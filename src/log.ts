@@ -26,25 +26,25 @@ let current: LoggerInterface = main;
  * Logger tool for checking if the code throws correct warning
  */
 export class LocalLogger implements LoggerInterface {
-  public warns = [];
-  public infos = [];
-  public debugs = [];
+  public warns: any[] = [];
+  public infos: any[] = [];
+  public debugs: any[] = [];
 
   public level() {
     return this;
   }
 
-  public warn(...args) {
+  public warn(...args: any[]) {
     this.warns.push(...args);
     return this;
   }
 
-  public info(...args) {
+  public info(...args: any[]) {
     this.infos.push(...args);
     return this;
   }
 
-  public debug(...args) {
+  public debug(...args: any[]) {
     this.debugs.push(...args);
     return this;
   }
@@ -72,15 +72,15 @@ export function reset() {
   return current;
 }
 
-export function warn(...args) {
+export function warn(...args: any[]) {
   current.warn.apply(current, arguments);
 }
 
-export function info(...args) {
+export function info(...args: any[]) {
   current.info.apply(current, arguments);
 }
 
-export function debug(...args) {
+export function debug(...args: any[]) {
   current.debug.apply(current, arguments);
 }
 
@@ -102,7 +102,7 @@ export namespace message {
     return `${channel} dropped as it is incompatible with ${markOrFacet}`;
   }
 
-  export function facetChannelShouldBeDiscrete(channel) {
+  export function facetChannelShouldBeDiscrete(channel: string) {
     return `${channel} encoding should be discrete (ordinal / nominal / binned).`;
   }
 
@@ -115,7 +115,7 @@ export namespace message {
     return 'Cannot clearly determine orientation for ' + mark + ' since both x and y channel encode discrete or empty fields.';
   }
 
-  export function orientOverridden(original, actual) {
+  export function orientOverridden(original: string, actual: string) {
     return `Specified orient ${original} overridden with ${actual}`;
   }
 
@@ -145,7 +145,7 @@ export namespace message {
   }
 
   // TIMEUNIT
-  export function invalidTimeUnit(unitName: string, value) {
+  export function invalidTimeUnit(unitName: string, value: string | number) {
     return `Invalid ${unitName}: ${value}`;
   }
 

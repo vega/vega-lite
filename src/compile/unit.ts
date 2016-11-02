@@ -107,7 +107,7 @@ export class UnitModel extends Model {
 
       if (isArray(encoding[channel])) {
         // Array of fieldDefs for detail channel (or production rule)
-        encoding[channel] = encoding[channel].reduce((fieldDefs, fieldDef) => {
+        encoding[channel] = encoding[channel].reduce((fieldDefs: FieldDef[], fieldDef: FieldDef) => {
           if (fieldDef.field === undefined && fieldDef.value === undefined) { // TODO: datum
             log.warn(log.message.emptyFieldDef(fieldDef, channel));
           } else {
@@ -188,6 +188,9 @@ export class UnitModel extends Model {
         // for text table without x/y scale we need wider bandSize
         this._width = scaleConfig.textBandWidth;
       } else {
+        if (typeof scaleConfig.bandSize === 'string') {
+          throw new Error('_initSize does not handle string bandSizes');
+        }
         this._width = scaleConfig.bandSize;
       }
     }
@@ -199,6 +202,9 @@ export class UnitModel extends Model {
         this._height = cellConfig.height;
       } // else: Do nothing, use dynamic height .
     } else {
+      if (typeof scaleConfig.bandSize === 'string') {
+        throw new Error('_initSize does not handle string bandSizes');
+      }
       this._height = scaleConfig.bandSize;
     }
   }
@@ -272,11 +278,11 @@ export class UnitModel extends Model {
     this.component.axis = parseAxisComponent(this, [X, Y]);
   }
 
-  public parseAxisGroup() {
+  public parseAxisGroup(): void {
     return null;
   }
 
-  public parseGridGroup() {
+  public parseGridGroup(): void {
     return null;
   }
 
@@ -312,7 +318,7 @@ export class UnitModel extends Model {
     return this._stack;
   }
 
-  public toSpec(excludeConfig?, excludeData?) {
+  public toSpec(excludeConfig?: any, excludeData?: any) {
     const encoding = duplicate(this._encoding);
     let spec: any;
 

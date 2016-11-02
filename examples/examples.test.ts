@@ -14,16 +14,16 @@ const validator = new zSchema({
 const vlSchema = require('../vega-lite-schema.json');
 const vgSchema = require('../node_modules/vega/vega-schema.json');
 
-function validateVL(spec) {
+function validateVL(spec: vl.spec.ExtendedSpec) {
   const valid = validator.validate(spec, vlSchema);
   const errors = validator.getLastErrors();
   if (!valid) {
     console.log(inspect(errors, { depth: 10, colors: true }));
   }
-  assert(valid, errors && errors.map((err) => {return err.message; }).join(', '));
+  assert(valid, errors && errors.map((err: Error) => {return err.message; }).join(', '));
 }
 
-function validateVega(spec) {
+function validateVega(spec: vl.spec.ExtendedSpec) {
   const vegaSpec = vl.compile(spec).spec;
 
   const valid = validator.validate(vegaSpec, vgSchema);
@@ -32,13 +32,13 @@ function validateVega(spec) {
     console.log(vegaSpec.marks[0].marks[0].properties);
     console.log(inspect(errors, { depth: 10, colors: true }));
   }
-  assert(valid, errors && errors.map((err) => {return err.message; }).join(', '));
+  assert(valid, errors && errors.map((err: Error) => {return err.message; }).join(', '));
 }
 
 describe('Examples', function() {
   const examples = fs.readdirSync('examples/specs');
 
-  examples.forEach(function(example) {
+  examples.forEach(function(example: string) {
     if (path.extname(example) !== '.json') { return; }
     const jsonSpec = JSON.parse(fs.readFileSync('examples/specs/' + example));
 

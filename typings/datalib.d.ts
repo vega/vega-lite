@@ -1,15 +1,18 @@
 declare module 'datalib/src/util' {
-  export function keys(a): Array<string>;
-  export function extend(a, b, ...rest);
+  export function keys(a: any): Array<string>;
+  export function extend<T, U, V, W>(a: T, b: U, c: V, d: W): T & U & V & W;
+  export function extend<T, U, V>(a: T, b: U, c: V): T & U & V;
+  export function extend<T, U>(a: T, b: U): T & U;
+  export function extend(...all: any[]): any;
   export function duplicate<T>(a: T): T;
   export function isArray(a: any | any[]): a is any[];
-  export function vals(a);
+  export function vals(a: any): any;
   export function truncate(a: string, length: number): string;
-  export function toMap(a);
-  export function isObject(a): a is any;
-  export function isString(a): a is string;
-  export function isNumber(a): a is number;
-  export function isBoolean(a): a is boolean;
+  export function toMap(a: any): any;
+  export function isObject(a: any): a is any;
+  export function isString(a: any): a is string;
+  export function isNumber(a: any): a is number;
+  export function isBoolean(a: any): a is boolean;
 }
 
 interface BinFunc {

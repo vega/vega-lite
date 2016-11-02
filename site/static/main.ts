@@ -1,6 +1,6 @@
 /* tslint:disable:no-unused-variable */
 
-declare const BASEURL, hljs;
+declare const BASEURL: string, hljs: any;
 
 // IIFE to prevent function declarations from moving into the global scope
 (() => {
@@ -81,9 +81,9 @@ function renderGallery() {
       d3.select(this).call(renderGalleryGroup);
     });
 
-    function renderGalleryGroup (selection) {
+    function renderGalleryGroup (selection: d3.Selection<any>) {
       const galleryGroupName = selection.attr('data-gallery-group');
-      let galleryGroupSpecs;
+      let galleryGroupSpecs: any[];
 
       // try to retrieve specs for a gallery group from in vl-examples.json
       try {

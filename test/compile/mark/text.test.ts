@@ -4,6 +4,7 @@ import {assert} from 'chai';
 import {parseUnitModel} from '../../util';
 import {text} from '../../../src/compile/mark/text';
 import {X, Y} from '../../../src/channel';
+import {ExtendedUnitSpec} from '../../../src/spec';
 
 describe('Mark: Text', function() {
   it('should return correct marktype', function() {
@@ -11,7 +12,7 @@ describe('Mark: Text', function() {
   });
 
   describe('with nothing', function() {
-    const spec = {
+    const spec: ExtendedUnitSpec = {
       "mark": "text",
       "encoding": {},
       "data": {"url": "data/cars.json"}
@@ -65,7 +66,7 @@ describe('Mark: Text', function() {
   });
 
   describe('with quantitative and format', function() {
-    const spec = {
+    const spec: ExtendedUnitSpec = {
       "mark": "text",
       "encoding": {
         "text": {"field": "foo", "type": "quantitative"}
@@ -85,7 +86,7 @@ describe('Mark: Text', function() {
   });
 
   describe('with temporal', function() {
-    const spec = {
+    const spec: ExtendedUnitSpec = {
       "mark": "text",
       "encoding": {
         "text": {"field": "foo", "type": "temporal"}
@@ -100,7 +101,7 @@ describe('Mark: Text', function() {
   });
 
   describe('with x, y, text (ordinal)', function() {
-    const spec = {
+    const spec: ExtendedUnitSpec = {
       "mark": "text",
       "encoding": {
         "x": {"field": "Acceleration", "type": "ordinal"},
@@ -129,7 +130,7 @@ describe('Mark: Text', function() {
   });
 
   describe('with row, column, text, and color', function() {
-    const spec = {
+    const spec: ExtendedUnitSpec = {
         "mark": "text",
         "encoding": {
           "row": {"field": "Origin", "type": "ordinal"},
@@ -173,7 +174,7 @@ describe('Mark: Text', function() {
   });
 
   describe('with row, column, text, and color and mark configs(applyColorToBackground, opacity)', function() {
-    const spec = {
+    const spec: ExtendedUnitSpec = {
         "mark": "text",
         "encoding": {
           "row": {"field": "Origin", "type": "ordinal"},

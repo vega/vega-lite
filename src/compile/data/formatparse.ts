@@ -1,4 +1,4 @@
-import {isDateTime} from '../../datetime';
+import {isDateTime, DateTime} from '../../datetime';
 import {FieldDef, isCount} from '../../fielddef';
 import {isOneOfFilter, isEqualFilter, isRangeFilter} from '../../filter';
 import {QUANTITATIVE, TEMPORAL} from '../../type';
@@ -24,7 +24,7 @@ export namespace formatParse {
       filter = [filter];
     }
     filter.forEach((f) => {
-      let val = null;
+      let val: string | number | boolean | DateTime = null;
       // For EqualFilter, just use the equal property.
       // For RangeFilter and OneOfFilter, all array members should have
       // the same type, so we only use the first one.

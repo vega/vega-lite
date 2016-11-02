@@ -3,38 +3,69 @@ import {ScaleType} from './scale';
 import {Dict, keys} from './util';
 import * as log from './log';
 
-export enum TimeUnit {
-  YEAR = 'year' as any,
-  MONTH = 'month' as any,
-  DAY = 'day' as any,
-  DATE = 'date' as any,
-  HOURS = 'hours' as any,
-  MINUTES = 'minutes' as any,
-  SECONDS = 'seconds' as any,
-  MILLISECONDS = 'milliseconds' as any,
-  YEARMONTH = 'yearmonth' as any,
-  YEARMONTHDATE = 'yearmonthdate' as any,
-  YEARMONTHDATEHOURS = 'yearmonthdatehours' as any,
-  YEARMONTHDATEHOURSMINUTES = 'yearmonthdatehoursminutes' as any,
-  YEARMONTHDATEHOURSMINUTESSECONDS = 'yearmonthdatehoursminutesseconds' as any,
+export namespace TimeUnit {
+  export const YEAR: 'year' = 'year';
+  export type YEAR = typeof YEAR;
+  export const MONTH: 'month' = 'month';
+  export type MONTH = typeof MONTH;
+  export const WEEK: 'week' =  'week';
+  export type WEEK = typeof WEEK;
+  export const DAY: 'day' = 'day';
+  export type DAY = typeof DAY;
+  export const DATE: 'date' = 'date';
+  export type DATE = typeof DATE;
+  export const HOURS: 'hours' = 'hours';
+  export type HOURS = typeof HOURS;
+  export const MINUTES: 'minutes' = 'minutes';
+  export type MINUTES = typeof MINUTES;
+  export const SECONDS: 'seconds' = 'seconds';
+  export type SECONDS = typeof SECONDS;
+  export const MILLISECONDS: 'milliseconds' = 'milliseconds';
+  export type MILLISECONDS = typeof MILLISECONDS;
+  export const YEARMONTH: 'yearmonth' = 'yearmonth';
+  export type YEARMONTH = typeof YEARMONTH;
+  export const YEARMONTHDATE: 'yearmonthdate' = 'yearmonthdate';
+  export type YEARMONTHDATE = typeof YEARMONTHDATE;
+  export const YEARMONTHDATEHOURS: 'yearmonthdatehours' = 'yearmonthdatehours';
+  export type YEARMONTHDATEHOURS = typeof YEARMONTHDATEHOURS;
+  export const YEARMONTHDATEHOURSMINUTES: 'yearmonthdatehoursminutes' = 'yearmonthdatehoursminutes';
+  export type YEARMONTHDATEHOURSMINUTES = typeof YEARMONTHDATEHOURSMINUTES;
+  export const YEARMONTHDATEHOURSMINUTESSECONDS: 'yearmonthdatehoursminutesseconds' = 'yearmonthdatehoursminutesseconds';
+  export type YEARMONTHDATEHOURSMINUTESSECONDS = typeof YEARMONTHDATEHOURSMINUTESSECONDS;
 
-  // MONTHDATE always include 29 February since we use year 0th (which is a leap year)
-  MONTHDATE = 'monthdate' as any,
-  HOURSMINUTES = 'hoursminutes' as any,
-  HOURSMINUTESSECONDS = 'hoursminutesseconds' as any,
-  MINUTESSECONDS = 'minutesseconds' as any,
-  SECONDSMILLISECONDS = 'secondsmilliseconds' as any,
-  QUARTER = 'quarter' as any,
-  YEARQUARTER = 'yearquarter' as any,
-  QUARTERMONTH = 'quartermonth' as any,
-  YEARQUARTERMONTH = 'yearquartermonth' as any,
+  // MONTHDATE always include 29 February since we use year 0th (which is a leap year);
+  export const MONTHDATE: 'monthdate' = 'monthdate';
+  export type MONTHDATE = typeof MONTHDATE;
+  export const HOURSMINUTES: 'hoursminutes' = 'hoursminutes';
+  export type HOURSMINUTES = typeof HOURSMINUTES;
+  export const HOURSMINUTESSECONDS: 'hoursminutesseconds' = 'hoursminutesseconds';
+  export type HOURSMINUTESSECONDS = typeof HOURSMINUTESSECONDS;
+  export const MINUTESSECONDS: 'minutesseconds' = 'minutesseconds';
+  export type MINUTESSECONDS = typeof MINUTESSECONDS;
+  export const SECONDSMILLISECONDS: 'secondsmilliseconds' = 'secondsmilliseconds';
+  export type SECONDSMILLISECONDS = typeof SECONDSMILLISECONDS;
+  export const QUARTER: 'quarter' = 'quarter';
+  export type QUARTER = typeof QUARTER;
+  export const YEARQUARTER: 'yearquarter' = 'yearquarter';
+  export type YEARQUARTER = typeof YEARQUARTER;
+  export const QUARTERMONTH: 'quartermonth' = 'quartermonth';
+  export type QUARTERMONTH = typeof QUARTERMONTH;
+  export const YEARQUARTERMONTH: 'yearquartermonth' = 'yearquartermonth';
+  export type YEARQUARTERMONTH = typeof YEARQUARTERMONTH;
 }
+export type TimeUnit = TimeUnit.YEAR | TimeUnit.MONTH | TimeUnit.WEEK | TimeUnit.DAY | TimeUnit.DATE | TimeUnit.HOURS
+  | TimeUnit.MINUTES | TimeUnit.SECONDS | TimeUnit.MILLISECONDS | TimeUnit.YEARMONTH
+  | TimeUnit.YEARMONTHDATE | TimeUnit.YEARMONTHDATEHOURS | TimeUnit.YEARMONTHDATEHOURSMINUTES
+  | TimeUnit.YEARMONTHDATEHOURSMINUTESSECONDS | TimeUnit.MONTHDATE | TimeUnit.HOURSMINUTES
+  | TimeUnit.HOURSMINUTESSECONDS | TimeUnit.MINUTESSECONDS | TimeUnit.SECONDSMILLISECONDS
+  | TimeUnit.QUARTER | TimeUnit.YEARQUARTER | TimeUnit.QUARTERMONTH | TimeUnit.YEARQUARTERMONTH;
 
 /** Time Unit that only corresponds to only one part of Date objects. */
 export const SINGLE_TIMEUNITS = [
   TimeUnit.YEAR,
   TimeUnit.QUARTER,
   TimeUnit.MONTH,
+  TimeUnit.WEEK,
   TimeUnit.DAY,
   TimeUnit.DATE,
   TimeUnit.HOURS,
@@ -120,7 +151,30 @@ export function isMultiTimeUnit(timeUnit: TimeUnit) {
   return !!MULTI_TIMEUNIT_INDEX[timeUnit];
 }
 
-export const TIMEUNITS = SINGLE_TIMEUNITS.concat(MULTI_TIMEUNITS);
+export const TIMEUNITS = [
+  TimeUnit.YEAR,
+  TimeUnit.QUARTER,
+  TimeUnit.MONTH,
+  TimeUnit.WEEK,
+  TimeUnit.DAY,
+  TimeUnit.DATE,
+  TimeUnit.HOURS,
+  TimeUnit.MINUTES,
+  TimeUnit.SECONDS,
+  TimeUnit.MILLISECONDS,
+  TimeUnit.YEARQUARTER,
+  TimeUnit.YEARQUARTERMONTH,
+  TimeUnit.YEARMONTH,
+  TimeUnit.YEARMONTHDATE,
+  TimeUnit.YEARMONTHDATEHOURS,
+  TimeUnit.YEARMONTHDATEHOURSMINUTES,
+  TimeUnit.YEARMONTHDATEHOURSMINUTESSECONDS,
+  TimeUnit.QUARTERMONTH,
+  TimeUnit.HOURSMINUTES,
+  TimeUnit.HOURSMINUTESSECONDS,
+  TimeUnit.MINUTESSECONDS,
+  TimeUnit.SECONDSMILLISECONDS
+];
 
 /** Returns true if fullTimeUnit contains the timeUnit, false otherwise. */
 export function containsTimeUnit(fullTimeUnit: TimeUnit, timeUnit: TimeUnit) {
@@ -135,7 +189,7 @@ export function containsTimeUnit(fullTimeUnit: TimeUnit, timeUnit: TimeUnit) {
     );
 }
 
-export function defaultScaleType(timeUnit: TimeUnit) {
+export function defaultScaleType(timeUnit: TimeUnit): ScaleType {
    switch (timeUnit) {
     case TimeUnit.HOURS:
     case TimeUnit.DAY:
@@ -163,7 +217,7 @@ export function fieldExpr(fullTimeUnit: TimeUnit, field: string): string {
     }
   }
 
-  let d: DateTimeExpr = SINGLE_TIMEUNITS.reduce((_d, tu: TimeUnit) => {
+  let d = SINGLE_TIMEUNITS.reduce((_d: DateTimeExpr, tu: TimeUnit) => {
     if (containsTimeUnit(fullTimeUnit, tu)) {
       _d[tu] = func(tu);
     }
@@ -180,7 +234,7 @@ export function fieldExpr(fullTimeUnit: TimeUnit, field: string): string {
 }
 
 /** returns the smallest nice unit for scale.nice */
-export function smallestUnit(timeUnit): string {
+export function smallestUnit(timeUnit: TimeUnit): string {
   if (!timeUnit) {
     return undefined;
   }
@@ -218,7 +272,7 @@ export function template(timeUnit: TimeUnit, field: string, shortTimeLabels: boo
     return undefined;
   }
 
-  let dateComponents = [];
+  let dateComponents: string[] = [];
   let template = '';
   const hasYear = containsTimeUnit(timeUnit, TimeUnit.YEAR);
 
@@ -242,7 +296,7 @@ export function template(timeUnit: TimeUnit, field: string, shortTimeLabels: boo
     dateComponents.push(shortTimeLabels ? '%y' : '%Y');
   }
 
-  let timeComponents = [];
+  let timeComponents: string[] = [];
 
   if (containsTimeUnit(timeUnit, TimeUnit.HOURS)) {
     timeComponents.push('%H');
@@ -257,7 +311,7 @@ export function template(timeUnit: TimeUnit, field: string, shortTimeLabels: boo
     timeComponents.push('%L');
   }
 
-  let dateTimeComponents = [];
+  let dateTimeComponents: string[] = [];
   if (dateComponents.length > 0) {
     dateTimeComponents.push(dateComponents.join(' '));
   }

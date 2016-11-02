@@ -6,6 +6,7 @@ import {VgValueRef} from '../../vega.schema';
 
 import {applyColorAndOpacity} from '../common';
 import {UnitModel} from '../unit';
+import {BandSize} from '../../scale';
 import * as ref from './valueref';
 
 export namespace tick {
@@ -35,14 +36,17 @@ export namespace tick {
     return p;
   }
 
-  function size(fieldDef: FieldDef, scaleName: string, scale: Scale, config: Config, scaleBandSize: number): VgValueRef {
-    let defaultSize;
+  function size(fieldDef: FieldDef, scaleName: string, scale: Scale, config: Config, scaleBandSize: number | BandSize): VgValueRef {
+    let defaultSize: number;
     if (config.mark.tickSize) {
       defaultSize = config.mark.tickSize;
     } else {
       const bandSize = scaleBandSize !== undefined ?
         scaleBandSize :
         config.scale.bandSize;
+      if (typeof bandSize !== 'number') {
+        throw new Error('Function does not handle non-numeric bandSize');
+      }
       defaultSize = bandSize / 1.5;
     }
 

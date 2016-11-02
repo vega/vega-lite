@@ -44,7 +44,7 @@ export namespace formula {
   }
 
   export function assemble(component: DataComponent) {
-    return vals(component.calculate).reduce(function(transform, formula) {
+    return vals(component.calculate).reduce(function(transform: any, formula: any) {
       transform.push(extend({ type: 'formula' }, formula));
       return transform;
     }, []);

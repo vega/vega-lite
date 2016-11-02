@@ -1,30 +1,53 @@
 import {DateTime} from './datetime';
 
-export enum ScaleType {
-    LINEAR = 'linear' as any,
-    LOG = 'log' as any,
-    POW = 'pow' as any,
-    SQRT = 'sqrt' as any,
-    QUANTILE = 'quantile' as any,
-    QUANTIZE = 'quantize' as any,
-    ORDINAL = 'ordinal' as any,
-    TIME = 'time' as any,
-    UTC  = 'utc' as any,
+export namespace ScaleType {
+    export const LINEAR: 'linear' = 'linear';
+    export type LINEAR = typeof LINEAR;
+    export const LOG: 'log' = 'log';
+    export type LOG = typeof LOG;
+    export const POW: 'pow' = 'pow';
+    export type POW = typeof POW;
+    export const SQRT: 'sqrt' = 'sqrt';
+    export type SQRT = typeof SQRT;
+    export const QUANTILE: 'quantile' = 'quantile';
+    export type QUANTILE = typeof QUANTILE;
+    export const QUANTIZE: 'quantize' = 'quantize';
+    export type QUANTIZE = typeof QUANTIZE;
+    export const ORDINAL: 'ordinal' = 'ordinal';
+    export type ORDINAL = typeof ORDINAL;
+    export const TIME: 'time' = 'time';
+    export type TIME = typeof TIME;
+    export const UTC: 'utc'  = 'utc';
+    export type UTC = typeof UTC;
 }
+export type ScaleType = ScaleType.LINEAR | ScaleType.LOG | ScaleType.POW
+  | ScaleType.SQRT | ScaleType.QUANTILE | ScaleType.QUANTIZE
+  | ScaleType.ORDINAL | ScaleType.TIME | ScaleType.UTC;
 
-export enum NiceTime {
-    SECOND = 'second' as any,
-    MINUTE = 'minute' as any,
-    HOUR = 'hour' as any,
-    DAY = 'day' as any,
-    WEEK = 'week' as any,
-    MONTH = 'month' as any,
-    YEAR = 'year' as any,
+export namespace NiceTime {
+    export const SECOND: 'second' = 'second';
+    export type SECOND = typeof SECOND;
+    export const MINUTE: 'minute' = 'minute';
+    export type MINUTE = typeof MINUTE;
+    export const HOUR: 'hour' = 'hour';
+    export type HOUR = typeof HOUR;
+    export const DAY: 'day' = 'day';
+    export type DAY = typeof DAY;
+    export const WEEK: 'week' = 'week';
+    export type WEEK = typeof WEEK;
+    export const MONTH: 'month' = 'month';
+    export type MONTH = typeof MONTH;
+    export const YEAR: 'year' = 'year';
+    export type YEAR = typeof YEAR;
 }
+export type NiceTime = NiceTime.SECOND | NiceTime.MINUTE | NiceTime.HOUR
+  | NiceTime.DAY | NiceTime.WEEK | NiceTime.MONTH | NiceTime.YEAR;
 
-export enum BandSize {
-  FIT = 'fit' as any
+export namespace BandSize {
+  export const FIT: 'fit' = 'fit';
+  export type FIT = typeof FIT;
 }
+export type BandSize = BandSize.FIT;
 
 export const BANDSIZE_FIT = BandSize.FIT;
 
@@ -87,7 +110,7 @@ export interface ScaleConfig {
   // let's not make a config.
 }
 
-export const defaultScaleConfig: ScaleConfig = {
+export const defaultScaleConfig = {
   round: true,
   textBandWidth: 90,
   bandSize: 21,

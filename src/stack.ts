@@ -7,12 +7,17 @@ import {Mark, BAR, AREA, POINT, CIRCLE, SQUARE, LINE, RULE, TEXT, TICK} from './
 import {ScaleType} from './scale';
 import {contains} from './util';
 
-export enum StackOffset {
-  ZERO = 'zero' as any,
-  CENTER = 'center' as any,
-  NORMALIZE = 'normalize' as any,
-  NONE = 'none' as any
+export namespace StackOffset {
+  export const ZERO: 'zero' = 'zero';
+  export type ZERO = typeof ZERO;
+  export const CENTER: 'center' = 'center';
+  export type CENTER = typeof CENTER;
+  export const NORMALIZE: 'normalize' = 'normalize';
+  export type NORMALIZE = typeof NORMALIZE;
+  export const NONE: 'none' = 'none';
+  export type NONE = typeof NONE;
 }
+export type StackOffset = StackOffset.ZERO | StackOffset.CENTER | StackOffset.NORMALIZE | StackOffset.NONE;
 
 export interface StackProperties {
   /** Dimension axis of the stack ('x' or 'y'). */
@@ -33,7 +38,7 @@ export const STACK_BY_DEFAULT_MARKS = [BAR, AREA];
 
 export function stack(mark: Mark, encoding: Encoding, stacked: StackOffset): StackProperties {
   // Should not have stack explicitly disabled
-  if (contains([StackOffset.NONE, null, false], stacked)) {
+  if (contains<string | boolean>([StackOffset.NONE, null, false], stacked)) {
     return null;
   }
 

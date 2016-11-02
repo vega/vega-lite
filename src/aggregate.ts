@@ -1,26 +1,52 @@
 
-export enum AggregateOp {
-    VALUES = 'values' as any,
-    COUNT = 'count' as any,
-    VALID = 'valid' as any,
-    MISSING = 'missing' as any,
-    DISTINCT = 'distinct' as any,
-    SUM = 'sum' as any,
-    MEAN = 'mean' as any,
-    AVERAGE = 'average' as any,
-    VARIANCE = 'variance' as any,
-    VARIANCEP = 'variancep' as any,
-    STDEV = 'stdev' as any,
-    STDEVP = 'stdevp' as any,
-    MEDIAN = 'median' as any,
-    Q1 = 'q1' as any,
-    Q3 = 'q3' as any,
-    MODESKEW = 'modeskew' as any,
-    MIN = 'min' as any,
-    MAX = 'max' as any,
-    ARGMIN = 'argmin' as any,
-    ARGMAX = 'argmax' as any,
+export namespace AggregateOp {
+    export const VALUES: 'values' = 'values';
+    export type VALUES = typeof VALUES;
+    export const COUNT: 'count' = 'count';
+    export type COUNT = typeof COUNT;
+    export const VALID: 'valid' = 'valid';
+    export type VALID = typeof VALID;
+    export const MISSING: 'missing' = 'missing';
+    export type MISSING = typeof MISSING;
+    export const DISTINCT: 'distinct' = 'distinct';
+    export type DISTINCT = typeof DISTINCT;
+    export const SUM: 'sum' = 'sum';
+    export type SUM = typeof SUM;
+    export const MEAN: 'mean' = 'mean';
+    export type MEAN = typeof MEAN;
+    export const AVERAGE: 'average' = 'average';
+    export type AVERAGE = typeof AVERAGE;
+    export const VARIANCE: 'variance' = 'variance';
+    export type VARIANCE = typeof VARIANCE;
+    export const VARIANCEP: 'variancep' = 'variancep';
+    export type VARIANCEP = typeof VARIANCEP;
+    export const STDEV: 'stdev' = 'stdev';
+    export type STDEV = typeof STDEV;
+    export const STDEVP: 'stdevp' = 'stdevp';
+    export type STDEVP = typeof STDEVP;
+    export const MEDIAN: 'median' = 'median';
+    export type MEDIAN = typeof MEDIAN;
+    export const Q1: 'q1' = 'q1';
+    export type Q1 = typeof Q1;
+    export const Q3: 'q3' = 'q3';
+    export type Q3 = typeof Q3;
+    export const MODESKEW: 'modeskew' = 'modeskew';
+    export type MODESKEW = typeof MODESKEW;
+    export const MIN: 'min' = 'min';
+    export type MIN = typeof MIN;
+    export const MAX: 'max' = 'max';
+    export type MAX = typeof MAX;
+    export const ARGMIN: 'argmin' = 'argmin';
+    export type ARGMIN = typeof ARGMIN;
+    export const ARGMAX: 'argmax' = 'argmax';
+    export type ARGMAX = typeof ARGMAX;
 }
+export type AggregateOp = AggregateOp.ARGMAX | AggregateOp.ARGMIN | AggregateOp.AVERAGE
+  | AggregateOp.COUNT | AggregateOp.DISTINCT | AggregateOp.MAX | AggregateOp.MEAN
+  | AggregateOp.MEDIAN | AggregateOp.MIN | AggregateOp.MISSING | AggregateOp.MODESKEW
+  | AggregateOp.Q1 | AggregateOp.Q3 | AggregateOp.STDEV | AggregateOp.STDEVP
+  | AggregateOp.SUM | AggregateOp.VALID | AggregateOp.VALUES | AggregateOp.VARIANCE
+  | AggregateOp.VARIANCEP;
 
 export const AGGREGATE_OPS = [
     AggregateOp.VALUES,

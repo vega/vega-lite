@@ -8,7 +8,7 @@ describe('compile/data/filter', () => {
   describe('parse', () => {
     it('should return a correct expression for an array of filter', () => {
       const model = parseUnitModel({
-        "data": {"value": []},
+        "data": {"values": []},
         "transform": {
           "filter": [
             {field: 'color', equal: 'red'},
@@ -29,7 +29,7 @@ describe('compile/data/filter', () => {
 
     it('should return a correct expression for a single filter', () => {
       const model = parseUnitModel({
-        "data": {"value": []},
+        "data": {"values": []},
         "transform": {
           "filter": 'datum["x"]===5'
         }

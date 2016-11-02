@@ -1,4 +1,5 @@
 import {DateTime} from './datetime';
+import {Shape} from './config';
 
 export interface LegendConfig {
   /**
@@ -103,7 +104,7 @@ export interface LegendConfig {
   /**
    * The font weight of the legend title.
    */
-  titleFontWeight?: string;
+  titleFontWeight?: number;
   /**
    * Optional mark property definitions for custom legend styling.
    */
@@ -126,6 +127,8 @@ export interface Legend extends LegendConfig {
    * Explicitly set the visible legend values.
    */
   values?: number[] | string[] | DateTime[];
+
+  shape?: Shape;
 }
 
 export const defaultLegendConfig: LegendConfig = {
