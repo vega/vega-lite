@@ -2,7 +2,7 @@
 
 import {assert} from 'chai';
 
-import {initBandSize, initType, points, domain, parseScaleComponent} from '../../src/compile/scale';
+import {bandSize, initType, points, domain, parseScaleComponent} from '../../src/compile/scale';
 import {SOURCE, SUMMARY} from '../../src/data';
 import {parseUnitModel} from '../util';
 
@@ -88,37 +88,37 @@ describe('Scale', function() {
     });
   });
 
-  describe('initBandSize()', () => {
+  describe('bandSize()', () => {
 
     it('should return undefined if bandSize spec is fit', () => {
-      const bandSize = initBandSize(BANDSIZE_FIT, 180, POINT, X, defaultScaleConfig);
-      assert.deepEqual(bandSize, undefined);
+      const _bandSize = bandSize(BANDSIZE_FIT, 180, POINT, X, defaultScaleConfig);
+      assert.deepEqual(_bandSize, undefined);
     });
 
     it('should return undefined if top-level size is provided for ordinal scale', () => {
-      const bandSize = initBandSize(undefined, 180, POINT, X, defaultScaleConfig);
-      assert.deepEqual(bandSize, undefined);
+      const _bandSize = bandSize(undefined, 180, POINT, X, defaultScaleConfig);
+      assert.deepEqual(_bandSize, undefined);
     });
 
     it('should return undefined if top-level size is provided for ordinal scale and throw warning if bandSize is specified', log.wrap((logger) => {
-      const bandSize = initBandSize(21, 180, POINT, X, defaultScaleConfig);
-      assert.deepEqual(bandSize, undefined);
+      const _bandSize = bandSize(21, 180, POINT, X, defaultScaleConfig);
+      assert.deepEqual(_bandSize, undefined);
       assert.equal(logger.warns[0], log.message.bandSizeOverridden(X));
     }));
 
     it('should return provided bandSize for ordinal scale', () => {
-      const bandSize = initBandSize(21, undefined, POINT, X, defaultScaleConfig);
-      assert.deepEqual(bandSize, 21);
+      const _bandSize = bandSize(21, undefined, POINT, X, defaultScaleConfig);
+      assert.deepEqual(_bandSize, 21);
     });
 
     it('should return provided textBandWidth for x-ordinal scale', () => {
-      const bandSize = initBandSize(undefined, undefined, TEXT, X, defaultScaleConfig);
-      assert.deepEqual(bandSize, defaultScaleConfig.textBandWidth);
+      const _bandSize = bandSize(undefined, undefined, TEXT, X, defaultScaleConfig);
+      assert.deepEqual(_bandSize, defaultScaleConfig.textBandWidth);
     });
 
     it('should return provided bandSize for other ordinal scale', () => {
-      const bandSize = initBandSize(undefined, undefined, POINT, X, defaultScaleConfig);
-      assert.deepEqual(bandSize, defaultScaleConfig.bandSize);
+      const _bandSize = bandSize(undefined, undefined, POINT, X, defaultScaleConfig);
+      assert.deepEqual(_bandSize, defaultScaleConfig.bandSize);
     });
   });
 
