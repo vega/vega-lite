@@ -274,7 +274,7 @@ vg.embed('#horizontal_line', {
 {:#scale-config}
 ## Scale Configuration  (`config.scale.*`)
 
-Scale configuration determines default properties for all [scales](scale.html) except for `row` and `column` (which are determined by [facet scale configuration](#facet-scale-config) instead).
+Scale configuration determines default properties for all [scales](scale.html).
 
 <span class="note-line">__See Code:__
 For a full list of scale configuration and their default values, please see the `ScaleConfig` interface and `defaultScaleConfig` in [scale.ts](https://github.com/vega/vega-lite/blob/master/src/scale.ts).
@@ -314,15 +314,6 @@ Facet cell configuration overrides [cell config](#cell-config) for faceted (trel
 | color         | Color         | Color of the grid between facets. |
 | opacity       | Number        | Opacity of the grid between facets. |
 | offset        | Number        | Offset for grid between facets. |
-
-
-{:#facet-scale-config}
-### Facet Scale Configuration (`config.facet.scale.*`)
-
-Facet scale configuration determines default properties for `row` and `column` [scales](scale.html).
-<span class="note-line">__See Code:__
-For a full list of scale configuration and their default values, please see the `FacetScaleConfig` interface and `defaultFacetScaleConfig` in [scale.ts](https://github.com/vega/vega-lite/blob/master/src/scale.ts).
-
 
 {:#facet-axis-config}
 ### Facet Axis Configuration (`config.facet.axis.*`)
