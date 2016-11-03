@@ -1,6 +1,6 @@
 import {X, Y, X2, Y2, SIZE} from '../../channel';
 import {Config, Orient} from '../../config';
-import {Scale, ScaleType} from '../../scale';
+import {Scale, ScaleType, BANDSIZE_FIT} from '../../scale';
 import {StackProperties} from '../../stack';
 import {extend} from '../../util';
 
@@ -118,13 +118,17 @@ export namespace bar {
     }
 
     if (scale && scale.type === ScaleType.ORDINAL) {
-      if (scale.bandSize) {
+      if (scale.bandSize && scale.bandSize !== BANDSIZE_FIT) {
         return {value: scale.bandSize - 1};
       }
       return ref.band(scaleName);
     } else if (scaleName) { // non-ordinal scale
       return {value: markConfig.barThinSize};
     }
-    return {value: config.scale.bandSize - 1};
+    if (config.scale.bandSize && config.scale.bandSize !== BANDSIZE_FIT) {
+      return {value: config.scale.bandSize - 1};
+    }
+    // TODO: this should depends on cell's width / height?
+    return {value: 20};
   }
 }

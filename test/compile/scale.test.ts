@@ -541,7 +541,66 @@ describe('Scale', function() {
       });
 
       describe('point, square, circle', function() {
-        // TODO:
+        it('should return [9, (minBandSize-2)^2] if both x and y are discrete', () => {
+          // TODO: replace this test with something more local
+          const model = parseUnitModel({
+            "data": {"url": "data/cars.json"},
+            "mark": "point",
+            "encoding": {
+              "y": {"field": "Origin", "type": "ordinal", "scale": {"bandSize": 11}},
+              "x": {"field": "Cylinders", "type": "ordinal", "scale": {"bandSize": 13}},
+              "size": {"aggregate": "mean", "field": "Horsepower", "type": "quantitative"}
+            }
+          });
+          const scales = parseScaleComponent(model)['size'];
+          assert.deepEqual(scales.main.range, [9, 81]);
+        });
+
+        it('should return [9, (xBandSize-2)^2] if x is discrete and y is continuous', () => {
+          // TODO: replace this test with something more local
+          const model = parseUnitModel({
+            "data": {"url": "data/cars.json"},
+            "mark": "point",
+            "encoding": {
+              "y": {"field": "Acceleration", "type": "quantitative"},
+              "x": {"field": "Cylinders", "type": "ordinal", "scale": {"bandSize": 11}},
+              "size": {"aggregate": "mean", "field": "Horsepower", "type": "quantitative"}
+            }
+          });
+          const scales = parseScaleComponent(model)['size'];
+          assert.deepEqual(scales.main.range, [9, 81]);
+        });
+
+        it('should return [9, (yBandSize-2)^2] if y is discrete and x is continuous', () => {
+          // TODO: replace this test with something more local
+          const model = parseUnitModel({
+            "data": {"url": "data/cars.json"},
+            "mark": "point",
+            "encoding": {
+              "x": {"field": "Acceleration", "type": "quantitative"},
+              "y": {"field": "Cylinders", "type": "ordinal", "scale": {"bandSize": 11}},
+              "size": {"aggregate": "mean", "field": "Horsepower", "type": "quantitative"}
+            }
+          });
+          const scales = parseScaleComponent(model)['size'];
+          assert.deepEqual(scales.main.range, [9, 81]);
+        });
+
+        it('should return [9, (scaleConfig.BandSize-2)^2] if y is discrete and x is continuous', () => {
+          // TODO: replace this test with something more local
+          const model = parseUnitModel({
+            "data": {"url": "data/cars.json"},
+            "mark": "point",
+            "encoding": {
+              "x": {"field": "Acceleration", "type": "quantitative"},
+              "y": {"field": "Acceleration", "type": "quantitative"},
+              "size": {"aggregate": "mean", "field": "Horsepower", "type": "quantitative"}
+            },
+            "config": {"scale": {"bandSize": 11}}
+          });
+          const scales = parseScaleComponent(model)['size'];
+          assert.deepEqual(scales.main.range, [9, 81]);
+        });
       });
     });
 

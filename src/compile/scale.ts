@@ -5,7 +5,7 @@ import {COLUMN, ROW, X, Y, X2, Y2, SHAPE, SIZE, COLOR, OPACITY, TEXT, hasScale, 
 import {Orient} from '../config';
 import {SOURCE, STACKED_SCALE} from '../data';
 import {DateTime, isDateTime, timestamp} from '../datetime';
-import {ChannelDefWithScale, FieldDef, field, isMeasure} from '../fielddef';
+import {ChannelDefWithScale, FieldDef, field} from '../fielddef';
 import {Mark, BAR, TEXT as TEXTMARK, RECT, RULE, TICK} from '../mark';
 import {Scale, ScaleConfig, ScaleType, NiceTime, BANDSIZE_FIT, BandSize} from '../scale';
 import {isSortField, SortOrder} from '../sort';
@@ -262,7 +262,7 @@ export function bandSize(bandSize: number | BandSize, topLevelSize: number, mark
       // only use config by default for X and Y
       if (channel === X && mark === TEXTMARK) {
         return scaleConfig.textBandWidth;
-      } else {
+      } else if (scaleConfig.bandSize !== BANDSIZE_FIT) {
         return scaleConfig.bandSize;
       }
     }
@@ -494,6 +494,7 @@ export function rangeMixins(scale: Scale, model: Model, channel: Channel): any {
       // If not ROW / COLUMN, we can assume that this is a unit spec.
       const bandSize = pointBandSize(model as UnitModel, scaleConfig);
 
+      //  TODO: make 9 a config
       return {range: [9, (bandSize - 2) * (bandSize - 2)]};
     case SHAPE:
       return {range: scaleConfig.shapeRange}; // FIXME: check for scheme (Vega 3)
@@ -509,29 +510,33 @@ export function rangeMixins(scale: Scale, model: Model, channel: Channel): any {
   return {};
 }
 
-function pointBandSize(model: UnitModel, scaleConfig: ScaleConfig) {
-
-  const hasX = model.has(X);
-  const hasY = model.has(Y);
-
-  // FIXME: remove all these isMeasureCheck
-  const xIsMeasure = isMeasure(model.encoding().x);
-  const yIsMeasure = isMeasure(model.encoding().y);
-
-  if (hasX && hasY) {
-    return xIsMeasure !== yIsMeasure ?
-      model.scale(xIsMeasure ? Y : X).bandSize :
-      // TODO: Remove casts and hande string bandSizes
-      Math.min(
-        (model.scale(X).bandSize || scaleConfig.bandSize) as number,
-        (model.scale(Y).bandSize || scaleConfig.bandSize) as number
-      );
-  } else if (hasY) {
-    return yIsMeasure ? scaleConfig.bandSize : model.scale(Y).bandSize;
-  } else if (hasX) {
-    return xIsMeasure ? scaleConfig.bandSize : model.scale(X).bandSize;
+/**
+ * @returns {number} Band size of x or y or minimum between the two if both are ordinal scale.
+ */
+function pointBandSize(model: UnitModel, scaleConfig: ScaleConfig): number {
+  const bandSizes: number[] = [];
+  if (model.scale(X)) {
+    const xBandSize = model.scale(X).bandSize;
+    if (xBandSize && xBandSize !== BANDSIZE_FIT) {
+      bandSizes.push(xBandSize);
+    }
   }
-  return scaleConfig.bandSize;
+
+  if (model.scale(Y)) {
+    const yBandSize = model.scale(Y).bandSize;
+    if (yBandSize && yBandSize !== BANDSIZE_FIT) {
+      bandSizes.push(yBandSize);
+    }
+  }
+
+  if (bandSizes.length > 0) {
+    return Math.min.apply(null, bandSizes);
+  }
+  if (scaleConfig.bandSize && scaleConfig.bandSize !== BANDSIZE_FIT) {
+    return scaleConfig.bandSize;
+  }
+  // TODO(#1168): better default point bandSize for fit mode
+  return 21;
 }
 
 export function clamp(scale: Scale, scaleConfig: ScaleConfig) {

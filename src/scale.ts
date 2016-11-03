@@ -29,13 +29,9 @@ export namespace NiceTime {
 export type NiceTime = typeof NiceTime.SECOND | typeof NiceTime.MINUTE | typeof NiceTime.HOUR
   | typeof NiceTime.DAY | typeof NiceTime.WEEK | typeof NiceTime.MONTH | typeof NiceTime.YEAR;
 
-export namespace BandSize {
-  // FIXME: should not be any
-  export const FIT: any = 'fit';
-}
-export type BandSize = typeof BandSize.FIT;
+export const BANDSIZE_FIT: 'fit' = 'fit';
+export type BandSize = typeof BANDSIZE_FIT;
 
-export const BANDSIZE_FIT = BandSize.FIT;
 
 export interface ScaleConfig {
   /**
