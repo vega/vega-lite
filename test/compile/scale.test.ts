@@ -77,13 +77,13 @@ describe('Scale', function() {
   describe('points()', function() {
     it('should return band scale for X,Y when mark is rect', () => {
       [X, Y].forEach((channel) => {
-        assert.equal(points(channel, RECT, 21), false);
+        assert.equal(points(channel, RECT, true), false);
       });
     });
 
     it('should return band scale for X,Y when mark is bar and bandSize is undefined (fit)', () => {
       [X, Y].forEach((channel) => {
-        assert.equal(points(channel, BAR, undefined), false);
+        assert.equal(points(channel, BAR, false), false);
       });
     });
   });

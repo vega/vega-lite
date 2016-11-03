@@ -43,16 +43,17 @@ export type ScaleComponents = {
 export function initScale(topLevelSize: number, mark: Mark, channel: Channel, fieldDef: ChannelDefWithScale, scaleConfig: ScaleConfig): Scale {
   let scale: Scale = duplicate((fieldDef || {}).scale || {});
 
+  // initialize bandSize as if it's an ordinal scale first since ordinal scale type depends on this.
+  const size = bandSize(scale.bandSize, topLevelSize, mark, channel, scaleConfig);
+
   scale.type = type(scale.type, fieldDef, channel, mark);
   if (scale.type === ScaleType.ORDINAL) {
-    // TODO: if possible, make points (ordinalType) not dependent on bandSize
-    const size = bandSize(scale.bandSize, topLevelSize, mark, channel, scaleConfig);
-    if (size !== undefined) {
-      scale.bandSize = size;
-    } else {
-      delete scale.bandSize; // make sure it really become undefined
-    }
-    scale.points = points(channel, mark, size);
+    scale.points = points(channel, mark, !!size);
+  }
+  if (scale.type === ScaleType.ORDINAL && size !== undefined) {
+    scale.bandSize = size;
+  } else {
+    delete scale.bandSize; // make sure it really become undefined
   }
 
   [
@@ -70,7 +71,6 @@ export function initScale(topLevelSize: number, mark: Mark, channel: Channel, fi
       scale[property] = value;
     }
   });
-
   return scale;
 }
 
@@ -228,7 +228,7 @@ export function type(scaleType: ScaleType, fieldDef: FieldDef, channel: Channel,
 }
 
 // TODO: when migrate to Vega3 rename this to ordinalType()
-export function points(channel: Channel, mark: Mark, bandSize: number) {
+export function points(channel: Channel, mark: Mark, canHaveBandSize: boolean) {
   if (contains([ROW, COLUMN], channel)) {
     // Use band scale for facet
     return false;
@@ -238,7 +238,7 @@ export function points(channel: Channel, mark: Mark, bandSize: number) {
     // Use band ordinal scale for x/y scale in one of the following cases:
     if (
       // 1) the mark is bar and the scale's bandWidth is 'fit',
-      (mark === BAR && !bandSize) ||
+      (mark === BAR && !canHaveBandSize) ||
       // 2) the mark is rect
       mark === RECT
     ) {
