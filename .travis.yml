@@ -5,7 +5,7 @@ node_js:
   - "6"
 install: NV=$(node --version); if [ ${NV:0:5} = "v0.12" ]; then npm install; else npm install -g yarn; yarn; fi
 script:
-  - npm run clean && npm run build
+  - npm run build
   - npm run lint
   - npm run pretest && npm run test:only
   - npm run codecov
