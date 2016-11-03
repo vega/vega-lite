@@ -85,8 +85,8 @@ export function parseLegend(model: UnitModel, channel: Channel): VgLegend {
       properties[group](fieldDef, props[group], model, channel) : // apply rule
       props[group]; // no rule -- just default values
     if (value !== undefined && keys(value).length > 0) {
-      def.properties = def.properties || {};
-      def.properties[group] = value;
+      def.encode = def.encode || {};
+      def.encode[group] = {update: value};
     }
   });
 
@@ -117,6 +117,7 @@ export function useColorLegendScale(fieldDef: FieldDef) {
   return fieldDef.type === ORDINAL || fieldDef.bin || fieldDef.timeUnit;
 }
 
+// TODO: should we rename this?
 export namespace properties {
   export function symbols(fieldDef: FieldDef, symbolsSpec: any, model: UnitModel, channel: Channel) {
     let symbols:any = {};
