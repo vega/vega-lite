@@ -104,7 +104,7 @@ export interface LegendConfig {
   /**
    * The font weight of the legend title.
    */
-  titleFontWeight?: number;
+  titleFontWeight?: string | number;
   /**
    * Optional mark property definitions for custom legend styling.
    */

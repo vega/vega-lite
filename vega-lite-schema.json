@@ -392,7 +392,10 @@
                         },
                         "titleFontWeight": {
                             "description": "Weight of the title.",
-                            "type": "string"
+                            "type": [
+                                "string",
+                                "number"
+                            ]
                         },
                         "titleOffset": {
                             "description": "A title offset value for the axis.",
@@ -979,7 +982,10 @@
                         },
                         "titleFontWeight": {
                             "description": "The font weight of the legend title.",
-                            "type": "number"
+                            "type": [
+                                "string",
+                                "number"
+                            ]
                         },
                         "properties": {
                             "description": "Optional mark property definitions for custom legend styling."
@@ -1915,7 +1921,10 @@
                 },
                 "titleFontWeight": {
                     "description": "Weight of the title.",
-                    "type": "string"
+                    "type": [
+                        "string",
+                        "number"
+                    ]
                 },
                 "titleOffset": {
                     "description": "A title offset value for the axis.",
@@ -2029,7 +2038,10 @@
                 },
                 "titleFontWeight": {
                     "description": "The font weight of the legend title.",
-                    "type": "number"
+                    "type": [
+                        "string",
+                        "number"
+                    ]
                 },
                 "properties": {
                     "description": "Optional mark property definitions for custom legend styling."

@@ -162,7 +162,7 @@ export interface AxisConfig {
   /**
    * Weight of the title.
    */
-  titleFontWeight?: string;
+  titleFontWeight?: string | number;
 
   /**
    * A title offset value for the axis.
