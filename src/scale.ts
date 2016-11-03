@@ -7,14 +7,27 @@ export namespace ScaleType {
     export const SQRT: 'sqrt' = 'sqrt';
     export const QUANTILE: 'quantile' = 'quantile';
     export const QUANTIZE: 'quantize' = 'quantize';
-    export const ORDINAL: 'ordinal' = 'ordinal';
+
+    // TODO: rename this back to ORDINAL once we are done
+    export const ORDINAL_LOOKUP: 'ordinal' = 'ordinal';
+    export const POINT: 'point' = 'point';
+    export const BAND: 'band' = 'band';
+
     export const TIME: 'time' = 'time';
     export const UTC: 'utc'  = 'utc';
 }
 
 export type ScaleType = typeof ScaleType.LINEAR | typeof ScaleType.LOG | typeof ScaleType.POW
   | typeof ScaleType.SQRT | typeof ScaleType.QUANTILE | typeof ScaleType.QUANTIZE
-  | typeof ScaleType.ORDINAL | typeof ScaleType.TIME | typeof ScaleType.UTC;
+  | typeof ScaleType.ORDINAL_LOOKUP | typeof ScaleType.POINT | typeof ScaleType.BAND
+   | typeof ScaleType.TIME | typeof ScaleType.UTC;
+
+export function isDiscreteScale(type: ScaleType):
+    type is typeof ScaleType.ORDINAL_LOOKUP | typeof ScaleType.POINT | typeof ScaleType.BAND {
+  return type === ScaleType.POINT ||
+    type === ScaleType.BAND ||
+    type === ScaleType.ORDINAL_LOOKUP;
+}
 
 export namespace NiceTime {
     export const SECOND: 'second' = 'second';
@@ -154,9 +167,6 @@ export interface Scale {
    * Applies spacing among ordinal elements in the scale range. The actual effect depends on how the scale is configured. If the __points__ parameter is `true`, the padding value is interpreted as a multiple of the spacing between points. A reasonable value is 1.0, such that the first and last point will be offset from the minimum and maximum value by half the distance between points. Otherwise, padding is typically in the range [0, 1] and corresponds to the fraction of space in the range interval to allocate to padding. A value of 0.5 means that the range band width will be equal to the padding width. For more, see the [D3 ordinal scale documentation](https://github.com/mbostock/d3/wiki/Ordinal-Scales).
    */
   padding?: number;
-
-  // FIXME: integrated to type when migrate to Vega 3
-  points?: boolean;
 
   // typical
   /**

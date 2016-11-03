@@ -52,6 +52,7 @@ export type VgScale = {
   range?: any[] | VgDataRef | string,
   rangeMin?: any,
   rangeMax?: any,
+  scheme?: string,
 
   bandSize?: number,
   clamp?: boolean,
