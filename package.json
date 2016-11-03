@@ -69,12 +69,12 @@
     "exorcist": "~0.4.0",
     "mocha": "~3.1.2",
     "nodemon": "~1.11.0",
-    "nyc": "~8.3.2",
+    "nyc": "~8.4.0",
     "source-map-support": "~0.4.6",
     "tsify": "~2.0.2",
     "tslint": "~3.15.1",
     "typescript": "^2.0.6",
-    "typescript-json-schema": "~0.2.0",
+    "typescript-json-schema": "~0.3.1",
     "uglify-js": "~2.7.4",
     "vega": "~2.6.3",
     "vega-datasets": "vega/vega-datasets#gh-pages",
@@ -84,8 +84,8 @@
   },
   "dependencies": {
     "datalib": "~1.7.3",
-    "vega-util": "1.0.1",
     "json-stable-stringify": "~1.0.1",
+    "vega-util": "1.0.1",
     "yargs": "~6.3.0"
   }
 }
