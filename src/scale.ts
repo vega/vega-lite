@@ -2,46 +2,32 @@ import {DateTime} from './datetime';
 
 export namespace ScaleType {
     export const LINEAR: 'linear' = 'linear';
-    export type LINEAR = typeof LINEAR;
     export const LOG: 'log' = 'log';
-    export type LOG = typeof LOG;
     export const POW: 'pow' = 'pow';
-    export type POW = typeof POW;
     export const SQRT: 'sqrt' = 'sqrt';
-    export type SQRT = typeof SQRT;
     export const QUANTILE: 'quantile' = 'quantile';
-    export type QUANTILE = typeof QUANTILE;
     export const QUANTIZE: 'quantize' = 'quantize';
-    export type QUANTIZE = typeof QUANTIZE;
     export const ORDINAL: 'ordinal' = 'ordinal';
-    export type ORDINAL = typeof ORDINAL;
     export const TIME: 'time' = 'time';
-    export type TIME = typeof TIME;
     export const UTC: 'utc'  = 'utc';
-    export type UTC = typeof UTC;
 }
-export type ScaleType = ScaleType.LINEAR | ScaleType.LOG | ScaleType.POW
-  | ScaleType.SQRT | ScaleType.QUANTILE | ScaleType.QUANTIZE
-  | ScaleType.ORDINAL | ScaleType.TIME | ScaleType.UTC;
+
+export type ScaleType = typeof ScaleType.LINEAR | typeof ScaleType.LOG | typeof ScaleType.POW
+  | typeof ScaleType.SQRT | typeof ScaleType.QUANTILE | typeof ScaleType.QUANTIZE
+  | typeof ScaleType.ORDINAL | typeof ScaleType.TIME | typeof ScaleType.UTC;
 
 export namespace NiceTime {
     export const SECOND: 'second' = 'second';
-    export type SECOND = typeof SECOND;
     export const MINUTE: 'minute' = 'minute';
-    export type MINUTE = typeof MINUTE;
     export const HOUR: 'hour' = 'hour';
-    export type HOUR = typeof HOUR;
     export const DAY: 'day' = 'day';
-    export type DAY = typeof DAY;
     export const WEEK: 'week' = 'week';
-    export type WEEK = typeof WEEK;
     export const MONTH: 'month' = 'month';
-    export type MONTH = typeof MONTH;
     export const YEAR: 'year' = 'year';
-    export type YEAR = typeof YEAR;
 }
-export type NiceTime = NiceTime.SECOND | NiceTime.MINUTE | NiceTime.HOUR
-  | NiceTime.DAY | NiceTime.WEEK | NiceTime.MONTH | NiceTime.YEAR;
+
+export type NiceTime = typeof NiceTime.SECOND | typeof NiceTime.MINUTE | typeof NiceTime.HOUR
+  | typeof NiceTime.DAY | typeof NiceTime.WEEK | typeof NiceTime.MONTH | typeof NiceTime.YEAR;
 
 export namespace BandSize {
   // FIXME: should not be any

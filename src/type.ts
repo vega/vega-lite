@@ -2,15 +2,11 @@
 
 export namespace Type {
   export const QUANTITATIVE: 'quantitative' = 'quantitative';
-  export type QUANTITATIVE = typeof QUANTITATIVE;
   export const ORDINAL: 'ordinal' = 'ordinal';
-  export type ORDINAL = typeof ORDINAL;
   export const TEMPORAL: 'temporal' = 'temporal';
-  export type TEMPORAL = typeof TEMPORAL;
   export const NOMINAL: 'nominal' = 'nominal';
-  export type NOMINAL = typeof NOMINAL;
 }
-export type Type = Type.QUANTITATIVE | Type.ORDINAL | Type.TEMPORAL | Type.NOMINAL;
+export type Type = typeof Type.QUANTITATIVE | typeof Type.ORDINAL | typeof Type.TEMPORAL | typeof Type.NOMINAL;
 
 export const QUANTITATIVE = Type.QUANTITATIVE;
 export const ORDINAL = Type.ORDINAL;

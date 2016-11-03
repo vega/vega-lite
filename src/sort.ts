@@ -8,6 +8,7 @@ export namespace SortOrder {
     export const NONE: 'none' = 'none';
     export type NONE = typeof NONE;
 }
+
 export type SortOrder = SortOrder.ASCENDING | SortOrder.DESCENDING | SortOrder.NONE;
 
 export interface SortField {

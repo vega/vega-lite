@@ -9,15 +9,12 @@ import {contains} from './util';
 
 export namespace StackOffset {
   export const ZERO: 'zero' = 'zero';
-  export type ZERO = typeof ZERO;
   export const CENTER: 'center' = 'center';
-  export type CENTER = typeof CENTER;
   export const NORMALIZE: 'normalize' = 'normalize';
-  export type NORMALIZE = typeof NORMALIZE;
   export const NONE: 'none' = 'none';
-  export type NONE = typeof NONE;
 }
-export type StackOffset = StackOffset.ZERO | StackOffset.CENTER | StackOffset.NORMALIZE | StackOffset.NONE;
+
+export type StackOffset = typeof StackOffset.ZERO | typeof StackOffset.CENTER | typeof StackOffset.NORMALIZE | typeof StackOffset.NONE;
 
 export interface StackProperties {
   /** Dimension axis of the stack ('x' or 'y'). */

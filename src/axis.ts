@@ -2,15 +2,11 @@ import {DateTime} from './datetime';
 
 export namespace AxisOrient {
     export const TOP: 'top' = 'top';
-    export type TOP = typeof TOP;
     export const RIGHT: 'right' = 'right';
-    export type RIGHT = typeof RIGHT;
     export const LEFT: 'left' = 'left';
-    export type LEFT = typeof LEFT;
     export const BOTTOM: 'bottom' = 'bottom';
-    export type BOTTOM = typeof BOTTOM;
 }
-export type AxisOrient = AxisOrient.TOP | AxisOrient.RIGHT | AxisOrient.LEFT | AxisOrient.BOTTOM;
+export type AxisOrient = typeof AxisOrient.TOP | typeof AxisOrient.RIGHT | typeof AxisOrient.LEFT | typeof AxisOrient.BOTTOM;
 
 export interface AxisConfig {
   // ---------- General ----------

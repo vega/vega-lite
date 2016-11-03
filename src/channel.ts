@@ -8,40 +8,25 @@ import {contains, without} from './util';
 
 export namespace Channel {
   export const X: 'x' = 'x';
-  export type X = typeof X;
   export const Y: 'y' = 'y';
-  export type Y = typeof Y;
   export const X2: 'x2' = 'x2';
-  export type X2 = typeof X2;
   export const Y2: 'y2' = 'y2';
-  export type Y2 = typeof Y2;
   export const ROW: 'row' = 'row';
-  export type ROW = typeof ROW;
   export const COLUMN: 'column' = 'column';
-  export type COLUMN = typeof COLUMN;
   export const SHAPE: 'shape' = 'shape';
-  export type SHAPE = typeof SHAPE;
   export const SIZE: 'size' = 'size';
-  export type SIZE = typeof SIZE;
   export const COLOR: 'color' = 'color';
-  export type COLOR = typeof COLOR;
   export const TEXT: 'text' = 'text';
-  export type TEXT = typeof TEXT;
   export const DETAIL: 'detail' = 'detail';
-  export type DETAIL = typeof DETAIL;
   export const LABEL: 'label' = 'label';
-  export type LABEL = typeof LABEL;
   export const PATH: 'path' = 'path';
-  export type PATH = typeof PATH;
   export const ORDER: 'order' = 'order';
-  export type ORDER = typeof ORDER;
   export const OPACITY: 'opacity' = 'opacity';
-  export type OPACITY = typeof OPACITY;
 }
-export type Channel = Channel.X | Channel.Y | Channel.X2 | Channel.Y2 | Channel.ROW
-  | Channel.COLUMN | Channel.SHAPE | Channel.SIZE | Channel.COLOR
-  | Channel.TEXT | Channel.DETAIL | Channel.LABEL | Channel.PATH
-  | Channel.ORDER | Channel.OPACITY;
+export type Channel = typeof Channel.X | typeof Channel.Y | typeof Channel.X2 | typeof Channel.Y2 | typeof Channel.ROW
+  | typeof Channel.COLUMN | typeof Channel.SHAPE | typeof Channel.SIZE | typeof Channel.COLOR
+  | typeof Channel.TEXT | typeof Channel.DETAIL | typeof Channel.LABEL | typeof Channel.PATH
+  | typeof Channel.ORDER | typeof Channel.OPACITY;
 
 export const X = Channel.X;
 export const Y = Channel.Y;

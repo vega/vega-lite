@@ -5,60 +5,38 @@ import * as log from './log';
 
 export namespace TimeUnit {
   export const YEAR: 'year' = 'year';
-  export type YEAR = typeof YEAR;
   export const MONTH: 'month' = 'month';
-  export type MONTH = typeof MONTH;
   export const WEEK: 'week' =  'week';
-  export type WEEK = typeof WEEK;
   export const DAY: 'day' = 'day';
-  export type DAY = typeof DAY;
   export const DATE: 'date' = 'date';
-  export type DATE = typeof DATE;
   export const HOURS: 'hours' = 'hours';
-  export type HOURS = typeof HOURS;
   export const MINUTES: 'minutes' = 'minutes';
-  export type MINUTES = typeof MINUTES;
   export const SECONDS: 'seconds' = 'seconds';
-  export type SECONDS = typeof SECONDS;
   export const MILLISECONDS: 'milliseconds' = 'milliseconds';
-  export type MILLISECONDS = typeof MILLISECONDS;
   export const YEARMONTH: 'yearmonth' = 'yearmonth';
-  export type YEARMONTH = typeof YEARMONTH;
   export const YEARMONTHDATE: 'yearmonthdate' = 'yearmonthdate';
-  export type YEARMONTHDATE = typeof YEARMONTHDATE;
   export const YEARMONTHDATEHOURS: 'yearmonthdatehours' = 'yearmonthdatehours';
-  export type YEARMONTHDATEHOURS = typeof YEARMONTHDATEHOURS;
   export const YEARMONTHDATEHOURSMINUTES: 'yearmonthdatehoursminutes' = 'yearmonthdatehoursminutes';
-  export type YEARMONTHDATEHOURSMINUTES = typeof YEARMONTHDATEHOURSMINUTES;
   export const YEARMONTHDATEHOURSMINUTESSECONDS: 'yearmonthdatehoursminutesseconds' = 'yearmonthdatehoursminutesseconds';
-  export type YEARMONTHDATEHOURSMINUTESSECONDS = typeof YEARMONTHDATEHOURSMINUTESSECONDS;
 
   // MONTHDATE always include 29 February since we use year 0th (which is a leap year);
   export const MONTHDATE: 'monthdate' = 'monthdate';
-  export type MONTHDATE = typeof MONTHDATE;
   export const HOURSMINUTES: 'hoursminutes' = 'hoursminutes';
-  export type HOURSMINUTES = typeof HOURSMINUTES;
   export const HOURSMINUTESSECONDS: 'hoursminutesseconds' = 'hoursminutesseconds';
-  export type HOURSMINUTESSECONDS = typeof HOURSMINUTESSECONDS;
   export const MINUTESSECONDS: 'minutesseconds' = 'minutesseconds';
-  export type MINUTESSECONDS = typeof MINUTESSECONDS;
   export const SECONDSMILLISECONDS: 'secondsmilliseconds' = 'secondsmilliseconds';
-  export type SECONDSMILLISECONDS = typeof SECONDSMILLISECONDS;
   export const QUARTER: 'quarter' = 'quarter';
-  export type QUARTER = typeof QUARTER;
   export const YEARQUARTER: 'yearquarter' = 'yearquarter';
-  export type YEARQUARTER = typeof YEARQUARTER;
   export const QUARTERMONTH: 'quartermonth' = 'quartermonth';
-  export type QUARTERMONTH = typeof QUARTERMONTH;
   export const YEARQUARTERMONTH: 'yearquartermonth' = 'yearquartermonth';
-  export type YEARQUARTERMONTH = typeof YEARQUARTERMONTH;
 }
-export type TimeUnit = TimeUnit.YEAR | TimeUnit.MONTH | TimeUnit.WEEK | TimeUnit.DAY | TimeUnit.DATE | TimeUnit.HOURS
-  | TimeUnit.MINUTES | TimeUnit.SECONDS | TimeUnit.MILLISECONDS | TimeUnit.YEARMONTH
-  | TimeUnit.YEARMONTHDATE | TimeUnit.YEARMONTHDATEHOURS | TimeUnit.YEARMONTHDATEHOURSMINUTES
-  | TimeUnit.YEARMONTHDATEHOURSMINUTESSECONDS | TimeUnit.MONTHDATE | TimeUnit.HOURSMINUTES
-  | TimeUnit.HOURSMINUTESSECONDS | TimeUnit.MINUTESSECONDS | TimeUnit.SECONDSMILLISECONDS
-  | TimeUnit.QUARTER | TimeUnit.YEARQUARTER | TimeUnit.QUARTERMONTH | TimeUnit.YEARQUARTERMONTH;
+
+export type TimeUnit = typeof TimeUnit.YEAR | typeof TimeUnit.MONTH | typeof TimeUnit.WEEK | typeof TimeUnit.DAY | typeof TimeUnit.DATE | typeof TimeUnit.HOURS
+  | typeof TimeUnit.MINUTES | typeof TimeUnit.SECONDS | typeof TimeUnit.MILLISECONDS | typeof TimeUnit.YEARMONTH
+  | typeof TimeUnit.YEARMONTHDATE | typeof TimeUnit.YEARMONTHDATEHOURS | typeof TimeUnit.YEARMONTHDATEHOURSMINUTES
+  | typeof TimeUnit.YEARMONTHDATEHOURSMINUTESSECONDS | typeof TimeUnit.MONTHDATE | typeof TimeUnit.HOURSMINUTES
+  | typeof TimeUnit.HOURSMINUTESSECONDS | typeof TimeUnit.MINUTESSECONDS | typeof TimeUnit.SECONDSMILLISECONDS
+  | typeof TimeUnit.QUARTER | typeof TimeUnit.YEARQUARTER | typeof TimeUnit.QUARTERMONTH | typeof TimeUnit.YEARQUARTERMONTH;
 
 /** Time Unit that only corresponds to only one part of Date objects. */
 export const SINGLE_TIMEUNITS = [
