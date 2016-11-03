@@ -81,8 +81,8 @@ export function parseLegend(model: UnitModel, channel: Channel): VgLegend {
   // 2) Add mark property definition groups
   const props = (typeof legend !== 'boolean' && legend.properties) || {};
   ['title', 'symbols', 'legend', 'labels'].forEach(function(group) {
-    let value = properties[group] ?
-      properties[group](fieldDef, props[group], model, channel) : // apply rule
+    let value = encode[group] ?
+      encode[group](fieldDef, props[group], model, channel) : // apply rule
       props[group]; // no rule -- just default values
     if (value !== undefined && keys(value).length > 0) {
       def.encode = def.encode || {};
@@ -118,7 +118,7 @@ export function useColorLegendScale(fieldDef: FieldDef) {
 }
 
 // TODO: should we rename this?
-export namespace properties {
+export namespace encode {
   export function symbols(fieldDef: FieldDef, symbolsSpec: any, model: UnitModel, channel: Channel) {
     let symbols:any = {};
     const mark = model.mark();
