@@ -1064,18 +1064,18 @@
         "Interpolate": {
             "enum": [
                 "linear",
-                "linear-closed",
-                "step",
-                "step-before",
-                "step-after",
                 "basis",
-                "basis-open",
                 "basis-closed",
-                "cardinal",
-                "cardinal-open",
-                "cardinal-closed",
+                "basis-open",
                 "bundle",
-                "monotone"
+                "cardinal",
+                "cardinal-closed",
+                "cardinal-open",
+                "linear-closed",
+                "monotone",
+                "step",
+                "step-after",
+                "step-before"
             ],
             "type": "string"
         },
