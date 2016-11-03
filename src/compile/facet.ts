@@ -220,7 +220,7 @@ export class FacetModel extends Model {
             }]
           }
         ),
-        properties: {
+        encode: {
           update: getFacetGroupProperties(this)
         }
       },
@@ -389,7 +389,7 @@ function getXAxesGroup(model: FacetModel): VgMarkGroup {
       }
     } : {},
     {
-      properties: {
+      encode: {
         update: {
           width: {field: {parent: model.child().sizeName('width')}},
           height: {
@@ -429,7 +429,7 @@ function getYAxesGroup(model: FacetModel): VgMarkGroup {
       }
     } : {},
     {
-      properties: {
+      encode: {
         update: {
           width: {
             field: {group: 'width'}
@@ -461,7 +461,7 @@ function getRowGridGroups(model: Model): any[] { // TODO: VgMarks
       data: model.dataTable(),
       transform: [{type: 'facet', groupby: [model.field(ROW)]}]
     },
-    properties: {
+    encode: {
       update: {
         y: {
           scale: model.scaleName(ROW),
@@ -479,7 +479,7 @@ function getRowGridGroups(model: Model): any[] { // TODO: VgMarks
   return [rowGrid, {
     name: model.name('row-grid-end'),
     type: 'rule',
-    properties: {
+    encode: {
       update: {
         y: { field: {group: 'height'}},
         x: {value: 0, offset: -facetGridConfig.offset },
@@ -502,7 +502,7 @@ function getColumnGridGroups(model: Model): any { // TODO: VgMarks
       data: model.dataTable(),
       transform: [{type: 'facet', groupby: [model.field(COLUMN)]}]
     },
-    properties: {
+    encode: {
       update: {
         x: {
           scale: model.scaleName(COLUMN),
@@ -520,7 +520,7 @@ function getColumnGridGroups(model: Model): any { // TODO: VgMarks
   return [columnGrid,  {
     name: model.name('column-grid-end'),
     type: 'rule',
-    properties: {
+    encode: {
       update: {
         x: { field: {group: 'width'}},
         y: {value: 0, offset: -facetGridConfig.offset},
