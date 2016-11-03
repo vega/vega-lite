@@ -64,8 +64,8 @@ export function parseInnerAxis(channel: Channel, model: Model): VgAxis {
   // For now, only need to add grid properties here because innerAxis is only for rendering grid.
   // TODO: support add other properties for innerAxis
   ['grid'].forEach(function(group) {
-    const value = properties[group] ?
-      properties[group](model, channel, props[group] || {}, def) :
+    const value = encode[group] ?
+      encode[group](model, channel, props[group] || {}, def) :
       props[group];
     if (value !== undefined && keys(value).length > 0) {
       def.encode = def.encode || {};
@@ -114,8 +114,8 @@ export function parseAxis(channel: Channel, model: Model): VgAxis {
     'axis', 'labels', // have special rules
     'grid', 'title', 'ticks', 'majorTicks', 'minorTicks' // only default values
   ].forEach(function(group) {
-    const value = properties[group] ?
-      properties[group](model, channel, props[group] || {}, def) :
+    const value = encode[group] ?
+      encode[group](model, channel, props[group] || {}, def) :
       props[group];
     if (value !== undefined && keys(value).length > 0) {
       def.encode = def.encode || {};
@@ -260,7 +260,7 @@ export function values(model: Model, channel: Channel) {
   return vals;
 }
 
-export namespace properties {
+export namespace encode {
   export function axis(model: Model, channel: Channel, axisPropsSpec: any) {
     const axis = model.axis(channel);
 
