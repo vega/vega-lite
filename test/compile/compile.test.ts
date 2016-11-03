@@ -36,8 +36,8 @@ describe('Compile', function() {
       const rootGroup = assembleRootGroup(model);
 
       assert.deepEqual(rootGroup.from, {"data": "layout"});
-      assert.deepEqual(rootGroup.properties.update.width, {field: "width"});
-      assert.deepEqual(rootGroup.properties.update.height, {field: "height"});
+      assert.deepEqual(rootGroup.encode.update.width, {field: "width"});
+      assert.deepEqual(rootGroup.encode.update.height, {field: "height"});
     });
 
     it('produce correct from and size when a chart name is provided.', function() {
@@ -61,8 +61,8 @@ describe('Compile', function() {
       const rootGroup = assembleRootGroup(model);
 
       assert.deepEqual(rootGroup.from, {"data": "chart_layout"});
-      assert.deepEqual(rootGroup.properties.update.width, {field:"chart_width"});
-      assert.deepEqual(rootGroup.properties.update.height, {field:"chart_height"});
+      assert.deepEqual(rootGroup.encode.update.width, {field:"chart_width"});
+      assert.deepEqual(rootGroup.encode.update.height, {field:"chart_height"});
     });
 
   });
