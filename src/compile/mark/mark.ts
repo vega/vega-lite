@@ -60,7 +60,7 @@ function parsePathMark(model: UnitModel) { // TODO: extract this into compilePat
         // sort transform
         {transform: [{ type: 'sort', by: sortPathBy(model)}]}
       ),
-      properties: { update: markCompiler[mark].properties(model) }
+      encode: { update: markCompiler[mark].properties(model) }
     }
   ];
 
@@ -86,7 +86,7 @@ function parsePathMark(model: UnitModel) { // TODO: extract this into compilePat
         isFaceted ? {} : dataFrom,
         {transform: transform}
       ),
-      properties: {
+      encode: {
         update: {
           width: { field: { group: 'width' } },
           height: { field: { group: 'height' } }
@@ -119,7 +119,7 @@ function parseNonPathMark(model: UnitModel) {
       // Otherwise, add it here.
       isFaceted ? {} : {from: dataFrom},
       // Properties
-      { properties: { update: text.background(model) } }
+      { encode: { update: text.background(model) } }
     ));
   }
 
@@ -144,7 +144,7 @@ function parseNonPathMark(model: UnitModel) {
       )
     } : {},
     // properties groups
-    { properties: { update: markCompiler[mark].properties(model) } }
+    { encode: { update: markCompiler[mark].properties(model) } }
   ));
 
   return marks;
