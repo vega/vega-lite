@@ -91,34 +91,34 @@ describe('Scale', function() {
   describe('bandSize()', () => {
 
     it('should return undefined if bandSize spec is fit', () => {
-      const _bandSize = bandSize(BANDSIZE_FIT, 180, POINT, X, defaultScaleConfig);
-      assert.deepEqual(_bandSize, undefined);
+      const size = bandSize(BANDSIZE_FIT, 180, POINT, X, defaultScaleConfig);
+      assert.deepEqual(size, undefined);
     });
 
     it('should return undefined if top-level size is provided for ordinal scale', () => {
-      const _bandSize = bandSize(undefined, 180, POINT, X, defaultScaleConfig);
-      assert.deepEqual(_bandSize, undefined);
+      const size = bandSize(undefined, 180, POINT, X, defaultScaleConfig);
+      assert.deepEqual(size, undefined);
     });
 
     it('should return undefined if top-level size is provided for ordinal scale and throw warning if bandSize is specified', log.wrap((logger) => {
-      const _bandSize = bandSize(21, 180, POINT, X, defaultScaleConfig);
-      assert.deepEqual(_bandSize, undefined);
+      const size = bandSize(21, 180, POINT, X, defaultScaleConfig);
+      assert.deepEqual(size, undefined);
       assert.equal(logger.warns[0], log.message.bandSizeOverridden(X));
     }));
 
     it('should return provided bandSize for ordinal scale', () => {
-      const _bandSize = bandSize(21, undefined, POINT, X, defaultScaleConfig);
-      assert.deepEqual(_bandSize, 21);
+      const size = bandSize(21, undefined, POINT, X, defaultScaleConfig);
+      assert.deepEqual(size, 21);
     });
 
     it('should return provided textBandWidth for x-ordinal scale', () => {
-      const _bandSize = bandSize(undefined, undefined, TEXT, X, defaultScaleConfig);
-      assert.deepEqual(_bandSize, defaultScaleConfig.textBandWidth);
+      const size = bandSize(undefined, undefined, TEXT, X, defaultScaleConfig);
+      assert.deepEqual(size, defaultScaleConfig.textBandWidth);
     });
 
     it('should return provided bandSize for other ordinal scale', () => {
-      const _bandSize = bandSize(undefined, undefined, POINT, X, defaultScaleConfig);
-      assert.deepEqual(_bandSize, defaultScaleConfig.bandSize);
+      const size = bandSize(undefined, undefined, POINT, X, defaultScaleConfig);
+      assert.deepEqual(size, defaultScaleConfig.bandSize);
     });
   });
 
