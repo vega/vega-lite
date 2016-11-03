@@ -338,7 +338,7 @@ describe('Scale', function() {
 
     describe('for ordinal', function() {
       it('should return correct domain with the provided sort property', function() {
-        const sortDef = {op: 'min', field:'Acceleration'};
+        const sortDef = {op: 'min' as 'min', field:'Acceleration'};
         const model = parseUnitModel({
             mark: "point",
             encoding: {

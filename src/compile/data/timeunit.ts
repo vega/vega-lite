@@ -13,7 +13,7 @@ import {DataComponent} from './data';
 
 export namespace timeUnit {
   function parse(model: Model): Dict<VgTransform> {
-    return model.reduce(function(timeUnitComponent, fieldDef: FieldDef, channel: Channel) {
+    return model.reduce(function(timeUnitComponent: Dict<VgTransform>, fieldDef: FieldDef, channel: Channel) {
       if (fieldDef.type === TEMPORAL && fieldDef.timeUnit) {
 
         const hash = field(fieldDef);

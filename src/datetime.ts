@@ -165,7 +165,7 @@ function normalizeDay(d: string | number) {
   }
 }
 
-export function timestamp(d: DateTime, normalize) {
+export function timestamp(d: DateTime, normalize: boolean) {
   const date = new Date(0, 0, 1, 0, 0, 0, 0); // start with uniform date
 
   // FIXME support UTC
@@ -227,7 +227,7 @@ export function timestamp(d: DateTime, normalize) {
  * @param normalize whether to normalize quarter, month, day.
  */
 export function dateTimeExpr(d: DateTime | DateTimeExpr, normalize = false) {
-  const units = [];
+  const units: (string | number)[] = [];
 
   if (normalize && d.day !== undefined) {
     if (keys(d).length > 1) {

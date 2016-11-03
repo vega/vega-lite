@@ -11,7 +11,7 @@ import {extend, keys, without, Dict} from '../util';
 import {applyMarkConfig, FILL_STROKE_CONFIG, numberFormat, timeTemplate} from './common';
 import {COLOR_LEGEND, COLOR_LEGEND_LABEL} from './scale';
 import {UnitModel} from './unit';
-import {VgLegend} from '../vega.schema';
+import {VgLegend, VgValueRef} from '../vega.schema';
 
 /* tslint:disable:no-unused-variable */
 // These imports exist so the TS compiler can name publicly exported members in
@@ -118,7 +118,7 @@ export function useColorLegendScale(fieldDef: FieldDef) {
 }
 
 export namespace properties {
-  export function symbols(fieldDef: FieldDef, symbolsSpec, model: UnitModel, channel: Channel) {
+  export function symbols(fieldDef: FieldDef, symbolsSpec: any, model: UnitModel, channel: Channel) {
     let symbols:any = {};
     const mark = model.mark();
     const legend = model.legend(channel);
@@ -162,7 +162,7 @@ export namespace properties {
       delete symbols.opacity;
     }
 
-    let value;
+    let value: VgValueRef;
     if (model.has(COLOR) && channel === COLOR) {
       if (useColorLegendScale(fieldDef)) {
         // for color legend scale, we need to override
@@ -220,7 +220,7 @@ export namespace properties {
     return keys(symbols).length > 0 ? symbols : undefined;
   }
 
-  export function labels(fieldDef: FieldDef, labelsSpec, model: UnitModel, channel: Channel) {
+  export function labels(fieldDef: FieldDef, labelsSpec: any, model: UnitModel, channel: Channel) {
     const legend = model.legend(channel);
     const config = model.config();
 
@@ -275,7 +275,7 @@ export namespace properties {
     return keys(labels).length > 0 ? labels : undefined;
   }
 
-  export function title(fieldDef: FieldDef, titleSpec, model: UnitModel, channel: Channel) {
+  export function title(fieldDef: FieldDef, titleSpec: any, model: UnitModel, channel: Channel) {
     const legend = model.legend(channel);
 
     let titles:any = {};

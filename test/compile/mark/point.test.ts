@@ -5,14 +5,15 @@ import {parseUnitModel} from '../../util';
 import {extend} from '../../../src/util';
 import {X, Y, SIZE, COLOR, SHAPE} from '../../../src/channel';
 import {point, square, circle} from '../../../src/compile/mark/point';
+import {ExtendedUnitSpec} from '../../../src/spec';
 
 describe('Mark: Point', function() {
   it('should return the correct mark type', function() {
     assert.equal(point.markType(), 'symbol');
   });
 
-  function pointXY(moreEncoding = {}) {
-    const spec = {
+  function pointXY(moreEncoding = {}): ExtendedUnitSpec {
+    return {
       "mark": "point",
       "encoding": extend(
         {
@@ -23,7 +24,6 @@ describe('Mark: Point', function() {
       ),
       "data": {"url": "data/barley.json"}
     };
-    return spec;
   }
 
   describe('with x', function() {

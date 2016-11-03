@@ -11,6 +11,7 @@ import {UnitModel} from './unit';
 import {buildModel} from './common';
 import {FieldDef} from '../fielddef';
 import {ScaleComponents} from './scale';
+import {StackProperties} from '../stack';
 import {VgData, VgAxis, VgLegend, isUnionedDomain, isDataRefDomain, VgDataRef} from '../vega.schema';
 
 
@@ -80,7 +81,7 @@ export class LayerModel extends Model {
     return null; // layer does not have field defs
   }
 
-  public stack() {
+  public stack(): StackProperties {
     return null; // this is only a property for UnitModel
   }
 
@@ -163,7 +164,7 @@ export class LayerModel extends Model {
           }
 
           // rename child scales to parent scales
-          vals(childScales).forEach(function(scale) {
+          vals(childScales).forEach(function(scale: any) {
             const scaleNameWithoutPrefix = scale.name.substr(child.name('').length);
             const newName = model.scaleName(scaleNameWithoutPrefix, true);
             child.renameScale(scale.name, newName);
@@ -202,11 +203,11 @@ export class LayerModel extends Model {
     });
   }
 
-  public parseAxisGroup() {
+  public parseAxisGroup(): void {
     return null;
   }
 
-  public parseGridGroup() {
+  public parseGridGroup(): void {
     return null;
   }
 
@@ -228,7 +229,7 @@ export class LayerModel extends Model {
     });
   }
 
-  public assembleParentGroupProperties() {
+  public assembleParentGroupProperties(): any {
     return null;
   }
 
@@ -256,11 +257,11 @@ export class LayerModel extends Model {
     }));
   }
 
-  public channels() {
+  public channels(): Channel[] {
     return [];
   }
 
-  protected mapping() {
+  protected mapping(): any {
     return null;
   }
 

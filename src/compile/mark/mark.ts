@@ -104,7 +104,7 @@ function parseNonPathMark(model: UnitModel) {
   const isFaceted = model.parent() && model.parent().isFacet();
   const dataFrom = {data: model.dataTable()};
 
-  let marks = []; // TODO: vgMarks
+  let marks: any[] = []; // TODO: vgMarks
   if (mark === TEXTMARK &&
     model.has(COLOR) &&
     model.config().mark.applyColorToBackground && !model.has(X) && !model.has(Y)

@@ -11,12 +11,12 @@ import {Model} from './../model';
 import {DataComponent} from './data';
 
 export namespace bin {
-  function numberFormatExpr(format, expr) {
+  function numberFormatExpr(format: string, expr: string) {
     return `format('${format}', ${expr})`;
   }
 
   function parse(model: Model): Dict<VgTransform[]> {
-    return model.reduce(function(binComponent, fieldDef: FieldDef, channel: Channel) {
+    return model.reduce(function(binComponent: Dict<VgTransform[]>, fieldDef: FieldDef, channel: Channel) {
       const bin = model.fieldDef(channel).bin;
       if (bin) {
         let binTrans = extend({
@@ -37,7 +37,7 @@ export namespace bin {
           binTrans.maxbins = autoMaxBins(channel);
         }
 
-        const transform = [binTrans];
+        const transform: VgTransform[] = [binTrans];
         const isOrdinalColor = model.isOrdinalScale(channel) || channel === COLOR;
         // color ramp has type linear or time, we have to create new bin_range field
         // with correct number format

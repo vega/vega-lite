@@ -6,6 +6,7 @@ import {FacetModel} from '../../src/compile/facet';
 import {SHAPE, ROW} from '../../src/channel';
 import {POINT} from '../../src/mark';
 import {FacetSpec} from '../../src/spec';
+import {Facet} from '../../src/facet';
 import {ORDINAL} from '../../src/type';
 import {parseFacetModel} from '../util';
 
@@ -24,9 +25,9 @@ describe('FacetModel', function() {
     it('should drop unsupported channel and throws warning', () => {
       log.runLocalLogger((localLogger) => {
         const model = parseFacetModel({
-          facet: {
+          facet: ({
             shape: {field: 'a', type: 'quantitative'}
-          },
+          }) as Facet, // Cast to allow invalid facet type for test
           spec: {
             mark: 'point'
           }

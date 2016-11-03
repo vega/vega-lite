@@ -8,7 +8,7 @@ import {FieldDef, field, OrderChannelDef} from '../fielddef';
 import {SortOrder} from '../sort';
 import {TimeUnit} from '../timeunit';
 import {QUANTITATIVE, ORDINAL} from '../type';
-import {contains, union} from '../util';
+import {contains, union, Dict} from '../util';
 
 import {FacetModel} from './facet';
 import {LayerModel} from './layer';
@@ -16,7 +16,7 @@ import {Model} from './model';
 import {template as timeUnitTemplate} from '../timeunit';
 import {UnitModel} from './unit';
 import {Spec, isUnitSpec, isSomeFacetSpec, isLayerSpec} from '../spec';
-
+import {VgValueRef} from '../vega.schema';
 
 export function buildModel(spec: Spec, parent: Model, parentGivenName: string): Model {
   if (isSomeFacetSpec(spec)) {
@@ -43,7 +43,7 @@ export const FILL_CONFIG = ['fill', 'fillOpacity',
 
 export const FILL_STROKE_CONFIG = union(STROKE_CONFIG, FILL_CONFIG);
 
-export function applyColorAndOpacity(p, model: UnitModel) {
+export function applyColorAndOpacity(p: any, model: UnitModel) {
   const filled = model.config().mark.filled;
   const colorFieldDef = model.encoding().color;
   const opacityFieldDef = model.encoding().opacity;
@@ -56,8 +56,8 @@ export function applyColorAndOpacity(p, model: UnitModel) {
     applyMarkConfig(p, model, STROKE_CONFIG);
   }
 
-  let colorValue;
-  let opacityValue;
+  let colorValue: VgValueRef;
+  let opacityValue: VgValueRef;
   if (model.has(COLOR)) {
     colorValue = {
       scale: model.scaleName(COLOR),
@@ -99,7 +99,7 @@ export function applyColorAndOpacity(p, model: UnitModel) {
   }
 }
 
-export function applyConfig(properties, config, propsList: string[]) {
+export function applyConfig(properties: Dict<any>, config: any, propsList: string[]) {
   propsList.forEach(function(property) {
     const value = config[property];
     if (value !== undefined) {
@@ -109,7 +109,7 @@ export function applyConfig(properties, config, propsList: string[]) {
   return properties;
 }
 
-export function applyMarkConfig(marksProperties, model: UnitModel, propsList: string[]) {
+export function applyMarkConfig(marksProperties: any, model: UnitModel, propsList: string[]) {
   return applyConfig(marksProperties, model.config().mark, propsList);
 }
 

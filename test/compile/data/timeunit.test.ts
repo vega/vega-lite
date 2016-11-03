@@ -10,7 +10,7 @@ describe('compile/data/timeunitdomain', () => {
     it('should return a dictionary of formula transform', () => {
 
       const model = parseUnitModel({
-        "data": {"value": []},
+        "data": {"values": []},
         "mark": "point",
         "encoding": {
           "x": {field: 'a', type: 'temporal', timeUnit: 'month'}

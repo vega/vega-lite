@@ -405,7 +405,7 @@ function _useRawDomain (scale: Scale, model: Model, channel: Channel) {
     // only applied to aggregate table
     fieldDef.aggregate &&
     // only activated if used with aggregate functions that produces values ranging in the domain of the source data
-    SHARED_DOMAIN_OPS.indexOf(fieldDef.aggregate) >= 0 &&
+    SHARED_DOMAIN_OPS.indexOf(fieldDef.aggregate as any) >= 0 &&
     (
       // Q always uses quantitative scale except when it's binned.
       // Binned field has similar values in both the source table and the summary table
@@ -521,9 +521,10 @@ function pointBandSize(model: UnitModel, scaleConfig: ScaleConfig) {
   if (hasX && hasY) {
     return xIsMeasure !== yIsMeasure ?
       model.scale(xIsMeasure ? Y : X).bandSize :
+      // TODO: Remove casts and hande string bandSizes
       Math.min(
-        model.scale(X).bandSize || scaleConfig.bandSize,
-        model.scale(Y).bandSize || scaleConfig.bandSize
+        (model.scale(X).bandSize || scaleConfig.bandSize) as number,
+        (model.scale(Y).bandSize || scaleConfig.bandSize) as number
       );
   } else if (hasY) {
     return yIsMeasure ? scaleConfig.bandSize : model.scale(Y).bandSize;

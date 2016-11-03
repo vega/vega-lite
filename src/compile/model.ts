@@ -18,12 +18,15 @@ import {DataComponent} from './data/data';
 import {LayoutComponent} from './layout';
 import {ScaleComponents, COLOR_LEGEND, COLOR_LEGEND_LABEL} from './scale';
 
+import {StackProperties} from '../stack';
+
 /* tslint:disable:no-unused-variable */
 // These imports exist so the TS compiler can name publicly exported members in
 // The automatically created .d.ts correctly
 import {Formula} from '../transform';
 import {OneOfFilter, EqualFilter, RangeFilter} from '../filter';
 /* tslint:enable:no-unused-variable */
+
 
 /**
  * Composable Components that are intermediate results of the parsing phase of the
@@ -151,23 +154,23 @@ export abstract class Model {
     this.parseMark(); // depends on data name and scale name, axisGroup, gridGroup and children's scale, axis, legend and mark.
   }
 
-  public abstract parseData();
+  public abstract parseData(): void;
 
-  public abstract parseSelectionData();
+  public abstract parseSelectionData(): void;
 
-  public abstract parseLayoutData();
+  public abstract parseLayoutData(): void;
 
-  public abstract parseScale();
+  public abstract parseScale(): void;
 
-  public abstract parseMark();
+  public abstract parseMark(): void;
 
-  public abstract parseAxis();
+  public abstract parseAxis(): void;
 
-  public abstract parseLegend();
+  public abstract parseLegend(): void;
 
   // TODO: revise if these two methods make sense for shared scale concat
-  public abstract parseAxisGroup();
-  public abstract parseGridGroup();
+  public abstract parseAxisGroup(): void;
+  public abstract parseGridGroup(): void;
 
 
   public abstract assembleData(data: VgData[]): VgData[];
@@ -227,13 +230,13 @@ export abstract class Model {
     return group;
   }
 
-  public abstract assembleParentGroupProperties(cellConfig: CellConfig);
+  public abstract assembleParentGroupProperties(cellConfig: CellConfig): any;
 
   public abstract channels(): Channel[];
 
-  protected abstract mapping();
+  protected abstract mapping(): any;
 
-  public reduce(f: (acc: any, fd: FieldDef, c: Channel) => any, init, t?: any) {
+  public reduce<T>(f: (acc: any, fd: FieldDef, c: Channel) => any, init: T, t?: any) {
     return reduce(this.mapping(), f, init, t);
   }
 
@@ -292,7 +295,7 @@ export abstract class Model {
     return this._transform ? this._transform.calculate : undefined;
   }
 
-  public filterInvalid() {
+  public filterInvalid(): boolean {
     const transform = this._transform || {};
     if (transform.filterInvalid === undefined) {
       return this.parent() ? this.parent().filterInvalid() : undefined;
@@ -365,7 +368,7 @@ export abstract class Model {
     return (this.mapping()[channel] || {}).sort;
   }
 
-  public abstract stack();
+  public abstract stack(): StackProperties;
 
   public axis(channel: Channel): Axis {
     return this._axis[channel];

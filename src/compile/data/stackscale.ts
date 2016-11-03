@@ -22,7 +22,7 @@ export namespace stackScale {
       const groupbyChannel = stackProps.groupbyChannel;
       const fieldChannel = stackProps.fieldChannel;
 
-      let fields = [];
+      let fields: string[] = [];
       const field = model.field(groupbyChannel);
       if (field) {
         fields.push(field);
@@ -71,7 +71,7 @@ export namespace stackScale {
     return null;
   }
 
-  export function parseLayer(model: LayerModel) {
+  export function parseLayer(model: LayerModel): VgData {
     // TODO
     return null;
   }

@@ -112,7 +112,7 @@ export function field(fieldDef: FieldDef, opt: FieldRefOption = {}) {
   if (isCount(fieldDef)) {
     field = 'count';
   } else {
-    let fn = undefined;
+    let fn: string = undefined;
 
     if (!opt.nofn) {
       if (fieldDef.bin) {

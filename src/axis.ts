@@ -1,11 +1,16 @@
 import {DateTime} from './datetime';
 
-export enum AxisOrient {
-    TOP = 'top' as any,
-    RIGHT = 'right' as any,
-    LEFT = 'left' as any,
-    BOTTOM = 'bottom' as any
+export namespace AxisOrient {
+    export const TOP: 'top' = 'top';
+    export type TOP = typeof TOP;
+    export const RIGHT: 'right' = 'right';
+    export type RIGHT = typeof RIGHT;
+    export const LEFT: 'left' = 'left';
+    export type LEFT = typeof LEFT;
+    export const BOTTOM: 'bottom' = 'bottom';
+    export type BOTTOM = typeof BOTTOM;
 }
+export type AxisOrient = AxisOrient.TOP | AxisOrient.RIGHT | AxisOrient.LEFT | AxisOrient.BOTTOM;
 
 export interface AxisConfig {
   // ---------- General ----------

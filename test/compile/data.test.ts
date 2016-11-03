@@ -18,8 +18,9 @@ import {DataComponent} from '../../src/compile/data/data';
 import {Model} from '../../src/compile/model';
 import {parseUnitModel} from '../util';
 import {mergeDeep, vals} from '../../src/util';
+import {ExtendedUnitSpec} from '../../src/spec';
 
-function compileAssembleData(model) {
+function compileAssembleData(model: Model) {
   model.parseData();
   return assembleData(model, []);
 }
@@ -273,7 +274,7 @@ describe('data: bin', function() {
 
 describe('data: nullFilter', function() {
   describe('compileUnit', function() {
-    const spec = {
+    const spec: ExtendedUnitSpec = {
       mark: "point",
       encoding: {
         y: {field: 'qq', type: "quantitative"},
