@@ -5,7 +5,7 @@
 import {Channel, X, X2, Y, Y2} from '../../channel';
 import {Config} from '../../config';
 import {FieldDef, FieldRefOption, field} from '../../fielddef';
-import {Scale, ScaleType} from '../../scale';
+import {Scale, ScaleType, isDiscreteScale} from '../../scale';
 import {StackProperties} from '../../stack';
 import {contains} from '../../util';
 import {VgValueRef} from '../../vega.schema';
@@ -73,7 +73,7 @@ defaultRef: VgValueRef | 'base' | 'baseOrMax'): VgValueRef {
   if (fieldDef) {
     /* istanbul ignore else */
     if (fieldDef.field) {
-      if (scale.type === ScaleType.ORDINAL) {
+      if (isDiscreteScale(scale.type)) {
         return fieldRef(fieldDef, scaleName, {binSuffix: 'range'});
       } else {
         return fieldRef(fieldDef, scaleName, {binSuffix: 'mid'});
