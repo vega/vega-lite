@@ -35,7 +35,7 @@ export function parseInnerAxis(channel: Channel, model: Model): VgAxis {
     scale: model.scaleName(channel),
     grid: true,
     tickSize: 0,
-    properties: {
+    encode: {
       labels: {
         text: {value: ''}
       },
@@ -68,8 +68,8 @@ export function parseInnerAxis(channel: Channel, model: Model): VgAxis {
       properties[group](model, channel, props[group] || {}, def) :
       props[group];
     if (value !== undefined && keys(value).length > 0) {
-      def.properties = def.properties || {};
-      def.properties[group] = value;
+      def.encode = def.encode || {};
+      def.encode[group] = {update: value};
     }
   });
 
@@ -118,8 +118,8 @@ export function parseAxis(channel: Channel, model: Model): VgAxis {
       properties[group](model, channel, props[group] || {}, def) :
       props[group];
     if (value !== undefined && keys(value).length > 0) {
-      def.properties = def.properties || {};
-      def.properties[group] = value;
+      def.encode = def.encode || {};
+      def.encode[group] = {update: value};
     }
   });
 
