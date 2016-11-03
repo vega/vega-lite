@@ -1,5 +1,4 @@
 import {DateTimeExpr, dateTimeExpr} from './datetime';
-import {ScaleType} from './scale';
 import {Dict, keys} from './util';
 import * as log from './log';
 
@@ -162,18 +161,6 @@ export function containsTimeUnit(fullTimeUnit: TimeUnit, timeUnit: TimeUnit) {
       index === 0 ||
       fullTimeUnitStr.charAt(index-1) !== 'i' // exclude milliseconds
     );
-}
-
-export function defaultScaleType(timeUnit: TimeUnit): ScaleType {
-   switch (timeUnit) {
-    case TimeUnit.HOURS:
-    case TimeUnit.DAY:
-    case TimeUnit.MONTH:
-    case TimeUnit.QUARTER:
-      return ScaleType.ORDINAL;
-  }
-  // date, year, minute, second, yearmonth, monthday, ...
-  return ScaleType.TIME;
 }
 
 /**
