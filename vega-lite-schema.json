@@ -40,8 +40,8 @@
         "AreaOverlay": {
             "enum": [
                 "line",
-                "none",
-                "linepoint"
+                "linepoint",
+                "none"
             ],
             "type": "string"
         },
@@ -398,10 +398,10 @@
         },
         "AxisOrient": {
             "enum": [
-                "top",
-                "right",
+                "bottom",
                 "left",
-                "bottom"
+                "right",
+                "top"
             ],
             "type": "string"
         },
@@ -659,10 +659,10 @@
         },
         "DataFormatType": {
             "enum": [
-                "json",
                 "csv",
-                "tsv",
-                "topojson"
+                "json",
+                "topojson",
+                "tsv"
             ],
             "type": "string"
         },
@@ -1023,15 +1023,15 @@
         },
         "FontStyle": {
             "enum": [
-                "normal",
-                "italic"
+                "italic",
+                "normal"
             ],
             "type": "string"
         },
         "FontWeight": {
             "enum": [
-                "normal",
-                "bold"
+                "bold",
+                "normal"
             ],
             "type": "string"
         },
@@ -1056,14 +1056,13 @@
         "HorizontalAlign": {
             "enum": [
                 "center",
-                "right",
-                "left"
+                "left",
+                "right"
             ],
             "type": "string"
         },
         "Interpolate": {
             "enum": [
-                "linear",
                 "basis",
                 "basis-closed",
                 "basis-open",
@@ -1071,6 +1070,7 @@
                 "cardinal",
                 "cardinal-closed",
                 "cardinal-open",
+                "linear",
                 "linear-closed",
                 "monotone",
                 "step",
@@ -1373,15 +1373,15 @@
             "enum": [
                 "area",
                 "bar",
+                "circle",
+                "errorBar",
                 "line",
                 "point",
-                "text",
-                "tick",
                 "rect",
                 "rule",
-                "circle",
                 "square",
-                "errorBar"
+                "text",
+                "tick"
             ],
             "type": "string"
         },
@@ -1493,11 +1493,11 @@
                         {
                             "enum": [
                                 "circle",
-                                "square",
                                 "cross",
                                 "diamond",
-                                "triangle-up",
-                                "triangle-down"
+                                "square",
+                                "triangle-down",
+                                "triangle-up"
                             ],
                             "type": "string"
                         },
@@ -1824,15 +1824,15 @@
                 "nice": {
                     "description": "If specified, modifies the scale domain to use a more human-friendly value range. If specified as a true boolean, modifies the scale domain to use a more human-friendly number range (e.g., 7 instead of 6.96). If specified as a string, modifies the scale domain to use a more human-friendly value range. For time and utc scale types only, the nice value should be a string indicating the desired time interval.",
                     "enum": [
-                        true,
-                        false,
-                        "year",
-                        "month",
                         "day",
-                        "second",
-                        "minute",
+                        false,
                         "hour",
-                        "week"
+                        "minute",
+                        "month",
+                        "second",
+                        true,
+                        "week",
+                        "year"
                     ]
                 },
                 "padding": {
@@ -2020,13 +2020,13 @@
         },
         "ScaleType": {
             "enum": [
-                "ordinal",
                 "linear",
                 "log",
+                "ordinal",
                 "pow",
-                "sqrt",
                 "quantile",
                 "quantize",
+                "sqrt",
                 "time",
                 "utc"
             ],
@@ -2035,11 +2035,11 @@
         "Shape": {
             "enum": [
                 "circle",
-                "square",
                 "cross",
                 "diamond",
-                "triangle-up",
-                "triangle-down"
+                "square",
+                "triangle-down",
+                "triangle-up"
             ],
             "type": "string"
         },
@@ -2075,34 +2075,34 @@
             "enum": [
                 "center",
                 "none",
-                "zero",
-                "normalize"
+                "normalize",
+                "zero"
             ],
             "type": "string"
         },
         "TimeUnit": {
             "enum": [
-                "year",
-                "month",
-                "day",
                 "date",
+                "day",
                 "hours",
-                "minutes",
-                "seconds",
+                "hoursminutes",
+                "hoursminutesseconds",
                 "milliseconds",
+                "minutes",
+                "minutesseconds",
+                "month",
+                "monthdate",
+                "quarter",
+                "quartermonth",
+                "seconds",
+                "secondsmilliseconds",
+                "year",
                 "yearmonth",
                 "yearmonthdate",
                 "yearmonthdatehours",
                 "yearmonthdatehoursminutes",
                 "yearmonthdatehoursminutesseconds",
-                "monthdate",
-                "hoursminutes",
-                "hoursminutesseconds",
-                "minutesseconds",
-                "secondsmilliseconds",
-                "quarter",
                 "yearquarter",
-                "quartermonth",
                 "yearquartermonth"
             ],
             "type": "string"
@@ -2161,10 +2161,10 @@
         },
         "Type": {
             "enum": [
-                "quantitative",
+                "nominal",
                 "ordinal",
-                "temporal",
-                "nominal"
+                "quantitative",
+                "temporal"
             ],
             "type": "string"
         },
@@ -2298,9 +2298,9 @@
         },
         "VerticalAlign": {
             "enum": [
-                "top",
                 "bottom",
-                "middle"
+                "middle",
+                "top"
             ],
             "type": "string"
         }
