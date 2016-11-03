@@ -3,6 +3,7 @@ import {Config, Orient} from '../../config';
 import {Scale, ScaleType, BANDSIZE_FIT} from '../../scale';
 import {StackProperties} from '../../stack';
 import {extend} from '../../util';
+import * as log from '../../log';
 
 import {applyColorAndOpacity} from '../common';
 import {UnitModel} from '../unit';
@@ -47,12 +48,8 @@ export namespace bar {
           p.x2 = ref.bin(xFieldDef, xScaleName, 'start', config.mark.barBinSpacing);
           p.x = ref.bin(xFieldDef, xScaleName, 'end');
           return p;
-        } else if (
-          // TODO: scale.type === band
-          xScale.type === ScaleType.ORDINAL && xScale.points === false &&
-          !xScale.bandSize
-        ) {
-          // TODO: bandSize fit doesn't support size yet
+        } else if (xScale.type === ScaleType.BAND) {
+          // TODO: band scale doesn't support size yet
           p.x = ref.fieldRef(xFieldDef, xScaleName, {});
           p.width = ref.band(xScaleName);
           return p;
@@ -89,12 +86,8 @@ export namespace bar {
           p.y2 = ref.bin(yFieldDef, yScaleName, 'start');
           p.y = ref.bin(yFieldDef, yScaleName, 'end', config.mark.barBinSpacing);
           return p;
-        } else if (
-            // TODO: scale.type === band
-            yScale.type === ScaleType.ORDINAL && yScale.points === false &&
-            !yScale.bandSize
-          ) {
-          // TODO: bandSize fit doesn't support size yet
+        } else if (yScale.type === ScaleType.BAND) {
+          // TODO: band scale doesn't support size yet
           p.y = ref.fieldRef(yFieldDef, yScaleName, {});
           p.height = ref.band(yScaleName);
           return p;
@@ -117,13 +110,17 @@ export namespace bar {
       return {value: markConfig.barSize};
     }
 
-    if (scale && scale.type === ScaleType.ORDINAL) {
-      if (scale.bandSize && scale.bandSize !== BANDSIZE_FIT) {
-        return {value: scale.bandSize - 1};
+    if (scale) {
+      if (scale.type === ScaleType.POINT) {
+        if (scale.bandSize !== BANDSIZE_FIT) {
+          return {value: scale.bandSize - 1};
+        }
+        log.warn(log.message.BAR_WITH_POINT_SCALE_AND_BANDSIZE_FIT);
+      } else if (scale.type === ScaleType.BAND) {
+        return ref.band(scaleName);
+      } else { // non-ordinal scale
+        return {value: markConfig.barThinSize};
       }
-      return ref.band(scaleName);
-    } else if (scaleName) { // non-ordinal scale
-      return {value: markConfig.barThinSize};
     }
     if (config.scale.bandSize && config.scale.bandSize !== BANDSIZE_FIT) {
       return {value: config.scale.bandSize - 1};
