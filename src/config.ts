@@ -77,119 +77,85 @@ export const defaultFacetConfig: FacetConfig = {
 
 export namespace FontWeight {
     export const NORMAL: 'normal' = 'normal';
-    export type NORMAL = typeof NORMAL;
     export const BOLD: 'bold' = 'bold';
-    export type BOLD = typeof BOLD;
 }
-export type FontWeight = FontWeight.NORMAL | FontWeight.BOLD;
+export type FontWeight = typeof FontWeight.NORMAL | typeof FontWeight.BOLD;
 
 export namespace Shape {
     export const CIRCLE: 'circle' = 'circle';
-    export type CIRCLE = typeof CIRCLE;
     export const SQUARE: 'square' = 'square';
-    export type SQUARE = typeof SQUARE;
     export const CROSS: 'cross' = 'cross';
-    export type CROSS = typeof CROSS;
     export const DIAMOND: 'diamond' = 'diamond';
-    export type DIAMOND = typeof DIAMOND;
     export const TRIANGLEUP: 'triangle-up' = 'triangle-up';
-    export type TRIANGLEUP = typeof TRIANGLEUP;
     export const TRIANGLEDOWN: 'triangle-down' = 'triangle-down';
-    export type TRIANGLEDOWN = typeof TRIANGLEDOWN;
 }
-export type Shape = Shape.CIRCLE | Shape.SQUARE | Shape.CROSS | Shape.DIAMOND | Shape.TRIANGLEUP | Shape.TRIANGLEDOWN;
+export type Shape = typeof Shape.CIRCLE | typeof Shape.SQUARE | typeof Shape.CROSS | typeof Shape.DIAMOND | typeof Shape.TRIANGLEUP | typeof Shape.TRIANGLEDOWN;
 
 export namespace Orient {
     export const HORIZONTAL: 'horizontal' = 'horizontal';
-    export type HORIZONTAL = typeof HORIZONTAL;
     export const VERTICAL: 'vertical' = 'vertical';
-    export type VERTICAL = typeof VERTICAL;
 }
-export type Orient = Orient.HORIZONTAL | Orient.VERTICAL;
+export type Orient = typeof Orient.HORIZONTAL | typeof Orient.VERTICAL;
 
 export namespace HorizontalAlign {
     export const LEFT: 'left' = 'left';
-    export type LEFT = typeof LEFT;
     export const RIGHT: 'right' = 'right';
-    export type RIGHT = typeof RIGHT;
     export const CENTER: 'center' = 'center';
-    export type CENTER = typeof CENTER;
 }
-export type HorizontalAlign = HorizontalAlign.LEFT | HorizontalAlign.RIGHT | HorizontalAlign.CENTER;
+export type HorizontalAlign = typeof HorizontalAlign.LEFT | typeof HorizontalAlign.RIGHT | typeof HorizontalAlign.CENTER;
 
 export namespace VerticalAlign {
     export const TOP: 'top' = 'top';
-    export type TOP = typeof TOP;
     export const MIDDLE: 'middle' = 'middle';
-    export type MIDDLE = typeof MIDDLE;
     export const BOTTOM: 'bottom' = 'bottom';
-    export type BOTTOM = typeof BOTTOM;
 }
-export type VerticalAlign = VerticalAlign.TOP | VerticalAlign.MIDDLE | VerticalAlign.BOTTOM;
+export type VerticalAlign = typeof VerticalAlign.TOP | typeof VerticalAlign.MIDDLE | typeof VerticalAlign.BOTTOM;
 
 export namespace FontStyle {
     export const NORMAL: 'normal' = 'normal';
-    export type NORMAL = typeof NORMAL;
     export const ITALIC: 'italic' = 'italic';
-    export type ITALIC = typeof ITALIC;
 }
-export type FontStyle = FontStyle.NORMAL | FontStyle.ITALIC;
+export type FontStyle = typeof FontStyle.NORMAL | typeof FontStyle.ITALIC;
 
 export namespace Interpolate {
     /** piecewise linear segments, as in a polyline */
     export const LINEAR: 'linear' = 'linear';
-    export type LINEAR = typeof LINEAR;
     /** close the linear segments to form a polygon */
     export const LINEAR_CLOSED: 'linear-closed' = 'linear-closed';
-    export type LINEAR_CLOSED = typeof LINEAR_CLOSED;
     /** alternate between horizontal and vertical segments, as in a step function */
     export const STEP: 'step' = 'step';
-    export type STEP = typeof STEP;
     /** alternate between vertical and horizontal segments, as in a step function */
     export const STEP_BEFORE: 'step-before' = 'step-before';
-    export type STEP_BEFORE = typeof STEP_BEFORE;
     /** alternate between horizontal and vertical segments, as in a step function */
     export const STEP_AFTER: 'step-after' = 'step-after';
-    export type STEP_AFTER = typeof STEP_AFTER;
     /** a B-spline, with control point duplication on the ends */
     export const BASIS: 'basis' = 'basis';
-    export type BASIS = typeof BASIS;
     /** an open B-spline; may not intersect the start or end */
     export const BASIS_OPEN: 'basis-open' = 'basis-open';
-    export type BASIS_OPEN = typeof BASIS_OPEN;
     /** a closed B-spline, as in a loop */
     export const BASIS_CLOSED: 'basis-closed' = 'basis-closed';
-    export type BASIS_CLOSED = typeof BASIS_CLOSED;
     /** a Cardinal spline, with control point duplication on the ends */
     export const CARDINAL: 'cardinal' = 'cardinal';
-    export type CARDINAL = typeof CARDINAL;
     /** an open Cardinal spline; may not intersect the start or end, but will intersect other control points */
     export const CARDINAL_OPEN: 'cardinal-open' = 'cardinal-open';
-    export type CARDINAL_OPEN = typeof CARDINAL_OPEN;
     /** a closed Cardinal spline, as in a loop */
     export const CARDINAL_CLOSED: 'cardinal-closed' = 'cardinal-closed';
-    export type CARDINAL_CLOSED = typeof CARDINAL_CLOSED;
     /** equivalent to basis, except the tension parameter is used to straighten the spline */
     export const BUNDLE: 'bundle' = 'bundle';
-    export type BUNDLE = typeof BUNDLE;
     /** cubic interpolation that preserves monotonicity in y */
     export const MONOTONE: 'monotone' = 'monotone';
-    export type MONOTONE = typeof MONOTONE;
 }
-export type Interpolate = Interpolate.BASIS | Interpolate.BASIS_CLOSED | Interpolate.BASIS_OPEN
-  | Interpolate.BUNDLE | Interpolate.CARDINAL | Interpolate.CARDINAL_CLOSED | Interpolate.CARDINAL_OPEN
-  | Interpolate.LINEAR | Interpolate.LINEAR_CLOSED | Interpolate.MONOTONE | Interpolate.STEP
-  | Interpolate.STEP_AFTER | Interpolate.STEP_BEFORE;
+export type Interpolate = typeof Interpolate.BASIS | typeof Interpolate.BASIS_CLOSED | typeof Interpolate.BASIS_OPEN
+  | typeof Interpolate.BUNDLE | typeof Interpolate.CARDINAL | typeof Interpolate.CARDINAL_CLOSED | typeof Interpolate.CARDINAL_OPEN
+  | typeof Interpolate.LINEAR | typeof Interpolate.LINEAR_CLOSED | typeof Interpolate.MONOTONE | typeof Interpolate.STEP
+  | typeof Interpolate.STEP_AFTER | typeof Interpolate.STEP_BEFORE;
 
 export namespace AreaOverlay {
   export const LINE: 'line' = 'line';
-  export type LINE = typeof LINE;
   export const LINEPOINT: 'linepoint' = 'linepoint';
-  export type LINEPOINT = typeof LINEPOINT;
   export const NONE: 'none' = 'none';
-  export type NONE = typeof NONE;
 }
-export type AreaOverlay = AreaOverlay.LINE | AreaOverlay.LINEPOINT | AreaOverlay.NONE;
+export type AreaOverlay = typeof AreaOverlay.LINE | typeof AreaOverlay.LINEPOINT | typeof AreaOverlay.NONE;
 
 export interface OverlayConfig {
   /**
