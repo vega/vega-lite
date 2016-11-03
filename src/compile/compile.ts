@@ -78,7 +78,7 @@ export function assembleRootGroup(model: Model) {
     model.description() ? {description: model.description()} : {},
     {
       from: {data: model.name(LAYOUT +'')},
-      properties: {
+      encode: {
         update: extend(
           {
             width: {field: model.name('width')},
