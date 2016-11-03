@@ -10,30 +10,28 @@ import {TEMPORAL} from '../../src/type';
 
 describe('Legend', function() {
   describe('parseLegend()', function() {
-    it('should output explicitly specified properties', function() {
-      it('should produce a Vega axis object with correct type and scale', function() {
-        const model = parseUnitModel({
-          mark: "point",
-          encoding: {
-            x: {field: "a", type: "nominal"},
-            color: {field: "a", type: "nominal"}
-          }
-        });
-        const def = legend.parseLegend(model, COLOR);
-        assert.isObject(def);
-        assert.equal(def.title, "a");
+    it('should produce a Vega axis object with correct type and scale', function() {
+      const model = parseUnitModel({
+        mark: "point",
+        encoding: {
+          x: {field: "a", type: "nominal"},
+          color: {field: "a", type: "nominal"}
+        }
       });
+      const def = legend.parseLegend(model, COLOR);
+      assert.isObject(def);
+      assert.equal(def.title, "a");
+    });
 
-      it('should produce correct encode block if needed', () => {
-        const model = parseUnitModel({
-          mark: "point",
-          encoding: {
-            color: {field: "a", type: "quantitative", "legend": {"labelColor": "#0099ff"}}
-          }
-        });
-        const def = legend.parseLegend(model, COLOR);
-        assert.equal(def.labels.encode.update.fill.value, '#0099ff');
+    it('should produce correct encode block if needed', () => {
+      const model = parseUnitModel({
+        mark: "point",
+        encoding: {
+          color: {field: "a", type: "quantitative", "legend": {"labelColor": "#0099ff"}}
+        }
       });
+      const def = legend.parseLegend(model, COLOR);
+      assert.equal(def.encode.labels.update.fill.value, '#0099ff');
     });
   });
 
