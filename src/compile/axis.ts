@@ -10,9 +10,6 @@ import {numberFormat, timeTemplate} from './common';
 import {Model} from './model';
 import {UnitModel} from './unit';
 
-// https://github.com/Microsoft/TypeScript/blob/master/doc/spec.md#11-ambient-declarations
-declare let exports;
-
 export function parseAxisComponent(model: Model, axisChannels: Channel[]): Dict<VgAxis> {
   return axisChannels.reduce(function(axis, channel) {
     if (model.axis(channel)) {

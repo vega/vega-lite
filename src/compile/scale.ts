@@ -1,6 +1,3 @@
-// https://github.com/Microsoft/TypeScript/blob/master/doc/spec.md#11-ambient-declarations
-declare var exports;
-
 import * as log from '../log';
 
 import {SHARED_DOMAIN_OPS} from '../aggregate';
