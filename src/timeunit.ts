@@ -6,7 +6,6 @@ import * as log from './log';
 export namespace TimeUnit {
   export const YEAR: 'year' = 'year';
   export const MONTH: 'month' = 'month';
-  export const WEEK: 'week' =  'week';
   export const DAY: 'day' = 'day';
   export const DATE: 'date' = 'date';
   export const HOURS: 'hours' = 'hours';
@@ -31,7 +30,7 @@ export namespace TimeUnit {
   export const YEARQUARTERMONTH: 'yearquartermonth' = 'yearquartermonth';
 }
 
-export type TimeUnit = typeof TimeUnit.YEAR | typeof TimeUnit.MONTH | typeof TimeUnit.WEEK | typeof TimeUnit.DAY | typeof TimeUnit.DATE | typeof TimeUnit.HOURS
+export type TimeUnit = typeof TimeUnit.YEAR | typeof TimeUnit.MONTH | typeof TimeUnit.DAY | typeof TimeUnit.DATE | typeof TimeUnit.HOURS
   | typeof TimeUnit.MINUTES | typeof TimeUnit.SECONDS | typeof TimeUnit.MILLISECONDS | typeof TimeUnit.YEARMONTH
   | typeof TimeUnit.YEARMONTHDATE | typeof TimeUnit.YEARMONTHDATEHOURS | typeof TimeUnit.YEARMONTHDATEHOURSMINUTES
   | typeof TimeUnit.YEARMONTHDATEHOURSMINUTESSECONDS | typeof TimeUnit.MONTHDATE | typeof TimeUnit.HOURSMINUTES
@@ -43,7 +42,6 @@ export const SINGLE_TIMEUNITS = [
   TimeUnit.YEAR,
   TimeUnit.QUARTER,
   TimeUnit.MONTH,
-  TimeUnit.WEEK,
   TimeUnit.DAY,
   TimeUnit.DATE,
   TimeUnit.HOURS,
@@ -133,7 +131,6 @@ export const TIMEUNITS = [
   TimeUnit.YEAR,
   TimeUnit.QUARTER,
   TimeUnit.MONTH,
-  TimeUnit.WEEK,
   TimeUnit.DAY,
   TimeUnit.DATE,
   TimeUnit.HOURS,

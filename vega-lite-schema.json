@@ -560,11 +560,11 @@
                         false,
                         "year",
                         "month",
-                        "week",
                         "day",
                         "second",
                         "minute",
-                        "hour"
+                        "hour",
+                        "week"
                     ]
                 },
                 "exponent": {
@@ -661,7 +661,6 @@
             "enum": [
                 "year",
                 "month",
-                "week",
                 "day",
                 "date",
                 "hours",
