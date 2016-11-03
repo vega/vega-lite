@@ -374,7 +374,7 @@ describe('Axis', function() {
     });
   });
 
-  describe('properties.axis()', function() {
+  describe('encode.axis()', function() {
     it('axisColor should change axis\'s color', function() {
         const model = parseModel({
         mark: "point",
@@ -382,7 +382,7 @@ describe('Axis', function() {
           x: {field: "a", type: "quantitative", axis: {axisColor: '#fff'}}
         }
       });
-        const axes = axis.properties.axis(model, X, {});
+        const axes = axis.encode.axis(model, X, {});
         assert.equal(axes.stroke.value, '#fff');
     });
 
@@ -393,12 +393,12 @@ describe('Axis', function() {
           x: {field: "a", type: "quantitative", axis: {axisWidth: 2}}
         }
       });
-        const axes = axis.properties.axis(model, X, {});
+        const axes = axis.encode.axis(model, X, {});
         assert.equal(axes.strokeWidth.value, 2);
     });
   });
 
-  describe('properties.grid()', function(){
+  describe('encode.grid()', function(){
       it('gridColor should change grid\'s color', function() {
         const model = parseModel({
         mark: "point",
@@ -406,7 +406,7 @@ describe('Axis', function() {
           x: {field: "a", type: "quantitative", axis: {gridColor: '#fff'}}
         }
       });
-        const axes = axis.properties.grid(model, X, {});
+        const axes = axis.encode.grid(model, X, {});
         assert.equal(axes.stroke.value, '#fff');
     });
 
@@ -417,7 +417,7 @@ describe('Axis', function() {
           x: {field: "a", type: "quantitative", axis: {grid: true, gridOpacity: 0.6}}
         }
       });
-        const axes = axis.properties.grid(model, X, {});
+        const axes = axis.encode.grid(model, X, {});
         assert.equal(axes.strokeOpacity.value, 0.6);
     });
 
@@ -428,7 +428,7 @@ describe('Axis', function() {
           x: {field: "a", type: "quantitative", axis: {grid: true, gridWidth: 2}}
         }
       });
-        const axes = axis.properties.grid(model, X, {});
+        const axes = axis.encode.grid(model, X, {});
         assert.equal(axes.strokeWidth.value, 2);
     });
 
@@ -439,14 +439,14 @@ describe('Axis', function() {
           x: {field: "a", type: "quantitative", axis: {grid: true, gridDash: [2]}}
         }
       });
-        const axes = axis.properties.grid(model, X, {});
+        const axes = axis.encode.grid(model, X, {});
         assert.deepEqual(axes.strokeDashOffset.value, [2]);
     });
   });
 
-  describe('properties.labels()', function () {
+  describe('encode.labels()', function () {
     it('should show labels by default', function () {
-      const labels = axis.properties.labels(parseUnitModel({
+      const labels = axis.encode.labels(parseUnitModel({
           mark: "point",
           encoding: {
             x: {field: 'a', type: "ordinal"}
@@ -456,7 +456,7 @@ describe('Axis', function() {
     });
 
     it('should hide labels if labels are set to false', function () {
-      const labels = axis.properties.labels(parseUnitModel({
+      const labels = axis.encode.labels(parseUnitModel({
           mark: "point",
           encoding: {
             x: {field: 'a', type: "ordinal", axis: {labels: false}}
@@ -472,7 +472,7 @@ describe('Axis', function() {
           x: {field: "a", type: "quantitative", axis: {labelAngle: -45}}
         }
       });
-      const labels = axis.properties.labels(model, X, {}, {});
+      const labels = axis.encode.labels(model, X, {}, {});
       assert.equal(labels.angle.value, -45);
     });
 
@@ -483,7 +483,7 @@ describe('Axis', function() {
           x: {field: "a", type: "temporal", timeUnit: "month"}
         }
       });
-      const labels = axis.properties.labels(model, X, {}, {type: 'x'});
+      const labels = axis.encode.labels(model, X, {}, {type: 'x'});
       assert.equal(labels.angle.value, 270);
       assert.equal(labels.baseline.value, 'middle');
     });
@@ -495,7 +495,7 @@ describe('Axis', function() {
           x: {field: "a", type: "temporal", timeUnit: "quarter"}
         }
       });
-      const labels = axis.properties.labels(model, X, {}, {type: 'x'});
+      const labels = axis.encode.labels(model, X, {}, {type: 'x'});
       let quarterPrefix = 'Q';
       let expected = quarterPrefix + '{{datum["data"] | quarter}}';
       assert.deepEqual(labels.text.template, expected);
@@ -508,7 +508,7 @@ describe('Axis', function() {
           x: {field: "a", type: "temporal", timeUnit: "yearquartermonth"}
         }
       });
-      const labels = axis.properties.labels(model, X, {}, {type: 'x'});
+      const labels = axis.encode.labels(model, X, {}, {type: 'x'});
       let quarterPrefix = 'Q';
       let expected = quarterPrefix + '{{datum["data"] | quarter}} {{datum["data"] | time:\'%b %Y\'}}';
       assert.deepEqual(labels.text.template, expected);
@@ -521,7 +521,7 @@ describe('Axis', function() {
           x: {field: "a", axis:{tickLabelColor: "blue"}}
         }
       });
-      const labels = axis.properties.labels(model, X, {}, {});
+      const labels = axis.encode.labels(model, X, {}, {});
       assert.equal(labels.fill.value, "blue");
     });
 
@@ -532,7 +532,7 @@ describe('Axis', function() {
           x: {field: "a", axis:{tickLabelFont: "Helvetica Neue"}}
         }
       });
-      const labels = axis.properties.labels(model, X, {}, {});
+      const labels = axis.encode.labels(model, X, {}, {});
       assert.equal(labels.font.value, "Helvetica Neue");
     });
 
@@ -543,12 +543,12 @@ describe('Axis', function() {
           x: {field: "a", axis:{tickLabelFontSize: 20}}
         }
       });
-      const labels = axis.properties.labels(model, X, {}, {});
+      const labels = axis.encode.labels(model, X, {}, {});
       assert.equal(labels.fontSize.value, 20);
     });
   });
 
-  describe('properties.ticks()', function() {
+  describe('encode.ticks()', function() {
     it('tickColor should change axis\'s ticks\'s color', function() {
         const model = parseModel({
         mark: "point",
@@ -556,7 +556,7 @@ describe('Axis', function() {
           x: {field: "a", type: "quantitative", axis: {tickColor: '#123'}}
         }
       });
-        const axes = axis.properties.ticks(model, X, {});
+        const axes = axis.encode.ticks(model, X, {});
         assert.equal(axes.stroke.value, '#123');
     });
 
@@ -567,12 +567,12 @@ describe('Axis', function() {
           x: {field: "a", type: "quantitative", axis: {tickWidth: 13}}
         }
       });
-        const axes = axis.properties.ticks(model, X, {});
+        const axes = axis.encode.ticks(model, X, {});
         assert.equal(axes.strokeWidth.value, 13);
     });
   });
 
-  describe('properties.title()', function() {
+  describe('encode.title()', function() {
     it('titleColor should change axis\'s title\'s color', function() {
         const model = parseModel({
         mark: "point",
@@ -580,7 +580,7 @@ describe('Axis', function() {
           x: {field: "a", type: "quantitative", axis: {titleColor: '#abc'}}
         }
       });
-        const axes = axis.properties.title(model, X, {});
+        const axes = axis.encode.title(model, X, {});
         assert.equal(axes.fill.value, '#abc');
     });
 
@@ -591,7 +591,7 @@ describe('Axis', function() {
           x: {field: "a", type: "quantitative", axis: {titleFont: 'anything'}}
         }
       });
-        const axes = axis.properties.title(model, X, {});
+        const axes = axis.encode.title(model, X, {});
         assert.equal(axes.font.value, 'anything');
     });
 
@@ -602,7 +602,7 @@ describe('Axis', function() {
           x: {field: "a", type: "quantitative", axis: {titleFontSize: 56}}
         }
       });
-        const axes = axis.properties.title(model, X, {});
+        const axes = axis.encode.title(model, X, {});
         assert.equal(axes.fontSize.value, 56);
     });
 
@@ -613,7 +613,7 @@ describe('Axis', function() {
           x: {field: "a", type: "quantitative", axis: {titleFontWeight: 'bold'}}
         }
       });
-        const axes = axis.properties.title(model, X, {});
+        const axes = axis.encode.title(model, X, {});
         assert.equal(axes.fontWeight.value, 'bold');
     });
   });
