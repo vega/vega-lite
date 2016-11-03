@@ -14,7 +14,7 @@ import {Scale, ScaleConfig, ScaleType, NiceTime, BANDSIZE_FIT, BandSize} from '.
 import {isSortField, SortOrder} from '../sort';
 import {StackOffset} from '../stack';
 import {NOMINAL, ORDINAL, QUANTITATIVE, TEMPORAL} from '../type';
-import {contains, extend, Dict} from '../util';
+import {contains, extend, duplicate, Dict} from '../util';
 import {VgScale} from '../vega.schema';
 
 import {Model} from './model';
@@ -44,7 +44,7 @@ export type ScaleComponents = {
 }
 
 export function initScale(topLevelSize: number, mark: Mark, channel: Channel, fieldDef: ChannelDefWithScale, scaleConfig: ScaleConfig): Scale {
-  let scale: Scale = extend({}, (fieldDef || {}).scale);
+  let scale: Scale = duplicate((fieldDef || {}).scale || {});
 
   scale.type = type(scale.type, fieldDef, channel, mark);
   if (scale.type === ScaleType.ORDINAL) {
