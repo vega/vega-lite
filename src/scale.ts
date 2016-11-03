@@ -44,10 +44,10 @@ export type NiceTime = NiceTime.SECOND | NiceTime.MINUTE | NiceTime.HOUR
   | NiceTime.DAY | NiceTime.WEEK | NiceTime.MONTH | NiceTime.YEAR;
 
 export namespace BandSize {
-  export const FIT: 'fit' = 'fit';
-  export type FIT = typeof FIT;
+  // FIXME: should not be any
+  export const FIT: any = 'fit';
 }
-export type BandSize = BandSize.FIT;
+export type BandSize = typeof BandSize.FIT;
 
 export const BANDSIZE_FIT = BandSize.FIT;
 

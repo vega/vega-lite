@@ -307,7 +307,7 @@ export class FacetModel extends Model {
     return this.facet();
   }
 
-  public spacing(channel) {
+  public spacing(channel: Channel) {
     return this._spacing[channel];
   }
 

@@ -331,7 +331,7 @@ describe('data: nullFilter', function() {
           encoding: {
             y: {aggregate: 'count', field: '*', type: "quantitative"}
           }
-        });
+        } as any);  // as any so we can set deprecated property transform.filterNull
 
         assert.deepEqual(nullFilter.parseUnit(model), {});
         assert.equal(localLogger.warns[0], log.message.DEPRECATED_FILTER_NULL);
