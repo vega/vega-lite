@@ -6,7 +6,7 @@ node_js:
 script:
   - npm run build
   - npm run lint
-  - npm run pretest && npm run test:only
+  - npm run pretest && npm run test:unit
   - npm run codecov
 after_success:
   - bash <(curl -s https://codecov.io/bash)
