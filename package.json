@@ -38,6 +38,7 @@
     "pretest": "tsc && npm run data",
     "test": "npm run schema && npm run test:only",
     "test:only": "nyc --reporter=html --reporter=text-summary mocha test && mocha examples",
+    "test:unit": "nyc --reporter=html --reporter=text-summary mocha",
     "codecov": "nyc report --reporter=json && codecov -f coverage/*.json",
     "test:debug": "npm run schema && mocha --debug-brk test examples",
     "watch:build": "watchify src/vl.ts -p tsify -v -d -s vl -o 'exorcist vega-lite.js.map > vega-lite.js'",
