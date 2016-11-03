@@ -170,7 +170,7 @@ mapping a binned quantitative field to `x` and aggregate `count` to `y` produces
 
 <span class="vl-example" data-name="histogram"></span>
 
-If you prefer to have histogram without gaps between bars, you can set the [`binnedBarSpacing` mark config](config.html#bar-config) to `0`.
+If you prefer to have histogram without gaps between bars, you can set the [`barBinSpacing` mark config](config.html#bar-config) to `0`.
 
 ## Rect
 
