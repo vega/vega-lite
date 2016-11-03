@@ -1,6 +1,8 @@
 import {X, X2, Y, Y2} from '../../channel';
-import {ScaleType} from '../../scale';
+import {ScaleType, isDiscreteScale} from '../../scale';
+import {RECT} from '../../mark';
 import {extend} from '../../util';
+import * as log from '../../log';
 
 import {applyColorAndOpacity} from '../common';
 import {UnitModel} from '../unit';
@@ -33,11 +35,16 @@ export namespace rect {
     if (xFieldDef && xFieldDef.bin && !x2FieldDef) { // TODO: better check for bin
       p.x2 = ref.bin(xFieldDef, xScaleName, 'start');
       p.x = ref.bin(xFieldDef, xScaleName, 'end');
-    } else if (xScale && xScale.type === ScaleType.ORDINAL) {
+    } else if (xScale && isDiscreteScale(xScale.type)) {
+      /* istanbul ignore else */
+      if (xScale.type === ScaleType.BAND) {
+        p.x = ref.normal(X, xFieldDef, xScaleName, xScale, ref.midX(config));
+        p.width = ref.band(xScaleName);
+      } else {
+        // We don't support rect mark with point/ordinal scale
+        throw new Error(log.message.scaleTypeNotWorkWithMark(RECT, xScale.type));
+      }
       // TODO: Currently we only support band scale for rect -- support point-ordinal axis case (if we support arbitrary scale type)
-      p.x = ref.normal(X, xFieldDef, xScaleName, xScale, ref.midX(config));
-      p.width = ref.band(xScaleName);
-
     } else { // continuous scale or no scale
       p.x = ref.normal(X, xFieldDef, xScaleName, xScale, 'baseOrMax');
       p.x2 = ref.normal(X2, x2FieldDef, xScaleName, xScale, 'base');
@@ -57,11 +64,15 @@ export namespace rect {
     if (yFieldDef && yFieldDef.bin && !y2FieldDef) { // TODO: better check for bin
       p.y2 = ref.bin(yFieldDef, yScaleName, 'start');
       p.y = ref.bin(yFieldDef, yScaleName, 'end');
-    } else if (yScale && yScale.type === ScaleType.ORDINAL) {
-      // TODO: Currently we only support band scale for rect -- support point-ordinal ayis case (if we support arbitrary scale type)
-      p.y = ref.normal(Y, yFieldDef, yScaleName, yScale, ref.midY(config));
-      p.height = ref.band(yScaleName);
-
+    } else if (yScale && isDiscreteScale(yScale.type)) {
+      /* istanbul ignore else */
+      if (yScale.type === ScaleType.BAND) {
+        p.y = ref.normal(Y, yFieldDef, yScaleName, yScale, ref.midY(config));
+        p.height = ref.band(yScaleName);
+      } else {
+        // We don't support rect mark with point/ordinal scale
+        throw new Error(log.message.scaleTypeNotWorkWithMark(RECT, yScale.type));
+      }
     } else { // continuous scale or no scale
       p.y = ref.normal(Y, yFieldDef, yScaleName, yScale, 'baseOrMax');
       p.y2 = ref.normal(Y2, y2FieldDef, yScaleName, yScale, 'base');

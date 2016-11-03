@@ -10,7 +10,7 @@ import * as vlEncoding from '../encoding'; // TODO: remove
 import {FieldDef, FieldRefOption, field} from '../fielddef';
 import {Legend} from '../legend';
 import {Mark, TEXT as TEXTMARK} from '../mark';
-import {Scale, ScaleConfig, ScaleType} from '../scale';
+import {Scale, ScaleConfig, isDiscreteScale} from '../scale';
 import {ExtendedUnitSpec} from '../spec';
 import {getFullName, QUANTITATIVE} from '../type';
 import {duplicate, extend, isArray, mergeDeep, Dict} from '../util';
@@ -176,7 +176,7 @@ export class UnitModel extends Model {
     if (width !== undefined) {
       this._width = width;
     } else if (scale[X]) {
-      if (scale[X].type !== ScaleType.ORDINAL || !scale[X].bandSize) {
+      if (!isDiscreteScale(scale[X].type) || !scale[X].bandSize) {
         this._width = cellConfig.width;
       } // else: Do nothing, use dynamic width.
     } else { // No scale X
@@ -194,7 +194,7 @@ export class UnitModel extends Model {
     if (height !== undefined) {
       this._height = height;
     } else if (scale[Y]) {
-      if (scale[Y].type !== ScaleType.ORDINAL || !scale[Y].bandSize) {
+      if (!isDiscreteScale(scale[Y].type) || !scale[Y].bandSize) {
         this._height = cellConfig.height;
       } // else: Do nothing, use dynamic height .
     } else {
@@ -359,7 +359,7 @@ export class UnitModel extends Model {
 
     if (fieldDef.bin) { // bin has default suffix that depends on scaleType
       opt = extend({
-        binSuffix: this.scale(channel).type === ScaleType.ORDINAL ? 'range' : 'start'
+        binSuffix: isDiscreteScale(this.scale(channel).type) ? 'range' : 'start'
       }, opt);
     }
 
