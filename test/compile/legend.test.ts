@@ -2,7 +2,7 @@
 
 import {assert} from 'chai';
 import {parseUnitModel} from '../util';
-import {COLOR, X, SHAPE, SIZE} from '../../src/channel';
+import {COLOR, SHAPE, SIZE} from '../../src/channel';
 import {defaultConfig} from '../../src/config';
 import * as legend from '../../src/compile/legend';
 import {TimeUnit} from '../../src/timeunit';
@@ -19,9 +19,20 @@ describe('Legend', function() {
             color: {field: "a", type: "nominal"}
           }
         });
-        const def = legend.parseLegend(model, X);
+        const def = legend.parseLegend(model, COLOR);
         assert.isObject(def);
         assert.equal(def.title, "a");
+      });
+
+      it('should produce correct encode block if needed', () => {
+        const model = parseUnitModel({
+          mark: "point",
+          encoding: {
+            color: {field: "a", type: "quantitative", "legend": {"labelColor": "#0099ff"}}
+          }
+        });
+        const def = legend.parseLegend(model, COLOR);
+        assert.equal(def.labels.encode.update.fill.value, '#0099ff');
       });
     });
   });
