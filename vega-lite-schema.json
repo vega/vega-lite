@@ -49,13 +49,9 @@
                     "$ref": "#/definitions/Config",
                     "description": "Configuration object"
                 }
-            },
-            "required": [
-                "mark"
-            ]
+            }
         },
         "Mark": {
-            "type": "string",
             "enum": [
                 "area",
                 "bar",
@@ -68,7 +64,8 @@
                 "circle",
                 "square",
                 "errorBar"
-            ]
+            ],
+            "type": "string"
         },
         "Encoding": {
             "type": "object",
@@ -176,10 +173,15 @@
                 "sort": {
                     "anyOf": [
                         {
-                            "$ref": "#/definitions/SortOrder"
+                            "$ref": "#/definitions/SortField"
                         },
                         {
-                            "$ref": "#/definitions/SortField"
+                            "enum": [
+                                "ascending",
+                                "descending",
+                                "none"
+                            ],
+                            "type": "string"
                         }
                     ]
                 },
@@ -416,13 +418,13 @@
             ]
         },
         "AxisOrient": {
-            "type": "string",
             "enum": [
                 "top",
                 "right",
                 "left",
                 "bottom"
-            ]
+            ],
+            "type": "string"
         },
         "DateTime": {
             "description": "Object for defining datetime in Vega-Lite Filter.\n\nIf both month and quarter are provided, month has higher precedence.\n\n`day` cannot be combined with other date.\n\nWe accept string for month and day names.",
@@ -538,15 +540,7 @@
                     "type": "boolean"
                 },
                 "bandSize": {
-                    "minimum": 0,
-                    "anyOf": [
-                        {
-                            "$ref": "#/definitions/BandSize"
-                        },
-                        {
-                            "type": "number"
-                        }
-                    ]
+                    "minimum": 0
                 },
                 "padding": {
                     "description": "Applies spacing among ordinal elements in the scale range. The actual effect depends on how the scale is configured. If the __points__ parameter is `true`, the padding value is interpreted as a multiple of the spacing between points. A reasonable value is 1.0, such that the first and last point will be offset from the minimum and maximum value by half the distance between points. Otherwise, padding is typically in the range [0, 1] and corresponds to the fraction of space in the range interval to allocate to padding. A value of 0.5 means that the range band width will be equal to the padding width. For more, see the [D3 ordinal scale documentation](https://github.com/mbostock/d3/wiki/Ordinal-Scales).",
@@ -561,13 +555,16 @@
                 },
                 "nice": {
                     "description": "If specified, modifies the scale domain to use a more human-friendly value range. If specified as a true boolean, modifies the scale domain to use a more human-friendly number range (e.g., 7 instead of 6.96). If specified as a string, modifies the scale domain to use a more human-friendly value range. For time and utc scale types only, the nice value should be a string indicating the desired time interval.",
-                    "anyOf": [
-                        {
-                            "$ref": "#/definitions/NiceTime"
-                        },
-                        {
-                            "type": "boolean"
-                        }
+                    "enum": [
+                        true,
+                        false,
+                        "year",
+                        "month",
+                        "week",
+                        "day",
+                        "second",
+                        "minute",
+                        "hour"
                     ]
                 },
                 "exponent": {
@@ -585,44 +582,18 @@
             }
         },
         "ScaleType": {
-            "type": "string",
             "enum": [
+                "ordinal",
                 "linear",
                 "log",
                 "pow",
                 "sqrt",
                 "quantile",
                 "quantize",
-                "ordinal",
                 "time",
                 "utc"
-            ]
-        },
-        "BandSize": {
-            "type": "string",
-            "enum": [
-                "fit"
-            ]
-        },
-        "NiceTime": {
-            "type": "string",
-            "enum": [
-                "second",
-                "minute",
-                "hour",
-                "day",
-                "week",
-                "month",
-                "year"
-            ]
-        },
-        "SortOrder": {
-            "type": "string",
-            "enum": [
-                "ascending",
-                "descending",
-                "none"
-            ]
+            ],
+            "type": "string"
         },
         "SortField": {
             "type": "object",
@@ -645,44 +616,52 @@
             ]
         },
         "AggregateOp": {
-            "type": "string",
             "enum": [
-                "values",
-                "count",
-                "valid",
-                "missing",
-                "distinct",
-                "sum",
-                "mean",
+                "argmax",
+                "argmin",
                 "average",
-                "variance",
-                "variancep",
-                "stdev",
-                "stdevp",
+                "count",
+                "distinct",
+                "max",
+                "mean",
                 "median",
+                "min",
+                "missing",
+                "modeskew",
                 "q1",
                 "q3",
-                "modeskew",
-                "min",
-                "max",
-                "argmin",
-                "argmax"
-            ]
+                "stdev",
+                "stdevp",
+                "sum",
+                "valid",
+                "values",
+                "variance",
+                "variancep"
+            ],
+            "type": "string"
+        },
+        "SortOrder": {
+            "enum": [
+                "ascending",
+                "descending",
+                "none"
+            ],
+            "type": "string"
         },
         "Type": {
-            "type": "string",
             "enum": [
                 "quantitative",
                 "ordinal",
                 "temporal",
                 "nominal"
-            ]
+            ],
+            "type": "string"
         },
         "TimeUnit": {
-            "type": "string",
             "enum": [
                 "year",
                 "month",
+                "week",
                 "day",
                 "date",
                 "hours",
@@ -703,7 +682,8 @@
                 "yearquarter",
                 "quartermonth",
                 "yearquartermonth"
-            ]
+            ],
+            "type": "string"
         },
         "Bin": {
             "description": "Binning properties or boolean flag for determining whether to bin data or not.",
@@ -806,10 +786,15 @@
                 "sort": {
                     "anyOf": [
                         {
-                            "$ref": "#/definitions/SortOrder"
+                            "$ref": "#/definitions/SortField"
                         },
                         {
-                            "$ref": "#/definitions/SortField"
+                            "enum": [
+                                "ascending",
+                                "descending",
+                                "none"
+                            ],
+                            "type": "string"
                         }
                     ]
                 },
@@ -889,6 +874,9 @@
                                     }
                                 }
                             ]
+                        },
+                        "shape": {
+                            "$ref": "#/definitions/Shape"
                         },
                         "orient": {
                             "description": "The orientation of the legend. One of \"left\" or \"right\". This determines how the legend is positioned within the scene. The default is \"right\".",
@@ -981,7 +969,7 @@
                         },
                         "titleFontWeight": {
                             "description": "The font weight of the legend title.",
-                            "type": "string"
+                            "type": "number"
                         },
                         "properties": {
                             "description": "Optional mark property definitions for custom legend styling."
@@ -992,6 +980,17 @@
                     "type": "null"
                 }
             ]
+        },
+        "Shape": {
+            "enum": [
+                "circle",
+                "square",
+                "cross",
+                "diamond",
+                "triangle-up",
+                "triangle-down"
+            ],
+            "type": "string"
         },
         "OrderChannelDef": {
             "type": "object",
@@ -1083,13 +1082,13 @@
             }
         },
         "DataFormatType": {
-            "type": "string",
             "enum": [
                 "json",
                 "csv",
                 "tsv",
                 "topojson"
-            ]
+            ],
+            "type": "string"
         },
         "Transform": {
             "type": "object",
@@ -1447,7 +1446,15 @@
                     "description": "The symbol shape to use. One of circle (default), square, cross, diamond, triangle-up, or triangle-down, or a custom SVG path.",
                     "anyOf": [
                         {
-                            "$ref": "#/definitions/Shape"
+                            "enum": [
+                                "circle",
+                                "square",
+                                "cross",
+                                "diamond",
+                                "triangle-up",
+                                "triangle-down"
+                            ],
+                            "type": "string"
                         },
                         {
                             "type": "string"
@@ -1534,23 +1541,22 @@
             }
         },
         "StackOffset": {
-            "type": "string",
             "enum": [
-                "zero",
                 "center",
-                "normalize",
-                "none"
-            ]
+                "none",
+                "zero",
+                "normalize"
+            ],
+            "type": "string"
         },
         "Orient": {
-            "type": "string",
             "enum": [
                 "horizontal",
                 "vertical"
-            ]
+            ],
+            "type": "string"
         },
         "Interpolate": {
-            "type": "string",
             "enum": [
                 "linear",
                 "linear-closed",
@@ -1565,48 +1571,38 @@
                 "cardinal-closed",
                 "bundle",
                 "monotone"
-            ]
-        },
-        "Shape": {
-            "type": "string",
-            "enum": [
-                "circle",
-                "square",
-                "cross",
-                "diamond",
-                "triangle-up",
-                "triangle-down"
-            ]
+            ],
+            "type": "string"
         },
         "HorizontalAlign": {
-            "type": "string",
             "enum": [
-                "left",
+                "center",
                 "right",
-                "center"
-            ]
+                "left"
+            ],
+            "type": "string"
         },
         "VerticalAlign": {
-            "type": "string",
             "enum": [
                 "top",
-                "middle",
-                "bottom"
-            ]
+                "bottom",
+                "middle"
+            ],
+            "type": "string"
         },
         "FontStyle": {
-            "type": "string",
             "enum": [
                 "normal",
                 "italic"
-            ]
+            ],
+            "type": "string"
         },
         "FontWeight": {
-            "type": "string",
             "enum": [
                 "normal",
                 "bold"
-            ]
+            ],
+            "type": "string"
         },
         "OverlayConfig": {
             "type": "object",
@@ -1630,12 +1626,12 @@
             }
         },
         "AreaOverlay": {
-            "type": "string",
             "enum": [
                 "line",
-                "linepoint",
-                "none"
-            ]
+                "none",
+                "linepoint"
+            ],
+            "type": "string"
         },
         "ScaleConfig": {
             "type": "object",
@@ -1655,15 +1651,7 @@
                 },
                 "bandSize": {
                     "description": "Default band size for (1) `y` ordinal scale,\n\nand (2) `x` ordinal scale when the mark is not `text`.",
-                    "minimum": 0,
-                    "anyOf": [
-                        {
-                            "$ref": "#/definitions/BandSize"
-                        },
-                        {
-                            "type": "number"
-                        }
-                    ]
+                    "minimum": 0
                 },
                 "opacity": {
                     "description": "Default range for opacity.",
@@ -2020,7 +2008,7 @@
                 },
                 "titleFontWeight": {
                     "description": "The font weight of the legend title.",
-                    "type": "string"
+                    "type": "number"
                 },
                 "properties": {
                     "description": "Optional mark property definitions for custom legend styling."
