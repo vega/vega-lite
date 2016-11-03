@@ -12,7 +12,7 @@ describe('Mark: Rect', function() {
   describe('simple vertical', function() {
     const model = parseUnitModel({
       "data": {"url": 'data/cars.json'},
-      "mark": "bar",
+      "mark": "rect",
       "encoding": {
         "x": {"field": "Origin", "type": "nominal"},
         "y": {"type": "quantitative", "field": 'Acceleration', "aggregate": "mean"}
@@ -32,7 +32,7 @@ describe('Mark: Rect', function() {
   describe('simple horizontal', function() {
     const model = parseUnitModel({
       "data": {"url": 'data/cars.json'},
-      "mark": "bar",
+      "mark": "rect",
       "encoding": {
         "y": {"field": "Origin", "type": "nominal"},
         "x": {"aggregate": "mean", "field": 'Acceleration', "type": "quantitative"}
@@ -52,7 +52,7 @@ describe('Mark: Rect', function() {
   describe('horizontal binned', function() {
     const model = parseUnitModel({
       "data": {"url": 'data/cars.json'},
-      "mark": "bar",
+      "mark": "rect",
       "encoding": {
         "y": {"bin": true, "field": 'Horsepower', "type": "quantitative"},
         "x": {"aggregate": "mean", "field": 'Acceleration', "type": "quantitative"}
@@ -70,7 +70,7 @@ describe('Mark: Rect', function() {
   describe('vertical binned', function() {
     const model = parseUnitModel({
       "data": {"url": 'data/cars.json'},
-      "mark": "bar",
+      "mark": "rect",
       "encoding": {
         "x": {"bin": true, "field": 'Horsepower', "type": "quantitative"},
         "y": {"aggregate": "mean", "field": 'Acceleration', "type": "quantitative"}
@@ -89,7 +89,7 @@ describe('Mark: Rect', function() {
   describe('simple ranged', function() {
     const model = parseUnitModel({
       "data": {"url": 'data/cars.json'},
-      "mark": "bar",
+      "mark": "rect",
       "encoding": {
         "y": {"aggregate": "min", "field": 'Horsepower', "type": "quantitative"},
         "y2": {"aggregate": "max", "field": 'Horsepower', "type": "quantitative"},
