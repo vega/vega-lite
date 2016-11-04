@@ -5,11 +5,11 @@ d3.json('examples/all-examples.json', function(examples: string[]) {
   render();
 
   function render() {
-    let viz = d3.select('div.viz-list').selectAll('.viz').data(examples);
+    const viz = d3.select('div.viz-list').selectAll('.viz').data(examples);
 
     viz.exit().remove();
 
-    let vizEnter = viz
+    const vizEnter = viz
       .enter()
       .append('div')
       .attr('class', 'viz')
@@ -21,14 +21,14 @@ d3.json('examples/all-examples.json', function(examples: string[]) {
 
     examples.forEach(function(example) {
       d3.json('examples/specs/' + example + '.vl.json', function(error, vlSpec) {
-        const vgSpec = vl['compile'](vlSpec);
-        var runtime = vega.parse(vgSpec); // may throw an Error if parsing fails
-        var view = new vega.View(runtime)
-          .logLevel(vega.Warn) // set view logging level
-          .initialize(document.querySelector('.viz#'+ example + '> div.view')) // set parent DOM element
-          .renderer('svg') // set render type (defaults to 'canvas')
-          .hover() // enable hover event processing
-          .run(); // update and render the view
+        const vgSpec = vl.compile(vlSpec);
+        const runtime = vega.parse(vgSpec); // may throw an Error if parsing fails
+        new vega.View(runtime)
+          .logLevel(vega.Warn)
+          .initialize(document.querySelector('.viz#'+ example + '> div.view'))
+          .renderer('svg')
+          .hover()
+          .run();
 
         d3.select('.viz#'+ example + '> .desc').text(vlSpec.description || '');
       });
