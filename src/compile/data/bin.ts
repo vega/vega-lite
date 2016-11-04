@@ -36,7 +36,7 @@ export namespace bin {
         }
 
         const transform: VgTransform[] = [binTrans];
-        const isOrdinalColor = model.isOrdinalScale(channel) || channel === COLOR;
+        const isOrdinalColor = model.hasDiscreteScale(channel) || channel === COLOR;
         // color ramp has type linear or time, we have to create new bin_range field
         // with correct number format
         if (isOrdinalColor) {
