@@ -12,7 +12,7 @@ const validator = new zSchema({
 });
 
 const vlSchema = require('../vega-lite-schema.json');
-const vgSchema = require('../node_modules/vega/vega-schema.json');
+const vgSchema = require('../node_modules/vega/build/vega-schema.json');
 
 function validateVL(spec: vl.spec.ExtendedSpec) {
   const valid = validator.validate(spec, vlSchema);
