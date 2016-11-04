@@ -67,9 +67,9 @@ export class LayerModel extends Model {
     return this._children;
   }
 
-  public isOrdinalScale(channel: Channel) {
+  public hasDiscreteScale(channel: Channel) {
     // since we assume shared scales we can just ask the first child
-    return this._children[0].isOrdinalScale(channel);
+    return this._children[0].hasDiscreteScale(channel);
   }
 
   public dataTable(): string {

@@ -168,7 +168,7 @@ function parseLayerSizeLayout(model: LayerModel, channel: Channel): SizeComponen
 }
 
 function getDistinct(model: Model, channel: Channel): StringSet {
-  if (model.has(channel) && model.isOrdinalScale(channel)) {
+  if (model.has(channel) && model.hasDiscreteScale(channel)) {
     const scale = model.scale(channel);
     if (isDiscreteScale(scale.type) && !(scale.domain instanceof Array)) {
       // if explicit domain is declared, use array length
