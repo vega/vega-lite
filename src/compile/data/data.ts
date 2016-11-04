@@ -149,7 +149,7 @@ export function assembleData(model: Model, data: VgData[]) {
     data.push(sourceData);
   }
 
-  summary.assemble(component, model.dataName(SOURCE)).forEach(function(summaryData) {
+  summary.assemble(component.summary || [], model.dataName(SOURCE)).forEach(function(summaryData) {
     data.push(summaryData);
   });
 
