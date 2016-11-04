@@ -77,7 +77,7 @@
     "typescript": "^2.0.6",
     "typescript-json-schema": "~0.3.2",
     "uglify-js": "~2.7.4",
-    "vega": "~2.6.3",
+    "vega": "3.0.0-beta.1",
     "vega-datasets": "vega/vega-datasets#gh-pages",
     "watchify": "~3.7.0",
     "yaml-front-matter": "~3.4.0",
