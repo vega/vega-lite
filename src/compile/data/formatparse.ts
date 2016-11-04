@@ -12,7 +12,7 @@ export namespace formatParse {
   // TODO: need to take calculate into account across levels when merging
   function parse(model: Model): Dict<string> {
     const calcFieldMap = (model.calculate() || []).reduce(function(fieldMap, formula) {
-      fieldMap[formula.field] = true;
+      fieldMap[formula.as] = true;
       return fieldMap;
     }, {});
 

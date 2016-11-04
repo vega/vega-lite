@@ -55,7 +55,7 @@ describe('data', function () {
       const model = parseUnitModel({
         transform: {
           calculate: [{
-            field: 'b2',
+            as: 'b2',
             expr: '2 * datum["b"]'
           }],
           filter: 'datum["a"] > datum["b"] && datum["c"] === datum["d"]'
