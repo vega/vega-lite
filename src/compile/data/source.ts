@@ -94,7 +94,7 @@ export namespace source {
     return sourceData;
   }
 
-  export function assemble(model: Model, component: DataComponent) {
+  export function assemble(component: DataComponent) {
     if (component.source) {
       let sourceData: VgData = component.source;
 
@@ -104,11 +104,11 @@ export namespace source {
       }
 
       sourceData.transform = [].concat(
-        formula.assemble(component),
-        nullFilter.assemble(component),
-        filter.assemble(component),
-        bin.assemble(component),
-        timeUnit.assemble(component)
+        formula.assemble(component.calculate),
+        nullFilter.assemble(component.nullFilter),
+        filter.assemble(component.filter),
+        bin.assemble(component.bin),
+        timeUnit.assemble(component.timeUnit)
       );
 
       return sourceData;

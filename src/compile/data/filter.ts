@@ -5,8 +5,6 @@ import {FacetModel} from '../facet';
 import {LayerModel} from '../layer';
 import {Model} from '../model';
 
-import {DataComponent} from './data';
-
 export namespace filter {
   /**
    * @param v value to be converted into Vega Expression
@@ -62,8 +60,7 @@ export namespace filter {
     return filterComponent;
   }
 
-  export function assemble(component: DataComponent) {
-    const filter = component.filter;
+  export function assemble(filter: string) {
     return filter ? [{
       type: 'filter',
       test: filter

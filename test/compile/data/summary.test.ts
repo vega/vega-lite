@@ -4,16 +4,9 @@ import {assert} from 'chai';
 
 import {DataComponent} from '../../../src/compile/data/data';
 import {summary} from '../../../src/compile/data/summary';
-import {Model} from '../../../src/compile/model';
 import {parseUnitModel} from '../../util';
 
 describe('compile/data/summary', function () {
-  const identity = {
-    dataName(data: any) {
-      return 'source';
-    }
-  } as Model;
-
   describe('unit (aggregated)', function() {
     const model = parseUnitModel({
       mark: "point",
@@ -44,7 +37,7 @@ describe('compile/data/summary', function () {
     });
 
     it('should assemble the correct aggregate transform', function() {
-      const summaryData = summary.assemble(model.component.data, identity)[0];
+      const summaryData = summary.assemble(model.component.data, 'source')[0];
       assert.deepEqual(summaryData, {
         'name': "summary",
         'source': 'source',
@@ -84,7 +77,7 @@ describe('compile/data/summary', function () {
     });
 
     it('should assemble the correct summary data', function() {
-      const summaryData = summary.assemble(model.component.data, identity)[0];
+      const summaryData = summary.assemble(model.component.data, 'source')[0];
       assert.deepEqual(summaryData, {
         'name': "summary",
         'source': 'source',

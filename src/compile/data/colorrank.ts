@@ -7,9 +7,6 @@ import {FacetModel} from '../facet';
 import {LayerModel} from '../layer';
 import {UnitModel} from '../unit';
 
-import {DataComponent} from './data';
-
-
 /**
  * We need to add a rank transform so that we can use the rank value as
  * input for color ramp's linear scale.
@@ -66,7 +63,7 @@ export namespace colorRank {
     return colorRankComponent;
   }
 
-  export function assemble(component: DataComponent) {
-    return flatten(vals(component.colorRank));
+  export function assemble(component: Dict<VgTransform[]>) {
+    return flatten(vals(component));
   }
 }

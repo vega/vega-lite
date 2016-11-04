@@ -8,8 +8,6 @@ import {FacetModel} from './../facet';
 import {LayerModel} from './../layer';
 import {Model} from './../model';
 
-import {DataComponent} from './data';
-
 export namespace bin {
   function numberFormatExpr(format: string, expr: string) {
     return `format('${format}', ${expr})`;
@@ -97,7 +95,7 @@ export namespace bin {
     return binComponent;
   }
 
-  export function assemble(component: DataComponent) {
-    return flatten(vals(component.bin));
+  export function assemble(component: Dict<VgTransform[]>) {
+    return flatten(vals(component));
   }
 }

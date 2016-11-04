@@ -9,8 +9,6 @@ import {FacetModel} from '../facet';
 import {LayerModel} from '../layer';
 import {Model} from '../model';
 
-import {DataComponent} from './data';
-
 export namespace timeUnit {
   function parse(model: Model): Dict<VgTransform> {
     return model.reduce(function(timeUnitComponent: Dict<VgTransform>, fieldDef: FieldDef, channel: Channel) {
@@ -55,8 +53,8 @@ export namespace timeUnit {
     return timeUnitComponent;
   }
 
-  export function assemble(component: DataComponent) {
+  export function assemble(component: Dict<VgTransform>) {
     // just join the values, which are already transforms
-    return vals(component.timeUnit);
+    return vals(component);
   }
 }

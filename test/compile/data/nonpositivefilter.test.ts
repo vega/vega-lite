@@ -25,7 +25,7 @@ describe('compile/data/nonpositivefilter', function () {
     });
 
     it('should assemble the correct filter transform', function() {
-      const filterTransform = nonPositiveFilter.assemble(model.component.data)[0];
+      const filterTransform = nonPositiveFilter.assemble(model.component.data.nonPositiveFilter)[0];
       assert.deepEqual(filterTransform, {
         type: 'filter',
         test: 'datum["b"] > 0'

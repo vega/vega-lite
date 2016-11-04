@@ -40,7 +40,7 @@ describe('compile/data/stackscale', function() {
 
     it('should assemble stack summary data correctly', function() {
       // simply return identity
-      const summaryData = stackScale.assemble(model.component.data);
+      const summaryData = stackScale.assemble(model.component.data.stackScale);
       assert.deepEqual(summaryData, model.component.data.stackScale);
     });
   });
@@ -65,7 +65,7 @@ describe('compile/data/stackscale', function() {
 
     it('should assemble stack summary data correctly', function() {
       // simply return identity
-      const summaryData = stackScale.assemble(model.component.data);
+      const summaryData = stackScale.assemble(model.component.data.stackScale);
       assert.deepEqual(summaryData, model.component.data.stackScale);
     });
   });

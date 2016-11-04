@@ -1,3 +1,4 @@
+import {SOURCE} from '../../data';
 import {FieldDef} from '../../fielddef';
 import {Formula} from '../../transform';
 import {keys, Dict, StringSet} from '../../util';
@@ -143,12 +144,12 @@ export function parseLayerData(model: LayerModel): DataComponent {
 export function assembleData(model: Model, data: VgData[]) {
   const component = model.component.data;
 
-  const sourceData = source.assemble(model, component);
+  const sourceData = source.assemble(component);
   if (sourceData) {
     data.push(sourceData);
   }
 
-  summary.assemble(component, model).forEach(function(summaryData) {
+  summary.assemble(component, model.dataName(SOURCE)).forEach(function(summaryData) {
     data.push(summaryData);
   });
 
@@ -156,13 +157,13 @@ export function assembleData(model: Model, data: VgData[]) {
     const dataTable = data[data.length - 1];
 
     // color rank
-    const colorRankTransform = colorRank.assemble(component);
+    const colorRankTransform = colorRank.assemble(component.colorRank);
     if (colorRankTransform.length > 0) {
       dataTable.transform = (dataTable.transform || []).concat(colorRankTransform);
     }
 
     // nonPositiveFilter
-    const nonPositiveFilterTransform = nonPositiveFilter.assemble(component);
+    const nonPositiveFilterTransform = nonPositiveFilter.assemble(component.nonPositiveFilter);
     if (nonPositiveFilterTransform.length > 0) {
       dataTable.transform = (dataTable.transform || []).concat(nonPositiveFilterTransform);
     }
@@ -176,7 +177,7 @@ export function assembleData(model: Model, data: VgData[]) {
 
   // stack
   // TODO: revise if this actually should be an array
-  const stackData = stackScale.assemble(component);
+  const stackData = stackScale.assemble(component.stackScale);
   if (stackData) {
     data.push(stackData);
   }

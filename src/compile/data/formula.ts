@@ -5,9 +5,6 @@ import {FacetModel} from './../facet';
 import {LayerModel} from './../layer';
 import {Model} from './../model';
 
-import {DataComponent} from './data';
-
-
 export namespace formula {
   function parse(model: Model): Dict<Formula> {
     return (model.calculate() || []).reduce(function(formulaComponent, formula) {
@@ -18,7 +15,7 @@ export namespace formula {
 
   export const parseUnit: (model: Model) => Dict<Formula> = parse;
 
-  export function parseFacet(model: FacetModel) {
+  export function parseFacet(model: FacetModel): Dict<Formula> {
     let formulaComponent = parse(model);
 
     const childDataComponent = model.child().component.data;
@@ -31,7 +28,7 @@ export namespace formula {
     return formulaComponent;
   }
 
-  export function parseLayer(model: LayerModel) {
+  export function parseLayer(model: LayerModel): Dict<Formula> {
     let formulaComponent = parse(model);
     model.children().forEach((child) => {
       const childDataComponent = child.component.data;
@@ -43,8 +40,8 @@ export namespace formula {
     return formulaComponent;
   }
 
-  export function assemble(component: DataComponent) {
-    return vals(component.calculate).reduce(function(transform: any, formula: any) {
+  export function assemble(component: Dict<Formula>) {
+    return vals(component).reduce(function(transform: any, formula: any) {
       transform.push(extend({ type: 'formula' }, formula));
       return transform;
     }, []);

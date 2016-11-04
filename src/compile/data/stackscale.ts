@@ -7,9 +7,6 @@ import {FacetModel} from './../facet';
 import {LayerModel} from './../layer';
 import {UnitModel} from './../unit';
 
-import {DataComponent} from './data';
-
-
 /**
  * Stacked scale data source, for feeding the shared scale.
  */
@@ -76,7 +73,7 @@ export namespace stackScale {
     return null;
   }
 
-  export function assemble(component: DataComponent) {
-    return component.stackScale;
+  export function assemble(component: VgData) {
+    return component;
   }
 }

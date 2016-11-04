@@ -6,8 +6,6 @@ import {FacetModel} from './../facet';
 import {LayerModel} from './../layer';
 import {Model} from './../model';
 
-import {DataComponent} from './data';
-
 const DEFAULT_NULL_FILTERS = {
   nominal: false,
   ordinal: false,
@@ -18,7 +16,7 @@ const DEFAULT_NULL_FILTERS = {
 // TODO: rename to invalidFilter
 export namespace nullFilter {
   /** Return Hashset of fields for null filtering (key=field, value = true). */
-  function parse(model: Model): Dict<boolean> {
+  function parse(model: Model): Dict<FieldDef> {
     const filterInvalid = model.filterInvalid();
 
     return model.reduce(function(aggregator: Dict<FieldDef>, fieldDef: FieldDef) {
@@ -36,7 +34,7 @@ export namespace nullFilter {
     }, {});
   }
 
-  export const parseUnit: (model: Model) => Dict<boolean> = parse;
+  export const parseUnit: (model: Model) => Dict<FieldDef> = parse;
 
   export function parseFacet(model: FacetModel) {
     let nullFilterComponent = parse(model);
@@ -69,9 +67,9 @@ export namespace nullFilter {
   }
 
   /** Convert the hashset of fields to a filter transform.  */
-  export function assemble(component: DataComponent) {
-    const filters = keys(component.nullFilter).reduce((_filters, field) => {
-      const fieldDef = component.nullFilter[field];
+  export function assemble(component: Dict<FieldDef>) {
+    const filters = keys(component).reduce((_filters, field) => {
+      const fieldDef = component[field];
       if (fieldDef !== null) {
         _filters.push('datum["' + fieldDef.field + '"] !== null');
         if (contains([QUANTITATIVE, TEMPORAL], fieldDef.type)) {

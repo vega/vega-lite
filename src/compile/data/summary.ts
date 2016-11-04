@@ -1,6 +1,6 @@
 import {AggregateOp} from '../../aggregate';
 import {Channel} from '../../channel';
-import {SOURCE, SUMMARY} from '../../data';
+import {SUMMARY} from '../../data';
 import {field, FieldDef} from '../../fielddef';
 import {keys, vals, reduce, hash, Dict, StringSet} from '../../util';
 import {VgData} from '../../vega.schema';
@@ -138,7 +138,7 @@ export namespace summary {
    * Assemble the summary. Needs a rename function because we cannot guarantee that the
    * parent data before the children data.
    */
-  export function assemble(component: DataComponent, model: Model): VgData[] {
+  export function assemble(component: DataComponent, sourceName: string): VgData[] {
     if (!component.summary) {
       return [];
     }
@@ -158,7 +158,7 @@ export namespace summary {
       if (keys(meas).length > 0) { // has aggregate
         summaryData.push({
           name: summaryComponent.name,
-          source: model.dataName(SOURCE),
+          source: sourceName,
           transform: [{
             type: 'aggregate',
             groupby: groupby,

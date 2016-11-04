@@ -5,8 +5,6 @@ import {FacetModel} from './../facet';
 import {LayerModel} from './../layer';
 import {Model} from './../model';
 
-import {DataComponent} from './data';
-
 /**
  * Filter non-positive value for log scale
  */
@@ -51,10 +49,10 @@ export namespace nonPositiveFilter {
     return nonPositiveFilter;
   }
 
-  export function assemble(component: DataComponent) {
-    return keys(component.nonPositiveFilter).filter((field) => {
+  export function assemble(component: Dict<boolean>) {
+    return keys(component).filter((field) => {
       // Only filter fields (keys) with value = true
-      return component.nonPositiveFilter[field];
+      return component[field];
     }).map(function(field) {
       return {
         type: 'filter',
