@@ -151,6 +151,9 @@ export namespace message {
     return `Scale type "${scaleType}" does not work with mark ${mark}.`;
   }
 
+  // AXIS
+  export const INVALID_CHANNEL_FOR_AXIS = 'Invalid channel for axis.';
+
   // STACK
   export function cannotStackRangedMark(channel: Channel) {
     return `Cannot stack ${channel} if there is already ${channel}2`;
