@@ -214,7 +214,7 @@ describe('Axis', function() {
       assert.deepEqual(tickSize, undefined);
     });
 
-    it('should return specified ticks', function () {
+    it('should return specified tickSize', function () {
       const tickSize = axis.tickSize(parseModel({
           mark: "point",
           encoding: {
@@ -236,7 +236,7 @@ describe('Axis', function() {
       assert.deepEqual(tickSizeEnd, undefined);
     });
 
-    it('should return specified ticks', function () {
+    it('should return specified tickSizeEnd', function () {
       const tickSizeEnd = axis.tickSizeEnd(parseModel({
           mark: "point",
           encoding: {
@@ -325,7 +325,7 @@ describe('Axis', function() {
       assert.deepEqual(titleOffset, undefined);
     });
 
-    it('should return specified ticks', function () {
+    it('should return specified titleOffset', function () {
       const titleOffset = axis.titleOffset(parseModel({
           mark: "point",
           encoding: {
