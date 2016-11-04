@@ -44,7 +44,7 @@ describe('data', function () {
         const sourceTransform = data[0].transform;
         assert.deepEqual(sourceTransform[sourceTransform.length - 1], {
           type: 'filter',
-          test: 'datum["b"] > 0'
+          expr: 'datum["b"] > 0'
         });
       });
     });
