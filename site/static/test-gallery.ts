@@ -1,5 +1,5 @@
 d3.select('#vl-version').text(vl.version);
-d3.select('#vg-version').text(vg.version);
+d3.select('#vg-version').text(vega.version);
 
 d3.json('examples/all-examples.json', function(examples: string[]) {
   render();
@@ -21,18 +21,14 @@ d3.json('examples/all-examples.json', function(examples: string[]) {
 
     examples.forEach(function(example) {
       d3.json('examples/specs/' + example + '.vl.json', function(error, vlSpec) {
-        let embedSpec = {
-          mode: 'vega-lite',
-          spec: vlSpec,
-          actions: {
-            export: false
-          }
-        };
-        vg.embed('.viz#'+ example + '> div.view', embedSpec, function(err: any) {
-          if (err) {
-            console.error(err);
-          }
-        });
+        const vgSpec = vl['compile'](vlSpec);
+        var runtime = vega.parse(vgSpec); // may throw an Error if parsing fails
+        var view = new vega.View(runtime)
+          .logLevel(vega.Warn) // set view logging level
+          .initialize(document.querySelector('.viz#'+ example + '> div.view')) // set parent DOM element
+          .renderer('svg') // set render type (defaults to 'canvas')
+          .hover() // enable hover event processing
+          .run(); // update and render the view
 
         d3.select('.viz#'+ example + '> .desc').text(vlSpec.description || '');
       });
