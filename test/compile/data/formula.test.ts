@@ -43,7 +43,7 @@ describe('compile/data/formula', () => {
         aaa: {as: 'a', expr: '5'}
       } as Dict<Formula>), [{
         type: 'formula',
-        field: 'a',
+        as: 'a',
         expr: '5'
       }]);
     });
