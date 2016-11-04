@@ -2,7 +2,7 @@ export import axis = require('./axis');
 export import aggregate = require('./aggregate');
 export import bin = require('./bin');
 export import channel = require('./channel');
-export const compile = require('./compile/compile').compile;
+export {compile}  from './compile/compile';
 export import config = require('./config');
 export import data = require('./data');
 export import datetime = require('./datetime');
