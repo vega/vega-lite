@@ -9,7 +9,7 @@ describe('compile/data/formula', () => {
   describe('parseUnit', () => {
     it('should return a dictionary of formula', () => {
       const f: Formula = {
-        "field": "a",
+        "as": "a",
         "expr": "5"
       };
       const model = new UnitModel({
@@ -40,7 +40,7 @@ describe('compile/data/formula', () => {
   describe('assemble', function() {
     it('should return correct vega formula transform', () => {
       assert.deepEqual(formula.assemble({
-        aaa: {field: 'a', expr: '5'}
+        aaa: {as: 'a', expr: '5'}
       } as Dict<Formula>), [{
         type: 'formula',
         field: 'a',
