@@ -63,7 +63,7 @@ export namespace filter {
   export function assemble(filter: string) {
     return filter ? [{
       type: 'filter',
-      test: filter
+      expr: filter
     }] : [];
   }
 }
