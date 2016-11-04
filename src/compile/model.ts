@@ -326,8 +326,7 @@ export abstract class Model {
     return this._scale[channel];
   }
 
-  // TODO: rename to hasDiscreteScale
-  public isOrdinalScale(channel: Channel) {
+  public hasDiscreteScale(channel: Channel) {
     const scale = this.scale(channel);
     return scale && isDiscreteScale(scale.type);
   }

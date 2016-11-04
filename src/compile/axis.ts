@@ -145,7 +145,7 @@ export function gridShow(model: Model, channel: Channel) {
     return grid;
   }
 
-  return !model.isOrdinalScale(channel) && !model.fieldDef(channel).bin;
+  return !model.hasDiscreteScale(channel) && !model.fieldDef(channel).bin;
 }
 
 export function grid(model: Model, channel: Channel) {
@@ -227,11 +227,11 @@ export function title(model: Model, channel: Channel) {
   let maxLength: number;
   if (axis.titleMaxLength) {
     maxLength = axis.titleMaxLength;
-  } else if (channel === X && !model.isOrdinalScale(X)) {
+  } else if (channel === X && !model.hasDiscreteScale(X)) {
     const unitModel: UnitModel = model as any; // only unit model has channel x
     // For non-ordinal scale, we know cell size at compile time, we can guess max length
     maxLength = unitModel.width / model.axis(X).characterWidth;
-  } else if (channel === Y && !model.isOrdinalScale(Y)) {
+  } else if (channel === Y && !model.hasDiscreteScale(Y)) {
     const unitModel: UnitModel = model as any; // only unit model has channel y
     // For non-ordinal scale, we know cell size at compile time, we can guess max length
     maxLength = unitModel.height / model.axis(Y).characterWidth;
