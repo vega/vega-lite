@@ -111,10 +111,6 @@
                             "description": "Enable or disable labels.",
                             "type": "boolean"
                         },
-                        "layer": {
-                            "description": "A string indicating if the axis (and any gridlines) should be placed above or below the data marks.",
-                            "type": "string"
-                        },
                         "offset": {
                             "description": "The offset, in pixels, by which to displace the axis from the edge of the enclosing group or data rectangle.",
                             "type": "number"
@@ -230,6 +226,10 @@
                                     "type": "array"
                                 }
                             ]
+                        },
+                        "zindex": {
+                            "description": "A non-positive integer indicating z-index of the axis.\n\nIf zindex is 0, axes should be drawn behind all chart elements.\n\nTo put them in front, use zindex = 1.",
+                            "type": "number"
                         }
                     },
                     "type": "object"
@@ -296,10 +296,6 @@
                 "labels": {
                     "description": "Enable or disable labels.",
                     "type": "boolean"
-                },
-                "layer": {
-                    "description": "A string indicating if the axis (and any gridlines) should be placed above or below the data marks.",
-                    "type": "string"
                 },
                 "offset": {
                     "description": "The offset, in pixels, by which to displace the axis from the edge of the enclosing group or data rectangle.",
@@ -391,6 +387,10 @@
                 },
                 "titleOffset": {
                     "description": "A title offset value for the axis.",
+                    "type": "number"
+                },
+                "zindex": {
+                    "description": "A non-positive integer indicating z-index of the axis.\n\nIf zindex is 0, axes should be drawn behind all chart elements.\n\nTo put them in front, use zindex = 1.",
                     "type": "number"
                 }
             },

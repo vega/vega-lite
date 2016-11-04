@@ -117,35 +117,35 @@ describe('Axis', function() {
     });
   });
 
-  describe('layer()', function () {
+  describe('zindex()', function () {
     it('should return undefined by default without grid defined', function () {
-      const layer = axis.layer(parseModel({
+      const zindex = axis.zindex(parseModel({
           mark: "point",
           encoding: {
             x: {field: 'a', type: 'quantitative'}
           }
         }), X, Y);
-      assert.deepEqual(layer, undefined);
+      assert.deepEqual(zindex, 1);
     });
 
     it('should return back by default with grid defined', function () {
-      const layer = axis.layer(parseModel({
+      const zindex = axis.zindex(parseModel({
           mark: "point",
           encoding: {
             x: {field: 'a', type: 'quantitative'}
           }
         }), X, {grid: true});
-      assert.deepEqual(layer, "back");
+      assert.deepEqual(zindex, 0);
     });
 
-    it('should return specified layer', function () {
-      const layer = axis.layer(parseModel({
+    it('should return specified zindex', function () {
+      const zindex = axis.zindex(parseModel({
           mark: "point",
           encoding: {
-            x: {field: 'a', type: 'quantitative', axis: {layer: "front"}}
+            x: {field: 'a', type: 'quantitative', axis: {zindex: 2}}
           }
         }), X, {grid: true});
-      assert.deepEqual(layer, "front");
+      assert.deepEqual(zindex, 2);
     });
   });
 
