@@ -25,7 +25,7 @@ export interface Formula {
   /**
    * The field in which to store the computed formula value.
    */
-  field: string;
+  as: string;
   /**
    * A string containing an expression for the formula. Use the variable `datum` to to refer to the current data object.
    */

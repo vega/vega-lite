@@ -73,7 +73,7 @@ function parseUnitSizeLayout(model: UnitModel, channel: Channel): SizeComponent 
   return {
     distinct: getDistinct(model, channel),
     formula: [{
-      field: model.channelSizeName(channel),
+      as: model.channelSizeName(channel),
       expr: unitSizeExpr(model, channel)
     }]
   };
@@ -112,7 +112,7 @@ function parseFacetSizeLayout(model: FacetModel, channel: Channel): SizeComponen
 
     const distinct = extend(getDistinct(model, channel), childSizeComponent.distinct);
     const formula = childSizeComponent.formula.concat([{
-      field: model.channelSizeName(channel),
+      as: model.channelSizeName(channel),
       expr: facetSizeFormula(model, channel, model.child().channelSizeName(channel))
     }]);
 
@@ -151,8 +151,8 @@ function parseLayerSizeLayout(model: LayerModel, channel: Channel): SizeComponen
     const childSizeComponent: SizeComponent = childLayoutComponent[sizeType];
 
     const distinct = childSizeComponent.distinct;
-    const formula = [{
-      field: model.channelSizeName(channel),
+    const formula: Formula[] = [{
+      as: model.channelSizeName(channel),
       expr: childSizeComponent.formula[0].expr
     }];
 
