@@ -202,35 +202,35 @@ describe('Axis', function() {
     });
   });
 
-  describe('ticks', function() {
+  describe('tickCount', function() {
     it('should return undefined by default', function () {
-      const ticks = axis.ticks(parseModel({
+      const tickCount = axis.tickCount(parseModel({
           mark: "point",
           encoding: {
             y: {field: 'a'}
           }
         }), Y);
-      assert.deepEqual(ticks, undefined);
+      assert.deepEqual(tickCount, undefined);
     });
 
     it('should return 5 by default', function () {
-      const ticks = axis.ticks(parseModel({
+      const tickCount = axis.tickCount(parseModel({
           mark: "point",
           encoding: {
             x: {field: 'a'}
           }
         }), X);
-      assert.deepEqual(ticks, 5);
+      assert.deepEqual(tickCount, 5);
     });
 
-    it('should return specified ticks', function () {
-      const ticks = axis.ticks(parseModel({
+    it('should return specified tickCount', function () {
+      const tickCount = axis.tickCount(parseModel({
           mark: "point",
           encoding: {
-            x: {field: 'a', axis: {ticks: 10}}
+            x: {field: 'a', axis: {tickCount: 10}}
           }
         }), X);
-      assert.deepEqual(ticks, 10);
+      assert.deepEqual(tickCount, 10);
     });
   });
 
