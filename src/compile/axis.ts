@@ -45,7 +45,7 @@ export function parseInnerAxis(channel: Channel, model: Model): VgAxis {
 
   const axis = model.axis(channel);
 
-  ['ticks', 'values', 'subdivide', 'zindex'].forEach(function(property) {
+  ['tickCount', 'values', 'subdivide', 'zindex'].forEach(function(property) {
     let method: (model: Model, channel: Channel, def:any)=>any;
 
     const value = (method = exports[property]) ?
@@ -84,7 +84,7 @@ export function parseAxis(channel: Channel, model: Model): VgAxis {
   // 1.2. Add properties
   [
     // a) properties with special rules (so it has axis[property] methods) -- call rule functions
-    'format', 'grid', 'offset', 'orient', 'tickSize', 'ticks', 'tickSizeEnd', 'title', 'titleOffset', 'values', 'zindex',
+    'format', 'grid', 'offset', 'orient', 'tickSize', 'tickCount', 'tickSizeEnd', 'title', 'titleOffset', 'values', 'zindex',
     // b) properties without rules, only produce default values in the schema, or explicit value if specified
     'tickPadding', 'tickSize', 'tickSizeMajor', 'tickSizeMinor','subdivide'
   ].forEach(function(property) {
@@ -104,7 +104,7 @@ export function parseAxis(channel: Channel, model: Model): VgAxis {
 
   [
     'axis', 'labels', // have special rules
-    'grid', 'title', 'ticks', 'majorTicks', 'minorTicks' // only default values
+    'grid', 'title', 'tickCount', 'majorTicks', 'minorTicks' // only default values
   ].forEach(function(group) {
     const value = encode[group] ?
       encode[group](model, channel, props[group] || {}, def) :
@@ -185,15 +185,15 @@ export function orient(model: Model, channel: Channel) {
   throw new Error(log.message.INVALID_CHANNEL_FOR_AXIS);
 }
 
-export function ticks(model: Model, channel: Channel) {
-  const ticks = model.axis(channel).ticks;
-  if (ticks !== undefined) {
-    return ticks;
+export function tickCount(model: Model, channel: Channel) {
+  const count = model.axis(channel).tickCount;
+  if (count !== undefined) {
+    return count;
   }
 
   // FIXME depends on scale type too
   if (channel === X && !model.fieldDef(channel).bin) {
-    // Vega's default ticks often lead to a lot of label occlusion on X without 90 degree rotation
+    // Vega's default tickCount often lead to a lot of label occlusion on X without 90 degree rotation
     return 5;
   }
 
