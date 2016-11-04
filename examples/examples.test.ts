@@ -7,7 +7,7 @@ const fs = require('fs');
 const path = require('path');
 
 const vlSchema = require('../vega-lite-schema.json');
-const vgSchema = require('../node_modules/vega/vega-schema.json');
+const vgSchema = require('../node_modules/vega/build/vega-schema.json');
 
 const ajv = new Ajv({
   validateSchema: false,
