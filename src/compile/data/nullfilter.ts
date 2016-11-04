@@ -85,7 +85,7 @@ export namespace nullFilter {
     return filters.length > 0 ?
       [{
         type: 'filter',
-        test: filters.join(' && ')
+        expr: filters.join(' && ')
       }] : [];
   }
 }
