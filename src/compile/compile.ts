@@ -49,7 +49,7 @@ function assemble(model: Model) {
       // Set size to 1 because we rely on padding anyway
       width: 1,
       height: 1,
-      padding: 'auto'
+      autosize: 'pad'
     },
     config.viewport ? { viewport: config.viewport } : {},
     config.background ? { background: config.background } : {},
