@@ -66,7 +66,7 @@ export namespace filter {
     const filter = component.filter;
     return filter ? [{
       type: 'filter',
-      test: filter
+      expr: filter
     }] : [];
   }
 }
