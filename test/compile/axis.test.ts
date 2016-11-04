@@ -34,16 +34,16 @@ describe('Axis', function() {
       const model = parseUnitModel({
         mark: "point",
         encoding: {
-          x:
-          {field: "a",
-           type: "quantitative",
-           axis: {grid: true, gridColor: "blue", gridWidth: 20}
+          x: {
+            field: "a",
+            type: "quantitative",
+            axis: {grid: true, gridColor: "blue", gridWidth: 20}
           }
         }
       });
       const def = axis.parseInnerAxis(X, model);
       assert.isObject(def);
-      assert.equal(def.type, 'x');
+      assert.equal(def.orient, 'bottom');
       assert.equal(def.scale, 'x');
       assert.deepEqual(def.encode.grid.update, {stroke: {value: "blue"}, strokeWidth: {value: 20}});
     });
@@ -59,7 +59,7 @@ describe('Axis', function() {
       });
       const def = axis.parseAxis(X, model);
       assert.isObject(def);
-      assert.equal(def.type, 'x');
+      assert.equal(def.orient, 'bottom');
       assert.equal(def.scale, 'x');
     });
 
@@ -160,17 +160,17 @@ describe('Axis', function() {
       assert.deepEqual(orient, 'bottom');
     });
 
-    it('should return undefined by default', function () {
+    it('should return bottom for x by default', function () {
       const orient = axis.orient(parseUnitModel({
           mark: "point",
           encoding: {
             x: {field: 'a', type: 'quantitative'}
           }
         }), X);
-      assert.deepEqual(orient, undefined);
+      assert.deepEqual(orient, 'bottom');
     });
 
-    it('should return top for COL', function () {
+    it('should return top for column by default', function () {
       const orient = axis.orient(parseModel({
           mark: "point",
           encoding: {
@@ -179,6 +179,26 @@ describe('Axis', function() {
           }
         }), COLUMN);
       assert.deepEqual(orient, 'top');
+    });
+
+    it('should return left for row by default', function () {
+      const orient = axis.orient(parseModel({
+          mark: "point",
+          encoding: {
+            row: {field: 'a', type: 'nominal'}
+          }
+        }), 'row');
+      assert.deepEqual(orient, 'left');
+    });
+
+    it('should return left for y by default', function () {
+      const orient = axis.orient(parseModel({
+          mark: "point",
+          encoding: {
+            y: {field: 'a'}
+          }
+        }), 'y');
+      assert.deepEqual(orient, 'left');
     });
   });
 
