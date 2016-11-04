@@ -1,3 +1,5 @@
+import * as log from '../log';
+
 import {AxisOrient} from '../axis';
 import {COLUMN, ROW, X, Y, Channel} from '../channel';
 import {DateTime, isDateTime, timestamp} from '../datetime';
@@ -23,15 +25,11 @@ export function parseAxisComponent(model: Model, axisChannels: Channel[]): Dict<
  * Make an inner axis for showing grid for shared axis.
  */
 export function parseInnerAxis(channel: Channel, model: Model): VgAxis {
-  const isCol = channel === COLUMN,
-    isRow = channel === ROW,
-    type = isCol ? 'x' : isRow ? 'y': channel;
-
   // TODO: support adding ticks as well
 
   // TODO: replace any with Vega Axis Interface
   let def: any = {
-    type: type,
+    orient: channel === 'x' ? 'bottom' : 'left',
     scale: model.scaleName(channel),
     grid: true,
     tickSize: 0,
@@ -77,15 +75,9 @@ export function parseInnerAxis(channel: Channel, model: Model): VgAxis {
 }
 
 export function parseAxis(channel: Channel, model: Model): VgAxis {
-  const isCol = channel === COLUMN,
-    isRow = channel === ROW,
-    type = isCol ? 'x' : isRow ? 'y': channel;
-
   const axis = model.axis(channel);
 
-  // TODO: replace any with Vega Axis Interface
-  let def: any = {
-    type: type,
+  let def: VgAxis = {
     scale: model.scaleName(channel)
   };
 
@@ -177,11 +169,20 @@ export function orient(model: Model, channel: Channel) {
   const orient = model.axis(channel).orient;
   if (orient) {
     return orient;
-  } else if (channel === COLUMN) {
-    // FIXME test and decide
-    return AxisOrient.TOP;
   }
-  return undefined;
+
+  switch (channel) {
+    case COLUMN:
+      // FIXME test and decide
+      return AxisOrient.TOP;
+    case X:
+      return AxisOrient.BOTTOM;
+    case ROW:
+    case Y:
+      return AxisOrient.LEFT;
+  }
+  /* istanbul ignore next: This should never happen. */
+  throw new Error(log.message.INVALID_CHANNEL_FOR_AXIS);
 }
 
 export function ticks(model: Model, channel: Channel) {
