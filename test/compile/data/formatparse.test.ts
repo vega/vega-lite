@@ -70,7 +70,7 @@ describe('compile/data/formatparse', () => {
       const model = parseUnitModel({
         transform: {
           calculate: [
-            {field: 'b2', expr: 'datum["b"] * 2'}
+            {as: 'b2', expr: 'datum["b"] * 2'}
           ]
         },
         mark: "point",
