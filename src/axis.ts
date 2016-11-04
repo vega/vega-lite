@@ -15,9 +15,12 @@ export interface AxisConfig {
    */
   axisWidth?: number;
   /**
-   * A string indicating if the axis (and any gridlines) should be placed above or below the data marks.
+   * A non-positive integer indicating z-index of the axis.
+   * If zindex is 0, axes should be drawn behind all chart elements.
+   * To put them in front, use zindex = 1.
+   * @type{integer}
    */
-  layer?: string;
+  zindex?: number;
   /**
    * The offset, in pixels, by which to displace the axis from the edge of the enclosing group or data rectangle.
    */
