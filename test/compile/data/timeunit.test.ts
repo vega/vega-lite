@@ -4,7 +4,7 @@ import {assert} from 'chai';
 import {parseUnitModel} from '../../util';
 import {timeUnit} from '../../../src/compile/data/timeunit';
 
-describe('compile/data/timeunitdomain', () => {
+describe('compile/data/timeunit', () => {
   describe('parseUnit', () => {
 
     it('should return a dictionary of formula transform', () => {

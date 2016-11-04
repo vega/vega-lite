@@ -14,7 +14,7 @@ import {nullFilter} from './nullfilter';
 import {filter} from './filter';
 import {bin} from './bin';
 import {formula} from './formula';
-import {nonPositiveFilter} from './nonpositivenullfilter';
+import {nonPositiveFilter} from './nonpositivefilter';
 import {summary} from './summary';
 import {stackScale} from './stackscale';
 import {timeUnit} from './timeunit';

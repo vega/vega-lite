@@ -37,6 +37,17 @@ describe('compile/data/filter', () => {
       const expr = filter.parse(model);
       assert.equal(expr, 'datum["x"]===5');
     });
+  });
 
+  describe('parseLayer', function() {
+    // TODO: write test
+  });
+
+  describe('parseFacet', function() {
+    // TODO: write test
+  });
+
+  describe('assemble', function() {
+    // TODO: write test
   });
 });
