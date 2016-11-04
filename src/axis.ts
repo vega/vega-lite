@@ -19,6 +19,7 @@ export interface AxisConfig {
    * If zindex is 0, axes should be drawn behind all chart elements.
    * To put them in front, use zindex = 1.
    * @type{integer}
+   * @minimum 0
    */
   zindex?: number;
   /**
@@ -45,16 +46,20 @@ export interface AxisConfig {
 
   /**
    * The offset (in pixels) into which to begin drawing with the grid dash array.
+   * @minimum 0
    */
   gridDash?: number[];
 
   /**
    * The stroke opacity of grid (value between [0,1])
+   * @minimum 0
+   * @maximum 1
    */
   gridOpacity?: number;
 
   /**
    * The grid width, in pixels.
+   * @minimum 0
    */
   gridWidth?: number;
 
@@ -65,6 +70,8 @@ export interface AxisConfig {
   labels?: boolean;
   /**
    * The rotation angle of the axis labels.
+   * @minimum 0
+   * @minimum 360
    */
   labelAngle?: number;
   /**
@@ -88,6 +95,7 @@ export interface AxisConfig {
   // ---------- Ticks ----------
   /**
    * If provided, sets the number of minor ticks between major ticks (the value 9 results in decimal subdivision). Only applicable for axes visualizing quantitative scales.
+   * @minimum 0
    */
   subdivide?: number;
   /**
@@ -113,6 +121,7 @@ export interface AxisConfig {
 
   /**
    * The font size of label, in pixels.
+   * @minimum 0
    */
   tickLabelFontSize?: number;
 
@@ -143,6 +152,7 @@ export interface AxisConfig {
 
   /**
    * The width, in pixels, of ticks.
+   * @minimum 0
    */
   tickWidth?: number;
 
@@ -159,6 +169,7 @@ export interface AxisConfig {
 
   /**
    * Size of the title.
+   * @minimum 0
    */
   titleFontSize?: number;
 
@@ -178,6 +189,7 @@ export interface AxisConfig {
   titleMaxLength?: number;
   /**
    * Character width for automatically determining title max length.
+   * @minimum 0
    */
   characterWidth?: number;
 
