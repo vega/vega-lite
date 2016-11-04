@@ -45,7 +45,7 @@ export function parseInnerAxis(channel: Channel, model: Model): VgAxis {
 
   const axis = model.axis(channel);
 
-  ['layer', 'ticks', 'values', 'subdivide'].forEach(function(property) {
+  ['ticks', 'values', 'subdivide', 'zindex'].forEach(function(property) {
     let method: (model: Model, channel: Channel, def:any)=>any;
 
     const value = (method = exports[property]) ?
@@ -84,7 +84,7 @@ export function parseAxis(channel: Channel, model: Model): VgAxis {
   // 1.2. Add properties
   [
     // a) properties with special rules (so it has axis[property] methods) -- call rule functions
-    'format', 'grid', 'layer', 'offset', 'orient', 'tickSize', 'ticks', 'tickSizeEnd', 'title', 'titleOffset', 'values',
+    'format', 'grid', 'offset', 'orient', 'tickSize', 'ticks', 'tickSizeEnd', 'title', 'titleOffset', 'values', 'zindex',
     // b) properties without rules, only produce default values in the schema, or explicit value if specified
     'tickPadding', 'tickSize', 'tickSizeMajor', 'tickSizeMinor','subdivide'
   ].forEach(function(property) {
@@ -153,16 +153,16 @@ export function grid(model: Model, channel: Channel) {
   );
 }
 
-export function layer(model: Model, channel: Channel, def: {grid?: boolean}) {
-  const layer = model.axis(channel).layer;
-  if (layer !== undefined) {
-    return layer;
+export function zindex(model: Model, channel: Channel, def: {grid?: boolean}) {
+  const z = model.axis(channel).zindex;
+  if (z !== undefined) {
+    return z;
   }
   if (def.grid) {
     // if grid is true, need to put layer on the back so that grid is behind marks
-    return 'back';
+    return 0;
   }
-  return undefined; // otherwise return undefined and use Vega's default.
+  return 1; // otherwise return undefined and use Vega's default.
 };
 
 export function orient(model: Model, channel: Channel) {
