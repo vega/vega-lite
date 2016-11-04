@@ -57,6 +57,7 @@
                 },
                 "characterWidth": {
                     "description": "Character width for automatically determining title max length.",
+                    "minimum": 0,
                     "type": "number"
                 },
                 "format": {
@@ -76,14 +77,18 @@
                     "items": {
                         "type": "number"
                     },
+                    "minimum": 0,
                     "type": "array"
                 },
                 "gridOpacity": {
                     "description": "The stroke opacity of grid (value between [0,1])",
+                    "maximum": 1,
+                    "minimum": 0,
                     "type": "number"
                 },
                 "gridWidth": {
                     "description": "The grid width, in pixels.",
+                    "minimum": 0,
                     "type": "number"
                 },
                 "labelAlign": {
@@ -126,6 +131,7 @@
                 },
                 "subdivide": {
                     "description": "If provided, sets the number of minor ticks between major ticks (the value 9 results in decimal subdivision). Only applicable for axes visualizing quantitative scales.",
+                    "minimum": 0,
                     "type": "number"
                 },
                 "tickColor": {
@@ -147,6 +153,7 @@
                 },
                 "tickLabelFontSize": {
                     "description": "The font size of label, in pixels.",
+                    "minimum": 0,
                     "type": "number"
                 },
                 "tickPadding": {
@@ -175,6 +182,7 @@
                 },
                 "tickWidth": {
                     "description": "The width, in pixels, of ticks.",
+                    "minimum": 0,
                     "type": "number"
                 },
                 "title": {
@@ -191,6 +199,7 @@
                 },
                 "titleFontSize": {
                     "description": "Size of the title.",
+                    "minimum": 0,
                     "type": "number"
                 },
                 "titleFontWeight": {
@@ -227,6 +236,7 @@
                 },
                 "zindex": {
                     "description": "A non-positive integer indicating z-index of the axis.\n\nIf zindex is 0, axes should be drawn behind all chart elements.\n\nTo put them in front, use zindex = 1.",
+                    "minimum": 0,
                     "type": "number"
                 }
             },
@@ -244,6 +254,7 @@
                 },
                 "characterWidth": {
                     "description": "Character width for automatically determining title max length.",
+                    "minimum": 0,
                     "type": "number"
                 },
                 "grid": {
@@ -259,14 +270,18 @@
                     "items": {
                         "type": "number"
                     },
+                    "minimum": 0,
                     "type": "array"
                 },
                 "gridOpacity": {
                     "description": "The stroke opacity of grid (value between [0,1])",
+                    "maximum": 1,
+                    "minimum": 0,
                     "type": "number"
                 },
                 "gridWidth": {
                     "description": "The grid width, in pixels.",
+                    "minimum": 0,
                     "type": "number"
                 },
                 "labelAlign": {
@@ -275,6 +290,7 @@
                 },
                 "labelAngle": {
                     "description": "The rotation angle of the axis labels.",
+                    "minimum": 360,
                     "type": "number"
                 },
                 "labelBaseline": {
@@ -303,6 +319,7 @@
                 },
                 "subdivide": {
                     "description": "If provided, sets the number of minor ticks between major ticks (the value 9 results in decimal subdivision). Only applicable for axes visualizing quantitative scales.",
+                    "minimum": 0,
                     "type": "number"
                 },
                 "tickColor": {
@@ -324,6 +341,7 @@
                 },
                 "tickLabelFontSize": {
                     "description": "The font size of label, in pixels.",
+                    "minimum": 0,
                     "type": "number"
                 },
                 "tickPadding": {
@@ -352,6 +370,7 @@
                 },
                 "tickWidth": {
                     "description": "The width, in pixels, of ticks.",
+                    "minimum": 0,
                     "type": "number"
                 },
                 "titleColor": {
@@ -364,6 +383,7 @@
                 },
                 "titleFontSize": {
                     "description": "Size of the title.",
+                    "minimum": 0,
                     "type": "number"
                 },
                 "titleFontWeight": {
@@ -384,6 +404,7 @@
                 },
                 "zindex": {
                     "description": "A non-positive integer indicating z-index of the axis.\n\nIf zindex is 0, axes should be drawn behind all chart elements.\n\nTo put them in front, use zindex = 1.",
+                    "minimum": 0,
                     "type": "number"
                 }
             },
@@ -1029,17 +1050,17 @@
         "Formula": {
             "description": "Formula object for calculate.",
             "properties": {
-                "expr": {
-                    "description": "A string containing an expression for the formula. Use the variable `datum` to to refer to the current data object.",
+                "as": {
+                    "description": "The field in which to store the computed formula value.",
                     "type": "string"
                 },
-                "field": {
-                    "description": "The field in which to store the computed formula value.",
+                "expr": {
+                    "description": "A string containing an expression for the formula. Use the variable `datum` to to refer to the current data object.",
                     "type": "string"
                 }
             },
             "required": [
-                "field",
+                "as",
                 "expr"
             ],
             "type": "object"
