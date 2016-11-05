@@ -74,7 +74,7 @@ export interface SupportedMark {
  * @return whether the mark supports the channel
  */
 export function supportMark(channel: Channel, mark: Mark) {
-  return !!getSupportedMark(channel)[mark];
+  return mark in getSupportedMark(channel);
 }
 
 /**
