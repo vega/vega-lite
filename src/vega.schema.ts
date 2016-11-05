@@ -91,5 +91,5 @@ export interface VgStackTransform {
   groupby: any;
   field: any;
   sortby: any;
-  output: any;
+  as: string[];
 }
