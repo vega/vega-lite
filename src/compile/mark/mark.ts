@@ -272,10 +272,7 @@ function stackTransform(model: UnitModel, stackFields: string[]) {
     groupby: [model.field(stack.groupbyChannel, {binSuffix: 'mid'}) || 'undefined'],
     field: model.field(stack.fieldChannel),
     sortby: sortby,
-    output: {
-      start: valName + '_start',
-      end: valName + '_end'
-    }
+    as: [valName + '_start', valName + '_end']
   };
 
   if (stack.offset) {
