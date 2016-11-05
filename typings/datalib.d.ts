@@ -8,7 +8,7 @@ declare module 'datalib/src/util' {
   export function isArray(a: any | any[]): a is any[];
   export function vals(a: any): any;
   export function truncate(a: string, length: number): string;
-  export function toMap(a: any): any;
+  export function toMap<T>(a: T[]): any;
   export function isObject(a: any): a is any;
   export function isString(a: any): a is string;
   export function isNumber(a: any): a is number;
