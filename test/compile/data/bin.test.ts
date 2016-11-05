@@ -9,30 +9,34 @@ import {parseUnitModel} from '../../util';
 
 describe('compile/data/bin', function() {
   describe('parseUnit', function() {
-    it('should add bin transform and correctly apply bin', function() {
-      const model = parseUnitModel({
-        mark: "point",
-        encoding: {
-          y: {
-            bin: { min: 0, max: 100 },
-            'field': 'Acceleration',
-            'type': "quantitative"
-          }
+    const model = parseUnitModel({
+      mark: "point",
+      encoding: {
+        y: {
+          bin: { min: 0, max: 100 },
+          'field': 'Acceleration',
+          'type': "quantitative"
         }
-      });
-      const transform = vals(bin.parseUnit(model))[0];
+      }
+    });
+    const transform = vals(bin.parseUnit(model))[0];
 
+    it('should add bin transform and correctly apply bin', function() {
       assert.deepEqual(transform[0], {
         type: 'bin',
         field: 'Acceleration',
-        output: {
-          start: 'bin_Acceleration_start',
-          mid: 'bin_Acceleration_mid',
-          end: 'bin_Acceleration_end'
-        },
+        as: ['bin_Acceleration_start', 'bin_Acceleration_end'],
         maxbins: 10,
         min: 0,
         max: 100
+      });
+    });
+
+    it('should add formula transform to calculate bin mid', () => {
+      assert.deepEqual(transform[1], {
+        type: 'formula',
+        as: 'bin_Acceleration_mid',
+        expr: '(datum["bin_Acceleration_start"]+datum["bin_Acceleration_end"])/2'
       });
     });
   });
