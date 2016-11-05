@@ -24,9 +24,7 @@ export namespace colorRank {
       }, {
         type: 'rank',
         field: model.field(COLOR),
-        output: {
-          rank: model.field(COLOR, { prefix: 'rank' })
-        }
+        as: model.field(COLOR, { prefix: 'rank' })
       }];
     }
     return colorRankComponent;
