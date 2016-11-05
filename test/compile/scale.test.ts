@@ -98,6 +98,7 @@ describe('Scale', function() {
         });
       });
     });
+
     it('should return band for row/column', function() {
       [ROW, COLUMN].forEach((channel) => {
         assert.deepEqual(
@@ -144,6 +145,21 @@ describe('Scale', function() {
     it('should return point scale for X,Y when mark is bar and bandSize is defined', () => {
       [X, Y].forEach((channel) => {
         assert.equal(type(undefined, {field: 'a', type: ORDINAL}, channel, BAR, true), ScaleType.POINT);
+      });
+    });
+
+    it('should return point scale for X,Y when mark is point', () => {
+      [X, Y].forEach((channel) => {
+        assert.equal(type(undefined, {field: 'a', type: ORDINAL}, channel, POINT, true), ScaleType.POINT);
+      });
+    });
+
+    it('should return point scale for X,Y when mark is point when ORDINAL SCALE TYPE is specified and throw warning', () => {
+      [X, Y].forEach((channel) => {
+        log.runLocalLogger((localLogger) => {
+          assert.equal(type('ordinal', {field: 'a', type: ORDINAL}, channel, POINT, true), ScaleType.POINT);
+          assert.equal(localLogger.warns[0], log.message.scaleTypeNotWorkWithChannel(channel, 'ordinal', 'point'));
+        });
       });
     });
   });
