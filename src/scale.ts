@@ -1,42 +1,58 @@
 import {DateTime} from './datetime';
+import {toMap} from './util';
 
 export namespace ScaleType {
-    export const LINEAR: 'linear' = 'linear';
-    export const LOG: 'log' = 'log';
-    export const POW: 'pow' = 'pow';
-    export const SQRT: 'sqrt' = 'sqrt';
-    export const QUANTILE: 'quantile' = 'quantile';
-    export const QUANTIZE: 'quantize' = 'quantize';
+  export const LINEAR: 'linear' = 'linear';
+  export const LOG: 'log' = 'log';
+  export const POW: 'pow' = 'pow';
+  export const SQRT: 'sqrt' = 'sqrt';
+  export const QUANTILE: 'quantile' = 'quantile';
+  export const QUANTIZE: 'quantize' = 'quantize';
+  export const SEQUENTIAL: 'sequential' = 'sequential';
 
-    // TODO: rename this back to ORDINAL once we are done
-    export const ORDINAL_LOOKUP: 'ordinal' = 'ordinal';
-    export const POINT: 'point' = 'point';
-    export const BAND: 'band' = 'band';
 
-    export const TIME: 'time' = 'time';
-    export const UTC: 'utc'  = 'utc';
+  // TODO: rename this back to ORDINAL once we are done
+  export const ORDINAL_LOOKUP: 'ordinal' = 'ordinal';
+  export const POINT: 'point' = 'point';
+  export const BAND: 'band' = 'band';
+
+  export const TIME: 'time' = 'time';
+  export const UTC: 'utc'  = 'utc';
 }
 
-export type ScaleType = typeof ScaleType.LINEAR | typeof ScaleType.LOG | typeof ScaleType.POW
-  | typeof ScaleType.SQRT | typeof ScaleType.QUANTILE | typeof ScaleType.QUANTIZE
-  | typeof ScaleType.ORDINAL_LOOKUP | typeof ScaleType.POINT | typeof ScaleType.BAND
-   | typeof ScaleType.TIME | typeof ScaleType.UTC;
+export type ScaleType = typeof ScaleType.LINEAR |
+  typeof ScaleType.LOG | typeof ScaleType.POW | typeof ScaleType.SQRT |
+  typeof ScaleType.QUANTILE | typeof ScaleType.QUANTIZE | typeof ScaleType.SEQUENTIAL |
+  typeof ScaleType.ORDINAL_LOOKUP | typeof ScaleType.POINT | typeof ScaleType.BAND |
+  typeof ScaleType.TIME | typeof ScaleType.UTC;
 
-export function isDiscreteScale(type: ScaleType):
-    type is typeof ScaleType.ORDINAL_LOOKUP | typeof ScaleType.POINT | typeof ScaleType.BAND {
-  return type === ScaleType.POINT ||
-    type === ScaleType.BAND ||
-    type === ScaleType.ORDINAL_LOOKUP;
+export const SCALE_TYPES: ScaleType[] = [
+  // Quantitative
+  'linear', 'log', 'pow', 'sqrt', // TODO: add 'quantile', 'quantize' when we really support them
+  // Discrete
+  'ordinal', 'point', 'band',
+  // Time
+  'time', 'utc'
+];
+
+export const CONTINUOUS_SCALE_TYPES: ScaleType[] = ['linear', 'log', 'pow', 'sqrt'];
+export const DISCRETE_SCALE_TYPES: ScaleType[] = ['ordinal', 'point', 'band'];
+const DISCRETE_SCALE_TYPE_INDEX = toMap(DISCRETE_SCALE_TYPES);
+
+export const TIME_SCALE_TYPES: ScaleType[] = ['time', 'utc'];
+
+export function isDiscreteScale(type: ScaleType): type is 'ordinal' | 'point' | 'band' {
+  return !!DISCRETE_SCALE_TYPE_INDEX[type];
 }
 
 export namespace NiceTime {
-    export const SECOND: 'second' = 'second';
-    export const MINUTE: 'minute' = 'minute';
-    export const HOUR: 'hour' = 'hour';
-    export const DAY: 'day' = 'day';
-    export const WEEK: 'week' = 'week';
-    export const MONTH: 'month' = 'month';
-    export const YEAR: 'year' = 'year';
+  export const SECOND: 'second' = 'second';
+  export const MINUTE: 'minute' = 'minute';
+  export const HOUR: 'hour' = 'hour';
+  export const DAY: 'day' = 'day';
+  export const WEEK: 'week' = 'week';
+  export const MONTH: 'month' = 'month';
+  export const YEAR: 'year' = 'year';
 }
 
 export type NiceTime = typeof NiceTime.SECOND | typeof NiceTime.MINUTE | typeof NiceTime.HOUR
