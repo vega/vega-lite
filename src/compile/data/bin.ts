@@ -20,11 +20,7 @@ export namespace bin {
         let binTrans = extend({
           type: 'bin',
           field: fieldDef.field,
-          output: {
-            start: field(fieldDef, { binSuffix: 'start' }),
-            mid: field(fieldDef, { binSuffix: 'mid' }),
-            end: field(fieldDef, { binSuffix: 'end' })
-          }
+          as: [field(fieldDef, { binSuffix: 'start' }), field(fieldDef, { binSuffix: 'end'})]
         },
           // if bin is an object, load parameter here!
           typeof bin === 'boolean' ? {} : bin
@@ -36,9 +32,18 @@ export namespace bin {
         }
 
         const transform: VgTransform[] = [binTrans];
-        const isOrdinalColor = model.hasDiscreteScale(channel) || channel === COLOR;
-        // color ramp has type linear or time, we have to create new bin_range field
+        // Calculate mid bin
+        // TODO: consider removing this
+        transform.push({
+          type: 'formula',
+          as: field(fieldDef, { binSuffix: 'mid' }),
+          expr: '(' + field(fieldDef, { binSuffix: 'start', datum: true }) + '+' +
+            field(fieldDef, { binSuffix: 'end', datum: true }) + ')/2'
+        });
+
+        // If color ramp has type linear or time, we have to create new bin_range field
         // with correct number format
+        const isOrdinalColor = model.hasDiscreteScale(channel) || channel === COLOR;
         if (isOrdinalColor) {
           // read format from axis or legend, if there is not format there then use config.numberFormat
           const format = (model.axis(channel) || model.legend(channel) || {}).format ||
@@ -49,7 +54,7 @@ export namespace bin {
 
           transform.push({
             type: 'formula',
-            field: field(fieldDef, { binSuffix: 'range' }),
+            as: field(fieldDef, { binSuffix: 'range' }),
             expr: numberFormatExpr(format, startField) +
               ' + \'-\' + ' +
               numberFormatExpr(format, endField)
