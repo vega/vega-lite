@@ -1,7 +1,7 @@
 import * as log from '../log';
 
 import {SHARED_DOMAIN_OPS} from '../aggregate';
-import {COLUMN, ROW, X, Y, X2, Y2, SHAPE, SIZE, COLOR, OPACITY, TEXT, hasScale, Channel} from '../channel';
+import {COLUMN, ROW, X, Y, X2, Y2, SHAPE, SIZE, COLOR, OPACITY, TEXT, hasScale, supportScaleType, Channel} from '../channel';
 import {SOURCE, STACKED_SCALE} from '../data';
 import {DateTime, isDateTime, timestamp} from '../datetime';
 import {ChannelDefWithScale, FieldDef, field} from '../fielddef';
@@ -179,30 +179,32 @@ function parseBinColorLegendLabel(model: Model, fieldDef: FieldDef): ScaleCompon
   };
 }
 
-export function type(scaleType: ScaleType, fieldDef: FieldDef, channel: Channel, mark: Mark, canHaveBandSize: boolean): ScaleType {
+export function type(specifiedType: ScaleType, fieldDef: FieldDef, channel: Channel, mark: Mark, canHaveBandSize: boolean): ScaleType {
   if (!hasScale(channel)) {
     // There is no scale for these channels
     return null;
   }
 
-  // Row and Column always use band Scale
+  if (specifiedType !== undefined) {
+    // Check if explicitly specified scale type is supported
+    if (supportScaleType(channel, specifiedType)) {
+      return specifiedType;
+    } else {
+      const newScaleType = defaultType(fieldDef, channel, mark, canHaveBandSize);
+      log.warn(log.message.scaleTypeNotWorkWithChannel(channel, specifiedType, newScaleType));
+      return newScaleType;
+    }
+  }
+
+  return defaultType(fieldDef, channel, mark, canHaveBandSize);
+}
+
+function defaultType(fieldDef: FieldDef, channel: Channel, mark: Mark, canHaveBandSize: boolean): ScaleType {
   if (contains([ROW, COLUMN], channel)) {
-    if (scaleType !== undefined && scaleType !== ScaleType.BAND) {
-      log.warn(log.message.scaleTypeNotWorkWithChannel(channel, scaleType, ScaleType.BAND));
-    }
-    return ScaleType.BAND; // TODO: call ordinalType()
+    return ScaleType.BAND;
   }
-
-  // Shape always use ordinal scale
   if (channel === SHAPE) {
-    if (scaleType !== undefined && scaleType !== ScaleType.ORDINAL_LOOKUP) {
-      log.warn(log.message.scaleTypeNotWorkWithChannel(channel, scaleType, ScaleType.ORDINAL_LOOKUP));
-    }
     return ScaleType.ORDINAL_LOOKUP;
-  }
-
-  if (scaleType !== undefined) {
-    return scaleType;
   }
 
   switch (fieldDef.type) {

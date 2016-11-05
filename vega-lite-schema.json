@@ -2411,6 +2411,7 @@
                 "pow",
                 "quantile",
                 "quantize",
+                "sequential",
                 "sqrt",
                 "time",
                 "utc"
