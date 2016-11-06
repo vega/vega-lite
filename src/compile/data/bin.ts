@@ -32,15 +32,6 @@ export namespace bin {
         }
 
         const transform: VgTransform[] = [binTrans];
-        // Calculate mid bin
-        // TODO: consider removing this
-        transform.push({
-          type: 'formula',
-          as: field(fieldDef, { binSuffix: 'mid' }),
-          expr: '(' + field(fieldDef, { binSuffix: 'start', datum: true }) + '+' +
-            field(fieldDef, { binSuffix: 'end', datum: true }) + ')/2'
-        });
-
         // If color ramp has type linear or time, we have to create new bin_range field
         // with correct number format
         const isOrdinalColor = model.hasDiscreteScale(channel) || channel === COLOR;

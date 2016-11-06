@@ -187,7 +187,7 @@ function sortPathBy(model: UnitModel): string | string[] {
         field: sort.field
       });
     } else {
-      return '-' + model.field(dimensionChannel, {binSuffix: 'mid'});
+      return '-' + model.field(dimensionChannel, {binSuffix: 'start'});
     }
   }
 }
@@ -204,7 +204,6 @@ function detailFields(model: UnitModel): string[] {
     return details;
   }, []);
 }
-
 
 function stackTransforms(model: UnitModel, impute: boolean): any[] {
   const stackByFields = getStackByFields(model);
@@ -248,7 +247,7 @@ function imputeTransform(model: UnitModel, stackFields: string[]) {
     type: 'impute',
     field: model.field(stack.fieldChannel),
     groupby: stackFields,
-    orderby: [model.field(stack.groupbyChannel, {binSuffix: 'mid'})],
+    orderby: [model.field(stack.groupbyChannel, {binSuffix: 'start'})],
     method: 'value',
     value: 0
   };
@@ -269,7 +268,7 @@ function stackTransform(model: UnitModel, stackFields: string[]) {
   // add stack transform to mark
   let transform: VgStackTransform = {
     type: 'stack',
-    groupby: [model.field(stack.groupbyChannel, {binSuffix: 'mid'}) || 'undefined'],
+    groupby: [model.field(stack.groupbyChannel, {binSuffix: 'start'}) || 'undefined'],
     field: model.field(stack.fieldChannel),
     sortby: sortby,
     as: [valName + '_start', valName + '_end']
