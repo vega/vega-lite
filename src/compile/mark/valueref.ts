@@ -46,7 +46,7 @@ export function bin(fieldDef: FieldDef, scaleName: string, side: 'start' | 'end'
   return fieldRef(fieldDef, scaleName, {binSuffix: side}, offset);
 }
 
-export function fieldRef(fieldDef: FieldDef, scaleName: string, opt: FieldRefOption, offset?: number): VgValueRef {
+export function fieldRef(fieldDef: FieldDef, scaleName: string, opt: FieldRefOption, offset?: number | VgValueRef): VgValueRef {
   let ref: VgValueRef = {
     scale: scaleName,
     field: field(fieldDef, opt),
@@ -57,12 +57,11 @@ export function fieldRef(fieldDef: FieldDef, scaleName: string, opt: FieldRefOpt
   return ref;
 }
 
-export function band(scaleName: string) {
-  let ref: VgValueRef = {
+export function band(scaleName: string, band: number|boolean = true): VgValueRef {
+  return {
     scale: scaleName,
-    band: true
+    band: band
   };
-  return ref;
 }
 
 export function binMidSignal(fieldDef: FieldDef, scaleName: string) {
@@ -84,6 +83,10 @@ export function midPoint(channel: Channel, fieldDef: FieldDef, scaleName: string
     /* istanbul ignore else */
     if (fieldDef.field) {
       if (isDiscreteScale(scale.type)) {
+        if (scale.type === 'band') {
+          // For band, to get mid point, need to offset by half of the band
+          return fieldRef(fieldDef, scaleName, {binSuffix: 'range'}, band(scaleName, 0.5));
+        }
         return fieldRef(fieldDef, scaleName, {binSuffix: 'range'});
       } else {
         if (fieldDef.bin) {
