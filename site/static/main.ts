@@ -10,7 +10,7 @@ function trim(str: string) {
 }
 
 /* Anchors */
-d3.selectAll('h2, h3, h4, h5, h6').each(function(this: Node) {
+d3.selectAll('h2, h3, h4, h5, h6').each(function(this: Element) {
   const sel = d3.select(this);
   const link = sel.select('a');
   const name = sel.attr('id');
@@ -20,7 +20,7 @@ d3.selectAll('h2, h3, h4, h5, h6').each(function(this: Node) {
 
 /* Documentation */
 
-function renderExample($target: d3.Selection<any>, text: string) {
+function renderExample($target: d3.Selection<any, any, any, any>, text: string) {
   $target.classed('example', true);
   $target.text('');
 
@@ -47,7 +47,7 @@ function renderExample($target: d3.Selection<any>, text: string) {
   });
 }
 
-d3.selectAll('.vl-example').each(function(this: Node) {
+d3.selectAll('.vl-example').each(function(this: Element) {
   const sel = d3.select(this);
   const name = sel.attr('data-name');
   if (name) {
@@ -77,11 +77,11 @@ function renderGallery() {
   d3.json(window.location.origin + BASEURL + '/examples/vl-examples.json', function(error, VL_SPECS) {
     if (error) { return console.warn(error); }
 
-    d3.selectAll('div.gallery').each(function(this: Node) {
+    d3.selectAll('div.gallery').each(function(this: Element) {
       d3.select(this).call(renderGalleryGroup);
     });
 
-    function renderGalleryGroup (selection: d3.Selection<any>) {
+    function renderGalleryGroup (selection: d3.Selection<any, any, any, any>) {
       const galleryGroupName = selection.attr('data-gallery-group');
       let galleryGroupSpecs: any[];
 
