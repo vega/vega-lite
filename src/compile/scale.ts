@@ -438,7 +438,8 @@ function _useRawDomain (scale: Scale, model: Model, channel: Channel) {
 /**
  * @returns {*} mix-in of bandSize, range, scheme.
  */
-export function rangeMixins(scale: Scale, model: Model, channel: Channel): any {
+export function rangeMixins(scale: Scale, model: Model, channel: Channel):
+  {range: string | Array<number|string|{data: string, field:string}>} | {bandSize: number} | {scheme: string} {
   const markConfig = model.config().mark;
   const scaleConfig = model.config().scale;
 
@@ -446,7 +447,7 @@ export function rangeMixins(scale: Scale, model: Model, channel: Channel): any {
 
   const fieldDef = model.fieldDef(channel);
 
-  if (isDiscreteScale(scale.type) && scale.bandSize) {
+  if (isDiscreteScale(scale.type) && scale.bandSize && scale.bandSize !== BANDSIZE_FIT) {
     if (scale.type === ScaleType.BAND) {
       return {bandSize: scale.bandSize};
     } else {
@@ -517,20 +518,19 @@ export function rangeMixins(scale: Scale, model: Model, channel: Channel): any {
       //  TODO: make 9 a config
       return {range: [9, (bandSize - 2) * (bandSize - 2)]};
     case SHAPE:
-      // FIXME: check for scheme or range (Vega 3)
-      return {scheme: scaleConfig.shapeRange};
+      return {range: scaleConfig.shapeRange};
     case COLOR:
-      if (fieldDef.type === NOMINAL) { // TODO: check if scale type lookup-ordinal ("ordinal")
-        return {scheme: scaleConfig.nominalColorRange}; // FIXME: check for scheme (Vega 3)
+      if (fieldDef.type === NOMINAL) {
+        return {scheme: scaleConfig.nominalColorScheme};
       }
       // else -- ordinal, time, or quantitative
-      // FIXME: this is probably not correct for the new sequential scale
-      return {range: scaleConfig.sequentialColorRange};
+      return {scheme: scaleConfig.sequentialColorScheme};
 
     case OPACITY:
       return {range: scaleConfig.opacity};
   }
-  return {};
+  /* istanbul ignore next: should never reach here */
+  throw new Error(`Scale range undefined for channel ${channel}`);
 }
 
 /**
