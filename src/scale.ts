@@ -115,12 +115,14 @@ export interface ScaleConfig {
    */
   useRawDomain?: boolean;
 
-  /** Default range for nominal color scale */
-  nominalColorRange?: string | string[];
-  /** Default range for ordinal / continuous color scale */
-  sequentialColorRange?: string | string[];
+  /** Default color scheme for nominal (categorical) data */
+  nominalColorScheme?: string;
+
+  /** Default color scheme for ordinal, quantitative and temporal field */
+  sequentialColorScheme?: string;
+
   /** Default range for shape */
-  shapeRange?: string | string[];
+  shapeRange?: string[];
 
   /** Default range for bar size scale */
   barSizeRange?: number[];
@@ -151,9 +153,9 @@ export const defaultScaleConfig = {
   useRawDomain: false,
   opacity: [0.3, 0.8],
 
-  nominalColorRange: 'category10',
-  sequentialColorRange: ['#AFC6A3', '#09622A'], // tableau greens
-  shapeRange: 'shapes',
+  nominalColorScheme: 'category10',
+  sequentialColorScheme: 'Greens',
+  shapeRange: ['circle', 'square', 'cross', 'diamond', 'triangle-up', 'triangle-down'],
   fontSizeRange: [8, 40],
   ruleSizeRange: [1, 5],
   tickSizeRange: [1, 20]
@@ -168,7 +170,7 @@ export interface Scale {
   /**
    * The range of the scale, representing the set of visual values. For numeric values, the range can take the form of a two-element array with minimum and maximum values. For ordinal or quantized data, the range may by an array of desired output values, which are mapped to elements in the specified domain. For ordinal scales only, the range can be defined using a DataRef: the range values are then drawn dynamically from a backing data set.
    */
-  range?: string | number[] | string[]; // TODO: declare vgRangeDomain
+  range?: number[] | string[]; // TODO: declare vgRangeDomain
   /**
    * If true, rounds numeric output values to integers. This can be helpful for snapping to the pixel grid.
    */

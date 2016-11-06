@@ -1872,9 +1872,6 @@
                                 "type": "number"
                             },
                             "type": "array"
-                        },
-                        {
-                            "type": "string"
                         }
                     ],
                     "description": "The range of the scale, representing the set of visual values. For numeric values, the range can take the form of a two-element array with minimum and maximum values. For ordinal or quantized data, the range may by an array of desired output values, which are mapped to elements in the specified domain. For ordinal scales only, the range can be defined using a DataRef: the range values are then drawn dynamically from a backing data set."
@@ -1943,19 +1940,9 @@
                     },
                     "type": "array"
                 },
-                "nominalColorRange": {
-                    "anyOf": [
-                        {
-                            "items": {
-                                "type": "string"
-                            },
-                            "type": "array"
-                        },
-                        {
-                            "type": "string"
-                        }
-                    ],
-                    "description": "Default range for nominal color scale"
+                "nominalColorScheme": {
+                    "description": "Default color scheme for nominal (categorical) data",
+                    "type": "string"
                 },
                 "opacity": {
                     "description": "Default range for opacity.",
@@ -1988,33 +1975,16 @@
                     },
                     "type": "array"
                 },
-                "sequentialColorRange": {
-                    "anyOf": [
-                        {
-                            "items": {
-                                "type": "string"
-                            },
-                            "type": "array"
-                        },
-                        {
-                            "type": "string"
-                        }
-                    ],
-                    "description": "Default range for ordinal / continuous color scale"
+                "sequentialColorScheme": {
+                    "description": "Default color scheme for ordinal, quantitative and temporal field",
+                    "type": "string"
                 },
                 "shapeRange": {
-                    "anyOf": [
-                        {
-                            "items": {
-                                "type": "string"
-                            },
-                            "type": "array"
-                        },
-                        {
-                            "type": "string"
-                        }
-                    ],
-                    "description": "Default range for shape"
+                    "description": "Default range for shape",
+                    "items": {
+                        "type": "string"
+                    },
+                    "type": "array"
                 },
                 "textBandWidth": {
                     "description": "Default band width for `x` ordinal scale when is mark is `text`.",
