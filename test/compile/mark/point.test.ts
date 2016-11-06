@@ -122,6 +122,21 @@ describe('Mark: Point', function() {
     });
   });
 
+  describe('with band x and quantitative y', () => {
+    it('should offset band position by half band', () => {
+      const model = parseUnitModel({
+        "data": {"url": "data/barley.json"},
+        "mark": "point",
+        "encoding":{
+          "x": {"field": "year", "type": "ordinal", "scale": {"type": "band"}},
+          "y": {"field": "yield", "type": "quantitative"}
+        }
+      });
+      const props = point.properties(model);
+      assert.deepEqual(props.x, {scale: 'x', field: 'year', offset: {scale: 'x', band: 0.5}});
+    });
+  });
+
   describe('with x, y, size', function () {
     const model = parseUnitModel(pointXY({
       "size": {"field": "*", "type": "quantitative", "aggregate": "count"}
