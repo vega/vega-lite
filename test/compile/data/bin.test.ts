@@ -31,14 +31,6 @@ describe('compile/data/bin', function() {
         max: 100
       });
     });
-
-    it('should add formula transform to calculate bin mid', () => {
-      assert.deepEqual(transform[1], {
-        type: 'formula',
-        as: 'bin_Acceleration_mid',
-        expr: '(datum["bin_Acceleration_start"]+datum["bin_Acceleration_end"])/2'
-      });
-    });
   });
 
   describe('parseLayer', function() {

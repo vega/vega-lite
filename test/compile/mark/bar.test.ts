@@ -7,7 +7,6 @@ import {defaultMarkConfig} from '../../../src/config';
 import {defaultScaleConfig} from '../../../src/scale';
 import {bar} from '../../../src/compile/mark/bar';
 
-
 describe('Mark: Bar', function() {
   it('should return the correct mark type', function() {
     assert.equal(bar.markType(), 'rect');
@@ -141,7 +140,7 @@ describe('Mark: Bar', function() {
     const props = bar.properties(model);
 
     it('should draw bar with y centered on bin_mid and height = size field', function() {
-      assert.deepEqual(props.yc, {scale: 'y', field: 'bin_Horsepower_mid'});
+      assert.deepEqual(props.yc, {scale: 'y', signal: '(datum["bin_Horsepower_start"]+datum["bin_Horsepower_end"])/2'});
       assert.deepEqual(props.height, {scale: 'size', field: 'mean_Acceleration'});
     });
   });
@@ -159,7 +158,7 @@ describe('Mark: Bar', function() {
     const props = bar.properties(model);
 
     it('should draw bar with x centered on bin_mid and width = size field', function() {
-      assert.deepEqual(props.xc, {scale: 'x', field: 'bin_Horsepower_mid'});
+      assert.deepEqual(props.xc, {scale: 'x', signal: '(datum["bin_Horsepower_start"]+datum["bin_Horsepower_end"])/2'});
       assert.deepEqual(props.width, {scale: 'size', field: 'mean_Acceleration'});
     });
   });
