@@ -251,7 +251,6 @@ export function scaleTypeSupportProperty(scaleType: ScaleType, propName: string)
       return isContinuousScale(scaleType) || scaleType === 'band' || scaleType === 'point';
     case 'bandSize':
     case 'padding':
-      // TODO: revise if point qualifies for bandSize here.  (It works for VL, but not for VG).
       return contains(['point', 'band'], scaleType);
     case 'scheme':
       return contains(['ordinal', 'sequential'], scaleType);
