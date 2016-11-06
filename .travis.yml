@@ -20,3 +20,6 @@ notifications:
       - 'uwdub:Ry6mwlUX1aZevqiqmYLiA3N1'
     on_success: never
     on_failure: change
+cache:
+  directories:
+  - $HOME/.yarn-cache
