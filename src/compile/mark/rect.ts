@@ -30,7 +30,6 @@ export namespace rect {
     const x2FieldDef = model.encoding().x2;
     const xScaleName = model.scaleName(X);
     const xScale = model.scale(X);
-    const config = model.config();
 
     if (xFieldDef && xFieldDef.bin && !x2FieldDef) { // TODO: better check for bin
       p.x2 = ref.bin(xFieldDef, xScaleName, 'start');
