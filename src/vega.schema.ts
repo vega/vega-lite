@@ -32,6 +32,7 @@ export type VgValueRef = {
     group?: string,
     parent?: string
   },
+  signal?: string;
   template?: string,
   scale?: string, // TODO: object
   mult?: number,
