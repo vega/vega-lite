@@ -50,6 +50,6 @@ export namespace tick {
       defaultSize = bandSize / 1.5;
     }
 
-    return ref.normal(SIZE, fieldDef, scaleName, scale, {value: defaultSize});
+    return ref.midPoint(SIZE, fieldDef, scaleName, scale, {value: defaultSize});
   }
 }
