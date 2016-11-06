@@ -45,6 +45,15 @@ export function initScale(topLevelSize: number | undefined, mark: Mark | undefin
     channel: Channel, fieldDef: ChannelDefWithScale, scaleConfig: ScaleConfig): Scale {
   let scale: Scale = duplicate((fieldDef || {}).scale || {});
 
+  const rangeProperties: any[] = ((scale.bandSize ? ['bandSize'] : []) as any[]).concat(
+    scale.scheme ? ['scheme'] : [],
+    scale.range ? ['range'] : []
+  );
+
+  if (rangeProperties.length > 1) {
+    log.warn(log.message.mutuallyExclusiveScaleProperties(rangeProperties));
+  }
+
   // initialize bandSize as if it's an ordinal scale first since ordinal scale type depends on this.
   const size = bandSize(scale.bandSize, topLevelSize, mark, channel, scaleConfig);
 
@@ -456,7 +465,13 @@ export function rangeMixins(scale: Scale, model: Model, channel: Channel):
     }
   }
 
-  // FIXME: check for scheme (Vega 3)
+  if (scale.scheme) {
+    if (scale.type === 'ordinal' || scale.type === 'sequential') {
+      return {scheme: scale.scheme};
+    } else {
+      log.warn(log.message.scalePropertiesNotWorkWithType('scheme', scale.type));
+    }
+  }
 
   if (scale.range) {
     if (!contains([X, Y, ROW, COLUMN], channel)) {
