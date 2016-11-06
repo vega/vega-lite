@@ -433,7 +433,7 @@ function _useRawDomain (scale: Scale, model: Model, channel: Channel) {
 }
 
 /**
- * @returns {*} mix-in of bandSize, range, scheme, or rangeMin and rangeMax
+ * @returns {*} mix-in of bandSize, range, scheme.
  */
 export function rangeMixins(scale: Scale, model: Model, channel: Channel): any {
   const config = model.config();
@@ -480,21 +480,15 @@ export function rangeMixins(scale: Scale, model: Model, channel: Channel): any {
   switch (channel) {
     case X:
       // FIXME revise if this is still true in Vega 3
+      // FIXME: what if size is not specified
       // we can't use {range: "width"} here since we put scale in the root group
       // not inside the cell, so scale is reusable for axes group
 
-      return {
-        rangeMin: 0,
-        // FIXME: what if size is not specified
-        rangeMax: topLevelSize // Fixed cell width for non-ordinal
-      };
+      return {range: [0, topLevelSize]};
     case Y:
       // FIXME revise if this is still true in Vega 3
-      return {
-        // FIXME: what if size is not specified
-        rangeMin: topLevelSize, // Fixed cell height for non-ordinal
-        rangeMax: 0
-      };
+      // FIXME: what if size is not specified
+      return {range: [topLevelSize, 0]};
     case SIZE:
       if (mark === BAR) {
         if (scaleConfig.barSizeRange !== undefined) {
