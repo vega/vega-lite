@@ -36,8 +36,8 @@ export type VgValueRef = {
   template?: string,
   scale?: string, // TODO: object
   mult?: number,
-  offset?: number,
-  band?: boolean
+  offset?: number | VgValueRef,
+  band?: boolean | number
 }
 
 export type UnionedDomain = {
