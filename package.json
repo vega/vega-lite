@@ -59,7 +59,7 @@
   "devDependencies": {
     "@types/ajv": "^0.0.4",
     "@types/chai": "^3.4.34",
-    "@types/d3": "^3.5.36",
+    "@types/d3": "^4.2.38",
     "@types/json-stable-stringify": "^1.0.29",
     "@types/mocha": "^2.2.32",
     "@types/node": "^6.0.46",
