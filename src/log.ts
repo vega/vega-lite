@@ -151,6 +151,10 @@ export namespace message {
     return `Scale type "${scaleType}" does not work with mark ${mark}.`;
   }
 
+  export function mutuallyExclusiveScaleProperties(properties: string[]) {
+    return properties.join(' and ') + ' are mutually exclusive. Only one of them should be specified for scale';
+  }
+
   // AXIS
   export const INVALID_CHANNEL_FOR_AXIS = 'Invalid channel for axis.';
 

@@ -2246,6 +2246,10 @@
                     "description": "If true, rounds numeric output values to integers. This can be helpful for snapping to the pixel grid.",
                     "type": "boolean"
                 },
+                "scheme": {
+                    "description": "Color scheme that determines output color of a color scale.",
+                    "type": "string"
+                },
                 "type": {
                     "$ref": "#/definitions/ScaleType"
                 },
