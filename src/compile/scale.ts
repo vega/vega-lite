@@ -106,9 +106,12 @@ export function initScale(topLevelSize: number | undefined, mark: Mark | undefin
   const size = bandSize(specifiedScale.bandSize, topLevelSize, mark, channel, scaleConfig);
   scale.type = type(specifiedScale.type, fieldDef, channel, mark, !!size);
 
-  // FIXME: only set this for BAND
-  if ((scale.type === ScaleType.POINT || scale.type === ScaleType.BAND) && size !== undefined) {
-    scale.bandSize = size;
+  if ((scale.type === ScaleType.POINT || scale.type === ScaleType.BAND)) {
+    if (size !== undefined) {
+      scale.bandSize = size;
+    }
+  } else if (specifiedScale.bandSize !== undefined) {
+    log.warn(log.message.scalePropertyNotWorkWithScaleType(scale.type, 'bandSize', channel));
   }
 
   // Use specified value if compatible or determine default values for each property
@@ -581,12 +584,13 @@ export function rangeMixins(scale: Scale, model: Model, channel: Channel):
 
   const fieldDef = model.fieldDef(channel);
 
-  if (isDiscreteScale(scale.type) && scale.bandSize && scale.bandSize !== BANDSIZE_FIT) {
-    if (scale.type === ScaleType.BAND) {
+  if (scale.bandSize && scale.bandSize !== BANDSIZE_FIT) {
+    /* istanbul ignore else: should never reach there */
+    if (scale.type === ScaleType.BAND || scale.type === ScaleType.POINT) {
       return {bandSize: scale.bandSize};
     } else {
-      // FIXME try to fix this once we can get something to render
-      return {range: [0, {data: 'layout', field: model.channelSizeName(channel)}]};
+      delete scale.bandSize;
+      log.warn(log.message.scalePropertyNotWorkWithScaleType(scale.type, 'bandSize', channel));
     }
   }
 
