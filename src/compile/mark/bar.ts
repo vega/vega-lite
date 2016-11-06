@@ -56,10 +56,10 @@ export namespace bar {
         }
       }
       // sized bin, normal point-ordinal axis, quantitative x-axis, or no x
-      p.xc = ref.normal(X, xFieldDef, xScaleName, model.scale(X),
+      p.xc = ref.midPoint(X, xFieldDef, xScaleName, model.scale(X),
         extend(ref.midX(config), {offset: 1}) // TODO: config.singleBarOffset
       );
-      p.width = ref.normal(SIZE, model.encoding().size, model.scaleName(SIZE), model.scale(SIZE),
+      p.width = ref.midPoint(SIZE, model.encoding().size, model.scaleName(SIZE), model.scale(SIZE),
         defaultSizeRef(xScaleName, model.scale(X), config)
       );
       return p;
@@ -93,10 +93,10 @@ export namespace bar {
           return p;
         }
       }
-      p.yc = ref.normal(Y, yFieldDef, yScaleName, model.scale(Y),
+      p.yc = ref.midPoint(Y, yFieldDef, yScaleName, model.scale(Y),
         ref.midY(config)
       );
-      p.height = ref.normal(SIZE, model.encoding().size, model.scaleName(SIZE), model.scale(SIZE),
+      p.height = ref.midPoint(SIZE, model.encoding().size, model.scaleName(SIZE), model.scale(SIZE),
         defaultSizeRef(yScaleName, model.scale(Y), config)
       );
       return p;
