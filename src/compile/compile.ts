@@ -72,7 +72,7 @@ function assemble(model: Model) {
 export function assembleRootGroup(model: Model) {
   let rootGroup:any = extend(
     {
-      name: model.name('root'),
+      name: model.name('main'),
       type: 'group',
     },
     model.description() ? {description: model.description()} : {},
