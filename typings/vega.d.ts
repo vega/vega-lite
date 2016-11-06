@@ -10,8 +10,8 @@ declare module vega {
   export class View {
     constructor(runtime: any);
     public logLevel(level: number): View;
-    public initialize(dom: any): View;
-    public renderer(renderer: any): View;
+    public initialize(dom: Element): View;
+    public renderer(renderer: string): View;
     public hover(): View;
     public run(): View;
   }
