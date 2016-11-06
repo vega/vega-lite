@@ -3,7 +3,7 @@ import {Orient} from '../../config';
 import {has, isAggregate} from '../../encoding';
 import {OrderChannelDef, FieldDef, field} from '../../fielddef';
 import {AREA, LINE, TEXT as TEXTMARK} from '../../mark';
-import {ScaleType} from '../../scale';
+import {isDiscreteScale} from '../../scale';
 import {isSortField} from '../../sort';
 import {contains, extend, isArray} from '../../util';
 import {VgStackTransform} from '../../vega.schema';
@@ -60,7 +60,7 @@ function parsePathMark(model: UnitModel) { // TODO: extract this into compilePat
         // sort transform
         {transform: [{ type: 'sort', by: sortPathBy(model)}]}
       ),
-      properties: { update: markCompiler[mark].properties(model) }
+      encode: { update: markCompiler[mark].properties(model) }
     }
   ];
 
@@ -86,7 +86,7 @@ function parsePathMark(model: UnitModel) { // TODO: extract this into compilePat
         isFaceted ? {} : dataFrom,
         {transform: transform}
       ),
-      properties: {
+      encode: {
         update: {
           width: { field: { group: 'width' } },
           height: { field: { group: 'height' } }
@@ -119,7 +119,7 @@ function parseNonPathMark(model: UnitModel) {
       // Otherwise, add it here.
       isFaceted ? {} : {from: dataFrom},
       // Properties
-      { properties: { update: text.background(model) } }
+      { encode: { update: text.background(model) } }
     ));
   }
 
@@ -144,7 +144,7 @@ function parseNonPathMark(model: UnitModel) {
       )
     } : {},
     // properties groups
-    { properties: { update: markCompiler[mark].properties(model) } }
+    { encode: { update: markCompiler[mark].properties(model) } }
   ));
 
   return marks;
@@ -188,7 +188,7 @@ function sortPathBy(model: UnitModel): string | string[] {
         field: sort.field
       });
     } else {
-      return '-' + model.field(dimensionChannel, {binSuffix: 'mid'});
+      return '-' + model.field(dimensionChannel, {binSuffix: 'start'});
     }
   }
 }
@@ -205,7 +205,6 @@ function detailFields(model: UnitModel): string[] {
     return details;
   }, []);
 }
-
 
 function stackTransforms(model: UnitModel, impute: boolean): any[] {
   const stackByFields = getStackByFields(model);
@@ -231,7 +230,7 @@ function getStackByFields(model: UnitModel) {
         const fieldDef: FieldDef = channelEncoding;
         const scale = model.scale(channel);
         const _field = field(fieldDef, {
-          binSuffix: scale && scale.type === ScaleType.ORDINAL ? 'range' : 'start'
+          binSuffix: scale && isDiscreteScale(scale.type) ? 'range' : 'start'
         });
         if (!!_field) {
           fields.push(_field);
@@ -249,7 +248,7 @@ function imputeTransform(model: UnitModel, stackFields: string[]) {
     type: 'impute',
     field: model.field(stack.fieldChannel),
     groupby: stackFields,
-    orderby: [model.field(stack.groupbyChannel, {binSuffix: 'mid'})],
+    orderby: [model.field(stack.groupbyChannel, {binSuffix: 'start'})],
     method: 'value',
     value: 0
   };
@@ -270,13 +269,10 @@ function stackTransform(model: UnitModel, stackFields: string[]) {
   // add stack transform to mark
   let transform: VgStackTransform = {
     type: 'stack',
-    groupby: [model.field(stack.groupbyChannel, {binSuffix: 'mid'}) || 'undefined'],
+    groupby: [model.field(stack.groupbyChannel, {binSuffix: 'start'}) || 'undefined'],
     field: model.field(stack.fieldChannel),
     sortby: sortby,
-    output: {
-      start: valName + '_start',
-      end: valName + '_end'
-    }
+    as: [valName + '_start', valName + '_end']
   };
 
   if (stack.offset) {

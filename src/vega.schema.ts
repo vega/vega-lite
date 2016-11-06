@@ -32,11 +32,12 @@ export type VgValueRef = {
     group?: string,
     parent?: string
   },
+  signal?: string;
   template?: string,
   scale?: string, // TODO: object
   mult?: number,
-  offset?: number,
-  band?: boolean
+  offset?: number | VgValueRef,
+  band?: boolean | number
 }
 
 export type UnionedDomain = {
@@ -52,6 +53,7 @@ export type VgScale = {
   range?: any[] | VgDataRef | string,
   rangeMin?: any,
   rangeMax?: any,
+  scheme?: string,
 
   bandSize?: number,
   clamp?: boolean,
@@ -90,5 +92,5 @@ export interface VgStackTransform {
   groupby: any;
   field: any;
   sortby: any;
-  output: any;
+  as: string[];
 }

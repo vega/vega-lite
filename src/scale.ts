@@ -1,29 +1,58 @@
 import {DateTime} from './datetime';
+import {toMap} from './util';
 
 export namespace ScaleType {
-    export const LINEAR: 'linear' = 'linear';
-    export const LOG: 'log' = 'log';
-    export const POW: 'pow' = 'pow';
-    export const SQRT: 'sqrt' = 'sqrt';
-    export const QUANTILE: 'quantile' = 'quantile';
-    export const QUANTIZE: 'quantize' = 'quantize';
-    export const ORDINAL: 'ordinal' = 'ordinal';
-    export const TIME: 'time' = 'time';
-    export const UTC: 'utc'  = 'utc';
+  export const LINEAR: 'linear' = 'linear';
+  export const LOG: 'log' = 'log';
+  export const POW: 'pow' = 'pow';
+  export const SQRT: 'sqrt' = 'sqrt';
+  export const QUANTILE: 'quantile' = 'quantile';
+  export const QUANTIZE: 'quantize' = 'quantize';
+  export const SEQUENTIAL: 'sequential' = 'sequential';
+
+
+  // TODO: rename this back to ORDINAL once we are done
+  export const ORDINAL_LOOKUP: 'ordinal' = 'ordinal';
+  export const POINT: 'point' = 'point';
+  export const BAND: 'band' = 'band';
+
+  export const TIME: 'time' = 'time';
+  export const UTC: 'utc'  = 'utc';
 }
 
-export type ScaleType = typeof ScaleType.LINEAR | typeof ScaleType.LOG | typeof ScaleType.POW
-  | typeof ScaleType.SQRT | typeof ScaleType.QUANTILE | typeof ScaleType.QUANTIZE
-  | typeof ScaleType.ORDINAL | typeof ScaleType.TIME | typeof ScaleType.UTC;
+export type ScaleType = typeof ScaleType.LINEAR |
+  typeof ScaleType.LOG | typeof ScaleType.POW | typeof ScaleType.SQRT |
+  typeof ScaleType.QUANTILE | typeof ScaleType.QUANTIZE | typeof ScaleType.SEQUENTIAL |
+  typeof ScaleType.ORDINAL_LOOKUP | typeof ScaleType.POINT | typeof ScaleType.BAND |
+  typeof ScaleType.TIME | typeof ScaleType.UTC;
+
+export const SCALE_TYPES: ScaleType[] = [
+  // Quantitative
+  'linear', 'log', 'pow', 'sqrt', // TODO: add 'quantile', 'quantize' when we really support them
+  // Discrete
+  'ordinal', 'point', 'band',
+  // Time
+  'time', 'utc'
+];
+
+export const CONTINUOUS_SCALE_TYPES: ScaleType[] = ['linear', 'log', 'pow', 'sqrt'];
+export const DISCRETE_SCALE_TYPES: ScaleType[] = ['ordinal', 'point', 'band'];
+const DISCRETE_SCALE_TYPE_INDEX = toMap(DISCRETE_SCALE_TYPES);
+
+export const TIME_SCALE_TYPES: ScaleType[] = ['time', 'utc'];
+
+export function isDiscreteScale(type: ScaleType): type is 'ordinal' | 'point' | 'band' {
+  return !!DISCRETE_SCALE_TYPE_INDEX[type];
+}
 
 export namespace NiceTime {
-    export const SECOND: 'second' = 'second';
-    export const MINUTE: 'minute' = 'minute';
-    export const HOUR: 'hour' = 'hour';
-    export const DAY: 'day' = 'day';
-    export const WEEK: 'week' = 'week';
-    export const MONTH: 'month' = 'month';
-    export const YEAR: 'year' = 'year';
+  export const SECOND: 'second' = 'second';
+  export const MINUTE: 'minute' = 'minute';
+  export const HOUR: 'hour' = 'hour';
+  export const DAY: 'day' = 'day';
+  export const WEEK: 'week' = 'week';
+  export const MONTH: 'month' = 'month';
+  export const YEAR: 'year' = 'year';
 }
 
 export type NiceTime = typeof NiceTime.SECOND | typeof NiceTime.MINUTE | typeof NiceTime.HOUR
@@ -154,9 +183,6 @@ export interface Scale {
    * Applies spacing among ordinal elements in the scale range. The actual effect depends on how the scale is configured. If the __points__ parameter is `true`, the padding value is interpreted as a multiple of the spacing between points. A reasonable value is 1.0, such that the first and last point will be offset from the minimum and maximum value by half the distance between points. Otherwise, padding is typically in the range [0, 1] and corresponds to the fraction of space in the range interval to allocate to padding. A value of 0.5 means that the range band width will be equal to the padding width. For more, see the [D3 ordinal scale documentation](https://github.com/mbostock/d3/wiki/Ordinal-Scales).
    */
   padding?: number;
-
-  // FIXME: integrated to type when migrate to Vega 3
-  points?: boolean;
 
   // typical
   /**

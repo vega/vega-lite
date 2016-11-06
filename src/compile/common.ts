@@ -137,7 +137,7 @@ export function numberFormat(fieldDef: FieldDef, format: string, config: Config,
 /** Return field reference with potential "-" prefix for descending sort */
 export function sortField(orderChannelDef: OrderChannelDef) {
   return (orderChannelDef.sort === SortOrder.DESCENDING ? '-' : '') +
-    field(orderChannelDef, {binSuffix: 'mid'});
+    field(orderChannelDef, {binSuffix: 'start'});
 }
 
 /**

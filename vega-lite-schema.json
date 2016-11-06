@@ -59,6 +59,7 @@
                         },
                         "characterWidth": {
                             "description": "Character width for automatically determining title max length.",
+                            "minimum": 0,
                             "type": "number"
                         },
                         "format": {
@@ -78,14 +79,18 @@
                             "items": {
                                 "type": "number"
                             },
+                            "minimum": 0,
                             "type": "array"
                         },
                         "gridOpacity": {
                             "description": "The stroke opacity of grid (value between [0,1])",
+                            "maximum": 1,
+                            "minimum": 0,
                             "type": "number"
                         },
                         "gridWidth": {
                             "description": "The grid width, in pixels.",
+                            "minimum": 0,
                             "type": "number"
                         },
                         "labelAlign": {
@@ -111,10 +116,6 @@
                             "description": "Enable or disable labels.",
                             "type": "boolean"
                         },
-                        "layer": {
-                            "description": "A string indicating if the axis (and any gridlines) should be placed above or below the data marks.",
-                            "type": "string"
-                        },
                         "offset": {
                             "description": "The offset, in pixels, by which to displace the axis from the edge of the enclosing group or data rectangle.",
                             "type": "number"
@@ -132,11 +133,17 @@
                         },
                         "subdivide": {
                             "description": "If provided, sets the number of minor ticks between major ticks (the value 9 results in decimal subdivision). Only applicable for axes visualizing quantitative scales.",
+                            "minimum": 0,
                             "type": "number"
                         },
                         "tickColor": {
                             "description": "The color of the axis's tick.",
                             "type": "string"
+                        },
+                        "tickCount": {
+                            "description": "A desired number of ticks, for axes visualizing quantitative scales. The resulting number may be different so that values are \"nice\" (multiples of 2, 5, 10) and lie within the underlying scale's range.",
+                            "minimum": 0,
+                            "type": "number"
                         },
                         "tickLabelColor": {
                             "description": "The color of the tick label, can be in hex color code or regular color name.",
@@ -148,6 +155,7 @@
                         },
                         "tickLabelFontSize": {
                             "description": "The font size of label, in pixels.",
+                            "minimum": 0,
                             "type": "number"
                         },
                         "tickPadding": {
@@ -176,10 +184,6 @@
                         },
                         "tickWidth": {
                             "description": "The width, in pixels, of ticks.",
-                            "type": "number"
-                        },
-                        "ticks": {
-                            "description": "A desired number of ticks, for axes visualizing quantitative scales. The resulting number may be different so that values are \"nice\" (multiples of 2, 5, 10) and lie within the underlying scale's range.",
                             "minimum": 0,
                             "type": "number"
                         },
@@ -197,6 +201,7 @@
                         },
                         "titleFontSize": {
                             "description": "Size of the title.",
+                            "minimum": 0,
                             "type": "number"
                         },
                         "titleFontWeight": {
@@ -230,6 +235,11 @@
                                     "type": "array"
                                 }
                             ]
+                        },
+                        "zindex": {
+                            "description": "A non-positive integer indicating z-index of the axis.\n\nIf zindex is 0, axes should be drawn behind all chart elements.\n\nTo put them in front, use zindex = 1.",
+                            "minimum": 0,
+                            "type": "number"
                         }
                     },
                     "type": "object"
@@ -251,6 +261,7 @@
                 },
                 "characterWidth": {
                     "description": "Character width for automatically determining title max length.",
+                    "minimum": 0,
                     "type": "number"
                 },
                 "grid": {
@@ -266,14 +277,18 @@
                     "items": {
                         "type": "number"
                     },
+                    "minimum": 0,
                     "type": "array"
                 },
                 "gridOpacity": {
                     "description": "The stroke opacity of grid (value between [0,1])",
+                    "maximum": 1,
+                    "minimum": 0,
                     "type": "number"
                 },
                 "gridWidth": {
                     "description": "The grid width, in pixels.",
+                    "minimum": 0,
                     "type": "number"
                 },
                 "labelAlign": {
@@ -282,6 +297,7 @@
                 },
                 "labelAngle": {
                     "description": "The rotation angle of the axis labels.",
+                    "minimum": 360,
                     "type": "number"
                 },
                 "labelBaseline": {
@@ -297,10 +313,6 @@
                     "description": "Enable or disable labels.",
                     "type": "boolean"
                 },
-                "layer": {
-                    "description": "A string indicating if the axis (and any gridlines) should be placed above or below the data marks.",
-                    "type": "string"
-                },
                 "offset": {
                     "description": "The offset, in pixels, by which to displace the axis from the edge of the enclosing group or data rectangle.",
                     "type": "number"
@@ -314,11 +326,17 @@
                 },
                 "subdivide": {
                     "description": "If provided, sets the number of minor ticks between major ticks (the value 9 results in decimal subdivision). Only applicable for axes visualizing quantitative scales.",
+                    "minimum": 0,
                     "type": "number"
                 },
                 "tickColor": {
                     "description": "The color of the axis's tick.",
                     "type": "string"
+                },
+                "tickCount": {
+                    "description": "A desired number of ticks, for axes visualizing quantitative scales. The resulting number may be different so that values are \"nice\" (multiples of 2, 5, 10) and lie within the underlying scale's range.",
+                    "minimum": 0,
+                    "type": "number"
                 },
                 "tickLabelColor": {
                     "description": "The color of the tick label, can be in hex color code or regular color name.",
@@ -330,6 +348,7 @@
                 },
                 "tickLabelFontSize": {
                     "description": "The font size of label, in pixels.",
+                    "minimum": 0,
                     "type": "number"
                 },
                 "tickPadding": {
@@ -358,10 +377,6 @@
                 },
                 "tickWidth": {
                     "description": "The width, in pixels, of ticks.",
-                    "type": "number"
-                },
-                "ticks": {
-                    "description": "A desired number of ticks, for axes visualizing quantitative scales. The resulting number may be different so that values are \"nice\" (multiples of 2, 5, 10) and lie within the underlying scale's range.",
                     "minimum": 0,
                     "type": "number"
                 },
@@ -375,6 +390,7 @@
                 },
                 "titleFontSize": {
                     "description": "Size of the title.",
+                    "minimum": 0,
                     "type": "number"
                 },
                 "titleFontWeight": {
@@ -391,6 +407,11 @@
                 },
                 "titleOffset": {
                     "description": "A title offset value for the axis.",
+                    "type": "number"
+                },
+                "zindex": {
+                    "description": "A non-positive integer indicating z-index of the axis.\n\nIf zindex is 0, axes should be drawn behind all chart elements.\n\nTo put them in front, use zindex = 1.",
+                    "minimum": 0,
                     "type": "number"
                 }
             },
@@ -1038,17 +1059,17 @@
         "Formula": {
             "description": "Formula object for calculate.",
             "properties": {
-                "expr": {
-                    "description": "A string containing an expression for the formula. Use the variable `datum` to to refer to the current data object.",
+                "as": {
+                    "description": "The field in which to store the computed formula value.",
                     "type": "string"
                 },
-                "field": {
-                    "description": "The field in which to store the computed formula value.",
+                "expr": {
+                    "description": "A string containing an expression for the formula. Use the variable `datum` to to refer to the current data object.",
                     "type": "string"
                 }
             },
             "required": [
-                "field",
+                "as",
                 "expr"
             ],
             "type": "object"
@@ -1839,9 +1860,6 @@
                     "description": "Applies spacing among ordinal elements in the scale range. The actual effect depends on how the scale is configured. If the __points__ parameter is `true`, the padding value is interpreted as a multiple of the spacing between points. A reasonable value is 1.0, such that the first and last point will be offset from the minimum and maximum value by half the distance between points. Otherwise, padding is typically in the range [0, 1] and corresponds to the fraction of space in the range interval to allocate to padding. A value of 0.5 means that the range band width will be equal to the padding width. For more, see the [D3 ordinal scale documentation](https://github.com/mbostock/d3/wiki/Ordinal-Scales).",
                     "type": "number"
                 },
-                "points": {
-                    "type": "boolean"
-                },
                 "range": {
                     "anyOf": [
                         {
@@ -2020,12 +2038,15 @@
         },
         "ScaleType": {
             "enum": [
+                "band",
                 "linear",
                 "log",
                 "ordinal",
+                "point",
                 "pow",
                 "quantile",
                 "quantize",
+                "sequential",
                 "sqrt",
                 "time",
                 "utc"

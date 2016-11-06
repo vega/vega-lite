@@ -18,7 +18,7 @@ export namespace timeUnit {
 
         timeUnitComponent[hash] = {
           type: 'formula',
-          field: field(fieldDef),
+          as: field(fieldDef),
           expr: fieldExpr(fieldDef.timeUnit, fieldDef.field)
         };
       }

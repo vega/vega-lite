@@ -2,16 +2,16 @@
 
 import {assert} from 'chai';
 
-import {bandSize, type, points, domain, parseScaleComponent} from '../../src/compile/scale';
+import {bandSize, type, domain, parseScaleComponent} from '../../src/compile/scale';
 import {SOURCE, SUMMARY} from '../../src/data';
 import {parseUnitModel} from '../util';
 
 import * as log from '../../src/log';
-import {X, Y, SHAPE, DETAIL} from '../../src/channel';
+import {X, Y, SHAPE, DETAIL, ROW, COLUMN} from '../../src/channel';
 import {BANDSIZE_FIT, ScaleType, defaultScaleConfig} from '../../src/scale';
 import {POINT, RECT, BAR, TEXT} from '../../src/mark';
 import {TimeUnit} from '../../src/timeunit';
-import {TEMPORAL} from '../../src/type';
+import {TEMPORAL, ORDINAL} from '../../src/type';
 
 describe('Scale', function() {
   describe('type()', function() {
@@ -21,31 +21,55 @@ describe('Scale', function() {
           field: 'a',
           type: TEMPORAL,
           timeUnit: TimeUnit.YEARMONTH
-        }, DETAIL, POINT),
+        }, DETAIL, POINT, true),
         null
       );
     });
 
-    it('should return time for yearmonth', function() {
-      assert.deepEqual(
-        type(undefined, {
-          field: 'a',
-          type: TEMPORAL,
-          timeUnit: TimeUnit.YEARMONTH
-        }, Y, POINT),
-        ScaleType.TIME
-      );
+    it('should return time for most of time unit.', function() {
+      // See exception in the next test)
+      const TIMEUNITS = [
+        TimeUnit.YEAR,
+        TimeUnit.DATE,
+        TimeUnit.MINUTES,
+        TimeUnit.SECONDS,
+        TimeUnit.MILLISECONDS,
+        TimeUnit.YEARMONTH,
+        TimeUnit.YEARMONTHDATE,
+        TimeUnit.YEARMONTHDATEHOURS,
+        TimeUnit.YEARMONTHDATEHOURSMINUTES,
+        TimeUnit.YEARMONTHDATEHOURSMINUTESSECONDS,
+        TimeUnit.HOURSMINUTES,
+        TimeUnit.HOURSMINUTESSECONDS,
+        TimeUnit.MINUTESSECONDS,
+        TimeUnit.SECONDSMILLISECONDS,
+        TimeUnit.YEARQUARTER,
+        TimeUnit.QUARTERMONTH,
+        TimeUnit.YEARQUARTERMONTH,
+      ];
+      for (const timeUnit of TIMEUNITS) {
+        assert.deepEqual(
+          type(undefined, {
+            field: 'a',
+            type: TEMPORAL,
+            timeUnit: timeUnit
+          }, Y, POINT, true),
+          ScaleType.TIME
+        );
+      }
     });
 
-    it('should return ordinal for month', function() {
-      assert.deepEqual(
-        type(undefined, {
-          field: 'a',
-          type: TEMPORAL,
-          timeUnit: TimeUnit.MONTH
-        }, Y, POINT),
-        ScaleType.ORDINAL // TODO: ordinal-point
-      );
+    it('should return a discrete scale for hours, day, month, quarter for x-y', function() {
+      [TimeUnit.MONTH, TimeUnit.HOURS, TimeUnit.DAY, TimeUnit.QUARTER].forEach((timeUnit) => {
+        assert.deepEqual(
+          type(undefined, {
+            field: 'a',
+            type: TEMPORAL,
+            timeUnit: timeUnit
+          }, Y, POINT, true),
+          ScaleType.POINT
+        );
+      });
     });
 
     it('should return ordinal for shape', function() {
@@ -54,36 +78,88 @@ describe('Scale', function() {
           field: 'a',
           type: TEMPORAL,
           timeUnit: TimeUnit.YEARMONTH
-        }, SHAPE, POINT),
-        ScaleType.ORDINAL // TODO: ordinal-point
+        }, SHAPE, POINT, true),
+        ScaleType.ORDINAL_LOOKUP
       );
     });
 
-    it('should return ordinal for shape even if non-ordinal is specified', function() {
-      log.runLocalLogger((localLogger) => {
+    it('should return ordinal for shape even if other type is specified', function() {
+      [ScaleType.LINEAR, ScaleType.BAND, ScaleType.POINT].forEach((badScaleType) => {
+        log.runLocalLogger((localLogger) => {
+          assert.deepEqual(
+            type(badScaleType, {
+              field: 'a',
+              type: TEMPORAL,
+              timeUnit: TimeUnit.YEARMONTH
+            }, SHAPE, POINT, true),
+            ScaleType.ORDINAL_LOOKUP
+          );
+          assert.equal(localLogger.warns[0], log.message.scaleTypeNotWorkWithChannel(SHAPE, badScaleType, ScaleType.ORDINAL_LOOKUP));
+        });
+      });
+    });
+
+    it('should return band for row/column', function() {
+      [ROW, COLUMN].forEach((channel) => {
         assert.deepEqual(
-          type(ScaleType.LINEAR, {
+          type(undefined, {
             field: 'a',
             type: TEMPORAL,
             timeUnit: TimeUnit.YEARMONTH
-          }, SHAPE, POINT),
-          ScaleType.ORDINAL // TODO: ordinal-point
+          }, channel, POINT, true),
+          ScaleType.BAND
         );
-        assert.equal(localLogger.warns[0], log.message.scaleTypeNotWorkWithChannel(SHAPE, ScaleType.LINEAR));
       });
     });
-  });
 
-  describe('points()', function() {
-    it('should return band scale for X,Y when mark is rect', () => {
+    it('should return band for row/column even if other type is specified', function() {
+      [ROW, COLUMN].forEach((channel) => {
+        [ScaleType.LINEAR, ScaleType.ORDINAL_LOOKUP, ScaleType.POINT].forEach((badScaleType) => {
+          log.runLocalLogger((localLogger) => {
+            assert.deepEqual(
+              type(badScaleType, {
+                field: 'a',
+                type: TEMPORAL,
+                timeUnit: TimeUnit.YEARMONTH
+              }, channel, POINT, true),
+              ScaleType.BAND
+            );
+            assert.equal(localLogger.warns[0], log.message.scaleTypeNotWorkWithChannel(channel, badScaleType, ScaleType.BAND));
+          });
+        });
+      });
+    });
+
+    it('should return band scale for ordinal X,Y when mark is rect', () => {
       [X, Y].forEach((channel) => {
-        assert.equal(points(channel, RECT, true), false);
+        assert.equal(type(undefined, {field: 'a', type: ORDINAL}, channel, RECT, true), ScaleType.BAND);
       });
     });
 
     it('should return band scale for X,Y when mark is bar and bandSize is undefined (fit)', () => {
       [X, Y].forEach((channel) => {
-        assert.equal(points(channel, BAR, false), false);
+        assert.equal(type(undefined, {field: 'a', type: ORDINAL}, channel, BAR, false), ScaleType.BAND);
+      });
+    });
+
+    it('should return point scale for X,Y when mark is bar and bandSize is defined', () => {
+      [X, Y].forEach((channel) => {
+        assert.equal(type(undefined, {field: 'a', type: ORDINAL}, channel, BAR, true), ScaleType.POINT);
+      });
+    });
+
+    it('should return point scale for X,Y when mark is point', () => {
+      [X, Y].forEach((channel) => {
+        assert.equal(type(undefined, {field: 'a', type: ORDINAL}, channel, POINT, true), ScaleType.POINT);
+      });
+    });
+
+    it('should return point scale for X,Y when mark is point when ORDINAL SCALE TYPE is specified and throw warning', () => {
+      [X, Y].forEach((channel) => {
+        log.runLocalLogger((localLogger) => {
+          assert.equal(type('ordinal', {field: 'a', type: ORDINAL}, channel, POINT, true), ScaleType.POINT);
+          assert.equal(localLogger.warns[0], log.message.scaleTypeNotWorkWithChannel(channel, 'ordinal', 'point'));
+        });
       });
     });
   });
@@ -389,7 +465,7 @@ describe('Scale', function() {
           field: 'origin',
           sort: true
         });
-        assert.deepEqual(scales.main.range, 'category10'); // TODO scheme in Vega 3
+        assert.deepEqual(scales.main.scheme, 'category10');
         assert.deepEqual(scales.main.bandSize, undefined);
       });
     });

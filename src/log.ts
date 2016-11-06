@@ -115,6 +115,8 @@ export namespace message {
   }
 
   // Mark
+  export const BAR_WITH_POINT_SCALE_AND_BANDSIZE_FIT = 'Bar mark should not be used with point scale when bandSize is fit. Please use band scale instead.';
+
   export function unclearOrientContinuous(mark: Mark) {
     return 'Cannot clearly determine orientation for ' + mark + ' since both x and y channel encode continous fields. In this case, we use vertical by default';
   }
@@ -132,14 +134,25 @@ export namespace message {
 
   export const CANNOT_USE_PADDING_WITH_FACET = 'Cannot use padding with facet\'s scale.  Please use spacing instead.';
 
+  export function customScaleRangeNotAllowed(channel: Channel) {
+    return `Custom scale ranged not allowed for channel ${channel}`;
+  }
+
   export function bandSizeOverridden(channel: Channel) {
     return `bandSize for ${channel} overridden as top-level ${
       channel === X ? 'width' : 'height'} is provided.`;
   }
 
-  export function scaleTypeNotWorkWithChannel(channel: Channel, scaleType: ScaleType) {
-    return `Channel ${channel} does not work with scale type = ${scaleType}`;
+  export function scaleTypeNotWorkWithChannel(channel: Channel, scaleType: ScaleType, newScaleType: ScaleType) {
+    return `Channel ${channel} does not work with ${scaleType} scale. We are using ${newScaleType} scale instead.`;
   }
+
+  export function scaleTypeNotWorkWithMark(mark: Mark, scaleType: ScaleType) {
+    return `Scale type "${scaleType}" does not work with mark ${mark}.`;
+  }
+
+  // AXIS
+  export const INVALID_CHANNEL_FOR_AXIS = 'Invalid channel for axis.';
 
   // STACK
   export function cannotStackRangedMark(channel: Channel) {

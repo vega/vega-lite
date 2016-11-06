@@ -44,7 +44,7 @@ describe('data', function () {
         const sourceTransform = data[0].transform;
         assert.deepEqual(sourceTransform[sourceTransform.length - 1], {
           type: 'filter',
-          test: 'datum["b"] > 0'
+          expr: 'datum["b"] > 0'
         });
       });
     });
@@ -55,7 +55,7 @@ describe('data', function () {
       const model = parseUnitModel({
         transform: {
           calculate: [{
-            field: 'b2',
+            as: 'b2',
             expr: '2 * datum["b"]'
           }],
           filter: 'datum["a"] > datum["b"] && datum["c"] === datum["d"]'

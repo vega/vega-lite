@@ -1,3 +1,5 @@
+import * as log from '../log';
+
 import {AxisOrient} from '../axis';
 import {COLUMN, ROW, X, Y, Channel} from '../channel';
 import {DateTime, isDateTime, timestamp} from '../datetime';
@@ -23,19 +25,15 @@ export function parseAxisComponent(model: Model, axisChannels: Channel[]): Dict<
  * Make an inner axis for showing grid for shared axis.
  */
 export function parseInnerAxis(channel: Channel, model: Model): VgAxis {
-  const isCol = channel === COLUMN,
-    isRow = channel === ROW,
-    type = isCol ? 'x' : isRow ? 'y': channel;
-
   // TODO: support adding ticks as well
 
   // TODO: replace any with Vega Axis Interface
   let def: any = {
-    type: type,
+    orient: channel === 'x' ? 'bottom' : 'left',
     scale: model.scaleName(channel),
     grid: true,
     tickSize: 0,
-    properties: {
+    encode: {
       labels: {
         text: {value: ''}
       },
@@ -47,7 +45,7 @@ export function parseInnerAxis(channel: Channel, model: Model): VgAxis {
 
   const axis = model.axis(channel);
 
-  ['layer', 'ticks', 'values', 'subdivide'].forEach(function(property) {
+  ['tickCount', 'values', 'subdivide', 'zindex'].forEach(function(property) {
     let method: (model: Model, channel: Channel, def:any)=>any;
 
     const value = (method = exports[property]) ?
@@ -64,12 +62,12 @@ export function parseInnerAxis(channel: Channel, model: Model): VgAxis {
   // For now, only need to add grid properties here because innerAxis is only for rendering grid.
   // TODO: support add other properties for innerAxis
   ['grid'].forEach(function(group) {
-    const value = properties[group] ?
-      properties[group](model, channel, props[group] || {}, def) :
+    const value = encode[group] ?
+      encode[group](model, channel, props[group] || {}, def) :
       props[group];
     if (value !== undefined && keys(value).length > 0) {
-      def.properties = def.properties || {};
-      def.properties[group] = value;
+      def.encode = def.encode || {};
+      def.encode[group] = {update: value};
     }
   });
 
@@ -77,22 +75,16 @@ export function parseInnerAxis(channel: Channel, model: Model): VgAxis {
 }
 
 export function parseAxis(channel: Channel, model: Model): VgAxis {
-  const isCol = channel === COLUMN,
-    isRow = channel === ROW,
-    type = isCol ? 'x' : isRow ? 'y': channel;
-
   const axis = model.axis(channel);
 
-  // TODO: replace any with Vega Axis Interface
-  let def: any = {
-    type: type,
+  let def: VgAxis = {
     scale: model.scaleName(channel)
   };
 
   // 1.2. Add properties
   [
     // a) properties with special rules (so it has axis[property] methods) -- call rule functions
-    'format', 'grid', 'layer', 'offset', 'orient', 'tickSize', 'ticks', 'tickSizeEnd', 'title', 'titleOffset', 'values',
+    'format', 'grid', 'offset', 'orient', 'tickSize', 'tickCount', 'tickSizeEnd', 'title', 'titleOffset', 'values', 'zindex',
     // b) properties without rules, only produce default values in the schema, or explicit value if specified
     'tickPadding', 'tickSize', 'tickSizeMajor', 'tickSizeMinor','subdivide'
   ].forEach(function(property) {
@@ -112,14 +104,14 @@ export function parseAxis(channel: Channel, model: Model): VgAxis {
 
   [
     'axis', 'labels', // have special rules
-    'grid', 'title', 'ticks', 'majorTicks', 'minorTicks' // only default values
+    'grid', 'title', 'tickCount', 'majorTicks', 'minorTicks' // only default values
   ].forEach(function(group) {
-    const value = properties[group] ?
-      properties[group](model, channel, props[group] || {}, def) :
+    const value = encode[group] ?
+      encode[group](model, channel, props[group] || {}, def) :
       props[group];
     if (value !== undefined && keys(value).length > 0) {
-      def.properties = def.properties || {};
-      def.properties[group] = value;
+      def.encode = def.encode || {};
+      def.encode[group] = {update: value};
     }
   });
 
@@ -145,7 +137,7 @@ export function gridShow(model: Model, channel: Channel) {
     return grid;
   }
 
-  return !model.isOrdinalScale(channel) && !model.fieldDef(channel).bin;
+  return !model.hasDiscreteScale(channel) && !model.fieldDef(channel).bin;
 }
 
 export function grid(model: Model, channel: Channel) {
@@ -161,38 +153,47 @@ export function grid(model: Model, channel: Channel) {
   );
 }
 
-export function layer(model: Model, channel: Channel, def: {grid?: boolean}) {
-  const layer = model.axis(channel).layer;
-  if (layer !== undefined) {
-    return layer;
+export function zindex(model: Model, channel: Channel, def: {grid?: boolean}) {
+  const z = model.axis(channel).zindex;
+  if (z !== undefined) {
+    return z;
   }
   if (def.grid) {
     // if grid is true, need to put layer on the back so that grid is behind marks
-    return 'back';
+    return 0;
   }
-  return undefined; // otherwise return undefined and use Vega's default.
+  return 1; // otherwise return undefined and use Vega's default.
 };
 
 export function orient(model: Model, channel: Channel) {
   const orient = model.axis(channel).orient;
   if (orient) {
     return orient;
-  } else if (channel === COLUMN) {
-    // FIXME test and decide
-    return AxisOrient.TOP;
   }
-  return undefined;
+
+  switch (channel) {
+    case COLUMN:
+      // FIXME test and decide
+      return AxisOrient.TOP;
+    case X:
+      return AxisOrient.BOTTOM;
+    case ROW:
+    case Y:
+      return AxisOrient.LEFT;
+  }
+  /* istanbul ignore next: This should never happen. */
+  throw new Error(log.message.INVALID_CHANNEL_FOR_AXIS);
 }
 
-export function ticks(model: Model, channel: Channel) {
-  const ticks = model.axis(channel).ticks;
-  if (ticks !== undefined) {
-    return ticks;
+export function tickCount(model: Model, channel: Channel) {
+  const count = model.axis(channel).tickCount;
+  if (count !== undefined) {
+    return count;
   }
 
   // FIXME depends on scale type too
   if (channel === X && !model.fieldDef(channel).bin) {
-    // Vega's default ticks often lead to a lot of label occlusion on X without 90 degree rotation
+    // Vega's default tickCount often lead to a lot of label occlusion on X without 90 degree rotation
     return 5;
   }
 
@@ -227,11 +228,11 @@ export function title(model: Model, channel: Channel) {
   let maxLength: number;
   if (axis.titleMaxLength) {
     maxLength = axis.titleMaxLength;
-  } else if (channel === X && !model.isOrdinalScale(X)) {
+  } else if (channel === X && !model.hasDiscreteScale(X)) {
     const unitModel: UnitModel = model as any; // only unit model has channel x
     // For non-ordinal scale, we know cell size at compile time, we can guess max length
     maxLength = unitModel.width / model.axis(X).characterWidth;
-  } else if (channel === Y && !model.isOrdinalScale(Y)) {
+  } else if (channel === Y && !model.hasDiscreteScale(Y)) {
     const unitModel: UnitModel = model as any; // only unit model has channel y
     // For non-ordinal scale, we know cell size at compile time, we can guess max length
     maxLength = unitModel.height / model.axis(Y).characterWidth;
@@ -260,7 +261,7 @@ export function values(model: Model, channel: Channel) {
   return vals;
 }
 
-export namespace properties {
+export namespace encode {
   export function axis(model: Model, channel: Channel, axisPropsSpec: any) {
     const axis = model.axis(channel);
 

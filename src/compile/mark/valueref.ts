@@ -5,7 +5,7 @@
 import {Channel, X, X2, Y, Y2} from '../../channel';
 import {Config} from '../../config';
 import {FieldDef, FieldRefOption, field} from '../../fielddef';
-import {Scale, ScaleType} from '../../scale';
+import {Scale, ScaleType, isDiscreteScale} from '../../scale';
 import {StackProperties} from '../../stack';
 import {contains} from '../../util';
 import {VgValueRef} from '../../vega.schema';
@@ -22,7 +22,7 @@ export function stackable(channel: Channel, fieldDef: FieldDef, scaleName: strin
     // x or y use stack_end so that stacked line's point mark use stack_end too.
     return fieldRef(fieldDef, scaleName, {suffix: 'end'});
   }
-  return normal(channel, fieldDef, scaleName, scale, defaultRef);
+  return midPoint(channel, fieldDef, scaleName, scale, defaultRef);
 }
 
 /**
@@ -36,7 +36,7 @@ export function stackable2(channel: Channel, aFieldDef: FieldDef, a2fieldDef: Fi
       ) {
     return fieldRef(aFieldDef, scaleName, {suffix: 'start'});
   }
-  return normal(channel, a2fieldDef, scaleName, scale, defaultRef);
+  return midPoint(channel, a2fieldDef, scaleName, scale, defaultRef);
 }
 
 /**
@@ -46,7 +46,7 @@ export function bin(fieldDef: FieldDef, scaleName: string, side: 'start' | 'end'
   return fieldRef(fieldDef, scaleName, {binSuffix: side}, offset);
 }
 
-export function fieldRef(fieldDef: FieldDef, scaleName: string, opt: FieldRefOption, offset?: number): VgValueRef {
+export function fieldRef(fieldDef: FieldDef, scaleName: string, opt: FieldRefOption, offset?: number | VgValueRef): VgValueRef {
   let ref: VgValueRef = {
     scale: scaleName,
     field: field(fieldDef, opt),
@@ -57,26 +57,43 @@ export function fieldRef(fieldDef: FieldDef, scaleName: string, opt: FieldRefOpt
   return ref;
 }
 
-export function band(scaleName: string) {
-  let ref: VgValueRef = {
+export function band(scaleName: string, band: number|boolean = true): VgValueRef {
+  return {
     scale: scaleName,
-    band: true
+    band: band
   };
-  return ref;
 }
 
+export function binMidSignal(fieldDef: FieldDef, scaleName: string) {
+  return {
+    scale: scaleName,
+    signal: '(' + field(fieldDef, {binSuffix: 'start', datum: true}) + '+' +
+      field(fieldDef, {binSuffix: 'end', datum: true}) + ')/2'
+  };
+}
 
-export function normal(channel: Channel, fieldDef: FieldDef, scaleName: string, scale: Scale,
-defaultRef: VgValueRef | 'base' | 'baseOrMax'): VgValueRef {
+/**
+ * @returns {VgValueRef} Value Ref for xc / yc or mid point for other channels.
+ */
+export function midPoint(channel: Channel, fieldDef: FieldDef, scaleName: string, scale: Scale,
+  defaultRef: VgValueRef | 'base' | 'baseOrMax'): VgValueRef {
   // TODO: datum support
 
   if (fieldDef) {
     /* istanbul ignore else */
     if (fieldDef.field) {
-      if (scale.type === ScaleType.ORDINAL) {
+      if (isDiscreteScale(scale.type)) {
+        if (scale.type === 'band') {
+          // For band, to get mid point, need to offset by half of the band
+          return fieldRef(fieldDef, scaleName, {binSuffix: 'range'}, band(scaleName, 0.5));
+        }
         return fieldRef(fieldDef, scaleName, {binSuffix: 'range'});
       } else {
-        return fieldRef(fieldDef, scaleName, {binSuffix: 'mid'});
+        if (fieldDef.bin) {
+          return binMidSignal(fieldDef, scaleName);
+        } else {
+          return fieldRef(fieldDef, scaleName, {}); // no need for bin suffix
+        }
       }
     } else if (fieldDef.value) {
       return {
@@ -108,7 +125,6 @@ defaultRef: VgValueRef | 'base' | 'baseOrMax'): VgValueRef {
   }
   return defaultRef;
 }
-
 
 export function midX(config: Config): VgValueRef {
 
