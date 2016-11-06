@@ -22,7 +22,7 @@ export function stackable(channel: Channel, fieldDef: FieldDef, scaleName: strin
     // x or y use stack_end so that stacked line's point mark use stack_end too.
     return fieldRef(fieldDef, scaleName, {suffix: 'end'});
   }
-  return normal(channel, fieldDef, scaleName, scale, defaultRef);
+  return midPoint(channel, fieldDef, scaleName, scale, defaultRef);
 }
 
 /**
@@ -36,7 +36,7 @@ export function stackable2(channel: Channel, aFieldDef: FieldDef, a2fieldDef: Fi
       ) {
     return fieldRef(aFieldDef, scaleName, {suffix: 'start'});
   }
-  return normal(channel, a2fieldDef, scaleName, scale, defaultRef);
+  return midPoint(channel, a2fieldDef, scaleName, scale, defaultRef);
 }
 
 /**
@@ -73,8 +73,11 @@ export function binMidSignal(fieldDef: FieldDef, scaleName: string) {
   };
 }
 
-export function normal(channel: Channel, fieldDef: FieldDef, scaleName: string, scale: Scale,
-defaultRef: VgValueRef | 'base' | 'baseOrMax'): VgValueRef {
+/**
+ * @returns {VgValueRef} Value Ref for xc / yc or mid point for other channels.
+ */
+export function midPoint(channel: Channel, fieldDef: FieldDef, scaleName: string, scale: Scale,
+  defaultRef: VgValueRef | 'base' | 'baseOrMax'): VgValueRef {
   // TODO: datum support
 
   if (fieldDef) {
@@ -119,7 +122,6 @@ defaultRef: VgValueRef | 'base' | 'baseOrMax'): VgValueRef {
   }
   return defaultRef;
 }
-
 
 export function midX(config: Config): VgValueRef {
 

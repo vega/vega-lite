@@ -28,7 +28,7 @@ export namespace rule {
     // FIXME: this function would overwrite strokeWidth but shouldn't
     applyColorAndOpacity(p, model);
 
-    p.strokeWidth = ref.normal(SIZE, model.encoding().size, model.scaleName(SIZE), model.scale(SIZE), {
+    p.strokeWidth = ref.midPoint(SIZE, model.encoding().size, model.scaleName(SIZE), model.scale(SIZE), {
       value: config.rule.strokeWidth
     });
 

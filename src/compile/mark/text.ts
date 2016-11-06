@@ -42,7 +42,7 @@ export namespace text {
     p.x = ref.stackable(X, model.encoding().x, model.scaleName(X), model.scale(X), stack, xDefault(config, textFieldDef));
     p.y = ref.stackable(Y, model.encoding().y, model.scaleName(Y), model.scale(Y), stack, ref.midY(config));
 
-    p.fontSize = ref.normal(SIZE, model.encoding().size, model.scaleName(SIZE), model.scale(SIZE),
+    p.fontSize = ref.midPoint(SIZE, model.encoding().size, model.scaleName(SIZE), model.scale(SIZE),
        {value: config.text.fontSize}
     );
 
