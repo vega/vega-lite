@@ -445,6 +445,21 @@ describe('Scale', function() {
   });
 
   describe('parseScaleComponent', () => {
+    describe('x ordinal point', () => {
+      it('should create a main x point scale with bandSize and no range', () => {
+        const model = parseUnitModel({
+          mark: "point",
+          encoding: {
+            x: { field: 'origin', type: "nominal"}
+          }
+        });
+        const scales = parseScaleComponent(model)['x'];
+        assert.equal(scales.main.type, 'point');
+        assert.equal(scales.main.bandSize, 21);
+        assert.equal(scales.main.range, undefined);
+      });
+    });
+
     describe('nominal with color', function() {
       const model = parseUnitModel({
         mark: "point",
