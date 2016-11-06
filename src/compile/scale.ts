@@ -41,7 +41,8 @@ export type ScaleComponents = {
   binColorLegend?: ScaleComponent
 }
 
-export function initScale(topLevelSize: number, mark: Mark, channel: Channel, fieldDef: ChannelDefWithScale, scaleConfig: ScaleConfig): Scale {
+export function initScale(topLevelSize: number | undefined, mark: Mark | undefined,
+    channel: Channel, fieldDef: ChannelDefWithScale, scaleConfig: ScaleConfig): Scale {
   let scale: Scale = duplicate((fieldDef || {}).scale || {});
 
   // initialize bandSize as if it's an ordinal scale first since ordinal scale type depends on this.
@@ -263,7 +264,8 @@ export function ordinalToContinuousType(channel: Channel, mark: Mark, canHaveBan
   return ScaleType.POINT;
 }
 
-export function bandSize(bandSize: number | BandSize, topLevelSize: number, mark: Mark, channel: Channel, scaleConfig: ScaleConfig): number {
+export function bandSize(bandSize: number | BandSize, topLevelSize: number | undefined, mark: Mark | undefined,
+    channel: Channel, scaleConfig: ScaleConfig): number {
   if (topLevelSize === undefined) {
     if (bandSize === BANDSIZE_FIT || bandSize === null) {
       return undefined; // no bandSize
