@@ -65,6 +65,13 @@ export function band(scaleName: string) {
   return ref;
 }
 
+export function binMidSignal(fieldDef: FieldDef, scaleName: string) {
+  return {
+    scale: scaleName,
+    signal: '(' + field(fieldDef, {binSuffix: 'start', datum: true}) + '+' +
+      field(fieldDef, {binSuffix: 'end', datum: true}) + ')/2'
+  };
+}
 
 export function normal(channel: Channel, fieldDef: FieldDef, scaleName: string, scale: Scale,
 defaultRef: VgValueRef | 'base' | 'baseOrMax'): VgValueRef {
@@ -76,7 +83,11 @@ defaultRef: VgValueRef | 'base' | 'baseOrMax'): VgValueRef {
       if (isDiscreteScale(scale.type)) {
         return fieldRef(fieldDef, scaleName, {binSuffix: 'range'});
       } else {
-        return fieldRef(fieldDef, scaleName, {binSuffix: 'mid'});
+        if (fieldDef.bin) {
+          return binMidSignal(fieldDef, scaleName);
+        } else {
+          return fieldRef(fieldDef, scaleName, {}); // no need for bin suffix
+        }
       }
     } else if (fieldDef.value) {
       return {

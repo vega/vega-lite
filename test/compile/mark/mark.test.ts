@@ -20,7 +20,7 @@ describe('Mark', function() {
       const stackTransform = markGroup[0].from.transform[0];
       assert.equal(stackTransform.type, 'stack');
 
-      assert.deepEqual(stackTransform.groupby, ['bin_Cost__Total_$_mid']);
+      assert.deepEqual(stackTransform.groupby, ['bin_Cost__Total_$_start']);
       assert.deepEqual(stackTransform.field, 'sum_Cost__Other');
       assert.deepEqual(stackTransform.sortby, ['-Effect__Amount_of_damage']);
     });
@@ -38,7 +38,7 @@ describe('Mark', function() {
       const stackTransform = markGroup[0].from.transform[0];
       assert.equal(stackTransform.type, 'stack');
 
-      assert.deepEqual(stackTransform.groupby, ['bin_Cost__Total_$_mid']);
+      assert.deepEqual(stackTransform.groupby, ['bin_Cost__Total_$_start']);
       assert.deepEqual(stackTransform.field, 'sum_Cost__Other');
       assert.deepEqual(stackTransform.sortby, ['-Effect__Amount_of_damage']);
     });

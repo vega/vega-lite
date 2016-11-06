@@ -16,7 +16,6 @@ export namespace summary {
   function addDimension(dims: { [field: string]: boolean }, fieldDef: FieldDef) {
     if (fieldDef.bin) {
       dims[field(fieldDef, { binSuffix: 'start' })] = true;
-      dims[field(fieldDef, { binSuffix: 'mid' })] = true;
       dims[field(fieldDef, { binSuffix: 'end' })] = true;
 
       // const scale = model.scale(channel);
