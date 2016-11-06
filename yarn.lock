@@ -4348,9 +4348,9 @@ vega-wordcloud@>=1.0.0-beta:
   optionalDependencies:
     canvas "^1.4.0"
 
-vega@3.0.0-beta.1:
-  version "3.0.0-beta.1"
-  resolved "https://registry.yarnpkg.com/vega/-/vega-3.0.0-beta.1.tgz#9f7994f6b236dd3e0c46f3435e76bc7c04cc8296"
+vega@^3.0.0-beta.3:
+  version "3.0.0-beta.3"
+  resolved "https://registry.yarnpkg.com/vega/-/vega-3.0.0-beta.3.tgz#912793cdedf8d9b07a7519ce09b9f33452962719"
   dependencies:
     d3-color "1"
     vega-crossfilter ">=1.0.0-beta"
@@ -4364,6 +4364,7 @@ vega@3.0.0-beta.1:
     vega-parser ">=1.0.0-beta"
     vega-runtime ">=1.0.0-beta"
     vega-scale "1"
+    vega-scenegraph ">=2.0.0-beta"
     vega-statistics "1"
     vega-util "1"
     vega-view ">=1.0.0-beta"
