@@ -189,7 +189,7 @@ export function supportScaleType(channel: Channel, scaleType: ScaleType): boolea
     case 'opacity':
       return scaleType in POSITION_SCALE_TYPE_INDEX;
     case 'color':
-      return true; // color supports all scale type
+      return scaleType !== 'band';    // band does not make sense with color
     case 'shape':
       return scaleType === 'ordinal'; // shape = lookup only
   }

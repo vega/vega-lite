@@ -361,7 +361,6 @@ describe('Scale', function() {
             encoding: {
               y: {
                 field: 'origin',
-                scale: {useRawDomain: true},
                 type: "temporal",
                 timeUnit: 'month'
               }
@@ -379,7 +378,6 @@ describe('Scale', function() {
               encoding: {
                 y: {
                   field: 'origin',
-                  scale: {useRawDomain: true},
                   type: "temporal",
                   timeUnit: 'yearmonth'
                 }
@@ -586,7 +584,6 @@ describe('Scale', function() {
     });
   });
 
-
   describe('rangeMixins()', function() {
     describe('row', function() {
       // TODO:
@@ -698,15 +695,7 @@ describe('Scale', function() {
     // FIXME
   });
 
-  describe('outerPadding()', function() {
-    // FIXME
-  });
-
   describe('reverse()', function() {
-    // FIXME
-  });
-
-  describe('zero()', function() {
     // FIXME
   });
 });
