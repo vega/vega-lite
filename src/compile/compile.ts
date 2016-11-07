@@ -46,9 +46,6 @@ function assemble(model: Model) {
   // TODO: change type to become VgSpec
   const output = extend(
     {
-      // Set size to 1 because we rely on padding anyway
-      width: 1,
-      height: 1,
       autosize: 'pad'
     },
     config.viewport ? { viewport: config.viewport } : {},
