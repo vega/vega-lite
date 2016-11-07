@@ -126,7 +126,8 @@ export function initScale(topLevelSize: number | undefined, mark: Mark | undefin
     // ordinal
     'padding', // padding
 
-    'useRawDomain' // TODO: correct move the rule to init phase
+    // FIXME: useRawDomain should not be included here as it is not really a Vega scale property
+    'useRawDomain'
   ].forEach(function(property) {
     const specifiedValue = specifiedScale[property];
 
@@ -201,9 +202,13 @@ export function parseScaleComponent(model: Model): Dict<ScaleComponents> {
 function parseMainScale(model: Model, fieldDef: FieldDef, channel: Channel) {
   const scale = model.scale(channel);
   const sort = model.sort(channel);
+
   let scaleDef: any = extend({
     name: model.scaleName(channel + '', true),
   }, scale);
+  // FIXME refactor initScale to remove useRawDomain to avoid this hack
+  // HACK: useRawDomain isn't really a Vega scale output
+  delete scaleDef.useRawDomain;
 
   // If channel is either X or Y then union them with X2 & Y2 if they exist
   if (channel === X && model.has(X2)) {
@@ -460,8 +465,10 @@ export function domain(scale: Scale, model: Model, channel:Channel): any {
     };
   }
 
-  const useRawDomain = _useRawDomain(scale, model, channel),
-  sort = domainSort(model, channel, scale.type);
+  // FIXME refactor _useRawDomain's signature
+  const useRawDomain = _useRawDomain(scale, model, channel);
+
+  const sort = domainSort(model, channel, scale.type);
 
   if (useRawDomain) { // useRawDomain - only Q/T
     return {
