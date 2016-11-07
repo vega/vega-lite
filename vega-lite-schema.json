@@ -2018,8 +2018,6 @@
                 "ordinal",
                 "point",
                 "pow",
-                "quantile",
-                "quantize",
                 "sequential",
                 "sqrt",
                 "time",

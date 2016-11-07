@@ -1,48 +1,60 @@
 import {DateTime} from './datetime';
-import {toMap} from './util';
+import {contains, toMap} from './util';
 
 export namespace ScaleType {
+  // Continuous - Quantitative
   export const LINEAR: 'linear' = 'linear';
   export const LOG: 'log' = 'log';
   export const POW: 'pow' = 'pow';
   export const SQRT: 'sqrt' = 'sqrt';
-  export const QUANTILE: 'quantile' = 'quantile';
-  export const QUANTIZE: 'quantize' = 'quantize';
+  // Continuous - Time
+  export const TIME: 'time' = 'time';
+  export const UTC: 'utc'  = 'utc';
+  // sequential
   export const SEQUENTIAL: 'sequential' = 'sequential';
 
+  // Quantile, Quantize, threshold
+  export const QUANTILE: 'quantile' = 'quantile';
+  export const QUANTIZE: 'quantize' = 'quantize';
+  export const THRESHOLD: 'threshold' = 'threshold';
 
   // TODO: rename this back to ORDINAL once we are done
   export const ORDINAL_LOOKUP: 'ordinal' = 'ordinal';
   export const POINT: 'point' = 'point';
   export const BAND: 'band' = 'band';
-
-  export const TIME: 'time' = 'time';
-  export const UTC: 'utc'  = 'utc';
 }
 
 export type ScaleType = typeof ScaleType.LINEAR |
   typeof ScaleType.LOG | typeof ScaleType.POW | typeof ScaleType.SQRT |
-  typeof ScaleType.QUANTILE | typeof ScaleType.QUANTIZE | typeof ScaleType.SEQUENTIAL |
-  typeof ScaleType.ORDINAL_LOOKUP | typeof ScaleType.POINT | typeof ScaleType.BAND |
-  typeof ScaleType.TIME | typeof ScaleType.UTC;
+  typeof ScaleType.TIME | typeof ScaleType.UTC |
+  // TODO: add 'quantize', 'quantile', 'threshold' back when we really support them
+  typeof ScaleType.SEQUENTIAL | // typeof ScaleType.QUANTILE | typeof ScaleType.QUANTIZE | typeof ScaleType.THRESHOLD |
+  typeof ScaleType.ORDINAL_LOOKUP | typeof ScaleType.POINT | typeof ScaleType.BAND;
 
 export const SCALE_TYPES: ScaleType[] = [
-  // Quantitative
-  'linear', 'log', 'pow', 'sqrt', // TODO: add 'quantile', 'quantize' when we really support them
+  // Continuous - Quantitative
+  'linear', 'log', 'pow', 'sqrt',
+  // Continuous - Time
+  'time', 'utc',
+  // Sequential
+  'sequential', // TODO: add 'quantile', 'quantize' when we really support them
   // Discrete
   'ordinal', 'point', 'band',
-  // Time
-  'time', 'utc'
 ];
 
-export const CONTINUOUS_SCALE_TYPES: ScaleType[] = ['linear', 'log', 'pow', 'sqrt'];
+export const CONTINUOUS_SCALE_TYPES: ScaleType[] = ['linear', 'log', 'pow', 'sqrt', 'time', 'utc'];
+const CONTINUOUS_SCALE_TYPE_INDEX = toMap(CONTINUOUS_SCALE_TYPES);
+
 export const DISCRETE_SCALE_TYPES: ScaleType[] = ['ordinal', 'point', 'band'];
 const DISCRETE_SCALE_TYPE_INDEX = toMap(DISCRETE_SCALE_TYPES);
 
 export const TIME_SCALE_TYPES: ScaleType[] = ['time', 'utc'];
 
 export function isDiscreteScale(type: ScaleType): type is 'ordinal' | 'point' | 'band' {
-  return !!DISCRETE_SCALE_TYPE_INDEX[type];
+  return type in DISCRETE_SCALE_TYPE_INDEX;
+}
+export function isContinuousScale(type: ScaleType): type is 'linear' | 'log' | 'pow' | 'sqrt' |  'time' | 'utc' {
+  return type in CONTINUOUS_SCALE_TYPE_INDEX;
 }
 
 export namespace NiceTime {
@@ -218,4 +230,45 @@ export interface Scale {
    * This property only works with aggregate functions that produce values within the raw data domain (`"mean"`, `"average"`, `"stdev"`, `"stdevp"`, `"median"`, `"q1"`, `"q3"`, `"min"`, `"max"`). For other aggregations that produce values outside of the raw data domain (e.g. `"count"`, `"sum"`), this property is ignored.
    */
   useRawDomain?: boolean;
+}
+
+export const SCALE_PROPERTIES = [
+  'type', 'domain', 'range', 'round', 'bandSize', 'scheme', 'padding', 'clamp', 'nice',
+  'exponent', 'zero',
+  // TODO: add interpolate here
+  // FIXME: determine if 'useRawDomain' should really be included here
+  'useRawDomain'
+];
+
+export function scaleTypeSupportProperty(scaleType: ScaleType, propName: string) {
+  switch (propName) {
+    case 'type':
+    case 'domain':
+      return true;
+    case 'range':
+      return scaleType !== 'sequential'; // sequential only support scheme
+    case 'round':
+      return isContinuousScale(scaleType) || scaleType === 'band' || scaleType === 'point';
+    case 'bandSize':
+    case 'padding':
+      // TODO: revise if point qualifies for bandSize here.  (It works for VL, but not for VG).
+      return contains(['point', 'band'], scaleType);
+    case 'scheme':
+      return contains(['ordinal', 'sequential'], scaleType);
+    case 'clamp':
+      return isContinuousScale(scaleType) || scaleType === 'sequential';
+    case 'nice':
+      return isContinuousScale(scaleType) || scaleType === 'sequential' || scaleType as any === 'quantize';
+    case 'exponent':
+      return scaleType === 'pow';
+    case 'zero':
+      // TODO: what about quantize, threshold?
+      return !isDiscreteScale(scaleType) && !contains(['log', 'time', 'utc'], scaleType);
+
+    case 'useRawDomain':
+      // TODO: 'quantize', 'quantile', 'threshold'
+      return isContinuousScale(scaleType) || contains(['quantize', 'quantile', 'threshold'], scaleType);
+  }
+  /* istanbul ignore next: should never reach here*/
+  throw new Error(`Invalid scale property ${propName}.`);
 }
