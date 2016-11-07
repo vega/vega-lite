@@ -322,13 +322,13 @@ namespace defaultProperty {
         if (channel === COLOR) {
           return ScaleType.ORDINAL_LOOKUP;
         }
-        return ordinalToContinuousType(channel, mark, canHaveBandSize);
+        return discreteToContinuousType(channel, mark, canHaveBandSize);
       case ORDINAL:
         if (channel === COLOR) {
           // TODO: check if this is still true
           return ScaleType.LINEAR; // ordinal has order, so use interpolated ordinal color scale.
         }
-        return ordinalToContinuousType(channel, mark, canHaveBandSize);
+        return discreteToContinuousType(channel, mark, canHaveBandSize);
       case TEMPORAL:
         if (channel === COLOR) {
           // FIXME: or sequential?
@@ -341,7 +341,7 @@ namespace defaultProperty {
           case TimeUnit.DAY:
           case TimeUnit.MONTH:
           case TimeUnit.QUARTER:
-            return ordinalToContinuousType(channel, mark, canHaveBandSize);
+            return discreteToContinuousType(channel, mark, canHaveBandSize);
         }
         return ScaleType.TIME;
 
@@ -354,21 +354,23 @@ namespace defaultProperty {
   }
 
   /**
+   * Determines default scale type for nominal/ordinal field.
    * @returns BAND or POINT scale based on channel, mark, and bandSize
    */
-  function ordinalToContinuousType(channel: Channel, mark: Mark, canHaveBandSize: boolean): ScaleType {
+  function discreteToContinuousType(channel: Channel, mark: Mark, canHaveBandSize: boolean): ScaleType {
     if (contains([X, Y], channel)) {
       // Use band ordinal scale for x/y scale in one of the following cases:
       if (
-        // 1) the mark is bar and the scale's bandWidth is 'fit',
+        // 1) the mark is bar and the scale's bandWidth is 'fit'.
+        // Basically, for fit mode
         (mark === BAR && !canHaveBandSize) ||
-        // 2) the mark is rect
+        // 2) the mark is rect as the rect mark should fit into a band.
         mark === RECT
       ) {
         return ScaleType.BAND;
       }
     }
-    // Otherwise use ordinal point scale
+    // Otherwise, use ordinal point scale so we can easily get center positions of the marks.
     return ScaleType.POINT;
   }
 
