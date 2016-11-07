@@ -6,12 +6,12 @@ import {SOURCE, STACKED_SCALE} from '../data';
 import {DateTime, isDateTime, timestamp} from '../datetime';
 import {ChannelDefWithScale, FieldDef, field} from '../fielddef';
 import {Mark, BAR, TEXT as TEXTMARK, RECT, RULE, TICK} from '../mark';
-import {Scale, ScaleConfig, ScaleType, NiceTime, BANDSIZE_FIT, BandSize, isDiscreteScale} from '../scale';
+import {Scale, ScaleConfig, ScaleType, NiceTime, BANDSIZE_FIT, BandSize, isDiscreteScale, scaleTypeSupportProperty} from '../scale';
 import {isSortField, SortOrder} from '../sort';
 import {StackOffset} from '../stack';
 import {TimeUnit} from '../timeunit';
 import {NOMINAL, ORDINAL, QUANTITATIVE, TEMPORAL} from '../type';
-import {contains, extend, duplicate, Dict} from '../util';
+import {contains, extend, Dict} from '../util';
 import {VgScale} from '../vega.schema';
 
 import {Model} from './model';
@@ -40,9 +40,58 @@ export type ScaleComponents = {
   binColorLegend?: ScaleComponent
 }
 
+export function channelScalePropertyIncompatability(channel: Channel, propName: string): string {
+  switch (propName) {
+    case 'range':
+      // User should not customize range for position and facet channel directly.
+      if (channel === X || channel === Y) {
+        return log.message.CANNOT_USE_RANGE_WITH_POSITION;
+      }
+      if (channel === ROW || channel === COLUMN) {
+        return log.message.cannotUseRangeOrBandSizePropertyWithFacet('range');
+      }
+      return undefined; // GOOD!
+    // band / point
+    case 'bandSize':
+      if (channel === ROW || channel === COLUMN) {
+        return log.message.cannotUseRangeOrBandSizePropertyWithFacet('bandSize');
+      }
+      return undefined; // GOOD!
+    case 'padding':
+      if (channel === ROW || channel === COLUMN) {
+        /*
+         * We do not use d3 scale's padding for row/column because padding there
+         * is a ratio ([0, 1]) and it causes the padding to be decimals.
+         * Therefore, we manually calculate "spacing" in the layout by ourselves.
+         */
+        return log.message.CANNOT_USE_PADDING_WITH_FACET;
+      }
+      return undefined; // GOOD!
+    case 'scheme':
+      if (channel !== COLOR) {
+        return log.message.CANNOT_USE_SCHEME_WITH_NON_COLOR;
+      }
+      return undefined;
+    case 'type':
+    case 'domain':
+    case 'round':
+    case 'clamp':
+    case 'exponent':
+    case 'nice':
+    case 'zero':
+    case 'useRawDomain':
+      // These channel do not have strict requirement
+      return undefined; // GOOD!
+  }
+  /* istanbul ignore next: it should never reach here */
+  throw new Error('Invalid scale property "${propName}".');
+}
+
+
 export function initScale(topLevelSize: number | undefined, mark: Mark | undefined,
     channel: Channel, fieldDef: ChannelDefWithScale, scaleConfig: ScaleConfig): Scale {
-  let scale: Scale = duplicate((fieldDef || {}).scale || {});
+  let specifiedScale = (fieldDef || {}).scale || {};
+  let scale: Scale = {};
 
   const rangeProperties: any[] = ((scale.bandSize ? ['bandSize'] : []) as any[]).concat(
     scale.scheme ? ['scheme'] : [],
@@ -54,31 +103,65 @@ export function initScale(topLevelSize: number | undefined, mark: Mark | undefin
   }
 
   // initialize bandSize as if it's an ordinal scale first since ordinal scale type depends on this.
-  const size = bandSize(scale.bandSize, topLevelSize, mark, channel, scaleConfig);
+  const size = bandSize(specifiedScale.bandSize, topLevelSize, mark, channel, scaleConfig);
+  scale.type = type(specifiedScale.type, fieldDef, channel, mark, !!size);
 
-  scale.type = type(scale.type, fieldDef, channel, mark, !!size);
-
-  // TODO(kanitw): consider replacing duplicate on the first line to copy only what is necessary
+  // FIXME: only set this for BAND
   if ((scale.type === ScaleType.POINT || scale.type === ScaleType.BAND) && size !== undefined) {
     scale.bandSize = size;
-  } else {
-    delete scale.bandSize; // make sure it really become undefined
   }
 
+  // Use specified value if compatible or determine default values for each property
   [
     // general properties
+    'domain', // For domain, we only copy specified value here.  Default value is determined during parsing phase.
     'round',
     // quantitative / time
     'clamp', 'nice',
     // quantitative
-    'exponent', 'zero',
+    'exponent', 'zero', // zero depends on domain
     // ordinal
-    'padding' // padding
+    'padding', // padding
+
+    'useRawDomain' // TODO: correct move the rule to init phase
   ].forEach(function(property) {
-    const value = exports[property](scale, scaleConfig, channel, fieldDef);
-    if (value !== undefined) {
-      scale[property] = value;
+    const specifiedValue = specifiedScale[property];
+
+    let supportedByScaleType = scaleTypeSupportProperty(scale.type, property);
+    const channelIncompatability = channelScalePropertyIncompatability(channel, property);
+
+    if (specifiedValue !== undefined) {
+      // If there is a specified value, check if it is compatible with scale type and channel
+      if (!supportedByScaleType) {
+        log.warn(log.message.scalePropertyNotWorkWithScaleType(scale.type, property, channel));
+      } else if (channelIncompatability) { // channel
+        log.warn(channelIncompatability);
+      } else {
+        scale[property] = specifiedValue;
+      }
+      return;
+    } else {
+      // If there is no property specified, check if we need to determine default value.
+      if (supportedByScaleType && channelIncompatability === undefined) {
+        let value: any;
+
+        // If we have default rule-base, determine default value first
+        if (property === 'nice') {
+          value = defaultProperty.nice(scale.type, channel, fieldDef);
+        } else if (property === 'padding') {
+          value = defaultProperty.padding(scale.type, channel, scaleConfig);
+        } else if (property === 'zero') {
+          value = defaultProperty.zero(scale, channel, fieldDef);
+        } else {
+          value = scaleConfig[property];
+        }
+
+        if (value !== undefined) { // use the default value
+          scale[property] = value;
+        }
+      }
     }
+
   });
   return scale;
 }
@@ -189,6 +272,10 @@ function parseBinColorLegendLabel(model: Model, fieldDef: FieldDef): ScaleCompon
   };
 }
 
+/**
+ * Determine if there is a specified scale type and if it is appropriate,
+ * or determine default type if type is unspecified or inappropriate.
+ */
 export function type(specifiedType: ScaleType, fieldDef: FieldDef, channel: Channel, mark: Mark, canHaveBandSize: boolean): ScaleType {
   if (!hasScale(channel)) {
     // There is no scale for these channels
@@ -200,78 +287,112 @@ export function type(specifiedType: ScaleType, fieldDef: FieldDef, channel: Chan
     if (supportScaleType(channel, specifiedType)) {
       return specifiedType;
     } else {
-      const newScaleType = defaultType(fieldDef, channel, mark, canHaveBandSize);
+      const newScaleType = defaultProperty.type(fieldDef, channel, mark, canHaveBandSize);
       log.warn(log.message.scaleTypeNotWorkWithChannel(channel, specifiedType, newScaleType));
       return newScaleType;
     }
   }
 
-  return defaultType(fieldDef, channel, mark, canHaveBandSize);
+  return defaultProperty.type(fieldDef, channel, mark, canHaveBandSize);
 }
 
-function defaultType(fieldDef: FieldDef, channel: Channel, mark: Mark, canHaveBandSize: boolean): ScaleType {
-  if (contains([ROW, COLUMN], channel)) {
-    return ScaleType.BAND;
-  }
-  if (channel === SHAPE) {
-    return ScaleType.ORDINAL_LOOKUP;
-  }
-
-  switch (fieldDef.type) {
-    case NOMINAL:
-      if (channel === COLOR) {
-        return ScaleType.ORDINAL_LOOKUP;
-      }
-      return ordinalToContinuousType(channel, mark, canHaveBandSize);
-    case ORDINAL:
-      if (channel === COLOR) {
-        // TODO: check if this is still true
-        return ScaleType.LINEAR; // ordinal has order, so use interpolated ordinal color scale.
-      }
-      return ordinalToContinuousType(channel, mark, canHaveBandSize);
-    case TEMPORAL:
-      if (channel === COLOR) {
-        // FIXME: or sequential?
-        return ScaleType.TIME; // time has order, so use interpolated color scale.
-      }
-
-      switch (fieldDef.timeUnit) {
-        // These time unit use discrete scale by default
-        case TimeUnit.HOURS:
-        case TimeUnit.DAY:
-        case TimeUnit.MONTH:
-        case TimeUnit.QUARTER:
-          return ordinalToContinuousType(channel, mark, canHaveBandSize);
-      }
-      return ScaleType.TIME;
-
-    case QUANTITATIVE:
-      return ScaleType.LINEAR;
-  }
-
-  // should never reach this
-  return null;
-}
-
-/**
- * @returns BAND or POINT scale based on channel, mark, and bandSize
- */
-export function ordinalToContinuousType(channel: Channel, mark: Mark, canHaveBandSize: boolean): ScaleType {
-  if (contains([X, Y], channel)) {
-    // Use band ordinal scale for x/y scale in one of the following cases:
-    if (
-      // 1) the mark is bar and the scale's bandWidth is 'fit',
-      (mark === BAR && !canHaveBandSize) ||
-      // 2) the mark is rect
-      mark === RECT
-    ) {
+namespace defaultProperty {
+  /**
+   * Determine appropriate default scale type.
+   */
+  export function type(fieldDef: FieldDef, channel: Channel, mark: Mark, canHaveBandSize: boolean): ScaleType {
+    if (contains([ROW, COLUMN], channel)) {
       return ScaleType.BAND;
     }
+    if (channel === SHAPE) {
+      return ScaleType.ORDINAL_LOOKUP;
+    }
+
+    switch (fieldDef.type) {
+      case NOMINAL:
+        if (channel === COLOR) {
+          return ScaleType.ORDINAL_LOOKUP;
+        }
+        return ordinalToContinuousType(channel, mark, canHaveBandSize);
+      case ORDINAL:
+        if (channel === COLOR) {
+          // TODO: check if this is still true
+          return ScaleType.LINEAR; // ordinal has order, so use interpolated ordinal color scale.
+        }
+        return ordinalToContinuousType(channel, mark, canHaveBandSize);
+      case TEMPORAL:
+        if (channel === COLOR) {
+          // FIXME: or sequential?
+          return ScaleType.TIME; // time has order, so use interpolated color scale.
+        }
+
+        switch (fieldDef.timeUnit) {
+          // These time unit use discrete scale by default
+          case TimeUnit.HOURS:
+          case TimeUnit.DAY:
+          case TimeUnit.MONTH:
+          case TimeUnit.QUARTER:
+            return ordinalToContinuousType(channel, mark, canHaveBandSize);
+        }
+        return ScaleType.TIME;
+
+      case QUANTITATIVE:
+        return ScaleType.LINEAR;
+    }
+
+    /* istanbul ignore next: should never reach this */
+    throw new Error(log.message.invalidFieldType(fieldDef.type));
   }
-  // Otherwise use ordinal point scale
-  return ScaleType.POINT;
+
+  /**
+   * @returns BAND or POINT scale based on channel, mark, and bandSize
+   */
+  function ordinalToContinuousType(channel: Channel, mark: Mark, canHaveBandSize: boolean): ScaleType {
+    if (contains([X, Y], channel)) {
+      // Use band ordinal scale for x/y scale in one of the following cases:
+      if (
+        // 1) the mark is bar and the scale's bandWidth is 'fit',
+        (mark === BAR && !canHaveBandSize) ||
+        // 2) the mark is rect
+        mark === RECT
+      ) {
+        return ScaleType.BAND;
+      }
+    }
+    // Otherwise use ordinal point scale
+    return ScaleType.POINT;
+  }
+
+
+  export function nice(scaleType: ScaleType, channel: Channel, fieldDef: FieldDef): boolean | NiceTime {
+    if (contains([ScaleType.TIME, ScaleType.UTC], scaleType)) {
+      return smallestUnit(fieldDef.timeUnit) as any;
+    }
+    return contains([X, Y], channel); // return true for quantitative X/Y
+  }
+
+  export function padding(scaleType: ScaleType, channel: Channel, scaleConfig: ScaleConfig) {
+    if (contains([X, Y], channel)) {
+      // Padding is only set for X and Y by default.
+      // Basically it doesn't make sense to add padding for color and size.
+      if (scaleType === ScaleType.POINT) {
+        return scaleConfig.pointPadding;
+      } else if (scaleType === ScaleType.BAND) {
+        return scaleConfig.bandPadding;
+      }
+    }
+    return undefined;
+  }
+
+  export function zero(specifiedScale: Scale, channel: Channel, fieldDef: FieldDef) {
+    // By default, return true only for non-binned, quantitative x-scale or y-scale
+    // If no custom domain is provided.
+    return !specifiedScale.domain && !fieldDef.bin && contains([X, Y], channel);
+  }
 }
 
+
+// TODO: determine where this should go
 export function bandSize(bandSize: number | BandSize, topLevelSize: number | undefined, mark: Mark | undefined,
     channel: Channel, scaleConfig: ScaleConfig): number {
   if (topLevelSize === undefined) {
@@ -298,6 +419,7 @@ export function bandSize(bandSize: number | BandSize, topLevelSize: number | und
   return undefined;
 }
 
+// TODO: rename to parseDomain?
 export function domain(scale: Scale, model: Model, channel:Channel): any {
   const fieldDef = model.fieldDef(channel);
 
@@ -412,7 +534,7 @@ export function domainSort(model: Model, channel: Channel, scaleType: ScaleType)
   return undefined;
 }
 
-
+// TODO: determine where this should go
 /**
  * Determine if useRawDomain should be activated for this scale.
  * @return {Boolean} Returns true if all of the following conditons applies:
@@ -443,6 +565,7 @@ function _useRawDomain (scale: Scale, model: Model, channel: Channel) {
     );
 }
 
+// TODO: refactor where this should go
 /**
  * @returns {*} mix-in of bandSize, range, scheme.
  */
@@ -471,7 +594,7 @@ export function rangeMixins(scale: Scale, model: Model, channel: Channel):
     if (scale.type === 'ordinal' || scale.type === 'sequential') {
       return {scheme: scale.scheme};
     } else {
-      log.warn(log.message.scalePropertiesNotWorkWithType('scheme', scale.type));
+      log.warn(log.message.scalePropertyNotWorkWithScaleType(scale.type, 'scheme', channel));
     }
   }
 
@@ -579,94 +702,3 @@ function pointBandSize(model: UnitModel, scaleConfig: ScaleConfig): number {
   return 21;
 }
 
-export function clamp(scale: Scale, scaleConfig: ScaleConfig) {
-  // Only works for scale with both continuous domain continuous range
-  // (Doesn't work for quantize, quantile, threshold, ordinal)
-  if (contains([ScaleType.LINEAR, ScaleType.POW, ScaleType.SQRT,
-        ScaleType.LOG, ScaleType.TIME, ScaleType.UTC], scale.type)) {
-    if (scale.clamp !== undefined) {
-      return scale.clamp;
-    }
-    return scaleConfig.clamp;
-  }
-  return undefined;
-}
-
-export function exponent(scale: Scale) {
-  if (scale.type === ScaleType.POW) {
-    return scale.exponent;
-  }
-  return undefined;
-}
-
-export function nice(scale: Scale, scaleConfig: ScaleConfig, channel: Channel, fieldDef: FieldDef): boolean | NiceTime {
-  if (contains([ScaleType.LINEAR, ScaleType.POW, ScaleType.SQRT, ScaleType.LOG,
-        ScaleType.TIME, ScaleType.UTC, ScaleType.QUANTIZE], scale.type)) {
-
-    if (scale.nice !== undefined) {
-      return scale.nice;
-    }
-    if (contains([ScaleType.TIME, ScaleType.UTC], scale.type)) {
-      return smallestUnit(fieldDef.timeUnit) as any;
-    }
-    return contains([X, Y], channel); // return true for quantitative X/Y
-  }
-  return undefined;
-}
-
-
-export function padding(scale: Scale, scaleConfig: ScaleConfig, channel: Channel) {
-  /*
-   * We do not use d3 scale's padding for row/column because padding there
-   * is a ratio ([0, 1]) and it causes the padding to be decimals.
-   * Therefore, we manually calculate "spacing" in the layout by ourselves.
-   */
-  if (contains([ROW, COLUMN], channel)) {
-    if (scale.padding !== undefined) {
-      log.warn(log.message.CANNOT_USE_PADDING_WITH_FACET);
-    }
-    return 0;
-  }
-
-  if (scale.type === ScaleType.BAND || scale.type === ScaleType.POINT) {
-    if (scale.padding !== undefined) {
-      return scale.padding;
-    }
-    /*
-     * Padding is only set for X and Y by default.
-     * Basically it doesn't make sense to add padding for color and size.
-    */
-    if (contains([X, Y], channel)) {
-      if (scale.type === ScaleType.POINT) {
-        return scaleConfig.pointPadding;
-      } else if (scale.type === ScaleType.BAND) {
-        return scaleConfig.bandPadding;
-      }
-    }
-  }
-  return undefined;
-}
-
-export function round(scale: Scale, scaleConfig: ScaleConfig, channel: Channel) {
-  if (contains([X, Y, ROW, COLUMN, SIZE], channel)) {
-    if (scale.round !== undefined) {
-      return scale.round;
-    }
-    return scaleConfig.round;
-  }
-
-  return undefined;
-}
-
-export function zero(scale: Scale, _: ScaleConfig, channel: Channel, fieldDef: FieldDef) {
-  // only applicable for non-ordinal scale
-  if (!contains([ScaleType.LOG, ScaleType.TIME, ScaleType.UTC, ScaleType.BAND, ScaleType.POINT, ScaleType.ORDINAL_LOOKUP], scale.type)) {
-    if (scale.zero !== undefined) {
-      return scale.zero;
-    }
-    // By default, return true only for non-binned, quantitative x-scale or y-scale
-    // If no custom domain is provided.
-    return !scale.domain && !fieldDef.bin && contains([X, Y], channel);
-  }
-  return undefined;
-}

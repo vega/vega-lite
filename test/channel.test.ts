@@ -14,7 +14,7 @@ describe('channel', () => {
 
   describe('supportScaleType', () => {
     // Make sure we always edit this when we add new channel
-    it('should have at least one supported scale type for all channels with scale', () => {
+    it('should have at least one supported scale types for all channels with scale', () => {
       for (let channel of SCALE_CHANNELS) {
         assert(some(SCALE_TYPES, (scaleType) => {
           return supportScaleType(channel, scaleType);
@@ -49,19 +49,20 @@ describe('channel', () => {
       }
     });
 
-    it('color should support all scale types', () => {
+    it('color should support all scale types except band', () => {
       for (let scaleType of SCALE_TYPES) {
-        assert(supportScaleType('color', scaleType));
+        assert.equal(supportScaleType('color', scaleType), scaleType !== 'band');
       }
     });
 
-    it('x, y, size, opacity should support all scale type except ordinal', () => {
+    it('x, y, size, opacity should support all scale type except ordinal and sequential', () => {
       // x,y should use either band or point for ordinal input
+      const nonOrdinal = without<ScaleType>(SCALE_TYPES, ['ordinal', 'sequential']);
       for (let channel of ['x', 'y', 'size', 'opacity'] as Channel[]) {
         assert(!supportScaleType(channel, 'ordinal'));
-        const nonOrdinal = without<ScaleType>(SCALE_TYPES, ['ordinal']);
+        assert(!supportScaleType(channel, 'sequential'));
         for (let scaleType of nonOrdinal) {
-          assert(supportScaleType(channel, scaleType));
+          assert(supportScaleType(channel, scaleType), `Error: ${channel}, ${scaleType}`);
         }
       }
     });
