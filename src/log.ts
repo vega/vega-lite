@@ -12,6 +12,7 @@ import {DateTime, DateTimeExpr} from './datetime';
 import {FieldDef} from './fielddef';
 import {Mark} from './mark';
 import {TimeUnit} from './timeunit';
+import {Type} from './type';
 import {ScaleType} from './scale';
 
 export {LoggerInterface} from 'vega-util';
@@ -102,6 +103,10 @@ export namespace message {
   export const DEPRECATED_FILTER_NULL = 'filterNull is deprecated. Please use filterInvalid instead.';
 
   // ENCODING & FACET
+  export function invalidFieldType(type: Type) {
+    return `Invalid field type "${type}"`;
+  }
+
   export function emptyFieldDef(fieldDef: FieldDef, channel: Channel) {
     return `Dropping ${JSON.stringify(fieldDef)} from channel ${channel} since it does not contain data field or value.`;
   }
@@ -132,7 +137,16 @@ export namespace message {
   // SCALE
   export const CANNOT_UNION_CUSTOM_DOMAIN_WITH_FIELD_DOMAIN = 'custom domain scale cannot be unioned with default field-based domain';
 
-  export const CANNOT_USE_PADDING_WITH_FACET = 'Cannot use padding with facet\'s scale.  Please use spacing instead.';
+  export const CANNOT_USE_SCHEME_WITH_NON_COLOR = 'Cannot use scheme with non-color channel.';
+
+  export const CANNOT_USE_RANGE_WITH_POSITION =
+    'Cannot use custom range with x or y channel.  Please use width, height, padding, or bandSize instead.';
+
+    export const CANNOT_USE_PADDING_WITH_FACET = 'Cannot use padding with facet\'s scale.  Please use spacing instead.';
+
+  export function cannotUseRangeOrBandSizePropertyWithFacet(propName: string) {
+    return `Cannot use custom ${propName} with row or column channel. Please use width, height, or spacing instead.`;
+  }
 
   export function customScaleRangeNotAllowed(channel: Channel) {
     return `Custom scale ranged not allowed for channel ${channel}`;
@@ -145,6 +159,9 @@ export namespace message {
 
   export function scaleTypeNotWorkWithChannel(channel: Channel, scaleType: ScaleType, newScaleType: ScaleType) {
     return `Channel ${channel} does not work with ${scaleType} scale. We are using ${newScaleType} scale instead.`;
+  }
+  export function scalePropertyNotWorkWithScaleType(scaleType: ScaleType, propName: string, channel: Channel) {
+    return `${channel}-scale's "${propName}" is dropped as it does not work with ${scaleType} scale.`;
   }
 
   export function scaleTypeNotWorkWithMark(mark: Mark, scaleType: ScaleType) {
