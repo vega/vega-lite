@@ -195,7 +195,7 @@ describe('Axis', function() {
       const orient = axis.orient(parseModel({
           mark: "point",
           encoding: {
-            y: {field: 'a'}
+            y: {field: 'a', type: 'quantitative'}
           }
         }), 'y');
       assert.deepEqual(orient, 'left');
