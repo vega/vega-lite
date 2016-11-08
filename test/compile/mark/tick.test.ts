@@ -137,7 +137,7 @@ describe('Mark: Tick', function() {
         {
           'x': {'field': 'Horsepower', 'type': 'quantitative'},
           'y': {'field': 'Cylinders', 'type': 'ordinal'},
-          'size': {'field': 'Acceleration'}
+          'size': {'field': 'Acceleration', 'type': 'quantitative'}
         },
       'data': {'url': 'data/cars.json'},
     });

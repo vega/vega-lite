@@ -69,7 +69,7 @@ describe('Axis', function() {
       const grid = axis.grid(parseModel({
           mark: "point",
           encoding: {
-            x: {field: 'a', axis:{grid: false}}
+            x: {field: 'a', type: 'quantitative', axis:{grid: false}}
           }
         }), X);
       assert.deepEqual(grid, false);
@@ -79,7 +79,7 @@ describe('Axis', function() {
       const grid = axis.grid(parseModel({
           mark: "point",
           encoding: {
-            x: {field: 'a'}
+            x: {field: 'a', type: 'quantitative'}
           }
         }), X);
       assert.deepEqual(grid, true);
@@ -89,7 +89,7 @@ describe('Axis', function() {
       const grid = axis.grid(parseModel({
           mark: "point",
           encoding: {
-            x: {field: 'a'}
+            x: {field: 'a', type: 'quantitative'}
           }
         }), COLUMN);
       assert.deepEqual(grid, undefined);
@@ -99,7 +99,7 @@ describe('Axis', function() {
       const grid = axis.grid(parseModel({
           mark: "point",
           encoding: {
-            x: {field: 'a'}
+            x: {field: 'a', type: 'quantitative'}
           }
         }), ROW);
       assert.deepEqual(grid, undefined);
@@ -111,7 +111,7 @@ describe('Axis', function() {
       const layer = axis.layer(parseModel({
           mark: "point",
           encoding: {
-            x: {field: 'a'}
+            x: {field: 'a', type: 'quantitative'}
           }
         }), X, Y);
       assert.deepEqual(layer, undefined);
@@ -121,7 +121,7 @@ describe('Axis', function() {
       const layer = axis.layer(parseModel({
           mark: "point",
           encoding: {
-            x: {field: 'a'}
+            x: {field: 'a', type: 'quantitative'}
           }
         }), X, {grid: true});
       assert.deepEqual(layer, "back");
@@ -131,7 +131,7 @@ describe('Axis', function() {
       const layer = axis.layer(parseModel({
           mark: "point",
           encoding: {
-            x: {field: 'a', axis: {layer: "front"}}
+            x: {field: 'a', type: 'quantitative', axis: {layer: "front"}}
           }
         }), X, {grid: true});
       assert.deepEqual(layer, "front");
@@ -143,7 +143,7 @@ describe('Axis', function() {
       const orient = axis.orient(parseUnitModel({
           mark: "point",
           encoding: {
-            x: {field: 'a', axis:{orient: 'bottom'}}
+            x: {field: 'a', type: 'quantitative', axis:{orient: 'bottom'}}
           }
         }), X);
       assert.deepEqual(orient, 'bottom');
@@ -153,7 +153,7 @@ describe('Axis', function() {
       const orient = axis.orient(parseUnitModel({
           mark: "point",
           encoding: {
-            x: {field: 'a'}
+            x: {field: 'a', type: 'quantitative'}
           }
         }), X);
       assert.deepEqual(orient, undefined);
@@ -163,7 +163,7 @@ describe('Axis', function() {
       const orient = axis.orient(parseModel({
           mark: "point",
           encoding: {
-            x: {field: 'a'},
+            x: {field: 'a', type: 'quantitative'},
             column: {field: 'a', type: 'nominal'}
           }
         }), COLUMN);
@@ -176,7 +176,7 @@ describe('Axis', function() {
       const ticks = axis.ticks(parseModel({
           mark: "point",
           encoding: {
-            y: {field: 'a'}
+            y: {field: 'a', type: 'quantitative'}
           }
         }), Y);
       assert.deepEqual(ticks, undefined);
@@ -186,7 +186,7 @@ describe('Axis', function() {
       const ticks = axis.ticks(parseModel({
           mark: "point",
           encoding: {
-            x: {field: 'a'}
+            x: {field: 'a', type: 'quantitative'}
           }
         }), X);
       assert.deepEqual(ticks, 5);
@@ -196,7 +196,7 @@ describe('Axis', function() {
       const ticks = axis.ticks(parseModel({
           mark: "point",
           encoding: {
-            x: {field: 'a', axis: {ticks: 10}}
+            x: {field: 'a', type: 'quantitative', axis: {ticks: 10}}
           }
         }), X);
       assert.deepEqual(ticks, 10);
@@ -208,7 +208,7 @@ describe('Axis', function() {
       const tickSize = axis.tickSize(parseModel({
           mark: "point",
           encoding: {
-            y: {field: 'a'}
+            y: {field: 'a', type: 'quantitative'}
           }
         }), Y);
       assert.deepEqual(tickSize, undefined);
@@ -218,7 +218,7 @@ describe('Axis', function() {
       const tickSize = axis.tickSize(parseModel({
           mark: "point",
           encoding: {
-            y: {field: 'a', axis: {tickSize: 10}}
+            y: {field: 'a', type: 'quantitative', axis: {tickSize: 10}}
           }
         }), Y);
       assert.deepEqual(tickSize, 10);
@@ -230,7 +230,7 @@ describe('Axis', function() {
       const tickSizeEnd = axis.tickSizeEnd(parseModel({
           mark: "point",
           encoding: {
-            y: {field: 'a'}
+            y: {field: 'a', type: 'quantitative'}
           }
         }), Y);
       assert.deepEqual(tickSizeEnd, undefined);
@@ -240,7 +240,7 @@ describe('Axis', function() {
       const tickSizeEnd = axis.tickSizeEnd(parseModel({
           mark: "point",
           encoding: {
-            y: {field: 'a', axis: {tickSizeEnd: 5}}
+            y: {field: 'a', type: 'quantitative', axis: {tickSizeEnd: 5}}
           }
         }), Y);
       assert.deepEqual(tickSizeEnd, 5);
@@ -252,7 +252,7 @@ describe('Axis', function() {
       const title = axis.title(parseUnitModel({
         mark: "point",
         encoding: {
-          x: {field: 'a', axis: {title: 'Custom'}}
+          x: {field: 'a', type: 'quantitative', axis: {title: 'Custom'}}
         }
       }), X);
       assert.deepEqual(title, 'Custom');
@@ -292,7 +292,7 @@ describe('Axis', function() {
       const title = axis.title(parseUnitModel({
           mark: "point",
           encoding: {
-            x: {field: 'abcdefghijkl'}
+            x: {field: 'abcdefghijkl', type: 'quantitative'}
           },
           config: {
             cell: {width: 60}
@@ -307,7 +307,7 @@ describe('Axis', function() {
         height: 60,
         mark: "point",
         encoding: {
-          y: {field: 'abcdefghijkl'}
+          y: {field: 'abcdefghijkl', type: 'quantitative'}
         }
       }), Y);
       assert.deepEqual(title, 'abcdefghi…');
@@ -319,7 +319,7 @@ describe('Axis', function() {
       const titleOffset = axis.titleOffset(parseModel({
           mark: "point",
           encoding: {
-            y: {field: 'a'}
+            y: {field: 'a', type: 'quantitative'}
           }
         }), Y);
       assert.deepEqual(titleOffset, undefined);
@@ -329,7 +329,7 @@ describe('Axis', function() {
       const titleOffset = axis.titleOffset(parseModel({
           mark: "point",
           encoding: {
-            y: {field: 'a', axis: {tickSize: 10, titleOffset: 15}}
+            y: {field: 'a', type: 'quantitative', axis: {tickSize: 10, titleOffset: 15}}
           }
         }), Y);
       assert.deepEqual(titleOffset, 15);
@@ -507,7 +507,7 @@ describe('Axis', function() {
       const model = parseModel({
         mark: "point",
         encoding: {
-          x: {field: "a", axis:{tickLabelColor: "blue"}}
+          x: {field: "a", type: 'quantitative', axis:{tickLabelColor: "blue"}}
         }
       });
       const labels = axis.properties.labels(model, X, {}, {});
@@ -518,7 +518,7 @@ describe('Axis', function() {
       const model = parseModel({
         mark: "point",
         encoding: {
-          x: {field: "a", axis:{tickLabelFont: "Helvetica Neue"}}
+          x: {field: "a", type: 'quantitative', axis:{tickLabelFont: "Helvetica Neue"}}
         }
       });
       const labels = axis.properties.labels(model, X, {}, {});
@@ -529,7 +529,7 @@ describe('Axis', function() {
       const model = parseModel({
         mark: "point",
         encoding: {
-          x: {field: "a", axis:{tickLabelFontSize: 20}}
+          x: {field: "a", type: 'quantitative', axis:{tickLabelFontSize: 20}}
         }
       });
       const labels = axis.properties.labels(model, X, {}, {});
