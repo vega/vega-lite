@@ -205,11 +205,12 @@ describe('Scale', function() {
         encoding: {
           y: {
             aggregate: 'sum',
-            field: 'origin'
+            field: 'origin',
+            type: 'quantitative'
           },
           x: {field: 'x', type: "ordinal"},
           color: {field: 'color', type: "ordinal"},
-          row: {field: 'row'}
+          row: {field: 'row', type: 'ordinal'}
         }
       });
 
