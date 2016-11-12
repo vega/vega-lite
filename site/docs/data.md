@@ -23,8 +23,8 @@ Here is a list of all properties describing `data` source:
 
 | Property      | Type          | Description    |
 | :------------ |:-------------:| :------------- |
-| [values](#inline-data) | Array         | Array of object that maps field names to their values. |
-| [url](#data-from-url) | String         | A URL from which to load the data set. Use the `format.type` property to ensure the loaded data is correctly parsed. |
+| [values](#inline) | Array         | Array of object that maps field names to their values. |
+| [url](#url) | String         | A URL from which to load the data set. Use the `format.type` property to ensure the loaded data is correctly parsed. |
 | [format](#format)     | Object         | Type of input data: `"json"`, `"csv"`, `"tsv"`. The default format type is determined by the extension of the file url. If no extension is detected, `"json"` will be used by default. |
 
 {:#inline}
