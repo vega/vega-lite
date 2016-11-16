@@ -59,12 +59,12 @@
   "devDependencies": {
     "@types/ajv": "^0.0.4",
     "@types/chai": "^3.4.34",
-    "@types/d3": "^4.2.38",
+    "@types/d3": "^4.3.0",
     "@types/json-stable-stringify": "^1.0.29",
-    "@types/mocha": "^2.2.32",
-    "@types/node": "^6.0.46",
+    "@types/mocha": "^2.2.33",
+    "@types/node": "^6.0.48",
     "ajv": "^4.9.0",
-    "browser-sync": "~2.17.5",
+    "browser-sync": "~2.17.6",
     "browserify": "~13.1.1",
     "chai": "~3.5.0",
     "cheerio": "~0.22.0",
@@ -72,11 +72,11 @@
     "exorcist": "~0.4.0",
     "mocha": "~3.1.2",
     "nodemon": "~1.11.0",
-    "nyc": "~8.4.0",
+    "nyc": "~9.0.1",
     "source-map-support": "~0.4.6",
     "tsify": "~2.0.2",
     "tslint": "~3.15.1",
-    "typescript": "^2.0.7",
+    "typescript": "^2.0.10",
     "typescript-json-schema": "~0.3.3",
     "uglify-js": "~2.7.4",
     "vega": "^3.0.0-beta.3",
@@ -88,6 +88,6 @@
     "datalib": "~1.7.3",
     "json-stable-stringify": "~1.0.1",
     "vega-util": "1.0.1",
-    "yargs": "~6.3.0"
+    "yargs": "~6.4.0"
   }
 }
