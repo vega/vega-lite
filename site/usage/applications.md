@@ -23,6 +23,7 @@ This is an incomplete list of integrations, applications, and extensions of the 
 * [Polestar](https://github.com/vega/polestar), lightweight Tableau-style interface for visual analysis
 * [Voyager](https://github.com/vega/voyager), visualization browser for open-ended data exploration
 * [Lyra](https://github.com/vega/lyra), an interactive, graphical Visualization Design Environment (VDE)
+* [mondrian-rest-ui](https://github.com/jazzido/mondrian-rest), an experimental UI for [`mondrian-rest`](https://github.com/jazzido/mondrian-rest) inspired by [Polestar](https://github.com/vega/polestar) and [CubesViewer](https://github.com/jjmontesl/cubesviewer).
 
 ## Libraries
 
