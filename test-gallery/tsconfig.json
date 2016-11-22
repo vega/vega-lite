@@ -13,19 +13,11 @@
     "noImplicitThis": true,
     "noImplicitReturns": true,
     "sourceMap": true,
-    "typeRoots" : ["./typings", "node_modules/@types"]
+    "typeRoots" : ["../typings", "../node_modules/@types"]
   },
   "include": [
-    "src/**/*.ts",
-    "test/**/*.ts",
-    "typings/*.d.ts",
-    "node_modules/@types/**/*.d.ts"
-  ],
-  "exclude": [
-    "node_modules",
-    "bower_components",
-    "data",
-    "_site",
-    "lib"
+    "*.ts",
+    "../typings/*.d.ts",
+    "../node_modules/@types/**/*.d.ts"
   ]
 }
