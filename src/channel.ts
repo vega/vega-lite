@@ -4,7 +4,7 @@
  */
 
 import {Mark} from './mark';
-import {contains, without} from './util';
+import {Dict, contains, without} from './util';
 
 export namespace Channel {
   export const X: 'x' = 'x';
@@ -45,6 +45,12 @@ export const ORDER = Channel.ORDER;
 export const OPACITY = Channel.OPACITY;
 
 export const CHANNELS = [X, Y, X2, Y2, ROW, COLUMN, SIZE, SHAPE, COLOR, PATH, ORDER, OPACITY, TEXT, DETAIL, LABEL];
+
+export const CHANNEL_INDEX: Dict<boolean> =
+  CHANNELS.reduce((d, channel) => {
+    d[channel] = true;
+    return d;
+  }, {} as Dict<boolean>);
 
 export const UNIT_CHANNELS = without(CHANNELS, [ROW, COLUMN]);
 export const UNIT_SCALE_CHANNELS = without(UNIT_CHANNELS, [PATH, ORDER, DETAIL, TEXT, LABEL, X2, Y2]);

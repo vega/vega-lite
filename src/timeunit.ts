@@ -50,7 +50,7 @@ export const SINGLE_TIMEUNITS = [
   TimeUnit.MILLISECONDS,
 ];
 
-const SINGLE_TIMEUNIT_INDEX: Dict<boolean> = SINGLE_TIMEUNITS.reduce((d, timeUnit) => {
+export const SINGLE_TIMEUNIT_INDEX: Dict<boolean> = SINGLE_TIMEUNITS.reduce((d, timeUnit) => {
   d[timeUnit] = true;
   return d;
 }, {} as Dict<boolean>);
@@ -118,7 +118,7 @@ export const MULTI_TIMEUNITS = [
   TimeUnit.SECONDSMILLISECONDS,
 ];
 
-const MULTI_TIMEUNIT_INDEX: Dict<boolean> = MULTI_TIMEUNITS.reduce((d, timeUnit) => {
+export const MULTI_TIMEUNIT_INDEX: Dict<boolean> = MULTI_TIMEUNITS.reduce((d, timeUnit) => {
   d[timeUnit] = true;
   return d;
 }, {} as Dict<boolean>);
