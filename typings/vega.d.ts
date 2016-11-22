@@ -4,7 +4,7 @@ declare module vg {
   export function embed(selector: any, spec: any, f?: any): void;
 }
 
-declare module vega {
+declare module 'vega' {
   export var version: string;
   export function parse(spec: any): any;
   export class View {

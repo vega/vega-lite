@@ -1,3 +1,8 @@
+import * as d3 from 'd3';
+import * as vega from 'vega';
+import * as vl from '../src/vl';
+import {ExtendedSpec} from '../src/spec';
+
 d3.select('#vl-version').text(vl.version);
 d3.select('#vg-version').text(vega.version);
 
@@ -20,7 +25,7 @@ d3.json('examples/all-examples.json', function(examples: string[]) {
     vizEnter.append('div').attr('class', 'view');
 
     examples.forEach(function(example) {
-      d3.json('examples/specs/' + example + '.vl.json', function(error: Error, vlSpec: any) {
+      d3.json('examples/specs/' + example + '.vl.json', function(error: Error, vlSpec: ExtendedSpec) {
         const vgSpec = vl.compile(vlSpec);
         const runtime = vega.parse(vgSpec); // may throw an Error if parsing fails
         new vega.View(runtime)
@@ -34,5 +39,4 @@ d3.json('examples/all-examples.json', function(examples: string[]) {
       });
     });
   }
-
 });
