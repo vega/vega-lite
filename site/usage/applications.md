@@ -23,6 +23,8 @@ This is an incomplete list of integrations, applications, and extensions of the 
 * [Polestar](https://github.com/vega/polestar), lightweight Tableau-style interface for visual analysis
 * [Voyager](https://github.com/vega/voyager), visualization browser for open-ended data exploration
 * [Lyra](https://github.com/vega/lyra), an interactive, graphical Visualization Design Environment (VDE)
+* [nteract](https://github.com/nteract/nteract), interactive notebook application with Vega and Vega-Lite renderer
+* [Vega-VSCode](https://github.com/vega/vega-vscode), Vega Language Plug-in for Visual Studio Code
 
 ## Libraries
 
