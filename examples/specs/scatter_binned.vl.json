@@ -1,6 +1,6 @@
 {
   "data": {"url": "data/movies.json"},
-  "mark": "point",
+  "mark": "circle",
   "encoding": {
     "x": {
       "bin": {"maxbins": 10},
@@ -14,8 +14,8 @@
     },
     "size": {
       "aggregate": "count",
-      "field": "*", "type":
-      "quantitative"
+      "field": "*",
+      "type": "quantitative"
     }
   }
 }
