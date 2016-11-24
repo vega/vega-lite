@@ -450,7 +450,6 @@
                 },
                 "fill": {
                     "description": "The fill color.",
-                    "format": "color",
                     "type": "string"
                 },
                 "fillOpacity": {
@@ -923,7 +922,6 @@
         "FacetGridConfig": {
             "properties": {
                 "color": {
-                    "format": "color",
                     "type": "string"
                 },
                 "offset": {
@@ -1411,7 +1409,6 @@
                 },
                 "color": {
                     "description": "Default color.",
-                    "format": "color",
                     "type": "string"
                 },
                 "dx": {
@@ -1424,7 +1421,6 @@
                 },
                 "fill": {
                     "description": "Default Fill Color.  This has higher precedence than config.color",
-                    "format": "color",
                     "type": "string"
                 },
                 "fillOpacity": {
@@ -1513,7 +1509,6 @@
                 },
                 "stroke": {
                     "description": "Default Stroke Color.  This has higher precedence than config.color",
-                    "format": "color",
                     "type": "string"
                 },
                 "strokeDash": {
