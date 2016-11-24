@@ -74,7 +74,7 @@
     "tsify": "~2.0.2",
     "tslint": "~3.15.1",
     "typescript": "^2.0.6",
-    "typescript-json-schema": "~0.3.2",
+    "typescript-json-schema": "~0.3.4",
     "uglify-js": "~2.7.4",
     "vega": "~2.6.3",
     "vega-datasets": "vega/vega-datasets#gh-pages",
