@@ -12,7 +12,6 @@ export interface CellConfig {
   // FILL_STROKE_CONFIG
   /**
    * The fill color.
-   * @format color
    */
   fill?: string;
 
@@ -57,7 +56,6 @@ export interface FacetConfig {
 }
 
 export interface FacetGridConfig {
-  /** @format color */
   color?: string;
   opacity?: number;
   offset?: number;
@@ -199,19 +197,16 @@ export interface MarkConfig {
 
   /**
    * Default color.
-   * @format color
    */
   color?: string;
 
   /**
    * Default Fill Color.  This has higher precedence than config.color
-   * @format color
    */
   fill?: string;
 
   /**
    * Default Stroke Color.  This has higher precedence than config.color
-   * @format color
    */
   stroke?: string;
 
