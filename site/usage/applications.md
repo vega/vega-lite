@@ -25,6 +25,7 @@ This is an incomplete list of integrations, applications, and extensions of the 
 * [Lyra](https://github.com/vega/lyra), an interactive, graphical Visualization Design Environment (VDE)
 * [nteract](https://github.com/nteract/nteract), interactive notebook application with Vega and Vega-Lite renderer
 * [Vega-VSCode](https://github.com/vega/vega-vscode), Vega Language Plug-in for Visual Studio Code
+* [mondrian-rest-ui](https://github.com/jazzido/mondrian-rest), an experimental UI for [`mondrian-rest`](https://github.com/jazzido/mondrian-rest) inspired by [Polestar](https://github.com/vega/polestar) and [CubesViewer](https://github.com/jjmontesl/cubesviewer).
 
 ## Libraries
 
