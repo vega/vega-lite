@@ -15,8 +15,7 @@
     "size": {
       "aggregate": "count",
       "field": "*",
-      "type": "quantitative",
-      "scale": {"range": [1,256]}
+      "type": "quantitative"
     }
   }
 }
