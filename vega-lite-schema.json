@@ -46,198 +46,191 @@
             "type": "string"
         },
         "Axis": {
-            "anyOf": [
-                {
-                    "properties": {
-                        "axisColor": {
-                            "description": "Color of axis line.",
-                            "type": "string"
-                        },
-                        "axisWidth": {
-                            "description": "Width of the axis line",
-                            "type": "number"
-                        },
-                        "characterWidth": {
-                            "description": "Character width for automatically determining title max length.",
-                            "type": "number"
-                        },
-                        "format": {
-                            "description": "The formatting pattern for axis labels.",
-                            "type": "string"
-                        },
-                        "grid": {
-                            "description": "A flag indicate if gridlines should be created in addition to ticks. If `grid` is unspecified, the default value is `true` for ROW and COL. For X and Y, the default value is `true` for quantitative and time fields and `false` otherwise.",
-                            "type": "boolean"
-                        },
-                        "gridColor": {
-                            "description": "Color of gridlines.",
-                            "type": "string"
-                        },
-                        "gridDash": {
-                            "description": "The offset (in pixels) into which to begin drawing with the grid dash array.",
+            "properties": {
+                "axisColor": {
+                    "description": "Color of axis line.",
+                    "type": "string"
+                },
+                "axisWidth": {
+                    "description": "Width of the axis line",
+                    "type": "number"
+                },
+                "characterWidth": {
+                    "description": "Character width for automatically determining title max length.",
+                    "type": "number"
+                },
+                "format": {
+                    "description": "The formatting pattern for axis labels.",
+                    "type": "string"
+                },
+                "grid": {
+                    "description": "A flag indicate if gridlines should be created in addition to ticks. If `grid` is unspecified, the default value is `true` for ROW and COL. For X and Y, the default value is `true` for quantitative and time fields and `false` otherwise.",
+                    "type": "boolean"
+                },
+                "gridColor": {
+                    "description": "Color of gridlines.",
+                    "type": "string"
+                },
+                "gridDash": {
+                    "description": "The offset (in pixels) into which to begin drawing with the grid dash array.",
+                    "items": {
+                        "type": "number"
+                    },
+                    "type": "array"
+                },
+                "gridOpacity": {
+                    "description": "The stroke opacity of grid (value between [0,1])",
+                    "type": "number"
+                },
+                "gridWidth": {
+                    "description": "The grid width, in pixels.",
+                    "type": "number"
+                },
+                "labelAlign": {
+                    "description": "Text alignment for the Label.",
+                    "type": "string"
+                },
+                "labelAngle": {
+                    "description": "The rotation angle of the axis labels.",
+                    "maximum": 360,
+                    "minimum": 0,
+                    "type": "number"
+                },
+                "labelBaseline": {
+                    "description": "Text baseline for the label.",
+                    "type": "string"
+                },
+                "labelMaxLength": {
+                    "description": "Truncate labels that are too long.",
+                    "minimum": 1,
+                    "type": "number"
+                },
+                "labels": {
+                    "description": "Enable or disable labels.",
+                    "type": "boolean"
+                },
+                "layer": {
+                    "description": "A string indicating if the axis (and any gridlines) should be placed above or below the data marks.",
+                    "type": "string"
+                },
+                "offset": {
+                    "description": "The offset, in pixels, by which to displace the axis from the edge of the enclosing group or data rectangle.",
+                    "type": "number"
+                },
+                "orient": {
+                    "$ref": "#/definitions/AxisOrient",
+                    "description": "The orientation of the axis. One of top, bottom, left or right. The orientation can be used to further specialize the axis type (e.g., a y axis oriented for the right edge of the chart)."
+                },
+                "properties": {
+                    "description": "Optional mark property definitions for custom axis styling."
+                },
+                "shortTimeLabels": {
+                    "description": "Whether month and day names should be abbreviated.",
+                    "type": "boolean"
+                },
+                "subdivide": {
+                    "description": "If provided, sets the number of minor ticks between major ticks (the value 9 results in decimal subdivision). Only applicable for axes visualizing quantitative scales.",
+                    "type": "number"
+                },
+                "tickColor": {
+                    "description": "The color of the axis's tick.",
+                    "type": "string"
+                },
+                "tickLabelColor": {
+                    "description": "The color of the tick label, can be in hex color code or regular color name.",
+                    "type": "string"
+                },
+                "tickLabelFont": {
+                    "description": "The font of the tick label.",
+                    "type": "string"
+                },
+                "tickLabelFontSize": {
+                    "description": "The font size of label, in pixels.",
+                    "type": "number"
+                },
+                "tickPadding": {
+                    "description": "The padding, in pixels, between ticks and text labels.",
+                    "type": "number"
+                },
+                "tickSize": {
+                    "description": "The size, in pixels, of major, minor and end ticks.",
+                    "minimum": 0,
+                    "type": "number"
+                },
+                "tickSizeEnd": {
+                    "description": "The size, in pixels, of end ticks.",
+                    "minimum": 0,
+                    "type": "number"
+                },
+                "tickSizeMajor": {
+                    "description": "The size, in pixels, of major ticks.",
+                    "minimum": 0,
+                    "type": "number"
+                },
+                "tickSizeMinor": {
+                    "description": "The size, in pixels, of minor ticks.",
+                    "minimum": 0,
+                    "type": "number"
+                },
+                "tickWidth": {
+                    "description": "The width, in pixels, of ticks.",
+                    "type": "number"
+                },
+                "ticks": {
+                    "description": "A desired number of ticks, for axes visualizing quantitative scales. The resulting number may be different so that values are \"nice\" (multiples of 2, 5, 10) and lie within the underlying scale's range.",
+                    "minimum": 0,
+                    "type": "number"
+                },
+                "title": {
+                    "description": "A title for the axis. Shows field name and its function by default.",
+                    "type": "string"
+                },
+                "titleColor": {
+                    "description": "Color of the title, can be in hex color code or regular color name.",
+                    "type": "string"
+                },
+                "titleFont": {
+                    "description": "Font of the title.",
+                    "type": "string"
+                },
+                "titleFontSize": {
+                    "description": "Size of the title.",
+                    "type": "number"
+                },
+                "titleFontWeight": {
+                    "description": "Weight of the title.",
+                    "type": [
+                        "string",
+                        "number"
+                    ]
+                },
+                "titleMaxLength": {
+                    "description": "Max length for axis title if the title is automatically generated from the field's description. By default, this is automatically based on cell size and characterWidth property.",
+                    "minimum": 0,
+                    "type": "number"
+                },
+                "titleOffset": {
+                    "description": "A title offset value for the axis.",
+                    "type": "number"
+                },
+                "values": {
+                    "anyOf": [
+                        {
                             "items": {
                                 "type": "number"
                             },
                             "type": "array"
                         },
-                        "gridOpacity": {
-                            "description": "The stroke opacity of grid (value between [0,1])",
-                            "type": "number"
-                        },
-                        "gridWidth": {
-                            "description": "The grid width, in pixels.",
-                            "type": "number"
-                        },
-                        "labelAlign": {
-                            "description": "Text alignment for the Label.",
-                            "type": "string"
-                        },
-                        "labelAngle": {
-                            "description": "The rotation angle of the axis labels.",
-                            "maximum": 360,
-                            "minimum": 0,
-                            "type": "number"
-                        },
-                        "labelBaseline": {
-                            "description": "Text baseline for the label.",
-                            "type": "string"
-                        },
-                        "labelMaxLength": {
-                            "description": "Truncate labels that are too long.",
-                            "minimum": 1,
-                            "type": "number"
-                        },
-                        "labels": {
-                            "description": "Enable or disable labels.",
-                            "type": "boolean"
-                        },
-                        "layer": {
-                            "description": "A string indicating if the axis (and any gridlines) should be placed above or below the data marks.",
-                            "type": "string"
-                        },
-                        "offset": {
-                            "description": "The offset, in pixels, by which to displace the axis from the edge of the enclosing group or data rectangle.",
-                            "type": "number"
-                        },
-                        "orient": {
-                            "$ref": "#/definitions/AxisOrient",
-                            "description": "The orientation of the axis. One of top, bottom, left or right. The orientation can be used to further specialize the axis type (e.g., a y axis oriented for the right edge of the chart)."
-                        },
-                        "properties": {
-                            "description": "Optional mark property definitions for custom axis styling."
-                        },
-                        "shortTimeLabels": {
-                            "description": "Whether month and day names should be abbreviated.",
-                            "type": "boolean"
-                        },
-                        "subdivide": {
-                            "description": "If provided, sets the number of minor ticks between major ticks (the value 9 results in decimal subdivision). Only applicable for axes visualizing quantitative scales.",
-                            "type": "number"
-                        },
-                        "tickColor": {
-                            "description": "The color of the axis's tick.",
-                            "type": "string"
-                        },
-                        "tickLabelColor": {
-                            "description": "The color of the tick label, can be in hex color code or regular color name.",
-                            "type": "string"
-                        },
-                        "tickLabelFont": {
-                            "description": "The font of the tick label.",
-                            "type": "string"
-                        },
-                        "tickLabelFontSize": {
-                            "description": "The font size of label, in pixels.",
-                            "type": "number"
-                        },
-                        "tickPadding": {
-                            "description": "The padding, in pixels, between ticks and text labels.",
-                            "type": "number"
-                        },
-                        "tickSize": {
-                            "description": "The size, in pixels, of major, minor and end ticks.",
-                            "minimum": 0,
-                            "type": "number"
-                        },
-                        "tickSizeEnd": {
-                            "description": "The size, in pixels, of end ticks.",
-                            "minimum": 0,
-                            "type": "number"
-                        },
-                        "tickSizeMajor": {
-                            "description": "The size, in pixels, of major ticks.",
-                            "minimum": 0,
-                            "type": "number"
-                        },
-                        "tickSizeMinor": {
-                            "description": "The size, in pixels, of minor ticks.",
-                            "minimum": 0,
-                            "type": "number"
-                        },
-                        "tickWidth": {
-                            "description": "The width, in pixels, of ticks.",
-                            "type": "number"
-                        },
-                        "ticks": {
-                            "description": "A desired number of ticks, for axes visualizing quantitative scales. The resulting number may be different so that values are \"nice\" (multiples of 2, 5, 10) and lie within the underlying scale's range.",
-                            "minimum": 0,
-                            "type": "number"
-                        },
-                        "title": {
-                            "description": "A title for the axis. Shows field name and its function by default.",
-                            "type": "string"
-                        },
-                        "titleColor": {
-                            "description": "Color of the title, can be in hex color code or regular color name.",
-                            "type": "string"
-                        },
-                        "titleFont": {
-                            "description": "Font of the title.",
-                            "type": "string"
-                        },
-                        "titleFontSize": {
-                            "description": "Size of the title.",
-                            "type": "number"
-                        },
-                        "titleFontWeight": {
-                            "description": "Weight of the title.",
-                            "type": [
-                                "string",
-                                "number"
-                            ]
-                        },
-                        "titleMaxLength": {
-                            "description": "Max length for axis title if the title is automatically generated from the field's description. By default, this is automatically based on cell size and characterWidth property.",
-                            "minimum": 0,
-                            "type": "number"
-                        },
-                        "titleOffset": {
-                            "description": "A title offset value for the axis.",
-                            "type": "number"
-                        },
-                        "values": {
-                            "anyOf": [
-                                {
-                                    "items": {
-                                        "type": "number"
-                                    },
-                                    "type": "array"
-                                },
-                                {
-                                    "items": {
-                                        "$ref": "#/definitions/DateTime"
-                                    },
-                                    "type": "array"
-                                }
-                            ]
+                        {
+                            "items": {
+                                "$ref": "#/definitions/DateTime"
+                            },
+                            "type": "array"
                         }
-                    },
-                    "type": "object"
-                },
-                {
-                    "type": "null"
+                    ]
                 }
-            ]
+            },
+            "type": "object"
         },
         "AxisConfig": {
             "properties": {
@@ -518,7 +511,14 @@
                     "type": "string"
                 },
                 "legend": {
-                    "$ref": "#/definitions/Legend"
+                    "anyOf": [
+                        {
+                            "$ref": "#/definitions/Legend"
+                        },
+                        {
+                            "type": "null"
+                        }
+                    ]
                 },
                 "scale": {
                     "$ref": "#/definitions/Scale"
@@ -1121,149 +1121,142 @@
             "type": "object"
         },
         "Legend": {
-            "anyOf": [
-                {
-                    "properties": {
-                        "format": {
-                            "description": "An optional formatting pattern for legend labels. Vega uses D3\\'s format pattern.",
-                            "type": "string"
-                        },
-                        "gradientHeight": {
-                            "description": "The height of the gradient, in pixels.",
-                            "type": "number"
-                        },
-                        "gradientStrokeColor": {
-                            "description": "The color of the gradient stroke, can be in hex color code or regular color name.",
-                            "type": "string"
-                        },
-                        "gradientStrokeWidth": {
-                            "description": "The width of the gradient stroke, in pixels.",
-                            "type": "number"
-                        },
-                        "gradientWidth": {
-                            "description": "The width of the gradient, in pixels.",
-                            "type": "number"
-                        },
-                        "labelAlign": {
-                            "description": "The alignment of the legend label, can be left, middle or right.",
-                            "type": "string"
-                        },
-                        "labelBaseline": {
-                            "description": "The position of the baseline of legend label, can be top, middle or bottom.",
-                            "type": "string"
-                        },
-                        "labelColor": {
-                            "description": "The color of the legend label, can be in hex color code or regular color name.",
-                            "type": "string"
-                        },
-                        "labelFont": {
-                            "description": "The font of the legend label.",
-                            "type": "string"
-                        },
-                        "labelFontSize": {
-                            "description": "The font size of legend label.",
-                            "type": "number"
-                        },
-                        "labelOffset": {
-                            "description": "The offset of the legend label.",
-                            "type": "number"
-                        },
-                        "margin": {
-                            "description": "The margin around the legend, in pixels",
-                            "type": "number"
-                        },
-                        "offset": {
-                            "description": "The offset, in pixels, by which to displace the legend from the edge of the enclosing group or data rectangle.",
-                            "type": "number"
-                        },
-                        "orient": {
-                            "description": "The orientation of the legend. One of \"left\" or \"right\". This determines how the legend is positioned within the scene. The default is \"right\".",
-                            "type": "string"
-                        },
-                        "padding": {
-                            "description": "The padding, in pixels, between the legend and axis.",
-                            "type": "number"
-                        },
-                        "properties": {
-                            "description": "Optional mark property definitions for custom legend styling."
-                        },
-                        "shape": {
-                            "$ref": "#/definitions/Shape"
-                        },
-                        "shortTimeLabels": {
-                            "description": "Whether month names and weekday names should be abbreviated.",
-                            "type": "boolean"
-                        },
-                        "symbolColor": {
-                            "description": "The color of the legend symbol,",
-                            "type": "string"
-                        },
-                        "symbolShape": {
-                            "description": "The shape of the legend symbol, can be the 'circle', 'square', 'cross', 'diamond',\n\n'triangle-up', 'triangle-down', or else a custom SVG path string.",
-                            "type": "string"
-                        },
-                        "symbolSize": {
-                            "description": "The size of the legend symbol, in pixels.",
-                            "type": "number"
-                        },
-                        "symbolStrokeWidth": {
-                            "description": "The width of the symbol's stroke.",
-                            "minimum": 0,
-                            "type": "number"
-                        },
-                        "title": {
-                            "description": "A title for the legend. (Shows field name and its function by default.)",
-                            "type": "string"
-                        },
-                        "titleColor": {
-                            "description": "Optional mark property definitions for custom legend styling.\n\nThe color of the legend title, can be in hex color code or regular color name.",
-                            "type": "string"
-                        },
-                        "titleFont": {
-                            "description": "The font of the legend title.",
-                            "type": "string"
-                        },
-                        "titleFontSize": {
-                            "description": "The font size of the legend title.",
-                            "type": "number"
-                        },
-                        "titleFontWeight": {
-                            "description": "The font weight of the legend title.",
-                            "type": [
-                                "string",
-                                "number"
-                            ]
-                        },
-                        "values": {
-                            "anyOf": [
-                                {
-                                    "items": {
-                                        "type": "string"
-                                    },
-                                    "type": "array"
-                                },
-                                {
-                                    "items": {
-                                        "type": "number"
-                                    },
-                                    "type": "array"
-                                },
-                                {
-                                    "items": {
-                                        "$ref": "#/definitions/DateTime"
-                                    },
-                                    "type": "array"
-                                }
-                            ],
-                            "description": "Explicitly set the visible legend values."
-                        }
-                    },
-                    "type": "object"
+            "properties": {
+                "format": {
+                    "description": "An optional formatting pattern for legend labels. Vega uses D3\\'s format pattern.",
+                    "type": "string"
                 },
-                {
-                    "type": "null"
+                "gradientHeight": {
+                    "description": "The height of the gradient, in pixels.",
+                    "type": "number"
+                },
+                "gradientStrokeColor": {
+                    "description": "The color of the gradient stroke, can be in hex color code or regular color name.",
+                    "type": "string"
+                },
+                "gradientStrokeWidth": {
+                    "description": "The width of the gradient stroke, in pixels.",
+                    "type": "number"
+                },
+                "gradientWidth": {
+                    "description": "The width of the gradient, in pixels.",
+                    "type": "number"
+                },
+                "labelAlign": {
+                    "description": "The alignment of the legend label, can be left, middle or right.",
+                    "type": "string"
+                },
+                "labelBaseline": {
+                    "description": "The position of the baseline of legend label, can be top, middle or bottom.",
+                    "type": "string"
+                },
+                "labelColor": {
+                    "description": "The color of the legend label, can be in hex color code or regular color name.",
+                    "type": "string"
+                },
+                "labelFont": {
+                    "description": "The font of the legend label.",
+                    "type": "string"
+                },
+                "labelFontSize": {
+                    "description": "The font size of legend label.",
+                    "type": "number"
+                },
+                "labelOffset": {
+                    "description": "The offset of the legend label.",
+                    "type": "number"
+                },
+                "margin": {
+                    "description": "The margin around the legend, in pixels",
+                    "type": "number"
+                },
+                "offset": {
+                    "description": "The offset, in pixels, by which to displace the legend from the edge of the enclosing group or data rectangle.",
+                    "type": "number"
+                },
+                "orient": {
+                    "description": "The orientation of the legend. One of \"left\" or \"right\". This determines how the legend is positioned within the scene. The default is \"right\".",
+                    "type": "string"
+                },
+                "padding": {
+                    "description": "The padding, in pixels, between the legend and axis.",
+                    "type": "number"
+                },
+                "properties": {
+                    "description": "Optional mark property definitions for custom legend styling."
+                },
+                "shape": {
+                    "$ref": "#/definitions/Shape"
+                },
+                "shortTimeLabels": {
+                    "description": "Whether month names and weekday names should be abbreviated.",
+                    "type": "boolean"
+                },
+                "symbolColor": {
+                    "description": "The color of the legend symbol,",
+                    "type": "string"
+                },
+                "symbolShape": {
+                    "description": "The shape of the legend symbol, can be the 'circle', 'square', 'cross', 'diamond',\n\n'triangle-up', 'triangle-down', or else a custom SVG path string.",
+                    "type": "string"
+                },
+                "symbolSize": {
+                    "description": "The size of the legend symbol, in pixels.",
+                    "type": "number"
+                },
+                "symbolStrokeWidth": {
+                    "description": "The width of the symbol's stroke.",
+                    "minimum": 0,
+                    "type": "number"
+                },
+                "title": {
+                    "description": "A title for the legend. (Shows field name and its function by default.)",
+                    "type": "string"
+                },
+                "titleColor": {
+                    "description": "Optional mark property definitions for custom legend styling.\n\nThe color of the legend title, can be in hex color code or regular color name.",
+                    "type": "string"
+                },
+                "titleFont": {
+                    "description": "The font of the legend title.",
+                    "type": "string"
+                },
+                "titleFontSize": {
+                    "description": "The font size of the legend title.",
+                    "type": "number"
+                },
+                "titleFontWeight": {
+                    "description": "The font weight of the legend title.",
+                    "type": [
+                        "string",
+                        "number"
+                    ]
+                },
+                "values": {
+                    "anyOf": [
+                        {
+                            "items": {
+                                "type": "string"
+                            },
+                            "type": "array"
+                        },
+                        {
+                            "items": {
+                                "type": "number"
+                            },
+                            "type": "array"
+                        },
+                        {
+                            "items": {
+                                "$ref": "#/definitions/DateTime"
+                            },
+                            "type": "array"
+                        }
+                    ],
+                    "description": "Explicitly set the visible legend values."
                 }
-            ]
+            },
+            "type": "object"
         },
         "LegendConfig": {
             "properties": {
@@ -1683,7 +1676,14 @@
                     "description": "Aggregation function for the field\n\n(e.g., `mean`, `sum`, `median`, `min`, `max`, `count`)."
                 },
                 "axis": {
-                    "$ref": "#/definitions/Axis"
+                    "anyOf": [
+                        {
+                            "$ref": "#/definitions/Axis"
+                        },
+                        {
+                            "type": "null"
+                        }
+                    ]
                 },
                 "bin": {
                     "anyOf": [
