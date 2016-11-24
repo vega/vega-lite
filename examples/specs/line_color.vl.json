@@ -3,7 +3,7 @@
   "data": {"url": "data/stocks.csv", "format": {"type": "csv"}},
   "mark": "line",
   "encoding": {
-    "x": {"field": "date", "type": "temporal"},
+    "x": {"field": "date", "type": "temporal", "axis": {"format": "%Y"}},
     "y": {"field": "price", "type": "quantitative"},
     "color": {"field": "symbol", "type": "nominal"}
   }
