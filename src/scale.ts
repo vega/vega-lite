@@ -136,20 +136,67 @@ export interface ScaleConfig {
   /** Default range for shape */
   shapeRange?: string[];
 
-  /** Default range for bar size scale */
-  barSizeRange?: number[];
+  /**
+   * Default minimum range for bar size scale with zero=false.
+   * @minimum 1
+   */
+  minBarSize?: number;
 
-  /** Default range for font size scale */
-  fontSizeRange?: number[];
+  /**
+   * Default max range for bar size scale.
+   * If undefined (default), we will use bandSize - 1.
+   * @minimum 1
+   */
+  maxBarSize?: number;
 
-  /** Default range for rule stroke widths */
-  ruleSizeRange?: number[];
+  /**
+   * Default minimum range for tick size (tick span) scale with zero=false.
+   * @minimum 1
+   */
+  minTickSize?: number;
 
-  /** Default range for tick spans */
-  tickSizeRange?: number[];
+  /**
+   * Default max range for tick size (tick span) scale.
+   * If undefined (default), we will use bandSize - 1.
+   * @minimum 1
+   */
+  maxTickSize?: number;
 
-  /** Default range for bar size scale */
-  pointSizeRange?: number[];
+  /**
+   * Default minimum range for rule size (strokeWidth) scale with zero=false.
+   * @minimum 1
+   */
+  minRuleSize?: number;
+
+  /**
+   * Default max range for rule size (strokeWidth) scale.
+   * @minimum 1
+   */
+  maxRuleSize?: number;
+
+  /**
+   * Default minimum range for point size scale with zero=false.
+   * @minimum 1
+   */
+  minPointSize?: number;
+
+  /**
+   * Default max range for point size scale.
+   * @minimum 1
+   */
+  maxPointSize?: number;
+
+  /**
+   * Default minimum range for text size (fontSize) scale with zero=false.
+   * @minimum 1
+   */
+  minTextSize?: number;
+
+  /**
+   * Default max range for text size (fontSize) scale.
+   * @minimum 1
+   */
+  maxTextSize?: number;
 
   // nice should depends on type (quantitative or temporal), so
   // let's not make a config.
@@ -165,12 +212,23 @@ export const defaultScaleConfig = {
   useRawDomain: false,
   opacity: [0.3, 0.8],
 
+  // if tickSize = 1, it becomes a dot.
+  // To be consistent, we just use 3 to be somewhat consistent with point, which use area = 9.
+  minTickSize: 3,
+
+  minRuleSize: 1,
+  maxRuleSize: 5,
+
+  // TODO: revise if these *can* become ratios of rangeStep
+  minPointSize: 9, // Point size is area. For square point, 9 = 3 pixel ^ 2, not too small!
+
+  // QUESTION: should these be min/maxFontSize?
+  minTextSize: 8, // smaller than 8 would be illegible
+  maxTextSize: 40,
+
   nominalColorScheme: 'category10',
   sequentialColorScheme: 'Greens',
   shapeRange: ['circle', 'square', 'cross', 'diamond', 'triangle-up', 'triangle-down'],
-  fontSizeRange: [8, 40],
-  ruleSizeRange: [1, 5],
-  tickSizeRange: [1, 20]
 };
 
 export interface Scale {

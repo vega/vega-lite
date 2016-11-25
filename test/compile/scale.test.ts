@@ -670,7 +670,7 @@ describe('Scale', function() {
       });
 
       describe('point, square, circle', function() {
-        it('should return [9, (minBandSize-2)^2] if both x and y are discrete', () => {
+        it('should return [0, (minBandSize-2)^2] if both x and y are discrete and size is quantitative (thus use zero=true, by default)', () => {
           // TODO: replace this test with something more local
           const model = parseUnitModel({
             "data": {"url": "data/cars.json"},
@@ -682,10 +682,41 @@ describe('Scale', function() {
             }
           });
           const scales = parseScaleComponent(model)['size'];
+          assert.deepEqual(scales.main.range, [0, 81]);
+        });
+
+        it('should return [9, (minBandSize-2)^2] if both x and y are discrete and size is not quantitative (thus use zero=false, by default)', () => {
+          // TODO: replace this test with something more local
+          const model = parseUnitModel({
+            "data": {"url": "data/cars.json"},
+            "mark": "point",
+            "encoding": {
+              "y": {"field": "Origin", "type": "ordinal", "scale": {"bandSize": 11}},
+              "x": {"field": "Cylinders", "type": "ordinal", "scale": {"bandSize": 13}},
+              "size": {"field": "Origin", "type": "ordinal"}
+            }
+          });
+          const scales = parseScaleComponent(model)['size'];
           assert.deepEqual(scales.main.range, [9, 81]);
         });
 
-        it('should return [9, (xBandSize-2)^2] if x is discrete and y is continuous', () => {
+        it('should return [9, (minBandSize-2)^2] if both x and y are discrete and size is quantitative but use zero=false', () => {
+          // TODO: replace this test with something more local
+          const model = parseUnitModel({
+            "data": {"url": "data/cars.json"},
+            "mark": "point",
+            "encoding": {
+              "y": {"field": "Origin", "type": "ordinal", "scale": {"bandSize": 11}},
+              "x": {"field": "Cylinders", "type": "ordinal", "scale": {"bandSize": 13}},
+              "size": {"field": "Acceleration", "type": "quantitative", "scale": {"zero": false}}
+            }
+          });
+          const scales = parseScaleComponent(model)['size'];
+          assert.deepEqual(scales.main.range, [9, 81]);
+          // TODO: this actually should throw warning too.
+        });
+
+        it('should return [0, (xBandSize-2)^2] if x is discrete and y is continuous and size is quantitative (thus use zero=true, by default)', () => {
           // TODO: replace this test with something more local
           const model = parseUnitModel({
             "data": {"url": "data/cars.json"},
@@ -697,10 +728,25 @@ describe('Scale', function() {
             }
           });
           const scales = parseScaleComponent(model)['size'];
+          assert.deepEqual(scales.main.range, [0, 81]);
+        });
+
+        it('should return [9, (xBandSize-2)^2] if x is discrete and y is continuous and size is quantitative (thus use zero=false, by default)', () => {
+          // TODO: replace this test with something more local
+          const model = parseUnitModel({
+            "data": {"url": "data/cars.json"},
+            "mark": "point",
+            "encoding": {
+              "y": {"field": "Acceleration", "type": "quantitative"},
+              "x": {"field": "Cylinders", "type": "ordinal", "scale": {"bandSize": 11}},
+              "size": {"field": "Origin", "type": "ordinal"}
+            }
+          });
+          const scales = parseScaleComponent(model)['size'];
           assert.deepEqual(scales.main.range, [9, 81]);
         });
 
-        it('should return [9, (yBandSize-2)^2] if y is discrete and x is continuous', () => {
+        it('should return [0, (yBandSize-2)^2] if y is discrete and x is continuous and size is quantitative (thus use zero=true, by default)', () => {
           // TODO: replace this test with something more local
           const model = parseUnitModel({
             "data": {"url": "data/cars.json"},
@@ -712,10 +758,10 @@ describe('Scale', function() {
             }
           });
           const scales = parseScaleComponent(model)['size'];
-          assert.deepEqual(scales.main.range, [9, 81]);
+          assert.deepEqual(scales.main.range, [0, 81]);
         });
 
-        it('should return [9, (scaleConfig.BandSize-2)^2] if y is discrete and x is continuous', () => {
+        it('should return [0, (scaleConfig.BandSize-2)^2] if y is discrete and x is continuous and size is quantitative (thus use zero=true, by default)', () => {
           // TODO: replace this test with something more local
           const model = parseUnitModel({
             "data": {"url": "data/cars.json"},
@@ -728,7 +774,7 @@ describe('Scale', function() {
             "config": {"scale": {"bandSize": 11}}
           });
           const scales = parseScaleComponent(model)['size'];
-          assert.deepEqual(scales.main.range, [9, 81]);
+          assert.deepEqual(scales.main.range, [0, 81]);
         });
       });
     });
