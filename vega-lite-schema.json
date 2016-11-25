@@ -2287,13 +2287,6 @@
                     "description": "Default band size for (1) `y` ordinal scale,\n\nand (2) `x` ordinal scale when the mark is not `text`.",
                     "minimum": 0
                 },
-                "barSizeRange": {
-                    "description": "Default range for bar size scale",
-                    "items": {
-                        "type": "number"
-                    },
-                    "type": "array"
-                },
                 "clamp": {
                     "description": "If true, values that exceed the data domain are clamped to either the minimum or maximum range value",
                     "type": "boolean"
@@ -2303,12 +2296,55 @@
                     "minimum": 0,
                     "type": "number"
                 },
-                "fontSizeRange": {
-                    "description": "Default range for font size scale",
-                    "items": {
-                        "type": "number"
-                    },
-                    "type": "array"
+                "maxBarSize": {
+                    "description": "Default max range for bar size scale.\n\nIf undefined (default), we will use bandSize - 1.",
+                    "minimum": 1,
+                    "type": "number"
+                },
+                "maxPointSize": {
+                    "description": "Default max range for point size scale.",
+                    "minimum": 1,
+                    "type": "number"
+                },
+                "maxRuleSize": {
+                    "description": "Default max range for rule size (strokeWidth) scale.",
+                    "minimum": 1,
+                    "type": "number"
+                },
+                "maxTextSize": {
+                    "description": "Default max range for text size (fontSize) scale.",
+                    "minimum": 1,
+                    "type": "number"
+                },
+                "maxTickSize": {
+                    "description": "Default max range for tick size (tick span) scale.\n\nIf undefined (default), we will use bandSize - 1.",
+                    "minimum": 1,
+                    "type": "number"
+                },
+                "minBarSize": {
+                    "description": "Default minimum range for bar size scale with zero=false.",
+                    "minimum": 1,
+                    "type": "number"
+                },
+                "minPointSize": {
+                    "description": "Default minimum range for point size scale with zero=false.",
+                    "minimum": 1,
+                    "type": "number"
+                },
+                "minRuleSize": {
+                    "description": "Default minimum range for rule size (strokeWidth) scale with zero=false.",
+                    "minimum": 1,
+                    "type": "number"
+                },
+                "minTextSize": {
+                    "description": "Default minimum range for text size (fontSize) scale with zero=false.",
+                    "minimum": 1,
+                    "type": "number"
+                },
+                "minTickSize": {
+                    "description": "Default minimum range for tick size (tick span) scale with zero=false.",
+                    "minimum": 1,
+                    "type": "number"
                 },
                 "nominalColorScheme": {
                     "description": "Default color scheme for nominal (categorical) data",
@@ -2327,23 +2363,9 @@
                     "minimum": 0,
                     "type": "number"
                 },
-                "pointSizeRange": {
-                    "description": "Default range for bar size scale",
-                    "items": {
-                        "type": "number"
-                    },
-                    "type": "array"
-                },
                 "round": {
                     "description": "If true, rounds numeric output values to integers.\n\nThis can be helpful for snapping to the pixel grid.\n\n(Only available for `x`, `y`, `size`, `row`, and `column` scales.)",
                     "type": "boolean"
-                },
-                "ruleSizeRange": {
-                    "description": "Default range for rule stroke widths",
-                    "items": {
-                        "type": "number"
-                    },
-                    "type": "array"
                 },
                 "sequentialColorScheme": {
                     "description": "Default color scheme for ordinal, quantitative and temporal field",
@@ -2360,13 +2382,6 @@
                     "description": "Default band width for `x` ordinal scale when is mark is `text`.",
                     "minimum": 0,
                     "type": "number"
-                },
-                "tickSizeRange": {
-                    "description": "Default range for tick spans",
-                    "items": {
-                        "type": "number"
-                    },
-                    "type": "array"
                 },
                 "useRawDomain": {
                     "description": "Uses the source data range as scale domain instead of aggregated data for aggregate axis.\n\nThis property only works with aggregate functions that produce values within the raw data domain (`\"mean\"`, `\"average\"`, `\"stdev\"`, `\"stdevp\"`, `\"median\"`, `\"q1\"`, `\"q3\"`, `\"min\"`, `\"max\"`). For other aggregations that produce values outside of the raw data domain (e.g. `\"count\"`, `\"sum\"`), this property is ignored.",
