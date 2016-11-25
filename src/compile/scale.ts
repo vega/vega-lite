@@ -2,11 +2,11 @@ import * as log from '../log';
 
 import {SHARED_DOMAIN_OPS} from '../aggregate';
 import {COLUMN, ROW, X, Y, X2, Y2, SHAPE, SIZE, COLOR, OPACITY, TEXT, hasScale, supportScaleType, Channel} from '../channel';
-import {Orient} from '../config';
+import {Orient, MarkConfig} from '../config';
 import {SOURCE, STACKED_SCALE} from '../data';
 import {DateTime, isDateTime, timestamp} from '../datetime';
 import {ChannelDefWithScale, FieldDef, field} from '../fielddef';
-import {Mark, BAR, TEXT as TEXTMARK, RECT, RULE, TICK} from '../mark';
+import {Mark, BAR, TEXT as TEXTMARK, RECT} from '../mark';
 import {Scale, ScaleConfig, ScaleType, NiceTime, BANDSIZE_FIT, BandSize, isDiscreteScale, scaleTypeSupportProperty} from '../scale';
 import {isSortField, SortOrder} from '../sort';
 import {StackOffset} from '../stack';
@@ -657,30 +657,10 @@ export function rangeMixins(scale: Scale, model: Model, channel: Channel):
       // FIXME: what if size is not specified
       return {range: [topLevelSize, 0]};
     case SIZE:
-      if (mark === BAR) {
-        if (scaleConfig.barSizeRange !== undefined) {
-          return {range: scaleConfig.barSizeRange};
-        }
-        const dimension = markConfig.orient === Orient.HORIZONTAL ? Y : X;
-        return {range: [markConfig.barThinSize, model.scale(dimension).bandSize]};
-      } else if (mark === TEXTMARK) {
-        return {range: scaleConfig.fontSizeRange };
-      } else if (mark === RULE) {
-        return {range: scaleConfig.ruleSizeRange };
-      } else if (mark === TICK) {
-        return {range: scaleConfig.tickSizeRange };
-        // FIXME similar to bar?
-      }
-      // else -- point, square, circle
-      if (scaleConfig.pointSizeRange !== undefined) {
-        return {range: scaleConfig.pointSizeRange};
-      }
-
-      // If not ROW / COLUMN, we can assume that this is a unit spec.
-      const bandSize = pointBandSize(model as UnitModel, scaleConfig);
-
-      //  TODO: make 9 a config
-      return {range: [9, (bandSize - 2) * (bandSize - 2)]};
+      // TODO: support custom rangeMin, rangeMax
+      const rangeMin = sizeRangeMin(mark, scale.zero, markConfig, scaleConfig);
+      const rangeMax = sizeRangeMax(mark, model, markConfig, scaleConfig);
+      return {range: [rangeMin, rangeMax]};
     case SHAPE:
       return {range: scaleConfig.shapeRange};
     case COLOR:
@@ -697,6 +677,69 @@ export function rangeMixins(scale: Scale, model: Model, channel: Channel):
   throw new Error(`Scale range undefined for channel ${channel}`);
 }
 
+function sizeRangeMin(mark: Mark, zero: boolean, markConfig: MarkConfig, scaleConfig: ScaleConfig) {
+  if (zero) {
+    return 0;
+  }
+  switch (mark) {
+    case 'bar':
+      return scaleConfig.minBarSize !== undefined ? scaleConfig.minBarSize : markConfig.barThinSize;
+    case 'tick':
+      return scaleConfig.minTickSize;
+    case 'rule':
+      return scaleConfig.minRuleSize;
+    case 'text':
+      return scaleConfig.minTextSize;
+    case 'point':
+    case 'square':
+    case 'circle':
+      return scaleConfig.minPointSize;
+  }
+  /* istanbul ignore next: should never reach here */
+  // sizeRangeMin not implemented for the mark
+  throw new Error(log.message.incompatibleChannel('size', mark));
+}
+
+function sizeRangeMax(mark: Mark, model: Model, markConfig: MarkConfig, scaleConfig: ScaleConfig) {
+  // TODO(#1168): make max size scale based on bandSize / overall plot size
+  switch (mark) {
+    case 'bar':
+      if (scaleConfig.maxBarSize !== undefined) {
+        return scaleConfig.maxBarSize;
+      }
+      return barTickBandSize(model, markConfig) - 1;
+    case 'tick':
+      if (scaleConfig.maxTickSize !== undefined) {
+        return scaleConfig.maxTickSize;
+      }
+      return barTickBandSize(model, markConfig) - 1;
+    case 'rule':
+      return scaleConfig.maxRuleSize;
+    case 'text':
+      return scaleConfig.maxTextSize;
+    case 'point':
+    case 'square':
+    case 'circle':
+      // FIXME this case totally should be refactored
+      const pointSize = pointBandSize(model as UnitModel, scaleConfig);
+      return (pointSize - 2) * (pointSize - 2);
+  }
+  /* istanbul ignore next: should never reach here */
+  // sizeRangeMax not implemented for the mark
+  throw new Error(log.message.incompatibleChannel('size', mark));
+}
+
+// TODO: we might be able to consolidate this with pointBandSize
+function barTickBandSize(model: Model, markConfig: MarkConfig) {
+  const dimension = markConfig.orient === Orient.HORIZONTAL ? Y : X;
+  const barBandSize = model.scale(dimension).bandSize;
+  if (barBandSize !== undefined && barBandSize !== BANDSIZE_FIT) {
+    return barBandSize;
+  }
+  // TODO(#1168): proportional bandSize for fit mode
+  return 21;
+}
+
 /**
  * @returns {number} Band size of x or y or minimum between the two if both are ordinal scale.
  */
@@ -704,6 +747,7 @@ function pointBandSize(model: UnitModel, scaleConfig: ScaleConfig): number {
   const bandSizes: number[] = [];
   if (model.scale(X)) {
     const xBandSize = model.scale(X).bandSize;
+    // TODO(#1168): proportional bandSize for fit mode
     if (xBandSize && xBandSize !== BANDSIZE_FIT) {
       bandSizes.push(xBandSize);
     }
@@ -711,6 +755,7 @@ function pointBandSize(model: UnitModel, scaleConfig: ScaleConfig): number {
 
   if (model.scale(Y)) {
     const yBandSize = model.scale(Y).bandSize;
+    // TODO(#1168): proportional bandSize for fit mode
     if (yBandSize && yBandSize !== BANDSIZE_FIT) {
       bandSizes.push(yBandSize);
     }
@@ -722,7 +767,5 @@ function pointBandSize(model: UnitModel, scaleConfig: ScaleConfig): number {
   if (scaleConfig.bandSize && scaleConfig.bandSize !== BANDSIZE_FIT) {
     return scaleConfig.bandSize;
   }
-  // TODO(#1168): better default point bandSize for fit mode
   return 21;
 }
-
