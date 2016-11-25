@@ -2,12 +2,12 @@
 
 import {assert} from 'chai';
 
-import {bandSize, type, domain, parseScaleComponent} from '../../src/compile/scale';
+import {bandSize, type, domain, parseScaleComponent, defaultProperty} from '../../src/compile/scale';
 import {SOURCE, SUMMARY} from '../../src/data';
 import {parseUnitModel} from '../util';
 
 import * as log from '../../src/log';
-import {X, Y, SHAPE, DETAIL, ROW, COLUMN} from '../../src/channel';
+import {X, Y, SHAPE, DETAIL, ROW, COLUMN, Channel} from '../../src/channel';
 import {BANDSIZE_FIT, ScaleType, defaultScaleConfig} from '../../src/scale';
 import {POINT, RECT, BAR, TEXT} from '../../src/mark';
 import {TimeUnit} from '../../src/timeunit';
@@ -160,6 +160,46 @@ describe('Scale', function() {
           assert.equal(type('ordinal', {field: 'a', type: ORDINAL}, channel, POINT, true), ScaleType.POINT);
           assert.equal(localLogger.warns[0], log.message.scaleTypeNotWorkWithChannel(channel, 'ordinal', 'point'));
         });
+      });
+    });
+  });
+
+  describe('defaultProperty', () => {
+    describe('nice', () => {
+      // TODO:
+    });
+
+    describe('padding', () => {
+      // TODO:
+    });
+
+    describe('zero', () => {
+      it('should return true when mapping a quantitative field to size', () => {
+        assert(defaultProperty.zero({}, 'size', {field: 'a', type: 'quantitative'}));
+      });
+
+      it('should return false when mapping a ordinal field to size', () => {
+        assert(!defaultProperty.zero({}, 'size', {field: 'a', type: 'ordinal'}));
+      });
+
+      it('should return true when mapping a non-binned quantitative field to x/y', () => {
+        for (let channel of ['x', 'y'] as Channel[]) {
+          assert(defaultProperty.zero({}, channel, {field: 'a', type: 'quantitative'}));
+        }
+      });
+
+      it('should return false when mapping a binned quantitative field to x/y', () => {
+        for (let channel of ['x', 'y'] as Channel[]) {
+          assert(!defaultProperty.zero({}, channel, {bin: true, field: 'a', type: 'quantitative'}));
+        }
+      });
+
+      it('should return false when mapping a non-binned quantitative field with custom domain to x/y', () => {
+        for (let channel of ['x', 'y'] as Channel[]) {
+          assert(!defaultProperty.zero({domain: [1, 5]}, channel, {
+            bin: true, field: 'a', type: 'quantitative'
+          }));
+        }
       });
     });
   });
@@ -700,14 +740,6 @@ describe('Scale', function() {
     describe('color', function() {
       // TODO:
     });
-  });
-
-  describe('bandSize()', function() {
-    // TODO:
-  });
-
-  describe('nice()', function() {
-    // FIXME
   });
 
   describe('reverse()', function() {
