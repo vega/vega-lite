@@ -658,15 +658,105 @@ describe('Scale', function() {
 
     describe('size', function() {
       describe('bar', function() {
-        // TODO:
+        it('should return [minBarSize, maxBarSize] if both are specified', () => {
+          const model = parseUnitModel({
+            "data": {"url": "data/cars.json"},
+            "mark": "bar",
+            "encoding": {
+              // not truly ordinal, just say ordinal for the sake of testing
+              "size": {"field": "Origin", "type": "ordinal"}
+            },
+            config: {
+              scale: {
+                minBarSize: 2,
+                maxBarSize: 9
+              }
+            }
+          });
+          const scales = parseScaleComponent(model)['size'];
+          assert.deepEqual(scales.main.range, [2, 9]);
+        });
+
+        it('should return [thinBarSize, bandWidth-1] if min/maxBarSize are not specified', () => {
+          const model = parseUnitModel({
+            "data": {"url": "data/cars.json"},
+            "mark": "bar",
+            "encoding": {
+              "y": {"field": "Acceleration", "type": "quantitative"},
+              "x": {"field": "Cylinders", "type": "ordinal", "scale": {"bandSize": 11}},
+              // not truly ordinal, just say ordinal for the sake of testing
+              "size": {"field": "Origin", "type": "ordinal"}
+            }
+          });
+          const scales = parseScaleComponent(model)['size'];
+          assert.deepEqual(scales.main.range, [2, 10]);
+        });
+      });
+
+      describe('tick', function() {
+        it('should return [minTickSize, maxTickSize] if both are specified', () => {
+          const model = parseUnitModel({
+            "data": {"url": "data/cars.json"},
+            "mark": "tick",
+            "encoding": {
+              // not truly ordinal, just say ordinal for the sake of testing
+              "size": {"field": "Origin", "type": "ordinal"}
+            },
+            config: {
+              scale: {
+                minTickSize: 4,
+                maxTickSize: 9
+              }
+            }
+          });
+          const scales = parseScaleComponent(model)['size'];
+          assert.deepEqual(scales.main.range, [4, 9]);
+        });
+
+        it('should return [minTickSize, bandWidth-1] if min/maxBarSize are not specified', () => {
+          const model = parseUnitModel({
+            "data": {"url": "data/cars.json"},
+            "mark": "tick",
+            "encoding": {
+              "y": {"field": "Acceleration", "type": "quantitative"},
+              "x": {"field": "Cylinders", "type": "ordinal", "scale": {"bandSize": 11}},
+              // not truly ordinal, just say ordinal for the sake of testing
+              "size": {"field": "Origin", "type": "ordinal"}
+            }
+          });
+          const scales = parseScaleComponent(model)['size'];
+          assert.deepEqual(scales.main.range, [3, 20]);
+        });
       });
 
       describe('text', function() {
-        // TODO:
+        it('should return [minTextSize, maxTextSize]', () => {
+          const model = parseUnitModel({
+            "data": {"url": "data/cars.json"},
+            "mark": "text",
+            "encoding": {
+              // not truly ordinal, just say ordinal for the sake of testing
+              "size": {"field": "Origin", "type": "ordinal"}
+            }
+          });
+          const scales = parseScaleComponent(model)['size'];
+          assert.deepEqual(scales.main.range, [defaultScaleConfig.minTextSize, defaultScaleConfig.maxTextSize]);
+        });
       });
 
       describe('rule', function() {
-        // TODO:
+        it('should return [minRuleSize, maxRuleSize]', () => {
+          const model = parseUnitModel({
+            "data": {"url": "data/cars.json"},
+            "mark": "rule",
+            "encoding": {
+              // not truly ordinal, just say ordinal for the sake of testing
+              "size": {"field": "Origin", "type": "ordinal"}
+            }
+          });
+          const scales = parseScaleComponent(model)['size'];
+          assert.deepEqual(scales.main.range, [defaultScaleConfig.minRuleSize, defaultScaleConfig.maxRuleSize]);
+        });
       });
 
       describe('point, square, circle', function() {
@@ -693,6 +783,7 @@ describe('Scale', function() {
             "encoding": {
               "y": {"field": "Origin", "type": "ordinal", "scale": {"bandSize": 11}},
               "x": {"field": "Cylinders", "type": "ordinal", "scale": {"bandSize": 13}},
+              // not truly ordinal, just say ordinal for the sake of testing
               "size": {"field": "Origin", "type": "ordinal"}
             }
           });
@@ -739,6 +830,7 @@ describe('Scale', function() {
             "encoding": {
               "y": {"field": "Acceleration", "type": "quantitative"},
               "x": {"field": "Cylinders", "type": "ordinal", "scale": {"bandSize": 11}},
+              // not truly ordinal, just say ordinal for the sake of testing
               "size": {"field": "Origin", "type": "ordinal"}
             }
           });
