@@ -228,7 +228,7 @@ function parseMainScale(model: Model, fieldDef: FieldDef, channel: Channel) {
     scaleDef.domain = domain(scale, model, channel);
   }
 
-  // TODO: move range to init
+  // TODO: move range to init, make it come after zero (rangeMixins depends on zero).
   extend(scaleDef, rangeMixins(scale, model, channel));
 
   if (sort && (isSortField(sort) ? sort.order : sort) === SortOrder.DESCENDING) {
@@ -292,7 +292,7 @@ export function type(specifiedType: ScaleType, fieldDef: FieldDef, channel: Chan
   }
 
   if (specifiedType !== undefined) {
-    // Check if explicitly specified scale type is supported
+    // Check if explicitly specified scale type is supported by the channel
     if (supportScaleType(channel, specifiedType)) {
       return specifiedType;
     } else {
@@ -305,7 +305,7 @@ export function type(specifiedType: ScaleType, fieldDef: FieldDef, channel: Chan
   return defaultProperty.type(fieldDef, channel, mark, canHaveBandSize);
 }
 
-namespace defaultProperty {
+export namespace defaultProperty {
   /**
    * Determine appropriate default scale type.
    */
@@ -396,9 +396,22 @@ namespace defaultProperty {
   }
 
   export function zero(specifiedScale: Scale, channel: Channel, fieldDef: FieldDef) {
-    // By default, return true only for non-binned, quantitative x-scale or y-scale
-    // If no custom domain is provided.
-    return !specifiedScale.domain && !fieldDef.bin && contains([X, Y], channel);
+    // By default, return true only for the following cases:
+
+    // 1) using quantitative field with size
+    // While this can be either ratio or interval fields, our assumption is that
+    // ratio are more common.
+    if (channel === SIZE && fieldDef.type === 'quantitative') {
+      return true;
+    }
+
+    // 2) non-binned, quantitative x-scale or y-scale if no custom domain is provided.
+    // (For binning, we should not include zero by default because binning are calculated without zero.
+    // Similar, if users explicitly provide a domain range, we should not augment zero as that will be unexpected.)
+    if (!specifiedScale.domain && !fieldDef.bin && contains([X, Y], channel)) {
+      return true;
+    }
+    return false;
   }
 }
 
