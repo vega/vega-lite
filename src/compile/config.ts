@@ -1,9 +1,10 @@
 import * as log from '../log';
 
 import {X, COLOR, SIZE, DETAIL} from '../channel';
-import {Config, Orient, MarkConfig, HorizontalAlign} from '../config';
+import {Config} from '../config';
 import {Encoding, isAggregate, has} from '../encoding';
 import {isMeasure} from '../fielddef';
+import {MarkConfig, Orient} from '../mark';
 import {BAR, AREA, POINT, LINE, TICK, CIRCLE, SQUARE, RECT, RULE, TEXT, Mark} from '../mark';
 import {ScaleType, Scale} from '../scale';
 import {StackProperties} from '../stack';
@@ -33,7 +34,7 @@ export function initMarkConfig(mark: Mark, encoding: Encoding, scale: Dict<Scale
   }
 
   if (markConfig.align === undefined) {
-    markConfig.align = has(encoding, X) ? HorizontalAlign.CENTER : HorizontalAlign.RIGHT;
+    markConfig.align = has(encoding, X) ? 'center' : 'right';
   }
 
   return markConfig;
@@ -82,24 +83,24 @@ export function orient(mark: Mark, encoding: Encoding, scale: Dict<Scale>, markC
             yScaleType === ScaleType.ORDINAL) ||
             encoding.y.bin
           ) {
-        return Orient.VERTICAL;
+        return 'vertical';
       }
       // y:Q or Ambiguous case, return horizontal
-      return Orient.HORIZONTAL;
+      return 'horizontal';
 
     case RULE:
     case BAR:
     case AREA:
       // If there are range for both x and y, y (vertical) has higher precedence.
       if (yIsRange) {
-        return Orient.VERTICAL;
+        return 'vertical';
       } else if (xIsRange) {
-        return Orient.HORIZONTAL;
+        return 'horizontal';
       } else if (mark === RULE) {
         if (encoding.x && !encoding.y) {
-          return Orient.VERTICAL;
+          return 'vertical';
         } else if (encoding.y && !encoding.x) {
-          return Orient.HORIZONTAL;
+          return 'horizontal';
         }
       }
 
@@ -109,15 +110,15 @@ export function orient(mark: Mark, encoding: Encoding, scale: Dict<Scale>, markC
       const xIsMeasure = isMeasure(encoding.x) || isMeasure(encoding.x2);
       const yIsMeasure = isMeasure(encoding.y) || isMeasure(encoding.y2);
       if (xIsMeasure && !yIsMeasure) {
-        return Orient.HORIZONTAL;
+        return 'horizontal';
       } else if (!xIsMeasure && yIsMeasure) {
-        return Orient.VERTICAL;
+        return 'vertical';
       } else if (xIsMeasure && yIsMeasure) {
         // temporal without timeUnit is considered continuous, but better serves as dimension
         if (encoding.x.type === TEMPORAL) {
-          return Orient.VERTICAL;
+          return 'vertical';
         } else if (encoding.y.type === TEMPORAL) {
-          return Orient.HORIZONTAL;
+          return 'horizontal';
         }
 
         if (markConfig.orient) {
@@ -129,12 +130,12 @@ export function orient(mark: Mark, encoding: Encoding, scale: Dict<Scale>, markC
           // Except for connected scatterplot, we should log warning for unclear orientation of QxQ plots.
           log.warn(log.message.unclearOrientContinuous(mark));
         }
-        return Orient.VERTICAL;
+        return 'vertical';
       } else {
         // For Discrete x Discrete case, return undefined.
         log.warn(log.message.unclearOrientDiscreteOrEmpty(mark));
         return undefined;
       }
   }
-  return Orient.VERTICAL;
+  return 'vertical';
 }

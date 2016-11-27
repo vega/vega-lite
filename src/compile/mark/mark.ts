@@ -1,5 +1,4 @@
 import {X, Y, COLOR, TEXT, SHAPE, PATH, ORDER, OPACITY, DETAIL, STACK_GROUP_CHANNELS} from '../../channel';
-import {Orient} from '../../config';
 import {has, isAggregate} from '../../encoding';
 import {OrderChannelDef, FieldDef, field} from '../../fielddef';
 import {AREA, LINE, TEXT as TEXTMARK} from '../../mark';
@@ -180,7 +179,7 @@ function sortPathBy(model: UnitModel): string | string[] {
     }
   } else {
     // For both line and area, we sort values based on dimension by default
-    const dimensionChannel = model.config().mark.orient === Orient.HORIZONTAL ? Y : X;
+    const dimensionChannel = model.config().mark.orient === 'horizontal' ? Y : X;
     const sort = model.sort(dimensionChannel);
     if (isSortField(sort)) {
       return '-' + field({

@@ -1,6 +1,5 @@
 import {X, Y, X2, Y2, SIZE} from '../../channel';
 import {applyColorAndOpacity} from '../common';
-import {Orient} from '../../config';
 import {UnitModel} from '../unit';
 import * as ref from './valueref';
 
@@ -20,7 +19,7 @@ export namespace rule {
     p.x = ref.stackable(X,model.encoding().x, model.scaleName(X), model.scale(X), stack, 'base');
     p.y = ref.stackable(Y, model.encoding().y, model.scaleName(Y), model.scale(Y), stack, 'base');
 
-    if(orient === Orient.VERTICAL) {
+    if(orient === 'vertical') {
       p.y2 = ref.stackable2(Y2, model.encoding().y, model.encoding().y2, model.scaleName(Y), model.scale(Y), stack, 'baseOrMax');
     } else {
       p.x2 = ref.stackable2(X2, model.encoding().x, model.encoding().x2, model.scaleName(X), model.scale(X), stack, 'baseOrMax');

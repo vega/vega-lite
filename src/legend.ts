@@ -1,5 +1,5 @@
 import {DateTime} from './datetime';
-import {Shape} from './config';
+import {Shape} from './mark';
 
 export interface LegendConfig {
   /**
@@ -75,7 +75,7 @@ export interface LegendConfig {
    * The shape of the legend symbol, can be the 'circle', 'square', 'cross', 'diamond',
    * 'triangle-up', 'triangle-down', or else a custom SVG path string.
    */
-  symbolShape?: string;
+  symbolShape?: Shape;
   /**
    * The size of the legend symbol, in pixels.
    * @mimimum 0
