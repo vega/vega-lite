@@ -424,6 +424,7 @@ function _useRawDomain (scale: Scale, model: Model, channel: Channel) {
  * @returns {*} mix-in of bandSize, range, scheme, or rangeMin and rangeMax
  */
 export function rangeMixins(scale: Scale, model: Model, channel: Channel): any {
+  const config = model.config();
   const markConfig = model.config().mark;
   const scaleConfig = model.config().scale;
 
@@ -476,7 +477,7 @@ export function rangeMixins(scale: Scale, model: Model, channel: Channel): any {
           return {range: scaleConfig.barSizeRange};
         }
         const dimension = markConfig.orient === 'horizontal' ? Y : X;
-        return {range: [markConfig.barThinSize, model.scale(dimension).bandSize]};
+        return {range: [config.bar.continuousBandSize, model.scale(dimension).bandSize]};
       } else if (mark === TEXTMARK) {
         return {range: scaleConfig.fontSizeRange };
       } else if (mark === RULE) {

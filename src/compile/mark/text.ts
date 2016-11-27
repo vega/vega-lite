@@ -1,5 +1,5 @@
 import {X, Y, COLOR, TEXT, SIZE} from '../../channel';
-import {applyMarkConfig, applyColorAndOpacity, numberFormat, timeTemplate} from '../common';
+import {applyConfig, applyColorAndOpacity, numberFormat, timeTemplate} from '../common';
 import {Config} from '../../config';
 import {FieldDef, field} from '../../fielddef';
 import {QUANTITATIVE, ORDINAL, TEMPORAL} from '../../type';
@@ -29,7 +29,7 @@ export namespace text {
     // TODO Use Vega's marks properties interface
     let p: any = {};
 
-    applyMarkConfig(p, model,
+    applyConfig(p, model.config().text,
       ['angle', 'align', 'baseline', 'dx', 'dy', 'font', 'fontWeight',
         'fontStyle', 'radius', 'theta', 'text']);
 
@@ -43,12 +43,12 @@ export namespace text {
     p.y = ref.stackable(Y, model.encoding().y, model.scaleName(Y), model.scale(Y), stack, ref.midY(config));
 
     p.fontSize = ref.normal(SIZE, model.encoding().size, model.scaleName(SIZE), model.scale(SIZE),
-       {value: config.mark.fontSize}
+       {value: config.text.fontSize}
     );
 
     p.text = text(textFieldDef, model.scaleName(TEXT), config);
 
-    if (model.config().mark.applyColorToBackground && !model.has(X) && !model.has(Y)) {
+    if (model.config().text.applyColorToBackground && !model.has(X) && !model.has(Y)) {
       p.fill = {value: 'black'}; // TODO: add rules for swapping between black and white
       // opacity
       const opacity = model.config().mark.opacity;
@@ -73,7 +73,7 @@ export namespace text {
     if (textFieldDef) {
       if (textFieldDef.field) {
         if (QUANTITATIVE === textFieldDef.type) {
-          const format = numberFormat(textFieldDef, config.mark.format, config, TEXT);
+          const format = numberFormat(textFieldDef, config.text.format, config, TEXT);
 
           const filter = 'number' + ( format ? ':\'' + format + '\'' : '');
           return {
@@ -81,7 +81,7 @@ export namespace text {
           };
         } else if (TEMPORAL === textFieldDef.type) {
           return {
-            template: timeTemplate(field(textFieldDef, {datum: true}), textFieldDef.timeUnit, config.mark.format, config.mark.shortTimeLabels, config)
+            template: timeTemplate(field(textFieldDef, {datum: true}), textFieldDef.timeUnit, config.text.format, config.text.shortTimeLabels, config)
           };
         } else {
           return { field: textFieldDef.field };
@@ -90,6 +90,6 @@ export namespace text {
         return { value: textFieldDef.value };
       }
     }
-    return {value: config.mark.text};
+    return {value: config.text.text};
   }
 }

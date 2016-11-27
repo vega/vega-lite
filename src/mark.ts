@@ -1,14 +1,15 @@
 import {StackOffset} from './stack';
+import {extend} from './util';
 
 export namespace Mark {
   export const AREA: 'area' = 'area';
   export const BAR: 'bar' = 'bar';
   export const LINE: 'line' = 'line';
   export const POINT: 'point' = 'point';
-  export const TEXT: 'text' = 'text';
-  export const TICK: 'tick' = 'tick';
   export const RECT: 'rect' = 'rect';
   export const RULE: 'rule' = 'rule';
+  export const TEXT: 'text' = 'text';
+  export const TICK: 'tick' = 'tick';
   export const CIRCLE: 'circle' = 'circle';
   export const SQUARE: 'square' = 'square';
   export const ERRORBAR: 'errorBar' = 'errorBar';
@@ -124,7 +125,7 @@ export interface MarkConfig {
 
   // ---------- Interpolation: Line / area ----------
   /**
-   * The line interpolation method to use. One of the following:
+   * The line interpolation method to use for line and area marks. One of the following:
    * - `"linear"`: piecewise linear segments, as in a polyline.
    * - `"linear-closed"`: close the linear segments to form a polygon.
    * - `"step"`: alternate between horizontal and vertical segments, as in a step function.
@@ -141,54 +142,87 @@ export interface MarkConfig {
    */
   interpolate?: Interpolate;
   /**
-   * Depending on the interpolation type, sets the tension parameter.
+   * Depending on the interpolation type, sets the tension parameter (for line and area marks).
    */
   tension?: number;
+}
 
-  // ---------- Line ---------
+export const defaultMarkConfig: MarkConfig = {
+  color: '#4682b4',
+};
+
+export interface AreaConfig extends MarkConfig {}
+
+export const defaultAreaConfig: AreaConfig = {
+
+};
+
+export interface BarConfig extends MarkConfig {
   /**
-   * Size of line mark.
+   * Offset between bar for binned field.  Ideal value for this is either 0 (Preferred by statisticians) or 1 (Vega-Lite Default, D3 example style).
+   * @minimum 0
    */
-  lineSize?: number;
-
-  // ---------- Rule ---------
+  binSpacing?: number;
   /**
-   * Size of rule mark.
+   * Default size of the bars on continuous scales.
    */
-  ruleSize?: number;
+  continuousBandSize?: number;
 
-  // ---------- Bar ----------
   /**
    * The size of the bars.  If unspecified, the default size is  `bandSize-1`,
    * which provides 1 pixel offset between bars.
    */
-  barSize?: number;
+  discreteBandSize?: number;
+}
 
-  /**
-   * The size of the bars on continuous scales.
-   */
-  barThinSize?: number;
+export const defaultBarConfig: BarConfig = {
+  binSpacing: 1,
+  continuousBandSize: 2
+};
 
-  // ---------- Point ----------
+export interface LineConfig extends MarkConfig {}
+
+export const defaultLineConfig: LineConfig = {
+  strokeWidth: 2
+};
+
+export interface PointConfig extends MarkConfig {
   /**
    * The symbol shape to use. One of circle (default), square, cross, diamond, triangle-up, or triangle-down, or a custom SVG path.
    */
   shape?: Shape | string;
 
-  // ---------- Point Size (Point / Square / Circle) ----------
   /**
-   * The pixel area each the point. For example: in the case of circles, the radius is determined in part by the square root of the size value.
+   * The pixel area each the point/circle/square.
+   * For example: in the case of circles, the radius is determined in part by the square root of the size value.
    */
   size?: number;
+}
 
-  // ---------- Tick ----------
-  /** The width of the ticks. */
-  tickSize?: number;
+export const defaultPointConfig: PointConfig = {
+  shape: 'circle',
+  size: 30,
+  strokeWidth: 2
+};
 
-  /** Thickness of the tick mark. */
-  tickThickness?: number;
+export const defaultCircleConfig: PointConfig = defaultPointConfig;
+export const defaultSquareConfig: PointConfig = extend({}, defaultPointConfig, {
+  shape: 'square'
+});
 
-  // ---------- Text ----------
+
+export interface RectConfig extends MarkConfig {}
+
+export const defaultRectConfig: RectConfig = {};
+
+export interface RuleConfig extends MarkConfig {}
+
+export const defaultRuleConfig: RuleConfig = {
+  strokeWidth: 1
+};
+
+
+export interface TextConfig extends MarkConfig {
   /**
    * The horizontal alignment of the text. One of left, right, center.
    */
@@ -242,38 +276,39 @@ export interface MarkConfig {
    * Whether month names and weekday names should be abbreviated.
    */
   shortTimeLabels?: boolean;
+
   /**
    * Placeholder Text
    */
   text?: string;
 
-  /**
-   * Offset between bar for binned field
-   * @minimum 0
-   */
-  barBinSpacing?: number;
-
+  // FIXME: remove this?
   /**
    * Apply color field to background color instead of the text.
    */
   applyColorToBackground?: boolean;
 }
 
-export const defaultMarkConfig: MarkConfig = {
-  color: '#4682b4',
-  shape: 'circle',
-  strokeWidth: 2,
-  size: 30,
-  barThinSize: 2,
-  // lineSize is undefined by default, and refer to value from strokeWidth
-  ruleSize: 1,
-  tickThickness: 1,
-
+export const defaultTextConfig: TextConfig = {
   fontSize: 10,
   baseline: 'middle',
   text: 'Abc',
-
-  barBinSpacing: 1,
-
   applyColorToBackground: false
 };
+
+export interface TickConfig extends MarkConfig {
+  /**
+   * The width of the ticks.
+   * If this value is undefined (by default,), we use 2/3 of rangeStep by default.
+   */
+  bandSize?: number;
+
+  /** Thickness of the tick mark. */
+  thickness?: number;
+}
+
+export const defaultTickConfig: TickConfig = {
+  thickness: 1
+};
+
+// TODO: ErrorBar Config

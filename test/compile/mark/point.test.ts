@@ -4,6 +4,7 @@ import {assert} from 'chai';
 import {parseUnitModel} from '../../util';
 import {extend} from '../../../src/util';
 import {X, Y, SIZE, COLOR, SHAPE} from '../../../src/channel';
+import {defaultMarkConfig} from '../../../src/mark';
 import {point, square, circle} from '../../../src/compile/mark/point';
 import {ExtendedUnitSpec} from '../../../src/spec';
 
@@ -109,8 +110,15 @@ describe('Mark: Point', function() {
     it('should scale on x', function() {
       assert.deepEqual(props.x, {scale: X, field: 'year'});
     });
+
     it('should scale on y', function(){
       assert.deepEqual(props.y, {scale: Y, field: 'yield'});
+    });
+
+    it('should be an unfilled circle', function(){
+      assert.deepEqual(props.shape, {value: 'circle'});
+      assert.deepEqual(props.fill, {value: 'transparent'});
+      assert.deepEqual(props.stroke, {value: defaultMarkConfig.color});
     });
   });
 
