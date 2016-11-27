@@ -1,5 +1,4 @@
 import {X, X2, Y, Y2} from '../../channel';
-import {Orient} from '../../config';
 
 import {applyColorAndOpacity, applyMarkConfig} from '../common';
 import {UnitModel} from '../unit';
@@ -27,7 +26,7 @@ export namespace area {
     p.y = ref.stackable(Y, model.encoding().y, model.scaleName(Y), model.scale(Y), stack, 'base');
 
     // Have only x2 or y2 based on orientation
-    if (orient === Orient.HORIZONTAL) {
+    if (orient === 'horizontal') {
       p.x2 = ref.stackable2(X2, model.encoding().x, model.encoding().x2, model.scaleName(X), model.scale(X), stack, 'base');
     } else {
       p.y2 = ref.stackable2(Y2, model.encoding().y, model.encoding().y2, model.scaleName(Y), model.scale(Y), stack, 'base');

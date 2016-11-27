@@ -1,5 +1,5 @@
 import {X, Y, X2, Y2, SIZE} from '../../channel';
-import {Config, Orient} from '../../config';
+import {Config} from '../../config';
 import {Scale, ScaleType, BANDSIZE_FIT} from '../../scale';
 import {StackProperties} from '../../stack';
 import {extend} from '../../util';
@@ -35,7 +35,7 @@ export namespace bar {
     const xScaleName = model.scaleName(X);
     const xScale = model.scale(X);
     // x, x2, and width -- we must specify two of these in all conditions
-    if (orient === Orient.HORIZONTAL) {
+    if (orient === 'horizontal') {
       p.x = ref.stackable(X, xFieldDef, xScaleName, model.scale(X), stack, 'base');
       p.x2 = ref.stackable2(X2, xFieldDef, model.encoding().x2, xScaleName, model.scale(X), stack, 'base');
       return p;
@@ -79,7 +79,7 @@ export namespace bar {
     const yScaleName = model.scaleName(Y);
     const yScale = model.scale(Y);
     // y, y2 & height -- we must specify two of these in all conditions
-    if (orient === Orient.VERTICAL) {
+    if (orient === 'vertical') {
       p.y = ref.stackable(Y, model.encoding().y, yScaleName, model.scale(Y), stack, 'base');
       p.y2 = ref.stackable2(Y2, model.encoding().y, model.encoding().y2, yScaleName, model.scale(Y), stack, 'base');
       return p;

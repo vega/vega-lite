@@ -1188,8 +1188,8 @@
                     "type": "string"
                 },
                 "symbolShape": {
-                    "description": "The shape of the legend symbol, can be the 'circle', 'square', 'cross', 'diamond',\n\n'triangle-up', 'triangle-down', or else a custom SVG path string.",
-                    "type": "string"
+                    "$ref": "#/definitions/Shape",
+                    "description": "The shape of the legend symbol, can be the 'circle', 'square', 'cross', 'diamond',\n\n'triangle-up', 'triangle-down', or else a custom SVG path string."
                 },
                 "symbolSize": {
                     "description": "The size of the legend symbol, in pixels.",
@@ -1319,8 +1319,8 @@
                     "type": "string"
                 },
                 "symbolShape": {
-                    "description": "The shape of the legend symbol, can be the 'circle', 'square', 'cross', 'diamond',\n\n'triangle-up', 'triangle-down', or else a custom SVG path string.",
-                    "type": "string"
+                    "$ref": "#/definitions/Shape",
+                    "description": "The shape of the legend symbol, can be the 'circle', 'square', 'cross', 'diamond',\n\n'triangle-up', 'triangle-down', or else a custom SVG path string."
                 },
                 "symbolSize": {
                     "description": "The size of the legend symbol, in pixels.",
@@ -1458,7 +1458,7 @@
                 },
                 "interpolate": {
                     "$ref": "#/definitions/Interpolate",
-                    "description": "The line interpolation method to use. One of linear, step-before, step-after, basis, basis-open, cardinal, cardinal-open, monotone."
+                    "description": "The line interpolation method to use. One of the following:\n\n- `\"linear\"`: piecewise linear segments, as in a polyline.\n\n- `\"linear-closed\"`: close the linear segments to form a polygon.\n\n- `\"step\"`: alternate between horizontal and vertical segments, as in a step function.\n\n- `\"step-before\"`: alternate between vertical and horizontal segments, as in a step function.\n\n- `\"step-after\"`: alternate between horizontal and vertical segments, as in a step function.\n\n- `\"basis\"`: a B-spline, with control point duplication on the ends.\n\n- `\"basis-open\"`: an open B-spline; may not intersect the start or end.\n\n- `\"basis-closed\"`: a closed B-spline, as in a loop.\n\n- `\"cardinal\"`: a Cardinal spline, with control point duplication on the ends.\n\n- `\"cardinal-open\"`: an open Cardinal spline; may not intersect the start or end, but will intersect other control points.\n\n- `\"cardinal-closed\"`: a closed Cardinal spline, as in a loop.\n\n- `\"bundle\"`: equivalent to basis, except the tension parameter is used to straighten the spline.\n\n- `\"monotone\"`: cubic interpolation that preserves monotonicity in y."
                 },
                 "lineSize": {
                     "description": "Size of line mark.",

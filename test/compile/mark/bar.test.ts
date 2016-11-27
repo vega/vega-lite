@@ -3,7 +3,7 @@
 import {assert} from 'chai';
 import {parseUnitModel} from '../../util';
 import * as log from '../../../src/log';
-import {defaultMarkConfig} from '../../../src/config';
+import {defaultMarkConfig} from '../../../src/mark';
 import {defaultScaleConfig} from '../../../src/scale';
 import {bar} from '../../../src/compile/mark/bar';
 
