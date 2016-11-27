@@ -26,9 +26,9 @@ export namespace tick {
 
     if (config.mark.orient === 'horizontal') {
       p.width = size(model.encoding().size, model.scaleName(SIZE), model.scale(SIZE), config, (model.scale(X) || {}).bandSize);
-      p.height = { value: config.mark.tickThickness };
+      p.height = { value: config.tick.thickness };
     } else {
-      p.width = { value: config.mark.tickThickness };
+      p.width = { value: config.tick.thickness };
       p.height = size(model.encoding().size, model.scaleName(SIZE), model.scale(SIZE), config, (model.scale(Y) || {}).bandSize);
     }
 
@@ -38,8 +38,8 @@ export namespace tick {
 
   function size(fieldDef: FieldDef, scaleName: string, scale: Scale, config: Config, scaleBandSize: number | BandSize): VgValueRef {
     let defaultSize: number;
-    if (config.mark.tickSize) {
-      defaultSize = config.mark.tickSize;
+    if (config.tick.bandSize !== undefined) {
+      defaultSize = config.tick.bandSize;
     } else {
       const bandSize = scaleBandSize !== undefined ?
         scaleBandSize :

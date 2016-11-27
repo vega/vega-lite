@@ -44,7 +44,7 @@ export namespace bar {
         if (xFieldDef.bin && !sizeFieldDef) {
           // TODO: check scale type = linear
 
-          p.x2 = ref.bin(xFieldDef, xScaleName, 'start', config.mark.barBinSpacing);
+          p.x2 = ref.bin(xFieldDef, xScaleName, 'start', config.bar.binSpacing);
           p.x = ref.bin(xFieldDef, xScaleName, 'end');
           return p;
         } else if (
@@ -87,7 +87,7 @@ export namespace bar {
       if (yFieldDef && yFieldDef.field) {
         if (yFieldDef.bin && !sizeFieldDef) {
           p.y2 = ref.bin(yFieldDef, yScaleName, 'start');
-          p.y = ref.bin(yFieldDef, yScaleName, 'end', config.mark.barBinSpacing);
+          p.y = ref.bin(yFieldDef, yScaleName, 'end', config.bar.binSpacing);
           return p;
         } else if (
             // TODO: scale.type === band
@@ -112,9 +112,8 @@ export namespace bar {
 
   // TODO: make this a mixins
   function defaultSizeRef(scaleName: string, scale: Scale, config: Config): VgValueRef {
-    const markConfig = config.mark;
-    if (markConfig.barSize) {
-      return {value: markConfig.barSize};
+    if (config.bar.discreteBandSize) {
+      return {value: config.bar.discreteBandSize};
     }
 
     if (scale && scale.type === ScaleType.ORDINAL) {
@@ -123,7 +122,7 @@ export namespace bar {
       }
       return ref.band(scaleName);
     } else if (scaleName) { // non-ordinal scale
-      return {value: markConfig.barThinSize};
+      return {value: config.bar.continuousBandSize};
     }
     if (config.scale.bandSize && config.scale.bandSize !== BANDSIZE_FIT) {
       return {value: config.scale.bandSize - 1};

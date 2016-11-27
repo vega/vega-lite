@@ -106,7 +106,7 @@ function parseNonPathMark(model: UnitModel) {
   let marks: any[] = []; // TODO: vgMarks
   if (mark === TEXTMARK &&
     model.has(COLOR) &&
-    model.config().mark.applyColorToBackground && !model.has(X) && !model.has(Y)
+    model.config().text.applyColorToBackground && !model.has(X) && !model.has(Y)
   ) {
     // add background to 'text' marks if has color
     marks.push(extend(

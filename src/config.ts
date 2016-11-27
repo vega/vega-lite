@@ -1,6 +1,7 @@
 import {AxisConfig, defaultAxisConfig, defaultFacetAxisConfig} from './axis';
 import {LegendConfig, defaultLegendConfig} from './legend';
-import {MarkConfig, defaultMarkConfig} from './mark';
+import {MarkConfig, AreaConfig, BarConfig, LineConfig, PointConfig, TextConfig, TickConfig, RectConfig, RuleConfig} from './mark';
+import * as mark from './mark';
 import {ScaleConfig, defaultScaleConfig} from './scale';
 
 
@@ -146,6 +147,40 @@ export interface Config {
   /** Mark Config */
   mark?: MarkConfig;
 
+  // MARK-SPECIFIC CONFIGS
+  /** Area-Specific Config */
+  area?: AreaConfig;
+
+  /** Bar-Specific Config */
+  bar?: BarConfig;
+
+  /** Circle-Specific Config */
+  circle?: BarConfig;
+
+  /** Line-Specific Config */
+  line?: LineConfig;
+
+  /** Point-Specific Config */
+  point?: PointConfig;
+
+  /** Rect-Specific Config */
+  rect?: RectConfig;
+
+  /** Rule-Specific Config */
+  rule?: RuleConfig;
+
+  /** Square-Specific Config */
+  square?: BarConfig;
+
+  /** Text-Specific Config */
+  text?: TextConfig;
+
+  /** Tick-Specific Config */
+  tick?: TickConfig;
+
+  // OTHER CONFIG
+
+  // FIXME: move this to line/area
   /** Mark Overlay Config */
   overlay?: OverlayConfig;
 
@@ -168,7 +203,19 @@ export const defaultConfig: Config = {
   countTitle: 'Number of Records',
 
   cell: defaultCellConfig,
-  mark: defaultMarkConfig,
+
+  mark: mark.defaultMarkConfig,
+  area: mark.defaultAreaConfig,
+  bar: mark.defaultBarConfig,
+  circle: mark.defaultCircleConfig,
+  line: mark.defaultLineConfig,
+  point: mark.defaultPointConfig,
+  rect: mark.defaultRectConfig,
+  rule: mark.defaultRuleConfig,
+  square: mark.defaultSquareConfig,
+  text: mark.defaultTextConfig,
+  tick: mark.defaultTickConfig,
+
   overlay: defaultOverlayConfig,
   scale: defaultScaleConfig,
   axis: defaultAxisConfig,

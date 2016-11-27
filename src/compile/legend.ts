@@ -200,8 +200,8 @@ export namespace properties {
     if (channel !== SHAPE) {
       if (legend.symbolShape !== undefined) {
         symbols.shape = {value: legend.symbolShape};
-      } else if (cfg.mark.shape !== undefined) {
-        symbols.shape = {value: cfg.mark.shape};
+      } else if (cfg.point.shape !== undefined) {
+        symbols.shape = {value: cfg.point.shape};
       }
     }
 

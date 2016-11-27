@@ -36,6 +36,8 @@ export namespace line {
     if (fieldDef && fieldDef.value !== undefined) {
        return { value: fieldDef.value};
     }
-    return { value: config.mark.lineSize };
+    // FIXME: We should not need this line since this should be taken care by applyColorAndOpacity
+    // but we have to refactor \ first
+    return { value: config.mark.strokeWidth };
   }
 }

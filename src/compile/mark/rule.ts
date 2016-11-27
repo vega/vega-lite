@@ -29,7 +29,7 @@ export namespace rule {
     applyColorAndOpacity(p, model);
 
     p.strokeWidth = ref.normal(SIZE, model.encoding().size, model.scaleName(SIZE), model.scale(SIZE), {
-      value: config.mark.ruleSize
+      value: config.rule.strokeWidth
     });
 
     return p;

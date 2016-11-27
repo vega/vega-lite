@@ -4,17 +4,18 @@ import {X, COLOR, SIZE, DETAIL} from '../channel';
 import {Config} from '../config';
 import {Encoding, isAggregate, has} from '../encoding';
 import {isMeasure} from '../fielddef';
-import {MarkConfig, Orient} from '../mark';
+import {MarkConfig, TextConfig, Orient} from '../mark';
 import {BAR, AREA, POINT, LINE, TICK, CIRCLE, SQUARE, RECT, RULE, TEXT, Mark} from '../mark';
 import {ScaleType, Scale} from '../scale';
 import {StackProperties} from '../stack';
 import {TEMPORAL} from '../type';
-import {contains, duplicate, Dict} from '../util';
+import {contains, extend, Dict} from '../util';
 /**
  * Augment config.mark with rule-based default values.
  */
 export function initMarkConfig(mark: Mark, encoding: Encoding, scale: Dict<Scale>, stacked: StackProperties, config: Config) {
-  const markConfig = duplicate(config.mark);
+  // override mark config with mark specific config
+  const markConfig = extend({}, config.mark, config[mark]);
 
   if (markConfig.filled === undefined) {
     markConfig.filled = mark !== POINT && mark !== LINE && mark !== RULE;
@@ -33,11 +34,16 @@ export function initMarkConfig(mark: Mark, encoding: Encoding, scale: Dict<Scale
     log.warn(log.message.orientOverridden(config.mark.orient, markConfig.orient));
   }
 
-  if (markConfig.align === undefined) {
-    markConfig.align = has(encoding, X) ? 'center' : 'right';
-  }
-
   return markConfig;
+}
+
+export function initTextConfig(encoding: Encoding, config: Config) {
+  const textConfig: TextConfig = extend({}, config.text);
+
+  if (textConfig.align === undefined) {
+    textConfig.align = has(encoding, X) ? 'center' : 'right';
+  }
+  return textConfig;
 }
 
 export function opacity(mark: Mark, encoding: Encoding, stacked: StackProperties) {

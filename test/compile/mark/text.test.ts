@@ -72,7 +72,7 @@ describe('Mark: Text', function() {
         "text": {"field": "foo", "type": "quantitative"}
       },
       "config": {
-        "mark": {
+        "text": {
           "format": "d"
         }
       }
@@ -184,8 +184,10 @@ describe('Mark: Text', function() {
           "size": {"field": "Acceleration", "type": "quantitative", "aggregate": "mean"}
         },
         "config": {
+          "text": {
+            "applyColorToBackground": true
+          },
           "mark": {
-            "applyColorToBackground": true,
             "opacity": 0.8
           }
         },
