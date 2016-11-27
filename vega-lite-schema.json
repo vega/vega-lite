@@ -1026,13 +1026,6 @@
             ],
             "type": "string"
         },
-        "FontWeight": {
-            "enum": [
-                "bold",
-                "normal"
-            ],
-            "type": "string"
-        },
         "Formula": {
             "description": "Formula object for calculate.",
             "properties": {
@@ -1445,8 +1438,19 @@
                     "description": "The font style (e.g., italic)."
                 },
                 "fontWeight": {
-                    "$ref": "#/definitions/FontWeight",
-                    "description": "The font weight (e.g., bold)."
+                    "anyOf": [
+                        {
+                            "enum": [
+                                "bold",
+                                "normal"
+                            ],
+                            "type": "string"
+                        },
+                        {
+                            "type": "number"
+                        }
+                    ],
+                    "description": "The font weight (e.g., `\"normal\"`, `\"bold\"`, `900`)."
                 },
                 "format": {
                     "description": "The formatting pattern for text value. If not defined, this will be determined automatically.",
