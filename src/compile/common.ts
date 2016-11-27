@@ -13,7 +13,7 @@ import {contains, union, Dict} from '../util';
 import {FacetModel} from './facet';
 import {LayerModel} from './layer';
 import {Model} from './model';
-import {template as timeUnitTemplate} from '../timeunit';
+import {formatExpression} from '../timeunit';
 import {UnitModel} from './unit';
 import {Spec, isUnitSpec, isSomeFacetSpec, isLayerSpec} from '../spec';
 import {VgValueRef} from '../vega.schema';
@@ -141,14 +141,14 @@ export function sortField(orderChannelDef: OrderChannelDef) {
 }
 
 /**
- * Returns the time template used for axis/legend labels or text mark for a temporal field
+ * Returns the time expression used for axis/legend labels or text mark for a temporal field
  */
-export function timeTemplate(templateField: string, timeUnit: TimeUnit, format: string, shortTimeLabels: boolean, config: Config): string {
+export function timeFormatExpression(field: string, timeUnit: TimeUnit, format: string, shortTimeLabels: boolean, config: Config): string {
   if (!timeUnit || format) {
     // If there is not time unit, or if user explicitly specify format for axis/legend/text.
     const _format = format || config.timeFormat; // only use config.timeFormat if there is no timeUnit.
-    return '{{' + templateField + ' | time:\'' + _format + '\'}}';
+    return 'timeFormat(\'' + _format + '\', ' + field + ')';
   } else {
-    return timeUnitTemplate(timeUnit, templateField, shortTimeLabels);
+    return formatExpression(timeUnit, field, shortTimeLabels);
   }
 }

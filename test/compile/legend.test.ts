@@ -220,7 +220,7 @@ describe('Legend', function() {
         assert.deepEqual(label.baseline.value, "middle");
     });
 
-    it('should return correct template for the timeUnit: TimeUnit.MONTH', function() {
+    it('should return correct expression for the timeUnit: TimeUnit.MONTH', function() {
       const model = parseUnitModel({
         mark: "point",
         encoding: {
@@ -229,11 +229,11 @@ describe('Legend', function() {
       });
       const fieldDef = {field: 'a', type: TEMPORAL, timeUnit: TimeUnit.MONTH};
       const label = legend.encode.labels(fieldDef, {}, model, COLOR);
-      let expected = "{{datum[\"data\"] | time:'%b'}}";
-      assert.deepEqual(label.text.template, expected);
+      let expected = "timeFormat('%b', datum[\"data\"])";
+      assert.deepEqual(label.text.signal, expected);
     });
 
-    it('should return correct template for the timeUnit: TimeUnit.QUARTER', function() {
+    it('should return correct expression for the timeUnit: TimeUnit.QUARTER', function() {
       const model = parseUnitModel({
         mark: "point",
         encoding: {
@@ -242,9 +242,8 @@ describe('Legend', function() {
       });
       const fieldDef = {field: 'a', type: TEMPORAL, timeUnit: TimeUnit.QUARTER};
       const label = legend.encode.labels(fieldDef, {}, model, COLOR);
-      let quarterPrefix = 'Q';
-      let expected = quarterPrefix + "{{datum[\"data\"] | quarter}}";
-      assert.deepEqual(label.text.template, expected);
+      let expected = "'Q' + (floor(month(datum[\"data\"]) / 3) + 1)";
+      assert.deepEqual(label.text.signal, expected);
     });
   });
 

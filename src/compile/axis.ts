@@ -8,7 +8,7 @@ import {NOMINAL, ORDINAL, TEMPORAL} from '../type';
 import {contains, keys, extend, truncate, Dict} from '../util';
 import {VgAxis} from '../vega.schema';
 
-import {numberFormat, timeTemplate} from './common';
+import {numberFormat, timeFormatExpression} from './common';
 import {Model} from './model';
 import {UnitModel} from './unit';
 
@@ -238,7 +238,6 @@ export function title(model: Model, channel: Channel) {
     maxLength = unitModel.height / model.axis(Y).characterWidth;
   }
 
-  // FIXME: we should use template to truncate instead
   return maxLength ? truncate(fieldTitle, maxLength) : fieldTitle;
 }
 
@@ -304,13 +303,13 @@ export namespace encode {
       // TODO replace this with Vega's labelMaxLength once it is introduced
       labelsSpec = extend({
         text: {
-          template: '{{ datum["data"] | truncate:' + axis.labelMaxLength + ' }}'
+          signal: 'truncate(datum.value, ' +  axis.labelMaxLength + ')'
         }
       }, labelsSpec || {});
     } else if (fieldDef.type === TEMPORAL) {
       labelsSpec = extend({
         text: {
-          template: timeTemplate('datum["data"]', fieldDef.timeUnit, axis.format, axis.shortTimeLabels, config)
+          signal: timeFormatExpression('datum.value', fieldDef.timeUnit, axis.format, axis.shortTimeLabels, config)
         }
       }, labelsSpec);
     }
