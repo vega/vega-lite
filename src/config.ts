@@ -357,9 +357,9 @@ export interface MarkConfig {
    */
   fontStyle?: FontStyle;
   /**
-   * The font weight (e.g., bold).
+   * The font weight (e.g., `"normal"`, `"bold"`, `900`).
    */
-  fontWeight?: FontWeight;
+  fontWeight?: FontWeight | number;
   // Vega-Lite only for text only
   /**
    * The formatting pattern for text value. If not defined, this will be determined automatically.
