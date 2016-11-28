@@ -78,7 +78,7 @@ export function parseAxis(channel: Channel, model: Model): VgAxis {
   const axis = model.axis(channel);
 
   let def: VgAxis = {
-    scale: model.scaleName(channel)
+    type: model.scaleName(channel)
   };
 
   // 1.2. Add properties
