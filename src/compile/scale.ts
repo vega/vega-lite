@@ -2,11 +2,11 @@ import * as log from '../log';
 
 import {SHARED_DOMAIN_OPS} from '../aggregate';
 import {COLUMN, ROW, X, Y, X2, Y2, SHAPE, SIZE, COLOR, OPACITY, TEXT, hasScale, supportScaleType, Channel} from '../channel';
-import {MarkConfig} from '../config';
+import {Config} from '../config';
 import {SOURCE, STACKED_SCALE} from '../data';
 import {DateTime, isDateTime, timestamp} from '../datetime';
 import {ChannelDefWithScale, FieldDef, field} from '../fielddef';
-import {Mark, BAR, TEXT as TEXTMARK, RECT} from '../mark';
+import {Mark, BAR, TEXT as TEXTMARK, RECT, MarkConfig} from '../mark';
 import {Scale, ScaleConfig, ScaleType, NiceTime, BANDSIZE_FIT, BandSize, isDiscreteScale, scaleTypeSupportProperty} from '../scale';
 import {isSortField, SortOrder} from '../sort';
 import {StackOffset} from '../stack';
@@ -600,7 +600,6 @@ export function rangeMixins(scale: Scale, model: Model, channel: Channel):
   {range: string | Array<number|string|{data: string, field:string}>} | {bandSize: number} | {scheme: string} {
 
   const config = model.config();
-  const markConfig = model.config().mark;
   const scaleConfig = model.config().scale;
 
   // TODO: need to add rule for quantile, quantize, threshold scale
@@ -661,8 +660,8 @@ export function rangeMixins(scale: Scale, model: Model, channel: Channel):
       return {range: [topLevelSize, 0]};
     case SIZE:
       // TODO: support custom rangeMin, rangeMax
-      const rangeMin = sizeRangeMin(mark, scale.zero, markConfig, scaleConfig);
-      const rangeMax = sizeRangeMax(mark, model, markConfig, scaleConfig);
+      const rangeMin = sizeRangeMin(mark, scale.zero, config);
+      const rangeMax = sizeRangeMax(mark, model, config);
       return {range: [rangeMin, rangeMax]};
     case SHAPE:
       return {range: scaleConfig.shapeRange};
@@ -680,13 +679,14 @@ export function rangeMixins(scale: Scale, model: Model, channel: Channel):
   throw new Error(`Scale range undefined for channel ${channel}`);
 }
 
-function sizeRangeMin(mark: Mark, zero: boolean, markConfig: MarkConfig, scaleConfig: ScaleConfig) {
+function sizeRangeMin(mark: Mark, zero: boolean, config: Config) {
+  const scaleConfig = config.scale;
   if (zero) {
     return 0;
   }
   switch (mark) {
     case 'bar':
-      return scaleConfig.minBarSize !== undefined ? scaleConfig.minBarSize : markConfig.barThinSize;
+      return scaleConfig.minBarSize !== undefined ? scaleConfig.minBarSize : config.bar.continuousBandSize;
     case 'tick':
       return scaleConfig.minTickSize;
     case 'rule':
@@ -703,19 +703,20 @@ function sizeRangeMin(mark: Mark, zero: boolean, markConfig: MarkConfig, scaleCo
   throw new Error(log.message.incompatibleChannel('size', mark));
 }
 
-function sizeRangeMax(mark: Mark, model: Model, markConfig: MarkConfig, scaleConfig: ScaleConfig) {
+function sizeRangeMax(mark: Mark, model: Model,  config: Config) {
+  const scaleConfig = model.config().scale;
   // TODO(#1168): make max size scale based on bandSize / overall plot size
   switch (mark) {
     case 'bar':
       if (scaleConfig.maxBarSize !== undefined) {
         return scaleConfig.maxBarSize;
       }
-      return barTickBandSize(model, markConfig) - 1;
+      return barTickBandSize(model, config.mark) - 1;
     case 'tick':
       if (scaleConfig.maxTickSize !== undefined) {
         return scaleConfig.maxTickSize;
       }
-      return barTickBandSize(model, markConfig) - 1;
+      return barTickBandSize(model, config.mark) - 1;
     case 'rule':
       return scaleConfig.maxRuleSize;
     case 'text':

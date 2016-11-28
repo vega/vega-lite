@@ -1,5 +1,5 @@
 import {X, Y, COLOR, TEXT, SIZE} from '../../channel';
-import {applyConfig, applyColorAndOpacity, numberFormat, timeTemplate} from '../common';
+import {applyConfig, applyColorAndOpacity, numberFormat, timeFormatExpression} from '../common';
 import {Config} from '../../config';
 import {FieldDef, field} from '../../fielddef';
 import {QUANTITATIVE, ORDINAL, TEMPORAL} from '../../type';
@@ -73,15 +73,14 @@ export namespace text {
     if (textFieldDef) {
       if (textFieldDef.field) {
         if (QUANTITATIVE === textFieldDef.type) {
+          // FIXME: what happens if we have bin?
           const format = numberFormat(textFieldDef, config.text.format, config, TEXT);
-
-          const filter = 'number' + ( format ? ':\'' + format + '\'' : '');
           return {
-            template: '{{' + field(textFieldDef, { datum: true }) + ' | ' + filter + '}}'
+            signal: `format('${format}', ${field(textFieldDef, { datum: true })})`
           };
         } else if (TEMPORAL === textFieldDef.type) {
           return {
-            template: timeTemplate(field(textFieldDef, {datum: true}), textFieldDef.timeUnit, config.text.format, config.text.shortTimeLabels, config)
+            signal: timeFormatExpression(field(textFieldDef, {datum: true}), textFieldDef.timeUnit, config.text.format, config.text.shortTimeLabels, config)
           };
         } else {
           return { field: textFieldDef.field };

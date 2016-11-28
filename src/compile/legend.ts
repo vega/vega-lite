@@ -8,7 +8,7 @@ import {AREA, BAR, TICK, TEXT, LINE, POINT, CIRCLE, SQUARE} from '../mark';
 import {ORDINAL, TEMPORAL} from '../type';
 import {extend, keys, without, Dict} from '../util';
 
-import {applyMarkConfig, FILL_STROKE_CONFIG, numberFormat, timeTemplate} from './common';
+import {applyMarkConfig, FILL_STROKE_CONFIG, numberFormat, timeFormatExpression} from './common';
 import {COLOR_LEGEND, COLOR_LEGEND_LABEL} from './scale';
 import {UnitModel} from './unit';
 import {VgLegend, VgValueRef} from '../vega.schema';
@@ -245,7 +245,7 @@ export namespace encode {
       } else if (fieldDef.type === TEMPORAL) {
         labelsSpec = extend({
           text: {
-            template: timeTemplate('datum["data"]', fieldDef.timeUnit, legend.format, legend.shortTimeLabels, config)
+            signal: timeFormatExpression('datum["data"]', fieldDef.timeUnit, legend.format, legend.shortTimeLabels, config)
           }
         }, labelsSpec || {});
       }
