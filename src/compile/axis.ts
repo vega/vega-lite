@@ -27,8 +27,7 @@ export function parseAxisComponent(model: Model, axisChannels: Channel[]): Dict<
 export function parseInnerAxis(channel: Channel, model: Model): VgAxis {
   // TODO: support adding ticks as well
 
-  // TODO: replace any with Vega Axis Interface
-  let def: any = {
+  let def: VgAxis = {
     orient: channel === 'x' ? 'bottom' : 'left',
     scale: model.scaleName(channel),
     grid: true,
@@ -287,7 +286,7 @@ export namespace encode {
     );
   }
 
-  export function labels(model: Model, channel: Channel, labelsSpec: any, def: {orient?: string, type?: string}) {
+  export function labels(model: Model, channel: Channel, labelsSpec: any, def: VgAxis) {
     const fieldDef = model.fieldDef(channel);
     const axis = model.axis(channel);
     const config = model.config();
@@ -318,7 +317,7 @@ export namespace encode {
     if (axis.labelAngle !== undefined) {
       labelsSpec.angle = {value: axis.labelAngle};
     } else {
-      // auto rotate for X and Row
+      // auto rotate for X
       if (channel === X && (contains([NOMINAL, ORDINAL], fieldDef.type) || !!fieldDef.bin || fieldDef.type === TEMPORAL)) {
         labelsSpec.angle = {value: 270};
       }
@@ -333,7 +332,7 @@ export namespace encode {
         if (labelsSpec.angle.value === 270) {
           labelsSpec.align = {
             value: def.orient === 'top' ? 'left':
-                   def.type === 'x' ? 'right' :
+                   (channel === X || channel === COLUMN) ? 'right' :
                    'center'
           };
         } else if (labelsSpec.angle.value === 90) {
@@ -349,7 +348,7 @@ export namespace encode {
         // Auto set baseline if rotated
         // TODO: consider other value besides 270, 90
         if (labelsSpec.angle.value === 270) {
-          labelsSpec.baseline = {value: def.type === 'x' ? 'middle' : 'bottom'};
+          labelsSpec.baseline = {value: (channel === X || channel === COLUMN) ? 'middle' : 'bottom'};
         } else if (labelsSpec.angle.value === 90) {
           labelsSpec.baseline = {value: 'bottom'};
         }

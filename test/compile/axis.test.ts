@@ -503,7 +503,19 @@ describe('Axis', function() {
           x: {field: "a", type: "temporal", timeUnit: "month"}
         }
       });
-      const labels = axis.encode.labels(model, X, {}, {type: 'x'});
+      const labels = axis.encode.labels(model, X, {}, {});
+      assert.equal(labels.angle.value, 270);
+      assert.equal(labels.baseline.value, 'middle');
+    });
+
+    it('should also rotate labels if the channel is column', function() {
+      const model = parseModel({
+        mark: "point",
+        encoding: {
+          column: {field: "a", type: "temporal", timeUnit: "month", axis: {labelAngle: 270}}
+        }
+      });
+      const labels = axis.encode.labels(model, COLUMN, {}, {});
       assert.equal(labels.angle.value, 270);
       assert.equal(labels.baseline.value, 'middle');
     });
@@ -515,7 +527,7 @@ describe('Axis', function() {
           x: {field: "a", type: "temporal", timeUnit: "quarter"}
         }
       });
-      const labels = axis.encode.labels(model, X, {}, {type: 'x'});
+      const labels = axis.encode.labels(model, X, {}, {});
       let expected = "'Q' + (floor(month(datum.value) / 3) + 1)";
       assert.equal(labels.text.signal, expected);
     });
@@ -527,7 +539,7 @@ describe('Axis', function() {
           x: {field: "a", type: "temporal", timeUnit: "yearquartermonth"}
         }
       });
-      const labels = axis.encode.labels(model, X, {}, {type: 'x'});
+      const labels = axis.encode.labels(model, X, {}, {});
       let expected = "'Q' + (floor(month(datum.value) / 3) + 1) + ' ' + timeFormat('%b %Y', datum.value)";
       assert.equal(labels.text.signal, expected);
     });
