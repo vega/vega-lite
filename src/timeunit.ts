@@ -167,15 +167,15 @@ export function containsTimeUnit(fullTimeUnit: TimeUnit, timeUnit: TimeUnit) {
  * Returns Vega expresssion for a given timeUnit and fieldRef
  */
 export function fieldExpr(fullTimeUnit: TimeUnit, field: string): string {
-  const fieldRef = 'datum["' + field + '"]';
+  const fieldRef =  `datum["${field}"]`;
 
   function func(timeUnit: TimeUnit) {
     if (timeUnit === TimeUnit.QUARTER) {
       // Divide by 3 to get the corresponding quarter number, multiply by 3
       // to scale to the first month of the corresponding quarter(0,3,6,9).
-      return 'floor(month(' + fieldRef + ')' + '/3)';
+      return `floor(month(${fieldRef})/3)`;
     } else {
-      return timeUnit + '(' + fieldRef + ')' ;
+      return `${timeUnit}(${fieldRef})`;
     }
   }
 
@@ -228,19 +228,19 @@ export function smallestUnit(timeUnit: TimeUnit): string {
   return undefined;
 }
 
-/** returns the template name used for axis labels for a time unit */
-export function template(timeUnit: TimeUnit, field: string, shortTimeLabels: boolean): string {
+/** returns the signal expression used for axis labels for a time unit */
+export function formatExpression(timeUnit: TimeUnit, field: string, shortTimeLabels: boolean): string {
   if (!timeUnit) {
     return undefined;
   }
 
   let dateComponents: string[] = [];
-  let template = '';
+  let expression = '';
   const hasYear = containsTimeUnit(timeUnit, TimeUnit.YEAR);
 
   if (containsTimeUnit(timeUnit, TimeUnit.QUARTER)) {
-   // special template for quarter as prefix
-    template = 'Q{{' + field + ' | quarter}}';
+   // special expression for quarter as prefix
+    expression = `'Q' + (floor(month(${field}) / 3) + 1)`;
   }
 
   if (containsTimeUnit(timeUnit, TimeUnit.MONTH)) {
@@ -282,14 +282,13 @@ export function template(timeUnit: TimeUnit, field: string, shortTimeLabels: boo
   }
 
   if (dateTimeComponents.length > 0) {
-    if (template) {
+    if (expression) {
       // Add space between quarter and main time format
-      template += ' ';
+      expression += ` + ' ' + `;
     }
-    template += '{{' + field + ' | time:\'' + dateTimeComponents.join(' ') + '\'}}';
+    expression += `timeFormat('${dateTimeComponents.join(' ')}', ${field})`;
   }
 
-  // If template is still an empty string, return undefined instead.
-  return template || undefined;
+  // If expression is still an empty string, return undefined instead.
+  return expression || undefined;
 }
-
