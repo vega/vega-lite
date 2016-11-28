@@ -287,7 +287,7 @@ export namespace encode {
     );
   }
 
-  export function labels(model: Model, channel: Channel, labelsSpec: any, def: {orient?: string, type?: string}) {
+  export function labels(model: Model, channel: Channel, labelsSpec: any, def: {orient?: string, scale?: string}) {
     const fieldDef = model.fieldDef(channel);
     const axis = model.axis(channel);
     const config = model.config();
@@ -333,7 +333,7 @@ export namespace encode {
         if (labelsSpec.angle.value === 270) {
           labelsSpec.align = {
             value: def.orient === 'top' ? 'left':
-                   def.type === 'x' ? 'right' :
+                   def.scale === 'x' ? 'right' :
                    'center'
           };
         } else if (labelsSpec.angle.value === 90) {
@@ -349,7 +349,7 @@ export namespace encode {
         // Auto set baseline if rotated
         // TODO: consider other value besides 270, 90
         if (labelsSpec.angle.value === 270) {
-          labelsSpec.baseline = {value: def.type === 'x' ? 'middle' : 'bottom'};
+          labelsSpec.baseline = {value: def.scale === 'x' ? 'middle' : 'bottom'};
         } else if (labelsSpec.angle.value === 90) {
           labelsSpec.baseline = {value: 'bottom'};
         }
