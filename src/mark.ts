@@ -33,6 +33,12 @@ export const PRIMITIVE_MARKS = [AREA, BAR, LINE, POINT, TEXT, TICK, RULE, CIRCLE
 
 export type FontStyle = 'normal' | 'italic';
 export type FontWeight = 'normal' | 'bold';
+/**
+ * @type integer
+ * @minimum 100
+ * @maximum 900
+ */
+export type FontWeightNumber = number;
 export type HorizontalAlign = 'left' | 'right' | 'center';
 export type Interpolate = 'linear' | 'linear-closed' |
   'step' | 'step-before' | 'step-after' |
@@ -143,6 +149,8 @@ export interface MarkConfig {
   interpolate?: Interpolate;
   /**
    * Depending on the interpolation type, sets the tension parameter (for line and area marks).
+   * @minimum 0
+   * @maximum 1
    */
   tension?: number;
 }
@@ -165,12 +173,14 @@ export interface BarConfig extends MarkConfig {
   binSpacing?: number;
   /**
    * Default size of the bars on continuous scales.
+   * @minimum 0
    */
   continuousBandSize?: number;
 
   /**
    * The size of the bars.  If unspecified, the default size is  `bandSize-1`,
    * which provides 1 pixel offset between bars.
+   * @minimum 0
    */
   discreteBandSize?: number;
 }
@@ -195,6 +205,7 @@ export interface PointConfig extends MarkConfig {
   /**
    * The pixel area each the point/circle/square.
    * For example: in the case of circles, the radius is determined in part by the square root of the size value.
+   * @minimum 0
    */
   size?: number;
 }
@@ -229,6 +240,8 @@ export interface TextConfig extends MarkConfig {
   align?: HorizontalAlign;
   /**
    * The rotation angle of the text, in degrees.
+   * @minimum 0
+   * @maximum 360
    */
   angle?: number;
   /**
@@ -245,6 +258,7 @@ export interface TextConfig extends MarkConfig {
   dy?: number;
   /**
    * Polar coordinate radial offset, in pixels, of the text label from the origin determined by the x and y properties.
+   * @minimum 0
    */
   radius?: number;
   /**
@@ -253,10 +267,12 @@ export interface TextConfig extends MarkConfig {
   theta?: number;
   /**
    * The typeface to set the text in (e.g., Helvetica Neue).
+   * @minimum 0
    */
   font?: string;
   /**
    * The font size, in pixels.
+   * @minimum 0
    */
   fontSize?: number;
   /**
@@ -266,7 +282,8 @@ export interface TextConfig extends MarkConfig {
   /**
    * The font weight (e.g., `"normal"`, `"bold"`, `900`).
    */
-  fontWeight?: FontWeight | number;
+  fontWeight?: FontWeight | FontWeightNumber;
+
   // Vega-Lite only for text only
   /**
    * The formatting pattern for text value. If not defined, this will be determined automatically.
@@ -300,10 +317,14 @@ export interface TickConfig extends MarkConfig {
   /**
    * The width of the ticks.
    * If this value is undefined (by default,), we use 2/3 of rangeStep by default.
+   * @minimum 0
    */
   bandSize?: number;
 
-  /** Thickness of the tick mark. */
+  /**
+   * Thickness of the tick mark.
+   * @minimum 0
+   */
   thickness?: number;
 }
 
