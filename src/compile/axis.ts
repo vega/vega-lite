@@ -303,7 +303,7 @@ export namespace encode {
       // TODO replace this with Vega's labelMaxLength once it is introduced
       labelsSpec = extend({
         text: {
-          signal: 'truncate(datum.value, ' +  axis.labelMaxLength + ')'
+          signal: `truncate(datum.value, ${axis.labelMaxLength})`
         }
       }, labelsSpec || {});
     } else if (fieldDef.type === TEMPORAL) {

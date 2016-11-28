@@ -157,49 +157,49 @@ describe('timeUnit', () => {
     it('should return correct template for YEARMONTHDATEHOURSMINUTESSECONDS', () => {
       assert.equal(
         formatExpression(TimeUnit.YEARMONTHDATEHOURSMINUTESSECONDS,'datum.x', undefined),
-        'timeFormat(\'%b %d, %Y %H:%M:%S\', datum.x)'
+        "timeFormat('%b %d, %Y %H:%M:%S', datum.x)"
       );
     });
 
     it('should return correct template for YEARMONTH (No comma)', () => {
       assert.equal(
         formatExpression(TimeUnit.YEARMONTH,'datum.x', undefined),
-        'timeFormat(\'%b %Y\', datum.x)'
+        "timeFormat('%b %Y', datum.x)"
       );
     });
 
     it('should return correct template for DAY', () => {
       assert.equal(
         formatExpression(TimeUnit.DAY,'datum.x', undefined),
-        'timeFormat(\'%A\', datum.x)'
+        "timeFormat('%A', datum.x)"
       );
     });
 
     it('should return correct template for DAY (shortened)', () => {
       assert.equal(
         formatExpression(TimeUnit.DAY,'datum.x', true),
-        'timeFormat(\'%a\', datum.x)'
+        "timeFormat('%a', datum.x)"
       );
     });
 
     it('should return correct template for QUARTER', () => {
       assert.equal(
         formatExpression(TimeUnit.QUARTER,'datum.x', undefined),
-        '\'Q\' + (floor(month(datum.x) / 3) + 1)'
+        "'Q' + (floor(month(datum.x) / 3) + 1)"
       );
     });
 
     it('should return correct template for YEARQUARTER', () => {
       assert.equal(
         formatExpression(TimeUnit.YEARQUARTER,'datum.x', undefined),
-        '\'Q\' + (floor(month(datum.x) / 3) + 1) + \' \' + timeFormat(\'%Y\', datum.x)'
+        "'Q' + (floor(month(datum.x) / 3) + 1) + ' ' + timeFormat('%Y', datum.x)"
       );
     });
 
     it('should return correct template for milliseconds', () => {
       assert.equal(
         formatExpression(TimeUnit.MILLISECONDS,'datum.x', undefined),
-        'timeFormat(\'%L\', datum.x)'
+        "timeFormat('%L', datum.x)"
       );
     });
 

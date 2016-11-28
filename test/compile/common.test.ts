@@ -14,30 +14,30 @@ describe('Common', function() {
     it('should get the right time expression for month with shortTimeLabels=true', function() {
       const fieldDef: FieldDef = {timeUnit: TimeUnit.MONTH, field: 'a', type: TEMPORAL};
       const expression = timeFormatExpression(field(fieldDef, {datum: true}), TimeUnit.MONTH, undefined, true, defaultConfig);
-      assert.equal(expression, 'timeFormat(\'%b\', datum["month_a"])');
+      assert.equal(expression, `timeFormat('%b', datum["month_a"])`);
     });
 
     it('should get the right time expression for month with shortTimeLabels=false', function() {
       const fieldDef: FieldDef = {timeUnit: TimeUnit.MONTH, field: 'a', type: TEMPORAL};
       const expression = timeFormatExpression(field(fieldDef, {datum: true}), TimeUnit.MONTH, undefined, false, defaultConfig);
-      assert.equal(expression, 'timeFormat(\'%B\', datum["month_a"])');
+      assert.equal(expression, `timeFormat('%B', datum["month_a"])`);
     });
 
     it('should get the right time expression for yearmonth with custom format', function() {
       const fieldDef: FieldDef = {timeUnit: TimeUnit.YEARMONTH, field: 'a', type: TEMPORAL};
       const expression = timeFormatExpression(field(fieldDef, {datum: true}), TimeUnit.MONTH, '%Y', true, defaultConfig);
-      assert.equal(expression, 'timeFormat(\'%Y\', datum["yearmonth_a"])');
+      assert.equal(expression, `timeFormat('%Y', datum["yearmonth_a"])`);
     });
 
     it('should get the right time expression for quarter', function() {
       const fieldDef: FieldDef = {timeUnit: TimeUnit.QUARTER, field: 'a', type: TEMPORAL};
       const expression = timeFormatExpression(field(fieldDef, {datum: true}), TimeUnit.QUARTER, undefined, true, defaultConfig);
-      assert.equal(expression, '\'Q\' + (floor(month(datum["quarter_a"]) / 3) + 1)');
+      assert.equal(expression, `'Q' + (floor(month(datum["quarter_a"]) / 3) + 1)`);
     });
 
     it('should get the right time expression for yearquarter', function() {
       const expression = timeFormatExpression('datum["data"]', TimeUnit.YEARQUARTER, undefined, true, defaultConfig);
-      assert.equal(expression, '\'Q\' + (floor(month(datum["data"]) / 3) + 1) + \' \' + timeFormat(\'%y\', datum["data"])');
+      assert.equal(expression, `'Q' + (floor(month(datum["data"]) / 3) + 1) + ' ' + timeFormat('%y', datum["data"])`);
     });
   });
 
