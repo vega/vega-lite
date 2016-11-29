@@ -825,7 +825,7 @@
                     "description": "Cell Config"
                 },
                 "circle": {
-                    "$ref": "#/definitions/BarConfig",
+                    "$ref": "#/definitions/PointConfig",
                     "description": "Circle-Specific Config"
                 },
                 "countTitle": {
@@ -873,7 +873,7 @@
                     "description": "Scale Config"
                 },
                 "square": {
-                    "$ref": "#/definitions/BarConfig",
+                    "$ref": "#/definitions/PointConfig",
                     "description": "Square-Specific Config"
                 },
                 "text": {
