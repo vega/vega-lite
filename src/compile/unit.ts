@@ -1,18 +1,16 @@
 import * as log from '../log';
 
-import {AggregateOp} from '../aggregate';
 import {Axis} from '../axis';
-import {X, Y, X2, Y2, TEXT, ORDER, Channel, UNIT_CHANNELS,  UNIT_SCALE_CHANNELS, NONSPATIAL_SCALE_CHANNELS, supportMark} from '../channel';
+import {X, Y, X2, Y2, TEXT, Channel, UNIT_CHANNELS,  UNIT_SCALE_CHANNELS, NONSPATIAL_SCALE_CHANNELS, supportMark} from '../channel';
 import {defaultConfig, Config, CellConfig} from '../config';
 import {SOURCE, SUMMARY} from '../data';
 import {Encoding} from '../encoding';
 import * as vlEncoding from '../encoding'; // TODO: remove
-import {FieldDef, FieldRefOption, field} from '../fielddef';
+import {FieldDef, FieldRefOption, field, normalize} from '../fielddef';
 import {Legend} from '../legend';
 import {Mark, TEXT as TEXTMARK} from '../mark';
 import {Scale, ScaleConfig, hasDiscreteDomain} from '../scale';
 import {ExtendedUnitSpec} from '../spec';
-import {getFullName, QUANTITATIVE} from '../type';
 import {duplicate, extend, isArray, mergeDeep, Dict} from '../util';
 import {VgData} from '../vega.schema';
 
@@ -27,18 +25,6 @@ import {parseMark} from './mark/mark';
 import initScale from './scale/init';
 import parseScaleComponent from './scale/parse';
 import {stack, StackProperties} from '../stack';
-
-function normalizeFieldDef(fieldDef: FieldDef, channel: Channel) {
-  if (fieldDef.type) {
-    // convert short type to full type
-    fieldDef.type = getFullName(fieldDef.type);
-  }
-
-  if ((channel === ORDER) && !fieldDef.aggregate && fieldDef.type === QUANTITATIVE) {
-    fieldDef.aggregate = AggregateOp.MIN;
-  }
-  return fieldDef;
-}
 
 /**
  * Internal model of Vega-Lite specification for the compiler.
@@ -121,7 +107,7 @@ export class UnitModel extends Model {
           if (fieldDef.field === undefined && fieldDef.value === undefined) { // TODO: datum
             log.warn(log.message.emptyFieldDef(fieldDef, channel));
           } else {
-            fieldDefs.push(normalizeFieldDef(fieldDef, channel));
+            fieldDefs.push(normalize(fieldDef, channel));
           }
           return fieldDefs;
         }, []);
@@ -132,7 +118,7 @@ export class UnitModel extends Model {
           delete encoding[channel];
           return;
         }
-        normalizeFieldDef(fieldDef, channel);
+        normalize(fieldDef, channel);
       }
     });
     return encoding;

@@ -148,6 +148,7 @@ export function getSupportedRole(channel: Channel): SupportedRole {
     case COLOR:
     case OPACITY:
     case LABEL:
+    case ORDER:
     case DETAIL:
       return {
         measure: true,
@@ -169,7 +170,7 @@ export function getSupportedRole(channel: Channel): SupportedRole {
         dimension: false
       };
   }
-  throw new Error('Invalid encoding channel' + channel);
+  throw new Error('Invalid encoding channel ' + channel);
 }
 
 export function hasScale(channel: Channel) {

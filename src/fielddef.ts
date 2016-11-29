@@ -3,12 +3,14 @@
 import {AggregateOp} from './aggregate';
 import {Axis} from './axis';
 import {Bin} from './bin';
+import {Channel, getSupportedRole} from './channel';
 import {Config} from './config';
 import {Legend} from './legend';
+import * as log from './log';
 import {Scale} from './scale';
 import {SortField, SortOrder} from './sort';
 import {TimeUnit} from './timeunit';
-import {Type, NOMINAL, ORDINAL, QUANTITATIVE, TEMPORAL} from './type';
+import {Type, NOMINAL, ORDINAL, QUANTITATIVE, TEMPORAL, getFullName} from './type';
 import {contains} from './util';
 
 /**
@@ -185,4 +187,35 @@ export function title(fieldDef: FieldDef, config: Config) {
   } else {
     return fieldDef.field;
   }
+}
+
+export function defaultType(fieldDef: FieldDef, channel: Channel): Type {
+  if (!!fieldDef.timeUnit) {
+    return 'temporal';
+  }
+  if (!!fieldDef.bin) {
+    return 'quantitative';
+  }
+  const canBeMeasure = getSupportedRole(channel).measure;
+  return canBeMeasure ? 'quantitative' : 'nominal';
+}
+
+/**
+ * Convert type to full, lowercase type, or augment the fieldDef with a default type if missing.
+ */
+export function normalize(fieldDef: FieldDef, channel: Channel) {
+  // If a fieldDef contains a field, we need type.
+  if (fieldDef.field) { // TODO: or datum
+    // convert short type to full type
+    const fullType = getFullName(fieldDef.type);
+    if (fullType) {
+      fieldDef.type = fullType;
+    } else {
+      // If type is empty / invalid, then augment with default type
+      const newType = defaultType(fieldDef, channel);
+      log.warn(log.message.emptyOrInvalidFieldType(fieldDef.type, channel, newType));
+      fieldDef.type = newType;
+    }
+  }
+  return fieldDef;
 }

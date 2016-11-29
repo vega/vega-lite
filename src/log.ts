@@ -107,6 +107,10 @@ export namespace message {
     return `Invalid field type "${type}"`;
   }
 
+  export function emptyOrInvalidFieldType(type: Type | string, channel: Channel, newType: Type) {
+    return `Invalid field type (${type}) for channel ${channel}, using ${newType} instead.`;
+  }
+
   export function emptyFieldDef(fieldDef: FieldDef, channel: Channel) {
     return `Dropping ${JSON.stringify(fieldDef)} from channel ${channel} since it does not contain data field or value.`;
   }
