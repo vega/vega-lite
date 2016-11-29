@@ -5,7 +5,7 @@
 
 import {Mark} from './mark';
 import {ScaleType, SCALE_TYPES} from './scale';
-import {contains, toMap, without} from './util';
+import {contains, toSet, without} from './util';
 
 export namespace Channel {
   // Facet
@@ -176,7 +176,7 @@ export function hasScale(channel: Channel) {
 }
 
 // Position does not work with ordinal (lookup) scale and sequential (which is only for color)
-const POSITION_SCALE_TYPE_INDEX = toMap(without(SCALE_TYPES, ['ordinal', 'sequential'] as ScaleType[]));
+const POSITION_SCALE_TYPE_INDEX = toSet(without(SCALE_TYPES, ['ordinal', 'sequential'] as ScaleType[]));
 
 export function supportScaleType(channel: Channel, scaleType: ScaleType): boolean {
   switch (channel) {

@@ -13,4 +13,18 @@ declare module 'vega-util' {
 
   export function log(...args: any[]): void;
   export function logger(_: number): LoggerInterface;
+
+  export function extend<T, U, V, W>(a: T, b: U, c: V, d: W): T & U & V & W;
+  export function extend<T, U, V>(a: T, b: U, c: V): T & U & V;
+  export function extend<T, U>(a: T, b: U): T & U;
+  export function extend(...all: any[]): any;
+
+  export function truncate(a: string, length: number): string;
+
+  export function isArray(a: any | any[]): a is any[];
+  export function isObject(a: any): a is any;
+  export function isString(a: any): a is string;
+  export function isNumber(a: any): a is number;
+
+  export function toSet<T>(array: T[]): {T: 1}
 }
