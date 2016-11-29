@@ -171,9 +171,8 @@ export function fieldExpr(fullTimeUnit: TimeUnit, field: string): string {
 
   function func(timeUnit: TimeUnit) {
     if (timeUnit === TimeUnit.QUARTER) {
-      // Divide by 3 to get the corresponding quarter number, multiply by 3
-      // to scale to the first month of the corresponding quarter(0,3,6,9).
-      return `floor(month(${fieldRef})/3)`;
+      // quarter starting at 0 (0,3,6,9).
+      return `(quarter(${fieldRef})-1)`;
     } else {
       return `${timeUnit}(${fieldRef})`;
     }
@@ -240,7 +239,7 @@ export function formatExpression(timeUnit: TimeUnit, field: string, shortTimeLab
 
   if (containsTimeUnit(timeUnit, TimeUnit.QUARTER)) {
    // special expression for quarter as prefix
-    expression = `'Q' + (floor(month(${field}) / 3) + 1)`;
+    expression = `'Q' + quarter(${field})`;
   }
 
   if (containsTimeUnit(timeUnit, TimeUnit.MONTH)) {

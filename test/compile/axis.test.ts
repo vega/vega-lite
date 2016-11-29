@@ -528,7 +528,7 @@ describe('Axis', function() {
         }
       });
       const labels = axis.encode.labels(model, X, {}, {});
-      let expected = "'Q' + (floor(month(datum.value) / 3) + 1)";
+      let expected = "'Q' + quarter(datum.value)";
       assert.equal(labels.text.signal, expected);
     });
 
@@ -540,7 +540,7 @@ describe('Axis', function() {
         }
       });
       const labels = axis.encode.labels(model, X, {}, {});
-      let expected = "'Q' + (floor(month(datum.value) / 3) + 1) + ' ' + timeFormat(datum.value, '%b %Y')";
+      let expected = "'Q' + quarter(datum.value) + ' ' + timeFormat(datum.value, '%b %Y')";
       assert.equal(labels.text.signal, expected);
     });
 

@@ -242,7 +242,7 @@ describe('Legend', function() {
       });
       const fieldDef = {field: 'a', type: TEMPORAL, timeUnit: TimeUnit.QUARTER};
       const label = legend.encode.labels(fieldDef, {}, model, COLOR);
-      let expected = `'Q' + (floor(month(datum["data"]) / 3) + 1)`;
+      let expected = `'Q' + quarter(datum["data"])`;
       assert.deepEqual(label.text.signal, expected);
     });
   });

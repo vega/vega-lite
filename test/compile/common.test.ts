@@ -32,12 +32,12 @@ describe('Common', function() {
     it('should get the right time expression for quarter', function() {
       const fieldDef: FieldDef = {timeUnit: TimeUnit.QUARTER, field: 'a', type: TEMPORAL};
       const expression = timeFormatExpression(field(fieldDef, {datum: true}), TimeUnit.QUARTER, undefined, true, defaultConfig);
-      assert.equal(expression, `'Q' + (floor(month(datum["quarter_a"]) / 3) + 1)`);
+      assert.equal(expression, `'Q' + quarter(datum["quarter_a"])`);
     });
 
     it('should get the right time expression for yearquarter', function() {
       const expression = timeFormatExpression('datum["data"]', TimeUnit.YEARQUARTER, undefined, true, defaultConfig);
-      assert.equal(expression, `'Q' + (floor(month(datum["data"]) / 3) + 1) + ' ' + timeFormat(datum["data"], '%y')`);
+      assert.equal(expression, `'Q' + quarter(datum["data"]) + ' ' + timeFormat(datum["data"], '%y')`);
     });
   });
 

@@ -66,7 +66,7 @@ describe('timeUnit', () => {
     it('should return correct field expression for QUARTER', () => {
       assert.equal(
         fieldExpr(TimeUnit.QUARTER, 'x'),
-        'datetime(0, floor(month(datum["x"])/3)*3, 1, 0, 0, 0, 0)'
+        'datetime(0, (quarter(datum["x"])-1)*3, 1, 0, 0, 0, 0)'
       );
     });
 
@@ -185,14 +185,14 @@ describe('timeUnit', () => {
     it('should return correct template for QUARTER', () => {
       assert.equal(
         formatExpression(TimeUnit.QUARTER,'datum.x', undefined),
-        "'Q' + (floor(month(datum.x) / 3) + 1)"
+        "'Q' + quarter(datum.x)"
       );
     });
 
     it('should return correct template for YEARQUARTER', () => {
       assert.equal(
         formatExpression(TimeUnit.YEARQUARTER,'datum.x', undefined),
-        "'Q' + (floor(month(datum.x) / 3) + 1) + ' ' + timeFormat(datum.x, '%Y')"
+        "'Q' + quarter(datum.x) + ' ' + timeFormat(datum.x, '%Y')"
       );
     });
 
