@@ -9,8 +9,8 @@ import {LayerModel} from './../layer';
 import {Model} from './../model';
 
 export namespace bin {
-  function numberFormatExpr(format: string, expr: string) {
-    return `format('${format}', ${expr})`;
+  function numberFormatExpr(expr: string, format: string) {
+    return `format(${expr}, '${format}')`;
   }
 
   function parse(model: Model): Dict<VgTransform[]> {
@@ -46,7 +46,7 @@ export namespace bin {
           transform.push({
             type: 'formula',
             as: field(fieldDef, { binSuffix: 'range' }),
-            expr: `${numberFormatExpr(format, startField)} + ' ' + ${numberFormatExpr(format, endField)}`
+            expr: `${numberFormatExpr(startField, format)} + ' ' + ${numberFormatExpr(endField, format)}`
           });
         }
         // FIXME: current merging logic can produce redundant transforms when a field is binned for color and for non-color

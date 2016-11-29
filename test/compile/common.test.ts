@@ -14,19 +14,19 @@ describe('Common', function() {
     it('should get the right time expression for month with shortTimeLabels=true', function() {
       const fieldDef: FieldDef = {timeUnit: TimeUnit.MONTH, field: 'a', type: TEMPORAL};
       const expression = timeFormatExpression(field(fieldDef, {datum: true}), TimeUnit.MONTH, undefined, true, defaultConfig);
-      assert.equal(expression, `timeFormat('%b', datum["month_a"])`);
+      assert.equal(expression, `timeFormat(datum["month_a"], '%b')`);
     });
 
     it('should get the right time expression for month with shortTimeLabels=false', function() {
       const fieldDef: FieldDef = {timeUnit: TimeUnit.MONTH, field: 'a', type: TEMPORAL};
       const expression = timeFormatExpression(field(fieldDef, {datum: true}), TimeUnit.MONTH, undefined, false, defaultConfig);
-      assert.equal(expression, `timeFormat('%B', datum["month_a"])`);
+      assert.equal(expression, `timeFormat(datum["month_a"], '%B')`);
     });
 
     it('should get the right time expression for yearmonth with custom format', function() {
       const fieldDef: FieldDef = {timeUnit: TimeUnit.YEARMONTH, field: 'a', type: TEMPORAL};
       const expression = timeFormatExpression(field(fieldDef, {datum: true}), TimeUnit.MONTH, '%Y', true, defaultConfig);
-      assert.equal(expression, `timeFormat('%Y', datum["yearmonth_a"])`);
+      assert.equal(expression, `timeFormat(datum["yearmonth_a"], '%Y')`);
     });
 
     it('should get the right time expression for quarter', function() {
@@ -37,7 +37,7 @@ describe('Common', function() {
 
     it('should get the right time expression for yearquarter', function() {
       const expression = timeFormatExpression('datum["data"]', TimeUnit.YEARQUARTER, undefined, true, defaultConfig);
-      assert.equal(expression, `'Q' + (floor(month(datum["data"]) / 3) + 1) + ' ' + timeFormat('%y', datum["data"])`);
+      assert.equal(expression, `'Q' + (floor(month(datum["data"]) / 3) + 1) + ' ' + timeFormat(datum["data"], '%y')`);
     });
   });
 

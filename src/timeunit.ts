@@ -286,7 +286,7 @@ export function formatExpression(timeUnit: TimeUnit, field: string, shortTimeLab
       // Add space between quarter and main time format
       expression += ` + ' ' + `;
     }
-    expression += `timeFormat('${dateTimeComponents.join(' ')}', ${field})`;
+    expression += `timeFormat(${field}, '${dateTimeComponents.join(' ')}')`;
   }
 
   // If expression is still an empty string, return undefined instead.

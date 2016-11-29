@@ -81,7 +81,7 @@
     "typescript": "^2.0.10",
     "typescript-json-schema": "~0.3.3",
     "uglify-js": "~2.7.4",
-    "vega": "^3.0.0-beta.4",
+    "vega": "~3.0.0-beta.5",
     "vega-datasets": "vega/vega-datasets#gh-pages",
     "watchify": "~3.7.0",
     "yaml-front-matter": "~3.4.0"
@@ -89,7 +89,7 @@
   "dependencies": {
     "datalib": "~1.7.3",
     "json-stable-stringify": "~1.0.1",
-    "vega-util": "1.0.1",
+    "vega-util": "~1.0.2",
     "yargs": "~6.4.0"
   }
 }

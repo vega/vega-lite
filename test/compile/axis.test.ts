@@ -540,7 +540,7 @@ describe('Axis', function() {
         }
       });
       const labels = axis.encode.labels(model, X, {}, {});
-      let expected = "'Q' + (floor(month(datum.value) / 3) + 1) + ' ' + timeFormat('%b %Y', datum.value)";
+      let expected = "'Q' + (floor(month(datum.value) / 3) + 1) + ' ' + timeFormat(datum.value, '%b %Y')";
       assert.equal(labels.text.signal, expected);
     });
 

@@ -147,7 +147,7 @@ export function timeFormatExpression(field: string, timeUnit: TimeUnit, format: 
   if (!timeUnit || format) {
     // If there is not time unit, or if user explicitly specify format for axis/legend/text.
     const _format = format || config.timeFormat; // only use config.timeFormat if there is no timeUnit.
-    return `timeFormat('${_format}', ${field})`;
+    return `timeFormat(${field}, '${_format}')`;
   } else {
     return formatExpression(timeUnit, field, shortTimeLabels);
   }

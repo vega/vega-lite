@@ -76,7 +76,7 @@ export namespace text {
           // FIXME: what happens if we have bin?
           const format = numberFormat(textFieldDef, config.text.format, config, TEXT);
           return {
-            signal: `format('${format}', ${field(textFieldDef, { datum: true })})`
+            signal: `format(${field(textFieldDef, { datum: true })}, '${format}')`
           };
         } else if (TEMPORAL === textFieldDef.type) {
           return {

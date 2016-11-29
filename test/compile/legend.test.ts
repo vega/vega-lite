@@ -229,7 +229,7 @@ describe('Legend', function() {
       });
       const fieldDef = {field: 'a', type: TEMPORAL, timeUnit: TimeUnit.MONTH};
       const label = legend.encode.labels(fieldDef, {}, model, COLOR);
-      let expected = `timeFormat('%b', datum["data"])`;
+      let expected = `timeFormat(datum["data"], '%b')`;
       assert.deepEqual(label.text.signal, expected);
     });
 

@@ -81,7 +81,7 @@ describe('Mark: Text', function() {
     const props = text.properties(model);
 
     it('should use number template', function() {
-      assert.deepEqual(props.text, {signal: `format('d', datum["foo"])`});
+      assert.deepEqual(props.text, {signal: `format(datum["foo"], 'd')`});
     });
   });
 
@@ -96,7 +96,7 @@ describe('Mark: Text', function() {
     const props = text.properties(model);
 
     it('should use date template', function() {
-      assert.deepEqual(props.text, {signal: `timeFormat('%b %d, %Y', datum["foo"])`});
+      assert.deepEqual(props.text, {signal: `timeFormat(datum["foo"], '%b %d, %Y')`});
     });
   });
 
@@ -154,7 +154,7 @@ describe('Mark: Text', function() {
 
     it('should map text to expression', function() {
       assert.deepEqual(props.text, {
-        signal: `format('s', datum["mean_Acceleration"])`
+        signal: `format(datum["mean_Acceleration"], 's')`
       });
     });
 
