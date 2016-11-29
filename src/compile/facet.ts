@@ -5,10 +5,9 @@ import {COLUMN, ROW, X, Y, Channel} from '../channel';
 import {defaultConfig, Config} from '../config';
 import {Facet} from '../facet';
 import {forEach} from '../encoding';
-import {FieldDef, isDimension} from '../fielddef';
+import {FieldDef, isDimension, normalize} from '../fielddef';
 import {Scale} from '../scale';
 import {FacetSpec} from '../spec';
-import {getFullName} from '../type';
 import {contains, extend, keys, vals, flatten, duplicate, mergeDeep, Dict} from '../util';
 import {VgData, VgMarkGroup} from '../vega.schema';
 import {StackProperties} from '../stack';
@@ -81,12 +80,10 @@ export class FacetModel extends Model {
         return;
       }
 
-      // TODO: if has no field / datum, then drop the field
-      if (fieldDef.type) {
-        // convert short type to full type
-        fieldDef.type = getFullName(fieldDef.type);
-      }
+      // Convert type to full, lowercase type, or augment the fieldDef with a default type if missing.
+      normalize(fieldDef, channel);
 
+      // TODO: move this warning into normalize
       if (!isDimension(fieldDef)) {
         log.warn(log.message.facetChannelShouldBeDiscrete(channel));
       }
