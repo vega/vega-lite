@@ -66,6 +66,12 @@ export interface MarkConfig {
    */
   color?: string;
 
+  /** Default color scheme for nominal (categorical) data */
+  nominalColorScheme?: string;
+
+  /** Default color scheme for ordinal, quantitative and temporal field */
+  sequentialColorScheme?: string;
+
   /**
    * Default Fill Color.  This has higher precedence than config.color
    */
@@ -84,6 +90,20 @@ export interface MarkConfig {
   opacity?: number;
 
   /**
+   * Default minimum opacity for mapping a field to opacity.
+   * @minimum 0
+   * @maximum 1
+   */
+  minOpacity?: number;
+
+  /**
+   * Default max opacity for mapping a field to opacity.
+   * @minimum 0
+   * @maximum 1
+   */
+  maxOpacity?: number;
+
+  /**
    * @minimum 0
    * @maximum 1
    */
@@ -100,6 +120,18 @@ export interface MarkConfig {
    * @minimum 0
    */
   strokeWidth?: number;
+
+  /**
+   * Default minimum strokeWidth for strokeWidth (or rule/line's size) scale with zero=false.
+   * @minimum 0
+   */
+  minStrokeWidth?: number;
+
+  /**
+   * Default max strokeWidth for strokeWidth  (or rule/line's size) scale.
+   * @minimum 0
+   */
+  maxStrokeWidth?: number;
 
   /**
    * An array of alternating stroke, space lengths for creating dashed or dotted lines.
@@ -157,6 +189,14 @@ export interface MarkConfig {
 
 export const defaultMarkConfig: MarkConfig = {
   color: '#4682b4',
+  nominalColorScheme: 'category10',
+  sequentialColorScheme: 'Greens',
+
+  minOpacity: 0.3,
+  maxOpacity: 0.8,
+
+  minStrokeWidth: 1,
+  maxStrokeWidth: 4
 };
 
 export interface AreaConfig extends MarkConfig {}
@@ -183,6 +223,20 @@ export interface BarConfig extends MarkConfig {
    * @minimum 0
    */
   discreteBandSize?: number;
+
+  /**
+   * The default max value for mapping quantitative fields to bar's size/bandSize.
+   * If undefined (default), we will use bandSize - 1.
+   * @minimum 0
+   */
+  maxBandSize?: number;
+
+  /**
+   * The default min value for mapping quantitative fields to bar's size/bandSize scale with zero=false
+   * If undefined (default), we will use the `continuousBandSize` value.
+   * @minimum 0
+   */
+  minBandSize?: number;
 }
 
 export const defaultBarConfig: BarConfig = {
@@ -198,9 +252,15 @@ export const defaultLineConfig: LineConfig = {
 
 export interface PointConfig extends MarkConfig {
   /**
-   * The symbol shape to use. One of circle (default), square, cross, diamond, triangle-up, or triangle-down, or a custom SVG path.
+   * The default symbol shape to use. One of: `"circle"` (default), `"square"`, `"cross"`, `"diamond"`, `"triangle-up"`, or `"triangle-down"`, or a custom SVG path.
    */
   shape?: Shape | string;
+
+  /**
+   * The default collection of symbol shapes for mapping nominal fields to shapes of point marks (i.e., range of a `shape` scale).
+   * Each value should be one of: `"circle"`, `"square"`, `"cross"`, `"diamond"`, `"triangle-up"`, or `"triangle-down"`, or a custom SVG path.
+   */
+  shapes?: (Shape|string)[];
 
   /**
    * The pixel area each the point/circle/square.
@@ -208,11 +268,27 @@ export interface PointConfig extends MarkConfig {
    * @minimum 0
    */
   size?: number;
+
+  /**
+   * Default minimum value for point size scale with zero=false.
+   * @minimum 0
+   */
+  minSize?: number;
+
+  /**
+   * Default max value for point size scale.
+   * @minimum 0
+   */
+  maxSize?: number;
 }
 
 export const defaultPointConfig: PointConfig = {
   shape: 'circle',
+  shapes: ['circle', 'square', 'cross', 'diamond', 'triangle-up', 'triangle-down'],
   size: 30,
+
+  // FIXME: revise if these *can* become ratios of rangeStep
+  minSize: 9, // Point size is area. For square point, 9 = 3 pixel ^ 2, not too small!
   strokeWidth: 2
 };
 
@@ -220,7 +296,6 @@ export const defaultCircleConfig: PointConfig = defaultPointConfig;
 export const defaultSquareConfig: PointConfig = extend({}, defaultPointConfig, {
   shape: 'square'
 });
-
 
 export interface RectConfig extends MarkConfig {}
 
@@ -231,7 +306,6 @@ export interface RuleConfig extends MarkConfig {}
 export const defaultRuleConfig: RuleConfig = {
   strokeWidth: 1
 };
-
 
 export interface TextConfig extends MarkConfig {
   /**
@@ -275,6 +349,20 @@ export interface TextConfig extends MarkConfig {
    * @minimum 0
    */
   fontSize?: number;
+
+  /**
+   * The default max value for mapping quantitative fields to text's size/fontSize.
+   * If undefined (default), we will use bandSize - 1.
+   * @minimum 0
+   */
+  maxFontSize?: number;
+
+  /**
+   * The default min value for mapping quantitative fields to tick's size/fontSize scale with zero=false
+   * @minimum 0
+   */
+  minFontSize?: number;
+
   /**
    * The font style (e.g., italic).
    */
@@ -308,6 +396,8 @@ export interface TextConfig extends MarkConfig {
 
 export const defaultTextConfig: TextConfig = {
   fontSize: 10,
+  minFontSize: 8,
+  maxFontSize: 40,
   baseline: 'middle',
   text: 'Abc',
   applyColorToBackground: false
@@ -322,6 +412,20 @@ export interface TickConfig extends MarkConfig {
   bandSize?: number;
 
   /**
+   * The default max value for mapping quantitative fields to tick's size/bandSize.
+   * If undefined (default), we will use bandSize - 1.
+   * @minimum 0
+   */
+  maxBandSize?: number;
+
+  /**
+   * The default min value for mapping quantitative fields to tick's size/bandSize scale with zero=false
+   * If undefined (default), we will use the `continuousBandSize` value.
+   * @minimum 0
+   */
+  minBandSize?: number;
+
+  /**
    * Thickness of the tick mark.
    * @minimum 0
    */
@@ -329,6 +433,9 @@ export interface TickConfig extends MarkConfig {
 }
 
 export const defaultTickConfig: TickConfig = {
+  // if tickSize = 1, it becomes a dot.
+  // To be consistent, we just use 3 to be somewhat consistent with point, which use area = 9.
+  minBandSize: 3,
   thickness: 1
 };
 
