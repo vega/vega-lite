@@ -1,5 +1,5 @@
 import {DateTime} from './datetime';
-import {contains, toMap} from './util';
+import {contains, toSet} from './util';
 
 export namespace ScaleType {
   // Continuous - Quantitative
@@ -43,10 +43,10 @@ export const SCALE_TYPES: ScaleType[] = [
 ];
 
 export const CONTINUOUS_SCALE_TYPES: ScaleType[] = ['linear', 'log', 'pow', 'sqrt', 'time', 'utc'];
-const CONTINUOUS_SCALE_TYPE_INDEX = toMap(CONTINUOUS_SCALE_TYPES);
+const CONTINUOUS_SCALE_TYPE_INDEX = toSet(CONTINUOUS_SCALE_TYPES);
 
 export const DISCRETE_SCALE_TYPES: ScaleType[] = ['ordinal', 'point', 'band'];
-const DISCRETE_SCALE_TYPE_INDEX = toMap(DISCRETE_SCALE_TYPES);
+const DISCRETE_SCALE_TYPE_INDEX = toSet(DISCRETE_SCALE_TYPES);
 
 export const TIME_SCALE_TYPES: ScaleType[] = ['time', 'utc'];
 
