@@ -63,7 +63,7 @@
     "@types/json-stable-stringify": "^1.0.29",
     "@types/mocha": "^2.2.33",
     "@types/node": "^6.0.48",
-    "ajv": "^4.9.0",
+    "ajv": "^5.0.0-beta.1",
     "browser-sync": "~2.17.6",
     "browserify": "~13.1.1",
     "chai": "~3.5.0",

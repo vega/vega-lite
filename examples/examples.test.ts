@@ -14,7 +14,7 @@ const ajv = new Ajv({
   extendRefs: true,
   allErrors: true,
   verbose: true
-} as any);  // FIXME: https://github.com/DefinitelyTyped/DefinitelyTyped/pull/12909
+});
 const validateVl = ajv.compile(vlSchema);
 const validateVg = ajv.compile(vgSchema);
 
