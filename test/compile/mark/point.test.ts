@@ -144,7 +144,7 @@ describe('Mark: Point', function() {
     const props = point.properties(model);
 
     it('should have scale for size', function () {
-      assert.deepEqual(props.size, {scale: SIZE, field: 'count'});
+      assert.deepEqual(props.size, {scale: SIZE, field: 'count_*'});
     });
   });
 
