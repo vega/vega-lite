@@ -53,12 +53,12 @@
                     "type": "number"
                 },
                 "filled": {
-                    "description": "Whether the shape\\'s color should be used as fill color instead of stroke color.\n\nThis is only applicable for \"bar\", \"point\", and \"area\".\n\nAll marks except \"point\" marks are filled by default.\n\nSee Mark Documentation (http://vega.github.io/vega-lite/docs/marks.html)\n\nfor usage example.",
+                    "description": "Whether the shape\\'s color should be used as fill color instead of stroke color.\nThis is only applicable for \"bar\", \"point\", and \"area\".\nAll marks except \"point\" marks are filled by default.\nSee Mark Documentation (http://vega.github.io/vega-lite/docs/marks.html)\nfor usage example.",
                     "type": "boolean"
                 },
                 "interpolate": {
                     "$ref": "#/definitions/Interpolate",
-                    "description": "The line interpolation method to use for line and area marks. One of the following:\n\n- `\"linear\"`: piecewise linear segments, as in a polyline.\n\n- `\"linear-closed\"`: close the linear segments to form a polygon.\n\n- `\"step\"`: alternate between horizontal and vertical segments, as in a step function.\n\n- `\"step-before\"`: alternate between vertical and horizontal segments, as in a step function.\n\n- `\"step-after\"`: alternate between horizontal and vertical segments, as in a step function.\n\n- `\"basis\"`: a B-spline, with control point duplication on the ends.\n\n- `\"basis-open\"`: an open B-spline; may not intersect the start or end.\n\n- `\"basis-closed\"`: a closed B-spline, as in a loop.\n\n- `\"cardinal\"`: a Cardinal spline, with control point duplication on the ends.\n\n- `\"cardinal-open\"`: an open Cardinal spline; may not intersect the start or end, but will intersect other control points.\n\n- `\"cardinal-closed\"`: a closed Cardinal spline, as in a loop.\n\n- `\"bundle\"`: equivalent to basis, except the tension parameter is used to straighten the spline.\n\n- `\"monotone\"`: cubic interpolation that preserves monotonicity in y."
+                    "description": "The line interpolation method to use for line and area marks. One of the following:\n- `\"linear\"`: piecewise linear segments, as in a polyline.\n- `\"linear-closed\"`: close the linear segments to form a polygon.\n- `\"step\"`: alternate between horizontal and vertical segments, as in a step function.\n- `\"step-before\"`: alternate between vertical and horizontal segments, as in a step function.\n- `\"step-after\"`: alternate between horizontal and vertical segments, as in a step function.\n- `\"basis\"`: a B-spline, with control point duplication on the ends.\n- `\"basis-open\"`: an open B-spline; may not intersect the start or end.\n- `\"basis-closed\"`: a closed B-spline, as in a loop.\n- `\"cardinal\"`: a Cardinal spline, with control point duplication on the ends.\n- `\"cardinal-open\"`: an open Cardinal spline; may not intersect the start or end, but will intersect other control points.\n- `\"cardinal-closed\"`: a closed Cardinal spline, as in a loop.\n- `\"bundle\"`: equivalent to basis, except the tension parameter is used to straighten the spline.\n- `\"monotone\"`: cubic interpolation that preserves monotonicity in y."
                 },
                 "maxOpacity": {
                     "description": "Default max opacity for mapping a field to opacity.",
@@ -93,7 +93,7 @@
                 },
                 "orient": {
                     "$ref": "#/definitions/Orient",
-                    "description": "The orientation of a non-stacked bar, tick, area, and line charts.\n\nThe value is either horizontal (default) or vertical.\n\n- For bar, rule and tick, this determines whether the size of the bar and tick\n\nshould be applied to x or y dimension.\n\n- For area, this property determines the orient property of the Vega output.\n\n- For line, this property determines the sort order of the points in the line\n\nif `config.sortLineBy` is not specified.\n\nFor stacked charts, this is always determined by the orientation of the stack;\n\ntherefore explicitly specified value will be ignored."
+                    "description": "The orientation of a non-stacked bar, tick, area, and line charts.\nThe value is either horizontal (default) or vertical.\n- For bar, rule and tick, this determines whether the size of the bar and tick\nshould be applied to x or y dimension.\n- For area, this property determines the orient property of the Vega output.\n- For line, this property determines the sort order of the points in the line\nif `config.sortLineBy` is not specified.\nFor stacked charts, this is always determined by the orientation of the stack;\ntherefore explicitly specified value will be ignored."
                 },
                 "sequentialColorScheme": {
                     "description": "Default color scheme for ordinal, quantitative and temporal field",
@@ -333,7 +333,7 @@
                     ]
                 },
                 "zindex": {
-                    "description": "A non-positive integer indicating z-index of the axis.\n\nIf zindex is 0, axes should be drawn behind all chart elements.\n\nTo put them in front, use zindex = 1.",
+                    "description": "A non-positive integer indicating z-index of the axis.\nIf zindex is 0, axes should be drawn behind all chart elements.\nTo put them in front, use zindex = 1.",
                     "minimum": 0,
                     "type": "number"
                 }
@@ -501,7 +501,7 @@
                     "type": "number"
                 },
                 "zindex": {
-                    "description": "A non-positive integer indicating z-index of the axis.\n\nIf zindex is 0, axes should be drawn behind all chart elements.\n\nTo put them in front, use zindex = 1.",
+                    "description": "A non-positive integer indicating z-index of the axis.\nIf zindex is 0, axes should be drawn behind all chart elements.\nTo put them in front, use zindex = 1.",
                     "minimum": 0,
                     "type": "number"
                 }
@@ -534,7 +534,7 @@
                     "type": "number"
                 },
                 "discreteBandSize": {
-                    "description": "The size of the bars.  If unspecified, the default size is  `bandSize-1`,\n\nwhich provides 1 pixel offset between bars.",
+                    "description": "The size of the bars.  If unspecified, the default size is  `bandSize-1`,\nwhich provides 1 pixel offset between bars.",
                     "minimum": 0,
                     "type": "number"
                 },
@@ -548,15 +548,15 @@
                     "type": "number"
                 },
                 "filled": {
-                    "description": "Whether the shape\\'s color should be used as fill color instead of stroke color.\n\nThis is only applicable for \"bar\", \"point\", and \"area\".\n\nAll marks except \"point\" marks are filled by default.\n\nSee Mark Documentation (http://vega.github.io/vega-lite/docs/marks.html)\n\nfor usage example.",
+                    "description": "Whether the shape\\'s color should be used as fill color instead of stroke color.\nThis is only applicable for \"bar\", \"point\", and \"area\".\nAll marks except \"point\" marks are filled by default.\nSee Mark Documentation (http://vega.github.io/vega-lite/docs/marks.html)\nfor usage example.",
                     "type": "boolean"
                 },
                 "interpolate": {
                     "$ref": "#/definitions/Interpolate",
-                    "description": "The line interpolation method to use for line and area marks. One of the following:\n\n- `\"linear\"`: piecewise linear segments, as in a polyline.\n\n- `\"linear-closed\"`: close the linear segments to form a polygon.\n\n- `\"step\"`: alternate between horizontal and vertical segments, as in a step function.\n\n- `\"step-before\"`: alternate between vertical and horizontal segments, as in a step function.\n\n- `\"step-after\"`: alternate between horizontal and vertical segments, as in a step function.\n\n- `\"basis\"`: a B-spline, with control point duplication on the ends.\n\n- `\"basis-open\"`: an open B-spline; may not intersect the start or end.\n\n- `\"basis-closed\"`: a closed B-spline, as in a loop.\n\n- `\"cardinal\"`: a Cardinal spline, with control point duplication on the ends.\n\n- `\"cardinal-open\"`: an open Cardinal spline; may not intersect the start or end, but will intersect other control points.\n\n- `\"cardinal-closed\"`: a closed Cardinal spline, as in a loop.\n\n- `\"bundle\"`: equivalent to basis, except the tension parameter is used to straighten the spline.\n\n- `\"monotone\"`: cubic interpolation that preserves monotonicity in y."
+                    "description": "The line interpolation method to use for line and area marks. One of the following:\n- `\"linear\"`: piecewise linear segments, as in a polyline.\n- `\"linear-closed\"`: close the linear segments to form a polygon.\n- `\"step\"`: alternate between horizontal and vertical segments, as in a step function.\n- `\"step-before\"`: alternate between vertical and horizontal segments, as in a step function.\n- `\"step-after\"`: alternate between horizontal and vertical segments, as in a step function.\n- `\"basis\"`: a B-spline, with control point duplication on the ends.\n- `\"basis-open\"`: an open B-spline; may not intersect the start or end.\n- `\"basis-closed\"`: a closed B-spline, as in a loop.\n- `\"cardinal\"`: a Cardinal spline, with control point duplication on the ends.\n- `\"cardinal-open\"`: an open Cardinal spline; may not intersect the start or end, but will intersect other control points.\n- `\"cardinal-closed\"`: a closed Cardinal spline, as in a loop.\n- `\"bundle\"`: equivalent to basis, except the tension parameter is used to straighten the spline.\n- `\"monotone\"`: cubic interpolation that preserves monotonicity in y."
                 },
                 "maxBandSize": {
-                    "description": "The default max value for mapping quantitative fields to bar's size/bandSize.\n\nIf undefined (default), we will use bandSize - 1.",
+                    "description": "The default max value for mapping quantitative fields to bar's size/bandSize.\nIf undefined (default), we will use bandSize - 1.",
                     "minimum": 0,
                     "type": "number"
                 },
@@ -572,7 +572,7 @@
                     "type": "number"
                 },
                 "minBandSize": {
-                    "description": "The default min value for mapping quantitative fields to bar's size/bandSize scale with zero=false\n\nIf undefined (default), we will use the `continuousBandSize` value.",
+                    "description": "The default min value for mapping quantitative fields to bar's size/bandSize scale with zero=false\nIf undefined (default), we will use the `continuousBandSize` value.",
                     "minimum": 0,
                     "type": "number"
                 },
@@ -598,7 +598,7 @@
                 },
                 "orient": {
                     "$ref": "#/definitions/Orient",
-                    "description": "The orientation of a non-stacked bar, tick, area, and line charts.\n\nThe value is either horizontal (default) or vertical.\n\n- For bar, rule and tick, this determines whether the size of the bar and tick\n\nshould be applied to x or y dimension.\n\n- For area, this property determines the orient property of the Vega output.\n\n- For line, this property determines the sort order of the points in the line\n\nif `config.sortLineBy` is not specified.\n\nFor stacked charts, this is always determined by the orientation of the stack;\n\ntherefore explicitly specified value will be ignored."
+                    "description": "The orientation of a non-stacked bar, tick, area, and line charts.\nThe value is either horizontal (default) or vertical.\n- For bar, rule and tick, this determines whether the size of the bar and tick\nshould be applied to x or y dimension.\n- For area, this property determines the orient property of the Vega output.\n- For line, this property determines the sort order of the points in the line\nif `config.sortLineBy` is not specified.\nFor stacked charts, this is always determined by the orientation of the stack;\ntherefore explicitly specified value will be ignored."
                 },
                 "sequentialColorScheme": {
                     "description": "Default color scheme for ordinal, quantitative and temporal field",
@@ -734,7 +734,7 @@
             "properties": {
                 "aggregate": {
                     "$ref": "#/definitions/AggregateOp",
-                    "description": "Aggregation function for the field\n\n(e.g., `mean`, `sum`, `median`, `min`, `max`, `count`)."
+                    "description": "Aggregation function for the field\n(e.g., `mean`, `sum`, `median`, `min`, `max`, `count`)."
                 },
                 "bin": {
                     "anyOf": [
@@ -745,7 +745,7 @@
                             "type": "boolean"
                         }
                     ],
-                    "description": "Flag for binning a `quantitative` field, or a bin property object\n\nfor binning parameters."
+                    "description": "Flag for binning a `quantitative` field, or a bin property object\nfor binning parameters."
                 },
                 "field": {
                     "description": "Name of the field from which to pull a data value.",
@@ -789,7 +789,7 @@
                 },
                 "type": {
                     "$ref": "#/definitions/Type",
-                    "description": "The encoded field's type of measurement. This can be either a full type\n\nname (`\"quantitative\"`, `\"temporal\"`, `\"ordinal\"`,  and `\"nominal\"`)\n\nor an initial character of the type name (`\"Q\"`, `\"T\"`, `\"O\"`, `\"N\"`).\n\nThis property is case insensitive."
+                    "description": "The encoded field's type of measurement. This can be either a full type\nname (`\"quantitative\"`, `\"temporal\"`, `\"ordinal\"`,  and `\"nominal\"`)\nor an initial character of the type name (`\"Q\"`, `\"T\"`, `\"O\"`, `\"N\"`).\nThis property is case insensitive."
                 },
                 "value": {
                     "description": "A constant value in visual domain.",
@@ -902,7 +902,7 @@
                     "description": "An object that specifies the format for the data file or values."
                 },
                 "url": {
-                    "description": "A URL from which to load the data set. Use the format.type property\n\nto ensure the loaded data is correctly parsed.",
+                    "description": "A URL from which to load the data set. Use the format.type property\nto ensure the loaded data is correctly parsed.",
                     "type": "string"
                 },
                 "values": {
@@ -917,23 +917,23 @@
         "DataFormat": {
             "properties": {
                 "feature": {
-                    "description": "The name of the TopoJSON object set to convert to a GeoJSON feature collection.\n\nFor example, in a map of the world, there may be an object set named `\"countries\"`.\n\nUsing the feature property, we can extract this set and generate a GeoJSON feature object for each country.",
+                    "description": "The name of the TopoJSON object set to convert to a GeoJSON feature collection.\nFor example, in a map of the world, there may be an object set named `\"countries\"`.\nUsing the feature property, we can extract this set and generate a GeoJSON feature object for each country.",
                     "type": "string"
                 },
                 "mesh": {
-                    "description": "The name of the TopoJSON object set to convert to a mesh.\n\nSimilar to the `feature` option, `mesh` extracts a named TopoJSON object set.\n\nUnlike the `feature` option, the corresponding geo data is returned as a single, unified mesh instance, not as individual GeoJSON features.\n\nExtracting a mesh is useful for more efficiently drawing borders or other geographic elements that you do not need to associate with specific regions such as individual countries, states or counties.",
+                    "description": "The name of the TopoJSON object set to convert to a mesh.\nSimilar to the `feature` option, `mesh` extracts a named TopoJSON object set.\nUnlike the `feature` option, the corresponding geo data is returned as a single, unified mesh instance, not as individual GeoJSON features.\nExtracting a mesh is useful for more efficiently drawing borders or other geographic elements that you do not need to associate with specific regions such as individual countries, states or counties.",
                     "type": "string"
                 },
                 "parse": {
                     "description": "A collection of parsing instructions can be used to define the data types of string-valued attributes in the JSON file. Each instruction is a name-value pair, where the name is the name of the attribute, and the value is the desired data type (one of `\"number\"`, `\"boolean\"` or `\"date\"`). For example, `\"parse\": {\"modified_on\":\"date\"}` ensures that the `modified_on` value in each row of the input data is parsed as a Date value. (See Datalib's [`dl.read.types` method](https://github.com/vega/datalib/wiki/Import#dl_read_types) for more information.)"
                 },
                 "property": {
-                    "description": "JSON only) The JSON property containing the desired data.\n\nThis parameter can be used when the loaded JSON file may have surrounding structure or meta-data.\n\nFor example `\"property\": \"values.features\"` is equivalent to retrieving `json.values.features`\n\nfrom the loaded JSON object.",
+                    "description": "JSON only) The JSON property containing the desired data.\nThis parameter can be used when the loaded JSON file may have surrounding structure or meta-data.\nFor example `\"property\": \"values.features\"` is equivalent to retrieving `json.values.features`\nfrom the loaded JSON object.",
                     "type": "string"
                 },
                 "type": {
                     "$ref": "#/definitions/DataFormatType",
-                    "description": "Type of input data: `\"json\"`, `\"csv\"`, `\"tsv\"`.\n\nThe default format type is determined by the extension of the file url.\n\nIf no extension is detected, `\"json\"` will be used by default."
+                    "description": "Type of input data: `\"json\"`, `\"csv\"`, `\"tsv\"`.\nThe default format type is determined by the extension of the file url.\nIf no extension is detected, `\"json\"` will be used by default."
                 }
             },
             "type": "object"
@@ -948,7 +948,7 @@
             "type": "string"
         },
         "DateTime": {
-            "description": "Object for defining datetime in Vega-Lite Filter.\n\nIf both month and quarter are provided, month has higher precedence.\n\n`day` cannot be combined with other date.\n\nWe accept string for month and day names.",
+            "description": "Object for defining datetime in Vega-Lite Filter.\nIf both month and quarter are provided, month has higher precedence.\n`day` cannot be combined with other date.\nWe accept string for month and day names.",
             "properties": {
                 "date": {
                     "description": "Integer value representing the date from 1-31.",
@@ -1011,7 +1011,7 @@
             "properties": {
                 "color": {
                     "$ref": "#/definitions/ChannelDefWithLegend",
-                    "description": "Color of the marks – either fill or stroke color based on mark type.\n\n(By default, fill color for `area`, `bar`, `tick`, `text`, `circle`, and `square` /\n\nstroke color for `line` and `point`.)"
+                    "description": "Color of the marks – either fill or stroke color based on mark type.\n(By default, fill color for `area`, `bar`, `tick`, `text`, `circle`, and `square` /\nstroke color for `line` and `point`.)"
                 },
                 "column": {
                     "$ref": "#/definitions/PositionChannelDef",
@@ -1029,7 +1029,7 @@
                             "type": "array"
                         }
                     ],
-                    "description": "Additional levels of detail for grouping data in aggregate views and\n\nin line and area marks without mapping data to a specific visual channel."
+                    "description": "Additional levels of detail for grouping data in aggregate views and\nin line and area marks without mapping data to a specific visual channel."
                 },
                 "label": {
                     "$ref": "#/definitions/FieldDef"
@@ -1072,11 +1072,11 @@
                 },
                 "shape": {
                     "$ref": "#/definitions/ChannelDefWithLegend",
-                    "description": "The symbol's shape (only for `point` marks). The supported values are\n\n`\"circle\"` (default), `\"square\"`, `\"cross\"`, `\"diamond\"`, `\"triangle-up\"`,\n\nor `\"triangle-down\"`, or else a custom SVG path string."
+                    "description": "The symbol's shape (only for `point` marks). The supported values are\n`\"circle\"` (default), `\"square\"`, `\"cross\"`, `\"diamond\"`, `\"triangle-up\"`,\nor `\"triangle-down\"`, or else a custom SVG path string."
                 },
                 "size": {
                     "$ref": "#/definitions/ChannelDefWithLegend",
-                    "description": "Size of the mark.\n\n- For `point`, `square` and `circle`\n\n– the symbol size, or pixel area of the mark.\n\n- For `bar` and `tick` – the bar and tick's size.\n\n- For `text` – the text's font size.\n\n- Size is currently unsupported for `line` and `area`."
+                    "description": "Size of the mark.\n- For `point`, `square` and `circle`\n– the symbol size, or pixel area of the mark.\n- For `bar` and `tick` – the bar and tick's size.\n- For `text` – the text's font size.\n- Size is currently unsupported for `line` and `area`."
                 },
                 "text": {
                     "$ref": "#/definitions/FieldDef",
@@ -1084,7 +1084,7 @@
                 },
                 "x": {
                     "$ref": "#/definitions/PositionChannelDef",
-                    "description": "X coordinates for `point`, `circle`, `square`,\n\n`line`, `rule`, `text`, and `tick`\n\n(or to width and height for `bar` and `area` marks)."
+                    "description": "X coordinates for `point`, `circle`, `square`,\n`line`, `rule`, `text`, and `tick`\n(or to width and height for `bar` and `area` marks)."
                 },
                 "x2": {
                     "$ref": "#/definitions/FieldDef",
@@ -1092,7 +1092,7 @@
                 },
                 "y": {
                     "$ref": "#/definitions/PositionChannelDef",
-                    "description": "Y coordinates for `point`, `circle`, `square`,\n\n`line`, `rule`, `text`, and `tick`\n\n(or to width and height for `bar` and `area` marks)."
+                    "description": "Y coordinates for `point`, `circle`, `square`,\n`line`, `rule`, `text`, and `tick`\n(or to width and height for `bar` and `area` marks)."
                 },
                 "y2": {
                     "$ref": "#/definitions/FieldDef",
@@ -1134,7 +1134,7 @@
             "type": "object"
         },
         "ExtendedUnitSpec": {
-            "description": "Schema for a unit Vega-Lite specification, with the syntactic sugar extensions:\n\n- `row` and `column` are included in the encoding.\n\n- (Future) label, box plot\n\n\n\nNote: the spec could contain facet.",
+            "description": "Schema for a unit Vega-Lite specification, with the syntactic sugar extensions:\n- `row` and `column` are included in the encoding.\n- (Future) label, box plot\n\nNote: the spec could contain facet.",
             "properties": {
                 "config": {
                     "$ref": "#/definitions/Config",
@@ -1145,7 +1145,7 @@
                     "description": "An object describing the data source"
                 },
                 "description": {
-                    "description": "An optional description of this mark for commenting purpose.\n\nThis property has no effect on the output visualization.",
+                    "description": "An optional description of this mark for commenting purpose.\nThis property has no effect on the output visualization.",
                     "type": "string"
                 },
                 "encoding": {
@@ -1157,7 +1157,7 @@
                 },
                 "mark": {
                     "$ref": "#/definitions/Mark",
-                    "description": "The mark type.\n\nOne of `\"bar\"`, `\"circle\"`, `\"square\"`, `\"tick\"`, `\"line\"`,\n\n`\"area\"`, `\"point\"`, `\"rule\"`, and `\"text\"`."
+                    "description": "The mark type.\nOne of `\"bar\"`, `\"circle\"`, `\"square\"`, `\"tick\"`, `\"line\"`,\n`\"area\"`, `\"point\"`, `\"rule\"`, and `\"text\"`."
                 },
                 "name": {
                     "description": "Name of the visualization for later reference.",
@@ -1226,7 +1226,7 @@
                     "description": "An object describing the data source"
                 },
                 "description": {
-                    "description": "An optional description of this mark for commenting purpose.\n\nThis property has no effect on the output visualization.",
+                    "description": "An optional description of this mark for commenting purpose.\nThis property has no effect on the output visualization.",
                     "type": "string"
                 },
                 "facet": {
@@ -1261,7 +1261,7 @@
             "properties": {
                 "aggregate": {
                     "$ref": "#/definitions/AggregateOp",
-                    "description": "Aggregation function for the field\n\n(e.g., `mean`, `sum`, `median`, `min`, `max`, `count`)."
+                    "description": "Aggregation function for the field\n(e.g., `mean`, `sum`, `median`, `min`, `max`, `count`)."
                 },
                 "bin": {
                     "anyOf": [
@@ -1272,7 +1272,7 @@
                             "type": "boolean"
                         }
                     ],
-                    "description": "Flag for binning a `quantitative` field, or a bin property object\n\nfor binning parameters."
+                    "description": "Flag for binning a `quantitative` field, or a bin property object\nfor binning parameters."
                 },
                 "field": {
                     "description": "Name of the field from which to pull a data value.",
@@ -1288,7 +1288,7 @@
                 },
                 "type": {
                     "$ref": "#/definitions/Type",
-                    "description": "The encoded field's type of measurement. This can be either a full type\n\nname (`\"quantitative\"`, `\"temporal\"`, `\"ordinal\"`,  and `\"nominal\"`)\n\nor an initial character of the type name (`\"Q\"`, `\"T\"`, `\"O\"`, `\"N\"`).\n\nThis property is case insensitive."
+                    "description": "The encoded field's type of measurement. This can be either a full type\nname (`\"quantitative\"`, `\"temporal\"`, `\"ordinal\"`,  and `\"nominal\"`)\nor an initial character of the type name (`\"Q\"`, `\"T\"`, `\"O\"`, `\"N\"`).\nThis property is case insensitive."
                 },
                 "value": {
                     "description": "A constant value in visual domain.",
@@ -1363,7 +1363,7 @@
                     "description": "An object describing the data source"
                 },
                 "description": {
-                    "description": "An optional description of this mark for commenting purpose.\n\nThis property has no effect on the output visualization.",
+                    "description": "An optional description of this mark for commenting purpose.\nThis property has no effect on the output visualization.",
                     "type": "string"
                 },
                 "height": {
@@ -1471,7 +1471,7 @@
                 },
                 "symbolShape": {
                     "$ref": "#/definitions/Shape",
-                    "description": "The shape of the legend symbol, can be the 'circle', 'square', 'cross', 'diamond',\n\n'triangle-up', 'triangle-down', or else a custom SVG path string."
+                    "description": "The shape of the legend symbol, can be the 'circle', 'square', 'cross', 'diamond',\n'triangle-up', 'triangle-down', or else a custom SVG path string."
                 },
                 "symbolSize": {
                     "description": "The size of the legend symbol, in pixels.",
@@ -1487,7 +1487,7 @@
                     "type": "string"
                 },
                 "titleColor": {
-                    "description": "Optional mark property definitions for custom legend styling.\n\nThe color of the legend title, can be in hex color code or regular color name.",
+                    "description": "Optional mark property definitions for custom legend styling.\nThe color of the legend title, can be in hex color code or regular color name.",
                     "type": "string"
                 },
                 "titleFont": {
@@ -1602,7 +1602,7 @@
                 },
                 "symbolShape": {
                     "$ref": "#/definitions/Shape",
-                    "description": "The shape of the legend symbol, can be the 'circle', 'square', 'cross', 'diamond',\n\n'triangle-up', 'triangle-down', or else a custom SVG path string."
+                    "description": "The shape of the legend symbol, can be the 'circle', 'square', 'cross', 'diamond',\n'triangle-up', 'triangle-down', or else a custom SVG path string."
                 },
                 "symbolSize": {
                     "description": "The size of the legend symbol, in pixels.",
@@ -1614,7 +1614,7 @@
                     "type": "number"
                 },
                 "titleColor": {
-                    "description": "Optional mark property definitions for custom legend styling.\n\nThe color of the legend title, can be in hex color code or regular color name.",
+                    "description": "Optional mark property definitions for custom legend styling.\nThe color of the legend title, can be in hex color code or regular color name.",
                     "type": "string"
                 },
                 "titleFont": {
@@ -1651,12 +1651,12 @@
                     "type": "number"
                 },
                 "filled": {
-                    "description": "Whether the shape\\'s color should be used as fill color instead of stroke color.\n\nThis is only applicable for \"bar\", \"point\", and \"area\".\n\nAll marks except \"point\" marks are filled by default.\n\nSee Mark Documentation (http://vega.github.io/vega-lite/docs/marks.html)\n\nfor usage example.",
+                    "description": "Whether the shape\\'s color should be used as fill color instead of stroke color.\nThis is only applicable for \"bar\", \"point\", and \"area\".\nAll marks except \"point\" marks are filled by default.\nSee Mark Documentation (http://vega.github.io/vega-lite/docs/marks.html)\nfor usage example.",
                     "type": "boolean"
                 },
                 "interpolate": {
                     "$ref": "#/definitions/Interpolate",
-                    "description": "The line interpolation method to use for line and area marks. One of the following:\n\n- `\"linear\"`: piecewise linear segments, as in a polyline.\n\n- `\"linear-closed\"`: close the linear segments to form a polygon.\n\n- `\"step\"`: alternate between horizontal and vertical segments, as in a step function.\n\n- `\"step-before\"`: alternate between vertical and horizontal segments, as in a step function.\n\n- `\"step-after\"`: alternate between horizontal and vertical segments, as in a step function.\n\n- `\"basis\"`: a B-spline, with control point duplication on the ends.\n\n- `\"basis-open\"`: an open B-spline; may not intersect the start or end.\n\n- `\"basis-closed\"`: a closed B-spline, as in a loop.\n\n- `\"cardinal\"`: a Cardinal spline, with control point duplication on the ends.\n\n- `\"cardinal-open\"`: an open Cardinal spline; may not intersect the start or end, but will intersect other control points.\n\n- `\"cardinal-closed\"`: a closed Cardinal spline, as in a loop.\n\n- `\"bundle\"`: equivalent to basis, except the tension parameter is used to straighten the spline.\n\n- `\"monotone\"`: cubic interpolation that preserves monotonicity in y."
+                    "description": "The line interpolation method to use for line and area marks. One of the following:\n- `\"linear\"`: piecewise linear segments, as in a polyline.\n- `\"linear-closed\"`: close the linear segments to form a polygon.\n- `\"step\"`: alternate between horizontal and vertical segments, as in a step function.\n- `\"step-before\"`: alternate between vertical and horizontal segments, as in a step function.\n- `\"step-after\"`: alternate between horizontal and vertical segments, as in a step function.\n- `\"basis\"`: a B-spline, with control point duplication on the ends.\n- `\"basis-open\"`: an open B-spline; may not intersect the start or end.\n- `\"basis-closed\"`: a closed B-spline, as in a loop.\n- `\"cardinal\"`: a Cardinal spline, with control point duplication on the ends.\n- `\"cardinal-open\"`: an open Cardinal spline; may not intersect the start or end, but will intersect other control points.\n- `\"cardinal-closed\"`: a closed Cardinal spline, as in a loop.\n- `\"bundle\"`: equivalent to basis, except the tension parameter is used to straighten the spline.\n- `\"monotone\"`: cubic interpolation that preserves monotonicity in y."
                 },
                 "maxOpacity": {
                     "description": "Default max opacity for mapping a field to opacity.",
@@ -1691,7 +1691,7 @@
                 },
                 "orient": {
                     "$ref": "#/definitions/Orient",
-                    "description": "The orientation of a non-stacked bar, tick, area, and line charts.\n\nThe value is either horizontal (default) or vertical.\n\n- For bar, rule and tick, this determines whether the size of the bar and tick\n\nshould be applied to x or y dimension.\n\n- For area, this property determines the orient property of the Vega output.\n\n- For line, this property determines the sort order of the points in the line\n\nif `config.sortLineBy` is not specified.\n\nFor stacked charts, this is always determined by the orientation of the stack;\n\ntherefore explicitly specified value will be ignored."
+                    "description": "The orientation of a non-stacked bar, tick, area, and line charts.\nThe value is either horizontal (default) or vertical.\n- For bar, rule and tick, this determines whether the size of the bar and tick\nshould be applied to x or y dimension.\n- For area, this property determines the orient property of the Vega output.\n- For line, this property determines the sort order of the points in the line\nif `config.sortLineBy` is not specified.\nFor stacked charts, this is always determined by the orientation of the stack;\ntherefore explicitly specified value will be ignored."
                 },
                 "sequentialColorScheme": {
                     "description": "Default color scheme for ordinal, quantitative and temporal field",
@@ -1765,12 +1765,12 @@
                     "type": "number"
                 },
                 "filled": {
-                    "description": "Whether the shape\\'s color should be used as fill color instead of stroke color.\n\nThis is only applicable for \"bar\", \"point\", and \"area\".\n\nAll marks except \"point\" marks are filled by default.\n\nSee Mark Documentation (http://vega.github.io/vega-lite/docs/marks.html)\n\nfor usage example.",
+                    "description": "Whether the shape\\'s color should be used as fill color instead of stroke color.\nThis is only applicable for \"bar\", \"point\", and \"area\".\nAll marks except \"point\" marks are filled by default.\nSee Mark Documentation (http://vega.github.io/vega-lite/docs/marks.html)\nfor usage example.",
                     "type": "boolean"
                 },
                 "interpolate": {
                     "$ref": "#/definitions/Interpolate",
-                    "description": "The line interpolation method to use for line and area marks. One of the following:\n\n- `\"linear\"`: piecewise linear segments, as in a polyline.\n\n- `\"linear-closed\"`: close the linear segments to form a polygon.\n\n- `\"step\"`: alternate between horizontal and vertical segments, as in a step function.\n\n- `\"step-before\"`: alternate between vertical and horizontal segments, as in a step function.\n\n- `\"step-after\"`: alternate between horizontal and vertical segments, as in a step function.\n\n- `\"basis\"`: a B-spline, with control point duplication on the ends.\n\n- `\"basis-open\"`: an open B-spline; may not intersect the start or end.\n\n- `\"basis-closed\"`: a closed B-spline, as in a loop.\n\n- `\"cardinal\"`: a Cardinal spline, with control point duplication on the ends.\n\n- `\"cardinal-open\"`: an open Cardinal spline; may not intersect the start or end, but will intersect other control points.\n\n- `\"cardinal-closed\"`: a closed Cardinal spline, as in a loop.\n\n- `\"bundle\"`: equivalent to basis, except the tension parameter is used to straighten the spline.\n\n- `\"monotone\"`: cubic interpolation that preserves monotonicity in y."
+                    "description": "The line interpolation method to use for line and area marks. One of the following:\n- `\"linear\"`: piecewise linear segments, as in a polyline.\n- `\"linear-closed\"`: close the linear segments to form a polygon.\n- `\"step\"`: alternate between horizontal and vertical segments, as in a step function.\n- `\"step-before\"`: alternate between vertical and horizontal segments, as in a step function.\n- `\"step-after\"`: alternate between horizontal and vertical segments, as in a step function.\n- `\"basis\"`: a B-spline, with control point duplication on the ends.\n- `\"basis-open\"`: an open B-spline; may not intersect the start or end.\n- `\"basis-closed\"`: a closed B-spline, as in a loop.\n- `\"cardinal\"`: a Cardinal spline, with control point duplication on the ends.\n- `\"cardinal-open\"`: an open Cardinal spline; may not intersect the start or end, but will intersect other control points.\n- `\"cardinal-closed\"`: a closed Cardinal spline, as in a loop.\n- `\"bundle\"`: equivalent to basis, except the tension parameter is used to straighten the spline.\n- `\"monotone\"`: cubic interpolation that preserves monotonicity in y."
                 },
                 "maxOpacity": {
                     "description": "Default max opacity for mapping a field to opacity.",
@@ -1805,7 +1805,7 @@
                 },
                 "orient": {
                     "$ref": "#/definitions/Orient",
-                    "description": "The orientation of a non-stacked bar, tick, area, and line charts.\n\nThe value is either horizontal (default) or vertical.\n\n- For bar, rule and tick, this determines whether the size of the bar and tick\n\nshould be applied to x or y dimension.\n\n- For area, this property determines the orient property of the Vega output.\n\n- For line, this property determines the sort order of the points in the line\n\nif `config.sortLineBy` is not specified.\n\nFor stacked charts, this is always determined by the orientation of the stack;\n\ntherefore explicitly specified value will be ignored."
+                    "description": "The orientation of a non-stacked bar, tick, area, and line charts.\nThe value is either horizontal (default) or vertical.\n- For bar, rule and tick, this determines whether the size of the bar and tick\nshould be applied to x or y dimension.\n- For area, this property determines the orient property of the Vega output.\n- For line, this property determines the sort order of the points in the line\nif `config.sortLineBy` is not specified.\nFor stacked charts, this is always determined by the orientation of the stack;\ntherefore explicitly specified value will be ignored."
                 },
                 "sequentialColorScheme": {
                     "description": "Default color scheme for ordinal, quantitative and temporal field",
@@ -1854,7 +1854,7 @@
                     "type": "string"
                 },
                 "oneOf": {
-                    "description": "A set of values that the `field`'s value should be a member of,\n\nfor a data item included in the filtered data.",
+                    "description": "A set of values that the `field`'s value should be a member of,\nfor a data item included in the filtered data.",
                     "items": {
                         "anyOf": [
                             {
@@ -1886,7 +1886,7 @@
             "properties": {
                 "aggregate": {
                     "$ref": "#/definitions/AggregateOp",
-                    "description": "Aggregation function for the field\n\n(e.g., `mean`, `sum`, `median`, `min`, `max`, `count`)."
+                    "description": "Aggregation function for the field\n(e.g., `mean`, `sum`, `median`, `min`, `max`, `count`)."
                 },
                 "bin": {
                     "anyOf": [
@@ -1897,7 +1897,7 @@
                             "type": "boolean"
                         }
                     ],
-                    "description": "Flag for binning a `quantitative` field, or a bin property object\n\nfor binning parameters."
+                    "description": "Flag for binning a `quantitative` field, or a bin property object\nfor binning parameters."
                 },
                 "field": {
                     "description": "Name of the field from which to pull a data value.",
@@ -1916,7 +1916,7 @@
                 },
                 "type": {
                     "$ref": "#/definitions/Type",
-                    "description": "The encoded field's type of measurement. This can be either a full type\n\nname (`\"quantitative\"`, `\"temporal\"`, `\"ordinal\"`,  and `\"nominal\"`)\n\nor an initial character of the type name (`\"Q\"`, `\"T\"`, `\"O\"`, `\"N\"`).\n\nThis property is case insensitive."
+                    "description": "The encoded field's type of measurement. This can be either a full type\nname (`\"quantitative\"`, `\"temporal\"`, `\"ordinal\"`,  and `\"nominal\"`)\nor an initial character of the type name (`\"Q\"`, `\"T\"`, `\"O\"`, `\"N\"`).\nThis property is case insensitive."
                 },
                 "value": {
                     "description": "A constant value in visual domain.",
@@ -1973,12 +1973,12 @@
                     "type": "number"
                 },
                 "filled": {
-                    "description": "Whether the shape\\'s color should be used as fill color instead of stroke color.\n\nThis is only applicable for \"bar\", \"point\", and \"area\".\n\nAll marks except \"point\" marks are filled by default.\n\nSee Mark Documentation (http://vega.github.io/vega-lite/docs/marks.html)\n\nfor usage example.",
+                    "description": "Whether the shape\\'s color should be used as fill color instead of stroke color.\nThis is only applicable for \"bar\", \"point\", and \"area\".\nAll marks except \"point\" marks are filled by default.\nSee Mark Documentation (http://vega.github.io/vega-lite/docs/marks.html)\nfor usage example.",
                     "type": "boolean"
                 },
                 "interpolate": {
                     "$ref": "#/definitions/Interpolate",
-                    "description": "The line interpolation method to use for line and area marks. One of the following:\n\n- `\"linear\"`: piecewise linear segments, as in a polyline.\n\n- `\"linear-closed\"`: close the linear segments to form a polygon.\n\n- `\"step\"`: alternate between horizontal and vertical segments, as in a step function.\n\n- `\"step-before\"`: alternate between vertical and horizontal segments, as in a step function.\n\n- `\"step-after\"`: alternate between horizontal and vertical segments, as in a step function.\n\n- `\"basis\"`: a B-spline, with control point duplication on the ends.\n\n- `\"basis-open\"`: an open B-spline; may not intersect the start or end.\n\n- `\"basis-closed\"`: a closed B-spline, as in a loop.\n\n- `\"cardinal\"`: a Cardinal spline, with control point duplication on the ends.\n\n- `\"cardinal-open\"`: an open Cardinal spline; may not intersect the start or end, but will intersect other control points.\n\n- `\"cardinal-closed\"`: a closed Cardinal spline, as in a loop.\n\n- `\"bundle\"`: equivalent to basis, except the tension parameter is used to straighten the spline.\n\n- `\"monotone\"`: cubic interpolation that preserves monotonicity in y."
+                    "description": "The line interpolation method to use for line and area marks. One of the following:\n- `\"linear\"`: piecewise linear segments, as in a polyline.\n- `\"linear-closed\"`: close the linear segments to form a polygon.\n- `\"step\"`: alternate between horizontal and vertical segments, as in a step function.\n- `\"step-before\"`: alternate between vertical and horizontal segments, as in a step function.\n- `\"step-after\"`: alternate between horizontal and vertical segments, as in a step function.\n- `\"basis\"`: a B-spline, with control point duplication on the ends.\n- `\"basis-open\"`: an open B-spline; may not intersect the start or end.\n- `\"basis-closed\"`: a closed B-spline, as in a loop.\n- `\"cardinal\"`: a Cardinal spline, with control point duplication on the ends.\n- `\"cardinal-open\"`: an open Cardinal spline; may not intersect the start or end, but will intersect other control points.\n- `\"cardinal-closed\"`: a closed Cardinal spline, as in a loop.\n- `\"bundle\"`: equivalent to basis, except the tension parameter is used to straighten the spline.\n- `\"monotone\"`: cubic interpolation that preserves monotonicity in y."
                 },
                 "maxOpacity": {
                     "description": "Default max opacity for mapping a field to opacity.",
@@ -2023,7 +2023,7 @@
                 },
                 "orient": {
                     "$ref": "#/definitions/Orient",
-                    "description": "The orientation of a non-stacked bar, tick, area, and line charts.\n\nThe value is either horizontal (default) or vertical.\n\n- For bar, rule and tick, this determines whether the size of the bar and tick\n\nshould be applied to x or y dimension.\n\n- For area, this property determines the orient property of the Vega output.\n\n- For line, this property determines the sort order of the points in the line\n\nif `config.sortLineBy` is not specified.\n\nFor stacked charts, this is always determined by the orientation of the stack;\n\ntherefore explicitly specified value will be ignored."
+                    "description": "The orientation of a non-stacked bar, tick, area, and line charts.\nThe value is either horizontal (default) or vertical.\n- For bar, rule and tick, this determines whether the size of the bar and tick\nshould be applied to x or y dimension.\n- For area, this property determines the orient property of the Vega output.\n- For line, this property determines the sort order of the points in the line\nif `config.sortLineBy` is not specified.\nFor stacked charts, this is always determined by the orientation of the stack;\ntherefore explicitly specified value will be ignored."
                 },
                 "sequentialColorScheme": {
                     "description": "Default color scheme for ordinal, quantitative and temporal field",
@@ -2049,7 +2049,7 @@
                     "description": "The default symbol shape to use. One of: `\"circle\"` (default), `\"square\"`, `\"cross\"`, `\"diamond\"`, `\"triangle-up\"`, or `\"triangle-down\"`, or a custom SVG path."
                 },
                 "shapes": {
-                    "description": "The default collection of symbol shapes for mapping nominal fields to shapes of point marks (i.e., range of a `shape` scale).\n\nEach value should be one of: `\"circle\"`, `\"square\"`, `\"cross\"`, `\"diamond\"`, `\"triangle-up\"`, or `\"triangle-down\"`, or a custom SVG path.",
+                    "description": "The default collection of symbol shapes for mapping nominal fields to shapes of point marks (i.e., range of a `shape` scale).\nEach value should be one of: `\"circle\"`, `\"square\"`, `\"cross\"`, `\"diamond\"`, `\"triangle-up\"`, or `\"triangle-down\"`, or a custom SVG path.",
                     "items": {
                         "anyOf": [
                             {
@@ -2071,7 +2071,7 @@
                     "type": "array"
                 },
                 "size": {
-                    "description": "The pixel area each the point/circle/square.\n\nFor example: in the case of circles, the radius is determined in part by the square root of the size value.",
+                    "description": "The pixel area each the point/circle/square.\nFor example: in the case of circles, the radius is determined in part by the square root of the size value.",
                     "minimum": 0,
                     "type": "number"
                 },
@@ -2115,7 +2115,7 @@
             "properties": {
                 "aggregate": {
                     "$ref": "#/definitions/AggregateOp",
-                    "description": "Aggregation function for the field\n\n(e.g., `mean`, `sum`, `median`, `min`, `max`, `count`)."
+                    "description": "Aggregation function for the field\n(e.g., `mean`, `sum`, `median`, `min`, `max`, `count`)."
                 },
                 "axis": {
                     "anyOf": [
@@ -2136,7 +2136,7 @@
                             "type": "boolean"
                         }
                     ],
-                    "description": "Flag for binning a `quantitative` field, or a bin property object\n\nfor binning parameters."
+                    "description": "Flag for binning a `quantitative` field, or a bin property object\nfor binning parameters."
                 },
                 "field": {
                     "description": "Name of the field from which to pull a data value.",
@@ -2170,7 +2170,7 @@
                 },
                 "type": {
                     "$ref": "#/definitions/Type",
-                    "description": "The encoded field's type of measurement. This can be either a full type\n\nname (`\"quantitative\"`, `\"temporal\"`, `\"ordinal\"`,  and `\"nominal\"`)\n\nor an initial character of the type name (`\"Q\"`, `\"T\"`, `\"O\"`, `\"N\"`).\n\nThis property is case insensitive."
+                    "description": "The encoded field's type of measurement. This can be either a full type\nname (`\"quantitative\"`, `\"temporal\"`, `\"ordinal\"`,  and `\"nominal\"`)\nor an initial character of the type name (`\"Q\"`, `\"T\"`, `\"O\"`, `\"N\"`).\nThis property is case insensitive."
                 },
                 "value": {
                     "description": "A constant value in visual domain.",
@@ -2190,7 +2190,7 @@
                     "type": "string"
                 },
                 "range": {
-                    "description": "Array of inclusive minimum and maximum values\n\nfor a field value of a data item to be included in the filtered data.",
+                    "description": "Array of inclusive minimum and maximum values\nfor a field value of a data item to be included in the filtered data.",
                     "items": {
                         "anyOf": [
                             {
@@ -2232,12 +2232,12 @@
                     "type": "number"
                 },
                 "filled": {
-                    "description": "Whether the shape\\'s color should be used as fill color instead of stroke color.\n\nThis is only applicable for \"bar\", \"point\", and \"area\".\n\nAll marks except \"point\" marks are filled by default.\n\nSee Mark Documentation (http://vega.github.io/vega-lite/docs/marks.html)\n\nfor usage example.",
+                    "description": "Whether the shape\\'s color should be used as fill color instead of stroke color.\nThis is only applicable for \"bar\", \"point\", and \"area\".\nAll marks except \"point\" marks are filled by default.\nSee Mark Documentation (http://vega.github.io/vega-lite/docs/marks.html)\nfor usage example.",
                     "type": "boolean"
                 },
                 "interpolate": {
                     "$ref": "#/definitions/Interpolate",
-                    "description": "The line interpolation method to use for line and area marks. One of the following:\n\n- `\"linear\"`: piecewise linear segments, as in a polyline.\n\n- `\"linear-closed\"`: close the linear segments to form a polygon.\n\n- `\"step\"`: alternate between horizontal and vertical segments, as in a step function.\n\n- `\"step-before\"`: alternate between vertical and horizontal segments, as in a step function.\n\n- `\"step-after\"`: alternate between horizontal and vertical segments, as in a step function.\n\n- `\"basis\"`: a B-spline, with control point duplication on the ends.\n\n- `\"basis-open\"`: an open B-spline; may not intersect the start or end.\n\n- `\"basis-closed\"`: a closed B-spline, as in a loop.\n\n- `\"cardinal\"`: a Cardinal spline, with control point duplication on the ends.\n\n- `\"cardinal-open\"`: an open Cardinal spline; may not intersect the start or end, but will intersect other control points.\n\n- `\"cardinal-closed\"`: a closed Cardinal spline, as in a loop.\n\n- `\"bundle\"`: equivalent to basis, except the tension parameter is used to straighten the spline.\n\n- `\"monotone\"`: cubic interpolation that preserves monotonicity in y."
+                    "description": "The line interpolation method to use for line and area marks. One of the following:\n- `\"linear\"`: piecewise linear segments, as in a polyline.\n- `\"linear-closed\"`: close the linear segments to form a polygon.\n- `\"step\"`: alternate between horizontal and vertical segments, as in a step function.\n- `\"step-before\"`: alternate between vertical and horizontal segments, as in a step function.\n- `\"step-after\"`: alternate between horizontal and vertical segments, as in a step function.\n- `\"basis\"`: a B-spline, with control point duplication on the ends.\n- `\"basis-open\"`: an open B-spline; may not intersect the start or end.\n- `\"basis-closed\"`: a closed B-spline, as in a loop.\n- `\"cardinal\"`: a Cardinal spline, with control point duplication on the ends.\n- `\"cardinal-open\"`: an open Cardinal spline; may not intersect the start or end, but will intersect other control points.\n- `\"cardinal-closed\"`: a closed Cardinal spline, as in a loop.\n- `\"bundle\"`: equivalent to basis, except the tension parameter is used to straighten the spline.\n- `\"monotone\"`: cubic interpolation that preserves monotonicity in y."
                 },
                 "maxOpacity": {
                     "description": "Default max opacity for mapping a field to opacity.",
@@ -2272,7 +2272,7 @@
                 },
                 "orient": {
                     "$ref": "#/definitions/Orient",
-                    "description": "The orientation of a non-stacked bar, tick, area, and line charts.\n\nThe value is either horizontal (default) or vertical.\n\n- For bar, rule and tick, this determines whether the size of the bar and tick\n\nshould be applied to x or y dimension.\n\n- For area, this property determines the orient property of the Vega output.\n\n- For line, this property determines the sort order of the points in the line\n\nif `config.sortLineBy` is not specified.\n\nFor stacked charts, this is always determined by the orientation of the stack;\n\ntherefore explicitly specified value will be ignored."
+                    "description": "The orientation of a non-stacked bar, tick, area, and line charts.\nThe value is either horizontal (default) or vertical.\n- For bar, rule and tick, this determines whether the size of the bar and tick\nshould be applied to x or y dimension.\n- For area, this property determines the orient property of the Vega output.\n- For line, this property determines the sort order of the points in the line\nif `config.sortLineBy` is not specified.\nFor stacked charts, this is always determined by the orientation of the stack;\ntherefore explicitly specified value will be ignored."
                 },
                 "sequentialColorScheme": {
                     "description": "Default color scheme for ordinal, quantitative and temporal field",
@@ -2330,12 +2330,12 @@
                     "type": "number"
                 },
                 "filled": {
-                    "description": "Whether the shape\\'s color should be used as fill color instead of stroke color.\n\nThis is only applicable for \"bar\", \"point\", and \"area\".\n\nAll marks except \"point\" marks are filled by default.\n\nSee Mark Documentation (http://vega.github.io/vega-lite/docs/marks.html)\n\nfor usage example.",
+                    "description": "Whether the shape\\'s color should be used as fill color instead of stroke color.\nThis is only applicable for \"bar\", \"point\", and \"area\".\nAll marks except \"point\" marks are filled by default.\nSee Mark Documentation (http://vega.github.io/vega-lite/docs/marks.html)\nfor usage example.",
                     "type": "boolean"
                 },
                 "interpolate": {
                     "$ref": "#/definitions/Interpolate",
-                    "description": "The line interpolation method to use for line and area marks. One of the following:\n\n- `\"linear\"`: piecewise linear segments, as in a polyline.\n\n- `\"linear-closed\"`: close the linear segments to form a polygon.\n\n- `\"step\"`: alternate between horizontal and vertical segments, as in a step function.\n\n- `\"step-before\"`: alternate between vertical and horizontal segments, as in a step function.\n\n- `\"step-after\"`: alternate between horizontal and vertical segments, as in a step function.\n\n- `\"basis\"`: a B-spline, with control point duplication on the ends.\n\n- `\"basis-open\"`: an open B-spline; may not intersect the start or end.\n\n- `\"basis-closed\"`: a closed B-spline, as in a loop.\n\n- `\"cardinal\"`: a Cardinal spline, with control point duplication on the ends.\n\n- `\"cardinal-open\"`: an open Cardinal spline; may not intersect the start or end, but will intersect other control points.\n\n- `\"cardinal-closed\"`: a closed Cardinal spline, as in a loop.\n\n- `\"bundle\"`: equivalent to basis, except the tension parameter is used to straighten the spline.\n\n- `\"monotone\"`: cubic interpolation that preserves monotonicity in y."
+                    "description": "The line interpolation method to use for line and area marks. One of the following:\n- `\"linear\"`: piecewise linear segments, as in a polyline.\n- `\"linear-closed\"`: close the linear segments to form a polygon.\n- `\"step\"`: alternate between horizontal and vertical segments, as in a step function.\n- `\"step-before\"`: alternate between vertical and horizontal segments, as in a step function.\n- `\"step-after\"`: alternate between horizontal and vertical segments, as in a step function.\n- `\"basis\"`: a B-spline, with control point duplication on the ends.\n- `\"basis-open\"`: an open B-spline; may not intersect the start or end.\n- `\"basis-closed\"`: a closed B-spline, as in a loop.\n- `\"cardinal\"`: a Cardinal spline, with control point duplication on the ends.\n- `\"cardinal-open\"`: an open Cardinal spline; may not intersect the start or end, but will intersect other control points.\n- `\"cardinal-closed\"`: a closed Cardinal spline, as in a loop.\n- `\"bundle\"`: equivalent to basis, except the tension parameter is used to straighten the spline.\n- `\"monotone\"`: cubic interpolation that preserves monotonicity in y."
                 },
                 "maxOpacity": {
                     "description": "Default max opacity for mapping a field to opacity.",
@@ -2370,7 +2370,7 @@
                 },
                 "orient": {
                     "$ref": "#/definitions/Orient",
-                    "description": "The orientation of a non-stacked bar, tick, area, and line charts.\n\nThe value is either horizontal (default) or vertical.\n\n- For bar, rule and tick, this determines whether the size of the bar and tick\n\nshould be applied to x or y dimension.\n\n- For area, this property determines the orient property of the Vega output.\n\n- For line, this property determines the sort order of the points in the line\n\nif `config.sortLineBy` is not specified.\n\nFor stacked charts, this is always determined by the orientation of the stack;\n\ntherefore explicitly specified value will be ignored."
+                    "description": "The orientation of a non-stacked bar, tick, area, and line charts.\nThe value is either horizontal (default) or vertical.\n- For bar, rule and tick, this determines whether the size of the bar and tick\nshould be applied to x or y dimension.\n- For area, this property determines the orient property of the Vega output.\n- For line, this property determines the sort order of the points in the line\nif `config.sortLineBy` is not specified.\nFor stacked charts, this is always determined by the orientation of the stack;\ntherefore explicitly specified value will be ignored."
                 },
                 "sequentialColorScheme": {
                     "description": "Default color scheme for ordinal, quantitative and temporal field",
@@ -2506,11 +2506,11 @@
                     "$ref": "#/definitions/ScaleType"
                 },
                 "useRawDomain": {
-                    "description": "Uses the source data range as scale domain instead of aggregated data for aggregate axis.\n\nThis property only works with aggregate functions that produce values within the raw data domain (`\"mean\"`, `\"average\"`, `\"stdev\"`, `\"stdevp\"`, `\"median\"`, `\"q1\"`, `\"q3\"`, `\"min\"`, `\"max\"`). For other aggregations that produce values outside of the raw data domain (e.g. `\"count\"`, `\"sum\"`), this property is ignored.",
+                    "description": "Uses the source data range as scale domain instead of aggregated data for aggregate axis.\nThis property only works with aggregate functions that produce values within the raw data domain (`\"mean\"`, `\"average\"`, `\"stdev\"`, `\"stdevp\"`, `\"median\"`, `\"q1\"`, `\"q3\"`, `\"min\"`, `\"max\"`). For other aggregations that produce values outside of the raw data domain (e.g. `\"count\"`, `\"sum\"`), this property is ignored.",
                     "type": "boolean"
                 },
                 "zero": {
-                    "description": "If `true`, ensures that a zero baseline value is included in the scale domain.\n\nDefault value: `true` for `x` and `y` channel if the quantitative field is not binned\n\nand no custom `domain` is provided; `false` otherwise.",
+                    "description": "If `true`, ensures that a zero baseline value is included in the scale domain.\nDefault value: `true` for `x` and `y` channel if the quantitative field is not binned\nand no custom `domain` is provided; `false` otherwise.",
                     "type": "boolean"
                 }
             },
@@ -2536,7 +2536,7 @@
                             "type": "number"
                         }
                     ],
-                    "description": "Default band size for (1) `y` ordinal scale,\n\nand (2) `x` ordinal scale when the mark is not `text`.",
+                    "description": "Default band size for (1) `y` ordinal scale,\nand (2) `x` ordinal scale when the mark is not `text`.",
                     "minimum": 0
                 },
                 "clamp": {
@@ -2555,7 +2555,7 @@
                     "type": "number"
                 },
                 "round": {
-                    "description": "If true, rounds numeric output values to integers.\n\nThis can be helpful for snapping to the pixel grid.\n\n(Only available for `x`, `y`, `size`, `row`, and `column` scales.)",
+                    "description": "If true, rounds numeric output values to integers.\nThis can be helpful for snapping to the pixel grid.\n(Only available for `x`, `y`, `size`, `row`, and `column` scales.)",
                     "type": "boolean"
                 },
                 "textBandWidth": {
@@ -2564,7 +2564,7 @@
                     "type": "number"
                 },
                 "useRawDomain": {
-                    "description": "Uses the source data range as scale domain instead of aggregated data for aggregate axis.\n\nThis property only works with aggregate functions that produce values within the raw data domain (`\"mean\"`, `\"average\"`, `\"stdev\"`, `\"stdevp\"`, `\"median\"`, `\"q1\"`, `\"q3\"`, `\"min\"`, `\"max\"`). For other aggregations that produce values outside of the raw data domain (e.g. `\"count\"`, `\"sum\"`), this property is ignored.",
+                    "description": "Uses the source data range as scale domain instead of aggregated data for aggregate axis.\nThis property only works with aggregate functions that produce values within the raw data domain (`\"mean\"`, `\"average\"`, `\"stdev\"`, `\"stdevp\"`, `\"median\"`, `\"q1\"`, `\"q3\"`, `\"min\"`, `\"max\"`). For other aggregations that produce values outside of the raw data domain (e.g. `\"count\"`, `\"sum\"`), this property is ignored.",
                     "type": "boolean"
                 }
             },
@@ -2675,7 +2675,7 @@
                     "type": "number"
                 },
                 "filled": {
-                    "description": "Whether the shape\\'s color should be used as fill color instead of stroke color.\n\nThis is only applicable for \"bar\", \"point\", and \"area\".\n\nAll marks except \"point\" marks are filled by default.\n\nSee Mark Documentation (http://vega.github.io/vega-lite/docs/marks.html)\n\nfor usage example.",
+                    "description": "Whether the shape\\'s color should be used as fill color instead of stroke color.\nThis is only applicable for \"bar\", \"point\", and \"area\".\nAll marks except \"point\" marks are filled by default.\nSee Mark Documentation (http://vega.github.io/vega-lite/docs/marks.html)\nfor usage example.",
                     "type": "boolean"
                 },
                 "font": {
@@ -2713,10 +2713,10 @@
                 },
                 "interpolate": {
                     "$ref": "#/definitions/Interpolate",
-                    "description": "The line interpolation method to use for line and area marks. One of the following:\n\n- `\"linear\"`: piecewise linear segments, as in a polyline.\n\n- `\"linear-closed\"`: close the linear segments to form a polygon.\n\n- `\"step\"`: alternate between horizontal and vertical segments, as in a step function.\n\n- `\"step-before\"`: alternate between vertical and horizontal segments, as in a step function.\n\n- `\"step-after\"`: alternate between horizontal and vertical segments, as in a step function.\n\n- `\"basis\"`: a B-spline, with control point duplication on the ends.\n\n- `\"basis-open\"`: an open B-spline; may not intersect the start or end.\n\n- `\"basis-closed\"`: a closed B-spline, as in a loop.\n\n- `\"cardinal\"`: a Cardinal spline, with control point duplication on the ends.\n\n- `\"cardinal-open\"`: an open Cardinal spline; may not intersect the start or end, but will intersect other control points.\n\n- `\"cardinal-closed\"`: a closed Cardinal spline, as in a loop.\n\n- `\"bundle\"`: equivalent to basis, except the tension parameter is used to straighten the spline.\n\n- `\"monotone\"`: cubic interpolation that preserves monotonicity in y."
+                    "description": "The line interpolation method to use for line and area marks. One of the following:\n- `\"linear\"`: piecewise linear segments, as in a polyline.\n- `\"linear-closed\"`: close the linear segments to form a polygon.\n- `\"step\"`: alternate between horizontal and vertical segments, as in a step function.\n- `\"step-before\"`: alternate between vertical and horizontal segments, as in a step function.\n- `\"step-after\"`: alternate between horizontal and vertical segments, as in a step function.\n- `\"basis\"`: a B-spline, with control point duplication on the ends.\n- `\"basis-open\"`: an open B-spline; may not intersect the start or end.\n- `\"basis-closed\"`: a closed B-spline, as in a loop.\n- `\"cardinal\"`: a Cardinal spline, with control point duplication on the ends.\n- `\"cardinal-open\"`: an open Cardinal spline; may not intersect the start or end, but will intersect other control points.\n- `\"cardinal-closed\"`: a closed Cardinal spline, as in a loop.\n- `\"bundle\"`: equivalent to basis, except the tension parameter is used to straighten the spline.\n- `\"monotone\"`: cubic interpolation that preserves monotonicity in y."
                 },
                 "maxFontSize": {
-                    "description": "The default max value for mapping quantitative fields to text's size/fontSize.\n\nIf undefined (default), we will use bandSize - 1.",
+                    "description": "The default max value for mapping quantitative fields to text's size/fontSize.\nIf undefined (default), we will use bandSize - 1.",
                     "minimum": 0,
                     "type": "number"
                 },
@@ -2758,7 +2758,7 @@
                 },
                 "orient": {
                     "$ref": "#/definitions/Orient",
-                    "description": "The orientation of a non-stacked bar, tick, area, and line charts.\n\nThe value is either horizontal (default) or vertical.\n\n- For bar, rule and tick, this determines whether the size of the bar and tick\n\nshould be applied to x or y dimension.\n\n- For area, this property determines the orient property of the Vega output.\n\n- For line, this property determines the sort order of the points in the line\n\nif `config.sortLineBy` is not specified.\n\nFor stacked charts, this is always determined by the orientation of the stack;\n\ntherefore explicitly specified value will be ignored."
+                    "description": "The orientation of a non-stacked bar, tick, area, and line charts.\nThe value is either horizontal (default) or vertical.\n- For bar, rule and tick, this determines whether the size of the bar and tick\nshould be applied to x or y dimension.\n- For area, this property determines the orient property of the Vega output.\n- For line, this property determines the sort order of the points in the line\nif `config.sortLineBy` is not specified.\nFor stacked charts, this is always determined by the orientation of the stack;\ntherefore explicitly specified value will be ignored."
                 },
                 "radius": {
                     "description": "Polar coordinate radial offset, in pixels, of the text label from the origin determined by the x and y properties.",
@@ -2820,7 +2820,7 @@
         "TickConfig": {
             "properties": {
                 "bandSize": {
-                    "description": "The width of the ticks.\n\nIf this value is undefined (by default,), we use 2/3 of rangeStep by default.",
+                    "description": "The width of the ticks.\nIf this value is undefined (by default,), we use 2/3 of rangeStep by default.",
                     "minimum": 0,
                     "type": "number"
                 },
@@ -2838,15 +2838,15 @@
                     "type": "number"
                 },
                 "filled": {
-                    "description": "Whether the shape\\'s color should be used as fill color instead of stroke color.\n\nThis is only applicable for \"bar\", \"point\", and \"area\".\n\nAll marks except \"point\" marks are filled by default.\n\nSee Mark Documentation (http://vega.github.io/vega-lite/docs/marks.html)\n\nfor usage example.",
+                    "description": "Whether the shape\\'s color should be used as fill color instead of stroke color.\nThis is only applicable for \"bar\", \"point\", and \"area\".\nAll marks except \"point\" marks are filled by default.\nSee Mark Documentation (http://vega.github.io/vega-lite/docs/marks.html)\nfor usage example.",
                     "type": "boolean"
                 },
                 "interpolate": {
                     "$ref": "#/definitions/Interpolate",
-                    "description": "The line interpolation method to use for line and area marks. One of the following:\n\n- `\"linear\"`: piecewise linear segments, as in a polyline.\n\n- `\"linear-closed\"`: close the linear segments to form a polygon.\n\n- `\"step\"`: alternate between horizontal and vertical segments, as in a step function.\n\n- `\"step-before\"`: alternate between vertical and horizontal segments, as in a step function.\n\n- `\"step-after\"`: alternate between horizontal and vertical segments, as in a step function.\n\n- `\"basis\"`: a B-spline, with control point duplication on the ends.\n\n- `\"basis-open\"`: an open B-spline; may not intersect the start or end.\n\n- `\"basis-closed\"`: a closed B-spline, as in a loop.\n\n- `\"cardinal\"`: a Cardinal spline, with control point duplication on the ends.\n\n- `\"cardinal-open\"`: an open Cardinal spline; may not intersect the start or end, but will intersect other control points.\n\n- `\"cardinal-closed\"`: a closed Cardinal spline, as in a loop.\n\n- `\"bundle\"`: equivalent to basis, except the tension parameter is used to straighten the spline.\n\n- `\"monotone\"`: cubic interpolation that preserves monotonicity in y."
+                    "description": "The line interpolation method to use for line and area marks. One of the following:\n- `\"linear\"`: piecewise linear segments, as in a polyline.\n- `\"linear-closed\"`: close the linear segments to form a polygon.\n- `\"step\"`: alternate between horizontal and vertical segments, as in a step function.\n- `\"step-before\"`: alternate between vertical and horizontal segments, as in a step function.\n- `\"step-after\"`: alternate between horizontal and vertical segments, as in a step function.\n- `\"basis\"`: a B-spline, with control point duplication on the ends.\n- `\"basis-open\"`: an open B-spline; may not intersect the start or end.\n- `\"basis-closed\"`: a closed B-spline, as in a loop.\n- `\"cardinal\"`: a Cardinal spline, with control point duplication on the ends.\n- `\"cardinal-open\"`: an open Cardinal spline; may not intersect the start or end, but will intersect other control points.\n- `\"cardinal-closed\"`: a closed Cardinal spline, as in a loop.\n- `\"bundle\"`: equivalent to basis, except the tension parameter is used to straighten the spline.\n- `\"monotone\"`: cubic interpolation that preserves monotonicity in y."
                 },
                 "maxBandSize": {
-                    "description": "The default max value for mapping quantitative fields to tick's size/bandSize.\n\nIf undefined (default), we will use bandSize - 1.",
+                    "description": "The default max value for mapping quantitative fields to tick's size/bandSize.\nIf undefined (default), we will use bandSize - 1.",
                     "minimum": 0,
                     "type": "number"
                 },
@@ -2862,7 +2862,7 @@
                     "type": "number"
                 },
                 "minBandSize": {
-                    "description": "The default min value for mapping quantitative fields to tick's size/bandSize scale with zero=false\n\nIf undefined (default), we will use the `continuousBandSize` value.",
+                    "description": "The default min value for mapping quantitative fields to tick's size/bandSize scale with zero=false\nIf undefined (default), we will use the `continuousBandSize` value.",
                     "minimum": 0,
                     "type": "number"
                 },
@@ -2888,7 +2888,7 @@
                 },
                 "orient": {
                     "$ref": "#/definitions/Orient",
-                    "description": "The orientation of a non-stacked bar, tick, area, and line charts.\n\nThe value is either horizontal (default) or vertical.\n\n- For bar, rule and tick, this determines whether the size of the bar and tick\n\nshould be applied to x or y dimension.\n\n- For area, this property determines the orient property of the Vega output.\n\n- For line, this property determines the sort order of the points in the line\n\nif `config.sortLineBy` is not specified.\n\nFor stacked charts, this is always determined by the orientation of the stack;\n\ntherefore explicitly specified value will be ignored."
+                    "description": "The orientation of a non-stacked bar, tick, area, and line charts.\nThe value is either horizontal (default) or vertical.\n- For bar, rule and tick, this determines whether the size of the bar and tick\nshould be applied to x or y dimension.\n- For area, this property determines the orient property of the Vega output.\n- For line, this property determines the sort order of the points in the line\nif `config.sortLineBy` is not specified.\nFor stacked charts, this is always determined by the orientation of the stack;\ntherefore explicitly specified value will be ignored."
                 },
                 "sequentialColorScheme": {
                     "description": "Default color scheme for ordinal, quantitative and temporal field",
@@ -3027,7 +3027,7 @@
             "properties": {
                 "color": {
                     "$ref": "#/definitions/ChannelDefWithLegend",
-                    "description": "Color of the marks – either fill or stroke color based on mark type.\n\n(By default, fill color for `area`, `bar`, `tick`, `text`, `circle`, and `square` /\n\nstroke color for `line` and `point`.)"
+                    "description": "Color of the marks – either fill or stroke color based on mark type.\n(By default, fill color for `area`, `bar`, `tick`, `text`, `circle`, and `square` /\nstroke color for `line` and `point`.)"
                 },
                 "detail": {
                     "anyOf": [
@@ -3041,7 +3041,7 @@
                             "type": "array"
                         }
                     ],
-                    "description": "Additional levels of detail for grouping data in aggregate views and\n\nin line and area marks without mapping data to a specific visual channel."
+                    "description": "Additional levels of detail for grouping data in aggregate views and\nin line and area marks without mapping data to a specific visual channel."
                 },
                 "label": {
                     "$ref": "#/definitions/FieldDef"
@@ -3080,11 +3080,11 @@
                 },
                 "shape": {
                     "$ref": "#/definitions/ChannelDefWithLegend",
-                    "description": "The symbol's shape (only for `point` marks). The supported values are\n\n`\"circle\"` (default), `\"square\"`, `\"cross\"`, `\"diamond\"`, `\"triangle-up\"`,\n\nor `\"triangle-down\"`, or else a custom SVG path string."
+                    "description": "The symbol's shape (only for `point` marks). The supported values are\n`\"circle\"` (default), `\"square\"`, `\"cross\"`, `\"diamond\"`, `\"triangle-up\"`,\nor `\"triangle-down\"`, or else a custom SVG path string."
                 },
                 "size": {
                     "$ref": "#/definitions/ChannelDefWithLegend",
-                    "description": "Size of the mark.\n\n- For `point`, `square` and `circle`\n\n– the symbol size, or pixel area of the mark.\n\n- For `bar` and `tick` – the bar and tick's size.\n\n- For `text` – the text's font size.\n\n- Size is currently unsupported for `line` and `area`."
+                    "description": "Size of the mark.\n- For `point`, `square` and `circle`\n– the symbol size, or pixel area of the mark.\n- For `bar` and `tick` – the bar and tick's size.\n- For `text` – the text's font size.\n- Size is currently unsupported for `line` and `area`."
                 },
                 "text": {
                     "$ref": "#/definitions/FieldDef",
@@ -3092,7 +3092,7 @@
                 },
                 "x": {
                     "$ref": "#/definitions/PositionChannelDef",
-                    "description": "X coordinates for `point`, `circle`, `square`,\n\n`line`, `rule`, `text`, and `tick`\n\n(or to width and height for `bar` and `area` marks)."
+                    "description": "X coordinates for `point`, `circle`, `square`,\n`line`, `rule`, `text`, and `tick`\n(or to width and height for `bar` and `area` marks)."
                 },
                 "x2": {
                     "$ref": "#/definitions/FieldDef",
@@ -3100,7 +3100,7 @@
                 },
                 "y": {
                     "$ref": "#/definitions/PositionChannelDef",
-                    "description": "Y coordinates for `point`, `circle`, `square`,\n\n`line`, `rule`, `text`, and `tick`\n\n(or to width and height for `bar` and `area` marks)."
+                    "description": "Y coordinates for `point`, `circle`, `square`,\n`line`, `rule`, `text`, and `tick`\n(or to width and height for `bar` and `area` marks)."
                 },
                 "y2": {
                     "$ref": "#/definitions/FieldDef",
@@ -3120,7 +3120,7 @@
                     "description": "An object describing the data source"
                 },
                 "description": {
-                    "description": "An optional description of this mark for commenting purpose.\n\nThis property has no effect on the output visualization.",
+                    "description": "An optional description of this mark for commenting purpose.\nThis property has no effect on the output visualization.",
                     "type": "string"
                 },
                 "encoding": {
@@ -3132,7 +3132,7 @@
                 },
                 "mark": {
                     "$ref": "#/definitions/Mark",
-                    "description": "The mark type.\n\nOne of `\"bar\"`, `\"circle\"`, `\"square\"`, `\"tick\"`, `\"line\"`,\n\n`\"area\"`, `\"point\"`, `\"rule\"`, and `\"text\"`."
+                    "description": "The mark type.\nOne of `\"bar\"`, `\"circle\"`, `\"square\"`, `\"tick\"`, `\"line\"`,\n`\"area\"`, `\"point\"`, `\"rule\"`, and `\"text\"`."
                 },
                 "name": {
                     "description": "Name of the visualization for later reference.",
