@@ -282,7 +282,7 @@ describe('Scale', function() {
 
           assert.deepEqual(_domain, {
             data: SOURCE,
-            field: [
+            fields: [
               'bin_origin_start',
               'bin_origin_end'
             ]
