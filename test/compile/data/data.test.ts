@@ -65,8 +65,7 @@ describe('data', function () {
           x: {field: 'a', type: "temporal", timeUnit: 'year'},
           y: {
             bin: {
-              min: 0,
-              max: 100
+              extent: [0, 100]
             },
             'field': 'Acceleration',
             'type': "quantitative"

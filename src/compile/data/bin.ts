@@ -17,7 +17,8 @@ export namespace bin {
     return model.reduce(function(binComponent: Dict<VgTransform[]>, fieldDef: FieldDef, channel: Channel) {
       const bin = model.fieldDef(channel).bin;
       if (bin) {
-        let binTrans = extend({
+
+        let binTrans: VgTransform = extend({
           type: 'bin',
           field: fieldDef.field,
           as: [field(fieldDef, { binSuffix: 'start' }), field(fieldDef, { binSuffix: 'end'})]
@@ -26,12 +27,25 @@ export namespace bin {
           typeof bin === 'boolean' ? {} : bin
         );
 
+        const transform: VgTransform[] = [];
+        if (!binTrans.extent) {
+          const extentSignal = model.name(fieldDef.field + '_extent');
+          transform.push({
+            type: 'extent',
+            field: fieldDef.field,
+            signal: extentSignal
+          });
+
+          binTrans.extent = {signal: extentSignal};
+        }
+
         if (!binTrans.maxbins && !binTrans.step) {
           // if both maxbins and step are not specified, need to automatically determine bin
           binTrans.maxbins = autoMaxBins(channel);
         }
 
-        const transform: VgTransform[] = [binTrans];
+        transform.push(binTrans);
+
         // If color ramp has type linear or time, we have to create new bin_range field
         // with correct number format
         const isOrdinalColor = model.hasDiscreteScale(channel) || channel === COLOR;
