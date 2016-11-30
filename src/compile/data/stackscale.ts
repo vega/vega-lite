@@ -31,7 +31,8 @@ export namespace stackScale {
         transform: [extend({
           type: 'aggregate',
           // produce sum of the field's value e.g., sum of sum, sum of distinct
-          summarize: [{ ops: ['sum'], field: model.field(fieldChannel) }]
+          ops: ['sum'],
+          fields: [model.field(fieldChannel)]
         }, fields.length > 0 ? {
           // group by channel and other facets
           groupby: fields

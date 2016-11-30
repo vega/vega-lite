@@ -383,8 +383,7 @@ function getXAxesGroup(model: FacetModel): VgMarkGroup {
         data: model.dataTable(),
         transform: [{
           type: 'aggregate',
-          groupby: [model.field(COLUMN)],
-          summarize: {'*': ['count']} // just a placeholder aggregation
+          groupby: [model.field(COLUMN)]
         }]
       }
     } : {},
@@ -423,8 +422,7 @@ function getYAxesGroup(model: FacetModel): VgMarkGroup {
         data: model.dataTable(),
         transform: [{
           type: 'aggregate',
-          groupby: [model.field(ROW)],
-          summarize: {'*': ['count']} // just a placeholder aggregation
+          groupby: [model.field(ROW)]
         }]
       }
     } : {},

@@ -45,9 +45,8 @@ export function assembleLayout(model: Model, layoutData: VgData[]): VgData[] {
         source: model.dataTable(),
         transform: [{
           type: 'aggregate',
-          summarize: distinctFields.map(function(field) {
-            return { field: field, ops: ['distinct'] };
-          })
+          fields: distinctFields,
+          ops: distinctFields.map(() => 'distinct')
         } as any].concat(formula)
       } : {
         name: model.dataName(LAYOUT),
