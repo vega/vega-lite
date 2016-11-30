@@ -214,12 +214,14 @@ function parseMainScale(model: Model, fieldDef: FieldDef, channel: Channel) {
   // If channel is either X or Y then union them with X2 & Y2 if they exist
   if (channel === X && model.has(X2)) {
     if (model.has(X)) {
+      // FIXME: Verify if this is really correct
       scaleDef.domain = { fields: [domain(scale, model, X), domain(scale, model, X2)] };
     } else {
       scaleDef.domain = domain(scale, model, X2);
     }
   } else if (channel === Y && model.has(Y2)) {
     if (model.has(Y)) {
+      // FIXME: Verify if this is really correct
       scaleDef.domain = { fields: [domain(scale, model, Y), domain(scale, model, Y2)] };
     } else {
       scaleDef.domain = domain(scale, model, Y2);
@@ -515,7 +517,7 @@ export function domain(scale: Scale, model: Model, channel:Channel): any {
       // other linear bin scale merges both bin_start and bin_end for non-ordinal scale
       return {
         data: model.dataTable(),
-        field: [
+        fields: [
           model.field(channel, { binSuffix: 'start' }),
           model.field(channel, { binSuffix: 'end' })
         ]
