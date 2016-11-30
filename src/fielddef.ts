@@ -110,7 +110,7 @@ export function field(fieldDef: FieldDef, opt: FieldRefOption = {}) {
   let suffix = opt.suffix;
 
   if (isCount(fieldDef)) {
-    field = 'count';
+    field = 'count_*';
   } else {
     let fn: string = undefined;
 
