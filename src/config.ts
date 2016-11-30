@@ -155,7 +155,7 @@ export interface Config {
   bar?: BarConfig;
 
   /** Circle-Specific Config */
-  circle?: BarConfig;
+  circle?: PointConfig;
 
   /** Line-Specific Config */
   line?: LineConfig;
@@ -170,7 +170,7 @@ export interface Config {
   rule?: RuleConfig;
 
   /** Square-Specific Config */
-  square?: BarConfig;
+  square?: PointConfig;
 
   /** Text-Specific Config */
   text?: TextConfig;

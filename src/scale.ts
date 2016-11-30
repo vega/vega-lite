@@ -97,10 +97,7 @@ export interface ScaleConfig {
    * @minimum 0
    */
   bandSize?: number | BandSize;
-  /**
-   * Default range for opacity.
-   */
-  opacity?: number[];
+
   /**
    * Default padding for `x` and `y` band-ordinal scales.
    * @minimum 0
@@ -127,108 +124,18 @@ export interface ScaleConfig {
    */
   useRawDomain?: boolean;
 
-  /** Default color scheme for nominal (categorical) data */
-  nominalColorScheme?: string;
-
-  /** Default color scheme for ordinal, quantitative and temporal field */
-  sequentialColorScheme?: string;
-
-  /** Default range for shape */
-  shapeRange?: string[];
-
-  /**
-   * Default minimum range for bar size scale with zero=false.
-   * @minimum 1
-   */
-  minBarSize?: number;
-
-  /**
-   * Default max range for bar size scale.
-   * If undefined (default), we will use bandSize - 1.
-   * @minimum 1
-   */
-  maxBarSize?: number;
-
-  /**
-   * Default minimum range for tick size (tick span) scale with zero=false.
-   * @minimum 1
-   */
-  minTickSize?: number;
-
-  /**
-   * Default max range for tick size (tick span) scale.
-   * If undefined (default), we will use bandSize - 1.
-   * @minimum 1
-   */
-  maxTickSize?: number;
-
-  /**
-   * Default minimum range for rule size (strokeWidth) scale with zero=false.
-   * @minimum 1
-   */
-  minRuleSize?: number;
-
-  /**
-   * Default max range for rule size (strokeWidth) scale.
-   * @minimum 1
-   */
-  maxRuleSize?: number;
-
-  /**
-   * Default minimum range for point size scale with zero=false.
-   * @minimum 1
-   */
-  minPointSize?: number;
-
-  /**
-   * Default max range for point size scale.
-   * @minimum 1
-   */
-  maxPointSize?: number;
-
-  /**
-   * Default minimum range for text size (fontSize) scale with zero=false.
-   * @minimum 1
-   */
-  minTextSize?: number;
-
-  /**
-   * Default max range for text size (fontSize) scale.
-   * @minimum 1
-   */
-  maxTextSize?: number;
-
   // nice should depends on type (quantitative or temporal), so
   // let's not make a config.
 }
 
 export const defaultScaleConfig = {
   round: true,
-  textBandWidth: 90,
+  textBandWidth: 90, // FIXME: consider if we will rename this "tableColumnWidth"
   bandSize: 21,
   pointPadding: 1,
   bandPadding: 0.1,
   facetSpacing: 16,
   useRawDomain: false,
-  opacity: [0.3, 0.8],
-
-  // if tickSize = 1, it becomes a dot.
-  // To be consistent, we just use 3 to be somewhat consistent with point, which use area = 9.
-  minTickSize: 3,
-
-  minRuleSize: 1,
-  maxRuleSize: 5,
-
-  // TODO: revise if these *can* become ratios of rangeStep
-  minPointSize: 9, // Point size is area. For square point, 9 = 3 pixel ^ 2, not too small!
-
-  // QUESTION: should these be min/maxFontSize?
-  minTextSize: 8, // smaller than 8 would be illegible
-  maxTextSize: 40,
-
-  nominalColorScheme: 'category10',
-  sequentialColorScheme: 'Greens',
-  shapeRange: ['circle', 'square', 'cross', 'diamond', 'triangle-up', 'triangle-down'],
 };
 
 export interface Scale {

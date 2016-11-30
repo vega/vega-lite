@@ -6,7 +6,7 @@ import {Config} from '../config';
 import {SOURCE, STACKED_SCALE} from '../data';
 import {DateTime, isDateTime, timestamp} from '../datetime';
 import {ChannelDefWithScale, FieldDef, field} from '../fielddef';
-import {Mark, BAR, TEXT as TEXTMARK, RECT, MarkConfig} from '../mark';
+import {Mark, BAR, TEXT as TEXTMARK, RECT, MarkConfig, PointConfig} from '../mark';
 import {Scale, ScaleConfig, ScaleType, NiceTime, BANDSIZE_FIT, BandSize, isDiscreteScale, scaleTypeSupportProperty} from '../scale';
 import {isSortField, SortOrder} from '../sort';
 import {StackOffset} from '../stack';
@@ -600,7 +600,6 @@ export function rangeMixins(scale: Scale, model: Model, channel: Channel):
   {range: string | Array<number|string|{data: string, field:string}>} | {bandSize: number} | {scheme: string} {
 
   const config = model.config();
-  const scaleConfig = model.config().scale;
 
   // TODO: need to add rule for quantile, quantize, threshold scale
 
@@ -664,39 +663,43 @@ export function rangeMixins(scale: Scale, model: Model, channel: Channel):
       const rangeMax = sizeRangeMax(mark, model, config);
       return {range: [rangeMin, rangeMax]};
     case SHAPE:
-      return {range: scaleConfig.shapeRange};
+      return {range: config.point.shapes};
     case COLOR:
       if (fieldDef.type === NOMINAL) {
-        return {scheme: scaleConfig.nominalColorScheme};
+        return {scheme: config.mark.nominalColorScheme};
       }
+      // TODO(#1737): support sequentialColorRange (with linear scale) if sequentialColorScheme is not specified.
+      // TODO: support custom rangeMin, rangeMax
       // else -- ordinal, time, or quantitative
-      return {scheme: scaleConfig.sequentialColorScheme};
+      return {scheme: config.mark.sequentialColorScheme};
 
     case OPACITY:
-      return {range: scaleConfig.opacity};
+      // TODO: support custom rangeMin, rangeMax
+      return {range: [config.mark.minOpacity, config.mark.maxOpacity]};
   }
   /* istanbul ignore next: should never reach here */
   throw new Error(`Scale range undefined for channel ${channel}`);
 }
 
 function sizeRangeMin(mark: Mark, zero: boolean, config: Config) {
-  const scaleConfig = config.scale;
   if (zero) {
     return 0;
   }
   switch (mark) {
     case 'bar':
-      return scaleConfig.minBarSize !== undefined ? scaleConfig.minBarSize : config.bar.continuousBandSize;
+      return config.bar.minBandSize !== undefined ? config.bar.minBandSize : config.bar.continuousBandSize;
     case 'tick':
-      return scaleConfig.minTickSize;
+      return config.tick.minBandSize;
     case 'rule':
-      return scaleConfig.minRuleSize;
+      return config.rule.minStrokeWidth;
     case 'text':
-      return scaleConfig.minTextSize;
+      return config.text.minFontSize;
     case 'point':
+      return config.point.minSize;
     case 'square':
+      return config.square.minSize;
     case 'circle':
-      return scaleConfig.minPointSize;
+      return config.circle.minSize;
   }
   /* istanbul ignore next: should never reach here */
   // sizeRangeMin not implemented for the mark
@@ -708,22 +711,26 @@ function sizeRangeMax(mark: Mark, model: Model,  config: Config) {
   // TODO(#1168): make max size scale based on bandSize / overall plot size
   switch (mark) {
     case 'bar':
-      if (scaleConfig.maxBarSize !== undefined) {
-        return scaleConfig.maxBarSize;
+      if (config.bar.maxBandSize !== undefined) {
+        return config.bar.maxBandSize;
       }
       return barTickBandSize(model, config.mark) - 1;
     case 'tick':
-      if (scaleConfig.maxTickSize !== undefined) {
-        return scaleConfig.maxTickSize;
+      if (config.tick.maxBandSize !== undefined) {
+        return config.tick.maxBandSize;
       }
       return barTickBandSize(model, config.mark) - 1;
     case 'rule':
-      return scaleConfig.maxRuleSize;
+      return config.rule.maxStrokeWidth;
     case 'text':
-      return scaleConfig.maxTextSize;
+      return config.text.maxFontSize;
     case 'point':
     case 'square':
     case 'circle':
+      if ((config[mark] as PointConfig).maxSize) {
+        return (config[mark] as PointConfig).maxSize;
+      }
+
       // FIXME this case totally should be refactored
       const pointSize = pointBandSize(model as UnitModel, scaleConfig);
       return (pointSize - 2) * (pointSize - 2);

@@ -9,9 +9,11 @@ import {parseUnitModel} from '../util';
 import * as log from '../../src/log';
 import {X, Y, SHAPE, DETAIL, ROW, COLUMN, Channel} from '../../src/channel';
 import {BANDSIZE_FIT, ScaleType, defaultScaleConfig} from '../../src/scale';
-import {POINT, RECT, BAR, TEXT} from '../../src/mark';
+import {Mark, POINT, RECT, BAR, TEXT} from '../../src/mark';
+import * as mark from '../../src/mark';
+import {ExtendedUnitSpec} from '../../src/spec';
 import {TimeUnit} from '../../src/timeunit';
-import {TEMPORAL, ORDINAL} from '../../src/type';
+import {TEMPORAL, ORDINAL, Type} from '../../src/type';
 
 describe('Scale', function() {
   describe('type()', function() {
@@ -656,9 +658,51 @@ describe('Scale', function() {
       // TODO: Y
     });
 
+    describe('color', function() {
+      it('should use default nominalColorScheme for a nominal color field.', () => {
+        const model = parseUnitModel({
+          "data": {"url": "data/cars.json"},
+          "mark": "point",
+          "encoding": {
+            "color": {"field": "Origin", "type": "nominal"}
+          }
+        });
+        const scales = parseScaleComponent(model)['color'];
+        assert.deepEqual(scales.main.scheme, mark.defaultMarkConfig.nominalColorScheme);
+      });
+
+      it('should use default sequentialColorSchema for a ordinal/temporal/quantitative color field.', () => {
+        for (let type of ['ordinal', 'temporal', 'quantitative'] as Type[]) {
+          const model = parseUnitModel({
+            "data": {"url": "data/cars.json"},
+            "mark": "point",
+            "encoding": {
+              "color": {"field": "Origin", "type": type}
+            }
+          });
+          const scales = parseScaleComponent(model)['color'];
+          assert.deepEqual(scales.main.scheme, mark.defaultMarkConfig.sequentialColorScheme);
+        }
+      });
+    });
+
+    describe('opacity', function() {
+      it('should use default opacityRange as opacity\'s scale range.', () => {
+        const model = parseUnitModel({
+          "data": {"url": "data/cars.json"},
+          "mark": "point",
+          "encoding": {
+            "opacity": {"field": "Acceleration", "type": "quantitative"}
+          }
+        });
+        const scales = parseScaleComponent(model)['opacity'];
+        assert.deepEqual(scales.main.range, [mark.defaultMarkConfig.minOpacity, mark.defaultMarkConfig.maxOpacity]);
+      });
+    });
+
     describe('size', function() {
       describe('bar', function() {
-        it('should return [minBarSize, maxBarSize] if both are specified', () => {
+        it('should return [minBandSize, maxBandSize] if both are specified', () => {
           const model = parseUnitModel({
             "data": {"url": "data/cars.json"},
             "mark": "bar",
@@ -669,9 +713,9 @@ describe('Scale', function() {
               "size": {"field": "Origin", "type": "ordinal"}
             },
             config: {
-              scale: {
-                minBarSize: 2,
-                maxBarSize: 9
+              bar: {
+                minBandSize: 2,
+                maxBandSize: 9
               }
             }
           });
@@ -679,7 +723,7 @@ describe('Scale', function() {
           assert.deepEqual(scales.main.range, [2, 9]);
         });
 
-        it('should return [thinBarSize, bandWidth-1] if min/maxBarSize are not specified', () => {
+        it('should return [continuousBandSize, bandWidth-1] if min/maxBarSize are not specified', () => {
           const model = parseUnitModel({
             "data": {"url": "data/cars.json"},
             "mark": "bar",
@@ -691,12 +735,12 @@ describe('Scale', function() {
             }
           });
           const scales = parseScaleComponent(model)['size'];
-          assert.deepEqual(scales.main.range, [2, 10]);
+          assert.deepEqual(scales.main.range, [mark.defaultBarConfig.continuousBandSize, 10]);
         });
       });
 
       describe('tick', function() {
-        it('should return [minTickSize, maxTickSize] if both are specified', () => {
+        it('should return [minBandSize, maxBandSize] if both are specified', () => {
           const model = parseUnitModel({
             "data": {"url": "data/cars.json"},
             "mark": "tick",
@@ -705,9 +749,9 @@ describe('Scale', function() {
               "size": {"field": "Origin", "type": "ordinal"}
             },
             config: {
-              scale: {
-                minTickSize: 4,
-                maxTickSize: 9
+              tick: {
+                minBandSize: 4,
+                maxBandSize: 9
               }
             }
           });
@@ -715,7 +759,7 @@ describe('Scale', function() {
           assert.deepEqual(scales.main.range, [4, 9]);
         });
 
-        it('should return [minTickSize, bandWidth-1] if min/maxBarSize are not specified', () => {
+        it('should return [(default)minBandSize, bandWidth-1] if min/maxBarSize are not specified', () => {
           const model = parseUnitModel({
             "data": {"url": "data/cars.json"},
             "mark": "tick",
@@ -727,12 +771,12 @@ describe('Scale', function() {
             }
           });
           const scales = parseScaleComponent(model)['size'];
-          assert.deepEqual(scales.main.range, [3, 20]);
+          assert.deepEqual(scales.main.range, [mark.defaultTickConfig.minBandSize, 20]);
         });
       });
 
       describe('text', function() {
-        it('should return [minTextSize, maxTextSize]', () => {
+        it('should return [minFontSize, maxFontSize]', () => {
           const model = parseUnitModel({
             "data": {"url": "data/cars.json"},
             "mark": "text",
@@ -742,12 +786,12 @@ describe('Scale', function() {
             }
           });
           const scales = parseScaleComponent(model)['size'];
-          assert.deepEqual(scales.main.range, [defaultScaleConfig.minTextSize, defaultScaleConfig.maxTextSize]);
+          assert.deepEqual(scales.main.range, [mark.defaultTextConfig.minFontSize, mark.defaultTextConfig.maxFontSize]);
         });
       });
 
       describe('rule', function() {
-        it('should return [minRuleSize, maxRuleSize]', () => {
+        it('should return [minStrokeWidth, maxStrokeWidth]', () => {
           const model = parseUnitModel({
             "data": {"url": "data/cars.json"},
             "mark": "rule",
@@ -758,11 +802,33 @@ describe('Scale', function() {
             }
           });
           const scales = parseScaleComponent(model)['size'];
-          assert.deepEqual(scales.main.range, [defaultScaleConfig.minRuleSize, defaultScaleConfig.maxRuleSize]);
+          assert.deepEqual(scales.main.range, [mark.defaultRuleConfig.minStrokeWidth, mark.defaultRuleConfig.maxStrokeWidth]);
         });
       });
 
       describe('point, square, circle', function() {
+        it('should return [minSize, maxSize]', () => {
+          for (let m of ['point', 'square', 'circle'] as Mark[]) {
+            let spec: ExtendedUnitSpec = {
+              "data": {"url": "data/cars.json"},
+              "mark": m,
+              "encoding": {
+                "y": {"field": "Acceleration", "type": "quantitative"},
+                // not truly ordinal, just say ordinal for the sake of testing
+                "size": {"field": "Origin", "type": "ordinal"}
+              },
+              config: {}
+            };
+            spec.config[m] = {
+              minSize: 5,
+              maxSize: 25
+            };
+            const model = parseUnitModel(spec);
+            const scales = parseScaleComponent(model)['size'];
+            assert.deepEqual(scales.main.range, [5, 25]);
+          }
+        });
+
         it('should return [0, (minBandSize-2)^2] if both x and y are discrete and size is quantitative (thus use zero=true, by default)', () => {
           // TODO: replace this test with something more local
           const model = parseUnitModel({
@@ -875,11 +941,17 @@ describe('Scale', function() {
     });
 
     describe('shape', function() {
-      // TODO:
-    });
-
-    describe('color', function() {
-      // TODO:
+      it('should use default shapes as shape\'s scale range.', () => {
+        const model = parseUnitModel({
+          "data": {"url": "data/cars.json"},
+          "mark": "point",
+          "encoding": {
+            "shape": {"field": "Origin", "type": "nominal"}
+          }
+        });
+        const scales = parseScaleComponent(model)['shape'];
+        assert.deepEqual(scales.main.range, mark.defaultPointConfig.shapes);
+      });
     });
   });
 
