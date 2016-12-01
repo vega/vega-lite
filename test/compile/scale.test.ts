@@ -536,31 +536,13 @@ describe('Scale', function() {
 
       const scales = parseScaleComponent(model)['color'];
 
-      it('should create color and inverse scales', function() {
+      it('should create index color scale', function() {
         assert.equal(scales.main.name, 'color');
-        assert.equal(scales.colorLegend.name, 'color_legend');
-        assert.equal(scales.binColorLegend, undefined);
-      });
+        assert.equal(scales.main.type, 'index');
 
-      it('should create correct inverse scale', function() {
-        assert.equal(scales.colorLegend.type, 'ordinal');
-        assert.deepEqual(scales.colorLegend.domain, {
-          data: 'source',
-          field: 'rank_origin',
-          sort: true
-        });
-        assert.deepEqual(scales.colorLegend.range, {
-          data: 'source',
-          field: 'origin',
-          sort: true
-        });
-      });
-
-      it('should create correct color scale', function() {
-        assert.equal(scales.main.type, 'linear');
         assert.deepEqual(scales.main.domain, {
           data: 'source',
-          field: 'rank_origin'
+          field: 'origin'
         });
       });
     });
@@ -569,7 +551,7 @@ describe('Scale', function() {
       const model = parseUnitModel({
           mark: "point",
           encoding: {
-            color: { field: 'origin', type: "quantitative", bin: true}
+            color: { field: "origin", type: "quantitative", bin: true}
           }
         });
 
@@ -577,22 +559,8 @@ describe('Scale', function() {
 
       it('should add correct scales', function() {
         assert.equal(scales.main.name, 'color');
-        assert.equal(scales.colorLegend.name, 'color_legend');
+        assert.equal(scales.main.type, 'index');
         assert.equal(scales.binColorLegend.name, 'color_legend_label');
-      });
-
-      it('should create correct identity scale', function() {
-        assert.equal(scales.colorLegend.type, 'ordinal');
-        assert.deepEqual(scales.colorLegend.domain, {
-          data: 'source',
-          field: 'bin_origin_start',
-          sort: true
-        });
-        assert.deepEqual(scales.colorLegend.range, {
-          data: 'source',
-          field: 'bin_origin_start',
-          sort: true
-        });
       });
 
       it('should sort range of color labels', function() {
@@ -621,22 +589,8 @@ describe('Scale', function() {
 
       it('should add correct scales', function() {
         assert.equal(scales.main.name, 'color');
-        assert.equal(scales.colorLegend.name, 'color_legend');
+        assert.equal(scales.main.type, 'index');
         assert.equal(scales.binColorLegend, undefined);
-      });
-
-      it('should create correct identity scale', function() {
-        assert.equal(scales.colorLegend.type, 'ordinal');
-        assert.deepEqual(scales.colorLegend.domain, {
-          data: 'source',
-          field: 'year_origin',
-          sort: true
-        });
-        assert.deepEqual(scales.colorLegend.range, {
-          data: 'source',
-          field: 'year_origin',
-          sort: true
-        });
       });
     });
   });

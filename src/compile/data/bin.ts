@@ -60,7 +60,7 @@ export namespace bin {
           transform.push({
             type: 'formula',
             as: field(fieldDef, { binSuffix: 'range' }),
-            expr: `${numberFormatExpr(startField, format)} + ' ' + ${numberFormatExpr(endField, format)}`
+            expr: `${numberFormatExpr(startField, format)} + ' - ' + ${numberFormatExpr(endField, format)}`
           });
         }
         // FIXME: current merging logic can produce redundant transforms when a field is binned for color and for non-color

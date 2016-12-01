@@ -2,7 +2,7 @@ import {X, Y, COLOR, TEXT, SIZE} from '../../channel';
 import {applyConfig, applyColorAndOpacity, numberFormat, timeFormatExpression} from '../common';
 import {Config} from '../../config';
 import {FieldDef, field} from '../../fielddef';
-import {QUANTITATIVE, ORDINAL, TEMPORAL} from '../../type';
+import {QUANTITATIVE, TEMPORAL} from '../../type';
 import {UnitModel} from '../unit';
 import * as ref from './valueref';
 import {VgValueRef} from '../../vega.schema';
@@ -20,7 +20,7 @@ export namespace text {
       height: { field: { group: 'height' } },
       fill: {
         scale: model.scaleName(COLOR),
-        field: model.field(COLOR, model.encoding().color.type === ORDINAL ? {prefix: 'rank'} : {})
+        field: model.field(COLOR)
       }
     };
   }

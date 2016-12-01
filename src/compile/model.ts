@@ -16,7 +16,7 @@ import {VgData, VgMarkGroup, VgScale, VgAxis, VgLegend} from '../vega.schema';
 
 import {DataComponent} from './data/data';
 import {LayoutComponent} from './layout';
-import {ScaleComponents, COLOR_LEGEND, COLOR_LEGEND_LABEL} from './scale';
+import {ScaleComponents, COLOR_LEGEND_LABEL} from './scale';
 
 import {StackProperties} from '../stack';
 
@@ -186,9 +186,6 @@ export abstract class Model {
     // help assemble scale domains with scale signature as well
     return flatten(vals(this.component.scale).map((scales: ScaleComponents) => {
       let arr = [scales.main];
-      if (scales.colorLegend) {
-        arr.push(scales.colorLegend);
-      }
       if (scales.binColorLegend) {
         arr.push(scales.binColorLegend);
       }
@@ -341,7 +338,7 @@ export abstract class Model {
    * (DO NOT USE THIS METHOD DURING SCALE PARSING, use model.name() instead)
    */
   public scaleName(originalScaleName: Channel|string, parse?: boolean): string {
-    const channel = contains([COLOR_LEGEND, COLOR_LEGEND_LABEL], originalScaleName) ? 'color' : originalScaleName;
+    const channel = contains([COLOR_LEGEND_LABEL], originalScaleName) ? 'color' : originalScaleName;
 
     if (parse) {
       // During the parse phase always return a value

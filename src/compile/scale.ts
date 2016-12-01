@@ -19,15 +19,8 @@ import {Model} from './model';
 import {smallestUnit} from '../timeunit';
 import {UnitModel} from './unit';
 
-/**
- * Color Ramp's scale for legends.  This scale has to be ordinal so that its
- * legends show a list of numbers.
- */
-export const COLOR_LEGEND = 'color_legend';
-
 // scale used to get labels for binned color scales
 export const COLOR_LEGEND_LABEL = 'color_legend_label';
-
 
 // FIXME: With layer and concat, scaleComponent should decompose between
 // ScaleSignature and ScaleDomain[].
@@ -37,8 +30,7 @@ export type ScaleComponent = VgScale;
 
 export type ScaleComponents = {
   main: ScaleComponent;
-  colorLegend?: ScaleComponent,
-  binColorLegend?: ScaleComponent
+  binColorLegend?: ScaleComponent;
 }
 
 export function channelScalePropertyIncompatability(channel: Channel, propName: string): string {
@@ -182,11 +174,8 @@ export function parseScaleComponent(model: Model): Dict<ScaleComponents> {
 
         // Add additional scales needed to support ordinal legends (list of values)
         // for color ramp.
-        if (channel === COLOR && model.legend(COLOR) && (fieldDef.type === ORDINAL || fieldDef.bin || fieldDef.timeUnit)) {
-          scales.colorLegend = parseColorLegendScale(model, fieldDef);
-          if (fieldDef.bin) {
-            scales.binColorLegend = parseBinColorLegendLabel(model, fieldDef);
-          }
+        if (channel === COLOR && model.legend(COLOR) && fieldDef.bin) {
+          scales.binColorLegend = parseBinColorLegendLabel(model, fieldDef);
         }
 
         scale[channel] = scales;
@@ -238,26 +227,6 @@ function parseMainScale(model: Model, fieldDef: FieldDef, channel: Channel) {
   }
 
   return scaleDef;
-}
-
-/**
- *  Return a scale  for producing ordinal scale for legends.
- *  - For an ordinal field, provide an ordinal scale that maps rank values to field value
- *  - For a field with bin or timeUnit, provide an identity ordinal scale
- *    (mapping the field values to themselves)
- */
-function parseColorLegendScale(model: Model, fieldDef: FieldDef): ScaleComponent {
-  return {
-    name: model.scaleName(COLOR_LEGEND, true),
-    type: ScaleType.ORDINAL_LOOKUP,
-    domain: {
-      data: model.dataTable(),
-      // use rank_<field> for ordinal type, for bin and timeUnit use default field
-      field: model.field(COLOR, (fieldDef.bin || fieldDef.timeUnit) ? {} : {prefix: 'rank'}),
-      sort: true
-    },
-    range: {data: model.dataTable(), field: model.field(COLOR), sort: true}
-  };
 }
 
 /**
@@ -327,14 +296,12 @@ export namespace defaultProperty {
         return discreteToContinuousType(channel, mark, canHaveRangeStep);
       case ORDINAL:
         if (channel === COLOR) {
-          // TODO: check if this is still true
-          return ScaleType.LINEAR; // ordinal has order, so use interpolated ordinal color scale.
+          return ScaleType.INDEX;
         }
         return discreteToContinuousType(channel, mark, canHaveRangeStep);
       case TEMPORAL:
         if (channel === COLOR) {
-          // FIXME: or sequential?
-          return ScaleType.TIME; // time has order, so use interpolated color scale.
+          return ScaleType.INDEX;
         }
 
         switch (fieldDef.timeUnit) {
@@ -348,6 +315,9 @@ export namespace defaultProperty {
         return ScaleType.TIME;
 
       case QUANTITATIVE:
+      if (fieldDef.bin) {
+          return ScaleType.INDEX;
+        }
         return ScaleType.LINEAR;
     }
 
@@ -528,13 +498,13 @@ export function domain(scale: Scale, model: Model, channel:Channel): any {
       // If sort by aggregation of a specified sort field, we need to use SOURCE table,
       // so we can aggregate values for the scale independently from the main aggregation.
       data: sort.op ? SOURCE : model.dataTable(),
-      field: (fieldDef.type === ORDINAL && channel === COLOR) ? model.field(channel, {prefix: 'rank'}) : model.field(channel),
+      field: model.field(channel),
       sort: sort
     };
   } else {
     return {
       data: model.dataTable(),
-      field: (fieldDef.type === ORDINAL && channel === COLOR) ? model.field(channel, {prefix: 'rank'}) : model.field(channel),
+      field: model.field(channel),
     };
   }
 }

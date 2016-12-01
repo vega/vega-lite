@@ -22,6 +22,9 @@ export namespace ScaleType {
   export const ORDINAL_LOOKUP: 'ordinal' = 'ordinal';
   export const POINT: 'point' = 'point';
   export const BAND: 'band' = 'band';
+
+  // Ordinal color scale
+  export const INDEX: 'index' = 'index';
 }
 
 export type ScaleType = typeof ScaleType.LINEAR |
@@ -29,7 +32,7 @@ export type ScaleType = typeof ScaleType.LINEAR |
   typeof ScaleType.TIME | typeof ScaleType.UTC |
   // TODO: add 'quantize', 'quantile', 'threshold' back when we really support them
   typeof ScaleType.SEQUENTIAL | // typeof ScaleType.QUANTILE | typeof ScaleType.QUANTIZE | typeof ScaleType.THRESHOLD |
-  typeof ScaleType.ORDINAL_LOOKUP | typeof ScaleType.POINT | typeof ScaleType.BAND;
+  typeof ScaleType.ORDINAL_LOOKUP | typeof ScaleType.POINT | typeof ScaleType.BAND | typeof ScaleType.INDEX;
 
 export const SCALE_TYPES: ScaleType[] = [
   // Continuous - Quantitative

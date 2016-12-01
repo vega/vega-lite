@@ -156,8 +156,7 @@ export class LayerModel extends Model {
               }
             }
 
-            // create color legend and color legend bin scales if we don't have them yet
-            modelScales.colorLegend = modelScales.colorLegend ? modelScales.colorLegend : childScales.colorLegend;
+            // create color legend bin scales if we don't have them yet
             modelScales.binColorLegend = modelScales.binColorLegend ? modelScales.binColorLegend : childScales.binColorLegend;
           } else {
             scaleComponent[channel] = childScales;
