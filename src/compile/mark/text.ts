@@ -65,7 +65,7 @@ export namespace text {
       return { field: { group: 'width' }, offset: -5 };
     }
     // TODO: allow this to fit (Be consistent with ref.midX())
-    return { value: config.scale.textBandWidth / 2 };
+    return { value: config.scale.textXRangeStep / 2 };
   }
 
   function text(textFieldDef: FieldDef, scaleName: string, config: Config): VgValueRef {

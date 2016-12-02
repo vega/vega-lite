@@ -128,19 +128,19 @@ export function midPoint(channel: Channel, fieldDef: FieldDef, scaleName: string
 
 export function midX(config: Config): VgValueRef {
 
-  if (typeof config.scale.bandSize === 'string') {
+  if (typeof config.scale.rangeStep === 'string') {
     // TODO: For fit-mode, use middle of the width
-    throw new Error('midX can not handle string bandSizes');
+    throw new Error('midX can not handle string rangeSteps');
   }
-  return {value: config.scale.bandSize / 2};
+  return {value: config.scale.rangeStep / 2};
 }
 
 export function midY(config: Config): VgValueRef {
-  if (typeof config.scale.bandSize === 'string') {
+  if (typeof config.scale.rangeStep === 'string') {
     // TODO: For fit-mode, use middle of the width
-    throw new Error('midX can not handle string bandSizes');
+    throw new Error('midX can not handle string rangeSteps');
   }
-  return {value: config.scale.bandSize / 2};
+  return {value: config.scale.rangeStep / 2};
 }
 
 function baseX(scaleName: string, scale: Scale): VgValueRef {

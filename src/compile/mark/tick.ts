@@ -6,7 +6,7 @@ import {VgValueRef} from '../../vega.schema';
 
 import {applyColorAndOpacity} from '../common';
 import {UnitModel} from '../unit';
-import {BandSize} from '../../scale';
+import {RangeStep} from '../../scale';
 import * as ref from './valueref';
 
 export namespace tick {
@@ -25,29 +25,30 @@ export namespace tick {
     p.yc = ref.stackable(Y, model.encoding().y, model.scaleName(Y), model.scale(Y), stack, ref.midY(config));
 
     if (config.mark.orient === 'horizontal') {
-      p.width = size(model.encoding().size, model.scaleName(SIZE), model.scale(SIZE), config, (model.scale(X) || {}).bandSize);
+      p.width = size(model.encoding().size, model.scaleName(SIZE), model.scale(SIZE), config, (model.scale(X) || {}).rangeStep);
       p.height = { value: config.tick.thickness };
     } else {
       p.width = { value: config.tick.thickness };
-      p.height = size(model.encoding().size, model.scaleName(SIZE), model.scale(SIZE), config, (model.scale(Y) || {}).bandSize);
+      p.height = size(model.encoding().size, model.scaleName(SIZE), model.scale(SIZE), config, (model.scale(Y) || {}).rangeStep);
     }
 
     applyColorAndOpacity(p, model);
     return p;
   }
 
-  function size(fieldDef: FieldDef, scaleName: string, scale: Scale, config: Config, scaleBandSize: number | BandSize): VgValueRef {
+  function size(fieldDef: FieldDef, scaleName: string, scale: Scale, config: Config, scaleRangeStep: number | RangeStep): VgValueRef {
     let defaultSize: number;
     if (config.tick.bandSize !== undefined) {
       defaultSize = config.tick.bandSize;
     } else {
-      const bandSize = scaleBandSize !== undefined ?
-        scaleBandSize :
-        config.scale.bandSize;
-      if (typeof bandSize !== 'number') {
-        throw new Error('Function does not handle non-numeric bandSize');
+      const rangeStep = scaleRangeStep !== undefined ?
+        scaleRangeStep :
+        config.scale.rangeStep;
+      if (typeof rangeStep !== 'number') {
+        // FIXME consolidate this log
+        throw new Error('Function does not handle non-numeric rangeStep');
       }
-      defaultSize = bandSize / 1.5;
+      defaultSize = rangeStep / 1.5;
     }
 
     return ref.midPoint(SIZE, fieldDef, scaleName, scale, {value: defaultSize});

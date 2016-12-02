@@ -17,9 +17,9 @@ When the top-level `width` property is specified, the width of the single plot i
 
 <span class="vl-example" data-name="bar_size_explicit"></span>
 
-**Note**: If numeric `bandSize` for an ordinal x/y-scale is specified when `width` / `height` is specified, the `bandSize` will be overridden with `"fit"`.
+**Note**: If numeric `rangeStep` for an ordinal x/y-scale is specified when `width` / `height` is specified, the `rangeStep` will be overridden with `"fit"`.
 
-**Warning**: If the cardinality of the x/y-field's domain is too high, the `bandSize` might become less than one pixel and the mark might not appear correctly.
+**Warning**: If the cardinality of the x/y-field's domain is too high, the `rangeStep` might become less than one pixel and the mark might not appear correctly.
 
 <span class="vl-example" data-name="bar_size_explicit_bad"></span>
 
@@ -29,19 +29,19 @@ If the top-level `width` / `height` property is not specified, the width / heigh
 
 - If `x` / `y` axis has a continuous scale (either quantitative or time), the width is drawn directly from the [`config.cell.width`](config.html#cell-config) / [`config.cell.height`](config.html#cell-config) property.
 
-- If the `x` / `y` channel has an ordinal scale with a numeric `bandSize` value (default), the width / height is a product of the scale's [`bandSize`]((scale.html#ordinal)) and the field's cardinality, or number of possible distinct values of the field mapped to the `x` / `y` channel, plus the scale's padding. (_bandWidth * (cardinality + padding)_).
+- If the `x` / `y` channel has an ordinal scale with a numeric `rangeStep` value (default), the width / height is a product of the scale's [`rangeStep`]((scale.html#ordinal)) and the field's cardinality, or number of possible distinct values of the field mapped to the `x` / `y` channel, plus the scale's padding. (_bandWidth * (cardinality + padding)_).
 
 This example shows continuous y-scale and ordinal x-scale:
 
 <span class="vl-example" data-name="bar_size_default"></span>
 
-- If the `x` / `y` channel has an ordinal scale with `bandSize` = `"fit"`, the width / height is drawn directly from the [`config.cell.width`](config.html#cell-config) / [`config.cell.height`](config.html#cell-config) property and the band of the scale will be adjusted to fit to the width.
+- If the `x` / `y` channel has an ordinal scale with `rangeStep` = `"fit"`, the width / height is drawn directly from the [`config.cell.width`](config.html#cell-config) / [`config.cell.height`](config.html#cell-config) property and the band of the scale will be adjusted to fit to the width.
 
 <span class="vl-example" data-name="bar_size_fit"></span>
 
-- If `x` / `y` is not mapped to a field, the width / height is derived from [config.scale.bandSize](#scale-config) except when the mark is `text`.  In that case, the width will be drawn from [config.scale.textBandWidth](#scale-config).
+- If `x` / `y` is not mapped to a field, the width / height is derived from [config.scale.rangeStep](#scale-config) except when the mark is `text`.  In that case, the width will be drawn from [config.scale.textXRangeStep](#scale-config).
 
-<span class="vl-example" data-name="bar_1d_bandsize_config"></span>
+<span class="vl-example" data-name="bar_1d_rangestep_config"></span>
 
 ## Total Width and Height of a Trellis Plots
 

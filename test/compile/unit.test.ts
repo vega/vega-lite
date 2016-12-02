@@ -72,28 +72,28 @@ describe('UnitModel', function() {
         height: 456,
         mark: 'text',
         encoding: {},
-        config: {scale: {textBandWidth: 91}}
+        config: {scale: {textXRangeStep: 91}}
       });
 
       assert.equal(model.width, 123);
       assert.equal(model.height, 456);
     });
 
-    it('should have width = default textBandWidth for text mark without x', () => {
+    it('should have width = default textXRangeStep for text mark without x', () => {
       const model = parseUnitModel({
         mark: 'text',
         encoding: {},
-        config: {scale: {textBandWidth: 91}}
+        config: {scale: {textXRangeStep: 91}}
       });
 
       assert.equal(model.width, 91);
     });
 
-    it('should have width/height = config.scalebandSize for non-text mark without x,y', () => {
+    it('should have width/height = config.scale.rangeStep  for non-text mark without x,y', () => {
       const model = parseUnitModel({
         mark: 'point',
         encoding: {},
-        config: {scale: {bandSize: 23}}
+        config: {scale: {rangeStep: 23}}
       });
 
       assert.equal(model.width, 23);
@@ -118,8 +118,8 @@ describe('UnitModel', function() {
       const model = parseUnitModel({
         mark: 'point',
         encoding: {
-          x: {field: 'a', type: 'ordinal', scale: {bandSize: 'fit'}},
-          y: {field: 'b', type: 'ordinal', scale: {bandSize: 'fit'}}
+          x: {field: 'a', type: 'ordinal', scale: {rangeStep: 'fit'}},
+          y: {field: 'b', type: 'ordinal', scale: {rangeStep: 'fit'}}
         },
         config: {cell: {width: 123, height: 456}}
       });

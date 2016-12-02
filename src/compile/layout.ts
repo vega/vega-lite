@@ -82,13 +82,13 @@ export function unitSizeExpr(model: UnitModel, channel: Channel): string {
   const scale = model.scale(channel);
   if (scale) {
 
-    if (isDiscreteScale(scale.type) && scale.bandSize) {
-      // If the spec has top level size or specified bandSize = fit, it will be undefined here.
+    if (isDiscreteScale(scale.type) && scale.rangeStep) {
+      // If the spec has top level size or specified rangeStep = fit, it will be undefined here.
 
       let layoutOffset = scale.type === ScaleType.BAND ? 2 * scale.padding : 1;
       return '(' + cardinalityExpr(model, channel) +
         ' + ' + layoutOffset +
-        ') * ' + scale.bandSize;
+        ') * ' + scale.rangeStep;
     }
   }
   return (channel === X ? model.width : model.height) + '';

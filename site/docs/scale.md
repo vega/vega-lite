@@ -115,7 +115,7 @@ TODO: Custom Domain for quantitative
 The range of the scale represents the set of output visual values. Vega-Lite automatically determines appropriate range based on the scale's channel and type, but `range` property can be provided to customize range values.
 
 `x` and `y` Scales
-: For continuous `x` and `y` scales (quantitative and time), the range are always `[0, cellWidth]` and  `[0, cellHeight]` (See [config.cell](config.html#cell-config) for customizing cell width and height). For ordinal `x` and `y` scales, the maximum range is a product of the field's cardinality and [`bandSize`](#ordinal).
+: For continuous `x` and `y` scales (quantitative and time), the range are always `[0, cellWidth]` and  `[0, cellHeight]` (See [config.cell](config.html#cell-config) for customizing cell width and height). For ordinal `x` and `y` scales, the maximum range is a product of the field's cardinality and [`rangeStep`](#ordinal).
 <span class="note-line">
 __Not Customizable__: specified `range` will be ignored.
 </span>
@@ -142,8 +142,8 @@ __Default value:__ derived from [scale config](config.html#scale-config)'s `shap
 : A `size` scale has a sequential range. Customized size `range` can be either a two-element array of size values for the interpolation or (for ordinal size scale only) an array of desired output size for each domain value.
 <span class="note-line">
 __Default value:__
-<br/> • for `bar`: derived from [scale config](config.html#scale-config)'s `barSizeRange`. If both scale's `range` and the scale config's `barSizeRange` are unspecified (default), the default size range is a range from [mark config](config.mark.html)'s `thinBarWidth` to the scale's `bandSize`.
-<br/> • for  `point`, `square`, and `circle`: derived from [scale config](config.html#scale-config)'s `pointSizeRange`. If both scale's `range` and the scale config's `pointSizeRange` are unspecified (default), the default size range is a range from 9 to the square of the scale's `bandSize` (_bandSize^2_).
+<br/> • for `bar`: derived from [scale config](config.html#scale-config)'s `barSizeRange`. If both scale's `range` and the scale config's `barSizeRange` are unspecified (default), the default size range is a range from [mark config](config.mark.html)'s `thinBarWidth` to the scale's `rangeStep`.
+<br/> • for  `point`, `square`, and `circle`: derived from [scale config](config.html#scale-config)'s `pointSizeRange`. If both scale's `range` and the scale config's `pointSizeRange` are unspecified (default), the default size range is a range from 9 to the square of the scale's `rangeStep` (_rangeStep^2_).
 <br/> • for  `text`: derived from [scale config](config.html#scale-config)'s `fontSizeRange` (`[8, 40]` by default).
 <br/> • for  `tick`: derived from [scale config](config.html#scale-config)'s `tickSizeRange` (`[1, 20]` by default).
 </span>
@@ -220,21 +220,21 @@ We can also create diverging color graph by specify `range` with multiple elemen
 
 | Property      | Type          | Description    |
 | :------------ |:-------------:| :------------- |
-| bandSize      | Integer &#124; String | Width for each `x` or `y` ordinal band.  This can be an integer value or a string `"fit"`.  For `"fit"`, the band size will be automatically adjusted to fit the scale for the specified width (for x-axis) or height (for y-axis). <span class="note-line">__Default value:__ for `x` ordinal scale of a `text` mark, derived from [scale config](config.html#scale-config)'s `textBandWidth`; otherwise, derived from [scale config](config.html#scale-config)'s `bandSize`.</span> <span class="note-line">__Warning__: <br/> 1) Numeric `bandSize` will be applied only if the top-level `width` (for x-scale) or `height` (for y-scale) is not specified.  If `width` (for x-scale) or `height` (for y-scale) is specified, `bandWidth` will always be `"fit"`. <br/> 2) If the cardinality of the scale domain is too high, the bandSize might become less than one pixel and the mark might not appear correctly. </span>|
+| rangeStep      | Integer &#124; String | Width for each `x` or `y` ordinal band.  This can be an integer value or a string `"fit"`.  For `"fit"`, the range step will be automatically adjusted to fit the scale for the specified width (for x-axis) or height (for y-axis). <span class="note-line">__Default value:__ for `x` ordinal scale of a `text` mark, derived from [scale config](config.html#scale-config)'s `textXRangeStep`; otherwise, derived from [scale config](config.html#scale-config)'s `rangeStep`.</span> <span class="note-line">__Warning__: <br/> 1) Numeric `rangeStep` will be applied only if the top-level `width` (for x-scale) or `height` (for y-scale) is not specified.  If `width` (for x-scale) or `height` (for y-scale) is specified, `bandWidth` will always be `"fit"`. <br/> 2) If the cardinality of the scale domain is too high, the rangeStep might become less than one pixel and the mark might not appear correctly. </span>|
 | scheme        |  String | Color scheme that determines output color of a color scale. <span class="note-line">__Default value:__ [scale config](config.html#scale-config)'s `nominalColorScheme` for nominal field and `sequentialColorScheme` for other types of fields.</span>|
 | padding       | Number        | Behavior depends on scale types.  (This doc is a **WORK-IN-PROGRESS**.  For now, Please refer to [d3-scale documentation](https://github.com/d3/d3-scale) for more information.) <span class="note-line">&nbsp;&nbsp; • __Default value:__ The default from `x` and `y` channels are derived from [scale config](config.html#scale-config)'s `pointPadding` for `point` scale and `bandPadding` for `band` scale.  Other channels has `0` padding by default. </span> <br/> <span class="note-line">For `row` and `column`, `padding` is ignored. Please use `spacing` instead! </span> |
 | spacing       | Integer        | (For `row` and `column` only) A pixel value for padding between cells in the trellis plots. <span class="note-line">&nbsp;&nbsp; •__Default value:__ derived from [scale config](config.html#scale-config)'s `facetSpacing`</span>
 
 
 {:#ex-bandwidth}
-#### Example: Custom Band Width
+#### Example: Custom Range Step
 
 Given a bar chart:
 
 <div class="vl-example" data-name="bar"></div>
 
-We can make the band for each bar smaller by providing `scale`'s `bandSize`.
+We can make the band for each bar smaller by providing `scale`'s `rangeStep`.
 
-<span class="vl-example" data-name="bar_size_bandsize_small"></span>
+<span class="vl-example" data-name="bar_size_rangestep_small"></span>
 
 For more information about adjusting size of a visualization, please see [this page](size.html).

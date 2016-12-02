@@ -1,6 +1,6 @@
 import {X, Y, X2, Y2, SIZE} from '../../channel';
 import {Config} from '../../config';
-import {Scale, ScaleType, BANDSIZE_FIT} from '../../scale';
+import {Scale, ScaleType, RANGESTEP_FIT} from '../../scale';
 import {StackProperties} from '../../stack';
 import {extend} from '../../util';
 import * as log from '../../log';
@@ -111,18 +111,18 @@ export namespace bar {
 
     if (scale) {
       if (scale.type === ScaleType.POINT) {
-        if (scale.bandSize !== BANDSIZE_FIT) {
-          return {value: scale.bandSize - 1};
+        if (scale.rangeStep !== RANGESTEP_FIT) {
+          return {value: scale.rangeStep - 1};
         }
-        log.warn(log.message.BAR_WITH_POINT_SCALE_AND_BANDSIZE_FIT);
+        log.warn(log.message.BAR_WITH_POINT_SCALE_AND_RANGESTEP_FIT);
       } else if (scale.type === ScaleType.BAND) {
         return ref.band(scaleName);
       } else { // non-ordinal scale
         return {value: config.bar.continuousBandSize};
       }
     }
-    if (config.scale.bandSize && config.scale.bandSize !== BANDSIZE_FIT) {
-      return {value: config.scale.bandSize - 1};
+    if (config.scale.rangeStep && config.scale.rangeStep !== RANGESTEP_FIT) {
+      return {value: config.scale.rangeStep - 1};
     }
     // TODO: this should depends on cell's width / height?
     return {value: 20};

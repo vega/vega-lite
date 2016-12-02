@@ -63,7 +63,7 @@ describe('compile/layout', () => {
       const model = parseUnitModel({
         mark: 'point',
         encoding: {
-          x: {field: 'a', type: 'ordinal', scale: {bandSize: 'fit'}}
+          x: {field: 'a', type: 'ordinal', scale: {rangeStep: 'fit'}}
         }
       });
 
@@ -76,7 +76,7 @@ describe('compile/layout', () => {
       const model = parseUnitModel({
         mark: 'point',
         encoding: {
-          y: {field: 'a', type: 'ordinal', scale: {bandSize: 'fit'}}
+          y: {field: 'a', type: 'ordinal', scale: {rangeStep: 'fit'}}
         }
       });
 
@@ -97,19 +97,19 @@ describe('compile/layout', () => {
       assert.equal(sizeExpr, '205');
     });
 
-    it('should return static cell size for ordinal scale with top-level width even if there is numeric bandSize', () => {
+    it('should return static cell size for ordinal scale with top-level width even if there is numeric rangeStep', () => {
       log.runLocalLogger((localLogger) => {
         const model = parseUnitModel({
           width: 205,
           mark: 'point',
           encoding: {
-            x: {field: 'a', type: 'ordinal', scale: {bandSize: 21}}
+            x: {field: 'a', type: 'ordinal', scale: {rangeStep: 21}}
           }
         });
 
         const sizeExpr = unitSizeExpr(model, X);
         assert.equal(sizeExpr, '205');
-        assert.equal(localLogger.warns[0], log.message.bandSizeOverridden(X));
+        assert.equal(localLogger.warns[0], log.message.rangeStepOverridden(X));
       });
     });
 
@@ -138,21 +138,21 @@ describe('compile/layout', () => {
       assert.equal(sizeExpr, '200');
     });
 
-    it('should return default bandSize if axis is not mapped', () => {
+    it('should return default rangeStep if axis is not mapped', () => {
       const model = parseUnitModel({
         mark: 'point',
         encoding: {},
-        config: {scale: {bandSize: 17}}
+        config: {scale: {rangeStep: 17}}
       });
       const sizeExpr = unitSizeExpr(model, X);
       assert.equal(sizeExpr, '17');
     });
 
-    it('should return textBandWidth if axis is not mapped for X of text mark', () => {
+    it('should return textXRangeStep if axis is not mapped for X of text mark', () => {
       const model = parseUnitModel({
         mark: 'text',
         encoding: {},
-        config: {scale: {textBandWidth: 91}}
+        config: {scale: {textXRangeStep: 91}}
       });
       const sizeExpr = unitSizeExpr(model, X);
       assert.equal(sizeExpr, '91');

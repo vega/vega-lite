@@ -123,9 +123,9 @@ Mapping a quantitative field to either `x` or `y` of the `bar` mark produces a s
 
 ### Bar Chart
 
-If we map a different ordinal field to the `y` channel, we can produce a horizontal bar chart. Specifying `scale.bandSize` of an ordinal field will adjust the [ordinal scale's band size](https://github.com/mbostock/d3/wiki/Ordinal-Scales#ordinal_rangeBands). By default, there will be a 1 pixel offset between bars. (See [an example that customizes size of the bars](encoding.html#ex-bar-size).)
+If we map a different ordinal field to the `y` channel, we can produce a horizontal bar chart. Specifying `scale.rangeStep` of an ordinal field will adjust the [ordinal scale's range step](https://github.com/mbostock/d3/wiki/Ordinal-Scales#ordinal_rangeBands). By default, there will be a 1 pixel offset between bars. (See [an example that customizes size of the bars](encoding.html#ex-bar-size).)
 
-<!-- TODO: Need to update docs our and Vega's scale.bandSize property and link there instead -->
+<!-- TODO: Need to update docs our and Vega's scale.rangeStep property and link there instead -->
 
 <span class="vl-example" data-name="bar_aggregate"></span>
 
