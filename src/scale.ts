@@ -48,12 +48,12 @@ export const SCALE_TYPES: ScaleType[] = [
 export const CONTINUOUS_SCALE_TYPES: ScaleType[] = ['linear', 'log', 'pow', 'sqrt', 'time', 'utc'];
 const CONTINUOUS_SCALE_TYPE_INDEX = toSet(CONTINUOUS_SCALE_TYPES);
 
-export const DISCRETE_SCALE_TYPES: ScaleType[] = ['ordinal', 'point', 'band'];
+export const DISCRETE_SCALE_TYPES: ScaleType[] = ['ordinal', 'point', 'band', 'index'];
 const DISCRETE_SCALE_TYPE_INDEX = toSet(DISCRETE_SCALE_TYPES);
 
 export const TIME_SCALE_TYPES: ScaleType[] = ['time', 'utc'];
 
-export function isDiscreteScale(type: ScaleType): type is 'ordinal' | 'point' | 'band' {
+export function isDiscreteScale(type: ScaleType): type is 'ordinal' | 'point' | 'band' | 'index' {
   return type in DISCRETE_SCALE_TYPE_INDEX;
 }
 export function isContinuousScale(type: ScaleType): type is 'linear' | 'log' | 'pow' | 'sqrt' |  'time' | 'utc' {
