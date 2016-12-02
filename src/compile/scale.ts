@@ -469,6 +469,7 @@ export function domain(scale: Scale, model: Model, channel:Channel): any {
   } else if (fieldDef.bin) { // bin
     if (isDiscreteScale(scale.type)) {
       // ordinal bin scale takes domain from bin_range, ordered by bin_start
+      // This is useful for both axis-based scale (x, y, column, and row) and legend-based scale (other channels).
       return {
         data: model.dataTable(),
         field: model.field(channel, { binSuffix: 'range' }),
@@ -477,21 +478,23 @@ export function domain(scale: Scale, model: Model, channel:Channel): any {
           op: 'min' // min or max doesn't matter since same _range would have the same _start
         }
       };
-    } else if (channel === COLOR) {
-      // Currently, binned on color uses linear scale and thus use _start point
-      return {
-        data: model.dataTable(),
-        field: model.field(channel, { binSuffix: 'start' })
-      };
-    } else {
-      // other linear bin scale merges both bin_start and bin_end for non-ordinal scale
-      return {
-        data: model.dataTable(),
-        fields: [
-          model.field(channel, { binSuffix: 'start' }),
-          model.field(channel, { binSuffix: 'end' })
-        ]
-      };
+    } else { // continuous scales
+      if (channel === X || channel === Y) {
+        // X/Y position have to include start and end for non-ordinal scale
+        return {
+          data: model.dataTable(),
+          fields: [
+            model.field(channel, { binSuffix: 'start' }),
+            model.field(channel, { binSuffix: 'end' })
+          ]
+        };
+      } else {
+        // TODO: use bin_mid
+        return {
+          data: model.dataTable(),
+          field: model.field(channel, { binSuffix: 'start' })
+        };
+      }
     }
   } else if (sort) { // have sort -- only for ordinal
     return {
