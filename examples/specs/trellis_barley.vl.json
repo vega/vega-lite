@@ -14,7 +14,7 @@
     "y": {
       "field": "variety", "type": "ordinal",
       "sort": {"field": "yield","op": "median", "order": "descending"},
-      "scale": {"bandSize": 12}
+      "scale": {"rangeStep": 12}
     },
     "color": {"field": "year", "type": "nominal"}
   }

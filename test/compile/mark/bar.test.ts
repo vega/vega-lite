@@ -23,9 +23,9 @@ describe('Mark: Bar', function() {
     });
     const props = bar.properties(model);
 
-    it('should draw bar, with y from zero to field value and x with center position and width = bandSize - 1', function() {
+    it('should draw bar, with y from zero to field value and x with center position and width = rangeStep - 1', function() {
       assert.deepEqual(props.xc, {scale: 'x', field: 'Origin'});
-      assert.deepEqual(props.width, {value: defaultScaleConfig.bandSize - 1});
+      assert.deepEqual(props.width, {value: defaultScaleConfig.rangeStep - 1});
       assert.deepEqual(props.y, {scale: 'y', field: 'mean_Acceleration'});
       assert.deepEqual(props.y2, {scale: 'y', value: 0});
       assert.isUndefined(props.height);
@@ -43,9 +43,9 @@ describe('Mark: Bar', function() {
     });
     const props = bar.properties(model);
 
-    it('should draw bar from zero to field value and y with center position  and height = bandSize - 1', function() {
+    it('should draw bar from zero to field value and y with center position  and height = rangeStep - 1', function() {
       assert.deepEqual(props.yc, {scale: 'y', field: 'Origin'});
-      assert.deepEqual(props.height, {value: defaultScaleConfig.bandSize - 1});
+      assert.deepEqual(props.height, {value: defaultScaleConfig.rangeStep - 1});
       assert.deepEqual(props.x, {scale: 'x', field: 'mean_Acceleration'});
       assert.deepEqual(props.x2, {scale: 'x', value: 0});
       assert.isUndefined(props.width);
@@ -211,7 +211,7 @@ describe('Mark: Bar', function() {
     });
     const props = bar.properties(model);
 
-    it('should use x and with with band size true and 0.5 offset', () => {
+    it('should use x and with band true', () => {
       assert.deepEqual(props.x, {
         scale: 'x',
         field: 'Origin',
@@ -236,7 +236,7 @@ describe('Mark: Bar', function() {
     });
     const props = bar.properties(model);
 
-    it('should use x and with with band size true and 0.5 offset', () => {
+    it('should use y with band true', () => {
       assert.deepEqual(props.y, {
         scale: 'y',
         field: 'Origin',

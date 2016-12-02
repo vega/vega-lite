@@ -11,7 +11,7 @@
   "encoding": {
     "x": {
       "field": "a", "type": "ordinal",
-      "scale": {"bandSize": 11}
+      "scale": {"rangeStep": 11}
     },
     "y": {"field": "b", "type": "quantitative"}
   }

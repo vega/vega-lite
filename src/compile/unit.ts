@@ -179,32 +179,32 @@ export class UnitModel extends Model {
     if (width !== undefined) {
       this._width = width;
     } else if (scale[X]) {
-      if (!isDiscreteScale(scale[X].type) || !scale[X].bandSize) {
+      if (!isDiscreteScale(scale[X].type) || !scale[X].rangeStep) {
         this._width = cellConfig.width;
       } // else: Do nothing, use dynamic width.
     } else { // No scale X
       if (mark === TEXTMARK) {
-        // for text table without x/y scale we need wider bandSize
-        this._width = scaleConfig.textBandWidth;
+        // for text table without x/y scale we need wider rangeStep
+        this._width = scaleConfig.textXRangeStep;
       } else {
-        if (typeof scaleConfig.bandSize === 'string') {
-          throw new Error('_initSize does not handle string bandSizes');
+        if (typeof scaleConfig.rangeStep === 'string') {
+          throw new Error('_initSize does not handle string rangeSteps');
         }
-        this._width = scaleConfig.bandSize;
+        this._width = scaleConfig.rangeStep;
       }
     }
 
     if (height !== undefined) {
       this._height = height;
     } else if (scale[Y]) {
-      if (!isDiscreteScale(scale[Y].type) || !scale[Y].bandSize) {
+      if (!isDiscreteScale(scale[Y].type) || !scale[Y].rangeStep) {
         this._height = cellConfig.height;
       } // else: Do nothing, use dynamic height .
     } else {
-      if (typeof scaleConfig.bandSize === 'string') {
-        throw new Error('_initSize does not handle string bandSizes');
+      if (typeof scaleConfig.rangeStep === 'string') {
+        throw new Error('_initSize does not handle string rangeSteps');
       }
-      this._height = scaleConfig.bandSize;
+      this._height = scaleConfig.rangeStep;
     }
   }
 

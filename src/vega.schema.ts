@@ -54,7 +54,7 @@ export type VgScale = {
   rangeMax?: any,
   scheme?: string,
 
-  bandSize?: number,
+  rangeStep?: number,
   clamp?: boolean,
   exponent?: number,
   nice?: boolean | NiceTime,

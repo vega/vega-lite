@@ -2417,20 +2417,6 @@
         },
         "Scale": {
             "properties": {
-                "bandSize": {
-                    "anyOf": [
-                        {
-                            "enum": [
-                                "fit"
-                            ],
-                            "type": "string"
-                        },
-                        {
-                            "type": "number"
-                        }
-                    ],
-                    "minimum": 0
-                },
                 "clamp": {
                     "description": "If true, values that exceed the data domain are clamped to either the minimum or maximum range value",
                     "type": "boolean"
@@ -2497,6 +2483,20 @@
                     ],
                     "description": "The range of the scale, representing the set of visual values. For numeric values, the range can take the form of a two-element array with minimum and maximum values. For ordinal or quantized data, the range may by an array of desired output values, which are mapped to elements in the specified domain. For ordinal scales only, the range can be defined using a DataRef: the range values are then drawn dynamically from a backing data set."
                 },
+                "rangeStep": {
+                    "anyOf": [
+                        {
+                            "enum": [
+                                "fit"
+                            ],
+                            "type": "string"
+                        },
+                        {
+                            "type": "number"
+                        }
+                    ],
+                    "minimum": 0
+                },
                 "round": {
                     "description": "If true, rounds numeric output values to integers. This can be helpful for snapping to the pixel grid.",
                     "type": "boolean"
@@ -2527,21 +2527,6 @@
                     "minimum": 0,
                     "type": "number"
                 },
-                "bandSize": {
-                    "anyOf": [
-                        {
-                            "enum": [
-                                "fit"
-                            ],
-                            "type": "string"
-                        },
-                        {
-                            "type": "number"
-                        }
-                    ],
-                    "description": "Default band size for (1) `y` ordinal scale,\nand (2) `x` ordinal scale when the mark is not `text`.",
-                    "minimum": 0
-                },
                 "clamp": {
                     "description": "If true, values that exceed the data domain are clamped to either the minimum or maximum range value",
                     "type": "boolean"
@@ -2557,11 +2542,26 @@
                     "minimum": 0,
                     "type": "number"
                 },
+                "rangeStep": {
+                    "anyOf": [
+                        {
+                            "enum": [
+                                "fit"
+                            ],
+                            "type": "string"
+                        },
+                        {
+                            "type": "number"
+                        }
+                    ],
+                    "description": "Default band size for (1) `y` ordinal scale,\nand (2) `x` ordinal scale when the mark is not `text`.",
+                    "minimum": 0
+                },
                 "round": {
                     "description": "If true, rounds numeric output values to integers.\nThis can be helpful for snapping to the pixel grid.\n(Only available for `x`, `y`, `size`, `row`, and `column` scales.)",
                     "type": "boolean"
                 },
-                "textBandWidth": {
+                "textXRangeStep": {
                     "description": "Default band width for `x` ordinal scale when is mark is `text`.",
                     "minimum": 0,
                     "type": "number"

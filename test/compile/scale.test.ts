@@ -2,13 +2,13 @@
 
 import {assert} from 'chai';
 
-import {bandSize, type, domain, parseScaleComponent, defaultProperty} from '../../src/compile/scale';
+import {rangeStep, type, domain, parseScaleComponent, defaultProperty} from '../../src/compile/scale';
 import {SOURCE, SUMMARY} from '../../src/data';
 import {parseUnitModel} from '../util';
 
 import * as log from '../../src/log';
 import {X, Y, SHAPE, DETAIL, ROW, COLUMN, Channel} from '../../src/channel';
-import {BANDSIZE_FIT, ScaleType, defaultScaleConfig} from '../../src/scale';
+import {RANGESTEP_FIT, ScaleType, defaultScaleConfig} from '../../src/scale';
 import {Mark, POINT, RECT, BAR, TEXT} from '../../src/mark';
 import * as mark from '../../src/mark';
 import {ExtendedUnitSpec} from '../../src/spec';
@@ -138,13 +138,13 @@ describe('Scale', function() {
       });
     });
 
-    it('should return band scale for X,Y when mark is bar and bandSize is undefined (fit)', () => {
+    it('should return band scale for X,Y when mark is bar and rangeStep is undefined (fit)', () => {
       [X, Y].forEach((channel) => {
         assert.equal(type(undefined, {field: 'a', type: ORDINAL}, channel, BAR, false), ScaleType.BAND);
       });
     });
 
-    it('should return point scale for X,Y when mark is bar and bandSize is defined', () => {
+    it('should return point scale for X,Y when mark is bar and rangeStep is defined', () => {
       [X, Y].forEach((channel) => {
         assert.equal(type(undefined, {field: 'a', type: ORDINAL}, channel, BAR, true), ScaleType.POINT);
       });
@@ -206,37 +206,37 @@ describe('Scale', function() {
     });
   });
 
-  describe('bandSize()', () => {
+  describe('rangeStep()', () => {
 
-    it('should return undefined if bandSize spec is fit', () => {
-      const size = bandSize(BANDSIZE_FIT, 180, POINT, X, defaultScaleConfig);
+    it('should return undefined if rangeStep spec is fit', () => {
+      const size = rangeStep(RANGESTEP_FIT, 180, POINT, X, defaultScaleConfig);
       assert.deepEqual(size, undefined);
     });
 
     it('should return undefined if top-level size is provided for ordinal scale', () => {
-      const size = bandSize(undefined, 180, POINT, X, defaultScaleConfig);
+      const size = rangeStep(undefined, 180, POINT, X, defaultScaleConfig);
       assert.deepEqual(size, undefined);
     });
 
-    it('should return undefined if top-level size is provided for ordinal scale and throw warning if bandSize is specified', log.wrap((logger) => {
-      const size = bandSize(21, 180, POINT, X, defaultScaleConfig);
+    it('should return undefined if top-level size is provided for ordinal scale and throw warning if rangeStep is specified', log.wrap((logger) => {
+      const size = rangeStep(21, 180, POINT, X, defaultScaleConfig);
       assert.deepEqual(size, undefined);
-      assert.equal(logger.warns[0], log.message.bandSizeOverridden(X));
+      assert.equal(logger.warns[0], log.message.rangeStepOverridden(X));
     }));
 
-    it('should return provided bandSize for ordinal scale', () => {
-      const size = bandSize(21, undefined, POINT, X, defaultScaleConfig);
+    it('should return provided rangeStep for ordinal scale', () => {
+      const size = rangeStep(21, undefined, POINT, X, defaultScaleConfig);
       assert.deepEqual(size, 21);
     });
 
-    it('should return provided textBandWidth for x-ordinal scale', () => {
-      const size = bandSize(undefined, undefined, TEXT, X, defaultScaleConfig);
-      assert.deepEqual(size, defaultScaleConfig.textBandWidth);
+    it('should return provided textXRangeStep for x-ordinal scale', () => {
+      const size = rangeStep(undefined, undefined, TEXT, X, defaultScaleConfig);
+      assert.deepEqual(size, defaultScaleConfig.textXRangeStep);
     });
 
-    it('should return provided bandSize for other ordinal scale', () => {
-      const size = bandSize(undefined, undefined, POINT, X, defaultScaleConfig);
-      assert.deepEqual(size, defaultScaleConfig.bandSize);
+    it('should return provided rangeStep for other ordinal scale', () => {
+      const size = rangeStep(undefined, undefined, POINT, X, defaultScaleConfig);
+      assert.deepEqual(size, defaultScaleConfig.rangeStep);
     });
   });
 
@@ -489,7 +489,7 @@ describe('Scale', function() {
 
   describe('parseScaleComponent', () => {
     describe('x ordinal point', () => {
-      it('should create a main x point scale with bandSize and no range', () => {
+      it('should create a main x point scale with rangeStep and no range', () => {
         const model = parseUnitModel({
           mark: "point",
           encoding: {
@@ -498,7 +498,7 @@ describe('Scale', function() {
         });
         const scales = parseScaleComponent(model)['x'];
         assert.equal(scales.main.type, 'point');
-        assert.equal(scales.main.bandSize, 21);
+        assert.equal(scales.main.rangeStep, 21);
         assert.equal(scales.main.range, undefined);
       });
     });
@@ -522,7 +522,7 @@ describe('Scale', function() {
           sort: true
         });
         assert.deepEqual(scales.main.scheme, 'category10');
-        assert.deepEqual(scales.main.bandSize, undefined);
+        assert.deepEqual(scales.main.rangeStep, undefined);
       });
     });
 
@@ -708,7 +708,7 @@ describe('Scale', function() {
             "mark": "bar",
             "encoding": {
               "y": {"field": "Acceleration", "type": "quantitative"},
-              "x": {"field": "Cylinders", "type": "ordinal", "scale": {"bandSize": 11}},
+              "x": {"field": "Cylinders", "type": "ordinal", "scale": {"rangeStep": 11}},
               // not truly ordinal, just say ordinal for the sake of testing
               "size": {"field": "Origin", "type": "ordinal"}
             },
@@ -729,7 +729,7 @@ describe('Scale', function() {
             "mark": "bar",
             "encoding": {
               "y": {"field": "Acceleration", "type": "quantitative"},
-              "x": {"field": "Cylinders", "type": "ordinal", "scale": {"bandSize": 11}},
+              "x": {"field": "Cylinders", "type": "ordinal", "scale": {"rangeStep": 11}},
               // not truly ordinal, just say ordinal for the sake of testing
               "size": {"field": "Origin", "type": "ordinal"}
             }
@@ -765,7 +765,7 @@ describe('Scale', function() {
             "mark": "tick",
             "encoding": {
               "y": {"field": "Acceleration", "type": "quantitative"},
-              "x": {"field": "Cylinders", "type": "ordinal", "scale": {"bandSize": 11}},
+              "x": {"field": "Cylinders", "type": "ordinal", "scale": {"rangeStep": 11}},
               // not truly ordinal, just say ordinal for the sake of testing
               "size": {"field": "Origin", "type": "ordinal"}
             }
@@ -835,8 +835,8 @@ describe('Scale', function() {
             "data": {"url": "data/cars.json"},
             "mark": "point",
             "encoding": {
-              "y": {"field": "Origin", "type": "ordinal", "scale": {"bandSize": 11}},
-              "x": {"field": "Cylinders", "type": "ordinal", "scale": {"bandSize": 13}},
+              "y": {"field": "Origin", "type": "ordinal", "scale": {"rangeStep": 11}},
+              "x": {"field": "Cylinders", "type": "ordinal", "scale": {"rangeStep": 13}},
               "size": {"aggregate": "mean", "field": "Horsepower", "type": "quantitative"}
             }
           });
@@ -850,8 +850,8 @@ describe('Scale', function() {
             "data": {"url": "data/cars.json"},
             "mark": "point",
             "encoding": {
-              "y": {"field": "Origin", "type": "ordinal", "scale": {"bandSize": 11}},
-              "x": {"field": "Cylinders", "type": "ordinal", "scale": {"bandSize": 13}},
+              "y": {"field": "Origin", "type": "ordinal", "scale": {"rangeStep": 11}},
+              "x": {"field": "Cylinders", "type": "ordinal", "scale": {"rangeStep": 13}},
               // not truly ordinal, just say ordinal for the sake of testing
               "size": {"field": "Origin", "type": "ordinal"}
             }
@@ -866,8 +866,8 @@ describe('Scale', function() {
             "data": {"url": "data/cars.json"},
             "mark": "point",
             "encoding": {
-              "y": {"field": "Origin", "type": "ordinal", "scale": {"bandSize": 11}},
-              "x": {"field": "Cylinders", "type": "ordinal", "scale": {"bandSize": 13}},
+              "y": {"field": "Origin", "type": "ordinal", "scale": {"rangeStep": 11}},
+              "x": {"field": "Cylinders", "type": "ordinal", "scale": {"rangeStep": 13}},
               "size": {"field": "Acceleration", "type": "quantitative", "scale": {"zero": false}}
             }
           });
@@ -876,14 +876,14 @@ describe('Scale', function() {
           // TODO: this actually should throw warning too.
         });
 
-        it('should return [0, (xBandSize-2)^2] if x is discrete and y is continuous and size is quantitative (thus use zero=true, by default)', () => {
+        it('should return [0, (xRangeStep-2)^2] if x is discrete and y is continuous and size is quantitative (thus use zero=true, by default)', () => {
           // TODO: replace this test with something more local
           const model = parseUnitModel({
             "data": {"url": "data/cars.json"},
             "mark": "point",
             "encoding": {
               "y": {"field": "Acceleration", "type": "quantitative"},
-              "x": {"field": "Cylinders", "type": "ordinal", "scale": {"bandSize": 11}},
+              "x": {"field": "Cylinders", "type": "ordinal", "scale": {"rangeStep": 11}},
               "size": {"aggregate": "mean", "field": "Horsepower", "type": "quantitative"}
             }
           });
@@ -891,14 +891,14 @@ describe('Scale', function() {
           assert.deepEqual(scales.main.range, [0, 81]);
         });
 
-        it('should return [9, (xBandSize-2)^2] if x is discrete and y is continuous and size is quantitative (thus use zero=false, by default)', () => {
+        it('should return [9, (xRangeStep-2)^2] if x is discrete and y is continuous and size is quantitative (thus use zero=false, by default)', () => {
           // TODO: replace this test with something more local
           const model = parseUnitModel({
             "data": {"url": "data/cars.json"},
             "mark": "point",
             "encoding": {
               "y": {"field": "Acceleration", "type": "quantitative"},
-              "x": {"field": "Cylinders", "type": "ordinal", "scale": {"bandSize": 11}},
+              "x": {"field": "Cylinders", "type": "ordinal", "scale": {"rangeStep": 11}},
               // not truly ordinal, just say ordinal for the sake of testing
               "size": {"field": "Origin", "type": "ordinal"}
             }
@@ -907,14 +907,14 @@ describe('Scale', function() {
           assert.deepEqual(scales.main.range, [9, 81]);
         });
 
-        it('should return [0, (yBandSize-2)^2] if y is discrete and x is continuous and size is quantitative (thus use zero=true, by default)', () => {
+        it('should return [0, (yRangeStep-2)^2] if y is discrete and x is continuous and size is quantitative (thus use zero=true, by default)', () => {
           // TODO: replace this test with something more local
           const model = parseUnitModel({
             "data": {"url": "data/cars.json"},
             "mark": "point",
             "encoding": {
               "x": {"field": "Acceleration", "type": "quantitative"},
-              "y": {"field": "Cylinders", "type": "ordinal", "scale": {"bandSize": 11}},
+              "y": {"field": "Cylinders", "type": "ordinal", "scale": {"rangeStep": 11}},
               "size": {"aggregate": "mean", "field": "Horsepower", "type": "quantitative"}
             }
           });
@@ -922,7 +922,7 @@ describe('Scale', function() {
           assert.deepEqual(scales.main.range, [0, 81]);
         });
 
-        it('should return [0, (scaleConfig.BandSize-2)^2] if y is discrete and x is continuous and size is quantitative (thus use zero=true, by default)', () => {
+        it('should return [0, (scaleConfig.rangeStep-2)^2] if y is discrete and x is continuous and size is quantitative (thus use zero=true, by default)', () => {
           // TODO: replace this test with something more local
           const model = parseUnitModel({
             "data": {"url": "data/cars.json"},
@@ -932,7 +932,7 @@ describe('Scale', function() {
               "y": {"field": "Acceleration", "type": "quantitative"},
               "size": {"aggregate": "mean", "field": "Horsepower", "type": "quantitative"}
             },
-            "config": {"scale": {"bandSize": 11}}
+            "config": {"scale": {"rangeStep": 11}}
           });
           const scales = parseScaleComponent(model)['size'];
           assert.deepEqual(scales.main.range, [0, 81]);

@@ -70,8 +70,8 @@ export namespace NiceTime {
 export type NiceTime = typeof NiceTime.SECOND | typeof NiceTime.MINUTE | typeof NiceTime.HOUR
   | typeof NiceTime.DAY | typeof NiceTime.WEEK | typeof NiceTime.MONTH | typeof NiceTime.YEAR;
 
-export const BANDSIZE_FIT: 'fit' = 'fit';
-export type BandSize = typeof BANDSIZE_FIT;
+export const RANGESTEP_FIT: 'fit' = 'fit';
+export type RangeStep = typeof RANGESTEP_FIT;
 
 
 export interface ScaleConfig {
@@ -87,16 +87,16 @@ export interface ScaleConfig {
    */
   clamp?: boolean;
   /**
-   *  Default band width for `x` ordinal scale when is mark is `text`.
+   *  Default range step for `x` ordinal scale when is mark is `text`.
    *  @minimum 0
    */
-  textBandWidth?: number;
+  textXRangeStep?: number; // FIXME: consider if we will rename this "tableColumnWidth"
   /**
-   * Default band size for (1) `y` ordinal scale,
+   * Default range step for (1) `y` ordinal scale,
    * and (2) `x` ordinal scale when the mark is not `text`.
    * @minimum 0
    */
-  bandSize?: number | BandSize;
+  rangeStep?: number | RangeStep;
 
   /**
    * Default padding for `x` and `y` band-ordinal scales.
@@ -130,8 +130,8 @@ export interface ScaleConfig {
 
 export const defaultScaleConfig = {
   round: true,
-  textBandWidth: 90, // FIXME: consider if we will rename this "tableColumnWidth"
-  bandSize: 21,
+  textXRangeStep: 90,
+  rangeStep: 21,
   pointPadding: 1,
   bandPadding: 0.1,
   facetSpacing: 16,
@@ -157,7 +157,7 @@ export interface Scale {
   /**
    * @minimum 0
    */
-  bandSize?: number | BandSize;
+  rangeStep?: number | RangeStep;
 
   /**
    * Color scheme that determines output color of a color scale.
@@ -165,7 +165,7 @@ export interface Scale {
   scheme?: string;
 
   /**
-   * Applies spacing among ordinal elements in the scale range. The actual effect depends on how the scale is configured. If the __points__ parameter is `true`, the padding value is interpreted as a multiple of the spacing between points. A reasonable value is 1.0, such that the first and last point will be offset from the minimum and maximum value by half the distance between points. Otherwise, padding is typically in the range [0, 1] and corresponds to the fraction of space in the range interval to allocate to padding. A value of 0.5 means that the range band width will be equal to the padding width. For more, see the [D3 ordinal scale documentation](https://github.com/mbostock/d3/wiki/Ordinal-Scales).
+   * Applies spacing among ordinal elements in the scale range. The actual effect depends on how the scale is configured. If the __points__ parameter is `true`, the padding value is interpreted as a multiple of the spacing between points. A reasonable value is 1.0, such that the first and last point will be offset from the minimum and maximum value by half the distance between points. Otherwise, padding is typically in the range [0, 1] and corresponds to the fraction of space in the range interval to allocate to padding. A value of 0.5 means that the band size will be equal to the padding width. For more, see the [D3 ordinal scale documentation](https://github.com/mbostock/d3/wiki/Ordinal-Scales).
    */
   padding?: number;
 
@@ -198,7 +198,7 @@ export interface Scale {
 }
 
 export const SCALE_PROPERTIES = [
-  'type', 'domain', 'range', 'round', 'bandSize', 'scheme', 'padding', 'clamp', 'nice',
+  'type', 'domain', 'range', 'round', 'rangeStep', 'scheme', 'padding', 'clamp', 'nice',
   'exponent', 'zero',
   // TODO: add interpolate here
   // FIXME: determine if 'useRawDomain' should really be included here
@@ -214,7 +214,7 @@ export function scaleTypeSupportProperty(scaleType: ScaleType, propName: string)
       return scaleType !== 'sequential'; // sequential only support scheme
     case 'round':
       return isContinuousScale(scaleType) || scaleType === 'band' || scaleType === 'point';
-    case 'bandSize':
+    case 'rangeStep':
     case 'padding':
       return contains(['point', 'band'], scaleType);
     case 'scheme':

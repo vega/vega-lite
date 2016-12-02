@@ -63,8 +63,8 @@ Each plot in either a single plot or a trellis plot is called a _cell_. Cell con
 
 | Property      | Type          | Description    |
 | :------------ |:-------------:| :------------- |
-| width         | Integer       | The default width of the single plot or each plot in a trellis plot when the visualization has a continuous (non-ordinal) x-scale or ordinal x-scale with `bandSize` = `"fit"`. <span class="note-line">__Default value:__ `200`</span> |
-| height        | Integer       | The default height of the single plot or each plot in a trellis plot when the visualization has a continuous (non-ordinal) y-scale with `bandSize` = `"fit"`. <span class="note-line">__Default value:__ `200`</span> |
+| width         | Integer       | The default width of the single plot or each plot in a trellis plot when the visualization has a continuous (non-ordinal) x-scale or ordinal x-scale with `rangeStep` = `"fit"`. <span class="note-line">__Default value:__ `200`</span> |
+| height        | Integer       | The default height of the single plot or each plot in a trellis plot when the visualization has a continuous (non-ordinal) y-scale with `rangeStep` = `"fit"`. <span class="note-line">__Default value:__ `200`</span> |
 
 **For more information about visualization's size, please see [Customizing Size](size.html) page.**
 
@@ -202,7 +202,7 @@ vg.embed('#horizontal_line', {
 | Property      | Type          | Description    |
 | :------------ |:-------------:| :------------- |
 | barBinSpacing | Number        | Spacing between bars of binned quantitative fields.  <span class="note-line">__Default value:__  `1`. </span> |
-| barSize       | Number        | The size of the bars (width for vertical bar charts and height for horizontal bar chart). <span class="note-line">__Default value:__  `bandSize-1` if  the bar's x or y axis is an ordinal scale. (This provides 1 pixel offset between bars.) and `2` for if both x and y scales have linear scales. </span>  |
+| barSize       | Number        | The size of the bars (width for vertical bar charts and height for horizontal bar chart). <span class="note-line">__Default value:__  `rangeStep-1` if  the bar's x or y axis is an ordinal scale. (This provides 1 pixel offset between bars.) and `2` for if both x and y scales have linear scales. </span>  |
 
 #### Example: Histogram without Spacing between bars
 
@@ -228,7 +228,7 @@ vg.embed('#horizontal_line', {
 
 | Property            | Type                | Description  |
 | :------------------ |:-------------------:| :------------|
-| tickSize           | Number        | The size of the ticks  (height of the ticks for horizontal dot plots and strip plots and width of the ticks for vertical dot plots and strip plots). <span class="note-line">__Default value:__ `2/3*bandSize` (This will provide offset between band equals to the width of the tick.) </span>|
+| tickSize           | Number        | The size of the ticks  (height of the ticks for horizontal dot plots and strip plots and width of the ticks for vertical dot plots and strip plots). <span class="note-line">__Default value:__ `2/3*rangeStep` (This will provide offset between band equals to the width of the tick.) </span>|
 | tickThickness           | Number              | Thickness of the tick mark. <span class="note-line">__Default value:__ `1` </span> |
 
 #### Example Customizing Tick's Size and Thickness

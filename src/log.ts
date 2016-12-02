@@ -120,7 +120,7 @@ export namespace message {
   }
 
   // Mark
-  export const BAR_WITH_POINT_SCALE_AND_BANDSIZE_FIT = 'Bar mark should not be used with point scale when bandSize is fit. Please use band scale instead.';
+  export const BAR_WITH_POINT_SCALE_AND_RANGESTEP_FIT = 'Bar mark should not be used with point scale when rangeStep is fit. Please use band scale instead.';
 
   export function unclearOrientContinuous(mark: Mark) {
     return 'Cannot clearly determine orientation for ' + mark + ' since both x and y channel encode continous fields. In this case, we use vertical by default';
@@ -140,11 +140,11 @@ export namespace message {
   export const CANNOT_USE_SCHEME_WITH_NON_COLOR = 'Cannot use scheme with non-color channel.';
 
   export const CANNOT_USE_RANGE_WITH_POSITION =
-    'Cannot use custom range with x or y channel.  Please use width, height, padding, or bandSize instead.';
+    'Cannot use custom range with x or y channel.  Please customize width, height, padding, or rangeStep instead.';
 
     export const CANNOT_USE_PADDING_WITH_FACET = 'Cannot use padding with facet\'s scale.  Please use spacing instead.';
 
-  export function cannotUseRangeOrBandSizePropertyWithFacet(propName: string) {
+  export function cannotUseRangePropertyWithFacet(propName: string) {
     return `Cannot use custom ${propName} with row or column channel. Please use width, height, or spacing instead.`;
   }
 
@@ -152,8 +152,8 @@ export namespace message {
     return `Custom scale ranged not allowed for channel ${channel}`;
   }
 
-  export function bandSizeOverridden(channel: Channel) {
-    return `bandSize for ${channel} overridden as top-level ${
+  export function rangeStepOverridden(channel: Channel) {
+    return `rangeStep for ${channel} overridden as top-level ${
       channel === X ? 'width' : 'height'} is provided.`;
   }
 

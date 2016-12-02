@@ -6,7 +6,7 @@
     "x": {
       "field": "year",
       "type": "ordinal",
-      "scale": {"bandSize": 50, "padding": 0.5}
+      "scale": {"rangeStep": 50, "padding": 0.5}
     },
     "y": {
       "aggregate": "median",

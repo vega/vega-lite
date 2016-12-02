@@ -17,7 +17,7 @@
     },
     "y": {
       "field": "gender", "type": "nominal",
-      "scale": {"bandSize": 6},
+      "scale": {"rangeStep": 6},
       "axis": null
     },
     "color": {

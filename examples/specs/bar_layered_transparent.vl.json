@@ -9,7 +9,7 @@
   "encoding": {
     "x": {
       "field": "age", "type": "ordinal",
-      "scale": {"bandSize": 17}
+      "scale": {"rangeStep": 17}
     },
     "y": {
       "aggregate": "sum", "field": "people", "type": "quantitative",

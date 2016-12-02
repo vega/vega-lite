@@ -7,7 +7,7 @@ import {SOURCE, STACKED_SCALE} from '../data';
 import {DateTime, isDateTime, timestamp} from '../datetime';
 import {ChannelDefWithScale, FieldDef, field} from '../fielddef';
 import {Mark, BAR, TEXT as TEXTMARK, RECT, MarkConfig, PointConfig} from '../mark';
-import {Scale, ScaleConfig, ScaleType, NiceTime, BANDSIZE_FIT, BandSize, isDiscreteScale, scaleTypeSupportProperty} from '../scale';
+import {Scale, ScaleConfig, ScaleType, NiceTime, RANGESTEP_FIT, RangeStep, isDiscreteScale, scaleTypeSupportProperty} from '../scale';
 import {isSortField, SortOrder} from '../sort';
 import {StackOffset} from '../stack';
 import {TimeUnit} from '../timeunit';
@@ -49,13 +49,13 @@ export function channelScalePropertyIncompatability(channel: Channel, propName: 
         return log.message.CANNOT_USE_RANGE_WITH_POSITION;
       }
       if (channel === ROW || channel === COLUMN) {
-        return log.message.cannotUseRangeOrBandSizePropertyWithFacet('range');
+        return log.message.cannotUseRangePropertyWithFacet('range');
       }
       return undefined; // GOOD!
     // band / point
-    case 'bandSize':
+    case 'rangeStep':
       if (channel === ROW || channel === COLUMN) {
-        return log.message.cannotUseRangeOrBandSizePropertyWithFacet('bandSize');
+        return log.message.cannotUseRangePropertyWithFacet('rangeStep');
       }
       return undefined; // GOOD!
     case 'padding':
@@ -94,7 +94,7 @@ export function initScale(topLevelSize: number | undefined, mark: Mark | undefin
   let specifiedScale = (fieldDef || {}).scale || {};
   let scale: Scale = {};
 
-  const rangeProperties: any[] = ((scale.bandSize ? ['bandSize'] : []) as any[]).concat(
+  const rangeProperties: any[] = ((scale.rangeStep ? ['rangeStep'] : []) as any[]).concat(
     scale.scheme ? ['scheme'] : [],
     scale.range ? ['range'] : []
   );
@@ -103,16 +103,16 @@ export function initScale(topLevelSize: number | undefined, mark: Mark | undefin
     log.warn(log.message.mutuallyExclusiveScaleProperties(rangeProperties));
   }
 
-  // initialize bandSize as if it's an ordinal scale first since ordinal scale type depends on this.
-  const size = bandSize(specifiedScale.bandSize, topLevelSize, mark, channel, scaleConfig);
-  scale.type = type(specifiedScale.type, fieldDef, channel, mark, !!size);
+  // initialize rangeStep as if it's an ordinal scale first since ordinal scale type depends on this.
+  const step = rangeStep(specifiedScale.rangeStep, topLevelSize, mark, channel, scaleConfig);
+  scale.type = type(specifiedScale.type, fieldDef, channel, mark, !!step);
 
   if ((scale.type === ScaleType.POINT || scale.type === ScaleType.BAND)) {
-    if (size !== undefined) {
-      scale.bandSize = size;
+    if (step !== undefined) {
+      scale.rangeStep = step;
     }
-  } else if (specifiedScale.bandSize !== undefined) {
-    log.warn(log.message.scalePropertyNotWorkWithScaleType(scale.type, 'bandSize', channel));
+  } else if (specifiedScale.rangeStep !== undefined) {
+    log.warn(log.message.scalePropertyNotWorkWithScaleType(scale.type, 'rangeStep', channel));
   }
 
   // Use specified value if compatible or determine default values for each property
@@ -287,7 +287,7 @@ function parseBinColorLegendLabel(model: Model, fieldDef: FieldDef): ScaleCompon
  * Determine if there is a specified scale type and if it is appropriate,
  * or determine default type if type is unspecified or inappropriate.
  */
-export function type(specifiedType: ScaleType, fieldDef: FieldDef, channel: Channel, mark: Mark, canHaveBandSize: boolean): ScaleType {
+export function type(specifiedType: ScaleType, fieldDef: FieldDef, channel: Channel, mark: Mark, canHaveRangeStep: boolean): ScaleType {
   if (!hasScale(channel)) {
     // There is no scale for these channels
     return null;
@@ -298,20 +298,20 @@ export function type(specifiedType: ScaleType, fieldDef: FieldDef, channel: Chan
     if (supportScaleType(channel, specifiedType)) {
       return specifiedType;
     } else {
-      const newScaleType = defaultProperty.type(fieldDef, channel, mark, canHaveBandSize);
+      const newScaleType = defaultProperty.type(fieldDef, channel, mark, canHaveRangeStep);
       log.warn(log.message.scaleTypeNotWorkWithChannel(channel, specifiedType, newScaleType));
       return newScaleType;
     }
   }
 
-  return defaultProperty.type(fieldDef, channel, mark, canHaveBandSize);
+  return defaultProperty.type(fieldDef, channel, mark, canHaveRangeStep);
 }
 
 export namespace defaultProperty {
   /**
    * Determine appropriate default scale type.
    */
-  export function type(fieldDef: FieldDef, channel: Channel, mark: Mark, canHaveBandSize: boolean): ScaleType {
+  export function type(fieldDef: FieldDef, channel: Channel, mark: Mark, canHaveRangeStep: boolean): ScaleType {
     if (contains([ROW, COLUMN], channel)) {
       return ScaleType.BAND;
     }
@@ -324,13 +324,13 @@ export namespace defaultProperty {
         if (channel === COLOR) {
           return ScaleType.ORDINAL_LOOKUP;
         }
-        return discreteToContinuousType(channel, mark, canHaveBandSize);
+        return discreteToContinuousType(channel, mark, canHaveRangeStep);
       case ORDINAL:
         if (channel === COLOR) {
           // TODO: check if this is still true
           return ScaleType.LINEAR; // ordinal has order, so use interpolated ordinal color scale.
         }
-        return discreteToContinuousType(channel, mark, canHaveBandSize);
+        return discreteToContinuousType(channel, mark, canHaveRangeStep);
       case TEMPORAL:
         if (channel === COLOR) {
           // FIXME: or sequential?
@@ -343,7 +343,7 @@ export namespace defaultProperty {
           case TimeUnit.DAY:
           case TimeUnit.MONTH:
           case TimeUnit.QUARTER:
-            return discreteToContinuousType(channel, mark, canHaveBandSize);
+            return discreteToContinuousType(channel, mark, canHaveRangeStep);
         }
         return ScaleType.TIME;
 
@@ -357,15 +357,15 @@ export namespace defaultProperty {
 
   /**
    * Determines default scale type for nominal/ordinal field.
-   * @returns BAND or POINT scale based on channel, mark, and bandSize
+   * @returns BAND or POINT scale based on channel, mark, and rangeStep
    */
-  function discreteToContinuousType(channel: Channel, mark: Mark, canHaveBandSize: boolean): ScaleType {
+  function discreteToContinuousType(channel: Channel, mark: Mark, canHaveRangeStep: boolean): ScaleType {
     if (contains([X, Y], channel)) {
       // Use band ordinal scale for x/y scale in one of the following cases:
       if (
         // 1) the mark is bar and the scale's bandWidth is 'fit'.
         // Basically, for fit mode
-        (mark === BAR && !canHaveBandSize) ||
+        (mark === BAR && !canHaveRangeStep) ||
         // 2) the mark is rect as the rect mark should fit into a band.
         mark === RECT
       ) {
@@ -419,28 +419,28 @@ export namespace defaultProperty {
 
 
 // TODO: determine where this should go
-export function bandSize(bandSize: number | BandSize, topLevelSize: number | undefined, mark: Mark | undefined,
+export function rangeStep(rangeStep: number | RangeStep, topLevelSize: number | undefined, mark: Mark | undefined,
     channel: Channel, scaleConfig: ScaleConfig): number {
   if (topLevelSize === undefined) {
-    if (bandSize === BANDSIZE_FIT || bandSize === null) {
-      return undefined; // no bandSize
-    } else if (bandSize !== undefined) {
-      // Use manually specified bandSize
-      return bandSize;
+    if (rangeStep === RANGESTEP_FIT || rangeStep === null) {
+      return undefined; // no rangeStep
+    } else if (rangeStep !== undefined) {
+      // Use manually specified rangeStep
+      return rangeStep;
     } else if (contains([X, Y], channel)) {
       // only use config by default for X and Y
       if (channel === X && mark === TEXTMARK) {
-        return scaleConfig.textBandWidth;
-      } else if (scaleConfig.bandSize !== BANDSIZE_FIT) {
-        return scaleConfig.bandSize;
+        return scaleConfig.textXRangeStep;
+      } else if (scaleConfig.rangeStep !== RANGESTEP_FIT) {
+        return scaleConfig.rangeStep;
       }
     }
   }
 
-  // If top-level is specified, use bandSize fit
-  if (bandSize && bandSize !== BANDSIZE_FIT) {
-    // If top-level size is specified, we override specified bandSize with "fit"
-    log.warn(log.message.bandSizeOverridden(channel));
+  // If top-level is specified, use rangeStep fit
+  if (rangeStep && rangeStep !== RANGESTEP_FIT) {
+    // If top-level size is specified, we override specified rangeStep with "fit"
+    log.warn(log.message.rangeStepOverridden(channel));
   }
   return undefined;
 }
@@ -595,11 +595,11 @@ function _useRawDomain (scale: Scale, model: Model, channel: Channel) {
 
 // TODO: refactor where this should go
 /**
- * @returns {*} mix-in of bandSize, range, scheme.
+ * @returns {*} mix-in of rangeStep, range, scheme.
  */
 
 export function rangeMixins(scale: Scale, model: Model, channel: Channel):
-  {range: string | Array<number|string|{data: string, field:string}>} | {bandSize: number} | {scheme: string} {
+  {range: string | Array<number|string|{data: string, field:string}>} | {rangeStep: number} | {scheme: string} {
 
   const config = model.config();
 
@@ -607,13 +607,13 @@ export function rangeMixins(scale: Scale, model: Model, channel: Channel):
 
   const fieldDef = model.fieldDef(channel);
 
-  if (scale.bandSize && scale.bandSize !== BANDSIZE_FIT) {
+  if (scale.rangeStep && scale.rangeStep !== RANGESTEP_FIT) {
     /* istanbul ignore else: should never reach there */
     if (scale.type === ScaleType.BAND || scale.type === ScaleType.POINT) {
-      return {bandSize: scale.bandSize};
+      return {rangeStep: scale.rangeStep};
     } else {
-      delete scale.bandSize;
-      log.warn(log.message.scalePropertyNotWorkWithScaleType(scale.type, 'bandSize', channel));
+      delete scale.rangeStep;
+      log.warn(log.message.scalePropertyNotWorkWithScaleType(scale.type, 'rangeStep', channel));
     }
   }
 
@@ -710,18 +710,18 @@ function sizeRangeMin(mark: Mark, zero: boolean, config: Config) {
 
 function sizeRangeMax(mark: Mark, model: Model,  config: Config) {
   const scaleConfig = model.config().scale;
-  // TODO(#1168): make max size scale based on bandSize / overall plot size
+  // TODO(#1168): make max size scale based on rangeStep / overall plot size
   switch (mark) {
     case 'bar':
       if (config.bar.maxBandSize !== undefined) {
         return config.bar.maxBandSize;
       }
-      return barTickBandSize(model, config.mark) - 1;
+      return barTickRangeStep(model, config.mark) - 1;
     case 'tick':
       if (config.tick.maxBandSize !== undefined) {
         return config.tick.maxBandSize;
       }
-      return barTickBandSize(model, config.mark) - 1;
+      return barTickRangeStep(model, config.mark) - 1;
     case 'rule':
       return config.rule.maxStrokeWidth;
     case 'text':
@@ -734,51 +734,51 @@ function sizeRangeMax(mark: Mark, model: Model,  config: Config) {
       }
 
       // FIXME this case totally should be refactored
-      const pointSize = pointBandSize(model as UnitModel, scaleConfig);
-      return (pointSize - 2) * (pointSize - 2);
+      const pointStep = pointRangeStep(model as UnitModel, scaleConfig);
+      return (pointStep - 2) * (pointStep - 2);
   }
   /* istanbul ignore next: should never reach here */
   // sizeRangeMax not implemented for the mark
   throw new Error(log.message.incompatibleChannel('size', mark));
 }
 
-// TODO: we might be able to consolidate this with pointBandSize
-function barTickBandSize(model: Model, markConfig: MarkConfig) {
+// TODO: we might be able to consolidate this with pointRangeStep
+function barTickRangeStep(model: Model, markConfig: MarkConfig) {
   const dimension = markConfig.orient === 'horizontal' ? Y : X;
-  const barBandSize = model.scale(dimension).bandSize;
-  if (barBandSize !== undefined && barBandSize !== BANDSIZE_FIT) {
-    return barBandSize;
+  const step = model.scale(dimension).rangeStep;
+  if (step !== undefined && step !== RANGESTEP_FIT) {
+    return step;
   }
-  // TODO(#1168): proportional bandSize for fit mode
+  // TODO(#1168): proportional rangeStep for fit mode
   return 21;
 }
 
 /**
- * @returns {number} Band size of x or y or minimum between the two if both are ordinal scale.
+ * @returns {number} Range step of x or y or minimum between the two if both are ordinal scale.
  */
-function pointBandSize(model: UnitModel, scaleConfig: ScaleConfig): number {
-  const bandSizes: number[] = [];
+function pointRangeStep(model: UnitModel, scaleConfig: ScaleConfig): number {
+  const rangeSteps: number[] = [];
   if (model.scale(X)) {
-    const xBandSize = model.scale(X).bandSize;
-    // TODO(#1168): proportional bandSize for fit mode
-    if (xBandSize && xBandSize !== BANDSIZE_FIT) {
-      bandSizes.push(xBandSize);
+    const xStep = model.scale(X).rangeStep;
+    // TODO(#1168): proportional rangeStep for fit mode
+    if (xStep && xStep !== RANGESTEP_FIT) {
+      rangeSteps.push(xStep);
     }
   }
 
   if (model.scale(Y)) {
-    const yBandSize = model.scale(Y).bandSize;
-    // TODO(#1168): proportional bandSize for fit mode
-    if (yBandSize && yBandSize !== BANDSIZE_FIT) {
-      bandSizes.push(yBandSize);
+    const yStep = model.scale(Y).rangeStep;
+    // TODO(#1168): proportional rangeStep for fit mode
+    if (yStep && yStep !== RANGESTEP_FIT) {
+      rangeSteps.push(yStep);
     }
   }
 
-  if (bandSizes.length > 0) {
-    return Math.min.apply(null, bandSizes);
+  if (rangeSteps.length > 0) {
+    return Math.min.apply(null, rangeSteps);
   }
-  if (scaleConfig.bandSize && scaleConfig.bandSize !== BANDSIZE_FIT) {
-    return scaleConfig.bandSize;
+  if (scaleConfig.rangeStep && scaleConfig.rangeStep !== RANGESTEP_FIT) {
+    return scaleConfig.rangeStep;
   }
   return 21;
 }
