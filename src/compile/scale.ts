@@ -7,7 +7,7 @@ import {SOURCE, STACKED_SCALE} from '../data';
 import {DateTime, isDateTime, timestamp} from '../datetime';
 import {ChannelDefWithScale, FieldDef, field} from '../fielddef';
 import {Mark, BAR, TEXT as TEXTMARK, RECT, MarkConfig, PointConfig} from '../mark';
-import {Scale, ScaleConfig, ScaleType, NiceTime, RANGESTEP_FIT, RangeStep, isDiscreteScale, scaleTypeSupportProperty} from '../scale';
+import {Scale, ScaleConfig, ScaleType, NiceTime, RANGESTEP_FIT, RangeStep, isContinuousScale, isDiscreteScale, scaleTypeSupportProperty} from '../scale';
 import {isSortField, SortOrder} from '../sort';
 import {StackOffset} from '../stack';
 import {TimeUnit} from '../timeunit';
@@ -172,9 +172,10 @@ export function parseScaleComponent(model: Model): Dict<ScaleComponents> {
           main: parseMainScale(model, fieldDef, channel)
         };
 
-        // Add additional scales needed to support ordinal legends (list of values)
-        // for color ramp.
-        if (channel === COLOR && model.legend(COLOR) && fieldDef.bin) {
+        // If the channel has bin, has legend, and use quantitative scales,
+        // the main scale will use bin_mid values, thus we have to add an additional scale to produce
+        // correct labels by mapping bin_mid to bin_range
+        if (fieldDef.bin && model.legend(channel) && isContinuousScale(model.scale(channel).type)) {
           scales.binColorLegend = parseBinColorLegendLabel(model, fieldDef);
         }
 

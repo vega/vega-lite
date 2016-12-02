@@ -5,6 +5,7 @@ import {FieldDef} from '../fielddef';
 import {Legend} from '../legend';
 import {title as fieldTitle} from '../fielddef';
 import {AREA, BAR, TICK, TEXT, LINE, POINT, CIRCLE, SQUARE} from '../mark';
+import {isContinuousScale} from '../scale';
 import {TEMPORAL} from '../type';
 import {extend, keys, without, Dict} from '../util';
 
@@ -208,21 +209,21 @@ export namespace encode {
 
     let labels:any = {};
 
-    if (channel === COLOR) {
-      if (fieldDef.bin) {
-        labelsSpec = extend({
-          text: {
-            scale: model.scaleName(COLOR_LEGEND_LABEL),
-            field: 'value'
-          }
-        }, labelsSpec || {});
-      } else if (fieldDef.type === TEMPORAL) {
-        labelsSpec = extend({
-          text: {
-            signal: timeFormatExpression('datum.value', fieldDef.timeUnit, legend.format, legend.shortTimeLabels, config)
-          }
-        }, labelsSpec || {});
-      }
+    if (fieldDef.bin && isContinuousScale(model.scale(channel).type)) {
+      // For a binned field that use a continuous scale, the value of the scale is a bin_mid value.
+      // Thus, we use the COLOR_LEGEND_LABEL to map bin_mid to bin_range value for correct labels.
+      labelsSpec = extend({
+        text: {
+          scale: model.scaleName(COLOR_LEGEND_LABEL),
+          field: 'value'
+        }
+      }, labelsSpec || {});
+    } else if (fieldDef.type === TEMPORAL) {
+      labelsSpec = extend({
+        text: {
+          signal: timeFormatExpression('datum.value', fieldDef.timeUnit, legend.format, legend.shortTimeLabels, config)
+        }
+      }, labelsSpec || {});
     }
 
     if (legend.labelAlign !== undefined) {
