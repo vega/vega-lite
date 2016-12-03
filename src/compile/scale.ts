@@ -7,7 +7,7 @@ import {SOURCE, STACKED_SCALE} from '../data';
 import {DateTime, isDateTime, timestamp} from '../datetime';
 import {ChannelDefWithScale, FieldDef, field} from '../fielddef';
 import {Mark, BAR, TEXT as TEXTMARK, RECT, MarkConfig, PointConfig} from '../mark';
-import {Scale, ScaleConfig, ScaleType, NiceTime, RANGESTEP_FIT, RangeStep, isDiscreteScale, scaleTypeSupportProperty} from '../scale';
+import {Scale, ScaleConfig, ScaleType, NiceTime, RANGESTEP_FIT, RangeStep, hasDiscreteDomain, scaleTypeSupportProperty} from '../scale';
 import {isSortField, SortOrder} from '../sort';
 import {StackOffset} from '../stack';
 import {TimeUnit} from '../timeunit';
@@ -497,7 +497,7 @@ export function domain(scale: Scale, model: Model, channel:Channel): any {
       })
     };
   } else if (fieldDef.bin) { // bin
-    if (isDiscreteScale(scale.type)) {
+    if (hasDiscreteDomain(scale.type)) {
       // ordinal bin scale takes domain from bin_range, ordered by bin_start
       return {
         data: model.dataTable(),
@@ -540,7 +540,7 @@ export function domain(scale: Scale, model: Model, channel:Channel): any {
 }
 
 export function domainSort(model: Model, channel: Channel, scaleType: ScaleType): any {
-  if (!isDiscreteScale(scaleType)) {
+  if (!hasDiscreteDomain(scaleType)) {
     return undefined;
   }
 

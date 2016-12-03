@@ -6,7 +6,7 @@ import {Encoding, isAggregate, has} from '../encoding';
 import {isMeasure} from '../fielddef';
 import {MarkConfig, TextConfig, Orient} from '../mark';
 import {BAR, AREA, POINT, LINE, TICK, CIRCLE, SQUARE, RECT, RULE, TEXT, Mark} from '../mark';
-import {Scale, isDiscreteScale} from '../scale';
+import {Scale, hasDiscreteDomain} from '../scale';
 import {StackProperties} from '../stack';
 import {TEMPORAL} from '../type';
 import {contains, extend, Dict} from '../util';
@@ -84,9 +84,9 @@ export function orient(mark: Mark, encoding: Encoding, scale: Dict<Scale>, markC
       const yScaleType = scale['y'] ? scale['y'].type : null;
 
       // Tick is opposite to bar, line, area and never have ranged mark.
-      if (!isDiscreteScale(xScaleType) && (
+      if (!hasDiscreteDomain(xScaleType) && (
             !encoding.y ||
-            isDiscreteScale(yScaleType) ||
+            hasDiscreteDomain(yScaleType) ||
             encoding.y.bin
         )) {
         return 'vertical';

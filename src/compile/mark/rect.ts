@@ -1,5 +1,5 @@
 import {X, X2, Y, Y2} from '../../channel';
-import {ScaleType, isDiscreteScale} from '../../scale';
+import {ScaleType, hasDiscreteDomain} from '../../scale';
 import {RECT} from '../../mark';
 import {extend} from '../../util';
 import * as log from '../../log';
@@ -34,7 +34,7 @@ export namespace rect {
     if (xFieldDef && xFieldDef.bin && !x2FieldDef) { // TODO: better check for bin
       p.x2 = ref.bin(xFieldDef, xScaleName, 'start');
       p.x = ref.bin(xFieldDef, xScaleName, 'end');
-    } else if (xScale && isDiscreteScale(xScale.type)) {
+    } else if (xScale && hasDiscreteDomain(xScale.type)) {
       /* istanbul ignore else */
       if (xScale.type === ScaleType.BAND) {
         p.x = ref.fieldRef(xFieldDef, xScaleName, {});
@@ -62,7 +62,7 @@ export namespace rect {
     if (yFieldDef && yFieldDef.bin && !y2FieldDef) { // TODO: better check for bin
       p.y2 = ref.bin(yFieldDef, yScaleName, 'start');
       p.y = ref.bin(yFieldDef, yScaleName, 'end');
-    } else if (yScale && isDiscreteScale(yScale.type)) {
+    } else if (yScale && hasDiscreteDomain(yScale.type)) {
       /* istanbul ignore else */
       if (yScale.type === ScaleType.BAND) {
         p.y = ref.fieldRef(yFieldDef, yScaleName, {});

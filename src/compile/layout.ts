@@ -1,7 +1,7 @@
 
 import {Channel, X, Y, ROW, COLUMN} from '../channel';
 import {LAYOUT} from '../data';
-import {ScaleType, isDiscreteScale} from '../scale';
+import {ScaleType, hasDiscreteDomain} from '../scale';
 import {Formula} from '../transform';
 import {extend, keys, StringSet} from '../util';
 import {VgData} from '../vega.schema';
@@ -82,7 +82,7 @@ export function unitSizeExpr(model: UnitModel, channel: Channel): string {
   const scale = model.scale(channel);
   if (scale) {
 
-    if (isDiscreteScale(scale.type) && scale.rangeStep) {
+    if (hasDiscreteDomain(scale.type) && scale.rangeStep) {
       // If the spec has top level size or specified rangeStep = fit, it will be undefined here.
 
       let layoutOffset = scale.type === ScaleType.BAND ? 2 * scale.padding : 1;
@@ -169,7 +169,7 @@ function parseLayerSizeLayout(model: LayerModel, channel: Channel): SizeComponen
 function getDistinct(model: Model, channel: Channel): StringSet {
   if (model.has(channel) && model.hasDiscreteScale(channel)) {
     const scale = model.scale(channel);
-    if (isDiscreteScale(scale.type) && !(scale.domain instanceof Array)) {
+    if (hasDiscreteDomain(scale.type) && !(scale.domain instanceof Array)) {
       // if explicit domain is declared, use array length
       const distinctField = model.field(channel);
       let distinct: StringSet = {};

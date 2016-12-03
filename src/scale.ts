@@ -42,19 +42,29 @@ export const SCALE_TYPES: ScaleType[] = [
   'ordinal', 'point', 'band',
 ];
 
-export const CONTINUOUS_SCALE_TYPES: ScaleType[] = ['linear', 'log', 'pow', 'sqrt', 'time', 'utc'];
-const CONTINUOUS_SCALE_TYPE_INDEX = toSet(CONTINUOUS_SCALE_TYPES);
+export const CONTINUOUS_TO_CONTINUOUS_SCALES: ScaleType[] = ['linear', 'log', 'pow', 'sqrt', 'time', 'utc'];
+const CONTINUOUS_TO_CONTINUOUS_INDEX = toSet(CONTINUOUS_TO_CONTINUOUS_SCALES);
 
-export const DISCRETE_SCALE_TYPES: ScaleType[] = ['ordinal', 'point', 'band'];
-const DISCRETE_SCALE_TYPE_INDEX = toSet(DISCRETE_SCALE_TYPES);
+export const CONTINUOUS_DOMAIN_SCALES: ScaleType[] = CONTINUOUS_TO_CONTINUOUS_SCALES.concat(['sequential' /* TODO add 'quantile', 'quantize', 'threshold'*/]);
+const CONTINUOUS_DOMAIN_INDEX = toSet(CONTINUOUS_DOMAIN_SCALES);
+
+export const DISCRETE_DOMAIN_SCALES: ScaleType[] = ['ordinal', 'point', 'band'];
+const DISCRETE_DOMAIN_INDEX = toSet(DISCRETE_DOMAIN_SCALES);
 
 export const TIME_SCALE_TYPES: ScaleType[] = ['time', 'utc'];
 
-export function isDiscreteScale(type: ScaleType): type is 'ordinal' | 'point' | 'band' {
-  return type in DISCRETE_SCALE_TYPE_INDEX;
+export function hasDiscreteDomain(type: ScaleType): type is 'ordinal' | 'point' | 'band' {
+  return type in DISCRETE_DOMAIN_INDEX;
 }
-export function isContinuousScale(type: ScaleType): type is 'linear' | 'log' | 'pow' | 'sqrt' |  'time' | 'utc' {
-  return type in CONTINUOUS_SCALE_TYPE_INDEX;
+
+export function hasContinuousDomain(type: ScaleType):
+  type is 'linear' | 'log' | 'pow' | 'sqrt' |  'time' | 'utc'|
+          'sequential' /* TODO add | 'quantile' | 'quantize' | 'threshold' */ {
+  return type in CONTINUOUS_DOMAIN_INDEX;
+}
+
+export function isContinuousToContinuous(type: ScaleType): type is 'linear' | 'log' | 'pow' | 'sqrt' |  'time' | 'utc' {
+  return type in CONTINUOUS_TO_CONTINUOUS_INDEX;
 }
 
 export namespace NiceTime {
@@ -213,25 +223,26 @@ export function scaleTypeSupportProperty(scaleType: ScaleType, propName: string)
     case 'range':
       return scaleType !== 'sequential'; // sequential only support scheme
     case 'round':
-      return isContinuousScale(scaleType) || scaleType === 'band' || scaleType === 'point';
+      return isContinuousToContinuous(scaleType) || scaleType === 'band' || scaleType === 'point';
     case 'rangeStep':
     case 'padding':
       return contains(['point', 'band'], scaleType);
     case 'scheme':
+      // ordinal can use nominal color scheme, sequential can use sequential color scheme
       return contains(['ordinal', 'sequential'], scaleType);
     case 'clamp':
-      return isContinuousScale(scaleType) || scaleType === 'sequential';
+      return isContinuousToContinuous(scaleType) || scaleType === 'sequential';
     case 'nice':
-      return isContinuousScale(scaleType) || scaleType === 'sequential' || scaleType as any === 'quantize';
+      return isContinuousToContinuous(scaleType) || scaleType === 'sequential' || scaleType as any === 'quantize';
     case 'exponent':
       return scaleType === 'pow';
     case 'zero':
       // TODO: what about quantize, threshold?
-      return !isDiscreteScale(scaleType) && !contains(['log', 'time', 'utc'], scaleType);
+      return !hasDiscreteDomain(scaleType) && !contains(['log', 'time', 'utc'], scaleType);
 
     case 'useRawDomain':
       // TODO: 'quantize', 'quantile', 'threshold'
-      return isContinuousScale(scaleType) || contains(['quantize', 'quantile', 'threshold'], scaleType);
+      return isContinuousToContinuous(scaleType) || contains(['quantize', 'quantile', 'threshold'], scaleType);
   }
   /* istanbul ignore next: should never reach here*/
   throw new Error(`Invalid scale property ${propName}.`);

@@ -7,7 +7,7 @@ import {Data, DataTable} from '../data';
 import {reduce, forEach} from '../encoding';
 import {FieldDef, FieldRefOption, field} from '../fielddef';
 import {Legend} from '../legend';
-import {Scale, isDiscreteScale} from '../scale';
+import {Scale, hasDiscreteDomain} from '../scale';
 import {SortField, SortOrder} from '../sort';
 import {BaseSpec} from '../spec';
 import {Transform} from '../transform';
@@ -313,7 +313,7 @@ export abstract class Model {
 
     if (fieldDef.bin) { // bin has default suffix that depends on scaleType
       opt = extend({
-        binSuffix: isDiscreteScale(this.scale(channel).type) ? 'range' : 'start'
+        binSuffix: hasDiscreteDomain(this.scale(channel).type) ? 'range' : 'start'
       }, opt);
     }
 
@@ -328,7 +328,7 @@ export abstract class Model {
 
   public hasDiscreteScale(channel: Channel) {
     const scale = this.scale(channel);
-    return scale && isDiscreteScale(scale.type);
+    return scale && hasDiscreteDomain(scale.type);
   }
 
   public renameScale(oldName: string, newName: string) {

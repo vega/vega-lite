@@ -2,7 +2,7 @@ import {X, Y, COLOR, TEXT, SHAPE, PATH, ORDER, OPACITY, DETAIL, STACK_GROUP_CHAN
 import {has, isAggregate} from '../../encoding';
 import {OrderChannelDef, FieldDef, field} from '../../fielddef';
 import {AREA, LINE, TEXT as TEXTMARK} from '../../mark';
-import {isDiscreteScale} from '../../scale';
+import {hasDiscreteDomain} from '../../scale';
 import {isSortField} from '../../sort';
 import {contains, extend, isArray} from '../../util';
 import {VgStackTransform} from '../../vega.schema';
@@ -229,7 +229,7 @@ function getStackByFields(model: UnitModel) {
         const fieldDef: FieldDef = channelEncoding;
         const scale = model.scale(channel);
         const _field = field(fieldDef, {
-          binSuffix: scale && isDiscreteScale(scale.type) ? 'range' : 'start'
+          binSuffix: scale && hasDiscreteDomain(scale.type) ? 'range' : 'start'
         });
         if (!!_field) {
           fields.push(_field);

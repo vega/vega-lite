@@ -5,7 +5,7 @@
 import {Channel, X, X2, Y, Y2} from '../../channel';
 import {Config} from '../../config';
 import {FieldDef, FieldRefOption, field} from '../../fielddef';
-import {Scale, ScaleType, isDiscreteScale} from '../../scale';
+import {Scale, ScaleType, hasDiscreteDomain} from '../../scale';
 import {StackProperties} from '../../stack';
 import {contains} from '../../util';
 import {VgValueRef} from '../../vega.schema';
@@ -82,7 +82,7 @@ export function midPoint(channel: Channel, fieldDef: FieldDef, scaleName: string
   if (fieldDef) {
     /* istanbul ignore else */
     if (fieldDef.field) {
-      if (isDiscreteScale(scale.type)) {
+      if (hasDiscreteDomain(scale.type)) {
         if (scale.type === 'band') {
           // For band, to get mid point, need to offset by half of the band
           return fieldRef(fieldDef, scaleName, {binSuffix: 'range'}, band(scaleName, 0.5));
