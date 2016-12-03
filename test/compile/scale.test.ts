@@ -7,7 +7,7 @@ import {SOURCE, SUMMARY} from '../../src/data';
 import {parseUnitModel} from '../util';
 
 import * as log from '../../src/log';
-import {X, Y, SHAPE, DETAIL, ROW, COLUMN, Channel} from '../../src/channel';
+import {X, Y, SHAPE, DETAIL, ROW, COLUMN, Channel, NONSPATIAL_SCALE_CHANNELS} from '../../src/channel';
 import {RANGESTEP_FIT, ScaleType, defaultScaleConfig} from '../../src/scale';
 import {Mark, POINT, RECT, BAR, TEXT} from '../../src/mark';
 import * as mark from '../../src/mark';
@@ -173,6 +173,22 @@ describe('Scale', function() {
 
     describe('padding', () => {
       // TODO:
+    });
+
+    describe('round', () => {
+      it('should return scaleConfig.round for x, y, row, column.', () => {
+        for (let c of ['x', 'y', 'row', 'column'] as Channel[]) {
+          assert(defaultProperty.round(c, {round: true}));
+          assert(!defaultProperty.round(c, {round: false}));
+        }
+      });
+
+      it('should return undefined other channels (not x, y, row, column).', () => {
+        for (let c of NONSPATIAL_SCALE_CHANNELS) {
+          assert.isUndefined(defaultProperty.round(c, {round: true}));
+          assert.isUndefined(defaultProperty.round(c, {round: false}));
+        }
+      });
     });
 
     describe('zero', () => {

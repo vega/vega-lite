@@ -2498,7 +2498,7 @@
                     "minimum": 0
                 },
                 "round": {
-                    "description": "If true, rounds numeric output values to integers. This can be helpful for snapping to the pixel grid.",
+                    "description": "If true, rounds numeric output values to integers. This can be helpful for snapping to the pixel grid.\n\n__Default Rule:__ `true` for `\"x\"`, `\"y\"`, `\"row\"`, `\"column\"` channels if scale config's `round` is `true`; `false` otherwise.",
                     "type": "boolean"
                 },
                 "scheme": {

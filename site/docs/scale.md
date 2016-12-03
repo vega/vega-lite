@@ -194,7 +194,7 @@ We can also create diverging color graph by specify `range` with multiple elemen
 
 | Property      | Type          | Description    |
 | :------------ |:-------------:| :------------- |
-| round         | Boolean       | If `true`, rounds numeric output values to integers. This can be helpful for snapping to the pixel grid (only available for `x`, `y`, `size`, `row`, and `column` scales). <span class="note-line">__Default value:__ derived from [scale config](config.html#scale-config) (`true` by default).</span> |
+| round         | Boolean       | If `true`, rounds numeric output values to integers. This can be helpful for snapping to the pixel grid. <span class="note-line">__Default value:__ True for `"x"`, `"y"`, `"row"`, `"column"` channels if scale config's `round` is `true`; false otherwise.</span> |
 
 {:#quant-props}
 
