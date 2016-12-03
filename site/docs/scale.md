@@ -218,6 +218,8 @@ We can also create diverging color graph by specify `range` with multiple elemen
 {:#ordinal}
 ### Discrete Scale Properties
 
+<!-- TODO revise -->
+
 | Property      | Type          | Description    |
 | :------------ |:-------------:| :------------- |
 | rangeStep      | Integer &#124; String | Width for each `x` or `y` ordinal band.  This can be an integer value or a string `"fit"`.  For `"fit"`, the range step will be automatically adjusted to fit the scale for the specified width (for x-axis) or height (for y-axis). <span class="note-line">__Default value:__ for `x` ordinal scale of a `text` mark, derived from [scale config](config.html#scale-config)'s `textXRangeStep`; otherwise, derived from [scale config](config.html#scale-config)'s `rangeStep`.</span> <span class="note-line">__Warning__: <br/> 1) Numeric `rangeStep` will be applied only if the top-level `width` (for x-scale) or `height` (for y-scale) is not specified.  If `width` (for x-scale) or `height` (for y-scale) is specified, `bandWidth` will always be `"fit"`. <br/> 2) If the cardinality of the scale domain is too high, the rangeStep might become less than one pixel and the mark might not appear correctly. </span>|

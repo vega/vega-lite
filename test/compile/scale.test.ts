@@ -2,7 +2,7 @@
 
 import {assert} from 'chai';
 
-import {rangeStep, type, domain, parseScaleComponent, defaultProperty} from '../../src/compile/scale';
+import {rangeStep, type, domain, parseScaleComponent, initScale, defaultProperty} from '../../src/compile/scale';
 import {SOURCE, SUMMARY} from '../../src/data';
 import {parseUnitModel} from '../util';
 
@@ -166,13 +166,82 @@ describe('Scale', function() {
     });
   });
 
+  describe('initScale', () => {
+    it('should output only padding without default paddingInner and paddingOuter if padding is specified for a band scale', () => {
+      const scale = initScale(100, 'bar', 'x',
+        {field: 'a', type: 'ordinal', scale: {type: 'band', padding: 0.6}},
+        {}
+      );
+      assert.equal(scale.padding, 0.6);
+      assert.isUndefined(scale.paddingInner);
+      assert.isUndefined(scale.paddingOuter);
+    });
+
+    it('should output default paddingInner and paddingOuter = paddingInner/2 if none of padding properties is specified for a band scale', () => {
+      const scale = initScale(100, 'bar', 'x',
+        {field: 'a', type: 'ordinal', scale: {type: 'band'}},
+        {bandPaddingInner: 0.3}
+      );
+      assert.equal(scale.paddingInner, 0.3);
+      assert.equal(scale.paddingOuter, 0.15);
+      assert.isUndefined(scale.padding);
+    });
+
+  });
+
   describe('defaultProperty', () => {
     describe('nice', () => {
       // TODO:
     });
 
-    describe('padding', () => {
-      // TODO:
+    describe('paddingInner', () => {
+      it('should be undefined if padding is specified.', () => {
+        assert.equal(defaultProperty.paddingInner(10, 'x', {}), undefined);
+      });
+
+      it('should be bandPaddingInner if channel is x or y and padding is not specified.', () => {
+        assert.equal(defaultProperty.paddingInner(undefined, 'x', {bandPaddingInner: 15}), 15);
+        assert.equal(defaultProperty.paddingInner(undefined, 'y', {bandPaddingInner: 15}), 15);
+      });
+
+      it('should be undefined for non-xy channels.', () => {
+        for (let c of NONSPATIAL_SCALE_CHANNELS) {
+          assert.equal(defaultProperty.paddingInner(undefined, c, {bandPaddingInner: 15}), undefined);
+        }
+      });
+    });
+
+    describe('paddingOuter', () => {
+      it('should be undefined if padding is specified.', () => {
+        for (let scaleType of ['point', 'band'] as ScaleType[]) {
+          assert.equal(defaultProperty.paddingOuter(10, 'x', scaleType, 0, {}), undefined);
+        }
+      });
+
+      it('should be pointPadding for point scale if channel is x or y and padding is not specified.', () => {
+        for (let c of ['x', 'y'] as Channel[]) {
+          assert.equal(defaultProperty.paddingOuter(undefined, c, 'point', 0, {pointPadding: 13}), 13);
+        }
+      });
+
+      it('should be config.scale.bandPaddingOuter for band scale if channel is x or y and padding is not specified and config.scale.bandPaddingOuter.', () => {
+        for (let c of ['x', 'y'] as Channel[]) {
+          assert.equal(defaultProperty.paddingOuter(undefined, c, 'band', 0, {bandPaddingOuter: 16}), 16);
+        }
+      });
+      it('should be paddingInner/2 for band scale if channel is x or y and padding is not specified and config.scale.bandPaddingOuter.', () => {
+        for (let c of ['x', 'y'] as Channel[]) {
+          assert.equal(defaultProperty.paddingOuter(undefined, c, 'band', 10, {}), 5);
+        }
+      });
+
+      it('should be undefined for non-xy channels.', () => {
+        for (let c of NONSPATIAL_SCALE_CHANNELS) {
+          for (let scaleType of ['point', 'band'] as ScaleType[]) {
+            assert.equal(defaultProperty.paddingOuter(undefined, c, scaleType, 0, {}), undefined);
+          }
+        }
+      });
     });
 
     describe('round', () => {

@@ -54,6 +54,8 @@ export function channelScalePropertyIncompatability(channel: Channel, propName: 
       }
       return undefined; // GOOD!
     case 'padding':
+    case 'paddingInner':
+    case 'paddingOuter':
       if (channel === ROW || channel === COLUMN) {
         /*
          * We do not use d3 scale's padding for row/column because padding there
@@ -120,7 +122,7 @@ export function initScale(topLevelSize: number | undefined, mark: Mark | undefin
     // quantitative
     'exponent', 'zero', // zero depends on domain
     // ordinal
-    'padding', // padding
+    'padding', 'paddingInner', 'paddingOuter', // padding
 
     // FIXME: useRawDomain should not be included here as it is not really a Vega scale property
     'useRawDomain'
@@ -148,8 +150,10 @@ export function initScale(topLevelSize: number | undefined, mark: Mark | undefin
         // If we have default rule-base, determine default value first
         if (property === 'nice') {
           value = defaultProperty.nice(scale.type, channel, fieldDef);
-        } else if (property === 'padding') {
-          value = defaultProperty.padding(scale.type, channel, scaleConfig);
+        } else if (property === 'paddingInner') {
+          value = defaultProperty.paddingInner(scale.padding, channel, scaleConfig);
+        } else if (property === 'paddingOuter') {
+          value = defaultProperty.paddingOuter(scale.padding, channel, scale.type, scale.paddingInner, scaleConfig);
         } else if (property === 'round') {
           value = defaultProperty.round(channel, scaleConfig);
         } else if (property === 'zero') {
@@ -375,14 +379,42 @@ export namespace defaultProperty {
     return contains([X, Y], channel); // return true for quantitative X/Y
   }
 
-  export function padding(scaleType: ScaleType, channel: Channel, scaleConfig: ScaleConfig) {
+  export function paddingInner(padding: number, channel: Channel,  scaleConfig: ScaleConfig) {
+    if (padding !== undefined) {
+      // If user has already manually specified "padding", no need to add default paddingInner.
+      return undefined;
+    }
+
+    if (contains([X, Y], channel)) {
+      // Padding is only set for X and Y by default.
+      // Basically it doesn't make sense to add padding for color and size.
+
+      // paddingOuter would only be called if it's a band scale, just return the default for bandScale.
+      return scaleConfig.bandPaddingInner;
+    }
+    return undefined;
+  }
+
+  export function paddingOuter(padding: number, channel: Channel, scaleType: ScaleType, paddingInner: number, scaleConfig: ScaleConfig) {
+    if (padding !== undefined) {
+      // If user has already manually specified "padding", no need to add default paddingOuter.
+      return undefined;
+    }
+
     if (contains([X, Y], channel)) {
       // Padding is only set for X and Y by default.
       // Basically it doesn't make sense to add padding for color and size.
       if (scaleType === ScaleType.POINT) {
         return scaleConfig.pointPadding;
       } else if (scaleType === ScaleType.BAND) {
-        return scaleConfig.bandPadding;
+        if (scaleConfig.bandPaddingOuter !== undefined) {
+          return scaleConfig.bandPaddingOuter;
+        }
+        /* By default, paddingOuter is paddingInner / 2. The reason is that
+           size (width/height) = step * (cardinality - paddingInner + 2 * paddingOuter).
+           and we want the width/height to be integer by default.
+           Note that step (by default) and cardinality are integers.) */
+        return paddingInner / 2;
       }
     }
     return undefined;

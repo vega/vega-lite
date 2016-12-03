@@ -44,10 +44,10 @@ describe('compile/layout', () => {
       });
 
       const sizeExpr = unitSizeExpr(model, X);
-      assert.equal(sizeExpr, '(datum["distinct_a"] + 1) * 21');
+      assert.equal(sizeExpr, 'max(datum["distinct_a"] + 2*0.5, 0) * 21');
     });
 
-    it('should return correct formula for ordinal-band scale', () => {
+    it('should return correct formula for ordinal-band scale with custom padding', () => {
       const model = parseUnitModel({
         mark: 'rect', // rect produces ordinal-band by default
         encoding: {
@@ -56,7 +56,19 @@ describe('compile/layout', () => {
       });
 
       const sizeExpr = unitSizeExpr(model, X);
-      assert.equal(sizeExpr, '(datum["distinct_a"] + 0.6) * 21');
+      assert.equal(sizeExpr, 'max(datum["distinct_a"] - 0.3 + 2*0.3, 0) * 21');
+    });
+
+    it('should return correct formula for ordinal-band scale with custom paddingInner', () => {
+      const model = parseUnitModel({
+        mark: 'rect', // rect produces ordinal-band by default
+        encoding: {
+          x: {field: 'a', type: 'ordinal', scale: {paddingInner: 0.3}},
+        }
+      });
+
+      const sizeExpr = unitSizeExpr(model, X);
+      assert.equal(sizeExpr, 'max(datum["distinct_a"] - 0.3 + 2*0.15, 0) * 21');
     });
 
     it('should return static cell size for ordinal x-scale with fit', () => {
