@@ -187,6 +187,8 @@ export function supportScaleType(channel: Channel, scaleType: ScaleType): boolea
     case 'y':
     case 'size': // TODO: size and opacity can support ordinal with more modification
     case 'opacity':
+      // Although it generally doesn'' make sense to use band with size and opacity,
+      // it can also work since we use band: 0.5 to get midpoint.
       return scaleType in POSITION_SCALE_TYPE_INDEX;
     case 'color':
       return scaleType !== 'band';    // band does not make sense with color

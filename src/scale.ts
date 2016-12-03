@@ -112,13 +112,22 @@ export interface ScaleConfig {
   rangeStep?: number | RangeStep;
 
   /**
-   * Default padding for `x` and `y` band-ordinal scales.
+   * Default inner padding for `x` and `y` band-ordinal scales.
    * @minimum 0
    * @maximum 1
    */
-  bandPadding?: number;
+  bandPaddingInner?: number;
+
   /**
-   * Default padding for `x` and `y` point-ordinal scales.
+   * Default outer padding for `x` and `y` band-ordinal scales.
+   * If not specified, by default, band scale's paddingOuter is paddingInner/2.
+   * @minimum 0
+   * @maximum 1
+   */
+  bandPaddingOuter?: number;
+
+  /**
+   * Default outer padding for `x` and `y` point-ordinal scales.
    * @minimum 0
    * @maximum 1
    */
@@ -145,8 +154,8 @@ export const defaultScaleConfig = {
   round: true,
   textXRangeStep: 90,
   rangeStep: 21,
-  pointPadding: 1,
-  bandPadding: 0.1,
+  pointPadding: 0.5,
+  bandPaddingInner: 0.1,
   facetSpacing: 16,
   useRawDomain: false,
 };
@@ -182,14 +191,31 @@ export interface Scale {
 
   /**
    * (For `row` and `column` only) A pixel value for padding between cells in the trellis plots.
-   * @type {number}
+   * @type {integer}
    */
   spacing?: number;
 
   /**
    * Applies spacing among ordinal elements in the scale range. The actual effect depends on how the scale is configured. If the __points__ parameter is `true`, the padding value is interpreted as a multiple of the spacing between points. A reasonable value is 1.0, such that the first and last point will be offset from the minimum and maximum value by half the distance between points. Otherwise, padding is typically in the range [0, 1] and corresponds to the fraction of space in the range interval to allocate to padding. A value of 0.5 means that the band size will be equal to the padding width. For more, see the [D3 ordinal scale documentation](https://github.com/mbostock/d3/wiki/Ordinal-Scales).
+   * A convenience property for setting the inner and outer padding to the same value.
+   * @minimum 0
+   * @maximum 1
    */
   padding?: number;
+
+  /**
+   * The inner padding of a band scale determines the ratio of the range that is reserved for blank space between bands. (For point scale, this property is ignored.)
+   * @minimum 0
+   * @maximum 1
+   */
+  paddingInner?: number;
+
+  /**
+   * The outer padding determines the ratio of the range that is reserved for blank space before the first and after the last bands/points.
+   * @minimum 0
+   * @maximum 1
+   */
+  paddingOuter?: number;
 
   // typical
   /**
@@ -238,7 +264,10 @@ export function scaleTypeSupportProperty(scaleType: ScaleType, propName: string)
       return isContinuousToContinuous(scaleType) || scaleType === 'band' || scaleType === 'point';
     case 'rangeStep':
     case 'padding':
+    case 'paddingOuter':
       return contains(['point', 'band'], scaleType);
+    case 'paddingInner':
+      return scaleType === 'band';
     case 'scheme':
       // ordinal can use nominal color scheme, sequential can use sequential color scheme
       return contains(['ordinal', 'sequential', 'index'], scaleType);
