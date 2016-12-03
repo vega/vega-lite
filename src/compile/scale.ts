@@ -155,6 +155,8 @@ export function initScale(topLevelSize: number | undefined, mark: Mark | undefin
           value = defaultProperty.nice(scale.type, channel, fieldDef);
         } else if (property === 'padding') {
           value = defaultProperty.padding(scale.type, channel, scaleConfig);
+        } else if (property === 'round') {
+          value = defaultProperty.round(channel, scaleConfig);
         } else if (property === 'zero') {
           value = defaultProperty.zero(scale, channel, fieldDef);
         } else {
@@ -393,6 +395,13 @@ export namespace defaultProperty {
       } else if (scaleType === ScaleType.BAND) {
         return scaleConfig.bandPadding;
       }
+    }
+    return undefined;
+  }
+
+  export function round(channel: Channel, scaleConfig: ScaleConfig) {
+    if (contains(['x', 'y', 'row', 'column'], channel)) {
+      return scaleConfig.round;
     }
     return undefined;
   }

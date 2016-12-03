@@ -148,8 +148,11 @@ export interface Scale {
    * The range of the scale, representing the set of visual values. For numeric values, the range can take the form of a two-element array with minimum and maximum values. For ordinal or quantized data, the range may by an array of desired output values, which are mapped to elements in the specified domain. For ordinal scales only, the range can be defined using a DataRef: the range values are then drawn dynamically from a backing data set.
    */
   range?: number[] | string[]; // TODO: declare vgRangeDomain
+
   /**
    * If true, rounds numeric output values to integers. This can be helpful for snapping to the pixel grid.
+   *
+   * __Default Rule:__ `true` for `"x"`, `"y"`, `"row"`, `"column"` channels if scale config's `round` is `true`; `false` otherwise.
    */
   round?: boolean;
 
