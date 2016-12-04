@@ -2,11 +2,11 @@
 
 import {assert} from 'chai';
 import {parseUnitModel} from '../util';
-import {COLOR, SHAPE, SIZE} from '../../src/channel';
+import {COLOR, SHAPE, SIZE, OPACITY} from '../../src/channel';
 import {defaultConfig} from '../../src/config';
 import * as legend from '../../src/compile/legend';
 import {TimeUnit} from '../../src/timeunit';
-import {TEMPORAL} from '../../src/type';
+import {TEMPORAL, QUANTITATIVE} from '../../src/type';
 
 describe('Legend', function() {
   describe('parseLegend()', function() {
@@ -167,6 +167,36 @@ describe('Legend', function() {
 
         assert.deepEqual(symbol.shape.value, "M0,0.2L0.2351,0.3236 0.1902,0.0618 0.3804,-0.1236 0.1175,-0.1618 0,-0.4 -0.1175,-0.1618 -0.3804,-0.1236 -0.1902,0.0618 -0.2351,0.3236 0,0.2Z");
     });
+
+    it('should override color for binned and continous scales', function() {
+      const symbol = legend.encode.symbols({field: 'a', bin: true}, {}, parseUnitModel({
+          mark: "point",
+          encoding: {
+            x: {field: "a", type: "nominal"},
+            color: {field: "a", type: "quantitative", bin: true}}
+        }), COLOR);
+        assert.deepEqual(symbol.stroke, {"scale": "color","field": "value"});
+    });
+
+    it('should override size for binned and continous scales', function() {
+      const symbol = legend.encode.symbols({field: 'a', bin: true}, {}, parseUnitModel({
+          mark: "point",
+          encoding: {
+            x: {field: "a", type: "nominal"},
+            size: {field: "a", type: "quantitative", bin: true}}
+        }), SIZE);
+        assert.deepEqual(symbol.size, {"scale": "size","field": "value"});
+    });
+
+    it('should override opacity for binned and continous scales', function() {
+      const symbol = legend.encode.symbols({field: 'a', bin: true}, {}, parseUnitModel({
+          mark: "point",
+          encoding: {
+            x: {field: "a", type: "nominal"},
+            opacity: {field: "a", type: "quantitative", bin: true}}
+        }), OPACITY);
+        assert.deepEqual(symbol.opacity, {"scale": "opacity","field": "value"});
+    });
   });
 
   describe('encode.labels', function() {
@@ -229,7 +259,7 @@ describe('Legend', function() {
       });
       const fieldDef = {field: 'a', type: TEMPORAL, timeUnit: TimeUnit.MONTH};
       const label = legend.encode.labels(fieldDef, {}, model, COLOR);
-      let expected = `timeFormat(datum["data"], '%b')`;
+      let expected = `timeFormat(datum.value, '%b')`;
       assert.deepEqual(label.text.signal, expected);
     });
 
@@ -242,8 +272,24 @@ describe('Legend', function() {
       });
       const fieldDef = {field: 'a', type: TEMPORAL, timeUnit: TimeUnit.QUARTER};
       const label = legend.encode.labels(fieldDef, {}, model, COLOR);
-      let expected = `'Q' + quarter(datum["data"])`;
+      let expected = `'Q' + quarter(datum.value)`;
       assert.deepEqual(label.text.signal, expected);
+    });
+
+    it('should use special scale for binned and continuous scales to set label text', function() {
+      const model = parseUnitModel({
+        mark: "point",
+        encoding: {
+          x: {field: "a", type: "temporal"},
+          color: {field: "a", type: "quantitative", bin: true}}
+      });
+      const fieldDef = {field: 'a', type: QUANTITATIVE, bin: true};
+      const label = legend.encode.labels(fieldDef, {}, model, COLOR);
+      let expected = {
+        field: "value",
+        scale: "color_bin_legend_label"
+      };
+      assert.deepEqual(label.text, expected);
     });
   });
 

@@ -19,7 +19,6 @@ import {nonPositiveFilter} from './nonpositivefilter';
 import {summary} from './summary';
 import {stackScale} from './stackscale';
 import {timeUnit} from './timeunit';
-import {colorRank} from './colorrank';
 
 
 /**
@@ -52,9 +51,6 @@ export interface DataComponent {
   /** Data source for feeding stacked scale. */
   // TODO: need to revise if single VgData is sufficient with layer / concat
   stackScale: VgData;
-
-  /** Dictionary mapping an output field name (hash) to the sort and rank transforms  */
-  colorRank: Dict<VgTransform[]>;
 
   /** Array of summary component object for producing summary (aggregate) data source */
   summary: SummaryComponent[];
@@ -89,8 +85,7 @@ export function parseUnitData(model: UnitModel): DataComponent {
     calculate: formula.parseUnit(model),
     timeUnit: timeUnit.parseUnit(model),
     summary: summary.parseUnit(model),
-    stackScale: stackScale.parseUnit(model),
-    colorRank: colorRank.parseUnit(model)
+    stackScale: stackScale.parseUnit(model)
   };
 }
 
@@ -106,8 +101,7 @@ export function parseFacetData(model: FacetModel): DataComponent {
     calculate: formula.parseFacet(model),
     timeUnit: timeUnit.parseFacet(model),
     summary: summary.parseFacet(model),
-    stackScale: stackScale.parseFacet(model),
-    colorRank: colorRank.parseFacet(model)
+    stackScale: stackScale.parseFacet(model)
   };
 }
 
@@ -126,8 +120,7 @@ export function parseLayerData(model: LayerModel): DataComponent {
     calculate: formula.parseLayer(model),
     timeUnit: timeUnit.parseLayer(model),
     summary: summary.parseLayer(model),
-    stackScale: stackScale.parseLayer(model),
-    colorRank: colorRank.parseLayer(model)
+    stackScale: stackScale.parseLayer(model)
   };
 }
 
@@ -156,21 +149,13 @@ export function assembleData(model: Model, data: VgData[]) {
   if (data.length > 0) {
     const dataTable = data[data.length - 1];
 
-    // color rank
-    const colorRankTransform = colorRank.assemble(component.colorRank);
-    if (colorRankTransform.length > 0) {
-      dataTable.transform = (dataTable.transform || []).concat(colorRankTransform);
-    }
-
     // nonPositiveFilter
     const nonPositiveFilterTransform = nonPositiveFilter.assemble(component.nonPositiveFilter);
     if (nonPositiveFilterTransform.length > 0) {
       dataTable.transform = (dataTable.transform || []).concat(nonPositiveFilterTransform);
     }
   } else {
-    if (keys(component.colorRank).length > 0) {
-      throw new Error('Invalid colorRank not merged');
-    } else if (keys(component.nonPositiveFilter).length > 0) {
+    if (keys(component.nonPositiveFilter).length > 0) {
       throw new Error('Invalid nonPositiveFilter not merged');
     }
   }

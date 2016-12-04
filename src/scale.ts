@@ -22,6 +22,9 @@ export namespace ScaleType {
   export const ORDINAL_LOOKUP: 'ordinal' = 'ordinal';
   export const POINT: 'point' = 'point';
   export const BAND: 'band' = 'band';
+
+  // Ordinal color scale
+  export const INDEX: 'index' = 'index';
 }
 
 export type ScaleType = typeof ScaleType.LINEAR |
@@ -29,7 +32,7 @@ export type ScaleType = typeof ScaleType.LINEAR |
   typeof ScaleType.TIME | typeof ScaleType.UTC |
   // TODO: add 'quantize', 'quantile', 'threshold' back when we really support them
   typeof ScaleType.SEQUENTIAL | // typeof ScaleType.QUANTILE | typeof ScaleType.QUANTIZE | typeof ScaleType.THRESHOLD |
-  typeof ScaleType.ORDINAL_LOOKUP | typeof ScaleType.POINT | typeof ScaleType.BAND;
+  typeof ScaleType.ORDINAL_LOOKUP | typeof ScaleType.POINT | typeof ScaleType.BAND | typeof ScaleType.INDEX;
 
 export const SCALE_TYPES: ScaleType[] = [
   // Continuous - Quantitative
@@ -48,7 +51,7 @@ const CONTINUOUS_TO_CONTINUOUS_INDEX = toSet(CONTINUOUS_TO_CONTINUOUS_SCALES);
 export const CONTINUOUS_DOMAIN_SCALES: ScaleType[] = CONTINUOUS_TO_CONTINUOUS_SCALES.concat(['sequential' /* TODO add 'quantile', 'quantize', 'threshold'*/]);
 const CONTINUOUS_DOMAIN_INDEX = toSet(CONTINUOUS_DOMAIN_SCALES);
 
-export const DISCRETE_DOMAIN_SCALES: ScaleType[] = ['ordinal', 'point', 'band'];
+export const DISCRETE_DOMAIN_SCALES: ScaleType[] = ['ordinal', 'point', 'band', 'index'];
 const DISCRETE_DOMAIN_INDEX = toSet(DISCRETE_DOMAIN_SCALES);
 
 export const TIME_SCALE_TYPES: ScaleType[] = ['time', 'utc'];
@@ -232,7 +235,7 @@ export function scaleTypeSupportProperty(scaleType: ScaleType, propName: string)
       return contains(['point', 'band'], scaleType);
     case 'scheme':
       // ordinal can use nominal color scheme, sequential can use sequential color scheme
-      return contains(['ordinal', 'sequential'], scaleType);
+      return contains(['ordinal', 'sequential', 'index'], scaleType);
     case 'clamp':
       return isContinuousToContinuous(scaleType) || scaleType === 'sequential';
     case 'nice':

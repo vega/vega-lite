@@ -5,11 +5,12 @@ import {FieldDef} from '../fielddef';
 import {Legend} from '../legend';
 import {title as fieldTitle} from '../fielddef';
 import {AREA, BAR, TICK, TEXT, LINE, POINT, CIRCLE, SQUARE} from '../mark';
-import {ORDINAL, TEMPORAL} from '../type';
+import {hasContinuousDomain} from '../scale';
+import {TEMPORAL} from '../type';
 import {extend, keys, without, Dict} from '../util';
 
 import {applyMarkConfig, FILL_STROKE_CONFIG, numberFormat, timeFormatExpression} from './common';
-import {COLOR_LEGEND, COLOR_LEGEND_LABEL} from './scale';
+import {BIN_LEGEND_SUFFIX, BIN_LEGEND_LABEL_SUFFIX} from './scale';
 import {UnitModel} from './unit';
 import {VgLegend, VgValueRef} from '../vega.schema';
 
@@ -29,25 +30,18 @@ export function parseLegendComponent(model: UnitModel): Dict<VgLegend> {
 }
 
 function getLegendDefWithScale(model: UnitModel, channel: Channel): VgLegend {
+  // For binned field with continuous scale, use a special scale so we can overrride the mark props and labels
+  const suffix = model.fieldDef(channel).bin && hasContinuousDomain(model.scale(channel).type) ? BIN_LEGEND_SUFFIX : '';
   switch (channel) {
     case COLOR:
-      const fieldDef = model.encoding().color;
-      const scale = model.scaleName(useColorLegendScale(fieldDef) ?
-        // To produce ordinal legend (list, rather than linear range) with correct labels:
-        // - For an ordinal field, provide an ordinal scale that maps rank values to field values
-        // - For a field with bin or timeUnit, provide an identity ordinal scale
-        // (mapping the field values to themselves)
-        COLOR_LEGEND :
-        COLOR
-      );
-
+      const scale = model.scaleName(COLOR) + suffix;
       return model.config().mark.filled ? { fill: scale } : { stroke: scale };
     case SIZE:
-      return { size: model.scaleName(SIZE) };
+      return { size: model.scaleName(SIZE) + suffix };
     case SHAPE:
-      return { shape: model.scaleName(SHAPE) };
+      return { shape: model.scaleName(SHAPE) + suffix };
     case OPACITY:
-      return { opacity: model.scaleName(OPACITY) };
+      return { opacity: model.scaleName(OPACITY) + suffix };
   }
   return null;
 }
@@ -112,11 +106,6 @@ export function values(legend: Legend) {
   return vals;
 }
 
-// we have to use special scales for ordinal or binned fields for the color channel
-export function useColorLegendScale(fieldDef: FieldDef) {
-  return fieldDef.type === ORDINAL || fieldDef.bin || fieldDef.timeUnit;
-}
-
 // TODO: should we rename this?
 export namespace encode {
   export function symbols(fieldDef: FieldDef, symbolsSpec: any, model: UnitModel, channel: Channel) {
@@ -164,12 +153,7 @@ export namespace encode {
     }
 
     let value: VgValueRef;
-    if (model.has(COLOR) && channel === COLOR) {
-      if (useColorLegendScale(fieldDef)) {
-        // for color legend scale, we need to override
-        value = { scale: model.scaleName(COLOR), field: 'data' };
-      }
-    } else if (model.encoding().color && model.encoding().color.value) {
+    if (model.encoding().color && model.encoding().color.value) {
       value = { value: model.encoding().color.value };
     }
 
@@ -212,6 +196,26 @@ export namespace encode {
       }
     }
 
+    if (fieldDef.bin && hasContinuousDomain(model.scale(channel).type)) {
+      const def = {
+        scale: model.scaleName(channel),
+        field: 'value'
+      };
+      switch (channel) {
+        case OPACITY:
+          symbols.opacity = def;
+          break;
+        case SIZE:
+          symbols.size = def;
+          break;
+        case COLOR:
+          symbols[filled ? 'fill' : 'stroke'] = def;
+          break;
+        default:
+          throw Error(`Legend for channel ${channel} not implemented`);
+      }
+    }
+
     if (legend.symbolStrokeWidth !== undefined) {
       symbols.strokeWidth = {value: legend.symbolStrokeWidth};
     }
@@ -227,28 +231,20 @@ export namespace encode {
 
     let labels:any = {};
 
-    if (channel === COLOR) {
-      if (fieldDef.type === ORDINAL) {
-        labelsSpec = extend({
-          text: {
-            scale: model.scaleName(COLOR_LEGEND),
-            field: 'data'
-          }
-        }, labelsSpec || {});
-      } else if (fieldDef.bin) {
-        labelsSpec = extend({
-          text: {
-            scale: model.scaleName(COLOR_LEGEND_LABEL),
-            field: 'data'
-          }
-        }, labelsSpec || {});
-      } else if (fieldDef.type === TEMPORAL) {
-        labelsSpec = extend({
-          text: {
-            signal: timeFormatExpression('datum["data"]', fieldDef.timeUnit, legend.format, legend.shortTimeLabels, config)
-          }
-        }, labelsSpec || {});
-      }
+    if (fieldDef.bin && hasContinuousDomain(model.scale(channel).type)) {
+      // Override label's text to map bin's quantitative value to range
+      labelsSpec = extend({
+        text: {
+          scale: model.scaleName(channel) + BIN_LEGEND_LABEL_SUFFIX,
+          field: 'value'
+        }
+      }, labelsSpec || {});
+    } else if (fieldDef.type === TEMPORAL) {
+      labelsSpec = extend({
+        text: {
+          signal: timeFormatExpression('datum.value', fieldDef.timeUnit, legend.format, legend.shortTimeLabels, config)
+        }
+      }, labelsSpec || {});
     }
 
     if (legend.labelAlign !== undefined) {

@@ -1,8 +1,9 @@
 import {autoMaxBins} from '../../bin';
-import {Channel, COLOR} from '../../channel';
+import {Channel} from '../../channel';
 import {field, FieldDef} from '../../fielddef';
 import {extend, vals, flatten, hash, Dict} from '../../util';
 import {VgTransform} from '../../vega.schema';
+import {hasDiscreteDomain} from '../../scale';
 
 import {FacetModel} from './../facet';
 import {LayerModel} from './../layer';
@@ -46,11 +47,9 @@ export namespace bin {
 
         transform.push(binTrans);
 
-        // If color ramp has type linear or time, we have to create new bin_range field
-        // with correct number format
-        const isOrdinalColor = model.hasDiscreteScale(channel) || channel === COLOR;
-        if (isOrdinalColor) {
-          // read format from axis or legend, if there is not format there then use config.numberFormat
+        const hasDiscreteDomainOrHasLegend = hasDiscreteDomain(model.scale(channel).type) || model.legend(channel);
+        if (hasDiscreteDomainOrHasLegend) {
+          // read format from axis or legend, if there is no format then use config.numberFormat
           const format = (model.axis(channel) || model.legend(channel) || {}).format ||
             model.config().numberFormat;
 
@@ -60,11 +59,11 @@ export namespace bin {
           transform.push({
             type: 'formula',
             as: field(fieldDef, { binSuffix: 'range' }),
-            expr: `${numberFormatExpr(startField, format)} + ' ' + ${numberFormatExpr(endField, format)}`
+            expr: `${numberFormatExpr(startField, format)} + ' - ' + ${numberFormatExpr(endField, format)}`
           });
         }
         // FIXME: current merging logic can produce redundant transforms when a field is binned for color and for non-color
-        const key = hash(bin) + '_' + fieldDef.field + 'oc:' + isOrdinalColor;
+        const key = hash(bin) + '_' + fieldDef.field + 'oc:' + hasDiscreteDomainOrHasLegend;
         binComponent[key] = transform;
       }
       return binComponent;

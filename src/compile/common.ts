@@ -7,7 +7,7 @@ import {Config} from '../config';
 import {FieldDef, field, OrderChannelDef} from '../fielddef';
 import {SortOrder} from '../sort';
 import {TimeUnit} from '../timeunit';
-import {QUANTITATIVE, ORDINAL} from '../type';
+import {QUANTITATIVE} from '../type';
 import {contains, union, Dict} from '../util';
 
 import {FacetModel} from './facet';
@@ -61,7 +61,7 @@ export function applyColorAndOpacity(p: any, model: UnitModel) {
   if (model.has(COLOR)) {
     colorValue = {
       scale: model.scaleName(COLOR),
-      field: model.field(COLOR, colorFieldDef.type === ORDINAL ? {prefix: 'rank'} : {})
+      field: model.field(COLOR)
     };
   } else if (colorFieldDef && colorFieldDef.value) {
     colorValue = { value: colorFieldDef.value };
@@ -70,7 +70,7 @@ export function applyColorAndOpacity(p: any, model: UnitModel) {
   if (model.has(OPACITY)) {
     opacityValue = {
       scale: model.scaleName(OPACITY),
-      field: model.field(OPACITY, opacityFieldDef.type === ORDINAL ? {prefix: 'rank'} : {})
+      field: model.field(OPACITY)
     };
   } else if (opacityFieldDef && opacityFieldDef.value) {
     opacityValue = { value: opacityFieldDef.value };
