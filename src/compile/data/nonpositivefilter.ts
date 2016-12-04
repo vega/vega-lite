@@ -50,6 +50,9 @@ export namespace nonPositiveFilter {
   }
 
   export function assemble(component: Dict<boolean>) {
+    if (!component) {
+      return [];
+    }
     return keys(component).filter((field) => {
       // Only filter fields (keys) with value = true
       return component[field];
