@@ -6,7 +6,6 @@ import {VgValueRef} from '../../vega.schema';
 
 import {applyColorAndOpacity} from '../common';
 import {UnitModel} from '../unit';
-import {RangeStep} from '../../scale';
 import * as ref from './valueref';
 
 export namespace tick {
@@ -36,7 +35,7 @@ export namespace tick {
     return p;
   }
 
-  function size(fieldDef: FieldDef, scaleName: string, scale: Scale, config: Config, scaleRangeStep: number | RangeStep): VgValueRef {
+  function size(fieldDef: FieldDef, scaleName: string, scale: Scale, config: Config, scaleRangeStep: number | null): VgValueRef {
     let defaultSize: number;
     if (config.tick.bandSize !== undefined) {
       defaultSize = config.tick.bandSize;

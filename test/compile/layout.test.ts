@@ -71,11 +71,11 @@ describe('compile/layout', () => {
       assert.equal(sizeExpr, 'max(datum["distinct_a"] - 0.3 + 2*0.15, 0) * 21');
     });
 
-    it('should return static cell size for ordinal x-scale with fit', () => {
+    it('should return static cell size for ordinal x-scale with null', () => {
       const model = parseUnitModel({
         mark: 'point',
         encoding: {
-          x: {field: 'a', type: 'ordinal', scale: {rangeStep: 'fit'}}
+          x: {field: 'a', type: 'ordinal', scale: {rangeStep: null}}
         }
       });
 
@@ -84,11 +84,11 @@ describe('compile/layout', () => {
     });
 
 
-    it('should return static cell size for ordinal y-scale with fit', () => {
+    it('should return static cell size for ordinal y-scale with null', () => {
       const model = parseUnitModel({
         mark: 'point',
         encoding: {
-          y: {field: 'a', type: 'ordinal', scale: {rangeStep: 'fit'}}
+          y: {field: 'a', type: 'ordinal', scale: {rangeStep: null}}
         }
       });
 
@@ -121,7 +121,7 @@ describe('compile/layout', () => {
 
         const sizeExpr = unitSizeExpr(model, X);
         assert.equal(sizeExpr, '205');
-        assert.equal(localLogger.warns[0], log.message.rangeStepOverridden(X));
+        assert.equal(localLogger.warns[0], log.message.rangeStepDropped(X));
       });
     });
 

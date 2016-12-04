@@ -5,7 +5,7 @@
     "x": {
       "field": "Origin",
       "type": "nominal",
-      "scale": {"rangeStep": "fit"}
+      "scale": {"rangeStep": null}
     },
     "y": {
       "aggregate": "count",
