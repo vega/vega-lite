@@ -120,7 +120,7 @@ export namespace message {
   }
 
   // Mark
-  export const BAR_WITH_POINT_SCALE_AND_RANGESTEP_FIT = 'Bar mark should not be used with point scale when rangeStep is fit. Please use band scale instead.';
+  export const BAR_WITH_POINT_SCALE_AND_RANGESTEP_NULL = 'Bar mark should not be used with point scale when rangeStep is null. Please use band scale instead.';
 
   export function unclearOrientContinuous(mark: Mark) {
     return 'Cannot clearly determine orientation for ' + mark + ' since both x and y channel encode continous fields. In this case, we use vertical by default';
@@ -152,8 +152,8 @@ export namespace message {
     return `Custom scale ranged not allowed for channel ${channel}`;
   }
 
-  export function rangeStepOverridden(channel: Channel) {
-    return `rangeStep for ${channel} overridden as top-level ${
+  export function rangeStepDropped(channel: Channel) {
+    return `rangeStep for ${channel} is dropped as top-level ${
       channel === X ? 'width' : 'height'} is provided.`;
   }
 

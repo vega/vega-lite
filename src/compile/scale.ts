@@ -7,7 +7,7 @@ import {SOURCE, STACKED_SCALE} from '../data';
 import {DateTime, isDateTime, timestamp} from '../datetime';
 import {ChannelDefWithScale, FieldDef, field} from '../fielddef';
 import {Mark, BAR, TEXT as TEXTMARK, RECT, MarkConfig, PointConfig} from '../mark';
-import {Scale, ScaleConfig, ScaleType, NiceTime, RANGESTEP_FIT, RangeStep, hasDiscreteDomain, scaleTypeSupportProperty, hasContinuousDomain} from '../scale';
+import {Scale, ScaleConfig, ScaleType, NiceTime, hasDiscreteDomain, scaleTypeSupportProperty, hasContinuousDomain} from '../scale';
 import {isSortField, SortOrder} from '../sort';
 import {StackOffset} from '../stack';
 import {TimeUnit} from '../timeunit';
@@ -358,8 +358,7 @@ export namespace defaultProperty {
     if (contains([X, Y], channel)) {
       // Use band ordinal scale for x/y scale in one of the following cases:
       if (
-        // 1) the mark is bar and the scale's bandWidth is 'fit'.
-        // Basically, for fit mode
+        // 1) the mark is bar and the scale cannot have range step (fit mode).
         (mark === BAR && !canHaveRangeStep) ||
         // 2) the mark is rect as the rect mark should fit into a band.
         mark === RECT
@@ -449,10 +448,11 @@ export namespace defaultProperty {
 
 
 // TODO: determine where this should go
-export function rangeStep(rangeStep: number | RangeStep, topLevelSize: number | undefined, mark: Mark | undefined,
+export function rangeStep(rangeStep: number | null, topLevelSize: number | undefined, mark: Mark | undefined,
     channel: Channel, scaleConfig: ScaleConfig): number {
   if (topLevelSize === undefined) {
-    if (rangeStep === RANGESTEP_FIT || rangeStep === null) {
+    // If null, we really want to make rangeStep fit width/height.  (If undefined, use default value.)
+    if (rangeStep === null) {
       return undefined; // no rangeStep
     } else if (rangeStep !== undefined) {
       // Use manually specified rangeStep
@@ -461,16 +461,16 @@ export function rangeStep(rangeStep: number | RangeStep, topLevelSize: number | 
       // only use config by default for X and Y
       if (channel === X && mark === TEXTMARK) {
         return scaleConfig.textXRangeStep;
-      } else if (scaleConfig.rangeStep !== RANGESTEP_FIT) {
+      } else if (scaleConfig.rangeStep) {
         return scaleConfig.rangeStep;
       }
     }
   }
 
   // If top-level is specified, use rangeStep fit
-  if (rangeStep && rangeStep !== RANGESTEP_FIT) {
-    // If top-level size is specified, we override specified rangeStep with "fit"
-    log.warn(log.message.rangeStepOverridden(channel));
+  if (rangeStep && rangeStep !== null) {
+    // If top-level size is specified, we drop specified rangeStep.
+    log.warn(log.message.rangeStepDropped(channel));
   }
   return undefined;
 }
@@ -640,7 +640,7 @@ export function rangeMixins(scale: Scale, model: Model, channel: Channel):
 
   const fieldDef = model.fieldDef(channel);
 
-  if (scale.rangeStep && scale.rangeStep !== RANGESTEP_FIT) {
+  if (scale.rangeStep) {
     /* istanbul ignore else: should never reach there */
     if (scale.type === ScaleType.BAND || scale.type === ScaleType.POINT) {
       return {rangeStep: scale.rangeStep};
@@ -779,7 +779,7 @@ function sizeRangeMax(mark: Mark, model: Model,  config: Config) {
 function barTickRangeStep(model: Model, markConfig: MarkConfig) {
   const dimension = markConfig.orient === 'horizontal' ? Y : X;
   const step = model.scale(dimension).rangeStep;
-  if (step !== undefined && step !== RANGESTEP_FIT) {
+  if (step) {
     return step;
   }
   // TODO(#1168): proportional rangeStep for fit mode
@@ -794,7 +794,7 @@ function pointRangeStep(model: UnitModel, scaleConfig: ScaleConfig): number {
   if (model.scale(X)) {
     const xStep = model.scale(X).rangeStep;
     // TODO(#1168): proportional rangeStep for fit mode
-    if (xStep && xStep !== RANGESTEP_FIT) {
+    if (xStep) {
       rangeSteps.push(xStep);
     }
   }
@@ -802,7 +802,7 @@ function pointRangeStep(model: UnitModel, scaleConfig: ScaleConfig): number {
   if (model.scale(Y)) {
     const yStep = model.scale(Y).rangeStep;
     // TODO(#1168): proportional rangeStep for fit mode
-    if (yStep && yStep !== RANGESTEP_FIT) {
+    if (yStep) {
       rangeSteps.push(yStep);
     }
   }
@@ -810,7 +810,7 @@ function pointRangeStep(model: UnitModel, scaleConfig: ScaleConfig): number {
   if (rangeSteps.length > 0) {
     return Math.min.apply(null, rangeSteps);
   }
-  if (scaleConfig.rangeStep && scaleConfig.rangeStep !== RANGESTEP_FIT) {
+  if (scaleConfig.rangeStep) {
     return scaleConfig.rangeStep;
   }
   return 21;
