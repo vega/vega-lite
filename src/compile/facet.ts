@@ -42,6 +42,7 @@ export class FacetModel extends Model {
     const facet  = this._facet = this._initFacet(spec.facet);
     this._scale  = this._initScaleAndSpacing(facet, config, child);
     this._axis   = this._initAxis(facet, config, child);
+    this._legend = {};
   }
 
   private _initConfig(specConfig: Config, parent: Model) {
