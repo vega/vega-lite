@@ -50,14 +50,17 @@ export namespace nonPositiveFilter {
   }
 
   export function assemble(component: Dict<boolean>) {
-    return keys(component).filter((field) => {
-      // Only filter fields (keys) with value = true
-      return component[field];
-    }).map(function(field) {
-      return {
-        type: 'filter',
-        expr: 'datum["' + field + '"] > 0'
-      };
-    });
+    if (component) {
+      return keys(component).filter((field) => {
+        // Only filter fields (keys) with value = true
+        return component[field];
+      }).map(function(field) {
+        return {
+          type: 'filter',
+          expr: 'datum["' + field + '"] > 0'
+        };
+      });
+    }
+    return [];
   }
 }
