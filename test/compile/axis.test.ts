@@ -479,7 +479,7 @@ describe('Axis', function() {
       const labels = axis.encode.labels(parseUnitModel({
           mark: "point",
           encoding: {
-            x: {field: 'a', type: "ordinal", axis: {labels: false}}
+            x: {field: 'a', type: "ordinal", axis: {label: false}}
           }
         }), X, {}, null);
       assert.deepEqual(labels.text, '');

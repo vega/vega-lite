@@ -291,7 +291,7 @@ export namespace encode {
     const axis = model.axis(channel);
     const config = model.config();
 
-    if (!axis.labels) {
+    if (!axis.label) {
       return extend({
         text: ''
       }, labelsSpec);
