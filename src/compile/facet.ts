@@ -144,6 +144,10 @@ export class FacetModel extends Model {
     return false;
   }
 
+  public facetedTable(): string {
+    return 'faceted-' + this.name('data');
+  }
+
   public dataTable(): string {
     return (this.hasSummary() ? SUMMARY : SOURCE) + '';
   }
@@ -210,15 +214,15 @@ export class FacetModel extends Model {
         name: this.name('cell'),
         type: 'group',
         from: extend(
-          this.dataTable() ? {data: this.dataTable()} : {},
           {
-            transform: [{
-              type: 'facet',
+            facet: {
+              name: this.facetedTable(),
+              data: this.dataTable(),
               groupby: [].concat(
                 this.has(ROW) ? [this.field(ROW)] : [],
                 this.has(COLUMN) ? [this.field(COLUMN)] : []
               )
-            }]
+            }
           }
         ),
         encode: {
@@ -457,8 +461,11 @@ function getRowGridGroups(model: Model): any[] { // TODO: VgMarks
     name: model.name('row-grid'),
     type: 'rule',
     from: {
-      data: model.dataTable(),
-      transform: [{type: 'facet', groupby: [model.field(ROW)]}]
+      facet: {
+        name: model.dataTable(),
+        data: model.dataTable(),
+        groupby: [model.field(ROW)]
+      }
     },
     encode: {
       update: {
@@ -498,8 +505,10 @@ function getColumnGridGroups(model: Model): any { // TODO: VgMarks
     name: model.name('column-grid'),
     type: 'rule',
     from: {
-      data: model.dataTable(),
-      transform: [{type: 'facet', groupby: [model.field(COLUMN)]}]
+      facet: {
+        data: model.dataTable(),
+        groupby: [model.field(COLUMN)]
+      }
     },
     encode: {
       update: {

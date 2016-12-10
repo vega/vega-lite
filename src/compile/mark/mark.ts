@@ -16,6 +16,8 @@ import {rect} from './rect';
 import {rule} from './rule';
 import {text} from './text';
 import {tick} from './tick';
+
+import {FacetModel} from '../facet';
 import {UnitModel} from '../unit';
 
 const markCompiler = {
@@ -39,11 +41,18 @@ export function parseMark(model: UnitModel): any[] {
   }
 }
 
+// FIXME: maybe this should not be here.  Need re-think and refactor, esp. after having all composition in.
+function dataFrom(model: UnitModel): string {
+  const parent = model.parent();
+  if (parent && parent.isFacet()) {
+    return (parent as FacetModel).facetedTable();
+  }
+  return model.dataTable();
+}
+
 function parsePathMark(model: UnitModel) { // TODO: extract this into compilePathMark
   const mark = model.mark();
   // TODO: replace this with more general case for composition
-  const isFaceted = model.parent() && model.parent().isFacet();
-  const dataFrom = {data: model.dataTable()};
   const details = detailFields(model);
 
   let pathMarks: any = [
@@ -54,8 +63,9 @@ function parsePathMark(model: UnitModel) { // TODO: extract this into compilePat
         // If has facet, `from.data` will be added in the cell group.
         // If has subfacet for line/area group, `from.data` will be added in the outer subfacet group below.
         // If has no subfacet, add from.data.
-        isFaceted || details.length > 0 ? {} : dataFrom,
+        details.length > 0 ? {} : {data: dataFrom(model)},
 
+        // FIXME(@domoritz): this has to be extracted as inline data source before doing data transform
         // sort transform
         {transform: [{ type: 'sort', by: sortPathBy(model)}]}
       ),
@@ -64,6 +74,7 @@ function parsePathMark(model: UnitModel) { // TODO: extract this into compilePat
   ];
 
   if (details.length > 0) { // have level of details - need to facet line into subgroups
+    // FIXME: replace this with facet directive
     const facetTransform = { type: 'facet', groupby: details };
     const transform: any[] = model.stack() ?
       // For stacked area / line, we need to impute missing tuples and stack values
@@ -79,12 +90,10 @@ function parsePathMark(model: UnitModel) { // TODO: extract this into compilePat
     return [{
       name: model.name('pathgroup'),
       type: 'group',
-      from: extend(
-        // If has facet, `from.data` will be added in the cell group.
-        // Otherwise, add it here.
-        isFaceted ? {} : dataFrom,
-        {transform: transform}
-      ),
+      from: {
+        data: dataFrom(model),
+        transform: transform
+      },
       encode: {
         update: {
           width: { field: { group: 'width' } },
@@ -100,8 +109,6 @@ function parsePathMark(model: UnitModel) { // TODO: extract this into compilePat
 
 function parseNonPathMark(model: UnitModel) {
   const mark = model.mark();
-  const isFaceted = model.parent() && model.parent().isFacet();
-  const dataFrom = {data: model.dataTable()};
 
   let marks: any[] = []; // TODO: vgMarks
   if (mark === TEXTMARK &&
@@ -109,42 +116,28 @@ function parseNonPathMark(model: UnitModel) {
     model.config().text.applyColorToBackground && !model.has(X) && !model.has(Y)
   ) {
     // add background to 'text' marks if has color
-    marks.push(extend(
-      {
-        name: model.name('background'),
-        type: 'rect'
-      },
-      // If has facet, `from.data` will be added in the cell group.
-      // Otherwise, add it here.
-      isFaceted ? {} : {from: dataFrom},
-      // Properties
-      { encode: { update: text.background(model) } }
-    ));
+    marks.push({
+      name: model.name('background'),
+      type: 'rect',
+      from: {data: dataFrom(model)},
+      encode: { update: text.background(model) }
+    });
   }
 
-  marks.push(extend(
-    {
-      name: model.name('marks'),
-      type: markCompiler[mark].markType()
-    },
-    // Add `from` if needed
-    (!isFaceted || model.stack() || model.has(ORDER)) ? {
-      from: extend(
-        // If faceted, `from.data` will be added in the cell group.
-        // Otherwise, add it here
-        isFaceted ? {} : dataFrom,
-        // `from.transform`
-        model.stack() ? // Stacked Chart need stack transform
-          { transform: stackTransforms(model, false) } :
-        model.has(ORDER) ?
-          // if non-stacked, detail field determines the layer order of each mark
-          { transform: [{type:'sort', by: sortBy(model)}] } :
-          {}
-      )
-    } : {},
-    // properties groups
-    { encode: { update: markCompiler[mark].properties(model) } }
-  ));
+  marks.push({
+    name: model.name('marks'),
+    type: markCompiler[mark].markType(),
+    from: extend(
+      {data: dataFrom(model)},
+      model.stack() ? // Stacked Chart need stack transform
+        { transform: stackTransforms(model, false) } :
+      model.has(ORDER) ?
+        // if non-stacked, detail field determines the layer order of each mark
+        { transform: [{type:'sort', by: sortBy(model)}] } :
+        {}
+    ),
+    encode: { update: markCompiler[mark].properties(model)}
+  });
 
   return marks;
 }
