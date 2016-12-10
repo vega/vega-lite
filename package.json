@@ -77,7 +77,7 @@
     "source-map-support": "~0.4.6",
     "tsify": "~2.0.2",
     "tslint": "~3.15.1",
-    "typescript": "^2.0.10",
+    "typescript": "2.0.10",
     "typescript-json-schema": "~0.3.3",
     "uglify-js": "~2.7.4",
     "vega": "~3.0.0-beta.5",
