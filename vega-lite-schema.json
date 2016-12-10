@@ -2463,7 +2463,7 @@
                     ]
                 },
                 "padding": {
-                    "description": "Applies spacing among ordinal elements in the scale range. The actual effect depends on how the scale is configured. If the __points__ parameter is `true`, the padding value is interpreted as a multiple of the spacing between points. A reasonable value is 1.0, such that the first and last point will be offset from the minimum and maximum value by half the distance between points. Otherwise, padding is typically in the range [0, 1] and corresponds to the fraction of space in the range interval to allocate to padding. A value of 0.5 means that the range band width will be equal to the padding width. For more, see the [D3 ordinal scale documentation](https://github.com/mbostock/d3/wiki/Ordinal-Scales).",
+                    "description": "Applies spacing among ordinal elements in the scale range. The actual effect depends on how the scale is configured. If the __points__ parameter is `true`, the padding value is interpreted as a multiple of the spacing between points. A reasonable value is 1.0, such that the first and last point will be offset from the minimum and maximum value by half the distance between points. Otherwise, padding is typically in the range [0, 1] and corresponds to the fraction of space in the range interval to allocate to padding. A value of 0.5 means that the band size will be equal to the padding width. For more, see the [D3 ordinal scale documentation](https://github.com/mbostock/d3/wiki/Ordinal-Scales).",
                     "type": "number"
                 },
                 "range": {
@@ -2504,6 +2504,10 @@
                 "scheme": {
                     "description": "Color scheme that determines output color of a color scale.",
                     "type": "string"
+                },
+                "spacing": {
+                    "description": "(For `row` and `column` only) A pixel value for padding between cells in the trellis plots.",
+                    "type": "number"
                 },
                 "type": {
                     "$ref": "#/definitions/ScaleType"
@@ -2554,7 +2558,7 @@
                             "type": "number"
                         }
                     ],
-                    "description": "Default band size for (1) `y` ordinal scale,\nand (2) `x` ordinal scale when the mark is not `text`.",
+                    "description": "Default range step for (1) `y` ordinal scale,\nand (2) `x` ordinal scale when the mark is not `text`.",
                     "minimum": 0
                 },
                 "round": {
@@ -2562,7 +2566,7 @@
                     "type": "boolean"
                 },
                 "textXRangeStep": {
-                    "description": "Default band width for `x` ordinal scale when is mark is `text`.",
+                    "description": "Default range step for `x` ordinal scale when is mark is `text`.",
                     "minimum": 0,
                     "type": "number"
                 },
