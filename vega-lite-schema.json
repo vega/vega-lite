@@ -2463,7 +2463,21 @@
                     ]
                 },
                 "padding": {
-                    "description": "Applies spacing among ordinal elements in the scale range. The actual effect depends on how the scale is configured. If the __points__ parameter is `true`, the padding value is interpreted as a multiple of the spacing between points. A reasonable value is 1.0, such that the first and last point will be offset from the minimum and maximum value by half the distance between points. Otherwise, padding is typically in the range [0, 1] and corresponds to the fraction of space in the range interval to allocate to padding. A value of 0.5 means that the band size will be equal to the padding width. For more, see the [D3 ordinal scale documentation](https://github.com/mbostock/d3/wiki/Ordinal-Scales).",
+                    "description": "Applies spacing among ordinal elements in the scale range. The actual effect depends on how the scale is configured. If the __points__ parameter is `true`, the padding value is interpreted as a multiple of the spacing between points. A reasonable value is 1.0, such that the first and last point will be offset from the minimum and maximum value by half the distance between points. Otherwise, padding is typically in the range [0, 1] and corresponds to the fraction of space in the range interval to allocate to padding. A value of 0.5 means that the band size will be equal to the padding width. For more, see the [D3 ordinal scale documentation](https://github.com/mbostock/d3/wiki/Ordinal-Scales).\nA convenience property for setting the inner and outer padding to the same value.",
+                    "maximum": 1,
+                    "minimum": 0,
+                    "type": "number"
+                },
+                "paddingInner": {
+                    "description": "The inner padding of a band scale determines the ratio of the range that is reserved for blank space between bands. (For point scale, this property is ignored.)",
+                    "maximum": 1,
+                    "minimum": 0,
+                    "type": "number"
+                },
+                "paddingOuter": {
+                    "description": "The outer padding determines the ratio of the range that is reserved for blank space before the first and after the last bands/points.",
+                    "maximum": 1,
+                    "minimum": 0,
                     "type": "number"
                 },
                 "range": {
@@ -2525,8 +2539,14 @@
         },
         "ScaleConfig": {
             "properties": {
-                "bandPadding": {
-                    "description": "Default padding for `x` and `y` band-ordinal scales.",
+                "bandPaddingInner": {
+                    "description": "Default inner padding for `x` and `y` band-ordinal scales.",
+                    "maximum": 1,
+                    "minimum": 0,
+                    "type": "number"
+                },
+                "bandPaddingOuter": {
+                    "description": "Default outer padding for `x` and `y` band-ordinal scales.\nIf not specified, by default, band scale's paddingOuter is paddingInner/2.",
                     "maximum": 1,
                     "minimum": 0,
                     "type": "number"
@@ -2541,7 +2561,7 @@
                     "type": "number"
                 },
                 "pointPadding": {
-                    "description": "Default padding for `x` and `y` point-ordinal scales.",
+                    "description": "Default outer padding for `x` and `y` point-ordinal scales.",
                     "maximum": 1,
                     "minimum": 0,
                     "type": "number"

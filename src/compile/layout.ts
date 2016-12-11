@@ -1,7 +1,7 @@
 
 import {Channel, X, Y, ROW, COLUMN} from '../channel';
 import {LAYOUT} from '../data';
-import {ScaleType, hasDiscreteDomain} from '../scale';
+import {hasDiscreteDomain} from '../scale';
 import {Formula} from '../transform';
 import {extend, keys, StringSet} from '../util';
 import {VgData} from '../vega.schema';
@@ -85,10 +85,19 @@ export function unitSizeExpr(model: UnitModel, channel: Channel): string {
     if (hasDiscreteDomain(scale.type) && scale.rangeStep) {
       // If the spec has top level size or specified rangeStep = fit, it will be undefined here.
 
-      let layoutOffset = scale.type === ScaleType.BAND ? 2 * scale.padding : 1;
-      return '(' + cardinalityExpr(model, channel) +
-        ' + ' + layoutOffset +
-        ') * ' + scale.rangeStep;
+      const cardinality = cardinalityExpr(model, channel);
+      const paddingOuter = scale.paddingOuter !== undefined ? scale.paddingOuter : scale.padding;
+      const paddingInner = scale.paddingInner !== undefined ? scale.paddingInner : scale.padding;
+
+      let space = cardinality +
+        (paddingInner ? ` - ${paddingInner}` : '') +
+        (paddingOuter ? ` + 2*${paddingOuter}` : '');
+
+      // This formula is equivalent to
+      // space = count - inner + outer * 2
+      // range = rangeStep * (space > 0 ? space : 0)
+      // in https://github.com/vega/vega-encode/blob/master/src/Scale.js#L112
+      return `max(${space}, 0) * ${scale.rangeStep}`;
     }
   }
   return (channel === X ? model.width : model.height) + '';
