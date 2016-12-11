@@ -7,7 +7,7 @@ import {UnitModel} from './../unit';
 import {sortParams} from '../common';
 import {STACKED, SUMMARY} from '../../data';
 import {has} from '../../encoding';
-import {FieldDef, field} from '../../fielddef';
+import {FieldDef, OrderChannelDef, field} from '../../fielddef';
 import {hasDiscreteDomain} from '../../scale';
 import {StackOffset} from '../../stack';
 import {contains, isArray} from '../../util';
@@ -59,14 +59,15 @@ function getStackByFields(model: UnitModel) {
   const stackProperties = model.stack();
 
   return stackProperties.stackByChannels.reduce(function(fields, channel) {
-    const channelEncoding = encoding[channel];
+    const channelDef = encoding[channel];
     if (has(encoding, channel)) {
-      if (isArray(channelEncoding)) {
-        channelEncoding.forEach(function(fieldDef) {
+      if (isArray(channelDef)) {
+        const cEnc: (FieldDef | OrderChannelDef)[] = channelDef;
+        cEnc.forEach(fieldDef => {
           fields.push(field(fieldDef));
         });
       } else {
-        const fieldDef: FieldDef = channelEncoding;
+        const fieldDef: FieldDef = channelDef;
         const scale = model.scale(channel);
         const _field = field(fieldDef, {
           binSuffix: scale && hasDiscreteDomain(scale.type) ? 'range' : 'start'
