@@ -229,6 +229,7 @@ export class FacetModel extends Model {
           update: getFacetGroupProperties(this)
         }
       },
+      // FIXME: move this call to assembleMarks()
       // Call child's assembleGroup to add marks, scales, axes, and legends.
       // Note that we can call child's assembleGroup() here because parseMark()
       // is the last method in compile() and thus the child is completely compiled
