@@ -129,6 +129,11 @@ export interface Legend extends LegendConfig {
   values?: number[] | string[] | DateTime[];
 
   shape?: Shape;
+
+  /**
+   * The type of the legend. Use `symbol` to create a discrete legend and `gradient` for a continuous color gradient.
+   */
+  type?: 'symbol' | 'gradient';
 }
 
 export const defaultLegendConfig: LegendConfig = {
