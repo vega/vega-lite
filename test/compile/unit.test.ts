@@ -118,8 +118,8 @@ describe('UnitModel', function() {
       const model = parseUnitModel({
         mark: 'point',
         encoding: {
-          x: {field: 'a', type: 'ordinal', scale: {rangeStep: 'fit'}},
-          y: {field: 'b', type: 'ordinal', scale: {rangeStep: 'fit'}}
+          x: {field: 'a', type: 'ordinal', scale: {rangeStep: null}},
+          y: {field: 'b', type: 'ordinal', scale: {rangeStep: null}}
         },
         config: {cell: {width: 123, height: 456}}
       });

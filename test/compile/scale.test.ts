@@ -8,7 +8,7 @@ import {parseUnitModel} from '../util';
 
 import * as log from '../../src/log';
 import {X, Y, SHAPE, DETAIL, ROW, COLUMN, Channel, NONSPATIAL_SCALE_CHANNELS} from '../../src/channel';
-import {RANGESTEP_FIT, ScaleType, defaultScaleConfig} from '../../src/scale';
+import {ScaleType, defaultScaleConfig} from '../../src/scale';
 import {Mark, POINT, RECT, BAR, TEXT} from '../../src/mark';
 import * as mark from '../../src/mark';
 import {ExtendedUnitSpec} from '../../src/spec';
@@ -292,21 +292,21 @@ describe('Scale', function() {
   });
 
   describe('rangeStep()', () => {
-
-    it('should return undefined if rangeStep spec is fit', () => {
-      const size = rangeStep(RANGESTEP_FIT, 180, POINT, X, defaultScaleConfig);
+    it('should return undefined if rangeStep spec is null', () => {
+      const size = rangeStep(null, undefined, POINT, X, defaultScaleConfig);
       assert.deepEqual(size, undefined);
     });
 
-    it('should return undefined if top-level size is provided for ordinal scale', () => {
-      const size = rangeStep(undefined, 180, POINT, X, defaultScaleConfig);
+    it('should return undefined if top-level size is provided for ordinal scale and drop specified rangeStep', log.wrap((localLogger)=> {
+      const size = rangeStep(21, 180, POINT, X, defaultScaleConfig);
       assert.deepEqual(size, undefined);
-    });
+      assert.equal(localLogger.warns[0], log.message.rangeStepDropped('x'));
+    }));
 
     it('should return undefined if top-level size is provided for ordinal scale and throw warning if rangeStep is specified', log.wrap((logger) => {
       const size = rangeStep(21, 180, POINT, X, defaultScaleConfig);
       assert.deepEqual(size, undefined);
-      assert.equal(logger.warns[0], log.message.rangeStepOverridden(X));
+      assert.equal(logger.warns[0], log.message.rangeStepDropped(X));
     }));
 
     it('should return provided rangeStep for ordinal scale', () => {

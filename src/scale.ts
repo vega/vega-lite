@@ -83,10 +83,6 @@ export namespace NiceTime {
 export type NiceTime = typeof NiceTime.SECOND | typeof NiceTime.MINUTE | typeof NiceTime.HOUR
   | typeof NiceTime.DAY | typeof NiceTime.WEEK | typeof NiceTime.MONTH | typeof NiceTime.YEAR;
 
-export const RANGESTEP_FIT: 'fit' = 'fit';
-export type RangeStep = typeof RANGESTEP_FIT;
-
-
 export interface ScaleConfig {
   /**
    * If true, rounds numeric output values to integers.
@@ -107,9 +103,11 @@ export interface ScaleConfig {
   /**
    * Default range step for (1) `y` ordinal scale,
    * and (2) `x` ordinal scale when the mark is not `text`.
+   *
    * @minimum 0
+   * @nullable
    */
-  rangeStep?: number | RangeStep;
+  rangeStep?: number | null;
 
   /**
    * Default inner padding for `x` and `y` band-ordinal scales.
@@ -180,9 +178,16 @@ export interface Scale {
 
   // ordinal
   /**
+   * The distance between the starts of adjacent bands or points in band or point scales.
+   * If this value is `null`, this will be determined to fit width (for x) or height (for y) of the plot.
+   * If both width and x-scale's rangeStep is provided, rangeStep will be dropped.  (The same rule is applied for height and y-scale's rangeStep.)
+   *
+   * __Default Rule:__ for `x` ordinal scale of a `text` mark, derived from [scale config](config.html#scale-config)'s `textXRangeStep`. Otherwise, derived from [scale config](config.html#scale-config)'s `rangeStep`.
+   * __Warning:__ If the cardinality of the scale domain is too high, the rangeStep might become less than one pixel and the mark might not appear correctly.
    * @minimum 0
+   * @nullable
    */
-  rangeStep?: number | RangeStep;
+  rangeStep?: number | null;
 
   /**
    * Color scheme that determines output color of a color scale.

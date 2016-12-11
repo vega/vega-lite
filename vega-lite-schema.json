@@ -2500,16 +2500,14 @@
                 "rangeStep": {
                     "anyOf": [
                         {
-                            "enum": [
-                                "fit"
-                            ],
-                            "type": "string"
+                            "description": "The distance between the starts of adjacent bands or points in band or point scales.\nIf this value is `null`, this will be determined to fit width (for x) or height (for y) of the plot.\nIf both width and x-scale's rangeStep is provided, rangeStep will be dropped.  (The same rule is applied for height and y-scale's rangeStep.)\n\n__Default Rule:__ for `x` ordinal scale of a `text` mark, derived from [scale config](config.html#scale-config)'s `textXRangeStep`. Otherwise, derived from [scale config](config.html#scale-config)'s `rangeStep`.\n__Warning:__ If the cardinality of the scale domain is too high, the rangeStep might become less than one pixel and the mark might not appear correctly.",
+                            "minimum": 0,
+                            "type": "number"
                         },
                         {
-                            "type": "number"
+                            "type": "null"
                         }
-                    ],
-                    "minimum": 0
+                    ]
                 },
                 "round": {
                     "description": "If true, rounds numeric output values to integers. This can be helpful for snapping to the pixel grid.\n\n__Default Rule:__ `true` for `\"x\"`, `\"y\"`, `\"row\"`, `\"column\"` channels if scale config's `round` is `true`; `false` otherwise.",
@@ -2569,17 +2567,14 @@
                 "rangeStep": {
                     "anyOf": [
                         {
-                            "enum": [
-                                "fit"
-                            ],
-                            "type": "string"
+                            "description": "Default range step for (1) `y` ordinal scale,\nand (2) `x` ordinal scale when the mark is not `text`.",
+                            "minimum": 0,
+                            "type": "number"
                         },
                         {
-                            "type": "number"
+                            "type": "null"
                         }
-                    ],
-                    "description": "Default range step for (1) `y` ordinal scale,\nand (2) `x` ordinal scale when the mark is not `text`.",
-                    "minimum": 0
+                    ]
                 },
                 "round": {
                     "description": "If true, rounds numeric output values to integers.\nThis can be helpful for snapping to the pixel grid.\n(Only available for `x`, `y`, `size`, `row`, and `column` scales.)",
