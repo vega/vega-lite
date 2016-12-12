@@ -5,7 +5,7 @@
     "filter": "datum.year == 2000",
     "calculate": [
       {
-        "field": "gender",
+        "as": "gender",
         "expr": "datum.sex == 2 ? \"Female\" : \"Male\""
       }
     ]
