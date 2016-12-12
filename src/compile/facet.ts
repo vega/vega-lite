@@ -258,8 +258,8 @@ export class FacetModel extends Model {
     // TODO: with nesting, we might need to consider calling child
     // this.child().parseAxisGroup();
 
-    const xAxisGroup = parseAxisGroup(this, X);
-    const yAxisGroup = parseAxisGroup(this, Y);
+    const xAxisGroup = parseAxisGroups(this, X);
+    const yAxisGroup = parseAxisGroups(this, Y);
 
     this.component.axisGroup = extend(
       xAxisGroup ? {x: xAxisGroup} : {},
@@ -399,7 +399,7 @@ export function assembleAxesGroupData(model: FacetModel, data: VgData[]) {
   return data;
 }
 
-function parseAxisGroup(model: FacetModel, channel: Channel) {
+function parseAxisGroups(model: FacetModel, channel: 'x' | 'y') {
   // TODO: add a case where inner spec is not a unit (facet/layer/concat)
   let axisGroup: any = null;
 
@@ -409,7 +409,7 @@ function parseAxisGroup(model: FacetModel, channel: Channel) {
       if (true) { // the channel has shared axes
 
         // add a group for the shared axes
-        axisGroup = channel === X ? getXAxesGroup(model) : getYAxesGroup(model);
+        axisGroup = getSharedAxisGroup(model, channel);
 
         if (child.axis(channel) && gridShow(child, channel)) { // show inner grid
           // add inner axis (aka axis that shows only grid to )
@@ -426,80 +426,64 @@ function parseAxisGroup(model: FacetModel, channel: Channel) {
 }
 
 
-function getXAxesGroup(model: FacetModel): VgMarkGroup {
-  const hasCol = !!model.facet().column;
+export function getSharedAxisGroup(model: FacetModel, channel: 'x' | 'y'): VgMarkGroup {
+  const isX = channel === 'x' ;
+  const facetChannel = isX ? 'column' : 'row';
+  const hasFacet = !!model.facet()[facetChannel];
+  const dataPrefix = isX ? COLUMN_AXES_DATA_PREFIX : ROW_AXES_DATA_PREFIX;
 
-  return extend(
-    {
-      name: model.name('x-axes'),
-      type: 'group'
-    },
-    hasCol ? {
-      // Need to drive this with special data source that has one item for each column value.
+  let axesGroup:VgMarkGroup = {
+    name: model.name(channel + '-axes'),
+    type: 'group'
+  };
 
-      // TODO: We might only need to drive this with special data source if there are both row and column
-      // However, it might be slightly difficult as we have to merge this with the main group.
-      from: {data: COLUMN_AXES_DATA_PREFIX + model.dataTable()}
-    } : {},
-    {
-      encode: {
-        update: {
-          width: {field: {parent: model.child().sizeName('width')}},
-          height: {
-            field: {group: 'height'}
-          },
-          x: hasCol ? {
-            scale: model.scaleName(COLUMN),
-            field: model.field(COLUMN),
-            // offset by the spacing
-            offset: model.spacing(COLUMN) / 2
-          } : {
-            // offset by the spacing
-            value: model.config().scale.facetSpacing / 2
-          }
+  if (hasFacet) {
+    // Need to drive this with special data source that has one item for each column/row value.
+
+    // TODO: We might only need to drive this with special data source if there are both row and column
+    // However, it might be slightly difficult as we have to merge this with the main group.
+    axesGroup.from = {data: dataPrefix + model.dataTable()};
+  }
+
+  if (isX) {
+    axesGroup.encode = {
+      update: {
+        width: {field: {parent: model.child().sizeName('width')}},
+        height: {field: {group: 'height'}},
+        x: hasFacet ? {
+          scale: model.scaleName(COLUMN),
+          field: model.field(COLUMN),
+          // offset by the spacing
+          offset: model.spacing(COLUMN) / 2
+        } : {
+          // TODO: support custom spacing here
+          // offset by the spacing
+          value: model.config().scale.facetSpacing / 2
         }
-      },
-      axes: [parseAxis(X, model.child())]
-    }
-  );
+      }
+    };
+  } else {
+    axesGroup.encode = {
+      update: {
+        width: {field: {group: 'width'}},
+        height: {field: {parent: model.child().sizeName('height')}},
+        y: hasFacet ? {
+          scale: model.scaleName(ROW),
+          field: model.field(ROW),
+          // offset by the spacing
+          offset: model.spacing(ROW) / 2
+        } : {
+          // offset by the spacing
+          value: model.config().scale.facetSpacing / 2
+        }
+      }
+    };
+  }
+
+  axesGroup.axes = [parseAxis(channel, model.child())];
+  return axesGroup;
 }
 
-function getYAxesGroup(model: FacetModel): VgMarkGroup {
-  const hasRow = !!model.facet().row;
-  return extend(
-    {
-      name: model.name('y-axes'),
-      type: 'group'
-    },
-    hasRow ? {
-      // Need to drive this with special data source that has one item for each row value.
-
-      // TODO: We might only need to drive this with special data source if there are both row and column
-      // However, it might be slightly difficult as we have to merge this with the main group.
-      from: {data: ROW_AXES_DATA_PREFIX + model.dataTable()}
-    } : {},
-    {
-      encode: {
-        update: {
-          width: {
-            field: {group: 'width'}
-          },
-          height: {field: {parent: model.child().sizeName('height')}},
-          y: hasRow ? {
-            scale: model.scaleName(ROW),
-            field: model.field(ROW),
-            // offset by the spacing
-            offset: model.spacing(ROW) / 2
-          } : {
-            // offset by the spacing
-            value: model.config().scale.facetSpacing / 2
-          }
-        }
-      },
-      axes: [parseAxis(Y, model.child())]
-    }
-  );
-}
 
 function getRowGridGroups(model: Model): any[] { // TODO: VgMarks
   const facetGridConfig = model.config().facet.grid;
@@ -509,7 +493,6 @@ function getRowGridGroups(model: Model): any[] { // TODO: VgMarks
     type: 'rule',
     from: {
       facet: {
-        name: model.dataTable(),
         data: model.dataTable(),
         groupby: [model.field(ROW)]
       }
