@@ -31,6 +31,7 @@ export function parseInnerAxis(channel: Channel, model: Model): VgAxis {
     orient: channel === 'x' ? 'bottom' : 'left',
     scale: model.scaleName(channel),
     grid: true,
+    domain: false,
     tick: false,
     label: false
   };
@@ -78,7 +79,7 @@ export function parseAxis(channel: Channel, model: Model): VgAxis {
     // a) properties with special rules (so it has axis[property] methods) -- call rule functions
     'format', 'grid', 'offset', 'orient', 'tickSize', 'tickCount', 'tickSizeEnd', 'title', 'titleOffset', 'values', 'zindex',
     // b) properties without rules, only produce default values in the schema, or explicit value if specified
-    'tickPadding', 'tickSize', 'tickSizeMajor', 'tickSizeMinor','subdivide'
+    'domain', 'tick', 'tickPadding', 'tickSize', 'tickSizeMajor', 'tickSizeMinor','subdivide'
   ].forEach(function(property) {
     let method: (model: Model, channel: Channel, def:any)=>any;
 

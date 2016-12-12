@@ -33,6 +33,11 @@ export interface AxisConfig {
    */
   axisColor?: string;
 
+  /**
+   * Whether to include the axis domain line.
+   */
+  domain?: boolean;
+
   // ---------- Grid ----------
   /**
    * A flag indicate if gridlines should be created in addition to ticks. If `grid` is unspecified, the default value is `true` for ROW and COL. For X and Y, the default value is `true` for quantitative and time fields and `false` otherwise.
@@ -98,6 +103,12 @@ export interface AxisConfig {
    * @minimum 0
    */
   subdivide?: number;
+
+  /**
+   * Whether the axis should include ticks.
+   */
+  tick?: boolean;
+
   /**
    * A desired number of ticks, for axes visualizing quantitative scales. The resulting number may be different so that values are "nice" (multiples of 2, 5, 10) and lie within the underlying scale's range.
    * @minimum 0
@@ -208,15 +219,16 @@ export const defaultAxisConfig: AxisConfig = {
   grid: undefined, // automatically determined
   label: true,
   labelMaxLength: 25,
-  tickSize: undefined, // implicitly 6
+  tickSize: undefined, // implicitly 6 (by Vega) // FIXME check if this is still true
   characterWidth: 6
 };
 
 export const defaultFacetAxisConfig: AxisConfig = {
   axisWidth: 0,
+  domain: false,
   label: true,
   grid: false,
-  tickSize: 0
+  tick: false
 };
 
 export interface Axis extends AxisConfig {
