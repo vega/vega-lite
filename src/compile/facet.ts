@@ -21,6 +21,17 @@ import {assembleLayout, parseFacetLayout} from './layout';
 import {Model} from './model';
 import {initScale, parseScaleComponent} from './scale';
 
+/**
+ * Prefix for special data sources for driving column's axis group.
+ */
+
+export const COLUMN_AXES_DATA_PREFIX = 'column-';
+
+/**
+ * Prefix for special data sources for driving row's axis group.
+ */
+export const ROW_AXES_DATA_PREFIX = 'row-';
+
 export class FacetModel extends Model {
   private _facet: Facet;
 
@@ -287,8 +298,12 @@ export class FacetModel extends Model {
   public assembleData(data: VgData[]): VgData[] {
     // Prefix traversal – parent data might be referred by children data
     assembleData(this, data);
-    return this._child.assembleData(data);
+    this._child.assembleData(data);
+    assembleAxesGroupData(this, data);
+
+    return data;
   }
+
 
   public assembleLayout(layoutData: VgData[]): VgData[] {
     // Postfix traversal – layout is assembled bottom-up
@@ -322,7 +337,8 @@ export class FacetModel extends Model {
   }
 }
 
-// TODO: move the rest of the file into FacetModel if possible
+
+
 
 function getFacetGroupProperties(model: FacetModel) {
   const child = model.child();
@@ -348,6 +364,39 @@ function getFacetGroupProperties(model: FacetModel) {
     },
     child.assembleParentGroupProperties(mergedCellConfig)
   );
+}
+
+
+// TODO: move the rest of the file src/compile/facet/*.ts
+
+/**
+ * Add data for driving row/column axes when there are both row and column
+ * Note that we don't have to deal with these in the parse step at all
+ * because these items never get merged with any other items.
+ */
+export function assembleAxesGroupData(model: FacetModel, data: VgData[]) {
+  if (model.facet().column) {
+    data.push({
+      name: COLUMN_AXES_DATA_PREFIX + model.dataTable(),
+      source: model.dataTable(),
+      transform: [{
+        type: 'aggregate',
+        groupby: [model.field(COLUMN)]
+      }]
+    });
+  }
+
+  if (model.facet().row) {
+    data.push({
+      name: ROW_AXES_DATA_PREFIX + model.dataTable(),
+      source: model.dataTable(),
+      transform: [{
+        type: 'aggregate',
+        groupby: [model.field(ROW)]
+      }]
+    });
+  }
+  return data;
 }
 
 function parseAxisGroup(model: FacetModel, channel: Channel) {
@@ -378,20 +427,19 @@ function parseAxisGroup(model: FacetModel, channel: Channel) {
 
 
 function getXAxesGroup(model: FacetModel): VgMarkGroup {
-  const hasCol = model.has(COLUMN);
+  const hasCol = !!model.facet().column;
+
   return extend(
     {
       name: model.name('x-axes'),
       type: 'group'
     },
     hasCol ? {
-      from: { // TODO: if we do facet transform at the parent level we can same some transform here
-        data: model.dataTable(),
-        transform: [{
-          type: 'aggregate',
-          groupby: [model.field(COLUMN)]
-        }]
-      }
+      // Need to drive this with special data source that has one item for each column value.
+
+      // TODO: We might only need to drive this with special data source if there are both row and column
+      // However, it might be slightly difficult as we have to merge this with the main group.
+      from: {data: COLUMN_AXES_DATA_PREFIX + model.dataTable()}
     } : {},
     {
       encode: {
@@ -417,20 +465,18 @@ function getXAxesGroup(model: FacetModel): VgMarkGroup {
 }
 
 function getYAxesGroup(model: FacetModel): VgMarkGroup {
-  const hasRow = model.has(ROW);
+  const hasRow = !!model.facet().row;
   return extend(
     {
       name: model.name('y-axes'),
       type: 'group'
     },
     hasRow ? {
-      from: {
-        data: model.dataTable(),
-        transform: [{
-          type: 'aggregate',
-          groupby: [model.field(ROW)]
-        }]
-      }
+      // Need to drive this with special data source that has one item for each row value.
+
+      // TODO: We might only need to drive this with special data source if there are both row and column
+      // However, it might be slightly difficult as we have to merge this with the main group.
+      from: {data: ROW_AXES_DATA_PREFIX + model.dataTable()}
     } : {},
     {
       encode: {

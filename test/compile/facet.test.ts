@@ -3,6 +3,7 @@ import {assert} from 'chai';
 import * as log from '../../src/log';
 
 import {FacetModel} from '../../src/compile/facet';
+import * as facet from '../../src/compile/facet';
 import {SHAPE, ROW} from '../../src/channel';
 import {POINT} from '../../src/mark';
 import {FacetSpec} from '../../src/spec';
@@ -65,6 +66,99 @@ describe('FacetModel', function() {
         assert.deepEqual(model.facet().row, {field: 'a', type: 'quantitative'});
         assert.equal(localLogger.warns[0], log.message.facetChannelShouldBeDiscrete(ROW));
       });
+    });
+  });
+});
+
+describe('compile/facet', () => {
+  describe('assembleAxesGroupData', () => {
+    it('should output row-source when there is row', () => {
+      const model = parseFacetModel({
+        facet: {
+          row: {field: 'a', type: 'ordinal'}
+        },
+        spec: {
+          mark: 'point'
+        }
+      });
+
+      // HACK: mock that we have parsed its data and there is not summary
+      // This way, we won't have surge in test coverage for the parse methods.
+      model['hasSummary'] = () => false;
+
+      assert.deepEqual(
+        facet.assembleAxesGroupData(model, []),
+        [{
+          name: facet.ROW_AXES_DATA_PREFIX + 'source',
+          source: 'source',
+          transform: [{
+            type: 'aggregate',
+            groupby: ['a']
+          }]
+        }]
+      );
+    });
+
+    it('should output column-source when there is column', () => {
+      const model = parseFacetModel({
+        facet: {
+          column: {field: 'a', type: 'ordinal'}
+        },
+        spec: {
+          mark: 'point'
+        }
+      });
+
+      // HACK: mock that we have parsed its data and there is not summary
+      // This way, we won't have surge in test coverage for the parse methods.
+      model['hasSummary'] = () => false;
+
+      assert.deepEqual(
+        facet.assembleAxesGroupData(model, []),
+        [{
+          name: facet.COLUMN_AXES_DATA_PREFIX + 'source',
+          source: 'source',
+          transform: [{
+            type: 'aggregate',
+            groupby: ['a']
+          }]
+        }]
+      );
+    });
+
+    it('should output row- and column-source when there are both row and column', () => {
+      const model = parseFacetModel({
+        facet: {
+          column: {field: 'a', type: 'ordinal'},
+          row: {field: 'b', type: 'ordinal'}
+        },
+        spec: {
+          mark: 'point'
+        }
+      });
+
+      // HACK: mock that we have parsed its data and there is not summary
+      // This way, we won't have surge in test coverage for the parse methods.
+      model['hasSummary'] = () => false;
+
+      assert.deepEqual(
+        facet.assembleAxesGroupData(model, []),
+        [{
+          name: facet.COLUMN_AXES_DATA_PREFIX + 'source',
+          source: 'source',
+          transform: [{
+            type: 'aggregate',
+            groupby: ['a']
+          }]
+        },{
+          name: facet.ROW_AXES_DATA_PREFIX + 'source',
+          source: 'source',
+          transform: [{
+            type: 'aggregate',
+            groupby: ['b']
+          }]
+        }]
+      );
     });
   });
 });
