@@ -38,12 +38,12 @@ describe('Legend', function() {
   describe('title()', function () {
     it('should add explicitly specified title', function () {
       const title = legend.title({title: 'Custom'}, {field: 'a'}, defaultConfig);
-      assert.deepEqual(title, 'Custom');
+      assert.equal(title, 'Custom');
     });
 
     it('should add return fieldTitle by default', function () {
       const title = legend.title({}, {field: 'a'}, defaultConfig);
-      assert.deepEqual(title, 'a');
+      assert.equal(title, 'a');
     });
   });
 
@@ -61,6 +61,29 @@ describe('Legend', function() {
       const values = legend.values({values: [1,2,3,4]});
 
       assert.deepEqual(values, [1,2,3,4]);
+    });
+
+  });
+
+  describe('type()', () => {
+    it('should return gradient type for color scale', () => {
+      const t = legend.type({}, {type: QUANTITATIVE}, COLOR);
+      assert.equal(t, 'gradient');
+    });
+
+    it('should not return gradient type for size scale', () => {
+      const t = legend.type({}, {type: QUANTITATIVE}, SIZE);
+      assert.equal(t, undefined);
+    });
+
+    it('should be able to override default', () => {
+      const t = legend.type({type: 'symbol'}, {type: QUANTITATIVE}, COLOR);
+      assert.equal(t, 'symbol');
+    });
+
+    it('should return no type for color scale with bin', () => {
+      const t = legend.type({}, {type: QUANTITATIVE, bin: true}, COLOR);
+      assert.equal(t, undefined);
     });
 
   });

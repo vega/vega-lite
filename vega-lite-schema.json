@@ -1508,6 +1508,14 @@
                         "number"
                     ]
                 },
+                "type": {
+                    "description": "The type of the legend. Use `symbol` to create a discrete legend and `gradient` for a continuous color gradient.",
+                    "enum": [
+                        "gradient",
+                        "symbol"
+                    ],
+                    "type": "string"
+                },
                 "values": {
                     "anyOf": [
                         {

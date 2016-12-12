@@ -6,8 +6,8 @@ import {Legend} from '../legend';
 import {title as fieldTitle} from '../fielddef';
 import {AREA, BAR, TICK, TEXT, LINE, POINT, CIRCLE, SQUARE} from '../mark';
 import {hasContinuousDomain} from '../scale';
-import {TEMPORAL} from '../type';
-import {extend, keys, without, Dict} from '../util';
+import {TEMPORAL, QUANTITATIVE} from '../type';
+import {extend, keys, without, Dict, contains} from '../util';
 
 import {applyMarkConfig, FILL_STROKE_CONFIG, numberFormat, timeFormatExpression} from './common';
 import {BIN_LEGEND_SUFFIX, BIN_LEGEND_LABEL_SUFFIX} from './scale';
@@ -63,6 +63,10 @@ export function parseLegend(model: UnitModel, channel: Channel): VgLegend {
   if (vals) {
     def.values = vals;
   }
+  const t = type(legend, fieldDef, channel);
+  if (t) {
+    def.type = t;
+  }
 
   // 1.2 Add properties without rules
   ['offset', 'orient'].forEach(function(property) {
@@ -104,6 +108,17 @@ export function values(legend: Legend) {
     });
   }
   return vals;
+}
+
+export function type(legend: Legend, fieldDef: FieldDef, channel: Channel) {
+  if (legend.type) {
+    return legend.type;
+  }
+
+  if (channel === COLOR && !fieldDef.bin && !fieldDef.timeUnit && contains([QUANTITATIVE, TEMPORAL], fieldDef.type)) {
+    return 'gradient';
+  }
+  return undefined;
 }
 
 // TODO: should we rename this?
