@@ -161,4 +161,105 @@ describe('compile/facet', () => {
       );
     });
   });
+
+  describe('getSharedAxisGroup', () => {
+    describe('column-only', () => {
+      const model = parseFacetModel({
+        facet: {
+          column: {field: 'a', type: 'ordinal'}
+        },
+        spec: {
+          mark: 'point',
+          encoding: {
+            x: {field: 'b', type: 'quantitative'},
+            y: {field: 'c', type: 'quantitative'}
+          }
+        }
+      });
+
+      // HACK: mock that we have parsed its data and there is not summary
+      // This way, we won't have surge in test coverage for the parse methods.
+      model['hasSummary'] = () => false;
+
+      describe('xAxisGroup', () => {
+        const xSharedAxisGroup = facet.getSharedAxisGroup(model, 'x');
+        it('should have correct type, name, and data source', () => {
+          assert.equal(xSharedAxisGroup.name, 'x-axes');
+          assert.equal(xSharedAxisGroup.type, 'group');
+          assert.deepEqual(xSharedAxisGroup.from, {data: 'column-source'});
+        });
+
+        it('should have width = child width, height = group height, x = column field', () => {
+          assert.deepEqual(xSharedAxisGroup.encode.update.width, {field: {parent: 'child_width'}});
+          assert.deepEqual(xSharedAxisGroup.encode.update.height, {field: {group: 'height'}});
+          assert.deepEqual(xSharedAxisGroup.encode.update.x, {scale: 'column', field: 'a', offset: 8});
+        });
+      });
+
+      describe('yAxisGroup', () => {
+        const ySharedAxisGroup = facet.getSharedAxisGroup(model, 'y');
+        it('should have correct type, name, and data source', () => {
+          assert.equal(ySharedAxisGroup.name, 'y-axes');
+          assert.equal(ySharedAxisGroup.type, 'group');
+          assert.equal(ySharedAxisGroup.from, undefined);
+        });
+
+        it('should have height = child height, width = group width, y = defaultFacetSpacing / 2.', () => {
+          assert.deepEqual(ySharedAxisGroup.encode.update.height, {field: {parent: 'child_height'}});
+          assert.deepEqual(ySharedAxisGroup.encode.update.width, {field: {group: 'width'}});
+          assert.deepEqual(ySharedAxisGroup.encode.update.y, {value: 8});
+        });
+      });
+    });
+
+    describe('row-only', () => {
+      const model = parseFacetModel({
+        facet: {
+          row: {field: 'a', type: 'ordinal'}
+        },
+        spec: {
+          mark: 'point',
+          encoding: {
+            x: {field: 'b', type: 'quantitative'},
+            y: {field: 'c', type: 'quantitative'}
+          }
+        }
+      });
+
+      // HACK: mock that we have parsed its data and there is not summary
+      // This way, we won't have surge in test coverage for the parse methods.
+      model['hasSummary'] = () => false;
+
+      describe('yAxisGroup', () => {
+        const ySharedAxisGroup = facet.getSharedAxisGroup(model, 'y');
+        it('should have correct type, name, and data source', () => {
+          assert.equal(ySharedAxisGroup.name, 'y-axes');
+          assert.equal(ySharedAxisGroup.type, 'group');
+          assert.deepEqual(ySharedAxisGroup.from, {data: 'row-source'});
+        });
+
+        it('should have height = child height, width = group width, y= row field', () => {
+          assert.deepEqual(ySharedAxisGroup.encode.update.height, {field: {parent: 'child_height'}});
+          assert.deepEqual(ySharedAxisGroup.encode.update.width, {field: {group: 'width'}});
+          assert.deepEqual(ySharedAxisGroup.encode.update.y, {scale: 'row', field: 'a', offset: 8});
+        });
+      });
+
+      describe('xAxisGroup', () => {
+        const xSharedAxisGroup = facet.getSharedAxisGroup(model, 'x');
+        it('should have correct type, name, and data source', () => {
+          assert.equal(xSharedAxisGroup.name, 'x-axes');
+          assert.equal(xSharedAxisGroup.type, 'group');
+          assert.equal(xSharedAxisGroup.from, undefined);
+        });
+
+        it('should have width = child width, height = group height, x, x = defaultFacetSpacing / 2.', () => {
+          assert.deepEqual(xSharedAxisGroup.encode.update.width, {field: {parent: 'child_width'}});
+          assert.deepEqual(xSharedAxisGroup.encode.update.height, {field: {group: 'height'}});
+          assert.deepEqual(xSharedAxisGroup.encode.update.x, {value: 8});
+        });
+      });
+    });
+  });
 });
+
