@@ -67,7 +67,7 @@ export interface AxisConfig {
   /**
    * Enable or disable labels.
    */
-  labels?: boolean;
+  label?: boolean;
   /**
    * The rotation angle of the axis labels.
    * @minimum 0
@@ -206,7 +206,7 @@ export interface AxisConfig {
 export const defaultAxisConfig: AxisConfig = {
   offset: undefined, // implicitly 0
   grid: undefined, // automatically determined
-  labels: true,
+  label: true,
   labelMaxLength: 25,
   tickSize: undefined, // implicitly 6
   characterWidth: 6
@@ -214,7 +214,7 @@ export const defaultAxisConfig: AxisConfig = {
 
 export const defaultFacetAxisConfig: AxisConfig = {
   axisWidth: 0,
-  labels: true,
+  label: true,
   grid: false,
   tickSize: 0
 };

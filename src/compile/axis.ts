@@ -31,15 +31,8 @@ export function parseInnerAxis(channel: Channel, model: Model): VgAxis {
     orient: channel === 'x' ? 'bottom' : 'left',
     scale: model.scaleName(channel),
     grid: true,
-    tickSize: 0,
-    encode: {
-      labels: {
-        text: {value: ''}
-      },
-      axis: {
-        stroke: {value: 'transparent'}
-      }
-    }
+    tick: false,
+    label: false
   };
 
   const axis = model.axis(channel);
@@ -291,7 +284,7 @@ export namespace encode {
     const axis = model.axis(channel);
     const config = model.config();
 
-    if (!axis.labels) {
+    if (!axis.label) {
       return extend({
         text: ''
       }, labelsSpec);

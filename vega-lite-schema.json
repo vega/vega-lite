@@ -189,6 +189,10 @@
                     "minimum": 0,
                     "type": "number"
                 },
+                "label": {
+                    "description": "Enable or disable labels.",
+                    "type": "boolean"
+                },
                 "labelAlign": {
                     "description": "Text alignment for the Label.",
                     "type": "string"
@@ -207,10 +211,6 @@
                     "description": "Truncate labels that are too long.",
                     "minimum": 1,
                     "type": "number"
-                },
-                "labels": {
-                    "description": "Enable or disable labels.",
-                    "type": "boolean"
                 },
                 "offset": {
                     "description": "The offset, in pixels, by which to displace the axis from the edge of the enclosing group or data rectangle.",
@@ -382,6 +382,10 @@
                     "minimum": 0,
                     "type": "number"
                 },
+                "label": {
+                    "description": "Enable or disable labels.",
+                    "type": "boolean"
+                },
                 "labelAlign": {
                     "description": "Text alignment for the Label.",
                     "type": "string"
@@ -399,10 +403,6 @@
                     "description": "Truncate labels that are too long.",
                     "minimum": 1,
                     "type": "number"
-                },
-                "labels": {
-                    "description": "Enable or disable labels.",
-                    "type": "boolean"
                 },
                 "offset": {
                     "description": "The offset, in pixels, by which to displace the axis from the edge of the enclosing group or data rectangle.",
