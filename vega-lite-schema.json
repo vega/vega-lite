@@ -158,6 +158,10 @@
                     "minimum": 0,
                     "type": "number"
                 },
+                "domain": {
+                    "description": "Whether to include the axis domain line.",
+                    "type": "boolean"
+                },
                 "format": {
                     "description": "The formatting pattern for axis labels.",
                     "type": "string"
@@ -231,6 +235,10 @@
                     "description": "If provided, sets the number of minor ticks between major ticks (the value 9 results in decimal subdivision). Only applicable for axes visualizing quantitative scales.",
                     "minimum": 0,
                     "type": "number"
+                },
+                "tick": {
+                    "description": "Whether the axis should include ticks.",
+                    "type": "boolean"
                 },
                 "tickColor": {
                     "description": "The color of the axis's tick.",
@@ -355,6 +363,10 @@
                     "minimum": 0,
                     "type": "number"
                 },
+                "domain": {
+                    "description": "Whether to include the axis domain line.",
+                    "type": "boolean"
+                },
                 "grid": {
                     "description": "A flag indicate if gridlines should be created in addition to ticks. If `grid` is unspecified, the default value is `true` for ROW and COL. For X and Y, the default value is `true` for quantitative and time fields and `false` otherwise.",
                     "type": "boolean"
@@ -419,6 +431,10 @@
                     "description": "If provided, sets the number of minor ticks between major ticks (the value 9 results in decimal subdivision). Only applicable for axes visualizing quantitative scales.",
                     "minimum": 0,
                     "type": "number"
+                },
+                "tick": {
+                    "description": "Whether the axis should include ticks.",
+                    "type": "boolean"
                 },
                 "tickColor": {
                     "description": "The color of the axis's tick.",
