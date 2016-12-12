@@ -164,10 +164,12 @@ export interface Scale {
    * The domain of the scale, representing the set of data values. For quantitative data, this can take the form of a two-element array with minimum and maximum values. For ordinal/categorical data, this may be an array of valid input values.
    */
   domain?: number[] | string[] | DateTime[];
+
   /**
-   * The range of the scale, representing the set of visual values. For numeric values, the range can take the form of a two-element array with minimum and maximum values. For ordinal or quantized data, the range may by an array of desired output values, which are mapped to elements in the specified domain. For ordinal scales only, the range can be defined using a DataRef: the range values are then drawn dynamically from a backing data set.
+   * The range of the scale, representing the set of visual values. For numeric values, the range can take the form of a two-element array with minimum and maximum values. For ordinal or quantized data, the range may by an array of desired output values, which are mapped to elements in the specified domain.
    */
   range?: number[] | string[]; // TODO: declare vgRangeDomain
+
 
   /**
    * If true, rounds numeric output values to integers. This can be helpful for snapping to the pixel grid.
@@ -190,7 +192,7 @@ export interface Scale {
   rangeStep?: number | null;
 
   /**
-   * Color scheme that determines output color of a color scale.
+   * Color scheme that determines output color of an index/ordinal/sequential color scale.
    */
   scheme?: string;
 
