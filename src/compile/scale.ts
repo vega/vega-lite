@@ -1,7 +1,7 @@
 import * as log from '../log';
 
 import {SHARED_DOMAIN_OPS} from '../aggregate';
-import {COLUMN, ROW, X, Y, X2, Y2, SHAPE, SIZE, COLOR, OPACITY, TEXT, hasScale, supportScaleType, Channel} from '../channel';
+import {COLUMN, ROW, X, Y, X2, Y2, SHAPE, SIZE, COLOR, OPACITY, TEXT, Channel} from '../channel';
 import {Config} from '../config';
 import {SOURCE} from '../data';
 import {DateTime, isDateTime, timestamp} from '../datetime';
@@ -10,14 +10,15 @@ import {Mark, BAR, TEXT as TEXTMARK, RECT, MarkConfig, PointConfig} from '../mar
 import {Scale, ScaleConfig, ScaleType, NiceTime, hasDiscreteDomain, scaleTypeSupportProperty, hasContinuousDomain} from '../scale';
 import {isSortField, SortOrder} from '../sort';
 import {StackOffset} from '../stack';
-import {TimeUnit} from '../timeunit';
-import {NOMINAL, ORDINAL, QUANTITATIVE, TEMPORAL} from '../type';
+import {NOMINAL, QUANTITATIVE, TEMPORAL} from '../type';
 import {contains, extend, Dict} from '../util';
 import {VgScale} from '../vega.schema';
 
 import {Model} from './model';
 import {smallestUnit} from '../timeunit';
 import {UnitModel} from './unit';
+
+import {type} from './scale/type';
 
 /** Scale suffix for scale used to get drive binned legends. */
 export const BIN_LEGEND_SUFFIX = '_bin_legend';
@@ -282,100 +283,8 @@ function parseBinLegendLabel(channel: Channel, model: Model, fieldDef: FieldDef)
   };
 }
 
-/**
- * Determine if there is a specified scale type and if it is appropriate,
- * or determine default type if type is unspecified or inappropriate.
- */
-export function type(specifiedType: ScaleType, fieldDef: FieldDef, channel: Channel, mark: Mark, canHaveRangeStep: boolean): ScaleType {
-  if (!hasScale(channel)) {
-    // There is no scale for these channels
-    return null;
-  }
-
-  if (specifiedType !== undefined) {
-    // Check if explicitly specified scale type is supported by the channel
-    if (supportScaleType(channel, specifiedType)) {
-      return specifiedType;
-    } else {
-      const newScaleType = defaultProperty.type(fieldDef, channel, mark, canHaveRangeStep);
-      log.warn(log.message.scaleTypeNotWorkWithChannel(channel, specifiedType, newScaleType));
-      return newScaleType;
-    }
-  }
-
-  return defaultProperty.type(fieldDef, channel, mark, canHaveRangeStep);
-}
 
 export namespace defaultProperty {
-  /**
-   * Determine appropriate default scale type.
-   */
-  export function type(fieldDef: FieldDef, channel: Channel, mark: Mark, canHaveRangeStep: boolean): ScaleType {
-    if (contains([ROW, COLUMN], channel)) {
-      return ScaleType.BAND;
-    }
-    if (channel === SHAPE) {
-      return ScaleType.ORDINAL_LOOKUP;
-    }
-
-    switch (fieldDef.type) {
-      case NOMINAL:
-        if (channel === COLOR) {
-          return ScaleType.ORDINAL_LOOKUP;
-        }
-        return discreteToContinuousType(channel, mark, canHaveRangeStep);
-      case ORDINAL:
-        if (channel === COLOR) {
-          return ScaleType.INDEX;
-        }
-        return discreteToContinuousType(channel, mark, canHaveRangeStep);
-      case TEMPORAL:
-        if (channel === COLOR) {
-          return ScaleType.SEQUENTIAL;
-        }
-
-        switch (fieldDef.timeUnit) {
-          // These time unit use discrete scale by default
-          case TimeUnit.HOURS:
-          case TimeUnit.DAY:
-          case TimeUnit.MONTH:
-          case TimeUnit.QUARTER:
-            return discreteToContinuousType(channel, mark, canHaveRangeStep);
-        }
-        return ScaleType.TIME;
-
-      case QUANTITATIVE:
-        if (channel === COLOR) {
-          return ScaleType.SEQUENTIAL;
-        }
-        return ScaleType.LINEAR;
-    }
-
-    /* istanbul ignore next: should never reach this */
-    throw new Error(log.message.invalidFieldType(fieldDef.type));
-  }
-
-  /**
-   * Determines default scale type for nominal/ordinal field.
-   * @returns BAND or POINT scale based on channel, mark, and rangeStep
-   */
-  function discreteToContinuousType(channel: Channel, mark: Mark, canHaveRangeStep: boolean): ScaleType {
-    if (contains([X, Y], channel)) {
-      // Use band ordinal scale for x/y scale in one of the following cases:
-      if (
-        // 1) the mark is bar and the scale cannot have range step (fit mode).
-        (mark === BAR && !canHaveRangeStep) ||
-        // 2) the mark is rect as the rect mark should fit into a band.
-        mark === RECT
-      ) {
-        return ScaleType.BAND;
-      }
-    }
-    // Otherwise, use ordinal point scale so we can easily get center positions of the marks.
-    return ScaleType.POINT;
-  }
-
-
   export function nice(scaleType: ScaleType, channel: Channel, fieldDef: FieldDef): boolean | NiceTime {
     if (contains([ScaleType.TIME, ScaleType.UTC], scaleType)) {
       return smallestUnit(fieldDef.timeUnit) as any;
