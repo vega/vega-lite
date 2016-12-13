@@ -9,6 +9,34 @@ import * as util from '../../util';
 import {Model} from '../model';
 import {UnitModel} from '../unit';
 
+export function rangeStep(rangeStep: number | null, topLevelSize: number | undefined, mark: Mark | undefined,
+    channel: Channel, scaleConfig: ScaleConfig): number {
+  if (topLevelSize === undefined) {
+
+    // If rangeStep is null, we really want to make rangeStep fit width/height.  (If undefined, use default value.)
+    if (rangeStep === null) {
+      return undefined; // no rangeStep
+    } else if (rangeStep !== undefined) {
+      // Use manually specified rangeStep
+      return rangeStep;
+    } else if (util.contains([X, Y], channel)) {
+      // only use config by default for X and Y
+      if (channel === X && mark === 'text') {
+        return scaleConfig.textXRangeStep;
+      } else if (scaleConfig.rangeStep) {
+        return scaleConfig.rangeStep;
+      }
+    }
+  }
+
+  // If top-level is specified, use rangeStep fit
+  if (rangeStep && rangeStep !== null) {
+    // If top-level size is specified, we drop specified rangeStep.
+    log.warn(log.message.rangeStepDropped(channel));
+  }
+  return undefined;
+}
+
 /**
  * @returns {*} mix-in of rangeStep, range, scheme.
  */

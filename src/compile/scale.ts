@@ -1,18 +1,18 @@
 import * as log from '../log';
 
-import {COLUMN, ROW, X, Y, X2, Y2, COLOR, TEXT, Channel} from '../channel';
+import {COLUMN, ROW, X, Y, X2, Y2, COLOR, Channel} from '../channel';
 import {ChannelDefWithScale, FieldDef, field} from '../fielddef';
-import {Mark, TEXT as TEXTMARK} from '../mark';
+import {Mark} from '../mark';
 import {Scale, ScaleConfig, ScaleType, scaleTypeSupportProperty, hasContinuousDomain} from '../scale';
 import {isSortField, SortOrder} from '../sort';
-import {contains, extend, Dict} from '../util';
+import {extend, Dict} from '../util';
 import {VgScale} from '../vega.schema';
 
 import {Model} from './model';
 
 
 import {domain} from './scale/domain';
-import {rangeMixins} from './scale/range';
+import {rangeMixins, rangeStep} from './scale/range';
 import * as rules from './scale/rules';
 import {type} from './scale/type';
 
@@ -279,31 +279,3 @@ function parseBinLegendLabel(channel: Channel, model: Model, fieldDef: FieldDef)
   };
 }
 
-// TODO: move this to range.ts after refactoring
-export function rangeStep(rangeStep: number | null, topLevelSize: number | undefined, mark: Mark | undefined,
-    channel: Channel, scaleConfig: ScaleConfig): number {
-  if (topLevelSize === undefined) {
-
-    // If rangeStep is null, we really want to make rangeStep fit width/height.  (If undefined, use default value.)
-    if (rangeStep === null) {
-      return undefined; // no rangeStep
-    } else if (rangeStep !== undefined) {
-      // Use manually specified rangeStep
-      return rangeStep;
-    } else if (contains([X, Y], channel)) {
-      // only use config by default for X and Y
-      if (channel === X && mark === TEXTMARK) {
-        return scaleConfig.textXRangeStep;
-      } else if (scaleConfig.rangeStep) {
-        return scaleConfig.rangeStep;
-      }
-    }
-  }
-
-  // If top-level is specified, use rangeStep fit
-  if (rangeStep && rangeStep !== null) {
-    // If top-level size is specified, we drop specified rangeStep.
-    log.warn(log.message.rangeStepDropped(channel));
-  }
-  return undefined;
-}
