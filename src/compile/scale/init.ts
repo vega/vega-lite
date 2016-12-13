@@ -1,48 +1,32 @@
 import * as log from '../../log';
 
+import {Config} from '../../config';
 import {Channel} from '../../channel';
 import {ChannelDefWithScale, FieldDef} from '../../fielddef';
 import {Mark} from '../../mark';
-import {Scale, ScaleConfig, ScaleType, scaleTypeSupportProperty} from '../../scale';
+import {Scale, ScaleConfig, scaleTypeSupportProperty} from '../../scale';
 
 import {channelScalePropertyIncompatability} from './scale';
-import {rangeStep} from './range';
+import rangeMixins from './range';
 import * as rules from './rules';
 import {type} from './type';
+import * as util from '../../util';
 
-export default function init(topLevelSize: number | undefined, mark: Mark | undefined,
-    channel: Channel, fieldDef: ChannelDefWithScale, scaleConfig: ScaleConfig): Scale {
+export default function init(
+    channel: Channel, fieldDef: ChannelDefWithScale, config: Config,
+    mark: Mark | undefined, topLevelSize: number | undefined, xyRangeSteps: number[]): Scale {
   let specifiedScale = (fieldDef || {}).scale || {};
   let scale: Scale = {};
 
-  const rangeProperties: any[] = ((scale.rangeStep ? ['rangeStep'] : []) as any[]).concat(
-    scale.scheme ? ['scheme'] : [],
-    scale.range ? ['range'] : []
-  );
-
-  if (rangeProperties.length > 1) {
-    log.warn(log.message.mutuallyExclusiveScaleProperties(rangeProperties));
-  }
-
-  // initialize rangeStep as if it's an ordinal scale first since ordinal scale type depends on this.
-  const step = rangeStep(specifiedScale.rangeStep, topLevelSize, mark, channel, scaleConfig);
-  scale.type = type(specifiedScale.type, fieldDef, channel, mark, !!step);
-
-  if ((scale.type === ScaleType.POINT || scale.type === ScaleType.BAND)) {
-    if (step !== undefined) {
-      scale.rangeStep = step;
-    }
-  } else if (specifiedScale.rangeStep !== undefined) {
-    log.warn(log.message.scalePropertyNotWorkWithScaleType(scale.type, 'rangeStep', channel));
-  }
+  // Default discrete scale type depends on whether the scale can have rangeStep.
+  const canHaveRangeStep = topLevelSize === undefined && specifiedScale.rangeStep !== null && config.scale.rangeStep !== null;
+  scale.type = type(specifiedScale.type, fieldDef, channel, mark, canHaveRangeStep);
 
   // Use specified value if compatible or determine default values for each property
   [
     // general properties
     'domain', // For domain, we only copy specified value here.  Default value is determined during parsing phase.
     'round',
-    'range',
-    'scheme',
     // quantitative / time
     'clamp', 'nice',
     // quantitative
@@ -71,14 +55,22 @@ export default function init(topLevelSize: number | undefined, mark: Mark | unde
     } else {
       // If there is no property specified, check if we need to determine default value.
       if (supportedByScaleType && channelIncompatability === undefined) {
-        const value = getDefaultValue(property, scale, channel, fieldDef, scaleConfig);
+        const value = getDefaultValue(property, scale, channel, fieldDef, config.scale);
         if (value !== undefined) { // use the default value
           scale[property] = value;
         }
       }
     }
   });
-  return scale;
+
+  return util.extend(
+    scale,
+    rangeMixins(
+      channel, scale.type, specifiedScale, config,
+      fieldDef.type, scale.zero,
+      mark, topLevelSize, xyRangeSteps
+    )
+  );
 }
 
 function getDefaultValue(property: string, scale: Scale, channel: Channel, fieldDef: FieldDef, scaleConfig: ScaleConfig) {

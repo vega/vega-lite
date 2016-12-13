@@ -4,12 +4,10 @@ import {ScaleType, hasContinuousDomain} from '../../scale';
 import {isSortField, SortOrder} from '../../sort';
 import {extend, Dict} from '../../util';
 
-import {ScaleComponent, ScaleComponents, BIN_LEGEND_SUFFIX, BIN_LEGEND_LABEL_SUFFIX} from './scale';
-
 import {Model} from '../model';
 
+import {ScaleComponent, ScaleComponents, BIN_LEGEND_SUFFIX, BIN_LEGEND_LABEL_SUFFIX} from './scale';
 import domain from './domain';
-import rangeMixins from './range';
 
 export default function parse(model: Model): Dict<ScaleComponents> {
   // TODO: should model.channels() inlcude X2/Y2?
@@ -66,9 +64,6 @@ function parseMainScale(model: Model, fieldDef: FieldDef, channel: Channel) {
   } else {
     scaleDef.domain = domain(scale, model, channel);
   }
-
-  // TODO: move range to init, make it come after zero (rangeMixins depends on zero).
-  extend(scaleDef, rangeMixins(scale, model, channel));
 
   if (sort && (isSortField(sort) ? sort.order : sort) === SortOrder.DESCENDING) {
     scaleDef.reverse = true;

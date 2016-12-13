@@ -148,10 +148,6 @@ export namespace message {
     return `Cannot use custom ${propName} with row or column channel. Please use width, height, or spacing instead.`;
   }
 
-  export function customScaleRangeNotAllowed(channel: Channel) {
-    return `Custom scale ranged not allowed for channel ${channel}`;
-  }
-
   export function rangeStepDropped(channel: Channel) {
     return `rangeStep for ${channel} is dropped as top-level ${
       channel === X ? 'width' : 'height'} is provided.`;
@@ -168,9 +164,6 @@ export namespace message {
     return `Scale type "${scaleType}" does not work with mark ${mark}.`;
   }
 
-  export function mutuallyExclusiveScaleProperties(properties: string[]) {
-    return properties.join(' and ') + ' are mutually exclusive. Only one of them should be specified for scale';
-  }
 
   // AXIS
   export const INVALID_CHANNEL_FOR_AXIS = 'Invalid channel for axis.';
