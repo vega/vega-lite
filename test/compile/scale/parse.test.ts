@@ -2,33 +2,11 @@
 
 import {assert} from 'chai';
 
-import {parseScaleComponent, initScale} from '../../src/compile/scale';
-import {parseUnitModel} from '../util';
+import parseScales from '../../../src/compile/scale/parse';
+import {parseUnitModel} from '../../util';
 
-describe('Scale', function() {
-  describe('initScale', () => {
-    it('should output only padding without default paddingInner and paddingOuter if padding is specified for a band scale', () => {
-      const scale = initScale(100, 'bar', 'x',
-        {field: 'a', type: 'ordinal', scale: {type: 'band', padding: 0.6}},
-        {}
-      );
-      assert.equal(scale.padding, 0.6);
-      assert.isUndefined(scale.paddingInner);
-      assert.isUndefined(scale.paddingOuter);
-    });
-
-    it('should output default paddingInner and paddingOuter = paddingInner/2 if none of padding properties is specified for a band scale', () => {
-      const scale = initScale(100, 'bar', 'x',
-        {field: 'a', type: 'ordinal', scale: {type: 'band'}},
-        {bandPaddingInner: 0.3}
-      );
-      assert.equal(scale.paddingInner, 0.3);
-      assert.equal(scale.paddingOuter, 0.15);
-      assert.isUndefined(scale.padding);
-    });
-  });
-
-  describe('parseScaleComponent', () => {
+describe('src/compile', function() {
+  describe('parse', () => {
     describe('x ordinal point', () => {
       it('should create a main x point scale with rangeStep and no range', () => {
         const model = parseUnitModel({
@@ -37,7 +15,7 @@ describe('Scale', function() {
             x: { field: 'origin', type: "nominal"}
           }
         });
-        const scales = parseScaleComponent(model)['x'];
+        const scales = parseScales(model)['x'];
         assert.equal(scales.main.type, 'point');
         assert.equal(scales.main.rangeStep, 21);
         assert.equal(scales.main.range, undefined);
@@ -52,7 +30,7 @@ describe('Scale', function() {
         }
       });
 
-      const scales = parseScaleComponent(model)['color'];
+      const scales = parseScales(model)['color'];
 
       it('should create correct main color scale', function() {
         assert.equal(scales.main.name, 'color');
@@ -75,7 +53,7 @@ describe('Scale', function() {
         }
       });
 
-      const scales = parseScaleComponent(model)['color'];
+      const scales = parseScales(model)['color'];
 
       it('should create index color scale', function() {
         assert.equal(scales.main.name, 'color');
@@ -97,7 +75,7 @@ describe('Scale', function() {
           }
         });
 
-      const scales = parseScaleComponent(model)['color'];
+      const scales = parseScales(model)['color'];
 
       it('should add correct scales', function() {
         assert.equal(scales.main.name, 'color');
@@ -132,7 +110,7 @@ describe('Scale', function() {
           }
         });
 
-      const scales = parseScaleComponent(model)['color'];
+      const scales = parseScales(model)['color'];
 
       it('should add correct scales', function() {
         assert.equal(scales.main.name, 'color');
@@ -141,9 +119,5 @@ describe('Scale', function() {
         assert.equal(scales.binLegendLabel, undefined);
       });
     });
-  });
-
-  describe('reverse()', function() {
-    // FIXME
   });
 });

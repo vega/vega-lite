@@ -10,7 +10,7 @@ import {TEMPORAL, QUANTITATIVE} from '../type';
 import {extend, keys, without, Dict, contains} from '../util';
 
 import {applyMarkConfig, FILL_STROKE_CONFIG, numberFormat, timeFormatExpression} from './common';
-import {BIN_LEGEND_SUFFIX, BIN_LEGEND_LABEL_SUFFIX} from './scale';
+import {BIN_LEGEND_SUFFIX, BIN_LEGEND_LABEL_SUFFIX} from './scale/scale';
 import {UnitModel} from './unit';
 import {VgLegend, VgValueRef} from '../vega.schema';
 
