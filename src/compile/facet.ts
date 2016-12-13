@@ -99,9 +99,10 @@ export class FacetModel extends Model {
     return [ROW, COLUMN].reduce(function(_scale, channel) {
       if (facet[channel]) {
         _scale[channel] = initScale(
-          undefined, // TODO(#1647): support width / height here
+          channel, facet[channel], config,
           undefined, // Facet doesn't have one single mark
-          channel, facet[channel], config.scale
+          undefined, // TODO(#1647): support width / height here
+          [] // There is no xyRangeSteps here and there is no need to input
         );
         model._spacing[channel] = (facet[channel].scale || {}).spacing !== undefined ?
           (facet[channel].scale || {}).spacing : config.scale.facetSpacing;

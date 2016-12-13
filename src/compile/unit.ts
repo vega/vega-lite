@@ -82,7 +82,7 @@ export class UnitModel extends Model {
     // FIXME move stacked out of config as it's not really a theme.
     // calculate stack properties
     this._stack = stack(mark, encoding, config.mark.stacked);
-    this._scale =  this._initScale(mark, encoding, config.scale, providedWidth, providedHeight);
+    this._scale =  this._initScale(mark, encoding, config, providedWidth, providedHeight);
 
     // TODO?: refactor these to be a part of the model as they are not really just config
     // (Maybe they should become a part of encoding?)
@@ -158,16 +158,24 @@ export class UnitModel extends Model {
     return config;
   }
 
-  private _initScale(mark: Mark, encoding: Encoding, scaleConfig: ScaleConfig, topLevelWidth:number, topLevelHeight: number): Dict<Scale> {
+  private _initScale(mark: Mark, encoding: Encoding, config: Config, topLevelWidth:number, topLevelHeight: number): Dict<Scale> {
+    const xyRangeSteps: number[] = [];
+
     return UNIT_SCALE_CHANNELS.reduce(function(_scale, channel) {
       if (vlEncoding.has(encoding, channel) ||
           (channel === X && vlEncoding.has(encoding, X2)) ||
           (channel === Y && vlEncoding.has(encoding, Y2))
         ) {
-        _scale[channel] = initScale(
+        const scale = _scale[channel] = initScale(channel, encoding[channel], config, mark,
           channel === X ? topLevelWidth : channel === Y ? topLevelHeight : undefined,
-          mark, channel, encoding[channel], scaleConfig
+          xyRangeSteps // for determine point / bar size
         );
+
+        if (channel === X || channel === Y) {
+          if (scale.rangeStep) {
+            xyRangeSteps.push(scale.rangeStep);
+          }
+        }
       }
       return _scale;
     }, {} as Dict<Scale>);
@@ -175,7 +183,7 @@ export class UnitModel extends Model {
 
   // TODO: consolidate this with scale?  Current scale range is in parseScale (later),
   // but not in initScale because scale range depends on size,
-  // but size depends on scale type and bandWidth
+  // but size depends on scale type and rangeStep
   private _initSize(mark: Mark, scale: Dict<Scale>, width: number, height: number, cellConfig: CellConfig, scaleConfig: ScaleConfig) {
     if (width !== undefined) {
       this._width = width;
