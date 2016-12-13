@@ -156,6 +156,7 @@ export class FacetModel extends Model {
   }
 
   public facetedTable(): string {
+    // FIXME: revise if the suffix should be 'data'
     return 'faceted-' + this.name('data');
   }
 
