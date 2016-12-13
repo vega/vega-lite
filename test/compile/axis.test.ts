@@ -234,50 +234,6 @@ describe('Axis', function() {
     });
   });
 
-  describe('tickSize', function() {
-    it('should return undefined by default', function () {
-      const tickSize = axis.tickSize(parseModel({
-          mark: "point",
-          encoding: {
-            y: {field: 'a', type: 'quantitative'}
-          }
-        }), Y);
-      assert.deepEqual(tickSize, undefined);
-    });
-
-    it('should return specified tickSize', function () {
-      const tickSize = axis.tickSize(parseModel({
-          mark: "point",
-          encoding: {
-            y: {field: 'a', type: 'quantitative', axis: {tickSize: 10}}
-          }
-        }), Y);
-      assert.deepEqual(tickSize, 10);
-    });
-  });
-
-  describe('tickSizeEnd', function() {
-    it('should return undefined by default', function () {
-      const tickSizeEnd = axis.tickSizeEnd(parseModel({
-          mark: "point",
-          encoding: {
-            y: {field: 'a', type: 'quantitative'}
-          }
-        }), Y);
-      assert.deepEqual(tickSizeEnd, undefined);
-    });
-
-    it('should return specified tickSizeEnd', function () {
-      const tickSizeEnd = axis.tickSizeEnd(parseModel({
-          mark: "point",
-          encoding: {
-            y: {field: 'a', type: 'quantitative', axis: {tickSizeEnd: 5}}
-          }
-        }), Y);
-      assert.deepEqual(tickSizeEnd, 5);
-    });
-  });
-
   describe('title()', function () {
     it('should add explicitly specified title', function () {
       const title = axis.title(parseUnitModel({
@@ -342,28 +298,6 @@ describe('Axis', function() {
         }
       }), Y);
       assert.deepEqual(title, 'abcdefghi…');
-    });
-  });
-
-  describe('titleOffset', function() {
-    it('should return undefined by default', function () {
-      const titleOffset = axis.titleOffset(parseModel({
-          mark: "point",
-          encoding: {
-            y: {field: 'a', type: 'quantitative'}
-          }
-        }), Y);
-      assert.deepEqual(titleOffset, undefined);
-    });
-
-    it('should return specified titleOffset', function () {
-      const titleOffset = axis.titleOffset(parseModel({
-          mark: "point",
-          encoding: {
-            y: {field: 'a', type: 'quantitative', axis: {tickSize: 10, titleOffset: 15}}
-          }
-        }), Y);
-      assert.deepEqual(titleOffset, 15);
     });
   });
 
