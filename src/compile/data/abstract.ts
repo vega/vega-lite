@@ -5,7 +5,7 @@ import {UnitModel} from './../unit';
 // TODO: use this to implement all other data compiler.
 
 /**
- * Abstract interface for implements a data component compiler.
+ * Abstract interface for implementing a data component compiler.
  * Each type of data component compiler should have a common data component (T),
  * which stores minimal set of properties that can be merged
  * and assembled into the desired output.
