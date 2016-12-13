@@ -2,170 +2,19 @@
 
 import {assert} from 'chai';
 
-import {rangeStep, type, domain, parseScaleComponent, initScale, defaultProperty} from '../../src/compile/scale';
+import {rangeStep, domain, parseScaleComponent, initScale, defaultProperty} from '../../src/compile/scale';
 import {SOURCE, SUMMARY} from '../../src/data';
 import {parseUnitModel} from '../util';
 
 import * as log from '../../src/log';
-import {X, Y, SHAPE, DETAIL, ROW, COLUMN, Channel, NONSPATIAL_SCALE_CHANNELS} from '../../src/channel';
+import {X, Y, Channel, NONSPATIAL_SCALE_CHANNELS} from '../../src/channel';
 import {ScaleType, defaultScaleConfig} from '../../src/scale';
-import {Mark, POINT, RECT, BAR, TEXT} from '../../src/mark';
+import {Mark, POINT, TEXT} from '../../src/mark';
 import * as mark from '../../src/mark';
 import {ExtendedUnitSpec} from '../../src/spec';
-import {TimeUnit} from '../../src/timeunit';
-import {TEMPORAL, ORDINAL, Type} from '../../src/type';
+import {Type} from '../../src/type';
 
 describe('Scale', function() {
-  describe('type()', function() {
-    it('should return null for channel without scale', function() {
-      assert.deepEqual(
-        type(undefined, {
-          field: 'a',
-          type: TEMPORAL,
-          timeUnit: TimeUnit.YEARMONTH
-        }, DETAIL, POINT, true),
-        null
-      );
-    });
-
-    it('should return time for most of time unit.', function() {
-      // See exception in the next test)
-      const TIMEUNITS = [
-        TimeUnit.YEAR,
-        TimeUnit.DATE,
-        TimeUnit.MINUTES,
-        TimeUnit.SECONDS,
-        TimeUnit.MILLISECONDS,
-        TimeUnit.YEARMONTH,
-        TimeUnit.YEARMONTHDATE,
-        TimeUnit.YEARMONTHDATEHOURS,
-        TimeUnit.YEARMONTHDATEHOURSMINUTES,
-        TimeUnit.YEARMONTHDATEHOURSMINUTESSECONDS,
-        TimeUnit.HOURSMINUTES,
-        TimeUnit.HOURSMINUTESSECONDS,
-        TimeUnit.MINUTESSECONDS,
-        TimeUnit.SECONDSMILLISECONDS,
-        TimeUnit.YEARQUARTER,
-        TimeUnit.QUARTERMONTH,
-        TimeUnit.YEARQUARTERMONTH,
-      ];
-      for (const timeUnit of TIMEUNITS) {
-        assert.deepEqual(
-          type(undefined, {
-            field: 'a',
-            type: TEMPORAL,
-            timeUnit: timeUnit
-          }, Y, POINT, true),
-          ScaleType.TIME
-        );
-      }
-    });
-
-    it('should return a discrete scale for hours, day, month, quarter for x-y', function() {
-      [TimeUnit.MONTH, TimeUnit.HOURS, TimeUnit.DAY, TimeUnit.QUARTER].forEach((timeUnit) => {
-        assert.deepEqual(
-          type(undefined, {
-            field: 'a',
-            type: TEMPORAL,
-            timeUnit: timeUnit
-          }, Y, POINT, true),
-          ScaleType.POINT
-        );
-      });
-    });
-
-    it('should return ordinal for shape', function() {
-      assert.deepEqual(
-        type(undefined, {
-          field: 'a',
-          type: TEMPORAL,
-          timeUnit: TimeUnit.YEARMONTH
-        }, SHAPE, POINT, true),
-        ScaleType.ORDINAL_LOOKUP
-      );
-    });
-
-    it('should return ordinal for shape even if other type is specified', function() {
-      [ScaleType.LINEAR, ScaleType.BAND, ScaleType.POINT].forEach((badScaleType) => {
-        log.runLocalLogger((localLogger) => {
-          assert.deepEqual(
-            type(badScaleType, {
-              field: 'a',
-              type: TEMPORAL,
-              timeUnit: TimeUnit.YEARMONTH
-            }, SHAPE, POINT, true),
-            ScaleType.ORDINAL_LOOKUP
-          );
-          assert.equal(localLogger.warns[0], log.message.scaleTypeNotWorkWithChannel(SHAPE, badScaleType, ScaleType.ORDINAL_LOOKUP));
-        });
-      });
-    });
-
-    it('should return band for row/column', function() {
-      [ROW, COLUMN].forEach((channel) => {
-        assert.deepEqual(
-          type(undefined, {
-            field: 'a',
-            type: TEMPORAL,
-            timeUnit: TimeUnit.YEARMONTH
-          }, channel, POINT, true),
-          ScaleType.BAND
-        );
-      });
-    });
-
-    it('should return band for row/column even if other type is specified', function() {
-      [ROW, COLUMN].forEach((channel) => {
-        [ScaleType.LINEAR, ScaleType.ORDINAL_LOOKUP, ScaleType.POINT].forEach((badScaleType) => {
-          log.runLocalLogger((localLogger) => {
-            assert.deepEqual(
-              type(badScaleType, {
-                field: 'a',
-                type: TEMPORAL,
-                timeUnit: TimeUnit.YEARMONTH
-              }, channel, POINT, true),
-              ScaleType.BAND
-            );
-            assert.equal(localLogger.warns[0], log.message.scaleTypeNotWorkWithChannel(channel, badScaleType, ScaleType.BAND));
-          });
-        });
-      });
-    });
-
-    it('should return band scale for ordinal X,Y when mark is rect', () => {
-      [X, Y].forEach((channel) => {
-        assert.equal(type(undefined, {field: 'a', type: ORDINAL}, channel, RECT, true), ScaleType.BAND);
-      });
-    });
-
-    it('should return band scale for X,Y when mark is bar and rangeStep is undefined (fit)', () => {
-      [X, Y].forEach((channel) => {
-        assert.equal(type(undefined, {field: 'a', type: ORDINAL}, channel, BAR, false), ScaleType.BAND);
-      });
-    });
-
-    it('should return point scale for X,Y when mark is bar and rangeStep is defined', () => {
-      [X, Y].forEach((channel) => {
-        assert.equal(type(undefined, {field: 'a', type: ORDINAL}, channel, BAR, true), ScaleType.POINT);
-      });
-    });
-
-    it('should return point scale for X,Y when mark is point', () => {
-      [X, Y].forEach((channel) => {
-        assert.equal(type(undefined, {field: 'a', type: ORDINAL}, channel, POINT, true), ScaleType.POINT);
-      });
-    });
-
-    it('should return point scale for X,Y when mark is point when ORDINAL SCALE TYPE is specified and throw warning', () => {
-      [X, Y].forEach((channel) => {
-        log.runLocalLogger((localLogger) => {
-          assert.equal(type('ordinal', {field: 'a', type: ORDINAL}, channel, POINT, true), ScaleType.POINT);
-          assert.equal(localLogger.warns[0], log.message.scaleTypeNotWorkWithChannel(channel, 'ordinal', 'point'));
-        });
-      });
-    });
-  });
-
   describe('initScale', () => {
     it('should output only padding without default paddingInner and paddingOuter if padding is specified for a band scale', () => {
       const scale = initScale(100, 'bar', 'x',
