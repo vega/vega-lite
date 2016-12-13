@@ -1,6 +1,6 @@
-import {X, Y, COLOR, TEXT, SHAPE, OPACITY, DETAIL} from '../../channel';
+import {X, Y, COLOR, TEXT, NONSPATIAL_CHANNELS, Channel} from '../../channel';
 import {AREA, LINE, TEXT as TEXTMARK} from '../../mark';
-import {contains} from '../../util';
+import {contains, without} from '../../util';
 
 import {area} from './area';
 import {bar} from './bar';
@@ -120,13 +120,14 @@ function parseNonPathMark(model: UnitModel) {
   return marks;
 }
 
+const NONSPATIAL_CHANNELS_EXCEPT_ORDER = without(NONSPATIAL_CHANNELS, ['order'] as Channel[]);
+
 /**
- * Returns list of detail fields (for 'color', 'shape', or 'detail' channels)
+ * Returns list of detail (group-by) fields
  * that the model's spec contains.
  */
 function detailFields(model: UnitModel): string[] {
-  // FIXME This is probably not a comprehensive list of detail fields.
-  return [COLOR, DETAIL, OPACITY, SHAPE].reduce(function(details, channel) {
+  return NONSPATIAL_CHANNELS_EXCEPT_ORDER.reduce(function(details, channel) {
     if (model.has(channel) && !model.fieldDef(channel).aggregate) {
       details.push(model.field(channel));
     }
