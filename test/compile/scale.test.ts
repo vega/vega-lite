@@ -194,6 +194,14 @@ describe('Scale', function() {
       // TODO:
     });
 
+    describe('padding', () => {
+      it('should be pointPadding for point scale if channel is x or y and padding is not specified.', () => {
+        for (let c of ['x', 'y'] as Channel[]) {
+          assert.equal(defaultProperty.padding(c, 'point', {pointPadding: 13}), 13);
+        }
+      });
+    });
+
     describe('paddingInner', () => {
       it('should be undefined if padding is specified.', () => {
         assert.equal(defaultProperty.paddingInner(10, 'x', {}), undefined);
@@ -215,12 +223,6 @@ describe('Scale', function() {
       it('should be undefined if padding is specified.', () => {
         for (let scaleType of ['point', 'band'] as ScaleType[]) {
           assert.equal(defaultProperty.paddingOuter(10, 'x', scaleType, 0, {}), undefined);
-        }
-      });
-
-      it('should be pointPadding for point scale if channel is x or y and padding is not specified.', () => {
-        for (let c of ['x', 'y'] as Channel[]) {
-          assert.equal(defaultProperty.paddingOuter(undefined, c, 'point', 0, {pointPadding: 13}), 13);
         }
       });
 

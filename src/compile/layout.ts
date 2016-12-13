@@ -87,7 +87,9 @@ export function unitSizeExpr(model: UnitModel, channel: Channel): string {
 
       const cardinality = cardinalityExpr(model, channel);
       const paddingOuter = scale.paddingOuter !== undefined ? scale.paddingOuter : scale.padding;
-      const paddingInner = scale.paddingInner !== undefined ? scale.paddingInner : scale.padding;
+      const paddingInner = scale.type === 'band' ? // only band has paddingInner
+        (scale.paddingInner !== undefined ? scale.paddingInner : scale.padding) :
+        0;
 
       let space = cardinality +
         (paddingInner ? ` - ${paddingInner}` : '') +

@@ -148,8 +148,11 @@ export function initScale(topLevelSize: number | undefined, mark: Mark | undefin
         let value: any;
 
         // If we have default rule-base, determine default value first
+
         if (property === 'nice') {
           value = defaultProperty.nice(scale.type, channel, fieldDef);
+        } else if (property === 'padding') {
+          value = defaultProperty.padding(channel, scale.type, scaleConfig);
         } else if (property === 'paddingInner') {
           value = defaultProperty.paddingInner(scale.padding, channel, scaleConfig);
         } else if (property === 'paddingOuter') {
@@ -378,6 +381,15 @@ export namespace defaultProperty {
     return contains([X, Y], channel); // return true for quantitative X/Y
   }
 
+  export function padding(channel: Channel, scaleType: ScaleType, scaleConfig: ScaleConfig) {
+    if (contains([X, Y], channel)) {
+      if (scaleType === ScaleType.POINT) {
+        return scaleConfig.pointPadding;
+      }
+    }
+    return undefined;
+  }
+
   export function paddingInner(padding: number, channel: Channel,  scaleConfig: ScaleConfig) {
     if (padding !== undefined) {
       // If user has already manually specified "padding", no need to add default paddingInner.
@@ -403,9 +415,7 @@ export namespace defaultProperty {
     if (contains([X, Y], channel)) {
       // Padding is only set for X and Y by default.
       // Basically it doesn't make sense to add padding for color and size.
-      if (scaleType === ScaleType.POINT) {
-        return scaleConfig.pointPadding;
-      } else if (scaleType === ScaleType.BAND) {
+      if (scaleType === ScaleType.BAND) {
         if (scaleConfig.bandPaddingOuter !== undefined) {
           return scaleConfig.bandPaddingOuter;
         }
