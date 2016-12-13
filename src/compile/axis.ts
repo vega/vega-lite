@@ -77,9 +77,9 @@ export function parseAxis(channel: Channel, model: Model): VgAxis {
   // 1.2. Add properties
   [
     // a) properties with special rules (so it has axis[property] methods) -- call rule functions
-    'format', 'grid', 'offset', 'orient', 'tickSize', 'tickCount', 'tickSizeEnd', 'title', 'titleOffset', 'values', 'zindex',
+    'format', 'grid', 'orient', 'tickSize', 'tickCount',  'title', 'values', 'zindex',
     // b) properties without rules, only produce default values in the schema, or explicit value if specified
-    'domain', 'tick', 'tickPadding', 'tickSize', 'tickSizeMajor', 'tickSizeMinor','subdivide'
+    'domain', 'offset', 'subdivide', 'tick', 'tickPadding', 'tickSize', 'tickSizeEnd', 'tickSizeMajor', 'tickSizeMinor', 'titleOffset'
   ].forEach(function(property) {
     let method: (model: Model, channel: Channel, def:any)=>any;
 
@@ -113,10 +113,6 @@ export function parseAxis(channel: Channel, model: Model): VgAxis {
 
 export function format(model: Model, channel: Channel) {
   return numberFormat(model.fieldDef(channel), model.axis(channel).format, model.config(), channel);
-}
-
-export function offset(model: Model, channel: Channel) {
-  return model.axis(channel).offset;
 }
 
 // TODO: we need to refactor this method after we take care of config refactoring
@@ -193,22 +189,6 @@ export function tickCount(model: Model, channel: Channel) {
   return undefined;
 }
 
-export function tickSize(model: Model, channel: Channel) {
-  const tickSize = model.axis(channel).tickSize;
-  if (tickSize !== undefined) {
-    return tickSize;
-  }
-  return undefined;
-}
-
-export function tickSizeEnd(model: Model, channel: Channel) {
-  const tickSizeEnd = model.axis(channel).tickSizeEnd;
-  if (tickSizeEnd !== undefined) {
-      return tickSizeEnd;
-  }
-  return undefined;
-}
-
 export function title(model: Model, channel: Channel) {
   const axis = model.axis(channel);
   if (axis.title !== undefined) {
@@ -232,14 +212,6 @@ export function title(model: Model, channel: Channel) {
   }
 
   return maxLength ? truncate(fieldTitle, maxLength) : fieldTitle;
-}
-
-export function titleOffset(model: Model, channel: Channel) {
-  const titleOffset = model.axis(channel).titleOffset;
-  if (titleOffset !== undefined) {
-      return titleOffset;
-  }
-  return undefined;
 }
 
 export function values(model: Model, channel: Channel) {
