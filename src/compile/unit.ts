@@ -65,6 +65,8 @@ export class UnitModel extends Model {
     super(spec, parent, parentGivenName);
 
     // use top-level width / height or parent's top-level width / height
+
+    // FIXME: once facet supports width/height, this is no longer correct!
     const providedWidth = spec.width !== undefined ? spec.width :
       parent ? parent['width'] : undefined; // only exists if parent is layer
     const providedHeight = spec.height !== undefined ? spec.height :
