@@ -3,7 +3,7 @@ import * as log from '../log';
 import {SHARED_DOMAIN_OPS} from '../aggregate';
 import {COLUMN, ROW, X, Y, X2, Y2, SHAPE, SIZE, COLOR, OPACITY, TEXT, hasScale, supportScaleType, Channel} from '../channel';
 import {Config} from '../config';
-import {SOURCE, STACKED_SCALE} from '../data';
+import {SOURCE} from '../data';
 import {DateTime, isDateTime, timestamp} from '../datetime';
 import {ChannelDefWithScale, FieldDef, field} from '../fielddef';
 import {Mark, BAR, TEXT as TEXTMARK, RECT, MarkConfig, PointConfig} from '../mark';
@@ -507,9 +507,11 @@ export function domain(scale: Scale, model: Model, channel:Channel): any {
       return [0, 1];
     }
     return {
-      data: model.dataName(STACKED_SCALE),
-      // STACKED_SCALE produces sum of the field's value e.g., sum of sum, sum of distinct
-      field: model.field(channel, {prefix: 'sum'})
+      data: model.dataName('stacked'),
+      fields: [
+        model.field(channel, {suffix: 'start'}),
+        model.field(channel, {suffix: 'end'})
+      ]
     };
   }
 

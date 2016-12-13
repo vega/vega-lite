@@ -344,8 +344,8 @@ describe('Scale', function() {
       const _domain = domain(model.scale(Y), model, Y);
 
       assert.deepEqual(_domain, {
-        data: 'stacked_scale',
-        field: 'sum_sum_origin'
+        data: 'stacked',
+        fields: ['sum_origin_start', 'sum_origin_end']
       });
     });
 
