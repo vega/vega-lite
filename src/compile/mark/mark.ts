@@ -3,7 +3,7 @@ import {isAggregate} from '../../encoding';
 import {OrderChannelDef, field} from '../../fielddef';
 import {AREA, LINE, TEXT as TEXTMARK} from '../../mark';
 import {isSortField} from '../../sort';
-import {contains, extend, isArray} from '../../util';
+import {contains, extend} from '../../util';
 
 import {area} from './area';
 import {bar} from './bar';
@@ -51,9 +51,11 @@ function dataFrom(model: UnitModel): string {
   return model.dataTable();
 }
 
-function parsePathMark(model: UnitModel) { // TODO: extract this into compilePathMark
+const FACETED_PATH_PREFIX = 'faceted-path-';
+
+function parsePathMark(model: UnitModel) {
   const mark = model.mark();
-  // TODO: replace this with more general case for composition
+  // FIXME: replace this with more general case for composition
   const details = detailFields(model);
 
   let pathMarks: any = [
@@ -61,13 +63,11 @@ function parsePathMark(model: UnitModel) { // TODO: extract this into compilePat
       name: model.name('marks'),
       type: markCompiler[mark].markType(),
       from: extend(
-        // If has facet, `from.data` will be added in the cell group.
-        // If has subfacet for line/area group, `from.data` will be added in the outer subfacet group below.
-        // If has no subfacet, add from.data.
-        details.length > 0 ? {} : {data: dataFrom(model)},
+        // If has subfacet for line/area group, need to use faceted data from below.
+        {data: (details.length > 0 ? FACETED_PATH_PREFIX : '') + dataFrom(model)},
 
-        // FIXME(@domoritz): this has to be extracted as inline data source before doing data transform
-        // sort transform
+        // FIXME(@domoritz): this has to be extracted as inline data source
+        // but there is no sort transform anymore? -- How do we sort this?
         {transform: [{ type: 'sort', by: sortPathBy(model)}]}
       ),
       encode: { update: markCompiler[mark].properties(model) }
@@ -75,23 +75,22 @@ function parsePathMark(model: UnitModel) { // TODO: extract this into compilePat
   ];
 
   if (details.length > 0) { // have level of details - need to facet line into subgroups
-    // FIXME: replace this with facet directive
-    const facetTransform = { type: 'facet', groupby: details };
-    const transform: any[] = model.stack() ?
-      // (Mark layer order does not matter for stacked charts)
-      [facetTransform] :
-      // For non-stacked path (line/area), we need to facet and possibly sort
-      [].concat(
-        facetTransform,
-        // if model has `order`, then sort mark's layer order by `order` field(s)
-        model.has(ORDER) ? [{type:'sort', by: sortBy(model)}] : []
-      );
+    // FIXME: replace this transform with something else
+    // (Mark layer order does not matter for stacked charts)
+    // For non-stacked path (line/area), we need to facet and possibly sort
+    // if model has `order`, then sort mark's layer order by `order` field(s)
+    const transform: any[] = !model.stack() && model.has(ORDER) ?
+      [{type:'sort', by: sortBy(model)}] : [];
 
     return [{
       name: model.name('pathgroup'),
       type: 'group',
       from: {
-        data: dataFrom(model),
+        facet: {
+          name: FACETED_PATH_PREFIX + dataFrom(model),
+          data: dataFrom(model),
+          groupby: details,
+        },
         transform: transform
       },
       encode: {
@@ -188,6 +187,7 @@ function sortPathBy(model: UnitModel): string | string[] {
  * that the model's spec contains.
  */
 function detailFields(model: UnitModel): string[] {
+  // FIXME This is probably not a comprehensive list of detail fields.
   return [COLOR, DETAIL, OPACITY, SHAPE].reduce(function(details, channel) {
     if (model.has(channel) && !model.fieldDef(channel).aggregate) {
       details.push(model.field(channel));
