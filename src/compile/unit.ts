@@ -2,7 +2,7 @@ import * as log from '../log';
 
 import {AggregateOp} from '../aggregate';
 import {Axis} from '../axis';
-import {X, Y, X2, Y2, TEXT, PATH, ORDER, Channel, UNIT_CHANNELS,  UNIT_SCALE_CHANNELS, NONSPATIAL_SCALE_CHANNELS, supportMark} from '../channel';
+import {X, Y, X2, Y2, TEXT, ORDER, Channel, UNIT_CHANNELS,  UNIT_SCALE_CHANNELS, NONSPATIAL_SCALE_CHANNELS, supportMark} from '../channel';
 import {defaultConfig, Config, CellConfig} from '../config';
 import {SOURCE, SUMMARY} from '../data';
 import {Encoding} from '../encoding';
@@ -34,7 +34,7 @@ function normalizeFieldDef(fieldDef: FieldDef, channel: Channel) {
     fieldDef.type = getFullName(fieldDef.type);
   }
 
-  if ((channel === PATH || channel === ORDER) && !fieldDef.aggregate && fieldDef.type === QUANTITATIVE) {
+  if ((channel === ORDER) && !fieldDef.aggregate && fieldDef.type === QUANTITATIVE) {
     fieldDef.aggregate = AggregateOp.MIN;
   }
   return fieldDef;

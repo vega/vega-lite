@@ -107,45 +107,6 @@ describe('normalize()', function () {
           ]
         });
       });
-
-      it('should not include path for line\'s point marker', () => {
-        const spec: any = {
-          "description": "Google's stock price over time.",
-          "data": {"url": "data/stocks.csv", "format": {"type": "csv"}},
-          "transform": {"filter": "datum[\"symbol\"]==='GOOG'"},
-          "mark": "line",
-          "encoding": {
-            "path": {"field": "date", "type": "temporal"},
-            "y": {"field": "price", "type": "quantitative"},
-            "x": {"field": "price", "type": "quantitative"}
-          },
-          "config": {"overlay": {"line": true}}
-        };
-        const normalizedSpec = normalize(spec);
-        assert.deepEqual(normalizedSpec, {
-          "description": "Google's stock price over time.",
-          "data": {"url": "data/stocks.csv","format": {"type": "csv"}},
-          "transform": {"filter": "datum[\"symbol\"]==='GOOG'"},
-          "layers": [
-            {
-              "mark": "line",
-              "encoding": {
-                "path": {"field": "date", "type": "temporal"},
-                "y": {"field": "price", "type": "quantitative"},
-                "x": {"field": "price", "type": "quantitative"}
-              }
-            },
-            {
-              "mark": "point",
-              "encoding": {
-                "y": {"field": "price", "type": "quantitative"},
-                "x": {"field": "price", "type": "quantitative"}
-              },
-              "config": {"mark": {"filled": true}}
-            }
-          ]
-        });
-      });
     });
 
     describe('area', () => {

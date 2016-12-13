@@ -1068,21 +1068,7 @@
                             "type": "array"
                         }
                     ],
-                    "description": "Layer order for non-stacked marks, or stack order for stacked marks."
-                },
-                "path": {
-                    "anyOf": [
-                        {
-                            "$ref": "#/definitions/OrderChannelDef"
-                        },
-                        {
-                            "items": {
-                                "$ref": "#/definitions/OrderChannelDef"
-                            },
-                            "type": "array"
-                        }
-                    ],
-                    "description": "Order of data points in line marks."
+                    "description": "stack order for stacked marks or order of data points in line marks."
                 },
                 "row": {
                     "$ref": "#/definitions/PositionChannelDef",
@@ -3106,21 +3092,7 @@
                             "type": "array"
                         }
                     ],
-                    "description": "Layer order for non-stacked marks, or stack order for stacked marks."
-                },
-                "path": {
-                    "anyOf": [
-                        {
-                            "$ref": "#/definitions/OrderChannelDef"
-                        },
-                        {
-                            "items": {
-                                "$ref": "#/definitions/OrderChannelDef"
-                            },
-                            "type": "array"
-                        }
-                    ],
-                    "description": "Order of data points in line marks."
+                    "description": "stack order for stacked marks or order of data points in line marks."
                 },
                 "shape": {
                     "$ref": "#/definitions/ChannelDefWithLegend",
