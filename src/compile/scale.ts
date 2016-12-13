@@ -463,7 +463,8 @@ export namespace defaultProperty {
 export function rangeStep(rangeStep: number | null, topLevelSize: number | undefined, mark: Mark | undefined,
     channel: Channel, scaleConfig: ScaleConfig): number {
   if (topLevelSize === undefined) {
-    // If null, we really want to make rangeStep fit width/height.  (If undefined, use default value.)
+
+    // If rangeStep is null, we really want to make rangeStep fit width/height.  (If undefined, use default value.)
     if (rangeStep === null) {
       return undefined; // no rangeStep
     } else if (rangeStep !== undefined) {
