@@ -4,14 +4,14 @@ import {ScaleType, hasContinuousDomain} from '../../scale';
 import {isSortField, SortOrder} from '../../sort';
 import {extend, Dict} from '../../util';
 
-import {ScaleComponents, BIN_LEGEND_SUFFIX, BIN_LEGEND_LABEL_SUFFIX} from './scale';
+import {ScaleComponent, ScaleComponents, BIN_LEGEND_SUFFIX, BIN_LEGEND_LABEL_SUFFIX} from './scale';
 
 import {Model} from '../model';
 
 import domain from './domain';
 import rangeMixins from './range';
 
-export default function(model: Model): Dict<ScaleComponents> {
+export default function parse(model: Model): Dict<ScaleComponents> {
   // TODO: should model.channels() inlcude X2/Y2?
   return model.channels().reduce(function(scale: Dict<ScaleComponents>, channel: Channel) {
     if (model.scale(channel)) {

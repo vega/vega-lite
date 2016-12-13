@@ -24,7 +24,8 @@ import {parseLegendComponent} from './legend';
 import {assembleLayout, parseUnitLayout} from './layout';
 import {Model} from './model';
 import {parseMark} from './mark/mark';
-import {parseScaleComponent, initScale} from './scale';
+import initScale from './scale/init';
+import parseScales from './scale/parse';
 import {stack, StackProperties} from '../stack';
 
 function normalizeFieldDef(fieldDef: FieldDef, channel: Channel) {
@@ -266,7 +267,7 @@ export class UnitModel extends Model {
   }
 
   public parseScale() {
-    this.component.scale = parseScaleComponent(this);
+    this.component.scale = parseScales(this);
   }
 
   public parseMark() {

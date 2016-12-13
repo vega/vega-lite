@@ -10,7 +10,7 @@ import {Model} from './model';
 import {UnitModel} from './unit';
 import {buildModel} from './common';
 import {FieldDef} from '../fielddef';
-import {ScaleComponents} from './scale';
+import {ScaleComponents} from './scale/scale';
 import {StackProperties} from '../stack';
 import {VgData, VgAxis, VgLegend, isUnionedDomain, isDataRefDomain, VgDataRef} from '../vega.schema';
 

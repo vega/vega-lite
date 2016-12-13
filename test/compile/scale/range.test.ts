@@ -1,7 +1,9 @@
 /* tslint:disable:quotemark */
 
 import {assert} from 'chai';
-import {parseScaleComponent} from '../../../src/compile/scale';
+
+// TODO: After refactor, we should not call parseScaleComponent simply to test rangeMixins!
+import parseScales from '../../../src/compile/scale/parse';
 import {rangeStep} from '../../../src/compile/scale/range';
 
 import * as log from '../../../src/log';
@@ -13,8 +15,6 @@ import {ExtendedUnitSpec} from '../../../src/spec';
 import {Type} from '../../../src/type';
 import {parseUnitModel} from '../../util';
 
-
-// TODO: After refactor, we should not call parseScaleComponent simply to test rangeMixins!
 describe('compile/scale', () => {
   describe('rangeMixins()', function() {
     describe('row', function() {
@@ -42,7 +42,7 @@ describe('compile/scale', () => {
             "color": {"field": "Origin", "type": "nominal"}
           }
         });
-        const scales = parseScaleComponent(model)['color'];
+        const scales = parseScales(model)['color'];
         assert.deepEqual(scales.main.scheme, mark.defaultMarkConfig.nominalColorScheme);
       });
 
@@ -55,7 +55,7 @@ describe('compile/scale', () => {
               "color": {"field": "Origin", "type": type}
             }
           });
-          const scales = parseScaleComponent(model)['color'];
+          const scales = parseScales(model)['color'];
           assert.deepEqual(scales.main.scheme, mark.defaultMarkConfig.sequentialColorScheme);
         }
       });
@@ -70,7 +70,7 @@ describe('compile/scale', () => {
             "opacity": {"field": "Acceleration", "type": "quantitative"}
           }
         });
-        const scales = parseScaleComponent(model)['opacity'];
+        const scales = parseScales(model)['opacity'];
         assert.deepEqual(scales.main.range, [mark.defaultMarkConfig.minOpacity, mark.defaultMarkConfig.maxOpacity]);
       });
     });
@@ -94,7 +94,7 @@ describe('compile/scale', () => {
               }
             }
           });
-          const scales = parseScaleComponent(model)['size'];
+          const scales = parseScales(model)['size'];
           assert.deepEqual(scales.main.range, [2, 9]);
         });
 
@@ -109,7 +109,7 @@ describe('compile/scale', () => {
               "size": {"field": "Origin", "type": "ordinal"}
             }
           });
-          const scales = parseScaleComponent(model)['size'];
+          const scales = parseScales(model)['size'];
           assert.deepEqual(scales.main.range, [mark.defaultBarConfig.continuousBandSize, 10]);
         });
       });
@@ -130,7 +130,7 @@ describe('compile/scale', () => {
               }
             }
           });
-          const scales = parseScaleComponent(model)['size'];
+          const scales = parseScales(model)['size'];
           assert.deepEqual(scales.main.range, [4, 9]);
         });
 
@@ -145,7 +145,7 @@ describe('compile/scale', () => {
               "size": {"field": "Origin", "type": "ordinal"}
             }
           });
-          const scales = parseScaleComponent(model)['size'];
+          const scales = parseScales(model)['size'];
           assert.deepEqual(scales.main.range, [mark.defaultTickConfig.minBandSize, 20]);
         });
       });
@@ -160,7 +160,7 @@ describe('compile/scale', () => {
               "size": {"field": "Origin", "type": "ordinal"}
             }
           });
-          const scales = parseScaleComponent(model)['size'];
+          const scales = parseScales(model)['size'];
           assert.deepEqual(scales.main.range, [mark.defaultTextConfig.minFontSize, mark.defaultTextConfig.maxFontSize]);
         });
       });
@@ -176,7 +176,7 @@ describe('compile/scale', () => {
               "size": {"field": "Origin", "type": "ordinal"}
             }
           });
-          const scales = parseScaleComponent(model)['size'];
+          const scales = parseScales(model)['size'];
           assert.deepEqual(scales.main.range, [mark.defaultRuleConfig.minStrokeWidth, mark.defaultRuleConfig.maxStrokeWidth]);
         });
       });
@@ -199,7 +199,7 @@ describe('compile/scale', () => {
               maxSize: 25
             };
             const model = parseUnitModel(spec);
-            const scales = parseScaleComponent(model)['size'];
+            const scales = parseScales(model)['size'];
             assert.deepEqual(scales.main.range, [5, 25]);
           }
         });
@@ -215,7 +215,7 @@ describe('compile/scale', () => {
               "size": {"aggregate": "mean", "field": "Horsepower", "type": "quantitative"}
             }
           });
-          const scales = parseScaleComponent(model)['size'];
+          const scales = parseScales(model)['size'];
           assert.deepEqual(scales.main.range, [0, 81]);
         });
 
@@ -231,7 +231,7 @@ describe('compile/scale', () => {
               "size": {"field": "Origin", "type": "ordinal"}
             }
           });
-          const scales = parseScaleComponent(model)['size'];
+          const scales = parseScales(model)['size'];
           assert.deepEqual(scales.main.range, [9, 81]);
         });
 
@@ -246,7 +246,7 @@ describe('compile/scale', () => {
               "size": {"field": "Acceleration", "type": "quantitative", "scale": {"zero": false}}
             }
           });
-          const scales = parseScaleComponent(model)['size'];
+          const scales = parseScales(model)['size'];
           assert.deepEqual(scales.main.range, [9, 81]);
           // TODO: this actually should throw warning too.
         });
@@ -262,7 +262,7 @@ describe('compile/scale', () => {
               "size": {"aggregate": "mean", "field": "Horsepower", "type": "quantitative"}
             }
           });
-          const scales = parseScaleComponent(model)['size'];
+          const scales = parseScales(model)['size'];
           assert.deepEqual(scales.main.range, [0, 81]);
         });
 
@@ -278,7 +278,7 @@ describe('compile/scale', () => {
               "size": {"field": "Origin", "type": "ordinal"}
             }
           });
-          const scales = parseScaleComponent(model)['size'];
+          const scales = parseScales(model)['size'];
           assert.deepEqual(scales.main.range, [9, 81]);
         });
 
@@ -293,7 +293,7 @@ describe('compile/scale', () => {
               "size": {"aggregate": "mean", "field": "Horsepower", "type": "quantitative"}
             }
           });
-          const scales = parseScaleComponent(model)['size'];
+          const scales = parseScales(model)['size'];
           assert.deepEqual(scales.main.range, [0, 81]);
         });
 
@@ -309,7 +309,7 @@ describe('compile/scale', () => {
             },
             "config": {"scale": {"rangeStep": 11}}
           });
-          const scales = parseScaleComponent(model)['size'];
+          const scales = parseScales(model)['size'];
           assert.deepEqual(scales.main.range, [0, 81]);
         });
       });
@@ -324,7 +324,7 @@ describe('compile/scale', () => {
             "shape": {"field": "Origin", "type": "nominal"}
           }
         });
-        const scales = parseScaleComponent(model)['shape'];
+        const scales = parseScales(model)['shape'];
         assert.deepEqual(scales.main.range, mark.defaultPointConfig.shapes);
       });
     });
