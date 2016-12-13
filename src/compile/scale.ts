@@ -117,6 +117,8 @@ export function initScale(topLevelSize: number | undefined, mark: Mark | undefin
     // general properties
     'domain', // For domain, we only copy specified value here.  Default value is determined during parsing phase.
     'round',
+    'range',
+    'scheme',
     // quantitative / time
     'clamp', 'nice',
     // quantitative
