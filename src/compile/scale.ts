@@ -1,18 +1,19 @@
 import * as log from '../log';
 
-import {COLUMN, ROW, X, Y, X2, Y2, SIZE, COLOR, TEXT, Channel} from '../channel';
+import {COLUMN, ROW, X, Y, X2, Y2, COLOR, TEXT, Channel} from '../channel';
 import {ChannelDefWithScale, FieldDef, field} from '../fielddef';
 import {Mark, TEXT as TEXTMARK} from '../mark';
-import {Scale, ScaleConfig, ScaleType, NiceTime, scaleTypeSupportProperty, hasContinuousDomain} from '../scale';
+import {Scale, ScaleConfig, ScaleType, scaleTypeSupportProperty, hasContinuousDomain} from '../scale';
 import {isSortField, SortOrder} from '../sort';
 import {contains, extend, Dict} from '../util';
 import {VgScale} from '../vega.schema';
 
 import {Model} from './model';
-import {smallestUnit} from '../timeunit';
+
 
 import {domain} from './scale/domain';
 import {rangeMixins} from './scale/range';
+import * as rules from './scale/rules';
 import {type} from './scale/type';
 
 /** Scale suffix for scale used to get drive binned legends. */
@@ -148,17 +149,17 @@ export function initScale(topLevelSize: number | undefined, mark: Mark | undefin
         // If we have default rule-base, determine default value first
 
         if (property === 'nice') {
-          value = defaultProperty.nice(scale.type, channel, fieldDef);
+          value = rules.nice(scale.type, channel, fieldDef);
         } else if (property === 'padding') {
-          value = defaultProperty.padding(channel, scale.type, scaleConfig);
+          value = rules.padding(channel, scale.type, scaleConfig);
         } else if (property === 'paddingInner') {
-          value = defaultProperty.paddingInner(scale.padding, channel, scaleConfig);
+          value = rules.paddingInner(scale.padding, channel, scaleConfig);
         } else if (property === 'paddingOuter') {
-          value = defaultProperty.paddingOuter(scale.padding, channel, scale.type, scale.paddingInner, scaleConfig);
+          value = rules.paddingOuter(scale.padding, channel, scale.type, scale.paddingInner, scaleConfig);
         } else if (property === 'round') {
-          value = defaultProperty.round(channel, scaleConfig);
+          value = rules.round(channel, scaleConfig);
         } else if (property === 'zero') {
-          value = defaultProperty.zero(scale, channel, fieldDef);
+          value = rules.zero(scale, channel, fieldDef);
         } else {
           value = scaleConfig[property];
         }
@@ -277,91 +278,6 @@ function parseBinLegendLabel(channel: Channel, model: Model, fieldDef: FieldDef)
     }
   };
 }
-
-
-export namespace defaultProperty {
-  export function nice(scaleType: ScaleType, channel: Channel, fieldDef: FieldDef): boolean | NiceTime {
-    if (contains([ScaleType.TIME, ScaleType.UTC], scaleType)) {
-      return smallestUnit(fieldDef.timeUnit) as any;
-    }
-    return contains([X, Y], channel); // return true for quantitative X/Y
-  }
-
-  export function padding(channel: Channel, scaleType: ScaleType, scaleConfig: ScaleConfig) {
-    if (contains([X, Y], channel)) {
-      if (scaleType === ScaleType.POINT) {
-        return scaleConfig.pointPadding;
-      }
-    }
-    return undefined;
-  }
-
-  export function paddingInner(padding: number, channel: Channel,  scaleConfig: ScaleConfig) {
-    if (padding !== undefined) {
-      // If user has already manually specified "padding", no need to add default paddingInner.
-      return undefined;
-    }
-
-    if (contains([X, Y], channel)) {
-      // Padding is only set for X and Y by default.
-      // Basically it doesn't make sense to add padding for color and size.
-
-      // paddingOuter would only be called if it's a band scale, just return the default for bandScale.
-      return scaleConfig.bandPaddingInner;
-    }
-    return undefined;
-  }
-
-  export function paddingOuter(padding: number, channel: Channel, scaleType: ScaleType, paddingInner: number, scaleConfig: ScaleConfig) {
-    if (padding !== undefined) {
-      // If user has already manually specified "padding", no need to add default paddingOuter.
-      return undefined;
-    }
-
-    if (contains([X, Y], channel)) {
-      // Padding is only set for X and Y by default.
-      // Basically it doesn't make sense to add padding for color and size.
-      if (scaleType === ScaleType.BAND) {
-        if (scaleConfig.bandPaddingOuter !== undefined) {
-          return scaleConfig.bandPaddingOuter;
-        }
-        /* By default, paddingOuter is paddingInner / 2. The reason is that
-           size (width/height) = step * (cardinality - paddingInner + 2 * paddingOuter).
-           and we want the width/height to be integer by default.
-           Note that step (by default) and cardinality are integers.) */
-        return paddingInner / 2;
-      }
-    }
-    return undefined;
-  }
-
-  export function round(channel: Channel, scaleConfig: ScaleConfig) {
-    if (contains(['x', 'y', 'row', 'column'], channel)) {
-      return scaleConfig.round;
-    }
-    return undefined;
-  }
-
-  export function zero(specifiedScale: Scale, channel: Channel, fieldDef: FieldDef) {
-    // By default, return true only for the following cases:
-
-    // 1) using quantitative field with size
-    // While this can be either ratio or interval fields, our assumption is that
-    // ratio are more common.
-    if (channel === SIZE && fieldDef.type === 'quantitative') {
-      return true;
-    }
-
-    // 2) non-binned, quantitative x-scale or y-scale if no custom domain is provided.
-    // (For binning, we should not include zero by default because binning are calculated without zero.
-    // Similar, if users explicitly provide a domain range, we should not augment zero as that will be unexpected.)
-    if (!specifiedScale.domain && !fieldDef.bin && contains([X, Y], channel)) {
-      return true;
-    }
-    return false;
-  }
-}
-
 
 // TODO: move this to range.ts after refactoring
 export function rangeStep(rangeStep: number | null, topLevelSize: number | undefined, mark: Mark | undefined,
