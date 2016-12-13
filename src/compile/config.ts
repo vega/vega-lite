@@ -132,7 +132,7 @@ export function orient(mark: Mark, encoding: Encoding, scale: Dict<Scale>, markC
           return markConfig.orient;
         }
 
-        if (!(mark === LINE &&  encoding.path)) {
+        if (!(mark === LINE && encoding.order)) {
           // Except for connected scatterplot, we should log warning for unclear orientation of QxQ plots.
           log.warn(log.message.unclearOrientContinuous(mark));
         }

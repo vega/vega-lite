@@ -27,13 +27,13 @@ export namespace Channel {
   // Non-scale channel
   export const TEXT: 'text' = 'text';
   export const LABEL: 'label' = 'label';
-  export const PATH: 'path' = 'path';
   export const ORDER: 'order' = 'order';
   export const DETAIL: 'detail' = 'detail';
 }
+
 export type Channel = typeof Channel.X | typeof Channel.Y | typeof Channel.X2 | typeof Channel.Y2 | typeof Channel.ROW
   | typeof Channel.COLUMN | typeof Channel.SHAPE | typeof Channel.SIZE | typeof Channel.COLOR
-  | typeof Channel.TEXT | typeof Channel.DETAIL | typeof Channel.LABEL | typeof Channel.PATH
+  | typeof Channel.TEXT | typeof Channel.DETAIL | typeof Channel.LABEL
   | typeof Channel.ORDER | typeof Channel.OPACITY;
 
 export const X = Channel.X;
@@ -48,14 +48,13 @@ export const COLOR = Channel.COLOR;
 export const TEXT = Channel.TEXT;
 export const DETAIL = Channel.DETAIL;
 export const LABEL = Channel.LABEL;
-export const PATH = Channel.PATH;
 export const ORDER = Channel.ORDER;
 export const OPACITY = Channel.OPACITY;
 
-export const CHANNELS = [X, Y, X2, Y2, ROW, COLUMN, SIZE, SHAPE, COLOR, PATH, ORDER, OPACITY, TEXT, DETAIL, LABEL];
+export const CHANNELS = [X, Y, X2, Y2, ROW, COLUMN, SIZE, SHAPE, COLOR, ORDER, OPACITY, TEXT, DETAIL, LABEL];
 
 export const UNIT_CHANNELS = without(CHANNELS, [ROW, COLUMN]);
-export const UNIT_SCALE_CHANNELS = without(UNIT_CHANNELS, [X2, Y2, PATH, ORDER, DETAIL, TEXT, LABEL, X2, Y2]);
+export const UNIT_SCALE_CHANNELS = without(UNIT_CHANNELS, [X2, Y2, ORDER, DETAIL, TEXT, LABEL, X2, Y2]);
 export const SCALE_CHANNELS = UNIT_SCALE_CHANNELS.concat([ROW, COLUMN]);
 export const NONSPATIAL_CHANNELS = without(UNIT_CHANNELS, [X, Y, X2, Y2]);
 export const NONSPATIAL_SCALE_CHANNELS = without(UNIT_SCALE_CHANNELS, [X, Y]);
@@ -97,7 +96,7 @@ export function getSupportedMark(channel: Channel): SupportedMark {
     case Y:
     case COLOR:
     case DETAIL:
-    case ORDER:
+    case ORDER:    // TODO: revise (order might not support rect, which is not stackable?)
     case OPACITY:
     case ROW:
     case COLUMN:
@@ -119,8 +118,6 @@ export function getSupportedMark(channel: Channel): SupportedMark {
       return {point: true};
     case TEXT:
       return {text: true};
-    case PATH:
-      return {line: true};
   }
   return {};
 }
@@ -162,17 +159,12 @@ export function getSupportedRole(channel: Channel): SupportedRole {
         measure: true,
         dimension: false
       };
-    case PATH:
-      return {
-        measure: false,
-        dimension: true
-      };
   }
   throw new Error('Invalid encoding channel' + channel);
 }
 
 export function hasScale(channel: Channel) {
-  return !contains([DETAIL, PATH, TEXT, LABEL, ORDER], channel);
+  return !contains([DETAIL, TEXT, LABEL, ORDER], channel);
 }
 
 // Position does not work with ordinal (lookup) scale and sequential (which is only for color)

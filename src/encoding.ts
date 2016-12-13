@@ -71,12 +71,7 @@ export interface UnitEncoding {
   label?: FieldDef;
 
   /**
-   * Order of data points in line marks.
-   */
-  path?: OrderChannelDef | OrderChannelDef[];
-
-  /**
-   * Layer order for non-stacked marks, or stack order for stacked marks.
+   * stack order for stacked marks or order of data points in line marks.
    */
   order?: OrderChannelDef | OrderChannelDef[];
 }
