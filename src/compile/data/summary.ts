@@ -62,6 +62,8 @@ export namespace summary {
   export function parseFacet(model: FacetModel): SummaryComponent[] {
     const childDataComponent = model.child().component.data;
 
+    // FIXME: this could be incorrect for faceted layer charts.
+
     // If child doesn't have its own data source but has a summary data source, merge
     if (!childDataComponent.source && childDataComponent.summary) {
       let summaryComponents = childDataComponent.summary.map(function(summaryComponent) {

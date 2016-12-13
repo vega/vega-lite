@@ -17,6 +17,7 @@ import {bin} from './bin';
 import {formula} from './formula';
 import {nonPositiveFilter} from './nonpositivefilter';
 import {summary} from './summary';
+import {stack, StackComponent} from './stack';
 import {stackScale} from './stackscale';
 import {timeUnit} from './timeunit';
 
@@ -47,6 +48,11 @@ export interface DataComponent {
 
   /** String set of fields to be filtered */
   nonPositiveFilter: Dict<boolean>;
+
+  /**
+   * Stack transforms to be applied.
+   */
+  stack: StackComponent;
 
   /** Data source for feeding stacked scale. */
   // TODO: need to revise if single VgData is sufficient with layer / concat
@@ -85,6 +91,7 @@ export function parseUnitData(model: UnitModel): DataComponent {
     calculate: formula.parseUnit(model),
     timeUnit: timeUnit.parseUnit(model),
     summary: summary.parseUnit(model),
+    stack: stack.parseUnit(model),
     stackScale: stackScale.parseUnit(model)
   };
 }
@@ -101,6 +108,7 @@ export function parseFacetData(model: FacetModel): DataComponent {
     calculate: formula.parseFacet(model),
     timeUnit: timeUnit.parseFacet(model),
     summary: summary.parseFacet(model),
+    stack: stack.parseFacet(model),
     stackScale: stackScale.parseFacet(model)
   };
 }
@@ -120,6 +128,7 @@ export function parseLayerData(model: LayerModel): DataComponent {
     calculate: formula.parseLayer(model),
     timeUnit: timeUnit.parseLayer(model),
     summary: summary.parseLayer(model),
+    stack: stack.parseLayer(model),
     stackScale: stackScale.parseLayer(model)
   };
 }
@@ -161,10 +170,14 @@ export function assembleData(model: Model, data: VgData[]) {
   }
 
   // stack
-  // TODO: revise if this actually should be an array
-  const stackData = stackScale.assemble(component.stackScale);
+  const stackData = stack.assemble(component.stack);
   if (stackData) {
     data.push(stackData);
+  }
+  // TODO: revise if this actually should be an array
+  const stackScaleData = stackScale.assemble(component.stackScale);
+  if (stackScaleData) {
+    data.push(stackScaleData);
   }
   return data;
 }

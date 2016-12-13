@@ -1,5 +1,7 @@
-import {isArray} from './util';
+import {StackOffset} from './stack';
 import {ScaleType, NiceTime} from './scale';
+import {isArray} from './util';
+
 
 export interface VgData {
   name: string;
@@ -86,10 +88,18 @@ export type VgLegend = any;
 export type VgTransform = any;
 
 export interface VgStackTransform {
-  type: string;
-  offset?: any;
-  groupby: any;
-  field: any;
-  sortby: any;
+  type: 'stack';
+  offset?: StackOffset;
+  groupby: string[];
+  field: string;
+  sort: string[];
   as: string[];
+}
+export interface VgImputeTransform {
+  type: 'impute';
+  groupby?: string[];
+  field: string;
+  orderby?: string[];
+  method?: 'value' | 'median' | 'max' | 'min' | 'mean';
+  value?: any;
 }
