@@ -1,13 +1,9 @@
-import {X, Y, COLOR, TEXT, SHAPE, PATH, ORDER, OPACITY, DETAIL} from '../../channel';
-import {isAggregate} from '../../encoding';
-import {OrderChannelDef, field} from '../../fielddef';
+import {X, Y, COLOR, TEXT, SHAPE, OPACITY, DETAIL} from '../../channel';
 import {AREA, LINE, TEXT as TEXTMARK} from '../../mark';
-import {isSortField} from '../../sort';
-import {contains, extend} from '../../util';
+import {contains} from '../../util';
 
 import {area} from './area';
 import {bar} from './bar';
-import {sortField} from '../common';
 import {line} from './line';
 import {point, circle, square} from './point';
 import {rect} from './rect';
@@ -62,25 +58,15 @@ function parsePathMark(model: UnitModel) {
     {
       name: model.name('marks'),
       type: markCompiler[mark].markType(),
-      from: extend(
-        // If has subfacet for line/area group, need to use faceted data from below.
-        {data: (details.length > 0 ? FACETED_PATH_PREFIX : '') + dataFrom(model)},
-
-        // FIXME(@domoritz): this has to be extracted as inline data source
-        // but there is no sort transform anymore? -- How do we sort this?
-        {transform: [{ type: 'sort', by: sortPathBy(model)}]}
-      ),
+      // If has subfacet for line/area group, need to use faceted data from below.
+      // FIXME: support sorting path order (in connected scatterplot)
+      from: {data: (details.length > 0 ? FACETED_PATH_PREFIX : '') + dataFrom(model)},
       encode: { update: markCompiler[mark].properties(model) }
     }
   ];
 
   if (details.length > 0) { // have level of details - need to facet line into subgroups
-    // FIXME: replace this transform with something else
-    // (Mark layer order does not matter for stacked charts)
-    // For non-stacked path (line/area), we need to facet and possibly sort
-    // if model has `order`, then sort mark's layer order by `order` field(s)
-    const transform: any[] = !model.stack() && model.has(ORDER) ?
-      [{type:'sort', by: sortBy(model)}] : [];
+    // TODO: for non-stacked plot, map order to zindex. (Maybe rename order for layer to zindex?)
 
     return [{
       name: model.name('pathgroup'),
@@ -90,8 +76,7 @@ function parsePathMark(model: UnitModel) {
           name: FACETED_PATH_PREFIX + dataFrom(model),
           data: dataFrom(model),
           groupby: details,
-        },
-        transform: transform
+        }
       },
       encode: {
         update: {
@@ -123,63 +108,16 @@ function parseNonPathMark(model: UnitModel) {
     });
   }
 
+  // TODO: for non-stacked plot, map order to zindex. (Maybe rename order for layer to zindex?)
+
   marks.push({
     name: model.name('marks'),
     type: markCompiler[mark].markType(),
-    from: extend(
-      {data: dataFrom(model)},
-      !model.stack() && model.has(ORDER) ?
-        // if non-stacked, detail field determines the layer order of each mark
-        { transform: [{type:'sort', by: sortBy(model)}] } :
-        {}
-    ),
+    from: {data: dataFrom(model)},
     encode: { update: markCompiler[mark].properties(model)}
   });
 
   return marks;
-}
-
-function sortBy(model: UnitModel): string | string[] {
-  if (model.has(ORDER)) {
-    let channelDef = model.encoding().order;
-    if (channelDef instanceof Array) {
-      // sort by multiple fields
-      return channelDef.map(sortField);
-    } else {
-      // sort by one field
-      return sortField(channelDef as OrderChannelDef); // have to add OrderChannelDef to make tsify not complaining
-    }
-  }
-  return null; // use default order
-}
-
-/**
- * Return path order for sort transform's by property
- */
-function sortPathBy(model: UnitModel): string | string[] {
-  if (model.mark() === LINE && model.has(PATH)) {
-    // For only line, sort by the path field if it is specified.
-    const channelDef = model.encoding().path;
-    if (channelDef instanceof Array) {
-      // sort by multiple fields
-      return channelDef.map(sortField);
-    } else {
-      // sort by one field
-      return sortField(channelDef as OrderChannelDef); // have to add OrderChannelDef to make tsify not complaining
-    }
-  } else {
-    // For both line and area, we sort values based on dimension by default
-    const dimensionChannel = model.config().mark.orient === 'horizontal' ? Y : X;
-    const sort = model.sort(dimensionChannel);
-    if (isSortField(sort)) {
-      return '-' + field({
-        aggregate: isAggregate(model.encoding()) ? sort.op : undefined,
-        field: sort.field
-      });
-    } else {
-      return '-' + model.field(dimensionChannel, {binSuffix: 'start'});
-    }
-  }
 }
 
 /**
