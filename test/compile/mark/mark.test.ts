@@ -7,7 +7,7 @@ import {parseMark} from '../../../src/compile/mark/mark';
 
 describe('Mark', function() {
   describe('Non-path based Mark', function() {
-    it('Aggregated Bar with a color with binned x should stack data correctly', function() {
+    it('Aggregated Bar with a color with binned x should use stacked data source', function() {
       const model = parseUnitModel({
         "mark": "bar",
         "encoding": {
@@ -17,30 +17,7 @@ describe('Mark', function() {
         }
       });
       const markGroup = parseMark(model);
-      const stackTransform = markGroup[0].from.transform[0];
-      assert.equal(stackTransform.type, 'stack');
-
-      assert.deepEqual(stackTransform.groupby, ['bin_Cost__Total_$_start']);
-      assert.deepEqual(stackTransform.field, 'sum_Cost__Other');
-      assert.deepEqual(stackTransform.sortby, ['-Effect__Amount_of_damage']);
-    });
-
-    it('Aggregated with a color with binned x should stack data correctly', function() {
-      const model = parseUnitModel({
-        "mark": "bar",
-        "encoding": {
-          "y": {"type": "quantitative", "field": "Cost__Other", "aggregate": "sum"},
-          "x": {"bin": true, "type": "quantitative", "field": "Cost__Total_$"},
-          "color": {"type": "ordinal", "field": "Effect__Amount_of_damage"}
-        }
-      });
-      const markGroup = parseMark(model);
-      const stackTransform = markGroup[0].from.transform[0];
-      assert.equal(stackTransform.type, 'stack');
-
-      assert.deepEqual(stackTransform.groupby, ['bin_Cost__Total_$_start']);
-      assert.deepEqual(stackTransform.field, 'sum_Cost__Other');
-      assert.deepEqual(stackTransform.sortby, ['-Effect__Amount_of_damage']);
+      assert.equal(markGroup[0].from.data, 'stacked');
     });
   });
 });

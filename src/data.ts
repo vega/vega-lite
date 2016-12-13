@@ -68,14 +68,18 @@ export interface Data {
 export namespace DataTable {
   export const SOURCE: 'source' = 'source';
   export const SUMMARY: 'summary' = 'summary';
+  export const STACKED: 'stacked' = 'stacked';
+
+  // FIXME remove
   export const STACKED_SCALE: 'stacked_scale' = 'stacked_scale';
   export const LAYOUT: 'layout' = 'layout';
 }
 
-export type DataTable = typeof DataTable.SOURCE | typeof DataTable.SUMMARY | typeof DataTable.STACKED_SCALE | typeof DataTable.LAYOUT;
+export type DataTable = typeof DataTable.SOURCE | typeof DataTable.SUMMARY | typeof DataTable.STACKED | typeof DataTable.STACKED_SCALE | typeof DataTable.LAYOUT;
 
 export const SUMMARY = DataTable.SUMMARY;
 export const SOURCE = DataTable.SOURCE;
+export const STACKED = DataTable.STACKED;
 export const STACKED_SCALE = DataTable.STACKED_SCALE;
 export const LAYOUT = DataTable.LAYOUT;
 

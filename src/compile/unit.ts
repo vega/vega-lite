@@ -77,6 +77,7 @@ export class UnitModel extends Model {
     const config = this._config = this._initConfig(spec.config, parent);
 
     // FIXME move stacked out of config as it's not really a theme.
+    // calculate stack properties
     this._stack = stack(mark, encoding, config.mark.stacked);
     this._scale =  this._initScale(mark, encoding, config.scale, providedWidth, providedHeight);
 
@@ -96,9 +97,6 @@ export class UnitModel extends Model {
       providedHeight,
       config.cell, config.scale
     );
-
-    // calculate stack properties
-
   }
 
   private _initEncoding(mark: Mark, encoding: Encoding) {
