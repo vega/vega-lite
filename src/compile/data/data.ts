@@ -18,9 +18,7 @@ import {formula} from './formula';
 import {nonPositiveFilter} from './nonpositivefilter';
 import {summary} from './summary';
 import {stack, StackComponent} from './stack';
-import {stackScale} from './stackscale';
 import {timeUnit} from './timeunit';
-
 
 /**
  * Composable component instance of a model's data.
@@ -53,10 +51,6 @@ export interface DataComponent {
    * Stack transforms to be applied.
    */
   stack: StackComponent;
-
-  /** Data source for feeding stacked scale. */
-  // TODO: need to revise if single VgData is sufficient with layer / concat
-  stackScale: VgData;
 
   /** Array of summary component object for producing summary (aggregate) data source */
   summary: SummaryComponent[];
@@ -91,8 +85,7 @@ export function parseUnitData(model: UnitModel): DataComponent {
     calculate: formula.parseUnit(model),
     timeUnit: timeUnit.parseUnit(model),
     summary: summary.parseUnit(model),
-    stack: stack.parseUnit(model),
-    stackScale: stackScale.parseUnit(model)
+    stack: stack.parseUnit(model)
   };
 }
 
@@ -108,8 +101,7 @@ export function parseFacetData(model: FacetModel): DataComponent {
     calculate: formula.parseFacet(model),
     timeUnit: timeUnit.parseFacet(model),
     summary: summary.parseFacet(model),
-    stack: stack.parseFacet(model),
-    stackScale: stackScale.parseFacet(model)
+    stack: stack.parseFacet(model)
   };
 }
 
@@ -128,11 +120,9 @@ export function parseLayerData(model: LayerModel): DataComponent {
     calculate: formula.parseLayer(model),
     timeUnit: timeUnit.parseLayer(model),
     summary: summary.parseLayer(model),
-    stack: stack.parseLayer(model),
-    stackScale: stackScale.parseLayer(model)
+    stack: stack.parseLayer(model)
   };
 }
-
 
 /* tslint:enable:no-use-before-declare */
 
@@ -173,11 +163,6 @@ export function assembleData(model: Model, data: VgData[]) {
   const stackData = stack.assemble(component.stack);
   if (stackData) {
     data.push(stackData);
-  }
-  // TODO: revise if this actually should be an array
-  const stackScaleData = stackScale.assemble(component.stackScale);
-  if (stackScaleData) {
-    data.push(stackScaleData);
   }
   return data;
 }
