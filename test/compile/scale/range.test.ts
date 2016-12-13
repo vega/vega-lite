@@ -2,11 +2,17 @@
 
 import {assert} from 'chai';
 import {parseScaleComponent} from '../../../src/compile/scale';
+import {rangeStep} from '../../../src/compile/scale/range';
+
+import * as log from '../../../src/log';
+import {X} from '../../../src/channel';
 import * as mark from '../../../src/mark';
 import {Mark} from '../../../src/mark';
+import {defaultScaleConfig} from '../../../src/scale';
 import {ExtendedUnitSpec} from '../../../src/spec';
 import {Type} from '../../../src/type';
 import {parseUnitModel} from '../../util';
+
 
 // TODO: After refactor, we should not call parseScaleComponent simply to test rangeMixins!
 describe('compile/scale', () => {
@@ -321,6 +327,40 @@ describe('compile/scale', () => {
         const scales = parseScaleComponent(model)['shape'];
         assert.deepEqual(scales.main.range, mark.defaultPointConfig.shapes);
       });
+    });
+  });
+
+  describe('rangeStep()', () => {
+    it('should return undefined if rangeStep spec is null', () => {
+      const size = rangeStep(null, undefined, 'point', X, defaultScaleConfig);
+      assert.deepEqual(size, undefined);
+    });
+
+    it('should return undefined if top-level size is provided for ordinal scale and drop specified rangeStep', log.wrap((localLogger)=> {
+      const size = rangeStep(21, 180, 'point', X, defaultScaleConfig);
+      assert.deepEqual(size, undefined);
+      assert.equal(localLogger.warns[0], log.message.rangeStepDropped('x'));
+    }));
+
+    it('should return undefined if top-level size is provided for ordinal scale and throw warning if rangeStep is specified', log.wrap((logger) => {
+      const size = rangeStep(21, 180, 'point', X, defaultScaleConfig);
+      assert.deepEqual(size, undefined);
+      assert.equal(logger.warns[0], log.message.rangeStepDropped(X));
+    }));
+
+    it('should return provided rangeStep for ordinal scale', () => {
+      const size = rangeStep(21, undefined, 'point', X, defaultScaleConfig);
+      assert.deepEqual(size, 21);
+    });
+
+    it('should return provided textXRangeStep for x-ordinal scale', () => {
+      const size = rangeStep(undefined, undefined, 'text', X, defaultScaleConfig);
+      assert.deepEqual(size, defaultScaleConfig.textXRangeStep);
+    });
+
+    it('should return provided rangeStep for other ordinal scale', () => {
+      const size = rangeStep(undefined, undefined, 'point', X, defaultScaleConfig);
+      assert.deepEqual(size, defaultScaleConfig.rangeStep);
     });
   });
 });
