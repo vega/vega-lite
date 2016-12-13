@@ -70,26 +70,7 @@ export default function init(topLevelSize: number | undefined, mark: Mark | unde
     } else {
       // If there is no property specified, check if we need to determine default value.
       if (supportedByScaleType && channelIncompatability === undefined) {
-        let value: any;
-
-        // If we have default rule-base, determine default value first
-
-        if (property === 'nice') {
-          value = rules.nice(scale.type, channel, fieldDef);
-        } else if (property === 'padding') {
-          value = rules.padding(channel, scale.type, scaleConfig);
-        } else if (property === 'paddingInner') {
-          value = rules.paddingInner(scale.padding, channel, scaleConfig);
-        } else if (property === 'paddingOuter') {
-          value = rules.paddingOuter(scale.padding, channel, scale.type, scale.paddingInner, scaleConfig);
-        } else if (property === 'round') {
-          value = rules.round(channel, scaleConfig);
-        } else if (property === 'zero') {
-          value = rules.zero(scale, channel, fieldDef);
-        } else {
-          value = scaleConfig[property];
-        }
-
+        const value = getDefaultValue(property, scale, channel, fieldDef, scaleConfig);
         if (value !== undefined) { // use the default value
           scale[property] = value;
         }
@@ -97,6 +78,26 @@ export default function init(topLevelSize: number | undefined, mark: Mark | unde
     }
   });
   return scale;
+}
+
+function getDefaultValue(property: string, scale: Scale, channel: Channel, fieldDef: FieldDef, scaleConfig: ScaleConfig) {
+  // If we have default rule-base, determine default value first
+  switch (property) {
+    case 'nice':
+      return rules.nice(scale.type, channel, fieldDef);
+    case 'padding':
+      return rules.padding(channel, scale.type, scaleConfig);
+    case 'paddingInner':
+      return rules.paddingInner(scale.padding, channel, scaleConfig);
+    case 'paddingOuter':
+      return rules.paddingOuter(scale.padding, channel, scale.type, scale.paddingInner, scaleConfig);
+    case 'round':
+      return rules.round(channel, scaleConfig);
+    case 'zero':
+      return rules.zero(scale, channel, fieldDef);
+  }
+  // Otherwise, use scale config
+  return scaleConfig[property];
 }
 
 function channelScalePropertyIncompatability(channel: Channel, propName: string): string {
