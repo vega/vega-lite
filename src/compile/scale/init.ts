@@ -67,8 +67,7 @@ export default function init(
     scale,
     rangeMixins(
       channel, scale.type, specifiedScale, config,
-      fieldDef.type, scale.zero,
-      mark, topLevelSize, xyRangeSteps
+      scale.zero, mark, topLevelSize, xyRangeSteps
     )
   );
 }
