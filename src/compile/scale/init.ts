@@ -16,11 +16,11 @@ export default function init(
     channel: Channel, fieldDef: ChannelDefWithScale, config: Config,
     mark: Mark | undefined, topLevelSize: number | undefined, xyRangeSteps: number[]): Scale {
   let specifiedScale = (fieldDef || {}).scale || {};
-  let scale: Scale = {};
 
-  // Default discrete scale type depends on whether the scale can have rangeStep.
-  const canHaveRangeStep = topLevelSize === undefined && specifiedScale.rangeStep !== null && config.scale.rangeStep !== null;
-  scale.type = type(fieldDef, channel, mark, canHaveRangeStep);
+  // TODO: revise if type here should be Scale
+  let scale: Scale = {
+    type: type(fieldDef, channel, mark, topLevelSize, config)
+  };
 
   // Use specified value if compatible or determine default values for each property
   [

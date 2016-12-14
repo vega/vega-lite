@@ -13,33 +13,33 @@ import * as util from '../../util';
  * or determine default type if type is unspecified or inappropriate.
  */
 export function type(fieldDef: ChannelDefWithScale, channel: Channel,
-  mark: Mark, canHaveRangeStep: boolean): ScaleType {
+  mark: Mark, topLevelSize: number | undefined, config: Config): ScaleType {
 
   if (!hasScale(channel)) {
     // There is no scale for these channels
     return null;
   }
-  let specifiedScale = (fieldDef || {}).scale || {};
+  let specifiedScale = fieldDef.scale || {};
   const specifiedType = specifiedScale.type;
   if (specifiedType !== undefined) {
     // Check if explicitly specified scale type is supported by the channel
     if (supportScaleType(channel, specifiedType)) {
       return specifiedType;
     } else {
-      const newScaleType = defaultType(specifiedScale, fieldDef, channel, mark, canHaveRangeStep);
+      const newScaleType = defaultType(specifiedScale, fieldDef, channel, mark, topLevelSize, config);
       log.warn(log.message.scaleTypeNotWorkWithChannel(channel, specifiedType, newScaleType));
       return newScaleType;
     }
   }
 
-  return defaultType(specifiedScale, fieldDef, channel, mark, canHaveRangeStep);
+  return defaultType(specifiedScale, fieldDef, channel, mark, topLevelSize, config);
 }
 
 /**
  * Determine appropriate default scale type.
  */
 function defaultType(specifiedScale: Scale, fieldDef: FieldDef, channel: Channel,
-    mark: Mark, canHaveRangeStep: boolean): ScaleType {
+    mark: Mark, topLevelSize: number | undefined, config: Config): ScaleType {
 
     if (util.contains(['row', 'column'], channel)) {
       return ScaleType.BAND;
@@ -53,12 +53,12 @@ function defaultType(specifiedScale: Scale, fieldDef: FieldDef, channel: Channel
         if (channel === 'color') {
           return ScaleType.ORDINAL_LOOKUP;
         }
-        return discreteToContinuousType(channel, mark, canHaveRangeStep);
+        return discreteToContinuousType(channel, mark, specifiedScale, topLevelSize, config);
       case 'ordinal':
         if (channel === 'color') {
           return ScaleType.INDEX;
         }
-        return discreteToContinuousType(channel, mark, canHaveRangeStep);
+        return discreteToContinuousType(channel, mark, specifiedScale, topLevelSize, config);
       case 'temporal':
         if (channel === 'color') {
           return continuousColorScaleType(specifiedScale, ScaleType.TIME);
@@ -69,7 +69,7 @@ function defaultType(specifiedScale: Scale, fieldDef: FieldDef, channel: Channel
           case 'day':
           case 'month':
           case 'quarter':
-            return discreteToContinuousType(channel, mark, canHaveRangeStep);
+            return discreteToContinuousType(channel, mark, specifiedScale, topLevelSize, config);
         }
         return ScaleType.TIME;
 
@@ -103,18 +103,32 @@ function defaultType(specifiedScale: Scale, fieldDef: FieldDef, channel: Channel
    * Determines default scale type for nominal/ordinal field.
    * @returns BAND or POINT scale based on channel, mark, and rangeStep
    */
-  function discreteToContinuousType(channel: Channel, mark: Mark, canHaveRangeStep: boolean): ScaleType {
+  function discreteToContinuousType(channel: Channel, mark: Mark, specifiedScale: Scale, topLevelSize: number | undefined, config: Config): ScaleType {
     if (util.contains(['x', 'y'], channel)) {
-      // Use band ordinal scale for x/y scale in one of the following cases:
-      if (
-        // 1) the mark is bar and the scale cannot have range step (fit mode).
-        (mark === 'bar' && !canHaveRangeStep) ||
-        // 2) the mark is rect as the rect mark should fit into a band.
-        mark === 'rect'
-      ) {
+      if (mark === 'rect') {
+        // The rect mark should fit into a band.
+        return ScaleType.BAND;
+      }
+      if (mark === 'bar') {
+        // For bar, use band only if there is no rangeStep since we need to use band for fit mode.
+        // However, for non-fit mode, point scale provides better center position.
+        if (haveRangeStep(specifiedScale, topLevelSize, config)) {
+          return ScaleType.POINT;
+        }
         return ScaleType.BAND;
       }
     }
     // Otherwise, use ordinal point scale so we can easily get center positions of the marks.
     return ScaleType.POINT;
+  }
+
+  function haveRangeStep(specifiedScale: Scale, topLevelSize: number | undefined, config: Config) {
+    if (topLevelSize !== undefined) {
+      // if topLevelSize is provided, rangeStep will be dropped.
+      return false;
+    }
+    if (specifiedScale.rangeStep !== undefined) {
+      return specifiedScale.rangeStep !== null;
+    }
+    return !!config.scale.rangeStep;
   }
