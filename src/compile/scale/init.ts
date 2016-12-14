@@ -9,7 +9,7 @@ import {Scale, ScaleConfig, scaleTypeSupportProperty} from '../../scale';
 import {channelScalePropertyIncompatability} from './scale';
 import rangeMixins from './range';
 import * as rules from './rules';
-import {type} from './type';
+import scaleType from './type';
 import * as util from '../../util';
 
 export default function init(
@@ -19,7 +19,7 @@ export default function init(
 
   // TODO: revise if type here should be Scale
   let scale: Scale = {
-    type: type(fieldDef, channel, mark, topLevelSize, config)
+    type: scaleType(fieldDef, channel, mark, topLevelSize, config)
   };
 
   // Use specified value if compatible or determine default values for each property
