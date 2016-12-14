@@ -2,6 +2,7 @@ import {assert} from 'chai';
 
 import * as log from '../../../src/log';
 
+import {defaultConfig} from '../../../src/config';
 import {X, Y, ROW, COLUMN} from '../../../src/channel';
 import {ScaleType} from '../../../src/scale';
 import {type} from '../../../src/compile/scale/type';
@@ -15,7 +16,7 @@ describe('compile/scale', () => {
           field: 'a',
           type: 'temporal',
           timeUnit: TimeUnit.YEARMONTH
-        }, 'detail', 'point', true),
+        }, 'detail', 'point', undefined, defaultConfig),
         null
       );
     });
@@ -47,7 +48,7 @@ describe('compile/scale', () => {
             field: 'a',
             type: 'temporal',
             timeUnit: timeUnit
-          }, Y, 'point', true),
+          }, Y, 'point', undefined, defaultConfig),
           ScaleType.TIME
         );
       }
@@ -60,7 +61,7 @@ describe('compile/scale', () => {
             field: 'a',
             type: 'temporal',
             timeUnit: timeUnit
-          }, Y, 'point', true),
+          }, Y, 'point', undefined, defaultConfig),
           ScaleType.POINT
         );
       });
@@ -72,7 +73,7 @@ describe('compile/scale', () => {
           field: 'a',
           type: 'temporal',
           timeUnit: TimeUnit.YEARMONTH
-        }, 'shape', 'point', true),
+        }, 'shape', 'point', undefined, defaultConfig),
         ScaleType.ORDINAL_LOOKUP
       );
     });
@@ -86,7 +87,7 @@ describe('compile/scale', () => {
               type: 'temporal',
               timeUnit: TimeUnit.YEARMONTH,
               scale: {type: badScaleType}
-            }, 'shape', 'point', true),
+            }, 'shape', 'point', undefined, defaultConfig),
             ScaleType.ORDINAL_LOOKUP
           );
           assert.equal(localLogger.warns[0], log.message.scaleTypeNotWorkWithChannel('shape', badScaleType, ScaleType.ORDINAL_LOOKUP));
@@ -101,7 +102,7 @@ describe('compile/scale', () => {
             field: 'a',
             type: 'temporal',
             timeUnit: TimeUnit.YEARMONTH
-          }, channel, 'point', true),
+          }, channel, 'point', undefined, defaultConfig),
           ScaleType.BAND
         );
       });
@@ -117,7 +118,7 @@ describe('compile/scale', () => {
                 type: 'temporal',
                 timeUnit: TimeUnit.YEARMONTH,
                 scale: {type: badScaleType}
-              }, channel, 'point', true),
+              }, channel, 'point', undefined, defaultConfig),
               ScaleType.BAND
             );
             assert.equal(localLogger.warns[0], log.message.scaleTypeNotWorkWithChannel(channel, badScaleType, ScaleType.BAND));
@@ -128,32 +129,35 @@ describe('compile/scale', () => {
 
     it('should return band scale for ordinal X,Y when mark is rect', () => {
       [X, Y].forEach((channel) => {
-        assert.equal(type({field: 'a', type: 'ordinal'}, channel, 'rect', true), ScaleType.BAND);
+        assert.equal(
+          type({field: 'a', type: 'ordinal'}, channel, 'rect', undefined, defaultConfig),
+          ScaleType.BAND
+        );
       });
     });
 
-    it('should return band scale for X,Y when mark is bar and rangeStep is undefined (fit)', () => {
+    it('should return band scale for X,Y when mark is bar and rangeStep is null (fit)', () => {
       [X, Y].forEach((channel) => {
-        assert.equal(type({field: 'a', type: 'ordinal'}, channel, 'bar', false), ScaleType.BAND);
+        assert.equal(type({field: 'a', type: 'ordinal', scale: {rangeStep: null}}, channel, 'bar', undefined, defaultConfig), ScaleType.BAND);
       });
     });
 
     it('should return point scale for X,Y when mark is bar and rangeStep is defined', () => {
       [X, Y].forEach((channel) => {
-        assert.equal(type({field: 'a', type: 'ordinal'}, channel, 'bar', true), ScaleType.POINT);
+        assert.equal(type({field: 'a', type: 'ordinal', scale: {rangeStep: 21}}, channel, 'bar', undefined, defaultConfig), ScaleType.POINT);
       });
     });
 
     it('should return point scale for X,Y when mark is point', () => {
       [X, Y].forEach((channel) => {
-        assert.equal(type({field: 'a', type: 'ordinal'}, channel, 'point', true), ScaleType.POINT);
+        assert.equal(type({field: 'a', type: 'ordinal'}, channel, 'point', undefined, defaultConfig), ScaleType.POINT);
       });
     });
 
     it('should return point scale for X,Y when mark is point when ORDINAL SCALE TYPE is specified and throw warning', () => {
       [X, Y].forEach((channel) => {
         log.runLocalLogger((localLogger) => {
-          assert.equal(type({field: 'a', type: 'ordinal', scale: {type: 'ordinal'}}, channel, 'point', true), ScaleType.POINT);
+          assert.equal(type({field: 'a', type: 'ordinal', scale: {type: 'ordinal'}}, channel, 'point', undefined, defaultConfig), ScaleType.POINT);
           assert.equal(localLogger.warns[0], log.message.scaleTypeNotWorkWithChannel(channel, 'ordinal', 'point'));
         });
       });
