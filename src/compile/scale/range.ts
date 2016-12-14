@@ -4,7 +4,6 @@ import {COLUMN, ROW, X, Y, SHAPE, SIZE, COLOR, OPACITY, Channel} from '../../cha
 import {Config} from '../../config';
 import {Mark, PointConfig} from '../../mark';
 import {Scale, ScaleConfig, ScaleType, scaleTypeSupportProperty} from '../../scale';
-import {Type} from '../../type';
 import * as util from '../../util';
 
 import {channelScalePropertyIncompatability} from './scale';
@@ -16,8 +15,7 @@ export type RangeMixins = {range: string | Array<number|string|{data: string, fi
  */
 export default function rangeMixins(
   channel: Channel, scaleType: ScaleType, specifiedScale: Scale, config: Config,
-  type: Type, zero: boolean,
-  mark: Mark, topLevelSize: number | undefined, xyRangeSteps: number[]): RangeMixins {
+  zero: boolean, mark: Mark, topLevelSize: number | undefined, xyRangeSteps: number[]): RangeMixins {
 
   let specifiedRangeStepIsNull = false;
 
@@ -88,7 +86,8 @@ export default function rangeMixins(
     case SHAPE:
       return {range: config.point.shapes};
     case COLOR:
-      if (type === 'nominal') {
+      if (scaleType === 'ordinal') {
+        // Only nominal data uses ordinal scale by default
         return {scheme: config.mark.nominalColorScheme};
       }
       // TODO(#1737): support sequentialColorRange (with linear scale) if sequentialColorScheme is not specified.
