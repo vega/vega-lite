@@ -12,7 +12,7 @@ import * as util from '../../util';
  * Determine if there is a specified scale type and if it is appropriate,
  * or determine default type if type is unspecified or inappropriate.
  */
-export function type(fieldDef: ChannelDefWithScale, channel: Channel,
+export default function type(fieldDef: ChannelDefWithScale, channel: Channel,
   mark: Mark, topLevelSize: number | undefined, config: Config): ScaleType {
 
   if (!hasScale(channel)) {
@@ -44,6 +44,8 @@ function defaultType(specifiedScale: Scale, fieldDef: FieldDef, channel: Channel
     if (util.contains(['row', 'column'], channel)) {
       return ScaleType.BAND;
     }
+
+    // TODO: shape could be more generalized for any discrete-only channel than having just a special case up here.
     if (channel === 'shape') {
       return ScaleType.ORDINAL_LOOKUP;
     }
