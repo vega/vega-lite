@@ -20,7 +20,7 @@ export default function init(
 
   // Default discrete scale type depends on whether the scale can have rangeStep.
   const canHaveRangeStep = topLevelSize === undefined && specifiedScale.rangeStep !== null && config.scale.rangeStep !== null;
-  scale.type = type(specifiedScale.type, fieldDef, channel, mark, canHaveRangeStep);
+  scale.type = type(fieldDef, channel, mark, canHaveRangeStep);
 
   // Use specified value if compatible or determine default values for each property
   [

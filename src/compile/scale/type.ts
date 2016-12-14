@@ -1,9 +1,10 @@
 import * as log from '../../log';
 
+import {Config} from '../../config';
 import {hasScale, supportScaleType, Channel} from '../../channel';
-import {FieldDef} from '../../fielddef';
+import {FieldDef, ChannelDefWithScale} from '../../fielddef';
 import {Mark} from '../../mark';
-import {ScaleType} from '../../scale';
+import {Scale, ScaleType} from '../../scale';
 
 import * as util from '../../util';
 
@@ -11,30 +12,35 @@ import * as util from '../../util';
  * Determine if there is a specified scale type and if it is appropriate,
  * or determine default type if type is unspecified or inappropriate.
  */
-export function type(specifiedType: ScaleType, fieldDef: FieldDef, channel: Channel, mark: Mark, canHaveRangeStep: boolean): ScaleType {
+export function type(fieldDef: ChannelDefWithScale, channel: Channel,
+  mark: Mark, canHaveRangeStep: boolean): ScaleType {
+
   if (!hasScale(channel)) {
     // There is no scale for these channels
     return null;
   }
-
+  let specifiedScale = (fieldDef || {}).scale || {};
+  const specifiedType = specifiedScale.type;
   if (specifiedType !== undefined) {
     // Check if explicitly specified scale type is supported by the channel
     if (supportScaleType(channel, specifiedType)) {
       return specifiedType;
     } else {
-      const newScaleType = defaultType(fieldDef, channel, mark, canHaveRangeStep);
+      const newScaleType = defaultType(specifiedScale, fieldDef, channel, mark, canHaveRangeStep);
       log.warn(log.message.scaleTypeNotWorkWithChannel(channel, specifiedType, newScaleType));
       return newScaleType;
     }
   }
 
-  return defaultType(fieldDef, channel, mark, canHaveRangeStep);
+  return defaultType(specifiedScale, fieldDef, channel, mark, canHaveRangeStep);
 }
 
 /**
  * Determine appropriate default scale type.
  */
-function defaultType(fieldDef: FieldDef, channel: Channel, mark: Mark, canHaveRangeStep: boolean): ScaleType {
+function defaultType(specifiedScale: Scale, fieldDef: FieldDef, channel: Channel,
+    mark: Mark, canHaveRangeStep: boolean): ScaleType {
+
     if (util.contains(['row', 'column'], channel)) {
       return ScaleType.BAND;
     }
@@ -55,9 +61,8 @@ function defaultType(fieldDef: FieldDef, channel: Channel, mark: Mark, canHaveRa
         return discreteToContinuousType(channel, mark, canHaveRangeStep);
       case 'temporal':
         if (channel === 'color') {
-          return ScaleType.SEQUENTIAL;
+          return continuousColorScaleType(specifiedScale, ScaleType.TIME);
         }
-
         switch (fieldDef.timeUnit) {
           // These time unit use discrete scale by default
           case 'hours':
@@ -70,13 +75,28 @@ function defaultType(fieldDef: FieldDef, channel: Channel, mark: Mark, canHaveRa
 
       case 'quantitative':
         if (channel === 'color') {
-          return ScaleType.SEQUENTIAL;
+          return continuousColorScaleType(specifiedScale, ScaleType.LINEAR);
         }
         return ScaleType.LINEAR;
     }
 
     /* istanbul ignore next: should never reach this */
     throw new Error(log.message.invalidFieldType(fieldDef.type));
+  }
+
+  /**
+   * Determine default continuous color scale type based on specified range type:
+   * - scheme = sequential
+   * - range = linear
+   */
+  function continuousColorScaleType(specifiedScale: Scale, rangeScaleType: 'linear' | 'time'): ScaleType {
+    if (specifiedScale.scheme) {
+      return ScaleType.SEQUENTIAL;
+    } else if (specifiedScale.range) {
+      return rangeScaleType;
+    }
+    // TODO: make default type also depend on config
+    return ScaleType.SEQUENTIAL;
   }
 
   /**
