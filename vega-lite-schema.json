@@ -791,8 +791,7 @@
                         {
                             "enum": [
                                 "ascending",
-                                "descending",
-                                "none"
+                                "descending"
                             ],
                             "type": "string"
                         }
@@ -2180,8 +2179,7 @@
                         {
                             "enum": [
                                 "ascending",
-                                "descending",
-                                "none"
+                                "descending"
                             ],
                             "type": "string"
                         }
@@ -2666,8 +2664,7 @@
         "SortOrder": {
             "enum": [
                 "ascending",
-                "descending",
-                "none"
+                "descending"
             ],
             "type": "string"
         },

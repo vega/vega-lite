@@ -1,12 +1,11 @@
 import {AggregateOp} from './aggregate';
 
 export namespace SortOrder {
-    export const ASCENDING: 'ascending' = 'ascending';
-    export const DESCENDING: 'descending' = 'descending';
-    export const NONE: 'none' = 'none';
+  export const ASCENDING: 'ascending' = 'ascending';
+  export const DESCENDING: 'descending' = 'descending';
 }
 
-export type SortOrder = typeof SortOrder.ASCENDING | typeof SortOrder.DESCENDING | typeof SortOrder.NONE;
+export type SortOrder = typeof SortOrder.ASCENDING | typeof SortOrder.DESCENDING | null;
 
 export interface SortField {
   /**
