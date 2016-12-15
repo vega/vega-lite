@@ -71,7 +71,7 @@ describe('Axis', function() {
         }
       });
       const def = axis.parseAxis(X, model);
-      assert.equal(def.encode.axis.update.stroke.value, '#0099ff');
+      assert.equal(def.encode.domain.update.stroke.value, '#0099ff');
     });
   });
 
@@ -328,7 +328,7 @@ describe('Axis', function() {
     });
   });
 
-  describe('encode.axis()', function() {
+  describe('encode.domain()', function() {
     it('axisColor should change axis\'s color', function() {
         const model = parseModel({
         mark: "point",
@@ -336,7 +336,7 @@ describe('Axis', function() {
           x: {field: "a", type: "quantitative", axis: {axisColor: '#fff'}}
         }
       });
-        const axes = axis.encode.axis(model, X, {});
+        const axes = axis.encode.domain(model, X, {});
         assert.equal(axes.stroke.value, '#fff');
     });
 
@@ -347,7 +347,7 @@ describe('Axis', function() {
           x: {field: "a", type: "quantitative", axis: {axisWidth: 2}}
         }
       });
-        const axes = axis.encode.axis(model, X, {});
+        const axes = axis.encode.domain(model, X, {});
         assert.equal(axes.strokeWidth.value, 2);
     });
   });
