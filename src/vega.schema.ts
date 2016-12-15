@@ -1,5 +1,6 @@
 import {StackOffset} from './stack';
 import {ScaleType, NiceTime} from './scale';
+import {SortOrder} from './sort';
 import {isArray} from './util';
 
 
@@ -92,9 +93,15 @@ export interface VgStackTransform {
   offset?: StackOffset;
   groupby: string[];
   field: string;
-  sort: string[];
+  sort: VgSort;
   as: string[];
 }
+
+export interface VgSort {
+  field: string | string[];
+  order: SortOrder | SortOrder[];
+}
+
 export interface VgImputeTransform {
   type: 'impute';
   groupby?: string[];

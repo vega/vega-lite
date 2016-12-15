@@ -37,7 +37,10 @@ describe('compile/data/stack', () => {
       groupby: ['bin_b_start'],
       field: 'sum_a',
       stackby: ['c'],
-      sort: ['-c'],
+      sort: {
+        field: ['c'],
+        order: ['descending']
+      },
       offset: 'zero',
       impute: false
     });
@@ -61,7 +64,10 @@ describe('compile/data/stack', () => {
       groupby: [],
       field: 'sum_a',
       stackby: ['c'],
-      sort: ['-c'],
+      sort: {
+        field: ['c'],
+        order: ['descending']
+      },
       offset: 'zero',
       impute: false
     });
@@ -85,7 +91,10 @@ describe('compile/data/stack', () => {
       groupby: ['b'],
       field: 'sum_a',
       stackby: ['c'],
-      sort: ['mean_d'],
+      sort: {
+        field: ['mean_d'],
+        order: ['ascending']
+      },
       offset: 'zero',
       impute: true
     });
@@ -118,7 +127,10 @@ describe('compile/data/stack', () => {
         groupby: ['b'],
         field: 'sum_a',
         stackby: ['c'],
-        sort: ['-c'],
+        sort: {
+          field: ['c'],
+          order: ['descending']
+        },
         offset: 'zero',
         impute: true
       };
@@ -130,7 +142,10 @@ describe('compile/data/stack', () => {
         groupby: ['b', 'd'],
         field: 'sum_a',
         stackby: ['c'],
-        sort: ['-c'],
+        sort: {
+          field: ['c'],
+          order: ['descending']
+        },
         offset: 'zero',
         impute: true
       });
@@ -158,7 +173,10 @@ describe('compile/data/stack', () => {
         groupby: ['b'],
         field: 'sum_a',
         stackby: ['c'],
-        sort: ['-c'],
+        sort: {
+          field: ['c'],
+          order: ['descending']
+        },
         offset: 'zero',
         impute: true
       };
@@ -170,7 +188,10 @@ describe('compile/data/stack', () => {
         groupby: ['b'], // no duplicate
         field: 'sum_a',
         stackby: ['c'],
-        sort: ['-c'],
+        sort: {
+          field: ['c'],
+          order: ['descending']
+        },
         offset: 'zero',
         impute: true
       });
@@ -206,7 +227,10 @@ describe('compile/data/stack', () => {
         groupby: ['bin_b_start'],
         field: 'sum_a',
         stackby: ['c'],
-        sort: ['mean_d'],
+        sort: {
+          field: ['mean_d'],
+          order: ['ascending']
+        },
         offset: 'zero',
         impute: true
       });
@@ -226,7 +250,10 @@ describe('compile/data/stack', () => {
             type: 'stack',
             groupby: ['bin_b_start'],
             field: 'sum_a',
-            sort: ['mean_d'],
+            sort: {
+              field: ['mean_d'],
+              order: ['ascending']
+            },
             as: ['sum_a_start', 'sum_a_end'],
             offset: 'zero'
           }
@@ -241,7 +268,10 @@ describe('compile/data/stack', () => {
         groupby: ['bin_b_start'],
         field: 'sum_a',
         stackby: ['c'],
-        sort: ['mean_d'],
+        sort: {
+          field: ['mean_d'],
+          order: ['ascending']
+        },
         offset: 'zero',
         impute: false
       });
@@ -253,7 +283,10 @@ describe('compile/data/stack', () => {
             type: 'stack',
             groupby: ['bin_b_start'],
             field: 'sum_a',
-            sort: ['mean_d'],
+            sort: {
+              field: ['mean_d'],
+              order: ['ascending']
+            },
             as: ['sum_a_start', 'sum_a_end'],
             offset: 'zero'
           }
