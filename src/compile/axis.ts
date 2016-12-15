@@ -96,7 +96,7 @@ export function parseAxis(channel: Channel, model: Model): VgAxis {
   const props = model.axis(channel).properties || {};
 
   [
-    'axis', 'labels', // have special rules
+    'domain', 'labels', // have special rules
     'grid', 'title', 'tickCount', 'majorTicks', 'minorTicks' // only default values
   ].forEach(function(group) {
     const value = encode[group] ?
@@ -226,7 +226,7 @@ export function values(model: Model, channel: Channel) {
 }
 
 export namespace encode {
-  export function axis(model: Model, channel: Channel, axisPropsSpec: any) {
+  export function domain(model: Model, channel: Channel, domainPropsSpec: any) {
     const axis = model.axis(channel);
 
     return extend(
@@ -236,7 +236,7 @@ export namespace encode {
       axis.axisWidth !== undefined ?
         { strokeWidth: {value: axis.axisWidth} } :
         {},
-      axisPropsSpec || {}
+      domainPropsSpec || {}
     );
   }
 
