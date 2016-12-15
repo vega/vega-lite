@@ -161,12 +161,12 @@ describe('Mark: Point', function() {
 
   describe('with x, y, shape', function () {
     const model = parseUnitModel(pointXY({
-      "shape": {"bin": {"maxbins": 15}, "field": "yield", "type": "quantitative"}
+      "shape": {"field": "site", "type": "nominal"}
     }));
     const props = point.properties(model);
 
     it('should have scale for shape', function () {
-      assert.deepEqual(props.shape, {scale: SHAPE, field: 'bin_yield_range'});
+      assert.deepEqual(props.shape, {scale: SHAPE, field: 'site'});
     });
   });
 
