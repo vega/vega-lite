@@ -51,16 +51,18 @@ export class LocalLogger implements LoggerInterface {
 }
 
 export function runLocalLogger(f: (localLogger: LocalLogger) => void) {
+  const oldLogger = current;
   const localLogger = current = new LocalLogger();
   f(localLogger);
-  reset();
+  reset(oldLogger);
 }
 
 export function wrap(f: (logger: LocalLogger) => void) {
+  const oldLogger = current;
   return () => {
     const logger = current = new LocalLogger();
     f(logger);
-    reset();
+    reset(oldLogger);
   };
 }
 
@@ -72,11 +74,19 @@ export function set(logger: LoggerInterface) {
   return current;
 }
 
+export function get(): LoggerInterface {
+  return current;
+}
+
+export function getMain() {
+  return main;
+}
+
 /**
  * Reset the main logger to use the default Vega Logger
  */
-export function reset() {
-  current = main;
+export function reset(logger: LoggerInterface = main) {
+  current = logger;
   return current;
 }
 
