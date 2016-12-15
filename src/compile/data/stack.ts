@@ -5,13 +5,12 @@ import {LayerModel} from './../layer';
 import {UnitModel} from './../unit';
 
 import {STACKED, SUMMARY} from '../../data';
-import {sortField} from '../common';
 import {has} from '../../encoding';
 import {FieldDef, field} from '../../fielddef';
 import {hasDiscreteDomain} from '../../scale';
 import {StackOffset} from '../../stack';
 import {contains, isArray} from '../../util';
-import {VgData, VgStackTransform, VgImputeTransform} from '../../vega.schema';
+import {VgData, VgSort, VgStackTransform, VgImputeTransform} from '../../vega.schema';
 
 export interface StackComponent {
   /**
@@ -42,7 +41,7 @@ export interface StackComponent {
   /**
    * Field that determines order of levels in the stacked charts.
    */
-  sort: string[];
+  sort: VgSort;
 
   /** Mode for stacking marks. */
   offset: StackOffset;
@@ -95,13 +94,23 @@ export const stack: AbstractDataCompiler<StackComponent> = {
 
     const stackby = getStackByFields(model);
     const orderDef = model.encoding().order;
-    const sortby = orderDef ?
-      (isArray(orderDef) ? orderDef : [orderDef]).map(sortField) :
+
+    let sort: VgSort;
+    if (orderDef) {
+      sort = (isArray(orderDef) ? orderDef : [orderDef]).reduce((s, orderChannelDef) => {
+        s.field.push(field(orderChannelDef, {binSuffix: 'start'}));
+        s.order.push(orderChannelDef.sort || 'ascending');
+        return s;
+      }, {field:[], order: []});
+    } else {
       // default = descending by stackFields
       // FIXME is the default here correct for binned fields?
-      stackby.map(function(field) {
-        return '-' + field;
-      });
+      sort = stackby.reduce((s, field) => {
+        s.field.push(field);
+        s.order.push('descending');
+        return s;
+      }, {field:[], order: []});
+    }
 
     return {
       name: model.dataName(STACKED),
@@ -109,9 +118,9 @@ export const stack: AbstractDataCompiler<StackComponent> = {
       groupby: groupby ? [groupby] : [],
       field: model.field(stackProperties.fieldChannel),
       stackby: stackby,
-      sort: sortby,
+      sort: sort,
       offset: stackProperties.offset,
-      impute: contains(['area', 'line',], model.mark())
+      impute: contains(['area', 'line'], model.mark())
     };
   },
 

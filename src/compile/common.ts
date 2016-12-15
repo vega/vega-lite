@@ -4,8 +4,7 @@ import {BAR, POINT, CIRCLE, SQUARE} from '../mark';
 import {AggregateOp} from '../aggregate';
 import {COLOR, OPACITY, TEXT, Channel} from '../channel';
 import {Config} from '../config';
-import {FieldDef, field, OrderChannelDef} from '../fielddef';
-import {SortOrder} from '../sort';
+import {FieldDef} from '../fielddef';
 import {TimeUnit} from '../timeunit';
 import {QUANTITATIVE} from '../type';
 import {contains, union, Dict} from '../util';
@@ -132,12 +131,6 @@ export function numberFormat(fieldDef: FieldDef, format: string, config: Config,
     return config.numberFormat;
   }
   return undefined;
-}
-
-/** Return field reference with potential "-" prefix for descending sort */
-export function sortField(orderChannelDef: OrderChannelDef) {
-  return (orderChannelDef.sort === SortOrder.DESCENDING ? '-' : '') +
-    field(orderChannelDef, {binSuffix: 'start'});
 }
 
 /**
