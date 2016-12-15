@@ -119,6 +119,10 @@ export namespace message {
     return `${channel} encoding should be discrete (ordinal / nominal / binned).`;
   }
 
+  export function discreteChannelCannotEncode(channel: Channel, type: Type) {
+    return `Using discrete channel ${channel} to encode ${type} field can be misleading as it does not encode ${type === 'ordinal' ? 'order' : 'magnitude'}.`;
+  }
+
   // Mark
   export const BAR_WITH_POINT_SCALE_AND_RANGESTEP_NULL = 'Bar mark should not be used with point scale when rangeStep is null. Please use band scale instead.';
 
@@ -156,6 +160,7 @@ export namespace message {
   export function scaleTypeNotWorkWithChannel(channel: Channel, scaleType: ScaleType, newScaleType: ScaleType) {
     return `Channel ${channel} does not work with ${scaleType} scale. We are using ${newScaleType} scale instead.`;
   }
+
   export function scalePropertyNotWorkWithScaleType(scaleType: ScaleType, propName: string, channel: Channel) {
     return `${channel}-scale's "${propName}" is dropped as it does not work with ${scaleType} scale.`;
   }
