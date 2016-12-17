@@ -38,7 +38,8 @@ export function parseInnerAxis(channel: Channel, model: Model): VgAxis {
 
   const axis = model.axis(channel);
 
-  ['tickCount', 'values', 'subdivide', 'zindex'].forEach(function(property) {
+  // FIXME: audit if we have checked all relevant properties here.
+  ['gridScale', 'tickCount', 'values', 'subdivide', 'zindex'].forEach(function(property) {
     let method: (model: Model, channel: Channel, def:any)=>any;
 
     const value = (method = exports[property]) ?
@@ -77,7 +78,7 @@ export function parseAxis(channel: Channel, model: Model): VgAxis {
   // 1.2. Add properties
   [
     // a) properties with special rules (so it has axis[property] methods) -- call rule functions
-    'format', 'grid', 'orient', 'tickSize', 'tickCount',  'title', 'values', 'zindex',
+    'format', 'grid', 'gridScale', 'orient', 'tickSize', 'tickCount',  'title', 'values', 'zindex',
     // b) properties without rules, only produce default values in the schema, or explicit value if specified
     'domain', 'offset', 'subdivide', 'tick', 'tickPadding', 'tickSize', 'tickSizeEnd', 'tickSizeMajor', 'tickSizeMinor', 'titleOffset'
   ].forEach(function(property) {
@@ -140,6 +141,14 @@ export function grid(model: Model, channel: Channel) {
     // the axis is a shared / union axis.
     (channel === Y || channel === X) && !(model.parent() && model.parent().isFacet())
   );
+}
+
+export function gridScale(model: Model, channel: Channel) {
+  const gridChannel: Channel = channel === 'x' ? 'y' : 'x';
+  if (model.scale(gridChannel)) {
+    return model.scaleName(gridChannel);
+  }
+  return undefined;
 }
 
 export function zindex(model: Model, channel: Channel, def: {grid?: boolean}) {
