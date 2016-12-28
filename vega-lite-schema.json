@@ -1025,6 +1025,12 @@
             },
             "type": "object"
         },
+        "Dict<SelectionSpec>": {
+            "additionalProperties": {
+                "$ref": "#/definitions/T"
+            },
+            "type": "object"
+        },
         "Encoding": {
             "properties": {
                 "color": {
@@ -1166,6 +1172,10 @@
                 "name": {
                     "description": "Name of the visualization for later reference.",
                     "type": "string"
+                },
+                "selection": {
+                    "$ref": "#/definitions/Dict<SelectionSpec>",
+                    "description": "A key-value mapping between named selections and their definitions."
                 },
                 "transform": {
                     "$ref": "#/definitions/Transform",
@@ -2663,6 +2673,11 @@
             ],
             "type": "string"
         },
+        "T": {
+            "properties": {
+            },
+            "type": "object"
+        },
         "TextConfig": {
             "properties": {
                 "align": {
@@ -3153,6 +3168,10 @@
                 "name": {
                     "description": "Name of the visualization for later reference.",
                     "type": "string"
+                },
+                "select": {
+                    "$ref": "#/definitions/Dict<SelectionSpec>",
+                    "description": "A key-value mapping between named selections and their definitions."
                 },
                 "transform": {
                     "$ref": "#/definitions/Transform",

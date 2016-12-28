@@ -27,4 +27,5 @@ declare module 'vega-util' {
   export function isNumber(a: any): a is number;
 
   export function toSet<T>(array: T[]): {T: 1}
+  export function stringValue(a: any): string;
 }

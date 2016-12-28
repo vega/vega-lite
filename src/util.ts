@@ -1,5 +1,5 @@
 import * as stringify from 'json-stable-stringify';
-export {extend, isArray, isObject, isNumber, isString, truncate, toSet} from 'vega-util';
+export {extend, isArray, isObject, isNumber, isString, truncate, toSet, stringValue} from 'vega-util';
 import {isNumber, isString} from 'vega-util';
 
 /**

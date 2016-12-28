@@ -83,6 +83,7 @@
     "uglify-js": "~2.7.4",
     "vega": "~3.0.0-beta.5",
     "vega-datasets": "vega/vega-datasets#gh-pages",
+    "vega-parser": "^1.0.0-beta.1",
     "watchify": "~3.7.0",
     "yaml-front-matter": "~3.4.0"
   },

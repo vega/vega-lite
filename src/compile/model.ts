@@ -27,6 +27,7 @@ import {Formula} from '../transform';
 import {OneOfFilter, EqualFilter, RangeFilter} from '../filter';
 /* tslint:enable:no-unused-variable */
 
+import {SelectionComponent} from '../selection';
 
 /**
  * Composable Components that are intermediate results of the parsing phase of the
@@ -37,6 +38,7 @@ export interface Component {
   data: DataComponent;
   layout: LayoutComponent;
   scale: Dict<ScaleComponents>;
+  selection: Dict<SelectionComponent>;
 
   /** Dictionary mapping channel to VgAxis definition */
   // TODO: if we allow multiple axes (e.g., dual axis), this will become VgAxis[]
@@ -138,13 +140,23 @@ export abstract class Model {
       }
     }
 
-    this.component = {data: null, layout: null, mark: null, scale: null, axis: null, axisGroup: null, gridGroup: null, legend: null};
+    this.component = {
+      data: null,
+      mark: null,
+      scale: null,
+      axis:  null,
+      legend: null,
+      layout: null,
+      selection: null,
+      axisGroup: null,
+      gridGroup: null
+    };
   }
 
 
   public parse() {
     this.parseData();
-    this.parseSelectionData();
+    this.parseSelection();
     this.parseLayoutData();
     this.parseScale(); // depends on data name
     this.parseAxis(); // depends on scale name
@@ -156,7 +168,7 @@ export abstract class Model {
 
   public abstract parseData(): void;
 
-  public abstract parseSelectionData(): void;
+  public abstract parseSelection(): void;
 
   public abstract parseLayoutData(): void;
 
@@ -172,14 +184,12 @@ export abstract class Model {
   public abstract parseAxisGroup(): void;
   public abstract parseGridGroup(): void;
 
+  public abstract assembleSignals(signals: any[]): any[];
 
+  public abstract assembleSelectionData(data: VgData[]): VgData[];
   public abstract assembleData(data: VgData[]): VgData[];
 
   public abstract assembleLayout(layoutData: VgData[]): VgData[];
-
-  // TODO: for Arvind to write
-  // public abstract assembleSelectionSignal(layoutData: VgData[]): VgData[];
-  // public abstract assembleSelectionData(layoutData: VgData[]): VgData[];
 
   public assembleScales(): VgScale[] {
     // FIXME: write assembleScales() in scale.ts that
@@ -225,6 +235,11 @@ export abstract class Model {
     const legends = this.assembleLegends();
     if (legends.length > 0) {
       group.legends = legends;
+    }
+
+    const signals = this.assembleSignals([]);
+    if (signals.length > 0) {
+      group.signals = signals;
     }
 
     return group;

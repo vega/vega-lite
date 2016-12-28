@@ -17,3 +17,7 @@ declare module 'vega' {
   }
   export const Warn: number;
 }
+
+declare module 'vega-parser' {
+  export function selector(selector: string): any[];
+}

@@ -27,6 +27,8 @@ import {parseMark} from './mark/mark';
 import initScale from './scale/init';
 import parseScales from './scale/parse';
 import {stack, StackProperties} from '../stack';
+import {SelectionSpec} from '../selection';
+import {parseUnitSelection, assembleUnitSignals, assembleUnitData as assembleSelectionData} from './selection';
 
 function normalizeFieldDef(fieldDef: FieldDef, channel: Channel) {
   if (fieldDef.type) {
@@ -60,6 +62,7 @@ export class UnitModel extends Model {
 
   private _mark: Mark;
   private _encoding: Encoding;
+  protected _selection: Dict<SelectionSpec>;
   private _stack: StackProperties;
 
   constructor(spec: ExtendedUnitSpec, parent: Model, parentGivenName: string) {
@@ -93,6 +96,9 @@ export class UnitModel extends Model {
 
     this._axis = this._initAxis(encoding, config);
     this._legend = this._initLegend(encoding, config);
+
+    // Selections will be initialized upon parse.
+    this._selection = spec.selection;
 
     // width / height
     this._initSize(mark, this._scale,
@@ -265,9 +271,8 @@ export class UnitModel extends Model {
     this.component.data = parseUnitData(this);
   }
 
-  public parseSelectionData() {
-    // TODO: @arvind can write this
-    // We might need to split this into compileSelectionData and compileSelectionSignals?
+  public parseSelection() {
+    this.component.selection = parseUnitSelection(this, this._selection);
   }
 
   public parseLayoutData() {
@@ -296,6 +301,14 @@ export class UnitModel extends Model {
 
   public parseLegend() {
     this.component.legend = parseLegendComponent(this);
+  }
+
+  public assembleSignals(signals: any[]): any[] {
+    return assembleUnitSignals(this, signals);
+  }
+
+  public assembleSelectionData(data: VgData[]): VgData[] {
+    return assembleSelectionData(this, data);
   }
 
   public assembleData(data: VgData[]): VgData[] {

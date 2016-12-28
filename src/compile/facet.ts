@@ -180,7 +180,7 @@ export class FacetModel extends Model {
     this.component.data = parseFacetData(this);
   }
 
-  public parseSelectionData() {
+  public parseSelection() {
     // TODO: @arvind can write this
     // We might need to split this into compileSelectionData and compileSelectionSignals?
   }
@@ -297,6 +297,14 @@ export class FacetModel extends Model {
 
   public assembleParentGroupProperties(): any {
     return null;
+  }
+
+  public assembleSignals(signals: any): any[] {
+    return [];
+  }
+
+  public assembleSelectionData(data: VgData[]): VgData[] {
+    return [];
   }
 
   public assembleData(data: VgData[]): VgData[] {

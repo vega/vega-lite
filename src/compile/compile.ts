@@ -7,7 +7,7 @@ import * as log from '../log';
 import {Model} from './model';
 import {normalize, ExtendedSpec} from '../spec';
 import {extend} from '../util';
-
+import {UNIT_SIGNAL} from './selection';
 import {buildModel} from './common';
 
 export function compile(inputSpec: ExtendedSpec, logger?: log.LoggerInterface) {
@@ -51,11 +51,11 @@ function assemble(model: Model) {
     config.viewport ? { viewport: config.viewport } : {},
     config.background ? { background: config.background } : {},
     {
-      // TODO: signal: model.assembleSelectionSignal
+      signals: [UNIT_SIGNAL],
       data: [].concat(
         model.assembleData([]),
-        model.assembleLayout([])
-        // TODO: model.assembleSelectionData
+        model.assembleLayout([]),
+        model.assembleSelectionData([])
       ),
       marks: [assembleRootGroup(model)]
     });
