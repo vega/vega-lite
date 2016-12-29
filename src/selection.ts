@@ -9,6 +9,15 @@ export enum SelectionDomain {
   VISUAL = 'visual'  as any
 }
 
+export enum SelectionResolutions {
+  SINGLE = 'single' as any,
+  INDEPENDENT = 'independent' as any,
+  UNION = 'union' as any,
+  UNION_OTHERS = 'union_others' as any,
+  INTERSECT = 'intersect' as any,
+  INTERSECT_OTHERS = 'intersect_others' as any
+}
+
 export interface SelectionSpec {
   type: SelectionTypes;
   domain?: SelectionDomain;
@@ -31,6 +40,7 @@ export interface SelectionComponent {
   events: any;
   predicate: string;
   bind: any;
+  resolve: SelectionResolutions;
 
   // Transforms
   project?: any;

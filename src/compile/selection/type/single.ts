@@ -5,6 +5,8 @@ import {defaultValue} from '../';
 import {stringValue} from '../../../util';
 
 const singleCompiler:SelectionCompiler = {
+  predicate: 'inPointSelection',
+
   parseUnitSelection: function(model: UnitModel, def: SelectionSpec) {
     return {
       events: defaultValue(def.on, 'click'),

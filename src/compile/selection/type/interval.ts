@@ -9,6 +9,8 @@ import {warn} from '../../../log';
 const BRUSH = '_brush';
 
 const intervalCompiler:SelectionCompiler = {
+  predicate: 'inIntervalSelection',
+
   parseUnitSelection: function(model: UnitModel, def: SelectionSpec) {
     return {
       events: defaultValue(def.on, '[mousedown, window:mouseup] > window:mousemove'),

@@ -7,6 +7,7 @@ export interface SelectionCompiler {
   tupleExpression:  (model: UnitModel, sel: SelectionComponent) => string;
   modifyExpression: (model: UnitModel, sel: SelectionComponent) => string;
   assembleUnitMarks: (model: UnitModel, sel:SelectionComponent, marks: any[]) => any[];
+  predicate: string;
 }
 
 import {default as single} from './single';

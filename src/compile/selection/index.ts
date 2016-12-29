@@ -1,4 +1,5 @@
-import {SelectionSpec, SelectionComponent, SelectionDomain, SelectionNames} from '../../selection';
+import {SelectionSpec, SelectionComponent, SelectionDomain,
+        SelectionResolutions, SelectionNames} from '../../selection';
 import {UnitModel} from '../unit';
 import {Channel} from '../../channel';
 import {Dict, extend, stringValue, isString} from '../../util';
@@ -16,15 +17,18 @@ export const UNIT_SIGNAL:any = {
 export function parseUnitSelection(model: UnitModel, spec: Dict<SelectionSpec>) {
   let selections: Dict<SelectionComponent> = {};
   for (let name in spec) {
-    let def = spec[name],
-        type = def.type;
+    if (!spec.hasOwnProperty(name)) {
+      continue;
+    }
 
+    let def = spec[name], type = def.type;
     let sel = selections[name] = extend({
       name: name,
       type: type,
       domain: def.domain || SelectionDomain.DATA,
       predicate: def.predicate,
-      bind: def.bind
+      bind: def.bind,
+      resolve: SelectionResolutions.SINGLE
     }, types[type].parseUnitSelection(model, def));
 
     if (isString(sel.events)) {
@@ -47,9 +51,11 @@ export function parseUnitSelection(model: UnitModel, spec: Dict<SelectionSpec>) 
 export function assembleUnitSignals(model: UnitModel, signals: any[]) {
   let selections = model.component.selection;
   for (let name in selections) {
-    let sel:SelectionComponent = selections[name],
-        type:SelectionCompiler = types[sel.type];
+    if (!selections.hasOwnProperty(name)) {
+      continue;
+    }
 
+    let sel = selections[name], type = compiler(sel);
     signals.push.apply(signals, type.assembleUnitSignals(model, sel));
     signals.push({
       name: name + SelectionNames.TUPLE,
@@ -82,15 +88,27 @@ export function assembleUnitData(model: UnitModel, data: VgData[]): VgData[] {
 export function assembleUnitMarks(model: UnitModel, marks: any[]): any[] {
   let selections = model.component.selection;
   for (let name in selections) {
-    let sel:SelectionComponent = selections[name],
-        type:SelectionCompiler = types[sel.type];
-    marks = type.assembleUnitMarks(model, sel, marks);
+    if (selections.hasOwnProperty(name)) {
+      let sel = selections[name];
+      marks = compiler(sel).assembleUnitMarks(model, sel, marks);
+    }
   }
 
   return marks;
 }
 
+export function predicate(sel: SelectionComponent): string {
+  const store = stringValue(sel.name + SelectionNames.STORE);
+  return '!tuples(' + store + ').length || ' +
+    compiler(sel).predicate + '(' + store + ', parent._id, datum, ' +
+    stringValue(sel.resolve) + ')';
+}
+
 // Utility functions
+
+function compiler(sel: SelectionComponent): SelectionCompiler {
+  return types[sel.type];
+}
 
 // TODO: Remove this function in favour of config.
 export function defaultValue(def: any, value: any) {

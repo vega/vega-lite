@@ -7,6 +7,8 @@ import {default as single} from './single';
 const TOGGLE = '_toggle';
 
 const multiCompiler:SelectionCompiler = {
+  predicate: single.predicate,
+
   parseUnitSelection: function(model: UnitModel, def: SelectionSpec) {
     return {
       events: defaultValue(def.on, 'click'),
