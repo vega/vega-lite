@@ -1,7 +1,7 @@
-import {SelectionSpec, SelectionComponent, SelectionTypes, SelectionDomain, SelectionNames} from '../../selection';
+import {SelectionSpec, SelectionComponent, SelectionDomain, SelectionNames} from '../../selection';
 import {UnitModel} from '../unit';
 import {Channel} from '../../channel';
-import {Dict, keys, extend, stringValue, isString} from '../../util';
+import {Dict, extend, stringValue, isString} from '../../util';
 import * as types from './type';
 import {SelectionCompiler} from './type';
 import {selector as parseSelector} from 'vega-parser';
@@ -15,7 +15,6 @@ export const UNIT_SIGNAL:any = {
 
 export function parseUnitSelection(model: UnitModel, spec: Dict<SelectionSpec>) {
   let selections: Dict<SelectionComponent> = {};
-
   for (let name in spec) {
     let def = spec[name],
         type = def.type;
@@ -47,7 +46,6 @@ export function parseUnitSelection(model: UnitModel, spec: Dict<SelectionSpec>) 
 
 export function assembleUnitSignals(model: UnitModel, signals: any[]) {
   let selections = model.component.selection;
-
   for (let name in selections) {
     let sel:SelectionComponent = selections[name],
         type:SelectionCompiler = types[sel.type];
@@ -57,14 +55,14 @@ export function assembleUnitSignals(model: UnitModel, signals: any[]) {
       name: name + SelectionNames.TUPLE,
       on: [{
         events: {signal: name},
-        update: '{unit: unit.datum && unit.datum._id, ' + 
+        update: '{unit: unit.datum && unit.datum._id, ' +
           type.tupleExpression(model, sel) + '}'
-      }] 
+      }]
     }, {
       name: name + SelectionNames.MODIFY,
       on: [{
         events: {signal: name},
-        update: 'modify(' + stringValue(name + SelectionNames.STORE) + ', ' + 
+        update: 'modify(' + stringValue(name + SelectionNames.STORE) + ', ' +
           type.modifyExpression(model, sel) + ')'
       }]
     });
@@ -81,8 +79,20 @@ export function assembleUnitData(model: UnitModel, data: VgData[]): VgData[] {
       }));
 }
 
+export function assembleUnitMarks(model: UnitModel, marks: any[]): any[] {
+  let selections = model.component.selection;
+  for (let name in selections) {
+    let sel:SelectionComponent = selections[name],
+        type:SelectionCompiler = types[sel.type];
+    marks = type.assembleUnitMarks(model, sel, marks);
+  }
+
+  return marks;
+}
+
 // Utility functions
 
+// TODO: Remove this function in favour of config.
 export function defaultValue(def: any, value: any) {
   return def !== undefined ? def : value;
 }

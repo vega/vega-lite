@@ -28,7 +28,7 @@ import initScale from './scale/init';
 import parseScales from './scale/parse';
 import {stack, StackProperties} from '../stack';
 import {SelectionSpec} from '../selection';
-import {parseUnitSelection, assembleUnitSignals, assembleUnitData as assembleSelectionData} from './selection';
+import {parseUnitSelection, assembleUnitSignals, assembleUnitData as assembleSelectionData, assembleUnitMarks as assembleSelectionMarks} from './selection';
 
 function normalizeFieldDef(fieldDef: FieldDef, channel: Channel) {
   if (fieldDef.type) {
@@ -320,7 +320,7 @@ export class UnitModel extends Model {
   }
 
   public assembleMarks() {
-    return this.component.mark;
+    return assembleSelectionMarks(this, this.component.mark);
   }
 
   public assembleParentGroupProperties(cellConfig: CellConfig) {

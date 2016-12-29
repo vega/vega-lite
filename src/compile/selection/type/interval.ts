@@ -1,10 +1,12 @@
-import {SelectionSpec, SelectionComponent, SelectionDomain, SelectionNames} from '../../../selection';
+import {SelectionSpec, SelectionComponent, SelectionNames} from '../../../selection';
 import {SelectionCompiler} from './';
 import {X, Y, Channel} from '../../../channel';
 import {UnitModel} from '../../unit';
 import {defaultValue, invert as invertFn} from '../';
-import {stringValue} from '../../../util';
+import {stringValue, extend} from '../../../util';
 import {warn} from '../../../log';
+
+const BRUSH = '_brush';
 
 const intervalCompiler:SelectionCompiler = {
   parseUnitSelection: function(model: UnitModel, def: SelectionSpec) {
@@ -28,8 +30,8 @@ const intervalCompiler:SelectionCompiler = {
       }
 
       let cs = channelSignal(model, sel, p.encoding);
-      signals.unshift(cs);
-      intervals.push('{field: ' + stringValue(p.field) + ', extent: ' + cs.name + '}')
+      signals.push(cs);
+      intervals.push('{field: ' + stringValue(p.field) + ', extent: ' + cs.name + '}');
     });
 
     signals.push({
@@ -45,8 +47,53 @@ const intervalCompiler:SelectionCompiler = {
   },
 
   modifyExpression: function(model: UnitModel, sel: SelectionComponent) {
-    let tpl = sel.name + SelectionNames.TUPLE; 
+    let tpl = sel.name + SelectionNames.TUPLE;
     return tpl + ', {unit: ' + tpl + '.unit}';
+  },
+
+  assembleUnitMarks: function(model: UnitModel, sel: SelectionComponent, marks: any[]) {
+    let name = sel.name, x:number = null, y:number = null;
+    sel.project.forEach(function(p: any, i: number) {
+      if (p.encoding === X) {
+        x = i;
+      } else if (p.encoding === Y) {
+        y = i;
+      }
+    });
+
+    let update = {
+      x: extend({}, x !== null ?
+        {scale: model.scaleName(X), signal: name + '[' + x + '].extent[0]'} :
+        {value: 0}),
+
+      x2: extend({}, x !== null ?
+        {scale: model.scaleName(X), signal: name + '[' + x + '].extent[1]'} :
+        {field: {group: 'width'}}),
+
+      y: extend({}, y !== null ?
+        {scale: model.scaleName(Y), signal: name + '[' + y + '].extent[0]'} :
+        {value: 0}),
+
+      y2: extend({}, y !== null ?
+        {scale: model.scaleName(Y), signal: name + '[' + y + '].extent[1]'} :
+        {field: {group: 'height'}}),
+    };
+
+    return [{
+      name: undefined,
+      type: 'rect',
+      encode: {
+        enter: {fill: {value: '#eee'}},
+        update: update
+      }
+    }].concat(marks, {
+      name: name + BRUSH,
+      type: 'rect',
+      encode: {
+        enter: {fill: {value: 'transparent'}},
+        update: update
+      }
+    });
   }
 };
 export {intervalCompiler as default};

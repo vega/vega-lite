@@ -29,10 +29,12 @@ const multiCompiler:SelectionCompiler = {
     let tpl = sel.name + SelectionNames.TUPLE,
         toggle = sel.name + TOGGLE;
 
-    return toggle + ' ? null : ' + tpl + ', ' + 
-      toggle + ' ? null : true, ' + 
+    return toggle + ' ? null : ' + tpl + ', ' +
+      toggle + ' ? null : true, ' +
       toggle + ' ? ' + tpl + ' : null';
-  }
+  },
+
+  assembleUnitMarks: function() { return arguments[arguments.length-1]; }
 };
 
 export {multiCompiler as default};

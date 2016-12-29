@@ -8,5 +8,6 @@
     "test/**/*.test.d.ts": {"when": "$(basename).ts"},
     "coverage/**/*": true,
     "_site/**/*": true
-  }
+  },
+  "files.trimTrailingWhitespace": true
 }
