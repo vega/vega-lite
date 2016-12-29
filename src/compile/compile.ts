@@ -6,7 +6,7 @@ import {LAYOUT} from '../data';
 import * as log from '../log';
 import {Model} from './model';
 import {normalize, ExtendedSpec} from '../spec';
-import {extend} from '../util';
+import {extend, stringValue} from '../util';
 import {UNIT_SIGNAL} from './selection';
 import {buildModel} from './common';
 
@@ -67,6 +67,7 @@ function assemble(model: Model) {
 }
 
 export function assembleRootGroup(model: Model) {
+  const layout = stringValue(model.name(LAYOUT + ''));
   let rootGroup:any = extend(
     {
       name: model.name('main'),
@@ -84,7 +85,12 @@ export function assembleRootGroup(model: Model) {
           model.assembleParentGroupProperties(model.config().cell)
         )
       }
-    });
+    }, model.assembleGroup());
 
-  return extend(rootGroup, model.assembleGroup());
+  let signals = rootGroup.signals || (rootGroup.signals = []);
+  signals.unshift.apply(signals, [
+    {name: 'width', update: 'tuples(' + layout + ')[0].width'},
+    {name: 'height', update: 'tuples(' + layout + ')[0].height'}
+  ]);
+  return rootGroup;
 }

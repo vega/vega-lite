@@ -237,7 +237,7 @@ export abstract class Model {
       group.legends = legends;
     }
 
-    const signals = this.assembleSignals([]);
+    const signals = this.assembleSignals(group.signals || []);
     if (signals.length > 0) {
       group.signals = signals;
     }

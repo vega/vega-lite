@@ -100,7 +100,7 @@ export {intervalCompiler as default};
 
 function channelSignal(model: UnitModel, sel: SelectionComponent, channel: Channel): any {
   let name  = sel.name + '_' + channel,
-      size  = 'unit.' + (channel === X ? 'width' : 'height'),
+      size  = (channel === X ? 'width' : 'height'),
       coord = channel + '(unit)',
       invert = invertFn.bind(null, model, sel, channel);
 
