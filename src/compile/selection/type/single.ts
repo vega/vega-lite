@@ -1,45 +1,36 @@
 import {SelectionSpec, SelectionComponent, SelectionNames} from '../../../selection';
 import {UnitModel} from '../../unit';
-import {SelectionCompiler} from './';
+import {SelectionCompiler, multi} from './';
 import {defaultValue} from '../';
 import {stringValue} from '../../../util';
 
 const singleCompiler:SelectionCompiler = {
-  predicate: 'inPointSelection',
+  predicate: multi.predicate,
 
-  parseUnitSelection: function(model: UnitModel, def: SelectionSpec) {
+  parse: function(model: UnitModel, def: SelectionSpec) {
     return {
       events: defaultValue(def.on, 'click'),
       project: defaultValue(def.project, {fields: ['_id']})
     };
   },
 
-  assembleUnitSignals: function(model: UnitModel, sel: SelectionComponent) {
-    let proj = sel.project;
-    return [{
-      name: sel.name,
-      value: {},
-      on: [{
-        events: sel.events,
-        update: '{fields: [' +
-          proj.map((p: any) => stringValue(p.field)).join(', ') +
-          '], values: [' +
-          proj.map((p: any) => 'datum[' + stringValue(p.field) + ']').join(', ') +
-          ']}'
-      }]
-    }];
+  signals: function(model: UnitModel, sel: SelectionComponent) {
+    return [multi.signals(model, sel)[0]];
   },
 
-  tupleExpression: function(model: UnitModel, sel: SelectionComponent) {
-    let name = sel.name;
-    return 'fields: ' + name + '.fields, values: ' + name + '.values';
+  tupleExpr: function(model: UnitModel, sel: SelectionComponent) {
+    let name = sel.name, values = name + '.values';
+    return 'fields: ' + name + '.fields, values: ' + values + ', ' +
+      sel.project.map(function(p: any, i: number) {
+        return p.field + ': ' + values + '[' + i + ']'
+      }).join(', ');
   },
 
-  modifyExpression: function(model: UnitModel, sel: SelectionComponent) {
+  modifyExpr: function(model: UnitModel, sel: SelectionComponent) {
     return sel.name + SelectionNames.TUPLE + ', true';
   },
 
-  assembleUnitMarks: function() { return arguments[arguments.length-1]; }
+  marks: function() { return arguments[arguments.length-1]; }
 };
 
 export {singleCompiler as default};

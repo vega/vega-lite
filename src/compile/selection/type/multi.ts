@@ -2,14 +2,14 @@ import {SelectionSpec, SelectionComponent, SelectionNames} from '../../../select
 import {UnitModel} from '../../unit';
 import {SelectionCompiler} from './';
 import {defaultValue} from '../';
-import {default as single} from './single';
+import {stringValue} from '../../../util';
 
 const TOGGLE = '_toggle';
 
 const multiCompiler:SelectionCompiler = {
-  predicate: single.predicate,
+  predicate: 'inPointSelection',
 
-  parseUnitSelection: function(model: UnitModel, def: SelectionSpec) {
+  parse: function(model: UnitModel, def: SelectionSpec) {
     return {
       events: defaultValue(def.on, 'click'),
       project: defaultValue(def.project, {fields: ['_id']}),
@@ -17,17 +17,32 @@ const multiCompiler:SelectionCompiler = {
     };
   },
 
-  assembleUnitSignals: function(model: UnitModel, sel: SelectionComponent) {
-    return single.assembleUnitSignals(model, sel).concat({
+  signals: function(model: UnitModel, sel: SelectionComponent) {
+    let proj = sel.project;
+    return [{
+      name: sel.name,
+      value: {},
+      on: [{
+        events: sel.events,
+        update: '{fields: [' +
+          proj.map((p: any) => stringValue(p.field)).join(', ') +
+          '], values: [' +
+          proj.map((p: any) => 'datum[' + stringValue(p.field) + ']').join(', ') +
+          ']}'
+      }]
+    }, {
       name: sel.name + TOGGLE,
       value: false,
       on: [{events: sel.events, update: sel.toggle}]
-    });
+    }];
   },
 
-  tupleExpression: single.tupleExpression,
+  tupleExpr: function(model: UnitModel, sel: SelectionComponent) {
+    let name = sel.name;
+    return 'fields: ' + name + '.fields, values: ' + name + '.values';
+  },
 
-  modifyExpression: function(model: UnitModel, sel: SelectionComponent) {
+  modifyExpr: function(model: UnitModel, sel: SelectionComponent) {
     let tpl = sel.name + SelectionNames.TUPLE,
         toggle = sel.name + TOGGLE;
 
@@ -36,7 +51,7 @@ const multiCompiler:SelectionCompiler = {
       toggle + ' ? ' + tpl + ' : null';
   },
 
-  assembleUnitMarks: function() { return arguments[arguments.length-1]; }
+  marks: function() { return arguments[arguments.length-1]; }
 };
 
 export {multiCompiler as default};

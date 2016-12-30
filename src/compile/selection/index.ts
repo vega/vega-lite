@@ -29,7 +29,7 @@ export function parseUnitSelection(model: UnitModel, spec: Dict<SelectionSpec>) 
       predicate: def.predicate,
       bind: def.bind,
       resolve: SelectionResolutions.SINGLE
-    }, types[type].parseUnitSelection(model, def));
+    }, types[type].parse(model, def));
 
     if (isString(sel.events)) {
       // TODO: Scope source.
@@ -56,20 +56,20 @@ export function assembleUnitSignals(model: UnitModel, signals: any[]) {
     }
 
     let sel = selections[name], type = compiler(sel);
-    signals.push.apply(signals, type.assembleUnitSignals(model, sel));
+    signals.push.apply(signals, type.signals(model, sel));
     signals.push({
       name: name + SelectionNames.TUPLE,
       on: [{
         events: {signal: name},
         update: '{unit: unit.datum && unit.datum._id, ' +
-          type.tupleExpression(model, sel) + '}'
+          type.tupleExpr(model, sel) + '}'
       }]
     }, {
       name: name + SelectionNames.MODIFY,
       on: [{
         events: {signal: name},
         update: 'modify(' + stringValue(name + SelectionNames.STORE) + ', ' +
-          type.modifyExpression(model, sel) + ')'
+          type.modifyExpr(model, sel) + ')'
       }]
     });
   }
@@ -90,7 +90,7 @@ export function assembleUnitMarks(model: UnitModel, marks: any[]): any[] {
   for (let name in selections) {
     if (selections.hasOwnProperty(name)) {
       let sel = selections[name];
-      marks = compiler(sel).assembleUnitMarks(model, sel, marks);
+      marks = compiler(sel).marks(model, sel, marks);
     }
   }
 

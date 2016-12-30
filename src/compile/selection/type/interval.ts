@@ -11,7 +11,7 @@ const BRUSH = '_brush';
 const intervalCompiler:SelectionCompiler = {
   predicate: 'inIntervalSelection',
 
-  parseUnitSelection: function(model: UnitModel, def: SelectionSpec) {
+  parse: function(model: UnitModel, def: SelectionSpec) {
     return {
       events: defaultValue(def.on, '[mousedown, window:mouseup] > window:mousemove'),
       project: defaultValue(def.project, {encodings: ['x', 'y']}),
@@ -21,7 +21,7 @@ const intervalCompiler:SelectionCompiler = {
     };
   },
 
-  assembleUnitSignals: function(model: UnitModel, sel: SelectionComponent) {
+  signals: function(model: UnitModel, sel: SelectionComponent) {
     let signals: any[] = [],
         intervals:any[] = [];
 
@@ -44,16 +44,16 @@ const intervalCompiler:SelectionCompiler = {
     return signals;
   },
 
-  tupleExpression: function(model: UnitModel, sel: SelectionComponent) {
+  tupleExpr: function(model: UnitModel, sel: SelectionComponent) {
     return 'intervals: ' + sel.name;
   },
 
-  modifyExpression: function(model: UnitModel, sel: SelectionComponent) {
+  modifyExpr: function(model: UnitModel, sel: SelectionComponent) {
     let tpl = sel.name + SelectionNames.TUPLE;
     return tpl + ', {unit: ' + tpl + '.unit}';
   },
 
-  assembleUnitMarks: function(model: UnitModel, sel: SelectionComponent, marks: any[]) {
+  marks: function(model: UnitModel, sel: SelectionComponent, marks: any[]) {
     let name = sel.name, x:number = null, y:number = null;
     sel.project.forEach(function(p: any, i: number) {
       if (p.encoding === X) {
