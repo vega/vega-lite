@@ -1,19 +1,19 @@
 import {UnitModel} from './../../unit';
-import {SelectionComponent, SelectionTypes} from '../../../selection';
+import {SelectionComponent} from '../../../selection';
 import {X, Y} from '../../../channel';
 import {stringValue} from '../../../util';
 import {warn} from '../../../log';
 import {TransformCompiler} from './';
 import {projections as intervalProjections, NS as INTERVAL} from '../types/interval';
 
-enum NS {
-  ANCHOR = '_zoom_anchor' as any,
-  DELTA  = '_zoom_delta' as any
-}
+const NS = {
+  ANCHOR: '_zoom_anchor',
+  DELTA: '_zoom_delta'
+};
 
 const zoom:TransformCompiler = {
   signals: function(model: UnitModel, sel: SelectionComponent, signals: any[]) {
-    if (sel.type !== SelectionTypes.INTERVAL) {
+    if (sel.type !== 'interval') {
       warn('zoom is currently only supported for interval selections.');
       return signals;
     }

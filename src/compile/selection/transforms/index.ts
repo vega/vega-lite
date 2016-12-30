@@ -10,10 +10,10 @@ export interface TransformCompiler {
   // marks?: (model: UnitModel, sel:SelectionComponent, marks: any[]) => void;
 }
 
-import {default as project} from './project';
-import {default as toggle} from './toggle';
-import {default as translate} from './translate';
-import {default as zoom} from './zoom';
+import project from './project';
+import toggle from './toggle';
+import translate from './translate';
+import zoom from './zoom';
 export const transforms: Dict<TransformCompiler> = {
   'project': project,
   'toggle': toggle,

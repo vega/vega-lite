@@ -1,5 +1,5 @@
 import {SelectionSpec, SelectionComponent, SelectionDomain,
-        SelectionResolutions, SelectionTypes} from '../../selection';
+        SelectionResolutions} from '../../selection';
 import {Model} from '../model';
 import {UnitModel} from '../unit';
 import {Channel} from '../../channel';
@@ -10,11 +10,11 @@ import {transforms} from './transforms';
 import {selector as parseSelector} from 'vega-parser';
 import {VgData} from '../../vega.schema';
 
-export enum NS {
-  STORE = '_store' as any,
-  TUPLE = '_tuple' as any,
-  MODIFY = '_modify' as any
-}
+export const NS = {
+  STORE: '_store',
+  TUPLE: '_tuple',
+  MODIFY: '_modify'
+};
 
 export function parseUnitSelection(model: UnitModel, spec: Dict<SelectionSpec>) {
   let selections: Dict<SelectionComponent> = {};
@@ -24,12 +24,14 @@ export function parseUnitSelection(model: UnitModel, spec: Dict<SelectionSpec>) 
     }
 
     let def = spec[name],
-        type:TypeCompiler = types[def.type];
+        type:TypeCompiler = types[def.type],
+        domain:SelectionDomain = 'data',
+        resolve:SelectionResolutions = 'single';
 
     let sel = selections[name] = extend({}, def, {
       name: name,
-      domain: def.domain || SelectionDomain.DATA,
-      resolve: SelectionResolutions.SINGLE
+      domain: def.domain || domain,
+      resolve: resolve
     }, type.parse(model, def));
 
     if (isString(sel.events)) {
@@ -103,7 +105,7 @@ export function assembleTopLevelSignals(model: Model) {
       }];
 
   for (let name in selections) {
-    if (selections[name].type === SelectionTypes.SINGLE) {
+    if (selections[name].type === 'single') {
       signals.push({
         name: name,
         update: 'tuples(' + stringValue(name + NS.STORE) + ')[0]'
@@ -153,6 +155,6 @@ export function defaultValue(def: any, value: any) {
 }
 
 export function invert(model: UnitModel, sel: SelectionComponent, channel: Channel, expr: string) {
-  return sel.domain === SelectionDomain.DATA ?
+  return sel.domain === 'data' ?
     'invert(' + stringValue(model.scaleName(channel)) + ', ' + expr + ')' : expr;
 }

@@ -1,29 +1,14 @@
-export enum SelectionTypes {
-  SINGLE = 'single' as any,
-  MULTI  = 'multi'  as any,
-  INTERVAL = 'interval' as any
-}
-
-export enum SelectionDomain {
-  DATA = 'data' as any,
-  VISUAL = 'visual'  as any
-}
-
-export enum SelectionResolutions {
-  SINGLE = 'single' as any,
-  INDEPENDENT = 'independent' as any,
-  UNION = 'union' as any,
-  UNION_OTHERS = 'union_others' as any,
-  INTERSECT = 'intersect' as any,
-  INTERSECT_OTHERS = 'intersect_others' as any
-}
+export type SelectionTypes = 'single' | 'multi' | 'interval';
+export type SelectionDomain = 'data' | 'visual';
+export type SelectionResolutions = 'single' | 'independent' | 'union' |
+  'union_others' | 'intersect' | 'intersect_others';
 
 export interface SelectionSpec {
   type: SelectionTypes;
   domain?: SelectionDomain;
-  on: any;
-  predicate: string;
-  bind: any;
+  on?: any;
+  predicate?: string;
+  bind?: any;
 
   // Transforms
   project?: ProjectSpec;

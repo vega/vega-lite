@@ -1,19 +1,19 @@
 import {UnitModel} from './../../unit';
-import {SelectionComponent, SelectionTypes} from '../../../selection';
+import {SelectionComponent} from '../../../selection';
 import {X} from '../../../channel';
 import {stringValue} from '../../../util';
 import {warn} from '../../../log';
 import {TransformCompiler} from './';
 import {projections as intervalProjections, NS as INTERVAL} from '../types/interval';
 
-enum NS {
-  ANCHOR = '_translate_anchor' as any,
-  DELTA  = '_translate_delta' as any
-}
+const NS = {
+  ANCHOR: '_translate_anchor',
+  DELTA: '_translate_delta'
+};
 
 const translate:TransformCompiler = {
   signals: function(model: UnitModel, sel: SelectionComponent, signals: any[]) {
-    if (sel.type !== SelectionTypes.INTERVAL) {
+    if (sel.type !== 'interval') {
       warn('translate is currently only supported for interval selections.');
       return signals;
     }

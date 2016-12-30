@@ -6,10 +6,10 @@ import {defaultValue, NS as NAMES, invert as invertFn} from '../';
 import {stringValue, extend} from '../../../util';
 import {warn} from '../../../log';
 
-export enum NS {
-  BRUSH = '_brush' as any,
-  SIZE  = '_size' as any
-}
+export const NS = {
+  BRUSH: '_brush',
+  SIZE: '_size'
+};
 
 const interval:TypeCompiler = {
   predicate: 'inIntervalSelection',
