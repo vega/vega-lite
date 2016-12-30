@@ -114,6 +114,10 @@
       }
     },
     {
+      "name": "heatmap",
+      "title": "Heatmap"
+    },
+    {
       "name": "text_table_heatmap",
       "title": "Text Table Heatmap",
       "galleryParameters": {
