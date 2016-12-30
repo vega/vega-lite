@@ -37,7 +37,7 @@ export function parseUnitSelection(model: UnitModel, spec: Dict<SelectionSpec>) 
     }
 
     for (let t in transforms) {
-      if (def[t] !== undefined && def[t] !== false && transforms[t].parse) {
+      if (sel[t] !== undefined && sel[t] !== false && transforms[t].parse) {
         transforms[t].parse(model, def, sel);
       }
     }
