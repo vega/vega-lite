@@ -1,4 +1,4 @@
-import {AbstractDataCompiler} from './abstract';
+import {DataComponentCompiler} from './base';
 
 import {FacetModel} from './../facet';
 import {LayerModel} from './../layer';
@@ -82,7 +82,7 @@ function getStackByFields(model: UnitModel) {
 /**
  * Stack data compiler
  */
-export const stack: AbstractDataCompiler<StackComponent> = {
+export const stack: DataComponentCompiler<StackComponent> = {
 
   parseUnit: function(model: UnitModel): StackComponent {
     const stackProperties = model.stack();

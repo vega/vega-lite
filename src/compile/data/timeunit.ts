@@ -1,34 +1,36 @@
+import {DataComponentCompiler} from './base';
+
 import {Channel} from '../../channel';
 import {field, FieldDef} from '../../fielddef';
 import {fieldExpr} from '../../timeunit';
 import {TEMPORAL} from '../../type';
 import {extend, vals, Dict} from '../../util';
-import {VgTransform} from '../../vega.schema';
+import {VgFormulaTransform} from '../../vega.schema';
 
 import {FacetModel} from '../facet';
 import {LayerModel} from '../layer';
 import {Model} from '../model';
 
-export namespace timeUnit {
-  function parse(model: Model): Dict<VgTransform> {
-    return model.reduce(function(timeUnitComponent: Dict<VgTransform>, fieldDef: FieldDef, channel: Channel) {
-      if (fieldDef.type === TEMPORAL && fieldDef.timeUnit) {
+function parse(model: Model): Dict<VgFormulaTransform> {
+  return model.reduce(function(timeUnitComponent: Dict<VgFormulaTransform>, fieldDef: FieldDef, channel: Channel) {
+    if (fieldDef.type === TEMPORAL && fieldDef.timeUnit) {
 
-        const hash = field(fieldDef);
+      const hash = field(fieldDef);
 
-        timeUnitComponent[hash] = {
-          type: 'formula',
-          as: field(fieldDef),
-          expr: fieldExpr(fieldDef.timeUnit, fieldDef.field)
-        };
-      }
-      return timeUnitComponent;
-    }, {});
-  }
+      timeUnitComponent[hash] = {
+        type: 'formula',
+        as: field(fieldDef),
+        expr: fieldExpr(fieldDef.timeUnit, fieldDef.field)
+      };
+    }
+    return timeUnitComponent;
+  }, {});
+}
 
-  export const parseUnit: (model: Model) => Dict<VgTransform> = parse;
+export const timeUnit: DataComponentCompiler<Dict<VgFormulaTransform>> = {
+  parseUnit: parse,
 
-  export function parseFacet(model: FacetModel) {
+  parseFacet: function (model: FacetModel) {
     let timeUnitComponent = parse(model);
 
     const childDataComponent = model.child().component.data;
@@ -39,9 +41,9 @@ export namespace timeUnit {
       delete childDataComponent.timeUnit;
     }
     return timeUnitComponent;
-  }
+  },
 
-  export function parseLayer(model: LayerModel) {
+  parseLayer: function(model: LayerModel) {
     let timeUnitComponent = parse(model);
     model.children().forEach((child) => {
       const childDataComponent = child.component.data;
@@ -51,10 +53,9 @@ export namespace timeUnit {
       }
     });
     return timeUnitComponent;
-  }
-
-  export function assemble(component: Dict<VgTransform>) {
+  },
+  assemble: function(component: Dict<VgFormulaTransform>) {
     // just join the values, which are already transforms
     return vals(component);
   }
-}
+};

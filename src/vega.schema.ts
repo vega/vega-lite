@@ -86,7 +86,28 @@ export function isDataRefDomain(domain: any[] | UnionedDomain | VgDataRef): doma
 export type VgMarkGroup = any;
 export type VgAxis = any;
 export type VgLegend = any;
-export type VgTransform = any;
+
+export interface VgBinTransform {
+  type: 'bin';
+  field: string;
+  as: string;
+  extent?: {signal: string};
+  // TODO: add other properties
+}
+
+export interface VgExtentTransform {
+  type: 'extent';
+  field: string;
+  signal: string;
+}
+
+export interface VgFormulaTransform {
+  type: 'formula';
+  as: string;
+  expr: string;
+}
+
+export type VgTransform = VgBinTransform | VgExtentTransform | VgFormulaTransform | any;
 
 export interface VgStackTransform {
   type: 'stack';
