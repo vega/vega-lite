@@ -1,12 +1,10 @@
 import {SelectionSpec, SelectionComponent, SelectionNames} from '../../../selection';
 import {UnitModel} from '../../unit';
-import {SelectionCompiler} from './';
+import {TypeCompiler} from './';
 import {defaultValue} from '../';
 import {stringValue} from '../../../util';
 
-const TOGGLE = '_toggle';
-
-const multiCompiler:SelectionCompiler = {
+const multi:TypeCompiler = {
   predicate: 'inPointSelection',
 
   parse: function(model: UnitModel, def: SelectionSpec) {
@@ -30,10 +28,6 @@ const multiCompiler:SelectionCompiler = {
           proj.map((p: any) => 'datum[' + stringValue(p.field) + ']').join(', ') +
           ']}'
       }]
-    }, {
-      name: sel.name + TOGGLE,
-      value: false,
-      on: [{events: sel.events, update: sel.toggle}]
     }];
   },
 
@@ -43,15 +37,8 @@ const multiCompiler:SelectionCompiler = {
   },
 
   modifyExpr: function(model: UnitModel, sel: SelectionComponent) {
-    let tpl = sel.name + SelectionNames.TUPLE,
-        toggle = sel.name + TOGGLE;
-
-    return toggle + ' ? null : ' + tpl + ', ' +
-      toggle + ' ? null : true, ' +
-      toggle + ' ? ' + tpl + ' : null';
-  },
-
-  marks: function() { return arguments[arguments.length-1]; }
+    return sel.name + SelectionNames.TUPLE;
+  }
 };
 
-export {multiCompiler as default};
+export {multi as default};

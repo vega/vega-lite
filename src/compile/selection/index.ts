@@ -3,8 +3,9 @@ import {SelectionSpec, SelectionComponent, SelectionDomain,
 import {UnitModel} from '../unit';
 import {Channel} from '../../channel';
 import {Dict, extend, stringValue, isString} from '../../util';
-import * as types from './type';
-import {SelectionCompiler} from './type';
+import * as types from './types';
+import {TypeCompiler} from './types';
+import {transforms} from './transforms';
 import {selector as parseSelector} from 'vega-parser';
 import {VgData} from '../../vega.schema';
 
@@ -21,28 +22,25 @@ export function parseUnitSelection(model: UnitModel, spec: Dict<SelectionSpec>) 
       continue;
     }
 
-    let def = spec[name], type = def.type;
-    let sel = selections[name] = extend({
+    let def = spec[name],
+        type:TypeCompiler = types[def.type];
+
+    let sel = selections[name] = extend({}, def, {
       name: name,
-      type: type,
       domain: def.domain || SelectionDomain.DATA,
-      predicate: def.predicate,
-      bind: def.bind,
       resolve: SelectionResolutions.SINGLE
-    }, types[type].parse(model, def));
+    }, type.parse(model, def));
 
     if (isString(sel.events)) {
       // TODO: Scope source.
       sel.events = parseSelector(sel.events);
     }
 
-    // Fold project definition:
-    // {fields: [], encodings: []} --> [{encoding: }, {field: }]
-    // TODO: map from field to channel?
-    sel.project = (sel.project.fields || [])
-      .map(function(f: string) { return {field: f}; })
-      .concat((sel.project.encodings || [])
-        .map(function(c: Channel) { return {encoding: c, field: model.field(c)}; }));
+    for (let t in transforms) {
+      if (def[t] !== undefined && def[t] !== false && transforms[t].parse) {
+        transforms[t].parse(model, def, sel);
+      }
+    }
   }
 
   return selections;
@@ -55,21 +53,39 @@ export function assembleUnitSignals(model: UnitModel, signals: any[]) {
       continue;
     }
 
-    let sel = selections[name], type = compiler(sel);
+    let sel = selections[name],
+        type = compiler(sel),
+        tupleExpr = type.tupleExpr(model, sel),
+        modifyExpr = type.modifyExpr(model, sel);
+
     signals.push.apply(signals, type.signals(model, sel));
+
+    for (let t in transforms) {
+      if (sel[t] === undefined || sel[t] === false) {
+        continue;
+      }
+
+      let tx = transforms[t];
+      if (tx.signals) {
+        signals = tx.signals(model, sel, signals);
+      }
+      if (tx.modifyExpr) {
+        modifyExpr = tx.modifyExpr(model, sel, modifyExpr);
+      }
+    }
+
     signals.push({
       name: name + SelectionNames.TUPLE,
       on: [{
         events: {signal: name},
-        update: '{unit: unit.datum && unit.datum._id, ' +
-          type.tupleExpr(model, sel) + '}'
+        update: '{unit: unit.datum && unit.datum._id, ' + tupleExpr + '}'
       }]
     }, {
       name: name + SelectionNames.MODIFY,
       on: [{
         events: {signal: name},
         update: 'modify(' + stringValue(name + SelectionNames.STORE) + ', ' +
-          type.modifyExpr(model, sel) + ')'
+          modifyExpr + ')'
       }]
     });
   }
@@ -89,8 +105,8 @@ export function assembleUnitMarks(model: UnitModel, marks: any[]): any[] {
   let selections = model.component.selection;
   for (let name in selections) {
     if (selections.hasOwnProperty(name)) {
-      let sel = selections[name];
-      marks = compiler(sel).marks(model, sel, marks);
+      let sel = selections[name], type = compiler(sel);
+      marks = type.marks ? type.marks(model, sel, marks) : marks;
     }
   }
 
@@ -106,13 +122,13 @@ export function predicate(sel: SelectionComponent): string {
 
 // Utility functions
 
-function compiler(sel: SelectionComponent): SelectionCompiler {
+function compiler(sel: SelectionComponent): TypeCompiler {
   return types[sel.type];
 }
 
 // TODO: Remove this function in favour of config.
 export function defaultValue(def: any, value: any) {
-  return def !== undefined ? def : value;
+  return def !== undefined && def !== true ? def : value;
 }
 
 export function invert(model: UnitModel, sel: SelectionComponent, channel: Channel, expr: string) {

@@ -1,5 +1,5 @@
 import {SelectionSpec, SelectionComponent, SelectionNames} from '../../../selection';
-import {SelectionCompiler} from './';
+import {TypeCompiler} from './';
 import {X, Y, Channel} from '../../../channel';
 import {UnitModel} from '../../unit';
 import {defaultValue, invert as invertFn} from '../';
@@ -8,7 +8,7 @@ import {warn} from '../../../log';
 
 const BRUSH = '_brush';
 
-const intervalCompiler:SelectionCompiler = {
+const interval:TypeCompiler = {
   predicate: 'inIntervalSelection',
 
   parse: function(model: UnitModel, def: SelectionSpec) {
@@ -98,7 +98,7 @@ const intervalCompiler:SelectionCompiler = {
     });
   }
 };
-export {intervalCompiler as default};
+export {interval as default};
 
 function channelSignal(model: UnitModel, sel: SelectionComponent, channel: Channel): any {
   let name  = sel.name + '_' + channel,

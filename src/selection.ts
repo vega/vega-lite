@@ -26,11 +26,16 @@ export interface SelectionSpec {
   bind: any;
 
   // Transforms
-  project?: any;
-  toggle?: any;
+  project?: ProjectSpec;
+  toggle?: string | boolean;
   translate?: any;
   zoom?: any;
   nearest?: any;
+}
+
+export interface ProjectSpec {
+  fields?: string[];
+  encodings?: string[];
 }
 
 export interface SelectionComponent {
