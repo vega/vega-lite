@@ -1,6 +1,7 @@
 import {UnitModel} from './../../unit';
-import {SelectionComponent, SelectionNames} from '../../../selection';
+import {SelectionComponent} from '../../../selection';
 import {TransformCompiler} from './';
+import {NS as NAMES} from '../';
 
 const NS = '_toggle';
 
@@ -14,7 +15,7 @@ const toggle:TransformCompiler = {
   },
 
   modifyExpr: function(model: UnitModel, sel: SelectionComponent, expr: string) {
-    let tpl = sel.name + SelectionNames.TUPLE,
+    let tpl = sel.name + NAMES.TUPLE,
         signal = sel.name + NS;
 
     return signal + ' ? null : ' + tpl + ', ' +

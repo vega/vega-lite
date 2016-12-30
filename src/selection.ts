@@ -54,9 +54,3 @@ export interface SelectionComponent {
   zoom?: any;
   nearest?: any;
 }
-
-export enum SelectionNames {
-  STORE = '_store' as any,
-  TUPLE = '_tuple' as any,
-  MODIFY = '_modify' as any
-}

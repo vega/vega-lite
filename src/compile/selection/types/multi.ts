@@ -1,7 +1,7 @@
-import {SelectionSpec, SelectionComponent, SelectionNames} from '../../../selection';
+import {SelectionSpec, SelectionComponent} from '../../../selection';
 import {UnitModel} from '../../unit';
 import {TypeCompiler} from './';
-import {defaultValue} from '../';
+import {defaultValue, NS} from '../';
 import {stringValue} from '../../../util';
 
 const multi:TypeCompiler = {
@@ -37,7 +37,7 @@ const multi:TypeCompiler = {
   },
 
   modifyExpr: function(model: UnitModel, sel: SelectionComponent) {
-    return sel.name + SelectionNames.TUPLE;
+    return sel.name + NS.TUPLE;
   }
 };
 

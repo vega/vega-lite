@@ -1,8 +1,8 @@
-import {SelectionSpec, SelectionComponent, SelectionNames} from '../../../selection';
+import {SelectionSpec, SelectionComponent} from '../../../selection';
 import {TypeCompiler} from './';
 import {X, Y, Channel} from '../../../channel';
 import {UnitModel} from '../../unit';
-import {defaultValue, invert as invertFn} from '../';
+import {defaultValue, NS as NAMES, invert as invertFn} from '../';
 import {stringValue, extend} from '../../../util';
 import {warn} from '../../../log';
 
@@ -79,7 +79,7 @@ const interval:TypeCompiler = {
   },
 
   modifyExpr: function(model: UnitModel, sel: SelectionComponent) {
-    let tpl = sel.name + SelectionNames.TUPLE;
+    let tpl = sel.name + NAMES.TUPLE;
     return tpl + ', {unit: ' + tpl + '.unit}';
   },
 

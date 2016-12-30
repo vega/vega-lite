@@ -1,7 +1,7 @@
-import {SelectionSpec, SelectionComponent, SelectionNames} from '../../../selection';
+import {SelectionSpec, SelectionComponent} from '../../../selection';
 import {UnitModel} from '../../unit';
 import {TypeCompiler, multi} from './';
-import {defaultValue} from '../';
+import {defaultValue, NS} from '../';
 
 const single:TypeCompiler = {
   predicate: multi.predicate,
@@ -24,7 +24,7 @@ const single:TypeCompiler = {
   },
 
   modifyExpr: function(model: UnitModel, sel: SelectionComponent) {
-    return sel.name + SelectionNames.TUPLE + ', true';
+    return sel.name + NS.TUPLE + ', true';
   }
 };
 

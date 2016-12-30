@@ -1,5 +1,6 @@
 import {SelectionSpec, SelectionComponent, SelectionDomain,
-        SelectionResolutions, SelectionNames} from '../../selection';
+        SelectionResolutions, SelectionTypes} from '../../selection';
+import {Model} from '../model';
 import {UnitModel} from '../unit';
 import {Channel} from '../../channel';
 import {Dict, extend, stringValue, isString} from '../../util';
@@ -9,11 +10,11 @@ import {transforms} from './transforms';
 import {selector as parseSelector} from 'vega-parser';
 import {VgData} from '../../vega.schema';
 
-export const UNIT_SIGNAL:any = {
-  name: 'unit',
-  value: {},
-  on: [{events: 'mousemove', update: 'group()'}]
-};
+export enum NS {
+  STORE = '_store' as any,
+  TUPLE = '_tuple' as any,
+  MODIFY = '_modify' as any
+}
 
 export function parseUnitSelection(model: UnitModel, spec: Dict<SelectionSpec>) {
   let selections: Dict<SelectionComponent> = {};
@@ -75,19 +76,39 @@ export function assembleUnitSignals(model: UnitModel, signals: any[]) {
     }
 
     signals.push({
-      name: name + SelectionNames.TUPLE,
+      name: name + NS.TUPLE,
       on: [{
         events: {signal: name},
         update: '{unit: unit.datum && unit.datum._id, ' + tupleExpr + '}'
       }]
     }, {
-      name: name + SelectionNames.MODIFY,
+      name: name + NS.MODIFY,
       on: [{
         events: {signal: name},
-        update: 'modify(' + stringValue(name + SelectionNames.STORE) + ', ' +
+        update: 'modify(' + stringValue(name + NS.STORE) + ', ' +
           modifyExpr + ')'
       }]
     });
+  }
+
+  return signals;
+}
+
+export function assembleTopLevelSignals(model: Model) {
+  let selections = model.component.selection,
+      signals:any[] = [{
+        name: 'unit',
+        value: {},
+        on: [{events: 'mousemove', update: 'group()'}]
+      }];
+
+  for (let name in selections) {
+    if (selections[name].type === SelectionTypes.SINGLE) {
+      signals.push({
+        name: name,
+        update: 'tuples(' + stringValue(name + NS.STORE) + ')[0]'
+      });
+    }
   }
 
   return signals;
@@ -97,7 +118,7 @@ export function assembleUnitData(model: UnitModel, data: VgData[]): VgData[] {
   return data
     .concat(Object.keys(model.component.selection)
       .map(function(k: string) {
-        return {name: k + SelectionNames.STORE};
+        return {name: k + NS.STORE};
       }));
 }
 
@@ -114,7 +135,7 @@ export function assembleUnitMarks(model: UnitModel, marks: any[]): any[] {
 }
 
 export function predicate(sel: SelectionComponent): string {
-  const store = stringValue(sel.name + SelectionNames.STORE);
+  const store = stringValue(sel.name + NS.STORE);
   return '!tuples(' + store + ').length || ' +
     compiler(sel).predicate + '(' + store + ', parent._id, datum, ' +
     stringValue(sel.resolve) + ')';
