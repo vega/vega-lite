@@ -1,3 +1,5 @@
+import {DataComponentCompiler} from './base';
+
 import {FieldDef} from '../../fielddef';
 import {QUANTITATIVE, TEMPORAL} from '../../type';
 import {contains, extend, keys, differ, Dict} from '../../util';
@@ -13,30 +15,29 @@ const DEFAULT_NULL_FILTERS = {
   temporal: true
 };
 
-// TODO: rename to invalidFilter
-export namespace nullFilter {
-  /** Return Hashset of fields for null filtering (key=field, value = true). */
-  function parse(model: Model): Dict<FieldDef> {
-    const filterInvalid = model.filterInvalid();
+/** Return Hashset of fields for null filtering (key=field, value = true). */
+function parse(model: Model): Dict<FieldDef> {
+  const filterInvalid = model.filterInvalid();
 
-    return model.reduce(function(aggregator: Dict<FieldDef>, fieldDef: FieldDef) {
-      if (fieldDef.field !== '*') { // Ignore * for count(*) fields.
-        if (filterInvalid ||
-          (filterInvalid === undefined && fieldDef.field && DEFAULT_NULL_FILTERS[fieldDef.type])) {
-          aggregator[fieldDef.field] = fieldDef;
-        } else {
-          // define this so we know that we don't filter nulls for this field
-          // this makes it easier to merge into parents
-          aggregator[fieldDef.field] = null;
-        }
+  return model.reduce(function(aggregator: Dict<FieldDef>, fieldDef: FieldDef) {
+    if (fieldDef.field !== '*') { // Ignore * for count(*) fields.
+      if (filterInvalid ||
+        (filterInvalid === undefined && fieldDef.field && DEFAULT_NULL_FILTERS[fieldDef.type])) {
+        aggregator[fieldDef.field] = fieldDef;
+      } else {
+        // define this so we know that we don't filter nulls for this field
+        // this makes it easier to merge into parents
+        aggregator[fieldDef.field] = null;
       }
-      return aggregator;
-    }, {});
-  }
+    }
+    return aggregator;
+  }, {});
+}
 
-  export const parseUnit: (model: Model) => Dict<FieldDef> = parse;
+export const nullFilter: DataComponentCompiler<Dict<FieldDef>> = {
+  parseUnit: parse,
 
-  export function parseFacet(model: FacetModel) {
+  parseFacet: function(model: FacetModel) {
     let nullFilterComponent = parse(model);
 
     const childDataComponent = model.child().component.data;
@@ -47,9 +48,9 @@ export namespace nullFilter {
       delete childDataComponent.nullFilter;
     }
     return nullFilterComponent;
-  }
+  },
 
-  export function parseLayer(model: LayerModel) {
+  parseLayer: function(model: LayerModel) {
     // note that we run this before source.parseLayer
 
     // FIXME: null filters are not properly propagated right now
@@ -64,10 +65,9 @@ export namespace nullFilter {
     });
 
     return nullFilterComponent;
-  }
+  },
 
-  /** Convert the hashset of fields to a filter transform.  */
-  export function assemble(component: Dict<FieldDef>) {
+  assemble: function(component: Dict<FieldDef>) {
     const filters = keys(component).reduce((_filters, field) => {
       const fieldDef = component[field];
       if (fieldDef !== null) {
@@ -88,4 +88,4 @@ export namespace nullFilter {
         expr: filters.join(' && ')
       }] : [];
   }
-}
+};
