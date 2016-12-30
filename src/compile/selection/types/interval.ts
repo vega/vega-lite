@@ -20,7 +20,7 @@ const interval:TypeCompiler = {
       project: defaultValue(def.project, {encodings: ['x', 'y']}),
       translate: defaultValue(def.translate, true),
       // TODO: Only zoom intervals by default if we're initializing scales?
-      zoom: defaultValue(def.zoom, def.bind && def.bind.scales)
+      zoom: defaultValue(def.zoom, def.zoom === true || (def.bind && def.bind.scales))
     };
   },
 

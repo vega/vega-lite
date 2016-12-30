@@ -13,8 +13,10 @@ export interface TransformCompiler {
 import {default as project} from './project';
 import {default as toggle} from './toggle';
 import {default as translate} from './translate';
+import {default as zoom} from './zoom';
 export const transforms: Dict<TransformCompiler> = {
   'project': project,
   'toggle': toggle,
-  'translate': translate
+  'translate': translate,
+  'zoom': zoom
 };
