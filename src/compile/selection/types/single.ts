@@ -16,7 +16,7 @@ const single:TypeCompiler = {
   tupleExpr: function(model, sel) {
     let name = sel.name, values = name + '.values';
     return 'fields: ' + name + '.fields, values: ' + values + ', ' +
-      sel.project.map(function(p: any, i: number) {
+      sel.project.map(function(p, i) {
         return p.field + ': ' + values + '[' + i + ']';
       }).join(', ');
   },

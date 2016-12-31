@@ -7,9 +7,9 @@ const project:TransformCompiler = {
   },
 
   parse: function(model, def, sel) {
-    sel.project = (sel.project.fields || [])
+    sel.project = (def.project.fields || [])
       .map(function(f: string) { return {field: f}; })
-      .concat((sel.project.encodings || [])
+      .concat((def.project.encodings || [])
         .map(function(c: Channel) { return {encoding: c, field: model.field(c)}; }));
   }
 };

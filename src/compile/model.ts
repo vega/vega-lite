@@ -156,9 +156,9 @@ export abstract class Model {
 
   public parse() {
     this.parseData();
-    this.parseSelection();
     this.parseLayoutData();
     this.parseScale(); // depends on data name
+    this.parseSelection();
     this.parseAxis(); // depends on scale name
     this.parseLegend(); // depends on scale name
     this.parseAxisGroup(); // depends on child axis

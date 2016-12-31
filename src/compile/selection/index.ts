@@ -28,11 +28,12 @@ export function parseUnitSelection(model: UnitModel, spec: Dict<SelectionSpec>) 
         domain:SelectionDomain = 'data',
         resolve:SelectionResolutions = 'single';
 
-    let sel = selections[name] = extend({}, def, {
+    extend(def, type.parse(model, def));
+    let sel = selections[name] = extend(def, {
       name: name,
       domain: def.domain || domain,
       resolve: resolve
-    }, type.parse(model, def));
+    }) as SelectionComponent;
 
     if (isString(sel.events)) {
       // TODO: Scope source.

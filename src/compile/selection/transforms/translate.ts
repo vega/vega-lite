@@ -4,6 +4,7 @@ import {X} from '../../../channel';
 import {stringValue} from '../../../util';
 import {warn} from '../../../log';
 import {TransformCompiler} from './';
+import {default as scalesCompiler, NS as EXTNS} from './scales';
 import {projections as intervalProjections, NS as INTERVAL} from '../types/interval';
 
 const NS = {
@@ -23,9 +24,11 @@ const translate:TransformCompiler = {
     }
 
     let name = sel.name,
-        size = name + INTERVAL.SIZE,
+        scales = scalesCompiler.has(sel),
+        size = scales ? 'unit' : name + INTERVAL.SIZE,
+        extent = scales ? name + EXTNS : name,
         anchor = name + NS.ANCHOR,
-        mousedown = '@' + name + INTERVAL.BRUSH + ':mousedown',
+        mousedown = (scales ? '' : '@' + name + INTERVAL.BRUSH + ':') + 'mousedown',
         {x, y} = intervalProjections(sel);
 
     signals.push({
@@ -35,8 +38,8 @@ const translate:TransformCompiler = {
         events: mousedown,
         update: '{x: x(unit), y: y(unit), ' +
           'width: ' + size + '.width, height: ' + size + '.height, ' +
-          (x !== null ? 'extent_x: slice(' + name + '_x), ' : '') +
-          (y !== null ? 'extent_y: slice(' + name + '_y), ' : '') + '}'
+          (x !== null ? 'extent_x: slice(' + extent + '_x), ' : '') +
+          (y !== null ? 'extent_y: slice(' + extent + '_y), ' : '') + '}'
       }]
     }, {
       name: name + NS.DELTA,

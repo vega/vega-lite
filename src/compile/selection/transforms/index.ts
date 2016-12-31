@@ -15,9 +15,11 @@ import project from './project';
 import toggle from './toggle';
 import translate from './translate';
 import zoom from './zoom';
+import scales from './scales';
 export const transforms: Dict<TransformCompiler> = {
   'project': project,
   'toggle': toggle,
+  'scales': scales,
   'translate': translate,
   'zoom': zoom
 };

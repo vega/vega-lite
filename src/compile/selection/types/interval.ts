@@ -31,7 +31,7 @@ const interval:TypeCompiler = {
         name = sel.name,
         size = name + NS.SIZE;
 
-    if (sel.translate && !(sel.bind && sel.bind.scales)) {
+    if (sel.translate && !(scales.has(sel))) {
       events(sel, function(_: any[], evt: any) {
         let filters = evt.between[0].filter || (evt.between[0].filter = []);
         filters.push('!event.item || (event.item && event.item.mark.name !== ' +
@@ -39,7 +39,7 @@ const interval:TypeCompiler = {
       });
     }
 
-    sel.project.forEach(function(p: any) {
+    sel.project.forEach(function(p) {
       if (p.encoding !== X && p.encoding !== Y) {
         warn('Interval selections only support x and y encoding channels.');
         return;
@@ -88,6 +88,11 @@ const interval:TypeCompiler = {
     let name = sel.name,
         {x, y} = projections(sel);
 
+    // Do not add a brush if we're binding to scales.
+    if (scales.has(sel)) {
+      return marks;
+    }
+
     let update = {
       x: extend({}, x !== null ?
         {scale: model.scaleName(X), signal: name + '[' + x + '].extent[0]'} :
@@ -127,7 +132,7 @@ export {interval as default};
 
 export function projections(sel: SelectionComponent) {
   let x:number = null, y:number = null;
-  sel.project.forEach(function(p: any, i: number) {
+  sel.project.forEach(function(p, i) {
     if (p.encoding === X) {
       x = i;
     } else if (p.encoding === Y) {
@@ -146,7 +151,7 @@ function channelSignal(model: UnitModel, sel: SelectionComponent, channel: Chann
   return {
     name: name,
     value: [],
-    on: events(sel, function(on: any[], evt: any) {
+    on: scales.has(sel) ? [] : events(sel, function(on: any[], evt: any) {
       on.push({
         events: evt.between[0],
         update: invert('[' + coord + ', ' + coord + ']')

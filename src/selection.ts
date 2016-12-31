@@ -1,3 +1,5 @@
+import {Channel} from './channel';
+
 export type SelectionTypes = 'single' | 'multi' | 'interval';
 export type SelectionDomain = 'data' | 'visual';
 export type SelectionResolutions = 'single' | 'independent' | 'union' |
@@ -18,11 +20,6 @@ export interface SelectionSpec {
   nearest?: any;
 }
 
-export interface ProjectSpec {
-  fields?: string[];
-  encodings?: string[];
-}
-
 export interface SelectionComponent {
   name: string;
   type: SelectionTypes;
@@ -33,9 +30,19 @@ export interface SelectionComponent {
   resolve: SelectionResolutions;
 
   // Transforms
-  project?: any;
+  project?: ProjectComponent[];
   toggle?: any;
   translate?: any;
   zoom?: any;
   nearest?: any;
+}
+
+export interface ProjectSpec {
+  fields?: string[];
+  encodings?: string[];
+}
+
+export interface ProjectComponent {
+  field?: string;
+  encoding?: Channel;
 }

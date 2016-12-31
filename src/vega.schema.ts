@@ -28,6 +28,10 @@ export type VgDataRef = {
   }
 };
 
+export type VgSignalRef = {
+  signal: string
+};
+
 export type VgValueRef = {
   value?: any,
   field?: string | {
@@ -49,7 +53,7 @@ export type UnionedDomain = {
 export type VgScale = {
   name: string,
   type: ScaleType,
-  domain?: any[] | UnionedDomain | VgDataRef,
+  domain?: any[] | UnionedDomain | VgDataRef | VgSignalRef,
   domainMin?: any,
   domainMax?: any
   range?: any[] | VgDataRef | string,
@@ -68,14 +72,14 @@ export type VgScale = {
   zero?: boolean
 }
 
-export function isUnionedDomain(domain: any[] | UnionedDomain | VgDataRef): domain is UnionedDomain {
+export function isUnionedDomain(domain: any[] | UnionedDomain | VgDataRef | VgSignalRef): domain is UnionedDomain {
   if (!isArray(domain)) {
     return 'fields' in domain;
   }
   return false;
 }
 
-export function isDataRefDomain(domain: any[] | UnionedDomain | VgDataRef): domain is VgDataRef {
+export function isDataRefDomain(domain: any[] | UnionedDomain | VgDataRef | VgSignalRef): domain is VgDataRef {
   if (!isArray(domain)) {
     return 'data' in domain;
   }
@@ -109,4 +113,10 @@ export interface VgImputeTransform {
   orderby?: string[];
   method?: 'value' | 'median' | 'max' | 'min' | 'mean';
   value?: any;
+}
+
+export interface VgExtentTransform {
+  type: 'extent';
+  field: string;  // TODO: string[];
+  signal: string;
 }

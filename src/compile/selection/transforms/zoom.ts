@@ -1,9 +1,10 @@
 import {UnitModel} from './../../unit';
 import {SelectionComponent} from '../../../selection';
-import {X, Y} from '../../../channel';
+import {X, Y, Channel} from '../../../channel';
 import {stringValue} from '../../../util';
 import {warn} from '../../../log';
 import {TransformCompiler} from './';
+import {default as scalesCompiler, extentSignal} from './scales';
 import {projections as intervalProjections, NS as INTERVAL} from '../types/interval';
 
 const NS = {
@@ -23,20 +24,22 @@ const zoom:TransformCompiler = {
     }
 
     let name = sel.name,
+        scales = scalesCompiler.has(sel),
         delta = name + NS.DELTA,
+        wheel = (scales ? '' : '@' + name + INTERVAL.BRUSH + ':') + 'wheel',
         {x, y} = intervalProjections(sel);
 
     signals.push({
       name: name + NS.ANCHOR,
       on: [{
-        events: 'wheel',
+        events: wheel,
         update: '{x: invert(' + stringValue(model.scaleName(X)) + ', x(unit)), ' +
           'y: invert(' + stringValue(model.scaleName(Y)) + ', y(unit))}'
       }]
     }, {
       name: delta,
       on: [{
-        events: 'wheel!',
+        events: wheel + '!',
         force: true,
         update: 'pow(1.001, event.deltaY * pow(16, event.deltaMode))'
       }]
@@ -67,21 +70,22 @@ const zoom:TransformCompiler = {
 
 export {zoom as default};
 
-function onDelta(model: UnitModel, sel: SelectionComponent, channel: string, size: string, signals: any[]) {
+function onDelta(model: UnitModel, sel: SelectionComponent, channel: Channel, size: string, signals: any[]) {
   let name = sel.name,
       signal:any = signals.filter((s:any) => s.name === name + '_' + channel)[0],
+      scales = scalesCompiler.has(sel),
+      base = scales ? extentSignal(sel, channel) : signal.name,
       anchor = name + NS.ANCHOR + '.' + channel,
       delta  = name + NS.DELTA,
       scale  = stringValue(model.scaleName(channel)),
       range  = '[' + anchor + ' + ' +
-        '(' + signal.name + '[0] - ' + anchor + ') * ' + delta + ', ' +
-        anchor + ' + (' + signal.name + '[1] - ' + anchor + ') * ' + delta + ']',
+        '(' + base + '[0] - ' + anchor + ') * ' + delta + ', ' +
+        anchor + ' + (' + base + '[1] - ' + anchor + ') * ' + delta + ']',
       lo = 'invert(' + scale + (channel === X ? ', 0' : ', unit.' + size) + ')',
       hi = 'invert(' + scale + (channel === X ? ', unit.' + size : ', 0') + ')';
 
   signal.on.push({
     events: {signal: delta},
-    update: sel.bind && sel.bind.scales ? range :
-      'clampRange(' + range + ', ' + lo + ', ' + hi + ')'
+    update: scales ? range : 'clampRange(' + range + ', ' + lo + ', ' + hi + ')'
   });
 }

@@ -21,9 +21,9 @@ const multi:TypeCompiler = {
       on: [{
         events: sel.events,
         update: '{fields: [' +
-          proj.map((p: any) => stringValue(p.field)).join(', ') +
+          proj.map((p) => stringValue(p.field)).join(', ') +
           '], values: [' +
-          proj.map((p: any) => 'datum[' + stringValue(p.field) + ']').join(', ') +
+          proj.map((p) => 'datum[' + stringValue(p.field) + ']').join(', ') +
           ']}'
       }]
     }];
