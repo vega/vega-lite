@@ -1,4 +1,6 @@
 import {Channel} from './channel';
+import {VgBinding} from './vega.schema';
+import {Dict} from './util';
 
 export type SelectionTypes = 'single' | 'multi' | 'interval';
 export type SelectionDomain = 'data' | 'visual';
@@ -10,7 +12,7 @@ export interface SelectionSpec {
   domain?: SelectionDomain;
   on?: any;
   predicate?: string;
-  bind?: any;
+  bind?: 'scales' | VgBinding | Dict<VgBinding>;
 
   // Transforms
   fields?: string[];
@@ -27,7 +29,7 @@ export interface SelectionComponent {
   domain: SelectionDomain;
   events: any;
   predicate: string;
-  bind: any;
+  bind?: 'scales' | VgBinding | Dict<VgBinding>;
   resolve: SelectionResolutions;
 
   // Transforms

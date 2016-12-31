@@ -40,43 +40,32 @@ export function parseUnitSelection(model: UnitModel, spec: Dict<SelectionSpec>) 
       sel.events = parseSelector(sel.events);
     }
 
-    for (let t in transforms) {
-      if (transforms[t].has(sel) && transforms[t].parse) {
-        transforms[t].parse(model, def, sel);
+    transforms(sel, function(tx) {
+      if (tx.parse) {
+        tx.parse(model, def, sel);
       }
-    }
+    });
   }
 
   return selections;
 }
 
 export function assembleUnitSignals(model: UnitModel, signals: any[]) {
-  let selections = model.component.selection;
-  for (let name in selections) {
-    if (!selections.hasOwnProperty(name)) {
-      continue;
-    }
-
-    let sel = selections[name],
-        type = compiler(sel),
+  selections(model, function(sel, type) {
+    let name = sel.name,
         tupleExpr = type.tupleExpr(model, sel),
         modifyExpr = type.modifyExpr(model, sel);
 
     signals.push.apply(signals, type.signals(model, sel));
 
-    for (let t in transforms) {
-      if (!transforms[t].has(sel)) {
-        continue;
-      }
-
-      let tx = transforms[t];
+    transforms(sel, function(tx) {
       if (tx.signals) {
         signals = tx.signals(model, sel, signals);
       }
       if (tx.modifyExpr) {
         modifyExpr = tx.modifyExpr(model, sel, modifyExpr);
       }
-    }
+    });
 
     signals.push({
       name: name + NS.TUPLE,
@@ -92,27 +81,29 @@ export function assembleUnitSignals(model: UnitModel, signals: any[]) {
           modifyExpr + ')'
       }]
     });
-  }
+  });
 
   return signals;
 }
 
 export function assembleTopLevelSignals(model: Model) {
-  let selections = model.component.selection,
-      signals:any[] = [{
-        name: 'unit',
-        value: {},
-        on: [{events: 'mousemove', update: 'group()'}]
-      }];
+  let signals:any[] = [{
+    name: 'unit',
+    value: {},
+    on: [{events: 'mousemove', update: 'group()'}]
+  }];
 
-  for (let name in selections) {
-    if (selections[name].type === 'single') {
-      signals.push({
-        name: name,
-        update: 'tuples(' + stringValue(name + NS.STORE) + ')[0]'
-      });
+  selections(model, function(sel, type) {
+    if (type.topLevelSignals) {
+      signals.push.apply(signals, type.topLevelSignals(model, sel));
     }
-  }
+
+    transforms(sel, function(tx) {
+      if (tx.topLevelSignals) {
+        signals = tx.topLevelSignals(model, sel, signals);
+      }
+    });
+  });
 
   return signals;
 }
@@ -126,13 +117,9 @@ export function assembleUnitData(model: UnitModel, data: VgData[]): VgData[] {
 }
 
 export function assembleUnitMarks(model: UnitModel, marks: any[]): any[] {
-  let selections = model.component.selection;
-  for (let name in selections) {
-    if (selections.hasOwnProperty(name)) {
-      let sel = selections[name], type = compiler(sel);
-      marks = type.marks ? type.marks(model, sel, marks) : marks;
-    }
-  }
+  selections(model, function(sel, type) {
+    marks = type.marks ? type.marks(model, sel, marks) : marks;
+  });
 
   return marks;
 }
@@ -145,6 +132,16 @@ export function predicate(sel: SelectionComponent): string {
 }
 
 // Utility functions
+
+function selections(model: Model, cb: (sel: SelectionComponent, type: TypeCompiler) => void) {
+  let selections = model.component.selection;
+  for (let name in selections) {
+    if (selections.hasOwnProperty(name)) {
+      let sel = selections[name];
+      cb(sel, compiler(sel));
+    }
+  }
+}
 
 function compiler(sel: SelectionComponent): TypeCompiler {
   return types[sel.type];

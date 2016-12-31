@@ -11,7 +11,7 @@ export const NS = '_ext';
 
 const scaleBindings:TransformCompiler = {
   has: function(sel) {
-    return sel.bind && sel.bind.scales;
+    return sel.bind && sel.bind === 'scales';
   },
 
   parse: function(model, def, sel) {

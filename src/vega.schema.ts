@@ -120,3 +120,36 @@ export interface VgExtentTransform {
   field: string;  // TODO: string[];
   signal: string;
 }
+
+export type VgCheckboxBinding = {
+  type: 'checkbox';
+  element?: string;
+}
+
+export type VgRadioBinding = {
+  type: 'radio';
+  options: string[];
+  element?: string;
+}
+
+export type VgSelectBinding = {
+  type: 'select';
+  options: string[];
+  element?: string;
+}
+
+export type VgRangeBinding = {
+  type: 'range';
+  min?: number;
+  max?: number;
+  step?: number;
+  element?: string;
+}
+
+export type VgGenericBinding = {
+  type: string;
+  element?: string;
+}
+
+export type VgBinding = VgCheckboxBinding | VgRadioBinding |
+  VgSelectBinding | VgRangeBinding | VgGenericBinding;

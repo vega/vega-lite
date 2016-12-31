@@ -81,7 +81,7 @@ function onDelta(model: UnitModel, sel: SelectionComponent, channel: string, siz
 
   signal.on.push({
     events: {signal: delta},
-    update: sel.bind && sel.bind.scales ? range :
+    update: scalesCompiler.has(sel) ? range :
       'clampRange(' + range + ', ' + lo + ', ' + hi + ')'
   });
 }

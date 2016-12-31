@@ -1,3 +1,4 @@
+import {stringValue} from '../../../util';
 import {TypeCompiler, multi} from './';
 import {defaultValue, NS} from '../';
 
@@ -12,6 +13,14 @@ const single:TypeCompiler = {
   },
 
   signals: multi.signals,
+
+  topLevelSignals: function(model, sel) {
+    let name = sel.name;
+    return [{
+      name: name,
+      update: 'tuples(' + stringValue(name + NS.STORE) + ')[0]'
+    }];
+  },
 
   tupleExpr: function(model, sel) {
     let name = sel.name, values = name + '.values';
