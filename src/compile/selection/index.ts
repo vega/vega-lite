@@ -40,7 +40,7 @@ export function parseUnitSelection(model: UnitModel, spec: Dict<SelectionSpec>) 
     }
 
     for (let t in transforms) {
-      if (sel[t] !== undefined && sel[t] !== false && transforms[t].parse) {
+      if (transforms[t].has(sel) && transforms[t].parse) {
         transforms[t].parse(model, def, sel);
       }
     }
@@ -64,7 +64,7 @@ export function assembleUnitSignals(model: UnitModel, signals: any[]) {
     signals.push.apply(signals, type.signals(model, sel));
 
     for (let t in transforms) {
-      if (sel[t] === undefined || sel[t] === false) {
+      if (!transforms[t].has(sel)) {
         continue;
       }
 

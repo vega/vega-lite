@@ -1,10 +1,12 @@
-import {UnitModel} from './../../unit';
-import {SelectionSpec, SelectionComponent} from '../../../selection';
 import {Channel} from '../../../channel';
 import {TransformCompiler} from './';
 
 const project:TransformCompiler = {
-  parse: function(model: UnitModel, def: SelectionSpec, sel: SelectionComponent) {
+  has: function(sel) {
+    return sel.project !== undefined && sel.project !== false;
+  },
+
+  parse: function(model, def, sel) {
     sel.project = (sel.project.fields || [])
       .map(function(f: string) { return {field: f}; })
       .concat((sel.project.encodings || [])

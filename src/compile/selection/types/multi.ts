@@ -1,5 +1,3 @@
-import {SelectionSpec, SelectionComponent} from '../../../selection';
-import {UnitModel} from '../../unit';
 import {TypeCompiler} from './';
 import {defaultValue, NS} from '../';
 import {stringValue} from '../../../util';
@@ -7,7 +5,7 @@ import {stringValue} from '../../../util';
 const multi:TypeCompiler = {
   predicate: 'inPointSelection',
 
-  parse: function(model: UnitModel, def: SelectionSpec) {
+  parse: function(model, def) {
     return {
       events: defaultValue(def.on, 'click'),
       project: defaultValue(def.project, {fields: ['_id']}),
@@ -15,7 +13,7 @@ const multi:TypeCompiler = {
     };
   },
 
-  signals: function(model: UnitModel, sel: SelectionComponent) {
+  signals: function(model, sel) {
     let proj = sel.project;
     return [{
       name: sel.name,
@@ -31,12 +29,12 @@ const multi:TypeCompiler = {
     }];
   },
 
-  tupleExpr: function(model: UnitModel, sel: SelectionComponent) {
+  tupleExpr: function(model, sel) {
     let name = sel.name;
     return 'fields: ' + name + '.fields, values: ' + name + '.values';
   },
 
-  modifyExpr: function(model: UnitModel, sel: SelectionComponent) {
+  modifyExpr: function(model, sel) {
     return sel.name + NS.TUPLE;
   }
 };

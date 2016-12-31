@@ -1,12 +1,14 @@
-import {UnitModel} from './../../unit';
-import {SelectionComponent} from '../../../selection';
 import {TransformCompiler} from './';
 import {NS as NAMES} from '../';
 
 const NS = '_toggle';
 
 const toggle:TransformCompiler = {
-  signals: function(model: UnitModel, sel: SelectionComponent, signals: any[]) {
+  has: function(sel) {
+    return sel.toggle !== undefined && sel.toggle !== false;
+  },
+
+  signals: function(model, sel, signals) {
     return signals.concat({
       name: sel.name + NS,
       value: false,
@@ -14,7 +16,7 @@ const toggle:TransformCompiler = {
     });
   },
 
-  modifyExpr: function(model: UnitModel, sel: SelectionComponent, expr: string) {
+  modifyExpr: function(model, sel, expr) {
     let tpl = sel.name + NAMES.TUPLE,
         signal = sel.name + NS;
 

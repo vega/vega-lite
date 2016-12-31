@@ -12,7 +12,11 @@ const NS = {
 };
 
 const zoom:TransformCompiler = {
-  signals: function(model: UnitModel, sel: SelectionComponent, signals: any[]) {
+  has: function(sel) {
+    return sel.zoom !== undefined && sel.zoom !== false;
+  },
+
+  signals: function(model, sel, signals) {
     if (sel.type !== 'interval') {
       warn('zoom is currently only supported for interval selections.');
       return signals;

@@ -1,10 +1,11 @@
-import {SelectionSpec, SelectionComponent} from '../../../selection';
+import {SelectionComponent} from '../../../selection';
 import {TypeCompiler} from './';
 import {X, Y, Channel} from '../../../channel';
 import {UnitModel} from '../../unit';
 import {defaultValue, NS as NAMES, invert as invertFn} from '../';
 import {stringValue, extend} from '../../../util';
 import {warn} from '../../../log';
+import scales from '../transforms/scales';
 
 export const NS = {
   BRUSH: '_brush',
@@ -14,17 +15,17 @@ export const NS = {
 const interval:TypeCompiler = {
   predicate: 'inIntervalSelection',
 
-  parse: function(model: UnitModel, def: SelectionSpec) {
+  parse: function(model, def) {
     return {
       events: defaultValue(def.on, '[mousedown, window:mouseup] > window:mousemove'),
       project: defaultValue(def.project, {encodings: ['x', 'y']}),
       translate: defaultValue(def.translate, true),
       // TODO: Only zoom intervals by default if we're initializing scales?
-      zoom: defaultValue(def.zoom, def.zoom === true || (def.bind && def.bind.scales))
+      zoom: defaultValue(def.zoom, def.zoom === true || scales.has(def))
     };
   },
 
-  signals: function(model: UnitModel, sel: SelectionComponent) {
+  signals: function(model, sel) {
     let signals: any[] = [],
         intervals:any[] = [],
         name = sel.name,
@@ -74,16 +75,16 @@ const interval:TypeCompiler = {
     return signals;
   },
 
-  tupleExpr: function(model: UnitModel, sel: SelectionComponent) {
+  tupleExpr: function(model, sel) {
     return 'intervals: ' + sel.name;
   },
 
-  modifyExpr: function(model: UnitModel, sel: SelectionComponent) {
+  modifyExpr: function(model, sel) {
     let tpl = sel.name + NAMES.TUPLE;
     return tpl + ', {unit: ' + tpl + '.unit}';
   },
 
-  marks: function(model: UnitModel, sel: SelectionComponent, marks: any[]) {
+  marks: function(model, sel, marks) {
     let name = sel.name,
         {x, y} = projections(sel);
 

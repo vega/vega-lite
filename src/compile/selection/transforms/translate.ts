@@ -12,7 +12,11 @@ const NS = {
 };
 
 const translate:TransformCompiler = {
-  signals: function(model: UnitModel, sel: SelectionComponent, signals: any[]) {
+  has: function(sel) {
+    return sel.translate !== undefined && sel.translate !== false;
+  },
+
+  signals: function(model, sel, signals) {
     if (sel.type !== 'interval') {
       warn('translate is currently only supported for interval selections.');
       return signals;
