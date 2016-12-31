@@ -18,7 +18,7 @@ const interval:TypeCompiler = {
   parse: function(model, def) {
     return {
       events: defaultValue(def.on, '[mousedown, window:mouseup] > window:mousemove'),
-      project: defaultValue(def.project, {encodings: ['x', 'y']}),
+      encodings: defaultValue(def.encodings, def.fields ? undefined : ['x', 'y']),
       translate: defaultValue(def.translate, true),
       // TODO: Only zoom intervals by default if we're initializing scales?
       zoom: defaultValue(def.zoom, def.zoom === true || scales.has(def))

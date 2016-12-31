@@ -13,7 +13,8 @@ export interface SelectionSpec {
   bind?: any;
 
   // Transforms
-  project?: ProjectSpec;
+  fields?: string[];
+  encodings?: string[];
   toggle?: string | boolean;
   translate?: any;
   zoom?: any;
@@ -35,11 +36,6 @@ export interface SelectionComponent {
   translate?: any;
   zoom?: any;
   nearest?: any;
-}
-
-export interface ProjectSpec {
-  fields?: string[];
-  encodings?: string[];
 }
 
 export interface ProjectComponent {

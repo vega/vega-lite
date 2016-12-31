@@ -7,7 +7,7 @@ const single:TypeCompiler = {
   parse: function(model, def) {
     return {
       events: defaultValue(def.on, 'click'),
-      project: defaultValue(def.project, {fields: ['_id']})
+      fields: defaultValue(def.fields, def.encodings ? undefined : ['_id']),
     };
   },
 
