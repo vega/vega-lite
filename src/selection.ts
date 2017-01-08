@@ -34,6 +34,7 @@ export interface SelectionComponent {
 
   // Transforms
   project?: ProjectComponent[];
+  scales?: Channel[];
   toggle?: any;
   translate?: any;
   zoom?: any;

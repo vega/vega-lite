@@ -19,5 +19,5 @@ declare module 'vega' {
 }
 
 declare module 'vega-parser' {
-  export function selector(selector: string): any[];
+  export function selector(selector: string, source: string): any[];
 }

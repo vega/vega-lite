@@ -56,6 +56,7 @@ export type VgScale = {
   domain?: any[] | UnionedDomain | VgDataRef | VgSignalRef,
   domainMin?: any,
   domainMax?: any
+  domainRaw?: VgSignalRef;
   range?: any[] | VgDataRef | string,
   rangeMin?: any,
   rangeMax?: any,
@@ -113,12 +114,6 @@ export interface VgImputeTransform {
   orderby?: string[];
   method?: 'value' | 'median' | 'max' | 'min' | 'mean';
   value?: any;
-}
-
-export interface VgExtentTransform {
-  type: 'extent';
-  field: string;  // TODO: string[];
-  signal: string;
 }
 
 export type VgCheckboxBinding = {

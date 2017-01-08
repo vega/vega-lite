@@ -30,14 +30,14 @@ export function parseUnitSelection(model: UnitModel, spec: Dict<SelectionSpec>) 
 
     extend(def, type.parse(model, def));
     let sel = selections[name] = extend(def, {
-      name: name,
+      name: model.name(name),
       domain: def.domain || domain,
       resolve: resolve
     }) as SelectionComponent;
 
     if (isString(sel.events)) {
       // TODO: Scope source.
-      sel.events = parseSelector(sel.events);
+      sel.events = parseSelector(sel.events, 'scope');
     }
 
     transforms(sel, function(tx) {
@@ -117,9 +117,26 @@ export function assembleUnitData(model: UnitModel, data: VgData[]): VgData[] {
 }
 
 export function assembleUnitMarks(model: UnitModel, marks: any[]): any[] {
+  let clippedGroup = false;
   selections(model, function(sel, type) {
     marks = type.marks ? type.marks(model, sel, marks) : marks;
+    transforms(sel, (tx) => clippedGroup = clippedGroup || tx.clippedGroup);
   });
+
+  if (clippedGroup) {
+    marks = [{
+      type: 'group',
+      encode: {
+        enter: {
+          width: {field: {group: 'width'}},
+          height: {field: {group: 'height'}},
+          fill: {value: 'transparent'},
+          clip: {value: true}
+        }
+      },
+      marks: marks
+    }];
+  }
 
   return marks;
 }
@@ -127,7 +144,7 @@ export function assembleUnitMarks(model: UnitModel, marks: any[]): any[] {
 export function predicate(sel: SelectionComponent): string {
   const store = stringValue(sel.name + NS.STORE);
   return '!tuples(' + store + ').length || ' +
-    compiler(sel).predicate + '(' + store + ', parent._id, datum, ' +
+    type(sel).predicate + '(' + store + ', parent._id, datum, ' +
     stringValue(sel.resolve) + ')';
 }
 
@@ -138,12 +155,12 @@ function selections(model: Model, cb: (sel: SelectionComponent, type: TypeCompil
   for (let name in selections) {
     if (selections.hasOwnProperty(name)) {
       let sel = selections[name];
-      cb(sel, compiler(sel));
+      cb(sel, type(sel));
     }
   }
 }
 
-function compiler(sel: SelectionComponent): TypeCompiler {
+function type(sel: SelectionComponent): TypeCompiler {
   return types[sel.type];
 }
 
@@ -155,4 +172,8 @@ export function defaultValue(def: any, value: any) {
 export function invert(model: UnitModel, sel: SelectionComponent, channel: Channel, expr: string) {
   return sel.domain === 'data' ?
     'invert(' + stringValue(model.scaleName(channel)) + ', ' + expr + ')' : expr;
+}
+
+export function channelSignalName(sel: SelectionComponent, channel: Channel) {
+  return sel.name + '_' + channel;
 }

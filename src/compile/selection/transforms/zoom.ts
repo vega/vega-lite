@@ -4,7 +4,7 @@ import {X, Y, Channel} from '../../../channel';
 import {stringValue} from '../../../util';
 import {warn} from '../../../log';
 import {TransformCompiler} from './';
-import {default as scalesCompiler, extentSignal} from './scales';
+import {default as scalesCompiler, domain} from './scales';
 import {projections as intervalProjections, NS as INTERVAL} from '../types/interval';
 
 const NS = {
@@ -13,6 +13,8 @@ const NS = {
 };
 
 const zoom:TransformCompiler = {
+  clippedGroup: true,
+
   has: function(sel) {
     return sel.zoom !== undefined && sel.zoom !== false;
   },
@@ -74,7 +76,7 @@ function onDelta(model: UnitModel, sel: SelectionComponent, channel: Channel, si
   let name = sel.name,
       signal:any = signals.filter((s:any) => s.name === name + '_' + channel)[0],
       scales = scalesCompiler.has(sel),
-      base = scales ? extentSignal(sel, channel) : signal.name,
+      base = scales ? domain(model, channel) : signal.name,
       anchor = name + NS.ANCHOR + '.' + channel,
       delta  = name + NS.DELTA,
       scale  = stringValue(model.scaleName(channel)),

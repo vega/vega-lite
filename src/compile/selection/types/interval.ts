@@ -2,7 +2,7 @@ import {SelectionComponent} from '../../../selection';
 import {TypeCompiler} from './';
 import {X, Y, Channel} from '../../../channel';
 import {UnitModel} from '../../unit';
-import {defaultValue, NS as NAMES, invert as invertFn} from '../';
+import {defaultValue, NS as NAMES, invert as invertFn, channelSignalName} from '../';
 import {stringValue, extend} from '../../../util';
 import {warn} from '../../../log';
 import scales from '../transforms/scales';
@@ -143,7 +143,7 @@ export function projections(sel: SelectionComponent) {
 }
 
 function channelSignal(model: UnitModel, sel: SelectionComponent, channel: Channel): any {
-  let name  = sel.name + '_' + channel,
+  let name  = channelSignalName(sel, channel),
       size  = (channel === X ? 'width' : 'height'),
       coord = channel + '(unit)',
       invert = invertFn.bind(null, model, sel, channel);

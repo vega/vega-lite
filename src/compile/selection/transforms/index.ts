@@ -11,6 +11,7 @@ export interface TransformCompiler {
   // tupleExpr?: (model: UnitModel, sel: SelectionComponent, expr: string) => string;
   modifyExpr?: (model: UnitModel, sel: SelectionComponent, expr: string) => string;
   // marks?: (model: UnitModel, sel:SelectionComponent, marks: any[]) => void;
+  clippedGroup?: boolean;
 }
 
 import project from './project';

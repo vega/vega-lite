@@ -2,7 +2,7 @@ import {SOURCE} from '../../data';
 import {FieldDef} from '../../fielddef';
 import {Formula} from '../../transform';
 import {keys, Dict, StringSet} from '../../util';
-import {VgData, VgTransform, VgExtentTransform} from '../../vega.schema';
+import {VgData, VgTransform} from '../../vega.schema';
 
 import {FacetModel} from './../facet';
 import {LayerModel} from './../layer';
@@ -54,9 +54,6 @@ export interface DataComponent {
 
   /** Array of summary component object for producing summary (aggregate) data source */
   summary: SummaryComponent[];
-
-  /** Transforms to calculate scale extents if bound to selection. */
-  extents?: Dict<VgExtentTransform[]>;
 }
 
 /**
@@ -166,17 +163,6 @@ export function assembleData(model: Model, data: VgData[]) {
   const stackData = stack.assemble(component.stack);
   if (stackData) {
     data.push(stackData);
-  }
-
-  // extents
-  for (let name in component.extents) {
-    if (!component.extents.hasOwnProperty(name)) {
-      continue;
-    }
-
-    let table = data.filter((d) => d.name === name)[0],
-        transforms = table.transform || (table.transform = []);
-    transforms.push.apply(transforms, component.extents[name]);
   }
 
   return data;
