@@ -14,7 +14,8 @@ const multi:TypeCompiler = {
   },
 
   signals: function(model, sel) {
-    let proj = sel.project;
+    let proj = sel.project,
+        d = '(item().isVoronoi ? datum.datum : datum)';
     return [{
       name: sel.name,
       value: {},
@@ -23,7 +24,7 @@ const multi:TypeCompiler = {
         update: '{fields: [' +
           proj.map((p) => stringValue(p.field)).join(', ') +
           '], values: [' +
-          proj.map((p) => 'datum[' + stringValue(p.field) + ']').join(', ') +
+          proj.map((p) => d + '[' + stringValue(p.field) + ']').join(', ') +
           ']}'
       }]
     }];

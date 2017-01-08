@@ -117,14 +117,20 @@ export function assembleUnitData(model: UnitModel, data: VgData[]): VgData[] {
 }
 
 export function assembleUnitMarks(model: UnitModel, marks: any[]): any[] {
-  let clippedGroup = false;
+  let clippedGroup = false,
+      selMarks = marks;
   selections(model, function(sel, type) {
-    marks = type.marks ? type.marks(model, sel, marks) : marks;
-    transforms(sel, (tx) => clippedGroup = clippedGroup || tx.clippedGroup);
+    selMarks = type.marks ? type.marks(model, sel, selMarks) : selMarks;
+    transforms(sel, function(tx) {
+      clippedGroup = clippedGroup || tx.clippedGroup;
+      if (tx.marks) {
+        selMarks = tx.marks(model, sel, marks, selMarks);
+      }
+    });
   });
 
   if (clippedGroup) {
-    marks = [{
+    selMarks = [{
       type: 'group',
       encode: {
         enter: {
@@ -134,11 +140,11 @@ export function assembleUnitMarks(model: UnitModel, marks: any[]): any[] {
           clip: {value: true}
         }
       },
-      marks: marks
+      marks: selMarks
     }];
   }
 
-  return marks;
+  return selMarks;
 }
 
 export function predicate(sel: SelectionComponent): string {

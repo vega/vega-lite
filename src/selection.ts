@@ -20,7 +20,7 @@ export interface SelectionSpec {
   toggle?: string | boolean;
   translate?: any;
   zoom?: any;
-  nearest?: any;
+  nearest?: boolean;
 }
 
 export interface SelectionComponent {

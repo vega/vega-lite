@@ -10,7 +10,7 @@ export interface TransformCompiler {
   topLevelSignals?: (model: Model, sel: SelectionComponent, signals: any[]) => any[];
   // tupleExpr?: (model: UnitModel, sel: SelectionComponent, expr: string) => string;
   modifyExpr?: (model: UnitModel, sel: SelectionComponent, expr: string) => string;
-  // marks?: (model: UnitModel, sel:SelectionComponent, marks: any[]) => void;
+  marks?: (model: UnitModel, sel:SelectionComponent, marks: any[], selMarks: any[]) => any[];
   clippedGroup?: boolean;
 }
 
@@ -20,8 +20,9 @@ import translate from './translate';
 import zoom from './zoom';
 import scales from './scales';
 import inputs from './inputs';
+import nearest from './nearest';
 const compilers: Dict<TransformCompiler> = {project, toggle, scales,
-  translate, zoom, inputs};
+  translate, zoom, inputs, nearest};
 
 export function transforms(sel: SelectionComponent, cb: (tx: TransformCompiler) => void) {
   for (let t in compilers) {

@@ -13,8 +13,6 @@ const NS = {
 };
 
 const zoom:TransformCompiler = {
-  clippedGroup: true,
-
   has: function(sel) {
     return sel.zoom !== undefined && sel.zoom !== false;
   },

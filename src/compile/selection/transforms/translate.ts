@@ -14,8 +14,6 @@ const NS = {
 };
 
 const translate:TransformCompiler = {
-  clippedGroup: true,
-
   has: function(sel) {
     return sel.translate !== undefined && sel.translate !== false;
   },

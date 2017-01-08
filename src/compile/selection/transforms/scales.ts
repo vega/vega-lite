@@ -8,6 +8,8 @@ import {NS as INTERVAL} from '../types/interval';
 import {stringValue} from '../../../util';
 
 const scaleBindings:TransformCompiler = {
+  clippedGroup: true,
+
   has: function(sel) {
     return sel.bind && sel.bind === 'scales';
   },
