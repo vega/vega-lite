@@ -28,9 +28,43 @@ describe('Axis', function() {
       assert.deepEqual(model1.axis(Y), model2.axis(Y));
     });
   });
+  describe('parseAxisComponent', function() {
+    it('should produce Vega grid axis objects for both main axis and for grid axis)', function() {
+      const model = parseUnitModel({
+        mark: "point",
+        encoding: {
+          x: {
+            field: "a",
+            type: "quantitative",
+            axis: {grid: true, gridColor: "blue", gridWidth: 20}
+          }
+        }
+      });
+      const axisComponent = axisParse.parseAxisComponent(model, ['x', 'y']);
+      assert.equal(axisComponent['x'].length, 2);
+      assert.equal(axisComponent['x'][0].grid, undefined);
+      assert.equal(axisComponent['x'][1].grid, true);
+    });
 
-  describe('parseInnerAxis', function() {
-    it('should produce a Vega inner axis object with correct type, scale and grid properties', function() {
+    it('should produce Vega grid axis objects for only main axis if grid is disabled)', function() {
+      const model = parseUnitModel({
+        mark: "point",
+        encoding: {
+          x: {
+            field: "a",
+            type: "quantitative",
+            axis: {grid: false, gridColor: "blue", gridWidth: 20}
+          }
+        }
+      });
+      const axisComponent = axisParse.parseAxisComponent(model, ['x', 'y']);
+      assert.equal(axisComponent['x'].length, 1);
+      assert.equal(axisComponent['x'][0].grid, undefined);
+    });
+  });
+
+  describe('parseGridAxis', function() {
+    it('should produce a Vega grid axis object with correct type, scale and grid properties', function() {
       const model = parseUnitModel({
         mark: "point",
         encoding: {
@@ -49,7 +83,7 @@ describe('Axis', function() {
     });
   });
 
-  describe('parseAxis', function() {
+  describe('parseMainAxis', function() {
     it('should produce a Vega axis object with correct type and scale', function() {
       const model = parseUnitModel({
         mark: "point",
