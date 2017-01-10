@@ -2,11 +2,11 @@
 
 import {assert} from 'chai';
 
-import parseScales from '../../../src/compile/scale/parse';
+import {parseScale} from '../../../src/compile/scale/parse';
 import {parseUnitModel} from '../../util';
 
 describe('src/compile', function() {
-  describe('parse', () => {
+  describe('parseScale', () => {
     describe('x ordinal point', () => {
       it('should create a main x point scale with rangeStep and no range', () => {
         const model = parseUnitModel({
@@ -15,7 +15,7 @@ describe('src/compile', function() {
             x: { field: 'origin', type: "nominal"}
           }
         });
-        const scales = parseScales(model)['x'];
+        const scales = parseScale(model, 'x');
         assert.equal(scales.main.type, 'point');
         assert.equal(scales.main.rangeStep, 21);
         assert.equal(scales.main.range, undefined);
@@ -30,7 +30,7 @@ describe('src/compile', function() {
         }
       });
 
-      const scales = parseScales(model)['color'];
+      const scales = parseScale(model, 'color');
 
       it('should create correct main color scale', function() {
         assert.equal(scales.main.name, 'color');
@@ -53,7 +53,7 @@ describe('src/compile', function() {
         }
       });
 
-      const scales = parseScales(model)['color'];
+      const scales = parseScale(model, 'color');
 
       it('should create index color scale', function() {
         assert.equal(scales.main.name, 'color');
@@ -75,7 +75,7 @@ describe('src/compile', function() {
           }
         });
 
-      const scales = parseScales(model)['color'];
+      const scales = parseScale(model, 'color');
 
       it('should add correct scales', function() {
         assert.equal(scales.main.name, 'color');
@@ -110,7 +110,7 @@ describe('src/compile', function() {
           }
         });
 
-      const scales = parseScales(model)['color'];
+      const scales = parseScale(model, 'color');
 
       it('should add correct scales', function() {
         assert.equal(scales.main.name, 'color');

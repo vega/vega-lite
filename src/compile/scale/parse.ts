@@ -9,25 +9,39 @@ import {Model} from '../model';
 import {ScaleComponent, ScaleComponents, BIN_LEGEND_SUFFIX, BIN_LEGEND_LABEL_SUFFIX} from './scale';
 import domain from './domain';
 
-export default function parse(model: Model): Dict<ScaleComponents> {
+/**
+ * Parse scales for all channels of a model.
+ */
+export default function parseScales(model: Model): Dict<ScaleComponents> {
   // TODO: should model.channels() inlcude X2/Y2?
   return model.channels().reduce(function(scale: Dict<ScaleComponents>, channel: Channel) {
-    if (model.scale(channel)) {
-      const fieldDef = model.fieldDef(channel);
-      const scales: ScaleComponents = {
-        main: parseMainScale(model, fieldDef, channel)
-      };
-
-      // Add additional scale needed for the labels in the binned legend.
-      if (model.legend(channel) && fieldDef.bin && hasContinuousDomain(model.scale(channel).type)) {
-        scales.binLegend = parseBinLegend(channel, model, fieldDef);
-        scales.binLegendLabel = parseBinLegendLabel(channel, model, fieldDef);
-      }
-
+    const scales = parseScale(model, channel);
+    if (scales) {
       scale[channel] = scales;
     }
     return scale;
   }, {} as Dict<ScaleComponents>);
+}
+
+/**
+ * Parse scales for a single channel of a model.
+ */
+export function parseScale(model: Model, channel: Channel) {
+   if (model.scale(channel)) {
+    const fieldDef = model.fieldDef(channel);
+    const scales: ScaleComponents = {
+      main: parseMainScale(model, fieldDef, channel)
+    };
+
+    // Add additional scale needed for the labels in the binned legend.
+    if (model.legend(channel) && fieldDef.bin && hasContinuousDomain(model.scale(channel).type)) {
+      scales.binLegend = parseBinLegend(channel, model, fieldDef);
+      scales.binLegendLabel = parseBinLegendLabel(channel, model, fieldDef);
+    }
+
+    return scales;
+  }
+  return null;
 }
 
 // TODO: consider return type of this method
