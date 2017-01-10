@@ -13,7 +13,8 @@ import {contains, extend, keys, vals, flatten, duplicate, mergeDeep, Dict} from 
 import {VgData, VgMarkGroup} from '../vega.schema';
 import {StackProperties} from '../stack';
 
-import {parseAxis, parseInnerAxis, gridShow, parseAxisComponent} from './axis';
+import {parseAxis, parseInnerAxis, parseAxisComponent} from './axis/parse';
+import {gridShow} from './axis/rules';
 import {buildModel} from './common';
 import {assembleData, parseFacetData} from './data/data';
 import {assembleLayout, parseFacetLayout} from './layout';
