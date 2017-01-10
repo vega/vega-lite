@@ -113,7 +113,7 @@ function getSpecifiedOrDefaultValue(property: string, specifiedAxis: Axis, chann
     case 'grid':
       return rules.grid(model, channel, isGridAxis); // FIXME: refactor this
     case 'gridScale':
-      return rules.gridScale(model, channel);
+      return rules.gridScale(model, channel, isGridAxis);
     case 'orient':
       return rules.orient(specifiedAxis, channel);
     case 'tickCount':

@@ -46,14 +46,14 @@ describe('compile/axis', ()=> {
         }), ROW, true);
       assert.deepEqual(grid, undefined);
     });
-    it('should return false for non-gridAxis', function () {
+    it('should return undefined for non-gridAxis', function () {
       const grid = rules.grid(parseModel({
           mark: "point",
           encoding: {
             x: {field: 'a', type: 'quantitative'}
           }
         }), X, false);
-      assert.deepEqual(grid, false);
+      assert.deepEqual(grid, undefined);
     });
   });
 
@@ -123,9 +123,9 @@ describe('compile/axis', ()=> {
     });
 
 
-    it('should add return null for gridAxis', function () {
+    it('should add return undefined for gridAxis', function () {
       const title = rules.title({titleMaxLength: 3}, {field: 'a', type: "quantitative"}, {}, true);
-      assert.deepEqual(title, null);
+      assert.deepEqual(title, undefined);
     });
   });
 
