@@ -156,11 +156,20 @@ export function assembleUnitMarks(model: UnitModel, marks: any[]): any[] {
   return selMarks;
 }
 
+let PREDICATES_OPS = {
+  'single': '"intersect", "all"',
+  'independent': '"intersect", "unit"',
+  'union': '"union", "all"',
+  'union_others': '"union", "others"',
+  'intersect': '"intersect", "all"',
+  'intersect_others': '"intersect", "others'
+};
+
 export function predicate(sel: SelectionComponent): string {
   const store = stringValue(sel.name + NS.STORE);
   return '!tuples(' + store + ').length || ' +
     type(sel).predicate + '(' + store + ', parent._id, datum, ' +
-    stringValue(sel.resolve) + ')';
+    PREDICATES_OPS[sel.resolve] + ')';
 }
 
 // Utility functions

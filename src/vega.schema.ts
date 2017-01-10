@@ -117,24 +117,24 @@ export interface VgImputeTransform {
 }
 
 export type VgCheckboxBinding = {
-  type: 'checkbox';
+  input: 'checkbox';
   element?: string;
 }
 
 export type VgRadioBinding = {
-  type: 'radio';
+  input: 'radio';
   options: string[];
   element?: string;
 }
 
 export type VgSelectBinding = {
-  type: 'select';
+  input: 'select';
   options: string[];
   element?: string;
 }
 
 export type VgRangeBinding = {
-  type: 'range';
+  input: 'range';
   min?: number;
   max?: number;
   step?: number;
@@ -142,7 +142,7 @@ export type VgRangeBinding = {
 }
 
 export type VgGenericBinding = {
-  type: string;
+  input: string;
   element?: string;
 }
 

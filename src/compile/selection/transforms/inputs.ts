@@ -14,13 +14,14 @@ const inputBindings:TransformCompiler = {
       return signals;
     }
 
+    let datum = '(item().isVoronoi ? datum.datum : datum)';
     proj.forEach(function(p) {
       signals.unshift({
         name: name + id(p.field),
         value: '',
         on: [{
           events: sel.events,
-          update: 'datum[' + stringValue(p.field) + ']'
+          update: datum + '[' + stringValue(p.field) + ']'
         }],
         bind: bind[p.field] || bind[p.encoding] || bind
       });

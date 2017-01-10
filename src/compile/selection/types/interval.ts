@@ -13,7 +13,7 @@ export const NS = {
 };
 
 const interval:TypeCompiler = {
-  predicate: 'inIntervalSelection',
+  predicate: 'vlInterval',
 
   signals: function(model, sel) {
     let signals: any[] = [],

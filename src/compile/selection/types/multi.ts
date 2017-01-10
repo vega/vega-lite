@@ -3,7 +3,7 @@ import {NS} from '../';
 import {stringValue} from '../../../util';
 
 const multi:TypeCompiler = {
-  predicate: 'inPointSelection',
+  predicate: 'vlPoint',
 
   signals: function(model, sel) {
     let proj = sel.project,

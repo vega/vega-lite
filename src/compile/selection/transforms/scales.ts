@@ -52,7 +52,9 @@ const scaleBindings:TransformCompiler = {
 
     sel.scales.forEach(function(channel) {
       let signal = signals.filter((s) => s.name === name + '_' + channel)[0];
-      signal.outer = true;
+      signal.push = 'outer';
+      delete signal.value;
+      delete signal.update;
     });
 
     return signals;
