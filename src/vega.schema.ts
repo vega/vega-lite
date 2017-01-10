@@ -1,8 +1,6 @@
 import {StackOffset} from './stack';
 import {ScaleType, NiceTime} from './scale';
-import {SortOrder} from './sort';
 import {isArray} from './util';
-
 
 export interface VgData {
   name: string;
