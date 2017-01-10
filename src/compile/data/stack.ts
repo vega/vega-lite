@@ -4,6 +4,7 @@ import {FacetModel} from './../facet';
 import {LayerModel} from './../layer';
 import {UnitModel} from './../unit';
 
+import {sortParams} from '../common';
 import {STACKED, SUMMARY} from '../../data';
 import {has} from '../../encoding';
 import {FieldDef, field} from '../../fielddef';
@@ -91,17 +92,12 @@ export const stack: DataComponentCompiler<StackComponent> = {
     }
 
     const groupby = model.field(stackProperties.groupbyChannel, {binSuffix: 'start'});
-
     const stackby = getStackByFields(model);
     const orderDef = model.encoding().order;
 
     let sort: VgSort;
     if (orderDef) {
-      sort = (isArray(orderDef) ? orderDef : [orderDef]).reduce((s, orderChannelDef) => {
-        s.field.push(field(orderChannelDef, {binSuffix: 'start'}));
-        s.order.push(orderChannelDef.sort || 'ascending');
-        return s;
-      }, {field:[], order: []});
+      sort = sortParams(orderDef);
     } else {
       // default = descending by stackFields
       // FIXME is the default here correct for binned fields?
