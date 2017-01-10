@@ -35,16 +35,18 @@ export function grid(model: Model, channel: Channel, isGridAxis: boolean) {
   }
 
   if (!isGridAxis) {
-    return false;
+    return undefined;
   }
 
   return gridShow(model, channel);
 }
 
-export function gridScale(model: Model, channel: Channel) {
-  const gridChannel: Channel = channel === 'x' ? 'y' : 'x';
-  if (model.scale(gridChannel)) {
-    return model.scaleName(gridChannel);
+export function gridScale(model: Model, channel: Channel, isGridAxis: boolean) {
+  if (isGridAxis) {
+    const gridChannel: Channel = channel === 'x' ? 'y' : 'x';
+    if (model.scale(gridChannel)) {
+      return model.scaleName(gridChannel);
+    }
   }
   return undefined;
 }
@@ -86,7 +88,7 @@ export function tickCount(specifiedAxis: Axis, channel: Channel, fieldDef: Field
 
 export function title(specifiedAxis: Axis, fieldDef: FieldDef, config: Config, isGridAxis: boolean) {
   if (isGridAxis) {
-    return null;
+    return undefined;
   }
   if (specifiedAxis.title !== undefined) {
     return specifiedAxis.title;
