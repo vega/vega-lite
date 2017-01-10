@@ -12,7 +12,7 @@ import domain from './domain';
 /**
  * Parse scales for all channels of a model.
  */
-export default function parseScales(model: Model): Dict<ScaleComponents> {
+export default function parseScaleComponent(model: Model): Dict<ScaleComponents> {
   // TODO: should model.channels() inlcude X2/Y2?
   return model.channels().reduce(function(scale: Dict<ScaleComponents>, channel: Channel) {
     const scales = parseScale(model, channel);
