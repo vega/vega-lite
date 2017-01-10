@@ -41,7 +41,7 @@ describe('Axis', function() {
           }
         }
       });
-      const def = axisParse.parseInnerAxis(X, model);
+      const def = axisParse.parseGridAxis(X, model);
       assert.isObject(def);
       assert.equal(def.orient, 'bottom');
       assert.equal(def.scale, 'x');
@@ -57,7 +57,7 @@ describe('Axis', function() {
           x: {field: "a", type: "quantitative"}
         }
       });
-      const def = axisParse.parseAxis(X, model);
+      const def = axisParse.parseMainAxis(X, model);
       assert.isObject(def);
       assert.equal(def.orient, 'bottom');
       assert.equal(def.scale, 'x');
@@ -70,7 +70,7 @@ describe('Axis', function() {
           x: {field: "a", type: "quantitative", "axis": {"axisColor": "#0099ff"}}
         }
       });
-      const def = axisParse.parseAxis(X, model);
+      const def = axisParse.parseMainAxis(X, model);
       assert.equal(def.encode.domain.update.stroke.value, '#0099ff');
     });
   });
