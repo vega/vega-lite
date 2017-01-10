@@ -51,7 +51,7 @@ export function parseInnerAxis(channel: Channel, model: Model): VgAxis {
     }
   });
 
-  const props = model.axis(channel).properties || {};
+  const props = model.axis(channel).encode || {};
 
   // For now, only need to add grid properties here because innerAxis is only for rendering grid.
   // TODO: support add other properties for innerAxis
@@ -94,7 +94,7 @@ export function parseAxis(channel: Channel, model: Model): VgAxis {
   });
 
   // 2) Add mark property definition groups
-  const props = model.axis(channel).properties || {};
+  const props = model.axis(channel).encode || {};
 
   [
     'domain', 'labels', // have special rules
