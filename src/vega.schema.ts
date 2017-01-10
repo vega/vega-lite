@@ -136,10 +136,13 @@ export interface VgStackTransform {
   as: string[];
 }
 
-export interface VgSort {
-  field: string | string[];
-  order: SortOrder | SortOrder[];
-}
+export type VgSort = {
+  field: string;
+  order: 'ascending' | 'descending';
+} | {
+  field: string[];
+  order: ('ascending' | 'descending')[];
+};
 
 export interface VgImputeTransform {
   type: 'impute';
