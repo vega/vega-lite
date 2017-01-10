@@ -1,8 +1,8 @@
 /* tslint:disable:quotemark */
 
 import {assert} from 'chai';
-import {parseUnitModel, parseModel} from '../../util';
-import {X, Y, COLUMN, ROW} from '../../../src/channel';
+import {parseModel} from '../../util';
+import {X, COLUMN, ROW} from '../../../src/channel';
 import * as rules from '../../../src/compile/axis/rules';
 
 describe('compile/axis', ()=> {
@@ -48,198 +48,75 @@ describe('compile/axis', ()=> {
     });
   });
 
-  describe('zindex()', function () {
-    it('should return undefined by default without grid defined', function () {
-      const zindex = rules.zindex(parseModel({
-          mark: "point",
-          encoding: {
-            x: {field: 'a', type: 'quantitative'}
-          }
-        }), X, Y);
-      assert.deepEqual(zindex, 1);
-    });
-
-    it('should return back by default with grid defined', function () {
-      const zindex = rules.zindex(parseModel({
-          mark: "point",
-          encoding: {
-            x: {field: 'a', type: 'quantitative'}
-          }
-        }), X, {grid: true});
-      assert.deepEqual(zindex, 0);
-    });
-
-    it('should return specified zindex', function () {
-      const zindex = rules.zindex(parseModel({
-          mark: "point",
-          encoding: {
-            x: {field: 'a', type: 'quantitative', axis: {zindex: 2}}
-          }
-        }), X, {grid: true});
-      assert.deepEqual(zindex, 2);
-    });
-  });
-
   describe('orient()', function () {
     it('should return specified orient', function () {
-      const orient = rules.orient(parseUnitModel({
-          mark: "point",
-          encoding: {
-            x: {field: 'a', type: 'quantitative', axis:{orient: 'bottom'}}
-          }
-        }), X);
+      const orient = rules.orient({orient: 'bottom'}, 'x');
       assert.deepEqual(orient, 'bottom');
     });
 
     it('should return bottom for x by default', function () {
-      const orient = rules.orient(parseUnitModel({
-          mark: "point",
-          encoding: {
-            x: {field: 'a', type: 'quantitative'}
-          }
-        }), X);
+      const orient = rules.orient({}, 'x');
       assert.deepEqual(orient, 'bottom');
     });
 
     it('should return top for column by default', function () {
-      const orient = rules.orient(parseModel({
-          mark: "point",
-          encoding: {
-            x: {field: 'a', type: 'quantitative'},
-            column: {field: 'a', type: 'nominal'}
-          }
-        }), COLUMN);
+      const orient = rules.orient({}, 'column');
       assert.deepEqual(orient, 'top');
     });
 
     it('should return left for row by default', function () {
-      const orient = rules.orient(parseModel({
-          mark: "point",
-          encoding: {
-            row: {field: 'a', type: 'nominal'}
-          }
-        }), 'row');
+      const orient = rules.orient({}, 'row');
       assert.deepEqual(orient, 'left');
     });
 
     it('should return left for y by default', function () {
-      const orient = rules.orient(parseModel({
-          mark: "point",
-          encoding: {
-            y: {field: 'a', type: 'quantitative'}
-          }
-        }), 'y');
+      const orient = rules.orient({}, 'y');
       assert.deepEqual(orient, 'left');
     });
   });
 
   describe('tickCount', function() {
-    it('should return undefined by default', function () {
-      const tickCount = rules.tickCount(parseModel({
-          mark: "point",
-          encoding: {
-            y: {field: 'a', type: 'quantitative'}
-          }
-        }), Y);
+    it('should return undefined by default for non-x', function () {
+      const tickCount = rules.tickCount({}, 'y', {field: 'a', type: 'quantitative'});
       assert.deepEqual(tickCount, undefined);
     });
 
-    it('should return 5 by default', function () {
-      const tickCount = rules.tickCount(parseModel({
-          mark: "point",
-          encoding: {
-            x: {field: 'a', type: 'quantitative'}
-          }
-        }), X);
+    it('should return 5 by default for x', function () {
+      const tickCount = rules.tickCount({}, 'x', {field: 'a', type: 'quantitative'});
       assert.deepEqual(tickCount, 5);
     });
 
     it('should return specified tickCount', function () {
-      const tickCount = rules.tickCount(parseModel({
-          mark: "point",
-          encoding: {
-            x: {field: 'a', type: 'quantitative', axis: {tickCount: 10}}
-          }
-        }), X);
+      const tickCount = rules.tickCount({tickCount: 10}, 'x', {field: 'a', type: 'quantitative'});
       assert.deepEqual(tickCount, 10);
     });
   });
 
   describe('title()', function () {
     it('should add explicitly specified title', function () {
-      const title = rules.title(parseUnitModel({
-        mark: "point",
-        encoding: {
-          x: {field: 'a', type: 'quantitative', axis: {title: 'Custom'}}
-        }
-      }), X);
+      const title = rules.title({title: 'Custom'}, {field: 'a', type: "quantitative"}, {});
       assert.deepEqual(title, 'Custom');
     });
 
     it('should add return fieldTitle by default', function () {
-      const title = rules.title(parseUnitModel({
-          mark: "point",
-          encoding: {
-            x: {field: 'a', type: "quantitative", axis: {titleMaxLength: 3}}
-          }
-        }), X);
+      const title = rules.title({titleMaxLength: 3}, {field: 'a', type: "quantitative"}, {});
       assert.deepEqual(title, 'a');
     });
 
     it('should add return fieldTitle by default', function () {
-      const title = rules.title(parseUnitModel({
-          mark: "point",
-          encoding: {
-            x: {field: 'a', type: "quantitative", aggregate: 'sum', axis: {titleMaxLength: 10}}
-          }
-        }), X);
+      const title = rules.title({titleMaxLength: 10}, { aggregate: 'sum', field: 'a', type: "quantitative"}, {});
       assert.deepEqual(title, 'SUM(a)');
     });
 
     it('should add return fieldTitle by default and truncate', function () {
-      const title = rules.title(parseUnitModel({
-          mark: "point",
-          encoding: {
-            x: {field: 'a', type: "quantitative", aggregate: 'sum', axis: {titleMaxLength: 3}}
-          }
-        }), X);
+      const title = rules.title({titleMaxLength: 3}, { aggregate: 'sum', field: 'a', type: "quantitative"}, {});
       assert.deepEqual(title, 'SU…');
-    });
-
-    it('should add return fieldTitle by default and truncate', function () {
-      const title = rules.title(parseUnitModel({
-          mark: "point",
-          encoding: {
-            x: {field: 'abcdefghijkl', type: 'quantitative'}
-          },
-          config: {
-            cell: {width: 60}
-          }
-        }), X);
-      assert.deepEqual(title, 'abcdefghi…');
-    });
-
-
-    it('should add return fieldTitle by default and truncate', function () {
-      const title = rules.title(parseUnitModel({
-        height: 60,
-        mark: "point",
-        encoding: {
-          y: {field: 'abcdefghijkl', type: 'quantitative'}
-        }
-      }), Y);
-      assert.deepEqual(title, 'abcdefghi…');
     });
   });
 
   describe('values', () => {
     it('should return correct timestamp values for DateTimes', () => {
-      const values = rules.values(parseModel({
-        mark: "point",
-        encoding: {
-          y: {field: 'a', type: 'temporal', axis: {values: [{year: 1970}, {year: 1980}]}}
-        }
-      }), Y);
+      const values = rules.values({values: [{year: 1970}, {year: 1980}]});
 
       assert.deepEqual(values, [
         new Date(1970, 0, 1).getTime(),
@@ -248,14 +125,26 @@ describe('compile/axis', ()=> {
     });
 
     it('should simply return values for non-DateTime', () => {
-      const values = rules.values(parseModel({
-        mark: "point",
-        encoding: {
-          y: {field: 'a', type: 'quantitative', axis: {values: [1,2,3,4]}}
-        }
-      }), Y);
+      const values = rules.values({values: [1,2,3,4]});
 
       assert.deepEqual(values, [1,2,3,4]);
+    });
+  });
+
+  describe('zindex()', function () {
+    it('should return undefined by default without grid defined', function () {
+      const zindex = rules.zindex({}, false);
+      assert.deepEqual(zindex, 1);
+    });
+
+    it('should return back by default with grid defined', function () {
+      const zindex = rules.zindex({}, true);
+      assert.deepEqual(zindex, 0);
+    });
+
+    it('should return specified zindex', function () {
+      const zindex = rules.zindex({zindex: 2}, false);
+      assert.deepEqual(zindex, 2);
     });
   });
 });

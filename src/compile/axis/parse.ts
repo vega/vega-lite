@@ -1,3 +1,4 @@
+import {Axis} from '../../axis';
 import {Channel} from '../../channel';
 import {VgAxis} from '../../vega.schema';
 
@@ -5,7 +6,7 @@ import * as encode from './encode';
 import * as rules from './rules';
 
 import {Model} from '../model';
-import {Dict, keys} from '../../util';
+import {Dict, contains, keys} from '../../util';
 
 export function parseAxisComponent(model: Model, axisChannels: Channel[]): Dict<VgAxis> {
   return axisChannels.reduce(function(axis, channel) {
@@ -71,7 +72,11 @@ const axisPartFlag = {
   title: 'title'
 };
 
-export function parseAxis(channel: Channel, model: Model): VgAxis {
+export function parseAxis(channel: Channel, model: Model) {
+  return _parseAxis(channel, model, false);
+}
+
+function _parseAxis(channel: Channel, model: Model, isGridAxis: boolean): VgAxis {
   const axis = model.axis(channel);
 
   let def: VgAxis = {
@@ -85,12 +90,7 @@ export function parseAxis(channel: Channel, model: Model): VgAxis {
     // b) properties without rules, only produce default values in the schema, or explicit value if specified
     'domain', 'offset', 'subdivide', 'tick', 'tickPadding', 'tickSize', 'tickSizeEnd', 'tickSizeMajor', 'tickSizeMinor', 'titleOffset'
   ].forEach(function(property) {
-    let method: (model: Model, channel: Channel, def:any)=>any;
-
-    const value = (method = rules[property]) ?
-                  // calling axis.format, axis.grid, ...
-                  method(model, channel, def) :
-                  axis[property];
+    const value = getSpecifiedOrDefaultValue(property, axis, channel, model, def);
     if (value !== undefined) {
       def[property] = value;
     }
@@ -101,7 +101,7 @@ export function parseAxis(channel: Channel, model: Model): VgAxis {
   [
     'domain', 'grid', 'labels', 'ticks', 'title'
   ].forEach(function(part) {
-    if (!axis[axisPartFlag[part]]) {
+    if (contains([false, null], def[axisPartFlag[part]])) {
       // No need to create encode for a disabled part.
       return;
     }
@@ -113,4 +113,30 @@ export function parseAxis(channel: Channel, model: Model): VgAxis {
   });
 
   return def;
+}
+
+function getSpecifiedOrDefaultValue(property: string, specifiedAxis: Axis, channel: Channel, model: Model, axisDef: VgAxis) {
+  const fieldDef = model.fieldDef(channel);
+  const config = model.config();
+
+  switch (property) {
+    case 'format':
+      return rules.format(specifiedAxis, channel, fieldDef, config);
+    case 'grid':
+      return rules.grid(model, channel); // FIXME: refactor this
+    case 'gridScale':
+      return rules.gridScale(model, channel);
+    case 'orient':
+      return rules.orient(specifiedAxis, channel);
+    case 'tickCount':
+      return rules.tickCount(specifiedAxis, channel, fieldDef); // TODO: scaleType
+    case 'title':
+      return rules.title(specifiedAxis, fieldDef, config);
+    case 'values':
+      return rules.values(specifiedAxis);
+    case 'zindex':
+      return rules.zindex(specifiedAxis, axisDef.grid); // FIXME axis.grid might be undefined
+  }
+  // Otherwise, return specified property.
+  return specifiedAxis[property];
 }
