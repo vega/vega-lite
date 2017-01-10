@@ -4,10 +4,10 @@ import {BAR, POINT, CIRCLE, SQUARE} from '../mark';
 import {AggregateOp} from '../aggregate';
 import {COLOR, OPACITY, TEXT, Channel} from '../channel';
 import {Config} from '../config';
-import {FieldDef} from '../fielddef';
+import {FieldDef, OrderChannelDef, field} from '../fielddef';
 import {TimeUnit} from '../timeunit';
 import {QUANTITATIVE} from '../type';
-import {contains, union, Dict} from '../util';
+import {contains, isArray, union, Dict} from '../util';
 
 import {FacetModel} from './facet';
 import {LayerModel} from './layer';
@@ -15,7 +15,7 @@ import {Model} from './model';
 import {formatExpression} from '../timeunit';
 import {UnitModel} from './unit';
 import {Spec, isUnitSpec, isSomeFacetSpec, isLayerSpec} from '../spec';
-import {VgValueRef} from '../vega.schema';
+import {VgValueRef, VgSort} from '../vega.schema';
 
 export function buildModel(spec: Spec, parent: Model, parentGivenName: string): Model {
   if (isSomeFacetSpec(spec)) {
@@ -144,4 +144,15 @@ export function timeFormatExpression(field: string, timeUnit: TimeUnit, format: 
   } else {
     return formatExpression(timeUnit, field, shortTimeLabels);
   }
+}
+
+/**
+ * Return Vega sort parameters (tuple of field and order).
+ */
+export function sortParams(orderDef: OrderChannelDef | OrderChannelDef[]): VgSort {
+  return (isArray(orderDef) ? orderDef : [orderDef]).reduce((s, orderChannelDef) => {
+    s.field.push(field(orderChannelDef, {binSuffix: 'start'}));
+    s.order.push(orderChannelDef.sort || 'ascending');
+    return s;
+  }, {field:[], order: []});
 }
