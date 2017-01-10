@@ -28,10 +28,14 @@ export function gridShow(model: Model, channel: Channel) {
   return !model.hasDiscreteScale(channel) && !model.fieldDef(channel).bin;
 }
 
-export function grid(model: Model, channel: Channel) {
+export function grid(model: Model, channel: Channel, isGridAxis: boolean) {
   if (channel === ROW || channel === COLUMN) {
     // never apply grid for ROW and COLUMN since we manually create rule-group for them
     return undefined;
+  }
+
+  if (!isGridAxis) {
+    return false;
   }
 
   return gridShow(model, channel) && (
@@ -84,7 +88,10 @@ export function tickCount(specifiedAxis: Axis, channel: Channel, fieldDef: Field
   return undefined;
 }
 
-export function title(specifiedAxis: Axis, fieldDef: FieldDef, config: Config) {
+export function title(specifiedAxis: Axis, fieldDef: FieldDef, config: Config, isGridAxis: boolean) {
+  if (isGridAxis) {
+    return null;
+  }
   if (specifiedAxis.title !== undefined) {
     return specifiedAxis.title;
   }
@@ -107,12 +114,12 @@ export function values(specifiedAxis: Axis) {
   return vals;
 }
 
-export function zindex(specifiedAxis: Axis, isGrid: boolean) {
+export function zindex(specifiedAxis: Axis, isGridAxis: boolean) {
   const z = specifiedAxis.zindex;
   if (z !== undefined) {
     return z;
   }
-  if (isGrid) {
+  if (isGridAxis) {
     // if grid is true, need to put layer on the back so that grid is behind marks
     return 0;
   }

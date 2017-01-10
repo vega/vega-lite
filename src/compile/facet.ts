@@ -13,7 +13,7 @@ import {contains, extend, keys, vals, flatten, duplicate, mergeDeep, Dict} from 
 import {VgData, VgMarkGroup} from '../vega.schema';
 import {StackProperties} from '../stack';
 
-import {parseAxis, parseInnerAxis, parseAxisComponent} from './axis/parse';
+import {parseMainAxis, parseGridAxis, parseAxisComponent} from './axis/parse';
 import {gridShow} from './axis/rules';
 import {buildModel} from './common';
 import {assembleData, parseFacetData} from './data/data';
@@ -424,7 +424,7 @@ function parseAxisGroups(model: FacetModel, channel: 'x' | 'y') {
 
         if (child.axis(channel) && gridShow(child, channel)) { // show inner grid
           // add inner axis (aka axis that shows only grid to )
-          child.component.axis[channel] = parseInnerAxis(channel, child);
+          child.component.axis[channel] = parseGridAxis(channel, child);
         } else {
           delete child.component.axis[channel];
         }
@@ -491,7 +491,7 @@ export function getSharedAxisGroup(model: FacetModel, channel: 'x' | 'y'): VgMar
     };
   }
 
-  axesGroup.axes = [parseAxis(channel, model.child())];
+  axesGroup.axes = [parseMainAxis(channel, model.child())];
   return axesGroup;
 }
 

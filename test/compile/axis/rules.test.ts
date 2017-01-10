@@ -13,7 +13,7 @@ describe('compile/axis', ()=> {
           encoding: {
             x: {field: 'a', type: 'quantitative', axis:{grid: false}}
           }
-        }), X);
+        }), X, true);
       assert.deepEqual(grid, false);
     });
 
@@ -23,7 +23,7 @@ describe('compile/axis', ()=> {
           encoding: {
             x: {field: 'a', type: 'quantitative'}
           }
-        }), X);
+        }), X, true);
       assert.deepEqual(grid, true);
     });
 
@@ -33,7 +33,7 @@ describe('compile/axis', ()=> {
           encoding: {
             x: {field: 'a', type: 'quantitative'}
           }
-        }), COLUMN);
+        }), COLUMN, true);
       assert.deepEqual(grid, undefined);
     });
 
@@ -43,8 +43,17 @@ describe('compile/axis', ()=> {
           encoding: {
             x: {field: 'a', type: 'quantitative'}
           }
-        }), ROW);
+        }), ROW, true);
       assert.deepEqual(grid, undefined);
+    });
+    it('should return false for non-gridAxis', function () {
+      const grid = rules.grid(parseModel({
+          mark: "point",
+          encoding: {
+            x: {field: 'a', type: 'quantitative'}
+          }
+        }), X, false);
+      assert.deepEqual(grid, false);
     });
   });
 
@@ -94,23 +103,29 @@ describe('compile/axis', ()=> {
 
   describe('title()', function () {
     it('should add explicitly specified title', function () {
-      const title = rules.title({title: 'Custom'}, {field: 'a', type: "quantitative"}, {});
+      const title = rules.title({title: 'Custom'}, {field: 'a', type: "quantitative"}, {}, false);
       assert.deepEqual(title, 'Custom');
     });
 
     it('should add return fieldTitle by default', function () {
-      const title = rules.title({titleMaxLength: 3}, {field: 'a', type: "quantitative"}, {});
+      const title = rules.title({titleMaxLength: 3}, {field: 'a', type: "quantitative"}, {}, false);
       assert.deepEqual(title, 'a');
     });
 
     it('should add return fieldTitle by default', function () {
-      const title = rules.title({titleMaxLength: 10}, { aggregate: 'sum', field: 'a', type: "quantitative"}, {});
+      const title = rules.title({titleMaxLength: 10}, { aggregate: 'sum', field: 'a', type: "quantitative"}, {}, false);
       assert.deepEqual(title, 'SUM(a)');
     });
 
     it('should add return fieldTitle by default and truncate', function () {
-      const title = rules.title({titleMaxLength: 3}, { aggregate: 'sum', field: 'a', type: "quantitative"}, {});
+      const title = rules.title({titleMaxLength: 3}, { aggregate: 'sum', field: 'a', type: "quantitative"}, {}, false);
       assert.deepEqual(title, 'SU…');
+    });
+
+
+    it('should add return null for gridAxis', function () {
+      const title = rules.title({titleMaxLength: 3}, {field: 'a', type: "quantitative"}, {}, true);
+      assert.deepEqual(title, null);
     });
   });
 
