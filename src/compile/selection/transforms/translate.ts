@@ -28,14 +28,18 @@ const translate:TransformCompiler = {
         scales = scalesCompiler.has(sel),
         size = scales ? 'unit' : name + INTERVAL.SIZE,
         anchor = name + NS.ANCHOR,
-        mousedown = (scales ? '' : '@' + name + INTERVAL.BRUSH + ':') + 'mousedown',
+        events = parseSelector(sel.translate, 'scope'),
         {x, y} = intervalProjections(sel);
+
+    if (!scales) {
+      events = events.map((e) => (e.between[0].markname = name + INTERVAL.BRUSH, e));
+    }
 
     signals.push({
       name: anchor,
       value: {},
       on: [{
-        events: parseSelector(mousedown, 'scope'),
+        events: events.map((e) => e.between[0]),
         update: '{x: x(unit), y: y(unit), ' +
           'width: ' + size + '.width, height: ' + size + '.height, ' +
 
@@ -49,7 +53,7 @@ const translate:TransformCompiler = {
       name: name + NS.DELTA,
       value: {},
       on: [{
-        events: parseSelector('[' + mousedown + ', window:mouseup] > window:mousemove', 'scope'),
+        events: events,
         update: '{x: x(unit) - ' + anchor + '.x, y: y(unit) - ' + anchor + '.y}'
       }]
     });

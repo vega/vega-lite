@@ -1,17 +1,9 @@
 import {TypeCompiler} from './';
-import {defaultValue, NS} from '../';
+import {NS} from '../';
 import {stringValue} from '../../../util';
 
 const multi:TypeCompiler = {
   predicate: 'inPointSelection',
-
-  parse: function(model, def) {
-    return {
-      events: defaultValue(def.on, 'click'),
-      fields: defaultValue(def.fields, def.encodings ? undefined : ['_id']),
-      toggle: defaultValue(def.toggle, 'event.shiftKey')
-    };
-  },
 
   signals: function(model, sel) {
     let proj = sel.project,

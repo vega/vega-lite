@@ -3,6 +3,7 @@ import {LegendConfig, defaultLegendConfig} from './legend';
 import {MarkConfig, AreaConfig, BarConfig, LineConfig, PointConfig, TextConfig, TickConfig, RectConfig, RuleConfig} from './mark';
 import * as mark from './mark';
 import {ScaleConfig, defaultScaleConfig} from './scale';
+import {SelectionConfig, defaultConfig as defaultSelectionConfig} from './selection';
 
 
 export interface CellConfig {
@@ -196,6 +197,9 @@ export interface Config {
 
   /** Facet Config */
   facet?: FacetConfig;
+
+  /** Selection Config */
+  selection?: SelectionConfig;
 }
 
 export const defaultConfig: Config = {
@@ -223,4 +227,6 @@ export const defaultConfig: Config = {
   legend: defaultLegendConfig,
 
   facet: defaultFacetConfig,
+
+  selection: defaultSelectionConfig
 };

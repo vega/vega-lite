@@ -17,28 +17,37 @@ export const NS = {
 };
 
 export function parseUnitSelection(model: UnitModel, spec: Dict<SelectionSpec>) {
-  let selections: Dict<SelectionComponent> = {};
+  let selections: Dict<SelectionComponent> = {},
+      config = model.config().selection;
+
   for (let name in spec) {
     if (!spec.hasOwnProperty(name)) {
       continue;
     }
 
     let def = spec[name],
-        type:TypeCompiler = types[def.type],
-        domain:SelectionDomain = 'data',
-        resolve:SelectionResolutions = 'single';
+        cfg = config[def.type];
 
-    extend(def, type.parse(model, def));
+    // Set default values from config if a property hasn't been specified,
+    // or if it is true. E.g., "translate": true should use the default
+    // event handlers for translate. However, true may be a valid value for
+    // a property (e.g., "nearest": true).
+    for (let key in cfg) {
+      if ((key === 'encodings' && def.fields) || (key === 'fields' && def.encodings)) {
+        continue;
+      }
+
+      if (def[key] === undefined || def[key] === true) {
+        def[key] = cfg[key] || def[key];
+      }
+    }
+
     let sel = selections[name] = extend(def, {
       name: model.name(name),
-      domain: def.domain || domain,
-      resolve: resolve
+      events: isString(def.on) ? parseSelector(def.on, 'scope') : def.on,
+      domain: 'data' as SelectionDomain, // TODO: Support def.domain
+      resolve: 'single' as SelectionResolutions
     }) as SelectionComponent;
-
-    if (isString(sel.events)) {
-      // TODO: Scope source.
-      sel.events = parseSelector(sel.events, 'scope');
-    }
 
     transforms(sel, function(tx) {
       if (tx.parse) {
@@ -90,7 +99,7 @@ export function assembleTopLevelSignals(model: Model) {
   let signals:any[] = [{
     name: 'unit',
     value: {},
-    on: [{events: 'mousemove', update: 'group()'}]
+    on: [{events: 'mousemove', update: 'group()._id ? group() : unit'}]
   }];
 
   selections(model, function(sel, type) {
@@ -168,11 +177,6 @@ function selections(model: Model, cb: (sel: SelectionComponent, type: TypeCompil
 
 function type(sel: SelectionComponent): TypeCompiler {
   return types[sel.type];
-}
-
-// TODO: Remove this function in favour of config.
-export function defaultValue(def: any, value: any) {
-  return def !== undefined && def !== true ? def : value;
 }
 
 export function invert(model: UnitModel, sel: SelectionComponent, channel: Channel, expr: string) {

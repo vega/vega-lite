@@ -1,16 +1,9 @@
 import {stringValue} from '../../../util';
 import {TypeCompiler, multi} from './';
-import {defaultValue, NS} from '../';
+import {NS} from '../';
 
 const single:TypeCompiler = {
   predicate: multi.predicate,
-
-  parse: function(model, def) {
-    return {
-      events: defaultValue(def.on, 'click'),
-      fields: defaultValue(def.fields, def.encodings ? undefined : ['_id']),
-    };
-  },
 
   signals: multi.signals,
 

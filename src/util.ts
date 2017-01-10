@@ -1,6 +1,6 @@
 import * as stringify from 'json-stable-stringify';
 export {extend, isArray, isObject, isNumber, isString, truncate, toSet, stringValue} from 'vega-util';
-import {isNumber, isString} from 'vega-util';
+import {isNumber, isString, isArray} from 'vega-util';
 
 /**
  * Creates an object composed of the picked object properties.
@@ -113,7 +113,7 @@ function deepMerge_(dest: any, src: any) {
     if (src[p] === undefined) {
       continue;
     }
-    if (typeof src[p] !== 'object' || src[p] === null) {
+    if (typeof src[p] !== 'object' || isArray(src[p]) || src[p] === null) {
       dest[p] = src[p];
     } else if (typeof dest[p] !== 'object' || dest[p] === null) {
       dest[p] = mergeDeep(src[p].constructor === Array ? [] : {}, src[p]);

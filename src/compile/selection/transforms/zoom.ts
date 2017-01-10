@@ -1,3 +1,4 @@
+import {selector as parseSelector} from 'vega-parser';
 import {UnitModel} from './../../unit';
 import {SelectionComponent} from '../../../selection';
 import {X, Y, Channel} from '../../../channel';
@@ -24,22 +25,25 @@ const zoom:TransformCompiler = {
     }
 
     let name = sel.name,
-        scales = scalesCompiler.has(sel),
         delta = name + NS.DELTA,
-        wheel = (scales ? '' : '@' + name + INTERVAL.BRUSH + ':') + 'wheel',
+        events = parseSelector(sel.zoom, 'scope'),
         {x, y} = intervalProjections(sel);
+
+    if (!scalesCompiler.has(sel)) {
+      events = events.map((e) => (e.markname = name + INTERVAL.BRUSH, e));
+    }
 
     signals.push({
       name: name + NS.ANCHOR,
       on: [{
-        events: wheel,
+        events: events,
         update: '{x: invert(' + stringValue(model.scaleName(X)) + ', x(unit)), ' +
           'y: invert(' + stringValue(model.scaleName(Y)) + ', y(unit))}'
       }]
     }, {
       name: delta,
       on: [{
-        events: wheel + '!',
+        events: events,
         force: true,
         update: 'pow(1.001, event.deltaY * pow(16, event.deltaMode))'
       }]

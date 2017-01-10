@@ -2,7 +2,7 @@ import {SelectionComponent} from '../../../selection';
 import {TypeCompiler} from './';
 import {X, Y, Channel} from '../../../channel';
 import {UnitModel} from '../../unit';
-import {defaultValue, NS as NAMES, invert as invertFn, channelSignalName} from '../';
+import {NS as NAMES, invert as invertFn, channelSignalName} from '../';
 import {stringValue, extend} from '../../../util';
 import {warn} from '../../../log';
 import scales from '../transforms/scales';
@@ -14,16 +14,6 @@ export const NS = {
 
 const interval:TypeCompiler = {
   predicate: 'inIntervalSelection',
-
-  parse: function(model, def) {
-    return {
-      events: defaultValue(def.on, '[mousedown, window:mouseup] > window:mousemove'),
-      encodings: defaultValue(def.encodings, def.fields ? undefined : ['x', 'y']),
-      translate: defaultValue(def.translate, true),
-      // TODO: Only zoom intervals by default if we're initializing scales?
-      zoom: defaultValue(def.zoom, def.zoom === true || scales.has(def))
-    };
-  },
 
   signals: function(model, sel) {
     let signals: any[] = [],

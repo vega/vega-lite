@@ -7,20 +7,23 @@ export type SelectionDomain = 'data' | 'visual';
 export type SelectionResolutions = 'single' | 'independent' | 'union' |
   'union_others' | 'intersect' | 'intersect_others';
 
-export interface SelectionSpec {
-  type: SelectionTypes;
-  domain?: SelectionDomain;
+export interface BaseSelectionSpec {
+  // domain?: SelectionDomain;
   on?: any;
-  predicate?: string;
+  // predicate?: string;
   bind?: 'scales' | VgBinding | Dict<VgBinding>;
 
   // Transforms
   fields?: string[];
   encodings?: string[];
   toggle?: string | boolean;
-  translate?: any;
-  zoom?: any;
+  translate?: string | boolean;
+  zoom?: string | boolean;
   nearest?: boolean;
+}
+
+export interface SelectionSpec extends BaseSelectionSpec {
+  type: SelectionTypes;
 }
 
 export interface SelectionComponent {
@@ -28,7 +31,7 @@ export interface SelectionComponent {
   type: SelectionTypes;
   domain: SelectionDomain;
   events: any;
-  predicate: string;
+  // predicate?: string;
   bind?: 'scales' | VgBinding | Dict<VgBinding>;
   resolve: SelectionResolutions;
 
@@ -45,3 +48,20 @@ export interface ProjectComponent {
   field?: string;
   encoding?: Channel;
 }
+
+export interface SelectionConfig {
+  single: BaseSelectionSpec;
+  multi: BaseSelectionSpec;
+  interval: BaseSelectionSpec;
+}
+
+export const defaultConfig:SelectionConfig = {
+  single: {on: 'click', fields: ['_id']},
+  multi: {on: 'click', fields: ['_id'], toggle: 'event.shiftKey'},
+  interval: {
+    on: '[mousedown, window:mouseup] > window:mousemove!',
+    encodings: ['x', 'y'],
+    translate: '[mousedown, window:mouseup] > window:mousemove!',
+    zoom: 'wheel'
+  }
+};
