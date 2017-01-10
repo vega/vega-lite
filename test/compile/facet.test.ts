@@ -1,3 +1,5 @@
+/* tslint:disable quotemark */
+
 import {assert} from 'chai';
 
 import * as log from '../../src/log';
@@ -68,6 +70,70 @@ describe('FacetModel', function() {
       });
     });
   });
+
+  describe('dataTable', () => {
+    it('should return stacked if there is a stacked data component', () => {
+      const model = parseFacetModel({
+        facet: {
+          row: {field: 'a', type: 'ordinal'}
+        },
+        spec: {
+          mark: 'point',
+          encoding: {
+            "x": {"aggregate": "sum", "field": "yield", "type": "quantitative"},
+            "y": {"field": "variety", "type": "nominal"},
+            "color": {"field": "site", "type": "nominal"}
+          }
+        }
+      });
+
+      // Mock
+      model.component.data = {stack: {}} as any;
+
+      assert.equal(model.dataTable(), 'stacked');
+    });
+
+    it('should return summary if there is a summary data component and no stacked', () => {
+      const model = parseFacetModel({
+        facet: {
+          row: {field: 'a', type: 'ordinal'}
+        },
+        spec: {
+          mark: 'point',
+          encoding: {
+            "x": {"aggregate": "sum", "field": "yield", "type": "quantitative"},
+            "y": {"field": "variety", "type": "nominal"}
+          }
+        }
+      });
+
+      // Mock
+      model.component.data = {summary: [{
+        measures: {a: 1}
+      }]} as any;
+
+      assert.equal(model.dataTable(), 'summary');
+    });
+
+    it('should return source if there is no stacked nor summary data component', () => {
+      const model = parseFacetModel({
+        facet: {
+          row: {field: 'a', type: 'ordinal'}
+        },
+        spec: {
+          mark: 'point',
+          encoding: {
+            "x": {"field": "yield", "type": "quantitative"},
+            "y": {"field": "variety", "type": "nominal"}
+          }
+        }
+      });
+      // Mock
+      model.component.data = {summary: []} as any;
+
+      assert.equal(model.dataTable(), 'source');
+    });
+  });
 });
 
 describe('compile/facet', () => {
@@ -82,8 +148,9 @@ describe('compile/facet', () => {
         }
       });
 
-      // HACK: mock that we have parsed its data and there is not summary
+      // HACK: mock that we have parsed its data and there is no stack and no summary
       // This way, we won't have surge in test coverage for the parse methods.
+      model.component.data = {} as any;
       model['hasSummary'] = () => false;
 
       assert.deepEqual(
@@ -109,8 +176,9 @@ describe('compile/facet', () => {
         }
       });
 
-      // HACK: mock that we have parsed its data and there is not summary
+      // HACK: mock that we have parsed its data and there is no stack and no summary
       // This way, we won't have surge in test coverage for the parse methods.
+      model.component.data = {} as any;
       model['hasSummary'] = () => false;
 
       assert.deepEqual(
@@ -137,8 +205,9 @@ describe('compile/facet', () => {
         }
       });
 
-      // HACK: mock that we have parsed its data and there is not summary
+      // HACK: mock that we have parsed its data and there is no stack and no summary
       // This way, we won't have surge in test coverage for the parse methods.
+      model.component.data = {} as any;
       model['hasSummary'] = () => false;
 
       assert.deepEqual(
@@ -177,8 +246,9 @@ describe('compile/facet', () => {
         }
       });
 
-      // HACK: mock that we have parsed its data and there is not summary
+      // HACK: mock that we have parsed its data and there is no stack and no summary
       // This way, we won't have surge in test coverage for the parse methods.
+      model.component.data = {} as any;
       model['hasSummary'] = () => false;
 
       describe('xAxisGroup', () => {
@@ -226,8 +296,9 @@ describe('compile/facet', () => {
         }
       });
 
-      // HACK: mock that we have parsed its data and there is not summary
+      // HACK: mock that we have parsed its data and there is no stack and no summary
       // This way, we won't have surge in test coverage for the parse methods.
+      model.component.data = {} as any;
       model['hasSummary'] = () => false;
 
       describe('yAxisGroup', () => {
