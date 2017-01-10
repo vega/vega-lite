@@ -8,6 +8,7 @@ export function mockDataComponent(): DataComponent {
     nullFilter: null,
     filter: null,
     nonPositiveFilter: null,
+    pathOrder: null,
 
     source: null,
     bin: null,
