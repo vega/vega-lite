@@ -199,11 +199,6 @@ export interface AxisConfig {
    * @minimum 0
    */
   titleMaxLength?: number;
-  /**
-   * Character width for automatically determining title max length.
-   * @minimum 0
-   */
-  characterWidth?: number;
 
   // ---------- Other ----------
   /**
@@ -221,7 +216,6 @@ export const defaultAxisConfig: AxisConfig = {
   label: true,
   labelMaxLength: 25,
   tickSize: undefined, // implicitly 6 (by Vega) // FIXME check if this is still true
-  characterWidth: 6
 };
 
 export const defaultFacetAxisConfig: AxisConfig = {

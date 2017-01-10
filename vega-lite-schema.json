@@ -153,11 +153,6 @@
                     "description": "Width of the axis line",
                     "type": "number"
                 },
-                "characterWidth": {
-                    "description": "Character width for automatically determining title max length.",
-                    "minimum": 0,
-                    "type": "number"
-                },
                 "domain": {
                     "description": "Whether to include the axis domain line.",
                     "type": "boolean"
@@ -357,11 +352,6 @@
                 },
                 "axisWidth": {
                     "description": "Width of the axis line",
-                    "type": "number"
-                },
-                "characterWidth": {
-                    "description": "Character width for automatically determining title max length.",
-                    "minimum": 0,
                     "type": "number"
                 },
                 "domain": {
