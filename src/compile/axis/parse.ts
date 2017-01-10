@@ -63,6 +63,14 @@ export function parseInnerAxis(channel: Channel, model: Model): VgAxis {
   return def;
 }
 
+const axisPartFlag = {
+  domain: 'domain',
+  grid: 'grid',
+  labels: 'label',
+  ticks: 'tick',
+  title: 'title'
+};
+
 export function parseAxis(channel: Channel, model: Model): VgAxis {
   const axis = model.axis(channel);
 
@@ -88,19 +96,19 @@ export function parseAxis(channel: Channel, model: Model): VgAxis {
     }
   });
 
-  // 2) Add mark property definition groups
-  const props = model.axis(channel).encode || {};
-
+  // 2) Add guide encode definition groups
+  const encodeSpec = model.axis(channel).encode || {};
   [
-    'domain', 'labels', // have special rules
-    'grid', 'title', 'tickCount', 'majorTicks', 'minorTicks' // only default values
-  ].forEach(function(group) {
-    const value = encode[group] ?
-      encode[group](model, channel, props[group] || {}, def) :
-      props[group];
+    'domain', 'grid', 'labels', 'ticks', 'title'
+  ].forEach(function(part) {
+    if (!axis[axisPartFlag[part]]) {
+      // No need to create encode for a disabled part.
+      return;
+    }
+    const value = encode[part](model, channel, encodeSpec[part] || {}, def);
     if (value !== undefined && keys(value).length > 0) {
       def.encode = def.encode || {};
-      def.encode[group] = {update: value};
+      def.encode[part] = {update: value};
     }
   });
 
