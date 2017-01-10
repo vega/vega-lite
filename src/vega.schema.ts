@@ -107,6 +107,24 @@ export interface VgFormulaTransform {
   expr: string;
 }
 
+export interface VgAxisEncode {
+  ticks?: VgGuideEncode;
+  labels?: VgGuideEncode;
+  title?: VgGuideEncode;
+  grid?: VgGuideEncode;
+  domain?: VgGuideEncode;
+}
+
+export interface VgLegendEncode {
+  title?: VgGuideEncode;
+  labels?: VgGuideEncode;
+  legend?: VgGuideEncode;
+  symbols?: VgGuideEncode;
+  gradient?: VgGuideEncode;
+}
+
+export type VgGuideEncode = any; // TODO: replace this (See guideEncode in Vega Schema)
+
 export type VgTransform = VgBinTransform | VgExtentTransform | VgFormulaTransform | any;
 
 export interface VgStackTransform {

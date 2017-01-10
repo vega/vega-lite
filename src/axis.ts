@@ -1,4 +1,5 @@
 import {DateTime} from './datetime';
+import {VgAxisEncode} from './vega.schema';
 
 export namespace AxisOrient {
     export const TOP: 'top' = 'top';
@@ -206,9 +207,9 @@ export interface AxisConfig {
 
   // ---------- Other ----------
   /**
-   * Optional mark property definitions for custom axis styling.
+   * Optional mark definitions for custom axis encoding.
    */
-  properties?: any; // TODO: replace
+  encode?: VgAxisEncode;
 }
 
 // TODO: add comment for properties that we rely on Vega's default to produce

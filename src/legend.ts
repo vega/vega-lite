@@ -1,5 +1,6 @@
 import {DateTime} from './datetime';
 import {Shape} from './mark';
+import {VgLegendEncode} from './vega.schema';
 
 export interface LegendConfig {
   /**
@@ -106,9 +107,9 @@ export interface LegendConfig {
    */
   titleFontWeight?: string | number;
   /**
-   * Optional mark property definitions for custom legend styling.
+   * Optional mark definitions for custom legend encoding.
    */
-  properties?: any; // TODO(#975) replace with config properties
+  encode?: VgLegendEncode;
 }
 
 /**

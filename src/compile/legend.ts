@@ -77,7 +77,7 @@ export function parseLegend(model: UnitModel, channel: Channel): VgLegend {
   });
 
   // 2) Add mark property definition groups
-  const props = (typeof legend !== 'boolean' && legend.properties) || {};
+  const props = (typeof legend !== 'boolean' && legend.encode) || {};
   ['title', 'symbols', 'legend', 'labels'].forEach(function(group) {
     let value = encode[group] ?
       encode[group](fieldDef, props[group], model, channel) : // apply rule
