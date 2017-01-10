@@ -39,8 +39,7 @@ export interface Component {
   scale: Dict<ScaleComponents>;
 
   /** Dictionary mapping channel to VgAxis definition */
-  // TODO: if we allow multiple axes (e.g., dual axis), this will become VgAxis[]
-  axis: Dict<VgAxis>;
+  axis: Dict<VgAxis[]>;
 
   /** Dictionary mapping channel to VgLegend definition */
   legend: Dict<VgLegend>;
@@ -199,7 +198,7 @@ export abstract class Model {
   public abstract assembleMarks(): any[]; // TODO: VgMarkGroup[]
 
   public assembleAxes(): VgAxis[] {
-    return vals(this.component.axis);
+    return [].concat.apply([], vals(this.component.axis));
   }
 
   public assembleLegends(): any[] { // TODO: VgLegend[]

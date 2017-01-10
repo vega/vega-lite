@@ -38,11 +38,7 @@ export function grid(model: Model, channel: Channel, isGridAxis: boolean) {
     return false;
   }
 
-  return gridShow(model, channel) && (
-    // FIXME refactor this cleanly -- essentially the condition below is whether
-    // the axis is a shared / union axis.
-    (channel === Y || channel === X) && !(model.parent() && model.parent().isFacet())
-  );
+  return gridShow(model, channel);
 }
 
 export function gridScale(model: Model, channel: Channel) {

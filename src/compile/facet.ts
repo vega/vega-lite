@@ -424,8 +424,9 @@ function parseAxisGroups(model: FacetModel, channel: 'x' | 'y') {
 
         if (child.axis(channel) && gridShow(child, channel)) { // show inner grid
           // add inner axis (aka axis that shows only grid to )
-          child.component.axis[channel] = parseGridAxis(channel, child);
+          child.component.axis[channel] = [parseGridAxis(channel, child)];
         } else {
+          // Delete existing child axes
           delete child.component.axis[channel];
         }
       } else {

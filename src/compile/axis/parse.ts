@@ -8,13 +8,36 @@ import * as rules from './rules';
 import {Model} from '../model';
 import {Dict, contains, keys} from '../../util';
 
-export function parseAxisComponent(model: Model, axisChannels: Channel[]): Dict<VgAxis> {
+export function parseAxisComponent(model: Model, axisChannels: Channel[]): Dict<VgAxis[]> {
   return axisChannels.reduce(function(axis, channel) {
+    const axes: VgAxis[] = [];
     if (model.axis(channel)) {
-      axis[channel] = parseMainAxis(channel, model);
+      const main = parseMainAxis(channel, model);
+      if (main && isVisibleAxis(main)) {
+        axes.push(main);
+      }
+
+      const grid = parseGridAxis(channel, model);
+      if (grid && isVisibleAxis(grid)) {
+        axes.push(grid);
+      }
+
+      if (axes.length > 0) {
+        axis[channel] = axes;
+      }
     }
     return axis;
-  }, {} as Dict<VgAxis>);
+  }, {} as Dict<VgAxis[]>);
+}
+
+/**
+ * Return if an axis is visible (shows at least one part of the axis).
+ */
+function isVisibleAxis(axis: VgAxis) {
+  if (axis.domain !== false || axis.grid !== false || axis.label !== false || axis.tick !== false || axis.title) {
+    return true;
+  }
+  return false;
 }
 
 /**
@@ -47,9 +70,9 @@ function parseAxis(channel: Channel, model: Model, isGridAxis: boolean): VgAxis 
   // 1.2. Add properties
   [
     // a) properties with special rules (so it has axis[property] methods) -- call rule functions
-    'format', 'grid', 'gridScale', 'orient', 'tickSize', 'tickCount',  'title', 'values', 'zindex',
+    'domain', 'format', 'label', 'grid', 'gridScale', 'orient', 'tick', 'tickSize', 'tickCount',  'title', 'values', 'zindex',
     // b) properties without rules, only produce default values in the schema, or explicit value if specified
-    'domain', 'offset', 'subdivide', 'tick', 'tickPadding', 'tickSize', 'tickSizeEnd', 'tickSizeMajor', 'tickSizeMinor', 'titleOffset'
+     'offset', 'subdivide', 'tickPadding', 'tickSize', 'tickSizeEnd', 'tickSizeMajor', 'tickSizeMinor', 'titleOffset'
   ].forEach(function(property) {
     const value = getSpecifiedOrDefaultValue(property, axis, channel, model, isGridAxis);
     if (value !== undefined) {
