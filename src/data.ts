@@ -65,20 +65,12 @@ export interface Data {
   values?: any[];
 }
 
-export namespace DataTable {
-  export const SOURCE: 'source' = 'source';
-  export const SUMMARY: 'summary' = 'summary';
-  export const STACKED: 'stacked' = 'stacked';
+export type DataSourceType = 'source' | 'summary' | 'stacked' | 'layout';
 
-  export const LAYOUT: 'layout' = 'layout';
-}
-
-export type DataTable = typeof DataTable.SOURCE | typeof DataTable.SUMMARY | typeof DataTable.STACKED | typeof DataTable.LAYOUT;
-
-export const SUMMARY = DataTable.SUMMARY;
-export const SOURCE = DataTable.SOURCE;
-export const STACKED = DataTable.STACKED;
-export const LAYOUT = DataTable.LAYOUT;
+export const SUMMARY: 'summary' = 'summary';
+export const SOURCE: 'source' = 'source';
+export const STACKED: 'stacked' = 'stacked';
+export const LAYOUT: 'layout' = 'layout';
 
 /** Mapping from datalib's inferred type to Vega-lite's type */
 // TODO: consider if we can remove
