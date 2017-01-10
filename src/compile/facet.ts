@@ -3,7 +3,6 @@ import * as log from '../log';
 import {AxisOrient, Axis} from '../axis';
 import {COLUMN, ROW, X, Y, Channel} from '../channel';
 import {defaultConfig, Config} from '../config';
-import {DataSourceType} from '../data';
 import {Facet} from '../facet';
 import {forEach} from '../encoding';
 import {FieldDef, isDimension} from '../fielddef';
@@ -163,7 +162,11 @@ export class FacetModel extends Model {
     return 'faceted-' + this.name('data');
   }
 
-  public dataTable(): DataSourceType {
+  public dataTable(): string {
+    // FIXME: shouldn't we apply data renaming here?
+    if (this.component.data.stack) {
+      return 'stacked';
+    }
     if (this.hasSummary()) {
       return 'summary';
     }
