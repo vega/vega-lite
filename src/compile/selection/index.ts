@@ -80,14 +80,13 @@ export function assembleUnitSignals(model: UnitModel, signals: any[]) {
       name: name + NS.TUPLE,
       on: [{
         events: {signal: name},
-        update: '{unit: unit.datum && unit.datum._id, ' + tupleExpr + '}'
+        update: `{unit: unit.datum && unit.datum._id, ${tupleExpr}}`
       }]
     }, {
       name: name + NS.MODIFY,
       on: [{
         events: {signal: name},
-        update: 'modify(' + stringValue(name + NS.STORE) + ', ' +
-          modifyExpr + ')'
+        update: `modify(${stringValue(name + NS.STORE)}, ${modifyExpr})`
       }]
     });
   });
@@ -165,11 +164,11 @@ let PREDICATES_OPS = {
   'intersect_others': '"intersect", "others'
 };
 
-export function predicate(sel: SelectionComponent): string {
-  const store = stringValue(sel.name + NS.STORE);
-  return '!tuples(' + store + ').length || ' +
-    type(sel).predicate + '(' + store + ', parent._id, datum, ' +
-    PREDICATES_OPS[sel.resolve] + ')';
+export function predicate(sel: SelectionComponent, datum?: string): string {
+  const store = stringValue(sel.name + NS.STORE),
+        op = PREDICATES_OPS[sel.resolve];
+  datum = datum || 'datum';
+  return type(sel).predicate + `(${store}, parent._id, ${datum}, ${op})`;
 }
 
 // Utility functions
@@ -189,8 +188,8 @@ function type(sel: SelectionComponent): TypeCompiler {
 }
 
 export function invert(model: UnitModel, sel: SelectionComponent, channel: Channel, expr: string) {
-  return sel.domain === 'data' ?
-    'invert(' + stringValue(model.scaleName(channel)) + ', ' + expr + ')' : expr;
+  let scale = stringValue(model.scaleName(channel));
+  return sel.domain === 'data' ? `invert(${scale}, ${expr})` : expr;
 }
 
 export function channelSignalName(sel: SelectionComponent, channel: Channel) {

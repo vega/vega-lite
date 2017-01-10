@@ -20,9 +20,9 @@ const toggle:TransformCompiler = {
     let tpl = sel.name + NAMES.TUPLE,
         signal = sel.name + NS;
 
-    return signal + ' ? null : ' + tpl + ', ' +
-      signal + ' ? null : true, ' +
-      signal + ' ? ' + tpl + ' : null';
+    return `${signal} ? null : ${tpl}, ` +
+      `${signal} ? null : true, ` +
+      `${signal} ? ${tpl} : null`;
   }
 };
 

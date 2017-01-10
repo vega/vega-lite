@@ -27,7 +27,9 @@ const zoom:TransformCompiler = {
     let name = sel.name,
         delta = name + NS.DELTA,
         events = parseSelector(sel.zoom, 'scope'),
-        {x, y} = intervalProjections(sel);
+        {x, y} = intervalProjections(sel),
+        sx = stringValue(model.scaleName(X)),
+        sy = stringValue(model.scaleName(Y));
 
     if (!scalesCompiler.has(sel)) {
       events = events.map((e) => (e.markname = name + INTERVAL.BRUSH, e));
@@ -37,8 +39,7 @@ const zoom:TransformCompiler = {
       name: name + NS.ANCHOR,
       on: [{
         events: events,
-        update: '{x: invert(' + stringValue(model.scaleName(X)) + ', x(unit)), ' +
-          'y: invert(' + stringValue(model.scaleName(Y)) + ', y(unit))}'
+        update: `{x: invert(${sx}, x(unit)), y: invert(${sy}, y(unit))}`
       }]
     }, {
       name: delta,
@@ -62,9 +63,9 @@ const zoom:TransformCompiler = {
       let sname = size[0].name;
       size[0].on.push({
         events: {signal: delta},
-        update: '{x: ' + sname + '.x, y: ' + sname + '.y, ' +
-          'width: '  + sname + '.width * ' + delta + ', ' +
-          'height: ' + sname + '.height * ' + delta + '}'
+        update: `{x: ${sname}.x, y: ${sname}.y, ` +
+          `width: ${sname}.width * ${delta} , ` +
+          `height: ${sname}.height * ${delta}}`
       });
     }
 
@@ -79,17 +80,16 @@ function onDelta(model: UnitModel, sel: SelectionComponent, channel: Channel, si
       signal:any = signals.filter((s:any) => s.name === name + '_' + channel)[0],
       scales = scalesCompiler.has(sel),
       base = scales ? domain(model, channel) : signal.name,
-      anchor = name + NS.ANCHOR + '.' + channel,
+      anchor = `${name}${NS.ANCHOR}.${channel}`,
       delta  = name + NS.DELTA,
       scale  = stringValue(model.scaleName(channel)),
-      range  = '[' + anchor + ' + ' +
-        '(' + base + '[0] - ' + anchor + ') * ' + delta + ', ' +
-        anchor + ' + (' + base + '[1] - ' + anchor + ') * ' + delta + ']',
-      lo = 'invert(' + scale + (channel === X ? ', 0' : ', unit.' + size) + ')',
-      hi = 'invert(' + scale + (channel === X ? ', unit.' + size : ', 0') + ')';
+      range  = `[${anchor} + (${base}[0] - ${anchor}) * ${delta}, ` +
+        `${anchor} + (${base}[1] - ${anchor}) * ${delta}]`,
+      lo = `invert(${scale}` + (channel === X ? ', 0' : `, unit.${size}`) + ')',
+      hi = `invert(${scale}` + (channel === X ? `, unit.${size}` : ', 0') + ')';
 
   signal.on.push({
     events: {signal: delta},
-    update: scales ? range : 'clampRange(' + range + ', ' + lo + ', ' + hi + ')'
+    update: scales ? range : `clampRange(${range}, ${lo}, ${hi})`
   });
 }

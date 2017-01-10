@@ -24,8 +24,8 @@ const interval:TypeCompiler = {
     if (sel.translate && !(scales.has(sel))) {
       events(sel, function(_: any[], evt: any) {
         let filters = evt.between[0].filter || (evt.between[0].filter = []);
-        filters.push('!event.item || (event.item && event.item.mark.name !== ' +
-          stringValue(name + NS.BRUSH) + ')');
+        filters.push('!event.item || (event.item && ' +
+          `event.item.mark.name !== ${stringValue(name + NS.BRUSH)})`);
       });
     }
 
@@ -37,7 +37,7 @@ const interval:TypeCompiler = {
 
       let cs = channelSignal(model, sel, p.encoding);
       signals.push(cs);
-      intervals.push('{field: ' + stringValue(p.field) + ', extent: ' + cs.name + '}');
+      intervals.push(`{field: ${stringValue(p.field)}, extent: ${cs.name}}`);
     });
 
     signals.push({
@@ -51,27 +51,27 @@ const interval:TypeCompiler = {
 
         on.push({
           events: evt,
-          update: '{x: ' + size + '.x, y: ' + size + '.y, ' +
-           'width: abs(x(unit) - ' + size + '.x), height: abs(y(unit) - ' + size + '.y)}'
+          update: `{x: ${size}.x, y: ${size}.y, ` +
+           `width: abs(x(unit) - ${size}.x), height: abs(y(unit) - ${size}.y)}`
         });
 
         return on;
       })
     }, {
       name: name,
-      update: '[' + intervals.join(', ') + ']'
+      update: `[${intervals.join(', ')}]`
     });
 
     return signals;
   },
 
   tupleExpr: function(model, sel) {
-    return 'intervals: ' + sel.name;
+    return `intervals: ${sel.name}`;
   },
 
   modifyExpr: function(model, sel) {
     let tpl = sel.name + NAMES.TUPLE;
-    return tpl + ', {unit: ' + tpl + '.unit}';
+    return `${tpl}, {unit: ${tpl}.unit}`;
   },
 
   marks: function(model, sel, marks) {
@@ -85,19 +85,19 @@ const interval:TypeCompiler = {
 
     let update = {
       x: extend({}, x !== null ?
-        {scale: model.scaleName(X), signal: name + '[' + x + '].extent[0]'} :
+        {scale: model.scaleName(X), signal: `${name}[${x}].extent[0]`} :
         {value: 0}),
 
       x2: extend({}, x !== null ?
-        {scale: model.scaleName(X), signal: name + '[' + x + '].extent[1]'} :
+        {scale: model.scaleName(X), signal: `${name}[${x}].extent[1]`} :
         {field: {group: 'width'}}),
 
       y: extend({}, y !== null ?
-        {scale: model.scaleName(Y), signal: name + '[' + y + '].extent[0]'} :
+        {scale: model.scaleName(Y), signal: `${name}[${y}].extent[0]`} :
         {value: 0}),
 
       y2: extend({}, y !== null ?
-        {scale: model.scaleName(Y), signal: name + '[' + y + '].extent[1]'} :
+        {scale: model.scaleName(Y), signal: `${name}[${y}].extent[1]`} :
         {field: {group: 'height'}}),
     };
 
@@ -135,7 +135,7 @@ export function projections(sel: SelectionComponent) {
 function channelSignal(model: UnitModel, sel: SelectionComponent, channel: Channel): any {
   let name  = channelSignalName(sel, channel),
       size  = (channel === X ? 'width' : 'height'),
-      coord = channel + '(unit)',
+      coord = `${channel}(unit)`,
       invert = invertFn.bind(null, model, sel, channel);
 
   return {
@@ -144,12 +144,12 @@ function channelSignal(model: UnitModel, sel: SelectionComponent, channel: Chann
     on: scales.has(sel) ? [] : events(sel, function(on: any[], evt: any) {
       on.push({
         events: evt.between[0],
-        update: invert('[' + coord + ', ' + coord + ']')
+        update: invert(`[${coord}, ${coord}]`)
       });
 
       on.push({
         events: evt,
-        update: '[' + name + '[0], ' + invert('clamp(' + coord + ', 0, ' + size + ')') + ']'
+        update: `[${name}[0], ` + invert(`clamp(${coord}, 0, ${size})`) + ']'
       });
 
       return on;
@@ -160,7 +160,7 @@ function channelSignal(model: UnitModel, sel: SelectionComponent, channel: Chann
 function events(sel: SelectionComponent, cb: Function) {
   return sel.events.reduce(function(on: any[], evt: any) {
     if (!evt.between) {
-      warn(evt + ' is not an ordered event stream for interval selections');
+      warn(`${evt} is not an ordered event stream for interval selections`);
       return on;
     }
     return cb(on, evt);

@@ -21,7 +21,7 @@ const inputBindings:TransformCompiler = {
         value: '',
         on: [{
           events: sel.events,
-          update: datum + '[' + stringValue(p.field) + ']'
+          update: `${datum}[${stringValue(p.field)}]`
         }],
         bind: bind[p.field] || bind[p.encoding] || bind
       });
@@ -36,13 +36,11 @@ const inputBindings:TransformCompiler = {
     }
 
     let name = sel.name, proj = sel.project,
-        signal = signals.filter((s) => s.name === name)[0];
+        signal = signals.filter((s) => s.name === name)[0],
+        fields = proj.map((p) => stringValue(p.field)).join(', '),
+        values = proj.map((p) => name + id(p.field)).join(', ');
 
-    signal.update = '{fields: [' +
-      proj.map((p) => stringValue(p.field)).join(', ') +
-      '], values: [' +
-      proj.map((p) => name + id(p.field)).join(', ') +
-      ']}';
+    signal.update = `{fields: [${fields}], values: [${values}]}`;
     delete signal.value;
     delete signal.on;
 

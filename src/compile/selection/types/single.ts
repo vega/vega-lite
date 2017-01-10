@@ -11,15 +11,15 @@ const single:TypeCompiler = {
     let name = sel.name;
     return [{
       name: name,
-      update: 'tuples(' + stringValue(name + NS.STORE) + ')[0]'
+      update: `tuples(${stringValue(name + NS.STORE)})[0]`
     }];
   },
 
   tupleExpr: function(model, sel) {
-    let name = sel.name, values = name + '.values';
-    return 'fields: ' + name + '.fields, values: ' + values + ', ' +
+    let name = sel.name, values = `${name}.values`;
+    return `fields: ${name}.fields, values: ${values}, ` +
       sel.project.map(function(p, i) {
-        return p.field + ': ' + values + '[' + i + ']';
+        return `${p.field}: ${values}[${i}]`;
       }).join(', ');
   },
 

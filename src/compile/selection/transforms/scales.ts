@@ -64,5 +64,6 @@ const scaleBindings:TransformCompiler = {
 export {scaleBindings as default};
 
 export function domain(model: UnitModel, channel: Channel) {
-  return 'domain(' + stringValue(model.scaleName(channel)) + ')';
+  let scale = stringValue(model.scaleName(channel));
+  return `domain(${scale})`;
 }
