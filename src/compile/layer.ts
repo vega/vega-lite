@@ -72,7 +72,7 @@ export class LayerModel extends Model {
     return this._children[0].hasDiscreteScale(channel);
   }
 
-  public dataTable(): string {
+  public dataTable() {
     // FIXME: don't just use the first child
     return this._children[0].dataTable();
   }

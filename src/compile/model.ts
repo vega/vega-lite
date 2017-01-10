@@ -3,7 +3,7 @@ import * as log from '../log';
 import {Axis} from '../axis';
 import {Channel, X, COLUMN} from '../channel';
 import {Config, CellConfig} from '../config';
-import {Data, DataTable} from '../data';
+import {Data, DataSourceType} from '../data';
 import {reduce, forEach} from '../encoding';
 import {FieldDef, FieldRefOption, field} from '../fielddef';
 import {Legend} from '../legend';
@@ -272,7 +272,7 @@ export abstract class Model {
    * For unit spec, this is always simply the spec.name + '-' + dataSourceType.
    * We already use the name map so that marks and scales use the correct data.
    */
-  public dataName(dataSourceType: DataTable): string {
+  public dataName(dataSourceType: DataSourceType): string {
     return this._dataNameMap.get(this.name(String(dataSourceType)));
   }
 
