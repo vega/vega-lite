@@ -20,7 +20,7 @@ import {parseAxisComponent} from './axis/parse';
 import {applyConfig, FILL_STROKE_CONFIG} from './common';
 import {initMarkConfig, initTextConfig} from './config';
 import {assembleData, parseUnitData} from './data/data';
-import {parseLegendComponent} from './legend';
+import {parseLegendComponent} from './legend/parse';
 import {assembleLayout, parseUnitLayout} from './layout';
 import {Model} from './model';
 import {parseMark} from './mark/mark';
