@@ -16,7 +16,7 @@ import {getFullName, QUANTITATIVE} from '../type';
 import {duplicate, extend, isArray, mergeDeep, Dict} from '../util';
 import {VgData} from '../vega.schema';
 
-import {parseAxisComponent} from './axis';
+import {parseAxisComponent} from './axis/parse';
 import {applyConfig, FILL_STROKE_CONFIG} from './common';
 import {initMarkConfig, initTextConfig} from './config';
 import {assembleData, parseUnitData} from './data/data';
