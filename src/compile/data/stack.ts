@@ -6,11 +6,10 @@ import {UnitModel} from './../unit';
 
 import {sortParams} from '../common';
 import {STACKED, SUMMARY} from '../../data';
-import {has} from '../../encoding';
 import {FieldDef, field} from '../../fielddef';
 import {hasDiscreteDomain} from '../../scale';
 import {StackOffset} from '../../stack';
-import {contains, isArray} from '../../util';
+import {contains} from '../../util';
 import {VgData, VgSort, VgStackTransform, VgImputeTransform} from '../../vega.schema';
 
 export interface StackComponent {
@@ -55,29 +54,21 @@ export interface StackComponent {
 
 
 function getStackByFields(model: UnitModel) {
-  const encoding = model.encoding();
   const stackProperties = model.stack();
 
-  return stackProperties.stackByChannels.reduce(function(fields, channel) {
-    const channelEncoding = encoding[channel];
-    if (has(encoding, channel)) {
-      if (isArray(channelEncoding)) {
-        channelEncoding.forEach(function(fieldDef) {
-          fields.push(field(fieldDef));
-        });
-      } else {
-        const fieldDef: FieldDef = channelEncoding;
-        const scale = model.scale(channel);
-        const _field = field(fieldDef, {
-          binSuffix: scale && hasDiscreteDomain(scale.type) ? 'range' : 'start'
-        });
-        if (!!_field) {
-          fields.push(_field);
-        }
-      }
+  return stackProperties.stackBy.reduce((fields, by) => {
+    const channel = by.channel;
+    const fieldDef = by.fieldDef;
+
+    const scale = model.scale(channel);
+    const _field = field(fieldDef, {
+      binSuffix: scale && hasDiscreteDomain(scale.type) ? 'range' : 'start'
+    });
+    if (!!_field) {
+      fields.push(_field);
     }
     return fields;
-  }, [] as string []);
+  }, [] as string[]);
 }
 
 /**

@@ -7,7 +7,7 @@ import {defaultConfig, Config, CellConfig} from '../config';
 import {SOURCE, SUMMARY} from '../data';
 import {Encoding} from '../encoding';
 import * as vlEncoding from '../encoding'; // TODO: remove
-import {FieldDef, FieldRefOption, field} from '../fielddef';
+import {ChannelDefWithScale, ChannelDefWithLegend, FieldDef, FieldRefOption, field} from '../fielddef';
 import {Legend} from '../legend';
 import {Mark, TEXT as TEXTMARK} from '../mark';
 import {Scale, ScaleConfig, hasDiscreteDomain} from '../scale';
@@ -166,7 +166,8 @@ export class UnitModel extends Model {
           (channel === X && vlEncoding.has(encoding, X2)) ||
           (channel === Y && vlEncoding.has(encoding, Y2))
         ) {
-        const scale = _scale[channel] = initScale(channel, encoding[channel], config, mark,
+        const scale = _scale[channel] = initScale(
+          channel, encoding[channel] as ChannelDefWithScale, config, mark,
           channel === X ? topLevelWidth : channel === Y ? topLevelHeight : undefined,
           xyRangeSteps // for determine point / bar size
         );
@@ -241,7 +242,8 @@ export class UnitModel extends Model {
   private _initLegend(encoding: Encoding, config: Config): Dict<Legend> {
     return NONSPATIAL_SCALE_CHANNELS.reduce(function(_legend, channel) {
       if (vlEncoding.has(encoding, channel)) {
-        const legendSpec = encoding[channel].legend;
+        const channelDef = encoding[channel] as ChannelDefWithLegend;
+        const legendSpec = channelDef.legend;
         // We no longer support false in the schema, but we keep false here for backward compatability.
         if (legendSpec !== null && legendSpec !== false) {
           _legend[channel] = extend({}, config.legend,
