@@ -6,14 +6,16 @@ import {VgValueRef} from '../../vega.schema';
 
 import {applyColorAndOpacity} from '../common';
 import {UnitModel} from '../unit';
+
+import {MarkCompiler} from './base';
 import * as ref from './valueref';
 
-export namespace tick {
-  export function markType() {
+export const tick: MarkCompiler = {
+  markType: () => {
     return 'rect';
-  }
+  },
 
-  export function properties(model: UnitModel) {
+  encodeEntry: (model: UnitModel) => {
     let p: any = {};
     const config = model.config();
     const stack = model.stack();
@@ -34,22 +36,22 @@ export namespace tick {
     applyColorAndOpacity(p, model);
     return p;
   }
+};
 
-  function size(fieldDef: FieldDef, scaleName: string, scale: Scale, config: Config, scaleRangeStep: number | null): VgValueRef {
-    let defaultSize: number;
-    if (config.tick.bandSize !== undefined) {
-      defaultSize = config.tick.bandSize;
-    } else {
-      const rangeStep = scaleRangeStep !== undefined ?
-        scaleRangeStep :
-        config.scale.rangeStep;
-      if (typeof rangeStep !== 'number') {
-        // FIXME consolidate this log
-        throw new Error('Function does not handle non-numeric rangeStep');
-      }
-      defaultSize = rangeStep / 1.5;
+function size(fieldDef: FieldDef, scaleName: string, scale: Scale, config: Config, scaleRangeStep: number | null): VgValueRef {
+  let defaultSize: number;
+  if (config.tick.bandSize !== undefined) {
+    defaultSize = config.tick.bandSize;
+  } else {
+    const rangeStep = scaleRangeStep !== undefined ?
+      scaleRangeStep :
+      config.scale.rangeStep;
+    if (typeof rangeStep !== 'number') {
+      // FIXME consolidate this log
+      throw new Error('Function does not handle non-numeric rangeStep');
     }
-
-    return ref.midPoint(SIZE, fieldDef, scaleName, scale, {value: defaultSize});
+    defaultSize = rangeStep / 1.5;
   }
+
+  return ref.midPoint(SIZE, fieldDef, scaleName, scale, {value: defaultSize});
 }

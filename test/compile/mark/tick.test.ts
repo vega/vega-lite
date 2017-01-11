@@ -30,7 +30,7 @@ describe('Mark: Tick', function() {
       "config": {"mark": {"stacked": "zero"}}
     });
 
-    const props = tick.properties(model);
+    const props = tick.encodeEntry(model);
 
     it('should use stack_end on x', function() {
       assert.deepEqual(props.xc, {scale: X, field: 'sum_a_end'});
@@ -51,7 +51,7 @@ describe('Mark: Tick', function() {
       "config": {"mark": {"stacked": "zero"}}
     });
 
-    const props = tick.properties(model);
+    const props = tick.encodeEntry(model);
 
     it('should use stack_end on y', function() {
       assert.deepEqual(props.yc, {scale: Y, field: 'sum_a_end'});
@@ -65,7 +65,7 @@ describe('Mark: Tick', function() {
       'data': {'url': 'data/cars.json'}
     });
 
-    const props = tick.properties(model);
+    const props = tick.encodeEntry(model);
     it('should be centered on y', function() {
       assert.deepEqual(props.yc, {value: 10.5});
     });
@@ -86,7 +86,7 @@ describe('Mark: Tick', function() {
       'data': {'url': 'data/cars.json'}
     });
 
-    const props = tick.properties(model);
+    const props = tick.encodeEntry(model);
     it('should be centered on x', function() {
       assert.deepEqual(props.xc, {value: 10.5});
     });
@@ -110,7 +110,7 @@ describe('Mark: Tick', function() {
         },
       'data': {'url': 'data/cars.json'}
     });
-    const props = tick.properties(model);
+    const props = tick.encodeEntry(model);
 
     it('should scale on x', function() {
       assert.deepEqual(props.xc, {scale: X, field: 'Horsepower'});
@@ -141,7 +141,7 @@ describe('Mark: Tick', function() {
         },
       'data': {'url': 'data/cars.json'},
     });
-    const props = tick.properties(model);
+    const props = tick.encodeEntry(model);
     it('width should change with size field', function() {
       assert.deepEqual(props.height, {'field': 'Acceleration', 'scale': SIZE});
     });
@@ -158,7 +158,7 @@ describe('Mark: Tick', function() {
         },
       'data': {'url': 'data/cars.json'},
     });
-    const props = tick.properties(model);
+    const props = tick.encodeEntry(model);
     it('height should change with size field', function() {
       assert.deepEqual(props.height, {'field': 'Acceleration', 'scale': SIZE});
     });

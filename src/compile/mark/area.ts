@@ -2,14 +2,15 @@ import {X, X2, Y, Y2} from '../../channel';
 
 import {applyColorAndOpacity, applyMarkConfig} from '../common';
 import {UnitModel} from '../unit';
+
+import {MarkCompiler} from './base';
 import * as ref from './valueref';
 
-export namespace area {
-  export function markType() {
+export const area: MarkCompiler = {
+  markType: () => {
     return 'area';
-  }
-
-  export function properties(model: UnitModel) {
+  },
+  encodeEntry: (model: UnitModel) => {
     // TODO Use Vega's marks properties interface
     let p: any = {};
     const config = model.config();
@@ -36,4 +37,4 @@ export namespace area {
     applyMarkConfig(p, model, ['interpolate', 'tension']);
     return p;
   }
-}
+};

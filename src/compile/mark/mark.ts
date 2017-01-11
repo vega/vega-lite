@@ -61,7 +61,7 @@ function parsePathMark(model: UnitModel) {
       // If has subfacet for line/area group, need to use faceted data from below.
       // FIXME: support sorting path order (in connected scatterplot)
       from: {data: (details.length > 0 ? FACETED_PATH_PREFIX : '') + dataFrom(model)},
-      encode: { update: markCompiler[mark].properties(model) }
+      encode: { update: markCompiler[mark].encodeEntry(model) }
     }
   ];
 
@@ -114,7 +114,7 @@ function parseNonPathMark(model: UnitModel) {
     name: model.name('marks'),
     type: markCompiler[mark].markType(),
     from: {data: dataFrom(model)},
-    encode: { update: markCompiler[mark].properties(model)}
+    encode: { update: markCompiler[mark].encodeEntry(model)}
   });
 
   return marks;

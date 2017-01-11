@@ -4,15 +4,22 @@ import {Config} from '../../config';
 import {FieldDef, field} from '../../fielddef';
 import {QUANTITATIVE, TEMPORAL} from '../../type';
 import {UnitModel} from '../unit';
+import {VgValueRef, VgMarkGroup} from '../../vega.schema';
+
+import {MarkCompiler} from './base';
 import * as ref from './valueref';
-import {VgValueRef} from '../../vega.schema';
 
-export namespace text {
-  export function markType() {
+// FIXME: remove thie once we remove the background hack
+export interface TextCompiler extends MarkCompiler {
+  background: (model: UnitModel) => VgMarkGroup;
+}
+
+export const text: TextCompiler = {
+  markType: () => {
     return 'text';
-  }
+  },
 
-  export function background(model: UnitModel) {
+  background: (model: UnitModel) => {
     return {
       x: { value: 0 },
       y: { value: 0 },
@@ -23,9 +30,9 @@ export namespace text {
         field: model.field(COLOR)
       }
     };
-  }
+  },
 
-  export function properties(model: UnitModel) {
+  encodeEntry: (model: UnitModel) => {
     // TODO Use Vega's marks properties interface
     let p: any = {};
 
@@ -46,7 +53,7 @@ export namespace text {
        {value: config.text.fontSize}
     );
 
-    p.text = text(textFieldDef, model.scaleName(TEXT), config);
+    p.text = textRef(textFieldDef, model.scaleName(TEXT), config);
 
     if (model.config().text.applyColorToBackground && !model.has(X) && !model.has(Y)) {
       p.fill = {value: 'black'}; // TODO: add rules for swapping between black and white
@@ -59,36 +66,36 @@ export namespace text {
 
     return p;
   }
+};
 
-  function xDefault(config: Config, textFieldDef:FieldDef): VgValueRef {
-    if (textFieldDef && textFieldDef.type === QUANTITATIVE) {
-      return { field: { group: 'width' }, offset: -5 };
-    }
-    // TODO: allow this to fit (Be consistent with ref.midX())
-    return { value: config.scale.textXRangeStep / 2 };
+function xDefault(config: Config, textFieldDef:FieldDef): VgValueRef {
+  if (textFieldDef && textFieldDef.type === QUANTITATIVE) {
+    return { field: { group: 'width' }, offset: -5 };
   }
+  // TODO: allow this to fit (Be consistent with ref.midX())
+  return { value: config.scale.textXRangeStep / 2 };
+}
 
-  function text(textFieldDef: FieldDef, scaleName: string, config: Config): VgValueRef {
-    // text
-    if (textFieldDef) {
-      if (textFieldDef.field) {
-        if (QUANTITATIVE === textFieldDef.type) {
-          // FIXME: what happens if we have bin?
-          const format = numberFormat(textFieldDef, config.text.format, config, TEXT);
-          return {
-            signal: `format(${field(textFieldDef, { datum: true })}, '${format}')`
-          };
-        } else if (TEMPORAL === textFieldDef.type) {
-          return {
-            signal: timeFormatExpression(field(textFieldDef, {datum: true}), textFieldDef.timeUnit, config.text.format, config.text.shortTimeLabels, config)
-          };
-        } else {
-          return { field: textFieldDef.field };
-        }
-      } else if (textFieldDef.value) {
-        return { value: textFieldDef.value };
+function textRef(textFieldDef: FieldDef, scaleName: string, config: Config): VgValueRef {
+  // text
+  if (textFieldDef) {
+    if (textFieldDef.field) {
+      if (QUANTITATIVE === textFieldDef.type) {
+        // FIXME: what happens if we have bin?
+        const format = numberFormat(textFieldDef, config.text.format, config, TEXT);
+        return {
+          signal: `format(${field(textFieldDef, { datum: true })}, '${format}')`
+        };
+      } else if (TEMPORAL === textFieldDef.type) {
+        return {
+          signal: timeFormatExpression(field(textFieldDef, {datum: true}), textFieldDef.timeUnit, config.text.format, config.text.shortTimeLabels, config)
+        };
+      } else {
+        return { field: textFieldDef.field };
       }
+    } else if (textFieldDef.value) {
+      return { value: textFieldDef.value };
     }
-    return {value: config.text.text};
   }
+  return {value: config.text.text};
 }

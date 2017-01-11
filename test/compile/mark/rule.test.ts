@@ -16,7 +16,7 @@ describe('Mark: Rule', function() {
       "encoding": {"x": {"field": "a", "type": "quantitative"}}
     });
 
-    const props = rule.properties(model);
+    const props = rule.encodeEntry(model);
 
     it('should create vertical rule that fits height', function() {
       assert.deepEqual(props.x, {scale: X, field: 'a'});
@@ -31,7 +31,7 @@ describe('Mark: Rule', function() {
       "encoding": {"y": {"field": "a", "type": "quantitative"}}
     });
 
-    const props = rule.properties(model);
+    const props = rule.encodeEntry(model);
 
     it('should create horizontal rule that fits height', function() {
       assert.deepEqual(props.y, {scale: Y, field: 'a'});
@@ -49,7 +49,7 @@ describe('Mark: Rule', function() {
       }
     });
 
-    const props = rule.properties(model);
+    const props = rule.encodeEntry(model);
 
     it('should create horizontal rule on the axis', function() {
       assert.deepEqual(props.x, {scale: X, field: 'a'});
@@ -67,7 +67,7 @@ describe('Mark: Rule', function() {
       }
     });
 
-    const props = rule.properties(model);
+    const props = rule.encodeEntry(model);
 
     it('should create horizontal rules on the axis', function() {
       assert.deepEqual(props.y, {scale: Y, field: 'a'});
@@ -86,7 +86,7 @@ describe('Mark: Rule', function() {
       }
     });
 
-    const props = rule.properties(model);
+    const props = rule.encodeEntry(model);
 
     it('should create horizontal rules', function() {
       assert.deepEqual(props.x, {scale: X, field: 'a'});
@@ -105,7 +105,7 @@ describe('Mark: Rule', function() {
       }
     });
 
-    const props = rule.properties(model);
+    const props = rule.encodeEntry(model);
 
     it('should create vertical rules', function() {
       assert.deepEqual(props.y, {scale: Y, field: 'a'});
@@ -123,7 +123,7 @@ describe('Mark: Rule', function() {
       }
     });
 
-    const props = rule.properties(model);
+    const props = rule.encodeEntry(model);
 
     it('should create vertical rule that emulates bar chart', function() {
       assert.equal(model.config().mark.orient, 'vertical');
@@ -143,7 +143,7 @@ describe('Mark: Rule', function() {
       }
     });
 
-    const props = rule.properties(model);
+    const props = rule.encodeEntry(model);
 
     it('should create horizontal rule that emulates bar chart', function() {
       assert.equal(model.config().mark.orient, 'horizontal');
@@ -168,7 +168,7 @@ describe('Mark: Rule', function() {
       }
     });
 
-    const props = rule.properties(model);
+    const props = rule.encodeEntry(model);
 
     it('should have the correct value for x, x2, and color', () => {
       assert.deepEqual(props.x, {scale: 'x', field: 'sum_b_end'});
@@ -190,7 +190,7 @@ describe('Mark: Rule', function() {
       }
     });
 
-    const props = rule.properties(model);
+    const props = rule.encodeEntry(model);
 
     it('should have the correct value for y, y2, and color', () => {
       assert.deepEqual(props.y, {scale: 'y', field: 'sum_b_end'});

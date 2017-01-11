@@ -4,14 +4,15 @@ import {FieldDef} from '../../fielddef';
 
 import {applyColorAndOpacity, applyMarkConfig} from '../common';
 import {UnitModel} from '../unit';
+
+import {MarkCompiler} from './base';
 import * as ref from './valueref';
 
-export namespace line {
-  export function markType() {
+export const line: MarkCompiler = {
+  markType: () => {
     return 'line';
-  }
-
-  export function properties(model: UnitModel) {
+  },
+  encodeEntry: (model: UnitModel) => {
     // TODO Use Vega's marks properties interface
     let p: any = {};
     const config = model.config();
@@ -29,15 +30,16 @@ export namespace line {
     applyMarkConfig(p, model, ['interpolate', 'tension']);
     return p;
   }
+};
 
-  // NOTE: This is different from other size because
-  // Vega does not support variable line size.
-  function size(fieldDef: FieldDef, config: Config) {
-    if (fieldDef && fieldDef.value !== undefined) {
-       return { value: fieldDef.value};
-    }
-    // FIXME: We should not need this line since this should be taken care by applyColorAndOpacity
-    // but we have to refactor \ first
-    return { value: config.mark.strokeWidth };
+// NOTE: This is different from other size because
+// Vega does not support variable line size.
+function size(fieldDef: FieldDef, config: Config) {
+  if (fieldDef && fieldDef.value !== undefined) {
+      return { value: fieldDef.value};
   }
+  // FIXME: We should not need this line since this should be taken care by applyColorAndOpacity
+  // but we have to refactor \ first
+  return { value: config.mark.strokeWidth };
 }
+

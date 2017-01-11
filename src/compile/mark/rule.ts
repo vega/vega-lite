@@ -1,14 +1,15 @@
 import {X, Y, X2, Y2, SIZE} from '../../channel';
 import {applyColorAndOpacity} from '../common';
 import {UnitModel} from '../unit';
+
+import {MarkCompiler} from './base';
 import * as ref from './valueref';
 
-export namespace rule {
-  export function markType() {
+export const rule: MarkCompiler = {
+  markType: () => {
     return 'rule';
-  }
-
-  export function properties(model: UnitModel) {
+  },
+  encodeEntry: (model: UnitModel) => {
     let p: any = {};
     const orient = model.config().mark.orient;
     const config = model.config();
@@ -34,4 +35,4 @@ export namespace rule {
 
     return p;
   }
-}
+};
