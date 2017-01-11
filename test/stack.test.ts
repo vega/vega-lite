@@ -117,7 +117,7 @@ describe('stack', () => {
         const _stack = stack(spec.mark, spec.encoding, spec.config.mark.stacked);
         assert.isOk(_stack);
         assert.isTrue(isStacked(spec));
-        assert.equal(_stack.stackByChannels[0], DETAIL);
+        assert.equal(_stack.stackBy[0].channel, DETAIL);
       });
     });
   });

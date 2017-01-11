@@ -91,18 +91,26 @@ export interface Encoding extends UnitEncoding {
 
 // TOD: rename this to hasChannelField and only use we really want it.
 export function has(encoding: Encoding, channel: Channel): boolean {
-  const channelEncoding = encoding && encoding[channel];
-  return channelEncoding && (
-    channelEncoding.field !== undefined ||
-    // TODO: check that we have field in the array
-    (isArray(channelEncoding) && channelEncoding.length > 0)
-  );
+  const channelDef = encoding && encoding[channel];
+  if (channelDef) {
+    if (isArray(channelDef)) {
+      return some(channelDef, (fieldDef) => !!fieldDef.field);
+    } else {
+      return !!channelDef.field;
+    }
+  }
+  return false;
 }
 
 export function isAggregate(encoding: Encoding) {
   return some(CHANNELS, (channel) => {
-    if (has(encoding, channel) && encoding[channel].aggregate) {
-      return true;
+    if (has(encoding, channel)) {
+      const channelDef = encoding[channel];
+      if (isArray(channelDef)) {
+        return some(channelDef, (fieldDef) => !!fieldDef.aggregate);
+      } else {
+        return !!channelDef.aggregate;
+      }
     }
     return false;
   });
@@ -116,13 +124,10 @@ export function fieldDefs(encoding: Encoding): FieldDef[] {
   let arr: FieldDef[] = [];
   CHANNELS.forEach(function(channel) {
     if (has(encoding, channel)) {
-      if (isArray(encoding[channel])) {
-        encoding[channel].forEach(function(fieldDef: FieldDef) {
-          arr.push(fieldDef);
-        });
-      } else {
-        arr.push(encoding[channel]);
-      }
+      const channelDef = encoding[channel];
+      (isArray(channelDef) ? channelDef : [channelDef]).forEach((fieldDef) => {
+        arr.push(fieldDef);
+      });
     }
   });
   return arr;
