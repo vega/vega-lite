@@ -126,7 +126,7 @@ export class FacetModel extends Model {
             if (yAxis && yAxis.orient !== AxisOrient.RIGHT && !modelAxis.orient) {
               modelAxis.orient = AxisOrient.RIGHT;
             }
-            if( child.has(X) && !modelAxis.labelAngle) {
+            if( child.channelHasField(X) && !modelAxis.labelAngle) {
               modelAxis.labelAngle = modelAxis.orient === AxisOrient.RIGHT ? 90 : 270;
             }
           }
@@ -140,7 +140,7 @@ export class FacetModel extends Model {
     return this._facet;
   }
 
-  public has(channel: Channel): boolean {
+  public channelHasField(channel: Channel): boolean {
     return !!this._facet[channel];
   }
 
@@ -241,8 +241,8 @@ export class FacetModel extends Model {
               name: this.facetedTable(),
               data: this.dataTable(),
               groupby: [].concat(
-                this.has(ROW) ? [this.field(ROW)] : [],
-                this.has(COLUMN) ? [this.field(COLUMN)] : []
+                this.channelHasField(ROW) ? [this.field(ROW)] : [],
+                this.channelHasField(COLUMN) ? [this.field(COLUMN)] : []
               )
             }
           }
@@ -285,8 +285,8 @@ export class FacetModel extends Model {
     const child = this.child();
 
     this.component.gridGroup = extend(
-      !child.has(X) && this.has(COLUMN) ? { column: getColumnGridGroups(this) } : {},
-      !child.has(Y) && this.has(ROW) ? { row: getRowGridGroups(this) } : {}
+      !child.channelHasField(X) && this.channelHasField(COLUMN) ? { column: getColumnGridGroups(this) } : {},
+      !child.channelHasField(Y) && this.channelHasField(ROW) ? { row: getRowGridGroups(this) } : {}
     );
   }
 
@@ -356,14 +356,14 @@ function getFacetGroupProperties(model: FacetModel) {
   const mergedCellConfig = extend({}, child.config().cell, child.config().facet.cell);
 
   return extend({
-      x: model.has(COLUMN) ? {
+      x: model.channelHasField(COLUMN) ? {
           scale: model.scaleName(COLUMN),
           field: model.field(COLUMN),
           // offset by the spacing / 2
           offset: model.spacing(COLUMN) / 2
         } : {value: model.config().scale.facetSpacing / 2},
 
-      y: model.has(ROW) ? {
+      y: model.channelHasField(ROW) ? {
         scale: model.scaleName(ROW),
         field: model.field(ROW),
         // offset by the spacing / 2
@@ -415,7 +415,7 @@ function parseAxisGroups(model: FacetModel, channel: 'x' | 'y') {
   let axisGroup: any = null;
 
   const child = model.child();
-  if (child.has(channel)) {
+  if (child.channelHasField(channel)) {
     if (child.axis(channel)) {
       if (true) { // the channel has shared axes
 

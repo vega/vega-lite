@@ -243,7 +243,7 @@ export abstract class Model {
     forEach(this.mapping(), f, t);
   }
 
-  public abstract has(channel: Channel): boolean;
+  public abstract channelHasField(channel: Channel): boolean;
 
   public parent(): Model {
     return this._parent;

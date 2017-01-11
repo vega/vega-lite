@@ -58,7 +58,7 @@ export class LayerModel extends Model {
     return this._height;
   }
 
-  public has(channel: Channel): boolean {
+  public channelHasField(channel: Channel): boolean {
     // layer does not have any channels
     return false;
   }

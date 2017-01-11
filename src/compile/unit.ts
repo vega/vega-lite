@@ -162,9 +162,9 @@ export class UnitModel extends Model {
     const xyRangeSteps: number[] = [];
 
     return UNIT_SCALE_CHANNELS.reduce(function(_scale, channel) {
-      if (vlEncoding.has(encoding, channel) ||
-          (channel === X && vlEncoding.has(encoding, X2)) ||
-          (channel === Y && vlEncoding.has(encoding, Y2))
+      if (vlEncoding.channelHasField(encoding, channel) ||
+          (channel === X && vlEncoding.channelHasField(encoding, X2)) ||
+          (channel === Y && vlEncoding.channelHasField(encoding, Y2))
         ) {
         const scale = _scale[channel] = initScale(
           channel, encoding[channel], config, mark,
@@ -221,9 +221,9 @@ export class UnitModel extends Model {
   private _initAxis(encoding: Encoding, config: Config): Dict<Axis> {
     return [X, Y].reduce(function(_axis, channel) {
       // Position Axis
-      if (vlEncoding.has(encoding, channel) ||
-          (channel === X && vlEncoding.has(encoding, X2)) ||
-          (channel === Y && vlEncoding.has(encoding, Y2))) {
+      if (vlEncoding.channelHasField(encoding, channel) ||
+          (channel === X && vlEncoding.channelHasField(encoding, X2)) ||
+          (channel === Y && vlEncoding.channelHasField(encoding, Y2))) {
 
         const axisSpec = (encoding[channel] || {}).axis;
 
@@ -241,7 +241,7 @@ export class UnitModel extends Model {
 
   private _initLegend(encoding: Encoding, config: Config): Dict<Legend> {
     return NONSPATIAL_SCALE_CHANNELS.reduce(function(_legend, channel) {
-      if (vlEncoding.has(encoding, channel)) {
+      if (vlEncoding.channelHasField(encoding, channel)) {
         const legendSpec = encoding[channel].legend;
         // We no longer support false in the schema, but we keep false here for backward compatability.
         if (legendSpec !== null && legendSpec !== false) {
@@ -352,8 +352,8 @@ export class UnitModel extends Model {
     return this._mark;
   }
 
-  public has(channel: Channel) {
-    return vlEncoding.has(this._encoding, channel);
+  public channelHasField(channel: Channel) {
+    return vlEncoding.channelHasField(this._encoding, channel);
   }
 
   public encoding() {

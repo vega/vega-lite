@@ -140,7 +140,7 @@ function parseFacetSizeLayout(model: FacetModel, channel: Channel): SizeComponen
 }
 
 function facetSizeFormula(model: FacetModel, channel: Channel, innerSize: string) {
-  if (model.has(channel)) {
+  if (model.channelHasField(channel)) {
     return '(datum["' + innerSize + '"] + ' + model.spacing(channel) + ')' + ' * ' + cardinalityExpr(model, channel);
   } else {
     return 'datum["' + innerSize + '"] + ' + model.config().scale.facetSpacing; // need to add outer padding for facet
@@ -181,7 +181,7 @@ function parseLayerSizeLayout(model: LayerModel, channel: Channel): SizeComponen
 }
 
 function getDistinct(model: Model, channel: Channel): StringSet {
-  if (model.has(channel) && model.hasDiscreteScale(channel)) {
+  if (model.channelHasField(channel) && model.hasDiscreteScale(channel)) {
     const scale = model.scale(channel);
     if (hasDiscreteDomain(scale.type) && !(scale.domain instanceof Array)) {
       // if explicit domain is declared, use array length

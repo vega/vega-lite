@@ -89,8 +89,7 @@ export interface Encoding extends UnitEncoding {
   column?: FacetChannelDef;
 }
 
-// TOD: rename this to hasChannelField and only use we really want it.
-export function has(encoding: Encoding, channel: Channel): boolean {
+export function channelHasField(encoding: Encoding, channel: Channel): boolean {
   const channelDef = encoding && encoding[channel];
   if (channelDef) {
     if (isArray(channelDef)) {
@@ -104,7 +103,7 @@ export function has(encoding: Encoding, channel: Channel): boolean {
 
 export function isAggregate(encoding: Encoding) {
   return some(CHANNELS, (channel) => {
-    if (has(encoding, channel)) {
+    if (channelHasField(encoding, channel)) {
       const channelDef = encoding[channel];
       if (isArray(channelDef)) {
         return some(channelDef, (fieldDef) => !!fieldDef.aggregate);
@@ -123,7 +122,7 @@ export function isRanged(encoding: Encoding) {
 export function fieldDefs(encoding: Encoding): FieldDef[] {
   let arr: FieldDef[] = [];
   CHANNELS.forEach(function(channel) {
-    if (has(encoding, channel)) {
+    if (channelHasField(encoding, channel)) {
       const channelDef = encoding[channel];
       (isArray(channelDef) ? channelDef : [channelDef]).forEach((fieldDef) => {
         arr.push(fieldDef);
