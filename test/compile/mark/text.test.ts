@@ -18,7 +18,7 @@ describe('Mark: Text', function() {
       "data": {"url": "data/cars.json"}
     };
     const model = parseUnitModel(spec);
-    const props = text.properties(model);
+    const props = text.encodeEntry(model);
 
     it('should have placeholder text', function() {
       assert.deepEqual(props.text, {value: "Abc"});
@@ -38,7 +38,7 @@ describe('Mark: Text', function() {
       "config": {"mark": {"stacked": "zero"}}
     });
 
-    const props = text.properties(model);
+    const props = text.encodeEntry(model);
 
     it('should use stack_end on x', function() {
       assert.deepEqual(props.x, {scale: X, field: 'sum_a_end'});
@@ -58,7 +58,7 @@ describe('Mark: Text', function() {
       "config": {"mark": {"stacked": "zero"}}
     });
 
-    const props = text.properties(model);
+    const props = text.encodeEntry(model);
 
     it('should use stack_end on y', function() {
       assert.deepEqual(props.y, {scale: Y, field: 'sum_a_end'});
@@ -78,7 +78,7 @@ describe('Mark: Text', function() {
       }
     };
     const model = parseUnitModel(spec);
-    const props = text.properties(model);
+    const props = text.encodeEntry(model);
 
     it('should use number template', function() {
       assert.deepEqual(props.text, {signal: `format(datum["foo"], 'd')`});
@@ -93,7 +93,7 @@ describe('Mark: Text', function() {
       }
     };
     const model = parseUnitModel(spec);
-    const props = text.properties(model);
+    const props = text.encodeEntry(model);
 
     it('should use date template', function() {
       assert.deepEqual(props.text, {signal: `timeFormat(datum["foo"], '%b %d, %Y')`});
@@ -111,7 +111,7 @@ describe('Mark: Text', function() {
       "data": {"url": "data/cars.json"}
     };
     const model = parseUnitModel(spec);
-    const props = text.properties(model);
+    const props = text.encodeEntry(model);
 
     it('should scale on x', function() {
       assert.deepEqual(props.x, {scale: X, field: 'Acceleration'});
@@ -142,7 +142,7 @@ describe('Mark: Text', function() {
         "data": {"url": "data/cars.json"}
       };
     const model = parseUnitModel(spec);
-    const props = text.properties(model);
+    const props = text.encodeEntry(model);
 
     it('should fit cell on x', function() {
       assert.deepEqual(props.x, { field: { group: 'width' }, offset: -5 });
@@ -194,7 +194,7 @@ describe('Mark: Text', function() {
         "data": {"url": "data/cars.json"}
       };
     const model = parseUnitModel(spec);
-    const props = text.properties(model);
+    const props = text.encodeEntry(model);
     it('should fill black', function() {
       assert.deepEqual(props.fill, {value: 'black'});
     });
