@@ -55,7 +55,9 @@ export const text: TextCompiler = {
 
     p.text = textRef(textFieldDef, model.scaleName(TEXT), config);
 
-    if (model.config().text.applyColorToBackground && !model.has(X) && !model.has(Y)) {
+    if (model.config().text.applyColorToBackground &&
+        !model.channelHasField(X) &&
+        !model.channelHasField(Y)) {
       p.fill = {value: 'black'}; // TODO: add rules for swapping between black and white
       // opacity
       const opacity = model.config().mark.opacity;

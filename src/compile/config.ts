@@ -2,7 +2,7 @@ import * as log from '../log';
 
 import {X, COLOR, SIZE, DETAIL} from '../channel';
 import {Config} from '../config';
-import {Encoding, isAggregate, has} from '../encoding';
+import {Encoding, isAggregate, channelHasField} from '../encoding';
 import {isMeasure} from '../fielddef';
 import {MarkConfig, TextConfig, Orient} from '../mark';
 import {BAR, AREA, POINT, LINE, TICK, CIRCLE, SQUARE, RECT, RULE, TEXT, Mark} from '../mark';
@@ -41,7 +41,7 @@ export function initTextConfig(encoding: Encoding, config: Config) {
   const textConfig: TextConfig = extend({}, config.text);
 
   if (textConfig.align === undefined) {
-    textConfig.align = has(encoding, X) ? 'center' : 'right';
+    textConfig.align = channelHasField(encoding, X) ? 'center' : 'right';
   }
   return textConfig;
 }
@@ -49,12 +49,12 @@ export function initTextConfig(encoding: Encoding, config: Config) {
 export function opacity(mark: Mark, encoding: Encoding, stacked: StackProperties) {
   if (contains([POINT, TICK, CIRCLE, SQUARE], mark)) {
     // point-based marks
-    if (!isAggregate(encoding) || has(encoding, DETAIL)) {
+    if (!isAggregate(encoding) || channelHasField(encoding, DETAIL)) {
       return 0.7;
     }
   }
   if (mark === BAR && !stacked) {
-    if (has(encoding, COLOR) || has(encoding, DETAIL) || has(encoding, SIZE)) {
+    if (channelHasField(encoding, COLOR) || channelHasField(encoding, DETAIL) || channelHasField(encoding, SIZE)) {
       return 0.7;
     }
   }

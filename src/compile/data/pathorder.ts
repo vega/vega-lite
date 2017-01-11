@@ -16,7 +16,7 @@ import {UnitModel} from '../unit';
 export const pathOrder: DataComponentCompiler<VgSort> = {
   parseUnit: function(model: UnitModel): VgSort {
     if (contains(['line', 'area'], model.mark())) {
-      if (model.mark() === 'line' && model.has('order')) {
+      if (model.mark() === 'line' && model.channelHasField('order')) {
         // For only line, sort by the order field if it is specified.
         return sortParams(model.encoding().order);
       } else {

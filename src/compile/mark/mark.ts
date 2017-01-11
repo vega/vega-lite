@@ -96,8 +96,10 @@ function parseNonPathMark(model: UnitModel) {
 
   let marks: any[] = []; // TODO: vgMarks
   if (mark === TEXTMARK &&
-    model.has(COLOR) &&
-    model.config().text.applyColorToBackground && !model.has(X) && !model.has(Y)
+    model.channelHasField(COLOR) &&
+    model.config().text.applyColorToBackground &&
+    !model.channelHasField(X) &&
+    !model.channelHasField(Y)
   ) {
     // add background to 'text' marks if has color
     marks.push({
@@ -128,7 +130,7 @@ const NONSPATIAL_CHANNELS_EXCEPT_ORDER = without(NONSPATIAL_CHANNELS, ['order'] 
  */
 function detailFields(model: UnitModel): string[] {
   return NONSPATIAL_CHANNELS_EXCEPT_ORDER.reduce(function(details, channel) {
-    if (model.has(channel) && !model.fieldDef(channel).aggregate) {
+    if (model.channelHasField(channel) && !model.fieldDef(channel).aggregate) {
       details.push(model.field(channel));
     }
     return details;

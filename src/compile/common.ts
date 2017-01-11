@@ -57,7 +57,7 @@ export function applyColorAndOpacity(p: any, model: UnitModel) {
 
   let colorValue: VgValueRef;
   let opacityValue: VgValueRef;
-  if (model.has(COLOR)) {
+  if (model.channelHasField(COLOR)) {
     colorValue = {
       scale: model.scaleName(COLOR),
       field: model.field(COLOR)
@@ -66,7 +66,7 @@ export function applyColorAndOpacity(p: any, model: UnitModel) {
     colorValue = { value: colorFieldDef.value };
   }
 
-  if (model.has(OPACITY)) {
+  if (model.channelHasField(OPACITY)) {
     opacityValue = {
       scale: model.scaleName(OPACITY),
       field: model.field(OPACITY)

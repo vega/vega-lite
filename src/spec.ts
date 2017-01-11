@@ -2,7 +2,7 @@
 
 import {Config, defaultOverlayConfig, AreaOverlay} from './config';
 import {Data} from './data';
-import {Encoding, UnitEncoding, has, isRanged} from './encoding';
+import {Encoding, UnitEncoding, channelHasField, isRanged} from './encoding';
 import {Facet} from './facet';
 import {FieldDef} from './fielddef';
 import {Mark, ERRORBAR, TICK, AREA, RULE, LINE, POINT} from './mark';
@@ -125,8 +125,8 @@ export function isSomeFacetSpec(spec: ExtendedSpec | ExtendedFacetSpec): spec is
 
 export function isExtendedUnitSpec(spec: ExtendedSpec): spec is ExtendedUnitSpec {
   if (isSomeUnitSpec(spec)) {
-    const hasRow = has(spec.encoding, ROW);
-    const hasColumn = has(spec.encoding, COLUMN);
+    const hasRow = channelHasField(spec.encoding, ROW);
+    const hasColumn = channelHasField(spec.encoding, COLUMN);
 
     return hasRow || hasColumn;
   }
@@ -166,8 +166,8 @@ export function normalize(spec: ExtendedSpec): Spec {
 }
 
 export function normalizeExtendedUnitSpec(spec: ExtendedUnitSpec): Spec {
-    const hasRow = has(spec.encoding, ROW);
-    const hasColumn = has(spec.encoding, COLUMN);
+    const hasRow = channelHasField(spec.encoding, ROW);
+    const hasColumn = channelHasField(spec.encoding, COLUMN);
 
     // TODO: @arvind please  add interaction syntax here
     let encoding = duplicate(spec.encoding);
@@ -225,10 +225,10 @@ export function normalizeUnitSpec(spec: UnitSpec): Spec {
 
 export function normalizeRangedUnitSpec(spec: UnitSpec): Spec {
   if (spec.encoding) {
-    const hasX = has(spec.encoding, X);
-    const hasY = has(spec.encoding, Y);
-    const hasX2 = has(spec.encoding, X2);
-    const hasY2 = has(spec.encoding, Y2);
+    const hasX = channelHasField(spec.encoding, X);
+    const hasY = channelHasField(spec.encoding, Y);
+    const hasX2 = channelHasField(spec.encoding, X2);
+    const hasY2 = channelHasField(spec.encoding, Y2);
     if ((hasX2 && !hasX) || (hasY2 && !hasY)) {
       let normalizedSpec = duplicate(spec);
       if (hasX2 && !hasX) {

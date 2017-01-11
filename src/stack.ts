@@ -2,7 +2,7 @@ import * as log from './log';
 
 import {SUM_OPS} from './aggregate';
 import {Channel, STACK_GROUP_CHANNELS, X, Y, X2, Y2} from './channel';
-import {Encoding, has, isAggregate} from './encoding';
+import {Encoding, channelHasField, isAggregate} from './encoding';
 import {FieldDef} from './fielddef';
 import {Mark, BAR, AREA, POINT, CIRCLE, SQUARE, LINE, RULE, TEXT, TICK} from './mark';
 import {ScaleType} from './scale';
@@ -63,7 +63,7 @@ export function stack(mark: Mark, encoding: Encoding, stacked: StackOffset): Sta
 
   // Should have grouping level of detail
   const stackBy = STACK_GROUP_CHANNELS.reduce((sc, channel) => {
-    if (has(encoding, channel)) {
+    if (channelHasField(encoding, channel)) {
       const channelDef = encoding[channel];
       (isArray(channelDef) ? channelDef : [channelDef]).forEach((fieldDef) => {
         if (!fieldDef.aggregate) {
@@ -82,8 +82,8 @@ export function stack(mark: Mark, encoding: Encoding, stacked: StackOffset): Sta
   }
 
   // Has only one aggregate axis
-  const hasXField = has(encoding, X);
-  const hasYField = has(encoding, Y);
+  const hasXField = channelHasField(encoding, X);
+  const hasYField = channelHasField(encoding, Y);
   const xIsAggregate = hasXField && !!encoding.x.aggregate;
   const yIsAggregate = hasYField && !!encoding.y.aggregate;
 
@@ -107,7 +107,7 @@ export function stack(mark: Mark, encoding: Encoding, stacked: StackOffset): Sta
       return null;
     }
 
-    if (has(encoding, fieldChannel === X ? X2 : Y2)) {
+    if (channelHasField(encoding, fieldChannel === X ? X2 : Y2)) {
       log.warn(log.message.cannotStackRangedMark(fieldChannel));
       return null;
     }
