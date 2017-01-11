@@ -44,7 +44,7 @@ describe('compile/layout', () => {
       });
 
       const sizeExpr = unitSizeExpr(model, X);
-      assert.equal(sizeExpr, 'max(datum["distinct_a"] + 2*0.5, 0) * 21');
+      assert.equal(sizeExpr, 'max(datum["distinct_a"] - 1 + 2*0.5, 0) * 21');
     });
 
     it('should return correct formula for ordinal-band scale with custom padding', () => {

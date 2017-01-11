@@ -87,9 +87,12 @@ export function unitSizeExpr(model: UnitModel, channel: Channel): string {
 
       const cardinality = cardinalityExpr(model, channel);
       const paddingOuter = scale.paddingOuter !== undefined ? scale.paddingOuter : scale.padding;
-      const paddingInner = scale.type === 'band' ? // only band has paddingInner
+      const paddingInner = scale.type === 'band' ?
+        // only band has real paddingInner
         (scale.paddingInner !== undefined ? scale.paddingInner : scale.padding) :
-        0;
+        // For point, as calculated in https://github.com/vega/vega-scale/blob/master/src/band.js#L128,
+        // it's equivalent to have paddingInner = 1 since there is only n-1 steps between n points.
+        1;
 
       let space = cardinality +
         (paddingInner ? ` - ${paddingInner}` : '') +
