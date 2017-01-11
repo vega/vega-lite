@@ -807,7 +807,7 @@ camelcase@^3.0.0:
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/camelcase/-/camelcase-3.0.0.tgz#32fc4b9fcdaf845fcdf7e73bb97cac2261f0ab0a"
 
-canvas@^1.4.0, canvas@^1.6.0:
+canvas@^1.4.0, canvas@^1.6, canvas@^1.6.0:
   version "1.6.2"
   resolved "https://registry.yarnpkg.com/canvas/-/canvas-1.6.2.tgz#12b56e3f00e7880aa45e3aae59fe75237720aaa4"
   dependencies:
@@ -4121,11 +4121,7 @@ typescript-json-schema@~0.3.3:
     typescript "~2.0.10"
     yargs "^6.4.0"
 
-typescript@^2.0.10:
-  version "2.1.1"
-  resolved "https://registry.yarnpkg.com/typescript/-/typescript-2.1.1.tgz#41c2b64472f529331b2055c0424862b44ce58d42"
-
-typescript@~2.0.10:
+typescript@2.0.10, typescript@~2.0.10:
   version "2.0.10"
   resolved "https://registry.yarnpkg.com/typescript/-/typescript-2.0.10.tgz#ccdd4ed86fd5550a407101a0814012e1b3fac3dd"
 
@@ -4301,6 +4297,16 @@ vega-loader@>=2.0.0-beta:
     topojson "1"
     vega-util "1"
 
+vega-loader@>=2.0.0-beta.3:
+  version "2.0.0-beta.4"
+  resolved "https://registry.yarnpkg.com/vega-loader/-/vega-loader-2.0.0-beta.4.tgz#2cb967aed43d243da7750fa88a631b29b06fc0d5"
+  dependencies:
+    d3-dsv "1"
+    d3-request "1"
+    d3-time-format "2"
+    topojson "1"
+    vega-util "1"
+
 vega-parser@>=1.0.0-beta:
   version "1.0.0-beta.11"
   resolved "https://registry.yarnpkg.com/vega-parser/-/vega-parser-1.0.0-beta.11.tgz#d1cb759a818e0ca6ec147aa1f9d22e0ec7aba16e"
@@ -4328,6 +4334,15 @@ vega-scale@1:
     d3-scale-chromatic "1"
     vega-util "1"
 
+vega-scale@>=1.1:
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/vega-scale/-/vega-scale-1.1.1.tgz#2e2ce5750ffb8ea2197fe137c84c7466c2b7b0dc"
+  dependencies:
+    d3-array "1"
+    d3-scale "1"
+    d3-scale-chromatic "1"
+    vega-util "1"
+
 vega-scenegraph@>=2.0.0-beta:
   version "2.0.0-beta.4"
   resolved "https://registry.yarnpkg.com/vega-scenegraph/-/vega-scenegraph-2.0.0-beta.4.tgz#89c9c08893b481fb315c87c1eff090e51889fd84"
@@ -4338,6 +4353,17 @@ vega-scenegraph@>=2.0.0-beta:
   optionalDependencies:
     canvas "^1.4.0"
 
+vega-scenegraph@>=2.0.0-beta.11:
+  version "2.0.0-beta.14"
+  resolved "https://registry.yarnpkg.com/vega-scenegraph/-/vega-scenegraph-2.0.0-beta.14.tgz#8aa7e4d3eb3386f0c57e0ace6d66832781de9ac3"
+  dependencies:
+    d3-path "1"
+    d3-shape "1"
+    vega-loader ">=2.0.0-beta.3"
+    vega-util "^1.1"
+  optionalDependencies:
+    canvas "^1.6"
+
 vega-statistics@1:
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/vega-statistics/-/vega-statistics-1.1.1.tgz#5cd1b77e1d60f0cba16c8f2c42f60900d816351d"
@@ -4347,6 +4373,10 @@ vega-statistics@1:
 vega-util@1, vega-util@~1.0.2:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/vega-util/-/vega-util-1.0.2.tgz#c6b421065289ca85dc4bea691d519b1f48d83f3f"
+
+vega-util@^1.1:
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/vega-util/-/vega-util-1.1.1.tgz#ad860f47f09af764f8a1f5acf6d4c1855de9a0fe"
 
 vega-view@>=1.0.0-beta:
   version "1.0.0-beta.9"
@@ -4378,9 +4408,9 @@ vega-wordcloud@>=1.0.0-beta:
   optionalDependencies:
     canvas "^1.6.0"
 
-vega@~3.0.0-beta.5:
-  version "3.0.0-beta.5"
-  resolved "https://registry.yarnpkg.com/vega/-/vega-3.0.0-beta.5.tgz#239352d9b199655aeba03b6972cb00edffed6f48"
+vega@^3.0.0-beta.13:
+  version "3.0.0-beta.13"
+  resolved "https://registry.yarnpkg.com/vega/-/vega-3.0.0-beta.13.tgz#91306a1d1120dc5ac835837bcb26d1ca3ac334b1"
   dependencies:
     d3-color "1"
     vega-crossfilter ">=1.0.0-beta"
@@ -4390,13 +4420,13 @@ vega@~3.0.0-beta.5:
     vega-force ">=1.0.0-beta"
     vega-geo ">=1.0.0-beta"
     vega-hierarchy ">=1.0.0-beta"
-    vega-loader ">=2.0.0-beta"
+    vega-loader ">=2.0.0-beta.3"
     vega-parser ">=1.0.0-beta"
     vega-runtime ">=1.0.0-beta"
-    vega-scale "1"
-    vega-scenegraph ">=2.0.0-beta"
+    vega-scale ">=1.1"
+    vega-scenegraph ">=2.0.0-beta.11"
     vega-statistics "1"
-    vega-util "1"
+    vega-util "^1.1"
     vega-view ">=1.0.0-beta"
     vega-voronoi ">=1.0.0-beta"
     vega-wordcloud ">=1.0.0-beta"
