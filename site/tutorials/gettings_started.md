@@ -83,7 +83,7 @@ To show the data as a point, we can set the `mark` property to `point`.
 
 Now, it looks like we get a point. In fact, Vega-Lite renders one point for each object in the array, but they are all overlapping since we have not specified each point's position.
 
-To visually separate the points, data variables can be mapped to visual properties of a mark. For example, we can *encode* the variable `a` of the data with `x` channel, which represents the x-position of the points. We can do that by adding an `encoding` object with its key `x` mapped to a channel definition that describes variable `a`.
+To visually separate the points, data variables can be mapped to visual properties of a mark. For example, we can [*encode*]({{site.baseurl}}/docs/encoding.html) the variable `a` of the data with `x` channel, which represents the x-position of the points. We can do that by adding an `encoding` object with its key `x` mapped to a channel definition that describes variable `a`.
 
 {: .suppress-error}
 ```json
