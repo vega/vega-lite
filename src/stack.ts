@@ -59,7 +59,7 @@ export function stack(mark: Mark, encoding: Encoding, stacked: StackOffset): Sta
 
   // Should have grouping level of detail
   const stackByChannels = STACK_GROUP_CHANNELS.reduce((sc, channel) => {
-    if (has(encoding, channel) && !encoding[channel].aggregate) {
+    if (has(encoding, channel) && !('aggregate' in encoding[channel])) {
       sc.push(channel);
     }
     return sc;

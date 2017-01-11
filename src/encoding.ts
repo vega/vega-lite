@@ -93,7 +93,7 @@ export interface Encoding extends UnitEncoding {
 export function has(encoding: Encoding, channel: Channel): boolean {
   const channelEncoding = encoding && encoding[channel];
   return channelEncoding && (
-    channelEncoding.field !== undefined ||
+    'field' in channelEncoding ||
     // TODO: check that we have field in the array
     (isArray(channelEncoding) && channelEncoding.length > 0)
   );
@@ -101,7 +101,7 @@ export function has(encoding: Encoding, channel: Channel): boolean {
 
 export function isAggregate(encoding: Encoding) {
   return some(CHANNELS, (channel) => {
-    if (has(encoding, channel) && encoding[channel].aggregate) {
+    if (has(encoding, channel) && 'aggregate' in encoding[channel]) {
       return true;
     }
     return false;
@@ -116,12 +116,14 @@ export function fieldDefs(encoding: Encoding): FieldDef[] {
   let arr: FieldDef[] = [];
   CHANNELS.forEach(function(channel) {
     if (has(encoding, channel)) {
-      if (isArray(encoding[channel])) {
-        encoding[channel].forEach(function(fieldDef: FieldDef) {
+      const channelDef = encoding[channel];
+      if (isArray(channelDef)) {
+        const cDef: (FieldDef | OrderChannelDef)[] = channelDef;
+        cDef.forEach(function(fieldDef: FieldDef | OrderChannelDef) {
           arr.push(fieldDef);
         });
       } else {
-        arr.push(encoding[channel]);
+        arr.push(channelDef);
       }
     }
   });
