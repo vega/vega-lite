@@ -20,7 +20,33 @@ describe('compile/data/stack', () => {
     });
   });
 
-  it('should produce correct stack component for bar with color and binned x', () => {
+  it('should produce correct stack component for bar with color', () => {
+    const model = parseUnitModel({
+      "mark": "bar",
+      "encoding": {
+        "x": {"aggregate": "sum", "field": "a", "type": "quantitative"},
+        "y": {"field": "b", "type": "nominal"},
+        "color": {"field": "c", "type": "ordinal", }
+      }
+    });
+
+    const stackComponent = stack.parseUnit(model);
+    assert.deepEqual(stackComponent, {
+      name: 'stacked',
+      source: 'summary',
+      groupby: ['b'],
+      field: 'sum_a',
+      stackby: ['c'],
+      sort: {
+        field: ['c'],
+        order: ['descending']
+      },
+      offset: 'zero',
+      impute: false
+    });
+  });
+
+  it('should produce correct stack component with both start and end of the binned field for bar with color and binned y', () => {
     const model = parseUnitModel({
       "mark": "bar",
       "encoding": {
@@ -34,7 +60,7 @@ describe('compile/data/stack', () => {
     assert.deepEqual(stackComponent, {
       name: 'stacked',
       source: 'summary',
-      groupby: ['bin_b_start'],
+      groupby: ['bin_b_start', 'bin_b_end'],
       field: 'sum_a',
       stackby: ['c'],
       sort: {
