@@ -1,7 +1,7 @@
 import {SOURCE} from '../../data';
 import {FieldDef} from '../../fielddef';
 import {Formula} from '../../transform';
-import {keys, Dict, StringSet} from '../../util';
+import {Dict, StringSet} from '../../util';
 import {VgData, VgSort, VgTransform} from '../../vega.schema';
 
 import {FacetModel} from './../facet';
@@ -152,22 +152,13 @@ export function assembleData(model: Model, data: VgData[]) {
     data.push(summaryData);
   });
 
-  if (data.length > 0) {
-    const dataTable = data[data.length - 1];
-
-    // nonPositiveFilter
-    const nonPositiveFilterTransform = nonPositiveFilter.assemble(component.nonPositiveFilter);
-    if (nonPositiveFilterTransform.length > 0) {
+  // nonPositiveFilter
+  const nonPositiveFilterTransform = nonPositiveFilter.assemble(component.nonPositiveFilter);
+  if (nonPositiveFilterTransform.length > 0) {
+    if (data.length > 0) {
+      const dataTable = data[data.length - 1];
       dataTable.transform = (dataTable.transform || []).concat(nonPositiveFilterTransform);
-    }
-
-    // Path Order
-    const pathOrderCollectTransform = pathOrder.assemble(component.pathOrder);
-    if (pathOrderCollectTransform) {
-      dataTable.transform = (dataTable.transform || []).concat([pathOrderCollectTransform]);
-    }
-  } else {
-    if (keys(component.nonPositiveFilter).length > 0) {
+    } else { /* istanbul ignore else: should never reach here */
       throw new Error('Invalid nonPositiveFilter not merged');
     }
   }
@@ -177,5 +168,17 @@ export function assembleData(model: Model, data: VgData[]) {
   if (stackData) {
     data.push(stackData);
   }
+
+  // Path Order
+  const pathOrderCollectTransform = pathOrder.assemble(component.pathOrder);
+  if (pathOrderCollectTransform) {
+    const dataTable = data[data.length - 1];
+    if (data.length > 0) {
+      dataTable.transform = (dataTable.transform || []).concat([pathOrderCollectTransform]);
+    } else { /* istanbul ignore else: should never reach here */
+      throw new Error('Invalid path order collect transform not added');
+    }
+  }
+
   return data;
 }

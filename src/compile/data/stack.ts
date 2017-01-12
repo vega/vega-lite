@@ -82,7 +82,19 @@ export const stack: DataComponentCompiler<StackComponent> = {
       return undefined;
     }
 
-    const groupby = model.field(stackProperties.groupbyChannel, {binSuffix: 'start'});
+    const groupby = [];
+    if (stackProperties.groupbyChannel) {
+      const groupbyFieldDef = model.fieldDef(stackProperties.groupbyChannel);
+      if (groupbyFieldDef.bin) {
+        // For Bin, we need to add both start and end to ensure that both get imputed
+        // and included in the stack output (https://github.com/vega/vega-lite/issues/1805).
+        groupby.push(model.field(stackProperties.groupbyChannel, {binSuffix: 'start'}));
+        groupby.push(model.field(stackProperties.groupbyChannel, {binSuffix: 'end'}));
+      } else {
+        groupby.push(model.field(stackProperties.groupbyChannel));
+      }
+    }
+
     const stackby = getStackByFields(model);
     const orderDef = model.encoding().order;
 
@@ -102,7 +114,7 @@ export const stack: DataComponentCompiler<StackComponent> = {
     return {
       name: model.dataName(STACKED),
       source: model.dataName(SUMMARY),
-      groupby: groupby ? [groupby] : [],
+      groupby: groupby,
       field: model.field(stackProperties.fieldChannel),
       stackby: stackby,
       sort: sort,
