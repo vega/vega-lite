@@ -41,17 +41,23 @@ export function compile(inputSpec: ExtendedSpec, logger?: log.LoggerInterface) {
 }
 
 function assemble(model: Model) {
-  const config = model.config();
-
   // TODO: change type to become VgSpec
   const output = extend(
+    topLevelBasicProperties(model),
     {
-      autosize: 'pad'
+      // Map calculated layout width and height to width and height signals.
+      signals: [
+        {
+          name: 'width',
+          update: "data('layout')[0].width"
+        },
+        {
+          name: 'height',
+          update: "data('layout')[0].height"
+        }
+      ] // TODO: concat.(model.assembleTopLevelSignals())
     },
-    config.viewport ? { viewport: config.viewport } : {},
-    config.background ? { background: config.background } : {},
     {
-      // TODO: signal: model.assembleSelectionSignal
       data: [].concat(
         model.assembleData([]),
         model.assembleLayout([])
@@ -64,6 +70,16 @@ function assemble(model: Model) {
     spec: output
     // TODO: add warning / errors here
   };
+}
+
+export function topLevelBasicProperties(model: Model) {
+  const config = model.config();
+  return extend(
+    // TODO: Add other top-level basic properties (#1778)
+    {autosize: 'pad'},
+    config.viewport ? { viewport: config.viewport } : {},
+    config.background ? { background: config.background } : {}
+  );
 }
 
 export function assembleRootGroup(model: Model) {
