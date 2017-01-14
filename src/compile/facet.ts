@@ -504,10 +504,7 @@ function getRowGridGroups(model: Model): any[] { // TODO: VgMarks
     name: model.name('row-grid'),
     type: 'rule',
     from: {
-      facet: {
-        data: model.dataTable(),
-        groupby: [model.field(ROW)]
-      }
+      data: ROW_AXES_DATA_PREFIX + model.dataTable()
     },
     encode: {
       update: {
@@ -547,10 +544,7 @@ function getColumnGridGroups(model: Model): any { // TODO: VgMarks
     name: model.name('column-grid'),
     type: 'rule',
     from: {
-      facet: {
-        data: model.dataTable(),
-        groupby: [model.field(COLUMN)]
-      }
+      data: COLUMN_AXES_DATA_PREFIX + model.dataTable()
     },
     encode: {
       update: {
