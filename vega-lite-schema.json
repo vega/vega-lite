@@ -1132,6 +1132,11 @@
         "ExtendedUnitSpec": {
             "description": "Schema for a unit Vega-Lite specification, with the syntactic sugar extensions:\n- `row` and `column` are included in the encoding.\n- (Future) label, box plot\n\nNote: the spec could contain facet.",
             "properties": {
+                "$schema": {
+                    "description": "URL to JSON schema for this Vega-Lite specification.",
+                    "format": "uri",
+                    "type": "string"
+                },
                 "config": {
                     "$ref": "#/definitions/Config",
                     "description": "Configuration object"
@@ -1213,6 +1218,11 @@
         },
         "FacetSpec": {
             "properties": {
+                "$schema": {
+                    "description": "URL to JSON schema for this Vega-Lite specification.",
+                    "format": "uri",
+                    "type": "string"
+                },
                 "config": {
                     "$ref": "#/definitions/Config",
                     "description": "Configuration object"
@@ -1350,6 +1360,11 @@
         },
         "LayerSpec": {
             "properties": {
+                "$schema": {
+                    "description": "URL to JSON schema for this Vega-Lite specification.",
+                    "format": "uri",
+                    "type": "string"
+                },
                 "config": {
                     "$ref": "#/definitions/Config",
                     "description": "Configuration object"
@@ -3091,6 +3106,11 @@
         },
         "UnitSpec": {
             "properties": {
+                "$schema": {
+                    "description": "URL to JSON schema for this Vega-Lite specification.",
+                    "format": "uri",
+                    "type": "string"
+                },
                 "config": {
                     "$ref": "#/definitions/Config",
                     "description": "Configuration object"
