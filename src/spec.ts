@@ -14,6 +14,12 @@ import {contains, duplicate, extend, hash, keys, omit, pick, vals} from './util'
 
 export interface BaseSpec {
   /**
+   * URL to JSON schema for this Vega-Lite specification.
+   * @format uri
+   */
+  $schema?: string;
+
+  /**
    * Name of the visualization for later reference.
    */
   name?: string;
