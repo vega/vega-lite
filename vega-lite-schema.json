@@ -931,7 +931,7 @@
                     "type": "string"
                 },
                 "mesh": {
-                    "description": "The name of the TopoJSON object set to convert to a mesh.\nSimilar to the `feature` option, `mesh` extracts a named TopoJSON object set.\nUnlike the `feature` option, the corresponding geo data is returned as a single, unified mesh instance, not as individual GeoJSON features.\nExtracting a mesh is useful for more efficiently drawing borders or other geographic elements that you do not need to associate with specific regions such as individual countries, states or counties.",
+                    "description": "The name of the TopoJSON object set to convert to a mesh.\nSimilar to the `feature` option, `mesh` extracts a named TopoJSON object set.\n  Unlike the `feature` option, the corresponding geo data is returned as a single, unified mesh instance, not as individual GeoJSON features.\nExtracting a mesh is useful for more efficiently drawing borders or other geographic elements that you do not need to associate with specific regions such as individual countries, states or counties.",
                     "type": "string"
                 },
                 "parse": {
@@ -2036,43 +2036,13 @@
                     "type": "string"
                 },
                 "shape": {
-                    "anyOf": [
-                        {
-                            "enum": [
-                                "circle",
-                                "cross",
-                                "diamond",
-                                "square",
-                                "triangle-down",
-                                "triangle-up"
-                            ],
-                            "type": "string"
-                        },
-                        {
-                            "type": "string"
-                        }
-                    ],
-                    "description": "The default symbol shape to use. One of: `\"circle\"` (default), `\"square\"`, `\"cross\"`, `\"diamond\"`, `\"triangle-up\"`, or `\"triangle-down\"`, or a custom SVG path."
+                    "description": "The default symbol shape to use. One of: `\"circle\"` (default), `\"square\"`, `\"cross\"`, `\"diamond\"`, `\"triangle-up\"`, or `\"triangle-down\"`, or a custom SVG path.",
+                    "type": "string"
                 },
                 "shapes": {
                     "description": "The default collection of symbol shapes for mapping nominal fields to shapes of point marks (i.e., range of a `shape` scale).\nEach value should be one of: `\"circle\"`, `\"square\"`, `\"cross\"`, `\"diamond\"`, `\"triangle-up\"`, or `\"triangle-down\"`, or a custom SVG path.",
                     "items": {
-                        "anyOf": [
-                            {
-                                "enum": [
-                                    "circle",
-                                    "cross",
-                                    "diamond",
-                                    "square",
-                                    "triangle-down",
-                                    "triangle-up"
-                                ],
-                                "type": "string"
-                            },
-                            {
-                                "type": "string"
-                            }
-                        ]
+                        "type": "string"
                     },
                     "type": "array"
                 },
