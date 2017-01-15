@@ -4,6 +4,7 @@ import {Scale, ScaleType} from '../../scale';
 import {StackProperties} from '../../stack';
 import {extend} from '../../util';
 import * as log from '../../log';
+import {VgEncodeEntry} from '../../vega.schema';
 
 import {applyColorAndOpacity} from '../common';
 import {UnitModel} from '../unit';
@@ -17,19 +18,18 @@ export const bar: MarkCompiler = {
     return 'rect';
   },
   encodeEntry: (model: UnitModel) => {
-    // TODO Use Vega's marks properties interface
     const stack = model.stack();
-    let p: any = extend(
+    let e: VgEncodeEntry = extend(
       x(model, stack),
       y(model, stack)
     );
-    applyColorAndOpacity(p, model);
-    return p;
+    applyColorAndOpacity(e, model);
+    return e;
   }
 };
 
 function x(model: UnitModel, stack: StackProperties) {
-  let p: any = {};
+  let e: VgEncodeEntry = {};
   const config = model.config();
   const orient = model.config().mark.orient;
   const sizeFieldDef = model.encoding().size;
@@ -39,37 +39,37 @@ function x(model: UnitModel, stack: StackProperties) {
   const xScale = model.scale(X);
   // x, x2, and width -- we must specify two of these in all conditions
   if (orient === 'horizontal') {
-    p.x = ref.stackable(X, xFieldDef, xScaleName, model.scale(X), stack, 'base');
-    p.x2 = ref.stackable2(X2, xFieldDef, model.encoding().x2, xScaleName, model.scale(X), stack, 'base');
-    return p;
+    e.x = ref.stackable(X, xFieldDef, xScaleName, model.scale(X), stack, 'base');
+    e.x2 = ref.stackable2(X2, xFieldDef, model.encoding().x2, xScaleName, model.scale(X), stack, 'base');
+    return e;
   } else { // vertical
     if (xFieldDef && xFieldDef.field) {
       if (xFieldDef.bin && !sizeFieldDef) {
         // TODO: check scale type = linear
 
-        p.x2 = ref.bin(xFieldDef, xScaleName, 'start', config.bar.binSpacing);
-        p.x = ref.bin(xFieldDef, xScaleName, 'end');
-        return p;
+        e.x2 = ref.bin(xFieldDef, xScaleName, 'start', config.bar.binSpacing);
+        e.x = ref.bin(xFieldDef, xScaleName, 'end');
+        return e;
       } else if (xScale.type === ScaleType.BAND) {
         // TODO: band scale doesn't support size yet
-        p.x = ref.fieldRef(xFieldDef, xScaleName, {});
-        p.width = ref.band(xScaleName);
-        return p;
+        e.x = ref.fieldRef(xFieldDef, xScaleName, {});
+        e.width = ref.band(xScaleName);
+        return e;
       }
     }
     // sized bin, normal point-ordinal axis, quantitative x-axis, or no x
-    p.xc = ref.midPoint(X, xFieldDef, xScaleName, model.scale(X),
+    e.xc = ref.midPoint(X, xFieldDef, xScaleName, model.scale(X),
       extend(ref.midX(config), {offset: 1}) // TODO: config.singleBarOffset
     );
-    p.width = ref.midPoint(SIZE, model.encoding().size, model.scaleName(SIZE), model.scale(SIZE),
+    e.width = ref.midPoint(SIZE, model.encoding().size, model.scaleName(SIZE), model.scale(SIZE),
       defaultSizeRef(xScaleName, model.scale(X), config)
     );
-    return p;
+    return e;
   }
 }
 
 function y(model: UnitModel, stack: StackProperties) {
-  let p: any = {};
+  let e: VgEncodeEntry = {};
   const config = model.config();
   const orient = model.config().mark.orient;
   const sizeFieldDef = model.encoding().size;
@@ -79,33 +79,32 @@ function y(model: UnitModel, stack: StackProperties) {
   const yScale = model.scale(Y);
   // y, y2 & height -- we must specify two of these in all conditions
   if (orient === 'vertical') {
-    p.y = ref.stackable(Y, model.encoding().y, yScaleName, model.scale(Y), stack, 'base');
-    p.y2 = ref.stackable2(Y2, model.encoding().y, model.encoding().y2, yScaleName, model.scale(Y), stack, 'base');
-    return p;
+    e.y = ref.stackable(Y, model.encoding().y, yScaleName, model.scale(Y), stack, 'base');
+    e.y2 = ref.stackable2(Y2, model.encoding().y, model.encoding().y2, yScaleName, model.scale(Y), stack, 'base');
+    return e;
   } else {
     if (yFieldDef && yFieldDef.field) {
       if (yFieldDef.bin && !sizeFieldDef) {
-        p.y2 = ref.bin(yFieldDef, yScaleName, 'start');
-        p.y = ref.bin(yFieldDef, yScaleName, 'end', config.bar.binSpacing);
-        return p;
+        e.y2 = ref.bin(yFieldDef, yScaleName, 'start');
+        e.y = ref.bin(yFieldDef, yScaleName, 'end', config.bar.binSpacing);
+        return e;
       } else if (yScale.type === ScaleType.BAND) {
         // TODO: band scale doesn't support size yet
-        p.y = ref.fieldRef(yFieldDef, yScaleName, {});
-        p.height = ref.band(yScaleName);
-        return p;
+        e.y = ref.fieldRef(yFieldDef, yScaleName, {});
+        e.height = ref.band(yScaleName);
+        return e;
       }
     }
-    p.yc = ref.midPoint(Y, yFieldDef, yScaleName, model.scale(Y),
+    e.yc = ref.midPoint(Y, yFieldDef, yScaleName, model.scale(Y),
       ref.midY(config)
     );
-    p.height = ref.midPoint(SIZE, model.encoding().size, model.scaleName(SIZE), model.scale(SIZE),
+    e.height = ref.midPoint(SIZE, model.encoding().size, model.scaleName(SIZE), model.scale(SIZE),
       defaultSizeRef(yScaleName, model.scale(Y), config)
     );
-    return p;
+    return e;
   }
 }
 
-// TODO: make this a mixins
 function defaultSizeRef(scaleName: string, scale: Scale, config: Config): VgValueRef {
   if (config.bar.discreteBandSize) {
     return {value: config.bar.discreteBandSize};

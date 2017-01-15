@@ -4,14 +4,14 @@ import {Config} from '../../config';
 import {FieldDef, field} from '../../fielddef';
 import {QUANTITATIVE, TEMPORAL} from '../../type';
 import {UnitModel} from '../unit';
-import {VgValueRef, VgMarkGroup} from '../../vega.schema';
+import {VgValueRef, VgEncodeEntry} from '../../vega.schema';
 
 import {MarkCompiler} from './base';
 import * as ref from './valueref';
 
 // FIXME: remove thie once we remove the background hack
 export interface TextCompiler extends MarkCompiler {
-  background: (model: UnitModel) => VgMarkGroup;
+  background: (model: UnitModel) => VgEncodeEntry;
 }
 
 export const text: TextCompiler = {
@@ -33,10 +33,9 @@ export const text: TextCompiler = {
   },
 
   encodeEntry: (model: UnitModel) => {
-    // TODO Use Vega's marks properties interface
-    let p: any = {};
+    let e: VgEncodeEntry = {};
 
-    applyConfig(p, model.config().text,
+    applyConfig(e, model.config().text,
       ['angle', 'align', 'baseline', 'dx', 'dy', 'font', 'fontWeight',
         'fontStyle', 'radius', 'theta', 'text']);
 
@@ -46,27 +45,27 @@ export const text: TextCompiler = {
 
     // TODO: refactor how refer to scale as discussed in https://github.com/vega/vega-lite/pull/1613
 
-    p.x = ref.stackable(X, model.encoding().x, model.scaleName(X), model.scale(X), stack, xDefault(config, textFieldDef));
-    p.y = ref.stackable(Y, model.encoding().y, model.scaleName(Y), model.scale(Y), stack, ref.midY(config));
+    e.x = ref.stackable(X, model.encoding().x, model.scaleName(X), model.scale(X), stack, xDefault(config, textFieldDef));
+    e.y = ref.stackable(Y, model.encoding().y, model.scaleName(Y), model.scale(Y), stack, ref.midY(config));
 
-    p.fontSize = ref.midPoint(SIZE, model.encoding().size, model.scaleName(SIZE), model.scale(SIZE),
+    e.fontSize = ref.midPoint(SIZE, model.encoding().size, model.scaleName(SIZE), model.scale(SIZE),
        {value: config.text.fontSize}
     );
 
-    p.text = textRef(textFieldDef, model.scaleName(TEXT), config);
+    e.text = textRef(textFieldDef, model.scaleName(TEXT), config);
 
     if (model.config().text.applyColorToBackground &&
         !model.channelHasField(X) &&
         !model.channelHasField(Y)) {
-      p.fill = {value: 'black'}; // TODO: add rules for swapping between black and white
+      e.fill = {value: 'black'}; // TODO: add rules for swapping between black and white
       // opacity
       const opacity = model.config().mark.opacity;
-      if (opacity) { p.opacity = { value: opacity }; };
+      if (opacity) { e.opacity = { value: opacity }; };
     } else {
-      applyColorAndOpacity(p, model);
+      applyColorAndOpacity(e, model);
     }
 
-    return p;
+    return e;
   }
 };
 

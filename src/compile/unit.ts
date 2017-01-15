@@ -71,7 +71,6 @@ export class UnitModel extends Model {
     this._scale =  this._initScale(mark, encoding, config, providedWidth, providedHeight);
 
     // TODO?: refactor these to be a part of the model as they are not really just config
-    // (Maybe they should become a part of encoding?)
     config.mark = initMarkConfig(mark, encoding, this._scale, this._stack, config);
     if (mark === 'text') { // FIXME: maybe we should refactor this
       config.text = initTextConfig(encoding, config);

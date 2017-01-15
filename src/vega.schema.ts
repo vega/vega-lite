@@ -26,8 +26,9 @@ export type VgDataRef = {
   }
 };
 
+// TODO: add type of value (Make it VgValueRef<T> { value?:T ... })
 export type VgValueRef = {
-  value?: any,
+  value?: number | string | boolean,
   field?: string | {
     datum?: string,
     group?: string,
@@ -80,8 +81,15 @@ export function isDataRefDomain(domain: any[] | UnionedDomain | VgDataRef): doma
   return false;
 }
 
-// TODO: declare
-export type VgMarkGroup = any;
+export type VgEncodeEntry = any;
+// TODO: make export interface VgEncodeEntry {
+//   x?: VgValueRef<number>
+//   y?: VgValueRef<number>
+//  ...
+//   color?: VgValueRef<string>
+//  ...
+// }
+
 export type VgAxis = any;
 export type VgLegend = any;
 

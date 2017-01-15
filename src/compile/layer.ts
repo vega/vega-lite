@@ -12,7 +12,7 @@ import {applyConfig, buildModel, FILL_STROKE_CONFIG} from './common';
 import {FieldDef} from '../fielddef';
 import {ScaleComponents} from './scale/scale';
 import {StackProperties} from '../stack';
-import {VgData, VgMarkGroup, isUnionedDomain, isDataRefDomain, VgDataRef} from '../vega.schema';
+import {VgData, isUnionedDomain, isDataRefDomain, VgDataRef, VgEncodeEntry} from '../vega.schema';
 
 export class LayerModel extends Model {
   private _children: UnitModel[];
@@ -227,7 +227,7 @@ export class LayerModel extends Model {
     });
   }
 
-  public assembleParentGroupProperties(cellConfig: CellConfig): VgMarkGroup {
+  public assembleParentGroupProperties(cellConfig: CellConfig): VgEncodeEntry {
     return applyConfig({}, cellConfig, FILL_STROKE_CONFIG.concat(['clip']));
   }
 

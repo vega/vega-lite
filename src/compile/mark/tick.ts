@@ -2,7 +2,7 @@ import {X, Y, SIZE} from '../../channel';
 import {Config} from '../../config';
 import {FieldDef} from '../../fielddef';
 import {Scale} from '../../scale';
-import {VgValueRef} from '../../vega.schema';
+import {VgEncodeEntry, VgValueRef} from '../../vega.schema';
 
 import {applyColorAndOpacity} from '../common';
 import {UnitModel} from '../unit';
@@ -16,25 +16,25 @@ export const tick: MarkCompiler = {
   },
 
   encodeEntry: (model: UnitModel) => {
-    let p: any = {};
+    let e: VgEncodeEntry = {};
     const config = model.config();
     const stack = model.stack();
 
     // TODO: refactor how refer to scale as discussed in https://github.com/vega/vega-lite/pull/1613
 
-    p.xc = ref.stackable(X, model.encoding().x, model.scaleName(X), model.scale(X), stack, ref.midX(config));
-    p.yc = ref.stackable(Y, model.encoding().y, model.scaleName(Y), model.scale(Y), stack, ref.midY(config));
+    e.xc = ref.stackable(X, model.encoding().x, model.scaleName(X), model.scale(X), stack, ref.midX(config));
+    e.yc = ref.stackable(Y, model.encoding().y, model.scaleName(Y), model.scale(Y), stack, ref.midY(config));
 
     if (config.mark.orient === 'horizontal') {
-      p.width = size(model.encoding().size, model.scaleName(SIZE), model.scale(SIZE), config, (model.scale(X) || {}).rangeStep);
-      p.height = { value: config.tick.thickness };
+      e.width = size(model.encoding().size, model.scaleName(SIZE), model.scale(SIZE), config, (model.scale(X) || {}).rangeStep);
+      e.height = { value: config.tick.thickness };
     } else {
-      p.width = { value: config.tick.thickness };
-      p.height = size(model.encoding().size, model.scaleName(SIZE), model.scale(SIZE), config, (model.scale(Y) || {}).rangeStep);
+      e.width = { value: config.tick.thickness };
+      e.height = size(model.encoding().size, model.scaleName(SIZE), model.scale(SIZE), config, (model.scale(Y) || {}).rangeStep);
     }
 
-    applyColorAndOpacity(p, model);
-    return p;
+    applyColorAndOpacity(e, model);
+    return e;
   }
 };
 

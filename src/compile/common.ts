@@ -3,11 +3,12 @@ import * as log from '../log';
 import {BAR, POINT, CIRCLE, SQUARE} from '../mark';
 import {AggregateOp} from '../aggregate';
 import {COLOR, OPACITY, TEXT, Channel} from '../channel';
-import {Config} from '../config';
+import {Config, CellConfig} from '../config';
 import {FieldDef, OrderChannelDef, field} from '../fielddef';
+import {MarkConfig, TextConfig} from '../mark';
 import {TimeUnit} from '../timeunit';
 import {QUANTITATIVE} from '../type';
-import {contains, isArray, union, Dict} from '../util';
+import {contains, isArray, union} from '../util';
 
 import {FacetModel} from './facet';
 import {LayerModel} from './layer';
@@ -15,7 +16,7 @@ import {Model} from './model';
 import {formatExpression} from '../timeunit';
 import {UnitModel} from './unit';
 import {Spec, isUnitSpec, isSomeFacetSpec, isLayerSpec} from '../spec';
-import {VgValueRef, VgSort} from '../vega.schema';
+import {VgEncodeEntry, VgValueRef, VgSort} from '../vega.schema';
 
 export function buildModel(spec: Spec, parent: Model, parentGivenName: string): Model {
   if (isSomeFacetSpec(spec)) {
@@ -42,7 +43,7 @@ export const FILL_CONFIG = ['fill', 'fillOpacity',
 
 export const FILL_STROKE_CONFIG = union(STROKE_CONFIG, FILL_CONFIG);
 
-export function applyColorAndOpacity(p: any, model: UnitModel) {
+export function applyColorAndOpacity(e: VgEncodeEntry, model: UnitModel) {
   const filled = model.config().mark.filled;
   const colorFieldDef = model.encoding().color;
   const opacityFieldDef = model.encoding().opacity;
@@ -50,9 +51,9 @@ export function applyColorAndOpacity(p: any, model: UnitModel) {
   // Apply fill stroke config first so that color field / value can override
   // fill / stroke
   if (filled) {
-    applyMarkConfig(p, model, FILL_CONFIG);
+    applyMarkConfig(e, model, FILL_CONFIG);
   } else {
-    applyMarkConfig(p, model, STROKE_CONFIG);
+    applyMarkConfig(e, model, STROKE_CONFIG);
   }
 
   let colorValue: VgValueRef;
@@ -77,39 +78,41 @@ export function applyColorAndOpacity(p: any, model: UnitModel) {
 
   if (colorValue !== undefined) {
     if (filled) {
-      p.fill = colorValue;
+      e.fill = colorValue;
     } else {
-      p.stroke = colorValue;
+      e.stroke = colorValue;
     }
   } else {
     // apply color config if there is no fill / stroke config
-    p[filled ? 'fill' : 'stroke'] = p[filled ? 'fill' : 'stroke'] ||
+    e[filled ? 'fill' : 'stroke'] = e[filled ? 'fill' : 'stroke'] ||
       {value: model.config().mark.color};
   }
 
   // If there is no fill, always fill symbols
   // with transparent fills https://github.com/vega/vega-lite/issues/1316
-  if (!p.fill && contains([BAR, POINT, CIRCLE, SQUARE], model.mark())) {
-    p.fill = {value: 'transparent'};
+  if (!e.fill && contains([BAR, POINT, CIRCLE, SQUARE], model.mark())) {
+    e.fill = {value: 'transparent'};
   }
 
   if (opacityValue !== undefined) {
-    p.opacity = opacityValue;
+    e.opacity = opacityValue;
   }
 }
 
-export function applyConfig(properties: Dict<any>, config: any, propsList: string[]) {
+export function applyConfig(e: VgEncodeEntry,
+    config: CellConfig | MarkConfig | TextConfig, // TODO(#1842): consolidate MarkConfig | TextConfig?
+    propsList: string[]) {
   propsList.forEach(function(property) {
     const value = config[property];
     if (value !== undefined) {
-      properties[property] = { value: value };
+      e[property] = { value: value };
     }
   });
-  return properties;
+  return e;
 }
 
-export function applyMarkConfig(marksProperties: any, model: UnitModel, propsList: string[]) {
-  return applyConfig(marksProperties, model.config().mark, propsList);
+export function applyMarkConfig(e: VgEncodeEntry, model: UnitModel, propsList: string[]) {
+  return applyConfig(e, model.config().mark, propsList);
 }
 
 /**
