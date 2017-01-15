@@ -12,7 +12,7 @@ import {SortField, SortOrder} from '../sort';
 import {BaseSpec, Padding} from '../spec';
 import {Transform} from '../transform';
 import {extend, flatten, vals, Dict} from '../util';
-import {VgData, VgMarkGroup, VgScale, VgAxis, VgLegend} from '../vega.schema';
+import {VgData, VgEncodeEntry, VgScale, VgAxis, VgLegend} from '../vega.schema';
 
 import {DataComponent} from './data/data';
 import {LayoutComponent} from './layout';
@@ -44,12 +44,12 @@ export interface Component {
   legend: Dict<VgLegend>;
 
   /** Dictionary mapping channel to axis mark group for facet and concat */
-  axisGroup: Dict<VgMarkGroup>;
+  axisGroup: Dict<VgEncodeEntry>;
 
   /** Dictionary mapping channel to grid mark group for facet (and concat?) */
-  gridGroup: Dict<VgMarkGroup[]>;
+  gridGroup: Dict<VgEncodeEntry[]>;
 
-  mark: VgMarkGroup[];
+  mark: VgEncodeEntry[];
 }
 
 class NameMap implements NameMapInterface {
@@ -207,7 +207,7 @@ export abstract class Model {
   }
 
   public assembleGroup() {
-    let group: VgMarkGroup = {};
+    let group: VgEncodeEntry = {};
 
     // TODO: consider if we want scales to come before marks in the output spec.
 
@@ -230,7 +230,7 @@ export abstract class Model {
     return group;
   }
 
-  public abstract assembleParentGroupProperties(cellConfig: CellConfig): VgMarkGroup;
+  public abstract assembleParentGroupProperties(cellConfig: CellConfig): VgEncodeEntry;
 
   public abstract channels(): Channel[];
 

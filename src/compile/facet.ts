@@ -9,7 +9,7 @@ import {FieldDef, isDimension, normalize} from '../fielddef';
 import {Scale} from '../scale';
 import {FacetSpec} from '../spec';
 import {contains, extend, keys, vals, flatten, duplicate, mergeDeep, Dict} from '../util';
-import {VgData, VgMarkGroup} from '../vega.schema';
+import {VgData, VgEncodeEntry} from '../vega.schema';
 import {StackProperties} from '../stack';
 
 import {parseMainAxis, parseGridAxis, parseAxisComponent} from './axis/parse';
@@ -453,13 +453,13 @@ function parseAxisGroups(model: FacetModel, channel: 'x' | 'y') {
 }
 
 
-export function getSharedAxisGroup(model: FacetModel, channel: 'x' | 'y'): VgMarkGroup {
+export function getSharedAxisGroup(model: FacetModel, channel: 'x' | 'y'): VgEncodeEntry {
   const isX = channel === 'x' ;
   const facetChannel = isX ? 'column' : 'row';
   const hasFacet = !!model.facet()[facetChannel];
   const dataPrefix = isX ? COLUMN_AXES_DATA_PREFIX : ROW_AXES_DATA_PREFIX;
 
-  let axesGroup:VgMarkGroup = {
+  let axesGroup:VgEncodeEntry = {
     name: model.name(channel + '-axes'),
     type: 'group'
   };
