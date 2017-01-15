@@ -19,7 +19,7 @@ export interface AxisConfig {
    * A non-positive integer indicating z-index of the axis.
    * If zindex is 0, axes should be drawn behind all chart elements.
    * To put them in front, use zindex = 1.
-   * @type{integer}
+   * @TJS-type integer
    * @minimum 0
    */
   zindex?: number;
@@ -91,6 +91,7 @@ export interface AxisConfig {
   /**
    * Truncate labels that are too long.
    * @minimum 1
+   * @TJS-type integer
    */
   labelMaxLength?: number;
   /**
@@ -102,6 +103,7 @@ export interface AxisConfig {
   /**
    * If provided, sets the number of minor ticks between major ticks (the value 9 results in decimal subdivision). Only applicable for axes visualizing quantitative scales.
    * @minimum 0
+   * @TJS-type integer
    */
   subdivide?: number;
 
@@ -113,6 +115,7 @@ export interface AxisConfig {
   /**
    * A desired number of ticks, for axes visualizing quantitative scales. The resulting number may be different so that values are "nice" (multiples of 2, 5, 10) and lie within the underlying scale's range.
    * @minimum 0
+   * @TJS-type integer
    */
   tickCount?: number;
 
@@ -197,6 +200,7 @@ export interface AxisConfig {
   /**
    * Max length for axis title if the title is automatically generated from the field's description. By default, this is automatically based on cell size and characterWidth property.
    * @minimum 0
+   * @TJS-type integer
    */
   titleMaxLength?: number;
 

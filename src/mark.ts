@@ -34,7 +34,7 @@ export const PRIMITIVE_MARKS = [AREA, BAR, LINE, POINT, TEXT, TICK, RULE, CIRCLE
 export type FontStyle = 'normal' | 'italic';
 export type FontWeight = 'normal' | 'bold';
 /**
- * @type integer
+ * @TJS-type integer
  * @minimum 100
  * @maximum 900
  */

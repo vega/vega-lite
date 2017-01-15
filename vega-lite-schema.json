@@ -213,7 +213,7 @@
                 "labelMaxLength": {
                     "description": "Truncate labels that are too long.",
                     "minimum": 1,
-                    "type": "number"
+                    "type": "integer"
                 },
                 "offset": {
                     "description": "The offset, in pixels, by which to displace the axis from the edge of the enclosing group or data rectangle.",
@@ -230,7 +230,7 @@
                 "subdivide": {
                     "description": "If provided, sets the number of minor ticks between major ticks (the value 9 results in decimal subdivision). Only applicable for axes visualizing quantitative scales.",
                     "minimum": 0,
-                    "type": "number"
+                    "type": "integer"
                 },
                 "tick": {
                     "description": "Whether the axis should include ticks.",
@@ -243,7 +243,7 @@
                 "tickCount": {
                     "description": "A desired number of ticks, for axes visualizing quantitative scales. The resulting number may be different so that values are \"nice\" (multiples of 2, 5, 10) and lie within the underlying scale's range.",
                     "minimum": 0,
-                    "type": "number"
+                    "type": "integer"
                 },
                 "tickLabelColor": {
                     "description": "The color of the tick label, can be in hex color code or regular color name.",
@@ -314,7 +314,7 @@
                 "titleMaxLength": {
                     "description": "Max length for axis title if the title is automatically generated from the field's description. By default, this is automatically based on cell size and characterWidth property.",
                     "minimum": 0,
-                    "type": "number"
+                    "type": "integer"
                 },
                 "titleOffset": {
                     "description": "A title offset value for the axis.",
@@ -339,7 +339,7 @@
                 "zindex": {
                     "description": "A non-positive integer indicating z-index of the axis.\nIf zindex is 0, axes should be drawn behind all chart elements.\nTo put them in front, use zindex = 1.",
                     "minimum": 0,
-                    "type": "number"
+                    "type": "integer"
                 }
             },
             "type": "object"
@@ -409,7 +409,7 @@
                 "labelMaxLength": {
                     "description": "Truncate labels that are too long.",
                     "minimum": 1,
-                    "type": "number"
+                    "type": "integer"
                 },
                 "offset": {
                     "description": "The offset, in pixels, by which to displace the axis from the edge of the enclosing group or data rectangle.",
@@ -422,7 +422,7 @@
                 "subdivide": {
                     "description": "If provided, sets the number of minor ticks between major ticks (the value 9 results in decimal subdivision). Only applicable for axes visualizing quantitative scales.",
                     "minimum": 0,
-                    "type": "number"
+                    "type": "integer"
                 },
                 "tick": {
                     "description": "Whether the axis should include ticks.",
@@ -435,7 +435,7 @@
                 "tickCount": {
                     "description": "A desired number of ticks, for axes visualizing quantitative scales. The resulting number may be different so that values are \"nice\" (multiples of 2, 5, 10) and lie within the underlying scale's range.",
                     "minimum": 0,
-                    "type": "number"
+                    "type": "integer"
                 },
                 "tickLabelColor": {
                     "description": "The color of the tick label, can be in hex color code or regular color name.",
@@ -502,7 +502,7 @@
                 "titleMaxLength": {
                     "description": "Max length for axis title if the title is automatically generated from the field's description. By default, this is automatically based on cell size and characterWidth property.",
                     "minimum": 0,
-                    "type": "number"
+                    "type": "integer"
                 },
                 "titleOffset": {
                     "description": "A title offset value for the axis.",
@@ -511,7 +511,7 @@
                 "zindex": {
                     "description": "A non-positive integer indicating z-index of the axis.\nIf zindex is 0, axes should be drawn behind all chart elements.\nTo put them in front, use zindex = 1.",
                     "minimum": 0,
-                    "type": "number"
+                    "type": "integer"
                 }
             },
             "type": "object"
@@ -964,7 +964,7 @@
                     "description": "Integer value representing the date from 1-31.",
                     "maximum": 31,
                     "minimum": 1,
-                    "type": "number"
+                    "type": "integer"
                 },
                 "day": {
                     "description": "Value representing the day of week.  This can be one of: (1) integer value -- `1` represents Monday; (2) case-insensitive day name (e.g., `\"Monday\"`);  (3) case-insensitive, 3-character short day name (e.g., `\"Mon\"`).   <br/> **Warning:** A DateTime definition object with `day`** should not be combined with `year`, `quarter`, `month`, or `date`.",
@@ -977,19 +977,19 @@
                     "description": "Integer value representing the hour of day from 0-23.",
                     "maximum": 23,
                     "minimum": 0,
-                    "type": "number"
+                    "type": "integer"
                 },
                 "milliseconds": {
                     "description": "Integer value representing millisecond segment of a time.",
                     "maximum": 999,
                     "minimum": 0,
-                    "type": "number"
+                    "type": "integer"
                 },
                 "minutes": {
                     "description": "Integer value representing minute segment of a time from 0-59.",
                     "maximum": 59,
                     "minimum": 0,
-                    "type": "number"
+                    "type": "integer"
                 },
                 "month": {
                     "description": "One of: (1) integer value representing the month from `1`-`12`. `1` represents January;  (2) case-insensitive month name (e.g., `\"January\"`);  (3) case-insensitive, 3-character short month name (e.g., `\"Jan\"`).",
@@ -1002,17 +1002,17 @@
                     "description": "Integer value representing the quarter of the year (from 1-4).",
                     "maximum": 4,
                     "minimum": 1,
-                    "type": "number"
+                    "type": "integer"
                 },
                 "seconds": {
                     "description": "Integer value representing second segment of a time from 0-59.",
                     "maximum": 59,
                     "minimum": 0,
-                    "type": "number"
+                    "type": "integer"
                 },
                 "year": {
                     "description": "Integer value representing the year.",
-                    "type": "number"
+                    "type": "integer"
                 }
             },
             "type": "object"
@@ -2491,7 +2491,7 @@
                 },
                 "spacing": {
                     "description": "(For `row` and `column` only) A pixel value for padding between cells in the trellis plots.",
-                    "type": "number"
+                    "type": "integer"
                 },
                 "type": {
                     "$ref": "#/definitions/ScaleType"
@@ -2528,7 +2528,7 @@
                 "facetSpacing": {
                     "description": "Default spacing between faceted plots.",
                     "minimum": 0,
-                    "type": "number"
+                    "type": "integer"
                 },
                 "pointPadding": {
                     "description": "Default outer padding for `x` and `y` point-ordinal scales.",

@@ -133,7 +133,7 @@ export interface ScaleConfig {
 
   /**
    * Default spacing between faceted plots.
-   * @type {integer}
+   * @TJS-type integer
    * @minimum 0
    */
   facetSpacing?: number;
@@ -198,7 +198,7 @@ export interface Scale {
 
   /**
    * (For `row` and `column` only) A pixel value for padding between cells in the trellis plots.
-   * @type {integer}
+   * @TJS-type integer
    */
   spacing?: number;
 
