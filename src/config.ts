@@ -3,7 +3,7 @@ import {LegendConfig, defaultLegendConfig} from './legend';
 import {MarkConfig, AreaConfig, BarConfig, LineConfig, PointConfig, TextConfig, TickConfig, RectConfig, RuleConfig} from './mark';
 import * as mark from './mark';
 import {ScaleConfig, defaultScaleConfig} from './scale';
-
+import {Padding} from './spec';
 
 export interface CellConfig {
   width?: number;
@@ -126,6 +126,15 @@ export interface Config {
   background?: string;
 
   /**
+   * The default visualization padding, in pixels, from the edge of the visualization canvas to the data rectangle. This can be a single number or an object with `"top"`, `"left"`, `"right"`, `"bottom"` properties.
+   *
+   * __Default value__: `5`
+   *
+   * * @minimum 0
+   */
+  padding?: Padding;
+
+  /**
    * D3 Number format for axis labels and text tables. For example "s" for SI units.
    */
   numberFormat?: string;
@@ -198,6 +207,7 @@ export interface Config {
 }
 
 export const defaultConfig: Config = {
+  padding: 5,
   numberFormat: 's',
   timeFormat: '%b %d, %Y',
   countTitle: 'Number of Records',

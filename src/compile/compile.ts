@@ -76,6 +76,7 @@ export function topLevelBasicProperties(model: Model) {
   const config = model.config();
   return extend(
     // TODO: Add other top-level basic properties (#1778)
+    {padding: model.padding() || config.padding},
     {autosize: 'pad'},
     config.viewport ? { viewport: config.viewport } : {},
     config.background ? { background: config.background } : {}
