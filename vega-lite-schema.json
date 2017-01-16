@@ -843,25 +843,6 @@
             },
             "type": "object"
         },
-        "Data": {
-            "properties": {
-                "format": {
-                    "$ref": "#/definitions/DataFormat",
-                    "description": "An object that specifies the format for the data file or values."
-                },
-                "url": {
-                    "description": "A URL from which to load the data set. Use the format.type property\nto ensure the loaded data is correctly parsed.",
-                    "type": "string"
-                },
-                "values": {
-                    "description": "Pass array of objects instead of a url to a file.",
-                    "items": {
-                    },
-                    "type": "array"
-                }
-            },
-            "type": "object"
-        },
         "DataFormat": {
             "properties": {
                 "feature": {
@@ -1161,7 +1142,14 @@
                     "description": "Configuration object"
                 },
                 "data": {
-                    "$ref": "#/definitions/Data",
+                    "anyOf": [
+                        {
+                            "$ref": "#/definitions/UrlData"
+                        },
+                        {
+                            "$ref": "#/definitions/InlineData"
+                        }
+                    ],
                     "description": "An object describing the data source"
                 },
                 "description": {
@@ -1273,7 +1261,14 @@
                     "description": "Configuration object"
                 },
                 "data": {
-                    "$ref": "#/definitions/Data",
+                    "anyOf": [
+                        {
+                            "$ref": "#/definitions/UrlData"
+                        },
+                        {
+                            "$ref": "#/definitions/InlineData"
+                        }
+                    ],
                     "description": "An object describing the data source"
                 },
                 "description": {
@@ -1404,6 +1399,20 @@
             ],
             "type": "string"
         },
+        "InlineData": {
+            "properties": {
+                "values": {
+                    "description": "Pass array of objects instead of a url to a file.",
+                    "items": {
+                    },
+                    "type": "array"
+                }
+            },
+            "required": [
+                "values"
+            ],
+            "type": "object"
+        },
         "Interpolate": {
             "enum": [
                 "basis",
@@ -1434,7 +1443,14 @@
                     "description": "Configuration object"
                 },
                 "data": {
-                    "$ref": "#/definitions/Data",
+                    "anyOf": [
+                        {
+                            "$ref": "#/definitions/UrlData"
+                        },
+                        {
+                            "$ref": "#/definitions/InlineData"
+                        }
+                    ],
                     "description": "An object describing the data source"
                 },
                 "description": {
@@ -3360,7 +3376,14 @@
                     "description": "Configuration object"
                 },
                 "data": {
-                    "$ref": "#/definitions/Data",
+                    "anyOf": [
+                        {
+                            "$ref": "#/definitions/UrlData"
+                        },
+                        {
+                            "$ref": "#/definitions/InlineData"
+                        }
+                    ],
                     "description": "An object describing the data source"
                 },
                 "description": {
@@ -3418,6 +3441,22 @@
             },
             "required": [
                 "mark"
+            ],
+            "type": "object"
+        },
+        "UrlData": {
+            "properties": {
+                "format": {
+                    "$ref": "#/definitions/DataFormat",
+                    "description": "An object that specifies the format for the data file or values."
+                },
+                "url": {
+                    "description": "A URL from which to load the data set. Use the format.type property\nto ensure the loaded data is correctly parsed.",
+                    "type": "string"
+                }
+            },
+            "required": [
+                "url"
             ],
             "type": "object"
         },

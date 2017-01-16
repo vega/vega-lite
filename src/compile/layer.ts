@@ -8,12 +8,13 @@ import {StackProperties} from '../stack';
 import {FILL_STROKE_CONFIG} from '../mark';
 import {keys, duplicate, mergeDeep, flatten, unique, isArray, vals, hash} from '../util';
 import {VgData, isDataRefUnionedDomain, isFieldRefUnionDomain, isDataRefDomain, VgDataRef, VgEncodeEntry, DataRefUnionDomain, FieldRefUnionDomain} from '../vega.schema';
+import {isUrlData} from '../data';
 
 import {assembleData, parseLayerData} from './data/data';
+import {applyConfig, buildModel} from './common';
 import {assembleLayout, parseLayerLayout} from './layout';
 import {Model} from './model';
 import {UnitModel} from './unit';
-import {applyConfig, buildModel} from './common';
 
 import {ScaleComponents} from './scale/scale';
 
@@ -314,7 +315,7 @@ export class LayerModel extends Model {
   public compatibleSource(child: UnitModel) {
     const data = this.data();
     const childData = child.component.data;
-    const compatible = !childData.source || (data && data.url === childData.source.url);
+    const compatible = !childData.source || (data && isUrlData(data) && data.url === childData.source.url);
     return compatible;
   }
 }
