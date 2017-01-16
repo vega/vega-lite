@@ -352,15 +352,17 @@ export class FacetModel extends Model {
   }
 }
 
+export function hasSubPlotWithXy(model: FacetModel) {
+  return model.hasChildWithFieldOnChannel('x') ||
+    model.hasChildWithFieldOnChannel('y');
+}
+
 export function spacing(scale: Scale, model: FacetModel, config: Config) {
   if (scale.spacing !== undefined) {
     return scale.spacing;
   }
 
-  const hasSubPlotWithXy = model.hasChildWithFieldOnChannel('x') ||
-    model.hasChildWithFieldOnChannel('y');
-
-  if (!hasSubPlotWithXy) {
+  if (!hasSubPlotWithXy(model)) {
     // If there is no subplot with x/y, it's a simple table so there should be no spacing.
     return 0;
   }
@@ -389,10 +391,9 @@ function getFacetGroupProperties(model: FacetModel) {
       width: {field: {parent: model.child().sizeName('width')}},
       height: {field: {parent: model.child().sizeName('height')}}
     },
-    child.assembleParentGroupProperties(mergedCellConfig)
+    hasSubPlotWithXy(model) ? child.assembleParentGroupProperties(mergedCellConfig) : {}
   );
 }
-
 
 // TODO: move the rest of the file src/compile/facet/*.ts
 
