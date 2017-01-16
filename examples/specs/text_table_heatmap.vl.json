@@ -7,5 +7,5 @@
     "color":  {"aggregate": "count", "field": "*", "type": "quantitative"},
     "text": {"aggregate": "count", "field": "*", "type": "quantitative"}
   },
-  "config": {"mark": {"applyColorToBackground": true}}
+  "config": {"text": {"applyColorToBackground": true}}
 }
