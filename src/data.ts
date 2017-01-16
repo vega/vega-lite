@@ -1,7 +1,6 @@
 /*
  * Constants and utilities for data.
  */
-import {Type} from './type';
 
 export interface DataFormat {
   /**
@@ -85,12 +84,3 @@ export const SOURCE: 'source' = 'source';
 export const STACKED: 'stacked' = 'stacked';
 export const LAYOUT: 'layout' = 'layout';
 
-/** Mapping from datalib's inferred type to Vega-lite's type */
-// TODO: consider if we can remove
-export const types = {
-  'boolean': Type.NOMINAL,
-  'number': Type.QUANTITATIVE,
-  'integer': Type.QUANTITATIVE,
-  'date': Type.TEMPORAL,
-  'string': Type.NOMINAL
-};
