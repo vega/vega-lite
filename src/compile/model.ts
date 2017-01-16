@@ -102,11 +102,11 @@ export abstract class Model {
   protected _sizeNameMap: NameMapInterface;
 
   protected _transform: Transform;
-  protected _scale: Dict<Scale>;
+  protected _scale: Dict<Scale> = {};
 
-  protected _axis: Dict<Axis>;
+  protected _axis: Dict<Axis> = {};
 
-  protected _legend: Dict<Legend>;
+  protected _legend: Dict<Legend> = {};
 
   protected _config: Config;
 
@@ -242,14 +242,14 @@ export abstract class Model {
     forEach(this.mapping(), f, t);
   }
 
-  public hasChildWithFieldOnChannel(channel: Channel) {
+  public hasDescendantWithFieldOnChannel(channel: Channel) {
     for (let child of this.children()) {
       if (child.isUnit()) {
         if (child.channelHasField(channel)) {
           return true;
         }
       } else {
-        if (child.hasChildWithFieldOnChannel(channel)) {
+        if (child.hasDescendantWithFieldOnChannel(channel)) {
           return true;
         }
       }
