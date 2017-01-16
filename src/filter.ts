@@ -49,7 +49,7 @@ export interface RangeFilter {
    * @maxItems 2
    * @minItems 2
    */
-  range: Array<number|DateTime>;
+  range: (number|DateTime)[];
 
 }
 
@@ -79,7 +79,7 @@ export interface OneOfFilter {
    * A set of values that the `field`'s value should be a member of,
    * for a data item included in the filtered data.
    */
-  oneOf: Array<string|number|boolean|DateTime>;
+  oneOf: (string|number|boolean|DateTime)[];
 
 }
 
