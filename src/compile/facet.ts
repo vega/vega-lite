@@ -112,6 +112,7 @@ export class FacetModel extends Model {
   }
 
   private _initAxis(facet: Facet, config: Config, child: Model): Dict<Axis> {
+    const model = this;
     return [ROW, COLUMN].reduce(function(_axis, channel) {
       if (facet[channel]) {
         const axisSpec = facet[channel].axis;
@@ -126,7 +127,7 @@ export class FacetModel extends Model {
             if (yAxis && yAxis.orient !== AxisOrient.RIGHT && !modelAxis.orient) {
               modelAxis.orient = AxisOrient.RIGHT;
             }
-            if( child.channelHasField(X) && !modelAxis.labelAngle) {
+            if (model.hasDescendantWithFieldOnChannel(X) && !modelAxis.labelAngle) {
               modelAxis.labelAngle = modelAxis.orient === AxisOrient.RIGHT ? 90 : 270;
             }
           }
@@ -353,8 +354,8 @@ export class FacetModel extends Model {
 }
 
 export function hasSubPlotWithXy(model: FacetModel) {
-  return model.hasChildWithFieldOnChannel('x') ||
-    model.hasChildWithFieldOnChannel('y');
+  return model.hasDescendantWithFieldOnChannel('x') ||
+    model.hasDescendantWithFieldOnChannel('y');
 }
 
 export function spacing(scale: Scale, model: FacetModel, config: Config) {
