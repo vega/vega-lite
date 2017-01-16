@@ -17,7 +17,6 @@ import {VgData, VgMarkGroup, VgScale, VgAxis, VgLegend} from '../vega.schema';
 import {DataComponent} from './data/data';
 import {LayoutComponent} from './layout';
 import {ScaleComponents, BIN_LEGEND_SUFFIX, BIN_LEGEND_LABEL_SUFFIX} from './scale/scale';
-
 import {StackProperties} from '../stack';
 
 /* tslint:disable:no-unused-variable */
@@ -245,11 +244,28 @@ export abstract class Model {
     forEach(this.mapping(), f, t);
   }
 
+  public hasChildWithFieldOnChannel(channel: Channel) {
+    for (let child of this.children()) {
+      if (child.isUnit()) {
+        if (child.channelHasField(channel)) {
+          return true;
+        }
+      } else {
+        if (child.hasChildWithFieldOnChannel(channel)) {
+          return true;
+        }
+      }
+    }
+    return false;
+  }
+
   public abstract channelHasField(channel: Channel): boolean;
 
   public parent(): Model {
     return this._parent;
   }
+
+  public abstract children(): Model[];
 
   public name(text: string, delimiter: string = '_') {
     return (this._name ? this._name + delimiter : '') + text;

@@ -254,6 +254,10 @@ export class UnitModel extends Model {
     }, {} as Dict<Legend>);
   }
 
+  public children(): Model[] {
+    return [];
+  }
+
   public get width(): number {
     return this._width;
   }

@@ -7,6 +7,7 @@ import * as log from '../../src/log';
 import {FacetModel} from '../../src/compile/facet';
 import * as facet from '../../src/compile/facet';
 import {SHAPE, ROW} from '../../src/channel';
+import {defaultConfig} from '../../src/config';
 import {POINT} from '../../src/mark';
 import {FacetSpec} from '../../src/spec';
 import {Facet} from '../../src/facet';
@@ -68,6 +69,44 @@ describe('FacetModel', function() {
         assert.deepEqual(model.facet().row, {field: 'a', type: 'quantitative'});
         assert.equal(localLogger.warns[0], log.message.facetChannelShouldBeDiscrete(ROW));
       });
+    });
+  });
+
+  describe('spacing', () => {
+    it('should return specified spacing if specified', () => {
+      assert.equal(facet.spacing({spacing: 123}, null, null), 123);
+    });
+
+    it('should return default facetSpacing if there is a subplot and no specified spacing', () => {
+      const model = parseFacetModel({
+        facet: {
+          row: {field: 'a', type: 'ordinal'}
+        },
+        spec: {
+          mark: 'point',
+          encoding: {
+            "x": {"aggregate": "sum", "field": "yield", "type": "quantitative"},
+            "y": {"field": "variety", "type": "nominal"},
+            "color": {"field": "site", "type": "nominal"}
+          }
+        }
+      });
+      assert.equal(facet.spacing({}, model, defaultConfig), defaultConfig.scale.facetSpacing);
+    });
+
+    it('should return 0 if it is a simple table without subplot with x/y and no specified spacing', () => {
+      const model = parseFacetModel({
+        facet: {
+          row: {field: 'a', type: 'ordinal'}
+        },
+        spec: {
+          mark: 'point',
+          encoding: {
+            "color": {"field": "site", "type": "nominal"}
+          }
+        }
+      });
+      assert.equal(facet.spacing({}, model, defaultConfig), 0);
     });
   });
 
