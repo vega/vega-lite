@@ -2,13 +2,13 @@ import * as log from '../log';
 
 import {Channel} from '../channel';
 import {keys, duplicate, mergeDeep, flatten, unique, isArray, vals, hash, Dict} from '../util';
-import {defaultConfig, Config} from '../config';
+import {defaultConfig, CellConfig, Config} from '../config';
 import {LayerSpec} from '../spec';
 import {assembleData, parseLayerData} from './data/data';
 import {assembleLayout, parseLayerLayout} from './layout';
 import {Model} from './model';
 import {UnitModel} from './unit';
-import {buildModel} from './common';
+import {applyConfig, buildModel, FILL_STROKE_CONFIG} from './common';
 import {FieldDef} from '../fielddef';
 import {ScaleComponents} from './scale/scale';
 import {StackProperties} from '../stack';
@@ -228,8 +228,8 @@ export class LayerModel extends Model {
     });
   }
 
-  public assembleParentGroupProperties(): any {
-    return null;
+  public assembleParentGroupProperties(cellConfig: CellConfig) {
+    return applyConfig({}, cellConfig, FILL_STROKE_CONFIG.concat(['clip']));
   }
 
   public assembleData(data: VgData[]): VgData[] {
