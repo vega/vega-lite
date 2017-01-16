@@ -104,8 +104,8 @@ export class FacetModel extends Model {
           undefined, // TODO(#1647): support width / height here
           [] // There is no xyRangeSteps here and there is no need to input
         );
-        model._spacing[channel] = (facet[channel].scale || {}).spacing !== undefined ?
-          (facet[channel].scale || {}).spacing : config.scale.facetSpacing;
+
+        model._spacing[channel] = spacing(facet[channel].scale || {}, model, config);
       }
       return _scale;
     }, {} as Dict<Scale>);
@@ -146,6 +146,10 @@ export class FacetModel extends Model {
 
   public child() {
     return this._child;
+  }
+
+  public children(): Model[] {
+    return [this._child];
   }
 
   private hasSummary() {
@@ -348,8 +352,20 @@ export class FacetModel extends Model {
   }
 }
 
+export function spacing(scale: Scale, model: FacetModel, config: Config) {
+  if (scale.spacing !== undefined) {
+    return scale.spacing;
+  }
 
+  const hasSubPlotWithXy = model.hasChildWithFieldOnChannel('x') ||
+    model.hasChildWithFieldOnChannel('y');
 
+  if (!hasSubPlotWithXy) {
+    // If there is no subplot with x/y, it's a simple table so there should be no spacing.
+    return 0;
+  }
+  return config.scale.facetSpacing;
+}
 
 function getFacetGroupProperties(model: FacetModel) {
   const child = model.child();
