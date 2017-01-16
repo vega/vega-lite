@@ -9,7 +9,7 @@ import {FieldDef, FieldRefOption, field} from '../fielddef';
 import {Legend} from '../legend';
 import {Scale, hasDiscreteDomain} from '../scale';
 import {SortField, SortOrder} from '../sort';
-import {BaseSpec} from '../spec';
+import {BaseSpec, Padding} from '../spec';
 import {Transform} from '../transform';
 import {extend, flatten, vals, Dict} from '../util';
 import {VgData, VgMarkGroup, VgScale, VgAxis, VgLegend} from '../vega.schema';
@@ -90,6 +90,7 @@ export abstract class Model {
   protected _parent: Model;
   protected _name: string;
   protected _description: string;
+  protected _padding: Padding;
 
   protected _data: Data;
 
@@ -127,6 +128,7 @@ export abstract class Model {
     this._data = spec.data;
 
     this._description = spec.description;
+    this._padding = spec.padding;
     this._transform = spec.transform;
 
     if (spec.transform) {
@@ -255,6 +257,10 @@ export abstract class Model {
 
   public description() {
     return this._description;
+  }
+
+  public padding() {
+    return this._padding;
   }
 
   public data() {

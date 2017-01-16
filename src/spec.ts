@@ -12,6 +12,8 @@ import {ROW, COLUMN, X, Y, X2, Y2} from './channel';
 import * as vlEncoding from './encoding';
 import {contains, duplicate, extend, hash, keys, omit, pick, vals} from './util';
 
+export type Padding = number | {top?: number, bottom?: number, left?: number, right?: number};
+
 export interface BaseSpec {
   /**
    * URL to JSON schema for this Vega-Lite specification.
@@ -29,6 +31,15 @@ export interface BaseSpec {
    * This property has no effect on the output visualization.
    */
   description?: string;
+
+  /**
+   * The default visualization padding, in pixels, from the edge of the visualization canvas to the data rectangle. This can be a single number or an object with `"top"`, `"left"`, `"right"`, `"bottom"` properties.
+   *
+   * __Default value__: `5`
+   *
+   * @minimum 0
+   */
+  padding?: Padding;
 
   /**
    * An object describing the data source

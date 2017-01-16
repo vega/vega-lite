@@ -866,6 +866,31 @@
                     "$ref": "#/definitions/OverlayConfig",
                     "description": "Mark Overlay Config"
                 },
+                "padding": {
+                    "anyOf": [
+                        {
+                            "properties": {
+                                "bottom": {
+                                    "type": "number"
+                                },
+                                "left": {
+                                    "type": "number"
+                                },
+                                "right": {
+                                    "type": "number"
+                                },
+                                "top": {
+                                    "type": "number"
+                                }
+                            },
+                            "type": "object"
+                        },
+                        {
+                            "type": "number"
+                        }
+                    ],
+                    "description": "The default visualization padding, in pixels, from the edge of the visualization canvas to the data rectangle. This can be a single number or an object with `\"top\"`, `\"left\"`, `\"right\"`, `\"bottom\"` properties.\n\n__Default value__: `5`\n\n* @minimum 0"
+                },
                 "point": {
                     "$ref": "#/definitions/PointConfig",
                     "description": "Point-Specific Config"
@@ -1164,6 +1189,32 @@
                     "description": "Name of the visualization for later reference.",
                     "type": "string"
                 },
+                "padding": {
+                    "anyOf": [
+                        {
+                            "properties": {
+                                "bottom": {
+                                    "type": "number"
+                                },
+                                "left": {
+                                    "type": "number"
+                                },
+                                "right": {
+                                    "type": "number"
+                                },
+                                "top": {
+                                    "type": "number"
+                                }
+                            },
+                            "type": "object"
+                        },
+                        {
+                            "type": "number"
+                        }
+                    ],
+                    "description": "The default visualization padding, in pixels, from the edge of the visualization canvas to the data rectangle. This can be a single number or an object with `\"top\"`, `\"left\"`, `\"right\"`, `\"bottom\"` properties.\n\n__Default value__: `5`",
+                    "minimum": 0
+                },
                 "transform": {
                     "$ref": "#/definitions/Transform",
                     "description": "An object describing filter and new field calculation."
@@ -1241,6 +1292,32 @@
                 "name": {
                     "description": "Name of the visualization for later reference.",
                     "type": "string"
+                },
+                "padding": {
+                    "anyOf": [
+                        {
+                            "properties": {
+                                "bottom": {
+                                    "type": "number"
+                                },
+                                "left": {
+                                    "type": "number"
+                                },
+                                "right": {
+                                    "type": "number"
+                                },
+                                "top": {
+                                    "type": "number"
+                                }
+                            },
+                            "type": "object"
+                        },
+                        {
+                            "type": "number"
+                        }
+                    ],
+                    "description": "The default visualization padding, in pixels, from the edge of the visualization canvas to the data rectangle. This can be a single number or an object with `\"top\"`, `\"left\"`, `\"right\"`, `\"bottom\"` properties.\n\n__Default value__: `5`",
+                    "minimum": 0
                 },
                 "spec": {
                     "anyOf": [
@@ -1390,6 +1467,32 @@
                 "name": {
                     "description": "Name of the visualization for later reference.",
                     "type": "string"
+                },
+                "padding": {
+                    "anyOf": [
+                        {
+                            "properties": {
+                                "bottom": {
+                                    "type": "number"
+                                },
+                                "left": {
+                                    "type": "number"
+                                },
+                                "right": {
+                                    "type": "number"
+                                },
+                                "top": {
+                                    "type": "number"
+                                }
+                            },
+                            "type": "object"
+                        },
+                        {
+                            "type": "number"
+                        }
+                    ],
+                    "description": "The default visualization padding, in pixels, from the edge of the visualization canvas to the data rectangle. This can be a single number or an object with `\"top\"`, `\"left\"`, `\"right\"`, `\"bottom\"` properties.\n\n__Default value__: `5`",
+                    "minimum": 0
                 },
                 "transform": {
                     "$ref": "#/definitions/Transform",
@@ -3137,6 +3240,32 @@
                 "name": {
                     "description": "Name of the visualization for later reference.",
                     "type": "string"
+                },
+                "padding": {
+                    "anyOf": [
+                        {
+                            "properties": {
+                                "bottom": {
+                                    "type": "number"
+                                },
+                                "left": {
+                                    "type": "number"
+                                },
+                                "right": {
+                                    "type": "number"
+                                },
+                                "top": {
+                                    "type": "number"
+                                }
+                            },
+                            "type": "object"
+                        },
+                        {
+                            "type": "number"
+                        }
+                    ],
+                    "description": "The default visualization padding, in pixels, from the edge of the visualization canvas to the data rectangle. This can be a single number or an object with `\"top\"`, `\"left\"`, `\"right\"`, `\"bottom\"` properties.\n\n__Default value__: `5`",
+                    "minimum": 0
                 },
                 "transform": {
                     "$ref": "#/definitions/Transform",

@@ -24,6 +24,7 @@ describe('Compile', function() {
         "mark": "point"
       }).spec;
 
+      assert.equal(spec.padding, 5);
       assert.equal(spec.autosize, 'pad');
       assert.deepEqual(spec.signals, [
         {
