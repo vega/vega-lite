@@ -1,6 +1,7 @@
 import {DataComponentCompiler} from './base';
 
 import {isDateTime, DateTime} from '../../datetime';
+import {isUrlData} from '../../data';
 import {FieldDef, isCount} from '../../fielddef';
 import {isOneOfFilter, isEqualFilter, isRangeFilter} from '../../filter';
 import {QUANTITATIVE, TEMPORAL} from '../../type';
@@ -61,7 +62,7 @@ function parse(model: Model): Dict<string> {
 
   // Custom parse should override inferred parse
   const data = model.data();
-  if (data && data.format && data.format.parse) {
+  if (data && isUrlData(data) && data.format && data.format.parse) {
     const parse = data.format.parse;
     keys(parse).forEach((field) => {
       parseComponent[field] = parse[field];

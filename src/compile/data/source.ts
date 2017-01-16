@@ -1,4 +1,4 @@
-import {DataFormat, SOURCE} from '../../data';
+import {DataFormat, SOURCE, isInlineData, isUrlData} from '../../data';
 import {contains, extend} from '../../util';
 import {VgData} from '../../vega.schema';
 
@@ -21,10 +21,10 @@ export namespace source {
       // If data is explicitly provided
 
       let sourceData: VgData = { name: model.dataName(SOURCE) };
-      if (data.values && data.values.length > 0) {
+      if (isInlineData(data)) {
         sourceData.values = data.values;
         sourceData.format = { type: 'json' };
-      } else if (data.url) {
+      } else if (isUrlData(data)) {
         sourceData.url = data.url;
 
         // Extract extension from URL using snippet from
@@ -49,6 +49,7 @@ export namespace source {
               {}
           );
       }
+
       return sourceData;
     } else if (!model.parent()) {
       // If data is not explicitly provided but the model is a root,
