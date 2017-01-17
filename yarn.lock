@@ -4119,9 +4119,9 @@ typedarray@~0.0.5:
   version "0.0.6"
   resolved "https://registry.yarnpkg.com/typedarray/-/typedarray-0.0.6.tgz#867ac74e3864187b1d3d47d996a78ec5c8830777"
 
-typescript-json-schema@~0.4.0:
-  version "0.4.0"
-  resolved "https://registry.yarnpkg.com/typescript-json-schema/-/typescript-json-schema-0.4.0.tgz#9a0d8490158c9fe25c8c90dd48e39f12b5364403"
+typescript-json-schema@^0.5.1:
+  version "0.5.1"
+  resolved "https://registry.yarnpkg.com/typescript-json-schema/-/typescript-json-schema-0.5.1.tgz#efa38828ef203a5ad8fc16b6e1c73c559eabc4aa"
   dependencies:
     glob "~7.1.1"
     json-stable-stringify "^1.0.1"
