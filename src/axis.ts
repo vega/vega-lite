@@ -215,17 +215,13 @@ export interface AxisConfig {
 // more concise Vega output.
 
 export const defaultAxisConfig: AxisConfig = {
-  offset: undefined, // implicitly 0
-  grid: undefined, // automatically determined
-  label: true,
   labelMaxLength: 25,
-  tickSize: undefined, // implicitly 6 (by Vega) // FIXME check if this is still true
 };
 
 export const defaultFacetAxisConfig: AxisConfig = {
   axisWidth: 0,
+  // TODO: remove these
   domain: false,
-  label: true,
   grid: false,
   tick: false
 };

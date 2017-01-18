@@ -6,7 +6,21 @@ import * as encode from './encode';
 import * as rules from './rules';
 
 import {Model} from '../model';
-import {Dict, contains, keys} from '../../util';
+import {Dict, keys, some} from '../../util';
+
+type AxisPart = 'domain' | 'grid' | 'labels' | 'ticks' | 'title';
+const AXIS_PARTS: AxisPart[] = ['domain', 'grid', 'labels', 'ticks', 'title'];
+
+/**
+ * Mapping an axis part to its enable/disable flag.
+ */
+const axisPartFlag = {
+  domain: 'domain',
+  grid: 'grid',
+  labels: 'label',
+  ticks: 'tick',
+  title: 'title'
+};
 
 export function parseAxisComponent(model: Model, axisChannels: Channel[]): Dict<VgAxis[]> {
   return axisChannels.reduce(function(axis, channel) {
@@ -30,14 +44,26 @@ export function parseAxisComponent(model: Model, axisChannels: Channel[]): Dict<
   }, {});
 }
 
+function isFalseOrNull(v: boolean | null) {
+  return v === false || v === null;
+}
+
 /**
  * Return if an axis is visible (shows at least one part of the axis).
  */
 function isVisibleAxis(axis: VgAxis) {
-  if (axis.domain !== false || axis.grid !== false || axis.label !== false || axis.tick !== false || axis.title) {
-    return true;
+  return some(AXIS_PARTS, (part) => hasAxisPart(axis, part));
+}
+
+function hasAxisPart(axis: VgAxis, part: AxisPart) {
+  // FIXME this method can be wrong if users use a Vega theme.
+  // (Not sure how to correctly handle that yet.).
+
+  if (part === 'grid' || part === 'title') {
+    return !!axis[part];
   }
-  return false;
+  // Other parts are enabled by default, so they should not be false or null.
+  return !isFalseOrNull(axis[axisPartFlag[part]]);
 }
 
 /**
@@ -47,14 +73,6 @@ export function parseGridAxis(channel: Channel, model: Model): VgAxis {
   // FIXME: support adding ticks for grid axis that are inner axes of faceted plots.
   return parseAxis(channel, model, true);
 }
-
-const axisPartFlag = {
-  domain: 'domain',
-  grid: 'grid',
-  labels: 'label',
-  ticks: 'tick',
-  title: 'title'
-};
 
 export function parseMainAxis(channel: Channel, model: Model) {
   return parseAxis(channel, model, false);
@@ -81,15 +99,17 @@ function parseAxis(channel: Channel, model: Model, isGridAxis: boolean): VgAxis 
   });
 
   // 2) Add guide encode definition groups
-  const encodeSpec = model.axis(channel).encode || {};
-  [
-    'domain', 'grid', 'labels', 'ticks', 'title'
-  ].forEach(function(part) {
-    if (contains([false, null], vgAxis[axisPartFlag[part]])) {
+
+  const encodeSpec = axis.encode || {};
+  AXIS_PARTS.forEach(function(part) {
+    if (!hasAxisPart(vgAxis, part)) {
       // No need to create encode for a disabled part.
       return;
     }
-    const value = encode[part](model, channel, encodeSpec[part] || {}, vgAxis);
+    // TODO(@yuhanlu): instead of calling encode[part], break this line based on part type
+    // as different require different parameters.
+    const value = encode[part](model, channel, encodeSpec.labels || {}, vgAxis);
+
     if (value !== undefined && keys(value).length > 0) {
       vgAxis.encode = vgAxis.encode || {};
       vgAxis.encode[part] = {update: value};

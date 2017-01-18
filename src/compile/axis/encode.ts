@@ -6,7 +6,8 @@ import {VgAxis} from '../../vega.schema';
 import {timeFormatExpression} from '../common';
 import {Model} from '../model';
 
-export function domain(model: Model, channel: Channel, domainPropsSpec: any) {
+// TODO: @yuhanlu -- please change method signature to require only what are really needed
+export function domain(model: Model, channel: Channel, domainPropsSpec: any, def?: VgAxis) {
   const axis = model.axis(channel);
 
   return extend(
@@ -20,7 +21,8 @@ export function domain(model: Model, channel: Channel, domainPropsSpec: any) {
   );
 }
 
-export function grid(model: Model, channel: Channel, gridPropsSpec: any) {
+// TODO: @yuhanlu -- please change method signature to require only what are really needed
+export function grid(model: Model, channel: Channel, gridPropsSpec: any, def?: VgAxis) {
   const axis = model.axis(channel);
 
   return extend(
@@ -32,16 +34,11 @@ export function grid(model: Model, channel: Channel, gridPropsSpec: any) {
   );
 }
 
+// TODO: @yuhanlu -- please change method signature to require only what are really needed
 export function labels(model: Model, channel: Channel, labelsSpec: any, def: VgAxis) {
   const fieldDef = model.fieldDef(channel);
   const axis = model.axis(channel);
   const config = model.config();
-
-  if (!axis.label) {
-    return extend({
-      text: ''
-    }, labelsSpec);
-  }
 
   // Text
   if (contains([NOMINAL, ORDINAL], fieldDef.type) && axis.labelMaxLength) {
@@ -116,7 +113,8 @@ export function labels(model: Model, channel: Channel, labelsSpec: any, def: VgA
   return keys(labelsSpec).length === 0 ? undefined : labelsSpec;
 }
 
-export function ticks(model: Model, channel: Channel, ticksPropsSpec: any) {
+// TODO: @yuhanlu -- please change method signature to require only what are really needed
+export function ticks(model: Model, channel: Channel, ticksPropsSpec: any, def?: VgAxis) {
   const axis = model.axis(channel);
 
   return extend(
@@ -126,7 +124,8 @@ export function ticks(model: Model, channel: Channel, ticksPropsSpec: any) {
   );
 }
 
-export function title(model: Model, channel: Channel, titlePropsSpec: any) {
+// TODO: @yuhanlu -- please change method signature to require only what are really needed
+export function title(model: Model, channel: Channel, titlePropsSpec: any, def?: VgAxis) {
   const axis = model.axis(channel);
 
   return extend(
