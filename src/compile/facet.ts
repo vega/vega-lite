@@ -105,7 +105,7 @@ export class FacetModel extends Model {
         model._spacing[channel] = spacing(facet[channel].scale || {}, model, config);
       }
       return _scale;
-    }, {} as Dict<Scale>);
+    }, {});
   }
 
   private _initAxis(facet: Facet, config: Config, child: Model): Dict<Axis> {
@@ -131,7 +131,7 @@ export class FacetModel extends Model {
         }
       }
       return _axis;
-    }, {} as Dict<Axis>);
+    }, {});
   }
 
   public facet() {

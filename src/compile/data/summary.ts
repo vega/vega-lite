@@ -103,7 +103,7 @@ export namespace summary {
 
   export function parseLayer(model: LayerModel): SummaryComponent[] {
     // Index by the fields we are grouping by
-    let summaries = {} as Dict<SummaryComponent>;
+    let summaries = {};
 
     // Combine summaries for children that don't have a distinct source
     // (either having its own data source, or its own tranformation of the same data source).
