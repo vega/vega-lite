@@ -6,7 +6,7 @@ import {extend, Dict} from '../../util';
 
 import {Model} from '../model';
 
-import {ScaleComponent, ScaleComponents, BIN_LEGEND_SUFFIX, BIN_LEGEND_LABEL_SUFFIX} from './scale';
+import {ScaleComponent, ScaleComponents, BIN_LEGEND_LABEL_SUFFIX} from './scale';
 import domain from './domain';
 
 /**
@@ -35,7 +35,6 @@ export function parseScale(model: Model, channel: Channel) {
 
     // Add additional scale needed for the labels in the binned legend.
     if (model.legend(channel) && fieldDef.bin && hasContinuousDomain(model.scale(channel).type)) {
-      scales.binLegend = parseBinLegend(channel, model, fieldDef);
       scales.binLegendLabel = parseBinLegendLabel(channel, model, fieldDef);
     }
 
@@ -84,22 +83,6 @@ function parseMainScale(model: Model, fieldDef: FieldDef, channel: Channel) {
   }
 
   return scaleDef;
-}
-
-/**
- * Return additional scale to drive legend when we use a continuous scale and binning.
- */
-function parseBinLegend(channel: Channel, model: Model, fieldDef: FieldDef): ScaleComponent {
-  return {
-    name: model.scaleName(channel, true) + BIN_LEGEND_SUFFIX,
-    type: ScaleType.POINT,
-    domain: {
-      data: model.dataTable(),
-      field: model.field(channel),
-      sort: true
-    },
-    range: [0,1] // doesn't matter because we override it
-  };
 }
 
 /**

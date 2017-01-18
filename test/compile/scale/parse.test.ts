@@ -81,9 +81,6 @@ describe('src/compile', function() {
         assert.equal(scales.main.name, 'color');
         assert.equal(scales.main.type, 'sequential');
 
-        assert.equal(scales.binLegend.name, 'color_bin_legend');
-        assert.equal(scales.binLegend.type, 'point');
-
         assert.equal(scales.binLegendLabel.name, 'color_bin_legend_label');
         assert.equal(scales.binLegendLabel.type, 'ordinal');
       });
@@ -115,7 +112,6 @@ describe('src/compile', function() {
       it('should add correct scales', function() {
         assert.equal(scales.main.name, 'color');
         assert.equal(scales.main.type, 'sequential');
-        assert.equal(scales.binLegend, undefined);
         assert.equal(scales.binLegendLabel, undefined);
       });
     });

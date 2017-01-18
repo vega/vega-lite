@@ -4,7 +4,7 @@ import {keys, Dict} from '../../util';
 import {VgLegend} from '../../vega.schema';
 
 import {numberFormat} from '../common';
-import {BIN_LEGEND_SUFFIX} from '../scale/scale';
+import {BIN_LEGEND_LABEL_SUFFIX} from '../scale/scale';
 import {UnitModel} from '../unit';
 
 import * as encode from './encode';
@@ -27,7 +27,7 @@ export function parseLegendComponent(model: UnitModel): Dict<VgLegend> {
 
 function getLegendDefWithScale(model: UnitModel, channel: Channel): VgLegend {
   // For binned field with continuous scale, use a special scale so we can overrride the mark props and labels
-  const suffix = model.fieldDef(channel).bin && hasContinuousDomain(model.scale(channel).type) ? BIN_LEGEND_SUFFIX : '';
+  const suffix = model.fieldDef(channel).bin && hasContinuousDomain(model.scale(channel).type) ? BIN_LEGEND_LABEL_SUFFIX : '';
   switch (channel) {
     case COLOR:
       const scale = model.scaleName(COLOR) + suffix;
