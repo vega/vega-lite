@@ -1,6 +1,6 @@
 import {AxisConfig, defaultAxisConfig, defaultFacetAxisConfig} from './axis';
 import {LegendConfig, defaultLegendConfig} from './legend';
-import {MarkConfig, AreaConfig, BarConfig, LineConfig, PointConfig, TextConfig, TickConfig, RectConfig, RuleConfig} from './mark';
+import {MarkConfig, AreaConfig, BarConfig, LineConfig, PointConfig, RectConfig, RuleConfig, SymbolConfig, TextConfig, TickConfig} from './mark';
 import * as mark from './mark';
 import {ScaleConfig, defaultScaleConfig} from './scale';
 import {Padding} from './spec';
@@ -164,7 +164,7 @@ export interface Config {
   bar?: BarConfig;
 
   /** Circle-Specific Config */
-  circle?: PointConfig;
+  circle?: SymbolConfig;
 
   /** Line-Specific Config */
   line?: LineConfig;
@@ -179,7 +179,7 @@ export interface Config {
   rule?: RuleConfig;
 
   /** Square-Specific Config */
-  square?: PointConfig;
+  square?: SymbolConfig;
 
   /** Text-Specific Config */
   text?: TextConfig;

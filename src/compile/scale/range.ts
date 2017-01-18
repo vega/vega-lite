@@ -2,7 +2,7 @@ import * as log from '../../log';
 
 import {COLUMN, ROW, X, Y, SHAPE, SIZE, COLOR, OPACITY, Channel} from '../../channel';
 import {Config} from '../../config';
-import {Mark, PointConfig} from '../../mark';
+import {Mark} from '../../mark';
 import {Scale, ScaleConfig, ScaleType, scaleTypeSupportProperty} from '../../scale';
 import * as util from '../../util';
 
@@ -150,8 +150,8 @@ function sizeRangeMax(mark: Mark, xyRangeSteps: number[], config: Config) {
     case 'point':
     case 'square':
     case 'circle':
-      if ((config[mark] as PointConfig).maxSize) {
-        return (config[mark] as PointConfig).maxSize;
+      if (config[mark].maxSize) {
+        return config[mark].maxSize;
       }
 
       // FIXME this case totally should be refactored

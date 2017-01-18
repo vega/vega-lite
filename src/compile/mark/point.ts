@@ -1,6 +1,6 @@
 import {X, Y, SHAPE, SIZE} from '../../channel';
 import {ChannelDefWithLegend} from '../../fielddef';
-import {PointConfig} from '../../mark';
+import {SymbolConfig, PointConfig} from '../../mark';
 import {Scale} from '../../scale';
 import {VgValueRef} from '../../vega.schema';
 
@@ -14,7 +14,7 @@ function encodeEntry(model: UnitModel, fixedShape?: string) {
   // TODO Use Vega's marks properties interface
   let p: any = {};
   const config = model.config();
-  const markSpecificConfig: PointConfig = fixedShape ? config[fixedShape] : config.point;
+  const markSpecificConfig: SymbolConfig = fixedShape ? config[fixedShape] : config.point;
   const stack = model.stack();
 
   // TODO: refactor how refer to scale as discussed in https://github.com/vega/vega-lite/pull/1613
@@ -26,18 +26,18 @@ function encodeEntry(model: UnitModel, fixedShape?: string) {
     {value: markSpecificConfig.size}
   );
 
-  p.shape = shape(model.encoding().shape, model.scaleName(SHAPE), model.scale(SHAPE), markSpecificConfig, fixedShape);
+  p.shape = shape(model.encoding().shape, model.scaleName(SHAPE), model.scale(SHAPE), config.point, fixedShape);
 
   applyColorAndOpacity(p, model);
   return p;
 }
 
-function shape(fieldDef: ChannelDefWithLegend, scaleName: string, scale: Scale, markSpecificConfig: PointConfig, fixedShape?: string): VgValueRef {
+function shape(fieldDef: ChannelDefWithLegend, scaleName: string, scale: Scale, pointConfig: PointConfig, fixedShape?: string): VgValueRef {
   // shape
   if (fixedShape) { // square and circle marks
     return { value: fixedShape };
   }
-  return ref.midPoint(SHAPE, fieldDef, scaleName, scale, {value: markSpecificConfig.shape});
+  return ref.midPoint(SHAPE, fieldDef, scaleName, scale, {value: pointConfig.shape});
 }
 
 export const point: MarkCompiler = {

@@ -835,7 +835,7 @@
                     "description": "Cell Config"
                 },
                 "circle": {
-                    "$ref": "#/definitions/PointConfig",
+                    "$ref": "#/definitions/SymbolConfig",
                     "description": "Circle-Specific Config"
                 },
                 "countTitle": {
@@ -908,7 +908,7 @@
                     "description": "Scale Config"
                 },
                 "square": {
-                    "$ref": "#/definitions/PointConfig",
+                    "$ref": "#/definitions/SymbolConfig",
                     "description": "Square-Specific Config"
                 },
                 "text": {
@@ -2744,6 +2744,119 @@
                 "zero"
             ],
             "type": "string"
+        },
+        "SymbolConfig": {
+            "properties": {
+                "color": {
+                    "description": "Default color.",
+                    "type": "string"
+                },
+                "fill": {
+                    "description": "Default Fill Color.  This has higher precedence than config.color",
+                    "type": "string"
+                },
+                "fillOpacity": {
+                    "maximum": 1,
+                    "minimum": 0,
+                    "type": "number"
+                },
+                "filled": {
+                    "description": "Whether the shape\\'s color should be used as fill color instead of stroke color.\nThis is only applicable for \"bar\", \"point\", and \"area\".\nAll marks except \"point\" marks are filled by default.\nSee Mark Documentation (http://vega.github.io/vega-lite/docs/marks.html)\nfor usage example.",
+                    "type": "boolean"
+                },
+                "interpolate": {
+                    "$ref": "#/definitions/Interpolate",
+                    "description": "The line interpolation method to use for line and area marks. One of the following:\n- `\"linear\"`: piecewise linear segments, as in a polyline.\n- `\"linear-closed\"`: close the linear segments to form a polygon.\n- `\"step\"`: alternate between horizontal and vertical segments, as in a step function.\n- `\"step-before\"`: alternate between vertical and horizontal segments, as in a step function.\n- `\"step-after\"`: alternate between horizontal and vertical segments, as in a step function.\n- `\"basis\"`: a B-spline, with control point duplication on the ends.\n- `\"basis-open\"`: an open B-spline; may not intersect the start or end.\n- `\"basis-closed\"`: a closed B-spline, as in a loop.\n- `\"cardinal\"`: a Cardinal spline, with control point duplication on the ends.\n- `\"cardinal-open\"`: an open Cardinal spline; may not intersect the start or end, but will intersect other control points.\n- `\"cardinal-closed\"`: a closed Cardinal spline, as in a loop.\n- `\"bundle\"`: equivalent to basis, except the tension parameter is used to straighten the spline.\n- `\"monotone\"`: cubic interpolation that preserves monotonicity in y."
+                },
+                "maxOpacity": {
+                    "description": "Default max opacity for mapping a field to opacity.",
+                    "maximum": 1,
+                    "minimum": 0,
+                    "type": "number"
+                },
+                "maxSize": {
+                    "description": "Default max value for point size scale.",
+                    "minimum": 0,
+                    "type": "number"
+                },
+                "maxStrokeWidth": {
+                    "description": "Default max strokeWidth for strokeWidth  (or rule/line's size) scale.",
+                    "minimum": 0,
+                    "type": "number"
+                },
+                "minOpacity": {
+                    "description": "Default minimum opacity for mapping a field to opacity.",
+                    "maximum": 1,
+                    "minimum": 0,
+                    "type": "number"
+                },
+                "minSize": {
+                    "description": "Default minimum value for point size scale with zero=false.",
+                    "minimum": 0,
+                    "type": "number"
+                },
+                "minStrokeWidth": {
+                    "description": "Default minimum strokeWidth for strokeWidth (or rule/line's size) scale with zero=false.",
+                    "minimum": 0,
+                    "type": "number"
+                },
+                "nominalColorScheme": {
+                    "description": "Default color scheme for nominal (categorical) data",
+                    "type": "string"
+                },
+                "opacity": {
+                    "maximum": 1,
+                    "minimum": 0,
+                    "type": "number"
+                },
+                "orient": {
+                    "$ref": "#/definitions/Orient",
+                    "description": "The orientation of a non-stacked bar, tick, area, and line charts.\nThe value is either horizontal (default) or vertical.\n- For bar, rule and tick, this determines whether the size of the bar and tick\nshould be applied to x or y dimension.\n- For area, this property determines the orient property of the Vega output.\n- For line, this property determines the sort order of the points in the line\nif `config.sortLineBy` is not specified.\nFor stacked charts, this is always determined by the orientation of the stack;\ntherefore explicitly specified value will be ignored."
+                },
+                "sequentialColorScheme": {
+                    "description": "Default color scheme for ordinal, quantitative and temporal field",
+                    "type": "string"
+                },
+                "size": {
+                    "description": "The pixel area each the point/circle/square.\nFor example: in the case of circles, the radius is determined in part by the square root of the size value.",
+                    "minimum": 0,
+                    "type": "number"
+                },
+                "stacked": {
+                    "$ref": "#/definitions/StackOffset"
+                },
+                "stroke": {
+                    "description": "Default Stroke Color.  This has higher precedence than config.color",
+                    "type": "string"
+                },
+                "strokeDash": {
+                    "description": "An array of alternating stroke, space lengths for creating dashed or dotted lines.",
+                    "items": {
+                        "type": "number"
+                    },
+                    "type": "array"
+                },
+                "strokeDashOffset": {
+                    "description": "The offset (in pixels) into which to begin drawing with the stroke dash array.",
+                    "type": "number"
+                },
+                "strokeOpacity": {
+                    "maximum": 1,
+                    "minimum": 0,
+                    "type": "number"
+                },
+                "strokeWidth": {
+                    "minimum": 0,
+                    "type": "number"
+                },
+                "tension": {
+                    "description": "Depending on the interpolation type, sets the tension parameter (for line and area marks).",
+                    "maximum": 1,
+                    "minimum": 0,
+                    "type": "number"
+                }
+            },
+            "type": "object"
         },
         "TextConfig": {
             "properties": {
