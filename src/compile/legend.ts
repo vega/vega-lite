@@ -6,7 +6,7 @@ import {Legend} from '../legend';
 import {title as fieldTitle} from '../fielddef';
 import {AREA, BAR, TICK, TEXT, LINE, POINT, CIRCLE, SQUARE} from '../mark';
 import {ORDINAL, TEMPORAL} from '../type';
-import {extend, keys, without, Dict} from '../util';
+import {extend, keys, without, Dict, prosSpecMapping} from '../util';
 
 import {applyMarkConfig, FILL_STROKE_CONFIG, numberFormat, timeTemplate} from './common';
 import {COLOR_LEGEND, COLOR_LEGEND_LABEL} from './scale';
@@ -122,6 +122,7 @@ export namespace properties {
     let symbols:any = {};
     const mark = model.mark();
     const legend = model.legend(channel);
+    symbolsSpec = prosSpecMapping(symbolsSpec);
 
     switch (mark) {
       case BAR:
@@ -223,6 +224,7 @@ export namespace properties {
   export function labels(fieldDef: FieldDef, labelsSpec: any, model: UnitModel, channel: Channel) {
     const legend = model.legend(channel);
     const config = model.config();
+    labelsSpec = prosSpecMapping(labelsSpec);
 
     let labels:any = {};
 
@@ -277,6 +279,7 @@ export namespace properties {
 
   export function title(fieldDef: FieldDef, titleSpec: any, model: UnitModel, channel: Channel) {
     const legend = model.legend(channel);
+    titleSpec = prosSpecMapping(titleSpec);
 
     let titles:any = {};
 
