@@ -250,17 +250,7 @@ export const defaultLineConfig: LineConfig = {
   strokeWidth: 2
 };
 
-export interface PointConfig extends MarkConfig {
-  /**
-   * The default symbol shape to use. One of: `"circle"` (default), `"square"`, `"cross"`, `"diamond"`, `"triangle-up"`, or `"triangle-down"`, or a custom SVG path.
-   */
-  shape?: Shape | string;
-
-  /**
-   * The default collection of symbol shapes for mapping nominal fields to shapes of point marks (i.e., range of a `shape` scale).
-   * Each value should be one of: `"circle"`, `"square"`, `"cross"`, `"diamond"`, `"triangle-up"`, or `"triangle-down"`, or a custom SVG path.
-   */
-  shapes?: (Shape|string)[];
+export interface SymbolConfig extends MarkConfig {
 
   /**
    * The pixel area each the point/circle/square.
@@ -282,9 +272,20 @@ export interface PointConfig extends MarkConfig {
   maxSize?: number;
 }
 
-export const defaultPointConfig: PointConfig = {
-  shape: 'circle',
-  shapes: ['circle', 'square', 'cross', 'diamond', 'triangle-up', 'triangle-down'],
+export interface PointConfig extends SymbolConfig {
+  /**
+   * The default symbol shape to use. One of: `"circle"` (default), `"square"`, `"cross"`, `"diamond"`, `"triangle-up"`, or `"triangle-down"`, or a custom SVG path.
+   */
+  shape?: Shape | string;
+
+  /**
+   * The default collection of symbol shapes for mapping nominal fields to shapes of point marks (i.e., range of a `shape` scale).
+   * Each value should be one of: `"circle"`, `"square"`, `"cross"`, `"diamond"`, `"triangle-up"`, or `"triangle-down"`, or a custom SVG path.
+   */
+  shapes?: (Shape|string)[];
+}
+
+export const defaultSymbolConfig: PointConfig = {
   size: 30,
 
   // FIXME: revise if these *can* become ratios of rangeStep
@@ -292,10 +293,13 @@ export const defaultPointConfig: PointConfig = {
   strokeWidth: 2
 };
 
-export const defaultCircleConfig: PointConfig = defaultPointConfig;
-export const defaultSquareConfig: PointConfig = extend({}, defaultPointConfig, {
-  shape: 'square'
+export const defaultPointConfig = extend({}, defaultSymbolConfig, {
+  shape: 'circle',
+  shapes: ['circle', 'square', 'cross', 'diamond', 'triangle-up', 'triangle-down'],
 });
+
+export const defaultCircleConfig: SymbolConfig = defaultSymbolConfig;
+export const defaultSquareConfig: SymbolConfig = defaultSymbolConfig;
 
 export interface RectConfig extends MarkConfig {}
 
