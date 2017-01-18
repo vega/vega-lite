@@ -32,7 +32,7 @@ export function stackable2(channel: Channel, aFieldDef: FieldDef, a2fieldDef: Fi
     stack: StackProperties, defaultRef: VgValueRef): VgValueRef {
   if (aFieldDef && stack &&
       // If fieldChannel is X and channel is X2 (or Y and Y2)
-      (channel as any as string).charAt(0) === (stack.fieldChannel as any as string).charAt(0)
+      channel.charAt(0) === stack.fieldChannel.charAt(0)
       ) {
     return fieldRef(aFieldDef, scaleName, {suffix: 'start'});
   }

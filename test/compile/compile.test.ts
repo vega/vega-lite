@@ -11,7 +11,7 @@ import {compile, assembleRootGroup} from '../../src/compile/compile';
 describe('Compile', function() {
   it('should throw error for invalid spec', () => {
     assert.throws(() => {
-      compile({} as any);
+      compile({});
     }, Error, log.message.INVALID_SPEC);
   });
 
