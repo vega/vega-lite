@@ -27,7 +27,7 @@ export function parseAxisComponent(model: Model, axisChannels: Channel[]): Dict<
       }
     }
     return axis;
-  }, {} as Dict<VgAxis[]>);
+  }, {});
 }
 
 /**

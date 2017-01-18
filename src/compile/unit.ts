@@ -165,7 +165,7 @@ export class UnitModel extends Model {
         }
       }
       return _scale;
-    }, {} as Dict<Scale>);
+    }, {});
   }
 
   // TODO: consolidate this with scale?  Current scale range is in parseScale (later),
@@ -222,7 +222,7 @@ export class UnitModel extends Model {
         }
       }
       return _axis;
-    }, {} as Dict<Axis>);
+    }, {});
   }
 
   private _initLegend(encoding: Encoding, config: Config): Dict<Legend> {
@@ -237,7 +237,7 @@ export class UnitModel extends Model {
         }
       }
       return _legend;
-    }, {} as Dict<Legend>);
+    }, {});
   }
 
   public children(): Model[] {

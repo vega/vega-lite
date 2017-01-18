@@ -56,7 +56,7 @@ class NameMap implements NameMapInterface {
   private _nameMap: Dict<string>;
 
   constructor() {
-    this._nameMap = {} as Dict<string>;
+    this._nameMap = {};
   }
 
   public rename(oldName: string, newName: string) {
@@ -230,7 +230,7 @@ export abstract class Model {
     return group;
   }
 
-  public abstract assembleParentGroupProperties(cellConfig: CellConfig): any;
+  public abstract assembleParentGroupProperties(cellConfig: CellConfig): VgMarkGroup;
 
   public abstract channels(): Channel[];
 

@@ -11,7 +11,7 @@ function parse(model: Model): Dict<Formula> {
   return (model.calculate() || []).reduce(function(formulaComponent, formula) {
     formulaComponent[hash(formula)] = formula;
     return formulaComponent;
-  }, {} as Dict<Formula>);
+  }, {});
 }
 
 export const formula: DataComponentCompiler<Dict<Formula>> = {

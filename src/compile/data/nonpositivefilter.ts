@@ -18,7 +18,7 @@ export const nonPositiveFilter: DataComponentCompiler<Dict<boolean>> = {
       }
       nonPositiveComponent[model.field(channel)] = scale.type === ScaleType.LOG;
       return nonPositiveComponent;
-    }, {} as Dict<boolean>);
+    }, {});
   },
 
   parseFacet: function(model: FacetModel) {
@@ -31,12 +31,12 @@ export const nonPositiveFilter: DataComponentCompiler<Dict<boolean>> = {
       delete childDataComponent.nonPositiveFilter;
       return nonPositiveFilterComponent;
     }
-    return {} as Dict<boolean>;
+    return {};
   },
 
   parseLayer: function(model: LayerModel) {
     // note that we run this before source.parseLayer
-    let nonPositiveFilterComponent = {} as Dict<boolean>;
+    let nonPositiveFilterComponent = {};
 
     model.children().forEach((child) => {
       const childDataComponent = child.component.data;

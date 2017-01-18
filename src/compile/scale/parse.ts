@@ -20,7 +20,7 @@ export default function parseScaleComponent(model: Model): Dict<ScaleComponents>
       scale[channel] = scales;
     }
     return scale;
-  }, {} as Dict<ScaleComponents>);
+  }, {});
 }
 
 /**

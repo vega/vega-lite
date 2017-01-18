@@ -1,7 +1,7 @@
 import * as log from '../log';
 
 import {Channel} from '../channel';
-import {keys, duplicate, mergeDeep, flatten, unique, isArray, vals, hash, Dict} from '../util';
+import {keys, duplicate, mergeDeep, flatten, unique, isArray, vals, hash} from '../util';
 import {defaultConfig, CellConfig, Config} from '../config';
 import {LayerSpec} from '../spec';
 import {assembleData, parseLayerData} from './data/data';
@@ -12,8 +12,7 @@ import {applyConfig, buildModel, FILL_STROKE_CONFIG} from './common';
 import {FieldDef} from '../fielddef';
 import {ScaleComponents} from './scale/scale';
 import {StackProperties} from '../stack';
-import {VgData, VgAxis, VgLegend, isUnionedDomain, isDataRefDomain, VgDataRef} from '../vega.schema';
-
+import {VgData, VgMarkGroup, isUnionedDomain, isDataRefDomain, VgDataRef} from '../vega.schema';
 
 export class LayerModel extends Model {
   private _children: UnitModel[];
@@ -108,7 +107,7 @@ export class LayerModel extends Model {
   public parseScale() {
     const model = this;
 
-    let scaleComponent = this.component.scale = {} as Dict<ScaleComponents>;
+    let scaleComponent = this.component.scale = {};
 
     this._children.forEach(function(child) {
       child.parseScale();
@@ -183,7 +182,7 @@ export class LayerModel extends Model {
   }
 
   public parseAxis() {
-    let axisComponent = this.component.axis = {} as Dict<VgAxis[]>;
+    let axisComponent = this.component.axis = {};
 
     this._children.forEach(function(child) {
       child.parseAxis();
@@ -211,7 +210,7 @@ export class LayerModel extends Model {
   }
 
   public parseLegend() {
-    let legendComponent = this.component.legend = {} as Dict<VgLegend>;
+    let legendComponent = this.component.legend = {};
 
     this._children.forEach(function(child) {
       child.parseLegend();
@@ -228,7 +227,7 @@ export class LayerModel extends Model {
     });
   }
 
-  public assembleParentGroupProperties(cellConfig: CellConfig) {
+  public assembleParentGroupProperties(cellConfig: CellConfig): VgMarkGroup {
     return applyConfig({}, cellConfig, FILL_STROKE_CONFIG.concat(['clip']));
   }
 

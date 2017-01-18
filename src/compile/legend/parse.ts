@@ -22,7 +22,7 @@ export function parseLegendComponent(model: UnitModel): Dict<VgLegend> {
       legendComponent[channel] = parseLegend(model, channel);
     }
     return legendComponent;
-  }, {} as Dict<VgLegend>);
+  }, {});
 }
 
 function getLegendDefWithScale(model: UnitModel, channel: Channel): VgLegend {
