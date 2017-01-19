@@ -56,7 +56,7 @@ const DISCRETE_DOMAIN_INDEX = toSet(DISCRETE_DOMAIN_SCALES);
 
 export const TIME_SCALE_TYPES: ScaleType[] = ['time', 'utc'];
 
-export function hasDiscreteDomain(type: ScaleType): type is 'ordinal' | 'point' | 'band' {
+export function hasDiscreteDomain(type: ScaleType): type is 'ordinal' | 'point' | 'band' | 'index' {
   return type in DISCRETE_DOMAIN_INDEX;
 }
 
