@@ -10,20 +10,20 @@ import {Dict, contains, keys} from '../../util';
 
 export function parseAxisComponent(model: Model, axisChannels: Channel[]): Dict<VgAxis[]> {
   return axisChannels.reduce(function(axis, channel) {
-    const axes: VgAxis[] = [];
+    const vgAxes: VgAxis[] = [];
     if (model.axis(channel)) {
       const main = parseMainAxis(channel, model);
       if (main && isVisibleAxis(main)) {
-        axes.push(main);
+        vgAxes.push(main);
       }
 
       const grid = parseGridAxis(channel, model);
       if (grid && isVisibleAxis(grid)) {
-        axes.push(grid);
+        vgAxes.push(grid);
       }
 
-      if (axes.length > 0) {
-        axis[channel] = axes;
+      if (vgAxes.length > 0) {
+        axis[channel] = vgAxes;
       }
     }
     return axis;
@@ -63,7 +63,7 @@ export function parseMainAxis(channel: Channel, model: Model) {
 function parseAxis(channel: Channel, model: Model, isGridAxis: boolean): VgAxis {
   const axis = model.axis(channel);
 
-  let def: VgAxis = {
+  let vgAxis: VgAxis = {
     scale: model.scaleName(channel)
   };
 
@@ -76,7 +76,7 @@ function parseAxis(channel: Channel, model: Model, isGridAxis: boolean): VgAxis 
   ].forEach(function(property) {
     const value = getSpecifiedOrDefaultValue(property, axis, channel, model, isGridAxis);
     if (value !== undefined) {
-      def[property] = value;
+      vgAxis[property] = value;
     }
   });
 
@@ -85,18 +85,18 @@ function parseAxis(channel: Channel, model: Model, isGridAxis: boolean): VgAxis 
   [
     'domain', 'grid', 'labels', 'ticks', 'title'
   ].forEach(function(part) {
-    if (contains([false, null], def[axisPartFlag[part]])) {
+    if (contains([false, null], vgAxis[axisPartFlag[part]])) {
       // No need to create encode for a disabled part.
       return;
     }
-    const value = encode[part](model, channel, encodeSpec[part] || {}, def);
+    const value = encode[part](model, channel, encodeSpec[part] || {}, vgAxis);
     if (value !== undefined && keys(value).length > 0) {
-      def.encode = def.encode || {};
-      def.encode[part] = {update: value};
+      vgAxis.encode = vgAxis.encode || {};
+      vgAxis.encode[part] = {update: value};
     }
   });
 
-  return def;
+  return vgAxis;
 }
 
 function getSpecifiedOrDefaultValue(property: string, specifiedAxis: Axis, channel: Channel, model: Model, isGridAxis: boolean) {
