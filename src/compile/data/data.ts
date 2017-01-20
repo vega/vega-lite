@@ -141,19 +141,19 @@ export function parseLayerData(model: LayerModel): DataComponent {
  * @return modified data array
  */
 export function assembleData(model: Model, data: VgData[]) {
-  const component = model.component.data;
+  const dataComponent = model.component.data;
 
-  const sourceData = source.assemble(component);
+  const sourceData = source.assemble(dataComponent);
   if (sourceData) {
     data.push(sourceData);
   }
 
-  summary.assemble(component.summary || [], model.dataName(SOURCE)).forEach(function(summaryData) {
+  summary.assemble(dataComponent.summary || [], model.dataName(SOURCE)).forEach(function(summaryData) {
     data.push(summaryData);
   });
 
   // nonPositiveFilter
-  const nonPositiveFilterTransform = nonPositiveFilter.assemble(component.nonPositiveFilter);
+  const nonPositiveFilterTransform = nonPositiveFilter.assemble(dataComponent.nonPositiveFilter);
   if (nonPositiveFilterTransform.length > 0) {
     if (data.length > 0) {
       const dataTable = data[data.length - 1];
@@ -164,13 +164,13 @@ export function assembleData(model: Model, data: VgData[]) {
   }
 
   // stack
-  const stackData = stack.assemble(component.stack);
+  const stackData = stack.assemble(dataComponent.stack);
   if (stackData) {
     data.push(stackData);
   }
 
   // Path Order
-  const pathOrderCollectTransform = pathOrder.assemble(component.pathOrder);
+  const pathOrderCollectTransform = pathOrder.assemble(dataComponent.pathOrder);
   if (pathOrderCollectTransform) {
     const dataTable = data[data.length - 1];
     if (data.length > 0) {

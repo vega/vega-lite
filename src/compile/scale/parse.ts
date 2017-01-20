@@ -14,12 +14,12 @@ import domain from './domain';
  */
 export default function parseScaleComponent(model: Model): Dict<ScaleComponents> {
   // TODO: should model.channels() inlcude X2/Y2?
-  return model.channels().reduce(function(scale: Dict<ScaleComponents>, channel: Channel) {
-    const scales = parseScale(model, channel);
-    if (scales) {
-      scale[channel] = scales;
+  return model.channels().reduce(function(scaleComponentsIndex: Dict<ScaleComponents>, channel: Channel) {
+    const scaleComponents = parseScale(model, channel);
+    if (scaleComponents) {
+      scaleComponentsIndex[channel] = scaleComponents;
     }
-    return scale;
+    return scaleComponentsIndex;
   }, {});
 }
 
@@ -53,37 +53,38 @@ function parseMainScale(model: Model, fieldDef: FieldDef, channel: Channel) {
   const scale = model.scale(channel);
   const sort = model.sort(channel);
 
-  let scaleDef: any = extend({
+  // TODO: replace "any" below with ScaleComponent
+  let scaleComponent: any = extend({
     name: model.scaleName(channel + '', true),
   }, scale);
   // FIXME refactor initScale to remove useRawDomain to avoid this hack
   // HACK: useRawDomain isn't really a Vega scale output
-  delete scaleDef.useRawDomain;
+  delete scaleComponent.useRawDomain;
 
   // If channel is either X or Y then union them with X2 & Y2 if they exist
   if (channel === X && model.channelHasField(X2)) {
     if (model.channelHasField(X)) {
       // FIXME: Verify if this is really correct
-      scaleDef.domain = { fields: [domain(scale, model, X), domain(scale, model, X2)] };
+      scaleComponent.domain = { fields: [domain(scale, model, X), domain(scale, model, X2)] };
     } else {
-      scaleDef.domain = domain(scale, model, X2);
+      scaleComponent.domain = domain(scale, model, X2);
     }
   } else if (channel === Y && model.channelHasField(Y2)) {
     if (model.channelHasField(Y)) {
       // FIXME: Verify if this is really correct
-      scaleDef.domain = { fields: [domain(scale, model, Y), domain(scale, model, Y2)] };
+      scaleComponent.domain = { fields: [domain(scale, model, Y), domain(scale, model, Y2)] };
     } else {
-      scaleDef.domain = domain(scale, model, Y2);
+      scaleComponent.domain = domain(scale, model, Y2);
     }
   } else {
-    scaleDef.domain = domain(scale, model, channel);
+    scaleComponent.domain = domain(scale, model, channel);
   }
 
   if (sort && (isSortField(sort) ? sort.order : sort) === SortOrder.DESCENDING) {
-    scaleDef.reverse = true;
+    scaleComponent.reverse = true;
   }
 
-  return scaleDef;
+  return scaleComponent;
 }
 
 /**
