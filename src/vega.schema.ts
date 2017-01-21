@@ -27,7 +27,7 @@ export type VgDataRef = {
 };
 
 // TODO: add type of value (Make it VgValueRef<T> { value?:T ... })
-export type VgValueRef = {
+export type VgValueRef<T> = {
   value?: number | string | boolean,
   field?: string | {
     datum?: string,
@@ -37,7 +37,7 @@ export type VgValueRef = {
   signal?: string;
   scale?: string, // TODO: object
   mult?: number,
-  offset?: number | VgValueRef,
+  offset?: number | T,
   band?: boolean | number
 }
 
