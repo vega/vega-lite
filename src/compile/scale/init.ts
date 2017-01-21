@@ -2,7 +2,7 @@ import * as log from '../../log';
 
 import {Config} from '../../config';
 import {Channel} from '../../channel';
-import {ChannelDefWithScale, FieldDef} from '../../fielddef';
+import {ScaleFieldDef, FieldDef} from '../../fielddef';
 import {Mark} from '../../mark';
 import {Scale, ScaleConfig, scaleTypeSupportProperty} from '../../scale';
 
@@ -13,7 +13,7 @@ import scaleType from './type';
 import * as util from '../../util';
 
 export default function init(
-    channel: Channel, fieldDef: ChannelDefWithScale, config: Config,
+    channel: Channel, fieldDef: ScaleFieldDef, config: Config,
     mark: Mark | undefined, topLevelSize: number | undefined, xyRangeSteps: number[]): Scale {
   let specifiedScale = (fieldDef || {}).scale || {};
 

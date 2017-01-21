@@ -1,6 +1,6 @@
 import {X, Y} from '../../channel';
 import {Config} from '../../config';
-import {FieldDef} from '../../fielddef';
+import {ChannelDef, isValueDef} from '../../fielddef';
 import {VgEncodeEntry} from '../../vega.schema';
 
 import {applyColorAndOpacity, applyMarkConfig} from '../common';
@@ -35,9 +35,9 @@ export const line: MarkCompiler = {
 // FIXME: replace this with normal size and throw warning if the size field is not the grouping field instead?
 // NOTE: This is different from other size because
 // Vega does not support variable line size.
-function size(fieldDef: FieldDef, config: Config) {
-  if (fieldDef && fieldDef.value !== undefined) {
-      return { value: fieldDef.value};
+function size(sizeDef: ChannelDef, config: Config) {
+  if (isValueDef(sizeDef)) {
+      return { value: sizeDef.value};
   }
   // FIXME: We should not need this line since this should be taken care by applyColorAndOpacity
   // but we have to refactor \ first

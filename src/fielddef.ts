@@ -14,9 +14,17 @@ import {Type, NOMINAL, ORDINAL, QUANTITATIVE, TEMPORAL, getFullName} from './typ
 import {contains} from './util';
 
 /**
- *  Interface for any kind of FieldDef;
- *  For simplicity, we do not declare multiple interfaces of FieldDef like
- *  we do for JSON schema.
+ * Definition object for a constant value of an encoding channel.
+ */
+export interface ValueDef {
+  /**
+   * A constant value in visual domain.
+   */
+  value?: number | string | boolean;
+}
+
+/**
+ *  Definition object for a data field, its type and transformation of an encoding channel.
  */
 export interface FieldDef {
   /**
@@ -32,10 +40,6 @@ export interface FieldDef {
    */
   type?: Type;
 
-  /**
-   * A constant value in visual domain.
-   */
-  value?: number | string | boolean;
 
   // function
 
@@ -62,18 +66,18 @@ export interface FieldDef {
   title?: string;
 }
 
-export interface ChannelDefWithScale extends FieldDef {
+export interface ScaleFieldDef extends FieldDef {
   scale?: Scale;
   sort?: SortField | SortOrder;
 }
 
-export interface PositionChannelDef extends ChannelDefWithScale {
+export interface PositionFieldDef extends ScaleFieldDef {
   /**
    * @nullable
    */
   axis?: Axis;
 }
-export interface ChannelDefWithLegend extends ChannelDefWithScale {
+export interface LegendFieldDef extends ScaleFieldDef {
    /**
     * @nullable
     */
@@ -84,12 +88,22 @@ export interface ChannelDefWithLegend extends ChannelDefWithScale {
 
 // Order Path have no scale
 
-export interface OrderChannelDef extends FieldDef {
+export interface OrderFieldDef extends FieldDef {
   sort?: SortOrder;
 }
 
+export type ChannelDef = FieldDef | ValueDef;
+
+export function isFieldDef(channelDef: ChannelDef): channelDef is FieldDef | PositionFieldDef | LegendFieldDef | OrderFieldDef  {
+  return channelDef && !!channelDef['field'];
+}
+
+export function isValueDef(channelDef: ChannelDef): channelDef is ValueDef {
+  return channelDef && !!channelDef['value'];
+}
+
 // TODO: consider if we want to distinguish ordinalOnlyScale from scale
-export type FacetChannelDef = PositionChannelDef;
+export type FacetFieldDef = PositionFieldDef;
 
 export interface FieldRefOption {
   /** exclude bin, aggregate, timeUnit */
@@ -159,11 +173,11 @@ function _isFieldDimension(fieldDef: FieldDef) {
 }
 
 export function isDimension(fieldDef: FieldDef) {
-  return fieldDef && fieldDef.field && _isFieldDimension(fieldDef);
+  return fieldDef && isFieldDef(fieldDef) && _isFieldDimension(fieldDef);
 }
 
 export function isMeasure(fieldDef: FieldDef) {
-  return fieldDef && fieldDef.field && !_isFieldDimension(fieldDef);
+  return fieldDef && isFieldDef(fieldDef) && !_isFieldDimension(fieldDef);
 }
 
 export function count(): FieldDef {

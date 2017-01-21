@@ -4,7 +4,7 @@ import {BAR, POINT, CIRCLE, SQUARE} from '../mark';
 import {AggregateOp} from '../aggregate';
 import {COLOR, OPACITY, TEXT, Channel} from '../channel';
 import {Config, CellConfig} from '../config';
-import {FieldDef, OrderChannelDef, field} from '../fielddef';
+import {FieldDef, OrderFieldDef, field, isFieldDef} from '../fielddef';
 import {MarkConfig, TextConfig} from '../mark';
 import {TimeUnit} from '../timeunit';
 import {QUANTITATIVE} from '../type';
@@ -45,8 +45,8 @@ export const FILL_STROKE_CONFIG = union(STROKE_CONFIG, FILL_CONFIG);
 
 export function applyColorAndOpacity(e: VgEncodeEntry, model: UnitModel) {
   const filled = model.config().mark.filled;
-  const colorFieldDef = model.encoding().color;
-  const opacityFieldDef = model.encoding().opacity;
+  const colorDef = model.encoding().color;
+
 
   // Apply fill stroke config first so that color field / value can override
   // fill / stroke
@@ -58,22 +58,23 @@ export function applyColorAndOpacity(e: VgEncodeEntry, model: UnitModel) {
 
   let colorValue: VgValueRef;
   let opacityValue: VgValueRef;
-  if (model.channelHasField(COLOR)) {
+  if (isFieldDef(colorDef)) {
     colorValue = {
       scale: model.scaleName(COLOR),
-      field: model.field(COLOR)
+      field: field(colorDef)
     };
-  } else if (colorFieldDef && colorFieldDef.value) {
-    colorValue = { value: colorFieldDef.value };
+  } else if (colorDef && colorDef.value) {
+    colorValue = { value: colorDef.value };
   }
 
-  if (model.channelHasField(OPACITY)) {
+  const opacityDef = model.encoding().opacity;
+  if (isFieldDef(opacityDef)) {
     opacityValue = {
       scale: model.scaleName(OPACITY),
-      field: model.field(OPACITY)
+      field: field(opacityDef)
     };
-  } else if (opacityFieldDef && opacityFieldDef.value) {
-    opacityValue = { value: opacityFieldDef.value };
+  } else if (opacityDef && opacityDef.value) {
+    opacityValue = { value: opacityDef.value };
   }
 
   if (colorValue !== undefined) {
@@ -152,7 +153,7 @@ export function timeFormatExpression(field: string, timeUnit: TimeUnit, format: 
 /**
  * Return Vega sort parameters (tuple of field and order).
  */
-export function sortParams(orderDef: OrderChannelDef | OrderChannelDef[]): VgSort {
+export function sortParams(orderDef: OrderFieldDef | OrderFieldDef[]): VgSort {
   return (isArray(orderDef) ? orderDef : [orderDef]).reduce((s, orderChannelDef) => {
     s.field.push(field(orderChannelDef, {binSuffix: 'start'}));
     s.order.push(orderChannelDef.sort || 'ascending');

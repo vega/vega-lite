@@ -2,7 +2,7 @@ import * as log from '../../log';
 
 import {Config} from '../../config';
 import {hasScale, supportScaleType, Channel} from '../../channel';
-import {FieldDef, ChannelDefWithScale} from '../../fielddef';
+import {FieldDef, ScaleFieldDef} from '../../fielddef';
 import {Mark} from '../../mark';
 import {Scale, ScaleType} from '../../scale';
 
@@ -12,7 +12,7 @@ import * as util from '../../util';
  * Determine if there is a specified scale type and if it is appropriate,
  * or determine default type if type is unspecified or inappropriate.
  */
-export default function type(fieldDef: ChannelDefWithScale, channel: Channel,
+export default function type(fieldDef: ScaleFieldDef, channel: Channel,
   mark: Mark, topLevelSize: number | undefined, config: Config): ScaleType {
 
   if (!hasScale(channel)) {

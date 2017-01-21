@@ -3,7 +3,7 @@ import * as log from './log';
 import {SUM_OPS} from './aggregate';
 import {Channel, STACK_GROUP_CHANNELS, X, Y, X2, Y2} from './channel';
 import {Encoding, channelHasField, isAggregate} from './encoding';
-import {FieldDef} from './fielddef';
+import {FieldDef, PositionFieldDef, isFieldDef} from './fielddef';
 import {Mark, BAR, AREA, POINT, CIRCLE, SQUARE, LINE, RULE, TEXT, TICK} from './mark';
 import {ScaleType} from './scale';
 import {contains, isArray} from './util';
@@ -66,7 +66,7 @@ export function stack(mark: Mark, encoding: Encoding, stacked: StackOffset): Sta
     if (channelHasField(encoding, channel)) {
       const channelDef = encoding[channel];
       (isArray(channelDef) ? channelDef : [channelDef]).forEach((fieldDef) => {
-        if (!fieldDef.aggregate) {
+        if (isFieldDef(fieldDef) && !fieldDef.aggregate) {
           sc.push({
             channel: channel,
             fieldDef: fieldDef
@@ -82,15 +82,16 @@ export function stack(mark: Mark, encoding: Encoding, stacked: StackOffset): Sta
   }
 
   // Has only one aggregate axis
-  const hasXField = channelHasField(encoding, X);
-  const hasYField = channelHasField(encoding, Y);
-  const xIsAggregate = hasXField && !!encoding.x.aggregate;
-  const yIsAggregate = hasYField && !!encoding.y.aggregate;
+  const hasXField = isFieldDef(encoding.x);
+  const hasYField = isFieldDef(encoding.y);
+  const xIsAggregate = isFieldDef(encoding.x) && !!encoding.x.aggregate;
+  const yIsAggregate = isFieldDef(encoding.y) && !!encoding.y.aggregate;
 
   if (xIsAggregate !== yIsAggregate) {
     const fieldChannel = xIsAggregate ? X : Y;
-    const fieldChannelAggregate = encoding[fieldChannel].aggregate;
-    const fieldChannelScale = encoding[fieldChannel].scale;
+    const fieldDef = encoding[fieldChannel] as PositionFieldDef;
+    const fieldChannelAggregate = fieldDef.aggregate;
+    const fieldChannelScale = fieldDef.scale;
 
     if (contains(STACK_BY_DEFAULT_MARKS, mark)) {
       // Bar and Area with sum ops are automatically stacked by default
