@@ -976,10 +976,10 @@
                 "color": {
                     "anyOf": [
                         {
-                            "$ref": "#/definitions/ValueDef"
+                            "$ref": "#/definitions/LegendFieldDef"
                         },
                         {
-                            "$ref": "#/definitions/LegendFieldDef"
+                            "$ref": "#/definitions/ValueDef<string>"
                         }
                     ],
                     "description": "Color of the marks – either fill or stroke color based on mark type.\n(By default, fill color for `area`, `bar`, `tick`, `text`, `circle`, and `square` /\nstroke color for `line` and `point`.)"
@@ -1005,10 +1005,10 @@
                 "opacity": {
                     "anyOf": [
                         {
-                            "$ref": "#/definitions/ValueDef"
+                            "$ref": "#/definitions/LegendFieldDef"
                         },
                         {
-                            "$ref": "#/definitions/LegendFieldDef"
+                            "$ref": "#/definitions/ValueDef<number>"
                         }
                     ],
                     "description": "Opacity of the marks – either can be a value or in a range."
@@ -1034,10 +1034,10 @@
                 "shape": {
                     "anyOf": [
                         {
-                            "$ref": "#/definitions/ValueDef"
+                            "$ref": "#/definitions/LegendFieldDef"
                         },
                         {
-                            "$ref": "#/definitions/LegendFieldDef"
+                            "$ref": "#/definitions/ValueDef<string>"
                         }
                     ],
                     "description": "The symbol's shape (only for `point` marks). The supported values are\n`\"circle\"` (default), `\"square\"`, `\"cross\"`, `\"diamond\"`, `\"triangle-up\"`,\nor `\"triangle-down\"`, or else a custom SVG path string."
@@ -1045,10 +1045,10 @@
                 "size": {
                     "anyOf": [
                         {
-                            "$ref": "#/definitions/ValueDef"
+                            "$ref": "#/definitions/LegendFieldDef"
                         },
                         {
-                            "$ref": "#/definitions/LegendFieldDef"
+                            "$ref": "#/definitions/ValueDef<number>"
                         }
                     ],
                     "description": "Size of the mark.\n- For `point`, `square` and `circle`\n– the symbol size, or pixel area of the mark.\n- For `bar` and `tick` – the bar and tick's size.\n- For `text` – the text's font size.\n- Size is currently unsupported for `line` and `area`."
@@ -1056,10 +1056,10 @@
                 "text": {
                     "anyOf": [
                         {
-                            "$ref": "#/definitions/ValueDef"
+                            "$ref": "#/definitions/FieldDef"
                         },
                         {
-                            "$ref": "#/definitions/FieldDef"
+                            "$ref": "#/definitions/ValueDef<string | number>"
                         }
                     ],
                     "description": "Text of the `text` mark."
@@ -1067,10 +1067,10 @@
                 "x": {
                     "anyOf": [
                         {
-                            "$ref": "#/definitions/ValueDef"
+                            "$ref": "#/definitions/PositionFieldDef"
                         },
                         {
-                            "$ref": "#/definitions/PositionFieldDef"
+                            "$ref": "#/definitions/ValueDef<number>"
                         }
                     ],
                     "description": "X coordinates for `point`, `circle`, `square`,\n`line`, `rule`, `text`, and `tick`\n(or to width and height for `bar` and `area` marks)."
@@ -1078,10 +1078,10 @@
                 "x2": {
                     "anyOf": [
                         {
-                            "$ref": "#/definitions/ValueDef"
+                            "$ref": "#/definitions/FieldDef"
                         },
                         {
-                            "$ref": "#/definitions/FieldDef"
+                            "$ref": "#/definitions/ValueDef<number>"
                         }
                     ],
                     "description": "X2 coordinates for ranged `bar`, `rule`, `area`"
@@ -1089,10 +1089,10 @@
                 "y": {
                     "anyOf": [
                         {
-                            "$ref": "#/definitions/ValueDef"
+                            "$ref": "#/definitions/PositionFieldDef"
                         },
                         {
-                            "$ref": "#/definitions/PositionFieldDef"
+                            "$ref": "#/definitions/ValueDef<number>"
                         }
                     ],
                     "description": "Y coordinates for `point`, `circle`, `square`,\n`line`, `rule`, `text`, and `tick`\n(or to width and height for `bar` and `area` marks)."
@@ -1100,10 +1100,10 @@
                 "y2": {
                     "anyOf": [
                         {
-                            "$ref": "#/definitions/ValueDef"
+                            "$ref": "#/definitions/FieldDef"
                         },
                         {
-                            "$ref": "#/definitions/FieldDef"
+                            "$ref": "#/definitions/ValueDef<number>"
                         }
                     ],
                     "description": "Y2 coordinates for ranged `bar`, `rule`, `area`"
@@ -3282,10 +3282,10 @@
                 "color": {
                     "anyOf": [
                         {
-                            "$ref": "#/definitions/ValueDef"
+                            "$ref": "#/definitions/LegendFieldDef"
                         },
                         {
-                            "$ref": "#/definitions/LegendFieldDef"
+                            "$ref": "#/definitions/ValueDef<string>"
                         }
                     ],
                     "description": "Color of the marks – either fill or stroke color based on mark type.\n(By default, fill color for `area`, `bar`, `tick`, `text`, `circle`, and `square` /\nstroke color for `line` and `point`.)"
@@ -3307,10 +3307,10 @@
                 "opacity": {
                     "anyOf": [
                         {
-                            "$ref": "#/definitions/ValueDef"
+                            "$ref": "#/definitions/LegendFieldDef"
                         },
                         {
-                            "$ref": "#/definitions/LegendFieldDef"
+                            "$ref": "#/definitions/ValueDef<number>"
                         }
                     ],
                     "description": "Opacity of the marks – either can be a value or in a range."
@@ -3332,10 +3332,10 @@
                 "shape": {
                     "anyOf": [
                         {
-                            "$ref": "#/definitions/ValueDef"
+                            "$ref": "#/definitions/LegendFieldDef"
                         },
                         {
-                            "$ref": "#/definitions/LegendFieldDef"
+                            "$ref": "#/definitions/ValueDef<string>"
                         }
                     ],
                     "description": "The symbol's shape (only for `point` marks). The supported values are\n`\"circle\"` (default), `\"square\"`, `\"cross\"`, `\"diamond\"`, `\"triangle-up\"`,\nor `\"triangle-down\"`, or else a custom SVG path string."
@@ -3343,10 +3343,10 @@
                 "size": {
                     "anyOf": [
                         {
-                            "$ref": "#/definitions/ValueDef"
+                            "$ref": "#/definitions/LegendFieldDef"
                         },
                         {
-                            "$ref": "#/definitions/LegendFieldDef"
+                            "$ref": "#/definitions/ValueDef<number>"
                         }
                     ],
                     "description": "Size of the mark.\n- For `point`, `square` and `circle`\n– the symbol size, or pixel area of the mark.\n- For `bar` and `tick` – the bar and tick's size.\n- For `text` – the text's font size.\n- Size is currently unsupported for `line` and `area`."
@@ -3354,10 +3354,10 @@
                 "text": {
                     "anyOf": [
                         {
-                            "$ref": "#/definitions/ValueDef"
+                            "$ref": "#/definitions/FieldDef"
                         },
                         {
-                            "$ref": "#/definitions/FieldDef"
+                            "$ref": "#/definitions/ValueDef<string | number>"
                         }
                     ],
                     "description": "Text of the `text` mark."
@@ -3365,10 +3365,10 @@
                 "x": {
                     "anyOf": [
                         {
-                            "$ref": "#/definitions/ValueDef"
+                            "$ref": "#/definitions/PositionFieldDef"
                         },
                         {
-                            "$ref": "#/definitions/PositionFieldDef"
+                            "$ref": "#/definitions/ValueDef<number>"
                         }
                     ],
                     "description": "X coordinates for `point`, `circle`, `square`,\n`line`, `rule`, `text`, and `tick`\n(or to width and height for `bar` and `area` marks)."
@@ -3376,10 +3376,10 @@
                 "x2": {
                     "anyOf": [
                         {
-                            "$ref": "#/definitions/ValueDef"
+                            "$ref": "#/definitions/FieldDef"
                         },
                         {
-                            "$ref": "#/definitions/FieldDef"
+                            "$ref": "#/definitions/ValueDef<number>"
                         }
                     ],
                     "description": "X2 coordinates for ranged `bar`, `rule`, `area`"
@@ -3387,10 +3387,10 @@
                 "y": {
                     "anyOf": [
                         {
-                            "$ref": "#/definitions/ValueDef"
+                            "$ref": "#/definitions/PositionFieldDef"
                         },
                         {
-                            "$ref": "#/definitions/PositionFieldDef"
+                            "$ref": "#/definitions/ValueDef<number>"
                         }
                     ],
                     "description": "Y coordinates for `point`, `circle`, `square`,\n`line`, `rule`, `text`, and `tick`\n(or to width and height for `bar` and `area` marks)."
@@ -3398,10 +3398,10 @@
                 "y2": {
                     "anyOf": [
                         {
-                            "$ref": "#/definitions/ValueDef"
+                            "$ref": "#/definitions/FieldDef"
                         },
                         {
-                            "$ref": "#/definitions/FieldDef"
+                            "$ref": "#/definitions/ValueDef<number>"
                         }
                     ],
                     "description": "Y2 coordinates for ranged `bar`, `rule`, `area`"
@@ -3482,16 +3482,35 @@
             ],
             "type": "object"
         },
-        "ValueDef": {
+        "ValueDef<number>": {
+            "description": "Definition object for a constant value of an encoding channel.",
+            "properties": {
+                "value": {
+                    "description": "A constant value in visual domain.",
+                    "type": "number"
+                }
+            },
+            "type": "object"
+        },
+        "ValueDef<string | number>": {
             "description": "Definition object for a constant value of an encoding channel.",
             "properties": {
                 "value": {
                     "description": "A constant value in visual domain.",
                     "type": [
                         "string",
-                        "number",
-                        "boolean"
+                        "number"
                     ]
+                }
+            },
+            "type": "object"
+        },
+        "ValueDef<string>": {
+            "description": "Definition object for a constant value of an encoding channel.",
+            "properties": {
+                "value": {
+                    "description": "A constant value in visual domain.",
+                    "type": "string"
                 }
             },
             "type": "object"
