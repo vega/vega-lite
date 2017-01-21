@@ -16,11 +16,11 @@ import {contains} from './util';
 /**
  * Definition object for a constant value of an encoding channel.
  */
-export interface ValueDef {
+export interface ValueDef<T> {
   /**
    * A constant value in visual domain.
    */
-  value?: number | string | boolean;
+  value?: T;
 }
 
 /**
@@ -92,14 +92,14 @@ export interface OrderFieldDef extends FieldDef {
   sort?: SortOrder;
 }
 
-export type ChannelDef = FieldDef | ValueDef;
+export type ChannelDef = FieldDef | ValueDef<any>;
 
 export function isFieldDef(channelDef: ChannelDef): channelDef is FieldDef | PositionFieldDef | LegendFieldDef | OrderFieldDef  {
   return channelDef && !!channelDef['field'];
 }
 
-export function isValueDef(channelDef: ChannelDef): channelDef is ValueDef {
-  return channelDef && !!channelDef['value'];
+export function isValueDef(channelDef: ChannelDef): channelDef is ValueDef<any> {
+  return channelDef && 'value' in channelDef && channelDef['value'] !== undefined;
 }
 
 // TODO: consider if we want to distinguish ordinalOnlyScale from scale

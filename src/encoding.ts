@@ -10,35 +10,36 @@ export interface UnitEncoding {
    * `line`, `rule`, `text`, and `tick`
    * (or to width and height for `bar` and `area` marks).
    */
-  x?: PositionFieldDef | ValueDef;
+  x?: PositionFieldDef | ValueDef<number>;
 
   /**
    * Y coordinates for `point`, `circle`, `square`,
    * `line`, `rule`, `text`, and `tick`
    * (or to width and height for `bar` and `area` marks).
    */
-  y?: PositionFieldDef | ValueDef;
+  y?: PositionFieldDef | ValueDef<number>;
 
   /**
    * X2 coordinates for ranged `bar`, `rule`, `area`
    */
-  x2?: FieldDef | ValueDef;
+  x2?: FieldDef | ValueDef<number>;
 
   /**
    * Y2 coordinates for ranged `bar`, `rule`, `area`
    */
-  y2?: FieldDef | ValueDef;
+  y2?: FieldDef | ValueDef<number>;
 
   /**
    * Color of the marks – either fill or stroke color based on mark type.
    * (By default, fill color for `area`, `bar`, `tick`, `text`, `circle`, and `square` /
    * stroke color for `line` and `point`.)
    */
-  color?: LegendFieldDef | ValueDef;
+  color?: LegendFieldDef | ValueDef<string>;
+
   /**
    * Opacity of the marks – either can be a value or in a range.
    */
-  opacity?: LegendFieldDef | ValueDef;
+  opacity?: LegendFieldDef | ValueDef<number>;
 
   /**
    * Size of the mark.
@@ -48,14 +49,14 @@ export interface UnitEncoding {
    * - For `text` – the text's font size.
    * - Size is currently unsupported for `line` and `area`.
    */
-  size?: LegendFieldDef | ValueDef;
+  size?: LegendFieldDef | ValueDef<number>;
 
   /**
    * The symbol's shape (only for `point` marks). The supported values are
    * `"circle"` (default), `"square"`, `"cross"`, `"diamond"`, `"triangle-up"`,
    * or `"triangle-down"`, or else a custom SVG path string.
    */
-  shape?: LegendFieldDef | ValueDef; // TODO: maybe distinguish ordinal-only
+  shape?: LegendFieldDef | ValueDef<string>; // TODO: maybe distinguish ordinal-only
 
   /**
    * Additional levels of detail for grouping data in aggregate views and
@@ -66,7 +67,7 @@ export interface UnitEncoding {
   /**
    * Text of the `text` mark.
    */
-  text?: FieldDef | ValueDef;
+  text?: FieldDef | ValueDef<string|number>;
 
   /**
    * stack order for stacked marks or order of data points in line marks.
