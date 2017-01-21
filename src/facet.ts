@@ -1,6 +1,6 @@
-import {FacetChannelDef} from './fielddef';
+import {FacetFieldDef} from './fielddef';
 
 export interface Facet {
-  row?: FacetChannelDef;
-  column?: FacetChannelDef;
+  row?: FacetFieldDef;
+  column?: FacetFieldDef;
 }

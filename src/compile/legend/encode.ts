@@ -1,5 +1,5 @@
 import {COLOR, SIZE, SHAPE, OPACITY, Channel} from '../../channel';
-import {FieldDef} from '../../fielddef';
+import {FieldDef, isValueDef} from '../../fielddef';
 import {AREA, BAR, TICK, TEXT, LINE, POINT, CIRCLE, SQUARE} from '../../mark';
 import {hasContinuousDomain} from '../../scale';
 import {TEMPORAL} from '../../type';
@@ -56,8 +56,9 @@ export function symbols(fieldDef: FieldDef, symbolsSpec: any, model: UnitModel, 
   }
 
   let value: VgValueRef;
-  if (model.encoding().color && model.encoding().color.value) {
-    value = { value: model.encoding().color.value };
+  const colorDef = model.encoding().color;
+  if (isValueDef(colorDef)) {
+    value = { value: colorDef.value };
   }
 
   if (value !== undefined) {

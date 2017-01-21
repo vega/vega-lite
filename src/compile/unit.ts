@@ -6,7 +6,7 @@ import {defaultConfig, Config, CellConfig} from '../config';
 import {SOURCE, SUMMARY} from '../data';
 import {Encoding} from '../encoding';
 import * as vlEncoding from '../encoding'; // TODO: remove
-import {FieldDef, FieldRefOption, field, normalize} from '../fielddef';
+import {ChannelDef, FieldDef, FieldRefOption, field, normalize, isFieldDef, isValueDef} from '../fielddef';
 import {Legend} from '../legend';
 import {Mark, TEXT as TEXTMARK} from '../mark';
 import {Scale, ScaleConfig, hasDiscreteDomain} from '../scale';
@@ -102,13 +102,13 @@ export class UnitModel extends Model {
 
       if (isArray(encoding[channel])) {
         // Array of fieldDefs for detail channel (or production rule)
-        encoding[channel] = encoding[channel].reduce((fieldDefs: FieldDef[], fieldDef: FieldDef) => {
-          if (fieldDef.field === undefined && fieldDef.value === undefined) { // TODO: datum
-            log.warn(log.message.emptyFieldDef(fieldDef, channel));
+        encoding[channel] = encoding[channel].reduce((channelDefs: ChannelDef[], channelDef: ChannelDef) => {
+          if (!isFieldDef(channelDef) && !isValueDef(channelDef)) { // TODO: datum
+            log.warn(log.message.emptyFieldDef(channelDef, channel));
           } else {
-            fieldDefs.push(normalize(fieldDef, channel));
+            channelDefs.push(normalize(channelDef, channel));
           }
-          return fieldDefs;
+          return channelDefs;
         }, []);
       } else {
         const fieldDef = encoding[channel];
@@ -206,11 +206,13 @@ export class UnitModel extends Model {
   private _initAxis(encoding: Encoding, config: Config): Dict<Axis> {
     return [X, Y].reduce(function(_axis, channel) {
       // Position Axis
-      if (vlEncoding.channelHasField(encoding, channel) ||
-          (channel === X && vlEncoding.channelHasField(encoding, X2)) ||
-          (channel === Y && vlEncoding.channelHasField(encoding, Y2))) {
 
-        const axisSpec = (encoding[channel] || {}).axis;
+      const channelDef = encoding[channel];
+      if (isFieldDef(channelDef) ||
+          (channel === X && isFieldDef(encoding.x2)) ||
+          (channel === Y && isFieldDef(encoding.y2))) {
+
+        const axisSpec = isFieldDef(channelDef) ? channelDef.axis : null;
 
         // We no longer support false in the schema, but we keep false here for backward compatability.
         if (axisSpec !== null && axisSpec !== false) {
@@ -226,8 +228,9 @@ export class UnitModel extends Model {
 
   private _initLegend(encoding: Encoding, config: Config): Dict<Legend> {
     return NONSPATIAL_SCALE_CHANNELS.reduce(function(_legend, channel) {
-      if (vlEncoding.channelHasField(encoding, channel)) {
-        const legendSpec = encoding[channel].legend;
+      const channelDef = encoding[channel];
+      if (isFieldDef(channelDef)) {
+        const legendSpec = channelDef.legend;
         // We no longer support false in the schema, but we keep false here for backward compatability.
         if (legendSpec !== null && legendSpec !== false) {
           _legend[channel] = extend({}, config.legend,

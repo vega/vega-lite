@@ -74,7 +74,7 @@ export class FacetModel extends Model {
       }
 
       // TODO: array of row / column ?
-      if (fieldDef.field === undefined && fieldDef.value === undefined) { // TODO: datum
+      if (fieldDef.field === undefined) { // TODO: datum
         log.warn(log.message.emptyFieldDef(fieldDef, channel));
         delete facet[channel];
         return;

@@ -1,7 +1,7 @@
 import {X, Y, COLOR, TEXT, SIZE} from '../../channel';
 import {applyConfig, applyColorAndOpacity, numberFormat, timeFormatExpression} from '../common';
 import {Config} from '../../config';
-import {FieldDef, field} from '../../fielddef';
+import {ChannelDef, field, isFieldDef} from '../../fielddef';
 import {QUANTITATIVE, TEMPORAL} from '../../type';
 import {UnitModel} from '../unit';
 import {VgValueRef, VgEncodeEntry} from '../../vega.schema';
@@ -41,18 +41,18 @@ export const text: TextCompiler = {
 
     const config = model.config();
     const stack = model.stack();
-    const textFieldDef = model.encoding().text;
+    const textDef = model.encoding().text;
 
     // TODO: refactor how refer to scale as discussed in https://github.com/vega/vega-lite/pull/1613
 
-    e.x = ref.stackable(X, model.encoding().x, model.scaleName(X), model.scale(X), stack, xDefault(config, textFieldDef));
+    e.x = ref.stackable(X, model.encoding().x, model.scaleName(X), model.scale(X), stack, xDefault(config, textDef));
     e.y = ref.stackable(Y, model.encoding().y, model.scaleName(Y), model.scale(Y), stack, ref.midY(config));
 
     e.fontSize = ref.midPoint(SIZE, model.encoding().size, model.scaleName(SIZE), model.scale(SIZE),
        {value: config.text.fontSize}
     );
 
-    e.text = textRef(textFieldDef, model.scaleName(TEXT), config);
+    e.text = textRef(textDef, model.scaleName(TEXT), config);
 
     if (model.config().text.applyColorToBackground &&
         !model.channelHasField(X) &&
@@ -69,33 +69,33 @@ export const text: TextCompiler = {
   }
 };
 
-function xDefault(config: Config, textFieldDef:FieldDef): VgValueRef {
-  if (textFieldDef && textFieldDef.type === QUANTITATIVE) {
+function xDefault(config: Config, textDef: ChannelDef): VgValueRef {
+  if (isFieldDef(textDef) && textDef.type === QUANTITATIVE) {
     return { field: { group: 'width' }, offset: -5 };
   }
   // TODO: allow this to fit (Be consistent with ref.midX())
   return { value: config.scale.textXRangeStep / 2 };
 }
 
-function textRef(textFieldDef: FieldDef, scaleName: string, config: Config): VgValueRef {
+function textRef(textDef: ChannelDef, scaleName: string, config: Config): VgValueRef {
   // text
-  if (textFieldDef) {
-    if (textFieldDef.field) {
-      if (QUANTITATIVE === textFieldDef.type) {
+  if (textDef) {
+    if (isFieldDef(textDef)) {
+      if (QUANTITATIVE === textDef.type) {
         // FIXME: what happens if we have bin?
-        const format = numberFormat(textFieldDef, config.text.format, config, TEXT);
+        const format = numberFormat(textDef, config.text.format, config, TEXT);
         return {
-          signal: `format(${field(textFieldDef, { datum: true })}, '${format}')`
+          signal: `format(${field(textDef, { datum: true })}, '${format}')`
         };
-      } else if (TEMPORAL === textFieldDef.type) {
+      } else if (TEMPORAL === textDef.type) {
         return {
-          signal: timeFormatExpression(field(textFieldDef, {datum: true}), textFieldDef.timeUnit, config.text.format, config.text.shortTimeLabels, config)
+          signal: timeFormatExpression(field(textDef, {datum: true}), textDef.timeUnit, config.text.format, config.text.shortTimeLabels, config)
         };
       } else {
-        return { field: textFieldDef.field };
+        return { field: textDef.field };
       }
-    } else if (textFieldDef.value) {
-      return { value: textFieldDef.value };
+    } else if (textDef.value) {
+      return { value: textDef.value };
     }
   }
   return {value: config.text.text};

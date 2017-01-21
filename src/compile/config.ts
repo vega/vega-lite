@@ -3,7 +3,7 @@ import * as log from '../log';
 import {X, COLOR, SIZE, DETAIL} from '../channel';
 import {Config} from '../config';
 import {Encoding, isAggregate, channelHasField} from '../encoding';
-import {isMeasure} from '../fielddef';
+import {isMeasure, FieldDef} from '../fielddef';
 import {MarkConfig, TextConfig, Orient} from '../mark';
 import {BAR, AREA, POINT, LINE, TICK, CIRCLE, SQUARE, RECT, RULE, TEXT, Mark} from '../mark';
 import {Scale, hasDiscreteDomain} from '../scale';
@@ -87,7 +87,7 @@ export function orient(mark: Mark, encoding: Encoding, scale: Dict<Scale>, markC
       if (!hasDiscreteDomain(xScaleType) && (
             !encoding.y ||
             hasDiscreteDomain(yScaleType) ||
-            encoding.y.bin
+            (encoding.y as FieldDef).bin
         )) {
         return 'vertical';
       }
@@ -120,10 +120,12 @@ export function orient(mark: Mark, encoding: Encoding, scale: Dict<Scale>, markC
       } else if (!xIsMeasure && yIsMeasure) {
         return 'vertical';
       } else if (xIsMeasure && yIsMeasure) {
+        const xDef = encoding.x as FieldDef;
+        const yDef = encoding.y as FieldDef;
         // temporal without timeUnit is considered continuous, but better serves as dimension
-        if (encoding.x.type === TEMPORAL) {
+        if (xDef.type === TEMPORAL) {
           return 'vertical';
-        } else if (encoding.y.type === TEMPORAL) {
+        } else if (yDef.type === TEMPORAL) {
           return 'horizontal';
         }
 

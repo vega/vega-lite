@@ -1,5 +1,5 @@
 import {X, Y, SHAPE, SIZE} from '../../channel';
-import {ChannelDefWithLegend} from '../../fielddef';
+import {LegendFieldDef} from '../../fielddef';
 import {SymbolConfig, PointConfig} from '../../mark';
 import {Scale} from '../../scale';
 import {VgEncodeEntry, VgValueRef} from '../../vega.schema';
@@ -31,12 +31,12 @@ function encodeEntry(model: UnitModel, fixedShape?: string) {
   return e;
 }
 
-function shape(fieldDef: ChannelDefWithLegend, scaleName: string, scale: Scale, pointConfig: PointConfig, fixedShape?: string): VgValueRef {
+function shape(shapeDef: LegendFieldDef, scaleName: string, scale: Scale, pointConfig: PointConfig, fixedShape?: string): VgValueRef {
   // shape
   if (fixedShape) { // square and circle marks
     return { value: fixedShape };
   }
-  return ref.midPoint(SHAPE, fieldDef, scaleName, scale, {value: pointConfig.shape});
+  return ref.midPoint(SHAPE, shapeDef, scaleName, scale, {value: pointConfig.shape});
 }
 
 export const point: MarkCompiler = {

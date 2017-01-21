@@ -1,5 +1,5 @@
 // utility for encoding mapping
-import {FieldDef, PositionChannelDef, FacetChannelDef, ChannelDefWithLegend, OrderChannelDef} from './fielddef';
+import {FieldDef, PositionFieldDef, FacetFieldDef, LegendFieldDef, OrderFieldDef, ValueDef} from './fielddef';
 import {Channel, CHANNELS} from './channel';
 import {isArray, some} from './util';
 
@@ -10,35 +10,35 @@ export interface UnitEncoding {
    * `line`, `rule`, `text`, and `tick`
    * (or to width and height for `bar` and `area` marks).
    */
-  x?: PositionChannelDef;
+  x?: PositionFieldDef | ValueDef;
 
   /**
    * Y coordinates for `point`, `circle`, `square`,
    * `line`, `rule`, `text`, and `tick`
    * (or to width and height for `bar` and `area` marks).
    */
-  y?: PositionChannelDef;
+  y?: PositionFieldDef | ValueDef;
 
   /**
    * X2 coordinates for ranged `bar`, `rule`, `area`
    */
-  x2?: FieldDef;
+  x2?: FieldDef | ValueDef;
 
   /**
    * Y2 coordinates for ranged `bar`, `rule`, `area`
    */
-  y2?: FieldDef;
+  y2?: FieldDef | ValueDef;
 
   /**
    * Color of the marks – either fill or stroke color based on mark type.
    * (By default, fill color for `area`, `bar`, `tick`, `text`, `circle`, and `square` /
    * stroke color for `line` and `point`.)
    */
-  color?: ChannelDefWithLegend;
+  color?: LegendFieldDef | ValueDef;
   /**
    * Opacity of the marks – either can be a value or in a range.
    */
-  opacity?: ChannelDefWithLegend;
+  opacity?: LegendFieldDef | ValueDef;
 
   /**
    * Size of the mark.
@@ -48,14 +48,14 @@ export interface UnitEncoding {
    * - For `text` – the text's font size.
    * - Size is currently unsupported for `line` and `area`.
    */
-  size?: ChannelDefWithLegend;
+  size?: LegendFieldDef | ValueDef;
 
   /**
    * The symbol's shape (only for `point` marks). The supported values are
    * `"circle"` (default), `"square"`, `"cross"`, `"diamond"`, `"triangle-up"`,
    * or `"triangle-down"`, or else a custom SVG path string.
    */
-  shape?: ChannelDefWithLegend; // TODO: maybe distinguish ordinal-only
+  shape?: LegendFieldDef | ValueDef; // TODO: maybe distinguish ordinal-only
 
   /**
    * Additional levels of detail for grouping data in aggregate views and
@@ -66,14 +66,12 @@ export interface UnitEncoding {
   /**
    * Text of the `text` mark.
    */
-  text?: FieldDef;
-
-  label?: FieldDef;
+  text?: FieldDef | ValueDef;
 
   /**
    * stack order for stacked marks or order of data points in line marks.
    */
-  order?: OrderChannelDef | OrderChannelDef[];
+  order?: OrderFieldDef | OrderFieldDef[];
 }
 
 // TODO: once we decompose facet, rename this to ExtendedEncoding
@@ -81,12 +79,12 @@ export interface Encoding extends UnitEncoding {
   /**
    * Vertical facets for trellis plots.
    */
-  row?: FacetChannelDef;
+  row?: FacetFieldDef;
 
   /**
    * Horizontal facets for trellis plots.
    */
-  column?: FacetChannelDef;
+  column?: FacetFieldDef;
 }
 
 export function channelHasField(encoding: Encoding, channel: Channel): boolean {
