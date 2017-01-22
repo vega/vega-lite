@@ -6,12 +6,13 @@ import {DateTime, isDateTime, timestamp} from '../../datetime';
 import {Scale, ScaleType, hasDiscreteDomain} from '../../scale';
 import {isSortField, SortOrder} from '../../sort';
 import {StackOffset} from '../../stack';
+import {VgDomain, VgOpSort} from '../../vega.schema';
 
 import * as util from '../../util';
 
 import {Model} from '../model';
 
-export default function domain(scale: Scale, model: Model, channel:Channel): any {
+export default function domain(scale: Scale, model: Model, channel:Channel): VgDomain {
   const fieldDef = model.fieldDef(channel);
 
   if (scale.domain) { // explicit value
@@ -97,7 +98,7 @@ export default function domain(scale: Scale, model: Model, channel:Channel): any
     return {
       // If sort by aggregation of a specified sort field, we need to use SOURCE table,
       // so we can aggregate values for the scale independently from the main aggregation.
-      data: sort.op ? SOURCE : model.dataTable(),
+      data: util.isBoolean(sort) ? model.dataTable(): SOURCE,
       field: model.field(channel),
       sort: sort
     };
@@ -109,7 +110,7 @@ export default function domain(scale: Scale, model: Model, channel:Channel): any
   }
 }
 
-export function domainSort(model: Model, channel: Channel, scaleType: ScaleType): any {
+export function domainSort(model: Model, channel: Channel, scaleType: ScaleType): VgOpSort {
   if (!hasDiscreteDomain(scaleType)) {
     return undefined;
   }

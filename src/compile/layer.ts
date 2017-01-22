@@ -3,11 +3,11 @@ import * as log from '../log';
 import {Channel} from '../channel';
 import {defaultConfig, CellConfig, Config} from '../config';
 import {FieldDef} from '../fielddef';
-import {FILL_STROKE_CONFIG} from '../mark';
 import {LayerSpec} from '../spec';
 import {StackProperties} from '../stack';
+import {FILL_STROKE_CONFIG} from '../mark';
 import {keys, duplicate, mergeDeep, flatten, unique, isArray, vals, hash} from '../util';
-import {VgData, isUnionedDomain, isDataRefDomain, VgDataRef, VgEncodeEntry} from '../vega.schema';
+import {VgData, isDataRefUnionedDomainDomain, isFieldRefUnionDomainDomain, isDataRefDomain, VgDataRef, VgEncodeEntry, DataRefUnionedDomain, FieldRefUnionDomain} from '../vega.schema';
 
 import {assembleData, parseLayerData} from './data/data';
 import {assembleLayout, parseLayerLayout} from './layout';
@@ -107,7 +107,36 @@ export class LayerModel extends Model {
     this.component.layout = parseLayerLayout(this);
   }
 
-  public parseScale() {
+  /**
+   * Convert the domain to an array of data refs. Also, thorw away sorting information
+   * since we always sort the domain when we union two domains.
+   */
+  private static normalizeDomain(domain: DataRefUnionedDomain | FieldRefUnionDomain | VgDataRef): VgDataRef[] {
+    if (isArray(domain)) {
+      return domain;
+    } else if (isDataRefDomain(domain)) {
+      delete domain.sort;
+      return [domain];
+    } else if(isFieldRefUnionDomainDomain(domain)) {
+      return domain.fields.map(d => {
+        return {
+          data: domain.data,
+          field: d
+        };
+      });
+    } else if (isDataRefUnionedDomainDomain(domain)) {
+      return domain.fields.map(d => {
+        return {
+          field: d.field,
+          data: d.data
+        };
+      });
+    }
+
+    throw 'Should not get here.';
+  }
+
+  public parseScale(this: LayerModel) {
     const model = this;
 
     let scaleComponent = this.component.scale = {};
@@ -115,7 +144,8 @@ export class LayerModel extends Model {
     this._children.forEach(function(child) {
       child.parseScale();
 
-      // FIXME: correctly implement independent scale
+      // FIXME(#1602):correctly implement independent scale
+      // Also need to check whether the scales are actually compatible, e.g. use the same sort or throw error
       if (true) { // if shared/union scale
         keys(child.component.scale).forEach(function(channel) {
           let childScales: ScaleComponents = child.component.scale[channel];
@@ -128,31 +158,38 @@ export class LayerModel extends Model {
           if (modelScales && modelScales.main) {
             // Scales are unioned by combining the domain of the main scale.
             // Other scales that are used for ordinal legends are appended.
-            const modelDomain = modelScales.main.domain;
-            const childDomain = childScales.main.domain;
 
-            if (isArray(modelDomain)) {
-              if (isArray(childScales.main.domain)) {
-                modelScales.main.domain = modelDomain.concat(childDomain);
+            const modelScaleDomain = modelScales.main.domain;
+            const childScaleDomain = childScales.main.domain;
+
+            if (isArray(modelScaleDomain)) {
+              if (isArray(childScaleDomain)) {
+                modelScales.main.domain = modelScaleDomain.concat(childScaleDomain);
               } else {
                 log.warn(log.message.CANNOT_UNION_CUSTOM_DOMAIN_WITH_FIELD_DOMAIN);
               }
+            } else if (isArray(childScaleDomain)) {
+              log.warn(log.message.CANNOT_UNION_CUSTOM_DOMAIN_WITH_FIELD_DOMAIN);
             } else {
-              const unionedFields = isUnionedDomain(modelDomain) ? modelDomain.fields : [modelDomain] as VgDataRef[];
+              const modelDomain = LayerModel.normalizeDomain(modelScaleDomain);
+              const childDomain = LayerModel.normalizeDomain(childScaleDomain);
 
-              if (isArray(childDomain)) {
-                log.warn(log.message.CANNOT_UNION_CUSTOM_DOMAIN_WITH_FIELD_DOMAIN);
-              }
-
-              let fields = isDataRefDomain(childDomain) ? unionedFields.concat([childDomain]) :
-                // if the domain is itself a union domain, concat
-                isUnionedDomain(childDomain) ? unionedFields.concat(childDomain.fields) :
-                  // we have to ignore explicit data domains for now because vega does not support unioning them
-                  unionedFields;
+              let fields = modelDomain.concat(childDomain);
               fields = unique(fields, hash);
-              // TODO: if all domains use the same data, we can merge them
+
               if (fields.length > 1) {
-                modelScales.main.domain = { fields: fields };
+                // if all scales use the same data, merge them
+                let data = fields.map(f => f.data);
+                data = unique(data, (d: string) => d);
+                if (data.length > 1) {
+                  modelScales.main.domain = { fields, sort: true };
+                } else {
+                  modelScales.main.domain = {
+                    data: data[0],
+                    fields: fields.map(f => f.field),
+                    sort: true
+                  };
+                }
               } else {
                 modelScales.main.domain = fields[0];
               }

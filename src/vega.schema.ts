@@ -17,13 +17,15 @@ export type VgParentRef = {
 
 export type VgFieldRef = string | VgParentRef | VgParentRef[];
 
+export type VgOpSort = boolean | {
+  field: VgFieldRef,
+  op: string
+}
+
 export type VgDataRef = {
   data: string,
   field: VgFieldRef,
-  sort: boolean | {
-    field: VgFieldRef,
-    op: string
-  }
+  sort?: VgOpSort
 };
 
 // TODO: add type of value (Make it VgValueRef<T> { value?:T ... })
@@ -41,18 +43,30 @@ export type VgValueRef = {
   band?: boolean | number
 }
 
-export type UnionedDomain = {
-  fields: VgDataRef[]
+export type DataRefUnionedDomain = {
+  fields: VgDataRef[],
+  sort?: boolean | {
+    op: 'count'
+  }
+}
+
+export type FieldRefUnionDomain = {
+  data: string,
+  fields: VgFieldRef[],
+  sort?: boolean | {
+    op: 'count'
+  }
 };
 
 export type VgRangeScheme = {scheme: string, extent?: number[], count?: number};
-
 export type VgRange = string | VgDataRef | (number|string|VgDataRef)[] | VgRangeScheme;
+
+export type VgDomain = any[] | DataRefUnionedDomain | FieldRefUnionDomain | VgDataRef;
 
 export type VgScale = {
   name: string,
   type: ScaleType,
-  domain?: any[] | UnionedDomain | VgDataRef,
+  domain?: VgDomain,
   domainMin?: any,
   domainMax?: any
   range?: VgRange,
@@ -71,16 +85,23 @@ export type VgScale = {
   zero?: boolean
 }
 
-export function isUnionedDomain(domain: any[] | UnionedDomain | VgDataRef): domain is UnionedDomain {
+export function isDataRefUnionedDomainDomain(domain: VgDomain): domain is DataRefUnionedDomain {
   if (!isArray(domain)) {
-    return 'fields' in domain;
+    return 'fields' in domain && !('data' in domain);
   }
   return false;
 }
 
-export function isDataRefDomain(domain: any[] | UnionedDomain | VgDataRef): domain is VgDataRef {
+export function isFieldRefUnionDomainDomain(domain: VgDomain): domain is FieldRefUnionDomain {
   if (!isArray(domain)) {
-    return 'data' in domain;
+    return 'fields' in domain && 'data' in domain;
+  }
+  return false;
+}
+
+export function isDataRefDomain(domain: VgDomain): domain is VgDataRef {
+  if (!isArray(domain)) {
+    return !('fields' in domain);
   }
   return false;
 }
