@@ -158,6 +158,25 @@ export const defaultScaleConfig = {
   useRawDomain: false,
 };
 
+export interface RangeScheme {
+  /**
+   * Color scheme that determines output color of an ordinal/sequential color scale.
+   */
+  scheme: string;
+
+  // TODO: add docs
+  extent?: number[];
+
+  // TODO: add docs
+  count?: number;
+}
+
+export type Range = number[] | string[] | RangeScheme;
+
+export function isRangeScheme(range: Range): range is RangeScheme {
+  return range && 'scheme' in range;
+}
+
 export interface Scale {
   type?: ScaleType;
   /**
@@ -168,8 +187,7 @@ export interface Scale {
   /**
    * The range of the scale, representing the set of visual values. For numeric values, the range can take the form of a two-element array with minimum and maximum values. For ordinal or quantized data, the range may by an array of desired output values, which are mapped to elements in the specified domain.
    */
-  range?: number[] | string[]; // TODO: declare vgRangeDomain
-
+  range?: Range; // TODO: declare vgRangeDomain
 
   /**
    * If true, rounds numeric output values to integers. This can be helpful for snapping to the pixel grid.
@@ -190,11 +208,6 @@ export interface Scale {
    * @nullable
    */
   rangeStep?: number | null;
-
-  /**
-   * Color scheme that determines output color of an index/ordinal/sequential color scale.
-   */
-  scheme?: string;
 
   /**
    * (For `row` and `column` only) A pixel value for padding between cells in the trellis plots.
@@ -253,7 +266,7 @@ export interface Scale {
 }
 
 export const SCALE_PROPERTIES = [
-  'type', 'domain', 'range', 'round', 'rangeStep', 'scheme', 'padding', 'clamp', 'nice',
+  'type', 'domain', 'range', 'round', 'rangeStep', 'padding', 'clamp', 'nice',
   'exponent', 'zero',
   // TODO: add interpolate here
   // FIXME: determine if 'useRawDomain' should really be included here
@@ -264,9 +277,8 @@ export function scaleTypeSupportProperty(scaleType: ScaleType, propName: string)
   switch (propName) {
     case 'type':
     case 'domain':
-      return true;
     case 'range':
-      return scaleType !== 'sequential'; // sequential only support scheme
+      return true;
     case 'round':
       return isContinuousToContinuous(scaleType) || scaleType === 'band' || scaleType === 'point';
     case 'rangeStep':
@@ -275,9 +287,6 @@ export function scaleTypeSupportProperty(scaleType: ScaleType, propName: string)
       return contains(['point', 'band'], scaleType);
     case 'paddingInner':
       return scaleType === 'band';
-    case 'scheme':
-      // ordinal can use nominal color scheme, sequential can use sequential color scheme
-      return contains(['ordinal', 'sequential', 'index'], scaleType);
     case 'clamp':
       return isContinuousToContinuous(scaleType) || scaleType === 'sequential';
     case 'nice':

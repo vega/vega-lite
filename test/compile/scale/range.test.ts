@@ -137,8 +137,8 @@ describe('compile/scale', () => {
     describe('color', function() {
       it('should use the specified scheme for a nominal color field.', () => {
         assert.deepEqual(
-          rangeMixins('color', 'ordinal', {scheme: 'warm'}, defaultConfig, undefined, 'point', undefined, []),
-          {scheme: 'warm'}
+          rangeMixins('color', 'ordinal', {range:{scheme: 'warm'}}, defaultConfig, undefined, 'point', undefined, []),
+          {range: {scheme: 'warm'}}
         );
       });
 
