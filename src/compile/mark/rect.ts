@@ -6,7 +6,7 @@ import {extend} from '../../util';
 import * as log from '../../log';
 import {VgEncodeEntry} from '../../vega.schema';
 
-import {applyColorAndOpacity} from '../common';
+import {applyColorAndOpacity} from './common';
 import {UnitModel} from '../unit';
 
 import {MarkCompiler} from './base';

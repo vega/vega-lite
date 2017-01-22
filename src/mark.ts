@@ -48,6 +48,13 @@ export type Interpolate = 'linear' | 'linear-closed' |
 export type Orient = 'horizontal' | 'vertical';
 export type VerticalAlign = 'top' | 'middle' | 'bottom';
 
+export const STROKE_CONFIG = ['stroke', 'strokeWidth',
+  'strokeDash', 'strokeDashOffset', 'strokeOpacity'];
+
+export const FILL_CONFIG = ['fill', 'fillOpacity'];
+
+export const FILL_STROKE_CONFIG = [].concat(STROKE_CONFIG, FILL_CONFIG);
+
 export interface MarkConfig {
 
   // ---------- Color ----------
@@ -60,6 +67,7 @@ export interface MarkConfig {
    */
   filled?: boolean;
 
+  // TODO: remove this once we correctly integrate theme
   /**
    * Default color.
    */

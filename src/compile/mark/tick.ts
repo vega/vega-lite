@@ -4,7 +4,7 @@ import {FieldDef} from '../../fielddef';
 import {Scale} from '../../scale';
 import {VgEncodeEntry, VgValueRef} from '../../vega.schema';
 
-import {applyColorAndOpacity} from '../common';
+import {applyColorAndOpacity} from './common';
 import {UnitModel} from '../unit';
 
 import {MarkCompiler} from './base';

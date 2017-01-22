@@ -1,22 +1,18 @@
-import {field, isFieldDef} from '../../fielddef';
+import {FILL_CONFIG, STROKE_CONFIG} from '../../mark';
 import * as util from '../../util';
-import {VgEncodeEntry, VgValueRef} from '../../vega.schema';
+import {VgEncodeEntry} from '../../vega.schema';
+
 import {applyMarkConfig} from '../common';
 import {UnitModel} from '../unit';
 
-// TODO: figure if we really need opacity in both
-export const STROKE_CONFIG = ['stroke', 'strokeWidth',
-  'strokeDash', 'strokeDashOffset', 'strokeOpacity', 'opacity'];
+import * as ref from './valueref';
 
-export const FILL_CONFIG = ['fill', 'fillOpacity',
-  'opacity'];
-
-export const FILL_STROKE_CONFIG = util.union(STROKE_CONFIG, FILL_CONFIG);
 
 export function applyColorAndOpacity(e: VgEncodeEntry, model: UnitModel) {
-  const filled = model.config().mark.filled;
-  const colorDef = model.encoding().color;
+  const config = model.config();
+  const filled = config.mark.filled;
 
+  // TODO: remove this once we correctly integrate theme
   // Apply fill stroke config first so that color field / value can override
   // fill / stroke
   if (filled) {
@@ -25,34 +21,16 @@ export function applyColorAndOpacity(e: VgEncodeEntry, model: UnitModel) {
     applyMarkConfig(e, model, STROKE_CONFIG);
   }
 
-  let colorValue: VgValueRef;
-  let opacityValue: VgValueRef;
-  if (isFieldDef(colorDef)) {
-    colorValue = {
-      scale: model.scaleName('color'),
-      field: field(colorDef)
-    };
-  } else if (colorDef && colorDef.value) {
-    colorValue = { value: colorDef.value };
-  }
+  let colorRef= ref.midPoint('color', model.encoding().color, model.scaleName('color'), model.scale('color'), undefined);
+  let opacityRef = ref.midPoint('opacity', model.encoding().opacity, model.scaleName('opacity'), model.scale('opacity'), {value: config.mark.opacity});
 
-  const opacityDef = model.encoding().opacity;
-  if (isFieldDef(opacityDef)) {
-    opacityValue = {
-      scale: model.scaleName('opacity'),
-      field: field(opacityDef)
-    };
-  } else if (opacityDef && opacityDef.value) {
-    opacityValue = { value: opacityDef.value };
-  }
-
-  if (colorValue !== undefined) {
+  if (colorRef !== undefined) {
     if (filled) {
-      e.fill = colorValue;
+      e.fill = colorRef;
     } else {
-      e.stroke = colorValue;
+      e.stroke = colorRef;
     }
-  } else {
+  } else { // TODO: remove this once we correctly integrate theme
     // apply color config if there is no fill / stroke config
     e[filled ? 'fill' : 'stroke'] = e[filled ? 'fill' : 'stroke'] ||
       {value: model.config().mark.color};
@@ -64,7 +42,7 @@ export function applyColorAndOpacity(e: VgEncodeEntry, model: UnitModel) {
     e.fill = {value: 'transparent'};
   }
 
-  if (opacityValue !== undefined) {
-    e.opacity = opacityValue;
+  if (opacityRef !== undefined) {
+    e.opacity = opacityRef;
   }
 }

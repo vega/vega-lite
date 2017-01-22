@@ -8,14 +8,14 @@ import {Encoding} from '../encoding';
 import * as vlEncoding from '../encoding'; // TODO: remove
 import {ChannelDef, FieldDef, FieldRefOption, field, normalize, isFieldDef, isValueDef} from '../fielddef';
 import {Legend} from '../legend';
-import {Mark, TEXT as TEXTMARK} from '../mark';
+import {Mark, TEXT as TEXTMARK, FILL_STROKE_CONFIG} from '../mark';
 import {Scale, ScaleConfig, hasDiscreteDomain} from '../scale';
 import {ExtendedUnitSpec} from '../spec';
 import {duplicate, extend, isArray, mergeDeep, Dict} from '../util';
 import {VgData} from '../vega.schema';
 
 import {parseAxisComponent} from './axis/parse';
-import {applyConfig, FILL_STROKE_CONFIG} from './common';
+import {applyConfig} from './common';
 import {initMarkConfig, initTextConfig} from './config';
 import {assembleData, parseUnitData} from './data/data';
 import {parseLegendComponent} from './legend/parse';

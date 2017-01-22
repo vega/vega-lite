@@ -1,7 +1,8 @@
 import {X, X2, Y, Y2} from '../../channel';
 import {VgEncodeEntry} from '../../vega.schema';
 
-import {applyColorAndOpacity, applyMarkConfig} from '../common';
+import {applyMarkConfig} from '../common';
+import {applyColorAndOpacity} from './common';
 import {UnitModel} from '../unit';
 
 import {MarkCompiler} from './base';

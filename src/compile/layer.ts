@@ -1,18 +1,21 @@
 import * as log from '../log';
 
 import {Channel} from '../channel';
-import {keys, duplicate, mergeDeep, flatten, unique, isArray, vals, hash} from '../util';
 import {defaultConfig, CellConfig, Config} from '../config';
+import {FieldDef} from '../fielddef';
+import {FILL_STROKE_CONFIG} from '../mark';
 import {LayerSpec} from '../spec';
+import {StackProperties} from '../stack';
+import {keys, duplicate, mergeDeep, flatten, unique, isArray, vals, hash} from '../util';
+import {VgData, isUnionedDomain, isDataRefDomain, VgDataRef, VgEncodeEntry} from '../vega.schema';
+
 import {assembleData, parseLayerData} from './data/data';
 import {assembleLayout, parseLayerLayout} from './layout';
 import {Model} from './model';
 import {UnitModel} from './unit';
-import {applyConfig, buildModel, FILL_STROKE_CONFIG} from './common';
-import {FieldDef} from '../fielddef';
+import {applyConfig, buildModel} from './common';
+
 import {ScaleComponents} from './scale/scale';
-import {StackProperties} from '../stack';
-import {VgData, isUnionedDomain, isDataRefDomain, VgDataRef, VgEncodeEntry} from '../vega.schema';
 
 export class LayerModel extends Model {
   private _children: UnitModel[];

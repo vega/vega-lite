@@ -1,13 +1,13 @@
 import {COLOR, SIZE, SHAPE, OPACITY, Channel} from '../../channel';
 import {FieldDef, isValueDef} from '../../fielddef';
-import {AREA, BAR, TICK, TEXT, LINE, POINT, CIRCLE, SQUARE} from '../../mark';
+import {AREA, BAR, TICK, TEXT, LINE, POINT, CIRCLE, SQUARE, FILL_STROKE_CONFIG} from '../../mark';
 import {hasContinuousDomain} from '../../scale';
 import {TEMPORAL} from '../../type';
 import {extend, keys, without} from '../../util';
 
 import {VgValueRef} from '../../vega.schema';
 
-import {applyMarkConfig, FILL_STROKE_CONFIG, timeFormatExpression} from '../common';
+import {applyMarkConfig, timeFormatExpression} from '../common';
 import {BIN_LEGEND_LABEL_SUFFIX} from '../scale/scale';
 import {UnitModel} from '../unit';
 
