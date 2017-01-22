@@ -1,14 +1,13 @@
 import * as log from '../log';
 
-import {BAR, POINT, CIRCLE, SQUARE} from '../mark';
 import {AggregateOp} from '../aggregate';
-import {COLOR, OPACITY, TEXT, Channel} from '../channel';
+import {TEXT, Channel} from '../channel';
 import {Config, CellConfig} from '../config';
-import {FieldDef, OrderFieldDef, field, isFieldDef} from '../fielddef';
+import {FieldDef, OrderFieldDef, field} from '../fielddef';
 import {MarkConfig, TextConfig} from '../mark';
 import {TimeUnit} from '../timeunit';
 import {QUANTITATIVE} from '../type';
-import {contains, isArray, union} from '../util';
+import {isArray} from '../util';
 
 import {FacetModel} from './facet';
 import {LayerModel} from './layer';
@@ -16,7 +15,7 @@ import {Model} from './model';
 import {formatExpression} from '../timeunit';
 import {UnitModel} from './unit';
 import {Spec, isUnitSpec, isSomeFacetSpec, isLayerSpec} from '../spec';
-import {VgEncodeEntry, VgValueRef, VgSort} from '../vega.schema';
+import {VgEncodeEntry, VgSort} from '../vega.schema';
 
 export function buildModel(spec: Spec, parent: Model, parentGivenName: string): Model {
   if (isSomeFacetSpec(spec)) {
@@ -32,72 +31,6 @@ export function buildModel(spec: Spec, parent: Model, parentGivenName: string): 
   }
 
   throw new Error(log.message.INVALID_SPEC);
-}
-
-// TODO: figure if we really need opacity in both
-export const STROKE_CONFIG = ['stroke', 'strokeWidth',
-  'strokeDash', 'strokeDashOffset', 'strokeOpacity', 'opacity'];
-
-export const FILL_CONFIG = ['fill', 'fillOpacity',
-  'opacity'];
-
-export const FILL_STROKE_CONFIG = union(STROKE_CONFIG, FILL_CONFIG);
-
-export function applyColorAndOpacity(e: VgEncodeEntry, model: UnitModel) {
-  const filled = model.config().mark.filled;
-  const colorDef = model.encoding().color;
-
-
-  // Apply fill stroke config first so that color field / value can override
-  // fill / stroke
-  if (filled) {
-    applyMarkConfig(e, model, FILL_CONFIG);
-  } else {
-    applyMarkConfig(e, model, STROKE_CONFIG);
-  }
-
-  let colorValue: VgValueRef;
-  let opacityValue: VgValueRef;
-  if (isFieldDef(colorDef)) {
-    colorValue = {
-      scale: model.scaleName(COLOR),
-      field: field(colorDef)
-    };
-  } else if (colorDef && colorDef.value) {
-    colorValue = { value: colorDef.value };
-  }
-
-  const opacityDef = model.encoding().opacity;
-  if (isFieldDef(opacityDef)) {
-    opacityValue = {
-      scale: model.scaleName(OPACITY),
-      field: field(opacityDef)
-    };
-  } else if (opacityDef && opacityDef.value) {
-    opacityValue = { value: opacityDef.value };
-  }
-
-  if (colorValue !== undefined) {
-    if (filled) {
-      e.fill = colorValue;
-    } else {
-      e.stroke = colorValue;
-    }
-  } else {
-    // apply color config if there is no fill / stroke config
-    e[filled ? 'fill' : 'stroke'] = e[filled ? 'fill' : 'stroke'] ||
-      {value: model.config().mark.color};
-  }
-
-  // If there is no fill, always fill symbols
-  // with transparent fills https://github.com/vega/vega-lite/issues/1316
-  if (!e.fill && contains([BAR, POINT, CIRCLE, SQUARE], model.mark())) {
-    e.fill = {value: 'transparent'};
-  }
-
-  if (opacityValue !== undefined) {
-    e.opacity = opacityValue;
-  }
 }
 
 export function applyConfig(e: VgEncodeEntry,
