@@ -40,7 +40,7 @@ describe('compile/scale', () => {
 
       it('should return band for row/column even if other type is specified', function() {
         [ROW, COLUMN].forEach((channel) => {
-          [ScaleType.LINEAR, ScaleType.ORDINAL_LOOKUP, ScaleType.POINT].forEach((badScaleType) => {
+          [ScaleType.LINEAR, ScaleType.ORDINAL, ScaleType.POINT].forEach((badScaleType) => {
             log.runLocalLogger((localLogger) => {
               assert.deepEqual(
                 scaleType({
@@ -63,14 +63,14 @@ describe('compile/scale', () => {
         it('should return ordinal scale for nominal data by default.', () => {
           assert.equal(
             scaleType({field: 'a', type: NOMINAL}, 'color', 'point', undefined,     defaultConfig),
-            ScaleType.ORDINAL_LOOKUP
+            ScaleType.ORDINAL
           );
         });
 
         it('should return ordinal scale for ordinal data.', () => {
           assert.equal(
             scaleType({field: 'a', type: ORDINAL}, 'color', 'point', undefined, defaultConfig),
-            ScaleType.ORDINAL_LOOKUP
+            ScaleType.ORDINAL
           );
         });
       });
@@ -82,7 +82,7 @@ describe('compile/scale', () => {
               field: 'a',
               type: 'nominal'
             }, 'shape', 'point', undefined, defaultConfig),
-            ScaleType.ORDINAL_LOOKUP
+            ScaleType.ORDINAL
           );
         });
 
@@ -95,9 +95,9 @@ describe('compile/scale', () => {
                   type: 'nominal',
                   scale: {type: badScaleType}
                 }, 'shape', 'point', undefined, defaultConfig),
-                ScaleType.ORDINAL_LOOKUP
+                ScaleType.ORDINAL
               );
-              assert.equal(localLogger.warns[0], log.message.scaleTypeNotWorkWithChannel('shape', badScaleType, ScaleType.ORDINAL_LOOKUP));
+              assert.equal(localLogger.warns[0], log.message.scaleTypeNotWorkWithChannel('shape', badScaleType, ScaleType.ORDINAL));
             });
           });
         });
@@ -108,7 +108,7 @@ describe('compile/scale', () => {
               field: 'a',
               type: 'ordinal',
             }, 'shape', 'point', undefined, defaultConfig),
-            ScaleType.ORDINAL_LOOKUP
+            ScaleType.ORDINAL
           );
           assert.equal(localLogger.warns[0], log.message.discreteChannelCannotEncode('shape', 'ordinal'));
         }));
@@ -233,7 +233,7 @@ describe('compile/scale', () => {
             type: 'temporal',
             timeUnit: TimeUnit.YEARMONTH
           }, 'shape', 'point', undefined, defaultConfig),
-          ScaleType.ORDINAL_LOOKUP
+          ScaleType.ORDINAL
         );
         assert.equal(localLogger.warns[0], log.message.discreteChannelCannotEncode('shape', 'temporal'));
       }));
@@ -321,7 +321,7 @@ describe('compile/scale', () => {
             field: 'a',
             type: 'quantitative',
           }, 'shape', 'point', undefined, defaultConfig),
-          ScaleType.ORDINAL_LOOKUP
+          ScaleType.ORDINAL
         );
         assert.equal(localLogger.warns[0], log.message.discreteChannelCannotEncode('shape', 'quantitative'));
       }));
