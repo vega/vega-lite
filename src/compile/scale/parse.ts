@@ -109,7 +109,7 @@ function parseBinLegend(channel: Channel, model: Model, fieldDef: FieldDef): Sca
 function parseBinLegendLabel(channel: Channel, model: Model, fieldDef: FieldDef): ScaleComponent {
   return {
     name: model.scaleName(channel, true) + BIN_LEGEND_LABEL_SUFFIX,
-    type: ScaleType.ORDINAL_LOOKUP,
+    type: ScaleType.ORDINAL,
     domain: {
       data: model.dataTable(),
       field: model.field(channel),

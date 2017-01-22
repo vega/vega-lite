@@ -48,16 +48,16 @@ function defaultType(specifiedScale: Scale, fieldDef: FieldDef, channel: Channel
   switch (fieldDef.type) {
     case 'nominal':
       if (channel === 'color' || channelRangeType(channel) === 'discrete') {
-        return ScaleType.ORDINAL_LOOKUP;
+        return ScaleType.ORDINAL;
       }
       return discreteToContinuousType(channel, mark, specifiedScale, topLevelSize, config);
 
     case 'ordinal':
       if (channel === 'color') {
-        return ScaleType.ORDINAL_LOOKUP;
+        return ScaleType.ORDINAL;
       } else if (channelRangeType(channel) === 'discrete') {
         log.warn(log.message.discreteChannelCannotEncode(channel, 'ordinal'));
-        return ScaleType.ORDINAL_LOOKUP;
+        return ScaleType.ORDINAL;
       }
       return discreteToContinuousType(channel, mark, specifiedScale, topLevelSize, config);
 
@@ -69,7 +69,7 @@ function defaultType(specifiedScale: Scale, fieldDef: FieldDef, channel: Channel
       } else if (channelRangeType(channel) === 'discrete') {
         log.warn(log.message.discreteChannelCannotEncode(channel, 'temporal'));
         // TODO: consider using quantize (equivalent to binning) once we have it
-        return ScaleType.ORDINAL_LOOKUP;
+        return ScaleType.ORDINAL;
       }
       switch (fieldDef.timeUnit) {
         // These time unit use discrete scale by default
@@ -89,7 +89,7 @@ function defaultType(specifiedScale: Scale, fieldDef: FieldDef, channel: Channel
       } else if (channelRangeType(channel) === 'discrete') {
         log.warn(log.message.discreteChannelCannotEncode(channel, 'quantitative'));
         // TODO: consider using quantize (equivalent to binning) once we have it
-        return ScaleType.ORDINAL_LOOKUP;
+        return ScaleType.ORDINAL;
       }
       return ScaleType.LINEAR;
   }

@@ -18,8 +18,7 @@ export namespace ScaleType {
   export const QUANTIZE: 'quantize' = 'quantize';
   export const THRESHOLD: 'threshold' = 'threshold';
 
-  // TODO: rename this back to ORDINAL once we are done
-  export const ORDINAL_LOOKUP: 'ordinal' = 'ordinal';
+  export const ORDINAL: 'ordinal' = 'ordinal';
   export const POINT: 'point' = 'point';
   export const BAND: 'band' = 'band';
 
@@ -30,7 +29,7 @@ export type ScaleType = typeof ScaleType.LINEAR |
   typeof ScaleType.TIME | typeof ScaleType.UTC |
   // TODO: add 'quantize', 'quantile', 'threshold' back when we really support them
   typeof ScaleType.SEQUENTIAL | // typeof ScaleType.QUANTILE | typeof ScaleType.QUANTIZE | typeof ScaleType.THRESHOLD |
-  typeof ScaleType.ORDINAL_LOOKUP | typeof ScaleType.POINT | typeof ScaleType.BAND;
+  typeof ScaleType.ORDINAL | typeof ScaleType.POINT | typeof ScaleType.BAND;
 
 export const SCALE_TYPES: ScaleType[] = [
   // Continuous - Quantitative
