@@ -81,7 +81,7 @@
     "typescript": "^2.1.5",
     "typescript-json-schema": "^0.5.1",
     "uglify-js": "~2.7.4",
-    "vega": "^3.0.0-beta.13",
+    "vega": "3.0.0-beta.15",
     "vega-datasets": "vega/vega-datasets#gh-pages",
     "watchify": "~3.7.0",
     "yaml-front-matter": "~3.4.0"
