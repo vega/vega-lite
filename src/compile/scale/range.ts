@@ -3,7 +3,7 @@ import * as log from '../../log';
 import {COLUMN, ROW, X, Y, SHAPE, SIZE, COLOR, OPACITY, Channel} from '../../channel';
 import {Config} from '../../config';
 import {Mark} from '../../mark';
-import {Scale, ScaleConfig, ScaleType, Range, isRangeScheme, scaleTypeSupportProperty, scaleTypeSupportScheme} from '../../scale';
+import {Scale, ScaleConfig, ScaleType, Range, scaleTypeSupportProperty} from '../../scale';
 import * as util from '../../util';
 
 import {channelScalePropertyIncompatability} from './scale';
@@ -83,17 +83,9 @@ export default function rangeMixins(
       const rangeMax = sizeRangeMax(mark, xyRangeSteps, config);
       return {range: [rangeMin, rangeMax]};
     case SHAPE:
-      return {range: config.point.shapes};
     case COLOR:
-      if (scaleType === 'ordinal') {
-        // Only nominal data uses ordinal scale by default
-        return {scheme: config.mark.nominalColorScheme};
-      }
-      // TODO(#1737): support sequentialColorRange (with linear scale) if sequentialColorScheme is not specified.
-      // TODO: support custom rangeMin, rangeMax
-      // else -- ordinal, time, or quantitative
-      // TODO: support linearColorRange
-      return {scheme: config.mark.sequentialColorScheme};
+      return {range: defaultRange(channel, scaleType, mark)};
+
 
     case OPACITY:
       // TODO: support custom rangeMin, rangeMax
@@ -101,6 +93,22 @@ export default function rangeMixins(
   }
   /* istanbul ignore next: should never reach here */
   throw new Error(`Scale range undefined for channel ${channel}`);
+}
+
+function defaultRange(channel: 'shape' | 'color', scaleType: ScaleType, mark: Mark) {
+  switch (channel) {
+    case SHAPE:
+      return 'symbol';
+    case COLOR:
+      if (scaleType === 'ordinal') {
+        // Only nominal data uses ordinal scale by default
+        return 'category';
+      }
+      if (scaleType === 'index') {
+        return 'ordinal';
+      }
+      return mark === 'rect' ? 'heatmap' : 'ramp';
+  }
 }
 
 function sizeRangeMin(mark: Mark, zero: boolean, config: Config) {

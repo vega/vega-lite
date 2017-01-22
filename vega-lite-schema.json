@@ -82,10 +82,6 @@
                     "minimum": 0,
                     "type": "number"
                 },
-                "nominalColorScheme": {
-                    "description": "Default color scheme for nominal (categorical) data",
-                    "type": "string"
-                },
                 "opacity": {
                     "maximum": 1,
                     "minimum": 0,
@@ -94,10 +90,6 @@
                 "orient": {
                     "$ref": "#/definitions/Orient",
                     "description": "The orientation of a non-stacked bar, tick, area, and line charts.\nThe value is either horizontal (default) or vertical.\n- For bar, rule and tick, this determines whether the size of the bar and tick\nshould be applied to x or y dimension.\n- For area, this property determines the orient property of the Vega output.\n- For line, this property determines the sort order of the points in the line\nif `config.sortLineBy` is not specified.\nFor stacked charts, this is always determined by the orientation of the stack;\ntherefore explicitly specified value will be ignored."
-                },
-                "sequentialColorScheme": {
-                    "description": "Default color scheme for ordinal, quantitative and temporal field",
-                    "type": "string"
                 },
                 "stacked": {
                     "$ref": "#/definitions/StackOffset"
@@ -595,10 +587,6 @@
                     "minimum": 0,
                     "type": "number"
                 },
-                "nominalColorScheme": {
-                    "description": "Default color scheme for nominal (categorical) data",
-                    "type": "string"
-                },
                 "opacity": {
                     "maximum": 1,
                     "minimum": 0,
@@ -607,10 +595,6 @@
                 "orient": {
                     "$ref": "#/definitions/Orient",
                     "description": "The orientation of a non-stacked bar, tick, area, and line charts.\nThe value is either horizontal (default) or vertical.\n- For bar, rule and tick, this determines whether the size of the bar and tick\nshould be applied to x or y dimension.\n- For area, this property determines the orient property of the Vega output.\n- For line, this property determines the sort order of the points in the line\nif `config.sortLineBy` is not specified.\nFor stacked charts, this is always determined by the orientation of the stack;\ntherefore explicitly specified value will be ignored."
-                },
-                "sequentialColorScheme": {
-                    "description": "Default color scheme for ordinal, quantitative and temporal field",
-                    "type": "string"
                 },
                 "stacked": {
                     "$ref": "#/definitions/StackOffset"
@@ -1849,10 +1833,6 @@
                     "minimum": 0,
                     "type": "number"
                 },
-                "nominalColorScheme": {
-                    "description": "Default color scheme for nominal (categorical) data",
-                    "type": "string"
-                },
                 "opacity": {
                     "maximum": 1,
                     "minimum": 0,
@@ -1861,10 +1841,6 @@
                 "orient": {
                     "$ref": "#/definitions/Orient",
                     "description": "The orientation of a non-stacked bar, tick, area, and line charts.\nThe value is either horizontal (default) or vertical.\n- For bar, rule and tick, this determines whether the size of the bar and tick\nshould be applied to x or y dimension.\n- For area, this property determines the orient property of the Vega output.\n- For line, this property determines the sort order of the points in the line\nif `config.sortLineBy` is not specified.\nFor stacked charts, this is always determined by the orientation of the stack;\ntherefore explicitly specified value will be ignored."
-                },
-                "sequentialColorScheme": {
-                    "description": "Default color scheme for ordinal, quantitative and temporal field",
-                    "type": "string"
                 },
                 "stacked": {
                     "$ref": "#/definitions/StackOffset"
@@ -1963,10 +1939,6 @@
                     "minimum": 0,
                     "type": "number"
                 },
-                "nominalColorScheme": {
-                    "description": "Default color scheme for nominal (categorical) data",
-                    "type": "string"
-                },
                 "opacity": {
                     "maximum": 1,
                     "minimum": 0,
@@ -1975,10 +1947,6 @@
                 "orient": {
                     "$ref": "#/definitions/Orient",
                     "description": "The orientation of a non-stacked bar, tick, area, and line charts.\nThe value is either horizontal (default) or vertical.\n- For bar, rule and tick, this determines whether the size of the bar and tick\nshould be applied to x or y dimension.\n- For area, this property determines the orient property of the Vega output.\n- For line, this property determines the sort order of the points in the line\nif `config.sortLineBy` is not specified.\nFor stacked charts, this is always determined by the orientation of the stack;\ntherefore explicitly specified value will be ignored."
-                },
-                "sequentialColorScheme": {
-                    "description": "Default color scheme for ordinal, quantitative and temporal field",
-                    "type": "string"
                 },
                 "stacked": {
                     "$ref": "#/definitions/StackOffset"
@@ -2173,10 +2141,6 @@
                     "minimum": 0,
                     "type": "number"
                 },
-                "nominalColorScheme": {
-                    "description": "Default color scheme for nominal (categorical) data",
-                    "type": "string"
-                },
                 "opacity": {
                     "maximum": 1,
                     "minimum": 0,
@@ -2185,10 +2149,6 @@
                 "orient": {
                     "$ref": "#/definitions/Orient",
                     "description": "The orientation of a non-stacked bar, tick, area, and line charts.\nThe value is either horizontal (default) or vertical.\n- For bar, rule and tick, this determines whether the size of the bar and tick\nshould be applied to x or y dimension.\n- For area, this property determines the orient property of the Vega output.\n- For line, this property determines the sort order of the points in the line\nif `config.sortLineBy` is not specified.\nFor stacked charts, this is always determined by the orientation of the stack;\ntherefore explicitly specified value will be ignored."
-                },
-                "sequentialColorScheme": {
-                    "description": "Default color scheme for ordinal, quantitative and temporal field",
-                    "type": "string"
                 },
                 "shape": {
                     "description": "The default symbol shape to use. One of: `\"circle\"` (default), `\"square\"`, `\"cross\"`, `\"diamond\"`, `\"triangle-up\"`, or `\"triangle-down\"`, or a custom SVG path.",
@@ -2404,10 +2364,6 @@
                     "minimum": 0,
                     "type": "number"
                 },
-                "nominalColorScheme": {
-                    "description": "Default color scheme for nominal (categorical) data",
-                    "type": "string"
-                },
                 "opacity": {
                     "maximum": 1,
                     "minimum": 0,
@@ -2416,10 +2372,6 @@
                 "orient": {
                     "$ref": "#/definitions/Orient",
                     "description": "The orientation of a non-stacked bar, tick, area, and line charts.\nThe value is either horizontal (default) or vertical.\n- For bar, rule and tick, this determines whether the size of the bar and tick\nshould be applied to x or y dimension.\n- For area, this property determines the orient property of the Vega output.\n- For line, this property determines the sort order of the points in the line\nif `config.sortLineBy` is not specified.\nFor stacked charts, this is always determined by the orientation of the stack;\ntherefore explicitly specified value will be ignored."
-                },
-                "sequentialColorScheme": {
-                    "description": "Default color scheme for ordinal, quantitative and temporal field",
-                    "type": "string"
                 },
                 "stacked": {
                     "$ref": "#/definitions/StackOffset"
@@ -2502,10 +2454,6 @@
                     "minimum": 0,
                     "type": "number"
                 },
-                "nominalColorScheme": {
-                    "description": "Default color scheme for nominal (categorical) data",
-                    "type": "string"
-                },
                 "opacity": {
                     "maximum": 1,
                     "minimum": 0,
@@ -2514,10 +2462,6 @@
                 "orient": {
                     "$ref": "#/definitions/Orient",
                     "description": "The orientation of a non-stacked bar, tick, area, and line charts.\nThe value is either horizontal (default) or vertical.\n- For bar, rule and tick, this determines whether the size of the bar and tick\nshould be applied to x or y dimension.\n- For area, this property determines the orient property of the Vega output.\n- For line, this property determines the sort order of the points in the line\nif `config.sortLineBy` is not specified.\nFor stacked charts, this is always determined by the orientation of the stack;\ntherefore explicitly specified value will be ignored."
-                },
-                "sequentialColorScheme": {
-                    "description": "Default color scheme for ordinal, quantitative and temporal field",
-                    "type": "string"
                 },
                 "stacked": {
                     "$ref": "#/definitions/StackOffset"
@@ -2838,10 +2782,6 @@
                     "minimum": 0,
                     "type": "number"
                 },
-                "nominalColorScheme": {
-                    "description": "Default color scheme for nominal (categorical) data",
-                    "type": "string"
-                },
                 "opacity": {
                     "maximum": 1,
                     "minimum": 0,
@@ -2850,10 +2790,6 @@
                 "orient": {
                     "$ref": "#/definitions/Orient",
                     "description": "The orientation of a non-stacked bar, tick, area, and line charts.\nThe value is either horizontal (default) or vertical.\n- For bar, rule and tick, this determines whether the size of the bar and tick\nshould be applied to x or y dimension.\n- For area, this property determines the orient property of the Vega output.\n- For line, this property determines the sort order of the points in the line\nif `config.sortLineBy` is not specified.\nFor stacked charts, this is always determined by the orientation of the stack;\ntherefore explicitly specified value will be ignored."
-                },
-                "sequentialColorScheme": {
-                    "description": "Default color scheme for ordinal, quantitative and temporal field",
-                    "type": "string"
                 },
                 "size": {
                     "description": "The pixel area each the point/circle/square.\nFor example: in the case of circles, the radius is determined in part by the square root of the size value.",
@@ -3010,10 +2946,6 @@
                     "minimum": 0,
                     "type": "number"
                 },
-                "nominalColorScheme": {
-                    "description": "Default color scheme for nominal (categorical) data",
-                    "type": "string"
-                },
                 "opacity": {
                     "maximum": 1,
                     "minimum": 0,
@@ -3027,10 +2959,6 @@
                     "description": "Polar coordinate radial offset, in pixels, of the text label from the origin determined by the x and y properties.",
                     "minimum": 0,
                     "type": "number"
-                },
-                "sequentialColorScheme": {
-                    "description": "Default color scheme for ordinal, quantitative and temporal field",
-                    "type": "string"
                 },
                 "shortTimeLabels": {
                     "description": "Whether month names and weekday names should be abbreviated.",
@@ -3140,10 +3068,6 @@
                     "minimum": 0,
                     "type": "number"
                 },
-                "nominalColorScheme": {
-                    "description": "Default color scheme for nominal (categorical) data",
-                    "type": "string"
-                },
                 "opacity": {
                     "maximum": 1,
                     "minimum": 0,
@@ -3152,10 +3076,6 @@
                 "orient": {
                     "$ref": "#/definitions/Orient",
                     "description": "The orientation of a non-stacked bar, tick, area, and line charts.\nThe value is either horizontal (default) or vertical.\n- For bar, rule and tick, this determines whether the size of the bar and tick\nshould be applied to x or y dimension.\n- For area, this property determines the orient property of the Vega output.\n- For line, this property determines the sort order of the points in the line\nif `config.sortLineBy` is not specified.\nFor stacked charts, this is always determined by the orientation of the stack;\ntherefore explicitly specified value will be ignored."
-                },
-                "sequentialColorScheme": {
-                    "description": "Default color scheme for ordinal, quantitative and temporal field",
-                    "type": "string"
                 },
                 "stacked": {
                     "$ref": "#/definitions/StackOffset"
