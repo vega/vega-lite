@@ -83,17 +83,9 @@ export default function rangeMixins(
       const rangeMax = sizeRangeMax(mark, xyRangeSteps, config);
       return {range: [rangeMin, rangeMax]};
     case SHAPE:
-      return {range: config.point.shapes};
     case COLOR:
-      if (scaleType === 'ordinal') {
-        // Only nominal data uses ordinal scale by default
-        return {scheme: config.mark.nominalColorScheme};
-      }
-      // TODO(#1737): support sequentialColorRange (with linear scale) if sequentialColorScheme is not specified.
-      // TODO: support custom rangeMin, rangeMax
-      // else -- ordinal, time, or quantitative
-      // TODO: support linearColorRange
-      return {scheme: config.mark.sequentialColorScheme};
+      return {range: {scheme: defaultScheme(channel, scaleType)}};
+
 
     case OPACITY:
       // TODO: support custom rangeMin, rangeMax
@@ -101,6 +93,20 @@ export default function rangeMixins(
   }
   /* istanbul ignore next: should never reach here */
   throw new Error(`Scale range undefined for channel ${channel}`);
+}
+
+function defaultScheme(channel: 'shape' | 'color', scaleType: ScaleType) {
+  if (channel === 'shape') {
+    return 'symbol';
+  } else { // color
+    if (scaleType === 'ordinal') {
+      // Only nominal data uses ordinal scale by default
+      return 'category';
+    } else if (scaleType === 'index') {
+      return 'ordinal';
+    }
+    return 'ramp';
+  }
 }
 
 function sizeRangeMin(mark: Mark, zero: boolean, config: Config) {
