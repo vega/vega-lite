@@ -33,8 +33,17 @@ export default function rangeMixins(
       } else {
         switch (property) {
           case 'range':
-            return {range: specifiedValue};
+            if (isRangeScheme(specifiedValue)) {
+              if (!scaleTypeSupportScheme(scaleType)) {
+                log.warn(log.message.scalePropertyNotWorkWithScaleType(scaleType, 'range.scheme', channel));
+              } else {
+                return {range: specifiedValue};
+              }
+            } else {
+              return {range: specifiedValue};
+            }
 
+            break;
           case 'rangeStep':
             if (topLevelSize === undefined) {
               if (specifiedValue !== null) {

@@ -304,3 +304,7 @@ export function scaleTypeSupportProperty(scaleType: ScaleType, propName: string)
   /* istanbul ignore next: should never reach here*/
   throw new Error(`Invalid scale property ${propName}.`);
 }
+
+export function scaleTypeSupportScheme(scaleType: ScaleType): scaleType is 'sequential' | 'ordinal' | 'index' {
+  return scaleType === 'sequential' || scaleType === 'ordinal' || scaleType === 'index';
+}

@@ -137,7 +137,7 @@ describe('compile/scale', () => {
     describe('color', function() {
       it('should use the specified scheme for a nominal color field.', () => {
         assert.deepEqual(
-          rangeMixins('color', 'ordinal', {range:{scheme: 'warm'}}, defaultConfig, undefined, 'point', undefined, []),
+          rangeMixins('color', 'ordinal', {range: {scheme: 'warm'}}, defaultConfig, undefined, 'point', undefined, []),
           {range: {scheme: 'warm'}}
         );
       });
@@ -151,21 +151,22 @@ describe('compile/scale', () => {
 
       // TODO: nominalColorRange, linearColorRange
 
-      it('should use default nominalColorScheme for a nominal color field.', () => {
+
+      it('should use {scheme: "category"} for a nominal color field.', () => {
         assert.deepEqual(
           rangeMixins('color', 'ordinal', {}, defaultConfig, undefined, 'point', undefined, []),
           {range: {scheme: 'category'}}
         );
       });
 
-      it('should use default sequentialColorScheme for an ordinal color field.', () => {
+      it('should use {scheme: "ordinal"} for an ordinal color field.', () => {
         assert.deepEqual(
           rangeMixins('color', 'index', {}, defaultConfig,  undefined, 'point', undefined, []),
           {range: {scheme: 'ordinal'}}
         );
       });
 
-      it('should use default sequentialColorScheme for a temporal/quantitative color field.', () => {
+      it('should use {scheme: "ramp"} for a temporal/quantitative color field.', () => {
         assert.deepEqual(
           rangeMixins('color', 'sequential', {}, defaultConfig, undefined, 'point', undefined, []),
           {range: {scheme: 'ramp'}}
@@ -302,7 +303,7 @@ describe('compile/scale', () => {
     });
 
     describe('shape', function() {
-      it('should use default shapes as shape\'s scale range.', () => {
+      it('should use default symbol scheme as shape\'s scale range.', () => {
         assert.deepEqual(
           rangeMixins('shape', 'ordinal', {}, defaultConfig, undefined, 'point', undefined, []),
           {range: {scheme: 'symbol'}}

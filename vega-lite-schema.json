@@ -2314,9 +2314,6 @@
                     "type": "string"
                 }
             },
-            "required": [
-                "scheme"
-            ],
             "type": "object"
         },
         "RectConfig": {
