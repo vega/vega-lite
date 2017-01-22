@@ -162,7 +162,7 @@ export interface RangeScheme {
   /**
    * Color scheme that determines output color of an ordinal/sequential color scale.
    */
-  scheme: string;
+  scheme?: string;
 
   // TODO: add docs
   extent?: number[];
@@ -174,7 +174,7 @@ export interface RangeScheme {
 export type Range = number[] | string[] | RangeScheme;
 
 export function isRangeScheme(range: Range): range is RangeScheme {
-  return range && 'scheme' in range;
+  return range && (!!range['scheme'] || !!range['extent'] || !!range['count']);
 }
 
 export interface Scale {

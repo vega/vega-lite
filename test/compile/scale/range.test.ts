@@ -149,8 +149,12 @@ describe('compile/scale', () => {
         );
       });
 
-      // TODO: nominalColorRange, linearColorRange
-
+      it('should use {scheme: "category"} for a nominal color field if only extend is provided.', () => {
+        assert.deepEqual(
+          rangeMixins('color', 'ordinal', {range: {extent: [0.2, 1]}}, defaultConfig, undefined, 'point', undefined, []),
+          {range: {scheme: 'category', extent: [0.2, 1]}}
+        );
+      });
 
       it('should use {scheme: "category"} for a nominal color field.', () => {
         assert.deepEqual(

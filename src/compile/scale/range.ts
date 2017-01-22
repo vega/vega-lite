@@ -37,7 +37,13 @@ export default function rangeMixins(
               if (!scaleTypeSupportScheme(scaleType)) {
                 log.warn(log.message.scalePropertyNotWorkWithScaleType(scaleType, 'range.scheme', channel));
               } else {
-                return {range: specifiedValue};
+                return {
+                  // Augment specified range scheme with scheme
+                  // (just in case users only want to override extent / count)
+                  range: util.extend({
+                    scheme: defaultScheme(channel, scaleType)
+                  }, specifiedValue)
+                };
               }
             } else {
               return {range: specifiedValue};
@@ -104,18 +110,21 @@ export default function rangeMixins(
   throw new Error(`Scale range undefined for channel ${channel}`);
 }
 
-function defaultScheme(channel: 'shape' | 'color', scaleType: ScaleType) {
-  if (channel === 'shape') {
-    return 'symbol';
-  } else { // color
-    if (scaleType === 'ordinal') {
-      // Only nominal data uses ordinal scale by default
-      return 'category';
-    } else if (scaleType === 'index') {
-      return 'ordinal';
-    }
-    return 'ramp';
+function defaultScheme(channel: Channel, scaleType: ScaleType) {
+  switch (channel) {
+    case SHAPE:
+      return 'symbol';
+    case COLOR:
+      if (scaleType === 'ordinal') {
+        // Only nominal data uses ordinal scale by default
+        return 'category';
+      } else if (scaleType === 'index') {
+        return 'ordinal';
+      }
+      return 'ramp';
   }
+  log.warn('No default scheme for channel ' + channel + '.');
+  return undefined;
 }
 
 function sizeRangeMin(mark: Mark, zero: boolean, config: Config) {
