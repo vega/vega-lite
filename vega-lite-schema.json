@@ -1127,6 +1127,27 @@
             ],
             "type": "object"
         },
+        "ExtendedScheme": {
+            "properties": {
+                "count": {
+                    "type": "number"
+                },
+                "extent": {
+                    "items": {
+                        "type": "number"
+                    },
+                    "type": "array"
+                },
+                "name": {
+                    "description": "Color scheme that determines output color of an ordinal/sequential color scale.",
+                    "type": "string"
+                }
+            },
+            "required": [
+                "name"
+            ],
+            "type": "object"
+        },
         "ExtendedUnitSpec": {
             "description": "Schema for a unit Vega-Lite specification, with the syntactic sugar extensions:\n- `row` and `column` are included in the encoding.\n- (Future) label, box plot\n\nNote: the spec could contain facet.",
             "properties": {
@@ -2298,27 +2319,6 @@
             ],
             "type": "object"
         },
-        "RangeScheme": {
-            "properties": {
-                "count": {
-                    "type": "number"
-                },
-                "extent": {
-                    "items": {
-                        "type": "number"
-                    },
-                    "type": "array"
-                },
-                "scheme": {
-                    "description": "Color scheme that determines output color of an ordinal/sequential color scale.",
-                    "type": "string"
-                }
-            },
-            "required": [
-                "scheme"
-            ],
-            "type": "object"
-        },
         "RectConfig": {
             "properties": {
                 "color": {
@@ -2573,22 +2573,12 @@
                             "type": "array"
                         },
                         {
-                            "$ref": "#/definitions/RangeScheme"
-                        },
-                        {
                             "items": {
                                 "type": "number"
                             },
                             "type": "array"
                         },
                         {
-                            "enum": [
-                                "category",
-                                "diverging",
-                                "heatmap",
-                                "ordinal",
-                                "ramp"
-                            ],
                             "type": "string"
                         }
                     ],
@@ -2609,6 +2599,17 @@
                 "round": {
                     "description": "If true, rounds numeric output values to integers. This can be helpful for snapping to the pixel grid.\n\n__Default Rule:__ `true` for `\"x\"`, `\"y\"`, `\"row\"`, `\"column\"` channels if scale config's `round` is `true`; `false` otherwise.",
                     "type": "boolean"
+                },
+                "scheme": {
+                    "anyOf": [
+                        {
+                            "$ref": "#/definitions/ExtendedScheme"
+                        },
+                        {
+                            "type": "string"
+                        }
+                    ],
+                    "description": "Color or range scheme that determines output color of an ordinal/sequential scale."
                 },
                 "spacing": {
                     "description": "(For `row` and `column` only) A pixel value for padding between cells in the trellis plots.",

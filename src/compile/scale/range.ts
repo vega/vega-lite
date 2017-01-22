@@ -3,13 +3,14 @@ import * as log from '../../log';
 import {COLUMN, ROW, X, Y, SHAPE, SIZE, COLOR, OPACITY, Channel} from '../../channel';
 import {Config} from '../../config';
 import {Mark} from '../../mark';
-import {Scale, ScaleConfig, ScaleType, Range, scaleTypeSupportProperty} from '../../scale';
+import {Scale, ScaleConfig, ScaleType, scaleTypeSupportProperty, isExtendedScheme} from '../../scale';
 import {Type} from '../../type';
+import {VgRange, VgRangeScheme} from '../../vega.schema';
 import * as util from '../../util';
 
 import {channelScalePropertyIncompatability} from './scale';
 
-export type RangeMixins = {range: Range | string} | {rangeStep: number};
+export type RangeMixins = {range: VgRange} | {rangeStep: number};
 
 /**
  * Return mixins that includes one of the range properties (range, rangeStep, scheme).
@@ -22,7 +23,7 @@ export default function rangeMixins(
 
   // Check if any of the range properties is specified.
   // If so, check if it is compatible and make sure that we only output one of the properties
-  for (let property of ['range', 'rangeStep']) {
+  for (let property of ['range', 'rangeStep', 'scheme']) {
     const specifiedValue = specifiedScale[property];
     if (specifiedValue !== undefined) {
       let supportedByScaleType = scaleTypeSupportProperty(scaleType, property);
@@ -35,7 +36,18 @@ export default function rangeMixins(
         switch (property) {
           case 'range':
             return {range: specifiedValue};
-
+          case 'scheme':
+            if (isExtendedScheme(specifiedValue)) {
+              let r: VgRangeScheme = {scheme: specifiedValue.name};
+              if (specifiedValue.count) {
+                r.count = specifiedValue.count;
+              }
+              if (specifiedValue.extent) {
+                r.extent = specifiedValue.extent;
+              }
+              return {range: r};
+            }
+            return {range: {scheme: specifiedValue}};
           case 'rangeStep':
             if (topLevelSize === undefined) {
               if (specifiedValue !== null) {
