@@ -1556,7 +1556,7 @@
                     "type": "number"
                 },
                 "shape": {
-                    "$ref": "#/definitions/Shape"
+                    "type": "string"
                 },
                 "shortTimeLabels": {
                     "description": "Whether month names and weekday names should be abbreviated.",
@@ -1567,8 +1567,8 @@
                     "type": "string"
                 },
                 "symbolShape": {
-                    "$ref": "#/definitions/Shape",
-                    "description": "The shape of the legend symbol, can be the 'circle', 'square', 'cross', 'diamond',\n'triangle-up', 'triangle-down', or else a custom SVG path string."
+                    "description": "The shape of the legend symbol, can be the 'circle', 'square', 'cross', 'diamond',\n'triangle-up', 'triangle-down', or else a custom SVG path string.",
+                    "type": "string"
                 },
                 "symbolSize": {
                     "description": "The size of the legend symbol, in pixels.",
@@ -1707,8 +1707,8 @@
                     "type": "string"
                 },
                 "symbolShape": {
-                    "$ref": "#/definitions/Shape",
-                    "description": "The shape of the legend symbol, can be the 'circle', 'square', 'cross', 'diamond',\n'triangle-up', 'triangle-down', or else a custom SVG path string."
+                    "description": "The shape of the legend symbol, can be the 'circle', 'square', 'cross', 'diamond',\n'triangle-up', 'triangle-down', or else a custom SVG path string.",
+                    "type": "string"
                 },
                 "symbolSize": {
                     "description": "The size of the legend symbol, in pixels.",
@@ -2724,17 +2724,6 @@
                 "sqrt",
                 "time",
                 "utc"
-            ],
-            "type": "string"
-        },
-        "Shape": {
-            "enum": [
-                "circle",
-                "cross",
-                "diamond",
-                "square",
-                "triangle-down",
-                "triangle-up"
             ],
             "type": "string"
         },
