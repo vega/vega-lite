@@ -1,5 +1,7 @@
 import {X, Y, COLOR, TEXT, SIZE} from '../../channel';
-import {applyConfig, applyColorAndOpacity, numberFormat, timeFormatExpression} from '../common';
+import {applyConfig, numberFormat, timeFormatExpression} from '../common';
+
+import {applyColorAndOpacity} from './common';
 import {Config} from '../../config';
 import {ChannelDef, field, isFieldDef} from '../../fielddef';
 import {QUANTITATIVE, TEMPORAL} from '../../type';

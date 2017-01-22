@@ -3,7 +3,8 @@ import {Config} from '../../config';
 import {ChannelDef, isValueDef} from '../../fielddef';
 import {VgEncodeEntry} from '../../vega.schema';
 
-import {applyColorAndOpacity, applyMarkConfig} from '../common';
+import {applyMarkConfig} from '../common';
+import {applyColorAndOpacity} from './common';
 import {UnitModel} from '../unit';
 
 import {MarkCompiler} from './base';
