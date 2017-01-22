@@ -216,13 +216,13 @@ describe('compile/scale', () => {
         );
       });
 
-      it('should return time scale for temporal color field  if range is provided.', () => {
+      it('should return sequential scale for temporal color field  if range is provided.', () => {
         assert.equal(
           scaleType(
             {field: 'a', type: TEMPORAL, scale: {range: ['cyan', 'blue']}},
             'color', 'point', undefined, defaultConfig
           ),
-          ScaleType.TIME
+          ScaleType.SEQUENTIAL
         );
       });
 
@@ -305,13 +305,13 @@ describe('compile/scale', () => {
         );
       });
 
-      it('should return linear scale for quantitative color field if range is provided.', () => {
+      it('should return sequential scale for quantitative color field if range is provided.', () => {
         assert.equal(
           scaleType(
             {field: 'a', type: QUANTITATIVE, scale: {range: ['cyan', 'blue']}},
             'color', 'point', undefined, defaultConfig
           ),
-          ScaleType.LINEAR
+          ScaleType.SEQUENTIAL
         );
       });
 

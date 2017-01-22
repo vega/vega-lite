@@ -4,7 +4,7 @@ import {Config} from '../../config';
 import {hasScale, supportScaleType, Channel} from '../../channel';
 import {FieldDef, ScaleFieldDef} from '../../fielddef';
 import {Mark} from '../../mark';
-import {Scale, ScaleType, isRangeScheme} from '../../scale';
+import {Scale, ScaleType} from '../../scale';
 
 import * as util from '../../util';
 
@@ -63,7 +63,9 @@ function defaultType(specifiedScale: Scale, fieldDef: FieldDef, channel: Channel
 
     case 'temporal':
       if (channel === 'color') {
-        return continuousColorScaleType(specifiedScale, ScaleType.TIME);
+        // Always use `sequential` as the default color scale for continuous data
+        // since it supports both array range and scheme range.
+        return 'sequential';
       } else if (channelRangeType(channel) === 'discrete') {
         log.warn(log.message.discreteChannelCannotEncode(channel, 'temporal'));
         // TODO: consider using quantize (equivalent to binning) once we have it
@@ -81,7 +83,9 @@ function defaultType(specifiedScale: Scale, fieldDef: FieldDef, channel: Channel
 
     case 'quantitative':
       if (channel === 'color') {
-        return continuousColorScaleType(specifiedScale, ScaleType.LINEAR);
+        // Always use `sequential` as the default color scale for continuous data
+        // since it supports both array range and scheme range.
+        return 'sequential';
       } else if (channelRangeType(channel) === 'discrete') {
         log.warn(log.message.discreteChannelCannotEncode(channel, 'quantitative'));
         // TODO: consider using quantize (equivalent to binning) once we have it
@@ -92,21 +96,6 @@ function defaultType(specifiedScale: Scale, fieldDef: FieldDef, channel: Channel
 
   /* istanbul ignore next: should never reach this */
   throw new Error(log.message.invalidFieldType(fieldDef.type));
-}
-
-/**
- * Determine default continuous color scale type based on specified range type:
- * - scheme = sequential
- * - range = linear
- */
-function continuousColorScaleType(specifiedScale: Scale, rangeScaleType: 'linear' | 'time'): ScaleType {
-  if (isRangeScheme(specifiedScale.range)) {
-    return ScaleType.SEQUENTIAL;
-  } else if (specifiedScale.range) {
-    return rangeScaleType;
-  }
-  // TODO: make default type also depend on config
-  return ScaleType.SEQUENTIAL;
 }
 
 /**
