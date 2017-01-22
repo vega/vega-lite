@@ -54,7 +54,7 @@ function defaultType(specifiedScale: Scale, fieldDef: FieldDef, channel: Channel
 
     case 'ordinal':
       if (channel === 'color') {
-        return ScaleType.INDEX;
+        return ScaleType.ORDINAL_LOOKUP;
       } else if (channelRangeType(channel) === 'discrete') {
         log.warn(log.message.discreteChannelCannotEncode(channel, 'ordinal'));
         return ScaleType.ORDINAL_LOOKUP;

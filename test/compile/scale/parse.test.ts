@@ -55,9 +55,9 @@ describe('src/compile', function() {
 
       const scales = parseScale(model, 'color');
 
-      it('should create index color scale', function() {
+      it('should create ordinal color scale', function() {
         assert.equal(scales.main.name, 'color');
-        assert.equal(scales.main.type, 'index');
+        assert.equal(scales.main.type, 'ordinal');
 
         assert.deepEqual(scales.main.domain, {
           data: 'source',

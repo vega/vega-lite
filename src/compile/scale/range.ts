@@ -4,6 +4,7 @@ import {COLUMN, ROW, X, Y, SHAPE, SIZE, COLOR, OPACITY, Channel} from '../../cha
 import {Config} from '../../config';
 import {Mark} from '../../mark';
 import {Scale, ScaleConfig, ScaleType, Range, scaleTypeSupportProperty} from '../../scale';
+import {Type} from '../../type';
 import * as util from '../../util';
 
 import {channelScalePropertyIncompatability} from './scale';
@@ -14,7 +15,7 @@ export type RangeMixins = {range: Range | string} | {rangeStep: number};
  * Return mixins that includes one of the range properties (range, rangeStep, scheme).
  */
 export default function rangeMixins(
-  channel: Channel, scaleType: ScaleType, specifiedScale: Scale, config: Config,
+  channel: Channel, scaleType: ScaleType, type: Type, specifiedScale: Scale, config: Config,
   zero: boolean, mark: Mark, topLevelSize: number | undefined, xyRangeSteps: number[]): RangeMixins {
 
   let specifiedRangeStepIsNull = false;
@@ -84,7 +85,7 @@ export default function rangeMixins(
       return {range: [rangeMin, rangeMax]};
     case SHAPE:
     case COLOR:
-      return {range: defaultRange(channel, scaleType, mark)};
+      return {range: defaultRange(channel, scaleType, type, mark)};
 
 
     case OPACITY:
@@ -95,17 +96,14 @@ export default function rangeMixins(
   throw new Error(`Scale range undefined for channel ${channel}`);
 }
 
-function defaultRange(channel: 'shape' | 'color', scaleType: ScaleType, mark: Mark) {
+function defaultRange(channel: 'shape' | 'color', scaleType: ScaleType, type: Type, mark: Mark) {
   switch (channel) {
     case SHAPE:
       return 'symbol';
     case COLOR:
       if (scaleType === 'ordinal') {
         // Only nominal data uses ordinal scale by default
-        return 'category';
-      }
-      if (scaleType === 'index') {
-        return 'ordinal';
+        return type === 'nominal' ? 'category' : 'ordinal';
       }
       return mark === 'rect' ? 'heatmap' : 'ramp';
   }
