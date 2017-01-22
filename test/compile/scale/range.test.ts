@@ -137,8 +137,15 @@ describe('compile/scale', () => {
     describe('color', function() {
       it('should use the specified scheme for a nominal color field.', () => {
         assert.deepEqual(
-          rangeMixins('color', 'ordinal', {scheme: 'warm'}, defaultConfig, undefined, 'point', undefined, []),
-          {scheme: 'warm'}
+          rangeMixins('color', 'ordinal', {range: {scheme: 'warm'}}, defaultConfig, undefined, 'point', undefined, []),
+          {range: {scheme: 'warm'}}
+        );
+      });
+
+      it('should use the specified range scheme string for a nominal color field.', () => {
+        assert.deepEqual(
+          rangeMixins('color', 'ordinal', {range:'warm'}, defaultConfig, undefined, 'point', undefined, []),
+          {range: {scheme: 'warm'}}
         );
       });
 
@@ -149,26 +156,31 @@ describe('compile/scale', () => {
         );
       });
 
-      // TODO: nominalColorRange, linearColorRange
+      it('should use {scheme: "category"} for a nominal color field if only extend is provided.', () => {
+        assert.deepEqual(
+          rangeMixins('color', 'ordinal', {range: {extent: [0.2, 1]}}, defaultConfig, undefined, 'point', undefined, []),
+          {range: {scheme: 'category', extent: [0.2, 1]}}
+        );
+      });
 
-      it('should use default nominalColorScheme for a nominal color field.', () => {
+      it('should use {scheme: "category"} for a nominal color field.', () => {
         assert.deepEqual(
           rangeMixins('color', 'ordinal', {}, defaultConfig, undefined, 'point', undefined, []),
-          {scheme: mark.defaultMarkConfig.nominalColorScheme}
+          {range: {scheme: 'category'}}
         );
       });
 
-      it('should use default sequentialColorScheme for an ordinal color field.', () => {
+      it('should use {scheme: "ordinal"} for an ordinal color field.', () => {
         assert.deepEqual(
           rangeMixins('color', 'index', {}, defaultConfig,  undefined, 'point', undefined, []),
-          {scheme: mark.defaultMarkConfig.sequentialColorScheme}
+          {range: {scheme: 'ordinal'}}
         );
       });
 
-      it('should use default sequentialColorScheme for a temporal/quantitative color field.', () => {
+      it('should use {scheme: "ramp"} for a temporal/quantitative color field.', () => {
         assert.deepEqual(
           rangeMixins('color', 'sequential', {}, defaultConfig, undefined, 'point', undefined, []),
-          {scheme: mark.defaultMarkConfig.sequentialColorScheme}
+          {range: {scheme: 'ramp'}}
         );
       });
     });
@@ -302,10 +314,10 @@ describe('compile/scale', () => {
     });
 
     describe('shape', function() {
-      it('should use default shapes as shape\'s scale range.', () => {
+      it('should use default symbol scheme as shape\'s scale range.', () => {
         assert.deepEqual(
           rangeMixins('shape', 'ordinal', {}, defaultConfig, undefined, 'point', undefined, []),
-          {range: mark.defaultPointConfig.shapes}
+          {range: {scheme: 'symbol'}}
         );
       });
     });

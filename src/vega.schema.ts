@@ -1,5 +1,5 @@
 import {StackOffset} from './stack';
-import {ScaleType, NiceTime} from './scale';
+import {ScaleType, RangeScheme, NiceTime} from './scale';
 import {isArray} from './util';
 
 export interface VgData {
@@ -51,7 +51,7 @@ export type VgScale = {
   domain?: any[] | UnionedDomain | VgDataRef,
   domainMin?: any,
   domainMax?: any
-  range?: any[] | VgDataRef | string,
+  range?: any[] | VgDataRef | string | RangeScheme,
   rangeMin?: any,
   rangeMax?: any,
   scheme?: string,

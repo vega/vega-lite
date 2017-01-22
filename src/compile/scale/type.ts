@@ -4,7 +4,7 @@ import {Config} from '../../config';
 import {hasScale, supportScaleType, Channel} from '../../channel';
 import {FieldDef, ScaleFieldDef} from '../../fielddef';
 import {Mark} from '../../mark';
-import {Scale, ScaleType} from '../../scale';
+import {Scale, ScaleType, isRangeScheme} from '../../scale';
 
 import * as util from '../../util';
 
@@ -100,9 +100,14 @@ function defaultType(specifiedScale: Scale, fieldDef: FieldDef, channel: Channel
  * - range = linear
  */
 function continuousColorScaleType(specifiedScale: Scale, rangeScaleType: 'linear' | 'time'): ScaleType {
-  if (specifiedScale.scheme) {
+  let range = specifiedScale.range;
+  if (util.isString(range)) {
+    range = {scheme: range};
+  }
+
+  if (isRangeScheme(range)) {
     return ScaleType.SEQUENTIAL;
-  } else if (specifiedScale.range) {
+  } else if (range) {
     return rangeScaleType;
   }
   // TODO: make default type also depend on config

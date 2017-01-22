@@ -3,12 +3,12 @@ import * as log from '../../log';
 import {COLUMN, ROW, X, Y, SHAPE, SIZE, COLOR, OPACITY, Channel} from '../../channel';
 import {Config} from '../../config';
 import {Mark} from '../../mark';
-import {Scale, ScaleConfig, ScaleType, scaleTypeSupportProperty} from '../../scale';
+import {Scale, ScaleConfig, ScaleType, Range, isRangeScheme, scaleTypeSupportProperty, scaleTypeSupportScheme} from '../../scale';
 import * as util from '../../util';
 
 import {channelScalePropertyIncompatability} from './scale';
 
-export type RangeMixins = {range: string | Array<number|string|{data: string, field:string}>} | {rangeStep: number} | {scheme: string};
+export type RangeMixins = {range: Range | string} | {rangeStep: number};
 
 /**
  * Return mixins that includes one of the range properties (range, rangeStep, scheme).
@@ -21,8 +21,8 @@ export default function rangeMixins(
 
   // Check if any of the range properties is specified.
   // If so, check if it is compatible and make sure that we only output one of the properties
-  for (let property of ['range', 'rangeStep', 'scheme']) {
-    const specifiedValue = specifiedScale[property];
+  for (let property of ['range', 'rangeStep']) {
+    let specifiedValue = specifiedScale[property];
     if (specifiedValue !== undefined) {
       let supportedByScaleType = scaleTypeSupportProperty(scaleType, property);
       const channelIncompatability = channelScalePropertyIncompatability(channel, property);
@@ -33,9 +33,27 @@ export default function rangeMixins(
       } else {
         switch (property) {
           case 'range':
-            return {range: specifiedValue};
-          case 'scheme':
-            return {scheme: specifiedValue};
+            if (util.isString(specifiedValue)) {
+              specifiedValue = {scheme: specifiedValue};
+            }
+
+            if (isRangeScheme(specifiedValue)) {
+              if (!scaleTypeSupportScheme(scaleType)) {
+                log.warn(log.message.scalePropertyNotWorkWithScaleType(scaleType, 'range.scheme', channel));
+              } else {
+                return {
+                  // Augment specified range scheme with scheme
+                  // (just in case users only want to override extent / count)
+                  range: util.extend({
+                    scheme: defaultScheme(channel, scaleType)
+                  }, specifiedValue)
+                };
+              }
+            } else {
+              return {range: specifiedValue};
+            }
+
+            break;
           case 'rangeStep':
             if (topLevelSize === undefined) {
               if (specifiedValue !== null) {
@@ -84,17 +102,9 @@ export default function rangeMixins(
       const rangeMax = sizeRangeMax(mark, xyRangeSteps, config);
       return {range: [rangeMin, rangeMax]};
     case SHAPE:
-      return {range: config.point.shapes};
     case COLOR:
-      if (scaleType === 'ordinal') {
-        // Only nominal data uses ordinal scale by default
-        return {scheme: config.mark.nominalColorScheme};
-      }
-      // TODO(#1737): support sequentialColorRange (with linear scale) if sequentialColorScheme is not specified.
-      // TODO: support custom rangeMin, rangeMax
-      // else -- ordinal, time, or quantitative
-      // TODO: support linearColorRange
-      return {scheme: config.mark.sequentialColorScheme};
+      return {range: {scheme: defaultScheme(channel, scaleType)}};
+
 
     case OPACITY:
       // TODO: support custom rangeMin, rangeMax
@@ -102,6 +112,23 @@ export default function rangeMixins(
   }
   /* istanbul ignore next: should never reach here */
   throw new Error(`Scale range undefined for channel ${channel}`);
+}
+
+function defaultScheme(channel: Channel, scaleType: ScaleType) {
+  switch (channel) {
+    case SHAPE:
+      return 'symbol';
+    case COLOR:
+      if (scaleType === 'ordinal') {
+        // Only nominal data uses ordinal scale by default
+        return 'category';
+      } else if (scaleType === 'index') {
+        return 'ordinal';
+      }
+      return 'ramp';
+  }
+  log.warn('No default scheme for channel ' + channel + '.');
+  return undefined;
 }
 
 function sizeRangeMin(mark: Mark, zero: boolean, config: Config) {
