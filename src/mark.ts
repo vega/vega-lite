@@ -276,13 +276,13 @@ export interface PointConfig extends SymbolConfig {
   /**
    * The default symbol shape to use. One of: `"circle"` (default), `"square"`, `"cross"`, `"diamond"`, `"triangle-up"`, or `"triangle-down"`, or a custom SVG path.
    */
-  shape?: Shape | string;
+  shape?: string;
 
   /**
    * The default collection of symbol shapes for mapping nominal fields to shapes of point marks (i.e., range of a `shape` scale).
    * Each value should be one of: `"circle"`, `"square"`, `"cross"`, `"diamond"`, `"triangle-up"`, or `"triangle-down"`, or a custom SVG path.
    */
-  shapes?: (Shape|string)[];
+  shapes?: string[];
 }
 
 export const defaultSymbolConfig: PointConfig = {
