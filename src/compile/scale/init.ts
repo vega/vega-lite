@@ -66,7 +66,7 @@ export default function init(
   return util.extend(
     scale,
     rangeMixins(
-      channel, scale.type, specifiedScale, config,
+      channel, scale.type, fieldDef.type, specifiedScale, config,
       scale.zero, mark, topLevelSize, xyRangeSteps
     )
   );

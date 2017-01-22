@@ -67,10 +67,10 @@ describe('compile/scale', () => {
           );
         });
 
-        it('should return index scale for ordinal data.', () => {
+        it('should return ordinal scale for ordinal data.', () => {
           assert.equal(
-            scaleType({field: 'a', type: ORDINAL}, 'color', 'point', undefined,     defaultConfig),
-            ScaleType.INDEX
+            scaleType({field: 'a', type: ORDINAL}, 'color', 'point', undefined, defaultConfig),
+            ScaleType.ORDINAL_LOOKUP
           );
         });
       });
