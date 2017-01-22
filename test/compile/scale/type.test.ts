@@ -305,6 +305,16 @@ describe('compile/scale', () => {
         );
       });
 
+      it('should return sequential scale for quantitative color field if a short form of range scheme is provided.', () => {
+        assert.equal(
+          scaleType(
+            {field: 'a', type: QUANTITATIVE, scale: {range: 'viridis'}},
+            'color', 'point', undefined, defaultConfig
+          ),
+          ScaleType.SEQUENTIAL
+        );
+      });
+
       it('should return linear scale for quantitative color field if range is provided.', () => {
         assert.equal(
           scaleType(

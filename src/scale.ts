@@ -171,7 +171,7 @@ export interface RangeScheme {
   count?: number;
 }
 
-export type Range = number[] | string[] | RangeScheme;
+export type Range = number[] | string[] | RangeScheme | string;
 
 export function isRangeScheme(range: Range): range is RangeScheme {
   return range && (!!range['scheme'] || !!range['extent'] || !!range['count']);
@@ -184,6 +184,7 @@ export interface Scale {
    */
   domain?: number[] | string[] | DateTime[];
 
+  // FIXME missing description for scheme.
   /**
    * The range of the scale, representing the set of visual values. For numeric values, the range can take the form of a two-element array with minimum and maximum values. For ordinal or quantized data, the range may by an array of desired output values, which are mapped to elements in the specified domain.
    */

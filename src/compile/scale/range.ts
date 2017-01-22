@@ -22,7 +22,7 @@ export default function rangeMixins(
   // Check if any of the range properties is specified.
   // If so, check if it is compatible and make sure that we only output one of the properties
   for (let property of ['range', 'rangeStep']) {
-    const specifiedValue = specifiedScale[property];
+    let specifiedValue = specifiedScale[property];
     if (specifiedValue !== undefined) {
       let supportedByScaleType = scaleTypeSupportProperty(scaleType, property);
       const channelIncompatability = channelScalePropertyIncompatability(channel, property);
@@ -33,6 +33,10 @@ export default function rangeMixins(
       } else {
         switch (property) {
           case 'range':
+            if (util.isString(specifiedValue)) {
+              specifiedValue = {scheme: specifiedValue};
+            }
+
             if (isRangeScheme(specifiedValue)) {
               if (!scaleTypeSupportScheme(scaleType)) {
                 log.warn(log.message.scalePropertyNotWorkWithScaleType(scaleType, 'range.scheme', channel));

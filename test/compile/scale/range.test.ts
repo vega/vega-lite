@@ -142,6 +142,13 @@ describe('compile/scale', () => {
         );
       });
 
+      it('should use the specified range scheme string for a nominal color field.', () => {
+        assert.deepEqual(
+          rangeMixins('color', 'ordinal', {range:'warm'}, defaultConfig, undefined, 'point', undefined, []),
+          {range: {scheme: 'warm'}}
+        );
+      });
+
       it('should use the specified range for a nominal color field.', () => {
         assert.deepEqual(
           rangeMixins('color', 'ordinal', {range: ['red', 'green', 'blue']}, defaultConfig, undefined, 'point', undefined, []),
