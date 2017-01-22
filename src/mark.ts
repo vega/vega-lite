@@ -45,7 +45,6 @@ export type Interpolate = 'linear' | 'linear-closed' |
   'basis' | 'basis-open' | 'basis-closed' |
   'cardinal' | 'cardinal-open' | 'cardinal-closed' |
   'bundle' | 'monotone';
-export type Shape = 'circle' | 'square' | 'cross' | 'diamond' | 'triangle-up' | 'triangle-down';
 export type Orient = 'horizontal' | 'vertical';
 export type VerticalAlign = 'top' | 'middle' | 'bottom';
 
