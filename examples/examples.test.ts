@@ -33,7 +33,6 @@ function validateVega(spec: vl.spec.ExtendedSpec) {
   const valid = validateVg(vegaSpec);
   const errors = validateVg.errors;
   if (!valid) {
-    console.log(vegaSpec.marks[0].marks[0].properties);
     console.log(inspect(errors, { depth: 10, colors: true }));
   }
   assert(valid, errors && errors.map((err: Ajv.ErrorObject) => {return err.message; }).join(', '));
