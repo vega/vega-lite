@@ -158,6 +158,8 @@ export const defaultScaleConfig = {
   useRawDomain: false,
 };
 
+export type VgDefaultRange = 'ordinal' | 'category' | 'ramp' | 'heatmap' | 'diverging';
+
 export interface RangeScheme {
   /**
    * Color scheme that determines output color of an ordinal/sequential color scale.
@@ -171,10 +173,10 @@ export interface RangeScheme {
   count?: number;
 }
 
-export type Range = number[] | string[] | RangeScheme;
+export type Range = number[] | string[] | RangeScheme | VgDefaultRange;
 
 export function isRangeScheme(range: Range): range is RangeScheme {
-  return range && 'scheme' in range;
+  return range && !!range['scheme'];
 }
 
 export interface Scale {

@@ -154,21 +154,21 @@ describe('compile/scale', () => {
       it('should use default nominalColorScheme for a nominal color field.', () => {
         assert.deepEqual(
           rangeMixins('color', 'ordinal', {}, defaultConfig, undefined, 'point', undefined, []),
-          {scheme: mark.defaultMarkConfig.nominalColorScheme}
+          {range: 'category'}
         );
       });
 
       it('should use default sequentialColorScheme for an ordinal color field.', () => {
         assert.deepEqual(
           rangeMixins('color', 'index', {}, defaultConfig,  undefined, 'point', undefined, []),
-          {scheme: mark.defaultMarkConfig.sequentialColorScheme}
+          {range: 'ordinal'}
         );
       });
 
       it('should use default sequentialColorScheme for a temporal/quantitative color field.', () => {
         assert.deepEqual(
           rangeMixins('color', 'sequential', {}, defaultConfig, undefined, 'point', undefined, []),
-          {scheme: mark.defaultMarkConfig.sequentialColorScheme}
+          {range: 'ramp'}
         );
       });
     });
@@ -305,7 +305,7 @@ describe('compile/scale', () => {
       it('should use default shapes as shape\'s scale range.', () => {
         assert.deepEqual(
           rangeMixins('shape', 'ordinal', {}, defaultConfig, undefined, 'point', undefined, []),
-          {range: mark.defaultPointConfig.shapes}
+          {range: 'symbol'}
         );
       });
     });

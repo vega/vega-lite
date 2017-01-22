@@ -65,12 +65,6 @@ export interface MarkConfig {
    */
   color?: string;
 
-  /** Default color scheme for nominal (categorical) data */
-  nominalColorScheme?: string;
-
-  /** Default color scheme for ordinal, quantitative and temporal field */
-  sequentialColorScheme?: string;
-
   /**
    * Default Fill Color.  This has higher precedence than config.color
    */
@@ -188,8 +182,6 @@ export interface MarkConfig {
 
 export const defaultMarkConfig: MarkConfig = {
   color: '#4682b4',
-  nominalColorScheme: 'category10',
-  sequentialColorScheme: 'Greens',
 
   minOpacity: 0.3,
   maxOpacity: 0.8,

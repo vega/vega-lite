@@ -40,7 +40,7 @@ describe('src/compile', function() {
           field: 'origin',
           sort: true
         });
-        assert.deepEqual(scales.main.scheme, 'category10');
+        assert.deepEqual(scales.main.range, 'category');
         assert.deepEqual(scales.main.rangeStep, undefined);
       });
     });
