@@ -223,9 +223,9 @@ after@0.8.1:
   version "0.8.1"
   resolved "https://registry.yarnpkg.com/after/-/after-0.8.1.tgz#ab5d4fb883f596816d3515f8f791c0af486dd627"
 
-ajv@^5.0.0-beta.1:
-  version "5.0.0-beta.1"
-  resolved "https://registry.yarnpkg.com/ajv/-/ajv-5.0.0-beta.1.tgz#ca45fe972aa0b86ffb5af555961594e0d4ae05e8"
+ajv@5.0.1-beta.1:
+  version "5.0.1-beta.1"
+  resolved "https://registry.yarnpkg.com/ajv/-/ajv-5.0.1-beta.1.tgz#1833fdf34b88642c737ab3ce2d75367897afbbde"
   dependencies:
     co "^4.6.0"
     json-stable-stringify "^1.0.1"
