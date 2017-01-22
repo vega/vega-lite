@@ -155,13 +155,11 @@ export const defaultScaleConfig = {
   useRawDomain: false,
 };
 
-export type VgDefaultRange = 'ordinal' | 'category' | 'ramp' | 'heatmap' | 'diverging';
-
-export interface RangeScheme {
+export interface ExtendedScheme {
   /**
    * Color scheme that determines output color of an ordinal/sequential color scale.
    */
-  scheme: string;
+  name: string;
 
   // TODO: add docs
   extent?: number[];
@@ -170,10 +168,11 @@ export interface RangeScheme {
   count?: number;
 }
 
-export type Range = number[] | string[] | RangeScheme | VgDefaultRange;
+export type Scheme = string | ExtendedScheme;
+export type Range = number[] | string[] | string;
 
-export function isRangeScheme(range: Range): range is RangeScheme {
-  return range && !!range['scheme'];
+export function isExtendedScheme(scheme: string | ExtendedScheme): scheme is ExtendedScheme {
+  return scheme && !!scheme['name'];
 }
 
 export interface Scale {
@@ -186,7 +185,7 @@ export interface Scale {
   /**
    * The range of the scale, representing the set of visual values. For numeric values, the range can take the form of a two-element array with minimum and maximum values. For ordinal or quantized data, the range may by an array of desired output values, which are mapped to elements in the specified domain.
    */
-  range?: Range; // TODO: declare vgRangeDomain
+  range?: Range;
 
   /**
    * If true, rounds numeric output values to integers. This can be helpful for snapping to the pixel grid.
@@ -207,6 +206,11 @@ export interface Scale {
    * @nullable
    */
   rangeStep?: number | null;
+
+  /**
+   * Range scheme (e.g., color schemes such as "category10" or "viridis").
+   */
+  scheme?: Scheme;
 
   /**
    * (For `row` and `column` only) A pixel value for padding between cells in the trellis plots.
@@ -265,7 +269,7 @@ export interface Scale {
 }
 
 export const SCALE_PROPERTIES = [
-  'type', 'domain', 'range', 'round', 'rangeStep', 'padding', 'clamp', 'nice',
+  'type', 'domain', 'range', 'round', 'rangeStep', 'scheme', 'padding', 'clamp', 'nice',
   'exponent', 'zero',
   // TODO: add interpolate here
   // FIXME: determine if 'useRawDomain' should really be included here
@@ -277,6 +281,7 @@ export function scaleTypeSupportProperty(scaleType: ScaleType, propName: string)
     case 'type':
     case 'domain':
     case 'range':
+    case 'scheme':
       return true;
     case 'round':
       return isContinuousToContinuous(scaleType) || scaleType === 'band' || scaleType === 'point';

@@ -51,6 +51,11 @@ export function channelScalePropertyIncompatability(channel: Channel, propName: 
         return log.message.CANNOT_USE_PADDING_WITH_FACET;
       }
       return undefined; // GOOD!
+    case 'scheme':
+      if (channel !== 'color') {
+        return log.message.CANNOT_USE_SCHEME_WITH_NON_COLOR;
+      }
+      return undefined;
     case 'type':
     case 'domain':
     case 'round':

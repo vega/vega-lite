@@ -209,7 +209,7 @@ describe('compile/scale', () => {
       it('should return sequential scale for temporal color field if scheme is provided.', () => {
         assert.equal(
           scaleType(
-            {field: 'a', type: TEMPORAL, scale: {range: {scheme: 'viridis'}}},
+            {field: 'a', type: TEMPORAL, scale: {scheme: 'viridis'}},
             'color', 'point', undefined, defaultConfig
           ),
           ScaleType.SEQUENTIAL
@@ -298,7 +298,7 @@ describe('compile/scale', () => {
       it('should return sequential scale for quantitative color field if scheme is provided.', () => {
         assert.equal(
           scaleType(
-            {field: 'a', type: QUANTITATIVE, scale: {range: {scheme: 'viridis'}}},
+            {field: 'a', type: QUANTITATIVE, scale: {scheme: 'viridis'}},
             'color', 'point', undefined, defaultConfig
           ),
           ScaleType.SEQUENTIAL

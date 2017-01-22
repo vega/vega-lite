@@ -45,13 +45,17 @@ export type UnionedDomain = {
   fields: VgDataRef[]
 };
 
+export type VgRangeScheme = {scheme: string, extent?: number[], count?: number};
+
+export type VgRange = string | VgDataRef | (number|string|VgDataRef)[] | VgRangeScheme;
+
 export type VgScale = {
   name: string,
   type: ScaleType,
   domain?: any[] | UnionedDomain | VgDataRef,
   domainMin?: any,
   domainMax?: any
-  range?: any[] | VgDataRef | string,
+  range?: VgRange,
   rangeMin?: any,
   rangeMax?: any,
   scheme?: string,
