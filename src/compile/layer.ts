@@ -17,6 +17,33 @@ import {applyConfig, buildModel} from './common';
 
 import {ScaleComponents} from './scale/scale';
 
+/**
+ * Convert the domain to an array of data refs. Also, throw away sorting information
+ * since we always sort the domain when we union two domains.
+ */
+function normalizeDomain(domain: DataRefUnionDomain | FieldRefUnionDomain | VgDataRef): VgDataRef[] {
+  if (isDataRefDomain(domain)) {
+    delete domain.sort;
+    return [domain];
+  } else if(isFieldRefUnionDomain(domain)) {
+    return domain.fields.map(d => {
+      return {
+        data: domain.data,
+        field: d
+      };
+    });
+  } else if (isDataRefUnionedDomain(domain)) {
+    return domain.fields.map(d => {
+      return {
+        field: d.field,
+        data: d.data
+      };
+    });
+  }
+
+  throw 'Should not get here.';
+}
+
 export class LayerModel extends Model {
   private _children: UnitModel[];
 
@@ -107,33 +134,6 @@ export class LayerModel extends Model {
     this.component.layout = parseLayerLayout(this);
   }
 
-  /**
-   * Convert the domain to an array of data refs. Also, thorw away sorting information
-   * since we always sort the domain when we union two domains.
-   */
-  private static normalizeDomain(domain: DataRefUnionDomain | FieldRefUnionDomain | VgDataRef): VgDataRef[] {
-    if (isDataRefDomain(domain)) {
-      delete domain.sort;
-      return [domain];
-    } else if(isFieldRefUnionDomain(domain)) {
-      return domain.fields.map(d => {
-        return {
-          data: domain.data,
-          field: d
-        };
-      });
-    } else if (isDataRefUnionedDomain(domain)) {
-      return domain.fields.map(d => {
-        return {
-          field: d.field,
-          data: d.data
-        };
-      });
-    }
-
-    throw 'Should not get here.';
-  }
-
   public parseScale(this: LayerModel) {
     const model = this;
 
@@ -142,7 +142,7 @@ export class LayerModel extends Model {
     this._children.forEach(function(child) {
       child.parseScale();
 
-      // FIXME(#1602):correctly implement independent scale
+      // FIXME(#1602): correctly implement independent scale
       // Also need to check whether the scales are actually compatible, e.g. use the same sort or throw error
       if (true) { // if shared/union scale
         keys(child.component.scale).forEach(function(channel) {
@@ -169,8 +169,8 @@ export class LayerModel extends Model {
             } else if (isArray(childScaleDomain)) {
               log.warn(log.message.CANNOT_UNION_CUSTOM_DOMAIN_WITH_FIELD_DOMAIN);
             } else {
-              const modelDomain = LayerModel.normalizeDomain(modelScaleDomain);
-              const childDomain = LayerModel.normalizeDomain(childScaleDomain);
+              const modelDomain = normalizeDomain(modelScaleDomain);
+              const childDomain = normalizeDomain(childScaleDomain);
 
               let fields = modelDomain.concat(childDomain);
               fields = unique(fields, hash);
