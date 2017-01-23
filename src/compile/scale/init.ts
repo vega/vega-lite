@@ -11,12 +11,19 @@ import * as rules from './rules';
 import scaleType from './type';
 import * as util from '../../util';
 
+/**
+ * Initialize Vega-Lite Scale's properties
+ *
+ * Note that we have to apply these rules here because:
+ * - many other scale and non-scale properties (including layout, mark) depend on scale type
+ * - layout depends on padding
+ * - range depends on zero and size (width and height) depends on range
+ */
 export default function init(
     channel: Channel, fieldDef: ScaleFieldDef, config: Config,
     mark: Mark | undefined, topLevelSize: number | undefined, xyRangeSteps: number[]): Scale {
   let specifiedScale = (fieldDef || {}).scale || {};
 
-  // TODO: revise if type here should be Scale
   let scale: Scale = {
     type: scaleType(fieldDef, channel, mark, topLevelSize, config)
   };
@@ -33,7 +40,6 @@ export default function init(
     // ordinal
     'padding', 'paddingInner', 'paddingOuter', // padding
 
-    // FIXME: useRawDomain should not be included here as it is not really a Vega scale property
     'useRawDomain'
   ].forEach(function(property) {
     const specifiedValue = specifiedScale[property];

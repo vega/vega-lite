@@ -17,7 +17,7 @@ describe('src/compile', function() {
         });
         const scales = parseScale(model, 'x');
         assert.equal(scales.main.type, 'point');
-        assert.equal(scales.main.rangeStep, 21);
+        assert.equal(scales.main.range['step'], 21);
         assert.equal(scales.main.range, undefined);
       });
     });
@@ -41,7 +41,7 @@ describe('src/compile', function() {
           sort: true
         });
         assert.deepEqual(scales.main.range, 'category');
-        assert.deepEqual(scales.main.rangeStep, undefined);
+        assert.deepEqual(scales.main.range['step'], undefined);
       });
     });
 
