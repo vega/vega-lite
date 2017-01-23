@@ -78,7 +78,7 @@ describe('compile/axis', () => {
   });
 
   describe('encode.labels()', function () {
-    it('should show labels by default', function () {
+    it('should show truncated labels by default', function () {
       const labels = encode.labels(parseUnitModel({
           mark: "point",
           encoding: {
@@ -86,16 +86,6 @@ describe('compile/axis', () => {
           }
         }), 'x', {}, {orient: 'top'});
       assert.deepEqual(labels.text.signal, 'truncate(datum.value, 25)');
-    });
-
-    it('should hide labels if labels are set to false', function () {
-      const labels = encode.labels(parseUnitModel({
-          mark: "point",
-          encoding: {
-            x: {field: 'a', type: "ordinal", axis: {label: false}}
-          }
-        }), 'x', {}, null);
-      assert.deepEqual(labels.text, '');
     });
 
     it('should rotate labels if labelAngle is defined', function() {
