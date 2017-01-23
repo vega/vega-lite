@@ -43,6 +43,9 @@ export function compile(inputSpec: ExtendedSpec, logger?: log.LoggerInterface) {
 function assemble(model: Model) {
   // TODO: change type to become VgSpec
   const output = extend(
+    {
+      $schema: 'http://vega.github.io/schema/vega/v3.0.json',
+    },
     topLevelBasicProperties(model),
     {
       // Map calculated layout width and height to width and height signals.
@@ -56,8 +59,7 @@ function assemble(model: Model) {
           update: "data('layout')[0].height"
         }
       ] // TODO: concat.(model.assembleTopLevelSignals())
-    },
-    {
+    },{
       data: [].concat(
         model.assembleData([]),
         model.assembleLayout([])
