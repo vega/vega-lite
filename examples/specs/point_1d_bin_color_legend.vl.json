@@ -1,0 +1,9 @@
+{
+  "description": "Demonstrate color legend with binned data.",
+  "data": {"url": "data/cars.json"},
+  "mark": "point",
+  "encoding": {
+    "x": {"field": "Acceleration", "type": "quantitative"},
+    "color": {"bin": true, "field": "Acceleration", "type": "quantitative"}
+  }
+}

@@ -193,7 +193,6 @@ export class LayerModel extends Model {
               }
             }
 
-            modelScales.binLegend = modelScales.binLegend ? modelScales.binLegend : childScales.binLegend;
             modelScales.binLegendLabel = modelScales.binLegendLabel ? modelScales.binLegendLabel : childScales.binLegendLabel;
           } else {
             scaleComponent[channel] = childScales;

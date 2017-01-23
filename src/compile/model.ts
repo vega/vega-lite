@@ -16,7 +16,7 @@ import {VgData, VgEncodeEntry, VgScale, VgAxis, VgLegend} from '../vega.schema';
 
 import {DataComponent} from './data/data';
 import {LayoutComponent} from './layout';
-import {ScaleComponents, BIN_LEGEND_SUFFIX, BIN_LEGEND_LABEL_SUFFIX} from './scale/scale';
+import {ScaleComponents, BIN_LEGEND_LABEL_SUFFIX} from './scale/scale';
 import {StackProperties} from '../stack';
 
 /* tslint:disable:no-unused-variable */
@@ -186,9 +186,6 @@ export abstract class Model {
     // help assemble scale domains with scale signature as well
     return flatten(vals(this.component.scale).map((scales: ScaleComponents) => {
       let arr = [scales.main];
-      if (scales.binLegend) {
-        arr.push(scales.binLegend);
-      }
       if (scales.binLegendLabel) {
         arr.push(scales.binLegendLabel);
       }
@@ -362,7 +359,7 @@ export abstract class Model {
    * (DO NOT USE THIS METHOD DURING SCALE PARSING, use model.name() instead)
    */
   public scaleName(originalScaleName: Channel|string, parse?: boolean): string {
-    const channel = originalScaleName.replace(BIN_LEGEND_SUFFIX, '').replace(BIN_LEGEND_LABEL_SUFFIX, '');
+    const channel = originalScaleName.replace(BIN_LEGEND_LABEL_SUFFIX, '');
 
     if (parse) {
       // During the parse phase always return a value

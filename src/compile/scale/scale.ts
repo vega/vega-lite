@@ -4,9 +4,6 @@ import {Channel} from '../../channel';
 import * as log from '../../log';
 
 
-
-/** Scale suffix for scale used to get drive binned legends. */
-export const BIN_LEGEND_SUFFIX = '_bin_legend';
 /** Scale suffix for scale for binned field's legend labels, which maps a binned field's quantitative values to range strings. */
 export const BIN_LEGEND_LABEL_SUFFIX = '_bin_legend_label';
 
@@ -18,7 +15,6 @@ export type ScaleComponent = VgScale;
 
 export type ScaleComponents = {
   main: ScaleComponent;
-  binLegend?: ScaleComponent;
   binLegendLabel?: ScaleComponent;
 }
 
