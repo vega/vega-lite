@@ -24,8 +24,7 @@ export default function rangeMixins(
   // Check if any of the range properties is specified.
   // If so, check if it is compatible and make sure that we only output one of the properties
   for (let property of ['range', 'rangeStep', 'scheme']) {
-    const specifiedValue = specifiedScale[property];
-    if (specifiedValue !== undefined) {
+    if (specifiedScale[property] !== undefined) {
       let supportedByScaleType = scaleTypeSupportProperty(scaleType, property);
       const channelIncompatability = channelScalePropertyIncompatability(channel, property);
       if (!supportedByScaleType) {
@@ -35,23 +34,25 @@ export default function rangeMixins(
       } else {
         switch (property) {
           case 'range':
-            return {range: specifiedValue};
+            return {range: specifiedScale[property]};
           case 'scheme':
-            if (isExtendedScheme(specifiedValue)) {
-              let r: VgRangeScheme = {scheme: specifiedValue.name};
-              if (specifiedValue.count) {
-                r.count = specifiedValue.count;
+            const scheme = specifiedScale[property];
+            if (isExtendedScheme(scheme)) {
+              let r: VgRangeScheme = {scheme: scheme.name};
+              if (scheme.count) {
+                r.count = scheme.count;
               }
-              if (specifiedValue.extent) {
-                r.extent = specifiedValue.extent;
+              if (scheme.extent) {
+                r.extent = scheme.extent;
               }
               return {range: r};
             }
-            return {range: {scheme: specifiedValue}};
+            return {range: {scheme: scheme}};
           case 'rangeStep':
             if (topLevelSize === undefined) {
-              if (specifiedValue !== null) {
-                return {rangeStep: specifiedValue};
+              const stepSize = specifiedScale[property];
+              if (stepSize !== null) {
+                return {rangeStep: stepSize};
               } else {
                 specifiedRangeStepIsNull = true;
               }
