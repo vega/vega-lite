@@ -68,19 +68,15 @@ export type VgDomain = any[] | DataRefUnionDomain | FieldRefUnionDomain | VgData
 export type VgScale = {
   name: string,
   type: ScaleType,
-  domain?: VgDomain,
-  domainMin?: any,
-  domainMax?: any
-  range?: VgRange,
-  rangeMin?: any,
-  rangeMax?: any,
-  scheme?: string,
+  domain: VgDomain,
+  range: VgRange,
 
   clamp?: boolean,
   exponent?: number,
   nice?: boolean | NiceTime,
   padding?: number,
-  points?: boolean,
+  paddingInner?: number,
+  paddingOuter?: number,
   reverse?: boolean,
   round?: boolean,
   zero?: boolean
