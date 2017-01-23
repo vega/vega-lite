@@ -23,6 +23,7 @@ examples/all-examples.json
 src/**/*.d.ts
 test/**/*.d.ts
 site/**/*.d.ts
+test-gallery/*.d.ts
 examples/**/*.d.ts
 .jekyll-metadata
 .nyc_output/*

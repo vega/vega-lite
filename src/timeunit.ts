@@ -1,5 +1,4 @@
 import {DateTimeExpr, dateTimeExpr} from './datetime';
-import {ScaleType} from './scale';
 import {Dict, keys} from './util';
 import * as log from './log';
 
@@ -53,7 +52,7 @@ export const SINGLE_TIMEUNITS = [
 const SINGLE_TIMEUNIT_INDEX: Dict<boolean> = SINGLE_TIMEUNITS.reduce((d, timeUnit) => {
   d[timeUnit] = true;
   return d;
-}, {} as Dict<boolean>);
+}, {});
 
 export function isSingleTimeUnit(timeUnit: TimeUnit) {
   return !!SINGLE_TIMEUNIT_INDEX[timeUnit];
@@ -121,7 +120,7 @@ export const MULTI_TIMEUNITS = [
 const MULTI_TIMEUNIT_INDEX: Dict<boolean> = MULTI_TIMEUNITS.reduce((d, timeUnit) => {
   d[timeUnit] = true;
   return d;
-}, {} as Dict<boolean>);
+}, {});
 
 export function isMultiTimeUnit(timeUnit: TimeUnit) {
   return !!MULTI_TIMEUNIT_INDEX[timeUnit];
@@ -164,31 +163,18 @@ export function containsTimeUnit(fullTimeUnit: TimeUnit, timeUnit: TimeUnit) {
     );
 }
 
-export function defaultScaleType(timeUnit: TimeUnit): ScaleType {
-   switch (timeUnit) {
-    case TimeUnit.HOURS:
-    case TimeUnit.DAY:
-    case TimeUnit.MONTH:
-    case TimeUnit.QUARTER:
-      return ScaleType.ORDINAL;
-  }
-  // date, year, minute, second, yearmonth, monthday, ...
-  return ScaleType.TIME;
-}
-
 /**
  * Returns Vega expresssion for a given timeUnit and fieldRef
  */
 export function fieldExpr(fullTimeUnit: TimeUnit, field: string): string {
-  const fieldRef = 'datum["' + field + '"]';
+  const fieldRef =  `datum["${field}"]`;
 
   function func(timeUnit: TimeUnit) {
     if (timeUnit === TimeUnit.QUARTER) {
-      // Divide by 3 to get the corresponding quarter number, multiply by 3
-      // to scale to the first month of the corresponding quarter(0,3,6,9).
-      return 'floor(month(' + fieldRef + ')' + '/3)';
+      // quarter starting at 0 (0,3,6,9).
+      return `(quarter(${fieldRef})-1)`;
     } else {
-      return timeUnit + '(' + fieldRef + ')' ;
+      return `${timeUnit}(${fieldRef})`;
     }
   }
 
@@ -241,19 +227,19 @@ export function smallestUnit(timeUnit: TimeUnit): string {
   return undefined;
 }
 
-/** returns the template name used for axis labels for a time unit */
-export function template(timeUnit: TimeUnit, field: string, shortTimeLabels: boolean): string {
+/** returns the signal expression used for axis labels for a time unit */
+export function formatExpression(timeUnit: TimeUnit, field: string, shortTimeLabels: boolean): string {
   if (!timeUnit) {
     return undefined;
   }
 
   let dateComponents: string[] = [];
-  let template = '';
+  let expression = '';
   const hasYear = containsTimeUnit(timeUnit, TimeUnit.YEAR);
 
   if (containsTimeUnit(timeUnit, TimeUnit.QUARTER)) {
-   // special template for quarter as prefix
-    template = 'Q{{' + field + ' | quarter}}';
+   // special expression for quarter as prefix
+    expression = `'Q' + quarter(${field})`;
   }
 
   if (containsTimeUnit(timeUnit, TimeUnit.MONTH)) {
@@ -295,14 +281,13 @@ export function template(timeUnit: TimeUnit, field: string, shortTimeLabels: boo
   }
 
   if (dateTimeComponents.length > 0) {
-    if (template) {
+    if (expression) {
       // Add space between quarter and main time format
-      template += ' ';
+      expression += ` + ' ' + `;
     }
-    template += '{{' + field + ' | time:\'' + dateTimeComponents.join(' ') + '\'}}';
+    expression += `timeFormat(${field}, '${dateTimeComponents.join(' ')}')`;
   }
 
-  // If template is still an empty string, return undefined instead.
-  return template || undefined;
+  // If expression is still an empty string, return undefined instead.
+  return expression || undefined;
 }
-

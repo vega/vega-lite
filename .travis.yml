@@ -6,7 +6,7 @@ node_js:
 script:
   - npm run build
   - npm run lint
-  - npm run pretest && npm run test:only
+  - npm run test:noschema # already run schema in build
   - npm run codecov
 after_success:
   - bash <(curl -s https://codecov.io/bash)
@@ -20,3 +20,6 @@ notifications:
       - 'uwdub:Ry6mwlUX1aZevqiqmYLiA3N1'
     on_success: never
     on_failure: change
+cache:
+  directories:
+  - $HOME/.yarn-cache

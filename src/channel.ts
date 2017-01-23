@@ -4,28 +4,36 @@
  */
 
 import {Mark} from './mark';
-import {contains, without} from './util';
+import {ScaleType, SCALE_TYPES} from './scale';
+import {contains, toSet, without} from './util';
 
 export namespace Channel {
+  // Facet
+  export const ROW: 'row' = 'row';
+  export const COLUMN: 'column' = 'column';
+
+  // Position
   export const X: 'x' = 'x';
   export const Y: 'y' = 'y';
   export const X2: 'x2' = 'x2';
   export const Y2: 'y2' = 'y2';
-  export const ROW: 'row' = 'row';
-  export const COLUMN: 'column' = 'column';
+
+  // Mark property with scale
+  export const COLOR: 'color' = 'color';
   export const SHAPE: 'shape' = 'shape';
   export const SIZE: 'size' = 'size';
-  export const COLOR: 'color' = 'color';
-  export const TEXT: 'text' = 'text';
-  export const DETAIL: 'detail' = 'detail';
-  export const LABEL: 'label' = 'label';
-  export const PATH: 'path' = 'path';
-  export const ORDER: 'order' = 'order';
   export const OPACITY: 'opacity' = 'opacity';
+
+  // Non-scale channel
+  export const TEXT: 'text' = 'text';
+  export const LABEL: 'label' = 'label';
+  export const ORDER: 'order' = 'order';
+  export const DETAIL: 'detail' = 'detail';
 }
+
 export type Channel = typeof Channel.X | typeof Channel.Y | typeof Channel.X2 | typeof Channel.Y2 | typeof Channel.ROW
   | typeof Channel.COLUMN | typeof Channel.SHAPE | typeof Channel.SIZE | typeof Channel.COLOR
-  | typeof Channel.TEXT | typeof Channel.DETAIL | typeof Channel.LABEL | typeof Channel.PATH
+  | typeof Channel.TEXT | typeof Channel.DETAIL | typeof Channel.LABEL
   | typeof Channel.ORDER | typeof Channel.OPACITY;
 
 export const X = Channel.X;
@@ -40,16 +48,25 @@ export const COLOR = Channel.COLOR;
 export const TEXT = Channel.TEXT;
 export const DETAIL = Channel.DETAIL;
 export const LABEL = Channel.LABEL;
-export const PATH = Channel.PATH;
 export const ORDER = Channel.ORDER;
 export const OPACITY = Channel.OPACITY;
 
-export const CHANNELS = [X, Y, X2, Y2, ROW, COLUMN, SIZE, SHAPE, COLOR, PATH, ORDER, OPACITY, TEXT, DETAIL, LABEL];
+export const CHANNELS = [X, Y, X2, Y2, ROW, COLUMN, SIZE, SHAPE, COLOR, ORDER, OPACITY, TEXT, DETAIL, LABEL];
 
-export const UNIT_CHANNELS = without(CHANNELS, [ROW, COLUMN]);
-export const UNIT_SCALE_CHANNELS = without(UNIT_CHANNELS, [PATH, ORDER, DETAIL, TEXT, LABEL, X2, Y2]);
-export const NONSPATIAL_CHANNELS = without(UNIT_CHANNELS, [X, Y, X2, Y2]);
-export const NONSPATIAL_SCALE_CHANNELS = without(UNIT_SCALE_CHANNELS, [X, Y, X2, Y2]);
+// CHANNELS without COLUMN, ROW
+export const UNIT_CHANNELS = [X, Y, X2, Y2, SIZE, SHAPE, COLOR, ORDER, OPACITY, TEXT, DETAIL, LABEL];
+
+// UNIT_CHANNELS without X2, Y2, ORDER, DETAIL, TEXT, LABEL
+export const UNIT_SCALE_CHANNELS = [X, Y, SIZE, SHAPE, COLOR, OPACITY];
+
+// UNIT_SCALE_CHANNELS with ROW, COLUMN
+export const SCALE_CHANNELS = [X, Y, SIZE, SHAPE, COLOR, OPACITY, ROW, COLUMN];
+
+// UNIT_CHANNELS without X, Y, X2, Y2;
+export const NONSPATIAL_CHANNELS = [SIZE, SHAPE, COLOR, ORDER, OPACITY, TEXT, DETAIL, LABEL];
+
+// UNIT_SCALE_CHANNELS without X, Y;
+export const NONSPATIAL_SCALE_CHANNELS = [SIZE, SHAPE, COLOR, OPACITY];
 
 /** Channels that can serve as groupings for stacked charts. */
 export const STACK_GROUP_CHANNELS = [COLOR, DETAIL, ORDER, OPACITY, SIZE];
@@ -74,7 +91,7 @@ export interface SupportedMark {
  * @return whether the mark supports the channel
  */
 export function supportMark(channel: Channel, mark: Mark) {
-  return !!getSupportedMark(channel)[mark];
+  return mark in getSupportedMark(channel);
 }
 
 /**
@@ -88,7 +105,7 @@ export function getSupportedMark(channel: Channel): SupportedMark {
     case Y:
     case COLOR:
     case DETAIL:
-    case ORDER:
+    case ORDER:    // TODO: revise (order might not support rect, which is not stackable?)
     case OPACITY:
     case ROW:
     case COLUMN:
@@ -110,8 +127,6 @@ export function getSupportedMark(channel: Channel): SupportedMark {
       return {point: true};
     case TEXT:
       return {text: true};
-    case PATH:
-      return {line: true};
   }
   return {};
 }
@@ -133,6 +148,7 @@ export function getSupportedRole(channel: Channel): SupportedRole {
     case COLOR:
     case OPACITY:
     case LABEL:
+    case ORDER:
     case DETAIL:
       return {
         measure: true,
@@ -153,15 +169,34 @@ export function getSupportedRole(channel: Channel): SupportedRole {
         measure: true,
         dimension: false
       };
-    case PATH:
-      return {
-        measure: false,
-        dimension: true
-      };
   }
-  throw new Error('Invalid encoding channel' + channel);
+  throw new Error('Invalid encoding channel ' + channel);
 }
 
 export function hasScale(channel: Channel) {
-  return !contains([DETAIL, PATH, TEXT, LABEL, ORDER], channel);
+  return !contains([DETAIL, TEXT, LABEL, ORDER], channel);
+}
+
+// Position does not work with ordinal (lookup) scale and sequential (which is only for color)
+const POSITION_SCALE_TYPE_INDEX = toSet(without(SCALE_TYPES, ['ordinal', 'sequential'] as ScaleType[]));
+
+export function supportScaleType(channel: Channel, scaleType: ScaleType): boolean {
+  switch (channel) {
+    case 'row':
+    case 'column':
+      return scaleType === 'band'; // row / column currently supports band only
+    case 'x':
+    case 'y':
+    case 'size': // TODO: size and opacity can support ordinal with more modification
+    case 'opacity':
+      // Although it generally doesn't make sense to use band with size and opacity,
+      // it can also work since we use band: 0.5 to get midpoint.
+      return scaleType in POSITION_SCALE_TYPE_INDEX;
+    case 'color':
+      return scaleType !== 'band';    // band does not make sense with color
+    case 'shape':
+      return scaleType === 'ordinal'; // shape = lookup only
+  }
+  /* istanbul ignore next: it should never reach here */
+  return false;
 }

@@ -3,18 +3,28 @@
 import {AggregateOp} from './aggregate';
 import {Axis} from './axis';
 import {Bin} from './bin';
+import {Channel, getSupportedRole} from './channel';
 import {Config} from './config';
 import {Legend} from './legend';
+import * as log from './log';
 import {Scale} from './scale';
 import {SortField, SortOrder} from './sort';
 import {TimeUnit} from './timeunit';
-import {Type, NOMINAL, ORDINAL, QUANTITATIVE, TEMPORAL} from './type';
+import {Type, NOMINAL, ORDINAL, QUANTITATIVE, TEMPORAL, getFullName} from './type';
 import {contains} from './util';
 
 /**
- *  Interface for any kind of FieldDef;
- *  For simplicity, we do not declare multiple interfaces of FieldDef like
- *  we do for JSON schema.
+ * Definition object for a constant value of an encoding channel.
+ */
+export interface ValueDef<T> {
+  /**
+   * A constant value in visual domain.
+   */
+  value?: T;
+}
+
+/**
+ *  Definition object for a data field, its type and transformation of an encoding channel.
  */
 export interface FieldDef {
   /**
@@ -30,10 +40,6 @@ export interface FieldDef {
    */
   type?: Type;
 
-  /**
-   * A constant value in visual domain.
-   */
-  value?: number | string | boolean;
 
   // function
 
@@ -60,18 +66,18 @@ export interface FieldDef {
   title?: string;
 }
 
-export interface ChannelDefWithScale extends FieldDef {
+export interface ScaleFieldDef extends FieldDef {
   scale?: Scale;
   sort?: SortField | SortOrder;
 }
 
-export interface PositionChannelDef extends ChannelDefWithScale {
+export interface PositionFieldDef extends ScaleFieldDef {
   /**
    * @nullable
    */
   axis?: Axis;
 }
-export interface ChannelDefWithLegend extends ChannelDefWithScale {
+export interface LegendFieldDef extends ScaleFieldDef {
    /**
     * @nullable
     */
@@ -82,12 +88,22 @@ export interface ChannelDefWithLegend extends ChannelDefWithScale {
 
 // Order Path have no scale
 
-export interface OrderChannelDef extends FieldDef {
+export interface OrderFieldDef extends FieldDef {
   sort?: SortOrder;
 }
 
+export type ChannelDef = FieldDef | ValueDef<any>;
+
+export function isFieldDef(channelDef: ChannelDef): channelDef is FieldDef | PositionFieldDef | LegendFieldDef | OrderFieldDef  {
+  return channelDef && !!channelDef['field'];
+}
+
+export function isValueDef(channelDef: ChannelDef): channelDef is ValueDef<any> {
+  return channelDef && 'value' in channelDef && channelDef['value'] !== undefined;
+}
+
 // TODO: consider if we want to distinguish ordinalOnlyScale from scale
-export type FacetChannelDef = PositionChannelDef;
+export type FacetFieldDef = PositionFieldDef;
 
 export interface FieldRefOption {
   /** exclude bin, aggregate, timeUnit */
@@ -99,7 +115,7 @@ export interface FieldRefOption {
   /** prepend fn with custom function prefix */
   prefix?: string;
   /** append suffix to the field ref for bin (default='start') */
-  binSuffix?: 'start' | 'end' | 'mid' | 'range';
+  binSuffix?: 'start' | 'end' | 'range';
   /** append suffix to the field ref (general) */
   suffix?: string;
 }
@@ -110,7 +126,7 @@ export function field(fieldDef: FieldDef, opt: FieldRefOption = {}) {
   let suffix = opt.suffix;
 
   if (isCount(fieldDef)) {
-    field = 'count';
+    field = 'count_*';
   } else {
     let fn: string = undefined;
 
@@ -157,11 +173,11 @@ function _isFieldDimension(fieldDef: FieldDef) {
 }
 
 export function isDimension(fieldDef: FieldDef) {
-  return fieldDef && fieldDef.field && _isFieldDimension(fieldDef);
+  return fieldDef && isFieldDef(fieldDef) && _isFieldDimension(fieldDef);
 }
 
 export function isMeasure(fieldDef: FieldDef) {
-  return fieldDef && fieldDef.field && !_isFieldDimension(fieldDef);
+  return fieldDef && isFieldDef(fieldDef) && !_isFieldDimension(fieldDef);
 }
 
 export function count(): FieldDef {
@@ -185,4 +201,35 @@ export function title(fieldDef: FieldDef, config: Config) {
   } else {
     return fieldDef.field;
   }
+}
+
+export function defaultType(fieldDef: FieldDef, channel: Channel): Type {
+  if (!!fieldDef.timeUnit) {
+    return 'temporal';
+  }
+  if (!!fieldDef.bin) {
+    return 'quantitative';
+  }
+  const canBeMeasure = getSupportedRole(channel).measure;
+  return canBeMeasure ? 'quantitative' : 'nominal';
+}
+
+/**
+ * Convert type to full, lowercase type, or augment the fieldDef with a default type if missing.
+ */
+export function normalize(fieldDef: FieldDef, channel: Channel) {
+  // If a fieldDef contains a field, we need type.
+  if (fieldDef.field) { // TODO: or datum
+    // convert short type to full type
+    const fullType = getFullName(fieldDef.type);
+    if (fullType) {
+      fieldDef.type = fullType;
+    } else {
+      // If type is empty / invalid, then augment with default type
+      const newType = defaultType(fieldDef, channel);
+      log.warn(log.message.emptyOrInvalidFieldType(fieldDef.type, channel, newType));
+      fieldDef.type = newType;
+    }
+  }
+  return fieldDef;
 }

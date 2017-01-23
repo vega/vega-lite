@@ -12,6 +12,7 @@ import {DateTime, DateTimeExpr} from './datetime';
 import {FieldDef} from './fielddef';
 import {Mark} from './mark';
 import {TimeUnit} from './timeunit';
+import {Type} from './type';
 import {ScaleType} from './scale';
 
 export {LoggerInterface} from 'vega-util';
@@ -102,6 +103,14 @@ export namespace message {
   export const DEPRECATED_FILTER_NULL = 'filterNull is deprecated. Please use filterInvalid instead.';
 
   // ENCODING & FACET
+  export function invalidFieldType(type: Type) {
+    return `Invalid field type "${type}"`;
+  }
+
+  export function emptyOrInvalidFieldType(type: Type | string, channel: Channel, newType: Type) {
+    return `Invalid field type (${type}) for channel ${channel}, using ${newType} instead.`;
+  }
+
   export function emptyFieldDef(fieldDef: FieldDef, channel: Channel) {
     return `Dropping ${JSON.stringify(fieldDef)} from channel ${channel} since it does not contain data field or value.`;
   }
@@ -114,7 +123,13 @@ export namespace message {
     return `${channel} encoding should be discrete (ordinal / nominal / binned).`;
   }
 
+  export function discreteChannelCannotEncode(channel: Channel, type: Type) {
+    return `Using discrete channel ${channel} to encode ${type} field can be misleading as it does not encode ${type === 'ordinal' ? 'order' : 'magnitude'}.`;
+  }
+
   // Mark
+  export const BAR_WITH_POINT_SCALE_AND_RANGESTEP_NULL = 'Bar mark should not be used with point scale when rangeStep is null. Please use band scale instead.';
+
   export function unclearOrientContinuous(mark: Mark) {
     return 'Cannot clearly determine orientation for ' + mark + ' since both x and y channel encode continous fields. In this case, we use vertical by default';
   }
@@ -130,16 +145,37 @@ export namespace message {
   // SCALE
   export const CANNOT_UNION_CUSTOM_DOMAIN_WITH_FIELD_DOMAIN = 'custom domain scale cannot be unioned with default field-based domain';
 
-  export const CANNOT_USE_PADDING_WITH_FACET = 'Cannot use padding with facet\'s scale.  Please use spacing instead.';
+  export const CANNOT_USE_SCHEME_WITH_NON_COLOR = 'Cannot use scheme with non-color channel.';
 
-  export function bandSizeOverridden(channel: Channel) {
-    return `bandSize for ${channel} overridden as top-level ${
+  export const CANNOT_USE_RANGE_WITH_POSITION =
+    'Cannot use custom range with x or y channel.  Please customize width, height, padding, or rangeStep instead.';
+
+    export const CANNOT_USE_PADDING_WITH_FACET = 'Cannot use padding with facet\'s scale.  Please use spacing instead.';
+
+  export function cannotUseRangePropertyWithFacet(propName: string) {
+    return `Cannot use custom ${propName} with row or column channel. Please use width, height, or spacing instead.`;
+  }
+
+  export function rangeStepDropped(channel: Channel) {
+    return `rangeStep for ${channel} is dropped as top-level ${
       channel === X ? 'width' : 'height'} is provided.`;
   }
 
-  export function scaleTypeNotWorkWithChannel(channel: Channel, scaleType: ScaleType) {
-    return `Channel ${channel} does not work with scale type = ${scaleType}`;
+  export function scaleTypeNotWorkWithChannel(channel: Channel, scaleType: ScaleType, newScaleType: ScaleType) {
+    return `Channel ${channel} does not work with ${scaleType} scale. We are using ${newScaleType} scale instead.`;
   }
+
+  export function scalePropertyNotWorkWithScaleType(scaleType: ScaleType, propName: string, channel: Channel) {
+    return `${channel}-scale's "${propName}" is dropped as it does not work with ${scaleType} scale.`;
+  }
+
+  export function scaleTypeNotWorkWithMark(mark: Mark, scaleType: ScaleType) {
+    return `Scale type "${scaleType}" does not work with mark ${mark}.`;
+  }
+
+
+  // AXIS
+  export const INVALID_CHANNEL_FOR_AXIS = 'Invalid channel for axis.';
 
   // STACK
   export function cannotStackRangedMark(channel: Channel) {

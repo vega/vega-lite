@@ -35,7 +35,7 @@ describe('Mark: Area', function() {
       },
       "data": {"url": 'data/movies.json'}
     });
-    const props = area.properties(model);
+    const props = area.encodeEntry(model);
 
     it('should end on axis', function() {
       assert.deepEqual(props.y2, {field: {group: 'height'}});
@@ -55,7 +55,7 @@ describe('Mark: Area', function() {
       },
       "data": {"url": 'data/movies.json'}
     });
-    const props = area.properties(model);
+    const props = area.encodeEntry(model);
 
     it('should end on axis', function() {
       assert.deepEqual(props.y2, {field: {group: 'height'}});
@@ -68,14 +68,14 @@ describe('Mark: Area', function() {
 
   describe('vertical area', function() {
     const model = parseUnitModel(verticalArea());
-    const props = area.properties(model);
+    const props = area.encodeEntry(model);
 
     it('should have scale for x', function() {
       assert.deepEqual(props.x, {scale: X, field: 'year_Year'});
     });
 
     it('should have scale for y', function(){
-      assert.deepEqual(props.y, {scale: Y, field: 'count'});
+      assert.deepEqual(props.y, {scale: Y, field: 'count_*'});
     });
 
     it('should have the correct value for y2', () => {
@@ -88,11 +88,11 @@ describe('Mark: Area', function() {
       "color": {"field": "Origin", "type": "quantitative"}
     }));
 
-    const props = area.properties(model);
+    const props = area.encodeEntry(model);
 
     it('should have the correct value for y and y2', () => {
-      assert.deepEqual(props.y, {scale: 'y', field: 'count_end'});
-      assert.deepEqual(props.y2, {scale: 'y', field: 'count_start'});
+      assert.deepEqual(props.y, {scale: 'y', field: 'count_*_end'});
+      assert.deepEqual(props.y2, {scale: 'y', field: 'count_*_start'});
     });
 
     it('should have correct orient', () => {
@@ -120,14 +120,14 @@ describe('Mark: Area', function() {
 
   describe('horizontal area', function() {
     const model = parseUnitModel(horizontalArea());
-    const props = area.properties(model);
+    const props = area.encodeEntry(model);
 
     it('should have scale for y', function() {
       assert.deepEqual(props.y, {scale: Y, field: 'year_Year'});
     });
 
     it('should have scale for x', function(){
-      assert.deepEqual(props.x, {scale: X, field: 'count'});
+      assert.deepEqual(props.x, {scale: X, field: 'count_*'});
     });
 
     it('should have the correct value for x2', () => {
@@ -145,7 +145,7 @@ describe('Mark: Area', function() {
       "data": {"url": 'data/movies.json'}
     });
 
-    const props = area.properties(model);
+    const props = area.encodeEntry(model);
 
     it('should end on axis', function() {
       assert.deepEqual(props.x2, {value: 0});
@@ -166,7 +166,7 @@ describe('Mark: Area', function() {
       "data": {"url": 'data/movies.json'}
     });
 
-    const props = area.properties(model);
+    const props = area.encodeEntry(model);
 
     it('should end on axis', function() {
       assert.deepEqual(props.x2, {value: 0});
@@ -182,11 +182,11 @@ describe('Mark: Area', function() {
       "color": {"field": "Origin", "type": "nominal"}
     }));
 
-    const props = area.properties(model);
+    const props = area.encodeEntry(model);
 
     it('should have the correct value for x and x2', () => {
-      assert.deepEqual(props.x, {scale: 'x', field: 'count_end'});
-      assert.deepEqual(props.x2, {scale: 'x', field: 'count_start'});
+      assert.deepEqual(props.x, {scale: 'x', field: 'count_*_end'});
+      assert.deepEqual(props.x2, {scale: 'x', field: 'count_*_start'});
     });
 
     it('should have correct orient', () => {
@@ -209,7 +209,7 @@ describe('Mark: Area', function() {
           "y2": {"aggregate": "max", "field": "Weight_in_lbs", "type": "quantitative" }
         }
       });
-      const props = area.properties(model);
+      const props = area.encodeEntry(model);
       assert.deepEqual(props.x, { scale: 'x', field: 'year_Year'});
       assert.deepEqual(props.y, { scale: 'y', field: 'min_Weight_in_lbs' });
       assert.deepEqual(props.y2, { scale: 'y', field: 'max_Weight_in_lbs' });
@@ -225,7 +225,7 @@ describe('Mark: Area', function() {
           "x2": {"aggregate": "max", "field": "Weight_in_lbs", "type": "quantitative" }
         }
       });
-      const props = area.properties(model);
+      const props = area.encodeEntry(model);
       assert.deepEqual(props.y, { scale: 'y', field: 'year_Year'});
       assert.deepEqual(props.x, { scale: 'x', field: 'min_Weight_in_lbs' });
       assert.deepEqual(props.x2, { scale: 'x', field: 'max_Weight_in_lbs' });

@@ -1,5 +1,5 @@
 import {DateTime} from './datetime';
-import {Shape} from './mark';
+import {VgLegendEncode} from './vega.schema';
 
 export interface LegendConfig {
   /**
@@ -75,7 +75,7 @@ export interface LegendConfig {
    * The shape of the legend symbol, can be the 'circle', 'square', 'cross', 'diamond',
    * 'triangle-up', 'triangle-down', or else a custom SVG path string.
    */
-  symbolShape?: Shape;
+  symbolShape?: string;
   /**
    * The size of the legend symbol, in pixels.
    * @mimimum 0
@@ -106,9 +106,9 @@ export interface LegendConfig {
    */
   titleFontWeight?: string | number;
   /**
-   * Optional mark property definitions for custom legend styling.
+   * Optional mark definitions for custom legend encoding.
    */
-  properties?: any; // TODO(#975) replace with config properties
+  encode?: VgLegendEncode;
 }
 
 /**
@@ -128,7 +128,12 @@ export interface Legend extends LegendConfig {
    */
   values?: number[] | string[] | DateTime[];
 
-  shape?: Shape;
+  shape?: string;
+
+  /**
+   * The type of the legend. Use `symbol` to create a discrete legend and `gradient` for a continuous color gradient.
+   */
+  type?: 'symbol' | 'gradient';
 }
 
 export const defaultLegendConfig: LegendConfig = {

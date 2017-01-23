@@ -7,14 +7,13 @@ const fs = require('fs');
 const path = require('path');
 
 const vlSchema = require('../vega-lite-schema.json');
-const vgSchema = require('../node_modules/vega/vega-schema.json');
+const vgSchema = require('vega/build/vega-schema.json');
 
 const ajv = new Ajv({
   validateSchema: false,
   extendRefs: true,
-  allErrors: true,
-  verbose: true
-} as any);  // FIXME: https://github.com/DefinitelyTyped/DefinitelyTyped/pull/12909
+  allErrors: true
+});
 const validateVl = ajv.compile(vlSchema);
 const validateVg = ajv.compile(vgSchema);
 
@@ -33,7 +32,6 @@ function validateVega(spec: vl.spec.ExtendedSpec) {
   const valid = validateVg(vegaSpec);
   const errors = validateVg.errors;
   if (!valid) {
-    console.log(vegaSpec.marks[0].marks[0].properties);
     console.log(inspect(errors, { depth: 10, colors: true }));
   }
   assert(valid, errors && errors.map((err: Ajv.ErrorObject) => {return err.message; }).join(', '));

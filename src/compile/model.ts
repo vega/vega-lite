@@ -3,21 +3,20 @@ import * as log from '../log';
 import {Axis} from '../axis';
 import {Channel, X, COLUMN} from '../channel';
 import {Config, CellConfig} from '../config';
-import {Data, DataTable} from '../data';
+import {Data, DataSourceType} from '../data';
 import {reduce, forEach} from '../encoding';
 import {FieldDef, FieldRefOption, field} from '../fielddef';
 import {Legend} from '../legend';
-import {Scale, ScaleType} from '../scale';
+import {Scale, hasDiscreteDomain} from '../scale';
 import {SortField, SortOrder} from '../sort';
-import {BaseSpec} from '../spec';
+import {BaseSpec, Padding} from '../spec';
 import {Transform} from '../transform';
-import {contains, extend, flatten, vals, Dict} from '../util';
-import {VgData, VgMarkGroup, VgScale, VgAxis, VgLegend} from '../vega.schema';
+import {extend, flatten, vals, Dict} from '../util';
+import {VgData, VgEncodeEntry, VgScale, VgAxis, VgLegend} from '../vega.schema';
 
 import {DataComponent} from './data/data';
 import {LayoutComponent} from './layout';
-import {ScaleComponents, COLOR_LEGEND, COLOR_LEGEND_LABEL} from './scale';
-
+import {ScaleComponents, BIN_LEGEND_SUFFIX, BIN_LEGEND_LABEL_SUFFIX} from './scale/scale';
 import {StackProperties} from '../stack';
 
 /* tslint:disable:no-unused-variable */
@@ -39,26 +38,25 @@ export interface Component {
   scale: Dict<ScaleComponents>;
 
   /** Dictionary mapping channel to VgAxis definition */
-  // TODO: if we allow multiple axes (e.g., dual axis), this will become VgAxis[]
-  axis: Dict<VgAxis>;
+  axis: Dict<VgAxis[]>;
 
   /** Dictionary mapping channel to VgLegend definition */
   legend: Dict<VgLegend>;
 
   /** Dictionary mapping channel to axis mark group for facet and concat */
-  axisGroup: Dict<VgMarkGroup>;
+  axisGroup: Dict<VgEncodeEntry>;
 
   /** Dictionary mapping channel to grid mark group for facet (and concat?) */
-  gridGroup: Dict<VgMarkGroup[]>;
+  gridGroup: Dict<VgEncodeEntry[]>;
 
-  mark: VgMarkGroup[];
+  mark: VgEncodeEntry[];
 }
 
 class NameMap implements NameMapInterface {
   private _nameMap: Dict<string>;
 
   constructor() {
-    this._nameMap = {} as Dict<string>;
+    this._nameMap = {};
   }
 
   public rename(oldName: string, newName: string) {
@@ -91,6 +89,7 @@ export abstract class Model {
   protected _parent: Model;
   protected _name: string;
   protected _description: string;
+  protected _padding: Padding;
 
   protected _data: Data;
 
@@ -104,11 +103,11 @@ export abstract class Model {
   protected _sizeNameMap: NameMapInterface;
 
   protected _transform: Transform;
-  protected _scale: Dict<Scale>;
+  protected _scale: Dict<Scale> = {};
 
-  protected _axis: Dict<Axis>;
+  protected _axis: Dict<Axis> = {};
 
-  protected _legend: Dict<Legend>;
+  protected _legend: Dict<Legend> = {};
 
   protected _config: Config;
 
@@ -128,6 +127,7 @@ export abstract class Model {
     this._data = spec.data;
 
     this._description = spec.description;
+    this._padding = spec.padding;
     this._transform = spec.transform;
 
     if (spec.transform) {
@@ -186,11 +186,11 @@ export abstract class Model {
     // help assemble scale domains with scale signature as well
     return flatten(vals(this.component.scale).map((scales: ScaleComponents) => {
       let arr = [scales.main];
-      if (scales.colorLegend) {
-        arr.push(scales.colorLegend);
+      if (scales.binLegend) {
+        arr.push(scales.binLegend);
       }
-      if (scales.binColorLegend) {
-        arr.push(scales.binColorLegend);
+      if (scales.binLegendLabel) {
+        arr.push(scales.binLegendLabel);
       }
       return arr;
     }));
@@ -199,7 +199,7 @@ export abstract class Model {
   public abstract assembleMarks(): any[]; // TODO: VgMarkGroup[]
 
   public assembleAxes(): VgAxis[] {
-    return vals(this.component.axis);
+    return [].concat.apply([], vals(this.component.axis));
   }
 
   public assembleLegends(): any[] { // TODO: VgLegend[]
@@ -207,7 +207,7 @@ export abstract class Model {
   }
 
   public assembleGroup() {
-    let group: VgMarkGroup = {};
+    let group: VgEncodeEntry = {};
 
     // TODO: consider if we want scales to come before marks in the output spec.
 
@@ -230,7 +230,7 @@ export abstract class Model {
     return group;
   }
 
-  public abstract assembleParentGroupProperties(cellConfig: CellConfig): any;
+  public abstract assembleParentGroupProperties(cellConfig: CellConfig): VgEncodeEntry;
 
   public abstract channels(): Channel[];
 
@@ -244,11 +244,28 @@ export abstract class Model {
     forEach(this.mapping(), f, t);
   }
 
-  public abstract has(channel: Channel): boolean;
+  public hasDescendantWithFieldOnChannel(channel: Channel) {
+    for (let child of this.children()) {
+      if (child.isUnit()) {
+        if (child.channelHasField(channel)) {
+          return true;
+        }
+      } else {
+        if (child.hasDescendantWithFieldOnChannel(channel)) {
+          return true;
+        }
+      }
+    }
+    return false;
+  }
+
+  public abstract channelHasField(channel: Channel): boolean;
 
   public parent(): Model {
     return this._parent;
   }
+
+  public abstract children(): Model[];
 
   public name(text: string, delimiter: string = '_') {
     return (this._name ? this._name + delimiter : '') + text;
@@ -256,6 +273,10 @@ export abstract class Model {
 
   public description() {
     return this._description;
+  }
+
+  public padding() {
+    return this._padding;
   }
 
   public data() {
@@ -272,7 +293,7 @@ export abstract class Model {
    * For unit spec, this is always simply the spec.name + '-' + dataSourceType.
    * We already use the name map so that marks and scales use the correct data.
    */
-  public dataName(dataSourceType: DataTable): string {
+  public dataName(dataSourceType: DataSourceType): string {
     return this._dataNameMap.get(this.name(String(dataSourceType)));
   }
 
@@ -313,7 +334,7 @@ export abstract class Model {
 
     if (fieldDef.bin) { // bin has default suffix that depends on scaleType
       opt = extend({
-        binSuffix: this.scale(channel).type === ScaleType.ORDINAL ? 'range' : 'start'
+        binSuffix: hasDiscreteDomain(this.scale(channel).type) ? 'range' : 'start'
       }, opt);
     }
 
@@ -326,10 +347,9 @@ export abstract class Model {
     return this._scale[channel];
   }
 
-  // TODO: rename to hasOrdinalScale
-  public isOrdinalScale(channel: Channel) {
+  public hasDiscreteScale(channel: Channel) {
     const scale = this.scale(channel);
-    return scale && scale.type === ScaleType.ORDINAL;
+    return scale && hasDiscreteDomain(scale.type);
   }
 
   public renameScale(oldName: string, newName: string) {
@@ -342,7 +362,7 @@ export abstract class Model {
    * (DO NOT USE THIS METHOD DURING SCALE PARSING, use model.name() instead)
    */
   public scaleName(originalScaleName: Channel|string, parse?: boolean): string {
-    const channel = contains([COLOR_LEGEND, COLOR_LEGEND_LABEL], originalScaleName) ? 'color' : originalScaleName;
+    const channel = originalScaleName.replace(BIN_LEGEND_SUFFIX, '').replace(BIN_LEGEND_LABEL_SUFFIX, '');
 
     if (parse) {
       // During the parse phase always return a value

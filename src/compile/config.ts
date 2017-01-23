@@ -2,11 +2,11 @@ import * as log from '../log';
 
 import {X, COLOR, SIZE, DETAIL} from '../channel';
 import {Config} from '../config';
-import {Encoding, isAggregate, has} from '../encoding';
-import {isMeasure} from '../fielddef';
+import {Encoding, isAggregate, channelHasField} from '../encoding';
+import {isMeasure, isFieldDef, FieldDef} from '../fielddef';
 import {MarkConfig, TextConfig, Orient} from '../mark';
 import {BAR, AREA, POINT, LINE, TICK, CIRCLE, SQUARE, RECT, RULE, TEXT, Mark} from '../mark';
-import {ScaleType, Scale} from '../scale';
+import {Scale, hasDiscreteDomain} from '../scale';
 import {StackProperties} from '../stack';
 import {TEMPORAL} from '../type';
 import {contains, extend, Dict} from '../util';
@@ -41,7 +41,7 @@ export function initTextConfig(encoding: Encoding, config: Config) {
   const textConfig: TextConfig = extend({}, config.text);
 
   if (textConfig.align === undefined) {
-    textConfig.align = has(encoding, X) ? 'center' : 'right';
+    textConfig.align = channelHasField(encoding, X) ? 'center' : 'right';
   }
   return textConfig;
 }
@@ -49,12 +49,12 @@ export function initTextConfig(encoding: Encoding, config: Config) {
 export function opacity(mark: Mark, encoding: Encoding, stacked: StackProperties) {
   if (contains([POINT, TICK, CIRCLE, SQUARE], mark)) {
     // point-based marks
-    if (!isAggregate(encoding) || has(encoding, DETAIL)) {
+    if (!isAggregate(encoding) || channelHasField(encoding, DETAIL)) {
       return 0.7;
     }
   }
   if (mark === BAR && !stacked) {
-    if (has(encoding, COLOR) || has(encoding, DETAIL) || has(encoding, SIZE)) {
+    if (channelHasField(encoding, COLOR) || channelHasField(encoding, DETAIL) || channelHasField(encoding, SIZE)) {
       return 0.7;
     }
   }
@@ -84,11 +84,11 @@ export function orient(mark: Mark, encoding: Encoding, scale: Dict<Scale>, markC
       const yScaleType = scale['y'] ? scale['y'].type : null;
 
       // Tick is opposite to bar, line, area and never have ranged mark.
-      if (xScaleType !== ScaleType.ORDINAL && (
+      if (!hasDiscreteDomain(xScaleType) && (
             !encoding.y ||
-            yScaleType === ScaleType.ORDINAL) ||
-            encoding.y.bin
-          ) {
+            hasDiscreteDomain(yScaleType) ||
+            (isFieldDef(encoding.y) && encoding.y.bin)
+        )) {
         return 'vertical';
       }
       // y:Q or Ambiguous case, return horizontal
@@ -120,10 +120,12 @@ export function orient(mark: Mark, encoding: Encoding, scale: Dict<Scale>, markC
       } else if (!xIsMeasure && yIsMeasure) {
         return 'vertical';
       } else if (xIsMeasure && yIsMeasure) {
+        const xDef = encoding.x as FieldDef;
+        const yDef = encoding.y as FieldDef;
         // temporal without timeUnit is considered continuous, but better serves as dimension
-        if (encoding.x.type === TEMPORAL) {
+        if (xDef.type === TEMPORAL) {
           return 'vertical';
-        } else if (encoding.y.type === TEMPORAL) {
+        } else if (yDef.type === TEMPORAL) {
           return 'horizontal';
         }
 
@@ -132,7 +134,7 @@ export function orient(mark: Mark, encoding: Encoding, scale: Dict<Scale>, markC
           return markConfig.orient;
         }
 
-        if (!(mark === LINE &&  encoding.path)) {
+        if (!(mark === LINE && encoding.order)) {
           // Except for connected scatterplot, we should log warning for unclear orientation of QxQ plots.
           log.warn(log.message.unclearOrientContinuous(mark));
         }

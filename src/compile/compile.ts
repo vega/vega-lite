@@ -41,20 +41,25 @@ export function compile(inputSpec: ExtendedSpec, logger?: log.LoggerInterface) {
 }
 
 function assemble(model: Model) {
-  const config = model.config();
-
   // TODO: change type to become VgSpec
   const output = extend(
     {
-      // Set size to 1 because we rely on padding anyway
-      width: 1,
-      height: 1,
-      padding: 'auto'
+      $schema: 'http://vega.github.io/schema/vega/v3.0.json',
     },
-    config.viewport ? { viewport: config.viewport } : {},
-    config.background ? { background: config.background } : {},
+    topLevelBasicProperties(model),
     {
-      // TODO: signal: model.assembleSelectionSignal
+      // Map calculated layout width and height to width and height signals.
+      signals: [
+        {
+          name: 'width',
+          update: "data('layout')[0].width"
+        },
+        {
+          name: 'height',
+          update: "data('layout')[0].height"
+        }
+      ] // TODO: concat.(model.assembleTopLevelSignals())
+    },{
       data: [].concat(
         model.assembleData([]),
         model.assembleLayout([])
@@ -69,16 +74,27 @@ function assemble(model: Model) {
   };
 }
 
+export function topLevelBasicProperties(model: Model) {
+  const config = model.config();
+  return extend(
+    // TODO: Add other top-level basic properties (#1778)
+    {padding: model.padding() || config.padding},
+    {autosize: 'pad'},
+    config.viewport ? { viewport: config.viewport } : {},
+    config.background ? { background: config.background } : {}
+  );
+}
+
 export function assembleRootGroup(model: Model) {
   let rootGroup:any = extend(
     {
-      name: model.name('root'),
+      name: model.name('main'),
       type: 'group',
     },
     model.description() ? {description: model.description()} : {},
     {
       from: {data: model.name(LAYOUT +'')},
-      properties: {
+      encode: {
         update: extend(
           {
             width: {field: model.name('width')},

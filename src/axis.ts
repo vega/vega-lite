@@ -1,4 +1,5 @@
 import {DateTime} from './datetime';
+import {VgAxisEncode} from './vega.schema';
 
 export namespace AxisOrient {
     export const TOP: 'top' = 'top';
@@ -15,9 +16,13 @@ export interface AxisConfig {
    */
   axisWidth?: number;
   /**
-   * A string indicating if the axis (and any gridlines) should be placed above or below the data marks.
+   * A non-positive integer indicating z-index of the axis.
+   * If zindex is 0, axes should be drawn behind all chart elements.
+   * To put them in front, use zindex = 1.
+   * @TJS-type integer
+   * @minimum 0
    */
-  layer?: string;
+  zindex?: number;
   /**
    * The offset, in pixels, by which to displace the axis from the edge of the enclosing group or data rectangle.
    */
@@ -28,6 +33,11 @@ export interface AxisConfig {
    * Color of axis line.
    */
   axisColor?: string;
+
+  /**
+   * Whether to include the axis domain line.
+   */
+  domain?: boolean;
 
   // ---------- Grid ----------
   /**
@@ -42,16 +52,20 @@ export interface AxisConfig {
 
   /**
    * The offset (in pixels) into which to begin drawing with the grid dash array.
+   * @minimum 0
    */
   gridDash?: number[];
 
   /**
    * The stroke opacity of grid (value between [0,1])
+   * @minimum 0
+   * @maximum 1
    */
   gridOpacity?: number;
 
   /**
    * The grid width, in pixels.
+   * @minimum 0
    */
   gridWidth?: number;
 
@@ -59,9 +73,11 @@ export interface AxisConfig {
   /**
    * Enable or disable labels.
    */
-  labels?: boolean;
+  label?: boolean;
   /**
    * The rotation angle of the axis labels.
+   * @minimum 0
+   * @minimum 360
    */
   labelAngle?: number;
   /**
@@ -75,6 +91,7 @@ export interface AxisConfig {
   /**
    * Truncate labels that are too long.
    * @minimum 1
+   * @TJS-type integer
    */
   labelMaxLength?: number;
   /**
@@ -85,13 +102,22 @@ export interface AxisConfig {
   // ---------- Ticks ----------
   /**
    * If provided, sets the number of minor ticks between major ticks (the value 9 results in decimal subdivision). Only applicable for axes visualizing quantitative scales.
+   * @minimum 0
+   * @TJS-type integer
    */
   subdivide?: number;
+
+  /**
+   * Whether the axis should include ticks.
+   */
+  tick?: boolean;
+
   /**
    * A desired number of ticks, for axes visualizing quantitative scales. The resulting number may be different so that values are "nice" (multiples of 2, 5, 10) and lie within the underlying scale's range.
    * @minimum 0
+   * @TJS-type integer
    */
-  ticks?: number;
+  tickCount?: number;
 
   /**
    * The color of the axis's tick.
@@ -110,6 +136,7 @@ export interface AxisConfig {
 
   /**
    * The font size of label, in pixels.
+   * @minimum 0
    */
   tickLabelFontSize?: number;
 
@@ -140,6 +167,7 @@ export interface AxisConfig {
 
   /**
    * The width, in pixels, of ticks.
+   * @minimum 0
    */
   tickWidth?: number;
 
@@ -156,6 +184,7 @@ export interface AxisConfig {
 
   /**
    * Size of the title.
+   * @minimum 0
    */
   titleFontSize?: number;
 
@@ -171,18 +200,15 @@ export interface AxisConfig {
   /**
    * Max length for axis title if the title is automatically generated from the field's description. By default, this is automatically based on cell size and characterWidth property.
    * @minimum 0
+   * @TJS-type integer
    */
   titleMaxLength?: number;
-  /**
-   * Character width for automatically determining title max length.
-   */
-  characterWidth?: number;
 
   // ---------- Other ----------
   /**
-   * Optional mark property definitions for custom axis styling.
+   * Optional mark definitions for custom axis encoding.
    */
-  properties?: any; // TODO: replace
+  encode?: VgAxisEncode;
 }
 
 // TODO: add comment for properties that we rely on Vega's default to produce
@@ -191,17 +217,17 @@ export interface AxisConfig {
 export const defaultAxisConfig: AxisConfig = {
   offset: undefined, // implicitly 0
   grid: undefined, // automatically determined
-  labels: true,
+  label: true,
   labelMaxLength: 25,
-  tickSize: undefined, // implicitly 6
-  characterWidth: 6
+  tickSize: undefined, // implicitly 6 (by Vega) // FIXME check if this is still true
 };
 
 export const defaultFacetAxisConfig: AxisConfig = {
   axisWidth: 0,
-  labels: true,
+  domain: false,
+  label: true,
   grid: false,
-  tickSize: 0
+  tick: false
 };
 
 export interface Axis extends AxisConfig {

@@ -44,7 +44,45 @@ describe('data', function () {
         const sourceTransform = data[0].transform;
         assert.deepEqual(sourceTransform[sourceTransform.length - 1], {
           type: 'filter',
-          test: 'datum["b"] > 0'
+          expr: 'datum["b"] > 0'
+        });
+      });
+    });
+
+    describe('stacked bar chart with binned dimension', () => {
+      const model = parseUnitModel({
+        "mark": "area",
+        "encoding": {
+          "x": {
+            "bin": {"maxbins": 10},
+            "field": "IMDB_Rating",
+            "type": "quantitative"
+          },
+          "color": {
+            "field": "Source",
+            "type": "nominal"
+          },
+          "y": {
+            "aggregate": "count",
+            "field": "*",
+            "type": "quantitative"
+          }
+        }
+      });
+
+      const data = compileAssembleData(model);
+      it('should contains 3 tables', function() {
+        assert.equal(data.length, 3);
+      });
+
+      it('should have collect transform as the last transform in stacked', function() {
+        const stackedTransform = data[2].transform;
+        assert.deepEqual(stackedTransform[stackedTransform.length - 1], {
+          type: 'collect',
+          sort: {
+            "field": "bin_IMDB_Rating_start",
+            "order": "descending"
+          }
         });
       });
     });
@@ -55,7 +93,7 @@ describe('data', function () {
       const model = parseUnitModel({
         transform: {
           calculate: [{
-            field: 'b2',
+            as: 'b2',
             expr: '2 * datum["b"]'
           }],
           filter: 'datum["a"] > datum["b"] && datum["c"] === datum["d"]'
@@ -65,8 +103,7 @@ describe('data', function () {
           x: {field: 'a', type: "temporal", timeUnit: 'year'},
           y: {
             bin: {
-              min: 0,
-              max: 100
+              extent: [0, 100]
             },
             'field': 'Acceleration',
             'type': "quantitative"

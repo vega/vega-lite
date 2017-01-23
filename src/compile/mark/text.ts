@@ -1,18 +1,27 @@
 import {X, Y, COLOR, TEXT, SIZE} from '../../channel';
-import {applyConfig, applyColorAndOpacity, numberFormat, timeTemplate} from '../common';
+import {applyConfig, numberFormat, timeFormatExpression} from '../common';
+
+import {applyColorAndOpacity} from './common';
 import {Config} from '../../config';
-import {FieldDef, field} from '../../fielddef';
-import {QUANTITATIVE, ORDINAL, TEMPORAL} from '../../type';
+import {ChannelDef, field, isFieldDef} from '../../fielddef';
+import {QUANTITATIVE, TEMPORAL} from '../../type';
 import {UnitModel} from '../unit';
+import {VgValueRef, VgEncodeEntry} from '../../vega.schema';
+
+import {MarkCompiler} from './base';
 import * as ref from './valueref';
-import {VgValueRef} from '../../vega.schema';
 
-export namespace text {
-  export function markType() {
+// FIXME: remove thie once we remove the background hack
+export interface TextCompiler extends MarkCompiler {
+  background: (model: UnitModel) => VgEncodeEntry;
+}
+
+export const text: TextCompiler = {
+  markType: () => {
     return 'text';
-  }
+  },
 
-  export function background(model: UnitModel) {
+  background: (model: UnitModel) => {
     return {
       x: { value: 0 },
       y: { value: 0 },
@@ -20,76 +29,76 @@ export namespace text {
       height: { field: { group: 'height' } },
       fill: {
         scale: model.scaleName(COLOR),
-        field: model.field(COLOR, model.encoding().color.type === ORDINAL ? {prefix: 'rank'} : {})
+        field: model.field(COLOR)
       }
     };
-  }
+  },
 
-  export function properties(model: UnitModel) {
-    // TODO Use Vega's marks properties interface
-    let p: any = {};
+  encodeEntry: (model: UnitModel) => {
+    let e: VgEncodeEntry = {};
 
-    applyConfig(p, model.config().text,
+    applyConfig(e, model.config().text,
       ['angle', 'align', 'baseline', 'dx', 'dy', 'font', 'fontWeight',
         'fontStyle', 'radius', 'theta', 'text']);
 
     const config = model.config();
     const stack = model.stack();
-    const textFieldDef = model.encoding().text;
+    const textDef = model.encoding().text;
 
     // TODO: refactor how refer to scale as discussed in https://github.com/vega/vega-lite/pull/1613
 
-    p.x = ref.stackable(X, model.encoding().x, model.scaleName(X), model.scale(X), stack, xDefault(config, textFieldDef));
-    p.y = ref.stackable(Y, model.encoding().y, model.scaleName(Y), model.scale(Y), stack, ref.midY(config));
+    e.x = ref.stackable(X, model.encoding().x, model.scaleName(X), model.scale(X), stack, xDefault(config, textDef));
+    e.y = ref.stackable(Y, model.encoding().y, model.scaleName(Y), model.scale(Y), stack, ref.midY(config));
 
-    p.fontSize = ref.normal(SIZE, model.encoding().size, model.scaleName(SIZE), model.scale(SIZE),
+    e.fontSize = ref.midPoint(SIZE, model.encoding().size, model.scaleName(SIZE), model.scale(SIZE),
        {value: config.text.fontSize}
     );
 
-    p.text = text(textFieldDef, model.scaleName(TEXT), config);
+    e.text = textRef(textDef, model.scaleName(TEXT), config);
 
-    if (model.config().text.applyColorToBackground && !model.has(X) && !model.has(Y)) {
-      p.fill = {value: 'black'}; // TODO: add rules for swapping between black and white
+    if (model.config().text.applyColorToBackground &&
+        !model.channelHasField(X) &&
+        !model.channelHasField(Y)) {
+      e.fill = {value: 'black'}; // TODO: add rules for swapping between black and white
       // opacity
       const opacity = model.config().mark.opacity;
-      if (opacity) { p.opacity = { value: opacity }; };
+      if (opacity) { e.opacity = { value: opacity }; };
     } else {
-      applyColorAndOpacity(p, model);
+      applyColorAndOpacity(e, model);
     }
 
-    return p;
+    return e;
   }
+};
 
-  function xDefault(config: Config, textFieldDef:FieldDef): VgValueRef {
-    if (textFieldDef && textFieldDef.type === QUANTITATIVE) {
-      return { field: { group: 'width' }, offset: -5 };
-    }
-    // TODO: allow this to fit (Be consistent with ref.midX())
-    return { value: config.scale.textBandWidth / 2 };
+function xDefault(config: Config, textDef: ChannelDef): VgValueRef {
+  if (isFieldDef(textDef) && textDef.type === QUANTITATIVE) {
+    return { field: { group: 'width' }, offset: -5 };
   }
+  // TODO: allow this to fit (Be consistent with ref.midX())
+  return { value: config.scale.textXRangeStep / 2 };
+}
 
-  function text(textFieldDef: FieldDef, scaleName: string, config: Config): VgValueRef {
-    // text
-    if (textFieldDef) {
-      if (textFieldDef.field) {
-        if (QUANTITATIVE === textFieldDef.type) {
-          const format = numberFormat(textFieldDef, config.text.format, config, TEXT);
-
-          const filter = 'number' + ( format ? ':\'' + format + '\'' : '');
-          return {
-            template: '{{' + field(textFieldDef, { datum: true }) + ' | ' + filter + '}}'
-          };
-        } else if (TEMPORAL === textFieldDef.type) {
-          return {
-            template: timeTemplate(field(textFieldDef, {datum: true}), textFieldDef.timeUnit, config.text.format, config.text.shortTimeLabels, config)
-          };
-        } else {
-          return { field: textFieldDef.field };
-        }
-      } else if (textFieldDef.value) {
-        return { value: textFieldDef.value };
+function textRef(textDef: ChannelDef, scaleName: string, config: Config): VgValueRef {
+  // text
+  if (textDef) {
+    if (isFieldDef(textDef)) {
+      if (QUANTITATIVE === textDef.type) {
+        // FIXME: what happens if we have bin?
+        const format = numberFormat(textDef, config.text.format, config, TEXT);
+        return {
+          signal: `format(${field(textDef, { datum: true })}, '${format}')`
+        };
+      } else if (TEMPORAL === textDef.type) {
+        return {
+          signal: timeFormatExpression(field(textDef, {datum: true}), textDef.timeUnit, config.text.format, config.text.shortTimeLabels, config)
+        };
+      } else {
+        return { field: textDef.field };
       }
+    } else if (textDef.value) {
+      return { value: textDef.value };
     }
-    return {value: config.text.text};
   }
+  return {value: config.text.text};
 }

@@ -2,7 +2,7 @@
   "data": {"url": "data/cars.json"},
   "transform": {
     "calculate": [{
-      "field": "OriginInitial",
+      "as": "OriginInitial",
       "expr": "datum.Origin[0]"
     }]
   },

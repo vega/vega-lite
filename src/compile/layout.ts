@@ -1,7 +1,7 @@
 
 import {Channel, X, Y, ROW, COLUMN} from '../channel';
 import {LAYOUT} from '../data';
-import {ScaleType} from '../scale';
+import {hasDiscreteDomain} from '../scale';
 import {Formula} from '../transform';
 import {extend, keys, StringSet} from '../util';
 import {VgData} from '../vega.schema';
@@ -45,9 +45,8 @@ export function assembleLayout(model: Model, layoutData: VgData[]): VgData[] {
         source: model.dataTable(),
         transform: [{
           type: 'aggregate',
-          summarize: distinctFields.map(function(field) {
-            return { field: field, ops: ['distinct'] };
-          })
+          fields: distinctFields,
+          ops: distinctFields.map(() => 'distinct')
         } as any].concat(formula)
       } : {
         name: model.dataName(LAYOUT),
@@ -73,7 +72,7 @@ function parseUnitSizeLayout(model: UnitModel, channel: Channel): SizeComponent 
   return {
     distinct: getDistinct(model, channel),
     formula: [{
-      field: model.channelSizeName(channel),
+      as: model.channelSizeName(channel),
       expr: unitSizeExpr(model, channel)
     }]
   };
@@ -83,13 +82,27 @@ export function unitSizeExpr(model: UnitModel, channel: Channel): string {
   const scale = model.scale(channel);
   if (scale) {
 
-    if (scale.type === ScaleType.ORDINAL && scale.bandSize) {
-      // If the spec has top level size or specified bandSize = fit, it will be undefined here.
+    if (hasDiscreteDomain(scale.type) && scale.rangeStep) {
+      // If the spec has top level size or specified rangeStep = fit, it will be undefined here.
 
-      let layoutOffset = scale.points ? 1 : 2 * scale.padding;
-      return '(' + cardinalityExpr(model, channel) +
-        ' + ' + layoutOffset +
-        ') * ' + scale.bandSize;
+      const cardinality = cardinalityExpr(model, channel);
+      const paddingOuter = scale.paddingOuter !== undefined ? scale.paddingOuter : scale.padding;
+      const paddingInner = scale.type === 'band' ?
+        // only band has real paddingInner
+        (scale.paddingInner !== undefined ? scale.paddingInner : scale.padding) :
+        // For point, as calculated in https://github.com/vega/vega-scale/blob/master/src/band.js#L128,
+        // it's equivalent to have paddingInner = 1 since there is only n-1 steps between n points.
+        1;
+
+      let space = cardinality +
+        (paddingInner ? ` - ${paddingInner}` : '') +
+        (paddingOuter ? ` + 2*${paddingOuter}` : '');
+
+      // This formula is equivalent to
+      // space = count - inner + outer * 2
+      // range = rangeStep * (space > 0 ? space : 0)
+      // in https://github.com/vega/vega-encode/blob/master/src/Scale.js#L112
+      return `max(${space}, 0) * ${scale.rangeStep}`;
     }
   }
   return (channel === X ? model.width : model.height) + '';
@@ -112,7 +125,7 @@ function parseFacetSizeLayout(model: FacetModel, channel: Channel): SizeComponen
 
     const distinct = extend(getDistinct(model, channel), childSizeComponent.distinct);
     const formula = childSizeComponent.formula.concat([{
-      field: model.channelSizeName(channel),
+      as: model.channelSizeName(channel),
       expr: facetSizeFormula(model, channel, model.child().channelSizeName(channel))
     }]);
 
@@ -127,7 +140,7 @@ function parseFacetSizeLayout(model: FacetModel, channel: Channel): SizeComponen
 }
 
 function facetSizeFormula(model: FacetModel, channel: Channel, innerSize: string) {
-  if (model.has(channel)) {
+  if (model.channelHasField(channel)) {
     return '(datum["' + innerSize + '"] + ' + model.spacing(channel) + ')' + ' * ' + cardinalityExpr(model, channel);
   } else {
     return 'datum["' + innerSize + '"] + ' + model.config().scale.facetSpacing; // need to add outer padding for facet
@@ -151,8 +164,8 @@ function parseLayerSizeLayout(model: LayerModel, channel: Channel): SizeComponen
     const childSizeComponent: SizeComponent = childLayoutComponent[sizeType];
 
     const distinct = childSizeComponent.distinct;
-    const formula = [{
-      field: model.channelSizeName(channel),
+    const formula: Formula[] = [{
+      as: model.channelSizeName(channel),
       expr: childSizeComponent.formula[0].expr
     }];
 
@@ -168,9 +181,9 @@ function parseLayerSizeLayout(model: LayerModel, channel: Channel): SizeComponen
 }
 
 function getDistinct(model: Model, channel: Channel): StringSet {
-  if (model.has(channel) && model.isOrdinalScale(channel)) {
+  if (model.channelHasField(channel) && model.hasDiscreteScale(channel)) {
     const scale = model.scale(channel);
-    if (scale.type === ScaleType.ORDINAL && !(scale.domain instanceof Array)) {
+    if (hasDiscreteDomain(scale.type) && !(scale.domain instanceof Array)) {
       // if explicit domain is declared, use array length
       const distinctField = model.field(channel);
       let distinct: StringSet = {};

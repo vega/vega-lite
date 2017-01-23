@@ -11,8 +11,35 @@ import {compile, assembleRootGroup} from '../../src/compile/compile';
 describe('Compile', function() {
   it('should throw error for invalid spec', () => {
     assert.throws(() => {
-      compile({} as any);
+      compile({});
     }, Error, log.message.INVALID_SPEC);
+  });
+
+  describe('compile', () => {
+    it('should return a spec with basic top-level properties, size signals, data and marks', () => {
+      const spec = compile({
+        "data": {
+          "values": [{"a": "A","b": 28}]
+        },
+        "mark": "point"
+      }).spec;
+
+      assert.equal(spec.padding, 5);
+      assert.equal(spec.autosize, 'pad');
+      assert.deepEqual(spec.signals, [
+        {
+          name: 'width',
+          update: "data('layout')[0].width"
+        },
+        {
+          name: 'height',
+          update: "data('layout')[0].height"
+        }
+      ]);
+
+      assert.equal(spec.data.length, 2); // just source and layout
+      assert.equal(spec.marks.length, 1); // just the root group
+    });
   });
 
   describe('assembleRootGroup()', function() {
@@ -36,8 +63,8 @@ describe('Compile', function() {
       const rootGroup = assembleRootGroup(model);
 
       assert.deepEqual(rootGroup.from, {"data": "layout"});
-      assert.deepEqual(rootGroup.properties.update.width, {field: "width"});
-      assert.deepEqual(rootGroup.properties.update.height, {field: "height"});
+      assert.deepEqual(rootGroup.encode.update.width, {field: "width"});
+      assert.deepEqual(rootGroup.encode.update.height, {field: "height"});
     });
 
     it('produce correct from and size when a chart name is provided.', function() {
@@ -61,8 +88,8 @@ describe('Compile', function() {
       const rootGroup = assembleRootGroup(model);
 
       assert.deepEqual(rootGroup.from, {"data": "chart_layout"});
-      assert.deepEqual(rootGroup.properties.update.width, {field:"chart_width"});
-      assert.deepEqual(rootGroup.properties.update.height, {field:"chart_height"});
+      assert.deepEqual(rootGroup.encode.update.width, {field:"chart_width"});
+      assert.deepEqual(rootGroup.encode.update.height, {field:"chart_height"});
     });
 
   });

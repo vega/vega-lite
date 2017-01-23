@@ -2,8 +2,7 @@ import {assert} from 'chai';
 
 import * as log from '../src/log';
 
-import {ScaleType} from '../src/scale';
-import {TimeUnit, containsTimeUnit, defaultScaleType, fieldExpr, convert, template} from '../src/timeunit';
+import {TimeUnit, containsTimeUnit, fieldExpr, convert, formatExpression} from '../src/timeunit';
 
 
 describe('timeUnit', () => {
@@ -43,41 +42,6 @@ describe('timeUnit', () => {
       const timeUnit = TimeUnit.SECONDS;
       assert.equal(containsTimeUnit(fullTimeUnit, timeUnit), false);
     });
-
-  });
-
-  describe('defaultScaleType', () => {
-    it('should return ordinal for month, quarter, day , hours', () => {
-      for (const timeUnit of [TimeUnit.MONTH, TimeUnit.QUARTER, TimeUnit.DAY, TimeUnit.HOURS]) {
-        assert.equal(defaultScaleType(timeUnit), ScaleType.ORDINAL);
-      }
-    });
-
-    it('should return time for other timeUnit', () => {
-      const TIMEUNITS = [
-        TimeUnit.YEAR,
-        TimeUnit.DATE,
-        TimeUnit.MINUTES,
-        TimeUnit.SECONDS,
-        TimeUnit.MILLISECONDS,
-        TimeUnit.YEARMONTH,
-        TimeUnit.YEARMONTHDATE,
-        TimeUnit.YEARMONTHDATEHOURS,
-        TimeUnit.YEARMONTHDATEHOURSMINUTES,
-        TimeUnit.YEARMONTHDATEHOURSMINUTESSECONDS,
-        TimeUnit.HOURSMINUTES,
-        TimeUnit.HOURSMINUTESSECONDS,
-        TimeUnit.MINUTESSECONDS,
-        TimeUnit.SECONDSMILLISECONDS,
-        TimeUnit.YEARQUARTER,
-        TimeUnit.QUARTERMONTH,
-        TimeUnit.YEARQUARTERMONTH,
-      ];
-
-      for (const timeUnit of TIMEUNITS) {
-        assert.equal(defaultScaleType(timeUnit), ScaleType.TIME);
-      }
-    });
   });
 
   describe('fieldExpr', () => {
@@ -102,7 +66,7 @@ describe('timeUnit', () => {
     it('should return correct field expression for QUARTER', () => {
       assert.equal(
         fieldExpr(TimeUnit.QUARTER, 'x'),
-        'datetime(0, floor(month(datum["x"])/3)*3, 1, 0, 0, 0, 0)'
+        'datetime(0, (quarter(datum["x"])-1)*3, 1, 0, 0, 0, 0)'
       );
     });
 
@@ -191,57 +155,57 @@ describe('timeUnit', () => {
 
   describe('template', () => {
     it('should return correct template for YEARMONTHDATEHOURSMINUTESSECONDS', () => {
-      assert.deepEqual(
-        template(TimeUnit.YEARMONTHDATEHOURSMINUTESSECONDS,'datum.x', undefined),
-        '{{datum.x | time:\'%b %d, %Y %H:%M:%S\'}}'
+      assert.equal(
+        formatExpression(TimeUnit.YEARMONTHDATEHOURSMINUTESSECONDS,'datum.x', undefined),
+        "timeFormat(datum.x, '%b %d, %Y %H:%M:%S')"
       );
     });
 
     it('should return correct template for YEARMONTH (No comma)', () => {
-      assert.deepEqual(
-        template(TimeUnit.YEARMONTH,'datum.x', undefined),
-        '{{datum.x | time:\'%b %Y\'}}'
+      assert.equal(
+        formatExpression(TimeUnit.YEARMONTH,'datum.x', undefined),
+        "timeFormat(datum.x, '%b %Y')"
       );
     });
 
     it('should return correct template for DAY', () => {
-      assert.deepEqual(
-        template(TimeUnit.DAY,'datum.x', undefined),
-        '{{datum.x | time:\'%A\'}}'
+      assert.equal(
+        formatExpression(TimeUnit.DAY,'datum.x', undefined),
+        "timeFormat(datum.x, '%A')"
       );
     });
 
     it('should return correct template for DAY (shortened)', () => {
-      assert.deepEqual(
-        template(TimeUnit.DAY,'datum.x', true),
-        '{{datum.x | time:\'%a\'}}'
+      assert.equal(
+        formatExpression(TimeUnit.DAY,'datum.x', true),
+        "timeFormat(datum.x, '%a')"
       );
     });
 
     it('should return correct template for QUARTER', () => {
-      assert.deepEqual(
-        template(TimeUnit.QUARTER,'datum.x', undefined),
-        'Q{{datum.x | quarter}}'
+      assert.equal(
+        formatExpression(TimeUnit.QUARTER,'datum.x', undefined),
+        "'Q' + quarter(datum.x)"
       );
     });
 
     it('should return correct template for YEARQUARTER', () => {
-      assert.deepEqual(
-        template(TimeUnit.YEARQUARTER,'datum.x', undefined),
-        'Q{{datum.x | quarter}} {{datum.x | time:\'%Y\'}}'
+      assert.equal(
+        formatExpression(TimeUnit.YEARQUARTER,'datum.x', undefined),
+        "'Q' + quarter(datum.x) + ' ' + timeFormat(datum.x, '%Y')"
       );
     });
 
     it('should return correct template for milliseconds', () => {
-      assert.deepEqual(
-        template(TimeUnit.MILLISECONDS,'datum.x', undefined),
-        '{{datum.x | time:\'%L\'}}'
+      assert.equal(
+        formatExpression(TimeUnit.MILLISECONDS,'datum.x', undefined),
+        "timeFormat(datum.x, '%L')"
       );
     });
 
     it('should return correct template for no timeUnit', () => {
-      assert.deepEqual(
-        template(undefined,'datum.x', undefined),
+      assert.equal(
+        formatExpression(undefined,'datum.x', undefined),
         undefined
       );
     });

@@ -1,37 +1,84 @@
 import {DateTime} from './datetime';
+import {contains, toSet} from './util';
 
 export namespace ScaleType {
-    export const LINEAR: 'linear' = 'linear';
-    export const LOG: 'log' = 'log';
-    export const POW: 'pow' = 'pow';
-    export const SQRT: 'sqrt' = 'sqrt';
-    export const QUANTILE: 'quantile' = 'quantile';
-    export const QUANTIZE: 'quantize' = 'quantize';
-    export const ORDINAL: 'ordinal' = 'ordinal';
-    export const TIME: 'time' = 'time';
-    export const UTC: 'utc'  = 'utc';
+  // Continuous - Quantitative
+  export const LINEAR: 'linear' = 'linear';
+  export const LOG: 'log' = 'log';
+  export const POW: 'pow' = 'pow';
+  export const SQRT: 'sqrt' = 'sqrt';
+  // Continuous - Time
+  export const TIME: 'time' = 'time';
+  export const UTC: 'utc'  = 'utc';
+  // sequential
+  export const SEQUENTIAL: 'sequential' = 'sequential';
+
+  // Quantile, Quantize, threshold
+  export const QUANTILE: 'quantile' = 'quantile';
+  export const QUANTIZE: 'quantize' = 'quantize';
+  export const THRESHOLD: 'threshold' = 'threshold';
+
+  export const ORDINAL: 'ordinal' = 'ordinal';
+  export const POINT: 'point' = 'point';
+  export const BAND: 'band' = 'band';
+
 }
 
-export type ScaleType = typeof ScaleType.LINEAR | typeof ScaleType.LOG | typeof ScaleType.POW
-  | typeof ScaleType.SQRT | typeof ScaleType.QUANTILE | typeof ScaleType.QUANTIZE
-  | typeof ScaleType.ORDINAL | typeof ScaleType.TIME | typeof ScaleType.UTC;
+export type ScaleType = typeof ScaleType.LINEAR |
+  typeof ScaleType.LOG | typeof ScaleType.POW | typeof ScaleType.SQRT |
+  typeof ScaleType.TIME | typeof ScaleType.UTC |
+  // TODO: add 'quantize', 'quantile', 'threshold' back when we really support them
+  typeof ScaleType.SEQUENTIAL | // typeof ScaleType.QUANTILE | typeof ScaleType.QUANTIZE | typeof ScaleType.THRESHOLD |
+  typeof ScaleType.ORDINAL | typeof ScaleType.POINT | typeof ScaleType.BAND;
+
+export const SCALE_TYPES: ScaleType[] = [
+  // Continuous - Quantitative
+  'linear', 'log', 'pow', 'sqrt',
+  // Continuous - Time
+  'time', 'utc',
+  // Sequential
+  'sequential', // TODO: add 'quantile', 'quantize' when we really support them
+  // Discrete
+  'ordinal', 'point', 'band',
+];
+
+export const CONTINUOUS_TO_CONTINUOUS_SCALES: ScaleType[] = ['linear', 'log', 'pow', 'sqrt', 'time', 'utc'];
+const CONTINUOUS_TO_CONTINUOUS_INDEX = toSet(CONTINUOUS_TO_CONTINUOUS_SCALES);
+
+export const CONTINUOUS_DOMAIN_SCALES: ScaleType[] = CONTINUOUS_TO_CONTINUOUS_SCALES.concat(['sequential' /* TODO add 'quantile', 'quantize', 'threshold'*/]);
+const CONTINUOUS_DOMAIN_INDEX = toSet(CONTINUOUS_DOMAIN_SCALES);
+
+export const DISCRETE_DOMAIN_SCALES: ScaleType[] = ['ordinal', 'point', 'band'];
+const DISCRETE_DOMAIN_INDEX = toSet(DISCRETE_DOMAIN_SCALES);
+
+export const TIME_SCALE_TYPES: ScaleType[] = ['time', 'utc'];
+
+export function hasDiscreteDomain(type: ScaleType): type is 'ordinal' | 'point' | 'band' {
+  return type in DISCRETE_DOMAIN_INDEX;
+}
+
+export function hasContinuousDomain(type: ScaleType):
+  type is 'linear' | 'log' | 'pow' | 'sqrt' |  'time' | 'utc'|
+          'sequential' /* TODO add | 'quantile' | 'quantize' | 'threshold' */ {
+  return type in CONTINUOUS_DOMAIN_INDEX;
+}
+
+export function isContinuousToContinuous(type: ScaleType): type is 'linear' | 'log' | 'pow' | 'sqrt' |  'time' | 'utc' {
+  return type in CONTINUOUS_TO_CONTINUOUS_INDEX;
+}
 
 export namespace NiceTime {
-    export const SECOND: 'second' = 'second';
-    export const MINUTE: 'minute' = 'minute';
-    export const HOUR: 'hour' = 'hour';
-    export const DAY: 'day' = 'day';
-    export const WEEK: 'week' = 'week';
-    export const MONTH: 'month' = 'month';
-    export const YEAR: 'year' = 'year';
+  export const SECOND: 'second' = 'second';
+  export const MINUTE: 'minute' = 'minute';
+  export const HOUR: 'hour' = 'hour';
+  export const DAY: 'day' = 'day';
+  export const WEEK: 'week' = 'week';
+  export const MONTH: 'month' = 'month';
+  export const YEAR: 'year' = 'year';
 }
 
 export type NiceTime = typeof NiceTime.SECOND | typeof NiceTime.MINUTE | typeof NiceTime.HOUR
   | typeof NiceTime.DAY | typeof NiceTime.WEEK | typeof NiceTime.MONTH | typeof NiceTime.YEAR;
-
-export const BANDSIZE_FIT: 'fit' = 'fit';
-export type BandSize = typeof BANDSIZE_FIT;
-
 
 export interface ScaleConfig {
   /**
@@ -46,28 +93,36 @@ export interface ScaleConfig {
    */
   clamp?: boolean;
   /**
-   *  Default band width for `x` ordinal scale when is mark is `text`.
+   *  Default range step for `x` ordinal scale when is mark is `text`.
    *  @minimum 0
    */
-  textBandWidth?: number;
+  textXRangeStep?: number; // FIXME: consider if we will rename this "tableColumnWidth"
   /**
-   * Default band size for (1) `y` ordinal scale,
+   * Default range step for (1) `y` ordinal scale,
    * and (2) `x` ordinal scale when the mark is not `text`.
+   *
    * @minimum 0
+   * @nullable
    */
-  bandSize?: number | BandSize;
+  rangeStep?: number | null;
+
   /**
-   * Default range for opacity.
-   */
-  opacity?: number[];
-  /**
-   * Default padding for `x` and `y` band-ordinal scales.
+   * Default inner padding for `x` and `y` band-ordinal scales.
    * @minimum 0
    * @maximum 1
    */
-  bandPadding?: number;
+  bandPaddingInner?: number;
+
   /**
-   * Default padding for `x` and `y` point-ordinal scales.
+   * Default outer padding for `x` and `y` band-ordinal scales.
+   * If not specified, by default, band scale's paddingOuter is paddingInner/2.
+   * @minimum 0
+   * @maximum 1
+   */
+  bandPaddingOuter?: number;
+
+  /**
+   * Default outer padding for `x` and `y` point-ordinal scales.
    * @minimum 0
    * @maximum 1
    */
@@ -75,7 +130,7 @@ export interface ScaleConfig {
 
   /**
    * Default spacing between faceted plots.
-   * @type {integer}
+   * @TJS-type integer
    * @minimum 0
    */
   facetSpacing?: number;
@@ -86,49 +141,39 @@ export interface ScaleConfig {
    */
   useRawDomain?: boolean;
 
-  /** Default range for nominal color scale */
-  nominalColorRange?: string | string[];
-  /** Default range for ordinal / continuous color scale */
-  sequentialColorRange?: string | string[];
-  /** Default range for shape */
-  shapeRange?: string | string[];
-
-  /** Default range for bar size scale */
-  barSizeRange?: number[];
-
-  /** Default range for font size scale */
-  fontSizeRange?: number[];
-
-  /** Default range for rule stroke widths */
-  ruleSizeRange?: number[];
-
-  /** Default range for tick spans */
-  tickSizeRange?: number[];
-
-  /** Default range for bar size scale */
-  pointSizeRange?: number[];
-
   // nice should depends on type (quantitative or temporal), so
   // let's not make a config.
 }
 
 export const defaultScaleConfig = {
   round: true,
-  textBandWidth: 90,
-  bandSize: 21,
-  pointPadding: 1,
-  bandPadding: 0.1,
+  textXRangeStep: 90,
+  rangeStep: 21,
+  pointPadding: 0.5,
+  bandPaddingInner: 0.1,
   facetSpacing: 16,
   useRawDomain: false,
-  opacity: [0.3, 0.8],
-
-  nominalColorRange: 'category10',
-  sequentialColorRange: ['#AFC6A3', '#09622A'], // tableau greens
-  shapeRange: 'shapes',
-  fontSizeRange: [8, 40],
-  ruleSizeRange: [1, 5],
-  tickSizeRange: [1, 20]
 };
+
+export interface ExtendedScheme {
+  /**
+   * Color scheme that determines output color of an ordinal/sequential color scale.
+   */
+  name: string;
+
+  // TODO: add docs
+  extent?: number[];
+
+  // TODO: add docs
+  count?: number;
+}
+
+export type Scheme = string | ExtendedScheme;
+export type Range = number[] | string[] | string;
+
+export function isExtendedScheme(scheme: string | ExtendedScheme): scheme is ExtendedScheme {
+  return scheme && !!scheme['name'];
+}
 
 export interface Scale {
   type?: ScaleType;
@@ -136,27 +181,64 @@ export interface Scale {
    * The domain of the scale, representing the set of data values. For quantitative data, this can take the form of a two-element array with minimum and maximum values. For ordinal/categorical data, this may be an array of valid input values.
    */
   domain?: number[] | string[] | DateTime[];
+
   /**
-   * The range of the scale, representing the set of visual values. For numeric values, the range can take the form of a two-element array with minimum and maximum values. For ordinal or quantized data, the range may by an array of desired output values, which are mapped to elements in the specified domain. For ordinal scales only, the range can be defined using a DataRef: the range values are then drawn dynamically from a backing data set.
+   * The range of the scale, representing the set of visual values. For numeric values, the range can take the form of a two-element array with minimum and maximum values. For ordinal or quantized data, the range may by an array of desired output values, which are mapped to elements in the specified domain.
    */
-  range?: string | number[] | string[]; // TODO: declare vgRangeDomain
+  range?: Range;
+
   /**
    * If true, rounds numeric output values to integers. This can be helpful for snapping to the pixel grid.
+   *
+   * __Default Rule:__ `true` for `"x"`, `"y"`, `"row"`, `"column"` channels if scale config's `round` is `true`; `false` otherwise.
    */
   round?: boolean;
 
   // ordinal
   /**
+   * The distance between the starts of adjacent bands or points in band or point scales.
+   * If this value is `null`, this will be determined to fit width (for x) or height (for y) of the plot.
+   * If both width and x-scale's rangeStep is provided, rangeStep will be dropped.  (The same rule is applied for height and y-scale's rangeStep.)
+   *
+   * __Default Rule:__ for `x` ordinal scale of a `text` mark, derived from [scale config](config.html#scale-config)'s `textXRangeStep`. Otherwise, derived from [scale config](config.html#scale-config)'s `rangeStep`.
+   * __Warning:__ If the cardinality of the scale domain is too high, the rangeStep might become less than one pixel and the mark might not appear correctly.
    * @minimum 0
+   * @nullable
    */
-  bandSize?: number | BandSize;
+  rangeStep?: number | null;
+
   /**
-   * Applies spacing among ordinal elements in the scale range. The actual effect depends on how the scale is configured. If the __points__ parameter is `true`, the padding value is interpreted as a multiple of the spacing between points. A reasonable value is 1.0, such that the first and last point will be offset from the minimum and maximum value by half the distance between points. Otherwise, padding is typically in the range [0, 1] and corresponds to the fraction of space in the range interval to allocate to padding. A value of 0.5 means that the range band width will be equal to the padding width. For more, see the [D3 ordinal scale documentation](https://github.com/mbostock/d3/wiki/Ordinal-Scales).
+   * Range scheme (e.g., color schemes such as "category10" or "viridis").
+   */
+  scheme?: Scheme;
+
+  /**
+   * (For `row` and `column` only) A pixel value for padding between cells in the trellis plots.
+   * @TJS-type integer
+   */
+  spacing?: number;
+
+  /**
+   * Applies spacing among ordinal elements in the scale range. The actual effect depends on how the scale is configured. If the __points__ parameter is `true`, the padding value is interpreted as a multiple of the spacing between points. A reasonable value is 1.0, such that the first and last point will be offset from the minimum and maximum value by half the distance between points. Otherwise, padding is typically in the range [0, 1] and corresponds to the fraction of space in the range interval to allocate to padding. A value of 0.5 means that the band size will be equal to the padding width. For more, see the [D3 ordinal scale documentation](https://github.com/mbostock/d3/wiki/Ordinal-Scales).
+   * A convenience property for setting the inner and outer padding to the same value.
+   * @minimum 0
+   * @maximum 1
    */
   padding?: number;
 
-  // FIXME: integrated to type when migrate to Vega 3
-  points?: boolean;
+  /**
+   * The inner padding of a band scale determines the ratio of the range that is reserved for blank space between bands. (For point scale, this property is ignored.)
+   * @minimum 0
+   * @maximum 1
+   */
+  paddingInner?: number;
+
+  /**
+   * The outer padding determines the ratio of the range that is reserved for blank space before the first and after the last bands/points.
+   * @minimum 0
+   * @maximum 1
+   */
+  paddingOuter?: number;
 
   // typical
   /**
@@ -184,4 +266,45 @@ export interface Scale {
    * This property only works with aggregate functions that produce values within the raw data domain (`"mean"`, `"average"`, `"stdev"`, `"stdevp"`, `"median"`, `"q1"`, `"q3"`, `"min"`, `"max"`). For other aggregations that produce values outside of the raw data domain (e.g. `"count"`, `"sum"`), this property is ignored.
    */
   useRawDomain?: boolean;
+}
+
+export const SCALE_PROPERTIES = [
+  'type', 'domain', 'range', 'round', 'rangeStep', 'scheme', 'padding', 'clamp', 'nice',
+  'exponent', 'zero',
+  // TODO: add interpolate here
+  // FIXME: determine if 'useRawDomain' should really be included here
+  'useRawDomain'
+];
+
+export function scaleTypeSupportProperty(scaleType: ScaleType, propName: string) {
+  switch (propName) {
+    case 'type':
+    case 'domain':
+    case 'range':
+    case 'scheme':
+      return true;
+    case 'round':
+      return isContinuousToContinuous(scaleType) || scaleType === 'band' || scaleType === 'point';
+    case 'rangeStep':
+    case 'padding':
+    case 'paddingOuter':
+      return contains(['point', 'band'], scaleType);
+    case 'paddingInner':
+      return scaleType === 'band';
+    case 'clamp':
+      return isContinuousToContinuous(scaleType) || scaleType === 'sequential';
+    case 'nice':
+      return isContinuousToContinuous(scaleType) || scaleType === 'sequential' || scaleType as any === 'quantize';
+    case 'exponent':
+      return scaleType === 'pow';
+    case 'zero':
+      // TODO: what about quantize, threshold?
+      return !hasDiscreteDomain(scaleType) && !contains(['log', 'time', 'utc'], scaleType);
+
+    case 'useRawDomain':
+      // TODO: 'quantize', 'quantile', 'threshold'
+      return isContinuousToContinuous(scaleType) || contains(['quantize', 'quantile', 'threshold'], scaleType);
+  }
+  /* istanbul ignore next: should never reach here*/
+  throw new Error(`Invalid scale property ${propName}.`);
 }

@@ -8,13 +8,13 @@ export function mockDataComponent(): DataComponent {
     nullFilter: null,
     filter: null,
     nonPositiveFilter: null,
+    pathOrder: null,
 
     source: null,
     bin: null,
     calculate: null,
     timeUnit: null,
     summary: null,
-    stackScale: null,
-    colorRank: null
+    stack: null
   };
 }

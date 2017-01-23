@@ -9,5 +9,5 @@
       "aggregate": "sum", "field": "people", "type": "quantitative",
       "axis": {"title": "population"}}
   },
-  "config": {"scale": {"bandSize": 21}}
+  "config": {"scale": {"rangeStep": 21}}
 }

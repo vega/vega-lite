@@ -1,3 +1,5 @@
+import {DataComponentCompiler} from './base';
+
 import {Formula} from '../../transform';
 import {extend, vals, hash, Dict} from '../../util';
 
@@ -5,17 +7,17 @@ import {FacetModel} from './../facet';
 import {LayerModel} from './../layer';
 import {Model} from './../model';
 
-export namespace formula {
-  function parse(model: Model): Dict<Formula> {
-    return (model.calculate() || []).reduce(function(formulaComponent, formula) {
-      formulaComponent[hash(formula)] = formula;
-      return formulaComponent;
-    }, {} as Dict<Formula>);
-  }
+function parse(model: Model): Dict<Formula> {
+  return (model.calculate() || []).reduce(function(formulaComponent, formula) {
+    formulaComponent[hash(formula)] = formula;
+    return formulaComponent;
+  }, {});
+}
 
-  export const parseUnit: (model: Model) => Dict<Formula> = parse;
+export const formula: DataComponentCompiler<Dict<Formula>> = {
+  parseUnit: parse,
 
-  export function parseFacet(model: FacetModel): Dict<Formula> {
+  parseFacet: function(model: FacetModel): Dict<Formula> {
     let formulaComponent = parse(model);
 
     const childDataComponent = model.child().component.data;
@@ -26,9 +28,9 @@ export namespace formula {
       delete childDataComponent.calculate;
     }
     return formulaComponent;
-  }
+  },
 
-  export function parseLayer(model: LayerModel): Dict<Formula> {
+  parseLayer: function(model: LayerModel): Dict<Formula> {
     let formulaComponent = parse(model);
     model.children().forEach((child) => {
       const childDataComponent = child.component.data;
@@ -38,12 +40,12 @@ export namespace formula {
       }
     });
     return formulaComponent;
-  }
+  },
 
-  export function assemble(component: Dict<Formula>) {
-    return vals(component).reduce(function(transform: any, formula: any) {
-      transform.push(extend({ type: 'formula' }, formula));
+  assemble: function(component: Dict<Formula>) {
+    return vals(component).reduce(function(transform: any, f: any) {
+      transform.push(extend({ type: 'formula' }, f));
       return transform;
     }, []);
   }
-}
+};

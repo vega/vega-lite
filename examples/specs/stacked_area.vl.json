@@ -11,7 +11,7 @@
     "y": {
       "aggregate": "sum", "field": "count","type": "quantitative"
     },
-    "color": {"field":"series", "type":"nominal", "scale":{"range": "category20b"}}
+    "color": {"field":"series", "type":"nominal", "scale":{"scheme": "category20b"}}
   },
   "config": {"cell": {"width": 300, "height": 200}}
 }
