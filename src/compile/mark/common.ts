@@ -21,8 +21,8 @@ export function applyColorAndOpacity(e: VgEncodeEntry, model: UnitModel) {
     applyMarkConfig(e, model, STROKE_CONFIG);
   }
 
-  let colorRef= ref.midPoint('color', model.encoding().color, model.scaleName('color'), model.scale('color'), undefined);
-  let opacityRef = ref.midPoint('opacity', model.encoding().opacity, model.scaleName('opacity'), model.scale('opacity'), {value: config.mark.opacity});
+  let colorRef = ref.midPoint('color', model.encoding().color, model.scaleName('color'), model.scale('color'), undefined);
+  let opacityRef = ref.midPoint('opacity', model.encoding().opacity, model.scaleName('opacity'), model.scale('opacity'), config.mark.opacity && {value: config.mark.opacity});
 
   if (colorRef !== undefined) {
     if (filled) {
@@ -42,7 +42,7 @@ export function applyColorAndOpacity(e: VgEncodeEntry, model: UnitModel) {
     e.fill = {value: 'transparent'};
   }
 
-  if (opacityRef !== undefined) {
+  if (opacityRef) {
     e.opacity = opacityRef;
   }
 }
