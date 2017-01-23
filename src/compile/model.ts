@@ -13,18 +13,13 @@ import {BaseSpec, Padding} from '../spec';
 import {Transform} from '../transform';
 import {extend, flatten, vals, Dict} from '../util';
 import {VgData, VgEncodeEntry, VgScale, VgAxis, VgLegend} from '../vega.schema';
+import {Formula} from '../transform';
+import {OneOfFilter, EqualFilter, RangeFilter} from '../filter';
 
 import {DataComponent} from './data/data';
 import {LayoutComponent} from './layout';
 import {ScaleComponents, BIN_LEGEND_SUFFIX, BIN_LEGEND_LABEL_SUFFIX} from './scale/scale';
 import {StackProperties} from '../stack';
-
-/* tslint:disable:no-unused-variable */
-// These imports exist so the TS compiler can name publicly exported members in
-// The automatically created .d.ts correctly
-import {Formula} from '../transform';
-import {OneOfFilter, EqualFilter, RangeFilter} from '../filter';
-/* tslint:enable:no-unused-variable */
 
 
 /**
@@ -312,7 +307,7 @@ export abstract class Model {
   public abstract dataTable(): string;
 
   // TRANSFORMS
-  public calculate() {
+  public calculate(): Formula[] {
     return this._transform ? this._transform.calculate : undefined;
   }
 
@@ -324,7 +319,7 @@ export abstract class Model {
     return transform.filterInvalid;
   }
 
-  public filter() {
+  public filter(): string | OneOfFilter | EqualFilter| RangeFilter | (string | OneOfFilter | EqualFilter| RangeFilter)[] {
     return this._transform ? this._transform.filter : undefined;
   }
 

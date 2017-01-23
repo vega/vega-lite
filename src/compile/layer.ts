@@ -87,7 +87,7 @@ export class LayerModel extends Model {
     return this._height;
   }
 
-  public channelHasField(channel: Channel): boolean {
+  public channelHasField(_: Channel): boolean {
     // layer does not have any channels
     return false;
   }
@@ -106,7 +106,7 @@ export class LayerModel extends Model {
     return this._children[0].dataTable();
   }
 
-  public fieldDef(channel: Channel): FieldDef {
+  public fieldDef(_: Channel): FieldDef {
     return null; // layer does not have field defs
   }
 
@@ -128,7 +128,7 @@ export class LayerModel extends Model {
 
   public parseLayoutData() {
     // TODO: correctly union ordinal scales rather than just using the layout of the first child
-    this._children.forEach((child, i) => {
+    this._children.forEach(child => {
       child.parseLayoutData();
     });
     this.component.layout = parseLayerLayout(this);

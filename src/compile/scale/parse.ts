@@ -30,12 +30,12 @@ export function parseScale(model: Model, channel: Channel) {
    if (model.scale(channel)) {
     const fieldDef = model.fieldDef(channel);
     const scales: ScaleComponents = {
-      main: parseMainScale(model, fieldDef, channel)
+      main: parseMainScale(model, channel)
     };
 
     // Add additional scale needed for the labels in the binned legend.
     if (model.legend(channel) && fieldDef.bin && hasContinuousDomain(model.scale(channel).type)) {
-      scales.binLegend = parseBinLegend(channel, model, fieldDef);
+      scales.binLegend = parseBinLegend(channel, model);
       scales.binLegendLabel = parseBinLegendLabel(channel, model, fieldDef);
     }
 
@@ -49,7 +49,7 @@ export function parseScale(model: Model, channel: Channel) {
 /**
  * Return the main scale for each channel.  (Only color can have multiple scales.)
  */
-function parseMainScale(model: Model, fieldDef: FieldDef, channel: Channel) {
+function parseMainScale(model: Model, channel: Channel) {
   const scale = model.scale(channel);
   const sort = model.sort(channel);
 
@@ -90,7 +90,7 @@ function parseMainScale(model: Model, fieldDef: FieldDef, channel: Channel) {
 /**
  * Return additional scale to drive legend when we use a continuous scale and binning.
  */
-function parseBinLegend(channel: Channel, model: Model, fieldDef: FieldDef): ScaleComponent {
+function parseBinLegend(channel: Channel, model: Model): ScaleComponent {
   return {
     name: model.scaleName(channel, true) + BIN_LEGEND_SUFFIX,
     type: ScaleType.POINT,

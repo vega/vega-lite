@@ -81,15 +81,15 @@ export function reset() {
   return current;
 }
 
-export function warn(...args: any[]) {
+export function warn(..._: any[]) {
   current.warn.apply(current, arguments);
 }
 
-export function info(...args: any[]) {
+export function info(..._: any[]) {
   current.info.apply(current, arguments);
 }
 
-export function debug(...args: any[]) {
+export function debug(..._: any[]) {
   current.debug.apply(current, arguments);
 }
 

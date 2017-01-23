@@ -52,7 +52,7 @@ export class FacetModel extends Model {
     const child  = this._child = buildModel(spec.spec, this, this.name('child'));
 
     const facet  = this._facet = this._initFacet(spec.facet);
-    this._scale  = this._initScaleAndSpacing(facet, config, child);
+    this._scale  = this._initScaleAndSpacing(facet, config);
     this._axis   = this._initAxis(facet, config, child);
     this._legend = {};
   }
@@ -91,7 +91,7 @@ export class FacetModel extends Model {
     return facet;
   }
 
-  private _initScaleAndSpacing(facet: Facet, config: Config, child: Model): Dict<Scale> {
+  private _initScaleAndSpacing(facet: Facet, config: Config): Dict<Scale> {
     const model = this;
     return [ROW, COLUMN].reduce(function(_scale, channel) {
       if (facet[channel]) {
@@ -152,8 +152,8 @@ export class FacetModel extends Model {
 
   private hasSummary() {
     const summary = this.component.data.summary;
-    for (let i = 0 ; i < summary.length ; i++) {
-      if (keys(summary[i].measures).length > 0) {
+    for (const s of summary) {
+      if (keys(s.measures).length > 0) {
         return true;
       }
     }

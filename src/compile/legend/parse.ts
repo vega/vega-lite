@@ -10,12 +10,6 @@ import {UnitModel} from '../unit';
 import * as encode from './encode';
 import * as rules from './rules';
 
-/* tslint:disable:no-unused-variable */
-// These imports exist so the TS compiler can name publicly exported members in
-// The automatically created .d.ts correctly
-import {Bin} from '../../bin';
-/* tslint:enable:no-unused-variable */
-
 export function parseLegendComponent(model: UnitModel): Dict<VgLegend> {
   return [COLOR, SIZE, SHAPE, OPACITY].reduce(function(legendComponent, channel) {
     if (model.legend(channel)) {

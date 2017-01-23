@@ -92,8 +92,8 @@ export function flatten(arrays: any[]) {
 }
 
 export function mergeDeep(dest: any, ...src: any[]) {
-  for (let i = 0; i < src.length; i++) {
-    dest = deepMerge_(dest, src[i]);
+  for (const s of src) {
+    dest = deepMerge_(dest, s);
   }
   return dest;
 };
@@ -124,14 +124,14 @@ function deepMerge_(dest: any, src: any) {
 
 export function unique<T>(values: T[], f: (item: T) => string) {
   let results: any[] = [];
-  var u = {}, v: string, i: number, n: number;
-  for (i = 0, n = values.length; i < n; ++i) {
-    v = f(values[i]);
+  let u = {}, v: string;
+  for (const val of values) {
+    v = f(val);
     if (v in u) {
       continue;
     }
     u[v] = 1;
-    results.push(values[i]);
+    results.push(val);
   }
   return results;
 };

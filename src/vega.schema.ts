@@ -20,7 +20,7 @@ export type VgFieldRef = string | VgParentRef | VgParentRef[];
 export type VgSortField = boolean | {
   field: VgFieldRef,
   op: string
-}
+};
 
 export type VgDataRef = {
   data: string,
@@ -41,14 +41,14 @@ export type VgValueRef = {
   mult?: number,
   offset?: number | VgValueRef,
   band?: boolean | number
-}
+};
 
 export type DataRefUnionDomain = {
   fields: VgDataRef[],
   sort?: boolean | {
     op: 'count'
   }
-}
+};
 
 export type FieldRefUnionDomain = {
   data: string,
@@ -83,7 +83,7 @@ export type VgScale = {
   reverse?: boolean,
   round?: boolean,
   zero?: boolean
-}
+};
 
 export function isDataRefUnionedDomain(domain: VgDomain): domain is DataRefUnionDomain {
   if (!isArray(domain)) {

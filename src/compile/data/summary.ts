@@ -1,5 +1,4 @@
 import {AggregateOp} from '../../aggregate';
-import {Channel} from '../../channel';
 import {SUMMARY} from '../../data';
 import {field, FieldDef} from '../../fielddef';
 import {keys, vals, reduce, hash, Dict, StringSet} from '../../util';
@@ -36,7 +35,7 @@ export namespace summary {
     /* dictionary mapping field name => dict set of aggregation functions */
     let meas: Dict<StringSet> = {};
 
-    model.forEach(function(fieldDef: FieldDef, channel: Channel) {
+    model.forEach(function(fieldDef: FieldDef) {
       if (fieldDef.aggregate) {
         if (fieldDef.aggregate === AggregateOp.COUNT) {
           meas['*'] = meas['*'] || {};

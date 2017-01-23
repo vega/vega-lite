@@ -1,4 +1,4 @@
-import {X, Y, COLOR, TEXT, NONSPATIAL_CHANNELS, Channel} from '../../channel';
+import {X, Y, COLOR, NONSPATIAL_CHANNELS, Channel} from '../../channel';
 import {AREA, LINE, TEXT as TEXTMARK} from '../../mark';
 import {contains, without} from '../../util';
 

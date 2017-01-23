@@ -20,7 +20,7 @@ export type ScaleComponents = {
   main: ScaleComponent;
   binLegend?: ScaleComponent;
   binLegendLabel?: ScaleComponent;
-}
+};
 
 export function channelScalePropertyIncompatability(channel: Channel, propName: string): string {
   switch (propName) {

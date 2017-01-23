@@ -2,7 +2,6 @@
 
 import {assert} from 'chai';
 import {parseUnitModel} from '../../util';
-import * as log from '../../../src/log';
 import {defaultBarConfig} from '../../../src/mark';
 import {defaultScaleConfig} from '../../../src/scale';
 import {bar} from '../../../src/compile/mark/bar';
@@ -405,22 +404,20 @@ describe('Mark: Bar', function() {
     // This is generally a terrible idea, but we should still test
     // if the output show expected results
     it('should produce vertical bar using x, x2', function() {
-      log.runLocalLogger((localLogger) => {
-        const model = parseUnitModel({
-          "data": {"url": 'data/cars.json'},
-          "mark": "bar",
-          "encoding": {
-            "x": {"field": 'Origin', "type": "nominal"},
-            "y": {"field": 'Cylinders', "type": "ordinal"}
-          }
-        });
-        const props = bar.encodeEntry(model);
-
-        assert.deepEqual(props.xc, {scale: 'x', field: 'Origin'});
-        assert.deepEqual(props.width, {value: 20 });
-        assert.deepEqual(props.yc, {scale: 'y', field: 'Cylinders'});
-        assert.deepEqual(props.height, {value: 20});
+      const model = parseUnitModel({
+        "data": {"url": 'data/cars.json'},
+        "mark": "bar",
+        "encoding": {
+          "x": {"field": 'Origin', "type": "nominal"},
+          "y": {"field": 'Cylinders', "type": "ordinal"}
+        }
       });
+      const props = bar.encodeEntry(model);
+
+      assert.deepEqual(props.xc, {scale: 'x', field: 'Origin'});
+      assert.deepEqual(props.width, {value: 20 });
+      assert.deepEqual(props.yc, {scale: 'y', field: 'Cylinders'});
+      assert.deepEqual(props.height, {value: 20});
     });
   });
 
