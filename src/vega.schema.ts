@@ -43,13 +43,15 @@ export type VgValueRef = {
   band?: boolean | number
 };
 
+// TODO: add vg prefix
 export type DataRefUnionDomain = {
-  fields: VgDataRef[],
+  fields: (any[] | VgDataRef)[],
   sort?: boolean | {
     op: 'count'
   }
 };
 
+// TODO: add vg prefix
 export type FieldRefUnionDomain = {
   data: string,
   fields: VgFieldRef[],
@@ -59,7 +61,7 @@ export type FieldRefUnionDomain = {
 };
 
 export type VgRangeScheme = {scheme: string, extent?: number[], count?: number};
-export type VgRange = string | VgDataRef | (number|string|VgDataRef)[] | VgRangeScheme;
+export type VgRange = string | VgDataRef | (number|string|VgDataRef)[] | VgRangeScheme | {step: number};
 
 export type VgDomain = any[] | DataRefUnionDomain | FieldRefUnionDomain | VgDataRef;
 
@@ -74,7 +76,6 @@ export type VgScale = {
   rangeMax?: any,
   scheme?: string,
 
-  rangeStep?: number,
   clamp?: boolean,
   exponent?: number,
   nice?: boolean | NiceTime,
