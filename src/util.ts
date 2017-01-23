@@ -47,9 +47,7 @@ export function contains<T>(array: Array<T>, item: T) {
 
 /** Returns the array without the elements in item */
 export function without<T>(array: Array<T>, excludedItems: Array<T>) {
-  return array.filter(function(item) {
-    return !contains(excludedItems, item);
-  });
+  return array.filter(item => !contains(excludedItems, item));
 }
 
 export function union<T>(array: Array<T>, other: Array<T>) {
