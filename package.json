@@ -7,6 +7,7 @@
     "Dominik Moritz <domoritz@cs.washington.edu> (http://www.domoritz.de)",
     "Jeffrey Heer <jheer@uw.edu> (http://jheer.org)"
   ],
+  "homepage": "https://vega.github.io/vega-lite/",
   "description": "Vega-lite provides a higher-level grammar for visual analysis, comparable to ggplot or Tableau, that generates complete Vega specifications.",
   "main": "src/vl.js",
   "types": "src/vl.d.ts",

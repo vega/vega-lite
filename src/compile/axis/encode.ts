@@ -7,7 +7,7 @@ import {timeFormatExpression} from '../common';
 import {Model} from '../model';
 
 // TODO: @yuhanlu -- please change method signature to require only what are really needed
-export function domain(model: Model, channel: Channel, domainPropsSpec: any, def?: VgAxis) {
+export function domain(model: Model, channel: Channel, domainPropsSpec: any, _?: VgAxis) {
   const axis = model.axis(channel);
 
   return extend(
@@ -22,7 +22,7 @@ export function domain(model: Model, channel: Channel, domainPropsSpec: any, def
 }
 
 // TODO: @yuhanlu -- please change method signature to require only what are really needed
-export function grid(model: Model, channel: Channel, gridPropsSpec: any, def?: VgAxis) {
+export function grid(model: Model, channel: Channel, gridPropsSpec: any, _?: VgAxis) {
   const axis = model.axis(channel);
 
   return extend(
@@ -114,7 +114,7 @@ export function labels(model: Model, channel: Channel, labelsSpec: any, def: VgA
 }
 
 // TODO: @yuhanlu -- please change method signature to require only what are really needed
-export function ticks(model: Model, channel: Channel, ticksPropsSpec: any, def?: VgAxis) {
+export function ticks(model: Model, channel: Channel, ticksPropsSpec: any, _?: VgAxis) {
   const axis = model.axis(channel);
 
   return extend(
@@ -125,7 +125,7 @@ export function ticks(model: Model, channel: Channel, ticksPropsSpec: any, def?:
 }
 
 // TODO: @yuhanlu -- please change method signature to require only what are really needed
-export function title(model: Model, channel: Channel, titlePropsSpec: any, def?: VgAxis) {
+export function title(model: Model, channel: Channel, titlePropsSpec: any, _?: VgAxis) {
   const axis = model.axis(channel);
 
   return extend(
