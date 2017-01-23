@@ -17,7 +17,7 @@ export type VgParentRef = {
 
 export type VgFieldRef = string | VgParentRef | VgParentRef[];
 
-export type VgOpSort = boolean | {
+export type VgSortField = boolean | {
   field: VgFieldRef,
   op: string
 }
@@ -25,7 +25,7 @@ export type VgOpSort = boolean | {
 export type VgDataRef = {
   data: string,
   field: VgFieldRef,
-  sort?: VgOpSort
+  sort?: VgSortField
 };
 
 // TODO: add type of value (Make it VgValueRef<T> { value?:T ... })
@@ -43,7 +43,7 @@ export type VgValueRef = {
   band?: boolean | number
 }
 
-export type DataRefUnionedDomain = {
+export type DataRefUnionDomain = {
   fields: VgDataRef[],
   sort?: boolean | {
     op: 'count'
@@ -61,7 +61,7 @@ export type FieldRefUnionDomain = {
 export type VgRangeScheme = {scheme: string, extent?: number[], count?: number};
 export type VgRange = string | VgDataRef | (number|string|VgDataRef)[] | VgRangeScheme;
 
-export type VgDomain = any[] | DataRefUnionedDomain | FieldRefUnionDomain | VgDataRef;
+export type VgDomain = any[] | DataRefUnionDomain | FieldRefUnionDomain | VgDataRef;
 
 export type VgScale = {
   name: string,
@@ -85,14 +85,14 @@ export type VgScale = {
   zero?: boolean
 }
 
-export function isDataRefUnionedDomainDomain(domain: VgDomain): domain is DataRefUnionedDomain {
+export function isDataRefUnionedDomain(domain: VgDomain): domain is DataRefUnionDomain {
   if (!isArray(domain)) {
     return 'fields' in domain && !('data' in domain);
   }
   return false;
 }
 
-export function isFieldRefUnionDomainDomain(domain: VgDomain): domain is FieldRefUnionDomain {
+export function isFieldRefUnionDomain(domain: VgDomain): domain is FieldRefUnionDomain {
   if (!isArray(domain)) {
     return 'fields' in domain && 'data' in domain;
   }

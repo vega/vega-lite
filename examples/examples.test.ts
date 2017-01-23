@@ -12,8 +12,7 @@ const vgSchema = require('vega/build/vega-schema.json');
 const ajv = new Ajv({
   validateSchema: false,
   extendRefs: true,
-  allErrors: true,
-  verbose: true
+  allErrors: true
 });
 const validateVl = ajv.compile(vlSchema);
 const validateVg = ajv.compile(vgSchema);

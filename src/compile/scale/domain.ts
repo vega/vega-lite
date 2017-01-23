@@ -6,7 +6,7 @@ import {DateTime, isDateTime, timestamp} from '../../datetime';
 import {Scale, ScaleType, hasDiscreteDomain} from '../../scale';
 import {isSortField, SortOrder} from '../../sort';
 import {StackOffset} from '../../stack';
-import {VgDomain, VgOpSort} from '../../vega.schema';
+import {VgDomain, VgSortField} from '../../vega.schema';
 
 import * as util from '../../util';
 
@@ -110,7 +110,7 @@ export default function domain(scale: Scale, model: Model, channel:Channel): VgD
   }
 }
 
-export function domainSort(model: Model, channel: Channel, scaleType: ScaleType): VgOpSort {
+export function domainSort(model: Model, channel: Channel, scaleType: ScaleType): VgSortField {
   if (!hasDiscreteDomain(scaleType)) {
     return undefined;
   }
