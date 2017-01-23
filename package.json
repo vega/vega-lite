@@ -40,7 +40,7 @@
     "test": "nyc --reporter=html --reporter=text-summary mocha",
     "posttest": "npm run lint && npm run test:examples",
     "test:examples": "npm run schema && mocha examples",
-    "test:noschema": "npm run pretest && nyc --reporter=html --reporter=text-summary mocha && npm run lint # && mocha examples",
+    "test:noschema": "npm run pretest && nyc --reporter=html --reporter=text-summary mocha && npm run lint && mocha examples",
     "codecov": "nyc report --reporter=json && codecov -f coverage/*.json",
     "test:debug": "npm run schema && mocha --debug-brk test examples",
     "watch:build": "watchify src/vl.ts -p tsify -v -d -s vl -o 'exorcist vega-lite.js.map > vega-lite.js'",
