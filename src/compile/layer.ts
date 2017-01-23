@@ -7,7 +7,7 @@ import {LayerSpec} from '../spec';
 import {StackProperties} from '../stack';
 import {FILL_STROKE_CONFIG} from '../mark';
 import {keys, duplicate, mergeDeep, flatten, unique, isArray, vals, hash} from '../util';
-import {VgData, isDataRefUnionedDomainDomain, isFieldRefUnionDomainDomain, isDataRefDomain, VgDataRef, VgEncodeEntry, DataRefUnionedDomain, FieldRefUnionDomain} from '../vega.schema';
+import {VgData, isDataRefUnionedDomain, isFieldRefUnionDomain, isDataRefDomain, VgDataRef, VgEncodeEntry, DataRefUnionDomain, FieldRefUnionDomain} from '../vega.schema';
 
 import {assembleData, parseLayerData} from './data/data';
 import {assembleLayout, parseLayerLayout} from './layout';
@@ -111,18 +111,18 @@ export class LayerModel extends Model {
    * Convert the domain to an array of data refs. Also, thorw away sorting information
    * since we always sort the domain when we union two domains.
    */
-  private static normalizeDomain(domain: DataRefUnionedDomain | FieldRefUnionDomain | VgDataRef): VgDataRef[] {
+  private static normalizeDomain(domain: DataRefUnionDomain | FieldRefUnionDomain | VgDataRef): VgDataRef[] {
     if (isDataRefDomain(domain)) {
       delete domain.sort;
       return [domain];
-    } else if(isFieldRefUnionDomainDomain(domain)) {
+    } else if(isFieldRefUnionDomain(domain)) {
       return domain.fields.map(d => {
         return {
           data: domain.data,
           field: d
         };
       });
-    } else if (isDataRefUnionedDomainDomain(domain)) {
+    } else if (isDataRefUnionedDomain(domain)) {
       return domain.fields.map(d => {
         return {
           field: d.field,
