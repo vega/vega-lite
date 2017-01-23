@@ -112,9 +112,7 @@ export class LayerModel extends Model {
    * since we always sort the domain when we union two domains.
    */
   private static normalizeDomain(domain: DataRefUnionedDomain | FieldRefUnionDomain | VgDataRef): VgDataRef[] {
-    if (isArray(domain)) {
-      return domain;
-    } else if (isDataRefDomain(domain)) {
+    if (isDataRefDomain(domain)) {
       delete domain.sort;
       return [domain];
     } else if(isFieldRefUnionDomainDomain(domain)) {
