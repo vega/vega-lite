@@ -1,6 +1,5 @@
 import {DataComponentCompiler} from './base';
 
-import {Channel} from '../../channel';
 import {field, FieldDef} from '../../fielddef';
 import {fieldExpr} from '../../timeunit';
 import {TEMPORAL} from '../../type';
@@ -12,7 +11,7 @@ import {LayerModel} from '../layer';
 import {Model} from '../model';
 
 function parse(model: Model): Dict<VgFormulaTransform> {
-  return model.reduce(function(timeUnitComponent: Dict<VgFormulaTransform>, fieldDef: FieldDef, channel: Channel) {
+  return model.reduce(function(timeUnitComponent: Dict<VgFormulaTransform>, fieldDef: FieldDef) {
     if (fieldDef.type === TEMPORAL && fieldDef.timeUnit) {
 
       const hash = field(fieldDef);

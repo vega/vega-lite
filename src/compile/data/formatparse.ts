@@ -23,7 +23,7 @@ function parse(model: Model): Dict<string> {
   if (!isArray(filter)) {
     filter = [filter];
   }
-  filter.forEach((f) => {
+  filter.forEach(f => {
     let val: string | number | boolean | DateTime = null;
     // For EqualFilter, just use the equal property.
     // For RangeFilter and OneOfFilter, all array members should have

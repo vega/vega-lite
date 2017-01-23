@@ -35,9 +35,7 @@ export function assembleLayout(model: Model, layoutData: VgData[]): VgData[] {
   if (true) { // if both are shared scale, we can simply merge data source for width and for height
     const distinctFields = keys(extend(layoutComponent.width.distinct, layoutComponent.height.distinct));
     const formula = layoutComponent.width.formula.concat(layoutComponent.height.formula)
-      .map(function(formula) {
-        return extend({type: 'formula'}, formula);
-      });
+      .map(f => extend({type: 'formula'}, f));
 
     return [
       distinctFields.length > 0 ? {

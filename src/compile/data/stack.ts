@@ -123,7 +123,7 @@ export const stack: DataComponentCompiler<StackComponent> = {
     };
   },
 
-  parseLayer: function(model: LayerModel): StackComponent {
+  parseLayer: function(_: LayerModel): StackComponent {
     // FIXME: merge if identical
     // FIXME: Correctly support facet of layer of stack.
     return undefined;

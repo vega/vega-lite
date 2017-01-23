@@ -368,7 +368,7 @@ export function normalizeOverlay(spec: UnitSpec, overlayWithPoint: boolean, over
 function accumulate(dict: any, fieldDefs: FieldDef[]): any {
   fieldDefs.forEach(function(fieldDef) {
     // Consider only pure fieldDef properties (ignoring scale, axis, legend)
-    var pureFieldDef = ['field', 'type', 'value', 'timeUnit', 'bin', 'aggregate'].reduce((f, key) => {
+    const pureFieldDef = ['field', 'type', 'value', 'timeUnit', 'bin', 'aggregate'].reduce((f, key) => {
       if (fieldDef[key] !== undefined) {
         f[key] = fieldDef[key];
       }

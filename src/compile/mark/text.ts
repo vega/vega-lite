@@ -54,7 +54,7 @@ export const text: TextCompiler = {
        {value: config.text.fontSize}
     );
 
-    e.text = textRef(textDef, model.scaleName(TEXT), config);
+    e.text = textRef(textDef, config);
 
     if (model.config().text.applyColorToBackground &&
         !model.channelHasField(X) &&
@@ -79,7 +79,7 @@ function xDefault(config: Config, textDef: ChannelDef): VgValueRef {
   return { value: config.scale.textXRangeStep / 2 };
 }
 
-function textRef(textDef: ChannelDef, scaleName: string, config: Config): VgValueRef {
+function textRef(textDef: ChannelDef, config: Config): VgValueRef {
   // text
   if (textDef) {
     if (isFieldDef(textDef)) {
