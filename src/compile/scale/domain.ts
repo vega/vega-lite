@@ -6,13 +6,13 @@ import {DateTime, isDateTime, timestamp} from '../../datetime';
 import {Scale, ScaleType, hasDiscreteDomain} from '../../scale';
 import {isSortField, SortOrder} from '../../sort';
 import {StackOffset} from '../../stack';
-import {VgDomain, VgSortField} from '../../vega.schema';
+import {VgDataRef, FieldRefUnionDomain, VgSortField} from '../../vega.schema';
 
 import * as util from '../../util';
 
 import {Model} from '../model';
 
-export default function domain(scale: Scale, model: Model, channel:Channel): VgDomain {
+export default function domain(scale: Scale, model: Model, channel:Channel): any[] | VgDataRef | FieldRefUnionDomain {
   const fieldDef = model.fieldDef(channel);
 
   if (scale.domain) { // explicit value
