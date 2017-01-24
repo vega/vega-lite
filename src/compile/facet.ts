@@ -34,11 +34,11 @@ export const COLUMN_AXES_DATA_PREFIX = 'column-';
 export const ROW_AXES_DATA_PREFIX = 'row-';
 
 export class FacetModel extends Model {
-  private _facet: Facet;
+  private readonly _facet: Facet;
 
-  private _child: Model;
+  private readonly _child: Model;
 
-  private _spacing: {
+  private readonly _spacing: {
     row?: number;
     column?: number;
   } = {};

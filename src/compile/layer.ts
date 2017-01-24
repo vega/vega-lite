@@ -52,14 +52,14 @@ export class LayerModel extends Model {
    * If undefined (e.g., for ordinal scale), the width of the
    * visualization will be calculated dynamically.
    */
-  private _width: number;
+  private readonly _width: number;
 
   /**
    * Fixed height for the unit visualization.
    * If undefined (e.g., for ordinal scale), the height of the
    * visualization will be calculated dynamically.
    */
-  private _height: number;
+  private readonly _height: number;
 
 
   constructor(spec: LayerSpec, parent: Model, parentGivenName: string) {

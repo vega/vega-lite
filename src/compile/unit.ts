@@ -44,9 +44,9 @@ export class UnitModel extends Model {
    */
   private _height: number;
 
-  private _mark: Mark;
-  private _encoding: Encoding;
-  private _stack: StackProperties;
+  private readonly _mark: Mark;
+  private readonly _encoding: Encoding;
+  private readonly _stack: StackProperties;
 
   constructor(spec: ExtendedUnitSpec, parent: Model, parentGivenName: string) {
     super(spec, parent, parentGivenName);
