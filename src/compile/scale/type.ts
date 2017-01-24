@@ -155,7 +155,6 @@ export function channelRangeType(channel: Channel):
     case 'x2':
     case 'y2':
     case 'detail':
-    case 'label':
     case 'text':
     case 'order':
       return undefined;
