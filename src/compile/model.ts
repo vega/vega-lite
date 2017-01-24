@@ -81,12 +81,12 @@ export interface NameMapInterface {
 }
 
 export abstract class Model {
-  protected _parent: Model;
-  protected _name: string;
-  protected _description: string;
-  protected _padding: Padding;
+  protected readonly _parent: Model;
+  protected readonly _name: string;
+  protected readonly _description: string;
+  protected readonly _padding: Padding;
 
-  protected _data: Data;
+  protected readonly _data: Data;
 
   /** Name map for data sources, which can be renamed by a model's parent. */
   protected _dataNameMap: NameMapInterface;
@@ -97,7 +97,7 @@ export abstract class Model {
   /** Name map for size, which can be renamed by a model's parent. */
   protected _sizeNameMap: NameMapInterface;
 
-  protected _transform: Transform;
+  protected readonly _transform: Transform;
   protected _scale: Dict<Scale> = {};
 
   protected _axis: Dict<Axis> = {};
