@@ -1,5 +1,5 @@
 // utility for encoding mapping
-import {FieldDef, PositionFieldDef, FacetFieldDef, LegendFieldDef, OrderFieldDef, ValueDef} from './fielddef';
+import {FieldDef, PositionFieldDef, FacetFieldDef, LegendFieldDef, OrderFieldDef, ValueDef, isFieldDef} from './fielddef';
 import {Channel, CHANNELS} from './channel';
 import {isArray, some} from './util';
 
@@ -94,7 +94,7 @@ export function channelHasField(encoding: Encoding, channel: Channel): boolean {
     if (isArray(channelDef)) {
       return some(channelDef, (fieldDef) => !!fieldDef.field);
     } else {
-      return !!channelDef.field;
+      return isFieldDef(channelDef);
     }
   }
   return false;
@@ -107,7 +107,7 @@ export function isAggregate(encoding: Encoding) {
       if (isArray(channelDef)) {
         return some(channelDef, (fieldDef) => !!fieldDef.aggregate);
       } else {
-        return !!channelDef.aggregate;
+        return isFieldDef(channelDef) && !!channelDef.aggregate;
       }
     }
     return false;

@@ -26,14 +26,13 @@ export namespace Channel {
 
   // Non-scale channel
   export const TEXT: 'text' = 'text';
-  export const LABEL: 'label' = 'label';
   export const ORDER: 'order' = 'order';
   export const DETAIL: 'detail' = 'detail';
 }
 
 export type Channel = typeof Channel.X | typeof Channel.Y | typeof Channel.X2 | typeof Channel.Y2 | typeof Channel.ROW
   | typeof Channel.COLUMN | typeof Channel.SHAPE | typeof Channel.SIZE | typeof Channel.COLOR
-  | typeof Channel.TEXT | typeof Channel.DETAIL | typeof Channel.LABEL
+  | typeof Channel.TEXT | typeof Channel.DETAIL
   | typeof Channel.ORDER | typeof Channel.OPACITY;
 
 export const X = Channel.X;
@@ -47,23 +46,23 @@ export const SIZE = Channel.SIZE;
 export const COLOR = Channel.COLOR;
 export const TEXT = Channel.TEXT;
 export const DETAIL = Channel.DETAIL;
-export const LABEL = Channel.LABEL;
 export const ORDER = Channel.ORDER;
 export const OPACITY = Channel.OPACITY;
 
-export const CHANNELS = [X, Y, X2, Y2, ROW, COLUMN, SIZE, SHAPE, COLOR, ORDER, OPACITY, TEXT, DETAIL, LABEL];
+
+export const CHANNELS = [X, Y, X2, Y2, ROW, COLUMN, SIZE, SHAPE, COLOR, ORDER, OPACITY, TEXT, DETAIL];
 
 // CHANNELS without COLUMN, ROW
-export const UNIT_CHANNELS = [X, Y, X2, Y2, SIZE, SHAPE, COLOR, ORDER, OPACITY, TEXT, DETAIL, LABEL];
+export const UNIT_CHANNELS = [X, Y, X2, Y2, SIZE, SHAPE, COLOR, ORDER, OPACITY, TEXT, DETAIL];
 
-// UNIT_CHANNELS without X2, Y2, ORDER, DETAIL, TEXT, LABEL
+// UNIT_CHANNELS without X2, Y2, ORDER, DETAIL, TEXT
 export const UNIT_SCALE_CHANNELS = [X, Y, SIZE, SHAPE, COLOR, OPACITY];
 
 // UNIT_SCALE_CHANNELS with ROW, COLUMN
 export const SCALE_CHANNELS = [X, Y, SIZE, SHAPE, COLOR, OPACITY, ROW, COLUMN];
 
 // UNIT_CHANNELS without X, Y, X2, Y2;
-export const NONSPATIAL_CHANNELS = [SIZE, SHAPE, COLOR, ORDER, OPACITY, TEXT, DETAIL, LABEL];
+export const NONSPATIAL_CHANNELS = [SIZE, SHAPE, COLOR, ORDER, OPACITY, TEXT, DETAIL];
 
 // UNIT_SCALE_CHANNELS without X, Y;
 export const NONSPATIAL_SCALE_CHANNELS = [SIZE, SHAPE, COLOR, OPACITY];
@@ -147,7 +146,6 @@ export function getSupportedRole(channel: Channel): SupportedRole {
     case Y:
     case COLOR:
     case OPACITY:
-    case LABEL:
     case ORDER:
     case DETAIL:
       return {
@@ -174,7 +172,7 @@ export function getSupportedRole(channel: Channel): SupportedRole {
 }
 
 export function hasScale(channel: Channel) {
-  return !contains([DETAIL, TEXT, LABEL, ORDER], channel);
+  return !contains([DETAIL, TEXT, ORDER], channel);
 }
 
 // Position does not work with ordinal (lookup) scale and sequential (which is only for color)
