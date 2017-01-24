@@ -3,6 +3,7 @@
  * such as 'x', 'y', 'color'.
  */
 
+import {Encoding} from './encoding';
 import {Mark} from './mark';
 import {ScaleType, SCALE_TYPES} from './scale';
 import {contains, toSet, without} from './util';
@@ -30,10 +31,7 @@ export namespace Channel {
   export const DETAIL: 'detail' = 'detail';
 }
 
-export type Channel = typeof Channel.X | typeof Channel.Y | typeof Channel.X2 | typeof Channel.Y2 | typeof Channel.ROW
-  | typeof Channel.COLUMN | typeof Channel.SHAPE | typeof Channel.SIZE | typeof Channel.COLOR
-  | typeof Channel.TEXT | typeof Channel.DETAIL
-  | typeof Channel.ORDER | typeof Channel.OPACITY;
+export type Channel = keyof Encoding;
 
 export const X = Channel.X;
 export const Y = Channel.Y;
