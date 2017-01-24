@@ -4,9 +4,8 @@ import {Config} from '../../config';
 import {Channel} from '../../channel';
 import {ScaleFieldDef, FieldDef} from '../../fielddef';
 import {Mark} from '../../mark';
-import {Scale, ScaleConfig, scaleTypeSupportProperty} from '../../scale';
+import {Scale, ScaleConfig, scaleTypeSupportProperty, channelScalePropertyIncompatability} from '../../scale';
 
-import {channelScalePropertyIncompatability} from './scale';
 import rangeMixins from './range';
 import * as rules from './rules';
 import scaleType from './type';
