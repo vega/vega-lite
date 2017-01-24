@@ -61,11 +61,12 @@ export const SUM_OPS = [
     AggregateOp.MISSING
 ];
 
+/**
+ * Aggregation operators that always produce values within the range [domainMin, domainMax].
+ */
 export const SHARED_DOMAIN_OPS = [
     AggregateOp.MEAN,
     AggregateOp.AVERAGE,
-    AggregateOp.STDEV,
-    AggregateOp.STDEVP,
     AggregateOp.MEDIAN,
     AggregateOp.Q1,
     AggregateOp.Q3,
