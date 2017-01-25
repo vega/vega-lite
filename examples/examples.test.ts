@@ -23,7 +23,7 @@ function validateVL(spec: vl.spec.ExtendedSpec) {
   if (!valid) {
     console.log(inspect(errors, { depth: 10, colors: true }));
   }
-  assert(valid, errors && errors.map((err: Ajv.ErrorObject) => {return err.message; }).join(', '));
+  assert(valid, errors && errors.map((err: Ajv.ErrorObject) => err.message).join(', '));
 }
 
 function validateVega(spec: vl.spec.ExtendedSpec) {
@@ -34,7 +34,7 @@ function validateVega(spec: vl.spec.ExtendedSpec) {
   if (!valid) {
     console.log(inspect(errors, { depth: 10, colors: true }));
   }
-  assert(valid, errors && errors.map((err: Ajv.ErrorObject) => {return err.message; }).join(', '));
+  assert(valid, errors && errors.map((err: Ajv.ErrorObject) => err.message).join(', '));
 }
 
 describe('Examples', function() {
