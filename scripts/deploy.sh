@@ -73,4 +73,6 @@ git push --tags
 
 # TODO: re-publish to github pages when we are ready to release 2.0.
 #  3. GITHUB PAGES PUBLISH
-# . ./scripts/deploy-gh.sh
+# . scripts/deploy-gh.sh
+
+scripts/deploy-schema.sh
