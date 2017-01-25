@@ -14,8 +14,8 @@
     }
   },
   "config": {
-    "mark": {
-      "barBinSpacing": 0
+    "bar": {
+      "binSpacing": 0
     }
   }
 }
