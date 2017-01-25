@@ -38,6 +38,7 @@
             "type": "string"
         },
         "AreaConfig": {
+            "additionalProperties": false,
             "properties": {
                 "color": {
                     "description": "Default color.",
@@ -136,6 +137,7 @@
             "type": "string"
         },
         "Axis": {
+            "additionalProperties": false,
             "properties": {
                 "axisColor": {
                     "description": "Color of axis line.",
@@ -337,6 +339,7 @@
             "type": "object"
         },
         "AxisConfig": {
+            "additionalProperties": false,
             "properties": {
                 "axisColor": {
                     "description": "Color of axis line.",
@@ -518,6 +521,7 @@
             "type": "string"
         },
         "BarConfig": {
+            "additionalProperties": false,
             "properties": {
                 "binSpacing": {
                     "description": "Offset between bar for binned field.  Ideal value for this is either 0 (Preferred by statisticians) or 1 (Vega-Lite Default, D3 example style).",
@@ -633,6 +637,7 @@
             "type": "object"
         },
         "Bin": {
+            "additionalProperties": false,
             "description": "Binning properties or boolean flag for determining whether to bin data or not.",
             "properties": {
                 "base": {
@@ -681,6 +686,7 @@
             "type": "object"
         },
         "CellConfig": {
+            "additionalProperties": false,
             "properties": {
                 "clip": {
                     "type": "boolean"
@@ -726,6 +732,7 @@
             "type": "object"
         },
         "Config": {
+            "additionalProperties": false,
             "properties": {
                 "area": {
                     "$ref": "#/definitions/AreaConfig",
@@ -782,6 +789,7 @@
                 "padding": {
                     "anyOf": [
                         {
+                            "additionalProperties": false,
                             "properties": {
                                 "bottom": {
                                     "type": "number"
@@ -844,6 +852,7 @@
             "type": "object"
         },
         "DataFormat": {
+            "additionalProperties": false,
             "properties": {
                 "feature": {
                     "description": "The name of the TopoJSON object set to convert to a GeoJSON feature collection.\nFor example, in a map of the world, there may be an object set named `\"countries\"`.\nUsing the feature property, we can extract this set and generate a GeoJSON feature object for each country.",
@@ -877,6 +886,7 @@
             "type": "string"
         },
         "DateTime": {
+            "additionalProperties": false,
             "description": "Object for defining datetime in Vega-Lite Filter.\nIf both month and quarter are provided, month has higher precedence.\n`day` cannot be combined with other date.\nWe accept string for month and day names.",
             "properties": {
                 "date": {
@@ -937,6 +947,7 @@
             "type": "object"
         },
         "Encoding": {
+            "additionalProperties": false,
             "properties": {
                 "color": {
                     "anyOf": [
@@ -1077,6 +1088,7 @@
             "type": "object"
         },
         "EqualFilter": {
+            "additionalProperties": false,
             "properties": {
                 "equal": {
                     "anyOf": [
@@ -1109,6 +1121,7 @@
             "type": "object"
         },
         "ExtendedScheme": {
+            "additionalProperties": false,
             "properties": {
                 "count": {
                     "type": "number"
@@ -1130,6 +1143,7 @@
             "type": "object"
         },
         "ExtendedUnitSpec": {
+            "additionalProperties": false,
             "description": "Schema for a unit Vega-Lite specification, with the syntactic sugar extensions:\n- `row` and `column` are included in the encoding.\n- (Future) label, box plot\n\nNote: the spec could contain facet.",
             "properties": {
                 "$schema": {
@@ -1174,6 +1188,7 @@
                 "padding": {
                     "anyOf": [
                         {
+                            "additionalProperties": false,
                             "properties": {
                                 "bottom": {
                                     "type": "number"
@@ -1208,6 +1223,7 @@
             "type": "object"
         },
         "Facet": {
+            "additionalProperties": false,
             "properties": {
                 "column": {
                     "$ref": "#/definitions/PositionFieldDef"
@@ -1219,6 +1235,7 @@
             "type": "object"
         },
         "FacetConfig": {
+            "additionalProperties": false,
             "properties": {
                 "axis": {
                     "$ref": "#/definitions/AxisConfig",
@@ -1236,6 +1253,7 @@
             "type": "object"
         },
         "FacetGridConfig": {
+            "additionalProperties": false,
             "properties": {
                 "color": {
                     "type": "string"
@@ -1250,6 +1268,7 @@
             "type": "object"
         },
         "FacetSpec": {
+            "additionalProperties": false,
             "properties": {
                 "$schema": {
                     "description": "URL to JSON schema for this Vega-Lite specification.",
@@ -1285,6 +1304,7 @@
                 "padding": {
                     "anyOf": [
                         {
+                            "additionalProperties": false,
                             "properties": {
                                 "bottom": {
                                     "type": "number"
@@ -1330,6 +1350,7 @@
             "type": "object"
         },
         "FieldDef": {
+            "additionalProperties": false,
             "description": "Definition object for a data field, its type and transformation of an encoding channel.",
             "properties": {
                 "aggregate": {
@@ -1374,6 +1395,7 @@
             "type": "string"
         },
         "Formula": {
+            "additionalProperties": false,
             "description": "Formula object for calculate.",
             "properties": {
                 "as": {
@@ -1400,6 +1422,7 @@
             "type": "string"
         },
         "InlineData": {
+            "additionalProperties": false,
             "properties": {
                 "values": {
                     "description": "Pass array of objects instead of a url to a file.",
@@ -1432,6 +1455,7 @@
             "type": "string"
         },
         "LayerSpec": {
+            "additionalProperties": false,
             "properties": {
                 "$schema": {
                     "description": "URL to JSON schema for this Vega-Lite specification.",
@@ -1474,6 +1498,7 @@
                 "padding": {
                     "anyOf": [
                         {
+                            "additionalProperties": false,
                             "properties": {
                                 "bottom": {
                                     "type": "number"
@@ -1511,6 +1536,7 @@
             "type": "object"
         },
         "Legend": {
+            "additionalProperties": false,
             "properties": {
                 "encode": {
                     "$ref": "#/definitions/VgLegendEncode",
@@ -1658,6 +1684,7 @@
             "type": "object"
         },
         "LegendConfig": {
+            "additionalProperties": false,
             "properties": {
                 "encode": {
                     "$ref": "#/definitions/VgLegendEncode",
@@ -1763,6 +1790,7 @@
             "type": "object"
         },
         "LegendFieldDef": {
+            "additionalProperties": false,
             "properties": {
                 "aggregate": {
                     "$ref": "#/definitions/AggregateOp",
@@ -1826,6 +1854,7 @@
             "type": "object"
         },
         "LineConfig": {
+            "additionalProperties": false,
             "properties": {
                 "color": {
                     "description": "Default color.",
@@ -1932,6 +1961,7 @@
             "type": "string"
         },
         "MarkConfig": {
+            "additionalProperties": false,
             "properties": {
                 "color": {
                     "description": "Default color.",
@@ -2022,6 +2052,7 @@
             "type": "object"
         },
         "OneOfFilter": {
+            "additionalProperties": false,
             "properties": {
                 "field": {
                     "description": "Field to be filtered",
@@ -2057,6 +2088,7 @@
             "type": "object"
         },
         "OrderFieldDef": {
+            "additionalProperties": false,
             "properties": {
                 "aggregate": {
                     "$ref": "#/definitions/AggregateOp",
@@ -2103,6 +2135,7 @@
             "type": "string"
         },
         "OverlayConfig": {
+            "additionalProperties": false,
             "properties": {
                 "area": {
                     "$ref": "#/definitions/AreaOverlay",
@@ -2124,6 +2157,7 @@
             "type": "object"
         },
         "PointConfig": {
+            "additionalProperties": false,
             "properties": {
                 "color": {
                     "description": "Default color.",
@@ -2240,6 +2274,7 @@
             "type": "object"
         },
         "PositionFieldDef": {
+            "additionalProperties": false,
             "properties": {
                 "aggregate": {
                     "$ref": "#/definitions/AggregateOp",
@@ -2303,6 +2338,7 @@
             "type": "object"
         },
         "RangeFilter": {
+            "additionalProperties": false,
             "properties": {
                 "field": {
                     "description": "Field to be filtered",
@@ -2336,6 +2372,7 @@
             "type": "object"
         },
         "RectConfig": {
+            "additionalProperties": false,
             "properties": {
                 "color": {
                     "description": "Default color.",
@@ -2426,6 +2463,7 @@
             "type": "object"
         },
         "RuleConfig": {
+            "additionalProperties": false,
             "properties": {
                 "color": {
                     "description": "Default color.",
@@ -2516,6 +2554,7 @@
             "type": "object"
         },
         "Scale": {
+            "additionalProperties": false,
             "properties": {
                 "clamp": {
                     "description": "If true, values that exceed the data domain are clamped to either the minimum or maximum range value",
@@ -2646,6 +2685,7 @@
             "type": "object"
         },
         "ScaleConfig": {
+            "additionalProperties": false,
             "properties": {
                 "bandPaddingInner": {
                     "description": "Default inner padding for `x` and `y` band-ordinal scales.",
@@ -2718,6 +2758,7 @@
             "type": "string"
         },
         "SortField": {
+            "additionalProperties": false,
             "properties": {
                 "field": {
                     "description": "The field name to aggregate over.",
@@ -2754,6 +2795,7 @@
             "type": "string"
         },
         "SymbolConfig": {
+            "additionalProperties": false,
             "properties": {
                 "color": {
                     "description": "Default color.",
@@ -2859,6 +2901,7 @@
             "type": "object"
         },
         "TextConfig": {
+            "additionalProperties": false,
             "properties": {
                 "align": {
                     "$ref": "#/definitions/HorizontalAlign",
@@ -3035,6 +3078,7 @@
             "type": "object"
         },
         "TickConfig": {
+            "additionalProperties": false,
             "properties": {
                 "bandSize": {
                     "description": "The width of the ticks.\nIf this value is undefined (by default,), we use 2/3 of rangeStep by default.",
@@ -3172,6 +3216,7 @@
             "type": "string"
         },
         "Transform": {
+            "additionalProperties": false,
             "properties": {
                 "calculate": {
                     "description": "Calculate new field(s) using the provided expresssion(s). Calculation are applied before filter.",
@@ -3233,6 +3278,7 @@
             "type": "string"
         },
         "UnitEncoding": {
+            "additionalProperties": false,
             "properties": {
                 "color": {
                     "anyOf": [
@@ -3365,6 +3411,7 @@
             "type": "object"
         },
         "UnitSpec": {
+            "additionalProperties": false,
             "properties": {
                 "$schema": {
                     "description": "URL to JSON schema for this Vega-Lite specification.",
@@ -3408,6 +3455,7 @@
                 "padding": {
                     "anyOf": [
                         {
+                            "additionalProperties": false,
                             "properties": {
                                 "bottom": {
                                     "type": "number"
@@ -3445,6 +3493,7 @@
             "type": "object"
         },
         "UrlData": {
+            "additionalProperties": false,
             "properties": {
                 "format": {
                     "$ref": "#/definitions/DataFormat",
@@ -3461,6 +3510,7 @@
             "type": "object"
         },
         "ValueDef<number>": {
+            "additionalProperties": false,
             "description": "Definition object for a constant value of an encoding channel.",
             "properties": {
                 "value": {
@@ -3471,6 +3521,7 @@
             "type": "object"
         },
         "ValueDef<string | number>": {
+            "additionalProperties": false,
             "description": "Definition object for a constant value of an encoding channel.",
             "properties": {
                 "value": {
@@ -3484,6 +3535,7 @@
             "type": "object"
         },
         "ValueDef<string>": {
+            "additionalProperties": false,
             "description": "Definition object for a constant value of an encoding channel.",
             "properties": {
                 "value": {
@@ -3502,6 +3554,7 @@
             "type": "string"
         },
         "VgAxisEncode": {
+            "additionalProperties": false,
             "properties": {
                 "domain": {
                 },
@@ -3517,6 +3570,7 @@
             "type": "object"
         },
         "VgLegendEncode": {
+            "additionalProperties": false,
             "properties": {
                 "gradient": {
                 },

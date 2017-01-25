@@ -34,7 +34,7 @@
     "prestart": "npm run data && scripts/index-examples",
     "start": "nodemon -x 'npm run build:test-gallery' & browser-sync start --server --files 'test-gallery/main.js' --index 'test-gallery/index.html'",
     "poststart": "rm examples/all-examples.json",
-    "schema": "typescript-json-schema --required true src/spec.ts ExtendedSpec > vega-lite-schema.json",
+    "schema": "typescript-json-schema --required true --noExtraProps true src/spec.ts ExtendedSpec > vega-lite-schema.json",
     "presite": "tsc && npm run build && bower install && npm run data && npm run build:toc",
     "site": "bundle exec jekyll serve --incremental",
     "pretest": "tsc && npm run data",
