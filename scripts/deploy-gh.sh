@@ -20,7 +20,7 @@ git add examples/images/*.svg -f
 
 # commit if things changed
 if [ -n "$(git status --porcelain)" ]; then
-  version=$(cat package.json | jq .version | sed -e 's/^"//'  -e 's/"$//')
+  version=$(scripts/version.sh)
   git commit -m "release $version"
 fi
 

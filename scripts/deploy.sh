@@ -52,7 +52,7 @@ fi
 
 # read version
 gitsha=$(git rev-parse HEAD)
-version=$(cat package.json | jq .version | sed -e 's/^"//'  -e 's/"$//')
+version=$(scripts/version.sh)
 
 git checkout head
 npm run build:all
