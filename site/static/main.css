@@ -27,6 +27,11 @@ footer {
   /* for safari */
   min-height: 40px;
 }
+footer > div {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
 blockquote {
   padding: 0 15px;
   color: #777;
@@ -275,14 +280,20 @@ nav a:hover {
 
 #edit-this-page {
   display: inline-block;
-  font-size: small;
+  font-size: 0.9em;
   color: #aaa;
   padding-top: 30px;
-  line-height: 2.5em;
+  cursor: pointer;
+  line-height: 3em;
   margin: 0.7em 0 0.3em 0;
   vertical-align: text-top;
   float: right;
   text-align: right;
+}
+
+footer #edit-this-page {
+  padding: 0;
+  margin: 0;
 }
 
 .lead {
