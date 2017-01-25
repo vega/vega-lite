@@ -30,6 +30,7 @@
     "data": "rsync -r node_modules/vega-datasets/data/* data",
     "deploy": "scripts/deploy.sh",
     "deploy:gh": "scripts/deploy-gh.sh",
+    "deploy:schema": "scripts/deploy-schema.sh",
     "lint": "tslint -c tslint.json 'src/**/*.ts' 'test/**/*.ts' --exclude '**/*.d.ts'",
     "prestart": "npm run data && scripts/index-examples",
     "start": "nodemon -x 'npm run build:test-gallery' & browser-sync start --server --files 'test-gallery/main.js' --index 'test-gallery/index.html'",
