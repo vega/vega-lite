@@ -1,16 +1,49 @@
+import * as log from '../log';
+
 import {Channel} from '../channel';
-import {keys, duplicate, mergeDeep, flatten, unique, isArray, vals, hash, Dict} from '../util';
-import {defaultConfig, Config} from '../config';
+import {defaultConfig, CellConfig, Config} from '../config';
+import {FieldDef} from '../fielddef';
 import {LayerSpec} from '../spec';
+import {StackProperties} from '../stack';
+import {FILL_STROKE_CONFIG} from '../mark';
+import {keys, duplicate, mergeDeep, flatten, unique, isArray, vals, hash} from '../util';
+import {VgData, isDataRefUnionedDomain, isFieldRefUnionDomain, isDataRefDomain, VgDataRef, VgEncodeEntry, DataRefUnionDomain, FieldRefUnionDomain} from '../vega.schema';
+import {isUrlData} from '../data';
+
 import {assembleData, parseLayerData} from './data/data';
+import {applyConfig, buildModel} from './common';
 import {assembleLayout, parseLayerLayout} from './layout';
 import {Model} from './model';
 import {UnitModel} from './unit';
-import {buildModel} from './common';
-import {FieldDef} from '../fielddef';
-import {ScaleComponents} from './scale';
-import {VgData, VgAxis, VgLegend, isUnionedDomain, isDataRefDomain, VgDataRef} from '../vega.schema';
 
+import {ScaleComponents} from './scale/scale';
+
+/**
+ * Convert the domain to an array of data refs. Also, throw away sorting information
+ * since we always sort the domain when we union two domains.
+ */
+function normalizeDomain(domain: DataRefUnionDomain | FieldRefUnionDomain | VgDataRef): VgDataRef[] {
+  if (isDataRefDomain(domain)) {
+    delete domain.sort;
+    return [domain];
+  } else if(isFieldRefUnionDomain(domain)) {
+    return domain.fields.map(d => {
+      return {
+        data: domain.data,
+        field: d
+      };
+    });
+  } else if (isDataRefUnionedDomain(domain)) {
+    return domain.fields.map(d => {
+      return {
+        field: d.field,
+        data: d.data
+      };
+    });
+  }
+
+  throw 'Should not get here.';
+}
 
 export class LayerModel extends Model {
   private _children: UnitModel[];
@@ -20,14 +53,14 @@ export class LayerModel extends Model {
    * If undefined (e.g., for ordinal scale), the width of the
    * visualization will be calculated dynamically.
    */
-  private _width: number;
+  private readonly _width: number;
 
   /**
    * Fixed height for the unit visualization.
    * If undefined (e.g., for ordinal scale), the height of the
    * visualization will be calculated dynamically.
    */
-  private _height: number;
+  private readonly _height: number;
 
 
   constructor(spec: LayerSpec, parent: Model, parentGivenName: string) {
@@ -55,7 +88,7 @@ export class LayerModel extends Model {
     return this._height;
   }
 
-  public has(channel: Channel): boolean {
+  public channelHasField(_: Channel): boolean {
     // layer does not have any channels
     return false;
   }
@@ -64,21 +97,21 @@ export class LayerModel extends Model {
     return this._children;
   }
 
-  public isOrdinalScale(channel: Channel) {
+  public hasDiscreteScale(channel: Channel) {
     // since we assume shared scales we can just ask the first child
-    return this._children[0].isOrdinalScale(channel);
+    return this._children[0].hasDiscreteScale(channel);
   }
 
-  public dataTable(): string {
+  public dataTable() {
     // FIXME: don't just use the first child
     return this._children[0].dataTable();
   }
 
-  public fieldDef(channel: Channel): FieldDef {
+  public fieldDef(_: Channel): FieldDef {
     return null; // layer does not have field defs
   }
 
-  public stack() {
+  public stack(): StackProperties {
     return null; // this is only a property for UnitModel
   }
 
@@ -96,21 +129,22 @@ export class LayerModel extends Model {
 
   public parseLayoutData() {
     // TODO: correctly union ordinal scales rather than just using the layout of the first child
-    this._children.forEach((child, i) => {
+    this._children.forEach(child => {
       child.parseLayoutData();
     });
     this.component.layout = parseLayerLayout(this);
   }
 
-  public parseScale() {
+  public parseScale(this: LayerModel) {
     const model = this;
 
-    let scaleComponent = this.component.scale = {} as Dict<ScaleComponents>;
+    let scaleComponent = this.component.scale = {};
 
     this._children.forEach(function(child) {
       child.parseScale();
 
-      // FIXME: correctly implement independent scale
+      // FIXME(#1602): correctly implement independent scale
+      // Also need to check whether the scales are actually compatible, e.g. use the same sort or throw error
       if (true) { // if shared/union scale
         keys(child.component.scale).forEach(function(channel) {
           let childScales: ScaleComponents = child.component.scale[channel];
@@ -123,47 +157,53 @@ export class LayerModel extends Model {
           if (modelScales && modelScales.main) {
             // Scales are unioned by combining the domain of the main scale.
             // Other scales that are used for ordinal legends are appended.
-            const modelDomain = modelScales.main.domain;
-            const childDomain = childScales.main.domain;
 
-            if (isArray(modelDomain)) {
-              if (isArray(childScales.main.domain)) {
-                modelScales.main.domain = modelDomain.concat(childDomain);
+            const modelScaleDomain = modelScales.main.domain;
+            const childScaleDomain = childScales.main.domain;
+
+            if (isArray(modelScaleDomain)) {
+              if (isArray(childScaleDomain)) {
+                modelScales.main.domain = modelScaleDomain.concat(childScaleDomain);
               } else {
-                model.addWarning('custom domain scale cannot be unioned with default field-based domain');
+                log.warn(log.message.CANNOT_UNION_CUSTOM_DOMAIN_WITH_FIELD_DOMAIN);
               }
+            } else if (isArray(childScaleDomain)) {
+              log.warn(log.message.CANNOT_UNION_CUSTOM_DOMAIN_WITH_FIELD_DOMAIN);
             } else {
-              const unionedFields = isUnionedDomain(modelDomain) ? modelDomain.fields : [modelDomain] as VgDataRef[];
+              const modelDomain = normalizeDomain(modelScaleDomain);
+              const childDomain = normalizeDomain(childScaleDomain);
 
-              if (isArray(childDomain)) {
-                model.addWarning('custom domain scale cannot be unioned with default field-based domain');
-              }
-
-              let fields = isDataRefDomain(childDomain) ? unionedFields.concat([childDomain]) :
-                // if the domain is itself a union domain, concat
-                isUnionedDomain(childDomain) ? unionedFields.concat(childDomain.fields) :
-                  // we have to ignore explicit data domains for now because vega does not support unioning them
-                  unionedFields;
+              let fields = modelDomain.concat(childDomain);
               fields = unique(fields, hash);
-              // TODO: if all domains use the same data, we can merge them
+
               if (fields.length > 1) {
-                modelScales.main.domain = { fields: fields };
+                // if all scales use the same data, merge them
+                let data = fields.map(f => f.data);
+                data = unique(data, (d: string) => d);
+                if (data.length > 1) {
+                  modelScales.main.domain = { fields, sort: true };
+                } else {
+                  modelScales.main.domain = {
+                    data: data[0],
+                    fields: fields.map(f => f.field),
+                    sort: true
+                  };
+                }
               } else {
                 modelScales.main.domain = fields[0];
               }
             }
 
-            // create color legend and color legend bin scales if we don't have them yet
-            modelScales.colorLegend = modelScales.colorLegend ? modelScales.colorLegend : childScales.colorLegend;
-            modelScales.binColorLegend = modelScales.binColorLegend ? modelScales.binColorLegend : childScales.binColorLegend;
+            modelScales.binLegend = modelScales.binLegend ? modelScales.binLegend : childScales.binLegend;
+            modelScales.binLegendLabel = modelScales.binLegendLabel ? modelScales.binLegendLabel : childScales.binLegendLabel;
           } else {
             scaleComponent[channel] = childScales;
           }
 
           // rename child scales to parent scales
-          vals(childScales).forEach(function(scale) {
+          vals(childScales).forEach(function(scale: any) {
             const scaleNameWithoutPrefix = scale.name.substr(child.name('').length);
-            const newName = model.scaleName(scaleNameWithoutPrefix);
+            const newName = model.scaleName(scaleNameWithoutPrefix, true);
             child.renameScale(scale.name, newName);
             scale.name = newName;
           });
@@ -181,7 +221,7 @@ export class LayerModel extends Model {
   }
 
   public parseAxis() {
-    let axisComponent = this.component.axis = {} as Dict<VgAxis[]>;
+    let axisComponent = this.component.axis = {};
 
     this._children.forEach(function(child) {
       child.parseAxis();
@@ -200,16 +240,16 @@ export class LayerModel extends Model {
     });
   }
 
-  public parseAxisGroup() {
+  public parseAxisGroup(): void {
     return null;
   }
 
-  public parseGridGroup() {
+  public parseGridGroup(): void {
     return null;
   }
 
   public parseLegend() {
-    let legendComponent = this.component.legend = {} as Dict<VgLegend>;
+    let legendComponent = this.component.legend = {};
 
     this._children.forEach(function(child) {
       child.parseLegend();
@@ -226,8 +266,8 @@ export class LayerModel extends Model {
     });
   }
 
-  public assembleParentGroupProperties() {
-    return null;
+  public assembleParentGroupProperties(cellConfig: CellConfig): VgEncodeEntry {
+    return applyConfig({}, cellConfig, FILL_STROKE_CONFIG.concat(['clip']));
   }
 
   public assembleData(data: VgData[]): VgData[] {
@@ -254,11 +294,11 @@ export class LayerModel extends Model {
     }));
   }
 
-  public channels() {
+  public channels(): Channel[] {
     return [];
   }
 
-  protected mapping() {
+  protected mapping(): any {
     return null;
   }
 
@@ -275,7 +315,7 @@ export class LayerModel extends Model {
   public compatibleSource(child: UnitModel) {
     const data = this.data();
     const childData = child.component.data;
-    const compatible = !childData.source || (data && data.url === childData.source.url);
+    const compatible = !childData.source || (data && isUrlData(data) && data.url === childData.source.url);
     return compatible;
   }
 }

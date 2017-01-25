@@ -3,45 +3,63 @@
  */
 
 import {LAYOUT} from '../data';
+import * as log from '../log';
 import {Model} from './model';
 import {normalize, ExtendedSpec} from '../spec';
 import {extend} from '../util';
 
 import {buildModel} from './common';
 
-export function compile(inputSpec: ExtendedSpec) {
-  // 1. Convert input spec into a normal form
-  // (Decompose all extended unit specs into composition of unit spec.)
-  const spec = normalize(inputSpec);
+export function compile(inputSpec: ExtendedSpec, logger?: log.LoggerInterface) {
+  if (logger) {
+    // set the singleton logger to the provided logger
+    log.set(logger);
+  }
 
-  // 2. Instantiate the model with default properties
-  const model = buildModel(spec, null, '');
+  try {
+    // 1. Convert input spec into a normal form
+    // (Decompose all extended unit specs into composition of unit spec.)
+    const spec = normalize(inputSpec);
 
-  // 3. Parse each part of the model to produce components that will be assembled later
-  // We traverse the whole tree to parse once for each type of components
-  // (e.g., data, layout, mark, scale).
-  // Please see inside model.parse() for order for compilation.
-  model.parse();
+    // 2. Instantiate the model with default properties
+    const model = buildModel(spec, null, '');
 
-  // 4. Assemble a Vega Spec from the parsed components in 3.
-  return assemble(model);
+    // 3. Parse each part of the model to produce components that will be assembled later
+    // We traverse the whole tree to parse once for each type of components
+    // (e.g., data, layout, mark, scale).
+    // Please see inside model.parse() for order for compilation.
+    model.parse();
+
+    // 4. Assemble a Vega Spec from the parsed components in 3.
+    return assemble(model);
+  } finally {
+    // Reset the singleton logger if a logger is provided
+    if (logger) {
+      log.reset();
+    }
+  }
 }
 
 function assemble(model: Model) {
-  const config = model.config();
-
   // TODO: change type to become VgSpec
   const output = extend(
     {
-      // Set size to 1 because we rely on padding anyway
-      width: 1,
-      height: 1,
-      padding: 'auto'
+      $schema: 'http://vega.github.io/schema/vega/v3.0.json',
     },
-    config.viewport ? { viewport: config.viewport } : {},
-    config.background ? { background: config.background } : {},
+    topLevelBasicProperties(model),
     {
-      // TODO: signal: model.assembleSelectionSignal
+      // Map calculated layout width and height to width and height signals.
+      signals: [
+        {
+          name: 'width',
+          update: "data('layout')[0].width"
+        },
+        {
+          name: 'height',
+          update: "data('layout')[0].height"
+        }
+      ] // TODO: concat.(model.assembleTopLevelSignals())
+    },{
       data: [].concat(
         model.assembleData([]),
         model.assembleLayout([])
@@ -56,19 +74,31 @@ function assemble(model: Model) {
   };
 }
 
+export function topLevelBasicProperties(model: Model) {
+  const config = model.config();
+  return extend(
+    // TODO: Add other top-level basic properties (#1778)
+    {padding: model.padding() || config.padding},
+    {autosize: 'pad'},
+    config.viewport ? { viewport: config.viewport } : {},
+    config.background ? { background: config.background } : {}
+  );
+}
+
 export function assembleRootGroup(model: Model) {
-  let rootGroup:any = extend({
-      name: model.name('root'),
+  let rootGroup:any = extend(
+    {
+      name: model.name('main'),
       type: 'group',
     },
     model.description() ? {description: model.description()} : {},
     {
-      from: {data: LAYOUT},
-      properties: {
+      from: {data: model.name(LAYOUT +'')},
+      encode: {
         update: extend(
           {
-            width: {field: 'width'},
-            height: {field: 'height'}
+            width: {field: model.name('width')},
+            height: {field: model.name('height')}
           },
           model.assembleParentGroupProperties(model.config().cell)
         )

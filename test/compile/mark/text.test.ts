@@ -1,10 +1,10 @@
-/* tslint:disable quote */
+/* tslint:disable quotemark */
 
 import {assert} from 'chai';
 import {parseUnitModel} from '../../util';
-import {extend} from '../../../src/util';
 import {text} from '../../../src/compile/mark/text';
 import {X, Y} from '../../../src/channel';
+import {ExtendedUnitSpec} from '../../../src/spec';
 
 describe('Mark: Text', function() {
   it('should return correct marktype', function() {
@@ -12,56 +12,96 @@ describe('Mark: Text', function() {
   });
 
   describe('with nothing', function() {
-    const spec = {
+    const spec: ExtendedUnitSpec = {
       "mark": "text",
       "encoding": {},
       "data": {"url": "data/cars.json"}
     };
     const model = parseUnitModel(spec);
-    const props = text.properties(model);
+    const props = text.encodeEntry(model);
 
     it('should have placeholder text', function() {
       assert.deepEqual(props.text, {value: "Abc"});
     });
   });
 
+  describe('with stacked x', function() {
+    // This is a simplified example for stacked text.
+    // In reality this will be used as stacked's overlayed marker
+    const model = parseUnitModel({
+      "mark": "text",
+      "encoding": {
+        "x": {"aggregate": "sum", "field": "a", "type": "quantitative"},
+        "color": {"field": "b", "type": "ordinal"}
+      },
+      "data": {"url": "data/barley.json"},
+      "config": {"mark": {"stacked": "zero"}}
+    });
+
+    const props = text.encodeEntry(model);
+
+    it('should use stack_end on x', function() {
+      assert.deepEqual(props.x, {scale: X, field: 'sum_a_end'});
+    });
+  });
+
+  describe('with stacked y', function() {
+    // This is a simplified example for stacked text.
+    // In reality this will be used as stacked's overlayed marker
+    const model = parseUnitModel({
+      "mark": "text",
+      "encoding": {
+        "y": {"aggregate": "sum", "field": "a", "type": "quantitative"},
+        "color": {"field": "b", "type": "ordinal"}
+      },
+      "data": {"url": "data/barley.json"},
+      "config": {"mark": {"stacked": "zero"}}
+    });
+
+    const props = text.encodeEntry(model);
+
+    it('should use stack_end on y', function() {
+      assert.deepEqual(props.y, {scale: Y, field: 'sum_a_end'});
+    });
+  });
+
   describe('with quantitative and format', function() {
-    const spec = {
+    const spec: ExtendedUnitSpec = {
       "mark": "text",
       "encoding": {
         "text": {"field": "foo", "type": "quantitative"}
       },
       "config": {
-        "mark": {
+        "text": {
           "format": "d"
         }
       }
     };
     const model = parseUnitModel(spec);
-    const props = text.properties(model);
+    const props = text.encodeEntry(model);
 
     it('should use number template', function() {
-      assert.deepEqual(props.text, {template: '{{datum["foo"] | number:\'d\'}}'});
+      assert.deepEqual(props.text, {signal: `format(datum["foo"], 'd')`});
     });
   });
 
   describe('with temporal', function() {
-    const spec = {
+    const spec: ExtendedUnitSpec = {
       "mark": "text",
       "encoding": {
         "text": {"field": "foo", "type": "temporal"}
       }
     };
     const model = parseUnitModel(spec);
-    const props = text.properties(model);
+    const props = text.encodeEntry(model);
 
     it('should use date template', function() {
-      assert.deepEqual(props.text, {template: '{{datum["foo"] | time:\'%Y-%m-%d\'}}'});
+      assert.deepEqual(props.text, {signal: `timeFormat(datum["foo"], '%b %d, %Y')`});
     });
   });
 
   describe('with x, y, text (ordinal)', function() {
-    const spec = {
+    const spec: ExtendedUnitSpec = {
       "mark": "text",
       "encoding": {
         "x": {"field": "Acceleration", "type": "ordinal"},
@@ -71,7 +111,7 @@ describe('Mark: Text', function() {
       "data": {"url": "data/cars.json"}
     };
     const model = parseUnitModel(spec);
-    const props = text.properties(model);
+    const props = text.encodeEntry(model);
 
     it('should scale on x', function() {
       assert.deepEqual(props.x, {scale: X, field: 'Acceleration'});
@@ -90,7 +130,7 @@ describe('Mark: Text', function() {
   });
 
   describe('with row, column, text, and color', function() {
-    const spec = {
+    const spec: ExtendedUnitSpec = {
         "mark": "text",
         "encoding": {
           "row": {"field": "Origin", "type": "ordinal"},
@@ -102,7 +142,7 @@ describe('Mark: Text', function() {
         "data": {"url": "data/cars.json"}
       };
     const model = parseUnitModel(spec);
-    const props = text.properties(model);
+    const props = text.encodeEntry(model);
 
     it('should fit cell on x', function() {
       assert.deepEqual(props.x, { field: { group: 'width' }, offset: -5 });
@@ -112,9 +152,9 @@ describe('Mark: Text', function() {
       assert.deepEqual(props.y, { value: 10.5 });
     });
 
-    it('should map text to template', function() {
+    it('should map text to expression', function() {
       assert.deepEqual(props.text, {
-        template: "{{datum[\"mean_Acceleration\"] | number:'s'}}"
+        signal: `format(datum["mean_Acceleration"], 's')`
       });
     });
 
@@ -134,7 +174,7 @@ describe('Mark: Text', function() {
   });
 
   describe('with row, column, text, and color and mark configs(applyColorToBackground, opacity)', function() {
-    const spec = {
+    const spec: ExtendedUnitSpec = {
         "mark": "text",
         "encoding": {
           "row": {"field": "Origin", "type": "ordinal"},
@@ -144,15 +184,17 @@ describe('Mark: Text', function() {
           "size": {"field": "Acceleration", "type": "quantitative", "aggregate": "mean"}
         },
         "config": {
+          "text": {
+            "applyColorToBackground": true
+          },
           "mark": {
-            "applyColorToBackground": true,
             "opacity": 0.8
           }
         },
         "data": {"url": "data/cars.json"}
       };
     const model = parseUnitModel(spec);
-    const props = text.properties(model);
+    const props = text.encodeEntry(model);
     it('should fill black', function() {
       assert.deepEqual(props.fill, {value: 'black'});
     });

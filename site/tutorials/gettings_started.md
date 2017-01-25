@@ -62,7 +62,7 @@ The [`data`]({{site.baseurl}}/docs/data.html) property defines the data source o
 
 ## Encoding Data with Marks
 
-Now we have a data source but we haven't defined yet how the the data should be visualized.
+Now we have a data source but we haven't defined yet how the data should be visualized.
 
 Basic graphical elements in Vega-Lite are [*marks*]({{site.baseurl}}/docs/mark.html). Marks provide basic shapes whose properties (such as position, size, and color) can be used to visually encode data, either from a data field (or a variable), or a constant value.
 
@@ -83,7 +83,7 @@ To show the data as a point, we can set the `mark` property to `point`.
 
 Now, it looks like we get a point. In fact, Vega-Lite renders one point for each object in the array, but they are all overlapping since we have not specified each point's position.
 
-To visually separate the points, data variables can be mapped to visual properties of a mark. For example, we can *encode* the variable `a` of the data with `x` channel, which represents the x-position of the points. We can do that by adding an `encoding` object with its key `x` mapped to a channel definition that describes variable `a`.
+To visually separate the points, data variables can be mapped to visual properties of a mark. For example, we can [*encode*]({{site.baseurl}}/docs/encoding.html) the variable `a` of the data with `x` channel, which represents the x-position of the points. We can do that by adding an `encoding` object with its key `x` mapped to a channel definition that describes variable `a`.
 
 {: .suppress-error}
 ```json

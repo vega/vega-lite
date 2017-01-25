@@ -1,4 +1,4 @@
-import {DataFormat, SOURCE} from '../../data';
+import {DataFormat, SOURCE, isInlineData, isUrlData} from '../../data';
 import {contains, extend} from '../../util';
 import {VgData} from '../../vega.schema';
 
@@ -21,10 +21,10 @@ export namespace source {
       // If data is explicitly provided
 
       let sourceData: VgData = { name: model.dataName(SOURCE) };
-      if (data.values && data.values.length > 0) {
+      if (isInlineData(data)) {
         sourceData.values = data.values;
         sourceData.format = { type: 'json' };
-      } else if (data.url) {
+      } else if (isUrlData(data)) {
         sourceData.url = data.url;
 
         // Extract extension from URL using snippet from
@@ -35,7 +35,7 @@ export namespace source {
         }
         const dataFormat: DataFormat = data.format || {};
 
-        // For backward compatability for former `data.formatType` property
+        // For backward compatibility for former `data.formatType` property
         const formatType: DataFormat = dataFormat.type || data['formatType'];
         sourceData.format =
           extend(
@@ -49,6 +49,7 @@ export namespace source {
               {}
           );
       }
+
       return sourceData;
     } else if (!model.parent()) {
       // If data is not explicitly provided but the model is a root,
@@ -58,7 +59,7 @@ export namespace source {
     return undefined;
   }
 
-  export const parseUnit = parse;
+  export const parseUnit: (model: Model) => VgData = parse;
 
   export function parseFacet(model: FacetModel) {
     let sourceData = parse(model);
@@ -94,7 +95,7 @@ export namespace source {
     return sourceData;
   }
 
-  export function assemble(model: Model, component: DataComponent) {
+  export function assemble(component: DataComponent) {
     if (component.source) {
       let sourceData: VgData = component.source;
 
@@ -104,11 +105,11 @@ export namespace source {
       }
 
       sourceData.transform = [].concat(
-        formula.assemble(component),
-        nullFilter.assemble(component),
-        filter.assemble(component),
-        bin.assemble(component),
-        timeUnit.assemble(component)
+        formula.assemble(component.calculate),
+        nullFilter.assemble(component.nullFilter),
+        filter.assemble(component.filter),
+        bin.assemble(component.bin),
+        timeUnit.assemble(component.timeUnit)
       );
 
       return sourceData;

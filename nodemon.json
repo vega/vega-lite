@@ -1,6 +1,7 @@
 {
   "ext": "ts,json",
   "ignore": [
+    "*.d.ts",
     "node_modules/*",
     "bower_components/*",
     "data/*",

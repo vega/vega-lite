@@ -7,6 +7,7 @@
 /examples/images
 /scripts
 /site
+/test-gallery
 /test
 /coverage
 /_site
@@ -29,3 +30,5 @@ _config.yml
 .vscode
 .editorconfig
 vl.sublime-project
+**/*.ts
+!**/*.d.ts

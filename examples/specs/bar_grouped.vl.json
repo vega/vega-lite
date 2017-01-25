@@ -2,13 +2,13 @@
   "data": { "url": "data/population.json"},
   "transform": {
     "filter": "datum.year == 2000",
-    "calculate": [{"field": "gender", "expr": "datum.sex == 2 ? \"Female\" : \"Male\""}]
+    "calculate": [{"as": "gender", "expr": "datum.sex == 2 ? \"Female\" : \"Male\""}]
   },
   "mark": "bar",
   "encoding": {
     "column": {
       "field": "age", "type": "ordinal",
-      "scale": {"padding": 4},
+      "scale": {"spacing": 4},
       "axis": {"orient": "bottom", "axisWidth": 1, "offset": -8}
     },
     "y": {
@@ -17,8 +17,8 @@
     },
     "x": {
       "field": "gender", "type": "nominal",
-      "scale": {"bandSize": 6},
-      "axis": false
+      "scale": {"rangeStep": 6},
+      "axis": null
     },
     "color": {
       "field": "gender", "type": "nominal",

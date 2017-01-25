@@ -49,7 +49,7 @@ export interface RangeFilter {
    * @maxItems 2
    * @minItems 2
    */
-  range: Array<number|DateTime>;
+  range: (number|DateTime)[];
 
 }
 
@@ -79,14 +79,14 @@ export interface OneOfFilter {
    * A set of values that the `field`'s value should be a member of,
    * for a data item included in the filtered data.
    */
-  oneOf: Array<string|number|boolean|DateTime>;
+  oneOf: (string|number|boolean|DateTime)[];
 
 }
 
 export function isOneOfFilter(filter: any): filter is OneOfFilter {
   return filter && !!filter.field && (
     isArray(filter.oneOf) ||
-    isArray(filter.in) // backward compatability
+    isArray(filter.in) // backward compatibility
   );
 }
 
@@ -104,8 +104,8 @@ export function expression(filter: Filter | string) {
     if (isEqualFilter(filter)) {
       return fieldExpr + '===' + valueExpr(filter.equal, filter.timeUnit);
     } else if (isOneOfFilter(filter)) {
-      // "oneOf" was formerly "in" -- so we need to add backward compatability
-      const oneOf = filter.oneOf || filter['in'];
+      // "oneOf" was formerly "in" -- so we need to add backward compatibility
+      const oneOf: OneOfFilter[] = filter.oneOf || filter['in'];
       return 'indexof([' +
         oneOf.map((v) => valueExpr(v, filter.timeUnit)).join(',') +
         '], ' + fieldExpr + ') !== -1';

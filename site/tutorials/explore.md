@@ -5,9 +5,9 @@ title: Exploring Data
 permalink: /tutorials/explore.html
 ---
 
-In this tutorial, you'll learn a few more techniques for creating visualizations in Vega-Lite. If you are not familiar with Vega-Lite, please read the [getting started tutorial](/tutorials/getting_started.html) first.
+In this tutorial, you'll learn a few more techniques for creating visualizations in Vega-Lite. If you are not familiar with Vega-Lite, please read the [getting started tutorial]({{site.baseurl}}/tutorials/getting_started.html) first.
 
-For this tutorial, we will create visualizations to explore weather data for Seattle, taken from [NOAA](https://www.ncdc.noaa.gov/cdo-web/). The [dataset](/data/seattle-weather.csv) is a [CSV file](https://en.wikipedia.org/wiki/Comma-separated_values) with columns for the temperature (in Celsius), precipitation (in centimeter), wind (in meter/second), and weather type. We have one row for each day from January 1st, 2012 to December 31st, 2015.
+For this tutorial, we will create visualizations to explore weather data for Seattle, taken from [NOAA](https://www.ncdc.noaa.gov/cdo-web/). The [dataset]({{site.baseurl}}/data/seattle-weather.csv) is a [CSV file](https://en.wikipedia.org/wiki/Comma-separated_values) with columns for the temperature (in Celsius), precipitation (in centimeter), wind (in meter/second), and weather type. We have one row for each day from January 1st, 2012 to December 31st, 2015.
 
 To load the CSV file with Vega-Lite, we need to provide a URL and set the format type in the data section of the specification.
 
@@ -190,4 +190,4 @@ However, the default color palette's semantics might not match our expectation. 
 
 <div class="vl-example" data-name="stacked_bar_weather"></div>
 
-This is the end of this tutorial where you learned different ways to discretize and aggregate data, derive new fields, and customize your charts. You can find more visualizations in the [gallery]({{site.baseurl}}/examples/gallery.html). If you want to further customize your charts, please read the [documentation]({{site.baseurl}}/docs/).
+This is the end of this tutorial where you learned different ways to discretize and aggregate data, derive new fields, and customize your charts. You can find more visualizations in the [gallery]({{site.baseurl}}/examples/). If you want to further customize your charts, please read the [documentation]({{site.baseurl}}/docs/).

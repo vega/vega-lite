@@ -1,6 +1,25 @@
 // DateTime definition object
 
-import {duplicate, isNumber} from './util';
+import {duplicate, keys, isNumber} from './util';
+import * as log from './log';
+
+/*
+ * A designated year that starts on Sunday.
+ */
+const SUNDAY_YEAR = 2006;
+
+/**
+ * @minimum 1
+ * @maximum 12
+ * @TJS-type integer
+ */
+export type Month = number;
+
+/**
+ * @minimum 1
+ * @maximum 7
+ */
+export type Day = number;
 
 /**
  * Object for defining datetime in Vega-Lite Filter.
@@ -9,33 +28,66 @@ import {duplicate, isNumber} from './util';
  * We accept string for month and day names.
  */
 export interface DateTime {
-  /** Integer value representing the year. */
+  /**
+   * Integer value representing the year.
+   * @TJS-type integer
+   */
   year?: number;
 
-  /** Integer value representing the quarter of the year (from 1-4). */
+  /**
+   * Integer value representing the quarter of the year (from 1-4).
+   * @minimum 1
+   * @maximum 4
+   * @TJS-type integer
+   */
   quarter?: number;
 
   /** One of: (1) integer value representing the month from `1`-`12`. `1` represents January;  (2) case-insensitive month name (e.g., `"January"`);  (3) case-insensitive, 3-character short month name (e.g., `"Jan"`). */
-  month?: number | string;
+  month?: Month | string;
 
-  /** Integer value representing the date from 1-31. */
+  /**
+   * Integer value representing the date from 1-31.
+   * @minimum 1
+   * @maximum 31
+   * @TJS-type integer
+   */
   date?: number;
 
   /**
    * Value representing the day of week.  This can be one of: (1) integer value -- `1` represents Monday; (2) case-insensitive day name (e.g., `"Monday"`);  (3) case-insensitive, 3-character short day name (e.g., `"Mon"`).   <br/> **Warning:** A DateTime definition object with `day`** should not be combined with `year`, `quarter`, `month`, or `date`.
    */
-  day?: number | string;
+  day?: Day | string;
 
-  /** Integer value representing the hour of day from 0-23. */
+  /**
+   * Integer value representing the hour of day from 0-23.
+   * @minimum 0
+   * @maximum 23
+   * @TJS-type integer
+   */
   hours?: number;
 
-  /** Integer value representing minute segment of a time from 0-59. */
+  /**
+   * Integer value representing minute segment of a time from 0-59.
+   * @minimum 0
+   * @maximum 59
+   * @TJS-type integer
+   */
   minutes?: number;
 
-  /** Integer value representing second segment of a time from 0-59. */
+  /**
+   * Integer value representing second segment of a time from 0-59.
+   * @minimum 0
+   * @maximum 59
+   * @TJS-type integer
+   */
   seconds?: number;
 
-  /** Integer value representing millisecond segment of a time. */
+  /**
+   * Integer value representing millisecond segment of a time.
+   * @minimum 0
+   * @maximum 999
+   * @TJS-type integer
+   */
   milliseconds?: number;
 }
 
@@ -71,12 +123,14 @@ export const SHORT_DAYS = DAYS.map((d) => d.substr(0,3));
 
 function normalizeQuarter(q: number | string) {
   if (isNumber(q)) {
+    if (q > 4) {
+      log.warn(log.message.invalidTimeUnit('quarter', q));
+    }
     // We accept 1-based quarter, so need to readjust to 0-based quarter
     return (q - 1) + '';
   } else {
-    // Simply an expression string, but normalize should not be called in this case.
-    console.warn('Potentially invalid quarter', q);
-    return q;
+    // Invalid quarter
+    throw new Error(log.message.invalidTimeUnit('quarter', q));
   }
 }
 
@@ -95,9 +149,8 @@ function normalizeMonth(m: string | number) {
     if (shortMonthIndex !== -1) {
       return shortMonthIndex + '';
     }
-    // Simply an expression string, but normalize should not be called in this case.
-    console.warn('Potentially invalid month', m);
-    return m;
+    // Invalid month
+    throw new Error(log.message.invalidTimeUnit('month', m));
   }
 }
 
@@ -117,10 +170,65 @@ function normalizeDay(d: string | number) {
     if (shortDayIndex !== -1) {
       return shortDayIndex + '';
     }
-    // Simply an expression string, but normalize should not be called in this case.
-    console.warn('Potentially invalid day', d);
-    return d;
+    // Invalid day
+    throw new Error(log.message.invalidTimeUnit('day', d));
   }
+}
+
+export function timestamp(d: DateTime, normalize: boolean) {
+  const date = new Date(0, 0, 1, 0, 0, 0, 0); // start with uniform date
+
+  // FIXME support UTC
+
+  if (d.day !== undefined) {
+    if (keys(d).length > 1) {
+      log.warn(log.message.droppedDay(d));
+      d = duplicate(d);
+      delete d.day;
+    } else {
+      // Use a year that has 1/1 as Sunday so we can setDate below
+      date.setFullYear(SUNDAY_YEAR);
+
+      const day = normalize ? normalizeDay(d.day) : d.day;
+      date.setDate(+day + 1); // +1 since date start at 1 in JS
+    }
+  }
+
+  if (d.year !== undefined) {
+    date.setFullYear(d.year);
+  }
+
+  if (d.quarter !== undefined) {
+    const quarter = normalize ? normalizeQuarter(d.quarter) : d.quarter;
+    date.setMonth(+quarter * 3);
+  }
+
+  if (d.month !== undefined) {
+    const month = normalize ? normalizeMonth(d.month) : d.month;
+    date.setMonth(+month);
+  }
+
+  if (d.date !== undefined) {
+    date.setDate(d.date);
+  }
+
+  if (d.hours !== undefined) {
+    date.setHours(d.hours);
+  }
+
+  if (d.minutes !== undefined) {
+    date.setMinutes(d.minutes);
+  }
+
+  if (d.seconds !== undefined) {
+    date.setSeconds(d.seconds);
+  }
+
+  if (d.milliseconds !== undefined) {
+    date.setMilliseconds(d.milliseconds);
+  }
+
+  return date.getTime();
 }
 
 /**
@@ -129,17 +237,13 @@ function normalizeDay(d: string | number) {
  * @param normalize whether to normalize quarter, month, day.
  */
 export function dateTimeExpr(d: DateTime | DateTimeExpr, normalize = false) {
-  const units = [];
+  const units: (string | number)[] = [];
 
   if (normalize && d.day !== undefined) {
-    for (let unit of ['year', 'quarter', 'month', 'date']) {
-      if (d[unit] !== undefined) {
-        console.warn('Dropping day from datetime', JSON.stringify(d),
-          'as day cannot be combined with', unit);
-        d = duplicate(d);
-        delete d.day;
-        break;
-      }
+    if (keys(d).length > 1) {
+      log.warn(log.message.droppedDay(d));
+      d = duplicate(d);
+      delete d.day;
     }
   }
 
@@ -147,7 +251,7 @@ export function dateTimeExpr(d: DateTime | DateTimeExpr, normalize = false) {
     units.push(d.year);
   } else if (d.day !== undefined) {
     // Set year to 2006 for working with day since January 1 2006 is a Sunday
-    units.push(2006);
+    units.push(SUNDAY_YEAR);
   } else {
     units.push(0);
   }

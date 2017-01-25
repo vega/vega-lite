@@ -1,10 +1,11 @@
 import {AggregateOp} from './aggregate';
 
-export enum SortOrder {
-    ASCENDING = 'ascending' as any,
-    DESCENDING = 'descending' as any,
-    NONE = 'none' as any,
+export namespace SortOrder {
+  export const ASCENDING: 'ascending' = 'ascending';
+  export const DESCENDING: 'descending' = 'descending';
 }
+
+export type SortOrder = typeof SortOrder.ASCENDING | typeof SortOrder.DESCENDING | null;
 
 export interface SortField {
   /**

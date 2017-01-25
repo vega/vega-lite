@@ -91,7 +91,7 @@ Custom domain values can be specified via the scale's `domain` property.
 
 | Property      | Type          | Description    |
 | :------------ |:-------------:| :------------- |
-| domain        | Array         | Custom domain values. For quantitative data, this can take the form of a two-element array with minimum and maximum values.  For ordinal data, this is an array representing all values and their orders. |
+| domain        | Array         | Custom domain values. <br/> • For _quantitative_ data, this can take the form of a two-element array with minimum and maximum values. <br/> • For _temporal_ data, this can, this can be a two-element array with minimum and maximum values in the form of either timestamp numbers or the [DateTime](transform.html#datetime) definition object.  <br/> • For _ordinal_ or _nominal_ data, this is an array representing all values and their orders.   |
 
 <!-- TODO:
 - Decide if we should write about custom domain for ordinal scale.
@@ -115,7 +115,7 @@ TODO: Custom Domain for quantitative
 The range of the scale represents the set of output visual values. Vega-Lite automatically determines appropriate range based on the scale's channel and type, but `range` property can be provided to customize range values.
 
 `x` and `y` Scales
-: For continuous `x` and `y` scales (quantitative and time), the range are always `[0, cellWidth]` and  `[0, cellHeight]` (See [config.cell](config.html#cell-config) for customizing cell width and height). For ordinal `x` and `y` scales, the maximum range is a product of the field's cardinality and [`bandSize`](#ordinal).
+: For continuous `x` and `y` scales (quantitative and time), the range are always `[0, cellWidth]` and  `[0, cellHeight]` (See [config.cell](config.html#cell-config) for customizing cell width and height). For ordinal `x` and `y` scales, the maximum range is a product of the field's cardinality and [`rangeStep`](#ordinal).
 <span class="note-line">
 __Not Customizable__: specified `range` will be ignored.
 </span>
@@ -142,8 +142,8 @@ __Default value:__ derived from [scale config](config.html#scale-config)'s `shap
 : A `size` scale has a sequential range. Customized size `range` can be either a two-element array of size values for the interpolation or (for ordinal size scale only) an array of desired output size for each domain value.
 <span class="note-line">
 __Default value:__
-<br/> • for `bar`: derived from [scale config](config.html#scale-config)'s `barSizeRange`. If both scale's `range` and the scale config's `barSizeRange` are unspecified (default), the default size range is a range from [mark config](config.mark.html)'s `thinBarWidth` to the scale's `bandSize`.
-<br/> • for  `point`, `square`, and `circle`: derived from [scale config](config.html#scale-config)'s `pointSizeRange`. If both scale's `range` and the scale config's `pointSizeRange` are unspecified (default), the default size range is a range from 9 to the square of the scale's `bandSize` (_bandSize^2_).
+<br/> • for `bar`: derived from [scale config](config.html#scale-config)'s `barSizeRange`. If both scale's `range` and the scale config's `barSizeRange` are unspecified (default), the default size range is a range from [mark config](config.mark.html)'s `thinBarWidth` to the scale's `rangeStep`.
+<br/> • for  `point`, `square`, and `circle`: derived from [scale config](config.html#scale-config)'s `pointSizeRange`. If both scale's `range` and the scale config's `pointSizeRange` are unspecified (default), the default size range is a range from 9 to the square of the scale's `rangeStep` (_rangeStep^2_).
 <br/> • for  `text`: derived from [scale config](config.html#scale-config)'s `fontSizeRange` (`[8, 40]` by default).
 <br/> • for  `tick`: derived from [scale config](config.html#scale-config)'s `tickSizeRange` (`[1, 20]` by default).
 </span>
@@ -153,17 +153,12 @@ __Default value:__
 | range        | Array &#124; String  | Customized scale range. |
 
 {:#color-palette}
-### Built-in Color Palettes
 
-The following built-in palettes can be used as a customized categorical color  `range` value.
+### Built-in Color Scheme
 
-| Name          | Description  |
-| :------------ | :------------|
-| `"category10"`    | Set the scale range to a 10-color categorical palette: <br><br> ![1f77b4](https://raw.githubusercontent.com/wiki/mbostock/d3/1f77b4.png) #1f77b4 ![ff7f0e](https://raw.githubusercontent.com/wiki/mbostock/d3/ff7f0e.png) #ff7f0e ![2ca02c](https://raw.githubusercontent.com/wiki/mbostock/d3/2ca02c.png) #2ca02c ![d62728](https://raw.githubusercontent.com/wiki/mbostock/d3/d62728.png) #d62728 ![9467bd](https://raw.githubusercontent.com/wiki/mbostock/d3/9467bd.png) #9467bd<br> ![8c564b](https://raw.githubusercontent.com/wiki/mbostock/d3/8c564b.png) #8c564b ![e377c2](https://raw.githubusercontent.com/wiki/mbostock/d3/e377c2.png) #e377c2 ![7f7f7f](https://raw.githubusercontent.com/wiki/mbostock/d3/7f7f7f.png) #7f7f7f ![bcbd22](https://raw.githubusercontent.com/wiki/mbostock/d3/bcbd22.png) #bcbd22 ![17becf](https://raw.githubusercontent.com/wiki/mbostock/d3/17becf.png) #17becf|
-| `"category20"`    | Set the scale range to a 20-color categorical palette: <br><br> ![1f77b4](https://raw.githubusercontent.com/wiki/mbostock/d3/1f77b4.png) #1f77b4 ![aec7e8](https://raw.githubusercontent.com/wiki/mbostock/d3/aec7e8.png) #aec7e8 ![ff7f0e](https://raw.githubusercontent.com/wiki/mbostock/d3/ff7f0e.png) #ff7f0e ![ffbb78](https://raw.githubusercontent.com/wiki/mbostock/d3/ffbb78.png) #ffbb78 ![2ca02c](https://raw.githubusercontent.com/wiki/mbostock/d3/2ca02c.png) #2ca02c<br> ![98df8a](https://raw.githubusercontent.com/wiki/mbostock/d3/98df8a.png) #98df8a ![d62728](https://raw.githubusercontent.com/wiki/mbostock/d3/d62728.png) #d62728 ![ff9896](https://raw.githubusercontent.com/wiki/mbostock/d3/ff9896.png) #ff9896 ![9467bd](https://raw.githubusercontent.com/wiki/mbostock/d3/9467bd.png) #9467bd ![c5b0d5](https://raw.githubusercontent.com/wiki/mbostock/d3/c5b0d5.png) #c5b0d5<br> ![8c564b](https://raw.githubusercontent.com/wiki/mbostock/d3/8c564b.png) #8c564b ![c49c94](https://raw.githubusercontent.com/wiki/mbostock/d3/c49c94.png) #c49c94 ![e377c2](https://raw.githubusercontent.com/wiki/mbostock/d3/e377c2.png) #e377c2 ![f7b6d2](https://raw.githubusercontent.com/wiki/mbostock/d3/f7b6d2.png) #f7b6d2 ![7f7f7f](https://raw.githubusercontent.com/wiki/mbostock/d3/7f7f7f.png) #7f7f7f<br> ![c7c7c7](https://raw.githubusercontent.com/wiki/mbostock/d3/c7c7c7.png) #c7c7c7 ![bcbd22](https://raw.githubusercontent.com/wiki/mbostock/d3/bcbd22.png) #bcbd22 ![dbdb8d](https://raw.githubusercontent.com/wiki/mbostock/d3/dbdb8d.png) #dbdb8d ![17becf](https://raw.githubusercontent.com/wiki/mbostock/d3/17becf.png) #17becf ![9edae5](https://raw.githubusercontent.com/wiki/mbostock/d3/9edae5.png) #9edae5|
-| `"category20b"`    | Set the scale range to a 20-color categorical palette: <br><br> ![393b79](https://raw.githubusercontent.com/wiki/mbostock/d3/393b79.png) #393b79 ![5254a3](https://raw.githubusercontent.com/wiki/mbostock/d3/5254a3.png) #5254a3 ![6b6ecf](https://raw.githubusercontent.com/wiki/mbostock/d3/6b6ecf.png) #6b6ecf ![9c9ede](https://raw.githubusercontent.com/wiki/mbostock/d3/9c9ede.png) #9c9ede ![637939](https://raw.githubusercontent.com/wiki/mbostock/d3/637939.png) #637939<br> ![8ca252](https://raw.githubusercontent.com/wiki/mbostock/d3/8ca252.png) #8ca252 ![b5cf6b](https://raw.githubusercontent.com/wiki/mbostock/d3/b5cf6b.png) #b5cf6b ![cedb9c](https://raw.githubusercontent.com/wiki/mbostock/d3/cedb9c.png) #cedb9c ![8c6d31](https://raw.githubusercontent.com/wiki/mbostock/d3/8c6d31.png) #8c6d31 ![bd9e39](https://raw.githubusercontent.com/wiki/mbostock/d3/bd9e39.png) #bd9e39<br> ![e7ba52](https://raw.githubusercontent.com/wiki/mbostock/d3/e7ba52.png) #e7ba52 ![e7cb94](https://raw.githubusercontent.com/wiki/mbostock/d3/e7cb94.png) #e7cb94 ![843c39](https://raw.githubusercontent.com/wiki/mbostock/d3/843c39.png) #843c39 ![ad494a](https://raw.githubusercontent.com/wiki/mbostock/d3/ad494a.png) #ad494a ![d6616b](https://raw.githubusercontent.com/wiki/mbostock/d3/d6616b.png) #d6616b<br> ![e7969c](https://raw.githubusercontent.com/wiki/mbostock/d3/e7969c.png) #e7969c ![7b4173](https://raw.githubusercontent.com/wiki/mbostock/d3/7b4173.png) #7b4173 ![a55194](https://raw.githubusercontent.com/wiki/mbostock/d3/a55194.png) #a55194 ![ce6dbd](https://raw.githubusercontent.com/wiki/mbostock/d3/ce6dbd.png) #ce6dbd ![de9ed6](https://raw.githubusercontent.com/wiki/mbostock/d3/de9ed6.png) #de9ed6|
-| `"category20c"`    | Set the scale range to a 20-color categorical palette: <br><br> ![3182bd](https://raw.githubusercontent.com/wiki/mbostock/d3/3182bd.png) #3182bd ![6baed6](https://raw.githubusercontent.com/wiki/mbostock/d3/6baed6.png) #6baed6 ![9ecae1](https://raw.githubusercontent.com/wiki/mbostock/d3/9ecae1.png) #9ecae1 ![c6dbef](https://raw.githubusercontent.com/wiki/mbostock/d3/c6dbef.png) #c6dbef ![e6550d](https://raw.githubusercontent.com/wiki/mbostock/d3/e6550d.png) #e6550d<br> ![fd8d3c](https://raw.githubusercontent.com/wiki/mbostock/d3/fd8d3c.png) #fd8d3c ![fdae6b](https://raw.githubusercontent.com/wiki/mbostock/d3/fdae6b.png) #fdae6b ![fdd0a2](https://raw.githubusercontent.com/wiki/mbostock/d3/fdd0a2.png) #fdd0a2 ![31a354](https://raw.githubusercontent.com/wiki/mbostock/d3/31a354.png) #31a354 ![74c476](https://raw.githubusercontent.com/wiki/mbostock/d3/74c476.png) #74c476<br> ![a1d99b](https://raw.githubusercontent.com/wiki/mbostock/d3/a1d99b.png) #a1d99b ![c7e9c0](https://raw.githubusercontent.com/wiki/mbostock/d3/c7e9c0.png) #c7e9c0 ![756bb1](https://raw.githubusercontent.com/wiki/mbostock/d3/756bb1.png) #756bb1 ![9e9ac8](https://raw.githubusercontent.com/wiki/mbostock/d3/9e9ac8.png) #9e9ac8 ![bcbddc](https://raw.githubusercontent.com/wiki/mbostock/d3/bcbddc.png) #bcbddc<br> ![dadaeb](https://raw.githubusercontent.com/wiki/mbostock/d3/dadaeb.png) #dadaeb ![636363](https://raw.githubusercontent.com/wiki/mbostock/d3/636363.png) #636363 ![969696](https://raw.githubusercontent.com/wiki/mbostock/d3/969696.png) #969696 ![bdbdbd](https://raw.githubusercontent.com/wiki/mbostock/d3/bdbdbd.png) #bdbdbd ![d9d9d9](https://raw.githubusercontent.com/wiki/mbostock/d3/d9d9d9.png) #d9d9d9|
-
+<!-- FIXME link to Vega heatmap example or a similar Vega-lite version-->
+We support all color schemes provided by the D3 4.0 [d3-scale](https://github.com/d3/d3-scale) and
+[d3-scale-chromatic](https://github.com/d3/d3-scale-chromatic) modules.
 
 ### Example: Default Color Ranges based on Data Types
 
@@ -186,13 +181,20 @@ For ordinal, quantitative, and time fields, `range` can be a two-element array d
 
 <div class="vl-example" data-name="scatter_color_ordinal_custom"></div>
 
+### Piecewise Scale Example: Diverging Color Scale
+
+We can also create diverging color graph by specify `range` with multiple elements. Number of elements of `range` should match with the number of elements in `domain`. Though continuous scale normally contains 2 elements in both `domain` and `range`, having 3 or more elements will create a piecewise scale. For more detail about a piecewise scale, please refer to [D3 documentation](https://github.com/d3/d3-scale#continuous_domain).
+
+<div class="vl-example" data-name="diverging_color_points"></div>
+
+
 ## Other Scale Properties
 
 ### General Scale Properties
 
 | Property      | Type          | Description    |
 | :------------ |:-------------:| :------------- |
-| round         | Boolean       | If `true`, rounds numeric output values to integers. This can be helpful for snapping to the pixel grid (only available for `x`, `y`, `size`, `row`, and `column` scales). <span class="note-line">__Default value:__ derived from [scale config](config.html#scale-config) (`true` by default).</span> |
+| round         | Boolean       | If `true`, rounds numeric output values to integers. This can be helpful for snapping to the pixel grid. <span class="note-line">__Default value:__ True for `"x"`, `"y"`, `"row"`, `"column"` channels if scale config's `round` is `true`; false otherwise.</span> |
 
 {:#quant-props}
 
@@ -203,7 +205,7 @@ For ordinal, quantitative, and time fields, `range` can be a two-element array d
 | clamp         | Boolean       | If `true`, values that exceed the data domain are clamped to either the minimum or maximum range value. <span class="note-line">__Default value:__ derived from [scale config](config.html#scale-config) (`true` by default)<br/>__Supported types:__ only `linear`, `pow`, `sqrt`, and `log`</span> |
 | exponent      | Number        | Sets the exponent of the scale transformation. (For `pow` scale types only, otherwise ignored.) |
 | nice          | Boolean       | If `true`, modifies the scale domain to use a more human-friendly number range (e.g., 7 instead of 6.96). <span class="note-line">__Default value:__ `true` only for quantitative x and y scales and `false` otherwise.</span> |
-| zero          | Boolean       | If `true`, ensures that a zero baseline value is included in the scale domain. <span class="note-line">__Default value:__ `true` for `x` and `y` channel if the quantitative field is not binned and no custom `domain` is provided; `false` otherwise.</span> |
+| zero          | Boolean       | If `true`, ensures that a zero baseline value is included in the scale domain. <span class="note-line">__Default value:__ `true` for `x` and `y` channel if the quantitative field is not binned and no custom `domain` is provided; `false` otherwise.</span><span class="note-line">__Note:__  This property is always `false` for log scale.</span> |
 | useRawDomain  | Boolean       | If `true`, set scale domain to the raw data domain. If `false`, use the aggregated data domain for scale. <span class="note-line">__Default value:__ `false`<br/>__Only valid for certain aggregations:__ This property only works with aggregate functions that produce values within the raw data domain (`"mean"`, `"average"`, `"stdev"`, `"stdevp"`, `"median"`, `"q1"`, `"q3"`, `"min"`, `"max"`). For other aggregations that produce values outside of the raw data domain (e.g. `"count"`, `"sum"`), this property is ignored. <br/>__Note:__ This property is ignored when the scale's `domain` is specified.</span>|
 
 ### Time Scale Properties
@@ -214,22 +216,27 @@ For ordinal, quantitative, and time fields, `range` can be a two-element array d
 | nice          | String        | If specified, modifies the scale domain to use a more human-friendly value range. For `time` and `utc` scale types only, the nice value should be a string indicating the desired time interval; legal values are `"second"`, `"minute"`, `"hour"`, `"day"`, `"week"`, `"month"`, or `"year"`.|
 
 {:#ordinal}
-### Ordinal Scale Properties
+### Discrete Scale Properties
+
+<!-- TODO revise -->
 
 | Property      | Type          | Description    |
 | :------------ |:-------------:| :------------- |
-| bandSize      | Integer &#124; String | Width for each `x` or `y` ordinal band.  This can be an integer value or a string `"fit"`.  For `"fit"`, the band size will be automatically adjusted to fit the scale for the specified width (for x-axis) or height (for y-axis). <span class="note-line">__Default value:__ for `x` ordinal scale of a `text` mark, derived from [scale config](config.html#scale-config)'s `textBandWidth`; otherwise, derived from [scale config](config.html#scale-config)'s `bandSize`.</span> <span class="note-line">__Warning__: <br/> 1) Numeric `bandSize` will be applied only if the top-level `width` (for x-scale) or `height` (for y-scale) is not specified.  If `width` (for x-scale) or `height` (for y-scale) is specified, `bandWidth` will always be `"fit"`. <br/> 2) If the cardinality of the scale domain is too high, the bandSize might become less than one pixel and the mark might not appear correctly. </span>|
-| padding       | Number        | • For `x` and `y` channels, the padding is a multiple of the spacing between points. A reasonable value is 1.0, such that the first and last point will be offset from the minimum and maximum value by half the distance between points. (See D3's [`ordinalRangePoints()`](https://github.com/mbostock/d3/wiki/Ordinal-Scales#ordinal_rangePoints) for illustration.) <span class="note-line">&nbsp;&nbsp; • __Default value:__ derived from [scale config](config.html#scale-config)'s `padding`</span> <br/> • For `row` and `column`, padding is a pixel value for padding between cells in the trellis plots. <span class="note-line">&nbsp;&nbsp; •__Default value:__ derived from  [facet scale config](config.html#facet-scale-config)'s `padding`.</span>  |
+| rangeStep      | Integer &#124; String | TODO: use description in code instead! |
+| scheme        |  String | Color scheme that determines output color of a color scale. <span class="note-line">__Default value:__ [scale config](config.html#scale-config)'s `nominalColorScheme` for nominal field and `sequentialColorScheme` for other types of fields.</span>|
+| padding       | Number        | Behavior depends on scale types.  (This doc is a **WORK-IN-PROGRESS**.  For now, Please refer to [d3-scale documentation](https://github.com/d3/d3-scale) for more information.) <span class="note-line">&nbsp;&nbsp; • __Default value:__ The default from `x` and `y` channels are derived from [scale config](config.html#scale-config)'s `pointPadding` for `point` scale and `bandPadding` for `band` scale.  Other channels has `0` padding by default. </span> <br/> <span class="note-line">For `row` and `column`, `padding` is ignored. Please use `spacing` instead! </span> |
+| spacing       | Integer        | (For `row` and `column` only) A pixel value for padding between cells in the trellis plots. <span class="note-line">&nbsp;&nbsp; •__Default value:__ derived from [scale config](config.html#scale-config)'s `facetSpacing`</span>
+
 
 {:#ex-bandwidth}
-#### Example: Custom Band Width
+#### Example: Custom Range Step
 
 Given a bar chart:
 
 <div class="vl-example" data-name="bar"></div>
 
-We can make the band for each bar smaller by providing `scale`'s `bandSize`.
+We can make the band for each bar smaller by providing `scale`'s `rangeStep`.
 
-<span class="vl-example" data-name="bar_size_bandsize_small"></span>
+<span class="vl-example" data-name="bar_size_rangestep_small"></span>
 
 For more information about adjusting size of a visualization, please see [this page](size.html).

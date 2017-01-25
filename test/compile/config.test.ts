@@ -1,28 +1,52 @@
-/* tslint:disable quote */
+/* tslint:disable quotemark */
+
+import * as log from '../../src/log';
 
 import {assert} from 'chai';
 import {orient} from '../../src/compile/config';
-import {Orient} from '../../src/config';
 import {BAR} from '../../src/mark';
 import {parseUnitModel} from '../util';
 
 describe('Config', function() {
   describe('orient', function() {
-    it('should return correct default', function() {
-      const model = parseUnitModel({
-        "mark": "bar",
-        "encoding": {
-          "y": {"type": "quantitative", "field": "foo"},
-          "x": {"type": "quantitative", "field": "bar"}
-        },
+    it('should return correct default for QxQ', function() {
+      log.runLocalLogger((localLogger) => {
+        const model = parseUnitModel({
+          "mark": "bar",
+          "encoding": {
+            "y": {"type": "quantitative", "field": "foo"},
+            "x": {"type": "quantitative", "field": "bar"}
+          },
+        });
+        assert.equal(model.config().mark.orient, 'vertical');
+        assert.equal(localLogger.warns[0], log.message.unclearOrientContinuous(BAR));
       });
-      assert.equal(orient(model.mark(), model.encoding()), Orient.VERTICAL);
-
-      const model2 = parseUnitModel({
-        "mark": "bar",
-      });
-      assert.equal(orient(model2.mark(), model2.encoding()), Orient.VERTICAL);
     });
+
+    it('should return correct default for empty plot', () => {
+      log.runLocalLogger((localLogger) => {
+        const model = parseUnitModel({
+          "mark": "bar",
+        });
+        assert.equal(model.config().mark.orient, undefined);
+        assert.equal(localLogger.warns[0], log.message.unclearOrientDiscreteOrEmpty(BAR));
+      });
+    });
+
+    it('should return correct orient for bar with both axes discrete', function() {
+      log.runLocalLogger((localLogger) => {
+        const model = parseUnitModel({
+          "mark": "bar",
+          "encoding": {
+            "x": {"type": "ordinal", "field": "foo"},
+            "y": {"type": "ordinal", "field": "bar"}
+          },
+        });
+        assert.equal(model.config().mark.orient, undefined);
+        assert.equal(localLogger.warns[0], log.message.unclearOrientDiscreteOrEmpty(BAR));
+      });
+    });
+
 
     it('should return correct orient for vertical bar', function() {
       const model = parseUnitModel({
@@ -32,7 +56,7 @@ describe('Config', function() {
           "x": {"type": "ordinal", "field": "bar"}
         },
       });
-      assert.equal(orient(model.mark(), model.encoding()), Orient.VERTICAL);
+      assert.equal(model.config().mark.orient, 'vertical');
     });
 
     it('should return correct orient for horizontal bar', function() {
@@ -43,7 +67,29 @@ describe('Config', function() {
           "y": {"type": "ordinal", "field": "bar"}
         },
       });
-      assert.equal(orient(model.mark(), model.encoding()), Orient.HORIZONTAL);
+      assert.equal(model.config().mark.orient, 'horizontal');
+    });
+
+    it('should return correct orient for vertical bar with raw temporal dimension', function() {
+      const model = parseUnitModel({
+        "mark": "bar",
+        "encoding": {
+          "y": {"type": "quantitative", "field": "foo"},
+          "x": {"type": "temporal", "field": "bar"}
+        },
+      });
+      assert.equal(model.config().mark.orient, 'vertical');
+    });
+
+    it('should return correct orient for horizontal bar with raw temporal dimension', function() {
+      const model = parseUnitModel({
+        "mark": "bar",
+        "encoding": {
+          "x": {"type": "quantitative", "field": "foo"},
+          "y": {"type": "temporal", "field": "bar"}
+        },
+      });
+      assert.equal(model.config().mark.orient, 'horizontal');
     });
 
     it('should return correct orient for vertical tick', function() {
@@ -54,9 +100,19 @@ describe('Config', function() {
           "y": {"type": "ordinal", "field": "bar"}
         },
       });
-      assert.equal(orient(model.mark(), model.encoding()), Orient.VERTICAL);
+      assert.equal(model.config().mark.orient, 'vertical');
     });
 
+    it('should return correct orient for vertical tick with bin', function() {
+      const model = parseUnitModel({
+        "mark": "tick",
+        "encoding": {
+          "x": {"type": "quantitative", "field": "foo"},
+          "y": {"type": "quantitative", "field": "bar", "bin": true}
+        },
+      });
+      assert.equal(model.config().mark.orient, 'vertical');
+    });
 
     it('should return correct orient for vertical tick of continuous timeUnit dotplot', function() {
       const model = parseUnitModel({
@@ -66,7 +122,7 @@ describe('Config', function() {
           "y": {"type": "ordinal", "field": "bar"}
         },
       });
-      assert.equal(orient(model.mark(), model.encoding()), Orient.VERTICAL);
+      assert.equal(model.config().mark.orient, 'vertical');
     });
 
     it('should return correct orient for horizontal tick', function() {
@@ -77,27 +133,51 @@ describe('Config', function() {
           "x": {"type": "ordinal", "field": "bar"}
         },
       });
-      assert.equal(orient(model.mark(), model.encoding()), Orient.HORIZONTAL);
+      assert.equal(model.config().mark.orient, 'horizontal');
     });
 
     it('should return correct orient for vertical rule', function() {
       const model = parseUnitModel({
         "mark": "rule",
         "encoding": {
-          "x": {"type": "quantitative", "field": "foo"},
+          "x": {"value": 0},
         },
       });
-      assert.equal(orient(model.mark(), model.encoding()), Orient.VERTICAL);
+      assert.equal(model.config().mark.orient, 'vertical');
     });
 
     it('should return correct orient for horizontal rule', function() {
       const model = parseUnitModel({
         "mark": "rule",
         "encoding": {
-          "y": {"type": "quantitative", "field": "foo"},
+          "y": {"value": 0},
         },
       });
-      assert.equal(orient(model.mark(), model.encoding(), {}), Orient.HORIZONTAL);
+      assert.equal(orient(model.mark(), model.encoding(), {}), 'horizontal');
+    });
+
+    it('should return correct orient for horizontal rules without x2 ', function() {
+      const model = parseUnitModel({
+        "mark": "rule",
+        "encoding": {
+          "x": {"field": "b", "type": "quantitative"},
+          "y": {"field": "a", "type": "ordinal"},
+        },
+      });
+
+      assert.equal(orient(model.mark(), model.encoding(), {}), 'horizontal');
+    });
+
+    it('should return correct orient for vertical rules without y2 ', function() {
+      const model = parseUnitModel({
+        "mark": "rule",
+        "encoding": {
+          "y": {"field": "b", "type": "quantitative"},
+          "x": {"field": "a", "type": "ordinal"},
+        },
+      });
+
+      assert.equal(orient(model.mark(), model.encoding(), {}), 'vertical');
     });
 
     it('should return correct orient for vertical rule with range', function() {
@@ -105,11 +185,11 @@ describe('Config', function() {
         "mark": "rule",
         "encoding": {
           "x": {"type": "ordinal", "field": "foo"},
-          "y": {"type": "quanitative", "field": "bar"},
-          "y2": {"type": "quanitative", "field": "baz"}
+          "y": {"type": "quantitative", "field": "bar"},
+          "y2": {"type": "quantitative", "field": "baz"}
         },
       });
-      assert.equal(orient(model.mark(), model.encoding(), {}), Orient.VERTICAL);
+      assert.equal(orient(model.mark(), model.encoding(), {}), 'vertical');
     });
 
     it('should return correct orient for horizontal rule with range', function() {
@@ -117,33 +197,33 @@ describe('Config', function() {
         "mark": "rule",
         "encoding": {
           "y": {"type": "ordinal", "field": "foo"},
-          "x": {"type": "quanitative", "field": "bar"},
-          "x2": {"type": "quanitative", "field": "baz"}
+          "x": {"type": "quantitative", "field": "bar"},
+          "x2": {"type": "quantitative", "field": "baz"}
         },
       });
-      assert.equal(orient(model.mark(), model.encoding(), {}), Orient.HORIZONTAL);
+      assert.equal(orient(model.mark(), model.encoding(), {}), 'horizontal');
     });
 
     it('should return correct orient for horizontal rule with range and no ordinal', function() {
       const model = parseUnitModel({
         "mark": "rule",
         "encoding": {
-          "x": {"type": "quanitative", "field": "bar"},
-          "x2": {"type": "quanitative", "field": "baz"}
+          "x": {"type": "quantitative", "field": "bar"},
+          "x2": {"type": "quantitative", "field": "baz"}
         },
       });
-      assert.equal(orient(model.mark(), model.encoding()), Orient.HORIZONTAL);
+      assert.equal(model.config().mark.orient, 'horizontal');
     });
 
     it('should return correct orient for vertical rule with range and no ordinal', function() {
       const model = parseUnitModel({
         "mark": "rule",
         "encoding": {
-          "y": {"type": "quanitative", "field": "bar"},
-          "y2": {"type": "quanitative", "field": "baz"}
+          "y": {"type": "quantitative", "field": "bar"},
+          "y2": {"type": "quantitative", "field": "baz"}
         },
       });
-      assert.equal(orient(model.mark(), model.encoding()), Orient.VERTICAL);
+      assert.equal(model.config().mark.orient, 'vertical');
     });
   });
 });

@@ -2,12 +2,15 @@ language: node_js
 node_js:
   - "0.12"
   - "4"
-  - "5"
-install: npm install
+  - "6"
 script:
-  - npm run clean && npm run build
+  - npm run build
   - npm run lint
-  - npm run cover
+  - npm run test:noschema # already run schema in build
+  - npm run codecov
+after_success:
+  - bash <(curl -s https://codecov.io/bash)
+cache: yarn
 notifications:
   email:
     on_success: never
@@ -17,3 +20,6 @@ notifications:
       - 'uwdub:Ry6mwlUX1aZevqiqmYLiA3N1'
     on_success: never
     on_failure: change
+cache:
+  directories:
+  - $HOME/.yarn-cache

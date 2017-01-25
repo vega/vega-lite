@@ -1,4 +1,6 @@
-# Vega-Lite
+# Vega-Lite 2 ALPHA
+
+**NOTE: The `master` branch now hosts ongoing Vega-Lite 2.0 pre-release development.  This is a work in progress that will introduce a number of MAJOR changes including migration to Vega v3 and D3 v4, as well as composition and interaction support described in [our research publication](http://idl.cs.washington.edu/papers/vega-lite).  For a more stable version, please use Vega-Lite v1. We have created branch [`1.x`](https://github.com/vega/vega-lite/tree/1.x) as our v1 maintenance branch.**
 
 [![Build Status](https://travis-ci.org/vega/vega-lite.svg?branch=master)](https://travis-ci.org/vega/vega-lite)
 [![npm dependencies](https://david-dm.org/vega/vega-lite.svg)](https://www.npmjs.com/package/vega-lite)
@@ -16,4 +18,5 @@ Contributions are also welcome. Please see [CONTRIBUTING.md](CONTRIBUTING.md) fo
 
 ## Team
 
-The development of Vega-Lite is led by [Kanit "Ham" Wongsuphasawat](https://twitter.com/kanitw), [Dominik Moritz](https://twitter.com/domoritz), and [Jeffrey Heer](https://twitter.com/jeffrey_heer) of the [University Washington Interactive Data Lab](https://idl.cs.washington.edu), with significant help from [Arvind Satyanarayan](https://twitter.com/arvindsatya1). Please see the [contributors page](https://github.com/vega/vega-lite/graphs/contributors) for the full list of contributors.
+The development of Vega-Lite is led by [Kanit "Ham" Wongsuphasawat](https://twitter.com/kanitw), [Dominik Moritz](https://twitter.com/domoritz), [Arvind Satyanarayan](https://twitter.com/arvindsatya1), and [Jeffrey Heer](https://twitter.com/jeffrey_heer) of the [University Washington Interactive Data Lab](https://idl.cs.washington.edu).
+Please see the [contributors page](https://github.com/vega/vega-lite/graphs/contributors) for the full list of contributors.

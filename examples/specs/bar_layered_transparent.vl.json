@@ -3,13 +3,13 @@
   "data": { "url": "data/population.json"},
   "transform": {
     "filter": "datum.year == 2000",
-    "calculate": [{"field": "gender", "expr": "datum.sex == 2 ? \"Female\" : \"Male\""}]
+    "calculate": [{"as": "gender", "expr": "datum.sex == 2 ? \"Female\" : \"Male\""}]
   },
   "mark": "bar",
   "encoding": {
     "x": {
       "field": "age", "type": "ordinal",
-      "scale": {"bandSize": 17}
+      "scale": {"rangeStep": 17}
     },
     "y": {
       "aggregate": "sum", "field": "people", "type": "quantitative",

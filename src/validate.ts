@@ -2,10 +2,10 @@ import {ExtendedUnitSpec} from './spec';
 
 // TODO: move to vl.spec.validator?
 
-import {toMap} from './util';
+import {toSet} from './util';
 import {BAR} from './mark';
 
-interface RequiredChannelMap {
+export interface RequiredChannelMap {
   [mark: string]: Array<string>;
 }
 
@@ -19,7 +19,7 @@ export const DEFAULT_REQUIRED_CHANNEL_MAP: RequiredChannelMap = {
   area: ['x', 'y']
 };
 
-interface SupportedChannelMap {
+export interface SupportedChannelMap {
   [mark: string]: {
     [channel: string]: number
   };
@@ -29,14 +29,14 @@ interface SupportedChannelMap {
  * Supported Encoding Channel for each mark type
  */
 export const DEFAULT_SUPPORTED_CHANNEL_TYPE: SupportedChannelMap = {
-  bar: toMap(['row', 'column', 'x', 'y', 'size', 'color', 'detail']),
-  line: toMap(['row', 'column', 'x', 'y', 'color', 'detail']), // TODO: add size when Vega supports
-  area: toMap(['row', 'column', 'x', 'y', 'color', 'detail']),
-  tick: toMap(['row', 'column', 'x', 'y', 'color', 'detail']),
-  circle: toMap(['row', 'column', 'x', 'y', 'color', 'size', 'detail']),
-  square: toMap(['row', 'column', 'x', 'y', 'color', 'size', 'detail']),
-  point: toMap(['row', 'column', 'x', 'y', 'color', 'size', 'detail', 'shape']),
-  text: toMap(['row', 'column', 'size', 'color', 'text']) // TODO(#724) revise
+  bar: toSet(['row', 'column', 'x', 'y', 'size', 'color', 'detail']),
+  line: toSet(['row', 'column', 'x', 'y', 'color', 'detail']), // TODO: add size when Vega supports
+  area: toSet(['row', 'column', 'x', 'y', 'color', 'detail']),
+  tick: toSet(['row', 'column', 'x', 'y', 'color', 'detail']),
+  circle: toSet(['row', 'column', 'x', 'y', 'color', 'size', 'detail']),
+  square: toSet(['row', 'column', 'x', 'y', 'color', 'size', 'detail']),
+  point: toSet(['row', 'column', 'x', 'y', 'color', 'size', 'detail', 'shape']),
+  text: toSet(['row', 'column', 'size', 'color', 'text']) // TODO(#724) revise
 };
 
 // TODO: consider if we should add validate method and

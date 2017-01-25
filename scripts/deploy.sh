@@ -32,8 +32,15 @@ if ! [ -f src/vl.js ]; then
   echo "${RED} src/vl.js not found.  Typescripts may be not compiled.${NC}"
   exit 1;
 fi
+if ! [ -f src/vl.d.ts ]; then
+  echo "${RED} src/vl.d.ts not found.  Typescript declarations may be not compiled.${NC}"
+  exit 1;
+fi
 
-npm publish
+# Use NPM tag to prevent people getting this by default when running `npm install``
+# https://medium.com/@mbostock/prereleases-and-npm-e778fc5e2420#.i9ko1erii
+npm publish --tag pre
+
 # exit if npm publish failed
 rc=$?
 if [[ $rc != 0 ]]; then
@@ -64,5 +71,6 @@ git checkout master
 git push --tags
 # now the published tag contains build files which work great with bower.
 
+# TODO: re-publish to github pages when we are ready to release 2.0.
 #  3. GITHUB PAGES PUBLISH
-. ./scripts/deploy-gh.sh
+# . ./scripts/deploy-gh.sh

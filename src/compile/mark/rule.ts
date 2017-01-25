@@ -1,95 +1,40 @@
 import {X, Y, X2, Y2, SIZE} from '../../channel';
-import {Orient} from '../../config';
+import {VgEncodeEntry} from '../../vega.schema';
 
+import {applyColorAndOpacity} from './common';
 import {UnitModel} from '../unit';
-import {applyColorAndOpacity} from '../common';
 
-export namespace rule {
-  export function markType() {
+import {MarkCompiler} from './base';
+import * as ref from './valueref';
+
+export const rule: MarkCompiler = {
+  markType: () => {
     return 'rule';
-  }
+  },
+  encodeEntry: (model: UnitModel) => {
+    let e: VgEncodeEntry = {};
+    const orient = model.config().mark.orient;
+    const config = model.config();
 
-  export function properties(model: UnitModel) {
-    let p: any = {};
+    // TODO: refactor how refer to scale as discussed in https://github.com/vega/vega-lite/pull/1613
+    const stack = model.stack();
 
-    // TODO: support explicit value
-    if(model.config().mark.orient === Orient.VERTICAL) {
-      if (model.has(X)) {
-        p.x = {
-          scale: model.scaleName(X),
-          field: model.field(X, { binSuffix: 'mid' })
-        };
-      } else {
-        p.x = { value : 0 };
-      }
+    e.x = ref.stackable(X,model.encoding().x, model.scaleName(X), model.scale(X), stack, 'base');
+    e.y = ref.stackable(Y, model.encoding().y, model.scaleName(Y), model.scale(Y), stack, 'base');
 
-      if (model.has(Y)) {
-        p.y = {
-          scale: model.scaleName(Y),
-          field: model.field(Y, { binSuffix: 'mid' })
-        };
-      } else {
-        p.y = { field: { group: 'height' } };
-      }
-
-      if (model.has(Y2)) {
-        p.y2 = {
-          scale: model.scaleName(Y),
-          field: model.field(Y2, { binSuffix: 'mid' })
-        };
-      } else {
-        p.y2 = { value: 0 };
-      }
+    if(orient === 'vertical') {
+      e.y2 = ref.stackable2(Y2, model.encoding().y, model.encoding().y2, model.scaleName(Y), model.scale(Y), stack, 'baseOrMax');
     } else {
-      if (model.has(Y)) {
-        p.y = {
-          scale: model.scaleName(Y),
-          field: model.field(Y, { binSuffix: 'mid' })
-        };
-      } else {
-        p.y = { value: 0 };
-      }
-
-      if (model.has(X)) {
-        p.x = {
-          scale: model.scaleName(X),
-          field: model.field(X, { binSuffix: 'mid' })
-        };
-      } else {
-        p.x = { value: 0 };
-      }
-
-      if (model.has(X2)) {
-        p.x2 = {
-          scale: model.scaleName(X),
-          field: model.field(X2, { binSuffix: 'mid' })
-        };
-      } else {
-        p.x2 = { field: { group: 'width' } };
-      }
+      e.x2 = ref.stackable2(X2, model.encoding().x, model.encoding().x2, model.scaleName(X), model.scale(X), stack, 'baseOrMax');
     }
 
     // FIXME: this function would overwrite strokeWidth but shouldn't
-    applyColorAndOpacity(p, model);
+    applyColorAndOpacity(e, model);
 
-    // size
-    if (model.has(SIZE)) {
-      p.strokeWidth = {
-        scale: model.scaleName(SIZE),
-        field: model.field(SIZE)
-      };
-    } else {
-      p.strokeWidth = { value: sizeValue(model) };
-    }
-    return p;
+    e.strokeWidth = ref.midPoint(SIZE, model.encoding().size, model.scaleName(SIZE), model.scale(SIZE), {
+      value: config.rule.strokeWidth
+    });
+
+    return e;
   }
-
-  function sizeValue(model: UnitModel) {
-    const fieldDef = model.encoding().size;
-    if (fieldDef && fieldDef.value !== undefined) {
-       return fieldDef.value;
-    }
-
-    return model.config().mark.ruleSize;
-  }
-}
+};

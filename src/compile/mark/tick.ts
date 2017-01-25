@@ -1,86 +1,57 @@
 import {X, Y, SIZE} from '../../channel';
-import {Orient} from '../../config';
-import {FieldDef, field} from '../../fielddef';
 import {Config} from '../../config';
-import {VgValueRef} from '../../vega.schema';
+import {FieldDef} from '../../fielddef';
+import {Scale} from '../../scale';
+import {VgEncodeEntry, VgValueRef} from '../../vega.schema';
 
+import {applyColorAndOpacity} from './common';
 import {UnitModel} from '../unit';
-import {applyColorAndOpacity} from '../common';
 
-export namespace tick {
-  export function markType() {
+import {MarkCompiler} from './base';
+import * as ref from './valueref';
+
+export const tick: MarkCompiler = {
+  markType: () => {
     return 'rect';
-  }
+  },
 
-  export function properties(model: UnitModel) {
-    let p: any = {};
+  encodeEntry: (model: UnitModel) => {
+    let e: VgEncodeEntry = {};
     const config = model.config();
+    const stack = model.stack();
 
-    // TODO: support explicit value
+    // TODO: refactor how refer to scale as discussed in https://github.com/vega/vega-lite/pull/1613
 
-    p.xc = x(model.encoding().x, model.scaleName(X), config);
+    e.xc = ref.stackable(X, model.encoding().x, model.scaleName(X), model.scale(X), stack, ref.midX(config));
+    e.yc = ref.stackable(Y, model.encoding().y, model.scaleName(Y), model.scale(Y), stack, ref.midY(config));
 
-    p.yc = y(model.encoding().y, model.scaleName(Y), config);
-
-    if (config.mark.orient === Orient.HORIZONTAL) {
-      p.width = size(model.encoding().size, model.scaleName(SIZE), config, (model.scale(X) || {}).bandSize);
-      p.height = { value: config.mark.tickThickness };
+    if (config.mark.orient === 'horizontal') {
+      e.width = size(model.encoding().size, model.scaleName(SIZE), model.scale(SIZE), config, (model.scale(X) || {}).rangeStep);
+      e.height = { value: config.tick.thickness };
     } else {
-      p.width = { value: config.mark.tickThickness };
-      p.height = size(model.encoding().size, model.scaleName(SIZE), config, (model.scale(Y) || {}).bandSize);
+      e.width = { value: config.tick.thickness };
+      e.height = size(model.encoding().size, model.scaleName(SIZE), model.scale(SIZE), config, (model.scale(Y) || {}).rangeStep);
     }
 
-    applyColorAndOpacity(p, model);
-    return p;
+    applyColorAndOpacity(e, model);
+    return e;
+  }
+};
+
+function size(fieldDef: FieldDef, scaleName: string, scale: Scale, config: Config, scaleRangeStep: number | null): VgValueRef {
+  let defaultSize: number;
+  if (config.tick.bandSize !== undefined) {
+    defaultSize = config.tick.bandSize;
+  } else {
+    const rangeStep = scaleRangeStep !== undefined ?
+      scaleRangeStep :
+      config.scale.rangeStep;
+    if (typeof rangeStep !== 'number') {
+      // FIXME consolidate this log
+      throw new Error('Function does not handle non-numeric rangeStep');
+    }
+    defaultSize = rangeStep / 1.5;
   }
 
-  function x(fieldDef: FieldDef, scaleName: string, config: Config): VgValueRef {
-    // x
-    if (fieldDef) {
-      if (fieldDef.field) {
-        return {
-          scale: scaleName,
-          field: field(fieldDef, { binSuffix: 'mid' })
-        };
-      } else if (fieldDef.value) {
-        return {value: fieldDef.value};
-      }
-    }
-    return { value: config.scale.bandSize / 2 };
-  }
-
-  function y(fieldDef: FieldDef, scaleName: string, config: Config): VgValueRef {
-    // y
-    if (fieldDef) {
-      if (fieldDef.field) {
-        return {
-          scale: scaleName,
-          field: field(fieldDef, { binSuffix: 'mid' })
-        };
-      } else if (fieldDef.value) {
-        return {value: fieldDef.value};
-      }
-    }
-    return { value: config.scale.bandSize / 2 };
-  }
-
-  function size(fieldDef: FieldDef, scaleName: string, config: Config, scaleBandSize: number): VgValueRef {
-    if (fieldDef) {
-      if (fieldDef.field) {
-        return {
-          scale: scaleName,
-          field: fieldDef.field
-        };
-      } else if (fieldDef.value !== undefined) {
-        return { value: fieldDef.value };
-      }
-    }
-    if (config.mark.tickSize) {
-      return { value: config.mark.tickSize };
-    }
-    const bandSize = scaleBandSize !== undefined ?
-      scaleBandSize :
-      config.scale.bandSize;
-    return { value: bandSize / 1.5 };
-  }
+  return ref.midPoint(SIZE, fieldDef, scaleName, scale, {value: defaultSize});
 }

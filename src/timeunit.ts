@@ -1,34 +1,40 @@
-import {COLUMN, ROW, SHAPE, COLOR, Channel} from './channel';
 import {DateTimeExpr, dateTimeExpr} from './datetime';
-import {ScaleType} from './scale';
-import {Dict, contains, keys, range} from './util';
+import {Dict, keys} from './util';
+import * as log from './log';
 
-export enum TimeUnit {
-  YEAR = 'year' as any,
-  MONTH = 'month' as any,
-  DAY = 'day' as any,
-  DATE = 'date' as any,
-  HOURS = 'hours' as any,
-  MINUTES = 'minutes' as any,
-  SECONDS = 'seconds' as any,
-  MILLISECONDS = 'milliseconds' as any,
-  YEARMONTH = 'yearmonth' as any,
-  // Note: don't add MONTH DATE because it will be incorrect
-  // since days on a leap year will be shifted by one if
-  // we only add
-  YEARMONTHDATE = 'yearmonthdate' as any,
-  YEARMONTHDATEHOURS = 'yearmonthdatehours' as any,
-  YEARMONTHDATEHOURSMINUTES = 'yearmonthdatehoursminutes' as any,
-  YEARMONTHDATEHOURSMINUTESSECONDS = 'yearmonthdatehoursminutesseconds' as any,
-  HOURSMINUTES = 'hoursminutes' as any,
-  HOURSMINUTESSECONDS = 'hoursminutesseconds' as any,
-  MINUTESSECONDS = 'minutesseconds' as any,
-  SECONDSMILLISECONDS = 'secondsmilliseconds' as any,
-  QUARTER = 'quarter' as any,
-  YEARQUARTER = 'yearquarter' as any,
-  QUARTERMONTH = 'quartermonth' as any,
-  YEARQUARTERMONTH = 'yearquartermonth' as any,
+export namespace TimeUnit {
+  export const YEAR: 'year' = 'year';
+  export const MONTH: 'month' = 'month';
+  export const DAY: 'day' = 'day';
+  export const DATE: 'date' = 'date';
+  export const HOURS: 'hours' = 'hours';
+  export const MINUTES: 'minutes' = 'minutes';
+  export const SECONDS: 'seconds' = 'seconds';
+  export const MILLISECONDS: 'milliseconds' = 'milliseconds';
+  export const YEARMONTH: 'yearmonth' = 'yearmonth';
+  export const YEARMONTHDATE: 'yearmonthdate' = 'yearmonthdate';
+  export const YEARMONTHDATEHOURS: 'yearmonthdatehours' = 'yearmonthdatehours';
+  export const YEARMONTHDATEHOURSMINUTES: 'yearmonthdatehoursminutes' = 'yearmonthdatehoursminutes';
+  export const YEARMONTHDATEHOURSMINUTESSECONDS: 'yearmonthdatehoursminutesseconds' = 'yearmonthdatehoursminutesseconds';
+
+  // MONTHDATE always include 29 February since we use year 0th (which is a leap year);
+  export const MONTHDATE: 'monthdate' = 'monthdate';
+  export const HOURSMINUTES: 'hoursminutes' = 'hoursminutes';
+  export const HOURSMINUTESSECONDS: 'hoursminutesseconds' = 'hoursminutesseconds';
+  export const MINUTESSECONDS: 'minutesseconds' = 'minutesseconds';
+  export const SECONDSMILLISECONDS: 'secondsmilliseconds' = 'secondsmilliseconds';
+  export const QUARTER: 'quarter' = 'quarter';
+  export const YEARQUARTER: 'yearquarter' = 'yearquarter';
+  export const QUARTERMONTH: 'quartermonth' = 'quartermonth';
+  export const YEARQUARTERMONTH: 'yearquartermonth' = 'yearquartermonth';
 }
+
+export type TimeUnit = typeof TimeUnit.YEAR | typeof TimeUnit.MONTH | typeof TimeUnit.DAY | typeof TimeUnit.DATE | typeof TimeUnit.HOURS
+  | typeof TimeUnit.MINUTES | typeof TimeUnit.SECONDS | typeof TimeUnit.MILLISECONDS | typeof TimeUnit.YEARMONTH
+  | typeof TimeUnit.YEARMONTHDATE | typeof TimeUnit.YEARMONTHDATEHOURS | typeof TimeUnit.YEARMONTHDATEHOURSMINUTES
+  | typeof TimeUnit.YEARMONTHDATEHOURSMINUTESSECONDS | typeof TimeUnit.MONTHDATE | typeof TimeUnit.HOURSMINUTES
+  | typeof TimeUnit.HOURSMINUTESSECONDS | typeof TimeUnit.MINUTESSECONDS | typeof TimeUnit.SECONDSMILLISECONDS
+  | typeof TimeUnit.QUARTER | typeof TimeUnit.YEARQUARTER | typeof TimeUnit.QUARTERMONTH | typeof TimeUnit.YEARQUARTERMONTH;
 
 /** Time Unit that only corresponds to only one part of Date objects. */
 export const SINGLE_TIMEUNITS = [
@@ -46,7 +52,7 @@ export const SINGLE_TIMEUNITS = [
 const SINGLE_TIMEUNIT_INDEX: Dict<boolean> = SINGLE_TIMEUNITS.reduce((d, timeUnit) => {
   d[timeUnit] = true;
   return d;
-}, {} as Dict<boolean>);
+}, {});
 
 export function isSingleTimeUnit(timeUnit: TimeUnit) {
   return !!SINGLE_TIMEUNIT_INDEX[timeUnit];
@@ -114,13 +120,35 @@ export const MULTI_TIMEUNITS = [
 const MULTI_TIMEUNIT_INDEX: Dict<boolean> = MULTI_TIMEUNITS.reduce((d, timeUnit) => {
   d[timeUnit] = true;
   return d;
-}, {} as Dict<boolean>);
+}, {});
 
 export function isMultiTimeUnit(timeUnit: TimeUnit) {
   return !!MULTI_TIMEUNIT_INDEX[timeUnit];
 }
 
-export const TIMEUNITS = SINGLE_TIMEUNITS.concat(MULTI_TIMEUNITS);
+export const TIMEUNITS = [
+  TimeUnit.YEAR,
+  TimeUnit.QUARTER,
+  TimeUnit.MONTH,
+  TimeUnit.DAY,
+  TimeUnit.DATE,
+  TimeUnit.HOURS,
+  TimeUnit.MINUTES,
+  TimeUnit.SECONDS,
+  TimeUnit.MILLISECONDS,
+  TimeUnit.YEARQUARTER,
+  TimeUnit.YEARQUARTERMONTH,
+  TimeUnit.YEARMONTH,
+  TimeUnit.YEARMONTHDATE,
+  TimeUnit.YEARMONTHDATEHOURS,
+  TimeUnit.YEARMONTHDATEHOURSMINUTES,
+  TimeUnit.YEARMONTHDATEHOURSMINUTESSECONDS,
+  TimeUnit.QUARTERMONTH,
+  TimeUnit.HOURSMINUTES,
+  TimeUnit.HOURSMINUTESSECONDS,
+  TimeUnit.MINUTESSECONDS,
+  TimeUnit.SECONDSMILLISECONDS
+];
 
 /** Returns true if fullTimeUnit contains the timeUnit, false otherwise. */
 export function containsTimeUnit(fullTimeUnit: TimeUnit, timeUnit: TimeUnit) {
@@ -135,35 +163,22 @@ export function containsTimeUnit(fullTimeUnit: TimeUnit, timeUnit: TimeUnit) {
     );
 }
 
-export function defaultScaleType(timeUnit: TimeUnit) {
-   switch (timeUnit) {
-    case TimeUnit.HOURS:
-    case TimeUnit.DAY:
-    case TimeUnit.MONTH:
-    case TimeUnit.QUARTER:
-      return ScaleType.ORDINAL;
-  }
-  // date, year, minute, second, yearmonth, monthday, ...
-  return ScaleType.TIME;
-}
-
 /**
  * Returns Vega expresssion for a given timeUnit and fieldRef
  */
 export function fieldExpr(fullTimeUnit: TimeUnit, field: string): string {
-  const fieldRef = 'datum["' + field + '"]';
+  const fieldRef =  `datum["${field}"]`;
 
   function func(timeUnit: TimeUnit) {
     if (timeUnit === TimeUnit.QUARTER) {
-      // Divide by 3 to get the corresponding quarter number, multiply by 3
-      // to scale to the first month of the corresponding quarter(0,3,6,9).
-      return 'floor(month(' + fieldRef + ')' + '/3)';
+      // quarter starting at 0 (0,3,6,9).
+      return `(quarter(${fieldRef})-1)`;
     } else {
-      return timeUnit + '(' + fieldRef + ')' ;
+      return `${timeUnit}(${fieldRef})`;
     }
   }
 
-  let d: DateTimeExpr = SINGLE_TIMEUNITS.reduce((_d, tu: TimeUnit) => {
+  let d = SINGLE_TIMEUNITS.reduce((_d: DateTimeExpr, tu: TimeUnit) => {
     if (containsTimeUnit(fullTimeUnit, tu)) {
       _d[tu] = func(tu);
     }
@@ -171,8 +186,7 @@ export function fieldExpr(fullTimeUnit: TimeUnit, field: string): string {
   }, {});
 
   if (d.day && keys(d).length > 1) {
-    console.warn('Time unit "'+ fullTimeUnit +'" is not supported. We are replacing it with ',
-      (fullTimeUnit+'').replace('day', 'date')+'.');
+    log.warn(log.message.dayReplacedWithDate(fullTimeUnit));
     delete d.day;
     d.date = func(TimeUnit.DATE);
   }
@@ -180,34 +194,8 @@ export function fieldExpr(fullTimeUnit: TimeUnit, field: string): string {
   return dateTimeExpr(d);
 }
 
-/** Generate the complete raw domain. */
-export function rawDomain(timeUnit: TimeUnit, channel: Channel) {
-  if (contains([ROW, COLUMN, SHAPE, COLOR], channel)) {
-    return null;
-  }
-
-  switch (timeUnit) {
-    case TimeUnit.SECONDS:
-      return range(0, 60);
-    case TimeUnit.MINUTES:
-      return range(0, 60);
-    case TimeUnit.HOURS:
-      return range(0, 24);
-    case TimeUnit.DAY:
-      return range(0, 7);
-    case TimeUnit.DATE:
-      return range(1, 32);
-    case TimeUnit.MONTH:
-      return range(0, 12);
-    case TimeUnit.QUARTER:
-      return [0,3,6,9];
-  }
-
-  return null;
-}
-
 /** returns the smallest nice unit for scale.nice */
-export function smallestUnit(timeUnit): string {
+export function smallestUnit(timeUnit: TimeUnit): string {
   if (!timeUnit) {
     return undefined;
   }
@@ -239,34 +227,37 @@ export function smallestUnit(timeUnit): string {
   return undefined;
 }
 
-/** returns the template name used for axis labels for a time unit */
-export function template(timeUnit: TimeUnit, field: string, shortTimeLabels: boolean): string {
+/** returns the signal expression used for axis labels for a time unit */
+export function formatExpression(timeUnit: TimeUnit, field: string, shortTimeLabels: boolean): string {
   if (!timeUnit) {
     return undefined;
   }
 
-  let dateComponents = [];
-
-  if (containsTimeUnit(timeUnit, TimeUnit.YEAR)) {
-    dateComponents.push(shortTimeLabels ? '%y' : '%Y');
-  }
+  let dateComponents: string[] = [];
+  let expression = '';
+  const hasYear = containsTimeUnit(timeUnit, TimeUnit.YEAR);
 
   if (containsTimeUnit(timeUnit, TimeUnit.QUARTER)) {
-   // special template for quarter
-    dateComponents.push('\'}}Q{{' + field + ' | quarter}}{{' + field + ' | time:\'');
+   // special expression for quarter as prefix
+    expression = `'Q' + quarter(${field})`;
   }
 
   if (containsTimeUnit(timeUnit, TimeUnit.MONTH)) {
-    dateComponents.push(shortTimeLabels ? '%b' : '%B');
+    // By default use short month name
+    dateComponents.push(shortTimeLabels !== false ? '%b' : '%B');
   }
 
   if (containsTimeUnit(timeUnit, TimeUnit.DAY)) {
     dateComponents.push(shortTimeLabels ? '%a' : '%A');
   } else if (containsTimeUnit(timeUnit, TimeUnit.DATE)) {
-    dateComponents.push('%d');
+    dateComponents.push('%d' + (hasYear ? ',' : '')); // add comma if there is year
   }
 
-  let timeComponents = [];
+  if (hasYear) {
+    dateComponents.push(shortTimeLabels ? '%y' : '%Y');
+  }
+
+  let timeComponents: string[] = [];
 
   if (containsTimeUnit(timeUnit, TimeUnit.HOURS)) {
     timeComponents.push('%H');
@@ -281,23 +272,22 @@ export function template(timeUnit: TimeUnit, field: string, shortTimeLabels: boo
     timeComponents.push('%L');
   }
 
-  let out = [];
+  let dateTimeComponents: string[] = [];
   if (dateComponents.length > 0) {
-    out.push(dateComponents.join('-'));
+    dateTimeComponents.push(dateComponents.join(' '));
   }
   if (timeComponents.length > 0) {
-    out.push(timeComponents.join(':'));
+    dateTimeComponents.push(timeComponents.join(':'));
   }
 
-  if (out.length > 0) {
-    // clean up empty formatting expressions that may have been generated by the quarter time unit
-    const template = '{{' + field + ' | time:\'' + out.join(' ') + '\'}}';
-
-    // FIXME: Remove these RegExp Hacks!!!
-    const escapedField = field.replace(/(\[|\])/g, '\\$1'); // excape field for use in Regex
-    return template.replace(new RegExp('{{' + escapedField + ' \\| time:\'\'}}', 'g'), ''); // remove empty templates with Regex
-  } else {
-    return undefined;
+  if (dateTimeComponents.length > 0) {
+    if (expression) {
+      // Add space between quarter and main time format
+      expression += ` + ' ' + `;
+    }
+    expression += `timeFormat(${field}, '${dateTimeComponents.join(' ')}')`;
   }
+
+  // If expression is still an empty string, return undefined instead.
+  return expression || undefined;
 }
-

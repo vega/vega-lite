@@ -1,7 +1,8 @@
+import {SOURCE} from '../../data';
 import {FieldDef} from '../../fielddef';
 import {Formula} from '../../transform';
-import {keys, Dict, StringSet} from '../../util';
-import {VgData, VgTransform} from '../../vega.schema';
+import {Dict, StringSet} from '../../util';
+import {VgData, VgSort, VgTransform} from '../../vega.schema';
 
 import {FacetModel} from './../facet';
 import {LayerModel} from './../layer';
@@ -14,13 +15,11 @@ import {nullFilter} from './nullfilter';
 import {filter} from './filter';
 import {bin} from './bin';
 import {formula} from './formula';
-import {nonPositiveFilter} from './nonpositivenullfilter';
+import {pathOrder} from './pathorder';
+import {nonPositiveFilter} from './nonpositivefilter';
 import {summary} from './summary';
-import {stackScale} from './stackscale';
+import {stack, StackComponent} from './stack';
 import {timeUnit} from './timeunit';
-import {timeUnitDomain} from './timeunitdomain';
-import {colorRank} from './colorrank';
-
 
 /**
  * Composable component instance of a model's data.
@@ -49,15 +48,13 @@ export interface DataComponent {
   /** String set of fields to be filtered */
   nonPositiveFilter: Dict<boolean>;
 
-  /** Data source for feeding stacked scale. */
-  // TODO: need to revise if single VgData is sufficient with layer / concat
-  stackScale: VgData;
+  /** Sort order to apply at the end */
+  pathOrder: VgSort;
 
-  /** Dictionary mapping an output field name (hash) to the sort and rank transforms  */
-  colorRank: Dict<VgTransform[]>;
-
-  /** String set of time units that need their own data sources for scale domain */
-  timeUnitDomain: StringSet;
+  /**
+   * Stack transforms to be applied.
+   */
+  stack: StackComponent;
 
   /** Array of summary component object for producing summary (aggregate) data source */
   summary: SummaryComponent[];
@@ -86,15 +83,14 @@ export function parseUnitData(model: UnitModel): DataComponent {
     nullFilter: nullFilter.parseUnit(model),
     filter: filter.parseUnit(model),
     nonPositiveFilter: nonPositiveFilter.parseUnit(model),
+    pathOrder: pathOrder.parseUnit(model),
 
     source: source.parseUnit(model),
     bin: bin.parseUnit(model),
     calculate: formula.parseUnit(model),
     timeUnit: timeUnit.parseUnit(model),
-    timeUnitDomain: timeUnitDomain.parseUnit(model),
     summary: summary.parseUnit(model),
-    stackScale: stackScale.parseUnit(model),
-    colorRank: colorRank.parseUnit(model)
+    stack: stack.parseUnit(model)
   };
 }
 
@@ -104,15 +100,14 @@ export function parseFacetData(model: FacetModel): DataComponent {
     nullFilter: nullFilter.parseFacet(model),
     filter: filter.parseFacet(model),
     nonPositiveFilter: nonPositiveFilter.parseFacet(model),
+    pathOrder: pathOrder.parseFacet(model),
 
     source: source.parseFacet(model),
     bin: bin.parseFacet(model),
     calculate: formula.parseFacet(model),
     timeUnit: timeUnit.parseFacet(model),
-    timeUnitDomain: timeUnitDomain.parseFacet(model),
     summary: summary.parseFacet(model),
-    stackScale: stackScale.parseFacet(model),
-    colorRank: colorRank.parseFacet(model)
+    stack: stack.parseFacet(model)
   };
 }
 
@@ -124,19 +119,17 @@ export function parseLayerData(model: LayerModel): DataComponent {
     formatParse: formatParse.parseLayer(model),
     nullFilter: nullFilter.parseLayer(model),
     nonPositiveFilter: nonPositiveFilter.parseLayer(model),
+    pathOrder: pathOrder.parseLayer(model),
 
     // everything after here does not affect whether we can merge child data into parent or not
     source: source.parseLayer(model),
     bin: bin.parseLayer(model),
     calculate: formula.parseLayer(model),
     timeUnit: timeUnit.parseLayer(model),
-    timeUnitDomain: timeUnitDomain.parseLayer(model),
     summary: summary.parseLayer(model),
-    stackScale: stackScale.parseLayer(model),
-    colorRank: colorRank.parseLayer(model)
+    stack: stack.parseLayer(model)
   };
 }
-
 
 /* tslint:enable:no-use-before-declare */
 
@@ -148,48 +141,44 @@ export function parseLayerData(model: LayerModel): DataComponent {
  * @return modified data array
  */
 export function assembleData(model: Model, data: VgData[]) {
-  const component = model.component.data;
+  const dataComponent = model.component.data;
 
-  const sourceData = source.assemble(model, component);
+  const sourceData = source.assemble(dataComponent);
   if (sourceData) {
     data.push(sourceData);
   }
 
-  summary.assemble(component, model).forEach(function(summaryData) {
+  summary.assemble(dataComponent.summary || [], model.dataName(SOURCE)).forEach(function(summaryData) {
     data.push(summaryData);
   });
 
-  if (data.length > 0) {
-    const dataTable = data[data.length - 1];
-
-    // color rank
-    const colorRankTransform = colorRank.assemble(component);
-    if (colorRankTransform.length > 0) {
-      dataTable.transform = (dataTable.transform || []).concat(colorRankTransform);
-    }
-
-    // nonPositiveFilter
-    const nonPositiveFilterTransform = nonPositiveFilter.assemble(component);
-    if (nonPositiveFilterTransform.length > 0) {
+  // nonPositiveFilter
+  const nonPositiveFilterTransform = nonPositiveFilter.assemble(dataComponent.nonPositiveFilter);
+  if (nonPositiveFilterTransform.length > 0) {
+    if (data.length > 0) {
+      const dataTable = data[data.length - 1];
       dataTable.transform = (dataTable.transform || []).concat(nonPositiveFilterTransform);
-    }
-  } else {
-    if (keys(component.colorRank).length > 0) {
-      throw new Error('Invalid colorRank not merged');
-    } else if (keys(component.nonPositiveFilter).length > 0) {
+    } else { /* istanbul ignore else: should never reach here */
       throw new Error('Invalid nonPositiveFilter not merged');
     }
   }
 
   // stack
-  // TODO: revise if this actually should be an array
-  const stackData = stackScale.assemble(component);
+  const stackData = stack.assemble(dataComponent.stack);
   if (stackData) {
     data.push(stackData);
   }
 
-  timeUnitDomain.assemble(component).forEach(function(timeUnitDomainData) {
-    data.push(timeUnitDomainData);
-  });
+  // Path Order
+  const pathOrderCollectTransform = pathOrder.assemble(dataComponent.pathOrder);
+  if (pathOrderCollectTransform) {
+    const dataTable = data[data.length - 1];
+    if (data.length > 0) {
+      dataTable.transform = (dataTable.transform || []).concat([pathOrderCollectTransform]);
+    } else { /* istanbul ignore else: should never reach here */
+      throw new Error('Invalid path order collect transform not added');
+    }
+  }
+
   return data;
 }

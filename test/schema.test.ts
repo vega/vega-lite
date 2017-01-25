@@ -1,20 +1,24 @@
-const assert = require('assert'),
-  inspect = require('util').inspect;
+import {assert} from 'chai';
+import * as Ajv from 'ajv';
+import {inspect} from 'util';
 
-const schema = require('../lib/schema.json');
 const specSchema = require('../vega-lite-schema.json');
-import {zSchema} from './util';
+const metaSchema = require('ajv/lib/refs/json-schema-draft-04.json');
 
 describe('Schema', function() {
   it('should be valid', function() {
-    const validator = new zSchema();
+    const ajv = new Ajv({
+      allErrors: true,
+      verbose: true
+    });
+
+    ajv.addMetaSchema(metaSchema, 'http://json-schema.org/draft-04/schema#');
 
     // now validate our data against the schema
-    const valid = validator.validate(specSchema, schema);
+    const valid = ajv.validateSchema(specSchema);
 
     if (!valid) {
-      const errors = validator.getLastErrors();
-      console.log(inspect(errors, { depth: 10, colors: true }));
+      console.log(inspect(ajv.errors, { depth: 10, colors: true }));
     }
     assert.equal(valid, true);
   });

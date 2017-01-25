@@ -6,7 +6,6 @@ data/*
 
 vega-lite*.js
 vega-lite*.map
-vega-lite-schema.json
 npm-debug.log
 instance.json
 coverage
@@ -21,4 +20,10 @@ examples/images/*
 examples/all-examples.json
 **/*.js.map
 **/*.js
+src/**/*.d.ts
+test/**/*.d.ts
+site/**/*.d.ts
+test-gallery/*.d.ts
+examples/**/*.d.ts
 .jekyll-metadata
+.nyc_output/*

@@ -46,8 +46,8 @@ A Vega-Lite `config` object can have the following top-level properties:
 | viewport      | Integer[]     | The width and height of the on-screen viewport, in pixels. If necessary, clipping and scrolling will be applied. <span class="note-line">__Default value:__ (none)</span> |
 | background    | String        | CSS color property to use as background of visualization. <span class="note-line">__Default value:__ (none)</span> |
 | countTitle    | String      | The default title for count field (`{field:'*', aggregate:'count', type: 'QUANTITATIVE'}`). <span class="note-line">__Default value:__ `'Number of Records'`.</span>|
-| numberFormat  | String      | The default number format pattern for text and labels of axes and legends (in the form of [D3 number format pattern](https://github.com/mbostock/d3/wiki/Formatting)). <span class="note-line">__Default value:__ `'s'`.</span>|
-| timeFormat    | String     | The default time format pattern for temporal field without time unit in the text mark and labels of axes and legends (in the form of [D3 time format pattern](https://github.com/mbostock/d3/wiki/Time-Formatting)). <span class="note-line">__Default value:__ `'%Y-%m-%d'`.</span>|
+| numberFormat  | String      | The default number format pattern for text and labels of axes and legends (in the form of [D3 number format pattern](https://github.com/mbostock/d3/wiki/Formatting)). <span class="note-line">__Default value:__ `"s"` (except for text marks that encode a count field, the default value is `"d"`).</span>|
+| timeFormat    | String     | The default time format pattern for temporal field without time unit in the text mark and labels of axes and legends (in the form of [D3 time format pattern](https://github.com/mbostock/d3/wiki/Time-Formatting)). <span class="note-line">__Default value:__ `'%b %d, %Y'`.</span>|
 
 <!-- TODO: consider adding width, height, numberFormat, timeFormat  -->
 
@@ -63,8 +63,8 @@ Each plot in either a single plot or a trellis plot is called a _cell_. Cell con
 
 | Property      | Type          | Description    |
 | :------------ |:-------------:| :------------- |
-| width         | Integer       | The default width of the single plot or each plot in a trellis plot when the visualization has a continuous (non-ordinal) x-scale or ordinal x-scale with `bandSize` = `"fit"`. <span class="note-line">__Default value:__ `200`</span> |
-| height        | Integer       | The default height of the single plot or each plot in a trellis plot when the visualization has a continuous (non-ordinal) y-scale with `bandSize` = `"fit"`. <span class="note-line">__Default value:__ `200`</span> |
+| width         | Integer       | The default width of the single plot or each plot in a trellis plot when the visualization has a continuous (non-ordinal) x-scale or ordinal x-scale with `rangeStep` = `"fit"`. <span class="note-line">__Default value:__ `200`</span> |
+| height        | Integer       | The default height of the single plot or each plot in a trellis plot when the visualization has a continuous (non-ordinal) y-scale with `rangeStep` = `"fit"`. <span class="note-line">__Default value:__ `200`</span> |
 
 **For more information about visualization's size, please see [Customizing Size](size.html) page.**
 
@@ -112,7 +112,7 @@ By default, `point` marks have filled borders and are transparent inside. Settin
 
 | Property      | Type          | Description    |
 | :------------ |:-------------:| :------------- |
-| opacity       | Number        | The overall opacity (value between [0,1]). <span class="note-line">__Default value:__ `0.7` for non-aggregate plots with `point`, `tick`, `circle`, or `square` marks and `1` otherwise. </span>|
+| opacity       | Number        | The overall opacity (value between [0,1]). <span class="note-line">__Default value:__ `0.7` for non-aggregate plots with `point`, `tick`, `circle`, or `square` marks or [layered `bar` charts](http://vega.github.io/vega-editor/?mode=vega-lite&spec=bar_layered_transparent&showEditor=1) and `1` otherwise. </span>|
 | fillOpacity   | Number        | The fill opacity (value between [0,1]). <span class="note-line">__Default value:__ `1` </span>|
 | strokeOpacity | Number        | The stroke opacity (value between [0,1]). <span class="note-line">__Default value:__ `1` </span> |
 
@@ -133,7 +133,7 @@ By default, `point` marks have filled borders and are transparent inside. Settin
 
 | Property      | Type          | Description    |
 | :------------ |:-------------:| :------------- |
-| stacked       | string        | Stacking modes for `bar` and `area` marks. <br/> • `zero` - stacking with baseline offset at zero value of the scale (for creating typical stacked [bar](mark.html#stacked-bar-chart) and [area](mark.html#stacked-area-chart) chart). <br/> • `normalize` - stacking with normalized domain (for creating normalized stacked [bar](mark.html#normalized-stacked-bar-chart) and [area](mark.html#normalized-stacked-area-chart) chart). <br/> • `center` - stacking with center baseline (for [streamgraph](mark.html#streamgraph)). <br/> • `none` - No-stacking. This will produces layered [bar](mark.html#layered-bar-chart) and area chart. <span class="note-line">__Default value:__ `zero` if applicable (`bar` or `area` marks with `color`, `opacity`, `size`, or `detail` channel mapped to a group-by field).</span>|
+| stacked       | string        | Modes for stacking marks. <br/> • `zero` - stacking with baseline offset at zero value of the scale (for creating typical stacked [bar](mark.html#stacked-bar-chart) and [area](mark.html#stacked-area-chart) chart). <br/> • `normalize` - stacking with normalized domain (for creating normalized stacked [bar](mark.html#normalized-stacked-bar-chart) and [area](mark.html#normalized-stacked-area-chart) chart). <br/> • `center` - stacking with center baseline (for [streamgraph](mark.html#streamgraph)). <br/> • `none` - No-stacking. This will produce layered [bar](mark.html#layered-bar-chart) and area chart. <span class="note-line">__Default value:__ `zero` for plots with all of the following conditions: (1) `bar` or `area` marks (2) `color`, `opacity`, `size`, or `detail` channel mapped to a group-by field (3) One ordinal or nominal axis, and (4) one quantitative axis with linear scale and summative aggregation function (e.g., `sum`, `count`).</span>|
 
 {:#interpolate}
 ### Interpolation (for Line and Area Marks)
@@ -201,8 +201,12 @@ vg.embed('#horizontal_line', {
 
 | Property      | Type          | Description    |
 | :------------ |:-------------:| :------------- |
-| barSize      | Number        | The size of the bars (width for vertical bar charts and height for horizontal bar chart). <span class="note-line">__Default value:__  `bandSize-1` if  the bar's x or y axis is an ordinal scale. (This provides 1 pixel offset between bars.) and `2` for if both x and y scales have linear scales. </span>  |
+| barBinSpacing | Number        | Spacing between bars of binned quantitative fields.  <span class="note-line">__Default value:__  `1`. </span> |
+| barSize       | Number        | The size of the bars (width for vertical bar charts and height for horizontal bar chart). <span class="note-line">__Default value:__  `rangeStep-1` if  the bar's x or y axis is an ordinal scale. (This provides 1 pixel offset between bars.) and `2` for if both x and y scales have linear scales. </span>  |
 
+#### Example: Histogram without Spacing between bars
+
+<span class="vl-example" data-name="histogram_no_spacing"></span>
 
 ### Point Config
 
@@ -224,7 +228,7 @@ vg.embed('#horizontal_line', {
 
 | Property            | Type                | Description  |
 | :------------------ |:-------------------:| :------------|
-| tickSize           | Number        | The size of the ticks  (height of the ticks for horizontal dot plots and strip plots and width of the ticks for vertical dot plots and strip plots). <span class="note-line">__Default value:__ `2/3*bandSize` (This will provide offset between band equals to the width of the tick.) </span>|
+| tickSize           | Number        | The size of the ticks  (height of the ticks for horizontal dot plots and strip plots and width of the ticks for vertical dot plots and strip plots). <span class="note-line">__Default value:__ `2/3*rangeStep` (This will provide offset between band equals to the width of the tick.) </span>|
 | tickThickness           | Number              | Thickness of the tick mark. <span class="note-line">__Default value:__ `1` </span> |
 
 #### Example Customizing Tick's Size and Thickness
@@ -262,8 +266,7 @@ vg.embed('#horizontal_line', {
 | :------------------ |:-------------------:| :------------|
 | text                | String |  Placeholder text if the `text` channel is not specified (`"Abc"` by default). |
 | format              | String  | The formatting pattern for text value. If not defined, this will be determined automatically |
-| shortTimeLabels     | Boolean | Whether month names and weekday names should be abbreviated. |
-
+| shortTimeLabels     | Boolean | Whether year, month names, and weekday names should be abbreviated.  <span class="note-line">__Default Behavior:__ Only month is shortened by default.</span>  |
 
 <!-- TODO: expand format detail -->
 <!-- TODO: example of customized text -->
@@ -271,7 +274,7 @@ vg.embed('#horizontal_line', {
 {:#scale-config}
 ## Scale Configuration  (`config.scale.*`)
 
-Scale configuration determines default properties for all [scales](scale.html) except for `row` and `column` (which are determined by [facet scale configuration](#facet-scale-config) instead).
+Scale configuration determines default properties for all [scales](scale.html).
 
 <span class="note-line">__See Code:__
 For a full list of scale configuration and their default values, please see the `ScaleConfig` interface and `defaultScaleConfig` in [scale.ts](https://github.com/vega/vega-lite/blob/master/src/scale.ts).
@@ -311,15 +314,6 @@ Facet cell configuration overrides [cell config](#cell-config) for faceted (trel
 | color         | Color         | Color of the grid between facets. |
 | opacity       | Number        | Opacity of the grid between facets. |
 | offset        | Number        | Offset for grid between facets. |
-
-
-{:#facet-scale-config}
-### Facet Scale Configuration (`config.facet.scale.*`)
-
-Facet scale configuration determines default properties for `row` and `column` [scales](scale.html).
-<span class="note-line">__See Code:__
-For a full list of scale configuration and their default values, please see the `FacetScaleConfig` interface and `defaultFacetScaleConfig` in [scale.ts](https://github.com/vega/vega-lite/blob/master/src/scale.ts).
-
 
 {:#facet-axis-config}
 ### Facet Axis Configuration (`config.facet.axis.*`)

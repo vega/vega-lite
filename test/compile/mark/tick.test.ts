@@ -1,3 +1,6 @@
+/* tslint:disable quotemark */
+
+
 // TODO:
 // test mark-tick with the following test cases,
 // looking at mark-point.test.ts as inspiration
@@ -14,6 +17,47 @@ describe('Mark: Tick', function() {
     assert.equal(tick.markType(), 'rect');
   });
 
+  describe('with stacked x', function() {
+    // This is a simplified example for stacked tick.
+    // In reality this will be used as stacked's overlayed marker
+    const model = parseUnitModel({
+      "mark": "tick",
+      "encoding": {
+        "x": {"aggregate": "sum", "field": "a", "type": "quantitative"},
+        "color": {"field": "b", "type": "ordinal"}
+      },
+      "data": {"url": "data/barley.json"},
+      "config": {"mark": {"stacked": "zero"}}
+    });
+
+    const props = tick.encodeEntry(model);
+
+    it('should use stack_end on x', function() {
+      assert.deepEqual(props.xc, {scale: X, field: 'sum_a_end'});
+    });
+  });
+
+
+  describe('with stacked y', function() {
+    // This is a simplified example for stacked tick.
+    // In reality this will be used as stacked's overlayed marker
+    const model = parseUnitModel({
+      "mark": "tick",
+      "encoding": {
+        "y": {"aggregate": "sum", "field": "a", "type": "quantitative"},
+        "color": {"field": "b", "type": "ordinal"}
+      },
+      "data": {"url": "data/barley.json"},
+      "config": {"mark": {"stacked": "zero"}}
+    });
+
+    const props = tick.encodeEntry(model);
+
+    it('should use stack_end on y', function() {
+      assert.deepEqual(props.yc, {scale: Y, field: 'sum_a_end'});
+    });
+  });
+
   describe('with quantitative x', function() {
     const model = parseUnitModel({
       'mark': 'tick',
@@ -21,7 +65,7 @@ describe('Mark: Tick', function() {
       'data': {'url': 'data/cars.json'}
     });
 
-    const props = tick.properties(model);
+    const props = tick.encodeEntry(model);
     it('should be centered on y', function() {
       assert.deepEqual(props.yc, {value: 10.5});
     });
@@ -42,7 +86,7 @@ describe('Mark: Tick', function() {
       'data': {'url': 'data/cars.json'}
     });
 
-    const props = tick.properties(model);
+    const props = tick.encodeEntry(model);
     it('should be centered on x', function() {
       assert.deepEqual(props.xc, {value: 10.5});
     });
@@ -66,7 +110,7 @@ describe('Mark: Tick', function() {
         },
       'data': {'url': 'data/cars.json'}
     });
-    const props = tick.properties(model);
+    const props = tick.encodeEntry(model);
 
     it('should scale on x', function() {
       assert.deepEqual(props.xc, {scale: X, field: 'Horsepower'});
@@ -93,11 +137,11 @@ describe('Mark: Tick', function() {
         {
           'x': {'field': 'Horsepower', 'type': 'quantitative'},
           'y': {'field': 'Cylinders', 'type': 'ordinal'},
-          'size': {'field': 'Acceleration'}
+          'size': {'field': 'Acceleration', 'type': 'quantitative'}
         },
       'data': {'url': 'data/cars.json'},
     });
-    const props = tick.properties(model);
+    const props = tick.encodeEntry(model);
     it('width should change with size field', function() {
       assert.deepEqual(props.height, {'field': 'Acceleration', 'scale': SIZE});
     });
@@ -106,18 +150,17 @@ describe('Mark: Tick', function() {
   describe('height should be mapped to size', function() {
     const model = parseUnitModel({
       'mark': 'tick',
-      'config': {'mark': {'orient': 'horizontal'}},
       'encoding':
         {
           'x': {'field': 'Horsepower', 'type': 'quantitative'},
           'y': {'field': 'Cylinders', 'type': 'ordinal'},
-          'size': {'field': 'Acceleration'}
+          'size': {'field': 'Acceleration', 'type': 'quantitative'}
         },
       'data': {'url': 'data/cars.json'},
     });
-    const props = tick.properties(model);
+    const props = tick.encodeEntry(model);
     it('height should change with size field', function() {
-      assert.deepEqual(props.width, {'field': 'Acceleration', 'scale': SIZE});
+      assert.deepEqual(props.height, {'field': 'Acceleration', 'scale': SIZE});
     });
   });
 });

@@ -1,7 +1,6 @@
 /*
  * Constants and utilities for data.
  */
-import {Type} from './type';
 
 export interface DataFormat {
   /**
@@ -10,6 +9,11 @@ export interface DataFormat {
    * If no extension is detected, `"json"` will be used by default.
    */
   type?: DataFormatType;
+
+  /**
+   * A collection of parsing instructions can be used to define the data types of string-valued attributes in the JSON file. Each instruction is a name-value pair, where the name is the name of the attribute, and the value is the desired data type (one of `"number"`, `"boolean"` or `"date"`). For example, `"parse": {"modified_on":"date"}` ensures that the `modified_on` value in each row of the input data is parsed as a Date value. (See Datalib's [`dl.read.types` method](https://github.com/vega/datalib/wiki/Import#dl_read_types) for more information.)
+   */
+  parse?: any;
 
   /**
    * JSON only) The JSON property containing the desired data.
@@ -28,20 +32,24 @@ export interface DataFormat {
   /**
    * The name of the TopoJSON object set to convert to a mesh.
    * Similar to the `feature` option, `mesh` extracts a named TopoJSON object set.
-   *  Unlike the `feature` option, the corresponding geo data is returned as a single, unified mesh instance, not as inidividual GeoJSON features.
+   *  Unlike the `feature` option, the corresponding geo data is returned as a single, unified mesh instance, not as individual GeoJSON features.
    * Extracting a mesh is useful for more efficiently drawing borders or other geographic elements that you do not need to associate with specific regions such as individual countries, states or counties.
    */
   mesh?: string;
 }
 
-export enum DataFormatType {
-    JSON = 'json' as any,
-    CSV = 'csv' as any,
-    TSV = 'tsv' as any,
-    TOPOJSON = 'topojson' as any
+export namespace DataFormatType {
+    export const JSON: 'json' = 'json';
+    export const CSV: 'csv' = 'csv';
+    export const TSV: 'tsv' = 'tsv';
+    export const TOPOJSON: 'topojson' = 'topojson';
 }
 
-export interface Data {
+export type DataFormatType = typeof DataFormatType.JSON | typeof DataFormatType.CSV | typeof DataFormatType.TSV | typeof DataFormatType.TOPOJSON;
+
+export type Data = UrlData | InlineData;
+
+export interface UrlData {
   /**
    * An object that specifies the format for the data file or values.
    */
@@ -51,31 +59,28 @@ export interface Data {
    * A URL from which to load the data set. Use the format.type property
    * to ensure the loaded data is correctly parsed.
    */
-  url?: string;
+  url: string;
+}
+
+export interface InlineData {
   /**
    * Pass array of objects instead of a url to a file.
    */
-  values?: any[];
+  values: any[];
 }
 
-export enum DataTable {
-  SOURCE = 'source' as any,
-  SUMMARY = 'summary' as any,
-  STACKED_SCALE = 'stacked_scale' as any,
-  LAYOUT = 'layout' as any
+export function isUrlData(data: Data): data is UrlData {
+  return !!data['url'];
 }
 
-export const SUMMARY = DataTable.SUMMARY;
-export const SOURCE = DataTable.SOURCE;
-export const STACKED_SCALE = DataTable.STACKED_SCALE;
-export const LAYOUT = DataTable.LAYOUT;
+export function isInlineData(data: Data): data is InlineData {
+  return !!data['values'];
+}
 
-/** Mapping from datalib's inferred type to Vega-lite's type */
-// TODO: consider if we can remove
-export const types = {
-  'boolean': Type.NOMINAL,
-  'number': Type.QUANTITATIVE,
-  'integer': Type.QUANTITATIVE,
-  'date': Type.TEMPORAL,
-  'string': Type.NOMINAL
-};
+export type DataSourceType = 'source' | 'summary' | 'stacked' | 'layout';
+
+export const SUMMARY: 'summary' = 'summary';
+export const SOURCE: 'source' = 'source';
+export const STACKED: 'stacked' = 'stacked';
+export const LAYOUT: 'layout' = 'layout';
+

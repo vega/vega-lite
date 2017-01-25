@@ -1,26 +1,33 @@
 
-export enum AggregateOp {
-    VALUES = 'values' as any,
-    COUNT = 'count' as any,
-    VALID = 'valid' as any,
-    MISSING = 'missing' as any,
-    DISTINCT = 'distinct' as any,
-    SUM = 'sum' as any,
-    MEAN = 'mean' as any,
-    AVERAGE = 'average' as any,
-    VARIANCE = 'variance' as any,
-    VARIANCEP = 'variancep' as any,
-    STDEV = 'stdev' as any,
-    STDEVP = 'stdevp' as any,
-    MEDIAN = 'median' as any,
-    Q1 = 'q1' as any,
-    Q3 = 'q3' as any,
-    MODESKEW = 'modeskew' as any,
-    MIN = 'min' as any,
-    MAX = 'max' as any,
-    ARGMIN = 'argmin' as any,
-    ARGMAX = 'argmax' as any,
+export namespace AggregateOp {
+    export const VALUES: 'values' = 'values';
+    export const COUNT: 'count' = 'count';
+    export const VALID: 'valid' = 'valid';
+    export const MISSING: 'missing' = 'missing';
+    export const DISTINCT: 'distinct' = 'distinct';
+    export const SUM: 'sum' = 'sum';
+    export const MEAN: 'mean' = 'mean';
+    export const AVERAGE: 'average' = 'average';
+    export const VARIANCE: 'variance' = 'variance';
+    export const VARIANCEP: 'variancep' = 'variancep';
+    export const STDEV: 'stdev' = 'stdev';
+    export const STDEVP: 'stdevp' = 'stdevp';
+    export const MEDIAN: 'median' = 'median';
+    export const Q1: 'q1' = 'q1';
+    export const Q3: 'q3' = 'q3';
+    export const MODESKEW: 'modeskew' = 'modeskew';
+    export const MIN: 'min' = 'min';
+    export const MAX: 'max' = 'max';
+    export const ARGMIN: 'argmin' = 'argmin';
+    export const ARGMAX: 'argmax' = 'argmax';;
 }
+
+export type AggregateOp = typeof AggregateOp.ARGMAX | typeof AggregateOp.ARGMIN | typeof AggregateOp.AVERAGE
+  | typeof AggregateOp.COUNT | typeof AggregateOp.DISTINCT | typeof AggregateOp.MAX | typeof AggregateOp.MEAN
+  | typeof AggregateOp.MEDIAN | typeof AggregateOp.MIN | typeof AggregateOp.MISSING | typeof AggregateOp.MODESKEW
+  | typeof AggregateOp.Q1 | typeof AggregateOp.Q3 | typeof AggregateOp.STDEV | typeof AggregateOp.STDEVP
+  | typeof AggregateOp.SUM | typeof AggregateOp.VALID | typeof AggregateOp.VALUES | typeof AggregateOp.VARIANCE
+  | typeof AggregateOp.VARIANCEP;
 
 export const AGGREGATE_OPS = [
     AggregateOp.VALUES,
@@ -49,14 +56,17 @@ export const AGGREGATE_OPS = [
 export const SUM_OPS = [
     AggregateOp.COUNT,
     AggregateOp.SUM,
-    AggregateOp.DISTINCT
+    AggregateOp.DISTINCT,
+    AggregateOp.VALID,
+    AggregateOp.MISSING
 ];
 
+/**
+ * Aggregation operators that always produce values within the range [domainMin, domainMax].
+ */
 export const SHARED_DOMAIN_OPS = [
     AggregateOp.MEAN,
     AggregateOp.AVERAGE,
-    AggregateOp.STDEV,
-    AggregateOp.STDEVP,
     AggregateOp.MEDIAN,
     AggregateOp.Q1,
     AggregateOp.Q3,

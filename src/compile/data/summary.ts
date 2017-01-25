@@ -1,6 +1,5 @@
 import {AggregateOp} from '../../aggregate';
-import {Channel} from '../../channel';
-import {SOURCE, SUMMARY} from '../../data';
+import {SUMMARY} from '../../data';
 import {field, FieldDef} from '../../fielddef';
 import {keys, vals, reduce, hash, Dict, StringSet} from '../../util';
 import {VgData} from '../../vega.schema';
@@ -9,14 +8,13 @@ import {FacetModel} from './../facet';
 import {LayerModel} from './../layer';
 import {Model} from './../model';
 
-import {DataComponent, SummaryComponent} from './data';
+import {SummaryComponent} from './data';
 
 
 export namespace summary {
   function addDimension(dims: { [field: string]: boolean }, fieldDef: FieldDef) {
     if (fieldDef.bin) {
       dims[field(fieldDef, { binSuffix: 'start' })] = true;
-      dims[field(fieldDef, { binSuffix: 'mid' })] = true;
       dims[field(fieldDef, { binSuffix: 'end' })] = true;
 
       // const scale = model.scale(channel);
@@ -37,7 +35,7 @@ export namespace summary {
     /* dictionary mapping field name => dict set of aggregation functions */
     let meas: Dict<StringSet> = {};
 
-    model.forEach(function(fieldDef: FieldDef, channel: Channel) {
+    model.forEach(function(fieldDef: FieldDef) {
       if (fieldDef.aggregate) {
         if (fieldDef.aggregate === AggregateOp.COUNT) {
           meas['*'] = meas['*'] || {};
@@ -62,6 +60,8 @@ export namespace summary {
 
   export function parseFacet(model: FacetModel): SummaryComponent[] {
     const childDataComponent = model.child().component.data;
+
+    // FIXME: this could be incorrect for faceted layer charts.
 
     // If child doesn't have its own data source but has a summary data source, merge
     if (!childDataComponent.source && childDataComponent.summary) {
@@ -102,7 +102,7 @@ export namespace summary {
 
   export function parseLayer(model: LayerModel): SummaryComponent[] {
     // Index by the fields we are grouping by
-    let summaries = {} as Dict<SummaryComponent>;
+    let summaries = {};
 
     // Combine summaries for children that don't have a distinct source
     // (either having its own data source, or its own tranformation of the same data source).
@@ -138,32 +138,31 @@ export namespace summary {
    * Assemble the summary. Needs a rename function because we cannot guarantee that the
    * parent data before the children data.
    */
-  export function assemble(component: DataComponent, model: Model): VgData[] {
-    if (!component.summary) {
-      return [];
-    }
-    return component.summary.reduce(function(summaryData, summaryComponent) {
+  export function assemble(component: SummaryComponent[], sourceName: string): VgData[] {
+    return component.reduce(function(summaryData, summaryComponent) {
       const dims = summaryComponent.dimensions;
       const meas = summaryComponent.measures;
 
-      const groupby = keys(dims);
-
-      // short-format summarize object for Vega's aggregate transform
-      // https://github.com/vega/vega/wiki/Data-Transforms#-aggregate
-      const summarize = reduce(meas, function(aggregator, fnDictSet, field) {
-        aggregator[field] = keys(fnDictSet);
-        return aggregator;
-      }, {});
-
       if (keys(meas).length > 0) { // has aggregate
+        const groupby = keys(dims);
+        const transform = reduce(meas, function(t, fnDictSet, field) {
+          const ops = keys(fnDictSet);
+          for (const op of ops) {
+            t.fields.push(field);
+            t.ops.push(op);
+          }
+          return t;
+        }, {
+          type: 'aggregate',
+          groupby: groupby,
+          fields: [],
+          ops: []
+        });
+
         summaryData.push({
           name: summaryComponent.name,
-          source: model.dataName(SOURCE),
-          transform: [{
-            type: 'aggregate',
-            groupby: groupby,
-            summarize: summarize
-          }]
+          source: sourceName,
+          transform: [transform]
         });
       }
       return summaryData;

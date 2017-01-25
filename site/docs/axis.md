@@ -44,9 +44,9 @@ Axis properties can be customized by setting `axis` to an axis property object. 
 | :------------ |:-------------:| :------------- |
 | axisColor     | Color         | Color of axis line. <span class="note-line">__Default value:__  (none, using Vega default). </span> |
 | axisWidth     | Number        | Width of the axis line. <span class="note-line">__Default value:__  (none, using Vega default). </span> |
-| layer         | String        | A string indicating if the axis (and any gridlines) should be placed above or below the data marks. One of `"front"` or `"back"`. <span class="note-line">__Default value:__ derived from  [axis config](config.html#facet-scale-config)'s `layer`. If the `layer` config is undefined, the default is `"back"` if `grid` is `true` and `"front"` otherwise. </span> |
 | offset        | Number | The offset, in pixels, by which to displace the axis from the edge of the enclosing group or data rectangle. <span class="note-line">__Default value:__ derived from  [axis config](config.html#facet-scale-config)'s `offset` (`0` by default)</span>|
 | orient        | String        | The orientation of the axis. One of `top` or `bottom` for `y` and `row` channels, and `left` or `right` for `x` and `column` channels. <span class="note-line">__Default value:__ `x` axis is placed on the bottom, `y` axis is placed on the left, `column`"s x-axis is placed on the top, `row`"s y-axis is placed on the right. </span> |
+| zindex        | Integer     | A non-positive integer indicating z-index of the axis.  If zindex is `0` axes should be drawn behind all chart elements. To put them in front, use `{"zindex": 1}`. <span class="note-line">__Default value:__ `0` (Behind the marks.) </span> |
 
 ### Grid
 
@@ -85,7 +85,7 @@ Axis properties can be customized by setting `axis` to an axis property object. 
 | tickSizeMinor | Number        | The size, in pixels, of minor ticks.|
 | tickSizeEnd   | Number        | The size, in pixels, of end ticks.|
 | tickWidth   	| Number        | The width, in pixels, of ticks.|
-| values        | Array         | Explicitly set the visible axis tick values.|
+| values        | Number[] &#124; [DateTime[]](transform.html#datetime) | Explicitly set the visible axis tick values. |
 
 ### Title
 
@@ -94,7 +94,7 @@ Axis properties can be customized by setting `axis` to an axis property object. 
 | title         | String        | A title for the axis. <span class="note-line">__Default value:__  derived from the field's name and transformation function applied e.g, "field_name", "SUM(field_name)", "BIN(field_name)", "YEAR(field_name)".</span> |
 | titleColor	| String 		| The color of the title. |
 | titleFont		| String 		| The font of title (e.g., `Helvetica Neue`). |
-| titleFontWeight	| Number 	 	|  The font weight of title (e.g., `bold`). | 
+| titleFontWeight	| Number 	 	|  The font weight of title (e.g., `bold`). |
 | titleFontSize	| Number 		| The font size of title, in pixels. <span class="note-line">__Default value:__ 10. </span> |
 | titleOffset   | Number        | The offset (in pixels) from the axis at which to place the title.|
 | titleMaxLength  | Integer     | Max length for axis title when the title is automatically generated from the field\'s description. <span class="note-line">__Default value:__  automatically determined based on the cell size (`config.cell.width`, `config.cell.height`) and `characterWidth` property.</span> |

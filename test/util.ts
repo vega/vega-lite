@@ -1,32 +1,23 @@
 import {buildModel} from '../src/compile/common';
 import {UnitModel} from '../src/compile/unit';
-import {ExtendedUnitSpec, normalize} from '../src/spec';
-import {contains} from '../src/util';
+import {FacetModel} from '../src/compile/facet';
+import {LayerModel} from '../src/compile/layer';
+import {ExtendedUnitSpec, FacetSpec, LayerSpec, normalize, ExtendedSpec} from '../src/spec';
+import {Model} from '../src/compile/model';
 
-// TODO: rename to parseModel
-export function parseModel(inputSpec) {
+export function parseModel(inputSpec: ExtendedSpec): Model {
   const spec = normalize(inputSpec);
   return buildModel(spec, null, '');
 }
 
-
-// TODO: rename to parseUnitModel
-/**
- * Call new Model without worrying about types.
- * We use this in tests to allow using raw JSON.
- */
-export function parseUnitModel(spec) {
-  // TODO: support other type of model as well
-  return new UnitModel(spec as ExtendedUnitSpec, null, '');
+export function parseUnitModel(spec: ExtendedUnitSpec) {
+  return new UnitModel(spec, null, '');
 }
 
-export const zSchema = require('z-schema');
+export function parseLayerModel(spec: LayerSpec) {
+  return new LayerModel(spec, null, '');
+}
 
-zSchema.registerFormat('color', function (str) {
-  // valid colors are in list or hex color
-  return contains(['purple'], str) || /^#([0-9a-f]{3}){1,2}$/i.test(str);
-});
-zSchema.registerFormat('font', function (str) {
-  // right now no fonts are valid
-  return false;
-});
+export function parseFacetModel(spec: FacetSpec) {
+  return new FacetModel(spec, null, '');
+}

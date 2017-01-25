@@ -1,20 +1,26 @@
+import * as log from '../log';
+
 import {Axis} from '../axis';
 import {Channel, X, COLUMN} from '../channel';
 import {Config, CellConfig} from '../config';
-import {Data, DataTable} from '../data';
-import {channelMappingReduce, channelMappingForEach} from '../encoding';
+import {Data, DataSourceType} from '../data';
+import {reduce, forEach} from '../encoding';
 import {FieldDef, FieldRefOption, field} from '../fielddef';
 import {Legend} from '../legend';
-import {Scale, ScaleType} from '../scale';
+import {Scale, hasDiscreteDomain} from '../scale';
 import {SortField, SortOrder} from '../sort';
-import {BaseSpec} from '../spec';
+import {BaseSpec, Padding} from '../spec';
 import {Transform} from '../transform';
-import {extend, flatten, vals, warning, Dict} from '../util';
-import {VgData, VgMarkGroup, VgScale, VgAxis, VgLegend} from '../vega.schema';
+import {extend, flatten, vals, Dict} from '../util';
+import {VgData, VgEncodeEntry, VgScale, VgAxis, VgLegend} from '../vega.schema';
+import {Formula} from '../transform';
+import {OneOfFilter, EqualFilter, RangeFilter} from '../filter';
 
 import {DataComponent} from './data/data';
 import {LayoutComponent} from './layout';
-import {ScaleComponents} from './scale';
+import {ScaleComponents, BIN_LEGEND_SUFFIX, BIN_LEGEND_LABEL_SUFFIX} from './scale/scale';
+import {StackProperties} from '../stack';
+
 
 /**
  * Composable Components that are intermediate results of the parsing phase of the
@@ -27,35 +33,39 @@ export interface Component {
   scale: Dict<ScaleComponents>;
 
   /** Dictionary mapping channel to VgAxis definition */
-  // TODO: if we allow multiple axes (e.g., dual axis), this will become VgAxis[]
-  axis: Dict<VgAxis>;
+  axis: Dict<VgAxis[]>;
 
   /** Dictionary mapping channel to VgLegend definition */
   legend: Dict<VgLegend>;
 
   /** Dictionary mapping channel to axis mark group for facet and concat */
-  axisGroup: Dict<VgMarkGroup>;
+  axisGroup: Dict<VgEncodeEntry>;
 
   /** Dictionary mapping channel to grid mark group for facet (and concat?) */
-  gridGroup: Dict<VgMarkGroup[]>;
+  gridGroup: Dict<VgEncodeEntry[]>;
 
-  mark: VgMarkGroup[];
+  mark: VgEncodeEntry[];
 }
 
-class NameMap {
+class NameMap implements NameMapInterface {
   private _nameMap: Dict<string>;
 
   constructor() {
-    this._nameMap = {} as Dict<string>;
+    this._nameMap = {};
   }
 
   public rename(oldName: string, newName: string) {
     this._nameMap[oldName] = newName;
   }
 
+
+  public has(name: string): boolean {
+    return this._nameMap[name] !== undefined;
+  }
+
   public get(name: string): string {
     // If the name appears in the _nameMap, we need to read its new name.
-    // We have to loop over the dict just in case, the new name also gets renamed.
+    // We have to loop over the dict just in case the new name also gets renamed.
     while (this._nameMap[name]) {
       name = this._nameMap[name];
     }
@@ -64,32 +74,37 @@ class NameMap {
   }
 }
 
-export abstract class Model {
-  protected _parent: Model;
-  protected _name: string;
-  protected _description: string;
+export interface NameMapInterface {
+  rename(oldname: string, newName: string): void;
+  has(name: string): boolean;
+  get(name: string): string;
+}
 
-  protected _data: Data;
+export abstract class Model {
+  protected readonly _parent: Model;
+  protected readonly _name: string;
+  protected readonly _description: string;
+  protected readonly _padding: Padding;
+
+  protected readonly _data: Data;
 
   /** Name map for data sources, which can be renamed by a model's parent. */
-  protected _dataNameMap: NameMap;
+  protected _dataNameMap: NameMapInterface;
 
   /** Name map for scales, which can be renamed by a model's parent. */
-  protected _scaleNameMap: NameMap;
+  protected _scaleNameMap: NameMapInterface;
 
   /** Name map for size, which can be renamed by a model's parent. */
-  protected _sizeNameMap: NameMap;
+  protected _sizeNameMap: NameMapInterface;
 
-  protected _transform: Transform;
-  protected _scale: Dict<Scale>;
+  protected readonly _transform: Transform;
+  protected _scale: Dict<Scale> = {};
 
-  protected _axis: Dict<Axis>;
+  protected _axis: Dict<Axis> = {};
 
-  protected _legend: Dict<Legend>;
+  protected _legend: Dict<Legend> = {};
 
   protected _config: Config;
-
-  protected _warnings: string[] = [];
 
   public component: Component;
 
@@ -107,7 +122,16 @@ export abstract class Model {
     this._data = spec.data;
 
     this._description = spec.description;
+    this._padding = spec.padding;
     this._transform = spec.transform;
+
+    if (spec.transform) {
+      if (spec.transform.filterInvalid === undefined &&
+          spec.transform['filterNull'] !== undefined) {
+        spec.transform.filterInvalid = spec.transform['filterNull'];
+        log.warn(log.message.DEPRECATED_FILTER_NULL);
+      }
+    }
 
     this.component = {data: null, layout: null, mark: null, scale: null, axis: null, axisGroup: null, gridGroup: null, legend: null};
   }
@@ -125,23 +149,23 @@ export abstract class Model {
     this.parseMark(); // depends on data name and scale name, axisGroup, gridGroup and children's scale, axis, legend and mark.
   }
 
-  public abstract parseData();
+  public abstract parseData(): void;
 
-  public abstract parseSelectionData();
+  public abstract parseSelectionData(): void;
 
-  public abstract parseLayoutData();
+  public abstract parseLayoutData(): void;
 
-  public abstract parseScale();
+  public abstract parseScale(): void;
 
-  public abstract parseMark();
+  public abstract parseMark(): void;
 
-  public abstract parseAxis();
+  public abstract parseAxis(): void;
 
-  public abstract parseLegend();
+  public abstract parseLegend(): void;
 
   // TODO: revise if these two methods make sense for shared scale concat
-  public abstract parseAxisGroup();
-  public abstract parseGridGroup();
+  public abstract parseAxisGroup(): void;
+  public abstract parseGridGroup(): void;
 
 
   public abstract assembleData(data: VgData[]): VgData[];
@@ -157,11 +181,11 @@ export abstract class Model {
     // help assemble scale domains with scale signature as well
     return flatten(vals(this.component.scale).map((scales: ScaleComponents) => {
       let arr = [scales.main];
-      if (scales.colorLegend) {
-        arr.push(scales.colorLegend);
+      if (scales.binLegend) {
+        arr.push(scales.binLegend);
       }
-      if (scales.binColorLegend) {
-        arr.push(scales.binColorLegend);
+      if (scales.binLegendLabel) {
+        arr.push(scales.binLegendLabel);
       }
       return arr;
     }));
@@ -170,7 +194,7 @@ export abstract class Model {
   public abstract assembleMarks(): any[]; // TODO: VgMarkGroup[]
 
   public assembleAxes(): VgAxis[] {
-    return vals(this.component.axis);
+    return [].concat.apply([], vals(this.component.axis));
   }
 
   public assembleLegends(): any[] { // TODO: VgLegend[]
@@ -178,7 +202,7 @@ export abstract class Model {
   }
 
   public assembleGroup() {
-    let group: VgMarkGroup = {};
+    let group: VgEncodeEntry = {};
 
     // TODO: consider if we want scales to come before marks in the output spec.
 
@@ -201,25 +225,42 @@ export abstract class Model {
     return group;
   }
 
-  public abstract assembleParentGroupProperties(cellConfig: CellConfig);
+  public abstract assembleParentGroupProperties(cellConfig: CellConfig): VgEncodeEntry;
 
   public abstract channels(): Channel[];
 
-  protected abstract mapping();
+  protected abstract mapping(): any;
 
-  public reduce(f: (acc: any, fd: FieldDef, c: Channel) => any, init, t?: any) {
-    return channelMappingReduce(this.channels(), this.mapping(), f, init, t);
+  public reduce<T>(f: (acc: any, fd: FieldDef, c: Channel) => any, init: T, t?: any) {
+    return reduce(this.mapping(), f, init, t);
   }
 
-  public forEach(f: (fd: FieldDef, c: Channel, i:number) => void, t?: any) {
-    channelMappingForEach(this.channels(), this.mapping(), f, t);
+  public forEach(f: (fd: FieldDef, c: Channel) => void, t?: any) {
+    forEach(this.mapping(), f, t);
   }
 
-  public abstract has(channel: Channel): boolean;
+  public hasDescendantWithFieldOnChannel(channel: Channel) {
+    for (let child of this.children()) {
+      if (child.isUnit()) {
+        if (child.channelHasField(channel)) {
+          return true;
+        }
+      } else {
+        if (child.hasDescendantWithFieldOnChannel(channel)) {
+          return true;
+        }
+      }
+    }
+    return false;
+  }
+
+  public abstract channelHasField(channel: Channel): boolean;
 
   public parent(): Model {
     return this._parent;
   }
+
+  public abstract children(): Model[];
 
   public name(text: string, delimiter: string = '_') {
     return (this._name ? this._name + delimiter : '') + text;
@@ -227,6 +268,10 @@ export abstract class Model {
 
   public description() {
     return this._description;
+  }
+
+  public padding() {
+    return this._padding;
   }
 
   public data() {
@@ -243,7 +288,7 @@ export abstract class Model {
    * For unit spec, this is always simply the spec.name + '-' + dataSourceType.
    * We already use the name map so that marks and scales use the correct data.
    */
-  public dataName(dataSourceType: DataTable): string {
+  public dataName(dataSourceType: DataSourceType): string {
     return this._dataNameMap.get(this.name(String(dataSourceType)));
   }
 
@@ -261,8 +306,21 @@ export abstract class Model {
 
   public abstract dataTable(): string;
 
-  public transform(): Transform {
-    return this._transform || {};
+  // TRANSFORMS
+  public calculate(): Formula[] {
+    return this._transform ? this._transform.calculate : undefined;
+  }
+
+  public filterInvalid(): boolean {
+    const transform = this._transform || {};
+    if (transform.filterInvalid === undefined) {
+      return this.parent() ? this.parent().filterInvalid() : undefined;
+    }
+    return transform.filterInvalid;
+  }
+
+  public filter(): string | OneOfFilter | EqualFilter| RangeFilter | (string | OneOfFilter | EqualFilter| RangeFilter)[] {
+    return this._transform ? this._transform.filter : undefined;
   }
 
   /** Get "field" reference for vega */
@@ -271,7 +329,7 @@ export abstract class Model {
 
     if (fieldDef.bin) { // bin has default suffix that depends on scaleType
       opt = extend({
-        binSuffix: this.scale(channel).type === ScaleType.ORDINAL ? 'range' : 'start'
+        binSuffix: hasDiscreteDomain(this.scale(channel).type) ? 'range' : 'start'
       }, opt);
     }
 
@@ -284,26 +342,48 @@ export abstract class Model {
     return this._scale[channel];
   }
 
-  // TODO: rename to hasOrdinalScale
-  public isOrdinalScale(channel: Channel) {
+  public hasDiscreteScale(channel: Channel) {
     const scale = this.scale(channel);
-    return scale && scale.type === ScaleType.ORDINAL;
+    return scale && hasDiscreteDomain(scale.type);
   }
 
   public renameScale(oldName: string, newName: string) {
     this._scaleNameMap.rename(oldName, newName);
   }
 
-  /** returns scale name for a given channel */
-  public scaleName(channel: Channel|string): string {
-    return this._scaleNameMap.get(this.name(channel + ''));
+
+  /**
+   * @return scale name for a given channel after the scale has been parsed and named.
+   * (DO NOT USE THIS METHOD DURING SCALE PARSING, use model.name() instead)
+   */
+  public scaleName(originalScaleName: Channel|string, parse?: boolean): string {
+    const channel = originalScaleName.replace(BIN_LEGEND_SUFFIX, '').replace(BIN_LEGEND_LABEL_SUFFIX, '');
+
+    if (parse) {
+      // During the parse phase always return a value
+      // No need to refer to rename map because a scale can't be renamed
+      // before it has the original name.
+      return this.name(originalScaleName + '');
+    }
+
+    // If there is a scale for the channel, it should either
+    // be in the _scale mapping or exist in the name map
+    if (
+        // in the scale map (the scale is not merged by its parent)
+        (this._scale && this._scale[channel]) ||
+        // in the scale name map (the the scale get merged by its parent)
+        this._scaleNameMap.has(this.name(originalScaleName + ''))
+      ) {
+      return this._scaleNameMap.get(this.name(originalScaleName + ''));
+    }
+    return undefined;
   }
 
   public sort(channel: Channel): SortField | SortOrder {
     return (this.mapping()[channel] || {}).sort;
   }
 
-  public abstract stack();
+  public abstract stack(): StackProperties;
 
   public axis(channel: Channel): Axis {
     return this._axis[channel];
@@ -318,15 +398,6 @@ export abstract class Model {
    */
   public config(): Config {
     return this._config;
-  }
-
-  public addWarning(message: string) {
-    warning(message);
-    this._warnings.push(message);
-  }
-
-  public warnings(): string[] {
-    return this._warnings;
   }
 
   /**
