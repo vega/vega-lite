@@ -40,6 +40,7 @@ export default function init(
     'clamp', 'nice',
     // quantitative
     'exponent', 'zero', // zero depends on domain
+    'interpolate',
     // ordinal
     'padding', 'paddingInner', 'paddingOuter', // padding
 

@@ -90,9 +90,15 @@ export interface AxisConfig {
    */
   labelMaxLength?: number;
   /**
+   * The padding, in pixels, between axis and text labels.
+   */
+  labelPadding?: number;
+  /**
    * Whether month and day names should be abbreviated.
    */
   shortTimeLabels?: boolean;
+  // FIXME: Add Description
+  position?: number;
 
   // ---------- Ticks ----------
   /**
@@ -198,12 +204,23 @@ export interface AxisConfig {
    * @TJS-type integer
    */
   titleMaxLength?: number;
-
+  /**
+   * The padding, in pixels, between title and axis.
+   */
+  titlePadding?: number;
   // ---------- Other ----------
   /**
    * Optional mark definitions for custom axis encoding.
    */
   encode?: VgAxisEncode;
+  /**
+   * Minimum extent, which determines the offset between axis ticks and labels.
+   */
+  minExtent?: number;
+  /**
+   * Maximum extent, which determines the offset between axis ticks and labels.
+   */
+  maxExtent?: number;
 }
 
 // TODO: add comment for properties that we rely on Vega's default to produce
@@ -242,3 +259,11 @@ export interface Axis extends AxisConfig {
   title?: string;
   values?: number[] | DateTime[];
 }
+
+export const AXIS_PROPERTIES:(keyof Axis)[] = [
+  // a) properties with special rules (so it has axis[property] methods) -- call rule functions
+  'domain', 'format', 'labels', 'grid', 'orient', 'ticks', 'tickSize', 'tickCount',  'title', 'values', 'zindex',
+  // b) properties without rules, only produce default values in the schema, or explicit value if specified
+    'labelPadding', 'maxExtent', 'minExtent', 'offset', 'position', 'subdivide', 'tickPadding', 'tickSize', 'tickSizeEnd',
+    'tickSizeMajor', 'tickSizeMinor', 'titleOffset', 'titlePadding'
+];
