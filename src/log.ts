@@ -171,6 +171,8 @@ export namespace message {
     return `Scale type "${scaleType}" does not work with mark ${mark}.`;
   }
 
+  export const INVAID_DOMAIN = 'Invalid scale domain';
+
 
   // AXIS
   export const INVALID_CHANNEL_FOR_AXIS = 'Invalid channel for axis.';
