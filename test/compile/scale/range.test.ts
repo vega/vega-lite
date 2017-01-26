@@ -2,7 +2,7 @@
 
 import {assert} from 'chai';
 
-import rangeMixins from '../../../src/compile/scale/range';
+import {default as rangeMixins, parseRange} from '../../../src/compile/scale/range';
 
 import {defaultConfig} from '../../../src/config';
 import * as log from '../../../src/log';
@@ -12,6 +12,28 @@ import {CONTINUOUS_TO_CONTINUOUS_SCALES, ScaleType} from '../../../src/scale';
 import {ORDINAL, NOMINAL, QUANTITATIVE} from '../../../src/type';
 
 describe('compile/scale', () => {
+  describe('parseRange()', () => {
+    it('should return correct range.step', () => {
+      assert.deepEqual(parseRange({rangeStep: 123}), {step: 123});
+    });
+
+    it('should return correct range.scheme', () => {
+      assert.deepEqual(parseRange({scheme: 'viridis'}), {scheme: 'viridis'});
+    });
+
+    it('should return correct range scheme object with count', () => {
+      assert.deepEqual(parseRange({scheme: {name: 'viridis', count : 6}}), {scheme: 'viridis', count: 6});
+    });
+
+    it('should return correct range scheme object with extent', () => {
+      assert.deepEqual(parseRange({scheme: {name: 'viridis', extent: [0.1, 0.9]}}), {scheme: 'viridis', extent: [0.1, 0.9]});
+    });
+
+    it('should return correct range', () => {
+      assert.deepEqual(parseRange({range: 'category'}), 'category');
+    });
+  });
+
   describe('rangeMixins()', function() {
     describe('row', function() {
       it('should always return {range: height}.', () => {
