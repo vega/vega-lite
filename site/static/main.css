@@ -16,6 +16,7 @@ header {
   background-color: #E6E6E6;
 }
 a {
+  cursor: pointer;
   color: #4682B4;
 }
 a:not(:hover) {
@@ -283,7 +284,6 @@ nav a:hover {
   font-size: 0.9em;
   color: #aaa;
   padding-top: 30px;
-  cursor: pointer;
   line-height: 3em;
   margin: 0.7em 0 0.3em 0;
   vertical-align: text-top;
