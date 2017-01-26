@@ -5,6 +5,7 @@
 # 1. NPM PUBLISH
 
 npm run clean
+npm run test
 npm run build
 
 # Check if all required files are here
