@@ -1,3 +1,4 @@
+import * as log from '../../log';
 
 import {SHARED_DOMAIN_OPS} from '../../aggregate';
 import {Channel} from '../../channel';
@@ -6,7 +7,7 @@ import {DateTime, isDateTime, timestamp} from '../../datetime';
 import {Scale, ScaleType, hasDiscreteDomain} from '../../scale';
 import {isSortField, SortOrder} from '../../sort';
 import {StackOffset} from '../../stack';
-import {VgDataRef, FieldRefUnionDomain, VgSortField} from '../../vega.schema';
+import {FieldRefUnionDomain, VgSortField, isDataRefUnionedDomain, isFieldRefUnionDomain, isDataRefDomain, VgDomain, VgDataRef} from '../../vega.schema';
 
 import * as util from '../../util';
 
@@ -161,4 +162,68 @@ function _useRawDomain (scale: Scale, model: Model, channel: Channel) {
       // T uses non-ordinal scale when there's no unit or when the unit is not ordinal.
       (fieldDef.type === 'temporal' && util.contains([ScaleType.TIME, ScaleType.UTC], scale.type))
     );
+}
+
+
+/**
+ * Convert the domain to an array of data refs or an array of values. Also, throw
+ * away sorting information since we always sort the domain when we union two domains.
+ */
+function normalizeDomain(domain: VgDomain): (any[] | VgDataRef)[] {
+  if (util.isArray(domain)) {
+    return [domain];
+  } else if (isDataRefDomain(domain)) {
+    delete domain.sort;
+    return [domain];
+  } else if(isFieldRefUnionDomain(domain)) {
+    return domain.fields.map(d => {
+      return {
+        data: domain.data,
+        field: d
+      };
+    });
+  } else if (isDataRefUnionedDomain(domain)) {
+    return domain.fields.map(d => {
+      if (util.isArray(d)) {
+        return d;
+      }
+      return {
+        field: d.field,
+        data: d.data
+      };
+    });
+  }
+  /* istanbul ignore next: This should never happen. */
+  throw new Error(log.message.INVAID_DOMAIN);
+}
+
+/**
+ * Union two data domains. A unioned domain is always sorted.
+ */
+export function unionDomains(domain1: VgDomain, domain2: VgDomain): VgDomain {
+  const normalizedDomain1 = normalizeDomain(domain1);
+  const normalizedDomain2 = normalizeDomain(domain2);
+
+  let domains = normalizedDomain1.concat(normalizedDomain2);
+  domains = util.unique(domains, util.hash);
+
+  if (domains.length > 1) {
+    const allData = domains.map(d => {
+      if (isDataRefDomain(d)) {
+        return d.data;
+      }
+      return null;
+    });
+
+    if (util.unique(allData, x => x).length === 1 && allData[0] !== null) {
+      return {
+        data: allData[0],
+        fields: domains.map(d => (d as VgDataRef).field)
+      };
+    }
+
+    return { fields: domains, sort: true };
+  } else {
+    return domains[0];
+  }
 }

@@ -7,9 +7,9 @@ import {Dict} from '../../util';
 import {Model} from '../model';
 
 import {ScaleComponent, ScaleComponents, BIN_LEGEND_SUFFIX, BIN_LEGEND_LABEL_SUFFIX} from './scale';
-import domain from './domain';
+import {default as domain, unionDomains} from './domain';
 import {parseRange} from './range';
-import {VgScale, VgDomain, VgDataRef} from '../../vega.schema';
+import {VgScale, VgDomain} from '../../vega.schema';
 
 /**
  * Parse scales for all channels of a model.
@@ -80,24 +80,19 @@ function parseMainScale(model: Model, channel: Channel) {
   return scaleComponent;
 }
 
-function parseDomain(model: Model, channel: Channel): VgDomain {
+export function parseDomain(model: Model, channel: Channel): VgDomain {
   const scale = model.scale(channel);
-
-  // FIXME(#): Can we always guarantee that the domain that we union is not already unioned?
-  type NonUnionDomain = any[] | VgDataRef;
 
   // If channel is either X or Y then union them with X2 & Y2 if they exist
   if (channel === X && model.channelHasField(X2)) {
     if (model.channelHasField(X)) {
-      // FIXME: Verify if this is really correct
-      return { fields: [domain(scale, model, X) as NonUnionDomain, domain(scale, model, X2) as NonUnionDomain] };
+      return unionDomains(domain(scale, model, X), domain(scale, model, X2));
     } else {
       return domain(scale, model, X2);
     }
   } else if (channel === Y && model.channelHasField(Y2)) {
     if (model.channelHasField(Y)) {
-      // FIXME: Verify if this is really correct
-      return { fields: [domain(scale, model, Y) as NonUnionDomain, domain(scale, model, Y2) as NonUnionDomain] };
+      return unionDomains(domain(scale, model, Y), domain(scale, model, Y2));
     } else {
       return domain(scale, model, Y2);
     }

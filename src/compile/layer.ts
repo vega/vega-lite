@@ -4,8 +4,8 @@ import {FieldDef} from '../fielddef';
 import {LayerSpec} from '../spec';
 import {StackProperties} from '../stack';
 import {FILL_STROKE_CONFIG} from '../mark';
-import {keys, duplicate, mergeDeep, flatten, unique, isArray, vals, hash} from '../util';
-import {VgData, isDataRefUnionedDomain, isFieldRefUnionDomain, isDataRefDomain, VgDomain, VgDataRef, VgEncodeEntry} from '../vega.schema';
+import {keys, duplicate, mergeDeep, flatten, vals} from '../util';
+import {VgData, VgEncodeEntry} from '../vega.schema';
 import {isUrlData} from '../data';
 
 import {assembleData, parseLayerData} from './data/data';
@@ -15,38 +15,8 @@ import {Model} from './model';
 import {UnitModel} from './unit';
 
 import {ScaleComponents} from './scale/scale';
+import {unionDomains} from './scale/domain';
 
-/**
- * Convert the domain to an array of data refs or an array of values. Also, throw
- * away sorting information since we always sort the domain when we union two domains.
- */
-function normalizeDomain(domain: VgDomain): (any[] | VgDataRef)[] {
-  if (isArray(domain)) {
-    return [domain];
-  } if (isDataRefDomain(domain)) {
-    delete domain.sort;
-    return [domain];
-  } else if(isFieldRefUnionDomain(domain)) {
-    return domain.fields.map(d => {
-      return {
-        data: domain.data,
-        field: d
-      };
-    });
-  } else if (isDataRefUnionedDomain(domain)) {
-    return domain.fields.map(d => {
-      if (isArray(d)) {
-        return d;
-      }
-      return {
-        field: d.field,
-        data: d.data
-      };
-    });
-  }
-
-  throw 'Should not get here.';
-}
 
 export class LayerModel extends Model {
   private _children: UnitModel[];
@@ -161,18 +131,7 @@ export class LayerModel extends Model {
             // Scales are unioned by combining the domain of the main scale.
             // Other scales that are used for ordinal legends are appended.
 
-            const modelDomain = normalizeDomain(modelScales.main.domain);
-            const childDomain = normalizeDomain(childScales.main.domain);
-
-            let fields = modelDomain.concat(childDomain);
-            fields = unique(fields, hash);
-
-            if (fields.length > 1) {
-              modelScales.main.domain = { fields, sort: true };
-            } else {
-              modelScales.main.domain = fields[0];
-            }
-
+            modelScales.main.domain = unionDomains(modelScales.main.domain, childScales.main.domain);
             modelScales.binLegend = modelScales.binLegend ? modelScales.binLegend : childScales.binLegend;
             modelScales.binLegendLabel = modelScales.binLegendLabel ? modelScales.binLegendLabel : childScales.binLegendLabel;
           } else {

@@ -16,4 +16,3 @@ export type ScaleComponents = {
   binLegend?: ScaleComponent;
   binLegendLabel?: ScaleComponent;
 };
-
