@@ -24,6 +24,8 @@ export function parseRange(scale: Scale): VgRange {
         r.extent = scheme.extent;
       }
       return r;
+    } else {
+      return { scheme };
     }
   }
   return scale.range;

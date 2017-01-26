@@ -1,5 +1,3 @@
-import * as log from '../log';
-
 import {Channel} from '../channel';
 import {defaultConfig, CellConfig, Config} from '../config';
 import {FieldDef} from '../fielddef';
@@ -7,7 +5,7 @@ import {LayerSpec} from '../spec';
 import {StackProperties} from '../stack';
 import {FILL_STROKE_CONFIG} from '../mark';
 import {keys, duplicate, mergeDeep, flatten, unique, isArray, vals, hash} from '../util';
-import {VgData, isDataRefUnionedDomain, isFieldRefUnionDomain, isDataRefDomain, VgDataRef, VgEncodeEntry, DataRefUnionDomain, FieldRefUnionDomain} from '../vega.schema';
+import {VgData, isDataRefUnionedDomain, isFieldRefUnionDomain, isDataRefDomain, VgDomain, VgDataRef, VgEncodeEntry} from '../vega.schema';
 import {isUrlData} from '../data';
 
 import {assembleData, parseLayerData} from './data/data';
@@ -19,11 +17,13 @@ import {UnitModel} from './unit';
 import {ScaleComponents} from './scale/scale';
 
 /**
- * Convert the domain to an array of data refs. Also, throw away sorting information
- * since we always sort the domain when we union two domains.
+ * Convert the domain to an array of data refs or an array of values. Also, throw
+ * away sorting information since we always sort the domain when we union two domains.
  */
-function normalizeDomain(domain: DataRefUnionDomain | FieldRefUnionDomain | VgDataRef): VgDataRef[] {
-  if (isDataRefDomain(domain)) {
+function normalizeDomain(domain: VgDomain): (any[] | VgDataRef)[] {
+  if (isArray(domain)) {
+    return [domain];
+  } if (isDataRefDomain(domain)) {
     delete domain.sort;
     return [domain];
   } else if(isFieldRefUnionDomain(domain)) {
@@ -35,6 +35,9 @@ function normalizeDomain(domain: DataRefUnionDomain | FieldRefUnionDomain | VgDa
     });
   } else if (isDataRefUnionedDomain(domain)) {
     return domain.fields.map(d => {
+      if (isArray(d)) {
+        return d;
+      }
       return {
         field: d.field,
         data: d.data
@@ -158,40 +161,16 @@ export class LayerModel extends Model {
             // Scales are unioned by combining the domain of the main scale.
             // Other scales that are used for ordinal legends are appended.
 
-            const modelScaleDomain = modelScales.main.domain;
-            const childScaleDomain = childScales.main.domain;
+            const modelDomain = normalizeDomain(modelScales.main.domain);
+            const childDomain = normalizeDomain(childScales.main.domain);
 
-            if (isArray(modelScaleDomain)) {
-              if (isArray(childScaleDomain)) {
-                modelScales.main.domain = modelScaleDomain.concat(childScaleDomain);
-              } else {
-                log.warn(log.message.CANNOT_UNION_CUSTOM_DOMAIN_WITH_FIELD_DOMAIN);
-              }
-            } else if (isArray(childScaleDomain)) {
-              log.warn(log.message.CANNOT_UNION_CUSTOM_DOMAIN_WITH_FIELD_DOMAIN);
+            let fields = modelDomain.concat(childDomain);
+            fields = unique(fields, hash);
+
+            if (fields.length > 1) {
+              modelScales.main.domain = { fields, sort: true };
             } else {
-              const modelDomain = normalizeDomain(modelScaleDomain);
-              const childDomain = normalizeDomain(childScaleDomain);
-
-              let fields = modelDomain.concat(childDomain);
-              fields = unique(fields, hash);
-
-              if (fields.length > 1) {
-                // if all scales use the same data, merge them
-                let data = fields.map(f => f.data);
-                data = unique(data, (d: string) => d);
-                if (data.length > 1) {
-                  modelScales.main.domain = { fields, sort: true };
-                } else {
-                  modelScales.main.domain = {
-                    data: data[0],
-                    fields: fields.map(f => f.field),
-                    sort: true
-                  };
-                }
-              } else {
-                modelScales.main.domain = fields[0];
-              }
+              modelScales.main.domain = fields[0];
             }
 
             modelScales.binLegend = modelScales.binLegend ? modelScales.binLegend : childScales.binLegend;
