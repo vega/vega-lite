@@ -17,8 +17,7 @@ describe('src/compile', function() {
         });
         const scales = parseScale(model, 'x');
         assert.equal(scales.main.type, 'point');
-        assert.equal(scales.main.range['step'], 21);
-        assert.equal(scales.main.range, undefined);
+        assert.deepEqual(scales.main.range, {step: 21});
       });
     });
 
@@ -40,8 +39,7 @@ describe('src/compile', function() {
           field: 'origin',
           sort: true
         });
-        assert.deepEqual(scales.main.range, 'category');
-        assert.deepEqual(scales.main.range['step'], undefined);
+        assert.equal(scales.main.range, 'category');
       });
     });
 
@@ -63,6 +61,28 @@ describe('src/compile', function() {
           data: 'source',
           field: 'origin',
           sort: true
+        });
+      });
+    });
+
+    describe('quantitative with color', function() {
+      const model = parseUnitModel({
+          mark: "point",
+          encoding: {
+            color: { field: "origin", type: "quantitative"}
+          }
+        });
+
+      const scales = parseScale(model, 'color');
+
+      it('should create linear color scale', function() {
+        assert.equal(scales.main.name, 'color');
+        assert.equal(scales.main.type, 'sequential');
+        assert.equal(scales.main.range, 'ramp');
+
+        assert.deepEqual(scales.main.domain, {
+          data: 'source',
+          field: 'origin'
         });
       });
     });

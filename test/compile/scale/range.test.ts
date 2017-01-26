@@ -139,14 +139,14 @@ describe('compile/scale', () => {
       it('should use the specified scheme for a nominal color field.', () => {
         assert.deepEqual(
           rangeMixins('color', 'ordinal', NOMINAL, {scheme: 'warm'}, defaultConfig, undefined, 'point', undefined, []),
-          {range: {scheme: 'warm'}}
+          {scheme: 'warm'}
         );
       });
 
       it('should use the specified scheme with extent for a nominal color field.', () => {
         assert.deepEqual(
           rangeMixins('color', 'ordinal', NOMINAL, {scheme: {name: 'warm', extent: [0.2, 1]}}, defaultConfig, undefined, 'point', undefined, []),
-          {range: {scheme: 'warm', extent: [0.2, 1]}}
+          {scheme: { name: 'warm', extent: [0.2, 1] }}
         );
       });
 
@@ -181,7 +181,7 @@ describe('compile/scale', () => {
       it('should use the specified scheme with count for a quantitative color field.', () => {
         assert.deepEqual(
           rangeMixins('color', 'ordinal', QUANTITATIVE, {scheme: {name: 'viridis', count: 3}}, defaultConfig, undefined, 'point', undefined, []),
-          {range: {scheme: 'viridis', count: 3}}
+          {scheme: {name: 'viridis', count: 3}}
         );
       });
     });

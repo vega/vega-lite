@@ -1,6 +1,5 @@
 import {assert} from 'chai';
 
-import * as log from '../../src/log';
 import {LayerModel} from '../../src/compile/layer';
 import {LayerSpec} from '../../src/spec';
 import {parseLayerModel} from '../util';
@@ -75,23 +74,31 @@ describe('Layer', function() {
       });
     });
 
-    it('should fail to unioned explicit and referenced domains', () => {
-      log.runLocalLogger((localLogger) => {
-        const model = parseLayerModel({
-          layers: [{
-            mark: 'point',
-            encoding: {
-              x: {scale: {domain: [1, 2, 3]}, field: 'b', type: 'ordinal'}
-            }
-          },{
-            mark: 'point',
-            encoding: {
-              x: {field: 'b', type: 'ordinal'}
-            }
-          }]
-        });
-        model.parseScale();
-        assert.equal(localLogger.warns[0], log.message.CANNOT_UNION_CUSTOM_DOMAIN_WITH_FIELD_DOMAIN);
+    it('should unioned explicit and referenced domains', () => {
+      const model = parseLayerModel({
+        layers: [{
+          mark: 'point',
+          encoding: {
+            x: {scale: {domain: [1, 2, 3]}, field: 'b', type: 'ordinal'}
+          }
+        },{
+          mark: 'point',
+          encoding: {
+            x: {field: 'b', type: 'ordinal'}
+          }
+        }]
+      });
+      model.parseScale();
+
+      assert.deepEqual(model.component.scale['x'].main.domain, {
+        fields: [
+          [1, 2, 3],
+          {
+            data: 'layer_1_source',
+            field: 'b'
+          }
+        ],
+        sort: true
       });
     });
   });
