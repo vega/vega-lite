@@ -1,8 +1,4 @@
 
-export namespace AggregateOp {
-
-}
-
 export type AggregateOp = 'argmax' | 'argmin' | 'average' | 'count'
   | 'distinct' | 'max' | 'mean' | 'median' | 'min' | 'missing' | 'modeskew'
   | 'q1' | 'q3' | 'stdev' | 'stdevp' | 'sum' | 'valid' | 'values' | 'variance'

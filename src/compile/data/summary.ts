@@ -1,4 +1,4 @@
-import {AggregateOp} from '../../aggregate';
+// import {AggregateOp} from '../../aggregate';
 import {SUMMARY} from '../../data';
 import {field, FieldDef} from '../../fielddef';
 import {keys, vals, reduce, hash, Dict, StringSet} from '../../util';
@@ -37,7 +37,7 @@ export namespace summary {
 
     model.forEach(function(fieldDef: FieldDef) {
       if (fieldDef.aggregate) {
-        if (fieldDef.aggregate === AggregateOp.COUNT) {
+        if (fieldDef.aggregate === 'count') {
           meas['*'] = meas['*'] || {};
           /* tslint:disable:no-string-literal */
           meas['*']['count'] = true;
