@@ -16,6 +16,7 @@ header {
   background-color: #E6E6E6;
 }
 a {
+  cursor: pointer;
   color: #4682B4;
 }
 a:not(:hover) {
@@ -24,14 +25,13 @@ a:not(:hover) {
 footer {
   border-top: 1px solid #eee;
   padding: 1em 0 1em 0;
-  font-size: small;
-  color: #aaa;
   /* for safari */
   min-height: 40px;
 }
 footer > div {
   display: flex;
   align-items: center;
+  justify-content: space-between;
 }
 blockquote {
   padding: 0 15px;
@@ -90,7 +90,9 @@ h1, h2, h3, h4 {
   text-rendering: optimizeLegibility;
 }
 h1 {
+  vertical-align: middle;
   color: black;
+  display: inline-block;
   font-weight: 300;
   font-size: 2.5em;
   margin: 0.7em 0 0.3em 0;
@@ -277,9 +279,29 @@ nav a:hover {
   flex: 0 0 auto;
 }
 
+.edit-page {
+  display: inline-block;
+  font-size: 0.9em;
+  color: #aaa;
+  padding-top: 30px;
+  line-height: 3em;
+  margin: 0.7em 0 0.3em 0;
+  vertical-align: text-top;
+  float: right;
+  text-align: right;
+}
+
+footer .edit-page {
+  padding: 0;
+  margin: 0;
+}
+
 .lead {
   font-size: 1.3em;
   font-weight: 300;
+}
+.idl-logo {
+  float: right;
 }
 .idl-logo img {
   height: 40px;
@@ -339,6 +361,8 @@ nav a:hover {
 /* Showcase */
 
 .showcase {
+  width: 100%;
+  clear: both;
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
@@ -468,5 +492,18 @@ nav a:hover {
   }
   .highlight {
     overflow-x: auto;
+  }
+}
+
+@media (max-width:640px) {
+  h1, #edit-this-page {
+    display: block;
+    text-align: left;
+    float: left;
+    width: 100%;
+    padding-top: 0;
+  }
+  #edit-this-page {
+    margin-top: 0;
   }
 }
