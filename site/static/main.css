@@ -279,7 +279,7 @@ nav a:hover {
   flex: 0 0 auto;
 }
 
-#edit-this-page {
+.edit-page {
   display: inline-block;
   font-size: 0.9em;
   color: #aaa;
@@ -291,7 +291,7 @@ nav a:hover {
   text-align: right;
 }
 
-footer #edit-this-page {
+footer .edit-page {
   padding: 0;
   margin: 0;
 }
