@@ -8,7 +8,8 @@ or even better, submit a pull request.
 
 - For major changes, please discuss with us via [our mailing list](https://groups.google.com/forum/#!forum/vega-js) and Github first,
 so we can better coordinate our efforts, prevent duplication of work,
-and help you to craft the change so that it is successfully accepted into the project.
+and help you to craft the change so that it is successfully accepted into the project. 
+  - One way to use GitHub for this purpose is to submit a pull request (PR) with a "[WIP]" prefix in the PR's title.  With a WIP PR, you can annotate your modification with questions. 
 
 - Generally we name a branch using this pattern `<your 2-3 letters initial>/<topic>`.
 For example, @kanitw's branch regarding scale type might be called `kw/scale-type`.
