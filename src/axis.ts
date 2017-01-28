@@ -73,7 +73,8 @@ export interface AxisConfig {
   /**
    * Enable or disable labels.
    */
-  label?: boolean;
+  labels?: boolean;
+
   /**
    * The rotation angle of the axis labels.
    * @minimum 0
@@ -110,7 +111,7 @@ export interface AxisConfig {
   /**
    * Whether the axis should include ticks.
    */
-  tick?: boolean;
+  ticks?: boolean;
 
   /**
    * A desired number of ticks, for axes visualizing quantitative scales. The resulting number may be different so that values are "nice" (multiples of 2, 5, 10) and lie within the underlying scale's range.
@@ -223,7 +224,7 @@ export const defaultFacetAxisConfig: AxisConfig = {
   // TODO: remove these
   domain: false,
   grid: false,
-  tick: false
+  ticks: false
 };
 
 export interface Axis extends AxisConfig {

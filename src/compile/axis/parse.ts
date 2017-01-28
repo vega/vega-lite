@@ -11,17 +11,6 @@ import {Dict, keys, some} from '../../util';
 type AxisPart = 'domain' | 'grid' | 'labels' | 'ticks' | 'title';
 const AXIS_PARTS: AxisPart[] = ['domain', 'grid', 'labels', 'ticks', 'title'];
 
-/**
- * Mapping an axis part to its enable/disable flag.
- */
-const axisPartFlag = {
-  domain: 'domain',
-  grid: 'grid',
-  labels: 'label',
-  ticks: 'tick',
-  title: 'title'
-};
-
 export function parseAxisComponent(model: Model, axisChannels: Channel[]): Dict<VgAxis[]> {
   return axisChannels.reduce(function(axis, channel) {
     const vgAxes: VgAxis[] = [];
@@ -63,7 +52,7 @@ function hasAxisPart(axis: VgAxis, part: AxisPart) {
     return !!axis[part];
   }
   // Other parts are enabled by default, so they should not be false or null.
-  return !isFalseOrNull(axis[axisPartFlag[part]]);
+  return !isFalseOrNull(axis[part]);
 }
 
 /**
@@ -88,7 +77,7 @@ function parseAxis(channel: Channel, model: Model, isGridAxis: boolean): VgAxis 
   // 1.2. Add properties
   [
     // a) properties with special rules (so it has axis[property] methods) -- call rule functions
-    'domain', 'format', 'label', 'grid', 'gridScale', 'orient', 'tick', 'tickSize', 'tickCount',  'title', 'values', 'zindex',
+    'domain', 'format', 'labels', 'grid', 'gridScale', 'orient', 'ticks', 'tickSize', 'tickCount',  'title', 'values', 'zindex',
     // b) properties without rules, only produce default values in the schema, or explicit value if specified
      'offset', 'subdivide', 'tickPadding', 'tickSize', 'tickSizeEnd', 'tickSizeMajor', 'tickSizeMinor', 'titleOffset'
   ].forEach(function(property) {
@@ -119,14 +108,14 @@ function parseAxis(channel: Channel, model: Model, isGridAxis: boolean): VgAxis 
   return vgAxis;
 }
 
-function getSpecifiedOrDefaultValue(property: string, specifiedAxis: Axis, channel: Channel, model: Model, isGridAxis: boolean) {
+function getSpecifiedOrDefaultValue(property: keyof VgAxis, specifiedAxis: Axis, channel: Channel, model: Model, isGridAxis: boolean) {
   const fieldDef = model.fieldDef(channel);
   const config = model.config();
 
   switch (property) {
     case 'domain':
-    case 'label':
-    case 'tick':
+    case 'labels':
+    case 'ticks':
       return isGridAxis ? false : specifiedAxis[property];
     case 'format':
       return rules.format(specifiedAxis, channel, fieldDef, config);
