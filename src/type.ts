@@ -1,4 +1,5 @@
 /** Constants and utilities for data type */
+/** Data type based on level of measurement */
 
 export namespace Type {
   export const QUANTITATIVE: 'quantitative' = 'quantitative';
