@@ -1,6 +1,5 @@
 import * as log from '../log';
 
-// import {AggregateOp} from '../aggregate';
 import {TEXT, Channel} from '../channel';
 import {Config, CellConfig} from '../config';
 import {FieldDef, OrderFieldDef, field} from '../fielddef';
