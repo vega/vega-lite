@@ -25,7 +25,10 @@ export default function init(
   let specifiedScale = (fieldDef || {}).scale || {};
 
   let scale: Scale = {
-    type: scaleType(fieldDef, channel, mark, topLevelSize, config)
+    type: scaleType(
+      specifiedScale.type, fieldDef.type, channel, fieldDef.timeUnit, mark,
+      topLevelSize !== undefined, specifiedScale.rangeStep, config.scale
+    )
   };
 
   // Use specified value if compatible or determine default values for each property
