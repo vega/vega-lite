@@ -49,14 +49,10 @@ describe('fieldDef', () => {
     });
 
     it('should return correct title for aggregate', () => {
-      // if "aggregate: 'mean' as 'mean'" is changed to "aggregate: 'mean'", it won't pass the test because
-      // it will show that type of 'mean' is string instead of 'mean'
-      const fieldDef = {field: 'f', type: QUANTITATIVE, aggregate: 'mean' as 'mean'};
-      assert.equal(title(fieldDef, {}), 'MEAN(f)');
+      assert.equal(title({field: 'f', type: QUANTITATIVE, aggregate: 'mean'}, {}), 'MEAN(f)');
     });
 
     it('should return correct title for count', () => {
-      // The same test error shows up here if 'count' as 'count' is changed to only 'count'
       const fieldDef = {field: '*', type: QUANTITATIVE, aggregate: 'count' as 'count'};
       assert.equal(title(fieldDef, {countTitle: 'baz!'}), 'baz!');
     });
