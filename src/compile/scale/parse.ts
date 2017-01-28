@@ -2,12 +2,14 @@ import {X, Y, X2, Y2, Channel} from '../../channel';
 import {FieldDef, field} from '../../fielddef';
 import {ScaleType, hasContinuousDomain} from '../../scale';
 import {isSortField, SortOrder} from '../../sort';
-import {extend, Dict} from '../../util';
+import {Dict} from '../../util';
 
 import {Model} from '../model';
 
 import {ScaleComponent, ScaleComponents, BIN_LEGEND_SUFFIX, BIN_LEGEND_LABEL_SUFFIX} from './scale';
-import domain from './domain';
+import {default as domain, unionDomains} from './domain';
+import {parseRange} from './range';
+import {VgScale, VgDomain} from '../../vega.schema';
 
 /**
  * Parse scales for all channels of a model.
@@ -53,38 +55,49 @@ function parseMainScale(model: Model, channel: Channel) {
   const scale = model.scale(channel);
   const sort = model.sort(channel);
 
-  // TODO: replace "any" below with ScaleComponent
-  let scaleComponent: any = extend({
+  let scaleComponent: VgScale = {
     name: model.scaleName(channel + '', true),
-  }, scale);
-  // FIXME refactor initScale to remove useRawDomain to avoid this hack
-  // HACK: useRawDomain isn't really a Vega scale output
-  delete scaleComponent.useRawDomain;
+    type: scale.type,
+    domain: parseDomain(model, channel),
+    range: parseRange(scale)
+  };
 
-  // If channel is either X or Y then union them with X2 & Y2 if they exist
-  if (channel === X && model.channelHasField(X2)) {
-    if (model.channelHasField(X)) {
-      // FIXME: Verify if this is really correct
-      scaleComponent.domain = { fields: [domain(scale, model, X), domain(scale, model, X2)] };
-    } else {
-      scaleComponent.domain = domain(scale, model, X2);
-    }
-  } else if (channel === Y && model.channelHasField(Y2)) {
-    if (model.channelHasField(Y)) {
-      // FIXME: Verify if this is really correct
-      scaleComponent.domain = { fields: [domain(scale, model, Y), domain(scale, model, Y2)] };
-    } else {
-      scaleComponent.domain = domain(scale, model, Y2);
-    }
-  } else {
-    scaleComponent.domain = domain(scale, model, channel);
-  }
+  [ 'round',
+    // quantitative / time
+    'clamp', 'nice',
+    // quantitative
+    'exponent', 'zero', // zero depends on domain
+    // ordinal
+    'padding', 'paddingInner', 'paddingOuter', // padding
+  ].forEach((property) => {
+    scaleComponent[property] = scale[property];
+  });
 
   if (sort && (isSortField(sort) ? sort.order : sort) === SortOrder.DESCENDING) {
     scaleComponent.reverse = true;
   }
 
   return scaleComponent;
+}
+
+export function parseDomain(model: Model, channel: Channel): VgDomain {
+  const scale = model.scale(channel);
+
+  // If channel is either X or Y then union them with X2 & Y2 if they exist
+  if (channel === X && model.channelHasField(X2)) {
+    if (model.channelHasField(X)) {
+      return unionDomains(domain(scale, model, X), domain(scale, model, X2));
+    } else {
+      return domain(scale, model, X2);
+    }
+  } else if (channel === Y && model.channelHasField(Y2)) {
+    if (model.channelHasField(Y)) {
+      return unionDomains(domain(scale, model, Y), domain(scale, model, Y2));
+    } else {
+      return domain(scale, model, Y2);
+    }
+  }
+  return domain(scale, model, channel);
 }
 
 /**

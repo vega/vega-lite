@@ -2,7 +2,7 @@
 
 
 import {assert} from 'chai';
-import domain from '../../../src/compile/scale/domain';
+import {default as domain, unionDomains} from '../../../src/compile/scale/domain';
 import {SOURCE, SUMMARY} from '../../../src/data';
 
 import {parseUnitModel} from '../../util';
@@ -252,6 +252,31 @@ describe('compile/scale', () => {
           field: 'origin',
           sort: true
         });
+      });
+    });
+  });
+
+  describe('unionDomains()', () => {
+    it('should union field and data ref union domains', () => {
+      const domain1 = {
+        data: 'foo',
+        fields: ['a', 'b']
+      };
+
+      const domain2 = {
+        fields: [{
+          data: 'foo',
+          field: 'b'
+        },{
+          data: 'foo',
+          field: 'c'
+        }]
+      };
+
+      const unioned = unionDomains(domain1, domain2);
+      assert.deepEqual(unioned, {
+        data: 'foo',
+        fields: ['a', 'b', 'c']
       });
     });
   });

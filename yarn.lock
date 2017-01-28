@@ -145,7 +145,7 @@
     "@types/d3-interpolate" "*"
     "@types/d3-selection" "*"
 
-"@types/d3@^4.3.0":
+"@types/d3@^4.4.1":
   version "4.4.1"
   resolved "https://registry.yarnpkg.com/@types/d3/-/d3-4.4.1.tgz#7673792ee00bbf471d466a6cc9998dae0172d0bd"
   dependencies:
@@ -188,13 +188,13 @@
   version "1.0.29"
   resolved "https://registry.yarnpkg.com/@types/json-stable-stringify/-/json-stable-stringify-1.0.29.tgz#61a10d158a3cce8dadb8390365f9dcb7de081247"
 
-"@types/mocha@^2.2.33":
+"@types/mocha@^2.2.38":
   version "2.2.38"
   resolved "https://registry.yarnpkg.com/@types/mocha/-/mocha-2.2.38.tgz#8c188f6e34c2e7c3f1d0127d908d5a36e5a60dc9"
 
-"@types/node@^7.0.1":
-  version "7.0.2"
-  resolved "https://registry.yarnpkg.com/@types/node/-/node-7.0.2.tgz#f318fcda63543ac076316cb91653d8e89aa7bfce"
+"@types/node@^7.0.4":
+  version "7.0.4"
+  resolved "https://registry.yarnpkg.com/@types/node/-/node-7.0.4.tgz#9aabc135979ded383325749f508894c662948c8b"
 
 abbrev@1:
   version "1.0.9"
@@ -704,15 +704,15 @@ browserify-zlib@~0.1.2:
   dependencies:
     pako "~0.2.0"
 
-browserify@^13.0.0, browserify@~13.3.0:
-  version "13.3.0"
-  resolved "https://registry.yarnpkg.com/browserify/-/browserify-13.3.0.tgz#b5a9c9020243f0c70e4675bec8223bc627e415ce"
+browserify@^14.0.0, browserify@~14.0.0:
+  version "14.0.0"
+  resolved "https://registry.yarnpkg.com/browserify/-/browserify-14.0.0.tgz#67e6cfe7acb2fb1a1908e8a763452306de0bcf38"
   dependencies:
     assert "^1.4.0"
     browser-pack "^6.0.1"
     browser-resolve "^1.11.0"
     browserify-zlib "~0.1.2"
-    buffer "^4.1.0"
+    buffer "^5.0.2"
     cached-path-relative "^1.0.0"
     concat-stream "~1.5.1"
     console-browserify "^1.1.0"
@@ -791,13 +791,12 @@ buffer-xor@^1.0.2:
   version "1.0.3"
   resolved "https://registry.yarnpkg.com/buffer-xor/-/buffer-xor-1.0.3.tgz#26e61ed1422fb70dd42e6e36729ed51d855fe8d9"
 
-buffer@^4.1.0:
-  version "4.9.1"
-  resolved "https://registry.yarnpkg.com/buffer/-/buffer-4.9.1.tgz#6d1bb601b07a4efced97094132093027c95bc298"
+buffer@^5.0.2:
+  version "5.0.2"
+  resolved "https://registry.yarnpkg.com/buffer/-/buffer-5.0.2.tgz#41d0407ff76782e9ec19f52f88e237ce6bb0de6d"
   dependencies:
     base64-js "^1.0.2"
     ieee754 "^1.1.4"
-    isarray "^1.0.0"
 
 builtin-modules@^1.0.0:
   version "1.1.1"
@@ -1340,9 +1339,9 @@ d3-time@1, d3-time@1.0.4:
   version "1.0.4"
   resolved "https://registry.yarnpkg.com/d3-time/-/d3-time-1.0.4.tgz#2ceba09a76b7450c992a1ded4e10fc6195e69649"
 
-d3-timer@1, d3-timer@1.0.3:
-  version "1.0.3"
-  resolved "https://registry.yarnpkg.com/d3-timer/-/d3-timer-1.0.3.tgz#7a308a10c8524778e6b32d1d6c1c329209ae0ebf"
+d3-timer@1, d3-timer@1.0.4:
+  version "1.0.4"
+  resolved "https://registry.yarnpkg.com/d3-timer/-/d3-timer-1.0.4.tgz#adaf7f60c7b54c99b2ffabd28c15a0c108a75321"
 
 d3-transition@1, d3-transition@1.0.3:
   version "1.0.3"
@@ -1369,9 +1368,9 @@ d3-zoom@1.1.1:
     d3-selection "1"
     d3-transition "1"
 
-d3@^4.4.0:
-  version "4.4.3"
-  resolved "https://registry.yarnpkg.com/d3/-/d3-4.4.3.tgz#4854d2084ece7550b4b025f24fb3c6f5d8d95d0e"
+d3@^4.4.4:
+  version "4.4.4"
+  resolved "https://registry.yarnpkg.com/d3/-/d3-4.4.4.tgz#15d4e455687bc7a8ff2eeb4b25354a6ba4f24f57"
   dependencies:
     d3-array "1.0.2"
     d3-axis "1.0.4"
@@ -1399,7 +1398,7 @@ d3@^4.4.0:
     d3-shape "1.0.4"
     d3-time "1.0.4"
     d3-time-format "2.0.3"
-    d3-timer "1.0.3"
+    d3-timer "1.0.4"
     d3-transition "1.0.3"
     d3-voronoi "1.1.1"
     d3-zoom "1.1.1"
@@ -2389,7 +2388,7 @@ is-obj@^1.0.0:
 
 is-posix-bracket@^0.1.0:
   version "0.1.1"
-  resolved "https://registry.yarnpkg.com/is-posix-bracket/-/is-posix-bracket-0.1.1.tgz#3334dc79774368e92f016e6fbc0a88f5cd6e6bc4"
+  resolved "http://registry.npmjs.org/is-posix-bracket/-/is-posix-bracket-0.1.1.tgz#3334dc79774368e92f016e6fbc0a88f5cd6e6bc4"
 
 is-primitive@^2.0.0:
   version "2.0.0"
@@ -2419,13 +2418,13 @@ is-utf8@^0.2.0:
   version "0.2.1"
   resolved "https://registry.yarnpkg.com/is-utf8/-/is-utf8-0.2.1.tgz#4b0da1442104d1b336340e80797e865cf39f7d72"
 
-isarray@^1.0.0, isarray@~1.0.0, isarray@1.0.0:
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/isarray/-/isarray-1.0.0.tgz#bb935d48582cba168c06834957a54a3e07124f11"
-
 isarray@~0.0.1, isarray@0.0.1:
   version "0.0.1"
   resolved "https://registry.yarnpkg.com/isarray/-/isarray-0.0.1.tgz#8a18acfca9a8f4177e09abfc6038939b05d1eedf"
+
+isarray@~1.0.0, isarray@1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/isarray/-/isarray-1.0.0.tgz#bb935d48582cba168c06834957a54a3e07124f11"
 
 isexe@^1.1.1:
   version "1.1.2"
@@ -3866,7 +3865,7 @@ socket.io@1.6.0:
     socket.io-client "1.6.0"
     socket.io-parser "2.3.1"
 
-source-map-support@~0.4.6:
+source-map-support@~0.4.10:
   version "0.4.10"
   resolved "https://registry.yarnpkg.com/source-map-support/-/source-map-support-0.4.10.tgz#d7b19038040a14c0837a18e630a196453952b378"
   dependencies:
@@ -3919,7 +3918,7 @@ split@0.3:
   dependencies:
     through "2"
 
-sprintf-js@^1.0.3, sprintf-js@~1.0.2:
+sprintf-js@~1.0.2:
   version "1.0.3"
   resolved "https://registry.yarnpkg.com/sprintf-js/-/sprintf-js-1.0.3.tgz#04e6926f662895354f3dd015203633b857297e2c"
 
@@ -4215,9 +4214,9 @@ tsify@~3.0.0:
     through2 "^2.0.0"
     tsconfig "^5.0.3"
 
-tslint@~4.3.1:
-  version "4.3.1"
-  resolved "https://registry.yarnpkg.com/tslint/-/tslint-4.3.1.tgz#28f679c53ca4b273688bcb6fcf0dde7ff1bb2169"
+tslint@~4.4.2:
+  version "4.4.2"
+  resolved "https://registry.yarnpkg.com/tslint/-/tslint-4.4.2.tgz#b14cb79ae039c72471ab4c2627226b940dda19c6"
   dependencies:
     babel-code-frame "^6.20.0"
     colors "^1.1.2"
@@ -4226,7 +4225,6 @@ tslint@~4.3.1:
     glob "^7.1.1"
     optimist "~0.6.0"
     resolve "^1.1.7"
-    underscore.string "^3.3.4"
     update-notifier "^1.0.2"
 
 tty-browserify@~0.0.0:
@@ -4253,16 +4251,16 @@ typedarray@~0.0.5:
   version "0.0.6"
   resolved "https://registry.yarnpkg.com/typedarray/-/typedarray-0.0.6.tgz#867ac74e3864187b1d3d47d996a78ec5c8830777"
 
-typescript-json-schema@^0.5.1:
-  version "0.5.1"
-  resolved "https://registry.yarnpkg.com/typescript-json-schema/-/typescript-json-schema-0.5.1.tgz#efa38828ef203a5ad8fc16b6e1c73c559eabc4aa"
+typescript-json-schema@^0.6.0:
+  version "0.6.0"
+  resolved "https://registry.yarnpkg.com/typescript-json-schema/-/typescript-json-schema-0.6.0.tgz#52a9dc10e7e9bd04199565531ed766d2d65cd96f"
   dependencies:
     glob "~7.1.1"
     json-stable-stringify "^1.0.1"
-    typescript "~2.1.4"
+    typescript "~2.1.5"
     yargs "^6.6.0"
 
-typescript@^2.1.5, typescript@~2.1.4:
+typescript@^2.1.5, typescript@~2.1.5:
   version "2.1.5"
   resolved "https://registry.yarnpkg.com/typescript/-/typescript-2.1.5.tgz#6fe9479e00e01855247cea216e7561bafcdbcd4a"
 
@@ -4270,7 +4268,7 @@ ua-parser-js@0.7.12:
   version "0.7.12"
   resolved "https://registry.yarnpkg.com/ua-parser-js/-/ua-parser-js-0.7.12.tgz#04c81a99bdd5dc52263ea29d24c6bf8d4818a4bb"
 
-uglify-js@^2.6, uglify-js@~2.7.4:
+uglify-js@^2.6, uglify-js@~2.7.5:
   version "2.7.5"
   resolved "https://registry.yarnpkg.com/uglify-js/-/uglify-js-2.7.5.tgz#4612c0c7baaee2ba7c487de4904ae122079f2ca8"
   dependencies:
@@ -4298,13 +4296,6 @@ umd@^3.0.0:
 undefsafe@0.0.3:
   version "0.0.3"
   resolved "https://registry.yarnpkg.com/undefsafe/-/undefsafe-0.0.3.tgz#ecca3a03e56b9af17385baac812ac83b994a962f"
-
-underscore.string@^3.3.4:
-  version "3.3.4"
-  resolved "https://registry.yarnpkg.com/underscore.string/-/underscore.string-3.3.4.tgz#2c2a3f9f83e64762fdc45e6ceac65142864213db"
-  dependencies:
-    sprintf-js "^1.0.3"
-    util-deprecate "^1.0.2"
 
 underscore@1.7.x:
   version "1.7.0"
@@ -4360,7 +4351,7 @@ urlgrey@>=0.4.0:
   version "0.4.4"
   resolved "https://registry.yarnpkg.com/urlgrey/-/urlgrey-0.4.4.tgz#892fe95960805e85519f1cd4389f2cb4cbb7652f"
 
-util-deprecate@^1.0.2, util-deprecate@~1.0.1:
+util-deprecate@~1.0.1:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/util-deprecate/-/util-deprecate-1.0.2.tgz#450d4dc9fa70de732762fbd2d4a28981419a0ccf"
 
@@ -4398,8 +4389,8 @@ vega-crossfilter@>=1.0.0-beta:
     vega-util "1"
 
 vega-dataflow@>=2.0.0-beta, vega-dataflow@>=2.0.0-beta.4:
-  version "2.0.0-beta.10"
-  resolved "https://registry.yarnpkg.com/vega-dataflow/-/vega-dataflow-2.0.0-beta.10.tgz#6b64ca22c93c8e7d0bf4ecd07bff369a9dfb58c4"
+  version "2.0.0-beta.12"
+  resolved "https://registry.yarnpkg.com/vega-dataflow/-/vega-dataflow-2.0.0-beta.12.tgz#8af39460029846ba28979a5de7f9054247d27e6c"
   dependencies:
     d3-array "1"
     vega-loader ">=2.0.0-beta"
@@ -4411,8 +4402,8 @@ vega-datasets@vega/vega-datasets#gh-pages:
   resolved "https://codeload.github.com/vega/vega-datasets/tar.gz/34d749afe9a1c733004e6253ee6b6f367e5b856b"
 
 vega-encode@>=1.0.0-beta:
-  version "1.0.0-beta.10"
-  resolved "https://registry.yarnpkg.com/vega-encode/-/vega-encode-1.0.0-beta.10.tgz#7369850c778bb523b69d4847c0d3693855746588"
+  version "1.0.0-beta.11"
+  resolved "https://registry.yarnpkg.com/vega-encode/-/vega-encode-1.0.0-beta.11.tgz#614a82702d910743c3c150920dfa70f933247a52"
   dependencies:
     d3-array "1"
     d3-format "1"
@@ -4452,7 +4443,7 @@ vega-hierarchy@>=1.0.0-beta:
     vega-dataflow ">=2.0.0-beta.4"
     vega-util "1"
 
-vega-loader@>=2.0.0-beta, vega-loader@>=2.0.0-beta.3:
+vega-loader@>=2.0.0-beta, vega-loader@>=2.0.0-beta.3, vega-loader@>=2.0.0-beta.4:
   version "2.0.0-beta.4"
   resolved "https://registry.yarnpkg.com/vega-loader/-/vega-loader-2.0.0-beta.4.tgz#2cb967aed43d243da7750fa88a631b29b06fc0d5"
   dependencies:
@@ -4463,9 +4454,10 @@ vega-loader@>=2.0.0-beta, vega-loader@>=2.0.0-beta.3:
     vega-util "1"
 
 vega-parser@>=1.0.0-beta:
-  version "1.0.0-beta.26"
-  resolved "https://registry.yarnpkg.com/vega-parser/-/vega-parser-1.0.0-beta.26.tgz#7f99ca03418f9e435bb9ea90d7f1e1327cba5647"
+  version "1.0.0-beta.28"
+  resolved "https://registry.yarnpkg.com/vega-parser/-/vega-parser-1.0.0-beta.28.tgz#888cb633533383c98ead3bc6701aa84f7402ce94"
   dependencies:
+    d3-array "1"
     d3-color "1"
     d3-format "1"
     d3-time-format "2"
@@ -4482,8 +4474,8 @@ vega-runtime@>=1.0.0-beta:
     vega-util "1"
 
 vega-scale@>=2.0.0-beta:
-  version "2.0.0-beta.0"
-  resolved "https://registry.yarnpkg.com/vega-scale/-/vega-scale-2.0.0-beta.0.tgz#a1d9d9584374a2022512edcaa9ede1822088eea4"
+  version "2.0.0-beta.2"
+  resolved "https://registry.yarnpkg.com/vega-scale/-/vega-scale-2.0.0-beta.2.tgz#340aead9848af80d91f7eb69fc302633b7e1ab96"
   dependencies:
     d3-array "1"
     d3-interpolate "1"
@@ -4508,13 +4500,13 @@ vega-statistics@1:
   dependencies:
     d3-array "1"
 
-vega-util@^1.1, vega-util@~1.1.1, vega-util@1:
-  version "1.1.1"
-  resolved "https://registry.yarnpkg.com/vega-util/-/vega-util-1.1.1.tgz#ad860f47f09af764f8a1f5acf6d4c1855de9a0fe"
+vega-util@^1.1, vega-util@~1.1.3, vega-util@1:
+  version "1.1.3"
+  resolved "https://registry.yarnpkg.com/vega-util/-/vega-util-1.1.3.tgz#21c01b2202639ee5786099a323b48616d8b91b14"
 
 vega-view@>=1.0.0-beta:
-  version "1.0.0-beta.21"
-  resolved "https://registry.yarnpkg.com/vega-view/-/vega-view-1.0.0-beta.21.tgz#e57f9d66376cc9adc430af4638f23e46259fe46c"
+  version "1.0.0-beta.22"
+  resolved "https://registry.yarnpkg.com/vega-view/-/vega-view-1.0.0-beta.22.tgz#6b8cf9e36438a1dfa44ae207f8249c79a00a5811"
   dependencies:
     d3-array "1"
     vega-dataflow ">=2.0.0-beta"
@@ -4542,9 +4534,9 @@ vega-wordcloud@>=1.0.0-beta:
   optionalDependencies:
     canvas "^1.6.0"
 
-vega@3.0.0-beta.16:
-  version "3.0.0-beta.16"
-  resolved "https://registry.yarnpkg.com/vega/-/vega-3.0.0-beta.16.tgz#83883e40b721a498a874536a9d0346acbac941cb"
+vega@3.0.0-beta.19:
+  version "3.0.0-beta.19"
+  resolved "https://registry.yarnpkg.com/vega/-/vega-3.0.0-beta.19.tgz#7c96894be661ac16e8b91983bfccc8ca4a97d22c"
   dependencies:
     d3-color "1"
     vega-crossfilter ">=1.0.0-beta"
@@ -4554,7 +4546,7 @@ vega@3.0.0-beta.16:
     vega-force ">=1.0.0-beta"
     vega-geo ">=1.0.0-beta"
     vega-hierarchy ">=1.0.0-beta"
-    vega-loader ">=2.0.0-beta.3"
+    vega-loader ">=2.0.0-beta.4"
     vega-parser ">=1.0.0-beta"
     vega-runtime ">=1.0.0-beta"
     vega-scale ">=2.0.0-beta"
@@ -4582,12 +4574,12 @@ vm-browserify@~0.0.1:
   dependencies:
     indexof "0.0.1"
 
-watchify@~3.8.0:
-  version "3.8.0"
-  resolved "https://registry.yarnpkg.com/watchify/-/watchify-3.8.0.tgz#a5cacc3517ca1e637d7b0af745375cafb597d6bb"
+watchify@~3.9.0:
+  version "3.9.0"
+  resolved "https://registry.yarnpkg.com/watchify/-/watchify-3.9.0.tgz#f075fd2e8a86acde84cedba6e5c2a0bedd523d9e"
   dependencies:
     anymatch "^1.3.0"
-    browserify "^13.0.0"
+    browserify "^14.0.0"
     chokidar "^1.0.0"
     defined "^1.0.0"
     outpipe "^1.1.0"

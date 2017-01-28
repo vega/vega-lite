@@ -4,8 +4,9 @@
 
 # 1. NPM PUBLISH
 
-# build:all (clean, rebuild, compile, test, and lint)
-npm run build:all
+npm run clean
+npm run test
+npm run build
 
 # Check if all required files are here
 if ! [ -f vega-lite.js ]; then
@@ -55,7 +56,7 @@ gitsha=$(git rev-parse HEAD)
 version=$(scripts/version.sh)
 
 git checkout head
-npm run build:all
+npm run build
 # add the compiled files, commit and tag!
 git add vega-lite* -f
 git add src/**/*.js -f
@@ -75,4 +76,4 @@ git push --tags
 #  3. GITHUB PAGES PUBLISH
 # . scripts/deploy-gh.sh
 
-scripts/deploy-schema.sh
+. ./scripts/deploy-schema.sh

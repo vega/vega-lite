@@ -3,12 +3,33 @@ import * as log from '../../log';
 import {COLUMN, ROW, X, Y, SHAPE, SIZE, COLOR, OPACITY, Channel} from '../../channel';
 import {Config} from '../../config';
 import {Mark} from '../../mark';
-import {Scale, ScaleConfig, ScaleType, channelScalePropertyIncompatability, scaleTypeSupportProperty, isExtendedScheme} from '../../scale';
+import {Scale, ScaleConfig, ScaleType, scaleTypeSupportProperty, Scheme, Range, isExtendedScheme, channelScalePropertyIncompatability} from '../../scale';
 import {Type} from '../../type';
 import {VgRange, VgRangeScheme} from '../../vega.schema';
 import * as util from '../../util';
 
-export type RangeMixins = {range: VgRange} | {rangeStep: number};
+export type RangeMixins = {range: Range} | {rangeStep: number} | {scheme: Scheme};
+
+export function parseRange(scale: Scale): VgRange {
+  if (scale.rangeStep) {
+    return {step: scale.rangeStep};
+  } else if (scale.scheme) {
+    const scheme = scale.scheme;
+    if (isExtendedScheme(scheme)) {
+      let r: VgRangeScheme = {scheme: scheme.name};
+      if (scheme.count) {
+        r.count = scheme.count;
+      }
+      if (scheme.extent) {
+        r.extent = scheme.extent;
+      }
+      return r;
+    } else {
+      return { scheme };
+    }
+  }
+  return scale.range;
+}
 
 /**
  * Return mixins that includes one of the range properties (range, rangeStep, scheme).
@@ -34,18 +55,7 @@ export default function rangeMixins(
           case 'range':
             return {range: specifiedScale[property]};
           case 'scheme':
-            const scheme = specifiedScale[property];
-            if (isExtendedScheme(scheme)) {
-              let r: VgRangeScheme = {scheme: scheme.name};
-              if (scheme.count) {
-                r.count = scheme.count;
-              }
-              if (scheme.extent) {
-                r.extent = scheme.extent;
-              }
-              return {range: r};
-            }
-            return {range: {scheme: scheme}};
+            return {scheme: specifiedScale[property]};
           case 'rangeStep':
             if (topLevelSize === undefined) {
               const stepSize = specifiedScale[property];

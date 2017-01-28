@@ -186,10 +186,6 @@
                     "minimum": 0,
                     "type": "number"
                 },
-                "label": {
-                    "description": "Enable or disable labels.",
-                    "type": "boolean"
-                },
                 "labelAlign": {
                     "description": "Text alignment for the Label.",
                     "type": "string"
@@ -209,6 +205,10 @@
                     "minimum": 1,
                     "type": "integer"
                 },
+                "labels": {
+                    "description": "Enable or disable labels.",
+                    "type": "boolean"
+                },
                 "offset": {
                     "description": "The offset, in pixels, by which to displace the axis from the edge of the enclosing group or data rectangle.",
                     "type": "number"
@@ -225,10 +225,6 @@
                     "description": "If provided, sets the number of minor ticks between major ticks (the value 9 results in decimal subdivision). Only applicable for axes visualizing quantitative scales.",
                     "minimum": 0,
                     "type": "integer"
-                },
-                "tick": {
-                    "description": "Whether the axis should include ticks.",
-                    "type": "boolean"
                 },
                 "tickColor": {
                     "description": "The color of the axis's tick.",
@@ -280,6 +276,10 @@
                     "description": "The width, in pixels, of ticks.",
                     "minimum": 0,
                     "type": "number"
+                },
+                "ticks": {
+                    "description": "Whether the axis should include ticks.",
+                    "type": "boolean"
                 },
                 "title": {
                     "description": "A title for the axis. Shows field name and its function by default.",
@@ -384,10 +384,6 @@
                     "minimum": 0,
                     "type": "number"
                 },
-                "label": {
-                    "description": "Enable or disable labels.",
-                    "type": "boolean"
-                },
                 "labelAlign": {
                     "description": "Text alignment for the Label.",
                     "type": "string"
@@ -406,6 +402,10 @@
                     "minimum": 1,
                     "type": "integer"
                 },
+                "labels": {
+                    "description": "Enable or disable labels.",
+                    "type": "boolean"
+                },
                 "offset": {
                     "description": "The offset, in pixels, by which to displace the axis from the edge of the enclosing group or data rectangle.",
                     "type": "number"
@@ -418,10 +418,6 @@
                     "description": "If provided, sets the number of minor ticks between major ticks (the value 9 results in decimal subdivision). Only applicable for axes visualizing quantitative scales.",
                     "minimum": 0,
                     "type": "integer"
-                },
-                "tick": {
-                    "description": "Whether the axis should include ticks.",
-                    "type": "boolean"
                 },
                 "tickColor": {
                     "description": "The color of the axis's tick.",
@@ -473,6 +469,10 @@
                     "description": "The width, in pixels, of ticks.",
                     "minimum": 0,
                     "type": "number"
+                },
+                "ticks": {
+                    "description": "Whether the axis should include ticks.",
+                    "type": "boolean"
                 },
                 "titleColor": {
                     "description": "Color of the title, can be in hex color code or regular color name.",

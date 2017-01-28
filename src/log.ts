@@ -143,8 +143,6 @@ export namespace message {
   }
 
   // SCALE
-  export const CANNOT_UNION_CUSTOM_DOMAIN_WITH_FIELD_DOMAIN = 'custom domain scale cannot be unioned with default field-based domain';
-
   export const CANNOT_USE_SCHEME_WITH_NON_COLOR = 'Cannot use scheme with non-color channel.';
 
   export const CANNOT_USE_RANGE_WITH_POSITION =
@@ -172,6 +170,8 @@ export namespace message {
   export function scaleTypeNotWorkWithMark(mark: Mark, scaleType: ScaleType) {
     return `Scale type "${scaleType}" does not work with mark ${mark}.`;
   }
+
+  export const INVAID_DOMAIN = 'Invalid scale domain';
 
 
   // AXIS
