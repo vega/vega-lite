@@ -1430,7 +1430,7 @@ debug-log@^1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/debug-log/-/debug-log-1.0.1.tgz#2307632d4c04382b8df8a32f70b895046d52745f"
 
-debug@2.2.0, debug@^2.2.0, debug@~2.2.0:
+debug@2.2.0, debug@~2.2.0:
   version "2.2.0"
   resolved "https://registry.yarnpkg.com/debug/-/debug-2.2.0.tgz#f87057e995b1a1f6ae6a4960664137bc56f039da"
   dependencies:
@@ -1439,6 +1439,12 @@ debug@2.2.0, debug@^2.2.0, debug@~2.2.0:
 debug@2.3.3:
   version "2.3.3"
   resolved "https://registry.yarnpkg.com/debug/-/debug-2.3.3.tgz#40c453e67e6e13c901ddec317af8986cda9eff8c"
+  dependencies:
+    ms "0.7.2"
+
+debug@^2.2.0:
+  version "2.6.0"
+  resolved "https://registry.yarnpkg.com/debug/-/debug-2.6.0.tgz#bc596bcabe7617f11d9fa15361eded5608b8499b"
   dependencies:
     ms "0.7.2"
 
@@ -4439,7 +4445,7 @@ vega-hierarchy@>=1.0.0-beta:
     vega-dataflow ">=2.0.0-beta.4"
     vega-util "1"
 
-vega-loader@>=2.0.0-beta, vega-loader@>=2.0.0-beta.3, vega-loader@>=2.0.0-beta.4:
+vega-loader@>=2.0.0-beta, vega-loader@>=2.0.0-beta.3:
   version "2.0.0-beta.4"
   resolved "https://registry.yarnpkg.com/vega-loader/-/vega-loader-2.0.0-beta.4.tgz#2cb967aed43d243da7750fa88a631b29b06fc0d5"
   dependencies:
@@ -4530,9 +4536,9 @@ vega-wordcloud@>=1.0.0-beta:
   optionalDependencies:
     canvas "^1.6.0"
 
-vega@^3.0.0-beta.19:
-  version "3.0.0-beta.19"
-  resolved "https://registry.yarnpkg.com/vega/-/vega-3.0.0-beta.19.tgz#7c96894be661ac16e8b91983bfccc8ca4a97d22c"
+vega@3.0.0-beta.17:
+  version "3.0.0-beta.17"
+  resolved "https://registry.yarnpkg.com/vega/-/vega-3.0.0-beta.17.tgz#e5a17d5002e05a60e06cae8e4f38b3e133bc31ef"
   dependencies:
     d3-color "1"
     vega-crossfilter ">=1.0.0-beta"
@@ -4542,7 +4548,7 @@ vega@^3.0.0-beta.19:
     vega-force ">=1.0.0-beta"
     vega-geo ">=1.0.0-beta"
     vega-hierarchy ">=1.0.0-beta"
-    vega-loader ">=2.0.0-beta.4"
+    vega-loader ">=2.0.0-beta.3"
     vega-parser ">=1.0.0-beta"
     vega-runtime ">=1.0.0-beta"
     vega-scale ">=2.0.0-beta"
