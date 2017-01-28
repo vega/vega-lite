@@ -12,8 +12,6 @@
     "noEmitOnError": true,
     "noImplicitThis": true,
     "noImplicitReturns": true,
-    "noUnusedParameters": true,
-    "noUnusedLocals": true,
     "sourceMap": true,
     "typeRoots" : ["./typings", "node_modules/@types"]
   },
