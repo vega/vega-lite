@@ -53,8 +53,7 @@ describe('fieldDef', () => {
     });
 
     it('should return correct title for count', () => {
-      const fieldDef = {field: '*', type: QUANTITATIVE, aggregate: 'count' as 'count'};
-      assert.equal(title(fieldDef, {countTitle: 'baz!'}), 'baz!');
+      assert.equal(title({field: '*', type: QUANTITATIVE, aggregate: 'count'}, {countTitle: 'baz!'}), 'baz!');
     });
 
     it('should return correct title for bin', () => {
