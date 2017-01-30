@@ -298,7 +298,7 @@ export function scaleTypeSupportProperty(scaleType: ScaleType, propName: string)
     case 'nice':
       return isContinuousToContinuous(scaleType) || scaleType === 'sequential' || scaleType as any === 'quantize';
     case 'exponent':
-      return scaleType === 'pow';
+      return scaleType === 'pow' || scaleType === 'log';
     case 'zero':
       // TODO: what about quantize, threshold?
       return !hasDiscreteDomain(scaleType) && !contains(['log', 'time', 'utc'], scaleType);
