@@ -20,3 +20,10 @@ else
   git status
   exit 1
 fi
+
+# 0.3 Check if the Vega's schema repository exists in the same parent directory (as a sibling directory)
+
+if ! [ -d "../schema" ]; then
+  echo "${RED} Vega-Lite schema cannot be updated if the vega/schema repository does not exist in the same parent directory. "
+  exit 1;
+fi
