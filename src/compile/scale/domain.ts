@@ -5,7 +5,7 @@ import {Channel} from '../../channel';
 import {SOURCE} from '../../data';
 import {DateTime, isDateTime, timestamp} from '../../datetime';
 import {Scale, ScaleType, hasDiscreteDomain} from '../../scale';
-import {isSortField, SortOrder} from '../../sort';
+import {isSortField} from '../../sort';
 import {StackOffset} from '../../stack';
 import {FieldRefUnionDomain, VgSortField, isDataRefUnionedDomain, isFieldRefUnionDomain, isDataRefDomain, VgDomain, VgDataRef} from '../../vega.schema';
 
@@ -126,7 +126,7 @@ export function domainSort(model: Model, channel: Channel, scaleType: ScaleType)
     };
   }
 
-  if (util.contains([SortOrder.ASCENDING, SortOrder.DESCENDING, undefined /* default =ascending*/], sort)) {
+  if (util.contains(['ascending', 'descending', undefined /* default =ascending*/], sort)) {
     return true;
   }
 
