@@ -181,11 +181,11 @@ export function isMeasure(fieldDef: FieldDef) {
 }
 
 export function count(): FieldDef {
-  return { field: '*', aggregate: AggregateOp.COUNT, type: QUANTITATIVE};
+  return { field: '*', aggregate: 'count', type: QUANTITATIVE};
 }
 
 export function isCount(fieldDef: FieldDef) {
-  return fieldDef.aggregate === AggregateOp.COUNT;
+  return fieldDef.aggregate === 'count';
 }
 
 export function title(fieldDef: FieldDef, config: Config) {

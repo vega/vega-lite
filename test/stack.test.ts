@@ -4,7 +4,6 @@ import {assert} from 'chai';
 
 import * as log from '../src/log';
 
-import {AggregateOp} from '../src/aggregate';
 import {X, Y, DETAIL} from '../src/channel';
 import {BAR, AREA, RECT, PRIMITIVE_MARKS} from '../src/mark';
 import {ScaleType} from '../src/scale';
@@ -247,7 +246,9 @@ describe('stack', () => {
 
   it('should always be disabled if the aggregated axis has non-summative aggregate', () => {
     [undefined, StackOffset.CENTER, StackOffset.ZERO, StackOffset.NORMALIZE].forEach((stacked) => {
-      [AggregateOp.AVERAGE, AggregateOp.VARIANCE, AggregateOp.Q3].forEach((aggregate) => {
+      // ['average', 'variance', 'q3'] will be interpreted as array of string instead of
+      // array of AxisOrient type, so I put type casting here.
+      ['average' as 'average', 'variance' as 'variance', 'q3' as 'q3'].forEach((aggregate) => {
         const marks = stacked === undefined ? STACK_BY_DEFAULT_MARKS : STACKABLE_MARKS;
         marks.forEach((mark) => {
           log.runLocalLogger((localLogger) => {
