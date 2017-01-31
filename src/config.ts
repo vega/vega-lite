@@ -4,6 +4,8 @@ import {MarkConfig, AreaConfig, BarConfig, LineConfig, PointConfig, RectConfig, 
 import * as mark from './mark';
 import {ScaleConfig, defaultScaleConfig} from './scale';
 import {Padding} from './spec';
+import {VgRangeScheme} from './vega.schema';
+import {Dict} from './util';
 
 export interface CellConfig {
   width?: number;
@@ -111,6 +113,8 @@ export const defaultOverlayConfig: OverlayConfig = {
   lineStyle: {}
 };
 
+export type RangeConfig = (number|string)[] | VgRangeScheme | {step: number};
+
 export interface Config {
   // TODO: add this back once we have top-down layout approach
   // width?: number;
@@ -195,6 +199,14 @@ export interface Config {
 
   /** Scale Config */
   scale?: ScaleConfig;
+
+  /**
+   * Scale range config, or properties defining named range arrays
+   * that can be used within scale range definitions
+   * (such as `{"type": "ordinal", "range": "category"}`).
+   * For default range that Vega-Lite adopts from Vega, see https://github.com/vega/vega-parser#scale-range-properties.
+   */
+  range?: {[name: string]: RangeConfig};
 
   /** Axis Config */
   axis?: AxisConfig;

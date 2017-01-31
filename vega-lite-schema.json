@@ -816,6 +816,56 @@
                     "$ref": "#/definitions/PointConfig",
                     "description": "Point-Specific Config"
                 },
+                "range": {
+                    "additionalProperties": {
+                        "anyOf": [
+                            {
+                                "additionalProperties": false,
+                                "properties": {
+                                    "count": {
+                                        "type": "number"
+                                    },
+                                    "extent": {
+                                        "items": {
+                                            "type": "number"
+                                        },
+                                        "type": "array"
+                                    },
+                                    "scheme": {
+                                        "type": "string"
+                                    }
+                                },
+                                "required": [
+                                    "scheme"
+                                ],
+                                "type": "object"
+                            },
+                            {
+                                "items": {
+                                    "type": [
+                                        "string",
+                                        "number"
+                                    ]
+                                },
+                                "type": "array"
+                            },
+                            {
+                                "additionalProperties": false,
+                                "properties": {
+                                    "step": {
+                                        "type": "number"
+                                    }
+                                },
+                                "required": [
+                                    "step"
+                                ],
+                                "type": "object"
+                            }
+                        ]
+                    },
+                    "description": "Scale range config, or properties defining named range arrays\nthat can be used within scale range definitions\n(such as `{\"type\": \"ordinal\", \"range\": \"category\"}`).\nFor default range that Vega-Lite adopts from Vega, see https://github.com/vega/vega-parser#scale-range-properties.",
+                    "type": "object"
+                },
                 "rect": {
                     "$ref": "#/definitions/RectConfig",
                     "description": "Rect-Specific Config"
