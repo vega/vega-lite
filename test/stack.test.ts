@@ -247,7 +247,7 @@ describe('stack', () => {
 
   it('should always be disabled if the aggregated axis has non-summative aggregate', () => {
     [undefined, StackOffset.CENTER, StackOffset.ZERO, StackOffset.NORMALIZE].forEach((stacked) => {
-      [AggregateOp.AVERAGE, AggregateOp.VARIANCE, AggregateOp.Q3].forEach((aggregate) => {
+      ['average', 'variance', 'q3'].forEach((aggregate: AggregateOp) => {
         const marks = stacked === undefined ? STACK_BY_DEFAULT_MARKS : STACKABLE_MARKS;
         marks.forEach((mark) => {
           log.runLocalLogger((localLogger) => {

@@ -1,6 +1,5 @@
 import * as log from '../log';
 
-import {AggregateOp} from '../aggregate';
 import {TEXT, Channel} from '../channel';
 import {Config, CellConfig} from '../config';
 import {FieldDef, OrderFieldDef, field} from '../fielddef';
@@ -60,7 +59,7 @@ export function numberFormat(fieldDef: FieldDef, format: string, config: Config,
 
     if (format) {
       return format;
-    } else if (fieldDef.aggregate === AggregateOp.COUNT && channel === TEXT) {
+    } else if (fieldDef.aggregate === 'count' && channel === TEXT) {
       // FIXME: need a more holistic way to deal with this.
       return 'd';
     }
