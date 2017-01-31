@@ -1,13 +1,7 @@
 import {DateTime} from './datetime';
 import {VgAxisEncode} from './vega.schema';
 
-export namespace AxisOrient {
-    export const TOP: 'top' = 'top';
-    export const RIGHT: 'right' = 'right';
-    export const LEFT: 'left' = 'left';
-    export const BOTTOM: 'bottom' = 'bottom';
-}
-export type AxisOrient = typeof AxisOrient.TOP | typeof AxisOrient.RIGHT | typeof AxisOrient.LEFT | typeof AxisOrient.BOTTOM;
+export type AxisOrient = 'top' | 'right' | 'left' | 'bottom';
 
 export interface AxisConfig {
   // ---------- General ----------

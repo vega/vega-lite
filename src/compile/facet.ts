@@ -1,6 +1,6 @@
 import * as log from '../log';
 
-import {AxisOrient, Axis} from '../axis';
+import {Axis} from '../axis';
 import {COLUMN, ROW, X, Y, Channel} from '../channel';
 import {defaultConfig, Config} from '../config';
 import {Facet} from '../facet';
@@ -121,11 +121,11 @@ export class FacetModel extends Model {
 
           if (channel === ROW) {
             const yAxis: any = child.axis(Y);
-            if (yAxis && yAxis.orient !== AxisOrient.RIGHT && !modelAxis.orient) {
-              modelAxis.orient = AxisOrient.RIGHT;
+            if (yAxis && yAxis.orient !== 'right' && !modelAxis.orient) {
+              modelAxis.orient = 'right';
             }
             if (model.hasDescendantWithFieldOnChannel(X) && !modelAxis.labelAngle) {
-              modelAxis.labelAngle = modelAxis.orient === AxisOrient.RIGHT ? 90 : 270;
+              modelAxis.labelAngle = modelAxis.orient === 'right' ? 90 : 270;
             }
           }
         }
