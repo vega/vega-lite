@@ -69,18 +69,7 @@ export function isContinuousToContinuous(type: ScaleType): type is 'linear' | 'l
   return type in CONTINUOUS_TO_CONTINUOUS_INDEX;
 }
 
-export namespace NiceTime {
-  export const SECOND: 'second' = 'second';
-  export const MINUTE: 'minute' = 'minute';
-  export const HOUR: 'hour' = 'hour';
-  export const DAY: 'day' = 'day';
-  export const WEEK: 'week' = 'week';
-  export const MONTH: 'month' = 'month';
-  export const YEAR: 'year' = 'year';
-}
-
-export type NiceTime = typeof NiceTime.SECOND | typeof NiceTime.MINUTE | typeof NiceTime.HOUR
-  | typeof NiceTime.DAY | typeof NiceTime.WEEK | typeof NiceTime.MONTH | typeof NiceTime.YEAR;
+export type NiceTime = 'second' | 'minute' | 'hour' | 'day' | 'week' | 'month' | 'year';
 
 export interface ScaleConfig {
   /**
