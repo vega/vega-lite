@@ -6,7 +6,6 @@ import {SOURCE} from '../../data';
 import {DateTime, isDateTime, timestamp} from '../../datetime';
 import {Scale, ScaleType, hasDiscreteDomain} from '../../scale';
 import {isSortField} from '../../sort';
-import {StackOffset} from '../../stack';
 import {FieldRefUnionDomain, VgSortField, isDataRefUnionedDomain, isFieldRefUnionDomain, isDataRefDomain, VgDomain, VgDataRef} from '../../vega.schema';
 
 import * as util from '../../util';
@@ -40,7 +39,7 @@ export default function domain(scale: Scale, model: Model, channel:Channel): any
   // For stack, use STACKED data.
   const stack = model.stack();
   if (stack && channel === stack.fieldChannel) {
-    if(stack.offset === StackOffset.NORMALIZE) {
+    if(stack.offset === 'normalize') {
       return [0, 1];
     }
     return {

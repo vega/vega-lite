@@ -8,14 +8,9 @@ import {Mark, BAR, AREA, POINT, CIRCLE, SQUARE, LINE, RULE, TEXT, TICK} from './
 import {ScaleType} from './scale';
 import {contains, isArray} from './util';
 
-export namespace StackOffset {
-  export const ZERO: 'zero' = 'zero';
-  export const CENTER: 'center' = 'center';
-  export const NORMALIZE: 'normalize' = 'normalize';
-  export const NONE: 'none' = 'none';
-}
 
-export type StackOffset = typeof StackOffset.ZERO | typeof StackOffset.CENTER | typeof StackOffset.NORMALIZE | typeof StackOffset.NONE;
+
+export type StackOffset = 'zero' | 'center' | 'normalize' | 'none';
 
 export interface StackProperties {
   /** Dimension axis of the stack ('x' or 'y'). */
@@ -47,7 +42,7 @@ export const STACK_BY_DEFAULT_MARKS = [BAR, AREA];
 
 export function stack(mark: Mark, encoding: Encoding, stacked: StackOffset): StackProperties {
   // Should not have stack explicitly disabled
-  if (contains<string | boolean>([StackOffset.NONE, null, false], stacked)) {
+  if (contains<string | boolean>(['none', null, false], stacked)) {
     return null;
   }
 
@@ -95,7 +90,7 @@ export function stack(mark: Mark, encoding: Encoding, stacked: StackOffset): Sta
 
     if (contains(STACK_BY_DEFAULT_MARKS, mark)) {
       // Bar and Area with sum ops are automatically stacked by default
-      stacked = stacked === undefined ? StackOffset.ZERO : stacked;
+      stacked = stacked === undefined ? 'zero' : stacked;
     }
 
     if (!stacked) {
