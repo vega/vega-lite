@@ -75,13 +75,7 @@ export const defaultFacetConfig: FacetConfig = {
   cell: defaultFacetCellConfig
 };
 
-// FIXME refactor this
-export namespace AreaOverlay {
-  export const LINE: 'line' = 'line';
-  export const LINEPOINT: 'linepoint' = 'linepoint';
-  export const NONE: 'none' = 'none';
-}
-export type AreaOverlay = typeof AreaOverlay.LINE | typeof AreaOverlay.LINEPOINT | typeof AreaOverlay.NONE;
+export type AreaOverlay = 'line' | 'linepoint' | 'none';
 
 export interface OverlayConfig {
   /**
