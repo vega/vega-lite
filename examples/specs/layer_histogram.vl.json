@@ -1,6 +1,6 @@
 {
   "data": {"url": "data/flights-2k.json"},
-  "layers": [
+  "layer": [
     {
       "mark": "bar",
       "encoding": {

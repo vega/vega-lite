@@ -121,7 +121,7 @@ export interface LayerSpec extends BaseSpec {
   /**
    * Unit specs that will be layered.
    */
-  layers: UnitSpec[];
+  layer: UnitSpec[];
 }
 
 /** This is for the future schema */
@@ -164,7 +164,7 @@ export function isSomeUnitSpec(spec: ExtendedSpec): spec is ExtendedUnitSpec | U
 }
 
 export function isLayerSpec(spec: ExtendedSpec | ExtendedFacetSpec): spec is LayerSpec {
-  return spec['layers'] !== undefined;
+  return spec['layer'] !== undefined;
 }
 
 
@@ -270,7 +270,7 @@ export function normalizeErrorBarUnitSpec(spec: UnitSpec): Spec {
     spec.description ? {description: spec.description} : {},
     spec.data ? {data: spec.data} : {},
     spec.transform ? {transform: spec.transform} : {},
-    spec.config ? {config: spec.config} : {}, {layers: []}
+    spec.config ? {config: spec.config} : {}, {layer: []}
   );
   if (!spec.encoding) {
     return layerSpec;
@@ -300,9 +300,9 @@ export function normalizeErrorBarUnitSpec(spec: UnitSpec): Spec {
         y: spec.encoding.y2 ? duplicate(spec.encoding.y2) : duplicate(spec.encoding.y)
       }, spec.encoding.size ? {size: duplicate(spec.encoding.size)} : {})
     };
-    layerSpec.layers.push(normalizeUnitSpec(ruleSpec));
-    layerSpec.layers.push(normalizeUnitSpec(lowerTickSpec));
-    layerSpec.layers.push(normalizeUnitSpec(upperTickSpec));
+    layerSpec.layer.push(normalizeUnitSpec(ruleSpec));
+    layerSpec.layer.push(normalizeUnitSpec(lowerTickSpec));
+    layerSpec.layer.push(normalizeUnitSpec(upperTickSpec));
   }
   return layerSpec;
 }
@@ -321,11 +321,11 @@ export function normalizeOverlay(spec: UnitSpec, overlayWithPoint: boolean, over
     spec.config && spec.config.mark ? spec.config.mark.stacked : undefined
   );
 
-  const layerSpec = extend(
-    pick(spec, outerProps),
-    { layers: [baseSpec] },
-    keys(baseConfig).length > 0 ? { config: baseConfig } : {}
-  );
+  const layerSpec = {
+    ...pick(spec, outerProps),
+    layer: [baseSpec],
+    ...(keys(baseConfig).length > 0 ? { config: baseConfig } : {})
+  };
 
   if (overlayWithLine) {
     // TODO: add name with suffix
@@ -341,7 +341,7 @@ export function normalizeOverlay(spec: UnitSpec, overlayWithPoint: boolean, over
       lineSpec.config = {mark: markConfig};
     }
 
-    layerSpec.layers.push(lineSpec);
+    layerSpec.layer.push(lineSpec);
   }
 
   if (overlayWithPoint) {
@@ -357,7 +357,7 @@ export function normalizeOverlay(spec: UnitSpec, overlayWithPoint: boolean, over
     if (keys(markConfig).length > 0) {
       pointSpec.config = {mark: markConfig};
     }
-    layerSpec.layers.push(pointSpec);
+    layerSpec.layer.push(pointSpec);
   }
   return layerSpec;
 }
@@ -384,7 +384,7 @@ function accumulate(dict: any, fieldDefs: FieldDef[]): any {
 function fieldDefIndex(spec: ExtendedSpec | ExtendedFacetSpec, dict: any = {}): any {
   // TODO: Support repeat and concat
   if (isLayerSpec(spec)) {
-    spec.layers.forEach(function(layer) {
+    spec.layer.forEach(function(layer) {
       accumulate(dict, vlEncoding.fieldDefs(layer.encoding));
     });
   } else if (isSomeFacetSpec(spec)) {

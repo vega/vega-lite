@@ -88,7 +88,7 @@ describe('normalize()', function () {
           "description": "Google's stock price over time.",
           "data": {"url": "data/stocks.csv","format": {"type": "csv"}},
           "transform": {"filter": "datum[\"symbol\"]==='GOOG'"},
-          "layers": [
+          "layer": [
             {
               "mark": "line",
               "encoding": {
@@ -127,7 +127,7 @@ describe('normalize()', function () {
           "description": "Google's stock price over time.",
           "data": {"url": "data/stocks.csv","format": {"type": "csv"}},
           "transform": {"filter": "datum[\"symbol\"]==='GOOG'"},
-          "layers": [
+          "layer": [
             {
               "mark": "area",
               "encoding": {
@@ -171,7 +171,7 @@ describe('normalize()', function () {
           "description": "Google's stock price over time.",
           "data": {"url": "data/stocks.csv","format": {"type": "csv"}},
           "transform": {"filter": "datum[\"symbol\"]==='GOOG'"},
-          "layers": [
+          "layer": [
             {
               "mark": "area",
               "encoding": {
@@ -254,11 +254,11 @@ describe('fieldDefs()', function() {
     ]);
   });
 
-  it('should get all non-duplicate fieldDefs from all layers in a LayerSpec', function() {
+  it('should get all non-duplicate fieldDefs from all layer in a LayerSpec', function() {
     const layerSpec: any = {
       "data": {"url": "data/stocks.csv","format": {"type": "csv"}},
       "transform": {"filter": "datum.symbol==='GOOG'"},
-      "layers": [
+      "layer": [
         {
           "description": "Google's stock price over time.",
           "mark": "line",
@@ -287,11 +287,11 @@ describe('fieldDefs()', function() {
     ]);
   });
 
-  it('should get all non-duplicate fieldDefs from all layers in a LayerSpec (merging duplicate fields with different scale types)', function() {
+  it('should get all non-duplicate fieldDefs from all layer in a LayerSpec (merging duplicate fields with different scale types)', function() {
     const layerSpec: any = {
       "data": {"url": "data/stocks.csv","format": {"type": "csv"}},
       "transform": {"filter": "datum.symbol==='GOOG'"},
-      "layers": [
+      "layer": [
         {
           "description": "Google's stock price over time.",
           "mark": "line",
@@ -319,7 +319,7 @@ describe('fieldDefs()', function() {
     ]);
   });
 
-  it('should get all non-duplicate fieldDefs from facet and layers in a FacetSpec', function() {
+  it('should get all non-duplicate fieldDefs from facet and layer in a FacetSpec', function() {
     const facetSpec: any = {
       "data": {"url": "data/movies.json"},
       "facet": {"row": {"field": "MPAA_Rating","type": "ordinal"}},
