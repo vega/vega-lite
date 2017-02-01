@@ -12,6 +12,7 @@ export const area: MarkCompiler = {
   markType: () => {
     return 'area';
   },
+  role: undefined,
   encodeEntry: (model: UnitModel) => {
     let e: VgEncodeEntry = {};
     const config = model.config();

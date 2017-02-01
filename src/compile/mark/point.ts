@@ -43,6 +43,7 @@ export const point: MarkCompiler = {
   markType: () => {
     return 'symbol';
   },
+  role: 'point',
   encodeEntry: (model: UnitModel) => {
     return encodeEntry(model);
   }
@@ -52,6 +53,7 @@ export const circle: MarkCompiler = {
   markType: () => {
     return 'symbol';
   },
+  role: 'circle',
   encodeEntry: (model: UnitModel) => {
     return encodeEntry(model, 'circle');
   }
@@ -61,6 +63,7 @@ export const square: MarkCompiler = {
   markType: () => {
     return 'symbol';
   },
+  role: 'square',
   encodeEntry: (model: UnitModel) => {
     return encodeEntry(model, 'square');
   }

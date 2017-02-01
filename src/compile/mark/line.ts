@@ -14,6 +14,7 @@ export const line: MarkCompiler = {
   markType: () => {
     return 'line';
   },
+  role: undefined,
   encodeEntry: (model: UnitModel) => {
     let e: VgEncodeEntry = {};
     const config = model.config();

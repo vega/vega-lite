@@ -94,6 +94,8 @@ function parsePathMark(model: UnitModel) {
 function parseNonPathMark(model: UnitModel) {
   const mark = model.mark();
 
+  const role = markCompiler[mark].role;
+
   let marks: any[] = []; // TODO: vgMarks
   if (mark === TEXTMARK &&
     model.channelHasField(COLOR) &&
@@ -115,6 +117,7 @@ function parseNonPathMark(model: UnitModel) {
   marks.push({
     name: model.name('marks'),
     type: markCompiler[mark].markType(),
+    ...(role? {role} : {}),
     from: {data: dataFrom(model)},
     encode: { update: markCompiler[mark].encodeEntry(model)}
   });
