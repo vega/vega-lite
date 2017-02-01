@@ -1,6 +1,6 @@
 /* Package of defining Vega-lite Specification's json schema at its utility functions */
 
-import {Config, defaultOverlayConfig, AreaOverlay} from './config';
+import {Config, defaultOverlayConfig} from './config';
 import {Data} from './data';
 import {Encoding, UnitEncoding, channelHasField, isRanged} from './encoding';
 import {Facet} from './facet';
@@ -219,10 +219,10 @@ export function normalizeUnitSpec(spec: UnitSpec): Spec {
   const config = spec.config;
   const overlayConfig = config && config.overlay;
   const overlayWithLine = overlayConfig  && spec.mark === AREA &&
-    contains([AreaOverlay.LINEPOINT, AreaOverlay.LINE], overlayConfig.area);
+    contains(['linepoint', 'line'], overlayConfig.area);
   const overlayWithPoint = overlayConfig && (
     (overlayConfig.line && spec.mark === LINE) ||
-    (overlayConfig.area === AreaOverlay.LINEPOINT && spec.mark === AREA)
+    (overlayConfig.area === 'linepoint' && spec.mark === AREA)
   );
 
   // TODO: thoroughly test

@@ -1,6 +1,6 @@
 import * as log from '../../log';
 
-import {Axis, AxisOrient} from '../../axis';
+import {Axis} from '../../axis';
 import {COLUMN, ROW, X, Y, Channel} from '../../channel';
 import {Config} from '../../config';
 import {DateTime, isDateTime, timestamp} from '../../datetime';
@@ -60,12 +60,12 @@ export function orient(specifiedAxis: Axis, channel: Channel) {
   switch (channel) {
     case COLUMN:
       // FIXME test and decide
-      return AxisOrient.TOP;
+      return 'top';
     case X:
-      return AxisOrient.BOTTOM;
+      return 'bottom';
     case ROW:
     case Y:
-      return AxisOrient.LEFT;
+      return 'left';
   }
   /* istanbul ignore next: This should never happen. */
   throw new Error(log.message.INVALID_CHANNEL_FOR_AXIS);

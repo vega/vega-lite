@@ -38,14 +38,7 @@ export interface DataFormat {
   mesh?: string;
 }
 
-export namespace DataFormatType {
-    export const JSON: 'json' = 'json';
-    export const CSV: 'csv' = 'csv';
-    export const TSV: 'tsv' = 'tsv';
-    export const TOPOJSON: 'topojson' = 'topojson';
-}
-
-export type DataFormatType = typeof DataFormatType.JSON | typeof DataFormatType.CSV | typeof DataFormatType.TSV | typeof DataFormatType.TOPOJSON;
+export type DataFormatType = 'json' | 'csv' | 'tsv' | 'topojson';
 
 export type Data = UrlData | InlineData;
 
@@ -83,4 +76,3 @@ export const SUMMARY: 'summary' = 'summary';
 export const SOURCE: 'source' = 'source';
 export const STACKED: 'stacked' = 'stacked';
 export const LAYOUT: 'layout' = 'layout';
-
