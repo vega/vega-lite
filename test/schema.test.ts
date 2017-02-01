@@ -22,4 +22,6 @@ describe('Schema', function() {
     }
     assert.equal(valid, true);
   });
+
+  // write another test case here to check that the schema file is different than the committed one
 });
