@@ -14,6 +14,7 @@ export const tick: MarkCompiler = {
   markType: () => {
     return 'rect';
   },
+  role: 'tick',
 
   encodeEntry: (model: UnitModel) => {
     let e: VgEncodeEntry = {};

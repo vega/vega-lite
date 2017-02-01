@@ -11,6 +11,7 @@ export const rule: MarkCompiler = {
   markType: () => {
     return 'rule';
   },
+  role: undefined,
   encodeEntry: (model: UnitModel) => {
     let e: VgEncodeEntry = {};
     const orient = model.config().mark.orient;

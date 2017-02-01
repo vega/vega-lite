@@ -18,6 +18,7 @@ export const bar: MarkCompiler = {
   markType: () => {
     return 'rect';
   },
+  role: 'bar',
   encodeEntry: (model: UnitModel) => {
     const stack = model.stack();
     let e: VgEncodeEntry = extend(

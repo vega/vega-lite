@@ -20,6 +20,7 @@ export const text: TextCompiler = {
   markType: () => {
     return 'text';
   },
+  role: undefined,
 
   background: (model: UnitModel) => {
     return {

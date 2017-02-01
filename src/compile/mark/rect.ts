@@ -16,6 +16,7 @@ export const rect: MarkCompiler = {
   markType: () => {
     return 'rect';
   },
+  role: undefined,
   encodeEntry: (model: UnitModel) => {
     let e: VgEncodeEntry = extend(
       x(model),
