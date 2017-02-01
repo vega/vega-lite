@@ -5,7 +5,6 @@ import * as mark from './mark';
 import {ScaleConfig, defaultScaleConfig} from './scale';
 import {Padding} from './spec';
 import {VgRangeScheme} from './vega.schema';
-import {Dict} from './util';
 
 export interface CellConfig {
   width?: number;
