@@ -12,7 +12,7 @@
       {"a": "I","b": "J","c": 52}
     ]
   },
-  "layers": [
+  "layer": [
     {
       "mark": "bar",
       "encoding": {

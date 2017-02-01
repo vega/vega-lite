@@ -1534,7 +1534,7 @@
                 "height": {
                     "type": "number"
                 },
-                "layers": {
+                "layer": {
                     "description": "Unit specs that will be layered.",
                     "items": {
                         "$ref": "#/definitions/UnitSpec"
@@ -1581,7 +1581,7 @@
                 }
             },
             "required": [
-                "layers"
+                "layer"
             ],
             "type": "object"
         },

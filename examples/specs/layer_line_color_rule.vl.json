@@ -1,6 +1,6 @@
 {
   "data": {"url": "data/stocks.csv","format": {"type": "csv"}},
-  "layers": [
+  "layer": [
     {
       "mark": "line",
       "encoding": {
