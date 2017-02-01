@@ -7,10 +7,6 @@ import {defaultScaleConfig} from '../../../src/scale';
 import {bar} from '../../../src/compile/mark/bar';
 
 describe('Mark: Bar', function() {
-  it('should return the correct mark type', function() {
-    assert.equal(bar.markType(), 'rect');
-  });
-
   describe('simple vertical', function() {
     const model = parseUnitModel({
       "data": {"url": 'data/cars.json'},

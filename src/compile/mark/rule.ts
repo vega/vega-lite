@@ -8,9 +8,7 @@ import {MarkCompiler} from './base';
 import * as ref from './valueref';
 
 export const rule: MarkCompiler = {
-  markType: () => {
-    return 'rule';
-  },
+  vgMark: 'rule',
   role: undefined,
   encodeEntry: (model: UnitModel) => {
     let e: VgEncodeEntry = {};

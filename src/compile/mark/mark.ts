@@ -2,6 +2,7 @@ import {X, Y, COLOR, NONSPATIAL_CHANNELS, Channel} from '../../channel';
 import {AREA, LINE, TEXT as TEXTMARK} from '../../mark';
 import {contains, without} from '../../util';
 
+import {MarkCompiler} from './base';
 import {area} from './area';
 import {bar} from './bar';
 import {line} from './line';
@@ -14,7 +15,7 @@ import {tick} from './tick';
 import {FacetModel} from '../facet';
 import {UnitModel} from '../unit';
 
-const markCompiler = {
+const markCompiler: {[type: string]: MarkCompiler} = {
   area: area,
   bar: bar,
   line: line,
@@ -57,7 +58,7 @@ function parsePathMark(model: UnitModel) {
   let pathMarks: any = [
     {
       name: model.name('marks'),
-      type: markCompiler[mark].markType(),
+      type: markCompiler[mark].vgMark,
       // If has subfacet for line/area group, need to use faceted data from below.
       // FIXME: support sorting path order (in connected scatterplot)
       from: {data: (details.length > 0 ? FACETED_PATH_PREFIX : '') + dataFrom(model)},
@@ -116,7 +117,7 @@ function parseNonPathMark(model: UnitModel) {
 
   marks.push({
     name: model.name('marks'),
-    type: markCompiler[mark].markType(),
+    type: markCompiler[mark].vgMark,
     ...(role? {role} : {}),
     from: {data: dataFrom(model)},
     encode: { update: markCompiler[mark].encodeEntry(model)}

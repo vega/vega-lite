@@ -40,9 +40,7 @@ function shape(shapeDef: LegendFieldDef, scaleName: string, scale: Scale, pointC
 }
 
 export const point: MarkCompiler = {
-  markType: () => {
-    return 'symbol';
-  },
+  vgMark: 'symbol',
   role: 'point',
   encodeEntry: (model: UnitModel) => {
     return encodeEntry(model);
@@ -50,9 +48,7 @@ export const point: MarkCompiler = {
 };
 
 export const circle: MarkCompiler = {
-  markType: () => {
-    return 'symbol';
-  },
+  vgMark: 'symbol',
   role: 'circle',
   encodeEntry: (model: UnitModel) => {
     return encodeEntry(model, 'circle');
@@ -60,9 +56,7 @@ export const circle: MarkCompiler = {
 };
 
 export const square: MarkCompiler = {
-  markType: () => {
-    return 'symbol';
-  },
+  vgMark: 'symbol',
   role: 'square',
   encodeEntry: (model: UnitModel) => {
     return encodeEntry(model, 'square');

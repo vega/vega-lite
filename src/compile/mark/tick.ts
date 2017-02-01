@@ -11,9 +11,7 @@ import {MarkCompiler} from './base';
 import * as ref from './valueref';
 
 export const tick: MarkCompiler = {
-  markType: () => {
-    return 'rect';
-  },
+  vgMark: 'rect',
   role: 'tick',
 
   encodeEntry: (model: UnitModel) => {
