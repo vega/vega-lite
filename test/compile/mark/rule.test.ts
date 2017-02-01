@@ -6,9 +6,6 @@ import {X, Y, COLOR} from '../../../src/channel';
 import {rule} from '../../../src/compile/mark/rule';
 
 describe('Mark: Rule', function() {
-  it('should return the correct mark type', function() {
-    assert.equal(rule.markType(), 'rule');
-  });
 
   describe('with x-only', () => {
     const model = parseUnitModel({

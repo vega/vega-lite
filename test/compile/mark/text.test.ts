@@ -7,10 +7,6 @@ import {X, Y} from '../../../src/channel';
 import {ExtendedUnitSpec} from '../../../src/spec';
 
 describe('Mark: Text', function() {
-  it('should return correct marktype', function() {
-    assert.equal(text.markType(), 'text');
-  });
-
   describe('with nothing', function() {
     const spec: ExtendedUnitSpec = {
       "mark": "text",

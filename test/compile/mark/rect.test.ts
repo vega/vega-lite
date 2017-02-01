@@ -5,10 +5,6 @@ import {parseUnitModel} from '../../util';
 import {rect} from '../../../src/compile/mark/rect';
 
 describe('Mark: Rect', function() {
-  it('should return the correct mark type', function() {
-    assert.equal(rect.markType(), 'rect');
-  });
-
   describe('simple vertical', function() {
     const model = parseUnitModel({
       "data": {"url": 'data/cars.json'},

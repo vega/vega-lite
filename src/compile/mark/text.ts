@@ -17,9 +17,7 @@ export interface TextCompiler extends MarkCompiler {
 }
 
 export const text: TextCompiler = {
-  markType: () => {
-    return 'text';
-  },
+  vgMark: 'text',
   role: undefined,
 
   background: (model: UnitModel) => {

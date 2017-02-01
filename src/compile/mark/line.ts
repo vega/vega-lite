@@ -11,9 +11,7 @@ import {MarkCompiler} from './base';
 import * as ref from './valueref';
 
 export const line: MarkCompiler = {
-  markType: () => {
-    return 'line';
-  },
+  vgMark: 'line',
   role: undefined,
   encodeEntry: (model: UnitModel) => {
     let e: VgEncodeEntry = {};

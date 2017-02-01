@@ -15,9 +15,7 @@ import {MarkCompiler} from './base';
 import * as ref from './valueref';
 
 export const bar: MarkCompiler = {
-  markType: () => {
-    return 'rect';
-  },
+  vgMark: 'rect',
   role: 'bar',
   encodeEntry: (model: UnitModel) => {
     const stack = model.stack();

@@ -9,9 +9,7 @@ import {MarkCompiler} from './base';
 import * as ref from './valueref';
 
 export const area: MarkCompiler = {
-  markType: () => {
-    return 'area';
-  },
+  vgMark: 'area',
   role: undefined,
   encodeEntry: (model: UnitModel) => {
     let e: VgEncodeEntry = {};

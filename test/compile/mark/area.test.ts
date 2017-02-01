@@ -8,10 +8,6 @@ import {area} from '../../../src/compile/mark/area';
 import {ExtendedUnitSpec} from '../../../src/spec';
 
 describe('Mark: Area', function() {
-  it('should return the correct mark type', function() {
-    assert.equal(area.markType(), 'area');
-  });
-
   function verticalArea(moreEncoding = {}): ExtendedUnitSpec {
     return {
       "mark": "area",
