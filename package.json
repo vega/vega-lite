@@ -80,9 +80,9 @@
     "tsify": "~3.0.0",
     "tslint": "~4.4.2",
     "typescript": "^2.1.5",
-    "typescript-json-schema": "^0.6.0",
+    "typescript-json-schema": "^0.9.0",
     "uglify-js": "~2.7.5",
-    "vega": "3.0.0-beta.19",
+    "vega": "3.0.0-beta.20",
     "vega-datasets": "vega/vega-datasets#gh-pages",
     "watchify": "~3.9.0",
     "yaml-front-matter": "~3.4.0"
