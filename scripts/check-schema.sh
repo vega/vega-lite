@@ -1,9 +1,9 @@
 #!/bin/bash
 
-npm run schema
-if git diff --exit-code HEAD -- ../vega-lite-schema.json then
+if ! git diff --exit-code HEAD HEAD~1 -- ./vega-lite-schema.json
+then
   echo "vega-lite-schema.json is different from the committed one."
-  exit 1;
+  exit 1
 else
-  exit 0;
+  exit 0
 fi
