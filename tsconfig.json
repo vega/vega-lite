@@ -10,6 +10,8 @@
     "removeComments": false,
     "preserveConstEnums": true,
     "noEmitOnError": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
     "noImplicitThis": true,
     "noImplicitReturns": true,
     "sourceMap": true,

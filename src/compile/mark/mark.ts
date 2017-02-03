@@ -1,5 +1,5 @@
 import {X, Y, COLOR, NONSPATIAL_CHANNELS, Channel} from '../../channel';
-import {AREA, LINE, TEXT as TEXTMARK} from '../../mark';
+import {AREA, LINE, TEXT as TEXT_MARK} from '../../mark';
 import {contains, without} from '../../util';
 
 import {MarkCompiler} from './base';
@@ -98,7 +98,7 @@ function parseNonPathMark(model: UnitModel) {
   const role = markCompiler[mark].role;
 
   let marks: any[] = []; // TODO: vgMarks
-  if (mark === TEXTMARK &&
+  if (mark === TEXT_MARK &&
     model.channelHasField(COLOR) &&
     model.config().text.applyColorToBackground &&
     !model.channelHasField(X) &&
