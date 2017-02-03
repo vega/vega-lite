@@ -8,7 +8,7 @@ import {Encoding} from '../encoding';
 import * as vlEncoding from '../encoding'; // TODO: remove
 import {ChannelDef, FieldDef, FieldRefOption, field, normalize, isFieldDef, isValueDef} from '../fielddef';
 import {Legend} from '../legend';
-import {Mark, TEXT as TEXTMARK, FILL_STROKE_CONFIG} from '../mark';
+import {Mark, TEXT as TEXT_MARK, FILL_STROKE_CONFIG} from '../mark';
 import {Scale, ScaleConfig, hasDiscreteDomain} from '../scale';
 import {ExtendedUnitSpec} from '../spec';
 import {duplicate, extend, isArray, mergeDeep, Dict} from '../util';
@@ -178,7 +178,7 @@ export class UnitModel extends Model {
         this._width = cellConfig.width;
       } // else: Do nothing, use dynamic width.
     } else { // No scale X
-      if (mark === TEXTMARK) {
+      if (mark === TEXT_MARK) {
         // for text table without x/y scale we need wider rangeStep
         this._width = scaleConfig.textXRangeStep;
       } else {
