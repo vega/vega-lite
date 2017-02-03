@@ -2,13 +2,13 @@
     "$schema": "http://json-schema.org/draft-04/schema#",
     "anyOf": [
         {
-            "$ref": "#/definitions/ExtendedUnitSpec"
+            "$ref": "#/definitions/GenericUnitSpec<ExtendedEncoding>"
         },
         {
-            "$ref": "#/definitions/FacetSpec"
+            "$ref": "#/definitions/GenericFacetSpec<ExtendedEncoding>"
         },
         {
-            "$ref": "#/definitions/LayerSpec"
+            "$ref": "#/definitions/GenericLayerSpec<ExtendedEncoding>"
         }
     ],
     "definitions": {
@@ -996,139 +996,6 @@
             },
             "type": "object"
         },
-        "Encoding": {
-            "additionalProperties": false,
-            "properties": {
-                "color": {
-                    "anyOf": [
-                        {
-                            "$ref": "#/definitions/LegendFieldDef"
-                        },
-                        {
-                            "$ref": "#/definitions/ValueDef<string>"
-                        }
-                    ],
-                    "description": "Color of the marks – either fill or stroke color based on mark type.\n(By default, fill color for `area`, `bar`, `tick`, `text`, `circle`, and `square` /\nstroke color for `line` and `point`.)"
-                },
-                "detail": {
-                    "anyOf": [
-                        {
-                            "$ref": "#/definitions/FieldDef"
-                        },
-                        {
-                            "items": {
-                                "$ref": "#/definitions/FieldDef"
-                            },
-                            "type": "array"
-                        }
-                    ],
-                    "description": "Additional levels of detail for grouping data in aggregate views and\nin line and area marks without mapping data to a specific visual channel."
-                },
-                "opacity": {
-                    "anyOf": [
-                        {
-                            "$ref": "#/definitions/LegendFieldDef"
-                        },
-                        {
-                            "$ref": "#/definitions/ValueDef<number>"
-                        }
-                    ],
-                    "description": "Opacity of the marks – either can be a value or in a range."
-                },
-                "order": {
-                    "anyOf": [
-                        {
-                            "$ref": "#/definitions/OrderFieldDef"
-                        },
-                        {
-                            "items": {
-                                "$ref": "#/definitions/OrderFieldDef"
-                            },
-                            "type": "array"
-                        }
-                    ],
-                    "description": "stack order for stacked marks or order of data points in line marks."
-                },
-                "shape": {
-                    "anyOf": [
-                        {
-                            "$ref": "#/definitions/LegendFieldDef"
-                        },
-                        {
-                            "$ref": "#/definitions/ValueDef<string>"
-                        }
-                    ],
-                    "description": "The symbol's shape (only for `point` marks). The supported values are\n`\"circle\"` (default), `\"square\"`, `\"cross\"`, `\"diamond\"`, `\"triangle-up\"`,\nor `\"triangle-down\"`, or else a custom SVG path string."
-                },
-                "size": {
-                    "anyOf": [
-                        {
-                            "$ref": "#/definitions/LegendFieldDef"
-                        },
-                        {
-                            "$ref": "#/definitions/ValueDef<number>"
-                        }
-                    ],
-                    "description": "Size of the mark.\n- For `point`, `square` and `circle`\n– the symbol size, or pixel area of the mark.\n- For `bar` and `tick` – the bar and tick's size.\n- For `text` – the text's font size.\n- Size is currently unsupported for `line` and `area`."
-                },
-                "text": {
-                    "anyOf": [
-                        {
-                            "$ref": "#/definitions/FieldDef"
-                        },
-                        {
-                            "$ref": "#/definitions/ValueDef<string | number>"
-                        }
-                    ],
-                    "description": "Text of the `text` mark."
-                },
-                "x": {
-                    "anyOf": [
-                        {
-                            "$ref": "#/definitions/PositionFieldDef"
-                        },
-                        {
-                            "$ref": "#/definitions/ValueDef<number>"
-                        }
-                    ],
-                    "description": "X coordinates for `point`, `circle`, `square`,\n`line`, `rule`, `text`, and `tick`\n(or to width and height for `bar` and `area` marks)."
-                },
-                "x2": {
-                    "anyOf": [
-                        {
-                            "$ref": "#/definitions/FieldDef"
-                        },
-                        {
-                            "$ref": "#/definitions/ValueDef<number>"
-                        }
-                    ],
-                    "description": "X2 coordinates for ranged `bar`, `rule`, `area`"
-                },
-                "y": {
-                    "anyOf": [
-                        {
-                            "$ref": "#/definitions/PositionFieldDef"
-                        },
-                        {
-                            "$ref": "#/definitions/ValueDef<number>"
-                        }
-                    ],
-                    "description": "Y coordinates for `point`, `circle`, `square`,\n`line`, `rule`, `text`, and `tick`\n(or to width and height for `bar` and `area` marks)."
-                },
-                "y2": {
-                    "anyOf": [
-                        {
-                            "$ref": "#/definitions/FieldDef"
-                        },
-                        {
-                            "$ref": "#/definitions/ValueDef<number>"
-                        }
-                    ],
-                    "description": "Y2 coordinates for ranged `bar`, `rule`, `area`"
-                }
-            },
-            "type": "object"
-        },
         "EqualFilter": {
             "additionalProperties": false,
             "properties": {
@@ -1325,9 +1192,282 @@
             ],
             "type": "object"
         },
-        "ExtendedUnitSpec": {
+        "Facet": {
             "additionalProperties": false,
-            "description": "Schema for a unit Vega-Lite specification, with the syntactic sugar extensions:\n- `row` and `column` are included in the encoding.\n- (Future) label, box plot\n\nNote: the spec could contain facet.",
+            "properties": {
+                "column": {
+                    "$ref": "#/definitions/PositionFieldDef",
+                    "description": "Horizontal facets for trellis plots."
+                },
+                "row": {
+                    "$ref": "#/definitions/PositionFieldDef",
+                    "description": "Vertical facets for trellis plots."
+                }
+            },
+            "type": "object"
+        },
+        "FacetConfig": {
+            "additionalProperties": false,
+            "properties": {
+                "axis": {
+                    "$ref": "#/definitions/AxisConfig",
+                    "description": "Facet Axis Config"
+                },
+                "cell": {
+                    "$ref": "#/definitions/CellConfig",
+                    "description": "Facet Cell Config"
+                },
+                "grid": {
+                    "$ref": "#/definitions/FacetGridConfig",
+                    "description": "Facet Grid Config"
+                }
+            },
+            "type": "object"
+        },
+        "FacetGridConfig": {
+            "additionalProperties": false,
+            "properties": {
+                "color": {
+                    "type": "string"
+                },
+                "offset": {
+                    "type": "number"
+                },
+                "opacity": {
+                    "type": "number"
+                }
+            },
+            "type": "object"
+        },
+        "FieldDef": {
+            "additionalProperties": false,
+            "description": "Definition object for a data field, its type and transformation of an encoding channel.",
+            "properties": {
+                "aggregate": {
+                    "$ref": "#/definitions/AggregateOp",
+                    "description": "Aggregation function for the field\n(e.g., `mean`, `sum`, `median`, `min`, `max`, `count`)."
+                },
+                "bin": {
+                    "anyOf": [
+                        {
+                            "$ref": "#/definitions/Bin"
+                        },
+                        {
+                            "type": "boolean"
+                        }
+                    ],
+                    "description": "Flag for binning a `quantitative` field, or a bin property object\nfor binning parameters."
+                },
+                "field": {
+                    "description": "Name of the field from which to pull a data value.",
+                    "type": "string"
+                },
+                "timeUnit": {
+                    "$ref": "#/definitions/TimeUnit",
+                    "description": "Time unit for a `temporal` field  (e.g., `year`, `yearmonth`, `month`, `hour`)."
+                },
+                "title": {
+                    "description": "Title for axis or legend.",
+                    "type": "string"
+                },
+                "type": {
+                    "$ref": "#/definitions/Type",
+                    "description": "The encoded field's type of measurement. This can be either a full type\nname (`\"quantitative\"`, `\"temporal\"`, `\"ordinal\"`,  and `\"nominal\"`)\nor an initial character of the type name (`\"Q\"`, `\"T\"`, `\"O\"`, `\"N\"`).\nThis property is case insensitive."
+                }
+            },
+            "type": "object"
+        },
+        "FontStyle": {
+            "enum": [
+                "italic",
+                "normal"
+            ],
+            "type": "string"
+        },
+        "Formula": {
+            "additionalProperties": false,
+            "description": "Formula object for calculate.",
+            "properties": {
+                "as": {
+                    "description": "The field in which to store the computed formula value.",
+                    "type": "string"
+                },
+                "expr": {
+                    "description": "A string containing an expression for the formula. Use the variable `datum` to to refer to the current data object.",
+                    "type": "string"
+                }
+            },
+            "required": [
+                "as",
+                "expr"
+            ],
+            "type": "object"
+        },
+        "GenericFacetSpec<ExtendedEncoding>": {
+            "additionalProperties": false,
+            "properties": {
+                "$schema": {
+                    "description": "URL to JSON schema for this Vega-Lite specification.",
+                    "format": "uri",
+                    "type": "string"
+                },
+                "config": {
+                    "$ref": "#/definitions/Config",
+                    "description": "Configuration object"
+                },
+                "data": {
+                    "anyOf": [
+                        {
+                            "$ref": "#/definitions/UrlData"
+                        },
+                        {
+                            "$ref": "#/definitions/InlineData"
+                        }
+                    ],
+                    "description": "An object describing the data source"
+                },
+                "description": {
+                    "description": "An optional description of this mark for commenting purpose.\nThis property has no effect on the output visualization.",
+                    "type": "string"
+                },
+                "facet": {
+                    "$ref": "#/definitions/Facet"
+                },
+                "name": {
+                    "description": "Name of the visualization for later reference.",
+                    "type": "string"
+                },
+                "padding": {
+                    "anyOf": [
+                        {
+                            "additionalProperties": false,
+                            "properties": {
+                                "bottom": {
+                                    "type": "number"
+                                },
+                                "left": {
+                                    "type": "number"
+                                },
+                                "right": {
+                                    "type": "number"
+                                },
+                                "top": {
+                                    "type": "number"
+                                }
+                            },
+                            "type": "object"
+                        },
+                        {
+                            "type": "number"
+                        }
+                    ],
+                    "description": "The default visualization padding, in pixels, from the edge of the visualization canvas to the data rectangle. This can be a single number or an object with `\"top\"`, `\"left\"`, `\"right\"`, `\"bottom\"` properties.\n\n__Default value__: `5`",
+                    "minimum": 0
+                },
+                "spec": {
+                    "anyOf": [
+                        {
+                            "$ref": "#/definitions/GenericUnitSpec<ExtendedEncoding>"
+                        },
+                        {
+                            "$ref": "#/definitions/GenericLayerSpec<ExtendedEncoding>"
+                        }
+                    ]
+                },
+                "transform": {
+                    "$ref": "#/definitions/Transform",
+                    "description": "An object describing filter and new field calculation."
+                }
+            },
+            "required": [
+                "facet",
+                "spec"
+            ],
+            "type": "object"
+        },
+        "GenericLayerSpec<ExtendedEncoding>": {
+            "additionalProperties": false,
+            "properties": {
+                "$schema": {
+                    "description": "URL to JSON schema for this Vega-Lite specification.",
+                    "format": "uri",
+                    "type": "string"
+                },
+                "config": {
+                    "$ref": "#/definitions/Config",
+                    "description": "Configuration object"
+                },
+                "data": {
+                    "anyOf": [
+                        {
+                            "$ref": "#/definitions/UrlData"
+                        },
+                        {
+                            "$ref": "#/definitions/InlineData"
+                        }
+                    ],
+                    "description": "An object describing the data source"
+                },
+                "description": {
+                    "description": "An optional description of this mark for commenting purpose.\nThis property has no effect on the output visualization.",
+                    "type": "string"
+                },
+                "height": {
+                    "type": "number"
+                },
+                "layer": {
+                    "description": "Unit specs that will be layered.",
+                    "items": {
+                        "$ref": "#/definitions/GenericUnitSpec<ExtendedEncoding>"
+                    },
+                    "type": "array"
+                },
+                "name": {
+                    "description": "Name of the visualization for later reference.",
+                    "type": "string"
+                },
+                "padding": {
+                    "anyOf": [
+                        {
+                            "additionalProperties": false,
+                            "properties": {
+                                "bottom": {
+                                    "type": "number"
+                                },
+                                "left": {
+                                    "type": "number"
+                                },
+                                "right": {
+                                    "type": "number"
+                                },
+                                "top": {
+                                    "type": "number"
+                                }
+                            },
+                            "type": "object"
+                        },
+                        {
+                            "type": "number"
+                        }
+                    ],
+                    "description": "The default visualization padding, in pixels, from the edge of the visualization canvas to the data rectangle. This can be a single number or an object with `\"top\"`, `\"left\"`, `\"right\"`, `\"bottom\"` properties.\n\n__Default value__: `5`",
+                    "minimum": 0
+                },
+                "transform": {
+                    "$ref": "#/definitions/Transform",
+                    "description": "An object describing filter and new field calculation."
+                },
+                "width": {
+                    "type": "number"
+                }
+            },
+            "required": [
+                "layer"
+            ],
+            "type": "object"
+        },
+        "GenericUnitSpec<ExtendedEncoding>": {
+            "additionalProperties": false,
             "properties": {
                 "$schema": {
                     "description": "URL to JSON schema for this Vega-Lite specification.",
@@ -1405,199 +1545,6 @@
             },
             "type": "object"
         },
-        "Facet": {
-            "additionalProperties": false,
-            "properties": {
-                "column": {
-                    "$ref": "#/definitions/PositionFieldDef",
-                    "description": "Horizontal facets for trellis plots."
-                },
-                "row": {
-                    "$ref": "#/definitions/PositionFieldDef",
-                    "description": "Vertical facets for trellis plots."
-                }
-            },
-            "type": "object"
-        },
-        "FacetConfig": {
-            "additionalProperties": false,
-            "properties": {
-                "axis": {
-                    "$ref": "#/definitions/AxisConfig",
-                    "description": "Facet Axis Config"
-                },
-                "cell": {
-                    "$ref": "#/definitions/CellConfig",
-                    "description": "Facet Cell Config"
-                },
-                "grid": {
-                    "$ref": "#/definitions/FacetGridConfig",
-                    "description": "Facet Grid Config"
-                }
-            },
-            "type": "object"
-        },
-        "FacetGridConfig": {
-            "additionalProperties": false,
-            "properties": {
-                "color": {
-                    "type": "string"
-                },
-                "offset": {
-                    "type": "number"
-                },
-                "opacity": {
-                    "type": "number"
-                }
-            },
-            "type": "object"
-        },
-        "FacetSpec": {
-            "additionalProperties": false,
-            "properties": {
-                "$schema": {
-                    "description": "URL to JSON schema for this Vega-Lite specification.",
-                    "format": "uri",
-                    "type": "string"
-                },
-                "config": {
-                    "$ref": "#/definitions/Config",
-                    "description": "Configuration object"
-                },
-                "data": {
-                    "anyOf": [
-                        {
-                            "$ref": "#/definitions/UrlData"
-                        },
-                        {
-                            "$ref": "#/definitions/InlineData"
-                        }
-                    ],
-                    "description": "An object describing the data source"
-                },
-                "description": {
-                    "description": "An optional description of this mark for commenting purpose.\nThis property has no effect on the output visualization.",
-                    "type": "string"
-                },
-                "facet": {
-                    "$ref": "#/definitions/Facet"
-                },
-                "name": {
-                    "description": "Name of the visualization for later reference.",
-                    "type": "string"
-                },
-                "padding": {
-                    "anyOf": [
-                        {
-                            "additionalProperties": false,
-                            "properties": {
-                                "bottom": {
-                                    "type": "number"
-                                },
-                                "left": {
-                                    "type": "number"
-                                },
-                                "right": {
-                                    "type": "number"
-                                },
-                                "top": {
-                                    "type": "number"
-                                }
-                            },
-                            "type": "object"
-                        },
-                        {
-                            "type": "number"
-                        }
-                    ],
-                    "description": "The default visualization padding, in pixels, from the edge of the visualization canvas to the data rectangle. This can be a single number or an object with `\"top\"`, `\"left\"`, `\"right\"`, `\"bottom\"` properties.\n\n__Default value__: `5`",
-                    "minimum": 0
-                },
-                "spec": {
-                    "anyOf": [
-                        {
-                            "$ref": "#/definitions/UnitSpec"
-                        },
-                        {
-                            "$ref": "#/definitions/LayerSpec"
-                        }
-                    ]
-                },
-                "transform": {
-                    "$ref": "#/definitions/Transform",
-                    "description": "An object describing filter and new field calculation."
-                }
-            },
-            "required": [
-                "facet",
-                "spec"
-            ],
-            "type": "object"
-        },
-        "FieldDef": {
-            "additionalProperties": false,
-            "description": "Definition object for a data field, its type and transformation of an encoding channel.",
-            "properties": {
-                "aggregate": {
-                    "$ref": "#/definitions/AggregateOp",
-                    "description": "Aggregation function for the field\n(e.g., `mean`, `sum`, `median`, `min`, `max`, `count`)."
-                },
-                "bin": {
-                    "anyOf": [
-                        {
-                            "$ref": "#/definitions/Bin"
-                        },
-                        {
-                            "type": "boolean"
-                        }
-                    ],
-                    "description": "Flag for binning a `quantitative` field, or a bin property object\nfor binning parameters."
-                },
-                "field": {
-                    "description": "Name of the field from which to pull a data value.",
-                    "type": "string"
-                },
-                "timeUnit": {
-                    "$ref": "#/definitions/TimeUnit",
-                    "description": "Time unit for a `temporal` field  (e.g., `year`, `yearmonth`, `month`, `hour`)."
-                },
-                "title": {
-                    "description": "Title for axis or legend.",
-                    "type": "string"
-                },
-                "type": {
-                    "$ref": "#/definitions/Type",
-                    "description": "The encoded field's type of measurement. This can be either a full type\nname (`\"quantitative\"`, `\"temporal\"`, `\"ordinal\"`,  and `\"nominal\"`)\nor an initial character of the type name (`\"Q\"`, `\"T\"`, `\"O\"`, `\"N\"`).\nThis property is case insensitive."
-                }
-            },
-            "type": "object"
-        },
-        "FontStyle": {
-            "enum": [
-                "italic",
-                "normal"
-            ],
-            "type": "string"
-        },
-        "Formula": {
-            "additionalProperties": false,
-            "description": "Formula object for calculate.",
-            "properties": {
-                "as": {
-                    "description": "The field in which to store the computed formula value.",
-                    "type": "string"
-                },
-                "expr": {
-                    "description": "A string containing an expression for the formula. Use the variable `datum` to to refer to the current data object.",
-                    "type": "string"
-                }
-            },
-            "required": [
-                "as",
-                "expr"
-            ],
-            "type": "object"
-        },
         "HorizontalAlign": {
             "enum": [
                 "center",
@@ -1638,87 +1585,6 @@
                 "step-before"
             ],
             "type": "string"
-        },
-        "LayerSpec": {
-            "additionalProperties": false,
-            "properties": {
-                "$schema": {
-                    "description": "URL to JSON schema for this Vega-Lite specification.",
-                    "format": "uri",
-                    "type": "string"
-                },
-                "config": {
-                    "$ref": "#/definitions/Config",
-                    "description": "Configuration object"
-                },
-                "data": {
-                    "anyOf": [
-                        {
-                            "$ref": "#/definitions/UrlData"
-                        },
-                        {
-                            "$ref": "#/definitions/InlineData"
-                        }
-                    ],
-                    "description": "An object describing the data source"
-                },
-                "description": {
-                    "description": "An optional description of this mark for commenting purpose.\nThis property has no effect on the output visualization.",
-                    "type": "string"
-                },
-                "height": {
-                    "type": "number"
-                },
-                "layer": {
-                    "description": "Unit specs that will be layered.",
-                    "items": {
-                        "$ref": "#/definitions/UnitSpec"
-                    },
-                    "type": "array"
-                },
-                "name": {
-                    "description": "Name of the visualization for later reference.",
-                    "type": "string"
-                },
-                "padding": {
-                    "anyOf": [
-                        {
-                            "additionalProperties": false,
-                            "properties": {
-                                "bottom": {
-                                    "type": "number"
-                                },
-                                "left": {
-                                    "type": "number"
-                                },
-                                "right": {
-                                    "type": "number"
-                                },
-                                "top": {
-                                    "type": "number"
-                                }
-                            },
-                            "type": "object"
-                        },
-                        {
-                            "type": "number"
-                        }
-                    ],
-                    "description": "The default visualization padding, in pixels, from the edge of the visualization canvas to the data rectangle. This can be a single number or an object with `\"top\"`, `\"left\"`, `\"right\"`, `\"bottom\"` properties.\n\n__Default value__: `5`",
-                    "minimum": 0
-                },
-                "transform": {
-                    "$ref": "#/definitions/Transform",
-                    "description": "An object describing filter and new field calculation."
-                },
-                "width": {
-                    "type": "number"
-                }
-            },
-            "required": [
-                "layer"
-            ],
-            "type": "object"
         },
         "Legend": {
             "additionalProperties": false,
@@ -3459,85 +3325,6 @@
                 "temporal"
             ],
             "type": "string"
-        },
-        "UnitSpec": {
-            "additionalProperties": false,
-            "properties": {
-                "$schema": {
-                    "description": "URL to JSON schema for this Vega-Lite specification.",
-                    "format": "uri",
-                    "type": "string"
-                },
-                "config": {
-                    "$ref": "#/definitions/Config",
-                    "description": "Configuration object"
-                },
-                "data": {
-                    "anyOf": [
-                        {
-                            "$ref": "#/definitions/UrlData"
-                        },
-                        {
-                            "$ref": "#/definitions/InlineData"
-                        }
-                    ],
-                    "description": "An object describing the data source"
-                },
-                "description": {
-                    "description": "An optional description of this mark for commenting purpose.\nThis property has no effect on the output visualization.",
-                    "type": "string"
-                },
-                "encoding": {
-                    "$ref": "#/definitions/Encoding",
-                    "description": "A key-value mapping between encoding channels and definition of fields."
-                },
-                "height": {
-                    "type": "number"
-                },
-                "mark": {
-                    "$ref": "#/definitions/Mark",
-                    "description": "The mark type.\nOne of `\"bar\"`, `\"circle\"`, `\"square\"`, `\"tick\"`, `\"line\"`,\n`\"area\"`, `\"point\"`, `\"rule\"`, and `\"text\"`."
-                },
-                "name": {
-                    "description": "Name of the visualization for later reference.",
-                    "type": "string"
-                },
-                "padding": {
-                    "anyOf": [
-                        {
-                            "additionalProperties": false,
-                            "properties": {
-                                "bottom": {
-                                    "type": "number"
-                                },
-                                "left": {
-                                    "type": "number"
-                                },
-                                "right": {
-                                    "type": "number"
-                                },
-                                "top": {
-                                    "type": "number"
-                                }
-                            },
-                            "type": "object"
-                        },
-                        {
-                            "type": "number"
-                        }
-                    ],
-                    "description": "The default visualization padding, in pixels, from the edge of the visualization canvas to the data rectangle. This can be a single number or an object with `\"top\"`, `\"left\"`, `\"right\"`, `\"bottom\"` properties.\n\n__Default value__: `5`",
-                    "minimum": 0
-                },
-                "transform": {
-                    "$ref": "#/definitions/Transform",
-                    "description": "An object describing filter and new field calculation."
-                },
-                "width": {
-                    "type": "number"
-                }
-            },
-            "type": "object"
         },
         "UrlData": {
             "additionalProperties": false,

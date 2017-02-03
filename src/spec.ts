@@ -57,7 +57,7 @@ export interface BaseSpec {
   config?: Config;
 }
 
-export interface UnitSpec extends BaseSpec {
+export interface GenericUnitSpec<E extends Encoding> extends BaseSpec {
   // FIXME description for top-level width
   width?: number;
 
@@ -74,44 +74,14 @@ export interface UnitSpec extends BaseSpec {
   /**
    * A key-value mapping between encoding channels and definition of fields.
    */
-  encoding?: Encoding;
+  encoding?: E;
 }
 
-/**
- * Schema for a unit Vega-Lite specification, with the syntactic sugar extensions:
- * - `row` and `column` are included in the encoding.
- * - (Future) label, box plot
- *
- * Note: the spec could contain facet.
- *
- * @required ["mark", "encoding"]
- */
-export interface ExtendedUnitSpec extends BaseSpec {
-  // FIXME description for top-level width
-  width?: number;
+export type UnitSpec = GenericUnitSpec<Encoding>;
 
-  // FIXME description for top-level width
-  height?: number;
+export type ExtendedUnitSpec = GenericUnitSpec<ExtendedEncoding>;
 
-  /**
-   * The mark type.
-   * One of `"bar"`, `"circle"`, `"square"`, `"tick"`, `"line"`,
-   * `"area"`, `"point"`, `"rule"`, and `"text"`.
-   */
-  mark?: Mark;
-
-  /**
-   * A key-value mapping between encoding channels and definition of fields.
-   */
-  encoding?: ExtendedEncoding;
-}
-
-export interface FacetSpec extends BaseSpec {
-  facet: Facet;
-  spec: LayerSpec | UnitSpec;
-}
-
-export interface LayerSpec extends BaseSpec {
+export interface GenericLayerSpec<E> extends BaseSpec {
   // FIXME description for top-level width
   width?: number;
 
@@ -121,18 +91,27 @@ export interface LayerSpec extends BaseSpec {
   /**
    * Unit specs that will be layered.
    */
-  layer: UnitSpec[];
+  // TODO: support layer of layer
+  layer: GenericUnitSpec<E>[];
 }
 
-/** This is for the future schema */
-export interface ExtendedFacetSpec extends BaseSpec {
+export type LayerSpec = GenericLayerSpec<Encoding>;
+
+
+export interface GenericFacetSpec<E> extends BaseSpec {
   facet: Facet;
 
-  spec: ExtendedUnitSpec | FacetSpec;
+  // TODO: support facet of facet
+  spec: GenericLayerSpec<E> | GenericUnitSpec<E>;
 }
 
-export type ExtendedSpec = ExtendedUnitSpec | FacetSpec | LayerSpec;
-export type Spec = UnitSpec | FacetSpec | LayerSpec;
+export type FacetSpec = GenericFacetSpec<Encoding>;
+export type ExtendedFacetSpec = GenericFacetSpec<ExtendedEncoding>;
+
+export type GenericSpec<E> = GenericUnitSpec<E> | GenericLayerSpec<E> | GenericFacetSpec<E>;
+
+export type ExtendedSpec = GenericSpec<ExtendedEncoding>;
+export type Spec = GenericSpec<Encoding>;
 
 /* Custom type guards */
 
