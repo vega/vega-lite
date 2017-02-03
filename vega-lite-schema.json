@@ -1162,6 +1162,147 @@
             ],
             "type": "object"
         },
+        "ExtendedEncoding": {
+            "additionalProperties": false,
+            "properties": {
+                "color": {
+                    "anyOf": [
+                        {
+                            "$ref": "#/definitions/LegendFieldDef"
+                        },
+                        {
+                            "$ref": "#/definitions/ValueDef<string>"
+                        }
+                    ],
+                    "description": "Color of the marks – either fill or stroke color based on mark type.\n(By default, fill color for `area`, `bar`, `tick`, `text`, `circle`, and `square` /\nstroke color for `line` and `point`.)"
+                },
+                "column": {
+                    "$ref": "#/definitions/PositionFieldDef",
+                    "description": "Horizontal facets for trellis plots."
+                },
+                "detail": {
+                    "anyOf": [
+                        {
+                            "$ref": "#/definitions/FieldDef"
+                        },
+                        {
+                            "items": {
+                                "$ref": "#/definitions/FieldDef"
+                            },
+                            "type": "array"
+                        }
+                    ],
+                    "description": "Additional levels of detail for grouping data in aggregate views and\nin line and area marks without mapping data to a specific visual channel."
+                },
+                "opacity": {
+                    "anyOf": [
+                        {
+                            "$ref": "#/definitions/LegendFieldDef"
+                        },
+                        {
+                            "$ref": "#/definitions/ValueDef<number>"
+                        }
+                    ],
+                    "description": "Opacity of the marks – either can be a value or in a range."
+                },
+                "order": {
+                    "anyOf": [
+                        {
+                            "$ref": "#/definitions/OrderFieldDef"
+                        },
+                        {
+                            "items": {
+                                "$ref": "#/definitions/OrderFieldDef"
+                            },
+                            "type": "array"
+                        }
+                    ],
+                    "description": "stack order for stacked marks or order of data points in line marks."
+                },
+                "row": {
+                    "$ref": "#/definitions/PositionFieldDef",
+                    "description": "Vertical facets for trellis plots."
+                },
+                "shape": {
+                    "anyOf": [
+                        {
+                            "$ref": "#/definitions/LegendFieldDef"
+                        },
+                        {
+                            "$ref": "#/definitions/ValueDef<string>"
+                        }
+                    ],
+                    "description": "The symbol's shape (only for `point` marks). The supported values are\n`\"circle\"` (default), `\"square\"`, `\"cross\"`, `\"diamond\"`, `\"triangle-up\"`,\nor `\"triangle-down\"`, or else a custom SVG path string."
+                },
+                "size": {
+                    "anyOf": [
+                        {
+                            "$ref": "#/definitions/LegendFieldDef"
+                        },
+                        {
+                            "$ref": "#/definitions/ValueDef<number>"
+                        }
+                    ],
+                    "description": "Size of the mark.\n- For `point`, `square` and `circle`\n– the symbol size, or pixel area of the mark.\n- For `bar` and `tick` – the bar and tick's size.\n- For `text` – the text's font size.\n- Size is currently unsupported for `line` and `area`."
+                },
+                "text": {
+                    "anyOf": [
+                        {
+                            "$ref": "#/definitions/FieldDef"
+                        },
+                        {
+                            "$ref": "#/definitions/ValueDef<string | number>"
+                        }
+                    ],
+                    "description": "Text of the `text` mark."
+                },
+                "x": {
+                    "anyOf": [
+                        {
+                            "$ref": "#/definitions/PositionFieldDef"
+                        },
+                        {
+                            "$ref": "#/definitions/ValueDef<number>"
+                        }
+                    ],
+                    "description": "X coordinates for `point`, `circle`, `square`,\n`line`, `rule`, `text`, and `tick`\n(or to width and height for `bar` and `area` marks)."
+                },
+                "x2": {
+                    "anyOf": [
+                        {
+                            "$ref": "#/definitions/FieldDef"
+                        },
+                        {
+                            "$ref": "#/definitions/ValueDef<number>"
+                        }
+                    ],
+                    "description": "X2 coordinates for ranged `bar`, `rule`, `area`"
+                },
+                "y": {
+                    "anyOf": [
+                        {
+                            "$ref": "#/definitions/PositionFieldDef"
+                        },
+                        {
+                            "$ref": "#/definitions/ValueDef<number>"
+                        }
+                    ],
+                    "description": "Y coordinates for `point`, `circle`, `square`,\n`line`, `rule`, `text`, and `tick`\n(or to width and height for `bar` and `area` marks)."
+                },
+                "y2": {
+                    "anyOf": [
+                        {
+                            "$ref": "#/definitions/FieldDef"
+                        },
+                        {
+                            "$ref": "#/definitions/ValueDef<number>"
+                        }
+                    ],
+                    "description": "Y2 coordinates for ranged `bar`, `rule`, `area`"
+                }
+            },
+            "type": "object"
+        },
         "ExtendedScheme": {
             "additionalProperties": false,
             "properties": {
@@ -1213,14 +1354,7 @@
                     "type": "string"
                 },
                 "encoding": {
-                    "allOf": [
-                        {
-                            "$ref": "#/definitions/Encoding"
-                        },
-                        {
-                            "$ref": "#/definitions/Facet"
-                        }
-                    ],
+                    "$ref": "#/definitions/ExtendedEncoding",
                     "description": "A key-value mapping between encoding channels and definition of fields."
                 },
                 "height": {

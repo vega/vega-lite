@@ -75,7 +75,7 @@ export interface Encoding {
   order?: OrderFieldDef | OrderFieldDef[];
 }
 
-export type ExtendedEncoding = Encoding & Facet;
+export interface ExtendedEncoding extends Encoding, Facet {}
 
 export function channelHasField(encoding: ExtendedEncoding, channel: Channel): boolean {
   const channelDef = encoding && encoding[channel];
