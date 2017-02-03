@@ -6,11 +6,11 @@ import {extend} from '../../../src/util';
 import {X, Y, SIZE, COLOR, SHAPE} from '../../../src/channel';
 import {defaultMarkConfig} from '../../../src/mark';
 import {point, square, circle} from '../../../src/compile/mark/point';
-import {ExtendedUnitSpec} from '../../../src/spec';
+import {UnitSpec} from '../../../src/spec';
 
 describe('Mark: Point', function() {
 
-  function pointXY(moreEncoding = {}): ExtendedUnitSpec {
+  function pointXY(moreEncoding = {}): UnitSpec {
     return {
       "mark": "point",
       "encoding": extend(

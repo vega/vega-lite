@@ -4,11 +4,11 @@ import {assert} from 'chai';
 import {parseUnitModel} from '../../util';
 import {text} from '../../../src/compile/mark/text';
 import {X, Y} from '../../../src/channel';
-import {ExtendedUnitSpec} from '../../../src/spec';
+import {UnitSpec, ExtendedUnitSpec} from '../../../src/spec';
 
 describe('Mark: Text', function() {
   describe('with nothing', function() {
-    const spec: ExtendedUnitSpec = {
+    const spec: UnitSpec = {
       "mark": "text",
       "encoding": {},
       "data": {"url": "data/cars.json"}
@@ -62,7 +62,7 @@ describe('Mark: Text', function() {
   });
 
   describe('with quantitative and format', function() {
-    const spec: ExtendedUnitSpec = {
+    const spec: UnitSpec = {
       "mark": "text",
       "encoding": {
         "text": {"field": "foo", "type": "quantitative"}
@@ -82,7 +82,7 @@ describe('Mark: Text', function() {
   });
 
   describe('with temporal', function() {
-    const spec: ExtendedUnitSpec = {
+    const spec: UnitSpec = {
       "mark": "text",
       "encoding": {
         "text": {"field": "foo", "type": "temporal"}
@@ -97,7 +97,7 @@ describe('Mark: Text', function() {
   });
 
   describe('with x, y, text (ordinal)', function() {
-    const spec: ExtendedUnitSpec = {
+    const spec: UnitSpec = {
       "mark": "text",
       "encoding": {
         "x": {"field": "Acceleration", "type": "ordinal"},

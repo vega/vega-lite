@@ -2,7 +2,7 @@ import * as log from './log';
 
 import {SUM_OPS} from './aggregate';
 import {Channel, STACK_GROUP_CHANNELS, X, Y, X2, Y2} from './channel';
-import {ExtendedEncoding, channelHasField, isAggregate} from './encoding';
+import {Encoding, channelHasField, isAggregate} from './encoding';
 import {FieldDef, PositionFieldDef, isFieldDef} from './fielddef';
 import {Mark, BAR, AREA, POINT, CIRCLE, SQUARE, LINE, RULE, TEXT, TICK} from './mark';
 import {ScaleType} from './scale';
@@ -40,7 +40,7 @@ export interface StackProperties {
 export const STACKABLE_MARKS = [BAR, AREA, RULE, POINT, CIRCLE, SQUARE, LINE, TEXT, TICK];
 export const STACK_BY_DEFAULT_MARKS = [BAR, AREA];
 
-export function stack(mark: Mark, encoding: ExtendedEncoding, stacked: StackOffset): StackProperties {
+export function stack(mark: Mark, encoding: Encoding, stacked: StackOffset): StackProperties {
   // Should not have stack explicitly disabled
   if (contains<string | boolean>(['none', null, false], stacked)) {
     return null;
