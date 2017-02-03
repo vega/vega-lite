@@ -1,5 +1,5 @@
-import {X, Y, COLOR, NONSPATIAL_CHANNELS, Channel} from '../../channel';
-import {AREA, LINE, TEXT as TEXTMARK} from '../../mark';
+import {NONSPATIAL_CHANNELS, Channel} from '../../channel';
+import {AREA, LINE} from '../../mark';
 import {contains, without} from '../../util';
 
 import {MarkCompiler} from './base';
@@ -98,20 +98,6 @@ function parseNonPathMark(model: UnitModel) {
   const role = markCompiler[mark].role;
 
   let marks: any[] = []; // TODO: vgMarks
-  if (mark === TEXTMARK &&
-    model.channelHasField(COLOR) &&
-    model.config().text.applyColorToBackground &&
-    !model.channelHasField(X) &&
-    !model.channelHasField(Y)
-  ) {
-    // add background to 'text' marks if has color
-    marks.push({
-      name: model.name('background'),
-      type: 'rect',
-      from: {data: dataFrom(model)},
-      encode: { update: text.background(model) }
-    });
-  }
 
   // TODO: for non-stacked plot, map order to zindex. (Maybe rename order for layer to zindex?)
 

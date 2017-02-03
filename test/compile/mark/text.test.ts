@@ -168,40 +168,4 @@ describe('Mark: Text', function() {
       });
     });
   });
-
-  describe('with row, column, text, and color and mark configs(applyColorToBackground, opacity)', function() {
-    const spec: ExtendedUnitSpec = {
-        "mark": "text",
-        "encoding": {
-          "row": {"field": "Origin", "type": "ordinal"},
-          "column": {"field": "Cylinders", "type": "ordinal"},
-          "text": {"field": "Acceleration", "type": "quantitative", "aggregate": "mean"},
-          "color": {"field": "Acceleration", "type": "quantitative", "aggregate": "mean"},
-          "size": {"field": "Acceleration", "type": "quantitative", "aggregate": "mean"}
-        },
-        "config": {
-          "text": {
-            "applyColorToBackground": true
-          },
-          "mark": {
-            "opacity": 0.8
-          }
-        },
-        "data": {"url": "data/cars.json"}
-      };
-    const model = parseUnitModel(spec);
-    const props = text.encodeEntry(model);
-    it('should fill black', function() {
-      assert.deepEqual(props.fill, {value: 'black'});
-    });
-
-    const bg = text.background(model);
-    it('should map color to background', function() {
-      assert.deepEqual(bg.fill, {
-        scale: 'color',
-        field: 'mean_Acceleration'
-      });
-    });
-
-  });
 });

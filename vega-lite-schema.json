@@ -2964,10 +2964,6 @@
                     "minimum": 0,
                     "type": "number"
                 },
-                "applyColorToBackground": {
-                    "description": "Apply color field to background color instead of the text.",
-                    "type": "boolean"
-                },
                 "baseline": {
                     "$ref": "#/definitions/VerticalAlign",
                     "description": "The vertical alignment of the text. One of top, middle, bottom."
