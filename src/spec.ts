@@ -2,7 +2,7 @@
 
 import {Config, defaultOverlayConfig} from './config';
 import {Data} from './data';
-import {Encoding, UnitEncoding, channelHasField, isRanged} from './encoding';
+import {ExtendedEncoding, Encoding, channelHasField, isRanged} from './encoding';
 import {Facet} from './facet';
 import {FieldDef} from './fielddef';
 import {Mark, ERRORBAR, TICK, AREA, RULE, LINE, POINT} from './mark';
@@ -69,12 +69,12 @@ export interface UnitSpec extends BaseSpec {
    * One of `"bar"`, `"circle"`, `"square"`, `"tick"`, `"line"`,
    * `"area"`, `"point"`, `"rule"`, and `"text"`.
    */
-  mark: Mark;
+  mark?: Mark;
 
   /**
    * A key-value mapping between encoding channels and definition of fields.
    */
-  encoding?: UnitEncoding;
+  encoding?: Encoding;
 }
 
 /**
@@ -103,7 +103,7 @@ export interface ExtendedUnitSpec extends BaseSpec {
   /**
    * A key-value mapping between encoding channels and definition of fields.
    */
-  encoding?: Encoding;
+  encoding?: ExtendedEncoding;
 }
 
 export interface FacetSpec extends BaseSpec {

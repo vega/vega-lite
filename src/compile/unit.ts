@@ -10,7 +10,7 @@ import {ChannelDef, FieldDef, FieldRefOption, field, normalize, isFieldDef, isVa
 import {Legend} from '../legend';
 import {Mark, TEXT as TEXT_MARK, FILL_STROKE_CONFIG} from '../mark';
 import {Scale, ScaleConfig, hasDiscreteDomain} from '../scale';
-import {ExtendedUnitSpec} from '../spec';
+import {UnitSpec} from '../spec';
 import {duplicate, extend, isArray, mergeDeep, Dict} from '../util';
 import {VgData} from '../vega.schema';
 
@@ -48,7 +48,7 @@ export class UnitModel extends Model {
   private readonly _encoding: Encoding;
   private readonly _stack: StackProperties;
 
-  constructor(spec: ExtendedUnitSpec, parent: Model, parentGivenName: string) {
+  constructor(spec: UnitSpec, parent: Model, parentGivenName: string) {
     super(spec, parent, parentGivenName);
 
     // use top-level width / height or parent's top-level width / height

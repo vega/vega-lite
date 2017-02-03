@@ -1,10 +1,10 @@
 // utility for encoding mapping
-import {FieldDef, PositionFieldDef, FacetFieldDef, LegendFieldDef, OrderFieldDef, ValueDef, isFieldDef} from './fielddef';
+import {FieldDef, PositionFieldDef, LegendFieldDef, OrderFieldDef, ValueDef, isFieldDef} from './fielddef';
 import {Channel, CHANNELS} from './channel';
+import {Facet} from './facet';
 import {isArray, some} from './util';
 
-// TODO: once we decompose facet, rename this to Encoding
-export interface UnitEncoding {
+export interface Encoding {
   /**
    * X coordinates for `point`, `circle`, `square`,
    * `line`, `rule`, `text`, and `tick`
@@ -75,20 +75,9 @@ export interface UnitEncoding {
   order?: OrderFieldDef | OrderFieldDef[];
 }
 
-// TODO: once we decompose facet, rename this to ExtendedEncoding
-export interface Encoding extends UnitEncoding {
-  /**
-   * Vertical facets for trellis plots.
-   */
-  row?: FacetFieldDef;
+export type ExtendedEncoding = Encoding & Facet;
 
-  /**
-   * Horizontal facets for trellis plots.
-   */
-  column?: FacetFieldDef;
-}
-
-export function channelHasField(encoding: Encoding, channel: Channel): boolean {
+export function channelHasField(encoding: ExtendedEncoding, channel: Channel): boolean {
   const channelDef = encoding && encoding[channel];
   if (channelDef) {
     if (isArray(channelDef)) {
@@ -100,7 +89,7 @@ export function channelHasField(encoding: Encoding, channel: Channel): boolean {
   return false;
 }
 
-export function isAggregate(encoding: Encoding) {
+export function isAggregate(encoding: ExtendedEncoding) {
   return some(CHANNELS, (channel) => {
     if (channelHasField(encoding, channel)) {
       const channelDef = encoding[channel];
@@ -114,11 +103,11 @@ export function isAggregate(encoding: Encoding) {
   });
 }
 
-export function isRanged(encoding: Encoding) {
+export function isRanged(encoding: ExtendedEncoding) {
   return encoding && ((!!encoding.x && !!encoding.x2) || (!!encoding.y && !!encoding.y2));
 }
 
-export function fieldDefs(encoding: Encoding): FieldDef[] {
+export function fieldDefs(encoding: ExtendedEncoding): FieldDef[] {
   let arr: FieldDef[] = [];
   CHANNELS.forEach(function(channel) {
     if (channelHasField(encoding, channel)) {

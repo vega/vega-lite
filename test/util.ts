@@ -2,7 +2,7 @@ import {buildModel} from '../src/compile/common';
 import {UnitModel} from '../src/compile/unit';
 import {FacetModel} from '../src/compile/facet';
 import {LayerModel} from '../src/compile/layer';
-import {ExtendedUnitSpec, FacetSpec, LayerSpec, normalize, ExtendedSpec} from '../src/spec';
+import {UnitSpec, FacetSpec, LayerSpec, normalize, ExtendedSpec} from '../src/spec';
 import {Model} from '../src/compile/model';
 
 export function parseModel(inputSpec: ExtendedSpec): Model {
@@ -10,7 +10,7 @@ export function parseModel(inputSpec: ExtendedSpec): Model {
   return buildModel(spec, null, '');
 }
 
-export function parseUnitModel(spec: ExtendedUnitSpec) {
+export function parseUnitModel(spec: UnitSpec) {
   return new UnitModel(spec, null, '');
 }
 
