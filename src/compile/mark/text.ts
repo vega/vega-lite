@@ -1,4 +1,4 @@
-import {X, Y, COLOR, TEXT, SIZE} from '../../channel';
+import {X, Y, TEXT, SIZE} from '../../channel';
 import {applyConfig, numberFormat, timeFormatExpression} from '../common';
 
 import {applyColorAndOpacity} from './common';
@@ -11,27 +11,9 @@ import {VgValueRef, VgEncodeEntry} from '../../vega.schema';
 import {MarkCompiler} from './base';
 import * as ref from './valueref';
 
-// FIXME: remove thie once we remove the background hack
-export interface TextCompiler extends MarkCompiler {
-  background: (model: UnitModel) => VgEncodeEntry;
-}
-
-export const text: TextCompiler = {
+export const text: MarkCompiler = {
   vgMark: 'text',
   role: undefined,
-
-  background: (model: UnitModel) => {
-    return {
-      x: { value: 0 },
-      y: { value: 0 },
-      width: { field: { group: 'width' } },
-      height: { field: { group: 'height' } },
-      fill: {
-        scale: model.scaleName(COLOR),
-        field: model.field(COLOR)
-      }
-    };
-  },
 
   encodeEntry: (model: UnitModel) => {
     let e: VgEncodeEntry = {};
@@ -45,7 +27,6 @@ export const text: TextCompiler = {
     const textDef = model.encoding().text;
 
     // TODO: refactor how refer to scale as discussed in https://github.com/vega/vega-lite/pull/1613
-
     e.x = ref.stackable(X, model.encoding().x, model.scaleName(X), model.scale(X), stack, xDefault(config, textDef));
     e.y = ref.stackable(Y, model.encoding().y, model.scaleName(Y), model.scale(Y), stack, ref.midY(config));
 
@@ -55,16 +36,7 @@ export const text: TextCompiler = {
 
     e.text = textRef(textDef, config);
 
-    if (model.config().text.applyColorToBackground &&
-        !model.channelHasField(X) &&
-        !model.channelHasField(Y)) {
-      e.fill = {value: 'black'}; // TODO: add rules for swapping between black and white
-      // opacity
-      const opacity = model.config().mark.opacity;
-      if (opacity) { e.opacity = { value: opacity }; };
-    } else {
-      applyColorAndOpacity(e, model);
-    }
+    applyColorAndOpacity(e, model);
 
     return e;
   }

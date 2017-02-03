@@ -389,12 +389,6 @@ export interface TextConfig extends MarkConfig {
    * Placeholder Text
    */
   text?: string;
-
-  // FIXME: remove this?
-  /**
-   * Apply color field to background color instead of the text.
-   */
-  applyColorToBackground?: boolean;
 }
 
 export const defaultTextConfig: TextConfig = {
@@ -402,8 +396,7 @@ export const defaultTextConfig: TextConfig = {
   minFontSize: 8,
   maxFontSize: 40,
   baseline: 'middle',
-  text: 'Abc',
-  applyColorToBackground: false
+  text: 'Abc'
 };
 
 export interface TickConfig extends MarkConfig {
