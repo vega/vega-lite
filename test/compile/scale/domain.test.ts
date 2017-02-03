@@ -20,8 +20,7 @@ describe('compile/scale', () => {
             type: 'quantitative'
           },
           x: {field: 'x', type: "ordinal"},
-          color: {field: 'color', type: "ordinal"},
-          row: {field: 'row', type: 'ordinal'}
+          color: {field: 'color', type: "ordinal"}
         }
       });
 
