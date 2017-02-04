@@ -12,15 +12,15 @@ import {SummaryComponent} from './data';
 
 
 export namespace summary {
-  function addDimension(dims: { [field: string]: boolean }, fieldDef: FieldDef) {
+  function addDimension(dims: {[field: string]: boolean}, fieldDef: FieldDef) {
     if (fieldDef.bin) {
-      dims[field(fieldDef, { binSuffix: 'start' })] = true;
-      dims[field(fieldDef, { binSuffix: 'end' })] = true;
+      dims[field(fieldDef, {binSuffix: 'start'})] = true;
+      dims[field(fieldDef, {binSuffix: 'end'})] = true;
 
       // const scale = model.scale(channel);
       // if (scaleType(scale, fieldDef, channel, model.mark()) === ScaleType.ORDINAL) {
       // also produce bin_range if the binned field use ordinal scale
-      dims[field(fieldDef, { binSuffix: 'range' })] = true;
+      dims[field(fieldDef, {binSuffix: 'range'})] = true;
       // }
     } else {
       dims[field(fieldDef)] = true;
@@ -92,7 +92,7 @@ export namespace summary {
               // add operator to existing measure field
               parentMeasures[field][op] = true;
             } else {
-              parentMeasures[field] = { op: true };
+              parentMeasures[field] = {op: true};
             }
           }
         }

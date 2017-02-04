@@ -24,7 +24,7 @@ export function symbols(fieldDef: FieldDef, symbolsSpec: any, model: UnitModel, 
       break;
     case CIRCLE:
     case SQUARE:
-      symbols.shape = { value: mark };
+      symbols.shape = {value: mark};
       break;
     case POINT:
     case LINE:
@@ -47,7 +47,7 @@ export function symbols(fieldDef: FieldDef, symbolsSpec: any, model: UnitModel, 
   applyMarkConfig(symbols, model, config);
 
   if (filled) {
-    symbols.strokeWidth = { value: 0 };
+    symbols.strokeWidth = {value: 0};
   }
 
   // Avoid override default mapping for opacity channel
@@ -58,7 +58,7 @@ export function symbols(fieldDef: FieldDef, symbolsSpec: any, model: UnitModel, 
   let value: VgValueRef;
   const colorDef = model.encoding().color;
   if (isValueDef(colorDef)) {
-    value = { value: colorDef.value };
+    value = {value: colorDef.value};
   }
 
   if (value !== undefined) {

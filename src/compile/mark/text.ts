@@ -44,10 +44,10 @@ export const text: MarkCompiler = {
 
 function xDefault(config: Config, textDef: ChannelDef): VgValueRef {
   if (isFieldDef(textDef) && textDef.type === QUANTITATIVE) {
-    return { field: { group: 'width' }, offset: -5 };
+    return {field: {group: 'width'}, offset: -5};
   }
   // TODO: allow this to fit (Be consistent with ref.midX())
-  return { value: config.scale.textXRangeStep / 2 };
+  return {value: config.scale.textXRangeStep / 2};
 }
 
 function textRef(textDef: ChannelDef, config: Config): VgValueRef {
@@ -58,17 +58,17 @@ function textRef(textDef: ChannelDef, config: Config): VgValueRef {
         // FIXME: what happens if we have bin?
         const format = numberFormat(textDef, config.text.format, config, TEXT);
         return {
-          signal: `format(${field(textDef, { datum: true })}, '${format}')`
+          signal: `format(${field(textDef, {datum: true})}, '${format}')`
         };
       } else if (TEMPORAL === textDef.type) {
         return {
           signal: timeFormatExpression(field(textDef, {datum: true}), textDef.timeUnit, config.text.format, config.text.shortTimeLabels, config)
         };
       } else {
-        return { field: textDef.field };
+        return {field: textDef.field};
       }
     } else if (textDef.value) {
-      return { value: textDef.value };
+      return {value: textDef.value};
     }
   }
   return {value: config.text.text};

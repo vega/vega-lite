@@ -178,7 +178,7 @@ describe('compile/scale', () => {
           });
           const _domain = domain(model.scale('y'), model, 'y');
 
-          assert.deepEqual(_domain, { data: 'source', field: 'month_origin', sort: {field: 'month_origin', op: 'min',} });
+          assert.deepEqual(_domain, {data: 'source', field: 'month_origin', sort: {field: 'month_origin', op: 'min',}});
         });
 
         it('should return the correct domain for yearmonth T',

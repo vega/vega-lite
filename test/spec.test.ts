@@ -198,8 +198,8 @@ describe('normalize()', function () {
       "mark": "rule",
       "encoding": {
         "y2": {"field": "age","type": "ordinal"},
-        "x": { "aggregate": "min", "field": "people", "type": "quantitative" },
-        "x2": { "aggregate": "max", "field": "people", "type": "quantitative" }
+        "x": {"aggregate": "min", "field": "people", "type": "quantitative"},
+        "x2": {"aggregate": "max", "field": "people", "type": "quantitative"}
       }
     };
 
@@ -208,8 +208,8 @@ describe('normalize()', function () {
       "mark": "rule",
       "encoding": {
         "y": {"field": "age","type": "ordinal"},
-        "x": { "aggregate": "min", "field": "people", "type": "quantitative" },
-        "x2": { "aggregate": "max", "field": "people", "type": "quantitative" }
+        "x": {"aggregate": "min", "field": "people", "type": "quantitative"},
+        "x2": {"aggregate": "max", "field": "people", "type": "quantitative"}
       }
     });
   });
@@ -220,8 +220,8 @@ describe('normalize()', function () {
       "mark": "rule",
       "encoding": {
         "x2": {"field": "age","type": "ordinal"},
-        "y": { "aggregate": "min", "field": "people", "type": "quantitative" },
-        "y2": { "aggregate": "max", "field": "people", "type": "quantitative" }
+        "y": {"aggregate": "min", "field": "people", "type": "quantitative"},
+        "y2": {"aggregate": "max", "field": "people", "type": "quantitative"}
       }
     };
 
@@ -230,8 +230,8 @@ describe('normalize()', function () {
       "mark": "rule",
       "encoding": {
         "x": {"field": "age","type": "ordinal"},
-        "y": { "aggregate": "min", "field": "people", "type": "quantitative" },
-        "y2": { "aggregate": "max", "field": "people", "type": "quantitative" }
+        "y": {"aggregate": "min", "field": "people", "type": "quantitative"},
+        "y2": {"aggregate": "max", "field": "people", "type": "quantitative"}
       }
     });
   });

@@ -141,11 +141,11 @@ describe('Mark: Text', function() {
     const props = text.encodeEntry(model);
 
     it('should fit cell on x', function() {
-      assert.deepEqual(props.x, { field: { group: 'width' }, offset: -5 });
+      assert.deepEqual(props.x, {field: {group: 'width'}, offset: -5});
     });
 
     it('should center on y', function() {
-      assert.deepEqual(props.y, { value: 10.5 });
+      assert.deepEqual(props.y, {value: 10.5});
     });
 
     it('should map text to expression', function() {

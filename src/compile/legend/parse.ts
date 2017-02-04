@@ -25,13 +25,13 @@ function getLegendDefWithScale(model: UnitModel, channel: Channel): VgLegend {
   switch (channel) {
     case COLOR:
       const scale = model.scaleName(COLOR) + suffix;
-      return model.config().mark.filled ? { fill: scale } : { stroke: scale };
+      return model.config().mark.filled ? {fill: scale } : { stroke: scale};
     case SIZE:
-      return { size: model.scaleName(SIZE) + suffix };
+      return {size: model.scaleName(SIZE) + suffix};
     case SHAPE:
-      return { shape: model.scaleName(SHAPE) + suffix };
+      return {shape: model.scaleName(SHAPE) + suffix};
     case OPACITY:
-      return { opacity: model.scaleName(OPACITY) + suffix };
+      return {opacity: model.scaleName(OPACITY) + suffix};
   }
   return null;
 }

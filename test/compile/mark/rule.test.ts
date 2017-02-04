@@ -32,8 +32,8 @@ describe('Mark: Rule', function() {
 
     it('should create horizontal rule that fits height', function() {
       assert.deepEqual(props.y, {scale: Y, field: 'a'});
-      assert.deepEqual(props.x, { value: 0 });
-      assert.deepEqual(props.x2, { field: { group: 'width' } });
+      assert.deepEqual(props.x, {value: 0});
+      assert.deepEqual(props.x2, {field: {group: 'width'}});
     });
   });
 
@@ -51,7 +51,7 @@ describe('Mark: Rule', function() {
     it('should create horizontal rule on the axis', function() {
       assert.deepEqual(props.x, {scale: X, field: 'a'});
       assert.deepEqual(props.x2, {scale: X, field: 'a2'});
-      assert.deepEqual(props.y, { field: { group: 'height' } });
+      assert.deepEqual(props.y, {field: {group: 'height'}});
     });
   });
 

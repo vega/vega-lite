@@ -75,7 +75,7 @@ if (d3.select('.gallery').empty() === false) {
 
 function renderGallery() {
   d3.json(window.location.origin + BASEURL + '/examples/vl-examples.json', function(error, VL_SPECS) {
-    if (error) { return console.warn(error); }
+    if (error) {return console.warn(error);}
 
     d3.selectAll('div.gallery').each(function(this: Element) {
       d3.select(this).call(renderGalleryGroup);
@@ -105,7 +105,7 @@ function renderGallery() {
 
       imageGroup.append('div')
         .attr('class', 'image')
-        .style('background-image', function(d) { return 'url(' + window.location.origin + BASEURL + '/examples/images/' + d.name + '.svg)'; })
+        .style('background-image', function(d) {return 'url(' + window.location.origin + BASEURL + '/examples/images/' + d.name + '.svg)';})
         .style('background-size', function(d) {
           const bgSizeDefault = 'cover';
           if (!d.galleryParameters || !d.galleryParameters.backgroundSize) {
