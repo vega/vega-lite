@@ -1,0 +1,26 @@
+"use strict";
+exports.axis = require("./axis");
+exports.aggregate = require("./aggregate");
+exports.bin = require("./bin");
+exports.channel = require("./channel");
+var compile_1 = require("./compile/compile");
+exports.compile = compile_1.compile;
+exports.config = require("./config");
+exports.data = require("./data");
+exports.datetime = require("./datetime");
+exports.encoding = require("./encoding");
+exports.facet = require("./facet");
+exports.fieldDef = require("./fielddef");
+exports.legend = require("./legend");
+exports.mark = require("./mark");
+exports.scale = require("./scale");
+exports.sort = require("./sort");
+exports.spec = require("./spec");
+exports.stack = require("./stack");
+exports.timeUnit = require("./timeunit");
+exports.transform = require("./transform");
+exports.type = require("./type");
+exports.util = require("./util");
+exports.validate = require("./validate");
+exports.version = require('../package.json').version;
+//# sourceMappingURL=vl.js.map

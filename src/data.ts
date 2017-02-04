@@ -40,7 +40,7 @@ export interface DataFormat {
 
 export type DataFormatType = 'json' | 'csv' | 'tsv' | 'topojson';
 
-export type Data = UrlData | InlineData;
+export type Data = UrlData | InlineData | InternalData;
 
 export interface UrlData {
   /**
@@ -62,12 +62,23 @@ export interface InlineData {
   values: any[];
 }
 
+export interface InternalData {
+  /**
+   * Reference to an internal mark's name (reactive geometry)
+   */
+  ref: string;
+}
+
 export function isUrlData(data: Data): data is UrlData {
   return !!data['url'];
 }
 
 export function isInlineData(data: Data): data is InlineData {
   return !!data['values'];
+}
+
+export function isInternalData(data: Data): data is InternalData {
+  return !!data['ref'];
 }
 
 export type DataSourceType = 'source' | 'summary' | 'stacked' | 'layout';

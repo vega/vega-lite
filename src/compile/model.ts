@@ -7,19 +7,19 @@ import {Data, DataSourceType} from '../data';
 import {reduce, forEach} from '../encoding';
 import {FieldDef, FieldRefOption, field, isFieldDef, ChannelDef} from '../fielddef';
 import {Legend} from '../legend';
+import {OneOfFilter, EqualFilter, RangeFilter} from '../filter';
 import {Scale, hasDiscreteDomain} from '../scale';
 import {SortField, SortOrder} from '../sort';
+import {StackProperties} from '../stack';
 import {BaseSpec, Padding} from '../spec';
 import {Transform} from '../transform';
 import {extend, flatten, vals, Dict} from '../util';
 import {VgData, VgEncodeEntry, VgScale, VgAxis, VgLegend} from '../vega.schema';
 import {Formula} from '../transform';
-import {OneOfFilter, EqualFilter, RangeFilter} from '../filter';
 
 import {DataComponent} from './data/data';
 import {LayoutComponent} from './layout';
 import {ScaleComponents, BIN_LEGEND_SUFFIX, BIN_LEGEND_LABEL_SUFFIX} from './scale/scale';
-import {StackProperties} from '../stack';
 
 import {SelectionComponent} from './selection/selection';
 
@@ -84,7 +84,7 @@ export interface NameMapInterface {
 
 export abstract class Model {
   public readonly parent: Model;
-  protected readonly name: string;
+  public readonly name: string;
   public readonly description: string;
   public readonly padding: Padding;
 
@@ -270,8 +270,12 @@ export abstract class Model {
 
   public abstract channelHasField(channel: Channel): boolean;
 
-  public getName(text: string, delimiter: string = '_') {
-    return (this.name ? this.name + delimiter : '') + text;
+  public getName(text?: string, delimiter: string = '_') {
+    if (text) {
+      return (this.name ? this.name + delimiter : '') + text;
+    } else {
+      return this.name;
+    }
   }
 
   public renameData(oldName: string, newName: string) {
