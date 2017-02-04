@@ -98,8 +98,8 @@ export function bandPosition(channel: 'x'|'y', model: UnitModel) {
   };
 }
 
-export function centeredBandPosition(channel: 'x' | 'y', model: UnitModel, defaultPosRef: VgValueRef, defaultSizeRef: VgValueRef) {
-  const centerChannel: 'xc' | 'yc' = channel === 'x' ? 'xc' : 'yc';
+export function centeredBandPosition(channel: 'x'|'y', model: UnitModel, defaultPosRef: VgValueRef, defaultSizeRef: VgValueRef) {
+  const centerChannel: 'xc'|'yc' = channel === 'x' ? 'xc' : 'yc';
   const sizeChannel = channel === 'x' ? 'width' : 'height';
   return {
     ...pointPosition(channel, model, defaultPosRef, centerChannel),
@@ -126,7 +126,7 @@ export function binnedPosition(channel: 'x'|'y', model: UnitModel, spacing: numb
 /**
  * Return mixins for point (non-band) position channels.
  */
-export function pointPosition(channel: 'x'|'y', model: UnitModel, defaultRef: VgValueRef | 'zeroOrMin' | 'zeroOrMax', vgChannel?: 'x'|'y'|'xc'|'yc') {
+export function pointPosition(channel: 'x'|'y', model: UnitModel, defaultRef: VgValueRef|'zeroOrMin'|'zeroOrMax', vgChannel?: 'x'|'y'|'xc'|'yc') {
   // TODO: refactor how refer to scale as discussed in https://github.com/vega/vega-lite/pull/1613
 
   const {encoding, stack} = model;
@@ -141,7 +141,7 @@ export function pointPosition(channel: 'x'|'y', model: UnitModel, defaultRef: Vg
  * Return mixins for x2, y2.
  * If channel is not specified, return one channel based on orientation.
  */
-export function pointPosition2(model: UnitModel, defaultRef: 'zeroOrMin' | 'zeroOrMax', channel?: 'x2' | 'y2') {
+export function pointPosition2(model: UnitModel, defaultRef: 'zeroOrMin'|'zeroOrMax', channel?: 'x2'|'y2') {
   const {encoding, markDef, stack} = model;
   channel = channel || (markDef.orient === 'horizontal' ? 'x2' : 'y2');
   const baseChannel = channel === 'x2' ? 'x' : 'y';

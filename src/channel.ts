@@ -2,7 +2,6 @@
  * Constants and utilities for encoding channels (Visual variables)
  * such as 'x', 'y', 'color'.
  */
-
 import {Encoding} from './encoding';
 import {Facet} from './facet';
 import {Mark} from './mark';
@@ -31,6 +30,8 @@ export namespace Channel {
   export const TEXT: 'text' = 'text';
   export const ORDER: 'order' = 'order';
   export const DETAIL: 'detail' = 'detail';
+  export const OFFSET: 'offset' = 'offset';
+  export const ANCHOR: 'anchor' = 'anchor';
 }
 
 export type Channel = keyof Encoding | keyof Facet;
@@ -46,14 +47,15 @@ export const SIZE = Channel.SIZE;
 export const COLOR = Channel.COLOR;
 export const TEXT = Channel.TEXT;
 export const DETAIL = Channel.DETAIL;
+export const ANCHOR = Channel.ANCHOR;
+export const OFFSET = Channel.OFFSET;
 export const ORDER = Channel.ORDER;
 export const OPACITY = Channel.OPACITY;
 
-
-export const CHANNELS = [X, Y, X2, Y2, ROW, COLUMN, SIZE, SHAPE, COLOR, ORDER, OPACITY, TEXT, DETAIL];
+export const CHANNELS = [X, Y, X2, Y2, ROW, COLUMN, SIZE, SHAPE, COLOR, ORDER, OPACITY, OFFSET, ANCHOR, TEXT, DETAIL];
 
 // CHANNELS without COLUMN, ROW
-export const UNIT_CHANNELS = [X, Y, X2, Y2, SIZE, SHAPE, COLOR, ORDER, OPACITY, TEXT, DETAIL];
+export const UNIT_CHANNELS = [X, Y, X2, Y2, SIZE, SHAPE, COLOR, ORDER, OPACITY, OFFSET, ANCHOR, TEXT, DETAIL];
 
 // UNIT_CHANNELS without X2, Y2, ORDER, DETAIL, TEXT
 export const UNIT_SCALE_CHANNELS = [X, Y, SIZE, SHAPE, COLOR, OPACITY];
@@ -62,12 +64,14 @@ export const UNIT_SCALE_CHANNELS = [X, Y, SIZE, SHAPE, COLOR, OPACITY];
 export const SCALE_CHANNELS = [X, Y, SIZE, SHAPE, COLOR, OPACITY, ROW, COLUMN];
 
 // UNIT_CHANNELS without X, Y, X2, Y2;
+// FIXME: does ANCHOR and OFFSET belong here
 export const NONSPATIAL_CHANNELS = [SIZE, SHAPE, COLOR, ORDER, OPACITY, TEXT, DETAIL];
 
 // UNIT_SCALE_CHANNELS without X, Y;
 export const NONSPATIAL_SCALE_CHANNELS = [SIZE, SHAPE, COLOR, OPACITY];
 
 /** Channels that can serve as groupings for stacked charts. */
+// FIXME: does ANCHOR and OFFSET belong here
 export const STACK_GROUP_CHANNELS = [COLOR, DETAIL, ORDER, OPACITY, SIZE];
 
 export interface SupportedMark {
@@ -81,6 +85,7 @@ export interface SupportedMark {
   line?: boolean;
   area?: boolean;
   text?: boolean;
+  label?: boolean;
 };
 
 /**
@@ -110,7 +115,7 @@ export function getSupportedMark(channel: Channel): SupportedMark {
     case COLUMN:
       return { // all marks
         point: true, tick: true, rule: true, circle: true, square: true,
-        bar: true, rect: true, line: true, area: true, text: true
+        bar: true, rect: true, line: true, area: true, label: true, text: true
       };
     case X2:
     case Y2:
@@ -120,12 +125,15 @@ export function getSupportedMark(channel: Channel): SupportedMark {
     case SIZE:
       return {
         point: true, tick: true, rule: true, circle: true, square: true,
-        bar: true, text: true, line: true
+        bar: true, text: true, line: true, label: true
       };
     case SHAPE:
       return {point: true};
     case TEXT:
-      return {text: true};
+      return {text: true, label: true};
+    case ANCHOR:
+    case OFFSET:
+      return {label: true};
   }
   return {};
 }
@@ -153,12 +161,14 @@ export function getSupportedRole(channel: Channel): SupportedRole {
         dimension: true
       };
     case ROW:
+    case ANCHOR:
     case COLUMN:
     case SHAPE:
       return {
         measure: false,
         dimension: true
       };
+    case OFFSET:
     case X2:
     case Y2:
     case SIZE:
@@ -172,7 +182,7 @@ export function getSupportedRole(channel: Channel): SupportedRole {
 }
 
 export function hasScale(channel: Channel) {
-  return !contains([DETAIL, TEXT, ORDER], channel);
+  return contains(SCALE_CHANNELS, channel);
 }
 
 // Position does not work with ordinal (lookup) scale and sequential (which is only for color)
@@ -219,11 +229,13 @@ export function getRangeType(channel: Channel): RangeType {
     // No scale, no range type.
     case X2:
     case Y2:
+    case ANCHOR:
+    case OFFSET:
     case DETAIL:
     case TEXT:
     case ORDER:
       return undefined;
   }
   /* istanbul ignore next: should never reach here. */
-  throw new Error('getSupportedRole not implemented for ' + channel);
+  throw new Error('getRangeType not implemented for ' + channel);
 }

@@ -5,11 +5,18 @@ import {isArray} from './util';
 export interface VgData {
   name: string;
   source?: string;
-  values?: any;
-  format?: any;
-  url?: any;
   transform?: any;
-}
+
+  // InlineData
+  values?: any;
+
+  // URLData
+  url?: any;
+  format?: any;
+
+  // InternalData
+  ref?: string;
+};
 
 export type VgParentRef = {
   parent: string
@@ -92,21 +99,21 @@ export function isDataRefUnionedDomain(domain: VgDomain): domain is DataRefUnion
     return 'fields' in domain && !('data' in domain);
   }
   return false;
-}
+};
 
 export function isFieldRefUnionDomain(domain: VgDomain): domain is FieldRefUnionDomain {
   if (!isArray(domain)) {
     return 'fields' in domain && 'data' in domain;
   }
   return false;
-}
+};
 
 export function isDataRefDomain(domain: VgDomain): domain is VgDataRef {
   if (!isArray(domain)) {
     return !('fields' in domain);
   }
   return false;
-}
+};
 
 export type VgEncodeEntry = any;
 // TODO: make export interface VgEncodeEntry {
@@ -126,19 +133,28 @@ export interface VgBinTransform {
   as: string;
   extent?: {signal: string};
   // TODO: add other properties
-}
+};
 
 export interface VgExtentTransform {
   type: 'extent';
   field: string;
   signal: string;
-}
+};
 
 export interface VgFormulaTransform {
   type: 'formula';
   as: string;
   expr: string;
-}
+};
+
+export interface VgLabelTransform {
+  type: 'labels';
+  ref: string;
+  anchor: string;
+  offset: number | string;
+};
+
+export type VgLayoutTransform = VgLabelTransform; /* TODO add other layouts */
 
 export interface VgAxisEncode {
   ticks?: VgGuideEncode;
@@ -146,7 +162,7 @@ export interface VgAxisEncode {
   title?: VgGuideEncode;
   grid?: VgGuideEncode;
   domain?: VgGuideEncode;
-}
+};
 
 export interface VgLegendEncode {
   title?: VgGuideEncode;
@@ -154,11 +170,11 @@ export interface VgLegendEncode {
   legend?: VgGuideEncode;
   symbols?: VgGuideEncode;
   gradient?: VgGuideEncode;
-}
+};
 
 export type VgGuideEncode = any; // TODO: replace this (See guideEncode in Vega Schema)
 
-export type VgTransform = VgBinTransform | VgExtentTransform | VgFormulaTransform | any;
+export type VgTransform = VgBinTransform | VgExtentTransform | VgFormulaTransform | VgLayoutTransform | any;
 
 export interface VgStackTransform {
   type: 'stack';
@@ -167,7 +183,7 @@ export interface VgStackTransform {
   field: string;
   sort: VgSort;
   as: string[];
-}
+};
 
 export type VgSort = {
   field: string;

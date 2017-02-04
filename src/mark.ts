@@ -8,6 +8,7 @@ export namespace Mark {
   export const RECT: 'rect' = 'rect';
   export const RULE: 'rule' = 'rule';
   export const TEXT: 'text' = 'text';
+  export const LABEL: 'label' = 'label';
   export const TICK: 'tick' = 'tick';
   export const CIRCLE: 'circle' = 'circle';
   export const SQUARE: 'square' = 'square';
@@ -16,7 +17,7 @@ export namespace Mark {
 /**
  * All types of primitive marks.
  */
-export type Mark = typeof Mark.AREA | typeof Mark.BAR | typeof Mark.LINE | typeof Mark.POINT | typeof Mark.TEXT | typeof Mark.TICK | typeof Mark.RECT | typeof Mark.RULE | typeof Mark.CIRCLE | typeof Mark.SQUARE;
+export type Mark = typeof Mark.AREA | typeof Mark.BAR | typeof Mark.LINE | typeof Mark.POINT | typeof Mark.TEXT | typeof Mark.LABEL | typeof Mark.TICK | typeof Mark.RECT | typeof Mark.RULE | typeof Mark.CIRCLE | typeof Mark.SQUARE;
 
 
 export const AREA = Mark.AREA;
@@ -24,6 +25,7 @@ export const BAR = Mark.BAR;
 export const LINE = Mark.LINE;
 export const POINT = Mark.POINT;
 export const TEXT = Mark.TEXT;
+export const LABEL = Mark.LABEL;
 export const TICK = Mark.TICK;
 export const RECT = Mark.RECT;
 export const RULE = Mark.RULE;
@@ -31,13 +33,13 @@ export const RULE = Mark.RULE;
 export const CIRCLE = Mark.CIRCLE;
 export const SQUARE = Mark.SQUARE;
 
-export const PRIMITIVE_MARKS = [AREA, BAR, LINE, POINT, TEXT, TICK, RECT, RULE, CIRCLE, SQUARE];
+export const PRIMITIVE_MARKS = [AREA, BAR, LINE, POINT, LABEL, TEXT, TICK, RECT, RULE, CIRCLE, SQUARE];
 
 export interface MarkDef {
   /**
    * The mark type.
    * One of `"bar"`, `"circle"`, `"square"`, `"tick"`, `"line"`,
-   * `"area"`, `"point"`, `"rule"`, and `"text"`.
+   * `"area"`, `"point"`, `"rule"`, `"label"`, and `"text"`.
    */
   type: Mark;
 
@@ -439,6 +441,16 @@ export interface TextConfig extends MarkConfig {
 }
 
 export const defaultTextConfig: TextConfig = {
+  minFontSize: 8,
+  maxFontSize: 40,
+  baseline: 'middle',
+  text: 'Abc'
+};
+
+export interface LabelConfig extends TextConfig {}
+
+export const defaultLabelConfig: LabelConfig = {
+  fontSize: 10,
   minFontSize: 8,
   maxFontSize: 40,
   baseline: 'middle',
