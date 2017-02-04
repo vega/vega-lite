@@ -1,12 +1,12 @@
-import {X, Y, SHAPE, SIZE} from '../../channel';
 import {LegendFieldDef} from '../../fielddef';
-import {SymbolConfig, PointConfig} from '../../mark';
 import {Scale} from '../../scale';
+import {SymbolConfig, PointConfig} from '../../mark';
 import {VgEncodeEntry, VgValueRef} from '../../vega.schema';
+import {X, Y, SHAPE, SIZE} from '../../channel';
 
-import {applyColorAndOpacity} from './common';
 import {UnitModel} from '../unit';
 
+import {applyColorAndOpacity} from './common';
 import {MarkCompiler} from './base';
 import * as ref from './valueref';
 

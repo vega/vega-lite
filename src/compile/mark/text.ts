@@ -49,7 +49,7 @@ function xDefault(config: Config, textDef: ChannelDef): VgValueRef {
   return {value: config.scale.textXRangeStep / 2};
 }
 
-function textRef(textDef: TextFieldDef | ValueDef<any>, config: Config): VgValueRef {
+export function textRef(textDef: TextFieldDef | ValueDef<any>, config: Config): VgValueRef {
   // text
   if (textDef) {
     if (isFieldDef(textDef)) {

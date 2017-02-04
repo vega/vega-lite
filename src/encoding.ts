@@ -70,6 +70,16 @@ export interface Encoding {
   text?: TextFieldDef | ValueDef<string|number>;
 
   /**
+   * Anchor position of the `label` mark.
+   */
+  anchor?: FieldDef | ValueDef<string>;
+
+  /**
+   * Offset of the `label` mark from the mark its labeling.
+   */
+  offset?: FieldDef | ValueDef<number|string>;
+
+  /**
    * stack order for stacked marks or order of data points in line marks.
    */
   order?: OrderFieldDef | OrderFieldDef[];

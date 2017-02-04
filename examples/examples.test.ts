@@ -31,8 +31,13 @@ function validateVL(spec: vl.spec.ExtendedSpec) {
 function validateVega(spec: vl.spec.ExtendedSpec) {
   const vegaSpec = vl.compile(spec).spec;
 
+  if (spec.description === 'A simple bar chart with embedded data.') {
+    console.log(inspect(vegaSpec));
+  }
+
   const valid = validateVg(vegaSpec);
   const errors = validateVg.errors;
+
   if (!valid) {
     console.log(inspect(errors, {depth: 10, colors: true}));
   }
