@@ -70,9 +70,9 @@ export default function domain(scale: Scale, model: Model, channel:Channel): any
       // This is useful for both axis-based scale (x, y, column, and row) and legend-based scale (other channels).
       return {
         data: model.dataTable(),
-        field: model.field(channel, { binSuffix: 'range' }),
+        field: model.field(channel, {binSuffix: 'range'}),
         sort: {
-          field: model.field(channel, { binSuffix: 'start' }),
+          field: model.field(channel, {binSuffix: 'start'}),
           op: 'min' // min or max doesn't matter since same _range would have the same _start
         }
       };
@@ -82,15 +82,15 @@ export default function domain(scale: Scale, model: Model, channel:Channel): any
         return {
           data: model.dataTable(),
           fields: [
-            model.field(channel, { binSuffix: 'start' }),
-            model.field(channel, { binSuffix: 'end' })
+            model.field(channel, {binSuffix: 'start'}),
+            model.field(channel, {binSuffix: 'end'})
           ]
         };
       } else {
         // TODO: use bin_mid
         return {
           data: model.dataTable(),
-          field: model.field(channel, { binSuffix: 'start' })
+          field: model.field(channel, {binSuffix: 'start'})
         };
       }
     }
@@ -221,7 +221,7 @@ export function unionDomains(domain1: VgDomain, domain2: VgDomain): VgDomain {
       };
     }
 
-    return { fields: domains, sort: true };
+    return {fields: domains, sort: true};
   } else {
     return domains[0];
   }

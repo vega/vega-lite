@@ -132,7 +132,7 @@ function parseBinLegendLabel(channel: Channel, model: Model, fieldDef: FieldDef)
       data: model.dataTable(),
       field: field(fieldDef, {binSuffix: 'range'}),
       sort: {
-        field: model.field(channel, { binSuffix: 'start' }),
+        field: model.field(channel, {binSuffix: 'start'}),
         op: 'min' // min or max doesn't matter since same _range would have the same _start
       }
     }

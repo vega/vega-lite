@@ -21,7 +21,7 @@ function validateVL(spec: vl.spec.ExtendedSpec) {
   const valid = validateVl(spec);
   const errors = validateVl.errors;
   if (!valid) {
-    console.log(inspect(errors, { depth: 10, colors: true }));
+    console.log(inspect(errors, {depth: 10, colors: true}));
   }
   assert(valid, errors && errors.map((err: Ajv.ErrorObject) => err.message).join(', '));
 }
@@ -32,7 +32,7 @@ function validateVega(spec: vl.spec.ExtendedSpec) {
   const valid = validateVg(vegaSpec);
   const errors = validateVg.errors;
   if (!valid) {
-    console.log(inspect(errors, { depth: 10, colors: true }));
+    console.log(inspect(errors, {depth: 10, colors: true}));
   }
   assert(valid, errors && errors.map((err: Ajv.ErrorObject) => err.message).join(', '));
 }
@@ -41,7 +41,7 @@ describe('Examples', function() {
   const examples = fs.readdirSync('examples/specs');
 
   examples.forEach(function(example: string) {
-    if (path.extname(example) !== '.json') { return; }
+    if (path.extname(example) !== '.json') {return;}
     const jsonSpec = JSON.parse(fs.readFileSync('examples/specs/' + example));
 
     describe(example, function() {

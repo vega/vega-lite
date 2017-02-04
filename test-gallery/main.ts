@@ -18,9 +18,9 @@ d3.json('examples/all-examples.json', function(examples: string[]) {
       .enter()
       .append('div')
       .attr('class', 'viz')
-      .attr('id', function(d:string) { return d; });
+      .attr('id', function(d:string) {return d;});
 
-    vizEnter.append('h3').text(function(d:string) { return d; });
+    vizEnter.append('h3').text(function(d:string) {return d;});
     vizEnter.append('div').attr('class', 'desc');
     vizEnter.append('div').attr('class', 'view');
 

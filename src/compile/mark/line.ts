@@ -24,7 +24,7 @@ export const line: MarkCompiler = {
     e.y = ref.stackable(Y, model.encoding().y, model.scaleName(Y), model.scale(Y), stack, 'base');
 
     const _size = size(model.encoding().size, config);
-    if (_size) { e.strokeWidth = _size; }
+    if (_size) {e.strokeWidth = _size;}
 
     applyColorAndOpacity(e, model);
     applyMarkConfig(e, model, ['interpolate', 'tension']);
@@ -41,6 +41,6 @@ function size(sizeDef: ChannelDef, config: Config) {
   }
   // FIXME: We should not need this line since this should be taken care by applyColorAndOpacity
   // but we have to refactor \ first
-  return { value: config.mark.strokeWidth };
+  return {value: config.mark.strokeWidth};
 }
 

@@ -80,8 +80,8 @@ export function topLevelBasicProperties(model: Model) {
     // TODO: Add other top-level basic properties (#1778)
     {padding: model.padding() || config.padding},
     {autosize: 'pad'},
-    config.viewport ? { viewport: config.viewport } : {},
-    config.background ? { background: config.background } : {}
+    config.viewport ? {viewport: config.viewport} : {},
+    config.background ? {background: config.background} : {}
   );
 }
 

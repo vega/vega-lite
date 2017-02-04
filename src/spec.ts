@@ -192,26 +192,26 @@ export function normalizeExtendedUnitSpec(spec: ExtendedUnitSpec): Spec {
     delete encoding.row;
 
     return extend(
-      spec.name ? { name: spec.name } : {},
-      spec.description ? { description: spec.description } : {},
-      { data: spec.data },
-      spec.transform ? { transform: spec.transform } : {},
+      spec.name ? {name: spec.name} : {},
+      spec.description ? {description: spec.description} : {},
+      {data: spec.data},
+      spec.transform ? {transform: spec.transform} : {},
       {
         facet: extend(
-          hasRow ? { row: spec.encoding.row } : {},
-          hasColumn ? { column: spec.encoding.column } : {}
+          hasRow ? {row: spec.encoding.row} : {},
+          hasColumn ? {column: spec.encoding.column} : {}
         ),
         spec: normalizeUnitSpec(extend(
-          spec.width ? { width: spec.width } : {},
-          spec.height ? { height: spec.height } : {},
+          spec.width ? {width: spec.width} : {},
+          spec.height ? {height: spec.height} : {},
           {
             mark: spec.mark,
             encoding: encoding
           },
-          spec.config ? { config: spec.config } : {}
+          spec.config ? {config: spec.config} : {}
         ))
       },
-      spec.config ? { config: spec.config } : {}
+      spec.config ? {config: spec.config} : {}
     );
 }
 
@@ -324,7 +324,7 @@ export function normalizeOverlay(spec: UnitSpec, overlayWithPoint: boolean, over
   const layerSpec = {
     ...pick(spec, outerProps),
     layer: [baseSpec],
-    ...(keys(baseConfig).length > 0 ? { config: baseConfig } : {})
+    ...(keys(baseConfig).length > 0 ? {config: baseConfig} : {})
   };
 
   if (overlayWithLine) {

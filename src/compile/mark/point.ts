@@ -34,7 +34,7 @@ function encodeEntry(model: UnitModel, fixedShape?: string) {
 function shape(shapeDef: LegendFieldDef, scaleName: string, scale: Scale, pointConfig: PointConfig, fixedShape?: string): VgValueRef {
   // shape
   if (fixedShape) { // square and circle marks
-    return { value: fixedShape };
+    return {value: fixedShape};
   }
   return ref.midPoint(SHAPE, shapeDef, scaleName, scale, {value: pointConfig.shape});
 }

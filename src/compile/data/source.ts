@@ -20,10 +20,10 @@ export namespace source {
     if (data) {
       // If data is explicitly provided
 
-      let sourceData: VgData = { name: model.dataName(SOURCE) };
+      let sourceData: VgData = {name: model.dataName(SOURCE)};
       if (isInlineData(data)) {
         sourceData.values = data.values;
-        sourceData.format = { type: 'json' };
+        sourceData.format = {type: 'json'};
       } else if (isUrlData(data)) {
         sourceData.url = data.url;
 
@@ -39,13 +39,13 @@ export namespace source {
         const formatType: DataFormat = dataFormat.type || data['formatType'];
         sourceData.format =
           extend(
-            { type: formatType ? formatType : defaultExtension },
-            dataFormat.property ? { property: dataFormat.property } : {},
+            {type: formatType ? formatType : defaultExtension},
+            dataFormat.property ? {property: dataFormat.property} : {},
             // Feature and mesh are two mutually exclusive properties
             dataFormat.feature ?
-              { feature : dataFormat.feature } :
+              {feature : dataFormat.feature} :
             dataFormat.mesh ?
-              { mesh : dataFormat.mesh } :
+              {mesh : dataFormat.mesh} :
               {}
           );
       }
@@ -54,7 +54,7 @@ export namespace source {
     } else if (!model.parent()) {
       // If data is not explicitly provided but the model is a root,
       // need to produce a source as well
-      return { name: model.dataName(SOURCE) };
+      return {name: model.dataName(SOURCE)};
     }
     return undefined;
   }

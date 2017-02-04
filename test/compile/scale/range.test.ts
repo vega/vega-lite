@@ -168,7 +168,7 @@ describe('compile/scale', () => {
       it('should use the specified scheme with extent for a nominal color field.', () => {
         assert.deepEqual(
           rangeMixins('color', 'ordinal', NOMINAL, {scheme: {name: 'warm', extent: [0.2, 1]}}, defaultConfig, undefined, 'point', undefined, []),
-          {scheme: { name: 'warm', extent: [0.2, 1] }}
+          {scheme: {name: 'warm', extent: [0.2, 1]}}
         );
       });
 

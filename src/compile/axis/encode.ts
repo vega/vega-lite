@@ -12,10 +12,10 @@ export function domain(model: Model, channel: Channel, domainPropsSpec: any, _?:
 
   return extend(
     axis.axisColor !== undefined ?
-      { stroke: {value: axis.axisColor} } :
+      {stroke: {value: axis.axisColor}} :
       {},
     axis.axisWidth !== undefined ?
-      { strokeWidth: {value: axis.axisWidth} } :
+      {strokeWidth: {value: axis.axisWidth}} :
       {},
     domainPropsSpec || {}
   );

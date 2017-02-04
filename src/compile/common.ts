@@ -38,7 +38,7 @@ export function applyConfig(e: VgEncodeEntry,
   propsList.forEach(function(property) {
     const value = config[property];
     if (value !== undefined) {
-      e[property] = { value: value };
+      e[property] = {value: value};
     }
   });
   return e;

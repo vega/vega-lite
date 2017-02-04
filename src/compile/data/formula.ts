@@ -44,7 +44,7 @@ export const formula: DataComponentCompiler<Dict<Formula>> = {
 
   assemble: function(component: Dict<Formula>) {
     return vals(component).reduce(function(transform: any, f: any) {
-      transform.push(extend({ type: 'formula' }, f));
+      transform.push(extend({type: 'formula'}, f));
       return transform;
     }, []);
   }

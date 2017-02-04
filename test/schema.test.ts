@@ -18,7 +18,7 @@ describe('Schema', function() {
     const valid = ajv.validateSchema(specSchema);
 
     if (!valid) {
-      console.log(inspect(ajv.errors, { depth: 10, colors: true }));
+      console.log(inspect(ajv.errors, {depth: 10, colors: true}));
     }
     assert.equal(valid, true);
   });

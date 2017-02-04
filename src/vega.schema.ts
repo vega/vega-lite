@@ -28,7 +28,7 @@ export type VgDataRef = {
   sort?: VgSortField
 };
 
-// TODO: add type of value (Make it VgValueRef<T> { value?:T ... })
+// TODO: add type of value (Make it VgValueRef<T> {value?:T ...})
 export type VgValueRef = {
   value?: number | string | boolean,
   field?: string | {
