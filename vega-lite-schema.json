@@ -2,13 +2,13 @@
     "$schema": "http://json-schema.org/draft-04/schema#",
     "anyOf": [
         {
-            "$ref": "#/definitions/GenericUnitSpec<EncodingWithFacet>"
+            "$ref": "#/definitions/GenericUnitSpec<AnyMark, EncodingWithFacet>"
         },
         {
-            "$ref": "#/definitions/GenericFacetSpec<EncodingWithFacet>"
+            "$ref": "#/definitions/GenericFacetSpec<AnyMark, EncodingWithFacet>"
         },
         {
-            "$ref": "#/definitions/GenericLayerSpec<EncodingWithFacet>"
+            "$ref": "#/definitions/GenericLayerSpec<AnyMark, EncodingWithFacet>"
         }
     ],
     "definitions": {
@@ -1303,7 +1303,7 @@
             ],
             "type": "object"
         },
-        "GenericFacetSpec<EncodingWithFacet>": {
+        "GenericFacetSpec<AnyMark, EncodingWithFacet>": {
             "additionalProperties": false,
             "properties": {
                 "$schema": {
@@ -1367,10 +1367,10 @@
                 "spec": {
                     "anyOf": [
                         {
-                            "$ref": "#/definitions/GenericUnitSpec<EncodingWithFacet>"
+                            "$ref": "#/definitions/GenericUnitSpec<AnyMark, EncodingWithFacet>"
                         },
                         {
-                            "$ref": "#/definitions/GenericLayerSpec<EncodingWithFacet>"
+                            "$ref": "#/definitions/GenericLayerSpec<AnyMark, EncodingWithFacet>"
                         }
                     ]
                 },
@@ -1385,7 +1385,7 @@
             ],
             "type": "object"
         },
-        "GenericLayerSpec<EncodingWithFacet>": {
+        "GenericLayerSpec<AnyMark, EncodingWithFacet>": {
             "additionalProperties": false,
             "properties": {
                 "$schema": {
@@ -1420,10 +1420,10 @@
                     "items": {
                         "anyOf": [
                             {
-                                "$ref": "#/definitions/GenericUnitSpec<EncodingWithFacet>"
+                                "$ref": "#/definitions/GenericUnitSpec<AnyMark, EncodingWithFacet>"
                             },
                             {
-                                "$ref": "#/definitions/GenericLayerSpec<EncodingWithFacet>"
+                                "$ref": "#/definitions/GenericLayerSpec<AnyMark, EncodingWithFacet>"
                             }
                         ]
                     },
@@ -1473,7 +1473,23 @@
             ],
             "type": "object"
         },
-        "GenericUnitSpec<EncodingWithFacet>": {
+        "GenericUnitSpec.M": {
+            "enum": [
+                "area",
+                "bar",
+                "circle",
+                "error-bar",
+                "line",
+                "point",
+                "rect",
+                "rule",
+                "square",
+                "text",
+                "tick"
+            ],
+            "type": "string"
+        },
+        "GenericUnitSpec<AnyMark, EncodingWithFacet>": {
             "additionalProperties": false,
             "properties": {
                 "$schema": {
@@ -1508,7 +1524,7 @@
                     "type": "number"
                 },
                 "mark": {
-                    "$ref": "#/definitions/Mark",
+                    "$ref": "#/definitions/GenericUnitSpec.M",
                     "description": "The mark type.\nOne of `\"bar\"`, `\"circle\"`, `\"square\"`, `\"tick\"`, `\"line\"`,\n`\"area\"`, `\"point\"`, `\"rule\"`, and `\"text\"`."
                 },
                 "name": {
@@ -2006,22 +2022,6 @@
                 }
             },
             "type": "object"
-        },
-        "Mark": {
-            "enum": [
-                "area",
-                "bar",
-                "circle",
-                "error-bar",
-                "line",
-                "point",
-                "rect",
-                "rule",
-                "square",
-                "text",
-                "tick"
-            ],
-            "type": "string"
         },
         "MarkConfig": {
             "additionalProperties": false,

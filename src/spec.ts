@@ -5,7 +5,7 @@ import {Data} from './data';
 import {EncodingWithFacet, Encoding, channelHasField, isRanged} from './encoding';
 import {Facet} from './facet';
 import {FieldDef} from './fielddef';
-import {Mark, ERRORBAR, AREA, LINE, POINT} from './mark';
+import {Mark, AnyMark, COMPOSITE_MARKS, ERRORBAR, AREA, LINE, POINT, isCompositeMark} from './mark';
 import {stack} from './stack';
 import {Transform} from './transform';
 import {ROW, COLUMN, X, Y, X2, Y2} from './channel';
@@ -57,7 +57,7 @@ export interface BaseSpec {
   config?: Config;
 }
 
-export interface GenericUnitSpec<E extends Encoding> extends BaseSpec {
+export interface GenericUnitSpec<M, E extends Encoding> extends BaseSpec {
   // FIXME description for top-level width
   width?: number;
 
@@ -69,7 +69,7 @@ export interface GenericUnitSpec<E extends Encoding> extends BaseSpec {
    * One of `"bar"`, `"circle"`, `"square"`, `"tick"`, `"line"`,
    * `"area"`, `"point"`, `"rule"`, and `"text"`.
    */
-  mark: Mark;
+  mark: M;
 
   /**
    * A key-value mapping between encoding channels and definition of fields.
@@ -77,11 +77,12 @@ export interface GenericUnitSpec<E extends Encoding> extends BaseSpec {
   encoding: E;
 }
 
-export type UnitSpec = GenericUnitSpec<Encoding>;
+export type UnitSpec = GenericUnitSpec<Mark, Encoding>;
 
-export type FacetedUnitSpec = GenericUnitSpec<EncodingWithFacet>;
 
-export interface GenericLayerSpec<E> extends BaseSpec {
+export type FacetedUnitSpec = GenericUnitSpec<AnyMark, EncodingWithFacet>;
+
+export interface GenericLayerSpec<M, E> extends BaseSpec {
   // FIXME description for top-level width
   width?: number;
 
@@ -92,31 +93,30 @@ export interface GenericLayerSpec<E> extends BaseSpec {
    * Unit specs that will be layered.
    */
   // TODO: support layer of layer
-  layer: (GenericLayerSpec<E> | GenericUnitSpec<E>)[];
+  layer: (GenericLayerSpec<M, E> | GenericUnitSpec<M, E>)[];
 }
 
-export type LayerSpec = GenericLayerSpec<Encoding>;
+export type LayerSpec = GenericLayerSpec<Mark, Encoding>;
 
-
-export interface GenericFacetSpec<E> extends BaseSpec {
+export interface GenericFacetSpec<M, E> extends BaseSpec {
   facet: Facet;
 
   // TODO: support facet of facet
-  spec: GenericLayerSpec<E> | GenericUnitSpec<E>;
+  spec: GenericLayerSpec<M, E> | GenericUnitSpec<M, E>;
 }
 
-export type FacetSpec = GenericFacetSpec<Encoding>;
-export type ExtendedFacetSpec = GenericFacetSpec<EncodingWithFacet>;
+export type FacetSpec = GenericFacetSpec<Mark, Encoding>;
+export type ExtendedFacetSpec = GenericFacetSpec<AnyMark, EncodingWithFacet>;
 
-export type GenericSpec<E> = GenericUnitSpec<E> | GenericLayerSpec<E> | GenericFacetSpec<E>;
+export type GenericSpec<M, E> = GenericUnitSpec<M, E> | GenericLayerSpec<M, E> | GenericFacetSpec<M, E>;
 
-export type ExtendedSpec = GenericSpec<EncodingWithFacet>;
-export type Spec = GenericSpec<Encoding>;
+export type ExtendedSpec = GenericSpec<AnyMark, EncodingWithFacet>;
+export type Spec = GenericSpec<Mark, Encoding>;
 
 /* Custom type guards */
 
 
-export function isFacetSpec(spec: GenericSpec<any>): spec is GenericFacetSpec<any> {
+export function isFacetSpec(spec: GenericSpec<AnyMark,any>): spec is GenericFacetSpec<AnyMark, any> {
   return spec['facet'] !== undefined;
 }
 
@@ -135,7 +135,7 @@ export function isUnitSpec(spec: ExtendedSpec): spec is FacetedUnitSpec | UnitSp
   return spec['mark'] !== undefined;
 }
 
-export function isLayerSpec(spec: ExtendedSpec | ExtendedFacetSpec): spec is LayerSpec {
+export function isLayerSpec(spec: ExtendedSpec | Spec): spec is GenericLayerSpec<AnyMark | Mark, Encoding> {
   return spec['layer'] !== undefined;
 }
 
@@ -156,14 +156,14 @@ export function normalize(spec: ExtendedSpec | Spec): Spec {
   return normalizeNonFacetUnit(spec);
 }
 
-function normalizeNonFacet(spec: GenericLayerSpec<Encoding> | GenericUnitSpec<Encoding>) {
+function normalizeNonFacet(spec: GenericLayerSpec<AnyMark, Encoding> | GenericUnitSpec<AnyMark, Encoding>) {
   if (isLayerSpec(spec)) {
     return normalizeLayer(spec);
   }
   return normalizeNonFacetUnit(spec);
 }
 
-function normalizeFacet(spec: GenericFacetSpec<Encoding>): FacetSpec {
+function normalizeFacet(spec: GenericFacetSpec<AnyMark, Encoding>): FacetSpec {
   const {spec: subspec, ...rest} = spec;
   return {
     ...rest,
@@ -171,7 +171,7 @@ function normalizeFacet(spec: GenericFacetSpec<Encoding>): FacetSpec {
   };
 }
 
-function normalizeLayer(spec: GenericLayerSpec<Encoding>): LayerSpec {
+function normalizeLayer(spec: GenericLayerSpec<AnyMark, Encoding>): LayerSpec {
   const {layer: layer, ...rest} = spec;
   return {
     ...rest,
@@ -200,7 +200,12 @@ function normalizeFacetedUnit(spec: FacetedUnitSpec): FacetSpec {
   };
 }
 
-function normalizeNonFacetUnit(spec: UnitSpec) {
+function isNormalUnitSpec(spec: GenericUnitSpec<AnyMark, Encoding>):
+  spec is GenericUnitSpec<Mark, Encoding> {
+    return !contains(COMPOSITE_MARKS, spec.mark);
+}
+
+function normalizeNonFacetUnit(spec: GenericUnitSpec<AnyMark, Encoding>) {
   const config = spec.config;
   const overlayConfig = config && config.overlay;
   const overlayWithLine = overlayConfig  && spec.mark === AREA &&
@@ -210,18 +215,24 @@ function normalizeNonFacetUnit(spec: UnitSpec) {
     (overlayConfig.area === 'linepoint' && spec.mark === AREA)
   );
 
-  if (spec.mark === ERRORBAR) {
-    return normalizeErrorBar(spec);
-  }
-  // TODO: thoroughly test
-  if (isRanged(spec.encoding)) {
-    return normalizeRangedUnit(spec);
-  }
+  if (isNormalUnitSpec(spec)) {
+    // TODO: thoroughly test
+    if (isRanged(spec.encoding)) {
+      return normalizeRangedUnit(spec);
+    }
 
-  if (overlayWithPoint || overlayWithLine) {
-    return normalizeOverlay(spec, overlayWithPoint, overlayWithLine);
+    if (overlayWithPoint || overlayWithLine) {
+      return normalizeOverlay(spec, overlayWithPoint, overlayWithLine);
+    }
+    return spec;
+  } else {
+    /* istanbul ignore else */
+    if (spec.mark === ERRORBAR) {
+      return normalizeErrorBar(spec);
+    } else {
+      throw new Error(`unsupported composite mark ${spec.mark}`);
+    }
   }
-  return spec;
 }
 
 function normalizeRangedUnit(spec: UnitSpec) {
@@ -245,7 +256,7 @@ function normalizeRangedUnit(spec: UnitSpec) {
   return spec;
 }
 
-function normalizeErrorBar(spec: UnitSpec): LayerSpec | UnitSpec {
+function normalizeErrorBar(spec: GenericUnitSpec<AnyMark, Encoding>): LayerSpec {
   const {mark: _m, encoding: encoding, ...outerSpec} = spec;
   const {size: _s, ...encodingWithoutSize} = encoding;
   const {x2: _x2, y2: _y2, ...encodingWithoutX2Y2} = encoding;
@@ -371,6 +382,9 @@ export function fieldDefs(spec: ExtendedSpec | ExtendedFacetSpec): FieldDef[] {
 };
 
 export function isStacked(spec: FacetedUnitSpec): boolean {
+  if (isCompositeMark(spec.mark)) {
+    return false;
+  }
   return stack(spec.mark, spec.encoding,
            (spec.config && spec.config.mark) ? spec.config.mark.stacked : undefined
          ) !== null;
