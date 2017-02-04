@@ -27,6 +27,7 @@ describe('Config', function() {
       log.runLocalLogger((localLogger) => {
         const model = parseUnitModel({
           "mark": "bar",
+          encoding: {}
         });
         assert.equal(model.config().mark.orient, undefined);
         assert.equal(localLogger.warns[0], log.message.unclearOrientDiscreteOrEmpty(BAR));

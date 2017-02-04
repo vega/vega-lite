@@ -1543,6 +1543,10 @@
                     "type": "number"
                 }
             },
+            "required": [
+                "mark",
+                "encoding"
+            ],
             "type": "object"
         },
         "HorizontalAlign": {

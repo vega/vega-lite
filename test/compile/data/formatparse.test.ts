@@ -27,7 +27,6 @@ describe('compile/data/formatparse', () => {
     it('should return a correct parse for filtered fields', () => {
       const model = parseUnitModel({
         "data": {"url": "a.json"},
-        "mark": "point",
         "transform": {
           "filter": [
             {"field": "a", "equal": {year: 2000}},
@@ -35,7 +34,9 @@ describe('compile/data/formatparse', () => {
             {"field": "c", "range": [{year: 2000}, {year: 2001}]},
             {"field": "d", "range": [1,2]}
           ]
-        }
+        },
+        "mark": "point",
+        encoding: {}
       });
       const parseComponent = formatParse.parseUnit(model);
       assert.deepEqual(parseComponent,{
