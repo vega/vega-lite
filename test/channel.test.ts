@@ -1,4 +1,4 @@
-import {Channel, hasScale, supportScaleType} from '../src/channel';
+import {Channel, hasScale, supportScaleType, getRangeType} from '../src/channel';
 import {CHANNELS, UNIT_CHANNELS, UNIT_SCALE_CHANNELS, SCALE_CHANNELS, NONSPATIAL_CHANNELS, NONSPATIAL_SCALE_CHANNELS} from '../src/channel';
 import {ScaleType, SCALE_TYPES} from '../src/scale';
 import {assert} from 'chai';
@@ -40,6 +40,16 @@ describe('channel', () => {
     it('should return true for all scale channel', () => {
       for (let channel of SCALE_CHANNELS) {
         assert(hasScale(channel));
+      }
+    });
+  });
+
+  describe('getRangeType', () => {
+    it('should be defined for all channels (no error).', () => {
+      for (let c of CHANNELS) {
+        assert.doesNotThrow(() => {
+          getRangeType(c);
+        });
       }
     });
   });

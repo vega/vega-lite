@@ -2,11 +2,11 @@
  * Constants and utilities for encoding channels (Visual variables)
  * such as 'x', 'y', 'color'.
  */
-
+import {contains, toSet, without, union} from './util';
 import {ExtendedEncoding} from './encoding';
 import {Mark} from './mark';
+import {RangeType} from './compile/scale/type';
 import {ScaleType, SCALE_TYPES} from './scale';
-import {contains, toSet, without} from './util';
 
 export namespace Channel {
   // Facet
@@ -51,19 +51,22 @@ export const OPACITY = Channel.OPACITY;
 export const CHANNELS = [X, Y, X2, Y2, ROW, COLUMN, SIZE, SHAPE, COLOR, ORDER, OPACITY, TEXT, DETAIL];
 
 // CHANNELS without COLUMN, ROW
-export const UNIT_CHANNELS = [X, Y, X2, Y2, SIZE, SHAPE, COLOR, ORDER, OPACITY, TEXT, DETAIL];
+export const UNIT_CHANNELS = without(CHANNELS, [ROW, COLUMN] as Channel[]);
 
 // UNIT_CHANNELS without X2, Y2, ORDER, DETAIL, TEXT
-export const UNIT_SCALE_CHANNELS = [X, Y, SIZE, SHAPE, COLOR, OPACITY];
+export const UNIT_SCALE_CHANNELS = without(UNIT_CHANNELS, [X2, Y2, ORDER, DETAIL, TEXT] as Channel[]);
 
 // UNIT_SCALE_CHANNELS with ROW, COLUMN
-export const SCALE_CHANNELS = [X, Y, SIZE, SHAPE, COLOR, OPACITY, ROW, COLUMN];
+export const SCALE_CHANNELS = union(UNIT_SCALE_CHANNELS, [ROW, COLUMN] as Channel[]);
 
 // UNIT_CHANNELS without X, Y, X2, Y2;
-export const NONSPATIAL_CHANNELS = [SIZE, SHAPE, COLOR, ORDER, OPACITY, TEXT, DETAIL];
+export const NONSPATIAL_CHANNELS = without(UNIT_CHANNELS, [X, Y, X2, Y2] as Channel[]);
+
+// NONSPATIAL_CHANNELS_EXCEPT_ORDER without ORDER;
+export const NONSPATIAL_CHANNELS_EXCEPT_ORDER = without(NONSPATIAL_CHANNELS, [ORDER] as Channel[]);
 
 // UNIT_SCALE_CHANNELS without X, Y;
-export const NONSPATIAL_SCALE_CHANNELS = [SIZE, SHAPE, COLOR, OPACITY];
+export const NONSPATIAL_SCALE_CHANNELS = without(UNIT_SCALE_CHANNELS, [X, Y] as Channel[]);
 
 /** Channels that can serve as groupings for stacked charts. */
 export const STACK_GROUP_CHANNELS = [COLOR, DETAIL, ORDER, OPACITY, SIZE];
@@ -173,26 +176,56 @@ export function hasScale(channel: Channel) {
   return !contains([DETAIL, TEXT, ORDER], channel);
 }
 
-// Position does not work with ordinal (lookup) scale and sequential (which is only for color)
-const POSITION_SCALE_TYPE_INDEX = toSet(without(SCALE_TYPES, ['ordinal', 'sequential'] as ScaleType[]));
-
 export function supportScaleType(channel: Channel, scaleType: ScaleType): boolean {
+  // Position does not work with ordinal (lookup) scale and sequential (which is only for color)
+  const POSITION_SCALE_TYPE_INDEX = toSet(without(SCALE_TYPES, ['ordinal', 'sequential'] as ScaleType[]));
+
   switch (channel) {
-    case 'row':
-    case 'column':
+    case ROW:
+    case COLUMN:
       return scaleType === 'band'; // row / column currently supports band only
-    case 'x':
-    case 'y':
-    case 'size': // TODO: size and opacity can support ordinal with more modification
-    case 'opacity':
+    case X:
+    case Y:
+    case SIZE: // TODO: size and opacity can support ordinal with more modification
+    case OPACITY:
       // Although it generally doesn't make sense to use band with size and opacity,
       // it can also work since we use band: 0.5 to get midpoint.
       return scaleType in POSITION_SCALE_TYPE_INDEX;
-    case 'color':
+    case COLOR:
       return scaleType !== 'band';    // band does not make sense with color
-    case 'shape':
+    case SHAPE:
       return scaleType === 'ordinal'; // shape = lookup only
   }
   /* istanbul ignore next: it should never reach here */
   return false;
+}
+
+export function getRangeType(channel: Channel): RangeType {
+
+  switch (channel) {
+    case X:
+    case Y:
+    case ROW:
+    case COLUMN:
+    case SIZE:
+    case OPACITY:
+      return 'continuous';
+
+    case SHAPE:
+      return 'discrete';
+
+    // Color can be either continuous or discrete, depending on scale type.
+    case COLOR:
+      return 'flexible';
+
+    // No scale, no range type.
+    case X2:
+    case Y2:
+    case DETAIL:
+    case TEXT:
+    case ORDER:
+      return undefined;
+  }
+  /* istanbul ignore next: should never reach here. */
+  throw new Error('getSupportedRole not implemented for ' + channel);
 }

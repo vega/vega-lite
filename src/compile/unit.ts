@@ -228,9 +228,8 @@ export class UnitModel extends Model {
 
   private _initLegend(encoding: Encoding, config: Config): Dict<Legend> {
     return NONSPATIAL_SCALE_CHANNELS.reduce(function(_legend, channel) {
-      const channelDef = encoding[channel];
-      if (isFieldDef(channelDef)) {
-        const legendSpec = channelDef.legend;
+      if (isFieldDef(encoding[channel])) {
+        const legendSpec = encoding[channel]['legend'];
         // We no longer support false in the schema, but we keep false here for backward compatability.
         if (legendSpec !== null && legendSpec !== false) {
           _legend[channel] = extend({}, config.legend,
