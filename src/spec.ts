@@ -161,7 +161,7 @@ export function normalize(spec: ExtendedSpec): Spec {
   return spec;
 }
 
-export function normalizeExtendedUnitSpec(spec: ExtendedUnitSpec): Spec {
+function normalizeExtendedUnitSpec(spec: ExtendedUnitSpec): Spec {
     const hasRow = channelHasField(spec.encoding, ROW);
     const hasColumn = channelHasField(spec.encoding, COLUMN);
 
@@ -194,7 +194,7 @@ export function normalizeExtendedUnitSpec(spec: ExtendedUnitSpec): Spec {
     );
 }
 
-export function normalizeUnitSpec(spec: UnitSpec): Spec {
+function normalizeUnitSpec(spec: UnitSpec): Spec {
   const config = spec.config;
   const overlayConfig = config && config.overlay;
   const overlayWithLine = overlayConfig  && spec.mark === AREA &&
@@ -219,7 +219,7 @@ export function normalizeUnitSpec(spec: UnitSpec): Spec {
   return spec;
 }
 
-export function normalizeRangedUnitSpec(spec: UnitSpec): Spec {
+function normalizeRangedUnitSpec(spec: UnitSpec): Spec {
   if (spec.encoding) {
     const hasX = channelHasField(spec.encoding, X);
     const hasY = channelHasField(spec.encoding, Y);
@@ -242,7 +242,7 @@ export function normalizeRangedUnitSpec(spec: UnitSpec): Spec {
   return spec;
 }
 
-export function normalizeErrorBarUnitSpec(spec: UnitSpec): Spec {
+function normalizeErrorBarUnitSpec(spec: UnitSpec): Spec {
   // FIXME correctly deal with color and opacity
 
   let layerSpec = extend(spec.name ? {name: spec.name} : {},
@@ -286,7 +286,7 @@ export function normalizeErrorBarUnitSpec(spec: UnitSpec): Spec {
   return layerSpec;
 }
 
-export function normalizeOverlay(spec: UnitSpec, overlayWithPoint: boolean, overlayWithLine: boolean): LayerSpec {
+function normalizeOverlay(spec: UnitSpec, overlayWithPoint: boolean, overlayWithLine: boolean): LayerSpec {
   let outerProps = ['name', 'description', 'data', 'transform'];
   let baseSpec = omit(spec, outerProps.concat('config'));
 
