@@ -75,9 +75,9 @@ export interface Encoding {
   order?: OrderFieldDef | OrderFieldDef[];
 }
 
-export interface ExtendedEncoding extends Encoding, Facet {}
+export interface EncodingWithFacet extends Encoding, Facet {}
 
-export function channelHasField(encoding: ExtendedEncoding, channel: Channel): boolean {
+export function channelHasField(encoding: EncodingWithFacet, channel: Channel): boolean {
   const channelDef = encoding && encoding[channel];
   if (channelDef) {
     if (isArray(channelDef)) {
@@ -89,7 +89,7 @@ export function channelHasField(encoding: ExtendedEncoding, channel: Channel): b
   return false;
 }
 
-export function isAggregate(encoding: ExtendedEncoding) {
+export function isAggregate(encoding: EncodingWithFacet) {
   return some(CHANNELS, (channel) => {
     if (channelHasField(encoding, channel)) {
       const channelDef = encoding[channel];
@@ -103,11 +103,11 @@ export function isAggregate(encoding: ExtendedEncoding) {
   });
 }
 
-export function isRanged(encoding: ExtendedEncoding) {
+export function isRanged(encoding: EncodingWithFacet) {
   return encoding && ((!!encoding.x && !!encoding.x2) || (!!encoding.y && !!encoding.y2));
 }
 
-export function fieldDefs(encoding: ExtendedEncoding): FieldDef[] {
+export function fieldDefs(encoding: EncodingWithFacet): FieldDef[] {
   let arr: FieldDef[] = [];
   CHANNELS.forEach(function(channel) {
     if (channelHasField(encoding, channel)) {

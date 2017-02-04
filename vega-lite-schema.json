@@ -2,13 +2,13 @@
     "$schema": "http://json-schema.org/draft-04/schema#",
     "anyOf": [
         {
-            "$ref": "#/definitions/GenericUnitSpec<ExtendedEncoding>"
+            "$ref": "#/definitions/GenericUnitSpec<EncodingWithFacet>"
         },
         {
-            "$ref": "#/definitions/GenericFacetSpec<ExtendedEncoding>"
+            "$ref": "#/definitions/GenericFacetSpec<EncodingWithFacet>"
         },
         {
-            "$ref": "#/definitions/GenericLayerSpec<ExtendedEncoding>"
+            "$ref": "#/definitions/GenericLayerSpec<EncodingWithFacet>"
         }
     ],
     "definitions": {
@@ -996,40 +996,7 @@
             },
             "type": "object"
         },
-        "EqualFilter": {
-            "additionalProperties": false,
-            "properties": {
-                "equal": {
-                    "anyOf": [
-                        {
-                            "$ref": "#/definitions/DateTime"
-                        },
-                        {
-                            "type": [
-                                "string",
-                                "number",
-                                "boolean"
-                            ]
-                        }
-                    ],
-                    "description": "Value that the field should be equal to."
-                },
-                "field": {
-                    "description": "Field to be filtered.",
-                    "type": "string"
-                },
-                "timeUnit": {
-                    "$ref": "#/definitions/TimeUnit",
-                    "description": "Time unit for the field to be filtered."
-                }
-            },
-            "required": [
-                "field",
-                "equal"
-            ],
-            "type": "object"
-        },
-        "ExtendedEncoding": {
+        "EncodingWithFacet": {
             "additionalProperties": false,
             "properties": {
                 "color": {
@@ -1170,6 +1137,39 @@
             },
             "type": "object"
         },
+        "EqualFilter": {
+            "additionalProperties": false,
+            "properties": {
+                "equal": {
+                    "anyOf": [
+                        {
+                            "$ref": "#/definitions/DateTime"
+                        },
+                        {
+                            "type": [
+                                "string",
+                                "number",
+                                "boolean"
+                            ]
+                        }
+                    ],
+                    "description": "Value that the field should be equal to."
+                },
+                "field": {
+                    "description": "Field to be filtered.",
+                    "type": "string"
+                },
+                "timeUnit": {
+                    "$ref": "#/definitions/TimeUnit",
+                    "description": "Time unit for the field to be filtered."
+                }
+            },
+            "required": [
+                "field",
+                "equal"
+            ],
+            "type": "object"
+        },
         "ExtendedScheme": {
             "additionalProperties": false,
             "properties": {
@@ -1303,7 +1303,7 @@
             ],
             "type": "object"
         },
-        "GenericFacetSpec<ExtendedEncoding>": {
+        "GenericFacetSpec<EncodingWithFacet>": {
             "additionalProperties": false,
             "properties": {
                 "$schema": {
@@ -1367,10 +1367,10 @@
                 "spec": {
                     "anyOf": [
                         {
-                            "$ref": "#/definitions/GenericUnitSpec<ExtendedEncoding>"
+                            "$ref": "#/definitions/GenericUnitSpec<EncodingWithFacet>"
                         },
                         {
-                            "$ref": "#/definitions/GenericLayerSpec<ExtendedEncoding>"
+                            "$ref": "#/definitions/GenericLayerSpec<EncodingWithFacet>"
                         }
                     ]
                 },
@@ -1385,7 +1385,7 @@
             ],
             "type": "object"
         },
-        "GenericLayerSpec<ExtendedEncoding>": {
+        "GenericLayerSpec<EncodingWithFacet>": {
             "additionalProperties": false,
             "properties": {
                 "$schema": {
@@ -1418,7 +1418,14 @@
                 "layer": {
                     "description": "Unit specs that will be layered.",
                     "items": {
-                        "$ref": "#/definitions/GenericUnitSpec<ExtendedEncoding>"
+                        "anyOf": [
+                            {
+                                "$ref": "#/definitions/GenericUnitSpec<EncodingWithFacet>"
+                            },
+                            {
+                                "$ref": "#/definitions/GenericLayerSpec<EncodingWithFacet>"
+                            }
+                        ]
                     },
                     "type": "array"
                 },
@@ -1466,7 +1473,7 @@
             ],
             "type": "object"
         },
-        "GenericUnitSpec<ExtendedEncoding>": {
+        "GenericUnitSpec<EncodingWithFacet>": {
             "additionalProperties": false,
             "properties": {
                 "$schema": {
@@ -1494,7 +1501,7 @@
                     "type": "string"
                 },
                 "encoding": {
-                    "$ref": "#/definitions/ExtendedEncoding",
+                    "$ref": "#/definitions/EncodingWithFacet",
                     "description": "A key-value mapping between encoding channels and definition of fields."
                 },
                 "height": {
@@ -2005,7 +2012,7 @@
                 "area",
                 "bar",
                 "circle",
-                "errorBar",
+                "error-bar",
                 "line",
                 "point",
                 "rect",

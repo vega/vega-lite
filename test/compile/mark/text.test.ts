@@ -4,7 +4,7 @@ import {assert} from 'chai';
 import {parseUnitModel} from '../../util';
 import {text} from '../../../src/compile/mark/text';
 import {X, Y} from '../../../src/channel';
-import {UnitSpec, ExtendedUnitSpec} from '../../../src/spec';
+import {UnitSpec, FacetedUnitSpec} from '../../../src/spec';
 
 describe('Mark: Text', function() {
   describe('with nothing', function() {
@@ -126,7 +126,7 @@ describe('Mark: Text', function() {
   });
 
   describe('with row, column, text, and color', function() {
-    const spec: ExtendedUnitSpec = {
+    const spec: FacetedUnitSpec = {
         "mark": "text",
         "encoding": {
           "row": {"field": "Origin", "type": "ordinal"},

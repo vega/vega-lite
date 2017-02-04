@@ -2,7 +2,7 @@
 
 import {Config, defaultOverlayConfig} from './config';
 import {Data} from './data';
-import {ExtendedEncoding, Encoding, channelHasField, isRanged} from './encoding';
+import {EncodingWithFacet, Encoding, channelHasField, isRanged} from './encoding';
 import {Facet} from './facet';
 import {FieldDef} from './fielddef';
 import {Mark, ERRORBAR, TICK, AREA, RULE, LINE, POINT} from './mark';
@@ -79,7 +79,7 @@ export interface GenericUnitSpec<E extends Encoding> extends BaseSpec {
 
 export type UnitSpec = GenericUnitSpec<Encoding>;
 
-export type ExtendedUnitSpec = GenericUnitSpec<ExtendedEncoding>;
+export type FacetedUnitSpec = GenericUnitSpec<EncodingWithFacet>;
 
 export interface GenericLayerSpec<E> extends BaseSpec {
   // FIXME description for top-level width
@@ -106,21 +106,21 @@ export interface GenericFacetSpec<E> extends BaseSpec {
 }
 
 export type FacetSpec = GenericFacetSpec<Encoding>;
-export type ExtendedFacetSpec = GenericFacetSpec<ExtendedEncoding>;
+export type ExtendedFacetSpec = GenericFacetSpec<EncodingWithFacet>;
 
 export type GenericSpec<E> = GenericUnitSpec<E> | GenericLayerSpec<E> | GenericFacetSpec<E>;
 
-export type ExtendedSpec = GenericSpec<ExtendedEncoding>;
+export type ExtendedSpec = GenericSpec<EncodingWithFacet>;
 export type Spec = GenericSpec<Encoding>;
 
 /* Custom type guards */
 
-export function isSomeFacetSpec(spec: ExtendedSpec | ExtendedFacetSpec): spec is FacetSpec | ExtendedFacetSpec {
+export function isFacetSpec(spec: ExtendedSpec | ExtendedFacetSpec): spec is FacetSpec | ExtendedFacetSpec {
   return spec['facet'] !== undefined;
 }
 
-export function isExtendedUnitSpec(spec: ExtendedSpec): spec is ExtendedUnitSpec {
-  if (isSomeUnitSpec(spec)) {
+export function isFacetedUnitSpec(spec: ExtendedSpec): spec is FacetedUnitSpec {
+  if (isUnitSpec(spec)) {
     const hasRow = channelHasField(spec.encoding, ROW);
     const hasColumn = channelHasField(spec.encoding, COLUMN);
 
@@ -130,15 +130,7 @@ export function isExtendedUnitSpec(spec: ExtendedSpec): spec is ExtendedUnitSpec
   return false;
 }
 
-export function isUnitSpec(spec: ExtendedSpec): spec is UnitSpec {
-  if (isSomeUnitSpec(spec)) {
-    return !isExtendedUnitSpec(spec);
-  }
-
-  return false;
-}
-
-export function isSomeUnitSpec(spec: ExtendedSpec): spec is ExtendedUnitSpec | UnitSpec {
+export function isUnitSpec(spec: ExtendedSpec): spec is FacetedUnitSpec | UnitSpec {
   return spec['mark'] !== undefined;
 }
 
@@ -152,7 +144,7 @@ export function isLayerSpec(spec: ExtendedSpec | ExtendedFacetSpec): spec is Lay
  */
 // TODO: consider moving this to another file.  Maybe vl.spec.normalize or vl.normalize
 export function normalize(spec: ExtendedSpec): Spec {
-  if (isExtendedUnitSpec(spec)) {
+  if (isFacetedUnitSpec(spec)) {
     return normalizeExtendedUnitSpec(spec);
   }
   if (isUnitSpec(spec)) {
@@ -161,7 +153,7 @@ export function normalize(spec: ExtendedSpec): Spec {
   return spec;
 }
 
-function normalizeExtendedUnitSpec(spec: ExtendedUnitSpec): Spec {
+function normalizeExtendedUnitSpec(spec: FacetedUnitSpec): Spec {
     const hasRow = channelHasField(spec.encoding, ROW);
     const hasColumn = channelHasField(spec.encoding, COLUMN);
 
@@ -366,7 +358,7 @@ function fieldDefIndex(spec: ExtendedSpec | ExtendedFacetSpec, dict: any = {}): 
     spec.layer.forEach(function(layer) {
       accumulate(dict, vlEncoding.fieldDefs(layer.encoding));
     });
-  } else if (isSomeFacetSpec(spec)) {
+  } else if (isFacetSpec(spec)) {
     accumulate(dict, vlEncoding.fieldDefs(spec.facet));
     fieldDefIndex(spec.spec, dict);
   } else { // Unit Spec
@@ -380,7 +372,7 @@ export function fieldDefs(spec: ExtendedSpec | ExtendedFacetSpec): FieldDef[] {
   return vals(fieldDefIndex(spec));
 };
 
-export function isStacked(spec: ExtendedUnitSpec): boolean {
+export function isStacked(spec: FacetedUnitSpec): boolean {
   return stack(spec.mark, spec.encoding,
            (spec.config && spec.config.mark) ? spec.config.mark.stacked : undefined
          ) !== null;

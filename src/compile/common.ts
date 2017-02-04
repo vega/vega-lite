@@ -13,11 +13,11 @@ import {LayerModel} from './layer';
 import {Model} from './model';
 import {formatExpression} from '../timeunit';
 import {UnitModel} from './unit';
-import {Spec, isUnitSpec, isSomeFacetSpec, isLayerSpec} from '../spec';
+import {Spec, isUnitSpec, isFacetSpec, isLayerSpec} from '../spec';
 import {VgEncodeEntry, VgSort} from '../vega.schema';
 
 export function buildModel(spec: Spec, parent: Model, parentGivenName: string): Model {
-  if (isSomeFacetSpec(spec)) {
+  if (isFacetSpec(spec)) {
     return new FacetModel(spec, parent, parentGivenName);
   }
 
