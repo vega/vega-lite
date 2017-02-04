@@ -19,7 +19,6 @@ export namespace AggregateOp {
     export const MIN: 'min' = 'min';
     export const MAX: 'max' = 'max';
     export const ARGMIN: 'argmin' = 'argmin';
-    export const AAA: 'aaa' = 'aaa';
     export const ARGMAX: 'argmax' = 'argmax';;
 }
 

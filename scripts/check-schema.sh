@@ -1,6 +1,6 @@
 #!/bin/bash
 
-if ! git diff --exit-code HEAD HEAD~1 -- ./vega-lite-schema.json
+if ! git diff --exit-code HEAD -- ./vega-lite-schema.json
 then
   echo "vega-lite-schema.json is different from the committed one."
   exit 1
