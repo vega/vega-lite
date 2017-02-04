@@ -3,11 +3,11 @@ import {assert} from 'chai';
 import * as log from '../../../src/log';
 
 import {defaultConfig} from '../../../src/config';
-import {X, Y, ROW, COLUMN, CHANNELS} from '../../../src/channel';
+import {X, Y, ROW, COLUMN, CHANNELS, getRangeType} from '../../../src/channel';
 import {PRIMITIVE_MARKS} from '../../../src/mark';
 import {ScaleType} from '../../../src/scale';
 import {ORDINAL, NOMINAL} from '../../../src/type';
-import scaleType, {channelRangeType} from '../../../src/compile/scale/type';
+import scaleType from '../../../src/compile/scale/type';
 import {TimeUnit} from '../../../src/timeunit';
 import * as util from '../../../src/util';
 
@@ -156,7 +156,7 @@ describe('compile/scale', () => {
         });
 
         it('should return point scale for ordinal/nominal fields for continous channels other than x and y.', () => {
-          const OTHER_CONTINUOUS_CHANNELS = CHANNELS.filter((c) => channelRangeType(c) === 'continuous' && !util.contains([X, Y, ROW, COLUMN], c));
+          const OTHER_CONTINUOUS_CHANNELS = CHANNELS.filter((c) => getRangeType(c) === 'continuous' && !util.contains([X, Y, ROW, COLUMN], c));
           PRIMITIVE_MARKS.forEach((mark) => {
             [ORDINAL, NOMINAL].forEach((t) => {
               OTHER_CONTINUOUS_CHANNELS.forEach((channel) => {
@@ -248,16 +248,6 @@ describe('compile/scale', () => {
           ScaleType.LINEAR
         );
       });
-    });
-  });
-
-  describe('channelRangeType', () => {
-    it('should be defined for all channels (no error).', () => {
-      for (let c of CHANNELS) {
-        assert.doesNotThrow(() => {
-          channelRangeType(c);
-        });
-      }
     });
   });
 });

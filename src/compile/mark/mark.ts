@@ -1,6 +1,6 @@
-import {NONSPATIAL_CHANNELS, Channel} from '../../channel';
+import {NONSPATIAL_CHANNELS_EXCEPT_ORDER} from '../../channel';
 import {AREA, LINE} from '../../mark';
-import {contains, without} from '../../util';
+import {contains} from '../../util';
 
 import {MarkCompiler} from './base';
 import {area} from './area';
@@ -62,7 +62,7 @@ function parsePathMark(model: UnitModel) {
       // If has subfacet for line/area group, need to use faceted data from below.
       // FIXME: support sorting path order (in connected scatterplot)
       from: {data: (details.length > 0 ? FACETED_PATH_PREFIX : '') + dataFrom(model)},
-      encode: { update: markCompiler[mark].encodeEntry(model) }
+      encode: {update: markCompiler[mark].encodeEntry(model)}
     }
   ];
 
@@ -81,8 +81,8 @@ function parsePathMark(model: UnitModel) {
       },
       encode: {
         update: {
-          width: { field: { group: 'width' } },
-          height: { field: { group: 'height' } }
+          width: {field: {group: 'width'}},
+          height: {field: {group: 'height'}}
         }
       },
       marks: pathMarks
@@ -104,7 +104,7 @@ function parseNonPathMark(model: UnitModel) {
   marks.push({
     name: model.name('marks'),
     type: markCompiler[mark].vgMark,
-    ...(role? {role} : {}),
+    ...(role ? { role } : {}),
     from: {data: dataFrom(model)},
     encode: { update: markCompiler[mark].encodeEntry(model)}
   });
@@ -112,7 +112,6 @@ function parseNonPathMark(model: UnitModel) {
   return marks;
 }
 
-const NONSPATIAL_CHANNELS_EXCEPT_ORDER = without(NONSPATIAL_CHANNELS, ['order'] as Channel[]);
 
 /**
  * Returns list of detail (group-by) fields
