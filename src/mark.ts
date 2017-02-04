@@ -12,7 +12,7 @@ export namespace Mark {
   export const TICK: 'tick' = 'tick';
   export const CIRCLE: 'circle' = 'circle';
   export const SQUARE: 'square' = 'square';
-  export const ERRORBAR: 'errorBar' = 'errorBar';
+  export const ERRORBAR: 'error-bar' = 'error-bar';
 }
 export type Mark = typeof Mark.AREA | typeof Mark.BAR | typeof Mark.LINE | typeof Mark.POINT | typeof Mark.TEXT | typeof Mark.TICK | typeof Mark.RECT | typeof Mark.RULE | typeof Mark.CIRCLE | typeof Mark.SQUARE | typeof Mark.ERRORBAR;
 
