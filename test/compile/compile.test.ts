@@ -11,7 +11,7 @@ import {compile, assembleRootGroup} from '../../src/compile/compile';
 describe('Compile', function() {
   it('should throw error for invalid spec', () => {
     assert.throws(() => {
-      compile({});
+      compile({} as any);
     }, Error, log.message.INVALID_SPEC);
   });
 
@@ -21,7 +21,8 @@ describe('Compile', function() {
         "data": {
           "values": [{"a": "A","b": 28}]
         },
-        "mark": "point"
+        "mark": "point",
+        "encoding": {}
       }).spec;
 
       assert.equal(spec.padding, 5);

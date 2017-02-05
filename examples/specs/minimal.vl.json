@@ -2,5 +2,6 @@
   "data": {
     "values": [{}]
   },
-  "mark": "point"
+  "mark": "point",
+  "encoding": {}
 }

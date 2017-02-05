@@ -1,14 +1,14 @@
 /* tslint:disable quotemark */
 
 import {assert} from 'chai';
-import {parseUnitModel} from '../../util';
+import {parseUnitModel, parseModel} from '../../util';
 import {text} from '../../../src/compile/mark/text';
 import {X, Y} from '../../../src/channel';
-import {ExtendedUnitSpec} from '../../../src/spec';
+import {UnitSpec, FacetedUnitSpec} from '../../../src/spec';
 
 describe('Mark: Text', function() {
   describe('with nothing', function() {
-    const spec: ExtendedUnitSpec = {
+    const spec: UnitSpec = {
       "mark": "text",
       "encoding": {},
       "data": {"url": "data/cars.json"}
@@ -62,7 +62,7 @@ describe('Mark: Text', function() {
   });
 
   describe('with quantitative and format', function() {
-    const spec: ExtendedUnitSpec = {
+    const spec: UnitSpec = {
       "mark": "text",
       "encoding": {
         "text": {"field": "foo", "type": "quantitative"}
@@ -82,7 +82,7 @@ describe('Mark: Text', function() {
   });
 
   describe('with temporal', function() {
-    const spec: ExtendedUnitSpec = {
+    const spec: UnitSpec = {
       "mark": "text",
       "encoding": {
         "text": {"field": "foo", "type": "temporal"}
@@ -97,7 +97,7 @@ describe('Mark: Text', function() {
   });
 
   describe('with x, y, text (ordinal)', function() {
-    const spec: ExtendedUnitSpec = {
+    const spec: UnitSpec = {
       "mark": "text",
       "encoding": {
         "x": {"field": "Acceleration", "type": "ordinal"},
@@ -126,7 +126,7 @@ describe('Mark: Text', function() {
   });
 
   describe('with row, column, text, and color', function() {
-    const spec: ExtendedUnitSpec = {
+    const spec: FacetedUnitSpec = {
         "mark": "text",
         "encoding": {
           "row": {"field": "Origin", "type": "ordinal"},
@@ -137,8 +137,8 @@ describe('Mark: Text', function() {
         },
         "data": {"url": "data/cars.json"}
       };
-    const model = parseUnitModel(spec);
-    const props = text.encodeEntry(model);
+    const model = parseModel(spec);
+    const props = text.encodeEntry(model.children()[0] as any);
 
     it('should fit cell on x', function() {
       assert.deepEqual(props.x, {field: {group: 'width'}, offset: -5});
@@ -156,14 +156,14 @@ describe('Mark: Text', function() {
 
     it('should map color to fill', function() {
       assert.deepEqual(props.fill, {
-        scale: 'color',
+        scale: 'child_color',
         field: 'mean_Acceleration'
       });
     });
 
     it('should map size to fontSize', function() {
       assert.deepEqual(props.fontSize, {
-        scale: 'size',
+        scale: 'child_size',
         field: 'mean_Acceleration'
       });
     });

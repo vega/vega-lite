@@ -2,10 +2,10 @@
 
 import {Config, defaultOverlayConfig} from './config';
 import {Data} from './data';
-import {ExtendedEncoding, Encoding, channelHasField, isRanged} from './encoding';
+import {EncodingWithFacet, Encoding, channelHasField, isRanged} from './encoding';
 import {Facet} from './facet';
 import {FieldDef} from './fielddef';
-import {Mark, ERRORBAR, TICK, AREA, RULE, LINE, POINT} from './mark';
+import {Mark, AnyMark, COMPOSITE_MARKS, ERRORBAR, AREA, LINE, POINT, isCompositeMark} from './mark';
 import {stack} from './stack';
 import {Transform} from './transform';
 import {ROW, COLUMN, X, Y, X2, Y2} from './channel';
@@ -57,7 +57,7 @@ export interface BaseSpec {
   config?: Config;
 }
 
-export interface UnitSpec extends BaseSpec {
+export interface GenericUnitSpec<M, E extends Encoding> extends BaseSpec {
   // FIXME description for top-level width
   width?: number;
 
@@ -69,49 +69,20 @@ export interface UnitSpec extends BaseSpec {
    * One of `"bar"`, `"circle"`, `"square"`, `"tick"`, `"line"`,
    * `"area"`, `"point"`, `"rule"`, and `"text"`.
    */
-  mark?: Mark;
+  mark: M;
 
   /**
    * A key-value mapping between encoding channels and definition of fields.
    */
-  encoding?: Encoding;
+  encoding: E;
 }
 
-/**
- * Schema for a unit Vega-Lite specification, with the syntactic sugar extensions:
- * - `row` and `column` are included in the encoding.
- * - (Future) label, box plot
- *
- * Note: the spec could contain facet.
- *
- * @required ["mark", "encoding"]
- */
-export interface ExtendedUnitSpec extends BaseSpec {
-  // FIXME description for top-level width
-  width?: number;
+export type UnitSpec = GenericUnitSpec<Mark, Encoding>;
 
-  // FIXME description for top-level width
-  height?: number;
 
-  /**
-   * The mark type.
-   * One of `"bar"`, `"circle"`, `"square"`, `"tick"`, `"line"`,
-   * `"area"`, `"point"`, `"rule"`, and `"text"`.
-   */
-  mark?: Mark;
+export type FacetedUnitSpec = GenericUnitSpec<AnyMark, EncodingWithFacet>;
 
-  /**
-   * A key-value mapping between encoding channels and definition of fields.
-   */
-  encoding?: ExtendedEncoding;
-}
-
-export interface FacetSpec extends BaseSpec {
-  facet: Facet;
-  spec: LayerSpec | UnitSpec;
-}
-
-export interface LayerSpec extends BaseSpec {
+export interface GenericLayerSpec<M, E> extends BaseSpec {
   // FIXME description for top-level width
   width?: number;
 
@@ -121,27 +92,36 @@ export interface LayerSpec extends BaseSpec {
   /**
    * Unit specs that will be layered.
    */
-  layer: UnitSpec[];
+  // TODO: support layer of layer
+  layer: (GenericLayerSpec<M, E> | GenericUnitSpec<M, E>)[];
 }
 
-/** This is for the future schema */
-export interface ExtendedFacetSpec extends BaseSpec {
+export type LayerSpec = GenericLayerSpec<Mark, Encoding>;
+
+export interface GenericFacetSpec<M, E> extends BaseSpec {
   facet: Facet;
 
-  spec: ExtendedUnitSpec | FacetSpec;
+  // TODO: support facet of facet
+  spec: GenericLayerSpec<M, E> | GenericUnitSpec<M, E>;
 }
 
-export type ExtendedSpec = ExtendedUnitSpec | FacetSpec | LayerSpec;
-export type Spec = UnitSpec | FacetSpec | LayerSpec;
+export type FacetSpec = GenericFacetSpec<Mark, Encoding>;
+export type ExtendedFacetSpec = GenericFacetSpec<AnyMark, EncodingWithFacet>;
+
+export type GenericSpec<M, E> = GenericUnitSpec<M, E> | GenericLayerSpec<M, E> | GenericFacetSpec<M, E>;
+
+export type ExtendedSpec = GenericSpec<AnyMark, EncodingWithFacet>;
+export type Spec = GenericSpec<Mark, Encoding>;
 
 /* Custom type guards */
 
-export function isSomeFacetSpec(spec: ExtendedSpec | ExtendedFacetSpec): spec is FacetSpec | ExtendedFacetSpec {
+
+export function isFacetSpec(spec: GenericSpec<AnyMark,any>): spec is GenericFacetSpec<AnyMark, any> {
   return spec['facet'] !== undefined;
 }
 
-export function isExtendedUnitSpec(spec: ExtendedSpec): spec is ExtendedUnitSpec {
-  if (isSomeUnitSpec(spec)) {
+export function isFacetedUnitSpec(spec: ExtendedSpec): spec is FacetedUnitSpec {
+  if (isUnitSpec(spec)) {
     const hasRow = channelHasField(spec.encoding, ROW);
     const hasColumn = channelHasField(spec.encoding, COLUMN);
 
@@ -151,71 +131,81 @@ export function isExtendedUnitSpec(spec: ExtendedSpec): spec is ExtendedUnitSpec
   return false;
 }
 
-export function isUnitSpec(spec: ExtendedSpec): spec is UnitSpec {
-  if (isSomeUnitSpec(spec)) {
-    return !isExtendedUnitSpec(spec);
-  }
-
-  return false;
-}
-
-export function isSomeUnitSpec(spec: ExtendedSpec): spec is ExtendedUnitSpec | UnitSpec {
+export function isUnitSpec(spec: ExtendedSpec): spec is FacetedUnitSpec | UnitSpec {
   return spec['mark'] !== undefined;
 }
 
-export function isLayerSpec(spec: ExtendedSpec | ExtendedFacetSpec): spec is LayerSpec {
+export function isLayerSpec(spec: ExtendedSpec | Spec): spec is GenericLayerSpec<AnyMark | Mark, Encoding> {
   return spec['layer'] !== undefined;
 }
-
 
 /**
  * Decompose extended unit specs into composition of pure unit specs.
  */
 // TODO: consider moving this to another file.  Maybe vl.spec.normalize or vl.normalize
-export function normalize(spec: ExtendedSpec): Spec {
-  if (isExtendedUnitSpec(spec)) {
-    return normalizeExtendedUnitSpec(spec);
+export function normalize(spec: ExtendedSpec | Spec): Spec {
+  if (isFacetSpec(spec)) {
+    return normalizeFacet(spec);
   }
-  if (isUnitSpec(spec)) {
-    return normalizeUnitSpec(spec);
+  if (isLayerSpec(spec)) {
+    return normalizeLayer(spec);
   }
-  return spec;
+  if (isFacetedUnitSpec(spec)) {
+    return normalizeFacetedUnit(spec);
+  }
+  return normalizeNonFacetUnit(spec);
 }
 
-export function normalizeExtendedUnitSpec(spec: ExtendedUnitSpec): Spec {
-    const hasRow = channelHasField(spec.encoding, ROW);
-    const hasColumn = channelHasField(spec.encoding, COLUMN);
-
-    // TODO: @arvind please  add interaction syntax here
-    let encoding = duplicate(spec.encoding);
-    delete encoding.column;
-    delete encoding.row;
-
-    return extend(
-      spec.name ? {name: spec.name} : {},
-      spec.description ? {description: spec.description} : {},
-      {data: spec.data},
-      spec.transform ? {transform: spec.transform} : {},
-      {
-        facet: extend(
-          hasRow ? {row: spec.encoding.row} : {},
-          hasColumn ? {column: spec.encoding.column} : {}
-        ),
-        spec: normalizeUnitSpec(extend(
-          spec.width ? {width: spec.width} : {},
-          spec.height ? {height: spec.height} : {},
-          {
-            mark: spec.mark,
-            encoding: encoding
-          },
-          spec.config ? {config: spec.config} : {}
-        ))
-      },
-      spec.config ? {config: spec.config} : {}
-    );
+function normalizeNonFacet(spec: GenericLayerSpec<AnyMark, Encoding> | GenericUnitSpec<AnyMark, Encoding>) {
+  if (isLayerSpec(spec)) {
+    return normalizeLayer(spec);
+  }
+  return normalizeNonFacetUnit(spec);
 }
 
-export function normalizeUnitSpec(spec: UnitSpec): Spec {
+function normalizeFacet(spec: GenericFacetSpec<AnyMark, Encoding>): FacetSpec {
+  const {spec: subspec, ...rest} = spec;
+  return {
+    ...rest,
+    spec: normalizeNonFacet(subspec)
+  };
+}
+
+function normalizeLayer(spec: GenericLayerSpec<AnyMark, Encoding>): LayerSpec {
+  const {layer: layer, ...rest} = spec;
+  return {
+    ...rest,
+    layer: layer.map(normalizeNonFacet)
+  };
+}
+
+function normalizeFacetedUnit(spec: FacetedUnitSpec): FacetSpec {
+  // New encoding in the inside spec should not contain row / column
+  // as row/column should be moved to facet
+  const {row: row, column: column, ...encoding} = spec.encoding;
+
+  // Mark and encoding should be moved into the inner spec
+  const {mark: mark, encoding: _, ...outerSpec} = spec;
+
+  return {
+    ...outerSpec,
+    facet: {
+      ...(row ? {row} : {}),
+      ...(column ? {column}: {}),
+    },
+    spec: normalizeNonFacetUnit({
+      mark,
+      encoding
+    })
+  };
+}
+
+function isNormalUnitSpec(spec: GenericUnitSpec<AnyMark, Encoding>):
+  spec is GenericUnitSpec<Mark, Encoding> {
+    return !contains(COMPOSITE_MARKS, spec.mark);
+}
+
+function normalizeNonFacetUnit(spec: GenericUnitSpec<AnyMark, Encoding>) {
   const config = spec.config;
   const overlayConfig = config && config.overlay;
   const overlayWithLine = overlayConfig  && spec.mark === AREA &&
@@ -225,89 +215,75 @@ export function normalizeUnitSpec(spec: UnitSpec): Spec {
     (overlayConfig.area === 'linepoint' && spec.mark === AREA)
   );
 
-  // TODO: thoroughly test
-  if (spec.mark === ERRORBAR) {
-    return normalizeErrorBarUnitSpec(spec);
-  }
-  // TODO: thoroughly test
-  if (isRanged(spec.encoding)) {
-    return normalizeRangedUnitSpec(spec);
-  }
+  if (isNormalUnitSpec(spec)) {
+    // TODO: thoroughly test
+    if (isRanged(spec.encoding)) {
+      return normalizeRangedUnit(spec);
+    }
 
-  if (overlayWithPoint || overlayWithLine) {
-    return normalizeOverlay(spec, overlayWithPoint, overlayWithLine);
-  }
-  return spec;
-}
-
-export function normalizeRangedUnitSpec(spec: UnitSpec): Spec {
-  if (spec.encoding) {
-    const hasX = channelHasField(spec.encoding, X);
-    const hasY = channelHasField(spec.encoding, Y);
-    const hasX2 = channelHasField(spec.encoding, X2);
-    const hasY2 = channelHasField(spec.encoding, Y2);
-    if ((hasX2 && !hasX) || (hasY2 && !hasY)) {
-      let normalizedSpec = duplicate(spec);
-      if (hasX2 && !hasX) {
-        normalizedSpec.encoding.x = normalizedSpec.encoding.x2;
-        delete normalizedSpec.encoding.x2;
-      }
-      if (hasY2 && !hasY) {
-        normalizedSpec.encoding.y = normalizedSpec.encoding.y2;
-        delete normalizedSpec.encoding.y2;
-      }
-
-      return normalizedSpec;
+    if (overlayWithPoint || overlayWithLine) {
+      return normalizeOverlay(spec, overlayWithPoint, overlayWithLine);
+    }
+    return spec;
+  } else {
+    /* istanbul ignore else */
+    if (spec.mark === ERRORBAR) {
+      return normalizeErrorBar(spec);
+    } else {
+      throw new Error(`unsupported composite mark ${spec.mark}`);
     }
   }
+}
+
+function normalizeRangedUnit(spec: UnitSpec) {
+  const hasX = channelHasField(spec.encoding, X);
+  const hasY = channelHasField(spec.encoding, Y);
+  const hasX2 = channelHasField(spec.encoding, X2);
+  const hasY2 = channelHasField(spec.encoding, Y2);
+  if ((hasX2 && !hasX) || (hasY2 && !hasY)) {
+    let normalizedSpec = duplicate(spec);
+    if (hasX2 && !hasX) {
+      normalizedSpec.encoding.x = normalizedSpec.encoding.x2;
+      delete normalizedSpec.encoding.x2;
+    }
+    if (hasY2 && !hasY) {
+      normalizedSpec.encoding.y = normalizedSpec.encoding.y2;
+      delete normalizedSpec.encoding.y2;
+    }
+
+    return normalizedSpec;
+  }
   return spec;
 }
 
-export function normalizeErrorBarUnitSpec(spec: UnitSpec): Spec {
-  // FIXME correctly deal with color and opacity
+function normalizeErrorBar(spec: GenericUnitSpec<AnyMark, Encoding>): LayerSpec {
+  const {mark: _m, encoding: encoding, ...outerSpec} = spec;
+  const {size: _s, ...encodingWithoutSize} = encoding;
+  const {x2: _x2, y2: _y2, ...encodingWithoutX2Y2} = encoding;
 
-  let layerSpec = extend(spec.name ? {name: spec.name} : {},
-    spec.description ? {description: spec.description} : {},
-    spec.data ? {data: spec.data} : {},
-    spec.transform ? {transform: spec.transform} : {},
-    spec.config ? {config: spec.config} : {}, {layer: []}
-  );
-  if (!spec.encoding) {
-    return layerSpec;
-  }
-  if (spec.mark === ERRORBAR) {
-    const ruleSpec = {
-      mark: RULE,
-      encoding: extend(
-        spec.encoding.x ? {x: duplicate(spec.encoding.x)} : {},
-        spec.encoding.y ? {y: duplicate(spec.encoding.y)} : {},
-        spec.encoding.x2 ? {x2: duplicate(spec.encoding.x2)} : {},
-        spec.encoding.y2 ? {y2: duplicate(spec.encoding.y2)} : {},
-        {})
-    };
-    const lowerTickSpec = {
-      mark: TICK,
-      encoding: extend(
-        spec.encoding.x ? {x: duplicate(spec.encoding.x)} : {},
-        spec.encoding.y ? {y: duplicate(spec.encoding.y)} : {},
-        spec.encoding.size ? {size: duplicate(spec.encoding.size)} : {},
-        {})
-    };
-    const upperTickSpec = {
-      mark: TICK,
-      encoding: extend({
-        x: spec.encoding.x2 ? duplicate(spec.encoding.x2) : duplicate(spec.encoding.x),
-        y: spec.encoding.y2 ? duplicate(spec.encoding.y2) : duplicate(spec.encoding.y)
-      }, spec.encoding.size ? {size: duplicate(spec.encoding.size)} : {})
-    };
-    layerSpec.layer.push(normalizeUnitSpec(ruleSpec));
-    layerSpec.layer.push(normalizeUnitSpec(lowerTickSpec));
-    layerSpec.layer.push(normalizeUnitSpec(upperTickSpec));
-  }
-  return layerSpec;
+  return {
+    ...outerSpec,
+    layer: [
+      {
+        mark: 'rule',
+        encoding: encodingWithoutSize
+      },{ // Lower tick
+        mark: 'tick',
+        encoding: encodingWithoutX2Y2
+      }, { // Upper tick
+        mark: 'tick',
+        encoding: {
+          ...encodingWithoutX2Y2,
+          ...(encoding.x2 ? {x: encoding.x2} : {}),
+          ...(encoding.y2 ? {y: encoding.y2} : {})
+        }
+      }
+    ]
+  };
 }
 
-export function normalizeOverlay(spec: UnitSpec, overlayWithPoint: boolean, overlayWithLine: boolean): LayerSpec {
+// FIXME(#1804): rewrite this
+function normalizeOverlay(spec: UnitSpec, overlayWithPoint: boolean, overlayWithLine: boolean): LayerSpec {
   let outerProps = ['name', 'description', 'data', 'transform'];
   let baseSpec = omit(spec, outerProps.concat('config'));
 
@@ -385,9 +361,13 @@ function fieldDefIndex(spec: ExtendedSpec | ExtendedFacetSpec, dict: any = {}): 
   // TODO: Support repeat and concat
   if (isLayerSpec(spec)) {
     spec.layer.forEach(function(layer) {
-      accumulate(dict, vlEncoding.fieldDefs(layer.encoding));
+      if (isUnitSpec(layer)) {
+        accumulate(dict, vlEncoding.fieldDefs(layer.encoding));
+      } else {
+        fieldDefIndex(layer, dict);
+      }
     });
-  } else if (isSomeFacetSpec(spec)) {
+  } else if (isFacetSpec(spec)) {
     accumulate(dict, vlEncoding.fieldDefs(spec.facet));
     fieldDefIndex(spec.spec, dict);
   } else { // Unit Spec
@@ -401,7 +381,10 @@ export function fieldDefs(spec: ExtendedSpec | ExtendedFacetSpec): FieldDef[] {
   return vals(fieldDefIndex(spec));
 };
 
-export function isStacked(spec: ExtendedUnitSpec): boolean {
+export function isStacked(spec: FacetedUnitSpec): boolean {
+  if (isCompositeMark(spec.mark)) {
+    return false;
+  }
   return stack(spec.mark, spec.encoding,
            (spec.config && spec.config.mark) ? spec.config.mark.stacked : undefined
          ) !== null;

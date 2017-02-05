@@ -5,10 +5,10 @@ import {parseUnitModel} from '../../util';
 import {extend} from '../../../src/util';
 import {X, Y, COLOR} from '../../../src/channel';
 import {area} from '../../../src/compile/mark/area';
-import {ExtendedUnitSpec} from '../../../src/spec';
+import {UnitSpec} from '../../../src/spec';
 
 describe('Mark: Area', function() {
-  function verticalArea(moreEncoding = {}): ExtendedUnitSpec {
+  function verticalArea(moreEncoding = {}): UnitSpec {
     return {
       "mark": "area",
       "encoding": extend(
@@ -100,7 +100,7 @@ describe('Mark: Area', function() {
     });
   });
 
-  function horizontalArea(moreEncoding = {}): ExtendedUnitSpec {
+  function horizontalArea(moreEncoding = {}): UnitSpec {
     return {
       "mark": "area",
       "encoding": extend(
