@@ -139,6 +139,8 @@ function sizeRangeMin(mark: Mark, zero: boolean, config: Config) {
       return config.bar.minBandSize !== undefined ? config.bar.minBandSize : config.bar.continuousBandSize;
     case 'tick':
       return config.tick.minBandSize;
+    case 'line':
+      return config.line.minStrokeWidth;
     case 'rule':
       return config.rule.minStrokeWidth;
     case 'text':
@@ -169,6 +171,8 @@ function sizeRangeMax(mark: Mark, xyRangeSteps: number[], config: Config) {
         return config.tick.maxBandSize;
       }
       return minXYRangeStep(xyRangeSteps, config.mark) - 1;
+    case 'line':
+      return config.line.maxStrokeWidth;
     case 'rule':
       return config.rule.maxStrokeWidth;
     case 'text':
