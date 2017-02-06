@@ -5,7 +5,9 @@ node_js:
   - "7"
 script:
   - npm run build
+  - npm run schema
   - npm run test:noschema # already run schema in build
+  - npm run checkschema
   - npm run codecov
 after_success:
   - bash <(curl -s https://codecov.io/bash)
