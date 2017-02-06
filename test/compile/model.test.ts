@@ -20,7 +20,7 @@ describe('Model', () => {
       const model = parseFacetModel({
         facet: {row: {field: 'a', type: 'nominal'}},
         spec: {
-          layers: [{
+          layer: [{
             mark: 'point',
             encoding: {
               x: {field: 'x', type: 'quantitative'}
@@ -53,7 +53,7 @@ describe('Model', () => {
       const model = parseFacetModel({
         facet: {row: {field: 'a', type: 'nominal'}},
         spec: {
-          layers: [{
+          layer: [{
             mark: 'point',
             encoding: {
               color: {field: 'x', type: 'quantitative'}

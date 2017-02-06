@@ -10,9 +10,6 @@ import {LINE} from '../../../src/mark';
 import {line} from '../../../src/compile/mark/line';
 
 describe('Mark: Line', function() {
-  it('should return the correct mark type', function() {
-    assert.equal(line.markType(), 'line');
-  });
 
   describe('with x, y', function() {
     const model = parseUnitModel({

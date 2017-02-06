@@ -12,7 +12,9 @@ describe('compile/data/source', function() {
       const model = parseUnitModel({
         data: {
           values: [{a: 1, b:2, c:3}, {a: 4, b:5, c:6}]
-        }
+        },
+        mark: 'point',
+        encoding: {}
       });
 
       const sourceComponent = source.parseUnit(model);
@@ -31,7 +33,9 @@ describe('compile/data/source', function() {
       const model = parseUnitModel({
           data: {
             url: 'http://foo.bar',
-          }
+          },
+          mark: 'point',
+          encoding: {}
         });
 
       const sourceComponent = source.parseUnit(model);
@@ -46,7 +50,10 @@ describe('compile/data/source', function() {
     });
 
     describe('with no data specified', function() {
-      const model = parseUnitModel({});
+      const model = parseUnitModel({
+        mark: 'point',
+        encoding: {}
+      });
       const sourceComponent = source.parseUnit(model);
       it('should provide placeholder source data', function() {
         assert.deepEqual(sourceComponent, {name: 'source'});
@@ -60,7 +67,9 @@ describe('compile/data/source', function() {
             data: {
               url: 'http://foo.bar',
               format: {type: 'json', property: 'baz'}
-            }
+            },
+            mark: 'point',
+            encoding: {}
           });
           const sourceComponent = source.parseUnit(model);
           assert.equal(sourceComponent.format.property, 'baz');
@@ -73,7 +82,9 @@ describe('compile/data/source', function() {
               data: {
                 url: 'http://foo.bar',
                 format: {type: 'topojson', feature: 'baz'}
-              }
+              },
+              mark: 'point',
+              encoding: {}
             });
 
           const sourceComponent = source.parseUnit(model);
@@ -92,7 +103,9 @@ describe('compile/data/source', function() {
               data: {
                 url: 'http://foo.bar',
                 format: {type: 'topojson', mesh: 'baz'}
-              }
+              },
+              mark: 'point',
+              encoding: {}
             });
 
           const sourceComponent = source.parseUnit(model);

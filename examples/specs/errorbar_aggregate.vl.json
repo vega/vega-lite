@@ -2,7 +2,7 @@
   "description": "A error bar plot showing mean, min, and max in the US population distribution of age groups in 2000.",
   "data": {"url": "data/population.json"},
   "transform": {"filter": "datum.year == 2000"},
-  "layers": [
+  "layer": [
     {
       "mark": "rule",
       "encoding": {

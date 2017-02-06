@@ -1,6 +1,5 @@
 import {assert} from 'chai';
 
-import {AggregateOp} from '../src/aggregate';
 import {Channel} from '../src/channel';
 import {defaultType, normalize, title} from '../src/fielddef';
 import * as log from '../src/log';
@@ -50,13 +49,11 @@ describe('fieldDef', () => {
     });
 
     it('should return correct title for aggregate', () => {
-      const fieldDef = {field: 'f', type: QUANTITATIVE, aggregate: AggregateOp.MEAN};
-      assert.equal(title(fieldDef, {}), 'MEAN(f)');
+      assert.equal(title({field: 'f', type: QUANTITATIVE, aggregate: 'mean'}, {}), 'MEAN(f)');
     });
 
     it('should return correct title for count', () => {
-      const fieldDef = {field: '*', type: QUANTITATIVE, aggregate: AggregateOp.COUNT};
-      assert.equal(title(fieldDef, {countTitle: 'baz!'}), 'baz!');
+      assert.equal(title({field: '*', type: QUANTITATIVE, aggregate: 'count'}, {countTitle: 'baz!'}), 'baz!');
     });
 
     it('should return correct title for bin', () => {
@@ -75,4 +72,3 @@ describe('fieldDef', () => {
     });
   });
 });
-

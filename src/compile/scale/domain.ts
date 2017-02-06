@@ -5,8 +5,7 @@ import {Channel} from '../../channel';
 import {SOURCE} from '../../data';
 import {DateTime, isDateTime, timestamp} from '../../datetime';
 import {Scale, ScaleType, hasDiscreteDomain} from '../../scale';
-import {isSortField, SortOrder} from '../../sort';
-import {StackOffset} from '../../stack';
+import {isSortField} from '../../sort';
 import {FieldRefUnionDomain, VgSortField, isDataRefUnionedDomain, isFieldRefUnionDomain, isDataRefDomain, VgDomain, VgDataRef} from '../../vega.schema';
 
 import * as util from '../../util';
@@ -40,7 +39,7 @@ export default function domain(scale: Scale, model: Model, channel:Channel): any
   // For stack, use STACKED data.
   const stack = model.stack();
   if (stack && channel === stack.fieldChannel) {
-    if(stack.offset === StackOffset.NORMALIZE) {
+    if(stack.offset === 'normalize') {
       return [0, 1];
     }
     return {
@@ -71,9 +70,9 @@ export default function domain(scale: Scale, model: Model, channel:Channel): any
       // This is useful for both axis-based scale (x, y, column, and row) and legend-based scale (other channels).
       return {
         data: model.dataTable(),
-        field: model.field(channel, { binSuffix: 'range' }),
+        field: model.field(channel, {binSuffix: 'range'}),
         sort: {
-          field: model.field(channel, { binSuffix: 'start' }),
+          field: model.field(channel, {binSuffix: 'start'}),
           op: 'min' // min or max doesn't matter since same _range would have the same _start
         }
       };
@@ -83,15 +82,15 @@ export default function domain(scale: Scale, model: Model, channel:Channel): any
         return {
           data: model.dataTable(),
           fields: [
-            model.field(channel, { binSuffix: 'start' }),
-            model.field(channel, { binSuffix: 'end' })
+            model.field(channel, {binSuffix: 'start'}),
+            model.field(channel, {binSuffix: 'end'})
           ]
         };
       } else {
         // TODO: use bin_mid
         return {
           data: model.dataTable(),
-          field: model.field(channel, { binSuffix: 'start' })
+          field: model.field(channel, {binSuffix: 'start'})
         };
       }
     }
@@ -126,7 +125,7 @@ export function domainSort(model: Model, channel: Channel, scaleType: ScaleType)
     };
   }
 
-  if (util.contains([SortOrder.ASCENDING, SortOrder.DESCENDING, undefined /* default =ascending*/], sort)) {
+  if (util.contains(['ascending', 'descending', undefined /* default =ascending*/], sort)) {
     return true;
   }
 
@@ -222,7 +221,7 @@ export function unionDomains(domain1: VgDomain, domain2: VgDomain): VgDomain {
       };
     }
 
-    return { fields: domains, sort: true };
+    return {fields: domains, sort: true};
   } else {
     return domains[0];
   }

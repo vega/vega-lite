@@ -4,14 +4,14 @@ import {assert} from 'chai';
 
 import {nullFilter} from '../../../src/compile/data/nullfilter';
 import * as log from '../../../src/log';
-import {ExtendedUnitSpec} from '../../../src/spec';
+import {UnitSpec} from '../../../src/spec';
 import {mergeDeep} from '../../../src/util';
 
 import {parseUnitModel} from '../../util';
 
 describe('compile/data/nullfilter', function() {
   describe('compileUnit', function() {
-    const spec: ExtendedUnitSpec = {
+    const spec: UnitSpec = {
       mark: "point",
       encoding: {
         y: {field: 'qq', type: "quantitative"},

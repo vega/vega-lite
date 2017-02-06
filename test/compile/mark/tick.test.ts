@@ -13,10 +13,6 @@ import {X, Y, SIZE} from '../../../src/channel';
 import {tick} from '../../../src/compile/mark/tick';
 
 describe('Mark: Tick', function() {
-  it('should return the correct mark type', function() {
-    assert.equal(tick.markType(), 'rect');
-  });
-
   describe('with stacked x', function() {
     // This is a simplified example for stacked tick.
     // In reality this will be used as stacked's overlayed marker

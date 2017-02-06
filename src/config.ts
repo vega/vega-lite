@@ -4,6 +4,7 @@ import {MarkConfig, AreaConfig, BarConfig, LineConfig, PointConfig, RectConfig, 
 import * as mark from './mark';
 import {ScaleConfig, defaultScaleConfig} from './scale';
 import {Padding} from './spec';
+import {VgRangeScheme} from './vega.schema';
 
 export interface CellConfig {
   width?: number;
@@ -75,13 +76,7 @@ export const defaultFacetConfig: FacetConfig = {
   cell: defaultFacetCellConfig
 };
 
-// FIXME refactor this
-export namespace AreaOverlay {
-  export const LINE: 'line' = 'line';
-  export const LINEPOINT: 'linepoint' = 'linepoint';
-  export const NONE: 'none' = 'none';
-}
-export type AreaOverlay = typeof AreaOverlay.LINE | typeof AreaOverlay.LINEPOINT | typeof AreaOverlay.NONE;
+export type AreaOverlay = 'line' | 'linepoint' | 'none';
 
 export interface OverlayConfig {
   /**
@@ -110,6 +105,8 @@ export const defaultOverlayConfig: OverlayConfig = {
   pointStyle: {filled: true},
   lineStyle: {}
 };
+
+export type RangeConfig = (number|string)[] | VgRangeScheme | {step: number};
 
 export interface Config {
   // TODO: add this back once we have top-down layout approach
@@ -195,6 +192,14 @@ export interface Config {
 
   /** Scale Config */
   scale?: ScaleConfig;
+
+  /**
+   * Scale range config, or properties defining named range arrays
+   * that can be used within scale range definitions
+   * (such as `{"type": "ordinal", "range": "category"}`).
+   * For default range that Vega-Lite adopts from Vega, see https://github.com/vega/vega-parser#scale-range-properties.
+   */
+  range?: {[name: string]: RangeConfig};
 
   /** Axis Config */
   axis?: AxisConfig;

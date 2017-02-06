@@ -6,14 +6,11 @@ import {extend} from '../../../src/util';
 import {X, Y, SIZE, COLOR, SHAPE} from '../../../src/channel';
 import {defaultMarkConfig} from '../../../src/mark';
 import {point, square, circle} from '../../../src/compile/mark/point';
-import {ExtendedUnitSpec} from '../../../src/spec';
+import {UnitSpec} from '../../../src/spec';
 
 describe('Mark: Point', function() {
-  it('should return the correct mark type', function() {
-    assert.equal(point.markType(), 'symbol');
-  });
 
-  function pointXY(moreEncoding = {}): ExtendedUnitSpec {
+  function pointXY(moreEncoding = {}): UnitSpec {
     return {
       "mark": "point",
       "encoding": extend(
@@ -214,10 +211,6 @@ describe('Mark: Point', function() {
 });
 
 describe('Mark: Square', function() {
-  it('should return the correct mark type', function() {
-    assert.equal(square.markType(), 'symbol');
-  });
-
   it('should have correct shape', function() {
     const model = parseUnitModel({
       "mark": "square",
@@ -263,10 +256,6 @@ describe('Mark: Square', function() {
 });
 
 describe('Mark: Circle', function() {
-  it('should return the correct mark type', function() {
-    assert.equal(circle.markType(), 'symbol');
-  });
-
   const model = parseUnitModel({
     "mark": "circle",
     "encoding": {

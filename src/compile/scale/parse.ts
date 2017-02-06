@@ -1,7 +1,7 @@
 import {X, Y, X2, Y2, Channel} from '../../channel';
 import {FieldDef, field} from '../../fielddef';
 import {ScaleType, hasContinuousDomain} from '../../scale';
-import {isSortField, SortOrder} from '../../sort';
+import {isSortField} from '../../sort';
 import {Dict} from '../../util';
 
 import {Model} from '../model';
@@ -73,7 +73,7 @@ function parseMainScale(model: Model, channel: Channel) {
     scaleComponent[property] = scale[property];
   });
 
-  if (sort && (isSortField(sort) ? sort.order : sort) === SortOrder.DESCENDING) {
+  if (sort && (isSortField(sort) ? sort.order : sort) === 'descending') {
     scaleComponent.reverse = true;
   }
 
@@ -132,7 +132,7 @@ function parseBinLegendLabel(channel: Channel, model: Model, fieldDef: FieldDef)
       data: model.dataTable(),
       field: field(fieldDef, {binSuffix: 'range'}),
       sort: {
-        field: model.field(channel, { binSuffix: 'start' }),
+        field: model.field(channel, {binSuffix: 'start'}),
         op: 'min' // min or max doesn't matter since same _range would have the same _start
       }
     }

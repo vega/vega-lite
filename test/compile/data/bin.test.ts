@@ -15,7 +15,7 @@ describe('compile/data/bin', function() {
           mark: "point",
           encoding: {
             y: {
-              bin: { extent: [0, 100] },
+              bin: {extent: [0, 100]},
               'field': 'Acceleration',
               'type': "quantitative"
             }

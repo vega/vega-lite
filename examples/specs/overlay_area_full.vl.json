@@ -2,7 +2,7 @@
   "description": "Google's stock price over time.",
   "data": {"url": "data/stocks.csv","format": {"type": "csv"}},
   "transform": {"filter": "datum.symbol==='GOOG'"},
-  "layers": [
+  "layer": [
     {
       "mark": "area",
       "encoding": {

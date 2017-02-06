@@ -43,7 +43,7 @@ export class LayerModel extends Model {
     this._height = spec.height;
 
     this._config = this._initConfig(spec.config, parent);
-    this._children = spec.layers.map((layer, i) => {
+    this._children = spec.layer.map((layer, i) => {
       // we know that the model has to be a unit model because we pass in a unit spec
       return buildModel(layer, this, this.name('layer_' + i)) as UnitModel;
     });

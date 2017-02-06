@@ -24,7 +24,7 @@ function parse(model: Model): Dict<VgTransform[]> {
       let binTrans: VgTransform = extend({
         type: 'bin',
         field: fieldDef.field,
-        as: [field(fieldDef, { binSuffix: 'start' }), field(fieldDef, { binSuffix: 'end'})]
+        as: [field(fieldDef, {binSuffix: 'start'}), field(fieldDef, { binSuffix: 'end'})]
       },
         // if bin is an object, load parameter here!
         typeof bin === 'boolean' ? {} : bin
@@ -55,12 +55,12 @@ function parse(model: Model): Dict<VgTransform[]> {
         const format = (model.axis(channel) || model.legend(channel) || {}).format ||
           model.config().numberFormat;
 
-        const startField = field(fieldDef, { datum: true, binSuffix: 'start' });
-        const endField = field(fieldDef, { datum: true, binSuffix: 'end' });
+        const startField = field(fieldDef, {datum: true, binSuffix: 'start'});
+        const endField = field(fieldDef, {datum: true, binSuffix: 'end'});
 
         transform.push({
           type: 'formula',
-          as: field(fieldDef, { binSuffix: 'range' }),
+          as: field(fieldDef, {binSuffix: 'range'}),
           expr: `${numberFormatExpr(startField, format)} + ' - ' + ${numberFormatExpr(endField, format)}`
         });
       }

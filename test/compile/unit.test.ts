@@ -4,13 +4,13 @@ import * as log from '../../src/log';
 import {UnitModel} from '../../src/compile/unit';
 import {X, SHAPE, DETAIL} from '../../src/channel';
 import {BAR} from '../../src/mark';
-import {ExtendedUnitSpec} from '../../src/spec';
+import {UnitSpec} from '../../src/spec';
 import {QUANTITATIVE} from '../../src/type';
 import {parseUnitModel} from '../util';
 
 describe('UnitModel', function() {
   it('should say it is unit', function() {
-    const model = new UnitModel({} as ExtendedUnitSpec, null, null);
+    const model = new UnitModel({} as UnitSpec, null, null);
     assert(model.isUnit());
     assert(!model.isFacet());
     assert(!model.isLayer());

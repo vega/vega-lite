@@ -2,7 +2,9 @@ import {COLOR, SIZE, SHAPE, OPACITY, Channel} from '../../channel';
 import {hasContinuousDomain} from '../../scale';
 import {keys, Dict} from '../../util';
 import {VgLegend} from '../../vega.schema';
+import {Legend, LEGEND_PROPERTIES} from '../../legend';
 
+import {Model} from '../model';
 import {numberFormat} from '../common';
 import {BIN_LEGEND_SUFFIX} from '../scale/scale';
 import {UnitModel} from '../unit';
@@ -25,13 +27,13 @@ function getLegendDefWithScale(model: UnitModel, channel: Channel): VgLegend {
   switch (channel) {
     case COLOR:
       const scale = model.scaleName(COLOR) + suffix;
-      return model.config().mark.filled ? { fill: scale } : { stroke: scale };
+      return model.config().mark.filled ? {fill: scale } : { stroke: scale};
     case SIZE:
-      return { size: model.scaleName(SIZE) + suffix };
+      return {size: model.scaleName(SIZE) + suffix};
     case SHAPE:
-      return { shape: model.scaleName(SHAPE) + suffix };
+      return {shape: model.scaleName(SHAPE) + suffix};
     case OPACITY:
-      return { opacity: model.scaleName(OPACITY) + suffix };
+      return {opacity: model.scaleName(OPACITY) + suffix};
   }
   return null;
 }
@@ -39,28 +41,11 @@ function getLegendDefWithScale(model: UnitModel, channel: Channel): VgLegend {
 export function parseLegend(model: UnitModel, channel: Channel): VgLegend {
   const fieldDef = model.fieldDef(channel);
   const legend = model.legend(channel);
-  const config = model.config();
 
   let def: VgLegend = getLegendDefWithScale(model, channel);
 
-  // 1.1 Add properties with special rules
-  def.title = rules.title(legend, fieldDef, config);
-  const format = numberFormat(fieldDef, legend.format, config, channel);
-  if (format) {
-    def.format = format;
-  }
-  const vals = rules.values(legend);
-  if (vals) {
-    def.values = vals;
-  }
-  const t = rules.type(legend, fieldDef, channel);
-  if (t) {
-    def.type = t;
-  }
-
-  // 1.2 Add properties without rules
-  ['offset', 'orient'].forEach(function(property) {
-    const value = legend[property];
+  LEGEND_PROPERTIES.forEach(function(property) {
+    const value = getSpecifiedOrDefaultValue(property, legend, channel, model);
     if (value !== undefined) {
       def[property] = value;
     }
@@ -68,7 +53,7 @@ export function parseLegend(model: UnitModel, channel: Channel): VgLegend {
 
   // 2) Add mark property definition groups
   const encodeSpec = legend.encode || {};
-  ['title', 'symbols', 'legend', 'labels'].forEach(function(part) {
+  ['labels', 'legend', 'title', 'symbols'].forEach(function(part) {
     let value = encode[part] ?
       encode[part](fieldDef, encodeSpec[part], model, channel) : // apply rule
       encodeSpec[part]; // no rule -- just default values
@@ -80,3 +65,23 @@ export function parseLegend(model: UnitModel, channel: Channel): VgLegend {
 
   return def;
 }
+
+function getSpecifiedOrDefaultValue(property: keyof VgLegend, specifiedLegend: Legend, channel: Channel, model: Model) {
+  const fieldDef = model.fieldDef(channel);
+  const config = model.config();
+
+  switch (property) {
+    case 'format':
+      return numberFormat(fieldDef, specifiedLegend.format, config, channel);
+    case 'title':
+      return rules.title(specifiedLegend, fieldDef, config);
+    case 'values':
+      return rules.values(specifiedLegend);
+    case 'type':
+      rules.type(specifiedLegend, fieldDef, channel);
+  }
+
+  // Otherwise, return specified property.
+  return specifiedLegend[property];
+}
+

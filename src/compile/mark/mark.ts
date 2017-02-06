@@ -1,7 +1,8 @@
-import {X, Y, COLOR, NONSPATIAL_CHANNELS, Channel} from '../../channel';
-import {AREA, LINE, TEXT as TEXTMARK} from '../../mark';
+import {NONSPATIAL_CHANNELS, Channel} from '../../channel';
+import {AREA, LINE} from '../../mark';
 import {contains, without} from '../../util';
 
+import {MarkCompiler} from './base';
 import {area} from './area';
 import {bar} from './bar';
 import {line} from './line';
@@ -14,7 +15,7 @@ import {tick} from './tick';
 import {FacetModel} from '../facet';
 import {UnitModel} from '../unit';
 
-const markCompiler = {
+const markCompiler: {[type: string]: MarkCompiler} = {
   area: area,
   bar: bar,
   line: line,
@@ -57,11 +58,11 @@ function parsePathMark(model: UnitModel) {
   let pathMarks: any = [
     {
       name: model.name('marks'),
-      type: markCompiler[mark].markType(),
+      type: markCompiler[mark].vgMark,
       // If has subfacet for line/area group, need to use faceted data from below.
       // FIXME: support sorting path order (in connected scatterplot)
       from: {data: (details.length > 0 ? FACETED_PATH_PREFIX : '') + dataFrom(model)},
-      encode: { update: markCompiler[mark].encodeEntry(model) }
+      encode: {update: markCompiler[mark].encodeEntry(model)}
     }
   ];
 
@@ -80,8 +81,8 @@ function parsePathMark(model: UnitModel) {
       },
       encode: {
         update: {
-          width: { field: { group: 'width' } },
-          height: { field: { group: 'height' } }
+          width: {field: { group: 'width' }},
+          height: {field: { group: 'height' }}
         }
       },
       marks: pathMarks
@@ -94,27 +95,16 @@ function parsePathMark(model: UnitModel) {
 function parseNonPathMark(model: UnitModel) {
   const mark = model.mark();
 
+  const role = markCompiler[mark].role;
+
   let marks: any[] = []; // TODO: vgMarks
-  if (mark === TEXTMARK &&
-    model.channelHasField(COLOR) &&
-    model.config().text.applyColorToBackground &&
-    !model.channelHasField(X) &&
-    !model.channelHasField(Y)
-  ) {
-    // add background to 'text' marks if has color
-    marks.push({
-      name: model.name('background'),
-      type: 'rect',
-      from: {data: dataFrom(model)},
-      encode: { update: text.background(model) }
-    });
-  }
 
   // TODO: for non-stacked plot, map order to zindex. (Maybe rename order for layer to zindex?)
 
   marks.push({
     name: model.name('marks'),
-    type: markCompiler[mark].markType(),
+    type: markCompiler[mark].vgMark,
+    ...(role? {role} : {}),
     from: {data: dataFrom(model)},
     encode: { update: markCompiler[mark].encodeEntry(model)}
   });

@@ -33,7 +33,8 @@ describe('FacetModel', function() {
             shape: {field: 'a', type: 'quantitative'}
           }) as Facet, // Cast to allow invalid facet type for test
           spec: {
-            mark: 'point'
+            mark: 'point',
+            encoding: {}
           }
         });
         assert.equal(model.facet()['shape'], undefined);
@@ -48,7 +49,8 @@ describe('FacetModel', function() {
             row: {type: 'ordinal'}
           },
           spec: {
-            mark: 'point'
+            mark: 'point',
+            encoding: {}
           }
         });
         assert.equal(model.facet().row, undefined);
@@ -63,7 +65,8 @@ describe('FacetModel', function() {
             row: {field: 'a', type: 'quantitative'}
           },
           spec: {
-            mark: 'point'
+            mark: 'point',
+            encoding: {}
           }
         });
         assert.deepEqual(model.facet().row, {field: 'a', type: 'quantitative'});
@@ -183,7 +186,8 @@ describe('compile/facet', () => {
           row: {field: 'a', type: 'ordinal'}
         },
         spec: {
-          mark: 'point'
+          mark: 'point',
+          encoding: {}
         }
       });
 
@@ -211,7 +215,8 @@ describe('compile/facet', () => {
           column: {field: 'a', type: 'ordinal'}
         },
         spec: {
-          mark: 'point'
+          mark: 'point',
+          encoding: {}
         }
       });
 
@@ -240,7 +245,8 @@ describe('compile/facet', () => {
           row: {field: 'b', type: 'ordinal'}
         },
         spec: {
-          mark: 'point'
+          mark: 'point',
+          encoding: {}
         }
       });
 

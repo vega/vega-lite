@@ -6,7 +6,7 @@ import {parseLayerModel} from '../util';
 
 describe('Layer', function() {
   it('should say it is layer', function() {
-    const model = new LayerModel({layers: []} as LayerSpec, null, null);
+    const model = new LayerModel({layer: []} as LayerSpec, null, null);
     assert(!model.isUnit());
     assert(!model.isFacet());
     assert(model.isLayer());
@@ -15,7 +15,7 @@ describe('Layer', function() {
   describe('merge scale domains', () => {
     it('should merge domains', () => {
       const model = parseLayerModel({
-        layers: [{
+        layer: [{
           mark: 'point',
           encoding: {
             x: {field: 'a', type: 'ordinal'}
@@ -44,7 +44,7 @@ describe('Layer', function() {
 
     it('should merge unioned domains', () => {
       const model = parseLayerModel({
-        layers: [{
+        layer: [{
           mark: 'point',
           encoding: {
             x: {bin: true, field: 'a', type: 'quantitative'}
@@ -76,7 +76,7 @@ describe('Layer', function() {
 
     it('should unioned explicit and referenced domains', () => {
       const model = parseLayerModel({
-        layers: [{
+        layer: [{
           mark: 'point',
           encoding: {
             x: {scale: {domain: [1, 2, 3]}, field: 'b', type: 'ordinal'}

@@ -11,9 +11,8 @@ import {MarkCompiler} from './base';
 import * as ref from './valueref';
 
 export const tick: MarkCompiler = {
-  markType: () => {
-    return 'rect';
-  },
+  vgMark: 'rect',
+  role: 'tick',
 
   encodeEntry: (model: UnitModel) => {
     let e: VgEncodeEntry = {};
@@ -27,9 +26,9 @@ export const tick: MarkCompiler = {
 
     if (config.mark.orient === 'horizontal') {
       e.width = size(model.encoding().size, model.scaleName(SIZE), model.scale(SIZE), config, (model.scale(X) || {}).rangeStep);
-      e.height = { value: config.tick.thickness };
+      e.height = {value: config.tick.thickness};
     } else {
-      e.width = { value: config.tick.thickness };
+      e.width = {value: config.tick.thickness};
       e.height = size(model.encoding().size, model.scaleName(SIZE), model.scale(SIZE), config, (model.scale(Y) || {}).rangeStep);
     }
 

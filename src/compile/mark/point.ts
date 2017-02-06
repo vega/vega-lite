@@ -34,33 +34,30 @@ function encodeEntry(model: UnitModel, fixedShape?: string) {
 function shape(shapeDef: LegendFieldDef, scaleName: string, scale: Scale, pointConfig: PointConfig, fixedShape?: string): VgValueRef {
   // shape
   if (fixedShape) { // square and circle marks
-    return { value: fixedShape };
+    return {value: fixedShape};
   }
   return ref.midPoint(SHAPE, shapeDef, scaleName, scale, {value: pointConfig.shape});
 }
 
 export const point: MarkCompiler = {
-  markType: () => {
-    return 'symbol';
-  },
+  vgMark: 'symbol',
+  role: 'point',
   encodeEntry: (model: UnitModel) => {
     return encodeEntry(model);
   }
 };
 
 export const circle: MarkCompiler = {
-  markType: () => {
-    return 'symbol';
-  },
+  vgMark: 'symbol',
+  role: 'circle',
   encodeEntry: (model: UnitModel) => {
     return encodeEntry(model, 'circle');
   }
 };
 
 export const square: MarkCompiler = {
-  markType: () => {
-    return 'symbol';
-  },
+  vgMark: 'symbol',
+  role: 'square',
   encodeEntry: (model: UnitModel) => {
     return encodeEntry(model, 'square');
   }

@@ -54,23 +54,23 @@ export const AGGREGATE_OPS = [
 ];
 
 /** Additive-based aggregation operations.  These can be applied to stack. */
-export const SUM_OPS = [
-    AggregateOp.COUNT,
-    AggregateOp.SUM,
-    AggregateOp.DISTINCT,
-    AggregateOp.VALID,
-    AggregateOp.MISSING
+export const SUM_OPS: AggregateOp[] = [
+    'count',
+    'sum',
+    'distinct',
+    'valid',
+    'missing'
 ];
 
 /**
  * Aggregation operators that always produce values within the range [domainMin, domainMax].
  */
-export const SHARED_DOMAIN_OPS = [
-    AggregateOp.MEAN,
-    AggregateOp.AVERAGE,
-    AggregateOp.MEDIAN,
-    AggregateOp.Q1,
-    AggregateOp.Q3,
-    AggregateOp.MIN,
-    AggregateOp.MAX,
+export const SHARED_DOMAIN_OPS: AggregateOp[] = [
+    'mean',
+    'average',
+    'median',
+    'q1',
+    'q3',
+    'min',
+    'max',
 ];

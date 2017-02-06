@@ -5,14 +5,10 @@ import {parseUnitModel} from '../../util';
 import {extend} from '../../../src/util';
 import {X, Y, COLOR} from '../../../src/channel';
 import {area} from '../../../src/compile/mark/area';
-import {ExtendedUnitSpec} from '../../../src/spec';
+import {UnitSpec} from '../../../src/spec';
 
 describe('Mark: Area', function() {
-  it('should return the correct mark type', function() {
-    assert.equal(area.markType(), 'area');
-  });
-
-  function verticalArea(moreEncoding = {}): ExtendedUnitSpec {
+  function verticalArea(moreEncoding = {}): UnitSpec {
     return {
       "mark": "area",
       "encoding": extend(
@@ -104,7 +100,7 @@ describe('Mark: Area', function() {
     });
   });
 
-  function horizontalArea(moreEncoding = {}): ExtendedUnitSpec {
+  function horizontalArea(moreEncoding = {}): UnitSpec {
     return {
       "mark": "area",
       "encoding": extend(
@@ -211,8 +207,8 @@ describe('Mark: Area', function() {
       });
       const props = area.encodeEntry(model);
       assert.deepEqual(props.x, { scale: 'x', field: 'year_Year'});
-      assert.deepEqual(props.y, { scale: 'y', field: 'min_Weight_in_lbs' });
-      assert.deepEqual(props.y2, { scale: 'y', field: 'max_Weight_in_lbs' });
+      assert.deepEqual(props.y, {scale: 'y', field: 'min_Weight_in_lbs'});
+      assert.deepEqual(props.y2, {scale: 'y', field: 'max_Weight_in_lbs'});
     });
 
     it ('horizontal area should work with aggregate', function() {
@@ -227,8 +223,8 @@ describe('Mark: Area', function() {
       });
       const props = area.encodeEntry(model);
       assert.deepEqual(props.y, { scale: 'y', field: 'year_Year'});
-      assert.deepEqual(props.x, { scale: 'x', field: 'min_Weight_in_lbs' });
-      assert.deepEqual(props.x2, { scale: 'x', field: 'max_Weight_in_lbs' });
+      assert.deepEqual(props.x, {scale: 'x', field: 'min_Weight_in_lbs'});
+      assert.deepEqual(props.x2, {scale: 'x', field: 'max_Weight_in_lbs'});
     });
   });
 });

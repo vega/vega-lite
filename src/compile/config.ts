@@ -13,7 +13,7 @@ import {contains, extend, Dict} from '../util';
 /**
  * Augment config.mark with rule-based default values.
  */
-export function initMarkConfig(mark: Mark, encoding: Encoding, scale: Dict<Scale>, stacked: StackProperties, config: Config) {
+export function initMarkConfig(mark: Mark, encoding: Encoding, scale: Dict<Scale>, stacked: StackProperties, config: Config): MarkConfig {
   // override mark config with mark specific config
   const markConfig = extend({}, config.mark, config[mark]);
 

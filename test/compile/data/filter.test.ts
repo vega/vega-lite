@@ -17,7 +17,9 @@ describe('compile/data/filter', () => {
             'datum["x"]===5',
             {field: 'x', range: [null, null]},
           ]
-        }
+        },
+        mark: 'point',
+        encoding: {}
       });
       const expr = filter.parseUnit(model);
       assert.equal(expr, '(datum["color"]==="red") && ' +
@@ -32,7 +34,9 @@ describe('compile/data/filter', () => {
         "data": {"values": []},
         "transform": {
           "filter": 'datum["x"]===5'
-        }
+        },
+        mark: 'point',
+        encoding: {}
       });
       const expr = filter.parseUnit(model);
       assert.equal(expr, 'datum["x"]===5');

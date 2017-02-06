@@ -69,18 +69,7 @@ export function isContinuousToContinuous(type: ScaleType): type is 'linear' | 'l
   return type in CONTINUOUS_TO_CONTINUOUS_INDEX;
 }
 
-export namespace NiceTime {
-  export const SECOND: 'second' = 'second';
-  export const MINUTE: 'minute' = 'minute';
-  export const HOUR: 'hour' = 'hour';
-  export const DAY: 'day' = 'day';
-  export const WEEK: 'week' = 'week';
-  export const MONTH: 'month' = 'month';
-  export const YEAR: 'year' = 'year';
-}
-
-export type NiceTime = typeof NiceTime.SECOND | typeof NiceTime.MINUTE | typeof NiceTime.HOUR
-  | typeof NiceTime.DAY | typeof NiceTime.WEEK | typeof NiceTime.MONTH | typeof NiceTime.YEAR;
+export type NiceTime = 'second' | 'minute' | 'hour' | 'day' | 'week' | 'month' | 'year';
 
 export interface ScaleConfig {
   /**
@@ -262,6 +251,9 @@ export interface Scale {
    */
   zero?: boolean;
 
+  // FIXME: Add description
+  interpolate?: 'rgb'| 'lab' | 'hcl' | 'hsl' | 'hsl-long' | 'hcl-long' | 'cubehelix' | 'cubehelix-long';
+
   // Vega-Lite only
   /**
    * Uses the source data range as scale domain instead of aggregated data for aggregate axis.
@@ -270,10 +262,9 @@ export interface Scale {
   useRawDomain?: boolean;
 }
 
-export const SCALE_PROPERTIES = [
+export const SCALE_PROPERTIES:(keyof Scale)[]= [
   'type', 'domain', 'range', 'round', 'rangeStep', 'scheme', 'padding', 'clamp', 'nice',
-  'exponent', 'zero',
-  // TODO: add interpolate here
+  'exponent', 'zero', 'interpolate',
   // FIXME: determine if 'useRawDomain' should really be included here
   'useRawDomain'
 ];
@@ -285,6 +276,8 @@ export function scaleTypeSupportProperty(scaleType: ScaleType, propName: string)
     case 'range':
     case 'scheme':
       return true;
+    case 'interpolate':
+      return scaleType === 'linear';
     case 'round':
       return isContinuousToContinuous(scaleType) || scaleType === 'band' || scaleType === 'point';
     case 'rangeStep':
@@ -343,9 +336,10 @@ export function channelScalePropertyIncompatability(channel: Channel, propName: 
         return log.message.CANNOT_USE_PADDING_WITH_FACET;
       }
       return undefined; // GOOD!
+    case 'interpolate':
     case 'scheme':
       if (channel !== 'color') {
-        return log.message.CANNOT_USE_SCHEME_WITH_NON_COLOR;
+        return log.message.CANNOT_USE_SCALE_PROPERTY_WITH_NON_COLOR(channel);
       }
       return undefined;
     case 'type':

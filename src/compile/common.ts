@@ -1,6 +1,5 @@
 import * as log from '../log';
 
-import {AggregateOp} from '../aggregate';
 import {TEXT, Channel} from '../channel';
 import {Config, CellConfig} from '../config';
 import {FieldDef, OrderFieldDef, field} from '../fielddef';
@@ -14,11 +13,11 @@ import {LayerModel} from './layer';
 import {Model} from './model';
 import {formatExpression} from '../timeunit';
 import {UnitModel} from './unit';
-import {Spec, isUnitSpec, isSomeFacetSpec, isLayerSpec} from '../spec';
+import {Spec, isUnitSpec, isFacetSpec, isLayerSpec} from '../spec';
 import {VgEncodeEntry, VgSort} from '../vega.schema';
 
 export function buildModel(spec: Spec, parent: Model, parentGivenName: string): Model {
-  if (isSomeFacetSpec(spec)) {
+  if (isFacetSpec(spec)) {
     return new FacetModel(spec, parent, parentGivenName);
   }
 
@@ -39,7 +38,7 @@ export function applyConfig(e: VgEncodeEntry,
   propsList.forEach(function(property) {
     const value = config[property];
     if (value !== undefined) {
-      e[property] = { value: value };
+      e[property] = {value: value};
     }
   });
   return e;
@@ -60,7 +59,7 @@ export function numberFormat(fieldDef: FieldDef, format: string, config: Config,
 
     if (format) {
       return format;
-    } else if (fieldDef.aggregate === AggregateOp.COUNT && channel === TEXT) {
+    } else if (fieldDef.aggregate === 'count' && channel === TEXT) {
       // FIXME: need a more holistic way to deal with this.
       return 'd';
     }

@@ -1,6 +1,6 @@
 import * as log from '../log';
 
-import {AxisOrient, Axis} from '../axis';
+import {Axis} from '../axis';
 import {COLUMN, ROW, X, Y, Channel} from '../channel';
 import {defaultConfig, Config} from '../config';
 import {Facet} from '../facet';
@@ -121,11 +121,11 @@ export class FacetModel extends Model {
 
           if (channel === ROW) {
             const yAxis: any = child.axis(Y);
-            if (yAxis && yAxis.orient !== AxisOrient.RIGHT && !modelAxis.orient) {
-              modelAxis.orient = AxisOrient.RIGHT;
+            if (yAxis && yAxis.orient !== 'right' && !modelAxis.orient) {
+              modelAxis.orient = 'right';
             }
             if (model.hasDescendantWithFieldOnChannel(X) && !modelAxis.labelAngle) {
-              modelAxis.labelAngle = modelAxis.orient === AxisOrient.RIGHT ? 90 : 270;
+              modelAxis.labelAngle = modelAxis.orient === 'right' ? 90 : 270;
             }
           }
         }
@@ -287,8 +287,8 @@ export class FacetModel extends Model {
     const child = this.child();
 
     this.component.gridGroup = extend(
-      !child.channelHasField(X) && this.channelHasField(COLUMN) ? { column: getColumnGridGroups(this) } : {},
-      !child.channelHasField(Y) && this.channelHasField(ROW) ? { row: getRowGridGroups(this) } : {}
+      !child.channelHasField(X) && this.channelHasField(COLUMN) ? {column: getColumnGridGroups(this)} : {},
+      !child.channelHasField(Y) && this.channelHasField(ROW) ? {row: getRowGridGroups(this)} : {}
     );
   }
 
@@ -529,8 +529,8 @@ function getRowGridGroups(model: Model): any[] { // TODO: VgMarks
         },
         x: {value: 0, offset: -facetGridConfig.offset },
         x2: {field: {group: 'width'}, offset: facetGridConfig.offset },
-        stroke: { value: facetGridConfig.color },
-        strokeOpacity: { value: facetGridConfig.opacity },
+        stroke: {value: facetGridConfig.color},
+        strokeOpacity: {value: facetGridConfig.opacity},
         strokeWidth: {value: 0.5}
       }
     }
@@ -544,8 +544,8 @@ function getRowGridGroups(model: Model): any[] { // TODO: VgMarks
         y: { field: {group: 'height'}},
         x: {value: 0, offset: -facetGridConfig.offset },
         x2: {field: {group: 'width'}, offset: facetGridConfig.offset },
-        stroke: { value: facetGridConfig.color },
-        strokeOpacity: { value: facetGridConfig.opacity },
+        stroke: {value: facetGridConfig.color},
+        strokeOpacity: {value: facetGridConfig.opacity},
         strokeWidth: {value: 0.5}
       }
     }
@@ -569,8 +569,8 @@ function getColumnGridGroups(model: Model): any { // TODO: VgMarks
         },
         y: {value: 0, offset: -facetGridConfig.offset},
         y2: {field: {group: 'height'}, offset: facetGridConfig.offset },
-        stroke: { value: facetGridConfig.color },
-        strokeOpacity: { value: facetGridConfig.opacity },
+        stroke: {value: facetGridConfig.color},
+        strokeOpacity: {value: facetGridConfig.opacity},
         strokeWidth: {value: 0.5}
       }
     }
@@ -584,8 +584,8 @@ function getColumnGridGroups(model: Model): any { // TODO: VgMarks
         x: { field: {group: 'width'}},
         y: {value: 0, offset: -facetGridConfig.offset},
         y2: {field: {group: 'height'}, offset: facetGridConfig.offset },
-        stroke: { value: facetGridConfig.color },
-        strokeOpacity: { value: facetGridConfig.opacity },
+        stroke: {value: facetGridConfig.color},
+        strokeOpacity: {value: facetGridConfig.opacity},
         strokeWidth: {value: 0.5}
       }
     }

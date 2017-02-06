@@ -6,9 +6,6 @@ import {X, Y, COLOR} from '../../../src/channel';
 import {rule} from '../../../src/compile/mark/rule';
 
 describe('Mark: Rule', function() {
-  it('should return the correct mark type', function() {
-    assert.equal(rule.markType(), 'rule');
-  });
 
   describe('with x-only', () => {
     const model = parseUnitModel({
@@ -35,8 +32,8 @@ describe('Mark: Rule', function() {
 
     it('should create horizontal rule that fits height', function() {
       assert.deepEqual(props.y, {scale: Y, field: 'a'});
-      assert.deepEqual(props.x, { value: 0 });
-      assert.deepEqual(props.x2, { field: { group: 'width' } });
+      assert.deepEqual(props.x, {value: 0});
+      assert.deepEqual(props.x2, {field: {group: 'width'}});
     });
   });
 
@@ -54,7 +51,7 @@ describe('Mark: Rule', function() {
     it('should create horizontal rule on the axis', function() {
       assert.deepEqual(props.x, {scale: X, field: 'a'});
       assert.deepEqual(props.x2, {scale: X, field: 'a2'});
-      assert.deepEqual(props.y, { field: { group: 'height' } });
+      assert.deepEqual(props.y, {field: {group: 'height'}});
     });
   });
 

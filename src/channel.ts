@@ -4,6 +4,7 @@
  */
 
 import {Encoding} from './encoding';
+import {Facet} from './facet';
 import {Mark} from './mark';
 import {ScaleType, SCALE_TYPES} from './scale';
 import {contains, toSet, without} from './util';
@@ -31,7 +32,7 @@ export namespace Channel {
   export const DETAIL: 'detail' = 'detail';
 }
 
-export type Channel = keyof Encoding;
+export type Channel = keyof Encoding | keyof Facet;
 
 export const X = Channel.X;
 export const Y = Channel.Y;
