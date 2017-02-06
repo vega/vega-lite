@@ -338,10 +338,8 @@ export function channelScalePropertyIncompatability(channel: Channel, propName: 
       return undefined; // GOOD!
     case 'interpolate':
     case 'scheme':
-      if (propName === 'scheme' && channel !== 'color') {
-        return log.message.CANNOT_USE_SCHEME_WITH_NON_COLOR;
-      } else if (propName === 'interpolate' && channel !== 'color') {
-        return log.message.CANNOT_USE_INTERPOLATE_WITH_NON_COLOR;
+      if (channel !== 'color') {
+        return log.message.CANNOT_USE_SCALE_PROPERTY_WITH_NON_COLOR(channel);
       }
       return undefined;
     case 'type':

@@ -145,9 +145,9 @@ export namespace message {
   // SCALE
   export const CANNOT_UNION_CUSTOM_DOMAIN_WITH_FIELD_DOMAIN = 'custom domain scale cannot be unioned with default field-based domain';
 
-  export const CANNOT_USE_INTERPOLATE_WITH_NON_COLOR = 'Cannot use interpolate with non-color channel.';
-
-  export const CANNOT_USE_SCHEME_WITH_NON_COLOR = 'Cannot use scheme with non-color channel.';
+  export function CANNOT_USE_SCALE_PROPERTY_WITH_NON_COLOR(prop: string) {
+    return 'Cannot use ' + prop + ' with non-color channel.';
+  }
 
   export const CANNOT_USE_RANGE_WITH_POSITION =
     'Cannot use custom range with x or y channel.  Please customize width, height, padding, or rangeStep instead.';
