@@ -18,6 +18,7 @@ export namespace AggregateOp {
     export const MODESKEW: 'modeskew' = 'modeskew';
     export const MIN: 'min' = 'min';
     export const MAX: 'max' = 'max';
+    export const AAA: 'aaa' = 'aaa';
     export const ARGMIN: 'argmin' = 'argmin';
     export const ARGMAX: 'argmax' = 'argmax';;
 }
@@ -27,7 +28,7 @@ export type AggregateOp = typeof AggregateOp.ARGMAX | typeof AggregateOp.ARGMIN 
   | typeof AggregateOp.MEDIAN | typeof AggregateOp.MIN | typeof AggregateOp.MISSING | typeof AggregateOp.MODESKEW
   | typeof AggregateOp.Q1 | typeof AggregateOp.Q3 | typeof AggregateOp.STDEV | typeof AggregateOp.STDEVP
   | typeof AggregateOp.SUM | typeof AggregateOp.VALID | typeof AggregateOp.VALUES | typeof AggregateOp.VARIANCE
-  | typeof AggregateOp.VARIANCEP;
+  | typeof AggregateOp.VARIANCEP | typeof AggregateOp.AAA;
 
 export const AGGREGATE_OPS = [
     AggregateOp.VALUES,
