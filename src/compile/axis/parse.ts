@@ -1,4 +1,4 @@
-import {Axis} from '../../axis';
+import {Axis, AXIS_PROPERTIES} from '../../axis';
 import {Channel} from '../../channel';
 import {VgAxis} from '../../vega.schema';
 
@@ -75,17 +75,18 @@ function parseAxis(channel: Channel, model: Model, isGridAxis: boolean): VgAxis 
   };
 
   // 1.2. Add properties
-  [
-    // a) properties with special rules (so it has axis[property] methods) -- call rule functions
-    'domain', 'format', 'labels', 'grid', 'gridScale', 'orient', 'ticks', 'tickSize', 'tickCount',  'title', 'values', 'zindex',
-    // b) properties without rules, only produce default values in the schema, or explicit value if specified
-     'offset', 'subdivide', 'tickPadding', 'tickSize', 'tickSizeEnd', 'tickSizeMajor', 'tickSizeMinor', 'titleOffset'
-  ].forEach(function(property) {
+  AXIS_PROPERTIES.forEach(function(property) {
     const value = getSpecifiedOrDefaultValue(property, axis, channel, model, isGridAxis);
     if (value !== undefined) {
       vgAxis[property] = value;
     }
   });
+
+  // Special case for gridScale since gridScale is not a Vega-Lite Axis property.
+  const gridScale = getSpecifiedOrDefaultValue('gridScale', axis, channel, model, isGridAxis);
+  if (gridScale !== undefined) {
+      vgAxis.gridScale = gridScale;
+  }
 
   // 2) Add guide encode definition groups
 
