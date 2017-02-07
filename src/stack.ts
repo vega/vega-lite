@@ -40,12 +40,9 @@ export interface StackProperties {
 export const STACKABLE_MARKS = [BAR, AREA, RULE, POINT, CIRCLE, SQUARE, LINE, TEXT, TICK];
 export const STACK_BY_DEFAULT_MARKS = [BAR, AREA];
 
-export function stack(mark: Mark, encoding: Encoding, stacked: StackOffset): StackProperties {
-  // Should not have stack explicitly disabled
-  if (contains<string | boolean>(['none', null, false], stacked)) {
-    return null;
-  }
-
+// Note: CompassQL uses this method and only pass in required properties of each argument object.
+// If required properties change, make sure to update CompassQL.
+export function stack(mark: Mark, encoding: Encoding, stackConfig: StackOffset): StackProperties {
   // Should have stackable mark
   if (!contains(STACKABLE_MARKS, mark)) {
     return null;
@@ -88,12 +85,17 @@ export function stack(mark: Mark, encoding: Encoding, stacked: StackOffset): Sta
     const fieldChannelAggregate = fieldDef.aggregate;
     const fieldChannelScale = fieldDef.scale;
 
-    if (contains(STACK_BY_DEFAULT_MARKS, mark)) {
+    let stackOffset: StackOffset = null;
+    if (fieldDef.stack !== undefined) {
+      stackOffset = fieldDef.stack;
+    } else if (contains(STACK_BY_DEFAULT_MARKS, mark)) {
       // Bar and Area with sum ops are automatically stacked by default
-      stacked = stacked === undefined ? 'zero' : stacked;
+      stackOffset = stackConfig === undefined ? 'zero' : stackConfig;
+    } else {
+      stackOffset = stackConfig;
     }
 
-    if (!stacked) {
+    if (!stackOffset || stackOffset === 'none') {
       return null;
     }
 
@@ -117,7 +119,7 @@ export function stack(mark: Mark, encoding: Encoding, stacked: StackOffset): Sta
       groupbyChannel: xIsAggregate ? (hasYField ? Y : null) : (hasXField ? X : null),
       fieldChannel: fieldChannel,
       stackBy: stackBy,
-      offset: stacked
+      offset: stackOffset
     };
   }
   return null;
