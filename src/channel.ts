@@ -6,6 +6,7 @@
 import {Encoding} from './encoding';
 import {Facet} from './facet';
 import {Mark} from './mark';
+import {RangeType} from './compile/scale/type';
 import {ScaleType, SCALE_TYPES} from './scale';
 import {contains, toSet, without} from './util';
 
@@ -179,21 +180,50 @@ const POSITION_SCALE_TYPE_INDEX = toSet(without(SCALE_TYPES, ['ordinal', 'sequen
 
 export function supportScaleType(channel: Channel, scaleType: ScaleType): boolean {
   switch (channel) {
-    case 'row':
-    case 'column':
+    case ROW:
+    case COLUMN:
       return scaleType === 'band'; // row / column currently supports band only
-    case 'x':
-    case 'y':
-    case 'size': // TODO: size and opacity can support ordinal with more modification
-    case 'opacity':
+    case X:
+    case Y:
+    case SIZE: // TODO: size and opacity can support ordinal with more modification
+    case OPACITY:
       // Although it generally doesn't make sense to use band with size and opacity,
       // it can also work since we use band: 0.5 to get midpoint.
       return scaleType in POSITION_SCALE_TYPE_INDEX;
-    case 'color':
+    case COLOR:
       return scaleType !== 'band';    // band does not make sense with color
-    case 'shape':
+    case SHAPE:
       return scaleType === 'ordinal'; // shape = lookup only
   }
   /* istanbul ignore next: it should never reach here */
   return false;
+}
+
+export function getRangeType(channel: Channel): RangeType {
+  switch (channel) {
+    case X:
+    case Y:
+    case ROW:
+    case COLUMN:
+    case SIZE:
+    case OPACITY:
+      return 'continuous';
+
+    case SHAPE:
+      return 'discrete';
+
+    // Color can be either continuous or discrete, depending on scale type.
+    case COLOR:
+      return 'flexible';
+
+    // No scale, no range type.
+    case X2:
+    case Y2:
+    case DETAIL:
+    case TEXT:
+    case ORDER:
+      return undefined;
+  }
+  /* istanbul ignore next: should never reach here. */
+  throw new Error('getSupportedRole not implemented for ' + channel);
 }
