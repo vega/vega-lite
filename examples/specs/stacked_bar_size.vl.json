@@ -1,4 +1,5 @@
 {
+  "$schema": "https://vega.github.io/schema/vega-lite/v2.json",
   "data": {"url": "data/seattle-weather.csv", "format": {"type": "csv"}},
   "mark": "bar",
   "config": {

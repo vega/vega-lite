@@ -1,4 +1,5 @@
 {
+  "$schema": "https://vega.github.io/schema/vega-lite/v2.json",
   "data": {"url": "data/stocks.csv", "format": {"type": "csv"}},
   "transform": {"filter": "datum.symbol==='GOOG'"},
   "mark": "line",

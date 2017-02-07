@@ -1,4 +1,5 @@
 {
+  "$schema": "https://vega.github.io/schema/vega-lite/v2.json",
   "description": "Stock price average broken down by quarter.",
   "data": {"url": "data/stocks.csv"},
   "mark": "line",
