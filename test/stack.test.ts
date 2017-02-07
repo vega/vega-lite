@@ -122,6 +122,29 @@ describe('stack', () => {
     });
   });
 
+  it('can enabled if one of the stackby channels is not aggregated', () => {
+    [undefined, 'center', 'zero', 'normalize'].forEach((stacked: StackOffset) => {
+      const marks = stacked === undefined ? STACK_BY_DEFAULT_MARKS : STACKABLE_MARKS;
+      marks.forEach((mark) => {
+        const spec: UnitSpec = {
+          "data": {"url": "data/barley.json"},
+          "mark": mark,
+          "encoding": {
+            "x": {"aggregate": "sum", "field": "yield", "type": "quantitative", "stack": stacked},
+            "y": {"field": "variety", "type": "nominal"},
+            "color": {"aggregate": "count", "field": "*", "type": "quantitative"},
+            "detail": {"field": "site", "type": "nominal"}
+          }
+        };
+
+        const _stack = stack(spec.mark, spec.encoding, undefined);
+        assert.isOk(_stack);
+        assert.isTrue(isStacked(spec));
+        assert.equal(_stack.stackBy[0].channel, DETAIL);
+      });
+    });
+  });
+
   it('should always be disabled if both x and y are aggregate', () => {
     [undefined, 'center', 'none', 'zero', 'normalize'].forEach((stacked: StackOffset) => {
       PRIMITIVE_MARKS.forEach((mark) => {

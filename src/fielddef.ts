@@ -8,6 +8,7 @@ import {Config} from './config';
 import {Legend} from './legend';
 import * as log from './log';
 import {Scale} from './scale';
+import {StackOffset} from './stack';
 import {SortField, SortOrder} from './sort';
 import {TimeUnit} from './timeunit';
 import {Type, NOMINAL, ORDINAL, QUANTITATIVE, TEMPORAL, getFullName} from './type';
@@ -76,6 +77,12 @@ export interface PositionFieldDef extends ScaleFieldDef {
    * @nullable
    */
   axis?: Axis;
+
+  /**
+   * Type of stacking offset if the field should be stacked.
+   * "none" or null, if the field should not be stacked.
+   */
+  stack?: StackOffset;
 }
 export interface LegendFieldDef extends ScaleFieldDef {
    /**

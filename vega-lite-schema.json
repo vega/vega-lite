@@ -2457,6 +2457,10 @@
                         }
                     ]
                 },
+                "stack": {
+                    "$ref": "#/definitions/StackOffset",
+                    "description": "Type of stacking offset if the field should be stacked.\n\"none\" or null, if the field should not be stacked."
+                },
                 "timeUnit": {
                     "$ref": "#/definitions/TimeUnit",
                     "description": "Time unit for a `temporal` field  (e.g., `year`, `yearmonth`, `month`, `hour`)."
