@@ -12,6 +12,24 @@ import scaleType from './type';
 import * as util from '../../util';
 
 /**
+ * All scale properties except type and all range properties.
+ */
+export const NON_TYPE_RANGE_SCALE_PROPERTIES: (keyof Scale)[] = [
+  // general properties
+  'domain', // For domain, we only copy specified value here.  Default value is determined during parsing phase.
+  'round',
+  // quantitative / time
+  'clamp', 'nice',
+  // quantitative
+  'exponent', 'zero', // zero depends on domain
+  'interpolate',
+  // ordinal
+  'padding', 'paddingInner', 'paddingOuter', // padding
+
+  'useRawDomain'
+];
+
+/**
  * Initialize Vega-Lite Scale's properties
  *
  * Note that we have to apply these rules here because:
@@ -32,20 +50,7 @@ export default function init(
   };
 
   // Use specified value if compatible or determine default values for each property
-  [
-    // general properties
-    'domain', // For domain, we only copy specified value here.  Default value is determined during parsing phase.
-    'round',
-    // quantitative / time
-    'clamp', 'nice',
-    // quantitative
-    'exponent', 'zero', // zero depends on domain
-    'interpolate',
-    // ordinal
-    'padding', 'paddingInner', 'paddingOuter', // padding
-
-    'useRawDomain'
-  ].forEach(function(property) {
+  NON_TYPE_RANGE_SCALE_PROPERTIES.forEach(function(property) {
     const specifiedValue = specifiedScale[property];
 
     let supportedByScaleType = scaleTypeSupportProperty(scale.type, property);
@@ -100,4 +105,3 @@ function getDefaultValue(property: string, scale: Scale, channel: Channel, field
   // Otherwise, use scale config
   return scaleConfig[property];
 }
-

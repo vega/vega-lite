@@ -1,9 +1,20 @@
 import {assert} from 'chai';
 
 import initScale from '../../../src/compile/scale/init';
+import {NON_TYPE_RANGE_SCALE_PROPERTIES} from '../../../src/compile/scale/init';
+
+import {SCALE_PROPERTIES} from '../../../src/scale';
 import {defaultConfig} from '../../../src/config';
+import {toSet, without} from '../../../src/util';
 
 describe('compile/scale', () => {
+  it('NON_TYPE_RANGE_SCALE_PROPERTIES should be SCALE_PROPERTIES wihtout type and range properties', () => {
+    assert.deepEqual(
+      toSet(NON_TYPE_RANGE_SCALE_PROPERTIES),
+      toSet(without(SCALE_PROPERTIES, ['type', 'range', 'rangeStep', 'scheme']))
+    );
+  });
+
   describe('init', () => {
     it('should output only padding without default paddingInner and paddingOuter if padding is specified for a band scale', () => {
       const scale = initScale(

@@ -1,6 +1,6 @@
 import {X, Y, X2, Y2, Channel} from '../../channel';
 import {FieldDef, field} from '../../fielddef';
-import {ScaleType, hasContinuousDomain} from '../../scale';
+import {Scale, ScaleType, hasContinuousDomain} from '../../scale';
 import {isSortField} from '../../sort';
 import {Dict} from '../../util';
 
@@ -46,6 +46,16 @@ export function parseScale(model: Model, channel: Channel) {
   return null;
 }
 
+export const NON_TYPE_DOMAIN_RANGE_VEGA_SCALE_PROPERTIES: (keyof Scale)[] = [
+  'round',
+  // quantitative / time
+  'clamp', 'nice',
+  // quantitative
+  'exponent', 'interpolate', 'zero', // zero depends on domain
+  // ordinal
+  'padding', 'paddingInner', 'paddingOuter', // padding
+];
+
 // TODO: consider return type of this method
 // maybe we should just return domain as we can have the rest of scale (ScaleSignature constant)
 /**
@@ -62,14 +72,7 @@ function parseMainScale(model: Model, channel: Channel) {
     range: parseRange(scale)
   };
 
-  [ 'round',
-    // quantitative / time
-    'clamp', 'nice',
-    // quantitative
-    'exponent', 'zero', // zero depends on domain
-    // ordinal
-    'padding', 'paddingInner', 'paddingOuter', // padding
-  ].forEach((property) => {
+  NON_TYPE_DOMAIN_RANGE_VEGA_SCALE_PROPERTIES.forEach((property) => {
     scaleComponent[property] = scale[property];
   });
 

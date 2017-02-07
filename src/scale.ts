@@ -263,13 +263,13 @@ export interface Scale {
 }
 
 export const SCALE_PROPERTIES:(keyof Scale)[]= [
-  'type', 'domain', 'range', 'round', 'rangeStep', 'scheme', 'padding', 'clamp', 'nice',
+  'type', 'domain', 'range', 'round', 'rangeStep', 'scheme', 'padding', 'paddingInner', 'paddingOuter', 'clamp', 'nice',
   'exponent', 'zero', 'interpolate',
   // FIXME: determine if 'useRawDomain' should really be included here
   'useRawDomain'
 ];
 
-export function scaleTypeSupportProperty(scaleType: ScaleType, propName: string) {
+export function scaleTypeSupportProperty(scaleType: ScaleType, propName: keyof Scale) {
   switch (propName) {
     case 'type':
     case 'domain':
@@ -307,7 +307,7 @@ export function scaleTypeSupportProperty(scaleType: ScaleType, propName: string)
 /**
  * Returns undefined if the input channel supports the input scale property name
  */
-export function channelScalePropertyIncompatability(channel: Channel, propName: string): string {
+export function channelScalePropertyIncompatability(channel: Channel, propName: keyof Scale): string {
   switch (propName) {
     case 'range':
       // User should not customize range for position and facet channel directly.

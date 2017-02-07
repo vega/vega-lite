@@ -3,9 +3,21 @@
 import {assert} from 'chai';
 
 import {parseScale, parseDomain} from '../../../src/compile/scale/parse';
+import {NON_TYPE_DOMAIN_RANGE_VEGA_SCALE_PROPERTIES} from '../../../src/compile/scale/parse';
 import {parseUnitModel} from '../../util';
 
+
+import {SCALE_PROPERTIES} from '../../../src/scale';;
+import {toSet, without} from '../../../src/util';
+
 describe('src/compile', function() {
+  it('NON_TYPE_RANGE_SCALE_PROPERTIES should be SCALE_PROPERTIES wihtout type, domain, useRawDomain, and range properties', () => {
+    assert.deepEqual(
+      toSet(NON_TYPE_DOMAIN_RANGE_VEGA_SCALE_PROPERTIES),
+      toSet(without(SCALE_PROPERTIES, ['type', 'domain', 'useRawDomain', 'range', 'rangeStep', 'scheme']))
+    );
+  });
+
   describe('parseScale', () => {
     describe('x ordinal point', () => {
       it('should create a main x point scale with rangeStep and no range', () => {

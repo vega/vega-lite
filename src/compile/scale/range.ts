@@ -31,6 +31,8 @@ export function parseRange(scale: Scale): VgRange {
   return scale.range;
 }
 
+export const RANGE_PROPERTIES: (keyof Scale)[] = ['range', 'rangeStep', 'scheme'];
+
 /**
  * Return mixins that includes one of the range properties (range, rangeStep, scheme).
  */
@@ -42,7 +44,7 @@ export default function rangeMixins(
 
   // Check if any of the range properties is specified.
   // If so, check if it is compatible and make sure that we only output one of the properties
-  for (let property of ['range', 'rangeStep', 'scheme']) {
+  for (let property of RANGE_PROPERTIES) {
     if (specifiedScale[property] !== undefined) {
       let supportedByScaleType = scaleTypeSupportProperty(scaleType, property);
       const channelIncompatability = channelScalePropertyIncompatability(channel, property);
