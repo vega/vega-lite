@@ -1,6 +1,6 @@
 import * as log from '../../log';
 
-import {hasScale, supportScaleType, Channel} from '../../channel';
+import {hasScale, supportScaleType, getRangeType, Channel} from '../../channel';
 import {Mark} from '../../mark';
 import {ScaleType, ScaleConfig} from '../../scale';
 import {TimeUnit} from '../../timeunit';
@@ -8,6 +8,7 @@ import {Type} from '../../type';
 
 import * as util from '../../util';
 
+export type RangeType = 'continuous' | 'discrete' | 'flexible' | undefined;
 
 /**
  * Determine if there is a specified scale type and if it is appropriate,
@@ -54,7 +55,7 @@ function defaultType(type: Type, channel: Channel, timeUnit: TimeUnit, mark: Mar
 
   switch (type) {
     case 'nominal':
-      if (channel === 'color' || channelRangeType(channel) === 'discrete') {
+      if (channel === 'color' || getRangeType(channel) === 'discrete') {
         return ScaleType.ORDINAL;
       }
       return discreteToContinuousType(channel, mark, hasTopLevelSize, specifiedRangeStep, scaleConfig);
@@ -62,7 +63,7 @@ function defaultType(type: Type, channel: Channel, timeUnit: TimeUnit, mark: Mar
     case 'ordinal':
       if (channel === 'color') {
         return ScaleType.ORDINAL;
-      } else if (channelRangeType(channel) === 'discrete') {
+      } else if (getRangeType(channel) === 'discrete') {
         log.warn(log.message.discreteChannelCannotEncode(channel, 'ordinal'));
         return ScaleType.ORDINAL;
       }
@@ -73,7 +74,7 @@ function defaultType(type: Type, channel: Channel, timeUnit: TimeUnit, mark: Mar
         // Always use `sequential` as the default color scale for continuous data
         // since it supports both array range and scheme range.
         return 'sequential';
-      } else if (channelRangeType(channel) === 'discrete') {
+      } else if (getRangeType(channel) === 'discrete') {
         log.warn(log.message.discreteChannelCannotEncode(channel, 'temporal'));
         // TODO: consider using quantize (equivalent to binning) once we have it
         return ScaleType.ORDINAL;
@@ -93,7 +94,7 @@ function defaultType(type: Type, channel: Channel, timeUnit: TimeUnit, mark: Mar
         // Always use `sequential` as the default color scale for continuous data
         // since it supports both array range and scheme range.
         return 'sequential';
-      } else if (channelRangeType(channel) === 'discrete') {
+      } else if (getRangeType(channel) === 'discrete') {
         log.warn(log.message.discreteChannelCannotEncode(channel, 'quantitative'));
         // TODO: consider using quantize (equivalent to binning) once we have it
         return ScaleType.ORDINAL;
@@ -140,35 +141,4 @@ function haveRangeStep(hasTopLevelSize: boolean, specifiedRangeStep: number, sca
     return specifiedRangeStep !== null;
   }
   return !!scaleConfig.rangeStep;
-}
-
-export function channelRangeType(channel: Channel):
-    'continuous' | 'discrete' | 'flexible' | undefined {
-
-  switch (channel) {
-    case 'x':
-    case 'y':
-    case 'row':
-    case 'column':
-    case 'size':
-    case 'opacity':
-      return 'continuous';
-
-    case 'shape':
-      return 'discrete';
-
-    // Color can be either continuous or discrete, depending on scale type.
-    case 'color':
-      return 'flexible';
-
-    // No scale, no range type.
-    case 'x2':
-    case 'y2':
-    case 'detail':
-    case 'text':
-    case 'order':
-      return undefined;
-  }
-  /* istanbul ignore next: should never reach here. */
-  throw new Error('getSupportedRole not implemented for' + channel);
 }
