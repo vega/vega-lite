@@ -526,8 +526,8 @@ describe('normalizeRangedUnitSpec',  () => {
       "mark": "rule",
       "encoding": {
         "y": {"field": "age","type": "ordinal"},
-        "x": { "aggregate": "min", "field": "people", "type": "quantitative" },
-        "x2": { "aggregate": "max", "field": "people", "type": "quantitative" }
+        "x": {"aggregate": "min", "field": "people", "type": "quantitative"},
+        "x2": {"aggregate": "max", "field": "people", "type": "quantitative"}
       }
     };
 

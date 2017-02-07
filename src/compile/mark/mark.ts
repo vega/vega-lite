@@ -81,8 +81,8 @@ function parsePathMark(model: UnitModel) {
       },
       encode: {
         update: {
-          width: {field: { group: 'width' }},
-          height: {field: { group: 'height' }}
+          width: {field: {group: 'width'}},
+          height: {field: {group: 'height'}}
         }
       },
       marks: pathMarks
