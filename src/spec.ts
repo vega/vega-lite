@@ -79,10 +79,12 @@ export interface GenericUnitSpec<M, E extends Encoding> extends BaseSpec {
 
 export type UnitSpec = GenericUnitSpec<Mark, Encoding>;
 
+export type LayeredUnitSpec = GenericUnitSpec<AnyMark, Encoding>;
+
 
 export type FacetedUnitSpec = GenericUnitSpec<AnyMark, EncodingWithFacet>;
 
-export interface GenericLayerSpec<M, E> extends BaseSpec {
+export interface GenericLayerSpec<U> extends BaseSpec {
   // FIXME description for top-level width
   width?: number;
 
@@ -93,30 +95,30 @@ export interface GenericLayerSpec<M, E> extends BaseSpec {
    * Unit specs that will be layered.
    */
   // TODO: support layer of layer
-  layer: (GenericLayerSpec<M, E> | GenericUnitSpec<M, E>)[];
+  layer: (GenericLayerSpec<U> | U)[];
 }
 
-export type LayerSpec = GenericLayerSpec<Mark, Encoding>;
+export type LayerSpec = GenericLayerSpec<UnitSpec>;
 
-export interface GenericFacetSpec<M, E> extends BaseSpec {
+export interface GenericFacetSpec<U> extends BaseSpec {
   facet: Facet;
 
   // TODO: support facet of facet
-  spec: GenericLayerSpec<M, E> | GenericUnitSpec<M, E>;
+  spec: GenericLayerSpec<U> | U;
 }
 
-export type FacetSpec = GenericFacetSpec<Mark, Encoding>;
-export type ExtendedFacetSpec = GenericFacetSpec<AnyMark, EncodingWithFacet>;
+export type FacetSpec = GenericFacetSpec<UnitSpec>;
+export type ExtendedFacetSpec = GenericFacetSpec<FacetedUnitSpec>;
 
-export type GenericSpec<M, E> = GenericUnitSpec<M, E> | GenericLayerSpec<M, E> | GenericFacetSpec<M, E>;
+export type GenericSpec<U> = U | GenericLayerSpec<U> | GenericFacetSpec<U>;
 
-export type ExtendedSpec = GenericSpec<AnyMark, EncodingWithFacet>;
-export type Spec = GenericSpec<Mark, Encoding>;
+export type ExtendedSpec = GenericSpec<FacetedUnitSpec>;
+export type Spec = GenericSpec<UnitSpec>;
 
 /* Custom type guards */
 
 
-export function isFacetSpec(spec: GenericSpec<AnyMark,any>): spec is GenericFacetSpec<AnyMark, any> {
+export function isFacetSpec(spec: GenericSpec<GenericUnitSpec<any, any>>): spec is GenericFacetSpec<GenericUnitSpec<any, any>> {
   return spec['facet'] !== undefined;
 }
 
@@ -135,7 +137,7 @@ export function isUnitSpec(spec: ExtendedSpec): spec is FacetedUnitSpec | UnitSp
   return spec['mark'] !== undefined;
 }
 
-export function isLayerSpec(spec: ExtendedSpec | Spec): spec is GenericLayerSpec<AnyMark | Mark, Encoding> {
+export function isLayerSpec(spec: ExtendedSpec | Spec): spec is GenericLayerSpec<GenericUnitSpec<any, Encoding>> {
   return spec['layer'] !== undefined;
 }
 
@@ -156,14 +158,14 @@ export function normalize(spec: ExtendedSpec | Spec): Spec {
   return normalizeNonFacetUnit(spec);
 }
 
-function normalizeNonFacet(spec: GenericLayerSpec<AnyMark, Encoding> | GenericUnitSpec<AnyMark, Encoding>) {
+function normalizeNonFacet(spec: GenericLayerSpec<LayeredUnitSpec> | LayeredUnitSpec) {
   if (isLayerSpec(spec)) {
     return normalizeLayer(spec);
   }
   return normalizeNonFacetUnit(spec);
 }
 
-function normalizeFacet(spec: GenericFacetSpec<AnyMark, Encoding>): FacetSpec {
+function normalizeFacet(spec: GenericFacetSpec<LayeredUnitSpec>): FacetSpec {
   const {spec: subspec, ...rest} = spec;
   return {
     ...rest,
@@ -171,7 +173,7 @@ function normalizeFacet(spec: GenericFacetSpec<AnyMark, Encoding>): FacetSpec {
   };
 }
 
-function normalizeLayer(spec: GenericLayerSpec<AnyMark, Encoding>): LayerSpec {
+function normalizeLayer(spec: GenericLayerSpec<LayeredUnitSpec>): LayerSpec {
   const {layer: layer, ...rest} = spec;
   return {
     ...rest,

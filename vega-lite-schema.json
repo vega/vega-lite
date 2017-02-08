@@ -5,10 +5,10 @@
             "$ref": "#/definitions/GenericUnitSpec<AnyMark, EncodingWithFacet>"
         },
         {
-            "$ref": "#/definitions/GenericFacetSpec<AnyMark, EncodingWithFacet>"
+            "$ref": "#/definitions/GenericFacetSpec<GenericUnitSpec<AnyMark, EncodingWithFacet>>"
         },
         {
-            "$ref": "#/definitions/GenericLayerSpec<AnyMark, EncodingWithFacet>"
+            "$ref": "#/definitions/GenericLayerSpec<GenericUnitSpec<AnyMark, EncodingWithFacet>>"
         }
     ],
     "definitions": {
@@ -1341,7 +1341,7 @@
             ],
             "type": "object"
         },
-        "GenericFacetSpec<AnyMark, EncodingWithFacet>": {
+        "GenericFacetSpec<GenericUnitSpec<AnyMark, EncodingWithFacet>>": {
             "additionalProperties": false,
             "properties": {
                 "$schema": {
@@ -1408,7 +1408,7 @@
                             "$ref": "#/definitions/GenericUnitSpec<AnyMark, EncodingWithFacet>"
                         },
                         {
-                            "$ref": "#/definitions/GenericLayerSpec<AnyMark, EncodingWithFacet>"
+                            "$ref": "#/definitions/GenericLayerSpec<GenericUnitSpec<AnyMark, EncodingWithFacet>>"
                         }
                     ]
                 },
@@ -1423,7 +1423,7 @@
             ],
             "type": "object"
         },
-        "GenericLayerSpec<AnyMark, EncodingWithFacet>": {
+        "GenericLayerSpec<GenericUnitSpec<AnyMark, EncodingWithFacet>>": {
             "additionalProperties": false,
             "properties": {
                 "$schema": {
@@ -1461,7 +1461,7 @@
                                 "$ref": "#/definitions/GenericUnitSpec<AnyMark, EncodingWithFacet>"
                             },
                             {
-                                "$ref": "#/definitions/GenericLayerSpec<AnyMark, EncodingWithFacet>"
+                                "$ref": "#/definitions/GenericLayerSpec<GenericUnitSpec<AnyMark, EncodingWithFacet>>"
                             }
                         ]
                     },
