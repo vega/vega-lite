@@ -93,6 +93,9 @@ export interface OrderFieldDef extends FieldDef {
 }
 
 export interface TextFieldDef extends FieldDef {
+  /**
+   * The formatting pattern for text value. If not defined, this will be determined automatically.
+   */
   format?: string;
 };
 

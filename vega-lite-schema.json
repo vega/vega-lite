@@ -3240,6 +3240,7 @@
                     "type": "string"
                 },
                 "format": {
+                    "description": "The formatting pattern for text value. If not defined, this will be determined automatically.",
                     "type": "string"
                 },
                 "timeUnit": {
