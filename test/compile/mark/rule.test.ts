@@ -146,7 +146,7 @@ describe('Mark: Rule', function() {
       assert.equal(model.config().mark.orient, 'horizontal');
 
       assert.deepEqual(props.x, {scale: X, field: 'b'});
-      assert.deepEqual(props.x2, {scale: X, value: 0 });
+      assert.deepEqual(props.x2, {scale: X, value: 0});
       assert.deepEqual(props.y, {scale: Y, field: 'a'});
     });
   });
