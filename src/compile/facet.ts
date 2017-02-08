@@ -541,7 +541,7 @@ function getRowGridGroups(model: Model): any[] { // TODO: VgMarks
     type: 'rule',
     encode: {
       update: {
-        y: { field: {group: 'height'}},
+        y: {field: {group: 'height'}},
         x: {value: 0, offset: -facetGridConfig.offset },
         x2: {field: {group: 'width'}, offset: facetGridConfig.offset },
         stroke: {value: facetGridConfig.color},
@@ -581,7 +581,7 @@ function getColumnGridGroups(model: Model): any { // TODO: VgMarks
     type: 'rule',
     encode: {
       update: {
-        x: { field: {group: 'width'}},
+        x: {field: {group: 'width'}},
         y: {value: 0, offset: -facetGridConfig.offset},
         y2: {field: {group: 'height'}, offset: facetGridConfig.offset },
         stroke: {value: facetGridConfig.color},

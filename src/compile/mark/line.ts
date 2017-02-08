@@ -37,7 +37,7 @@ export const line: MarkCompiler = {
 // Vega does not support variable line size.
 function size(sizeDef: ChannelDef, config: Config) {
   if (isValueDef(sizeDef)) {
-      return { value: sizeDef.value};
+      return {value: sizeDef.value};
   }
   // FIXME: We should not need this line since this should be taken care by applyColorAndOpacity
   // but we have to refactor \ first

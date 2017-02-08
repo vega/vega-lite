@@ -227,7 +227,7 @@ describe('compile/scale', () => {
         const model = parseUnitModel({
             mark: "point",
             encoding: {
-              y: { field: 'origin', type: "ordinal", sort: sortDef}
+              y: {field: 'origin', type: "ordinal", sort: sortDef}
             }
           });
 
@@ -242,7 +242,7 @@ describe('compile/scale', () => {
         const model = parseUnitModel({
           mark: "point",
           encoding: {
-            y: { field: 'origin', type: "ordinal"}
+            y: {field: 'origin', type: "ordinal"}
           }
         });
 

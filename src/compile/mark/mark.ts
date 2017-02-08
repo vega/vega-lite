@@ -106,7 +106,7 @@ function parseNonPathMark(model: UnitModel) {
     type: markCompiler[mark].vgMark,
     ...(role? {role} : {}),
     from: {data: dataFrom(model)},
-    encode: { update: markCompiler[mark].encodeEntry(model)}
+    encode: {update: markCompiler[mark].encodeEntry(model)}
   });
 
   return marks;

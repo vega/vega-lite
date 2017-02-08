@@ -24,7 +24,7 @@ function parse(model: Model): Dict<VgTransform[]> {
       let binTrans: VgTransform = extend({
         type: 'bin',
         field: fieldDef.field,
-        as: [field(fieldDef, {binSuffix: 'start'}), field(fieldDef, { binSuffix: 'end'})]
+        as: [field(fieldDef, {binSuffix: 'start'}), field(fieldDef, {binSuffix: 'end'})]
       },
         // if bin is an object, load parameter here!
         typeof bin === 'boolean' ? {} : bin

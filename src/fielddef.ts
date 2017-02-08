@@ -181,7 +181,7 @@ export function isMeasure(fieldDef: FieldDef) {
 }
 
 export function count(): FieldDef {
-  return { field: '*', aggregate: 'count', type: QUANTITATIVE};
+  return {field: '*', aggregate: 'count', type: QUANTITATIVE};
 }
 
 export function isCount(fieldDef: FieldDef) {

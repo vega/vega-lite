@@ -24,7 +24,7 @@ describe('src/compile', function() {
         const model = parseUnitModel({
           mark: "point",
           encoding: {
-            x: { field: 'origin', type: "nominal"}
+            x: {field: 'origin', type: "nominal"}
           }
         });
         const scales = parseScale(model, 'x');
@@ -37,7 +37,7 @@ describe('src/compile', function() {
       const model = parseUnitModel({
         mark: "point",
         encoding: {
-          color: { field: 'origin', type: "nominal"}
+          color: {field: 'origin', type: "nominal"}
         }
       });
 
@@ -59,7 +59,7 @@ describe('src/compile', function() {
       const model = parseUnitModel({
         mark: "point",
         encoding: {
-          color: { field: 'origin', type: "ordinal"}
+          color: {field: 'origin', type: "ordinal"}
         }
       });
 
@@ -81,7 +81,7 @@ describe('src/compile', function() {
       const model = parseUnitModel({
           mark: "point",
           encoding: {
-            color: { field: "origin", type: "quantitative"}
+            color: {field: "origin", type: "quantitative"}
           }
         });
 
@@ -103,7 +103,7 @@ describe('src/compile', function() {
       const model = parseUnitModel({
           mark: "point",
           encoding: {
-            color: { field: "origin", type: "quantitative", bin: true}
+            color: {field: "origin", type: "quantitative", bin: true}
           }
         });
 

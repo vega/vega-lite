@@ -17,7 +17,7 @@ export const area: MarkCompiler = {
 
     // We should always have orient as we augment it in config.ts
     const orient = config.mark.orient;
-    e.orient = { value: orient} ;
+    e.orient = {value: orient} ;
 
     const stack = model.stack();
 
