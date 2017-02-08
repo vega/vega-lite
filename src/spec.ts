@@ -84,7 +84,7 @@ export type LayeredUnitSpec = GenericUnitSpec<AnyMark, Encoding>;
 
 export type FacetedUnitSpec = GenericUnitSpec<AnyMark, EncodingWithFacet>;
 
-export interface GenericLayerSpec<U> extends BaseSpec {
+export interface GenericLayerSpec<U extends GenericUnitSpec<any, any>> extends BaseSpec {
   // FIXME description for top-level width
   width?: number;
 
@@ -100,7 +100,7 @@ export interface GenericLayerSpec<U> extends BaseSpec {
 
 export type LayerSpec = GenericLayerSpec<UnitSpec>;
 
-export interface GenericFacetSpec<U> extends BaseSpec {
+export interface GenericFacetSpec<U extends GenericUnitSpec<any, any>> extends BaseSpec {
   facet: Facet;
 
   // TODO: support facet of facet
@@ -110,7 +110,7 @@ export interface GenericFacetSpec<U> extends BaseSpec {
 export type FacetSpec = GenericFacetSpec<UnitSpec>;
 export type ExtendedFacetSpec = GenericFacetSpec<FacetedUnitSpec>;
 
-export type GenericSpec<U> = U | GenericLayerSpec<U> | GenericFacetSpec<U>;
+export type GenericSpec<U extends GenericUnitSpec<any, any>> = U | GenericLayerSpec<U> | GenericFacetSpec<U>;
 
 export type ExtendedSpec = GenericSpec<FacetedUnitSpec>;
 export type Spec = GenericSpec<UnitSpec>;
