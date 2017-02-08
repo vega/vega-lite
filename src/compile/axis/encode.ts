@@ -26,7 +26,7 @@ export function grid(model: Model, channel: Channel, gridPropsSpec: any, _?: VgA
   const axis = model.axis(channel);
 
   return extend(
-    axis.gridColor !== undefined ? { stroke: {value: axis.gridColor}} : {},
+    axis.gridColor !== undefined ? {stroke: {value: axis.gridColor}} : {},
     axis.gridOpacity !== undefined ? {strokeOpacity: {value: axis.gridOpacity} } : {},
     axis.gridWidth !== undefined ? {strokeWidth : {value: axis.gridWidth} } : {},
     axis.gridDash !== undefined ? {strokeDashOffset : {value: axis.gridDash} } : {},

@@ -113,12 +113,12 @@ describe('compile/axis', ()=> {
     });
 
     it('should add return fieldTitle by default', function () {
-      const title = rules.title({titleMaxLength: 10}, { aggregate: 'sum', field: 'a', type: "quantitative"}, {}, false);
+      const title = rules.title({titleMaxLength: 10}, {aggregate: 'sum', field: 'a', type: "quantitative"}, {}, false);
       assert.deepEqual(title, 'SUM(a)');
     });
 
     it('should add return fieldTitle by default and truncate', function () {
-      const title = rules.title({titleMaxLength: 3}, { aggregate: 'sum', field: 'a', type: "quantitative"}, {}, false);
+      const title = rules.title({titleMaxLength: 3}, {aggregate: 'sum', field: 'a', type: "quantitative"}, {}, false);
       assert.deepEqual(title, 'SU…');
     });
 

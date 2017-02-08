@@ -71,7 +71,7 @@ describe('Mark: Tick', function() {
     });
 
     it('width should tick thickness with orient vertical', function() {
-      assert.deepEqual(props.width, { value: 1});
+      assert.deepEqual(props.width, {value: 1});
     });
   });
 
@@ -92,7 +92,7 @@ describe('Mark: Tick', function() {
     });
 
     it('height should tick thickness with orient horizontal', function() {
-      assert.deepEqual(props.height, { value: 1});
+      assert.deepEqual(props.height, {value: 1});
     });
   });
 
@@ -117,11 +117,11 @@ describe('Mark: Tick', function() {
     });
 
     it('wiidth should be tick thickness with default orient vertical', function() {
-      assert.deepEqual(props.width, { value: 1});
+      assert.deepEqual(props.width, {value: 1});
     });
 
     it('height should be matched to field with default orient vertical', function() {
-      assert.deepEqual(props.height, { value: 14});
+      assert.deepEqual(props.height, {value: 14});
     });
   });
 

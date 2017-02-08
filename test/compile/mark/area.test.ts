@@ -206,7 +206,7 @@ describe('Mark: Area', function() {
         }
       });
       const props = area.encodeEntry(model);
-      assert.deepEqual(props.x, { scale: 'x', field: 'year_Year'});
+      assert.deepEqual(props.x, {scale: 'x', field: 'year_Year'});
       assert.deepEqual(props.y, {scale: 'y', field: 'min_Weight_in_lbs'});
       assert.deepEqual(props.y2, {scale: 'y', field: 'max_Weight_in_lbs'});
     });
@@ -222,7 +222,7 @@ describe('Mark: Area', function() {
         }
       });
       const props = area.encodeEntry(model);
-      assert.deepEqual(props.y, { scale: 'y', field: 'year_Year'});
+      assert.deepEqual(props.y, {scale: 'y', field: 'year_Year'});
       assert.deepEqual(props.x, {scale: 'x', field: 'min_Weight_in_lbs'});
       assert.deepEqual(props.x2, {scale: 'x', field: 'max_Weight_in_lbs'});
     });

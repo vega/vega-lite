@@ -428,13 +428,13 @@ describe('Mark: Bar', function() {
         "mark": "bar",
         "encoding": {
           "x": {"field": "age", "type": "ordinal"},
-          "y": { "field": "people", "aggregate": "q1", "type": "quantitative"},
-          "y2": { "field": "people", "aggregate": "q3", "type": "quantitative"}
+          "y": {"field": "people", "aggregate": "q1", "type": "quantitative"},
+          "y2": {"field": "people", "aggregate": "q3", "type": "quantitative"}
         }
       });
 
       const props = bar.encodeEntry(model);
-      assert.deepEqual(props.xc, { scale: 'x', field: 'age'});
+      assert.deepEqual(props.xc, {scale: 'x', field: 'age'});
       assert.deepEqual(props.y, {scale: 'y', field: 'q1_people'});
       assert.deepEqual(props.y2, {scale: 'y', field: 'q3_people'});
     });
@@ -445,13 +445,13 @@ describe('Mark: Bar', function() {
         "mark": "bar",
         "encoding": {
           "y": {"field": "age", "type": "ordinal"},
-          "x": { "field": "people", "aggregate": "q1", "type": "quantitative"},
-          "x2": { "field": "people", "aggregate": "q3", "type": "quantitative"}
+          "x": {"field": "people", "aggregate": "q1", "type": "quantitative"},
+          "x2": {"field": "people", "aggregate": "q3", "type": "quantitative"}
         }
       });
 
       const props = bar.encodeEntry(model);
-      assert.deepEqual(props.yc, { scale: 'y', field: 'age'});
+      assert.deepEqual(props.yc, {scale: 'y', field: 'age'});
       assert.deepEqual(props.x, {scale: 'x', field: 'q1_people'});
       assert.deepEqual(props.x2, {scale: 'x', field: 'q3_people'});
     });

@@ -39,7 +39,7 @@ describe('compile/data/summary', function () {
       const model = parseUnitModel({
         mark: "point",
         encoding: {
-          'x': { 'aggregate': 'mean', 'field': 'Displacement', 'type': "quantitative"},
+          'x': {'aggregate': 'mean', 'field': 'Displacement', 'type': "quantitative"},
           'detail': [
             {'field': 'Origin', 'type': "ordinal"},
             {'field': 'Cylinders', 'type': "quantitative"}
