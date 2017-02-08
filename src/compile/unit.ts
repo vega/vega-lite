@@ -66,7 +66,7 @@ export class UnitModel extends Model {
     const config = this._config = this._initConfig(spec.config, parent);
 
     // calculate stack properties
-    this._stack = stack(mark, encoding, config.mark.stacked);
+    this._stack = stack(mark, encoding, config.stack);
     this._scale =  this._initScale(mark, encoding, config, providedWidth, providedHeight);
 
     // TODO?: refactor these to be a part of the model as they are not really just config

@@ -31,7 +31,7 @@ describe('Mark: Text', function() {
         "color": {"field": "b", "type": "ordinal"}
       },
       "data": {"url": "data/barley.json"},
-      "config": {"mark": {"stacked": "zero"}}
+      "config": {"stack":  "zero"}
     });
 
     const props = text.encodeEntry(model);
@@ -51,7 +51,7 @@ describe('Mark: Text', function() {
         "color": {"field": "b", "type": "ordinal"}
       },
       "data": {"url": "data/barley.json"},
-      "config": {"mark": {"stacked": "zero"}}
+      "config": {"stack":  "zero"}
     });
 
     const props = text.encodeEntry(model);

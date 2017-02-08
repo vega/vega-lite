@@ -161,7 +161,7 @@ describe('Mark: Rule', function() {
         "color": {"field": "Origin", "type": "nominal"}
       },
       "config": {
-        "mark": {"stacked": "zero"}
+        "stack": "zero"
       }
     });
 
@@ -183,7 +183,7 @@ describe('Mark: Rule', function() {
         "color": {"field": "Origin", "type": "nominal"}
       },
       "config": {
-        "mark": {"stacked": "zero"}
+        "stack": "zero"
       }
     });
 

@@ -14,14 +14,12 @@
     },
     "y": {
       "aggregate": "sum", "field": "people", "type": "quantitative",
-      "axis": {"title": "population"}
+      "axis": {"title": "population"},
+      "stack": "none"
     },
     "color": {
       "field": "gender", "type": "nominal",
       "scale": {"range": ["#e377c2","#1f77b4"]}
     }
-  },
-  "config": {
-    "mark": {"opacity": 0.6, "stacked" : "none"}
   }
 }
