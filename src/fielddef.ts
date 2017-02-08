@@ -99,9 +99,17 @@ export interface OrderFieldDef extends FieldDef {
   sort?: SortOrder;
 }
 
+export interface TextFieldDef extends FieldDef {
+  // FIXME: add more reference to Vega's format pattern or d3's format pattern.
+  /**
+   * The formatting pattern for text value. If not defined, this will be determined automatically.
+   */
+  format?: string;
+};
+
 export type ChannelDef = FieldDef | ValueDef<any>;
 
-export function isFieldDef(channelDef: ChannelDef): channelDef is FieldDef | PositionFieldDef | LegendFieldDef | OrderFieldDef  {
+export function isFieldDef(channelDef: ChannelDef): channelDef is FieldDef | PositionFieldDef | LegendFieldDef | OrderFieldDef | TextFieldDef {
   return channelDef && !!channelDef['field'];
 }
 

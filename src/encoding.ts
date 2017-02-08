@@ -1,5 +1,5 @@
 // utility for encoding mapping
-import {FieldDef, PositionFieldDef, LegendFieldDef, OrderFieldDef, ValueDef, isFieldDef} from './fielddef';
+import {FieldDef, PositionFieldDef, LegendFieldDef, OrderFieldDef, ValueDef,TextFieldDef, isFieldDef} from './fielddef';
 import {Channel, CHANNELS} from './channel';
 import {Facet} from './facet';
 import {isArray, some} from './util';
@@ -67,7 +67,7 @@ export interface Encoding {
   /**
    * Text of the `text` mark.
    */
-  text?: FieldDef | ValueDef<string|number>;
+  text?: TextFieldDef | ValueDef<string|number>;
 
   /**
    * stack order for stacked marks or order of data points in line marks.

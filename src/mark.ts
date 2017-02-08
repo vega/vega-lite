@@ -379,11 +379,6 @@ export interface TextConfig extends MarkConfig {
    */
   fontWeight?: FontWeight | FontWeightNumber;
 
-  // Vega-Lite only for text only
-  /**
-   * The formatting pattern for text value. If not defined, this will be determined automatically.
-   */
-  format?: string;
   /**
    * Whether month names and weekday names should be abbreviated.
    */
