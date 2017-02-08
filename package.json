@@ -80,6 +80,7 @@
     "source-map-support": "~0.4.10",
     "tsify": "~3.0.0",
     "tslint": "~4.4.2",
+    "tslint-eslint-rules": "^3.3.0",
     "typescript": "^2.1.5",
     "typescript-json-schema": "^0.9.0",
     "uglify-js": "~2.7.5",
