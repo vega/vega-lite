@@ -3,7 +3,7 @@ import {applyConfig, numberFormat, timeFormatExpression} from '../common';
 
 import {applyColorAndOpacity} from './common';
 import {Config} from '../../config';
-import {ChannelDef, field, isFieldDef} from '../../fielddef';
+import {ChannelDef, TextFieldDef, ValueDef, field, isFieldDef} from '../../fielddef';
 import {QUANTITATIVE, TEMPORAL} from '../../type';
 import {UnitModel} from '../unit';
 import {VgValueRef, VgEncodeEntry} from '../../vega.schema';
@@ -50,19 +50,19 @@ function xDefault(config: Config, textDef: ChannelDef): VgValueRef {
   return {value: config.scale.textXRangeStep / 2};
 }
 
-function textRef(textDef: ChannelDef, config: Config): VgValueRef {
+function textRef(textDef: TextFieldDef | ValueDef<any>, config: Config): VgValueRef {
   // text
   if (textDef) {
     if (isFieldDef(textDef)) {
       if (QUANTITATIVE === textDef.type) {
         // FIXME: what happens if we have bin?
-        const format = numberFormat(textDef, config.text.format, config, TEXT);
+        const format = numberFormat(textDef, textDef.format, config, TEXT);
         return {
           signal: `format(${field(textDef, {datum: true})}, '${format}')`
         };
       } else if (TEMPORAL === textDef.type) {
         return {
-          signal: timeFormatExpression(field(textDef, {datum: true}), textDef.timeUnit, config.text.format, config.text.shortTimeLabels, config)
+          signal: timeFormatExpression(field(textDef, {datum: true}), textDef.timeUnit, textDef.format, config.text.shortTimeLabels, config)
         };
       } else {
         return {field: textDef.field};

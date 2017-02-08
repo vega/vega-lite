@@ -92,9 +92,13 @@ export interface OrderFieldDef extends FieldDef {
   sort?: SortOrder;
 }
 
+export interface TextFieldDef extends FieldDef {
+  format?: string;
+};
+
 export type ChannelDef = FieldDef | ValueDef<any>;
 
-export function isFieldDef(channelDef: ChannelDef): channelDef is FieldDef | PositionFieldDef | LegendFieldDef | OrderFieldDef  {
+export function isFieldDef(channelDef: ChannelDef): channelDef is FieldDef | PositionFieldDef | LegendFieldDef | OrderFieldDef | TextFieldDef {
   return channelDef && !!channelDef['field'];
 }
 

@@ -65,12 +65,7 @@ describe('Mark: Text', function() {
     const spec: UnitSpec = {
       "mark": "text",
       "encoding": {
-        "text": {"field": "foo", "type": "quantitative"}
-      },
-      "config": {
-        "text": {
-          "format": "d"
-        }
+        "text": {"field": "foo", "type": "quantitative", "format": "d"}
       }
     };
     const model = parseUnitModel(spec);
