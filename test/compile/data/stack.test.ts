@@ -26,7 +26,7 @@ describe('compile/data/stack', () => {
       "encoding": {
         "x": {"aggregate": "sum", "field": "a", "type": "quantitative"},
         "y": {"field": "b", "type": "nominal"},
-        "color": {"field": "c", "type": "ordinal", }
+        "color": {"field": "c", "type": "ordinal",}
       }
     });
 
@@ -52,7 +52,7 @@ describe('compile/data/stack', () => {
       "encoding": {
         "x": {"aggregate": "sum", "field": "a", "type": "quantitative"},
         "y": {"bin": true, "field": "b", "type": "quantitative"},
-        "color": {"field": "c", "type": "ordinal", }
+        "color": {"field": "c", "type": "ordinal",}
       }
     });
 
@@ -77,7 +77,7 @@ describe('compile/data/stack', () => {
       "mark": "bar",
       "encoding": {
         "x": {"aggregate": "sum", "field": "a", "type": "quantitative"},
-        "color": {"field": "c", "type": "ordinal", }
+        "color": {"field": "c", "type": "ordinal",}
       }
     });
     model.component.data = {} as DataComponent;

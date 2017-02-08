@@ -527,8 +527,8 @@ function getRowGridGroups(model: Model): any[] { // TODO: VgMarks
           scale: model.scaleName(ROW),
           field: model.field(ROW)
         },
-        x: {value: 0, offset: -facetGridConfig.offset },
-        x2: {field: {group: 'width'}, offset: facetGridConfig.offset },
+        x: {value: 0, offset: -facetGridConfig.offset},
+        x2: {field: {group: 'width'}, offset: facetGridConfig.offset},
         stroke: {value: facetGridConfig.color},
         strokeOpacity: {value: facetGridConfig.opacity},
         strokeWidth: {value: 0.5}
@@ -542,8 +542,8 @@ function getRowGridGroups(model: Model): any[] { // TODO: VgMarks
     encode: {
       update: {
         y: {field: {group: 'height'}},
-        x: {value: 0, offset: -facetGridConfig.offset },
-        x2: {field: {group: 'width'}, offset: facetGridConfig.offset },
+        x: {value: 0, offset: -facetGridConfig.offset},
+        x2: {field: {group: 'width'}, offset: facetGridConfig.offset},
         stroke: {value: facetGridConfig.color},
         strokeOpacity: {value: facetGridConfig.opacity},
         strokeWidth: {value: 0.5}
@@ -568,7 +568,7 @@ function getColumnGridGroups(model: Model): any { // TODO: VgMarks
           field: model.field(COLUMN)
         },
         y: {value: 0, offset: -facetGridConfig.offset},
-        y2: {field: {group: 'height'}, offset: facetGridConfig.offset },
+        y2: {field: {group: 'height'}, offset: facetGridConfig.offset},
         stroke: {value: facetGridConfig.color},
         strokeOpacity: {value: facetGridConfig.opacity},
         strokeWidth: {value: 0.5}
@@ -583,7 +583,7 @@ function getColumnGridGroups(model: Model): any { // TODO: VgMarks
       update: {
         x: {field: {group: 'width'}},
         y: {value: 0, offset: -facetGridConfig.offset},
-        y2: {field: {group: 'height'}, offset: facetGridConfig.offset },
+        y2: {field: {group: 'height'}, offset: facetGridConfig.offset},
         stroke: {value: facetGridConfig.color},
         strokeOpacity: {value: facetGridConfig.opacity},
         strokeWidth: {value: 0.5}

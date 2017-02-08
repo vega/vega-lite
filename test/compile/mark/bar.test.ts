@@ -367,7 +367,7 @@ describe('Mark: Bar', function() {
       assert.deepEqual(props.x, {scale: 'x', field: 'Acceleration'});
       assert.deepEqual(props.x2, {scale: 'x', value: 0});
       assert.deepEqual(props.yc, {scale: 'y', field: 'Horsepower'});
-      assert.deepEqual(props.height, {value: defaultBarConfig.continuousBandSize });
+      assert.deepEqual(props.height, {value: defaultBarConfig.continuousBandSize});
     });
   });
 
@@ -390,7 +390,7 @@ describe('Mark: Bar', function() {
 
     it('should produce horizontal bar using x, x2', function() {
       assert.deepEqual(props.xc, {scale: 'x', field: 'Acceleration'});
-      assert.deepEqual(props.width, {value: defaultBarConfig.continuousBandSize });
+      assert.deepEqual(props.width, {value: defaultBarConfig.continuousBandSize});
       assert.deepEqual(props.y, {scale: 'y', field: 'Horsepower'});
       assert.deepEqual(props.y2, {scale: 'y', value: 0});
     });
@@ -411,7 +411,7 @@ describe('Mark: Bar', function() {
       const props = bar.encodeEntry(model);
 
       assert.deepEqual(props.xc, {scale: 'x', field: 'Origin'});
-      assert.deepEqual(props.width, {value: 20 });
+      assert.deepEqual(props.width, {value: 20});
       assert.deepEqual(props.yc, {scale: 'y', field: 'Cylinders'});
       assert.deepEqual(props.height, {value: 20});
     });

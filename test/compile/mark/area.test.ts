@@ -200,9 +200,9 @@ describe('Mark: Area', function() {
         "data": {"url": "data/cars.json"},
         "mark": "area",
         "encoding": {
-          "x": {"timeUnit": "year", "field": "Year", "type": "temporal" },
-          "y": {"aggregate": "min", "field": "Weight_in_lbs", "type": "quantitative" },
-          "y2": {"aggregate": "max", "field": "Weight_in_lbs", "type": "quantitative" }
+          "x": {"timeUnit": "year", "field": "Year", "type": "temporal"},
+          "y": {"aggregate": "min", "field": "Weight_in_lbs", "type": "quantitative"},
+          "y2": {"aggregate": "max", "field": "Weight_in_lbs", "type": "quantitative"}
         }
       });
       const props = area.encodeEntry(model);
@@ -216,9 +216,9 @@ describe('Mark: Area', function() {
         "data": {"url": "data/cars.json"},
         "mark": "area",
         "encoding": {
-          "y": {"timeUnit": "year", "field": "Year", "type": "temporal" },
-          "x": {"aggregate": "min", "field": "Weight_in_lbs", "type": "quantitative" },
-          "x2": {"aggregate": "max", "field": "Weight_in_lbs", "type": "quantitative" }
+          "y": {"timeUnit": "year", "field": "Year", "type": "temporal"},
+          "x": {"aggregate": "min", "field": "Weight_in_lbs", "type": "quantitative"},
+          "x2": {"aggregate": "max", "field": "Weight_in_lbs", "type": "quantitative"}
         }
       });
       const props = area.encodeEntry(model);
