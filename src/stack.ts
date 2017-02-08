@@ -4,7 +4,7 @@ import {SUM_OPS} from './aggregate';
 import {Channel, STACK_GROUP_CHANNELS, X, Y, X2, Y2} from './channel';
 import {Encoding, channelHasField, isAggregate} from './encoding';
 import {FieldDef, PositionFieldDef, isFieldDef} from './fielddef';
-import {Mark, BAR, AREA, POINT, CIRCLE, SQUARE, LINE, RULE, TEXT, TICK} from './mark';
+import {Mark, BAR, AREA, POINT, CIRCLE, SQUARE, LINE, RULE, TEXT, TICK, MarkDef, isMarkDef} from './mark';
 import {ScaleType} from './scale';
 import {contains, isArray} from './util';
 
@@ -42,7 +42,9 @@ export const STACK_BY_DEFAULT_MARKS = [BAR, AREA];
 
 // Note: CompassQL uses this method and only pass in required properties of each argument object.
 // If required properties change, make sure to update CompassQL.
-export function stack(mark: Mark, encoding: Encoding, stackConfig: StackOffset): StackProperties {
+
+export function stack(m: Mark | MarkDef, encoding: Encoding, stackConfig: StackOffset): StackProperties {
+  const mark = isMarkDef(m) ? m.type : m;
   // Should have stackable mark
   if (!contains(STACKABLE_MARKS, mark)) {
     return null;
