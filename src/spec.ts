@@ -6,8 +6,9 @@ import {Data} from './data';
 import {EncodingWithFacet, Encoding, channelHasField, isRanged} from './encoding';
 import {Facet} from './facet';
 import {FieldDef} from './fielddef';
+
 import * as log from './log';
-import {Mark, AREA, LINE, POINT, isPrimitiveMark} from './mark';
+import {Mark, MarkDef, AREA, LINE, POINT, isPrimitiveMark} from './mark';
 import {stack} from './stack';
 import {Transform} from './transform';
 import {ROW, COLUMN, X, Y, X2, Y2} from './channel';
@@ -79,12 +80,12 @@ export interface GenericUnitSpec<M, E extends Encoding> extends BaseSpec {
   encoding: E;
 }
 
-export type UnitSpec = GenericUnitSpec<Mark, Encoding>;
+export type UnitSpec = GenericUnitSpec<Mark | MarkDef, Encoding>;
 
-export type LayeredUnitSpec = GenericUnitSpec<string, Encoding>;
+export type LayeredUnitSpec = GenericUnitSpec<string | MarkDef, Encoding>;
 
 
-export type FacetedUnitSpec = GenericUnitSpec<string, EncodingWithFacet>;
+export type FacetedUnitSpec = GenericUnitSpec<string | MarkDef, EncodingWithFacet>;
 
 export interface GenericLayerSpec<U extends GenericUnitSpec<any, any>> extends BaseSpec {
   // FIXME description for top-level width
@@ -115,6 +116,7 @@ export type ExtendedFacetSpec = GenericFacetSpec<FacetedUnitSpec>;
 export type GenericSpec<U extends GenericUnitSpec<any, any>> = U | GenericLayerSpec<U> | GenericFacetSpec<U>;
 
 export type ExtendedSpec = GenericSpec<FacetedUnitSpec>;
+
 export type Spec = GenericSpec<UnitSpec>;
 
 /* Custom type guards */
@@ -135,7 +137,7 @@ export function isFacetedUnitSpec(spec: ExtendedSpec): spec is FacetedUnitSpec {
   return false;
 }
 
-export function isUnitSpec(spec: ExtendedSpec): spec is FacetedUnitSpec | UnitSpec {
+export function isUnitSpec(spec: ExtendedSpec | Spec): spec is FacetedUnitSpec | UnitSpec {
   return !!spec['mark'];
 }
 
@@ -147,7 +149,7 @@ export function isLayerSpec(spec: ExtendedSpec | Spec): spec is GenericLayerSpec
  * Decompose extended unit specs into composition of pure unit specs.
  */
 // TODO: consider moving this to another file.  Maybe vl.spec.normalize or vl.normalize
-export function normalize(spec: ExtendedSpec | Spec): Spec {
+export function normalize(spec: ExtendedSpec): Spec {
   if (isFacetSpec(spec)) {
     return normalizeFacet(spec);
   }
@@ -207,12 +209,12 @@ function normalizeFacetedUnit(spec: FacetedUnitSpec): FacetSpec {
   };
 }
 
-function isNonFacetUnitSpecWithPrimitiveMark(spec: GenericUnitSpec<string, Encoding>):
+function isNonFacetUnitSpecWithPrimitiveMark(spec: GenericUnitSpec<string | MarkDef, Encoding>):
   spec is GenericUnitSpec<Mark, Encoding> {
     return isPrimitiveMark(spec.mark);
 }
 
-function normalizeNonFacetUnit(spec: GenericUnitSpec<string, Encoding>) {
+function normalizeNonFacetUnit(spec: GenericUnitSpec<string | MarkDef, Encoding>) {
   const config = spec.config;
   const overlayConfig = config && config.overlay;
   const overlayWithLine = overlayConfig  && spec.mark === AREA &&

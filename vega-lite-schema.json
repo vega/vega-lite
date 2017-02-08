@@ -2,13 +2,13 @@
     "$schema": "http://json-schema.org/draft-04/schema#",
     "anyOf": [
         {
-            "$ref": "#/definitions/GenericUnitSpec<string, EncodingWithFacet>"
+            "$ref": "#/definitions/GenericUnitSpec<string | MarkDef, EncodingWithFacet>"
         },
         {
-            "$ref": "#/definitions/GenericFacetSpec<GenericUnitSpec<string, EncodingWithFacet>>"
+            "$ref": "#/definitions/GenericFacetSpec<GenericUnitSpec<string | MarkDef, EncodingWithFacet>>"
         },
         {
-            "$ref": "#/definitions/GenericLayerSpec<GenericUnitSpec<string, EncodingWithFacet>>"
+            "$ref": "#/definitions/GenericLayerSpec<GenericUnitSpec<string | MarkDef, EncodingWithFacet>>"
         }
     ],
     "definitions": {
@@ -1339,7 +1339,7 @@
             ],
             "type": "object"
         },
-        "GenericFacetSpec<GenericUnitSpec<string, EncodingWithFacet>>": {
+        "GenericFacetSpec<GenericUnitSpec<string | MarkDef, EncodingWithFacet>>": {
             "additionalProperties": false,
             "properties": {
                 "$schema": {
@@ -1403,10 +1403,10 @@
                 "spec": {
                     "anyOf": [
                         {
-                            "$ref": "#/definitions/GenericUnitSpec<string, EncodingWithFacet>"
+                            "$ref": "#/definitions/GenericUnitSpec<string | MarkDef, EncodingWithFacet>"
                         },
                         {
-                            "$ref": "#/definitions/GenericLayerSpec<GenericUnitSpec<string, EncodingWithFacet>>"
+                            "$ref": "#/definitions/GenericLayerSpec<GenericUnitSpec<string | MarkDef, EncodingWithFacet>>"
                         }
                     ]
                 },
@@ -1421,7 +1421,7 @@
             ],
             "type": "object"
         },
-        "GenericLayerSpec<GenericUnitSpec<string, EncodingWithFacet>>": {
+        "GenericLayerSpec<GenericUnitSpec<string | MarkDef, EncodingWithFacet>>": {
             "additionalProperties": false,
             "properties": {
                 "$schema": {
@@ -1456,10 +1456,10 @@
                     "items": {
                         "anyOf": [
                             {
-                                "$ref": "#/definitions/GenericUnitSpec<string, EncodingWithFacet>"
+                                "$ref": "#/definitions/GenericUnitSpec<string | MarkDef, EncodingWithFacet>"
                             },
                             {
-                                "$ref": "#/definitions/GenericLayerSpec<GenericUnitSpec<string, EncodingWithFacet>>"
+                                "$ref": "#/definitions/GenericLayerSpec<GenericUnitSpec<string | MarkDef, EncodingWithFacet>>"
                             }
                         ]
                     },
@@ -1509,7 +1509,7 @@
             ],
             "type": "object"
         },
-        "GenericUnitSpec<string, EncodingWithFacet>": {
+        "GenericUnitSpec<string | MarkDef, EncodingWithFacet>": {
             "additionalProperties": false,
             "properties": {
                 "$schema": {
@@ -1544,8 +1544,15 @@
                     "type": "number"
                 },
                 "mark": {
-                    "description": "The mark type.\nOne of `\"bar\"`, `\"circle\"`, `\"square\"`, `\"tick\"`, `\"line\"`,\n`\"area\"`, `\"point\"`, `\"rule\"`, and `\"text\"`.",
-                    "type": "string"
+                    "anyOf": [
+                        {
+                            "$ref": "#/definitions/MarkDef"
+                        },
+                        {
+                            "type": "string"
+                        }
+                    ],
+                    "description": "The mark type.\nOne of `\"bar\"`, `\"circle\"`, `\"square\"`, `\"tick\"`, `\"line\"`,\n`\"area\"`, `\"point\"`, `\"rule\"`, and `\"text\"`."
                 },
                 "name": {
                     "description": "Name of the visualization for later reference.",
@@ -2074,6 +2081,22 @@
             },
             "type": "object"
         },
+        "Mark": {
+            "description": "All types of primitive marks.",
+            "enum": [
+                "area",
+                "bar",
+                "circle",
+                "line",
+                "point",
+                "rect",
+                "rule",
+                "square",
+                "text",
+                "tick"
+            ],
+            "type": "string"
+        },
         "MarkConfig": {
             "additionalProperties": false,
             "properties": {
@@ -2160,6 +2183,33 @@
                     "type": "number"
                 }
             },
+            "type": "object"
+        },
+        "MarkDef": {
+            "additionalProperties": false,
+            "properties": {
+                "interpolate": {
+                    "$ref": "#/definitions/Interpolate",
+                    "description": "The line interpolation method to use for line and area marks. One of the following:\n- `\"linear\"`: piecewise linear segments, as in a polyline.\n- `\"linear-closed\"`: close the linear segments to form a polygon.\n- `\"step\"`: alternate between horizontal and vertical segments, as in a step function.\n- `\"step-before\"`: alternate between vertical and horizontal segments, as in a step function.\n- `\"step-after\"`: alternate between horizontal and vertical segments, as in a step function.\n- `\"basis\"`: a B-spline, with control point duplication on the ends.\n- `\"basis-open\"`: an open B-spline; may not intersect the start or end.\n- `\"basis-closed\"`: a closed B-spline, as in a loop.\n- `\"cardinal\"`: a Cardinal spline, with control point duplication on the ends.\n- `\"cardinal-open\"`: an open Cardinal spline; may not intersect the start or end, but will intersect other control points.\n- `\"cardinal-closed\"`: a closed Cardinal spline, as in a loop.\n- `\"bundle\"`: equivalent to basis, except the tension parameter is used to straighten the spline.\n- `\"monotone\"`: cubic interpolation that preserves monotonicity in y."
+                },
+                "orient": {
+                    "$ref": "#/definitions/Orient",
+                    "description": "The orientation of a non-stacked bar, tick, area, and line charts.\nThe value is either horizontal (default) or vertical.\n- For bar, rule and tick, this determines whether the size of the bar and tick\nshould be applied to x or y dimension.\n- For area, this property determines the orient property of the Vega output.\n- For line, this property determines the sort order of the points in the line\nif `config.sortLineBy` is not specified.\nFor stacked charts, this is always determined by the orientation of the stack;\ntherefore explicitly specified value will be ignored."
+                },
+                "tension": {
+                    "description": "Depending on the interpolation type, sets the tension parameter (for line and area marks).",
+                    "maximum": 1,
+                    "minimum": 0,
+                    "type": "number"
+                },
+                "type": {
+                    "$ref": "#/definitions/Mark",
+                    "description": "The mark type.\nOne of `\"bar\"`, `\"circle\"`, `\"square\"`, `\"tick\"`, `\"line\"`,\n`\"area\"`, `\"point\"`, `\"rule\"`, and `\"text\"`."
+                }
+            },
+            "required": [
+                "type"
+            ],
             "type": "object"
         },
         "OneOfFilter": {

@@ -10,7 +10,7 @@ import {parseUnitModel} from '../util';
 
 describe('UnitModel', function() {
   it('should say it is unit', function() {
-    const model = new UnitModel({} as UnitSpec, null, null);
+    const model = new UnitModel({mark: 'point'} as UnitSpec, null, null);
     assert(model.isUnit());
     assert(!model.isFacet());
     assert(!model.isLayer());

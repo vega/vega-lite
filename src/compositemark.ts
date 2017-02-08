@@ -1,4 +1,5 @@
 import {Encoding} from './encoding';
+import {MarkDef, isMarkDef} from './mark';
 import {GenericUnitSpec, LayerSpec} from './spec';
 
 export const ERRORBAR: 'error-bar' = 'error-bar';
@@ -24,10 +25,10 @@ export function remove(mark: string) {
  */
 export function normalize(
     // This GenericUnitSpec has any as Encoding because unit specs with composite mark can have additional encoding channels.
-    spec: GenericUnitSpec<string, any>
+    spec: GenericUnitSpec<string | MarkDef, any>
   ): LayerSpec {
 
-  const mark = spec.mark;
+  const mark = isMarkDef(spec.mark) ? spec.mark.type : spec.mark;
   const normalizer = normalizerRegistry[mark];
   if (normalizer) {
     return normalizer(spec);

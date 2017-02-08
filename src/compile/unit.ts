@@ -8,7 +8,7 @@ import {Encoding} from '../encoding';
 import * as vlEncoding from '../encoding'; // TODO: remove
 import {ChannelDef, FieldDef, FieldRefOption, field, normalize, isFieldDef, isValueDef} from '../fielddef';
 import {Legend} from '../legend';
-import {Mark, TEXT as TEXT_MARK, FILL_STROKE_CONFIG} from '../mark';
+import {Mark, MarkDef, TEXT as TEXT_MARK, FILL_STROKE_CONFIG, isMarkDef} from '../mark';
 import {Scale, ScaleConfig, hasDiscreteDomain} from '../scale';
 import {UnitSpec} from '../spec';
 import {duplicate, extend, isArray, mergeDeep, Dict} from '../util';
@@ -44,7 +44,7 @@ export class UnitModel extends Model {
    */
   private _height: number;
 
-  private readonly _mark: Mark;
+  private readonly _markDef: MarkDef;
   private readonly _encoding: Encoding;
   private readonly _stack: StackProperties;
 
@@ -59,7 +59,8 @@ export class UnitModel extends Model {
     const providedHeight = spec.height !== undefined ? spec.height :
       parent ? parent['height'] : undefined; // only exists if parent is layer
 
-    const mark = this._mark = spec.mark;
+    const markDef = this._markDef = this._initMarkDef(spec.mark);
+    const mark =  markDef.type;
     const encoding = this._encoding = this._initEncoding(mark, spec.encoding || {});
 
     // TODO?: ideally we should use config only inside this constructor
@@ -84,6 +85,15 @@ export class UnitModel extends Model {
       providedHeight,
       config.cell, config.scale
     );
+  }
+
+  private _initMarkDef(mark: Mark | MarkDef) {
+    if (isMarkDef(mark)) {
+      return mark;
+    }
+    return {
+      type: mark
+    };
   }
 
   private _initEncoding(mark: Mark, encoding: Encoding) {
@@ -323,7 +333,7 @@ export class UnitModel extends Model {
     let spec: any;
 
     spec = {
-      mark: this._mark,
+      mark: this._markDef,
       encoding: encoding
     };
 
@@ -340,7 +350,7 @@ export class UnitModel extends Model {
   }
 
   public mark(): Mark {
-    return this._mark;
+    return this._markDef.type;
   }
 
   public channelHasField(channel: Channel) {
