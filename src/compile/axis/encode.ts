@@ -27,9 +27,9 @@ export function grid(model: Model, channel: Channel, gridPropsSpec: any, _?: VgA
 
   return extend(
     axis.gridColor !== undefined ? {stroke: {value: axis.gridColor}} : {},
-    axis.gridOpacity !== undefined ? {strokeOpacity: {value: axis.gridOpacity} } : {},
-    axis.gridWidth !== undefined ? {strokeWidth : {value: axis.gridWidth} } : {},
-    axis.gridDash !== undefined ? {strokeDashOffset : {value: axis.gridDash} } : {},
+    axis.gridOpacity !== undefined ? {strokeOpacity: {value: axis.gridOpacity}} : {},
+    axis.gridWidth !== undefined ? {strokeWidth : {value: axis.gridWidth}} : {},
+    axis.gridDash !== undefined ? {strokeDashOffset : {value: axis.gridDash}} : {},
     gridPropsSpec || {}
   );
 }
@@ -118,8 +118,8 @@ export function ticks(model: Model, channel: Channel, ticksPropsSpec: any, _?: V
   const axis = model.axis(channel);
 
   return extend(
-    axis.tickColor !== undefined ? {stroke : {value: axis.tickColor} } : {},
-    axis.tickWidth !== undefined ? {strokeWidth: {value: axis.tickWidth} } : {},
+    axis.tickColor !== undefined ? {stroke : {value: axis.tickColor}} : {},
+    axis.tickWidth !== undefined ? {strokeWidth: {value: axis.tickWidth}} : {},
     ticksPropsSpec || {}
   );
 }
@@ -129,7 +129,7 @@ export function title(model: Model, channel: Channel, titlePropsSpec: any, _?: V
   const axis = model.axis(channel);
 
   return extend(
-    axis.titleColor !== undefined ? {fill : {value: axis.titleColor} } : {},
+    axis.titleColor !== undefined ? {fill : {value: axis.titleColor}} : {},
     axis.titleFont !== undefined ? {font: {value: axis.titleFont}} : {},
     axis.titleFontSize !== undefined ? {fontSize: {value: axis.titleFontSize}} : {},
     axis.titleFontWeight !== undefined ? {fontWeight: {value: axis.titleFontWeight}} : {},
