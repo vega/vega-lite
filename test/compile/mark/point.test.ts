@@ -52,7 +52,7 @@ describe('Mark: Point', function() {
         "color": {"field": "b", "type": "ordinal"}
       },
       "data": {"url": "data/barley.json"},
-      "config": {"mark": {"stacked": "zero"}}
+      "config": {"stack": "zero"}
     });
 
     const props = point.encodeEntry(model);
@@ -90,7 +90,7 @@ describe('Mark: Point', function() {
         "color": {"field": "b", "type": "ordinal"}
       },
       "data": {"url": "data/barley.json"},
-      "config": {"mark": {"stacked": "zero"}}
+      "config": {"stack": "zero"}
     });
 
     const props = point.encodeEntry(model);

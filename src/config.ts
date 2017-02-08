@@ -3,6 +3,7 @@ import {LegendConfig, defaultLegendConfig} from './legend';
 import {MarkConfig, AreaConfig, BarConfig, LineConfig, PointConfig, RectConfig, RuleConfig, SymbolConfig, TextConfig, TickConfig} from './mark';
 import * as mark from './mark';
 import {ScaleConfig, defaultScaleConfig} from './scale';
+import {StackOffset} from './stack';
 import {Padding} from './spec';
 import {VgRangeScheme} from './vega.schema';
 
@@ -149,6 +150,9 @@ export interface Config {
 
   /** Cell Config */
   cell?: CellConfig;
+
+  /** Default stack offset for stackable mark. */
+  stack?: StackOffset;
 
   /** Mark Config */
   mark?: MarkConfig;

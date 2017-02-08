@@ -1,4 +1,3 @@
-import {StackOffset} from './stack';
 import {contains, extend} from './util';
 
 export namespace Mark {
@@ -152,10 +151,6 @@ export interface MarkConfig {
    * The offset (in pixels) into which to begin drawing with the stroke dash array.
    */
   strokeDashOffset?: number;
-
-  // FIXME: move this outside mark config
-  // ---------- Stacking: Bar & Area ----------
-  stacked?: StackOffset;
 
   // ---------- Orientation: Bar, Tick, Line, Area ----------
   /**

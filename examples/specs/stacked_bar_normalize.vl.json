@@ -20,5 +20,5 @@
       "scale": {"range": ["#EA98D2", "#659CCA"]}
     }
   },
-  "config": {"mark": {"stacked": "normalize"}}
+  "config": {"stack":  "normalize"}
 }

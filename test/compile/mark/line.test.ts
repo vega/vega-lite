@@ -79,7 +79,7 @@ describe('Mark: Line', function() {
         "y": {"field": "yield", "type": "quantitative", "aggregate": "sum"},
         "color": {"field": "a", "type": "nominal"}
       },
-      "config": {"mark": {"stacked": "zero"}}
+      "config": {"stack":  "zero"}
     });
     const props = line.encodeEntry(model);
 
@@ -97,7 +97,7 @@ describe('Mark: Line', function() {
         "x": {"field": "yield", "type": "quantitative", "aggregate": "sum"},
         "color": {"field": "a", "type": "nominal"}
       },
-      "config": {"mark": {"stacked": "zero"}}
+      "config": {"stack":  "zero"}
     });
     const props = line.encodeEntry(model);
 

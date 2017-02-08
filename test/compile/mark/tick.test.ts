@@ -23,7 +23,7 @@ describe('Mark: Tick', function() {
         "color": {"field": "b", "type": "ordinal"}
       },
       "data": {"url": "data/barley.json"},
-      "config": {"mark": {"stacked": "zero"}}
+      "config": {"stack":  "zero"}
     });
 
     const props = tick.encodeEntry(model);
@@ -44,7 +44,7 @@ describe('Mark: Tick', function() {
         "color": {"field": "b", "type": "ordinal"}
       },
       "data": {"url": "data/barley.json"},
-      "config": {"mark": {"stacked": "zero"}}
+      "config": {"stack":  "zero"}
     });
 
     const props = tick.encodeEntry(model);

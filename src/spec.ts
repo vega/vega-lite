@@ -296,7 +296,7 @@ function normalizeOverlay(spec: UnitSpec, overlayWithPoint: boolean, overlayWith
   // Need to copy stack config to overlayed layer
   const stacked = stack(spec.mark,
     spec.encoding,
-    spec.config && spec.config.mark ? spec.config.mark.stacked : undefined
+    spec.config ? spec.config.stack : undefined
   );
 
   const layerSpec = {
@@ -388,6 +388,6 @@ export function isStacked(spec: FacetedUnitSpec): boolean {
     return false;
   }
   return stack(spec.mark, spec.encoding,
-           (spec.config && spec.config.mark) ? spec.config.mark.stacked : undefined
+           spec.config ? spec.config.stack : undefined
          ) !== null;
 }
