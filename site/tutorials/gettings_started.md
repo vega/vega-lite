@@ -250,7 +250,7 @@ You can use [Vega-Embed](https://github.com/vega/vega-embed) to embed your Vega-
   <meta charset="utf-8">
 
   <script src="https://d3js.org/d3.v3.min.js"></script>
-  <script src="https://vega.github.io/vega/vega.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/vega/{{ site.data.versions.vega }}/vega.js"></script>
   <script src="https://vega.github.io/vega-lite/vega-lite.js"></script>
   <script src="https://vega.github.io/vega-editor/vendor/vega-embed.js" charset="utf-8"></script>
 
