@@ -3,42 +3,19 @@ import {VgAxisEncode} from './vega.schema';
 
 export type AxisOrient = 'top' | 'right' | 'left' | 'bottom';
 
-export interface AxisConfig {
+export interface AxisConfig extends AxisBase {
   // ---------- General ----------
   /**
    * Width of the axis line
    */
-  axisWidth?: number;
-  /**
-   * A non-positive integer indicating z-index of the axis.
-   * If zindex is 0, axes should be drawn behind all chart elements.
-   * To put them in front, use zindex = 1.
-   * @TJS-type integer
-   * @minimum 0
-   */
-  zindex?: number;
-  /**
-   * The offset, in pixels, by which to displace the axis from the edge of the enclosing group or data rectangle.
-   */
-  offset?: number;
+  domainWidth?: number;
 
   // ---------- Axis ----------
   /**
    * Color of axis line.
    */
-  axisColor?: string;
-
-  /**
-   * Whether to include the axis domain line.
-   */
-  domain?: boolean;
-
+  domainColor?: string;
   // ---------- Grid ----------
-  /**
-   * A flag indicate if gridlines should be created in addition to ticks. If `grid` is unspecified, the default value is `true` for ROW and COL. For X and Y, the default value is `true` for quantitative and time fields and `false` otherwise.
-   */
-  grid?: boolean;
-
   /**
    * Color of gridlines.
    */
@@ -63,62 +40,7 @@ export interface AxisConfig {
    */
   gridWidth?: number;
 
-  // ---------- Labels ----------
-  /**
-   * Enable or disable labels.
-   */
-  labels?: boolean;
-
-  /**
-   * The rotation angle of the axis labels.
-   * @minimum 0
-   * @minimum 360
-   */
-  labelAngle?: number;
-  /**
-   * Text alignment for the Label.
-   */
-  labelAlign?: string;
-  /**
-   * Text baseline for the label.
-   */
-  labelBaseline?: string;
-  /**
-   * Truncate labels that are too long.
-   * @minimum 1
-   * @TJS-type integer
-   */
-  labelMaxLength?: number;
-  /**
-   * The padding, in pixels, between axis and text labels.
-   */
-  labelPadding?: number;
-  /**
-   * Whether month and day names should be abbreviated.
-   */
-  shortTimeLabels?: boolean;
-  // FIXME: Add Description
-  position?: number;
-
   // ---------- Ticks ----------
-  /**
-   * If provided, sets the number of minor ticks between major ticks (the value 9 results in decimal subdivision). Only applicable for axes visualizing quantitative scales.
-   * @minimum 0
-   * @TJS-type integer
-   */
-  subdivide?: number;
-
-  /**
-   * Whether the axis should include ticks.
-   */
-  ticks?: boolean;
-
-  /**
-   * A desired number of ticks, for axes visualizing quantitative scales. The resulting number may be different so that values are "nice" (multiples of 2, 5, 10) and lie within the underlying scale's range.
-   * @minimum 0
-   * @TJS-type integer
-   */
-  tickCount?: number;
 
   /**
    * The color of the axis's tick.
@@ -128,44 +50,18 @@ export interface AxisConfig {
   /**
    * The color of the tick label, can be in hex color code or regular color name.
    */
-  tickLabelColor?: string;
+  labelColor?: string;
 
   /**
    * The font of the tick label.
    */
-  tickLabelFont?: string;
+  labelFont?: string;
 
   /**
    * The font size of label, in pixels.
    * @minimum 0
    */
-  tickLabelFontSize?: number;
-
-  /**
-   * The padding, in pixels, between ticks and text labels.
-   */
-  tickPadding?: number;
-  /**
-   * The size, in pixels, of major, minor and end ticks.
-   * @minimum 0
-   */
-  tickSize?: number;
-  /**
-   * The size, in pixels, of major ticks.
-   * @minimum 0
-   */
-  tickSizeMajor?: number;
-  /**
-   * The size, in pixels, of minor ticks.
-   * @minimum 0
-   */
-  tickSizeMinor?: number;
-  /**
-   * The size, in pixels, of end ticks.
-   * @minimum 0
-   */
-  tickSizeEnd?: number;
-
+  labelFontSize?: number;
   /**
    * The width, in pixels, of ticks.
    * @minimum 0
@@ -198,29 +94,6 @@ export interface AxisConfig {
    * A title offset value for the axis.
    */
   titleOffset?: number;
-  /**
-   * Max length for axis title if the title is automatically generated from the field's description. By default, this is automatically based on cell size and characterWidth property.
-   * @minimum 0
-   * @TJS-type integer
-   */
-  titleMaxLength?: number;
-  /**
-   * The padding, in pixels, between title and axis.
-   */
-  titlePadding?: number;
-  // ---------- Other ----------
-  /**
-   * Optional mark definitions for custom axis encoding.
-   */
-  encode?: VgAxisEncode;
-  /**
-   * Minimum extent, which determines the offset between axis ticks and labels.
-   */
-  minExtent?: number;
-  /**
-   * Maximum extent, which determines the offset between axis ticks and labels.
-   */
-  maxExtent?: number;
 }
 
 // TODO: add comment for properties that we rely on Vega's default to produce
@@ -231,20 +104,18 @@ export const defaultAxisConfig: AxisConfig = {
 };
 
 export const defaultFacetAxisConfig: AxisConfig = {
-  axisWidth: 0,
+  domainWidth: 0,
   // TODO: remove these
   domain: false,
   grid: false,
   ticks: false
 };
 
-export interface Axis extends AxisConfig {
+export interface Axis extends AxisBase {
   /**
-   * The rotation angle of the axis labels.
-   * @minimum 0
-   * @maximum 360
+   * The padding, in pixels, between axis and text labels.
    */
-  labelAngle?: number;
+  labelPadding?: number;
   /**
    * The formatting pattern for axis labels.
    */
@@ -254,16 +125,97 @@ export interface Axis extends AxisConfig {
    */
   orient?: AxisOrient;
   /**
+   * The offset, in pixels, by which to displace the axis from the edge of the enclosing group or data rectangle.
+   */
+  offset?: number;
+  // FIXME: Add Description
+  position?: number;
+  /**
+   * A desired number of ticks, for axes visualizing quantitative scales. The resulting number may be different so that values are "nice" (multiples of 2, 5, 10) and lie within the underlying scale's range.
+   * @minimum 0
+   * @TJS-type integer
+   */
+  tickCount?: number;
+  /**
    * A title for the axis. Shows field name and its function by default.
    */
   title?: string;
   values?: number[] | DateTime[];
+  /**
+   * A non-positive integer indicating z-index of the axis.
+   * If zindex is 0, axes should be drawn behind all chart elements.
+   * To put them in front, use zindex = 1.
+   * @TJS-type integer
+   * @minimum 0
+   */
+  zindex?: number;
+  /**
+   * Optional mark definitions for custom axis encoding.
+   */
+  encode?: VgAxisEncode;
+}
+
+export interface AxisBase {
+  /**
+   * Whether to include the axis domain line.
+   */
+  domain?: boolean;
+  /**
+   * A flag indicate if gridlines should be created in addition to ticks. If `grid` is unspecified, the default value is `true` for ROW and COL. For X and Y, the default value is `true` for quantitative and time fields and `false` otherwise.
+   */
+  grid?: boolean;
+  /**
+   * Enable or disable labels.
+   */
+  labels?: boolean;
+  /**
+   * The rotation angle of the axis labels.
+   * @minimum 0
+   * @maximum 360
+   */
+  labelAngle?: number;
+  /**
+   * Truncate labels that are too long.
+   * @minimum 1
+   * @TJS-type integer
+   */
+  labelMaxLength?: number;
+  /**
+   * Whether the axis should include ticks.
+   */
+  ticks?: boolean;
+  /**
+   * The size, in pixels, of major, minor and end ticks.
+   * @minimum 0
+   */
+  tickSize?: number;
+  /**
+   * Max length for axis title if the title is automatically generated from the field's description. By default, this is automatically based on cell size and characterWidth property.
+   * @minimum 0
+   * @TJS-type integer
+   */
+  titleMaxLength?: number;
+  /**
+   * The padding, in pixels, between title and axis.
+   */
+  titlePadding?: number;
+  /**
+   * Minimum extent, which determines the offset between axis ticks and labels.
+   */
+  minExtent?: number;
+  /**
+   * Maximum extent, which determines the offset between axis ticks and labels.
+   */
+  maxExtent?: number;
+  /**
+   * Whether month and day names should be abbreviated.
+   */
+  shortTimeLabels?: boolean;
 }
 
 export const AXIS_PROPERTIES:(keyof Axis)[] = [
   // a) properties with special rules (so it has axis[property] methods) -- call rule functions
   'domain', 'format', 'labels', 'grid', 'orient', 'ticks', 'tickSize', 'tickCount',  'title', 'values', 'zindex',
   // b) properties without rules, only produce default values in the schema, or explicit value if specified
-    'labelPadding', 'maxExtent', 'minExtent', 'offset', 'position', 'subdivide', 'tickPadding', 'tickSize', 'tickSizeEnd',
-    'tickSizeMajor', 'tickSizeMinor', 'titleOffset', 'titlePadding'
+    'labelPadding', 'maxExtent', 'minExtent', 'offset', 'position', 'tickSize', 'titlePadding'
 ];

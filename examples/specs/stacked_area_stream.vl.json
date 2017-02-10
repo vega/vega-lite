@@ -6,7 +6,7 @@
     "x": {
       "timeUnit": "yearmonth", "field": "date", "type": "temporal",
       "scale": {"nice": "month"},
-      "axis": {"axisWidth": 0, "format": "%Y", "labelAngle": 0, "tickSize": 0}
+      "axis": {"format": "%Y", "labelAngle": 0, "tickSize": 0}
     },
     "y": {
       "aggregate": "sum", "field": "count","type": "quantitative",
@@ -14,5 +14,9 @@
     },
     "color": {"field":"series", "type":"nominal", "scale":{"scheme": "category20b"}}
   },
-  "config": {"cell": {"width": 300, "height": 200}, "stack": "center"}
+  "config": {
+    "cell": {"width": 300, "height": 200},
+    "axis": {"domainWidth": 0},
+    "stack": "center"
+    }
 }

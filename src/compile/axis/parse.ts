@@ -98,7 +98,12 @@ function parseAxis(channel: Channel, model: Model, isGridAxis: boolean): VgAxis 
     }
     // TODO(@yuhanlu): instead of calling encode[part], break this line based on part type
     // as different require different parameters.
-    const value = encode[part](model, channel, encodeSpec.labels || {}, vgAxis);
+    let value;
+    if (part === 'labels') {
+        value = encode[part](model, channel, encodeSpec.labels || {}, vgAxis);
+    } else {
+        value = encodeSpec[part] || {};
+    }
 
     if (value !== undefined && keys(value).length > 0) {
       vgAxis.encode = vgAxis.encode || {};

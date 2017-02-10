@@ -1,6 +1,6 @@
 import * as log from '../log';
 
-import {Axis} from '../axis';
+import {Axis, defaultAxisConfig} from '../axis';
 import {X, Y, X2, Y2, Channel, UNIT_CHANNELS,  UNIT_SCALE_CHANNELS, NONSPATIAL_SCALE_CHANNELS, supportMark} from '../channel';
 import {defaultConfig, Config, CellConfig} from '../config';
 import {SOURCE, SUMMARY} from '../data';
@@ -81,7 +81,7 @@ export class UnitModel extends Model {
       config.text = initTextConfig(encoding, config);
     }
 
-    this.axes = this.initAxes(encoding, config);
+    this.axes = this.initAxes(encoding);
     this.legends = this.initLegend(encoding, config);
 
     // width / height
@@ -221,7 +221,7 @@ export class UnitModel extends Model {
     return {width, height};
   }
 
-  private initAxes(encoding: Encoding, config: Config): Dict<Axis> {
+  private initAxes(encoding: Encoding): Dict<Axis> {
     return [X, Y].reduce(function(_axis, channel) {
       // Position Axis
 
@@ -235,8 +235,8 @@ export class UnitModel extends Model {
         // We no longer support false in the schema, but we keep false here for backward compatability.
         if (axisSpec !== null && axisSpec !== false) {
           _axis[channel] = extend({},
-            config.axis,
-            axisSpec === true ? {} : axisSpec ||  {}
+          defaultAxisConfig,
+          axisSpec === true ? {} : axisSpec ||  {}
           );
         }
       }
