@@ -1,11 +1,13 @@
 /* Package of defining Vega-lite Specification's json schema at its utility functions */
 
 import {Config, defaultOverlayConfig} from './config';
+import * as compositeMark from './compositemark';
 import {Data} from './data';
 import {EncodingWithFacet, Encoding, channelHasField, isRanged} from './encoding';
 import {Facet} from './facet';
 import {FieldDef} from './fielddef';
-import {Mark, AnyMark, COMPOSITE_MARKS, ERRORBAR, AREA, LINE, POINT, isCompositeMark} from './mark';
+import * as log from './log';
+import {Mark, AREA, LINE, POINT, isPrimitiveMark} from './mark';
 import {stack} from './stack';
 import {Transform} from './transform';
 import {ROW, COLUMN, X, Y, X2, Y2} from './channel';
@@ -79,10 +81,10 @@ export interface GenericUnitSpec<M, E extends Encoding> extends BaseSpec {
 
 export type UnitSpec = GenericUnitSpec<Mark, Encoding>;
 
-export type LayeredUnitSpec = GenericUnitSpec<AnyMark, Encoding>;
+export type LayeredUnitSpec = GenericUnitSpec<string, Encoding>;
 
 
-export type FacetedUnitSpec = GenericUnitSpec<AnyMark, EncodingWithFacet>;
+export type FacetedUnitSpec = GenericUnitSpec<string, EncodingWithFacet>;
 
 export interface GenericLayerSpec<U extends GenericUnitSpec<any, any>> extends BaseSpec {
   // FIXME description for top-level width
@@ -134,7 +136,7 @@ export function isFacetedUnitSpec(spec: ExtendedSpec): spec is FacetedUnitSpec {
 }
 
 export function isUnitSpec(spec: ExtendedSpec): spec is FacetedUnitSpec | UnitSpec {
-  return spec['mark'] !== undefined;
+  return !!spec['mark'];
 }
 
 export function isLayerSpec(spec: ExtendedSpec | Spec): spec is GenericLayerSpec<GenericUnitSpec<any, Encoding>> {
@@ -155,7 +157,10 @@ export function normalize(spec: ExtendedSpec | Spec): Spec {
   if (isFacetedUnitSpec(spec)) {
     return normalizeFacetedUnit(spec);
   }
-  return normalizeNonFacetUnit(spec);
+  if (isUnitSpec(spec)) {
+    return normalizeNonFacetUnit(spec);
+  }
+  throw new Error(log.message.INVALID_SPEC);
 }
 
 function normalizeNonFacet(spec: GenericLayerSpec<LayeredUnitSpec> | LayeredUnitSpec) {
@@ -202,12 +207,12 @@ function normalizeFacetedUnit(spec: FacetedUnitSpec): FacetSpec {
   };
 }
 
-function isNormalUnitSpec(spec: GenericUnitSpec<AnyMark, Encoding>):
+function isNonFacetUnitSpecWithPrimitiveMark(spec: GenericUnitSpec<string, Encoding>):
   spec is GenericUnitSpec<Mark, Encoding> {
-    return !contains(COMPOSITE_MARKS, spec.mark);
+    return isPrimitiveMark(spec.mark);
 }
 
-function normalizeNonFacetUnit(spec: GenericUnitSpec<AnyMark, Encoding>) {
+function normalizeNonFacetUnit(spec: GenericUnitSpec<string, Encoding>) {
   const config = spec.config;
   const overlayConfig = config && config.overlay;
   const overlayWithLine = overlayConfig  && spec.mark === AREA &&
@@ -217,23 +222,20 @@ function normalizeNonFacetUnit(spec: GenericUnitSpec<AnyMark, Encoding>) {
     (overlayConfig.area === 'linepoint' && spec.mark === AREA)
   );
 
-  if (isNormalUnitSpec(spec)) {
+  if (isNonFacetUnitSpecWithPrimitiveMark(spec)) {
     // TODO: thoroughly test
     if (isRanged(spec.encoding)) {
       return normalizeRangedUnit(spec);
     }
 
+    // TODO: consider moving this to become another case of compositeMark
     if (overlayWithPoint || overlayWithLine) {
       return normalizeOverlay(spec, overlayWithPoint, overlayWithLine);
     }
-    return spec;
+
+    return spec; // Nothing to normalize
   } else {
-    /* istanbul ignore else */
-    if (spec.mark === ERRORBAR) {
-      return normalizeErrorBar(spec);
-    } else {
-      throw new Error(`unsupported composite mark ${spec.mark}`);
-    }
+    return compositeMark.normalize(spec);
   }
 }
 
@@ -258,31 +260,6 @@ function normalizeRangedUnit(spec: UnitSpec) {
   return spec;
 }
 
-function normalizeErrorBar(spec: GenericUnitSpec<AnyMark, Encoding>): LayerSpec {
-  const {mark: _m, encoding: encoding, ...outerSpec} = spec;
-  const {size: _s, ...encodingWithoutSize} = encoding;
-  const {x2: _x2, y2: _y2, ...encodingWithoutX2Y2} = encoding;
-
-  return {
-    ...outerSpec,
-    layer: [
-      {
-        mark: 'rule',
-        encoding: encodingWithoutSize
-      },{ // Lower tick
-        mark: 'tick',
-        encoding: encodingWithoutX2Y2
-      }, { // Upper tick
-        mark: 'tick',
-        encoding: {
-          ...encodingWithoutX2Y2,
-          ...(encoding.x2 ? {x: encoding.x2} : {}),
-          ...(encoding.y2 ? {y: encoding.y2} : {})
-        }
-      }
-    ]
-  };
-}
 
 // FIXME(#1804): rewrite this
 function normalizeOverlay(spec: UnitSpec, overlayWithPoint: boolean, overlayWithLine: boolean): LayerSpec {
@@ -384,10 +361,10 @@ export function fieldDefs(spec: ExtendedSpec | ExtendedFacetSpec): FieldDef[] {
 };
 
 export function isStacked(spec: FacetedUnitSpec): boolean {
-  if (isCompositeMark(spec.mark)) {
-    return false;
+  if (isPrimitiveMark(spec.mark)) {
+    return stack(spec.mark, spec.encoding,
+            spec.config ? spec.config.stack : undefined
+          ) !== null;
   }
-  return stack(spec.mark, spec.encoding,
-           spec.config ? spec.config.stack : undefined
-         ) !== null;
+  return false;
 }
