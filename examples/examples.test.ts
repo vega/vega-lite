@@ -24,6 +24,8 @@ function validateVL(spec: vl.spec.ExtendedSpec) {
     console.log(inspect(errors, {depth: 10, colors: true}));
   }
   assert(valid, errors && errors.map((err: Ajv.ErrorObject) => err.message).join(', '));
+
+  assert(spec.$schema, 'https://vega.github.io/schema/vega-lite/v2.json');
 }
 
 function validateVega(spec: vl.spec.ExtendedSpec) {
@@ -45,7 +47,7 @@ describe('Examples', function() {
     const jsonSpec = JSON.parse(fs.readFileSync('examples/specs/' + example));
 
     describe(example, function() {
-      it('should be valid vega-lite', function() {
+      it('should be valid vega-lite with proper $schema', function() {
         validateVL(jsonSpec);
       });
 
