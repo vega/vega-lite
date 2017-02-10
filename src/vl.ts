@@ -2,6 +2,7 @@ export import axis = require('./axis');
 export import aggregate = require('./aggregate');
 export import bin = require('./bin');
 export import channel = require('./channel');
+export import compositeMark = require('./compositemark');
 export {compile}  from './compile/compile';
 export import config = require('./config');
 export import data = require('./data');

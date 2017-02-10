@@ -1,4 +1,4 @@
-import {contains, extend} from './util';
+import {extend, toSet} from './util';
 
 export namespace Mark {
   export const AREA: 'area' = 'area';
@@ -11,13 +11,13 @@ export namespace Mark {
   export const TICK: 'tick' = 'tick';
   export const CIRCLE: 'circle' = 'circle';
   export const SQUARE: 'square' = 'square';
-  export const ERRORBAR: 'error-bar' = 'error-bar';
 }
+
+/**
+ * All types of primitive marks.
+ */
 export type Mark = typeof Mark.AREA | typeof Mark.BAR | typeof Mark.LINE | typeof Mark.POINT | typeof Mark.TEXT | typeof Mark.TICK | typeof Mark.RECT | typeof Mark.RULE | typeof Mark.CIRCLE | typeof Mark.SQUARE;
 
-export type CompositeMark = typeof Mark.ERRORBAR;
-
-export type AnyMark = Mark | CompositeMark;
 
 export const AREA = Mark.AREA;
 export const BAR = Mark.BAR;
@@ -31,12 +31,12 @@ export const RULE = Mark.RULE;
 export const CIRCLE = Mark.CIRCLE;
 export const SQUARE = Mark.SQUARE;
 
-export const ERRORBAR = Mark.ERRORBAR;
-export const PRIMITIVE_MARKS = [AREA, BAR, LINE, POINT, TEXT, TICK, RULE, CIRCLE, SQUARE];
-export const COMPOSITE_MARKS = [ERRORBAR];
+export const PRIMITIVE_MARKS = [AREA, BAR, LINE, POINT, TEXT, TICK, RECT, RULE, CIRCLE, SQUARE];
 
-export function isCompositeMark(mark: AnyMark): mark is CompositeMark {
-  return contains(COMPOSITE_MARKS, mark);
+const PRIMITIVE_MARK_INDEX = toSet(PRIMITIVE_MARKS);
+
+export function isPrimitiveMark(mark: string): mark is Mark {
+  return mark in PRIMITIVE_MARK_INDEX;
 }
 
 export type FontStyle = 'normal' | 'italic';
