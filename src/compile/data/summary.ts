@@ -59,7 +59,7 @@ export namespace summary {
   }
 
   export function parseFacet(model: FacetModel): SummaryComponent[] {
-    const childDataComponent = model.child().component.data;
+    const childDataComponent = model.child.component.data;
 
     // FIXME: this could be incorrect for faceted layer charts.
 
@@ -69,8 +69,8 @@ export namespace summary {
         // add facet fields as dimensions
         summaryComponent.dimensions = model.reduce(addDimension, summaryComponent.dimensions);
 
-        const summaryNameWithoutPrefix = summaryComponent.name.substr(model.child().name('').length);
-        model.child().renameData(summaryComponent.name, summaryNameWithoutPrefix);
+        const summaryNameWithoutPrefix = summaryComponent.name.substr(model.child.getName('').length);
+        model.child.renameData(summaryComponent.name, summaryNameWithoutPrefix);
         summaryComponent.name = summaryNameWithoutPrefix;
         return summaryComponent;
       });
@@ -106,7 +106,7 @@ export namespace summary {
 
     // Combine summaries for children that don't have a distinct source
     // (either having its own data source, or its own tranformation of the same data source).
-    model.children().forEach((child) => {
+    model.children.forEach((child) => {
       const childDataComponent = child.component.data;
       if (!childDataComponent.source && childDataComponent.summary) {
         // Merge the summaries if we can

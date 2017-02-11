@@ -54,9 +54,7 @@ export interface StackComponent {
 
 
 function getStackByFields(model: UnitModel) {
-  const stackProperties = model.stack();
-
-  return stackProperties.stackBy.reduce((fields, by) => {
+  return model.stack.stackBy.reduce((fields, by) => {
     const channel = by.channel;
     const fieldDef = by.fieldDef;
 
@@ -77,7 +75,7 @@ function getStackByFields(model: UnitModel) {
 export const stack: DataComponentCompiler<StackComponent> = {
 
   parseUnit: function(model: UnitModel): StackComponent {
-    const stackProperties = model.stack();
+    const stackProperties = model.stack;
     if (!stackProperties) {
       return undefined;
     }
@@ -96,7 +94,7 @@ export const stack: DataComponentCompiler<StackComponent> = {
     }
 
     const stackby = getStackByFields(model);
-    const orderDef = model.encoding().order;
+    const orderDef = model.encoding.order;
 
     let sort: VgSort;
     if (orderDef) {
@@ -130,7 +128,7 @@ export const stack: DataComponentCompiler<StackComponent> = {
   },
 
   parseFacet: function(model: FacetModel): StackComponent {
-    const child = model.child();
+    const child = model.child;
     const childDataComponent = child.component.data;
     // FIXME: Correctly support facet of layer of stack.
     if (childDataComponent.stack) {

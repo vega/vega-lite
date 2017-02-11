@@ -37,7 +37,7 @@ describe('FacetModel', function() {
             encoding: {}
           }
         });
-        assert.equal(model.facet()['shape'], undefined);
+        assert.equal(model.facet['shape'], undefined);
         assert.equal(localLogger.warns[0], log.message.incompatibleChannel(SHAPE, 'facet'));
       });
     });
@@ -53,7 +53,7 @@ describe('FacetModel', function() {
             encoding: {}
           }
         });
-        assert.equal(model.facet().row, undefined);
+        assert.equal(model.facet.row, undefined);
         assert.equal(localLogger.warns[0], log.message.emptyFieldDef({type: ORDINAL}, ROW));
       });
     });
@@ -69,7 +69,7 @@ describe('FacetModel', function() {
             encoding: {}
           }
         });
-        assert.deepEqual(model.facet().row, {field: 'a', type: 'quantitative'});
+        assert.deepEqual(model.facet.row, {field: 'a', type: 'quantitative'});
         assert.equal(localLogger.warns[0], log.message.facetChannelShouldBeDiscrete(ROW));
       });
     });

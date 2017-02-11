@@ -15,15 +15,13 @@ export const line: MarkCompiler = {
   role: undefined,
   encodeEntry: (model: UnitModel) => {
     let e: VgEncodeEntry = {};
-    const config = model.config();
-    const stack = model.stack();
 
     // TODO: refactor how refer to scale as discussed in https://github.com/vega/vega-lite/pull/1613
 
-    e.x = ref.stackable(X, model.encoding().x, model.scaleName(X), model.scale(X), stack, 'base');
-    e.y = ref.stackable(Y, model.encoding().y, model.scaleName(Y), model.scale(Y), stack, 'base');
+    e.x = ref.stackable(X, model.encoding.x, model.scaleName(X), model.scale(X), model.stack, 'base');
+    e.y = ref.stackable(Y, model.encoding.y, model.scaleName(Y), model.scale(Y), model.stack, 'base');
 
-    const _size = size(model.encoding().size, config);
+    const _size = size(model.encoding.size, model.config);
     if (_size) {e.strokeWidth = _size;}
 
     applyColorAndOpacity(e, model);

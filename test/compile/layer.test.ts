@@ -27,10 +27,10 @@ describe('Layer', function() {
           }
         }]
       });
-      assert.equal(model.children().length, 2);
+      assert.equal(model.children.length, 2);
       model.parseScale();
 
-      assert.deepEqual(model.component.scale['x'].main.domain, {
+      assert.deepEqual(model.component.scales['x'].main.domain, {
         fields: [{
           data: 'layer_0_source',
           field: 'a'
@@ -56,10 +56,10 @@ describe('Layer', function() {
           }
         }]
       });
-      assert.equal(model.children().length, 2);
+      assert.equal(model.children.length, 2);
       model.parseScale();
 
-      assert.deepEqual(model.component.scale['x'].main.domain, {
+      assert.deepEqual(model.component.scales['x'].main.domain, {
         fields: [{
           data: 'layer_0_source',
           field: 'bin_a_start'
@@ -90,7 +90,7 @@ describe('Layer', function() {
       });
       model.parseScale();
 
-      assert.deepEqual(model.component.scale['x'].main.domain, {
+      assert.deepEqual(model.component.scales['x'].main.domain, {
         fields: [
           [1, 2, 3],
           {

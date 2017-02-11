@@ -37,7 +37,7 @@ export default function domain(scale: Scale, model: Model, channel:Channel): any
   }
 
   // For stack, use STACKED data.
-  const stack = model.stack();
+  const stack = model.stack;
   if (stack && channel === stack.fieldChannel) {
     if(stack.offset === 'normalize') {
       return [0, 1];

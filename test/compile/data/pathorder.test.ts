@@ -105,7 +105,7 @@ describe('compile/data/pathorder', function() {
           }
         }
       });
-      const child = model.child();
+      const child = model.child;
       child.component.data = {
         pathOrder: pathOrder.parseUnit(child as any)
       } as any;
@@ -144,7 +144,7 @@ describe('compile/data/pathorder', function() {
           }
         }
       }) as LayerModel;
-      const children = model.children();
+      const children = model.children;
       children[0].component.data = {
         pathOrder: pathOrder.parseUnit(children[0])
       } as any;

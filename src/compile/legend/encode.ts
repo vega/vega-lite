@@ -33,7 +33,7 @@ export function symbols(fieldDef: FieldDef, symbolsSpec: any, model: UnitModel, 
       break;
   }
 
-  const cfg = model.config();
+  const cfg = model.config;
   const filled = cfg.mark.filled;
 
   let config = channel === COLOR ?
@@ -56,7 +56,7 @@ export function symbols(fieldDef: FieldDef, symbolsSpec: any, model: UnitModel, 
   }
 
   let value: VgValueRef;
-  const colorDef = model.encoding().color;
+  const colorDef = model.encoding.color;
   if (isValueDef(colorDef)) {
     value = {value: colorDef.value};
   }
@@ -131,7 +131,7 @@ export function symbols(fieldDef: FieldDef, symbolsSpec: any, model: UnitModel, 
 
 export function labels(fieldDef: FieldDef, labelsSpec: any, model: UnitModel, channel: Channel) {
   const legend = model.legend(channel);
-  const config = model.config();
+  const config = model.config;
 
   let labels:any = {};
 

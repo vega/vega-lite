@@ -45,7 +45,7 @@ export function applyConfig(e: VgEncodeEntry,
 }
 
 export function applyMarkConfig(e: VgEncodeEntry, model: UnitModel, propsList: string[]) {
-  return applyConfig(e, model.config().mark, propsList);
+  return applyConfig(e, model.config.mark, propsList);
 }
 
 /**

@@ -9,7 +9,7 @@ import * as ref from './valueref';
 
 
 export function applyColorAndOpacity(e: VgEncodeEntry, model: UnitModel) {
-  const config = model.config();
+  const config = model.config;
   const filled = config.mark.filled;
 
   // TODO: remove this once we correctly integrate theme
@@ -21,8 +21,8 @@ export function applyColorAndOpacity(e: VgEncodeEntry, model: UnitModel) {
     applyMarkConfig(e, model, STROKE_CONFIG);
   }
 
-  let colorRef = ref.midPoint('color', model.encoding().color, model.scaleName('color'), model.scale('color'), undefined);
-  let opacityRef = ref.midPoint('opacity', model.encoding().opacity, model.scaleName('opacity'), model.scale('opacity'), config.mark.opacity && {value: config.mark.opacity});
+  let colorRef = ref.midPoint('color', model.encoding.color, model.scaleName('color'), model.scale('color'), undefined);
+  let opacityRef = ref.midPoint('opacity', model.encoding.opacity, model.scaleName('opacity'), model.scale('opacity'), config.mark.opacity && {value: config.mark.opacity});
 
   if (colorRef !== undefined) {
     if (filled) {
@@ -33,7 +33,7 @@ export function applyColorAndOpacity(e: VgEncodeEntry, model: UnitModel) {
   } else { // TODO: remove this once we correctly integrate theme
     // apply color config if there is no fill / stroke config
     e[filled ? 'fill' : 'stroke'] = e[filled ? 'fill' : 'stroke'] ||
-      {value: model.config().mark.color};
+      {value: model.config.mark.color};
   }
 
   // If there is no fill, always fill symbols

@@ -123,7 +123,7 @@ describe('Mark: Rule', function() {
     const props = rule.encodeEntry(model);
 
     it('should create vertical rule that emulates bar chart', function() {
-      assert.equal(model.config().mark.orient, 'vertical');
+      assert.equal(model.config.mark.orient, 'vertical');
 
       assert.deepEqual(props.x, {scale: X, field: 'a'});
       assert.deepEqual(props.y, {scale: Y, field: 'b'});
@@ -143,7 +143,7 @@ describe('Mark: Rule', function() {
     const props = rule.encodeEntry(model);
 
     it('should create horizontal rule that emulates bar chart', function() {
-      assert.equal(model.config().mark.orient, 'horizontal');
+      assert.equal(model.config.mark.orient, 'horizontal');
 
       assert.deepEqual(props.x, {scale: X, field: 'b'});
       assert.deepEqual(props.x2, {scale: X, value: 0});

@@ -133,7 +133,7 @@ describe('Mark: Text', function() {
         "data": {"url": "data/cars.json"}
       };
     const model = parseModel(spec);
-    const props = text.encodeEntry(model.children()[0] as any);
+    const props = text.encodeEntry(model.children[0] as any);
 
     it('should fit cell on x', function() {
       assert.deepEqual(props.x, {field: {group: 'width'}, offset: -5});

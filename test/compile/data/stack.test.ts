@@ -145,7 +145,7 @@ describe('compile/data/stack', () => {
           }
         }
       });
-      const child = model.child();
+      const child = model.child;
       child.component.data = mockDataComponent();
       child.component.data.stack = {
         name: 'stacked',
@@ -191,7 +191,7 @@ describe('compile/data/stack', () => {
           }
         }
       });
-      const child = model.child();
+      const child = model.child;
       child.component.data = mockDataComponent();
       child.component.data.stack = {
         name: 'stacked',
@@ -236,7 +236,7 @@ describe('compile/data/stack', () => {
           }
         }
       });
-      const child = model.child();
+      const child = model.child;
       child.component.data = mockDataComponent();
       child.component.data.stack = undefined;
 

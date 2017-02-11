@@ -139,8 +139,8 @@ export function forEach(mapping: any,
   });
 }
 
-export function reduce<T>(mapping: any,
-    f: (acc: any, fd: FieldDef, c: Channel) => any,
+export function reduce<T, U>(mapping: U,
+    f: (acc: any, fd: FieldDef, c: Channel) => U,
     init: T, thisArg?: any) {
   if (!mapping) {
     return init;

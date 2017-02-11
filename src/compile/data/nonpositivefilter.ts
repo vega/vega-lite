@@ -22,7 +22,7 @@ export const nonPositiveFilter: DataComponentCompiler<Dict<boolean>> = {
   },
 
   parseFacet: function(model: FacetModel) {
-    const childDataComponent = model.child().component.data;
+    const childDataComponent = model.child.component.data;
 
     // If child doesn't have its own data source, then consider merging
     if (!childDataComponent.source) {
@@ -38,7 +38,7 @@ export const nonPositiveFilter: DataComponentCompiler<Dict<boolean>> = {
     // note that we run this before source.parseLayer
     let nonPositiveFilterComponent = {};
 
-    model.children().forEach((child) => {
+    model.children.forEach((child) => {
       const childDataComponent = child.component.data;
       if (model.compatibleSource(child) && !differ(childDataComponent.nonPositiveFilter, nonPositiveFilterComponent)) {
         extend(nonPositiveFilterComponent, childDataComponent.nonPositiveFilter);

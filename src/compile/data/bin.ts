@@ -32,7 +32,7 @@ function parse(model: Model): Dict<VgTransform[]> {
 
       const transform: VgTransform[] = [];
       if (!binTrans.extent) {
-        const extentSignal = model.name(fieldDef.field + '_extent');
+        const extentSignal = model.getName(fieldDef.field + '_extent');
         transform.push({
           type: 'extent',
           field: fieldDef.field,
@@ -53,7 +53,7 @@ function parse(model: Model): Dict<VgTransform[]> {
       if (hasDiscreteDomainOrHasLegend) {
         // read format from axis or legend, if there is no format then use config.numberFormat
         const format = (model.axis(channel) || model.legend(channel) || {}).format ||
-          model.config().numberFormat;
+          model.config.numberFormat;
 
         const startField = field(fieldDef, {datum: true, binSuffix: 'start'});
         const endField = field(fieldDef, {datum: true, binSuffix: 'end'});
@@ -78,7 +78,7 @@ export const bin: DataComponentCompiler<Dict<VgTransform[]>> = {
   parseFacet: function(model: FacetModel) {
     let binComponent = parse(model);
 
-    const childDataComponent = model.child().component.data;
+    const childDataComponent = model.child.component.data;
 
     // If child doesn't have its own data source, then merge
     if (!childDataComponent.source) {
@@ -92,7 +92,7 @@ export const bin: DataComponentCompiler<Dict<VgTransform[]>> = {
   parseLayer: function (model: LayerModel) {
     let binComponent = parse(model);
 
-    model.children().forEach((child) => {
+    model.children.forEach((child) => {
       const childDataComponent = child.component.data;
 
       // If child doesn't have its own data source, then merge

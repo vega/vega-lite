@@ -18,7 +18,7 @@ export const bar: MarkCompiler = {
   vgMark: 'rect',
   role: 'bar',
   encodeEntry: (model: UnitModel) => {
-    const stack = model.stack();
+    const stack = model.stack;
     let e: VgEncodeEntry = extend(
       x(model, stack),
       y(model, stack)
@@ -30,17 +30,17 @@ export const bar: MarkCompiler = {
 
 function x(model: UnitModel, stack: StackProperties) {
   let e: VgEncodeEntry = {};
-  const config = model.config();
-  const orient = model.config().mark.orient;
-  const sizeDef = model.encoding().size;
+  const {config, encoding} = model;
+  const orient = model.config.mark.orient;
+  const sizeDef = model.encoding.size;
 
-  const xDef = model.encoding().x;
+  const xDef = model.encoding.x;
   const xScaleName = model.scaleName(X);
   const xScale = model.scale(X);
   // x, x2, and width -- we must specify two of these in all conditions
   if (orient === 'horizontal') {
     e.x = ref.stackable(X, xDef, xScaleName, model.scale(X), stack, 'base');
-    e.x2 = ref.stackable2(X2, xDef, model.encoding().x2, xScaleName, model.scale(X), stack, 'base');
+    e.x2 = ref.stackable2(X2, xDef, encoding.x2, xScaleName, model.scale(X), stack, 'base');
     return e;
   } else { // vertical
     if (isFieldDef(xDef)) {
@@ -61,7 +61,7 @@ function x(model: UnitModel, stack: StackProperties) {
     e.xc = ref.midPoint(X, xDef, xScaleName, model.scale(X),
       extend(ref.midX(config), {offset: 1}) // TODO: config.singleBarOffset
     );
-    e.width = ref.midPoint(SIZE, model.encoding().size, model.scaleName(SIZE), model.scale(SIZE),
+    e.width = ref.midPoint(SIZE, encoding.size, model.scaleName(SIZE), model.scale(SIZE),
       defaultSizeRef(xScaleName, model.scale(X), config)
     );
     return e;
@@ -70,17 +70,17 @@ function x(model: UnitModel, stack: StackProperties) {
 
 function y(model: UnitModel, stack: StackProperties) {
   let e: VgEncodeEntry = {};
-  const config = model.config();
-  const orient = model.config().mark.orient;
-  const sizeDef = model.encoding().size;
+  const {config, encoding} = model;
+  const orient = model.config.mark.orient;
+  const sizeDef = encoding.size;
 
-  const yDef = model.encoding().y;
+  const yDef = encoding.y;
   const yScaleName = model.scaleName(Y);
   const yScale = model.scale(Y);
   // y, y2 & height -- we must specify two of these in all conditions
   if (orient === 'vertical') {
-    e.y = ref.stackable(Y, model.encoding().y, yScaleName, model.scale(Y), stack, 'base');
-    e.y2 = ref.stackable2(Y2, model.encoding().y, model.encoding().y2, yScaleName, model.scale(Y), stack, 'base');
+    e.y = ref.stackable(Y, yDef, yScaleName, model.scale(Y), stack, 'base');
+    e.y2 = ref.stackable2(Y2, yDef, encoding.y2, yScaleName, model.scale(Y), stack, 'base');
     return e;
   } else {
     if (isFieldDef(yDef)) {
@@ -98,7 +98,7 @@ function y(model: UnitModel, stack: StackProperties) {
     e.yc = ref.midPoint(Y, yDef, yScaleName, model.scale(Y),
       ref.midY(config)
     );
-    e.height = ref.midPoint(SIZE, model.encoding().size, model.scaleName(SIZE), model.scale(SIZE),
+    e.height = ref.midPoint(SIZE, encoding.size, model.scaleName(SIZE), model.scale(SIZE),
       defaultSizeRef(yScaleName, model.scale(Y), config)
     );
     return e;

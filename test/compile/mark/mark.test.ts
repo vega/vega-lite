@@ -82,7 +82,7 @@ describe('Mark', function() {
             }
           }
         });
-        const markGroup = parseMark(model.child() as UnitModel);
+        const markGroup = parseMark(model.child as UnitModel);
         assert.equal(markGroup[0].from.data, 'faceted-data');
       });
     });

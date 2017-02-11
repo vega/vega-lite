@@ -36,7 +36,7 @@ export const filter: DataComponentCompiler<string> = {
   parseFacet: function(model: FacetModel) {
     let filterComponent = parse(model);
 
-    const childDataComponent = model.child().component.data;
+    const childDataComponent = model.child.component.data;
 
     // If child doesn't have its own data source but has filter, then merge
     if (!childDataComponent.source && childDataComponent.filter) {
@@ -52,7 +52,7 @@ export const filter: DataComponentCompiler<string> = {
   parseLayer: function(model: LayerModel) {
     // Note that this `filter.parseLayer` method is called before `source.parseLayer`
     let filterComponent = parse(model);
-    model.children().forEach((child) => {
+    model.children.forEach((child) => {
       const childDataComponent = child.component.data;
       if (model.compatibleSource(child) && childDataComponent.filter && childDataComponent.filter === filterComponent) {
         // same filter in child so we can just delete it
