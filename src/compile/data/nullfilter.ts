@@ -40,7 +40,7 @@ export const nullFilter: DataComponentCompiler<Dict<FieldDef>> = {
   parseFacet: function(model: FacetModel) {
     let nullFilterComponent = parse(model);
 
-    const childDataComponent = model.child().component.data;
+    const childDataComponent = model.child.component.data;
 
     // If child doesn't have its own data source, then merge
     if (!childDataComponent.source) {
@@ -56,7 +56,7 @@ export const nullFilter: DataComponentCompiler<Dict<FieldDef>> = {
     // FIXME: null filters are not properly propagated right now
     let nullFilterComponent = parse(model);
 
-    model.children().forEach((child) => {
+    model.children.forEach((child) => {
       const childDataComponent = child.component.data;
       if (model.compatibleSource(child) && !differ<FieldDef>(childDataComponent.nullFilter, nullFilterComponent)) {
         extend(nullFilterComponent, childDataComponent.nullFilter);

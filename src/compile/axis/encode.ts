@@ -38,7 +38,7 @@ export function grid(model: Model, channel: Channel, gridPropsSpec: any, _?: VgA
 export function labels(model: Model, channel: Channel, labelsSpec: any, def: VgAxis) {
   const fieldDef = model.fieldDef(channel);
   const axis = model.axis(channel);
-  const config = model.config();
+  const config = model.config;
 
   // Text
   if (contains([NOMINAL, ORDINAL], fieldDef.type) && axis.labelMaxLength) {

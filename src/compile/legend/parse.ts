@@ -27,7 +27,7 @@ function getLegendDefWithScale(model: UnitModel, channel: Channel): VgLegend {
   switch (channel) {
     case COLOR:
       const scale = model.scaleName(COLOR) + suffix;
-      return model.config().mark.filled ? {fill: scale} : {stroke: scale};
+      return model.config.mark.filled ? {fill: scale} : {stroke: scale};
     case SIZE:
       return {size: model.scaleName(SIZE) + suffix};
     case SHAPE:
@@ -68,13 +68,12 @@ export function parseLegend(model: UnitModel, channel: Channel): VgLegend {
 
 function getSpecifiedOrDefaultValue(property: keyof VgLegend, specifiedLegend: Legend, channel: Channel, model: Model) {
   const fieldDef = model.fieldDef(channel);
-  const config = model.config();
 
   switch (property) {
     case 'format':
-      return numberFormat(fieldDef, specifiedLegend.format, config, channel);
+      return numberFormat(fieldDef, specifiedLegend.format, model.config, channel);
     case 'title':
-      return rules.title(specifiedLegend, fieldDef, config);
+      return rules.title(specifiedLegend, fieldDef, model.config);
     case 'values':
       return rules.values(specifiedLegend);
     case 'type':

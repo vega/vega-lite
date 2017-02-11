@@ -38,11 +38,11 @@ export function parseMark(model: UnitModel): any[] {
 
 // FIXME: maybe this should not be here.  Need re-think and refactor, esp. after having all composition in.
 function dataFrom(model: UnitModel): string {
-  const parent = model.parent();
+  const parent = model.parent;
   if (parent && parent.isFacet()) {
     return (parent as FacetModel).facetedTable();
   }
-  if (model.stack()) {
+  if (model.stack) {
     return model.dataName('stacked');
   }
   return model.dataTable();
@@ -57,7 +57,7 @@ function parsePathMark(model: UnitModel) {
 
   let pathMarks: any = [
     {
-      name: model.name('marks'),
+      name: model.getName('marks'),
       type: markCompiler[mark].vgMark,
       // If has subfacet for line/area group, need to use faceted data from below.
       // FIXME: support sorting path order (in connected scatterplot)
@@ -70,7 +70,7 @@ function parsePathMark(model: UnitModel) {
     // TODO: for non-stacked plot, map order to zindex. (Maybe rename order for layer to zindex?)
 
     return [{
-      name: model.name('pathgroup'),
+      name: model.getName('pathgroup'),
       type: 'group',
       from: {
         facet: {
@@ -102,7 +102,7 @@ function parseNonPathMark(model: UnitModel) {
   // TODO: for non-stacked plot, map order to zindex. (Maybe rename order for layer to zindex?)
 
   marks.push({
-    name: model.name('marks'),
+    name: model.getName('marks'),
     type: markCompiler[mark].vgMark,
     ...(role? {role} : {}),
     from: {data: dataFrom(model)},

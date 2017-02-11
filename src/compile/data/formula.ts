@@ -20,7 +20,7 @@ export const formula: DataComponentCompiler<Dict<Formula>> = {
   parseFacet: function(model: FacetModel): Dict<Formula> {
     let formulaComponent = parse(model);
 
-    const childDataComponent = model.child().component.data;
+    const childDataComponent = model.child.component.data;
 
     // If child doesn't have its own data source, then merge
     if (!childDataComponent.source) {
@@ -32,7 +32,7 @@ export const formula: DataComponentCompiler<Dict<Formula>> = {
 
   parseLayer: function(model: LayerModel): Dict<Formula> {
     let formulaComponent = parse(model);
-    model.children().forEach((child) => {
+    model.children.forEach((child) => {
       const childDataComponent = child.component.data;
       if (!childDataComponent.source && childDataComponent.calculate) {
         extend(formulaComponent || {}, childDataComponent.calculate);

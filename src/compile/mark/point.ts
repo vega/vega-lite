@@ -12,20 +12,19 @@ import * as ref from './valueref';
 
 function encodeEntry(model: UnitModel, fixedShape?: string) {
   let e: VgEncodeEntry = {};
-  const config = model.config();
+  const {config, encoding, stack} = model;
   const markSpecificConfig: SymbolConfig = fixedShape ? config[fixedShape] : config.point;
-  const stack = model.stack();
 
   // TODO: refactor how refer to scale as discussed in https://github.com/vega/vega-lite/pull/1613
 
-  e.x = ref.stackable(X, model.encoding().x, model.scaleName(X), model.scale(X), stack, ref.midX(config));
-  e.y = ref.stackable(Y, model.encoding().y, model.scaleName(Y), model.scale(Y), stack, ref.midY(config));
+  e.x = ref.stackable(X, encoding.x, model.scaleName(X), model.scale(X), stack, ref.midX(config));
+  e.y = ref.stackable(Y, encoding.y, model.scaleName(Y), model.scale(Y), stack, ref.midY(config));
 
-  e.size = ref.midPoint(SIZE, model.encoding().size, model.scaleName(SIZE), model.scale(SIZE),
+  e.size = ref.midPoint(SIZE, encoding.size, model.scaleName(SIZE), model.scale(SIZE),
     {value: markSpecificConfig.size}
   );
 
-  e.shape = shape(model.encoding().shape, model.scaleName(SHAPE), model.scale(SHAPE), config.point, fixedShape);
+  e.shape = shape(encoding.shape, model.scaleName(SHAPE), model.scale(SHAPE), config.point, fixedShape);
 
   applyColorAndOpacity(e, model);
   return e;

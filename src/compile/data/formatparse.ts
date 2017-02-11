@@ -61,7 +61,7 @@ function parse(model: Model): Dict<string> {
   });
 
   // Custom parse should override inferred parse
-  const data = model.data();
+  const data = model.data;
   if (data && isUrlData(data) && data.format && data.format.parse) {
     const parse = data.format.parse;
     keys(parse).forEach((field) => {
@@ -79,7 +79,7 @@ export const formatParse: DataComponentCompiler<Dict<string>> = {
     let parseComponent = parse(model);
 
     // If child doesn't have its own data source, but has its own parse, then merge
-    const childDataComponent = model.child().component.data;
+    const childDataComponent = model.child.component.data;
     if (!childDataComponent.source && childDataComponent.formatParse) {
       extend(parseComponent, childDataComponent.formatParse);
       delete childDataComponent.formatParse;
@@ -90,7 +90,7 @@ export const formatParse: DataComponentCompiler<Dict<string>> = {
   parseLayer: function(model: LayerModel) {
     // note that we run this before source.parseLayer
     let parseComponent = parse(model);
-    model.children().forEach((child) => {
+    model.children.forEach((child) => {
       const childDataComponent = child.component.data;
       if (model.compatibleSource(child) && !differ(childDataComponent.formatParse, parseComponent)) {
         // merge parse up if the child does not have an incompatible parse

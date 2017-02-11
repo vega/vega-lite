@@ -16,20 +16,19 @@ export const tick: MarkCompiler = {
 
   encodeEntry: (model: UnitModel) => {
     let e: VgEncodeEntry = {};
-    const config = model.config();
-    const stack = model.stack();
+    const {config, encoding, stack} = model;
 
     // TODO: refactor how refer to scale as discussed in https://github.com/vega/vega-lite/pull/1613
 
-    e.xc = ref.stackable(X, model.encoding().x, model.scaleName(X), model.scale(X), stack, ref.midX(config));
-    e.yc = ref.stackable(Y, model.encoding().y, model.scaleName(Y), model.scale(Y), stack, ref.midY(config));
+    e.xc = ref.stackable(X, encoding.x, model.scaleName(X), model.scale(X), stack, ref.midX(config));
+    e.yc = ref.stackable(Y, encoding.y, model.scaleName(Y), model.scale(Y), stack, ref.midY(config));
 
     if (config.mark.orient === 'horizontal') {
-      e.width = size(model.encoding().size, model.scaleName(SIZE), model.scale(SIZE), config, (model.scale(X) || {}).rangeStep);
+      e.width = size(encoding.size, model.scaleName(SIZE), model.scale(SIZE), config, (model.scale(X) || {}).rangeStep);
       e.height = {value: config.tick.thickness};
     } else {
       e.width = {value: config.tick.thickness};
-      e.height = size(model.encoding().size, model.scaleName(SIZE), model.scale(SIZE), config, (model.scale(Y) || {}).rangeStep);
+      e.height = size(encoding.size, model.scaleName(SIZE), model.scale(SIZE), config, (model.scale(Y) || {}).rangeStep);
     }
 
     applyColorAndOpacity(e, model);

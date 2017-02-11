@@ -25,7 +25,7 @@ describe('UnitModel', function() {
             shape: {field: 'a', type: 'quantitative'}
           }
         });
-        assert.equal(model.encoding().shape, undefined);
+        assert.equal(model.encoding.shape, undefined);
         assert.equal(localLogger.warns[0], log.message.incompatibleChannel(SHAPE, BAR));
       });
     });
@@ -38,7 +38,7 @@ describe('UnitModel', function() {
             x: {type: 'quantitative'}
           }
         });
-        assert.equal(model.encoding().x, undefined);
+        assert.equal(model.encoding.x, undefined);
         assert.equal(localLogger.warns[0], log.message.emptyFieldDef({type: QUANTITATIVE}, X));
       });
     });
@@ -55,7 +55,7 @@ describe('UnitModel', function() {
             ]
           }
         });
-        assert.deepEqual(model.encoding().detail, [
+        assert.deepEqual(model.encoding.detail, [
           {field: 'a', type: 'ordinal'},
           {value: 'b'}
         ]);

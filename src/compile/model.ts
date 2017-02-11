@@ -30,44 +30,44 @@ import {StackProperties} from '../stack';
 export interface Component {
   data: DataComponent;
   layout: LayoutComponent;
-  scale: Dict<ScaleComponents>;
+  scales: Dict<ScaleComponents>;
 
   /** Dictionary mapping channel to VgAxis definition */
-  axis: Dict<VgAxis[]>;
+  axes: Dict<VgAxis[]>;
 
   /** Dictionary mapping channel to VgLegend definition */
-  legend: Dict<VgLegend>;
+  legends: Dict<VgLegend>;
 
   /** Dictionary mapping channel to axis mark group for facet and concat */
-  axisGroup: Dict<VgEncodeEntry>;
+  axisGroups: Dict<VgEncodeEntry>;
 
   /** Dictionary mapping channel to grid mark group for facet (and concat?) */
-  gridGroup: Dict<VgEncodeEntry[]>;
+  gridGroups: Dict<VgEncodeEntry[]>;
 
   mark: VgEncodeEntry[];
 }
 
 class NameMap implements NameMapInterface {
-  private _nameMap: Dict<string>;
+  private nameMap: Dict<string>;
 
   constructor() {
-    this._nameMap = {};
+    this.nameMap = {};
   }
 
   public rename(oldName: string, newName: string) {
-    this._nameMap[oldName] = newName;
+    this.nameMap[oldName] = newName;
   }
 
 
   public has(name: string): boolean {
-    return this._nameMap[name] !== undefined;
+    return this.nameMap[name] !== undefined;
   }
 
   public get(name: string): string {
     // If the name appears in the _nameMap, we need to read its new name.
     // We have to loop over the dict just in case the new name also gets renamed.
-    while (this._nameMap[name]) {
-      name = this._nameMap[name];
+    while (this.nameMap[name]) {
+      name = this.nameMap[name];
     }
 
     return name;
@@ -81,49 +81,53 @@ export interface NameMapInterface {
 }
 
 export abstract class Model {
-  protected readonly _parent: Model;
-  protected readonly _name: string;
-  protected readonly _description: string;
-  protected readonly _padding: Padding;
+  public readonly parent: Model;
+  protected readonly name: string;
+  public readonly description: string;
+  public readonly padding: Padding;
 
-  protected readonly _data: Data;
+  public readonly data: Data;
 
   /** Name map for data sources, which can be renamed by a model's parent. */
-  protected _dataNameMap: NameMapInterface;
+  protected dataNameMap: NameMapInterface;
 
   /** Name map for scales, which can be renamed by a model's parent. */
-  protected _scaleNameMap: NameMapInterface;
+  protected scaleNameMap: NameMapInterface;
 
   /** Name map for size, which can be renamed by a model's parent. */
-  protected _sizeNameMap: NameMapInterface;
+  protected sizeNameMap: NameMapInterface;
 
-  protected readonly _transform: Transform;
-  protected _scale: Dict<Scale> = {};
+  protected readonly transform: Transform;
+  protected abstract readonly scales: Dict<Scale> = {};
 
-  protected _axis: Dict<Axis> = {};
+  protected abstract readonly axes: Dict<Axis> = {};
 
-  protected _legend: Dict<Legend> = {};
+  protected abstract readonly legends: Dict<Legend> = {};
 
-  protected _config: Config;
+  public abstract readonly config: Config;
 
   public component: Component;
 
+  public abstract readonly children: Model[] = [];
+
+  public abstract stack: StackProperties;
+
   constructor(spec: BaseSpec, parent: Model, parentGivenName: string) {
-    this._parent = parent;
+    this.parent = parent;
 
     // If name is not provided, always use parent's givenName to avoid name conflicts.
-    this._name = spec.name || parentGivenName;
+    this.name = spec.name || parentGivenName;
 
     // Shared name maps
-    this._dataNameMap = parent ? parent._dataNameMap : new NameMap();
-    this._scaleNameMap = parent ? parent._scaleNameMap : new NameMap();
-    this._sizeNameMap = parent ? parent._sizeNameMap : new NameMap();
+    this.dataNameMap = parent ? parent.dataNameMap : new NameMap();
+    this.scaleNameMap = parent ? parent.scaleNameMap : new NameMap();
+    this.sizeNameMap = parent ? parent.sizeNameMap : new NameMap();
 
-    this._data = spec.data;
+    this.data = spec.data;
 
-    this._description = spec.description;
-    this._padding = spec.padding;
-    this._transform = spec.transform;
+    this.description = spec.description;
+    this.padding = spec.padding;
+    this.transform = spec.transform;
 
     if (spec.transform) {
       if (spec.transform.filterInvalid === undefined &&
@@ -133,7 +137,7 @@ export abstract class Model {
       }
     }
 
-    this.component = {data: null, layout: null, mark: null, scale: null, axis: null, axisGroup: null, gridGroup: null, legend: null};
+    this.component = {data: null, layout: null, mark: null, scales: null, axes: null, axisGroups: null, gridGroups: null, legends: null};
   }
 
 
@@ -179,7 +183,7 @@ export abstract class Model {
   public assembleScales(): VgScale[] {
     // FIXME: write assembleScales() in scale.ts that
     // help assemble scale domains with scale signature as well
-    return flatten(vals(this.component.scale).map((scales: ScaleComponents) => {
+    return flatten(vals(this.component.scales).map((scales: ScaleComponents) => {
       let arr = [scales.main];
       if (scales.binLegend) {
         arr.push(scales.binLegend);
@@ -194,11 +198,11 @@ export abstract class Model {
   public abstract assembleMarks(): any[]; // TODO: VgMarkGroup[]
 
   public assembleAxes(): VgAxis[] {
-    return [].concat.apply([], vals(this.component.axis));
+    return [].concat.apply([], vals(this.component.axes));
   }
 
   public assembleLegends(): any[] { // TODO: VgLegend[]
-    return vals(this.component.legend);
+    return vals(this.component.legends);
   }
 
   public assembleGroup() {
@@ -229,18 +233,18 @@ export abstract class Model {
 
   public abstract channels(): Channel[];
 
-  protected abstract mapping(): any;
+  protected abstract getMapping(): {[key: string]: any};
 
-  public reduce<T>(f: (acc: any, fd: FieldDef, c: Channel) => any, init: T, t?: any) {
-    return reduce(this.mapping(), f, init, t);
+  public reduce<T, U>(f: (acc: U, fd: FieldDef, c: Channel) => U, init: T, t?: any) {
+    return reduce(this.getMapping(), f, init, t);
   }
 
   public forEach(f: (fd: FieldDef, c: Channel) => void, t?: any) {
-    forEach(this.mapping(), f, t);
+    forEach(this.getMapping(), f, t);
   }
 
   public hasDescendantWithFieldOnChannel(channel: Channel) {
-    for (let child of this.children()) {
+    for (let child of this.children) {
       if (child.isUnit()) {
         if (child.channelHasField(channel)) {
           return true;
@@ -256,30 +260,12 @@ export abstract class Model {
 
   public abstract channelHasField(channel: Channel): boolean;
 
-  public parent(): Model {
-    return this._parent;
-  }
-
-  public abstract children(): Model[];
-
-  public name(text: string, delimiter: string = '_') {
-    return (this._name ? this._name + delimiter : '') + text;
-  }
-
-  public description() {
-    return this._description;
-  }
-
-  public padding() {
-    return this._padding;
-  }
-
-  public data() {
-    return this._data;
+  public getName(text: string, delimiter: string = '_') {
+    return (this.name ? this.name + delimiter : '') + text;
   }
 
   public renameData(oldName: string, newName: string) {
-     this._dataNameMap.rename(oldName, newName);
+     this.dataNameMap.rename(oldName, newName);
   }
 
   /**
@@ -289,11 +275,11 @@ export abstract class Model {
    * We already use the name map so that marks and scales use the correct data.
    */
   public dataName(dataSourceType: DataSourceType): string {
-    return this._dataNameMap.get(this.name(String(dataSourceType)));
+    return this.dataNameMap.get(this.getName(String(dataSourceType)));
   }
 
   public renameSize(oldName: string, newName: string) {
-    this._sizeNameMap.rename(oldName, newName);
+    this.sizeNameMap.rename(oldName, newName);
   }
 
   public channelSizeName(channel: Channel): string {
@@ -301,26 +287,26 @@ export abstract class Model {
   }
 
   public sizeName(size: string): string {
-     return this._sizeNameMap.get(this.name(size, '_'));
+     return this.sizeNameMap.get(this.getName(size, '_'));
   }
 
   public abstract dataTable(): string;
 
   // TRANSFORMS
   public calculate(): Formula[] {
-    return this._transform ? this._transform.calculate : undefined;
+    return this.transform ? this.transform.calculate : undefined;
   }
 
   public filterInvalid(): boolean {
-    const transform = this._transform || {};
+    const transform = this.transform || {};
     if (transform.filterInvalid === undefined) {
-      return this.parent() ? this.parent().filterInvalid() : undefined;
+      return this.parent ? this.parent.filterInvalid() : undefined;
     }
     return transform.filterInvalid;
   }
 
   public filter(): string | OneOfFilter | EqualFilter| RangeFilter | (string | OneOfFilter | EqualFilter| RangeFilter)[] {
-    return this._transform ? this._transform.filter : undefined;
+    return this.transform ? this.transform.filter : undefined;
   }
 
   /** Get "field" reference for vega */
@@ -339,7 +325,7 @@ export abstract class Model {
   public abstract fieldDef(channel: Channel): FieldDef;
 
   public scale(channel: Channel): Scale {
-    return this._scale[channel];
+    return this.scales[channel];
   }
 
   public hasDiscreteScale(channel: Channel) {
@@ -348,7 +334,7 @@ export abstract class Model {
   }
 
   public renameScale(oldName: string, newName: string) {
-    this._scaleNameMap.rename(oldName, newName);
+    this.scaleNameMap.rename(oldName, newName);
   }
 
 
@@ -356,48 +342,39 @@ export abstract class Model {
    * @return scale name for a given channel after the scale has been parsed and named.
    * (DO NOT USE THIS METHOD DURING SCALE PARSING, use model.name() instead)
    */
-  public scaleName(originalScaleName: Channel|string, parse?: boolean): string {
+  public scaleName(this: Model, originalScaleName: Channel|string, parse?: boolean): string {
     const channel = originalScaleName.replace(BIN_LEGEND_SUFFIX, '').replace(BIN_LEGEND_LABEL_SUFFIX, '');
 
     if (parse) {
       // During the parse phase always return a value
       // No need to refer to rename map because a scale can't be renamed
       // before it has the original name.
-      return this.name(originalScaleName + '');
+      return this.getName(originalScaleName + '');
     }
 
     // If there is a scale for the channel, it should either
     // be in the _scale mapping or exist in the name map
     if (
         // in the scale map (the scale is not merged by its parent)
-        (this._scale && this._scale[channel]) ||
+        (this.scale && this.scales[channel]) ||
         // in the scale name map (the the scale get merged by its parent)
-        this._scaleNameMap.has(this.name(originalScaleName + ''))
+        this.scaleNameMap.has(this.getName(originalScaleName + ''))
       ) {
-      return this._scaleNameMap.get(this.name(originalScaleName + ''));
+      return this.scaleNameMap.get(this.getName(originalScaleName + ''));
     }
     return undefined;
   }
 
   public sort(channel: Channel): SortField | SortOrder {
-    return (this.mapping()[channel] || {}).sort;
+    return (this.getMapping()[channel] || {}).sort;
   }
 
-  public abstract stack(): StackProperties;
-
   public axis(channel: Channel): Axis {
-    return this._axis[channel];
+    return this.axes[channel];
   }
 
   public legend(channel: Channel): Legend {
-    return this._legend[channel];
-  }
-
-  /**
-   * Get the spec configuration.
-   */
-  public config(): Config {
-    return this._config;
+    return this.legends[channel];
   }
 
   /**

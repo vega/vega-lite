@@ -28,8 +28,8 @@ export const rect: MarkCompiler = {
 function x(model: UnitModel) {
   let e: VgEncodeEntry = {};
 
-  const xDef = model.encoding().x;
-  const x2Def = model.encoding().x2;
+  const xDef = model.encoding.x;
+  const x2Def = model.encoding.x2;
   const xScaleName = model.scaleName(X);
   const xScale = model.scale(X);
 
@@ -56,8 +56,8 @@ function x(model: UnitModel) {
 function y(model: UnitModel) {
   let e: VgEncodeEntry = {};
 
-  const yDef = model.encoding().y;
-  const y2Def = model.encoding().y2;
+  const yDef = model.encoding.y;
+  const y2Def = model.encoding.y2;
   const yScaleName = model.scaleName(Y);
   const yScale = model.scale(Y);
 

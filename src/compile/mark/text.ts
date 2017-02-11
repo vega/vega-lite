@@ -18,19 +18,18 @@ export const text: MarkCompiler = {
   encodeEntry: (model: UnitModel) => {
     let e: VgEncodeEntry = {};
 
-    applyConfig(e, model.config().text,
+    applyConfig(e, model.config.text,
       ['angle', 'align', 'baseline', 'dx', 'dy', 'font', 'fontWeight',
         'fontStyle', 'radius', 'theta', 'text']);
 
-    const config = model.config();
-    const stack = model.stack();
-    const textDef = model.encoding().text;
+    const {config, encoding, stack} = model;
+    const textDef = encoding.text;
 
     // TODO: refactor how refer to scale as discussed in https://github.com/vega/vega-lite/pull/1613
-    e.x = ref.stackable(X, model.encoding().x, model.scaleName(X), model.scale(X), stack, xDefault(config, textDef));
-    e.y = ref.stackable(Y, model.encoding().y, model.scaleName(Y), model.scale(Y), stack, ref.midY(config));
+    e.x = ref.stackable(X, encoding.x, model.scaleName(X), model.scale(X), stack, xDefault(config, textDef));
+    e.y = ref.stackable(Y, encoding.y, model.scaleName(Y), model.scale(Y), stack, ref.midY(config));
 
-    e.fontSize = ref.midPoint(SIZE, model.encoding().size, model.scaleName(SIZE), model.scale(SIZE),
+    e.fontSize = ref.midPoint(SIZE, encoding.size, model.scaleName(SIZE), model.scale(SIZE),
        {value: config.text.fontSize}
     );
 

@@ -1,10 +1,13 @@
 import {Channel} from '../channel';
 import {defaultConfig, CellConfig, Config} from '../config';
 import {FieldDef} from '../fielddef';
+import {Legend} from '../legend';
+import {Scale} from '../scale';
+import {Axis} from '../axis';
 import {LayerSpec} from '../spec';
 import {StackProperties} from '../stack';
 import {FILL_STROKE_CONFIG} from '../mark';
-import {keys, duplicate, mergeDeep, flatten, vals} from '../util';
+import {keys, duplicate, mergeDeep, flatten, vals, Dict} from '../util';
 import {VgData, VgEncodeEntry} from '../vega.schema';
 import {isUrlData} from '../data';
 
@@ -19,46 +22,47 @@ import {unionDomains} from './scale/domain';
 
 
 export class LayerModel extends Model {
-  private _children: UnitModel[];
+  public readonly children: UnitModel[];
+
+  protected readonly scales: Dict<Scale> = {};
+
+  protected readonly axes: Dict<Axis> = {};
+
+  protected readonly legends: Dict<Legend> = {};
+
+  public readonly config: Config;
+
+  public readonly stack: StackProperties = null;
 
   /**
    * Fixed width for the unit visualization.
    * If undefined (e.g., for ordinal scale), the width of the
    * visualization will be calculated dynamically.
    */
-  private readonly _width: number;
+  public readonly width: number;
 
   /**
    * Fixed height for the unit visualization.
    * If undefined (e.g., for ordinal scale), the height of the
    * visualization will be calculated dynamically.
    */
-  private readonly _height: number;
-
+  public readonly height: number;
 
   constructor(spec: LayerSpec, parent: Model, parentGivenName: string) {
     super(spec, parent, parentGivenName);
 
-    this._width = spec.width;
-    this._height = spec.height;
+    this.width = spec.width;
+    this.height = spec.height;
 
-    this._config = this._initConfig(spec.config, parent);
-    this._children = spec.layer.map((layer, i) => {
+    this.config = this.initConfig(spec.config, parent);
+    this.children = spec.layer.map((layer, i) => {
       // we know that the model has to be a unit model because we pass in a unit spec
-      return buildModel(layer, this, this.name('layer_' + i)) as UnitModel;
+      return buildModel(layer, this, this.getName('layer_' + i)) as UnitModel;
     });
   }
 
-  private _initConfig(specConfig: Config, parent: Model) {
-    return mergeDeep(duplicate(defaultConfig), specConfig, parent ? parent.config() : {});
-  }
-
-  public get width(): number {
-    return this._width;
-  }
-
-  public get height(): number {
-    return this._height;
+  private initConfig(specConfig: Config, parent: Model) {
+    return mergeDeep(duplicate(defaultConfig), specConfig, parent ? parent.config : {});
   }
 
   public channelHasField(_: Channel): boolean {
@@ -66,30 +70,22 @@ export class LayerModel extends Model {
     return false;
   }
 
-  public children() {
-    return this._children;
-  }
-
   public hasDiscreteScale(channel: Channel) {
     // since we assume shared scales we can just ask the first child
-    return this._children[0].hasDiscreteScale(channel);
+    return this.children[0].hasDiscreteScale(channel);
   }
 
   public dataTable() {
     // FIXME: don't just use the first child
-    return this._children[0].dataTable();
+    return this.children[0].dataTable();
   }
 
   public fieldDef(_: Channel): FieldDef {
     return null; // layer does not have field defs
   }
 
-  public stack(): StackProperties {
-    return null; // this is only a property for UnitModel
-  }
-
   public parseData() {
-    this._children.forEach((child) => {
+    this.children.forEach((child) => {
       child.parseData();
     });
     this.component.data = parseLayerData(this);
@@ -102,7 +98,7 @@ export class LayerModel extends Model {
 
   public parseLayoutData() {
     // TODO: correctly union ordinal scales rather than just using the layout of the first child
-    this._children.forEach(child => {
+    this.children.forEach(child => {
       child.parseLayoutData();
     });
     this.component.layout = parseLayerLayout(this);
@@ -111,16 +107,16 @@ export class LayerModel extends Model {
   public parseScale(this: LayerModel) {
     const model = this;
 
-    let scaleComponent = this.component.scale = {};
+    let scaleComponent = this.component.scales = {};
 
-    this._children.forEach(function(child) {
+    this.children.forEach(function(child) {
       child.parseScale();
 
       // FIXME(#1602): correctly implement independent scale
       // Also need to check whether the scales are actually compatible, e.g. use the same sort or throw error
       if (true) { // if shared/union scale
-        keys(child.component.scale).forEach(function(channel) {
-          let childScales: ScaleComponents = child.component.scale[channel];
+        keys(child.component.scales).forEach(function(channel) {
+          let childScales: ScaleComponents = child.component.scales[channel];
           if (!childScales) {
             // the child does not have any scales so we have nothing to merge
             return;
@@ -140,7 +136,7 @@ export class LayerModel extends Model {
 
           // rename child scales to parent scales
           vals(childScales).forEach(function(scale: any) {
-            const scaleNameWithoutPrefix = scale.name.substr(child.name('').length);
+            const scaleNameWithoutPrefix = scale.name.substr(child.getName('').length);
             const newName = model.scaleName(scaleNameWithoutPrefix, true);
             child.renameScale(scale.name, newName);
             scale.name = newName;
@@ -153,25 +149,25 @@ export class LayerModel extends Model {
   }
 
   public parseMark() {
-    this._children.forEach(function(child) {
+    this.children.forEach(function(child) {
       child.parseMark();
     });
   }
 
   public parseAxis() {
-    let axisComponent = this.component.axis = {};
+    let axisComponent = this.component.axes = {};
 
-    this._children.forEach(function(child) {
+    this.children.forEach(function(child) {
       child.parseAxis();
 
       // TODO: correctly implement independent axes
       if (true) { // if shared/union scale
-        keys(child.component.axis).forEach(function(channel) {
+        keys(child.component.axes).forEach(function(channel) {
           // TODO: support multiple axes for shared scale
 
           // just use the first axis definition for each channel
           if (!axisComponent[channel]) {
-            axisComponent[channel] = child.component.axis[channel];
+            axisComponent[channel] = child.component.axes[channel];
           }
         });
       }
@@ -187,17 +183,17 @@ export class LayerModel extends Model {
   }
 
   public parseLegend() {
-    let legendComponent = this.component.legend = {};
+    let legendComponent = this.component.legends = {};
 
-    this._children.forEach(function(child) {
+    this.children.forEach(function(child) {
       child.parseLegend();
 
       // TODO: correctly implement independent axes
       if (true) { // if shared/union scale
-        keys(child.component.legend).forEach(function(channel) {
+        keys(child.component.legends).forEach(function(channel) {
           // just use the first legend definition for each channel
           if (!legendComponent[channel]) {
-            legendComponent[channel] = child.component.legend[channel];
+            legendComponent[channel] = child.component.legends[channel];
           }
         });
       }
@@ -211,7 +207,7 @@ export class LayerModel extends Model {
   public assembleData(data: VgData[]): VgData[] {
     // Prefix traversal – parent data might be referred to by children data
     assembleData(this, data);
-    this._children.forEach((child) => {
+    this.children.forEach((child) => {
       child.assembleData(data);
     });
     return data;
@@ -219,7 +215,7 @@ export class LayerModel extends Model {
 
   public assembleLayout(layoutData: VgData[]): VgData[] {
     // Postfix traversal – layout is assembled bottom-up
-    this._children.forEach((child) => {
+    this.children.forEach((child) => {
       child.assembleLayout(layoutData);
     });
     return assembleLayout(this, layoutData);
@@ -227,7 +223,7 @@ export class LayerModel extends Model {
 
   public assembleMarks(): any[] {
     // only children have marks
-    return flatten(this._children.map((child) => {
+    return flatten(this.children.map((child) => {
       return child.assembleMarks();
     }));
   }
@@ -236,7 +232,7 @@ export class LayerModel extends Model {
     return [];
   }
 
-  protected mapping(): any {
+  protected getMapping(): any {
     return null;
   }
 
@@ -251,7 +247,7 @@ export class LayerModel extends Model {
    * This function can only be called once th child has been parsed.
    */
   public compatibleSource(child: UnitModel) {
-    const data = this.data();
+    const data = this.data;
     const childData = child.component.data;
     const compatible = !childData.source || (data && isUrlData(data) && data.url === childData.source.url);
     return compatible;

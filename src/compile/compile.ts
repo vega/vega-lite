@@ -75,10 +75,10 @@ function assemble(model: Model) {
 }
 
 export function topLevelBasicProperties(model: Model) {
-  const config = model.config();
+  const config = model.config;
   return extend(
     // TODO: Add other top-level basic properties (#1778)
-    {padding: model.padding() || config.padding},
+    {padding: model.padding || config.padding},
     {autosize: 'pad'},
     config.viewport ? {viewport: config.viewport} : {},
     config.background ? {background: config.background} : {}
@@ -88,19 +88,19 @@ export function topLevelBasicProperties(model: Model) {
 export function assembleRootGroup(model: Model) {
   let rootGroup:any = extend(
     {
-      name: model.name('main'),
+      name: model.getName('main'),
       type: 'group',
     },
-    model.description() ? {description: model.description()} : {},
+    model.description ? {description: model.description} : {},
     {
-      from: {data: model.name(LAYOUT +'')},
+      from: {data: model.getName(LAYOUT +'')},
       encode: {
         update: extend(
           {
-            width: {field: model.name('width')},
-            height: {field: model.name('height')}
+            width: {field: model.getName('width')},
+            height: {field: model.getName('height')}
           },
-          model.assembleParentGroupProperties(model.config().cell)
+          model.assembleParentGroupProperties(model.config.cell)
         )
       }
     });
