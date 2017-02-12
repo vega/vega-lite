@@ -91,6 +91,7 @@
   },
   "dependencies": {
     "json-stable-stringify": "~1.0.1",
+    "tslib": "^1.5.0",
     "vega-util": "~1.1.3",
     "yargs": "~6.6.0"
   }

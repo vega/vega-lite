@@ -4219,6 +4219,10 @@ tsify@~3.0.0:
     through2 "^2.0.0"
     tsconfig "^5.0.3"
 
+tslib:
+  version "1.5.0"
+  resolved "https://registry.yarnpkg.com/tslib/-/tslib-1.5.0.tgz#3bb50f871e5fdf9a4555a9ff237b730860048fea"
+
 tslint-eslint-rules@^3.3.0:
   version "3.3.0"
   resolved "https://registry.yarnpkg.com/tslint-eslint-rules/-/tslint-eslint-rules-3.3.0.tgz#1dec066b52f49200ca5eed5013a09a76065334c3"
