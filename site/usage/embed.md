@@ -13,8 +13,8 @@ To embed a Vega-Lite specification on your web page first load the required libr
 
 ```html
 <script src="//d3js.org/d3.v3.min.js" charset="utf-8"></script>
-<script src="//vega.github.io/vega/vega.js" charset="utf-8"></script>
-<script src="//vega.github.io/vega-lite/vega-lite.js" charset="utf-8"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/vega/{{ site.data.versions.vega }}/vega.js" charset="utf-8"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/vega-lite/{{ site.data.versions.vega-lite }}/vega-lite.js" charset="utf-8"></script>
 <script src="//vega.github.io/vega-editor/vendor/vega-embed.js" charset="utf-8"></script>
 ```
 
