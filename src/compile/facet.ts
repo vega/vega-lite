@@ -127,10 +127,10 @@ export class FacetModel extends Model {
       if (facet[channel]) {
         const axisSpec = facet[channel].axis;
         if (axisSpec !== false) {
-          const modelAxis = _axis[channel] = extend({},
-            defaultFacetAxisConfig,
-            axisSpec === true ? {} : axisSpec || {}
-          );
+          const modelAxis = _axis[channel] = {
+            ...defaultFacetAxisConfig,
+            ...axisSpec
+          };
 
           if (channel === ROW) {
             const yAxis: any = child.axis(Y);

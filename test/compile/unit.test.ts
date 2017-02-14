@@ -2,7 +2,7 @@ import {assert} from 'chai';
 
 import * as log from '../../src/log';
 import {UnitModel} from '../../src/compile/unit';
-import {X, SHAPE, DETAIL} from '../../src/channel';
+import {X, Y, SHAPE, DETAIL} from '../../src/channel';
 import {BAR} from '../../src/mark';
 import {UnitSpec} from '../../src/spec';
 import {QUANTITATIVE} from '../../src/type';
@@ -140,6 +140,35 @@ describe('UnitModel', function() {
 
       assert.equal(model.width, undefined);
       assert.equal(model.height, undefined);
+    });
+  });
+
+  describe('initAxes', () => {
+    it('it should have axis.labelMaxLength = config.axis.labelMaxLength', () => {
+      const model = parseUnitModel({
+        mark: 'point',
+        encoding: {
+          x: {field: 'a', type: 'ordinal'},
+          y: {field: 'b', type: 'ordinal'}
+        },
+        config: {axis: {labelMaxLength: 123}}
+      });
+
+      assert.equal(model.axis(X).labelMaxLength, 123);
+      assert.equal(model.axis(Y).labelMaxLength, 123);
+    });
+
+    it('it should have axis.offset = encode.x.axis.offset', () => {
+      const model = parseUnitModel({
+        mark: 'point',
+        encoding: {
+          x: {field: 'a', type: 'ordinal', axis: {offset: 345}},
+          y: {field: 'b', type: 'ordinal'}
+        },
+        config: {axis: {labelMaxLength: 123}}
+      });
+
+      assert.equal(model.axis(X).offset, 345);
     });
   });
 });

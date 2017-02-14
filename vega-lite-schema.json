@@ -190,10 +190,6 @@
                 "position": {
                     "type": "number"
                 },
-                "shortTimeLabels": {
-                    "description": "Whether month and day names should be abbreviated.",
-                    "type": "boolean"
-                },
                 "tickCount": {
                     "description": "A desired number of ticks, for axes visualizing quantitative scales. The resulting number may be different so that values are \"nice\" (multiples of 2, 5, 10) and lie within the underlying scale's range.",
                     "minimum": 0,
@@ -253,11 +249,11 @@
                     "type": "boolean"
                 },
                 "domainColor": {
-                    "description": "Color of axis line.",
+                    "description": "Color of axis domain line.",
                     "type": "string"
                 },
                 "domainWidth": {
-                    "description": "Width of the axis line",
+                    "description": "Width of the domain line",
                     "type": "number"
                 },
                 "grid": {
@@ -323,10 +319,6 @@
                     "description": "Minimum extent, which determines the offset between axis ticks and labels.",
                     "type": "number"
                 },
-                "shortTimeLabels": {
-                    "description": "Whether month and day names should be abbreviated.",
-                    "type": "boolean"
-                },
                 "tickColor": {
                     "description": "The color of the axis's tick.",
                     "type": "string"
@@ -369,10 +361,6 @@
                     "description": "Max length for axis title if the title is automatically generated from the field's description. By default, this is automatically based on cell size and characterWidth property.",
                     "minimum": 0,
                     "type": "integer"
-                },
-                "titleOffset": {
-                    "description": "A title offset value for the axis.",
-                    "type": "number"
                 },
                 "titlePadding": {
                     "description": "The padding, in pixels, between title and axis.",

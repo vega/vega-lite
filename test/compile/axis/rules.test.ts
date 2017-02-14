@@ -34,7 +34,7 @@ describe('compile/axis', ()=> {
             x: {field: 'a', type: 'quantitative'}
           }
         }), COLUMN, true);
-      assert.deepEqual(grid, undefined);
+      assert.deepEqual(grid, false);
     });
 
     it('should return undefined for ROW', function () {
@@ -44,7 +44,7 @@ describe('compile/axis', ()=> {
             x: {field: 'a', type: 'quantitative'}
           }
         }), ROW, true);
-      assert.deepEqual(grid, undefined);
+      assert.deepEqual(grid, false);
     });
     it('should return undefined for non-gridAxis', function () {
       const grid = rules.grid(parseModel({

@@ -1,6 +1,7 @@
 import * as log from '../../log';
 
 import {Axis} from '../../axis';
+import {VgAxis} from '../../vega.schema';
 import {COLUMN, ROW, X, Y, Channel} from '../../channel';
 import {Config} from '../../config';
 import {DateTime, isDateTime, timestamp} from '../../datetime';
@@ -31,7 +32,7 @@ export function gridShow(model: Model, channel: Channel) {
 export function grid(model: Model, channel: Channel, isGridAxis: boolean) {
   if (channel === ROW || channel === COLUMN) {
     // never apply grid for ROW and COLUMN since we manually create rule-group for them
-    return undefined;
+    return false;
   }
 
   if (!isGridAxis) {
@@ -123,3 +124,13 @@ export function zindex(specifiedAxis: Axis, isGridAxis: boolean) {
   }
   return 1; // otherwise return undefined and use Vega's default.
 };
+
+export function domainAndTicks(property: keyof VgAxis, specifiedAxis: Axis, isGridAxis: boolean, channel: Channel) {
+  if (isGridAxis || channel === ROW || channel === COLUMN) {
+    return false;
+  }
+  return specifiedAxis[property];
+}
+
+export const domain = domainAndTicks;
+export const ticks = domainAndTicks;

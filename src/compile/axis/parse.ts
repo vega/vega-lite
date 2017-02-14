@@ -100,7 +100,7 @@ function parseAxis(channel: Channel, model: Model, isGridAxis: boolean): VgAxis 
     // as different require different parameters.
     let value;
     if (part === 'labels') {
-        value = encode[part](model, channel, encodeSpec.labels || {}, vgAxis);
+        value = encode.labels(model, channel, encodeSpec.labels || {}, vgAxis);
     } else {
         value = encodeSpec[part] || {};
     }
@@ -118,10 +118,12 @@ function getSpecifiedOrDefaultValue(property: keyof VgAxis, specifiedAxis: Axis,
   const fieldDef = model.fieldDef(channel);
 
   switch (property) {
-    case 'domain':
     case 'labels':
-    case 'ticks':
       return isGridAxis ? false : specifiedAxis[property];
+    case 'domain':
+      return rules.domain(property, specifiedAxis, isGridAxis, channel);
+    case 'ticks':
+      return rules.ticks(property, specifiedAxis, isGridAxis, channel);
     case 'format':
       return rules.format(specifiedAxis, channel, fieldDef, model.config);
     case 'grid':

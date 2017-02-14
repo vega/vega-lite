@@ -377,5 +377,24 @@ describe('compile/facet', () => {
       });
     });
   });
+
+  describe('initAxis', () => {
+    it('should should have defaultFacetAxisConfig that domainWidth = 0', () => {
+      const model = parseFacetModel({
+        facet: {
+          row: {field: 'a', type: 'ordinal'}
+        },
+        spec: {
+          mark: 'point',
+          encoding: {
+            "x": {"aggregate": "sum", "field": "yield", "type": "quantitative"},
+            "y": {"field": "variety", "type": "nominal"},
+          }
+        }
+      });
+      assert.deepEqual(model.axis(ROW), {"domainWidth": 0, "orient": "right", "labelAngle": 90});
+    });
+  });
+
 });
 

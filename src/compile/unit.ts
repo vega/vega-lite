@@ -1,6 +1,6 @@
 import * as log from '../log';
 
-import {Axis, defaultAxisConfig} from '../axis';
+import {Axis, VlAxisBase, AXIS_BASE_PROPERTIES} from '../axis';
 import {X, Y, X2, Y2, Channel, UNIT_CHANNELS,  UNIT_SCALE_CHANNELS, NONSPATIAL_SCALE_CHANNELS, supportMark} from '../channel';
 import {defaultConfig, Config, CellConfig} from '../config';
 import {SOURCE, SUMMARY} from '../data';
@@ -81,7 +81,7 @@ export class UnitModel extends Model {
       config.text = initTextConfig(encoding, config);
     }
 
-    this.axes = this.initAxes(encoding);
+    this.axes = this.initAxes(encoding, config);
     this.legends = this.initLegend(encoding, config);
 
     // width / height
@@ -221,7 +221,7 @@ export class UnitModel extends Model {
     return {width, height};
   }
 
-  private initAxes(encoding: Encoding): Dict<Axis> {
+  private initAxes(encoding: Encoding, config: Config): Dict<Axis> {
     return [X, Y].reduce(function(_axis, channel) {
       // Position Axis
 
@@ -234,10 +234,17 @@ export class UnitModel extends Model {
 
         // We no longer support false in the schema, but we keep false here for backward compatability.
         if (axisSpec !== null && axisSpec !== false) {
-          _axis[channel] = extend({},
-          defaultAxisConfig,
-          axisSpec === true ? {} : axisSpec ||  {}
-          );
+          let vlAxisBase: VlAxisBase = {};
+          AXIS_BASE_PROPERTIES.forEach(function(property) {
+            if (encoding !== undefined && encoding[property] !== undefined) {
+              vlAxisBase[property] = encoding[property];
+            }
+          });
+          _axis[channel] = {
+            labelMaxLength: config.axis.labelMaxLength,
+            ...vlAxisBase,
+            ...axisSpec
+          };
         }
       }
       return _axis;
