@@ -252,7 +252,7 @@ You can use [Vega-Embed](https://github.com/vega/vega-embed) to embed your Vega-
   <script src="//d3js.org/d3.v3.min.js"></script>
   <script src="//cdnjs.cloudflare.com/ajax/libs/vega/{{ site.data.versions.vega }}/vega.js"></script>
   <script src="//cdnjs.cloudflare.com/ajax/libs/vega-lite/{{ site.data.versions.vega-lite }}/vega-lite.js"></script>
-  <script src="//vega.github.io/vega-editor/vendor/vega-embed.js" charset="utf-8"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/vega-embed/{{ site.data.versions.vega-embed }}/vega-embed.js" charset="utf-8"></script>
 
   <style media="screen">
     /* Add space between vega-embed links  */
@@ -289,15 +289,8 @@ You can use [Vega-Embed](https://github.com/vega/vega-embed) to embed your Vega-
     }
   };
 
-  var embedSpec = {
-    mode: "vega-lite",  // Instruct Vega-Embed to use the Vega-Lite compiler
-    spec: vlSpec
-    // You can add more vega-embed configuration properties here.
-    // See https://github.com/vega/vega/wiki/Embed-Vega-Web-Components#configuration-propeties for more information.
-  };
-
   // Embed the visualization in the container with id `vis`
-  vg.embed("#vis", embedSpec, function(error, result) {
+  vg.embed("#vis", vlSpec, function(error, result) {
     // Callback receiving the View instance and parsed Vega spec
     // result.view is the View, which resides under the '#vis' element
   });

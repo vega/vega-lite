@@ -42,14 +42,8 @@
       }
     }
   };
-  var embedSpec = {
-    mode: "vega-lite",  // Instruct Vega-Embed to use the Vega-Lite compiler
-    spec: vlSpec
-    // You can add more vega-embed configuration properties here.
-    // See https://github.com/vega/vega/wiki/Embed-Vega-Web-Components#configuration-propeties for more information.
-  };
   // Embed the visualization in the container with id `vis`
-  vg.embed("#vis", embedSpec, function(error, result) {
+  vg.embed("#vis", vlSpec, function(error, result) {
     // Callback receiving the View instance and parsed Vega spec
     // result.view is the View, which resides under the '#vis' element
   });

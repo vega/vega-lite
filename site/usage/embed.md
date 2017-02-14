@@ -15,7 +15,7 @@ To embed a Vega-Lite specification on your web page first load the required libr
 <script src="//d3js.org/d3.v3.min.js" charset="utf-8"></script>
 <script src="//cdnjs.cloudflare.com/ajax/libs/vega/{{ site.data.versions.vega }}/vega.js" charset="utf-8"></script>
 <script src="//cdnjs.cloudflare.com/ajax/libs/vega-lite/{{ site.data.versions.vega-lite }}/vega-lite.js" charset="utf-8"></script>
-<script src="//vega.github.io/vega-editor/vendor/vega-embed.js" charset="utf-8"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/vega-embed/{{ site.data.versions.vega-embed }}/vega-embed.js" charset="utf-8"></script>
 ```
 
 We suggest that you install Vega-Lite with [npm](https://www.npmjs.com/package/vega-lite) to get the latest stable version. To install Vega-Lite with npm, simply install it as you would any other npm module.
@@ -35,11 +35,7 @@ The next step is to create a DOM element that the visualization will be attached
 Then use Vega-Embed's provided function to embed your spec.
 
 ```js
-var embedSpec = {
-  mode: "vega-lite",
-  spec: vlSpec
-}
-vg.embed("#vis", embedSpec, function(error, result) {
+vg.embed("#vis", vlSpec, function(error, result) {
   // Callback receiving the View instance and parsed Vega spec
   // result.view is the View, which resides under the '#vis' element
 });
