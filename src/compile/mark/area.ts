@@ -2,7 +2,7 @@ import {X, X2, Y, Y2} from '../../channel';
 import {VgEncodeEntry} from '../../vega.schema';
 
 import {applyMarkConfig} from '../common';
-import {applyColorAndOpacity} from './common';
+import {applyColor} from './common';
 import {UnitModel} from '../unit';
 
 import {MarkCompiler} from './base';
@@ -31,8 +31,9 @@ export const area: MarkCompiler = {
       e.y2 = ref.stackable2(Y2, encoding.y, encoding.y2, model.scaleName(Y), model.scale(Y), stack, 'base');
     }
 
-    applyColorAndOpacity(e, model);
+    applyColor(e, model);
     applyMarkConfig(e, model, ['interpolate', 'tension']);
+    e.opacity = ref.midPoint('opacity', model.encoding.opacity, model.scaleName('opacity'), model.scale('opacity'), config.mark.opacity && {value: config.mark.opacity});
     return e;
   }
 };

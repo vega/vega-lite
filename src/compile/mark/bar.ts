@@ -7,7 +7,7 @@ import {extend} from '../../util';
 import * as log from '../../log';
 import {VgEncodeEntry} from '../../vega.schema';
 
-import {applyColorAndOpacity} from './common';
+import {applyColor} from './common';
 import {UnitModel} from '../unit';
 import {VgValueRef} from '../../vega.schema';
 
@@ -23,7 +23,8 @@ export const bar: MarkCompiler = {
       x(model, stack),
       y(model, stack)
     );
-    applyColorAndOpacity(e, model);
+    applyColor(e, model);
+    ref.midPoint('opacity', model.encoding.opacity, model.scaleName('opacity'), model.scale('opacity'), model.config.mark.opacity && {value: model.config.mark.opacity});
     return e;
   }
 };

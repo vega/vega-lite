@@ -4,7 +4,7 @@ import {FieldDef} from '../../fielddef';
 import {Scale} from '../../scale';
 import {VgEncodeEntry, VgValueRef} from '../../vega.schema';
 
-import {applyColorAndOpacity} from './common';
+import {applyColor} from './common';
 import {UnitModel} from '../unit';
 
 import {MarkCompiler} from './base';
@@ -31,7 +31,9 @@ export const tick: MarkCompiler = {
       e.height = size(encoding.size, model.scaleName(SIZE), model.scale(SIZE), config, (model.scale(Y) || {}).rangeStep);
     }
 
-    applyColorAndOpacity(e, model);
+    applyColor(e, model);
+    e.opacity = ref.midPoint('opacity', model.encoding.opacity, model.scaleName('opacity'), model.scale('opacity'), config.mark.opacity && {value: config.mark.opacity});
+
     return e;
   }
 };

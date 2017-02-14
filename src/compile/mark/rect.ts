@@ -6,7 +6,7 @@ import {extend} from '../../util';
 import * as log from '../../log';
 import {VgEncodeEntry} from '../../vega.schema';
 
-import {applyColorAndOpacity} from './common';
+import {applyColor} from './common';
 import {UnitModel} from '../unit';
 
 import {MarkCompiler} from './base';
@@ -20,7 +20,8 @@ export const rect: MarkCompiler = {
       x(model),
       y(model)
     );
-    applyColorAndOpacity(e, model);
+    applyColor(e, model);
+    e.opacity = ref.midPoint('opacity', model.encoding.opacity, model.scaleName('opacity'), model.scale('opacity'), model.config.mark.opacity && {value: model.config.mark.opacity});
     return e;
   }
 };
