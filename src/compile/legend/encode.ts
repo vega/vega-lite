@@ -14,7 +14,6 @@ import {UnitModel} from '../unit';
 export function symbols(fieldDef: FieldDef, symbolsSpec: any, model: UnitModel, channel: Channel) {
   let symbols:any = {};
   const mark = model.mark();
-  const legend = model.legend(channel);
 
   switch (mark) {
     case BAR:
@@ -75,9 +74,7 @@ export function symbols(fieldDef: FieldDef, symbolsSpec: any, model: UnitModel, 
       {value: cfg.mark.color};
   }
 
-  if (legend.symbolColor !== undefined) {
-    symbols.fill = {value: legend.symbolColor};
-  } else if (symbols.fill === undefined) {
+  if (symbols.fill === undefined) {
     // fall back to mark config colors for legend fill
     if (cfg.mark.fill !== undefined) {
       symbols.fill = {value: cfg.mark.fill};
@@ -87,16 +84,8 @@ export function symbols(fieldDef: FieldDef, symbolsSpec: any, model: UnitModel, 
   }
 
   if (channel !== SHAPE) {
-    if (legend.symbolShape !== undefined) {
-      symbols.shape = {value: legend.symbolShape};
-    } else if (cfg.point.shape !== undefined) {
+    if (cfg.point.shape !== undefined) {
       symbols.shape = {value: cfg.point.shape};
-    }
-  }
-
-  if (channel !== SIZE) {
-    if (legend.symbolSize !== undefined) {
-      symbols.size = {value: legend.symbolSize};
     }
   }
 
@@ -118,10 +107,6 @@ export function symbols(fieldDef: FieldDef, symbolsSpec: any, model: UnitModel, 
       default:
         throw Error(`Legend for channel ${channel} not implemented`);
     }
-  }
-
-  if (legend.symbolStrokeWidth !== undefined) {
-    symbols.strokeWidth = {value: legend.symbolStrokeWidth};
   }
 
   symbols = extend(symbols, symbolsSpec || {});
@@ -146,29 +131,11 @@ export function labels(fieldDef: FieldDef, labelsSpec: any, model: UnitModel, ch
   } else if (fieldDef.type === TEMPORAL) {
     labelsSpec = extend({
       text: {
-        signal: timeFormatExpression('datum.value', fieldDef.timeUnit, legend.format, legend.shortTimeLabels, config.timeFormat)
+
+        // FIXME: shortTimeLabels set as true by default
+        signal: timeFormatExpression('datum.value', fieldDef.timeUnit, legend.format, config.legend.shortTimeLabels, config.timeFormat)
       }
     }, labelsSpec || {});
-  }
-
-  if (legend.labelAlign !== undefined) {
-    labels.align = {value: legend.labelAlign};
-  }
-
-  if (legend.labelColor !== undefined) {
-    labels.fill = {value: legend.labelColor};
-  }
-
-  if (legend.labelFont !== undefined) {
-    labels.font = {value: legend.labelFont};
-  }
-
-  if (legend.labelFontSize !== undefined) {
-    labels.fontSize = {value: legend.labelFontSize};
-  }
-
-  if (legend.labelBaseline !== undefined) {
-    labels.baseline = {value: legend.labelBaseline};
   }
 
   labels = extend(labels, labelsSpec || {});
@@ -176,28 +143,3 @@ export function labels(fieldDef: FieldDef, labelsSpec: any, model: UnitModel, ch
   return keys(labels).length > 0 ? labels : undefined;
 }
 
-export function title(fieldDef: FieldDef, titleSpec: any, model: UnitModel, channel: Channel) {
-  const legend = model.legend(channel);
-
-  let titles:any = {};
-
-  if (legend.titleColor !== undefined) {
-    titles.fill = {value: legend.titleColor};
-  }
-
-  if (legend.titleFont !== undefined) {
-    titles.font = {value: legend.titleFont};
-  }
-
-  if (legend.titleFontSize !== undefined) {
-    titles.fontSize = {value: legend.titleFontSize};
-  }
-
-  if (legend.titleFontWeight !== undefined) {
-    titles.fontWeight = {value: legend.titleFontWeight};
-  }
-
-  titles = extend(titles, titleSpec || {});
-
-  return keys(titles).length > 0 ? titles : undefined;
-}

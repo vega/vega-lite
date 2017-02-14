@@ -372,3 +372,13 @@ export interface VgAxisConfig extends VgAxisBase {
    */
   shortTimeLabels?: boolean;
 }
+
+export interface VgLegendBase {
+  entryPadding?: number;
+
+  orient?: string;
+
+  offset?: number;
+
+  padding?: number;
+}
