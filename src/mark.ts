@@ -7,6 +7,7 @@ export const POINT: 'point' = 'point';
 export const RECT: 'rect' = 'rect';
 export const RULE: 'rule' = 'rule';
 export const TEXT: 'text' = 'text';
+export const LABEL: 'label' = 'label';
 export const TICK: 'tick' = 'tick';
 export const CIRCLE: 'circle' = 'circle';
 export const SQUARE: 'square' = 'square';
@@ -16,15 +17,15 @@ export const ERRORBAR: 'error-bar' = 'error-bar';
  * All types of primitive marks.
  */
 export type Mark = 'area' | 'bar'  | 'line' | 'point' |
-  'rect' | 'rule' | 'text' | 'tick' | 'circle' | 'square';
+  'rect' | 'rule' | 'label' | 'text' | 'tick' | 'circle' | 'square';
 
-export const PRIMITIVE_MARKS = [AREA, BAR, LINE, POINT, TEXT, TICK, RECT, RULE, CIRCLE, SQUARE];
+export const PRIMITIVE_MARKS = [AREA, BAR, LINE, POINT, LABEL, TEXT, TICK, RECT, RULE, CIRCLE, SQUARE];
 
 export interface MarkDef {
   /**
    * The mark type.
    * One of `"bar"`, `"circle"`, `"square"`, `"tick"`, `"line"`,
-   * `"area"`, `"point"`, `"rule"`, and `"text"`.
+   * `"area"`, `"point"`, `"rule"`, `"label"`, and `"text"`.
    */
   type: Mark;
 
@@ -59,6 +60,7 @@ export interface MarkDef {
    */
   interpolate?: Interpolate;
 
+<<<<<<< HEAD
   /**
    * Depending on the interpolation type, sets the tension parameter (for line and area marks).
    * @minimum 0
@@ -66,12 +68,29 @@ export interface MarkDef {
    */
   tension?: number;
 }
+=======
+export const AREA = Mark.AREA;
+export const BAR = Mark.BAR;
+export const LINE = Mark.LINE;
+export const POINT = Mark.POINT;
+export const TEXT = Mark.TEXT;
+export const LABEL = Mark.LABEL;
+export const TICK = Mark.TICK;
+export const RECT = Mark.RECT;
+export const RULE = Mark.RULE;
+>>>>>>> 53722bdd... re-order imports
 
 export function isMarkDef(mark: string | MarkDef): mark is MarkDef {
   return mark['type'];
 }
 
+<<<<<<< HEAD
 const PRIMITIVE_MARK_INDEX = toSet(PRIMITIVE_MARKS);
+=======
+export const ERRORBAR = Mark.ERRORBAR;
+export const PRIMITIVE_MARKS = [AREA, BAR, LINE, POINT, TEXT, LABEL, TICK, RULE, CIRCLE, SQUARE];
+export const COMPOSITE_MARKS = [ERRORBAR];
+>>>>>>> 53722bdd... re-order imports
 
 export function isPrimitiveMark(mark: string | MarkDef): mark is Mark {
   const markType = isMarkDef(mark) ? mark.type : mark;
@@ -430,6 +449,16 @@ export interface TextConfig extends MarkConfig {
 }
 
 export const defaultTextConfig: TextConfig = {
+  fontSize: 10,
+  minFontSize: 8,
+  maxFontSize: 40,
+  baseline: 'middle',
+  text: 'Abc'
+};
+
+export interface LabelConfig extends TextConfig {}
+
+export const defaultLabelConfig: LabelConfig = {
   fontSize: 10,
   minFontSize: 8,
   maxFontSize: 40,

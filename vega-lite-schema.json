@@ -798,6 +798,10 @@
                     "$ref": "#/definitions/FacetConfig",
                     "description": "Facet Config"
                 },
+                "label": {
+                    "$ref": "#/definitions/LabelConfig",
+                    "description": "Label-Specific Config"
+                },
                 "legend": {
                     "$ref": "#/definitions/LegendConfig",
                     "description": "Legend Config"
@@ -1035,6 +1039,17 @@
         "EncodingWithFacet": {
             "additionalProperties": false,
             "properties": {
+                "anchor": {
+                    "anyOf": [
+                        {
+                            "$ref": "#/definitions/FieldDef"
+                        },
+                        {
+                            "$ref": "#/definitions/ValueDef<string>"
+                        }
+                    ],
+                    "description": "Anchor position of the `label` mark."
+                },
                 "color": {
                     "anyOf": [
                         {
@@ -1063,6 +1078,17 @@
                         }
                     ],
                     "description": "Additional levels of detail for grouping data in aggregate views and\nin line and area marks without mapping data to a specific visual channel."
+                },
+                "offset": {
+                    "anyOf": [
+                        {
+                            "$ref": "#/definitions/FieldDef"
+                        },
+                        {
+                            "$ref": "#/definitions/ValueDef<string | number>"
+                        }
+                    ],
+                    "description": "Offset of the `label` mark from the mark its labeling."
                 },
                 "opacity": {
                     "anyOf": [
@@ -1358,6 +1384,9 @@
                         },
                         {
                             "$ref": "#/definitions/InlineData"
+                        },
+                        {
+                            "$ref": "#/definitions/InternalData"
                         }
                     ],
                     "description": "An object describing the data source"
@@ -1440,6 +1469,9 @@
                         },
                         {
                             "$ref": "#/definitions/InlineData"
+                        },
+                        {
+                            "$ref": "#/definitions/InternalData"
                         }
                     ],
                     "description": "An object describing the data source"
@@ -1509,7 +1541,28 @@
             ],
             "type": "object"
         },
+<<<<<<< HEAD
         "GenericUnitSpec<string | MarkDef, EncodingWithFacet>": {
+=======
+        "GenericUnitSpec.M": {
+            "enum": [
+                "area",
+                "bar",
+                "circle",
+                "error-bar",
+                "label",
+                "line",
+                "point",
+                "rect",
+                "rule",
+                "square",
+                "text",
+                "tick"
+            ],
+            "type": "string"
+        },
+        "GenericUnitSpec<AnyMark, EncodingWithFacet>": {
+>>>>>>> 53722bdd... re-order imports
             "additionalProperties": false,
             "properties": {
                 "$schema": {
@@ -1528,6 +1581,9 @@
                         },
                         {
                             "$ref": "#/definitions/InlineData"
+                        },
+                        {
+                            "$ref": "#/definitions/InternalData"
                         }
                     ],
                     "description": "An object describing the data source"
@@ -1622,6 +1678,19 @@
             ],
             "type": "object"
         },
+        "InternalData": {
+            "additionalProperties": false,
+            "properties": {
+                "ref": {
+                    "description": "Reference to an internal mark's name (reactive geometry)",
+                    "type": "string"
+                }
+            },
+            "required": [
+                "ref"
+            ],
+            "type": "object"
+        },
         "Interpolate": {
             "enum": [
                 "basis",
@@ -1640,9 +1709,181 @@
             ],
             "type": "string"
         },
+        "LabelConfig": {
+            "additionalProperties": false,
+            "properties": {
+                "align": {
+                    "$ref": "#/definitions/HorizontalAlign",
+                    "description": "The horizontal alignment of the text. One of left, right, center."
+                },
+                "angle": {
+                    "description": "The rotation angle of the text, in degrees.",
+                    "maximum": 360,
+                    "minimum": 0,
+                    "type": "number"
+                },
+                "baseline": {
+                    "$ref": "#/definitions/VerticalAlign",
+                    "description": "The vertical alignment of the text. One of top, middle, bottom."
+                },
+                "color": {
+                    "description": "Default color.",
+                    "type": "string"
+                },
+                "dx": {
+                    "description": "The horizontal offset, in pixels, between the text label and its anchor point. The offset is applied after rotation by the angle property.",
+                    "type": "number"
+                },
+                "dy": {
+                    "description": "The vertical offset, in pixels, between the text label and its anchor point. The offset is applied after rotation by the angle property.",
+                    "type": "number"
+                },
+                "fill": {
+                    "description": "Default Fill Color.  This has higher precedence than config.color",
+                    "type": "string"
+                },
+                "fillOpacity": {
+                    "maximum": 1,
+                    "minimum": 0,
+                    "type": "number"
+                },
+                "filled": {
+                    "description": "Whether the shape\\'s color should be used as fill color instead of stroke color.\nThis is only applicable for \"bar\", \"point\", and \"area\".\nAll marks except \"point\" marks are filled by default.\nSee Mark Documentation (http://vega.github.io/vega-lite/docs/marks.html)\nfor usage example.",
+                    "type": "boolean"
+                },
+                "font": {
+                    "description": "The typeface to set the text in (e.g., Helvetica Neue).",
+                    "minimum": 0,
+                    "type": "string"
+                },
+                "fontSize": {
+                    "description": "The font size, in pixels.",
+                    "minimum": 0,
+                    "type": "number"
+                },
+                "fontStyle": {
+                    "$ref": "#/definitions/FontStyle",
+                    "description": "The font style (e.g., italic)."
+                },
+                "fontWeight": {
+                    "anyOf": [
+                        {
+                            "enum": [
+                                "bold",
+                                "normal"
+                            ],
+                            "type": "string"
+                        },
+                        {
+                            "type": "number"
+                        }
+                    ],
+                    "description": "The font weight (e.g., `\"normal\"`, `\"bold\"`, `900`)."
+                },
+                "format": {
+                    "description": "The formatting pattern for text value. If not defined, this will be determined automatically.",
+                    "type": "string"
+                },
+                "interpolate": {
+                    "$ref": "#/definitions/Interpolate",
+                    "description": "The line interpolation method to use for line and area marks. One of the following:\n- `\"linear\"`: piecewise linear segments, as in a polyline.\n- `\"linear-closed\"`: close the linear segments to form a polygon.\n- `\"step\"`: alternate between horizontal and vertical segments, as in a step function.\n- `\"step-before\"`: alternate between vertical and horizontal segments, as in a step function.\n- `\"step-after\"`: alternate between horizontal and vertical segments, as in a step function.\n- `\"basis\"`: a B-spline, with control point duplication on the ends.\n- `\"basis-open\"`: an open B-spline; may not intersect the start or end.\n- `\"basis-closed\"`: a closed B-spline, as in a loop.\n- `\"cardinal\"`: a Cardinal spline, with control point duplication on the ends.\n- `\"cardinal-open\"`: an open Cardinal spline; may not intersect the start or end, but will intersect other control points.\n- `\"cardinal-closed\"`: a closed Cardinal spline, as in a loop.\n- `\"bundle\"`: equivalent to basis, except the tension parameter is used to straighten the spline.\n- `\"monotone\"`: cubic interpolation that preserves monotonicity in y."
+                },
+                "maxFontSize": {
+                    "description": "The default max value for mapping quantitative fields to text's size/fontSize.\nIf undefined (default), we will use bandSize - 1.",
+                    "minimum": 0,
+                    "type": "number"
+                },
+                "maxOpacity": {
+                    "description": "Default max opacity for mapping a field to opacity.",
+                    "maximum": 1,
+                    "minimum": 0,
+                    "type": "number"
+                },
+                "maxStrokeWidth": {
+                    "description": "Default max strokeWidth for strokeWidth  (or rule/line's size) scale.",
+                    "minimum": 0,
+                    "type": "number"
+                },
+                "minFontSize": {
+                    "description": "The default min value for mapping quantitative fields to tick's size/fontSize scale with zero=false",
+                    "minimum": 0,
+                    "type": "number"
+                },
+                "minOpacity": {
+                    "description": "Default minimum opacity for mapping a field to opacity.",
+                    "maximum": 1,
+                    "minimum": 0,
+                    "type": "number"
+                },
+                "minStrokeWidth": {
+                    "description": "Default minimum strokeWidth for strokeWidth (or rule/line's size) scale with zero=false.",
+                    "minimum": 0,
+                    "type": "number"
+                },
+                "opacity": {
+                    "maximum": 1,
+                    "minimum": 0,
+                    "type": "number"
+                },
+                "orient": {
+                    "$ref": "#/definitions/Orient",
+                    "description": "The orientation of a non-stacked bar, tick, area, and line charts.\nThe value is either horizontal (default) or vertical.\n- For bar, rule and tick, this determines whether the size of the bar and tick\nshould be applied to x or y dimension.\n- For area, this property determines the orient property of the Vega output.\n- For line, this property determines the sort order of the points in the line\nif `config.sortLineBy` is not specified.\nFor stacked charts, this is always determined by the orientation of the stack;\ntherefore explicitly specified value will be ignored."
+                },
+                "radius": {
+                    "description": "Polar coordinate radial offset, in pixels, of the text label from the origin determined by the x and y properties.",
+                    "minimum": 0,
+                    "type": "number"
+                },
+                "shortTimeLabels": {
+                    "description": "Whether month names and weekday names should be abbreviated.",
+                    "type": "boolean"
+                },
+                "stacked": {
+                    "$ref": "#/definitions/StackOffset"
+                },
+                "stroke": {
+                    "description": "Default Stroke Color.  This has higher precedence than config.color",
+                    "type": "string"
+                },
+                "strokeDash": {
+                    "description": "An array of alternating stroke, space lengths for creating dashed or dotted lines.",
+                    "items": {
+                        "type": "number"
+                    },
+                    "type": "array"
+                },
+                "strokeDashOffset": {
+                    "description": "The offset (in pixels) into which to begin drawing with the stroke dash array.",
+                    "type": "number"
+                },
+                "strokeOpacity": {
+                    "maximum": 1,
+                    "minimum": 0,
+                    "type": "number"
+                },
+                "strokeWidth": {
+                    "minimum": 0,
+                    "type": "number"
+                },
+                "tension": {
+                    "description": "Depending on the interpolation type, sets the tension parameter (for line and area marks).",
+                    "maximum": 1,
+                    "minimum": 0,
+                    "type": "number"
+                },
+                "text": {
+                    "description": "Placeholder Text",
+                    "type": "string"
+                },
+                "theta": {
+                    "description": "Polar coordinate angle, in radians, of the text label from the origin determined by the x and y properties. Values for theta follow the same convention of arc mark startAngle and endAngle properties: angles are measured in radians, with 0 indicating \"north\".",
+                    "type": "number"
+                }
+            },
+            "type": "object"
+        },
         "Legend": {
             "additionalProperties": false,
-            "description": "Properties of a legend or boolean flag for determining whether to show it.",
             "properties": {
                 "encode": {
                     "$ref": "#/definitions/VgLegendEncode",
@@ -3410,7 +3651,6 @@
         },
         "Transform": {
             "additionalProperties": false,
-            "description": "Top-level transform object.",
             "properties": {
                 "calculate": {
                     "description": "Calculate new field(s) using the provided expresssion(s). Calculation are applied before filter.",

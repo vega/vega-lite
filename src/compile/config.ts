@@ -5,7 +5,7 @@ import {Config} from '../config';
 import {Encoding, isAggregate, channelHasField} from '../encoding';
 import {isMeasure, isFieldDef, FieldDef} from '../fielddef';
 import {MarkConfig, TextConfig, Orient} from '../mark';
-import {BAR, AREA, POINT, LINE, TICK, CIRCLE, SQUARE, RECT, RULE, TEXT, Mark} from '../mark';
+import {BAR, AREA, POINT, LINE, TICK, CIRCLE, SQUARE, RECT, RULE, TEXT, LABEL, Mark} from '../mark';
 import {Scale, hasDiscreteDomain} from '../scale';
 import {StackProperties} from '../stack';
 import {TEMPORAL} from '../type';
@@ -70,6 +70,7 @@ export function orient(mark: Mark, encoding: Encoding, scale: Dict<Scale>, markC
     case CIRCLE:
     case SQUARE:
     case TEXT:
+    case LABEL:
     case RECT:
       // orient is meaningless for these marks.
       return undefined;

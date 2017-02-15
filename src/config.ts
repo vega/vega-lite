@@ -1,6 +1,6 @@
 import {AxisConfig, defaultAxisConfig, defaultFacetAxisConfig} from './axis';
 import {LegendConfig, defaultLegendConfig} from './legend';
-import {MarkConfig, AreaConfig, BarConfig, LineConfig, PointConfig, RectConfig, RuleConfig, SymbolConfig, TextConfig, TickConfig} from './mark';
+import {MarkConfig, AreaConfig, BarConfig, LineConfig, PointConfig, RectConfig, RuleConfig, SymbolConfig, TextConfig, LabelConfig, TickConfig} from './mark';
 import * as mark from './mark';
 import {ScaleConfig, defaultScaleConfig} from './scale';
 import {StackOffset} from './stack';
@@ -185,6 +185,9 @@ export interface Config {
   /** Text-Specific Config */
   text?: TextConfig;
 
+  /** Label-Specific Config */
+  label?: LabelConfig;
+
   /** Tick-Specific Config */
   tick?: TickConfig;
 
@@ -233,6 +236,7 @@ export const defaultConfig: Config = {
   rule: mark.defaultRuleConfig,
   square: mark.defaultSquareConfig,
   text: mark.defaultTextConfig,
+  label: mark.defaultLabelConfig,
   tick: mark.defaultTickConfig,
 
   overlay: defaultOverlayConfig,
