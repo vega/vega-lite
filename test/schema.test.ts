@@ -2,7 +2,7 @@ import {assert} from 'chai';
 import * as Ajv from 'ajv';
 import {inspect} from 'util';
 
-const specSchema = require('../vega-lite-schema.json');
+const specSchema = require('../../build/vega-lite-schema.json');
 const metaSchema = require('ajv/lib/refs/json-schema-draft-04.json');
 
 describe('Schema', function() {

@@ -58,8 +58,8 @@ version=$(scripts/version.sh)
 git checkout head
 npm run build
 # add the compiled files, commit and tag!
-git add vega-lite* -f
-git add src/**/*.js -f
+git add build/vega-lite* -f
+git add build/src/**/*.js -f
 
 # commit, tag and push to gh-pages and swap back to master
 set +e
