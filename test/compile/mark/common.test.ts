@@ -5,7 +5,7 @@ import {parseUnitModel} from '../../util';
 import {applyColor} from '../../../src/compile/mark/common';
 
 describe('compile/mark/common', () => {
-  describe('applyColorAndOpacity()', function() {
+  describe('applyColor()', function() {
     it('color should be mapped to fill for bar', function() {
       const model = parseUnitModel({
         "mark": "bar",
