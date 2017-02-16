@@ -208,8 +208,12 @@ export abstract class Model {
   public assembleGroup() {
     let group: VgEncodeEntry = {};
 
-    // TODO: consider if we want scales to come before marks in the output spec.
+    const signals = this.assembleSignals(group.signals || []);
+    if (signals.length > 0) {
+      group.signals = signals;
+    }
 
+    // TODO: consider if we want scales to come before marks in the output spec.
     group.marks = this.assembleMarks();
     const scales = this.assembleScales();
     if (scales.length > 0) {
@@ -224,11 +228,6 @@ export abstract class Model {
     const legends = this.assembleLegends();
     if (legends.length > 0) {
       group.legends = legends;
-    }
-
-    const signals = this.assembleSignals(group.signals || []);
-    if (signals.length > 0) {
-      group.signals = signals;
     }
 
     return group;
