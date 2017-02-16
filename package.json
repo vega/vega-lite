@@ -29,7 +29,6 @@
     "build:site": "mkdir -p build/site && browserify site/static/main.ts -p [tsify -p site] -d > build/site/main.js",
     "build:versions": "scripts/update-version.sh",
     "build:test-gallery": "browserify test-gallery/main.ts -p [tsify -p test-gallery] -d > build/test-gallery/main.js",
-
     "checkschema": "scripts/check-schema.sh",
     "clean": "rm -rf build && rm -f vega-lite.* & find -E src test site examples -regex '.*\\.(js|js.map|d.ts)' -delete & rm -rf examples/_diff examples/_original examples/_output examples/images && rm -rf data",
     "data": "rsync -r node_modules/vega-datasets/data/* data",
