@@ -1,8 +1,8 @@
-import {stringValue} from '../../../util';
-import {TypeCompiler, multi} from './';
-import {TUPLE, STORE} from '../';
+import {TUPLE, STORE, SelectionCompiler} from './selection';
+import multi from './multi';
+import {stringValue} from '../../util';
 
-const single:TypeCompiler = {
+const single:SelectionCompiler = {
   predicate: multi.predicate,
 
   signals: multi.signals,
@@ -11,7 +11,7 @@ const single:TypeCompiler = {
     let name = selCmpt.name;
     return [{
       name: name,
-      update: `tuples(${stringValue(name + STORE)})[0]`
+      update: `data(${stringValue(name + STORE)})[0]`
     }];
   },
 

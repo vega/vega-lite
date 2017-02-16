@@ -1,8 +1,7 @@
-import {TypeCompiler} from './';
-import {TUPLE} from '../';
-import {stringValue} from '../../../util';
+import {TUPLE, SelectionCompiler} from './selection';
+import {stringValue} from '../../util';
 
-const multi:TypeCompiler = {
+const multi:SelectionCompiler = {
   predicate: 'vlPoint',
 
   signals: function(model, selCmpt) {

@@ -1,18 +1,51 @@
-import {SelectionDef, SelectionComponent, SelectionDomain,
-        SelectionResolutions} from '../../selection';
+import {SelectionDef, SelectionDomain, SelectionResolutions, SelectionTypes} from '../../selection';
+import {SelectionComponent} from './selection';
 import {Model} from '../model';
 import {UnitModel} from '../unit';
 import {Channel} from '../../channel';
 import {Dict, extend, stringValue, isString} from '../../util';
-import * as types from './types';
-import {TypeCompiler} from './types';
-import {forEachTransform} from './transforms';
+import {forEachTransform} from './transforms/transforms';
 import {selector as parseSelector} from 'vega-parser';
-import {VgData} from '../../vega.schema';
+import {VgData, VgBinding} from '../../vega.schema';
+import singleCompiler from './single';
+import multiCompiler from './multi';
+import intervalCompiler from './interval';
 
 export const STORE = '_store',
   TUPLE  = '_tuple',
   MODIFY = '_modify';
+
+export interface SelectionComponent {
+  name: string;
+  type: SelectionTypes;
+  domain: SelectionDomain;
+  events: any;
+  // predicate?: string;
+  bind?: 'scales' | VgBinding | Dict<VgBinding>;
+  resolve: SelectionResolutions;
+
+  // Transforms
+  project?: ProjectComponent[];
+  scales?: Channel[];
+  toggle?: any;
+  translate?: any;
+  zoom?: any;
+  nearest?: any;
+}
+
+export interface ProjectComponent {
+  field?: string;
+  encoding?: Channel;
+}
+
+export interface SelectionCompiler {
+  signals: (model: UnitModel, selCmpt: SelectionComponent) => any[];
+  topLevelSignals?: (model: Model, selCmpt: SelectionComponent) => any[];
+  tupleExpr: (model: UnitModel, selCmpt: SelectionComponent) => string;
+  modifyExpr: (model: UnitModel, selCmpt: SelectionComponent) => string;
+  marks?: (model: UnitModel, selCmpt:SelectionComponent, marks: any[]) => any[];
+  predicate: string;  // Vega expr string to determine inclusion in selection.
+}
 
 export function parseUnitSelection(model: UnitModel, selDefs: Dict<SelectionDef>) {
   let selCmpts: Dict<SelectionComponent> = {},
@@ -60,12 +93,12 @@ export function parseUnitSelection(model: UnitModel, selDefs: Dict<SelectionDef>
 }
 
 export function assembleUnitSignals(model: UnitModel, signals: any[]) {
-  forEachSelection(model, function(selCmpt, typeCompiler) {
+  forEachSelection(model, function(selCmpt, selCompiler) {
     let name = selCmpt.name,
-        tupleExpr = typeCompiler.tupleExpr(model, selCmpt),
-        modifyExpr = typeCompiler.modifyExpr(model, selCmpt);
+        tupleExpr = selCompiler.tupleExpr(model, selCmpt),
+        modifyExpr = selCompiler.modifyExpr(model, selCmpt);
 
-    signals.push.apply(signals, typeCompiler.signals(model, selCmpt));
+    signals.push.apply(signals, selCompiler.signals(model, selCmpt));
 
     forEachTransform(selCmpt, function(txCompiler) {
       if (txCompiler.signals) {
@@ -101,9 +134,9 @@ export function assembleTopLevelSignals(model: Model) {
     on: [{events: 'mousemove', update: 'group()._id ? group() : unit'}]
   }];
 
-  forEachSelection(model, function(selCmpt, typeCompiler) {
-    if (typeCompiler.topLevelSignals) {
-      signals.push.apply(signals, typeCompiler.topLevelSignals(model, selCmpt));
+  forEachSelection(model, function(selCmpt, selCompiler) {
+    if (selCompiler.topLevelSignals) {
+      signals.push.apply(signals, selCompiler.topLevelSignals(model, selCmpt));
     }
 
     forEachTransform(selCmpt, function(txCompiler) {
@@ -127,8 +160,8 @@ export function assembleUnitData(model: UnitModel, data: VgData[]): VgData[] {
 export function assembleUnitMarks(model: UnitModel, marks: any[]): any[] {
   let clippedGroup = false,
       selMarks = marks;
-  forEachSelection(model, function(selCmpt, typeCompiler) {
-    selMarks = typeCompiler.marks ? typeCompiler.marks(model, selCmpt, selMarks) : selMarks;
+  forEachSelection(model, function(selCmpt, selCompiler) {
+    selMarks = selCompiler.marks ? selCompiler.marks(model, selCmpt, selMarks) : selMarks;
     forEachTransform(selCmpt, function(txCompiler) {
       clippedGroup = clippedGroup || txCompiler.clippedGroup;
       if (txCompiler.marks) {
@@ -168,23 +201,31 @@ export function predicate(selCmpt: SelectionComponent, datum?: string): string {
   const store = stringValue(selCmpt.name + STORE),
         op = PREDICATES_OPS[selCmpt.resolve];
   datum = datum || 'datum';
-  return type(selCmpt).predicate + `(${store}, parent._id, ${datum}, ${op})`;
+  return compiler(selCmpt).predicate + `(${store}, parent._id, ${datum}, ${op})`;
 }
 
 // Utility functions
 
-function forEachSelection(model: Model, cb: (selCmpt: SelectionComponent, typeCompiler: TypeCompiler) => void) {
+function forEachSelection(model: Model, cb: (selCmpt: SelectionComponent, selCompiler: SelectionCompiler) => void) {
   let selections = model.component.selection;
   for (let name in selections) {
     if (selections.hasOwnProperty(name)) {
       let sel = selections[name];
-      cb(sel, type(sel));
+      cb(sel, compiler(sel));
     }
   }
 }
 
-function type(sel: SelectionComponent): TypeCompiler {
-  return types[sel.type];
+function compiler(selCmpt: SelectionComponent): SelectionCompiler {
+  switch (selCmpt.type) {
+    case 'single':
+      return singleCompiler;
+    case 'multi':
+      return multiCompiler;
+    case 'interval':
+      return intervalCompiler;
+  }
+  return null;
 }
 
 export function invert(model: UnitModel, selCmpt: SelectionComponent, channel: Channel, expr: string) {

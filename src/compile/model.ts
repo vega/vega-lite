@@ -27,7 +27,7 @@ import {Formula} from '../transform';
 import {OneOfFilter, EqualFilter, RangeFilter} from '../filter';
 /* tslint:enable:no-unused-variable */
 
-import {SelectionComponent} from '../selection';
+import {SelectionComponent} from './selection/selection';
 
 /**
  * Composable Components that are intermediate results of the parsing phase of the

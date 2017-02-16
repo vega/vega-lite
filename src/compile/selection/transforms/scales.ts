@@ -1,10 +1,10 @@
-import {TransformCompiler} from './';
+import {TransformCompiler} from './transforms';
 import {warn} from '../../../log';
 import {hasContinuousDomain} from '../../../scale';
 import {Channel} from '../../../channel';
-import {TUPLE, MODIFY, channelSignalName} from '../';
+import {TUPLE, MODIFY, channelSignalName} from '../selection';
 import {UnitModel} from '../../unit';
-import {SIZE as INTERVAL_SIZE} from '../types/interval';
+import {SIZE as INTERVAL_SIZE} from '../interval';
 import {stringValue} from '../../../util';
 
 const scaleBindings:TransformCompiler = {

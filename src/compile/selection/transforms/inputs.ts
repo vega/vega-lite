@@ -1,4 +1,4 @@
-import {TransformCompiler} from './';
+import {TransformCompiler} from './transforms';
 import {stringValue} from '../../../util';
 import {warn} from '../../../log';
 

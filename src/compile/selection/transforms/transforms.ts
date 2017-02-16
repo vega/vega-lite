@@ -1,6 +1,7 @@
 import {Model} from '../../model';
 import {UnitModel} from '../../unit';
-import {SelectionDef, SelectionComponent} from '../../../selection';
+import {SelectionDef} from '../../../selection';
+import {SelectionComponent} from '../selection';
 import {Dict} from '../../../util';
 
 export interface TransformCompiler {

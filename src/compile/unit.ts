@@ -28,7 +28,7 @@ import initScale from './scale/init';
 import parseScales from './scale/parse';
 import {stack, StackProperties} from '../stack';
 import {SelectionDef} from '../selection';
-import {parseUnitSelection, assembleUnitSignals, assembleUnitData as assembleSelectionData, assembleUnitMarks as assembleSelectionMarks} from './selection';
+import {parseUnitSelection, assembleUnitSignals, assembleUnitData as assembleSelectionData, assembleUnitMarks as assembleSelectionMarks} from './selection/selection';
 
 function normalizeFieldDef(fieldDef: FieldDef, channel: Channel) {
   if (fieldDef.type) {

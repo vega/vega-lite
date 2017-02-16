@@ -1,5 +1,5 @@
-import {TransformCompiler} from './';
-import {TUPLE} from '../';
+import {TransformCompiler} from './transforms';
+import {TUPLE} from '../selection';
 
 const TOGGLE = '_toggle';
 

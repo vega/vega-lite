@@ -1,16 +1,14 @@
-import {SelectionComponent} from '../../../selection';
-import {TypeCompiler} from './';
-import {X, Y, Channel} from '../../../channel';
-import {UnitModel} from '../../unit';
-import {TUPLE, invert as invertFn, channelSignalName} from '../';
-import {stringValue, extend} from '../../../util';
-import {warn} from '../../../log';
-import scales from '../transforms/scales';
+import {SelectionComponent, SelectionCompiler, TUPLE, invert as invertFn, channelSignalName} from './selection';
+import {X, Y, Channel} from '../../channel';
+import {UnitModel} from '../unit';
+import {stringValue, extend} from '../../util';
+import {warn} from '../../log';
+import scales from './transforms/scales';
 
 export const BRUSH = '_brush',
   SIZE = '_size';
 
-const interval:TypeCompiler = {
+const interval:SelectionCompiler = {
   predicate: 'vlInterval',
 
   signals: function(model, selCmpt) {

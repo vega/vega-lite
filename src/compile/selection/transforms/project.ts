@@ -1,6 +1,6 @@
 import {Channel} from '../../../channel';
 import {SelectionDef} from '../../../selection';
-import {TransformCompiler} from './';
+import {TransformCompiler} from './transforms';
 
 const project:TransformCompiler = {
   has: function(selDef: SelectionDef) {

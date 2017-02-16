@@ -1,4 +1,4 @@
-import {TransformCompiler} from './';
+import {TransformCompiler} from './transforms';
 
 const VORONOI = 'voronoi';
 

@@ -7,7 +7,7 @@ import * as log from '../log';
 import {Model} from './model';
 import {normalize, ExtendedSpec} from '../spec';
 import {extend, stringValue} from '../util';
-import {assembleTopLevelSignals} from './selection';
+import {assembleTopLevelSignals} from './selection/selection';
 import {buildModel} from './common';
 
 export function compile(inputSpec: ExtendedSpec, logger?: log.LoggerInterface) {
@@ -89,8 +89,8 @@ export function assembleRootGroup(model: Model) {
 
   let signals = rootGroup.signals || (rootGroup.signals = []);
   signals.unshift.apply(signals, [
-    {name: 'width', update: 'tuples(' + layout + ')[0].width'},
-    {name: 'height', update: 'tuples(' + layout + ')[0].height'}
+    {name: 'width', update: 'data(' + layout + ')[0].width'},
+    {name: 'height', update: 'data(' + layout + ')[0].height'}
   ]);
   return rootGroup;
 }

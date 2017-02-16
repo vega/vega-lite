@@ -1,4 +1,3 @@
-import {Channel} from './channel';
 import {VgBinding} from './vega.schema';
 import {Dict} from './util';
 
@@ -24,29 +23,6 @@ export interface BaseSelectionDef {
 
 export interface SelectionDef extends BaseSelectionDef {
   type: SelectionTypes;
-}
-
-export interface SelectionComponent {
-  name: string;
-  type: SelectionTypes;
-  domain: SelectionDomain;
-  events: any;
-  // predicate?: string;
-  bind?: 'scales' | VgBinding | Dict<VgBinding>;
-  resolve: SelectionResolutions;
-
-  // Transforms
-  project?: ProjectComponent[];
-  scales?: Channel[];
-  toggle?: any;
-  translate?: any;
-  zoom?: any;
-  nearest?: any;
-}
-
-export interface ProjectComponent {
-  field?: string;
-  encoding?: Channel;
 }
 
 export interface SelectionConfig {
