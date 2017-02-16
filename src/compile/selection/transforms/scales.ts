@@ -20,7 +20,7 @@ const scaleBindings:TransformCompiler = {
       return;
     }
 
-    let scales = model.component.scale,
+    let scales = model.component.scales,
         bound:Channel[] = selCmpt.scales = [];
 
     selCmpt.project.forEach(function(p) {

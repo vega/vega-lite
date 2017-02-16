@@ -1,8 +1,8 @@
 import {SOURCE} from '../../data';
 import {FieldDef} from '../../fielddef';
 import {Formula} from '../../transform';
-import {keys, Dict, StringSet} from '../../util';
-import {VgData, VgTransform} from '../../vega.schema';
+import {Dict, StringSet} from '../../util';
+import {VgData, VgSort, VgTransform} from '../../vega.schema';
 
 import {FacetModel} from './../facet';
 import {LayerModel} from './../layer';
@@ -15,6 +15,7 @@ import {nullFilter} from './nullfilter';
 import {filter} from './filter';
 import {bin} from './bin';
 import {formula} from './formula';
+import {pathOrder} from './pathorder';
 import {nonPositiveFilter} from './nonpositivefilter';
 import {summary} from './summary';
 import {stack, StackComponent} from './stack';
@@ -46,6 +47,9 @@ export interface DataComponent {
 
   /** String set of fields to be filtered */
   nonPositiveFilter: Dict<boolean>;
+
+  /** Sort order to apply at the end */
+  pathOrder: VgSort;
 
   /**
    * Stack transforms to be applied.
@@ -79,6 +83,7 @@ export function parseUnitData(model: UnitModel): DataComponent {
     nullFilter: nullFilter.parseUnit(model),
     filter: filter.parseUnit(model),
     nonPositiveFilter: nonPositiveFilter.parseUnit(model),
+    pathOrder: pathOrder.parseUnit(model),
 
     source: source.parseUnit(model),
     bin: bin.parseUnit(model),
@@ -95,6 +100,7 @@ export function parseFacetData(model: FacetModel): DataComponent {
     nullFilter: nullFilter.parseFacet(model),
     filter: filter.parseFacet(model),
     nonPositiveFilter: nonPositiveFilter.parseFacet(model),
+    pathOrder: pathOrder.parseFacet(model),
 
     source: source.parseFacet(model),
     bin: bin.parseFacet(model),
@@ -113,6 +119,7 @@ export function parseLayerData(model: LayerModel): DataComponent {
     formatParse: formatParse.parseLayer(model),
     nullFilter: nullFilter.parseLayer(model),
     nonPositiveFilter: nonPositiveFilter.parseLayer(model),
+    pathOrder: pathOrder.parseLayer(model),
 
     // everything after here does not affect whether we can merge child data into parent or not
     source: source.parseLayer(model),
@@ -134,35 +141,43 @@ export function parseLayerData(model: LayerModel): DataComponent {
  * @return modified data array
  */
 export function assembleData(model: Model, data: VgData[]) {
-  const component = model.component.data;
+  const dataComponent = model.component.data;
 
-  const sourceData = source.assemble(component);
+  const sourceData = source.assemble(dataComponent);
   if (sourceData) {
     data.push(sourceData);
   }
 
-  summary.assemble(component.summary || [], model.dataName(SOURCE)).forEach(function(summaryData) {
+  summary.assemble(dataComponent.summary || [], model.dataName(SOURCE)).forEach(function(summaryData) {
     data.push(summaryData);
   });
 
-  if (data.length > 0) {
-    const dataTable = data[data.length - 1];
-
-    // nonPositiveFilter
-    const nonPositiveFilterTransform = nonPositiveFilter.assemble(component.nonPositiveFilter);
-    if (nonPositiveFilterTransform.length > 0) {
+  // nonPositiveFilter
+  const nonPositiveFilterTransform = nonPositiveFilter.assemble(dataComponent.nonPositiveFilter);
+  if (nonPositiveFilterTransform.length > 0) {
+    if (data.length > 0) {
+      const dataTable = data[data.length - 1];
       dataTable.transform = (dataTable.transform || []).concat(nonPositiveFilterTransform);
-    }
-  } else {
-    if (keys(component.nonPositiveFilter).length > 0) {
+    } else { /* istanbul ignore else: should never reach here */
       throw new Error('Invalid nonPositiveFilter not merged');
     }
   }
 
   // stack
-  const stackData = stack.assemble(component.stack);
+  const stackData = stack.assemble(dataComponent.stack);
   if (stackData) {
     data.push(stackData);
+  }
+
+  // Path Order
+  const pathOrderCollectTransform = pathOrder.assemble(dataComponent.pathOrder);
+  if (pathOrderCollectTransform) {
+    const dataTable = data[data.length - 1];
+    if (data.length > 0) {
+      dataTable.transform = (dataTable.transform || []).concat([pathOrderCollectTransform]);
+    } else { /* istanbul ignore else: should never reach here */
+      throw new Error('Invalid path order collect transform not added');
+    }
   }
 
   return data;

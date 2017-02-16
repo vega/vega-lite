@@ -1,40 +1,87 @@
-import {StackOffset} from './stack';
-import {extend} from './util';
+import {extend, toSet} from './util';
 
-export namespace Mark {
-  export const AREA: 'area' = 'area';
-  export const BAR: 'bar' = 'bar';
-  export const LINE: 'line' = 'line';
-  export const POINT: 'point' = 'point';
-  export const RECT: 'rect' = 'rect';
-  export const RULE: 'rule' = 'rule';
-  export const TEXT: 'text' = 'text';
-  export const TICK: 'tick' = 'tick';
-  export const CIRCLE: 'circle' = 'circle';
-  export const SQUARE: 'square' = 'square';
-  export const ERRORBAR: 'errorBar' = 'errorBar';
+export const AREA: 'area' = 'area';
+export const BAR: 'bar' = 'bar';
+export const LINE: 'line' = 'line';
+export const POINT: 'point' = 'point';
+export const RECT: 'rect' = 'rect';
+export const RULE: 'rule' = 'rule';
+export const TEXT: 'text' = 'text';
+export const TICK: 'tick' = 'tick';
+export const CIRCLE: 'circle' = 'circle';
+export const SQUARE: 'square' = 'square';
+export const ERRORBAR: 'error-bar' = 'error-bar';
+
+/**
+ * All types of primitive marks.
+ */
+export type Mark = 'area' | 'bar'  | 'line' | 'point' |
+  'rect' | 'rule' | 'text' | 'tick' | 'circle' | 'square';
+
+export const PRIMITIVE_MARKS = [AREA, BAR, LINE, POINT, TEXT, TICK, RECT, RULE, CIRCLE, SQUARE];
+
+export interface MarkDef {
+  /**
+   * The mark type.
+   * One of `"bar"`, `"circle"`, `"square"`, `"tick"`, `"line"`,
+   * `"area"`, `"point"`, `"rule"`, and `"text"`.
+   */
+  type: Mark;
+
+  /**
+   * The orientation of a non-stacked bar, tick, area, and line charts.
+   * The value is either horizontal (default) or vertical.
+   * - For bar, rule and tick, this determines whether the size of the bar and tick
+   * should be applied to x or y dimension.
+   * - For area, this property determines the orient property of the Vega output.
+   * - For line, this property determines the sort order of the points in the line
+   * if `config.sortLineBy` is not specified.
+   * For stacked charts, this is always determined by the orientation of the stack;
+   * therefore explicitly specified value will be ignored.
+   */
+  orient?: Orient;
+
+  /**
+   * The line interpolation method to use for line and area marks. One of the following:
+   * - `"linear"`: piecewise linear segments, as in a polyline.
+   * - `"linear-closed"`: close the linear segments to form a polygon.
+   * - `"step"`: alternate between horizontal and vertical segments, as in a step function.
+   * - `"step-before"`: alternate between vertical and horizontal segments, as in a step function.
+   * - `"step-after"`: alternate between horizontal and vertical segments, as in a step function.
+   * - `"basis"`: a B-spline, with control point duplication on the ends.
+   * - `"basis-open"`: an open B-spline; may not intersect the start or end.
+   * - `"basis-closed"`: a closed B-spline, as in a loop.
+   * - `"cardinal"`: a Cardinal spline, with control point duplication on the ends.
+   * - `"cardinal-open"`: an open Cardinal spline; may not intersect the start or end, but will intersect other control points.
+   * - `"cardinal-closed"`: a closed Cardinal spline, as in a loop.
+   * - `"bundle"`: equivalent to basis, except the tension parameter is used to straighten the spline.
+   * - `"monotone"`: cubic interpolation that preserves monotonicity in y.
+   */
+  interpolate?: Interpolate;
+
+  /**
+   * Depending on the interpolation type, sets the tension parameter (for line and area marks).
+   * @minimum 0
+   * @maximum 1
+   */
+  tension?: number;
 }
-export type Mark = typeof Mark.AREA | typeof Mark.BAR | typeof Mark.LINE | typeof Mark.POINT | typeof Mark.TEXT | typeof Mark.TICK | typeof Mark.RECT | typeof Mark.RULE | typeof Mark.CIRCLE | typeof Mark.SQUARE | typeof Mark.ERRORBAR;
 
-export const AREA = Mark.AREA;
-export const BAR = Mark.BAR;
-export const LINE = Mark.LINE;
-export const POINT = Mark.POINT;
-export const TEXT = Mark.TEXT;
-export const TICK = Mark.TICK;
-export const RECT = Mark.RECT;
-export const RULE = Mark.RULE;
+export function isMarkDef(mark: string | MarkDef): mark is MarkDef {
+  return mark['type'];
+}
 
-export const CIRCLE = Mark.CIRCLE;
-export const SQUARE = Mark.SQUARE;
+const PRIMITIVE_MARK_INDEX = toSet(PRIMITIVE_MARKS);
 
-export const ERRORBAR = Mark.ERRORBAR;
-export const PRIMITIVE_MARKS = [AREA, BAR, LINE, POINT, TEXT, TICK, RULE, CIRCLE, SQUARE];
+export function isPrimitiveMark(mark: string | MarkDef): mark is Mark {
+  const markType = isMarkDef(mark) ? mark.type : mark;
+  return markType in PRIMITIVE_MARK_INDEX;
+}
 
 export type FontStyle = 'normal' | 'italic';
 export type FontWeight = 'normal' | 'bold';
 /**
- * @type integer
+ * @TJS-type integer
  * @minimum 100
  * @maximum 900
  */
@@ -45,9 +92,15 @@ export type Interpolate = 'linear' | 'linear-closed' |
   'basis' | 'basis-open' | 'basis-closed' |
   'cardinal' | 'cardinal-open' | 'cardinal-closed' |
   'bundle' | 'monotone';
-export type Shape = 'circle' | 'square' | 'cross' | 'diamond' | 'triangle-up' | 'triangle-down';
 export type Orient = 'horizontal' | 'vertical';
 export type VerticalAlign = 'top' | 'middle' | 'bottom';
+
+export const STROKE_CONFIG = ['stroke', 'strokeWidth',
+  'strokeDash', 'strokeDashOffset', 'strokeOpacity'];
+
+export const FILL_CONFIG = ['fill', 'fillOpacity'];
+
+export const FILL_STROKE_CONFIG = [].concat(STROKE_CONFIG, FILL_CONFIG);
 
 export interface MarkConfig {
 
@@ -61,16 +114,11 @@ export interface MarkConfig {
    */
   filled?: boolean;
 
+  // TODO: remove this once we correctly integrate theme
   /**
    * Default color.
    */
   color?: string;
-
-  /** Default color scheme for nominal (categorical) data */
-  nominalColorScheme?: string;
-
-  /** Default color scheme for ordinal, quantitative and temporal field */
-  sequentialColorScheme?: string;
 
   /**
    * Default Fill Color.  This has higher precedence than config.color
@@ -143,10 +191,6 @@ export interface MarkConfig {
    */
   strokeDashOffset?: number;
 
-  // FIXME: move this outside mark config
-  // ---------- Stacking: Bar & Area ----------
-  stacked?: StackOffset;
-
   // ---------- Orientation: Bar, Tick, Line, Area ----------
   /**
    * The orientation of a non-stacked bar, tick, area, and line charts.
@@ -189,8 +233,6 @@ export interface MarkConfig {
 
 export const defaultMarkConfig: MarkConfig = {
   color: '#4682b4',
-  nominalColorScheme: 'category10',
-  sequentialColorScheme: 'Greens',
 
   minOpacity: 0.3,
   maxOpacity: 0.8,
@@ -250,17 +292,7 @@ export const defaultLineConfig: LineConfig = {
   strokeWidth: 2
 };
 
-export interface PointConfig extends MarkConfig {
-  /**
-   * The default symbol shape to use. One of: `"circle"` (default), `"square"`, `"cross"`, `"diamond"`, `"triangle-up"`, or `"triangle-down"`, or a custom SVG path.
-   */
-  shape?: Shape | string;
-
-  /**
-   * The default collection of symbol shapes for mapping nominal fields to shapes of point marks (i.e., range of a `shape` scale).
-   * Each value should be one of: `"circle"`, `"square"`, `"cross"`, `"diamond"`, `"triangle-up"`, or `"triangle-down"`, or a custom SVG path.
-   */
-  shapes?: (Shape|string)[];
+export interface SymbolConfig extends MarkConfig {
 
   /**
    * The pixel area each the point/circle/square.
@@ -282,9 +314,20 @@ export interface PointConfig extends MarkConfig {
   maxSize?: number;
 }
 
-export const defaultPointConfig: PointConfig = {
-  shape: 'circle',
-  shapes: ['circle', 'square', 'cross', 'diamond', 'triangle-up', 'triangle-down'],
+export interface PointConfig extends SymbolConfig {
+  /**
+   * The default symbol shape to use. One of: `"circle"` (default), `"square"`, `"cross"`, `"diamond"`, `"triangle-up"`, or `"triangle-down"`, or a custom SVG path.
+   */
+  shape?: string;
+
+  /**
+   * The default collection of symbol shapes for mapping nominal fields to shapes of point marks (i.e., range of a `shape` scale).
+   * Each value should be one of: `"circle"`, `"square"`, `"cross"`, `"diamond"`, `"triangle-up"`, or `"triangle-down"`, or a custom SVG path.
+   */
+  shapes?: string[];
+}
+
+export const defaultSymbolConfig: PointConfig = {
   size: 30,
 
   // FIXME: revise if these *can* become ratios of rangeStep
@@ -292,10 +335,13 @@ export const defaultPointConfig: PointConfig = {
   strokeWidth: 2
 };
 
-export const defaultCircleConfig: PointConfig = defaultPointConfig;
-export const defaultSquareConfig: PointConfig = extend({}, defaultPointConfig, {
-  shape: 'square'
+export const defaultPointConfig = extend({}, defaultSymbolConfig, {
+  shape: 'circle',
+  shapes: ['circle', 'square', 'cross', 'diamond', 'triangle-up', 'triangle-down'],
 });
+
+export const defaultCircleConfig: SymbolConfig = defaultSymbolConfig;
+export const defaultSquareConfig: SymbolConfig = defaultSymbolConfig;
 
 export interface RectConfig extends MarkConfig {}
 
@@ -372,11 +418,6 @@ export interface TextConfig extends MarkConfig {
    */
   fontWeight?: FontWeight | FontWeightNumber;
 
-  // Vega-Lite only for text only
-  /**
-   * The formatting pattern for text value. If not defined, this will be determined automatically.
-   */
-  format?: string;
   /**
    * Whether month names and weekday names should be abbreviated.
    */
@@ -386,12 +427,6 @@ export interface TextConfig extends MarkConfig {
    * Placeholder Text
    */
   text?: string;
-
-  // FIXME: remove this?
-  /**
-   * Apply color field to background color instead of the text.
-   */
-  applyColorToBackground?: boolean;
 }
 
 export const defaultTextConfig: TextConfig = {
@@ -399,8 +434,7 @@ export const defaultTextConfig: TextConfig = {
   minFontSize: 8,
   maxFontSize: 40,
   baseline: 'middle',
-  text: 'Abc',
-  applyColorToBackground: false
+  text: 'Abc'
 };
 
 export interface TickConfig extends MarkConfig {

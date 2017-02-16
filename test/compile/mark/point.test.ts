@@ -6,14 +6,11 @@ import {extend} from '../../../src/util';
 import {X, Y, SIZE, COLOR, SHAPE} from '../../../src/channel';
 import {defaultMarkConfig} from '../../../src/mark';
 import {point, square, circle} from '../../../src/compile/mark/point';
-import {ExtendedUnitSpec} from '../../../src/spec';
+import {UnitSpec} from '../../../src/spec';
 
 describe('Mark: Point', function() {
-  it('should return the correct mark type', function() {
-    assert.equal(point.markType(), 'symbol');
-  });
 
-  function pointXY(moreEncoding = {}): ExtendedUnitSpec {
+  function pointXY(moreEncoding = {}): UnitSpec {
     return {
       "mark": "point",
       "encoding": extend(
@@ -34,7 +31,7 @@ describe('Mark: Point', function() {
       "data": {"url": "data/barley.json"}
     });
 
-    const props = point.properties(model);
+    const props = point.encodeEntry(model);
 
     it('should be centered on y', function() {
       assert.deepEqual(props.y, {value: 21 / 2});
@@ -55,10 +52,10 @@ describe('Mark: Point', function() {
         "color": {"field": "b", "type": "ordinal"}
       },
       "data": {"url": "data/barley.json"},
-      "config": {"mark": {"stacked": "zero"}}
+      "config": {"stack": "zero"}
     });
 
-    const props = point.properties(model);
+    const props = point.encodeEntry(model);
 
     it('should use stack_end on x', function() {
       assert.deepEqual(props.x, {scale: X, field: 'sum_a_end'});
@@ -72,7 +69,7 @@ describe('Mark: Point', function() {
       "data": {"url": "data/barley.json"}
     });
 
-    const props = point.properties(model);
+    const props = point.encodeEntry(model);
 
     it('should be centered on x', function() {
       assert.deepEqual(props.x, {value: 21 / 2});
@@ -93,10 +90,10 @@ describe('Mark: Point', function() {
         "color": {"field": "b", "type": "ordinal"}
       },
       "data": {"url": "data/barley.json"},
-      "config": {"mark": {"stacked": "zero"}}
+      "config": {"stack": "zero"}
     });
 
-    const props = point.properties(model);
+    const props = point.encodeEntry(model);
 
     it('should use stack_end on y', function() {
       assert.deepEqual(props.y, {scale: Y, field: 'sum_a_end'});
@@ -105,7 +102,7 @@ describe('Mark: Point', function() {
 
   describe('with x and y', function() {
     const model = parseUnitModel(pointXY());
-    const props = point.properties(model);
+    const props = point.encodeEntry(model);
 
     it('should scale on x', function() {
       assert.deepEqual(props.x, {scale: X, field: 'year'});
@@ -132,7 +129,7 @@ describe('Mark: Point', function() {
           "y": {"field": "yield", "type": "quantitative"}
         }
       });
-      const props = point.properties(model);
+      const props = point.encodeEntry(model);
       assert.deepEqual(props.x, {scale: 'x', field: 'year', offset: {scale: 'x', band: 0.5}});
     });
   });
@@ -141,7 +138,7 @@ describe('Mark: Point', function() {
     const model = parseUnitModel(pointXY({
       "size": {"field": "*", "type": "quantitative", "aggregate": "count"}
     }));
-    const props = point.properties(model);
+    const props = point.encodeEntry(model);
 
     it('should have scale for size', function () {
       assert.deepEqual(props.size, {scale: SIZE, field: 'count_*'});
@@ -152,7 +149,7 @@ describe('Mark: Point', function() {
     const model = parseUnitModel(pointXY({
       "color": {"field": "yield", "type": "quantitative"}
     }));
-    const props = point.properties(model);
+    const props = point.encodeEntry(model);
 
     it('should have scale for color', function () {
       assert.deepEqual(props.stroke, {scale: COLOR, field: 'yield'});
@@ -163,7 +160,7 @@ describe('Mark: Point', function() {
     const model = parseUnitModel(pointXY({
       "shape": {"field": "site", "type": "nominal"}
     }));
-    const props = point.properties(model);
+    const props = point.encodeEntry(model);
 
     it('should have scale for shape', function () {
       assert.deepEqual(props.shape, {scale: SHAPE, field: 'site'});
@@ -176,7 +173,7 @@ describe('Mark: Point', function() {
       "color": {"value": "red"},
       "size": {"value": 23}
     }));
-    const props = point.properties(model);
+    const props = point.encodeEntry(model);
     it('should correct shape, color and size', function () {
       assert.deepEqual(props.shape, {value: "circle"});
       assert.deepEqual(props.stroke, {value: "red"});
@@ -194,7 +191,7 @@ describe('Mark: Point', function() {
         },
         "config": {"mark": {"color":"red", "stroke": "blue"}}
       });
-      const props = point.properties(model);
+      const props = point.encodeEntry(model);
       assert.deepEqual(props.stroke, {value: "blue"});
     });
 
@@ -207,17 +204,13 @@ describe('Mark: Point', function() {
         },
         "config": {"mark": {"color":"red"}}
       });
-      const props = point.properties(model);
+      const props = point.encodeEntry(model);
       assert.deepEqual(props.stroke, {value: "red"});
     });
   });
 });
 
 describe('Mark: Square', function() {
-  it('should return the correct mark type', function() {
-    assert.equal(square.markType(), 'symbol');
-  });
-
   it('should have correct shape', function() {
     const model = parseUnitModel({
       "mark": "square",
@@ -225,7 +218,7 @@ describe('Mark: Square', function() {
         "color": {"value": "blue"}
       }
     });
-    const props = square.properties(model);
+    const props = square.encodeEntry(model);
 
     assert.equal(props.shape.value, 'square');
   });
@@ -237,7 +230,7 @@ describe('Mark: Square', function() {
         "color": {"value": "blue"}
       }
     });
-    const props = square.properties(model);
+    const props = square.encodeEntry(model);
 
     assert.equal(props.fill.value, 'blue');
   });
@@ -255,7 +248,7 @@ describe('Mark: Square', function() {
       }
     });
 
-    const props = square.properties(model);
+    const props = square.encodeEntry(model);
 
     assert.equal(props.stroke.value, 'blue');
     assert.equal(props.fill.value, 'transparent');
@@ -263,17 +256,13 @@ describe('Mark: Square', function() {
 });
 
 describe('Mark: Circle', function() {
-  it('should return the correct mark type', function() {
-    assert.equal(circle.markType(), 'symbol');
-  });
-
   const model = parseUnitModel({
     "mark": "circle",
     "encoding": {
       "color": {"value": "blue"}
     }
   });
-  const props = circle.properties(model);
+  const props = circle.encodeEntry(model);
 
   it('should have correct shape', function() {
     assert.equal(props.shape.value, 'circle');
@@ -296,7 +285,7 @@ describe('Mark: Circle', function() {
       }
     });
 
-    const filledCircleProps = circle.properties(filledCircleModel);
+    const filledCircleProps = circle.encodeEntry(filledCircleModel);
 
     assert.equal(filledCircleProps.stroke.value, 'blue');
     assert.equal(filledCircleProps.fill.value, 'transparent');

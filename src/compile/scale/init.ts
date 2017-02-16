@@ -2,41 +2,55 @@ import * as log from '../../log';
 
 import {Config} from '../../config';
 import {Channel} from '../../channel';
-import {ChannelDefWithScale, FieldDef} from '../../fielddef';
+import {ScaleFieldDef, FieldDef} from '../../fielddef';
 import {Mark} from '../../mark';
-import {Scale, ScaleConfig, scaleTypeSupportProperty} from '../../scale';
+import {Scale, ScaleConfig, scaleTypeSupportProperty, channelScalePropertyIncompatability} from '../../scale';
 
-import {channelScalePropertyIncompatability} from './scale';
 import rangeMixins from './range';
 import * as rules from './rules';
 import scaleType from './type';
 import * as util from '../../util';
 
+/**
+ * All scale properties except type and all range properties.
+ */
+export const NON_TYPE_RANGE_SCALE_PROPERTIES: (keyof Scale)[] = [
+  // general properties
+  'domain', // For domain, we only copy specified value here.  Default value is determined during parsing phase.
+  'round',
+  // quantitative / time
+  'clamp', 'nice',
+  // quantitative
+  'exponent', 'zero', // zero depends on domain
+  'interpolate',
+  // ordinal
+  'padding', 'paddingInner', 'paddingOuter', // padding
+
+  'useRawDomain'
+];
+
+/**
+ * Initialize Vega-Lite Scale's properties
+ *
+ * Note that we have to apply these rules here because:
+ * - many other scale and non-scale properties (including layout, mark) depend on scale type
+ * - layout depends on padding
+ * - range depends on zero and size (width and height) depends on range
+ */
 export default function init(
-    channel: Channel, fieldDef: ChannelDefWithScale, config: Config,
+    channel: Channel, fieldDef: ScaleFieldDef, config: Config,
     mark: Mark | undefined, topLevelSize: number | undefined, xyRangeSteps: number[]): Scale {
   let specifiedScale = (fieldDef || {}).scale || {};
 
-  // TODO: revise if type here should be Scale
   let scale: Scale = {
-    type: scaleType(fieldDef, channel, mark, topLevelSize, config)
+    type: scaleType(
+      specifiedScale.type, fieldDef.type, channel, fieldDef.timeUnit, mark,
+      topLevelSize !== undefined, specifiedScale.rangeStep, config.scale
+    )
   };
 
   // Use specified value if compatible or determine default values for each property
-  [
-    // general properties
-    'domain', // For domain, we only copy specified value here.  Default value is determined during parsing phase.
-    'round',
-    // quantitative / time
-    'clamp', 'nice',
-    // quantitative
-    'exponent', 'zero', // zero depends on domain
-    // ordinal
-    'padding', 'paddingInner', 'paddingOuter', // padding
-
-    // FIXME: useRawDomain should not be included here as it is not really a Vega scale property
-    'useRawDomain'
-  ].forEach(function(property) {
+  NON_TYPE_RANGE_SCALE_PROPERTIES.forEach(function(property) {
     const specifiedValue = specifiedScale[property];
 
     let supportedByScaleType = scaleTypeSupportProperty(scale.type, property);
@@ -66,7 +80,7 @@ export default function init(
   return util.extend(
     scale,
     rangeMixins(
-      channel, scale.type, specifiedScale, config,
+      channel, scale.type, fieldDef.type, specifiedScale, config,
       scale.zero, mark, topLevelSize, xyRangeSteps
     )
   );
@@ -91,4 +105,3 @@ function getDefaultValue(property: string, scale: Scale, channel: Channel, field
   // Otherwise, use scale config
   return scaleConfig[property];
 }
-

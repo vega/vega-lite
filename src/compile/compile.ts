@@ -41,17 +41,25 @@ export function compile(inputSpec: ExtendedSpec, logger?: log.LoggerInterface) {
 }
 
 function assemble(model: Model) {
-  const config = model.config();
-
   // TODO: change type to become VgSpec
   const output = extend(
     {
-      autosize: 'pad'
+      $schema: 'http://vega.github.io/schema/vega/v3.0.json',
     },
-    config.viewport ? { viewport: config.viewport } : {},
-    config.background ? { background: config.background } : {},
+    topLevelBasicProperties(model),
     {
-      signals: assembleTopLevelSignals(model),
+      // Map calculated layout width and height to width and height signals.
+      signals: [
+        {
+          name: 'width',
+          update: "data('layout')[0].width"
+        },
+        {
+          name: 'height',
+          update: "data('layout')[0].height"
+        }
+      ].concat(assembleTopLevelSignals(model))
+    },{
       data: [].concat(
         model.assembleData([]),
         model.assembleLayout([]),
@@ -66,31 +74,36 @@ function assemble(model: Model) {
   };
 }
 
+export function topLevelBasicProperties(model: Model) {
+  const config = model.config;
+  return extend(
+    // TODO: Add other top-level basic properties (#1778)
+    {padding: model.padding || config.padding},
+    {autosize: 'pad'},
+    config.viewport ? {viewport: config.viewport} : {},
+    config.background ? {background: config.background} : {}
+  );
+}
+
 export function assembleRootGroup(model: Model) {
-  const layout = stringValue(model.name(LAYOUT + ''));
   let rootGroup:any = extend(
     {
-      name: model.name('main'),
+      name: model.getName('main'),
       type: 'group',
     },
-    model.description() ? {description: model.description()} : {},
+    model.description ? {description: model.description} : {},
     {
-      from: {data: model.name(LAYOUT +'')},
+      from: {data: model.getName(LAYOUT +'')},
       encode: {
         update: extend(
           {
-            width: {field: model.name('width')},
-            height: {field: model.name('height')}
+            width: {field: model.getName('width')},
+            height: {field: model.getName('height')}
           },
-          model.assembleParentGroupProperties(model.config().cell)
+          model.assembleParentGroupProperties(model.config.cell)
         )
       }
-    }, model.assembleGroup());
+    });
 
-  let signals = rootGroup.signals || (rootGroup.signals = []);
-  signals.unshift.apply(signals, [
-    {name: 'width', update: 'data(' + layout + ')[0].width'},
-    {name: 'height', update: 'data(' + layout + ')[0].height'}
-  ]);
-  return rootGroup;
+  return extend(rootGroup, model.assembleGroup());
 }

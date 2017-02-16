@@ -1,4 +1,4 @@
-import {DataFormat, SOURCE} from '../../data';
+import {DataFormat, SOURCE, isInlineData, isUrlData} from '../../data';
 import {contains, extend} from '../../util';
 import {VgData} from '../../vega.schema';
 
@@ -15,16 +15,16 @@ import {timeUnit} from './timeunit';
 
 export namespace source {
   function parse(model: Model): VgData {
-    let data = model.data();
+    let data = model.data;
 
     if (data) {
       // If data is explicitly provided
 
-      let sourceData: VgData = { name: model.dataName(SOURCE) };
-      if (data.values && data.values.length > 0) {
+      let sourceData: VgData = {name: model.dataName(SOURCE)};
+      if (isInlineData(data)) {
         sourceData.values = data.values;
-        sourceData.format = { type: 'json' };
-      } else if (data.url) {
+        sourceData.format = {type: 'json'};
+      } else if (isUrlData(data)) {
         sourceData.url = data.url;
 
         // Extract extension from URL using snippet from
@@ -39,21 +39,22 @@ export namespace source {
         const formatType: DataFormat = dataFormat.type || data['formatType'];
         sourceData.format =
           extend(
-            { type: formatType ? formatType : defaultExtension },
-            dataFormat.property ? { property: dataFormat.property } : {},
+            {type: formatType ? formatType : defaultExtension},
+            dataFormat.property ? {property: dataFormat.property} : {},
             // Feature and mesh are two mutually exclusive properties
             dataFormat.feature ?
-              { feature : dataFormat.feature } :
+              {feature : dataFormat.feature} :
             dataFormat.mesh ?
-              { mesh : dataFormat.mesh } :
+              {mesh : dataFormat.mesh} :
               {}
           );
       }
+
       return sourceData;
-    } else if (!model.parent()) {
+    } else if (!model.parent) {
       // If data is not explicitly provided but the model is a root,
       // need to produce a source as well
-      return { name: model.dataName(SOURCE) };
+      return {name: model.dataName(SOURCE)};
     }
     return undefined;
   }
@@ -62,9 +63,9 @@ export namespace source {
 
   export function parseFacet(model: FacetModel) {
     let sourceData = parse(model);
-    if (!model.child().component.data.source) {
+    if (!model.child.component.data.source) {
       // If the child does not have its own source, have to rename its source.
-      model.child().renameData(model.child().dataName(SOURCE), model.dataName(SOURCE));
+      model.child.renameData(model.child.dataName(SOURCE), model.dataName(SOURCE));
     }
 
     return sourceData;
@@ -72,7 +73,7 @@ export namespace source {
 
   export function parseLayer(model: LayerModel) {
     let sourceData = parse(model);
-    model.children().forEach((child) => {
+    model.children.forEach((child) => {
       const childData = child.component.data;
 
       if (model.compatibleSource(child)) {

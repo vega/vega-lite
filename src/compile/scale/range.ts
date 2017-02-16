@@ -2,28 +2,50 @@ import * as log from '../../log';
 
 import {COLUMN, ROW, X, Y, SHAPE, SIZE, COLOR, OPACITY, Channel} from '../../channel';
 import {Config} from '../../config';
-import {Mark, PointConfig} from '../../mark';
-import {Scale, ScaleConfig, ScaleType, scaleTypeSupportProperty} from '../../scale';
+import {Mark} from '../../mark';
+import {Scale, ScaleConfig, ScaleType, scaleTypeSupportProperty, Scheme, Range, isExtendedScheme, channelScalePropertyIncompatability} from '../../scale';
+import {Type} from '../../type';
+import {VgRange, VgRangeScheme} from '../../vega.schema';
 import * as util from '../../util';
 
-import {channelScalePropertyIncompatability} from './scale';
+export type RangeMixins = {range: Range} | {rangeStep: number} | {scheme: Scheme};
 
-export type RangeMixins = {range: string | Array<number|string|{data: string, field:string}>} | {rangeStep: number} | {scheme: string};
+export function parseRange(scale: Scale): VgRange {
+  if (scale.rangeStep) {
+    return {step: scale.rangeStep};
+  } else if (scale.scheme) {
+    const scheme = scale.scheme;
+    if (isExtendedScheme(scheme)) {
+      let r: VgRangeScheme = {scheme: scheme.name};
+      if (scheme.count) {
+        r.count = scheme.count;
+      }
+      if (scheme.extent) {
+        r.extent = scheme.extent;
+      }
+      return r;
+    } else {
+      return {scheme};
+    }
+  }
+  return scale.range;
+}
+
+export const RANGE_PROPERTIES: (keyof Scale)[] = ['range', 'rangeStep', 'scheme'];
 
 /**
  * Return mixins that includes one of the range properties (range, rangeStep, scheme).
  */
 export default function rangeMixins(
-  channel: Channel, scaleType: ScaleType, specifiedScale: Scale, config: Config,
+  channel: Channel, scaleType: ScaleType, type: Type, specifiedScale: Scale, config: Config,
   zero: boolean, mark: Mark, topLevelSize: number | undefined, xyRangeSteps: number[]): RangeMixins {
 
   let specifiedRangeStepIsNull = false;
 
   // Check if any of the range properties is specified.
   // If so, check if it is compatible and make sure that we only output one of the properties
-  for (let property of ['range', 'rangeStep', 'scheme']) {
-    const specifiedValue = specifiedScale[property];
-    if (specifiedValue !== undefined) {
+  for (let property of RANGE_PROPERTIES) {
+    if (specifiedScale[property] !== undefined) {
       let supportedByScaleType = scaleTypeSupportProperty(scaleType, property);
       const channelIncompatability = channelScalePropertyIncompatability(channel, property);
       if (!supportedByScaleType) {
@@ -33,13 +55,14 @@ export default function rangeMixins(
       } else {
         switch (property) {
           case 'range':
-            return {range: specifiedValue};
+            return {range: specifiedScale[property]};
           case 'scheme':
-            return {scheme: specifiedValue};
+            return {scheme: specifiedScale[property]};
           case 'rangeStep':
             if (topLevelSize === undefined) {
-              if (specifiedValue !== null) {
-                return {rangeStep: specifiedValue};
+              const stepSize = specifiedScale[property];
+              if (stepSize !== null) {
+                return {rangeStep: stepSize};
               } else {
                 specifiedRangeStepIsNull = true;
               }
@@ -84,17 +107,9 @@ export default function rangeMixins(
       const rangeMax = sizeRangeMax(mark, xyRangeSteps, config);
       return {range: [rangeMin, rangeMax]};
     case SHAPE:
-      return {range: config.point.shapes};
     case COLOR:
-      if (scaleType === 'ordinal') {
-        // Only nominal data uses ordinal scale by default
-        return {scheme: config.mark.nominalColorScheme};
-      }
-      // TODO(#1737): support sequentialColorRange (with linear scale) if sequentialColorScheme is not specified.
-      // TODO: support custom rangeMin, rangeMax
-      // else -- ordinal, time, or quantitative
-      // TODO: support linearColorRange
-      return {scheme: config.mark.sequentialColorScheme};
+      return {range: defaultRange(channel, scaleType, type, mark)};
+
 
     case OPACITY:
       // TODO: support custom rangeMin, rangeMax
@@ -102,6 +117,19 @@ export default function rangeMixins(
   }
   /* istanbul ignore next: should never reach here */
   throw new Error(`Scale range undefined for channel ${channel}`);
+}
+
+function defaultRange(channel: 'shape' | 'color', scaleType: ScaleType, type: Type, mark: Mark) {
+  switch (channel) {
+    case SHAPE:
+      return 'symbol';
+    case COLOR:
+      if (scaleType === 'ordinal') {
+        // Only nominal data uses ordinal scale by default
+        return type === 'nominal' ? 'category' : 'ordinal';
+      }
+      return mark === 'rect' ? 'heatmap' : 'ramp';
+  }
 }
 
 function sizeRangeMin(mark: Mark, zero: boolean, config: Config) {
@@ -150,8 +178,8 @@ function sizeRangeMax(mark: Mark, xyRangeSteps: number[], config: Config) {
     case 'point':
     case 'square':
     case 'circle':
-      if ((config[mark] as PointConfig).maxSize) {
-        return (config[mark] as PointConfig).maxSize;
+      if (config[mark].maxSize) {
+        return config[mark].maxSize;
       }
 
       // FIXME this case totally should be refactored

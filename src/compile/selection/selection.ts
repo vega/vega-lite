@@ -49,7 +49,7 @@ export interface SelectionCompiler {
 
 export function parseUnitSelection(model: UnitModel, selDefs: Dict<SelectionDef>) {
   let selCmpts: Dict<SelectionComponent> = {},
-      selectionConfig = model.config().selection;
+      selectionConfig = model.config.selection;
 
   for (let name in selDefs) {
     if (!selDefs.hasOwnProperty(name)) {
@@ -76,7 +76,7 @@ export function parseUnitSelection(model: UnitModel, selDefs: Dict<SelectionDef>
     }
 
     let selCmpt = selCmpts[name] = extend({}, selDef, {
-      name: model.name(name),
+      name: model.getName(name),
       events: isString(selDef.on) ? parseSelector(selDef.on, 'scope') : selDef.on,
       domain: 'data' as SelectionDomain, // TODO: Support def.domain
       resolve: 'single' as SelectionResolutions

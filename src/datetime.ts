@@ -11,6 +11,7 @@ const SUNDAY_YEAR = 2006;
 /**
  * @minimum 1
  * @maximum 12
+ * @TJS-type integer
  */
 export type Month = number;
 
@@ -27,13 +28,17 @@ export type Day = number;
  * We accept string for month and day names.
  */
 export interface DateTime {
-  /** Integer value representing the year. */
+  /**
+   * Integer value representing the year.
+   * @TJS-type integer
+   */
   year?: number;
 
   /**
    * Integer value representing the quarter of the year (from 1-4).
    * @minimum 1
    * @maximum 4
+   * @TJS-type integer
    */
   quarter?: number;
 
@@ -44,6 +49,7 @@ export interface DateTime {
    * Integer value representing the date from 1-31.
    * @minimum 1
    * @maximum 31
+   * @TJS-type integer
    */
   date?: number;
 
@@ -56,6 +62,7 @@ export interface DateTime {
    * Integer value representing the hour of day from 0-23.
    * @minimum 0
    * @maximum 23
+   * @TJS-type integer
    */
   hours?: number;
 
@@ -63,6 +70,7 @@ export interface DateTime {
    * Integer value representing minute segment of a time from 0-59.
    * @minimum 0
    * @maximum 59
+   * @TJS-type integer
    */
   minutes?: number;
 
@@ -70,6 +78,7 @@ export interface DateTime {
    * Integer value representing second segment of a time from 0-59.
    * @minimum 0
    * @maximum 59
+   * @TJS-type integer
    */
   seconds?: number;
 
@@ -77,6 +86,7 @@ export interface DateTime {
    * Integer value representing millisecond segment of a time.
    * @minimum 0
    * @maximum 999
+   * @TJS-type integer
    */
   milliseconds?: number;
 }

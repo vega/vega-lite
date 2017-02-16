@@ -1,4 +1,5 @@
 {
+  "$schema": "https://vega.github.io/schema/vega-lite/v2.json",
   "data": {"url": "data/movies.json"},
   "mark": "bar",
   "encoding": {
@@ -14,8 +15,8 @@
     }
   },
   "config": {
-    "mark": {
-      "barBinSpacing": 0
+    "bar": {
+      "binSpacing": 0
     }
   }
 }

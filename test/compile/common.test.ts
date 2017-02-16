@@ -1,13 +1,12 @@
 /* tslint:disable:quotemark */
 
 import {assert} from 'chai';
-import {parseUnitModel} from '../util';
 import {X} from '../../src/channel';
 import {defaultConfig} from '../../src/config';
 import {TimeUnit} from '../../src/timeunit';
 import {field, FieldDef} from '../../src/fielddef';
 import {TEMPORAL, QUANTITATIVE, ORDINAL, NOMINAL} from '../../src/type';
-import {numberFormat, timeFormatExpression, applyColorAndOpacity} from '../../src/compile/common';
+import {numberFormat, timeFormatExpression} from '../../src/compile/common';
 
 describe('Common', function() {
   describe('timeFormat()', function() {
@@ -62,38 +61,6 @@ describe('Common', function() {
       for (let type of [TEMPORAL, NOMINAL, ORDINAL]) {
         assert.equal(numberFormat({bin: true, field: 'a', type: type}, undefined, 'd', X), undefined);
       }
-    });
-  });
-
-  describe('applyColorAndOpacity()', function() {
-    it('opacity should be mapped to a field if specified', function() {
-      const model = parseUnitModel({
-        "mark": "bar",
-        "encoding": {
-          "y": {"type": "quantitative", "field": 'US_Gross', "aggregate": "sum", "axis": true},
-          "opacity": {"field": "US_Gross", "type": "quantitative"}
-        },
-        "data": {"url": "data/movies.json"}
-      });
-
-      let p: any = {};
-      applyColorAndOpacity(p, model);
-      assert.deepEqual(p.opacity.field, 'US_Gross');
-    });
-
-    it('opacity should be mapped to a value if specified', function() {
-      const model = parseUnitModel({
-        "mark": "bar",
-        "encoding": {
-          "y": {"type": "quantitative", "field": 'US_Gross', "aggregate": "sum", "axis": true},
-          "opacity": {"value": 0.5}
-        },
-        "data": {"url": "data/movies.json"}
-      });
-
-      let p: any = {};
-      applyColorAndOpacity(p, model);
-      assert.deepEqual(p.opacity.value, 0.5);
     });
   });
 });

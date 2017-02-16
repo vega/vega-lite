@@ -1,46 +1,32 @@
 import * as log from '../log';
 
-import {AggregateOp} from '../aggregate';
 import {Axis} from '../axis';
-import {X, Y, X2, Y2, TEXT, ORDER, Channel, UNIT_CHANNELS,  UNIT_SCALE_CHANNELS, NONSPATIAL_SCALE_CHANNELS, supportMark} from '../channel';
+import {X, Y, X2, Y2, Channel, UNIT_CHANNELS,  UNIT_SCALE_CHANNELS, NONSPATIAL_SCALE_CHANNELS, supportMark} from '../channel';
 import {defaultConfig, Config, CellConfig} from '../config';
 import {SOURCE, SUMMARY} from '../data';
 import {Encoding} from '../encoding';
 import * as vlEncoding from '../encoding'; // TODO: remove
-import {FieldDef, FieldRefOption, field} from '../fielddef';
+import {ChannelDef, FieldDef, FieldRefOption, field, normalize, isFieldDef, isValueDef} from '../fielddef';
 import {Legend} from '../legend';
-import {Mark, TEXT as TEXTMARK} from '../mark';
+import {Mark, MarkDef, TEXT as TEXT_MARK, FILL_STROKE_CONFIG, isMarkDef} from '../mark';
 import {Scale, ScaleConfig, hasDiscreteDomain} from '../scale';
-import {ExtendedUnitSpec} from '../spec';
-import {getFullName, QUANTITATIVE} from '../type';
+import {UnitSpec} from '../spec';
 import {duplicate, extend, isArray, mergeDeep, Dict} from '../util';
 import {VgData} from '../vega.schema';
 
-import {parseAxisComponent} from './axis';
-import {applyConfig, FILL_STROKE_CONFIG} from './common';
+import {parseAxisComponent} from './axis/parse';
+import {applyConfig} from './common';
 import {initMarkConfig, initTextConfig} from './config';
 import {assembleData, parseUnitData} from './data/data';
-import {parseLegendComponent} from './legend';
+import {parseLegendComponent} from './legend/parse';
 import {assembleLayout, parseUnitLayout} from './layout';
 import {Model} from './model';
 import {parseMark} from './mark/mark';
 import initScale from './scale/init';
-import parseScales from './scale/parse';
+import parseScaleComponent from './scale/parse';
 import {stack, StackProperties} from '../stack';
 import {SelectionDef} from '../selection';
 import {parseUnitSelection, assembleUnitSignals, assembleUnitData as assembleSelectionData, assembleUnitMarks as assembleSelectionMarks} from './selection/selection';
-
-function normalizeFieldDef(fieldDef: FieldDef, channel: Channel) {
-  if (fieldDef.type) {
-    // convert short type to full type
-    fieldDef.type = getFullName(fieldDef.type);
-  }
-
-  if ((channel === ORDER) && !fieldDef.aggregate && fieldDef.type === QUANTITATIVE) {
-    fieldDef.aggregate = AggregateOp.MIN;
-  }
-  return fieldDef;
-}
 
 /**
  * Internal model of Vega-Lite specification for the compiler.
@@ -51,21 +37,26 @@ export class UnitModel extends Model {
    * If undefined (e.g., for ordinal scale), the width of the
    * visualization will be calculated dynamically.
    */
-  private _width: number;
+  public readonly width: number;
 
   /**
    * Fixed height for the unit visualization.
    * If undefined (e.g., for ordinal scale), the height of the
    * visualization will be calculated dynamically.
    */
-  private _height: number;
+  public readonly height: number;
 
-  private _mark: Mark;
-  private _encoding: Encoding;
-  protected _selection: Dict<SelectionDef>;
-  private _stack: StackProperties;
+  private readonly markDef: MarkDef;
+  public readonly encoding: Encoding;
+  protected readonly selection: Dict<SelectionDef> = {};
+  protected readonly scales: Dict<Scale> = {};
+  protected readonly axes: Dict<Axis> = {};
+  protected readonly legends: Dict<Legend> = {};
+  public readonly config: Config;
+  public readonly stack: StackProperties;
+  public children: Model[] = [];
 
-  constructor(spec: ExtendedUnitSpec, parent: Model, parentGivenName: string) {
+  constructor(spec: UnitSpec, parent: Model, parentGivenName: string) {
     super(spec, parent, parentGivenName);
 
     // use top-level width / height or parent's top-level width / height
@@ -76,39 +67,49 @@ export class UnitModel extends Model {
     const providedHeight = spec.height !== undefined ? spec.height :
       parent ? parent['height'] : undefined; // only exists if parent is layer
 
-    const mark = this._mark = spec.mark;
-    const encoding = this._encoding = this._initEncoding(mark, spec.encoding || {});
+    const markDef = this.markDef = this.initMarkDef(spec.mark);
+    const mark =  markDef.type;
+    const encoding = this.encoding = this.initEncoding(mark, spec.encoding || {});
 
     // TODO?: ideally we should use config only inside this constructor
-    const config = this._config = this._initConfig(spec.config, parent);
+    const config = this.config = this.initConfig(spec.config, parent);
 
-    // FIXME move stacked out of config as it's not really a theme.
     // calculate stack properties
-    this._stack = stack(mark, encoding, config.mark.stacked);
-    this._scale =  this._initScale(mark, encoding, config, providedWidth, providedHeight);
+    this.stack = stack(mark, encoding, config.stack);
+    this.scales = this.initScales(mark, encoding, config, providedWidth, providedHeight);
 
     // TODO?: refactor these to be a part of the model as they are not really just config
-    // (Maybe they should become a part of encoding?)
-    config.mark = initMarkConfig(mark, encoding, this._scale, this._stack, config);
+    config.mark = initMarkConfig(mark, encoding, this.scales, this.stack, config);
     if (mark === 'text') { // FIXME: maybe we should refactor this
       config.text = initTextConfig(encoding, config);
     }
 
-    this._axis = this._initAxis(encoding, config);
-    this._legend = this._initLegend(encoding, config);
+    this.axes = this.initAxes(encoding, config);
+    this.legends = this.initLegend(encoding, config);
 
     // Selections will be initialized upon parse.
-    this._selection = spec.selection;
+    this.selection = spec.selection;
 
     // width / height
-    this._initSize(mark, this._scale,
+    const {width = this.width, height = this.height} = this.initSize(mark, this.scales,
       providedWidth,
       providedHeight,
       config.cell, config.scale
     );
+    this.width = width;
+    this.height = height;
   }
 
-  private _initEncoding(mark: Mark, encoding: Encoding) {
+  private initMarkDef(mark: Mark | MarkDef) {
+    if (isMarkDef(mark)) {
+      return mark;
+    }
+    return {
+      type: mark
+    };
+  }
+
+  private initEncoding(mark: Mark, encoding: Encoding) {
     // clone to prevent side effect to the original spec
     encoding = duplicate(encoding);
 
@@ -123,13 +124,13 @@ export class UnitModel extends Model {
 
       if (isArray(encoding[channel])) {
         // Array of fieldDefs for detail channel (or production rule)
-        encoding[channel] = encoding[channel].reduce((fieldDefs: FieldDef[], fieldDef: FieldDef) => {
-          if (fieldDef.field === undefined && fieldDef.value === undefined) { // TODO: datum
-            log.warn(log.message.emptyFieldDef(fieldDef, channel));
+        encoding[channel] = encoding[channel].reduce((channelDefs: ChannelDef[], channelDef: ChannelDef) => {
+          if (!isFieldDef(channelDef) && !isValueDef(channelDef)) { // TODO: datum
+            log.warn(log.message.emptyFieldDef(channelDef, channel));
           } else {
-            fieldDefs.push(normalizeFieldDef(fieldDef, channel));
+            channelDefs.push(normalize(channelDef, channel));
           }
-          return fieldDefs;
+          return channelDefs;
         }, []);
       } else {
         const fieldDef = encoding[channel];
@@ -138,7 +139,7 @@ export class UnitModel extends Model {
           delete encoding[channel];
           return;
         }
-        normalizeFieldDef(fieldDef, channel);
+        normalize(fieldDef, channel);
       }
     });
     return encoding;
@@ -147,15 +148,15 @@ export class UnitModel extends Model {
   /**
    * Init config by merging config from parent and, if applicable, from facet config
    */
-  private _initConfig(specConfig: Config, parent: Model) {
-    let config = mergeDeep(duplicate(defaultConfig), parent ? parent.config() : {}, specConfig);
+  private initConfig(specConfig: Config, parent: Model) {
+    let config = mergeDeep(duplicate(defaultConfig), parent ? parent.config : {}, specConfig);
     let hasFacetParent = false;
     while (parent !== null) {
       if (parent.isFacet()) {
         hasFacetParent = true;
         break;
       }
-      parent = parent.parent();
+      parent = parent.parent;
     }
 
     if (hasFacetParent) {
@@ -164,15 +165,16 @@ export class UnitModel extends Model {
     return config;
   }
 
-  private _initScale(mark: Mark, encoding: Encoding, config: Config, topLevelWidth:number, topLevelHeight: number): Dict<Scale> {
+  private initScales(mark: Mark, encoding: Encoding, config: Config, topLevelWidth:number, topLevelHeight: number): Dict<Scale> {
     const xyRangeSteps: number[] = [];
 
-    return UNIT_SCALE_CHANNELS.reduce(function(_scale, channel) {
-      if (vlEncoding.has(encoding, channel) ||
-          (channel === X && vlEncoding.has(encoding, X2)) ||
-          (channel === Y && vlEncoding.has(encoding, Y2))
+    return UNIT_SCALE_CHANNELS.reduce((scales, channel) => {
+      if (vlEncoding.channelHasField(encoding, channel) ||
+          (channel === X && vlEncoding.channelHasField(encoding, X2)) ||
+          (channel === Y && vlEncoding.channelHasField(encoding, Y2))
         ) {
-        const scale = _scale[channel] = initScale(channel, encoding[channel], config, mark,
+        const scale = scales[channel] = initScale(
+          channel, encoding[channel], config, mark,
           channel === X ? topLevelWidth : channel === Y ? topLevelHeight : undefined,
           xyRangeSteps // for determine point / bar size
         );
@@ -183,54 +185,58 @@ export class UnitModel extends Model {
           }
         }
       }
-      return _scale;
-    }, {} as Dict<Scale>);
+      return scales;
+    }, {});
   }
 
   // TODO: consolidate this with scale?  Current scale range is in parseScale (later),
   // but not in initScale because scale range depends on size,
   // but size depends on scale type and rangeStep
-  private _initSize(mark: Mark, scale: Dict<Scale>, width: number, height: number, cellConfig: CellConfig, scaleConfig: ScaleConfig) {
-    if (width !== undefined) {
-      this._width = width;
-    } else if (scale[X]) {
-      if (!hasDiscreteDomain(scale[X].type) || !scale[X].rangeStep) {
-        this._width = cellConfig.width;
-      } // else: Do nothing, use dynamic width.
-    } else { // No scale X
-      if (mark === TEXTMARK) {
-        // for text table without x/y scale we need wider rangeStep
-        this._width = scaleConfig.textXRangeStep;
+  private initSize(mark: Mark, scale: Dict<Scale>, width: number, height: number, cellConfig: CellConfig, scaleConfig: ScaleConfig) {
+    if (width === undefined) {
+      if (scale[X]) {
+        if (!hasDiscreteDomain(scale[X].type) || !scale[X].rangeStep) {
+          width = cellConfig.width;
+        } // else: Do nothing, use dynamic width.
+      } else { // No scale X
+        if (mark === TEXT_MARK) {
+          // for text table without x/y scale we need wider rangeStep
+          width = scaleConfig.textXRangeStep;
+        } else {
+          if (typeof scaleConfig.rangeStep === 'string') {
+            throw new Error('_initSize does not handle string rangeSteps');
+          }
+          width = scaleConfig.rangeStep;
+        }
+      }
+    }
+
+    if (height === undefined) {
+      if (scale[Y]) {
+        if (!hasDiscreteDomain(scale[Y].type) || !scale[Y].rangeStep) {
+          height = cellConfig.height;
+        } // else: Do nothing, use dynamic height .
       } else {
         if (typeof scaleConfig.rangeStep === 'string') {
           throw new Error('_initSize does not handle string rangeSteps');
         }
-        this._width = scaleConfig.rangeStep;
+        height = scaleConfig.rangeStep;
       }
     }
 
-    if (height !== undefined) {
-      this._height = height;
-    } else if (scale[Y]) {
-      if (!hasDiscreteDomain(scale[Y].type) || !scale[Y].rangeStep) {
-        this._height = cellConfig.height;
-      } // else: Do nothing, use dynamic height .
-    } else {
-      if (typeof scaleConfig.rangeStep === 'string') {
-        throw new Error('_initSize does not handle string rangeSteps');
-      }
-      this._height = scaleConfig.rangeStep;
-    }
+    return {width, height};
   }
 
-  private _initAxis(encoding: Encoding, config: Config): Dict<Axis> {
+  private initAxes(encoding: Encoding, config: Config): Dict<Axis> {
     return [X, Y].reduce(function(_axis, channel) {
       // Position Axis
-      if (vlEncoding.has(encoding, channel) ||
-          (channel === X && vlEncoding.has(encoding, X2)) ||
-          (channel === Y && vlEncoding.has(encoding, Y2))) {
 
-        const axisSpec = (encoding[channel] || {}).axis;
+      const channelDef = encoding[channel];
+      if (isFieldDef(channelDef) ||
+          (channel === X && isFieldDef(encoding.x2)) ||
+          (channel === Y && isFieldDef(encoding.y2))) {
+
+        const axisSpec = isFieldDef(channelDef) ? channelDef.axis : null;
 
         // We no longer support false in the schema, but we keep false here for backward compatability.
         if (axisSpec !== null && axisSpec !== false) {
@@ -241,13 +247,14 @@ export class UnitModel extends Model {
         }
       }
       return _axis;
-    }, {} as Dict<Axis>);
+    }, {});
   }
 
-  private _initLegend(encoding: Encoding, config: Config): Dict<Legend> {
+  private initLegend(encoding: Encoding, config: Config): Dict<Legend> {
     return NONSPATIAL_SCALE_CHANNELS.reduce(function(_legend, channel) {
-      if (vlEncoding.has(encoding, channel)) {
-        const legendSpec = encoding[channel].legend;
+      const channelDef = encoding[channel];
+      if (isFieldDef(channelDef)) {
+        const legendSpec = channelDef.legend;
         // We no longer support false in the schema, but we keep false here for backward compatability.
         if (legendSpec !== null && legendSpec !== false) {
           _legend[channel] = extend({}, config.legend,
@@ -256,15 +263,7 @@ export class UnitModel extends Model {
         }
       }
       return _legend;
-    }, {} as Dict<Legend>);
-  }
-
-  public get width(): number {
-    return this._width;
-  }
-
-  public get height(): number {
-    return this._height;
+    }, {});
   }
 
   public parseData() {
@@ -272,7 +271,7 @@ export class UnitModel extends Model {
   }
 
   public parseSelection() {
-    this.component.selection = parseUnitSelection(this, this._selection);
+    this.component.selection = parseUnitSelection(this, this.selection);
   }
 
   public parseLayoutData() {
@@ -280,7 +279,7 @@ export class UnitModel extends Model {
   }
 
   public parseScale() {
-    this.component.scale = parseScales(this);
+    this.component.scales = parseScaleComponent(this);
   }
 
   public parseMark() {
@@ -288,7 +287,7 @@ export class UnitModel extends Model {
   }
 
   public parseAxis() {
-    this.component.axis = parseAxisComponent(this, [X, Y]);
+    this.component.axes = parseAxisComponent(this, [X, Y]);
   }
 
   public parseAxisGroup(): void {
@@ -300,7 +299,7 @@ export class UnitModel extends Model {
   }
 
   public parseLegend() {
-    this.component.legend = parseLegendComponent(this);
+    this.component.legends = parseLegendComponent(this);
   }
 
   public assembleSignals(signals: any[]): any[] {
@@ -331,29 +330,25 @@ export class UnitModel extends Model {
     return UNIT_CHANNELS;
   }
 
-  protected mapping() {
-    return this.encoding();
-  }
-
-  public stack(): StackProperties {
-    return this._stack;
+  protected getMapping() {
+    return this.encoding;
   }
 
   public toSpec(excludeConfig?: any, excludeData?: any) {
-    const encoding = duplicate(this._encoding);
+    const encoding = duplicate(this.encoding);
     let spec: any;
 
     spec = {
-      mark: this._mark,
+      mark: this.markDef,
       encoding: encoding
     };
 
     if (!excludeConfig) {
-      spec.config = duplicate(this._config);
+      spec.config = duplicate(this.config);
     }
 
     if (!excludeData) {
-      spec.data = duplicate(this._data);
+      spec.data = duplicate(this.data);
     }
 
     // remove defaults
@@ -361,21 +356,17 @@ export class UnitModel extends Model {
   }
 
   public mark(): Mark {
-    return this._mark;
+    return this.markDef.type;
   }
 
-  public has(channel: Channel) {
-    return vlEncoding.has(this._encoding, channel);
-  }
-
-  public encoding() {
-    return this._encoding;
+  public channelHasField(channel: Channel) {
+    return vlEncoding.channelHasField(this.encoding, channel);
   }
 
   public fieldDef(channel: Channel): FieldDef {
     // TODO: remove this || {}
     // Currently we have it to prevent null pointer exception.
-    return this._encoding[channel] || {};
+    return this.encoding[channel] || {};
   }
 
   /** Get "field" reference for vega */
@@ -392,7 +383,7 @@ export class UnitModel extends Model {
   }
 
   public dataTable() {
-    return this.dataName(vlEncoding.isAggregate(this._encoding) ? SUMMARY : SOURCE);
+    return this.dataName(vlEncoding.isAggregate(this.encoding) ? SUMMARY : SOURCE);
   }
 
   public isUnit() {

@@ -10,9 +10,6 @@ import {LINE} from '../../../src/mark';
 import {line} from '../../../src/compile/mark/line';
 
 describe('Mark: Line', function() {
-  it('should return the correct mark type', function() {
-    assert.equal(line.markType(), 'line');
-  });
 
   describe('with x, y', function() {
     const model = parseUnitModel({
@@ -23,7 +20,7 @@ describe('Mark: Line', function() {
         "y": {"field": "yield", "type": "quantitative"}
       }
     });
-    const props = line.properties(model);
+    const props = line.encodeEntry(model);
 
     it('should have scale for x', function() {
       assert.deepEqual(props.x, {scale: X, field: 'year'});
@@ -44,7 +41,7 @@ describe('Mark: Line', function() {
         "color": {"field": "Acceleration", "type": "quantitative"}
       }
     });
-    const props = line.properties(model);
+    const props = line.encodeEntry(model);
 
     it('should have scale for color', function () {
       assert.deepEqual(props.stroke, {scale: COLOR, field: 'Acceleration'});
@@ -64,7 +61,7 @@ describe('Mark: Line', function() {
             "size": {"field": "Acceleration", "type": "quantitative", "aggregate": "mean"}
           }
         });
-        const props = line.properties(model);
+        const props = line.encodeEntry(model);
 
         // If size field is dropped, then strokeWidth only have value
         assert.deepEqual(props.strokeWidth, {value: 2});
@@ -82,9 +79,9 @@ describe('Mark: Line', function() {
         "y": {"field": "yield", "type": "quantitative", "aggregate": "sum"},
         "color": {"field": "a", "type": "nominal"}
       },
-      "config": {"mark": {"stacked": "zero"}}
+      "config": {"stack":  "zero"}
     });
-    const props = line.properties(model);
+    const props = line.encodeEntry(model);
 
     it('should use y_end', function() {
       assert.deepEqual(props.y, {scale: Y, field: 'sum_yield_end'});
@@ -100,9 +97,9 @@ describe('Mark: Line', function() {
         "x": {"field": "yield", "type": "quantitative", "aggregate": "sum"},
         "color": {"field": "a", "type": "nominal"}
       },
-      "config": {"mark": {"stacked": "zero"}}
+      "config": {"stack":  "zero"}
     });
-    const props = line.properties(model);
+    const props = line.encodeEntry(model);
 
     it('should use x_end', function() {
       assert.deepEqual(props.x, {scale: X, field: 'sum_yield_end'});

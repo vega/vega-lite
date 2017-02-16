@@ -1,3 +1,5 @@
+/* tslint:disable quotemark */
+
 import {assert} from 'chai';
 
 import * as log from '../../src/log';
@@ -5,6 +7,7 @@ import * as log from '../../src/log';
 import {FacetModel} from '../../src/compile/facet';
 import * as facet from '../../src/compile/facet';
 import {SHAPE, ROW} from '../../src/channel';
+import {defaultConfig} from '../../src/config';
 import {POINT} from '../../src/mark';
 import {FacetSpec} from '../../src/spec';
 import {Facet} from '../../src/facet';
@@ -30,10 +33,11 @@ describe('FacetModel', function() {
             shape: {field: 'a', type: 'quantitative'}
           }) as Facet, // Cast to allow invalid facet type for test
           spec: {
-            mark: 'point'
+            mark: 'point',
+            encoding: {}
           }
         });
-        assert.equal(model.facet()['shape'], undefined);
+        assert.equal(model.facet['shape'], undefined);
         assert.equal(localLogger.warns[0], log.message.incompatibleChannel(SHAPE, 'facet'));
       });
     });
@@ -45,10 +49,11 @@ describe('FacetModel', function() {
             row: {type: 'ordinal'}
           },
           spec: {
-            mark: 'point'
+            mark: 'point',
+            encoding: {}
           }
         });
-        assert.equal(model.facet().row, undefined);
+        assert.equal(model.facet.row, undefined);
         assert.equal(localLogger.warns[0], log.message.emptyFieldDef({type: ORDINAL}, ROW));
       });
     });
@@ -60,12 +65,115 @@ describe('FacetModel', function() {
             row: {field: 'a', type: 'quantitative'}
           },
           spec: {
-            mark: 'point'
+            mark: 'point',
+            encoding: {}
           }
         });
-        assert.deepEqual(model.facet().row, {field: 'a', type: 'quantitative'});
+        assert.deepEqual(model.facet.row, {field: 'a', type: 'quantitative'});
         assert.equal(localLogger.warns[0], log.message.facetChannelShouldBeDiscrete(ROW));
       });
+    });
+  });
+
+  describe('spacing', () => {
+    it('should return specified spacing if specified', () => {
+      assert.equal(facet.spacing({spacing: 123}, null, null), 123);
+    });
+
+    it('should return default facetSpacing if there is a subplot and no specified spacing', () => {
+      const model = parseFacetModel({
+        facet: {
+          row: {field: 'a', type: 'ordinal'}
+        },
+        spec: {
+          mark: 'point',
+          encoding: {
+            "x": {"aggregate": "sum", "field": "yield", "type": "quantitative"},
+            "y": {"field": "variety", "type": "nominal"},
+            "color": {"field": "site", "type": "nominal"}
+          }
+        }
+      });
+      assert.equal(facet.spacing({}, model, defaultConfig), defaultConfig.scale.facetSpacing);
+    });
+
+    it('should return 0 if it is a simple table without subplot with x/y and no specified spacing', () => {
+      const model = parseFacetModel({
+        facet: {
+          row: {field: 'a', type: 'ordinal'}
+        },
+        spec: {
+          mark: 'point',
+          encoding: {
+            "color": {"field": "site", "type": "nominal"}
+          }
+        }
+      });
+      assert.equal(facet.spacing({}, model, defaultConfig), 0);
+    });
+  });
+
+  describe('dataTable', () => {
+    it('should return stacked if there is a stacked data component', () => {
+      const model = parseFacetModel({
+        facet: {
+          row: {field: 'a', type: 'ordinal'}
+        },
+        spec: {
+          mark: 'point',
+          encoding: {
+            "x": {"aggregate": "sum", "field": "yield", "type": "quantitative"},
+            "y": {"field": "variety", "type": "nominal"},
+            "color": {"field": "site", "type": "nominal"}
+          }
+        }
+      });
+
+      // Mock
+      model.component.data = {stack: {}} as any;
+
+      assert.equal(model.dataTable(), 'stacked');
+    });
+
+    it('should return summary if there is a summary data component and no stacked', () => {
+      const model = parseFacetModel({
+        facet: {
+          row: {field: 'a', type: 'ordinal'}
+        },
+        spec: {
+          mark: 'point',
+          encoding: {
+            "x": {"aggregate": "sum", "field": "yield", "type": "quantitative"},
+            "y": {"field": "variety", "type": "nominal"}
+          }
+        }
+      });
+
+      // Mock
+      model.component.data = {summary: [{
+        measures: {a: 1}
+      }]} as any;
+
+      assert.equal(model.dataTable(), 'summary');
+    });
+
+    it('should return source if there is no stacked nor summary data component', () => {
+      const model = parseFacetModel({
+        facet: {
+          row: {field: 'a', type: 'ordinal'}
+        },
+        spec: {
+          mark: 'point',
+          encoding: {
+            "x": {"field": "yield", "type": "quantitative"},
+            "y": {"field": "variety", "type": "nominal"}
+          }
+        }
+      });
+      // Mock
+      model.component.data = {summary: []} as any;
+
+      assert.equal(model.dataTable(), 'source');
     });
   });
 });
@@ -78,12 +186,14 @@ describe('compile/facet', () => {
           row: {field: 'a', type: 'ordinal'}
         },
         spec: {
-          mark: 'point'
+          mark: 'point',
+          encoding: {}
         }
       });
 
-      // HACK: mock that we have parsed its data and there is not summary
+      // HACK: mock that we have parsed its data and there is no stack and no summary
       // This way, we won't have surge in test coverage for the parse methods.
+      model.component.data = {} as any;
       model['hasSummary'] = () => false;
 
       assert.deepEqual(
@@ -105,12 +215,14 @@ describe('compile/facet', () => {
           column: {field: 'a', type: 'ordinal'}
         },
         spec: {
-          mark: 'point'
+          mark: 'point',
+          encoding: {}
         }
       });
 
-      // HACK: mock that we have parsed its data and there is not summary
+      // HACK: mock that we have parsed its data and there is no stack and no summary
       // This way, we won't have surge in test coverage for the parse methods.
+      model.component.data = {} as any;
       model['hasSummary'] = () => false;
 
       assert.deepEqual(
@@ -133,12 +245,14 @@ describe('compile/facet', () => {
           row: {field: 'b', type: 'ordinal'}
         },
         spec: {
-          mark: 'point'
+          mark: 'point',
+          encoding: {}
         }
       });
 
-      // HACK: mock that we have parsed its data and there is not summary
+      // HACK: mock that we have parsed its data and there is no stack and no summary
       // This way, we won't have surge in test coverage for the parse methods.
+      model.component.data = {} as any;
       model['hasSummary'] = () => false;
 
       assert.deepEqual(
@@ -177,8 +291,9 @@ describe('compile/facet', () => {
         }
       });
 
-      // HACK: mock that we have parsed its data and there is not summary
+      // HACK: mock that we have parsed its data and there is no stack and no summary
       // This way, we won't have surge in test coverage for the parse methods.
+      model.component.data = {} as any;
       model['hasSummary'] = () => false;
 
       describe('xAxisGroup', () => {
@@ -226,8 +341,9 @@ describe('compile/facet', () => {
         }
       });
 
-      // HACK: mock that we have parsed its data and there is not summary
+      // HACK: mock that we have parsed its data and there is no stack and no summary
       // This way, we won't have surge in test coverage for the parse methods.
+      model.component.data = {} as any;
       model['hasSummary'] = () => false;
 
       describe('yAxisGroup', () => {

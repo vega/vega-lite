@@ -2,19 +2,15 @@ import * as log from './log';
 
 import {SUM_OPS} from './aggregate';
 import {Channel, STACK_GROUP_CHANNELS, X, Y, X2, Y2} from './channel';
-import {Encoding, has, isAggregate} from './encoding';
-import {Mark, BAR, AREA, POINT, CIRCLE, SQUARE, LINE, RULE, TEXT, TICK} from './mark';
+import {Encoding, channelHasField, isAggregate} from './encoding';
+import {FieldDef, PositionFieldDef, isFieldDef} from './fielddef';
+import {Mark, BAR, AREA, POINT, CIRCLE, SQUARE, LINE, RULE, TEXT, TICK, MarkDef, isMarkDef} from './mark';
 import {ScaleType} from './scale';
-import {contains} from './util';
+import {contains, isArray} from './util';
 
-export namespace StackOffset {
-  export const ZERO: 'zero' = 'zero';
-  export const CENTER: 'center' = 'center';
-  export const NORMALIZE: 'normalize' = 'normalize';
-  export const NONE: 'none' = 'none';
-}
 
-export type StackOffset = typeof StackOffset.ZERO | typeof StackOffset.CENTER | typeof StackOffset.NORMALIZE | typeof StackOffset.NONE;
+
+export type StackOffset = 'zero' | 'center' | 'normalize' | 'none';
 
 export interface StackProperties {
   /** Dimension axis of the stack ('x' or 'y'). */
@@ -23,8 +19,11 @@ export interface StackProperties {
   /** Measure axis of the stack ('x' or 'y'). */
   fieldChannel: Channel;
 
-  /** Stack-by channels e.g., color, detail */
-  stackByChannels: Channel[];
+  /** Stack-by fields e.g., color, detail */
+  stackBy: {
+    fieldDef: FieldDef,
+    channel: Channel
+  }[];
 
   /**
    * Modes for stacking marks:
@@ -41,12 +40,11 @@ export interface StackProperties {
 export const STACKABLE_MARKS = [BAR, AREA, RULE, POINT, CIRCLE, SQUARE, LINE, TEXT, TICK];
 export const STACK_BY_DEFAULT_MARKS = [BAR, AREA];
 
-export function stack(mark: Mark, encoding: Encoding, stacked: StackOffset): StackProperties {
-  // Should not have stack explicitly disabled
-  if (contains<string | boolean>([StackOffset.NONE, null, false], stacked)) {
-    return null;
-  }
+// Note: CompassQL uses this method and only pass in required properties of each argument object.
+// If required properties change, make sure to update CompassQL.
 
+export function stack(m: Mark | MarkDef, encoding: Encoding, stackConfig: StackOffset): StackProperties {
+  const mark = isMarkDef(m) ? m.type : m;
   // Should have stackable mark
   if (!contains(STACKABLE_MARKS, mark)) {
     return null;
@@ -58,34 +56,48 @@ export function stack(mark: Mark, encoding: Encoding, stacked: StackOffset): Sta
   }
 
   // Should have grouping level of detail
-  const stackByChannels = STACK_GROUP_CHANNELS.reduce((sc, channel) => {
-    if (has(encoding, channel) && !encoding[channel].aggregate) {
-      sc.push(channel);
+  const stackBy = STACK_GROUP_CHANNELS.reduce((sc, channel) => {
+    if (channelHasField(encoding, channel)) {
+      const channelDef = encoding[channel];
+      (isArray(channelDef) ? channelDef : [channelDef]).forEach((fieldDef) => {
+        if (isFieldDef(fieldDef) && !fieldDef.aggregate) {
+          sc.push({
+            channel: channel,
+            fieldDef: fieldDef
+          });
+        }
+      });
     }
     return sc;
   }, []);
 
-  if (stackByChannels.length === 0) {
+  if (stackBy.length === 0) {
     return null;
   }
 
   // Has only one aggregate axis
-  const hasXField = has(encoding, X);
-  const hasYField = has(encoding, Y);
-  const xIsAggregate = hasXField && !!encoding.x.aggregate;
-  const yIsAggregate = hasYField && !!encoding.y.aggregate;
+  const hasXField = isFieldDef(encoding.x);
+  const hasYField = isFieldDef(encoding.y);
+  const xIsAggregate = isFieldDef(encoding.x) && !!encoding.x.aggregate;
+  const yIsAggregate = isFieldDef(encoding.y) && !!encoding.y.aggregate;
 
   if (xIsAggregate !== yIsAggregate) {
     const fieldChannel = xIsAggregate ? X : Y;
-    const fieldChannelAggregate = encoding[fieldChannel].aggregate;
-    const fieldChannelScale = encoding[fieldChannel].scale;
+    const fieldDef = encoding[fieldChannel] as PositionFieldDef;
+    const fieldChannelAggregate = fieldDef.aggregate;
+    const fieldChannelScale = fieldDef.scale;
 
-    if (contains(STACK_BY_DEFAULT_MARKS, mark)) {
+    let stackOffset: StackOffset = null;
+    if (fieldDef.stack !== undefined) {
+      stackOffset = fieldDef.stack;
+    } else if (contains(STACK_BY_DEFAULT_MARKS, mark)) {
       // Bar and Area with sum ops are automatically stacked by default
-      stacked = stacked === undefined ? StackOffset.ZERO : stacked;
+      stackOffset = stackConfig === undefined ? 'zero' : stackConfig;
+    } else {
+      stackOffset = stackConfig;
     }
 
-    if (!stacked) {
+    if (!stackOffset || stackOffset === 'none') {
       return null;
     }
 
@@ -95,7 +107,7 @@ export function stack(mark: Mark, encoding: Encoding, stacked: StackOffset): Sta
       return null;
     }
 
-    if (has(encoding, fieldChannel === X ? X2 : Y2)) {
+    if (channelHasField(encoding, fieldChannel === X ? X2 : Y2)) {
       log.warn(log.message.cannotStackRangedMark(fieldChannel));
       return null;
     }
@@ -108,8 +120,8 @@ export function stack(mark: Mark, encoding: Encoding, stacked: StackOffset): Sta
     return {
       groupbyChannel: xIsAggregate ? (hasYField ? Y : null) : (hasXField ? X : null),
       fieldChannel: fieldChannel,
-      stackByChannels: stackByChannels,
-      offset: stacked
+      stackBy: stackBy,
+      offset: stackOffset
     };
   }
   return null;

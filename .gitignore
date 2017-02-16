@@ -3,6 +3,7 @@ bower_components
 _site
 data/*
 *.sublime-workspace
+.idea
 
 vega-lite*.js
 vega-lite*.map

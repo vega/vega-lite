@@ -3,7 +3,10 @@
  * such as 'x', 'y', 'color'.
  */
 
+import {Encoding} from './encoding';
+import {Facet} from './facet';
 import {Mark} from './mark';
+import {RangeType} from './compile/scale/type';
 import {ScaleType, SCALE_TYPES} from './scale';
 import {contains, toSet, without} from './util';
 
@@ -26,15 +29,11 @@ export namespace Channel {
 
   // Non-scale channel
   export const TEXT: 'text' = 'text';
-  export const LABEL: 'label' = 'label';
   export const ORDER: 'order' = 'order';
   export const DETAIL: 'detail' = 'detail';
 }
 
-export type Channel = typeof Channel.X | typeof Channel.Y | typeof Channel.X2 | typeof Channel.Y2 | typeof Channel.ROW
-  | typeof Channel.COLUMN | typeof Channel.SHAPE | typeof Channel.SIZE | typeof Channel.COLOR
-  | typeof Channel.TEXT | typeof Channel.DETAIL | typeof Channel.LABEL
-  | typeof Channel.ORDER | typeof Channel.OPACITY;
+export type Channel = keyof Encoding | keyof Facet;
 
 export const X = Channel.X;
 export const Y = Channel.Y;
@@ -47,17 +46,26 @@ export const SIZE = Channel.SIZE;
 export const COLOR = Channel.COLOR;
 export const TEXT = Channel.TEXT;
 export const DETAIL = Channel.DETAIL;
-export const LABEL = Channel.LABEL;
 export const ORDER = Channel.ORDER;
 export const OPACITY = Channel.OPACITY;
 
-export const CHANNELS = [X, Y, X2, Y2, ROW, COLUMN, SIZE, SHAPE, COLOR, ORDER, OPACITY, TEXT, DETAIL, LABEL];
 
-export const UNIT_CHANNELS = without(CHANNELS, [ROW, COLUMN]);
-export const UNIT_SCALE_CHANNELS = without(UNIT_CHANNELS, [X2, Y2, ORDER, DETAIL, TEXT, LABEL, X2, Y2]);
-export const SCALE_CHANNELS = UNIT_SCALE_CHANNELS.concat([ROW, COLUMN]);
-export const NONSPATIAL_CHANNELS = without(UNIT_CHANNELS, [X, Y, X2, Y2]);
-export const NONSPATIAL_SCALE_CHANNELS = without(UNIT_SCALE_CHANNELS, [X, Y]);
+export const CHANNELS = [X, Y, X2, Y2, ROW, COLUMN, SIZE, SHAPE, COLOR, ORDER, OPACITY, TEXT, DETAIL];
+
+// CHANNELS without COLUMN, ROW
+export const UNIT_CHANNELS = [X, Y, X2, Y2, SIZE, SHAPE, COLOR, ORDER, OPACITY, TEXT, DETAIL];
+
+// UNIT_CHANNELS without X2, Y2, ORDER, DETAIL, TEXT
+export const UNIT_SCALE_CHANNELS = [X, Y, SIZE, SHAPE, COLOR, OPACITY];
+
+// UNIT_SCALE_CHANNELS with ROW, COLUMN
+export const SCALE_CHANNELS = [X, Y, SIZE, SHAPE, COLOR, OPACITY, ROW, COLUMN];
+
+// UNIT_CHANNELS without X, Y, X2, Y2;
+export const NONSPATIAL_CHANNELS = [SIZE, SHAPE, COLOR, ORDER, OPACITY, TEXT, DETAIL];
+
+// UNIT_SCALE_CHANNELS without X, Y;
+export const NONSPATIAL_SCALE_CHANNELS = [SIZE, SHAPE, COLOR, OPACITY];
 
 /** Channels that can serve as groupings for stacked charts. */
 export const STACK_GROUP_CHANNELS = [COLOR, DETAIL, ORDER, OPACITY, SIZE];
@@ -138,7 +146,7 @@ export function getSupportedRole(channel: Channel): SupportedRole {
     case Y:
     case COLOR:
     case OPACITY:
-    case LABEL:
+    case ORDER:
     case DETAIL:
       return {
         measure: true,
@@ -160,11 +168,11 @@ export function getSupportedRole(channel: Channel): SupportedRole {
         dimension: false
       };
   }
-  throw new Error('Invalid encoding channel' + channel);
+  throw new Error('Invalid encoding channel ' + channel);
 }
 
 export function hasScale(channel: Channel) {
-  return !contains([DETAIL, TEXT, LABEL, ORDER], channel);
+  return !contains([DETAIL, TEXT, ORDER], channel);
 }
 
 // Position does not work with ordinal (lookup) scale and sequential (which is only for color)
@@ -172,21 +180,50 @@ const POSITION_SCALE_TYPE_INDEX = toSet(without(SCALE_TYPES, ['ordinal', 'sequen
 
 export function supportScaleType(channel: Channel, scaleType: ScaleType): boolean {
   switch (channel) {
-    case 'row':
-    case 'column':
+    case ROW:
+    case COLUMN:
       return scaleType === 'band'; // row / column currently supports band only
-    case 'x':
-    case 'y':
-    case 'size': // TODO: size and opacity can support ordinal with more modification
-    case 'opacity':
+    case X:
+    case Y:
+    case SIZE: // TODO: size and opacity can support ordinal with more modification
+    case OPACITY:
       // Although it generally doesn't make sense to use band with size and opacity,
       // it can also work since we use band: 0.5 to get midpoint.
       return scaleType in POSITION_SCALE_TYPE_INDEX;
-    case 'color':
+    case COLOR:
       return scaleType !== 'band';    // band does not make sense with color
-    case 'shape':
+    case SHAPE:
       return scaleType === 'ordinal'; // shape = lookup only
   }
   /* istanbul ignore next: it should never reach here */
   return false;
+}
+
+export function getRangeType(channel: Channel): RangeType {
+  switch (channel) {
+    case X:
+    case Y:
+    case ROW:
+    case COLUMN:
+    case SIZE:
+    case OPACITY:
+      return 'continuous';
+
+    case SHAPE:
+      return 'discrete';
+
+    // Color can be either continuous or discrete, depending on scale type.
+    case COLOR:
+      return 'flexible';
+
+    // No scale, no range type.
+    case X2:
+    case Y2:
+    case DETAIL:
+    case TEXT:
+    case ORDER:
+      return undefined;
+  }
+  /* istanbul ignore next: should never reach here. */
+  throw new Error('getSupportedRole not implemented for ' + channel);
 }

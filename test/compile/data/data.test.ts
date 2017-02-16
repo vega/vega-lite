@@ -48,6 +48,44 @@ describe('data', function () {
         });
       });
     });
+
+    describe('stacked bar chart with binned dimension', () => {
+      const model = parseUnitModel({
+        "mark": "area",
+        "encoding": {
+          "x": {
+            "bin": {"maxbins": 10},
+            "field": "IMDB_Rating",
+            "type": "quantitative"
+          },
+          "color": {
+            "field": "Source",
+            "type": "nominal"
+          },
+          "y": {
+            "aggregate": "count",
+            "field": "*",
+            "type": "quantitative"
+          }
+        }
+      });
+
+      const data = compileAssembleData(model);
+      it('should contains 3 tables', function() {
+        assert.equal(data.length, 3);
+      });
+
+      it('should have collect transform as the last transform in stacked', function() {
+        const stackedTransform = data[2].transform;
+        assert.deepEqual(stackedTransform[stackedTransform.length - 1], {
+          type: 'collect',
+          sort: {
+            "field": "bin_IMDB_Rating_start",
+            "order": "descending"
+          }
+        });
+      });
+    });
   });
 
   describe('assemble', function () {

@@ -3,6 +3,7 @@
     "target": "es5",
     "module": "commonjs",
     "moduleResolution": "node",
+    "importHelpers": true,
     "isolatedModules": false,
     "declaration": true,
     "noImplicitAny": true,

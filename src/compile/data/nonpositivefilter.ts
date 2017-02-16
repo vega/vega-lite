@@ -1,3 +1,5 @@
+import {DataComponentCompiler} from './base';
+
 import {ScaleType} from '../../scale';
 import {extend, keys, differ, Dict} from '../../util';
 
@@ -5,11 +7,9 @@ import {FacetModel} from './../facet';
 import {LayerModel} from './../layer';
 import {Model} from './../model';
 
-/**
- * Filter non-positive value for log scale
- */
-export namespace nonPositiveFilter {
-  export function parseUnit(model: Model): Dict<boolean> {
+
+export const nonPositiveFilter: DataComponentCompiler<Dict<boolean>> = {
+  parseUnit: function(model: Model): Dict<boolean> {
     return model.channels().reduce(function(nonPositiveComponent, channel) {
       const scale = model.scale(channel);
       if (!model.field(channel) || !scale) {
@@ -18,11 +18,11 @@ export namespace nonPositiveFilter {
       }
       nonPositiveComponent[model.field(channel)] = scale.type === ScaleType.LOG;
       return nonPositiveComponent;
-    }, {} as Dict<boolean>);
-  }
+    }, {});
+  },
 
-  export function parseFacet(model: FacetModel) {
-    const childDataComponent = model.child().component.data;
+  parseFacet: function(model: FacetModel) {
+    const childDataComponent = model.child.component.data;
 
     // If child doesn't have its own data source, then consider merging
     if (!childDataComponent.source) {
@@ -31,29 +31,29 @@ export namespace nonPositiveFilter {
       delete childDataComponent.nonPositiveFilter;
       return nonPositiveFilterComponent;
     }
-    return {} as Dict<boolean>;
-  }
+    return {};
+  },
 
-  export function parseLayer(model: LayerModel) {
+  parseLayer: function(model: LayerModel) {
     // note that we run this before source.parseLayer
-    let nonPositiveFilter = {} as Dict<boolean>;
+    let nonPositiveFilterComponent = {};
 
-    model.children().forEach((child) => {
+    model.children.forEach((child) => {
       const childDataComponent = child.component.data;
-      if (model.compatibleSource(child) && !differ(childDataComponent.nonPositiveFilter, nonPositiveFilter)) {
-        extend(nonPositiveFilter, childDataComponent.nonPositiveFilter);
+      if (model.compatibleSource(child) && !differ(childDataComponent.nonPositiveFilter, nonPositiveFilterComponent)) {
+        extend(nonPositiveFilterComponent, childDataComponent.nonPositiveFilter);
         delete childDataComponent.nonPositiveFilter;
       }
     });
 
-    return nonPositiveFilter;
-  }
+    return nonPositiveFilterComponent;
+  },
 
-  export function assemble(component: Dict<boolean>) {
-    if (component) {
-      return keys(component).filter((field) => {
+  assemble: function(nonPositiveFilterComponent: Dict<boolean>) {
+    if (nonPositiveFilterComponent) {
+      return keys(nonPositiveFilterComponent).filter((field) => {
         // Only filter fields (keys) with value = true
-        return component[field];
+        return nonPositiveFilterComponent[field];
       }).map(function(field) {
         return {
           type: 'filter',
@@ -63,4 +63,4 @@ export namespace nonPositiveFilter {
     }
     return [];
   }
-}
+};

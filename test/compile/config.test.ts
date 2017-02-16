@@ -18,7 +18,7 @@ describe('Config', function() {
             "x": {"type": "quantitative", "field": "bar"}
           },
         });
-        assert.equal(model.config().mark.orient, 'vertical');
+        assert.equal(model.config.mark.orient, 'vertical');
         assert.equal(localLogger.warns[0], log.message.unclearOrientContinuous(BAR));
       });
     });
@@ -27,8 +27,9 @@ describe('Config', function() {
       log.runLocalLogger((localLogger) => {
         const model = parseUnitModel({
           "mark": "bar",
+          encoding: {}
         });
-        assert.equal(model.config().mark.orient, undefined);
+        assert.equal(model.config.mark.orient, undefined);
         assert.equal(localLogger.warns[0], log.message.unclearOrientDiscreteOrEmpty(BAR));
       });
     });
@@ -42,7 +43,7 @@ describe('Config', function() {
             "y": {"type": "ordinal", "field": "bar"}
           },
         });
-        assert.equal(model.config().mark.orient, undefined);
+        assert.equal(model.config.mark.orient, undefined);
         assert.equal(localLogger.warns[0], log.message.unclearOrientDiscreteOrEmpty(BAR));
       });
     });
@@ -56,7 +57,7 @@ describe('Config', function() {
           "x": {"type": "ordinal", "field": "bar"}
         },
       });
-      assert.equal(model.config().mark.orient, 'vertical');
+      assert.equal(model.config.mark.orient, 'vertical');
     });
 
     it('should return correct orient for horizontal bar', function() {
@@ -67,7 +68,7 @@ describe('Config', function() {
           "y": {"type": "ordinal", "field": "bar"}
         },
       });
-      assert.equal(model.config().mark.orient, 'horizontal');
+      assert.equal(model.config.mark.orient, 'horizontal');
     });
 
     it('should return correct orient for vertical bar with raw temporal dimension', function() {
@@ -78,7 +79,7 @@ describe('Config', function() {
           "x": {"type": "temporal", "field": "bar"}
         },
       });
-      assert.equal(model.config().mark.orient, 'vertical');
+      assert.equal(model.config.mark.orient, 'vertical');
     });
 
     it('should return correct orient for horizontal bar with raw temporal dimension', function() {
@@ -89,7 +90,7 @@ describe('Config', function() {
           "y": {"type": "temporal", "field": "bar"}
         },
       });
-      assert.equal(model.config().mark.orient, 'horizontal');
+      assert.equal(model.config.mark.orient, 'horizontal');
     });
 
     it('should return correct orient for vertical tick', function() {
@@ -100,7 +101,7 @@ describe('Config', function() {
           "y": {"type": "ordinal", "field": "bar"}
         },
       });
-      assert.equal(model.config().mark.orient, 'vertical');
+      assert.equal(model.config.mark.orient, 'vertical');
     });
 
     it('should return correct orient for vertical tick with bin', function() {
@@ -111,7 +112,7 @@ describe('Config', function() {
           "y": {"type": "quantitative", "field": "bar", "bin": true}
         },
       });
-      assert.equal(model.config().mark.orient, 'vertical');
+      assert.equal(model.config.mark.orient, 'vertical');
     });
 
     it('should return correct orient for vertical tick of continuous timeUnit dotplot', function() {
@@ -122,7 +123,7 @@ describe('Config', function() {
           "y": {"type": "ordinal", "field": "bar"}
         },
       });
-      assert.equal(model.config().mark.orient, 'vertical');
+      assert.equal(model.config.mark.orient, 'vertical');
     });
 
     it('should return correct orient for horizontal tick', function() {
@@ -133,7 +134,7 @@ describe('Config', function() {
           "x": {"type": "ordinal", "field": "bar"}
         },
       });
-      assert.equal(model.config().mark.orient, 'horizontal');
+      assert.equal(model.config.mark.orient, 'horizontal');
     });
 
     it('should return correct orient for vertical rule', function() {
@@ -143,7 +144,7 @@ describe('Config', function() {
           "x": {"value": 0},
         },
       });
-      assert.equal(model.config().mark.orient, 'vertical');
+      assert.equal(model.config.mark.orient, 'vertical');
     });
 
     it('should return correct orient for horizontal rule', function() {
@@ -153,7 +154,7 @@ describe('Config', function() {
           "y": {"value": 0},
         },
       });
-      assert.equal(orient(model.mark(), model.encoding(), {}), 'horizontal');
+      assert.equal(orient(model.mark(), model.encoding, {}), 'horizontal');
     });
 
     it('should return correct orient for horizontal rules without x2 ', function() {
@@ -165,7 +166,7 @@ describe('Config', function() {
         },
       });
 
-      assert.equal(orient(model.mark(), model.encoding(), {}), 'horizontal');
+      assert.equal(orient(model.mark(), model.encoding, {}), 'horizontal');
     });
 
     it('should return correct orient for vertical rules without y2 ', function() {
@@ -177,7 +178,7 @@ describe('Config', function() {
         },
       });
 
-      assert.equal(orient(model.mark(), model.encoding(), {}), 'vertical');
+      assert.equal(orient(model.mark(), model.encoding, {}), 'vertical');
     });
 
     it('should return correct orient for vertical rule with range', function() {
@@ -189,7 +190,7 @@ describe('Config', function() {
           "y2": {"type": "quantitative", "field": "baz"}
         },
       });
-      assert.equal(orient(model.mark(), model.encoding(), {}), 'vertical');
+      assert.equal(orient(model.mark(), model.encoding, {}), 'vertical');
     });
 
     it('should return correct orient for horizontal rule with range', function() {
@@ -201,7 +202,7 @@ describe('Config', function() {
           "x2": {"type": "quantitative", "field": "baz"}
         },
       });
-      assert.equal(orient(model.mark(), model.encoding(), {}), 'horizontal');
+      assert.equal(orient(model.mark(), model.encoding, {}), 'horizontal');
     });
 
     it('should return correct orient for horizontal rule with range and no ordinal', function() {
@@ -212,7 +213,7 @@ describe('Config', function() {
           "x2": {"type": "quantitative", "field": "baz"}
         },
       });
-      assert.equal(model.config().mark.orient, 'horizontal');
+      assert.equal(model.config.mark.orient, 'horizontal');
     });
 
     it('should return correct orient for vertical rule with range and no ordinal', function() {
@@ -223,7 +224,7 @@ describe('Config', function() {
           "y2": {"type": "quantitative", "field": "baz"}
         },
       });
-      assert.equal(model.config().mark.orient, 'vertical');
+      assert.equal(model.config.mark.orient, 'vertical');
     });
   });
 });

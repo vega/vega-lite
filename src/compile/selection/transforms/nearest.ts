@@ -10,12 +10,12 @@ const nearest:TransformCompiler = {
   marks: function(model, selCmpt, marks, selMarks) {
     let mark = marks[0],
         index = selMarks.indexOf(mark),
-        isPathgroup = mark.name === model.name('pathgroup'),
+        isPathgroup = mark.name === model.getName('pathgroup'),
         exists = ((m: any) => m.name && m.name.indexOf(VORONOI) >= 0),
         cellDef = {
-          name: model.name(VORONOI),
+          name: model.getName(VORONOI),
           type: 'path',
-          from: {data: model.name('marks')},
+          from: {data: model.getName('marks')},
           encode: {
             enter: {
               fill: {value: 'transparent'},

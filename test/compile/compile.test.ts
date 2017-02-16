@@ -15,6 +15,34 @@ describe('Compile', function() {
     }, Error, log.message.INVALID_SPEC);
   });
 
+  describe('compile', () => {
+    it('should return a spec with basic top-level properties, size signals, data and marks', () => {
+      const spec = compile({
+        "data": {
+          "values": [{"a": "A","b": 28}]
+        },
+        "mark": "point",
+        "encoding": {}
+      }).spec;
+
+      assert.equal(spec.padding, 5);
+      assert.equal(spec.autosize, 'pad');
+      assert.deepEqual(spec.signals, [
+        {
+          name: 'width',
+          update: "data('layout')[0].width"
+        },
+        {
+          name: 'height',
+          update: "data('layout')[0].height"
+        }
+      ]);
+
+      assert.equal(spec.data.length, 2); // just source and layout
+      assert.equal(spec.marks.length, 1); // just the root group
+    });
+  });
+
   describe('assembleRootGroup()', function() {
     it('produce correct from and size.', function() {
       const model = parseUnitModel({

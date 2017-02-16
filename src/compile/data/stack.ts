@@ -1,15 +1,15 @@
-import {AbstractDataCompiler} from './abstract';
+import {DataComponentCompiler} from './base';
 
 import {FacetModel} from './../facet';
 import {LayerModel} from './../layer';
 import {UnitModel} from './../unit';
 
+import {sortParams} from '../common';
 import {STACKED, SUMMARY} from '../../data';
-import {has} from '../../encoding';
 import {FieldDef, field} from '../../fielddef';
 import {hasDiscreteDomain} from '../../scale';
 import {StackOffset} from '../../stack';
-import {contains, isArray} from '../../util';
+import {contains} from '../../util';
 import {VgData, VgSort, VgStackTransform, VgImputeTransform} from '../../vega.schema';
 
 export interface StackComponent {
@@ -54,54 +54,51 @@ export interface StackComponent {
 
 
 function getStackByFields(model: UnitModel) {
-  const encoding = model.encoding();
-  const stackProperties = model.stack();
+  return model.stack.stackBy.reduce((fields, by) => {
+    const channel = by.channel;
+    const fieldDef = by.fieldDef;
 
-  return stackProperties.stackByChannels.reduce(function(fields, channel) {
-    const channelEncoding = encoding[channel];
-    if (has(encoding, channel)) {
-      if (isArray(channelEncoding)) {
-        channelEncoding.forEach(function(fieldDef) {
-          fields.push(field(fieldDef));
-        });
-      } else {
-        const fieldDef: FieldDef = channelEncoding;
-        const scale = model.scale(channel);
-        const _field = field(fieldDef, {
-          binSuffix: scale && hasDiscreteDomain(scale.type) ? 'range' : 'start'
-        });
-        if (!!_field) {
-          fields.push(_field);
-        }
-      }
+    const scale = model.scale(channel);
+    const _field = field(fieldDef, {
+      binSuffix: scale && hasDiscreteDomain(scale.type) ? 'range' : 'start'
+    });
+    if (!!_field) {
+      fields.push(_field);
     }
     return fields;
-  }, [] as string []);
+  }, [] as string[]);
 }
 
 /**
  * Stack data compiler
  */
-export const stack: AbstractDataCompiler<StackComponent> = {
+export const stack: DataComponentCompiler<StackComponent> = {
 
   parseUnit: function(model: UnitModel): StackComponent {
-    const stackProperties = model.stack();
+    const stackProperties = model.stack;
     if (!stackProperties) {
       return undefined;
     }
 
-    const groupby = model.field(stackProperties.groupbyChannel, {binSuffix: 'start'});
+    const groupby = [];
+    if (stackProperties.groupbyChannel) {
+      const groupbyFieldDef = model.fieldDef(stackProperties.groupbyChannel);
+      if (groupbyFieldDef.bin) {
+        // For Bin, we need to add both start and end to ensure that both get imputed
+        // and included in the stack output (https://github.com/vega/vega-lite/issues/1805).
+        groupby.push(model.field(stackProperties.groupbyChannel, {binSuffix: 'start'}));
+        groupby.push(model.field(stackProperties.groupbyChannel, {binSuffix: 'end'}));
+      } else {
+        groupby.push(model.field(stackProperties.groupbyChannel));
+      }
+    }
 
     const stackby = getStackByFields(model);
-    const orderDef = model.encoding().order;
+    const orderDef = model.encoding.order;
 
     let sort: VgSort;
     if (orderDef) {
-      sort = (isArray(orderDef) ? orderDef : [orderDef]).reduce((s, orderChannelDef) => {
-        s.field.push(field(orderChannelDef, {binSuffix: 'start'}));
-        s.order.push(orderChannelDef.sort || 'ascending');
-        return s;
-      }, {field:[], order: []});
+      sort = sortParams(orderDef);
     } else {
       // default = descending by stackFields
       // FIXME is the default here correct for binned fields?
@@ -115,7 +112,7 @@ export const stack: AbstractDataCompiler<StackComponent> = {
     return {
       name: model.dataName(STACKED),
       source: model.dataName(SUMMARY),
-      groupby: groupby ? [groupby] : [],
+      groupby: groupby,
       field: model.field(stackProperties.fieldChannel),
       stackby: stackby,
       sort: sort,
@@ -124,14 +121,14 @@ export const stack: AbstractDataCompiler<StackComponent> = {
     };
   },
 
-  parseLayer: function(model: LayerModel): StackComponent {
+  parseLayer: function(_: LayerModel): StackComponent {
     // FIXME: merge if identical
     // FIXME: Correctly support facet of layer of stack.
     return undefined;
   },
 
   parseFacet: function(model: FacetModel): StackComponent {
-    const child = model.child();
+    const child = model.child;
     const childDataComponent = child.component.data;
     // FIXME: Correctly support facet of layer of stack.
     if (childDataComponent.stack) {

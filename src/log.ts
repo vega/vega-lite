@@ -81,15 +81,15 @@ export function reset() {
   return current;
 }
 
-export function warn(...args: any[]) {
+export function warn(..._: any[]) {
   current.warn.apply(current, arguments);
 }
 
-export function info(...args: any[]) {
+export function info(..._: any[]) {
   current.info.apply(current, arguments);
 }
 
-export function debug(...args: any[]) {
+export function debug(..._: any[]) {
   current.debug.apply(current, arguments);
 }
 
@@ -105,6 +105,10 @@ export namespace message {
   // ENCODING & FACET
   export function invalidFieldType(type: Type) {
     return `Invalid field type "${type}"`;
+  }
+
+  export function emptyOrInvalidFieldType(type: Type | string, channel: Channel, newType: Type) {
+    return `Invalid field type (${type}) for channel ${channel}, using ${newType} instead.`;
   }
 
   export function emptyFieldDef(fieldDef: FieldDef, channel: Channel) {
@@ -141,7 +145,9 @@ export namespace message {
   // SCALE
   export const CANNOT_UNION_CUSTOM_DOMAIN_WITH_FIELD_DOMAIN = 'custom domain scale cannot be unioned with default field-based domain';
 
-  export const CANNOT_USE_SCHEME_WITH_NON_COLOR = 'Cannot use scheme with non-color channel.';
+  export function CANNOT_USE_SCALE_PROPERTY_WITH_NON_COLOR(prop: string) {
+    return 'Cannot use ' + prop + ' with non-color channel.';
+  }
 
   export const CANNOT_USE_RANGE_WITH_POSITION =
     'Cannot use custom range with x or y channel.  Please customize width, height, padding, or rangeStep instead.';
@@ -168,6 +174,8 @@ export namespace message {
   export function scaleTypeNotWorkWithMark(mark: Mark, scaleType: ScaleType) {
     return `Scale type "${scaleType}" does not work with mark ${mark}.`;
   }
+
+  export const INVAID_DOMAIN = 'Invalid scale domain';
 
 
   // AXIS

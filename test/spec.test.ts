@@ -7,7 +7,7 @@ import {normalize, fieldDefs} from '../src/spec';
 // describe('isStacked()') -- tested as part of stackOffset in stack.test.ts
 
 describe('normalize()', function () {
-  describe('normalizeExtendedUnitSpec', () => {
+  describe('normalizeFacetedUnit', () => {
     it('should convert single extended spec with column into a composite spec', function() {
       const spec: any = {
         "name": "faceted",
@@ -24,6 +24,8 @@ describe('normalize()', function () {
       };
 
       assert.deepEqual(normalize(spec), {
+        "width": 123,
+        "height": 234,
         "name": "faceted",
         "description": "faceted spec",
         "data": {"url": "data/movies.json"},
@@ -31,8 +33,6 @@ describe('normalize()', function () {
           "column": {"field": "MPAA_Rating","type": "ordinal"}
         },
         "spec": {
-          "width": 123,
-          "height": 234,
           "mark": "point",
           "encoding": {
             "x": {"field": "Worldwide_Gross","type": "quantitative"},
@@ -69,6 +69,310 @@ describe('normalize()', function () {
     });
   });
 
+  describe('normalizeFacet', () => {
+    it('should produce correct layered specs for mean point and vertical error bar', () => {
+      assert.deepEqual(normalize({
+        "description": "A error bar plot showing mean, min, and max in the US population distribution of age groups in 2000.",
+        "data": {"url": "data/population.json"},
+        "transform": {"filter": "datum.year == 2000"},
+        facet: {
+          "row": {"field": "MPAA_Rating","type": "ordinal"}
+        },
+        spec: {
+          layer: [
+            {
+              "mark": "point",
+              "encoding": {
+                "x": {"field": "age","type": "ordinal"},
+                "y": {
+                  "aggregate": "mean",
+                  "field": "people",
+                  "type": "quantitative",
+                  "axis": {"title": "population"}
+                },
+                "size": {"value": 2}
+              }
+            },
+            {
+              mark: 'error-bar',
+              encoding: {
+                "x": {"field": "age","type": "ordinal"},
+                "y": {
+                  "aggregate": "min",
+                  "field": "people",
+                  "type": "quantitative",
+                  "axis": {"title": "population"}
+                },
+                "y2": {
+                  "aggregate": "max",
+                  "field": "people",
+                  "type": "quantitative"
+                },
+                "size": {"value": 5}
+              }
+            }
+          ]
+        }
+      }), {
+        "description": "A error bar plot showing mean, min, and max in the US population distribution of age groups in 2000.",
+        "data": {"url": "data/population.json"},
+        "transform": {"filter": "datum.year == 2000"},
+        facet: {
+          "row": {"field": "MPAA_Rating","type": "ordinal"}
+        },
+        spec: {
+          layer: [
+            {
+              "mark": "point",
+              "encoding": {
+                "x": {"field": "age","type": "ordinal"},
+                "y": {
+                  "aggregate": "mean",
+                  "field": "people",
+                  "type": "quantitative",
+                  "axis": {"title": "population"}
+                },
+                "size": {"value": 2}
+              }
+            },
+            {
+              "layer": [
+                {
+                  "mark": "rule",
+                  "encoding": {
+                    "x": {"field": "age","type": "ordinal"},
+                    "y": {
+                      "aggregate": "min",
+                      "field": "people",
+                      "type": "quantitative",
+                      "axis": {"title": "population"}
+                    },
+                    "y2": {
+                      "aggregate": "max",
+                      "field": "people",
+                      "type": "quantitative"
+                    }
+                  }
+                },
+                {
+                  "mark": "tick",
+                  "encoding": {
+                    "x": {"field": "age","type": "ordinal"},
+                    "y": {
+                      "aggregate": "min",
+                      "field": "people",
+                      "type": "quantitative",
+                      "axis": {"title": "population"}
+                    },
+                    "size": {"value": 5}
+                  }
+                },
+                {
+                  "mark": "tick",
+                  "encoding": {
+                    "x": {"field": "age","type": "ordinal"},
+                    "y": {
+                      "aggregate": "max",
+                      "field": "people",
+                      "type": "quantitative",
+                      // "axis": {"title": "population"}
+                    },
+                    "size": {"value": 5}
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      });
+    });
+  });
+
+  describe('normalizeLayer', () => {
+    it('should produce correct layered specs for mean point and vertical error bar', () => {
+      assert.deepEqual(normalize({
+        "description": "A error bar plot showing mean, min, and max in the US population distribution of age groups in 2000.",
+        "data": {"url": "data/population.json"},
+        "transform": {"filter": "datum.year == 2000"},
+        layer: [
+          {
+            "mark": "point",
+            "encoding": {
+              "x": {"field": "age","type": "ordinal"},
+              "y": {
+                "aggregate": "mean",
+                "field": "people",
+                "type": "quantitative",
+                "axis": {"title": "population"}
+              },
+              "size": {"value": 2}
+            }
+          },
+          {
+            mark: 'error-bar',
+            encoding: {
+              "x": {"field": "age","type": "ordinal"},
+              "y": {
+                "aggregate": "min",
+                "field": "people",
+                "type": "quantitative",
+                "axis": {"title": "population"}
+              },
+              "y2": {
+                "aggregate": "max",
+                "field": "people",
+                "type": "quantitative"
+              },
+              "size": {"value": 5}
+            }
+          }
+        ]
+      }), {
+        "description": "A error bar plot showing mean, min, and max in the US population distribution of age groups in 2000.",
+        "data": {"url": "data/population.json"},
+        "transform": {"filter": "datum.year == 2000"},
+        layer: [
+          {
+            "mark": "point",
+            "encoding": {
+              "x": {"field": "age","type": "ordinal"},
+              "y": {
+                "aggregate": "mean",
+                "field": "people",
+                "type": "quantitative",
+                "axis": {"title": "population"}
+              },
+              "size": {"value": 2}
+            }
+          },
+          {
+            "layer": [
+              {
+                "mark": "rule",
+                "encoding": {
+                  "x": {"field": "age","type": "ordinal"},
+                  "y": {
+                    "aggregate": "min",
+                    "field": "people",
+                    "type": "quantitative",
+                    "axis": {"title": "population"}
+                  },
+                  "y2": {
+                    "aggregate": "max",
+                    "field": "people",
+                    "type": "quantitative"
+                  }
+                }
+              },
+              {
+                "mark": "tick",
+                "encoding": {
+                  "x": {"field": "age","type": "ordinal"},
+                  "y": {
+                    "aggregate": "min",
+                    "field": "people",
+                    "type": "quantitative",
+                    "axis": {"title": "population"}
+                  },
+                  "size": {"value": 5}
+                }
+              },
+              {
+                "mark": "tick",
+                "encoding": {
+                  "x": {"field": "age","type": "ordinal"},
+                  "y": {
+                    "aggregate": "max",
+                    "field": "people",
+                    "type": "quantitative",
+                    // "axis": {"title": "population"}
+                  },
+                  "size": {"value": 5}
+                }
+              }
+            ]
+          }
+        ]
+      });
+    });
+  });
+
+  describe('normalizeErrorBar', () => {
+
+    it('should produce correct layered specs for horizontal error bar', () => {
+      assert.deepEqual(normalize({
+        "description": "A error bar plot showing mean, min, and max in the US population distribution of age groups in 2000.",
+        "data": {"url": "data/population.json"},
+        "transform": {"filter": "datum.year == 2000"},
+        mark: 'error-bar',
+        encoding: {
+          "y": {"field": "age","type": "ordinal"},
+          "x": {
+            "aggregate": "min",
+            "field": "people",
+            "type": "quantitative",
+            "axis": {"title": "population"}
+          },
+          "x2": {
+            "aggregate": "max",
+            "field": "people",
+            "type": "quantitative"
+          },
+          "size": {"value": 5}
+        }
+      }), {
+        "description": "A error bar plot showing mean, min, and max in the US population distribution of age groups in 2000.",
+        "data": {"url": "data/population.json"},
+        "transform": {"filter": "datum.year == 2000"},
+        "layer": [
+          {
+            "mark": "rule",
+            "encoding": {
+              "y": {"field": "age","type": "ordinal"},
+              "x": {
+                "aggregate": "min",
+                "field": "people",
+                "type": "quantitative",
+                "axis": {"title": "population"}
+              },
+              "x2": {
+                "aggregate": "max",
+                "field": "people",
+                "type": "quantitative"
+              }
+            }
+          },
+          {
+            "mark": "tick",
+            "encoding": {
+              "y": {"field": "age","type": "ordinal"},
+              "x": {
+                "aggregate": "min",
+                "field": "people",
+                "type": "quantitative",
+                "axis": {"title": "population"}
+              },
+              "size": {"value": 5}
+            }
+          },
+          {
+            "mark": "tick",
+            "encoding": {
+              "y": {"field": "age","type": "ordinal"},
+              "x": {
+                "aggregate": "max",
+                "field": "people",
+                "type": "quantitative",
+                // "axis": {"title": "population"}
+              },
+              "size": {"value": 5}
+            }
+          }
+        ]
+      });
+    });
+  });
+
   describe('normalizeOverlay', () => {
     describe('line', () => {
       it('should be normalized correctly', () => {
@@ -88,7 +392,7 @@ describe('normalize()', function () {
           "description": "Google's stock price over time.",
           "data": {"url": "data/stocks.csv","format": {"type": "csv"}},
           "transform": {"filter": "datum[\"symbol\"]==='GOOG'"},
-          "layers": [
+          "layer": [
             {
               "mark": "line",
               "encoding": {
@@ -127,7 +431,7 @@ describe('normalize()', function () {
           "description": "Google's stock price over time.",
           "data": {"url": "data/stocks.csv","format": {"type": "csv"}},
           "transform": {"filter": "datum[\"symbol\"]==='GOOG'"},
-          "layers": [
+          "layer": [
             {
               "mark": "area",
               "encoding": {
@@ -171,7 +475,7 @@ describe('normalize()', function () {
           "description": "Google's stock price over time.",
           "data": {"url": "data/stocks.csv","format": {"type": "csv"}},
           "transform": {"filter": "datum[\"symbol\"]==='GOOG'"},
-          "layers": [
+          "layer": [
             {
               "mark": "area",
               "encoding": {
@@ -191,15 +495,17 @@ describe('normalize()', function () {
       });
     });
   });
+});
 
+describe('normalizeRangedUnitSpec',  () => {
   it('should convert y2 -> y if there is no y in the encoding', function() {
     const spec: any = {
       "data": {"url": "data/population.json"},
       "mark": "rule",
       "encoding": {
         "y2": {"field": "age","type": "ordinal"},
-        "x": { "aggregate": "min", "field": "people", "type": "quantitative" },
-        "x2": { "aggregate": "max", "field": "people", "type": "quantitative" }
+        "x": {"aggregate": "min", "field": "people", "type": "quantitative"},
+        "x2": {"aggregate": "max", "field": "people", "type": "quantitative"}
       }
     };
 
@@ -208,10 +514,24 @@ describe('normalize()', function () {
       "mark": "rule",
       "encoding": {
         "y": {"field": "age","type": "ordinal"},
-        "x": { "aggregate": "min", "field": "people", "type": "quantitative" },
-        "x2": { "aggregate": "max", "field": "people", "type": "quantitative" }
+        "x": {"aggregate": "min", "field": "people", "type": "quantitative"},
+        "x2": {"aggregate": "max", "field": "people", "type": "quantitative"}
       }
     });
+  });
+
+  it('should do nothing if there is no missing x or y', function() {
+    const spec: any = {
+      "data": {"url": "data/population.json"},
+      "mark": "rule",
+      "encoding": {
+        "y": {"field": "age","type": "ordinal"},
+        "x": {"aggregate": "min", "field": "people", "type": "quantitative"},
+        "x2": {"aggregate": "max", "field": "people", "type": "quantitative"}
+      }
+    };
+
+    assert.deepEqual(normalize(spec), spec);
   });
 
   it('should convert x2 -> x if there is no x in the encoding', function() {
@@ -220,8 +540,8 @@ describe('normalize()', function () {
       "mark": "rule",
       "encoding": {
         "x2": {"field": "age","type": "ordinal"},
-        "y": { "aggregate": "min", "field": "people", "type": "quantitative" },
-        "y2": { "aggregate": "max", "field": "people", "type": "quantitative" }
+        "y": {"aggregate": "min", "field": "people", "type": "quantitative"},
+        "y2": {"aggregate": "max", "field": "people", "type": "quantitative"}
       }
     };
 
@@ -230,8 +550,8 @@ describe('normalize()', function () {
       "mark": "rule",
       "encoding": {
         "x": {"field": "age","type": "ordinal"},
-        "y": { "aggregate": "min", "field": "people", "type": "quantitative" },
-        "y2": { "aggregate": "max", "field": "people", "type": "quantitative" }
+        "y": {"aggregate": "min", "field": "people", "type": "quantitative"},
+        "y2": {"aggregate": "max", "field": "people", "type": "quantitative"}
       }
     });
   });
@@ -254,11 +574,11 @@ describe('fieldDefs()', function() {
     ]);
   });
 
-  it('should get all non-duplicate fieldDefs from all layers in a LayerSpec', function() {
+  it('should get all non-duplicate fieldDefs from all layer in a LayerSpec', function() {
     const layerSpec: any = {
       "data": {"url": "data/stocks.csv","format": {"type": "csv"}},
       "transform": {"filter": "datum.symbol==='GOOG'"},
-      "layers": [
+      "layer": [
         {
           "description": "Google's stock price over time.",
           "mark": "line",
@@ -287,11 +607,11 @@ describe('fieldDefs()', function() {
     ]);
   });
 
-  it('should get all non-duplicate fieldDefs from all layers in a LayerSpec (merging duplicate fields with different scale types)', function() {
+  it('should get all non-duplicate fieldDefs from all layer in a LayerSpec (merging duplicate fields with different scale types)', function() {
     const layerSpec: any = {
       "data": {"url": "data/stocks.csv","format": {"type": "csv"}},
       "transform": {"filter": "datum.symbol==='GOOG'"},
-      "layers": [
+      "layer": [
         {
           "description": "Google's stock price over time.",
           "mark": "line",
@@ -319,7 +639,7 @@ describe('fieldDefs()', function() {
     ]);
   });
 
-  it('should get all non-duplicate fieldDefs from facet and layers in a FacetSpec', function() {
+  it('should get all non-duplicate fieldDefs from facet and layer in a FacetSpec', function() {
     const facetSpec: any = {
       "data": {"url": "data/movies.json"},
       "facet": {"row": {"field": "MPAA_Rating","type": "ordinal"}},

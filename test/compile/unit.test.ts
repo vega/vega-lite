@@ -4,13 +4,13 @@ import * as log from '../../src/log';
 import {UnitModel} from '../../src/compile/unit';
 import {X, SHAPE, DETAIL} from '../../src/channel';
 import {BAR} from '../../src/mark';
-import {ExtendedUnitSpec} from '../../src/spec';
+import {UnitSpec} from '../../src/spec';
 import {QUANTITATIVE} from '../../src/type';
 import {parseUnitModel} from '../util';
 
 describe('UnitModel', function() {
   it('should say it is unit', function() {
-    const model = new UnitModel({} as ExtendedUnitSpec, null, null);
+    const model = new UnitModel({mark: 'point'} as UnitSpec, null, null);
     assert(model.isUnit());
     assert(!model.isFacet());
     assert(!model.isLayer());
@@ -25,7 +25,7 @@ describe('UnitModel', function() {
             shape: {field: 'a', type: 'quantitative'}
           }
         });
-        assert.equal(model.encoding().shape, undefined);
+        assert.equal(model.encoding.shape, undefined);
         assert.equal(localLogger.warns[0], log.message.incompatibleChannel(SHAPE, BAR));
       });
     });
@@ -38,7 +38,7 @@ describe('UnitModel', function() {
             x: {type: 'quantitative'}
           }
         });
-        assert.equal(model.encoding().x, undefined);
+        assert.equal(model.encoding.x, undefined);
         assert.equal(localLogger.warns[0], log.message.emptyFieldDef({type: QUANTITATIVE}, X));
       });
     });
@@ -55,7 +55,7 @@ describe('UnitModel', function() {
             ]
           }
         });
-        assert.deepEqual(model.encoding().detail, [
+        assert.deepEqual(model.encoding.detail, [
           {field: 'a', type: 'ordinal'},
           {value: 'b'}
         ]);

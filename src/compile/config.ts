@@ -2,8 +2,8 @@ import * as log from '../log';
 
 import {X, COLOR, SIZE, DETAIL} from '../channel';
 import {Config} from '../config';
-import {Encoding, isAggregate, has} from '../encoding';
-import {isMeasure} from '../fielddef';
+import {Encoding, isAggregate, channelHasField} from '../encoding';
+import {isMeasure, isFieldDef, FieldDef} from '../fielddef';
 import {MarkConfig, TextConfig, Orient} from '../mark';
 import {BAR, AREA, POINT, LINE, TICK, CIRCLE, SQUARE, RECT, RULE, TEXT, Mark} from '../mark';
 import {Scale, hasDiscreteDomain} from '../scale';
@@ -13,7 +13,7 @@ import {contains, extend, Dict} from '../util';
 /**
  * Augment config.mark with rule-based default values.
  */
-export function initMarkConfig(mark: Mark, encoding: Encoding, scale: Dict<Scale>, stacked: StackProperties, config: Config) {
+export function initMarkConfig(mark: Mark, encoding: Encoding, scale: Dict<Scale>, stacked: StackProperties, config: Config): MarkConfig {
   // override mark config with mark specific config
   const markConfig = extend({}, config.mark, config[mark]);
 
@@ -41,7 +41,7 @@ export function initTextConfig(encoding: Encoding, config: Config) {
   const textConfig: TextConfig = extend({}, config.text);
 
   if (textConfig.align === undefined) {
-    textConfig.align = has(encoding, X) ? 'center' : 'right';
+    textConfig.align = channelHasField(encoding, X) ? 'center' : 'right';
   }
   return textConfig;
 }
@@ -49,12 +49,12 @@ export function initTextConfig(encoding: Encoding, config: Config) {
 export function opacity(mark: Mark, encoding: Encoding, stacked: StackProperties) {
   if (contains([POINT, TICK, CIRCLE, SQUARE], mark)) {
     // point-based marks
-    if (!isAggregate(encoding) || has(encoding, DETAIL)) {
+    if (!isAggregate(encoding) || channelHasField(encoding, DETAIL)) {
       return 0.7;
     }
   }
   if (mark === BAR && !stacked) {
-    if (has(encoding, COLOR) || has(encoding, DETAIL) || has(encoding, SIZE)) {
+    if (channelHasField(encoding, COLOR) || channelHasField(encoding, DETAIL) || channelHasField(encoding, SIZE)) {
       return 0.7;
     }
   }
@@ -87,7 +87,7 @@ export function orient(mark: Mark, encoding: Encoding, scale: Dict<Scale>, markC
       if (!hasDiscreteDomain(xScaleType) && (
             !encoding.y ||
             hasDiscreteDomain(yScaleType) ||
-            encoding.y.bin
+            (isFieldDef(encoding.y) && encoding.y.bin)
         )) {
         return 'vertical';
       }
@@ -120,10 +120,12 @@ export function orient(mark: Mark, encoding: Encoding, scale: Dict<Scale>, markC
       } else if (!xIsMeasure && yIsMeasure) {
         return 'vertical';
       } else if (xIsMeasure && yIsMeasure) {
+        const xDef = encoding.x as FieldDef;
+        const yDef = encoding.y as FieldDef;
         // temporal without timeUnit is considered continuous, but better serves as dimension
-        if (encoding.x.type === TEMPORAL) {
+        if (xDef.type === TEMPORAL) {
           return 'vertical';
-        } else if (encoding.y.type === TEMPORAL) {
+        } else if (yDef.type === TEMPORAL) {
           return 'horizontal';
         }
 

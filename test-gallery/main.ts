@@ -18,16 +18,16 @@ d3.json('examples/all-examples.json', function(examples: string[]) {
       .enter()
       .append('div')
       .attr('class', 'viz')
-      .attr('id', function(d:string) { return d; });
+      .attr('id', function(d:string) {return d;});
 
-    vizEnter.append('h3').text(function(d:string) { return d; });
+    vizEnter.append('h3').text(function(d:string) {return d;});
     vizEnter.append('div').attr('class', 'desc');
     vizEnter.append('div').attr('class', 'view');
 
     examples.forEach(function(example) {
       d3.json('examples/specs/' + example + '.vl.json', function(error: Error, vlSpec: ExtendedSpec) {
         const vgSpec = vl.compile(vlSpec);
-        const runtime = vega.parse(vgSpec); // may throw an Error if parsing fails
+        const runtime = vega.parse(vgSpec.spec); // may throw an Error if parsing fails
         new vega.View(runtime)
           .logLevel(vega.Warn)
           .initialize(document.querySelector('.viz#'+ example + '> div.view'))

@@ -8,7 +8,8 @@ or even better, submit a pull request.
 
 - For major changes, please discuss with us via [our mailing list](https://groups.google.com/forum/#!forum/vega-js) and Github first,
 so we can better coordinate our efforts, prevent duplication of work,
-and help you to craft the change so that it is successfully accepted into the project.
+and help you to craft the change so that it is successfully accepted into the project. 
+  - One way to use GitHub for this purpose is to submit a pull request (PR) with a "[WIP]" prefix in the PR's title.  With a WIP PR, you can annotate your modification with questions. 
 
 - Generally we name a branch using this pattern `<your 2-3 letters initial>/<topic>`.
 For example, @kanitw's branch regarding scale type might be called `kw/scale-type`.
@@ -174,11 +175,9 @@ i.e., running `brew install jq` if you use [homebrew](http://brew.sh) on mac.
 
 ## Suggested Programming Environment.
 
-We use the [atom](atom.io) editor with the following plug-ins:
-- `atom-typescript` - This provides us IDE-like features for TS inside Atom including renaming, go to definition, find all references.
-- `linter` and `linter-tslint` – These shows tslint errors inside the editor. This is quite important since our Travis run includes linting too. Therefore, if your branch has a linting error, Travis test will fail too.
-
-__Tips:__ If you don't want to see intermediate files (`.js`, `.js.map`), you can "Hide VCS Ignored Files" in the `tree-view` plugin.
+We use the [Visual Studio Code](http://code.visualstudio.com/) editor with TSLint plugin. 
+- VSCode has a nice built-in Typescript support!
+- We already include project settings to hide compiled files  (`*.js`, `*.js.map`).  This should work automatically if you open the vega-lite folder with VSCode.  
 
 ## Manually Testing with Vega-Editor
 
@@ -187,21 +186,21 @@ To manually test your changes locally, you should have a local instance of
 (See [Vega Editor's README](https://github.com/vega/vega-editor#local-testing--debugging)
 for instructions).
 
-## Developing Vega-Lite and Datalib
+## Developing Vega-Lite and Vega-Util
 
-Vega-Lite depends on [Datalib](https://github.com/vega/datalib).
-If you plan to make changes to datalib and test Vega-Lite without publishing / copying compiled Datalib all the time, use [`npm link`](http://justjs.com/posts/npm-link-developing-your-own-npm-modules-without-tears) command.
+Vega-Lite depends on [vega-util](https://github.com/vega/vega-util).
+If you plan to make changes to datalib and test Vega-Lite without publishing / copying compiled vega-util all the time, use [`npm link`](http://justjs.com/posts/npm-link-developing-your-own-npm-modules-without-tears) command.
 
 ```sh
 # first link datalib global npm
-cd path/to/datalib
+cd path/to/vega-util
 npm link
 # then link vega-lite to datalib
 cd path/to/vega-lite
-npm link datalib
+npm link vega-util
 ```
 
-Now all the changes you make in Datalib are reflected in your Vega-Lite automatically.
+Now all the changes you make in vega-util are reflected in your Vega-Lite automatically.
 
 # Note
 

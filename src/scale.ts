@@ -1,3 +1,5 @@
+import * as log from './log';
+import {Channel} from './channel';
 import {DateTime} from './datetime';
 import {contains, toSet} from './util';
 
@@ -18,13 +20,10 @@ export namespace ScaleType {
   export const QUANTIZE: 'quantize' = 'quantize';
   export const THRESHOLD: 'threshold' = 'threshold';
 
-  // TODO: rename this back to ORDINAL once we are done
-  export const ORDINAL_LOOKUP: 'ordinal' = 'ordinal';
+  export const ORDINAL: 'ordinal' = 'ordinal';
   export const POINT: 'point' = 'point';
   export const BAND: 'band' = 'band';
 
-  // Ordinal color scale
-  export const INDEX: 'index' = 'index';
 }
 
 export type ScaleType = typeof ScaleType.LINEAR |
@@ -32,7 +31,7 @@ export type ScaleType = typeof ScaleType.LINEAR |
   typeof ScaleType.TIME | typeof ScaleType.UTC |
   // TODO: add 'quantize', 'quantile', 'threshold' back when we really support them
   typeof ScaleType.SEQUENTIAL | // typeof ScaleType.QUANTILE | typeof ScaleType.QUANTIZE | typeof ScaleType.THRESHOLD |
-  typeof ScaleType.ORDINAL_LOOKUP | typeof ScaleType.POINT | typeof ScaleType.BAND | typeof ScaleType.INDEX;
+  typeof ScaleType.ORDINAL | typeof ScaleType.POINT | typeof ScaleType.BAND;
 
 export const SCALE_TYPES: ScaleType[] = [
   // Continuous - Quantitative
@@ -51,7 +50,7 @@ const CONTINUOUS_TO_CONTINUOUS_INDEX = toSet(CONTINUOUS_TO_CONTINUOUS_SCALES);
 export const CONTINUOUS_DOMAIN_SCALES: ScaleType[] = CONTINUOUS_TO_CONTINUOUS_SCALES.concat(['sequential' /* TODO add 'quantile', 'quantize', 'threshold'*/]);
 const CONTINUOUS_DOMAIN_INDEX = toSet(CONTINUOUS_DOMAIN_SCALES);
 
-export const DISCRETE_DOMAIN_SCALES: ScaleType[] = ['ordinal', 'point', 'band', 'index'];
+export const DISCRETE_DOMAIN_SCALES: ScaleType[] = ['ordinal', 'point', 'band'];
 const DISCRETE_DOMAIN_INDEX = toSet(DISCRETE_DOMAIN_SCALES);
 
 export const TIME_SCALE_TYPES: ScaleType[] = ['time', 'utc'];
@@ -70,18 +69,7 @@ export function isContinuousToContinuous(type: ScaleType): type is 'linear' | 'l
   return type in CONTINUOUS_TO_CONTINUOUS_INDEX;
 }
 
-export namespace NiceTime {
-  export const SECOND: 'second' = 'second';
-  export const MINUTE: 'minute' = 'minute';
-  export const HOUR: 'hour' = 'hour';
-  export const DAY: 'day' = 'day';
-  export const WEEK: 'week' = 'week';
-  export const MONTH: 'month' = 'month';
-  export const YEAR: 'year' = 'year';
-}
-
-export type NiceTime = typeof NiceTime.SECOND | typeof NiceTime.MINUTE | typeof NiceTime.HOUR
-  | typeof NiceTime.DAY | typeof NiceTime.WEEK | typeof NiceTime.MONTH | typeof NiceTime.YEAR;
+export type NiceTime = 'second' | 'minute' | 'hour' | 'day' | 'week' | 'month' | 'year';
 
 export interface ScaleConfig {
   /**
@@ -133,7 +121,7 @@ export interface ScaleConfig {
 
   /**
    * Default spacing between faceted plots.
-   * @type {integer}
+   * @TJS-type integer
    * @minimum 0
    */
   facetSpacing?: number;
@@ -158,6 +146,26 @@ export const defaultScaleConfig = {
   useRawDomain: false,
 };
 
+export interface ExtendedScheme {
+  /**
+   * Color scheme that determines output color of an ordinal/sequential color scale.
+   */
+  name: string;
+
+  // TODO: add docs
+  extent?: number[];
+
+  // TODO: add docs
+  count?: number;
+}
+
+export type Scheme = string | ExtendedScheme;
+export type Range = number[] | string[] | string;
+
+export function isExtendedScheme(scheme: string | ExtendedScheme): scheme is ExtendedScheme {
+  return scheme && !!scheme['name'];
+}
+
 export interface Scale {
   type?: ScaleType;
   /**
@@ -168,8 +176,7 @@ export interface Scale {
   /**
    * The range of the scale, representing the set of visual values. For numeric values, the range can take the form of a two-element array with minimum and maximum values. For ordinal or quantized data, the range may by an array of desired output values, which are mapped to elements in the specified domain.
    */
-  range?: number[] | string[]; // TODO: declare vgRangeDomain
-
+  range?: Range;
 
   /**
    * If true, rounds numeric output values to integers. This can be helpful for snapping to the pixel grid.
@@ -192,13 +199,13 @@ export interface Scale {
   rangeStep?: number | null;
 
   /**
-   * Color scheme that determines output color of an index/ordinal/sequential color scale.
+   * Range scheme (e.g., color schemes such as "category10" or "viridis").
    */
-  scheme?: string;
+  scheme?: Scheme;
 
   /**
    * (For `row` and `column` only) A pixel value for padding between cells in the trellis plots.
-   * @type {integer}
+   * @TJS-type integer
    */
   spacing?: number;
 
@@ -244,6 +251,9 @@ export interface Scale {
    */
   zero?: boolean;
 
+  // FIXME: Add description
+  interpolate?: 'rgb'| 'lab' | 'hcl' | 'hsl' | 'hsl-long' | 'hcl-long' | 'cubehelix' | 'cubehelix-long';
+
   // Vega-Lite only
   /**
    * Uses the source data range as scale domain instead of aggregated data for aggregate axis.
@@ -252,21 +262,22 @@ export interface Scale {
   useRawDomain?: boolean;
 }
 
-export const SCALE_PROPERTIES = [
-  'type', 'domain', 'range', 'round', 'rangeStep', 'scheme', 'padding', 'clamp', 'nice',
-  'exponent', 'zero',
-  // TODO: add interpolate here
+export const SCALE_PROPERTIES:(keyof Scale)[]= [
+  'type', 'domain', 'range', 'round', 'rangeStep', 'scheme', 'padding', 'paddingInner', 'paddingOuter', 'clamp', 'nice',
+  'exponent', 'zero', 'interpolate',
   // FIXME: determine if 'useRawDomain' should really be included here
   'useRawDomain'
 ];
 
-export function scaleTypeSupportProperty(scaleType: ScaleType, propName: string) {
+export function scaleTypeSupportProperty(scaleType: ScaleType, propName: keyof Scale) {
   switch (propName) {
     case 'type':
     case 'domain':
-      return true;
     case 'range':
-      return scaleType !== 'sequential'; // sequential only support scheme
+    case 'scheme':
+      return true;
+    case 'interpolate':
+      return scaleType === 'linear';
     case 'round':
       return isContinuousToContinuous(scaleType) || scaleType === 'band' || scaleType === 'point';
     case 'rangeStep':
@@ -275,15 +286,12 @@ export function scaleTypeSupportProperty(scaleType: ScaleType, propName: string)
       return contains(['point', 'band'], scaleType);
     case 'paddingInner':
       return scaleType === 'band';
-    case 'scheme':
-      // ordinal can use nominal color scheme, sequential can use sequential color scheme
-      return contains(['ordinal', 'sequential', 'index'], scaleType);
     case 'clamp':
       return isContinuousToContinuous(scaleType) || scaleType === 'sequential';
     case 'nice':
       return isContinuousToContinuous(scaleType) || scaleType === 'sequential' || scaleType as any === 'quantize';
     case 'exponent':
-      return scaleType === 'pow';
+      return scaleType === 'pow' || scaleType === 'log';
     case 'zero':
       // TODO: what about quantize, threshold?
       return !hasDiscreteDomain(scaleType) && !contains(['log', 'time', 'utc'], scaleType);
@@ -294,4 +302,57 @@ export function scaleTypeSupportProperty(scaleType: ScaleType, propName: string)
   }
   /* istanbul ignore next: should never reach here*/
   throw new Error(`Invalid scale property ${propName}.`);
+}
+
+/**
+ * Returns undefined if the input channel supports the input scale property name
+ */
+export function channelScalePropertyIncompatability(channel: Channel, propName: keyof Scale): string {
+  switch (propName) {
+    case 'range':
+      // User should not customize range for position and facet channel directly.
+      if (channel === 'x' || channel === 'y') {
+        return log.message.CANNOT_USE_RANGE_WITH_POSITION;
+      }
+      if (channel === 'row' || channel === 'column') {
+        return log.message.cannotUseRangePropertyWithFacet('range');
+      }
+      return undefined; // GOOD!
+    // band / point
+    case 'rangeStep':
+      if (channel === 'row' || channel === 'column') {
+        return log.message.cannotUseRangePropertyWithFacet('rangeStep');
+      }
+      return undefined; // GOOD!
+    case 'padding':
+    case 'paddingInner':
+    case 'paddingOuter':
+      if (channel === 'row' || channel === 'column') {
+        /*
+         * We do not use d3 scale's padding for row/column because padding there
+         * is a ratio ([0, 1]) and it causes the padding to be decimals.
+         * Therefore, we manually calculate "spacing" in the layout by ourselves.
+         */
+        return log.message.CANNOT_USE_PADDING_WITH_FACET;
+      }
+      return undefined; // GOOD!
+    case 'interpolate':
+    case 'scheme':
+      if (channel !== 'color') {
+        return log.message.CANNOT_USE_SCALE_PROPERTY_WITH_NON_COLOR(channel);
+      }
+      return undefined;
+    case 'type':
+    case 'domain':
+    case 'round':
+    case 'clamp':
+    case 'exponent':
+    case 'nice':
+    case 'zero':
+    case 'useRawDomain':
+      // These channel do not have strict requirement
+      return undefined; // GOOD!
+  }
+  /* istanbul ignore next: it should never reach here */
+  throw new Error('Invalid scale property "${propName}".');
 }

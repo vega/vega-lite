@@ -7,9 +7,9 @@ import {isNumber, isString, isArray} from 'vega-util';
  *
  * Example:  (from lodash)
  *
- * var object = { 'a': 1, 'b': '2', 'c': 3 };
+ * var object = {'a': 1, 'b': '2', 'c': 3};
  * pick(object, ['a', 'c']);
- * // → { 'a': 1, 'c': 3 }
+ * // → {'a': 1, 'c': 3}
  *
  */
 export function pick(obj: any, props: string[]) {
@@ -47,9 +47,7 @@ export function contains<T>(array: Array<T>, item: T) {
 
 /** Returns the array without the elements in item */
 export function without<T>(array: Array<T>, excludedItems: Array<T>) {
-  return array.filter(function(item) {
-    return !contains(excludedItems, item);
-  });
+  return array.filter(item => !contains(excludedItems, item));
 }
 
 export function union<T>(array: Array<T>, other: Array<T>) {
@@ -94,8 +92,8 @@ export function flatten(arrays: any[]) {
 }
 
 export function mergeDeep(dest: any, ...src: any[]) {
-  for (let i = 0; i < src.length; i++) {
-    dest = deepMerge_(dest, src[i]);
+  for (const s of src) {
+    dest = deepMerge_(dest, s);
   }
   return dest;
 };
@@ -124,16 +122,16 @@ function deepMerge_(dest: any, src: any) {
   return dest;
 }
 
-export function unique<T>(values: T[], f: (item: T) => string) {
+export function unique<T>(values: T[], f: (item: T) => string): T[] {
   let results: any[] = [];
-  var u = {}, v: string, i: number, n: number;
-  for (i = 0, n = values.length; i < n; ++i) {
-    v = f(values[i]);
+  let u = {}, v: string;
+  for (const val of values) {
+    v = f(val);
     if (v in u) {
       continue;
     }
     u[v] = 1;
-    results.push(values[i]);
+    results.push(val);
   }
   return results;
 };

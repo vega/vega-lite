@@ -2,10 +2,11 @@
 
 
 import {assert} from 'chai';
-import domain from '../../../src/compile/scale/domain';
+import {default as domain, unionDomains} from '../../../src/compile/scale/domain';
 import {SOURCE, SUMMARY} from '../../../src/data';
 
 import {parseUnitModel} from '../../util';
+import {VgDataRef} from '../../../src/vega.schema';
 
 describe('compile/scale', () => {
   describe('domain()', function() {
@@ -19,8 +20,7 @@ describe('compile/scale', () => {
             type: 'quantitative'
           },
           x: {field: 'x', type: "ordinal"},
-          color: {field: 'color', type: "ordinal"},
-          row: {field: 'row', type: 'ordinal'}
+          color: {field: 'color', type: "ordinal"}
         }
       });
 
@@ -70,7 +70,7 @@ describe('compile/scale', () => {
               }
             }
           });
-          const _domain = domain(model.scale('y'), model, 'y');
+          const _domain = domain(model.scale('y'), model, 'y') as VgDataRef;
 
           assert.deepEqual(_domain.data, SOURCE);
         });
@@ -88,7 +88,7 @@ describe('compile/scale', () => {
               }
             }
           });
-          const _domain = domain(model.scale('y'), model, 'y');
+          const _domain = domain(model.scale('y'), model, 'y') as VgDataRef;
 
           assert.deepEqual(_domain.data, SUMMARY);
         });
@@ -121,7 +121,7 @@ describe('compile/scale', () => {
               }
             }
           });
-          const _domain = domain(model.scale('y'), model, 'y');
+          const _domain = domain(model.scale('y'), model, 'y') as VgDataRef;
 
           assert.deepEqual(_domain.data, SUMMARY);
         });
@@ -140,7 +140,7 @@ describe('compile/scale', () => {
               }
             }
           });
-          const _domain = domain(model.scale('y'), model, 'y');
+          const _domain = domain(model.scale('y'), model, 'y') as VgDataRef;
 
           assert.deepEqual(_domain.data, SOURCE);
         });
@@ -158,10 +158,10 @@ describe('compile/scale', () => {
               }
             }
           });
-          const _domain = domain(model.scale('y'), model, 'y');
+          const _domain = domain(model.scale('y'), model, 'y') as VgDataRef;
 
           assert.deepEqual(_domain.data, SOURCE);
-          assert.operator(_domain.field.indexOf('year'), '>', -1);
+          assert.operator((_domain.field as string).indexOf('year'), '>', -1);
         });
 
       it('should return the correct domain for month T',
@@ -178,7 +178,7 @@ describe('compile/scale', () => {
           });
           const _domain = domain(model.scale('y'), model, 'y');
 
-          assert.deepEqual(_domain, { data: 'source', field: 'month_origin', sort: {field: 'month_origin', op: 'min',} });
+          assert.deepEqual(_domain, {data: 'source', field: 'month_origin', sort: {field: 'month_origin', op: 'min',}});
         });
 
         it('should return the correct domain for yearmonth T',
@@ -227,7 +227,7 @@ describe('compile/scale', () => {
         const model = parseUnitModel({
             mark: "point",
             encoding: {
-              y: { field: 'origin', type: "ordinal", sort: sortDef}
+              y: {field: 'origin', type: "ordinal", sort: sortDef}
             }
           });
 
@@ -242,7 +242,7 @@ describe('compile/scale', () => {
         const model = parseUnitModel({
           mark: "point",
           encoding: {
-            y: { field: 'origin', type: "ordinal"}
+            y: {field: 'origin', type: "ordinal"}
           }
         });
 
@@ -251,6 +251,31 @@ describe('compile/scale', () => {
           field: 'origin',
           sort: true
         });
+      });
+    });
+  });
+
+  describe('unionDomains()', () => {
+    it('should union field and data ref union domains', () => {
+      const domain1 = {
+        data: 'foo',
+        fields: ['a', 'b']
+      };
+
+      const domain2 = {
+        fields: [{
+          data: 'foo',
+          field: 'b'
+        },{
+          data: 'foo',
+          field: 'c'
+        }]
+      };
+
+      const unioned = unionDomains(domain1, domain2);
+      assert.deepEqual(unioned, {
+        data: 'foo',
+        fields: ['a', 'b', 'c']
       });
     });
   });

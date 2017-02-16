@@ -1,94 +1,78 @@
-import {X, Y, COLOR, TEXT, SIZE} from '../../channel';
-import {applyConfig, applyColorAndOpacity, numberFormat, timeFormatExpression} from '../common';
+import {X, Y, TEXT, SIZE} from '../../channel';
+import {applyConfig, numberFormat, timeFormatExpression} from '../common';
+
+import {applyColor} from './common';
 import {Config} from '../../config';
-import {FieldDef, field} from '../../fielddef';
+import {ChannelDef, TextFieldDef, ValueDef, field, isFieldDef} from '../../fielddef';
 import {QUANTITATIVE, TEMPORAL} from '../../type';
 import {UnitModel} from '../unit';
+import {VgValueRef, VgEncodeEntry} from '../../vega.schema';
+
+import {MarkCompiler} from './base';
 import * as ref from './valueref';
-import {VgValueRef} from '../../vega.schema';
 
-export namespace text {
-  export function markType() {
-    return 'text';
-  }
+export const text: MarkCompiler = {
+  vgMark: 'text',
+  role: undefined,
 
-  export function background(model: UnitModel) {
-    return {
-      x: { value: 0 },
-      y: { value: 0 },
-      width: { field: { group: 'width' } },
-      height: { field: { group: 'height' } },
-      fill: {
-        scale: model.scaleName(COLOR),
-        field: model.field(COLOR)
-      }
-    };
-  }
+  encodeEntry: (model: UnitModel) => {
+    let e: VgEncodeEntry = {};
 
-  export function properties(model: UnitModel) {
-    // TODO Use Vega's marks properties interface
-    let p: any = {};
-
-    applyConfig(p, model.config().text,
+    applyConfig(e, model.config.text,
       ['angle', 'align', 'baseline', 'dx', 'dy', 'font', 'fontWeight',
         'fontStyle', 'radius', 'theta', 'text']);
 
-    const config = model.config();
-    const stack = model.stack();
-    const textFieldDef = model.encoding().text;
+    const {config, encoding, stack} = model;
+    const textDef = encoding.text;
 
     // TODO: refactor how refer to scale as discussed in https://github.com/vega/vega-lite/pull/1613
+    e.x = ref.stackable(X, encoding.x, model.scaleName(X), model.scale(X), stack, xDefault(config, textDef));
+    e.y = ref.stackable(Y, encoding.y, model.scaleName(Y), model.scale(Y), stack, ref.midY(config));
 
-    p.x = ref.stackable(X, model.encoding().x, model.scaleName(X), model.scale(X), stack, xDefault(config, textFieldDef));
-    p.y = ref.stackable(Y, model.encoding().y, model.scaleName(Y), model.scale(Y), stack, ref.midY(config));
-
-    p.fontSize = ref.midPoint(SIZE, model.encoding().size, model.scaleName(SIZE), model.scale(SIZE),
+    e.fontSize = ref.midPoint(SIZE, encoding.size, model.scaleName(SIZE), model.scale(SIZE),
        {value: config.text.fontSize}
     );
 
-    p.text = text(textFieldDef, model.scaleName(TEXT), config);
+    e.text = textRef(textDef, config);
 
-    if (model.config().text.applyColorToBackground && !model.has(X) && !model.has(Y)) {
-      p.fill = {value: 'black'}; // TODO: add rules for swapping between black and white
-      // opacity
-      const opacity = model.config().mark.opacity;
-      if (opacity) { p.opacity = { value: opacity }; };
-    } else {
-      applyColorAndOpacity(p, model);
+    const opacity = ref.midPoint('opacity', model.encoding.opacity, model.scaleName('opacity'), model.scale('opacity'), config.mark.opacity && {value: config.mark.opacity});
+    if (opacity !== undefined) {
+      e.opacity = opacity;
     }
+    applyColor(e, model);
 
-    return p;
+    return e;
   }
+};
 
-  function xDefault(config: Config, textFieldDef:FieldDef): VgValueRef {
-    if (textFieldDef && textFieldDef.type === QUANTITATIVE) {
-      return { field: { group: 'width' }, offset: -5 };
-    }
-    // TODO: allow this to fit (Be consistent with ref.midX())
-    return { value: config.scale.textXRangeStep / 2 };
+function xDefault(config: Config, textDef: ChannelDef): VgValueRef {
+  if (isFieldDef(textDef) && textDef.type === QUANTITATIVE) {
+    return {field: {group: 'width'}, offset: -5};
   }
+  // TODO: allow this to fit (Be consistent with ref.midX())
+  return {value: config.scale.textXRangeStep / 2};
+}
 
-  function text(textFieldDef: FieldDef, scaleName: string, config: Config): VgValueRef {
-    // text
-    if (textFieldDef) {
-      if (textFieldDef.field) {
-        if (QUANTITATIVE === textFieldDef.type) {
-          // FIXME: what happens if we have bin?
-          const format = numberFormat(textFieldDef, config.text.format, config, TEXT);
-          return {
-            signal: `format(${field(textFieldDef, { datum: true })}, '${format}')`
-          };
-        } else if (TEMPORAL === textFieldDef.type) {
-          return {
-            signal: timeFormatExpression(field(textFieldDef, {datum: true}), textFieldDef.timeUnit, config.text.format, config.text.shortTimeLabels, config)
-          };
-        } else {
-          return { field: textFieldDef.field };
-        }
-      } else if (textFieldDef.value) {
-        return { value: textFieldDef.value };
+function textRef(textDef: TextFieldDef | ValueDef<any>, config: Config): VgValueRef {
+  // text
+  if (textDef) {
+    if (isFieldDef(textDef)) {
+      if (QUANTITATIVE === textDef.type) {
+        // FIXME: what happens if we have bin?
+        const format = numberFormat(textDef, textDef.format, config, TEXT);
+        return {
+          signal: `format(${field(textDef, {datum: true})}, '${format}')`
+        };
+      } else if (TEMPORAL === textDef.type) {
+        return {
+          signal: timeFormatExpression(field(textDef, {datum: true}), textDef.timeUnit, textDef.format, config.text.shortTimeLabels, config)
+        };
+      } else {
+        return {field: textDef.field};
       }
+    } else if (textDef.value) {
+      return {value: textDef.value};
     }
-    return {value: config.text.text};
   }
+  return {value: config.text.text};
 }

@@ -1,7 +1,8 @@
-import {X, Y, COLOR, TEXT, NONSPATIAL_CHANNELS, Channel} from '../../channel';
-import {AREA, LINE, TEXT as TEXTMARK} from '../../mark';
+import {NONSPATIAL_CHANNELS, Channel} from '../../channel';
+import {AREA, LINE} from '../../mark';
 import {contains, without} from '../../util';
 
+import {MarkCompiler} from './base';
 import {area} from './area';
 import {bar} from './bar';
 import {line} from './line';
@@ -14,7 +15,7 @@ import {tick} from './tick';
 import {FacetModel} from '../facet';
 import {UnitModel} from '../unit';
 
-const markCompiler = {
+const markCompiler: {[type: string]: MarkCompiler} = {
   area: area,
   bar: bar,
   line: line,
@@ -37,11 +38,11 @@ export function parseMark(model: UnitModel): any[] {
 
 // FIXME: maybe this should not be here.  Need re-think and refactor, esp. after having all composition in.
 function dataFrom(model: UnitModel): string {
-  const parent = model.parent();
+  const parent = model.parent;
   if (parent && parent.isFacet()) {
     return (parent as FacetModel).facetedTable();
   }
-  if (model.stack()) {
+  if (model.stack) {
     return model.dataName('stacked');
   }
   return model.dataTable();
@@ -56,12 +57,12 @@ function parsePathMark(model: UnitModel) {
 
   let pathMarks: any = [
     {
-      name: model.name('marks'),
-      type: markCompiler[mark].markType(),
+      name: model.getName('marks'),
+      type: markCompiler[mark].vgMark,
       // If has subfacet for line/area group, need to use faceted data from below.
       // FIXME: support sorting path order (in connected scatterplot)
       from: {data: (details.length > 0 ? FACETED_PATH_PREFIX : '') + dataFrom(model)},
-      encode: { update: markCompiler[mark].properties(model) }
+      encode: {update: markCompiler[mark].encodeEntry(model)}
     }
   ];
 
@@ -69,7 +70,7 @@ function parsePathMark(model: UnitModel) {
     // TODO: for non-stacked plot, map order to zindex. (Maybe rename order for layer to zindex?)
 
     return [{
-      name: model.name('pathgroup'),
+      name: model.getName('pathgroup'),
       type: 'group',
       from: {
         facet: {
@@ -80,8 +81,8 @@ function parsePathMark(model: UnitModel) {
       },
       encode: {
         update: {
-          width: { field: { group: 'width' } },
-          height: { field: { group: 'height' } }
+          width: {field: {group: 'width'}},
+          height: {field: {group: 'height'}}
         }
       },
       marks: pathMarks
@@ -94,27 +95,18 @@ function parsePathMark(model: UnitModel) {
 function parseNonPathMark(model: UnitModel) {
   const mark = model.mark();
 
+  const role = markCompiler[mark].role;
+
   let marks: any[] = []; // TODO: vgMarks
-  if (mark === TEXTMARK &&
-    model.has(COLOR) &&
-    model.config().text.applyColorToBackground && !model.has(X) && !model.has(Y)
-  ) {
-    // add background to 'text' marks if has color
-    marks.push({
-      name: model.name('background'),
-      type: 'rect',
-      from: {data: dataFrom(model)},
-      encode: { update: text.background(model) }
-    });
-  }
 
   // TODO: for non-stacked plot, map order to zindex. (Maybe rename order for layer to zindex?)
 
   marks.push({
-    name: model.name('marks'),
-    type: markCompiler[mark].markType(),
+    name: model.getName('marks'),
+    type: markCompiler[mark].vgMark,
+    ...(role? {role} : {}),
     from: {data: dataFrom(model)},
-    encode: { update: markCompiler[mark].properties(model)}
+    encode: {update: markCompiler[mark].encodeEntry(model)}
   });
 
   return marks;
@@ -128,7 +120,7 @@ const NONSPATIAL_CHANNELS_EXCEPT_ORDER = without(NONSPATIAL_CHANNELS, ['order'] 
  */
 function detailFields(model: UnitModel): string[] {
   return NONSPATIAL_CHANNELS_EXCEPT_ORDER.reduce(function(details, channel) {
-    if (model.has(channel) && !model.fieldDef(channel).aggregate) {
+    if (model.channelHasField(channel) && !model.fieldDef(channel).aggregate) {
       details.push(model.field(channel));
     }
     return details;

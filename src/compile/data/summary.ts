@@ -1,5 +1,4 @@
-import {AggregateOp} from '../../aggregate';
-import {Channel} from '../../channel';
+// import {AggregateOp} from '../../aggregate';
 import {SUMMARY} from '../../data';
 import {field, FieldDef} from '../../fielddef';
 import {keys, vals, reduce, hash, Dict, StringSet} from '../../util';
@@ -13,15 +12,15 @@ import {SummaryComponent} from './data';
 
 
 export namespace summary {
-  function addDimension(dims: { [field: string]: boolean }, fieldDef: FieldDef) {
+  function addDimension(dims: {[field: string]: boolean}, fieldDef: FieldDef) {
     if (fieldDef.bin) {
-      dims[field(fieldDef, { binSuffix: 'start' })] = true;
-      dims[field(fieldDef, { binSuffix: 'end' })] = true;
+      dims[field(fieldDef, {binSuffix: 'start'})] = true;
+      dims[field(fieldDef, {binSuffix: 'end'})] = true;
 
       // const scale = model.scale(channel);
       // if (scaleType(scale, fieldDef, channel, model.mark()) === ScaleType.ORDINAL) {
       // also produce bin_range if the binned field use ordinal scale
-      dims[field(fieldDef, { binSuffix: 'range' })] = true;
+      dims[field(fieldDef, {binSuffix: 'range'})] = true;
       // }
     } else {
       dims[field(fieldDef)] = true;
@@ -36,9 +35,9 @@ export namespace summary {
     /* dictionary mapping field name => dict set of aggregation functions */
     let meas: Dict<StringSet> = {};
 
-    model.forEach(function(fieldDef: FieldDef, channel: Channel) {
+    model.forEach(function(fieldDef: FieldDef) {
       if (fieldDef.aggregate) {
-        if (fieldDef.aggregate === AggregateOp.COUNT) {
+        if (fieldDef.aggregate === 'count') {
           meas['*'] = meas['*'] || {};
           /* tslint:disable:no-string-literal */
           meas['*']['count'] = true;
@@ -60,7 +59,7 @@ export namespace summary {
   }
 
   export function parseFacet(model: FacetModel): SummaryComponent[] {
-    const childDataComponent = model.child().component.data;
+    const childDataComponent = model.child.component.data;
 
     // FIXME: this could be incorrect for faceted layer charts.
 
@@ -70,8 +69,8 @@ export namespace summary {
         // add facet fields as dimensions
         summaryComponent.dimensions = model.reduce(addDimension, summaryComponent.dimensions);
 
-        const summaryNameWithoutPrefix = summaryComponent.name.substr(model.child().name('').length);
-        model.child().renameData(summaryComponent.name, summaryNameWithoutPrefix);
+        const summaryNameWithoutPrefix = summaryComponent.name.substr(model.child.getName('').length);
+        model.child.renameData(summaryComponent.name, summaryNameWithoutPrefix);
         summaryComponent.name = summaryNameWithoutPrefix;
         return summaryComponent;
       });
@@ -93,7 +92,7 @@ export namespace summary {
               // add operator to existing measure field
               parentMeasures[field][op] = true;
             } else {
-              parentMeasures[field] = { op: true };
+              parentMeasures[field] = {op: true};
             }
           }
         }
@@ -103,11 +102,11 @@ export namespace summary {
 
   export function parseLayer(model: LayerModel): SummaryComponent[] {
     // Index by the fields we are grouping by
-    let summaries = {} as Dict<SummaryComponent>;
+    let summaries = {};
 
     // Combine summaries for children that don't have a distinct source
     // (either having its own data source, or its own tranformation of the same data source).
-    model.children().forEach((child) => {
+    model.children.forEach((child) => {
       const childDataComponent = child.component.data;
       if (!childDataComponent.source && childDataComponent.summary) {
         // Merge the summaries if we can

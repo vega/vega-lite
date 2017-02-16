@@ -5,10 +5,6 @@ import {parseUnitModel} from '../../util';
 import {rect} from '../../../src/compile/mark/rect';
 
 describe('Mark: Rect', function() {
-  it('should return the correct mark type', function() {
-    assert.equal(rect.markType(), 'rect');
-  });
-
   describe('simple vertical', function() {
     const model = parseUnitModel({
       "data": {"url": 'data/cars.json'},
@@ -18,7 +14,7 @@ describe('Mark: Rect', function() {
         "y": {"type": "quantitative", "field": 'Acceleration', "aggregate": "mean"}
       }
     });
-    const props = rect.properties(model);
+    const props = rect.encodeEntry(model);
 
     it('should draw bar, with y from zero to field value and x band', function() {
       assert.deepEqual(props.x, {scale: 'x', field: 'Origin'});
@@ -38,7 +34,7 @@ describe('Mark: Rect', function() {
         "x": {"aggregate": "mean", "field": 'Acceleration', "type": "quantitative"}
       }
     });
-    const props = rect.properties(model);
+    const props = rect.encodeEntry(model);
 
     it('should draw bar from zero to field value and y band', function() {
       assert.deepEqual(props.y, {scale: 'y', field: 'Origin'});
@@ -58,7 +54,7 @@ describe('Mark: Rect', function() {
         "x": {"aggregate": "mean", "field": 'Acceleration', "type": "quantitative"}
       }
     });
-    const props = rect.properties(model);
+    const props = rect.encodeEntry(model);
 
     it('should draw bar with y and y2', function() {
       assert.deepEqual(props.y2, {scale: 'y', field: 'bin_Horsepower_start'});
@@ -76,7 +72,7 @@ describe('Mark: Rect', function() {
         "y": {"aggregate": "mean", "field": 'Acceleration', "type": "quantitative"}
       }
     });
-    const props = rect.properties(model);
+    const props = rect.encodeEntry(model);
 
     it('should draw bar with x and x2', function() {
       assert.deepEqual(props.x2, {scale: 'x', field: 'bin_Horsepower_start'});
@@ -97,7 +93,7 @@ describe('Mark: Rect', function() {
         "x2": {"aggregate": "max", "field": 'Acceleration', "type": "quantitative"}
       }
     });
-    const props = rect.properties(model);
+    const props = rect.encodeEntry(model);
 
     it('should draw rectange with x, x2, y, y2', function() {
       assert.deepEqual(props.x, {scale: 'x', field: 'min_Acceleration'});
@@ -117,7 +113,7 @@ describe('Mark: Rect', function() {
         "color": {"aggregate": "mean", "field": "Horsepower", "type": "quantitative"}
       }
     });
-    const props = rect.properties(model);
+    const props = rect.encodeEntry(model);
 
     it('should draw rect with x and y bands', function() {
       assert.deepEqual(props.x, {scale: 'x', field: 'Cylinders'});

@@ -13,10 +13,6 @@ import {X, Y, SIZE} from '../../../src/channel';
 import {tick} from '../../../src/compile/mark/tick';
 
 describe('Mark: Tick', function() {
-  it('should return the correct mark type', function() {
-    assert.equal(tick.markType(), 'rect');
-  });
-
   describe('with stacked x', function() {
     // This is a simplified example for stacked tick.
     // In reality this will be used as stacked's overlayed marker
@@ -27,10 +23,10 @@ describe('Mark: Tick', function() {
         "color": {"field": "b", "type": "ordinal"}
       },
       "data": {"url": "data/barley.json"},
-      "config": {"mark": {"stacked": "zero"}}
+      "config": {"stack":  "zero"}
     });
 
-    const props = tick.properties(model);
+    const props = tick.encodeEntry(model);
 
     it('should use stack_end on x', function() {
       assert.deepEqual(props.xc, {scale: X, field: 'sum_a_end'});
@@ -48,10 +44,10 @@ describe('Mark: Tick', function() {
         "color": {"field": "b", "type": "ordinal"}
       },
       "data": {"url": "data/barley.json"},
-      "config": {"mark": {"stacked": "zero"}}
+      "config": {"stack":  "zero"}
     });
 
-    const props = tick.properties(model);
+    const props = tick.encodeEntry(model);
 
     it('should use stack_end on y', function() {
       assert.deepEqual(props.yc, {scale: Y, field: 'sum_a_end'});
@@ -65,7 +61,7 @@ describe('Mark: Tick', function() {
       'data': {'url': 'data/cars.json'}
     });
 
-    const props = tick.properties(model);
+    const props = tick.encodeEntry(model);
     it('should be centered on y', function() {
       assert.deepEqual(props.yc, {value: 10.5});
     });
@@ -75,7 +71,7 @@ describe('Mark: Tick', function() {
     });
 
     it('width should tick thickness with orient vertical', function() {
-      assert.deepEqual(props.width, { value: 1});
+      assert.deepEqual(props.width, {value: 1});
     });
   });
 
@@ -86,7 +82,7 @@ describe('Mark: Tick', function() {
       'data': {'url': 'data/cars.json'}
     });
 
-    const props = tick.properties(model);
+    const props = tick.encodeEntry(model);
     it('should be centered on x', function() {
       assert.deepEqual(props.xc, {value: 10.5});
     });
@@ -96,7 +92,7 @@ describe('Mark: Tick', function() {
     });
 
     it('height should tick thickness with orient horizontal', function() {
-      assert.deepEqual(props.height, { value: 1});
+      assert.deepEqual(props.height, {value: 1});
     });
   });
 
@@ -110,7 +106,7 @@ describe('Mark: Tick', function() {
         },
       'data': {'url': 'data/cars.json'}
     });
-    const props = tick.properties(model);
+    const props = tick.encodeEntry(model);
 
     it('should scale on x', function() {
       assert.deepEqual(props.xc, {scale: X, field: 'Horsepower'});
@@ -121,11 +117,11 @@ describe('Mark: Tick', function() {
     });
 
     it('wiidth should be tick thickness with default orient vertical', function() {
-      assert.deepEqual(props.width, { value: 1});
+      assert.deepEqual(props.width, {value: 1});
     });
 
     it('height should be matched to field with default orient vertical', function() {
-      assert.deepEqual(props.height, { value: 14});
+      assert.deepEqual(props.height, {value: 14});
     });
   });
 
@@ -141,7 +137,7 @@ describe('Mark: Tick', function() {
         },
       'data': {'url': 'data/cars.json'},
     });
-    const props = tick.properties(model);
+    const props = tick.encodeEntry(model);
     it('width should change with size field', function() {
       assert.deepEqual(props.height, {'field': 'Acceleration', 'scale': SIZE});
     });
@@ -158,7 +154,7 @@ describe('Mark: Tick', function() {
         },
       'data': {'url': 'data/cars.json'},
     });
-    const props = tick.properties(model);
+    const props = tick.encodeEntry(model);
     it('height should change with size field', function() {
       assert.deepEqual(props.height, {'field': 'Acceleration', 'scale': SIZE});
     });

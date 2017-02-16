@@ -1,96 +1,16 @@
 /* tslint:disable:quotemark */
 
 import {assert} from 'chai';
-import {parseUnitModel} from '../util';
-import {COLOR, SHAPE, SIZE, OPACITY} from '../../src/channel';
-import {defaultConfig} from '../../src/config';
-import * as legend from '../../src/compile/legend';
-import {TimeUnit} from '../../src/timeunit';
-import {TEMPORAL, QUANTITATIVE} from '../../src/type';
+import {parseUnitModel} from '../../util';
+import {COLOR, SHAPE, SIZE, OPACITY} from '../../../src/channel';
+import * as encode from '../../../src/compile/legend/encode';
+import {TimeUnit} from '../../../src/timeunit';
+import {TEMPORAL, QUANTITATIVE} from '../../../src/type';
 
-describe('Legend', function() {
-  describe('parseLegend()', function() {
-    it('should produce a Vega axis object with correct type and scale', function() {
-      const model = parseUnitModel({
-        mark: "point",
-        encoding: {
-          x: {field: "a", type: "nominal"},
-          color: {field: "a", type: "nominal"}
-        }
-      });
-      const def = legend.parseLegend(model, COLOR);
-      assert.isObject(def);
-      assert.equal(def.title, "a");
-    });
-
-    it('should produce correct encode block if needed', () => {
-      const model = parseUnitModel({
-        mark: "point",
-        encoding: {
-          color: {field: "a", type: "quantitative", "legend": {"labelColor": "#0099ff"}}
-        }
-      });
-      const def = legend.parseLegend(model, COLOR);
-      assert.equal(def.encode.labels.update.fill.value, '#0099ff');
-    });
-  });
-
-  describe('title()', function () {
-    it('should add explicitly specified title', function () {
-      const title = legend.title({title: 'Custom'}, {field: 'a'}, defaultConfig);
-      assert.equal(title, 'Custom');
-    });
-
-    it('should add return fieldTitle by default', function () {
-      const title = legend.title({}, {field: 'a'}, defaultConfig);
-      assert.equal(title, 'a');
-    });
-  });
-
-  describe('values()', () => {
-    it('should return correct timestamp values for DateTimes', () => {
-      const values = legend.values({values: [{year: 1970}, {year: 1980}]});
-
-      assert.deepEqual(values, [
-        new Date(1970, 0, 1).getTime(),
-        new Date(1980, 0, 1).getTime()
-      ]);
-    });
-
-    it('should simply return values for non-DateTime', () => {
-      const values = legend.values({values: [1,2,3,4]});
-
-      assert.deepEqual(values, [1,2,3,4]);
-    });
-
-  });
-
-  describe('type()', () => {
-    it('should return gradient type for color scale', () => {
-      const t = legend.type({}, {type: QUANTITATIVE}, COLOR);
-      assert.equal(t, 'gradient');
-    });
-
-    it('should not return gradient type for size scale', () => {
-      const t = legend.type({}, {type: QUANTITATIVE}, SIZE);
-      assert.equal(t, undefined);
-    });
-
-    it('should be able to override default', () => {
-      const t = legend.type({type: 'symbol'}, {type: QUANTITATIVE}, COLOR);
-      assert.equal(t, 'symbol');
-    });
-
-    it('should return no type for color scale with bin', () => {
-      const t = legend.type({}, {type: QUANTITATIVE, bin: true}, COLOR);
-      assert.equal(t, undefined);
-    });
-
-  });
-
+describe('compile/legend', function() {
   describe('encode.symbols', function() {
     it('should initialize if filled', function() {
-      const symbol = legend.encode.symbols({field: 'a'}, {}, parseUnitModel({
+      const symbol = encode.symbols({field: 'a'}, {}, parseUnitModel({
           mark: "point",
           encoding: {
             x: {field: "a", type: "nominal"},
@@ -101,7 +21,7 @@ describe('Legend', function() {
     });
 
     it('should not have strokeDash and strokeDashOffset', function() {
-      const symbol = legend.encode.symbols({field: 'a'}, {}, parseUnitModel({
+      const symbol = encode.symbols({field: 'a'}, {}, parseUnitModel({
           mark: "point",
           encoding: {
             x: {field: "a", type: "nominal"},
@@ -113,7 +33,7 @@ describe('Legend', function() {
     });
 
     it('should return specific color value', function() {
-      const symbol = legend.encode.symbols({field: 'a'}, {}, parseUnitModel({
+      const symbol = encode.symbols({field: 'a'}, {}, parseUnitModel({
           mark: "point",
           encoding: {
             x: {field: "a", type: "nominal"},
@@ -124,7 +44,7 @@ describe('Legend', function() {
     });
 
     it('should return specific shape value', function() {
-      const symbol = legend.encode.symbols({field: 'a'}, {}, parseUnitModel({
+      const symbol = encode.symbols({field: 'a'}, {}, parseUnitModel({
           mark: "point",
           encoding: {
             x: {field: "a", type: "nominal"},
@@ -135,7 +55,7 @@ describe('Legend', function() {
     });
 
     it('should return specific size of the symbol', function() {
-      const symbol = legend.encode.symbols({field: 'a'}, {}, parseUnitModel({
+      const symbol = encode.symbols({field: 'a'}, {}, parseUnitModel({
           mark: "point",
           encoding: {
             x: {field: "a", type: "nominal"},
@@ -145,7 +65,7 @@ describe('Legend', function() {
     });
 
     it('should return not override size of the symbol for size channel', function() {
-      const symbol = legend.encode.symbols({field: 'a'}, {}, parseUnitModel({
+      const symbol = encode.symbols({field: 'a'}, {}, parseUnitModel({
           mark: "point",
           encoding: {
             x: {field: "a", type: "nominal"},
@@ -155,7 +75,7 @@ describe('Legend', function() {
     });
 
     it('should return not override size of the symbol for shape channel', function() {
-      const symbol = legend.encode.symbols({field: 'a'}, {}, parseUnitModel({
+      const symbol = encode.symbols({field: 'a'}, {}, parseUnitModel({
           mark: "point",
           encoding: {
             x: {field: "a", type: "nominal"},
@@ -165,7 +85,7 @@ describe('Legend', function() {
     });
 
     it('should return specific width of the symbol', function() {
-      const symbol = legend.encode.symbols({field: 'a'}, {}, parseUnitModel({
+      const symbol = encode.symbols({field: 'a'}, {}, parseUnitModel({
           mark: "point",
           encoding: {
             x: {field: "a", type: "nominal"},
@@ -175,7 +95,7 @@ describe('Legend', function() {
     });
 
     it('should create legend for SVG path', function() {
-      const symbol = legend.encode.symbols({field: 'a'}, {}, parseUnitModel({
+      const symbol = encode.symbols({field: 'a'}, {}, parseUnitModel({
           mark: "point",
           encoding: {
             x: {field: "a", type: "nominal"},
@@ -192,7 +112,7 @@ describe('Legend', function() {
     });
 
     it('should override color for binned and continous scales', function() {
-      const symbol = legend.encode.symbols({field: 'a', bin: true}, {}, parseUnitModel({
+      const symbol = encode.symbols({field: 'a', bin: true}, {}, parseUnitModel({
           mark: "point",
           encoding: {
             x: {field: "a", type: "nominal"},
@@ -202,7 +122,7 @@ describe('Legend', function() {
     });
 
     it('should override size for binned and continous scales', function() {
-      const symbol = legend.encode.symbols({field: 'a', bin: true}, {}, parseUnitModel({
+      const symbol = encode.symbols({field: 'a', bin: true}, {}, parseUnitModel({
           mark: "point",
           encoding: {
             x: {field: "a", type: "nominal"},
@@ -212,7 +132,7 @@ describe('Legend', function() {
     });
 
     it('should override opacity for binned and continous scales', function() {
-      const symbol = legend.encode.symbols({field: 'a', bin: true}, {}, parseUnitModel({
+      const symbol = encode.symbols({field: 'a', bin: true}, {}, parseUnitModel({
           mark: "point",
           encoding: {
             x: {field: "a", type: "nominal"},
@@ -224,7 +144,7 @@ describe('Legend', function() {
 
   describe('encode.labels', function() {
     it('should return alignment value of the label', function() {
-      const label = legend.encode.labels({field: 'a'}, {}, parseUnitModel({
+      const label = encode.labels({field: 'a'}, {}, parseUnitModel({
           mark: "point",
           encoding: {
             x: {field: "a", type: "nominal"},
@@ -234,7 +154,7 @@ describe('Legend', function() {
     });
 
     it('should return color value of the label', function() {
-      const label = legend.encode.labels({field: 'a'}, {}, parseUnitModel({
+      const label = encode.labels({field: 'a'}, {}, parseUnitModel({
           mark: "point",
           encoding: {
             x: {field: "a", type: "nominal"},
@@ -244,7 +164,7 @@ describe('Legend', function() {
     });
 
     it('should return font of the label', function() {
-      const label = legend.encode.labels({field: 'a'}, {}, parseUnitModel({
+      const label = encode.labels({field: 'a'}, {}, parseUnitModel({
           mark: "point",
           encoding: {
             x: {field: "a", type: "nominal"},
@@ -254,7 +174,7 @@ describe('Legend', function() {
     });
 
     it('should return font size of the label', function() {
-      const label = legend.encode.labels({field: 'a'}, {}, parseUnitModel({
+      const label = encode.labels({field: 'a'}, {}, parseUnitModel({
           mark: "point",
           encoding: {
             x: {field: "a", type: "nominal"},
@@ -264,7 +184,7 @@ describe('Legend', function() {
     });
 
     it('should return baseline of the label', function() {
-      const label = legend.encode.labels({field: 'a'}, {}, parseUnitModel({
+      const label = encode.labels({field: 'a'}, {}, parseUnitModel({
           mark: "point",
           encoding: {
             x: {field: "a", type: "nominal"},
@@ -281,7 +201,7 @@ describe('Legend', function() {
           color: {field: "a", type: "temporal", timeUnit: "month"}}
       });
       const fieldDef = {field: 'a', type: TEMPORAL, timeUnit: TimeUnit.MONTH};
-      const label = legend.encode.labels(fieldDef, {}, model, COLOR);
+      const label = encode.labels(fieldDef, {}, model, COLOR);
       let expected = `timeFormat(datum.value, '%b')`;
       assert.deepEqual(label.text.signal, expected);
     });
@@ -294,7 +214,7 @@ describe('Legend', function() {
           color: {field: "a", type: "temporal", timeUnit: "quarter"}}
       });
       const fieldDef = {field: 'a', type: TEMPORAL, timeUnit: TimeUnit.QUARTER};
-      const label = legend.encode.labels(fieldDef, {}, model, COLOR);
+      const label = encode.labels(fieldDef, {}, model, COLOR);
       let expected = `'Q' + quarter(datum.value)`;
       assert.deepEqual(label.text.signal, expected);
     });
@@ -307,7 +227,7 @@ describe('Legend', function() {
           color: {field: "a", type: "quantitative", bin: true}}
       });
       const fieldDef = {field: 'a', type: QUANTITATIVE, bin: true};
-      const label = legend.encode.labels(fieldDef, {}, model, COLOR);
+      const label = encode.labels(fieldDef, {}, model, COLOR);
       let expected = {
         field: "value",
         scale: "color_bin_legend_label"
@@ -318,7 +238,7 @@ describe('Legend', function() {
 
   describe('encode.title', function() {
     it('should return color of the title', function() {
-      const title = legend.encode.title({field: 'a'}, {}, parseUnitModel({
+      const title = encode.title({field: 'a'}, {}, parseUnitModel({
           mark: "point",
           encoding: {
             x: {field: "a", type: "nominal"},
@@ -328,7 +248,7 @@ describe('Legend', function() {
     });
 
     it('should return font of the title', function() {
-      const title = legend.encode.title({field: 'a'}, {}, parseUnitModel({
+      const title = encode.title({field: 'a'}, {}, parseUnitModel({
           mark: "point",
           encoding: {
             x: {field: "a", type: "nominal"},
@@ -338,7 +258,7 @@ describe('Legend', function() {
     });
 
     it('should return font size of the title', function() {
-      const title = legend.encode.title({field: 'a'}, {}, parseUnitModel({
+      const title = encode.title({field: 'a'}, {}, parseUnitModel({
           mark: "point",
           encoding: {
             x: {field: "a", type: "nominal"},
@@ -348,7 +268,7 @@ describe('Legend', function() {
     });
 
     it('should return font weight of the title', function() {
-      const title = legend.encode.title({field: 'a'}, {}, parseUnitModel({
+      const title = encode.title({field: 'a'}, {}, parseUnitModel({
           mark: "point",
           encoding: {
             x: {field: "a", type: "nominal"},

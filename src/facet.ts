@@ -1,6 +1,14 @@
-import {FacetChannelDef} from './fielddef';
+import {FacetFieldDef} from './fielddef';
 
 export interface Facet {
-  row?: FacetChannelDef;
-  column?: FacetChannelDef;
+
+  /**
+   * Vertical facets for trellis plots.
+   */
+  row?: FacetFieldDef;
+
+  /**
+   * Horizontal facets for trellis plots.
+   */
+  column?: FacetFieldDef;
 }

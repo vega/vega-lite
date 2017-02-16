@@ -1,6 +1,7 @@
 {
+  "$schema": "https://vega.github.io/schema/vega-lite/v2.json",
   "data": {"url": "data/flights-2k.json"},
-  "layers": [
+  "layer": [
     {
       "mark": "bar",
       "encoding": {

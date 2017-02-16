@@ -1,10 +1,12 @@
 import {AxisConfig, defaultAxisConfig, defaultFacetAxisConfig} from './axis';
 import {LegendConfig, defaultLegendConfig} from './legend';
-import {MarkConfig, AreaConfig, BarConfig, LineConfig, PointConfig, TextConfig, TickConfig, RectConfig, RuleConfig} from './mark';
+import {MarkConfig, AreaConfig, BarConfig, LineConfig, PointConfig, RectConfig, RuleConfig, SymbolConfig, TextConfig, TickConfig} from './mark';
 import * as mark from './mark';
 import {ScaleConfig, defaultScaleConfig} from './scale';
+import {StackOffset} from './stack';
+import {Padding} from './spec';
+import {VgRangeScheme} from './vega.schema';
 import {SelectionConfig, defaultConfig as defaultSelectionConfig} from './selection';
-
 
 export interface CellConfig {
   width?: number;
@@ -77,13 +79,7 @@ export const defaultFacetConfig: FacetConfig = {
   cell: defaultFacetCellConfig
 };
 
-// FIXME refactor this
-export namespace AreaOverlay {
-  export const LINE: 'line' = 'line';
-  export const LINEPOINT: 'linepoint' = 'linepoint';
-  export const NONE: 'none' = 'none';
-}
-export type AreaOverlay = typeof AreaOverlay.LINE | typeof AreaOverlay.LINEPOINT | typeof AreaOverlay.NONE;
+export type AreaOverlay = 'line' | 'linepoint' | 'none';
 
 export interface OverlayConfig {
   /**
@@ -113,6 +109,8 @@ export const defaultOverlayConfig: OverlayConfig = {
   lineStyle: {}
 };
 
+export type RangeConfig = (number|string)[] | VgRangeScheme | {step: number};
+
 export interface Config {
   // TODO: add this back once we have top-down layout approach
   // width?: number;
@@ -126,6 +124,15 @@ export interface Config {
    * CSS color property to use as background of visualization. Default is `"transparent"`.
    */
   background?: string;
+
+  /**
+   * The default visualization padding, in pixels, from the edge of the visualization canvas to the data rectangle. This can be a single number or an object with `"top"`, `"left"`, `"right"`, `"bottom"` properties.
+   *
+   * __Default value__: `5`
+   *
+   * * @minimum 0
+   */
+  padding?: Padding;
 
   /**
    * D3 Number format for axis labels and text tables. For example "s" for SI units.
@@ -146,6 +153,9 @@ export interface Config {
   /** Cell Config */
   cell?: CellConfig;
 
+  /** Default stack offset for stackable mark. */
+  stack?: StackOffset;
+
   /** Mark Config */
   mark?: MarkConfig;
 
@@ -157,7 +167,7 @@ export interface Config {
   bar?: BarConfig;
 
   /** Circle-Specific Config */
-  circle?: PointConfig;
+  circle?: SymbolConfig;
 
   /** Line-Specific Config */
   line?: LineConfig;
@@ -172,7 +182,7 @@ export interface Config {
   rule?: RuleConfig;
 
   /** Square-Specific Config */
-  square?: PointConfig;
+  square?: SymbolConfig;
 
   /** Text-Specific Config */
   text?: TextConfig;
@@ -189,6 +199,14 @@ export interface Config {
   /** Scale Config */
   scale?: ScaleConfig;
 
+  /**
+   * Scale range config, or properties defining named range arrays
+   * that can be used within scale range definitions
+   * (such as `{"type": "ordinal", "range": "category"}`).
+   * For default range that Vega-Lite adopts from Vega, see https://github.com/vega/vega-parser#scale-range-properties.
+   */
+  range?: {[name: string]: RangeConfig};
+
   /** Axis Config */
   axis?: AxisConfig;
 
@@ -203,6 +221,7 @@ export interface Config {
 }
 
 export const defaultConfig: Config = {
+  padding: 5,
   numberFormat: 's',
   timeFormat: '%b %d, %Y',
   countTitle: 'Number of Records',

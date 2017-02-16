@@ -2,13 +2,13 @@
     "$schema": "http://json-schema.org/draft-04/schema#",
     "anyOf": [
         {
-            "$ref": "#/definitions/ExtendedUnitSpec"
+            "$ref": "#/definitions/GenericUnitSpec<string | MarkDef, EncodingWithFacet>"
         },
         {
-            "$ref": "#/definitions/FacetSpec"
+            "$ref": "#/definitions/GenericFacetSpec<GenericUnitSpec<string | MarkDef, EncodingWithFacet>>"
         },
         {
-            "$ref": "#/definitions/LayerSpec"
+            "$ref": "#/definitions/GenericLayerSpec<GenericUnitSpec<string | MarkDef, EncodingWithFacet>>"
         }
     ],
     "definitions": {
@@ -38,6 +38,7 @@
             "type": "string"
         },
         "AreaConfig": {
+            "additionalProperties": false,
             "properties": {
                 "color": {
                     "description": "Default color.",
@@ -82,10 +83,6 @@
                     "minimum": 0,
                     "type": "number"
                 },
-                "nominalColorScheme": {
-                    "description": "Default color scheme for nominal (categorical) data",
-                    "type": "string"
-                },
                 "opacity": {
                     "maximum": 1,
                     "minimum": 0,
@@ -94,13 +91,6 @@
                 "orient": {
                     "$ref": "#/definitions/Orient",
                     "description": "The orientation of a non-stacked bar, tick, area, and line charts.\nThe value is either horizontal (default) or vertical.\n- For bar, rule and tick, this determines whether the size of the bar and tick\nshould be applied to x or y dimension.\n- For area, this property determines the orient property of the Vega output.\n- For line, this property determines the sort order of the points in the line\nif `config.sortLineBy` is not specified.\nFor stacked charts, this is always determined by the orientation of the stack;\ntherefore explicitly specified value will be ignored."
-                },
-                "sequentialColorScheme": {
-                    "description": "Default color scheme for ordinal, quantitative and temporal field",
-                    "type": "string"
-                },
-                "stacked": {
-                    "$ref": "#/definitions/StackOffset"
                 },
                 "stroke": {
                     "description": "Default Stroke Color.  This has higher precedence than config.color",
@@ -144,6 +134,7 @@
             "type": "string"
         },
         "Axis": {
+            "additionalProperties": false,
             "properties": {
                 "axisColor": {
                     "description": "Color of axis line.",
@@ -153,14 +144,13 @@
                     "description": "Width of the axis line",
                     "type": "number"
                 },
-                "characterWidth": {
-                    "description": "Character width for automatically determining title max length.",
-                    "minimum": 0,
-                    "type": "number"
-                },
                 "domain": {
                     "description": "Whether to include the axis domain line.",
                     "type": "boolean"
+                },
+                "encode": {
+                    "$ref": "#/definitions/VgAxisEncode",
+                    "description": "Optional mark definitions for custom axis encoding."
                 },
                 "format": {
                     "description": "The formatting pattern for axis labels.",
@@ -193,10 +183,6 @@
                     "minimum": 0,
                     "type": "number"
                 },
-                "label": {
-                    "description": "Enable or disable labels.",
-                    "type": "boolean"
-                },
                 "labelAlign": {
                     "description": "Text alignment for the Label.",
                     "type": "string"
@@ -214,6 +200,22 @@
                 "labelMaxLength": {
                     "description": "Truncate labels that are too long.",
                     "minimum": 1,
+                    "type": "integer"
+                },
+                "labelPadding": {
+                    "description": "The padding, in pixels, between axis and text labels.",
+                    "type": "number"
+                },
+                "labels": {
+                    "description": "Enable or disable labels.",
+                    "type": "boolean"
+                },
+                "maxExtent": {
+                    "description": "Maximum extent, which determines the offset between axis ticks and labels.",
+                    "type": "number"
+                },
+                "minExtent": {
+                    "description": "Minimum extent, which determines the offset between axis ticks and labels.",
                     "type": "number"
                 },
                 "offset": {
@@ -224,8 +226,8 @@
                     "$ref": "#/definitions/AxisOrient",
                     "description": "The orientation of the axis. One of top, bottom, left or right. The orientation can be used to further specialize the axis type (e.g., a y axis oriented for the right edge of the chart)."
                 },
-                "properties": {
-                    "description": "Optional mark property definitions for custom axis styling."
+                "position": {
+                    "type": "number"
                 },
                 "shortTimeLabels": {
                     "description": "Whether month and day names should be abbreviated.",
@@ -234,11 +236,7 @@
                 "subdivide": {
                     "description": "If provided, sets the number of minor ticks between major ticks (the value 9 results in decimal subdivision). Only applicable for axes visualizing quantitative scales.",
                     "minimum": 0,
-                    "type": "number"
-                },
-                "tick": {
-                    "description": "Whether the axis should include ticks.",
-                    "type": "boolean"
+                    "type": "integer"
                 },
                 "tickColor": {
                     "description": "The color of the axis's tick.",
@@ -247,7 +245,7 @@
                 "tickCount": {
                     "description": "A desired number of ticks, for axes visualizing quantitative scales. The resulting number may be different so that values are \"nice\" (multiples of 2, 5, 10) and lie within the underlying scale's range.",
                     "minimum": 0,
-                    "type": "number"
+                    "type": "integer"
                 },
                 "tickLabelColor": {
                     "description": "The color of the tick label, can be in hex color code or regular color name.",
@@ -290,6 +288,10 @@
                     "description": "The width, in pixels, of ticks.",
                     "minimum": 0,
                     "type": "number"
+                },
+                "ticks": {
+                    "description": "Whether the axis should include ticks.",
+                    "type": "boolean"
                 },
                 "title": {
                     "description": "A title for the axis. Shows field name and its function by default.",
@@ -318,10 +320,14 @@
                 "titleMaxLength": {
                     "description": "Max length for axis title if the title is automatically generated from the field's description. By default, this is automatically based on cell size and characterWidth property.",
                     "minimum": 0,
-                    "type": "number"
+                    "type": "integer"
                 },
                 "titleOffset": {
                     "description": "A title offset value for the axis.",
+                    "type": "number"
+                },
+                "titlePadding": {
+                    "description": "The padding, in pixels, between title and axis.",
                     "type": "number"
                 },
                 "values": {
@@ -343,12 +349,13 @@
                 "zindex": {
                     "description": "A non-positive integer indicating z-index of the axis.\nIf zindex is 0, axes should be drawn behind all chart elements.\nTo put them in front, use zindex = 1.",
                     "minimum": 0,
-                    "type": "number"
+                    "type": "integer"
                 }
             },
             "type": "object"
         },
         "AxisConfig": {
+            "additionalProperties": false,
             "properties": {
                 "axisColor": {
                     "description": "Color of axis line.",
@@ -358,14 +365,13 @@
                     "description": "Width of the axis line",
                     "type": "number"
                 },
-                "characterWidth": {
-                    "description": "Character width for automatically determining title max length.",
-                    "minimum": 0,
-                    "type": "number"
-                },
                 "domain": {
                     "description": "Whether to include the axis domain line.",
                     "type": "boolean"
+                },
+                "encode": {
+                    "$ref": "#/definitions/VgAxisEncode",
+                    "description": "Optional mark definitions for custom axis encoding."
                 },
                 "grid": {
                     "description": "A flag indicate if gridlines should be created in addition to ticks. If `grid` is unspecified, the default value is `true` for ROW and COL. For X and Y, the default value is `true` for quantitative and time fields and `false` otherwise.",
@@ -394,10 +400,6 @@
                     "minimum": 0,
                     "type": "number"
                 },
-                "label": {
-                    "description": "Enable or disable labels.",
-                    "type": "boolean"
-                },
                 "labelAlign": {
                     "description": "Text alignment for the Label.",
                     "type": "string"
@@ -414,14 +416,30 @@
                 "labelMaxLength": {
                     "description": "Truncate labels that are too long.",
                     "minimum": 1,
+                    "type": "integer"
+                },
+                "labelPadding": {
+                    "description": "The padding, in pixels, between axis and text labels.",
+                    "type": "number"
+                },
+                "labels": {
+                    "description": "Enable or disable labels.",
+                    "type": "boolean"
+                },
+                "maxExtent": {
+                    "description": "Maximum extent, which determines the offset between axis ticks and labels.",
+                    "type": "number"
+                },
+                "minExtent": {
+                    "description": "Minimum extent, which determines the offset between axis ticks and labels.",
                     "type": "number"
                 },
                 "offset": {
                     "description": "The offset, in pixels, by which to displace the axis from the edge of the enclosing group or data rectangle.",
                     "type": "number"
                 },
-                "properties": {
-                    "description": "Optional mark property definitions for custom axis styling."
+                "position": {
+                    "type": "number"
                 },
                 "shortTimeLabels": {
                     "description": "Whether month and day names should be abbreviated.",
@@ -430,11 +448,7 @@
                 "subdivide": {
                     "description": "If provided, sets the number of minor ticks between major ticks (the value 9 results in decimal subdivision). Only applicable for axes visualizing quantitative scales.",
                     "minimum": 0,
-                    "type": "number"
-                },
-                "tick": {
-                    "description": "Whether the axis should include ticks.",
-                    "type": "boolean"
+                    "type": "integer"
                 },
                 "tickColor": {
                     "description": "The color of the axis's tick.",
@@ -443,7 +457,7 @@
                 "tickCount": {
                     "description": "A desired number of ticks, for axes visualizing quantitative scales. The resulting number may be different so that values are \"nice\" (multiples of 2, 5, 10) and lie within the underlying scale's range.",
                     "minimum": 0,
-                    "type": "number"
+                    "type": "integer"
                 },
                 "tickLabelColor": {
                     "description": "The color of the tick label, can be in hex color code or regular color name.",
@@ -487,6 +501,10 @@
                     "minimum": 0,
                     "type": "number"
                 },
+                "ticks": {
+                    "description": "Whether the axis should include ticks.",
+                    "type": "boolean"
+                },
                 "titleColor": {
                     "description": "Color of the title, can be in hex color code or regular color name.",
                     "type": "string"
@@ -510,16 +528,20 @@
                 "titleMaxLength": {
                     "description": "Max length for axis title if the title is automatically generated from the field's description. By default, this is automatically based on cell size and characterWidth property.",
                     "minimum": 0,
-                    "type": "number"
+                    "type": "integer"
                 },
                 "titleOffset": {
                     "description": "A title offset value for the axis.",
                     "type": "number"
                 },
+                "titlePadding": {
+                    "description": "The padding, in pixels, between title and axis.",
+                    "type": "number"
+                },
                 "zindex": {
                     "description": "A non-positive integer indicating z-index of the axis.\nIf zindex is 0, axes should be drawn behind all chart elements.\nTo put them in front, use zindex = 1.",
                     "minimum": 0,
-                    "type": "number"
+                    "type": "integer"
                 }
             },
             "type": "object"
@@ -534,6 +556,7 @@
             "type": "string"
         },
         "BarConfig": {
+            "additionalProperties": false,
             "properties": {
                 "binSpacing": {
                     "description": "Offset between bar for binned field.  Ideal value for this is either 0 (Preferred by statisticians) or 1 (Vega-Lite Default, D3 example style).",
@@ -603,10 +626,6 @@
                     "minimum": 0,
                     "type": "number"
                 },
-                "nominalColorScheme": {
-                    "description": "Default color scheme for nominal (categorical) data",
-                    "type": "string"
-                },
                 "opacity": {
                     "maximum": 1,
                     "minimum": 0,
@@ -615,13 +634,6 @@
                 "orient": {
                     "$ref": "#/definitions/Orient",
                     "description": "The orientation of a non-stacked bar, tick, area, and line charts.\nThe value is either horizontal (default) or vertical.\n- For bar, rule and tick, this determines whether the size of the bar and tick\nshould be applied to x or y dimension.\n- For area, this property determines the orient property of the Vega output.\n- For line, this property determines the sort order of the points in the line\nif `config.sortLineBy` is not specified.\nFor stacked charts, this is always determined by the orientation of the stack;\ntherefore explicitly specified value will be ignored."
-                },
-                "sequentialColorScheme": {
-                    "description": "Default color scheme for ordinal, quantitative and temporal field",
-                    "type": "string"
-                },
-                "stacked": {
-                    "$ref": "#/definitions/StackOffset"
                 },
                 "stroke": {
                     "description": "Default Stroke Color.  This has higher precedence than config.color",
@@ -656,7 +668,172 @@
             },
             "type": "object"
         },
+        "BaseSelectionDef": {
+            "additionalProperties": false,
+            "properties": {
+                "bind": {
+                    "anyOf": [
+                        {
+                            "additionalProperties": false,
+                            "properties": {
+                                "element": {
+                                    "type": "string"
+                                },
+                                "input": {
+                                    "enum": [
+                                        "checkbox"
+                                    ],
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "input"
+                            ],
+                            "type": "object"
+                        },
+                        {
+                            "additionalProperties": false,
+                            "properties": {
+                                "element": {
+                                    "type": "string"
+                                },
+                                "input": {
+                                    "enum": [
+                                        "radio"
+                                    ],
+                                    "type": "string"
+                                },
+                                "options": {
+                                    "items": {
+                                        "type": "string"
+                                    },
+                                    "type": "array"
+                                }
+                            },
+                            "required": [
+                                "input",
+                                "options"
+                            ],
+                            "type": "object"
+                        },
+                        {
+                            "additionalProperties": false,
+                            "properties": {
+                                "element": {
+                                    "type": "string"
+                                },
+                                "input": {
+                                    "enum": [
+                                        "select"
+                                    ],
+                                    "type": "string"
+                                },
+                                "options": {
+                                    "items": {
+                                        "type": "string"
+                                    },
+                                    "type": "array"
+                                }
+                            },
+                            "required": [
+                                "input",
+                                "options"
+                            ],
+                            "type": "object"
+                        },
+                        {
+                            "additionalProperties": false,
+                            "properties": {
+                                "element": {
+                                    "type": "string"
+                                },
+                                "input": {
+                                    "enum": [
+                                        "range"
+                                    ],
+                                    "type": "string"
+                                },
+                                "max": {
+                                    "type": "number"
+                                },
+                                "min": {
+                                    "type": "number"
+                                },
+                                "step": {
+                                    "type": "number"
+                                }
+                            },
+                            "required": [
+                                "input"
+                            ],
+                            "type": "object"
+                        },
+                        {
+                            "additionalProperties": false,
+                            "properties": {
+                                "element": {
+                                    "type": "string"
+                                },
+                                "input": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "input"
+                            ],
+                            "type": "object"
+                        },
+                        {
+                            "$ref": "#/definitions/Dict<VgBinding>"
+                        },
+                        {
+                            "enum": [
+                                "scales"
+                            ],
+                            "type": "string"
+                        }
+                    ]
+                },
+                "encodings": {
+                    "items": {
+                        "type": "string"
+                    },
+                    "type": "array"
+                },
+                "fields": {
+                    "items": {
+                        "type": "string"
+                    },
+                    "type": "array"
+                },
+                "nearest": {
+                    "type": "boolean"
+                },
+                "on": {
+                },
+                "toggle": {
+                    "type": [
+                        "string",
+                        "boolean"
+                    ]
+                },
+                "translate": {
+                    "type": [
+                        "string",
+                        "boolean"
+                    ]
+                },
+                "zoom": {
+                    "type": [
+                        "string",
+                        "boolean"
+                    ]
+                }
+            },
+            "type": "object"
+        },
         "Bin": {
+            "additionalProperties": false,
             "description": "Binning properties or boolean flag for determining whether to bin data or not.",
             "properties": {
                 "base": {
@@ -705,6 +882,7 @@
             "type": "object"
         },
         "CellConfig": {
+            "additionalProperties": false,
             "properties": {
                 "clip": {
                     "type": "boolean"
@@ -749,78 +927,8 @@
             },
             "type": "object"
         },
-        "ChannelDefWithLegend": {
-            "properties": {
-                "aggregate": {
-                    "$ref": "#/definitions/AggregateOp",
-                    "description": "Aggregation function for the field\n(e.g., `mean`, `sum`, `median`, `min`, `max`, `count`)."
-                },
-                "bin": {
-                    "anyOf": [
-                        {
-                            "$ref": "#/definitions/Bin"
-                        },
-                        {
-                            "type": "boolean"
-                        }
-                    ],
-                    "description": "Flag for binning a `quantitative` field, or a bin property object\nfor binning parameters."
-                },
-                "field": {
-                    "description": "Name of the field from which to pull a data value.",
-                    "type": "string"
-                },
-                "legend": {
-                    "anyOf": [
-                        {
-                            "$ref": "#/definitions/Legend"
-                        },
-                        {
-                            "type": "null"
-                        }
-                    ]
-                },
-                "scale": {
-                    "$ref": "#/definitions/Scale"
-                },
-                "sort": {
-                    "anyOf": [
-                        {
-                            "$ref": "#/definitions/SortField"
-                        },
-                        {
-                            "enum": [
-                                "ascending",
-                                "descending"
-                            ],
-                            "type": "string"
-                        }
-                    ]
-                },
-                "timeUnit": {
-                    "$ref": "#/definitions/TimeUnit",
-                    "description": "Time unit for a `temporal` field  (e.g., `year`, `yearmonth`, `month`, `hour`)."
-                },
-                "title": {
-                    "description": "Title for axis or legend.",
-                    "type": "string"
-                },
-                "type": {
-                    "$ref": "#/definitions/Type",
-                    "description": "The encoded field's type of measurement. This can be either a full type\nname (`\"quantitative\"`, `\"temporal\"`, `\"ordinal\"`,  and `\"nominal\"`)\nor an initial character of the type name (`\"Q\"`, `\"T\"`, `\"O\"`, `\"N\"`).\nThis property is case insensitive."
-                },
-                "value": {
-                    "description": "A constant value in visual domain.",
-                    "type": [
-                        "string",
-                        "number",
-                        "boolean"
-                    ]
-                }
-            },
-            "type": "object"
-        },
         "Config": {
+            "additionalProperties": false,
             "properties": {
                 "area": {
                     "$ref": "#/definitions/AreaConfig",
@@ -843,7 +951,7 @@
                     "description": "Cell Config"
                 },
                 "circle": {
-                    "$ref": "#/definitions/PointConfig",
+                    "$ref": "#/definitions/SymbolConfig",
                     "description": "Circle-Specific Config"
                 },
                 "countTitle": {
@@ -874,9 +982,85 @@
                     "$ref": "#/definitions/OverlayConfig",
                     "description": "Mark Overlay Config"
                 },
+                "padding": {
+                    "anyOf": [
+                        {
+                            "additionalProperties": false,
+                            "properties": {
+                                "bottom": {
+                                    "type": "number"
+                                },
+                                "left": {
+                                    "type": "number"
+                                },
+                                "right": {
+                                    "type": "number"
+                                },
+                                "top": {
+                                    "type": "number"
+                                }
+                            },
+                            "type": "object"
+                        },
+                        {
+                            "type": "number"
+                        }
+                    ],
+                    "description": "The default visualization padding, in pixels, from the edge of the visualization canvas to the data rectangle. This can be a single number or an object with `\"top\"`, `\"left\"`, `\"right\"`, `\"bottom\"` properties.\n\n__Default value__: `5`\n\n* @minimum 0"
+                },
                 "point": {
                     "$ref": "#/definitions/PointConfig",
                     "description": "Point-Specific Config"
+                },
+                "range": {
+                    "additionalProperties": {
+                        "anyOf": [
+                            {
+                                "additionalProperties": false,
+                                "properties": {
+                                    "count": {
+                                        "type": "number"
+                                    },
+                                    "extent": {
+                                        "items": {
+                                            "type": "number"
+                                        },
+                                        "type": "array"
+                                    },
+                                    "scheme": {
+                                        "type": "string"
+                                    }
+                                },
+                                "required": [
+                                    "scheme"
+                                ],
+                                "type": "object"
+                            },
+                            {
+                                "items": {
+                                    "type": [
+                                        "string",
+                                        "number"
+                                    ]
+                                },
+                                "type": "array"
+                            },
+                            {
+                                "additionalProperties": false,
+                                "properties": {
+                                    "step": {
+                                        "type": "number"
+                                    }
+                                },
+                                "required": [
+                                    "step"
+                                ],
+                                "type": "object"
+                            }
+                        ]
+                    },
+                    "description": "Scale range config, or properties defining named range arrays\nthat can be used within scale range definitions\n(such as `{\"type\": \"ordinal\", \"range\": \"category\"}`).\nFor default range that Vega-Lite adopts from Vega, see https://github.com/vega/vega-parser#scale-range-properties.",
+                    "type": "object"
                 },
                 "rect": {
                     "$ref": "#/definitions/RectConfig",
@@ -890,9 +1074,17 @@
                     "$ref": "#/definitions/ScaleConfig",
                     "description": "Scale Config"
                 },
+                "selection": {
+                    "$ref": "#/definitions/SelectionConfig",
+                    "description": "Selection Config"
+                },
                 "square": {
-                    "$ref": "#/definitions/PointConfig",
+                    "$ref": "#/definitions/SymbolConfig",
                     "description": "Square-Specific Config"
+                },
+                "stack": {
+                    "$ref": "#/definitions/StackOffset",
+                    "description": "Default stack offset for stackable mark."
                 },
                 "text": {
                     "$ref": "#/definitions/TextConfig",
@@ -913,33 +1105,15 @@
             },
             "type": "object"
         },
-        "Data": {
-            "properties": {
-                "format": {
-                    "$ref": "#/definitions/DataFormat",
-                    "description": "An object that specifies the format for the data file or values."
-                },
-                "url": {
-                    "description": "A URL from which to load the data set. Use the format.type property\nto ensure the loaded data is correctly parsed.",
-                    "type": "string"
-                },
-                "values": {
-                    "description": "Pass array of objects instead of a url to a file.",
-                    "items": {
-                    },
-                    "type": "array"
-                }
-            },
-            "type": "object"
-        },
         "DataFormat": {
+            "additionalProperties": false,
             "properties": {
                 "feature": {
                     "description": "The name of the TopoJSON object set to convert to a GeoJSON feature collection.\nFor example, in a map of the world, there may be an object set named `\"countries\"`.\nUsing the feature property, we can extract this set and generate a GeoJSON feature object for each country.",
                     "type": "string"
                 },
                 "mesh": {
-                    "description": "The name of the TopoJSON object set to convert to a mesh.\nSimilar to the `feature` option, `mesh` extracts a named TopoJSON object set.\nUnlike the `feature` option, the corresponding geo data is returned as a single, unified mesh instance, not as individual GeoJSON features.\nExtracting a mesh is useful for more efficiently drawing borders or other geographic elements that you do not need to associate with specific regions such as individual countries, states or counties.",
+                    "description": "The name of the TopoJSON object set to convert to a mesh.\nSimilar to the `feature` option, `mesh` extracts a named TopoJSON object set.\n  Unlike the `feature` option, the corresponding geo data is returned as a single, unified mesh instance, not as individual GeoJSON features.\nExtracting a mesh is useful for more efficiently drawing borders or other geographic elements that you do not need to associate with specific regions such as individual countries, states or counties.",
                     "type": "string"
                 },
                 "parse": {
@@ -966,13 +1140,14 @@
             "type": "string"
         },
         "DateTime": {
+            "additionalProperties": false,
             "description": "Object for defining datetime in Vega-Lite Filter.\nIf both month and quarter are provided, month has higher precedence.\n`day` cannot be combined with other date.\nWe accept string for month and day names.",
             "properties": {
                 "date": {
                     "description": "Integer value representing the date from 1-31.",
                     "maximum": 31,
                     "minimum": 1,
-                    "type": "number"
+                    "type": "integer"
                 },
                 "day": {
                     "description": "Value representing the day of week.  This can be one of: (1) integer value -- `1` represents Monday; (2) case-insensitive day name (e.g., `\"Monday\"`);  (3) case-insensitive, 3-character short day name (e.g., `\"Mon\"`).   <br/> **Warning:** A DateTime definition object with `day`** should not be combined with `year`, `quarter`, `month`, or `date`.",
@@ -985,19 +1160,19 @@
                     "description": "Integer value representing the hour of day from 0-23.",
                     "maximum": 23,
                     "minimum": 0,
-                    "type": "number"
+                    "type": "integer"
                 },
                 "milliseconds": {
                     "description": "Integer value representing millisecond segment of a time.",
                     "maximum": 999,
                     "minimum": 0,
-                    "type": "number"
+                    "type": "integer"
                 },
                 "minutes": {
                     "description": "Integer value representing minute segment of a time from 0-59.",
                     "maximum": 59,
                     "minimum": 0,
-                    "type": "number"
+                    "type": "integer"
                 },
                 "month": {
                     "description": "One of: (1) integer value representing the month from `1`-`12`. `1` represents January;  (2) case-insensitive month name (e.g., `\"January\"`);  (3) case-insensitive, 3-character short month name (e.g., `\"Jan\"`).",
@@ -1010,35 +1185,49 @@
                     "description": "Integer value representing the quarter of the year (from 1-4).",
                     "maximum": 4,
                     "minimum": 1,
-                    "type": "number"
+                    "type": "integer"
                 },
                 "seconds": {
                     "description": "Integer value representing second segment of a time from 0-59.",
                     "maximum": 59,
                     "minimum": 0,
-                    "type": "number"
+                    "type": "integer"
                 },
                 "year": {
                     "description": "Integer value representing the year.",
-                    "type": "number"
+                    "type": "integer"
                 }
             },
             "type": "object"
         },
-        "Dict<SelectionSpec>": {
+        "Dict<SelectionDef>": {
             "additionalProperties": {
                 "$ref": "#/definitions/T"
             },
             "type": "object"
         },
-        "Encoding": {
+        "Dict<VgBinding>": {
+            "additionalProperties": {
+                "$ref": "#/definitions/T"
+            },
+            "type": "object"
+        },
+        "EncodingWithFacet": {
+            "additionalProperties": false,
             "properties": {
                 "color": {
-                    "$ref": "#/definitions/ChannelDefWithLegend",
+                    "anyOf": [
+                        {
+                            "$ref": "#/definitions/LegendFieldDef"
+                        },
+                        {
+                            "$ref": "#/definitions/ValueDef<string>"
+                        }
+                    ],
                     "description": "Color of the marks – either fill or stroke color based on mark type.\n(By default, fill color for `area`, `bar`, `tick`, `text`, `circle`, and `square` /\nstroke color for `line` and `point`.)"
                 },
                 "column": {
-                    "$ref": "#/definitions/PositionChannelDef",
+                    "$ref": "#/definitions/PositionFieldDef",
                     "description": "Horizontal facets for trellis plots."
                 },
                 "detail": {
@@ -1055,21 +1244,25 @@
                     ],
                     "description": "Additional levels of detail for grouping data in aggregate views and\nin line and area marks without mapping data to a specific visual channel."
                 },
-                "label": {
-                    "$ref": "#/definitions/FieldDef"
-                },
                 "opacity": {
-                    "$ref": "#/definitions/ChannelDefWithLegend",
+                    "anyOf": [
+                        {
+                            "$ref": "#/definitions/LegendFieldDef"
+                        },
+                        {
+                            "$ref": "#/definitions/ValueDef<number>"
+                        }
+                    ],
                     "description": "Opacity of the marks – either can be a value or in a range."
                 },
                 "order": {
                     "anyOf": [
                         {
-                            "$ref": "#/definitions/OrderChannelDef"
+                            "$ref": "#/definitions/OrderFieldDef"
                         },
                         {
                             "items": {
-                                "$ref": "#/definitions/OrderChannelDef"
+                                "$ref": "#/definitions/OrderFieldDef"
                             },
                             "type": "array"
                         }
@@ -1077,41 +1270,91 @@
                     "description": "stack order for stacked marks or order of data points in line marks."
                 },
                 "row": {
-                    "$ref": "#/definitions/PositionChannelDef",
+                    "$ref": "#/definitions/PositionFieldDef",
                     "description": "Vertical facets for trellis plots."
                 },
                 "shape": {
-                    "$ref": "#/definitions/ChannelDefWithLegend",
+                    "anyOf": [
+                        {
+                            "$ref": "#/definitions/LegendFieldDef"
+                        },
+                        {
+                            "$ref": "#/definitions/ValueDef<string>"
+                        }
+                    ],
                     "description": "The symbol's shape (only for `point` marks). The supported values are\n`\"circle\"` (default), `\"square\"`, `\"cross\"`, `\"diamond\"`, `\"triangle-up\"`,\nor `\"triangle-down\"`, or else a custom SVG path string."
                 },
                 "size": {
-                    "$ref": "#/definitions/ChannelDefWithLegend",
+                    "anyOf": [
+                        {
+                            "$ref": "#/definitions/LegendFieldDef"
+                        },
+                        {
+                            "$ref": "#/definitions/ValueDef<number>"
+                        }
+                    ],
                     "description": "Size of the mark.\n- For `point`, `square` and `circle`\n– the symbol size, or pixel area of the mark.\n- For `bar` and `tick` – the bar and tick's size.\n- For `text` – the text's font size.\n- Size is currently unsupported for `line` and `area`."
                 },
                 "text": {
-                    "$ref": "#/definitions/FieldDef",
+                    "anyOf": [
+                        {
+                            "$ref": "#/definitions/TextFieldDef"
+                        },
+                        {
+                            "$ref": "#/definitions/ValueDef<string | number>"
+                        }
+                    ],
                     "description": "Text of the `text` mark."
                 },
                 "x": {
-                    "$ref": "#/definitions/PositionChannelDef",
+                    "anyOf": [
+                        {
+                            "$ref": "#/definitions/PositionFieldDef"
+                        },
+                        {
+                            "$ref": "#/definitions/ValueDef<number>"
+                        }
+                    ],
                     "description": "X coordinates for `point`, `circle`, `square`,\n`line`, `rule`, `text`, and `tick`\n(or to width and height for `bar` and `area` marks)."
                 },
                 "x2": {
-                    "$ref": "#/definitions/FieldDef",
+                    "anyOf": [
+                        {
+                            "$ref": "#/definitions/FieldDef"
+                        },
+                        {
+                            "$ref": "#/definitions/ValueDef<number>"
+                        }
+                    ],
                     "description": "X2 coordinates for ranged `bar`, `rule`, `area`"
                 },
                 "y": {
-                    "$ref": "#/definitions/PositionChannelDef",
+                    "anyOf": [
+                        {
+                            "$ref": "#/definitions/PositionFieldDef"
+                        },
+                        {
+                            "$ref": "#/definitions/ValueDef<number>"
+                        }
+                    ],
                     "description": "Y coordinates for `point`, `circle`, `square`,\n`line`, `rule`, `text`, and `tick`\n(or to width and height for `bar` and `area` marks)."
                 },
                 "y2": {
-                    "$ref": "#/definitions/FieldDef",
+                    "anyOf": [
+                        {
+                            "$ref": "#/definitions/FieldDef"
+                        },
+                        {
+                            "$ref": "#/definitions/ValueDef<number>"
+                        }
+                    ],
                     "description": "Y2 coordinates for ranged `bar`, `rule`, `area`"
                 }
             },
             "type": "object"
         },
         "EqualFilter": {
+            "additionalProperties": false,
             "properties": {
                 "equal": {
                     "anyOf": [
@@ -1143,62 +1386,44 @@
             ],
             "type": "object"
         },
-        "ExtendedUnitSpec": {
-            "description": "Schema for a unit Vega-Lite specification, with the syntactic sugar extensions:\n- `row` and `column` are included in the encoding.\n- (Future) label, box plot\n\nNote: the spec could contain facet.",
+        "ExtendedScheme": {
+            "additionalProperties": false,
             "properties": {
-                "config": {
-                    "$ref": "#/definitions/Config",
-                    "description": "Configuration object"
-                },
-                "data": {
-                    "$ref": "#/definitions/Data",
-                    "description": "An object describing the data source"
-                },
-                "description": {
-                    "description": "An optional description of this mark for commenting purpose.\nThis property has no effect on the output visualization.",
-                    "type": "string"
-                },
-                "encoding": {
-                    "$ref": "#/definitions/Encoding",
-                    "description": "A key-value mapping between encoding channels and definition of fields."
-                },
-                "height": {
+                "count": {
                     "type": "number"
                 },
-                "mark": {
-                    "$ref": "#/definitions/Mark",
-                    "description": "The mark type.\nOne of `\"bar\"`, `\"circle\"`, `\"square\"`, `\"tick\"`, `\"line\"`,\n`\"area\"`, `\"point\"`, `\"rule\"`, and `\"text\"`."
+                "extent": {
+                    "items": {
+                        "type": "number"
+                    },
+                    "type": "array"
                 },
                 "name": {
-                    "description": "Name of the visualization for later reference.",
+                    "description": "Color scheme that determines output color of an ordinal/sequential color scale.",
                     "type": "string"
-                },
-                "selection": {
-                    "$ref": "#/definitions/Dict<SelectionSpec>",
-                    "description": "A key-value mapping between named selections and their definitions."
-                },
-                "transform": {
-                    "$ref": "#/definitions/Transform",
-                    "description": "An object describing filter and new field calculation."
-                },
-                "width": {
-                    "type": "number"
                 }
             },
+            "required": [
+                "name"
+            ],
             "type": "object"
         },
         "Facet": {
+            "additionalProperties": false,
             "properties": {
                 "column": {
-                    "$ref": "#/definitions/PositionChannelDef"
+                    "$ref": "#/definitions/PositionFieldDef",
+                    "description": "Horizontal facets for trellis plots."
                 },
                 "row": {
-                    "$ref": "#/definitions/PositionChannelDef"
+                    "$ref": "#/definitions/PositionFieldDef",
+                    "description": "Vertical facets for trellis plots."
                 }
             },
             "type": "object"
         },
         "FacetConfig": {
+            "additionalProperties": false,
             "properties": {
                 "axis": {
                     "$ref": "#/definitions/AxisConfig",
@@ -1216,6 +1441,7 @@
             "type": "object"
         },
         "FacetGridConfig": {
+            "additionalProperties": false,
             "properties": {
                 "color": {
                     "type": "string"
@@ -1229,49 +1455,9 @@
             },
             "type": "object"
         },
-        "FacetSpec": {
-            "properties": {
-                "config": {
-                    "$ref": "#/definitions/Config",
-                    "description": "Configuration object"
-                },
-                "data": {
-                    "$ref": "#/definitions/Data",
-                    "description": "An object describing the data source"
-                },
-                "description": {
-                    "description": "An optional description of this mark for commenting purpose.\nThis property has no effect on the output visualization.",
-                    "type": "string"
-                },
-                "facet": {
-                    "$ref": "#/definitions/Facet"
-                },
-                "name": {
-                    "description": "Name of the visualization for later reference.",
-                    "type": "string"
-                },
-                "spec": {
-                    "anyOf": [
-                        {
-                            "$ref": "#/definitions/UnitSpec"
-                        },
-                        {
-                            "$ref": "#/definitions/LayerSpec"
-                        }
-                    ]
-                },
-                "transform": {
-                    "$ref": "#/definitions/Transform",
-                    "description": "An object describing filter and new field calculation."
-                }
-            },
-            "required": [
-                "facet",
-                "spec"
-            ],
-            "type": "object"
-        },
         "FieldDef": {
+            "additionalProperties": false,
+            "description": "Definition object for a data field, its type and transformation of an encoding channel.",
             "properties": {
                 "aggregate": {
                     "$ref": "#/definitions/AggregateOp",
@@ -1303,14 +1489,6 @@
                 "type": {
                     "$ref": "#/definitions/Type",
                     "description": "The encoded field's type of measurement. This can be either a full type\nname (`\"quantitative\"`, `\"temporal\"`, `\"ordinal\"`,  and `\"nominal\"`)\nor an initial character of the type name (`\"Q\"`, `\"T\"`, `\"O\"`, `\"N\"`).\nThis property is case insensitive."
-                },
-                "value": {
-                    "description": "A constant value in visual domain.",
-                    "type": [
-                        "string",
-                        "number",
-                        "boolean"
-                    ]
                 }
             },
             "type": "object"
@@ -1323,6 +1501,7 @@
             "type": "string"
         },
         "Formula": {
+            "additionalProperties": false,
             "description": "Formula object for calculate.",
             "properties": {
                 "as": {
@@ -1340,6 +1519,270 @@
             ],
             "type": "object"
         },
+        "GenericFacetSpec<GenericUnitSpec<string | MarkDef, EncodingWithFacet>>": {
+            "additionalProperties": false,
+            "properties": {
+                "$schema": {
+                    "description": "URL to JSON schema for this Vega-Lite specification.",
+                    "format": "uri",
+                    "type": "string"
+                },
+                "config": {
+                    "$ref": "#/definitions/Config",
+                    "description": "Configuration object"
+                },
+                "data": {
+                    "anyOf": [
+                        {
+                            "$ref": "#/definitions/UrlData"
+                        },
+                        {
+                            "$ref": "#/definitions/InlineData"
+                        }
+                    ],
+                    "description": "An object describing the data source"
+                },
+                "description": {
+                    "description": "An optional description of this mark for commenting purpose.\nThis property has no effect on the output visualization.",
+                    "type": "string"
+                },
+                "facet": {
+                    "$ref": "#/definitions/Facet"
+                },
+                "name": {
+                    "description": "Name of the visualization for later reference.",
+                    "type": "string"
+                },
+                "padding": {
+                    "anyOf": [
+                        {
+                            "additionalProperties": false,
+                            "properties": {
+                                "bottom": {
+                                    "type": "number"
+                                },
+                                "left": {
+                                    "type": "number"
+                                },
+                                "right": {
+                                    "type": "number"
+                                },
+                                "top": {
+                                    "type": "number"
+                                }
+                            },
+                            "type": "object"
+                        },
+                        {
+                            "type": "number"
+                        }
+                    ],
+                    "description": "The default visualization padding, in pixels, from the edge of the visualization canvas to the data rectangle. This can be a single number or an object with `\"top\"`, `\"left\"`, `\"right\"`, `\"bottom\"` properties.\n\n__Default value__: `5`",
+                    "minimum": 0
+                },
+                "spec": {
+                    "anyOf": [
+                        {
+                            "$ref": "#/definitions/GenericUnitSpec<string | MarkDef, EncodingWithFacet>"
+                        },
+                        {
+                            "$ref": "#/definitions/GenericLayerSpec<GenericUnitSpec<string | MarkDef, EncodingWithFacet>>"
+                        }
+                    ]
+                },
+                "transform": {
+                    "$ref": "#/definitions/Transform",
+                    "description": "An object describing filter and new field calculation."
+                }
+            },
+            "required": [
+                "facet",
+                "spec"
+            ],
+            "type": "object"
+        },
+        "GenericLayerSpec<GenericUnitSpec<string | MarkDef, EncodingWithFacet>>": {
+            "additionalProperties": false,
+            "properties": {
+                "$schema": {
+                    "description": "URL to JSON schema for this Vega-Lite specification.",
+                    "format": "uri",
+                    "type": "string"
+                },
+                "config": {
+                    "$ref": "#/definitions/Config",
+                    "description": "Configuration object"
+                },
+                "data": {
+                    "anyOf": [
+                        {
+                            "$ref": "#/definitions/UrlData"
+                        },
+                        {
+                            "$ref": "#/definitions/InlineData"
+                        }
+                    ],
+                    "description": "An object describing the data source"
+                },
+                "description": {
+                    "description": "An optional description of this mark for commenting purpose.\nThis property has no effect on the output visualization.",
+                    "type": "string"
+                },
+                "height": {
+                    "type": "number"
+                },
+                "layer": {
+                    "description": "Unit specs that will be layered.",
+                    "items": {
+                        "anyOf": [
+                            {
+                                "$ref": "#/definitions/GenericUnitSpec<string | MarkDef, EncodingWithFacet>"
+                            },
+                            {
+                                "$ref": "#/definitions/GenericLayerSpec<GenericUnitSpec<string | MarkDef, EncodingWithFacet>>"
+                            }
+                        ]
+                    },
+                    "type": "array"
+                },
+                "name": {
+                    "description": "Name of the visualization for later reference.",
+                    "type": "string"
+                },
+                "padding": {
+                    "anyOf": [
+                        {
+                            "additionalProperties": false,
+                            "properties": {
+                                "bottom": {
+                                    "type": "number"
+                                },
+                                "left": {
+                                    "type": "number"
+                                },
+                                "right": {
+                                    "type": "number"
+                                },
+                                "top": {
+                                    "type": "number"
+                                }
+                            },
+                            "type": "object"
+                        },
+                        {
+                            "type": "number"
+                        }
+                    ],
+                    "description": "The default visualization padding, in pixels, from the edge of the visualization canvas to the data rectangle. This can be a single number or an object with `\"top\"`, `\"left\"`, `\"right\"`, `\"bottom\"` properties.\n\n__Default value__: `5`",
+                    "minimum": 0
+                },
+                "transform": {
+                    "$ref": "#/definitions/Transform",
+                    "description": "An object describing filter and new field calculation."
+                },
+                "width": {
+                    "type": "number"
+                }
+            },
+            "required": [
+                "layer"
+            ],
+            "type": "object"
+        },
+        "GenericUnitSpec<string | MarkDef, EncodingWithFacet>": {
+            "additionalProperties": false,
+            "properties": {
+                "$schema": {
+                    "description": "URL to JSON schema for this Vega-Lite specification.",
+                    "format": "uri",
+                    "type": "string"
+                },
+                "config": {
+                    "$ref": "#/definitions/Config",
+                    "description": "Configuration object"
+                },
+                "data": {
+                    "anyOf": [
+                        {
+                            "$ref": "#/definitions/UrlData"
+                        },
+                        {
+                            "$ref": "#/definitions/InlineData"
+                        }
+                    ],
+                    "description": "An object describing the data source"
+                },
+                "description": {
+                    "description": "An optional description of this mark for commenting purpose.\nThis property has no effect on the output visualization.",
+                    "type": "string"
+                },
+                "encoding": {
+                    "$ref": "#/definitions/EncodingWithFacet",
+                    "description": "A key-value mapping between encoding channels and definition of fields."
+                },
+                "height": {
+                    "type": "number"
+                },
+                "mark": {
+                    "anyOf": [
+                        {
+                            "$ref": "#/definitions/MarkDef"
+                        },
+                        {
+                            "type": "string"
+                        }
+                    ],
+                    "description": "The mark type.\nOne of `\"bar\"`, `\"circle\"`, `\"square\"`, `\"tick\"`, `\"line\"`,\n`\"area\"`, `\"point\"`, `\"rule\"`, and `\"text\"`."
+                },
+                "name": {
+                    "description": "Name of the visualization for later reference.",
+                    "type": "string"
+                },
+                "padding": {
+                    "anyOf": [
+                        {
+                            "additionalProperties": false,
+                            "properties": {
+                                "bottom": {
+                                    "type": "number"
+                                },
+                                "left": {
+                                    "type": "number"
+                                },
+                                "right": {
+                                    "type": "number"
+                                },
+                                "top": {
+                                    "type": "number"
+                                }
+                            },
+                            "type": "object"
+                        },
+                        {
+                            "type": "number"
+                        }
+                    ],
+                    "description": "The default visualization padding, in pixels, from the edge of the visualization canvas to the data rectangle. This can be a single number or an object with `\"top\"`, `\"left\"`, `\"right\"`, `\"bottom\"` properties.\n\n__Default value__: `5`",
+                    "minimum": 0
+                },
+                "selection": {
+                    "$ref": "#/definitions/Dict<SelectionDef>",
+                    "description": "A key-value mapping between selection names and definitions."
+                },
+                "transform": {
+                    "$ref": "#/definitions/Transform",
+                    "description": "An object describing filter and new field calculation."
+                },
+                "width": {
+                    "type": "number"
+                }
+            },
+            "required": [
+                "mark",
+                "encoding"
+            ],
+            "type": "object"
+        },
         "HorizontalAlign": {
             "enum": [
                 "center",
@@ -1347,6 +1790,21 @@
                 "right"
             ],
             "type": "string"
+        },
+        "InlineData": {
+            "additionalProperties": false,
+            "properties": {
+                "values": {
+                    "description": "Pass array of objects instead of a url to a file.",
+                    "items": {
+                    },
+                    "type": "array"
+                }
+            },
+            "required": [
+                "values"
+            ],
+            "type": "object"
         },
         "Interpolate": {
             "enum": [
@@ -1366,49 +1824,18 @@
             ],
             "type": "string"
         },
-        "LayerSpec": {
-            "properties": {
-                "config": {
-                    "$ref": "#/definitions/Config",
-                    "description": "Configuration object"
-                },
-                "data": {
-                    "$ref": "#/definitions/Data",
-                    "description": "An object describing the data source"
-                },
-                "description": {
-                    "description": "An optional description of this mark for commenting purpose.\nThis property has no effect on the output visualization.",
-                    "type": "string"
-                },
-                "height": {
-                    "type": "number"
-                },
-                "layers": {
-                    "description": "Unit specs that will be layered.",
-                    "items": {
-                        "$ref": "#/definitions/UnitSpec"
-                    },
-                    "type": "array"
-                },
-                "name": {
-                    "description": "Name of the visualization for later reference.",
-                    "type": "string"
-                },
-                "transform": {
-                    "$ref": "#/definitions/Transform",
-                    "description": "An object describing filter and new field calculation."
-                },
-                "width": {
-                    "type": "number"
-                }
-            },
-            "required": [
-                "layers"
-            ],
-            "type": "object"
-        },
         "Legend": {
+            "additionalProperties": false,
+            "description": "Properties of a legend or boolean flag for determining whether to show it.",
             "properties": {
+                "encode": {
+                    "$ref": "#/definitions/VgLegendEncode",
+                    "description": "Optional mark definitions for custom legend encoding."
+                },
+                "entryPadding": {
+                    "description": "Padding (in pixels) between legend entries in a symbol legend.",
+                    "type": "number"
+                },
                 "format": {
                     "description": "An optional formatting pattern for legend labels. Vega uses D3\\'s format pattern.",
                     "type": "string"
@@ -1469,11 +1896,8 @@
                     "description": "The padding, in pixels, between the legend and axis.",
                     "type": "number"
                 },
-                "properties": {
-                    "description": "Optional mark property definitions for custom legend styling."
-                },
                 "shape": {
-                    "$ref": "#/definitions/Shape"
+                    "type": "string"
                 },
                 "shortTimeLabels": {
                     "description": "Whether month names and weekday names should be abbreviated.",
@@ -1484,8 +1908,8 @@
                     "type": "string"
                 },
                 "symbolShape": {
-                    "$ref": "#/definitions/Shape",
-                    "description": "The shape of the legend symbol, can be the 'circle', 'square', 'cross', 'diamond',\n'triangle-up', 'triangle-down', or else a custom SVG path string."
+                    "description": "The shape of the legend symbol, can be the 'circle', 'square', 'cross', 'diamond',\n'triangle-up', 'triangle-down', or else a custom SVG path string.",
+                    "type": "string"
                 },
                 "symbolSize": {
                     "description": "The size of the legend symbol, in pixels.",
@@ -1494,6 +1918,10 @@
                 "symbolStrokeWidth": {
                     "description": "The width of the symbol's stroke.",
                     "minimum": 0,
+                    "type": "number"
+                },
+                "tickCount": {
+                    "description": "The number of ticks for legend.",
                     "type": "number"
                 },
                 "title": {
@@ -1518,6 +1946,10 @@
                         "string",
                         "number"
                     ]
+                },
+                "titlePadding": {
+                    "description": "The padding, in pixels, between title and legend.",
+                    "type": "number"
                 },
                 "type": {
                     "description": "The type of the legend. Use `symbol` to create a discrete legend and `gradient` for a continuous color gradient.",
@@ -1549,12 +1981,26 @@
                         }
                     ],
                     "description": "Explicitly set the visible legend values."
+                },
+                "zindex": {
+                    "description": "A non-positive integer indicating z-index of the legend.\nIf zindex is 0, legend should be drawn behind all chart elements.\nTo put them in front, use zindex = 1.",
+                    "minimum": 0,
+                    "type": "integer"
                 }
             },
             "type": "object"
         },
         "LegendConfig": {
+            "additionalProperties": false,
             "properties": {
+                "encode": {
+                    "$ref": "#/definitions/VgLegendEncode",
+                    "description": "Optional mark definitions for custom legend encoding."
+                },
+                "entryPadding": {
+                    "description": "Padding (in pixels) between legend entries in a symbol legend.",
+                    "type": "number"
+                },
                 "gradientHeight": {
                     "description": "The height of the gradient, in pixels.",
                     "type": "number"
@@ -1611,9 +2057,6 @@
                     "description": "The padding, in pixels, between the legend and axis.",
                     "type": "number"
                 },
-                "properties": {
-                    "description": "Optional mark property definitions for custom legend styling."
-                },
                 "shortTimeLabels": {
                     "description": "Whether month names and weekday names should be abbreviated.",
                     "type": "boolean"
@@ -1623,8 +2066,8 @@
                     "type": "string"
                 },
                 "symbolShape": {
-                    "$ref": "#/definitions/Shape",
-                    "description": "The shape of the legend symbol, can be the 'circle', 'square', 'cross', 'diamond',\n'triangle-up', 'triangle-down', or else a custom SVG path string."
+                    "description": "The shape of the legend symbol, can be the 'circle', 'square', 'cross', 'diamond',\n'triangle-up', 'triangle-down', or else a custom SVG path string.",
+                    "type": "string"
                 },
                 "symbolSize": {
                     "description": "The size of the legend symbol, in pixels.",
@@ -1633,6 +2076,10 @@
                 "symbolStrokeWidth": {
                     "description": "The width of the symbol's stroke.",
                     "minimum": 0,
+                    "type": "number"
+                },
+                "tickCount": {
+                    "description": "The number of ticks for legend.",
                     "type": "number"
                 },
                 "titleColor": {
@@ -1653,11 +2100,85 @@
                         "string",
                         "number"
                     ]
+                },
+                "titlePadding": {
+                    "description": "The padding, in pixels, between title and legend.",
+                    "type": "number"
+                },
+                "zindex": {
+                    "description": "A non-positive integer indicating z-index of the legend.\nIf zindex is 0, legend should be drawn behind all chart elements.\nTo put them in front, use zindex = 1.",
+                    "minimum": 0,
+                    "type": "integer"
+                }
+            },
+            "type": "object"
+        },
+        "LegendFieldDef": {
+            "additionalProperties": false,
+            "properties": {
+                "aggregate": {
+                    "$ref": "#/definitions/AggregateOp",
+                    "description": "Aggregation function for the field\n(e.g., `mean`, `sum`, `median`, `min`, `max`, `count`)."
+                },
+                "bin": {
+                    "anyOf": [
+                        {
+                            "$ref": "#/definitions/Bin"
+                        },
+                        {
+                            "type": "boolean"
+                        }
+                    ],
+                    "description": "Flag for binning a `quantitative` field, or a bin property object\nfor binning parameters."
+                },
+                "field": {
+                    "description": "Name of the field from which to pull a data value.",
+                    "type": "string"
+                },
+                "legend": {
+                    "anyOf": [
+                        {
+                            "$ref": "#/definitions/Legend"
+                        },
+                        {
+                            "type": "null"
+                        }
+                    ]
+                },
+                "scale": {
+                    "$ref": "#/definitions/Scale"
+                },
+                "sort": {
+                    "anyOf": [
+                        {
+                            "$ref": "#/definitions/SortField"
+                        },
+                        {
+                            "enum": [
+                                "ascending",
+                                "descending"
+                            ],
+                            "type": "string"
+                        }
+                    ]
+                },
+                "timeUnit": {
+                    "$ref": "#/definitions/TimeUnit",
+                    "description": "Time unit for a `temporal` field  (e.g., `year`, `yearmonth`, `month`, `hour`)."
+                },
+                "title": {
+                    "description": "Title for axis or legend.",
+                    "type": "string"
+                },
+                "type": {
+                    "$ref": "#/definitions/Type",
+                    "description": "The encoded field's type of measurement. This can be either a full type\nname (`\"quantitative\"`, `\"temporal\"`, `\"ordinal\"`,  and `\"nominal\"`)\nor an initial character of the type name (`\"Q\"`, `\"T\"`, `\"O\"`, `\"N\"`).\nThis property is case insensitive."
                 }
             },
             "type": "object"
         },
         "LineConfig": {
+            "additionalProperties": false,
             "properties": {
                 "color": {
                     "description": "Default color.",
@@ -1702,10 +2223,6 @@
                     "minimum": 0,
                     "type": "number"
                 },
-                "nominalColorScheme": {
-                    "description": "Default color scheme for nominal (categorical) data",
-                    "type": "string"
-                },
                 "opacity": {
                     "maximum": 1,
                     "minimum": 0,
@@ -1714,13 +2231,6 @@
                 "orient": {
                     "$ref": "#/definitions/Orient",
                     "description": "The orientation of a non-stacked bar, tick, area, and line charts.\nThe value is either horizontal (default) or vertical.\n- For bar, rule and tick, this determines whether the size of the bar and tick\nshould be applied to x or y dimension.\n- For area, this property determines the orient property of the Vega output.\n- For line, this property determines the sort order of the points in the line\nif `config.sortLineBy` is not specified.\nFor stacked charts, this is always determined by the orientation of the stack;\ntherefore explicitly specified value will be ignored."
-                },
-                "sequentialColorScheme": {
-                    "description": "Default color scheme for ordinal, quantitative and temporal field",
-                    "type": "string"
-                },
-                "stacked": {
-                    "$ref": "#/definitions/StackOffset"
                 },
                 "stroke": {
                     "description": "Default Stroke Color.  This has higher precedence than config.color",
@@ -1756,11 +2266,11 @@
             "type": "object"
         },
         "Mark": {
+            "description": "All types of primitive marks.",
             "enum": [
                 "area",
                 "bar",
                 "circle",
-                "errorBar",
                 "line",
                 "point",
                 "rect",
@@ -1772,6 +2282,7 @@
             "type": "string"
         },
         "MarkConfig": {
+            "additionalProperties": false,
             "properties": {
                 "color": {
                     "description": "Default color.",
@@ -1816,10 +2327,6 @@
                     "minimum": 0,
                     "type": "number"
                 },
-                "nominalColorScheme": {
-                    "description": "Default color scheme for nominal (categorical) data",
-                    "type": "string"
-                },
                 "opacity": {
                     "maximum": 1,
                     "minimum": 0,
@@ -1828,13 +2335,6 @@
                 "orient": {
                     "$ref": "#/definitions/Orient",
                     "description": "The orientation of a non-stacked bar, tick, area, and line charts.\nThe value is either horizontal (default) or vertical.\n- For bar, rule and tick, this determines whether the size of the bar and tick\nshould be applied to x or y dimension.\n- For area, this property determines the orient property of the Vega output.\n- For line, this property determines the sort order of the points in the line\nif `config.sortLineBy` is not specified.\nFor stacked charts, this is always determined by the orientation of the stack;\ntherefore explicitly specified value will be ignored."
-                },
-                "sequentialColorScheme": {
-                    "description": "Default color scheme for ordinal, quantitative and temporal field",
-                    "type": "string"
-                },
-                "stacked": {
-                    "$ref": "#/definitions/StackOffset"
                 },
                 "stroke": {
                     "description": "Default Stroke Color.  This has higher precedence than config.color",
@@ -1869,7 +2369,35 @@
             },
             "type": "object"
         },
+        "MarkDef": {
+            "additionalProperties": false,
+            "properties": {
+                "interpolate": {
+                    "$ref": "#/definitions/Interpolate",
+                    "description": "The line interpolation method to use for line and area marks. One of the following:\n- `\"linear\"`: piecewise linear segments, as in a polyline.\n- `\"linear-closed\"`: close the linear segments to form a polygon.\n- `\"step\"`: alternate between horizontal and vertical segments, as in a step function.\n- `\"step-before\"`: alternate between vertical and horizontal segments, as in a step function.\n- `\"step-after\"`: alternate between horizontal and vertical segments, as in a step function.\n- `\"basis\"`: a B-spline, with control point duplication on the ends.\n- `\"basis-open\"`: an open B-spline; may not intersect the start or end.\n- `\"basis-closed\"`: a closed B-spline, as in a loop.\n- `\"cardinal\"`: a Cardinal spline, with control point duplication on the ends.\n- `\"cardinal-open\"`: an open Cardinal spline; may not intersect the start or end, but will intersect other control points.\n- `\"cardinal-closed\"`: a closed Cardinal spline, as in a loop.\n- `\"bundle\"`: equivalent to basis, except the tension parameter is used to straighten the spline.\n- `\"monotone\"`: cubic interpolation that preserves monotonicity in y."
+                },
+                "orient": {
+                    "$ref": "#/definitions/Orient",
+                    "description": "The orientation of a non-stacked bar, tick, area, and line charts.\nThe value is either horizontal (default) or vertical.\n- For bar, rule and tick, this determines whether the size of the bar and tick\nshould be applied to x or y dimension.\n- For area, this property determines the orient property of the Vega output.\n- For line, this property determines the sort order of the points in the line\nif `config.sortLineBy` is not specified.\nFor stacked charts, this is always determined by the orientation of the stack;\ntherefore explicitly specified value will be ignored."
+                },
+                "tension": {
+                    "description": "Depending on the interpolation type, sets the tension parameter (for line and area marks).",
+                    "maximum": 1,
+                    "minimum": 0,
+                    "type": "number"
+                },
+                "type": {
+                    "$ref": "#/definitions/Mark",
+                    "description": "The mark type.\nOne of `\"bar\"`, `\"circle\"`, `\"square\"`, `\"tick\"`, `\"line\"`,\n`\"area\"`, `\"point\"`, `\"rule\"`, and `\"text\"`."
+                }
+            },
+            "required": [
+                "type"
+            ],
+            "type": "object"
+        },
         "OneOfFilter": {
+            "additionalProperties": false,
             "properties": {
                 "field": {
                     "description": "Field to be filtered",
@@ -1904,7 +2432,8 @@
             ],
             "type": "object"
         },
-        "OrderChannelDef": {
+        "OrderFieldDef": {
+            "additionalProperties": false,
             "properties": {
                 "aggregate": {
                     "$ref": "#/definitions/AggregateOp",
@@ -1939,14 +2468,6 @@
                 "type": {
                     "$ref": "#/definitions/Type",
                     "description": "The encoded field's type of measurement. This can be either a full type\nname (`\"quantitative\"`, `\"temporal\"`, `\"ordinal\"`,  and `\"nominal\"`)\nor an initial character of the type name (`\"Q\"`, `\"T\"`, `\"O\"`, `\"N\"`).\nThis property is case insensitive."
-                },
-                "value": {
-                    "description": "A constant value in visual domain.",
-                    "type": [
-                        "string",
-                        "number",
-                        "boolean"
-                    ]
                 }
             },
             "type": "object"
@@ -1959,6 +2480,7 @@
             "type": "string"
         },
         "OverlayConfig": {
+            "additionalProperties": false,
             "properties": {
                 "area": {
                     "$ref": "#/definitions/AreaOverlay",
@@ -1980,6 +2502,7 @@
             "type": "object"
         },
         "PointConfig": {
+            "additionalProperties": false,
             "properties": {
                 "color": {
                     "description": "Default color.",
@@ -2034,10 +2557,6 @@
                     "minimum": 0,
                     "type": "number"
                 },
-                "nominalColorScheme": {
-                    "description": "Default color scheme for nominal (categorical) data",
-                    "type": "string"
-                },
                 "opacity": {
                     "maximum": 1,
                     "minimum": 0,
@@ -2047,48 +2566,14 @@
                     "$ref": "#/definitions/Orient",
                     "description": "The orientation of a non-stacked bar, tick, area, and line charts.\nThe value is either horizontal (default) or vertical.\n- For bar, rule and tick, this determines whether the size of the bar and tick\nshould be applied to x or y dimension.\n- For area, this property determines the orient property of the Vega output.\n- For line, this property determines the sort order of the points in the line\nif `config.sortLineBy` is not specified.\nFor stacked charts, this is always determined by the orientation of the stack;\ntherefore explicitly specified value will be ignored."
                 },
-                "sequentialColorScheme": {
-                    "description": "Default color scheme for ordinal, quantitative and temporal field",
-                    "type": "string"
-                },
                 "shape": {
-                    "anyOf": [
-                        {
-                            "enum": [
-                                "circle",
-                                "cross",
-                                "diamond",
-                                "square",
-                                "triangle-down",
-                                "triangle-up"
-                            ],
-                            "type": "string"
-                        },
-                        {
-                            "type": "string"
-                        }
-                    ],
-                    "description": "The default symbol shape to use. One of: `\"circle\"` (default), `\"square\"`, `\"cross\"`, `\"diamond\"`, `\"triangle-up\"`, or `\"triangle-down\"`, or a custom SVG path."
+                    "description": "The default symbol shape to use. One of: `\"circle\"` (default), `\"square\"`, `\"cross\"`, `\"diamond\"`, `\"triangle-up\"`, or `\"triangle-down\"`, or a custom SVG path.",
+                    "type": "string"
                 },
                 "shapes": {
                     "description": "The default collection of symbol shapes for mapping nominal fields to shapes of point marks (i.e., range of a `shape` scale).\nEach value should be one of: `\"circle\"`, `\"square\"`, `\"cross\"`, `\"diamond\"`, `\"triangle-up\"`, or `\"triangle-down\"`, or a custom SVG path.",
                     "items": {
-                        "anyOf": [
-                            {
-                                "enum": [
-                                    "circle",
-                                    "cross",
-                                    "diamond",
-                                    "square",
-                                    "triangle-down",
-                                    "triangle-up"
-                                ],
-                                "type": "string"
-                            },
-                            {
-                                "type": "string"
-                            }
-                        ]
+                        "type": "string"
                     },
                     "type": "array"
                 },
@@ -2096,9 +2581,6 @@
                     "description": "The pixel area each the point/circle/square.\nFor example: in the case of circles, the radius is determined in part by the square root of the size value.",
                     "minimum": 0,
                     "type": "number"
-                },
-                "stacked": {
-                    "$ref": "#/definitions/StackOffset"
                 },
                 "stroke": {
                     "description": "Default Stroke Color.  This has higher precedence than config.color",
@@ -2133,7 +2615,8 @@
             },
             "type": "object"
         },
-        "PositionChannelDef": {
+        "PositionFieldDef": {
+            "additionalProperties": false,
             "properties": {
                 "aggregate": {
                     "$ref": "#/definitions/AggregateOp",
@@ -2181,6 +2664,10 @@
                         }
                     ]
                 },
+                "stack": {
+                    "$ref": "#/definitions/StackOffset",
+                    "description": "Type of stacking offset if the field should be stacked.\n\"none\" or null, if the field should not be stacked."
+                },
                 "timeUnit": {
                     "$ref": "#/definitions/TimeUnit",
                     "description": "Time unit for a `temporal` field  (e.g., `year`, `yearmonth`, `month`, `hour`)."
@@ -2192,19 +2679,12 @@
                 "type": {
                     "$ref": "#/definitions/Type",
                     "description": "The encoded field's type of measurement. This can be either a full type\nname (`\"quantitative\"`, `\"temporal\"`, `\"ordinal\"`,  and `\"nominal\"`)\nor an initial character of the type name (`\"Q\"`, `\"T\"`, `\"O\"`, `\"N\"`).\nThis property is case insensitive."
-                },
-                "value": {
-                    "description": "A constant value in visual domain.",
-                    "type": [
-                        "string",
-                        "number",
-                        "boolean"
-                    ]
                 }
             },
             "type": "object"
         },
         "RangeFilter": {
+            "additionalProperties": false,
             "properties": {
                 "field": {
                     "description": "Field to be filtered",
@@ -2238,6 +2718,7 @@
             "type": "object"
         },
         "RectConfig": {
+            "additionalProperties": false,
             "properties": {
                 "color": {
                     "description": "Default color.",
@@ -2282,10 +2763,6 @@
                     "minimum": 0,
                     "type": "number"
                 },
-                "nominalColorScheme": {
-                    "description": "Default color scheme for nominal (categorical) data",
-                    "type": "string"
-                },
                 "opacity": {
                     "maximum": 1,
                     "minimum": 0,
@@ -2294,13 +2771,6 @@
                 "orient": {
                     "$ref": "#/definitions/Orient",
                     "description": "The orientation of a non-stacked bar, tick, area, and line charts.\nThe value is either horizontal (default) or vertical.\n- For bar, rule and tick, this determines whether the size of the bar and tick\nshould be applied to x or y dimension.\n- For area, this property determines the orient property of the Vega output.\n- For line, this property determines the sort order of the points in the line\nif `config.sortLineBy` is not specified.\nFor stacked charts, this is always determined by the orientation of the stack;\ntherefore explicitly specified value will be ignored."
-                },
-                "sequentialColorScheme": {
-                    "description": "Default color scheme for ordinal, quantitative and temporal field",
-                    "type": "string"
-                },
-                "stacked": {
-                    "$ref": "#/definitions/StackOffset"
                 },
                 "stroke": {
                     "description": "Default Stroke Color.  This has higher precedence than config.color",
@@ -2336,6 +2806,7 @@
             "type": "object"
         },
         "RuleConfig": {
+            "additionalProperties": false,
             "properties": {
                 "color": {
                     "description": "Default color.",
@@ -2380,10 +2851,6 @@
                     "minimum": 0,
                     "type": "number"
                 },
-                "nominalColorScheme": {
-                    "description": "Default color scheme for nominal (categorical) data",
-                    "type": "string"
-                },
                 "opacity": {
                     "maximum": 1,
                     "minimum": 0,
@@ -2392,13 +2859,6 @@
                 "orient": {
                     "$ref": "#/definitions/Orient",
                     "description": "The orientation of a non-stacked bar, tick, area, and line charts.\nThe value is either horizontal (default) or vertical.\n- For bar, rule and tick, this determines whether the size of the bar and tick\nshould be applied to x or y dimension.\n- For area, this property determines the orient property of the Vega output.\n- For line, this property determines the sort order of the points in the line\nif `config.sortLineBy` is not specified.\nFor stacked charts, this is always determined by the orientation of the stack;\ntherefore explicitly specified value will be ignored."
-                },
-                "sequentialColorScheme": {
-                    "description": "Default color scheme for ordinal, quantitative and temporal field",
-                    "type": "string"
-                },
-                "stacked": {
-                    "$ref": "#/definitions/StackOffset"
                 },
                 "stroke": {
                     "description": "Default Stroke Color.  This has higher precedence than config.color",
@@ -2434,6 +2894,7 @@
             "type": "object"
         },
         "Scale": {
+            "additionalProperties": false,
             "properties": {
                 "clamp": {
                     "description": "If true, values that exceed the data domain are clamped to either the minimum or maximum range value",
@@ -2465,6 +2926,19 @@
                 "exponent": {
                     "description": "Sets the exponent of the scale transformation. For pow scale types only, otherwise ignored.",
                     "type": "number"
+                },
+                "interpolate": {
+                    "enum": [
+                        "cubehelix",
+                        "cubehelix-long",
+                        "hcl",
+                        "hcl-long",
+                        "hsl",
+                        "hsl-long",
+                        "lab",
+                        "rgb"
+                    ],
+                    "type": "string"
                 },
                 "nice": {
                     "description": "If specified, modifies the scale domain to use a more human-friendly value range. If specified as a true boolean, modifies the scale domain to use a more human-friendly number range (e.g., 7 instead of 6.96). If specified as a string, modifies the scale domain to use a more human-friendly value range. For time and utc scale types only, the nice value should be a string indicating the desired time interval.",
@@ -2511,6 +2985,9 @@
                                 "type": "number"
                             },
                             "type": "array"
+                        },
+                        {
+                            "type": "string"
                         }
                     ],
                     "description": "The range of the scale, representing the set of visual values. For numeric values, the range can take the form of a two-element array with minimum and maximum values. For ordinal or quantized data, the range may by an array of desired output values, which are mapped to elements in the specified domain."
@@ -2532,12 +3009,19 @@
                     "type": "boolean"
                 },
                 "scheme": {
-                    "description": "Color scheme that determines output color of an index/ordinal/sequential color scale.",
-                    "type": "string"
+                    "anyOf": [
+                        {
+                            "$ref": "#/definitions/ExtendedScheme"
+                        },
+                        {
+                            "type": "string"
+                        }
+                    ],
+                    "description": "Range scheme (e.g., color schemes such as \"category10\" or \"viridis\")."
                 },
                 "spacing": {
                     "description": "(For `row` and `column` only) A pixel value for padding between cells in the trellis plots.",
-                    "type": "number"
+                    "type": "integer"
                 },
                 "type": {
                     "$ref": "#/definitions/ScaleType"
@@ -2554,6 +3038,7 @@
             "type": "object"
         },
         "ScaleConfig": {
+            "additionalProperties": false,
             "properties": {
                 "bandPaddingInner": {
                     "description": "Default inner padding for `x` and `y` band-ordinal scales.",
@@ -2574,7 +3059,7 @@
                 "facetSpacing": {
                     "description": "Default spacing between faceted plots.",
                     "minimum": 0,
-                    "type": "number"
+                    "type": "integer"
                 },
                 "pointPadding": {
                     "description": "Default outer padding for `x` and `y` point-ordinal scales.",
@@ -2613,7 +3098,6 @@
         "ScaleType": {
             "enum": [
                 "band",
-                "index",
                 "linear",
                 "log",
                 "ordinal",
@@ -2626,18 +3110,28 @@
             ],
             "type": "string"
         },
-        "Shape": {
-            "enum": [
-                "circle",
-                "cross",
-                "diamond",
-                "square",
-                "triangle-down",
-                "triangle-up"
+        "SelectionConfig": {
+            "additionalProperties": false,
+            "properties": {
+                "interval": {
+                    "$ref": "#/definitions/BaseSelectionDef"
+                },
+                "multi": {
+                    "$ref": "#/definitions/BaseSelectionDef"
+                },
+                "single": {
+                    "$ref": "#/definitions/BaseSelectionDef"
+                }
+            },
+            "required": [
+                "single",
+                "multi",
+                "interval"
             ],
-            "type": "string"
+            "type": "object"
         },
         "SortField": {
+            "additionalProperties": false,
             "properties": {
                 "field": {
                     "description": "The field name to aggregate over.",
@@ -2673,12 +3167,117 @@
             ],
             "type": "string"
         },
+        "SymbolConfig": {
+            "additionalProperties": false,
+            "properties": {
+                "color": {
+                    "description": "Default color.",
+                    "type": "string"
+                },
+                "fill": {
+                    "description": "Default Fill Color.  This has higher precedence than config.color",
+                    "type": "string"
+                },
+                "fillOpacity": {
+                    "maximum": 1,
+                    "minimum": 0,
+                    "type": "number"
+                },
+                "filled": {
+                    "description": "Whether the shape\\'s color should be used as fill color instead of stroke color.\nThis is only applicable for \"bar\", \"point\", and \"area\".\nAll marks except \"point\" marks are filled by default.\nSee Mark Documentation (http://vega.github.io/vega-lite/docs/marks.html)\nfor usage example.",
+                    "type": "boolean"
+                },
+                "interpolate": {
+                    "$ref": "#/definitions/Interpolate",
+                    "description": "The line interpolation method to use for line and area marks. One of the following:\n- `\"linear\"`: piecewise linear segments, as in a polyline.\n- `\"linear-closed\"`: close the linear segments to form a polygon.\n- `\"step\"`: alternate between horizontal and vertical segments, as in a step function.\n- `\"step-before\"`: alternate between vertical and horizontal segments, as in a step function.\n- `\"step-after\"`: alternate between horizontal and vertical segments, as in a step function.\n- `\"basis\"`: a B-spline, with control point duplication on the ends.\n- `\"basis-open\"`: an open B-spline; may not intersect the start or end.\n- `\"basis-closed\"`: a closed B-spline, as in a loop.\n- `\"cardinal\"`: a Cardinal spline, with control point duplication on the ends.\n- `\"cardinal-open\"`: an open Cardinal spline; may not intersect the start or end, but will intersect other control points.\n- `\"cardinal-closed\"`: a closed Cardinal spline, as in a loop.\n- `\"bundle\"`: equivalent to basis, except the tension parameter is used to straighten the spline.\n- `\"monotone\"`: cubic interpolation that preserves monotonicity in y."
+                },
+                "maxOpacity": {
+                    "description": "Default max opacity for mapping a field to opacity.",
+                    "maximum": 1,
+                    "minimum": 0,
+                    "type": "number"
+                },
+                "maxSize": {
+                    "description": "Default max value for point size scale.",
+                    "minimum": 0,
+                    "type": "number"
+                },
+                "maxStrokeWidth": {
+                    "description": "Default max strokeWidth for strokeWidth  (or rule/line's size) scale.",
+                    "minimum": 0,
+                    "type": "number"
+                },
+                "minOpacity": {
+                    "description": "Default minimum opacity for mapping a field to opacity.",
+                    "maximum": 1,
+                    "minimum": 0,
+                    "type": "number"
+                },
+                "minSize": {
+                    "description": "Default minimum value for point size scale with zero=false.",
+                    "minimum": 0,
+                    "type": "number"
+                },
+                "minStrokeWidth": {
+                    "description": "Default minimum strokeWidth for strokeWidth (or rule/line's size) scale with zero=false.",
+                    "minimum": 0,
+                    "type": "number"
+                },
+                "opacity": {
+                    "maximum": 1,
+                    "minimum": 0,
+                    "type": "number"
+                },
+                "orient": {
+                    "$ref": "#/definitions/Orient",
+                    "description": "The orientation of a non-stacked bar, tick, area, and line charts.\nThe value is either horizontal (default) or vertical.\n- For bar, rule and tick, this determines whether the size of the bar and tick\nshould be applied to x or y dimension.\n- For area, this property determines the orient property of the Vega output.\n- For line, this property determines the sort order of the points in the line\nif `config.sortLineBy` is not specified.\nFor stacked charts, this is always determined by the orientation of the stack;\ntherefore explicitly specified value will be ignored."
+                },
+                "size": {
+                    "description": "The pixel area each the point/circle/square.\nFor example: in the case of circles, the radius is determined in part by the square root of the size value.",
+                    "minimum": 0,
+                    "type": "number"
+                },
+                "stroke": {
+                    "description": "Default Stroke Color.  This has higher precedence than config.color",
+                    "type": "string"
+                },
+                "strokeDash": {
+                    "description": "An array of alternating stroke, space lengths for creating dashed or dotted lines.",
+                    "items": {
+                        "type": "number"
+                    },
+                    "type": "array"
+                },
+                "strokeDashOffset": {
+                    "description": "The offset (in pixels) into which to begin drawing with the stroke dash array.",
+                    "type": "number"
+                },
+                "strokeOpacity": {
+                    "maximum": 1,
+                    "minimum": 0,
+                    "type": "number"
+                },
+                "strokeWidth": {
+                    "minimum": 0,
+                    "type": "number"
+                },
+                "tension": {
+                    "description": "Depending on the interpolation type, sets the tension parameter (for line and area marks).",
+                    "maximum": 1,
+                    "minimum": 0,
+                    "type": "number"
+                }
+            },
+            "type": "object"
+        },
         "T": {
+            "additionalProperties": false,
             "properties": {
             },
             "type": "object"
         },
         "TextConfig": {
+            "additionalProperties": false,
             "properties": {
                 "align": {
                     "$ref": "#/definitions/HorizontalAlign",
@@ -2689,10 +3288,6 @@
                     "maximum": 360,
                     "minimum": 0,
                     "type": "number"
-                },
-                "applyColorToBackground": {
-                    "description": "Apply color field to background color instead of the text.",
-                    "type": "boolean"
                 },
                 "baseline": {
                     "$ref": "#/definitions/VerticalAlign",
@@ -2752,10 +3347,6 @@
                     ],
                     "description": "The font weight (e.g., `\"normal\"`, `\"bold\"`, `900`)."
                 },
-                "format": {
-                    "description": "The formatting pattern for text value. If not defined, this will be determined automatically.",
-                    "type": "string"
-                },
                 "interpolate": {
                     "$ref": "#/definitions/Interpolate",
                     "description": "The line interpolation method to use for line and area marks. One of the following:\n- `\"linear\"`: piecewise linear segments, as in a polyline.\n- `\"linear-closed\"`: close the linear segments to form a polygon.\n- `\"step\"`: alternate between horizontal and vertical segments, as in a step function.\n- `\"step-before\"`: alternate between vertical and horizontal segments, as in a step function.\n- `\"step-after\"`: alternate between horizontal and vertical segments, as in a step function.\n- `\"basis\"`: a B-spline, with control point duplication on the ends.\n- `\"basis-open\"`: an open B-spline; may not intersect the start or end.\n- `\"basis-closed\"`: a closed B-spline, as in a loop.\n- `\"cardinal\"`: a Cardinal spline, with control point duplication on the ends.\n- `\"cardinal-open\"`: an open Cardinal spline; may not intersect the start or end, but will intersect other control points.\n- `\"cardinal-closed\"`: a closed Cardinal spline, as in a loop.\n- `\"bundle\"`: equivalent to basis, except the tension parameter is used to straighten the spline.\n- `\"monotone\"`: cubic interpolation that preserves monotonicity in y."
@@ -2792,10 +3383,6 @@
                     "minimum": 0,
                     "type": "number"
                 },
-                "nominalColorScheme": {
-                    "description": "Default color scheme for nominal (categorical) data",
-                    "type": "string"
-                },
                 "opacity": {
                     "maximum": 1,
                     "minimum": 0,
@@ -2810,16 +3397,9 @@
                     "minimum": 0,
                     "type": "number"
                 },
-                "sequentialColorScheme": {
-                    "description": "Default color scheme for ordinal, quantitative and temporal field",
-                    "type": "string"
-                },
                 "shortTimeLabels": {
                     "description": "Whether month names and weekday names should be abbreviated.",
                     "type": "boolean"
-                },
-                "stacked": {
-                    "$ref": "#/definitions/StackOffset"
                 },
                 "stroke": {
                     "description": "Default Stroke Color.  This has higher precedence than config.color",
@@ -2862,7 +3442,49 @@
             },
             "type": "object"
         },
+        "TextFieldDef": {
+            "additionalProperties": false,
+            "properties": {
+                "aggregate": {
+                    "$ref": "#/definitions/AggregateOp",
+                    "description": "Aggregation function for the field\n(e.g., `mean`, `sum`, `median`, `min`, `max`, `count`)."
+                },
+                "bin": {
+                    "anyOf": [
+                        {
+                            "$ref": "#/definitions/Bin"
+                        },
+                        {
+                            "type": "boolean"
+                        }
+                    ],
+                    "description": "Flag for binning a `quantitative` field, or a bin property object\nfor binning parameters."
+                },
+                "field": {
+                    "description": "Name of the field from which to pull a data value.",
+                    "type": "string"
+                },
+                "format": {
+                    "description": "The formatting pattern for text value. If not defined, this will be determined automatically.",
+                    "type": "string"
+                },
+                "timeUnit": {
+                    "$ref": "#/definitions/TimeUnit",
+                    "description": "Time unit for a `temporal` field  (e.g., `year`, `yearmonth`, `month`, `hour`)."
+                },
+                "title": {
+                    "description": "Title for axis or legend.",
+                    "type": "string"
+                },
+                "type": {
+                    "$ref": "#/definitions/Type",
+                    "description": "The encoded field's type of measurement. This can be either a full type\nname (`\"quantitative\"`, `\"temporal\"`, `\"ordinal\"`,  and `\"nominal\"`)\nor an initial character of the type name (`\"Q\"`, `\"T\"`, `\"O\"`, `\"N\"`).\nThis property is case insensitive."
+                }
+            },
+            "type": "object"
+        },
         "TickConfig": {
+            "additionalProperties": false,
             "properties": {
                 "bandSize": {
                     "description": "The width of the ticks.\nIf this value is undefined (by default,), we use 2/3 of rangeStep by default.",
@@ -2922,10 +3544,6 @@
                     "minimum": 0,
                     "type": "number"
                 },
-                "nominalColorScheme": {
-                    "description": "Default color scheme for nominal (categorical) data",
-                    "type": "string"
-                },
                 "opacity": {
                     "maximum": 1,
                     "minimum": 0,
@@ -2934,13 +3552,6 @@
                 "orient": {
                     "$ref": "#/definitions/Orient",
                     "description": "The orientation of a non-stacked bar, tick, area, and line charts.\nThe value is either horizontal (default) or vertical.\n- For bar, rule and tick, this determines whether the size of the bar and tick\nshould be applied to x or y dimension.\n- For area, this property determines the orient property of the Vega output.\n- For line, this property determines the sort order of the points in the line\nif `config.sortLineBy` is not specified.\nFor stacked charts, this is always determined by the orientation of the stack;\ntherefore explicitly specified value will be ignored."
-                },
-                "sequentialColorScheme": {
-                    "description": "Default color scheme for ordinal, quantitative and temporal field",
-                    "type": "string"
-                },
-                "stacked": {
-                    "$ref": "#/definitions/StackOffset"
                 },
                 "stroke": {
                     "description": "Default Stroke Color.  This has higher precedence than config.color",
@@ -3008,6 +3619,8 @@
             "type": "string"
         },
         "Transform": {
+            "additionalProperties": false,
+            "description": "Top-level transform object.",
             "properties": {
                 "calculate": {
                     "description": "Calculate new field(s) using the provided expresssion(s). Calculation are applied before filter.",
@@ -3068,122 +3681,57 @@
             ],
             "type": "string"
         },
-        "UnitEncoding": {
+        "UrlData": {
+            "additionalProperties": false,
             "properties": {
-                "color": {
-                    "$ref": "#/definitions/ChannelDefWithLegend",
-                    "description": "Color of the marks – either fill or stroke color based on mark type.\n(By default, fill color for `area`, `bar`, `tick`, `text`, `circle`, and `square` /\nstroke color for `line` and `point`.)"
+                "format": {
+                    "$ref": "#/definitions/DataFormat",
+                    "description": "An object that specifies the format for the data file or values."
                 },
-                "detail": {
-                    "anyOf": [
-                        {
-                            "$ref": "#/definitions/FieldDef"
-                        },
-                        {
-                            "items": {
-                                "$ref": "#/definitions/FieldDef"
-                            },
-                            "type": "array"
-                        }
-                    ],
-                    "description": "Additional levels of detail for grouping data in aggregate views and\nin line and area marks without mapping data to a specific visual channel."
-                },
-                "label": {
-                    "$ref": "#/definitions/FieldDef"
-                },
-                "opacity": {
-                    "$ref": "#/definitions/ChannelDefWithLegend",
-                    "description": "Opacity of the marks – either can be a value or in a range."
-                },
-                "order": {
-                    "anyOf": [
-                        {
-                            "$ref": "#/definitions/OrderChannelDef"
-                        },
-                        {
-                            "items": {
-                                "$ref": "#/definitions/OrderChannelDef"
-                            },
-                            "type": "array"
-                        }
-                    ],
-                    "description": "stack order for stacked marks or order of data points in line marks."
-                },
-                "shape": {
-                    "$ref": "#/definitions/ChannelDefWithLegend",
-                    "description": "The symbol's shape (only for `point` marks). The supported values are\n`\"circle\"` (default), `\"square\"`, `\"cross\"`, `\"diamond\"`, `\"triangle-up\"`,\nor `\"triangle-down\"`, or else a custom SVG path string."
-                },
-                "size": {
-                    "$ref": "#/definitions/ChannelDefWithLegend",
-                    "description": "Size of the mark.\n- For `point`, `square` and `circle`\n– the symbol size, or pixel area of the mark.\n- For `bar` and `tick` – the bar and tick's size.\n- For `text` – the text's font size.\n- Size is currently unsupported for `line` and `area`."
-                },
-                "text": {
-                    "$ref": "#/definitions/FieldDef",
-                    "description": "Text of the `text` mark."
-                },
-                "x": {
-                    "$ref": "#/definitions/PositionChannelDef",
-                    "description": "X coordinates for `point`, `circle`, `square`,\n`line`, `rule`, `text`, and `tick`\n(or to width and height for `bar` and `area` marks)."
-                },
-                "x2": {
-                    "$ref": "#/definitions/FieldDef",
-                    "description": "X2 coordinates for ranged `bar`, `rule`, `area`"
-                },
-                "y": {
-                    "$ref": "#/definitions/PositionChannelDef",
-                    "description": "Y coordinates for `point`, `circle`, `square`,\n`line`, `rule`, `text`, and `tick`\n(or to width and height for `bar` and `area` marks)."
-                },
-                "y2": {
-                    "$ref": "#/definitions/FieldDef",
-                    "description": "Y2 coordinates for ranged `bar`, `rule`, `area`"
+                "url": {
+                    "description": "A URL from which to load the data set. Use the format.type property\nto ensure the loaded data is correctly parsed.",
+                    "type": "string"
+                }
+            },
+            "required": [
+                "url"
+            ],
+            "type": "object"
+        },
+        "ValueDef<number>": {
+            "additionalProperties": false,
+            "description": "Definition object for a constant value of an encoding channel.",
+            "properties": {
+                "value": {
+                    "description": "A constant value in visual domain.",
+                    "type": "number"
                 }
             },
             "type": "object"
         },
-        "UnitSpec": {
+        "ValueDef<string | number>": {
+            "additionalProperties": false,
+            "description": "Definition object for a constant value of an encoding channel.",
             "properties": {
-                "config": {
-                    "$ref": "#/definitions/Config",
-                    "description": "Configuration object"
-                },
-                "data": {
-                    "$ref": "#/definitions/Data",
-                    "description": "An object describing the data source"
-                },
-                "description": {
-                    "description": "An optional description of this mark for commenting purpose.\nThis property has no effect on the output visualization.",
-                    "type": "string"
-                },
-                "encoding": {
-                    "$ref": "#/definitions/UnitEncoding",
-                    "description": "A key-value mapping between encoding channels and definition of fields."
-                },
-                "height": {
-                    "type": "number"
-                },
-                "mark": {
-                    "$ref": "#/definitions/Mark",
-                    "description": "The mark type.\nOne of `\"bar\"`, `\"circle\"`, `\"square\"`, `\"tick\"`, `\"line\"`,\n`\"area\"`, `\"point\"`, `\"rule\"`, and `\"text\"`."
-                },
-                "name": {
-                    "description": "Name of the visualization for later reference.",
-                    "type": "string"
-                },
-                "select": {
-                    "$ref": "#/definitions/Dict<SelectionSpec>",
-                    "description": "A key-value mapping between named selections and their definitions."
-                },
-                "transform": {
-                    "$ref": "#/definitions/Transform",
-                    "description": "An object describing filter and new field calculation."
-                },
-                "width": {
-                    "type": "number"
+                "value": {
+                    "description": "A constant value in visual domain.",
+                    "type": [
+                        "string",
+                        "number"
+                    ]
                 }
             },
-            "required": [
-                "mark"
-            ],
+            "type": "object"
+        },
+        "ValueDef<string>": {
+            "additionalProperties": false,
+            "description": "Definition object for a constant value of an encoding channel.",
+            "properties": {
+                "value": {
+                    "description": "A constant value in visual domain.",
+                    "type": "string"
+                }
+            },
             "type": "object"
         },
         "VerticalAlign": {
@@ -3193,6 +3741,38 @@
                 "top"
             ],
             "type": "string"
+        },
+        "VgAxisEncode": {
+            "additionalProperties": false,
+            "properties": {
+                "domain": {
+                },
+                "grid": {
+                },
+                "labels": {
+                },
+                "ticks": {
+                },
+                "title": {
+                }
+            },
+            "type": "object"
+        },
+        "VgLegendEncode": {
+            "additionalProperties": false,
+            "properties": {
+                "gradient": {
+                },
+                "labels": {
+                },
+                "legend": {
+                },
+                "symbols": {
+                },
+                "title": {
+                }
+            },
+            "type": "object"
         }
     }
 }
