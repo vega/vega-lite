@@ -184,24 +184,24 @@ export interface VgImputeTransform {
   orderby?: string[];
   method?: 'value' | 'median' | 'max' | 'min' | 'mean';
   value?: any;
-}
+};
 
 export type VgCheckboxBinding = {
   input: 'checkbox';
   element?: string;
-}
+};
 
 export type VgRadioBinding = {
   input: 'radio';
   options: string[];
   element?: string;
-}
+};
 
 export type VgSelectBinding = {
   input: 'select';
   options: string[];
   element?: string;
-}
+};
 
 export type VgRangeBinding = {
   input: 'range';
@@ -209,12 +209,12 @@ export type VgRangeBinding = {
   max?: number;
   step?: number;
   element?: string;
-}
+};
 
 export type VgGenericBinding = {
   input: string;
   element?: string;
-}
+};
 
 export type VgBinding = VgCheckboxBinding | VgRadioBinding |
   VgSelectBinding | VgRangeBinding | VgGenericBinding;

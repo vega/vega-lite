@@ -7,7 +7,7 @@ const inputBindings:TransformCompiler = {
     return selCmpt.bind && selCmpt.bind !== 'scales';
   },
 
-  topLevelSignals: function(model, selCmpt, signals) {
+  topLevelSignals: function(_model, selCmpt, signals) {
     let name = selCmpt.name, proj = selCmpt.project, bind = selCmpt.bind;
     if (selCmpt.type !== 'single' || selCmpt.resolve !== 'single') {
       warn('Only "single" selections resolved to "single" can be bound to input widgets.');
@@ -30,7 +30,7 @@ const inputBindings:TransformCompiler = {
     return signals;
   },
 
-  signals: function(model, selCmpt, signals) {
+  signals: function(_model, selCmpt, signals) {
     if (selCmpt.type !== 'single' || selCmpt.resolve !== 'single') {
       return signals;
     }

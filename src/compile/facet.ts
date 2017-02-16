@@ -305,11 +305,11 @@ export class FacetModel extends Model {
     return null;
   }
 
-  public assembleSignals(signals: any): any[] {
+  public assembleSignals(_signals: any): any[] {
     return [];
   }
 
-  public assembleSelectionData(data: VgData[]): VgData[] {
+  public assembleSelectionData(_data: VgData[]): VgData[] {
     return [];
   }
 

@@ -8,7 +8,7 @@ const toggle:TransformCompiler = {
     return selCmpt.toggle !== undefined && selCmpt.toggle !== false;
   },
 
-  signals: function(model, selCmpt, signals) {
+  signals: function(_model, selCmpt, signals) {
     return signals.concat({
       name: selCmpt.name + TOGGLE,
       value: false,
@@ -16,7 +16,7 @@ const toggle:TransformCompiler = {
     });
   },
 
-  modifyExpr: function(model, selCmpt, expr) {
+  modifyExpr: function(_model, selCmpt, _expr) {
     let tpl = selCmpt.name + TUPLE,
         signal = selCmpt.name + TOGGLE;
 

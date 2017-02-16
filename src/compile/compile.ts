@@ -6,7 +6,7 @@ import {LAYOUT} from '../data';
 import * as log from '../log';
 import {Model} from './model';
 import {normalize, ExtendedSpec} from '../spec';
-import {extend, stringValue} from '../util';
+import {extend} from '../util';
 import {assembleTopLevelSignals} from './selection/selection';
 import {buildModel} from './common';
 

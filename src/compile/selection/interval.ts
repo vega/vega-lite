@@ -61,11 +61,11 @@ const interval:SelectionCompiler = {
     return signals;
   },
 
-  tupleExpr: function(model, selCmpt) {
+  tupleExpr: function(_model, selCmpt) {
     return `intervals: ${selCmpt.name}`;
   },
 
-  modifyExpr: function(model, selCmpt) {
+  modifyExpr: function(_model, selCmpt) {
     let tpl = selCmpt.name + TUPLE;
     return `${tpl}, {unit: ${tpl}.unit}`;
   },
