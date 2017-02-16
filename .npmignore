@@ -27,6 +27,4 @@ tsconfig.json
 tslint.json
 yarn.lock
 vl.sublime-project
-**/*.ts
-!**/*.d.ts
-**/*.js.map
+build/test

@@ -19,12 +19,7 @@ examples/_output/*
 examples/_diff/*
 examples/images/*
 examples/all-examples.json
-**/*.js.map
-**/*.js
-src/**/*.d.ts
-test/**/*.d.ts
-site/**/*.d.ts
-test-gallery/*.d.ts
-examples/**/*.d.ts
+build/*
+!build/vega-lite-schema.json
 .jekyll-metadata
 .nyc_output/*
