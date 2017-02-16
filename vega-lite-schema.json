@@ -319,6 +319,10 @@
                     "description": "Minimum extent, which determines the offset between axis ticks and labels.",
                     "type": "number"
                 },
+                "shortTimeLabels": {
+                    "description": "Whether month names and weekday names should be abbreviated.",
+                    "type": "boolean"
+                },
                 "tickColor": {
                     "description": "The color of the axis's tick.",
                     "type": "string"

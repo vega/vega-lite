@@ -379,7 +379,7 @@ describe('compile/facet', () => {
   });
 
   describe('initAxis', () => {
-    it('should should have defaultFacetAxisConfig that domainWidth = 0', () => {
+    it('should map properties of vl config in config.facet.axis', () => {
       const model = parseFacetModel({
         facet: {
           row: {field: 'a', type: 'ordinal'}
@@ -389,12 +389,29 @@ describe('compile/facet', () => {
           encoding: {
             "x": {"aggregate": "sum", "field": "yield", "type": "quantitative"},
             "y": {"field": "variety", "type": "nominal"},
-          }
-        }
+          },
+        },
+        config: {"facet": {"axis": {"labelMaxLength": 123}}}
       });
-      assert.deepEqual(model.axis(ROW), {"domainWidth": 0, "orient": "right", "labelAngle": 90});
+      assert.deepEqual(model.axis(ROW), {"labelMaxLength": 123, "orient": "right", "labelAngle": 90});
+    });
+
+    it('should not map non vl config properties in config.facet.axis', () => {
+      const model = parseFacetModel({
+        facet: {
+          row: {field: 'a', type: 'ordinal'}
+        },
+        spec: {
+          mark: 'point',
+          encoding: {
+            "x": {"aggregate": "sum", "field": "yield", "type": "quantitative"},
+            "y": {"field": "variety", "type": "nominal"},
+          },
+        },
+        config: {"facet": {"axis": {"domainWidth": 123}}}
+      });
+      assert.deepEqual(model.axis(ROW), {"orient": "right", "labelAngle": 90});
     });
   });
-
 });
 

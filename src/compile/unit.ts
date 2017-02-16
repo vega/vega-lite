@@ -1,6 +1,6 @@
 import * as log from '../log';
 
-import {Axis, VlAxisBase, AXIS_BASE_PROPERTIES} from '../axis';
+import {Axis, VlOnlyAxisConfig, VL_AXIS_BASE_PROPERTIES} from '../axis';
 import {X, Y, X2, Y2, Channel, UNIT_CHANNELS,  UNIT_SCALE_CHANNELS, NONSPATIAL_SCALE_CHANNELS, supportMark} from '../channel';
 import {defaultConfig, Config, CellConfig} from '../config';
 import {SOURCE, SUMMARY} from '../data';
@@ -234,14 +234,13 @@ export class UnitModel extends Model {
 
         // We no longer support false in the schema, but we keep false here for backward compatability.
         if (axisSpec !== null && axisSpec !== false) {
-          let vlAxisBase: VlAxisBase = {};
-          AXIS_BASE_PROPERTIES.forEach(function(property) {
-            if (encoding !== undefined && encoding[property] !== undefined) {
-              vlAxisBase[property] = encoding[property];
+          let vlAxisBase: VlOnlyAxisConfig = {};
+          VL_AXIS_BASE_PROPERTIES.forEach(function(property) {
+            if (config.axis[property] !== undefined) {
+              vlAxisBase[property] = config.axis[property];
             }
           });
           _axis[channel] = {
-            labelMaxLength: config.axis.labelMaxLength,
             ...vlAxisBase,
             ...axisSpec
           };

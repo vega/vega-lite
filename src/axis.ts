@@ -1,95 +1,9 @@
 import {DateTime} from './datetime';
-import {VgAxisEncode} from './vega.schema';
+import {VgAxisEncode, VgAxisBase, VgAxisConfig} from './vega.schema';
 
 export type AxisOrient = 'top' | 'right' | 'left' | 'bottom';
 
-export interface AxisConfig extends AxisBase {
-  // ---------- Axis ----------
-  /**
-   * Width of the domain line
-   */
-  domainWidth?: number;
-
-  /**
-   * Color of axis domain line.
-   */
-  domainColor?: string;
-
-  // ---------- Grid ----------
-  /**
-   * Color of gridlines.
-   */
-  gridColor?: string;
-
-  /**
-   * The offset (in pixels) into which to begin drawing with the grid dash array.
-   * @minimum 0
-   */
-  gridDash?: number[];
-
-  /**
-   * The stroke opacity of grid (value between [0,1])
-   * @minimum 0
-   * @maximum 1
-   */
-  gridOpacity?: number;
-
-  /**
-   * The grid width, in pixels.
-   * @minimum 0
-   */
-  gridWidth?: number;
-
-  // ---------- Ticks ----------
-  /**
-   * The color of the axis's tick.
-   */
-  tickColor?: string;
-
-  /**
-   * The color of the tick label, can be in hex color code or regular color name.
-   */
-  labelColor?: string;
-
-  /**
-   * The font of the tick label.
-   */
-  labelFont?: string;
-
-  /**
-   * The font size of label, in pixels.
-   * @minimum 0
-   */
-  labelFontSize?: number;
-
-  /**
-   * The width, in pixels, of ticks.
-   * @minimum 0
-   */
-  tickWidth?: number;
-
-  // ---------- Title ----------
-  /**
-   * Color of the title, can be in hex color code or regular color name.
-   */
-  titleColor?: string;
-
-  /**
-   * Font of the title.
-   */
-  titleFont?: string;
-
-  /**
-   * Size of the title.
-   * @minimum 0
-   */
-  titleFontSize?: number;
-
-  /**
-   * Weight of the title.
-   */
-  titleFontWeight?: string | number;
-}
+export interface AxisConfig extends VgAxisConfig, VlOnlyAxisConfig {}
 
 // TODO: add comment for properties that we rely on Vega's default to produce
 // more concise Vega output.
@@ -102,7 +16,7 @@ export const defaultFacetAxisConfig: AxisConfig = {
   domainWidth: 0,
 };
 
-export interface Axis extends AxisBase {
+export interface Axis extends VgAxisBase, VlOnlyAxisConfig {
   /**
    * The padding, in pixels, between axis and text labels.
    */
@@ -155,9 +69,9 @@ export interface Axis extends AxisBase {
   encode?: VgAxisEncode;
 }
 
-export interface AxisBase extends VgAxisBase, VlAxisBase {}
+export interface AxisBase extends VgAxisBase, VlOnlyAxisConfig {}
 
-export interface VlAxisBase {
+export interface VlOnlyAxisConfig {
   /**
    * Truncate labels that are too long.
    * @minimum 1
@@ -166,64 +80,6 @@ export interface VlAxisBase {
   labelMaxLength?: number;
 }
 
-export interface VgAxisBase {
-  /**
-   * Whether to include the axis domain line.
-   */
-  domain?: boolean;
-
-  /**
-   * A flag indicate if gridlines should be created in addition to ticks. If `grid` is unspecified, the default value is `true` for ROW and COL. For X and Y, the default value is `true` for quantitative and time fields and `false` otherwise.
-   */
-  grid?: boolean;
-
-  /**
-   * Enable or disable labels.
-   */
-  labels?: boolean;
-
-  /**
-   * The rotation angle of the axis labels.
-   * @minimum 0
-   * @maximum 360
-   */
-  labelAngle?: number;  // FIXME: not sure if this should be a theme
-
-  /**
-   * Whether the axis should include ticks.
-   */
-  ticks?: boolean;
-
-  /**
-   * The size, in pixels, of major, minor and end ticks.
-   * @minimum 0
-   */
-  tickSize?: number;
-
-  /**
-   * Max length for axis title if the title is automatically generated from the field's description. By default, this is automatically based on cell size and characterWidth property.
-   * @minimum 0
-   * @TJS-type integer
-   */
-  titleMaxLength?: number;
-
-  /**
-   * The padding, in pixels, between title and axis.
-   */
-  titlePadding?: number;
-
-  /**
-   * Minimum extent, which determines the offset between axis ticks and labels.
-   */
-  minExtent?: number;
-
-  /**
-   * Maximum extent, which determines the offset between axis ticks and labels.
-   */
-  maxExtent?: number;
-}
-
-
 export const AXIS_PROPERTIES:(keyof Axis)[] = [
   // a) properties with special rules (so it has axis[property] methods) -- call rule functions
   'domain', 'format', 'labels', 'grid', 'orient', 'ticks', 'tickSize', 'tickCount',  'title', 'values', 'zindex',
@@ -231,4 +87,4 @@ export const AXIS_PROPERTIES:(keyof Axis)[] = [
     'labelPadding', 'maxExtent', 'minExtent', 'offset', 'position', 'tickSize', 'titlePadding'
 ];
 
-export const AXIS_BASE_PROPERTIES:(keyof VlAxisBase)[] = ['labelMaxLength'];
+export const VL_AXIS_BASE_PROPERTIES:(keyof VlOnlyAxisConfig)[] = ['labelMaxLength'];

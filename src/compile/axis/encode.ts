@@ -23,7 +23,7 @@ export function labels(model: Model, channel: Channel, labelsSpec: any, def: VgA
   } else if (fieldDef.type === TEMPORAL) {
     labelsSpec = extend({
       text: {
-        signal: timeFormatExpression('datum.value', fieldDef.timeUnit, axis.format, axis.shortTimeLabels, config)
+        signal: timeFormatExpression('datum.value', fieldDef.timeUnit, axis.format, config.axis.shortTimeLabels, config)
       }
     }, labelsSpec);
   }

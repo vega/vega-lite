@@ -158,6 +158,19 @@ describe('UnitModel', function() {
       assert.equal(model.axis(Y).labelMaxLength, 123);
     });
 
+    it('it should not match non vl-config properties', () => {
+      const model = parseUnitModel({
+        mark: 'point',
+        encoding: {
+          x: {field: 'a', type: 'ordinal'},
+          y: {field: 'b', type: 'ordinal'}
+        },
+        config: {axis: {domainWidth: 123}}
+      });
+
+      assert.equal(model.axis(X)['domainWidth'], undefined);
+    });
+
     it('it should have axis.offset = encode.x.axis.offset', () => {
       const model = parseUnitModel({
         mark: 'point',

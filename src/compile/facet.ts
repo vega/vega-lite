@@ -1,6 +1,6 @@
 import * as log from '../log';
 
-import {Axis, defaultFacetAxisConfig} from '../axis';
+import {Axis, VlOnlyAxisConfig, VL_AXIS_BASE_PROPERTIES} from '../axis';
 import {COLUMN, ROW, X, Y, Channel} from '../channel';
 import {defaultConfig, Config} from '../config';
 import {Facet} from '../facet';
@@ -66,7 +66,7 @@ export class FacetModel extends Model {
 
     const facet  = this.facet = this.initFacet(spec.facet);
     this.scales  = this.initScalesAndSpacing(facet, config);
-    this.axes   = this.initAxis(facet, child);
+    this.axes   = this.initAxis(facet, config, child);
     this.legends = {};
   }
 
@@ -121,14 +121,21 @@ export class FacetModel extends Model {
     }, {});
   }
 
-  private initAxis(facet: Facet, child: Model): Dict<Axis> {
+  private initAxis(facet: Facet, config: Config, child: Model): Dict<Axis> {
     const model = this;
     return [ROW, COLUMN].reduce(function(_axis, channel) {
       if (facet[channel]) {
         const axisSpec = facet[channel].axis;
         if (axisSpec !== false) {
+          let vlAxisBase: VlOnlyAxisConfig = {};
+          VL_AXIS_BASE_PROPERTIES.forEach(function(property) {
+            if (config.facet.axis[property] !== undefined) {
+              vlAxisBase[property] = config.facet.axis[property];
+            }
+          });
+
           const modelAxis = _axis[channel] = {
-            ...defaultFacetAxisConfig,
+            ...vlAxisBase,
             ...axisSpec
           };
 
