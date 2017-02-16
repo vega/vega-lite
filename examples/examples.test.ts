@@ -1,12 +1,13 @@
 import {assert} from 'chai';
-import * as vl from '../src/vl';
+import {compile} from '../src/compile/compile';
+import {ExtendedSpec} from '../src/spec';
 import * as Ajv from 'ajv';
 
 const inspect = require('util').inspect;
 const fs = require('fs');
 const path = require('path');
 
-const vlSchema = require('../vega-lite-schema.json');
+const vlSchema = require('../../build/vega-lite-schema.json');
 const vgSchema = require('vega/build/vega-schema.json');
 
 const ajv = new Ajv({
@@ -17,7 +18,7 @@ const ajv = new Ajv({
 const validateVl = ajv.compile(vlSchema);
 const validateVg = ajv.compile(vgSchema);
 
-function validateVL(spec: vl.spec.ExtendedSpec) {
+function validateVL(spec: ExtendedSpec) {
   const valid = validateVl(spec);
   const errors = validateVl.errors;
   if (!valid) {
@@ -28,8 +29,8 @@ function validateVL(spec: vl.spec.ExtendedSpec) {
   assert.equal(spec.$schema, 'https://vega.github.io/schema/vega-lite/v2.json');
 }
 
-function validateVega(spec: vl.spec.ExtendedSpec) {
-  const vegaSpec = vl.compile(spec).spec;
+function validateVega(spec: ExtendedSpec) {
+  const vegaSpec = compile(spec).spec;
 
   const valid = validateVg(vegaSpec);
   const errors = validateVg.errors;
