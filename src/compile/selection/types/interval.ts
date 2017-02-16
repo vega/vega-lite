@@ -13,27 +13,27 @@ export const BRUSH = '_brush',
 const interval:TypeCompiler = {
   predicate: 'vlInterval',
 
-  signals: function(model, sel) {
+  signals: function(model, selCmpt) {
     let signals: any[] = [],
         intervals:any[] = [],
-        name = sel.name,
+        name = selCmpt.name,
         size = name + SIZE;
 
-    if (sel.translate && !(scales.has(sel))) {
-      events(sel, function(_: any[], evt: any) {
+    if (selCmpt.translate && !(scales.has(selCmpt))) {
+      events(selCmpt, function(_: any[], evt: any) {
         let filters = evt.between[0].filter || (evt.between[0].filter = []);
         filters.push('!event.item || (event.item && ' +
           `event.item.mark.name !== ${stringValue(name + BRUSH)})`);
       });
     }
 
-    sel.project.forEach(function(p) {
+    selCmpt.project.forEach(function(p) {
       if (p.encoding !== X && p.encoding !== Y) {
         warn('Interval selections only support x and y encoding channels.');
         return;
       }
 
-      let cs = channelSignal(model, sel, p.encoding);
+      let cs = channelSignal(model, selCmpt, p.encoding);
       signals.push(cs);
       intervals.push(`{field: ${stringValue(p.field)}, extent: ${cs.name}}`);
     });
@@ -41,7 +41,7 @@ const interval:TypeCompiler = {
     signals.push({
       name: size,
       value: [],
-      on: events(sel, function(on: any[], evt: any) {
+      on: events(selCmpt, function(on: any[], evt: any) {
         on.push({
           events: evt.between[0],
           update: '{x: x(unit), y: y(unit), width: 0, height: 0}'
@@ -63,21 +63,21 @@ const interval:TypeCompiler = {
     return signals;
   },
 
-  tupleExpr: function(model, sel) {
-    return `intervals: ${sel.name}`;
+  tupleExpr: function(model, selCmpt) {
+    return `intervals: ${selCmpt.name}`;
   },
 
-  modifyExpr: function(model, sel) {
-    let tpl = sel.name + TUPLE;
+  modifyExpr: function(model, selCmpt) {
+    let tpl = selCmpt.name + TUPLE;
     return `${tpl}, {unit: ${tpl}.unit}`;
   },
 
-  marks: function(model, sel, marks) {
-    let name = sel.name,
-        {x, y} = projections(sel);
+  marks: function(model, selCmpt, marks) {
+    let name = selCmpt.name,
+        {x, y} = projections(selCmpt);
 
     // Do not add a brush if we're binding to scales.
-    if (scales.has(sel)) {
+    if (scales.has(selCmpt)) {
       return marks;
     }
 
@@ -118,9 +118,9 @@ const interval:TypeCompiler = {
 };
 export {interval as default};
 
-export function projections(sel: SelectionComponent) {
+export function projections(selCmpt: SelectionComponent) {
   let x:number = null, y:number = null;
-  sel.project.forEach(function(p, i) {
+  selCmpt.project.forEach(function(p, i) {
     if (p.encoding === X) {
       x = i;
     } else if (p.encoding === Y) {
@@ -130,16 +130,16 @@ export function projections(sel: SelectionComponent) {
   return {x: x, y: y};
 }
 
-function channelSignal(model: UnitModel, sel: SelectionComponent, channel: Channel): any {
-  let name  = channelSignalName(sel, channel),
+function channelSignal(model: UnitModel, selCmpt: SelectionComponent, channel: Channel): any {
+  let name  = channelSignalName(selCmpt, channel),
       size  = (channel === X ? 'width' : 'height'),
       coord = `${channel}(unit)`,
-      invert = invertFn.bind(null, model, sel, channel);
+      invert = invertFn.bind(null, model, selCmpt, channel);
 
   return {
     name: name,
     value: [],
-    on: scales.has(sel) ? [] : events(sel, function(on: any[], evt: any) {
+    on: scales.has(selCmpt) ? [] : events(selCmpt, function(on: any[], evt: any) {
       on.push({
         events: evt.between[0],
         update: invert(`[${coord}, ${coord}]`)
@@ -155,8 +155,8 @@ function channelSignal(model: UnitModel, sel: SelectionComponent, channel: Chann
   };
 }
 
-function events(sel: SelectionComponent, cb: Function) {
-  return sel.events.reduce(function(on: any[], evt: any) {
+function events(selCmpt: SelectionComponent, cb: Function) {
+  return selCmpt.events.reduce(function(on: any[], evt: any) {
     if (!evt.between) {
       warn(`${evt} is not an ordered event stream for interval selections`);
       return on;

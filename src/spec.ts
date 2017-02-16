@@ -11,7 +11,7 @@ import {Transform} from './transform';
 import {ROW, COLUMN, X, Y, X2, Y2} from './channel';
 import * as vlEncoding from './encoding';
 import {contains, duplicate, extend, hash, keys, omit, pick, vals, Dict} from './util';
-import {SelectionSpec} from './selection';
+import {SelectionDef} from './selection';
 
 export interface BaseSpec {
   /**
@@ -63,7 +63,7 @@ export interface UnitSpec extends BaseSpec {
   /**
    * A key-value mapping between named selections and their definitions.
    */
-  selection?: Dict<SelectionSpec>;
+  selection?: Dict<SelectionDef>;
 }
 
 /**
@@ -97,7 +97,7 @@ export interface ExtendedUnitSpec extends BaseSpec {
   /**
    * A key-value mapping between named selections and their definitions.
    */
-  selection?: Dict<SelectionSpec>;
+  selection?: Dict<SelectionDef>;
 }
 
 export interface FacetSpec extends BaseSpec {

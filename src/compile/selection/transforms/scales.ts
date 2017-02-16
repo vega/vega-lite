@@ -10,20 +10,20 @@ import {stringValue} from '../../../util';
 const scaleBindings:TransformCompiler = {
   clippedGroup: true,
 
-  has: function(sel) {
-    return sel.bind && sel.bind === 'scales';
+  has: function(selCmpt) {
+    return selCmpt.bind && selCmpt.bind === 'scales';
   },
 
-  parse: function(model, def, sel) {
-    if (sel.type !== 'interval') {
+  parse: function(model, selDef, selCmpt) {
+    if (selCmpt.type !== 'interval') {
       warn('Scale bindings are currently only supported for interval selections.');
       return;
     }
 
     let scales = model.component.scale,
-        bound:Channel[] = sel.scales = [];
+        bound:Channel[] = selCmpt.scales = [];
 
-    sel.project.forEach(function(p) {
+    selCmpt.project.forEach(function(p) {
       let channel = p.encoding,
           scale = scales[channel] && scales[channel].main;
 
@@ -32,25 +32,25 @@ const scaleBindings:TransformCompiler = {
         return;
       }
 
-      scale.domainRaw = {signal: channelSignalName(sel, channel)};
+      scale.domainRaw = {signal: channelSignalName(selCmpt, channel)};
       bound.push(channel);
     });
   },
 
-  topLevelSignals: function(model, sel, signals) {
-    return signals.concat(sel.scales.map((channel) => {
-      return {name: channelSignalName(sel, channel)};
+  topLevelSignals: function(model, selCmpt, signals) {
+    return signals.concat(selCmpt.scales.map((channel) => {
+      return {name: channelSignalName(selCmpt, channel)};
     }));
   },
 
-  signals: function(model, sel, signals) {
-    let name = sel.name;
+  signals: function(model, selCmpt, signals) {
+    let name = selCmpt.name;
     signals = signals.filter(function(s) {
       return s.name !== name + INTERVAL_SIZE &&
         s.name !== name + TUPLE && s.name !== MODIFY;
     });
 
-    sel.scales.forEach(function(channel) {
+    selCmpt.scales.forEach(function(channel) {
       let signal = signals.filter((s) => s.name === name + '_' + channel)[0];
       signal.push = 'outer';
       delete signal.value;

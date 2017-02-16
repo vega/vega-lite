@@ -3,16 +3,16 @@ import {TransformCompiler} from './';
 const VORONOI = 'voronoi';
 
 const nearest:TransformCompiler = {
-  has: function(sel) {
-    return sel.nearest !== undefined && sel.nearest !== false;
+  has: function(selCmpt) {
+    return selCmpt.nearest !== undefined && selCmpt.nearest !== false;
   },
 
-  marks: function(model, sel, marks, selMarks) {
+  marks: function(model, selCmpt, marks, selMarks) {
     let mark = marks[0],
         index = selMarks.indexOf(mark),
-        pathgroup = mark.name === model.name('pathgroup'),
+        isPathgroup = mark.name === model.name('pathgroup'),
         exists = ((m: any) => m.name && m.name.indexOf(VORONOI) >= 0),
-        cell = {
+        cellDef = {
           name: model.name(VORONOI),
           type: 'path',
           from: {data: model.name('marks')},
@@ -32,11 +32,11 @@ const nearest:TransformCompiler = {
           }]
         };
 
-    if (pathgroup && !mark.marks.filter(exists).length) {
-      mark.marks.push(cell);
+    if (isPathgroup && !mark.marks.filter(exists).length) {
+      mark.marks.push(cellDef);
       selMarks.splice(index, 1, mark);
-    } else if (!pathgroup && !selMarks.filter(exists).length) {
-      selMarks.splice(index + 1, 0, cell);
+    } else if (!isPathgroup && !selMarks.filter(exists).length) {
+      selMarks.splice(index + 1, 0, cellDef);
     }
 
     return selMarks;

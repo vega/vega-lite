@@ -27,7 +27,7 @@ import {parseMark} from './mark/mark';
 import initScale from './scale/init';
 import parseScales from './scale/parse';
 import {stack, StackProperties} from '../stack';
-import {SelectionSpec} from '../selection';
+import {SelectionDef} from '../selection';
 import {parseUnitSelection, assembleUnitSignals, assembleUnitData as assembleSelectionData, assembleUnitMarks as assembleSelectionMarks} from './selection';
 
 function normalizeFieldDef(fieldDef: FieldDef, channel: Channel) {
@@ -62,7 +62,7 @@ export class UnitModel extends Model {
 
   private _mark: Mark;
   private _encoding: Encoding;
-  protected _selection: Dict<SelectionSpec>;
+  protected _selection: Dict<SelectionDef>;
   private _stack: StackProperties;
 
   constructor(spec: ExtendedUnitSpec, parent: Model, parentGivenName: string) {

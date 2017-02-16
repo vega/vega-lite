@@ -12,22 +12,22 @@ const ANCHOR = '_translate_anchor',
       DELTA  = '_translate_delta';
 
 const translate:TransformCompiler = {
-  has: function(sel) {
-    return sel.translate !== undefined && sel.translate !== false;
+  has: function(selCmpt) {
+    return selCmpt.translate !== undefined && selCmpt.translate !== false;
   },
 
-  signals: function(model, sel, signals) {
-    if (sel.type !== 'interval') {
+  signals: function(model, selCmpt, signals) {
+    if (selCmpt.type !== 'interval') {
       warn('translate is currently only supported for interval selections.');
       return signals;
     }
 
-    let name = sel.name,
-        scales = scalesCompiler.has(sel),
+    let name = selCmpt.name,
+        scales = scalesCompiler.has(selCmpt),
         size = scales ? 'unit' : name + INTERVAL_SIZE,
         anchor = name + ANCHOR,
-        events = parseSelector(sel.translate, 'scope'),
-        {x, y} = intervalProjections(sel);
+        events = parseSelector(selCmpt.translate, 'scope'),
+        {x, y} = intervalProjections(selCmpt);
 
     if (!scales) {
       events = events.map((e) => (e.between[0].markname = name + INTERVAL_BRUSH, e));
@@ -57,11 +57,11 @@ const translate:TransformCompiler = {
     });
 
     if (x !== null) {
-      onDelta(model, sel, X, 'width', signals);
+      onDelta(model, selCmpt, X, 'width', signals);
     }
 
     if (y !== null) {
-      onDelta(model, sel, Y, 'height', signals);
+      onDelta(model, selCmpt, Y, 'height', signals);
     }
 
     return signals;
@@ -70,22 +70,22 @@ const translate:TransformCompiler = {
 
 export {translate as default};
 
-function getSign(sel: SelectionComponent, channel: Channel) {
+function getSign(selCmpt: SelectionComponent, channel: Channel) {
   let s = channel === X ? '+' : '-';
-  if (scalesCompiler.has(sel)) {
+  if (scalesCompiler.has(selCmpt)) {
     s = s === '+' ? '-' : '+';
   }
   return ` ${s} `;
 }
 
-function onDelta(model: UnitModel, sel: SelectionComponent, channel: Channel, size: string, signals: any[]) {
-  let name = sel.name,
+function onDelta(model: UnitModel, selCmpt: SelectionComponent, channel: Channel, size: string, signals: any[]) {
+  let name = selCmpt.name,
       signal:any = signals.filter((s:any) => s.name === name + '_' + channel)[0],
       anchor = name + ANCHOR,
       delta  = name + DELTA,
       scale  = stringValue(model.scaleName(channel)),
       extent = `.extent_${channel}`,
-      sign = getSign(sel, channel),
+      sign = getSign(selCmpt, channel),
       offset = `${sign} abs(span(${anchor}${extent})) * ` +
         `${delta}.${channel} / ${anchor}.${size}`,
       range = `[${anchor}${extent}[0] ${offset}, ` +
@@ -95,6 +95,6 @@ function onDelta(model: UnitModel, sel: SelectionComponent, channel: Channel, si
 
   signal.on.push({
     events: {signal: delta},
-    update: scalesCompiler.has(sel) ? range : `clampRange(${range}, ${lo}, ${hi})`
+    update: scalesCompiler.has(selCmpt) ? range : `clampRange(${range}, ${lo}, ${hi})`
   });
 }

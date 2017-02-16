@@ -12,24 +12,24 @@ const ANCHOR = '_zoom_anchor',
       DELTA  = '_zoom_delta';
 
 const zoom:TransformCompiler = {
-  has: function(sel) {
-    return sel.zoom !== undefined && sel.zoom !== false;
+  has: function(selCmpt) {
+    return selCmpt.zoom !== undefined && selCmpt.zoom !== false;
   },
 
-  signals: function(model, sel, signals) {
-    if (sel.type !== 'interval') {
+  signals: function(model, selCmpt, signals) {
+    if (selCmpt.type !== 'interval') {
       warn('zoom is currently only supported for interval selections.');
       return signals;
     }
 
-    let name = sel.name,
+    let name = selCmpt.name,
         delta = name + DELTA,
-        events = parseSelector(sel.zoom, 'scope'),
-        {x, y} = intervalProjections(sel),
+        events = parseSelector(selCmpt.zoom, 'scope'),
+        {x, y} = intervalProjections(selCmpt),
         sx = stringValue(model.scaleName(X)),
         sy = stringValue(model.scaleName(Y));
 
-    if (!scalesCompiler.has(sel)) {
+    if (!scalesCompiler.has(selCmpt)) {
       events = events.map((e) => (e.markname = name + INTERVAL_BRUSH, e));
     }
 
@@ -49,11 +49,11 @@ const zoom:TransformCompiler = {
     });
 
     if (x !== null) {
-      onDelta(model, sel, 'x', 'width', signals);
+      onDelta(model, selCmpt, 'x', 'width', signals);
     }
 
     if (y !== null) {
-      onDelta(model, sel, 'y', 'height', signals);
+      onDelta(model, selCmpt, 'y', 'height', signals);
     }
 
     let size = signals.filter((s:any) => s.name === name + INTERVAL_SIZE);
@@ -73,10 +73,10 @@ const zoom:TransformCompiler = {
 
 export {zoom as default};
 
-function onDelta(model: UnitModel, sel: SelectionComponent, channel: Channel, size: string, signals: any[]) {
-  let name = sel.name,
+function onDelta(model: UnitModel, selCmpt: SelectionComponent, channel: Channel, size: string, signals: any[]) {
+  let name = selCmpt.name,
       signal:any = signals.filter((s:any) => s.name === name + '_' + channel)[0],
-      scales = scalesCompiler.has(sel),
+      scales = scalesCompiler.has(selCmpt),
       base = scales ? domain(model, channel) : signal.name,
       anchor = `${name}${ANCHOR}.${channel}`,
       delta  = name + DELTA,

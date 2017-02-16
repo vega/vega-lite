@@ -7,7 +7,7 @@ export type SelectionDomain = 'data' | 'visual';
 export type SelectionResolutions = 'single' | 'independent' | 'union' |
   'union_others' | 'intersect' | 'intersect_others';
 
-export interface BaseSelectionSpec {
+export interface BaseSelectionDef {
   // domain?: SelectionDomain;
   on?: any;
   // predicate?: string;
@@ -22,7 +22,7 @@ export interface BaseSelectionSpec {
   nearest?: boolean;
 }
 
-export interface SelectionSpec extends BaseSelectionSpec {
+export interface SelectionDef extends BaseSelectionDef {
   type: SelectionTypes;
 }
 
@@ -50,9 +50,9 @@ export interface ProjectComponent {
 }
 
 export interface SelectionConfig {
-  single: BaseSelectionSpec;
-  multi: BaseSelectionSpec;
-  interval: BaseSelectionSpec;
+  single: BaseSelectionDef;
+  multi: BaseSelectionDef;
+  interval: BaseSelectionDef;
 }
 
 export const defaultConfig:SelectionConfig = {

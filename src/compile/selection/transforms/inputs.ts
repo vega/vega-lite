@@ -3,13 +3,13 @@ import {stringValue} from '../../../util';
 import {warn} from '../../../log';
 
 const inputBindings:TransformCompiler = {
-  has: function(sel) {
-    return sel.bind && sel.bind !== 'scales';
+  has: function(selCmpt) {
+    return selCmpt.bind && selCmpt.bind !== 'scales';
   },
 
-  topLevelSignals: function(model, sel, signals) {
-    let name = sel.name, proj = sel.project, bind = sel.bind;
-    if (sel.type !== 'single' || sel.resolve !== 'single') {
+  topLevelSignals: function(model, selCmpt, signals) {
+    let name = selCmpt.name, proj = selCmpt.project, bind = selCmpt.bind;
+    if (selCmpt.type !== 'single' || selCmpt.resolve !== 'single') {
       warn('Only "single" selections resolved to "single" can be bound to input widgets.');
       return signals;
     }
@@ -20,7 +20,7 @@ const inputBindings:TransformCompiler = {
         name: name + id(p.field),
         value: '',
         on: [{
-          events: sel.events,
+          events: selCmpt.events,
           update: `${datum}[${stringValue(p.field)}]`
         }],
         bind: bind[p.field] || bind[p.encoding] || bind
@@ -30,12 +30,12 @@ const inputBindings:TransformCompiler = {
     return signals;
   },
 
-  signals: function(model, sel, signals) {
-    if (sel.type !== 'single' || sel.resolve !== 'single') {
+  signals: function(model, selCmpt, signals) {
+    if (selCmpt.type !== 'single' || selCmpt.resolve !== 'single') {
       return signals;
     }
 
-    let name = sel.name, proj = sel.project,
+    let name = selCmpt.name, proj = selCmpt.project,
         signal = signals.filter((s) => s.name === name)[0],
         fields = proj.map((p) => stringValue(p.field)).join(', '),
         values = proj.map((p) => name + id(p.field)).join(', ');

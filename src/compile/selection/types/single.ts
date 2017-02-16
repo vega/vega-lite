@@ -7,24 +7,24 @@ const single:TypeCompiler = {
 
   signals: multi.signals,
 
-  topLevelSignals: function(model, sel) {
-    let name = sel.name;
+  topLevelSignals: function(model, selCmpt) {
+    let name = selCmpt.name;
     return [{
       name: name,
       update: `tuples(${stringValue(name + STORE)})[0]`
     }];
   },
 
-  tupleExpr: function(model, sel) {
-    let name = sel.name, values = `${name}.values`;
+  tupleExpr: function(model, selCmpt) {
+    let name = selCmpt.name, values = `${name}.values`;
     return `fields: ${name}.fields, values: ${values}, ` +
-      sel.project.map(function(p, i) {
+      selCmpt.project.map(function(p, i) {
         return `${p.field}: ${values}[${i}]`;
       }).join(', ');
   },
 
-  modifyExpr: function(model, sel) {
-    return sel.name + TUPLE + ', true';
+  modifyExpr: function(model, selCmpt) {
+    return selCmpt.name + TUPLE + ', true';
   }
 };
 

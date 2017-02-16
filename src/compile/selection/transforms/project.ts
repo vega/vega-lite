@@ -1,19 +1,19 @@
 import {Channel} from '../../../channel';
-import {SelectionSpec} from '../../../selection';
+import {SelectionDef} from '../../../selection';
 import {TransformCompiler} from './';
 
 const project:TransformCompiler = {
-  has: function(sel: SelectionSpec) {
-    return sel.fields !== undefined || sel.encodings !== undefined;
+  has: function(selDef: SelectionDef) {
+    return selDef.fields !== undefined || selDef.encodings !== undefined;
   },
 
-  parse: function(model, def, sel) {
+  parse: function(model, selDef, selCmpt) {
     let fields = {};
     // TODO: find a possible channel mapping for these fields.
-    (def.fields || []).forEach((f) => fields[f] = null);
-    (def.encodings || []).forEach((e: Channel) => fields[model.field(e)] = e);
+    (selDef.fields || []).forEach((f) => fields[f] = null);
+    (selDef.encodings || []).forEach((e: Channel) => fields[model.field(e)] = e);
 
-    let projection = sel.project || (sel.project = []);
+    let projection = selCmpt.project || (selCmpt.project = []);
     for (let field in fields) {
       if (fields.hasOwnProperty(field)) {
         projection.push({field: field, encoding: fields[field]});

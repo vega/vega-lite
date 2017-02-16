@@ -1,16 +1,16 @@
 import {Model} from '../../model';
 import {UnitModel} from '../../unit';
-import {SelectionSpec, SelectionComponent} from '../../../selection';
+import {SelectionDef, SelectionComponent} from '../../../selection';
 import {Dict} from '../../../util';
 
 export interface TransformCompiler {
-  has: (sel: SelectionComponent | SelectionSpec) => boolean;
-  parse?: (model: UnitModel, def: SelectionSpec, sel: SelectionComponent) => void;
-  signals?: (model: UnitModel, sel: SelectionComponent, signals: any[]) => any[];
-  topLevelSignals?: (model: Model, sel: SelectionComponent, signals: any[]) => any[];
-  // tupleExpr?: (model: UnitModel, sel: SelectionComponent, expr: string) => string;
-  modifyExpr?: (model: UnitModel, sel: SelectionComponent, expr: string) => string;
-  marks?: (model: UnitModel, sel:SelectionComponent, marks: any[], selMarks: any[]) => any[];
+  has: (selCmpt: SelectionComponent | SelectionDef) => boolean;
+  parse?: (model: UnitModel, def: SelectionDef, selCmpt: SelectionComponent) => void;
+  signals?: (model: UnitModel, selCmpt: SelectionComponent, signals: any[]) => any[];
+  topLevelSignals?: (model: Model, selCmpt: SelectionComponent, signals: any[]) => any[];
+  // tupleExpr?: (model: UnitModel, selCmpt: SelectionComponent, expr: string) => string;
+  modifyExpr?: (model: UnitModel, selCmpt: SelectionComponent, expr: string) => string;
+  marks?: (model: UnitModel, selCmpt:SelectionComponent, marks: any[], selMarks: any[]) => any[];
   clippedGroup?: boolean;
 }
 
@@ -24,9 +24,9 @@ import nearest from './nearest';
 const compilers: Dict<TransformCompiler> = {project, toggle, scales,
   translate, zoom, inputs, nearest};
 
-export function transforms(sel: SelectionComponent, cb: (tx: TransformCompiler) => void) {
+export function forEachTransform(selCmpt: SelectionComponent, cb: (tx: TransformCompiler) => void) {
   for (let t in compilers) {
-    if (compilers[t].has(sel)) {
+    if (compilers[t].has(selCmpt)) {
       cb(compilers[t]);
     }
   }

@@ -5,28 +5,28 @@ import {stringValue} from '../../../util';
 const multi:TypeCompiler = {
   predicate: 'vlPoint',
 
-  signals: function(model, sel) {
-    let proj = sel.project,
+  signals: function(model, selCmpt) {
+    let proj = selCmpt.project,
         datum  = '(item().isVoronoi ? datum.datum : datum)',
         fields = proj.map((p) => stringValue(p.field)).join(', '),
         values = proj.map((p) => `${datum}[${stringValue(p.field)}]`).join(', ');
     return [{
-      name: sel.name,
+      name: selCmpt.name,
       value: {},
       on: [{
-        events: sel.events,
+        events: selCmpt.events,
         update: `{fields: [${fields}], values: [${values}]}`
       }]
     }];
   },
 
-  tupleExpr: function(model, sel) {
-    let name = sel.name;
+  tupleExpr: function(model, selCmpt) {
+    let name = selCmpt.name;
     return `fields: ${name}.fields, values: ${name}.values`;
   },
 
-  modifyExpr: function(model, sel) {
-    return sel.name + TUPLE;
+  modifyExpr: function(model, selCmpt) {
+    return selCmpt.name + TUPLE;
   }
 };
 
