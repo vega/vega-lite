@@ -12,7 +12,7 @@ export const nonPositiveFilter: DataComponentCompiler<Dict<boolean>> = {
   parseUnit: function(model: Model): Dict<boolean> {
     return model.channels().reduce(function(nonPositiveComponent, channel) {
       const scale = model.scale(channel);
-      if (!model.field(channel) || !scale) {
+      if (!model.fieldDef(channel) || !scale) {
         // don't set anything
         return nonPositiveComponent;
       }
