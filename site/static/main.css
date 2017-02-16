@@ -277,6 +277,10 @@ nav a:hover {
   float: right;
   text-align: right;
   flex: 0 0 auto;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  flex-wrap: wrap;
 }
 
 .edit-page {
