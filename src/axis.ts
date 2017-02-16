@@ -5,9 +5,6 @@ export type AxisOrient = 'top' | 'right' | 'left' | 'bottom';
 
 export interface AxisConfig extends VgAxisConfig, VlOnlyAxisConfig {}
 
-// TODO: add comment for properties that we rely on Vega's default to produce
-// more concise Vega output.
-
 export const defaultAxisConfig: AxisConfig = {
   labelMaxLength: 25,
 };
