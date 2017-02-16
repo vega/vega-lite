@@ -10,11 +10,9 @@ import {transforms} from './transforms';
 import {selector as parseSelector} from 'vega-parser';
 import {VgData} from '../../vega.schema';
 
-export const NS = {
-  STORE: '_store',
-  TUPLE: '_tuple',
-  MODIFY: '_modify'
-};
+export const STORE = '_store',
+  TUPLE  = '_tuple',
+  MODIFY = '_modify';
 
 export function parseUnitSelection(model: UnitModel, spec: Dict<SelectionSpec>) {
   let selections: Dict<SelectionComponent> = {},
@@ -77,16 +75,16 @@ export function assembleUnitSignals(model: UnitModel, signals: any[]) {
     });
 
     signals.push({
-      name: name + NS.TUPLE,
+      name: name + TUPLE,
       on: [{
         events: {signal: name},
         update: `{unit: unit.datum && unit.datum._id, ${tupleExpr}}`
       }]
     }, {
-      name: name + NS.MODIFY,
+      name: name + MODIFY,
       on: [{
         events: {signal: name},
-        update: `modify(${stringValue(name + NS.STORE)}, ${modifyExpr})`
+        update: `modify(${stringValue(name + STORE)}, ${modifyExpr})`
       }]
     });
   });
@@ -120,7 +118,7 @@ export function assembleUnitData(model: UnitModel, data: VgData[]): VgData[] {
   return data
     .concat(Object.keys(model.component.selection)
       .map(function(k: string) {
-        return {name: k + NS.STORE};
+        return {name: k + STORE};
       }));
 }
 
@@ -165,7 +163,7 @@ let PREDICATES_OPS = {
 };
 
 export function predicate(sel: SelectionComponent, datum?: string): string {
-  const store = stringValue(sel.name + NS.STORE),
+  const store = stringValue(sel.name + STORE),
         op = PREDICATES_OPS[sel.resolve];
   datum = datum || 'datum';
   return type(sel).predicate + `(${store}, parent._id, ${datum}, ${op})`;

@@ -1,6 +1,6 @@
 import {stringValue} from '../../../util';
 import {TypeCompiler, multi} from './';
-import {NS} from '../';
+import {TUPLE, STORE} from '../';
 
 const single:TypeCompiler = {
   predicate: multi.predicate,
@@ -11,7 +11,7 @@ const single:TypeCompiler = {
     let name = sel.name;
     return [{
       name: name,
-      update: `tuples(${stringValue(name + NS.STORE)})[0]`
+      update: `tuples(${stringValue(name + STORE)})[0]`
     }];
   },
 
@@ -24,7 +24,7 @@ const single:TypeCompiler = {
   },
 
   modifyExpr: function(model, sel) {
-    return sel.name + NS.TUPLE + ', true';
+    return sel.name + TUPLE + ', true';
   }
 };
 

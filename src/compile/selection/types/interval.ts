@@ -2,15 +2,13 @@ import {SelectionComponent} from '../../../selection';
 import {TypeCompiler} from './';
 import {X, Y, Channel} from '../../../channel';
 import {UnitModel} from '../../unit';
-import {NS as NAMES, invert as invertFn, channelSignalName} from '../';
+import {TUPLE, invert as invertFn, channelSignalName} from '../';
 import {stringValue, extend} from '../../../util';
 import {warn} from '../../../log';
 import scales from '../transforms/scales';
 
-export const NS = {
-  BRUSH: '_brush',
-  SIZE: '_size'
-};
+export const BRUSH = '_brush',
+  SIZE = '_size';
 
 const interval:TypeCompiler = {
   predicate: 'vlInterval',
@@ -19,13 +17,13 @@ const interval:TypeCompiler = {
     let signals: any[] = [],
         intervals:any[] = [],
         name = sel.name,
-        size = name + NS.SIZE;
+        size = name + SIZE;
 
     if (sel.translate && !(scales.has(sel))) {
       events(sel, function(_: any[], evt: any) {
         let filters = evt.between[0].filter || (evt.between[0].filter = []);
         filters.push('!event.item || (event.item && ' +
-          `event.item.mark.name !== ${stringValue(name + NS.BRUSH)})`);
+          `event.item.mark.name !== ${stringValue(name + BRUSH)})`);
       });
     }
 
@@ -70,7 +68,7 @@ const interval:TypeCompiler = {
   },
 
   modifyExpr: function(model, sel) {
-    let tpl = sel.name + NAMES.TUPLE;
+    let tpl = sel.name + TUPLE;
     return `${tpl}, {unit: ${tpl}.unit}`;
   },
 
@@ -109,7 +107,7 @@ const interval:TypeCompiler = {
         update: update
       }
     }].concat(marks, {
-      name: name + NS.BRUSH,
+      name: name + BRUSH,
       type: 'rect',
       encode: {
         enter: {fill: {value: 'transparent'}},

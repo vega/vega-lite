@@ -1,6 +1,6 @@
 import {TransformCompiler} from './';
 
-const NS = 'voronoi';
+const VORONOI = 'voronoi';
 
 const nearest:TransformCompiler = {
   has: function(sel) {
@@ -11,9 +11,9 @@ const nearest:TransformCompiler = {
     let mark = marks[0],
         index = selMarks.indexOf(mark),
         pathgroup = mark.name === model.name('pathgroup'),
-        exists = ((m: any) => m.name && m.name.indexOf(NS) >= 0),
+        exists = ((m: any) => m.name && m.name.indexOf(VORONOI) >= 0),
         cell = {
-          name: model.name(NS),
+          name: model.name(VORONOI),
           type: 'path',
           from: {data: model.name('marks')},
           encode: {

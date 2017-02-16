@@ -2,9 +2,9 @@ import {TransformCompiler} from './';
 import {warn} from '../../../log';
 import {hasContinuousDomain} from '../../../scale';
 import {Channel} from '../../../channel';
-import {NS as NAMES, channelSignalName} from '../';
+import {TUPLE, MODIFY, channelSignalName} from '../';
 import {UnitModel} from '../../unit';
-import {NS as INTERVAL} from '../types/interval';
+import {SIZE as INTERVAL_SIZE} from '../types/interval';
 import {stringValue} from '../../../util';
 
 const scaleBindings:TransformCompiler = {
@@ -46,8 +46,8 @@ const scaleBindings:TransformCompiler = {
   signals: function(model, sel, signals) {
     let name = sel.name;
     signals = signals.filter(function(s) {
-      return s.name !== name + INTERVAL.SIZE &&
-        s.name !== name + NAMES.TUPLE && s.name !== NAMES.MODIFY;
+      return s.name !== name + INTERVAL_SIZE &&
+        s.name !== name + TUPLE && s.name !== MODIFY;
     });
 
     sel.scales.forEach(function(channel) {

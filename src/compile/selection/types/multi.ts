@@ -1,5 +1,5 @@
 import {TypeCompiler} from './';
-import {NS} from '../';
+import {TUPLE} from '../';
 import {stringValue} from '../../../util';
 
 const multi:TypeCompiler = {
@@ -26,7 +26,7 @@ const multi:TypeCompiler = {
   },
 
   modifyExpr: function(model, sel) {
-    return sel.name + NS.TUPLE;
+    return sel.name + TUPLE;
   }
 };
 

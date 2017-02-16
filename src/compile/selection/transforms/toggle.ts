@@ -1,7 +1,7 @@
 import {TransformCompiler} from './';
-import {NS as NAMES} from '../';
+import {TUPLE} from '../';
 
-const NS = '_toggle';
+const TOGGLE = '_toggle';
 
 const toggle:TransformCompiler = {
   has: function(sel) {
@@ -10,15 +10,15 @@ const toggle:TransformCompiler = {
 
   signals: function(model, sel, signals) {
     return signals.concat({
-      name: sel.name + NS,
+      name: sel.name + TOGGLE,
       value: false,
       on: [{events: sel.events, update: sel.toggle}]
     });
   },
 
   modifyExpr: function(model, sel, expr) {
-    let tpl = sel.name + NAMES.TUPLE,
-        signal = sel.name + NS;
+    let tpl = sel.name + TUPLE,
+        signal = sel.name + TOGGLE;
 
     return `${signal} ? null : ${tpl}, ` +
       `${signal} ? null : true, ` +

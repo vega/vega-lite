@@ -6,12 +6,10 @@ import {stringValue} from '../../../util';
 import {warn} from '../../../log';
 import {TransformCompiler} from './';
 import {default as scalesCompiler, domain} from './scales';
-import {projections as intervalProjections, NS as INTERVAL} from '../types/interval';
+import {projections as intervalProjections, SIZE as INTERVAL_SIZE, BRUSH as INTERVAL_BRUSH} from '../types/interval';
 
-const NS = {
-  ANCHOR: '_zoom_anchor',
-  DELTA: '_zoom_delta'
-};
+const ANCHOR = '_zoom_anchor',
+      DELTA  = '_zoom_delta';
 
 const zoom:TransformCompiler = {
   has: function(sel) {
@@ -25,18 +23,18 @@ const zoom:TransformCompiler = {
     }
 
     let name = sel.name,
-        delta = name + NS.DELTA,
+        delta = name + DELTA,
         events = parseSelector(sel.zoom, 'scope'),
         {x, y} = intervalProjections(sel),
         sx = stringValue(model.scaleName(X)),
         sy = stringValue(model.scaleName(Y));
 
     if (!scalesCompiler.has(sel)) {
-      events = events.map((e) => (e.markname = name + INTERVAL.BRUSH, e));
+      events = events.map((e) => (e.markname = name + INTERVAL_BRUSH, e));
     }
 
     signals.push({
-      name: name + NS.ANCHOR,
+      name: name + ANCHOR,
       on: [{
         events: events,
         update: `{x: invert(${sx}, x(unit)), y: invert(${sy}, y(unit))}`
@@ -58,7 +56,7 @@ const zoom:TransformCompiler = {
       onDelta(model, sel, 'y', 'height', signals);
     }
 
-    let size = signals.filter((s:any) => s.name === name + INTERVAL.SIZE);
+    let size = signals.filter((s:any) => s.name === name + INTERVAL_SIZE);
     if (size.length) {
       let sname = size[0].name;
       size[0].on.push({
@@ -80,8 +78,8 @@ function onDelta(model: UnitModel, sel: SelectionComponent, channel: Channel, si
       signal:any = signals.filter((s:any) => s.name === name + '_' + channel)[0],
       scales = scalesCompiler.has(sel),
       base = scales ? domain(model, channel) : signal.name,
-      anchor = `${name}${NS.ANCHOR}.${channel}`,
-      delta  = name + NS.DELTA,
+      anchor = `${name}${ANCHOR}.${channel}`,
+      delta  = name + DELTA,
       scale  = stringValue(model.scaleName(channel)),
       range  = `[${anchor} + (${base}[0] - ${anchor}) * ${delta}, ` +
         `${anchor} + (${base}[1] - ${anchor}) * ${delta}]`,

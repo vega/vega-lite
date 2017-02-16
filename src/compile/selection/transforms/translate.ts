@@ -6,12 +6,10 @@ import {stringValue} from '../../../util';
 import {warn} from '../../../log';
 import {TransformCompiler} from './';
 import {default as scalesCompiler, domain} from './scales';
-import {projections as intervalProjections, NS as INTERVAL} from '../types/interval';
+import {projections as intervalProjections, SIZE as INTERVAL_SIZE, BRUSH as INTERVAL_BRUSH} from '../types/interval';
 
-const NS = {
-  ANCHOR: '_translate_anchor',
-  DELTA: '_translate_delta'
-};
+const ANCHOR = '_translate_anchor',
+      DELTA  = '_translate_delta';
 
 const translate:TransformCompiler = {
   has: function(sel) {
@@ -26,13 +24,13 @@ const translate:TransformCompiler = {
 
     let name = sel.name,
         scales = scalesCompiler.has(sel),
-        size = scales ? 'unit' : name + INTERVAL.SIZE,
-        anchor = name + NS.ANCHOR,
+        size = scales ? 'unit' : name + INTERVAL_SIZE,
+        anchor = name + ANCHOR,
         events = parseSelector(sel.translate, 'scope'),
         {x, y} = intervalProjections(sel);
 
     if (!scales) {
-      events = events.map((e) => (e.between[0].markname = name + INTERVAL.BRUSH, e));
+      events = events.map((e) => (e.between[0].markname = name + INTERVAL_BRUSH, e));
     }
 
     signals.push({
@@ -50,7 +48,7 @@ const translate:TransformCompiler = {
               `slice(${name}_y)`) + ', ' : '') + '}'
       }]
     }, {
-      name: name + NS.DELTA,
+      name: name + DELTA,
       value: {},
       on: [{
         events: events,
@@ -83,8 +81,8 @@ function getSign(sel: SelectionComponent, channel: Channel) {
 function onDelta(model: UnitModel, sel: SelectionComponent, channel: Channel, size: string, signals: any[]) {
   let name = sel.name,
       signal:any = signals.filter((s:any) => s.name === name + '_' + channel)[0],
-      anchor = name + NS.ANCHOR,
-      delta  = name + NS.DELTA,
+      anchor = name + ANCHOR,
+      delta  = name + DELTA,
       scale  = stringValue(model.scaleName(channel)),
       extent = `.extent_${channel}`,
       sign = getSign(sel, channel),
