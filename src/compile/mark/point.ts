@@ -25,7 +25,11 @@ function encodeEntry(model: UnitModel, fixedShape?: string) {
   );
 
   e.shape = shape(encoding.shape, model.scaleName(SHAPE), model.scale(SHAPE), config.point, fixedShape);
-  e.opacity = ref.midPoint('opacity', model.encoding.opacity, model.scaleName('opacity'), model.scale('opacity'), config.mark.opacity && {value: config.mark.opacity});
+
+  const opacity = ref.midPoint('opacity', model.encoding.opacity, model.scaleName('opacity'), model.scale('opacity'), config.mark.opacity && {value: config.mark.opacity});
+  if (opacity !== undefined) {
+    e.opacity = opacity;
+  }
   applyColor(e, model);
   return e;
 }

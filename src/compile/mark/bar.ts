@@ -23,8 +23,11 @@ export const bar: MarkCompiler = {
       x(model, stack),
       y(model, stack)
     );
+    const opacity = ref.midPoint('opacity', model.encoding.opacity, model.scaleName('opacity'), model.scale('opacity'), model.config.mark.opacity && {value: model.config.mark.opacity});
+    if (opacity !== undefined) {
+      e.opacity = opacity;
+    }
     applyColor(e, model);
-    ref.midPoint('opacity', model.encoding.opacity, model.scaleName('opacity'), model.scale('opacity'), model.config.mark.opacity && {value: model.config.mark.opacity});
     return e;
   }
 };

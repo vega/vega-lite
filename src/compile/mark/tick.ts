@@ -31,8 +31,11 @@ export const tick: MarkCompiler = {
       e.height = size(encoding.size, model.scaleName(SIZE), model.scale(SIZE), config, (model.scale(Y) || {}).rangeStep);
     }
 
+    const opacity = ref.midPoint('opacity', model.encoding.opacity, model.scaleName('opacity'), model.scale('opacity'), config.mark.opacity && {value: config.mark.opacity});
+    if (opacity !== undefined) {
+      e.opacity = opacity;
+    }
     applyColor(e, model);
-    e.opacity = ref.midPoint('opacity', model.encoding.opacity, model.scaleName('opacity'), model.scale('opacity'), config.mark.opacity && {value: config.mark.opacity});
 
     return e;
   }

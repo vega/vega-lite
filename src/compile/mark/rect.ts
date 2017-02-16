@@ -20,8 +20,12 @@ export const rect: MarkCompiler = {
       x(model),
       y(model)
     );
+
+    const opacity = ref.midPoint('opacity', model.encoding.opacity, model.scaleName('opacity'), model.scale('opacity'), model.config.mark.opacity && {value: model.config.mark.opacity});
+    if (opacity !== undefined) {
+      e.opacity = opacity;
+    }
     applyColor(e, model);
-    e.opacity = ref.midPoint('opacity', model.encoding.opacity, model.scaleName('opacity'), model.scale('opacity'), model.config.mark.opacity && {value: model.config.mark.opacity});
     return e;
   }
 };

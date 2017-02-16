@@ -27,8 +27,11 @@ export const rule: MarkCompiler = {
     }
 
     // FIXME: this function would overwrite strokeWidth but shouldn't
+    const opacity = ref.midPoint('opacity', model.encoding.opacity, model.scaleName('opacity'), model.scale('opacity'), config.mark.opacity && {value: config.mark.opacity});
+    if (opacity !== undefined) {
+      e.opacity = opacity;
+    }
     applyColor(e, model);
-    e.opacity = ref.midPoint('opacity', model.encoding.opacity, model.scaleName('opacity'), model.scale('opacity'), config.mark.opacity && {value: config.mark.opacity});
     e.strokeWidth = ref.midPoint(SIZE, encoding.size, model.scaleName(SIZE), model.scale(SIZE), {
       value: config.rule.strokeWidth
     });

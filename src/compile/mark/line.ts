@@ -24,7 +24,10 @@ export const line: MarkCompiler = {
     const _size = size(model.encoding.size, model.config);
     if (_size) {e.strokeWidth = _size;}
 
-    ref.midPoint('opacity', model.encoding.opacity, model.scaleName('opacity'), model.scale('opacity'), model.config.mark.opacity && {value: model.config.mark.opacity});
+    const opacity = ref.midPoint('opacity', model.encoding.opacity, model.scaleName('opacity'), model.scale('opacity'), model.config.mark.opacity && {value: model.config.mark.opacity});
+    if (opacity !== undefined) {
+      e.opacity = opacity;
+    }
     applyColor(e, model);
     applyMarkConfig(e, model, ['interpolate', 'tension']);
     return e;

@@ -31,9 +31,13 @@ export const area: MarkCompiler = {
       e.y2 = ref.stackable2(Y2, encoding.y, encoding.y2, model.scaleName(Y), model.scale(Y), stack, 'base');
     }
 
+    const opacity = ref.midPoint('opacity', model.encoding.opacity, model.scaleName('opacity'), model.scale('opacity'), config.mark.opacity && {value: config.mark.opacity});
+    if (opacity !== undefined) {
+      e.opacity = opacity;
+    }
+
     applyColor(e, model);
     applyMarkConfig(e, model, ['interpolate', 'tension']);
-    e.opacity = ref.midPoint('opacity', model.encoding.opacity, model.scaleName('opacity'), model.scale('opacity'), config.mark.opacity && {value: config.mark.opacity});
     return e;
   }
 };
