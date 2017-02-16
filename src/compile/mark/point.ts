@@ -4,7 +4,7 @@ import {SymbolConfig, PointConfig} from '../../mark';
 import {Scale} from '../../scale';
 import {VgEncodeEntry, VgValueRef} from '../../vega.schema';
 
-import {applyColorAndOpacity} from './common';
+import {applyColor} from './common';
 import {UnitModel} from '../unit';
 
 import {MarkCompiler} from './base';
@@ -26,7 +26,11 @@ function encodeEntry(model: UnitModel, fixedShape?: string) {
 
   e.shape = shape(encoding.shape, model.scaleName(SHAPE), model.scale(SHAPE), config.point, fixedShape);
 
-  applyColorAndOpacity(e, model);
+  const opacity = ref.midPoint('opacity', model.encoding.opacity, model.scaleName('opacity'), model.scale('opacity'), config.mark.opacity && {value: config.mark.opacity});
+  if (opacity !== undefined) {
+    e.opacity = opacity;
+  }
+  applyColor(e, model);
   return e;
 }
 

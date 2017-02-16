@@ -8,7 +8,7 @@ import {UnitModel} from '../unit';
 import * as ref from './valueref';
 
 
-export function applyColorAndOpacity(e: VgEncodeEntry, model: UnitModel) {
+export function applyColor(e: VgEncodeEntry, model: UnitModel) {
   const config = model.config;
   const filled = config.mark.filled;
 
@@ -22,7 +22,6 @@ export function applyColorAndOpacity(e: VgEncodeEntry, model: UnitModel) {
   }
 
   let colorRef = ref.midPoint('color', model.encoding.color, model.scaleName('color'), model.scale('color'), undefined);
-  let opacityRef = ref.midPoint('opacity', model.encoding.opacity, model.scaleName('opacity'), model.scale('opacity'), config.mark.opacity && {value: config.mark.opacity});
 
   if (colorRef !== undefined) {
     if (filled) {
@@ -40,9 +39,5 @@ export function applyColorAndOpacity(e: VgEncodeEntry, model: UnitModel) {
   // with transparent fills https://github.com/vega/vega-lite/issues/1316
   if (!e.fill && util.contains(['bar', 'point', 'circle', 'square'], model.mark())) {
     e.fill = {value: 'transparent'};
-  }
-
-  if (opacityRef) {
-    e.opacity = opacityRef;
   }
 }

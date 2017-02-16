@@ -2,38 +2,53 @@
 
 import {assert} from 'chai';
 import {parseUnitModel} from '../../util';
-import {applyColorAndOpacity} from '../../../src/compile/mark/common';
+import {applyColor} from '../../../src/compile/mark/common';
 
 describe('compile/mark/common', () => {
-  describe('applyColorAndOpacity()', function() {
-    it('opacity should be mapped to a field if specified', function() {
+  describe('applyColor()', function() {
+    it('color should be mapped to fill for bar', function() {
       const model = parseUnitModel({
         "mark": "bar",
         "encoding": {
-          "y": {"type": "quantitative", "field": 'US_Gross', "aggregate": "sum", "axis": true},
-          "opacity": {"field": "US_Gross", "type": "quantitative"}
+          "x": {
+            "field": "gender", "type": "nominal",
+            "scale": {"rangeStep": 6},
+            "axis": null
+          },
+          "color": {
+            "field": "gender", "type": "nominal",
+            "scale": {"range": ["#EA98D2", "#659CCA"]}
+          }
         },
-        "data": {"url": "data/movies.json"}
+        "data": {"url": "data/population.json"}
       });
 
       let p: any = {};
-      applyColorAndOpacity(p, model);
-      assert.deepEqual(p.opacity.field, 'US_Gross');
+      applyColor(p, model);
+      assert.deepEqual(p.fill, {"field": "gender", "scale": "color"});
     });
 
-    it('opacity should be mapped to a value if specified', function() {
+    it('color should be mapped to stroke for point', function() {
       const model = parseUnitModel({
-        "mark": "bar",
+        "mark": "point",
         "encoding": {
-          "y": {"type": "quantitative", "field": 'US_Gross', "aggregate": "sum", "axis": true},
-          "opacity": {"value": 0.5}
+          "x": {
+            "field": "gender", "type": "nominal",
+            "scale": {"rangeStep": 6},
+            "axis": null
+          },
+          "color": {
+            "field": "gender", "type": "nominal",
+            "scale": {"range": ["#EA98D2", "#659CCA"]}
+          }
         },
-        "data": {"url": "data/movies.json"}
+        "data": {"url": "data/population.json"}
       });
 
       let p: any = {};
-      applyColorAndOpacity(p, model);
-      assert.deepEqual(p.opacity.value, 0.5);
+      applyColor(p, model);
+      assert.deepEqual(p.stroke, {"field": "gender", "scale": "color"});
+      assert.deepEqual(p.fill.value, "transparent");
     });
   });
 });

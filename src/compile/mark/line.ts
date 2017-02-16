@@ -4,7 +4,7 @@ import {ChannelDef, isValueDef} from '../../fielddef';
 import {VgEncodeEntry} from '../../vega.schema';
 
 import {applyMarkConfig} from '../common';
-import {applyColorAndOpacity} from './common';
+import {applyColor} from './common';
 import {UnitModel} from '../unit';
 
 import {MarkCompiler} from './base';
@@ -24,7 +24,11 @@ export const line: MarkCompiler = {
     const _size = size(model.encoding.size, model.config);
     if (_size) {e.strokeWidth = _size;}
 
-    applyColorAndOpacity(e, model);
+    const opacity = ref.midPoint('opacity', model.encoding.opacity, model.scaleName('opacity'), model.scale('opacity'), model.config.mark.opacity && {value: model.config.mark.opacity});
+    if (opacity !== undefined) {
+      e.opacity = opacity;
+    }
+    applyColor(e, model);
     applyMarkConfig(e, model, ['interpolate', 'tension']);
     return e;
   }

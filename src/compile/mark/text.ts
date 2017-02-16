@@ -1,7 +1,7 @@
 import {X, Y, TEXT, SIZE} from '../../channel';
 import {applyConfig, numberFormat, timeFormatExpression} from '../common';
 
-import {applyColorAndOpacity} from './common';
+import {applyColor} from './common';
 import {Config} from '../../config';
 import {ChannelDef, TextFieldDef, ValueDef, field, isFieldDef} from '../../fielddef';
 import {QUANTITATIVE, TEMPORAL} from '../../type';
@@ -35,7 +35,11 @@ export const text: MarkCompiler = {
 
     e.text = textRef(textDef, config);
 
-    applyColorAndOpacity(e, model);
+    const opacity = ref.midPoint('opacity', model.encoding.opacity, model.scaleName('opacity'), model.scale('opacity'), config.mark.opacity && {value: config.mark.opacity});
+    if (opacity !== undefined) {
+      e.opacity = opacity;
+    }
+    applyColor(e, model);
 
     return e;
   }
