@@ -66,8 +66,6 @@ export interface Axis extends VgAxisBase, VlOnlyAxisConfig {
   encode?: VgAxisEncode;
 }
 
-export interface AxisBase extends VgAxisBase, VlOnlyAxisConfig {}
-
 export interface VlOnlyAxisConfig {
   /**
    * Truncate labels that are too long.
@@ -84,4 +82,4 @@ export const AXIS_PROPERTIES:(keyof Axis)[] = [
     'labelPadding', 'maxExtent', 'minExtent', 'offset', 'position', 'tickSize', 'titlePadding'
 ];
 
-export const VL_AXIS_BASE_PROPERTIES:(keyof VlOnlyAxisConfig)[] = ['labelMaxLength'];
+export const VL_ONLY_AXIS_PROPERTIES:(keyof VlOnlyAxisConfig)[] = ['labelMaxLength'];

@@ -379,7 +379,7 @@ describe('compile/facet', () => {
   });
 
   describe('initAxis', () => {
-    it('should map properties of vl config in config.facet.axis', () => {
+    it('should include properties of VlOnlyAxisConfig in config.facet.axis', () => {
       const model = parseFacetModel({
         facet: {
           row: {field: 'a', type: 'ordinal'}
@@ -396,7 +396,7 @@ describe('compile/facet', () => {
       assert.deepEqual(model.axis(ROW), {"labelMaxLength": 123, "orient": "right", "labelAngle": 90});
     });
 
-    it('should not map non vl config properties in config.facet.axis', () => {
+    it('should not include properties of non-VlOnlyAxisConfig in config.facet.axis', () => {
       const model = parseFacetModel({
         facet: {
           row: {field: 'a', type: 'ordinal'}

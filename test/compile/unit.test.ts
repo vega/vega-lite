@@ -158,7 +158,7 @@ describe('UnitModel', function() {
       assert.equal(model.axis(Y).labelMaxLength, 123);
     });
 
-    it('it should not match non vl-config properties', () => {
+    it('should not include properties of non-VlOnlyAxisConfig in config.facet.axis', () => {
       const model = parseUnitModel({
         mark: 'point',
         encoding: {

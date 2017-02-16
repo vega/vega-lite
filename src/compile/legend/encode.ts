@@ -146,7 +146,7 @@ export function labels(fieldDef: FieldDef, labelsSpec: any, model: UnitModel, ch
   } else if (fieldDef.type === TEMPORAL) {
     labelsSpec = extend({
       text: {
-        signal: timeFormatExpression('datum.value', fieldDef.timeUnit, legend.format, legend.shortTimeLabels, config)
+        signal: timeFormatExpression('datum.value', fieldDef.timeUnit, legend.format, legend.shortTimeLabels, config.timeFormat)
       }
     }, labelsSpec || {});
   }

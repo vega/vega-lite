@@ -181,6 +181,10 @@ export interface VgImputeTransform {
   value?: any;
 }
 
+/**
+ * Base object for Vega's Axis and Axis Config.
+ * All of these properties are both properties of Vega's Axis and Axis Config.
+ */
 export interface VgAxisBase {
   /**
    * Whether to include the axis domain line.
