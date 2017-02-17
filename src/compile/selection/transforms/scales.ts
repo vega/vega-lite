@@ -14,7 +14,7 @@ const scaleBindings:TransformCompiler = {
     return selCmpt.bind && selCmpt.bind === 'scales';
   },
 
-  parse: function(model, _selDef, selCmpt) {
+  parse: function(model, selDef, selCmpt) {
     if (selCmpt.type !== 'interval') {
       warn('Scale bindings are currently only supported for interval selections.');
       return;
@@ -37,13 +37,13 @@ const scaleBindings:TransformCompiler = {
     });
   },
 
-  topLevelSignals: function(_model, selCmpt, signals) {
+  topLevelSignals: function(model, selCmpt, signals) {
     return signals.concat(selCmpt.scales.map((channel) => {
       return {name: channelSignalName(selCmpt, channel)};
     }));
   },
 
-  signals: function(_model, selCmpt, signals) {
+  signals: function(model, selCmpt, signals) {
     let name = selCmpt.name;
     signals = signals.filter(function(s) {
       return s.name !== name + INTERVAL_SIZE &&

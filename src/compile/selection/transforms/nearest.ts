@@ -7,7 +7,7 @@ const nearest:TransformCompiler = {
     return selCmpt.nearest !== undefined && selCmpt.nearest !== false;
   },
 
-  marks: function(model, _selCmpt, marks, selMarks) {
+  marks: function(model, selCmpt, marks, selMarks) {
     let mark = marks[0],
         index = selMarks.indexOf(mark),
         isPathgroup = mark.name === model.getName('pathgroup'),

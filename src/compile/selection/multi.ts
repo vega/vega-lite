@@ -4,7 +4,7 @@ import {stringValue} from '../../util';
 const multi:SelectionCompiler = {
   predicate: 'vlPoint',
 
-  signals: function(_model, selCmpt) {
+  signals: function(model, selCmpt) {
     let proj = selCmpt.project,
         datum  = '(item().isVoronoi ? datum.datum : datum)',
         fields = proj.map((p) => stringValue(p.field)).join(', '),
@@ -19,12 +19,12 @@ const multi:SelectionCompiler = {
     }];
   },
 
-  tupleExpr: function(_model, selCmpt) {
+  tupleExpr: function(model, selCmpt) {
     let name = selCmpt.name;
     return `fields: ${name}.fields, values: ${name}.values`;
   },
 
-  modifyExpr: function(_model, selCmpt) {
+  modifyExpr: function(model, selCmpt) {
     return selCmpt.name + TUPLE;
   }
 };

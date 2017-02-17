@@ -204,11 +204,11 @@ export class LayerModel extends Model {
     return applyConfig({}, cellConfig, FILL_STROKE_CONFIG.concat(['clip']));
   }
 
-  public assembleSignals(_signals: any[]): any[] {
+  public assembleSignals(signals: any[]): any[] {
     return [];
   }
 
-  public assembleSelectionData(_data: VgData[]): VgData[] {
+  public assembleSelectionData(data: VgData[]): VgData[] {
     return [];
   }
 

@@ -7,7 +7,7 @@ const single:SelectionCompiler = {
 
   signals: multi.signals,
 
-  topLevelSignals: function(_model, selCmpt) {
+  topLevelSignals: function(model, selCmpt) {
     let name = selCmpt.name;
     return [{
       name: name,
@@ -15,7 +15,7 @@ const single:SelectionCompiler = {
     }];
   },
 
-  tupleExpr: function(_model, selCmpt) {
+  tupleExpr: function(model, selCmpt) {
     let name = selCmpt.name, values = `${name}.values`;
     return `fields: ${name}.fields, values: ${values}, ` +
       selCmpt.project.map(function(p, i) {
@@ -23,7 +23,7 @@ const single:SelectionCompiler = {
       }).join(', ');
   },
 
-  modifyExpr: function(_model, selCmpt) {
+  modifyExpr: function(model, selCmpt) {
     return selCmpt.name + TUPLE + ', true';
   }
 };
