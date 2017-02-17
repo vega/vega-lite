@@ -182,7 +182,20 @@ describe('Mark: Point', function() {
   });
 
   describe('with configs', function() {
-    it('should apply stroke config over color config', function() {
+    it('should apply color from mark-specific config over general mark config', function() {
+      const model = parseUnitModel({
+        "mark": "point",
+        "encoding": {
+          "x": {"field": "Horsepower","type": "quantitative"},
+          "y": {"field": "Miles_per_Gallon","type": "quantitative"}
+        },
+        "config": {"mark": {"color":"blue"}, "point": {"color":"red"}}
+      });
+      const props = point.encodeEntry(model);
+      assert.deepEqual(props.stroke, {value: "red"});
+    });
+
+    it('should apply color config and not apply stroke config', function() {
       const model = parseUnitModel({
         "mark": "point",
         "encoding": {
@@ -192,20 +205,20 @@ describe('Mark: Point', function() {
         "config": {"mark": {"color":"red", "stroke": "blue"}}
       });
       const props = point.encodeEntry(model);
-      assert.deepEqual(props.stroke, {value: "blue"});
+      assert.deepEqual(props.stroke, {value: "red"});
     });
 
-    it('should apply color config', function() {
+    it('should not apply stroke config but instead output default color', function() {
       const model = parseUnitModel({
         "mark": "point",
         "encoding": {
           "x": {"field": "Horsepower","type": "quantitative"},
           "y": {"field": "Miles_per_Gallon","type": "quantitative"}
         },
-        "config": {"mark": {"color":"red"}}
+        "config": {"mark": {"stroke": "red"}}
       });
       const props = point.encodeEntry(model);
-      assert.deepEqual(props.stroke, {value: "red"});
+      assert.deepEqual(props.stroke, {value: defaultMarkConfig.color});
     });
   });
 });
