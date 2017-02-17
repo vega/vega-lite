@@ -11,15 +11,10 @@ const scaleBindings:TransformCompiler = {
   clippedGroup: true,
 
   has: function(selCmpt) {
-    return selCmpt.bind && selCmpt.bind === 'scales';
+    return selCmpt.type === 'interval' && selCmpt.bind && selCmpt.bind === 'scales';
   },
 
   parse: function(model, selDef, selCmpt) {
-    if (selCmpt.type !== 'interval') {
-      warn('Scale bindings are currently only supported for interval selections.');
-      return;
-    }
-
     let scales = model.component.scales,
         bound:Channel[] = selCmpt.scales = [];
 

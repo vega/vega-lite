@@ -3,7 +3,6 @@ import {UnitModel} from './../../unit';
 import {SelectionComponent} from '../selection';
 import {X, Y, Channel} from '../../../channel';
 import {stringValue} from '../../../util';
-import {warn} from '../../../log';
 import {TransformCompiler} from './transforms';
 import {default as scalesCompiler, domain} from './scales';
 import {projections as intervalProjections, SIZE as INTERVAL_SIZE, BRUSH as INTERVAL_BRUSH} from '../interval';
@@ -13,15 +12,10 @@ const ANCHOR = '_zoom_anchor',
 
 const zoom:TransformCompiler = {
   has: function(selCmpt) {
-    return selCmpt.zoom !== undefined && selCmpt.zoom !== false;
+    return selCmpt.type === 'interval' && selCmpt.zoom !== undefined && selCmpt.zoom !== false;
   },
 
   signals: function(model, selCmpt, signals) {
-    if (selCmpt.type !== 'interval') {
-      warn('zoom is currently only supported for interval selections.');
-      return signals;
-    }
-
     let name = selCmpt.name,
         delta = name + DELTA,
         events = parseSelector(selCmpt.zoom, 'scope'),

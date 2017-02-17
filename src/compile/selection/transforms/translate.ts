@@ -3,7 +3,6 @@ import {UnitModel} from './../../unit';
 import {SelectionComponent} from '../selection';
 import {X, Y, Channel} from '../../../channel';
 import {stringValue} from '../../../util';
-import {warn} from '../../../log';
 import {TransformCompiler} from './transforms';
 import {default as scalesCompiler, domain} from './scales';
 import {projections as intervalProjections, SIZE as INTERVAL_SIZE, BRUSH as INTERVAL_BRUSH} from '../interval';
@@ -13,15 +12,10 @@ const ANCHOR = '_translate_anchor',
 
 const translate:TransformCompiler = {
   has: function(selCmpt) {
-    return selCmpt.translate !== undefined && selCmpt.translate !== false;
+    return selCmpt.type === 'interval' && selCmpt.translate !== undefined && selCmpt.translate !== false;
   },
 
   signals: function(model, selCmpt, signals) {
-    if (selCmpt.type !== 'interval') {
-      warn('translate is currently only supported for interval selections.');
-      return signals;
-    }
-
     let name = selCmpt.name,
         scales = scalesCompiler.has(selCmpt),
         size = scales ? 'unit' : name + INTERVAL_SIZE,
@@ -75,7 +69,7 @@ function getSign(selCmpt: SelectionComponent, channel: Channel) {
   if (scalesCompiler.has(selCmpt)) {
     s = s === '+' ? '-' : '+';
   }
-  return ` ${s} `;
+  return s;
 }
 
 function onDelta(model: UnitModel, selCmpt: SelectionComponent, channel: Channel, size: string, signals: any[]) {
