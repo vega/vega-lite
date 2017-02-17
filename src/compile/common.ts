@@ -3,7 +3,7 @@ import * as log from '../log';
 import {TEXT, Channel} from '../channel';
 import {Config, CellConfig} from '../config';
 import {FieldDef, OrderFieldDef, field} from '../fielddef';
-import {MarkConfig, TextConfig} from '../mark';
+import {Mark, MarkConfig, TextConfig} from '../mark';
 import {TimeUnit} from '../timeunit';
 import {QUANTITATIVE} from '../type';
 import {isArray} from '../util';
@@ -46,6 +46,18 @@ export function applyConfig(e: VgEncodeEntry,
 
 export function applyMarkConfig(e: VgEncodeEntry, model: UnitModel, propsList: string[]) {
   return applyConfig(e, model.config.mark, propsList);
+}
+
+/**
+ * Return value mark specific config property if exists.
+ * Otherwise, return general mark specific config.
+ */
+export function getMarkConfig(prop: keyof MarkConfig, mark: Mark, config: Config) {
+  const markSpecificConfig = config[mark];
+  if (markSpecificConfig[prop] !== undefined) {
+    return markSpecificConfig[prop];
+  }
+  return config.mark[prop];
 }
 
 /**
