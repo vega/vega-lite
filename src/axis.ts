@@ -3,7 +3,7 @@ import {VgAxisEncode, VgAxisBase, VgAxisConfig} from './vega.schema';
 
 export type AxisOrient = 'top' | 'right' | 'left' | 'bottom';
 
-export interface AxisConfig extends VgAxisConfig, VlOnlyAxisConfig {}
+export interface AxisConfig extends VgAxisConfig, VlOnlyAxisBase {}
 
 export const defaultAxisConfig: AxisConfig = {
   labelMaxLength: 25,
@@ -13,7 +13,7 @@ export const defaultFacetAxisConfig: AxisConfig = {
   domainWidth: 0,
 };
 
-export interface Axis extends VgAxisBase, VlOnlyAxisConfig {
+export interface Axis extends VgAxisBase, VlOnlyAxisBase {
   /**
    * The padding, in pixels, between axis and text labels.
    */
@@ -66,7 +66,12 @@ export interface Axis extends VgAxisBase, VlOnlyAxisConfig {
   encode?: VgAxisEncode;
 }
 
-export interface VlOnlyAxisConfig {
+
+/**
+ * Base object for properties that are shared between Axis and Axis Config.
+ * These properties are not in Vega Axis and Axis Config.
+ */
+export interface VlOnlyAxisBase {
   /**
    * Truncate labels that are too long.
    * @minimum 1
@@ -82,4 +87,4 @@ export const AXIS_PROPERTIES:(keyof Axis)[] = [
     'labelPadding', 'maxExtent', 'minExtent', 'offset', 'position', 'tickSize', 'titlePadding'
 ];
 
-export const VL_ONLY_AXIS_PROPERTIES:(keyof VlOnlyAxisConfig)[] = ['labelMaxLength'];
+export const VL_ONLY_AXIS_PROPERTIES:(keyof VlOnlyAxisBase)[] = ['labelMaxLength'];
