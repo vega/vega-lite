@@ -16,7 +16,7 @@ import {VgValueRef} from '../../vega.schema';
 /**
  * @return Vega ValueRef for stackable x or y
  */
-export function stackable(channel: Channel, channelDef: ChannelDef, scaleName: string, scale: Scale,
+export function stackable(channel: 'x' | 'y', channelDef: ChannelDef, scaleName: string, scale: Scale,
     stack: StackProperties, defaultRef: VgValueRef): VgValueRef {
   if (channelDef && stack && channel === stack.fieldChannel) {
     // x or y use stack_end so that stacked line's point mark use stack_end too.
@@ -28,7 +28,7 @@ export function stackable(channel: Channel, channelDef: ChannelDef, scaleName: s
 /**
  * @return Vega ValueRef for stackable x2 or y2
  */
-export function stackable2(channel: Channel, aFieldDef: FieldDef, a2fieldDef: FieldDef, scaleName: string, scale: Scale,
+export function stackable2(channel: 'x2' | 'y2', aFieldDef: FieldDef, a2fieldDef: FieldDef, scaleName: string, scale: Scale,
     stack: StackProperties, defaultRef: VgValueRef): VgValueRef {
   if (aFieldDef && stack &&
       // If fieldChannel is X and channel is X2 (or Y and Y2)

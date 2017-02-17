@@ -1,45 +1,32 @@
-import {X, Y, SHAPE, SIZE} from '../../channel';
-import {LegendFieldDef} from '../../fielddef';
-import {SymbolConfig, PointConfig} from '../../mark';
-import {Scale} from '../../scale';
-import {VgEncodeEntry, VgValueRef} from '../../vega.schema';
 
-import {applyColor} from './common';
+
+import * as mixins from './mixins';
 import {UnitModel} from '../unit';
 
 import {MarkCompiler} from './base';
 import * as ref from './valueref';
+import {getMarkConfig} from '../common';
+import {Config} from '../../config';
 
-function encodeEntry(model: UnitModel, fixedShape?: string) {
-  let e: VgEncodeEntry = {};
-  const {config, encoding, stack} = model;
-  const markSpecificConfig: SymbolConfig = fixedShape ? config[fixedShape] : config.point;
+function encodeEntry(model: UnitModel, fixedShape?: 'circle' | 'square') {
+  const {config} = model;
 
-  // TODO: refactor how refer to scale as discussed in https://github.com/vega/vega-lite/pull/1613
+  return {
+    ...mixins.pointPosition('x', model, ref.midX(config)),
+    ...mixins.pointPosition('y', model, ref.midY(config)),
 
-  e.x = ref.stackable(X, encoding.x, model.scaleName(X), model.scale(X), stack, ref.midX(config));
-  e.y = ref.stackable(Y, encoding.y, model.scaleName(Y), model.scale(Y), stack, ref.midY(config));
-
-  e.size = ref.midPoint(SIZE, encoding.size, model.scaleName(SIZE), model.scale(SIZE),
-    {value: markSpecificConfig.size}
-  );
-
-  e.shape = shape(encoding.shape, model.scaleName(SHAPE), model.scale(SHAPE), config.point, fixedShape);
-
-  const opacity = ref.midPoint('opacity', model.encoding.opacity, model.scaleName('opacity'), model.scale('opacity'), config.mark.opacity && {value: config.mark.opacity});
-  if (opacity !== undefined) {
-    e.opacity = opacity;
-  }
-  applyColor(e, model);
-  return e;
+    ...mixins.color(model),
+    ...mixins.nonPosition('size', model),
+    ...shapeMixins(model, config, fixedShape),
+    ...mixins.nonPosition('opacity', model)
+  };
 }
 
-function shape(shapeDef: LegendFieldDef, scaleName: string, scale: Scale, pointConfig: PointConfig, fixedShape?: string): VgValueRef {
-  // shape
-  if (fixedShape) { // square and circle marks
-    return {value: fixedShape};
+export function shapeMixins(model: UnitModel, config: Config, fixedShape?: 'circle' | 'square') {
+  if (fixedShape) {
+    return {shape: {value: fixedShape}};
   }
-  return ref.midPoint(SHAPE, shapeDef, scaleName, scale, {value: pointConfig.shape});
+  return mixins.nonPosition('shape', model, {defaultValue: getMarkConfig('shape', 'point', config) as string});
 }
 
 export const point: MarkCompiler = {

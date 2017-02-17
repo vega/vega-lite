@@ -1,12 +1,12 @@
-import {X, Y, TEXT, SIZE} from '../../channel';
-import {applyConfig, numberFormat, timeFormatExpression, getMarkConfig} from '../common';
+import {TEXT, X} from '../../channel';
+import {numberFormat, timeFormatExpression, getMarkConfig} from '../common';
 
-import {applyColor} from './common';
+import * as mixins from './mixins';
 import {Config} from '../../config';
 import {ChannelDef, TextFieldDef, ValueDef, field, isFieldDef} from '../../fielddef';
 import {QUANTITATIVE, TEMPORAL} from '../../type';
 import {UnitModel} from '../unit';
-import {VgValueRef, VgEncodeEntry} from '../../vega.schema';
+import {VgValueRef} from '../../vega.schema';
 
 import {MarkCompiler} from './base';
 import * as ref from './valueref';
@@ -17,35 +17,20 @@ export const text: MarkCompiler = {
   role: undefined,
 
   encodeEntry: (model: UnitModel) => {
-    let e: VgEncodeEntry = {};
-
-    applyConfig(e, model.config.text,
-      ['angle', 'align', 'baseline', 'dx', 'dy', 'font', 'fontWeight',
-        'fontStyle', 'radius', 'theta', 'text']);
-
-    const {config, encoding, stack} = model;
+    const {config, encoding} = model;
     const textDef = encoding.text;
 
-    // TODO: refactor how refer to scale as discussed in https://github.com/vega/vega-lite/pull/1613
-    e.x = ref.stackable(X, encoding.x, model.scaleName(X), model.scale(X), stack, xDefault(config, textDef));
-    e.y = ref.stackable(Y, encoding.y, model.scaleName(Y), model.scale(Y), stack, ref.midY(config));
-
-    e.fontSize = ref.midPoint(SIZE, encoding.size, model.scaleName(SIZE), model.scale(SIZE),  undefined);
-
-    e.text = textRef(textDef, config);
-
-    const opacity = ref.midPoint('opacity', model.encoding.opacity, model.scaleName('opacity'), model.scale('opacity'), config.mark.opacity && {value: config.mark.opacity});
-    if (opacity !== undefined) {
-      e.opacity = opacity;
-    }
-
-    // We gonna use mixins in a later PR anyway, so pardon this _align var name.
-    const _align = align(encoding, config);
-    if (_align) { e.align = {value: _align};};
-
-    applyColor(e, model);
-
-    return e;
+    return {
+      ...mixins.pointPosition('x', model, xDefault(config, textDef)),
+      ...mixins.pointPosition('y', model, ref.midY(config)),
+      text: textRef(textDef, config),
+      ...mixins.color(model),
+      ...mixins.nonPosition('opacity', model),
+      ...mixins.nonPosition('size', model, {
+        vgChannel: 'fontSize'  // VL's text size is fontSize
+      }),
+      ...mixins.valueIfDefined('align', align(encoding, config))
+    };
   }
 };
 
