@@ -121,7 +121,7 @@ export const stack: DataComponentCompiler<StackComponent> = {
     };
   },
 
-  parseLayer: function(_: LayerModel): StackComponent {
+  parseLayer: function(model: LayerModel): StackComponent {
     // FIXME: merge if identical
     // FIXME: Correctly support facet of layer of stack.
     return undefined;

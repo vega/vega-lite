@@ -176,7 +176,7 @@ export function labels(fieldDef: FieldDef, labelsSpec: any, model: UnitModel, ch
   return keys(labels).length > 0 ? labels : undefined;
 }
 
-export function title(_: FieldDef, titleSpec: any, model: UnitModel, channel: Channel) {
+export function title(fieldDef: FieldDef, titleSpec: any, model: UnitModel, channel: Channel) {
   const legend = model.legend(channel);
 
   let titles:any = {};
