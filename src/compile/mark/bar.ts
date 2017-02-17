@@ -1,13 +1,12 @@
-import {X, Y, X2, Y2, SIZE} from '../../channel';
+import {X, Y} from '../../channel';
 import {Config} from '../../config';
 import {isFieldDef} from '../../fielddef';
 import {Scale, ScaleType} from '../../scale';
 import {StackProperties} from '../../stack';
-import {extend} from '../../util';
 import * as log from '../../log';
 import {VgEncodeEntry} from '../../vega.schema';
 
-import {applyColor} from './common';
+import * as mixins from './mixins';
 import {UnitModel} from '../unit';
 import {VgValueRef} from '../../vega.schema';
 
@@ -19,22 +18,17 @@ export const bar: MarkCompiler = {
   role: 'bar',
   encodeEntry: (model: UnitModel) => {
     const stack = model.stack;
-    let e: VgEncodeEntry = extend(
-      x(model, stack),
-      y(model, stack)
-    );
-    const opacity = ref.midPoint('opacity', model.encoding.opacity, model.scaleName('opacity'), model.scale('opacity'), model.config.mark.opacity && {value: model.config.mark.opacity});
-    if (opacity !== undefined) {
-      e.opacity = opacity;
-    }
-    applyColor(e, model);
-    return e;
+    return {
+      ...x(model, stack),
+      ...y(model, stack),
+      ...mixins.color(model),
+      ...mixins.nonPosition('opacity', model)
+    };
   }
 };
 
-function x(model: UnitModel, stack: StackProperties) {
-  let e: VgEncodeEntry = {};
-  const {config, encoding} = model;
+function x(model: UnitModel, stack: StackProperties): VgEncodeEntry {
+  const {config} = model;
   const orient = model.markDef.orient;
   const sizeDef = model.encoding.size;
 
@@ -43,37 +37,29 @@ function x(model: UnitModel, stack: StackProperties) {
   const xScale = model.scale(X);
   // x, x2, and width -- we must specify two of these in all conditions
   if (orient === 'horizontal') {
-    e.x = ref.stackable(X, xDef, xScaleName, model.scale(X), stack, 'base');
-    e.x2 = ref.stackable2(X2, xDef, encoding.x2, xScaleName, model.scale(X), stack, 'base');
-    return e;
+    return {
+      ...mixins.pointPosition('x', model, 'base'),
+      ...mixins.pointPosition2(model, 'base'),
+    };
   } else { // vertical
     if (isFieldDef(xDef)) {
       if (xDef.bin && !sizeDef) {
         // TODO: check scale type = linear
-
-        e.x2 = ref.bin(xDef, xScaleName, 'start', config.bar.binSpacing);
-        e.x = ref.bin(xDef, xScaleName, 'end');
-        return e;
+        return mixins.binnedPosition('x', model, config.bar.binSpacing);
       } else if (xScale.type === ScaleType.BAND) {
-        // TODO: band scale doesn't support size yet
-        e.x = ref.fieldRef(xDef, xScaleName, {});
-        e.width = ref.band(xScaleName);
-        return e;
+        return mixins.bandPosition('x', model);
       }
     }
     // sized bin, normal point-ordinal axis, quantitative x-axis, or no x
-    e.xc = ref.midPoint(X, xDef, xScaleName, model.scale(X),
-      extend(ref.midX(config), {offset: 1}) // TODO: config.singleBarOffset
-    );
-    e.width = ref.midPoint(SIZE, encoding.size, model.scaleName(SIZE), model.scale(SIZE),
+
+    return mixins.centeredBandPosition('x', model,
+      {...ref.midX(config), offset: 1}, // TODO: config.singleBarOffset,
       defaultSizeRef(xScaleName, model.scale(X), config)
     );
-    return e;
   }
 }
 
 function y(model: UnitModel, stack: StackProperties) {
-  let e: VgEncodeEntry = {};
   const {config, encoding} = model;
   const orient = model.markDef.orient;
   const sizeDef = encoding.size;
@@ -83,29 +69,19 @@ function y(model: UnitModel, stack: StackProperties) {
   const yScale = model.scale(Y);
   // y, y2 & height -- we must specify two of these in all conditions
   if (orient === 'vertical') {
-    e.y = ref.stackable(Y, yDef, yScaleName, model.scale(Y), stack, 'base');
-    e.y2 = ref.stackable2(Y2, yDef, encoding.y2, yScaleName, model.scale(Y), stack, 'base');
-    return e;
+    return {
+      ...mixins.pointPosition('y', model, 'base'),
+      ...mixins.pointPosition2(model, 'base'),
+    };
   } else {
     if (isFieldDef(yDef)) {
       if (yDef.bin && !sizeDef) {
-        e.y2 = ref.bin(yDef, yScaleName, 'start');
-        e.y = ref.bin(yDef, yScaleName, 'end', config.bar.binSpacing);
-        return e;
+        return mixins.binnedPosition('y', model, config.bar.binSpacing);
       } else if (yScale.type === ScaleType.BAND) {
-        // TODO: band scale doesn't support size yet
-        e.y = ref.fieldRef(yDef, yScaleName, {});
-        e.height = ref.band(yScaleName);
-        return e;
+        return mixins.bandPosition('y', model);
       }
     }
-    e.yc = ref.midPoint(Y, yDef, yScaleName, model.scale(Y),
-      ref.midY(config)
-    );
-    e.height = ref.midPoint(SIZE, encoding.size, model.scaleName(SIZE), model.scale(SIZE),
-      defaultSizeRef(yScaleName, model.scale(Y), config)
-    );
-    return e;
+    return mixins.centeredBandPosition('y', model, ref.midY(config), defaultSizeRef(yScaleName, model.scale(Y), config));
   }
 }
 

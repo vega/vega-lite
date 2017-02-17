@@ -2,10 +2,10 @@
 
 import {assert} from 'chai';
 import {parseUnitModel} from '../../util';
-import {applyColor} from '../../../src/compile/mark/common';
+import {color} from '../../../src/compile/mark/mixins';
 
-describe('compile/mark/common', () => {
-  describe('applyColor()', function() {
+describe('compile/mark/mixins', () => {
+  describe('color()', function() {
     it('color should be mapped to fill for bar', function() {
       const model = parseUnitModel({
         "mark": "bar",
@@ -23,9 +23,8 @@ describe('compile/mark/common', () => {
         "data": {"url": "data/population.json"}
       });
 
-      let p: any = {};
-      applyColor(p, model);
-      assert.deepEqual(p.fill, {"field": "gender", "scale": "color"});
+      const colorMixins = color(model);
+      assert.deepEqual(colorMixins.fill, {"field": "gender", "scale": "color"});
     });
 
     it('color should be mapped to stroke for point', function() {
@@ -45,10 +44,9 @@ describe('compile/mark/common', () => {
         "data": {"url": "data/population.json"}
       });
 
-      let p: any = {};
-      applyColor(p, model);
-      assert.deepEqual(p.stroke, {"field": "gender", "scale": "color"});
-      assert.deepEqual(p.fill.value, "transparent");
+      const colorMixins = color(model);
+      assert.deepEqual(colorMixins.stroke, {"field": "gender", "scale": "color"});
+      assert.deepEqual(colorMixins.fill.value, "transparent");
     });
   });
 });
