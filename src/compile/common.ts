@@ -72,10 +72,10 @@ export function numberFormat(fieldDef: FieldDef, format: string, config: Config,
 /**
  * Returns the time expression used for axis/legend labels or text mark for a temporal field
  */
-export function timeFormatExpression(field: string, timeUnit: TimeUnit, format: string, shortTimeLabels: boolean, config: Config): string {
+export function timeFormatExpression(field: string, timeUnit: TimeUnit, format: string, shortTimeLabels: boolean, timeFormatConfig: string): string {
   if (!timeUnit || format) {
     // If there is not time unit, or if user explicitly specify format for axis/legend/text.
-    const _format = format || config.timeFormat; // only use config.timeFormat if there is no timeUnit.
+    const _format = format || timeFormatConfig; // only use config.timeFormat if there is no timeUnit.
     return `timeFormat(${field}, '${_format}')`;
   } else {
     return formatExpression(timeUnit, field, shortTimeLabels);

@@ -10,7 +10,7 @@
     "column": {
       "field": "age", "type": "ordinal",
       "scale": {"spacing": 4},
-      "axis": {"orient": "bottom", "axisWidth": 1, "offset": -8}
+      "axis": {"orient": "bottom", "offset": -8}
     },
     "y": {
       "aggregate": "sum", "field": "people", "type": "quantitative",
@@ -26,5 +26,8 @@
       "scale": {"range": ["#EA98D2", "#659CCA"]}
     }
   },
-  "config": {"facet": {"cell": {"strokeWidth": 0}}}
+  "config": {
+    "facet": {"cell": {"strokeWidth": 0}},
+    "axis": {"domainWidth": 1}
+  }
 }

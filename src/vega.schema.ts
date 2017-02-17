@@ -180,3 +180,158 @@ export interface VgImputeTransform {
   method?: 'value' | 'median' | 'max' | 'min' | 'mean';
   value?: any;
 }
+
+/**
+ * Base object for Vega's Axis and Axis Config.
+ * All of these properties are both properties of Vega's Axis and Axis Config.
+ */
+export interface VgAxisBase {
+  /**
+   * Whether to include the axis domain line.
+   */
+  domain?: boolean;
+
+  /**
+   * A flag indicate if gridlines should be created in addition to ticks. If `grid` is unspecified, the default value is `true` for ROW and COL. For X and Y, the default value is `true` for quantitative and time fields and `false` otherwise.
+   */
+  grid?: boolean;
+
+  /**
+   * Enable or disable labels.
+   */
+  labels?: boolean;
+
+  /**
+   * The rotation angle of the axis labels.
+   * @minimum 0
+   * @maximum 360
+   */
+  labelAngle?: number;  // FIXME: not sure if this should be a theme
+
+  /**
+   * Whether the axis should include ticks.
+   */
+  ticks?: boolean;
+
+  /**
+   * The size, in pixels, of major, minor and end ticks.
+   * @minimum 0
+   */
+  tickSize?: number;
+
+  /**
+   * Max length for axis title if the title is automatically generated from the field's description. By default, this is automatically based on cell size and characterWidth property.
+   * @minimum 0
+   * @TJS-type integer
+   */
+  titleMaxLength?: number;
+
+  /**
+   * The padding, in pixels, between title and axis.
+   */
+  titlePadding?: number;
+
+  /**
+   * Minimum extent, which determines the offset between axis ticks and labels.
+   */
+  minExtent?: number;
+
+  /**
+   * Maximum extent, which determines the offset between axis ticks and labels.
+   */
+  maxExtent?: number;
+}
+
+export interface VgAxisConfig extends VgAxisBase {
+ // ---------- Axis ----------
+  /**
+   * Width of the domain line
+   */
+  domainWidth?: number;
+
+  /**
+   * Color of axis domain line.
+   */
+  domainColor?: string;
+
+  // ---------- Grid ----------
+  /**
+   * Color of gridlines.
+   */
+  gridColor?: string;
+
+  /**
+   * The offset (in pixels) into which to begin drawing with the grid dash array.
+   * @minimum 0
+   */
+  gridDash?: number[];
+
+  /**
+   * The stroke opacity of grid (value between [0,1])
+   * @minimum 0
+   * @maximum 1
+   */
+  gridOpacity?: number;
+
+  /**
+   * The grid width, in pixels.
+   * @minimum 0
+   */
+  gridWidth?: number;
+
+  // ---------- Ticks ----------
+  /**
+   * The color of the axis's tick.
+   */
+  tickColor?: string;
+
+  /**
+   * The color of the tick label, can be in hex color code or regular color name.
+   */
+  labelColor?: string;
+
+  /**
+   * The font of the tick label.
+   */
+  labelFont?: string;
+
+  /**
+   * The font size of label, in pixels.
+   * @minimum 0
+   */
+  labelFontSize?: number;
+
+  /**
+   * The width, in pixels, of ticks.
+   * @minimum 0
+   */
+  tickWidth?: number;
+
+  // ---------- Title ----------
+  /**
+   * Color of the title, can be in hex color code or regular color name.
+   */
+  titleColor?: string;
+
+  /**
+   * Font of the title.
+   */
+  titleFont?: string;
+
+  /**
+   * Size of the title.
+   * @minimum 0
+   */
+  titleFontSize?: number;
+
+  /**
+   * Weight of the title.
+   */
+  titleFontWeight?: string | number;
+  /**
+   * Whether month names and weekday names should be abbreviated.
+   */
+  shortTimeLabels?: boolean;
+}
+
+

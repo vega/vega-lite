@@ -136,14 +136,6 @@
         "Axis": {
             "additionalProperties": false,
             "properties": {
-                "axisColor": {
-                    "description": "Color of axis line.",
-                    "type": "string"
-                },
-                "axisWidth": {
-                    "description": "Width of the axis line",
-                    "type": "number"
-                },
                 "domain": {
                     "description": "Whether to include the axis domain line.",
                     "type": "boolean"
@@ -160,42 +152,11 @@
                     "description": "A flag indicate if gridlines should be created in addition to ticks. If `grid` is unspecified, the default value is `true` for ROW and COL. For X and Y, the default value is `true` for quantitative and time fields and `false` otherwise.",
                     "type": "boolean"
                 },
-                "gridColor": {
-                    "description": "Color of gridlines.",
-                    "type": "string"
-                },
-                "gridDash": {
-                    "description": "The offset (in pixels) into which to begin drawing with the grid dash array.",
-                    "items": {
-                        "type": "number"
-                    },
-                    "minimum": 0,
-                    "type": "array"
-                },
-                "gridOpacity": {
-                    "description": "The stroke opacity of grid (value between [0,1])",
-                    "maximum": 1,
-                    "minimum": 0,
-                    "type": "number"
-                },
-                "gridWidth": {
-                    "description": "The grid width, in pixels.",
-                    "minimum": 0,
-                    "type": "number"
-                },
-                "labelAlign": {
-                    "description": "Text alignment for the Label.",
-                    "type": "string"
-                },
                 "labelAngle": {
                     "description": "The rotation angle of the axis labels.",
                     "maximum": 360,
                     "minimum": 0,
                     "type": "number"
-                },
-                "labelBaseline": {
-                    "description": "Text baseline for the label.",
-                    "type": "string"
                 },
                 "labelMaxLength": {
                     "description": "Truncate labels that are too long.",
@@ -229,63 +190,13 @@
                 "position": {
                     "type": "number"
                 },
-                "shortTimeLabels": {
-                    "description": "Whether month and day names should be abbreviated.",
-                    "type": "boolean"
-                },
-                "subdivide": {
-                    "description": "If provided, sets the number of minor ticks between major ticks (the value 9 results in decimal subdivision). Only applicable for axes visualizing quantitative scales.",
-                    "minimum": 0,
-                    "type": "integer"
-                },
-                "tickColor": {
-                    "description": "The color of the axis's tick.",
-                    "type": "string"
-                },
                 "tickCount": {
                     "description": "A desired number of ticks, for axes visualizing quantitative scales. The resulting number may be different so that values are \"nice\" (multiples of 2, 5, 10) and lie within the underlying scale's range.",
                     "minimum": 0,
                     "type": "integer"
                 },
-                "tickLabelColor": {
-                    "description": "The color of the tick label, can be in hex color code or regular color name.",
-                    "type": "string"
-                },
-                "tickLabelFont": {
-                    "description": "The font of the tick label.",
-                    "type": "string"
-                },
-                "tickLabelFontSize": {
-                    "description": "The font size of label, in pixels.",
-                    "minimum": 0,
-                    "type": "number"
-                },
-                "tickPadding": {
-                    "description": "The padding, in pixels, between ticks and text labels.",
-                    "type": "number"
-                },
                 "tickSize": {
                     "description": "The size, in pixels, of major, minor and end ticks.",
-                    "minimum": 0,
-                    "type": "number"
-                },
-                "tickSizeEnd": {
-                    "description": "The size, in pixels, of end ticks.",
-                    "minimum": 0,
-                    "type": "number"
-                },
-                "tickSizeMajor": {
-                    "description": "The size, in pixels, of major ticks.",
-                    "minimum": 0,
-                    "type": "number"
-                },
-                "tickSizeMinor": {
-                    "description": "The size, in pixels, of minor ticks.",
-                    "minimum": 0,
-                    "type": "number"
-                },
-                "tickWidth": {
-                    "description": "The width, in pixels, of ticks.",
                     "minimum": 0,
                     "type": "number"
                 },
@@ -297,34 +208,10 @@
                     "description": "A title for the axis. Shows field name and its function by default.",
                     "type": "string"
                 },
-                "titleColor": {
-                    "description": "Color of the title, can be in hex color code or regular color name.",
-                    "type": "string"
-                },
-                "titleFont": {
-                    "description": "Font of the title.",
-                    "type": "string"
-                },
-                "titleFontSize": {
-                    "description": "Size of the title.",
-                    "minimum": 0,
-                    "type": "number"
-                },
-                "titleFontWeight": {
-                    "description": "Weight of the title.",
-                    "type": [
-                        "string",
-                        "number"
-                    ]
-                },
                 "titleMaxLength": {
                     "description": "Max length for axis title if the title is automatically generated from the field's description. By default, this is automatically based on cell size and characterWidth property.",
                     "minimum": 0,
                     "type": "integer"
-                },
-                "titleOffset": {
-                    "description": "A title offset value for the axis.",
-                    "type": "number"
                 },
                 "titlePadding": {
                     "description": "The padding, in pixels, between title and axis.",
@@ -357,21 +244,17 @@
         "AxisConfig": {
             "additionalProperties": false,
             "properties": {
-                "axisColor": {
-                    "description": "Color of axis line.",
-                    "type": "string"
-                },
-                "axisWidth": {
-                    "description": "Width of the axis line",
-                    "type": "number"
-                },
                 "domain": {
                     "description": "Whether to include the axis domain line.",
                     "type": "boolean"
                 },
-                "encode": {
-                    "$ref": "#/definitions/VgAxisEncode",
-                    "description": "Optional mark definitions for custom axis encoding."
+                "domainColor": {
+                    "description": "Color of axis domain line.",
+                    "type": "string"
+                },
+                "domainWidth": {
+                    "description": "Width of the domain line",
+                    "type": "number"
                 },
                 "grid": {
                     "description": "A flag indicate if gridlines should be created in addition to ticks. If `grid` is unspecified, the default value is `true` for ROW and COL. For X and Y, the default value is `true` for quantitative and time fields and `false` otherwise.",
@@ -400,27 +283,29 @@
                     "minimum": 0,
                     "type": "number"
                 },
-                "labelAlign": {
-                    "description": "Text alignment for the Label.",
-                    "type": "string"
-                },
                 "labelAngle": {
                     "description": "The rotation angle of the axis labels.",
-                    "minimum": 360,
+                    "maximum": 360,
+                    "minimum": 0,
                     "type": "number"
                 },
-                "labelBaseline": {
-                    "description": "Text baseline for the label.",
+                "labelColor": {
+                    "description": "The color of the tick label, can be in hex color code or regular color name.",
                     "type": "string"
+                },
+                "labelFont": {
+                    "description": "The font of the tick label.",
+                    "type": "string"
+                },
+                "labelFontSize": {
+                    "description": "The font size of label, in pixels.",
+                    "minimum": 0,
+                    "type": "number"
                 },
                 "labelMaxLength": {
                     "description": "Truncate labels that are too long.",
                     "minimum": 1,
                     "type": "integer"
-                },
-                "labelPadding": {
-                    "description": "The padding, in pixels, between axis and text labels.",
-                    "type": "number"
                 },
                 "labels": {
                     "description": "Enable or disable labels.",
@@ -434,65 +319,16 @@
                     "description": "Minimum extent, which determines the offset between axis ticks and labels.",
                     "type": "number"
                 },
-                "offset": {
-                    "description": "The offset, in pixels, by which to displace the axis from the edge of the enclosing group or data rectangle.",
-                    "type": "number"
-                },
-                "position": {
-                    "type": "number"
-                },
                 "shortTimeLabels": {
-                    "description": "Whether month and day names should be abbreviated.",
+                    "description": "Whether month names and weekday names should be abbreviated.",
                     "type": "boolean"
-                },
-                "subdivide": {
-                    "description": "If provided, sets the number of minor ticks between major ticks (the value 9 results in decimal subdivision). Only applicable for axes visualizing quantitative scales.",
-                    "minimum": 0,
-                    "type": "integer"
                 },
                 "tickColor": {
                     "description": "The color of the axis's tick.",
                     "type": "string"
                 },
-                "tickCount": {
-                    "description": "A desired number of ticks, for axes visualizing quantitative scales. The resulting number may be different so that values are \"nice\" (multiples of 2, 5, 10) and lie within the underlying scale's range.",
-                    "minimum": 0,
-                    "type": "integer"
-                },
-                "tickLabelColor": {
-                    "description": "The color of the tick label, can be in hex color code or regular color name.",
-                    "type": "string"
-                },
-                "tickLabelFont": {
-                    "description": "The font of the tick label.",
-                    "type": "string"
-                },
-                "tickLabelFontSize": {
-                    "description": "The font size of label, in pixels.",
-                    "minimum": 0,
-                    "type": "number"
-                },
-                "tickPadding": {
-                    "description": "The padding, in pixels, between ticks and text labels.",
-                    "type": "number"
-                },
                 "tickSize": {
                     "description": "The size, in pixels, of major, minor and end ticks.",
-                    "minimum": 0,
-                    "type": "number"
-                },
-                "tickSizeEnd": {
-                    "description": "The size, in pixels, of end ticks.",
-                    "minimum": 0,
-                    "type": "number"
-                },
-                "tickSizeMajor": {
-                    "description": "The size, in pixels, of major ticks.",
-                    "minimum": 0,
-                    "type": "number"
-                },
-                "tickSizeMinor": {
-                    "description": "The size, in pixels, of minor ticks.",
                     "minimum": 0,
                     "type": "number"
                 },
@@ -530,18 +366,9 @@
                     "minimum": 0,
                     "type": "integer"
                 },
-                "titleOffset": {
-                    "description": "A title offset value for the axis.",
-                    "type": "number"
-                },
                 "titlePadding": {
                     "description": "The padding, in pixels, between title and axis.",
                     "type": "number"
-                },
-                "zindex": {
-                    "description": "A non-positive integer indicating z-index of the axis.\nIf zindex is 0, axes should be drawn behind all chart elements.\nTo put them in front, use zindex = 1.",
-                    "minimum": 0,
-                    "type": "integer"
                 }
             },
             "type": "object"

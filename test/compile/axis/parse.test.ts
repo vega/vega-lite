@@ -71,7 +71,7 @@ describe('Axis', function() {
           x: {
             field: "a",
             type: "quantitative",
-            axis: {grid: true, gridColor: "blue", gridWidth: 20}
+            axis: {grid: true}
           }
         }
       });
@@ -79,7 +79,6 @@ describe('Axis', function() {
       assert.isObject(def);
       assert.equal(def.orient, 'bottom');
       assert.equal(def.scale, 'x');
-      assert.deepEqual(def.encode.grid.update, {stroke: {value: "blue"}, strokeWidth: {value: 20}});
     });
   });
 
@@ -95,17 +94,6 @@ describe('Axis', function() {
       assert.isObject(def);
       assert.equal(def.orient, 'bottom');
       assert.equal(def.scale, 'x');
-    });
-
-    it('should produce correct encode block if needed', () => {
-      const model = parseUnitModel({
-        mark: "point",
-        encoding: {
-          x: {field: "a", type: "quantitative", "axis": {"axisColor": "#0099ff"}}
-        }
-      });
-      const def = axisParse.parseMainAxis(X, model);
-      assert.equal(def.encode.domain.update.stroke.value, '#0099ff');
     });
   });
 
