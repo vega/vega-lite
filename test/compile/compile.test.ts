@@ -35,6 +35,11 @@ describe('Compile', function() {
         {
           name: 'height',
           update: "data('layout')[0].height"
+        },
+        {
+          name: 'unit',
+          value: {},
+          on: [{events: 'mousemove', update: 'group()._id ? group() : unit'}]
         }
       ]);
 
