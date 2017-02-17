@@ -82,7 +82,7 @@ export interface NameMapInterface {
 
 export abstract class Model {
   public readonly parent: Model;
-  protected readonly name: string;
+  public readonly name: string;
   public readonly description: string;
   public readonly padding: Padding;
 
@@ -262,9 +262,9 @@ export abstract class Model {
 
   public getName(text?: string, delimiter: string = '_') {
     if (text) {
-      return (this._name ? this._name + delimiter : '') + text;
+      return (this.name ? this.name + delimiter : '') + text;
     } else {
-      return this._name;
+      return this.name;
     }
   }
 
