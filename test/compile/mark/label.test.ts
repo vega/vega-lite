@@ -3,7 +3,7 @@
 import {assert} from 'chai';
 import {parseLayerModel} from '../../util';
 import {label} from '../../../src/compile/mark/label';
-import {Mark} from '../../../src/mark';
+import {LABEL} from '../../../src/mark';
 // import {ANCHOR, OFFSET} from '../../../src/channel';
 
 describe('Mark: Label', function () {
@@ -50,7 +50,7 @@ describe('Mark: Label', function () {
     });
 
     // const props = label.encodeEntry(model);
-    const labelMarks = model.children().filter((child) => typeof child.mark === Mark.LABEL);
+    const labelMarks = model.children.filter((child) => typeof child.mark === LABEL);
     const encodedLabels = labelMarks.map((labelMark) => label.encodeEntry(labelMark));
 
     it('should have correct ANCHOR', function () {
