@@ -234,14 +234,14 @@ export class UnitModel extends Model {
 
         // We no longer support false in the schema, but we keep false here for backward compatability.
         if (axisSpec !== null && axisSpec !== false) {
-          let vlAxisProperties: VlOnlyAxisConfig = {};
+          let vlOnlyAxisProperties: VlOnlyAxisConfig = {};
           VL_ONLY_AXIS_PROPERTIES.forEach(function(property) {
             if (config.axis[property] !== undefined) {
-              vlAxisProperties[property] = config.axis[property];
+              vlOnlyAxisProperties[property] = config.axis[property];
             }
           });
           _axis[channel] = {
-            ...vlAxisProperties,
+            ...vlOnlyAxisProperties,
             ...axisSpec
           };
         }
