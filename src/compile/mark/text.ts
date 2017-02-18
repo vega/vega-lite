@@ -1,5 +1,5 @@
 import {X, Y, TEXT, SIZE} from '../../channel';
-import {applyConfig, numberFormat, timeFormatExpression} from '../common';
+import {applyConfig, numberFormat, timeFormatExpression, getMarkConfig} from '../common';
 
 import {applyColor} from './common';
 import {Config} from '../../config';
@@ -10,6 +10,7 @@ import {VgValueRef, VgEncodeEntry} from '../../vega.schema';
 
 import {MarkCompiler} from './base';
 import * as ref from './valueref';
+import {Encoding, channelHasField} from '../../encoding';
 
 export const text: MarkCompiler = {
   vgMark: 'text',
@@ -37,6 +38,11 @@ export const text: MarkCompiler = {
     if (opacity !== undefined) {
       e.opacity = opacity;
     }
+
+    // We gonna use mixins in a later PR anyway, so pardon this _align var name.
+    const _align = align(encoding, config);
+    if (_align) { e.align = {value: _align};};
+
     applyColor(e, model);
 
     return e;
@@ -73,4 +79,12 @@ function textRef(textDef: TextFieldDef | ValueDef<any>, config: Config): VgValue
     }
   }
   return {value: config.text.text};
+}
+
+function align(encoding: Encoding, config: Config) {
+  const alignConfig = getMarkConfig('align', 'text', config);
+  if (alignConfig === undefined) {
+    return channelHasField(encoding, X) ? 'center' : 'right';
+  }
+  return undefined;
 }

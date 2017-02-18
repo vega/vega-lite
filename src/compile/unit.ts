@@ -16,7 +16,7 @@ import {VgData} from '../vega.schema';
 
 import {parseAxisComponent} from './axis/parse';
 import {applyConfig} from './common';
-import {initMarkConfig, initTextConfig} from './config';
+import {initMarkConfig} from './config';
 import {assembleData, parseUnitData} from './data/data';
 import {parseLegendComponent} from './legend/parse';
 import {assembleLayout, parseUnitLayout} from './layout';
@@ -81,9 +81,6 @@ export class UnitModel extends Model {
     this.markDef = initMarkDef(spec.mark, encoding, this.scales, config);
     // TODO?: refactor these to be a part of the model as they are not really just config
     config.mark = initMarkConfig(mark, encoding, this.scales, this.stack, config);
-    if (mark === 'text') { // FIXME: maybe we should refactor this
-      config.text = initTextConfig(encoding, config);
-    }
 
     this.axes = this.initAxes(encoding, config);
     this.legends = this.initLegend(encoding, config);
