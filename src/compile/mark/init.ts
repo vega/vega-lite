@@ -1,12 +1,13 @@
 import {Mark, MarkDef, isMarkDef, BAR, AREA, POINT, LINE, TICK, CIRCLE, SQUARE, RECT, RULE, TEXT, Orient} from '../../mark';
-import {Encoding} from '../../encoding';
+import {Encoding, isAggregate, channelHasField} from '../../encoding';
 import * as log from '../../log';
-import {Dict} from '../../util';
+import {Dict, contains} from '../../util';
 import {Scale, hasDiscreteDomain} from '../../scale';
 import {isFieldDef, isMeasure, FieldDef} from '../../fielddef';
 import {TEMPORAL} from '../../type';
 import {Config} from '../../config';
 import {getMarkConfig} from '../common';
+import {StackProperties} from '../../stack';
 
 export function initMarkDef(mark: Mark | MarkDef, encoding: Encoding, scale: Dict<Scale>, config: Config): MarkDef {
   let markDef = isMarkDef(mark) ? {...mark} : {type: mark};
@@ -17,6 +18,39 @@ export function initMarkDef(mark: Mark | MarkDef, encoding: Encoding, scale: Dic
     log.warn(log.message.orientOverridden(markDef.orient,specifiedOrient));
   }
   return markDef;
+}
+
+/**
+ * Initialize encoding's value with some special default values
+ */
+export function initEncoding(mark: Mark, encoding: Encoding, stacked: StackProperties, config: Config): Encoding {
+  const opacityConfig = getMarkConfig('opacity', mark, config);
+  if (!encoding.opacity && opacityConfig === undefined) {
+    const opacity = defaultOpacity(mark, encoding, stacked);
+    if (opacity !== undefined) {
+      encoding.opacity = {value: opacity};
+    }
+  }
+  return encoding;
+}
+
+
+export function defaultOpacity(mark: Mark, encoding: Encoding, stacked: StackProperties) {
+  if (contains([POINT, TICK, CIRCLE, SQUARE], mark)) {
+    // point-based marks
+    if (!isAggregate(encoding) || channelHasField(encoding, 'detail')) {
+      return 0.7;
+    }
+  }
+  if (mark === BAR && !stacked) {
+    if (channelHasField(encoding, 'color') || channelHasField(encoding, 'detail') || channelHasField(encoding, 'size')) {
+      return 0.7;
+    }
+  }
+  if (mark === AREA) {
+    return 0.7; // inspired by Tableau
+  }
+  return undefined;
 }
 
 function orient(mark: Mark, encoding: Encoding, scale: Dict<Scale>, specifiedOrient: Orient): Orient {
