@@ -13,7 +13,7 @@ import {stack} from './stack';
 import {Transform} from './transform';
 import {ROW, COLUMN, X, Y, X2, Y2} from './channel';
 import * as vlEncoding from './encoding';
-import {contains, duplicate, extend, hash, keys, omit, pick, vals, Dict} from './util';
+import {contains, duplicate, extend, hash, keys, omit, pick, vals} from './util';
 import {SelectionDef} from './selection';
 
 export type Padding = number | {top?: number, bottom?: number, left?: number, right?: number};
@@ -83,7 +83,7 @@ export interface GenericUnitSpec<M, E extends Encoding> extends BaseSpec {
   /**
    * A key-value mapping between selection names and definitions.
    */
-  selection?: Dict<SelectionDef>;
+  selection?: {[name: string]: SelectionDef};
 }
 
 export type UnitSpec = GenericUnitSpec<Mark | MarkDef, Encoding>;

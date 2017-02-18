@@ -1027,12 +1027,6 @@
             },
             "type": "object"
         },
-        "Dict<SelectionDef>": {
-            "additionalProperties": {
-                "$ref": "#/definitions/T"
-            },
-            "type": "object"
-        },
         "Dict<VgBinding>": {
             "additionalProperties": {
                 "$ref": "#/definitions/T"
@@ -1593,8 +1587,11 @@
                     "minimum": 0
                 },
                 "selection": {
-                    "$ref": "#/definitions/Dict<SelectionDef>",
-                    "description": "A key-value mapping between selection names and definitions."
+                    "additionalProperties": {
+                        "$ref": "#/definitions/SelectionDef"
+                    },
+                    "description": "A key-value mapping between selection names and definitions.",
+                    "type": "object"
                 },
                 "transform": {
                     "$ref": "#/definitions/Transform",
@@ -2956,6 +2953,184 @@
                 "interval"
             ],
             "type": "object"
+        },
+        "SelectionDef": {
+            "additionalProperties": false,
+            "properties": {
+                "bind": {
+                    "anyOf": [
+                        {
+                            "additionalProperties": false,
+                            "properties": {
+                                "element": {
+                                    "type": "string"
+                                },
+                                "input": {
+                                    "enum": [
+                                        "checkbox"
+                                    ],
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "input"
+                            ],
+                            "type": "object"
+                        },
+                        {
+                            "additionalProperties": false,
+                            "properties": {
+                                "element": {
+                                    "type": "string"
+                                },
+                                "input": {
+                                    "enum": [
+                                        "radio"
+                                    ],
+                                    "type": "string"
+                                },
+                                "options": {
+                                    "items": {
+                                        "type": "string"
+                                    },
+                                    "type": "array"
+                                }
+                            },
+                            "required": [
+                                "input",
+                                "options"
+                            ],
+                            "type": "object"
+                        },
+                        {
+                            "additionalProperties": false,
+                            "properties": {
+                                "element": {
+                                    "type": "string"
+                                },
+                                "input": {
+                                    "enum": [
+                                        "select"
+                                    ],
+                                    "type": "string"
+                                },
+                                "options": {
+                                    "items": {
+                                        "type": "string"
+                                    },
+                                    "type": "array"
+                                }
+                            },
+                            "required": [
+                                "input",
+                                "options"
+                            ],
+                            "type": "object"
+                        },
+                        {
+                            "additionalProperties": false,
+                            "properties": {
+                                "element": {
+                                    "type": "string"
+                                },
+                                "input": {
+                                    "enum": [
+                                        "range"
+                                    ],
+                                    "type": "string"
+                                },
+                                "max": {
+                                    "type": "number"
+                                },
+                                "min": {
+                                    "type": "number"
+                                },
+                                "step": {
+                                    "type": "number"
+                                }
+                            },
+                            "required": [
+                                "input"
+                            ],
+                            "type": "object"
+                        },
+                        {
+                            "additionalProperties": false,
+                            "properties": {
+                                "element": {
+                                    "type": "string"
+                                },
+                                "input": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "input"
+                            ],
+                            "type": "object"
+                        },
+                        {
+                            "$ref": "#/definitions/Dict<VgBinding>"
+                        },
+                        {
+                            "enum": [
+                                "scales"
+                            ],
+                            "type": "string"
+                        }
+                    ]
+                },
+                "encodings": {
+                    "items": {
+                        "type": "string"
+                    },
+                    "type": "array"
+                },
+                "fields": {
+                    "items": {
+                        "type": "string"
+                    },
+                    "type": "array"
+                },
+                "nearest": {
+                    "type": "boolean"
+                },
+                "on": {
+                },
+                "toggle": {
+                    "type": [
+                        "string",
+                        "boolean"
+                    ]
+                },
+                "translate": {
+                    "type": [
+                        "string",
+                        "boolean"
+                    ]
+                },
+                "type": {
+                    "$ref": "#/definitions/SelectionTypes"
+                },
+                "zoom": {
+                    "type": [
+                        "string",
+                        "boolean"
+                    ]
+                }
+            },
+            "required": [
+                "type"
+            ],
+            "type": "object"
+        },
+        "SelectionTypes": {
+            "enum": [
+                "interval",
+                "multi",
+                "single"
+            ],
+            "type": "string"
         },
         "SortField": {
             "additionalProperties": false,

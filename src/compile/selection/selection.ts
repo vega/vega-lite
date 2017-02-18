@@ -21,7 +21,7 @@ export interface SelectionComponent {
   domain: SelectionDomain;
   events: any;
   // predicate?: string;
-  bind?: 'scales' | VgBinding | Dict<VgBinding>;
+  bind?: 'scales' | VgBinding | {[key: string]: VgBinding};
   resolve: SelectionResolutions;
 
   // Transforms
