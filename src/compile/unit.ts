@@ -16,7 +16,6 @@ import {VgData} from '../vega.schema';
 
 import {parseAxisComponent} from './axis/parse';
 import {applyConfig} from './common';
-import {initMarkConfig} from './config';
 import {assembleData, parseUnitData} from './data/data';
 import {parseLegendComponent} from './legend/parse';
 import {assembleLayout, parseUnitLayout} from './layout';
@@ -47,8 +46,9 @@ export class UnitModel extends Model {
    */
   public readonly height: number;
 
-  public readonly markDef: MarkDef;
+  public readonly markDef: MarkDef & {filled: boolean};
   public readonly encoding: Encoding;
+
   protected readonly selection: Dict<SelectionDef> = {};
   protected readonly scales: Dict<Scale> = {};
   protected readonly axes: Dict<Axis> = {};
@@ -80,8 +80,6 @@ export class UnitModel extends Model {
 
     this.markDef = initMarkDef(spec.mark, encoding, this.scales, config);
     this.encoding = initEncoding(mark, encoding, this.stack, config);
-    // TODO?: refactor these to be a part of the model as they are not really just config
-    config.mark = initMarkConfig(mark, encoding, this.scales, this.stack, config);
 
     this.axes = this.initAxes(encoding, config);
     this.legends = this.initLegend(encoding, config);

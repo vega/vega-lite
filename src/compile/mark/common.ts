@@ -8,7 +8,7 @@ import * as ref from './valueref';
 
 export function applyColor(e: VgEncodeEntry, model: UnitModel) {
   const config = model.config;
-  const filled = config.mark.filled;
+  const filled = model.markDef.filled;
 
   let colorRef = ref.midPoint('color', model.encoding.color, model.scaleName('color'), model.scale('color'), undefined);
 
