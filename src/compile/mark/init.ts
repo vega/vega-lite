@@ -9,15 +9,22 @@ import {Config} from '../../config';
 import {getMarkConfig} from '../common';
 import {StackProperties} from '../../stack';
 
-export function initMarkDef(mark: Mark | MarkDef, encoding: Encoding, scale: Dict<Scale>, config: Config): MarkDef {
-  let markDef = isMarkDef(mark) ? {...mark} : {type: mark};
-  const specifiedOrient = markDef.orient || getMarkConfig('orient', markDef.type, config);
+export function initMarkDef(mark: Mark | MarkDef, encoding: Encoding, scale: Dict<Scale>, config: Config): MarkDef & {filled: boolean} {
+  const markDef = isMarkDef(mark) ? mark : {type: mark};
 
+  const specifiedOrient = markDef.orient || getMarkConfig('orient', markDef.type, config);
   markDef.orient = orient(markDef.type, encoding, scale, specifiedOrient);
   if (specifiedOrient !== undefined && specifiedOrient !== markDef.orient) {
     log.warn(log.message.orientOverridden(markDef.orient,specifiedOrient));
   }
-  return markDef;
+
+  return {
+    ...markDef,
+
+    // TODO: filled could be injected to encoding too, but we don't have filled channel yet.
+    // Thus we inject it here for now.
+    filled: filled(markDef.type, config)
+  };
 }
 
 /**
@@ -35,7 +42,7 @@ export function initEncoding(mark: Mark, encoding: Encoding, stacked: StackPrope
 }
 
 
-export function defaultOpacity(mark: Mark, encoding: Encoding, stacked: StackProperties) {
+function defaultOpacity(mark: Mark, encoding: Encoding, stacked: StackProperties) {
   if (contains([POINT, TICK, CIRCLE, SQUARE], mark)) {
     // point-based marks
     if (!isAggregate(encoding) || channelHasField(encoding, 'detail')) {
@@ -51,6 +58,11 @@ export function defaultOpacity(mark: Mark, encoding: Encoding, stacked: StackPro
     return 0.7; // inspired by Tableau
   }
   return undefined;
+}
+
+function filled(mark: Mark, config: Config) {
+  const filledConfig = getMarkConfig('filled', mark, config);
+  return filledConfig !== undefined ? filledConfig : mark !== POINT && mark !== LINE && mark !== RULE;
 }
 
 function orient(mark: Mark, encoding: Encoding, scale: Dict<Scale>, specifiedOrient: Orient): Orient {

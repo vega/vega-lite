@@ -9,7 +9,7 @@ import {TEMPORAL, QUANTITATIVE} from '../../../src/type';
 
 describe('compile/legend', function() {
   describe('encode.symbols', function() {
-    it('should initialize if filled', function() {
+    it('should have strokeWidth if filled (by default)', function() {
       const symbol = encode.symbols({field: 'a'}, {}, parseUnitModel({
           mark: "point",
           encoding: {

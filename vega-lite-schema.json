@@ -348,7 +348,7 @@
                     "type": "number"
                 },
                 "filled": {
-                    "description": "Whether the shape\\'s color should be used as fill color instead of stroke color.\nThis is only applicable for \"bar\", \"point\", and \"area\".\nAll marks except \"point\" marks are filled by default.\nSee Mark Documentation (http://vega.github.io/vega-lite/docs/marks.html)\nfor usage example.",
+                    "description": "Whether the shape\\'s color should be used as fill color instead of stroke color.\nThis is only applicable for \"bar\", \"point\", and \"area\".\nAll marks except \"point\", \"line\", and \"rule\" are filled by default.",
                     "type": "boolean"
                 },
                 "font": {
@@ -2037,7 +2037,7 @@
                     "type": "number"
                 },
                 "filled": {
-                    "description": "Whether the shape\\'s color should be used as fill color instead of stroke color.\nThis is only applicable for \"bar\", \"point\", and \"area\".\nAll marks except \"point\" marks are filled by default.\nSee Mark Documentation (http://vega.github.io/vega-lite/docs/marks.html)\nfor usage example.",
+                    "description": "Whether the shape\\'s color should be used as fill color instead of stroke color.\nThis is only applicable for \"bar\", \"point\", and \"area\".\nAll marks except \"point\", \"line\", and \"rule\" are filled by default.",
                     "type": "boolean"
                 },
                 "font": {
@@ -2326,7 +2326,7 @@
                     "type": "number"
                 },
                 "filled": {
-                    "description": "Whether the shape\\'s color should be used as fill color instead of stroke color.\nThis is only applicable for \"bar\", \"point\", and \"area\".\nAll marks except \"point\" marks are filled by default.\nSee Mark Documentation (http://vega.github.io/vega-lite/docs/marks.html)\nfor usage example.",
+                    "description": "Whether the shape\\'s color should be used as fill color instead of stroke color.\nThis is only applicable for \"bar\", \"point\", and \"area\".\nAll marks except \"point\", \"line\", and \"rule\" are filled by default.",
                     "type": "boolean"
                 },
                 "font": {
@@ -3054,7 +3054,7 @@
                     "type": "number"
                 },
                 "filled": {
-                    "description": "Whether the shape\\'s color should be used as fill color instead of stroke color.\nThis is only applicable for \"bar\", \"point\", and \"area\".\nAll marks except \"point\" marks are filled by default.\nSee Mark Documentation (http://vega.github.io/vega-lite/docs/marks.html)\nfor usage example.",
+                    "description": "Whether the shape\\'s color should be used as fill color instead of stroke color.\nThis is only applicable for \"bar\", \"point\", and \"area\".\nAll marks except \"point\", \"line\", and \"rule\" are filled by default.",
                     "type": "boolean"
                 },
                 "font": {
@@ -3227,7 +3227,7 @@
                     "type": "number"
                 },
                 "filled": {
-                    "description": "Whether the shape\\'s color should be used as fill color instead of stroke color.\nThis is only applicable for \"bar\", \"point\", and \"area\".\nAll marks except \"point\" marks are filled by default.\nSee Mark Documentation (http://vega.github.io/vega-lite/docs/marks.html)\nfor usage example.",
+                    "description": "Whether the shape\\'s color should be used as fill color instead of stroke color.\nThis is only applicable for \"bar\", \"point\", and \"area\".\nAll marks except \"point\", \"line\", and \"rule\" are filled by default.",
                     "type": "boolean"
                 },
                 "font": {
@@ -3448,7 +3448,7 @@
                     "type": "number"
                 },
                 "filled": {
-                    "description": "Whether the shape\\'s color should be used as fill color instead of stroke color.\nThis is only applicable for \"bar\", \"point\", and \"area\".\nAll marks except \"point\" marks are filled by default.\nSee Mark Documentation (http://vega.github.io/vega-lite/docs/marks.html)\nfor usage example.",
+                    "description": "Whether the shape\\'s color should be used as fill color instead of stroke color.\nThis is only applicable for \"bar\", \"point\", and \"area\".\nAll marks except \"point\", \"line\", and \"rule\" are filled by default.",
                     "type": "boolean"
                 },
                 "font": {

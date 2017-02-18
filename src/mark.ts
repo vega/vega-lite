@@ -121,9 +121,7 @@ export interface MarkConfig {
   /**
    * Whether the shape\'s color should be used as fill color instead of stroke color.
    * This is only applicable for "bar", "point", and "area".
-   * All marks except "point" marks are filled by default.
-   * See Mark Documentation (http://vega.github.io/vega-lite/docs/marks.html)
-   * for usage example.
+   * All marks except "point", "line", and "rule" are filled by default.
    */
   filled?: boolean;
 

@@ -86,5 +86,7 @@ function align(encoding: Encoding, config: Config) {
   if (alignConfig === undefined) {
     return channelHasField(encoding, X) ? 'center' : 'right';
   }
+
+  // If there is a config, Vega-parser will process this already.
   return undefined;
 }

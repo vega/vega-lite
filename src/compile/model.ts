@@ -241,7 +241,7 @@ export abstract class Model {
 
   public reduceFieldDef<T, U>(f: (acc: U, fd: FieldDef, c: Channel) => U, init: T, t?: any) {
     return reduce(this.getMapping(), (acc:U , cd: ChannelDef, c: Channel) => {
-     return isFieldDef(cd) ? f(acc, cd, c) : acc;
+      return isFieldDef(cd) ? f(acc, cd, c) : acc;
     }, init, t);
   }
 
