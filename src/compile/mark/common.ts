@@ -19,8 +19,11 @@ export function applyColor(e: VgEncodeEntry, model: UnitModel) {
       e.stroke = colorRef;
     }
   } else {
+    const colorValue = getMarkConfig('color', model.mark(), config);
     // apply color config if there is no fill / stroke config
-    e[filled ? 'fill' : 'stroke'] = {value: getMarkConfig('color', model.mark(), config)};
+    if (colorValue) {
+      e[filled ? 'fill' : 'stroke'] = {value: colorValue};
+    }
   }
 
   // If there is no fill, always fill symbols
