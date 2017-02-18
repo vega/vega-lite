@@ -49,7 +49,7 @@ function parse(model: Model): Dict<string> {
   });
 
   // Parse encoded fields
-  model.forEach(function(fieldDef: FieldDef) {
+  model.forEachFieldDef(function(fieldDef: FieldDef) {
     if (fieldDef.type === TEMPORAL) {
       parseComponent[fieldDef.field] = 'date';
     } else if (fieldDef.type === QUANTITATIVE) {

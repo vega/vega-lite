@@ -35,7 +35,7 @@ export namespace summary {
     /* dictionary mapping field name => dict set of aggregation functions */
     let meas: Dict<StringSet> = {};
 
-    model.forEach(function(fieldDef: FieldDef) {
+    model.forEachFieldDef(function(fieldDef: FieldDef) {
       if (fieldDef.aggregate) {
         if (fieldDef.aggregate === 'count') {
           meas['*'] = meas['*'] || {};
@@ -67,7 +67,7 @@ export namespace summary {
     if (!childDataComponent.source && childDataComponent.summary) {
       let summaryComponents = childDataComponent.summary.map(function(summaryComponent) {
         // add facet fields as dimensions
-        summaryComponent.dimensions = model.reduce(addDimension, summaryComponent.dimensions);
+        summaryComponent.dimensions = model.reduceFieldDef(addDimension, summaryComponent.dimensions);
 
         const summaryNameWithoutPrefix = summaryComponent.name.substr(model.child.getName('').length);
         model.child.renameData(summaryComponent.name, summaryNameWithoutPrefix);

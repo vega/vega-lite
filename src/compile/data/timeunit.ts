@@ -11,7 +11,7 @@ import {LayerModel} from '../layer';
 import {Model} from '../model';
 
 function parse(model: Model): Dict<VgFormulaTransform> {
-  return model.reduce(function(timeUnitComponent: Dict<VgFormulaTransform>, fieldDef: FieldDef) {
+  return model.reduceFieldDef(function(timeUnitComponent: Dict<VgFormulaTransform>, fieldDef: FieldDef) {
     if (fieldDef.type === TEMPORAL && fieldDef.timeUnit) {
 
       const hash = field(fieldDef);

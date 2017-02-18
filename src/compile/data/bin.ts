@@ -17,7 +17,7 @@ function numberFormatExpr(expr: string, format: string) {
 }
 
 function parse(model: Model): Dict<VgTransform[]> {
-  return model.reduce(function(binComponent: Dict<VgTransform[]>, fieldDef: FieldDef, channel: Channel) {
+  return model.reduceFieldDef(function(binComponent: Dict<VgTransform[]>, fieldDef: FieldDef, channel: Channel) {
     const bin = model.fieldDef(channel).bin;
     if (bin) {
 
