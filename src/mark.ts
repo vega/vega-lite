@@ -242,10 +242,84 @@ export interface MarkConfig {
    * @maximum 1
    */
   tension?: number;
+
+  /**
+   * The default symbol shape to use. One of: `"circle"` (default), `"square"`, `"cross"`, `"diamond"`, `"triangle-up"`, or `"triangle-down"`, or a custom SVG path.
+   */
+  shape?: string;
+
+  /**
+   * The pixel area each the point/circle/square.
+   * For example: in the case of circles, the radius is determined in part by the square root of the size value.
+   * @minimum 0
+   */
+  size?: number;
+
+  // Text / Label Mark Config
+
+  /**
+   * The horizontal alignment of the text. One of left, right, center.
+   */
+  align?: HorizontalAlign;
+
+  /**
+   * The rotation angle of the text, in degrees.
+   * @minimum 0
+   * @maximum 360
+   */
+  angle?: number;
+
+  /**
+   * The vertical alignment of the text. One of top, middle, bottom.
+   */
+  baseline?: VerticalAlign;
+
+  /**
+   * The horizontal offset, in pixels, between the text label and its anchor point. The offset is applied after rotation by the angle property.
+   */
+  dx?: number;
+
+  /**
+   * The vertical offset, in pixels, between the text label and its anchor point. The offset is applied after rotation by the angle property.
+   */
+  dy?: number;
+
+  /**
+   * Polar coordinate radial offset, in pixels, of the text label from the origin determined by the x and y properties.
+   * @minimum 0
+   */
+  radius?: number;
+
+  /**
+   * Polar coordinate angle, in radians, of the text label from the origin determined by the x and y properties. Values for theta follow the same convention of arc mark startAngle and endAngle properties: angles are measured in radians, with 0 indicating "north".
+   */
+  theta?: number;
+
+  /**
+   * The typeface to set the text in (e.g., Helvetica Neue).
+   * @minimum 0
+   */
+  font?: string;
+
+  /**
+   * The font size, in pixels.
+   * @minimum 0
+   */
+  fontSize?: number;
+
+  /**
+   * The font style (e.g., italic).
+   */
+  fontStyle?: FontStyle;
+  /**
+   * The font weight (e.g., `"normal"`, `"bold"`, `900`).
+   */
+  fontWeight?: FontWeight | FontWeightNumber;
+
 }
 
 export const defaultMarkConfig: MarkConfig = {
-  color: '#4682b4',
+  color: '#4c78a8',
 
   minOpacity: 0.3,
   maxOpacity: 0.8,
@@ -306,14 +380,6 @@ export const defaultLineConfig: LineConfig = {
 };
 
 export interface SymbolConfig extends MarkConfig {
-
-  /**
-   * The pixel area each the point/circle/square.
-   * For example: in the case of circles, the radius is determined in part by the square root of the size value.
-   * @minimum 0
-   */
-  size?: number;
-
   /**
    * Default minimum value for point size scale with zero=false.
    * @minimum 0
@@ -328,10 +394,6 @@ export interface SymbolConfig extends MarkConfig {
 }
 
 export interface PointConfig extends SymbolConfig {
-  /**
-   * The default symbol shape to use. One of: `"circle"` (default), `"square"`, `"cross"`, `"diamond"`, `"triangle-up"`, or `"triangle-down"`, or a custom SVG path.
-   */
-  shape?: string;
 
   /**
    * The default collection of symbol shapes for mapping nominal fields to shapes of point marks (i.e., range of a `shape` scale).
@@ -368,48 +430,6 @@ export const defaultRuleConfig: RuleConfig = {
 
 export interface TextConfig extends MarkConfig {
   /**
-   * The horizontal alignment of the text. One of left, right, center.
-   */
-  align?: HorizontalAlign;
-  /**
-   * The rotation angle of the text, in degrees.
-   * @minimum 0
-   * @maximum 360
-   */
-  angle?: number;
-  /**
-   * The vertical alignment of the text. One of top, middle, bottom.
-   */
-  baseline?: VerticalAlign;
-  /**
-   * The horizontal offset, in pixels, between the text label and its anchor point. The offset is applied after rotation by the angle property.
-   */
-  dx?: number;
-  /**
-   * The vertical offset, in pixels, between the text label and its anchor point. The offset is applied after rotation by the angle property.
-   */
-  dy?: number;
-  /**
-   * Polar coordinate radial offset, in pixels, of the text label from the origin determined by the x and y properties.
-   * @minimum 0
-   */
-  radius?: number;
-  /**
-   * Polar coordinate angle, in radians, of the text label from the origin determined by the x and y properties. Values for theta follow the same convention of arc mark startAngle and endAngle properties: angles are measured in radians, with 0 indicating "north".
-   */
-  theta?: number;
-  /**
-   * The typeface to set the text in (e.g., Helvetica Neue).
-   * @minimum 0
-   */
-  font?: string;
-  /**
-   * The font size, in pixels.
-   * @minimum 0
-   */
-  fontSize?: number;
-
-  /**
    * The default max value for mapping quantitative fields to text's size/fontSize.
    * If undefined (default), we will use bandSize - 1.
    * @minimum 0
@@ -423,15 +443,6 @@ export interface TextConfig extends MarkConfig {
   minFontSize?: number;
 
   /**
-   * The font style (e.g., italic).
-   */
-  fontStyle?: FontStyle;
-  /**
-   * The font weight (e.g., `"normal"`, `"bold"`, `900`).
-   */
-  fontWeight?: FontWeight | FontWeightNumber;
-
-  /**
    * Whether month names and weekday names should be abbreviated.
    */
   shortTimeLabels?: boolean;
@@ -443,7 +454,6 @@ export interface TextConfig extends MarkConfig {
 }
 
 export const defaultTextConfig: TextConfig = {
-  fontSize: 10,
   minFontSize: 8,
   maxFontSize: 40,
   baseline: 'middle',
