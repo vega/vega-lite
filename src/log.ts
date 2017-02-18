@@ -115,8 +115,9 @@ export namespace message {
     return `Dropping ${JSON.stringify(fieldDef)} from channel ${channel} since it does not contain data field or value.`;
   }
 
-  export function incompatibleChannel(channel: Channel, markOrFacet: Mark | 'facet') {
-    return `${channel} dropped as it is incompatible with ${markOrFacet}`;
+  export function incompatibleChannel(channel: Channel, markOrFacet: Mark | 'facet', when?: string) {
+    return `${channel} dropped as it is incompatible with ${markOrFacet}` +
+      when ? `when ${when}` : '';
   }
 
   export function facetChannelShouldBeDiscrete(channel: string) {
