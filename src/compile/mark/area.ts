@@ -16,7 +16,7 @@ export const area: MarkCompiler = {
     const {config, encoding, stack} = model;
 
     // We should always have orient as we augment it in config.ts
-    const orient = config.mark.orient;
+    const orient = model.markDef.orient;
     e.orient = {value: orient} ;
 
     // TODO: refactor how refer to scale as discussed in https://github.com/vega/vega-lite/pull/1613

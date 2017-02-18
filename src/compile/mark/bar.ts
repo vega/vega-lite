@@ -35,7 +35,7 @@ export const bar: MarkCompiler = {
 function x(model: UnitModel, stack: StackProperties) {
   let e: VgEncodeEntry = {};
   const {config, encoding} = model;
-  const orient = model.config.mark.orient;
+  const orient = model.markDef.orient;
   const sizeDef = model.encoding.size;
 
   const xDef = model.encoding.x;
@@ -75,7 +75,7 @@ function x(model: UnitModel, stack: StackProperties) {
 function y(model: UnitModel, stack: StackProperties) {
   let e: VgEncodeEntry = {};
   const {config, encoding} = model;
-  const orient = model.config.mark.orient;
+  const orient = model.markDef.orient;
   const sizeDef = encoding.size;
 
   const yDef = encoding.y;

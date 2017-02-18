@@ -23,7 +23,7 @@ export const tick: MarkCompiler = {
     e.xc = ref.stackable(X, encoding.x, model.scaleName(X), model.scale(X), stack, ref.midX(config));
     e.yc = ref.stackable(Y, encoding.y, model.scaleName(Y), model.scale(Y), stack, ref.midY(config));
 
-    if (config.mark.orient === 'horizontal') {
+    if (model.markDef.orient === 'horizontal') {
       e.width = size(encoding.size, model.scaleName(SIZE), model.scale(SIZE), config, (model.scale(X) || {}).rangeStep);
       e.height = {value: config.tick.thickness};
     } else {
