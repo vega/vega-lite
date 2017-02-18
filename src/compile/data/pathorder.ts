@@ -21,7 +21,7 @@ export const pathOrder: DataComponentCompiler<VgSort> = {
         return sortParams(model.encoding.order);
       } else {
         // For both line and area, we sort values based on dimension by default
-        const dimensionChannel: 'x' | 'y' = model.config.mark.orient === 'horizontal' ? 'y' : 'x';
+        const dimensionChannel: 'x' | 'y' = model.markDef.orient === 'horizontal' ? 'y' : 'x';
         const sort = model.sort(dimensionChannel);
         const sortField = isSortField(sort) ?
           field({

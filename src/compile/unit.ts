@@ -27,6 +27,7 @@ import parseScaleComponent from './scale/parse';
 import {stack, StackProperties} from '../stack';
 import {SelectionDef} from '../selection';
 import {parseUnitSelection, assembleUnitSignals, assembleUnitData as assembleSelectionData, assembleUnitMarks as assembleSelectionMarks} from './selection/selection';
+import {initMarkDef} from './mark/init';
 
 /**
  * Internal model of Vega-Lite specification for the compiler.
@@ -46,7 +47,7 @@ export class UnitModel extends Model {
    */
   public readonly height: number;
 
-  private readonly markDef: MarkDef;
+  public readonly markDef: MarkDef;
   public readonly encoding: Encoding;
   protected readonly selection: Dict<SelectionDef> = {};
   protected readonly scales: Dict<Scale> = {};
@@ -67,8 +68,7 @@ export class UnitModel extends Model {
     const providedHeight = spec.height !== undefined ? spec.height :
       parent ? parent['height'] : undefined; // only exists if parent is layer
 
-    const markDef = this.markDef = this.initMarkDef(spec.mark);
-    const mark =  markDef.type;
+    const mark = isMarkDef(spec.mark) ? spec.mark.type : spec.mark;
     const encoding = this.encoding = this.initEncoding(mark, spec.encoding || {});
 
     // TODO?: ideally we should use config only inside this constructor
@@ -78,6 +78,7 @@ export class UnitModel extends Model {
     this.stack = stack(mark, encoding, config.stack);
     this.scales = this.initScales(mark, encoding, config, providedWidth, providedHeight);
 
+    this.markDef = initMarkDef(spec.mark, encoding, this.scales, config);
     // TODO?: refactor these to be a part of the model as they are not really just config
     config.mark = initMarkConfig(mark, encoding, this.scales, this.stack, config);
     if (mark === 'text') { // FIXME: maybe we should refactor this
@@ -98,15 +99,6 @@ export class UnitModel extends Model {
     );
     this.width = width;
     this.height = height;
-  }
-
-  private initMarkDef(mark: Mark | MarkDef) {
-    if (isMarkDef(mark)) {
-      return mark;
-    }
-    return {
-      type: mark
-    };
   }
 
   private initEncoding(mark: Mark, encoding: Encoding) {

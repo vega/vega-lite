@@ -12,7 +12,7 @@ export const rule: MarkCompiler = {
   role: undefined,
   encodeEntry: (model: UnitModel) => {
     let e: VgEncodeEntry = {};
-    const orient = model.config.mark.orient;
+    const orient = model.markDef.orient;
     const {config, encoding, stack} = model;
 
     // TODO: refactor how refer to scale as discussed in https://github.com/vega/vega-lite/pull/1613
