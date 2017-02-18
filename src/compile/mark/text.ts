@@ -29,9 +29,7 @@ export const text: MarkCompiler = {
     e.x = ref.stackable(X, encoding.x, model.scaleName(X), model.scale(X), stack, xDefault(config, textDef));
     e.y = ref.stackable(Y, encoding.y, model.scaleName(Y), model.scale(Y), stack, ref.midY(config));
 
-    e.fontSize = ref.midPoint(SIZE, encoding.size, model.scaleName(SIZE), model.scale(SIZE),
-       {value: config.text.fontSize}
-    );
+    e.fontSize = ref.midPoint(SIZE, encoding.size, model.scaleName(SIZE), model.scale(SIZE),  undefined);
 
     e.text = textRef(textDef, config);
 
