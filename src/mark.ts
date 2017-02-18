@@ -328,12 +328,6 @@ export const defaultMarkConfig: MarkConfig = {
   maxStrokeWidth: 4
 };
 
-export interface AreaConfig extends MarkConfig {}
-
-export const defaultAreaConfig: AreaConfig = {
-
-};
-
 export interface BarConfig extends MarkConfig {
   /**
    * Offset between bar for binned field.  Ideal value for this is either 0 (Preferred by statisticians) or 1 (Vega-Lite Default, D3 example style).
@@ -373,9 +367,8 @@ export const defaultBarConfig: BarConfig = {
   continuousBandSize: 2
 };
 
-export interface LineConfig extends MarkConfig {}
 
-export const defaultLineConfig: LineConfig = {
+export const defaultLineConfig: MarkConfig = {
   strokeWidth: 2
 };
 
@@ -418,13 +411,7 @@ export const defaultPointConfig = extend({}, defaultSymbolConfig, {
 export const defaultCircleConfig: SymbolConfig = defaultSymbolConfig;
 export const defaultSquareConfig: SymbolConfig = defaultSymbolConfig;
 
-export interface RectConfig extends MarkConfig {}
-
-export const defaultRectConfig: RectConfig = {};
-
-export interface RuleConfig extends MarkConfig {}
-
-export const defaultRuleConfig: RuleConfig = {
+export const defaultRuleConfig: MarkConfig = {
   strokeWidth: 1
 };
 
