@@ -52,7 +52,7 @@ export function applyMarkConfig(e: VgEncodeEntry, model: UnitModel, propsList: s
  * Return value mark specific config property if exists.
  * Otherwise, return general mark specific config.
  */
-export function getMarkConfig(prop: keyof MarkConfig, mark: Mark, config: Config) {
+export function getMarkConfig<P extends keyof MarkConfig>(prop: P, mark: Mark, config: Config): MarkConfig[P] {
   const markSpecificConfig = config[mark];
   if (markSpecificConfig[prop] !== undefined) {
     return markSpecificConfig[prop];

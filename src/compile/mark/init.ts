@@ -10,7 +10,7 @@ import {getMarkConfig} from '../common';
 
 export function initMarkDef(mark: Mark | MarkDef, encoding: Encoding, scale: Dict<Scale>, config: Config): MarkDef {
   let markDef = isMarkDef(mark) ? {...mark} : {type: mark};
-  const specifiedOrient = markDef.orient || getMarkConfig('orient', markDef.type, config) as Orient;
+  const specifiedOrient = markDef.orient || getMarkConfig('orient', markDef.type, config);
 
   markDef.orient = orient(markDef.type, encoding, scale, specifiedOrient);
   if (specifiedOrient !== undefined && specifiedOrient !== markDef.orient) {
