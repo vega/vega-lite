@@ -5,7 +5,7 @@ import {Channel, X, COLUMN} from '../channel';
 import {Config, CellConfig} from '../config';
 import {Data, DataSourceType} from '../data';
 import {reduce, forEach} from '../encoding';
-import {FieldDef, FieldRefOption, field} from '../fielddef';
+import {FieldDef, FieldRefOption, field, isFieldDef, ChannelDef} from '../fielddef';
 import {Legend} from '../legend';
 import {Scale, hasDiscreteDomain} from '../scale';
 import {SortField, SortOrder} from '../sort';
@@ -239,12 +239,18 @@ export abstract class Model {
 
   protected abstract getMapping(): {[key: string]: any};
 
-  public reduce<T, U>(f: (acc: U, fd: FieldDef, c: Channel) => U, init: T, t?: any) {
-    return reduce(this.getMapping(), f, init, t);
+  public reduceFieldDef<T, U>(f: (acc: U, fd: FieldDef, c: Channel) => U, init: T, t?: any) {
+    return reduce(this.getMapping(), (acc:U , cd: ChannelDef, c: Channel) => {
+     return isFieldDef(cd) ? f(acc, cd, c) : acc;
+    }, init, t);
   }
 
-  public forEach(f: (fd: FieldDef, c: Channel) => void, t?: any) {
-    forEach(this.getMapping(), f, t);
+  public forEachFieldDef(f: (fd: FieldDef, c: Channel) => void, t?: any) {
+    forEach(this.getMapping(), (cd: ChannelDef, c: Channel) => {
+      if (isFieldDef(cd)) {
+        f(cd, c);
+      }
+    }, t);
   }
 
   public hasDescendantWithFieldOnChannel(channel: Channel) {

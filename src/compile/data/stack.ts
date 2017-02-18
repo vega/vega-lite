@@ -142,7 +142,7 @@ export const stack: DataComponentCompiler<StackComponent> = {
       stackComponent.source = model.dataName(SUMMARY);
 
       // Add faceted field to groupby
-      stackComponent.groupby = model.reduce((groupby: string[], fieldDef: FieldDef) => {
+      stackComponent.groupby = model.reduceFieldDef((groupby: string[], fieldDef: FieldDef) => {
         const facetedField = field(fieldDef, {binSuffix: 'start'});
         if (!contains(groupby, facetedField)) {
           groupby.push(facetedField);
