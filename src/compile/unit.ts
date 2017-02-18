@@ -1,17 +1,17 @@
-import * as log from '../log';
+
 
 import {Axis, VlOnlyAxisBase, VL_ONLY_AXIS_PROPERTIES} from '../axis';
-import {X, Y, X2, Y2, Channel, UNIT_CHANNELS,  UNIT_SCALE_CHANNELS, NONSPATIAL_SCALE_CHANNELS, supportMark} from '../channel';
+import {X, Y, X2, Y2, Channel, UNIT_CHANNELS,  UNIT_SCALE_CHANNELS, NONSPATIAL_SCALE_CHANNELS} from '../channel';
 import {defaultConfig, Config, CellConfig} from '../config';
 import {SOURCE, SUMMARY} from '../data';
-import {Encoding} from '../encoding';
+import {Encoding, dropInvalidFieldDefs} from '../encoding';
 import * as vlEncoding from '../encoding'; // TODO: remove
-import {ChannelDef, FieldDef, FieldRefOption, field, normalize, isFieldDef, isValueDef} from '../fielddef';
+import {FieldDef, FieldRefOption, field, isFieldDef} from '../fielddef';
 import {Legend} from '../legend';
 import {Mark, MarkDef, TEXT as TEXT_MARK, FILL_STROKE_CONFIG, isMarkDef} from '../mark';
 import {Scale, ScaleConfig, hasDiscreteDomain} from '../scale';
 import {UnitSpec} from '../spec';
-import {duplicate, extend, isArray, mergeDeep, Dict} from '../util';
+import {duplicate, extend, mergeDeep, Dict} from '../util';
 import {VgData} from '../vega.schema';
 
 import {parseAxisComponent} from './axis/parse';
@@ -69,7 +69,7 @@ export class UnitModel extends Model {
       parent ? parent['height'] : undefined; // only exists if parent is layer
 
     const mark = isMarkDef(spec.mark) ? spec.mark.type : spec.mark;
-    const encoding = this.encoding = this.initEncoding(mark, spec.encoding || {});
+    const encoding = this.encoding = dropInvalidFieldDefs(mark, spec.encoding || {});
 
     // TODO?: ideally we should use config only inside this constructor
     const config = this.config = this.initConfig(spec.config, parent);
@@ -98,41 +98,6 @@ export class UnitModel extends Model {
     this.height = height;
   }
 
-  private initEncoding(mark: Mark, encoding: Encoding) {
-    // clone to prevent side effect to the original spec
-    encoding = duplicate(encoding);
-
-    Object.keys(encoding).forEach((channel: any) => {
-      if (!supportMark(channel, mark)) {
-        // Drop unsupported channel
-
-        log.warn(log.message.incompatibleChannel(channel, mark));
-        delete encoding[channel];
-        return;
-      }
-
-      if (isArray(encoding[channel])) {
-        // Array of fieldDefs for detail channel (or production rule)
-        encoding[channel] = encoding[channel].reduce((channelDefs: ChannelDef[], channelDef: ChannelDef) => {
-          if (!isFieldDef(channelDef) && !isValueDef(channelDef)) { // TODO: datum
-            log.warn(log.message.emptyFieldDef(channelDef, channel));
-          } else {
-            channelDefs.push(normalize(channelDef, channel));
-          }
-          return channelDefs;
-        }, []);
-      } else {
-        const fieldDef = encoding[channel];
-        if (fieldDef.field === undefined && fieldDef.value === undefined) { // TODO: datum
-          log.warn(log.message.emptyFieldDef(fieldDef, channel));
-          delete encoding[channel];
-          return;
-        }
-        normalize(fieldDef, channel);
-      }
-    });
-    return encoding;
-  }
 
   /**
    * Init config by merging config from parent and, if applicable, from facet config

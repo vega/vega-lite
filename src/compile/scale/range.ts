@@ -7,6 +7,7 @@ import {Scale, ScaleConfig, ScaleType, scaleTypeSupportProperty, Scheme, Range, 
 import {Type} from '../../type';
 import {VgRange, VgRangeScheme} from '../../vega.schema';
 import * as util from '../../util';
+import {getMarkConfig} from '../common';
 
 export type RangeMixins = {range: Range} | {rangeStep: number} | {scheme: Scheme};
 
@@ -141,8 +142,9 @@ function sizeRangeMin(mark: Mark, zero: boolean, config: Config) {
       return config.bar.minBandSize !== undefined ? config.bar.minBandSize : config.bar.continuousBandSize;
     case 'tick':
       return config.tick.minBandSize;
+    case 'line':
     case 'rule':
-      return config.rule.minStrokeWidth;
+      return getMarkConfig('minStrokeWidth', mark, config);
     case 'text':
       return config.text.minFontSize;
     case 'point':
@@ -171,8 +173,9 @@ function sizeRangeMax(mark: Mark, xyRangeSteps: number[], config: Config) {
         return config.tick.maxBandSize;
       }
       return minXYRangeStep(xyRangeSteps, config.mark) - 1;
+    case 'line':
     case 'rule':
-      return config.rule.maxStrokeWidth;
+      return getMarkConfig('maxStrokeWidth', mark, config);
     case 'text':
       return config.text.maxFontSize;
     case 'point':

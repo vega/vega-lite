@@ -1,8 +1,10 @@
 // utility for encoding mapping
-import {FieldDef, PositionFieldDef, LegendFieldDef, OrderFieldDef, ValueDef,TextFieldDef, isFieldDef} from './fielddef';
-import {Channel, CHANNELS} from './channel';
+import {FieldDef, PositionFieldDef, LegendFieldDef, OrderFieldDef, ValueDef, TextFieldDef, isFieldDef, ChannelDef, isValueDef, normalize} from './fielddef';
+import {Channel, CHANNELS, supportMark} from './channel';
 import {Facet} from './facet';
-import {isArray, some} from './util';
+import {isArray, some, duplicate} from './util';
+import {Mark} from './mark';
+import * as log from './log';
 
 export interface Encoding {
   /**
@@ -102,6 +104,54 @@ export function isAggregate(encoding: EncodingWithFacet) {
     return false;
   });
 }
+
+export function dropInvalidFieldDefs(mark: Mark, encoding: Encoding): Encoding {
+
+  // clone to prevent side effect to the original spec
+  encoding = duplicate(encoding);
+
+  Object.keys(encoding).forEach((channel: Channel) => {
+    if (!supportMark(channel, mark)) {
+      // Drop unsupported channel
+
+      log.warn(log.message.incompatibleChannel(channel, mark));
+      delete encoding[channel];
+      return;
+    }
+
+    // Drop line's size if the field is aggregated.
+    if (channel === 'size' && mark === 'line') {
+      const channelDef = encoding[channel];
+      if (isFieldDef(channelDef) && channelDef.aggregate) {
+        log.warn(log.message.incompatibleChannel(channel, mark, 'when the field is aggregated.'));
+        delete encoding[channel];
+      }
+      return;
+    }
+
+    if (isArray(encoding[channel])) {
+      // Array of fieldDefs for detail channel (or production rule)
+      encoding[channel] = encoding[channel].reduce((channelDefs: ChannelDef[], channelDef: ChannelDef) => {
+        if (!isFieldDef(channelDef) && !isValueDef(channelDef)) { // TODO: datum
+          log.warn(log.message.emptyFieldDef(channelDef, channel));
+        } else {
+          channelDefs.push(normalize(channelDef, channel));
+        }
+        return channelDefs;
+      }, []);
+    } else {
+      const fieldDef = encoding[channel];
+      if (fieldDef.field === undefined && fieldDef.value === undefined) { // TODO: datum
+        log.warn(log.message.emptyFieldDef(fieldDef, channel));
+        delete encoding[channel];
+        return;
+      }
+      normalize(fieldDef, channel);
+    }
+  });
+  return encoding;
+}
+
 
 export function isRanged(encoding: EncodingWithFacet) {
   return encoding && ((!!encoding.x && !!encoding.x2) || (!!encoding.y && !!encoding.y2));

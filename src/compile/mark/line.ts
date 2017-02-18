@@ -1,6 +1,4 @@
 import {X, Y} from '../../channel';
-import {Config} from '../../config';
-import {ChannelDef, isValueDef} from '../../fielddef';
 import {VgEncodeEntry} from '../../vega.schema';
 
 import {applyMarkConfig} from '../common';
@@ -15,34 +13,24 @@ export const line: MarkCompiler = {
   role: undefined,
   encodeEntry: (model: UnitModel) => {
     let e: VgEncodeEntry = {};
+    const {config, encoding} = model;
 
     // TODO: refactor how refer to scale as discussed in https://github.com/vega/vega-lite/pull/1613
 
     e.x = ref.stackable(X, model.encoding.x, model.scaleName(X), model.scale(X), model.stack, 'base');
     e.y = ref.stackable(Y, model.encoding.y, model.scaleName(Y), model.scale(Y), model.stack, 'base');
 
-    const _size = size(model.encoding.size, model.config);
-    if (_size) {e.strokeWidth = _size;}
-
     const opacity = ref.midPoint('opacity', model.encoding.opacity, model.scaleName('opacity'), model.scale('opacity'), model.config.mark.opacity && {value: model.config.mark.opacity});
     if (opacity !== undefined) {
       e.opacity = opacity;
     }
     applyColor(e, model);
+
+    e.strokeWidth = ref.midPoint('size', encoding.size, model.scaleName('size'), model.scale('size'), {
+      value: config.line.strokeWidth
+    });
+
     applyMarkConfig(e, model, ['interpolate', 'tension']);
     return e;
   }
 };
-
-// FIXME: replace this with normal size and throw warning if the size field is not the grouping field instead?
-// NOTE: This is different from other size because
-// Vega does not support variable line size.
-function size(sizeDef: ChannelDef, config: Config) {
-  if (isValueDef(sizeDef)) {
-      return {value: sizeDef.value};
-  }
-  // FIXME: We should not need this line since this should be taken care by applyColorAndOpacity
-  // but we have to refactor \ first
-  return {value: config.mark.strokeWidth};
-}
-

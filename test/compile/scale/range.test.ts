@@ -269,7 +269,7 @@ describe('compile/scale', () => {
         it('should return [minStrokeWidth, maxStrokeWidth]', () => {
           assert.deepEqual(
             rangeMixins('size', 'linear', QUANTITATIVE, {}, defaultConfig, undefined, 'rule', undefined, []),
-            {range: [defaultConfig.rule.minStrokeWidth, defaultConfig.rule.maxStrokeWidth]}
+            {range: [defaultConfig.mark.minStrokeWidth, defaultConfig.mark.maxStrokeWidth]}
           );
         });
       });

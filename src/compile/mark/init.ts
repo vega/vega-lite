@@ -19,7 +19,7 @@ export function initMarkDef(mark: Mark | MarkDef, encoding: Encoding, scale: Dic
   return markDef;
 }
 
-export function orient(mark: Mark, encoding: Encoding, scale: Dict<Scale>, specifiedOrient: Orient): Orient {
+function orient(mark: Mark, encoding: Encoding, scale: Dict<Scale>, specifiedOrient: Orient): Orient {
   switch (mark) {
     case POINT:
     case CIRCLE:
