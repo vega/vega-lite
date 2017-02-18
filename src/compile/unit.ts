@@ -27,7 +27,7 @@ import parseScaleComponent from './scale/parse';
 import {stack, StackProperties} from '../stack';
 import {SelectionDef} from '../selection';
 import {parseUnitSelection, assembleUnitSignals, assembleUnitData as assembleSelectionData, assembleUnitMarks as assembleSelectionMarks} from './selection/selection';
-import {initMarkDef} from './mark/init';
+import {initMarkDef, initEncoding} from './mark/init';
 
 /**
  * Internal model of Vega-Lite specification for the compiler.
@@ -79,6 +79,7 @@ export class UnitModel extends Model {
     this.scales = this.initScales(mark, encoding, config, providedWidth, providedHeight);
 
     this.markDef = initMarkDef(spec.mark, encoding, this.scales, config);
+    this.encoding = initEncoding(mark, encoding, this.stack, config);
     // TODO?: refactor these to be a part of the model as they are not really just config
     config.mark = initMarkConfig(mark, encoding, this.scales, this.stack, config);
 
