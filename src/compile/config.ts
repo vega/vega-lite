@@ -1,7 +1,7 @@
-import {X, COLOR, SIZE, DETAIL} from '../channel';
+import {COLOR, SIZE, DETAIL} from '../channel';
 import {Config} from '../config';
 import {Encoding, isAggregate, channelHasField} from '../encoding';
-import {MarkConfig, TextConfig} from '../mark';
+import {MarkConfig} from '../mark';
 import {BAR, AREA, POINT, LINE, TICK, CIRCLE, SQUARE, RULE, Mark} from '../mark';
 import {Scale} from '../scale';
 import {StackProperties} from '../stack';
@@ -25,15 +25,6 @@ export function initMarkConfig(mark: Mark, encoding: Encoding, scale: Dict<Scale
   }
 
   return markConfig;
-}
-
-export function initTextConfig(encoding: Encoding, config: Config) {
-  const textConfig: TextConfig = extend({}, config.text);
-
-  if (textConfig.align === undefined) {
-    textConfig.align = channelHasField(encoding, X) ? 'center' : 'right';
-  }
-  return textConfig;
 }
 
 export function opacity(mark: Mark, encoding: Encoding, stacked: StackProperties) {
