@@ -65,7 +65,7 @@ function textRef(textDef: TextFieldDef | ValueDef<any>, config: Config): VgValue
         };
       } else if (TEMPORAL === textDef.type) {
         return {
-          signal: timeFormatExpression(field(textDef, {datum: true}), textDef.timeUnit, textDef.format, config.text.shortTimeLabels, config)
+          signal: timeFormatExpression(field(textDef, {datum: true}), textDef.timeUnit, textDef.format, config.text.shortTimeLabels, config.timeFormat)
         };
       } else {
         return {field: textDef.field};

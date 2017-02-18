@@ -3,7 +3,7 @@ import * as log from '../log';
 import {TEXT, Channel} from '../channel';
 import {Config, CellConfig} from '../config';
 import {FieldDef, OrderFieldDef, field} from '../fielddef';
-import {MarkConfig, TextConfig} from '../mark';
+import {Mark, MarkConfig, TextConfig} from '../mark';
 import {TimeUnit} from '../timeunit';
 import {QUANTITATIVE} from '../type';
 import {isArray} from '../util';
@@ -49,6 +49,18 @@ export function applyMarkConfig(e: VgEncodeEntry, model: UnitModel, propsList: s
 }
 
 /**
+ * Return value mark specific config property if exists.
+ * Otherwise, return general mark specific config.
+ */
+export function getMarkConfig(prop: keyof MarkConfig, mark: Mark, config: Config) {
+  const markSpecificConfig = config[mark];
+  if (markSpecificConfig[prop] !== undefined) {
+    return markSpecificConfig[prop];
+  }
+  return config.mark[prop];
+}
+
+/**
  * Returns number format for a fieldDef
  *
  * @param format explicitly specified format
@@ -72,10 +84,10 @@ export function numberFormat(fieldDef: FieldDef, format: string, config: Config,
 /**
  * Returns the time expression used for axis/legend labels or text mark for a temporal field
  */
-export function timeFormatExpression(field: string, timeUnit: TimeUnit, format: string, shortTimeLabels: boolean, config: Config): string {
+export function timeFormatExpression(field: string, timeUnit: TimeUnit, format: string, shortTimeLabels: boolean, timeFormatConfig: string): string {
   if (!timeUnit || format) {
     // If there is not time unit, or if user explicitly specify format for axis/legend/text.
-    const _format = format || config.timeFormat; // only use config.timeFormat if there is no timeUnit.
+    const _format = format || timeFormatConfig; // only use config.timeFormat if there is no timeUnit.
     return `timeFormat(${field}, '${_format}')`;
   } else {
     return formatExpression(timeUnit, field, shortTimeLabels);

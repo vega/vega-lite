@@ -65,7 +65,7 @@ export class LayerModel extends Model {
     return mergeDeep(duplicate(defaultConfig), specConfig, parent ? parent.config : {});
   }
 
-  public channelHasField(_: Channel): boolean {
+  public channelHasField(channel: Channel): boolean {
     // layer does not have any channels
     return false;
   }
@@ -80,7 +80,7 @@ export class LayerModel extends Model {
     return this.children[0].dataTable();
   }
 
-  public fieldDef(_: Channel): FieldDef {
+  public fieldDef(channel: Channel): FieldDef {
     return null; // layer does not have field defs
   }
 

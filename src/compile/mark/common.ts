@@ -1,8 +1,6 @@
-import {FILL_CONFIG, STROKE_CONFIG} from '../../mark';
 import * as util from '../../util';
 import {VgEncodeEntry} from '../../vega.schema';
-
-import {applyMarkConfig} from '../common';
+import {getMarkConfig} from '../common';
 import {UnitModel} from '../unit';
 
 import * as ref from './valueref';
@@ -12,15 +10,6 @@ export function applyColor(e: VgEncodeEntry, model: UnitModel) {
   const config = model.config;
   const filled = config.mark.filled;
 
-  // TODO: remove this once we correctly integrate theme
-  // Apply fill stroke config first so that color field / value can override
-  // fill / stroke
-  if (filled) {
-    applyMarkConfig(e, model, FILL_CONFIG);
-  } else {
-    applyMarkConfig(e, model, STROKE_CONFIG);
-  }
-
   let colorRef = ref.midPoint('color', model.encoding.color, model.scaleName('color'), model.scale('color'), undefined);
 
   if (colorRef !== undefined) {
@@ -29,10 +18,9 @@ export function applyColor(e: VgEncodeEntry, model: UnitModel) {
     } else {
       e.stroke = colorRef;
     }
-  } else { // TODO: remove this once we correctly integrate theme
+  } else {
     // apply color config if there is no fill / stroke config
-    e[filled ? 'fill' : 'stroke'] = e[filled ? 'fill' : 'stroke'] ||
-      {value: model.config.mark.color};
+    e[filled ? 'fill' : 'stroke'] = {value: getMarkConfig('color', model.mark(), config)};
   }
 
   // If there is no fill, always fill symbols
@@ -41,3 +29,4 @@ export function applyColor(e: VgEncodeEntry, model: UnitModel) {
     e.fill = {value: 'transparent'};
   }
 }
+
