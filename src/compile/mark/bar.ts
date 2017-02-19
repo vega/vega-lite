@@ -38,8 +38,8 @@ function x(model: UnitModel, stack: StackProperties): VgEncodeEntry {
   // x, x2, and width -- we must specify two of these in all conditions
   if (orient === 'horizontal') {
     return {
-      ...mixins.pointPosition('x', model, 'base'),
-      ...mixins.pointPosition2(model, 'base'),
+      ...mixins.pointPosition('x', model, 'zeroOrMin'),
+      ...mixins.pointPosition2(model, 'zeroOrMin'),
     };
   } else { // vertical
     if (isFieldDef(xDef)) {
@@ -70,8 +70,8 @@ function y(model: UnitModel, stack: StackProperties) {
   // y, y2 & height -- we must specify two of these in all conditions
   if (orient === 'vertical') {
     return {
-      ...mixins.pointPosition('y', model, 'base'),
-      ...mixins.pointPosition2(model, 'base'),
+      ...mixins.pointPosition('y', model, 'zeroOrMin'),
+      ...mixins.pointPosition2(model, 'zeroOrMin'),
     };
   } else {
     if (isFieldDef(yDef)) {

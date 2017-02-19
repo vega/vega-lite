@@ -76,7 +76,7 @@ export function binMidSignal(fieldDef: FieldDef, scaleName: string) {
  * @returns {VgValueRef} Value Ref for xc / yc or mid point for other channels.
  */
 export function midPoint(channel: Channel, channelDef: ChannelDef, scaleName: string, scale: Scale,
-  defaultRef: VgValueRef | 'base' | 'baseOrMax'): VgValueRef {
+  defaultRef: VgValueRef | 'zeroOrMin' | 'zeroOrMax'): VgValueRef {
   // TODO: datum support
 
   if (channelDef) {
@@ -104,21 +104,21 @@ export function midPoint(channel: Channel, channelDef: ChannelDef, scaleName: st
     }
   }
 
-  if (defaultRef === 'base') {
+  if (defaultRef === 'zeroOrMin') {
     /* istanbul ignore else */
     if (channel === X || channel === X2) {
-      return baseX(scaleName, scale);
+      return zeroOrMinX(scaleName, scale);
     } else if (channel === Y || channel === Y2) {
-      return baseY(scaleName, scale);
+      return zeroOrMinY(scaleName, scale);
     } else {
       throw new Error(`Unsupported channel ${channel} for base function`); // FIXME add this to log.message
     }
-  } else if (defaultRef === 'baseOrMax') {
+  } else if (defaultRef === 'zeroOrMax') {
     /* istanbul ignore else */
     if (channel === X || channel === X2) {
-      return baseOrMaxX(scaleName, scale);
+      return zeroOrMaxX(scaleName, scale);
     } else if (channel === Y || channel === Y2) {
-      return baseOrMaxY(scaleName, scale);
+      return zeroOrMaxY(scaleName, scale);
     } else {
       throw new Error(`Unsupported channel ${channel} for base function`); // FIXME add this to log.message
     }
@@ -143,7 +143,7 @@ export function midY(config: Config): VgValueRef {
   return {value: config.scale.rangeStep / 2};
 }
 
-function baseX(scaleName: string, scale: Scale): VgValueRef {
+function zeroOrMinX(scaleName: string, scale: Scale): VgValueRef {
   if (scaleName) {
     // Log / Time / UTC scale do not support zero
     if (!contains([ScaleType.LOG, ScaleType.TIME, ScaleType.UTC], scale.type) &&
@@ -162,7 +162,7 @@ function baseX(scaleName: string, scale: Scale): VgValueRef {
 /**
  * @returns {VgValueRef} base value if scale exists and return max value if scale does not exist
  */
-function baseOrMaxX(scaleName: string, scale: Scale): VgValueRef {
+function zeroOrMaxX(scaleName: string, scale: Scale): VgValueRef {
   if (scaleName) {
     // Log / Time / UTC scale do not support zero
     if (!contains([ScaleType.LOG, ScaleType.TIME, ScaleType.UTC], scale.type) &&
@@ -177,7 +177,7 @@ function baseOrMaxX(scaleName: string, scale: Scale): VgValueRef {
   return {field: {group: 'width'}};
 }
 
-function baseY(scaleName: string, scale: Scale): VgValueRef {
+function zeroOrMinY(scaleName: string, scale: Scale): VgValueRef {
   if (scaleName) {
     // Log / Time / UTC scale do not support zero
     if (!contains([ScaleType.LOG, ScaleType.TIME, ScaleType.UTC], scale.type) &&
@@ -196,7 +196,7 @@ function baseY(scaleName: string, scale: Scale): VgValueRef {
 /**
  * @returns {VgValueRef} base value if scale exists and return max value if scale does not exist
  */
-function baseOrMaxY(scaleName: string, scale: Scale): VgValueRef {
+function zeroOrMaxY(scaleName: string, scale: Scale): VgValueRef {
   if (scaleName) {
     // Log / Time / UTC scale do not support zero
     if (!contains([ScaleType.LOG, ScaleType.TIME, ScaleType.UTC], scale.type) &&

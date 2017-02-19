@@ -8,8 +8,8 @@ export const line: MarkCompiler = {
   role: undefined,
   encodeEntry: (model: UnitModel) => {
     return {
-      ...mixins.pointPosition('x', model, 'base'),
-      ...mixins.pointPosition('y', model, 'base'),
+      ...mixins.pointPosition('x', model, 'zeroOrMin'),
+      ...mixins.pointPosition('y', model, 'zeroOrMin'),
       ...mixins.color(model),
       ...mixins.nonPosition('opacity', model),
       ...mixins.nonPosition('size', model, {

@@ -39,8 +39,8 @@ function x(model: UnitModel) {
     }
   } else { // continuous scale or no scale
     return {
-      ...mixins.pointPosition('x', model, 'baseOrMax'),
-      ...mixins.pointPosition2(model, 'base', 'x2')
+      ...mixins.pointPosition('x', model, 'zeroOrMax'),
+      ...mixins.pointPosition2(model, 'zeroOrMin', 'x2')
     };
   }
 }
@@ -62,8 +62,8 @@ function y(model: UnitModel) {
     }
   } else { // continuous scale or no scale
     return {
-      ...mixins.pointPosition('y', model, 'baseOrMax'),
-      ...mixins.pointPosition2(model, 'base', 'y2')
+      ...mixins.pointPosition('y', model, 'zeroOrMax'),
+      ...mixins.pointPosition2(model, 'zeroOrMin', 'y2')
     };
   }
 }
