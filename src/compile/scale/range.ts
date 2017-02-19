@@ -114,7 +114,11 @@ export default function rangeMixins(
 
     case OPACITY:
       // TODO: support custom rangeMin, rangeMax
-      return {range: [config.mark.minOpacity, config.mark.maxOpacity]};
+      return {range: [
+        getMarkConfig('minOpacity', mark, config),
+        getMarkConfig('maxOpacity', mark, config)
+        ]
+      };
   }
   /* istanbul ignore next: should never reach here */
   throw new Error(`Scale range undefined for channel ${channel}`);
@@ -148,11 +152,11 @@ function sizeRangeMin(mark: Mark, zero: boolean, config: Config) {
     case 'text':
       return config.text.minFontSize;
     case 'point':
-      return config.point.minSize;
     case 'square':
-      return config.square.minSize;
     case 'circle':
-      return config.circle.minSize;
+      if (config[mark].minSize) {
+        return config[mark].minSize;
+      }
   }
   /* istanbul ignore next: should never reach here */
   // sizeRangeMin not implemented for the mark
@@ -167,12 +171,12 @@ function sizeRangeMax(mark: Mark, xyRangeSteps: number[], config: Config) {
       if (config.bar.maxBandSize !== undefined) {
         return config.bar.maxBandSize;
       }
-      return minXYRangeStep(xyRangeSteps, config.mark) - 1;
+      return minXYRangeStep(xyRangeSteps, config.scale) - 1;
     case 'tick':
       if (config.tick.maxBandSize !== undefined) {
         return config.tick.maxBandSize;
       }
-      return minXYRangeStep(xyRangeSteps, config.mark) - 1;
+      return minXYRangeStep(xyRangeSteps, config.scale) - 1;
     case 'line':
     case 'rule':
       return getMarkConfig('maxStrokeWidth', mark, config);
