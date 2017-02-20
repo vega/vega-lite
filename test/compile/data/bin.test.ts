@@ -25,10 +25,10 @@ describe('compile/data/bin', function() {
         assert.deepEqual(transform[0], {
           type: 'bin',
           field: 'Acceleration',
-          as: ['bin_Acceleration_start', 'bin_Acceleration_end'],
+          as: ['bin_extent_0,100_maxbins_10_Acceleration_start', 'bin_extent_0,100_maxbins_10_Acceleration_end'],
           maxbins: 10,
           extent: [0, 100],
-          signal: "Acceleration_bins",
+          signal: "bin_extent_0,100_maxbins_10_Acceleration_bins",
         });
       });
     });
@@ -50,15 +50,15 @@ describe('compile/data/bin', function() {
         assert.deepEqual(transform[0], {
           type: 'extent',
           field: 'Acceleration',
-          signal: 'Acceleration_extent'
+          signal: 'bin_Acceleration_extent'
         });
         assert.deepEqual(transform[1], {
           type: 'bin',
           field: 'Acceleration',
           as: ['bin_Acceleration_start', 'bin_Acceleration_end'],
           maxbins: 10,
-          signal: "Acceleration_bins",
-          extent: {signal: 'Acceleration_extent'}
+          signal: "bin_Acceleration_bins",
+          extent: {signal: 'bin_Acceleration_extent'}
         });
       });
     });

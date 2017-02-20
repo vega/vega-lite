@@ -1,8 +1,9 @@
+
 // utility for a field definition object
 
 import {AggregateOp} from './aggregate';
 import {Axis} from './axis';
-import {Bin} from './bin';
+import {Bin, binToString} from './bin';
 import {Channel, rangeType} from './channel';
 import {Config} from './config';
 import {Legend} from './legend';
@@ -159,7 +160,7 @@ export function field(fieldDef: FieldDef, opt: FieldRefOption = {}) {
 
     if (!opt.nofn) {
       if (fieldDef.bin) {
-        fn = 'bin';
+        fn = binToString(fieldDef.bin);
         suffix = opt.binSuffix;
       } else if (fieldDef.aggregate) {
         fn = String(opt.aggregate || fieldDef.aggregate);

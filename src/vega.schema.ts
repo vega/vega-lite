@@ -181,7 +181,7 @@ export interface VgLegendEncode {
 
 export type VgGuideEncode = any; // TODO: replace this (See guideEncode in Vega Schema)
 
-export type VgTransform = VgBinTransform | VgExtentTransform | VgFormulaTransform | VgAggregateTransform | VgFilterTransform | VgImputeTransform | VgStackTransform;
+export type VgTransform = VgBinTransform | VgExtentTransform | VgFormulaTransform | VgAggregateTransform | VgFilterTransform | VgImputeTransform | VgStackTransform | any;
 
 export interface VgStackTransform {
   type: 'stack';

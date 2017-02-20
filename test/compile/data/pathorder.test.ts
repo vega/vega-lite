@@ -45,7 +45,7 @@ describe('compile/data/pathorder', function() {
         }
       });
       assert.deepEqual(pathOrder.parseUnit(model), {
-        field: 'bin_IMDB_Rating_start',
+        field: 'bin_maxbins_10_IMDB_Rating_start',
         order: 'descending'
       });
     });
@@ -71,7 +71,7 @@ describe('compile/data/pathorder', function() {
         }
       });
       assert.deepEqual(pathOrder.parseUnit(model), {
-        field: 'bin_IMDB_Rating_start',
+        field: 'bin_maxbins_10_IMDB_Rating_start',
         order: 'descending'
       });
     });
@@ -108,7 +108,7 @@ describe('compile/data/pathorder', function() {
       } as any;
 
       assert.deepEqual(pathOrder.parseFacet(model), {
-        field: 'bin_IMDB_Rating_start',
+        field: 'bin_maxbins_10_IMDB_Rating_start',
         order: 'descending'
       });
     });
@@ -149,7 +149,7 @@ describe('compile/data/pathorder', function() {
       } as any;
 
       assert.deepEqual(pathOrder.parseLayer(model), {
-        field: 'bin_IMDB_Rating_start',
+        field: 'bin_maxbins_10_IMDB_Rating_start',
         order: 'descending'
       });
     });

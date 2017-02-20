@@ -1,11 +1,14 @@
 import * as log from '../../log';
 
 import {SHARED_DOMAIN_OPS} from '../../aggregate';
+import {binToString} from '../../bin';
 import {Channel} from '../../channel';
 import {SOURCE} from '../../data';
 import {DateTime, isDateTime, timestamp} from '../../datetime';
+import {FieldDef} from '../../fielddef';
 import {Domain, hasDiscreteDomain, isBinScale, Scale, ScaleConfig, ScaleType} from '../../scale';
 import {isSortField} from '../../sort';
+import * as util from '../../util';
 import {
   DataRefUnionDomain,
   FieldRefUnionDomain,
@@ -17,11 +20,6 @@ import {
   VgDomain,
   VgSortField
 } from '../../vega.schema';
-
-import * as util from '../../util';
-
-import {FieldDef} from '../../fielddef';
-import {varName} from '../../util';
 import {Model} from '../model';
 
 export function initDomain(domain: Domain, fieldDef: FieldDef, scale: ScaleType, scaleConfig: ScaleConfig) {
@@ -102,8 +100,8 @@ function parseSingleChannelDomain(scale: Scale, model: Model, channel:Channel): 
     };
   } else if (fieldDef.bin) { // bin
     if (isBinScale(scale.type)) {
-      const field = varName(model.getName(fieldDef.field + '_bins'));
-      return {signal: `sequence(${field}.start, ${field}.stop + ${field}.step, ${field}.step)`};
+      const signal = model.getName(`${binToString(fieldDef.bin)}_${fieldDef.field}_bins`);
+      return {signal: `sequence(${signal}.start, ${signal}.stop + ${signal}.step, ${signal}.step)`};
     }
 
     if (hasDiscreteDomain(scale.type)) {

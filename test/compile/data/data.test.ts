@@ -79,7 +79,7 @@ describe('data', function () {
         assert.deepEqual(stackedTransform[stackedTransform.length - 1], {
           type: 'collect',
           sort: {
-            "field": "bin_IMDB_Rating_start",
+            "field": "bin_maxbins_10_IMDB_Rating_start",
             "order": "descending"
           }
         });

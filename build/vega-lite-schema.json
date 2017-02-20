@@ -1325,6 +1325,10 @@
                     "$ref": "#/definitions/MarkConfig",
                     "description": "Mark Config"
                 },
+                "maxbins": {
+                    "description": "Default maximum number of bins for binned variables.",
+                    "type": "integer"
+                },
                 "numberFormat": {
                     "description": "D3 Number format for axis labels and text tables. For example \"s\" for SI units.",
                     "type": "string"
