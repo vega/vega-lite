@@ -65,7 +65,7 @@ function parse(model: Model): Dict<VgTransform[]> {
         });
       }
       // FIXME: current merging logic can produce redundant transforms when a field is binned for color and for non-color
-      const key = hash(bin) + '_' + fieldDef.field + 'oc:' + hasDiscreteDomainOrHasLegend;
+      const key = hash(bin) + '_' + fieldDef.field + (hasDiscreteDomainOrHasLegend ? '_range' : '');
       binComponent[key] = transform;
     }
     return binComponent;
