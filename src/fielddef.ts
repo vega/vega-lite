@@ -252,9 +252,11 @@ export function defaultType(fieldDef: FieldDef, channel: Channel): Type {
 export function normalize(fieldDef: ChannelDef, channel: Channel) {
   // If a fieldDef contains a field, we need type.
   if (isFieldDef(fieldDef)) { // TODO: or datum
-    // TODO: swojit - you can normalize bin here
-    if (!!fieldDef.bin) {
+    if (fieldDef.bin) {
       fieldDef.bin = isBoolean(fieldDef.bin) ? {maxbins: 10} : fieldDef.bin;
+      if (!fieldDef.bin.maxbins) {
+        fieldDef.bin.maxbins = 10;
+      }
     }
 
     // Normalize Type

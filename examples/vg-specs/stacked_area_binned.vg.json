@@ -120,7 +120,7 @@
                 {
                     "type": "collect",
                     "sort": {
-                        "field": "bin_Acceleration_start",
+                        "field": "bin_maxbins_10_Acceleration_start",
                         "order": "descending"
                     }
                 }
