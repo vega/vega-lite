@@ -3,7 +3,7 @@ import {DataComponentCompiler} from './base';
 import {autoMaxBins} from '../../bin';
 import {Channel} from '../../channel';
 import {field, FieldDef} from '../../fielddef';
-import {extend, vals, flatten, hash, Dict} from '../../util';
+import {extend, vals, flatten, hash, isBoolean,Dict} from '../../util';
 import {VgTransform} from '../../vega.schema';
 import {hasDiscreteDomain} from '../../scale';
 
@@ -27,7 +27,7 @@ function parse(model: Model): Dict<VgTransform[]> {
         as: [field(fieldDef, {binSuffix: 'start'}), field(fieldDef, {binSuffix: 'end'})]
       },
         // if bin is an object, load parameter here!
-        typeof bin === 'boolean' ? {} : bin
+        isBoolean(bin) ? {} : bin
       );
 
       const transform: VgTransform[] = [];
