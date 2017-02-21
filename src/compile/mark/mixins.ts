@@ -57,6 +57,11 @@ export function nonPosition(channel: Channel, model: UnitModel, opt: {defaultVal
   } : {};
 }
 
+export function text(model: UnitModel) {
+  // TODO: support production rule
+  return {text: ref.text(model.encoding.text, model.config)};
+}
+
 export function bandPosition(channel: 'x'|'y', model: UnitModel) {
   // TODO: band scale doesn't support size yet
   const fieldDef = model.encoding[channel];
