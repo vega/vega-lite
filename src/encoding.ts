@@ -1,5 +1,5 @@
 // utility for encoding mapping
-import {FieldDef, PositionFieldDef, LegendFieldDef, OrderFieldDef, ValueDef, TextFieldDef, isFieldDef, ChannelDef, isValueDef, normalize} from './fielddef';
+import {FieldDef, PositionFieldDef, LegendFieldDef, OrderFieldDef, ValueDef, TextFieldDef, isFieldDef, ChannelDef, isValueDef, normalize, ConditionalValueDef} from './fielddef';
 import {Channel, CHANNELS, supportMark} from './channel';
 import {Facet} from './facet';
 import {isArray, some, duplicate} from './util';
@@ -36,12 +36,12 @@ export interface Encoding {
    * (By default, fill color for `area`, `bar`, `tick`, `text`, `circle`, and `square` /
    * stroke color for `line` and `point`.)
    */
-  color?: LegendFieldDef | ValueDef<string>;
+  color?: LegendFieldDef<string> | ConditionalValueDef<string>;
 
   /**
    * Opacity of the marks – either can be a value or in a range.
    */
-  opacity?: LegendFieldDef | ValueDef<number>;
+  opacity?: LegendFieldDef<number> | ConditionalValueDef<number>;
 
   /**
    * Size of the mark.
@@ -51,14 +51,14 @@ export interface Encoding {
    * - For `text` – the text's font size.
    * - Size is currently unsupported for `line` and `area`.
    */
-  size?: LegendFieldDef | ValueDef<number>;
+  size?: LegendFieldDef<number> | ConditionalValueDef<number>;
 
   /**
    * The symbol's shape (only for `point` marks). The supported values are
    * `"circle"` (default), `"square"`, `"cross"`, `"diamond"`, `"triangle-up"`,
    * or `"triangle-down"`, or else a custom SVG path string.
    */
-  shape?: LegendFieldDef | ValueDef<string>; // TODO: maybe distinguish ordinal-only
+  shape?: LegendFieldDef<string> | ConditionalValueDef<string>; // TODO: maybe distinguish ordinal-only
 
   /**
    * Additional levels of detail for grouping data in aggregate views and
@@ -69,7 +69,7 @@ export interface Encoding {
   /**
    * Text of the `text` mark.
    */
-  text?: TextFieldDef | ValueDef<string|number>;
+  text?: TextFieldDef | ConditionalValueDef<string|number>;
 
   /**
    * stack order for stacked marks or order of data points in line marks.

@@ -735,6 +735,99 @@
             },
             "type": "object"
         },
+        "Condition<number>": {
+            "additionalProperties": false,
+            "properties": {
+                "selection": {
+                    "type": "string"
+                },
+                "value": {
+                    "type": "number"
+                }
+            },
+            "required": [
+                "selection",
+                "value"
+            ],
+            "type": "object"
+        },
+        "Condition<string | number>": {
+            "additionalProperties": false,
+            "properties": {
+                "selection": {
+                    "type": "string"
+                },
+                "value": {
+                    "type": [
+                        "string",
+                        "number"
+                    ]
+                }
+            },
+            "required": [
+                "selection",
+                "value"
+            ],
+            "type": "object"
+        },
+        "Condition<string>": {
+            "additionalProperties": false,
+            "properties": {
+                "selection": {
+                    "type": "string"
+                },
+                "value": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "selection",
+                "value"
+            ],
+            "type": "object"
+        },
+        "ConditionalValueDef<number>": {
+            "additionalProperties": false,
+            "properties": {
+                "condition": {
+                    "$ref": "#/definitions/Condition<number>"
+                },
+                "value": {
+                    "description": "A constant value in visual domain.",
+                    "type": "number"
+                }
+            },
+            "type": "object"
+        },
+        "ConditionalValueDef<string | number>": {
+            "additionalProperties": false,
+            "properties": {
+                "condition": {
+                    "$ref": "#/definitions/Condition<string | number>"
+                },
+                "value": {
+                    "description": "A constant value in visual domain.",
+                    "type": [
+                        "string",
+                        "number"
+                    ]
+                }
+            },
+            "type": "object"
+        },
+        "ConditionalValueDef<string>": {
+            "additionalProperties": false,
+            "properties": {
+                "condition": {
+                    "$ref": "#/definitions/Condition<string>"
+                },
+                "value": {
+                    "description": "A constant value in visual domain.",
+                    "type": "string"
+                }
+            },
+            "type": "object"
+        },
         "Config": {
             "additionalProperties": false,
             "properties": {
@@ -1020,10 +1113,10 @@
                 "color": {
                     "anyOf": [
                         {
-                            "$ref": "#/definitions/LegendFieldDef"
+                            "$ref": "#/definitions/LegendFieldDef<string>"
                         },
                         {
-                            "$ref": "#/definitions/ValueDef<string>"
+                            "$ref": "#/definitions/ConditionalValueDef<string>"
                         }
                     ],
                     "description": "Color of the marks – either fill or stroke color based on mark type.\n(By default, fill color for `area`, `bar`, `tick`, `text`, `circle`, and `square` /\nstroke color for `line` and `point`.)"
@@ -1049,10 +1142,10 @@
                 "opacity": {
                     "anyOf": [
                         {
-                            "$ref": "#/definitions/LegendFieldDef"
+                            "$ref": "#/definitions/LegendFieldDef<number>"
                         },
                         {
-                            "$ref": "#/definitions/ValueDef<number>"
+                            "$ref": "#/definitions/ConditionalValueDef<number>"
                         }
                     ],
                     "description": "Opacity of the marks – either can be a value or in a range."
@@ -1078,10 +1171,10 @@
                 "shape": {
                     "anyOf": [
                         {
-                            "$ref": "#/definitions/LegendFieldDef"
+                            "$ref": "#/definitions/LegendFieldDef<string>"
                         },
                         {
-                            "$ref": "#/definitions/ValueDef<string>"
+                            "$ref": "#/definitions/ConditionalValueDef<string>"
                         }
                     ],
                     "description": "The symbol's shape (only for `point` marks). The supported values are\n`\"circle\"` (default), `\"square\"`, `\"cross\"`, `\"diamond\"`, `\"triangle-up\"`,\nor `\"triangle-down\"`, or else a custom SVG path string."
@@ -1089,10 +1182,10 @@
                 "size": {
                     "anyOf": [
                         {
-                            "$ref": "#/definitions/LegendFieldDef"
+                            "$ref": "#/definitions/LegendFieldDef<number>"
                         },
                         {
-                            "$ref": "#/definitions/ValueDef<number>"
+                            "$ref": "#/definitions/ConditionalValueDef<number>"
                         }
                     ],
                     "description": "Size of the mark.\n- For `point`, `square` and `circle`\n– the symbol size, or pixel area of the mark.\n- For `bar` and `tick` – the bar and tick's size.\n- For `text` – the text's font size.\n- Size is currently unsupported for `line` and `area`."
@@ -1103,7 +1196,7 @@
                             "$ref": "#/definitions/TextFieldDef"
                         },
                         {
-                            "$ref": "#/definitions/ValueDef<string | number>"
+                            "$ref": "#/definitions/ConditionalValueDef<string | number>"
                         }
                     ],
                     "description": "Text of the `text` mark."
@@ -1918,7 +2011,7 @@
             },
             "type": "object"
         },
-        "LegendFieldDef": {
+        "LegendFieldDef<number>": {
             "additionalProperties": false,
             "properties": {
                 "aggregate": {
@@ -1935,6 +2028,76 @@
                         }
                     ],
                     "description": "Flag for binning a `quantitative` field, or a bin property object\nfor binning parameters."
+                },
+                "condition": {
+                    "$ref": "#/definitions/Condition<number>"
+                },
+                "field": {
+                    "description": "Name of the field from which to pull a data value.",
+                    "type": "string"
+                },
+                "legend": {
+                    "anyOf": [
+                        {
+                            "$ref": "#/definitions/Legend"
+                        },
+                        {
+                            "type": "null"
+                        }
+                    ]
+                },
+                "scale": {
+                    "$ref": "#/definitions/Scale"
+                },
+                "sort": {
+                    "anyOf": [
+                        {
+                            "$ref": "#/definitions/SortField"
+                        },
+                        {
+                            "enum": [
+                                "ascending",
+                                "descending"
+                            ],
+                            "type": "string"
+                        }
+                    ]
+                },
+                "timeUnit": {
+                    "$ref": "#/definitions/TimeUnit",
+                    "description": "Time unit for a `temporal` field  (e.g., `year`, `yearmonth`, `month`, `hour`)."
+                },
+                "title": {
+                    "description": "Title for axis or legend.",
+                    "type": "string"
+                },
+                "type": {
+                    "$ref": "#/definitions/Type",
+                    "description": "The encoded field's type of measurement. This can be either a full type\nname (`\"quantitative\"`, `\"temporal\"`, `\"ordinal\"`,  and `\"nominal\"`)\nor an initial character of the type name (`\"Q\"`, `\"T\"`, `\"O\"`, `\"N\"`).\nThis property is case insensitive."
+                }
+            },
+            "type": "object"
+        },
+        "LegendFieldDef<string>": {
+            "additionalProperties": false,
+            "properties": {
+                "aggregate": {
+                    "$ref": "#/definitions/AggregateOp",
+                    "description": "Aggregation function for the field\n(e.g., `mean`, `sum`, `median`, `min`, `max`, `count`)."
+                },
+                "bin": {
+                    "anyOf": [
+                        {
+                            "$ref": "#/definitions/Bin"
+                        },
+                        {
+                            "type": "boolean"
+                        }
+                    ],
+                    "description": "Flag for binning a `quantitative` field, or a bin property object\nfor binning parameters."
+                },
+                "condition": {
+                    "$ref": "#/definitions/Condition<string>"
                 },
                 "field": {
                     "description": "Name of the field from which to pull a data value.",
@@ -3383,6 +3546,9 @@
                     ],
                     "description": "Flag for binning a `quantitative` field, or a bin property object\nfor binning parameters."
                 },
+                "condition": {
+                    "$ref": "#/definitions/Condition<string | number>"
+                },
                 "field": {
                     "description": "Name of the field from which to pull a data value.",
                     "type": "string"
@@ -3697,31 +3863,6 @@
                 "value": {
                     "description": "A constant value in visual domain.",
                     "type": "number"
-                }
-            },
-            "type": "object"
-        },
-        "ValueDef<string | number>": {
-            "additionalProperties": false,
-            "description": "Definition object for a constant value of an encoding channel.",
-            "properties": {
-                "value": {
-                    "description": "A constant value in visual domain.",
-                    "type": [
-                        "string",
-                        "number"
-                    ]
-                }
-            },
-            "type": "object"
-        },
-        "ValueDef<string>": {
-            "additionalProperties": false,
-            "description": "Definition object for a constant value of an encoding channel.",
-            "properties": {
-                "value": {
-                    "description": "A constant value in visual domain.",
-                    "type": "string"
                 }
             },
             "type": "object"
