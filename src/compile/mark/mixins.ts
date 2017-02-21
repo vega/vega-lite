@@ -6,7 +6,8 @@ import {UnitModel} from '../unit';
 
 import * as ref from './valueref';
 
-import {Channel} from '../../channel';
+import {NONSPATIAL_SCALE_CHANNELS} from '../../channel';
+import {Condition} from '../../fielddef';
 
 export function color(model: UnitModel) {
   const config = model.config;
@@ -42,24 +43,46 @@ export function valueIfDefined(prop: string, value: VgValueRef): VgEncodeEntry {
 }
 
 /**
- * Return mixins for non-positional channels.
+ * Return mixins for non-positional channels with scales.  (Text doesn't have scale.)
  */
-export function nonPosition(channel: Channel, model: UnitModel, opt: {defaultValue?: number | string | boolean, vgChannel?: string, defaultRef?: VgValueRef} = {}): VgEncodeEntry {
+export function nonPosition(channel: typeof NONSPATIAL_SCALE_CHANNELS[0], model: UnitModel, opt: {defaultValue?: number | string | boolean, vgChannel?: string, defaultRef?: VgValueRef} = {}): VgEncodeEntry {
   // TODO: refactor how refer to scale as discussed in https://github.com/vega/vega-lite/pull/1613
 
   const {defaultValue, vgChannel} = opt;
   const defaultRef = opt.defaultRef || (defaultValue !== undefined ? {value: defaultValue} : undefined);
-  const valueRef = ref.midPoint(channel, model.encoding[channel], model.scaleName(channel), model.scale(channel), defaultRef);
 
-  return valueRef !== undefined ? {
-    // allow vgChannel to be different from channel (mainly for size and color)
-    [vgChannel || channel]: valueRef
-  } : {};
+  const channelDef = model.encoding[channel];
+  const valueRef = ref.midPoint(channel, channelDef, model.scaleName(channel), model.scale(channel), defaultRef);
+
+  return wrapCondition(channelDef && channelDef.condition, vgChannel || channel, valueRef);
+}
+
+/**
+ * Return a mixin that include a Vega production rule for a Vega-Lite conditional channel definition.
+ * or a simple mixin if channel def has no condition.
+ */
+function wrapCondition(condition: Condition<any>, vgChannel: string, valueRef: VgValueRef): VgEncodeEntry {
+  if (condition) {
+    const {selection, value} = condition;
+    return {
+      [vgChannel]: [
+        {test: selectionTest(selection), value},
+        ...(valueRef !== undefined ? [valueRef] : [])
+      ]
+    };
+  } else {
+    return valueRef !== undefined ? {[vgChannel]: valueRef} : {};
+  }
+}
+
+function selectionTest(selectionName: string) {
+  // FIXME: Arvind please implement this!
+  return selectionName;
 }
 
 export function text(model: UnitModel) {
-  // TODO: support production rule
-  return {text: ref.text(model.encoding.text, model.config)};
+  const channelDef = model.encoding.text;
+  return wrapCondition(channelDef && channelDef.condition, 'text', ref.text(channelDef, model.config));
 }
 
 export function bandPosition(channel: 'x'|'y', model: UnitModel) {
