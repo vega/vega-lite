@@ -18,9 +18,10 @@ function numberFormatExpr(expr: string, format: string) {
 
 function parse(model: Model): Dict<VgTransform[]> {
   return model.reduceFieldDef(function(binComponent: Dict<VgTransform[]>, fieldDef: FieldDef, channel: Channel) {
+    // Extracting the bin
     const bin = model.fieldDef(channel).bin;
     if (bin) {
-
+      // If bin exists, then binTrans is created which is a Bin & ???
       let binTrans: VgTransform = extend({
         type: 'bin',
         field: fieldDef.field,
@@ -32,7 +33,9 @@ function parse(model: Model): Dict<VgTransform[]> {
 
       const transform: VgTransform[] = [];
       if (!binTrans.extent) {
-        const extentSignal = model.getName(fieldDef.field + '_extent');
+        const extentSignal = model.getName(/*channel + '_' + */fieldDef.field + '_extent');
+        // Not going to use channel to differentiate extent signals.
+        // Just here for the moment so that I know what the viz must look like
         transform.push({
           type: 'extent',
           field: fieldDef.field,
@@ -65,7 +68,13 @@ function parse(model: Model): Dict<VgTransform[]> {
         });
       }
       // FIXME: current merging logic can produce redundant transforms when a field is binned for color and for non-color
-      const key = hash(bin) + '_' + fieldDef.field + (hasDiscreteDomainOrHasLegend ? '_range' : '');
+      let res = '_';
+      for (const property in bin.valueOf()) {
+        if (bin[property]) {
+          res += '_' + property + '_' + bin[property].toString();
+        }
+      }
+      const key = hash(bin) + res + fieldDef.field/* + (hasDiscreteDomainOrHasLegend ? '_range' : '') */;
       binComponent[key] = transform;
     }
     return binComponent;
