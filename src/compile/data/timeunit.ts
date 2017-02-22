@@ -14,11 +14,10 @@ function parse(model: Model): Dict<VgFormulaTransform> {
   return model.reduceFieldDef(function(timeUnitComponent: Dict<VgFormulaTransform>, fieldDef: FieldDef) {
     if (fieldDef.type === TEMPORAL && fieldDef.timeUnit) {
 
-      const hash = field(fieldDef);
-
-      timeUnitComponent[hash] = {
+      const f = field(fieldDef);
+      timeUnitComponent[f] = {
         type: 'formula',
-        as: field(fieldDef),
+        as: f,
         expr: fieldExpr(fieldDef.timeUnit, fieldDef.field)
       };
     }
