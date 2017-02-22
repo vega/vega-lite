@@ -2,14 +2,44 @@
 
 
 import {assert} from 'chai';
-import {default as domain, unionDomains} from '../../../src/compile/scale/domain';
+import {parseDomain, unionDomains} from '../../../src/compile/scale/domain';
 import {SOURCE, SUMMARY} from '../../../src/data';
 
 import {parseUnitModel} from '../../util';
 import {FieldRefUnionDomain, VgDataRef} from '../../../src/vega.schema';
 
 describe('compile/scale', () => {
-  describe('domain()', function() {
+  describe('parseDomain()', () => {
+    it('should have correct domain with x and x2 channel', function() {
+      const model = parseUnitModel({
+          mark: 'bar',
+          encoding: {
+            x: {field: 'a', type: 'quantitative'},
+            x2: {field: 'b', type: 'quantitative'},
+            y: {field: 'c', type: 'quantitative'},
+            y2: {field: 'd', type: 'quantitative'}
+          }
+        });
+
+      const xDomain = parseDomain(model, 'x');
+      assert.deepEqual(xDomain, {data: 'source', fields: ['a', 'b']});
+
+      const yDomain = parseDomain(model, 'y');
+      assert.deepEqual(yDomain, {data: 'source', fields: ['c', 'd']});
+    });
+
+    it('should have correct domain for color', function() {
+      const model = parseUnitModel({
+          mark: 'bar',
+          encoding: {
+            color: {field: 'a', type: 'quantitative'},
+          }
+        });
+
+      const xDomain = parseDomain(model, 'color');
+      assert.deepEqual(xDomain, {data: 'source', field: 'a'});
+    });
+
     it('should return domain for stack', function() {
       const model = parseUnitModel({
         mark: "bar",
@@ -24,9 +54,7 @@ describe('compile/scale', () => {
         }
       });
 
-      const _domain = domain(model.scale('y'), model, 'y');
-
-      assert.deepEqual(_domain, {
+      assert.deepEqual(parseDomain(model,'y'), {
         data: 'stacked',
         fields: ['sum_origin_start', 'sum_origin_end']
       });
@@ -46,9 +74,8 @@ describe('compile/scale', () => {
               }
             }
           });
-          const _domain = domain(model.scale('y'), model, 'y');
 
-          assert.deepEqual(_domain, {
+          assert.deepEqual(parseDomain(model,'y'), {
             data: SOURCE,
             fields: [
               'bin_origin_start',
@@ -70,7 +97,7 @@ describe('compile/scale', () => {
               }
             }
           });
-          const _domain = domain(model.scale('y'), model, 'y') as FieldRefUnionDomain;
+          const _domain = parseDomain(model,'y') as FieldRefUnionDomain;
 
           assert.deepEqual(_domain.data, SUMMARY);
           assert.deepEqual(_domain.fields, ['min_acceleration', 'max_acceleration']);
@@ -89,8 +116,7 @@ describe('compile/scale', () => {
               }
             }
           });
-          const _domain = domain(model.scale('y'), model, 'y') as VgDataRef;
-
+          const _domain = parseDomain(model,'y') as VgDataRef;
           assert.deepEqual(_domain.data, SUMMARY);
         });
 
@@ -105,7 +131,7 @@ describe('compile/scale', () => {
             }
           }
         });
-        const _domain = domain(model.scale('y'), model, 'y');
+        const _domain = parseDomain(model,'y');
 
         assert.deepEqual(_domain, [0, 200]);
       });
@@ -121,7 +147,7 @@ describe('compile/scale', () => {
             }
           }
         });
-        const _domain = domain(model.scale('y'), model, 'y') as VgDataRef;
+        const _domain = parseDomain(model,'y') as VgDataRef;
 
         assert.deepEqual(_domain.data, SUMMARY);
       });
@@ -142,7 +168,7 @@ describe('compile/scale', () => {
             }
           }
         });
-        const _domain = domain(model.scale('y'), model, 'y') as FieldRefUnionDomain;
+        const _domain = parseDomain(model,'y') as FieldRefUnionDomain;
 
         assert.deepEqual(_domain.data, SUMMARY);
         assert.deepEqual(_domain.fields, ['min_acceleration', 'max_acceleration']);
@@ -162,7 +188,7 @@ describe('compile/scale', () => {
               }
             }
           });
-          const _domain = domain(model.scale('y'), model, 'y') as FieldRefUnionDomain;
+          const _domain = parseDomain(model,'y') as FieldRefUnionDomain;
 
           assert.deepEqual(_domain.data, SOURCE);
         });
@@ -180,7 +206,7 @@ describe('compile/scale', () => {
               }
             }
           });
-          const _domain = domain(model.scale('y'), model, 'y') as VgDataRef;
+          const _domain = parseDomain(model,'y') as VgDataRef;
 
           assert.deepEqual(_domain.data, SOURCE);
           assert.operator((_domain.field as string).indexOf('year'), '>', -1);
@@ -198,7 +224,7 @@ describe('compile/scale', () => {
               }
             }
           });
-          const _domain = domain(model.scale('y'), model, 'y');
+          const _domain = parseDomain(model,'y');
 
           assert.deepEqual(_domain, {data: 'source', field: 'month_origin', sort: {field: 'month_origin', op: 'min',}});
         });
@@ -215,7 +241,7 @@ describe('compile/scale', () => {
                 }
               }
             });
-            const _domain = domain(model.scale('y'), model, 'y');
+            const _domain = parseDomain(model,'y');
 
             assert.deepEqual(_domain, {
               data: 'source', field: 'yearmonth_origin',
@@ -234,7 +260,7 @@ describe('compile/scale', () => {
             }
           }
         });
-        const _domain = domain(model.scale('y'), model, 'y');
+        const _domain = parseDomain(model,'y');
 
         assert.deepEqual(_domain, [
           new Date(1970, 0, 1).getTime(),
@@ -253,7 +279,7 @@ describe('compile/scale', () => {
             }
           });
 
-        assert.deepEqual(domain(model.scale('y'), model, 'y'), {
+        assert.deepEqual(parseDomain(model,'y'), {
             data: "source",
             field: 'origin',
             sort: sortDef
@@ -268,7 +294,7 @@ describe('compile/scale', () => {
           }
         });
 
-        assert.deepEqual(domain(model.scale('y'), model, 'y'), {
+        assert.deepEqual(parseDomain(model,'y'), {
           data: "source",
           field: 'origin',
           sort: true

@@ -2,7 +2,7 @@
 
 import {assert} from 'chai';
 
-import {parseScale, parseDomain} from '../../../src/compile/scale/parse';
+import {parseScale} from '../../../src/compile/scale/parse';
 import {NON_TYPE_DOMAIN_RANGE_VEGA_SCALE_PROPERTIES} from '../../../src/compile/scale/parse';
 import {parseUnitModel} from '../../util';
 
@@ -152,37 +152,4 @@ describe('src/compile', function() {
       });
     });
   });
-
-  describe('parseDomain()', () => {
-    it('should have correct domain with x and x2 channel', function() {
-      const model = parseUnitModel({
-          mark: 'bar',
-          encoding: {
-            x: {field: 'a', type: 'quantitative'},
-            x2: {field: 'b', type: 'quantitative'},
-            y: {field: 'c', type: 'quantitative'},
-            y2: {field: 'd', type: 'quantitative'}
-          }
-        });
-
-      const xDomain = parseDomain(model, 'x');
-      assert.deepEqual(xDomain, {data: 'source', fields: ['a', 'b']});
-
-      const yDomain = parseDomain(model, 'y');
-      assert.deepEqual(yDomain, {data: 'source', fields: ['c', 'd']});
-    });
-
-    it('should have correct domain for color', function() {
-      const model = parseUnitModel({
-          mark: 'bar',
-          encoding: {
-            color: {field: 'a', type: 'quantitative'},
-          }
-        });
-
-      const xDomain = parseDomain(model, 'color');
-      assert.deepEqual(xDomain, {data: 'source', field: 'a'});
-    });
-  });
-
 });

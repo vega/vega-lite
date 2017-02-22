@@ -1,4 +1,4 @@
-import {X, Y, X2, Y2, Channel} from '../../channel';
+import {Channel} from '../../channel';
 import {FieldDef, field} from '../../fielddef';
 import {Scale, ScaleType, hasContinuousDomain} from '../../scale';
 import {isSortField} from '../../sort';
@@ -7,9 +7,9 @@ import {Dict} from '../../util';
 import {Model} from '../model';
 
 import {ScaleComponent, ScaleComponents, BIN_LEGEND_SUFFIX, BIN_LEGEND_LABEL_SUFFIX} from './scale';
-import {default as domain, unionDomains} from './domain';
+import {parseDomain} from './domain';
 import {parseRange} from './range';
-import {VgScale, VgDomain} from '../../vega.schema';
+import {VgScale} from '../../vega.schema';
 
 /**
  * Parse scales for all channels of a model.
@@ -83,25 +83,6 @@ function parseMainScale(model: Model, channel: Channel) {
   return scaleComponent;
 }
 
-export function parseDomain(model: Model, channel: Channel): VgDomain {
-  const scale = model.scale(channel);
-
-  // If channel is either X or Y then union them with X2 & Y2 if they exist
-  if (channel === X && model.channelHasField(X2)) {
-    if (model.channelHasField(X)) {
-      return unionDomains(domain(scale, model, X), domain(scale, model, X2));
-    } else {
-      return domain(scale, model, X2);
-    }
-  } else if (channel === Y && model.channelHasField(Y2)) {
-    if (model.channelHasField(Y)) {
-      return unionDomains(domain(scale, model, Y), domain(scale, model, Y2));
-    } else {
-      return domain(scale, model, Y2);
-    }
-  }
-  return domain(scale, model, channel);
-}
 
 /**
  * Return additional scale to drive legend when we use a continuous scale and binning.
