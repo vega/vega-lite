@@ -6,7 +6,7 @@ import {default as domain, unionDomains} from '../../../src/compile/scale/domain
 import {SOURCE, SUMMARY} from '../../../src/data';
 
 import {parseUnitModel} from '../../util';
-import {VgDataRef} from '../../../src/vega.schema';
+import {FieldRefUnionDomain, VgDataRef} from '../../../src/vega.schema';
 
 describe('compile/scale', () => {
   describe('domain()', function() {
@@ -64,15 +64,16 @@ describe('compile/scale', () => {
             encoding: {
               y: {
                 aggregate: 'mean',
-                field: 'origin',
+                field: 'acceleration',
                 scale: {domain: 'unaggregated'},
                 type: "quantitative"
               }
             }
           });
-          const _domain = domain(model.scale('y'), model, 'y') as VgDataRef;
+          const _domain = domain(model.scale('y'), model, 'y') as FieldRefUnionDomain;
 
-          assert.deepEqual(_domain.data, SOURCE);
+          assert.deepEqual(_domain.data, SUMMARY);
+          assert.deepEqual(_domain.fields, ['min_acceleration', 'max_acceleration']);
         });
 
       it('should return the aggregated domain for sum Q',
@@ -131,7 +132,7 @@ describe('compile/scale', () => {
           encoding: {
             y: {
               aggregate: 'min',
-              field: 'origin',
+              field: 'acceleration',
               type: "quantitative"
             }
           },
@@ -141,9 +142,10 @@ describe('compile/scale', () => {
             }
           }
         });
-        const _domain = domain(model.scale('y'), model, 'y') as VgDataRef;
+        const _domain = domain(model.scale('y'), model, 'y') as FieldRefUnionDomain;
 
-        assert.deepEqual(_domain.data, SOURCE);
+        assert.deepEqual(_domain.data, SUMMARY);
+        assert.deepEqual(_domain.fields, ['min_acceleration', 'max_acceleration']);
       });
     });
 
@@ -160,7 +162,7 @@ describe('compile/scale', () => {
               }
             }
           });
-          const _domain = domain(model.scale('y'), model, 'y') as VgDataRef;
+          const _domain = domain(model.scale('y'), model, 'y') as FieldRefUnionDomain;
 
           assert.deepEqual(_domain.data, SOURCE);
         });
