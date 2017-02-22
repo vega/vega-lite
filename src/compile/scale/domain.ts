@@ -4,13 +4,34 @@ import {SHARED_DOMAIN_OPS} from '../../aggregate';
 import {Channel} from '../../channel';
 import {SOURCE} from '../../data';
 import {DateTime, isDateTime, timestamp} from '../../datetime';
-import {Scale, ScaleType, hasDiscreteDomain} from '../../scale';
+import {Domain, Scale, ScaleType, hasDiscreteDomain, ScaleConfig} from '../../scale';
 import {isSortField} from '../../sort';
 import {FieldRefUnionDomain, VgSortField, isDataRefUnionedDomain, isFieldRefUnionDomain, isDataRefDomain, VgDomain, VgDataRef} from '../../vega.schema';
 
 import * as util from '../../util';
 
 import {Model} from '../model';
+import {FieldDef} from '../../fielddef';
+
+
+export function initDomain(domain: Domain, fieldDef: FieldDef, scale: ScaleType, scaleConfig: ScaleConfig) {
+  if (domain === 'unaggregated') {
+    const {valid, reason} = canUseUnaggregatedDomain(fieldDef, scale);
+    if(!valid) {
+      log.warn(reason);
+      return undefined;
+    }
+  } else if (domain === undefined && scaleConfig.useUnaggregatedDomain) {
+    // Apply config if domain is not specified.
+    const {valid} = canUseUnaggregatedDomain(fieldDef, scale);
+    if (valid) {
+      return 'unaggregated';
+    }
+  }
+
+  return domain;
+}
+
 
 export function parseDomain(model: Model, channel: Channel): VgDomain {
   const scale = model.scale(channel);
@@ -33,7 +54,7 @@ export function parseDomain(model: Model, channel: Channel): VgDomain {
   return parseSingleChannelDomain(scale, model, channel);
 }
 
-export function parseSingleChannelDomain(scale: Scale, model: Model, channel:Channel): any[] | VgDataRef | FieldRefUnionDomain {
+function parseSingleChannelDomain(scale: Scale, model: Model, channel:Channel): any[] | VgDataRef | FieldRefUnionDomain {
   const fieldDef = model.fieldDef(channel);
 
   if (scale.domain && scale.domain !== 'unaggregated') { // explicit value
@@ -72,12 +93,9 @@ export function parseSingleChannelDomain(scale: Scale, model: Model, channel:Cha
     };
   }
 
-  // FIXME refactor signature
-  const noAggDomain = useUnaggregatedDomain(scale, model, channel);
-
   const sort = domainSort(model, channel, scale.type);
 
-  if (noAggDomain) {
+  if (scale.domain === 'unaggregated') {
     return {
       data: model.dataTable(),
       fields: [
@@ -154,34 +172,40 @@ export function domainSort(model: Model, channel: Channel, scaleType: ScaleType)
   return undefined;
 }
 
+
+
 /**
- * Determine if scale should use unaggregated domain.
+ * Determine if a scale can use unaggregated domain.
  * @return {Boolean} Returns true if all of the following conditons applies:
  * 1. `scale.domain` is `unaggregated`
  * 2. Aggregation function is not `count` or `sum`
  * 3. The scale is quantitative or time scale.
  */
-export function useUnaggregatedDomain(scale: Scale, model: Model, channel: Channel) {
-  const fieldDef = model.fieldDef(channel);
+export function canUseUnaggregatedDomain(fieldDef: FieldDef, scaleType: ScaleType): {valid: boolean, reason?: string} {
+  if (!fieldDef.aggregate) {
+    return {
+      valid: false,
+      reason: log.message.unaggregateDomainHasNoEffectForRawField(fieldDef)
+    };
+  }
 
-  return scale.domain === 'unaggregated' &&
-    // only applied to aggregate table
-    fieldDef.aggregate &&
-    // only activated if used with aggregate functions that produces values ranging in the domain of the source data
-    SHARED_DOMAIN_OPS.indexOf(fieldDef.aggregate as any) >= 0 &&
-    (
-      // Q always uses quantitative scale except when it's binned.
-      // Binned field has similar values in both the source table and the summary table
-      // but the summary table has fewer values, therefore binned fields draw
-      // domain values from the summary table.
-      // Meanwhile, we rely on non-positive filter inside summary data source, thus
-      // we can't use unaggregated domain to feed into log scale
-      // FIXME(https://github.com/vega/vega-lite/issues/1537):
-      // consider allowing unaggregated domain for log scale once we reimplement data sources
-      (fieldDef.type === 'quantitative' && !fieldDef.bin && scale.type !== ScaleType.LOG) ||
-      // T uses non-ordinal scale when there's no unit or when the unit is not ordinal.
-      (fieldDef.type === 'temporal' && util.contains([ScaleType.TIME, ScaleType.UTC], scale.type))
-    );
+  if (SHARED_DOMAIN_OPS.indexOf(fieldDef.aggregate) === -1) {
+    return {
+      valid: false,
+      reason: log.message.unaggregateDomainWithNonSharedDomainOp(fieldDef.aggregate)
+    };
+  }
+
+  if (fieldDef.type === 'quantitative') {
+    if (scaleType === 'log') {
+      return {
+        valid: false,
+        reason: log.message.unaggregatedDomainWithLogScale(fieldDef)
+      };
+    }
+  }
+
+  return {valid: true};
 }
 
 

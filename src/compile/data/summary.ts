@@ -2,7 +2,6 @@ import {SUMMARY} from '../../data';
 import {field, FieldDef} from '../../fielddef';
 import {keys, vals, reduce, hash, Dict, StringSet} from '../../util';
 import {VgData} from '../../vega.schema';
-import {useUnaggregatedDomain} from '../scale/domain';
 
 import {FacetModel} from './../facet';
 import {LayerModel} from './../layer';
@@ -48,14 +47,14 @@ export namespace summary {
 
           // add min/max so we can use their union as unaggregated domain
           const scale = model.scale(channel);
-          if (scale && useUnaggregatedDomain(scale, model, channel)) {
+          if (scale && scale.domain === 'unaggregated') {
             meas[fieldDef.field]['min'] = true;
             meas[fieldDef.field]['max'] = true;
           }
         }
       } else {
         addDimension(dims, fieldDef);
-      }
+      };
     });
 
     return [{

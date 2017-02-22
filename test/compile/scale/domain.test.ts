@@ -4,9 +4,10 @@
 import {assert} from 'chai';
 import {parseDomain, unionDomains} from '../../../src/compile/scale/domain';
 import {SOURCE, SUMMARY} from '../../../src/data';
-
+import * as log from '../../../src/log';
 import {parseUnitModel} from '../../util';
 import {FieldRefUnionDomain, VgDataRef} from '../../../src/vega.schema';
+import {PositionFieldDef} from '../../../src/fielddef';
 
 describe('compile/scale', () => {
   describe('parseDomain()', () => {
@@ -61,28 +62,30 @@ describe('compile/scale', () => {
     });
 
     describe('for quantitative', function() {
-      it('should return the right domain for binned Q',
-        function() {
-          const model = parseUnitModel({
-            mark: "point",
-            encoding: {
-              y: {
-                bin: {maxbins: 15},
-                field: 'origin',
-                scale: {domain: 'unaggregated'},
-                type: "quantitative"
-              }
-            }
-          });
-
-          assert.deepEqual(parseDomain(model,'y'), {
-            data: SOURCE,
-            fields: [
-              'bin_origin_start',
-              'bin_origin_end'
-            ]
-          });
+      it('should return the right domain for binned Q', log.wrap((localLogger) => {
+        const fieldDef: PositionFieldDef = {
+          bin: {maxbins: 15},
+          field: 'origin',
+          scale: {domain: 'unaggregated'},
+          type: 'quantitative'
+        };
+        const model = parseUnitModel({
+          mark: "point",
+          encoding: {
+            y: fieldDef
+          }
         });
+
+        assert.deepEqual(parseDomain(model,'y'), {
+          data: SOURCE,
+          fields: [
+            'bin_origin_start',
+            'bin_origin_end'
+          ]
+        });
+
+        assert.equal(localLogger.warns[0], log.message.unaggregateDomainHasNoEffectForRawField(fieldDef));
+      }));
 
       it('should return the unaggregated domain if requested for non-bin, non-sum Q',
         function() {
@@ -103,22 +106,24 @@ describe('compile/scale', () => {
           assert.deepEqual(_domain.fields, ['min_acceleration', 'max_acceleration']);
         });
 
-      it('should return the aggregated domain for sum Q',
-        function() {
-          const model = parseUnitModel({
-            mark: "point",
-            encoding: {
-              y: {
-                aggregate: 'sum',
-                field: 'origin',
-                scale: {domain: 'unaggregated'},
-                type: "quantitative"
-              }
+      it('should return the aggregated domain for sum Q', log.wrap((localLogger) => {
+        const model = parseUnitModel({
+          mark: "point",
+          encoding: {
+            y: {
+              aggregate: 'sum',
+              field: 'origin',
+              scale: {domain: 'unaggregated'},
+              type: "quantitative"
             }
-          });
-          const _domain = parseDomain(model,'y') as VgDataRef;
-          assert.deepEqual(_domain.data, SUMMARY);
+          }
         });
+        const _domain = parseDomain(model,'y') as VgDataRef;
+        assert.deepEqual(_domain.data, SUMMARY);
+        assert.equal(
+          localLogger.warns[0], log.message.unaggregateDomainWithNonSharedDomainOp('sum')
+        );
+      }));
 
       it('should return the right custom domain', () => {
         const model = parseUnitModel({
@@ -176,42 +181,6 @@ describe('compile/scale', () => {
     });
 
     describe('for time', function() {
-      it('should return the unaggregated domain if requested for raw T',
-        function() {
-          const model = parseUnitModel({
-            mark: "point",
-            encoding: {
-              y: {
-                field: 'origin',
-                scale: {domain: 'unaggregated'},
-                type: "temporal"
-              }
-            }
-          });
-          const _domain = parseDomain(model,'y') as FieldRefUnionDomain;
-
-          assert.deepEqual(_domain.data, SOURCE);
-        });
-
-      it('should return the unaggregated domain if requested for year T',
-        function() {
-          const model = parseUnitModel({
-            mark: "point",
-            encoding: {
-              y: {
-                field: 'origin',
-                scale: {domain: 'unaggregated'},
-                type: "temporal",
-                timeUnit: 'year'
-              }
-            }
-          });
-          const _domain = parseDomain(model,'y') as VgDataRef;
-
-          assert.deepEqual(_domain.data, SOURCE);
-          assert.operator((_domain.field as string).indexOf('year'), '>', -1);
-        });
-
       it('should return the correct domain for month T',
         function() {
           const model = parseUnitModel({
