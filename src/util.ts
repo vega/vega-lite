@@ -13,7 +13,7 @@ import {isNumber, isString, isArray} from 'vega-util';
  *
  */
 export function pick(obj: any, props: string[]) {
-  let copy = {};
+  const copy = {};
   props.forEach((prop) => {
     if (obj.hasOwnProperty(prop)) {
       copy[prop] = obj[prop];
@@ -27,7 +27,7 @@ export function pick(obj: any, props: string[]) {
  * and inherited enumerable string keyed properties of object that are not omitted.
  */
 export function omit(obj: any, props: string[]) {
-  let copy = duplicate(obj);
+  const copy = duplicate(obj);
   props.forEach((prop) => {
     delete copy[prop];
   });
@@ -58,7 +58,7 @@ export function reduce(obj: any, f: (a: any, i: any, d: any, k: any, o: any) => 
   if (obj.reduce) {
     return obj.reduce.call(thisArg, f, init);
   } else {
-    for (let k in obj) {
+    for (const k in obj) {
       if (obj.hasOwnProperty(k)) {
         init = f.call(thisArg, init, obj[k], k, obj);
       }
@@ -67,6 +67,9 @@ export function reduce(obj: any, f: (a: any, i: any, d: any, k: any, o: any) => 
   }
 }
 
+/**
+ * Returns true if any item returns true.
+ */
 export function some<T>(arr: Array<T>, f: (d: T, k?: any, i?: any) => boolean) {
   let i = 0;
   for (let k = 0; k<arr.length; k++) {
@@ -77,7 +80,10 @@ export function some<T>(arr: Array<T>, f: (d: T, k?: any, i?: any) => boolean) {
   return false;
 }
 
-export function every<T>(arr: Array<T>, f: (d: T, k?: any, i?: any) => boolean) {
+/**
+ * Returns true if all items return true.
+ */
+ export function every<T>(arr: Array<T>, f: (d: T, k?: any, i?: any) => boolean) {
   let i = 0;
   for (let k = 0; k<arr.length; k++) {
     if (!f(arr[k], k, i++)) {
@@ -91,6 +97,9 @@ export function flatten(arrays: any[]) {
   return [].concat.apply([], arrays);
 }
 
+/**
+ * recursively merges src into dest
+ */
 export function mergeDeep(dest: any, ...src: any[]) {
   for (const s of src) {
     dest = deepMerge_(dest, s);
@@ -104,7 +113,7 @@ function deepMerge_(dest: any, src: any) {
     return dest;
   }
 
-  for (let p in src) {
+  for (const p in src) {
     if (!src.hasOwnProperty(p)) {
       continue;
     }
@@ -123,8 +132,9 @@ function deepMerge_(dest: any, src: any) {
 }
 
 export function unique<T>(values: T[], f: (item: T) => string): T[] {
-  let results: any[] = [];
-  let u = {}, v: string;
+  const results: any[] = [];
+  const u = {};
+  let v: string;
   for (const val of values) {
     v = f(val);
     if (v in u) {
@@ -146,7 +156,7 @@ export type StringSet = Dict<boolean>;
  * Returns true if the two dictionaries disagree. Applies only to defined values.
  */
 export function differ<T>(dict: Dict<T>, other: Dict<T>) {
-  for (let key in dict) {
+  for (const key in dict) {
     if (dict.hasOwnProperty(key)) {
       if (other[key] && dict[key] && other[key] !== dict[key]) {
         return true;
@@ -159,8 +169,8 @@ export function differ<T>(dict: Dict<T>, other: Dict<T>) {
 export const keys = Object.keys;
 
 export function vals(x: any) {
-  let _vals: any[] = [];
-  for (let k in x) {
+  const _vals: any[] = [];
+  for (const k in x) {
     if (x.hasOwnProperty(k)) {
       _vals.push(x[k]);
     }

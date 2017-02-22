@@ -38,7 +38,7 @@ export const nullFilter: DataComponentCompiler<Dict<FieldDef>> = {
   parseUnit: parse,
 
   parseFacet: function(model: FacetModel) {
-    let nullFilterComponent = parse(model);
+    const nullFilterComponent = parse(model);
 
     const childDataComponent = model.child.component.data;
 

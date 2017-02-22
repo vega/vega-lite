@@ -49,7 +49,7 @@ export interface Component {
   mark: VgEncodeEntry[];
 }
 
-class NameMap implements NameMapInterface {
+export class NameMap implements NameMapInterface {
   private nameMap: Dict<string>;
 
   constructor() {
