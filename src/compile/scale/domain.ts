@@ -58,11 +58,11 @@ export default function domain(scale: Scale, model: Model, channel:Channel): any
 
   if (noAggDomain) {
     return {
-      data: SOURCE,
-      field: model.field(channel, {
-        // no aggregate rather than nofn as bin and timeUnit is fine
-        noAggregate: true
-      })
+      data: model.dataTable(),
+      fields: [
+        model.field(channel, {aggregate: 'min'}),
+        model.field(channel, {aggregate: 'max'})
+      ]
     };
   } else if (fieldDef.bin) { // bin
     if (hasDiscreteDomain(scale.type)) {
@@ -140,7 +140,7 @@ export function domainSort(model: Model, channel: Channel, scaleType: ScaleType)
  * 2. Aggregation function is not `count` or `sum`
  * 3. The scale is quantitative or time scale.
  */
-function useUnaggregatedDomain(scale: Scale, model: Model, channel: Channel) {
+export function useUnaggregatedDomain(scale: Scale, model: Model, channel: Channel) {
   const fieldDef = model.fieldDef(channel);
 
   return scale.domain === 'unaggregated' &&

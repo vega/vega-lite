@@ -55,6 +55,23 @@ describe('compile/data/summary', function () {
         measures: {Displacement: {mean: true}}
       }]);
     });
+
+    it('should add min and max if needed for unaggregated scale domain', function() {
+      const model = parseUnitModel({
+        mark: "point",
+        encoding: {
+          'x': {'aggregate': 'mean', 'field': 'Displacement', 'type': "quantitative", scale: {domain: 'unaggregated'}},
+        }
+      });
+      model.component.data = {} as DataComponent;
+      model.component.data.summary = summary.parseUnit(model);
+      assert.deepEqual(model.component.data.summary, [{
+        name: 'summary',
+        // source will be added in assemble step
+        dimensions: {},
+        measures: {Displacement: {mean: true, min: true, max: true}}
+      }]);
+    });
   });
 
   describe('parseLayer', function() {

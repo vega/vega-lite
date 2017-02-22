@@ -123,8 +123,6 @@ export type FacetFieldDef = PositionFieldDef;
 export interface FieldRefOption {
   /** exclude bin, aggregate, timeUnit */
   nofn?: boolean;
-  /** exclude aggregation function */
-  noAggregate?: boolean;
   /** Wrap the field inside datum[...] per Vega convention */
   datum?: boolean;
   /** prepend fn with custom function prefix */
@@ -133,6 +131,8 @@ export interface FieldRefOption {
   binSuffix?: 'start' | 'end' | 'range';
   /** append suffix to the field ref (general) */
   suffix?: string;
+  /** Overrride which aggregate to use. Needed for unaggregated domain. */
+  aggregate?: AggregateOp;
 }
 
 export function field(fieldDef: FieldDef, opt: FieldRefOption = {}) {
@@ -149,8 +149,8 @@ export function field(fieldDef: FieldDef, opt: FieldRefOption = {}) {
       if (fieldDef.bin) {
         fn = 'bin';
         suffix = opt.binSuffix;
-      } else if (!opt.noAggregate && fieldDef.aggregate) {
-        fn = String(fieldDef.aggregate);
+      } else if (fieldDef.aggregate) {
+        fn = String(opt.aggregate || fieldDef.aggregate);
       } else if (fieldDef.timeUnit) {
         fn = String(fieldDef.timeUnit);
       }

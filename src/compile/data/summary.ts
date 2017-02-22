@@ -1,8 +1,8 @@
-// import {AggregateOp} from '../../aggregate';
 import {SUMMARY} from '../../data';
 import {field, FieldDef} from '../../fielddef';
 import {keys, vals, reduce, hash, Dict, StringSet} from '../../util';
 import {VgData} from '../../vega.schema';
+import {useUnaggregatedDomain} from '../scale/domain';
 
 import {FacetModel} from './../facet';
 import {LayerModel} from './../layer';
@@ -30,12 +30,12 @@ export namespace summary {
 
   export function parseUnit(model: Model): SummaryComponent[] {
     /* string set for dimensions */
-    let dims: StringSet = {};
+    const dims: StringSet = {};
 
     /* dictionary mapping field name => dict set of aggregation functions */
-    let meas: Dict<StringSet> = {};
+    const meas: Dict<StringSet> = {};
 
-    model.forEachFieldDef(function(fieldDef: FieldDef) {
+    model.forEachFieldDef(function(fieldDef, channel) {
       if (fieldDef.aggregate) {
         if (fieldDef.aggregate === 'count') {
           meas['*'] = meas['*'] || {};
@@ -45,6 +45,13 @@ export namespace summary {
         } else {
           meas[fieldDef.field] = meas[fieldDef.field] || {};
           meas[fieldDef.field][fieldDef.aggregate] = true;
+
+          // add min/max so we can use their union as unaggregated domain
+          const scale = model.scale(channel);
+          if (scale && useUnaggregatedDomain(scale, model, channel)) {
+            meas[fieldDef.field]['min'] = true;
+            meas[fieldDef.field]['max'] = true;
+          }
         }
       } else {
         addDimension(dims, fieldDef);
