@@ -6,6 +6,7 @@ import {ScaleFieldDef, FieldDef} from '../../fielddef';
 import {Mark} from '../../mark';
 import {Scale, ScaleConfig, scaleTypeSupportProperty, channelScalePropertyIncompatability} from '../../scale';
 
+import {initDomain} from './domain';
 import rangeMixins from './range';
 import * as rules from './rules';
 import scaleType from './type';
@@ -60,17 +61,12 @@ export default function init(
         log.warn(log.message.scalePropertyNotWorkWithScaleType(scale.type, property, channel));
       } else if (channelIncompatability) { // channel
         log.warn(channelIncompatability);
-      } else {
-        scale[property] = specifiedValue;
       }
-      return;
-    } else {
-      // If there is no property specified, check if we need to determine default value.
-      if (supportedByScaleType && channelIncompatability === undefined) {
-        const value = getDefaultValue(property, scale, channel, fieldDef, config.scale);
-        if (value !== undefined) { // use the default value
-          scale[property] = value;
-        }
+    }
+    if (supportedByScaleType && channelIncompatability === undefined) {
+      const value = getValue(specifiedValue, property, scale, channel, fieldDef, config.scale);
+      if (value !== undefined) { // use the default value
+        scale[property] = value;
       }
     }
   });
@@ -84,7 +80,21 @@ export default function init(
   );
 }
 
-function getDefaultValue(property: string, scale: Scale, channel: Channel, fieldDef: FieldDef, scaleConfig: ScaleConfig) {
+function getValue(specifiedValue: any, property: keyof Scale, scale: Scale, channel: Channel, fieldDef: FieldDef, scaleConfig: ScaleConfig) {
+  // For domain, we might override specified value
+  if (property === 'domain') {
+    return initDomain(specifiedValue, fieldDef, scale.type, scaleConfig);
+  }
+
+  // Other properties, no overriding default values
+  if (specifiedValue !== undefined) {
+    return specifiedValue;
+  }
+  return getDefaultValue(property, scale, channel, fieldDef, scaleConfig);
+}
+
+function getDefaultValue(property: keyof Scale, scale: Scale, channel: Channel, fieldDef: FieldDef, scaleConfig: ScaleConfig) {
+
   // If we have default rule-base, determine default value first
   switch (property) {
     case 'nice':
@@ -99,10 +109,6 @@ function getDefaultValue(property: string, scale: Scale, channel: Channel, field
       return rules.round(channel, scaleConfig);
     case 'zero':
       return rules.zero(scale, channel, fieldDef);
-    case 'domain':
-      if (scaleConfig.useUnaggregatedDomain) {
-        return 'unaggregated';
-      }
   }
   // Otherwise, use scale config
   return scaleConfig[property];

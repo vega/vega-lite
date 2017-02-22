@@ -158,7 +158,9 @@ export interface ExtendedScheme {
   count?: number;
 }
 
+export type Domain = number[] | string[] | DateTime[] | 'unaggregated';
 export type Scheme = string | ExtendedScheme;
+
 export type Range = number[] | string[] | string;
 
 export function isExtendedScheme(scheme: string | ExtendedScheme): scheme is ExtendedScheme {
@@ -173,7 +175,7 @@ export interface Scale {
    * If the domain is 'unaggregated', we use the source data range before aggregation as scale domain instead of aggregated data for aggregate axis.
    * This property only works with aggregate functions that produce values within the raw data domain (`"mean"`, `"average"`, `"median"`, `"q1"`, `"q3"`, `"min"`, `"max"`). For other aggregations that produce values outside of the raw data domain (e.g. `"count"`, `"sum"`), this property is ignored.
    */
-  domain?: number[] | string[] | DateTime[] | 'unaggregated';
+  domain?: Domain;
 
   /**
    * The range of the scale, representing the set of visual values. For numeric values, the range can take the form of a two-element array with minimum and maximum values. For ordinal or quantized data, the range may by an array of desired output values, which are mapped to elements in the specified domain.
@@ -328,7 +330,7 @@ export function channelScalePropertyIncompatability(channel: Channel, propName: 
     case 'interpolate':
     case 'scheme':
       if (channel !== 'color') {
-        return log.message.CANNOT_USE_SCALE_PROPERTY_WITH_NON_COLOR(channel);
+        return log.message.cannotUseScalePropertyWithNonColor(channel);
       }
       return undefined;
     case 'type':

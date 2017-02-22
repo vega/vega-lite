@@ -146,8 +146,20 @@ export namespace message {
   // SCALE
   export const CANNOT_UNION_CUSTOM_DOMAIN_WITH_FIELD_DOMAIN = 'custom domain scale cannot be unioned with default field-based domain';
 
-  export function CANNOT_USE_SCALE_PROPERTY_WITH_NON_COLOR(prop: string) {
+  export function cannotUseScalePropertyWithNonColor(prop: string) {
     return 'Cannot use ' + prop + ' with non-color channel.';
+  }
+
+  export function unaggregateDomainHasNoEffectForRawField(fieldDef: FieldDef) {
+    return `Using unaggregated domain with raw field has no effect (${JSON.stringify(fieldDef)}).`;
+  }
+
+  export function unaggregateDomainWithNonSharedDomainOp(aggregate: AggregateOp) {
+    return `Unaggregated domain not applicable for ${aggregate} since it produces values outside the origin domain of the source data.`;
+  }
+
+  export function unaggregatedDomainWithLogScale(fieldDef: FieldDef) {
+    return `Unaggregated domain is currently unsupported for log scale (${JSON.stringify(fieldDef)}).`;
   }
 
   export const CANNOT_USE_RANGE_WITH_POSITION =
