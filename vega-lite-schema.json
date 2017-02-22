@@ -1631,6 +1631,7 @@
         },
         "Legend": {
             "additionalProperties": false,
+            "description": "Properties of a legend or boolean flag for determining whether to show it.",
             "properties": {
                 "encode": {
                     "$ref": "#/definitions/VgLegendEncode",
@@ -3611,6 +3612,7 @@
         },
         "Transform": {
             "additionalProperties": false,
+            "description": "Top-level transform object.",
             "properties": {
                 "calculate": {
                     "description": "Calculate new field(s) using the provided expresssion(s). Calculation are applied before filter.",

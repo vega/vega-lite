@@ -1,12 +1,15 @@
+---
+---
 <!DOCTYPE html>
 <head>
   <title>Vega Lite Bar Chart</title>
   <meta charset="utf-8">
 
   <script src="https://d3js.org/d3.v3.min.js"></script>
-  <script src="https://vega.github.io/vega/vega.js"></script>
-  <script src="https://vega.github.io/vega-lite/vega-lite.js"></script>
-<script src="https//cdnjs.cloudflare.com/ajax/libs/vega-embed/3.0.0-beta.0/vega-embed.js" charset="utf-8"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/vega/{{ site.data.versions.vega }}/vega.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/vega-lite/{{ site.data.versions.vega-lite }}/vega-lite.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/vega-embed/{{ site.data.versions.vega-embed }}/vega-embed.js" charset="utf-8"></script>
+  
   <style media="screen">
     /* Add space between vega-embed links  */
     .vega-actions a {
@@ -41,8 +44,14 @@
       }
     }
   };
+
+  // optional argument passed to vega-embed to specify vega-lite spec. More info at https://github.com/vega/vega-embed
+  var opt = {
+    "mode": "vega-lite"
+  };
+
   // Embed the visualization in the container with id `vis`
-  vg.embed("#vis", vlSpec, function(error, result) {
+  vega.embed("#vis", vlSpec, opt, function(error, result) {
     // Callback receiving the View instance and parsed Vega spec
     // result.view is the View, which resides under the '#vis' element
   });
