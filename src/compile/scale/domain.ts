@@ -15,7 +15,7 @@ import {Model} from '../model';
 export default function domain(scale: Scale, model: Model, channel:Channel): any[] | VgDataRef | FieldRefUnionDomain {
   const fieldDef = model.fieldDef(channel);
 
-  if (scale.domain) { // explicit value
+  if (scale.domain && scale.domain !== 'unaggregated') { // explicit value
     if (isDateTime(scale.domain[0])) {
       return (scale.domain as DateTime[]).map((dt) => {
         return timestamp(dt, true);
@@ -51,12 +51,12 @@ export default function domain(scale: Scale, model: Model, channel:Channel): any
     };
   }
 
-  // FIXME refactor _useRawDomain's signature
-  const useRawDomain = _useRawDomain(scale, model, channel);
+  // FIXME refactor signature
+  const noAggDomain = useUnaggregatedDomain(scale, model, channel);
 
   const sort = domainSort(model, channel, scale.type);
 
-  if (useRawDomain) { // useRawDomain - only Q/T
+  if (noAggDomain) {
     return {
       data: SOURCE,
       field: model.field(channel, {
@@ -134,16 +134,16 @@ export function domainSort(model: Model, channel: Channel, scaleType: ScaleType)
 }
 
 /**
- * Determine if useRawDomain should be activated for this scale.
+ * Determine if scale should use unaggregated domain.
  * @return {Boolean} Returns true if all of the following conditons applies:
- * 1. `useRawDomain` is enabled either through scale or config
+ * 1. `scale.domain` is `unaggregated`
  * 2. Aggregation function is not `count` or `sum`
  * 3. The scale is quantitative or time scale.
  */
-function _useRawDomain (scale: Scale, model: Model, channel: Channel) {
+function useUnaggregatedDomain(scale: Scale, model: Model, channel: Channel) {
   const fieldDef = model.fieldDef(channel);
 
-  return scale.useRawDomain && //  if useRawDomain is enabled
+  return scale.domain === 'unaggregated' &&
     // only applied to aggregate table
     fieldDef.aggregate &&
     // only activated if used with aggregate functions that produces values ranging in the domain of the source data
@@ -154,9 +154,9 @@ function _useRawDomain (scale: Scale, model: Model, channel: Channel) {
       // but the summary table has fewer values, therefore binned fields draw
       // domain values from the summary table.
       // Meanwhile, we rely on non-positive filter inside summary data source, thus
-      // we can't use raw domain to feed into log scale
+      // we can't use unaggregated domain to feed into log scale
       // FIXME(https://github.com/vega/vega-lite/issues/1537):
-      // consider allowing useRawDomain for log scale once we reimplement data sources
+      // consider allowing unaggregated domain for log scale once we reimplement data sources
       (fieldDef.type === 'quantitative' && !fieldDef.bin && scale.type !== ScaleType.LOG) ||
       // T uses non-ordinal scale when there's no unit or when the unit is not ordinal.
       (fieldDef.type === 'temporal' && util.contains([ScaleType.TIME, ScaleType.UTC], scale.type))

@@ -24,9 +24,7 @@ export const NON_TYPE_RANGE_SCALE_PROPERTIES: (keyof Scale)[] = [
   'exponent', 'zero', // zero depends on domain
   'interpolate',
   // ordinal
-  'padding', 'paddingInner', 'paddingOuter', // padding
-
-  'useRawDomain'
+  'padding', 'paddingInner', 'paddingOuter' // padding
 ];
 
 /**
@@ -40,9 +38,9 @@ export const NON_TYPE_RANGE_SCALE_PROPERTIES: (keyof Scale)[] = [
 export default function init(
     channel: Channel, fieldDef: ScaleFieldDef, config: Config,
     mark: Mark | undefined, topLevelSize: number | undefined, xyRangeSteps: number[]): Scale {
-  let specifiedScale = (fieldDef || {}).scale || {};
+  const specifiedScale = (fieldDef || {}).scale || {};
 
-  let scale: Scale = {
+  const scale: Scale = {
     type: scaleType(
       specifiedScale.type, fieldDef.type, channel, fieldDef.timeUnit, mark,
       topLevelSize !== undefined, specifiedScale.rangeStep, config.scale
@@ -53,7 +51,7 @@ export default function init(
   NON_TYPE_RANGE_SCALE_PROPERTIES.forEach(function(property) {
     const specifiedValue = specifiedScale[property];
 
-    let supportedByScaleType = scaleTypeSupportProperty(scale.type, property);
+    const supportedByScaleType = scaleTypeSupportProperty(scale.type, property);
     const channelIncompatability = channelScalePropertyIncompatability(channel, property);
 
     if (specifiedValue !== undefined) {
@@ -101,6 +99,10 @@ function getDefaultValue(property: string, scale: Scale, channel: Channel, field
       return rules.round(channel, scaleConfig);
     case 'zero':
       return rules.zero(scale, channel, fieldDef);
+    case 'domain':
+      if (scaleConfig.useUnaggregatedDomain) {
+        return 'unaggregated';
+      }
   }
   // Otherwise, use scale config
   return scaleConfig[property];

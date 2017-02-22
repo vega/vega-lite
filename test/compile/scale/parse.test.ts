@@ -11,10 +11,10 @@ import {SCALE_PROPERTIES} from '../../../src/scale';;
 import {toSet, without} from '../../../src/util';
 
 describe('src/compile', function() {
-  it('NON_TYPE_RANGE_SCALE_PROPERTIES should be SCALE_PROPERTIES wihtout type, domain, useRawDomain, and range properties', () => {
+  it('NON_TYPE_RANGE_SCALE_PROPERTIES should be SCALE_PROPERTIES wihtout type, domain, and range properties', () => {
     assert.deepEqual(
       toSet(NON_TYPE_DOMAIN_RANGE_VEGA_SCALE_PROPERTIES),
-      toSet(without(SCALE_PROPERTIES, ['type', 'domain', 'useRawDomain', 'range', 'rangeStep', 'scheme']))
+      toSet(without(SCALE_PROPERTIES, ['type', 'domain', 'range', 'rangeStep', 'scheme']))
     );
   });
 
