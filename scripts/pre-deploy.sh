@@ -12,7 +12,12 @@ if [ "$(git rev-parse --abbrev-ref HEAD)" != "master" ]; then
   exit 1
 fi
 
-# 0.2 Check if all files are committed
+# 0.2 Build toc and versions file to make sure they are up to date
+
+npm run build:toc
+npm run build:versions
+
+# 0.3 Check if all files are committed
 if [ -z "$(git status --porcelain)" ]; then
   echo "All tracked files are committed.  Publishing on npm and bower. \n"
 else
@@ -21,7 +26,7 @@ else
   exit 1
 fi
 
-# 0.3 Check if the Vega's schema repository exists in the same parent directory (as a sibling directory)
+# 0.4 Check if the Vega's schema repository exists in the same parent directory (as a sibling directory)
 
 if ! [ -d "../schema" ]; then
   echo "${RED} Vega-Lite schema cannot be updated if the vega/schema repository does not exist in the same parent directory. "
