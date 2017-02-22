@@ -127,10 +127,10 @@ export interface ScaleConfig {
   facetSpacing?: number;
 
   /**
-   * Uses the source data range as scale domain instead of aggregated data for aggregate axis.
-   * This property only works with aggregate functions that produce values within the raw data domain (`"mean"`, `"average"`, `"stdev"`, `"stdevp"`, `"median"`, `"q1"`, `"q3"`, `"min"`, `"max"`). For other aggregations that produce values outside of the raw data domain (e.g. `"count"`, `"sum"`), this property is ignored.
+   * Use the source data range before aggregation as scale domain instead of aggregated data for aggregate axis.
+   * This property only works with aggregate functions that produce values within the raw data domain (`"mean"`, `"average"`, `"median"`, `"q1"`, `"q3"`, `"min"`, `"max"`). For other aggregations that produce values outside of the raw data domain (e.g. `"count"`, `"sum"`), this property is ignored.
    */
-  useRawDomain?: boolean;
+  useUnaggregatedDomain?: boolean;
 
   // nice should depends on type (quantitative or temporal), so
   // let's not make a config.
@@ -142,8 +142,7 @@ export const defaultScaleConfig = {
   rangeStep: 21,
   pointPadding: 0.5,
   bandPaddingInner: 0.1,
-  facetSpacing: 16,
-  useRawDomain: false,
+  facetSpacing: 16
 };
 
 export interface ExtendedScheme {
@@ -170,8 +169,11 @@ export interface Scale {
   type?: ScaleType;
   /**
    * The domain of the scale, representing the set of data values. For quantitative data, this can take the form of a two-element array with minimum and maximum values. For ordinal/categorical data, this may be an array of valid input values.
+   *
+   * If the domain is 'unaggregated', we use the source data range before aggregation as scale domain instead of aggregated data for aggregate axis.
+   * This property only works with aggregate functions that produce values within the raw data domain (`"mean"`, `"average"`, `"median"`, `"q1"`, `"q3"`, `"min"`, `"max"`). For other aggregations that produce values outside of the raw data domain (e.g. `"count"`, `"sum"`), this property is ignored.
    */
-  domain?: number[] | string[] | DateTime[];
+  domain?: number[] | string[] | DateTime[] | 'unaggregated';
 
   /**
    * The range of the scale, representing the set of visual values. For numeric values, the range can take the form of a two-element array with minimum and maximum values. For ordinal or quantized data, the range may by an array of desired output values, which are mapped to elements in the specified domain.
@@ -253,20 +255,11 @@ export interface Scale {
 
   // FIXME: Add description
   interpolate?: 'rgb'| 'lab' | 'hcl' | 'hsl' | 'hsl-long' | 'hcl-long' | 'cubehelix' | 'cubehelix-long';
-
-  // Vega-Lite only
-  /**
-   * Uses the source data range as scale domain instead of aggregated data for aggregate axis.
-   * This property only works with aggregate functions that produce values within the raw data domain (`"mean"`, `"average"`, `"stdev"`, `"stdevp"`, `"median"`, `"q1"`, `"q3"`, `"min"`, `"max"`). For other aggregations that produce values outside of the raw data domain (e.g. `"count"`, `"sum"`), this property is ignored.
-   */
-  useRawDomain?: boolean;
 }
 
 export const SCALE_PROPERTIES:(keyof Scale)[]= [
   'type', 'domain', 'range', 'round', 'rangeStep', 'scheme', 'padding', 'paddingInner', 'paddingOuter', 'clamp', 'nice',
-  'exponent', 'zero', 'interpolate',
-  // FIXME: determine if 'useRawDomain' should really be included here
-  'useRawDomain'
+  'exponent', 'zero', 'interpolate'
 ];
 
 export function scaleTypeSupportProperty(scaleType: ScaleType, propName: keyof Scale) {
@@ -295,10 +288,6 @@ export function scaleTypeSupportProperty(scaleType: ScaleType, propName: keyof S
     case 'zero':
       // TODO: what about quantize, threshold?
       return !hasDiscreteDomain(scaleType) && !contains(['log', 'time', 'utc'], scaleType);
-
-    case 'useRawDomain':
-      // TODO: 'quantize', 'quantile', 'threshold'
-      return isContinuousToContinuous(scaleType) || contains(['quantize', 'quantile', 'threshold'], scaleType);
   }
   /* istanbul ignore next: should never reach here*/
   throw new Error(`Invalid scale property ${propName}.`);
@@ -349,7 +338,6 @@ export function channelScalePropertyIncompatability(channel: Channel, propName: 
     case 'exponent':
     case 'nice':
     case 'zero':
-    case 'useRawDomain':
       // These channel do not have strict requirement
       return undefined; // GOOD!
   }

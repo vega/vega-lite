@@ -41,7 +41,7 @@ describe('compile/scale', () => {
               y: {
                 bin: {maxbins: 15},
                 field: 'origin',
-                scale: {useRawDomain: true},
+                scale: {domain: 'unaggregated'},
                 type: "quantitative"
               }
             }
@@ -57,7 +57,7 @@ describe('compile/scale', () => {
           });
         });
 
-      it('should return the raw domain if useRawDomain is true for non-bin, non-sum Q',
+      it('should return the unaggregated domain if requested for non-bin, non-sum Q',
         function() {
           const model = parseUnitModel({
             mark: "point",
@@ -65,7 +65,7 @@ describe('compile/scale', () => {
               y: {
                 aggregate: 'mean',
                 field: 'origin',
-                scale: {useRawDomain: true},
+                scale: {domain: 'unaggregated'},
                 type: "quantitative"
               }
             }
@@ -75,7 +75,7 @@ describe('compile/scale', () => {
           assert.deepEqual(_domain.data, SOURCE);
         });
 
-      it('should return the aggregate domain for sum Q',
+      it('should return the aggregated domain for sum Q',
         function() {
           const model = parseUnitModel({
             mark: "point",
@@ -83,7 +83,7 @@ describe('compile/scale', () => {
               y: {
                 aggregate: 'sum',
                 field: 'origin',
-                scale: {useRawDomain: true},
+                scale: {domain: 'unaggregated'},
                 type: "quantitative"
               }
             }
@@ -109,33 +109,53 @@ describe('compile/scale', () => {
         assert.deepEqual(_domain, [0, 200]);
       });
 
-      it('should return the aggregated domain if useRawDomain is false', function() {
-          const model = parseUnitModel({
-            mark: "point",
-            encoding: {
-              y: {
-                aggregate: 'min',
-                field: 'origin',
-                scale: {useRawDomain: false},
-                type: "quantitative"
-              }
+      it('should return the aggregated domain if we do not overrride it', function() {
+        const model = parseUnitModel({
+          mark: "point",
+          encoding: {
+            y: {
+              aggregate: 'min',
+              field: 'origin',
+              type: "quantitative"
             }
-          });
-          const _domain = domain(model.scale('y'), model, 'y') as VgDataRef;
-
-          assert.deepEqual(_domain.data, SUMMARY);
+          }
         });
+        const _domain = domain(model.scale('y'), model, 'y') as VgDataRef;
+
+        assert.deepEqual(_domain.data, SUMMARY);
+      });
+
+      it('should return the aggregated domain if specified in config', function() {
+        const model = parseUnitModel({
+          mark: "point",
+          encoding: {
+            y: {
+              aggregate: 'min',
+              field: 'origin',
+              type: "quantitative"
+            }
+          },
+          config: {
+            scale: {
+              useUnaggregatedDomain: true
+            }
+          }
+        });
+        const _domain = domain(model.scale('y'), model, 'y') as VgDataRef;
+
+        assert.deepEqual(_domain.data, SOURCE);
+      });
     });
 
     describe('for time', function() {
-      it('should return the raw domain if useRawDomain is true for raw T',
+      it('should return the unaggregated domain if requested for raw T',
         function() {
           const model = parseUnitModel({
             mark: "point",
             encoding: {
               y: {
                 field: 'origin',
-                scale: {useRawDomain: true},
+                scale: {domain: 'unaggregated'},
                 type: "temporal"
               }
             }
@@ -145,14 +165,14 @@ describe('compile/scale', () => {
           assert.deepEqual(_domain.data, SOURCE);
         });
 
-      it('should return the raw domain if useRawDomain is true for year T',
+      it('should return the unaggregated domain if requested for year T',
         function() {
           const model = parseUnitModel({
             mark: "point",
             encoding: {
               y: {
                 field: 'origin',
-                scale: {useRawDomain: true},
+                scale: {domain: 'unaggregated'},
                 type: "temporal",
                 timeUnit: 'year'
               }
