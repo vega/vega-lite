@@ -12,7 +12,28 @@ import * as util from '../../util';
 
 import {Model} from '../model';
 
-export default function domain(scale: Scale, model: Model, channel:Channel): any[] | VgDataRef | FieldRefUnionDomain {
+export function parseDomain(model: Model, channel: Channel): VgDomain {
+  const scale = model.scale(channel);
+
+
+  // If channel is either X or Y then union them with X2 & Y2 if they exist
+  if (channel === 'x' && model.channelHasField('x2')) {
+    if (model.channelHasField('x')) {
+      return unionDomains(parseSingleChannelDomain(scale, model, 'x'), parseSingleChannelDomain(scale, model, 'x2'));
+    } else {
+      return parseSingleChannelDomain(scale, model, 'x2');
+    }
+  } else if (channel === 'y' && model.channelHasField('y2')) {
+    if (model.channelHasField('y')) {
+      return unionDomains(parseSingleChannelDomain(scale, model, 'y'), parseSingleChannelDomain(scale, model, 'y2'));
+    } else {
+      return parseSingleChannelDomain(scale, model, 'y2');
+    }
+  }
+  return parseSingleChannelDomain(scale, model, channel);
+}
+
+export function parseSingleChannelDomain(scale: Scale, model: Model, channel:Channel): any[] | VgDataRef | FieldRefUnionDomain {
   const fieldDef = model.fieldDef(channel);
 
   if (scale.domain && scale.domain !== 'unaggregated') { // explicit value
