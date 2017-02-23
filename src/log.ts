@@ -147,7 +147,7 @@ export namespace message {
   export const CANNOT_UNION_CUSTOM_DOMAIN_WITH_FIELD_DOMAIN = 'custom domain scale cannot be unioned with default field-based domain';
 
   export function cannotUseScalePropertyWithNonColor(prop: string) {
-    return 'Cannot use ' + prop + ' with non-color channel.';
+    return `Cannot use ${prop} with non-color channel.`;
   }
 
   export function unaggregateDomainHasNoEffectForRawField(fieldDef: FieldDef) {
