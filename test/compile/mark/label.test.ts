@@ -38,7 +38,7 @@ describe('Mark: Label', function () {
         },
         {
           "mark": "label",
-          "data": {"ref": "myBar" },
+          "data": {"ref": "myBar"},
           "encoding": {
             "text": {"field": "b"},
             "color": {"value": "auto"},
