@@ -1660,10 +1660,6 @@
                 "shape": {
                     "type": "string"
                 },
-                "shortTimeLabels": {
-                    "description": "Whether month names and weekday names should be abbreviated.",
-                    "type": "boolean"
-                },
                 "tickCount": {
                     "description": "The number of ticks for legend.",
                     "type": "number"
@@ -1720,6 +1716,7 @@
                 },
                 "gradientHeight": {
                     "description": "The height of the gradient, in pixels.",
+                    "minimum": 0,
                     "type": "number"
                 },
                 "gradientStrokeColor": {
@@ -1728,10 +1725,12 @@
                 },
                 "gradientStrokeWidth": {
                     "description": "The width of the gradient stroke, in pixels.",
+                    "minimum": 0,
                     "type": "number"
                 },
                 "gradientWidth": {
                     "description": "The width of the gradient, in pixels.",
+                    "minimum": 0,
                     "type": "number"
                 },
                 "labelAlign": {
@@ -1752,10 +1751,12 @@
                 },
                 "labelFontSize": {
                     "description": "The font size of legend label.",
+                    "minimum": 0,
                     "type": "number"
                 },
                 "labelOffset": {
                     "description": "The offset of the legend label.",
+                    "minimum": 0,
                     "type": "number"
                 },
                 "offset": {
@@ -1780,6 +1781,7 @@
                 },
                 "symbolSize": {
                     "description": "The size of the legend symbol, in pixels.",
+                    "minimum": 0,
                     "type": "number"
                 },
                 "symbolStrokeWidth": {

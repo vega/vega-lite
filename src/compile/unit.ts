@@ -7,7 +7,7 @@ import {SOURCE, SUMMARY} from '../data';
 import {Encoding, dropInvalidFieldDefs} from '../encoding';
 import * as vlEncoding from '../encoding'; // TODO: remove
 import {FieldDef, FieldRefOption, field, isFieldDef} from '../fielddef';
-import {Legend, VlOnlyLegendBase ,VL_ONLY_LEGEND_PROPERTIES} from '../legend';
+import {Legend} from '../legend';
 import {Mark, MarkDef, TEXT as TEXT_MARK, FILL_STROKE_CONFIG, isMarkDef} from '../mark';
 import {Scale, ScaleConfig, hasDiscreteDomain} from '../scale';
 import {UnitSpec} from '../spec';
@@ -214,15 +214,8 @@ export class UnitModel extends Model {
       const channelDef = encoding[channel];
       if (isFieldDef(channelDef)) {
         const legendSpec = channelDef.legend;
-        // We no longer support false in the schema, but we keep false here for backward compatability.
-        let vlLegendBase: VlOnlyLegendBase = {};
-        VL_ONLY_LEGEND_PROPERTIES.forEach(function(property) {
-          if (config.legend[property] !== undefined) {
-            vlLegendBase[property] = config.legend[property];
-          }
-        });
         if (legendSpec !== null && legendSpec !== false) {
-          _legend[channel] = {...vlLegendBase, ...legendSpec};
+          _legend[channel] = {...legendSpec};
         }
       }
       return _legend;

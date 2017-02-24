@@ -1,7 +1,12 @@
 import {DateTime} from './datetime';
 import {VgLegendEncode, VgLegendBase, VgLegendConfig} from './vega.schema';
 
-export interface LegendConfig extends VgLegendConfig, VlOnlyLegendBase {}
+export interface LegendConfig extends VgLegendConfig, VlOnlyLegendBase {
+  /**
+   * Whether month names and weekday names should be abbreviated.
+   */
+  shortTimeLabels?: boolean;
+}
 
 /**
  * Properties of a legend or boolean flag for determining whether to show it.
@@ -49,10 +54,7 @@ export interface Legend extends VgLegendBase, VlOnlyLegendBase {
 }
 
 export interface VlOnlyLegendBase {
-  /**
-   * Whether month names and weekday names should be abbreviated.
-   */
-  shortTimeLabels?: boolean;
+
 }
 
 export const defaultLegendConfig: LegendConfig = {
@@ -60,5 +62,3 @@ export const defaultLegendConfig: LegendConfig = {
 };
 
 export const LEGEND_PROPERTIES:(keyof Legend)[] = ['entryPadding', 'format', 'offset', 'orient', 'tickCount', 'title', 'type', 'values' ,'zindex'];
-
-export const VL_ONLY_LEGEND_PROPERTIES:(keyof VlOnlyLegendBase)[] = ['shortTimeLabels'];

@@ -404,19 +404,19 @@ export interface VgLegendConfig extends VgLegendBase {
 
   /**
    * The width of the gradient stroke, in pixels.
-   * @mimimum 0
+   * @minimum 0
    */
   gradientStrokeWidth?: number;
 
   /**
    * The height of the gradient, in pixels.
-   * @mimimum 0
+   * @minimum 0
    */
   gradientHeight?: number;
 
   /**
    * The width of the gradient, in pixels.
-   * @mimimum 0
+   * @minimum 0
    */
   gradientWidth?: number;
 
@@ -443,13 +443,13 @@ export interface VgLegendConfig extends VgLegendBase {
 
   /**
    * The font size of legend label.
-   * @mimimum 0
+   * @minimum 0
    */
   labelFontSize?: number;
 
   /**
    * The offset of the legend label.
-   * @mimimum 0
+   * @minimum 0
    */
   labelOffset?: number;
 
@@ -467,7 +467,7 @@ export interface VgLegendConfig extends VgLegendBase {
 
   /**
    * The size of the legend symbol, in pixels.
-   * @mimimum 0
+   * @minimum 0
    */
   symbolSize?: number;
 

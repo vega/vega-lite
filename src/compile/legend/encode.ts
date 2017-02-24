@@ -86,10 +86,7 @@ export function symbols(fieldDef: FieldDef, symbolsSpec: any, model: UnitModel, 
   const shapeDef = model.encoding.shape;
   if (channel !== SHAPE) {
     if (isValueDef(shapeDef)) {
-      value = {value: shapeDef.value};
-    }
-    if (value !== undefined) {
-      symbols.shape = value;
+      symbols.shape = {value: shapeDef.value};
     }
   }
 
