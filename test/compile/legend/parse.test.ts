@@ -19,16 +19,5 @@ describe('compile/legend', function() {
       assert.isObject(def);
       assert.equal(def.title, "a");
     });
-
-    it('should produce correct encode block if needed', () => {
-      const model = parseUnitModel({
-        mark: "point",
-        encoding: {
-          color: {field: "a", type: "quantitative", "legend": {"labelColor": "#0099ff"}}
-        }
-      });
-      const def = legendParse.parseLegend(model, COLOR);
-      assert.equal(def.encode.labels.update.fill.value, '#0099ff');
-    });
   });
 });

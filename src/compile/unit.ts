@@ -214,11 +214,8 @@ export class UnitModel extends Model {
       const channelDef = encoding[channel];
       if (isFieldDef(channelDef)) {
         const legendSpec = channelDef.legend;
-        // We no longer support false in the schema, but we keep false here for backward compatability.
         if (legendSpec !== null && legendSpec !== false) {
-          _legend[channel] = extend({}, config.legend,
-            legendSpec === true ? {} : legendSpec ||  {}
-          );
+          _legend[channel] = {...legendSpec};
         }
       }
       return _legend;

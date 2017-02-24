@@ -1738,50 +1738,6 @@
                     "description": "An optional formatting pattern for legend labels. Vega uses D3\\'s format pattern.",
                     "type": "string"
                 },
-                "gradientHeight": {
-                    "description": "The height of the gradient, in pixels.",
-                    "type": "number"
-                },
-                "gradientStrokeColor": {
-                    "description": "The color of the gradient stroke, can be in hex color code or regular color name.",
-                    "type": "string"
-                },
-                "gradientStrokeWidth": {
-                    "description": "The width of the gradient stroke, in pixels.",
-                    "type": "number"
-                },
-                "gradientWidth": {
-                    "description": "The width of the gradient, in pixels.",
-                    "type": "number"
-                },
-                "labelAlign": {
-                    "description": "The alignment of the legend label, can be left, middle or right.",
-                    "type": "string"
-                },
-                "labelBaseline": {
-                    "description": "The position of the baseline of legend label, can be top, middle or bottom.",
-                    "type": "string"
-                },
-                "labelColor": {
-                    "description": "The color of the legend label, can be in hex color code or regular color name.",
-                    "type": "string"
-                },
-                "labelFont": {
-                    "description": "The font of the legend label.",
-                    "type": "string"
-                },
-                "labelFontSize": {
-                    "description": "The font size of legend label.",
-                    "type": "number"
-                },
-                "labelOffset": {
-                    "description": "The offset of the legend label.",
-                    "type": "number"
-                },
-                "margin": {
-                    "description": "The margin around the legend, in pixels",
-                    "type": "number"
-                },
                 "offset": {
                     "description": "The offset, in pixels, by which to displace the legend from the edge of the enclosing group or data rectangle.",
                     "type": "number"
@@ -1797,27 +1753,6 @@
                 "shape": {
                     "type": "string"
                 },
-                "shortTimeLabels": {
-                    "description": "Whether month names and weekday names should be abbreviated.",
-                    "type": "boolean"
-                },
-                "symbolColor": {
-                    "description": "The color of the legend symbol,",
-                    "type": "string"
-                },
-                "symbolShape": {
-                    "description": "The shape of the legend symbol, can be the 'circle', 'square', 'cross', 'diamond',\n'triangle-up', 'triangle-down', or else a custom SVG path string.",
-                    "type": "string"
-                },
-                "symbolSize": {
-                    "description": "The size of the legend symbol, in pixels.",
-                    "type": "number"
-                },
-                "symbolStrokeWidth": {
-                    "description": "The width of the symbol's stroke.",
-                    "minimum": 0,
-                    "type": "number"
-                },
                 "tickCount": {
                     "description": "The number of ticks for legend.",
                     "type": "number"
@@ -1825,29 +1760,6 @@
                 "title": {
                     "description": "A title for the legend. (Shows field name and its function by default.)",
                     "type": "string"
-                },
-                "titleColor": {
-                    "description": "Optional mark property definitions for custom legend styling.\nThe color of the legend title, can be in hex color code or regular color name.",
-                    "type": "string"
-                },
-                "titleFont": {
-                    "description": "The font of the legend title.",
-                    "type": "string"
-                },
-                "titleFontSize": {
-                    "description": "The font size of the legend title.",
-                    "type": "number"
-                },
-                "titleFontWeight": {
-                    "description": "The font weight of the legend title.",
-                    "type": [
-                        "string",
-                        "number"
-                    ]
-                },
-                "titlePadding": {
-                    "description": "The padding, in pixels, between title and legend.",
-                    "type": "number"
                 },
                 "type": {
                     "description": "The type of the legend. Use `symbol` to create a discrete legend and `gradient` for a continuous color gradient.",
@@ -1891,16 +1803,13 @@
         "LegendConfig": {
             "additionalProperties": false,
             "properties": {
-                "encode": {
-                    "$ref": "#/definitions/VgLegendEncode",
-                    "description": "Optional mark definitions for custom legend encoding."
-                },
                 "entryPadding": {
                     "description": "Padding (in pixels) between legend entries in a symbol legend.",
                     "type": "number"
                 },
                 "gradientHeight": {
                     "description": "The height of the gradient, in pixels.",
+                    "minimum": 0,
                     "type": "number"
                 },
                 "gradientStrokeColor": {
@@ -1909,10 +1818,12 @@
                 },
                 "gradientStrokeWidth": {
                     "description": "The width of the gradient stroke, in pixels.",
+                    "minimum": 0,
                     "type": "number"
                 },
                 "gradientWidth": {
                     "description": "The width of the gradient, in pixels.",
+                    "minimum": 0,
                     "type": "number"
                 },
                 "labelAlign": {
@@ -1933,14 +1844,12 @@
                 },
                 "labelFontSize": {
                     "description": "The font size of legend label.",
+                    "minimum": 0,
                     "type": "number"
                 },
                 "labelOffset": {
                     "description": "The offset of the legend label.",
-                    "type": "number"
-                },
-                "margin": {
-                    "description": "The margin around the legend, in pixels",
+                    "minimum": 0,
                     "type": "number"
                 },
                 "offset": {
@@ -1963,12 +1872,9 @@
                     "description": "The color of the legend symbol,",
                     "type": "string"
                 },
-                "symbolShape": {
-                    "description": "The shape of the legend symbol, can be the 'circle', 'square', 'cross', 'diamond',\n'triangle-up', 'triangle-down', or else a custom SVG path string.",
-                    "type": "string"
-                },
                 "symbolSize": {
                     "description": "The size of the legend symbol, in pixels.",
+                    "minimum": 0,
                     "type": "number"
                 },
                 "symbolStrokeWidth": {
@@ -1976,9 +1882,9 @@
                     "minimum": 0,
                     "type": "number"
                 },
-                "tickCount": {
-                    "description": "The number of ticks for legend.",
-                    "type": "number"
+                "symbolType": {
+                    "description": "Default shape type (such as \"circle\") for legend symbols.",
+                    "type": "string"
                 },
                 "titleColor": {
                     "description": "Optional mark property definitions for custom legend styling.\nThe color of the legend title, can be in hex color code or regular color name.",
@@ -2002,11 +1908,6 @@
                 "titlePadding": {
                     "description": "The padding, in pixels, between title and legend.",
                     "type": "number"
-                },
-                "zindex": {
-                    "description": "A non-positive integer indicating z-index of the legend.\nIf zindex is 0, legend should be drawn behind all chart elements.\nTo put them in front, use zindex = 1.",
-                    "minimum": 0,
-                    "type": "integer"
                 }
             },
             "type": "object"
