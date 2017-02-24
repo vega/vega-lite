@@ -367,8 +367,4 @@ export interface VgAxisConfig extends VgAxisBase {
    * Weight of the title.
    */
   titleFontWeight?: string | number;
-  /**
-   * Whether month names and weekday names should be abbreviated.
-   */
-  shortTimeLabels?: boolean;
 }

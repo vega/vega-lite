@@ -3,7 +3,12 @@ import {VgAxisEncode, VgAxisBase, VgAxisConfig} from './vega.schema';
 
 export type AxisOrient = 'top' | 'right' | 'left' | 'bottom';
 
-export interface AxisConfig extends VgAxisConfig, VlOnlyAxisBase {}
+export interface AxisConfig extends VgAxisConfig, VlOnlyAxisBase {
+  /**
+   * Whether month names and weekday names should be abbreviated.
+   */
+  shortTimeLabels?: boolean;
+}
 
 export const defaultAxisConfig: AxisConfig = {
   labelMaxLength: 25,
