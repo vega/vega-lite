@@ -24,8 +24,12 @@ export interface ValueDef<T> {
   value?: T;
 }
 
-export interface ConditionalValueDef<T> extends ValueDef<T> {
-  condition?: Condition<T>;
+export type ConditionalDef<A, B> =
+  ({condition: Condition & A} & B) |
+  ({condition: Condition & B} & A);
+
+export interface Condition {
+  selection: string;
 }
 
 /**
@@ -71,11 +75,6 @@ export interface FieldDef {
   title?: string;
 }
 
-export interface Condition<T> {
-  selection: string;
-  value: T;
-}
-
 export interface ScaleFieldDef extends FieldDef {
   scale?: Scale;
   sort?: SortField | SortOrder;
@@ -93,13 +92,12 @@ export interface PositionFieldDef extends ScaleFieldDef {
    */
   stack?: StackOffset;
 }
-export interface LegendFieldDef<T> extends ScaleFieldDef {
-   /**
-    * @nullable
-    */
-  legend?: Legend;
 
-  condition?: Condition<T>;
+export interface LegendFieldDef extends ScaleFieldDef {
+  /**
+   * @nullable
+   */
+  legend?: Legend;
 }
 
 // Detail
@@ -116,13 +114,11 @@ export interface TextFieldDef extends FieldDef {
    * The formatting pattern for text value. If not defined, this will be determined automatically.
    */
   format?: string;
-
-  condition?: Condition<string|number>;
 };
 
 export type ChannelDef = FieldDef | ValueDef<any>;
 
-export function isFieldDef(channelDef: ChannelDef): channelDef is FieldDef | PositionFieldDef | LegendFieldDef<any> | OrderFieldDef | TextFieldDef {
+export function isFieldDef(channelDef: ChannelDef): channelDef is FieldDef | PositionFieldDef | OrderFieldDef | TextFieldDef {
   return channelDef && !!channelDef['field'];
 }
 

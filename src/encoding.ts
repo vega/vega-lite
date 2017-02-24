@@ -1,5 +1,5 @@
 // utility for encoding mapping
-import {FieldDef, PositionFieldDef, LegendFieldDef, OrderFieldDef, ValueDef, TextFieldDef, isFieldDef, ChannelDef, isValueDef, normalize, ConditionalValueDef} from './fielddef';
+import {FieldDef, PositionFieldDef, OrderFieldDef, ValueDef, TextFieldDef, isFieldDef, ChannelDef, isValueDef, normalize, ConditionalDef, LegendFieldDef} from './fielddef';
 import {Channel, CHANNELS, supportMark} from './channel';
 import {Facet} from './facet';
 import {isArray, some, duplicate} from './util';
@@ -36,12 +36,16 @@ export interface Encoding {
    * (By default, fill color for `area`, `bar`, `tick`, `text`, `circle`, and `square` /
    * stroke color for `line` and `point`.)
    */
+<<<<<<< HEAD
   color?: LegendFieldDef<string> | ConditionalValueDef<string>;
 
+=======
+  color?: ConditionalDef<LegendFieldDef, ValueDef<string>>;
+>>>>>>> c2bd972... [WIP] Make FieldDef can be the ConditionedDef too.
   /**
    * Opacity of the marks – either can be a value or in a range.
    */
-  opacity?: LegendFieldDef<number> | ConditionalValueDef<number>;
+  opacity?: ConditionalDef<LegendFieldDef, ValueDef<number>>;
 
   /**
    * Size of the mark.
@@ -51,14 +55,18 @@ export interface Encoding {
    * - For `text` – the text's font size.
    * - Size is currently unsupported for `line` and `area`.
    */
-  size?: LegendFieldDef<number> | ConditionalValueDef<number>;
+  size?: ConditionalDef<LegendFieldDef, ValueDef<string>>;
 
   /**
    * The symbol's shape (only for `point` marks). The supported values are
    * `"circle"` (default), `"square"`, `"cross"`, `"diamond"`, `"triangle-up"`,
    * or `"triangle-down"`, or else a custom SVG path string.
    */
+<<<<<<< HEAD
   shape?: LegendFieldDef<string> | ConditionalValueDef<string>; // TODO: maybe distinguish ordinal-only
+=======
+  shape?: ConditionalDef<LegendFieldDef, ValueDef<string>>; // TODO: maybe distinguish ordinal-only
+>>>>>>> c2bd972... [WIP] Make FieldDef can be the ConditionedDef too.
 
   /**
    * Additional levels of detail for grouping data in aggregate views and
@@ -69,7 +77,7 @@ export interface Encoding {
   /**
    * Text of the `text` mark.
    */
-  text?: TextFieldDef | ConditionalValueDef<string|number>;
+  text?: ConditionalDef<TextFieldDef, ValueDef<string>>;
 
   /**
    * stack order for stacked marks or order of data points in line marks.
