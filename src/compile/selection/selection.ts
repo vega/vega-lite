@@ -79,7 +79,7 @@ export function parseUnitSelection(model: UnitModel, selDefs: Dict<SelectionDef>
       name: model.getName(name),
       events: isString(selDef.on) ? parseSelector(selDef.on, 'scope') : selDef.on,
       domain: 'data' as SelectionDomain, // TODO: Support def.domain
-      resolve: 'single' as SelectionResolutions
+      resolve: 'union' as SelectionResolutions
     }) as SelectionComponent;
 
     forEachTransform(selCmpt, function(txCompiler) {
