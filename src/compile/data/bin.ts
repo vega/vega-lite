@@ -19,34 +19,47 @@ function numberFormatExpr(expr: string, format: string) {
 function parse(model: Model): Dict<VgTransform[]> {
   return model.reduceFieldDef(function(binComponent: Dict<VgTransform[]>, fieldDef: FieldDef, channel: Channel) {
     const bin = model.fieldDef(channel).bin;
+    // Make this bin variable always an object
+    // and extend it with maxbins if needed here.
+    const transform: VgTransform[] = [];
     if (bin) {
-      let binTrans: VgTransform = extend({
-        type: 'bin',
-        field: fieldDef.field,
-        as: [field(fieldDef, {binSuffix: 'start'}), field(fieldDef, {binSuffix: 'end'})]
-      },
-        // if bin is an object, load parameter here!
-        isBoolean(bin) ? {} : bin
-      );
-
-      const transform: VgTransform[] = [];
-      if (!binTrans.extent) {
-        const extentSignal = model.getName(fieldDef.field + '_extent');
-        transform.push({
-          type: 'extent',
+      const key = hash(bin) + fieldDef.field;
+      // FIXME: Check
+      if (!binComponent[key]) {
+        let binTrans: VgTransform = extend({
+          type: 'bin',
           field: fieldDef.field,
-          signal: extentSignal
-        });
+          as: [field(fieldDef, {binSuffix: 'start'}), field(fieldDef, {binSuffix: 'end'})]
+        },
+          // if bin is an object, load parameter here!
+          isBoolean(bin) ? {} : bin
+        );
 
-        binTrans.extent = {signal: extentSignal};
+        if (!binTrans.extent) {
+          const extentSignal = model.getName(fieldDef.field + '_extent');
+          transform.push({
+            type: 'extent',
+            field: fieldDef.field,
+            signal: extentSignal
+          });
+
+          binTrans.extent = {signal: extentSignal};
+        }
+
+        //
+        if (!binTrans.maxbins && !binTrans.step) {
+          // if both maxbins and step are not specified, need to automatically determine bin
+          binTrans.maxbins = autoMaxBins(channel);
+        }
+
+        transform.push(binTrans);
+      } else {
+        for (const element in binComponent[key]) {
+          if (element) {
+            transform.push(element);
+          }
+        }
       }
-
-      if (!binTrans.maxbins && !binTrans.step) {
-        // if both maxbins and step are not specified, need to automatically determine bin
-        binTrans.maxbins = autoMaxBins(channel);
-      }
-
-      transform.push(binTrans);
 
       const hasDiscreteDomainOrHasLegend = hasDiscreteDomain(model.scale(channel).type) || model.legend(channel);
       if (hasDiscreteDomainOrHasLegend) {
@@ -64,7 +77,6 @@ function parse(model: Model): Dict<VgTransform[]> {
         });
       }
       // FIXME: current merging logic can produce redundant transforms when a field is binned for color and for non-color
-      const key = hash(bin) + fieldDef.field;
       binComponent[key] = transform;
     }
     return binComponent;
