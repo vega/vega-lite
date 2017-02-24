@@ -39,7 +39,9 @@ export interface Axis extends VgAxisBase, VlOnlyAxisBase {
    */
   offset?: number;
 
-  // FIXME: Add Description
+  /**
+   * The anchor position of the axis in pixels (default 0). For x-axis with top or bottom orientation, this sets the axis group x coordinate. For y-axis with left or right orientation, this sets the axis group y coordinate.
+   */
   position?: number;
 
   /**
