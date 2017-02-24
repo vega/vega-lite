@@ -42,6 +42,16 @@ describe('compile/legend', function() {
         assert.isUndefined(symbol.size);
     });
 
+    it('should return specific symbols.shape.value if user has specified', function() {
+      const symbol = encode.symbols({field: 'a'}, {}, parseUnitModel({
+          mark: "point",
+          encoding: {
+            x: {field: "a", type: "nominal"},
+            shape: {value: "square"}}
+        }), COLOR);
+        assert.deepEqual(symbol.shape.value, 'square');
+    });
+
     it('should override color for binned and continous scales', function() {
       const symbol = encode.symbols({field: 'a', bin: true}, {}, parseUnitModel({
           mark: "point",
