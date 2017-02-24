@@ -42,23 +42,6 @@ describe('compile/legend', function() {
         assert.isUndefined(symbol.size);
     });
 
-    it('should create legend for SVG path', function() {
-      const symbol = encode.symbols({field: 'a'}, {}, parseUnitModel({
-          mark: "point",
-          encoding: {
-            x: {field: "a", type: "nominal"},
-            color: {field: "a", type: "nominal"}
-          },
-          config: {
-            point: {
-              shape: "M0,0.2L0.2351,0.3236 0.1902,0.0618 0.3804,-0.1236 0.1175,-0.1618 0,-0.4 -0.1175,-0.1618 -0.3804,-0.1236 -0.1902,0.0618 -0.2351,0.3236 0,0.2Z"
-            }
-          }
-        }), COLOR);
-
-        assert.deepEqual(symbol.shape.value, "M0,0.2L0.2351,0.3236 0.1902,0.0618 0.3804,-0.1236 0.1175,-0.1618 0,-0.4 -0.1175,-0.1618 -0.3804,-0.1236 -0.1902,0.0618 -0.2351,0.3236 0,0.2Z");
-    });
-
     it('should override color for binned and continous scales', function() {
       const symbol = encode.symbols({field: 'a', bin: true}, {}, parseUnitModel({
           mark: "point",

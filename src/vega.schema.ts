@@ -459,9 +459,9 @@ export interface VgLegendConfig extends VgLegendBase {
    */
   symbolColor?: string;
 
+  // FIXME: need better description
   /**
-   * The shape of the legend symbol, can be the 'circle', 'square', 'cross', 'diamond',
-   * 'triangle-up', 'triangle-down', or else a custom SVG path string.
+   * Default shape type (such as "circle") for legend symbols.
    */
   symbolType?: string;
 

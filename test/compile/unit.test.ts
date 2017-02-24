@@ -2,7 +2,7 @@ import {assert} from 'chai';
 
 import * as log from '../../src/log';
 import {UnitModel} from '../../src/compile/unit';
-import {X, Y, SHAPE, DETAIL} from '../../src/channel';
+import {X, Y, COLOR, SHAPE, DETAIL} from '../../src/channel';
 import {BAR} from '../../src/mark';
 import {UnitSpec} from '../../src/spec';
 import {QUANTITATIVE} from '../../src/type';
@@ -182,6 +182,35 @@ describe('UnitModel', function() {
       });
 
       assert.equal(model.axis(X).offset, 345);
+    });
+  });
+
+  describe('initLegend', () => {
+    it('it should have axis.labelMaxLength = config.axis.labelMaxLength', () => {
+      const model = parseUnitModel({
+        mark: 'point',
+        encoding: {
+          x: {field: 'a', type: 'ordinal'},
+          y: {field: 'b', type: 'ordinal'},
+          color: {field: 'a', type: 'ordinal'}
+        },
+        config: {legend: {shortTimeLabels: true}}
+      });
+      assert.equal(model.legend(COLOR).shortTimeLabels, true);
+    });
+
+    it('should not include properties of non-VlOnlyLegendConfig in config.legend', () => {
+      const model = parseUnitModel({
+        mark: 'point',
+        encoding: {
+          x: {field: 'a', type: 'ordinal'},
+          y: {field: 'b', type: 'ordinal'},
+          color: {field: 'a', type: 'ordinal'}
+        },
+        config: {legend: {entryPadding: 123}}
+      });
+
+      assert.equal(model.legend(COLOR)['entryPadding'], undefined);
     });
   });
 });

@@ -1,5 +1,5 @@
 import {DateTime} from './datetime';
-import { VgLegendEncode, VgLegendBase, VgLegendConfig } from './vega.schema';
+import {VgLegendEncode, VgLegendBase, VgLegendConfig} from './vega.schema';
 
 export interface LegendConfig extends VgLegendConfig, VlOnlyLegendBase {}
 

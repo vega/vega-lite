@@ -1638,6 +1638,7 @@
                     "description": "Optional mark definitions for custom legend encoding."
                 },
                 "entryPadding": {
+                    "description": "Padding (in pixels) between legend entries in a symbol legend.",
                     "type": "number"
                 },
                 "format": {
@@ -1645,12 +1646,15 @@
                     "type": "string"
                 },
                 "offset": {
+                    "description": "The offset, in pixels, by which to displace the legend from the edge of the enclosing group or data rectangle.",
                     "type": "number"
                 },
                 "orient": {
+                    "description": "The orientation of the legend. One of \"left\" or \"right\". This determines how the legend is positioned within the scene. The default is \"right\".",
                     "type": "string"
                 },
                 "padding": {
+                    "description": "The padding, in pixels, between the legend and axis.",
                     "type": "number"
                 },
                 "shape": {
@@ -1711,6 +1715,7 @@
             "additionalProperties": false,
             "properties": {
                 "entryPadding": {
+                    "description": "Padding (in pixels) between legend entries in a symbol legend.",
                     "type": "number"
                 },
                 "gradientHeight": {
@@ -1754,12 +1759,15 @@
                     "type": "number"
                 },
                 "offset": {
+                    "description": "The offset, in pixels, by which to displace the legend from the edge of the enclosing group or data rectangle.",
                     "type": "number"
                 },
                 "orient": {
+                    "description": "The orientation of the legend. One of \"left\" or \"right\". This determines how the legend is positioned within the scene. The default is \"right\".",
                     "type": "string"
                 },
                 "padding": {
+                    "description": "The padding, in pixels, between the legend and axis.",
                     "type": "number"
                 },
                 "shortTimeLabels": {
@@ -1780,7 +1788,7 @@
                     "type": "number"
                 },
                 "symbolType": {
-                    "description": "The shape of the legend symbol, can be the 'circle', 'square', 'cross', 'diamond',\n'triangle-up', 'triangle-down', or else a custom SVG path string.",
+                    "description": "Default shape type (such as \"circle\") for legend symbols.",
                     "type": "string"
                 },
                 "titleColor": {

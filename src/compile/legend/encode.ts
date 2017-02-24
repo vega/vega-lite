@@ -83,9 +83,13 @@ export function symbols(fieldDef: FieldDef, symbolsSpec: any, model: UnitModel, 
     }
   }
 
+  const shapeDef = model.encoding.shape;
   if (channel !== SHAPE) {
-    if (cfg.point.shape !== undefined) {
-      symbols.shape = {value: cfg.point.shape};
+    if (isValueDef(shapeDef)) {
+      value = {value: shapeDef.value};
+    }
+    if (value !== undefined) {
+      symbols.shape = value;
     }
   }
 
@@ -131,8 +135,6 @@ export function labels(fieldDef: FieldDef, labelsSpec: any, model: UnitModel, ch
   } else if (fieldDef.type === TEMPORAL) {
     labelsSpec = extend({
       text: {
-
-        // FIXME: shortTimeLabels set as true by default
         signal: timeFormatExpression('datum.value', fieldDef.timeUnit, legend.format, config.legend.shortTimeLabels, config.timeFormat)
       }
     }, labelsSpec || {});
