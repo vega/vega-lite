@@ -8,6 +8,7 @@ import * as ref from './valueref';
 
 import {NONSPATIAL_SCALE_CHANNELS} from '../../channel';
 import {Condition} from '../../fielddef';
+import {predicate} from '../selection/selection';
 
 export function color(model: UnitModel) {
   const config = model.config;
@@ -54,19 +55,19 @@ export function nonPosition(channel: typeof NONSPATIAL_SCALE_CHANNELS[0], model:
   const channelDef = model.encoding[channel];
   const valueRef = ref.midPoint(channel, channelDef, model.scaleName(channel), model.scale(channel), defaultRef);
 
-  return wrapCondition(channelDef && channelDef.condition, vgChannel || channel, valueRef);
+  return wrapCondition(model, channelDef && channelDef.condition, vgChannel || channel, valueRef);
 }
 
 /**
  * Return a mixin that include a Vega production rule for a Vega-Lite conditional channel definition.
  * or a simple mixin if channel def has no condition.
  */
-function wrapCondition(condition: Condition<any>, vgChannel: string, valueRef: VgValueRef): VgEncodeEntry {
+function wrapCondition(model: UnitModel, condition: Condition<any>, vgChannel: string, valueRef: VgValueRef): VgEncodeEntry {
   if (condition) {
     const {selection, value} = condition;
     return {
       [vgChannel]: [
-        {test: selectionTest(selection), value},
+        {test: selectionTest(model, selection), value},
         ...(valueRef !== undefined ? [valueRef] : [])
       ]
     };
@@ -75,14 +76,15 @@ function wrapCondition(condition: Condition<any>, vgChannel: string, valueRef: V
   }
 }
 
-function selectionTest(selectionName: string) {
-  // FIXME: Arvind please implement this!
-  return selectionName;
+function selectionTest(model: UnitModel, selectionName: string) {
+  const negate = selectionName.charAt(0) === '!',
+    name = negate ? selectionName.slice(1) : selectionName;
+  return (negate ? '!' : '') + predicate(model.component.selection[name]);
 }
 
 export function text(model: UnitModel) {
   const channelDef = model.encoding.text;
-  return wrapCondition(channelDef && channelDef.condition, 'text', ref.text(channelDef, model.config));
+  return wrapCondition(model, channelDef && channelDef.condition, 'text', ref.text(channelDef, model.config));
 }
 
 export function bandPosition(channel: 'x'|'y', model: UnitModel) {
