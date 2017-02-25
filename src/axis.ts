@@ -41,7 +41,7 @@ export interface Axis extends VgAxisBase, VlOnlyAxisBase {
 
   /**
    * The anchor position of the axis in pixels. For x-axis with top or bottom orientation, this sets the axis group x coordinate. For y-axis with left or right orientation, this sets the axis group y coordinate.
-   * 
+   *
    * __Default value__: `0`
    */
   position?: number;
