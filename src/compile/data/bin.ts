@@ -21,19 +21,17 @@ function parse(model: Model): Dict<VgTransform[]> {
     const bin = model.fieldDef(channel).bin;
     // Make this bin variable always an object
     // and extend it with maxbins if needed here.
-    const transform: VgTransform[] = [];
+    let transform: VgTransform[] = [];
     if (bin) {
       const key = hash(bin) + fieldDef.field;
       // FIXME: Check
       if (!binComponent[key]) {
-        let binTrans: VgTransform = extend({
-          type: 'bin',
+        let binTrans: VgTransform = {
+          ...{type: 'bin',
           field: fieldDef.field,
           as: [field(fieldDef, {binSuffix: 'start'}), field(fieldDef, {binSuffix: 'end'})]
-        },
-          // if bin is an object, load parameter here!
-          isBoolean(bin) ? {} : bin
-        );
+          }, ...isBoolean(bin) ? {}: bin
+        };
 
         if (!binTrans.extent) {
           const extentSignal = model.getName(fieldDef.field + '_extent');
@@ -54,11 +52,7 @@ function parse(model: Model): Dict<VgTransform[]> {
 
         transform.push(binTrans);
       } else {
-        for (const element in binComponent[key]) {
-          if (element) {
-            transform.push(element);
-          }
-        }
+        transform = binComponent[key].slice();
       }
 
       const hasDiscreteDomainOrHasLegend = hasDiscreteDomain(model.scale(channel).type) || model.legend(channel);
