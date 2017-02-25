@@ -49,7 +49,7 @@
             "additionalProperties": false,
             "properties": {
                 "domain": {
-                    "description": "Whether to include the axis domain line.",
+                    "description": "A boolean flag indicating if the domain (the axis baseline) should be included as part of the axis (default true).",
                     "type": "boolean"
                 },
                 "encode": {
@@ -80,15 +80,15 @@
                     "type": "number"
                 },
                 "labels": {
-                    "description": "Enable or disable labels.",
+                    "description": "A boolean flag indicating if labels should be included as part of the axis (default true).",
                     "type": "boolean"
                 },
                 "maxExtent": {
-                    "description": "Maximum extent, which determines the offset between axis ticks and labels.",
+                    "description": "The maximum extent in pixels that axis ticks and labels should use. This determines a maximum offset value for axis titles.",
                     "type": "number"
                 },
                 "minExtent": {
-                    "description": "Minimum extent, which determines the offset between axis ticks and labels.",
+                    "description": "The minimum extent in pixels that axis ticks and labels should use. This determines a minimum offset value for axis titles.",
                     "type": "number"
                 },
                 "offset": {
@@ -100,6 +100,7 @@
                     "description": "The orientation of the axis. One of top, bottom, left or right. The orientation can be used to further specialize the axis type (e.g., a y axis oriented for the right edge of the chart)."
                 },
                 "position": {
+                    "description": "The anchor position of the axis in pixels. For x-axis with top or bottom orientation, this sets the axis group x coordinate. For y-axis with left or right orientation, this sets the axis group y coordinate.\n\n__Default value__: `0`",
                     "type": "number"
                 },
                 "tickCount": {
@@ -157,7 +158,7 @@
             "additionalProperties": false,
             "properties": {
                 "domain": {
-                    "description": "Whether to include the axis domain line.",
+                    "description": "A boolean flag indicating if the domain (the axis baseline) should be included as part of the axis (default true).",
                     "type": "boolean"
                 },
                 "domainColor": {
@@ -165,7 +166,7 @@
                     "type": "string"
                 },
                 "domainWidth": {
-                    "description": "Width of the domain line",
+                    "description": "Stroke width of axis domain line",
                     "type": "number"
                 },
                 "grid": {
@@ -220,15 +221,15 @@
                     "type": "integer"
                 },
                 "labels": {
-                    "description": "Enable or disable labels.",
+                    "description": "A boolean flag indicating if labels should be included as part of the axis (default true).",
                     "type": "boolean"
                 },
                 "maxExtent": {
-                    "description": "Maximum extent, which determines the offset between axis ticks and labels.",
+                    "description": "The maximum extent in pixels that axis ticks and labels should use. This determines a maximum offset value for axis titles.",
                     "type": "number"
                 },
                 "minExtent": {
-                    "description": "Minimum extent, which determines the offset between axis ticks and labels.",
+                    "description": "The minimum extent in pixels that axis ticks and labels should use. This determines a minimum offset value for axis titles.",
                     "type": "number"
                 },
                 "shortTimeLabels": {
@@ -262,12 +263,12 @@
                     "type": "string"
                 },
                 "titleFontSize": {
-                    "description": "Size of the title.",
+                    "description": "Font size of the title.",
                     "minimum": 0,
                     "type": "number"
                 },
                 "titleFontWeight": {
-                    "description": "Weight of the title.",
+                    "description": "Font weight of the title.",
                     "type": [
                         "string",
                         "number"
@@ -1859,10 +1860,11 @@
                     "type": "number"
                 },
                 "shape": {
+                    "description": "The name of a scale that maps to a shape value.",
                     "type": "string"
                 },
                 "tickCount": {
-                    "description": "The number of ticks for legend.",
+                    "description": "The desired number of tick values for quantitative legends.",
                     "type": "number"
                 },
                 "title": {

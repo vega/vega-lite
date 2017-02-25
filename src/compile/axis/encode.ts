@@ -6,7 +6,6 @@ import {VgAxis} from '../../vega.schema';
 import {timeFormatExpression} from '../common';
 import {Model} from '../model';
 
-// TODO: @yuhanlu -- please change method signature to require only what are really needed
 export function labels(model: Model, channel: Channel, labelsSpec: any, def: VgAxis) {
   const fieldDef = model.fieldDef(channel);
   const axis = model.axis(channel);

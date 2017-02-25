@@ -23,7 +23,7 @@ export interface Legend extends VgLegendBase, VlOnlyLegendBase {
   format?: string;
 
   /**
-   * The number of ticks for legend.
+   * The desired number of tick values for quantitative legends.
    */
   tickCount?: number;
 
@@ -36,6 +36,9 @@ export interface Legend extends VgLegendBase, VlOnlyLegendBase {
    */
   values?: number[] | string[] | DateTime[];
 
+  /**
+   * The name of a scale that maps to a shape value.
+   */
   shape?: string;
 
   /**
@@ -53,9 +56,7 @@ export interface Legend extends VgLegendBase, VlOnlyLegendBase {
   zindex?: number;
 }
 
-export interface VlOnlyLegendBase {
-
-}
+export interface VlOnlyLegendBase {}
 
 export const defaultLegendConfig: LegendConfig = {
   orient: undefined, // implicitly "right"

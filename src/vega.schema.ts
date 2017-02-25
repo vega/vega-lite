@@ -226,7 +226,7 @@ export type VgBinding = VgCheckboxBinding | VgRadioBinding |
  */
 export interface VgAxisBase {
   /**
-   * Whether to include the axis domain line.
+   * A boolean flag indicating if the domain (the axis baseline) should be included as part of the axis (default true).
    */
   domain?: boolean;
 
@@ -236,7 +236,7 @@ export interface VgAxisBase {
   grid?: boolean;
 
   /**
-   * Enable or disable labels.
+   * A boolean flag indicating if labels should be included as part of the axis (default true).
    */
   labels?: boolean;
 
@@ -245,7 +245,7 @@ export interface VgAxisBase {
    * @minimum 0
    * @maximum 360
    */
-  labelAngle?: number;  // FIXME: not sure if this should be a theme
+  labelAngle?: number;
 
   /**
    * Whether the axis should include ticks.
@@ -271,12 +271,12 @@ export interface VgAxisBase {
   titlePadding?: number;
 
   /**
-   * Minimum extent, which determines the offset between axis ticks and labels.
+   * The minimum extent in pixels that axis ticks and labels should use. This determines a minimum offset value for axis titles.
    */
   minExtent?: number;
 
   /**
-   * Maximum extent, which determines the offset between axis ticks and labels.
+   * The maximum extent in pixels that axis ticks and labels should use. This determines a maximum offset value for axis titles.
    */
   maxExtent?: number;
 }
@@ -284,7 +284,7 @@ export interface VgAxisBase {
 export interface VgAxisConfig extends VgAxisBase {
  // ---------- Axis ----------
   /**
-   * Width of the domain line
+   * Stroke width of axis domain line
    */
   domainWidth?: number;
 
@@ -358,13 +358,13 @@ export interface VgAxisConfig extends VgAxisBase {
   titleFont?: string;
 
   /**
-   * Size of the title.
+   * Font size of the title.
    * @minimum 0
    */
   titleFontSize?: number;
 
   /**
-   * Weight of the title.
+   * Font weight of the title.
    */
   titleFontWeight?: string | number;
 }
@@ -455,7 +455,6 @@ export interface VgLegendConfig extends VgLegendBase {
    */
   symbolColor?: string;
 
-  // FIXME: need better description
   /**
    * Default shape type (such as "circle") for legend symbols.
    */
