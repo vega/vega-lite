@@ -55,7 +55,7 @@ d3.selectAll('.vl-example').each(function(this: Element) {
   const name = sel.attr('data-name');
   if (name) {
     const dir = sel.attr('data-dir');
-    const fullUrl = BASEURL + '/examples/specs/' + (dir ? (dir + '/') : '') + name + '.vl.json';
+    const fullUrl = BASEURL + '/build/examples/specs/' + (dir ? (dir + '/') : '') + name + '.vl.json';
 
     d3.text(fullUrl, function(error, spec) {
       if (error) {
@@ -108,7 +108,7 @@ function renderGallery() {
 
       imageGroup.append('div')
         .attr('class', 'image')
-        .style('background-image', function(d) {return 'url(' + window.location.origin + BASEURL + '/examples/images/' + d.name + '.vl.svg)';})
+        .style('background-image', function(d) {return 'url(' + window.location.origin + BASEURL + '/build/examples/images/' + d.name + '.vl.svg)';})
         .style('background-size', function(d) {
           const bgSizeDefault = 'cover';
           if (!d.galleryParameters || !d.galleryParameters.backgroundSize) {

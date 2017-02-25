@@ -27,4 +27,5 @@ tsconfig.json
 tslint.json
 yarn.lock
 vl.sublime-project
+build/examples
 build/test
