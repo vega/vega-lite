@@ -455,7 +455,6 @@ export interface VgLegendConfig extends VgLegendBase {
    */
   symbolColor?: string;
 
-  // FIXME: need better description
   /**
    * Default shape type (such as "circle") for legend symbols.
    */
