@@ -14,10 +14,6 @@ export const defaultAxisConfig: AxisConfig = {
   labelMaxLength: 25,
 };
 
-export const defaultFacetAxisConfig: AxisConfig = {
-  domainWidth: 0,
-};
-
 export interface Axis extends VgAxisBase, VlOnlyAxisBase {
   /**
    * The padding, in pixels, between axis and text labels.

@@ -1,4 +1,4 @@
-import {AxisConfig, defaultAxisConfig, defaultFacetAxisConfig} from './axis';
+import {AxisConfig, defaultAxisConfig} from './axis';
 import {LegendConfig, defaultLegendConfig} from './legend';
 import {MarkConfig, BarConfig, PointConfig, SymbolConfig, TextConfig, TickConfig} from './mark';
 import * as mark from './mark';
@@ -74,7 +74,7 @@ const defaultFacetGridConfig: FacetGridConfig = {
 };
 
 export const defaultFacetConfig: FacetConfig = {
-  axis: defaultFacetAxisConfig,
+  axis: {},
   grid: defaultFacetGridConfig,
   cell: defaultFacetCellConfig
 };
