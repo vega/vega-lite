@@ -1,5 +1,4 @@
 import {VgBinding} from './vega.schema';
-import {Dict} from './util';
 
 export type SelectionTypes = 'single' | 'multi' | 'interval';
 export type SelectionDomain = 'data' | 'visual';
@@ -10,7 +9,7 @@ export interface BaseSelectionDef {
   // domain?: SelectionDomain;
   on?: any;
   // predicate?: string;
-  bind?: 'scales' | VgBinding | Dict<VgBinding>;
+  bind?: 'scales' | VgBinding | {[key: string]: VgBinding};
 
   // Transforms
   fields?: string[];

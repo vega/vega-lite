@@ -592,7 +592,121 @@
                             "type": "object"
                         },
                         {
-                            "$ref": "#/definitions/Dict<VgBinding>"
+                            "additionalProperties": {
+                                "anyOf": [
+                                    {
+                                        "additionalProperties": false,
+                                        "properties": {
+                                            "element": {
+                                                "type": "string"
+                                            },
+                                            "input": {
+                                                "enum": [
+                                                    "checkbox"
+                                                ],
+                                                "type": "string"
+                                            }
+                                        },
+                                        "required": [
+                                            "input"
+                                        ],
+                                        "type": "object"
+                                    },
+                                    {
+                                        "additionalProperties": false,
+                                        "properties": {
+                                            "element": {
+                                                "type": "string"
+                                            },
+                                            "input": {
+                                                "enum": [
+                                                    "radio"
+                                                ],
+                                                "type": "string"
+                                            },
+                                            "options": {
+                                                "items": {
+                                                    "type": "string"
+                                                },
+                                                "type": "array"
+                                            }
+                                        },
+                                        "required": [
+                                            "input",
+                                            "options"
+                                        ],
+                                        "type": "object"
+                                    },
+                                    {
+                                        "additionalProperties": false,
+                                        "properties": {
+                                            "element": {
+                                                "type": "string"
+                                            },
+                                            "input": {
+                                                "enum": [
+                                                    "select"
+                                                ],
+                                                "type": "string"
+                                            },
+                                            "options": {
+                                                "items": {
+                                                    "type": "string"
+                                                },
+                                                "type": "array"
+                                            }
+                                        },
+                                        "required": [
+                                            "input",
+                                            "options"
+                                        ],
+                                        "type": "object"
+                                    },
+                                    {
+                                        "additionalProperties": false,
+                                        "properties": {
+                                            "element": {
+                                                "type": "string"
+                                            },
+                                            "input": {
+                                                "enum": [
+                                                    "range"
+                                                ],
+                                                "type": "string"
+                                            },
+                                            "max": {
+                                                "type": "number"
+                                            },
+                                            "min": {
+                                                "type": "number"
+                                            },
+                                            "step": {
+                                                "type": "number"
+                                            }
+                                        },
+                                        "required": [
+                                            "input"
+                                        ],
+                                        "type": "object"
+                                    },
+                                    {
+                                        "additionalProperties": false,
+                                        "properties": {
+                                            "element": {
+                                                "type": "string"
+                                            },
+                                            "input": {
+                                                "type": "string"
+                                            }
+                                        },
+                                        "required": [
+                                            "input"
+                                        ],
+                                        "type": "object"
+                                    }
+                                ]
+                            },
+                            "type": "object"
                         },
                         {
                             "enum": [
@@ -1098,12 +1212,6 @@
                     "description": "Integer value representing the year.",
                     "type": "integer"
                 }
-            },
-            "type": "object"
-        },
-        "Dict<VgBinding>": {
-            "additionalProperties": {
-                "$ref": "#/definitions/T"
             },
             "type": "object"
         },
@@ -2982,7 +3090,121 @@
                             "type": "object"
                         },
                         {
-                            "$ref": "#/definitions/Dict<VgBinding>"
+                            "additionalProperties": {
+                                "anyOf": [
+                                    {
+                                        "additionalProperties": false,
+                                        "properties": {
+                                            "element": {
+                                                "type": "string"
+                                            },
+                                            "input": {
+                                                "enum": [
+                                                    "checkbox"
+                                                ],
+                                                "type": "string"
+                                            }
+                                        },
+                                        "required": [
+                                            "input"
+                                        ],
+                                        "type": "object"
+                                    },
+                                    {
+                                        "additionalProperties": false,
+                                        "properties": {
+                                            "element": {
+                                                "type": "string"
+                                            },
+                                            "input": {
+                                                "enum": [
+                                                    "radio"
+                                                ],
+                                                "type": "string"
+                                            },
+                                            "options": {
+                                                "items": {
+                                                    "type": "string"
+                                                },
+                                                "type": "array"
+                                            }
+                                        },
+                                        "required": [
+                                            "input",
+                                            "options"
+                                        ],
+                                        "type": "object"
+                                    },
+                                    {
+                                        "additionalProperties": false,
+                                        "properties": {
+                                            "element": {
+                                                "type": "string"
+                                            },
+                                            "input": {
+                                                "enum": [
+                                                    "select"
+                                                ],
+                                                "type": "string"
+                                            },
+                                            "options": {
+                                                "items": {
+                                                    "type": "string"
+                                                },
+                                                "type": "array"
+                                            }
+                                        },
+                                        "required": [
+                                            "input",
+                                            "options"
+                                        ],
+                                        "type": "object"
+                                    },
+                                    {
+                                        "additionalProperties": false,
+                                        "properties": {
+                                            "element": {
+                                                "type": "string"
+                                            },
+                                            "input": {
+                                                "enum": [
+                                                    "range"
+                                                ],
+                                                "type": "string"
+                                            },
+                                            "max": {
+                                                "type": "number"
+                                            },
+                                            "min": {
+                                                "type": "number"
+                                            },
+                                            "step": {
+                                                "type": "number"
+                                            }
+                                        },
+                                        "required": [
+                                            "input"
+                                        ],
+                                        "type": "object"
+                                    },
+                                    {
+                                        "additionalProperties": false,
+                                        "properties": {
+                                            "element": {
+                                                "type": "string"
+                                            },
+                                            "input": {
+                                                "type": "string"
+                                            }
+                                        },
+                                        "required": [
+                                            "input"
+                                        ],
+                                        "type": "object"
+                                    }
+                                ]
+                            },
+                            "type": "object"
                         },
                         {
                             "enum": [
@@ -3245,12 +3467,6 @@
                     "description": "Polar coordinate angle, in radians, of the text label from the origin determined by the x and y properties. Values for theta follow the same convention of arc mark startAngle and endAngle properties: angles are measured in radians, with 0 indicating \"north\".",
                     "type": "number"
                 }
-            },
-            "type": "object"
-        },
-        "T": {
-            "additionalProperties": false,
-            "properties": {
             },
             "type": "object"
         },
