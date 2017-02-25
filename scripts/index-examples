@@ -11,10 +11,10 @@ var OUTPUT = '/examples/all-examples.json';
 var examples = fs.readdirSync(DIR + SPECS);
 
 var examples = examples.filter(function(example) {
-  return path.extname(example) === '.json'
+  return path.extname(example) === '.json';
 }).map(function(example){
   return path.basename(example, '.vl.json');
-})
+});
 
 fs.writeFile(DIR + OUTPUT, JSON.stringify(examples), function (err) {
   if (err) return console.log(err);
