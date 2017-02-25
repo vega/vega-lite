@@ -3,7 +3,7 @@ import {DataComponentCompiler} from './base';
 import {autoMaxBins} from '../../bin';
 import {Channel} from '../../channel';
 import {field, FieldDef} from '../../fielddef';
-import {extend, vals, flatten, hash, isBoolean,Dict} from '../../util';
+import {vals, flatten, hash, isBoolean,Dict} from '../../util';
 import {VgTransform} from '../../vega.schema';
 import {hasDiscreteDomain} from '../../scale';
 
@@ -88,7 +88,7 @@ export const bin: DataComponentCompiler<Dict<VgTransform[]>> = {
     // If child doesn't have its own data source, then merge
     if (!childDataComponent.source) {
       // FIXME: current merging logic can produce redundant transforms when a field is binned for color and for non-color
-      extend(binComponent, childDataComponent.bin);
+      binComponent = {...childDataComponent.bin};
       delete childDataComponent.bin;
     }
     return binComponent;
@@ -102,7 +102,7 @@ export const bin: DataComponentCompiler<Dict<VgTransform[]>> = {
 
       // If child doesn't have its own data source, then merge
       if (!childDataComponent.source) {
-        extend(binComponent, childDataComponent.bin);
+        binComponent = {...childDataComponent.bin};
         delete childDataComponent.bin;
       }
     });
