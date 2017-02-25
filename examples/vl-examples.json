@@ -236,5 +236,23 @@
         "backgroundPosition": "30% 0%"
       }
     }
+  ],
+  "Interactive": [
+    {
+      "name": "brush",
+      "title": "Rectangular Brush"
+    },
+    {
+      "name": "paintbrush",
+      "title": "Paintbrush Highlight"
+    },
+    {
+      "name": "panzoom_scatter",
+      "title": "Scatterplot Pan & Zoom"
+    },
+    {
+      "name": "query_widgets",
+      "title": "Query Widgets"
+    }
   ]
 }
