@@ -103,7 +103,7 @@ function renderGallery() {
 
       imageGroup.append('div')
         .attr('class', 'image')
-        .style('background-image', function(d) {return 'url(' + window.location.origin + BASEURL + '/examples/images/' + d.name + '.svg)';})
+        .style('background-image', function(d) {return 'url(' + window.location.origin + BASEURL + 'build/examples/images/' + d.name + '.svg)';})
         .style('background-size', function(d) {
           var bgSizeDefault = 'cover';
           if (!d.galleryParameters || !d.galleryParameters.backgroundSize) {
