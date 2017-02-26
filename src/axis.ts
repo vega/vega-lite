@@ -86,10 +86,7 @@ export interface VlOnlyAxisBase {
 }
 
 export const AXIS_PROPERTIES:(keyof Axis)[] = [
-  // a) properties with special rules (so it has axis[property] methods) -- call rule functions
-  'domain', 'format', 'labels', 'grid', 'orient', 'ticks', 'tickSize', 'tickCount',  'title', 'values', 'zindex',
-  // b) properties without rules, only produce default values in the schema, or explicit value if specified
-    'labelPadding', 'maxExtent', 'minExtent', 'offset', 'position', 'tickSize', 'titlePadding'
+  'domain', 'format', 'grid', 'labelPadding', 'labels', 'maxExtent', 'minExtent', 'offset', 'orient', 'position', 'tickCount', 'ticks', 'tickSize', 'title', 'titlePadding', 'values', 'zindex'
 ];
 
 export const VL_ONLY_AXIS_PROPERTIES:(keyof VlOnlyAxisBase)[] = ['labelMaxLength'];
