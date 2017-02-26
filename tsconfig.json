@@ -21,7 +21,8 @@
     "test/**/*.ts",
     "examples/**/*.ts",
     "typings/*.d.ts",
-    "node_modules/@types/**/*.d.ts"
+    "node_modules/@types/**/*.d.ts",
+    "site/static/main.ts"
   ],
   "exclude": [
     "node_modules",
