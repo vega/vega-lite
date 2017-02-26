@@ -1329,7 +1329,7 @@ d3-scale@1, d3-scale@1.0.4:
     d3-time "1"
     d3-time-format "2"
 
-d3-selection@1, d3-selection@1.0.3:
+d3-selection@1, d3-selection@1.0.3, d3-selection@^1.0.3:
   version "1.0.3"
   resolved "https://registry.yarnpkg.com/d3-selection/-/d3-selection-1.0.3.tgz#e63e51416172427854c1bcdfa066eb5fe872c108"
 
@@ -1431,7 +1431,7 @@ debug-log@^1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/debug-log/-/debug-log-1.0.1.tgz#2307632d4c04382b8df8a32f70b895046d52745f"
 
-debug@2.2.0, debug@~2.2.0:
+debug@2.2.0, debug@^2.2.0, debug@~2.2.0:
   version "2.2.0"
   resolved "https://registry.yarnpkg.com/debug/-/debug-2.2.0.tgz#f87057e995b1a1f6ae6a4960664137bc56f039da"
   dependencies:
@@ -1440,12 +1440,6 @@ debug@2.2.0, debug@~2.2.0:
 debug@2.3.3:
   version "2.3.3"
   resolved "https://registry.yarnpkg.com/debug/-/debug-2.3.3.tgz#40c453e67e6e13c901ddec317af8986cda9eff8c"
-  dependencies:
-    ms "0.7.2"
-
-debug@^2.2.0:
-  version "2.6.1"
-  resolved "https://registry.yarnpkg.com/debug/-/debug-2.6.1.tgz#79855090ba2c4e3115cc7d8769491d58f0491351"
   dependencies:
     ms "0.7.2"
 
@@ -4449,6 +4443,13 @@ vega-datasets@vega/vega-datasets#gh-pages:
   version "1.8.0"
   resolved "https://codeload.github.com/vega/vega-datasets/tar.gz/34d749afe9a1c733004e6253ee6b6f367e5b856b"
 
+vega-embed@3.0.0-beta.4:
+  version "3.0.0-beta.4"
+  resolved "https://registry.yarnpkg.com/vega-embed/-/vega-embed-3.0.0-beta.4.tgz#8b7eee137db0b1cb20f61a64ff4f48d44db98fdb"
+  dependencies:
+    d3-selection "^1.0.3"
+    vega-schema-url-parser "^1.0.0-beta.2"
+
 vega-encode@>=1.0.0-beta:
   version "1.0.0-beta.11"
   resolved "https://registry.yarnpkg.com/vega-encode/-/vega-encode-1.0.0-beta.11.tgz#614a82702d910743c3c150920dfa70f933247a52"
@@ -4541,6 +4542,10 @@ vega-scenegraph@>=2.0.0-beta, vega-scenegraph@>=2.0.0-beta.11:
     vega-util "^1.1"
   optionalDependencies:
     canvas "^1.6"
+
+vega-schema-url-parser@^1.0.0-beta.2:
+  version "1.0.0-beta.2"
+  resolved "https://registry.yarnpkg.com/vega-schema-url-parser/-/vega-schema-url-parser-1.0.0-beta.2.tgz#0a9ff04b348b8d1a514226e2f8ca81dfad72579b"
 
 vega-statistics@1:
   version "1.1.1"

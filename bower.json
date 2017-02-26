@@ -29,11 +29,6 @@
     "example/_diff/*"
   ],
   "dependencies": {
-    "vega": "git@github.com:vega/vega.git#bc645b52f4377"
-  },
-  "devDependencies": {
-    "d3": "~4.3.0",
-    "highlightjs": "~9.4.0",
-    "octicons": "^4.2.0"
+    "vega": "3.0.0-beta.22"
   }
 }

@@ -1,6 +1,6 @@
 /* tslint:disable:no-unused-variable */
 
-declare const BASEURL: string, hljs: any;
+declare const BASEURL: string, hljs: any, vega: any;
 
 // IIFE to prevent function declarations from moving into the global scope
 (() => {
@@ -36,13 +36,16 @@ function renderExample($target: d3.Selection<any, any, any, any>, text: string) 
     spec.data.url = window.location.origin + BASEURL + '/' + spec.data.url;
   }
 
-  vg.embed(vis.node(), {
+  vega.embed(vis.node(), spec, {
     mode: 'vega-lite',
-    spec: spec,
     renderer: 'svg',
     actions: {
       source: false,
       export: false
+    }
+  }, (err: Error) => {
+    if (err) {
+      console.error(err);
     }
   });
 }
