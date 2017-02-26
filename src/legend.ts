@@ -1,7 +1,7 @@
 import {DateTime} from './datetime';
 import {VgLegendEncode, VgLegendBase, VgLegendConfig} from './vega.schema';
 
-export interface LegendConfig extends VgLegendConfig, VlOnlyLegendBase {
+export interface LegendConfig extends VgLegendConfig {
   /**
    * Whether month names and weekday names should be abbreviated.
    */
@@ -11,7 +11,7 @@ export interface LegendConfig extends VgLegendConfig, VlOnlyLegendBase {
 /**
  * Properties of a legend or boolean flag for determining whether to show it.
  */
-export interface Legend extends VgLegendBase, VlOnlyLegendBase {
+export interface Legend extends VgLegendBase {
   /**
    * Optional mark definitions for custom legend encoding.
    */
@@ -55,8 +55,6 @@ export interface Legend extends VgLegendBase, VlOnlyLegendBase {
    */
   zindex?: number;
 }
-
-export interface VlOnlyLegendBase {}
 
 export const defaultLegendConfig: LegendConfig = {
   orient: undefined, // implicitly "right"
