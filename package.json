@@ -20,7 +20,7 @@
     "test": "test"
   },
   "scripts": {
-    "build": "browserify src/vl.ts -p tsify -g [ babelify --presets [ es2015 ] ] -d -s vl | exorcist vega-lite.js.map > vega-lite.js ",
+    "build": "browserify src/vl.ts -p tsify -g [ babelify ] -d -s vl | exorcist vega-lite.js.map > vega-lite.js ",
     "postbuild": "uglifyjs vega-lite.js -cm --in-source-map vega-lite.js.map --source-map vega-lite.min.js.map > vega-lite.min.js && npm run schema",
     "build:all": "npm run clean && npm run build && npm run test:noschema && npm run build:images",
     "build:images": "npm run data && scripts/generate-images.sh",
@@ -41,10 +41,10 @@
     "presite": "tsc && npm run build && bower install && npm run data && npm run build:toc && npm run build:versions",
     "site": "bundle exec jekyll serve --incremental",
     "pretest": "tsc && npm run data",
-    "test": "nyc --reporter=html --reporter=text-summary mocha",
+    "test": "nyc --reporter=html --reporter=text-summary --require ./test/babel.ts mocha",
     "posttest": "npm run lint && npm run test:examples",
-    "test:examples": "npm run schema && mocha examples",
-    "test:noschema": "npm run pretest && nyc --reporter=html --reporter=text-summary mocha && npm run lint && mocha examples",
+    "test:examples": "npm run schema && mocha --require ./test/babel.ts examples",
+    "test:noschema": "npm run pretest && nyc --reporter=html --reporter=text-summary --require ./test/babel.ts mocha && npm run lint && mocha --require ./test/babel.ts examples",
     "codecov": "nyc report --reporter=json && codecov -f coverage/*.json",
     "test:debug": "npm run schema && mocha --debug-brk test examples",
     "watch:build": "watchify src/vl.ts -p tsify -v -d -s vl -o 'exorcist vega-lite.js.map > vega-lite.js'",
