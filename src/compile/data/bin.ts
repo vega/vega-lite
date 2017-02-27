@@ -1,9 +1,9 @@
 import {DataComponentCompiler} from './base';
 
-import {autoMaxBins} from '../../bin';
+import {autoMaxBins, Bin} from '../../bin';
 import {Channel} from '../../channel';
 import {field, FieldDef} from '../../fielddef';
-import {vals, flatten, hash, isBoolean,Dict} from '../../util';
+import {extend, vals, flatten, hash, isBoolean, Dict} from '../../util';
 import {VgTransform} from '../../vega.schema';
 import {hasDiscreteDomain} from '../../scale';
 
@@ -18,41 +18,39 @@ function numberFormatExpr(expr: string, format: string) {
 
 function parse(model: Model): Dict<VgTransform[]> {
   return model.reduceFieldDef(function(binComponent: Dict<VgTransform[]>, fieldDef: FieldDef, channel: Channel) {
-    const bin = model.fieldDef(channel).bin;
+    const fieldDefBin = model.fieldDef(channel).bin;
+    const bin: Bin = isBoolean(fieldDefBin) ? {} : fieldDefBin;
+    if (bin && !(<VgTransform>bin).maxbins && !(<VgTransform>bin).steps) {
+      (<VgTransform>bin).maxbins = autoMaxBins(channel);
+    }
     // Make this bin variable always an object
     // and extend it with maxbins if needed here.
-    let transform: VgTransform[] = [];
+    const transform: VgTransform[] = [];
     if (bin) {
-      const key = hash(bin) + fieldDef.field;
-      // FIXME: Check
-      if (!binComponent[key]) {
-        let binTrans: VgTransform = {
-          ...{type: 'bin',
-          field: fieldDef.field,
-          as: [field(fieldDef, {binSuffix: 'start'}), field(fieldDef, {binSuffix: 'end'})]
-          }, ...isBoolean(bin) ? {}: bin
+      const key = hash(bin) + '_' + fieldDef.field;
+      if (binComponent[key]) {
+        transform.push.apply(transform, binComponent[key]); // concat in place
+      } else {
+        const checkExtentAbsent: boolean = !bin.extent;
+        const extentSignal = model.getName(key + '_extent');
+        const binTrans: VgTransform = {
+          ...{
+            type: 'bin',
+            field: fieldDef.field,
+            as: [field(fieldDef, {binSuffix: 'start'}), field(fieldDef, {binSuffix: 'end'})]
+          },
+          ...bin,
+          // add extent if it's not specified
+          ...(checkExtentAbsent ? {extent: {signal: extentSignal}} : {})
         };
-
-        if (!binTrans.extent) {
-          const extentSignal = model.getName(fieldDef.field + '_extent');
+        if (checkExtentAbsent) {
           transform.push({
             type: 'extent',
             field: fieldDef.field,
             signal: extentSignal
           });
-
-          binTrans.extent = {signal: extentSignal};
         }
-
-        //
-        if (!binTrans.maxbins && !binTrans.step) {
-          // if both maxbins and step are not specified, need to automatically determine bin
-          binTrans.maxbins = autoMaxBins(channel);
-        }
-
         transform.push(binTrans);
-      } else {
-        transform = binComponent[key].slice();
       }
 
       const hasDiscreteDomainOrHasLegend = hasDiscreteDomain(model.scale(channel).type) || model.legend(channel);
@@ -70,7 +68,6 @@ function parse(model: Model): Dict<VgTransform[]> {
           expr: `${numberFormatExpr(startField, format)} + ' - ' + ${numberFormatExpr(endField, format)}`
         });
       }
-      // FIXME: current merging logic can produce redundant transforms when a field is binned for color and for non-color
       binComponent[key] = transform;
     }
     return binComponent;
@@ -88,7 +85,7 @@ export const bin: DataComponentCompiler<Dict<VgTransform[]>> = {
     // If child doesn't have its own data source, then merge
     if (!childDataComponent.source) {
       // FIXME: current merging logic can produce redundant transforms when a field is binned for color and for non-color
-      binComponent = {...childDataComponent.bin};
+      extend(binComponent, childDataComponent.bin);
       delete childDataComponent.bin;
     }
     return binComponent;
@@ -102,7 +99,7 @@ export const bin: DataComponentCompiler<Dict<VgTransform[]>> = {
 
       // If child doesn't have its own data source, then merge
       if (!childDataComponent.source) {
-        binComponent = {...childDataComponent.bin};
+        extend(binComponent, childDataComponent.bin);
         delete childDataComponent.bin;
       }
     });
