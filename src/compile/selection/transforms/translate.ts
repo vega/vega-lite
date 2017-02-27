@@ -1,4 +1,4 @@
-import {selector as parseSelector} from 'vega-parser';
+import {default as parseSelector} from 'vega-parser/src/parsers/event-selector';
 import {UnitModel} from './../../unit';
 import {SelectionComponent} from '../selection';
 import {X, Y, Channel} from '../../../channel';

@@ -20,7 +20,7 @@
     "test": "test"
   },
   "scripts": {
-    "build": "browserify src/vl.ts -p tsify -d -s vl | exorcist vega-lite.js.map > vega-lite.js ",
+    "build": "browserify src/vl.ts -p tsify -g [ babelify --presets [ es2015 ] ] -d -s vl | exorcist vega-lite.js.map > vega-lite.js ",
     "postbuild": "uglifyjs vega-lite.js -cm --in-source-map vega-lite.js.map --source-map vega-lite.min.js.map > vega-lite.min.js && npm run schema",
     "build:all": "npm run clean && npm run build && npm run test:noschema && npm run build:images",
     "build:images": "npm run data && scripts/generate-images.sh",
@@ -68,6 +68,8 @@
     "@types/mocha": "^2.2.39",
     "@types/node": "^7.0.5",
     "ajv": "5.0.1-beta.1",
+    "babel-preset-es2015": "^6.22.0",
+    "babelify": "^7.3.0",
     "browser-sync": "~2.18.8",
     "browserify": "~14.1.0",
     "chai": "~3.5.0",
