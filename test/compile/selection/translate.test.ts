@@ -2,7 +2,7 @@
 
 import {assert} from 'chai';
 import {parseUnitModel} from '../../util';
-import {selector as parseSelector} from 'vega-parser';
+import {default as parseSelector} from 'vega-parser/src/parsers/event-selector';
 import * as selection from '../../../src/compile/selection/selection';
 import translate from '../../../src/compile/selection/transforms/translate';
 

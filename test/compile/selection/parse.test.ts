@@ -3,7 +3,7 @@
 import {assert} from 'chai';
 import {parseUnitModel} from '../../util';
 import * as selection from '../../../src/compile/selection/selection';
-import {selector as parseSelector} from 'vega-parser';
+import {default as parseSelector} from 'vega-parser/src/parsers/event-selector';
 
 describe('Selection', function() {
   const model = parseUnitModel({
