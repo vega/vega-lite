@@ -16,22 +16,39 @@ function numberFormatExpr(expr: string, format: string) {
   return `format(${expr}, '${format}')`;
 }
 
+function checkDiscreteDomainOrLegend(model: Model, transform: VgTransform[], fieldDef: FieldDef, channel: Channel) {
+  const hasDiscreteDomainOrHasLegend = hasDiscreteDomain(model.scale(channel).type) || model.legend(channel);
+  if (hasDiscreteDomainOrHasLegend) {
+    // read format from axis or legend, if there is no format then use config.numberFormat
+    const format = (model.axis(channel) || model.legend(channel) || {}).format ||
+      model.config.numberFormat;
+
+    const startField = field(fieldDef, {datum: true, binSuffix: 'start'});
+    const endField = field(fieldDef, {datum: true, binSuffix: 'end'});
+
+    transform.push({
+      type: 'formula',
+      as: field(fieldDef, {binSuffix: 'range'}),
+      expr: `${numberFormatExpr(startField, format)} + ' - ' + ${numberFormatExpr(endField, format)}`
+    });
+  }
+}
+
 function parse(model: Model): Dict<VgTransform[]> {
   return model.reduceFieldDef(function(binComponent: Dict<VgTransform[]>, fieldDef: FieldDef, channel: Channel) {
     const fieldDefBin = model.fieldDef(channel).bin;
-    const bin: Bin = isBoolean(fieldDefBin) ? {} : fieldDefBin;
-    if (bin && !(<VgTransform>bin).maxbins && !(<VgTransform>bin).steps) {
-      (<VgTransform>bin).maxbins = autoMaxBins(channel);
-    }
-    // Make this bin variable always an object
-    // and extend it with maxbins if needed here.
-    const transform: VgTransform[] = [];
-    if (bin) {
+    if (fieldDefBin) {
+      // Make this bin variable always an object
+      // and extend it with maxbins if needed here.
+      const bin: Bin = isBoolean(fieldDefBin) ? {} : {...fieldDefBin};
+      if (!bin.maxbins && !bin.steps) {
+        bin.maxbins = autoMaxBins(channel);
+      }
       const key = hash(bin) + '_' + fieldDef.field;
       if (binComponent[key]) {
-        transform.push.apply(transform, binComponent[key]); // concat in place
+        checkDiscreteDomainOrLegend(model, binComponent[key], fieldDef, channel);
       } else {
-        const checkExtentAbsent: boolean = !bin.extent;
+        const transform: VgTransform[] = [];
         const extentSignal = model.getName(key + '_extent');
         const binTrans: VgTransform = {
           ...{
@@ -41,9 +58,9 @@ function parse(model: Model): Dict<VgTransform[]> {
           },
           ...bin,
           // add extent if it's not specified
-          ...(checkExtentAbsent ? {extent: {signal: extentSignal}} : {})
+          ...(!bin.extent ? {extent: {signal: extentSignal}} : {})
         };
-        if (checkExtentAbsent) {
+        if (!bin.extent) {
           transform.push({
             type: 'extent',
             field: fieldDef.field,
@@ -51,24 +68,10 @@ function parse(model: Model): Dict<VgTransform[]> {
           });
         }
         transform.push(binTrans);
+
+        checkDiscreteDomainOrLegend(model, transform, fieldDef, channel);
+        binComponent[key] = transform;
       }
-
-      const hasDiscreteDomainOrHasLegend = hasDiscreteDomain(model.scale(channel).type) || model.legend(channel);
-      if (hasDiscreteDomainOrHasLegend) {
-        // read format from axis or legend, if there is no format then use config.numberFormat
-        const format = (model.axis(channel) || model.legend(channel) || {}).format ||
-          model.config.numberFormat;
-
-        const startField = field(fieldDef, {datum: true, binSuffix: 'start'});
-        const endField = field(fieldDef, {datum: true, binSuffix: 'end'});
-
-        transform.push({
-          type: 'formula',
-          as: field(fieldDef, {binSuffix: 'range'}),
-          expr: `${numberFormatExpr(startField, format)} + ' - ' + ${numberFormatExpr(endField, format)}`
-        });
-      }
-      binComponent[key] = transform;
     }
     return binComponent;
   }, {});
