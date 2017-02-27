@@ -5,7 +5,7 @@ import {UnitModel} from '../unit';
 import {Channel} from '../../channel';
 import {Dict, extend, stringValue, isString} from '../../util';
 import {forEachTransform} from './transforms/transforms';
-import {default as parseSelector} from 'vega-parser/src/parsers/event-selector';
+import parseSelector from 'vega-parser/src/parsers/event-selector';
 import {VgData, VgBinding} from '../../vega.schema';
 import singleCompiler from './single';
 import multiCompiler from './multi';
