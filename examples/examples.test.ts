@@ -25,7 +25,7 @@ function validateVL(spec: vl.spec.ExtendedSpec) {
   }
   assert(valid, errors && errors.map((err: Ajv.ErrorObject) => err.message).join(', '));
 
-  assert(spec.$schema, 'https://vega.github.io/schema/vega-lite/v2.json');
+  assert.equal(spec.$schema, 'https://vega.github.io/schema/vega-lite/v2.json');
 }
 
 function validateVega(spec: vl.spec.ExtendedSpec) {
