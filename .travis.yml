@@ -12,14 +12,12 @@ after_success:
   - bash <(curl -s https://codecov.io/bash)
 cache: yarn
 notifications:
-  email:
-    on_success: never
-    on_failure: change
+  email: never
   slack:
     rooms:
-      - 'uwdub:Ry6mwlUX1aZevqiqmYLiA3N1'
+      - vega-js:eJe5JNgxfucTVcTMbeplKX3v
     on_success: never
-    on_failure: change
+    on_failure: always
 cache:
   directories:
   - $HOME/.yarn-cache
