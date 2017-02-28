@@ -289,12 +289,14 @@ export interface MarkConfig {
    */
   fontWeight?: FontWeight | FontWeightNumber;
 
+  /**
+   * Placeholder Text
+   */
+  text?: string;
 }
 
 export const defaultMarkConfig: MarkConfig = {
   color: '#4c78a8',
-
-
 };
 
 export interface BarConfig extends MarkConfig {
@@ -323,21 +325,14 @@ export const defaultBarConfig: BarConfig = {
 };
 
 export interface TextConfig extends MarkConfig {
-
   /**
    * Whether month names and weekday names should be abbreviated.
    */
   shortTimeLabels?: boolean;
-
-  /**
-   * Placeholder Text
-   */
-  text?: string;
 }
 
 export const defaultTextConfig: TextConfig = {
   baseline: 'middle',
-  text: 'Abc'
 };
 
 export interface TickConfig extends MarkConfig {

@@ -438,6 +438,10 @@
                     "minimum": 0,
                     "type": "number"
                 },
+                "text": {
+                    "description": "Placeholder Text",
+                    "type": "string"
+                },
                 "theta": {
                     "description": "Polar coordinate angle, in radians, of the text label from the origin determined by the x and y properties. Values for theta follow the same convention of arc mark startAngle and endAngle properties: angles are measured in radians, with 0 indicating \"north\".",
                     "type": "number"
@@ -2268,6 +2272,10 @@
                     "minimum": 0,
                     "type": "number"
                 },
+                "text": {
+                    "description": "Placeholder Text",
+                    "type": "string"
+                },
                 "theta": {
                     "description": "Polar coordinate angle, in radians, of the text label from the origin determined by the x and y properties. Values for theta follow the same convention of arc mark startAngle and endAngle properties: angles are measured in radians, with 0 indicating \"north\".",
                     "type": "number"
@@ -3455,6 +3463,10 @@
                     "maximum": 1,
                     "minimum": 0,
                     "type": "number"
+                },
+                "text": {
+                    "description": "Placeholder Text",
+                    "type": "string"
                 },
                 "theta": {
                     "description": "Polar coordinate angle, in radians, of the text label from the origin determined by the x and y properties. Values for theta follow the same convention of arc mark startAngle and endAngle properties: angles are measured in radians, with 0 indicating \"north\".",
