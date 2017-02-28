@@ -232,7 +232,7 @@ export const defaultConfig: Config = {
   area: {},
   bar: mark.defaultBarConfig,
   circle: mark.defaultCircleConfig,
-  line: mark.defaultLineConfig,
+  line: {},
   point: mark.defaultPointConfig,
   rect: {},
   rule: mark.defaultRuleConfig,

@@ -365,11 +365,6 @@ export const defaultBarConfig: BarConfig = {
   continuousBandSize: 2
 };
 
-
-export const defaultLineConfig: MarkConfig = {
-  strokeWidth: 2
-};
-
 export interface SymbolConfig extends MarkConfig {
   /**
    * Default minimum value for point size scale with zero=false.
@@ -394,15 +389,11 @@ export interface PointConfig extends SymbolConfig {
 }
 
 export const defaultSymbolConfig: PointConfig = {
-  size: 30,
-
   // FIXME: revise if these *can* become ratios of rangeStep
   minSize: 9, // Point size is area. For square point, 9 = 3 pixel ^ 2, not too small!
-  strokeWidth: 2
 };
 
 export const defaultPointConfig = extend({}, defaultSymbolConfig, {
-  shape: 'circle',
   shapes: ['circle', 'square', 'cross', 'diamond', 'triangle-up', 'triangle-down'],
 });
 

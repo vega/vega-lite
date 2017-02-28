@@ -113,7 +113,6 @@ describe('Mark: Point', function() {
     });
 
     it('should be an unfilled circle', function(){
-      assert.deepEqual(props.shape, {value: 'circle'});
       assert.deepEqual(props.fill, {value: 'transparent'});
       assert.deepEqual(props.stroke, {value: defaultMarkConfig.color});
     });
