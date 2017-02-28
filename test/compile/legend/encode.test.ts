@@ -9,17 +9,6 @@ import {TEMPORAL, QUANTITATIVE} from '../../../src/type';
 
 describe('compile/legend', function() {
   describe('encode.symbols', function() {
-    it('should have strokeWidth if filled (by default)', function() {
-      const symbol = encode.symbols({field: 'a'}, {}, parseUnitModel({
-          mark: "point",
-          encoding: {
-            x: {field: "a", type: "nominal"},
-            color: {field: "a", type: "nominal"}
-          }
-        }), COLOR);
-        assert.deepEqual(symbol.strokeWidth.value, 2);
-    });
-
     it('should not have strokeDash and strokeDashOffset', function() {
       const symbol = encode.symbols({field: 'a'}, {}, parseUnitModel({
           mark: "point",
@@ -28,8 +17,8 @@ describe('compile/legend', function() {
             color: {field: "a", type: "nominal"}
           }
         }), COLOR);
-        assert.isUndefined(symbol.strokeDash);
-        assert.isUndefined(symbol.strokeDashOffset);
+        assert.isUndefined((symbol||{}).strokeDash);
+        assert.isUndefined((symbol||{}).strokeDashOffset);
     });
 
     it('should return not override size of the symbol for shape channel', function() {
