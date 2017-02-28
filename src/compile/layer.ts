@@ -7,6 +7,7 @@ import {Legend} from '../legend';
 import {FILL_STROKE_CONFIG} from '../mark';
 import {Scale} from '../scale';
 import {LayerSpec} from '../spec';
+import {Projection} from '../projection';
 import {StackProperties} from '../stack';
 import {Dict, duplicate, flatten, keys, mergeDeep} from '../util';
 import {isSignalRefDomain, VgData, VgEncodeEntry, VgScale} from '../vega.schema';
@@ -28,6 +29,8 @@ export class LayerModel extends Model {
   protected readonly axes: Dict<Axis> = {};
 
   protected readonly legends: Dict<Legend> = {};
+
+  protected readonly projections: Dict<Projection> = {};
 
   public readonly config: Config;
 
@@ -145,6 +148,12 @@ export class LayerModel extends Model {
   public parseMark() {
     this.children.forEach(function(child) {
       child.parseMark();
+    });
+  }
+
+  public parseProjection() {
+    this.children.forEach(function(child) {
+      child.parseProjection();
     });
   }
 

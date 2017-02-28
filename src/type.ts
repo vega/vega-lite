@@ -6,20 +6,26 @@ export namespace Type {
   export const ORDINAL: 'ordinal' = 'ordinal';
   export const TEMPORAL: 'temporal' = 'temporal';
   export const NOMINAL: 'nominal' = 'nominal';
+  export const GEOJSON: 'geojson' = 'geojson';
+  export const LONGITUDE: 'longitude' = 'longitude';
+  export const LATITUDE: 'latitude' = 'latitude';
 }
-export type Type = typeof Type.QUANTITATIVE | typeof Type.ORDINAL | typeof Type.TEMPORAL | typeof Type.NOMINAL;
+export type Type = typeof Type.QUANTITATIVE | typeof Type.ORDINAL | typeof Type.TEMPORAL | typeof Type.NOMINAL | typeof Type.GEOJSON | typeof Type.LONGITUDE | typeof Type.LATITUDE;
 
 export const QUANTITATIVE = Type.QUANTITATIVE;
-export const ORDINAL = Type.ORDINAL;
-export const TEMPORAL = Type.TEMPORAL;
-export const NOMINAL = Type.NOMINAL;
+export const ORDINAL      = Type.ORDINAL;
+export const TEMPORAL     = Type.TEMPORAL;
+export const NOMINAL      = Type.NOMINAL;
+export const GEOJSON      = Type.GEOJSON;
+export const LONGITUDE    = Type.LONGITUDE;
+export const LATITUDE     = Type.LATITUDE;
 
 /**
  * Get full, lowercase type name for a given type.
  * @param  type
  * @return Full type name.
  */
-export function getFullName(type: Type|string): Type {
+export function getFullName(type: Type | string): Type {
   if (type) {
     type = type.toLowerCase();
     switch (type) {

@@ -12,9 +12,10 @@ import {hasDiscreteDomain, Scale} from '../scale';
 import {SortField, SortOrder} from '../sort';
 import {BaseSpec, Padding} from '../spec';
 import {Transform} from '../transform';
+import {Projection} from '../projection';
 import {Formula} from '../transform';
 import {Dict, extend, vals} from '../util';
-import {VgAxis, VgData, VgEncodeEntry, VgLegend, VgScale} from '../vega.schema';
+import {VgAxis, VgData, VgEncodeEntry, VgLegend, VgScale, VgProjection} from '../vega.schema';
 
 import {StackProperties} from '../stack';
 import {DataComponent} from './data/data';
@@ -44,6 +45,8 @@ export interface Component {
 
   /** Dictionary mapping channel to grid mark group for facet (and concat?) */
   gridGroups: Dict<VgEncodeEntry[]>;
+
+  projections: VgProjection[];
 
   mark: VgEncodeEntry[];
 }
@@ -95,6 +98,9 @@ export abstract class Model {
   /** Name map for scales, which can be renamed by a model's parent. */
   protected scaleNameMap: NameMapInterface;
 
+  /** Name map for scales, which can be renamed by a model's parent. */
+  protected projectionNameMap: NameMapInterface;
+
   /** Name map for size, which can be renamed by a model's parent. */
   protected sizeNameMap: NameMapInterface;
 
@@ -104,6 +110,8 @@ export abstract class Model {
   protected abstract readonly axes: Dict<Axis> = {};
 
   protected abstract readonly legends: Dict<Legend> = {};
+
+  protected abstract readonly projections: Dict<Projection> = {};
 
   public abstract readonly config: Config;
 
@@ -122,6 +130,7 @@ export abstract class Model {
     // Shared name maps
     this.dataNameMap = parent ? parent.dataNameMap : new NameMap();
     this.scaleNameMap = parent ? parent.scaleNameMap : new NameMap();
+    this.projectionNameMap = parent ? parent.projectionNameMap : new NameMap();
     this.sizeNameMap = parent ? parent.sizeNameMap : new NameMap();
 
     this.data = spec.data;
@@ -138,7 +147,18 @@ export abstract class Model {
       }
     }
 
-    this.component = {data: null, layout: null, mark: null, scales: null, axes: null, axisGroups: null, gridGroups: null, legends: null, selection: null};
+    this.component = {
+      data: null,
+      layout: null,
+      mark: null,
+      scales: null,
+      projections: null,
+      axes: null,
+      axisGroups: null,
+      gridGroups: null,
+      legends: null,
+      selection: null
+    };
   }
 
 
@@ -149,6 +169,7 @@ export abstract class Model {
     this.parseSelection();
     this.parseAxis(); // depends on scale name
     this.parseLegend(); // depends on scale name
+    this.parseProjection();
     this.parseAxisGroup(); // depends on child axis
     this.parseGridGroup();
     this.parseMark(); // depends on data name and scale name, axisGroup, gridGroup and children's scale, axis, legend and mark.
@@ -167,6 +188,8 @@ export abstract class Model {
   public abstract parseAxis(): void;
 
   public abstract parseLegend(): void;
+
+  public abstract parseProjection(): void;
 
   // TODO: revise if these two methods make sense for shared scale concat
   public abstract parseAxisGroup(): void;
