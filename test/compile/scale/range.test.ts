@@ -6,7 +6,6 @@ import {default as rangeMixins, parseRange} from '../../../src/compile/scale/ran
 
 import {defaultConfig} from '../../../src/config';
 import * as log from '../../../src/log';
-import * as mark from '../../../src/mark';
 import {Mark} from '../../../src/mark';
 import {CONTINUOUS_TO_CONTINUOUS_SCALES, ScaleType} from '../../../src/scale';
 import {ORDINAL, NOMINAL, QUANTITATIVE} from '../../../src/type';
@@ -212,7 +211,7 @@ describe('compile/scale', () => {
       it('should use default opacityRange as opacity\'s scale range.', () => {
         assert.deepEqual(
           rangeMixins('opacity', 'linear', QUANTITATIVE, {}, defaultConfig, undefined, 'point', undefined, []),
-          {range: [mark.defaultMarkConfig.minOpacity, mark.defaultMarkConfig.maxOpacity]}
+          {range: [defaultConfig.scale.minOpacity, defaultConfig.scale.maxOpacity]}
         );
       });
     });
@@ -221,7 +220,7 @@ describe('compile/scale', () => {
       describe('bar', function() {
         it('should return [minBandSize, maxBandSize] if both are specified', () => {
           const config = {
-            bar: {minBandSize: 2, maxBandSize: 9}
+            scale: {minBandSize: 2, maxBandSize: 9}
           };
           assert.deepEqual(
             rangeMixins('size', 'linear', QUANTITATIVE, {}, config, undefined, 'bar', undefined, []),
@@ -240,7 +239,7 @@ describe('compile/scale', () => {
       describe('tick', function() {
         it('should return [minBandSize, maxBandSize] if both are specified', () => {
           const config = {
-            tick: {minBandSize: 4, maxBandSize: 9}
+            scale: {minBandSize: 4, maxBandSize: 9}
           };
           assert.deepEqual(
             rangeMixins('size', 'linear', QUANTITATIVE, {}, config, undefined, 'tick', undefined, []),
@@ -251,7 +250,7 @@ describe('compile/scale', () => {
         it('should return [(default)minBandSize, rangeStep-1] by default since maxSize config is not specified', () => {
           assert.deepEqual(
             rangeMixins('size', 'linear', QUANTITATIVE, {}, defaultConfig, undefined, 'tick', undefined, []),
-            {range: [defaultConfig.tick.minBandSize, defaultConfig.scale.rangeStep - 1]}
+            {range: [defaultConfig.scale.minBandSize, defaultConfig.scale.rangeStep - 1]}
           );
         });
       });
@@ -260,7 +259,7 @@ describe('compile/scale', () => {
         it('should return [minFontSize, maxFontSize]', () => {
           assert.deepEqual(
             rangeMixins('size', 'linear', QUANTITATIVE, {}, defaultConfig, undefined, 'text', undefined, []),
-            {range: [defaultConfig.text.minFontSize, defaultConfig.text.maxFontSize]}
+            {range: [defaultConfig.scale.minFontSize, defaultConfig.scale.maxFontSize]}
           );
         });
       });
@@ -269,7 +268,7 @@ describe('compile/scale', () => {
         it('should return [minStrokeWidth, maxStrokeWidth]', () => {
           assert.deepEqual(
             rangeMixins('size', 'linear', QUANTITATIVE, {}, defaultConfig, undefined, 'rule', undefined, []),
-            {range: [defaultConfig.mark.minStrokeWidth, defaultConfig.mark.maxStrokeWidth]}
+            {range: [defaultConfig.scale.minStrokeWidth, defaultConfig.scale.maxStrokeWidth]}
           );
         });
       });
@@ -277,10 +276,12 @@ describe('compile/scale', () => {
       describe('point, square, circle', function() {
         it('should return [minSize, maxSize]', () => {
           for (let m of ['point', 'square', 'circle'] as Mark[]) {
-            let config = {};
-            config[m] = {
-              minSize: 5,
-              maxSize: 25
+            let config = {
+              scale: {
+                minSize: 5,
+                maxSize: 25
+
+              }
             };
 
             assert.deepEqual(

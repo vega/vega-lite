@@ -385,38 +385,6 @@
                     "$ref": "#/definitions/Interpolate",
                     "description": "The line interpolation method to use for line and area marks. One of the following:\n- `\"linear\"`: piecewise linear segments, as in a polyline.\n- `\"linear-closed\"`: close the linear segments to form a polygon.\n- `\"step\"`: alternate between horizontal and vertical segments, as in a step function.\n- `\"step-before\"`: alternate between vertical and horizontal segments, as in a step function.\n- `\"step-after\"`: alternate between horizontal and vertical segments, as in a step function.\n- `\"basis\"`: a B-spline, with control point duplication on the ends.\n- `\"basis-open\"`: an open B-spline; may not intersect the start or end.\n- `\"basis-closed\"`: a closed B-spline, as in a loop.\n- `\"cardinal\"`: a Cardinal spline, with control point duplication on the ends.\n- `\"cardinal-open\"`: an open Cardinal spline; may not intersect the start or end, but will intersect other control points.\n- `\"cardinal-closed\"`: a closed Cardinal spline, as in a loop.\n- `\"bundle\"`: equivalent to basis, except the tension parameter is used to straighten the spline.\n- `\"monotone\"`: cubic interpolation that preserves monotonicity in y."
                 },
-                "maxBandSize": {
-                    "description": "The default max value for mapping quantitative fields to bar's size/bandSize.\nIf undefined (default), we will use bandSize - 1.",
-                    "minimum": 0,
-                    "type": "number"
-                },
-                "maxOpacity": {
-                    "description": "Default max opacity for mapping a field to opacity.",
-                    "maximum": 1,
-                    "minimum": 0,
-                    "type": "number"
-                },
-                "maxStrokeWidth": {
-                    "description": "Default max strokeWidth for strokeWidth  (or rule/line's size) scale.",
-                    "minimum": 0,
-                    "type": "number"
-                },
-                "minBandSize": {
-                    "description": "The default min value for mapping quantitative fields to bar's size/bandSize scale with zero=false\nIf undefined (default), we will use the `continuousBandSize` value.",
-                    "minimum": 0,
-                    "type": "number"
-                },
-                "minOpacity": {
-                    "description": "Default minimum opacity for mapping a field to opacity.",
-                    "maximum": 1,
-                    "minimum": 0,
-                    "type": "number"
-                },
-                "minStrokeWidth": {
-                    "description": "Default minimum strokeWidth for strokeWidth (or rule/line's size) scale with zero=false.",
-                    "minimum": 0,
-                    "type": "number"
-                },
                 "opacity": {
                     "maximum": 1,
                     "minimum": 0,
@@ -967,7 +935,7 @@
                     "description": "Cell Config"
                 },
                 "circle": {
-                    "$ref": "#/definitions/SymbolConfig",
+                    "$ref": "#/definitions/MarkConfig",
                     "description": "Circle-Specific Config"
                 },
                 "countTitle": {
@@ -1025,7 +993,7 @@
                     "description": "The default visualization padding, in pixels, from the edge of the visualization canvas to the data rectangle. This can be a single number or an object with `\"top\"`, `\"left\"`, `\"right\"`, `\"bottom\"` properties.\n\n__Default value__: `5`\n\n* @minimum 0"
                 },
                 "point": {
-                    "$ref": "#/definitions/PointConfig",
+                    "$ref": "#/definitions/MarkConfig",
                     "description": "Point-Specific Config"
                 },
                 "range": {
@@ -1095,7 +1063,7 @@
                     "description": "Selection Config"
                 },
                 "square": {
-                    "$ref": "#/definitions/SymbolConfig",
+                    "$ref": "#/definitions/MarkConfig",
                     "description": "Square-Specific Config"
                 },
                 "stack": {
@@ -2247,28 +2215,6 @@
                     "$ref": "#/definitions/Interpolate",
                     "description": "The line interpolation method to use for line and area marks. One of the following:\n- `\"linear\"`: piecewise linear segments, as in a polyline.\n- `\"linear-closed\"`: close the linear segments to form a polygon.\n- `\"step\"`: alternate between horizontal and vertical segments, as in a step function.\n- `\"step-before\"`: alternate between vertical and horizontal segments, as in a step function.\n- `\"step-after\"`: alternate between horizontal and vertical segments, as in a step function.\n- `\"basis\"`: a B-spline, with control point duplication on the ends.\n- `\"basis-open\"`: an open B-spline; may not intersect the start or end.\n- `\"basis-closed\"`: a closed B-spline, as in a loop.\n- `\"cardinal\"`: a Cardinal spline, with control point duplication on the ends.\n- `\"cardinal-open\"`: an open Cardinal spline; may not intersect the start or end, but will intersect other control points.\n- `\"cardinal-closed\"`: a closed Cardinal spline, as in a loop.\n- `\"bundle\"`: equivalent to basis, except the tension parameter is used to straighten the spline.\n- `\"monotone\"`: cubic interpolation that preserves monotonicity in y."
                 },
-                "maxOpacity": {
-                    "description": "Default max opacity for mapping a field to opacity.",
-                    "maximum": 1,
-                    "minimum": 0,
-                    "type": "number"
-                },
-                "maxStrokeWidth": {
-                    "description": "Default max strokeWidth for strokeWidth  (or rule/line's size) scale.",
-                    "minimum": 0,
-                    "type": "number"
-                },
-                "minOpacity": {
-                    "description": "Default minimum opacity for mapping a field to opacity.",
-                    "maximum": 1,
-                    "minimum": 0,
-                    "type": "number"
-                },
-                "minStrokeWidth": {
-                    "description": "Default minimum strokeWidth for strokeWidth (or rule/line's size) scale with zero=false.",
-                    "minimum": 0,
-                    "type": "number"
-                },
                 "opacity": {
                     "maximum": 1,
                     "minimum": 0,
@@ -2457,180 +2403,6 @@
                 "pointStyle": {
                     "$ref": "#/definitions/MarkConfig",
                     "description": "Default style for the overlayed point."
-                }
-            },
-            "type": "object"
-        },
-        "PointConfig": {
-            "additionalProperties": false,
-            "properties": {
-                "align": {
-                    "$ref": "#/definitions/HorizontalAlign",
-                    "description": "The horizontal alignment of the text. One of left, right, center."
-                },
-                "angle": {
-                    "description": "The rotation angle of the text, in degrees.",
-                    "maximum": 360,
-                    "minimum": 0,
-                    "type": "number"
-                },
-                "baseline": {
-                    "$ref": "#/definitions/VerticalAlign",
-                    "description": "The vertical alignment of the text. One of top, middle, bottom."
-                },
-                "color": {
-                    "description": "Default color.",
-                    "type": "string"
-                },
-                "dx": {
-                    "description": "The horizontal offset, in pixels, between the text label and its anchor point. The offset is applied after rotation by the angle property.",
-                    "type": "number"
-                },
-                "dy": {
-                    "description": "The vertical offset, in pixels, between the text label and its anchor point. The offset is applied after rotation by the angle property.",
-                    "type": "number"
-                },
-                "fill": {
-                    "description": "Default Fill Color.  This has higher precedence than config.color",
-                    "type": "string"
-                },
-                "fillOpacity": {
-                    "maximum": 1,
-                    "minimum": 0,
-                    "type": "number"
-                },
-                "filled": {
-                    "description": "Whether the shape\\'s color should be used as fill color instead of stroke color.\nThis is only applicable for \"bar\", \"point\", and \"area\".\nAll marks except \"point\", \"line\", and \"rule\" are filled by default.",
-                    "type": "boolean"
-                },
-                "font": {
-                    "description": "The typeface to set the text in (e.g., Helvetica Neue).",
-                    "minimum": 0,
-                    "type": "string"
-                },
-                "fontSize": {
-                    "description": "The font size, in pixels.",
-                    "minimum": 0,
-                    "type": "number"
-                },
-                "fontStyle": {
-                    "$ref": "#/definitions/FontStyle",
-                    "description": "The font style (e.g., italic)."
-                },
-                "fontWeight": {
-                    "anyOf": [
-                        {
-                            "enum": [
-                                "bold",
-                                "normal"
-                            ],
-                            "type": "string"
-                        },
-                        {
-                            "type": "number"
-                        }
-                    ],
-                    "description": "The font weight (e.g., `\"normal\"`, `\"bold\"`, `900`)."
-                },
-                "interpolate": {
-                    "$ref": "#/definitions/Interpolate",
-                    "description": "The line interpolation method to use for line and area marks. One of the following:\n- `\"linear\"`: piecewise linear segments, as in a polyline.\n- `\"linear-closed\"`: close the linear segments to form a polygon.\n- `\"step\"`: alternate between horizontal and vertical segments, as in a step function.\n- `\"step-before\"`: alternate between vertical and horizontal segments, as in a step function.\n- `\"step-after\"`: alternate between horizontal and vertical segments, as in a step function.\n- `\"basis\"`: a B-spline, with control point duplication on the ends.\n- `\"basis-open\"`: an open B-spline; may not intersect the start or end.\n- `\"basis-closed\"`: a closed B-spline, as in a loop.\n- `\"cardinal\"`: a Cardinal spline, with control point duplication on the ends.\n- `\"cardinal-open\"`: an open Cardinal spline; may not intersect the start or end, but will intersect other control points.\n- `\"cardinal-closed\"`: a closed Cardinal spline, as in a loop.\n- `\"bundle\"`: equivalent to basis, except the tension parameter is used to straighten the spline.\n- `\"monotone\"`: cubic interpolation that preserves monotonicity in y."
-                },
-                "maxOpacity": {
-                    "description": "Default max opacity for mapping a field to opacity.",
-                    "maximum": 1,
-                    "minimum": 0,
-                    "type": "number"
-                },
-                "maxSize": {
-                    "description": "Default max value for point size scale.",
-                    "minimum": 0,
-                    "type": "number"
-                },
-                "maxStrokeWidth": {
-                    "description": "Default max strokeWidth for strokeWidth  (or rule/line's size) scale.",
-                    "minimum": 0,
-                    "type": "number"
-                },
-                "minOpacity": {
-                    "description": "Default minimum opacity for mapping a field to opacity.",
-                    "maximum": 1,
-                    "minimum": 0,
-                    "type": "number"
-                },
-                "minSize": {
-                    "description": "Default minimum value for point size scale with zero=false.",
-                    "minimum": 0,
-                    "type": "number"
-                },
-                "minStrokeWidth": {
-                    "description": "Default minimum strokeWidth for strokeWidth (or rule/line's size) scale with zero=false.",
-                    "minimum": 0,
-                    "type": "number"
-                },
-                "opacity": {
-                    "maximum": 1,
-                    "minimum": 0,
-                    "type": "number"
-                },
-                "orient": {
-                    "$ref": "#/definitions/Orient",
-                    "description": "The orientation of a non-stacked bar, tick, area, and line charts.\nThe value is either horizontal (default) or vertical.\n- For bar, rule and tick, this determines whether the size of the bar and tick\nshould be applied to x or y dimension.\n- For area, this property determines the orient property of the Vega output.\n- For line, this property determines the sort order of the points in the line\nif `config.sortLineBy` is not specified.\nFor stacked charts, this is always determined by the orientation of the stack;\ntherefore explicitly specified value will be ignored."
-                },
-                "radius": {
-                    "description": "Polar coordinate radial offset, in pixels, of the text label from the origin determined by the x and y properties.",
-                    "minimum": 0,
-                    "type": "number"
-                },
-                "shape": {
-                    "description": "The default symbol shape to use. One of: `\"circle\"` (default), `\"square\"`, `\"cross\"`, `\"diamond\"`, `\"triangle-up\"`, or `\"triangle-down\"`, or a custom SVG path.",
-                    "type": "string"
-                },
-                "shapes": {
-                    "description": "The default collection of symbol shapes for mapping nominal fields to shapes of point marks (i.e., range of a `shape` scale).\nEach value should be one of: `\"circle\"`, `\"square\"`, `\"cross\"`, `\"diamond\"`, `\"triangle-up\"`, or `\"triangle-down\"`, or a custom SVG path.",
-                    "items": {
-                        "type": "string"
-                    },
-                    "type": "array"
-                },
-                "size": {
-                    "description": "The pixel area each the point/circle/square.\nFor example: in the case of circles, the radius is determined in part by the square root of the size value.",
-                    "minimum": 0,
-                    "type": "number"
-                },
-                "stroke": {
-                    "description": "Default Stroke Color.  This has higher precedence than config.color",
-                    "type": "string"
-                },
-                "strokeDash": {
-                    "description": "An array of alternating stroke, space lengths for creating dashed or dotted lines.",
-                    "items": {
-                        "type": "number"
-                    },
-                    "type": "array"
-                },
-                "strokeDashOffset": {
-                    "description": "The offset (in pixels) into which to begin drawing with the stroke dash array.",
-                    "type": "number"
-                },
-                "strokeOpacity": {
-                    "maximum": 1,
-                    "minimum": 0,
-                    "type": "number"
-                },
-                "strokeWidth": {
-                    "minimum": 0,
-                    "type": "number"
-                },
-                "tension": {
-                    "description": "Depending on the interpolation type, sets the tension parameter (for line and area marks).",
-                    "maximum": 1,
-                    "minimum": 0,
-                    "type": "number"
-                },
-                "theta": {
-                    "description": "Polar coordinate angle, in radians, of the text label from the origin determined by the x and y properties. Values for theta follow the same convention of arc mark startAngle and endAngle properties: angles are measured in radians, with 0 indicating \"north\".",
-                    "type": "number"
                 }
             },
             "type": "object"
@@ -2907,6 +2679,58 @@
                     "minimum": 0,
                     "type": "integer"
                 },
+                "maxBandSize": {
+                    "description": "The default max value for mapping quantitative fields to bar's size/bandSize.\nIf undefined (default), we will use bandSize - 1.",
+                    "minimum": 0,
+                    "type": "number"
+                },
+                "maxFontSize": {
+                    "description": "The default max value for mapping quantitative fields to text's size/fontSize.\nIf undefined (default), we will use bandSize - 1.",
+                    "minimum": 0,
+                    "type": "number"
+                },
+                "maxOpacity": {
+                    "description": "Default max opacity for mapping a field to opacity.",
+                    "maximum": 1,
+                    "minimum": 0,
+                    "type": "number"
+                },
+                "maxSize": {
+                    "description": "Default max value for point size scale.",
+                    "minimum": 0,
+                    "type": "number"
+                },
+                "maxStrokeWidth": {
+                    "description": "Default max strokeWidth for strokeWidth  (or rule/line's size) scale.",
+                    "minimum": 0,
+                    "type": "number"
+                },
+                "minBandSize": {
+                    "description": "The default min value for mapping quantitative fields to bar and tick's size/bandSize scale with zero=false\nIf undefined (default), we will use the `continuousBandSize` value for bar and 3 for ticks.",
+                    "minimum": 0,
+                    "type": "number"
+                },
+                "minFontSize": {
+                    "description": "The default min value for mapping quantitative fields to tick's size/fontSize scale with zero=false",
+                    "minimum": 0,
+                    "type": "number"
+                },
+                "minOpacity": {
+                    "description": "Default minimum opacity for mapping a field to opacity.",
+                    "maximum": 1,
+                    "minimum": 0,
+                    "type": "number"
+                },
+                "minSize": {
+                    "description": "Default minimum value for point size scale with zero=false.",
+                    "minimum": 0,
+                    "type": "number"
+                },
+                "minStrokeWidth": {
+                    "description": "Default minimum strokeWidth for strokeWidth (or rule/line's size) scale with zero=false.",
+                    "minimum": 0,
+                    "type": "number"
+                },
                 "pointPadding": {
                     "description": "Default outer padding for `x` and `y` point-ordinal scales.",
                     "maximum": 1,
@@ -2928,6 +2752,13 @@
                 "round": {
                     "description": "If true, rounds numeric output values to integers.\nThis can be helpful for snapping to the pixel grid.\n(Only available for `x`, `y`, `size`, `row`, and `column` scales.)",
                     "type": "boolean"
+                },
+                "shapes": {
+                    "description": "The default collection of symbol shapes for mapping nominal fields to shapes of point marks (i.e., range of a `shape` scale).\nEach value should be one of: `\"circle\"`, `\"square\"`, `\"cross\"`, `\"diamond\"`, `\"triangle-up\"`, or `\"triangle-down\"`, or a custom SVG path.",
+                    "items": {
+                        "type": "string"
+                    },
+                    "type": "array"
                 },
                 "textXRangeStep": {
                     "description": "Default range step for `x` ordinal scale when is mark is `text`.",
@@ -3305,173 +3136,6 @@
             ],
             "type": "string"
         },
-        "SymbolConfig": {
-            "additionalProperties": false,
-            "properties": {
-                "align": {
-                    "$ref": "#/definitions/HorizontalAlign",
-                    "description": "The horizontal alignment of the text. One of left, right, center."
-                },
-                "angle": {
-                    "description": "The rotation angle of the text, in degrees.",
-                    "maximum": 360,
-                    "minimum": 0,
-                    "type": "number"
-                },
-                "baseline": {
-                    "$ref": "#/definitions/VerticalAlign",
-                    "description": "The vertical alignment of the text. One of top, middle, bottom."
-                },
-                "color": {
-                    "description": "Default color.",
-                    "type": "string"
-                },
-                "dx": {
-                    "description": "The horizontal offset, in pixels, between the text label and its anchor point. The offset is applied after rotation by the angle property.",
-                    "type": "number"
-                },
-                "dy": {
-                    "description": "The vertical offset, in pixels, between the text label and its anchor point. The offset is applied after rotation by the angle property.",
-                    "type": "number"
-                },
-                "fill": {
-                    "description": "Default Fill Color.  This has higher precedence than config.color",
-                    "type": "string"
-                },
-                "fillOpacity": {
-                    "maximum": 1,
-                    "minimum": 0,
-                    "type": "number"
-                },
-                "filled": {
-                    "description": "Whether the shape\\'s color should be used as fill color instead of stroke color.\nThis is only applicable for \"bar\", \"point\", and \"area\".\nAll marks except \"point\", \"line\", and \"rule\" are filled by default.",
-                    "type": "boolean"
-                },
-                "font": {
-                    "description": "The typeface to set the text in (e.g., Helvetica Neue).",
-                    "minimum": 0,
-                    "type": "string"
-                },
-                "fontSize": {
-                    "description": "The font size, in pixels.",
-                    "minimum": 0,
-                    "type": "number"
-                },
-                "fontStyle": {
-                    "$ref": "#/definitions/FontStyle",
-                    "description": "The font style (e.g., italic)."
-                },
-                "fontWeight": {
-                    "anyOf": [
-                        {
-                            "enum": [
-                                "bold",
-                                "normal"
-                            ],
-                            "type": "string"
-                        },
-                        {
-                            "type": "number"
-                        }
-                    ],
-                    "description": "The font weight (e.g., `\"normal\"`, `\"bold\"`, `900`)."
-                },
-                "interpolate": {
-                    "$ref": "#/definitions/Interpolate",
-                    "description": "The line interpolation method to use for line and area marks. One of the following:\n- `\"linear\"`: piecewise linear segments, as in a polyline.\n- `\"linear-closed\"`: close the linear segments to form a polygon.\n- `\"step\"`: alternate between horizontal and vertical segments, as in a step function.\n- `\"step-before\"`: alternate between vertical and horizontal segments, as in a step function.\n- `\"step-after\"`: alternate between horizontal and vertical segments, as in a step function.\n- `\"basis\"`: a B-spline, with control point duplication on the ends.\n- `\"basis-open\"`: an open B-spline; may not intersect the start or end.\n- `\"basis-closed\"`: a closed B-spline, as in a loop.\n- `\"cardinal\"`: a Cardinal spline, with control point duplication on the ends.\n- `\"cardinal-open\"`: an open Cardinal spline; may not intersect the start or end, but will intersect other control points.\n- `\"cardinal-closed\"`: a closed Cardinal spline, as in a loop.\n- `\"bundle\"`: equivalent to basis, except the tension parameter is used to straighten the spline.\n- `\"monotone\"`: cubic interpolation that preserves monotonicity in y."
-                },
-                "maxOpacity": {
-                    "description": "Default max opacity for mapping a field to opacity.",
-                    "maximum": 1,
-                    "minimum": 0,
-                    "type": "number"
-                },
-                "maxSize": {
-                    "description": "Default max value for point size scale.",
-                    "minimum": 0,
-                    "type": "number"
-                },
-                "maxStrokeWidth": {
-                    "description": "Default max strokeWidth for strokeWidth  (or rule/line's size) scale.",
-                    "minimum": 0,
-                    "type": "number"
-                },
-                "minOpacity": {
-                    "description": "Default minimum opacity for mapping a field to opacity.",
-                    "maximum": 1,
-                    "minimum": 0,
-                    "type": "number"
-                },
-                "minSize": {
-                    "description": "Default minimum value for point size scale with zero=false.",
-                    "minimum": 0,
-                    "type": "number"
-                },
-                "minStrokeWidth": {
-                    "description": "Default minimum strokeWidth for strokeWidth (or rule/line's size) scale with zero=false.",
-                    "minimum": 0,
-                    "type": "number"
-                },
-                "opacity": {
-                    "maximum": 1,
-                    "minimum": 0,
-                    "type": "number"
-                },
-                "orient": {
-                    "$ref": "#/definitions/Orient",
-                    "description": "The orientation of a non-stacked bar, tick, area, and line charts.\nThe value is either horizontal (default) or vertical.\n- For bar, rule and tick, this determines whether the size of the bar and tick\nshould be applied to x or y dimension.\n- For area, this property determines the orient property of the Vega output.\n- For line, this property determines the sort order of the points in the line\nif `config.sortLineBy` is not specified.\nFor stacked charts, this is always determined by the orientation of the stack;\ntherefore explicitly specified value will be ignored."
-                },
-                "radius": {
-                    "description": "Polar coordinate radial offset, in pixels, of the text label from the origin determined by the x and y properties.",
-                    "minimum": 0,
-                    "type": "number"
-                },
-                "shape": {
-                    "description": "The default symbol shape to use. One of: `\"circle\"` (default), `\"square\"`, `\"cross\"`, `\"diamond\"`, `\"triangle-up\"`, or `\"triangle-down\"`, or a custom SVG path.",
-                    "type": "string"
-                },
-                "size": {
-                    "description": "The pixel area each the point/circle/square.\nFor example: in the case of circles, the radius is determined in part by the square root of the size value.",
-                    "minimum": 0,
-                    "type": "number"
-                },
-                "stroke": {
-                    "description": "Default Stroke Color.  This has higher precedence than config.color",
-                    "type": "string"
-                },
-                "strokeDash": {
-                    "description": "An array of alternating stroke, space lengths for creating dashed or dotted lines.",
-                    "items": {
-                        "type": "number"
-                    },
-                    "type": "array"
-                },
-                "strokeDashOffset": {
-                    "description": "The offset (in pixels) into which to begin drawing with the stroke dash array.",
-                    "type": "number"
-                },
-                "strokeOpacity": {
-                    "maximum": 1,
-                    "minimum": 0,
-                    "type": "number"
-                },
-                "strokeWidth": {
-                    "minimum": 0,
-                    "type": "number"
-                },
-                "tension": {
-                    "description": "Depending on the interpolation type, sets the tension parameter (for line and area marks).",
-                    "maximum": 1,
-                    "minimum": 0,
-                    "type": "number"
-                },
-                "theta": {
-                    "description": "Polar coordinate angle, in radians, of the text label from the origin determined by the x and y properties. Values for theta follow the same convention of arc mark startAngle and endAngle properties: angles are measured in radians, with 0 indicating \"north\".",
-                    "type": "number"
-                }
-            },
-            "type": "object"
-        },
         "TextConfig": {
             "additionalProperties": false,
             "properties": {
@@ -3546,38 +3210,6 @@
                 "interpolate": {
                     "$ref": "#/definitions/Interpolate",
                     "description": "The line interpolation method to use for line and area marks. One of the following:\n- `\"linear\"`: piecewise linear segments, as in a polyline.\n- `\"linear-closed\"`: close the linear segments to form a polygon.\n- `\"step\"`: alternate between horizontal and vertical segments, as in a step function.\n- `\"step-before\"`: alternate between vertical and horizontal segments, as in a step function.\n- `\"step-after\"`: alternate between horizontal and vertical segments, as in a step function.\n- `\"basis\"`: a B-spline, with control point duplication on the ends.\n- `\"basis-open\"`: an open B-spline; may not intersect the start or end.\n- `\"basis-closed\"`: a closed B-spline, as in a loop.\n- `\"cardinal\"`: a Cardinal spline, with control point duplication on the ends.\n- `\"cardinal-open\"`: an open Cardinal spline; may not intersect the start or end, but will intersect other control points.\n- `\"cardinal-closed\"`: a closed Cardinal spline, as in a loop.\n- `\"bundle\"`: equivalent to basis, except the tension parameter is used to straighten the spline.\n- `\"monotone\"`: cubic interpolation that preserves monotonicity in y."
-                },
-                "maxFontSize": {
-                    "description": "The default max value for mapping quantitative fields to text's size/fontSize.\nIf undefined (default), we will use bandSize - 1.",
-                    "minimum": 0,
-                    "type": "number"
-                },
-                "maxOpacity": {
-                    "description": "Default max opacity for mapping a field to opacity.",
-                    "maximum": 1,
-                    "minimum": 0,
-                    "type": "number"
-                },
-                "maxStrokeWidth": {
-                    "description": "Default max strokeWidth for strokeWidth  (or rule/line's size) scale.",
-                    "minimum": 0,
-                    "type": "number"
-                },
-                "minFontSize": {
-                    "description": "The default min value for mapping quantitative fields to tick's size/fontSize scale with zero=false",
-                    "minimum": 0,
-                    "type": "number"
-                },
-                "minOpacity": {
-                    "description": "Default minimum opacity for mapping a field to opacity.",
-                    "maximum": 1,
-                    "minimum": 0,
-                    "type": "number"
-                },
-                "minStrokeWidth": {
-                    "description": "Default minimum strokeWidth for strokeWidth (or rule/line's size) scale with zero=false.",
-                    "minimum": 0,
-                    "type": "number"
                 },
                 "opacity": {
                     "maximum": 1,
@@ -3770,38 +3402,6 @@
                 "interpolate": {
                     "$ref": "#/definitions/Interpolate",
                     "description": "The line interpolation method to use for line and area marks. One of the following:\n- `\"linear\"`: piecewise linear segments, as in a polyline.\n- `\"linear-closed\"`: close the linear segments to form a polygon.\n- `\"step\"`: alternate between horizontal and vertical segments, as in a step function.\n- `\"step-before\"`: alternate between vertical and horizontal segments, as in a step function.\n- `\"step-after\"`: alternate between horizontal and vertical segments, as in a step function.\n- `\"basis\"`: a B-spline, with control point duplication on the ends.\n- `\"basis-open\"`: an open B-spline; may not intersect the start or end.\n- `\"basis-closed\"`: a closed B-spline, as in a loop.\n- `\"cardinal\"`: a Cardinal spline, with control point duplication on the ends.\n- `\"cardinal-open\"`: an open Cardinal spline; may not intersect the start or end, but will intersect other control points.\n- `\"cardinal-closed\"`: a closed Cardinal spline, as in a loop.\n- `\"bundle\"`: equivalent to basis, except the tension parameter is used to straighten the spline.\n- `\"monotone\"`: cubic interpolation that preserves monotonicity in y."
-                },
-                "maxBandSize": {
-                    "description": "The default max value for mapping quantitative fields to tick's size/bandSize.\nIf undefined (default), we will use bandSize - 1.",
-                    "minimum": 0,
-                    "type": "number"
-                },
-                "maxOpacity": {
-                    "description": "Default max opacity for mapping a field to opacity.",
-                    "maximum": 1,
-                    "minimum": 0,
-                    "type": "number"
-                },
-                "maxStrokeWidth": {
-                    "description": "Default max strokeWidth for strokeWidth  (or rule/line's size) scale.",
-                    "minimum": 0,
-                    "type": "number"
-                },
-                "minBandSize": {
-                    "description": "The default min value for mapping quantitative fields to tick's size/bandSize scale with zero=false\nIf undefined (default), we will use the `continuousBandSize` value.",
-                    "minimum": 0,
-                    "type": "number"
-                },
-                "minOpacity": {
-                    "description": "Default minimum opacity for mapping a field to opacity.",
-                    "maximum": 1,
-                    "minimum": 0,
-                    "type": "number"
-                },
-                "minStrokeWidth": {
-                    "description": "Default minimum strokeWidth for strokeWidth (or rule/line's size) scale with zero=false.",
-                    "minimum": 0,
-                    "type": "number"
                 },
                 "opacity": {
                     "maximum": 1,

@@ -134,6 +134,81 @@ export interface ScaleConfig {
 
   // nice should depends on type (quantitative or temporal), so
   // let's not make a config.
+
+  // Configs for Range
+
+
+  /**
+   * The default max value for mapping quantitative fields to bar's size/bandSize.
+   * If undefined (default), we will use bandSize - 1.
+   * @minimum 0
+   */
+  maxBandSize?: number;
+
+  /**
+   * The default min value for mapping quantitative fields to bar and tick's size/bandSize scale with zero=false
+   * If undefined (default), we will use the `continuousBandSize` value for bar and 3 for ticks.
+   * @minimum 0
+   */
+  minBandSize?: number;
+
+  /**
+   * The default max value for mapping quantitative fields to text's size/fontSize.
+   * If undefined (default), we will use bandSize - 1.
+   * @minimum 0
+   */
+  maxFontSize?: number;
+
+  /**
+   * The default min value for mapping quantitative fields to tick's size/fontSize scale with zero=false
+   * @minimum 0
+   */
+  minFontSize?: number;
+
+  /**
+   * Default minimum opacity for mapping a field to opacity.
+   * @minimum 0
+   * @maximum 1
+   */
+  minOpacity?: number;
+
+  /**
+   * Default max opacity for mapping a field to opacity.
+   * @minimum 0
+   * @maximum 1
+   */
+  maxOpacity?: number;
+
+
+  /**
+   * Default minimum value for point size scale with zero=false.
+   * @minimum 0
+   */
+  minSize?: number;
+
+  /**
+   * Default max value for point size scale.
+   * @minimum 0
+   */
+  maxSize?: number;
+
+  /**
+   * Default minimum strokeWidth for strokeWidth (or rule/line's size) scale with zero=false.
+   * @minimum 0
+   */
+  minStrokeWidth?: number;
+
+  /**
+   * Default max strokeWidth for strokeWidth  (or rule/line's size) scale.
+   * @minimum 0
+   */
+  maxStrokeWidth?: number;
+
+  /**
+   * The default collection of symbol shapes for mapping nominal fields to shapes of point marks (i.e., range of a `shape` scale).
+   * Each value should be one of: `"circle"`, `"square"`, `"cross"`, `"diamond"`, `"triangle-up"`, or `"triangle-down"`, or a custom SVG path.
+   */
+  shapes?: string[];
 }
 
 export const defaultScaleConfig = {
@@ -142,7 +217,21 @@ export const defaultScaleConfig = {
   rangeStep: 21,
   pointPadding: 0.5,
   bandPaddingInner: 0.1,
-  facetSpacing: 16
+  facetSpacing: 16,
+
+  minFontSize: 8,
+  maxFontSize: 40,
+
+  minOpacity: 0.3,
+  maxOpacity: 0.8,
+
+  // FIXME: revise if these *can* become ratios of rangeStep
+  minSize: 9, // Point size is area. For square point, 9 = 3 pixel ^ 2, not too small!
+
+  minStrokeWidth: 1,
+  maxStrokeWidth: 4,
+
+  shapes: ['circle', 'square', 'cross', 'diamond', 'triangle-up', 'triangle-down']
 };
 
 export interface ExtendedScheme {
