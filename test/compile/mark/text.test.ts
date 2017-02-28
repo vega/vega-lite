@@ -7,20 +7,6 @@ import {X, Y} from '../../../src/channel';
 import {UnitSpec, FacetedUnitSpec} from '../../../src/spec';
 
 describe('Mark: Text', function() {
-  describe('with nothing', function() {
-    const spec: UnitSpec = {
-      "mark": "text",
-      "encoding": {},
-      "data": {"url": "data/cars.json"}
-    };
-    const model = parseUnitModel(spec);
-    const props = text.encodeEntry(model);
-
-    it('should have placeholder text', function() {
-      assert.deepEqual(props.text, {value: "Abc"});
-    });
-  });
-
   describe('with stacked x', function() {
     // This is a simplified example for stacked text.
     // In reality this will be used as stacked's overlayed marker
