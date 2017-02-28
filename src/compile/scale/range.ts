@@ -7,7 +7,6 @@ import {Scale, ScaleConfig, ScaleType, scaleTypeSupportProperty, Scheme, Range, 
 import {Type} from '../../type';
 import {VgRange, VgRangeScheme} from '../../vega.schema';
 import * as util from '../../util';
-import {getMarkConfig} from '../common';
 
 export type RangeMixins = {range: Range} | {rangeStep: number} | {scheme: Scheme};
 
@@ -114,11 +113,7 @@ export default function rangeMixins(
 
     case OPACITY:
       // TODO: support custom rangeMin, rangeMax
-      return {range: [
-        getMarkConfig('minOpacity', mark, config),
-        getMarkConfig('maxOpacity', mark, config)
-        ]
-      };
+      return {range: [config.scale.minOpacity, config.scale.maxOpacity]};
   }
   /* istanbul ignore next: should never reach here */
   throw new Error(`Scale range undefined for channel ${channel}`);
@@ -143,19 +138,19 @@ function sizeRangeMin(mark: Mark, zero: boolean, config: Config) {
   }
   switch (mark) {
     case 'bar':
-      return config.bar.minBandSize !== undefined ? config.bar.minBandSize : config.bar.continuousBandSize;
+      return config.scale.minBandSize !== undefined ? config.scale.minBandSize : config.bar.continuousBandSize;
     case 'tick':
-      return config.tick.minBandSize;
+      return config.scale.minBandSize;
     case 'line':
     case 'rule':
-      return getMarkConfig('minStrokeWidth', mark, config);
+      return config.scale.minStrokeWidth;
     case 'text':
-      return config.text.minFontSize;
+      return config.scale.minFontSize;
     case 'point':
     case 'square':
     case 'circle':
-      if (config[mark].minSize) {
-        return config[mark].minSize;
+      if (config.scale.minSize) {
+        return config.scale.minSize;
       }
   }
   /* istanbul ignore next: should never reach here */
@@ -168,25 +163,21 @@ function sizeRangeMax(mark: Mark, xyRangeSteps: number[], config: Config) {
   // TODO(#1168): make max size scale based on rangeStep / overall plot size
   switch (mark) {
     case 'bar':
-      if (config.bar.maxBandSize !== undefined) {
-        return config.bar.maxBandSize;
-      }
-      return minXYRangeStep(xyRangeSteps, config.scale) - 1;
     case 'tick':
-      if (config.tick.maxBandSize !== undefined) {
-        return config.tick.maxBandSize;
+      if (config.scale.maxBandSize !== undefined) {
+        return config.scale.maxBandSize;
       }
       return minXYRangeStep(xyRangeSteps, config.scale) - 1;
     case 'line':
     case 'rule':
-      return getMarkConfig('maxStrokeWidth', mark, config);
+      return config.scale.maxStrokeWidth;
     case 'text':
-      return config.text.maxFontSize;
+      return config.scale.maxFontSize;
     case 'point':
     case 'square':
     case 'circle':
-      if (config[mark].maxSize) {
-        return config[mark].maxSize;
+      if (config.scale.maxSize) {
+        return config.scale.maxSize;
       }
 
       // FIXME this case totally should be refactored

@@ -1,6 +1,6 @@
 import {AxisConfig, defaultAxisConfig} from './axis';
 import {LegendConfig, defaultLegendConfig} from './legend';
-import {MarkConfig, BarConfig, PointConfig, SymbolConfig, TextConfig, TickConfig} from './mark';
+import {MarkConfig, BarConfig, TextConfig, TickConfig} from './mark';
 import * as mark from './mark';
 import {ScaleConfig, defaultScaleConfig} from './scale';
 import {StackOffset} from './stack';
@@ -167,13 +167,13 @@ export interface Config {
   bar?: BarConfig;
 
   /** Circle-Specific Config */
-  circle?: SymbolConfig;
+  circle?: MarkConfig;
 
   /** Line-Specific Config */
   line?: MarkConfig;
 
   /** Point-Specific Config */
-  point?: PointConfig;
+  point?: MarkConfig;
 
   /** Rect-Specific Config */
   rect?: MarkConfig;
@@ -182,7 +182,7 @@ export interface Config {
   rule?: MarkConfig;
 
   /** Square-Specific Config */
-  square?: SymbolConfig;
+  square?: MarkConfig;
 
   /** Text-Specific Config */
   text?: TextConfig;
@@ -231,12 +231,12 @@ export const defaultConfig: Config = {
   mark: mark.defaultMarkConfig,
   area: {},
   bar: mark.defaultBarConfig,
-  circle: mark.defaultCircleConfig,
+  circle: {},
   line: {},
-  point: mark.defaultPointConfig,
+  point: {},
   rect: {},
-  rule: mark.defaultRuleConfig,
-  square: mark.defaultSquareConfig,
+  rule: {},
+  square: {},
   text: mark.defaultTextConfig,
   tick: mark.defaultTickConfig,
 
