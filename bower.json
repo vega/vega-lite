@@ -30,14 +30,5 @@
   ],
   "dependencies": {
     "vega": "3.0.0-beta.22"
-  },
-  "devDependencies": {
-    "d3": "~4.3.0",
-    "highlightjs": "~9.4.0",
-    "octicons": "^4.2.0",
-    "vega-embed": "~3.0.0-beta.4"
-  },
-  "resolutions": {
-    "vega": "3.0.0-beta.22"
   }
 }
