@@ -1,7 +1,8 @@
 import * as d3 from 'd3';
 import * as vega from 'vega';
-import * as vl from '../src/vl';
 import {ExtendedSpec} from '../src/spec';
+
+const vl = require('../build/vega-lite.min');
 
 d3.select('#vl-version').text(vl.version);
 d3.select('#vg-version').text(vega.version);
