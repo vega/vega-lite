@@ -7,7 +7,7 @@
 import {logger, LoggerInterface, Warn} from 'vega-util';
 
 import {AggregateOp} from './aggregate';
-import {X, Channel} from './channel';
+import {Channel} from './channel';
 import {DateTime, DateTimeExpr} from './datetime';
 import {FieldDef} from './fielddef';
 import {Mark} from './mark';
@@ -173,7 +173,7 @@ export namespace message {
 
   export function rangeStepDropped(channel: Channel) {
     return `rangeStep for ${channel} is dropped as top-level ${
-      channel === X ? 'width' : 'height'} is provided.`;
+      channel === 'x' ? 'width' : 'height'} is provided.`;
   }
 
   export function scaleTypeNotWorkWithChannel(channel: Channel, scaleType: ScaleType, newScaleType: ScaleType) {
