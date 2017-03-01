@@ -1,12 +1,12 @@
 {
   "ext": "ts,json",
   "ignore": [
-    "*.d.ts",
     "node_modules/*",
     "data/*",
     "vega-lite-schema.json",
     "examples/_original/*",
     "examples/_output/*",
-    "_site"
+    "_site/*",
+    "build/*"
   ]
 }

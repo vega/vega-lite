@@ -20,13 +20,12 @@
     "test": "test"
   },
   "scripts": {
-    "prebuild": "mkdir -p build",
-    "build": "browserify src/vl.ts -p tsify -g [ babelify ] -d -s vl | exorcist build/vega-lite.js.map > build/vega-lite.js && cp package.json build",
-    "postbuild": "uglifyjs build/vega-lite.js -cm --in-source-map build/vega-lite.js.map --source-map build/vega-lite.min.js.map > build/vega-lite.min.js && tsc && npm run schema",
-    "build:all": "npm run clean && npm run build && npm run test:noschema && npm run build:images",
+    "prebuild": "mkdir -p build/site build/examples/images",
+    "build": "tsc && cp package.json build && browserify build/src/vl.js -g [ babelify ] -d -s vl | exorcist build/vega-lite.js.map > build/vega-lite.js",
+    "postbuild": "uglifyjs build/vega-lite.js -cm --in-source-map build/vega-lite.js.map --source-map build/vega-lite.min.js.map > build/vega-lite.min.js && npm run schema",
     "build:images": "npm run data && scripts/generate-images.sh",
     "build:toc": "bundle exec jekyll build -q && scripts/generate-toc",
-    "build:site": "mkdir -p build/site && browserify site/static/main.ts -p [tsify -p site] -d > build/site/main.js",
+    "build:site": "browserify site/static/main.ts -p [tsify -p site] -d > build/site/main.js",
     "build:versions": "scripts/update-version.sh",
     "build:test-gallery": "browserify test-gallery/main.ts -p [tsify -p test-gallery] -d > build/test-gallery/main.js",
     "checkschema": "scripts/check-schema.sh",
@@ -44,21 +43,21 @@
     "preschema": "npm run prebuild",
     "schema": "typescript-json-schema --required true --noExtraProps true src/spec.ts ExtendedSpec > build/vega-lite-schema.json",
 
-    "presite": "tsc && npm run build && npm run build:site && npm run data && npm run build:toc && npm run build:versions",
+    "presite": "npm run build && npm run data && npm run build:site && npm run build:toc && npm run build:versions",
     "site": "bundle exec jekyll serve",
+
+    "lint": "tslint -c tslint.json 'src/**/*.ts' 'test/**/*.ts'",
 
     "test": "tsc && npm run schema && npm run test:nocompile",
     "test:nocompile": "npm run test:only && npm run lint && npm run test:examples",
     "test:only": "nyc --reporter=html --reporter=text-summary --require ./test/babel.ts mocha build/test",
-    "lint": "tslint -c tslint.json 'src/**/*.ts' 'test/**/*.ts'",
     "test:examples": "npm run data && mocha --require ./test/babel.ts build/examples",
-
     "test:debug": "npm run schema && npm run data && mocha --require ./test/babel.ts --debug-brk build/test build/examples",
 
     "codecov": "nyc report --reporter=json && codecov -f coverage/*.json",
     "watch:build": "watchify src/vl.ts -p tsify -v -d -s vl -o 'exorcist build/vega-lite.js.map > build/vega-lite.js'",
     "watch:test": "nodemon -x 'npm test'",
-    "watch": "nodemon -x 'npm run build && npm run test:noschema' # already run schema in build",
+    "watch": "nodemon -x 'npm run build && npm run test:nocompile' # already ran schema in build",
     "x-compile": "./scripts/examples-compile.sh",
     "x-diff": "./scripts/examples-diff.sh"
   },
@@ -81,6 +80,7 @@
     "babelify": "^7.3.0",
     "browser-sync": "~2.18.8",
     "browserify": "~14.1.0",
+    "browserify-shim": "^3.8.13",
     "chai": "~3.5.0",
     "cheerio": "~0.22.0",
     "codecov": "~1.0.1",

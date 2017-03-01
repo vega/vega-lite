@@ -9,32 +9,32 @@ npm run test
 npm run build
 
 # Check if all required files are here
-if ! [ -f vega-lite.js ]; then
-  echo "${RED} vega-lite.js not found ${NC}"
+if ! [ -f build/vega-lite.js ]; then
+  echo "${RED} build/vega-lite.js not found ${NC}"
   exit 1;
 fi
-if ! [ -f vega-lite.js.map ]; then
-  echo "${RED} vega-lite.js.map not found ${NC}"
+if ! [ -f build/vega-lite.js.map ]; then
+  echo "${RED} build/vega-lite.js.map not found ${NC}"
   exit 1;
 fi
-if ! [ -f vega-lite.min.js ]; then
-  echo "${RED} vega-lite.min.js not found ${NC}"
+if ! [ -f build/vega-lite.min.js ]; then
+  echo "${RED} build/vega-lite.min.js not found ${NC}"
   exit 1;
 fi
-if ! [ -f vega-lite.min.js.map ]; then
-  echo "${RED} vega-lite.min.js.map not found ${NC}"
+if ! [ -f build/vega-lite.min.js.map ]; then
+  echo "${RED} build/vega-lite.min.js.map not found ${NC}"
   exit 1;
 fi
-if ! [ -f vega-lite-schema.json ]; then
-  echo "${RED} vega-lite-schema.json not found${NC}"
+if ! [ -f build/vega-lite-schema.json ]; then
+  echo "${RED} build/vega-lite-schema.json not found${NC}"
   exit 1;
 fi
-if ! [ -f src/vl.js ]; then
-  echo "${RED} src/vl.js not found.  Typescripts may be not compiled.${NC}"
+if ! [ -f build/src/vl.js ]; then
+  echo "${RED} build/src/vl.js not found.  Typescripts may be not compiled.${NC}"
   exit 1;
 fi
-if ! [ -f src/vl.d.ts ]; then
-  echo "${RED} src/vl.d.ts not found.  Typescript declarations may be not compiled.${NC}"
+if ! [ -f build/src/vl.d.ts ]; then
+  echo "${RED} build/src/vl.d.ts not found.  Typescript declarations may be not compiled.${NC}"
   exit 1;
 fi
 
@@ -58,8 +58,7 @@ version=$(scripts/version.sh)
 git checkout head
 npm run build
 # add the compiled files, commit and tag!
-git add build/vega-lite* -f
-git add build/src/**/*.js -f
+git add build/** -f
 
 # commit, tag and push to gh-pages and swap back to master
 set +e
