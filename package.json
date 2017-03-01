@@ -22,33 +22,40 @@
   "scripts": {
     "prebuild": "mkdir -p build",
     "build": "browserify src/vl.ts -p tsify -g [ babelify ] -d -s vl | exorcist build/vega-lite.js.map > build/vega-lite.js && cp package.json build",
-    "postbuild": "uglifyjs build/vega-lite.js -cm --in-source-map build/vega-lite.js.map --source-map build/vega-lite.min.js.map > build/vega-lite.min.js && npm run schema",
+    "postbuild": "uglifyjs build/vega-lite.js -cm --in-source-map build/vega-lite.js.map --source-map build/vega-lite.min.js.map > build/vega-lite.min.js && tsc && npm run schema",
     "build:all": "npm run clean && npm run build && npm run test:noschema && npm run build:images",
     "build:images": "npm run data && scripts/generate-images.sh",
     "build:toc": "bundle exec jekyll build -q && scripts/generate-toc",
     "build:site": "mkdir -p build/site && browserify site/static/main.ts -p [tsify -p site] -d > build/site/main.js",
     "build:versions": "scripts/update-version.sh",
     "build:test-gallery": "browserify test-gallery/main.ts -p [tsify -p test-gallery] -d > build/test-gallery/main.js",
+
     "checkschema": "scripts/check-schema.sh",
     "clean": "rm -rf build && rm -f vega-lite.* & find -E src test site examples -regex '.*\\.(js|js.map|d.ts)' -delete & rm -rf examples/_diff examples/_original examples/_output examples/images && rm -rf data",
     "data": "rsync -r node_modules/vega-datasets/data/* data",
+
     "deploy": "scripts/deploy.sh",
     "deploy:gh": "scripts/deploy-gh.sh",
     "deploy:schema": "scripts/deploy-schema.sh",
-    "lint": "tslint -c tslint.json 'src/**/*.ts' 'test/**/*.ts'",
+
     "prestart": "npm run data && scripts/index-examples",
     "start": "nodemon -x 'npm run build:test-gallery' & browser-sync start --server --files 'build/test-gallery/main.js' --index 'test-gallery/index.html'",
     "poststart": "rm examples/all-examples.json",
+
     "preschema": "npm run prebuild",
     "schema": "typescript-json-schema --required true --noExtraProps true src/spec.ts ExtendedSpec > build/vega-lite-schema.json",
+
     "presite": "tsc && npm run build && npm run build:site && npm run data && npm run build:toc && npm run build:versions",
     "site": "bundle exec jekyll serve",
-    "pretest": "tsc && npm run data",
-    "test": "npm run test:only && npm run lint && npm run schema && npm run test:examples",
-    "test:noschema": "npm run pretest && npm run test:only && npm run lint && npm test:examples",
+
+    "test": "tsc && npm run schema && npm run test:nocompile",
+    "test:nocompile": "npm run test:only && npm run lint && npm run test:examples",
     "test:only": "nyc --reporter=html --reporter=text-summary --require ./test/babel.ts mocha build/test",
-    "test:examples": "mocha --require ./test/babel.ts build/examples",
-    "test:debug": "npm run schema && mocha --require ./test/babel.ts --debug-brk build/test build/examples",
+    "lint": "tslint -c tslint.json 'src/**/*.ts' 'test/**/*.ts'",
+    "test:examples": "npm run data && mocha --require ./test/babel.ts build/examples",
+
+    "test:debug": "npm run schema && npm run data && mocha --require ./test/babel.ts --debug-brk build/test build/examples",
+
     "codecov": "nyc report --reporter=json && codecov -f coverage/*.json",
     "watch:build": "watchify src/vl.ts -p tsify -v -d -s vl -o 'exorcist build/vega-lite.js.map > build/vega-lite.js'",
     "watch:test": "nodemon -x 'npm test'",
