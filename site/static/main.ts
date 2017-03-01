@@ -1,6 +1,13 @@
-/* tslint:disable:no-unused-variable */
+// global imports for vega-embed
+(window as any).vega = require('vega');
+(window as any).vl = require('../../build/vega-lite.min');
 
-declare const BASEURL: string, vega: any;
+import {selectAll, select, Selection} from 'd3-selection';
+import {json, text} from 'd3-request';
+import * as hljs from 'highlight.js';
+const embed = require('vega-embed');
+
+declare const BASEURL: string;
 
 // IIFE to prevent function declarations from moving into the global scope
 (() => {
@@ -10,9 +17,8 @@ function trim(str: string) {
 }
 
 /* Anchors */
-d3.selectAll('h2, h3, h4, h5, h6').each(function(this: Element) {
-  const sel = d3.select(this);
-  const link = sel.select('a');
+selectAll('h2, h3, h4, h5, h6').each(function(this: Element) {
+  const sel = select(this);
   const name = sel.attr('id');
   const title = sel.text();
   sel.html('<a href="#' + name + '" class="anchor"><span class="octicon octicon-link"></span></a>' + trim(title));
@@ -20,7 +26,7 @@ d3.selectAll('h2, h3, h4, h5, h6').each(function(this: Element) {
 
 /* Documentation */
 
-function renderExample($target: d3.Selection<any, any, any, any>, text: string) {
+function renderExample($target: Selection<any, any, any, any>, text: string) {
   $target.classed('example', true);
   $target.text('');
 
@@ -36,7 +42,7 @@ function renderExample($target: d3.Selection<any, any, any, any>, text: string) 
     spec.data.url = window.location.origin + BASEURL + '/' + spec.data.url;
   }
 
-  vega.embed(vis.node(), spec, {
+  embed(vis.node(), spec, {
     mode: 'vega-lite',
     renderer: 'svg',
     actions: {
@@ -50,14 +56,14 @@ function renderExample($target: d3.Selection<any, any, any, any>, text: string) 
   });
 }
 
-d3.selectAll('.vl-example').each(function(this: Element) {
-  const sel = d3.select(this);
+selectAll('.vl-example').each(function(this: Element) {
+  const sel = select(this);
   const name = sel.attr('data-name');
   if (name) {
     const dir = sel.attr('data-dir');
-    const fullUrl = BASEURL + '/build/examples/specs/' + (dir ? (dir + '/') : '') + name + '.vl.json';
+    const fullUrl = BASEURL + '/examples/specs/' + (dir ? (dir + '/') : '') + name + '.vl.json';
 
-    d3.text(fullUrl, function(error, spec) {
+    text(fullUrl, function(error, spec) {
       if (error) {
         console.error(error);
       } else {
@@ -72,19 +78,19 @@ d3.selectAll('.vl-example').each(function(this: Element) {
 
 /* Gallery */
 
-if (d3.select('.gallery').empty() === false) {
+if (select('.gallery').empty() === false) {
   renderGallery();
 }
 
 function renderGallery() {
-  d3.json(window.location.origin + BASEURL + '/examples/vl-examples.json', function(error, VL_SPECS) {
+  json(window.location.origin + BASEURL + '/examples/vl-examples.json', function(error, VL_SPECS) {
     if (error) {return console.warn(error);}
 
-    d3.selectAll('div.gallery').each(function(this: Element) {
-      d3.select(this).call(renderGalleryGroup);
+    selectAll('div.gallery').each(function(this: Element) {
+      select(this).call(renderGalleryGroup);
     });
 
-    function renderGalleryGroup (selection: d3.Selection<any, any, any, any>) {
+    function renderGalleryGroup (selection: Selection<any, any, any, any>) {
       const galleryGroupName = selection.attr('data-gallery-group');
       let galleryGroupSpecs: any[];
 
