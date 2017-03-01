@@ -21,7 +21,7 @@
   },
   "scripts": {
     "prebuild": "mkdir -p build/site build/examples/images build/test-gallery",
-    "build": "tsc && cp package.json build && browserify build/src/vl.js -g [ babelify ] -d -s vl | exorcist build/vega-lite.js.map > build/vega-lite.js",
+    "build": "tsc && cp package.json build && browserify src/vl.ts -p tsify -g [ babelify ] -d -s vl | exorcist build/vega-lite.js.map > build/vega-lite.js",
     "postbuild": "uglifyjs build/vega-lite.js -cm --in-source-map build/vega-lite.js.map --source-map build/vega-lite.min.js.map > build/vega-lite.min.js && npm run schema",
     "build:images": "npm run data && scripts/generate-images.sh",
     "build:toc": "bundle exec jekyll build -q && scripts/generate-toc",
