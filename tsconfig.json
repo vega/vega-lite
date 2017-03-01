@@ -27,9 +27,9 @@
   ],
   "exclude": [
     "node_modules",
-    "bower_components",
     "data",
     "_site",
-    "lib"
+    "site",
+    "test-gallery"
   ]
 }

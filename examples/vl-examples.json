@@ -114,14 +114,6 @@
       }
     },
     {
-      "name": "text_table_heatmap",
-      "title": "Text Table Heatmap",
-      "galleryParameters": {
-        "backgroundSize": "250%",
-        "backgroundPosition": "35% 40%"
-      }
-    },
-    {
       "name": "rect_heatmap",
       "title": "Table Heatmap",
       "galleryParameters": {
