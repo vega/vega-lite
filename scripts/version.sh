@@ -1,3 +1,3 @@
 #!/bin/bash
 
-npm list vega-lite | head -n 1 | sed 's/.*@//' | awk '{print $1}'
+npm list $1 | head -n 1 | sed 's/.*@//' | awk '{print $1}'

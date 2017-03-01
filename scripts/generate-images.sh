@@ -3,8 +3,6 @@
 
 set -e
 
-mkdir -p build/examples/images
-
 # Put `vega-lite.js` on the Node search path so the `vl2svg` script can
 # require it without needing it to be installed globally.
 export NODE_PATH=.
