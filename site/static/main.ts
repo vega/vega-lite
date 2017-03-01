@@ -1,6 +1,6 @@
 /* tslint:disable:no-unused-variable */
 
-declare const BASEURL: string, hljs: any, vega: any;
+declare const BASEURL: string, vega: any;
 
 // IIFE to prevent function declarations from moving into the global scope
 (() => {
@@ -28,7 +28,7 @@ function renderExample($target: d3.Selection<any, any, any, any>, text: string) 
 
   const code = $target.append('pre').attr('class', 'example-code')
     .append('code').attr('class', 'json').text(text);
-  hljs.highlightBlock(code.node());
+  hljs.highlightBlock(code.node() as any);
 
   const spec = JSON.parse(text);
   if (spec.data.url) {
