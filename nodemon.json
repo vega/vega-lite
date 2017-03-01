@@ -3,7 +3,6 @@
   "ignore": [
     "*.d.ts",
     "node_modules/*",
-    "bower_components/*",
     "data/*",
     "vega-lite-schema.json",
     "examples/_original/*",
