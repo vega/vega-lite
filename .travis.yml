@@ -5,7 +5,7 @@ node_js:
   - "7"
 script:
   - npm run build
-  - npm run test:noschema # already run schema in build
+  - npm run test:nocompile # already run schema and tsc in build
   - npm run checkschema
   - npm run codecov
 after_success:
