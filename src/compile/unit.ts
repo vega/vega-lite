@@ -1,6 +1,4 @@
-
-
-import {Axis, VL_ONLY_AXIS_PROPERTIES, VlOnlyAxisBase} from '../axis';
+import {Axis} from '../axis';
 import {Channel, NONSPATIAL_SCALE_CHANNELS, UNIT_CHANNELS, UNIT_SCALE_CHANNELS, X, X2,  Y, Y2} from '../channel';
 import {CellConfig, Config, defaultConfig} from '../config';
 import {SOURCE, SUMMARY} from '../data';
@@ -193,14 +191,7 @@ export class UnitModel extends Model {
 
         // We no longer support false in the schema, but we keep false here for backward compatability.
         if (axisSpec !== null && axisSpec !== false) {
-          let vlOnlyAxisProperties: VlOnlyAxisBase = {};
-          VL_ONLY_AXIS_PROPERTIES.forEach(function(property) {
-            if (config.axis[property] !== undefined) {
-              vlOnlyAxisProperties[property] = config.axis[property];
-            }
-          });
           _axis[channel] = {
-            ...vlOnlyAxisProperties,
             ...axisSpec
           };
         }

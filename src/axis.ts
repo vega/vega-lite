@@ -3,7 +3,7 @@ import {VgAxisBase, VgAxisConfig, VgAxisEncode} from './vega.schema';
 
 export type AxisOrient = 'top' | 'right' | 'left' | 'bottom';
 
-export interface AxisConfig extends VgAxisConfig, VlOnlyAxisBase {
+export interface AxisConfig extends VgAxisConfig {
   /**
    * Whether month names and weekday names should be abbreviated.
    */
@@ -11,10 +11,10 @@ export interface AxisConfig extends VgAxisConfig, VlOnlyAxisBase {
 }
 
 export const defaultAxisConfig: AxisConfig = {
-  labelMaxLength: 25,
+  labelLimit: 25,
 };
 
-export interface Axis extends VgAxisBase, VlOnlyAxisBase {
+export interface Axis extends VgAxisBase {
   /**
    * The padding, in pixels, between axis and text labels.
    */
@@ -71,22 +71,6 @@ export interface Axis extends VgAxisBase, VlOnlyAxisBase {
   encode?: VgAxisEncode;
 }
 
-
-/**
- * Base object for properties that are shared between Axis and Axis Config.
- * These properties are not in Vega Axis and Axis Config.
- */
-export interface VlOnlyAxisBase {
-  /**
-   * Truncate labels that are too long.
-   * @minimum 1
-   * @TJS-type integer
-   */
-  labelMaxLength?: number;
-}
-
 export const AXIS_PROPERTIES:(keyof Axis)[] = [
   'domain', 'format', 'grid', 'labelPadding', 'labels', 'maxExtent', 'minExtent', 'offset', 'orient', 'position', 'tickCount', 'ticks', 'tickSize', 'title', 'titlePadding', 'values', 'zindex'
 ];
-
-export const VL_ONLY_AXIS_PROPERTIES:(keyof VlOnlyAxisBase)[] = ['labelMaxLength'];

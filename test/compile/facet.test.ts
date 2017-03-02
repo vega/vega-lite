@@ -379,23 +379,6 @@ describe('compile/facet', () => {
   });
 
   describe('initAxis', () => {
-    it('should include properties of VlOnlyAxisConfig in config.facet.axis', () => {
-      const model = parseFacetModel({
-        facet: {
-          row: {field: 'a', type: 'ordinal'}
-        },
-        spec: {
-          mark: 'point',
-          encoding: {
-            "x": {"aggregate": "sum", "field": "yield", "type": "quantitative"},
-            "y": {"field": "variety", "type": "nominal"},
-          },
-        },
-        config: {"facet": {"axis": {"labelMaxLength": 123}}}
-      });
-      assert.deepEqual(model.axis(ROW), {"labelMaxLength": 123, "orient": "right", "labelAngle": 90});
-    });
-
     it('should not include properties of non-VlOnlyAxisConfig in config.facet.axis', () => {
       const model = parseFacetModel({
         facet: {

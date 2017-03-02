@@ -358,6 +358,16 @@ export interface VgAxisConfig extends VgAxisBase {
   labelFontSize?: number;
 
   /**
+   * Maximum allowed pixel width of axis tick labels.
+   */
+  labelLimit?: number;
+
+  /**
+   * Maximum allowed pixel width of axis titles.
+   */
+   titleLimit?: number;
+
+  /**
    * The width, in pixels, of ticks.
    * @minimum 0
    */
@@ -461,6 +471,11 @@ export interface VgLegendConfig extends VgLegendBase {
   labelFontSize?: number;
 
   /**
+   * Maximum allowed pixel width of axis tick labels.
+   */
+  labelLimit?: number;
+
+  /**
    * The offset of the legend label.
    * @minimum 0
    */
@@ -512,6 +527,11 @@ export interface VgLegendConfig extends VgLegendBase {
    * The font weight of the legend title.
    */
   titleFontWeight?: string | number;
+
+  /**
+   * Maximum allowed pixel width of axis titles.
+   */
+  titleLimit?: number;
 
   /**
    * The padding, in pixels, between title and legend.
