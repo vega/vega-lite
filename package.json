@@ -71,6 +71,7 @@
   },
   "devDependencies": {
     "@types/chai": "^3.4.35",
+    "@types/highlight.js": "^9.1.9",
     "@types/d3": "^4.5.0",
     "@types/json-stable-stringify": "^1.0.30",
     "@types/mocha": "^2.2.39",
@@ -96,16 +97,15 @@
     "tslint-eslint-rules": "^3.4.0",
     "typescript": "^2.2.1",
     "typescript-json-schema": "^0.10.0",
-    "uglify-js": "~2.8.1",
-    "vega": "3.0.0-beta.24",
+    "uglify-js": "~2.8.4",
+    "vega": "3.0.0-beta.25",
     "vega-datasets": "vega/vega-datasets#gh-pages",
-    "vega-embed": "3.0.0-beta.4",
-    "vega-parser": "^1.0.0-beta.37",
+    "vega-embed": "3.0.0-beta.5",
+    "vega-parser": "^1.0.0-beta.38",
     "watchify": "~3.9.0",
     "yaml-front-matter": "~3.4.0"
   },
   "dependencies": {
-    "@types/highlight.js": "^9.1.9",
     "json-stable-stringify": "~1.0.1",
     "tslib": "^1.6.0",
     "vega-util": "~1.1.4",
