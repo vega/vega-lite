@@ -54,7 +54,7 @@
     "test:examples": "npm run data && mocha --require ./test/babel.ts build/examples",
     "test:debug": "npm run schema && npm run data && mocha --require ./test/babel.ts --debug-brk build/test build/examples",
 
-    "codecov": "nyc report --reporter=text-lcov > coverage.lcov && codecov",
+    "codecov": "nyc report --require ./test/babel.ts --reporter=text-lcov > coverage.lcov && codecov",
     "watch:build": "watchify src/vl.ts -p tsify -v -d -s vl -o 'exorcist build/vega-lite.js.map > build/vega-lite.js'",
     "watch:test": "nodemon -x 'npm test'",
     "watch": "nodemon -x 'npm run build && npm run test:nocompile' # already ran schema in build",
