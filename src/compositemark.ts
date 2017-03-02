@@ -54,10 +54,14 @@ add(ERRORBAR, (spec: GenericUnitSpec<ERRORBAR, Encoding>): LayerSpec => {
         encoding: encodingWithoutX2Y2
       }, { // Upper tick
         mark: 'tick',
-        encoding: {
-          ...encodingWithoutX2Y2,
-          ...(encoding.x2 ? {x: encoding.x2} : {}),
-          ...(encoding.y2 ? {y: encoding.y2} : {})
+        encoding: encoding.x2 ? {
+          x: encoding.x2,
+          y: encoding.y,
+          ...encodingWithoutX_X2_Y_Y2
+        } : {
+          x: encoding.x,
+          y: encoding.y2,
+          ...encodingWithoutX_X2_Y_Y2
         }
       }
     ]
