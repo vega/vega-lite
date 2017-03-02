@@ -1,6 +1,6 @@
 import {AxisConfig, defaultAxisConfig} from './axis';
 import {LegendConfig, defaultLegendConfig} from './legend';
-import {MarkConfig, BarConfig, PointConfig, SymbolConfig, TextConfig, LabelConfig, TickConfig} from './mark';
+import {MarkConfig, BarConfig, TextConfig, LabelConfig, TickConfig} from './mark';
 import * as mark from './mark';
 import {ScaleConfig, defaultScaleConfig} from './scale';
 import {StackOffset} from './stack';

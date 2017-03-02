@@ -156,17 +156,13 @@ export interface TextConfig extends MarkConfig {
 }
 
 export const defaultTextConfig: TextConfig = {
-  baseline: 'middle',
+  baseline: 'middle'
 };
 
 export interface LabelConfig extends TextConfig {}
 
 export const defaultLabelConfig: LabelConfig = {
-  fontSize: 10,
-  minFontSize: 8,
-  maxFontSize: 40,
-  baseline: 'middle',
-  text: 'Abc'
+  baseline: 'middle'
 };
 
 export interface TickConfig extends MarkConfig {
