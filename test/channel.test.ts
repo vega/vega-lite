@@ -14,7 +14,7 @@ describe('channel', () => {
 
   describe('UNIT_SCALE_CHANNELS', () => {
     it('should be UNIT_CHANNELS without X2, Y2, ORDER, DETAIL, TEXT, LABEL', () => {
-      assert.deepEqual(UNIT_SCALE_CHANNELS, without(UNIT_CHANNELS, ['x2', 'y2', 'order', 'detail', 'text', 'label']));
+      assert.deepEqual(UNIT_SCALE_CHANNELS, without(UNIT_CHANNELS, ['x2', 'y2', 'order', 'detail', 'text', 'label', 'anchor', 'offset']));
     });
   });
 
@@ -25,13 +25,13 @@ describe('channel', () => {
   });
 
   describe('NONSPATIAL_CHANNELS', () => {
-    it('should be UNIT_CHANNELS without x, y, x2, y2', () => {
-      assert.deepEqual(NONSPATIAL_CHANNELS, without(UNIT_CHANNELS, ['x', 'y', 'x2', 'y2']));
+    it('should be UNIT_CHANNELS without x, y, x2, y2, ANCHOR, OFFSET', () => {
+      assert.deepEqual(NONSPATIAL_CHANNELS, without(UNIT_CHANNELS, ['x', 'y', 'x2', 'y2', 'anchor', 'offset']));
     });
   });
 
   describe('NONSPATIAL_SCALE_CHANNELS', () => {
-    it('should be UNIT_SCALE_CHANNELS without x, y, x2, y2', () => {
+    it('should be UNIT_SCALE_CHANNELS without x, y, ANCHOR, OFFSET', () => {
       assert.deepEqual(NONSPATIAL_SCALE_CHANNELS, without(UNIT_SCALE_CHANNELS, ['x', 'y']));
     });
   });

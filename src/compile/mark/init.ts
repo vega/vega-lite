@@ -1,4 +1,4 @@
-import {Mark, MarkDef, isMarkDef, BAR, AREA, POINT, LINE, TICK, CIRCLE, SQUARE, RECT, RULE, TEXT, Orient} from '../../mark';
+import {Mark, MarkDef, isMarkDef, BAR, AREA, POINT, LINE, TICK, CIRCLE, SQUARE, RECT, RULE, TEXT, LABEL, Orient} from '../../mark';
 import {Encoding, isAggregate, channelHasField} from '../../encoding';
 import * as log from '../../log';
 import {Dict, contains} from '../../util';
@@ -71,6 +71,7 @@ function orient(mark: Mark, encoding: Encoding, scale: Dict<Scale>, specifiedOri
     case CIRCLE:
     case SQUARE:
     case TEXT:
+    case LABEL:
     case RECT:
       // orient is meaningless for these marks.
       return undefined;

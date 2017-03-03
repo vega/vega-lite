@@ -1,4 +1,4 @@
-import {DataFormat, SOURCE, isInlineData, isUrlData} from '../../data';
+import {DataFormat, SOURCE, isInlineData, isUrlData, isInternalData} from '../../data';
 import {contains, extend} from '../../util';
 import {VgData} from '../../vega.schema';
 
@@ -18,39 +18,41 @@ export namespace source {
     let data = model.data;
 
     if (data) {
-      // If data is explicitly provided
+      if (isInternalData(data)) {
+        return undefined;
+      } else {
+        // If data is explicitly provided
+        let sourceData: VgData = {name: model.dataName(SOURCE)};
+        if (isInlineData(data)) {
+          sourceData.values = data.values;
+          sourceData.format = {type: 'json'};
+        } else if (isUrlData(data)) {
+          sourceData.url = data.url;
 
-      let sourceData: VgData = {name: model.dataName(SOURCE)};
-      if (isInlineData(data)) {
-        sourceData.values = data.values;
-        sourceData.format = {type: 'json'};
-      } else if (isUrlData(data)) {
-        sourceData.url = data.url;
+          // Extract extension from URL using snippet from
+          // http://stackoverflow.com/questions/680929/how-to-extract-extension-from-filename-string-in-javascript
+          let defaultExtension = /(?:\.([^.]+))?$/.exec(sourceData.url)[1];
+          if (!contains(['json', 'csv', 'tsv', 'topojson'], defaultExtension)) {
+            defaultExtension = 'json';
+          }
+          const dataFormat: DataFormat = data.format || {};
 
-        // Extract extension from URL using snippet from
-        // http://stackoverflow.com/questions/680929/how-to-extract-extension-from-filename-string-in-javascript
-        let defaultExtension = /(?:\.([^.]+))?$/.exec(sourceData.url)[1];
-        if (!contains(['json', 'csv', 'tsv', 'topojson'], defaultExtension)) {
-          defaultExtension = 'json';
+          // For backward compatibility for former `data.formatType` property
+          const formatType: DataFormat = dataFormat.type || data['formatType'];
+          sourceData.format =
+            extend(
+              {type: formatType ? formatType : defaultExtension},
+              dataFormat.property ? {property: dataFormat.property} : {},
+              // Feature and mesh are two mutually exclusive properties
+              dataFormat.feature ?
+                {feature: dataFormat.feature} :
+                dataFormat.mesh ?
+                  {mesh: dataFormat.mesh} :
+                  {}
+            );
         }
-        const dataFormat: DataFormat = data.format || {};
-
-        // For backward compatibility for former `data.formatType` property
-        const formatType: DataFormat = dataFormat.type || data['formatType'];
-        sourceData.format =
-          extend(
-            {type: formatType ? formatType : defaultExtension},
-            dataFormat.property ? {property: dataFormat.property} : {},
-            // Feature and mesh are two mutually exclusive properties
-            dataFormat.feature ?
-              {feature : dataFormat.feature} :
-            dataFormat.mesh ?
-              {mesh : dataFormat.mesh} :
-              {}
-          );
+        return sourceData;
       }
-
-      return sourceData;
     } else if (!model.parent) {
       // If data is not explicitly provided but the model is a root,
       // need to produce a source as well
