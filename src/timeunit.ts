@@ -291,3 +291,15 @@ export function formatExpression(timeUnit: TimeUnit, field: string, shortTimeLab
   // If expression is still an empty string, return undefined instead.
   return expression || undefined;
 }
+
+export function isDiscreteByDefault(timeUnit: TimeUnit) {
+  switch (timeUnit) {
+    // These time unit use discrete scale by default
+    case 'hours':
+    case 'day':
+    case 'month':
+    case 'quarter':
+      return true;
+  }
+  return false;
+}
