@@ -3,7 +3,7 @@ import * as log from '../../log';
 import {hasScale, supportScaleType, rangeType, Channel} from '../../channel';
 import {Mark} from '../../mark';
 import {ScaleType, ScaleConfig} from '../../scale';
-import {TimeUnit} from '../../timeunit';
+import {TimeUnit, isDiscreteByDefault} from '../../timeunit';
 import {Type} from '../../type';
 
 import * as util from '../../util';
@@ -79,13 +79,8 @@ function defaultType(type: Type, channel: Channel, timeUnit: TimeUnit, mark: Mar
         // TODO: consider using quantize (equivalent to binning) once we have it
         return ScaleType.ORDINAL;
       }
-      switch (timeUnit) {
-        // These time unit use discrete scale by default
-        case 'hours':
-        case 'day':
-        case 'month':
-        case 'quarter':
-          return discreteToContinuousType(channel, mark, hasTopLevelSize, specifiedRangeStep, scaleConfig);
+      if (isDiscreteByDefault(timeUnit)) {
+        return discreteToContinuousType(channel, mark, hasTopLevelSize, specifiedRangeStep, scaleConfig);
       }
       return ScaleType.TIME;
 
