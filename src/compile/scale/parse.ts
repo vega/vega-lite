@@ -1,12 +1,11 @@
 import {Channel} from '../../channel';
-import {FieldDef, field} from '../../fielddef';
-import {Scale, ScaleType, hasContinuousDomain} from '../../scale';
+import {Scale} from '../../scale';
 import {isSortField} from '../../sort';
 import {Dict} from '../../util';
 
 import {Model} from '../model';
 
-import {ScaleComponent, ScaleComponents, BIN_LEGEND_SUFFIX, BIN_LEGEND_LABEL_SUFFIX} from './scale';
+import {ScaleComponents} from './scale';
 import {parseDomain} from './domain';
 import {parseRange} from './range';
 import {VgScale} from '../../vega.schema';
@@ -30,18 +29,9 @@ export default function parseScaleComponent(model: Model): Dict<ScaleComponents>
  */
 export function parseScale(model: Model, channel: Channel) {
    if (model.scale(channel)) {
-    const fieldDef = model.fieldDef(channel);
-    const scales: ScaleComponents = {
+    return {
       main: parseMainScale(model, channel)
     };
-
-    // Add additional scale needed for the labels in the binned legend.
-    if (model.legend(channel) && fieldDef.bin && hasContinuousDomain(model.scale(channel).type)) {
-      scales.binLegend = parseBinLegend(channel, model);
-      scales.binLegendLabel = parseBinLegendLabel(channel, model, fieldDef);
-    }
-
-    return scales;
   }
   return null;
 }
@@ -81,44 +71,4 @@ function parseMainScale(model: Model, channel: Channel) {
   }
 
   return scaleComponent;
-}
-
-
-/**
- * Return additional scale to drive legend when we use a continuous scale and binning.
- */
-function parseBinLegend(channel: Channel, model: Model): ScaleComponent {
-  return {
-    name: model.scaleName(channel, true) + BIN_LEGEND_SUFFIX,
-    type: ScaleType.POINT,
-    domain: {
-      data: model.dataTable(),
-      field: model.field(channel),
-      sort: true
-    },
-    range: [0,1] // doesn't matter because we override it
-  };
-}
-
-/**
- *  Return an additional scale for bin labels because we need to map bin_start to bin_range in legends
- */
-function parseBinLegendLabel(channel: Channel, model: Model, fieldDef: FieldDef): ScaleComponent {
-  return {
-    name: model.scaleName(channel, true) + BIN_LEGEND_LABEL_SUFFIX,
-    type: ScaleType.ORDINAL,
-    domain: {
-      data: model.dataTable(),
-      field: model.field(channel),
-      sort: true
-    },
-    range: {
-      data: model.dataTable(),
-      field: field(fieldDef, {binSuffix: 'range'}),
-      sort: {
-        field: model.field(channel, {binSuffix: 'start'}),
-        op: 'min' // min or max doesn't matter since same _range would have the same _start
-      }
-    }
-  };
 }

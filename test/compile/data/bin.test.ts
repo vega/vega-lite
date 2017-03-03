@@ -27,7 +27,8 @@ describe('compile/data/bin', function() {
           field: 'Acceleration',
           as: ['bin_Acceleration_start', 'bin_Acceleration_end'],
           maxbins: 10,
-          extent: [0, 100]
+          extent: [0, 100],
+          signal: "Acceleration_bins",
         });
       });
     });
@@ -56,6 +57,7 @@ describe('compile/data/bin', function() {
           field: 'Acceleration',
           as: ['bin_Acceleration_start', 'bin_Acceleration_end'],
           maxbins: 10,
+          signal: "Acceleration_bins",
           extent: {signal: 'Acceleration_extent'}
         });
       });

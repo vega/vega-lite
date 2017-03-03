@@ -1,12 +1,10 @@
 import {COLOR, SIZE, SHAPE, OPACITY, Channel} from '../../channel';
-import {hasContinuousDomain} from '../../scale';
 import {keys, Dict} from '../../util';
 import {VgLegend} from '../../vega.schema';
 import {Legend, LEGEND_PROPERTIES} from '../../legend';
 
 import {Model} from '../model';
 import {numberFormat} from '../common';
-import {BIN_LEGEND_SUFFIX} from '../scale/scale';
 import {UnitModel} from '../unit';
 
 import * as encode from './encode';
@@ -23,17 +21,16 @@ export function parseLegendComponent(model: UnitModel): Dict<VgLegend> {
 
 function getLegendDefWithScale(model: UnitModel, channel: Channel): VgLegend {
   // For binned field with continuous scale, use a special scale so we can overrride the mark props and labels
-  const suffix = model.fieldDef(channel).bin && hasContinuousDomain(model.scale(channel).type) ? BIN_LEGEND_SUFFIX : '';
   switch (channel) {
     case COLOR:
-      const scale = model.scaleName(COLOR) + suffix;
+      const scale = model.scaleName(COLOR);
       return model.markDef.filled ? {fill: scale} : {stroke: scale};
     case SIZE:
-      return {size: model.scaleName(SIZE) + suffix};
+      return {size: model.scaleName(SIZE)};
     case SHAPE:
-      return {shape: model.scaleName(SHAPE) + suffix};
+      return {shape: model.scaleName(SHAPE)};
     case OPACITY:
-      return {opacity: model.scaleName(OPACITY) + suffix};
+      return {opacity: model.scaleName(OPACITY)};
   }
   return null;
 }

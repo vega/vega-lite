@@ -18,7 +18,7 @@ import {OneOfFilter, EqualFilter, RangeFilter} from '../filter';
 
 import {DataComponent} from './data/data';
 import {LayoutComponent} from './layout';
-import {ScaleComponents, BIN_LEGEND_SUFFIX, BIN_LEGEND_LABEL_SUFFIX} from './scale/scale';
+import {ScaleComponents} from './scale/scale';
 import {StackProperties} from '../stack';
 
 import {SelectionComponent} from './selection/selection';
@@ -185,12 +185,6 @@ export abstract class Model {
     // help assemble scale domains with scale signature as well
     return flatten(vals(this.component.scales).map((scales: ScaleComponents) => {
       let arr = [scales.main];
-      if (scales.binLegend) {
-        arr.push(scales.binLegend);
-      }
-      if (scales.binLegendLabel) {
-        arr.push(scales.binLegendLabel);
-      }
       return arr;
     }));
   }
@@ -356,7 +350,8 @@ export abstract class Model {
    * (DO NOT USE THIS METHOD DURING SCALE PARSING, use model.name() instead)
    */
   public scaleName(this: Model, originalScaleName: Channel|string, parse?: boolean): string {
-    const channel = originalScaleName.replace(BIN_LEGEND_SUFFIX, '').replace(BIN_LEGEND_LABEL_SUFFIX, '');
+    // FIXME?
+    const channel = originalScaleName;
 
     if (parse) {
       // During the parse phase always return a value

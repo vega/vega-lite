@@ -176,8 +176,12 @@ export namespace message {
       channel === 'x' ? 'width' : 'height'} is provided.`;
   }
 
-  export function scaleTypeNotWorkWithChannel(channel: Channel, scaleType: ScaleType, newScaleType: ScaleType) {
-    return `Channel ${channel} does not work with ${scaleType} scale. We are using ${newScaleType} scale instead.`;
+  export function cannotOverrideBinScaleType(channel: Channel) {
+    return `Cannot override scale type for binned channel ${channel}.`;
+  }
+
+  export function scaleTypeNotWorkWithChannel(channel: Channel, scaleType: ScaleType) {
+    return `Channel ${channel} does not work with ${scaleType} scale.`;
   }
 
   export function scalePropertyNotWorkWithScaleType(scaleType: ScaleType, propName: string, channel: Channel) {
@@ -190,6 +194,7 @@ export namespace message {
 
   export const INVAID_DOMAIN = 'Invalid scale domain';
 
+  export const UNABLE_TO_MERGE_DOMAINS = 'Unable to merge domains';
 
   // AXIS
   export const INVALID_CHANNEL_FOR_AXIS = 'Invalid channel for axis.';

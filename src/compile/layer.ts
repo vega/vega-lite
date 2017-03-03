@@ -8,7 +8,7 @@ import {LayerSpec} from '../spec';
 import {StackProperties} from '../stack';
 import {FILL_STROKE_CONFIG} from '../mark';
 import {keys, duplicate, mergeDeep, flatten, vals, Dict} from '../util';
-import {VgData, VgEncodeEntry} from '../vega.schema';
+import {VgData, VgEncodeEntry, isSignalRefDomain, VgScale} from '../vega.schema';
 import {isUrlData} from '../data';
 
 import {assembleData, parseLayerData} from './data/data';
@@ -117,19 +117,14 @@ export class LayerModel extends Model {
       if (true) { // if shared/union scale
         keys(child.component.scales).forEach(function(channel) {
           let childScales: ScaleComponents = child.component.scales[channel];
-          if (!childScales) {
-            // the child does not have any scales so we have nothing to merge
+          const modelScales: ScaleComponents = scaleComponent[channel];
+
+          if (!childScales || isSignalRefDomain(childScales.main.domain) || modelScales && isSignalRefDomain(modelScales.main.domain)) {
             return;
           }
 
-          const modelScales: ScaleComponents = scaleComponent[channel];
           if (modelScales && modelScales.main) {
-            // Scales are unioned by combining the domain of the main scale.
-            // Other scales that are used for ordinal legends are appended.
-
             modelScales.main.domain = unionDomains(modelScales.main.domain, childScales.main.domain);
-            modelScales.binLegend = modelScales.binLegend ? modelScales.binLegend : childScales.binLegend;
-            modelScales.binLegendLabel = modelScales.binLegendLabel ? modelScales.binLegendLabel : childScales.binLegendLabel;
           } else {
             scaleComponent[channel] = childScales;
           }
@@ -142,7 +137,8 @@ export class LayerModel extends Model {
             scale.name = newName;
           });
 
-          delete childScales[channel];
+          // remove merged scales from children
+          delete child.component.scales[channel];
         });
       }
     });
@@ -210,6 +206,13 @@ export class LayerModel extends Model {
 
   public assembleSelectionData(data: VgData[]): VgData[] {
     return [];
+  }
+
+  public assembleScales(): VgScale[] {
+    // combine with scales from children
+    return this.children.reduce((scales, c) => {
+      return scales.concat(c.assembleScales());
+    }, super.assembleScales());
   }
 
   public assembleData(data: VgData[]): VgData[] {

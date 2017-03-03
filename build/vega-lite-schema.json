@@ -2805,6 +2805,8 @@
         "ScaleType": {
             "enum": [
                 "band",
+                "bin-linear",
+                "bin-ordinal",
                 "linear",
                 "log",
                 "ordinal",

@@ -42,39 +42,7 @@ describe('Layer', function() {
       });
     });
 
-    it('should merge unioned domains', () => {
-      const model = parseLayerModel({
-        layer: [{
-          mark: 'point',
-          encoding: {
-            x: {bin: true, field: 'a', type: 'quantitative'}
-          }
-        },{
-          mark: 'point',
-          encoding: {
-            x: {field: 'b', type: 'ordinal'}
-          }
-        }]
-      });
-      assert.equal(model.children.length, 2);
-      model.parseScale();
-
-      assert.deepEqual(model.component.scales['x'].main.domain, {
-        fields: [{
-          data: 'layer_0_source',
-          field: 'bin_a_start'
-        },{
-          data: 'layer_0_source',
-          field: 'bin_a_end'
-        },{
-          data: 'layer_1_source',
-          field: 'b'
-        }],
-        sort: true
-      });
-    });
-
-    it('should unioned explicit and referenced domains', () => {
+    it('should union explicit and referenced domains', () => {
       const model = parseLayerModel({
         layer: [{
           mark: 'point',

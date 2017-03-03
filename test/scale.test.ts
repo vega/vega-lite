@@ -17,9 +17,9 @@ describe('scale', () => {
   });
 
   describe('scaleTypes', () => {
-    it('should either hasContinuousDomain or hasDiscreteDomain', () => {
+    it('should either hasContinuousDomain or hasDiscreteDomain or isBinScale', () => {
       for (let scaleType of scale.SCALE_TYPES) {
-        assert(scale.hasContinuousDomain(scaleType) !== scale.hasDiscreteDomain(scaleType));
+        assert(scale.hasContinuousDomain(scaleType) || scale.hasDiscreteDomain(scaleType) || scale.isBinScale(scaleType));
       }
     });
   });

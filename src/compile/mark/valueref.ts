@@ -5,7 +5,7 @@
 import {Channel, X, X2, Y, Y2} from '../../channel';
 import {Config} from '../../config';
 import {ChannelDef, FieldDef, FieldRefOption, field, isFieldDef, TextFieldDef, ValueDef} from '../../fielddef';
-import {Scale, ScaleType, hasDiscreteDomain} from '../../scale';
+import {Scale, ScaleType, hasDiscreteDomain, isBinScale} from '../../scale';
 import {StackProperties} from '../../stack';
 import {contains} from '../../util';
 import {VgValueRef} from '../../vega.schema';
@@ -65,14 +65,6 @@ export function band(scaleName: string, band: number|boolean = true): VgValueRef
   };
 }
 
-export function binMidSignal(fieldDef: FieldDef, scaleName: string) {
-  return {
-    scale: scaleName,
-    signal: '(' + field(fieldDef, {binSuffix: 'start', datum: true}) + '+' +
-      field(fieldDef, {binSuffix: 'end', datum: true}) + ')/2'
-  };
-}
-
 /**
  * @returns {VgValueRef} Value Ref for xc / yc or mid point for other channels.
  */
@@ -83,6 +75,17 @@ export function midPoint(channel: Channel, channelDef: ChannelDef, scaleName: st
   if (channelDef) {
     /* istanbul ignore else */
     if (isFieldDef(channelDef)) {
+      if (isBinScale(scale.type)) {
+        if (contains(['x', 'y', 'x2', 'y2', 'size'], channel)) {
+          // return the middle point for size and length channels
+          return {
+            signal: `(scale("${scaleName}", ${field(channelDef, {binSuffix: 'start', datum: true})}) + scale("${scaleName}", ${field(channelDef, {binSuffix: 'end', datum: true})}))/2`
+          };
+        } else {
+          return fieldRef(channelDef, scaleName, {binSuffix: 'start'});
+        }
+      }
+
       if (hasDiscreteDomain(scale.type)) {
         if (scale.type === 'band') {
           // For band, to get mid point, need to offset by half of the band
@@ -90,11 +93,7 @@ export function midPoint(channel: Channel, channelDef: ChannelDef, scaleName: st
         }
         return fieldRef(channelDef, scaleName, {binSuffix: 'range'});
       } else {
-        if (channelDef.bin) {
-          return binMidSignal(channelDef, scaleName);
-        } else {
-          return fieldRef(channelDef, scaleName, {}); // no need for bin suffix
-        }
+        return fieldRef(channelDef, scaleName, {}); // no need for bin suffix
       }
     } else if (channelDef.value) {
       return {

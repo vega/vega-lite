@@ -16,7 +16,7 @@ export type RangeType = 'continuous' | 'discrete' | 'flexible' | undefined;
  */
 // NOTE: CompassQL uses this method.
 export default function type(
-  specifiedType: ScaleType, type: Type, channel: Channel, timeUnit: TimeUnit, mark: Mark,
+  specifiedType: ScaleType, type: Type, channel: Channel, timeUnit: TimeUnit, binned: boolean, mark: Mark,
   hasTopLevelSize: boolean, specifiedRangeStep: number, scaleConfig: ScaleConfig): ScaleType {
 
   if (!hasScale(channel)) {
@@ -24,21 +24,21 @@ export default function type(
     return null;
   }
   if (specifiedType !== undefined) {
-    // Check if explicitly specified scale type is supported by the channel
-    if (supportScaleType(channel, specifiedType)) {
-      return specifiedType;
+    // for binned fields we don't allow overriding the default scale
+    if (binned) {
+      log.warn(log.message.cannotOverrideBinScaleType(channel));
     } else {
-      const newScaleType = defaultType(
-        type, channel, timeUnit, mark,
-        hasTopLevelSize, specifiedRangeStep,  scaleConfig
-      );
-      log.warn(log.message.scaleTypeNotWorkWithChannel(channel, specifiedType, newScaleType));
-      return newScaleType;
+      // Check if explicitly specified scale type is supported by the channel
+      if (supportScaleType(channel, specifiedType)) {
+        return specifiedType;
+      } else {
+        log.warn(log.message.scaleTypeNotWorkWithChannel(channel, specifiedType));
+      }
     }
   }
 
   return defaultType(
-    type, channel, timeUnit, mark,
+    type, channel, timeUnit, binned, mark,
     hasTopLevelSize, specifiedRangeStep, scaleConfig
   );
 }
@@ -46,26 +46,26 @@ export default function type(
 /**
  * Determine appropriate default scale type.
  */
-function defaultType(type: Type, channel: Channel, timeUnit: TimeUnit, mark: Mark,
+function defaultType(type: Type, channel: Channel, timeUnit: TimeUnit, binned: boolean, mark: Mark,
   hasTopLevelSize: boolean, specifiedRangeStep: number, scaleConfig: ScaleConfig): ScaleType {
 
   if (util.contains(['row', 'column'], channel)) {
-    return ScaleType.BAND;
+    return 'band';
   }
 
   switch (type) {
     case 'nominal':
       if (channel === 'color' || rangeType(channel) === 'discrete') {
-        return ScaleType.ORDINAL;
+        return 'ordinal';
       }
       return discreteToContinuousType(channel, mark, hasTopLevelSize, specifiedRangeStep, scaleConfig);
 
     case 'ordinal':
       if (channel === 'color') {
-        return ScaleType.ORDINAL;
+        return 'ordinal';
       } else if (rangeType(channel) === 'discrete') {
         log.warn(log.message.discreteChannelCannotEncode(channel, 'ordinal'));
-        return ScaleType.ORDINAL;
+        return 'ordinal';
       }
       return discreteToContinuousType(channel, mark, hasTopLevelSize, specifiedRangeStep, scaleConfig);
 
@@ -77,24 +77,31 @@ function defaultType(type: Type, channel: Channel, timeUnit: TimeUnit, mark: Mar
       } else if (rangeType(channel) === 'discrete') {
         log.warn(log.message.discreteChannelCannotEncode(channel, 'temporal'));
         // TODO: consider using quantize (equivalent to binning) once we have it
-        return ScaleType.ORDINAL;
+        return 'ordinal';
       }
       if (isDiscreteByDefault(timeUnit)) {
         return discreteToContinuousType(channel, mark, hasTopLevelSize, specifiedRangeStep, scaleConfig);
       }
-      return ScaleType.TIME;
+      return 'time';
 
     case 'quantitative':
       if (channel === 'color') {
-        // Always use `sequential` as the default color scale for continuous data
+        if (binned) {
+          return 'bin-ordinal';
+        }
+        // Use `sequential` as the default color scale for continuous data
         // since it supports both array range and scheme range.
         return 'sequential';
       } else if (rangeType(channel) === 'discrete') {
         log.warn(log.message.discreteChannelCannotEncode(channel, 'quantitative'));
         // TODO: consider using quantize (equivalent to binning) once we have it
-        return ScaleType.ORDINAL;
+        return 'ordinal';
       }
-      return ScaleType.LINEAR;
+
+      if (binned) {
+        return 'bin-linear';
+      }
+      return 'linear';
   }
 
   /* istanbul ignore next: should never reach this */
@@ -112,19 +119,19 @@ function discreteToContinuousType(
   if (util.contains(['x', 'y'], channel)) {
     if (mark === 'rect') {
       // The rect mark should fit into a band.
-      return ScaleType.BAND;
+      return 'band';
     }
     if (mark === 'bar') {
       // For bar, use band only if there is no rangeStep since we need to use band for fit mode.
       // However, for non-fit mode, point scale provides better center position.
       if (haveRangeStep(hasTopLevelSize, specifiedRangeStep, scaleConfig)) {
-        return ScaleType.POINT;
+        return 'point';
       }
-      return ScaleType.BAND;
+      return 'band';
     }
   }
   // Otherwise, use ordinal point scale so we can easily get center positions of the marks.
-  return ScaleType.POINT;
+  return 'point';
 }
 
 function haveRangeStep(hasTopLevelSize: boolean, specifiedRangeStep: number, scaleConfig: ScaleConfig) {

@@ -6,6 +6,7 @@ import {contains, toSet} from './util';
 export namespace ScaleType {
   // Continuous - Quantitative
   export const LINEAR: 'linear' = 'linear';
+  export const BIN_LINEAR: 'bin-linear' = 'bin-linear';
   export const LOG: 'log' = 'log';
   export const POW: 'pow' = 'pow';
   export const SQRT: 'sqrt' = 'sqrt';
@@ -21,27 +22,27 @@ export namespace ScaleType {
   export const THRESHOLD: 'threshold' = 'threshold';
 
   export const ORDINAL: 'ordinal' = 'ordinal';
+  export const BIN_ORDINAL: 'bin-ordinal' = 'bin-ordinal';
   export const POINT: 'point' = 'point';
   export const BAND: 'band' = 'band';
-
 }
 
-export type ScaleType = typeof ScaleType.LINEAR |
+export type ScaleType = typeof ScaleType.LINEAR | typeof ScaleType.BIN_LINEAR |
   typeof ScaleType.LOG | typeof ScaleType.POW | typeof ScaleType.SQRT |
   typeof ScaleType.TIME | typeof ScaleType.UTC |
   // TODO: add 'quantize', 'quantile', 'threshold' back when we really support them
   typeof ScaleType.SEQUENTIAL | // typeof ScaleType.QUANTILE | typeof ScaleType.QUANTIZE | typeof ScaleType.THRESHOLD |
-  typeof ScaleType.ORDINAL | typeof ScaleType.POINT | typeof ScaleType.BAND;
+  typeof ScaleType.ORDINAL | typeof ScaleType.BIN_ORDINAL | typeof ScaleType.POINT | typeof ScaleType.BAND;
 
 export const SCALE_TYPES: ScaleType[] = [
   // Continuous - Quantitative
-  'linear', 'log', 'pow', 'sqrt',
+  'linear', 'bin-linear', 'log', 'pow', 'sqrt',
   // Continuous - Time
   'time', 'utc',
   // Sequential
   'sequential', // TODO: add 'quantile', 'quantize' when we really support them
   // Discrete
-  'ordinal', 'point', 'band',
+  'ordinal', 'bin-ordinal', 'point', 'band',
 ];
 
 export const CONTINUOUS_TO_CONTINUOUS_SCALES: ScaleType[] = ['linear', 'log', 'pow', 'sqrt', 'time', 'utc'];
@@ -53,10 +54,16 @@ const CONTINUOUS_DOMAIN_INDEX = toSet(CONTINUOUS_DOMAIN_SCALES);
 export const DISCRETE_DOMAIN_SCALES: ScaleType[] = ['ordinal', 'point', 'band'];
 const DISCRETE_DOMAIN_INDEX = toSet(DISCRETE_DOMAIN_SCALES);
 
+const BIN_SCALES_INDEX = toSet(['bin-linear', 'bin-ordinal']);
+
 export const TIME_SCALE_TYPES: ScaleType[] = ['time', 'utc'];
 
 export function hasDiscreteDomain(type: ScaleType): type is 'ordinal' | 'point' | 'band' {
   return type in DISCRETE_DOMAIN_INDEX;
+}
+
+export function isBinScale(type: ScaleType): type is 'bin-linear' | 'bin-ordinal' {
+  return type in BIN_SCALES_INDEX;
 }
 
 export function hasContinuousDomain(type: ScaleType):

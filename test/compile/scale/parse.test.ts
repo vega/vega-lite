@@ -111,26 +111,55 @@ describe('src/compile', function() {
 
       it('should add correct scales', function() {
         assert.equal(scales.main.name, 'color');
-        assert.equal(scales.main.type, 'sequential');
-
-        assert.equal(scales.binLegend.name, 'color_bin_legend');
-        assert.equal(scales.binLegend.type, 'point');
-
-        assert.equal(scales.binLegendLabel.name, 'color_bin_legend_label');
-        assert.equal(scales.binLegendLabel.type, 'ordinal');
+        assert.equal(scales.main.type, 'bin-ordinal');
       });
+    });
 
-      it('should sort domain and range for labels', function() {
-        assert.deepEqual(scales.binLegendLabel.domain, {
-          data: 'source',
-          field: 'bin_origin_start',
-          sort: true
+    describe('ordinal color with bin', function() {
+      const model = parseUnitModel({
+          mark: "point",
+          encoding: {
+            color: {field: "origin", type: "ordinal", bin: true}
+          }
         });
-        assert.deepEqual(scales.binLegendLabel.range, {
-          data: 'source',
-          field: 'bin_origin_range',
-          sort: {"field": "bin_origin_start","op": "min"}
+
+      const scales = parseScale(model, 'color');
+
+      it('should add correct scales', function() {
+        assert.equal(scales.main.name, 'color');
+        assert.equal(scales.main.type, 'ordinal');
+      });
+    });
+
+    describe('opacity with bin', function() {
+      const model = parseUnitModel({
+          mark: "point",
+          encoding: {
+            opacity: {field: "origin", type: "quantitative", bin: true}
+          }
         });
+
+      const scales = parseScale(model, 'opacity');
+
+      it('should add correct scales', function() {
+        assert.equal(scales.main.name, 'opacity');
+        assert.equal(scales.main.type, 'bin-linear');
+      });
+    });
+
+    describe('size with bin', function() {
+      const model = parseUnitModel({
+          mark: "point",
+          encoding: {
+            size: {field: "origin", type: "quantitative", bin: true}
+          }
+        });
+
+      const scales = parseScale(model, 'size');
+
+      it('should add correct scales', function() {
+        assert.equal(scales.main.name, 'size');
+        assert.equal(scales.main.type, 'bin-linear');
       });
     });
 
@@ -147,8 +176,6 @@ describe('src/compile', function() {
       it('should add correct scales', function() {
         assert.equal(scales.main.name, 'color');
         assert.equal(scales.main.type, 'sequential');
-        assert.equal(scales.binLegend, undefined);
-        assert.equal(scales.binLegendLabel, undefined);
       });
     });
   });
