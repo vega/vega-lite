@@ -10,9 +10,8 @@ import * as log from './log';
 import {Scale} from './scale';
 import {StackOffset} from './stack';
 import {SortField, SortOrder} from './sort';
-import {TimeUnit} from './timeunit';
-import {Type, NOMINAL, ORDINAL, QUANTITATIVE, TEMPORAL, getFullName} from './type';
-import {contains} from './util';
+import {TimeUnit, isDiscreteByDefault} from './timeunit';
+import {Type, getFullName} from './type';
 
 /**
  * Definition object for a constant value of an encoding channel.
@@ -189,27 +188,22 @@ export function field(fieldDef: FieldDef, opt: FieldRefOption = {}) {
   return field;
 }
 
-function _isFieldDimension(fieldDef: FieldDef) {
-  if (contains([NOMINAL, ORDINAL], fieldDef.type)) {
-    return true;
-  } else if(!!fieldDef.bin) {
-    return true;
-  } else if (fieldDef.type === TEMPORAL) {
-    return !!fieldDef.timeUnit;
+export function isDiscrete(fieldDef: FieldDef) {
+  switch (fieldDef.type) {
+    case 'nominal':
+    case 'ordinal':
+      return true;
+    case 'quantitative':
+      return !!fieldDef.bin;
+    case 'temporal':
+      // TODO: deal with custom scale type case.
+      return isDiscreteByDefault(fieldDef.timeUnit);
   }
-  return false;
+  throw new Error(log.message.invalidFieldType(fieldDef.type));
 }
 
-export function isDimension(fieldDef: FieldDef) {
-  return fieldDef && isFieldDef(fieldDef) && _isFieldDimension(fieldDef);
-}
-
-export function isMeasure(fieldDef: FieldDef) {
-  return fieldDef && isFieldDef(fieldDef) && !_isFieldDimension(fieldDef);
-}
-
-export function count(): FieldDef {
-  return {field: '*', aggregate: 'count', type: QUANTITATIVE};
+export function isContinuous(fieldDef: FieldDef) {
+  return !isDiscrete(fieldDef);
 }
 
 export function isCount(fieldDef: FieldDef) {
