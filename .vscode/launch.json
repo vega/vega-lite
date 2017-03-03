@@ -2,34 +2,13 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "name": "Launch",
-      "type": "node",
-      "request": "launch",
-      "program": "${workspaceRoot}/src/vl.js",
-      "stopOnEntry": false,
-      "args": [],
-      "cwd": "${workspaceRoot}",
-      "preLaunchTask": null,
-      "runtimeExecutable": null,
-      "runtimeArgs": [
-        "--nolazy"
-      ],
-      "env": {
-        "NODE_ENV": "development"
-      },
-      "externalConsole": false,
-      "sourceMaps": false,
-      "outDir": null
-    },
-    {
-      "name": "Attach",
       "type": "node",
       "request": "attach",
+      "name": "Attach",
       "port": 5858,
       "address": "localhost",
       "restart": false,
       "sourceMaps": true,
-      "outDir": null,
       "localRoot": "${workspaceRoot}",
       "remoteRoot": null
     }
