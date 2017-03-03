@@ -3,7 +3,7 @@ import * as log from '../log';
 import {Axis} from '../axis';
 import {Channel, X, COLUMN} from '../channel';
 import {Config, CellConfig} from '../config';
-import {Data, DataSourceType} from '../data';
+import {Data, DataSourceType, isNamedData, SOURCE} from '../data';
 import {reduce, forEach} from '../encoding';
 import {FieldDef, FieldRefOption, field, isFieldDef, ChannelDef} from '../fielddef';
 import {Legend} from '../legend';
@@ -271,6 +271,9 @@ export abstract class Model {
   public abstract channelHasField(channel: Channel): boolean;
 
   public getName(text: string, delimiter: string = '_') {
+    if (this.data && text === SOURCE && isNamedData(this.data)) {
+      return this.data.name;
+    }
     return (this.name ? this.name + delimiter : '') + text;
   }
 

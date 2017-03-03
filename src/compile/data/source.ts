@@ -1,4 +1,4 @@
-import {DataFormat, SOURCE, isInlineData, isUrlData} from '../../data';
+import {DataFormat, isNamedData, isInlineData, isUrlData, SOURCE} from '../../data';
 import {contains, extend} from '../../util';
 import {VgData} from '../../vega.schema';
 
@@ -48,6 +48,8 @@ export namespace source {
               {mesh : dataFormat.mesh} :
               {}
           );
+      } else if (isNamedData(data)) {
+        return {name: data.name};
       }
 
       return sourceData;

@@ -60,6 +60,18 @@ describe('compile/data/source', function() {
       });
     });
 
+    describe('with named data source provided', function() {
+      const model = parseUnitModel({
+        data: {name: 'foo'},
+        mark: 'point',
+        encoding: {}
+      });
+      const sourceComponent = source.parseUnit(model);
+      it('should provide named source data', function() {
+        assert.deepEqual(sourceComponent, {name: 'foo'});
+      });
+    });
+
     describe('data format', function() {
       describe('json', () => {
         it('should include property if specified', function() {

@@ -40,7 +40,7 @@ export interface DataFormat {
 
 export type DataFormatType = 'json' | 'csv' | 'tsv' | 'topojson';
 
-export type Data = UrlData | InlineData;
+export type Data = UrlData | InlineData | NamedData;
 
 export interface UrlData {
   /**
@@ -62,12 +62,23 @@ export interface InlineData {
   values: any[];
 }
 
+export interface NamedData {
+  /**
+   * Provide a placeholder name and bind data at runtime.
+   */
+  name: string;
+}
+
 export function isUrlData(data: Data): data is UrlData {
   return !!data['url'];
 }
 
 export function isInlineData(data: Data): data is InlineData {
   return !!data['values'];
+}
+
+export function isNamedData(data: Data): data is NamedData {
+  return !!data['name'];
 }
 
 export type DataSourceType = 'source' | 'summary' | 'stacked' | 'layout';
