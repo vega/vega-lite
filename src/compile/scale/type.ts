@@ -1,6 +1,6 @@
 import * as log from '../../log';
 
-import {hasScale, supportScaleType, getRangeType, Channel} from '../../channel';
+import {hasScale, supportScaleType, rangeType, Channel} from '../../channel';
 import {Mark} from '../../mark';
 import {ScaleType, ScaleConfig} from '../../scale';
 import {TimeUnit} from '../../timeunit';
@@ -55,7 +55,7 @@ function defaultType(type: Type, channel: Channel, timeUnit: TimeUnit, mark: Mar
 
   switch (type) {
     case 'nominal':
-      if (channel === 'color' || getRangeType(channel) === 'discrete') {
+      if (channel === 'color' || rangeType(channel) === 'discrete') {
         return ScaleType.ORDINAL;
       }
       return discreteToContinuousType(channel, mark, hasTopLevelSize, specifiedRangeStep, scaleConfig);
@@ -63,7 +63,7 @@ function defaultType(type: Type, channel: Channel, timeUnit: TimeUnit, mark: Mar
     case 'ordinal':
       if (channel === 'color') {
         return ScaleType.ORDINAL;
-      } else if (getRangeType(channel) === 'discrete') {
+      } else if (rangeType(channel) === 'discrete') {
         log.warn(log.message.discreteChannelCannotEncode(channel, 'ordinal'));
         return ScaleType.ORDINAL;
       }
@@ -74,7 +74,7 @@ function defaultType(type: Type, channel: Channel, timeUnit: TimeUnit, mark: Mar
         // Always use `sequential` as the default color scale for continuous data
         // since it supports both array range and scheme range.
         return 'sequential';
-      } else if (getRangeType(channel) === 'discrete') {
+      } else if (rangeType(channel) === 'discrete') {
         log.warn(log.message.discreteChannelCannotEncode(channel, 'temporal'));
         // TODO: consider using quantize (equivalent to binning) once we have it
         return ScaleType.ORDINAL;
@@ -94,7 +94,7 @@ function defaultType(type: Type, channel: Channel, timeUnit: TimeUnit, mark: Mar
         // Always use `sequential` as the default color scale for continuous data
         // since it supports both array range and scheme range.
         return 'sequential';
-      } else if (getRangeType(channel) === 'discrete') {
+      } else if (rangeType(channel) === 'discrete') {
         log.warn(log.message.discreteChannelCannotEncode(channel, 'quantitative'));
         // TODO: consider using quantize (equivalent to binning) once we have it
         return ScaleType.ORDINAL;
