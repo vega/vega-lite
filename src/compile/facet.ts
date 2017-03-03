@@ -5,7 +5,7 @@ import {COLUMN, ROW, X, Y, Channel} from '../channel';
 import {defaultConfig, Config} from '../config';
 import {Facet} from '../facet';
 import {forEach} from '../encoding';
-import {FieldDef, isDimension, normalize} from '../fielddef';
+import {FieldDef, normalize, isDiscrete} from '../fielddef';
 import {Legend} from '../legend';
 import {Scale} from '../scale';
 import {FacetSpec} from '../spec';
@@ -97,7 +97,7 @@ export class FacetModel extends Model {
       normalize(fieldDef, channel);
 
       // TODO: move this warning into normalize
-      if (!isDimension(fieldDef)) {
+      if (!isDiscrete(fieldDef)) {
         log.warn(log.message.facetChannelShouldBeDiscrete(channel));
       }
     });

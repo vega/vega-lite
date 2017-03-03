@@ -3,7 +3,7 @@ import {Encoding, isAggregate, channelHasField} from '../../encoding';
 import * as log from '../../log';
 import {Dict, contains} from '../../util';
 import {Scale, hasDiscreteDomain} from '../../scale';
-import {isFieldDef, isMeasure, FieldDef} from '../../fielddef';
+import {isFieldDef, FieldDef, isContinuous} from '../../fielddef';
 import {TEMPORAL} from '../../type';
 import {Config} from '../../config';
 import {getMarkConfig} from '../common';
@@ -114,19 +114,29 @@ function orient(mark: Mark, encoding: Encoding, scale: Dict<Scale>, specifiedOri
       /* tslint:disable */
     case LINE: // intentional fall through
       /* tslint:enable */
-      const xIsMeasure = isMeasure(encoding.x) || isMeasure(encoding.x2);
-      const yIsMeasure = isMeasure(encoding.y) || isMeasure(encoding.y2);
-      if (xIsMeasure && !yIsMeasure) {
+      const xIsContinuous = isFieldDef(encoding.x) && isContinuous(encoding.x);
+      const yIsContinuous = isFieldDef(encoding.y) && isContinuous(encoding.y);
+      if (xIsContinuous && !yIsContinuous) {
         return 'horizontal';
-      } else if (!xIsMeasure && yIsMeasure) {
+      } else if (!xIsContinuous && yIsContinuous) {
         return 'vertical';
-      } else if (xIsMeasure && yIsMeasure) {
-        const xDef = encoding.x as FieldDef;
+      } else if (xIsContinuous && yIsContinuous) {
+        const xDef = encoding.x as FieldDef; // we can cast here since they are surely fieldDef
         const yDef = encoding.y as FieldDef;
+
+        const xIsTemporal = xDef.type === TEMPORAL;
+        const yIsTemporal = yDef.type === TEMPORAL;
+
         // temporal without timeUnit is considered continuous, but better serves as dimension
-        if (xDef.type === TEMPORAL) {
+        if (xIsTemporal && !yIsTemporal) {
           return 'vertical';
-        } else if (yDef.type === TEMPORAL) {
+        } else if (!xIsTemporal && yIsTemporal) {
+          return 'horizontal';
+        }
+
+        if (!xDef.aggregate && !!yDef.aggregate) {
+          return 'vertical';
+        } else if (!!xDef.aggregate && !yDef.aggregate) {
           return 'horizontal';
         }
 
