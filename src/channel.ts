@@ -130,47 +130,6 @@ export function getSupportedMark(channel: Channel): SupportedMark {
   return {};
 }
 
-export interface SupportedRole {
-  measure: boolean;
-  dimension: boolean;
-};
-
-/**
- * Return whether a channel supports dimension / measure role
- * @param  channel
- * @return A dictionary mapping role to boolean values.
- */
-export function getSupportedRole(channel: Channel): SupportedRole {
-  switch (channel) {
-    case X:
-    case Y:
-    case COLOR:
-    case OPACITY:
-    case ORDER:
-    case DETAIL:
-      return {
-        measure: true,
-        dimension: true
-      };
-    case ROW:
-    case COLUMN:
-    case SHAPE:
-      return {
-        measure: false,
-        dimension: true
-      };
-    case X2:
-    case Y2:
-    case SIZE:
-    case TEXT:
-      return {
-        measure: true,
-        dimension: false
-      };
-  }
-  throw new Error('Invalid encoding channel ' + channel);
-}
-
 export function hasScale(channel: Channel) {
   return !contains([DETAIL, TEXT, ORDER], channel);
 }
@@ -199,16 +158,16 @@ export function supportScaleType(channel: Channel, scaleType: ScaleType): boolea
   return false;
 }
 
-export function getRangeType(channel: Channel): RangeType {
+export function rangeType(channel: Channel): RangeType {
   switch (channel) {
     case X:
     case Y:
-    case ROW:
-    case COLUMN:
     case SIZE:
     case OPACITY:
       return 'continuous';
 
+    case ROW:
+    case COLUMN:
     case SHAPE:
       return 'discrete';
 

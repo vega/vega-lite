@@ -3,7 +3,7 @@
 import {AggregateOp} from './aggregate';
 import {Axis} from './axis';
 import {Bin} from './bin';
-import {Channel, getSupportedRole} from './channel';
+import {Channel, rangeType} from './channel';
 import {Config} from './config';
 import {Legend} from './legend';
 import * as log from './log';
@@ -238,8 +238,16 @@ export function defaultType(fieldDef: FieldDef, channel: Channel): Type {
   if (!!fieldDef.bin) {
     return 'quantitative';
   }
-  const canBeMeasure = getSupportedRole(channel).measure;
-  return canBeMeasure ? 'quantitative' : 'nominal';
+  switch (rangeType(channel)) {
+    case 'continuous':
+      return 'quantitative';
+    case 'discrete':
+      return 'nominal';
+    case 'flexible': // color
+      return 'nominal';
+    default:
+      return 'quantitative';
+  }
 }
 
 /**
