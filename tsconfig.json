@@ -14,7 +14,7 @@
     "noEmitOnError": true,
     "noImplicitThis": true,
     "noImplicitReturns": true,
-    "sourceMap": true,
+    "inlineSourceMap": true,
     "typeRoots" : ["./typings", "node_modules/@types"]
   },
   "include": [
