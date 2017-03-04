@@ -2,7 +2,7 @@
 
 set -e
 
-version=$(scripts/version.sh)
+version=$(scripts/version.sh vega-lite)
 
 pushd ../schema/vega-lite/
 
