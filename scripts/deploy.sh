@@ -53,7 +53,7 @@ fi
 
 # read version
 gitsha=$(git rev-parse HEAD)
-version=$(scripts/version.sh)
+version=$(scripts/version.sh vega-lite)
 
 git checkout head
 npm run build
