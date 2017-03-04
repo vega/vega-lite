@@ -1,7 +1,7 @@
 import {assert} from 'chai';
 
 import {Channel} from '../src/channel';
-import {defaultType, normalize, title} from '../src/fielddef';
+import {defaultType, normalize, title, channelCompatibility} from '../src/fielddef';
 import * as log from '../src/log';
 import {TimeUnit} from '../src/timeunit';
 import {QUANTITATIVE, TEMPORAL} from '../src/type';
@@ -40,6 +40,71 @@ describe('fieldDef', () => {
       assert.deepEqual(normalize(fieldDef, 'x'), {field: 'a', type: 'quantitative'});
       assert.equal(localLogger.warns[0], log.message.emptyOrInvalidFieldType(undefined, 'x', 'quantitative'));
     }));
+  });
+
+  describe('channelCompatability', () => {
+    describe('row/column', () => {
+      it('is incompatible with continuous field', () => {
+        ['row', 'column'].forEach((channel:Channel) => {
+          assert(!channelCompatibility({field: 'a', type: 'quantitative'}, channel).compatible);
+        });
+      });
+      it('is compatible with discrete field', () => {
+        ['row', 'column'].forEach((channel:Channel) => {
+          assert(channelCompatibility({field: 'a', type: 'nominal'}, channel).compatible);
+        });
+      });
+    });
+
+    describe('x/y/color/text/detail', () => {
+      it('is compatible with continuous field', () => {
+        ['x', 'y', 'color', 'text', 'detail'].forEach((channel:Channel) => {
+          assert(channelCompatibility({field: 'a', type: 'quantitative'}, channel).compatible);
+        });
+      });
+      it('is compatible with discrete field', () => {
+        ['x', 'y', 'color', 'text', 'detail'].forEach((channel:Channel) => {
+          assert(channelCompatibility({field: 'a', type: 'nominal'}, channel).compatible);
+        });
+      });
+    });
+
+    describe('opacity/size/x2/y2', () => {
+      it('is compatible with continuous field', () => {
+        ['opacity', 'size', 'x2', 'y2'].forEach((channel:Channel) => {
+          assert(channelCompatibility({field: 'a', type: 'quantitative'}, channel).compatible);
+        });
+      });
+      it('is incompatible with discrete field', () => {
+        ['opacity', 'size', 'x2', 'y2'].forEach((channel:Channel) => {
+          assert(!channelCompatibility({field: 'a', type: 'nominal'}, channel).compatible);
+        });
+      });
+    });
+
+    describe('shape', () => {
+      it('is compatible with nominal field', () => {
+        assert(channelCompatibility({field: 'a', type: 'nominal'}, 'shape').compatible);
+      });
+      it('is incompatible with ordinal field', () => {
+        assert(!channelCompatibility({field: 'a', type: 'ordinal'}, 'shape').compatible);
+      });
+      it('is incompatible with quantitative field', () => {
+        assert(!channelCompatibility({field: 'a', type: 'quantitative'}, 'shape').compatible);
+      });
+    });
+
+    describe('order', () => {
+      it('is incompatible with nominal field', () => {
+        assert(!channelCompatibility({field: 'a', type: 'nominal'}, 'order').compatible);
+      });
+      it('is compatible with ordinal field', () => {
+        assert(channelCompatibility({field: 'a', type: 'ordinal'}, 'order').compatible);
+      });
+      it('is compatible with quantitative field', () => {
+        assert(channelCompatibility({field: 'a', type: 'quantitative'}, 'order').compatible);
+      });
+    });
   });
 
   describe('title()', () => {

@@ -5,7 +5,7 @@ import {COLUMN, ROW, X, Y, Channel} from '../channel';
 import {defaultConfig, Config} from '../config';
 import {Facet} from '../facet';
 import {forEach} from '../encoding';
-import {FieldDef, normalize, isDiscrete} from '../fielddef';
+import {FieldDef, normalize} from '../fielddef';
 import {Legend} from '../legend';
 import {Scale} from '../scale';
 import {FacetSpec} from '../spec';
@@ -95,11 +95,6 @@ export class FacetModel extends Model {
 
       // Convert type to full, lowercase type, or augment the fieldDef with a default type if missing.
       normalize(fieldDef, channel);
-
-      // TODO: move this warning into normalize
-      if (!isDiscrete(fieldDef)) {
-        log.warn(log.message.facetChannelShouldBeDiscrete(channel));
-      }
     });
     return facet;
   }
