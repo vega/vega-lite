@@ -247,9 +247,9 @@ export function defaultType(fieldDef: FieldDef, channel: Channel): Type {
 /**
  * Convert type to full, lowercase type, or augment the fieldDef with a default type if missing.
  */
-export function normalize(fieldDef: FieldDef, channel: Channel) {
+export function normalize(fieldDef: ChannelDef, channel: Channel) {
   // If a fieldDef contains a field, we need type.
-  if (fieldDef.field) { // TODO: or datum
+  if (isFieldDef(fieldDef)) { // TODO: or datum
     // convert short type to full type
     const fullType = getFullName(fieldDef.type);
     if (fullType) {
@@ -260,6 +260,67 @@ export function normalize(fieldDef: FieldDef, channel: Channel) {
       log.warn(log.message.emptyOrInvalidFieldType(fieldDef.type, channel, newType));
       fieldDef.type = newType;
     }
+
+    const {compatible, warning} = channelCompatibility(fieldDef, channel);
+    if (!compatible) {
+      log.warn(warning);
+    }
   }
   return fieldDef;
+}
+
+const COMPATIBLE = {compatible: true};
+export function channelCompatibility(fieldDef: FieldDef, channel: Channel): {compatible: boolean; warning?: string;} {
+  switch (channel) {
+    case 'row':
+    case 'column':
+      if (isContinuous(fieldDef) && !fieldDef.timeUnit) {
+        // TODO:(https://github.com/vega/vega-lite/issues/2011):
+        // with timeUnit it's not always strictly continuous
+        return {
+          compatible: false,
+          warning: log.message.facetChannelShouldBeDiscrete(channel)
+        };
+      }
+      return COMPATIBLE;
+
+    case 'x':
+    case 'y':
+    case 'color':
+    case 'text':
+    case 'detail':
+      return COMPATIBLE;
+
+    case 'opacity':
+    case 'size':
+    case 'x2':
+    case 'y2':
+      if (isDiscrete(fieldDef)) {
+        return {
+          compatible: false,
+          warning: `Channel ${channel} should not be used with discrete field.`
+        };
+      }
+      return COMPATIBLE;
+
+    case 'shape':
+      if (fieldDef.type !== 'nominal') {
+        return {
+          compatible: false,
+          warning: 'Shape channel should be used with nominal data only'
+        };
+      } else {
+        return COMPATIBLE;
+      }
+
+    case 'order':
+      if (fieldDef.type === 'nominal') {
+        return {
+          compatible: false,
+          warning: `Channel order is inappropriate for nominal field, which has no inherent order.`
+        };
+      }
+      return COMPATIBLE;
+  }
+  throw new Error('channelCompatability not implemented for channel ' + channel);
 }

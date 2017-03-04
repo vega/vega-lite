@@ -140,13 +140,13 @@ export function dropInvalidFieldDefs(mark: Mark, encoding: Encoding): Encoding {
         return channelDefs;
       }, []);
     } else {
-      const fieldDef = encoding[channel];
-      if (fieldDef.field === undefined && fieldDef.value === undefined) { // TODO: datum
-        log.warn(log.message.emptyFieldDef(fieldDef, channel));
+      const channelDef = encoding[channel];
+      if (channelDef.field === undefined && channelDef.value === undefined) { // TODO: datum
+        log.warn(log.message.emptyFieldDef(channelDef, channel));
         delete encoding[channel];
         return;
       }
-      normalize(fieldDef, channel);
+      normalize(channelDef, channel);
     }
   });
   return encoding;
