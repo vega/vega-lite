@@ -20,6 +20,16 @@ describe('compile/scale', () => {
       );
     });
 
+    it('should show warning if users try to override the scale and use bin', function() {
+      log.runLocalLogger((localLogger) => {
+        assert.deepEqual(
+          scaleType('point', 'color', {type: 'quantitative', bin: 'true'}, 'point', undefined, undefined, defaultConfig),
+          ScaleType.BIN_ORDINAL
+        );
+        assert.equal(localLogger.warns[0], log.message.cannotOverrideBinScaleType('color', 'bin-ordinal'));
+      });
+    });
+
     describe('row/column', () => {
       it('should return band for row/column', function() {
         [ROW, COLUMN].forEach((channel) => {
@@ -38,7 +48,7 @@ describe('compile/scale', () => {
                 scaleType(badScaleType, channel, {type: 'temporal', timeUnit: 'yearmonth'}, 'point', undefined, undefined, defaultConfig),
                 ScaleType.BAND
               );
-              assert.equal(localLogger.warns[0], log.message.scaleTypeNotWorkWithChannel(channel, badScaleType));
+              assert.equal(localLogger.warns[0], log.message.scaleTypeNotWorkWithChannel(channel, badScaleType, 'band'));
             });
           });
         });
@@ -77,7 +87,7 @@ describe('compile/scale', () => {
                 scaleType(badScaleType, 'shape', {type: 'nominal'}, 'point', undefined, undefined, defaultConfig),
                 ScaleType.ORDINAL
               );
-              assert.equal(localLogger.warns[0], log.message.scaleTypeNotWorkWithChannel('shape', badScaleType));
+              assert.equal(localLogger.warns[0], log.message.scaleTypeNotWorkWithChannel('shape', badScaleType, 'ordinal'));
             });
           });
         });
@@ -148,8 +158,8 @@ describe('compile/scale', () => {
           [ORDINAL, NOMINAL].forEach((t) => {
             [X, Y].forEach((channel) => {
               log.runLocalLogger((localLogger) => {
-                assert.equal(scaleType('ordinal', channel,{type: t}, 'point', undefined, undefined, defaultConfig), ScaleType.POINT);
-                assert.equal(localLogger.warns[0], log.message.scaleTypeNotWorkWithChannel(channel, 'ordinal'));
+                assert.equal(scaleType('ordinal', channel, {type: t}, 'point', undefined, undefined, defaultConfig), ScaleType.POINT);
+                assert.equal(localLogger.warns[0], log.message.scaleTypeNotWorkWithChannel(channel, 'ordinal', 'point'));
               });
             });
           });

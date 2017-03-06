@@ -19,6 +19,8 @@ export default function type(
   specifiedType: ScaleType, channel: Channel, fieldDef: FieldDef, mark: Mark,
   hasTopLevelSize: boolean, specifiedRangeStep: number, scaleConfig: ScaleConfig): ScaleType {
 
+  const defaultScaleType = defaultType(channel, fieldDef, mark, hasTopLevelSize, specifiedRangeStep, scaleConfig);
+
   if (!hasScale(channel)) {
     // There is no scale for these channels
     return null;
@@ -27,18 +29,20 @@ export default function type(
     // for binned fields we don't allow overriding the default scale
     if (fieldDef.bin) {
       // TODO: generalize this as a method in fieldDef that determines scale type support for a fieldDef (looking at functions and type)
-      log.warn(log.message.cannotOverrideBinScaleType(channel));
+      log.warn(log.message.cannotOverrideBinScaleType(channel, defaultScaleType));
+      return defaultScaleType;
+    }
+
+    // Check if explicitly specified scale type is supported by the channel
+    if (supportScaleType(channel, specifiedType)) {
+      return specifiedType;
     } else {
-      // Check if explicitly specified scale type is supported by the channel
-      if (supportScaleType(channel, specifiedType)) {
-        return specifiedType;
-      } else {
-        log.warn(log.message.scaleTypeNotWorkWithChannel(channel, specifiedType));
-      }
+      log.warn(log.message.scaleTypeNotWorkWithChannel(channel, specifiedType, defaultScaleType));
+      return defaultScaleType;
     }
   }
 
-  return defaultType(channel, fieldDef, mark, hasTopLevelSize, specifiedRangeStep, scaleConfig);
+  return defaultScaleType;
 }
 
 /**

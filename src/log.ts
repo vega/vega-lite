@@ -176,12 +176,12 @@ export namespace message {
       channel === 'x' ? 'width' : 'height'} is provided.`;
   }
 
-  export function cannotOverrideBinScaleType(channel: Channel) {
-    return `Cannot override scale type for binned channel ${channel}.`;
+  export function cannotOverrideBinScaleType(channel: Channel, defaultScaleType: ScaleType) {
+    return `Cannot override scale type for binned channel ${channel}. We are using ${defaultScaleType} scale instead.`;
   }
 
-  export function scaleTypeNotWorkWithChannel(channel: Channel, scaleType: ScaleType) {
-    return `Channel ${channel} does not work with ${scaleType} scale.`;
+  export function scaleTypeNotWorkWithChannel(channel: Channel, scaleType: ScaleType, defaultScaleType: ScaleType) {
+    return `Channel ${channel} does not work with ${scaleType} scale. We are using ${defaultScaleType} scale instead.`;
   }
 
   export function scalePropertyNotWorkWithScaleType(scaleType: ScaleType, propName: string, channel: Channel) {
