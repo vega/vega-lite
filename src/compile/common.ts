@@ -72,7 +72,7 @@ export function getMarkConfig<P extends keyof MarkConfig>(prop: P, mark: Mark, c
  * @param format explicitly specified format
  */
 export function numberFormat(fieldDef: FieldDef, format: string, config: Config, channel: Channel) {
-  if (fieldDef.type === QUANTITATIVE && !fieldDef.bin) {
+  if (fieldDef.type === QUANTITATIVE) {
     // add number format for quantitative type only
 
     if (format) {
