@@ -3,10 +3,10 @@ import * as log from '../../log';
 import {hasScale, supportScaleType, rangeType, Channel} from '../../channel';
 import {Mark} from '../../mark';
 import {ScaleType, ScaleConfig} from '../../scale';
-import {TimeUnit, isDiscreteByDefault} from '../../timeunit';
-import {Type} from '../../type';
+import {isDiscreteByDefault} from '../../timeunit';
 
 import * as util from '../../util';
+import {FieldDef} from '../../fielddef';
 
 export type RangeType = 'continuous' | 'discrete' | 'flexible' | undefined;
 
@@ -16,7 +16,7 @@ export type RangeType = 'continuous' | 'discrete' | 'flexible' | undefined;
  */
 // NOTE: CompassQL uses this method.
 export default function type(
-  specifiedType: ScaleType, type: Type, channel: Channel, timeUnit: TimeUnit, binned: boolean, mark: Mark,
+  specifiedType: ScaleType, channel: Channel, fieldDef: FieldDef, mark: Mark,
   hasTopLevelSize: boolean, specifiedRangeStep: number, scaleConfig: ScaleConfig): ScaleType {
 
   if (!hasScale(channel)) {
@@ -25,7 +25,8 @@ export default function type(
   }
   if (specifiedType !== undefined) {
     // for binned fields we don't allow overriding the default scale
-    if (binned) {
+    if (fieldDef.bin) {
+      // TODO: generalize this as a method in fieldDef that determines scale type support for a fieldDef (looking at functions and type)
       log.warn(log.message.cannotOverrideBinScaleType(channel));
     } else {
       // Check if explicitly specified scale type is supported by the channel
@@ -37,23 +38,20 @@ export default function type(
     }
   }
 
-  return defaultType(
-    type, channel, timeUnit, binned, mark,
-    hasTopLevelSize, specifiedRangeStep, scaleConfig
-  );
+  return defaultType(channel, fieldDef, mark, hasTopLevelSize, specifiedRangeStep, scaleConfig);
 }
 
 /**
  * Determine appropriate default scale type.
  */
-function defaultType(type: Type, channel: Channel, timeUnit: TimeUnit, binned: boolean, mark: Mark,
+function defaultType(channel: Channel, fieldDef: FieldDef, mark: Mark,
   hasTopLevelSize: boolean, specifiedRangeStep: number, scaleConfig: ScaleConfig): ScaleType {
 
   if (util.contains(['row', 'column'], channel)) {
     return 'band';
   }
 
-  switch (type) {
+  switch (fieldDef.type) {
     case 'nominal':
       if (channel === 'color' || rangeType(channel) === 'discrete') {
         return 'ordinal';
@@ -79,14 +77,14 @@ function defaultType(type: Type, channel: Channel, timeUnit: TimeUnit, binned: b
         // TODO: consider using quantize (equivalent to binning) once we have it
         return 'ordinal';
       }
-      if (isDiscreteByDefault(timeUnit)) {
+      if (isDiscreteByDefault(fieldDef.timeUnit)) {
         return discreteToContinuousType(channel, mark, hasTopLevelSize, specifiedRangeStep, scaleConfig);
       }
       return 'time';
 
     case 'quantitative':
       if (channel === 'color') {
-        if (binned) {
+        if (fieldDef.bin) {
           return 'bin-ordinal';
         }
         // Use `sequential` as the default color scale for continuous data
@@ -98,14 +96,14 @@ function defaultType(type: Type, channel: Channel, timeUnit: TimeUnit, binned: b
         return 'ordinal';
       }
 
-      if (binned) {
+      if (fieldDef.bin) {
         return 'bin-linear';
       }
       return 'linear';
   }
 
   /* istanbul ignore next: should never reach this */
-  throw new Error(log.message.invalidFieldType(type));
+  throw new Error(log.message.invalidFieldType(fieldDef.type));
 }
 
 /**

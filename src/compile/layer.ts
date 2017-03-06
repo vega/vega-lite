@@ -7,7 +7,7 @@ import {Axis} from '../axis';
 import {LayerSpec} from '../spec';
 import {StackProperties} from '../stack';
 import {FILL_STROKE_CONFIG} from '../mark';
-import {keys, duplicate, mergeDeep, flatten, vals, Dict} from '../util';
+import {keys, duplicate, mergeDeep, flatten, Dict} from '../util';
 import {VgData, VgEncodeEntry, isSignalRefDomain, VgScale} from '../vega.schema';
 import {isUrlData} from '../data';
 
@@ -17,7 +17,6 @@ import {assembleLayout, parseLayerLayout} from './layout';
 import {Model} from './model';
 import {UnitModel} from './unit';
 
-import {ScaleComponents} from './scale/scale';
 import {unionDomains} from './scale/domain';
 
 
@@ -107,7 +106,7 @@ export class LayerModel extends Model {
   public parseScale(this: LayerModel) {
     const model = this;
 
-    let scaleComponent = this.component.scales = {};
+    const scaleComponent: Dict<VgScale> = this.component.scales = {};
 
     this.children.forEach(function(child) {
       child.parseScale();
@@ -116,26 +115,24 @@ export class LayerModel extends Model {
       // Also need to check whether the scales are actually compatible, e.g. use the same sort or throw error
       if (true) { // if shared/union scale
         keys(child.component.scales).forEach(function(channel) {
-          let childScales: ScaleComponents = child.component.scales[channel];
-          const modelScales: ScaleComponents = scaleComponent[channel];
+          let childScale = child.component.scales[channel];
+          const modelScale = scaleComponent[channel];
 
-          if (!childScales || isSignalRefDomain(childScales.main.domain) || modelScales && isSignalRefDomain(modelScales.main.domain)) {
+          if (!childScale || isSignalRefDomain(childScale.domain) || (modelScale && isSignalRefDomain(modelScale.domain))) {
+            // TODO: merge signal ref domains
             return;
           }
 
-          if (modelScales && modelScales.main) {
-            modelScales.main.domain = unionDomains(modelScales.main.domain, childScales.main.domain);
+          if (modelScale) {
+            modelScale.domain = unionDomains(modelScale.domain, childScale.domain);
           } else {
-            scaleComponent[channel] = childScales;
+            scaleComponent[channel] = childScale;
           }
 
-          // rename child scales to parent scales
-          vals(childScales).forEach(function(scale: any) {
-            const scaleNameWithoutPrefix = scale.name.substr(child.getName('').length);
-            const newName = model.scaleName(scaleNameWithoutPrefix, true);
-            child.renameScale(scale.name, newName);
-            scale.name = newName;
-          });
+          // rename child scale to parent scales
+          const scaleNameWithoutPrefix = childScale.name.substr(child.getName('').length);
+          const newName = model.scaleName(scaleNameWithoutPrefix, true);
+          child.renameScale(childScale.name, newName);
 
           // remove merged scales from children
           delete child.component.scales[channel];

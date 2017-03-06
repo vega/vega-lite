@@ -5,7 +5,7 @@
 import {Channel, X, X2, Y, Y2} from '../../channel';
 import {Config} from '../../config';
 import {ChannelDef, FieldDef, FieldRefOption, field, isFieldDef, TextFieldDef, ValueDef} from '../../fielddef';
-import {Scale, ScaleType, hasDiscreteDomain, isBinScale} from '../../scale';
+import {Scale, ScaleType, hasDiscreteDomain} from '../../scale';
 import {StackProperties} from '../../stack';
 import {contains} from '../../util';
 import {VgValueRef} from '../../vega.schema';
@@ -75,15 +75,12 @@ export function midPoint(channel: Channel, channelDef: ChannelDef, scaleName: st
   if (channelDef) {
     /* istanbul ignore else */
     if (isFieldDef(channelDef)) {
-      if (isBinScale(scale.type)) {
-        if (contains(['x', 'y', 'x2', 'y2', 'size'], channel)) {
-          // return the middle point for size and length channels
-          return {
-            signal: `(scale("${scaleName}", ${field(channelDef, {binSuffix: 'start', datum: true})}) + scale("${scaleName}", ${field(channelDef, {binSuffix: 'end', datum: true})}))/2`
-          };
-        } else {
-          return fieldRef(channelDef, scaleName, {binSuffix: 'start'});
-        }
+      if (scale.type === 'bin-linear') {
+        return {
+          signal: `(scale("${scaleName}", ${field(channelDef, {binSuffix: 'start', datum: true})}) + scale("${scaleName}", ${field(channelDef, {binSuffix: 'end', datum: true})}))/2`
+        };
+      } else if (scale.type === 'bin-ordinal') {
+        return fieldRef(channelDef, scaleName, {binSuffix: 'start'});
       }
 
       if (hasDiscreteDomain(scale.type)) {

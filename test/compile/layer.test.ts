@@ -30,7 +30,7 @@ describe('Layer', function() {
       assert.equal(model.children.length, 2);
       model.parseScale();
 
-      assert.deepEqual(model.component.scales['x'].main.domain, {
+      assert.deepEqual(model.component.scales['x'].domain, {
         fields: [{
           data: 'layer_0_source',
           field: 'a'
@@ -58,7 +58,7 @@ describe('Layer', function() {
       });
       model.parseScale();
 
-      assert.deepEqual(model.component.scales['x'].main.domain, {
+      assert.deepEqual(model.component.scales['x'].domain, {
         fields: [
           [1, 2, 3],
           {

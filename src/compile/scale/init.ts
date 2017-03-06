@@ -43,8 +43,8 @@ export default function init(
 
   const scale: Scale = {
     type: scaleType(
-      specifiedScale.type, fieldDef.type, channel, fieldDef.timeUnit, !!fieldDef.bin, mark,
-      topLevelSize !== undefined, specifiedScale.rangeStep, config.scale
+      specifiedScale.type, channel, fieldDef, mark, topLevelSize !== undefined,
+      specifiedScale.rangeStep, config.scale
     )
   };
 

@@ -368,7 +368,7 @@ export function scaleTypeSupportProperty(scaleType: ScaleType, propName: keyof S
     case 'scheme':
       return true;
     case 'interpolate':
-      return scaleType === 'linear';
+      return scaleType === 'linear' || scaleType === 'bin-linear';
     case 'round':
       return isContinuousToContinuous(scaleType) || scaleType === 'band' || scaleType === 'point';
     case 'rangeStep':
@@ -385,7 +385,7 @@ export function scaleTypeSupportProperty(scaleType: ScaleType, propName: keyof S
       return scaleType === 'pow' || scaleType === 'log';
     case 'zero':
       // TODO: what about quantize, threshold?
-      return !hasDiscreteDomain(scaleType) && !contains(['log', 'time', 'utc'], scaleType);
+      return scaleType === 'bin-ordinal' || (!hasDiscreteDomain(scaleType) && !contains(['log', 'time', 'utc'], scaleType));
   }
   /* istanbul ignore next: should never reach here*/
   throw new Error(`Invalid scale property ${propName}.`);

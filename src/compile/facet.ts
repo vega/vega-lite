@@ -213,15 +213,11 @@ export class FacetModel extends Model {
     keys(child.component.scales).forEach(function(channel) {
       // TODO: correctly implement independent scale
       if (true) { // if shared/union scale
-        scaleComponent[channel] = child.component.scales[channel];
+        const scale = scaleComponent[channel] = child.component.scales[channel];
 
-        // for each scale, need to rename
-        vals(scaleComponent[channel]).forEach(function(scale: any) {
-          const scaleNameWithoutPrefix = scale.name.substr(child.getName('').length);
-          const newName = model.scaleName(scaleNameWithoutPrefix, true);
-          child.renameScale(scale.name, newName);
-          scale.name = newName;
-        });
+        const scaleNameWithoutPrefix = scale.name.substr(child.getName('').length);
+        const newName = model.scaleName(scaleNameWithoutPrefix, true);
+        child.renameScale(scale.name, newName);
 
         // Once put in parent, just remove the child's scale.
         delete child.component.scales[channel];
