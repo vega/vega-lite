@@ -45,20 +45,20 @@ export const SCALE_TYPES: ScaleType[] = [
   'ordinal', 'bin-ordinal', 'point', 'band',
 ];
 
-export const CONTINUOUS_TO_CONTINUOUS_SCALES: ScaleType[] = ['linear', 'log', 'pow', 'sqrt', 'time', 'utc'];
+export const CONTINUOUS_TO_CONTINUOUS_SCALES: ScaleType[] = ['linear', 'bin-linear', 'log', 'pow', 'sqrt', 'time', 'utc'];
 const CONTINUOUS_TO_CONTINUOUS_INDEX = toSet(CONTINUOUS_TO_CONTINUOUS_SCALES);
 
 export const CONTINUOUS_DOMAIN_SCALES: ScaleType[] = CONTINUOUS_TO_CONTINUOUS_SCALES.concat(['sequential' /* TODO add 'quantile', 'quantize', 'threshold'*/]);
 const CONTINUOUS_DOMAIN_INDEX = toSet(CONTINUOUS_DOMAIN_SCALES);
 
-export const DISCRETE_DOMAIN_SCALES: ScaleType[] = ['ordinal', 'point', 'band'];
+export const DISCRETE_DOMAIN_SCALES: ScaleType[] = ['ordinal', 'bin-ordinal', 'point', 'band'];
 const DISCRETE_DOMAIN_INDEX = toSet(DISCRETE_DOMAIN_SCALES);
 
 const BIN_SCALES_INDEX = toSet(['bin-linear', 'bin-ordinal']);
 
 export const TIME_SCALE_TYPES: ScaleType[] = ['time', 'utc'];
 
-export function hasDiscreteDomain(type: ScaleType): type is 'ordinal' | 'point' | 'band' {
+export function hasDiscreteDomain(type: ScaleType): type is 'ordinal' | 'bin-ordinal' | 'point' | 'band' {
   return type in DISCRETE_DOMAIN_INDEX;
 }
 
@@ -72,7 +72,7 @@ export function hasContinuousDomain(type: ScaleType):
   return type in CONTINUOUS_DOMAIN_INDEX;
 }
 
-export function isContinuousToContinuous(type: ScaleType): type is 'linear' | 'log' | 'pow' | 'sqrt' |  'time' | 'utc' {
+export function isContinuousToContinuous(type: ScaleType): type is 'linear' | 'bin-linear' | 'log' | 'pow' | 'sqrt' |  'time' | 'utc' {
   return type in CONTINUOUS_TO_CONTINUOUS_INDEX;
 }
 
