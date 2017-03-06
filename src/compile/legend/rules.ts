@@ -6,6 +6,7 @@ import {Legend} from '../../legend';
 import {title as fieldTitle} from '../../fielddef';
 import {TEMPORAL, QUANTITATIVE} from '../../type';
 import {contains} from '../../util';
+import {containsTimeUnit} from '../../timeunit';
 
 export function title(legend: Legend, fieldDef: FieldDef, config: Config) {
   if (legend.title !== undefined) {
@@ -30,8 +31,7 @@ export function type(legend: Legend, fieldDef: FieldDef, channel: Channel) {
   if (legend.type) {
     return legend.type;
   }
-
-  if (channel === COLOR && !fieldDef.bin && !fieldDef.timeUnit && contains([QUANTITATIVE, TEMPORAL], fieldDef.type)) {
+  if (channel === COLOR && !fieldDef.bin && (!fieldDef.timeUnit || containsTimeUnit(fieldDef.timeUnit, 'year')) && contains([QUANTITATIVE, TEMPORAL], fieldDef.type)) {
     return 'gradient';
   }
   return undefined;

@@ -152,14 +152,12 @@ export const TIMEUNITS = [
 
 /** Returns true if fullTimeUnit contains the timeUnit, false otherwise. */
 export function containsTimeUnit(fullTimeUnit: TimeUnit, timeUnit: TimeUnit) {
-  let fullTimeUnitStr = fullTimeUnit.toString();
-  let timeUnitStr = timeUnit.toString();
-  const index = fullTimeUnitStr.indexOf(timeUnitStr);
+  const index = fullTimeUnit.indexOf(timeUnit);
   return index > -1 &&
     (
       timeUnit !== TimeUnit.SECONDS ||
       index === 0 ||
-      fullTimeUnitStr.charAt(index-1) !== 'i' // exclude milliseconds
+      fullTimeUnit.charAt(index-1) !== 'i' // exclude milliseconds
     );
 }
 
