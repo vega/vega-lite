@@ -295,7 +295,7 @@ export function channelCompatibility(fieldDef: FieldDef, channel: Channel): {com
     case 'size':
     case 'x2':
     case 'y2':
-      if (isDiscrete(fieldDef)) {
+      if (isDiscrete(fieldDef) && !fieldDef.bin) {
         return {
           compatible: false,
           warning: `Channel ${channel} should not be used with discrete field.`

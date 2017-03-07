@@ -75,6 +75,13 @@ describe('fieldDef', () => {
           assert(channelCompatibility({field: 'a', type: 'quantitative'}, channel).compatible);
         });
       });
+
+      it('is compatible with binned field', () => {
+        ['opacity', 'size', 'x2', 'y2'].forEach((channel:Channel) => {
+          assert(channelCompatibility({bin: true, field: 'a', type: 'quantitative'}, channel).compatible);
+        });
+      });
+
       it('is incompatible with discrete field', () => {
         ['opacity', 'size', 'x2', 'y2'].forEach((channel:Channel) => {
           assert(!channelCompatibility({field: 'a', type: 'nominal'}, channel).compatible);
