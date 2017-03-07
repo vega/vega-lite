@@ -5,7 +5,7 @@
 import {Channel, X, X2, Y, Y2} from '../../channel';
 import {Config} from '../../config';
 import {ChannelDef, FieldDef, FieldRefOption, field, isFieldDef, TextFieldDef, ValueDef} from '../../fielddef';
-import {Scale, ScaleType, hasDiscreteDomain} from '../../scale';
+import {Scale, ScaleType, hasDiscreteDomain, isBinScale} from '../../scale';
 import {StackProperties} from '../../stack';
 import {contains} from '../../util';
 import {VgValueRef} from '../../vega.schema';
@@ -65,6 +65,9 @@ export function band(scaleName: string, band: number|boolean = true): VgValueRef
   };
 }
 
+/**
+ * Signal that returns the middle of a bin. Should only be used with x and y.
+ */
 function binMidSignal(fieldDef: FieldDef, scaleName: string) {
   return {
     signal: `(` +
@@ -85,9 +88,12 @@ export function midPoint(channel: Channel, channelDef: ChannelDef, scaleName: st
   if (channelDef) {
     /* istanbul ignore else */
     if (isFieldDef(channelDef)) {
-      if (scale.type === 'bin-linear') {
-        return binMidSignal(channelDef, scaleName);
-      } else if (scale.type === 'bin-ordinal') {
+      if (isBinScale(scale.type)) {
+        // Use middle only for x an y to place marks in the center between start and end of the bin range.
+        // We do not use the mid point for other channels (e.g. size) so that properties of legends and marks match.
+        if (contains(['x', 'y'], channel)) {
+          return binMidSignal(channelDef, scaleName);
+        }
         return fieldRef(channelDef, scaleName, {binSuffix: 'start'});
       }
 

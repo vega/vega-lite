@@ -14,6 +14,8 @@ describe('scale', () => {
     });
 
     // TODO: write more test blindly (Don't look at our code, just look at D3 code.)
+
+    assert.isFalse(scale.scaleTypeSupportProperty('bin-linear', 'zero'));
   });
 
   describe('scaleTypes', () => {
