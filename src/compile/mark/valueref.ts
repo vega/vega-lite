@@ -65,6 +65,16 @@ export function band(scaleName: string, band: number|boolean = true): VgValueRef
   };
 }
 
+function binMidSignal(fieldDef: FieldDef, scaleName: string) {
+  return {
+    signal: `(` +
+      `scale("${scaleName}", ${field(fieldDef, {binSuffix: 'start', datum: true})})` +
+      ` + ` +
+      `scale("${scaleName}", ${field(fieldDef, {binSuffix: 'end', datum: true})})`+
+    `)/2`
+  };
+}
+
 /**
  * @returns {VgValueRef} Value Ref for xc / yc or mid point for other channels.
  */
@@ -76,9 +86,7 @@ export function midPoint(channel: Channel, channelDef: ChannelDef, scaleName: st
     /* istanbul ignore else */
     if (isFieldDef(channelDef)) {
       if (scale.type === 'bin-linear') {
-        return {
-          signal: `(scale("${scaleName}", ${field(channelDef, {binSuffix: 'start', datum: true})}) + scale("${scaleName}", ${field(channelDef, {binSuffix: 'end', datum: true})}))/2`
-        };
+        return binMidSignal(channelDef, scaleName);
       } else if (scale.type === 'bin-ordinal') {
         return fieldRef(channelDef, scaleName, {binSuffix: 'start'});
       }
@@ -93,9 +101,7 @@ export function midPoint(channel: Channel, channelDef: ChannelDef, scaleName: st
         return fieldRef(channelDef, scaleName, {}); // no need for bin suffix
       }
     } else if (channelDef.value) {
-      return {
-        value: channelDef.value
-      };
+      return {value: channelDef.value};
     } else {
       throw new Error('FieldDef without field or value.'); // FIXME add this to log.message
     }
