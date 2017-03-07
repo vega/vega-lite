@@ -10,9 +10,8 @@
       "axis": {"title": "Month of the year"}
     },
     "y": {
-      "field": "*",
-      "type": "quantitative",
-      "aggregate": "count"
+      "aggregate": "count",
+      "type": "quantitative"
     },
     "color": {
       "field": "weather",

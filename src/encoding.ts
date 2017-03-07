@@ -141,7 +141,7 @@ export function dropInvalidFieldDefs(mark: Mark, encoding: Encoding): Encoding {
       }, []);
     } else {
       const channelDef = encoding[channel];
-      if (channelDef.field === undefined && channelDef.value === undefined) { // TODO: datum
+      if (!isFieldDef(channelDef) && !isValueDef(channelDef)) { // TODO: datum
         log.warn(log.message.emptyFieldDef(channelDef, channel));
         delete encoding[channel];
         return;

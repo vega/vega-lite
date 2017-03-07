@@ -135,7 +135,7 @@ describe('Mark: Point', function() {
 
   describe('with x, y, size', function () {
     const model = parseUnitModel(pointXY({
-      "size": {"field": "*", "type": "quantitative", "aggregate": "count"}
+      "size": {"aggregate": "count", "type": "quantitative"}
     }));
     const props = point.encodeEntry(model);
 

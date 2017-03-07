@@ -40,7 +40,6 @@ describe('compile/data/pathorder', function() {
           },
           "y": {
             "aggregate": "count",
-            "field": "*",
             "type": "quantitative"
           }
         }
@@ -67,7 +66,6 @@ describe('compile/data/pathorder', function() {
           },
           "x": {
             "aggregate": "count",
-            "field": "*",
             "type": "quantitative"
           }
         }
@@ -99,7 +97,6 @@ describe('compile/data/pathorder', function() {
             },
             "x": {
               "aggregate": "count",
-              "field": "*",
               "type": "quantitative"
             }
           }
@@ -134,7 +131,6 @@ describe('compile/data/pathorder', function() {
           },
           "x": {
             "aggregate": "count",
-            "field": "*",
             "type": "quantitative"
           }
         },
