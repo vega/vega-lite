@@ -4,8 +4,9 @@ import {DateTime, isDateTime, timestamp} from '../../datetime';
 import {FieldDef} from '../../fielddef';
 import {Legend} from '../../legend';
 import {title as fieldTitle} from '../../fielddef';
-import {TEMPORAL, QUANTITATIVE} from '../../type';
 import {contains} from '../../util';
+import {ScaleType, isBinScale} from '../../scale';
+import {Type} from '../../type';
 
 export function title(legend: Legend, fieldDef: FieldDef, config: Config) {
   if (legend.title !== undefined) {
@@ -26,12 +27,11 @@ export function values(legend: Legend) {
   return vals;
 }
 
-export function type(legend: Legend, fieldDef: FieldDef, channel: Channel) {
+export function type(legend: Legend, type: Type, channel: Channel, scaleType: ScaleType) {
   if (legend.type) {
     return legend.type;
   }
-
-  if (channel === COLOR && !fieldDef.bin && !fieldDef.timeUnit && contains([QUANTITATIVE, TEMPORAL], fieldDef.type)) {
+  if (channel === COLOR && ((type === 'quantitative' && !isBinScale(scaleType)) || (type === 'temporal' && contains<ScaleType>(['time', 'utc'], scaleType)))) {
     return 'gradient';
   }
   return undefined;

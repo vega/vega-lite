@@ -219,7 +219,7 @@ export function title(fieldDef: FieldDef, config: Config) {
   }
   const fn = fieldDef.aggregate || fieldDef.timeUnit || (fieldDef.bin && 'bin');
   if (fn) {
-    return fn.toString().toUpperCase() + '(' + fieldDef.field + ')';
+    return fn.toUpperCase() + '(' + fieldDef.field + ')';
   } else {
     return fieldDef.field;
   }

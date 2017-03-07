@@ -13,13 +13,14 @@ describe('compile/legend', function() {
         mark: "point",
         encoding: {
           x: {field: "a", type: "nominal"},
-          color: {field: "a", type: "nominal"}
+          color: {field: "a", type: "quantitative"}
         }
       });
       const def = legendParse.parseLegend(model, COLOR);
       assert.isObject(def);
       assert.equal(def.title, 'a');
       assert.equal(def.stroke, 'color');
+      assert.equal(def.type, 'gradient');
     });
 
     [SIZE, SHAPE, OPACITY].forEach(channel => {
