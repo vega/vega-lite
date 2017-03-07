@@ -38,32 +38,37 @@ describe('compile/legend', function() {
 
   describe('type()', () => {
     it('should return gradient type for color scale', () => {
-      const t = rules.type({}, undefined, COLOR, 'sequential');
+      const t = rules.type({}, 'quantitative', COLOR, 'sequential');
       assert.equal(t, 'gradient');
     });
 
     it('should not return gradient type for size scale', () => {
-      const t = rules.type({}, undefined, SIZE, 'linear');
+      const t = rules.type({}, 'quantitative', SIZE, 'linear');
       assert.equal(t, undefined);
     });
 
     it('should be able to override default', () => {
-      const t = rules.type({type: 'symbol'}, undefined, COLOR, 'sequential');
+      const t = rules.type({type: 'symbol'}, 'quantitative', COLOR, 'sequential');
       assert.equal(t, 'symbol');
     });
 
     it('should return no type for color scale with bin', () => {
-      const t = rules.type({}, undefined, COLOR, 'bin-ordinal');
+      const t = rules.type({}, 'quantitative', COLOR, 'bin-ordinal');
       assert.equal(t, undefined);
     });
 
-    it('should return gradient type for color scale with year time unit', () => {
-      const t = rules.type({}, 'year', COLOR, 'time');
+    it('should return gradient type for color scale with time scale', () => {
+      const t = rules.type({}, 'temporal', COLOR, 'time');
       assert.equal(t, 'gradient');
     });
 
-    it('should return no type for color scale with month time unit', () => {
-      const t = rules.type({}, 'month', COLOR, 'time');
+    it('should return no type for color scale with ordinal scale and temporal type', () => {
+      const t = rules.type({}, 'temporal', COLOR, 'ordinal');
+      assert.equal(t, undefined);
+    });
+
+    it('should return no type for color scale with ordinal scale and ordinal type', () => {
+      const t = rules.type({}, 'ordinal', COLOR, 'ordinal');
       assert.equal(t, undefined);
     });
   });

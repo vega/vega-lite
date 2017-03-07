@@ -74,7 +74,7 @@ function getSpecifiedOrDefaultValue(property: keyof VgLegend, specifiedLegend: L
     case 'values':
       return rules.values(specifiedLegend);
     case 'type':
-      return rules.type(specifiedLegend, fieldDef.timeUnit, channel, model.scale(channel).type);
+      return rules.type(specifiedLegend, fieldDef.type, channel, model.scale(channel).type);
   }
 
   // Otherwise, return specified property.

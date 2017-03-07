@@ -5,8 +5,8 @@ import {FieldDef} from '../../fielddef';
 import {Legend} from '../../legend';
 import {title as fieldTitle} from '../../fielddef';
 import {contains} from '../../util';
-import {containsTimeUnit, TimeUnit} from '../../timeunit';
-import {ScaleType} from '../../scale';
+import {ScaleType, isBinScale} from '../../scale';
+import {Type} from '../../type';
 
 export function title(legend: Legend, fieldDef: FieldDef, config: Config) {
   if (legend.title !== undefined) {
@@ -27,11 +27,11 @@ export function values(legend: Legend) {
   return vals;
 }
 
-export function type(legend: Legend, timeUnit: TimeUnit, channel: Channel, scaleType: ScaleType) {
+export function type(legend: Legend, type: Type, channel: Channel, scaleType: ScaleType) {
   if (legend.type) {
     return legend.type;
   }
-  if (channel === COLOR && (!timeUnit || containsTimeUnit(timeUnit, 'year')) && contains<ScaleType>(['time', 'utc', 'sequential'], scaleType)) {
+  if (channel === COLOR && ((type === 'quantitative' && !isBinScale(scaleType)) || (type === 'temporal' && contains<ScaleType>(['time', 'utc'], scaleType)))) {
     return 'gradient';
   }
   return undefined;
