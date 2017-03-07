@@ -85,7 +85,7 @@ describe('stack', () => {
           "encoding": {
             "x": {"aggregate": "sum", "field": "yield", "type": "quantitative"},
             "y": {"field": "variety", "type": "nominal"},
-            "color": {"aggregate": "count", "field": "*", "type": "quantitative"}
+            "color": {"aggregate": "count", "type": "quantitative"}
           },
           "config": {
             "stack": stacked
@@ -107,7 +107,7 @@ describe('stack', () => {
           "encoding": {
             "x": {"aggregate": "sum", "field": "yield", "type": "quantitative"},
             "y": {"field": "variety", "type": "nominal"},
-            "color": {"aggregate": "count", "field": "*", "type": "quantitative"},
+            "color": {"aggregate": "count", "type": "quantitative"},
             "detail": {"field": "site", "type": "nominal"}
           },
           "config": {
@@ -132,7 +132,7 @@ describe('stack', () => {
           "encoding": {
             "x": {"aggregate": "sum", "field": "yield", "type": "quantitative", "stack": stacked},
             "y": {"field": "variety", "type": "nominal"},
-            "color": {"aggregate": "count", "field": "*", "type": "quantitative"},
+            "color": {"aggregate": "count", "type": "quantitative"},
             "detail": {"field": "site", "type": "nominal"}
           }
         };
@@ -153,7 +153,7 @@ describe('stack', () => {
           "mark": mark,
           "encoding": {
             "x": {"aggregate": "sum", "field": "yield", "type": "quantitative"},
-            "y": {"aggregate": "count", "field": "*", "type": "quantitative"},
+            "y": {"aggregate": "count",  "type": "quantitative"},
             "color": {"field": "site", "type": "nominal"}
           },
           "config": {

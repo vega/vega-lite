@@ -15,7 +15,6 @@
     },
     "size": {
       "aggregate": "count",
-      "field": "*",
       "type": "quantitative"
     }
   }

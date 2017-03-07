@@ -64,7 +64,6 @@ describe('data', function () {
           },
           "y": {
             "aggregate": "count",
-            "field": "*",
             "type": "quantitative"
           }
         }

@@ -14,7 +14,7 @@ describe('Mark: Area', function() {
       "encoding": extend(
         {
           "x": {"timeUnit": "year", "field": "Year", "type": "temporal"},
-          "y": {"aggregate": "count", "field": "*", "type": "quantitative"}
+          "y": {"aggregate": "count", "type": "quantitative"}
         },
         moreEncoding
       ),
@@ -106,7 +106,7 @@ describe('Mark: Area', function() {
       "encoding": extend(
         {
           "y": {"timeUnit": "year", "field": "Year", "type": "temporal"},
-          "x": {"aggregate": "count", "field": "*", "type": "quantitative"}
+          "x": {"aggregate": "count", "type": "quantitative"}
         },
         moreEncoding
       ),
