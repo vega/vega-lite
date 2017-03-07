@@ -385,7 +385,7 @@ export function scaleTypeSupportProperty(scaleType: ScaleType, propName: keyof S
       return scaleType === 'pow' || scaleType === 'log';
     case 'zero':
       // TODO: what about quantize, threshold?
-      return scaleType === 'bin-ordinal' || (!hasDiscreteDomain(scaleType) && !contains(['log', 'time', 'utc'], scaleType));
+      return scaleType === 'bin-ordinal' || (!hasDiscreteDomain(scaleType) && !contains(['log', 'time', 'utc', 'bin-linear'], scaleType));
   }
   /* istanbul ignore next: should never reach here*/
   throw new Error(`Invalid scale property ${propName}.`);
