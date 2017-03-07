@@ -90,6 +90,7 @@ export function midPoint(channel: Channel, channelDef: ChannelDef, scaleName: st
     if (isFieldDef(channelDef)) {
       if (isBinScale(scale.type)) {
         // Use middle only for x an y to place marks in the center between start and end of the bin range.
+        // We do not use the mid point for other channels (e.g. size) so that properties of legends and marks match.
         if (contains(['x', 'y'], channel)) {
           return binMidSignal(channelDef, scaleName);
         }
