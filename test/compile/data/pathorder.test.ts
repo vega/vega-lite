@@ -66,7 +66,6 @@ describe('compile/data/pathorder', function() {
           },
           "x": {
             "aggregate": "count",
-
             "type": "quantitative"
           }
         }
