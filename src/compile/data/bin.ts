@@ -24,7 +24,8 @@ function parse(model: Model): Dict<VgTransform[]> {
       let binTrans: VgTransform = extend({
         type: 'bin',
         field: fieldDef.field,
-        as: [field(fieldDef, {binSuffix: 'start'}), field(fieldDef, {binSuffix: 'end'})]
+        as: [field(fieldDef, {binSuffix: 'start'}), field(fieldDef, {binSuffix: 'end'})],
+        signal: model.getName(fieldDef.field + '_bins')
       },
         // if bin is an object, load parameter here!
         typeof bin === 'boolean' ? {} : bin
@@ -49,8 +50,8 @@ function parse(model: Model): Dict<VgTransform[]> {
 
       transform.push(binTrans);
 
-      const hasDiscreteDomainOrHasLegend = hasDiscreteDomain(model.scale(channel).type) || model.legend(channel);
-      if (hasDiscreteDomainOrHasLegend) {
+      const discreteDomain = hasDiscreteDomain(model.scale(channel).type);
+      if (discreteDomain) {
         // read format from axis or legend, if there is no format then use config.numberFormat
         const format = (model.axis(channel) || model.legend(channel) || {}).format ||
           model.config.numberFormat;
@@ -65,7 +66,7 @@ function parse(model: Model): Dict<VgTransform[]> {
         });
       }
       // FIXME: current merging logic can produce redundant transforms when a field is binned for color and for non-color
-      const key = hash(bin) + '_' + fieldDef.field + 'oc:' + hasDiscreteDomainOrHasLegend;
+      const key = hash(bin) + '_' + fieldDef.field + 'oc:' + discreteDomain;
       binComponent[key] = transform;
     }
     return binComponent;

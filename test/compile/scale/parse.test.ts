@@ -20,7 +20,7 @@ describe('src/compile', function() {
 
   describe('parseScale', () => {
     describe('x ordinal point', () => {
-      it('should create a main x point scale with rangeStep and no range', () => {
+      it('should create an x point scale with rangeStep and no range', () => {
         const model = parseUnitModel({
           mark: "point",
           encoding: {
@@ -28,8 +28,8 @@ describe('src/compile', function() {
           }
         });
         const scales = parseScale(model, 'x');
-        assert.equal(scales.main.type, 'point');
-        assert.deepEqual(scales.main.range, {step: 21});
+        assert.equal(scales.type, 'point');
+        assert.deepEqual(scales.range, {step: 21});
       });
     });
 
@@ -43,15 +43,15 @@ describe('src/compile', function() {
 
       const scales = parseScale(model, 'color');
 
-      it('should create correct main color scale', function() {
-        assert.equal(scales.main.name, 'color');
-        assert.equal(scales.main.type, 'ordinal');
-        assert.deepEqual(scales.main.domain, {
+      it('should create correct color scale', function() {
+        assert.equal(scales.name, 'color');
+        assert.equal(scales.type, 'ordinal');
+        assert.deepEqual(scales.domain, {
           data: 'source',
           field: 'origin',
           sort: true
         });
-        assert.equal(scales.main.range, 'category');
+        assert.equal(scales.range, 'category');
       });
     });
 
@@ -66,10 +66,10 @@ describe('src/compile', function() {
       const scales = parseScale(model, 'color');
 
       it('should create ordinal color scale', function() {
-        assert.equal(scales.main.name, 'color');
-        assert.equal(scales.main.type, 'ordinal');
+        assert.equal(scales.name, 'color');
+        assert.equal(scales.type, 'ordinal');
 
-        assert.deepEqual(scales.main.domain, {
+        assert.deepEqual(scales.domain, {
           data: 'source',
           field: 'origin',
           sort: true
@@ -88,11 +88,11 @@ describe('src/compile', function() {
       const scales = parseScale(model, 'color');
 
       it('should create linear color scale', function() {
-        assert.equal(scales.main.name, 'color');
-        assert.equal(scales.main.type, 'sequential');
-        assert.equal(scales.main.range, 'ramp');
+        assert.equal(scales.name, 'color');
+        assert.equal(scales.type, 'sequential');
+        assert.equal(scales.range, 'ramp');
 
-        assert.deepEqual(scales.main.domain, {
+        assert.deepEqual(scales.domain, {
           data: 'source',
           field: 'origin'
         });
@@ -110,27 +110,56 @@ describe('src/compile', function() {
       const scales = parseScale(model, 'color');
 
       it('should add correct scales', function() {
-        assert.equal(scales.main.name, 'color');
-        assert.equal(scales.main.type, 'sequential');
-
-        assert.equal(scales.binLegend.name, 'color_bin_legend');
-        assert.equal(scales.binLegend.type, 'point');
-
-        assert.equal(scales.binLegendLabel.name, 'color_bin_legend_label');
-        assert.equal(scales.binLegendLabel.type, 'ordinal');
+        assert.equal(scales.name, 'color');
+        assert.equal(scales.type, 'bin-ordinal');
       });
+    });
 
-      it('should sort domain and range for labels', function() {
-        assert.deepEqual(scales.binLegendLabel.domain, {
-          data: 'source',
-          field: 'bin_origin_start',
-          sort: true
+    describe('ordinal color with bin', function() {
+      const model = parseUnitModel({
+          mark: "point",
+          encoding: {
+            color: {field: "origin", type: "ordinal", bin: true}
+          }
         });
-        assert.deepEqual(scales.binLegendLabel.range, {
-          data: 'source',
-          field: 'bin_origin_range',
-          sort: {"field": "bin_origin_start","op": "min"}
+
+      const scales = parseScale(model, 'color');
+
+      it('should add correct scales', function() {
+        assert.equal(scales.name, 'color');
+        assert.equal(scales.type, 'ordinal');
+      });
+    });
+
+    describe('opacity with bin', function() {
+      const model = parseUnitModel({
+          mark: "point",
+          encoding: {
+            opacity: {field: "origin", type: "quantitative", bin: true}
+          }
         });
+
+      const scales = parseScale(model, 'opacity');
+
+      it('should add correct scales', function() {
+        assert.equal(scales.name, 'opacity');
+        assert.equal(scales.type, 'bin-linear');
+      });
+    });
+
+    describe('size with bin', function() {
+      const model = parseUnitModel({
+          mark: "point",
+          encoding: {
+            size: {field: "origin", type: "quantitative", bin: true}
+          }
+        });
+
+      const scales = parseScale(model, 'size');
+
+      it('should add correct scales', function() {
+        assert.equal(scales.name, 'size');
+        assert.equal(scales.type, 'bin-linear');
       });
     });
 
@@ -145,10 +174,8 @@ describe('src/compile', function() {
       const scales = parseScale(model, 'color');
 
       it('should add correct scales', function() {
-        assert.equal(scales.main.name, 'color');
-        assert.equal(scales.main.type, 'sequential');
-        assert.equal(scales.binLegend, undefined);
-        assert.equal(scales.binLegendLabel, undefined);
+        assert.equal(scales.name, 'color');
+        assert.equal(scales.type, 'sequential');
       });
     });
   });

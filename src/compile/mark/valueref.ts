@@ -65,11 +65,13 @@ export function band(scaleName: string, band: number|boolean = true): VgValueRef
   };
 }
 
-export function binMidSignal(fieldDef: FieldDef, scaleName: string) {
+function binMidSignal(fieldDef: FieldDef, scaleName: string) {
   return {
-    scale: scaleName,
-    signal: '(' + field(fieldDef, {binSuffix: 'start', datum: true}) + '+' +
-      field(fieldDef, {binSuffix: 'end', datum: true}) + ')/2'
+    signal: `(` +
+      `scale("${scaleName}", ${field(fieldDef, {binSuffix: 'start', datum: true})})` +
+      ` + ` +
+      `scale("${scaleName}", ${field(fieldDef, {binSuffix: 'end', datum: true})})`+
+    `)/2`
   };
 }
 
@@ -83,6 +85,12 @@ export function midPoint(channel: Channel, channelDef: ChannelDef, scaleName: st
   if (channelDef) {
     /* istanbul ignore else */
     if (isFieldDef(channelDef)) {
+      if (scale.type === 'bin-linear') {
+        return binMidSignal(channelDef, scaleName);
+      } else if (scale.type === 'bin-ordinal') {
+        return fieldRef(channelDef, scaleName, {binSuffix: 'start'});
+      }
+
       if (hasDiscreteDomain(scale.type)) {
         if (scale.type === 'band') {
           // For band, to get mid point, need to offset by half of the band
@@ -90,16 +98,10 @@ export function midPoint(channel: Channel, channelDef: ChannelDef, scaleName: st
         }
         return fieldRef(channelDef, scaleName, {binSuffix: 'range'});
       } else {
-        if (channelDef.bin) {
-          return binMidSignal(channelDef, scaleName);
-        } else {
-          return fieldRef(channelDef, scaleName, {}); // no need for bin suffix
-        }
+        return fieldRef(channelDef, scaleName, {}); // no need for bin suffix
       }
     } else if (channelDef.value) {
-      return {
-        value: channelDef.value
-      };
+      return {value: channelDef.value};
     } else {
       throw new Error('FieldDef without field or value.'); // FIXME add this to log.message
     }

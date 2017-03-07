@@ -18,7 +18,6 @@ import {OneOfFilter, EqualFilter, RangeFilter} from '../filter';
 
 import {DataComponent} from './data/data';
 import {LayoutComponent} from './layout';
-import {ScaleComponents, BIN_LEGEND_SUFFIX, BIN_LEGEND_LABEL_SUFFIX} from './scale/scale';
 import {StackProperties} from '../stack';
 
 import {SelectionComponent} from './selection/selection';
@@ -31,7 +30,7 @@ import {SelectionComponent} from './selection/selection';
 export interface Component {
   data: DataComponent;
   layout: LayoutComponent;
-  scales: Dict<ScaleComponents>;
+  scales: Dict<VgScale>;
   selection: Dict<SelectionComponent>;
 
   /** Dictionary mapping channel to VgAxis definition */
@@ -183,14 +182,8 @@ export abstract class Model {
   public assembleScales(): VgScale[] {
     // FIXME: write assembleScales() in scale.ts that
     // help assemble scale domains with scale signature as well
-    return flatten(vals(this.component.scales).map((scales: ScaleComponents) => {
-      let arr = [scales.main];
-      if (scales.binLegend) {
-        arr.push(scales.binLegend);
-      }
-      if (scales.binLegendLabel) {
-        arr.push(scales.binLegendLabel);
-      }
+    return flatten(vals(this.component.scales).map((scale: VgScale) => {
+      let arr = [scale];
       return arr;
     }));
   }
@@ -356,8 +349,6 @@ export abstract class Model {
    * (DO NOT USE THIS METHOD DURING SCALE PARSING, use model.name() instead)
    */
   public scaleName(this: Model, originalScaleName: Channel|string, parse?: boolean): string {
-    const channel = originalScaleName.replace(BIN_LEGEND_SUFFIX, '').replace(BIN_LEGEND_LABEL_SUFFIX, '');
-
     if (parse) {
       // During the parse phase always return a value
       // No need to refer to rename map because a scale can't be renamed
@@ -369,7 +360,7 @@ export abstract class Model {
     // be in the _scale mapping or exist in the name map
     if (
         // in the scale map (the scale is not merged by its parent)
-        (this.scale && this.scales[channel]) ||
+        (this.scale && this.scales[originalScaleName]) ||
         // in the scale name map (the the scale get merged by its parent)
         this.scaleNameMap.has(this.getName(originalScaleName + ''))
       ) {

@@ -1,7 +1,7 @@
 import {X, Y} from '../../channel';
 import {Config} from '../../config';
 import {isFieldDef} from '../../fielddef';
-import {Scale, ScaleType} from '../../scale';
+import {Scale, ScaleType, isBinScale} from '../../scale';
 import {StackProperties} from '../../stack';
 import * as log from '../../log';
 import {VgEncodeEntry} from '../../vega.schema';
@@ -43,8 +43,7 @@ function x(model: UnitModel, stack: StackProperties): VgEncodeEntry {
     };
   } else { // vertical
     if (isFieldDef(xDef)) {
-      if (xDef.bin && !sizeDef) {
-        // TODO: check scale type = linear
+      if (!sizeDef && isBinScale(xScale.type)) {
         return mixins.binnedPosition('x', model, config.bar.binSpacing);
       } else if (xScale.type === ScaleType.BAND) {
         return mixins.bandPosition('x', model);

@@ -104,7 +104,14 @@ export function isFieldRefUnionDomain(domain: VgDomain): domain is FieldRefUnion
 
 export function isDataRefDomain(domain: VgDomain): domain is VgDataRef {
   if (!isArray(domain)) {
-    return !('fields' in domain);
+     return 'field' in domain && 'data' in domain;
+  }
+  return false;
+}
+
+export function isSignalRefDomain(domain: VgDomain): domain is VgSignalRef {
+  if (!isArray(domain)) {
+    return 'signal' in domain;
   }
   return false;
 }

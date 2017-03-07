@@ -15,16 +15,26 @@ describe('compile/scale', () => {
   describe('type()', () => {
     it('should return null for channel without scale', function() {
       assert.deepEqual(
-        scaleType(undefined, 'temporal', 'detail', 'yearmonth', 'point', undefined, undefined, defaultConfig),
+        scaleType(undefined, 'detail', {type: 'temporal', timeUnit: 'yearmonth'}, 'point', undefined, undefined, defaultConfig),
         null
       );
+    });
+
+    it('should show warning if users try to override the scale and use bin', function() {
+      log.runLocalLogger((localLogger) => {
+        assert.deepEqual(
+          scaleType('point', 'color', {type: 'quantitative', bin: 'true'}, 'point', undefined, undefined, defaultConfig),
+          ScaleType.BIN_ORDINAL
+        );
+        assert.equal(localLogger.warns[0], log.message.cannotOverrideBinScaleType('color', 'bin-ordinal'));
+      });
     });
 
     describe('row/column', () => {
       it('should return band for row/column', function() {
         [ROW, COLUMN].forEach((channel) => {
           assert.deepEqual(
-            scaleType(undefined, 'temporal', channel, 'yearmonth', 'point', undefined, undefined, defaultConfig),
+            scaleType(undefined, channel, {type: 'temporal', timeUnit: 'yearmonth'}, 'point', undefined, undefined, defaultConfig),
             ScaleType.BAND
           );
         });
@@ -35,10 +45,10 @@ describe('compile/scale', () => {
           [ScaleType.LINEAR, ScaleType.ORDINAL, ScaleType.POINT].forEach((badScaleType) => {
             log.runLocalLogger((localLogger) => {
               assert.deepEqual(
-                scaleType(badScaleType, 'temporal', channel, 'yearmonth', 'point', undefined, undefined, defaultConfig),
+                scaleType(badScaleType, channel, {type: 'temporal', timeUnit: 'yearmonth'}, 'point', undefined, undefined, defaultConfig),
                 ScaleType.BAND
               );
-              assert.equal(localLogger.warns[0], log.message.scaleTypeNotWorkWithChannel(channel, badScaleType, ScaleType.BAND));
+              assert.equal(localLogger.warns[0], log.message.scaleTypeNotWorkWithChannel(channel, badScaleType, 'band'));
             });
           });
         });
@@ -49,14 +59,14 @@ describe('compile/scale', () => {
       describe('color', () => {
         it('should return ordinal scale for nominal data by default.', () => {
           assert.equal(
-            scaleType(undefined, 'nominal', 'color', undefined, 'point', undefined, undefined, defaultConfig),
+            scaleType(undefined, 'color', {type: 'nominal'}, 'point', undefined, undefined, defaultConfig),
             ScaleType.ORDINAL
           );
         });
 
         it('should return ordinal scale for ordinal data.', () => {
           assert.equal(
-            scaleType(undefined, 'ordinal', 'color', undefined, 'point', undefined, undefined, defaultConfig),
+            scaleType(undefined, 'color', {type: 'nominal'}, 'point', undefined, undefined, defaultConfig),
             ScaleType.ORDINAL
           );
         });
@@ -65,7 +75,7 @@ describe('compile/scale', () => {
       describe('discrete channel (shape)', () => {
         it('should return ordinal for nominal field', function() {
           assert.deepEqual(
-            scaleType(undefined, 'nominal', 'shape', undefined, 'point', undefined, undefined, defaultConfig),
+            scaleType(undefined, 'shape', {type: 'nominal'}, 'point', undefined, undefined, defaultConfig),
             ScaleType.ORDINAL
           );
         });
@@ -74,17 +84,17 @@ describe('compile/scale', () => {
           [ScaleType.LINEAR, ScaleType.BAND, ScaleType.POINT].forEach((badScaleType) => {
             log.runLocalLogger((localLogger) => {
               assert.deepEqual(
-                scaleType(badScaleType, 'nominal', 'shape', undefined, 'point', undefined, undefined, defaultConfig),
+                scaleType(badScaleType, 'shape', {type: 'nominal'}, 'point', undefined, undefined, defaultConfig),
                 ScaleType.ORDINAL
               );
-              assert.equal(localLogger.warns[0], log.message.scaleTypeNotWorkWithChannel('shape', badScaleType, ScaleType.ORDINAL));
+              assert.equal(localLogger.warns[0], log.message.scaleTypeNotWorkWithChannel('shape', badScaleType, 'ordinal'));
             });
           });
         });
 
         it('should return ordinal for an ordinal field and throw a warning.', log.wrap((localLogger) => {
           assert.deepEqual(
-            scaleType(undefined, 'ordinal', 'shape', undefined, 'point', undefined, undefined, defaultConfig),
+            scaleType(undefined, 'shape', {type: 'ordinal'}, 'point', undefined, undefined, defaultConfig),
             ScaleType.ORDINAL
           );
           assert.equal(localLogger.warns[0], log.message.discreteChannelCannotEncode('shape', 'ordinal'));
@@ -101,7 +111,7 @@ describe('compile/scale', () => {
             [ORDINAL, NOMINAL].forEach((t) => {
               [X, Y].forEach((channel) => {
                 assert.equal(
-                  scaleType(undefined, t, channel, undefined, mark, undefined, undefined, defaultConfig),
+                  scaleType(undefined, channel, {type: t}, mark, undefined, undefined, defaultConfig),
                   ScaleType.POINT
                 );
               });
@@ -113,7 +123,7 @@ describe('compile/scale', () => {
           [ORDINAL, NOMINAL].forEach((t) => {
             [X, Y].forEach((channel) => {
               assert.equal(
-                scaleType(undefined, t, channel, undefined, 'rect', undefined, undefined, defaultConfig),
+                scaleType(undefined, channel, {type: t}, 'rect', undefined, undefined, defaultConfig),
                 ScaleType.BAND
               );
             });
@@ -123,7 +133,7 @@ describe('compile/scale', () => {
         it('should return band scale for X,Y when mark is bar and rangeStep is null (fit)', () => {
           [ORDINAL, NOMINAL].forEach((t) => {
             [X, Y].forEach((channel) => {
-              assert.equal(scaleType(undefined, t, channel, undefined, 'bar', null, undefined, defaultConfig), ScaleType.BAND);
+              assert.equal(scaleType(undefined, channel, {type: t}, 'bar', null, undefined, defaultConfig), ScaleType.BAND);
             });
           });
         });
@@ -131,7 +141,7 @@ describe('compile/scale', () => {
         it('should return point scale for X,Y when mark is bar and rangeStep is defined', () => {
           [ORDINAL, NOMINAL].forEach((t) => {
             [X, Y].forEach((channel) => {
-              assert.equal(scaleType(undefined, t, channel, undefined, 'bar', undefined, 21, defaultConfig), ScaleType.POINT);
+              assert.equal(scaleType(undefined, channel, {type: t}, 'bar', undefined, 21, defaultConfig), ScaleType.POINT);
             });
           });
         });
@@ -139,7 +149,7 @@ describe('compile/scale', () => {
         it('should return point scale for X,Y when mark is point', () => {
           [ORDINAL, NOMINAL].forEach((t) => {
             [X, Y].forEach((channel) => {
-              assert.equal(scaleType(undefined, t, channel, undefined, 'point', undefined, undefined, defaultConfig), ScaleType.POINT);
+              assert.equal(scaleType(undefined, channel, {type: t}, 'point', undefined, undefined, defaultConfig), ScaleType.POINT);
             });
           });
         });
@@ -148,7 +158,7 @@ describe('compile/scale', () => {
           [ORDINAL, NOMINAL].forEach((t) => {
             [X, Y].forEach((channel) => {
               log.runLocalLogger((localLogger) => {
-                assert.equal(scaleType('ordinal', t, channel, undefined, 'point', undefined, undefined, defaultConfig), ScaleType.POINT);
+                assert.equal(scaleType('ordinal', channel, {type: t}, 'point', undefined, undefined, defaultConfig), ScaleType.POINT);
                 assert.equal(localLogger.warns[0], log.message.scaleTypeNotWorkWithChannel(channel, 'ordinal', 'point'));
               });
             });
@@ -161,9 +171,9 @@ describe('compile/scale', () => {
             [ORDINAL, NOMINAL].forEach((t) => {
               OTHER_CONTINUOUS_CHANNELS.forEach((channel) => {
                 assert.equal(
-                  scaleType(undefined, t, channel, undefined, mark, undefined, undefined, defaultConfig),
+                  scaleType(undefined, channel, {type: t}, mark, undefined, undefined, defaultConfig),
                   ScaleType.POINT,
-                  `${channel}, ${mark}, ${t} ` + scaleType(undefined, t, channel, undefined, mark, undefined, undefined, defaultConfig)
+                  `${channel}, ${mark}, ${t} ` + scaleType(undefined, channel, {type: t}, mark, undefined, undefined, defaultConfig)
                 );
               });
             });
@@ -175,14 +185,14 @@ describe('compile/scale', () => {
     describe('temporal', () => {
       it('should return sequential scale for temporal color field by default.', () => {
         assert.equal(
-          scaleType(undefined, 'temporal','color', undefined, 'point', undefined, undefined, defaultConfig),
+          scaleType(undefined, 'color', {type: 'temporal'}, 'point', undefined, undefined, defaultConfig),
           ScaleType.SEQUENTIAL
         );
       });
 
       it('should return ordinal for temporal field and throw a warning.', log.wrap((localLogger) => {
         assert.deepEqual(
-          scaleType(undefined, 'temporal', 'shape', 'yearmonth', 'point', undefined, undefined, defaultConfig),
+          scaleType(undefined, 'shape', {type: 'temporal', timeUnit: 'yearmonth'}, 'point', undefined, undefined, defaultConfig),
           ScaleType.ORDINAL
         );
         assert.equal(localLogger.warns[0], log.message.discreteChannelCannotEncode('shape', 'temporal'));
@@ -211,7 +221,7 @@ describe('compile/scale', () => {
         ];
         for (const timeUnit of TIMEUNITS) {
           assert.deepEqual(
-            scaleType(undefined, 'temporal', Y, timeUnit, 'point', undefined, undefined, defaultConfig),
+            scaleType(undefined, Y, {type: 'temporal', timeUnit: timeUnit}, 'point', undefined, undefined, defaultConfig),
             ScaleType.TIME
           );
         }
@@ -220,7 +230,7 @@ describe('compile/scale', () => {
       it('should return a discrete scale for hours, day, month, quarter for x-y', function() {
         [TimeUnit.MONTH, TimeUnit.HOURS, TimeUnit.DAY, TimeUnit.QUARTER].forEach((timeUnit) => {
           assert.deepEqual(
-            scaleType(undefined, 'temporal', Y, timeUnit, 'point', undefined, undefined, defaultConfig),
+            scaleType(undefined, Y, {type: 'temporal', timeUnit: timeUnit}, 'point', undefined, undefined, defaultConfig),
             ScaleType.POINT
           );
         });
@@ -229,14 +239,21 @@ describe('compile/scale', () => {
     describe('quantitative', () => {
       it('should return sequential scale for quantitative color field by default.', () => {
         assert.equal(
-          scaleType(undefined, 'quantitative', 'color', undefined, 'point', undefined, undefined, defaultConfig),
+          scaleType(undefined, 'color', {type: 'quantitative'}, 'point', undefined, undefined, defaultConfig),
           ScaleType.SEQUENTIAL
+        );
+      });
+
+      it('should return ordinal bin scale for quantitative color field with binning.', () => {
+        assert.equal(
+          scaleType(undefined, 'color', {type: 'quantitative', bin: true}, 'point', undefined, undefined, defaultConfig),
+          ScaleType.BIN_ORDINAL
         );
       });
 
       it('should return ordinal for encoding quantitative field with a discrete channel and throw a warning.', log.wrap((localLogger) => {
         assert.deepEqual(
-          scaleType(undefined, 'quantitative', 'shape', undefined, 'point', undefined, undefined, defaultConfig),
+          scaleType(undefined, 'shape', {type: 'quantitative'}, 'point', undefined, undefined, defaultConfig),
           ScaleType.ORDINAL
         );
         assert.equal(localLogger.warns[0], log.message.discreteChannelCannotEncode('shape', 'quantitative'));
@@ -244,8 +261,15 @@ describe('compile/scale', () => {
 
       it('should return linear scale for quantitative by default.', () => {
         assert.equal(
-          scaleType(undefined, 'quantitative', 'x', undefined, 'point', undefined, undefined, defaultConfig),
+          scaleType(undefined, 'x', {type: 'quantitative'}, 'point', undefined, undefined, defaultConfig),
           ScaleType.LINEAR
+        );
+      });
+
+      it('should return bin linear scale for quantitative by default.', () => {
+        assert.equal(
+          scaleType(undefined, 'x', {type: 'quantitative', bin: true}, 'point', undefined, undefined, defaultConfig),
+          ScaleType.BIN_LINEAR
         );
       });
     });

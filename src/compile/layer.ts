@@ -7,8 +7,8 @@ import {Axis} from '../axis';
 import {LayerSpec} from '../spec';
 import {StackProperties} from '../stack';
 import {FILL_STROKE_CONFIG} from '../mark';
-import {keys, duplicate, mergeDeep, flatten, vals, Dict} from '../util';
-import {VgData, VgEncodeEntry} from '../vega.schema';
+import {keys, duplicate, mergeDeep, flatten, Dict} from '../util';
+import {VgData, VgEncodeEntry, isSignalRefDomain, VgScale} from '../vega.schema';
 import {isUrlData} from '../data';
 
 import {assembleData, parseLayerData} from './data/data';
@@ -17,7 +17,6 @@ import {assembleLayout, parseLayerLayout} from './layout';
 import {Model} from './model';
 import {UnitModel} from './unit';
 
-import {ScaleComponents} from './scale/scale';
 import {unionDomains} from './scale/domain';
 
 
@@ -107,7 +106,7 @@ export class LayerModel extends Model {
   public parseScale(this: LayerModel) {
     const model = this;
 
-    let scaleComponent = this.component.scales = {};
+    const scaleComponent: Dict<VgScale> = this.component.scales = {};
 
     this.children.forEach(function(child) {
       child.parseScale();
@@ -116,33 +115,27 @@ export class LayerModel extends Model {
       // Also need to check whether the scales are actually compatible, e.g. use the same sort or throw error
       if (true) { // if shared/union scale
         keys(child.component.scales).forEach(function(channel) {
-          let childScales: ScaleComponents = child.component.scales[channel];
-          if (!childScales) {
-            // the child does not have any scales so we have nothing to merge
+          let childScale = child.component.scales[channel];
+          const modelScale = scaleComponent[channel];
+
+          if (!childScale || isSignalRefDomain(childScale.domain) || (modelScale && isSignalRefDomain(modelScale.domain))) {
+            // TODO: merge signal ref domains
             return;
           }
 
-          const modelScales: ScaleComponents = scaleComponent[channel];
-          if (modelScales && modelScales.main) {
-            // Scales are unioned by combining the domain of the main scale.
-            // Other scales that are used for ordinal legends are appended.
-
-            modelScales.main.domain = unionDomains(modelScales.main.domain, childScales.main.domain);
-            modelScales.binLegend = modelScales.binLegend ? modelScales.binLegend : childScales.binLegend;
-            modelScales.binLegendLabel = modelScales.binLegendLabel ? modelScales.binLegendLabel : childScales.binLegendLabel;
+          if (modelScale) {
+            modelScale.domain = unionDomains(modelScale.domain, childScale.domain);
           } else {
-            scaleComponent[channel] = childScales;
+            scaleComponent[channel] = childScale;
           }
 
-          // rename child scales to parent scales
-          vals(childScales).forEach(function(scale: any) {
-            const scaleNameWithoutPrefix = scale.name.substr(child.getName('').length);
-            const newName = model.scaleName(scaleNameWithoutPrefix, true);
-            child.renameScale(scale.name, newName);
-            scale.name = newName;
-          });
+          // rename child scale to parent scales
+          const scaleNameWithoutPrefix = childScale.name.substr(child.getName('').length);
+          const newName = model.scaleName(scaleNameWithoutPrefix, true);
+          child.renameScale(childScale.name, newName);
 
-          delete childScales[channel];
+          // remove merged scales from children
+          delete child.component.scales[channel];
         });
       }
     });
@@ -210,6 +203,13 @@ export class LayerModel extends Model {
 
   public assembleSelectionData(data: VgData[]): VgData[] {
     return [];
+  }
+
+  public assembleScales(): VgScale[] {
+    // combine with scales from children
+    return this.children.reduce((scales, c) => {
+      return scales.concat(c.assembleScales());
+    }, super.assembleScales());
   }
 
   public assembleData(data: VgData[]): VgData[] {

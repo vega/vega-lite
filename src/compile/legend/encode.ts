@@ -1,14 +1,12 @@
-import {COLOR, SIZE, SHAPE, OPACITY, Channel} from '../../channel';
+import {COLOR, SHAPE, Channel} from '../../channel';
 import {FieldDef, isValueDef} from '../../fielddef';
 import {AREA, BAR, TICK, TEXT, LINE, POINT, CIRCLE, SQUARE, FILL_STROKE_CONFIG} from '../../mark';
-import {hasContinuousDomain} from '../../scale';
 import {TEMPORAL} from '../../type';
 import {extend, keys, without} from '../../util';
 
 import {VgValueRef} from '../../vega.schema';
 
 import {applyMarkConfig, timeFormatExpression} from '../common';
-import {BIN_LEGEND_LABEL_SUFFIX} from '../scale/scale';
 import {UnitModel} from '../unit';
 
 export function symbols(fieldDef: FieldDef, symbolsSpec: any, model: UnitModel, channel: Channel) {
@@ -49,11 +47,6 @@ export function symbols(fieldDef: FieldDef, symbolsSpec: any, model: UnitModel, 
     symbols.strokeWidth = {value: 0};
   }
 
-  // Avoid override default mapping for opacity channel
-  if (channel === OPACITY) {
-    delete symbols.opacity;
-  }
-
   let value: VgValueRef;
   const colorDef = model.encoding.color;
   if (isValueDef(colorDef)) {
@@ -90,26 +83,6 @@ export function symbols(fieldDef: FieldDef, symbolsSpec: any, model: UnitModel, 
     }
   }
 
-  if (fieldDef.bin && hasContinuousDomain(model.scale(channel).type)) {
-    const def = {
-      scale: model.scaleName(channel),
-      field: 'value'
-    };
-    switch (channel) {
-      case OPACITY:
-        symbols.opacity = def;
-        break;
-      case SIZE:
-        symbols.size = def;
-        break;
-      case COLOR:
-        symbols[filled ? 'fill' : 'stroke'] = def;
-        break;
-      default:
-        throw Error(`Legend for channel ${channel} not implemented`);
-    }
-  }
-
   symbols = extend(symbols, symbolsSpec || {});
 
   return keys(symbols).length > 0 ? symbols : undefined;
@@ -121,15 +94,7 @@ export function labels(fieldDef: FieldDef, labelsSpec: any, model: UnitModel, ch
 
   let labels:any = {};
 
-  if (fieldDef.bin && hasContinuousDomain(model.scale(channel).type)) {
-    // Override label's text to map bin's quantitative value to range
-    labelsSpec = extend({
-      text: {
-        scale: model.scaleName(channel) + BIN_LEGEND_LABEL_SUFFIX,
-        field: 'value'
-      }
-    }, labelsSpec || {});
-  } else if (fieldDef.type === TEMPORAL) {
+  if (fieldDef.type === TEMPORAL) {
     labelsSpec = extend({
       text: {
         signal: timeFormatExpression('datum.value', fieldDef.timeUnit, legend.format, config.legend.shortTimeLabels, config.timeFormat)

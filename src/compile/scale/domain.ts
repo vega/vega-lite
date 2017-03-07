@@ -4,15 +4,24 @@ import {SHARED_DOMAIN_OPS} from '../../aggregate';
 import {Channel} from '../../channel';
 import {SOURCE} from '../../data';
 import {DateTime, isDateTime, timestamp} from '../../datetime';
-import {Domain, Scale, ScaleType, hasDiscreteDomain, ScaleConfig} from '../../scale';
+import {Domain, hasDiscreteDomain, isBinScale, Scale, ScaleConfig, ScaleType} from '../../scale';
 import {isSortField} from '../../sort';
-import {FieldRefUnionDomain, VgSortField, isDataRefUnionedDomain, isFieldRefUnionDomain, isDataRefDomain, VgDomain, VgDataRef} from '../../vega.schema';
+import {
+  FieldRefUnionDomain,
+  DataRefUnionDomain,
+  isDataRefDomain,
+  isDataRefUnionedDomain,
+  isFieldRefUnionDomain,
+  isSignalRefDomain,
+  VgDataRef,
+  VgDomain,
+  VgSortField
+} from '../../vega.schema';
 
 import * as util from '../../util';
 
 import {Model} from '../model';
 import {FieldDef} from '../../fielddef';
-
 
 export function initDomain(domain: Domain, fieldDef: FieldDef, scale: ScaleType, scaleConfig: ScaleConfig) {
   if (domain === 'unaggregated') {
@@ -36,7 +45,6 @@ export function initDomain(domain: Domain, fieldDef: FieldDef, scale: ScaleType,
 export function parseDomain(model: Model, channel: Channel): VgDomain {
   const scale = model.scale(channel);
 
-
   // If channel is either X or Y then union them with X2 & Y2 if they exist
   if (channel === 'x' && model.channelHasField('x2')) {
     if (model.channelHasField('x')) {
@@ -54,7 +62,7 @@ export function parseDomain(model: Model, channel: Channel): VgDomain {
   return parseSingleChannelDomain(scale, model, channel);
 }
 
-function parseSingleChannelDomain(scale: Scale, model: Model, channel:Channel): any[] | VgDataRef | FieldRefUnionDomain {
+function parseSingleChannelDomain(scale: Scale, model: Model, channel:Channel): VgDomain {
   const fieldDef = model.fieldDef(channel);
 
   if (scale.domain && scale.domain !== 'unaggregated') { // explicit value
@@ -104,6 +112,11 @@ function parseSingleChannelDomain(scale: Scale, model: Model, channel:Channel): 
       ]
     };
   } else if (fieldDef.bin) { // bin
+    if (isBinScale(scale.type)) {
+      const field = model.getName(fieldDef.field + '_bins');
+      return {signal: `sequence(${field}.start, ${field}.stop + ${field}.step, ${field}.step)`};
+    }
+
     if (hasDiscreteDomain(scale.type)) {
       // ordinal bin scale takes domain from bin_range, ordered by bin_start
       // This is useful for both axis-based scale (x, y, column, and row) and legend-based scale (other channels).
@@ -208,12 +221,18 @@ export function canUseUnaggregatedDomain(fieldDef: FieldDef, scaleType: ScaleTyp
   return {valid: true};
 }
 
+/**
+ * Scale domains that we can union. We cannot union signal domains we use for
+ * binned data because they have to be exactly the same. Otherwise it doesn't
+ * make any sense to union.
+ */
+type UnionableDomain = any[] | VgDataRef | DataRefUnionDomain | FieldRefUnionDomain;
 
 /**
  * Convert the domain to an array of data refs or an array of values. Also, throw
  * away sorting information since we always sort the domain when we union two domains.
  */
-function normalizeDomain(domain: VgDomain): (any[] | VgDataRef)[] {
+function normalizeDomain(domain: UnionableDomain): (any[] | VgDataRef)[] {
   if (util.isArray(domain)) {
     return [domain];
   } else if (isDataRefDomain(domain)) {
@@ -245,6 +264,13 @@ function normalizeDomain(domain: VgDomain): (any[] | VgDataRef)[] {
  * Union two data domains. A unioned domain is always sorted.
  */
 export function unionDomains(domain1: VgDomain, domain2: VgDomain): VgDomain {
+  if (isSignalRefDomain(domain1) || isSignalRefDomain(domain2)) {
+    if (!isSignalRefDomain(domain1) || !isSignalRefDomain(domain2) || domain1.signal !== domain2.signal) {
+      throw new Error(log.message.UNABLE_TO_MERGE_DOMAINS);
+    }
+    return domain1;
+  }
+
   const normalizedDomain1 = normalizeDomain(domain1);
   const normalizedDomain2 = normalizeDomain(domain2);
 

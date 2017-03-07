@@ -3,7 +3,7 @@
 
 import {assert} from 'chai';
 import {parseDomain, unionDomains} from '../../../src/compile/scale/domain';
-import {SOURCE, SUMMARY} from '../../../src/data';
+import {SUMMARY} from '../../../src/data';
 import * as log from '../../../src/log';
 import {parseUnitModel} from '../../util';
 import {FieldRefUnionDomain, VgDataRef} from '../../../src/vega.schema';
@@ -77,11 +77,7 @@ describe('compile/scale', () => {
         });
 
         assert.deepEqual(parseDomain(model,'y'), {
-          data: SOURCE,
-          fields: [
-            'bin_origin_start',
-            'bin_origin_end'
-          ]
+          signal: 'sequence(origin_bins.start, origin_bins.stop + origin_bins.step, origin_bins.step)'
         });
 
         assert.equal(localLogger.warns[0], log.message.unaggregateDomainHasNoEffectForRawField(fieldDef));
@@ -287,6 +283,24 @@ describe('compile/scale', () => {
           data: 'foo',
           field: 'c'
         }]
+      };
+
+      const unioned = unionDomains(domain1, domain2);
+      assert.deepEqual(unioned, {
+        data: 'foo',
+        fields: ['a', 'b', 'c']
+      });
+    });
+
+    it('should union data ref union domains', () => {
+      const domain1 = {
+        data: 'foo',
+        fields: ['a', 'b']
+      };
+
+      const domain2 = {
+        data: 'foo',
+        fields: ['b', 'c']
       };
 
       const unioned = unionDomains(domain1, domain2);
