@@ -4,7 +4,6 @@ import {assert} from 'chai';
 import {COLOR, SIZE} from '../../../src/channel';
 import {defaultConfig} from '../../../src/config';
 import * as rules from '../../../src/compile/legend/rules';
-import {QUANTITATIVE} from '../../../src/type';
 
 describe('compile/legend', function() {
   describe('title()', function () {
@@ -39,22 +38,32 @@ describe('compile/legend', function() {
 
   describe('type()', () => {
     it('should return gradient type for color scale', () => {
-      const t = rules.type({}, {type: QUANTITATIVE}, COLOR);
+      const t = rules.type({}, undefined, COLOR, 'sequential');
       assert.equal(t, 'gradient');
     });
 
     it('should not return gradient type for size scale', () => {
-      const t = rules.type({}, {type: QUANTITATIVE}, SIZE);
+      const t = rules.type({}, undefined, SIZE, 'linear');
       assert.equal(t, undefined);
     });
 
     it('should be able to override default', () => {
-      const t = rules.type({type: 'symbol'}, {type: QUANTITATIVE}, COLOR);
+      const t = rules.type({type: 'symbol'}, undefined, COLOR, 'sequential');
       assert.equal(t, 'symbol');
     });
 
     it('should return no type for color scale with bin', () => {
-      const t = rules.type({}, {type: QUANTITATIVE, bin: true}, COLOR);
+      const t = rules.type({}, undefined, COLOR, 'bin-ordinal');
+      assert.equal(t, undefined);
+    });
+
+    it('should return gradient type for color scale with year time unit', () => {
+      const t = rules.type({}, 'year', COLOR, 'time');
+      assert.equal(t, 'gradient');
+    });
+
+    it('should return no type for color scale with month time unit', () => {
+      const t = rules.type({}, 'month', COLOR, 'time');
       assert.equal(t, undefined);
     });
   });
