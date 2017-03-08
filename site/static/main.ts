@@ -9,9 +9,6 @@ const embed = require('vega-embed');
 
 declare const BASEURL: string;
 
-// IIFE to prevent function declarations from moving into the global scope
-(() => {
-
 function trim(str: string) {
   return str.replace(/^\s+|\s+$/g, '');
 }
@@ -136,5 +133,3 @@ function renderGallery() {
     }
   });
 }
-
-})();
