@@ -218,6 +218,7 @@ export class FacetModel extends Model {
         const scaleNameWithoutPrefix = scale.name.substr(child.getName('').length);
         const newName = model.scaleName(scaleNameWithoutPrefix, true);
         child.renameScale(scale.name, newName);
+        scale.name = newName;
 
         // Once put in parent, just remove the child's scale.
         delete child.component.scales[channel];

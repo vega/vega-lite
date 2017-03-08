@@ -133,6 +133,7 @@ export class LayerModel extends Model {
           const scaleNameWithoutPrefix = childScale.name.substr(child.getName('').length);
           const newName = model.scaleName(scaleNameWithoutPrefix, true);
           child.renameScale(childScale.name, newName);
+          childScale.name = newName;
 
           // remove merged scales from children
           delete child.component.scales[channel];
