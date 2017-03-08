@@ -11,7 +11,7 @@ import {Scale, hasDiscreteDomain} from '../scale';
 import {SortField, SortOrder} from '../sort';
 import {BaseSpec, Padding} from '../spec';
 import {Transform} from '../transform';
-import {extend, flatten, vals, Dict} from '../util';
+import {extend, vals, Dict} from '../util';
 import {VgData, VgEncodeEntry, VgScale, VgAxis, VgLegend} from '../vega.schema';
 import {Formula} from '../transform';
 import {OneOfFilter, EqualFilter, RangeFilter} from '../filter';
@@ -182,10 +182,7 @@ export abstract class Model {
   public assembleScales(): VgScale[] {
     // FIXME: write assembleScales() in scale.ts that
     // help assemble scale domains with scale signature as well
-    return flatten(vals(this.component.scales).map((scale: VgScale) => {
-      let arr = [scale];
-      return arr;
-    }));
+    return vals(this.component.scales);
   }
 
   public abstract assembleMarks(): any[]; // TODO: VgMarkGroup[]
