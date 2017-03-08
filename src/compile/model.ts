@@ -191,7 +191,7 @@ export abstract class Model {
     return [].concat.apply([], vals(this.component.axes));
   }
 
-  public assembleLegends(): any[] { // TODO: VgLegend[]
+  public assembleLegends(): VgLegend[] {
     return vals(this.component.legends);
   }
 
@@ -343,14 +343,13 @@ export abstract class Model {
 
   /**
    * @return scale name for a given channel after the scale has been parsed and named.
-   * (DO NOT USE THIS METHOD DURING SCALE PARSING, use model.name() instead)
    */
-  public scaleName(this: Model, originalScaleName: Channel|string, parse?: boolean): string {
+  public scaleName(this: Model, originalScaleName: Channel | string, parse?: boolean): string {
     if (parse) {
       // During the parse phase always return a value
       // No need to refer to rename map because a scale can't be renamed
       // before it has the original name.
-      return this.getName(originalScaleName + '');
+      return this.getName(originalScaleName);
     }
 
     // If there is a scale for the channel, it should either
@@ -359,9 +358,9 @@ export abstract class Model {
         // in the scale map (the scale is not merged by its parent)
         (this.scale && this.scales[originalScaleName]) ||
         // in the scale name map (the the scale get merged by its parent)
-        this.scaleNameMap.has(this.getName(originalScaleName + ''))
+        this.scaleNameMap.has(this.getName(originalScaleName))
       ) {
-      return this.scaleNameMap.get(this.getName(originalScaleName + ''));
+      return this.scaleNameMap.get(this.getName(originalScaleName));
     }
     return undefined;
   }

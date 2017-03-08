@@ -168,8 +168,8 @@ export function differ<T>(dict: Dict<T>, other: Dict<T>) {
 
 export const keys = Object.keys;
 
-export function vals(x: any) {
-  const _vals: any[] = [];
+export function vals<T>(x: {[key: string]: T}): T[] {
+  const _vals: T[] = [];
   for (const k in x) {
     if (x.hasOwnProperty(k)) {
       _vals.push(x[k]);
