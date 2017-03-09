@@ -77,4 +77,25 @@ describe("normalizeErrorBar", () => {
         ]
       });
     });
+
+   it("should throw error when missing x2 and y2", () => {
+      assert.throws(() => {
+        normalize({
+          "description": "A error bar plot showing mean, min, and max in the US population distribution of age groups in 2000.",
+          "data": {"url": "data/population.json"},
+          "transform": {"filter": "datum.year == 2000"},
+          mark: "error-bar",
+          encoding: {
+            "y": {"field": "age","type": "ordinal"},
+            "x": {
+              "aggregate": "min",
+              "field": "people",
+              "type": "quantitative",
+              "axis": {"title": "population"}
+            },
+            "size": {"value": 5}
+          }
+        });
+      }, Error, 'Neither x2 or y2 provided');
+    });
   });
