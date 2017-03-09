@@ -42,6 +42,11 @@ add(ERRORBAR, (spec: GenericUnitSpec<ERRORBAR, Encoding>): LayerSpec => {
   const {mark: _m, encoding: encoding, ...outerSpec} = spec;
   const {size: _s, ...encodingWithoutSize} = encoding;
   const {x2: _x2, y2: _y2, ...encodingWithoutX2Y2} = encoding;
+  const {x: _x, y: _y, ...encodingWithoutX_X2_Y_Y2} = encodingWithoutX2Y2;
+
+  if (!encoding.x2 && !encoding.y2) {
+    throw new Error('Neither x2 or y2 provided');
+  }
 
   return {
     ...outerSpec,
@@ -54,10 +59,14 @@ add(ERRORBAR, (spec: GenericUnitSpec<ERRORBAR, Encoding>): LayerSpec => {
         encoding: encodingWithoutX2Y2
       }, { // Upper tick
         mark: 'tick',
-        encoding: {
-          ...encodingWithoutX2Y2,
-          ...(encoding.x2 ? {x: encoding.x2} : {}),
-          ...(encoding.y2 ? {y: encoding.y2} : {})
+        encoding: encoding.x2 ? {
+          x: encoding.x2,
+          y: encoding.y,
+          ...encodingWithoutX_X2_Y_Y2
+        } : {
+          x: encoding.x,
+          y: encoding.y2,
+          ...encodingWithoutX_X2_Y_Y2
         }
       }
     ]
