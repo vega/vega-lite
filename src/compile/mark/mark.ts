@@ -1,6 +1,6 @@
-import {NONSPATIAL_CHANNELS, Channel} from '../../channel';
+import {LEVEL_OF_DETAIL_CHANNELS} from '../../channel';
 import {AREA, LINE} from '../../mark';
-import {contains, without} from '../../util';
+import {contains} from '../../util';
 
 import {MarkCompiler} from './base';
 import {area} from './area';
@@ -112,14 +112,14 @@ function parseNonPathMark(model: UnitModel) {
   return marks;
 }
 
-const NONSPATIAL_CHANNELS_EXCEPT_ORDER = without(NONSPATIAL_CHANNELS, ['order'] as Channel[]);
+
 
 /**
  * Returns list of detail (group-by) fields
  * that the model's spec contains.
  */
 function detailFields(model: UnitModel): string[] {
-  return NONSPATIAL_CHANNELS_EXCEPT_ORDER.reduce(function(details, channel) {
+  return LEVEL_OF_DETAIL_CHANNELS.reduce(function(details, channel) {
     if (model.channelHasField(channel) && !model.fieldDef(channel).aggregate) {
       details.push(model.field(channel));
     }

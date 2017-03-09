@@ -1,13 +1,15 @@
 import {Mark, MarkDef, isMarkDef, BAR, AREA, POINT, LINE, TICK, CIRCLE, SQUARE, RECT, RULE, TEXT, Orient} from '../../mark';
 import {Encoding, isAggregate, channelHasField} from '../../encoding';
 import * as log from '../../log';
-import {Dict, contains} from '../../util';
+import {Dict, contains, some} from '../../util';
 import {Scale, hasDiscreteDomain} from '../../scale';
 import {isFieldDef, FieldDef, isContinuous} from '../../fielddef';
 import {TEMPORAL} from '../../type';
 import {Config} from '../../config';
 import {getMarkConfig} from '../common';
 import {StackProperties} from '../../stack';
+import {LEVEL_OF_DETAIL_CHANNELS, Channel} from '../../channel';
+import {isArray} from 'vega-util';
 
 export function initMarkDef(mark: Mark | MarkDef, encoding: Encoding, scale: Dict<Scale>, config: Config): MarkDef & {filled: boolean} {
   const markDef = isMarkDef(mark) ? mark : {type: mark};
@@ -50,7 +52,7 @@ function defaultOpacity(mark: Mark, encoding: Encoding, stacked: StackProperties
     }
   }
   if (mark === BAR && !stacked) {
-    if (channelHasField(encoding, 'color') || channelHasField(encoding, 'detail') || channelHasField(encoding, 'size')) {
+    if (some(LEVEL_OF_DETAIL_CHANNELS, (channel) => hasRawField(encoding, channel))) {
       return 0.7;
     }
   }
@@ -58,6 +60,16 @@ function defaultOpacity(mark: Mark, encoding: Encoding, stacked: StackProperties
     return 0.7; // inspired by Tableau
   }
   return undefined;
+}
+
+function hasRawField(encoding: Encoding, channel: Channel) {
+  const channelDef = encoding[channel];
+  if (isArray(channelDef)) { // detail
+    return some(channelDef, fieldDef => !fieldDef.aggregate);
+  } else if (isFieldDef(channelDef)) {
+    return !channelDef.aggregate;
+  }
+  return false;
 }
 
 function filled(mark: Mark, config: Config) {
