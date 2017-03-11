@@ -18,6 +18,6 @@ declare module 'vega' {
   export const Warn: number;
 }
 
-declare module 'vega-parser/src/parsers/event-selector' {
-  export default function(selector: string, source: string): any[];
+declare module 'vega-event-selector' {
+  export function selector(selector: string, source: string): any[];
 }

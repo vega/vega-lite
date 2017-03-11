@@ -1,11 +1,7 @@
-// global imports for vega-embed
-(window as any).vega = require('vega');
-(window as any).vl = require('../../build/vega-lite.min');
-
 import {selectAll, select, Selection} from 'd3-selection';
 import {json, text} from 'd3-request';
 import * as hljs from 'highlight.js';
-const embed = require('vega-embed');
+import embed from 'vega-embed';
 
 declare const BASEURL: string;
 
