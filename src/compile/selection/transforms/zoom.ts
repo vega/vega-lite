@@ -1,4 +1,4 @@
-import parseSelector from 'vega-parser/src/parsers/event-selector';
+import {selector as parseSelector} from 'vega-event-selector';
 import {Channel, X, Y} from '../../../channel';
 import {stringValue} from '../../../util';
 import {BRUSH as INTERVAL_BRUSH, projections as intervalProjections, SIZE as INTERVAL_SIZE} from '../interval';

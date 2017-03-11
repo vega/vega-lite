@@ -1,4 +1,4 @@
-import parseSelector from 'vega-parser/src/parsers/event-selector';
+import {selector as parseSelector} from 'vega-event-selector';
 import {Channel} from '../../channel';
 import {SelectionDef, SelectionDomain, SelectionResolutions, SelectionTypes} from '../../selection';
 import {Dict, extend, isString, stringValue} from '../../util';

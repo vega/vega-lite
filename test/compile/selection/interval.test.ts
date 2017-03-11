@@ -1,7 +1,8 @@
 /* tslint:disable quotemark */
 
 import {assert} from 'chai';
-import {default as parseSelector} from 'vega-parser/src/parsers/event-selector';
+import {selector as parseSelector} from 'vega-event-selector';
+
 import interval from '../../../src/compile/selection/interval';
 import * as selection from '../../../src/compile/selection/selection';
 import {parseUnitModel} from '../../util';
