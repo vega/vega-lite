@@ -185,3 +185,14 @@ export function duplicate<T>(obj: T): T {
 export function isBoolean(b: any): b is boolean {
   return b === true || b === false;
 }
+
+/**
+ * Convert a string into a valid variable name
+ */
+export function varName(s: string) {
+  // Replace non-alphanumeric characters (anything besides a-zA-Z0-9_) with _
+  const alphanumericS = s.replace(/\W/g, '_');
+
+  // Add _ if the string has leading numbers.
+  return (s.match(/^\d+/) ? '_' : '') + alphanumericS;
+}

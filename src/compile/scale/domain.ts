@@ -22,6 +22,7 @@ import * as util from '../../util';
 
 import {Model} from '../model';
 import {FieldDef} from '../../fielddef';
+import {varName} from '../../util';
 
 export function initDomain(domain: Domain, fieldDef: FieldDef, scale: ScaleType, scaleConfig: ScaleConfig) {
   if (domain === 'unaggregated') {
@@ -113,7 +114,7 @@ function parseSingleChannelDomain(scale: Scale, model: Model, channel:Channel): 
     };
   } else if (fieldDef.bin) { // bin
     if (isBinScale(scale.type)) {
-      const field = model.getName(fieldDef.field + '_bins');
+      const field = varName(model.getName(fieldDef.field + '_bins'));
       return {signal: `sequence(${field}.start, ${field}.stop + ${field}.step, ${field}.step)`};
     }
 
