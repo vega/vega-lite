@@ -3,7 +3,7 @@ import {DataComponentCompiler} from './base';
 import {autoMaxBins} from '../../bin';
 import {Channel} from '../../channel';
 import {field, FieldDef} from '../../fielddef';
-import {extend, vals, flatten, hash, Dict} from '../../util';
+import {extend, vals, flatten, hash, Dict, varName} from '../../util';
 import {VgTransform} from '../../vega.schema';
 import {hasDiscreteDomain} from '../../scale';
 
@@ -25,7 +25,7 @@ function parse(model: Model): Dict<VgTransform[]> {
         type: 'bin',
         field: fieldDef.field,
         as: [field(fieldDef, {binSuffix: 'start'}), field(fieldDef, {binSuffix: 'end'})],
-        signal: model.getName(fieldDef.field + '_bins')
+        signal: varName(model.getName(fieldDef.field + '_bins'))
       },
         // if bin is an object, load parameter here!
         typeof bin === 'boolean' ? {} : bin
@@ -33,7 +33,7 @@ function parse(model: Model): Dict<VgTransform[]> {
 
       const transform: VgTransform[] = [];
       if (!binTrans.extent) {
-        const extentSignal = model.getName(fieldDef.field + '_extent');
+        const extentSignal = varName(model.getName(fieldDef.field + '_extent'));
         transform.push({
           type: 'extent',
           field: fieldDef.field,
