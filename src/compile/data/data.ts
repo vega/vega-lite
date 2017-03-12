@@ -17,7 +17,7 @@ import {bin} from './bin';
 import {formula} from './formula';
 import {pathOrder} from './pathorder';
 import {nonPositiveFilter} from './nonpositivefilter';
-import {summary} from './summary';
+import {summary} from './aggregate';
 import {stack, StackComponent} from './stack';
 import {timeUnit} from './timeunit';
 
