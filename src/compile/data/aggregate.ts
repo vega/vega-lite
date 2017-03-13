@@ -1,13 +1,12 @@
+import {SummaryComponent} from 'vega-lite/build/src/compile/data/data';
 import {SUMMARY} from '../../data';
 import {field, FieldDef} from '../../fielddef';
-import {keys, vals, reduce, hash, Dict, StringSet} from '../../util';
-import {VgData} from '../../vega.schema';
+import {keys, vals, hash, Dict, StringSet} from '../../util';
+import {VgAggregateTransform} from '../../vega.schema';
 
 import {FacetModel} from './../facet';
 import {LayerModel} from './../layer';
 import {Model} from './../model';
-
-import {SummaryComponent} from './data';
 
 
 export namespace summary {
@@ -144,34 +143,25 @@ export namespace summary {
    * Assemble the summary. Needs a rename function because we cannot guarantee that the
    * parent data before the children data.
    */
-  export function assemble(component: SummaryComponent[], sourceName: string): VgData[] {
-    return component.reduce(function(summaryData, summaryComponent) {
-      const dims = summaryComponent.dimensions;
-      const meas = summaryComponent.measures;
+  export function assemble(components: SummaryComponent[]): VgAggregateTransform [] {
+    return components
+      .filter(comp => keys(comp.measures).length > 0)
+      .map(summaryComponent => {
+        let ops: string[] = [];
+        let fields: string[] = [];
+        keys(summaryComponent.measures).forEach(field => {
+          keys(summaryComponent.measures[field]).forEach(op => {
+            ops.push(op);
+            fields.push(field);
+          });
+        });
 
-      if (keys(meas).length > 0) { // has aggregate
-        const groupby = keys(dims);
-        const transform = reduce(meas, function(t, fnDictSet, field) {
-          const ops = keys(fnDictSet);
-          for (const op of ops) {
-            t.fields.push(field);
-            t.ops.push(op);
-          }
-          return t;
-        }, {
+        return {
           type: 'aggregate',
-          groupby: groupby,
-          fields: [],
-          ops: []
-        });
-
-        summaryData.push({
-          name: summaryComponent.name,
-          source: sourceName,
-          transform: [transform]
-        });
-      }
-      return summaryData;
-    }, []);
+          groupby: keys(summaryComponent.dimensions),
+          ops,
+          fields
+        } as VgAggregateTransform;
+      });
   }
 }

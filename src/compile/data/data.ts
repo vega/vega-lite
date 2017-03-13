@@ -1,4 +1,4 @@
-import {SOURCE} from '../../data';
+
 import {FieldDef} from '../../fielddef';
 import {Formula} from '../../transform';
 import {Dict, StringSet} from '../../util';
@@ -20,6 +20,7 @@ import {nonPositiveFilter} from './nonpositivefilter';
 import {summary} from './aggregate';
 import {stack, StackComponent} from './stack';
 import {timeUnit} from './timeunit';
+import {SUMMARY} from '../../data';
 
 /**
  * Composable component instance of a model's data.
@@ -148,8 +149,13 @@ export function assembleData(model: Model, data: VgData[]) {
     data.push(sourceData);
   }
 
-  summary.assemble(dataComponent.summary || [], model.dataName(SOURCE)).forEach(function(summaryData) {
-    data.push(summaryData);
+  // aggregate
+  summary.assemble(dataComponent.summary || []).forEach(aggregate => {
+    data.push({
+      source: sourceData.name,
+      name: model.dataName(SUMMARY),
+      transform: [aggregate]
+    });
   });
 
   // nonPositiveFilter

@@ -96,17 +96,13 @@ describe('compile/data/summary', function () {
         dimensions: {Origin: true},
         measures: {'*':{count: true}, Acceleration: {sum: true}}
       }];
-      const summaryData = summary.assemble(summaryComponent, 'source')[0];
-      assert.deepEqual(summaryData, {
-        'name': "summary",
-        'source': 'source',
-        'transform': [{
-          'type': 'aggregate',
-          'groupby': ['Origin'],
-          'fields': ['*', 'Acceleration', ],
-          'ops': ['count', 'sum', ]
-        }]
-      });
+      const aggregates = summary.assemble(summaryComponent);
+      assert.deepEqual(aggregates, [{
+        'type': 'aggregate',
+        'groupby': ['Origin'],
+        'fields': ['*', 'Acceleration', ],
+        'ops': ['count', 'sum', ]
+      }]);
     });
 
     it('should assemble the correct summary data', function() {
@@ -116,17 +112,13 @@ describe('compile/data/summary', function () {
         dimensions: {Origin: true, Cylinders: true},
         measures: {Displacement: {mean: true}}
       }];
-      const summaryData = summary.assemble(summaryComponent, 'source')[0];
-      assert.deepEqual(summaryData, {
-        'name': "summary",
-        'source': 'source',
-        'transform': [{
-          'type': 'aggregate',
-          'groupby': ['Origin', 'Cylinders'],
-          'fields': ['Displacement'],
-          'ops': ['mean']
-        }]
-      });
+      const aggregates = summary.assemble(summaryComponent);
+      assert.deepEqual(aggregates, [{
+        'type': 'aggregate',
+        'groupby': ['Origin', 'Cylinders'],
+        'fields': ['Displacement'],
+        'ops': ['mean']
+      }]);
     });
   });
 });
