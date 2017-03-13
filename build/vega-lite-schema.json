@@ -17,6 +17,8 @@
                 "argmax",
                 "argmin",
                 "average",
+                "ci0",
+                "ci1",
                 "count",
                 "distinct",
                 "max",

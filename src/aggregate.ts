@@ -1,7 +1,7 @@
 
 export type AggregateOp = 'argmax' | 'argmin' | 'average' | 'count'
   | 'distinct' | 'max' | 'mean' | 'median' | 'min' | 'missing' | 'modeskew'
-  | 'q1' | 'q3' | 'stdev' | 'stdevp' | 'sum' | 'valid' | 'values' | 'variance'
+  | 'q1' | 'q3' | 'ci0' | 'ci1' | 'stdev' | 'stdevp' | 'sum' | 'valid' | 'values' | 'variance'
   | 'variancep';
 
 export const AGGREGATE_OPS: AggregateOp[] = [
@@ -20,6 +20,8 @@ export const AGGREGATE_OPS: AggregateOp[] = [
     'median',
     'q1',
     'q3',
+    'ci0',
+    'ci1',
     'modeskew',
     'min',
     'max',
