@@ -148,6 +148,15 @@ export interface VgFormulaTransform {
   expr: string;
 }
 
+export interface VgAggregateTransform {
+  type: 'aggregate';
+  groupby: VgFieldRef[];
+  fields: VgFieldRef[];
+  ops: string[];
+  as?: string[];
+  drop?: boolean;
+}
+
 export interface VgAxisEncode {
   ticks?: VgGuideEncode;
   labels?: VgGuideEncode;
@@ -166,7 +175,7 @@ export interface VgLegendEncode {
 
 export type VgGuideEncode = any; // TODO: replace this (See guideEncode in Vega Schema)
 
-export type VgTransform = VgBinTransform | VgExtentTransform | VgFormulaTransform | any;
+export type VgTransform = VgBinTransform | VgExtentTransform | VgFormulaTransform | VgAggregateTransform | any;
 
 export interface VgStackTransform {
   type: 'stack';

@@ -54,19 +54,6 @@ export function union<T>(array: Array<T>, other: Array<T>) {
   return array.concat(without(other, array));
 }
 
-export function reduce(obj: any, f: (a: any, i: any, d: any, k: any, o: any) => any, init: any, thisArg?: any) {
-  if (obj.reduce) {
-    return obj.reduce.call(thisArg, f, init);
-  } else {
-    for (const k in obj) {
-      if (obj.hasOwnProperty(k)) {
-        init = f.call(thisArg, init, obj[k], k, obj);
-      }
-    }
-    return init;
-  }
-}
-
 /**
  * Returns true if any item returns true.
  */
