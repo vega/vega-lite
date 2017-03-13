@@ -37,7 +37,7 @@ describe('data', function () {
       });
 
       const data = compileAssembleData(model);
-      it('should contains 1 table', function() {
+      it('should contain 1 table', function() {
         assert.equal(data.length, 1);
       });
       it('should have filter non-positive in source', function() {
