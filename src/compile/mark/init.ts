@@ -56,9 +56,6 @@ function defaultOpacity(mark: Mark, encoding: Encoding, stacked: StackProperties
       return 0.7;
     }
   }
-  if (mark === AREA) {
-    return 0.7; // inspired by Tableau
-  }
   return undefined;
 }
 
