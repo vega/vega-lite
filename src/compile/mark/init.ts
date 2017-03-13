@@ -1,15 +1,13 @@
 import {Mark, MarkDef, isMarkDef, BAR, AREA, POINT, LINE, TICK, CIRCLE, SQUARE, RECT, RULE, TEXT, Orient} from '../../mark';
 import {Encoding, isAggregate} from '../../encoding';
 import * as log from '../../log';
-import {Dict, contains, some} from '../../util';
+import {Dict, contains} from '../../util';
 import {Scale, hasDiscreteDomain} from '../../scale';
 import {isFieldDef, FieldDef, isContinuous} from '../../fielddef';
 import {TEMPORAL} from '../../type';
 import {Config} from '../../config';
 import {getMarkConfig} from '../common';
 import {StackProperties} from '../../stack';
-import {LEVEL_OF_DETAIL_CHANNELS, Channel} from '../../channel';
-import {isArray} from 'vega-util';
 
 export function initMarkDef(mark: Mark | MarkDef, encoding: Encoding, scale: Dict<Scale>, config: Config): MarkDef & {filled: boolean} {
   const markDef = isMarkDef(mark) ? mark : {type: mark};
@@ -51,22 +49,7 @@ function defaultOpacity(mark: Mark, encoding: Encoding, stacked: StackProperties
       return 0.7;
     }
   }
-  if (mark === BAR && !stacked) {
-    if (some(LEVEL_OF_DETAIL_CHANNELS, (channel) => hasRawField(encoding, channel))) {
-      return 0.7;
-    }
-  }
   return undefined;
-}
-
-function hasRawField(encoding: Encoding, channel: Channel) {
-  const channelDef = encoding[channel];
-  if (isArray(channelDef)) { // detail
-    return some(channelDef, fieldDef => !fieldDef.aggregate);
-  } else if (isFieldDef(channelDef)) {
-    return !channelDef.aggregate;
-  }
-  return false;
 }
 
 function filled(mark: Mark, config: Config) {
