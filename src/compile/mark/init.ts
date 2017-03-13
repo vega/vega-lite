@@ -1,5 +1,5 @@
 import {Mark, MarkDef, isMarkDef, BAR, AREA, POINT, LINE, TICK, CIRCLE, SQUARE, RECT, RULE, TEXT, Orient} from '../../mark';
-import {Encoding, isAggregate, channelHasField} from '../../encoding';
+import {Encoding, isAggregate} from '../../encoding';
 import * as log from '../../log';
 import {Dict, contains, some} from '../../util';
 import {Scale, hasDiscreteDomain} from '../../scale';
@@ -47,7 +47,7 @@ export function initEncoding(mark: Mark, encoding: Encoding, stacked: StackPrope
 function defaultOpacity(mark: Mark, encoding: Encoding, stacked: StackProperties) {
   if (contains([POINT, TICK, CIRCLE, SQUARE], mark)) {
     // point-based marks
-    if (!isAggregate(encoding) || channelHasField(encoding, 'detail')) {
+    if (!isAggregate(encoding)) {
       return 0.7;
     }
   }
