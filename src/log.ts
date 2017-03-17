@@ -168,7 +168,7 @@ export namespace message {
     return `Using unaggregated domain with raw field has no effect (${JSON.stringify(fieldDef)}).`;
   }
 
-  export function unaggregateDomainWithNonSharedDomainOp(aggregate: AggregateOp) {
+  export function unaggregateDomainWithNonSharedDomainOp(aggregate: string) {
     return `Unaggregated domain not applicable for ${aggregate} since it produces values outside the origin domain of the source data.`;
   }
 
@@ -222,7 +222,7 @@ export namespace message {
     return `Cannot stack non-linear scale (${scaleType})`;
   }
 
-  export function cannotStackNonSummativeAggregate(aggregate: AggregateOp) {
+  export function cannotStackNonSummativeAggregate(aggregate: string) {
     return `Cannot stack when the aggregate function is non-summative (${aggregate})`;
   }
 

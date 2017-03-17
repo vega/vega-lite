@@ -4,6 +4,7 @@ import {AGGREGATE_OP_INDEX, AggregateOp} from './aggregate';
 import {Axis} from './axis';
 import {autoMaxBins, Bin, binToString} from './bin';
 import {Channel, rangeType} from './channel';
+import {CompositeAggregate} from './compositemark';
 import {Config} from './config';
 import {Legend} from './legend';
 import * as log from './log';
@@ -76,7 +77,7 @@ export interface FieldDef<F> {
    * Aggregation function for the field
    * (e.g., `mean`, `sum`, `median`, `min`, `max`, `count`).
    */
-  aggregate?: AggregateOp;
+  aggregate?: AggregateOp | CompositeAggregate;
 
   /**
    * Title for axis or legend.
@@ -199,7 +200,7 @@ export function field(fieldDef: FieldDef<string>, opt: FieldRefOption = {}): str
   return field;
 }
 
-export function isDiscrete(fieldDef: FieldDef<string>) {
+export function isDiscrete(fieldDef: FieldDef<Field>) {
   switch (fieldDef.type) {
     case 'nominal':
     case 'ordinal':
@@ -213,7 +214,7 @@ export function isDiscrete(fieldDef: FieldDef<string>) {
   throw new Error(log.message.invalidFieldType(fieldDef.type));
 }
 
-export function isContinuous(fieldDef: FieldDef<string>) {
+export function isContinuous(fieldDef: FieldDef<Field>) {
   return !isDiscrete(fieldDef);
 }
 

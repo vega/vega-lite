@@ -1,6 +1,6 @@
 import * as log from '../../log';
 
-import {SHARED_DOMAIN_OPS} from '../../aggregate';
+import {SHARED_DOMAIN_OP_INDEX} from '../../aggregate';
 import {binToString} from '../../bin';
 import {Channel} from '../../channel';
 import {DateTime, isDateTime, timestamp} from '../../datetime';
@@ -192,7 +192,7 @@ export function canUseUnaggregatedDomain(fieldDef: FieldDef<string>, scaleType: 
     };
   }
 
-  if (SHARED_DOMAIN_OPS.indexOf(fieldDef.aggregate) === -1) {
+  if (!SHARED_DOMAIN_OP_INDEX[fieldDef.aggregate]) {
     return {
       valid: false,
       reason: log.message.unaggregateDomainWithNonSharedDomainOp(fieldDef.aggregate)
