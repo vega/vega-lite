@@ -5,7 +5,7 @@ import {MarkCompiler} from './base';
 
 export const area: MarkCompiler = {
   vgMark: 'area',
-  role: undefined,
+  defaultRole: undefined,
   encodeEntry: (model: UnitModel) => {
     const orient = model.markDef.orient;
 

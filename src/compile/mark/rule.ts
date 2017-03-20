@@ -4,7 +4,7 @@ import * as mixins from './mixins';
 
 export const rule: MarkCompiler = {
   vgMark: 'rule',
-  role: undefined,
+  defaultRole: undefined,
   encodeEntry: (model: UnitModel) => {
     return {
       ...mixins.pointPosition('x', model, 'zeroOrMin'),

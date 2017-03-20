@@ -14,7 +14,7 @@ import {Encoding, channelHasField} from '../../encoding';
 
 export const text: MarkCompiler = {
   vgMark: 'text',
-  role: undefined,
+  defaultRole: undefined,
 
   encodeEntry: (model: UnitModel) => {
     const {config, encoding} = model;
