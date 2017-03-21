@@ -1,11 +1,11 @@
 /* tslint:disable:quotemark */
 
 import {assert} from 'chai';
-import {parseUnitModel} from '../../util';
 import {COLOR, SHAPE} from '../../../src/channel';
 import * as encode from '../../../src/compile/legend/encode';
 import {TimeUnit} from '../../../src/timeunit';
 import {TEMPORAL} from '../../../src/type';
+import {parseUnitModel} from '../../util';
 
 describe('compile/legend', function() {
   describe('encode.symbols', function() {

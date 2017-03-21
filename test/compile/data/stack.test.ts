@@ -2,11 +2,11 @@
 
 import {assert} from 'chai';
 
-import {stack} from '../../../src/compile/data/stack';
 import {DataComponent} from '../../../src/compile/data/data';
+import {stack} from '../../../src/compile/data/stack';
 
+import {parseFacetModel, parseUnitModel} from '../../util';
 import {mockDataComponent} from './datatestutil';
-import {parseUnitModel, parseFacetModel} from '../../util';
 
 describe('compile/data/stack', () => {
   describe('parseUnit', () => {

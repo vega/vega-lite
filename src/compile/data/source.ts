@@ -1,4 +1,4 @@
-import {DataFormat, isNamedData, isInlineData, isUrlData, SOURCE} from '../../data';
+import {DataFormat, isInlineData, isNamedData, isUrlData, SOURCE} from '../../data';
 import {contains, extend} from '../../util';
 import {VgData} from '../../vega.schema';
 
@@ -6,11 +6,11 @@ import {FacetModel} from '../facet';
 import {LayerModel} from '../layer';
 import {Model} from './../model';
 
-import {DataComponent} from './data';
-import {nullFilter} from './nullfilter';
-import {filter} from './filter';
 import {bin} from './bin';
+import {DataComponent} from './data';
+import {filter} from './filter';
 import {formula} from './formula';
+import {nullFilter} from './nullfilter';
 import {timeUnit} from './timeunit';
 
 export namespace source {

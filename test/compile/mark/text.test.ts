@@ -1,10 +1,10 @@
 /* tslint:disable quotemark */
 
 import {assert} from 'chai';
-import {parseUnitModel, parseModel} from '../../util';
-import {text} from '../../../src/compile/mark/text';
 import {X, Y} from '../../../src/channel';
-import {UnitSpec, FacetedUnitSpec} from '../../../src/spec';
+import {text} from '../../../src/compile/mark/text';
+import {FacetedUnitSpec, UnitSpec} from '../../../src/spec';
+import {parseModel, parseUnitModel} from '../../util';
 
 describe('Mark: Text', function() {
   describe('with stacked x', function() {

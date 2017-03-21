@@ -1,5 +1,5 @@
+import {NiceTime, ScaleType} from './scale';
 import {StackOffset} from './stack';
-import {ScaleType, NiceTime} from './scale';
 import {isArray} from './util';
 
 export interface VgData {

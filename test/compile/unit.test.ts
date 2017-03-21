@@ -1,8 +1,8 @@
 import {assert} from 'chai';
 
-import * as log from '../../src/log';
+import {DETAIL, SHAPE, X, Y} from '../../src/channel';
 import {UnitModel} from '../../src/compile/unit';
-import {X, Y, SHAPE, DETAIL} from '../../src/channel';
+import * as log from '../../src/log';
 import {BAR} from '../../src/mark';
 import {UnitSpec} from '../../src/spec';
 import {QUANTITATIVE} from '../../src/type';

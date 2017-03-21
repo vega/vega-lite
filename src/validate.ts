@@ -1,10 +1,10 @@
-import {FacetedUnitSpec} from './spec';
 import {isMarkDef} from './mark';
+import {FacetedUnitSpec} from './spec';
 
 // TODO: move to vl.spec.validator?
 
-import {toSet} from './util';
 import {BAR} from './mark';
+import {toSet} from './util';
 
 export interface RequiredChannelMap {
   [mark: string]: Array<string>;

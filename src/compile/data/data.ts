@@ -9,18 +9,18 @@ import {LayerModel} from './../layer';
 import {Model} from './../model';
 import {UnitModel} from './../unit';
 
-import {source} from './source';
-import {formatParse} from './formatparse';
-import {nullFilter} from './nullfilter';
-import {filter} from './filter';
-import {bin} from './bin';
-import {formula} from './formula';
-import {pathOrder} from './pathorder';
-import {nonPositiveFilter} from './nonpositivefilter';
+import {SUMMARY} from '../../data';
 import {summary} from './aggregate';
+import {bin} from './bin';
+import {filter} from './filter';
+import {formatParse} from './formatparse';
+import {formula} from './formula';
+import {nonPositiveFilter} from './nonpositivefilter';
+import {nullFilter} from './nullfilter';
+import {pathOrder} from './pathorder';
+import {source} from './source';
 import {stack, StackComponent} from './stack';
 import {timeUnit} from './timeunit';
-import {SUMMARY} from '../../data';
 
 /**
  * Composable component instance of a model's data.

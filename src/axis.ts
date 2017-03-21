@@ -1,5 +1,5 @@
 import {DateTime} from './datetime';
-import {VgAxisEncode, VgAxisBase, VgAxisConfig} from './vega.schema';
+import {VgAxisBase, VgAxisConfig, VgAxisEncode} from './vega.schema';
 
 export type AxisOrient = 'top' | 'right' | 'left' | 'bottom';
 

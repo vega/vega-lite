@@ -1,10 +1,10 @@
 /* tslint:disable:quotemark */
 
 import {assert} from 'chai';
-import {parseUnitModel} from '../../util';
 import {COLOR, OPACITY, SHAPE, SIZE} from '../../../src/channel';
 import * as legendParse from '../../../src/compile/legend/parse';
 import {UnitSpec} from '../../../src/spec';
+import {parseUnitModel} from '../../util';
 
 describe('compile/legend', function() {
   describe('parseLegend()', function() {

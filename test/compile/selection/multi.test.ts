@@ -1,9 +1,9 @@
 /* tslint:disable quotemark */
 
 import {assert} from 'chai';
-import {parseUnitModel} from '../../util';
-import * as selection from '../../../src/compile/selection/selection';
 import multi from '../../../src/compile/selection/multi';
+import * as selection from '../../../src/compile/selection/selection';
+import {parseUnitModel} from '../../util';
 
 describe('Multi Selection', function() {
   const model = parseUnitModel({

@@ -3,9 +3,9 @@ import {DataComponentCompiler} from './base';
 import {autoMaxBins} from '../../bin';
 import {Channel} from '../../channel';
 import {field, FieldDef} from '../../fielddef';
-import {extend, vals, flatten, hash, Dict, varName} from '../../util';
-import {VgTransform} from '../../vega.schema';
 import {hasDiscreteDomain} from '../../scale';
+import {Dict, extend, flatten, hash, vals, varName} from '../../util';
+import {VgTransform} from '../../vega.schema';
 
 import {FacetModel} from './../facet';
 import {LayerModel} from './../layer';

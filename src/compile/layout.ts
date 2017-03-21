@@ -1,5 +1,5 @@
 
-import {Channel, X, Y, ROW, COLUMN} from '../channel';
+import {Channel, COLUMN, ROW, X, Y} from '../channel';
 import {LAYOUT} from '../data';
 import {hasDiscreteDomain} from '../scale';
 import {Formula} from '../transform';

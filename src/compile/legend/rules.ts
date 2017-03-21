@@ -1,12 +1,12 @@
-import {COLOR, Channel} from '../../channel';
+import {Channel, COLOR} from '../../channel';
 import {Config} from '../../config';
 import {DateTime, isDateTime, timestamp} from '../../datetime';
 import {FieldDef} from '../../fielddef';
-import {Legend} from '../../legend';
 import {title as fieldTitle} from '../../fielddef';
-import {contains} from '../../util';
-import {ScaleType, isBinScale} from '../../scale';
+import {Legend} from '../../legend';
+import {isBinScale, ScaleType} from '../../scale';
 import {Type} from '../../type';
+import {contains} from '../../util';
 
 export function title(legend: Legend, fieldDef: FieldDef, config: Config) {
   if (legend.title !== undefined) {

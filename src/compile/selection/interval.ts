@@ -1,8 +1,8 @@
-import {SelectionComponent, SelectionCompiler, TUPLE, invert as invertFn, channelSignalName} from './selection';
-import {X, Y, Channel} from '../../channel';
-import {UnitModel} from '../unit';
-import {stringValue, extend} from '../../util';
+import {Channel, X, Y} from '../../channel';
 import {warn} from '../../log';
+import {extend, stringValue} from '../../util';
+import {UnitModel} from '../unit';
+import {channelSignalName, invert as invertFn, SelectionCompiler, SelectionComponent, TUPLE} from './selection';
 import scales from './transforms/scales';
 
 export const BRUSH = '_brush',

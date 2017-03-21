@@ -1,6 +1,6 @@
-import {COLOR, SHAPE, Channel} from '../../channel';
+import {Channel, COLOR, SHAPE} from '../../channel';
 import {FieldDef, isValueDef} from '../../fielddef';
-import {AREA, BAR, TICK, TEXT, LINE, POINT, CIRCLE, SQUARE, FILL_STROKE_CONFIG} from '../../mark';
+import {AREA, BAR, CIRCLE, FILL_STROKE_CONFIG, LINE, POINT, SQUARE, TEXT, TICK} from '../../mark';
 import {TEMPORAL} from '../../type';
 import {extend, keys, without} from '../../util';
 

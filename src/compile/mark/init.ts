@@ -1,13 +1,13 @@
-import {Mark, MarkDef, isMarkDef, BAR, AREA, POINT, LINE, TICK, CIRCLE, SQUARE, RECT, RULE, TEXT, Orient} from '../../mark';
-import {Encoding, isAggregate} from '../../encoding';
-import * as log from '../../log';
-import {Dict, contains} from '../../util';
-import {Scale, hasDiscreteDomain} from '../../scale';
-import {isFieldDef, FieldDef, isContinuous} from '../../fielddef';
-import {TEMPORAL} from '../../type';
 import {Config} from '../../config';
-import {getMarkConfig} from '../common';
+import {Encoding, isAggregate} from '../../encoding';
+import {FieldDef, isContinuous, isFieldDef} from '../../fielddef';
+import * as log from '../../log';
+import {AREA, BAR, CIRCLE, isMarkDef, LINE, Mark, MarkDef, Orient, POINT, RECT, RULE, SQUARE, TEXT, TICK} from '../../mark';
+import {hasDiscreteDomain, Scale} from '../../scale';
 import {StackProperties} from '../../stack';
+import {TEMPORAL} from '../../type';
+import {contains, Dict} from '../../util';
+import {getMarkConfig} from '../common';
 
 export function initMarkDef(mark: Mark | MarkDef, encoding: Encoding, scale: Dict<Scale>, config: Config): MarkDef & {filled: boolean} {
   const markDef = isMarkDef(mark) ? mark : {type: mark};

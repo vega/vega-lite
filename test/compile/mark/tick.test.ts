@@ -8,9 +8,9 @@
 // After finishing all test, make sure all lines in mark-tick.ts is tested
 // (except the scaffold labels() method)
 import {assert} from 'chai';
-import {parseUnitModel} from '../../util';
-import {X, Y, SIZE} from '../../../src/channel';
+import {SIZE, X, Y} from '../../../src/channel';
 import {tick} from '../../../src/compile/mark/tick';
+import {parseUnitModel} from '../../util';
 
 describe('Mark: Tick', function() {
   describe('with stacked x', function() {

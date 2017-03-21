@@ -1,5 +1,5 @@
-import {UnitModel} from '../unit';
 import {VgEncodeEntry} from '../../vega.schema';
+import {UnitModel} from '../unit';
 
 /**
  * Abstract interface for compiling a Vega-Lite primitive mark type.

@@ -4,13 +4,13 @@ import {assert} from 'chai';
 
 import * as log from '../../src/log';
 
+import {ROW, SHAPE} from '../../src/channel';
 import {FacetModel} from '../../src/compile/facet';
 import * as facet from '../../src/compile/facet';
-import {SHAPE, ROW} from '../../src/channel';
 import {defaultConfig} from '../../src/config';
+import {Facet} from '../../src/facet';
 import {POINT} from '../../src/mark';
 import {FacetSpec} from '../../src/spec';
-import {Facet} from '../../src/facet';
 import {ORDINAL} from '../../src/type';
 import {parseFacetModel} from '../util';
 

@@ -5,9 +5,9 @@ import {Dict} from '../../util';
 
 import {Model} from '../model';
 
+import {VgScale} from '../../vega.schema';
 import {parseDomain} from './domain';
 import {parseRange} from './range';
-import {VgScale} from '../../vega.schema';
 
 /**
  * Parse scales for all channels of a model.

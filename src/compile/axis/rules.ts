@@ -1,12 +1,12 @@
 import * as log from '../../log';
 
 import {Axis} from '../../axis';
-import {VgAxis} from '../../vega.schema';
-import {COLUMN, ROW, X, Y, Channel} from '../../channel';
+import {Channel, COLUMN, ROW, X, Y} from '../../channel';
 import {Config} from '../../config';
 import {DateTime, isDateTime, timestamp} from '../../datetime';
-import {title as fieldDefTitle, FieldDef} from '../../fielddef';
+import {FieldDef, title as fieldDefTitle} from '../../fielddef';
 import {truncate} from '../../util';
+import {VgAxis} from '../../vega.schema';
 
 import {numberFormat} from '../common';
 import {Model} from '../model';

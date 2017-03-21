@@ -1,10 +1,10 @@
 // utility for encoding mapping
-import {FieldDef, PositionFieldDef, LegendFieldDef, OrderFieldDef, ValueDef, TextFieldDef, isFieldDef, ChannelDef, isValueDef, normalize, ConditionalValueDef} from './fielddef';
 import {Channel, CHANNELS, supportMark} from './channel';
 import {Facet} from './facet';
-import {isArray, some, duplicate} from './util';
-import {Mark} from './mark';
+import {ChannelDef, ConditionalValueDef, FieldDef, isFieldDef, isValueDef, LegendFieldDef, normalize, OrderFieldDef, PositionFieldDef, TextFieldDef, ValueDef} from './fielddef';
 import * as log from './log';
+import {Mark} from './mark';
+import {duplicate, isArray, some} from './util';
 
 export interface Encoding {
   /**

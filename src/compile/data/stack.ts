@@ -4,13 +4,13 @@ import {FacetModel} from './../facet';
 import {LayerModel} from './../layer';
 import {UnitModel} from './../unit';
 
-import {sortParams} from '../common';
 import {STACKED, SUMMARY} from '../../data';
-import {FieldDef, field} from '../../fielddef';
+import {field, FieldDef} from '../../fielddef';
 import {hasDiscreteDomain} from '../../scale';
 import {StackOffset} from '../../stack';
 import {contains} from '../../util';
-import {VgData, VgSort, VgStackTransform, VgImputeTransform} from '../../vega.schema';
+import {VgData, VgImputeTransform, VgSort, VgStackTransform} from '../../vega.schema';
+import {sortParams} from '../common';
 
 export interface StackComponent {
   /**

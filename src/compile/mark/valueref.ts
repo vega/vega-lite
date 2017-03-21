@@ -4,8 +4,8 @@
 
 import {Channel, X, X2, Y, Y2} from '../../channel';
 import {Config} from '../../config';
-import {ChannelDef, FieldDef, FieldRefOption, field, isFieldDef, TextFieldDef, ValueDef} from '../../fielddef';
-import {Scale, ScaleType, hasDiscreteDomain, isBinScale} from '../../scale';
+import {ChannelDef, field, FieldDef, FieldRefOption, isFieldDef, TextFieldDef, ValueDef} from '../../fielddef';
+import {hasDiscreteDomain, isBinScale, Scale, ScaleType} from '../../scale';
 import {StackProperties} from '../../stack';
 import {contains} from '../../util';
 import {VgValueRef} from '../../vega.schema';

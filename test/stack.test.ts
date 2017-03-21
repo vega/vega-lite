@@ -5,11 +5,11 @@ import {assert} from 'chai';
 import * as log from '../src/log';
 
 import {AggregateOp} from '../src/aggregate';
-import {X, Y, DETAIL} from '../src/channel';
-import {BAR, AREA, RECT, PRIMITIVE_MARKS} from '../src/mark';
+import {DETAIL, X, Y} from '../src/channel';
+import {AREA, BAR, PRIMITIVE_MARKS, RECT} from '../src/mark';
 import {ScaleType} from '../src/scale';
-import {stack, StackOffset, STACK_BY_DEFAULT_MARKS, STACKABLE_MARKS} from '../src/stack';
 import {isStacked, UnitSpec} from '../src/spec';
+import {stack, STACK_BY_DEFAULT_MARKS, STACKABLE_MARKS, StackOffset} from '../src/stack';
 
 describe('stack', () => {
   const NON_STACKABLE_MARKS = [RECT];

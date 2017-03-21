@@ -1,12 +1,12 @@
 
 
-import * as mixins from './mixins';
 import {UnitModel} from '../unit';
+import * as mixins from './mixins';
 
+import {Config} from '../../config';
+import {getMarkConfig} from '../common';
 import {MarkCompiler} from './base';
 import * as ref from './valueref';
-import {getMarkConfig} from '../common';
-import {Config} from '../../config';
 
 function encodeEntry(model: UnitModel, fixedShape?: 'circle' | 'square') {
   const {config} = model;

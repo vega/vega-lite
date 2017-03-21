@@ -1,12 +1,12 @@
 /* tslint:disable quotemark */
 
 import {assert} from 'chai';
-import {parseUnitModel} from '../../util';
-import {extend} from '../../../src/util';
-import {X, Y, SIZE, COLOR, SHAPE} from '../../../src/channel';
+import {COLOR, SHAPE, SIZE, X, Y} from '../../../src/channel';
+import {circle, point, square} from '../../../src/compile/mark/point';
 import {defaultMarkConfig} from '../../../src/mark';
-import {point, square, circle} from '../../../src/compile/mark/point';
 import {UnitSpec} from '../../../src/spec';
+import {extend} from '../../../src/util';
+import {parseUnitModel} from '../../util';
 
 describe('Mark: Point', function() {
 

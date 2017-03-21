@@ -4,11 +4,11 @@
 
 import {LAYOUT} from '../data';
 import * as log from '../log';
-import {Model} from './model';
-import {normalize, ExtendedSpec} from '../spec';
+import {ExtendedSpec, normalize} from '../spec';
 import {extend} from '../util';
-import {assembleTopLevelSignals} from './selection/selection';
 import {buildModel} from './common';
+import {Model} from './model';
+import {assembleTopLevelSignals} from './selection/selection';
 
 export function compile(inputSpec: ExtendedSpec, logger?: log.LoggerInterface) {
   if (logger) {

@@ -4,9 +4,9 @@ import {assert} from 'chai';
 import {parseUnitModel} from '../util';
 
 
-import * as log from '../../src/log';
 import {X, Y} from '../../src/channel';
 import {cardinalityExpr, unitSizeExpr} from '../../src/compile/layout';
+import * as log from '../../src/log';
 
 describe('compile/layout', () => {
   describe('cardinalityExpr', () => {

@@ -1,8 +1,8 @@
+import {SelectionDef} from '../../../selection';
+import {Dict} from '../../../util';
 import {Model} from '../../model';
 import {UnitModel} from '../../unit';
-import {SelectionDef} from '../../../selection';
 import {SelectionComponent} from '../selection';
-import {Dict} from '../../../util';
 
 export interface TransformCompiler {
   has: (selCmpt: SelectionComponent | SelectionDef) => boolean;
@@ -15,13 +15,13 @@ export interface TransformCompiler {
   clippedGroup?: boolean;
 }
 
+import inputs from './inputs';
+import nearest from './nearest';
 import project from './project';
+import scales from './scales';
 import toggle from './toggle';
 import translate from './translate';
 import zoom from './zoom';
-import scales from './scales';
-import inputs from './inputs';
-import nearest from './nearest';
 const compilers: Dict<TransformCompiler> = {project, toggle, scales,
   translate, zoom, inputs, nearest};
 

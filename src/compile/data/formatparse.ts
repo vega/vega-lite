@@ -1,11 +1,11 @@
 import {DataComponentCompiler} from './base';
 
-import {isDateTime, DateTime} from '../../datetime';
 import {isUrlData} from '../../data';
+import {DateTime, isDateTime} from '../../datetime';
 import {FieldDef, isCount} from '../../fielddef';
-import {isOneOfFilter, isEqualFilter, isRangeFilter} from '../../filter';
+import {isEqualFilter, isOneOfFilter, isRangeFilter} from '../../filter';
 import {QUANTITATIVE, TEMPORAL} from '../../type';
-import {extend, differ, keys, isArray, isNumber, isString, Dict} from '../../util';
+import {Dict, differ, extend, isArray, isNumber, isString, keys} from '../../util';
 
 import {FacetModel} from './../facet';
 import {LayerModel} from './../layer';

@@ -1,6 +1,6 @@
 import {assert} from 'chai';
+import {AREA, BAR, LINE, TEXT} from '../src/mark';
 import {getEncodingMappingError} from '../src/validate';
-import {BAR, LINE, AREA, TEXT} from '../src/mark';
 
 describe('vl.validate', function() {
   describe('getEncodingMappingError()', function () {

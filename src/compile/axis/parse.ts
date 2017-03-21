@@ -5,8 +5,8 @@ import {VgAxis} from '../../vega.schema';
 import * as encode from './encode';
 import * as rules from './rules';
 
-import {Model} from '../model';
 import {Dict, keys, some} from '../../util';
+import {Model} from '../model';
 
 type AxisPart = 'domain' | 'grid' | 'labels' | 'ticks' | 'title';
 const AXIS_PARTS: AxisPart[] = ['domain', 'grid', 'labels', 'ticks', 'title'];

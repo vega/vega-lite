@@ -2,9 +2,9 @@
 
 import {assert} from 'chai';
 
-import {parseUnitModel, parseFacetModel} from '../../util';
 import {parseMark} from '../../../src/compile/mark/mark';
 import {UnitModel} from '../../../src/compile/unit';
+import {parseFacetModel, parseUnitModel} from '../../util';
 
 describe('Mark', function() {
   describe('parseMark', function() {

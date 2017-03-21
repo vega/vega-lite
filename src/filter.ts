@@ -1,6 +1,6 @@
 import {DateTime, dateTimeExpr, isDateTime} from './datetime';
 import {field} from './fielddef';
-import {TimeUnit, fieldExpr as timeUnitFieldExpr, isSingleTimeUnit} from './timeunit';
+import {fieldExpr as timeUnitFieldExpr, isSingleTimeUnit, TimeUnit} from './timeunit';
 import {isArray, isString} from './util';
 
 export type Filter = EqualFilter | RangeFilter | OneOfFilter ;

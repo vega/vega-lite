@@ -1,5 +1,5 @@
 import {toSet} from './util';
-import {Orient, Interpolate, VgMarkConfig} from './vega.schema';
+import {Interpolate, Orient, VgMarkConfig} from './vega.schema';
 export {Orient} from './vega.schema';
 
 export namespace Mark {

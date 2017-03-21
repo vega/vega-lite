@@ -1,10 +1,10 @@
 /* tslint:disable quotemark */
 
 import {assert} from 'chai';
-import {parseUnitModel} from '../../util';
 import {default as parseSelector} from 'vega-parser/src/parsers/event-selector';
 import * as selection from '../../../src/compile/selection/selection';
 import zoom from '../../../src/compile/selection/transforms/zoom';
+import {parseUnitModel} from '../../util';
 
 describe('Zoom Selection Transform', function() {
   const model = parseUnitModel({

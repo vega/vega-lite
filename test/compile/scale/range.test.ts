@@ -8,7 +8,7 @@ import {defaultConfig} from '../../../src/config';
 import * as log from '../../../src/log';
 import {Mark} from '../../../src/mark';
 import {CONTINUOUS_TO_CONTINUOUS_SCALES, ScaleType} from '../../../src/scale';
-import {ORDINAL, NOMINAL, QUANTITATIVE} from '../../../src/type';
+import {NOMINAL, ORDINAL, QUANTITATIVE} from '../../../src/type';
 
 describe('compile/scale', () => {
   describe('parseRange()', () => {

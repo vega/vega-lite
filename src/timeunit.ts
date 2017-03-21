@@ -1,6 +1,6 @@
 import {DateTimeExpr, dateTimeExpr} from './datetime';
-import {Dict, keys} from './util';
 import * as log from './log';
+import {Dict, keys} from './util';
 
 export namespace TimeUnit {
   export const YEAR: 'year' = 'year';

@@ -1,6 +1,6 @@
-import {TUPLE, STORE, SelectionCompiler} from './selection';
-import multi from './multi';
 import {stringValue} from '../../util';
+import multi from './multi';
+import {SelectionCompiler, STORE, TUPLE} from './selection';
 
 const single:SelectionCompiler = {
   predicate: multi.predicate,

@@ -1,9 +1,9 @@
 /* tslint:disable:quotemark */
 
 import {assert} from 'chai';
-import {parseModel} from '../../util';
-import {X, COLUMN, ROW} from '../../../src/channel';
+import {COLUMN, ROW, X} from '../../../src/channel';
 import * as rules from '../../../src/compile/axis/rules';
+import {parseModel} from '../../util';
 
 describe('compile/axis', ()=> {
   describe('grid()', function () {

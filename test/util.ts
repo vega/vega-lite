@@ -1,9 +1,9 @@
 import {buildModel} from '../src/compile/common';
-import {UnitModel} from '../src/compile/unit';
 import {FacetModel} from '../src/compile/facet';
 import {LayerModel} from '../src/compile/layer';
-import {UnitSpec, FacetSpec, LayerSpec, normalize, ExtendedSpec} from '../src/spec';
 import {Model} from '../src/compile/model';
+import {UnitModel} from '../src/compile/unit';
+import {ExtendedSpec, FacetSpec, LayerSpec, normalize, UnitSpec} from '../src/spec';
 
 export function parseModel(inputSpec: ExtendedSpec): Model {
   const spec = normalize(inputSpec);

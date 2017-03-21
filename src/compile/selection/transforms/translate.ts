@@ -1,11 +1,11 @@
 import parseSelector from 'vega-parser/src/parsers/event-selector';
-import {UnitModel} from './../../unit';
-import {SelectionComponent} from '../selection';
-import {X, Y, Channel} from '../../../channel';
+import {Channel, X, Y} from '../../../channel';
 import {stringValue} from '../../../util';
-import {TransformCompiler} from './transforms';
+import {BRUSH as INTERVAL_BRUSH, projections as intervalProjections, SIZE as INTERVAL_SIZE} from '../interval';
+import {SelectionComponent} from '../selection';
+import {UnitModel} from './../../unit';
 import {default as scalesCompiler, domain} from './scales';
-import {projections as intervalProjections, SIZE as INTERVAL_SIZE, BRUSH as INTERVAL_BRUSH} from '../interval';
+import {TransformCompiler} from './transforms';
 
 const ANCHOR = '_translate_anchor',
       DELTA  = '_translate_delta';

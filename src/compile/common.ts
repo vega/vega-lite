@@ -1,20 +1,20 @@
 import * as log from '../log';
 
-import {TEXT, Channel} from '../channel';
-import {Config, CellConfig} from '../config';
-import {FieldDef, OrderFieldDef, field} from '../fielddef';
+import {Channel, TEXT} from '../channel';
+import {CellConfig, Config} from '../config';
+import {field, FieldDef, OrderFieldDef} from '../fielddef';
 import {Mark, MarkConfig, TextConfig} from '../mark';
 import {TimeUnit} from '../timeunit';
 import {QUANTITATIVE} from '../type';
 import {isArray} from '../util';
 
+import {isFacetSpec, isLayerSpec, isUnitSpec, Spec} from '../spec';
+import {formatExpression} from '../timeunit';
+import {VgEncodeEntry, VgSort} from '../vega.schema';
 import {FacetModel} from './facet';
 import {LayerModel} from './layer';
 import {Model} from './model';
-import {formatExpression} from '../timeunit';
 import {UnitModel} from './unit';
-import {Spec, isUnitSpec, isFacetSpec, isLayerSpec} from '../spec';
-import {VgEncodeEntry, VgSort} from '../vega.schema';
 
 export function buildModel(spec: Spec, parent: Model, parentGivenName: string): Model {
   if (isFacetSpec(spec)) {

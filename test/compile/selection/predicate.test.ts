@@ -1,9 +1,9 @@
 /* tslint:disable quotemark */
 
 import {assert} from 'chai';
-import {parseUnitModel} from '../../util';
-import * as selection from '../../../src/compile/selection/selection';
 import {nonPosition} from '../../../src/compile/mark/mixins';
+import * as selection from '../../../src/compile/selection/selection';
+import {parseUnitModel} from '../../util';
 
 function getModel(selectionDef: any) {
   const model = parseUnitModel({

@@ -2,7 +2,7 @@ import {assert} from 'chai';
 
 import * as log from '../src/log';
 
-import {TimeUnit, containsTimeUnit, fieldExpr, convert, formatExpression} from '../src/timeunit';
+import {containsTimeUnit, convert, fieldExpr, formatExpression, TimeUnit} from '../src/timeunit';
 
 
 describe('timeUnit', () => {

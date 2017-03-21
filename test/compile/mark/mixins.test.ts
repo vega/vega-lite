@@ -1,8 +1,8 @@
 /* tslint:disable:quotemark */
 
 import {assert} from 'chai';
-import {parseUnitModel} from '../../util';
 import {color} from '../../../src/compile/mark/mixins';
+import {parseUnitModel} from '../../util';
 
 describe('compile/mark/mixins', () => {
   describe('color()', function() {

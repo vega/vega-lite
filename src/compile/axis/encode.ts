@@ -1,6 +1,6 @@
-import {COLUMN, X, Channel} from '../../channel';
+import {Channel, COLUMN, X} from '../../channel';
 import {NOMINAL, ORDINAL, TEMPORAL} from '../../type';
-import {contains, keys, extend} from '../../util';
+import {contains, extend, keys} from '../../util';
 import {VgAxis} from '../../vega.schema';
 
 import {timeFormatExpression} from '../common';

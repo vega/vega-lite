@@ -1,7 +1,7 @@
-import {Channel, hasScale, rangeType, supportScaleType} from '../src/channel';
-import {CHANNELS, UNIT_CHANNELS, UNIT_SCALE_CHANNELS, SCALE_CHANNELS, NONSPATIAL_CHANNELS, NONSPATIAL_SCALE_CHANNELS} from '../src/channel';
-import {ScaleType, SCALE_TYPES} from '../src/scale';
 import {assert} from 'chai';
+import {Channel, hasScale, rangeType, supportScaleType} from '../src/channel';
+import {CHANNELS, NONSPATIAL_CHANNELS, NONSPATIAL_SCALE_CHANNELS, SCALE_CHANNELS, UNIT_CHANNELS, UNIT_SCALE_CHANNELS} from '../src/channel';
+import {SCALE_TYPES, ScaleType} from '../src/scale';
 import {some, without} from '../src/util';
 
 

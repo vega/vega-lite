@@ -1,7 +1,7 @@
 
-import {X, Y, Channel} from '../../channel';
+import {Channel, X, Y} from '../../channel';
 import {FieldDef} from '../../fielddef';
-import {Scale, ScaleConfig, ScaleType, NiceTime} from '../../scale';
+import {NiceTime, Scale, ScaleConfig, ScaleType} from '../../scale';
 import {smallestUnit} from '../../timeunit';
 import * as util from '../../util';
 

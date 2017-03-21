@@ -3,11 +3,11 @@
  * such as 'x', 'y', 'color'.
  */
 
+import {RangeType} from './compile/scale/type';
 import {Encoding} from './encoding';
 import {Facet} from './facet';
 import {Mark} from './mark';
-import {RangeType} from './compile/scale/type';
-import {ScaleType, SCALE_TYPES} from './scale';
+import {SCALE_TYPES, ScaleType} from './scale';
 import {contains, toSet, without} from './util';
 
 export namespace Channel {

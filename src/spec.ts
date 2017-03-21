@@ -1,20 +1,20 @@
 /* Package of defining Vega-lite Specification's json schema at its utility functions */
 
-import {Config, defaultOverlayConfig} from './config';
 import * as compositeMark from './compositemark';
+import {Config, defaultOverlayConfig} from './config';
 import {Data} from './data';
-import {EncodingWithFacet, Encoding, channelHasField, isRanged} from './encoding';
+import {channelHasField, Encoding, EncodingWithFacet, isRanged} from './encoding';
 import {Facet} from './facet';
 import {FieldDef} from './fielddef';
 
+import {COLUMN, ROW, X, X2, Y, Y2} from './channel';
+import * as vlEncoding from './encoding';
 import * as log from './log';
-import {Mark, MarkDef, AREA, LINE, POINT, isPrimitiveMark} from './mark';
+import {AREA, isPrimitiveMark, LINE, Mark, MarkDef, POINT} from './mark';
+import {SelectionDef} from './selection';
 import {stack} from './stack';
 import {Transform} from './transform';
-import {ROW, COLUMN, X, Y, X2, Y2} from './channel';
-import * as vlEncoding from './encoding';
 import {contains, duplicate, extend, hash, keys, omit, pick, vals} from './util';
-import {SelectionDef} from './selection';
 
 export type Padding = number | {top?: number, bottom?: number, left?: number, right?: number};
 

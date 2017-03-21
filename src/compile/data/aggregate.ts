@@ -1,7 +1,7 @@
 import {SummaryComponent} from 'vega-lite/build/src/compile/data/data';
 import {SUMMARY} from '../../data';
 import {field, FieldDef} from '../../fielddef';
-import {keys, vals, hash, Dict, StringSet} from '../../util';
+import {Dict, hash, keys, StringSet, vals} from '../../util';
 import {VgAggregateTransform} from '../../vega.schema';
 
 import {FacetModel} from './../facet';

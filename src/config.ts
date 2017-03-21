@@ -1,12 +1,12 @@
 import {AxisConfig, defaultAxisConfig} from './axis';
-import {LegendConfig, defaultLegendConfig} from './legend';
-import {MarkConfig, BarConfig, TextConfig, TickConfig} from './mark';
+import {defaultLegendConfig, LegendConfig} from './legend';
+import {BarConfig, MarkConfig, TextConfig, TickConfig} from './mark';
 import * as mark from './mark';
-import {ScaleConfig, defaultScaleConfig} from './scale';
-import {StackOffset} from './stack';
+import {defaultScaleConfig, ScaleConfig} from './scale';
+import {defaultConfig as defaultSelectionConfig, SelectionConfig} from './selection';
 import {Padding} from './spec';
+import {StackOffset} from './stack';
 import {VgRangeScheme} from './vega.schema';
-import {SelectionConfig, defaultConfig as defaultSelectionConfig} from './selection';
 
 export interface CellConfig {
   width?: number;
