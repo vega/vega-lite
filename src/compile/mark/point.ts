@@ -31,7 +31,7 @@ export function shapeMixins(model: UnitModel, config: Config, fixedShape?: 'circ
 
 export const point: MarkCompiler = {
   vgMark: 'symbol',
-  role: 'point',
+  defaultRole: 'point',
   encodeEntry: (model: UnitModel) => {
     return encodeEntry(model);
   }
@@ -39,7 +39,7 @@ export const point: MarkCompiler = {
 
 export const circle: MarkCompiler = {
   vgMark: 'symbol',
-  role: 'circle',
+  defaultRole: 'circle',
   encodeEntry: (model: UnitModel) => {
     return encodeEntry(model, 'circle');
   }
@@ -47,7 +47,7 @@ export const circle: MarkCompiler = {
 
 export const square: MarkCompiler = {
   vgMark: 'symbol',
-  role: 'square',
+  defaultRole: 'square',
   encodeEntry: (model: UnitModel) => {
     return encodeEntry(model, 'square');
   }

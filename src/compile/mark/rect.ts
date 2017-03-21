@@ -11,7 +11,7 @@ import {MarkCompiler} from './base';
 
 export const rect: MarkCompiler = {
   vgMark: 'rect',
-  role: undefined,
+  defaultRole: undefined,
   encodeEntry: (model: UnitModel) => {
     return {
       ...x(model),

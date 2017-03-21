@@ -44,6 +44,13 @@ export interface MarkDef {
   type: Mark;
 
   /**
+   * A metadata string indicating the role of the mark.
+   * This allows users to use `config.<role-name>.*` to customize properties of marks with specific roles.
+   * In addition, SVG renderers will add this role value (prepended with the prefix role-) as a CSS class name on the enclosing SVG group (g) element containing the mark instances.
+   */
+  role?: string;
+
+  /**
    * The orientation of a non-stacked bar, tick, area, and line charts.
    * The value is either horizontal (default) or vertical.
    * - For bar, rule and tick, this determines whether the size of the bar and tick

@@ -2305,6 +2305,10 @@
                     "$ref": "#/definitions/Orient",
                     "description": "The orientation of a non-stacked bar, tick, area, and line charts.\nThe value is either horizontal (default) or vertical.\n- For bar, rule and tick, this determines whether the size of the bar and tick\nshould be applied to x or y dimension.\n- For area, this property determines the orient property of the Vega output.\n- For line, this property determines the sort order of the points in the line\nif `config.sortLineBy` is not specified.\nFor stacked charts, this is always determined by the orientation of the stack;\ntherefore explicitly specified value will be ignored."
                 },
+                "role": {
+                    "description": "A metadata string indicating the role of the mark.\nThis allows users to use `config.<role-name>.*` to customize properties of marks with specific roles.\nIn addition, SVG renderers will add this role value (prepended with the prefix role-) as a CSS class name on the enclosing SVG group (g) element containing the mark instances.",
+                    "type": "string"
+                },
                 "tension": {
                     "description": "Depending on the interpolation type, sets the tension parameter (for line and area marks).",
                     "maximum": 1,

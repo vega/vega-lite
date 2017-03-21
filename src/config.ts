@@ -218,6 +218,13 @@ export interface Config {
 
   /** Selection Config */
   selection?: SelectionConfig;
+
+  // Support arbitrary key for role config
+  // Note: Technically, the type for role config should be `MarkConfig`.
+  // However, Typescript requires that the index type must be compatible with all other properties.
+  // Basically, it will complain that `legend: LegendConfig` is not an instance of `MarkConfig`
+  // Thus, we have to use `any` here.
+  [role: string]: any;
 }
 
 export const defaultConfig: Config = {

@@ -50,16 +50,16 @@ describe('Common', function() {
     });
 
     it('should use format if provided', function() {
-      assert.equal(numberFormat({field: 'a', type: QUANTITATIVE}, 'a', 'd', X), 'a');
+      assert.equal(numberFormat({field: 'a', type: QUANTITATIVE}, 'a', {}, X), 'a');
     });
 
     it('should not use number format for binned quantitative scale', function() {
-      assert.equal(numberFormat({bin: true, field: 'a', type: QUANTITATIVE}, undefined, 'd', X), undefined);
+      assert.equal(numberFormat({bin: true, field: 'a', type: QUANTITATIVE}, undefined, {}, X), undefined);
     });
 
     it('should not use number format for non-quantitative scale', function() {
       for (let type of [TEMPORAL, NOMINAL, ORDINAL]) {
-        assert.equal(numberFormat({bin: true, field: 'a', type: type}, undefined, 'd', X), undefined);
+        assert.equal(numberFormat({bin: true, field: 'a', type: type}, undefined, {}, X), undefined);
       }
     });
   });

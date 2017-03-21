@@ -14,7 +14,7 @@ import * as ref from './valueref';
 
 export const text: MarkCompiler = {
   vgMark: 'text',
-  role: undefined,
+  defaultRole: undefined,
 
   encodeEntry: (model: UnitModel) => {
     const {config, encoding} = model;

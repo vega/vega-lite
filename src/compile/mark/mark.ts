@@ -95,7 +95,7 @@ function parsePathMark(model: UnitModel) {
 function parseNonPathMark(model: UnitModel) {
   const mark = model.mark();
 
-  const role = markCompiler[mark].role;
+  const role = model.markDef.role || markCompiler[mark].defaultRole;
 
   let marks: any[] = []; // TODO: vgMarks
 
