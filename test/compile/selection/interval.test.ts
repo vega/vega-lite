@@ -1,10 +1,10 @@
 /* tslint:disable quotemark */
 
 import {assert} from 'chai';
-import {parseUnitModel} from '../../util';
 import {default as parseSelector} from 'vega-parser/src/parsers/event-selector';
-import * as selection from '../../../src/compile/selection/selection';
 import interval from '../../../src/compile/selection/interval';
+import * as selection from '../../../src/compile/selection/selection';
+import {parseUnitModel} from '../../util';
 
 describe('Interval Selections', function() {
   const model = parseUnitModel({

@@ -1,7 +1,7 @@
 import {DataComponentCompiler} from './base';
 
 import {ScaleType} from '../../scale';
-import {extend, keys, differ, Dict} from '../../util';
+import {Dict, differ, extend, keys} from '../../util';
 
 import {FacetModel} from './../facet';
 import {LayerModel} from './../layer';

@@ -1,5 +1,5 @@
-import {TUPLE, SelectionCompiler} from './selection';
 import {stringValue} from '../../util';
+import {SelectionCompiler, TUPLE} from './selection';
 
 const multi:SelectionCompiler = {
   predicate: 'vlPoint',

@@ -1,8 +1,8 @@
 /* tslint:disable:quotemark */
 
 import {assert} from 'chai';
-import {parseUnitModel} from '../../util';
 import {timeUnit} from '../../../src/compile/data/timeunit';
+import {parseUnitModel} from '../../util';
 
 describe('compile/data/timeunit', () => {
   describe('parseUnit', () => {

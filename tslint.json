@@ -64,6 +64,7 @@
     "no-switch-case-fall-through": true,
     "quotemark": [true, "single", "avoid-escape"],
     "triple-equals": [true, "allow-null-check"],
-    "variable-name": [true, "check-format", "allow-leading-underscore", "ban-keywords"]
+    "variable-name": [true, "check-format", "allow-leading-underscore", "ban-keywords"],
+    "ordered-imports": [true]
   }
 }

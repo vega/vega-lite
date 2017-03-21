@@ -5,8 +5,8 @@ import {DataComponentCompiler} from './base';
 import {isAggregate} from '../../encoding';
 import {field} from '../../fielddef';
 import {isSortField} from '../../sort';
-import {VgSort} from '../../vega.schema';
 import {contains} from '../../util';
+import {VgSort} from '../../vega.schema';
 
 import {sortParams} from '../common';
 import {FacetModel} from '../facet';

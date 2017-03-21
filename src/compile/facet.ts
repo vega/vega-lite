@@ -1,19 +1,19 @@
 import * as log from '../log';
 
-import {Axis, VlOnlyAxisBase, VL_ONLY_AXIS_PROPERTIES} from '../axis';
-import {COLUMN, ROW, X, Y, Channel} from '../channel';
-import {defaultConfig, Config} from '../config';
-import {Facet} from '../facet';
+import {Axis, VL_ONLY_AXIS_PROPERTIES, VlOnlyAxisBase} from '../axis';
+import {Channel, COLUMN, ROW, X, Y} from '../channel';
+import {Config, defaultConfig} from '../config';
 import {forEach} from '../encoding';
+import {Facet} from '../facet';
 import {FieldDef, normalize} from '../fielddef';
 import {Legend} from '../legend';
 import {Scale} from '../scale';
 import {FacetSpec} from '../spec';
-import {contains, extend, keys, vals, flatten, duplicate, mergeDeep, Dict} from '../util';
-import {VgData, VgEncodeEntry} from '../vega.schema';
 import {StackProperties} from '../stack';
+import {contains, Dict, duplicate, extend, flatten, keys, mergeDeep, vals} from '../util';
+import {VgData, VgEncodeEntry} from '../vega.schema';
 
-import {parseMainAxis, parseGridAxis, parseAxisComponent} from './axis/parse';
+import {parseAxisComponent, parseGridAxis, parseMainAxis} from './axis/parse';
 import {gridShow} from './axis/rules';
 import {buildModel} from './common';
 import {assembleData, parseFacetData} from './data/data';

@@ -2,8 +2,8 @@
 
 import {assert} from 'chai';
 
-import {parseUnitModel, parseModel} from '../../util';
 import * as encode from '../../../src/compile/axis/encode';
+import {parseModel, parseUnitModel} from '../../util';
 
 
 describe('compile/axis', () => {

@@ -1,6 +1,6 @@
-import * as log from './log';
 import {Channel} from './channel';
 import {DateTime} from './datetime';
+import * as log from './log';
 import {contains, toSet} from './util';
 
 export namespace ScaleType {

@@ -1,6 +1,6 @@
 import {assert} from 'chai';
-import {parseFacetModel} from '../util';
 import {NameMap} from '../../src/compile/model';
+import {parseFacetModel} from '../util';
 
 describe('Model', () => {
   describe('NameMap', function () {

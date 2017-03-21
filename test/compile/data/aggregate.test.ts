@@ -2,8 +2,8 @@
 
 import {assert} from 'chai';
 
-import {DataComponent} from '../../../src/compile/data/data';
 import {summary} from '../../../src/compile/data/aggregate';
+import {DataComponent} from '../../../src/compile/data/data';
 import {parseUnitModel} from '../../util';
 
 describe('compile/data/summary', function () {

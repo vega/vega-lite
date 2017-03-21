@@ -1,6 +1,6 @@
 import * as stringify from 'json-stable-stringify';
 export {extend, isArray, isObject, isNumber, isString, truncate, toSet, stringValue} from 'vega-util';
-import {isNumber, isString, isArray} from 'vega-util';
+import {isArray, isNumber, isString} from 'vega-util';
 
 /**
  * Creates an object composed of the picked object properties.

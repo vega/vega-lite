@@ -4,7 +4,7 @@ import {assert} from 'chai';
 
 import {pathOrder} from '../../../src/compile/data/pathorder';
 import {LayerModel} from '../../../src/compile/layer';
-import {parseUnitModel, parseModel, parseFacetModel} from '../../util';
+import {parseFacetModel, parseModel, parseUnitModel} from '../../util';
 
 describe('compile/data/pathorder', function() {
   describe('compileUnit', function() {

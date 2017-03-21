@@ -1,11 +1,11 @@
 /* tslint:disable quotemark */
 
 import {assert} from 'chai';
-import {parseUnitModel} from '../../util';
-import {extend} from '../../../src/util';
-import {X, Y, COLOR} from '../../../src/channel';
+import {COLOR, X, Y} from '../../../src/channel';
 import {area} from '../../../src/compile/mark/area';
 import {UnitSpec} from '../../../src/spec';
+import {extend} from '../../../src/util';
+import {parseUnitModel} from '../../util';
 
 describe('Mark: Area', function() {
   function verticalArea(moreEncoding = {}): UnitSpec {

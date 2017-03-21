@@ -1,7 +1,7 @@
 import {DataComponentCompiler} from './base';
 
 import {Formula} from '../../transform';
-import {extend, vals, hash, Dict} from '../../util';
+import {Dict, extend, hash, vals} from '../../util';
 
 import {FacetModel} from './../facet';
 import {LayerModel} from './../layer';

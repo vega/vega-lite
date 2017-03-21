@@ -1,32 +1,32 @@
 
 
-import {Axis, VlOnlyAxisBase, VL_ONLY_AXIS_PROPERTIES} from '../axis';
-import {X, Y, X2, Y2, Channel, UNIT_CHANNELS,  UNIT_SCALE_CHANNELS, NONSPATIAL_SCALE_CHANNELS} from '../channel';
-import {defaultConfig, Config, CellConfig} from '../config';
+import {Axis, VL_ONLY_AXIS_PROPERTIES, VlOnlyAxisBase} from '../axis';
+import {Channel, NONSPATIAL_SCALE_CHANNELS, UNIT_CHANNELS, UNIT_SCALE_CHANNELS, X, X2,  Y, Y2} from '../channel';
+import {CellConfig, Config, defaultConfig} from '../config';
 import {SOURCE, SUMMARY} from '../data';
-import {Encoding, dropInvalidFieldDefs} from '../encoding';
+import {dropInvalidFieldDefs, Encoding} from '../encoding';
 import * as vlEncoding from '../encoding'; // TODO: remove
-import {FieldDef, FieldRefOption, field, isFieldDef} from '../fielddef';
+import {field, FieldDef, FieldRefOption, isFieldDef} from '../fielddef';
 import {Legend} from '../legend';
-import {Mark, MarkDef, TEXT as TEXT_MARK, FILL_STROKE_CONFIG, isMarkDef} from '../mark';
-import {Scale, ScaleConfig, hasDiscreteDomain} from '../scale';
+import {FILL_STROKE_CONFIG, isMarkDef, Mark, MarkDef, TEXT as TEXT_MARK} from '../mark';
+import {hasDiscreteDomain, Scale, ScaleConfig} from '../scale';
 import {UnitSpec} from '../spec';
-import {duplicate, extend, mergeDeep, Dict} from '../util';
+import {Dict, duplicate, extend, mergeDeep} from '../util';
 import {VgData} from '../vega.schema';
 
+import {SelectionDef} from '../selection';
+import {stack, StackProperties} from '../stack';
 import {parseAxisComponent} from './axis/parse';
 import {applyConfig} from './common';
 import {assembleData, parseUnitData} from './data/data';
-import {parseLegendComponent} from './legend/parse';
 import {assembleLayout, parseUnitLayout} from './layout';
-import {Model} from './model';
+import {parseLegendComponent} from './legend/parse';
+import {initEncoding, initMarkDef} from './mark/init';
 import {parseMark} from './mark/mark';
+import {Model} from './model';
 import initScale from './scale/init';
 import parseScaleComponent from './scale/parse';
-import {stack, StackProperties} from '../stack';
-import {SelectionDef} from '../selection';
-import {parseUnitSelection, assembleUnitSignals, assembleUnitData as assembleSelectionData, assembleUnitMarks as assembleSelectionMarks} from './selection/selection';
-import {initMarkDef, initEncoding} from './mark/init';
+import {assembleUnitData as assembleSelectionData, assembleUnitMarks as assembleSelectionMarks, assembleUnitSignals, parseUnitSelection} from './selection/selection';
 
 /**
  * Internal model of Vega-Lite specification for the compiler.

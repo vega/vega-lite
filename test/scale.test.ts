@@ -1,5 +1,5 @@
-import * as scale from '../src/scale';
 import {assert} from 'chai';
+import * as scale from '../src/scale';
 import {some} from '../src/util';
 
 describe('scale', () => {

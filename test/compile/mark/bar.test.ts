@@ -1,10 +1,10 @@
 /* tslint:disable quotemark */
 
 import {assert} from 'chai';
-import {parseUnitModel} from '../../util';
+import {bar} from '../../../src/compile/mark/bar';
 import {defaultBarConfig} from '../../../src/mark';
 import {defaultScaleConfig} from '../../../src/scale';
-import {bar} from '../../../src/compile/mark/bar';
+import {parseUnitModel} from '../../util';
 
 describe('Mark: Bar', function() {
   describe('simple vertical', function() {

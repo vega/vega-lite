@@ -1,9 +1,9 @@
 /* tslint:disable quotemark */
 
 import {assert} from 'chai';
-import {parseUnitModel} from '../../util';
 import * as selection from '../../../src/compile/selection/selection';
 import nearest from '../../../src/compile/selection/transforms/nearest';
+import {parseUnitModel} from '../../util';
 
 function getModel(markType: any) {
   const model = parseUnitModel({

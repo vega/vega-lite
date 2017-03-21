@@ -1,8 +1,8 @@
 /* tslint:disable quotemark */
 
 import {assert} from 'chai';
-import {parseUnitModel} from '../../util';
 import {rect} from '../../../src/compile/mark/rect';
+import {parseUnitModel} from '../../util';
 
 describe('Mark: Rect', function() {
   describe('simple vertical', function() {

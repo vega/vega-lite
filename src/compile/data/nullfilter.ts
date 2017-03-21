@@ -2,7 +2,7 @@ import {DataComponentCompiler} from './base';
 
 import {FieldDef} from '../../fielddef';
 import {QUANTITATIVE, TEMPORAL} from '../../type';
-import {contains, extend, keys, differ, Dict} from '../../util';
+import {contains, Dict, differ, extend, keys} from '../../util';
 
 import {FacetModel} from './../facet';
 import {LayerModel} from './../layer';

@@ -1,10 +1,10 @@
 import * as log from './log';
 
 import {SUM_OPS} from './aggregate';
-import {Channel, STACK_GROUP_CHANNELS, X, Y, X2, Y2} from './channel';
-import {Encoding, channelHasField, isAggregate} from './encoding';
-import {FieldDef, PositionFieldDef, isFieldDef} from './fielddef';
-import {Mark, BAR, AREA, POINT, CIRCLE, SQUARE, LINE, RULE, TEXT, TICK, MarkDef, isMarkDef} from './mark';
+import {Channel, STACK_GROUP_CHANNELS, X, X2, Y, Y2} from './channel';
+import {channelHasField, Encoding, isAggregate} from './encoding';
+import {FieldDef, isFieldDef, PositionFieldDef} from './fielddef';
+import {AREA, BAR, CIRCLE, isMarkDef, LINE, Mark, MarkDef, POINT, RULE, SQUARE, TEXT, TICK} from './mark';
 import {ScaleType} from './scale';
 import {contains, isArray} from './util';
 

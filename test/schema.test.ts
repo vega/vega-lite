@@ -1,5 +1,5 @@
-import {assert} from 'chai';
 import * as Ajv from 'ajv';
+import {assert} from 'chai';
 import {inspect} from 'util';
 
 const specSchema = require('../../build/vega-lite-schema.json');

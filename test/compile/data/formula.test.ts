@@ -2,8 +2,8 @@
 import {assert} from 'chai';
 import {formula} from '../../../src/compile/data/formula';
 import {UnitModel} from '../../../src/compile/unit';
-import {hash, Dict} from '../../../src/util';
 import {Formula} from '../../../src/transform';
+import {Dict, hash} from '../../../src/util';
 
 describe('compile/data/formula', () => {
   describe('parseUnit', () => {

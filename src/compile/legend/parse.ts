@@ -1,10 +1,10 @@
-import {COLOR, SIZE, SHAPE, OPACITY, Channel} from '../../channel';
-import {keys, Dict} from '../../util';
-import {VgLegend} from '../../vega.schema';
+import {Channel, COLOR, OPACITY, SHAPE, SIZE} from '../../channel';
 import {Legend, LEGEND_PROPERTIES} from '../../legend';
+import {Dict, keys} from '../../util';
+import {VgLegend} from '../../vega.schema';
 
-import {Model} from '../model';
 import {numberFormat} from '../common';
+import {Model} from '../model';
 import {UnitModel} from '../unit';
 
 import * as encode from './encode';

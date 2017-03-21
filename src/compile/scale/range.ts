@@ -1,12 +1,12 @@
 import * as log from '../../log';
 
-import {COLUMN, ROW, X, Y, SHAPE, SIZE, COLOR, OPACITY, Channel} from '../../channel';
+import {Channel, COLOR, COLUMN, OPACITY, ROW, SHAPE, SIZE, X, Y} from '../../channel';
 import {Config} from '../../config';
 import {Mark} from '../../mark';
-import {Scale, ScaleConfig, ScaleType, scaleTypeSupportProperty, Scheme, Range, isExtendedScheme, channelScalePropertyIncompatability} from '../../scale';
+import {channelScalePropertyIncompatability, isExtendedScheme, Range, Scale, ScaleConfig, ScaleType, scaleTypeSupportProperty, Scheme} from '../../scale';
 import {Type} from '../../type';
-import {VgRange, VgRangeScheme} from '../../vega.schema';
 import * as util from '../../util';
+import {VgRange, VgRangeScheme} from '../../vega.schema';
 
 export type RangeMixins = {range: Range} | {rangeStep: number} | {scheme: Scheme};
 

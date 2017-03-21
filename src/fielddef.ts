@@ -8,10 +8,10 @@ import {Config} from './config';
 import {Legend} from './legend';
 import * as log from './log';
 import {Scale} from './scale';
-import {StackOffset} from './stack';
 import {SortField, SortOrder} from './sort';
-import {TimeUnit, isDiscreteByDefault} from './timeunit';
-import {Type, getFullName} from './type';
+import {StackOffset} from './stack';
+import {isDiscreteByDefault, TimeUnit} from './timeunit';
+import {getFullName, Type} from './type';
 
 /**
  * Definition object for a constant value of an encoding channel.

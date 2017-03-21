@@ -1,15 +1,15 @@
+import parseSelector from 'vega-parser/src/parsers/event-selector';
+import {Channel} from '../../channel';
 import {SelectionDef, SelectionDomain, SelectionResolutions, SelectionTypes} from '../../selection';
-import {SelectionComponent} from './selection';
+import {Dict, extend, isString, stringValue} from '../../util';
+import {VgBinding, VgData} from '../../vega.schema';
 import {Model} from '../model';
 import {UnitModel} from '../unit';
-import {Channel} from '../../channel';
-import {Dict, extend, stringValue, isString} from '../../util';
-import {forEachTransform} from './transforms/transforms';
-import parseSelector from 'vega-parser/src/parsers/event-selector';
-import {VgData, VgBinding} from '../../vega.schema';
-import singleCompiler from './single';
-import multiCompiler from './multi';
 import intervalCompiler from './interval';
+import multiCompiler from './multi';
+import {SelectionComponent} from './selection';
+import singleCompiler from './single';
+import {forEachTransform} from './transforms/transforms';
 
 export const STORE = '_store',
   TUPLE  = '_tuple',

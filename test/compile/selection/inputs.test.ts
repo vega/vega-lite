@@ -1,9 +1,9 @@
 /* tslint:disable quotemark */
 
 import {assert} from 'chai';
-import {parseUnitModel} from '../../util';
 import * as selection from '../../../src/compile/selection/selection';
 import inputs from '../../../src/compile/selection/transforms/inputs';
+import {parseUnitModel} from '../../util';
 
 describe('Inputs Selection Transform', function() {
   const model = parseUnitModel({

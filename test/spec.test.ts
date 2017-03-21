@@ -2,7 +2,7 @@
 
 import {assert} from 'chai';
 
-import {normalize, fieldDefs} from '../src/spec';
+import {fieldDefs, normalize} from '../src/spec';
 
 // describe('isStacked()') -- tested as part of stackOffset in stack.test.ts
 

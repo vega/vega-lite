@@ -1,8 +1,8 @@
 /* tslint:disable:quotemark */
 import {assert} from 'chai';
 
-import {parseUnitModel} from '../../util';
 import {formatParse} from '../../../src/compile/data/formatparse';
+import {parseUnitModel} from '../../util';
 
 describe('compile/data/formatparse', () => {
   describe('parseUnit', () => {

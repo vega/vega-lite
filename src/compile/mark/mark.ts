@@ -2,11 +2,11 @@ import {LEVEL_OF_DETAIL_CHANNELS} from '../../channel';
 import {AREA, LINE} from '../../mark';
 import {contains} from '../../util';
 
-import {MarkCompiler} from './base';
 import {area} from './area';
 import {bar} from './bar';
+import {MarkCompiler} from './base';
 import {line} from './line';
-import {point, circle, square} from './point';
+import {circle, point, square} from './point';
 import {rect} from './rect';
 import {rule} from './rule';
 import {text} from './text';

@@ -2,8 +2,8 @@
 
 import {assert} from 'chai';
 
-import {nonPositiveFilter} from '../../../src/compile/data/nonpositivefilter';
 import {DataComponent} from '../../../src/compile/data/data';
+import {nonPositiveFilter} from '../../../src/compile/data/nonpositivefilter';
 import {parseUnitModel} from '../../util';
 
 describe('compile/data/nonpositivefilter', function () {

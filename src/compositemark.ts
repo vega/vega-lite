@@ -1,5 +1,5 @@
 import {Encoding} from './encoding';
-import {MarkDef, isMarkDef} from './mark';
+import {isMarkDef, MarkDef} from './mark';
 import {GenericUnitSpec, LayerSpec} from './spec';
 
 export const ERRORBAR: 'error-bar' = 'error-bar';

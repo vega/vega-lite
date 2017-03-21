@@ -11,9 +11,9 @@ import {Channel} from './channel';
 import {DateTime, DateTimeExpr} from './datetime';
 import {FieldDef} from './fielddef';
 import {Mark} from './mark';
+import {ScaleType} from './scale';
 import {TimeUnit} from './timeunit';
 import {Type} from './type';
-import {ScaleType} from './scale';
 
 export {LoggerInterface} from 'vega-util';
 

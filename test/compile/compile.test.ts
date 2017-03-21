@@ -5,7 +5,7 @@ import {parseUnitModel} from '../util';
 
 import * as log from '../../src/log';
 
-import {compile, assembleRootGroup} from '../../src/compile/compile';
+import {assembleRootGroup, compile} from '../../src/compile/compile';
 
 
 describe('Compile', function() {

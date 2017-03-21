@@ -1,12 +1,12 @@
 import * as log from '../../log';
 
-import {hasScale, supportScaleType, rangeType, Channel} from '../../channel';
+import {Channel, hasScale, rangeType, supportScaleType} from '../../channel';
 import {Mark} from '../../mark';
-import {ScaleType, ScaleConfig} from '../../scale';
+import {ScaleConfig, ScaleType} from '../../scale';
 import {isDiscreteByDefault} from '../../timeunit';
 
-import * as util from '../../util';
 import {FieldDef} from '../../fielddef';
+import * as util from '../../util';
 
 export type RangeType = 'continuous' | 'discrete' | 'flexible' | undefined;
 

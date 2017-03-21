@@ -1,7 +1,7 @@
 import {assert} from 'chai';
 
 import {Channel} from '../src/channel';
-import {defaultType, normalize, title, channelCompatibility} from '../src/fielddef';
+import {channelCompatibility, defaultType, normalize, title} from '../src/fielddef';
 import * as log from '../src/log';
 import {TimeUnit} from '../src/timeunit';
 import {QUANTITATIVE, TEMPORAL} from '../src/type';

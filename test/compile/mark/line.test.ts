@@ -5,9 +5,9 @@ import {parseUnitModel} from '../../util';
 
 import * as log from '../../../src/log';
 
-import {X, Y, COLOR, SIZE} from '../../../src/channel';
-import {LINE} from '../../../src/mark';
+import {COLOR, SIZE, X, Y} from '../../../src/channel';
 import {line} from '../../../src/compile/mark/line';
+import {LINE} from '../../../src/mark';
 
 describe('Mark: Line', function() {
 

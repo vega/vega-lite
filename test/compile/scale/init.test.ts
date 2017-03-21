@@ -3,8 +3,8 @@ import {assert} from 'chai';
 import initScale from '../../../src/compile/scale/init';
 import {NON_TYPE_RANGE_SCALE_PROPERTIES} from '../../../src/compile/scale/init';
 
-import {SCALE_PROPERTIES} from '../../../src/scale';
 import {defaultConfig} from '../../../src/config';
+import {SCALE_PROPERTIES} from '../../../src/scale';
 import {toSet, without} from '../../../src/util';
 
 describe('compile/scale', () => {

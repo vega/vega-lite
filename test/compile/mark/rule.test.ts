@@ -1,9 +1,9 @@
 /* tslint:disable quotemark */
 
 import {assert} from 'chai';
-import {parseUnitModel} from '../../util';
-import {X, Y, COLOR} from '../../../src/channel';
+import {COLOR, X, Y} from '../../../src/channel';
 import {rule} from '../../../src/compile/mark/rule';
+import {parseUnitModel} from '../../util';
 
 describe('Mark: Rule', function() {
 

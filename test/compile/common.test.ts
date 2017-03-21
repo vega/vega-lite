@@ -2,11 +2,11 @@
 
 import {assert} from 'chai';
 import {X} from '../../src/channel';
-import {defaultConfig} from '../../src/config';
-import {TimeUnit} from '../../src/timeunit';
-import {field, FieldDef} from '../../src/fielddef';
-import {TEMPORAL, QUANTITATIVE, ORDINAL, NOMINAL} from '../../src/type';
 import {numberFormat, timeFormatExpression} from '../../src/compile/common';
+import {defaultConfig} from '../../src/config';
+import {field, FieldDef} from '../../src/fielddef';
+import {TimeUnit} from '../../src/timeunit';
+import {NOMINAL, ORDINAL, QUANTITATIVE, TEMPORAL} from '../../src/type';
 
 describe('Common', function() {
   describe('timeFormat()', function() {

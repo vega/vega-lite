@@ -4,10 +4,10 @@
 import {assert} from 'chai';
 import {parseDomain, unionDomains} from '../../../src/compile/scale/domain';
 import {SUMMARY} from '../../../src/data';
-import * as log from '../../../src/log';
-import {parseUnitModel} from '../../util';
-import {FieldRefUnionDomain, VgDataRef} from '../../../src/vega.schema';
 import {PositionFieldDef} from '../../../src/fielddef';
+import * as log from '../../../src/log';
+import {FieldRefUnionDomain, VgDataRef} from '../../../src/vega.schema';
+import {parseUnitModel} from '../../util';
 
 describe('compile/scale', () => {
   describe('parseDomain()', () => {

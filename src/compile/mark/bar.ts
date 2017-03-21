@@ -1,14 +1,14 @@
 import {X, Y} from '../../channel';
 import {Config} from '../../config';
 import {isFieldDef} from '../../fielddef';
-import {Scale, ScaleType, isBinScale} from '../../scale';
-import {StackProperties} from '../../stack';
 import * as log from '../../log';
+import {isBinScale, Scale, ScaleType} from '../../scale';
+import {StackProperties} from '../../stack';
 import {VgEncodeEntry} from '../../vega.schema';
 
-import * as mixins from './mixins';
-import {UnitModel} from '../unit';
 import {VgValueRef} from '../../vega.schema';
+import {UnitModel} from '../unit';
+import * as mixins from './mixins';
 
 import {MarkCompiler} from './base';
 import * as ref from './valueref';

@@ -7,8 +7,8 @@ import {DateTime, isDateTime, timestamp} from '../../datetime';
 import {Domain, hasDiscreteDomain, isBinScale, Scale, ScaleConfig, ScaleType} from '../../scale';
 import {isSortField} from '../../sort';
 import {
-  FieldRefUnionDomain,
   DataRefUnionDomain,
+  FieldRefUnionDomain,
   isDataRefDomain,
   isDataRefUnionedDomain,
   isFieldRefUnionDomain,
@@ -20,9 +20,9 @@ import {
 
 import * as util from '../../util';
 
-import {Model} from '../model';
 import {FieldDef} from '../../fielddef';
 import {varName} from '../../util';
+import {Model} from '../model';
 
 export function initDomain(domain: Domain, fieldDef: FieldDef, scale: ScaleType, scaleConfig: ScaleConfig) {
   if (domain === 'unaggregated') {

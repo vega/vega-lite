@@ -1,4 +1,4 @@
-import {Channel, ROW, COLUMN, SHAPE, SIZE} from './channel';
+import {Channel, COLUMN, ROW, SHAPE, SIZE} from './channel';
 
 /**
  * Binning properties or boolean flag for determining whether to bin data or not.

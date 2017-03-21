@@ -1,5 +1,5 @@
-import {TransformCompiler} from './transforms';
 import {stringValue} from '../../../util';
+import {TransformCompiler} from './transforms';
 
 const inputBindings:TransformCompiler = {
   has: function(selCmpt) {

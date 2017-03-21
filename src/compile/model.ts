@@ -1,24 +1,24 @@
 import * as log from '../log';
 
 import {Axis} from '../axis';
-import {Channel, X, COLUMN} from '../channel';
-import {Config, CellConfig} from '../config';
+import {Channel, COLUMN, X} from '../channel';
+import {CellConfig, Config} from '../config';
 import {Data, DataSourceType, isNamedData, SOURCE} from '../data';
-import {reduce, forEach} from '../encoding';
-import {FieldDef, FieldRefOption, field, isFieldDef, ChannelDef} from '../fielddef';
+import {forEach, reduce} from '../encoding';
+import {ChannelDef, field, FieldDef, FieldRefOption, isFieldDef} from '../fielddef';
+import {EqualFilter, OneOfFilter, RangeFilter} from '../filter';
 import {Legend} from '../legend';
-import {Scale, hasDiscreteDomain} from '../scale';
+import {hasDiscreteDomain, Scale} from '../scale';
 import {SortField, SortOrder} from '../sort';
 import {BaseSpec, Padding} from '../spec';
 import {Transform} from '../transform';
-import {extend, vals, Dict} from '../util';
-import {VgData, VgEncodeEntry, VgScale, VgAxis, VgLegend} from '../vega.schema';
 import {Formula} from '../transform';
-import {OneOfFilter, EqualFilter, RangeFilter} from '../filter';
+import {Dict, extend, vals} from '../util';
+import {VgAxis, VgData, VgEncodeEntry, VgLegend, VgScale} from '../vega.schema';
 
+import {StackProperties} from '../stack';
 import {DataComponent} from './data/data';
 import {LayoutComponent} from './layout';
-import {StackProperties} from '../stack';
 
 import {SelectionComponent} from './selection/selection';
 

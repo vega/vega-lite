@@ -1,5 +1,5 @@
-import * as mixins from './mixins';
 import {UnitModel} from '../unit';
+import * as mixins from './mixins';
 
 import {MarkCompiler} from './base';
 

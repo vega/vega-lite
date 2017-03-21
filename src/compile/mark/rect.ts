@@ -1,11 +1,11 @@
 import {X, Y} from '../../channel';
 import {isFieldDef} from '../../fielddef';
-import {ScaleType, hasDiscreteDomain} from '../../scale';
-import {RECT} from '../../mark';
 import * as log from '../../log';
+import {RECT} from '../../mark';
+import {hasDiscreteDomain, ScaleType} from '../../scale';
 
-import * as mixins from './mixins';
 import {UnitModel} from '../unit';
+import * as mixins from './mixins';
 
 import {MarkCompiler} from './base';
 

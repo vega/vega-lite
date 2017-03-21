@@ -2,9 +2,9 @@
 
 import {assert} from 'chai';
 
-import {parseUnitModel} from '../../util';
-import * as axisParse from '../../../src/compile/axis/parse';
 import {X, Y} from '../../../src/channel';
+import * as axisParse from '../../../src/compile/axis/parse';
+import {parseUnitModel} from '../../util';
 
 describe('Axis', function() {
   // TODO: move this to model.test.ts

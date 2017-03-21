@@ -1,10 +1,10 @@
 /* tslint:disable quotemark */
 
 import {assert} from 'chai';
-import {parseUnitModel} from '../../util';
 import {default as parseSelector} from 'vega-parser/src/parsers/event-selector';
 import * as selection from '../../../src/compile/selection/selection';
 import translate from '../../../src/compile/selection/transforms/translate';
+import {parseUnitModel} from '../../util';
 
 describe('Translate Selection Transform', function() {
   const model = parseUnitModel({

@@ -3,7 +3,7 @@ import {DataComponentCompiler} from './base';
 import {field, FieldDef} from '../../fielddef';
 import {fieldExpr} from '../../timeunit';
 import {TEMPORAL} from '../../type';
-import {extend, vals, Dict} from '../../util';
+import {Dict, extend, vals} from '../../util';
 import {VgFormulaTransform} from '../../vega.schema';
 
 import {FacetModel} from '../facet';

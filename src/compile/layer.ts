@@ -1,18 +1,18 @@
+import {Axis} from '../axis';
 import {Channel} from '../channel';
-import {defaultConfig, CellConfig, Config} from '../config';
+import {CellConfig, Config, defaultConfig} from '../config';
+import {isUrlData} from '../data';
 import {FieldDef} from '../fielddef';
 import {Legend} from '../legend';
+import {FILL_STROKE_CONFIG} from '../mark';
 import {Scale} from '../scale';
-import {Axis} from '../axis';
 import {LayerSpec} from '../spec';
 import {StackProperties} from '../stack';
-import {FILL_STROKE_CONFIG} from '../mark';
-import {keys, duplicate, mergeDeep, flatten, Dict} from '../util';
-import {VgData, VgEncodeEntry, isSignalRefDomain, VgScale} from '../vega.schema';
-import {isUrlData} from '../data';
+import {Dict, duplicate, flatten, keys, mergeDeep} from '../util';
+import {isSignalRefDomain, VgData, VgEncodeEntry, VgScale} from '../vega.schema';
 
-import {assembleData, parseLayerData} from './data/data';
 import {applyConfig, buildModel} from './common';
+import {assembleData, parseLayerData} from './data/data';
 import {assembleLayout, parseLayerLayout} from './layout';
 import {Model} from './model';
 import {UnitModel} from './unit';

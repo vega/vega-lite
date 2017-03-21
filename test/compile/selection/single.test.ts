@@ -1,9 +1,9 @@
 /* tslint:disable quotemark */
 
 import {assert} from 'chai';
-import {parseUnitModel} from '../../util';
 import * as selection from '../../../src/compile/selection/selection';
 import single from '../../../src/compile/selection/single';
+import {parseUnitModel} from '../../util';
 
 describe('Single Selection', function() {
   const model = parseUnitModel({
