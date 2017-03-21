@@ -47,7 +47,6 @@
     "site": "bundle exec jekyll serve",
 
     "lint": "tslint -c tslint.json 'src/**/*.ts' 'test/**/*.ts'",
-    "lint:fix": "tslint -c tslint.json --fix 'src/**/*.ts' 'test/**/*.ts'",
 
     "test": "tsc && npm run schema && npm run data && npm run test:nocompile",
     "test:nocompile": "npm run test:only && npm run lint && npm run mocha:examples",
