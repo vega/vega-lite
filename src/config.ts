@@ -4,8 +4,9 @@ import {BarConfig, MarkConfig, TextConfig, TickConfig} from './mark';
 import * as mark from './mark';
 import {defaultScaleConfig, ScaleConfig} from './scale';
 import {defaultConfig as defaultSelectionConfig, SelectionConfig} from './selection';
-import {Padding} from './spec';
 import {StackOffset} from './stack';
+import {TopLevelProperties} from './toplevelprops';
+import {duplicate, mergeDeep} from './util';
 import {VgRangeScheme} from './vega.schema';
 
 export interface CellConfig {
@@ -111,28 +112,10 @@ export const defaultOverlayConfig: OverlayConfig = {
 
 export type RangeConfig = (number|string)[] | VgRangeScheme | {step: number};
 
-export interface Config {
+export interface Config  extends TopLevelProperties {
   // TODO: add this back once we have top-down layout approach
   // width?: number;
   // height?: number;
-  // padding?: number|string;
-  /**
-   * The width and height of the on-screen viewport, in pixels. If necessary, clipping and scrolling will be applied.
-   */
-  viewport?: number;
-  /**
-   * CSS color property to use as background of visualization. Default is `"transparent"`.
-   */
-  background?: string;
-
-  /**
-   * The default visualization padding, in pixels, from the edge of the visualization canvas to the data rectangle. This can be a single number or an object with `"top"`, `"left"`, `"right"`, `"bottom"` properties.
-   *
-   * __Default value__: `5`
-   *
-   * * @minimum 0
-   */
-  padding?: Padding;
 
   /**
    * D3 Number format for axis labels and text tables. For example "s" for SI units.
@@ -301,3 +284,7 @@ export const defaultConfig: Config = {
 
   selection: defaultSelectionConfig,
 };
+
+export function initConfig(config: Config) {
+  return mergeDeep(duplicate(defaultConfig), config);
+}

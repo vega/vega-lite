@@ -16,17 +16,17 @@ import {LayerModel} from './layer';
 import {Model} from './model';
 import {UnitModel} from './unit';
 
-export function buildModel(spec: Spec, parent: Model, parentGivenName: string): Model {
+export function buildModel(spec: Spec, parent: Model, parentGivenName: string, config: Config): Model {
   if (isFacetSpec(spec)) {
-    return new FacetModel(spec, parent, parentGivenName);
+    return new FacetModel(spec, parent, parentGivenName, config);
   }
 
   if (isLayerSpec(spec)) {
-    return new LayerModel(spec, parent, parentGivenName);
+    return new LayerModel(spec, parent, parentGivenName, config);
   }
 
   if (isUnitSpec(spec)) {
-    return new UnitModel(spec, parent, parentGivenName);
+    return new UnitModel(spec, parent, parentGivenName, config);
   }
 
   throw new Error(log.message.INVALID_SPEC);

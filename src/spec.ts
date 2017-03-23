@@ -13,17 +13,25 @@ import * as log from './log';
 import {AREA, isPrimitiveMark, LINE, Mark, MarkDef, POINT} from './mark';
 import {SelectionDef} from './selection';
 import {stack} from './stack';
+import {TopLevelProperties} from './toplevelprops';
 import {Transform} from './transform';
 import {contains, duplicate, extend, hash, keys, omit, pick, vals} from './util';
 
-export type Padding = number | {top?: number, bottom?: number, left?: number, right?: number};
-
-export interface BaseSpec {
+export type TopLevel<S extends BaseSpec> = S & TopLevelProperties & {
   /**
    * URL to JSON schema for this Vega-Lite specification.
    * @format uri
    */
   $schema?: string;
+
+  /**
+   * Configuration object
+   */
+  config?: Config;
+};
+
+
+export interface BaseSpec {
 
   /**
    * Name of the visualization for later reference.
@@ -37,28 +45,14 @@ export interface BaseSpec {
   description?: string;
 
   /**
-   * The default visualization padding, in pixels, from the edge of the visualization canvas to the data rectangle. This can be a single number or an object with `"top"`, `"left"`, `"right"`, `"bottom"` properties.
-   *
-   * __Default value__: `5`
-   *
-   * @minimum 0
-   */
-  padding?: Padding;
-
-  /**
    * An object describing the data source
    */
   data?: Data;
 
   /**
-   * An array of transforms.
+   * An object describing filter and new field calculation.
    */
   transform?: Transform[];
-
-  /**
-   * Configuration object
-   */
-  config?: Config;
 }
 
 export interface GenericUnitSpec<M, E extends Encoding> extends BaseSpec {
@@ -124,22 +118,13 @@ export type ExtendedSpec = GenericSpec<FacetedUnitSpec>;
 
 export type Spec = GenericSpec<UnitSpec>;
 
+export type TopLevelExtendedSpec = TopLevel<ExtendedSpec>;
+
 /* Custom type guards */
 
 
 export function isFacetSpec(spec: GenericSpec<GenericUnitSpec<any, any>>): spec is GenericFacetSpec<GenericUnitSpec<any, any>> {
   return spec['facet'] !== undefined;
-}
-
-export function isFacetedUnitSpec(spec: ExtendedSpec): spec is FacetedUnitSpec {
-  if (isUnitSpec(spec)) {
-    const hasRow = channelHasField(spec.encoding, ROW);
-    const hasColumn = channelHasField(spec.encoding, COLUMN);
-
-    return hasRow || hasColumn;
-  }
-
-  return false;
 }
 
 export function isUnitSpec(spec: ExtendedSpec | Spec): spec is FacetedUnitSpec | UnitSpec {
@@ -154,46 +139,49 @@ export function isLayerSpec(spec: ExtendedSpec | Spec): spec is GenericLayerSpec
  * Decompose extended unit specs into composition of pure unit specs.
  */
 // TODO: consider moving this to another file.  Maybe vl.spec.normalize or vl.normalize
-export function normalize(spec: ExtendedSpec): Spec {
+export function normalize(spec: TopLevel<ExtendedSpec>): Spec {
   if (isFacetSpec(spec)) {
-    return normalizeFacet(spec);
+    return normalizeFacet(spec, spec.config);
   }
   if (isLayerSpec(spec)) {
-    return normalizeLayer(spec);
-  }
-  if (isFacetedUnitSpec(spec)) {
-    return normalizeFacetedUnit(spec);
+    return normalizeLayer(spec, spec.config);
   }
   if (isUnitSpec(spec)) {
-    return normalizeNonFacetUnit(spec);
+    const hasRow = channelHasField(spec.encoding, ROW);
+    const hasColumn = channelHasField(spec.encoding, COLUMN);
+
+    if (hasRow || hasColumn) {
+      return normalizeFacetedUnit(spec, spec.config);
+    }
+    return normalizeNonFacetUnit(spec, spec.config);
   }
   throw new Error(log.message.INVALID_SPEC);
 }
 
-function normalizeNonFacet(spec: GenericLayerSpec<LayeredUnitSpec> | LayeredUnitSpec) {
+function normalizeNonFacet(spec: GenericLayerSpec<LayeredUnitSpec> | LayeredUnitSpec, config: Config) {
   if (isLayerSpec(spec)) {
-    return normalizeLayer(spec);
+    return normalizeLayer(spec, config);
   }
-  return normalizeNonFacetUnit(spec);
+  return normalizeNonFacetUnit(spec, config);
 }
 
-function normalizeFacet(spec: GenericFacetSpec<LayeredUnitSpec>): FacetSpec {
+function normalizeFacet(spec: GenericFacetSpec<LayeredUnitSpec>, config: Config): FacetSpec {
   const {spec: subspec, ...rest} = spec;
   return {
     ...rest,
-    spec: normalizeNonFacet(subspec)
+    spec: normalizeNonFacet(subspec, config)
   };
 }
 
-function normalizeLayer(spec: GenericLayerSpec<LayeredUnitSpec>): LayerSpec {
+function normalizeLayer(spec: GenericLayerSpec<LayeredUnitSpec>, config: Config): LayerSpec {
   const {layer: layer, ...rest} = spec;
   return {
     ...rest,
-    layer: layer.map(normalizeNonFacet)
+    layer: layer.map((subspec) => normalizeNonFacet(subspec, config))
   };
 }
 
-function normalizeFacetedUnit(spec: FacetedUnitSpec): FacetSpec {
+function normalizeFacetedUnit(spec: FacetedUnitSpec, config: Config): FacetSpec {
   // New encoding in the inside spec should not contain row / column
   // as row/column should be moved to facet
   const {row: row, column: column, ...encoding} = spec.encoding;
@@ -210,7 +198,7 @@ function normalizeFacetedUnit(spec: FacetedUnitSpec): FacetSpec {
     spec: normalizeNonFacetUnit({
       mark,
       encoding
-    })
+    }, config)
   };
 }
 
@@ -219,8 +207,7 @@ function isNonFacetUnitSpecWithPrimitiveMark(spec: GenericUnitSpec<string | Mark
     return isPrimitiveMark(spec.mark);
 }
 
-function normalizeNonFacetUnit(spec: GenericUnitSpec<string | MarkDef, Encoding>) {
-  const config = spec.config;
+function normalizeNonFacetUnit(spec: GenericUnitSpec<string | MarkDef, Encoding>, config: Config) {
   const overlayConfig = config && config.overlay;
   const overlayWithLine = overlayConfig  && spec.mark === AREA &&
     contains(['linepoint', 'line'], overlayConfig.area);
@@ -237,7 +224,7 @@ function normalizeNonFacetUnit(spec: GenericUnitSpec<string | MarkDef, Encoding>
 
     // TODO: consider moving this to become another case of compositeMark
     if (overlayWithPoint || overlayWithLine) {
-      return normalizeOverlay(spec, overlayWithPoint, overlayWithLine);
+      return normalizeOverlay(spec, overlayWithPoint, overlayWithLine, config);
     }
 
     return spec; // Nothing to normalize
@@ -269,18 +256,18 @@ function normalizeRangedUnit(spec: UnitSpec) {
 
 
 // FIXME(#1804): rewrite this
-function normalizeOverlay(spec: UnitSpec, overlayWithPoint: boolean, overlayWithLine: boolean): LayerSpec {
+function normalizeOverlay(spec: UnitSpec, overlayWithPoint: boolean, overlayWithLine: boolean, config: Config): LayerSpec {
   let outerProps = ['name', 'description', 'data', 'transform'];
   let baseSpec = omit(spec, outerProps.concat('config'));
 
-  let baseConfig = duplicate(spec.config);
+  let baseConfig = duplicate(config);
   delete baseConfig.overlay;
   // TODO: remove shape, size
 
   // Need to copy stack config to overlayed layer
   const stacked = stack(spec.mark,
     spec.encoding,
-    spec.config ? spec.config.stack : undefined
+    config ? config.stack : undefined
   );
 
   const layerSpec = {
@@ -296,7 +283,7 @@ function normalizeOverlay(spec: UnitSpec, overlayWithPoint: boolean, overlayWith
     // TODO: remove shape, size
     let markConfig = extend({},
       defaultOverlayConfig.lineStyle,
-      spec.config.overlay.lineStyle,
+      config.overlay.lineStyle,
       stacked ? {stacked: stacked.offset} : null
     );
     if (keys(markConfig).length > 0) {
@@ -313,7 +300,7 @@ function normalizeOverlay(spec: UnitSpec, overlayWithPoint: boolean, overlayWith
 
     let markConfig = extend({},
       defaultOverlayConfig.pointStyle,
-      spec.config.overlay.pointStyle,
+      config.overlay.pointStyle,
       stacked ? {stacked: stacked.offset} : null
     );
     if (keys(markConfig).length > 0) {
@@ -367,10 +354,11 @@ export function fieldDefs(spec: ExtendedSpec | ExtendedFacetSpec): FieldDef[] {
   return vals(fieldDefIndex(spec));
 };
 
-export function isStacked(spec: FacetedUnitSpec): boolean {
+export function isStacked(spec: TopLevel<FacetedUnitSpec>, config?: Config): boolean {
+  config = config || spec.config;
   if (isPrimitiveMark(spec.mark)) {
     return stack(spec.mark, spec.encoding,
-            spec.config ? spec.config.stack : undefined
+            config ? config.stack : undefined
           ) !== null;
   }
   return false;
