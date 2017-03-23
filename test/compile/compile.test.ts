@@ -16,7 +16,7 @@ describe('Compile', function() {
   });
 
   describe('compile', () => {
-    it('should return a spec with basic top-level properties, size signals, data and marks', () => {
+    it('should return a spec with default top-level properties, size signals, data and marks', () => {
       const spec = compile({
         "data": {
           "values": [{"a": "A","b": 28}]
@@ -26,6 +26,38 @@ describe('Compile', function() {
       }).spec;
 
       assert.equal(spec.padding, 5);
+      assert.equal(spec.autosize, 'pad');
+      assert.deepEqual(spec.signals, [
+        {
+          name: 'width',
+          update: "data('layout')[0].width"
+        },
+        {
+          name: 'height',
+          update: "data('layout')[0].height"
+        },
+        {
+          name: 'unit',
+          value: {},
+          on: [{events: 'mousemove', update: 'group()._id ? group() : unit'}]
+        }
+      ]);
+
+      assert.equal(spec.data.length, 2); // just source and layout
+      assert.equal(spec.marks.length, 1); // just the root group
+    });
+
+    it('should return a spec with specified top-level properties, size signals, data and marks', () => {
+      const spec = compile({
+        "padding": 123,
+        "data": {
+          "values": [{"a": "A","b": 28}]
+        },
+        "mark": "point",
+        "encoding": {}
+      }).spec;
+
+      assert.equal(spec.padding, 123);
       assert.equal(spec.autosize, 'pad');
       assert.deepEqual(spec.signals, [
         {

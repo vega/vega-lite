@@ -1,6 +1,6 @@
 import {Axis} from '../axis';
 import {Channel, COLUMN, ROW, X, Y} from '../channel';
-import {Config, defaultConfig} from '../config';
+import {Config} from '../config';
 import {forEach} from '../encoding';
 import {Facet} from '../facet';
 import {FieldDef, normalize} from '../fielddef';
@@ -9,7 +9,7 @@ import * as log from '../log';
 import {Scale} from '../scale';
 import {FacetSpec} from '../spec';
 import {StackProperties} from '../stack';
-import {contains, Dict, duplicate, extend, flatten, keys, mergeDeep, vals} from '../util';
+import {contains, Dict, duplicate, extend, flatten, keys, vals} from '../util';
 import {VgData, VgEncodeEntry} from '../vega.schema';
 
 import {parseAxisComponent, parseGridAxis, parseMainAxis} from './axis/parse';
@@ -54,24 +54,18 @@ export class FacetModel extends Model {
     column?: number;
   } = {};
 
-  constructor(spec: FacetSpec, parent: Model, parentGivenName: string) {
-    super(spec, parent, parentGivenName);
+  constructor(spec: FacetSpec, parent: Model, parentGivenName: string, config: Config) {
+    super(spec, parent, parentGivenName, config);
 
-    // Config must be initialized before child as it gets cascaded to the child
-    const config = this.config = this.initConfig(spec.config, parent);
-
-    const child  = this.child = buildModel(spec.spec, this, this.getName('child'));
+    const child  = this.child = buildModel(spec.spec, this, this.getName('child'), config);
     this.children = [child];
 
     const facet  = this.facet = this.initFacet(spec.facet);
-    this.scales  = this.initScalesAndSpacing(facet, config);
-    this.axes   = this.initAxis(facet, config, child);
+    this.scales  = this.initScalesAndSpacing(facet, this.config);
+    this.axes   = this.initAxis(facet, this.config, child);
     this.legends = {};
   }
 
-  private initConfig(specConfig: Config, parent: Model) {
-    return mergeDeep(duplicate(defaultConfig), parent ? parent.config : {}, specConfig);
-  }
 
   private initFacet(facet: Facet) {
     // clone to prevent side effect to the original spec

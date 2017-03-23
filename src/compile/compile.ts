@@ -1,16 +1,17 @@
 /**
  * Module for compiling Vega-lite spec into Vega spec.
  */
-
+import {Config, initConfig} from '../config';
 import {LAYOUT} from '../data';
 import * as log from '../log';
-import {ExtendedSpec, normalize} from '../spec';
+import {ExtendedSpec, normalize, TopLevel} from '../spec';
+import {extractTopLevelProperties, TopLevelProperties} from '../toplevelprops';
 import {extend} from '../util';
 import {buildModel} from './common';
 import {Model} from './model';
 import {assembleTopLevelSignals} from './selection/selection';
 
-export function compile(inputSpec: ExtendedSpec, logger?: log.LoggerInterface) {
+export function compile(inputSpec: TopLevel<ExtendedSpec>, logger?: log.LoggerInterface) {
   if (logger) {
     // set the singleton logger to the provided logger
     log.set(logger);
@@ -21,8 +22,9 @@ export function compile(inputSpec: ExtendedSpec, logger?: log.LoggerInterface) {
     // (Decompose all extended unit specs into composition of unit spec.)
     const spec = normalize(inputSpec);
 
-    // 2. Instantiate the model with default properties
-    const model = buildModel(spec, null, '');
+    // 2. Instantiate the model with default config
+    const config = initConfig(inputSpec.config);
+    const model = buildModel(spec, null, '', config);
 
     // 3. Parse each part of the model to produce components that will be assembled later
     // We traverse the whole tree to parse once for each type of components
@@ -31,7 +33,7 @@ export function compile(inputSpec: ExtendedSpec, logger?: log.LoggerInterface) {
     model.parse();
 
     // 4. Assemble a Vega Spec from the parsed components in 3.
-    return assemble(model);
+    return assemble(model, getTopLevelProperties(inputSpec, config));
   } finally {
     // Reset the singleton logger if a logger is provided
     if (logger) {
@@ -40,13 +42,22 @@ export function compile(inputSpec: ExtendedSpec, logger?: log.LoggerInterface) {
   }
 }
 
-function assemble(model: Model) {
+
+function getTopLevelProperties(topLevelSpec: TopLevel<any>, config: Config) {
+  return {
+    ...extractTopLevelProperties(config),
+    ...extractTopLevelProperties(topLevelSpec),
+  };
+}
+
+function assemble(model: Model, topLevelProperties: TopLevelProperties) {
   // TODO: change type to become VgSpec
   const output = extend(
     {
       $schema: 'http://vega.github.io/schema/vega/v3.0.json',
     },
-    topLevelBasicProperties(model),
+    {autosize: 'pad'}, // Currently we don't support custom autosize
+    topLevelProperties,
     {
       // Map calculated layout width and height to width and height signals.
       signals: [
@@ -72,17 +83,6 @@ function assemble(model: Model) {
     spec: output
     // TODO: add warning / errors here
   };
-}
-
-export function topLevelBasicProperties(model: Model) {
-  const config = model.config;
-  return extend(
-    // TODO: Add other top-level basic properties (#1778)
-    {padding: model.padding || config.padding},
-    {autosize: 'pad'},
-    config.viewport ? {viewport: config.viewport} : {},
-    config.background ? {background: config.background} : {}
-  );
 }
 
 export function assembleRootGroup(model: Model) {

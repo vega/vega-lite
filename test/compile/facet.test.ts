@@ -5,21 +5,22 @@ import {assert} from 'chai';
 import * as log from '../../src/log';
 
 import {ROW, SHAPE} from '../../src/channel';
-import {FacetModel} from '../../src/compile/facet';
 import * as facet from '../../src/compile/facet';
 import {defaultConfig} from '../../src/config';
 import {Facet} from '../../src/facet';
 import {POINT} from '../../src/mark';
-import {FacetSpec} from '../../src/spec';
 import {ORDINAL} from '../../src/type';
 import {parseFacetModel} from '../util';
 
 describe('FacetModel', function() {
   it('should say it is facet', function() {
-    const model = new FacetModel({facet: {}, spec: {
-      mark: POINT,
-      encoding: {}
-    }} as FacetSpec, null, null);
+    const model = parseFacetModel({
+      facet: {},
+      spec: {
+        mark: POINT,
+        encoding: {}
+      }
+    });
     assert(!model.isUnit());
     assert(model.isFacet());
     assert(!model.isLayer());

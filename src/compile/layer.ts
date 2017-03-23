@@ -1,6 +1,6 @@
 import {Axis} from '../axis';
 import {Channel} from '../channel';
-import {CellConfig, Config, defaultConfig} from '../config';
+import {CellConfig, Config} from '../config';
 import {isUrlData} from '../data';
 import {FieldDef} from '../fielddef';
 import {Legend} from '../legend';
@@ -8,7 +8,7 @@ import {FILL_STROKE_CONFIG} from '../mark';
 import {Scale} from '../scale';
 import {LayerSpec} from '../spec';
 import {StackProperties} from '../stack';
-import {Dict, duplicate, flatten, keys, mergeDeep} from '../util';
+import {Dict, flatten, keys} from '../util';
 import {isSignalRefDomain, VgData, VgEncodeEntry, VgScale} from '../vega.schema';
 
 import {applyConfig, buildModel} from './common';
@@ -47,21 +47,17 @@ export class LayerModel extends Model {
    */
   public readonly height: number;
 
-  constructor(spec: LayerSpec, parent: Model, parentGivenName: string) {
-    super(spec, parent, parentGivenName);
+  constructor(spec: LayerSpec, parent: Model, parentGivenName: string, config: Config) {
+    super(spec, parent, parentGivenName, config);
 
     this.width = spec.width;
     this.height = spec.height;
 
-    this.config = this.initConfig(spec.config, parent);
     this.children = spec.layer.map((layer, i) => {
+      // FIXME: this is not always the case
       // we know that the model has to be a unit model because we pass in a unit spec
-      return buildModel(layer, this, this.getName('layer_' + i)) as UnitModel;
+      return buildModel(layer, this, this.getName('layer_' + i), config) as UnitModel;
     });
-  }
-
-  private initConfig(specConfig: Config, parent: Model) {
-    return mergeDeep(duplicate(defaultConfig), specConfig, parent ? parent.config : {});
   }
 
   public channelHasField(channel: Channel): boolean {

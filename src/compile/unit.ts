@@ -1,15 +1,15 @@
 import {Axis} from '../axis';
 import {Channel, NONSPATIAL_SCALE_CHANNELS, UNIT_CHANNELS, UNIT_SCALE_CHANNELS, X, X2,  Y, Y2} from '../channel';
-import {CellConfig, Config, defaultConfig} from '../config';
+import {CellConfig, Config} from '../config';
 import {SOURCE, SUMMARY} from '../data';
 import {dropInvalidFieldDefs, Encoding} from '../encoding';
 import * as vlEncoding from '../encoding'; // TODO: remove
 import {field, FieldDef, FieldRefOption, isFieldDef} from '../fielddef';
 import {Legend} from '../legend';
 import {FILL_STROKE_CONFIG, isMarkDef, Mark, MarkDef, TEXT as TEXT_MARK} from '../mark';
-import {hasDiscreteDomain, Scale, ScaleConfig} from '../scale';
+import {hasDiscreteDomain, Scale} from '../scale';
 import {UnitSpec} from '../spec';
-import {Dict, duplicate, extend, mergeDeep} from '../util';
+import {Dict, duplicate, extend} from '../util';
 import {VgData} from '../vega.schema';
 
 import {SelectionDef} from '../selection';
@@ -46,7 +46,6 @@ export class UnitModel extends Model {
 
   public readonly markDef: MarkDef & {filled: boolean};
   public readonly encoding: Encoding;
-
   protected readonly selection: Dict<SelectionDef> = {};
   protected readonly scales: Dict<Scale> = {};
   protected readonly axes: Dict<Axis> = {};
@@ -55,8 +54,11 @@ export class UnitModel extends Model {
   public readonly stack: StackProperties;
   public children: Model[] = [];
 
-  constructor(spec: UnitSpec, parent: Model, parentGivenName: string) {
-    super(spec, parent, parentGivenName);
+  constructor(spec: UnitSpec, parent: Model, parentGivenName: string, cfg: Config) {
+    super(spec, parent, parentGivenName, cfg);
+
+    // FIXME(#2041): copy config.facet.cell to config.cell -- this seems incorrect and should be rewritten
+    this.initFacetCellConfig();
 
     // use top-level width / height or parent's top-level width / height
 
@@ -69,18 +71,15 @@ export class UnitModel extends Model {
     const mark = isMarkDef(spec.mark) ? spec.mark.type : spec.mark;
     const encoding = this.encoding = dropInvalidFieldDefs(mark, spec.encoding || {});
 
-    // TODO?: ideally we should use config only inside this constructor
-    const config = this.config = this.initConfig(spec.config, parent);
-
     // calculate stack properties
-    this.stack = stack(mark, encoding, config.stack);
-    this.scales = this.initScales(mark, encoding, config, providedWidth, providedHeight);
+    this.stack = stack(mark, encoding, this.config.stack);
+    this.scales = this.initScales(mark, encoding, providedWidth, providedHeight);
 
-    this.markDef = initMarkDef(spec.mark, encoding, this.scales, config);
-    this.encoding = initEncoding(mark, encoding, this.stack, config);
+    this.markDef = initMarkDef(spec.mark, encoding, this.scales, this.config);
+    this.encoding = initEncoding(mark, encoding, this.stack, this.config);
 
-    this.axes = this.initAxes(encoding, config);
-    this.legends = this.initLegend(encoding, config);
+    this.axes = this.initAxes(encoding);
+    this.legends = this.initLegend(encoding);
 
     // Selections will be initialized upon parse.
     this.selection = spec.selection;
@@ -88,35 +87,30 @@ export class UnitModel extends Model {
     // width / height
     const {width = this.width, height = this.height} = this.initSize(mark, this.scales,
       providedWidth,
-      providedHeight,
-      config.cell, config.scale
+      providedHeight
     );
     this.width = width;
     this.height = height;
   }
 
-
-  /**
-   * Init config by merging config from parent and, if applicable, from facet config
-   */
-  private initConfig(specConfig: Config, parent: Model) {
-    let config = mergeDeep(duplicate(defaultConfig), parent ? parent.config : {}, specConfig);
-    let hasFacetParent = false;
-    while (parent !== null) {
-      if (parent.isFacet()) {
-        hasFacetParent = true;
+  private initFacetCellConfig() {
+    const config = this.config;
+    let ancestor = this.parent;
+    let hasFacetAncestor = false;
+    while (ancestor !== null) {
+      if (ancestor.isFacet()) {
+        hasFacetAncestor = true;
         break;
       }
-      parent = parent.parent;
+      ancestor = ancestor.parent;
     }
 
-    if (hasFacetParent) {
+    if (hasFacetAncestor) {
       config.cell = extend({}, config.cell, config.facet.cell);
     }
-    return config;
   }
 
-  private initScales(mark: Mark, encoding: Encoding, config: Config, topLevelWidth:number, topLevelHeight: number): Dict<Scale> {
+  private initScales(mark: Mark, encoding: Encoding, topLevelWidth:number, topLevelHeight: number): Dict<Scale> {
     const xyRangeSteps: number[] = [];
 
     return UNIT_SCALE_CHANNELS.reduce((scales, channel) => {
@@ -125,7 +119,7 @@ export class UnitModel extends Model {
           (channel === Y && vlEncoding.channelHasField(encoding, Y2))
         ) {
         const scale = scales[channel] = initScale(
-          channel, encoding[channel], config, mark,
+          channel, encoding[channel], this.config, mark,
           channel === X ? topLevelWidth : channel === Y ? topLevelHeight : undefined,
           xyRangeSteps // for determine point / bar size
         );
@@ -143,7 +137,10 @@ export class UnitModel extends Model {
   // TODO: consolidate this with scale?  Current scale range is in parseScale (later),
   // but not in initScale because scale range depends on size,
   // but size depends on scale type and rangeStep
-  private initSize(mark: Mark, scale: Dict<Scale>, width: number, height: number, cellConfig: CellConfig, scaleConfig: ScaleConfig) {
+  private initSize(mark: Mark, scale: Dict<Scale>, width: number, height: number) {
+    const cellConfig = this.config.cell;
+    const scaleConfig = this.config.scale;
+
     if (width === undefined) {
       if (scale[X]) {
         if (!hasDiscreteDomain(scale[X].type) || !scale[X].rangeStep) {
@@ -178,7 +175,7 @@ export class UnitModel extends Model {
     return {width, height};
   }
 
-  private initAxes(encoding: Encoding, config: Config): Dict<Axis> {
+  private initAxes(encoding: Encoding): Dict<Axis> {
     return [X, Y].reduce(function(_axis, channel) {
       // Position Axis
 
@@ -200,7 +197,7 @@ export class UnitModel extends Model {
     }, {});
   }
 
-  private initLegend(encoding: Encoding, config: Config): Dict<Legend> {
+  private initLegend(encoding: Encoding): Dict<Legend> {
     return NONSPATIAL_SCALE_CHANNELS.reduce(function(_legend, channel) {
       const channelDef = encoding[channel];
       if (isFieldDef(channelDef)) {
