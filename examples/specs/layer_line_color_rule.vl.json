@@ -19,9 +19,9 @@
           "aggregate": "mean"
         },
         "size": {"value": 2},
-        "color": {"field": "symbol","type": "nominal"}
-      },
-      "config": {"mark": {"opacity": 0.5}}
+        "color": {"field": "symbol","type": "nominal"},
+        "opacity": {"value": 0.5}
+      }
     }
   ]
 }
