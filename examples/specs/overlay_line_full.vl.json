@@ -17,8 +17,8 @@
       "encoding": {
         "x": {"field": "date","type": "temporal"},
         "y": {"field": "price","type": "quantitative"}
-      },
-      "config": {"mark": {"filled": true}}
+      }
     }
-  ]
+  ],
+  "config": {"mark": {"filled": true}}
 }

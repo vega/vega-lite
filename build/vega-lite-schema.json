@@ -105,10 +105,6 @@
                     },
                     "type": "array"
                 },
-                "viewport": {
-                    "description": "The width and height of the on-screen viewport, in pixels. If necessary, clipping and scrolling will be applied.",
-                    "type": "number"
-                },
                 "width": {
                     "type": "number"
                 }
@@ -210,10 +206,6 @@
                         ]
                     },
                     "type": "array"
-                },
-                "viewport": {
-                    "description": "The width and height of the on-screen viewport, in pixels. If necessary, clipping and scrolling will be applied.",
-                    "type": "number"
                 }
             },
             "required": [
@@ -317,10 +309,6 @@
                         ]
                     },
                     "type": "array"
-                },
-                "viewport": {
-                    "description": "The width and height of the on-screen viewport, in pixels. If necessary, clipping and scrolling will be applied.",
-                    "type": "number"
                 },
                 "width": {
                     "type": "number"
@@ -1457,10 +1445,6 @@
                 "timeFormat": {
                     "description": "Default datetime format for axis and legend labels. The format can be set directly on each axis and legend.",
                     "type": "string"
-                },
-                "viewport": {
-                    "description": "The width and height of the on-screen viewport, in pixels. If necessary, clipping and scrolling will be applied.",
-                    "type": "number"
                 }
             },
             "type": "object"

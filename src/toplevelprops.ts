@@ -1,14 +1,9 @@
 
 export type Padding = number | {top?: number, bottom?: number, left?: number, right?: number};
 export interface TopLevelProperties {
-
   // Current we don't support autosize yet.  Once we do, we have to modify compile.ts to fix this.
   // autosize?: ...;
 
-  /**
-   * The width and height of the on-screen viewport, in pixels. If necessary, clipping and scrolling will be applied.
-   */
-  viewport?: number;
   /**
    * CSS color property to use as background of visualization. Default is `"transparent"`.
    */
@@ -22,12 +17,10 @@ export interface TopLevelProperties {
    * @minimum 0
    */
   padding?: Padding;
-
-
 }
 
 const TOP_LEVEL_PROPERTIES: (keyof TopLevelProperties)[] = [
-  'viewport', 'background', 'padding'
+  'background', 'padding'
 ];
 
 export function extractTopLevelProperties<T extends TopLevelProperties>(t: T) {
