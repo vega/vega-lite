@@ -1,5 +1,7 @@
 {
   "$schema": "https://vega.github.io/schema/vega-lite/v2.json",
+  "width": 300,
+  "height": 200,
   "data": {"url": "data/unemployment-across-industries.json"},
   "mark": "area",
   "encoding": {
@@ -11,9 +13,5 @@
     "y": {
       "aggregate": "sum", "field": "count","type": "quantitative"
     }
-  },
-  "config": {
-    "cell": {"width": 300, "height": 200},
-    "axis": {"domainWidth": 0}
   }
 }

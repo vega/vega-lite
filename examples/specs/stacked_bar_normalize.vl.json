@@ -9,7 +9,8 @@
   "encoding": {
     "y": {
       "aggregate": "sum", "field": "people", "type": "quantitative",
-      "axis": {"title": "population"}
+      "axis": {"title": "population"},
+      "stack":  "normalize"
     },
     "x": {
       "field": "age", "type": "ordinal",
@@ -19,6 +20,5 @@
       "field": "gender", "type": "nominal",
       "scale": {"range": ["#EA98D2", "#659CCA"]}
     }
-  },
-  "config": {"stack":  "normalize"}
+  }
 }

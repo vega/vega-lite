@@ -255,6 +255,7 @@
             "axes": [
                 {
                     "scale": "x",
+                    "domain": false,
                     "orient": "bottom",
                     "tickCount": 5,
                     "title": "YEARMONTH(date)",
