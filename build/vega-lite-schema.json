@@ -254,6 +254,9 @@
                     "description": "Color of the title, can be in hex color code or regular color name.",
                     "type": "string"
                 },
+                "titleEllipsis": {
+                    "type": "string"
+                },
                 "titleFont": {
                     "description": "Font of the title.",
                     "type": "string"
@@ -1938,6 +1941,10 @@
                     "minimum": 0,
                     "type": "number"
                 },
+                "labelLimit": {
+                    "description": "Maximum allowed pixel width of axis tick labels.",
+                    "type": "number"
+                },
                 "labelOffset": {
                     "description": "The offset of the legend label.",
                     "minimum": 0,
@@ -1995,6 +2002,10 @@
                         "string",
                         "number"
                     ]
+                },
+                "titleLimit": {
+                    "description": "Maximum allowed pixel width of axis titles.",
+                    "type": "number"
                 },
                 "titlePadding": {
                     "description": "The padding, in pixels, between title and legend.",

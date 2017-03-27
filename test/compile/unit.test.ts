@@ -1,6 +1,6 @@
 import {assert} from 'chai';
 
-import {DETAIL, SHAPE, X, Y} from '../../src/channel';
+import {DETAIL, SHAPE, X} from '../../src/channel';
 import {UnitModel} from '../../src/compile/unit';
 import * as log from '../../src/log';
 import {BAR} from '../../src/mark';
@@ -163,8 +163,7 @@ describe('UnitModel', function() {
         encoding: {
           x: {field: 'a', type: 'ordinal', axis: {offset: 345}},
           y: {field: 'b', type: 'ordinal'}
-        },
-        config: {axis: {tickWidth: 123}}
+        }
       });
 
       assert.equal(model.axis(X).offset, 345);

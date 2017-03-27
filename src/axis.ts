@@ -10,10 +10,6 @@ export interface AxisConfig extends VgAxisConfig {
   shortTimeLabels?: boolean;
 }
 
-export const defaultAxisConfig: AxisConfig = {
-  labelLimit: 25,
-};
-
 export interface Axis extends VgAxisBase {
   /**
    * The padding, in pixels, between axis and text labels.

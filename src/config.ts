@@ -1,4 +1,4 @@
-import {AxisConfig, defaultAxisConfig} from './axis';
+import {AxisConfig} from './axis';
 import {defaultLegendConfig, LegendConfig} from './legend';
 import {BarConfig, MarkConfig, TextConfig, TickConfig} from './mark';
 import * as mark from './mark';
@@ -249,7 +249,7 @@ export const defaultConfig: Config = {
 
   overlay: defaultOverlayConfig,
   scale: defaultScaleConfig,
-  axis: defaultAxisConfig,
+  axis: {},
   legend: defaultLegendConfig,
 
   facet: defaultFacetConfig,

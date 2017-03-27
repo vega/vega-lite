@@ -367,6 +367,8 @@ export interface VgAxisConfig extends VgAxisBase {
    */
    titleLimit?: number;
 
+  titleEllipsis?: string;
+
   /**
    * The width, in pixels, of ticks.
    * @minimum 0
