@@ -210,6 +210,16 @@ export interface Config {
   /** Axis Config */
   axis?: AxisConfig;
 
+  axisX?: AxisConfig;
+
+  axisY?: AxisConfig;
+
+  axisLeft?: AxisConfig;
+
+  axisTop?: AxisConfig;
+
+  axisBand?: AxisConfig;
+
   /** Legend Config */
   legend?: LegendConfig;
 
@@ -250,6 +260,11 @@ export const defaultConfig: Config = {
   overlay: defaultOverlayConfig,
   scale: defaultScaleConfig,
   axis: {},
+  axisX: {},
+  axisY: {},
+  axisLeft: {},
+  axisTop: {},
+  axisBand: {},
   legend: defaultLegendConfig,
 
   facet: defaultFacetConfig,

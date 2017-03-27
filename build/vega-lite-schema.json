@@ -926,6 +926,21 @@
                     "$ref": "#/definitions/AxisConfig",
                     "description": "Axis Config"
                 },
+                "axisBand": {
+                    "$ref": "#/definitions/AxisConfig"
+                },
+                "axisLeft": {
+                    "$ref": "#/definitions/AxisConfig"
+                },
+                "axisTop": {
+                    "$ref": "#/definitions/AxisConfig"
+                },
+                "axisX": {
+                    "$ref": "#/definitions/AxisConfig"
+                },
+                "axisY": {
+                    "$ref": "#/definitions/AxisConfig"
+                },
                 "background": {
                     "description": "CSS color property to use as background of visualization. Default is `\"transparent\"`.",
                     "type": "string"
