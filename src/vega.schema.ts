@@ -365,9 +365,7 @@ export interface VgAxisConfig extends VgAxisBase {
   /**
    * Maximum allowed pixel width of axis titles.
    */
-   titleLimit?: number;
-
-  titleEllipsis?: string;
+  titleLimit?: number;
 
   /**
    * The width, in pixels, of ticks.
