@@ -1,0 +1,315 @@
+{
+    "$schema": "http://vega.github.io/schema/vega/v3.0.json",
+    "padding": 5,
+    "autosize": "pad",
+    "signals": [
+        {
+            "name": "width",
+            "update": "data('layout')[0].width"
+        },
+        {
+            "name": "height",
+            "update": "data('layout')[0].height"
+        },
+        {
+            "name": "unit",
+            "value": {},
+            "on": [
+                {
+                    "events": "mousemove",
+                    "update": "group()._id ? group() : unit"
+                }
+            ]
+        }
+    ],
+    "data": [
+        {
+            "name": "source",
+            "url": "data/stocks.csv",
+            "format": {
+                "type": "csv",
+                "parse": {
+                    "date": "date",
+                    "price": "number"
+                }
+            },
+            "transform": [
+                {
+                    "type": "filter",
+                    "expr": "datum[\"date\"] !== null && !isNaN(datum[\"date\"]) && datum[\"price\"] !== null && !isNaN(datum[\"price\"])"
+                },
+                {
+                    "type": "filter",
+                    "expr": "datum.symbol==='GOOG'"
+                },
+                {
+                    "type": "collect",
+                    "sort": {
+                        "field": "date",
+                        "order": "descending"
+                    }
+                }
+            ]
+        },
+        {
+            "name": "layer_1_source",
+            "source": "source",
+            "transform": [
+                {
+                    "type": "filter",
+                    "expr": "datum[\"date\"] !== null && !isNaN(datum[\"date\"]) && datum[\"price\"] !== null && !isNaN(datum[\"price\"])"
+                }
+            ]
+        },
+        {
+            "name": "layout",
+            "values": [
+                {}
+            ],
+            "transform": [
+                {
+                    "type": "formula",
+                    "as": "width",
+                    "expr": "200"
+                },
+                {
+                    "type": "formula",
+                    "as": "height",
+                    "expr": "200"
+                }
+            ]
+        }
+    ],
+    "marks": [
+        {
+            "name": "main",
+            "type": "group",
+            "description": "Google's stock price over time.",
+            "from": {
+                "data": "layout"
+            },
+            "encode": {
+                "update": {
+                    "width": {
+                        "field": "width"
+                    },
+                    "height": {
+                        "field": "height"
+                    },
+                    "fill": {
+                        "value": "transparent"
+                    }
+                }
+            },
+            "marks": [
+                {
+                    "name": "layer_0_pathgroup",
+                    "type": "group",
+                    "from": {
+                        "facet": {
+                            "name": "faceted-path-source",
+                            "data": "source",
+                            "groupby": [
+                                "symbol"
+                            ]
+                        }
+                    },
+                    "encode": {
+                        "update": {
+                            "width": {
+                                "field": {
+                                    "group": "width"
+                                }
+                            },
+                            "height": {
+                                "field": {
+                                    "group": "height"
+                                }
+                            }
+                        }
+                    },
+                    "marks": [
+                        {
+                            "name": "layer_0_marks",
+                            "type": "line",
+                            "from": {
+                                "data": "faceted-path-source"
+                            },
+                            "encode": {
+                                "update": {
+                                    "x": {
+                                        "scale": "x",
+                                        "field": "date"
+                                    },
+                                    "y": {
+                                        "scale": "y",
+                                        "field": "price"
+                                    },
+                                    "stroke": {
+                                        "scale": "color",
+                                        "field": "symbol"
+                                    }
+                                }
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "layer_1_marks",
+                    "type": "symbol",
+                    "role": "point",
+                    "from": {
+                        "data": "layer_1_source"
+                    },
+                    "encode": {
+                        "update": {
+                            "x": {
+                                "scale": "x",
+                                "field": "date"
+                            },
+                            "y": {
+                                "scale": "y",
+                                "field": "price"
+                            },
+                            "fill": {
+                                "scale": "color",
+                                "field": "symbol"
+                            },
+                            "opacity": {
+                                "value": 0.7
+                            }
+                        }
+                    }
+                }
+            ],
+            "scales": [
+                {
+                    "name": "x",
+                    "type": "time",
+                    "domain": {
+                        "fields": [
+                            {
+                                "data": "source",
+                                "field": "date"
+                            },
+                            {
+                                "data": "layer_1_source",
+                                "field": "date"
+                            }
+                        ],
+                        "sort": true
+                    },
+                    "range": [
+                        0,
+                        200
+                    ],
+                    "round": true
+                },
+                {
+                    "name": "y",
+                    "type": "linear",
+                    "domain": {
+                        "fields": [
+                            {
+                                "data": "source",
+                                "field": "price"
+                            },
+                            {
+                                "data": "layer_1_source",
+                                "field": "price"
+                            }
+                        ],
+                        "sort": true
+                    },
+                    "range": [
+                        200,
+                        0
+                    ],
+                    "round": true,
+                    "nice": true,
+                    "zero": true
+                },
+                {
+                    "name": "color",
+                    "type": "ordinal",
+                    "domain": {
+                        "fields": [
+                            {
+                                "data": "source",
+                                "field": "symbol"
+                            },
+                            {
+                                "data": "layer_1_source",
+                                "field": "symbol"
+                            }
+                        ],
+                        "sort": true
+                    },
+                    "range": "category"
+                }
+            ],
+            "axes": [
+                {
+                    "scale": "x",
+                    "orient": "bottom",
+                    "tickCount": 5,
+                    "title": "date",
+                    "zindex": 1,
+                    "encode": {
+                        "labels": {
+                            "update": {
+                                "text": {
+                                    "signal": "timeFormat(datum.value, '%b %d, %Y')"
+                                },
+                                "angle": {
+                                    "value": 270
+                                },
+                                "align": {
+                                    "value": "right"
+                                },
+                                "baseline": {
+                                    "value": "middle"
+                                }
+                            }
+                        }
+                    }
+                },
+                {
+                    "scale": "x",
+                    "domain": false,
+                    "grid": true,
+                    "labels": false,
+                    "orient": "bottom",
+                    "tickCount": 5,
+                    "ticks": false,
+                    "zindex": 0,
+                    "gridScale": "y"
+                },
+                {
+                    "scale": "y",
+                    "format": "s",
+                    "orient": "left",
+                    "title": "price",
+                    "zindex": 1
+                },
+                {
+                    "scale": "y",
+                    "domain": false,
+                    "format": "s",
+                    "grid": true,
+                    "labels": false,
+                    "orient": "left",
+                    "ticks": false,
+                    "zindex": 0,
+                    "gridScale": "x"
+                }
+            ],
+            "legends": [
+                {
+                    "stroke": "color",
+                    "title": "symbol"
+                }
+            ]
+        }
+    ]
+}

@@ -1,8 +1,5 @@
 /node_modules
 /data
-/examples/_original
-/examples/_output
-/examples/_diff
 /examples/images
 /scripts
 /site

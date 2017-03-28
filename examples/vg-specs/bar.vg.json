@@ -1,0 +1,236 @@
+{
+    "$schema": "http://vega.github.io/schema/vega/v3.0.json",
+    "padding": 5,
+    "autosize": "pad",
+    "signals": [
+        {
+            "name": "width",
+            "update": "data('layout')[0].width"
+        },
+        {
+            "name": "height",
+            "update": "data('layout')[0].height"
+        },
+        {
+            "name": "unit",
+            "value": {},
+            "on": [
+                {
+                    "events": "mousemove",
+                    "update": "group()._id ? group() : unit"
+                }
+            ]
+        }
+    ],
+    "data": [
+        {
+            "name": "source",
+            "values": [
+                {
+                    "a": "A",
+                    "b": 28
+                },
+                {
+                    "a": "B",
+                    "b": 55
+                },
+                {
+                    "a": "C",
+                    "b": 43
+                },
+                {
+                    "a": "D",
+                    "b": 91
+                },
+                {
+                    "a": "E",
+                    "b": 81
+                },
+                {
+                    "a": "F",
+                    "b": 53
+                },
+                {
+                    "a": "G",
+                    "b": 19
+                },
+                {
+                    "a": "H",
+                    "b": 87
+                },
+                {
+                    "a": "I",
+                    "b": 52
+                }
+            ],
+            "format": {
+                "type": "json",
+                "parse": {
+                    "b": "number"
+                }
+            },
+            "transform": [
+                {
+                    "type": "filter",
+                    "expr": "datum[\"b\"] !== null && !isNaN(datum[\"b\"])"
+                }
+            ]
+        },
+        {
+            "name": "layout",
+            "source": "source",
+            "transform": [
+                {
+                    "type": "aggregate",
+                    "fields": [
+                        "a"
+                    ],
+                    "ops": [
+                        "distinct"
+                    ]
+                },
+                {
+                    "type": "formula",
+                    "as": "width",
+                    "expr": "max(datum[\"distinct_a\"] - 1 + 2*0.5, 0) * 21"
+                },
+                {
+                    "type": "formula",
+                    "as": "height",
+                    "expr": "200"
+                }
+            ]
+        }
+    ],
+    "marks": [
+        {
+            "name": "main",
+            "type": "group",
+            "description": "A simple bar chart with embedded data.",
+            "from": {
+                "data": "layout"
+            },
+            "encode": {
+                "update": {
+                    "width": {
+                        "field": "width"
+                    },
+                    "height": {
+                        "field": "height"
+                    },
+                    "fill": {
+                        "value": "transparent"
+                    }
+                }
+            },
+            "marks": [
+                {
+                    "name": "marks",
+                    "type": "rect",
+                    "role": "bar",
+                    "from": {
+                        "data": "source"
+                    },
+                    "encode": {
+                        "update": {
+                            "xc": {
+                                "scale": "x",
+                                "field": "a"
+                            },
+                            "width": {
+                                "value": 20
+                            },
+                            "y": {
+                                "scale": "y",
+                                "field": "b"
+                            },
+                            "y2": {
+                                "scale": "y",
+                                "value": 0
+                            },
+                            "fill": {
+                                "value": "#4c78a8"
+                            }
+                        }
+                    }
+                }
+            ],
+            "scales": [
+                {
+                    "name": "x",
+                    "type": "point",
+                    "domain": {
+                        "data": "source",
+                        "field": "a",
+                        "sort": true
+                    },
+                    "range": {
+                        "step": 21
+                    },
+                    "round": true,
+                    "padding": 0.5
+                },
+                {
+                    "name": "y",
+                    "type": "linear",
+                    "domain": {
+                        "data": "source",
+                        "field": "b"
+                    },
+                    "range": [
+                        200,
+                        0
+                    ],
+                    "round": true,
+                    "nice": true,
+                    "zero": true
+                }
+            ],
+            "axes": [
+                {
+                    "scale": "x",
+                    "orient": "bottom",
+                    "tickCount": 5,
+                    "title": "a",
+                    "zindex": 1,
+                    "encode": {
+                        "labels": {
+                            "update": {
+                                "text": {
+                                    "signal": "truncate(datum.value, 25)"
+                                },
+                                "angle": {
+                                    "value": 270
+                                },
+                                "align": {
+                                    "value": "right"
+                                },
+                                "baseline": {
+                                    "value": "middle"
+                                }
+                            }
+                        }
+                    }
+                },
+                {
+                    "scale": "y",
+                    "format": "s",
+                    "orient": "left",
+                    "title": "b",
+                    "zindex": 1
+                },
+                {
+                    "scale": "y",
+                    "domain": false,
+                    "format": "s",
+                    "grid": true,
+                    "labels": false,
+                    "orient": "left",
+                    "ticks": false,
+                    "zindex": 0,
+                    "gridScale": "x"
+                }
+            ]
+        }
+    ]
+}

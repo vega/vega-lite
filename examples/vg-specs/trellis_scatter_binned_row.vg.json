@@ -1,0 +1,376 @@
+{
+    "$schema": "http://vega.github.io/schema/vega/v3.0.json",
+    "padding": 5,
+    "autosize": "pad",
+    "signals": [
+        {
+            "name": "width",
+            "update": "data('layout')[0].width"
+        },
+        {
+            "name": "height",
+            "update": "data('layout')[0].height"
+        },
+        {
+            "name": "unit",
+            "value": {},
+            "on": [
+                {
+                    "events": "mousemove",
+                    "update": "group()._id ? group() : unit"
+                }
+            ]
+        }
+    ],
+    "data": [
+        {
+            "name": "source",
+            "url": "data/cars.json",
+            "format": {
+                "type": "json",
+                "parse": {
+                    "Acceleration": "number",
+                    "Horsepower": "number",
+                    "Miles_per_Gallon": "number"
+                }
+            },
+            "transform": [
+                {
+                    "type": "filter",
+                    "expr": "datum[\"Acceleration\"] !== null && !isNaN(datum[\"Acceleration\"]) && datum[\"Horsepower\"] !== null && !isNaN(datum[\"Horsepower\"]) && datum[\"Miles_per_Gallon\"] !== null && !isNaN(datum[\"Miles_per_Gallon\"])"
+                },
+                {
+                    "type": "extent",
+                    "field": "Acceleration",
+                    "signal": "Acceleration_extent"
+                },
+                {
+                    "type": "bin",
+                    "field": "Acceleration",
+                    "as": [
+                        "bin_Acceleration_start",
+                        "bin_Acceleration_end"
+                    ],
+                    "signal": "Acceleration_bins",
+                    "extent": {
+                        "signal": "Acceleration_extent"
+                    },
+                    "maxbins": 6
+                },
+                {
+                    "type": "formula",
+                    "as": "bin_Acceleration_range",
+                    "expr": "format(datum[\"bin_Acceleration_start\"], 's') + ' - ' + format(datum[\"bin_Acceleration_end\"], 's')"
+                }
+            ]
+        },
+        {
+            "name": "row-source",
+            "source": "source",
+            "transform": [
+                {
+                    "type": "aggregate",
+                    "groupby": [
+                        "bin_Acceleration_range"
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "layout",
+            "source": "source",
+            "transform": [
+                {
+                    "type": "aggregate",
+                    "fields": [
+                        "bin_Acceleration_range"
+                    ],
+                    "ops": [
+                        "distinct"
+                    ]
+                },
+                {
+                    "type": "formula",
+                    "as": "child_width",
+                    "expr": "200"
+                },
+                {
+                    "type": "formula",
+                    "as": "width",
+                    "expr": "datum[\"child_width\"] + 16"
+                },
+                {
+                    "type": "formula",
+                    "as": "child_height",
+                    "expr": "200"
+                },
+                {
+                    "type": "formula",
+                    "as": "height",
+                    "expr": "(datum[\"child_height\"] + 16) * datum[\"distinct_bin_Acceleration_range\"]"
+                }
+            ]
+        }
+    ],
+    "marks": [
+        {
+            "name": "main",
+            "type": "group",
+            "description": "A trellis scatterplot showing Horsepower and Miles per gallons, faceted by binned values of Acceleration.",
+            "from": {
+                "data": "layout"
+            },
+            "encode": {
+                "update": {
+                    "width": {
+                        "field": "width"
+                    },
+                    "height": {
+                        "field": "height"
+                    }
+                }
+            },
+            "marks": [
+                {
+                    "name": "x-axes",
+                    "type": "group",
+                    "encode": {
+                        "update": {
+                            "width": {
+                                "field": {
+                                    "parent": "child_width"
+                                }
+                            },
+                            "height": {
+                                "field": {
+                                    "group": "height"
+                                }
+                            },
+                            "x": {
+                                "value": 8
+                            }
+                        }
+                    },
+                    "axes": [
+                        {
+                            "scale": "x",
+                            "format": "s",
+                            "orient": "bottom",
+                            "tickCount": 5,
+                            "title": "Horsepower",
+                            "zindex": 1
+                        }
+                    ]
+                },
+                {
+                    "name": "y-axes",
+                    "type": "group",
+                    "from": {
+                        "data": "row-source"
+                    },
+                    "encode": {
+                        "update": {
+                            "width": {
+                                "field": {
+                                    "group": "width"
+                                }
+                            },
+                            "height": {
+                                "field": {
+                                    "parent": "child_height"
+                                }
+                            },
+                            "y": {
+                                "scale": "row",
+                                "field": "bin_Acceleration_range",
+                                "offset": 8
+                            }
+                        }
+                    },
+                    "axes": [
+                        {
+                            "scale": "y",
+                            "format": "s",
+                            "orient": "left",
+                            "title": "Miles_per_Gallon",
+                            "zindex": 1
+                        }
+                    ]
+                },
+                {
+                    "name": "cell",
+                    "type": "group",
+                    "from": {
+                        "facet": {
+                            "name": "faceted-data",
+                            "data": "source",
+                            "groupby": [
+                                "bin_Acceleration_range"
+                            ]
+                        }
+                    },
+                    "encode": {
+                        "update": {
+                            "x": {
+                                "value": 8
+                            },
+                            "y": {
+                                "scale": "row",
+                                "field": "bin_Acceleration_range",
+                                "offset": 8
+                            },
+                            "width": {
+                                "field": {
+                                    "parent": "child_width"
+                                }
+                            },
+                            "height": {
+                                "field": {
+                                    "parent": "child_height"
+                                }
+                            },
+                            "stroke": {
+                                "value": "#ccc"
+                            },
+                            "strokeWidth": {
+                                "value": 1
+                            },
+                            "fill": {
+                                "value": "transparent"
+                            }
+                        }
+                    },
+                    "marks": [
+                        {
+                            "name": "child_marks",
+                            "type": "symbol",
+                            "role": "point",
+                            "from": {
+                                "data": "faceted-data"
+                            },
+                            "encode": {
+                                "update": {
+                                    "x": {
+                                        "scale": "x",
+                                        "field": "Horsepower"
+                                    },
+                                    "y": {
+                                        "scale": "y",
+                                        "field": "Miles_per_Gallon"
+                                    },
+                                    "stroke": {
+                                        "value": "#4c78a8"
+                                    },
+                                    "fill": {
+                                        "value": "transparent"
+                                    },
+                                    "opacity": {
+                                        "value": 0.7
+                                    }
+                                }
+                            }
+                        }
+                    ],
+                    "axes": [
+                        {
+                            "scale": "x",
+                            "domain": false,
+                            "format": "s",
+                            "grid": true,
+                            "labels": false,
+                            "orient": "bottom",
+                            "tickCount": 5,
+                            "ticks": false,
+                            "zindex": 0,
+                            "gridScale": "y"
+                        },
+                        {
+                            "scale": "y",
+                            "domain": false,
+                            "format": "s",
+                            "grid": true,
+                            "labels": false,
+                            "orient": "left",
+                            "ticks": false,
+                            "zindex": 0,
+                            "gridScale": "x"
+                        }
+                    ]
+                }
+            ],
+            "scales": [
+                {
+                    "name": "row",
+                    "type": "band",
+                    "domain": {
+                        "data": "source",
+                        "field": "bin_Acceleration_range",
+                        "sort": {
+                            "field": "bin_Acceleration_start",
+                            "op": "min"
+                        }
+                    },
+                    "range": "height",
+                    "round": true
+                },
+                {
+                    "name": "x",
+                    "type": "linear",
+                    "domain": {
+                        "data": "source",
+                        "field": "Horsepower"
+                    },
+                    "range": [
+                        0,
+                        200
+                    ],
+                    "round": true,
+                    "nice": true,
+                    "zero": true
+                },
+                {
+                    "name": "y",
+                    "type": "linear",
+                    "domain": {
+                        "data": "source",
+                        "field": "Miles_per_Gallon"
+                    },
+                    "range": [
+                        200,
+                        0
+                    ],
+                    "round": true,
+                    "nice": true,
+                    "zero": true
+                }
+            ],
+            "axes": [
+                {
+                    "scale": "row",
+                    "domain": false,
+                    "format": "s",
+                    "grid": false,
+                    "orient": "right",
+                    "ticks": false,
+                    "title": "BIN(Acceleration)",
+                    "zindex": 1,
+                    "encode": {
+                        "labels": {
+                            "update": {
+                                "angle": {
+                                    "value": 90
+                                },
+                                "align": {
+                                    "value": "center"
+                                },
+                                "baseline": {
+                                    "value": "bottom"
+                                }
+                            }
+                        }
+                    }
+                }
+            ]
+        }
+    ]
+}

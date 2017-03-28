@@ -1,0 +1,363 @@
+{
+    "$schema": "http://vega.github.io/schema/vega/v3.0.json",
+    "padding": 5,
+    "autosize": "pad",
+    "signals": [
+        {
+            "name": "width",
+            "update": "data('layout')[0].width"
+        },
+        {
+            "name": "height",
+            "update": "data('layout')[0].height"
+        },
+        {
+            "name": "unit",
+            "value": {},
+            "on": [
+                {
+                    "events": "mousemove",
+                    "update": "group()._id ? group() : unit"
+                }
+            ]
+        }
+    ],
+    "data": [
+        {
+            "name": "source",
+            "url": "data/population.json",
+            "format": {
+                "type": "json",
+                "parse": {
+                    "people": "number"
+                }
+            },
+            "transform": [
+                {
+                    "type": "formula",
+                    "as": "gender",
+                    "expr": "datum.sex == 2 ? \"Female\" : \"Male\""
+                },
+                {
+                    "type": "filter",
+                    "expr": "datum[\"people\"] !== null && !isNaN(datum[\"people\"])"
+                },
+                {
+                    "type": "filter",
+                    "expr": "datum.year == 2000"
+                }
+            ]
+        },
+        {
+            "source": "source",
+            "name": "summary",
+            "transform": [
+                {
+                    "type": "aggregate",
+                    "groupby": [
+                        "gender",
+                        "age"
+                    ],
+                    "ops": [
+                        "sum"
+                    ],
+                    "fields": [
+                        "people"
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "stacked",
+            "source": "summary",
+            "transform": [
+                {
+                    "type": "stack",
+                    "groupby": [
+                        "gender",
+                        "age"
+                    ],
+                    "field": "sum_people",
+                    "sort": {
+                        "field": [
+                            "gender"
+                        ],
+                        "order": [
+                            "descending"
+                        ]
+                    },
+                    "as": [
+                        "sum_people_start",
+                        "sum_people_end"
+                    ],
+                    "offset": "zero"
+                }
+            ]
+        },
+        {
+            "name": "column-stacked",
+            "source": "stacked",
+            "transform": [
+                {
+                    "type": "aggregate",
+                    "groupby": [
+                        "age"
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "layout",
+            "source": "stacked",
+            "transform": [
+                {
+                    "type": "aggregate",
+                    "fields": [
+                        "age",
+                        "gender"
+                    ],
+                    "ops": [
+                        "distinct",
+                        "distinct"
+                    ]
+                },
+                {
+                    "type": "formula",
+                    "as": "child_width",
+                    "expr": "max(datum[\"distinct_gender\"] - 1 + 2*0.5, 0) * 6"
+                },
+                {
+                    "type": "formula",
+                    "as": "width",
+                    "expr": "(datum[\"child_width\"] + 4) * datum[\"distinct_age\"]"
+                },
+                {
+                    "type": "formula",
+                    "as": "child_height",
+                    "expr": "200"
+                },
+                {
+                    "type": "formula",
+                    "as": "height",
+                    "expr": "datum[\"child_height\"] + 16"
+                }
+            ]
+        }
+    ],
+    "marks": [
+        {
+            "name": "main",
+            "type": "group",
+            "from": {
+                "data": "layout"
+            },
+            "encode": {
+                "update": {
+                    "width": {
+                        "field": "width"
+                    },
+                    "height": {
+                        "field": "height"
+                    }
+                }
+            },
+            "marks": [
+                {
+                    "name": "y-axes",
+                    "type": "group",
+                    "encode": {
+                        "update": {
+                            "width": {
+                                "field": {
+                                    "group": "width"
+                                }
+                            },
+                            "height": {
+                                "field": {
+                                    "parent": "child_height"
+                                }
+                            },
+                            "y": {
+                                "value": 8
+                            }
+                        }
+                    },
+                    "axes": [
+                        {
+                            "scale": "y",
+                            "format": "s",
+                            "orient": "left",
+                            "title": "population",
+                            "zindex": 1
+                        }
+                    ]
+                },
+                {
+                    "name": "cell",
+                    "type": "group",
+                    "from": {
+                        "facet": {
+                            "name": "faceted-data",
+                            "data": "stacked",
+                            "groupby": [
+                                "age"
+                            ]
+                        }
+                    },
+                    "encode": {
+                        "update": {
+                            "x": {
+                                "scale": "column",
+                                "field": "age",
+                                "offset": 2
+                            },
+                            "y": {
+                                "value": 8
+                            },
+                            "width": {
+                                "field": {
+                                    "parent": "child_width"
+                                }
+                            },
+                            "height": {
+                                "field": {
+                                    "parent": "child_height"
+                                }
+                            },
+                            "stroke": {
+                                "value": "#ccc"
+                            },
+                            "strokeWidth": {
+                                "value": 0
+                            },
+                            "fill": {
+                                "value": "transparent"
+                            }
+                        }
+                    },
+                    "marks": [
+                        {
+                            "name": "child_marks",
+                            "type": "rect",
+                            "role": "bar",
+                            "from": {
+                                "data": "faceted-data"
+                            },
+                            "encode": {
+                                "update": {
+                                    "xc": {
+                                        "scale": "x",
+                                        "field": "gender"
+                                    },
+                                    "width": {
+                                        "value": 5
+                                    },
+                                    "y": {
+                                        "scale": "y",
+                                        "field": "sum_people_end"
+                                    },
+                                    "y2": {
+                                        "scale": "y",
+                                        "field": "sum_people_start"
+                                    },
+                                    "fill": {
+                                        "scale": "color",
+                                        "field": "gender"
+                                    }
+                                }
+                            }
+                        }
+                    ]
+                }
+            ],
+            "scales": [
+                {
+                    "name": "column",
+                    "type": "band",
+                    "domain": {
+                        "data": "stacked",
+                        "field": "age",
+                        "sort": true
+                    },
+                    "range": "width",
+                    "round": true
+                },
+                {
+                    "name": "x",
+                    "type": "point",
+                    "domain": {
+                        "data": "summary",
+                        "field": "gender",
+                        "sort": true
+                    },
+                    "range": {
+                        "step": 6
+                    },
+                    "round": true,
+                    "padding": 0.5
+                },
+                {
+                    "name": "y",
+                    "type": "linear",
+                    "domain": {
+                        "data": "stacked",
+                        "fields": [
+                            "sum_people_start",
+                            "sum_people_end"
+                        ]
+                    },
+                    "range": [
+                        200,
+                        0
+                    ],
+                    "round": true,
+                    "nice": true,
+                    "zero": true
+                },
+                {
+                    "name": "color",
+                    "type": "ordinal",
+                    "domain": {
+                        "data": "summary",
+                        "field": "gender",
+                        "sort": true
+                    },
+                    "range": [
+                        "#EA98D2",
+                        "#659CCA"
+                    ]
+                }
+            ],
+            "axes": [
+                {
+                    "scale": "column",
+                    "domain": false,
+                    "grid": false,
+                    "offset": -8,
+                    "orient": "bottom",
+                    "ticks": false,
+                    "title": "age",
+                    "zindex": 1
+                }
+            ],
+            "legends": [
+                {
+                    "fill": "color",
+                    "title": "gender",
+                    "encode": {
+                        "symbols": {
+                            "update": {
+                                "shape": {
+                                    "value": "square"
+                                },
+                                "strokeWidth": {
+                                    "value": 0
+                                }
+                            }
+                        }
+                    }
+                }
+            ]
+        }
+    ]
+}

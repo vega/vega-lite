@@ -1,0 +1,246 @@
+{
+    "$schema": "http://vega.github.io/schema/vega/v3.0.json",
+    "padding": 5,
+    "autosize": "pad",
+    "signals": [
+        {
+            "name": "width",
+            "update": "data('layout')[0].width"
+        },
+        {
+            "name": "height",
+            "update": "data('layout')[0].height"
+        },
+        {
+            "name": "unit",
+            "value": {},
+            "on": [
+                {
+                    "events": "mousemove",
+                    "update": "group()._id ? group() : unit"
+                }
+            ]
+        }
+    ],
+    "data": [
+        {
+            "name": "source",
+            "url": "data/cars.json",
+            "format": {
+                "type": "json",
+                "parse": {
+                    "Horsepower": "number"
+                }
+            },
+            "transform": [
+                {
+                    "type": "filter",
+                    "expr": "datum[\"Horsepower\"] !== null && !isNaN(datum[\"Horsepower\"])"
+                }
+            ]
+        },
+        {
+            "source": "source",
+            "name": "summary",
+            "transform": [
+                {
+                    "type": "aggregate",
+                    "groupby": [
+                        "Origin",
+                        "Cylinders"
+                    ],
+                    "ops": [
+                        "mean"
+                    ],
+                    "fields": [
+                        "Horsepower"
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "layout",
+            "source": "summary",
+            "transform": [
+                {
+                    "type": "aggregate",
+                    "fields": [
+                        "Cylinders",
+                        "Origin"
+                    ],
+                    "ops": [
+                        "distinct",
+                        "distinct"
+                    ]
+                },
+                {
+                    "type": "formula",
+                    "as": "width",
+                    "expr": "max(datum[\"distinct_Cylinders\"] - 0.1 + 2*0.05, 0) * 21"
+                },
+                {
+                    "type": "formula",
+                    "as": "height",
+                    "expr": "max(datum[\"distinct_Origin\"] - 0.1 + 2*0.05, 0) * 21"
+                }
+            ]
+        }
+    ],
+    "marks": [
+        {
+            "name": "main",
+            "type": "group",
+            "from": {
+                "data": "layout"
+            },
+            "encode": {
+                "update": {
+                    "width": {
+                        "field": "width"
+                    },
+                    "height": {
+                        "field": "height"
+                    },
+                    "fill": {
+                        "value": "transparent"
+                    }
+                }
+            },
+            "marks": [
+                {
+                    "name": "marks",
+                    "type": "rect",
+                    "from": {
+                        "data": "summary"
+                    },
+                    "encode": {
+                        "update": {
+                            "x": {
+                                "scale": "x",
+                                "field": "Cylinders"
+                            },
+                            "width": {
+                                "scale": "x",
+                                "band": true
+                            },
+                            "y": {
+                                "scale": "y",
+                                "field": "Origin"
+                            },
+                            "height": {
+                                "scale": "y",
+                                "band": true
+                            },
+                            "fill": {
+                                "scale": "color",
+                                "field": "mean_Horsepower"
+                            }
+                        }
+                    }
+                }
+            ],
+            "scales": [
+                {
+                    "name": "x",
+                    "type": "band",
+                    "domain": {
+                        "data": "summary",
+                        "field": "Cylinders",
+                        "sort": true
+                    },
+                    "range": {
+                        "step": 21
+                    },
+                    "round": true,
+                    "paddingInner": 0.1,
+                    "paddingOuter": 0.05
+                },
+                {
+                    "name": "y",
+                    "type": "band",
+                    "domain": {
+                        "data": "summary",
+                        "field": "Origin",
+                        "sort": true
+                    },
+                    "range": {
+                        "step": 21
+                    },
+                    "round": true,
+                    "paddingInner": 0.1,
+                    "paddingOuter": 0.05
+                },
+                {
+                    "name": "color",
+                    "type": "sequential",
+                    "domain": {
+                        "data": "summary",
+                        "field": "mean_Horsepower"
+                    },
+                    "range": "heatmap",
+                    "nice": false,
+                    "zero": false
+                }
+            ],
+            "axes": [
+                {
+                    "scale": "x",
+                    "orient": "bottom",
+                    "tickCount": 5,
+                    "title": "Cylinders",
+                    "zindex": 1,
+                    "encode": {
+                        "labels": {
+                            "update": {
+                                "text": {
+                                    "signal": "truncate(datum.value, 25)"
+                                },
+                                "angle": {
+                                    "value": 270
+                                },
+                                "align": {
+                                    "value": "right"
+                                },
+                                "baseline": {
+                                    "value": "middle"
+                                }
+                            }
+                        }
+                    }
+                },
+                {
+                    "scale": "y",
+                    "orient": "left",
+                    "title": "Origin",
+                    "zindex": 1,
+                    "encode": {
+                        "labels": {
+                            "update": {
+                                "text": {
+                                    "signal": "truncate(datum.value, 25)"
+                                }
+                            }
+                        }
+                    }
+                }
+            ],
+            "legends": [
+                {
+                    "fill": "color",
+                    "format": "s",
+                    "title": "MEAN(Horsepower)",
+                    "type": "gradient",
+                    "encode": {
+                        "symbols": {
+                            "update": {
+                                "strokeWidth": {
+                                    "value": 0
+                                }
+                            }
+                        }
+                    }
+                }
+            ]
+        }
+    ]
+}

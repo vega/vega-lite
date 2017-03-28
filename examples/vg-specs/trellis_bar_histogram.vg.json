@@ -1,0 +1,388 @@
+{
+    "$schema": "http://vega.github.io/schema/vega/v3.0.json",
+    "padding": 5,
+    "autosize": "pad",
+    "signals": [
+        {
+            "name": "width",
+            "update": "data('layout')[0].width"
+        },
+        {
+            "name": "height",
+            "update": "data('layout')[0].height"
+        },
+        {
+            "name": "unit",
+            "value": {},
+            "on": [
+                {
+                    "events": "mousemove",
+                    "update": "group()._id ? group() : unit"
+                }
+            ]
+        }
+    ],
+    "data": [
+        {
+            "name": "source",
+            "url": "data/cars.json",
+            "format": {
+                "type": "json",
+                "parse": {
+                    "Horsepower": "number"
+                }
+            },
+            "transform": [
+                {
+                    "type": "filter",
+                    "expr": "datum[\"Horsepower\"] !== null && !isNaN(datum[\"Horsepower\"])"
+                },
+                {
+                    "type": "extent",
+                    "field": "Horsepower",
+                    "signal": "child_Horsepower_extent"
+                },
+                {
+                    "type": "bin",
+                    "field": "Horsepower",
+                    "as": [
+                        "bin_Horsepower_start",
+                        "bin_Horsepower_end"
+                    ],
+                    "signal": "child_Horsepower_bins",
+                    "maxbins": 15,
+                    "extent": {
+                        "signal": "child_Horsepower_extent"
+                    }
+                }
+            ]
+        },
+        {
+            "source": "source",
+            "name": "summary",
+            "transform": [
+                {
+                    "type": "aggregate",
+                    "groupby": [
+                        "bin_Horsepower_start",
+                        "bin_Horsepower_end",
+                        "bin_Horsepower_range",
+                        "Origin"
+                    ],
+                    "ops": [
+                        "count"
+                    ],
+                    "fields": [
+                        "*"
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "row-summary",
+            "source": "summary",
+            "transform": [
+                {
+                    "type": "aggregate",
+                    "groupby": [
+                        "Origin"
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "layout",
+            "source": "summary",
+            "transform": [
+                {
+                    "type": "aggregate",
+                    "fields": [
+                        "Origin"
+                    ],
+                    "ops": [
+                        "distinct"
+                    ]
+                },
+                {
+                    "type": "formula",
+                    "as": "child_width",
+                    "expr": "200"
+                },
+                {
+                    "type": "formula",
+                    "as": "width",
+                    "expr": "datum[\"child_width\"] + 16"
+                },
+                {
+                    "type": "formula",
+                    "as": "child_height",
+                    "expr": "200"
+                },
+                {
+                    "type": "formula",
+                    "as": "height",
+                    "expr": "(datum[\"child_height\"] + 16) * datum[\"distinct_Origin\"]"
+                }
+            ]
+        }
+    ],
+    "marks": [
+        {
+            "name": "main",
+            "type": "group",
+            "from": {
+                "data": "layout"
+            },
+            "encode": {
+                "update": {
+                    "width": {
+                        "field": "width"
+                    },
+                    "height": {
+                        "field": "height"
+                    }
+                }
+            },
+            "marks": [
+                {
+                    "name": "x-axes",
+                    "type": "group",
+                    "encode": {
+                        "update": {
+                            "width": {
+                                "field": {
+                                    "parent": "child_width"
+                                }
+                            },
+                            "height": {
+                                "field": {
+                                    "group": "height"
+                                }
+                            },
+                            "x": {
+                                "value": 8
+                            }
+                        }
+                    },
+                    "axes": [
+                        {
+                            "scale": "x",
+                            "format": "s",
+                            "orient": "bottom",
+                            "title": "BIN(Horsepower)",
+                            "zindex": 1,
+                            "encode": {
+                                "labels": {
+                                    "update": {
+                                        "angle": {
+                                            "value": 270
+                                        },
+                                        "align": {
+                                            "value": "right"
+                                        },
+                                        "baseline": {
+                                            "value": "middle"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "y-axes",
+                    "type": "group",
+                    "from": {
+                        "data": "row-summary"
+                    },
+                    "encode": {
+                        "update": {
+                            "width": {
+                                "field": {
+                                    "group": "width"
+                                }
+                            },
+                            "height": {
+                                "field": {
+                                    "parent": "child_height"
+                                }
+                            },
+                            "y": {
+                                "scale": "row",
+                                "field": "Origin",
+                                "offset": 8
+                            }
+                        }
+                    },
+                    "axes": [
+                        {
+                            "scale": "y",
+                            "format": "s",
+                            "orient": "left",
+                            "title": "Number of Records",
+                            "zindex": 1
+                        }
+                    ]
+                },
+                {
+                    "name": "cell",
+                    "type": "group",
+                    "from": {
+                        "facet": {
+                            "name": "faceted-data",
+                            "data": "summary",
+                            "groupby": [
+                                "Origin"
+                            ]
+                        }
+                    },
+                    "encode": {
+                        "update": {
+                            "x": {
+                                "value": 8
+                            },
+                            "y": {
+                                "scale": "row",
+                                "field": "Origin",
+                                "offset": 8
+                            },
+                            "width": {
+                                "field": {
+                                    "parent": "child_width"
+                                }
+                            },
+                            "height": {
+                                "field": {
+                                    "parent": "child_height"
+                                }
+                            },
+                            "stroke": {
+                                "value": "#ccc"
+                            },
+                            "strokeWidth": {
+                                "value": 1
+                            },
+                            "fill": {
+                                "value": "transparent"
+                            }
+                        }
+                    },
+                    "marks": [
+                        {
+                            "name": "child_marks",
+                            "type": "rect",
+                            "role": "bar",
+                            "from": {
+                                "data": "faceted-data"
+                            },
+                            "encode": {
+                                "update": {
+                                    "x2": {
+                                        "scale": "x",
+                                        "field": "bin_Horsepower_start",
+                                        "offset": 1
+                                    },
+                                    "x": {
+                                        "scale": "x",
+                                        "field": "bin_Horsepower_end"
+                                    },
+                                    "y": {
+                                        "scale": "y",
+                                        "field": "count_*"
+                                    },
+                                    "y2": {
+                                        "scale": "y",
+                                        "value": 0
+                                    },
+                                    "fill": {
+                                        "value": "#4c78a8"
+                                    }
+                                }
+                            }
+                        }
+                    ],
+                    "axes": [
+                        {
+                            "scale": "y",
+                            "domain": false,
+                            "format": "s",
+                            "grid": true,
+                            "labels": false,
+                            "orient": "left",
+                            "ticks": false,
+                            "zindex": 0,
+                            "gridScale": "x"
+                        }
+                    ]
+                }
+            ],
+            "scales": [
+                {
+                    "name": "row",
+                    "type": "band",
+                    "domain": {
+                        "data": "summary",
+                        "field": "Origin",
+                        "sort": true
+                    },
+                    "range": "height",
+                    "round": true
+                },
+                {
+                    "name": "x",
+                    "type": "bin-linear",
+                    "domain": {
+                        "signal": "sequence(child_Horsepower_bins.start, child_Horsepower_bins.stop + child_Horsepower_bins.step, child_Horsepower_bins.step)"
+                    },
+                    "range": [
+                        0,
+                        200
+                    ],
+                    "round": true,
+                    "nice": true
+                },
+                {
+                    "name": "y",
+                    "type": "linear",
+                    "domain": {
+                        "data": "summary",
+                        "field": "count_*"
+                    },
+                    "range": [
+                        200,
+                        0
+                    ],
+                    "round": true,
+                    "nice": true,
+                    "zero": true
+                }
+            ],
+            "axes": [
+                {
+                    "scale": "row",
+                    "domain": false,
+                    "grid": false,
+                    "orient": "right",
+                    "ticks": false,
+                    "title": "Origin",
+                    "zindex": 1,
+                    "encode": {
+                        "labels": {
+                            "update": {
+                                "angle": {
+                                    "value": 90
+                                },
+                                "align": {
+                                    "value": "center"
+                                },
+                                "baseline": {
+                                    "value": "bottom"
+                                }
+                            }
+                        }
+                    }
+                }
+            ]
+        }
+    ]
+}
