@@ -1,0 +1,332 @@
+{
+    "$schema": "http://vega.github.io/schema/vega/v3.0.json",
+    "padding": 5,
+    "autosize": "pad",
+    "signals": [
+        {
+            "name": "width",
+            "update": "data('layout')[0].width"
+        },
+        {
+            "name": "height",
+            "update": "data('layout')[0].height"
+        },
+        {
+            "name": "unit",
+            "value": {},
+            "on": [
+                {
+                    "events": "mousemove",
+                    "update": "group()._id ? group() : unit"
+                }
+            ]
+        }
+    ],
+    "data": [
+        {
+            "name": "source",
+            "url": "data/movies.json",
+            "format": {
+                "type": "json",
+                "parse": {
+                    "Worldwide_Gross": "number",
+                    "US_DVD_Sales": "number"
+                }
+            },
+            "transform": [
+                {
+                    "type": "filter",
+                    "expr": "datum[\"Worldwide_Gross\"] !== null && !isNaN(datum[\"Worldwide_Gross\"]) && datum[\"US_DVD_Sales\"] !== null && !isNaN(datum[\"US_DVD_Sales\"])"
+                }
+            ]
+        },
+        {
+            "name": "column-source",
+            "source": "source",
+            "transform": [
+                {
+                    "type": "aggregate",
+                    "groupby": [
+                        "MPAA_Rating"
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "layout",
+            "source": "source",
+            "transform": [
+                {
+                    "type": "aggregate",
+                    "fields": [
+                        "MPAA_Rating"
+                    ],
+                    "ops": [
+                        "distinct"
+                    ]
+                },
+                {
+                    "type": "formula",
+                    "as": "child_width",
+                    "expr": "200"
+                },
+                {
+                    "type": "formula",
+                    "as": "width",
+                    "expr": "(datum[\"child_width\"] + 16) * datum[\"distinct_MPAA_Rating\"]"
+                },
+                {
+                    "type": "formula",
+                    "as": "child_height",
+                    "expr": "200"
+                },
+                {
+                    "type": "formula",
+                    "as": "height",
+                    "expr": "datum[\"child_height\"] + 16"
+                }
+            ]
+        }
+    ],
+    "marks": [
+        {
+            "name": "main",
+            "type": "group",
+            "from": {
+                "data": "layout"
+            },
+            "encode": {
+                "update": {
+                    "width": {
+                        "field": "width"
+                    },
+                    "height": {
+                        "field": "height"
+                    }
+                }
+            },
+            "marks": [
+                {
+                    "name": "x-axes",
+                    "type": "group",
+                    "from": {
+                        "data": "column-source"
+                    },
+                    "encode": {
+                        "update": {
+                            "width": {
+                                "field": {
+                                    "parent": "child_width"
+                                }
+                            },
+                            "height": {
+                                "field": {
+                                    "group": "height"
+                                }
+                            },
+                            "x": {
+                                "scale": "column",
+                                "field": "MPAA_Rating",
+                                "offset": 8
+                            }
+                        }
+                    },
+                    "axes": [
+                        {
+                            "scale": "x",
+                            "format": "s",
+                            "orient": "bottom",
+                            "tickCount": 5,
+                            "title": "Worldwide_Gross",
+                            "zindex": 1
+                        }
+                    ]
+                },
+                {
+                    "name": "y-axes",
+                    "type": "group",
+                    "encode": {
+                        "update": {
+                            "width": {
+                                "field": {
+                                    "group": "width"
+                                }
+                            },
+                            "height": {
+                                "field": {
+                                    "parent": "child_height"
+                                }
+                            },
+                            "y": {
+                                "value": 8
+                            }
+                        }
+                    },
+                    "axes": [
+                        {
+                            "scale": "y",
+                            "format": "s",
+                            "orient": "left",
+                            "title": "US_DVD_Sales",
+                            "zindex": 1
+                        }
+                    ]
+                },
+                {
+                    "name": "cell",
+                    "type": "group",
+                    "from": {
+                        "facet": {
+                            "name": "faceted-data",
+                            "data": "source",
+                            "groupby": [
+                                "MPAA_Rating"
+                            ]
+                        }
+                    },
+                    "encode": {
+                        "update": {
+                            "x": {
+                                "scale": "column",
+                                "field": "MPAA_Rating",
+                                "offset": 8
+                            },
+                            "y": {
+                                "value": 8
+                            },
+                            "width": {
+                                "field": {
+                                    "parent": "child_width"
+                                }
+                            },
+                            "height": {
+                                "field": {
+                                    "parent": "child_height"
+                                }
+                            },
+                            "stroke": {
+                                "value": "#ccc"
+                            },
+                            "strokeWidth": {
+                                "value": 1
+                            },
+                            "fill": {
+                                "value": "transparent"
+                            }
+                        }
+                    },
+                    "marks": [
+                        {
+                            "name": "child_marks",
+                            "type": "symbol",
+                            "role": "point",
+                            "from": {
+                                "data": "faceted-data"
+                            },
+                            "encode": {
+                                "update": {
+                                    "x": {
+                                        "scale": "x",
+                                        "field": "Worldwide_Gross"
+                                    },
+                                    "y": {
+                                        "scale": "y",
+                                        "field": "US_DVD_Sales"
+                                    },
+                                    "stroke": {
+                                        "value": "#4c78a8"
+                                    },
+                                    "fill": {
+                                        "value": "transparent"
+                                    },
+                                    "opacity": {
+                                        "value": 0.7
+                                    }
+                                }
+                            }
+                        }
+                    ],
+                    "axes": [
+                        {
+                            "scale": "x",
+                            "domain": false,
+                            "format": "s",
+                            "grid": true,
+                            "labels": false,
+                            "orient": "bottom",
+                            "tickCount": 5,
+                            "ticks": false,
+                            "zindex": 0,
+                            "gridScale": "y"
+                        },
+                        {
+                            "scale": "y",
+                            "domain": false,
+                            "format": "s",
+                            "grid": true,
+                            "labels": false,
+                            "orient": "left",
+                            "ticks": false,
+                            "zindex": 0,
+                            "gridScale": "x"
+                        }
+                    ]
+                }
+            ],
+            "scales": [
+                {
+                    "name": "column",
+                    "type": "band",
+                    "domain": {
+                        "data": "source",
+                        "field": "MPAA_Rating",
+                        "sort": true
+                    },
+                    "range": "width",
+                    "round": true
+                },
+                {
+                    "name": "x",
+                    "type": "linear",
+                    "domain": {
+                        "data": "source",
+                        "field": "Worldwide_Gross"
+                    },
+                    "range": [
+                        0,
+                        200
+                    ],
+                    "round": true,
+                    "nice": true,
+                    "zero": true
+                },
+                {
+                    "name": "y",
+                    "type": "linear",
+                    "domain": {
+                        "data": "source",
+                        "field": "US_DVD_Sales"
+                    },
+                    "range": [
+                        200,
+                        0
+                    ],
+                    "round": true,
+                    "nice": true,
+                    "zero": true
+                }
+            ],
+            "axes": [
+                {
+                    "scale": "column",
+                    "domain": false,
+                    "grid": false,
+                    "orient": "top",
+                    "ticks": false,
+                    "title": "MPAA_Rating",
+                    "zindex": 1
+                }
+            ]
+        }
+    ]
+}

@@ -1,0 +1,246 @@
+{
+    "$schema": "http://vega.github.io/schema/vega/v3.0.json",
+    "padding": 5,
+    "autosize": "pad",
+    "signals": [
+        {
+            "name": "width",
+            "update": "data('layout')[0].width"
+        },
+        {
+            "name": "height",
+            "update": "data('layout')[0].height"
+        },
+        {
+            "name": "unit",
+            "value": {},
+            "on": [
+                {
+                    "events": "mousemove",
+                    "update": "group()._id ? group() : unit"
+                }
+            ]
+        }
+    ],
+    "data": [
+        {
+            "name": "source",
+            "url": "data/driving.json",
+            "format": {
+                "type": "json",
+                "parse": {
+                    "miles": "number",
+                    "gas": "number",
+                    "year": "date"
+                }
+            },
+            "transform": [
+                {
+                    "type": "filter",
+                    "expr": "datum[\"miles\"] !== null && !isNaN(datum[\"miles\"]) && datum[\"gas\"] !== null && !isNaN(datum[\"gas\"]) && datum[\"year\"] !== null && !isNaN(datum[\"year\"])"
+                },
+                {
+                    "type": "collect",
+                    "sort": {
+                        "field": [
+                            "year"
+                        ],
+                        "order": [
+                            "ascending"
+                        ]
+                    }
+                }
+            ]
+        },
+        {
+            "name": "layer_1_source",
+            "source": "source",
+            "transform": [
+                {
+                    "type": "filter",
+                    "expr": "datum[\"miles\"] !== null && !isNaN(datum[\"miles\"]) && datum[\"gas\"] !== null && !isNaN(datum[\"gas\"]) && datum[\"year\"] !== null && !isNaN(datum[\"year\"])"
+                }
+            ]
+        },
+        {
+            "name": "layout",
+            "values": [
+                {}
+            ],
+            "transform": [
+                {
+                    "type": "formula",
+                    "as": "width",
+                    "expr": "200"
+                },
+                {
+                    "type": "formula",
+                    "as": "height",
+                    "expr": "200"
+                }
+            ]
+        }
+    ],
+    "marks": [
+        {
+            "name": "main",
+            "type": "group",
+            "from": {
+                "data": "layout"
+            },
+            "encode": {
+                "update": {
+                    "width": {
+                        "field": "width"
+                    },
+                    "height": {
+                        "field": "height"
+                    },
+                    "fill": {
+                        "value": "transparent"
+                    }
+                }
+            },
+            "marks": [
+                {
+                    "name": "layer_0_marks",
+                    "type": "line",
+                    "from": {
+                        "data": "source"
+                    },
+                    "encode": {
+                        "update": {
+                            "x": {
+                                "scale": "x",
+                                "field": "miles"
+                            },
+                            "y": {
+                                "scale": "y",
+                                "field": "gas"
+                            },
+                            "stroke": {
+                                "value": "#4c78a8"
+                            }
+                        }
+                    }
+                },
+                {
+                    "name": "layer_1_marks",
+                    "type": "symbol",
+                    "role": "point",
+                    "from": {
+                        "data": "layer_1_source"
+                    },
+                    "encode": {
+                        "update": {
+                            "x": {
+                                "scale": "x",
+                                "field": "miles"
+                            },
+                            "y": {
+                                "scale": "y",
+                                "field": "gas"
+                            },
+                            "fill": {
+                                "value": "#4c78a8"
+                            },
+                            "opacity": {
+                                "value": 0.7
+                            }
+                        }
+                    }
+                }
+            ],
+            "scales": [
+                {
+                    "name": "x",
+                    "type": "linear",
+                    "domain": {
+                        "fields": [
+                            {
+                                "data": "source",
+                                "field": "miles"
+                            },
+                            {
+                                "data": "layer_1_source",
+                                "field": "miles"
+                            }
+                        ],
+                        "sort": true
+                    },
+                    "range": [
+                        0,
+                        200
+                    ],
+                    "round": true,
+                    "nice": true,
+                    "zero": false
+                },
+                {
+                    "name": "y",
+                    "type": "linear",
+                    "domain": {
+                        "fields": [
+                            {
+                                "data": "source",
+                                "field": "gas"
+                            },
+                            {
+                                "data": "layer_1_source",
+                                "field": "gas"
+                            }
+                        ],
+                        "sort": true
+                    },
+                    "range": [
+                        200,
+                        0
+                    ],
+                    "round": true,
+                    "nice": true,
+                    "zero": false
+                }
+            ],
+            "axes": [
+                {
+                    "scale": "x",
+                    "format": "s",
+                    "orient": "bottom",
+                    "tickCount": 5,
+                    "title": "miles",
+                    "zindex": 1
+                },
+                {
+                    "scale": "x",
+                    "domain": false,
+                    "format": "s",
+                    "grid": true,
+                    "labels": false,
+                    "orient": "bottom",
+                    "tickCount": 5,
+                    "ticks": false,
+                    "zindex": 0,
+                    "gridScale": "y"
+                },
+                {
+                    "scale": "y",
+                    "format": "s",
+                    "orient": "left",
+                    "title": "gas",
+                    "zindex": 1
+                },
+                {
+                    "scale": "y",
+                    "domain": false,
+                    "format": "s",
+                    "grid": true,
+                    "labels": false,
+                    "orient": "left",
+                    "ticks": false,
+                    "zindex": 0,
+                    "gridScale": "x"
+                }
+            ]
+        }
+    ]
+}

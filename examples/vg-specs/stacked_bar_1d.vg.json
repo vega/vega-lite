@@ -1,0 +1,226 @@
+{
+    "$schema": "http://vega.github.io/schema/vega/v3.0.json",
+    "padding": 5,
+    "autosize": "pad",
+    "signals": [
+        {
+            "name": "width",
+            "update": "data('layout')[0].width"
+        },
+        {
+            "name": "height",
+            "update": "data('layout')[0].height"
+        },
+        {
+            "name": "unit",
+            "value": {},
+            "on": [
+                {
+                    "events": "mousemove",
+                    "update": "group()._id ? group() : unit"
+                }
+            ]
+        }
+    ],
+    "data": [
+        {
+            "name": "source",
+            "url": "data/cars.json",
+            "format": {
+                "type": "json",
+                "parse": {
+                    "Acceleration": "number"
+                }
+            },
+            "transform": [
+                {
+                    "type": "filter",
+                    "expr": "datum[\"Acceleration\"] !== null && !isNaN(datum[\"Acceleration\"])"
+                }
+            ]
+        },
+        {
+            "source": "source",
+            "name": "summary",
+            "transform": [
+                {
+                    "type": "aggregate",
+                    "groupby": [
+                        "Origin"
+                    ],
+                    "ops": [
+                        "sum"
+                    ],
+                    "fields": [
+                        "Acceleration"
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "stacked",
+            "source": "summary",
+            "transform": [
+                {
+                    "type": "stack",
+                    "groupby": [],
+                    "field": "sum_Acceleration",
+                    "sort": {
+                        "field": [
+                            "Origin"
+                        ],
+                        "order": [
+                            "descending"
+                        ]
+                    },
+                    "as": [
+                        "sum_Acceleration_start",
+                        "sum_Acceleration_end"
+                    ],
+                    "offset": "zero"
+                }
+            ]
+        },
+        {
+            "name": "layout",
+            "values": [
+                {}
+            ],
+            "transform": [
+                {
+                    "type": "formula",
+                    "as": "width",
+                    "expr": "200"
+                },
+                {
+                    "type": "formula",
+                    "as": "height",
+                    "expr": "21"
+                }
+            ]
+        }
+    ],
+    "marks": [
+        {
+            "name": "main",
+            "type": "group",
+            "from": {
+                "data": "layout"
+            },
+            "encode": {
+                "update": {
+                    "width": {
+                        "field": "width"
+                    },
+                    "height": {
+                        "field": "height"
+                    },
+                    "fill": {
+                        "value": "transparent"
+                    }
+                }
+            },
+            "marks": [
+                {
+                    "name": "marks",
+                    "type": "rect",
+                    "role": "bar",
+                    "from": {
+                        "data": "stacked"
+                    },
+                    "encode": {
+                        "update": {
+                            "x": {
+                                "scale": "x",
+                                "field": "sum_Acceleration_end"
+                            },
+                            "x2": {
+                                "scale": "x",
+                                "field": "sum_Acceleration_start"
+                            },
+                            "yc": {
+                                "value": 10.5
+                            },
+                            "height": {
+                                "value": 20
+                            },
+                            "fill": {
+                                "scale": "color",
+                                "field": "Origin"
+                            }
+                        }
+                    }
+                }
+            ],
+            "scales": [
+                {
+                    "name": "x",
+                    "type": "linear",
+                    "domain": {
+                        "data": "stacked",
+                        "fields": [
+                            "sum_Acceleration_start",
+                            "sum_Acceleration_end"
+                        ]
+                    },
+                    "range": [
+                        0,
+                        200
+                    ],
+                    "round": true,
+                    "nice": true,
+                    "zero": true
+                },
+                {
+                    "name": "color",
+                    "type": "ordinal",
+                    "domain": {
+                        "data": "summary",
+                        "field": "Origin",
+                        "sort": true
+                    },
+                    "range": "category"
+                }
+            ],
+            "axes": [
+                {
+                    "scale": "x",
+                    "format": "s",
+                    "orient": "bottom",
+                    "tickCount": 5,
+                    "title": "SUM(Acceleration)",
+                    "zindex": 1
+                },
+                {
+                    "scale": "x",
+                    "domain": false,
+                    "format": "s",
+                    "grid": true,
+                    "labels": false,
+                    "orient": "bottom",
+                    "tickCount": 5,
+                    "ticks": false,
+                    "zindex": 0
+                }
+            ],
+            "legends": [
+                {
+                    "fill": "color",
+                    "title": "Origin",
+                    "encode": {
+                        "symbols": {
+                            "update": {
+                                "shape": {
+                                    "value": "square"
+                                },
+                                "strokeWidth": {
+                                    "value": 0
+                                }
+                            }
+                        }
+                    }
+                }
+            ]
+        }
+    ]
+}

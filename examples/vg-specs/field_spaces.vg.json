@@ -1,0 +1,228 @@
+{
+    "$schema": "http://vega.github.io/schema/vega/v3.0.json",
+    "padding": 5,
+    "autosize": "pad",
+    "signals": [
+        {
+            "name": "width",
+            "update": "data('layout')[0].width"
+        },
+        {
+            "name": "height",
+            "update": "data('layout')[0].height"
+        },
+        {
+            "name": "unit",
+            "value": {},
+            "on": [
+                {
+                    "events": "mousemove",
+                    "update": "group()._id ? group() : unit"
+                }
+            ]
+        }
+    ],
+    "data": [
+        {
+            "name": "source",
+            "values": [
+                {
+                    "a b": 0.9228935641885049,
+                    "c d": 0.5982771352733822
+                },
+                {
+                    "a b": 0.6819537235661846,
+                    "c d": 0.4599852852378238
+                },
+                {
+                    "a b": 0.035533848836472814,
+                    "c d": 0.6863884491167203
+                },
+                {
+                    "a b": 0.3491133898504284,
+                    "c d": 0.7368153745410643
+                },
+                {
+                    "a b": 0.42475313594111874,
+                    "c d": 0.8129620247637963
+                },
+                {
+                    "a b": 0.5239172250991592,
+                    "c d": 0.5616266265239936
+                },
+                {
+                    "a b": 0.4668258532026234,
+                    "c d": 0.436625706645942
+                },
+                {
+                    "a b": 0.2692059264553106,
+                    "c d": 0.2746758424896977
+                },
+                {
+                    "a b": 0.6009825566170259,
+                    "c d": 0.2648775327299746
+                },
+                {
+                    "a b": 0.7457746080337384,
+                    "c d": 0.15435369511584507
+                }
+            ],
+            "format": {
+                "type": "json",
+                "parse": {
+                    "a b": "number",
+                    "c d": "number"
+                }
+            },
+            "transform": [
+                {
+                    "type": "filter",
+                    "expr": "datum[\"a b\"] !== null && !isNaN(datum[\"a b\"]) && datum[\"c d\"] !== null && !isNaN(datum[\"c d\"])"
+                }
+            ]
+        },
+        {
+            "name": "layout",
+            "values": [
+                {}
+            ],
+            "transform": [
+                {
+                    "type": "formula",
+                    "as": "width",
+                    "expr": "200"
+                },
+                {
+                    "type": "formula",
+                    "as": "height",
+                    "expr": "200"
+                }
+            ]
+        }
+    ],
+    "marks": [
+        {
+            "name": "main",
+            "type": "group",
+            "from": {
+                "data": "layout"
+            },
+            "encode": {
+                "update": {
+                    "width": {
+                        "field": "width"
+                    },
+                    "height": {
+                        "field": "height"
+                    },
+                    "fill": {
+                        "value": "transparent"
+                    }
+                }
+            },
+            "marks": [
+                {
+                    "name": "marks",
+                    "type": "symbol",
+                    "role": "point",
+                    "from": {
+                        "data": "source"
+                    },
+                    "encode": {
+                        "update": {
+                            "x": {
+                                "scale": "x",
+                                "field": "a b"
+                            },
+                            "y": {
+                                "scale": "y",
+                                "field": "c d"
+                            },
+                            "stroke": {
+                                "value": "#4c78a8"
+                            },
+                            "fill": {
+                                "value": "transparent"
+                            },
+                            "opacity": {
+                                "value": 0.7
+                            }
+                        }
+                    }
+                }
+            ],
+            "scales": [
+                {
+                    "name": "x",
+                    "type": "linear",
+                    "domain": {
+                        "data": "source",
+                        "field": "a b"
+                    },
+                    "range": [
+                        0,
+                        200
+                    ],
+                    "round": true,
+                    "nice": true,
+                    "zero": true
+                },
+                {
+                    "name": "y",
+                    "type": "linear",
+                    "domain": {
+                        "data": "source",
+                        "field": "c d"
+                    },
+                    "range": [
+                        200,
+                        0
+                    ],
+                    "round": true,
+                    "nice": true,
+                    "zero": true
+                }
+            ],
+            "axes": [
+                {
+                    "scale": "x",
+                    "format": "s",
+                    "orient": "bottom",
+                    "tickCount": 5,
+                    "title": "a b",
+                    "zindex": 1
+                },
+                {
+                    "scale": "x",
+                    "domain": false,
+                    "format": "s",
+                    "grid": true,
+                    "labels": false,
+                    "orient": "bottom",
+                    "tickCount": 5,
+                    "ticks": false,
+                    "zindex": 0,
+                    "gridScale": "y"
+                },
+                {
+                    "scale": "y",
+                    "format": "s",
+                    "orient": "left",
+                    "title": "c d",
+                    "zindex": 1
+                },
+                {
+                    "scale": "y",
+                    "domain": false,
+                    "format": "s",
+                    "grid": true,
+                    "labels": false,
+                    "orient": "left",
+                    "ticks": false,
+                    "zindex": 0,
+                    "gridScale": "x"
+                }
+            ]
+        }
+    ]
+}

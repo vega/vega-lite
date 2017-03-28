@@ -1,0 +1,289 @@
+{
+    "$schema": "http://vega.github.io/schema/vega/v3.0.json",
+    "padding": 5,
+    "autosize": "pad",
+    "signals": [
+        {
+            "name": "width",
+            "update": "data('layout')[0].width"
+        },
+        {
+            "name": "height",
+            "update": "data('layout')[0].height"
+        },
+        {
+            "name": "unit",
+            "value": {},
+            "on": [
+                {
+                    "events": "mousemove",
+                    "update": "group()._id ? group() : unit"
+                }
+            ]
+        }
+    ],
+    "data": [
+        {
+            "name": "source",
+            "url": "data/seattle-weather.csv",
+            "format": {
+                "type": "csv",
+                "parse": {
+                    "date": "date"
+                }
+            },
+            "transform": [
+                {
+                    "type": "filter",
+                    "expr": "datum[\"date\"] !== null && !isNaN(datum[\"date\"])"
+                },
+                {
+                    "type": "formula",
+                    "as": "month_date",
+                    "expr": "datetime(0, month(datum[\"date\"]), 1, 0, 0, 0, 0)"
+                }
+            ]
+        },
+        {
+            "source": "source",
+            "name": "summary",
+            "transform": [
+                {
+                    "type": "aggregate",
+                    "groupby": [
+                        "month_date",
+                        "weather"
+                    ],
+                    "ops": [
+                        "count"
+                    ],
+                    "fields": [
+                        "*"
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "stacked",
+            "source": "summary",
+            "transform": [
+                {
+                    "type": "stack",
+                    "groupby": [
+                        "month_date"
+                    ],
+                    "field": "count_*",
+                    "sort": {
+                        "field": [
+                            "weather"
+                        ],
+                        "order": [
+                            "descending"
+                        ]
+                    },
+                    "as": [
+                        "count_*_start",
+                        "count_*_end"
+                    ],
+                    "offset": "zero"
+                }
+            ]
+        },
+        {
+            "name": "layout",
+            "source": "summary",
+            "transform": [
+                {
+                    "type": "aggregate",
+                    "fields": [
+                        "month_date"
+                    ],
+                    "ops": [
+                        "distinct"
+                    ]
+                },
+                {
+                    "type": "formula",
+                    "as": "width",
+                    "expr": "max(datum[\"distinct_month_date\"] - 1 + 2*0.5, 0) * 21"
+                },
+                {
+                    "type": "formula",
+                    "as": "height",
+                    "expr": "200"
+                }
+            ]
+        }
+    ],
+    "marks": [
+        {
+            "name": "main",
+            "type": "group",
+            "from": {
+                "data": "layout"
+            },
+            "encode": {
+                "update": {
+                    "width": {
+                        "field": "width"
+                    },
+                    "height": {
+                        "field": "height"
+                    },
+                    "fill": {
+                        "value": "transparent"
+                    }
+                }
+            },
+            "marks": [
+                {
+                    "name": "marks",
+                    "type": "rect",
+                    "role": "bar",
+                    "from": {
+                        "data": "stacked"
+                    },
+                    "encode": {
+                        "update": {
+                            "xc": {
+                                "scale": "x",
+                                "field": "month_date"
+                            },
+                            "width": {
+                                "scale": "size",
+                                "field": "weather"
+                            },
+                            "y": {
+                                "scale": "y",
+                                "field": "count_*_end"
+                            },
+                            "y2": {
+                                "scale": "y",
+                                "field": "count_*_start"
+                            },
+                            "fill": {
+                                "value": "#4c78a8"
+                            }
+                        }
+                    }
+                }
+            ],
+            "scales": [
+                {
+                    "name": "x",
+                    "type": "point",
+                    "domain": {
+                        "data": "summary",
+                        "field": "month_date",
+                        "sort": {
+                            "field": "month_date",
+                            "op": "min"
+                        }
+                    },
+                    "range": {
+                        "step": 21
+                    },
+                    "round": true,
+                    "padding": 0.5
+                },
+                {
+                    "name": "y",
+                    "type": "linear",
+                    "domain": {
+                        "data": "stacked",
+                        "fields": [
+                            "count_*_start",
+                            "count_*_end"
+                        ]
+                    },
+                    "range": [
+                        200,
+                        0
+                    ],
+                    "round": true,
+                    "nice": true,
+                    "zero": true
+                },
+                {
+                    "name": "size",
+                    "type": "point",
+                    "domain": {
+                        "data": "summary",
+                        "field": "weather",
+                        "sort": true
+                    },
+                    "range": [
+                        2,
+                        20
+                    ]
+                }
+            ],
+            "axes": [
+                {
+                    "scale": "x",
+                    "orient": "bottom",
+                    "tickCount": 5,
+                    "title": "MONTH(date)",
+                    "zindex": 1,
+                    "encode": {
+                        "labels": {
+                            "update": {
+                                "text": {
+                                    "signal": "timeFormat(datum.value, '%b')"
+                                },
+                                "angle": {
+                                    "value": 270
+                                },
+                                "align": {
+                                    "value": "right"
+                                },
+                                "baseline": {
+                                    "value": "middle"
+                                }
+                            }
+                        }
+                    }
+                },
+                {
+                    "scale": "y",
+                    "format": "s",
+                    "orient": "left",
+                    "title": "Number of Records",
+                    "zindex": 1
+                },
+                {
+                    "scale": "y",
+                    "domain": false,
+                    "format": "s",
+                    "grid": true,
+                    "labels": false,
+                    "orient": "left",
+                    "ticks": false,
+                    "zindex": 0,
+                    "gridScale": "x"
+                }
+            ],
+            "legends": [
+                {
+                    "size": "size",
+                    "title": "weather",
+                    "encode": {
+                        "symbols": {
+                            "update": {
+                                "shape": {
+                                    "value": "square"
+                                },
+                                "strokeWidth": {
+                                    "value": 0
+                                },
+                                "fill": {
+                                    "value": "#4c78a8"
+                                }
+                            }
+                        }
+                    }
+                }
+            ]
+        }
+    ]
+}

@@ -1,0 +1,333 @@
+{
+    "$schema": "http://vega.github.io/schema/vega/v3.0.json",
+    "padding": 5,
+    "autosize": "pad",
+    "signals": [
+        {
+            "name": "width",
+            "update": "data('layout')[0].width"
+        },
+        {
+            "name": "height",
+            "update": "data('layout')[0].height"
+        },
+        {
+            "name": "unit",
+            "value": {},
+            "on": [
+                {
+                    "events": "mousemove",
+                    "update": "group()._id ? group() : unit"
+                }
+            ]
+        }
+    ],
+    "data": [
+        {
+            "name": "source",
+            "url": "data/flights-2k.json",
+            "format": {
+                "type": "json",
+                "parse": {
+                    "distance": "number"
+                }
+            },
+            "transform": [
+                {
+                    "type": "filter",
+                    "expr": "datum[\"distance\"] !== null && !isNaN(datum[\"distance\"])"
+                },
+                {
+                    "type": "extent",
+                    "field": "distance",
+                    "signal": "layer_0_distance_extent"
+                },
+                {
+                    "type": "bin",
+                    "field": "distance",
+                    "as": [
+                        "bin_distance_start",
+                        "bin_distance_end"
+                    ],
+                    "signal": "layer_0_distance_bins",
+                    "extent": {
+                        "signal": "layer_0_distance_extent"
+                    },
+                    "maxbins": 10
+                }
+            ]
+        },
+        {
+            "source": "source",
+            "name": "summary",
+            "transform": [
+                {
+                    "type": "aggregate",
+                    "groupby": [
+                        "bin_distance_start",
+                        "bin_distance_end",
+                        "bin_distance_range"
+                    ],
+                    "ops": [
+                        "count"
+                    ],
+                    "fields": [
+                        "*"
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "layer_1_source",
+            "source": "source",
+            "transform": [
+                {
+                    "type": "filter",
+                    "expr": "datum[\"distance\"] !== null && !isNaN(datum[\"distance\"])"
+                },
+                {
+                    "type": "filter",
+                    "expr": "datum.delay < 5"
+                },
+                {
+                    "type": "extent",
+                    "field": "distance",
+                    "signal": "layer_1_distance_extent"
+                },
+                {
+                    "type": "bin",
+                    "field": "distance",
+                    "as": [
+                        "bin_distance_start",
+                        "bin_distance_end"
+                    ],
+                    "signal": "layer_1_distance_bins",
+                    "extent": {
+                        "signal": "layer_1_distance_extent"
+                    },
+                    "maxbins": 10
+                }
+            ]
+        },
+        {
+            "source": "layer_1_source",
+            "name": "layer_1_summary",
+            "transform": [
+                {
+                    "type": "aggregate",
+                    "groupby": [
+                        "bin_distance_start",
+                        "bin_distance_end",
+                        "bin_distance_range"
+                    ],
+                    "ops": [
+                        "count"
+                    ],
+                    "fields": [
+                        "*"
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "layout",
+            "values": [
+                {}
+            ],
+            "transform": [
+                {
+                    "type": "formula",
+                    "as": "width",
+                    "expr": "200"
+                },
+                {
+                    "type": "formula",
+                    "as": "height",
+                    "expr": "200"
+                }
+            ]
+        }
+    ],
+    "marks": [
+        {
+            "name": "main",
+            "type": "group",
+            "from": {
+                "data": "layout"
+            },
+            "encode": {
+                "update": {
+                    "width": {
+                        "field": "width"
+                    },
+                    "height": {
+                        "field": "height"
+                    },
+                    "fill": {
+                        "value": "transparent"
+                    }
+                }
+            },
+            "marks": [
+                {
+                    "name": "layer_0_marks",
+                    "type": "rect",
+                    "role": "bar",
+                    "from": {
+                        "data": "summary"
+                    },
+                    "encode": {
+                        "update": {
+                            "x2": {
+                                "scale": "layer_0_x",
+                                "field": "bin_distance_start",
+                                "offset": 1
+                            },
+                            "x": {
+                                "scale": "layer_0_x",
+                                "field": "bin_distance_end"
+                            },
+                            "y": {
+                                "scale": "y",
+                                "field": "count_*"
+                            },
+                            "y2": {
+                                "scale": "y",
+                                "value": 0
+                            },
+                            "fill": {
+                                "value": "#4c78a8"
+                            }
+                        }
+                    }
+                },
+                {
+                    "name": "layer_1_marks",
+                    "type": "rect",
+                    "role": "bar",
+                    "from": {
+                        "data": "layer_1_summary"
+                    },
+                    "encode": {
+                        "update": {
+                            "x2": {
+                                "scale": "layer_1_x",
+                                "field": "bin_distance_start",
+                                "offset": 1
+                            },
+                            "x": {
+                                "scale": "layer_1_x",
+                                "field": "bin_distance_end"
+                            },
+                            "y": {
+                                "scale": "y",
+                                "field": "count_*"
+                            },
+                            "y2": {
+                                "scale": "y",
+                                "value": 0
+                            },
+                            "fill": {
+                                "value": "goldenrod"
+                            }
+                        }
+                    }
+                }
+            ],
+            "scales": [
+                {
+                    "name": "y",
+                    "type": "linear",
+                    "domain": {
+                        "fields": [
+                            {
+                                "data": "summary",
+                                "field": "count_*"
+                            },
+                            {
+                                "data": "layer_1_summary",
+                                "field": "count_*"
+                            }
+                        ],
+                        "sort": true
+                    },
+                    "range": [
+                        200,
+                        0
+                    ],
+                    "round": true,
+                    "nice": true,
+                    "zero": true
+                },
+                {
+                    "name": "layer_0_x",
+                    "type": "bin-linear",
+                    "domain": {
+                        "signal": "sequence(layer_0_distance_bins.start, layer_0_distance_bins.stop + layer_0_distance_bins.step, layer_0_distance_bins.step)"
+                    },
+                    "range": [
+                        0,
+                        200
+                    ],
+                    "round": true,
+                    "nice": true
+                },
+                {
+                    "name": "layer_1_x",
+                    "type": "bin-linear",
+                    "domain": {
+                        "signal": "sequence(layer_1_distance_bins.start, layer_1_distance_bins.stop + layer_1_distance_bins.step, layer_1_distance_bins.step)"
+                    },
+                    "range": [
+                        0,
+                        200
+                    ],
+                    "round": true,
+                    "nice": true
+                }
+            ],
+            "axes": [
+                {
+                    "scale": "layer_0_x",
+                    "format": "s",
+                    "orient": "bottom",
+                    "title": "BIN(distance)",
+                    "zindex": 1,
+                    "encode": {
+                        "labels": {
+                            "update": {
+                                "angle": {
+                                    "value": 270
+                                },
+                                "align": {
+                                    "value": "right"
+                                },
+                                "baseline": {
+                                    "value": "middle"
+                                }
+                            }
+                        }
+                    }
+                },
+                {
+                    "scale": "y",
+                    "format": "s",
+                    "orient": "left",
+                    "title": "Number of Records",
+                    "zindex": 1
+                },
+                {
+                    "scale": "y",
+                    "domain": false,
+                    "format": "s",
+                    "grid": true,
+                    "labels": false,
+                    "orient": "left",
+                    "ticks": false,
+                    "zindex": 0,
+                    "gridScale": "layer_0_x"
+                }
+            ]
+        }
+    ]
+}

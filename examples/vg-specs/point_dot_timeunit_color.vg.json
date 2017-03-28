@@ -1,0 +1,203 @@
+{
+    "$schema": "http://vega.github.io/schema/vega/v3.0.json",
+    "padding": 5,
+    "autosize": "pad",
+    "signals": [
+        {
+            "name": "width",
+            "update": "data('layout')[0].width"
+        },
+        {
+            "name": "height",
+            "update": "data('layout')[0].height"
+        },
+        {
+            "name": "unit",
+            "value": {},
+            "on": [
+                {
+                    "events": "mousemove",
+                    "update": "group()._id ? group() : unit"
+                }
+            ]
+        }
+    ],
+    "data": [
+        {
+            "name": "source",
+            "url": "data/seattle-temps.csv",
+            "format": {
+                "type": "csv",
+                "parse": {
+                    "date": "date",
+                    "temp": "number"
+                }
+            },
+            "transform": [
+                {
+                    "type": "filter",
+                    "expr": "datum[\"date\"] !== null && !isNaN(datum[\"date\"]) && datum[\"temp\"] !== null && !isNaN(datum[\"temp\"])"
+                },
+                {
+                    "type": "formula",
+                    "as": "yearmonth_date",
+                    "expr": "datetime(year(datum[\"date\"]), month(datum[\"date\"]), 1, 0, 0, 0, 0)"
+                }
+            ]
+        },
+        {
+            "source": "source",
+            "name": "summary",
+            "transform": [
+                {
+                    "type": "aggregate",
+                    "groupby": [
+                        "yearmonth_date"
+                    ],
+                    "ops": [
+                        "mean"
+                    ],
+                    "fields": [
+                        "temp"
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "layout",
+            "values": [
+                {}
+            ],
+            "transform": [
+                {
+                    "type": "formula",
+                    "as": "width",
+                    "expr": "200"
+                },
+                {
+                    "type": "formula",
+                    "as": "height",
+                    "expr": "21"
+                }
+            ]
+        }
+    ],
+    "marks": [
+        {
+            "name": "main",
+            "type": "group",
+            "from": {
+                "data": "layout"
+            },
+            "encode": {
+                "update": {
+                    "width": {
+                        "field": "width"
+                    },
+                    "height": {
+                        "field": "height"
+                    },
+                    "fill": {
+                        "value": "transparent"
+                    }
+                }
+            },
+            "marks": [
+                {
+                    "name": "marks",
+                    "type": "symbol",
+                    "role": "point",
+                    "from": {
+                        "data": "summary"
+                    },
+                    "encode": {
+                        "update": {
+                            "x": {
+                                "scale": "x",
+                                "field": "mean_temp"
+                            },
+                            "y": {
+                                "value": 10.5
+                            },
+                            "stroke": {
+                                "scale": "color",
+                                "field": "yearmonth_date"
+                            },
+                            "fill": {
+                                "value": "transparent"
+                            }
+                        }
+                    }
+                }
+            ],
+            "scales": [
+                {
+                    "name": "x",
+                    "type": "linear",
+                    "domain": {
+                        "data": "summary",
+                        "field": "mean_temp"
+                    },
+                    "range": [
+                        0,
+                        200
+                    ],
+                    "round": true,
+                    "nice": true,
+                    "zero": true
+                },
+                {
+                    "name": "color",
+                    "type": "sequential",
+                    "domain": {
+                        "data": "summary",
+                        "field": "yearmonth_date",
+                        "sort": {
+                            "field": "yearmonth_date",
+                            "op": "min"
+                        }
+                    },
+                    "range": "ramp",
+                    "nice": false,
+                    "zero": false
+                }
+            ],
+            "axes": [
+                {
+                    "scale": "x",
+                    "format": "s",
+                    "orient": "bottom",
+                    "tickCount": 5,
+                    "title": "MEAN(temp)",
+                    "zindex": 1
+                },
+                {
+                    "scale": "x",
+                    "domain": false,
+                    "format": "s",
+                    "grid": true,
+                    "labels": false,
+                    "orient": "bottom",
+                    "tickCount": 5,
+                    "ticks": false,
+                    "zindex": 0
+                }
+            ],
+            "legends": [
+                {
+                    "stroke": "color",
+                    "title": "YEARMONTH(date)",
+                    "encode": {
+                        "labels": {
+                            "update": {
+                                "text": {
+                                    "signal": "timeFormat(datum.value, '%b %Y')"
+                                }
+                            }
+                        }
+                    }
+                }
+            ]
+        }
+    ]
+}

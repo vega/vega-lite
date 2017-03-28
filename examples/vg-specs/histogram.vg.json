@@ -1,0 +1,227 @@
+{
+    "$schema": "http://vega.github.io/schema/vega/v3.0.json",
+    "padding": 5,
+    "autosize": "pad",
+    "signals": [
+        {
+            "name": "width",
+            "update": "data('layout')[0].width"
+        },
+        {
+            "name": "height",
+            "update": "data('layout')[0].height"
+        },
+        {
+            "name": "unit",
+            "value": {},
+            "on": [
+                {
+                    "events": "mousemove",
+                    "update": "group()._id ? group() : unit"
+                }
+            ]
+        }
+    ],
+    "data": [
+        {
+            "name": "source",
+            "url": "data/movies.json",
+            "format": {
+                "type": "json",
+                "parse": {
+                    "IMDB_Rating": "number"
+                }
+            },
+            "transform": [
+                {
+                    "type": "filter",
+                    "expr": "datum[\"IMDB_Rating\"] !== null && !isNaN(datum[\"IMDB_Rating\"])"
+                },
+                {
+                    "type": "extent",
+                    "field": "IMDB_Rating",
+                    "signal": "IMDB_Rating_extent"
+                },
+                {
+                    "type": "bin",
+                    "field": "IMDB_Rating",
+                    "as": [
+                        "bin_IMDB_Rating_start",
+                        "bin_IMDB_Rating_end"
+                    ],
+                    "signal": "IMDB_Rating_bins",
+                    "maxbins": 10,
+                    "extent": {
+                        "signal": "IMDB_Rating_extent"
+                    }
+                }
+            ]
+        },
+        {
+            "source": "source",
+            "name": "summary",
+            "transform": [
+                {
+                    "type": "aggregate",
+                    "groupby": [
+                        "bin_IMDB_Rating_start",
+                        "bin_IMDB_Rating_end",
+                        "bin_IMDB_Rating_range"
+                    ],
+                    "ops": [
+                        "count"
+                    ],
+                    "fields": [
+                        "*"
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "layout",
+            "values": [
+                {}
+            ],
+            "transform": [
+                {
+                    "type": "formula",
+                    "as": "width",
+                    "expr": "200"
+                },
+                {
+                    "type": "formula",
+                    "as": "height",
+                    "expr": "200"
+                }
+            ]
+        }
+    ],
+    "marks": [
+        {
+            "name": "main",
+            "type": "group",
+            "from": {
+                "data": "layout"
+            },
+            "encode": {
+                "update": {
+                    "width": {
+                        "field": "width"
+                    },
+                    "height": {
+                        "field": "height"
+                    },
+                    "fill": {
+                        "value": "transparent"
+                    }
+                }
+            },
+            "marks": [
+                {
+                    "name": "marks",
+                    "type": "rect",
+                    "role": "bar",
+                    "from": {
+                        "data": "summary"
+                    },
+                    "encode": {
+                        "update": {
+                            "x2": {
+                                "scale": "x",
+                                "field": "bin_IMDB_Rating_start",
+                                "offset": 1
+                            },
+                            "x": {
+                                "scale": "x",
+                                "field": "bin_IMDB_Rating_end"
+                            },
+                            "y": {
+                                "scale": "y",
+                                "field": "count_*"
+                            },
+                            "y2": {
+                                "scale": "y",
+                                "value": 0
+                            },
+                            "fill": {
+                                "value": "#4c78a8"
+                            }
+                        }
+                    }
+                }
+            ],
+            "scales": [
+                {
+                    "name": "x",
+                    "type": "bin-linear",
+                    "domain": {
+                        "signal": "sequence(IMDB_Rating_bins.start, IMDB_Rating_bins.stop + IMDB_Rating_bins.step, IMDB_Rating_bins.step)"
+                    },
+                    "range": [
+                        0,
+                        200
+                    ],
+                    "round": true,
+                    "nice": true
+                },
+                {
+                    "name": "y",
+                    "type": "linear",
+                    "domain": {
+                        "data": "summary",
+                        "field": "count_*"
+                    },
+                    "range": [
+                        200,
+                        0
+                    ],
+                    "round": true,
+                    "nice": true,
+                    "zero": true
+                }
+            ],
+            "axes": [
+                {
+                    "scale": "x",
+                    "format": "s",
+                    "orient": "bottom",
+                    "title": "BIN(IMDB_Rating)",
+                    "zindex": 1,
+                    "encode": {
+                        "labels": {
+                            "update": {
+                                "angle": {
+                                    "value": 270
+                                },
+                                "align": {
+                                    "value": "right"
+                                },
+                                "baseline": {
+                                    "value": "middle"
+                                }
+                            }
+                        }
+                    }
+                },
+                {
+                    "scale": "y",
+                    "format": "s",
+                    "orient": "left",
+                    "title": "Number of Records",
+                    "zindex": 1
+                },
+                {
+                    "scale": "y",
+                    "domain": false,
+                    "format": "s",
+                    "grid": true,
+                    "labels": false,
+                    "orient": "left",
+                    "ticks": false,
+                    "zindex": 0,
+                    "gridScale": "x"
+                }
+            ]
+        }
+    ]
+}

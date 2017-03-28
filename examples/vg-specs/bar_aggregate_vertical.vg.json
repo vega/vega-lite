@@ -1,0 +1,216 @@
+{
+    "$schema": "http://vega.github.io/schema/vega/v3.0.json",
+    "padding": 5,
+    "autosize": "pad",
+    "signals": [
+        {
+            "name": "width",
+            "update": "data('layout')[0].width"
+        },
+        {
+            "name": "height",
+            "update": "data('layout')[0].height"
+        },
+        {
+            "name": "unit",
+            "value": {},
+            "on": [
+                {
+                    "events": "mousemove",
+                    "update": "group()._id ? group() : unit"
+                }
+            ]
+        }
+    ],
+    "data": [
+        {
+            "name": "source",
+            "url": "data/cars.json",
+            "format": {
+                "type": "json",
+                "parse": {
+                    "Acceleration": "number"
+                }
+            },
+            "transform": [
+                {
+                    "type": "filter",
+                    "expr": "datum[\"Acceleration\"] !== null && !isNaN(datum[\"Acceleration\"])"
+                }
+            ]
+        },
+        {
+            "source": "source",
+            "name": "summary",
+            "transform": [
+                {
+                    "type": "aggregate",
+                    "groupby": [
+                        "Cylinders"
+                    ],
+                    "ops": [
+                        "mean"
+                    ],
+                    "fields": [
+                        "Acceleration"
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "layout",
+            "source": "summary",
+            "transform": [
+                {
+                    "type": "aggregate",
+                    "fields": [
+                        "Cylinders"
+                    ],
+                    "ops": [
+                        "distinct"
+                    ]
+                },
+                {
+                    "type": "formula",
+                    "as": "width",
+                    "expr": "max(datum[\"distinct_Cylinders\"] - 1 + 2*0.5, 0) * 21"
+                },
+                {
+                    "type": "formula",
+                    "as": "height",
+                    "expr": "200"
+                }
+            ]
+        }
+    ],
+    "marks": [
+        {
+            "name": "main",
+            "type": "group",
+            "from": {
+                "data": "layout"
+            },
+            "encode": {
+                "update": {
+                    "width": {
+                        "field": "width"
+                    },
+                    "height": {
+                        "field": "height"
+                    },
+                    "fill": {
+                        "value": "transparent"
+                    }
+                }
+            },
+            "marks": [
+                {
+                    "name": "marks",
+                    "type": "rect",
+                    "role": "bar",
+                    "from": {
+                        "data": "summary"
+                    },
+                    "encode": {
+                        "update": {
+                            "xc": {
+                                "scale": "x",
+                                "field": "Cylinders"
+                            },
+                            "width": {
+                                "value": 20
+                            },
+                            "y": {
+                                "scale": "y",
+                                "field": "mean_Acceleration"
+                            },
+                            "y2": {
+                                "scale": "y",
+                                "value": 0
+                            },
+                            "fill": {
+                                "value": "#4c78a8"
+                            }
+                        }
+                    }
+                }
+            ],
+            "scales": [
+                {
+                    "name": "x",
+                    "type": "point",
+                    "domain": {
+                        "data": "summary",
+                        "field": "Cylinders",
+                        "sort": true
+                    },
+                    "range": {
+                        "step": 21
+                    },
+                    "round": true,
+                    "padding": 0.5
+                },
+                {
+                    "name": "y",
+                    "type": "linear",
+                    "domain": {
+                        "data": "summary",
+                        "field": "mean_Acceleration"
+                    },
+                    "range": [
+                        200,
+                        0
+                    ],
+                    "round": true,
+                    "nice": true,
+                    "zero": true
+                }
+            ],
+            "axes": [
+                {
+                    "scale": "x",
+                    "orient": "bottom",
+                    "tickCount": 5,
+                    "title": "Cylinders",
+                    "zindex": 1,
+                    "encode": {
+                        "labels": {
+                            "update": {
+                                "text": {
+                                    "signal": "truncate(datum.value, 25)"
+                                },
+                                "angle": {
+                                    "value": 270
+                                },
+                                "align": {
+                                    "value": "right"
+                                },
+                                "baseline": {
+                                    "value": "middle"
+                                }
+                            }
+                        }
+                    }
+                },
+                {
+                    "scale": "y",
+                    "format": "s",
+                    "orient": "left",
+                    "title": "MEAN(Acceleration)",
+                    "zindex": 1
+                },
+                {
+                    "scale": "y",
+                    "domain": false,
+                    "format": "s",
+                    "grid": true,
+                    "labels": false,
+                    "orient": "left",
+                    "ticks": false,
+                    "zindex": 0,
+                    "gridScale": "x"
+                }
+            ]
+        }
+    ]
+}
