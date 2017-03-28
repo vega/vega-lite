@@ -14,9 +14,6 @@ Gemfile.lock
 
 test/log
 test/log/difflist.json
-examples/_original/*
-examples/_output/*
-examples/_diff/*
 examples/images/*
 examples/all-examples.json
 build/*

@@ -31,7 +31,7 @@
     "build:versions": "scripts/update-version.sh",
     "build:test-gallery": "browserify test-gallery/main.ts -p [tsify -p test-gallery] -d > build/test-gallery/main.js",
     "checkschema": "scripts/check-schema.sh",
-    "clean": "rm -rf build && rm -f vega-lite.* & find -E src test site examples -regex '.*\\.(js|js.map|d.ts)' -delete & rm -rf examples/_diff examples/_original examples/_output examples/images && rm -rf data",
+    "clean": "rm -rf build && rm -f vega-lite.* & find -E src test site examples -regex '.*\\.(js|js.map|d.ts|vg.json)' -delete & rm -rf data",
     "data": "rsync -r node_modules/vega-datasets/data/* data",
 
     "deploy": "scripts/deploy.sh",
@@ -60,8 +60,7 @@
     "codecov": "nyc report --reporter=json && codecov -f coverage/*.json",
     "watch:build": "watchify src/vl.ts -p tsify -v -d -s vl -o 'exorcist build/vega-lite.js.map > build/vega-lite.js'",
     "watch:test": "nodemon -x 'npm test'",
-    "watch": "nodemon -x 'npm run build && npm run test:nocompile' # already ran schema in build",
-    "x-diff": "./scripts/examples-diff.sh"
+    "watch": "nodemon -x 'npm run build && npm run test:nocompile' # already ran schema in build"
   },
   "repository": {
     "type": "git",
