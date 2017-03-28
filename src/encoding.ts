@@ -4,7 +4,7 @@ import {Facet} from './facet';
 import {ChannelDef, ConditionalValueDef, FieldDef, isFieldDef, isValueDef, LegendFieldDef, normalize, OrderFieldDef, PositionFieldDef, TextFieldDef, ValueDef} from './fielddef';
 import * as log from './log';
 import {Mark} from './mark';
-import {duplicate, isArray, some} from './util';
+import {isArray, some} from './util';
 
 export interface Encoding {
   /**
@@ -105,18 +105,13 @@ export function isAggregate(encoding: EncodingWithFacet) {
   });
 }
 
-export function dropInvalidFieldDefs(mark: Mark, encoding: Encoding): Encoding {
-
-  // clone to prevent side effect to the original spec
-  encoding = duplicate(encoding);
-
-  Object.keys(encoding).forEach((channel: Channel) => {
+export function normalizeEncoding(encoding: Encoding, mark: Mark): Encoding {
+  return Object.keys(encoding).reduce((normalizedEncoding: Encoding, channel: Channel) => {
     if (!supportMark(channel, mark)) {
       // Drop unsupported channel
 
       log.warn(log.message.incompatibleChannel(channel, mark));
-      delete encoding[channel];
-      return;
+      return normalizedEncoding;
     }
 
     // Drop line's size if the field is aggregated.
@@ -124,14 +119,13 @@ export function dropInvalidFieldDefs(mark: Mark, encoding: Encoding): Encoding {
       const channelDef = encoding[channel];
       if (isFieldDef(channelDef) && channelDef.aggregate) {
         log.warn(log.message.incompatibleChannel(channel, mark, 'when the field is aggregated.'));
-        delete encoding[channel];
+        return normalizedEncoding;
       }
-      return;
     }
 
     if (isArray(encoding[channel])) {
       // Array of fieldDefs for detail channel (or production rule)
-      encoding[channel] = encoding[channel].reduce((channelDefs: ChannelDef[], channelDef: ChannelDef) => {
+      normalizedEncoding[channel] = encoding[channel].reduce((channelDefs: ChannelDef[], channelDef: ChannelDef) => {
         if (!isFieldDef(channelDef) && !isValueDef(channelDef)) { // TODO: datum
           log.warn(log.message.emptyFieldDef(channelDef, channel));
         } else {
@@ -143,13 +137,12 @@ export function dropInvalidFieldDefs(mark: Mark, encoding: Encoding): Encoding {
       const channelDef = encoding[channel];
       if (!isFieldDef(channelDef) && !isValueDef(channelDef)) { // TODO: datum
         log.warn(log.message.emptyFieldDef(channelDef, channel));
-        delete encoding[channel];
-        return;
+        return normalizedEncoding;
       }
-      normalize(channelDef, channel);
+      normalizedEncoding[channel] = normalize(channelDef, channel);
     }
-  });
-  return encoding;
+    return normalizedEncoding;
+  }, {});
 }
 
 

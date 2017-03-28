@@ -250,16 +250,25 @@ export function defaultType(fieldDef: FieldDef, channel: Channel): Type {
 export function normalize(fieldDef: ChannelDef, channel: Channel) {
   // If a fieldDef contains a field, we need type.
   if (isFieldDef(fieldDef)) { // TODO: or datum
-    // convert short type to full type
-    const fullType = getFullName(fieldDef.type);
-    if (fullType) {
-      fieldDef.type = fullType;
+    // Normalize Type
+    if (fieldDef.type) {
+      const fullType = getFullName(fieldDef.type);
+      if (fieldDef.type !== fullType) {
+        // convert short type to full type
+        fieldDef = {
+          ...fieldDef,
+          type: fullType
+        };
+      }
     } else {
       // If type is empty / invalid, then augment with default type
       const newType = defaultType(fieldDef, channel);
       log.warn(log.message.emptyOrInvalidFieldType(fieldDef.type, channel, newType));
       fieldDef.type = newType;
     }
+
+    // TODO: swojit - you can normalize bin here
+
 
     const {compatible, warning} = channelCompatibility(fieldDef, channel);
     if (!compatible) {
