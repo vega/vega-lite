@@ -254,9 +254,6 @@
                     "description": "Color of the title, can be in hex color code or regular color name.",
                     "type": "string"
                 },
-                "titleEllipsis": {
-                    "type": "string"
-                },
                 "titleFont": {
                     "description": "Font of the title.",
                     "type": "string"
