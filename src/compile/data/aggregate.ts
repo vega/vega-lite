@@ -1,4 +1,4 @@
-import {SummaryComponent} from 'vega-lite/build/src/compile/data/data';
+import {SummaryComponent} from '../../compile/data/data';
 import {SUMMARY} from '../../data';
 import {field, FieldDef} from '../../fielddef';
 import {Dict, hash, keys, StringSet, vals} from '../../util';
