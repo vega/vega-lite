@@ -6,7 +6,8 @@ node_js:
 script:
   - npm run build
   - npm run test:nocompile # already run schema and tsc in build
-  - npm run checkschema
+  - npm run check:schema
+  - npm run check:examples
   - npm run codecov
 after_success:
   - bash <(curl -s https://codecov.io/bash)

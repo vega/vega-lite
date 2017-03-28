@@ -109,9 +109,6 @@
                             },
                             "stroke": {
                                 "value": "#4c78a8"
-                            },
-                            "interpolate": {
-                                "value": "monotone"
                             }
                         }
                     }
