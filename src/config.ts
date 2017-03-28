@@ -207,17 +207,42 @@ export interface Config {
    */
   range?: {[name: string]: RangeConfig};
 
-  /** Axis Config */
+  /** Generic axis config. */
   axis?: AxisConfig;
 
+  /**
+   * X-axis specific config.
+   */
   axisX?: AxisConfig;
 
+  /**
+   * Y-axis specific config.
+   */
   axisY?: AxisConfig;
 
+  /**
+   * Specific axis config for y-axis along the left edge of the chart.
+   */
   axisLeft?: AxisConfig;
 
+  /**
+   * Specific axis config for y-axis along the right edge of the chart.
+   */
+  axisRight?: AxisConfig;
+
+  /**
+   * Specific axis config for x-axis along the top edge of the chart.
+   */
   axisTop?: AxisConfig;
 
+  /**
+   * Specific axis config for x-axis along the bottom edge of the chart.
+   */
+  axixBottom?: AxisConfig;
+
+  /**
+   * Specific axis config for axes with "band" scales.
+   */
   axisBand?: AxisConfig;
 
   /** Legend Config */
@@ -263,7 +288,9 @@ export const defaultConfig: Config = {
   axisX: {},
   axisY: {},
   axisLeft: {},
+  axisRight: {},
   axisTop: {},
+  axisBottom: {},
   axisBand: {},
   legend: defaultLegendConfig,
 
