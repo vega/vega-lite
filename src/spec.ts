@@ -14,6 +14,8 @@ import {AREA, isPrimitiveMark, LINE, Mark, MarkDef, POINT} from './mark';
 import {SelectionDef} from './selection';
 import {stack} from './stack';
 import {Transform} from './transform';
+import {Projection} from './projection';
+
 import {contains, duplicate, extend, hash, keys, omit, pick, vals} from './util';
 
 export type Padding = number | {top?: number, bottom?: number, left?: number, right?: number};
@@ -54,6 +56,11 @@ export interface BaseSpec {
    * An object describing filter and new field calculation.
    */
   transform?: Transform;
+
+  /**
+   * For geo-transforms
+   */
+  projection?: Projection;
 
   /**
    * Configuration object

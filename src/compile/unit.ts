@@ -10,6 +10,7 @@ import {field, FieldDef, FieldRefOption, isFieldDef} from '../fielddef';
 import {Legend} from '../legend';
 import {FILL_STROKE_CONFIG, isMarkDef, Mark, MarkDef, TEXT as TEXT_MARK} from '../mark';
 import {hasDiscreteDomain, Scale, ScaleConfig} from '../scale';
+import {Projection} from '../projection';
 import {UnitSpec} from '../spec';
 import {Dict, duplicate, extend, mergeDeep} from '../util';
 import {VgData} from '../vega.schema';
@@ -52,6 +53,7 @@ export class UnitModel extends Model {
   protected readonly selection: Dict<SelectionDef> = {};
   protected readonly scales: Dict<Scale> = {};
   protected readonly axes: Dict<Axis> = {};
+  protected readonly projections: Dict<Projection> = {};
   protected readonly legends: Dict<Legend> = {};
   public readonly config: Config;
   public readonly stack: StackProperties;
@@ -83,6 +85,8 @@ export class UnitModel extends Model {
 
     this.axes = this.initAxes(encoding, config);
     this.legends = this.initLegend(encoding, config);
+
+    this.projections = this.initProjections(config);
 
     // Selections will be initialized upon parse.
     this.selection = spec.selection;
@@ -222,6 +226,13 @@ export class UnitModel extends Model {
     }, {});
   }
 
+  private initProjections(config: Config): Dict<Projection> {
+    return {
+      ...config.projection,
+      ...this.projection
+    };
+  }
+
   public parseData() {
     this.component.data = parseUnitData(this);
   }
@@ -240,6 +251,10 @@ export class UnitModel extends Model {
 
   public parseMark() {
     this.component.mark = parseMark(this);
+  }
+
+  public parseProjection() {
+    this.component.projections = parseProjectionComponent(this);
   }
 
   public parseAxis() {

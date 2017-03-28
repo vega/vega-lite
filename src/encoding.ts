@@ -1,5 +1,6 @@
 // utility for encoding mapping
 import {Channel, CHANNELS, supportMark} from './channel';
+import {LATITUDE, LONGITUDE} from './type';
 import {Facet} from './facet';
 import {ChannelDef, ConditionalValueDef, FieldDef, isFieldDef, isValueDef, LegendFieldDef, normalize, OrderFieldDef, PositionFieldDef, TextFieldDef, ValueDef} from './fielddef';
 import * as log from './log';
@@ -69,7 +70,12 @@ export interface Encoding {
   /**
    * Text of the `text` mark.
    */
-  text?: TextFieldDef | ConditionalValueDef<string|number>;
+  text?: TextFieldDef | ConditionalValueDef<string | number>;
+
+  /**
+   * Geopath of the `path` mark.
+   */
+  path?: FieldDef;
 
   /**
    * stack order for stacked marks or order of data points in line marks.
@@ -206,4 +212,24 @@ export function reduce<T, U>(mapping: U,
       return f.call(thisArg, r, mapping[channel], channel);
     }
   }, init);
+}
+
+/*
+ * Check if the encoding contains any x/y of type LATITUDE or
+ * LONGITUDE. This can be used to determine if a geo transform
+ * should be produced.
+ */
+export function containsLatLong(encoding: Encoding): boolean {
+  if (encoding.x) {
+    const xType = encoding.x;
+    if (xType === LATITUDE || xType === LONGITUDE) {
+      return true;
+    }
+  } else if (encoding.y) {
+    const yType = encoding.y;
+    if (yType === LATITUDE || yType === LONGITUDE) {
+      return true;
+    }
+  }
+  return false;
 }

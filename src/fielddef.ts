@@ -38,7 +38,7 @@ export interface FieldDef {
 
   /**
    * The encoded field's type of measurement. This can be either a full type
-   * name (`"quantitative"`, `"temporal"`, `"ordinal"`,  and `"nominal"`)
+   * name (`"quantitative"`, `"temporal"`, `"ordinal"`, `"nominal"`, `"geojson"`, `"latitude"`, `"longitude"`)
    * or an initial character of the type name (`"Q"`, `"T"`, `"O"`, `"N"`).
    * This property is case insensitive.
    */
