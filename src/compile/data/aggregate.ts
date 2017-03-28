@@ -125,7 +125,8 @@ export namespace summary {
             mergeMeasures(summaries[key].measures, childSummary.measures);
           } else {
             // give the summary a new name
-            childSummary.name = model.dataName(SUMMARY) + '_' + keys(summaries).length;
+            // FIXME: make sure that we don't have multiple datasets with the same name
+            childSummary.name = model.dataName(SUMMARY);
             summaries[key] = childSummary;
           }
 
