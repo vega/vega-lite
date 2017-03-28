@@ -100,8 +100,8 @@ describe('compile/data/summary', function () {
       assert.deepEqual(aggregates, [{
         'type': 'aggregate',
         'groupby': ['Origin'],
-        'fields': ['*', 'Acceleration', ],
-        'ops': ['count', 'sum', ]
+        'fields': ['*', 'Acceleration'],
+        'ops': ['count', 'sum']
       }]);
     });
 
