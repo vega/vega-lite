@@ -1,7 +1,7 @@
 import {Axis} from '../axis';
 import {Channel, COLUMN, ROW, X, Y} from '../channel';
 import {Config} from '../config';
-import {forEach} from '../encoding';
+import {reduce} from '../encoding';
 import {Facet} from '../facet';
 import {FieldDef, normalize} from '../fielddef';
 import {Legend} from '../legend';
@@ -9,7 +9,7 @@ import * as log from '../log';
 import {Scale} from '../scale';
 import {FacetSpec} from '../spec';
 import {StackProperties} from '../stack';
-import {contains, Dict, duplicate, extend, flatten, keys, vals} from '../util';
+import {contains, Dict, extend, flatten, keys, vals} from '../util';
 import {VgData, VgEncodeEntry} from '../vega.schema';
 
 import {parseAxisComponent, parseGridAxis, parseMainAxis} from './axis/parse';
@@ -69,27 +69,23 @@ export class FacetModel extends Model {
 
   private initFacet(facet: Facet) {
     // clone to prevent side effect to the original spec
-    facet = duplicate(facet);
-
-    forEach(facet, function(fieldDef: FieldDef, channel: Channel) {
+    return reduce(facet, function(normalizedFacet, fieldDef: FieldDef, channel: Channel) {
       if (!contains([ROW, COLUMN], channel)) {
         // Drop unsupported channel
         log.warn(log.message.incompatibleChannel(channel, 'facet'));
-        delete facet[channel];
-        return;
+        return normalizedFacet;
       }
 
       // TODO: array of row / column ?
       if (fieldDef.field === undefined) { // TODO: datum
         log.warn(log.message.emptyFieldDef(fieldDef, channel));
-        delete facet[channel];
-        return;
+        return normalizedFacet;
       }
 
       // Convert type to full, lowercase type, or augment the fieldDef with a default type if missing.
-      normalize(fieldDef, channel);
-    });
-    return facet;
+      normalizedFacet[channel] = normalize(fieldDef, channel);
+      return normalizedFacet;
+    }, {});
   }
 
   private initScalesAndSpacing(facet: Facet, config: Config): Dict<Scale> {
