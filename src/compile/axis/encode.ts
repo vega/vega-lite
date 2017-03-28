@@ -12,14 +12,7 @@ export function labels(model: Model, channel: Channel, labelsSpec: any, def: VgA
   const config = model.config;
 
   // Text
-  if (contains([NOMINAL, ORDINAL], fieldDef.type) && axis.labelMaxLength) {
-    // TODO replace this with Vega's labelMaxLength once it is introduced
-    labelsSpec = extend({
-      text: {
-        signal: `truncate(datum.value, ${axis.labelMaxLength})`
-      }
-    }, labelsSpec || {});
-  } else if (fieldDef.type === TEMPORAL) {
+  if (fieldDef.type === TEMPORAL) {
     labelsSpec = extend({
       text: {
         signal: timeFormatExpression('datum.value', fieldDef.timeUnit, axis.format, config.axis.shortTimeLabels, config.timeFormat)

@@ -8,16 +8,6 @@ import {parseModel, parseUnitModel} from '../../util';
 
 describe('compile/axis', () => {
   describe('encode.labels()', function () {
-    it('should show truncated labels by default', function () {
-      const labels = encode.labels(parseUnitModel({
-          mark: "point",
-          encoding: {
-            x: {field: 'a', type: "ordinal"}
-          }
-        }), 'x', {}, {orient: 'top'});
-      assert.deepEqual(labels.text.signal, 'truncate(datum.value, 25)');
-    });
-
     it('should rotate label', function() {
       const model = parseUnitModel({
         mark: "point",

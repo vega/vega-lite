@@ -72,11 +72,6 @@
                     "minimum": 0,
                     "type": "number"
                 },
-                "labelMaxLength": {
-                    "description": "Truncate labels that are too long.",
-                    "minimum": 1,
-                    "type": "integer"
-                },
                 "labelPadding": {
                     "description": "The padding, in pixels, between axis and text labels.",
                     "type": "number"
@@ -217,10 +212,9 @@
                     "minimum": 0,
                     "type": "number"
                 },
-                "labelMaxLength": {
-                    "description": "Truncate labels that are too long.",
-                    "minimum": 1,
-                    "type": "integer"
+                "labelLimit": {
+                    "description": "Maximum allowed pixel width of axis tick labels.",
+                    "type": "number"
                 },
                 "labels": {
                     "description": "A boolean flag indicating if labels should be included as part of the axis (default true).",
@@ -275,6 +269,10 @@
                         "string",
                         "number"
                     ]
+                },
+                "titleLimit": {
+                    "description": "Maximum allowed pixel width of axis titles.",
+                    "type": "number"
                 },
                 "titleMaxLength": {
                     "description": "Max length for axis title if the title is automatically generated from the field's description. By default, this is automatically based on cell size and characterWidth property.",
@@ -1940,6 +1938,10 @@
                     "minimum": 0,
                     "type": "number"
                 },
+                "labelLimit": {
+                    "description": "Maximum allowed pixel width of axis tick labels.",
+                    "type": "number"
+                },
                 "labelOffset": {
                     "description": "The offset of the legend label.",
                     "minimum": 0,
@@ -1997,6 +1999,10 @@
                         "string",
                         "number"
                     ]
+                },
+                "titleLimit": {
+                    "description": "Maximum allowed pixel width of axis titles.",
+                    "type": "number"
                 },
                 "titlePadding": {
                     "description": "The padding, in pixels, between title and legend.",

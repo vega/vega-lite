@@ -1,12 +1,11 @@
-import * as log from '../log';
-
-import {Axis, VL_ONLY_AXIS_PROPERTIES, VlOnlyAxisBase} from '../axis';
+import {Axis} from '../axis';
 import {Channel, COLUMN, ROW, X, Y} from '../channel';
 import {Config, defaultConfig} from '../config';
 import {forEach} from '../encoding';
 import {Facet} from '../facet';
 import {FieldDef, normalize} from '../fielddef';
 import {Legend} from '../legend';
+import * as log from '../log';
 import {Scale} from '../scale';
 import {FacetSpec} from '../spec';
 import {StackProperties} from '../stack';
@@ -122,15 +121,7 @@ export class FacetModel extends Model {
       if (facet[channel]) {
         const axisSpec = facet[channel].axis;
         if (axisSpec !== false) {
-          let vlOnlyAxisProperties: VlOnlyAxisBase = {};
-          VL_ONLY_AXIS_PROPERTIES.forEach(function(property) {
-            if (config.facet.axis[property] !== undefined) {
-              vlOnlyAxisProperties[property] = config.facet.axis[property];
-            }
-          });
-
           const modelAxis = _axis[channel] = {
-            ...vlOnlyAxisProperties,
             ...axisSpec
           };
 

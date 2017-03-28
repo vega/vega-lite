@@ -1,6 +1,6 @@
 import {assert} from 'chai';
 
-import {DETAIL, SHAPE, X, Y} from '../../src/channel';
+import {DETAIL, SHAPE, X} from '../../src/channel';
 import {UnitModel} from '../../src/compile/unit';
 import * as log from '../../src/log';
 import {BAR} from '../../src/mark';
@@ -144,20 +144,6 @@ describe('UnitModel', function() {
   });
 
   describe('initAxes', () => {
-    it('it should have axis.labelMaxLength = config.axis.labelMaxLength', () => {
-      const model = parseUnitModel({
-        mark: 'point',
-        encoding: {
-          x: {field: 'a', type: 'ordinal'},
-          y: {field: 'b', type: 'ordinal'}
-        },
-        config: {axis: {labelMaxLength: 123}}
-      });
-
-      assert.equal(model.axis(X).labelMaxLength, 123);
-      assert.equal(model.axis(Y).labelMaxLength, 123);
-    });
-
     it('should not include properties of non-VlOnlyAxisConfig in config.facet.axis', () => {
       const model = parseUnitModel({
         mark: 'point',
@@ -177,8 +163,7 @@ describe('UnitModel', function() {
         encoding: {
           x: {field: 'a', type: 'ordinal', axis: {offset: 345}},
           y: {field: 'b', type: 'ordinal'}
-        },
-        config: {axis: {labelMaxLength: 123}}
+        }
       });
 
       assert.equal(model.axis(X).offset, 345);
