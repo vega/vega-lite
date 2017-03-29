@@ -17,12 +17,10 @@ const DEFAULT_NULL_FILTERS = {
 
 /** Return Hashset of fields for null filtering (key=field, value = true). */
 function parse(model: Model): Dict<FieldDef> {
-  const filterInvalid = model.filterInvalid();
-
   return model.reduceFieldDef(function(aggregator: Dict<FieldDef>, fieldDef: FieldDef) {
-    if (fieldDef.field !== '*') { // Ignore * for count(*) fields.
-      if (filterInvalid ||
-        (filterInvalid === undefined && fieldDef.field && DEFAULT_NULL_FILTERS[fieldDef.type])) {
+    if (fieldDef.aggregate !== 'count') { // Ignore * for count(*) fields.
+      if (model.config.filterInvalid ||
+        (model.config.filterInvalid === undefined && (fieldDef.field && DEFAULT_NULL_FILTERS[fieldDef.type]))) {
         aggregator[fieldDef.field] = fieldDef;
       } else {
         // define this so we know that we don't filter nulls for this field
@@ -60,7 +58,7 @@ export const nullFilter: DataComponentCompiler<Dict<FieldDef>> = {
       const childDataComponent = child.component.data;
       if (model.compatibleSource(child) && !differ<FieldDef>(childDataComponent.nullFilter, nullFilterComponent)) {
         extend(nullFilterComponent, childDataComponent.nullFilter);
-        delete childDataComponent.nullFilter;
+        childDataComponent.nullFilter = {};
       }
     });
 

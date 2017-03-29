@@ -2,7 +2,6 @@
 import {Channel, COLUMN, ROW, X, Y} from '../channel';
 import {LAYOUT} from '../data';
 import {hasDiscreteDomain} from '../scale';
-import {Formula} from '../transform';
 import {extend, keys, StringSet} from '../util';
 import {VgData} from '../vega.schema';
 
@@ -16,6 +15,11 @@ import {UnitModel} from './unit';
 export interface LayoutComponent {
   width: SizeComponent;
   height: SizeComponent;
+}
+
+export interface Formula {
+    as: string;
+    expr: string;
 }
 
 export interface SizeComponent {

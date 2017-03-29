@@ -254,6 +254,9 @@ export interface Config {
   /** Selection Config */
   selection?: SelectionConfig;
 
+  /** Filter all null values. */
+  filterInvalid?: boolean;
+
   // Support arbitrary key for role config
   // Note: Technically, the type for role config should be `MarkConfig`.
   // However, Typescript requires that the index type must be compatible with all other properties.
@@ -296,5 +299,5 @@ export const defaultConfig: Config = {
 
   facet: defaultFacetConfig,
 
-  selection: defaultSelectionConfig
+  selection: defaultSelectionConfig,
 };

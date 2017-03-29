@@ -1,5 +1,5 @@
 import {DataFormat, isInlineData, isNamedData, isUrlData, SOURCE} from '../../data';
-import {contains, extend} from '../../util';
+import {contains} from '../../util';
 import {VgData} from '../../vega.schema';
 
 import {FacetModel} from '../facet';
@@ -8,10 +8,9 @@ import {Model} from './../model';
 
 import {bin} from './bin';
 import {DataComponent} from './data';
-import {filter} from './filter';
-import {formula} from './formula';
 import {nullFilter} from './nullfilter';
 import {timeUnit} from './timeunit';
+import {transforms} from './transforms';
 
 export namespace source {
   function parse(model: Model): VgData {
@@ -37,17 +36,14 @@ export namespace source {
 
         // For backward compatibility for former `data.formatType` property
         const formatType: DataFormat = dataFormat.type || data['formatType'];
-        sourceData.format =
-          extend(
-            {type: formatType ? formatType : defaultExtension},
-            dataFormat.property ? {property: dataFormat.property} : {},
-            // Feature and mesh are two mutually exclusive properties
-            dataFormat.feature ?
-              {feature : dataFormat.feature} :
-            dataFormat.mesh ?
-              {mesh : dataFormat.mesh} :
-              {}
-          );
+        const {property, feature, mesh} = dataFormat;
+
+        sourceData.format = {
+        type: formatType ? formatType : defaultExtension,
+        ...(property ? {property} : {}),
+        ...(feature ? {feature} : {}),
+        ...(mesh ? {mesh} : {}),
+        };
       } else if (isNamedData(data)) {
         return {name: data.name};
       }
@@ -75,12 +71,13 @@ export namespace source {
 
   export function parseLayer(model: LayerModel) {
     let sourceData = parse(model);
+
     model.children.forEach((child) => {
       const childData = child.component.data;
 
       if (model.compatibleSource(child)) {
-        // we cannot merge if the child has filters defined even after we tried to move them up
-        const canMerge = !childData.filter && !childData.formatParse && !childData.nullFilter;
+        // we cannot merge if the child has transforms defined even after we tried to move them up
+        const canMerge = !childData.transforms && !childData.formatParse && !childData.nullFilter;
         if (canMerge) {
           // rename source because we can just remove it
           child.renameData(child.dataName(SOURCE), model.dataName(SOURCE));
@@ -94,6 +91,7 @@ export namespace source {
         }
       }
     });
+
     return sourceData;
   }
 
@@ -107,9 +105,8 @@ export namespace source {
       }
 
       sourceData.transform = [].concat(
-        formula.assemble(component.calculate),
+        transforms.assemble(component.transforms),
         nullFilter.assemble(component.nullFilter),
-        filter.assemble(component.filter),
         bin.assemble(component.bin),
         timeUnit.assemble(component.timeUnit)
       );

@@ -7,9 +7,7 @@ describe("normalizeErrorBar", () => {
 
     it("should produce correct layered specs for horizontal error bar", () => {
       assert.deepEqual(normalize({
-        "description": "A error bar plot showing mean, min, and max in the US population distribution of age groups in 2000.",
         "data": {"url": "data/population.json"},
-        "transform": {"filter": "datum.year == 2000"},
         mark: "error-bar",
         encoding: {
           "y": {"field": "age","type": "ordinal"},
@@ -27,9 +25,7 @@ describe("normalizeErrorBar", () => {
           "size": {"value": 5}
         }
       }), {
-        "description": "A error bar plot showing mean, min, and max in the US population distribution of age groups in 2000.",
         "data": {"url": "data/population.json"},
-        "transform": {"filter": "datum.year == 2000"},
         "layer": [
           {
             "mark": "rule",
@@ -81,9 +77,7 @@ describe("normalizeErrorBar", () => {
    it("should throw error when missing x2 and y2", () => {
       assert.throws(() => {
         normalize({
-          "description": "A error bar plot showing mean, min, and max in the US population distribution of age groups in 2000.",
           "data": {"url": "data/population.json"},
-          "transform": {"filter": "datum.year == 2000"},
           mark: "error-bar",
           encoding: {
             "y": {"field": "age","type": "ordinal"},

@@ -90,13 +90,14 @@ describe('data', function () {
   describe('assemble', function () {
     it('should have correct order of transforms (null filter, timeUnit, bin then filter)', function () {
       const model = parseUnitModel({
-        transform: {
-          calculate: [{
-            as: 'b2',
-            expr: '2 * datum["b"]'
-          }],
-          filter: 'datum["a"] > datum["b"] && datum["c"] === datum["d"]'
-        },
+        transform: [{
+            calculate: '2 * datum["b"]',
+            as: 'b2'
+          },
+          {
+            filter: 'datum["a"] > datum["b"] && datum["c"] === datum["d"]'
+          }
+        ],
         mark: "point",
         encoding: {
           x: {field: 'a', type: "temporal", timeUnit: 'year'},

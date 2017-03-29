@@ -1,4 +1,4 @@
-import * as log from '../log';
+
 
 import {Axis} from '../axis';
 import {Channel, COLUMN, X} from '../channel';
@@ -6,13 +6,11 @@ import {CellConfig, Config} from '../config';
 import {Data, DataSourceType, isNamedData, SOURCE} from '../data';
 import {forEach, reduce} from '../encoding';
 import {ChannelDef, field, FieldDef, FieldRefOption, isFieldDef} from '../fielddef';
-import {EqualFilter, OneOfFilter, RangeFilter} from '../filter';
 import {Legend} from '../legend';
 import {hasDiscreteDomain, Scale} from '../scale';
 import {SortField, SortOrder} from '../sort';
 import {BaseSpec, Padding} from '../spec';
 import {Transform} from '../transform';
-import {Formula} from '../transform';
 import {Dict, extend, vals} from '../util';
 import {VgAxis, VgData, VgEncodeEntry, VgLegend, VgScale} from '../vega.schema';
 
@@ -88,6 +86,7 @@ export abstract class Model {
   public readonly padding: Padding;
 
   public readonly data: Data;
+  public readonly transforms: Transform[];
 
   /** Name map for data sources, which can be renamed by a model's parent. */
   protected dataNameMap: NameMapInterface;
@@ -128,15 +127,7 @@ export abstract class Model {
 
     this.description = spec.description;
     this.padding = spec.padding;
-    this.transform = spec.transform;
-
-    if (spec.transform) {
-      if (spec.transform.filterInvalid === undefined &&
-          spec.transform['filterNull'] !== undefined) {
-        spec.transform.filterInvalid = spec.transform['filterNull'];
-        log.warn(log.message.DEPRECATED_FILTER_NULL);
-      }
-    }
+    this.transforms = spec.transform || [];
 
     this.component = {data: null, layout: null, mark: null, scales: null, axes: null, axisGroups: null, gridGroups: null, legends: null, selection: null};
   }
@@ -294,23 +285,6 @@ export abstract class Model {
   }
 
   public abstract dataTable(): string;
-
-  // TRANSFORMS
-  public calculate(): Formula[] {
-    return this.transform ? this.transform.calculate : undefined;
-  }
-
-  public filterInvalid(): boolean {
-    const transform = this.transform || {};
-    if (transform.filterInvalid === undefined) {
-      return this.parent ? this.parent.filterInvalid() : undefined;
-    }
-    return transform.filterInvalid;
-  }
-
-  public filter(): string | OneOfFilter | EqualFilter| RangeFilter | (string | OneOfFilter | EqualFilter| RangeFilter)[] {
-    return this.transform ? this.transform.filter : undefined;
-  }
 
   /** Get "field" reference for vega */
   public field(channel: Channel, opt: FieldRefOption = {}) {

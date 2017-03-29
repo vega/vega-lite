@@ -51,9 +51,9 @@ export interface BaseSpec {
   data?: Data;
 
   /**
-   * An object describing filter and new field calculation.
+   * An array of transforms.
    */
-  transform?: Transform;
+  transform?: Transform[];
 
   /**
    * Configuration object

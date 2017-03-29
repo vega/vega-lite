@@ -148,6 +148,11 @@ export interface VgFormulaTransform {
   expr: string;
 }
 
+export interface VgFilterTransform {
+  type: 'filter';
+  expr: string;
+}
+
 export interface VgAggregateTransform {
   type: 'aggregate';
   groupby: VgFieldRef[];
@@ -175,7 +180,7 @@ export interface VgLegendEncode {
 
 export type VgGuideEncode = any; // TODO: replace this (See guideEncode in Vega Schema)
 
-export type VgTransform = VgBinTransform | VgExtentTransform | VgFormulaTransform | VgAggregateTransform | any;
+export type VgTransform = VgBinTransform | VgExtentTransform | VgFormulaTransform | VgAggregateTransform | VgFilterTransform | any;
 
 export interface VgStackTransform {
   type: 'stack';

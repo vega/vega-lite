@@ -21,7 +21,7 @@ declare module 'vega-util' {
 
   export function truncate(a: string, length: number): string;
 
-  export function isArray(a: any | any[]): a is any[];
+  export function isArray<T>(a: T | T[]): a is T[];
   export function isObject(a: any): a is any;
   export function isString(a: any): a is string;
   export function isNumber(a: any): a is number;

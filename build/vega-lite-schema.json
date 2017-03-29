@@ -776,6 +776,24 @@
             },
             "type": "object"
         },
+        "CalculateTransform": {
+            "additionalProperties": false,
+            "properties": {
+                "as": {
+                    "description": "The field for storing the computed formula value.",
+                    "type": "string"
+                },
+                "calculate": {
+                    "description": "A string containing a Vega Expression. Use the variable `datum` to to refer to the current data object.",
+                    "type": "string"
+                }
+            },
+            "required": [
+                "as",
+                "calculate"
+            ],
+            "type": "object"
+        },
         "CellConfig": {
             "additionalProperties": false,
             "properties": {
@@ -977,6 +995,10 @@
                 "facet": {
                     "$ref": "#/definitions/FacetConfig",
                     "description": "Facet Config"
+                },
+                "filterInvalid": {
+                    "description": "Filter all null values.",
+                    "type": "boolean"
                 },
                 "legend": {
                     "$ref": "#/definitions/LegendConfig",
@@ -1497,31 +1519,57 @@
             },
             "type": "object"
         },
+        "FilterTransform": {
+            "additionalProperties": false,
+            "properties": {
+                "filter": {
+                    "anyOf": [
+                        {
+                            "$ref": "#/definitions/EqualFilter"
+                        },
+                        {
+                            "$ref": "#/definitions/RangeFilter"
+                        },
+                        {
+                            "$ref": "#/definitions/OneOfFilter"
+                        },
+                        {
+                            "items": {
+                                "anyOf": [
+                                    {
+                                        "$ref": "#/definitions/EqualFilter"
+                                    },
+                                    {
+                                        "$ref": "#/definitions/RangeFilter"
+                                    },
+                                    {
+                                        "$ref": "#/definitions/OneOfFilter"
+                                    },
+                                    {
+                                        "type": "string"
+                                    }
+                                ]
+                            },
+                            "type": "array"
+                        },
+                        {
+                            "type": "string"
+                        }
+                    ],
+                    "description": "A string containing the filter Vega expression. Use `datum` to refer to the current data object."
+                }
+            },
+            "required": [
+                "filter"
+            ],
+            "type": "object"
+        },
         "FontStyle": {
             "enum": [
                 "italic",
                 "normal"
             ],
             "type": "string"
-        },
-        "Formula": {
-            "additionalProperties": false,
-            "description": "Formula object for calculate.",
-            "properties": {
-                "as": {
-                    "description": "The field in which to store the computed formula value.",
-                    "type": "string"
-                },
-                "expr": {
-                    "description": "A string containing an expression for the formula. Use the variable `datum` to to refer to the current data object.",
-                    "type": "string"
-                }
-            },
-            "required": [
-                "as",
-                "expr"
-            ],
-            "type": "object"
         },
         "GenericFacetSpec<GenericUnitSpec<string | MarkDef, EncodingWithFacet>>": {
             "additionalProperties": false,
@@ -1598,8 +1646,18 @@
                     ]
                 },
                 "transform": {
-                    "$ref": "#/definitions/Transform",
-                    "description": "An object describing filter and new field calculation."
+                    "description": "An array of transforms.",
+                    "items": {
+                        "anyOf": [
+                            {
+                                "$ref": "#/definitions/FilterTransform"
+                            },
+                            {
+                                "$ref": "#/definitions/CalculateTransform"
+                            }
+                        ]
+                    },
+                    "type": "array"
                 }
             },
             "required": [
@@ -1687,8 +1745,18 @@
                     "minimum": 0
                 },
                 "transform": {
-                    "$ref": "#/definitions/Transform",
-                    "description": "An object describing filter and new field calculation."
+                    "description": "An array of transforms.",
+                    "items": {
+                        "anyOf": [
+                            {
+                                "$ref": "#/definitions/FilterTransform"
+                            },
+                            {
+                                "$ref": "#/definitions/CalculateTransform"
+                            }
+                        ]
+                    },
+                    "type": "array"
                 },
                 "width": {
                     "type": "number"
@@ -1786,8 +1854,18 @@
                     "type": "object"
                 },
                 "transform": {
-                    "$ref": "#/definitions/Transform",
-                    "description": "An object describing filter and new field calculation."
+                    "description": "An array of transforms.",
+                    "items": {
+                        "anyOf": [
+                            {
+                                "$ref": "#/definitions/FilterTransform"
+                            },
+                            {
+                                "$ref": "#/definitions/CalculateTransform"
+                            }
+                        ]
+                    },
+                    "type": "array"
                 },
                 "width": {
                     "type": "number"
@@ -3570,60 +3648,6 @@
                 "yearquartermonth"
             ],
             "type": "string"
-        },
-        "Transform": {
-            "additionalProperties": false,
-            "description": "Top-level transform object.",
-            "properties": {
-                "calculate": {
-                    "description": "Calculate new field(s) using the provided expresssion(s). Calculation are applied before filter.",
-                    "items": {
-                        "$ref": "#/definitions/Formula"
-                    },
-                    "type": "array"
-                },
-                "filter": {
-                    "anyOf": [
-                        {
-                            "$ref": "#/definitions/EqualFilter"
-                        },
-                        {
-                            "$ref": "#/definitions/RangeFilter"
-                        },
-                        {
-                            "$ref": "#/definitions/OneOfFilter"
-                        },
-                        {
-                            "items": {
-                                "anyOf": [
-                                    {
-                                        "$ref": "#/definitions/EqualFilter"
-                                    },
-                                    {
-                                        "$ref": "#/definitions/RangeFilter"
-                                    },
-                                    {
-                                        "$ref": "#/definitions/OneOfFilter"
-                                    },
-                                    {
-                                        "type": "string"
-                                    }
-                                ]
-                            },
-                            "type": "array"
-                        },
-                        {
-                            "type": "string"
-                        }
-                    ],
-                    "description": "A string containing the filter Vega expression. Use `datum` to refer to the current data object."
-                },
-                "filterInvalid": {
-                    "description": "Whether to filter invalid values (`null` and `NaN`) from the data. By default (`undefined`), only quantitative and temporal fields are filtered. If set to `true`, all data items with null values are filtered. If `false`, all data items are included.",
-                    "type": "boolean"
-                }
-            },
-            "type": "object"
         },
         "Type": {
             "enum": [
