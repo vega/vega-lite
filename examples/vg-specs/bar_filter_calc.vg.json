@@ -70,16 +70,16 @@
             "transform": [
                 {
                     "type": "formula",
-                    "as": "b2",
-                    "expr": "2*datum.b"
-                },
-                {
-                    "type": "filter",
-                    "expr": "datum[\"b2\"] !== null && !isNaN(datum[\"b2\"])"
+                    "expr": "2*datum.b",
+                    "as": "b2"
                 },
                 {
                     "type": "filter",
                     "expr": "datum.b2 > 60"
+                },
+                {
+                    "type": "filter",
+                    "expr": "datum[\"b2\"] !== null && !isNaN(datum[\"b2\"])"
                 }
             ]
         },

@@ -36,7 +36,13 @@
                 {
                     "type": "filter",
                     "expr": "datum[\"distance\"] !== null && !isNaN(datum[\"distance\"])"
-                },
+                }
+            ]
+        },
+        {
+            "name": "layer_0_source",
+            "source": "source",
+            "transform": [
                 {
                     "type": "extent",
                     "field": "distance",
@@ -58,8 +64,8 @@
             ]
         },
         {
-            "source": "source",
-            "name": "summary",
+            "source": "layer_0_source",
+            "name": "layer_0_summary",
             "transform": [
                 {
                     "type": "aggregate",
@@ -83,11 +89,11 @@
             "transform": [
                 {
                     "type": "filter",
-                    "expr": "datum[\"distance\"] !== null && !isNaN(datum[\"distance\"])"
+                    "expr": "datum.delay < 5"
                 },
                 {
                     "type": "filter",
-                    "expr": "datum.delay < 5"
+                    "expr": "datum[\"distance\"] !== null && !isNaN(datum[\"distance\"])"
                 },
                 {
                     "type": "extent",
@@ -174,7 +180,7 @@
                     "type": "rect",
                     "role": "bar",
                     "from": {
-                        "data": "summary"
+                        "data": "layer_0_summary"
                     },
                     "encode": {
                         "update": {
@@ -241,7 +247,7 @@
                     "domain": {
                         "fields": [
                             {
-                                "data": "summary",
+                                "data": "layer_0_summary",
                                 "field": "count_*"
                             },
                             {

@@ -93,6 +93,11 @@
             ]
         },
         {
+            "name": "layer_0_source",
+            "source": "source",
+            "transform": []
+        },
+        {
             "name": "layer_1_source",
             "source": "source",
             "transform": [
@@ -104,7 +109,7 @@
         },
         {
             "name": "layout",
-            "source": "source",
+            "source": "layer_0_source",
             "transform": [
                 {
                     "type": "aggregate",
@@ -154,7 +159,7 @@
                     "type": "rect",
                     "role": "bar",
                     "from": {
-                        "data": "source"
+                        "data": "layer_0_source"
                     },
                     "encode": {
                         "update": {
@@ -209,7 +214,7 @@
                     "domain": {
                         "fields": [
                             {
-                                "data": "source",
+                                "data": "layer_0_source",
                                 "field": "a"
                             },
                             {
@@ -231,7 +236,7 @@
                     "domain": {
                         "fields": [
                             {
-                                "data": "source",
+                                "data": "layer_0_source",
                                 "field": "c"
                             },
                             {

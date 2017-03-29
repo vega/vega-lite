@@ -36,11 +36,11 @@
             "transform": [
                 {
                     "type": "filter",
-                    "expr": "datum[\"date\"] !== null && !isNaN(datum[\"date\"]) && datum[\"price\"] !== null && !isNaN(datum[\"price\"])"
+                    "expr": "datum.symbol==='GOOG'"
                 },
                 {
                     "type": "filter",
-                    "expr": "datum.symbol==='GOOG'"
+                    "expr": "datum[\"date\"] !== null && !isNaN(datum[\"date\"]) && datum[\"price\"] !== null && !isNaN(datum[\"price\"])"
                 },
                 {
                     "type": "collect",
@@ -50,6 +50,11 @@
                     }
                 }
             ]
+        },
+        {
+            "name": "layer_0_source",
+            "source": "source",
+            "transform": []
         },
         {
             "name": "layer_1_source",
@@ -116,7 +121,7 @@
                     "name": "layer_0_marks",
                     "type": "area",
                     "from": {
-                        "data": "source"
+                        "data": "layer_0_source"
                     },
                     "encode": {
                         "update": {
@@ -198,7 +203,7 @@
                         "fields": [
                             {
                                 "field": "date",
-                                "data": "source"
+                                "data": "layer_0_source"
                             },
                             {
                                 "field": "date",
@@ -224,7 +229,7 @@
                         "fields": [
                             {
                                 "field": "price",
-                                "data": "source"
+                                "data": "layer_0_source"
                             },
                             {
                                 "field": "price",

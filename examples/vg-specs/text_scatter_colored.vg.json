@@ -36,8 +36,8 @@
             "transform": [
                 {
                     "type": "formula",
-                    "as": "OriginInitial",
-                    "expr": "datum.Origin[0]"
+                    "expr": "datum.Origin[0]",
+                    "as": "OriginInitial"
                 },
                 {
                     "type": "filter",
