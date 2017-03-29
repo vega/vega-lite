@@ -172,9 +172,6 @@
                     "encode": {
                         "labels": {
                             "update": {
-                                "text": {
-                                    "signal": "truncate(datum.value, 25)"
-                                },
                                 "angle": {
                                     "value": 270
                                 },

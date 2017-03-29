@@ -192,9 +192,6 @@
                     "encode": {
                         "labels": {
                             "update": {
-                                "text": {
-                                    "signal": "truncate(datum.value, 25)"
-                                },
                                 "angle": {
                                     "value": 270
                                 },
@@ -212,16 +209,7 @@
                     "scale": "y",
                     "orient": "left",
                     "title": "Origin",
-                    "zindex": 1,
-                    "encode": {
-                        "labels": {
-                            "update": {
-                                "text": {
-                                    "signal": "truncate(datum.value, 25)"
-                                }
-                            }
-                        }
-                    }
+                    "zindex": 1
                 }
             ],
             "legends": [
