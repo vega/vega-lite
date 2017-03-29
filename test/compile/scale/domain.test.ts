@@ -61,6 +61,26 @@ describe('compile/scale', () => {
       });
     });
 
+    it('should return normalize domain for stack if specified', function() {
+      const model = parseUnitModel({
+        mark: "bar",
+        encoding: {
+          y: {
+            aggregate: 'sum',
+            field: 'origin',
+            type: 'quantitative'
+          },
+          x: {field: 'x', type: "ordinal"},
+          color: {field: 'color', type: "ordinal"}
+        },
+        config: {
+          stack: "normalize"
+        }
+      });
+
+      assert.deepEqual(parseDomain(model,'y'), [0, 1]);
+    });
+
     describe('for quantitative', function() {
       it('should return the right domain for binned Q', log.wrap((localLogger) => {
         const fieldDef: PositionFieldDef = {
@@ -190,8 +210,7 @@ describe('compile/scale', () => {
             }
           });
           const _domain = parseDomain(model,'y');
-
-          assert.deepEqual(_domain, {data: 'source', field: 'month_origin', sort: {field: 'month_origin', op: 'min',}});
+          assert.deepEqual(_domain, {data: 'source', field: 'month_origin', sort: true});
         });
 
         it('should return the correct domain for yearmonth T',
@@ -208,11 +227,43 @@ describe('compile/scale', () => {
             });
             const _domain = parseDomain(model,'y');
 
-            assert.deepEqual(_domain, {
-              data: 'source', field: 'yearmonth_origin',
-              sort: {field: 'yearmonth_origin', op: 'min'}
-            });
+            assert.deepEqual(_domain, {data: 'source', field: 'yearmonth_origin'});
           });
+
+
+        it('should return the correct domain for yearmonth T when specify sort',
+          function() {
+            const model = parseUnitModel({
+              mark: "line",
+              encoding: {
+                x: {
+                  timeUnit: 'month',
+                  field: 'date',
+                  type: 'temporal',
+                  sort: {
+                    op: 'mean',
+                    field: 'precipitation',
+                    order: 'descending'
+                  }
+                },
+                y: {
+                  aggregate: 'mean',
+                  field: 'precipitation',
+                  type: 'quantitative'
+                }
+              }
+            });
+            const _domain = parseDomain(model,'x');
+
+            assert.deepEqual(_domain, {
+              data: 'source',
+              field: 'month_date',
+              sort: {
+                op: 'mean',
+                field: 'precipitation'
+              }
+            });
+        });
 
       it('should return the right custom domain with DateTime objects', () => {
         const model = parseUnitModel({
@@ -274,7 +325,6 @@ describe('compile/scale', () => {
         data: 'foo',
         fields: ['a', 'b']
       };
-
       const domain2 = {
         fields: [{
           data: 'foo',

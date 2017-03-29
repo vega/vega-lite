@@ -1385,8 +1385,8 @@
                 }
             },
             "required": [
-                "equal",
-                "field"
+                "field",
+                "equal"
             ],
             "type": "object"
         },
@@ -1794,8 +1794,8 @@
                 }
             },
             "required": [
-                "encoding",
-                "mark"
+                "mark",
+                "encoding"
             ],
             "type": "object"
         },
@@ -2873,9 +2873,9 @@
                 }
             },
             "required": [
-                "interval",
+                "single",
                 "multi",
-                "single"
+                "interval"
             ],
             "type": "object"
         },

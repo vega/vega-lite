@@ -1,7 +1,7 @@
 {
     "$schema": "http://vega.github.io/schema/vega/v3.0.json",
-    "padding": 5,
     "autosize": "pad",
+    "padding": 5,
     "signals": [
         {
             "name": "width",
@@ -141,8 +141,11 @@
                                 "scale": "y",
                                 "field": "gas"
                             },
-                            "fill": {
+                            "stroke": {
                                 "value": "#4c78a8"
+                            },
+                            "fill": {
+                                "value": "transparent"
                             },
                             "opacity": {
                                 "value": 0.7
