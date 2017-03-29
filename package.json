@@ -96,7 +96,7 @@
     "tslint": "~4.5.1",
     "tslint-eslint-rules": "^3.5.1",
     "typescript": "^2.2.2",
-    "typescript-json-schema": "^0.10.0",
+    "typescript-json-schema": "^0.11.0",
     "uglify-js": "~2.8.17",
     "vega": "3.0.0-beta.27",
     "vega-datasets": "vega/vega-datasets#gh-pages",
