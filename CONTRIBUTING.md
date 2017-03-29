@@ -125,6 +125,8 @@ Running `npm run test` automatically includes test coverage summary and generate
 You can see if specific lines are covered in the unit test by running `open coverage/index.html`
 and browse through the report.
 
+A lot of linting errors can be fixed automatically with running `npm run lint -- --fix`.
+
 ### Watch tasks
 
 During development, it can be convenient to rebuild automatically or run tests in the background.
