@@ -1,7 +1,7 @@
 {
     "$schema": "http://vega.github.io/schema/vega/v3.0.json",
-    "autosize": "pad",
     "padding": 5,
+    "autosize": "pad",
     "signals": [
         {
             "name": "width",
@@ -175,10 +175,7 @@
                     "domain": {
                         "data": "summary",
                         "field": "month_date",
-                        "sort": {
-                            "field": "month_date",
-                            "op": "min"
-                        }
+                        "sort": true
                     },
                     "range": {
                         "step": 21

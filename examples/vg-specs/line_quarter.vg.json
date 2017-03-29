@@ -1,7 +1,7 @@
 {
     "$schema": "http://vega.github.io/schema/vega/v3.0.json",
-    "autosize": "pad",
     "padding": 5,
+    "autosize": "pad",
     "signals": [
         {
             "name": "width",
@@ -316,10 +316,7 @@
                     "domain": {
                         "data": "summary",
                         "field": "year_date",
-                        "sort": {
-                            "field": "year_date",
-                            "op": "min"
-                        }
+                        "sort": true
                     },
                     "range": "width",
                     "round": true
@@ -330,10 +327,7 @@
                     "domain": {
                         "data": "summary",
                         "field": "quarter_date",
-                        "sort": {
-                            "field": "quarter_date",
-                            "op": "min"
-                        }
+                        "sort": true
                     },
                     "range": {
                         "step": 21
