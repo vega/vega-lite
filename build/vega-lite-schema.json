@@ -924,7 +924,35 @@
                 },
                 "axis": {
                     "$ref": "#/definitions/AxisConfig",
-                    "description": "Axis Config"
+                    "description": "Generic axis config."
+                },
+                "axisBand": {
+                    "$ref": "#/definitions/AxisConfig",
+                    "description": "Specific axis config for axes with \"band\" scales."
+                },
+                "axisLeft": {
+                    "$ref": "#/definitions/AxisConfig",
+                    "description": "Specific axis config for y-axis along the left edge of the chart."
+                },
+                "axisRight": {
+                    "$ref": "#/definitions/AxisConfig",
+                    "description": "Specific axis config for y-axis along the right edge of the chart."
+                },
+                "axisTop": {
+                    "$ref": "#/definitions/AxisConfig",
+                    "description": "Specific axis config for x-axis along the top edge of the chart."
+                },
+                "axisX": {
+                    "$ref": "#/definitions/AxisConfig",
+                    "description": "X-axis specific config."
+                },
+                "axisY": {
+                    "$ref": "#/definitions/AxisConfig",
+                    "description": "Y-axis specific config."
+                },
+                "axixBottom": {
+                    "$ref": "#/definitions/AxisConfig",
+                    "description": "Specific axis config for x-axis along the bottom edge of the chart."
                 },
                 "background": {
                     "description": "CSS color property to use as background of visualization. Default is `\"transparent\"`.",

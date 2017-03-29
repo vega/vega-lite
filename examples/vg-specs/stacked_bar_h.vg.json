@@ -232,16 +232,7 @@
                     "scale": "y",
                     "orient": "left",
                     "title": "variety",
-                    "zindex": 1,
-                    "encode": {
-                        "labels": {
-                            "update": {
-                                "text": {
-                                    "signal": "truncate(datum.value, 25)"
-                                }
-                            }
-                        }
-                    }
+                    "zindex": 1
                 }
             ],
             "legends": [
