@@ -162,11 +162,7 @@
                     "type": "time",
                     "domain": {
                         "data": "summary",
-                        "field": "year_Year",
-                        "sort": {
-                            "field": "year_Year",
-                            "op": "min"
-                        }
+                        "field": "year_Year"
                     },
                     "range": [
                         200,

@@ -120,11 +120,7 @@
                     "type": "time",
                     "domain": {
                         "data": "source",
-                        "field": "date",
-                        "sort": {
-                            "field": "date",
-                            "op": "min"
-                        }
+                        "field": "date"
                     },
                     "range": [
                         0,

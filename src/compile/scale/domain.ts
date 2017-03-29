@@ -75,18 +75,6 @@ function parseSingleChannelDomain(scale: Scale, model: Model, channel:Channel): 
     return scale.domain;
   }
 
-  // special case for temporal scale
-  if (fieldDef.type === 'temporal') {
-    return {
-      data: model.dataTable(),
-      field: model.field(channel),
-      sort: {
-        field: model.field(channel),
-        op: 'min'
-      }
-    };
-  }
-
   // For stack, use STACKED data.
   const stack = model.stack;
   if (stack && channel === stack.fieldChannel) {
@@ -162,6 +150,7 @@ function parseSingleChannelDomain(scale: Scale, model: Model, channel:Channel): 
     };
   }
 }
+
 
 export function domainSort(model: Model, channel: Channel, scaleType: ScaleType): VgSortField {
   if (!hasDiscreteDomain(scaleType)) {

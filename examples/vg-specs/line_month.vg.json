@@ -147,10 +147,7 @@
                     "domain": {
                         "data": "summary",
                         "field": "month_date",
-                        "sort": {
-                            "field": "month_date",
-                            "op": "min"
-                        }
+                        "sort": true
                     },
                     "range": {
                         "step": 21

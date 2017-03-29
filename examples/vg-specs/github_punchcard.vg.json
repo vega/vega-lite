@@ -156,10 +156,7 @@
                     "domain": {
                         "data": "summary",
                         "field": "hours_time",
-                        "sort": {
-                            "field": "hours_time",
-                            "op": "min"
-                        }
+                        "sort": true
                     },
                     "range": {
                         "step": 21
@@ -173,10 +170,7 @@
                     "domain": {
                         "data": "summary",
                         "field": "day_time",
-                        "sort": {
-                            "field": "day_time",
-                            "op": "min"
-                        }
+                        "sort": true
                     },
                     "range": {
                         "step": 21

@@ -151,11 +151,7 @@
                     "type": "sequential",
                     "domain": {
                         "data": "summary",
-                        "field": "yearmonth_date",
-                        "sort": {
-                            "field": "yearmonth_date",
-                            "op": "min"
-                        }
+                        "field": "yearmonth_date"
                     },
                     "range": "ramp",
                     "nice": false,
