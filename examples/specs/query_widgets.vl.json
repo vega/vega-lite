@@ -2,9 +2,9 @@
   "$schema": "https://vega.github.io/schema/vega-lite/v2.json",
   "description": "Drag the sliders to highlight points.",
   "data": {"url": "data/cars.json"},
-  "transform": {
-    "calculate": [{"as": "Year", "expr": "year(datum.Year)"}]
-  },
+  "transform": [{
+    "calculate": "year(datum.Year)", "as": "Year"
+  }],
   "selection": {
     "CylYr": {
       "type": "single", "fields": ["Cylinders", "Year"],

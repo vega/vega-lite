@@ -36,11 +36,11 @@
             "transform": [
                 {
                     "type": "filter",
-                    "expr": "datum[\"date\"] !== null && !isNaN(datum[\"date\"]) && datum[\"price\"] !== null && !isNaN(datum[\"price\"])"
+                    "expr": "datum.symbol==='GOOG'"
                 },
                 {
                     "type": "filter",
-                    "expr": "datum.symbol==='GOOG'"
+                    "expr": "datum[\"date\"] !== null && !isNaN(datum[\"date\"]) && datum[\"price\"] !== null && !isNaN(datum[\"price\"])"
                 },
                 {
                     "type": "collect",
@@ -50,6 +50,11 @@
                     }
                 }
             ]
+        },
+        {
+            "name": "layer_0_source",
+            "source": "source",
+            "transform": []
         },
         {
             "name": "layer_1_source",
@@ -102,56 +107,26 @@
             },
             "marks": [
                 {
-                    "name": "layer_0_pathgroup",
-                    "type": "group",
+                    "name": "layer_0_marks",
+                    "type": "line",
                     "from": {
-                        "facet": {
-                            "name": "faceted-path-source",
-                            "data": "source",
-                            "groupby": [
-                                "symbol"
-                            ]
-                        }
+                        "data": "layer_0_source"
                     },
                     "encode": {
                         "update": {
-                            "width": {
-                                "field": {
-                                    "group": "width"
-                                }
+                            "x": {
+                                "scale": "x",
+                                "field": "date"
                             },
-                            "height": {
-                                "field": {
-                                    "group": "height"
-                                }
+                            "y": {
+                                "scale": "y",
+                                "field": "price"
+                            },
+                            "stroke": {
+                                "value": "#4c78a8"
                             }
                         }
-                    },
-                    "marks": [
-                        {
-                            "name": "layer_0_marks",
-                            "type": "line",
-                            "from": {
-                                "data": "faceted-path-source"
-                            },
-                            "encode": {
-                                "update": {
-                                    "x": {
-                                        "scale": "x",
-                                        "field": "date"
-                                    },
-                                    "y": {
-                                        "scale": "y",
-                                        "field": "price"
-                                    },
-                                    "stroke": {
-                                        "scale": "color",
-                                        "field": "symbol"
-                                    }
-                                }
-                            }
-                        }
-                    ]
+                    }
                 },
                 {
                     "name": "layer_1_marks",
@@ -171,8 +146,7 @@
                                 "field": "price"
                             },
                             "fill": {
-                                "scale": "color",
-                                "field": "symbol"
+                                "value": "#4c78a8"
                             },
                             "opacity": {
                                 "value": 0.7
@@ -188,7 +162,7 @@
                     "domain": {
                         "fields": [
                             {
-                                "data": "source",
+                                "data": "layer_0_source",
                                 "field": "date"
                             },
                             {
@@ -210,7 +184,7 @@
                     "domain": {
                         "fields": [
                             {
-                                "data": "source",
+                                "data": "layer_0_source",
                                 "field": "price"
                             },
                             {
@@ -227,24 +201,6 @@
                     "round": true,
                     "nice": true,
                     "zero": true
-                },
-                {
-                    "name": "color",
-                    "type": "ordinal",
-                    "domain": {
-                        "fields": [
-                            {
-                                "data": "source",
-                                "field": "symbol"
-                            },
-                            {
-                                "data": "layer_1_source",
-                                "field": "symbol"
-                            }
-                        ],
-                        "sort": true
-                    },
-                    "range": "category"
                 }
             ],
             "axes": [
@@ -301,12 +257,6 @@
                     "ticks": false,
                     "zindex": 0,
                     "gridScale": "x"
-                }
-            ],
-            "legends": [
-                {
-                    "stroke": "color",
-                    "title": "symbol"
                 }
             ]
         }

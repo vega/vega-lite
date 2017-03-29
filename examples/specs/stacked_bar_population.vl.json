@@ -2,10 +2,10 @@
   "$schema": "https://vega.github.io/schema/vega-lite/v2.json",
   "description": "A bar chart showing the US population distribution of age groups and gender in 2000.",
   "data": { "url": "data/population.json"},
-  "transform": {
-    "filter": "datum.year == 2000",
-    "calculate": [{"as": "gender", "expr": "datum.sex == 2 ? \"Female\" : \"Male\""}]
-  },
+  "transform": [
+    {"filter": "datum.year == 2000"},
+    {"calculate": "datum.sex == 2 ? \"Female\" : \"Male\"", "as": "gender"}
+  ],
   "mark": "bar",
   "encoding": {
     "y": {

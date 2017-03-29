@@ -1,12 +1,10 @@
 {
   "$schema": "https://vega.github.io/schema/vega-lite/v2.json",
   "data": {"url": "data/cars.json"},
-  "transform": {
-    "calculate": [{
-      "as": "OriginInitial",
-      "expr": "datum.Origin[0]"
-    }]
-  },
+  "transform": [{
+    "calculate": "datum.Origin[0]",
+    "as": "OriginInitial"
+  }],
   "mark": "text",
   "encoding": {
     "x": {"field": "Horsepower", "type": "quantitative"},

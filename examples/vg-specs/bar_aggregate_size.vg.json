@@ -35,11 +35,11 @@
             "transform": [
                 {
                     "type": "filter",
-                    "expr": "datum[\"people\"] !== null && !isNaN(datum[\"people\"])"
+                    "expr": "datum.year == 2000"
                 },
                 {
                     "type": "filter",
-                    "expr": "datum.year == 2000"
+                    "expr": "datum[\"people\"] !== null && !isNaN(datum[\"people\"])"
                 }
             ]
         },

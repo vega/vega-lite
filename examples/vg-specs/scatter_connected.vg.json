@@ -53,6 +53,11 @@
             ]
         },
         {
+            "name": "layer_0_source",
+            "source": "source",
+            "transform": []
+        },
+        {
             "name": "layer_1_source",
             "source": "source",
             "transform": [
@@ -106,7 +111,7 @@
                     "name": "layer_0_marks",
                     "type": "line",
                     "from": {
-                        "data": "source"
+                        "data": "layer_0_source"
                     },
                     "encode": {
                         "update": {
@@ -158,7 +163,7 @@
                     "domain": {
                         "fields": [
                             {
-                                "data": "source",
+                                "data": "layer_0_source",
                                 "field": "miles"
                             },
                             {
@@ -182,7 +187,7 @@
                     "domain": {
                         "fields": [
                             {
-                                "data": "source",
+                                "data": "layer_0_source",
                                 "field": "gas"
                             },
                             {

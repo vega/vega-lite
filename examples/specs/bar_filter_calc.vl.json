@@ -14,10 +14,10 @@
       {"a": "F","b": 53}
     ]
   },
-  "transform": {
-    "calculate": [{"as": "b2","expr": "2*datum.b"}],
-    "filter": "datum.b2 > 60"
-  },
+  "transform": [
+    {"calculate": "2*datum.b", "as": "b2"},
+    {"filter": "datum.b2 > 60"}
+  ],
   "mark": "bar",
   "encoding": {
     "y": {"field": "b2", "type": "quantitative"},

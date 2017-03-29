@@ -82,8 +82,8 @@
             "transform": [
                 {
                     "type": "formula",
-                    "as": "Year",
-                    "expr": "year(datum.Year)"
+                    "expr": "year(datum.Year)",
+                    "as": "Year"
                 },
                 {
                     "type": "filter",

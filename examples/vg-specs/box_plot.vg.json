@@ -40,8 +40,13 @@
             ]
         },
         {
+            "name": "layer_0_source",
             "source": "source",
-            "name": "summary",
+            "transform": []
+        },
+        {
+            "source": "layer_0_source",
+            "name": "layer_0_summary",
             "transform": [
                 {
                     "type": "aggregate",
@@ -175,7 +180,7 @@
         },
         {
             "name": "layout",
-            "source": "summary",
+            "source": "layer_0_summary",
             "transform": [
                 {
                     "type": "aggregate",
@@ -225,7 +230,7 @@
                     "name": "layer_0_marks",
                     "type": "rule",
                     "from": {
-                        "data": "summary"
+                        "data": "layer_0_summary"
                     },
                     "encode": {
                         "update": {
@@ -373,7 +378,7 @@
                         "fields": [
                             {
                                 "field": "age",
-                                "data": "summary"
+                                "data": "layer_0_summary"
                             },
                             {
                                 "field": "age",
@@ -407,11 +412,11 @@
                         "fields": [
                             {
                                 "field": "min_people",
-                                "data": "summary"
+                                "data": "layer_0_summary"
                             },
                             {
                                 "field": "max_people",
-                                "data": "summary"
+                                "data": "layer_0_summary"
                             },
                             {
                                 "field": "min_people",

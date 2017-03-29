@@ -1,9 +1,9 @@
 {
   "$schema": "https://vega.github.io/schema/vega-lite/v2.json",
   "data": { "url": "data/population.json"},
-  "transform": {
+  "transform": [{
     "filter": "datum.year == 2000"
-  },
+  }],
   "mark": "bar",
   "encoding": {
     "x": {
