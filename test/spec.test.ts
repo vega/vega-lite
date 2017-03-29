@@ -74,7 +74,7 @@ describe('normalize()', function () {
       assert.deepEqual(normalize({
         "description": "A error bar plot showing mean, min, and max in the US population distribution of age groups in 2000.",
         "data": {"url": "data/population.json"},
-        "transform": {"filter": "datum.year == 2000"},
+        "transform": [{"filter": "datum.year == 2000"}],
         facet: {
           "row": {"field": "MPAA_Rating","type": "ordinal"}
         },
@@ -116,7 +116,7 @@ describe('normalize()', function () {
       }), {
         "description": "A error bar plot showing mean, min, and max in the US population distribution of age groups in 2000.",
         "data": {"url": "data/population.json"},
-        "transform": {"filter": "datum.year == 2000"},
+        "transform": [{"filter": "datum.year == 2000"}],
         facet: {
           "row": {"field": "MPAA_Rating","type": "ordinal"}
         },
@@ -193,7 +193,7 @@ describe('normalize()', function () {
       assert.deepEqual(normalize({
         "description": "A error bar plot showing mean, min, and max in the US population distribution of age groups in 2000.",
         "data": {"url": "data/population.json"},
-        "transform": {"filter": "datum.year == 2000"},
+        "transform": [{"filter": "datum.year == 2000"}],
         layer: [
           {
             "mark": "point",
@@ -230,7 +230,7 @@ describe('normalize()', function () {
       }), {
         "description": "A error bar plot showing mean, min, and max in the US population distribution of age groups in 2000.",
         "data": {"url": "data/population.json"},
-        "transform": {"filter": "datum.year == 2000"},
+        "transform": [{"filter": "datum.year == 2000"}],
         layer: [
           {
             "mark": "point",
@@ -301,9 +301,7 @@ describe('normalize()', function () {
     describe('line', () => {
       it('should be normalized correctly', () => {
         const spec: any = {
-          "description": "Google's stock price over time.",
           "data": {"url": "data/stocks.csv", "format": {"type": "csv"}},
-          "transform": {"filter": "datum[\"symbol\"]==='GOOG'"},
           "mark": "line",
           "encoding": {
             "x": {"field": "date", "type": "temporal"},
@@ -313,9 +311,7 @@ describe('normalize()', function () {
         };
         const normalizedSpec = normalize(spec);
         assert.deepEqual(normalizedSpec, {
-          "description": "Google's stock price over time.",
           "data": {"url": "data/stocks.csv","format": {"type": "csv"}},
-          "transform": {"filter": "datum[\"symbol\"]==='GOOG'"},
           "layer": [
             {
               "mark": "line",
@@ -340,9 +336,7 @@ describe('normalize()', function () {
     describe('area', () => {
       it('with linepoint should be normalized correctly', () => {
         const spec: any = {
-          "description": "Google's stock price over time.",
           "data": {"url": "data/stocks.csv", "format": {"type": "csv"}},
-          "transform": {"filter": "datum[\"symbol\"]==='GOOG'"},
           "mark": "area",
           "encoding": {
             "x": {"field": "date", "type": "temporal"},
@@ -352,9 +346,7 @@ describe('normalize()', function () {
         };
         const normalizedSpec = normalize(spec);
         assert.deepEqual(normalizedSpec, {
-          "description": "Google's stock price over time.",
           "data": {"url": "data/stocks.csv","format": {"type": "csv"}},
-          "transform": {"filter": "datum[\"symbol\"]==='GOOG'"},
           "layer": [
             {
               "mark": "area",
@@ -384,9 +376,7 @@ describe('normalize()', function () {
 
       it('with linepoint should be normalized correctly', () => {
         const spec: any = {
-          "description": "Google's stock price over time.",
           "data": {"url": "data/stocks.csv", "format": {"type": "csv"}},
-          "transform": {"filter": "datum[\"symbol\"]==='GOOG'"},
           "mark": "area",
           "encoding": {
             "x": {"field": "date", "type": "temporal"},
@@ -396,9 +386,7 @@ describe('normalize()', function () {
         };
         const normalizedSpec = normalize(spec);
         assert.deepEqual(normalizedSpec, {
-          "description": "Google's stock price over time.",
           "data": {"url": "data/stocks.csv","format": {"type": "csv"}},
-          "transform": {"filter": "datum[\"symbol\"]==='GOOG'"},
           "layer": [
             {
               "mark": "area",
@@ -501,7 +489,6 @@ describe('fieldDefs()', function() {
   it('should get all non-duplicate fieldDefs from all layer in a LayerSpec', function() {
     const layerSpec: any = {
       "data": {"url": "data/stocks.csv","format": {"type": "csv"}},
-      "transform": {"filter": "datum.symbol==='GOOG'"},
       "layer": [
         {
           "description": "Google's stock price over time.",
@@ -534,7 +521,6 @@ describe('fieldDefs()', function() {
   it('should get all non-duplicate fieldDefs from all layer in a LayerSpec (merging duplicate fields with different scale types)', function() {
     const layerSpec: any = {
       "data": {"url": "data/stocks.csv","format": {"type": "csv"}},
-      "transform": {"filter": "datum.symbol==='GOOG'"},
       "layer": [
         {
           "description": "Google's stock price over time.",

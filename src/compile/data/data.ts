@@ -1,6 +1,6 @@
 
 import {FieldDef} from '../../fielddef';
-import {Formula} from '../../transform';
+import {Transform} from '../../transform';
 import {Dict, StringSet} from '../../util';
 import {VgData, VgSort, VgTransform} from '../../vega.schema';
 
@@ -12,15 +12,14 @@ import {UnitModel} from './../unit';
 import {SUMMARY} from '../../data';
 import {summary} from './aggregate';
 import {bin} from './bin';
-import {filter} from './filter';
 import {formatParse} from './formatparse';
-import {formula} from './formula';
 import {nonPositiveFilter} from './nonpositivefilter';
 import {nullFilter} from './nullfilter';
 import {pathOrder} from './pathorder';
 import {source} from './source';
 import {stack, StackComponent} from './stack';
 import {timeUnit} from './timeunit';
+import {transforms} from './transforms';
 
 /**
  * Composable component instance of a model's data.
@@ -34,11 +33,8 @@ export interface DataComponent {
   /** String set of fields for null filtering */
   nullFilter: Dict<FieldDef>;
 
-  /** Hashset of a formula object */
-  calculate: Dict<Formula>;
-
-  /** Filter test expression */
-  filter: string;
+  /** Transforms */
+  transforms: Transform[];
 
   /** Dictionary mapping a bin parameter hash to transforms of the binned field */
   bin: Dict<VgTransform[]>;
@@ -81,14 +77,13 @@ export interface SummaryComponent {
 export function parseUnitData(model: UnitModel): DataComponent {
   return {
     formatParse: formatParse.parseUnit(model),
+    transforms: transforms.parseUnit(model),
     nullFilter: nullFilter.parseUnit(model),
-    filter: filter.parseUnit(model),
     nonPositiveFilter: nonPositiveFilter.parseUnit(model),
     pathOrder: pathOrder.parseUnit(model),
 
     source: source.parseUnit(model),
     bin: bin.parseUnit(model),
-    calculate: formula.parseUnit(model),
     timeUnit: timeUnit.parseUnit(model),
     summary: summary.parseUnit(model),
     stack: stack.parseUnit(model)
@@ -98,14 +93,13 @@ export function parseUnitData(model: UnitModel): DataComponent {
 export function parseFacetData(model: FacetModel): DataComponent {
   return {
     formatParse: formatParse.parseFacet(model),
+    transforms: transforms.parseFacet(model),
     nullFilter: nullFilter.parseFacet(model),
-    filter: filter.parseFacet(model),
     nonPositiveFilter: nonPositiveFilter.parseFacet(model),
     pathOrder: pathOrder.parseFacet(model),
 
     source: source.parseFacet(model),
     bin: bin.parseFacet(model),
-    calculate: formula.parseFacet(model),
     timeUnit: timeUnit.parseFacet(model),
     summary: summary.parseFacet(model),
     stack: stack.parseFacet(model)
@@ -116,7 +110,7 @@ export function parseLayerData(model: LayerModel): DataComponent {
   return {
     // filter and formatParse could cause us to not be able to merge into parent
     // so let's parse them first
-    filter: filter.parseLayer(model),
+    transforms: transforms.parseLayer(model),
     formatParse: formatParse.parseLayer(model),
     nullFilter: nullFilter.parseLayer(model),
     nonPositiveFilter: nonPositiveFilter.parseLayer(model),
@@ -125,7 +119,6 @@ export function parseLayerData(model: LayerModel): DataComponent {
     // everything after here does not affect whether we can merge child data into parent or not
     source: source.parseLayer(model),
     bin: bin.parseLayer(model),
-    calculate: formula.parseLayer(model),
     timeUnit: timeUnit.parseLayer(model),
     summary: summary.parseLayer(model),
     stack: stack.parseLayer(model)

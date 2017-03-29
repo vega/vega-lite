@@ -3,7 +3,7 @@ import {field} from './fielddef';
 import {fieldExpr as timeUnitFieldExpr, isSingleTimeUnit, TimeUnit} from './timeunit';
 import {isArray, isString} from './util';
 
-export type Filter = EqualFilter | RangeFilter | OneOfFilter ;
+export type Filter = EqualFilter | RangeFilter | OneOfFilter | string;
 
 
 export interface EqualFilter {
@@ -90,9 +90,18 @@ export function isOneOfFilter(filter: any): filter is OneOfFilter {
   );
 }
 
-export function expression(filter: Filter | string) {
-  if (isString(filter)) {
-    return filter as string;
+/**
+ * Converts a filter into an expression.
+ */
+export function expression(filter: Filter | Filter[]): string {
+  if (isArray(filter)) {
+    return '(' +
+      filter.map((f) => expression(f))
+        .filter((f) => f !==undefined)
+        .join(') && (') +
+      ')';
+  } else if (isString(filter)) {
+    return filter;
   } else { // Filter Object
     const fieldExpr = filter.timeUnit ?
       // For timeUnit, cast into integer with time() so we can use ===, inrange, indexOf to compare values directly.

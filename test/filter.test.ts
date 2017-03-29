@@ -110,5 +110,24 @@ describe('filter', () => {
       const expr = expression('datum["x"]===5');
       assert.equal(expr, 'datum["x"]===5');
     });
+
+    it('should return a correct expression for an array', () => {
+      const expr = expression(['datum["x"]===5', 'datum["y"]>=4']);
+      assert.equal(expr, '(datum["x"]===5) && (datum["y"]>=4)');
+    });
+
+    it('should return a correct expression for an array of strings and objects', () => {
+      const expr = expression([
+        {field: 'color', equal: 'red'},
+        {field: 'color', oneOf: ['red', 'yellow']},
+        {field: 'x', range: [0, 5]},
+        'datum["x"]===5',
+        {field: 'x', range: [null, null]}
+      ]);
+      assert.equal(expr, '(datum["color"]==="red") && ' +
+        '(indexof(["red","yellow"], datum["color"]) !== -1) && ' +
+        '(inrange(datum["x"], 0, 5)) && ' +
+        '(datum["x"]===5)');
+    });
   });
 });

@@ -99,9 +99,6 @@ export function debug(..._: any[]) {
 export namespace message {
   export const INVALID_SPEC = 'Invalid spec';
 
-  // DATA
-  export const DEPRECATED_FILTER_NULL = 'filterNull is deprecated. Please use filterInvalid instead.';
-
   // ENCODING & FACET
   export function invalidFieldType(type: Type) {
     return `Invalid field type "${type}"`;

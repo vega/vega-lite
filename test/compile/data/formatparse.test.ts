@@ -27,14 +27,14 @@ describe('compile/data/formatparse', () => {
     it('should return a correct parse for filtered fields', () => {
       const model = parseUnitModel({
         "data": {"url": "a.json"},
-        "transform": {
+        "transform": [{
           "filter": [
             {"field": "a", "equal": {year: 2000}},
             {"field": "b", "oneOf": ["a", "b"]},
             {"field": "c", "range": [{year: 2000}, {year: 2001}]},
             {"field": "d", "range": [1,2]}
           ]
-        },
+        }],
         "mark": "point",
         encoding: {}
       });
@@ -69,11 +69,7 @@ describe('compile/data/formatparse', () => {
 
     it('should include parse for all applicable fields, and exclude calculated fields', function() {
       const model = parseUnitModel({
-        transform: {
-          calculate: [
-            {as: 'b2', expr: 'datum["b"] * 2'}
-          ]
-        },
+        transform: [{calculate: 'datum["b"] * 2', as: 'b2'}],
         mark: "point",
         encoding: {
           x: {field: 'a', type: "temporal"},

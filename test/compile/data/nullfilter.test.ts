@@ -3,10 +3,9 @@
 import {assert} from 'chai';
 
 import {nullFilter} from '../../../src/compile/data/nullfilter';
-import * as log from '../../../src/log';
 import {UnitSpec} from '../../../src/spec';
-import {mergeDeep} from '../../../src/util';
 
+import {mergeDeep} from '../../../src/util';
 import {parseUnitModel} from '../../util';
 
 describe('compile/data/nullfilter', function() {
@@ -20,7 +19,7 @@ describe('compile/data/nullfilter', function() {
       }
     };
 
-    it('should add filterNull for Q and T by default', function () {
+    it.only('should add filterNull for Q and T by default', function () {
       const model = parseUnitModel(spec);
       assert.deepEqual(nullFilter.parseUnit(model), {
         qq: {field: 'qq', type: "quantitative"},
@@ -30,24 +29,21 @@ describe('compile/data/nullfilter', function() {
     });
 
     it('should add filterNull for O when specified', function () {
-      log.runLocalLogger((localLogger) => {
-        const model = parseUnitModel(mergeDeep(spec, {
-          transform: {
-            filterNull: true
-          }
-        }));
-        assert.deepEqual(nullFilter.parseUnit(model), {
-          qq: {field: 'qq', type: "quantitative"},
-          tt: {field: 'tt', type: "temporal"},
-          oo: {field: 'oo', type: "ordinal"}
-        });
-        assert.equal(localLogger.warns[0], log.message.DEPRECATED_FILTER_NULL);
+      const model = parseUnitModel(mergeDeep(spec, {
+        config: {
+          filterInvalid: true
+        }
+      }));
+      assert.deepEqual(nullFilter.parseUnit(model), {
+        qq: {field: 'qq', type: "quantitative"},
+        tt: {field: 'tt', type: "temporal"},
+        oo: {field: 'oo', type: "ordinal"}
       });
     });
 
     it('should add no null filter if filterInvalid is false', function () {
       const model = parseUnitModel(mergeDeep(spec, {
-        transform: {
+        config: {
           filterInvalid: false
         }
       }));
@@ -59,20 +55,14 @@ describe('compile/data/nullfilter', function() {
     });
 
     it ('should add no null filter for count field', () => {
-      log.runLocalLogger((localLogger) => {
-        const model = parseUnitModel({
-          transform: {
-            filterNull: true
-          },
-          mark: "point",
-          encoding: {
-            y: {aggregate: 'count', field: '*', type: "quantitative"}
-          }
-        } as any);  // as any so we can set deprecated property transform.filterNull
-
-        assert.deepEqual(nullFilter.parseUnit(model), {});
-        assert.equal(localLogger.warns[0], log.message.DEPRECATED_FILTER_NULL);
+      const model = parseUnitModel({
+        mark: "point",
+        encoding: {
+          y: {aggregate: 'count', field: '*', type: "quantitative"}
+        }
       });
+
+      assert.deepEqual(nullFilter.parseUnit(model), {});
     });
   });
 
