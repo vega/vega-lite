@@ -19,7 +19,7 @@ describe('compile/data/nullfilter', function() {
       }
     };
 
-    it.only('should add filterNull for Q and T by default', function () {
+    it('should add filterNull for Q and T by default', function () {
       const model = parseUnitModel(spec);
       assert.deepEqual(nullFilter.parseUnit(model), {
         qq: {field: 'qq', type: "quantitative"},
