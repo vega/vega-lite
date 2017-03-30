@@ -8,14 +8,14 @@ import {forEach, reduce} from '../encoding';
 import {ChannelDef, field, FieldDef, FieldRefOption, isFieldDef} from '../fielddef';
 import {EqualFilter, OneOfFilter, RangeFilter} from '../filter';
 import {Legend} from '../legend';
+import {Projection} from '../projection';
 import {hasDiscreteDomain, Scale} from '../scale';
 import {SortField, SortOrder} from '../sort';
 import {BaseSpec, Padding} from '../spec';
 import {Transform} from '../transform';
-import {Projection} from '../projection';
 import {Formula} from '../transform';
 import {Dict, extend, vals} from '../util';
-import {VgAxis, VgData, VgEncodeEntry, VgLegend, VgScale, VgProjection} from '../vega.schema';
+import {VgAxis, VgData, VgEncodeEntry, VgLegend, VgProjection, VgScale} from '../vega.schema';
 
 import {StackProperties} from '../stack';
 import {DataComponent} from './data/data';
@@ -46,7 +46,7 @@ export interface Component {
   /** Dictionary mapping channel to grid mark group for facet (and concat?) */
   gridGroups: Dict<VgEncodeEntry[]>;
 
-  projections: VgProjection[];
+  projection: VgProjection;
 
   mark: VgEncodeEntry[];
 }
@@ -98,7 +98,7 @@ export abstract class Model {
   /** Name map for scales, which can be renamed by a model's parent. */
   protected scaleNameMap: NameMapInterface;
 
-  /** Name map for scales, which can be renamed by a model's parent. */
+  /** Name map for projections, which can be renamed by a model's parent. */
   protected projectionNameMap: NameMapInterface;
 
   /** Name map for size, which can be renamed by a model's parent. */
@@ -111,7 +111,7 @@ export abstract class Model {
 
   protected abstract readonly legends: Dict<Legend> = {};
 
-  protected abstract readonly projections: Dict<Projection> = {};
+  protected abstract readonly projection: Projection;
 
   public abstract readonly config: Config;
 
@@ -141,7 +141,7 @@ export abstract class Model {
 
     if (spec.transform) {
       if (spec.transform.filterInvalid === undefined &&
-          spec.transform['filterNull'] !== undefined) {
+        spec.transform['filterNull'] !== undefined) {
         spec.transform.filterInvalid = spec.transform['filterNull'];
         log.warn(log.message.DEPRECATED_FILTER_NULL);
       }
@@ -152,7 +152,7 @@ export abstract class Model {
       layout: null,
       mark: null,
       scales: null,
-      projections: null,
+      projection: null,
       axes: null,
       axisGroups: null,
       gridGroups: null,
@@ -250,10 +250,10 @@ export abstract class Model {
 
   public abstract channels(): Channel[];
 
-  protected abstract getMapping(): {[key: string]: any};
+  protected abstract getMapping(): { [key: string]: any };
 
   public reduceFieldDef<T, U>(f: (acc: U, fd: FieldDef, c: Channel) => U, init: T, t?: any) {
-    return reduce(this.getMapping(), (acc:U , cd: ChannelDef, c: Channel) => {
+    return reduce(this.getMapping(), (acc: U, cd: ChannelDef, c: Channel) => {
       return isFieldDef(cd) ? f(acc, cd, c) : acc;
     }, init, t);
   }
@@ -291,7 +291,7 @@ export abstract class Model {
   }
 
   public renameData(oldName: string, newName: string) {
-     this.dataNameMap.rename(oldName, newName);
+    this.dataNameMap.rename(oldName, newName);
   }
 
   /**
@@ -313,7 +313,7 @@ export abstract class Model {
   }
 
   public sizeName(size: string): string {
-     return this.sizeNameMap.get(this.getName(size, '_'));
+    return this.sizeNameMap.get(this.getName(size, '_'));
   }
 
   public abstract dataTable(): string;
@@ -331,7 +331,7 @@ export abstract class Model {
     return transform.filterInvalid;
   }
 
-  public filter(): string | OneOfFilter | EqualFilter| RangeFilter | (string | OneOfFilter | EqualFilter| RangeFilter)[] {
+  public filter(): string | OneOfFilter | EqualFilter | RangeFilter | (string | OneOfFilter | EqualFilter | RangeFilter)[] {
     return this.transform ? this.transform.filter : undefined;
   }
 
@@ -378,11 +378,11 @@ export abstract class Model {
     // If there is a scale for the channel, it should either
     // be in the _scale mapping or exist in the name map
     if (
-        // in the scale map (the scale is not merged by its parent)
-        (this.scale && this.scales[originalScaleName]) ||
-        // in the scale name map (the the scale get merged by its parent)
-        this.scaleNameMap.has(this.getName(originalScaleName))
-      ) {
+      // in the scale map (the scale is not merged by its parent)
+      (this.scale && this.scales[originalScaleName]) ||
+      // in the scale name map (the the scale get merged by its parent)
+      this.scaleNameMap.has(this.getName(originalScaleName))
+    ) {
       return this.scaleNameMap.get(this.getName(originalScaleName));
     }
     return undefined;

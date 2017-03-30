@@ -1,12 +1,7 @@
-import {VgProjectionConfig} from './vega.schema';
-
+import {VgProjectionBase} from './vega.schema';
 /**
  * Top-level projection object.
  */
-export interface Projection extends VgProjectionConfig {}
+export interface Projection extends VgProjectionBase {}
 
-export interface ProjectionConfig extends Projection {}
-
-export const defaultProjectionConfig: ProjectionConfig = {
-  type: 'mercator'
-};
+export const PROJECTION_PROPERTIES:(keyof Projection)[] = ['type', 'center', 'translate', 'zoom', 'rotate', 'precision', 'clipAngle', 'scale', 'clipExtent'];

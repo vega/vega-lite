@@ -11,10 +11,10 @@ import {COLUMN, ROW, X, X2, Y, Y2} from './channel';
 import * as vlEncoding from './encoding';
 import * as log from './log';
 import {AREA, isPrimitiveMark, LINE, Mark, MarkDef, POINT} from './mark';
+import {Projection} from './projection';
 import {SelectionDef} from './selection';
 import {stack} from './stack';
 import {Transform} from './transform';
-import {Projection} from './projection';
 
 import {contains, duplicate, extend, hash, keys, omit, pick, vals} from './util';
 

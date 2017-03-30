@@ -9,8 +9,8 @@ import * as vlEncoding from '../encoding'; // TODO: remove
 import {field, FieldDef, FieldRefOption, isFieldDef} from '../fielddef';
 import {Legend} from '../legend';
 import {FILL_STROKE_CONFIG, isMarkDef, Mark, MarkDef, TEXT as TEXT_MARK} from '../mark';
-import {hasDiscreteDomain, Scale, ScaleConfig} from '../scale';
 import {Projection} from '../projection';
+import {hasDiscreteDomain, Scale, ScaleConfig} from '../scale';
 import {UnitSpec} from '../spec';
 import {Dict, duplicate, extend, mergeDeep} from '../util';
 import {VgData} from '../vega.schema';
@@ -21,10 +21,11 @@ import {parseAxisComponent} from './axis/parse';
 import {applyConfig} from './common';
 import {assembleData, parseUnitData} from './data/data';
 import {assembleLayout, parseUnitLayout} from './layout';
-import {parseLegendComponent} from './legend/parse';
 import {initEncoding, initMarkDef} from './mark/init';
 import {parseMark} from './mark/mark';
 import {Model} from './model';
+import {parseProjection} from './projection/parse';
+import {parseLegendComponent} from './legend/parse';
 import initScale from './scale/init';
 import parseScaleComponent from './scale/parse';
 import {assembleUnitData as assembleSelectionData, assembleUnitMarks as assembleSelectionMarks, assembleUnitSignals, parseUnitSelection} from './selection/selection';
@@ -53,7 +54,7 @@ export class UnitModel extends Model {
   protected readonly selection: Dict<SelectionDef> = {};
   protected readonly scales: Dict<Scale> = {};
   protected readonly axes: Dict<Axis> = {};
-  protected readonly projections: Dict<Projection> = {};
+  protected readonly projection: Projection;
   protected readonly legends: Dict<Legend> = {};
   public readonly config: Config;
   public readonly stack: StackProperties;
@@ -84,9 +85,9 @@ export class UnitModel extends Model {
     this.encoding = initEncoding(mark, encoding, this.stack, config);
 
     this.axes = this.initAxes(encoding, config);
-    this.legends = this.initLegend(encoding, config);
+    this.legends = this.initLegends(encoding, config);
 
-    this.projections = this.initProjections(config);
+    this.projection = this.initProjection(spec.projection);
 
     // Selections will be initialized upon parse.
     this.selection = spec.selection;
@@ -213,7 +214,7 @@ export class UnitModel extends Model {
     }, {});
   }
 
-  private initLegend(encoding: Encoding, config: Config): Dict<Legend> {
+  private initLegends(encoding: Encoding, config: Config): Dict<Legend> {
     return NONSPATIAL_SCALE_CHANNELS.reduce(function(_legend, channel) {
       const channelDef = encoding[channel];
       if (isFieldDef(channelDef)) {
@@ -226,11 +227,8 @@ export class UnitModel extends Model {
     }, {});
   }
 
-  private initProjections(config: Config): Dict<Projection> {
-    return {
-      ...config.projection,
-      ...this.projection
-    };
+  private initProjection(projection: Projection): Projection {
+    return projection;
   }
 
   public parseData() {
@@ -254,7 +252,7 @@ export class UnitModel extends Model {
   }
 
   public parseProjection() {
-    this.component.projections = parseProjectionComponent(this);
+    this.component.mark = parseProjection(this);
   }
 
   public parseAxis() {
