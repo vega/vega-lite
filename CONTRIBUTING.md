@@ -172,9 +172,6 @@ and also update github pages, which contains our webpage and documentation.
 If you want to update only github pages,
 use `npm run deploy:gh`.
 
-To use any of these two commands, you will need to [install jq](https://stedolan.github.io/jq/download/)
-i.e., running `brew install jq` if you use [homebrew](http://brew.sh) on mac.
-
 ## Suggested Programming Environment.
 
 We use the [Visual Studio Code](http://code.visualstudio.com/) editor with TSLint plugin. 
