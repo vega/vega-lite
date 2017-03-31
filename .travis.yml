@@ -4,8 +4,6 @@ node_js:
   - "6"
   - "7"
 script:
-  - sudo apt-get -qq update
-  - sudo apt-get install -y parallel
   - npm run build
   - npm run test:nocompile # already run schema and tsc in build
   - npm run check:schema
@@ -24,3 +22,8 @@ notifications:
 cache:
   directories:
   - $HOME/.yarn-cache
+
+before_install:
+  - sudo add-apt-repository ppa:ubuntu-toolchain-r/test -y
+  - sudo apt-get update -q
+  - sudo apt-get install parallel -y
