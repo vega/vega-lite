@@ -16,5 +16,6 @@ then
     bin/vl2vg -p $file > $dir/$name.vg.json
   done
 else
+  echo "yeah we use parallel!"
   ls examples/specs/*.vl.json | parallel  --plus --halt 1 "bin/vl2vg -p {} > examples/vg-specs/{/..}.vg.json"
 fi
