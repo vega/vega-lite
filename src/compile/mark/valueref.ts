@@ -106,7 +106,7 @@ export function midPoint(channel: Channel, channelDef: ChannelDef, scaleName: st
       } else {
         return fieldRef(channelDef, scaleName, {}); // no need for bin suffix
       }
-    } else if (channelDef.value) {
+    } else if (channelDef.value !== undefined) {
       return {value: channelDef.value};
     } else {
       throw new Error('FieldDef without field or value.'); // FIXME add this to log.message
