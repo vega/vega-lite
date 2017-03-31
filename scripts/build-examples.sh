@@ -5,11 +5,18 @@ dir=${dir-"examples/vg-specs"}
 
 echo "compiling examples to $dir"
 
-mkdir -p $dir
-rm -f $dir/*
+rm -rf $dir
+mkdir $dir
 
-for file in examples/specs/*.vl.json; do
-  filename=$(basename "$file")
-  name="${filename%.vl.json}"
-  bin/vl2vg -p $file > $dir/$name.vg.json
-done
+if type parallel >/dev/null 2>&1
+then
+  echo "Parallel not found! Sequentially generate vega specs from examples."
+  for file in examples/specs/*.vl.json; do
+    filename=$(basename "$file")
+    name="${filename%.vl.json}"
+    bin/vl2vg -p $file > $dir/$name.vg.json
+  done
+else
+  echo "Using parallel to generate vega specs from examples in parallel."
+  ls examples/specs/*.vl.json | parallel  --plus --halt 1 "bin/vl2vg -p {} > examples/vg-specs/{/..}.vg.json"
+fi
