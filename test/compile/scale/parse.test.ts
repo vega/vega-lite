@@ -7,7 +7,7 @@ import {NON_TYPE_DOMAIN_RANGE_VEGA_SCALE_PROPERTIES} from '../../../src/compile/
 import {parseUnitModel} from '../../util';
 
 
-import {SCALE_PROPERTIES} from '../../../src/scale';;
+import {SCALE_PROPERTIES} from '../../../src/scale';
 import {toSet, without} from '../../../src/util';
 
 describe('src/compile', function() {

@@ -309,9 +309,8 @@ export function channelCompatibility(fieldDef: FieldDef, channel: Channel): {com
           compatible: false,
           warning: 'Shape channel should be used with nominal data only'
         };
-      } else {
-        return COMPATIBLE;
       }
+      return COMPATIBLE;
 
     case 'order':
       if (fieldDef.type === 'nominal') {
