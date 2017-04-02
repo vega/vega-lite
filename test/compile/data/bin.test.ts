@@ -62,6 +62,48 @@ describe('compile/data/bin', function() {
         });
       });
     });
+    describe('should bin the same field', () => {
+      const model = parseUnitModel({
+        data: {"url": "data/movies.json"},
+        mark: "circle",
+        encoding: {
+          x: {
+            bin: {maxbins: 10},
+            field: "IMDB_Rating",
+            type: "q"
+          },
+          y: {
+            bin: {"maxbins": 10},
+            field: "Rotten_Tomatoes_Rating",
+            type: "q"
+          },
+          color: {
+            bin: {maxbins: 20},
+            field: "Rotten_Tomatoes_Rating",
+            type: "quantitative"
+          },
+          size: {
+            aggregate: "count",
+            field: "*",
+            type: "q"
+          }
+        }
+      });
+      const transform = vals(bin.parseUnit(model))[0];
+      assert.deepEqual(transform[0], {
+        type: 'extent',
+        field: 'IMDB_Rating',
+        signal: 'bin_maxbins_10_IMDB_Rating_extent'
+      });
+      assert.deepEqual(transform[1],{
+        type: 'bin',
+        field: 'IMDB_Rating',
+        as: [ 'bin_maxbins_10_IMDB_Rating_start', 'bin_maxbins_10_IMDB_Rating_end' ],
+        signal: 'bin_maxbins_10_IMDB_Rating_bins',
+        maxbins: 10,
+        extent: {signal: 'bin_maxbins_10_IMDB_Rating_extent'}
+      });
+    });
   });
 
   describe('parseLayer', function() {
