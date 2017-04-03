@@ -396,6 +396,44 @@ describe('compile/facet', () => {
       });
       assert.deepEqual(model.axis(ROW), {"orient": "right", "labelAngle": 90});
     });
+
+    it('should set the labelAngle if specified', () => {
+      const model = parseFacetModel({
+        facet: {
+          row: {field: 'c', type: 'ordinal', "axis": {"labelAngle": 0}}
+        },
+        spec: {
+          mark: 'point',
+          encoding: {
+            "x": {"aggregate": "sum", "field": "yield", "type": "quantitative"},
+            "y": {"field": "variety", "type": "nominal"}
+          },
+        }
+      });
+      assert.deepEqual(model.axis(ROW), {"orient": "right", "labelAngle": 0});
+    });
+
+    it('should set the labelAngle if labelAngle is not specified', () => {
+      const model = parseFacetModel({
+        facet: {
+          row: {field: 'a', type: 'ordinal'}
+        },
+        spec: {
+          mark: 'point',
+          encoding: {
+            "x": {"aggregate": "sum", "field": "yield", "type": "quantitative"},
+            "y": {"field": "variety", "type": "nominal"},
+            "row": {
+              "field": "c", "type": "nominal",
+              "axis": {
+                  "title": "title"
+              }
+            }
+          },
+        }
+      });
+      assert.deepEqual(model.axis(ROW), {"orient": "right", "labelAngle": 90});
+    });
   });
 });
 

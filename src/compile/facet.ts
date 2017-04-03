@@ -117,10 +117,10 @@ export class FacetModel extends Model {
 
           if (channel === ROW) {
             const yAxis: any = child.axis(Y);
-            if (yAxis && yAxis.orient !== 'right' && !modelAxis.orient) {
+            if (yAxis && yAxis.orient !== 'right' && modelAxis.orient === undefined) {
               modelAxis.orient = 'right';
             }
-            if (model.hasDescendantWithFieldOnChannel(X) && !modelAxis.labelAngle) {
+            if (model.hasDescendantWithFieldOnChannel(X) && modelAxis.labelAngle === undefined) {
               modelAxis.labelAngle = modelAxis.orient === 'right' ? 90 : 270;
             }
           }
