@@ -4,8 +4,8 @@ import {autoMaxBins} from '../../bin';
 import {Channel} from '../../channel';
 import {field, FieldDef} from '../../fielddef';
 import {hasDiscreteDomain} from '../../scale';
-import {Dict, extend, flatten, hash, vals, varName} from '../../util';
-import {VgTransform} from '../../vega.schema';
+import {Dict, extend, flatten, hash, isBoolean, vals, varName} from '../../util';
+import {VgBinTransform, VgTransform} from '../../vega.schema';
 
 import {FacetModel} from './../facet';
 import {LayerModel} from './../layer';
@@ -21,17 +21,19 @@ function parse(model: Model): Dict<VgTransform[]> {
     const bin = model.fieldDef(channel).bin;
     if (bin) {
 
-      let binTrans: VgTransform = extend({
+       let binTrans: VgBinTransform = {
         type: 'bin',
         field: fieldDef.field,
         as: [field(fieldDef, {binSuffix: 'start'}), field(fieldDef, {binSuffix: 'end'})],
         signal: varName(model.getName(fieldDef.field + '_bins'))
-      },
-        // if bin is an object, load parameter here!
-        typeof bin === 'boolean' ? {} : bin
-      );
+      };
+
+      if (!isBoolean(bin)) {
+         binTrans = extend(binTrans, bin);
+      }
 
       const transform: VgTransform[] = [];
+
       if (!binTrans.extent) {
         const extentSignal = varName(model.getName(fieldDef.field + '_extent'));
         transform.push({

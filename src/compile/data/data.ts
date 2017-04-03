@@ -2,7 +2,7 @@
 import {FieldDef} from '../../fielddef';
 import {Transform} from '../../transform';
 import {Dict, StringSet} from '../../util';
-import {VgData, VgSort, VgTransform} from '../../vega.schema';
+import {VgData, VgFormulaTransform, VgSort, VgTransform} from '../../vega.schema';
 
 import {FacetModel} from './../facet';
 import {LayerModel} from './../layer';
@@ -40,7 +40,7 @@ export interface DataComponent {
   bin: Dict<VgTransform[]>;
 
   /** Dictionary mapping an output field name (hash) to the time unit transform  */
-  timeUnit: Dict<VgTransform>;
+  timeUnit: Dict<VgFormulaTransform>;
 
   /** String set of fields to be filtered */
   nonPositiveFilter: Dict<boolean>;

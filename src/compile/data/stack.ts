@@ -9,7 +9,7 @@ import {field, FieldDef} from '../../fielddef';
 import {hasDiscreteDomain} from '../../scale';
 import {StackOffset} from '../../stack';
 import {contains} from '../../util';
-import {VgData, VgImputeTransform, VgSort, VgStackTransform} from '../../vega.schema';
+import {VgData, VgSort, VgTransform} from '../../vega.schema';
 import {sortParams} from '../common';
 
 export interface StackComponent {
@@ -160,7 +160,7 @@ export const stack: DataComponentCompiler<StackComponent> = {
       return undefined;
     }
 
-    let transform: (VgStackTransform|VgImputeTransform)[] = [];
+    let transform: VgTransform[] = [];
     // Impute
     if (stackComponent.impute) {
       transform.push({

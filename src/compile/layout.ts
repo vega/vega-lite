@@ -3,7 +3,7 @@ import {Channel, COLUMN, ROW, X, Y} from '../channel';
 import {LAYOUT} from '../data';
 import {hasDiscreteDomain} from '../scale';
 import {extend, keys, StringSet} from '../util';
-import {VgData} from '../vega.schema';
+import {VgData, VgFormulaTransform, VgTransform} from '../vega.schema';
 
 import {FacetModel} from './facet';
 import {LayerModel} from './layer';
@@ -39,7 +39,12 @@ export function assembleLayout(model: Model, layoutData: VgData[]): VgData[] {
   if (true) { // if both are shared scale, we can simply merge data source for width and for height
     const distinctFields = keys(extend(layoutComponent.width.distinct, layoutComponent.height.distinct));
     const formula = layoutComponent.width.formula.concat(layoutComponent.height.formula)
-      .map(f => extend({type: 'formula'}, f));
+      .map(f => {
+        return {
+          type: 'formula',
+          ...f
+        } as VgFormulaTransform;
+      });
 
     return [
       distinctFields.length > 0 ? {
@@ -49,7 +54,7 @@ export function assembleLayout(model: Model, layoutData: VgData[]): VgData[] {
           type: 'aggregate',
           fields: distinctFields,
           ops: distinctFields.map(() => 'distinct')
-        } as any].concat(formula)
+        } as VgTransform].concat(formula)
       } : {
         name: model.dataName(LAYOUT),
         values: [{}],

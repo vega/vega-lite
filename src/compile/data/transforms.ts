@@ -17,7 +17,7 @@ export const transforms: DataComponentCompiler<Transform[]> = {
   parseLayer: parse,
 
   assemble: function(transformArray: Transform[]): VgTransform[] {
-    return transformArray.map(t => {
+    const func: (t:Transform) => VgTransform = (t: Transform) => {
       if (isCalculate(t)) {
         return {
           type: 'formula',
@@ -34,6 +34,8 @@ export const transforms: DataComponentCompiler<Transform[]> = {
       }
 
       return null;
-    });
+    };
+
+    return transformArray.map(func);
   }
 };
