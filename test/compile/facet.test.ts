@@ -380,10 +380,10 @@ describe('compile/facet', () => {
   });
 
   describe('initAxis', () => {
-    it('should not include properties of non-VlOnlyAxisConfig in config.facet.axis', () => {
+    it('should include properties from axis and config.axis', () => {
       const model = parseFacetModel({
         facet: {
-          row: {field: 'a', type: 'ordinal'}
+          row: {field: 'a', type: 'ordinal', axis: {offset: 30}}
         },
         spec: {
           mark: 'point',
@@ -394,7 +394,7 @@ describe('compile/facet', () => {
         },
         config: {"facet": {"axis": {"domainWidth": 123}}}
       });
-      assert.deepEqual(model.axis(ROW), {"orient": "right", "labelAngle": 90});
+      assert.deepEqual(model.axis(ROW), {"orient": "right", "labelAngle": 90, "offset": 30, "domainWidth": 123});
     });
   });
 });
