@@ -368,7 +368,7 @@ export function scaleTypeSupportProperty(scaleType: ScaleType, propName: keyof S
     case 'scheme':
       return true;
     case 'interpolate':
-      return scaleType === 'linear' || scaleType === 'bin-linear';
+      return contains(['linear', 'bin-linear', 'pow', 'log', 'sqrt', 'utc', 'time'], scaleType);
     case 'round':
       return isContinuousToContinuous(scaleType) || scaleType === 'band' || scaleType === 'point';
     case 'rangeStep':
