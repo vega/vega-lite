@@ -51,12 +51,13 @@
 
     "lint": "tslint -c tslint.json 'src/**/*.ts' 'test/**/*.ts'",
 
-    "test": "npm run tsc && npm run schema && npm run data && npm run test:nocompile",
+    "pretest": "npm run tsc && npm run schema && npm run data",
+    "test": "npm run test:nocompile",
     "test:nocompile": "npm run test:only && npm run lint && npm run mocha:examples",
     "test:only": "nyc --reporter=html --reporter=text-summary npm run mocha:test",
-    "test:debug": "npm run tsc && npm run schema && npm run data && mocha --recursive --debug-brk build/test build/examples",
-    "mocha:test": "mocha --reporter dot --recursive build/test",
-    "mocha:examples": "mocha --reporter dot --recursive build/examples",
+    "test:debug": "npm run pretest && mocha --recursive --debug-brk build/test build/examples",
+    "mocha:test": "mocha --require source-map-support/register --reporter dot --recursive build/test",
+    "mocha:examples": "mocha --require source-map-support/register --reporter dot --recursive build/examples",
 
     "codecov": "nyc report --reporter=json && codecov -f coverage/*.json",
     "watch:build": "watchify src/vl.ts -p tsify -v -d -s vl -o 'exorcist build/vega-lite.js.map > build/vega-lite.js'",
