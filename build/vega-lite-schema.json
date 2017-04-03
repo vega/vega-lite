@@ -1070,6 +1070,10 @@
                     "description": "A minimum allowable step size (particularly useful for integer values).",
                     "type": "number"
                 },
+                "nice": {
+                    "description": "If true (the default), attempts to make the bin boundaries use human-friendly boundaries, such as multiples of ten.",
+                    "type": "boolean"
+                },
                 "step": {
                     "description": "An exact step size to use between bins. If provided, options such as maxbins will be ignored.",
                     "type": "number"

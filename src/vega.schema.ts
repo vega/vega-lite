@@ -1,3 +1,4 @@
+import {BinBase} from './bin';
 import {NiceTime, ScaleType} from './scale';
 import {StackOffset} from './stack';
 import {isArray} from './util';
@@ -8,7 +9,7 @@ export interface VgData {
   values?: any;
   format?: any;
   url?: any;
-  transform?: any;
+  transform?: VgTransform[];
 }
 
 
@@ -128,13 +129,13 @@ export type VgEncodeEntry = any;
 export type VgAxis = any;
 export type VgLegend = any;
 
-export interface VgBinTransform {
+export interface VgBinTransform extends BinBase {
   type: 'bin';
+  extent?: number[] | {signal: string};
   field: string;
-  as: string;
-  extent?: {signal: string};
-  // TODO: add other properties
-}
+  as: string[];
+  signal?: string;
+};
 
 export interface VgExtentTransform {
   type: 'extent';
@@ -156,8 +157,8 @@ export interface VgFilterTransform {
 export interface VgAggregateTransform {
   type: 'aggregate';
   groupby: VgFieldRef[];
-  fields: VgFieldRef[];
-  ops: string[];
+  fields?: VgFieldRef[];
+  ops?: string[];
   as?: string[];
   drop?: boolean;
 }
@@ -180,7 +181,7 @@ export interface VgLegendEncode {
 
 export type VgGuideEncode = any; // TODO: replace this (See guideEncode in Vega Schema)
 
-export type VgTransform = VgBinTransform | VgExtentTransform | VgFormulaTransform | VgAggregateTransform | VgFilterTransform | any;
+export type VgTransform = VgBinTransform | VgExtentTransform | VgFormulaTransform | VgAggregateTransform | VgFilterTransform | VgImputeTransform | VgStackTransform;
 
 export interface VgStackTransform {
   type: 'stack';
