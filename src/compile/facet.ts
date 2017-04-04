@@ -111,8 +111,10 @@ export class FacetModel extends Model {
       if (facet[channel]) {
         const axisSpec = facet[channel].axis;
         if (axisSpec !== false) {
+          const axisConfig:any = config.facet !== undefined && config.facet.axis !== undefined? config.facet.axis : {};
           const modelAxis = _axis[channel] = {
-            ...axisSpec
+            ...axisSpec,
+            ...axisConfig
           };
 
           if (channel === ROW) {
