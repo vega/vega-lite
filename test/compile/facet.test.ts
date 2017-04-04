@@ -380,7 +380,7 @@ describe('compile/facet', () => {
   });
 
   describe('initAxis', () => {
-    it('should include properties from axis and config.axis', () => {
+    it('should include properties from axis and config.facet.axis', () => {
       const model = parseFacetModel({
         facet: {
           row: {field: 'a', type: 'ordinal', axis: {offset: 30}}
