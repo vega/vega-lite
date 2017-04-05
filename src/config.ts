@@ -114,26 +114,6 @@ export const defaultFacetConfig: FacetConfig = {
   cell: defaultFacetCellConfig
 };
 
-export type AreaOverlay = 'line' | 'linepoint' | 'none';
-
-export interface OverlayConfig {
-  /**
-   * Whether to overlay line with point.
-   *
-   * __Default value:__ `false`
-   */
-  line?: boolean;
-
-  /**
-   * Type of overlay for area mark (line or linepoint)
-   */
-  area?: AreaOverlay;
-}
-
-export const defaultOverlayConfig: OverlayConfig = {
-  line: false
-};
-
 export type RangeConfig = (number|string)[] | VgRangeScheme | {step: number};
 
 export interface VLOnlyConfig {
@@ -178,11 +158,6 @@ export interface VLOnlyConfig {
   /** Facet Config */
   facet?: FacetConfig;
 
-  // FIXME: move this to line/area
-  /** Mark Overlay Config */
-  overlay?: OverlayConfig;
-
-
   /** Scale Config */
   scale?: ScaleConfig;
 
@@ -191,7 +166,6 @@ export interface VLOnlyConfig {
 
   /** Default stack offset for stackable mark. */
   stack?: StackOffset;
-
 }
 
 export interface Config extends TopLevelProperties, VLOnlyConfig, MarkConfigMixins, CompositeMarkConfigMixins, AxisConfigMixins {
@@ -241,7 +215,6 @@ export const defaultConfig: Config = {
   boxWhisker: {},
   boxMid: {},
 
-  overlay: defaultOverlayConfig,
   scale: defaultScaleConfig,
   axis: {},
   axisX: {},

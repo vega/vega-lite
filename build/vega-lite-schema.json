@@ -45,14 +45,6 @@
         }
       ]
     },
-    "AreaOverlay": {
-      "enum": [
-        "line",
-        "linepoint",
-        "none"
-      ],
-      "type": "string"
-    },
     "Axis": {
       "additionalProperties": false,
       "properties": {
@@ -1727,10 +1719,6 @@
         "numberFormat": {
           "description": "D3 Number format for axis labels and text tables. For example \"s\" for SI units.(in the form of [D3 number format pattern](https://github.com/mbostock/d3/wiki/Formatting)).\n\n__Default value:__ `\"s\"` (except for text marks that encode a count field, the default value is `\"d\"`).",
           "type": "string"
-        },
-        "overlay": {
-          "$ref": "#/definitions/OverlayConfig",
-          "description": "Mark Overlay Config "
         },
         "padding": {
           "$ref": "#/definitions/Padding",
@@ -3979,20 +3967,6 @@
       ],
       "type": "string"
     },
-    "OverlayConfig": {
-      "additionalProperties": false,
-      "properties": {
-        "area": {
-          "$ref": "#/definitions/AreaOverlay",
-          "description": "Type of overlay for area mark (line or linepoint)"
-        },
-        "line": {
-          "description": "Whether to overlay line with point.\n\n__Default value:__ `false`",
-          "type": "boolean"
-        }
-      },
-      "type": "object"
-    },
     "Padding": {
       "anyOf": [
         {
@@ -5720,10 +5694,6 @@
         "numberFormat": {
           "description": "D3 Number format for axis labels and text tables. For example \"s\" for SI units.(in the form of [D3 number format pattern](https://github.com/mbostock/d3/wiki/Formatting)).\n\n__Default value:__ `\"s\"` (except for text marks that encode a count field, the default value is `\"d\"`).",
           "type": "string"
-        },
-        "overlay": {
-          "$ref": "#/definitions/OverlayConfig",
-          "description": "Mark Overlay Config "
         },
         "scale": {
           "$ref": "#/definitions/ScaleConfig",
