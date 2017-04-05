@@ -26,7 +26,7 @@ describe('compile/scale', () => {
           scaleType('point', 'color', {type: 'quantitative', bin: 'true'}, 'point', undefined, undefined, defaultConfig),
           ScaleType.BIN_ORDINAL
         );
-        assert.equal(localLogger.warns[0], log.message.cannotOverrideBinScaleType('color', 'bin-ordinal'));
+        assert.equal(localLogger.warns[0], log.message.scaleTypeNotWorkWithFieldDef(ScaleType.POINT, ScaleType.BIN_ORDINAL));
       });
     });
 
@@ -270,6 +270,62 @@ describe('compile/scale', () => {
         assert.equal(
           scaleType(undefined, 'x', {type: 'quantitative', bin: true}, 'point', undefined, undefined, defaultConfig),
           ScaleType.BIN_LINEAR
+        );
+      });
+    });
+
+    describe('dataTypeMatchScaleType()', () => {
+      it('should return specified value if datatype is ordinal or nominal and specified scale type is the ordinal or nominal', () => {
+        assert.equal(
+          scaleType(ScaleType.ORDINAL, 'shape', {type: 'ordinal'}, 'point', undefined, undefined, defaultConfig),
+          ScaleType.ORDINAL
+        );
+      });
+
+      it('should return default scale type if data type is temporal but specified scale type is not time or utc', () => {
+        assert.equal(
+          scaleType(ScaleType.LINEAR, 'x', {type: 'temporal', timeUnit: 'year'}, 'point', undefined, undefined, defaultConfig),
+          ScaleType.TIME
+        );
+
+        assert.equal(
+          scaleType(ScaleType.LINEAR, 'color', {type: 'temporal', timeUnit: 'year'}, 'point', undefined, undefined, defaultConfig),
+          ScaleType.SEQUENTIAL
+        );
+      });
+
+      it('should return specified discrete scale type if data type is temporal but specified scale type is time or utc', () => {
+        assert.equal(
+          scaleType(ScaleType.POINT, 'x', {type: 'temporal', timeUnit: 'year'}, 'point', undefined, undefined, defaultConfig),
+          ScaleType.POINT
+        );
+      });
+
+      it('should return default scale type if data type is temporal but specified scale type is time or utc or any discrete type', () => {
+        assert.equal(
+          scaleType(ScaleType.LINEAR, 'x', {type: 'temporal', timeUnit: 'year'}, 'point', undefined, undefined, defaultConfig),
+          ScaleType.TIME
+        );
+      });
+
+      it('should return default scale type if data type is quantative but scale type do not support quantative', () => {
+        assert.equal(
+          scaleType(ScaleType.TIME, 'color', {type: 'quantitative'}, 'point', undefined, undefined, defaultConfig),
+          ScaleType.SEQUENTIAL
+        );
+      });
+
+      it('should return default scale type if data type is quantative and scale type supports quantative', () => {
+        assert.equal(
+          scaleType(ScaleType.TIME, 'x', {type: 'quantitative'}, 'point', undefined, undefined, defaultConfig),
+          ScaleType.LINEAR
+        );
+      });
+
+      it('should return default scale type if data type is quantative and scale type supports quantative', () => {
+        assert.equal(
+          scaleType(ScaleType.TIME, 'x', {type: 'temporal'}, 'point', undefined, undefined, defaultConfig),
+          ScaleType.TIME
         );
       });
     });
