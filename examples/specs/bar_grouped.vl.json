@@ -3,7 +3,7 @@
   "data": { "url": "data/population.json"},
   "transform": [
     {"filter": "datum.year == 2000"},
-    {"calculate": "datum.sex == 2 ? \"Female\" : \"Male\"", "as": "gender"}
+    {"calculate": "datum.sex == 2 ? 'Female' : 'Male'", "as": "gender"}
   ],
   "mark": "bar",
   "encoding": {
