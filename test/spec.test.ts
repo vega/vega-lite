@@ -298,20 +298,57 @@ describe('normalize()', function () {
   });
 
   describe('normalizeOverlay', () => {
-    describe('line', () => {
-      it('should be normalized correctly', () => {
-        const spec: any = {
-          "data": {"url": "data/stocks.csv", "format": {"type": "csv"}},
-          "mark": "line",
-          "encoding": {
-            "x": {"field": "date", "type": "temporal"},
-            "y": {"field": "price", "type": "quantitative"}
+    it('correctly normalizes line with overlayed point.', () => {
+      const spec: any = {
+        "data": {"url": "data/stocks.csv", "format": {"type": "csv"}},
+        "mark": "line",
+        "encoding": {
+          "x": {"field": "date", "type": "temporal"},
+          "y": {"field": "price", "type": "quantitative"}
+        },
+        "config": {"overlay": {"line": true}}
+      };
+      const normalizedSpec = normalize(spec);
+      assert.deepEqual(normalizedSpec, {
+        "data": {"url": "data/stocks.csv","format": {"type": "csv"}},
+        "layer": [
+          {
+            "mark": "line",
+            "encoding": {
+              "x": {"field": "date", "type": "temporal"},
+              "y": {"field": "price","type": "quantitative"}
+            }
           },
-          "config": {"overlay": {"line": true}}
-        };
-        const normalizedSpec = normalize(spec);
-        assert.deepEqual(normalizedSpec, {
-          "data": {"url": "data/stocks.csv","format": {"type": "csv"}},
+          {
+            "mark": {"type": "point", "filled": true, "role": "pointOverlay"},
+            "encoding": {
+              "x": {"field": "date","type": "temporal"},
+              "y": {"field": "price","type": "quantitative"}
+            }
+          }
+        ],
+        "config": {"overlay": {"line": true}}
+      });
+    });
+
+    it('correctly normalizes faceted line plots with overlayed point.', () => {
+      const spec: any = {
+        "data": {"url": "data/stocks.csv", "format": {"type": "csv"}},
+        "mark": "line",
+        "encoding": {
+          "row": {"field": "symbol", "type": "nominal"},
+          "x": {"field": "date", "type": "temporal"},
+          "y": {"field": "price", "type": "quantitative"}
+        },
+        "config": {"overlay": {"line": true}}
+      };
+      const normalizedSpec = normalize(spec);
+      assert.deepEqual(normalizedSpec, {
+        "data": {"url": "data/stocks.csv","format": {"type": "csv"}},
+        "facet": {
+          "row": {"field": "symbol", "type": "nominal"},
+        },
+        "spec": {
           "layer": [
             {
               "mark": "line",
@@ -328,83 +365,153 @@ describe('normalize()', function () {
               }
             }
           ],
-          "config": {"overlay": {"line": true}}
-        });
+        },
+        "config": {"overlay": {"line": true}}
       });
     });
 
-    describe('area', () => {
-      it('with linepoint should be normalized correctly', () => {
-        const spec: any = {
-          "data": {"url": "data/stocks.csv", "format": {"type": "csv"}},
-          "mark": "area",
-          "encoding": {
-            "x": {"field": "date", "type": "temporal"},
-            "y": {"field": "price", "type": "quantitative"}
-          },
-          "config": {"overlay": {"area": 'linepoint'}}
-        };
-        const normalizedSpec = normalize(spec);
-        assert.deepEqual(normalizedSpec, {
-          "data": {"url": "data/stocks.csv","format": {"type": "csv"}},
-          "layer": [
-            {
-              "mark": "area",
-              "encoding": {
-                "x": {"field": "date","type": "temporal"},
-                "y": {"field": "price","type": "quantitative"}
-              }
-            },
-            {
-              "mark": {"type": "line", "role": "lineOverlay"},
-              "encoding": {
-                "x": {"field": "date","type": "temporal"},
-                "y": {"field": "price","type": "quantitative"}
-              }
-            },
-            {
-              "mark": {"type": "point", "filled": true, "role": "pointOverlay"},
-              "encoding": {
-                "x": {"field": "date","type": "temporal"},
-                "y": {"field": "price","type": "quantitative"}
-              }
+    it('correctly normalizes area with overlay line and point', () => {
+      const spec: any = {
+        "data": {"url": "data/stocks.csv", "format": {"type": "csv"}},
+        "mark": "area",
+        "encoding": {
+          "x": {"field": "date", "type": "temporal"},
+          "y": {"field": "price", "type": "quantitative"}
+        },
+        "config": {"overlay": {"area": 'linepoint'}}
+      };
+      const normalizedSpec = normalize(spec);
+      assert.deepEqual(normalizedSpec, {
+        "data": {"url": "data/stocks.csv","format": {"type": "csv"}},
+        "layer": [
+          {
+            "mark": "area",
+            "encoding": {
+              "x": {"field": "date","type": "temporal"},
+              "y": {"field": "price","type": "quantitative"}
             }
-          ],
-          "config": {"overlay": {"area": 'linepoint'}}
-        });
+          },
+          {
+            "mark": {"type": "line", "role": "lineOverlay"},
+            "encoding": {
+              "x": {"field": "date","type": "temporal"},
+              "y": {"field": "price","type": "quantitative"}
+            }
+          },
+          {
+            "mark": {"type": "point", "filled": true, "role": "pointOverlay"},
+            "encoding": {
+              "x": {"field": "date","type": "temporal"},
+              "y": {"field": "price","type": "quantitative"}
+            }
+          }
+        ],
+        "config": {"overlay": {"area": 'linepoint'}}
       });
+    });
 
-      it('with linepoint should be normalized correctly', () => {
-        const spec: any = {
-          "data": {"url": "data/stocks.csv", "format": {"type": "csv"}},
-          "mark": "area",
-          "encoding": {
-            "x": {"field": "date", "type": "temporal"},
-            "y": {"field": "price", "type": "quantitative"}
-          },
-          "config": {"overlay": {"area": 'line'}}
-        };
-        const normalizedSpec = normalize(spec);
-        assert.deepEqual(normalizedSpec, {
-          "data": {"url": "data/stocks.csv","format": {"type": "csv"}},
-          "layer": [
-            {
-              "mark": "area",
-              "encoding": {
-                "x": {"field": "date","type": "temporal"},
-                "y": {"field": "price","type": "quantitative"}
-              }
-            },
-            {
-              "mark": {"type": "line", "role": "lineOverlay"},
-              "encoding": {
-                "x": {"field": "date","type": "temporal"},
-                "y": {"field": "price","type": "quantitative"}
-              }
+    it('correctly normalizes area with overlay line', () => {
+      const spec: any = {
+        "data": {"url": "data/stocks.csv", "format": {"type": "csv"}},
+        "mark": "area",
+        "encoding": {
+          "x": {"field": "date", "type": "temporal"},
+          "y": {"field": "price", "type": "quantitative"}
+        },
+        "config": {"overlay": {"area": 'line'}}
+      };
+      const normalizedSpec = normalize(spec);
+      assert.deepEqual(normalizedSpec, {
+        "data": {"url": "data/stocks.csv","format": {"type": "csv"}},
+        "layer": [
+          {
+            "mark": "area",
+            "encoding": {
+              "x": {"field": "date","type": "temporal"},
+              "y": {"field": "price","type": "quantitative"}
             }
-          ],
-          "config": {"overlay": {"area": 'line'}}
-        });
+          },
+          {
+            "mark": {"type": "line", "role": "lineOverlay"},
+            "encoding": {
+              "x": {"field": "date","type": "temporal"},
+              "y": {"field": "price","type": "quantitative"}
+            }
+          }
+        ],
+        "config": {"overlay": {"area": 'line'}}
+      });
+    });
+
+    it('correctly normalizes stacked area with overlay line', () => {
+      const spec: any = {
+        "data": {"url": "data/stocks.csv", "format": {"type": "csv"}},
+        "mark": "area",
+        "encoding": {
+          "x": {"field": "date", "type": "temporal"},
+          "y": {"aggregate": "sum", "field": "price", "type": "quantitative"},
+          "color": {"field": "symbol", "type": "nominal"}
+        },
+        "config": {"overlay": {"area": 'line'}}
+      };
+      const normalizedSpec = normalize(spec);
+      assert.deepEqual(normalizedSpec, {
+        "data": {"url": "data/stocks.csv","format": {"type": "csv"}},
+        "layer": [
+          {
+            "mark": "area",
+            "encoding": {
+              "x": {"field": "date","type": "temporal"},
+              "y": {"aggregate": "sum", "field": "price","type": "quantitative"},
+              "color": {"field": "symbol", "type": "nominal"}
+            }
+          },
+          {
+            "mark": {"type": "line", "role": "lineOverlay"},
+            "encoding": {
+              "x": {"field": "date","type": "temporal"},
+              "y": {"aggregate": "sum", "field": "price","type": "quantitative", "stack": "zero"},
+              "color": {"field": "symbol", "type": "nominal"}
+            }
+          }
+        ],
+        "config": {"overlay": {"area": 'line'}}
+      });
+    });
+
+    it('correctly normalizes streamgraph with overlay line', () => {
+      const spec: any = {
+        "data": {"url": "data/stocks.csv", "format": {"type": "csv"}},
+        "mark": "area",
+        "encoding": {
+          "x": {"field": "date", "type": "temporal"},
+          "y": {"aggregate": "sum", "field": "price", "type": "quantitative", "stack": "center"},
+          "color": {"field": "symbol", "type": "nominal"}
+        },
+        "config": {"overlay": {"area": 'line'}}
+      };
+      const normalizedSpec = normalize(spec);
+      assert.deepEqual(normalizedSpec, {
+        "data": {"url": "data/stocks.csv","format": {"type": "csv"}},
+        "layer": [
+          {
+            "mark": "area",
+            "encoding": {
+              "x": {"field": "date","type": "temporal"},
+              "y": {"aggregate": "sum", "field": "price","type": "quantitative", "stack": "center"},
+              "color": {"field": "symbol", "type": "nominal"}
+            }
+          },
+          {
+            "mark": {"type": "line", "role": "lineOverlay"},
+            "encoding": {
+              "x": {"field": "date","type": "temporal"},
+              "y": {"aggregate": "sum", "field": "price","type": "quantitative", "stack": "center"},
+              "color": {"field": "symbol", "type": "nominal"}
+            }
+          }
+        ],
+        "config": {"overlay": {"area": 'line'}}
       });
     });
   });
