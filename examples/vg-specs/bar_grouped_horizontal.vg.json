@@ -39,7 +39,7 @@
                 },
                 {
                     "type": "formula",
-                    "expr": "datum.sex == 2 ? \"Female\" : \"Male\"",
+                    "expr": "datum.sex == 2 ? 'Female' : 'Male'",
                     "as": "gender"
                 },
                 {
