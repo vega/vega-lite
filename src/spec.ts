@@ -1,7 +1,7 @@
 /* Package of defining Vega-lite Specification's json schema at its utility functions */
 
 import * as compositeMark from './compositemark';
-import {Config, defaultOverlayConfig} from './config';
+import {Config} from './config';
 import {Data} from './data';
 import {channelHasField, Encoding, EncodingWithFacet, isRanged} from './encoding';
 import {Facet} from './facet';
@@ -10,12 +10,12 @@ import {FieldDef} from './fielddef';
 import {COLUMN, ROW, X, X2, Y, Y2} from './channel';
 import * as vlEncoding from './encoding';
 import * as log from './log';
-import {AREA, isPrimitiveMark, LINE, Mark, MarkDef, POINT} from './mark';
+import {AREA, isPrimitiveMark, LINE, Mark, MarkDef} from './mark';
 import {SelectionDef} from './selection';
 import {stack} from './stack';
 import {TopLevelProperties} from './toplevelprops';
 import {Transform} from './transform';
-import {contains, duplicate, extend, hash, keys, omit, pick, vals} from './util';
+import {contains, duplicate, hash, vals} from './util';
 
 export type TopLevel<S extends BaseSpec> = S & TopLevelProperties & {
   /**
@@ -208,20 +208,19 @@ function isNonFacetUnitSpecWithPrimitiveMark(spec: GenericUnitSpec<string | Mark
 }
 
 function normalizeNonFacetUnit(spec: GenericUnitSpec<string | MarkDef, Encoding>, config: Config) {
-  const overlayConfig = config && config.overlay;
-  const overlayWithLine = overlayConfig  && spec.mark === AREA &&
-    contains(['linepoint', 'line'], overlayConfig.area);
-  const overlayWithPoint = overlayConfig && (
-    (overlayConfig.line && spec.mark === LINE) ||
-    (overlayConfig.area === 'linepoint' && spec.mark === AREA)
-  );
-
   if (isNonFacetUnitSpecWithPrimitiveMark(spec)) {
     // TODO: thoroughly test
     if (isRanged(spec.encoding)) {
       return normalizeRangedUnit(spec);
     }
 
+    const overlayConfig = config && config.overlay;
+    const overlayWithLine = overlayConfig  && spec.mark === AREA &&
+      contains(['linepoint', 'line'], overlayConfig.area);
+    const overlayWithPoint = overlayConfig && (
+      (overlayConfig.line && spec.mark === LINE) ||
+      (overlayConfig.area === 'linepoint' && spec.mark === AREA)
+    );
     // TODO: consider moving this to become another case of compositeMark
     if (overlayWithPoint || overlayWithLine) {
       return normalizeOverlay(spec, overlayWithPoint, overlayWithLine, config);
@@ -255,60 +254,50 @@ function normalizeRangedUnit(spec: UnitSpec) {
 }
 
 
-// FIXME(#1804): rewrite this
+// FIXME(#1804): re-design this
 function normalizeOverlay(spec: UnitSpec, overlayWithPoint: boolean, overlayWithLine: boolean, config: Config): LayerSpec {
-  let outerProps = ['name', 'description', 'data', 'transform'];
-  let baseSpec = omit(spec, outerProps.concat('config'));
-
-  let baseConfig = duplicate(config);
-  delete baseConfig.overlay;
-  // TODO: remove shape, size
+  const {mark, encoding, ...outerSpec} = spec;
+  const layer = [{mark, encoding}];
 
   // Need to copy stack config to overlayed layer
-  const stacked = stack(spec.mark,
-    spec.encoding,
-    config ? config.stack : undefined
-  );
+  const stackProps = stack(mark, encoding, config ? config.stack : undefined);
 
-  const layerSpec = {
-    ...pick(spec, outerProps),
-    layer: [baseSpec],
-    ...(keys(baseConfig).length > 0 ? {config: baseConfig} : {})
-  };
+  let overlayEncoding = encoding;
+  if (stackProps) {
+    const {fieldChannel: stackFieldChannel, offset} = stackProps;
+    overlayEncoding = {
+      ...encoding,
+      [stackFieldChannel]: {
+        ...encoding[stackFieldChannel],
+        ...(offset ? {stack: offset} : {})
+      }
+    };
+  }
 
   if (overlayWithLine) {
-    // TODO: add name with suffix
-    let lineSpec = duplicate(baseSpec);
-    lineSpec.mark = LINE;
-    // TODO: remove shape, size
-    let markConfig = extend({},
-      defaultOverlayConfig.lineStyle,
-      config.overlay.lineStyle,
-      stacked ? {stacked: stacked.offset} : null
-    );
-    if (keys(markConfig).length > 0) {
-      lineSpec.config = {mark: markConfig};
-    }
-
-    layerSpec.layer.push(lineSpec);
+    layer.push({
+      mark: {
+        type: 'line',
+        role: 'lineOverlay'
+      },
+      encoding: overlayEncoding
+    });
   }
-
   if (overlayWithPoint) {
-    // TODO: add name with suffix
-    let pointSpec = duplicate(baseSpec);
-    pointSpec.mark = POINT;
-
-    let markConfig = extend({},
-      defaultOverlayConfig.pointStyle,
-      config.overlay.pointStyle,
-      stacked ? {stacked: stacked.offset} : null
-    );
-    if (keys(markConfig).length > 0) {
-      pointSpec.config = {mark: markConfig};
-    }
-    layerSpec.layer.push(pointSpec);
+    layer.push({
+      mark: {
+        type: 'point',
+        filled: true,
+        role: 'pointOverlay'
+      },
+      encoding: overlayEncoding
+    });
   }
-  return layerSpec;
+
+  return {
+    ...outerSpec,
+    layer
+  };
 }
 
 // TODO: add vl.spec.validate & move stuff from vl.validate to here

@@ -60,12 +60,7 @@
         {
             "name": "layer_1_source",
             "source": "source",
-            "transform": [
-                {
-                    "type": "filter",
-                    "expr": "datum[\"miles\"] !== null && !isNaN(datum[\"miles\"]) && datum[\"gas\"] !== null && !isNaN(datum[\"gas\"]) && datum[\"year\"] !== null && !isNaN(datum[\"year\"])"
-                }
-            ]
+            "transform": []
         },
         {
             "name": "layout",
@@ -132,7 +127,7 @@
                 {
                     "name": "layer_1_marks",
                     "type": "symbol",
-                    "role": "point",
+                    "role": "pointOverlay",
                     "from": {
                         "data": "layer_1_source"
                     },
@@ -146,11 +141,8 @@
                                 "scale": "y",
                                 "field": "gas"
                             },
-                            "stroke": {
-                                "value": "#4c78a8"
-                            },
                             "fill": {
-                                "value": "transparent"
+                                "value": "#4c78a8"
                             },
                             "opacity": {
                                 "value": 0.7

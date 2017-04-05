@@ -14,10 +14,10 @@ export type StackOffset = 'zero' | 'center' | 'normalize' | 'none';
 
 export interface StackProperties {
   /** Dimension axis of the stack ('x' or 'y'). */
-  groupbyChannel: Channel;
+  groupbyChannel: 'x' | 'y';
 
   /** Measure axis of the stack ('x' or 'y'). */
-  fieldChannel: Channel;
+  fieldChannel: 'x' | 'y';
 
   /** Stack-by fields e.g., color, detail */
   stackBy: {
