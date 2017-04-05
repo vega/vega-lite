@@ -9,8 +9,8 @@ import {TEMPORAL} from '../../type';
 import {contains, Dict} from '../../util';
 import {getMarkConfig} from '../common';
 
-export function initMarkDef(mark: Mark | MarkDef, encoding: Encoding, scale: Dict<Scale>, config: Config): MarkDef & {filled: boolean} {
-  const markDef = isMarkDef(mark) ? mark : {type: mark};
+export function initMarkDef(mark: Mark | MarkDef, encoding: Encoding, scale: Dict<Scale>, config: Config): MarkDef {
+  const markDef = isMarkDef(mark) ? {...mark} : {type: mark};
 
   const specifiedOrient = markDef.orient || getMarkConfig('orient', markDef.type, config);
   markDef.orient = orient(markDef.type, encoding, scale, specifiedOrient);
@@ -18,13 +18,12 @@ export function initMarkDef(mark: Mark | MarkDef, encoding: Encoding, scale: Dic
     log.warn(log.message.orientOverridden(markDef.orient,specifiedOrient));
   }
 
-  return {
-    ...markDef,
+  const specifiedFilled = markDef.filled;
+  if (specifiedFilled === undefined) {
+    markDef.filled = filled(markDef.type, config);
+  }
 
-    // TODO: filled could be injected to encoding too, but we don't have filled channel yet.
-    // Thus we inject it here for now.
-    filled: filled(markDef.type, config)
-  };
+  return markDef;
 }
 
 /**

@@ -51,6 +51,12 @@ export interface MarkDef {
   role?: string;
 
   /**
+   * Whether the mark's color should be used as fill color instead of stroke color.
+   * All marks except "point", "line", and "rule" are filled by default.
+   */
+  filled?: boolean;
+
+  /**
    * The orientation of a non-stacked bar, tick, area, and line charts.
    * The value is either horizontal (default) or vertical.
    * - For bar, rule and tick, this determines whether the size of the bar and tick
@@ -111,8 +117,7 @@ export interface MarkConfig extends VgMarkConfig {
 
   // ---------- Color ----------
   /**
-   * Whether the shape\'s color should be used as fill color instead of stroke color.
-   * This is only applicable for "bar", "point", and "area".
+   * Whether the mark's color should be used as fill color instead of stroke color.
    * All marks except "point", "line", and "rule" are filled by default.
    */
   filled?: boolean;

@@ -44,7 +44,7 @@ export class UnitModel extends Model {
    */
   public readonly height: number;
 
-  public readonly markDef: MarkDef & {filled: boolean};
+  public readonly markDef: MarkDef;
   public readonly encoding: Encoding;
   protected readonly selection: Dict<SelectionDef> = {};
   protected readonly scales: Dict<Scale> = {};
