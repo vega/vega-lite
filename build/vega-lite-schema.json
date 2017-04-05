@@ -2690,14 +2690,6 @@
                 "line": {
                     "description": "Whether to overlay line with point.",
                     "type": "boolean"
-                },
-                "lineStyle": {
-                    "$ref": "#/definitions/MarkConfig",
-                    "description": "Default style for the overlayed point."
-                },
-                "pointStyle": {
-                    "$ref": "#/definitions/MarkConfig",
-                    "description": "Default style for the overlayed point."
                 }
             },
             "type": "object"

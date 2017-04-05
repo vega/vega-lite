@@ -92,22 +92,10 @@ export interface OverlayConfig {
    * Type of overlay for area mark (line or linepoint)
    */
   area?: AreaOverlay;
-
-  /**
-   * Default style for the overlayed point.
-   */
-  pointStyle?: MarkConfig;
-
-  /**
-   * Default style for the overlayed point.
-   */
-  lineStyle?: MarkConfig;
 }
 
 export const defaultOverlayConfig: OverlayConfig = {
-  line: false,
-  pointStyle: {filled: true},
-  lineStyle: {}
+  line: false
 };
 
 export type RangeConfig = (number|string)[] | VgRangeScheme | {step: number};

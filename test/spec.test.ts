@@ -316,19 +316,19 @@ describe('normalize()', function () {
             {
               "mark": "line",
               "encoding": {
-                "x": {"field": "date","type": "temporal"},
+                "x": {"field": "date", "type": "temporal"},
                 "y": {"field": "price","type": "quantitative"}
               }
             },
             {
-              "mark": "point",
+              "mark": {"type": "point", "filled": true, "role": "pointOverlay"},
               "encoding": {
                 "x": {"field": "date","type": "temporal"},
                 "y": {"field": "price","type": "quantitative"}
-              },
-              "config": {"mark": {"filled": true}}
+              }
             }
-          ]
+          ],
+          "config": {"overlay": {"line": true}}
         });
       });
     });
@@ -356,21 +356,21 @@ describe('normalize()', function () {
               }
             },
             {
-              "mark": "line",
+              "mark": {"type": "line", "role": "lineOverlay"},
               "encoding": {
                 "x": {"field": "date","type": "temporal"},
                 "y": {"field": "price","type": "quantitative"}
               }
             },
             {
-              "mark": "point",
+              "mark": {"type": "point", "filled": true, "role": "pointOverlay"},
               "encoding": {
                 "x": {"field": "date","type": "temporal"},
                 "y": {"field": "price","type": "quantitative"}
-              },
-              "config": {"mark": {"filled": true}}
+              }
             }
-          ]
+          ],
+          "config": {"overlay": {"area": 'linepoint'}}
         });
       });
 
@@ -396,13 +396,14 @@ describe('normalize()', function () {
               }
             },
             {
-              "mark": "line",
+              "mark": {"type": "line", "role": "lineOverlay"},
               "encoding": {
                 "x": {"field": "date","type": "temporal"},
                 "y": {"field": "price","type": "quantitative"}
               }
             }
-          ]
+          ],
+          "config": {"overlay": {"area": 'line'}}
         });
       });
     });
