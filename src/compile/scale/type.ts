@@ -6,7 +6,10 @@ import {ScaleConfig, ScaleType} from '../../scale';
 import {isDiscreteByDefault} from '../../timeunit';
 
 import {FieldDef} from '../../fielddef';
+import {hasDiscreteDomain} from '../../scale';
+import {Type} from '../../type';
 import * as util from '../../util';
+import {contains} from '../../util';
 
 export type RangeType = 'continuous' | 'discrete' | 'flexible' | undefined;
 
@@ -26,20 +29,19 @@ export default function type(
     return null;
   }
   if (specifiedType !== undefined) {
-    // for binned fields we don't allow overriding the default scale
-    if (fieldDef.bin) {
-      // TODO: generalize this as a method in fieldDef that determines scale type support for a fieldDef (looking at functions and type)
-      log.warn(log.message.cannotOverrideBinScaleType(channel, defaultScaleType));
-      return defaultScaleType;
-    }
-
     // Check if explicitly specified scale type is supported by the channel
-    if (supportScaleType(channel, specifiedType)) {
-      return specifiedType;
-    } else {
+    if (!supportScaleType(channel, specifiedType)) {
       log.warn(log.message.scaleTypeNotWorkWithChannel(channel, specifiedType, defaultScaleType));
       return defaultScaleType;
     }
+
+    // Check if explicitly specified scale type is supported by the data type
+    if (!fieldDefMatchScaleType(specifiedType, fieldDef)) {
+      log.warn(log.message.scaleTypeNotWorkWithFieldDef(specifiedType, defaultScaleType));
+      return defaultScaleType;
+    }
+
+    return specifiedType;
   }
 
   return defaultScaleType;
@@ -145,4 +147,24 @@ function haveRangeStep(hasTopLevelSize: boolean, specifiedRangeStep: number, sca
     return specifiedRangeStep !== null;
   }
   return !!scaleConfig.rangeStep;
+}
+
+export function fieldDefMatchScaleType(specifiedType: ScaleType, fieldDef: FieldDef):boolean {
+  const type: Type = fieldDef.type;
+  if (contains([Type.ORDINAL, Type.NOMINAL], type)) {
+    return specifiedType === undefined || hasDiscreteDomain(specifiedType);
+  } else if (type === Type.TEMPORAL) {
+    if (!fieldDef.timeUnit) {
+      return contains([ScaleType.TIME, ScaleType.UTC, undefined], specifiedType);
+    } else {
+      return contains([ScaleType.TIME, ScaleType.UTC, undefined], specifiedType) || hasDiscreteDomain(specifiedType);
+    }
+  } else if (type === Type.QUANTITATIVE) {
+    if (fieldDef.bin) {
+      return specifiedType === ScaleType.BIN_LINEAR || specifiedType === ScaleType.BIN_ORDINAL;
+    }
+    return contains([ScaleType.LOG, ScaleType.POW, ScaleType.SQRT, ScaleType.QUANTILE, ScaleType.QUANTIZE, ScaleType.LINEAR, undefined], specifiedType);
+  }
+
+  return true;
 }
