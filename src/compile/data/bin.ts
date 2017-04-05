@@ -4,8 +4,8 @@ import {Bin, binToString} from '../../bin';
 import {Channel} from '../../channel';
 import {field, FieldDef} from '../../fielddef';
 import {hasDiscreteDomain} from '../../scale';
-import {Dict, extend, flatten, isBoolean, vals} from '../../util';
-import {VgTransform} from '../../vega.schema';
+import {Dict, extend, flatten, isBoolean, vals, varName} from '../../util';
+import {VgBinTransform, VgTransform} from '../../vega.schema';
 
 import {FacetModel} from './../facet';
 import {LayerModel} from './../layer';
@@ -47,23 +47,31 @@ function parse(model: Model): Dict<VgTransform[]> {
       if (!transform) {
         binComponent[key] = transform = [];
         const extentSignal = model.getName(key + '_extent');
-        const binTrans: VgTransform = {
-          ...{
+        // const binTrans: VgBinTransform = {
+        //   ...{
+        //     type: 'bin',
+        //     field: fieldDef.field,
+        //     as: [field(fieldDef, {binSuffix: 'start'}), field(fieldDef, {binSuffix: 'end'})],
+        //     signal: varName(model.getName(key + '_bins'))
+        //   },
+        //   ...bin,
+        //   // add extent if it's not specified
+        //   ...(!bin.extent ? {extent: {signal: extentSignal}} : {}),
+        // };
+        let binTrans: VgBinTransform = {
             type: 'bin',
             field: fieldDef.field,
             as: [field(fieldDef, {binSuffix: 'start'}), field(fieldDef, {binSuffix: 'end'})],
-            signal: model.getName(key + '_bins')
-          },
-          ...bin,
-          // add extent if it's not specified
-          ...(!bin.extent ? {extent: {signal: extentSignal}} : {}),
+            signal: varName(model.getName(key + '_bins'))
         };
+        extend(binTrans, bin);
         if (!bin.extent) {
           transform.push({
             type: 'extent',
             field: fieldDef.field,
             signal: extentSignal
           });
+          binTrans.extent = {signal: extentSignal};
         }
         transform.push(binTrans);
       }

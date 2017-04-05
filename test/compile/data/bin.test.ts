@@ -28,7 +28,7 @@ describe('compile/data/bin', function() {
           as: ['bin_extent_0,100_maxbins_10_Acceleration_start', 'bin_extent_0,100_maxbins_10_Acceleration_end'],
           maxbins: 10,
           extent: [0, 100],
-          signal: "bin_extent_0,100_maxbins_10_Acceleration_bins",
+          signal: "bin_extent_0_100_maxbins_10_Acceleration_bins",
         });
       });
     });
