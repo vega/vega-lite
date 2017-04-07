@@ -42,19 +42,19 @@
                 {
                     "type": "extent",
                     "field": "Acceleration",
-                    "signal": "bin_Acceleration_extent"
+                    "signal": "bin_maxbins_10_Acceleration_extent"
                 },
                 {
                     "type": "bin",
                     "field": "Acceleration",
                     "as": [
-                        "bin_Acceleration_start",
-                        "bin_Acceleration_end"
+                        "bin_maxbins_10_Acceleration_start",
+                        "bin_maxbins_10_Acceleration_end"
                     ],
-                    "signal": "bin_Acceleration_bins",
+                    "signal": "bin_maxbins_10_Acceleration_bins",
                     "maxbins": 10,
                     "extent": {
-                        "signal": "bin_Acceleration_extent"
+                        "signal": "bin_maxbins_10_Acceleration_extent"
                     }
                 }
             ]
@@ -125,7 +125,7 @@
                             },
                             "opacity": {
                                 "scale": "opacity",
-                                "field": "bin_Acceleration_start"
+                                "field": "bin_maxbins_10_Acceleration_start"
                             }
                         }
                     }
@@ -166,7 +166,7 @@
                     "name": "opacity",
                     "type": "bin-linear",
                     "domain": {
-                        "signal": "sequence(bin_Acceleration_bins.start, bin_Acceleration_bins.stop + bin_Acceleration_bins.step, bin_Acceleration_bins.step)"
+                        "signal": "sequence(bin_maxbins_10_Acceleration_bins.start, bin_maxbins_10_Acceleration_bins.stop + bin_maxbins_10_Acceleration_bins.step, bin_maxbins_10_Acceleration_bins.step)"
                     },
                     "range": [
                         0.3,
