@@ -49,7 +49,7 @@
                     "field": "Acceleration",
                     "as": [
                         "bin_maxbins_10_Acceleration_start",
-                       "bin_maxbins_10_Acceleration_end"
+                        "bin_maxbins_10_Acceleration_end"
                     ],
                     "signal": "bin_maxbins_10_Acceleration_bins",
                     "maxbins": 10,
