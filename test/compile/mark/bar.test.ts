@@ -59,8 +59,8 @@ describe('Mark: Bar', function() {
     const props = bar.encodeEntry(model);
 
     it('should draw bar with y and y2', function() {
-      assert.deepEqual(props.y2, {scale: 'y', field: 'bin_Horsepower_start'});
-      assert.deepEqual(props.y, {scale: 'y', field: 'bin_Horsepower_end', offset: defaultBarConfig.binSpacing});
+      assert.deepEqual(props.y2, {scale: 'y', field: 'bin_maxbins_10_Horsepower_start'});
+      assert.deepEqual(props.y, {scale: 'y', field: 'bin_maxbins_10_Horsepower_end', offset: defaultBarConfig.binSpacing});
       assert.isUndefined(props.height);
     });
   });
@@ -77,8 +77,8 @@ describe('Mark: Bar', function() {
     const props = bar.encodeEntry(model);
 
     it('should draw bar with x and x2', function() {
-      assert.deepEqual(props.x2, {scale: 'x', field: 'bin_Horsepower_start', offset: defaultBarConfig.binSpacing});
-      assert.deepEqual(props.x, {scale: 'x', field: 'bin_Horsepower_end'});
+      assert.deepEqual(props.x2, {scale: 'x', field: 'bin_maxbins_10_Horsepower_start', offset: defaultBarConfig.binSpacing});
+      assert.deepEqual(props.x, {scale: 'x', field: 'bin_maxbins_10_Horsepower_end'});
       assert.isUndefined(props.width);
     });
   });
@@ -97,8 +97,8 @@ describe('Mark: Bar', function() {
     const props = bar.encodeEntry(model);
 
     it('should draw bar with y and y2', function() {
-      assert.deepEqual(props.y2, {scale: 'y', field: 'bin_Horsepower_start'});
-      assert.deepEqual(props.y, {scale: 'y', field: 'bin_Horsepower_end'});
+      assert.deepEqual(props.y2, {scale: 'y', field: 'bin_maxbins_10_Horsepower_start'});
+      assert.deepEqual(props.y, {scale: 'y', field: 'bin_maxbins_10_Horsepower_end'});
       assert.isUndefined(props.height);
     });
   });
@@ -116,8 +116,8 @@ describe('Mark: Bar', function() {
     const props = bar.encodeEntry(model);
 
     it('should draw bar with x and x2', function() {
-      assert.deepEqual(props.x2, {scale: 'x', field: 'bin_Horsepower_start'});
-      assert.deepEqual(props.x, {scale: 'x', field: 'bin_Horsepower_end'});
+      assert.deepEqual(props.x2, {scale: 'x', field: 'bin_maxbins_10_Horsepower_start'});
+      assert.deepEqual(props.x, {scale: 'x', field: 'bin_maxbins_10_Horsepower_end'});
       assert.isUndefined(props.width);
     });
   });
@@ -135,7 +135,7 @@ describe('Mark: Bar', function() {
     const props = bar.encodeEntry(model);
 
     it('should draw bar with y centered on bin_mid and height = size field', function() {
-      assert.deepEqual(props.yc, {signal: '(scale("y", datum["bin_Horsepower_start"]) + scale("y", datum["bin_Horsepower_end"]))/2'});
+      assert.deepEqual(props.yc, {signal: '(scale(\"y\", datum[\"bin_maxbins_10_Horsepower_start\"]) + scale(\"y\", datum[\"bin_maxbins_10_Horsepower_end\"]))/2'});
       assert.deepEqual(props.height, {scale: 'size', field: 'mean_Acceleration'});
     });
   });
@@ -153,7 +153,7 @@ describe('Mark: Bar', function() {
     const props = bar.encodeEntry(model);
 
     it('should draw bar with x centered on bin_mid and width = size field', function() {
-      assert.deepEqual(props.xc, {signal: '(scale("x", datum["bin_Horsepower_start"]) + scale("x", datum["bin_Horsepower_end"]))/2'});
+      assert.deepEqual(props.xc, {signal: '(scale(\"x\", datum[\"bin_maxbins_10_Horsepower_start\"]) + scale(\"x\", datum[\"bin_maxbins_10_Horsepower_end\"]))/2'});
       assert.deepEqual(props.width, {scale: 'size', field: 'mean_Acceleration'});
     });
   });
