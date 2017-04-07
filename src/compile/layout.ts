@@ -1,6 +1,6 @@
 
 import {Channel, COLUMN, ROW, X, Y} from '../channel';
-import {LAYOUT} from '../data';
+import {LAYOUT, MAIN} from '../data';
 import {hasDiscreteDomain} from '../scale';
 import {extend, keys, StringSet} from '../util';
 import {VgData, VgFormulaTransform, VgTransform} from '../vega.schema';
@@ -23,6 +23,9 @@ export interface Formula {
 }
 
 export interface SizeComponent {
+  /** Where to pull data from */
+  source: string;
+
   /** Field that we need to calculate distinct */
   distinct: StringSet;
 
@@ -48,15 +51,15 @@ export function assembleLayout(model: Model, layoutData: VgData[]): VgData[] {
 
     return [
       distinctFields.length > 0 ? {
-        name: model.dataName(LAYOUT),
-        source: model.dataTable(),
+        name: LAYOUT,
+        source: model.lookupDataSource(layoutComponent.width.source || layoutComponent.height.source),
         transform: [{
           type: 'aggregate',
           fields: distinctFields,
           ops: distinctFields.map(() => 'distinct')
         } as VgTransform].concat(formula)
       } : {
-        name: model.dataName(LAYOUT),
+        name: LAYOUT,
         values: [{}],
         transform: formula
       }
@@ -76,8 +79,11 @@ export function parseUnitLayout(model: UnitModel): LayoutComponent {
 }
 
 function parseUnitSizeLayout(model: UnitModel, channel: Channel): SizeComponent {
+  const distinct = getDistinct(model, channel);
+
   return {
-    distinct: getDistinct(model, channel),
+    source: keys(distinct).length > 0 ? model.getDataName(MAIN) : null,
+    distinct,
     formula: [{
       as: model.channelSizeName(channel),
       expr: unitSizeExpr(model, channel)
@@ -138,6 +144,7 @@ function parseFacetSizeLayout(model: FacetModel, channel: Channel): SizeComponen
 
     delete childLayoutComponent[sizeType];
     return {
+      source: model.getDataName(MAIN),
       distinct: distinct,
       formula: formula
     };
@@ -181,6 +188,7 @@ function parseLayerSizeLayout(model: LayerModel, channel: Channel): SizeComponen
     });
 
     return {
+      source: model.getDataName(MAIN),
       distinct: distinct,
       formula: formula
     };

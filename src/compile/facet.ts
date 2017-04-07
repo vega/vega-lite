@@ -1,6 +1,7 @@
 import {Axis} from '../axis';
 import {Channel, COLUMN, ROW, X, Y} from '../channel';
 import {Config} from '../config';
+import {MAIN} from '../data';
 import {reduce} from '../encoding';
 import {Facet} from '../facet';
 import {FieldDef, normalize} from '../fielddef';
@@ -11,27 +12,16 @@ import {FacetSpec} from '../spec';
 import {StackProperties} from '../stack';
 import {contains, Dict, extend, flatten, keys, vals} from '../util';
 import {VgData, VgEncodeEntry} from '../vega.schema';
-
 import {parseAxisComponent, parseGridAxis, parseMainAxis} from './axis/parse';
 import {gridShow} from './axis/rules';
 import {buildModel} from './common';
-import {assembleData, parseFacetData} from './data/data';
+import {assembleData, assembleFacetData} from './data/assemble';
+import {parseData} from './data/parse';
 import {assembleLayout, parseFacetLayout} from './layout';
 import {Model} from './model';
-
 import initScale from './scale/init';
 import parseScaleComponent from './scale/parse';
 
-/**
- * Prefix for special data sources for driving column's axis group.
- */
-
-export const COLUMN_AXES_DATA_PREFIX = 'column-';
-
-/**
- * Prefix for special data sources for driving row's axis group.
- */
-export const ROW_AXES_DATA_PREFIX = 'row-';
 
 export class FacetModel extends Model {
   public readonly facet: Facet;
@@ -136,39 +126,13 @@ export class FacetModel extends Model {
     return !!this.facet[channel];
   }
 
-  private hasSummary() {
-    const summary = this.component.data.summary;
-    for (const s of summary) {
-      if (keys(s.measures).length > 0) {
-        return true;
-      }
-    }
-    return false;
-  }
-
-  public facetedTable(): string {
-    // FIXME: revise if the suffix should be 'data'
-    return 'faceted-' + this.getName('data');
-  }
-
-  public dataTable(): string {
-    // FIXME: shouldn't we apply data renaming here?
-    if (this.component.data.stack) {
-      return 'stacked';
-    }
-    if (this.hasSummary()) {
-      return 'summary';
-    }
-    return 'source';
-  }
-
   public fieldDef(channel: Channel): FieldDef {
     return this.facet[channel];
   }
 
   public parseData() {
+    this.component.data = parseData(this);
     this.child.parseData();
-    this.component.data = parseFacetData(this);
   }
 
   public parseSelection() {
@@ -187,13 +151,11 @@ export class FacetModel extends Model {
 
     child.parseScale();
 
-    // TODO: support scales for field reference of parent data (e.g., for SPLOM)
-
     // First, add scale for row and column.
     const scaleComponent = this.component.scales = parseScaleComponent(this);
 
     // Then, move shared/union from its child spec.
-    keys(child.component.scales).forEach(function(channel) {
+    keys(child.component.scales).forEach(channel => {
       // TODO: correctly implement independent scale
       if (true) { // if shared/union scale
         const scale = scaleComponent[channel] = child.component.scales[channel];
@@ -202,6 +164,9 @@ export class FacetModel extends Model {
         const newName = model.scaleName(scaleNameWithoutPrefix, true);
         child.renameScale(scale.name, newName);
         scale.name = newName;
+
+        // FIXME: this is so broken
+        (scale.domain as any).data = this.getDataName(MAIN);
 
         // Once put in parent, just remove the child's scale.
         delete child.component.scales[channel];
@@ -212,33 +177,23 @@ export class FacetModel extends Model {
   public parseMark() {
     this.child.parseMark();
 
-    this.component.mark = extend(
-      {
-        name: this.getName('cell'),
-        type: 'group',
-        from: extend(
-          {
-            facet: {
-              name: this.facetedTable(),
-              data: this.dataTable(),
-              groupby: [].concat(
-                this.channelHasField(ROW) ? [this.field(ROW)] : [],
-                this.channelHasField(COLUMN) ? [this.field(COLUMN)] : []
-              )
-            }
-          }
-        ),
-        encode: {
-          update: getFacetGroupProperties(this)
+    this.component.mark = [{
+      name: this.getName('cell'),
+      type: 'group',
+      from: {
+        facet: {
+          name: this.component.data.facetRoot.name,
+          data: this.component.data.facetRoot.data,
+          groupby: [].concat(
+            this.channelHasField(ROW) ? [this.field(ROW)] : [],
+            this.channelHasField(COLUMN) ? [this.field(COLUMN)] : []
+          )
         }
       },
-      // FIXME: move this call to assembleMarks()
-      // Call child's assembleGroup to add marks, scales, axes, and legends.
-      // Note that we can call child's assembleGroup() here because parseMark()
-      // is the last method in compile() and thus the child is completely compiled
-      // at this point.
-      this.child.assembleGroup()
-    );
+      encode: {
+        update: getFacetGroupProperties(this)
+      }
+    }];
   }
 
   public parseAxis() {
@@ -283,6 +238,15 @@ export class FacetModel extends Model {
     this.child.component.legends = {};
   }
 
+  public assembleData(): VgData[] {
+    if (!this.parent) {
+      // only assemble data in the root
+      return assembleData(vals(this.component.data.sources));
+    }
+
+    return [];
+  }
+
   public assembleParentGroupProperties(): any {
     return null;
   }
@@ -295,29 +259,27 @@ export class FacetModel extends Model {
     return [];
   }
 
-  public assembleData(data: VgData[]): VgData[] {
-    // Prefix traversal – parent data might be referred by children data
-    assembleData(this, data);
-    this.child.assembleData(data);
-    assembleAxesGroupData(this, data);
-
-    return data;
-  }
-
-
   public assembleLayout(layoutData: VgData[]): VgData[] {
     // Postfix traversal – layout is assembled bottom-up
     this.child.assembleLayout(layoutData);
     return assembleLayout(this, layoutData);
   }
 
-  public assembleMarks(): any[] {
-    return [].concat(
+  public assembleMarks(): VgEncodeEntry[] {
+    const data = assembleFacetData(this.component.data.facetRoot);
+
+    const mark = this.component.mark[0];
+    // correct the name of the faceted data source
+    mark.from.facet.name = this.child.lookupDataSource(mark.from.facet.name);
+
+    const marks = [].concat(
       // axisGroup is a mapping to VgMarkGroup
       vals(this.component.axisGroups),
       flatten(vals(this.component.gridGroups)),
-      this.component.mark
+      extend(mark, data.length > 0 ? {data: data} : {}, this.child.assembleGroup())
     );
+
+    return marks.map(this.correctDataNames);
   }
 
   public channels() {
@@ -382,36 +344,6 @@ function getFacetGroupProperties(model: FacetModel) {
 
 // TODO: move the rest of the file src/compile/facet/*.ts
 
-/**
- * Add data for driving row/column axes when there are both row and column
- * Note that we don't have to deal with these in the parse step at all
- * because these items never get merged with any other items.
- */
-export function assembleAxesGroupData(model: FacetModel, data: VgData[]) {
-  if (model.facet.column) {
-    data.push({
-      name: COLUMN_AXES_DATA_PREFIX + model.dataTable(),
-      source: model.dataTable(),
-      transform: [{
-        type: 'aggregate',
-        groupby: [model.field(COLUMN)]
-      }]
-    });
-  }
-
-  if (model.facet.row) {
-    data.push({
-      name: ROW_AXES_DATA_PREFIX + model.dataTable(),
-      source: model.dataTable(),
-      transform: [{
-        type: 'aggregate',
-        groupby: [model.field(ROW)]
-      }]
-    });
-  }
-  return data;
-}
-
 function parseAxisGroups(model: FacetModel, channel: 'x' | 'y') {
   // TODO: add a case where inner spec is not a unit (facet/layer/concat)
   let axisGroup: any = null;
@@ -444,7 +376,6 @@ export function getSharedAxisGroup(model: FacetModel, channel: 'x' | 'y'): VgEnc
   const isX = channel === 'x' ;
   const facetChannel = isX ? 'column' : 'row';
   const hasFacet = !!model.facet[facetChannel];
-  const dataPrefix = isX ? COLUMN_AXES_DATA_PREFIX : ROW_AXES_DATA_PREFIX;
 
   const axesGroup: VgEncodeEntry = {
     name: model.getName(channel + '-axes'),
@@ -456,7 +387,7 @@ export function getSharedAxisGroup(model: FacetModel, channel: 'x' | 'y'): VgEnc
 
     // TODO: We might only need to drive this with special data source if there are both row and column
     // However, it might be slightly difficult as we have to merge this with the main group.
-    axesGroup.from = {data: dataPrefix + model.dataTable()};
+    axesGroup.from = {data: channel === 'x' ? model.getName('column') : model.getName('row')};
   }
 
   if (isX) {
@@ -506,7 +437,7 @@ function getRowGridGroups(model: Model): any[] { // TODO: VgMarks
     name: model.getName('row-grid'),
     type: 'rule',
     from: {
-      data: ROW_AXES_DATA_PREFIX + model.dataTable()
+      data: model.getDataName(MAIN)
     },
     encode: {
       update: {
@@ -546,7 +477,7 @@ function getColumnGridGroups(model: Model): any { // TODO: VgMarks
     name: model.getName('column-grid'),
     type: 'rule',
     from: {
-      data: COLUMN_AXES_DATA_PREFIX + model.dataTable()
+      data: model.getDataName(MAIN)
     },
     encode: {
       update: {

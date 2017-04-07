@@ -3,7 +3,7 @@
 
 import {assert} from 'chai';
 import {parseDomain, unionDomains} from '../../../src/compile/scale/domain';
-import {SUMMARY} from '../../../src/data';
+import {MAIN} from '../../../src/data';
 import {PositionFieldDef} from '../../../src/fielddef';
 import * as log from '../../../src/log';
 import {FieldRefUnionDomain, VgDataRef} from '../../../src/vega.schema';
@@ -118,7 +118,7 @@ describe('compile/scale', () => {
           });
           const _domain = parseDomain(model,'y') as FieldRefUnionDomain;
 
-          assert.deepEqual(_domain.data, SUMMARY);
+          assert.deepEqual(_domain.data, MAIN);
           assert.deepEqual(_domain.fields, ['min_acceleration', 'max_acceleration']);
         });
 
@@ -135,7 +135,7 @@ describe('compile/scale', () => {
           }
         });
         const _domain = parseDomain(model,'y') as VgDataRef;
-        assert.deepEqual(_domain.data, SUMMARY);
+        assert.deepEqual(_domain.data, MAIN);
         assert.equal(
           localLogger.warns[0], log.message.unaggregateDomainWithNonSharedDomainOp('sum')
         );
@@ -170,7 +170,7 @@ describe('compile/scale', () => {
         });
         const _domain = parseDomain(model,'y') as VgDataRef;
 
-        assert.deepEqual(_domain.data, SUMMARY);
+        assert.deepEqual(_domain.data, MAIN);
       });
 
       it('should return the aggregated domain if specified in config', function() {
@@ -191,7 +191,7 @@ describe('compile/scale', () => {
         });
         const _domain = parseDomain(model,'y') as FieldRefUnionDomain;
 
-        assert.deepEqual(_domain.data, SUMMARY);
+        assert.deepEqual(_domain.data, MAIN);
         assert.deepEqual(_domain.fields, ['min_acceleration', 'max_acceleration']);
       });
     });

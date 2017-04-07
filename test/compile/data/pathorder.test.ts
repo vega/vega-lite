@@ -1,11 +1,14 @@
 /* tslint:disable:quotemark */
 
 import {assert} from 'chai';
+import {OrderNode} from '../../../src/compile/data/pathorder';
+import {UnitModel} from '../../../src/compile/unit';
+import {VgCollectTransform} from '../../../src/vega.schema';
+import {parseUnitModel} from '../../util';
 
-import {pathOrder} from '../../../src/compile/data/pathorder';
-import {LayerModel} from '../../../src/compile/layer';
-import {VgSort} from '../../../src/vega.schema';
-import {parseFacetModel, parseModel, parseUnitModel} from '../../util';
+function assemble(model: UnitModel) {
+  return new OrderNode(model).assemble();
+}
 
 describe('compile/data/pathorder', function() {
   describe('compileUnit', function() {
@@ -19,9 +22,12 @@ describe('compile/data/pathorder', function() {
           "order": {"field": "year","type": "temporal"}
         }
       });
-      assert.deepEqual<VgSort>(pathOrder.parseUnit(model), {
-        field: ['year'],
-        order: ['ascending']
+      assert.deepEqual<VgCollectTransform>(assemble(model), {
+        type: 'collect',
+        sort: {
+          field: ['year'],
+          order: ['ascending']
+        }
       });
     });
 
@@ -45,127 +51,11 @@ describe('compile/data/pathorder', function() {
           }
         }
       });
-      assert.deepEqual<VgSort>(pathOrder.parseUnit(model), {
-        field: 'bin_maxbins_10_IMDB_Rating_start',
-        order: 'descending'
-      });
-    });
-
-    it('should order by x by default if y is the dimension', function () {
-      const model = parseUnitModel({
-        "data": {"url": "data/movies.json"},
-        "mark": "line",
-        "encoding": {
-          "y": {
-            "bin": {"maxbins": 10},
-            "field": "IMDB_Rating",
-            "type": "quantitative"
-          },
-          "color": {
-            "field": "Source",
-            "type": "nominal"
-          },
-          "x": {
-            "aggregate": "count",
-            "type": "quantitative"
-          }
-        }
-      });
-      assert.deepEqual<VgSort>(pathOrder.parseUnit(model), {
-        field: 'bin_maxbins_10_IMDB_Rating_start',
-        order: 'descending'
-      });
-    });
-  });
-
-  describe('parseLayer', function() {
-    it('should return line order for line when merging line and point', () => {
-      const model = parseFacetModel({
-        "data": {"url": "data/movies.json"},
-        "facet": {
-          "column": {
-            "field": "Source",
-            "type": "nominal"
-          }
-        },
-        "spec": {
-          "mark": "line",
-          "encoding": {
-            "y": {
-              "bin": {"maxbins": 10},
-              "field": "IMDB_Rating",
-              "type": "quantitative"
-            },
-            "x": {
-              "aggregate": "count",
-              "type": "quantitative"
-            }
-          }
-        }
-      });
-      const child = model.child;
-      child.component.data = {
-        pathOrder: pathOrder.parseUnit(child as any)
-      } as any;
-
-      assert.deepEqual<VgSort>(pathOrder.parseFacet(model), {
-        field: 'bin_maxbins_10_IMDB_Rating_start',
-        order: 'descending'
-      });
-    });
-  });
-
-  describe('parseFacet', function() {
-    it('should return line order for line for faceted line', () => {
-      const model = parseModel({
-        "data": {"url": "data/movies.json"},
-        "mark": "line",
-        "encoding": {
-          "y": {
-            "bin": {"maxbins": 10},
-            "field": "IMDB_Rating",
-            "type": "quantitative"
-          },
-          "color": {
-            "field": "Source",
-            "type": "nominal"
-          },
-          "x": {
-            "aggregate": "count",
-            "type": "quantitative"
-          }
-        },
-        "config": {
-          "overlay": {
-            "line": true
-          }
-        }
-      }) as LayerModel;
-      const children = model.children;
-      children[0].component.data = {
-        pathOrder: pathOrder.parseUnit(children[0])
-      } as any;
-      children[1].component.data = {
-        pathOrder: pathOrder.parseUnit(children[1])
-      } as any;
-
-      assert.deepEqual<VgSort>(pathOrder.parseLayer(model), {
-        field: 'bin_maxbins_10_IMDB_Rating_start',
-        order: 'descending'
-      });
-    });
-  });
-
-  describe('assemble', function() {
-    it('should correctly assemble a collect transform', () => {
-      assert.deepEqual(pathOrder.assemble({
-        field: 'a',
-        order: 'ascending'
-      }), {
+      assert.deepEqual<VgCollectTransform>(assemble(model), {
         type: 'collect',
         sort: {
-          field: 'a',
-          order: 'ascending'
+          field: 'bin_maxbins_10_IMDB_Rating_start',
+          order: 'descending'
         }
       });
     });
