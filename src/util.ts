@@ -153,6 +153,32 @@ export function differ<T>(dict: Dict<T>, other: Dict<T>) {
   return false;
 }
 
+export function hasIntersection(a: StringSet, b: StringSet) {
+  for (const key in a) {
+    if (key in b) {
+      return true;
+    }
+  }
+  return false;
+}
+
+export function differArray<T>(array: T[], other: T[]) {
+  if (array.length !== other.length) {
+    return true;
+  }
+
+  array.sort();
+  other.sort();
+
+  for (let i = 0; i < array.length; i++) {
+    if (other[i] !== array[i]) {
+      return true;
+    }
+  }
+
+  return false;
+}
+
 export const keys = Object.keys;
 
 export function vals<T>(x: {[key: string]: T}): T[] {

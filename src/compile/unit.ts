@@ -1,22 +1,22 @@
 import {Axis} from '../axis';
 import {Channel, NONSPATIAL_SCALE_CHANNELS, UNIT_CHANNELS, UNIT_SCALE_CHANNELS, X, X2,  Y, Y2} from '../channel';
 import {CellConfig, Config} from '../config';
-import {SOURCE, SUMMARY} from '../data';
 import {Encoding, normalizeEncoding} from '../encoding';
 import * as vlEncoding from '../encoding'; // TODO: remove
 import {field, FieldDef, FieldRefOption, isFieldDef} from '../fielddef';
 import {Legend} from '../legend';
 import {FILL_STROKE_CONFIG, isMarkDef, Mark, MarkDef, TEXT as TEXT_MARK} from '../mark';
 import {hasDiscreteDomain, Scale} from '../scale';
+import {SelectionDef} from '../selection';
 import {UnitSpec} from '../spec';
-import {Dict, duplicate, extend} from '../util';
+import {stack, StackProperties} from '../stack';
+import {Dict, duplicate, extend, vals} from '../util';
 import {VgData} from '../vega.schema';
 
-import {SelectionDef} from '../selection';
-import {stack, StackProperties} from '../stack';
 import {parseAxisComponent} from './axis/parse';
 import {applyConfig} from './common';
-import {assembleData, parseUnitData} from './data/data';
+import {assembleData} from './data/assemble';
+import {parseData} from './data/parse';
 import {assembleLayout, parseUnitLayout} from './layout';
 import {parseLegendComponent} from './legend/parse';
 import {initEncoding, initMarkDef} from './mark/init';
@@ -211,7 +211,7 @@ export class UnitModel extends Model {
   }
 
   public parseData() {
-    this.component.data = parseUnitData(this);
+    this.component.data = parseData(this);
   }
 
   public parseSelection() {
@@ -246,6 +246,14 @@ export class UnitModel extends Model {
     this.component.legends = parseLegendComponent(this);
   }
 
+  public assembleData(): VgData[] {
+     if (!this.parent) {
+      // only assemble data in the root
+      return assembleData(vals(this.component.data.sources));
+    }
+    return [];
+  }
+
   public assembleSignals(signals: any[]): any[] {
     return assembleUnitSignals(this, signals);
   }
@@ -254,16 +262,15 @@ export class UnitModel extends Model {
     return assembleSelectionData(this, data);
   }
 
-  public assembleData(data: VgData[]): VgData[] {
-    return assembleData(this, data);
-  }
-
   public assembleLayout(layoutData: VgData[]): VgData[] {
     return assembleLayout(this, layoutData);
   }
 
   public assembleMarks() {
-    return assembleSelectionMarks(this, this.component.mark);
+    let marks = this.component.mark;
+    marks = assembleSelectionMarks(this, marks);
+
+    return marks.map(this.correctDataNames);
   }
 
   public assembleParentGroupProperties(cellConfig: CellConfig) {
@@ -324,10 +331,6 @@ export class UnitModel extends Model {
     }
 
     return field(fieldDef, opt);
-  }
-
-  public dataTable() {
-    return this.dataName(vlEncoding.isAggregate(this.encoding) ? SUMMARY : SOURCE);
   }
 
   public isUnit() {

@@ -1,109 +1,89 @@
-import {DataComponentCompiler} from './base';
-
 import {isUrlData} from '../../data';
 import {DateTime, isDateTime} from '../../datetime';
 import {FieldDef, isCount} from '../../fielddef';
 import {isEqualFilter, isOneOfFilter, isRangeFilter} from '../../filter';
 import {QUANTITATIVE, TEMPORAL} from '../../type';
-import {Dict, differ, extend, isArray, isNumber, isString, keys} from '../../util';
+import {Dict, extend, isArray, isNumber, isString, keys} from '../../util';
 
 import {CalculateTransform, FilterTransform, isCalculate, isFilter} from '../../transform';
-import {FacetModel} from './../facet';
-import {LayerModel} from './../layer';
 import {Model} from './../model';
+import {DataFlowNode} from './dataflow';
 
-function parse(model: Model): Dict<string> {
-  const calcFieldMap = model.transforms.filter(isCalculate).reduce(function(fieldMap, formula: CalculateTransform) {
-    fieldMap[formula.as] = true;
-    return fieldMap;
-  }, {});
+export class ParseNode extends DataFlowNode {
+  private _parse: Dict<string> = {};
 
-  const parseComponent: Dict<string> = {};
+  constructor(model: Model) {
+    super();
 
-  // Parse filter fields
-  model.transforms.filter(isFilter).forEach((transform: FilterTransform) => {
-    let filter = transform.filter;
-    if (!isArray(filter)) {
-      filter = [filter];
-    }
-    filter.forEach(f => {
-      let val: string | number | boolean | DateTime = null;
-      // For EqualFilter, just use the equal property.
-      // For RangeFilter and OneOfFilter, all array members should have
-      // the same type, so we only use the first one.
-      if (isEqualFilter(f)) {
-        val = f.equal;
-      } else if (isRangeFilter(f)) {
-        val = f.range[0];
-      } else if (isOneOfFilter(f)) {
-        val = (f.oneOf || f['in'])[0];
-      } // else -- for filter expression, we can't infer anything
+    const calcFieldMap = model.transforms.filter(isCalculate).reduce((fieldMap, formula: CalculateTransform) => {
+      fieldMap[formula.as] = true;
+      return fieldMap;
+    }, {});
 
-      if (val) {
-        if (isDateTime(val)) {
-          parseComponent[f['field']] = 'date';
-        } else if (isNumber(val)) {
-          parseComponent[f['field']] = 'number';
-        } else if (isString(val)) {
-          parseComponent[f['field']] = 'string';
+    // Parse filter fields
+    model.transforms.filter(isFilter).forEach((transform: FilterTransform) => {
+      let filter = transform.filter;
+      if (!isArray(filter)) {
+        filter = [filter];
+      }
+      filter.forEach(f => {
+        let val: string | number | boolean | DateTime = null;
+        // For EqualFilter, just use the equal property.
+        // For RangeFilter and OneOfFilter, all array members should have
+        // the same type, so we only use the first one.
+        if (isEqualFilter(f)) {
+          val = f.equal;
+        } else if (isRangeFilter(f)) {
+          val = f.range[0];
+        } else if (isOneOfFilter(f)) {
+          val = (f.oneOf || f['in'])[0];
+        } // else -- for filter expression, we can't infer anything
+
+        if (val) {
+          if (isDateTime(val)) {
+            this._parse[f['field']] = 'date';
+          } else if (isNumber(val)) {
+            this._parse[f['field']] = 'number';
+          } else if (isString(val)) {
+            this._parse[f['field']] = 'string';
+          }
         }
+      });
+    });
+
+    // Parse encoded fields
+    model.forEachFieldDef((fieldDef: FieldDef) => {
+      if (fieldDef.type === TEMPORAL) {
+        this._parse[fieldDef.field] = 'date';
+      } else if (fieldDef.type === QUANTITATIVE) {
+        if (isCount(fieldDef) || calcFieldMap[fieldDef.field]) {
+          return;
+        }
+        this._parse[fieldDef.field] = 'number';
       }
     });
-  });
 
-  // Parse encoded fields
-  model.forEachFieldDef(function(fieldDef: FieldDef) {
-    if (fieldDef.type === TEMPORAL) {
-      parseComponent[fieldDef.field] = 'date';
-    } else if (fieldDef.type === QUANTITATIVE) {
-      if (isCount(fieldDef) || calcFieldMap[fieldDef.field]) {
-        return;
-      }
-      parseComponent[fieldDef.field] = 'number';
+    // Custom parse should override inferred parse
+    const data = model.data;
+    if (data && isUrlData(data) && data.format && data.format.parse) {
+      const parse = data.format.parse;
+      keys(parse).forEach((field) => {
+        this._parse[field] = parse[field];
+      });
     }
-  });
-
-  // Custom parse should override inferred parse
-  const data = model.data;
-  if (data && isUrlData(data) && data.format && data.format.parse) {
-    const parse = data.format.parse;
-    keys(parse).forEach((field) => {
-      parseComponent[field] = parse[field];
-    });
   }
 
-  return parseComponent;
+  public get parse() {
+    return this._parse;
+  }
+
+
+  public merge(other: ParseNode) {
+    this._parse = extend(this._parse, other.parse);
+    other.remove();
+  }
+
+  public assemble() {
+    return this._parse;
+  }
 }
-
-export const formatParse: DataComponentCompiler<Dict<string>> = {
-  parseUnit: parse,
-
-  parseFacet: function(model: FacetModel) {
-    const parseComponent = parse(model);
-
-    // If child doesn't have its own data source, but has its own parse, then merge
-    const childDataComponent = model.child.component.data;
-    if (!childDataComponent.source && childDataComponent.formatParse) {
-      extend(parseComponent, childDataComponent.formatParse);
-      delete childDataComponent.formatParse;
-    }
-    return parseComponent;
-  },
-
-  parseLayer: function(model: LayerModel) {
-    // note that we run this before source.parseLayer
-    const parseComponent = parse(model);
-    model.children.forEach((child) => {
-      const childDataComponent = child.component.data;
-      if (model.compatibleSource(child) && !differ(childDataComponent.formatParse, parseComponent)) {
-        // merge parse up if the child does not have an incompatible parse
-        extend(parseComponent, childDataComponent.formatParse);
-        delete childDataComponent.formatParse;
-      }
-    });
-    return parseComponent;
-  },
-
-  // identity function
-  assemble: function (x) {return x;}
-};

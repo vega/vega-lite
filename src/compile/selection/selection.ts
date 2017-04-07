@@ -181,7 +181,7 @@ export function assembleUnitMarks(model: UnitModel, marks: any[]): any[] {
           clip: {value: true}
         }
       },
-      marks: selMarks
+      marks: selMarks.map(model.correctDataNames)
     }];
   }
 
