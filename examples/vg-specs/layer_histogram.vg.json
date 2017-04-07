@@ -73,7 +73,6 @@
                         "bin_maxbins_10_distance_start",
                         "bin_maxbins_10_distance_end",
                         "bin_maxbins_10_distance_range"
-
                     ],
                     "ops": [
                         "count"
