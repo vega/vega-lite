@@ -1,8 +1,13 @@
 /* tslint:disable:quotemark */
 import {assert} from 'chai';
 
-import {formatParse} from '../../../src/compile/data/formatparse';
+import {ParseNode} from '../../../src/compile/data/formatparse';
+import {Model} from '../../../src/compile/model';
 import {parseUnitModel} from '../../util';
+
+function parse(model: Model) {
+  return new ParseNode(model).assemble();
+}
 
 describe('compile/data/formatparse', () => {
   describe('parseUnit', () => {
@@ -17,8 +22,8 @@ describe('compile/data/formatparse', () => {
           "shape": {"field": "d", "type": "nominal"}
         }
       });
-      const parseComponent = formatParse.parseUnit(model);
-      assert.deepEqual(parseComponent,{
+
+      assert.deepEqual(parse(model), {
         a: 'number',
         b: 'date'
       });
@@ -38,8 +43,8 @@ describe('compile/data/formatparse', () => {
         "mark": "point",
         encoding: {}
       });
-      const parseComponent = formatParse.parseUnit(model);
-      assert.deepEqual(parseComponent,{
+
+      assert.deepEqual(parse(model), {
         a: 'date',
         b: 'string',
         c: 'date',
@@ -58,8 +63,8 @@ describe('compile/data/formatparse', () => {
           "shape": {"field": "c", "type": "nominal"}
         }
       });
-      const parseComponent = formatParse.parseUnit(model);
-      assert.deepEqual(parseComponent,{
+
+      assert.deepEqual(parse(model), {
         a: 'number',
         b: 'date',
         c: 'number',
@@ -79,23 +84,10 @@ describe('compile/data/formatparse', () => {
         }
       });
 
-      const formatParseComponent = formatParse.parseUnit(model);
-      assert.deepEqual(formatParseComponent, {
+      assert.deepEqual(parse(model), {
         'a': 'date',
         'b': 'number'
       });
     });
-  });
-
-  describe('parseLayer', function() {
-    // TODO: write test
-  });
-
-  describe('parseFacet', function() {
-    // TODO: write test
-  });
-
-  describe('assemble', function() {
-    // TODO: write test
   });
 });

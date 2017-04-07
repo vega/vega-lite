@@ -1,14 +1,15 @@
 /* tslint:disable:quotemark */
 
 import {assert} from 'chai';
-import {assembleData} from '../../../src/compile/data/data';
+import {assembleData} from '../../../src/compile/data/assemble';
 import {Model} from '../../../src/compile/model';
+import {vals} from '../../../src/util';
 import {VgTransform} from '../../../src/vega.schema';
 import {parseUnitModel} from '../../util';
 
 function compileAssembleData(model: Model) {
   model.parseData();
-  return assembleData(model, []);
+  return assembleData(vals(model.component.data.sources));
 }
 
 describe('data', function () {
@@ -121,5 +122,4 @@ describe('data', function () {
     });
   });
 });
-
 

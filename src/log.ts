@@ -99,6 +99,11 @@ export function debug(..._: any[]) {
 export namespace message {
   export const INVALID_SPEC = 'Invalid spec';
 
+  // TRANSFORMS
+  export function invalidTransformIgnored(transform: any) {
+    return `Ignoring an invalid transform: ${JSON.stringify(transform)}.`;
+  }
+
   // ENCODING & FACET
   export function invalidFieldType(type: Type) {
     return `Invalid field type "${type}"`;

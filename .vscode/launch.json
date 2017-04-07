@@ -4,6 +4,13 @@
     {
       "type": "node",
       "request": "attach",
+      "name": "Attach (Inspector Protocol)",
+      "port": 9229,
+      "protocol": "inspector"
+    },
+    {
+      "type": "node",
+      "request": "attach",
       "name": "Attach",
       "port": 5858,
       "address": "localhost",

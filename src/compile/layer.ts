@@ -1,23 +1,22 @@
 import {Axis} from '../axis';
 import {Channel} from '../channel';
 import {CellConfig, Config} from '../config';
-import {isUrlData} from '../data';
 import {FieldDef} from '../fielddef';
 import {Legend} from '../legend';
 import {FILL_STROKE_CONFIG} from '../mark';
 import {Scale} from '../scale';
 import {LayerSpec} from '../spec';
 import {StackProperties} from '../stack';
-import {Dict, flatten, keys} from '../util';
+import {Dict, flatten, keys, vals} from '../util';
 import {isSignalRefDomain, VgData, VgEncodeEntry, VgScale} from '../vega.schema';
 
 import {applyConfig, buildModel} from './common';
-import {assembleData, parseLayerData} from './data/data';
+import {assembleData} from './data/assemble';
+import {parseData} from './data/parse';
 import {assembleLayout, parseLayerLayout} from './layout';
 import {Model} from './model';
-import {UnitModel} from './unit';
-
 import {unionDomains} from './scale/domain';
+import {UnitModel} from './unit';
 
 
 export class LayerModel extends Model {
@@ -70,20 +69,15 @@ export class LayerModel extends Model {
     return this.children[0].hasDiscreteScale(channel);
   }
 
-  public dataTable() {
-    // FIXME: don't just use the first child
-    return this.children[0].dataTable();
-  }
-
   public fieldDef(channel: Channel): FieldDef {
     return null; // layer does not have field defs
   }
 
   public parseData() {
+    this.component.data = parseData(this);
     this.children.forEach((child) => {
       child.parseData();
     });
-    this.component.data = parseLayerData(this);
   }
 
   public parseSelection() {
@@ -202,20 +196,19 @@ export class LayerModel extends Model {
     return [];
   }
 
+  public assembleData(): VgData[] {
+     if (!this.parent) {
+      // only assemble data in the root
+      return assembleData(vals(this.component.data.sources));
+    }
+    return [];
+  }
+
   public assembleScales(): VgScale[] {
     // combine with scales from children
     return this.children.reduce((scales, c) => {
       return scales.concat(c.assembleScales());
     }, super.assembleScales());
-  }
-
-  public assembleData(data: VgData[]): VgData[] {
-    // Prefix traversal – parent data might be referred to by children data
-    assembleData(this, data);
-    this.children.forEach((child) => {
-      child.assembleData(data);
-    });
-    return data;
   }
 
   public assembleLayout(layoutData: VgData[]): VgData[] {
@@ -243,18 +236,5 @@ export class LayerModel extends Model {
 
   public isLayer() {
     return true;
-  }
-
-  /**
-   * Returns true if the child either has no source defined or uses the same url.
-   * This is useful if you want to know whether it is possible to move a filter up.
-   *
-   * This function can only be called once th child has been parsed.
-   */
-  public compatibleSource(child: UnitModel) {
-    const data = this.data;
-    const childData = child.component.data;
-    const compatible = !childData.source || (data && isUrlData(data) && data.url === childData.source.url);
-    return compatible;
   }
 }
