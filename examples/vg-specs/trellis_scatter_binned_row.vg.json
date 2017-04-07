@@ -42,7 +42,7 @@
                 {
                     "type": "extent",
                     "field": "Acceleration",
-                    "signal": "Acceleration_extent"
+                    "signal": "bin_Acceleration_extent"
                 },
                 {
                     "type": "bin",
@@ -51,11 +51,11 @@
                         "bin_Acceleration_start",
                         "bin_Acceleration_end"
                     ],
-                    "signal": "Acceleration_bins",
+                    "signal": "bin_Acceleration_bins",
+                    "maxbins": 10,
                     "extent": {
-                        "signal": "Acceleration_extent"
-                    },
-                    "maxbins": 6
+                        "signal": "bin_Acceleration_extent"
+                    }
                 },
                 {
                     "type": "formula",

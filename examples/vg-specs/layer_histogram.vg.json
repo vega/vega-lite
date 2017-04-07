@@ -46,8 +46,8 @@
                 {
                     "type": "extent",
                     "field": "distance",
-                    "signal": "layer_0_distance_extent"
-                },
+                    "signal": "layer_0_bin_distance_extent"
+               },
                 {
                     "type": "bin",
                     "field": "distance",
@@ -55,11 +55,11 @@
                         "bin_distance_start",
                         "bin_distance_end"
                     ],
-                    "signal": "layer_0_distance_bins",
+                    "signal": "layer_0_bin_distance_bins",
+                    "maxbins": 10,
                     "extent": {
-                        "signal": "layer_0_distance_extent"
-                    },
-                    "maxbins": 10
+                        "signal": "layer_0_bin_distance_extent"
+                    }
                 }
             ]
         },
@@ -98,7 +98,7 @@
                 {
                     "type": "extent",
                     "field": "distance",
-                    "signal": "layer_1_distance_extent"
+                    "signal": "layer_1_bin_distance_extent"
                 },
                 {
                     "type": "bin",
@@ -107,11 +107,11 @@
                         "bin_distance_start",
                         "bin_distance_end"
                     ],
-                    "signal": "layer_1_distance_bins",
+                    "signal": "layer_1_bin_distance_bins",
+                    "maxbins": 10,
                     "extent": {
-                        "signal": "layer_1_distance_extent"
-                    },
-                    "maxbins": 10
+                        "signal": "layer_1_bin_distance_extent"
+                    }
                 }
             ]
         },
@@ -269,7 +269,7 @@
                     "name": "layer_0_x",
                     "type": "bin-linear",
                     "domain": {
-                        "signal": "sequence(layer_0_distance_bins.start, layer_0_distance_bins.stop + layer_0_distance_bins.step, layer_0_distance_bins.step)"
+                        "signal": "sequence(layer_0_bin_distance_bins.start, layer_0_bin_distance_bins.stop + layer_0_bin_distance_bins.step, layer_0_bin_distance_bins.step)"
                     },
                     "range": [
                         0,
@@ -282,7 +282,7 @@
                     "name": "layer_1_x",
                     "type": "bin-linear",
                     "domain": {
-                        "signal": "sequence(layer_1_distance_bins.start, layer_1_distance_bins.stop + layer_1_distance_bins.step, layer_1_distance_bins.step)"
+                        "signal": "sequence(layer_1_bin_distance_bins.start, layer_1_bin_distance_bins.stop + layer_1_bin_distance_bins.step, layer_1_bin_distance_bins.step)"
                     },
                     "range": [
                         0,

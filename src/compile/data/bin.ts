@@ -47,24 +47,14 @@ function parse(model: Model): Dict<VgTransform[]> {
       if (!transform) {
         binComponent[key] = transform = [];
         const extentSignal = model.getName(key + '_extent');
-        // const binTrans: VgBinTransform = {
-        //   ...{
-        //     type: 'bin',
-        //     field: fieldDef.field,
-        //     as: [field(fieldDef, {binSuffix: 'start'}), field(fieldDef, {binSuffix: 'end'})],
-        //     signal: varName(model.getName(key + '_bins'))
-        //   },
-        //   ...bin,
-        //   // add extent if it's not specified
-        //   ...(!bin.extent ? {extent: {signal: extentSignal}} : {}),
-        // };
+
         let binTrans: VgBinTransform = {
             type: 'bin',
             field: fieldDef.field,
             as: [field(fieldDef, {binSuffix: 'start'}), field(fieldDef, {binSuffix: 'end'})],
             signal: varName(model.getName(key + '_bins'))
         };
-        extend(binTrans, bin);
+        extend(binTrans, bin); // Has side effect. TODO: Try to remove them
         if (!bin.extent) {
           transform.push({
             type: 'extent',

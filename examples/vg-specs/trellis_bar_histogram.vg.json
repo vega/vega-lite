@@ -40,19 +40,19 @@
                 {
                     "type": "extent",
                     "field": "Horsepower",
-                    "signal": "child_Horsepower_extent"
+                    "signal": "child_bin_maxbins_15_Horsepower_extent"
                 },
                 {
                     "type": "bin",
                     "field": "Horsepower",
                     "as": [
-                        "bin_Horsepower_start",
-                        "bin_Horsepower_end"
+                        "bin_maxbins_15_Horsepower_start",
+                        "bin_maxbins_15_Horsepower_end"
                     ],
-                    "signal": "child_Horsepower_bins",
+                    "signal": "child_bin_maxbins_15_Horsepower_bins",
                     "maxbins": 15,
                     "extent": {
-                        "signal": "child_Horsepower_extent"
+                        "signal": "child_bin_maxbins_15_Horsepower_extent"
                     }
                 }
             ]
@@ -64,9 +64,9 @@
                 {
                     "type": "aggregate",
                     "groupby": [
-                        "bin_Horsepower_start",
-                        "bin_Horsepower_end",
-                        "bin_Horsepower_range",
+                        "bin_maxbins_15_Horsepower_start",
+                        "bin_maxbins_15_Horsepower_end",
+                        "bin_maxbins_15_Horsepower_range",
                         "Origin"
                     ],
                     "ops": [
@@ -279,12 +279,12 @@
                                 "update": {
                                     "x2": {
                                         "scale": "x",
-                                        "field": "bin_Horsepower_start",
+                                        "field": "bin_maxbins_15_Horsepower_start",
                                         "offset": 1
                                     },
                                     "x": {
                                         "scale": "x",
-                                        "field": "bin_Horsepower_end"
+                                        "field": "bin_maxbins_15_Horsepower_end"
                                     },
                                     "y": {
                                         "scale": "y",
@@ -332,7 +332,7 @@
                     "name": "x",
                     "type": "bin-linear",
                     "domain": {
-                        "signal": "sequence(child_Horsepower_bins.start, child_Horsepower_bins.stop + child_Horsepower_bins.step, child_Horsepower_bins.step)"
+                        "signal": "sequence(child_bin_maxbins_15_Horsepower_bins.start, child_bin_maxbins_15_Horsepower_bins.stop + child_bin_maxbins_15_Horsepower_bins.step, child_bin_maxbins_15_Horsepower_bins.step)"
                     },
                     "range": [
                         0,

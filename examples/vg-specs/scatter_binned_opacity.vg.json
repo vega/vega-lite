@@ -42,7 +42,7 @@
                 {
                     "type": "extent",
                     "field": "Acceleration",
-                    "signal": "Acceleration_extent"
+                    "signal": "bin_Acceleration_extent"
                 },
                 {
                     "type": "bin",
@@ -51,11 +51,11 @@
                         "bin_Acceleration_start",
                         "bin_Acceleration_end"
                     ],
-                    "signal": "Acceleration_bins",
+                    "signal": "bin_Acceleration_bins",
+                    "maxbins": 10,
                     "extent": {
-                        "signal": "Acceleration_extent"
-                    },
-                    "maxbins": 10
+                        "signal": "bin_Acceleration_extent"
+                    }
                 }
             ]
         },
@@ -166,7 +166,7 @@
                     "name": "opacity",
                     "type": "bin-linear",
                     "domain": {
-                        "signal": "sequence(Acceleration_bins.start, Acceleration_bins.stop + Acceleration_bins.step, Acceleration_bins.step)"
+                        "signal": "sequence(bin_Acceleration_bins.start, bin_Acceleration_bins.stop + bin_Acceleration_bins.step, bin_Acceleration_bins.step)"
                     },
                     "range": [
                         0.3,
