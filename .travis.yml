@@ -5,6 +5,7 @@ node_js:
   - "7"
 script:
   - npm run build
+  - npm run build:examples
   - npm run test:nocompile # already run schema and tsc in build
   - npm run check:schema
   - npm run check:examples
