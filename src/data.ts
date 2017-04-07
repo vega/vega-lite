@@ -69,21 +69,21 @@ export interface NamedData {
   name: string;
 }
 
-export function isUrlData(data: Data): data is UrlData {
+export function isUrlData(data: Partial<Data>): data is UrlData {
   return !!data['url'];
 }
 
-export function isInlineData(data: Data): data is InlineData {
+export function isInlineData(data: Partial<Data>): data is InlineData {
   return !!data['values'];
 }
 
-export function isNamedData(data: Data): data is NamedData {
+export function isNamedData(data: Partial<Data>): data is NamedData {
   return !!data['name'];
 }
 
-export type DataSourceType = 'source' | 'summary' | 'stacked' | 'layout';
+export type DataSourceType = 'raw' | 'main' | 'layout' | 'row' | 'column';
 
-export const SUMMARY: 'summary' = 'summary';
-export const SOURCE: 'source' = 'source';
-export const STACKED: 'stacked' = 'stacked';
+
+export const MAIN: 'main' = 'main';
+export const RAW: 'raw' = 'raw';
 export const LAYOUT: 'layout' = 'layout';

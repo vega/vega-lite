@@ -1,41 +1,89 @@
-import {DataComponentCompiler} from './base';
-
-import {expression} from '../../filter';
-import {isCalculate, isFilter, Transform} from '../../transform';
-import {VgTransform} from '../../vega.schema';
+import {isArray} from 'vega-util';
+import {expression, Filter} from '../../filter';
+import {CalculateTransform, FilterTransform, isCalculate, isFilter} from '../../transform';
+import {VgFilterTransform, VgFormulaTransform} from '../../vega.schema';
 import {Model} from '../model';
+import {DataFlowNode, DependsOnNode, NewFieldNode} from './dataflow';
 
-function parse(model: Model): Transform[] {
-  return model.transforms;
+import * as log from '../../log';
+import {transforms} from './optimizers';
+
+export class FilterNode extends DataFlowNode {
+  private filter: Filter | Filter[];
+
+  constructor(transform: FilterTransform) {
+    super();
+
+    this.filter = transform.filter;
+  }
+
+  public merge(other: FilterNode) {
+    this.filter = (isArray(this.filter) ? this.filter : [this.filter]).concat(
+      isArray(other.filter) ? other.filter : [other.filter]);
+
+    this.remove();
+  }
+
+  public assemble(): VgFilterTransform {
+    return {
+      type: 'filter',
+      expr: expression(this.filter)
+    };
+  }
 }
 
-export const transforms: DataComponentCompiler<Transform[]> = {
-  parseUnit: parse,
+/**
+ * We don't know what a calculate node depends on so we should never move it beyond anything that produces fields.
+ */
+export class CalculateNode extends DataFlowNode implements NewFieldNode {
 
-  parseFacet: parse,
-
-  parseLayer: parse,
-
-  assemble: function(transformArray: Transform[]): VgTransform[] {
-    const func: (t:Transform) => VgTransform = (t: Transform) => {
-      if (isCalculate(t)) {
-        return {
-          type: 'formula',
-          expr: t.calculate,
-          as: t.as
-        };
-      }
-
-      if (isFilter(t)) {
-        return {
-          type: 'filter',
-          expr: expression(t.filter)
-        };
-      }
-
-      return null;
-    };
-
-    return transformArray.map(func);
+  constructor(private transform: CalculateTransform) {
+    super();
   }
-};
+
+  public produces() {
+    const out = {};
+    out[this.transform.as] = true;
+    return out;
+  }
+
+  public assemble(): VgFormulaTransform {
+    return {
+      type: 'formula',
+      expr: this.transform.calculate,
+      as: this.transform.as
+    };
+  }
+}
+
+/**
+ * Parses a transforms array into a chain of connected dataflow nodes.
+ */
+export function parseTransformArray(model: Model) {
+  let first: DataFlowNode;
+  let last: DataFlowNode;
+  let node: DataFlowNode;
+  let previous: DataFlowNode;
+
+  model.transforms.forEach((t, i) => {
+    if (isCalculate(t)) {
+      node = new CalculateNode(t);
+    } else if (isFilter(t)) {
+      node = new FilterNode(t);
+    } else {
+      log.warn(log.message.invalidTransformIgnored(t));
+      return;
+    }
+
+    if (i === 0) {
+      first = node;
+    } else {
+      node.parent = previous;
+    }
+    previous = node;
+  });
+
+  last = node;
+
+  return {first, last};
+}
