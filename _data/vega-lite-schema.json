@@ -1170,26 +1170,6 @@
             ],
             "type": "object"
         },
-        "Condition<string | number | boolean>": {
-            "additionalProperties": false,
-            "properties": {
-                "selection": {
-                    "type": "string"
-                },
-                "value": {
-                    "type": [
-                        "string",
-                        "number",
-                        "boolean"
-                    ]
-                }
-            },
-            "required": [
-                "selection",
-                "value"
-            ],
-            "type": "object"
-        },
         "Condition<string | number>": {
             "additionalProperties": false,
             "properties": {
@@ -1238,18 +1218,17 @@
             },
             "type": "object"
         },
-        "ConditionalValueDef<string | number | boolean>": {
+        "ConditionalValueDef<string | number>": {
             "additionalProperties": false,
             "properties": {
                 "condition": {
-                    "$ref": "#/definitions/Condition<string | number | boolean>"
+                    "$ref": "#/definitions/Condition<string | number>"
                 },
                 "value": {
                     "description": "A constant value in visual domain.",
                     "type": [
                         "string",
-                        "number",
-                        "boolean"
+                        "number"
                     ]
                 }
             },
@@ -1346,11 +1325,6 @@
                 "mark": {
                     "$ref": "#/definitions/MarkConfig",
                     "description": "Mark Config"
-                },
-                "maxbins": {
-                    "description": "Default maximum number of bins for binned variables.",
-                    "minimum": 0,
-                    "type": "integer"
                 },
                 "numberFormat": {
                     "description": "D3 Number format for axis labels and text tables. For example \"s\" for SI units.",
@@ -1664,7 +1638,7 @@
                             "$ref": "#/definitions/TextFieldDef"
                         },
                         {
-                            "$ref": "#/definitions/ConditionalValueDef<string | number | boolean>"
+                            "$ref": "#/definitions/ConditionalValueDef<string | number>"
                         }
                     ],
                     "description": "Text of the `text` mark."
@@ -2717,6 +2691,14 @@
                 "line": {
                     "description": "Whether to overlay line with point.",
                     "type": "boolean"
+                },
+                "lineStyle": {
+                    "$ref": "#/definitions/MarkConfig",
+                    "description": "Default style for the overlayed point."
+                },
+                "pointStyle": {
+                    "$ref": "#/definitions/MarkConfig",
+                    "description": "Default style for the overlayed point."
                 }
             },
             "type": "object"

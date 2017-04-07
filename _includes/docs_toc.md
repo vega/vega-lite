@@ -15,7 +15,6 @@
     - [Text]({{site.baseurl}}/docs/mark.html#text)
     - [Tick]({{site.baseurl}}/docs/mark.html#tick)
     - [Bar]({{site.baseurl}}/docs/mark.html#bar)
-    - [Rect]({{site.baseurl}}/docs/mark.html#rect)
     - [Line]({{site.baseurl}}/docs/mark.html#line)
     - [Area]({{site.baseurl}}/docs/mark.html#area)
 - [Encoding]({{site.baseurl}}/docs/encoding.html)

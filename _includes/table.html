@@ -1,0 +1,51 @@
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: left">Property</th>
+      <th style="text-align: center">Type</th>
+      <th style="text-align: left">Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% assign props = include.props | split: ","  %}
+    {% for prop in props %}
+      {% assign type = include.source[prop].type %}
+      {% assign description =  include.source[prop].description" %}
+      {% if type == nil %}
+        <!--special case for $ref-->
+        {% if include.source[prop]["$ref"] %}
+          {% assign array = include.source[prop]["$ref"] | split: "/" %}
+          {% assign last_index = array | size | minus: 1 %}
+          {% assign type = array[last_index] %}
+
+        {% elsif include.source[prop].anyOf %}
+          <!--special case for anyOf-->
+          {% capture type %}
+            {% assign para = include.source[prop].anyOf %}
+            {% include type.html types=para %}
+          {% endcapture %}
+        {% endif %}
+      {% elsif type == "array" %}
+         <!--special case for type is arrays of objects -->
+        {% assign type = include.source[prop].items.type | append: "[]" | capitalize %}
+      {% elsif type.first != nil %}
+        <!--special case for type is multiple objects-->
+        {% assign res = ""%}
+        {% for element in type %}
+          {% assign elem = element | capitalize %}
+          {% assign res = res | append: " | " | append: elem %}
+        {% endfor %}
+        {% assign type =  res | remove_first: " | " %}
+      {% else %}
+        <!--normal case for single type-->
+        {% assign type = type | capitalize %}
+      {% endif %}
+
+      <tr>
+        <td style="text-align: left">{{prop}}</td>
+        <td style="text-align: center">{{type}}</td>
+        <td style="text-align: left">{{description | markdownify }}</td>
+      </tr>
+    {% endfor %}
+  </tbody>
+</table>
