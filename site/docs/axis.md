@@ -43,7 +43,7 @@ Axis properties can be customized by setting `axis` to an axis property object. 
 
 #### General
 
-{% include table.html props="orient,offset,zindex" source= schema.Axis.properties %}
+{% include table.html props="domain,orient,offset,position,zindex" source= schema.Axis.properties %}
 
 #### Labels
 
@@ -51,18 +51,18 @@ Axis properties can be customized by setting `axis` to an axis property object. 
 
 #### Ticks
 
-{% include table.html props="labelPadding,tickSize,values" source= schema.Axis.properties %}
+{% include table.html props="ticks,labelPadding,labelLimit,tickCount,tickSize,values" source= schema.Axis.properties %}
 
 #### Title
 
-{% include table.html props="title" source= schema.Axis.properties %}
+{% include table.html props="title，maxExtent，minExtent" source= schema.Axis.properties %}
 
 
 ### Axis Config
 
 #### General
 
-{% include table.html props="domainColor,domainWidth" source=schema.AxisConfig.properties %}
+{% include table.html props="domain,domainColor,domainWidth" source=schema.AxisConfig.properties %}
 
 #### Grid
 
@@ -78,4 +78,4 @@ Axis properties can be customized by setting `axis` to an axis property object. 
 
 #### Title
 
-{% include table.html props="titleColor,titleFont,titleFontWeight,titleFontSize,titlePadding,titleMaxLength" source=schema.AxisConfig.properties %}
+{% include table.html props="titleColor,titleFont,titleLimit,titleFontWeight,titleFontSize,titlePadding,titleMaxLength" source=schema.AxisConfig.properties %}
