@@ -122,7 +122,7 @@
                                 "scale": "y",
                                 "field": "price"
                             },
-                            "fill": {
+                            "stroke": {
                                 "value": "#4c78a8"
                             }
                         }
