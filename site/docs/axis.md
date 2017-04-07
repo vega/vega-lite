@@ -55,7 +55,7 @@ Axis properties can be customized by setting `axis` to an axis property object. 
 
 #### Title
 
-{% include table.html props="title，maxExtent，minExtent" source= schema.Axis.properties %}
+{% include table.html props="title,maxExtent,minExtent" source= schema.Axis.properties %}
 
 
 ### Axis Config
