@@ -54,7 +54,7 @@
                     "signal": "bin_Acceleration_bins",
                     "maxbins": 10,
                     "extent": {
-                         "signal": "bin_Acceleration_extent"
+                        "signal": "bin_Acceleration_extent"
                     }
                 }
             ]

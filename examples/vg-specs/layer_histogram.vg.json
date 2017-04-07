@@ -47,7 +47,7 @@
                     "type": "extent",
                     "field": "distance",
                     "signal": "layer_0_bin_distance_extent"
-               },
+                },
                 {
                     "type": "bin",
                     "field": "distance",

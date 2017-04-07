@@ -41,7 +41,7 @@
                     "type": "extent",
                     "field": "IMDB_Rating",
                     "signal": "bin_maxbins_10_IMDB_Rating_extent"
-               },
+                },
                 {
                     "type": "bin",
                     "field": "IMDB_Rating",

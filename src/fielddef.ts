@@ -13,6 +13,7 @@ import {SortField, SortOrder} from './sort';
 import {StackOffset} from './stack';
 import {isDiscreteByDefault, TimeUnit} from './timeunit';
 import {getFullName, Type} from './type';
+import {isBoolean} from './util';
 
 /**
  * Definition object for a constant value of an encoding channel.
@@ -251,6 +252,9 @@ export function defaultType(fieldDef: FieldDef, channel: Channel): Type {
 export function normalize(fieldDef: ChannelDef, channel: Channel) {
   // If a fieldDef contains a field, we need type.
   if (isFieldDef(fieldDef)) { // TODO: or datum
+    // TODO: swojit - you can normalize bin here
+    fieldDef.bin = isBoolean(fieldDef.bin) ? {maxbins: 10} : fieldDef.bin;
+
     // Normalize Type
     if (fieldDef.type) {
       const fullType = getFullName(fieldDef.type);
@@ -270,9 +274,6 @@ export function normalize(fieldDef: ChannelDef, channel: Channel) {
         type: newType
       };
     }
-
-    // TODO: swojit - you can normalize bin here
-
 
     const {compatible, warning} = channelCompatibility(fieldDef, channel);
     if (!compatible) {
