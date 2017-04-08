@@ -264,7 +264,10 @@ export function normalize(fieldDef: ChannelDef, channel: Channel) {
       // If type is empty / invalid, then augment with default type
       const newType = defaultType(fieldDef, channel);
       log.warn(log.message.emptyOrInvalidFieldType(fieldDef.type, channel, newType));
-      fieldDef.type = newType;
+      fieldDef = {
+          ...fieldDef,
+        type: newType
+      };
     }
 
     // TODO: swojit - you can normalize bin here
