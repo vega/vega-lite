@@ -52,7 +52,7 @@ function x(model: UnitModel, stack: StackProperties): VgEncodeEntry {
     // sized bin, normal point-ordinal axis, quantitative x-axis, or no x
 
     return mixins.centeredBandPosition('x', model,
-      {...ref.midX(config), offset: 1}, // TODO: config.singleBarOffset,
+      {...ref.midX(config)},
       defaultSizeRef(xScaleName, model.scale(X), config)
     );
   }

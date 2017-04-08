@@ -290,8 +290,7 @@ describe('Mark: Bar', function() {
       assert.deepEqual(props.y2, {scale: 'y', value: 0});
       assert.isUndefined(props.height);
       assert.deepEqual(props.xc, {
-        value: 10.5,
-        offset: 1
+        value: 10.5
       });
     });
   });
