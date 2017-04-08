@@ -254,7 +254,7 @@ export interface VgAxisBase {
   domain?: boolean;
 
   /**
-   * A flag indicate if gridlines should be created in addition to ticks. If `grid` is unspecified, the default value is `"true"` "for `ROW` and `COL`. For `X` and `Y`, the default value is `"true"` for quantitative and time fields and `"false"` otherwise.
+   * A flag indicate if gridlines should be created in addition to ticks. For `X` and `Y`, the default value is `"true"` for quantitative and time fields and `"false"` otherwise.
    *
    * __Default value:__ `"true"` for (1) quantitative fields that are not binned and (2) time fields;  otherwise, `"false"`.
    */
@@ -270,7 +270,7 @@ export interface VgAxisBase {
   /**
    * The rotation angle of the axis labels.
    *
-   * __Default value:__ `"-45"` for time or ordinal axis and `"0"` otherwise.
+   * __Default value:__ `-45` for time or ordinal axis and `0` otherwise.
    * @minimum 0
    * @maximum 360
    */
@@ -284,7 +284,7 @@ export interface VgAxisBase {
   /**
    * The size, in pixels, of major, minor and end ticks.
    *
-   * __Default value:__  derived from [axis config](config.html#axis-config)'s `tickSize` (`"6"` by default).
+   * __Default value:__  derived from [axis config](config.html#axis-config)'s `tickSize` (`6` by default).
    *
    * @minimum 0
    */
@@ -347,7 +347,7 @@ export interface VgAxisConfig extends VgAxisBase {
   /**
    * The stroke opacity of grid (value between [0,1])
    *
-   * __Default value:__ (`"1"` by default)
+   * __Default value:__ (`1` by default)
    * @minimum 0
    * @maximum 1
    */
@@ -378,7 +378,7 @@ export interface VgAxisConfig extends VgAxisBase {
   /**
    * The font size of label, in pixels.
    *
-   * __Default value:__ `"10"`.
+   * __Default value:__ `10`.
    *
    * @minimum 0
    */
@@ -414,7 +414,7 @@ export interface VgAxisConfig extends VgAxisBase {
   /**
    * Font size of the title.
    *
-   * __Default value:__ `"10"`.
+   * __Default value:__ `10`.
    *
    * @minimum 0
    */

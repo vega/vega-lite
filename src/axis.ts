@@ -7,7 +7,7 @@ export interface AxisConfig extends VgAxisConfig {
   /**
    * Whether month names and weekday names should be abbreviated.
    *
-   * __Default value:__  derived from [axis config](config.html#axis-config)'s "`shortTimeLabels`" ("`false`" by default).
+   * __Default value:__  derived from [axis config](config.html#axis-config)'s "shortTimeLabels" (`"false" by default).
    */
   shortTimeLabels?: boolean;
 }
@@ -28,7 +28,7 @@ export interface Axis extends VgAxisBase {
   /**
    * The orientation of the axis. One of top, bottom, left or right. The orientation can be used to further specialize the axis type (e.g., a y axis oriented for the right edge of the chart).
    *
-   * __Default value:__ `x` axis is placed on the bottom, `y` axis is placed on the left, `column`"s x-axis is placed on the top, `row`s y-axis is placed on the right.
+   * __Default value:__ `"x"` axis is placed on the bottom, `"y"` axis is placed on the left, `"column"`"s x-axis is placed on the top, `"row"`s y-axis is placed on the right.
    */
   orient?: AxisOrient;
 
@@ -42,7 +42,7 @@ export interface Axis extends VgAxisBase {
   /**
    * The anchor position of the axis in pixels. For x-axis with top or bottom orientation, this sets the axis group x coordinate. For y-axis with left or right orientation, this sets the axis group y coordinate.
    *
-   * __Default value__: `"0"`
+   * __Default value__: `0`
    */
   position?: number;
 
@@ -70,7 +70,7 @@ export interface Axis extends VgAxisBase {
    * If zindex is 0, axes should be drawn behind all chart elements.
    * To put them in front, use `"zindex = 1"`.
    *
-   * __Default value:__ `"0"` (Behind the marks.)
+   * __Default value:__ `0` (Behind the marks.)
    *
    * @TJS-type integer
    * @minimum 0

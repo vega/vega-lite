@@ -43,39 +43,39 @@ Axis properties can be customized by setting `axis` to an axis property object. 
 
 #### General
 
-{% include table.html props="domain,orient,offset,position,zindex" source= schema.Axis.properties %}
+{% include table.html props="domain,orient,offset,position,zindex" source="Axis" %}
 
 #### Labels
 
-{% include table.html props="labels,format,labelAngle" source= schema.Axis.properties %}
+{% include table.html props="labels,format,labelAngle" source= "Axis" %}
 
 #### Ticks
 
-{% include table.html props="ticks,labelPadding,labelLimit,tickCount,tickSize,values" source= schema.Axis.properties %}
+{% include table.html props="ticks,labelPadding,labelLimit,tickCount,tickSize,values" source="Axis" %}
 
 #### Title
 
-{% include table.html props="title,maxExtent,minExtent" source= schema.Axis.properties %}
+{% include table.html props="title,maxExtent,minExtent" source="Axis" %}
 
 
 ### Axis Config
 
 #### General
 
-{% include table.html props="domain,domainColor,domainWidth" source=schema.AxisConfig.properties %}
+{% include table.html props="domain,domainColor,domainWidth" source="AxisConfig" %}
 
 #### Grid
 
-{% include table.html props="grid,gridColor,gridDash,gridOpacity,gridWidth" source=schema.AxisConfig.properties %}
+{% include table.html props="grid,gridColor,gridDash,gridOpacity,gridWidth" source="AxisConfig" %}
 
 #### Labels
 
-{% include table.html props="shortTimeLabels" source=schema.AxisConfig.properties %}
+{% include table.html props="shortTimeLabels" source="AxisConfig" %}
 
 #### Ticks
 
-{% include table.html props="tickColor,labelColor,labelFont,labelFontSize,tickWidth" source=schema.AxisConfig.properties %}
+{% include table.html props="tickColor,labelColor,labelFont,labelFontSize,tickWidth" source="AxisConfig" %}
 
 #### Title
 
-{% include table.html props="titleColor,titleFont,titleLimit,titleFontWeight,titleFontSize,titlePadding,titleMaxLength" source=schema.AxisConfig.properties %}
+{% include table.html props="titleColor,titleFont,titleLimit,titleFontWeight,titleFontSize,titlePadding,titleMaxLength" source="AxisConfig" %}

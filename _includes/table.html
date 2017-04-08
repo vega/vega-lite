@@ -7,35 +7,36 @@
     </tr>
   </thead>
   <tbody>
+    {% assign schema = site.data.vega-lite-schema.definitions[include.source].properties %}
     {% assign props = include.props | split: ","  %}
     {% for prop in props %}
-      {% assign type = include.source[prop].type %}
-      {% assign description =  include.source[prop].description" %}
+      {% assign type = schema[prop].type %}
+      {% assign description =  schema[prop].description" %}
       {% if type == nil %}
         <!--special case for $ref-->
-        {% if include.source[prop]["$ref"] %}
-          {% assign array = include.source[prop]["$ref"] | split: "/" %}
+        {% if schema[prop]["$ref"] %}
+          {% assign array = schema[prop]["$ref"] | split: "/" %}
           {% assign last_index = array | size | minus: 1 %}
           {% assign type = array[last_index] %}
 
-        {% elsif include.source[prop].anyOf %}
+        {% elsif schema[prop].anyOf %}
           <!--special case for anyOf-->
           {% capture type %}
-            {% assign para = include.source[prop].anyOf %}
+            {% assign para = schema[prop].anyOf %}
             {% include type.html types=para %}
           {% endcapture %}
         {% endif %}
       {% elsif type == "array" %}
          <!--special case for type is arrays of objects -->
-        {% assign type = include.source[prop].items.type | append: "[]" | capitalize %}
+        {% assign type = schema[prop].items.type | append: "[]" | capitalize %}
       {% elsif type.first != nil %}
-        <!--special case for type is multiple objects-->
-        {% assign res = ""%}
+        <!-- special case for type in the schema is an array of multiple types-->
+        {% assign newType = ""%}
         {% for element in type %}
           {% assign elem = element | capitalize %}
-          {% assign res = res | append: " | " | append: elem %}
+          {% assign newType = newType | append: " | " | append: elem %}
         {% endfor %}
-        {% assign type =  res | remove_first: " | " %}
+        {% assign type =  newType | remove_first: " | " %}
       {% else %}
         <!--normal case for single type-->
         {% assign type = type | capitalize %}
