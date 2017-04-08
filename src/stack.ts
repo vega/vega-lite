@@ -13,10 +13,10 @@ import {contains, isArray} from './util';
 export type StackOffset = 'zero' | 'center' | 'normalize' | 'none';
 
 export interface StackProperties {
-  /** Dimension axis of the stack ('x' or 'y'). */
+  /** Dimension axis of the stack. */
   groupbyChannel: 'x' | 'y';
 
-  /** Measure axis of the stack ('x' or 'y'). */
+  /** Measure axis of the stack. */
   fieldChannel: 'x' | 'y';
 
   /** Stack-by fields e.g., color, detail */
