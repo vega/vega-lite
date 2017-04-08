@@ -7,12 +7,12 @@ export const rule: MarkCompiler = {
   vgMark: 'rule',
   defaultRole: undefined,
   encodeEntry: (model: UnitModel) => {
-    const {config, markDef} = model;
+    const {config, markDef, width, height} = model;
     const orient = markDef.orient;
 
     return {
-      ...mixins.pointPosition('x', model, orient === 'horizontal' ? 'zeroOrMin' : ref.midX(config)),
-      ...mixins.pointPosition('y', model, orient === 'vertical' ? 'zeroOrMin' : ref.midY(config)),
+      ...mixins.pointPosition('x', model, orient === 'horizontal' ? 'zeroOrMin' : ref.midX(width, config)),
+      ...mixins.pointPosition('y', model, orient === 'vertical' ? 'zeroOrMin' : ref.midY(height, config)),
       ...mixins.pointPosition2(model, 'zeroOrMax'),
 
       ...mixins.color(model),

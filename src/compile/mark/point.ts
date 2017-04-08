@@ -9,11 +9,11 @@ import {MarkCompiler} from './base';
 import * as ref from './valueref';
 
 function encodeEntry(model: UnitModel, fixedShape?: 'circle' | 'square') {
-  const {config} = model;
+  const {config, width, height} = model;
 
   return {
-    ...mixins.pointPosition('x', model, ref.midX(config)),
-    ...mixins.pointPosition('y', model, ref.midY(config)),
+    ...mixins.pointPosition('x', model, ref.midX(width, config)),
+    ...mixins.pointPosition('y', model, ref.midY(height, config)),
 
     ...mixins.color(model),
     ...mixins.nonPosition('size', model),

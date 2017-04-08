@@ -159,7 +159,10 @@ export function text(textDef: TextFieldDef | ValueDef<any>, config: Config): VgV
   return {value: config.text.text};
 }
 
-export function midX(config: Config): VgValueRef {
+export function midX(width: number, config: Config): VgValueRef {
+  if (width) {
+    return {value: width / 2};
+  }
 
   if (typeof config.scale.rangeStep === 'string') {
     // TODO: For fit-mode, use middle of the width
@@ -168,7 +171,11 @@ export function midX(config: Config): VgValueRef {
   return {value: config.scale.rangeStep / 2};
 }
 
-export function midY(config: Config): VgValueRef {
+export function midY(height: number, config: Config): VgValueRef {
+  if (height) {
+    return {value: height / 2};
+  }
+
   if (typeof config.scale.rangeStep === 'string') {
     // TODO: For fit-mode, use middle of the width
     throw new Error('midX can not handle string rangeSteps');

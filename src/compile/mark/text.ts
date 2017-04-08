@@ -17,12 +17,12 @@ export const text: MarkCompiler = {
   defaultRole: undefined,
 
   encodeEntry: (model: UnitModel) => {
-    const {config, encoding} = model;
+    const {config, encoding, height} = model;
     const textDef = encoding.text;
 
     return {
       ...mixins.pointPosition('x', model, xDefault(config, textDef)),
-      ...mixins.pointPosition('y', model, ref.midY(config)),
+      ...mixins.pointPosition('y', model, ref.midY(height, config)),
       ...mixins.text(model),
       ...mixins.color(model),
       ...mixins.nonPosition('opacity', model),

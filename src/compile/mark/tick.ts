@@ -11,15 +11,15 @@ export const tick: MarkCompiler = {
   defaultRole: 'tick',
 
   encodeEntry: (model: UnitModel) => {
-    const {config, markDef} = model;
+    const {config, markDef, width, height} = model;
     const orient = markDef.orient;
 
     const vgSizeChannel = orient === 'horizontal' ? 'width' : 'height';
     const vgThicknessChannel = orient === 'horizontal' ? 'height' : 'width';
 
     return {
-      ...mixins.pointPosition('x', model, ref.midX(config), 'xc'),
-      ...mixins.pointPosition('y', model, ref.midY(config), 'yc'),
+      ...mixins.pointPosition('x', model, ref.midX(width, config), 'xc'),
+      ...mixins.pointPosition('y', model, ref.midY(height, config), 'yc'),
 
       // size / thickness => width / height
       ...mixins.nonPosition('size', model, {
