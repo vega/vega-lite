@@ -253,6 +253,8 @@ export function normalize(channelDef: ChannelDef, channel: Channel) {
   // If a fieldDef contains a field, we need type.
   if (isFieldDef(channelDef)) { // TODO: or datum
     let fieldDef: FieldDef = channelDef;
+
+    // Normalize bin
     if (fieldDef.bin) {
       const bin = fieldDef.bin;
       if (isBoolean(bin)) {

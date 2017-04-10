@@ -117,6 +117,7 @@ export interface Config  extends TopLevelProperties {
 
   /**
    * Default maximum number of bins for binned variables.
+   * @minimum 0
    * @TJS-type integer
    */
   maxbins?: number;

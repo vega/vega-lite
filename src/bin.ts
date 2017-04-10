@@ -65,5 +65,5 @@ export function autoMaxBins(channel: Channel): number {
       return 6; // Vega's "shape" has 6 distinct values
     default:
       return 10;
-   }
+  }
 }
