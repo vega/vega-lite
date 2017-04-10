@@ -434,11 +434,15 @@ export interface VgLegendBase {
 
   /**
    * The orientation of the legend. One of `"left"` or `"right"`. This determines how the legend is positioned within the scene. The default is `"right"`.
+   *
+   * __Default value:__  derived from [legend config](config.html#legend-config)'s `orient` (`"right"` by default).
    */
   orient?: string;
 
   /**
    * The offset, in pixels, by which to displace the legend from the edge of the enclosing group or data rectangle.
+   *
+   * __Default value:__  derived from [legend config](config.html#legend-config)'s `offset` (`0` by default).
    */
   offset?: number;
 
@@ -496,6 +500,9 @@ export interface VgLegendConfig extends VgLegendBase {
 
   /**
    * The font size of legend label.
+   *
+   * __Default value:__ 10.
+   *
    * @minimum 0
    */
   labelFontSize?: number;

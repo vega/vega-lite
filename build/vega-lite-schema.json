@@ -2101,15 +2101,15 @@
                     "type": "number"
                 },
                 "format": {
-                    "description": "An optional formatting pattern for legend labels. Vega uses D3\\'s format pattern.",
+                    "description": "An optional formatting pattern for legend labels. Vega uses D3\\'s format pattern.\n\n__Default value:__  derived from [`numberFormat`](config.html#format) config for quantitative axis and from [`timeFormat`](config.html#format) config for time axis.",
                     "type": "string"
                 },
                 "offset": {
-                    "description": "The offset, in pixels, by which to displace the legend from the edge of the enclosing group or data rectangle.",
+                    "description": "The offset, in pixels, by which to displace the legend from the edge of the enclosing group or data rectangle.\n\n__Default value:__  derived from [legend config](config.html#legend-config)'s `offset` (`0` by default).",
                     "type": "number"
                 },
                 "orient": {
-                    "description": "The orientation of the legend. One of `\"left\"` or `\"right\"`. This determines how the legend is positioned within the scene. The default is `\"right\"`.",
+                    "description": "The orientation of the legend. One of `\"left\"` or `\"right\"`. This determines how the legend is positioned within the scene. The default is `\"right\"`.\n\n__Default value:__  derived from [legend config](config.html#legend-config)'s `orient` (`\"right\"` by default).",
                     "type": "string"
                 },
                 "padding": {
@@ -2125,7 +2125,7 @@
                     "type": "number"
                 },
                 "title": {
-                    "description": "A title for the legend. (Shows field name and its function by default.)",
+                    "description": "A title for the legend. (Shows field name and its function by default.)\n\n__Default value:__  derived from the field's name and transformation function applied e.g, \"field_name\", \"SUM(field_name)\", \"BIN(field_name)\", \"YEAR(field_name)\".",
                     "type": "string"
                 },
                 "type": {
@@ -2210,7 +2210,7 @@
                     "type": "string"
                 },
                 "labelFontSize": {
-                    "description": "The font size of legend label.",
+                    "description": "The font size of legend label.\n\n__Default value:__ 10.",
                     "minimum": 0,
                     "type": "number"
                 },
@@ -2224,11 +2224,11 @@
                     "type": "number"
                 },
                 "offset": {
-                    "description": "The offset, in pixels, by which to displace the legend from the edge of the enclosing group or data rectangle.",
+                    "description": "The offset, in pixels, by which to displace the legend from the edge of the enclosing group or data rectangle.\n\n__Default value:__  derived from [legend config](config.html#legend-config)'s `offset` (`0` by default).",
                     "type": "number"
                 },
                 "orient": {
-                    "description": "The orientation of the legend. One of `\"left\"` or `\"right\"`. This determines how the legend is positioned within the scene. The default is `\"right\"`.",
+                    "description": "The orientation of the legend. One of `\"left\"` or `\"right\"`. This determines how the legend is positioned within the scene. The default is `\"right\"`.\n\n__Default value:__  derived from [legend config](config.html#legend-config)'s `orient` (`\"right\"` by default).",
                     "type": "string"
                 },
                 "padding": {
@@ -2236,7 +2236,7 @@
                     "type": "number"
                 },
                 "shortTimeLabels": {
-                    "description": "Whether month names and weekday names should be abbreviated.",
+                    "description": "Whether month names and weekday names should be abbreviated.\n\n__Default value:__  derived from [legend config](config.html#legend-config)'s `shortTimeLabels` (`false` by default).",
                     "type": "boolean"
                 },
                 "symbolColor": {
