@@ -8,6 +8,7 @@
   </thead>
   <tbody>
     {% assign schema = site.data.vega-lite-schema.definitions[include.source].properties %}
+
     {% assign props = include.props | split: ","  %}
     {% for prop in props %}
       {% assign type = schema[prop].type %}
@@ -18,7 +19,6 @@
           {% assign array = schema[prop]["$ref"] | split: "/" %}
           {% assign last_index = array | size | minus: 1 %}
           {% assign type = array[last_index] %}
-
         {% elsif schema[prop].anyOf %}
           <!--special case for anyOf-->
           {% capture type %}
@@ -42,9 +42,19 @@
         {% assign type = type | capitalize %}
       {% endif %}
 
+      <!--check if prop is a link or not.-->
+      {% capture propWithLink %}
+          {% include checkLink.html check="prop" channel="Axis" param=prop %}
+      {% endcapture %}
+
+      {% capture typeWithLink %}
+        {% include checkLink.html check="type" channel="Axis" param=type %}
+      {% endcapture %}
+
+
       <tr>
-        <td style="text-align: left">{{prop}}</td>
-        <td style="text-align: center">{{type}}</td>
+        <td style="text-align: left">{{propWithLink}}</td>
+        <td style="text-align: center">{{typeWithLink}}</td>
         <td style="text-align: left">{{description | markdownify }}</td>
       </tr>
     {% endfor %}

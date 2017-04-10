@@ -5,15 +5,18 @@
       {% assign array = type.items["$ref"] | split: "/" %}
       {% assign last_index = array | size | minus: 1 %}
       {% assign element = array[last_index] | append: "[]"%}
-      {% assign res =  res | append: " | " | append: element%}
+      {{element}}
     {% else %}
       {% assign element = type.items.type | append: "[]" | capitalize%}
-      {% assign res =  res | append: " | " | append: element%}
+      {{element}}
     {% endif %}
   {% else if type.type != nil }
     {% assign element = type.type | capitalize%}
-    {% assign res =  res | append: " | " | append: element %}
+    {{element}}
   {% endif %}
-{% endfor %}
 
-{{res | remove_first: " | " }}
+  {% assign splitstring = " | " %}
+  {% unless forloop.last %}
+    {{splitstring}}
+  {% endunless %}
+{% endfor %}
