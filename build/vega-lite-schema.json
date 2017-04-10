@@ -1169,6 +1169,26 @@
             ],
             "type": "object"
         },
+        "Condition<string | number | boolean>": {
+            "additionalProperties": false,
+            "properties": {
+                "selection": {
+                    "type": "string"
+                },
+                "value": {
+                    "type": [
+                        "string",
+                        "number",
+                        "boolean"
+                    ]
+                }
+            },
+            "required": [
+                "selection",
+                "value"
+            ],
+            "type": "object"
+        },
         "Condition<string | number>": {
             "additionalProperties": false,
             "properties": {
@@ -1217,17 +1237,18 @@
             },
             "type": "object"
         },
-        "ConditionalValueDef<string | number>": {
+        "ConditionalValueDef<string | number | boolean>": {
             "additionalProperties": false,
             "properties": {
                 "condition": {
-                    "$ref": "#/definitions/Condition<string | number>"
+                    "$ref": "#/definitions/Condition<string | number | boolean>"
                 },
                 "value": {
                     "description": "A constant value in visual domain.",
                     "type": [
                         "string",
-                        "number"
+                        "number",
+                        "boolean"
                     ]
                 }
             },
@@ -1637,7 +1658,7 @@
                             "$ref": "#/definitions/TextFieldDef"
                         },
                         {
-                            "$ref": "#/definitions/ConditionalValueDef<string | number>"
+                            "$ref": "#/definitions/ConditionalValueDef<string | number | boolean>"
                         }
                     ],
                     "description": "Text of the `text` mark."
