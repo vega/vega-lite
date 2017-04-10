@@ -251,15 +251,13 @@ export function defaultType(fieldDef: FieldDef, channel: Channel): Type {
  */
 export function normalize(fieldDef: ChannelDef, channel: Channel) {
   // If a fieldDef contains a field, we need type.
-  fieldDef = JSON.parse(JSON.stringify(fieldDef)); // Clone
   if (isFieldDef(fieldDef)) { // TODO: or datum
-    if (fieldDef.bin) {
-      fieldDef.bin = isBoolean(fieldDef.bin) ? {maxbins: autoMaxBins(channel)} : fieldDef.bin;
-      if (!fieldDef.bin.maxbins && !fieldDef.bin.steps) {
-        fieldDef.bin.maxbins = autoMaxBins(channel);
-      }
-    }
+    const bin: Bin = fieldDef.bin && (isBoolean(fieldDef.bin) ? {maxbins: autoMaxBins(channel)} :
+      JSON.parse(JSON.stringify(fieldDef.bin))); // Clone it
 
+    if (bin && !bin.maxbins && !bin.step) {
+      bin.maxbins = autoMaxBins(channel);
+    }
     // Normalize Type
     if (fieldDef.type) {
       const fullType = getFullName(fieldDef.type);
@@ -279,6 +277,10 @@ export function normalize(fieldDef: ChannelDef, channel: Channel) {
         type: newType
       };
     }
+    fieldDef = {
+      ...fieldDef,
+      ...(bin ? {bin : bin} : {})
+    };
 
     const {compatible, warning} = channelCompatibility(fieldDef, channel);
     if (!compatible) {
