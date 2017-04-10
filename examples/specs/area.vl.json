@@ -13,7 +13,7 @@
     }
   },
   "config": {
-    "cell": {"width": 300, "height": 200},
+    "cell": {"width": 300, "height": 100},
     "axis": {"domainWidth": 0}
   }
 }
