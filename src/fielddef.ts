@@ -251,6 +251,7 @@ export function defaultType(fieldDef: FieldDef, channel: Channel): Type {
  */
 export function normalize(fieldDef: ChannelDef, channel: Channel) {
   // If a fieldDef contains a field, we need type.
+  fieldDef = JSON.parse(JSON.stringify(fieldDef)); // Clone
   if (isFieldDef(fieldDef)) { // TODO: or datum
     if (fieldDef.bin) {
       fieldDef.bin = isBoolean(fieldDef.bin) ? {maxbins: autoMaxBins(channel)} : fieldDef.bin;

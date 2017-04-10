@@ -45,7 +45,7 @@ function parse(model: Model): Dict<VgTransform[]> {
         binComponent[key] = transform = [];
         const extentSignal = model.getName(key + '_extent');
 
-        let binTrans: VgBinTransform = {
+        const binTrans: VgBinTransform = {
             type: 'bin',
             field: fieldDef.field,
             as: [field(fieldDef, {binSuffix: 'start'}), field(fieldDef, {binSuffix: 'end'})],
