@@ -58,7 +58,7 @@ Axis properties will apply to the current encoding channel only. Axis properties
 
 #### Ticks
 
-{% include table.html props="ticks,labelPadding,labelLimit,tickCount,tickSize,values" source="Axis" %}
+{% include table.html props="ticks,labelPadding,tickCount,tickSize,values" source="Axis" %}
 
 #### Title
 
@@ -83,7 +83,7 @@ Axis Config will apply to the all encoding channel has `axis`. Axis Config can b
 
 #### Ticks
 
-{% include table.html props="tickColor,labelColor,labelFont,labelFontSize,tickWidth" source="AxisConfig" %}
+{% include table.html props="tickColor,labelColor,labelFont,labelFontSize,labelLimit,tickWidth" source="AxisConfig" %}
 
 #### Title
 
