@@ -26,6 +26,12 @@ By default, Vega-Lite automatically creates axes for `x`, `y`, `row`, and `colum
     "y": ...,
     ...
   },
+  "config": {
+    "axis": {
+      ...                       // Axis Config
+    },
+    ...
+  }
   ...
 }
 ```
@@ -36,10 +42,13 @@ The field's axis can be removed by setting `axis` to `false`. If `axis` is `true
 
 Axis properties can be customized by setting `axis` to an axis property object. The `axis` property object supports the following properties:
 
+Either Axis properties or Axis Config can be customized. To customize Axis properties, you need to set `axis` to an axis property object. To customize Axis Config, you need set config properties by specifying `config: {axis: {...}}`.
+
 <!--TODO: add default behavior for each property -->
 
 ### Axis Properties
-{% assign schema = site.data.vega-lite-schema.definitions %}
+
+Axis properties will apply to the current encoding channel only. Axis properties can be customized by setting `axis` to an axis property object. The `axis` property object supports the following properties:
 
 #### General
 
@@ -59,6 +68,8 @@ Axis properties can be customized by setting `axis` to an axis property object. 
 
 
 ### Axis Config
+
+Axis Config will apply to the all encoding channel has `axis`. Axis Config can be customized by setting `config: {axis: {...}}`. Axis Config supports the following configurations:
 
 #### General
 
