@@ -3,7 +3,7 @@
 
 import {AggregateOp} from './aggregate';
 import {Axis} from './axis';
-import {Bin, binToString} from './bin';
+import {autoMaxBins, Bin, binToString} from './bin';
 import {Channel, rangeType} from './channel';
 import {Config} from './config';
 import {Legend} from './legend';
@@ -253,9 +253,9 @@ export function normalize(fieldDef: ChannelDef, channel: Channel) {
   // If a fieldDef contains a field, we need type.
   if (isFieldDef(fieldDef)) { // TODO: or datum
     if (fieldDef.bin) {
-      fieldDef.bin = isBoolean(fieldDef.bin) ? {maxbins: 10} : fieldDef.bin;
-      if (!fieldDef.bin.maxbins) {
-        fieldDef.bin.maxbins = 10;
+      fieldDef.bin = isBoolean(fieldDef.bin) ? {maxbins: autoMaxBins(channel)} : fieldDef.bin;
+      if (!fieldDef.bin.maxbins && !fieldDef.bin.steps) {
+        fieldDef.bin.maxbins = autoMaxBins(channel);
       }
     }
 

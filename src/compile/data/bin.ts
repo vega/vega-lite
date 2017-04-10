@@ -39,9 +39,6 @@ function parse(model: Model): Dict<VgTransform[]> {
     const fieldDefBin = model.fieldDef(channel).bin;
     if (fieldDefBin) {
       const bin: Bin = isBoolean(fieldDefBin) ? {} : fieldDefBin;
-      if (!bin.maxbins && !bin.steps) {
-        bin.maxbins = model.config.maxbins;
-      }
       const key = `${binToString(fieldDef.bin)}_${fieldDef.field}`;
       let transform: VgTransform[] = binComponent[key];
       if (!transform) {
