@@ -49,9 +49,9 @@ function parse(model: Model): Dict<VgTransform[]> {
             type: 'bin',
             field: fieldDef.field,
             as: [field(fieldDef, {binSuffix: 'start'}), field(fieldDef, {binSuffix: 'end'})],
-            signal: varName(model.getName(key + '_bins'))
+            signal: varName(model.getName(key + '_bins')),
+            ...bin
         };
-        extend(binTrans, bin); // Has side effect. TODO: Try to remove them
         if (!bin.extent) {
           transform.push({
             type: 'extent',
