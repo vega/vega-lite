@@ -42,25 +42,25 @@
                 {
                     "type": "extent",
                     "field": "Acceleration",
-                    "signal": "bin_maxbins_10_Acceleration_extent"
+                    "signal": "bin_maxbins_6_Acceleration_extent"
                 },
                 {
                     "type": "bin",
                     "field": "Acceleration",
                     "as": [
-                        "bin_maxbins_10_Acceleration_start",
-                        "bin_maxbins_10_Acceleration_end"
+                        "bin_maxbins_6_Acceleration_start",
+                        "bin_maxbins_6_Acceleration_end"
                     ],
-                    "signal": "bin_maxbins_10_Acceleration_bins",
-                    "maxbins": 10,
+                    "signal": "bin_maxbins_6_Acceleration_bins",
+                    "maxbins": 6,
                     "extent": {
-                        "signal": "bin_maxbins_10_Acceleration_extent"
+                        "signal": "bin_maxbins_6_Acceleration_extent"
                     }
                 },
                 {
                     "type": "formula",
-                    "as": "bin_maxbins_10_Acceleration_range",
-                    "expr": "format(datum[\"bin_maxbins_10_Acceleration_start\"], 's') + ' - ' + format(datum[\"bin_maxbins_10_Acceleration_end\"], 's')"
+                    "as": "bin_maxbins_6_Acceleration_range",
+                    "expr": "format(datum[\"bin_maxbins_6_Acceleration_start\"], 's') + ' - ' + format(datum[\"bin_maxbins_6_Acceleration_end\"], 's')"
                 }
             ]
         },
@@ -71,7 +71,7 @@
                 {
                     "type": "aggregate",
                     "groupby": [
-                        "bin_maxbins_10_Acceleration_range"
+                        "bin_maxbins_6_Acceleration_range"
                     ]
                 }
             ]
@@ -83,7 +83,7 @@
                 {
                     "type": "aggregate",
                     "fields": [
-                        "bin_maxbins_10_Acceleration_range"
+                        "bin_maxbins_6_Acceleration_range"
                     ],
                     "ops": [
                         "distinct"
@@ -107,7 +107,7 @@
                 {
                     "type": "formula",
                     "as": "height",
-                    "expr": "(datum[\"child_height\"] + 16) * datum[\"distinct_bin_maxbins_10_Acceleration_range\"]"
+                    "expr": "(datum[\"child_height\"] + 16) * datum[\"distinct_bin_maxbins_6_Acceleration_range\"]"
                 }
             ]
         }
@@ -182,7 +182,7 @@
                             },
                             "y": {
                                 "scale": "row",
-                                "field": "bin_maxbins_10_Acceleration_range",
+                                "field": "bin_maxbins_6_Acceleration_range",
                                 "offset": 8
                             }
                         }
@@ -205,7 +205,7 @@
                             "name": "faceted-data",
                             "data": "source",
                             "groupby": [
-                                "bin_maxbins_10_Acceleration_range"
+                                "bin_maxbins_6_Acceleration_range"
                             ]
                         }
                     },
@@ -216,7 +216,7 @@
                             },
                             "y": {
                                 "scale": "row",
-                                "field": "bin_maxbins_10_Acceleration_range",
+                                "field": "bin_maxbins_6_Acceleration_range",
                                 "offset": 8
                             },
                             "width": {
@@ -304,9 +304,9 @@
                     "type": "band",
                     "domain": {
                         "data": "source",
-                        "field": "bin_maxbins_10_Acceleration_range",
+                        "field": "bin_maxbins_6_Acceleration_range",
                         "sort": {
-                            "field": "bin_maxbins_10_Acceleration_start",
+                            "field": "bin_maxbins_6_Acceleration_start",
                             "op": "min"
                         }
                     },
