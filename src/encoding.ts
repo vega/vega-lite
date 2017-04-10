@@ -69,7 +69,7 @@ export interface Encoding {
   /**
    * Text of the `text` mark.
    */
-  text?: TextFieldDef | ConditionalValueDef<string|number>;
+  text?: TextFieldDef | ConditionalValueDef<string|number|boolean>;
 
   /**
    * stack order for stacked marks or order of data points in line marks.
