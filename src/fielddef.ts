@@ -1,8 +1,9 @@
+
 // utility for a field definition object
 
 import {AggregateOp} from './aggregate';
 import {Axis} from './axis';
-import {Bin} from './bin';
+import {autoMaxBins, Bin, binToString} from './bin';
 import {Channel, rangeType} from './channel';
 import {Config} from './config';
 import {Legend} from './legend';
@@ -12,6 +13,7 @@ import {SortField, SortOrder} from './sort';
 import {StackOffset} from './stack';
 import {isDiscreteByDefault, TimeUnit} from './timeunit';
 import {getFullName, Type} from './type';
+import {isBoolean} from './util';
 
 /**
  * Definition object for a constant value of an encoding channel.
@@ -159,7 +161,7 @@ export function field(fieldDef: FieldDef, opt: FieldRefOption = {}) {
 
     if (!opt.nofn) {
       if (fieldDef.bin) {
-        fn = 'bin';
+        fn = binToString(fieldDef.bin);
         suffix = opt.binSuffix;
       } else if (fieldDef.aggregate) {
         fn = String(opt.aggregate || fieldDef.aggregate);
@@ -247,9 +249,30 @@ export function defaultType(fieldDef: FieldDef, channel: Channel): Type {
 /**
  * Convert type to full, lowercase type, or augment the fieldDef with a default type if missing.
  */
-export function normalize(fieldDef: ChannelDef, channel: Channel) {
+export function normalize(channelDef: ChannelDef, channel: Channel) {
   // If a fieldDef contains a field, we need type.
-  if (isFieldDef(fieldDef)) { // TODO: or datum
+  if (isFieldDef(channelDef)) { // TODO: or datum
+    let fieldDef: FieldDef = channelDef;
+
+    // Normalize bin
+    if (fieldDef.bin) {
+      const bin = fieldDef.bin;
+      if (isBoolean(bin)) {
+        fieldDef = {
+          ...fieldDef,
+          bin: {maxbins: autoMaxBins(channel)}
+        };
+      } else if (!bin.maxbins && !bin.step) {
+        fieldDef = {
+          ...fieldDef,
+          bin: {
+            ...bin,
+            maxbins: autoMaxBins(channel)
+          }
+        };
+      }
+    }
+
     // Normalize Type
     if (fieldDef.type) {
       const fullType = getFullName(fieldDef.type);
@@ -270,15 +293,13 @@ export function normalize(fieldDef: ChannelDef, channel: Channel) {
       };
     }
 
-    // TODO: swojit - you can normalize bin here
-
-
     const {compatible, warning} = channelCompatibility(fieldDef, channel);
     if (!compatible) {
       log.warn(warning);
     }
+    return fieldDef;
   }
-  return fieldDef;
+  return channelDef;
 }
 
 const COMPATIBLE = {compatible: true};

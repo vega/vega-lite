@@ -116,6 +116,13 @@ export interface Config  extends TopLevelProperties {
   timeFormat?: string;
 
   /**
+   * Default maximum number of bins for binned variables.
+   * @minimum 0
+   * @TJS-type integer
+   */
+  maxbins?: number;
+
+  /**
    * Default axis and legend title for count fields.
    * @type {string}
    */
@@ -240,6 +247,7 @@ export const defaultConfig: Config = {
   padding: 5,
   numberFormat: 's',
   timeFormat: '%b %d, %Y',
+  maxbins: 10,
   countTitle: 'Number of Records',
 
   cell: defaultCellConfig,

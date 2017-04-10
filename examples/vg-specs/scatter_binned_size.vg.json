@@ -42,20 +42,20 @@
                 {
                     "type": "extent",
                     "field": "Acceleration",
-                    "signal": "Acceleration_extent"
+                    "signal": "bin_maxbins_6_Acceleration_extent"
                 },
                 {
                     "type": "bin",
                     "field": "Acceleration",
                     "as": [
-                        "bin_Acceleration_start",
-                        "bin_Acceleration_end"
+                        "bin_maxbins_6_Acceleration_start",
+                        "bin_maxbins_6_Acceleration_end"
                     ],
-                    "signal": "Acceleration_bins",
+                    "signal": "bin_maxbins_6_Acceleration_bins",
+                    "maxbins": 6,
                     "extent": {
-                        "signal": "Acceleration_extent"
-                    },
-                    "maxbins": 6
+                        "signal": "bin_maxbins_6_Acceleration_extent"
+                    }
                 }
             ]
         },
@@ -125,7 +125,7 @@
                             },
                             "size": {
                                 "scale": "size",
-                                "field": "bin_Acceleration_start"
+                                "field": "bin_maxbins_6_Acceleration_start"
                             },
                             "opacity": {
                                 "value": 0.7
@@ -169,7 +169,7 @@
                     "name": "size",
                     "type": "bin-linear",
                     "domain": {
-                        "signal": "sequence(Acceleration_bins.start, Acceleration_bins.stop + Acceleration_bins.step, Acceleration_bins.step)"
+                        "signal": "sequence(bin_maxbins_6_Acceleration_bins.start, bin_maxbins_6_Acceleration_bins.stop + bin_maxbins_6_Acceleration_bins.step, bin_maxbins_6_Acceleration_bins.step)"
                     },
                     "range": [
                         9,

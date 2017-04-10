@@ -97,7 +97,7 @@ describe('compile/scale', () => {
         });
 
         assert.deepEqual(parseDomain(model,'y'), {
-          signal: 'sequence(origin_bins.start, origin_bins.stop + origin_bins.step, origin_bins.step)'
+          signal: 'sequence(bin_maxbins_15_origin_bins.start, bin_maxbins_15_origin_bins.stop + bin_maxbins_15_origin_bins.step, bin_maxbins_15_origin_bins.step)'
         });
 
         assert.equal(localLogger.warns[0], log.message.unaggregateDomainHasNoEffectForRawField(fieldDef));

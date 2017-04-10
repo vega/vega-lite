@@ -60,7 +60,7 @@ describe('compile/data/stack', () => {
     assert.deepEqual(stackComponent, {
       name: 'stacked',
       source: 'summary',
-      groupby: ['bin_b_start', 'bin_b_end'],
+      groupby: ["bin_maxbins_10_b_start", "bin_maxbins_10_b_end"],
       field: 'sum_a',
       stackby: ['c'],
       sort: {

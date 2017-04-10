@@ -1,4 +1,5 @@
 import {Channel, COLUMN, ROW, SHAPE, SIZE} from './channel';
+import {isBoolean} from './util';
 
 export interface BinBase {
   /**
@@ -44,6 +45,13 @@ export interface Bin extends BinBase {
    * @maxItems 2
    */
   extent?: number[];  // VgBinTransform uses a different extent so we need to pull this out.
+}
+
+export function binToString(bin: Bin | boolean) {
+  if (isBoolean(bin)) {
+    return 'bin';
+  }
+  return 'bin' + Object.keys(bin).map(p => `_${p}_${bin[p]}`).join('');
 }
 
 export function autoMaxBins(channel: Channel): number {

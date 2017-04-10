@@ -1,10 +1,10 @@
 import {DataComponentCompiler} from './base';
 
-import {autoMaxBins} from '../../bin';
+import {Bin, binToString} from '../../bin';
 import {Channel} from '../../channel';
 import {field, FieldDef} from '../../fielddef';
 import {hasDiscreteDomain} from '../../scale';
-import {Dict, extend, flatten, hash, isBoolean, vals, varName} from '../../util';
+import {Dict, extend, flatten, isBoolean, vals, varName} from '../../util';
 import {VgBinTransform, VgTransform} from '../../vega.schema';
 
 import {FacetModel} from './../facet';
@@ -16,60 +16,56 @@ function numberFormatExpr(expr: string, format: string) {
   return `format(${expr}, '${format}')`;
 }
 
+function addRangeFormula(model: Model, transform: VgTransform[], fieldDef: FieldDef, channel: Channel) {
+    const discreteDomain = hasDiscreteDomain(model.scale(channel).type);
+    if  (discreteDomain) {
+      // read format from axis or legend, if there is no format then use config.numberFormat
+      const format = (model.axis(channel) || model.legend(channel) || {}).format ||
+        model.config.numberFormat;
+
+      const startField = field(fieldDef, {datum: true, binSuffix: 'start'});
+      const endField = field(fieldDef, {datum: true, binSuffix: 'end'});
+
+      transform.push({
+        type: 'formula',
+        as: field(fieldDef, {binSuffix: 'range'}),
+        expr: `${numberFormatExpr(startField, format)} + ' - ' + ${numberFormatExpr(endField, format)}`
+      });
+    }
+}
+
 function parse(model: Model): Dict<VgTransform[]> {
   return model.reduceFieldDef(function(binComponent: Dict<VgTransform[]>, fieldDef: FieldDef, channel: Channel) {
-    const bin = model.fieldDef(channel).bin;
-    if (bin) {
+    const fieldDefBin = model.fieldDef(channel).bin;
+    if (fieldDefBin) {
+      const bin: Bin = isBoolean(fieldDefBin) ? {} : fieldDefBin;
+      const key = `${binToString(fieldDef.bin)}_${fieldDef.field}`;
+      let transform: VgTransform[] = binComponent[key];
+      if (!transform) {
+        binComponent[key] = transform = [];
+        const extentSignal = model.getName(key + '_extent');
 
-       let binTrans: VgBinTransform = {
-        type: 'bin',
-        field: fieldDef.field,
-        as: [field(fieldDef, {binSuffix: 'start'}), field(fieldDef, {binSuffix: 'end'})],
-        signal: varName(model.getName(fieldDef.field + '_bins'))
-      };
-
-      if (!isBoolean(bin)) {
-         binTrans = extend(binTrans, bin);
+        const binTrans: VgBinTransform = {
+            type: 'bin',
+            field: fieldDef.field,
+            as: [field(fieldDef, {binSuffix: 'start'}), field(fieldDef, {binSuffix: 'end'})],
+            signal: varName(model.getName(key + '_bins')),
+            ...bin
+        };
+        if (!bin.extent) {
+          transform.push({
+            type: 'extent',
+            field: fieldDef.field,
+            signal: extentSignal
+          });
+          binTrans.extent = {signal: extentSignal};
+        }
+        transform.push(binTrans);
       }
-
-      const transform: VgTransform[] = [];
-
-      if (!binTrans.extent) {
-        const extentSignal = varName(model.getName(fieldDef.field + '_extent'));
-        transform.push({
-          type: 'extent',
-          field: fieldDef.field,
-          signal: extentSignal
-        });
-
-        binTrans.extent = {signal: extentSignal};
+      // if formula doesn't exist already
+      if (transform.length > 0 && transform[transform.length - 1].type !== 'formula') {
+        addRangeFormula(model, binComponent[key], fieldDef, channel);
       }
-
-      if (!binTrans.maxbins && !binTrans.step) {
-        // if both maxbins and step are not specified, need to automatically determine bin
-        binTrans.maxbins = autoMaxBins(channel);
-      }
-
-      transform.push(binTrans);
-
-      const discreteDomain = hasDiscreteDomain(model.scale(channel).type);
-      if (discreteDomain) {
-        // read format from axis or legend, if there is no format then use config.numberFormat
-        const format = (model.axis(channel) || model.legend(channel) || {}).format ||
-          model.config.numberFormat;
-
-        const startField = field(fieldDef, {datum: true, binSuffix: 'start'});
-        const endField = field(fieldDef, {datum: true, binSuffix: 'end'});
-
-        transform.push({
-          type: 'formula',
-          as: field(fieldDef, {binSuffix: 'range'}),
-          expr: `${numberFormatExpr(startField, format)} + ' - ' + ${numberFormatExpr(endField, format)}`
-        });
-      }
-      // FIXME: current merging logic can produce redundant transforms when a field is binned for color and for non-color
-      const key = hash(bin) + '_' + fieldDef.field + 'oc:' + discreteDomain;
-      binComponent[key] = transform;
     }
     return binComponent;
   }, {});

@@ -40,19 +40,19 @@
                 {
                     "type": "extent",
                     "field": "IMDB_Rating",
-                    "signal": "IMDB_Rating_extent"
+                    "signal": "bin_maxbins_10_IMDB_Rating_extent"
                 },
                 {
                     "type": "bin",
                     "field": "IMDB_Rating",
                     "as": [
-                        "bin_IMDB_Rating_start",
-                        "bin_IMDB_Rating_end"
+                        "bin_maxbins_10_IMDB_Rating_start",
+                        "bin_maxbins_10_IMDB_Rating_end"
                     ],
-                    "signal": "IMDB_Rating_bins",
+                    "signal": "bin_maxbins_10_IMDB_Rating_bins",
                     "maxbins": 10,
                     "extent": {
-                        "signal": "IMDB_Rating_extent"
+                        "signal": "bin_maxbins_10_IMDB_Rating_extent"
                     }
                 }
             ]
@@ -64,9 +64,9 @@
                 {
                     "type": "aggregate",
                     "groupby": [
-                        "bin_IMDB_Rating_start",
-                        "bin_IMDB_Rating_end",
-                        "bin_IMDB_Rating_range"
+                        "bin_maxbins_10_IMDB_Rating_start",
+                        "bin_maxbins_10_IMDB_Rating_end",
+                        "bin_maxbins_10_IMDB_Rating_range"
                     ],
                     "ops": [
                         "count"
@@ -128,12 +128,12 @@
                         "update": {
                             "x2": {
                                 "scale": "x",
-                                "field": "bin_IMDB_Rating_start",
+                                "field": "bin_maxbins_10_IMDB_Rating_start",
                                 "offset": 1
                             },
                             "x": {
                                 "scale": "x",
-                                "field": "bin_IMDB_Rating_end"
+                                "field": "bin_maxbins_10_IMDB_Rating_end"
                             },
                             "y": {
                                 "scale": "y",
@@ -155,7 +155,7 @@
                     "name": "x",
                     "type": "bin-linear",
                     "domain": {
-                        "signal": "sequence(IMDB_Rating_bins.start, IMDB_Rating_bins.stop + IMDB_Rating_bins.step, IMDB_Rating_bins.step)"
+                        "signal": "sequence(bin_maxbins_10_IMDB_Rating_bins.start, bin_maxbins_10_IMDB_Rating_bins.stop + bin_maxbins_10_IMDB_Rating_bins.step, bin_maxbins_10_IMDB_Rating_bins.step)"
                     },
                     "range": [
                         0,

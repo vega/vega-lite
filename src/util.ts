@@ -176,7 +176,7 @@ export function isBoolean(b: any): b is boolean {
 /**
  * Convert a string into a valid variable name
  */
-export function varName(s: string) {
+export function varName(s: string): string {
   // Replace non-alphanumeric characters (anything besides a-zA-Z0-9_) with _
   const alphanumericS = s.replace(/\W/g, '_');
 

@@ -41,20 +41,20 @@
                 {
                     "type": "extent",
                     "field": "Acceleration",
-                    "signal": "Acceleration_extent"
+                    "signal": "bin_maxbins_10_Acceleration_extent"
                 },
                 {
                     "type": "bin",
                     "field": "Acceleration",
                     "as": [
-                        "bin_Acceleration_start",
-                        "bin_Acceleration_end"
+                        "bin_maxbins_10_Acceleration_start",
+                        "bin_maxbins_10_Acceleration_end"
                     ],
-                    "signal": "Acceleration_bins",
+                    "signal": "bin_maxbins_10_Acceleration_bins",
+                    "maxbins": 10,
                     "extent": {
-                        "signal": "Acceleration_extent"
-                    },
-                    "maxbins": 10
+                        "signal": "bin_maxbins_10_Acceleration_extent"
+                    }
                 }
             ]
         },
@@ -66,9 +66,9 @@
                     "type": "aggregate",
                     "groupby": [
                         "Cylinders",
-                        "bin_Acceleration_start",
-                        "bin_Acceleration_end",
-                        "bin_Acceleration_range"
+                        "bin_maxbins_10_Acceleration_start",
+                        "bin_maxbins_10_Acceleration_end",
+                        "bin_maxbins_10_Acceleration_range"
                     ],
                     "ops": [
                         "sum"
@@ -90,8 +90,8 @@
                         "Cylinders"
                     ],
                     "orderby": [
-                        "bin_Acceleration_start",
-                        "bin_Acceleration_end"
+                        "bin_maxbins_10_Acceleration_start",
+                        "bin_maxbins_10_Acceleration_end"
                     ],
                     "method": "value",
                     "value": 0
@@ -99,8 +99,8 @@
                 {
                     "type": "stack",
                     "groupby": [
-                        "bin_Acceleration_start",
-                        "bin_Acceleration_end"
+                        "bin_maxbins_10_Acceleration_start",
+                        "bin_maxbins_10_Acceleration_end"
                     ],
                     "field": "sum_Horsepower",
                     "sort": {
@@ -120,7 +120,7 @@
                 {
                     "type": "collect",
                     "sort": {
-                        "field": "bin_Acceleration_start",
+                        "field": "bin_maxbins_10_Acceleration_start",
                         "order": "descending"
                     }
                 }
@@ -202,7 +202,7 @@
                             "encode": {
                                 "update": {
                                     "x": {
-                                        "signal": "(scale(\"x\", datum[\"bin_Acceleration_start\"]) + scale(\"x\", datum[\"bin_Acceleration_end\"]))/2"
+                                        "signal": "(scale(\"x\", datum[\"bin_maxbins_10_Acceleration_start\"]) + scale(\"x\", datum[\"bin_maxbins_10_Acceleration_end\"]))/2"
                                     },
                                     "y": {
                                         "scale": "y",
@@ -230,7 +230,7 @@
                     "name": "x",
                     "type": "bin-linear",
                     "domain": {
-                        "signal": "sequence(Acceleration_bins.start, Acceleration_bins.stop + Acceleration_bins.step, Acceleration_bins.step)"
+                        "signal": "sequence(bin_maxbins_10_Acceleration_bins.start, bin_maxbins_10_Acceleration_bins.stop + bin_maxbins_10_Acceleration_bins.step, bin_maxbins_10_Acceleration_bins.step)"
                     },
                     "range": [
                         0,
