@@ -249,15 +249,28 @@ export function defaultType(fieldDef: FieldDef, channel: Channel): Type {
 /**
  * Convert type to full, lowercase type, or augment the fieldDef with a default type if missing.
  */
-export function normalize(fieldDef: ChannelDef, channel: Channel) {
+export function normalize(channelDef: ChannelDef, channel: Channel) {
   // If a fieldDef contains a field, we need type.
-  if (isFieldDef(fieldDef)) { // TODO: or datum
-    const bin: Bin = fieldDef.bin && (isBoolean(fieldDef.bin) ? {maxbins: autoMaxBins(channel)} :
-      JSON.parse(JSON.stringify(fieldDef.bin))); // Clone it
-
-    if (bin && !bin.maxbins && !bin.step) {
-      bin.maxbins = autoMaxBins(channel);
+  if (isFieldDef(channelDef)) { // TODO: or datum
+    let fieldDef: FieldDef = channelDef;
+    if (fieldDef.bin) {
+      const bin = fieldDef.bin;
+      if (isBoolean(bin)) {
+        fieldDef = {
+          ...fieldDef,
+          bin: {maxbins: autoMaxBins(channel)}
+        };
+      } else if (!bin.maxbins && !bin.step) {
+        fieldDef = {
+          ...fieldDef,
+          bin: {
+            ...bin,
+            maxbins: autoMaxBins(channel)
+          }
+        };
+      }
     }
+
     // Normalize Type
     if (fieldDef.type) {
       const fullType = getFullName(fieldDef.type);
@@ -277,17 +290,14 @@ export function normalize(fieldDef: ChannelDef, channel: Channel) {
         type: newType
       };
     }
-    fieldDef = {
-      ...fieldDef,
-      ...(bin ? {bin : bin} : {})
-    };
 
     const {compatible, warning} = channelCompatibility(fieldDef, channel);
     if (!compatible) {
       log.warn(warning);
     }
+    return fieldDef;
   }
-  return fieldDef;
+  return channelDef;
 }
 
 const COMPATIBLE = {compatible: true};
