@@ -79,6 +79,7 @@ describe('compile/data/bin', function() {
       const transformArray = vals(bin.parseUnit(model));
       assert.deepEqual(transformArray.length, 1); // Generate only one
       const transform = transformArray[0];
+      assert.deepEqual(transform.length, 3);
       assert.deepEqual(transform[0], {
         type: 'extent',
         field: 'Rotten_Tomatoes_Rating',

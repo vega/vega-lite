@@ -1348,6 +1348,7 @@
                 },
                 "maxbins": {
                     "description": "Default maximum number of bins for binned variables.",
+                    "minimum": 0,
                     "type": "integer"
                 },
                 "numberFormat": {
