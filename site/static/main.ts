@@ -1,5 +1,5 @@
-import {selectAll, select, Selection} from 'd3-selection';
 import {json, text} from 'd3-request';
+import {select, selectAll, Selection} from 'd3-selection';
 import * as hljs from 'highlight.js';
 import embed from 'vega-embed';
 

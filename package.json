@@ -99,9 +99,9 @@
     "typescript": "^2.2.2",
     "typescript-json-schema": "^0.11.0",
     "uglify-js": "~2.8.17",
-    "vega": "3.0.0-beta.27",
+    "vega": "3.0.0-beta.28",
     "vega-datasets": "vega/vega-datasets#gh-pages",
-    "vega-embed": "3.0.0-beta.7",
+    "vega-embed": "3.0.0-beta.9",
     "watchify": "~3.9.0",
     "yaml-front-matter": "~3.4.0"
   },

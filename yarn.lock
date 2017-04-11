@@ -4796,11 +4796,13 @@ vega-datasets@vega/vega-datasets#gh-pages:
   version "1.8.0"
   resolved "https://codeload.github.com/vega/vega-datasets/tar.gz/34d749afe9a1c733004e6253ee6b6f367e5b856b"
 
-vega-embed@3.0.0-beta.7:
-  version "3.0.0-beta.7"
-  resolved "https://registry.yarnpkg.com/vega-embed/-/vega-embed-3.0.0-beta.7.tgz#f36cce00368110e8febbb2056612e16755c6b266"
+vega-embed@3.0.0-beta.9:
+  version "3.0.0-beta.9"
+  resolved "https://registry.yarnpkg.com/vega-embed/-/vega-embed-3.0.0-beta.9.tgz#18a17a1a85ba99ad1f672b488871a8f38ca630a7"
   dependencies:
     d3-selection "^1.0.5"
+    vega "^3.0.0-beta.28"
+    vega-lite "^2.0.0-alpha.8"
     vega-schema-url-parser "^1.0.0-beta.2"
 
 vega-encode@>=1.0.0-beta:
@@ -4848,6 +4850,16 @@ vega-hierarchy@>=1.0.0-beta:
     d3-hierarchy "1"
     vega-dataflow ">=2.0.0-beta.4"
     vega-util "1"
+
+vega-lite@^2.0.0-alpha.8:
+  version "2.0.0-alpha.8"
+  resolved "https://registry.yarnpkg.com/vega-lite/-/vega-lite-2.0.0-alpha.8.tgz#42cffa57f3987a1aae108d3d4a376fa1b43c7fb5"
+  dependencies:
+    json-stable-stringify "~1.0.1"
+    tslib "^1.6.0"
+    vega-event-selector "^2.0.0-beta"
+    vega-util "~1.1.4"
+    yargs "~7.0.2"
 
 vega-loader@>=2.0.0-beta, vega-loader@>=2.0.0-beta.5:
   version "2.0.0-beta.5"
@@ -4945,9 +4957,9 @@ vega-wordcloud@>=1.0.0-beta:
   optionalDependencies:
     canvas "^1.6.0"
 
-vega@3.0.0-beta.27:
-  version "3.0.0-beta.27"
-  resolved "https://registry.yarnpkg.com/vega/-/vega-3.0.0-beta.27.tgz#3990179e11a5d35eceb900b1bc6c25f77b8b9be4"
+vega@3.0.0-beta.28, vega@^3.0.0-beta.28:
+  version "3.0.0-beta.28"
+  resolved "https://registry.yarnpkg.com/vega/-/vega-3.0.0-beta.28.tgz#742a9612612fbaa2541f04be489221be28fdd608"
   dependencies:
     vega-crossfilter ">=1.0.0-beta"
     vega-dataflow ">=2.0.0-beta"
