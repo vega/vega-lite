@@ -176,7 +176,7 @@ export function fieldExpr(fullTimeUnit: TimeUnit, field: string): string {
     }
   }
 
-  let d = SINGLE_TIMEUNITS.reduce((_d: DateTimeExpr, tu: TimeUnit) => {
+  const d = SINGLE_TIMEUNITS.reduce((_d: DateTimeExpr, tu: TimeUnit) => {
     if (containsTimeUnit(fullTimeUnit, tu)) {
       _d[tu] = func(tu);
     }
@@ -231,7 +231,7 @@ export function formatExpression(timeUnit: TimeUnit, field: string, shortTimeLab
     return undefined;
   }
 
-  let dateComponents: string[] = [];
+  const dateComponents: string[] = [];
   let expression = '';
   const hasYear = containsTimeUnit(timeUnit, TimeUnit.YEAR);
 
@@ -255,7 +255,7 @@ export function formatExpression(timeUnit: TimeUnit, field: string, shortTimeLab
     dateComponents.push(shortTimeLabels ? '%y' : '%Y');
   }
 
-  let timeComponents: string[] = [];
+  const timeComponents: string[] = [];
 
   if (containsTimeUnit(timeUnit, TimeUnit.HOURS)) {
     timeComponents.push('%H');
@@ -270,7 +270,7 @@ export function formatExpression(timeUnit: TimeUnit, field: string, shortTimeLab
     timeComponents.push('%L');
   }
 
-  let dateTimeComponents: string[] = [];
+  const dateTimeComponents: string[] = [];
   if (dateComponents.length > 0) {
     dateTimeComponents.push(dateComponents.join(' '));
   }

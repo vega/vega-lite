@@ -29,7 +29,7 @@ export const timeUnit: DataComponentCompiler<Dict<VgFormulaTransform>> = {
   parseUnit: parse,
 
   parseFacet: function (model: FacetModel) {
-    let timeUnitComponent = parse(model);
+    const timeUnitComponent = parse(model);
 
     const childDataComponent = model.child.component.data;
 
@@ -42,7 +42,7 @@ export const timeUnit: DataComponentCompiler<Dict<VgFormulaTransform>> = {
   },
 
   parseLayer: function(model: LayerModel) {
-    let timeUnitComponent = parse(model);
+    const timeUnitComponent = parse(model);
     model.children.forEach((child) => {
       const childDataComponent = child.component.data;
       if (!childDataComponent.source) {

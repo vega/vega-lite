@@ -54,7 +54,7 @@ describe('compile/scale', () => {
 
     describe('x/y', function() {
       it('should return config.cell.width for x-continous scales by default.', () => {
-        for (let scaleType of CONTINUOUS_TO_CONTINUOUS_SCALES) {
+        for (const scaleType of CONTINUOUS_TO_CONTINUOUS_SCALES) {
           assert.deepEqual(
             rangeMixins('x', scaleType, QUANTITATIVE, {}, defaultConfig, true, 'point', undefined, []),
             {range: [0, 200]}
@@ -63,7 +63,7 @@ describe('compile/scale', () => {
       });
 
       it('should return config.cell.height for y-continous scales by default.', () => {
-        for (let scaleType of CONTINUOUS_TO_CONTINUOUS_SCALES) {
+        for (const scaleType of CONTINUOUS_TO_CONTINUOUS_SCALES) {
           assert.deepEqual(
             rangeMixins('y', scaleType, QUANTITATIVE, {}, defaultConfig, true, 'point', undefined, []),
             {range: [200, 0]}
@@ -80,7 +80,7 @@ describe('compile/scale', () => {
       }));
 
       it('should return config.scale.rangeStep for band/point scales by default.', () => {
-        for (let scaleType of ['point', 'band'] as ScaleType[]) {
+        for (const scaleType of ['point', 'band'] as ScaleType[]) {
           assert.deepEqual(
             rangeMixins('x', scaleType, NOMINAL, {}, defaultConfig, undefined, 'point', undefined, []),
             {rangeStep: 21}
@@ -89,7 +89,7 @@ describe('compile/scale', () => {
       });
 
       it('should return config.scale.textXRangeStep by default for text mark\'s x band/point scales.', () => {
-        for (let scaleType of ['point', 'band'] as ScaleType[]) {
+        for (const scaleType of ['point', 'band'] as ScaleType[]) {
           assert.deepEqual(
             rangeMixins('x', scaleType, NOMINAL, {}, {scale: {textXRangeStep: 55}}, undefined, 'text', undefined, []),
             {rangeStep: 55}
@@ -98,7 +98,7 @@ describe('compile/scale', () => {
       });
 
       it('should return specified rangeStep if topLevelSize is undefined for band/point scales', () => {
-        for (let scaleType of ['point', 'band'] as ScaleType[]) {
+        for (const scaleType of ['point', 'band'] as ScaleType[]) {
           assert.deepEqual(
             rangeMixins('x', scaleType, NOMINAL, {rangeStep: 23}, defaultConfig, undefined, 'text', undefined, []),
             {rangeStep: 23}
@@ -107,7 +107,7 @@ describe('compile/scale', () => {
       });
 
       it('should drop rangeStep if topLevelSize is specified for band/point scales', log.wrap((localLogger) => {
-        for (let scaleType of ['point', 'band'] as ScaleType[]) {
+        for (const scaleType of ['point', 'band'] as ScaleType[]) {
           assert.deepEqual(
             rangeMixins('x', scaleType, NOMINAL, {rangeStep: 23}, defaultConfig, undefined, 'text', 123, []),
             {range: [0, 123]}
@@ -117,7 +117,7 @@ describe('compile/scale', () => {
       }));
 
       it('should return default topLevelSize if rangeStep is null for band/point scales', () => {
-        for (let scaleType of ['point', 'band'] as ScaleType[]) {
+        for (const scaleType of ['point', 'band'] as ScaleType[]) {
           assert.deepEqual(
             rangeMixins('x', scaleType, NOMINAL, {rangeStep: null}, defaultConfig, undefined, 'text', undefined, []),
             {range: [0, 200]}
@@ -126,7 +126,7 @@ describe('compile/scale', () => {
       });
 
       it('should return default topLevelSize if rangeStep config is null', () => {
-        for (let scaleType of ['point', 'band'] as ScaleType[]) {
+        for (const scaleType of ['point', 'band'] as ScaleType[]) {
           assert.deepEqual(
             rangeMixins('x', scaleType, NOMINAL, {}, {cell: {width: 200}, scale: {rangeStep: null}}, undefined, 'point', undefined, []),
             {range: [0, 200]}
@@ -135,7 +135,7 @@ describe('compile/scale', () => {
       });
 
       it('should return default topLevelSize for text if textXRangeStep config is null', () => {
-        for (let scaleType of ['point', 'band'] as ScaleType[]) {
+        for (const scaleType of ['point', 'band'] as ScaleType[]) {
           assert.deepEqual(
             rangeMixins('x', scaleType, NOMINAL, {}, {cell: {width: 200}, scale: {textXRangeStep: null}}, undefined, 'text', undefined, []),
             {range: [0, 200]}
@@ -144,7 +144,7 @@ describe('compile/scale', () => {
       });
 
       it('should drop rangeStep for continuous scales', () => {
-        for (let scaleType of CONTINUOUS_TO_CONTINUOUS_SCALES) {
+        for (const scaleType of CONTINUOUS_TO_CONTINUOUS_SCALES) {
           log.wrap((localLogger) => {
             assert.deepEqual(
               rangeMixins('x', scaleType, QUANTITATIVE, {rangeStep: 23}, defaultConfig, undefined, 'text', 123, []),
@@ -275,8 +275,8 @@ describe('compile/scale', () => {
 
       describe('point, square, circle', function() {
         it('should return [minSize, maxSize]', () => {
-          for (let m of ['point', 'square', 'circle'] as Mark[]) {
-            let config = {
+          for (const m of ['point', 'square', 'circle'] as Mark[]) {
+            const config = {
               scale: {
                 minSize: 5,
                 maxSize: 25
@@ -292,7 +292,7 @@ describe('compile/scale', () => {
         });
 
         it('should return [0, (minBandSize-2)^2] if both x and y are discrete and size is quantitative (thus use zero=true, by default)', () => {
-          for (let m of ['point', 'square', 'circle'] as Mark[]) {
+          for (const m of ['point', 'square', 'circle'] as Mark[]) {
             assert.deepEqual(
               rangeMixins('size', 'linear', QUANTITATIVE, {}, defaultConfig, true, m, undefined,
                 [11, 13] // xyRangeSteps
@@ -303,7 +303,7 @@ describe('compile/scale', () => {
         });
 
         it('should return [9, (minBandSize-2)^2] if both x and y are discrete and size is not quantitative (thus use zero=false, by default)', () => {
-          for (let m of ['point', 'square', 'circle'] as Mark[]) {
+          for (const m of ['point', 'square', 'circle'] as Mark[]) {
             assert.deepEqual(
               rangeMixins('size', 'linear', QUANTITATIVE, {}, defaultConfig,  false, m, undefined,
                 [11, 13] // xyRangeSteps
@@ -314,7 +314,7 @@ describe('compile/scale', () => {
         });
 
         it('should return [9, (minBandSize-2)^2] if both x and y are discrete and size is quantitative but use zero=false', () => {
-          for (let m of ['point', 'square', 'circle'] as Mark[]) {
+          for (const m of ['point', 'square', 'circle'] as Mark[]) {
             assert.deepEqual(
               rangeMixins('size', 'linear', QUANTITATIVE, {}, defaultConfig, false, m, undefined,
                 [11, 13] // xyRangeSteps
@@ -325,7 +325,7 @@ describe('compile/scale', () => {
         });
 
         it('should return [0, (xRangeStep-2)^2] if x is discrete and y is continuous and size is quantitative (thus use zero=true, by default)', () => {
-            for (let m of ['point', 'square', 'circle'] as Mark[]) {
+            for (const m of ['point', 'square', 'circle'] as Mark[]) {
             assert.deepEqual(
               rangeMixins('size', 'linear', QUANTITATIVE, {}, defaultConfig, true, m, undefined,
                 [11] // xyRangeSteps only have one value

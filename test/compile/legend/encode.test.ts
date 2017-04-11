@@ -52,7 +52,7 @@ describe('compile/legend', function() {
       });
       const fieldDef = {field: 'a', type: TEMPORAL, timeUnit: TimeUnit.MONTH};
       const label = encode.labels(fieldDef, {}, model, COLOR);
-      let expected = `timeFormat(datum.value, '%b')`;
+      const expected = `timeFormat(datum.value, '%b')`;
       assert.deepEqual(label.text.signal, expected);
     });
 
@@ -65,7 +65,7 @@ describe('compile/legend', function() {
       });
       const fieldDef = {field: 'a', type: TEMPORAL, timeUnit: TimeUnit.QUARTER};
       const label = encode.labels(fieldDef, {}, model, COLOR);
-      let expected = `'Q' + quarter(datum.value)`;
+      const expected = `'Q' + quarter(datum.value)`;
       assert.deepEqual(label.text.signal, expected);
     });
   });

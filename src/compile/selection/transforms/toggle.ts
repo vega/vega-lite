@@ -17,7 +17,7 @@ const toggle:TransformCompiler = {
   },
 
   modifyExpr: function(model, selCmpt, expr) {
-    let tpl = selCmpt.name + TUPLE,
+    const tpl = selCmpt.name + TUPLE,
         signal = selCmpt.name + TOGGLE;
 
     return `${signal} ? null : ${tpl}, ` +

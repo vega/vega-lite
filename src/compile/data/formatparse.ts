@@ -18,7 +18,7 @@ function parse(model: Model): Dict<string> {
     return fieldMap;
   }, {});
 
-  let parseComponent: Dict<string> = {};
+  const parseComponent: Dict<string> = {};
 
   // Parse filter fields
   model.transforms.filter(isFilter).forEach((transform: FilterTransform) => {
@@ -79,7 +79,7 @@ export const formatParse: DataComponentCompiler<Dict<string>> = {
   parseUnit: parse,
 
   parseFacet: function(model: FacetModel) {
-    let parseComponent = parse(model);
+    const parseComponent = parse(model);
 
     // If child doesn't have its own data source, but has its own parse, then merge
     const childDataComponent = model.child.component.data;
@@ -92,7 +92,7 @@ export const formatParse: DataComponentCompiler<Dict<string>> = {
 
   parseLayer: function(model: LayerModel) {
     // note that we run this before source.parseLayer
-    let parseComponent = parse(model);
+    const parseComponent = parse(model);
     model.children.forEach((child) => {
       const childDataComponent = child.component.data;
       if (model.compatibleSource(child) && !differ(childDataComponent.formatParse, parseComponent)) {

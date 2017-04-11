@@ -48,22 +48,22 @@ export interface SelectionCompiler {
 }
 
 export function parseUnitSelection(model: UnitModel, selDefs: Dict<SelectionDef>) {
-  let selCmpts: Dict<SelectionComponent> = {},
+  const selCmpts: Dict<SelectionComponent> = {},
       selectionConfig = model.config.selection;
 
-  for (let name in selDefs) {
+  for (const name in selDefs) {
     if (!selDefs.hasOwnProperty(name)) {
       continue;
     }
 
-    let selDef = selDefs[name],
+    const selDef = selDefs[name],
         cfg = selectionConfig[selDef.type];
 
     // Set default values from config if a property hasn't been specified,
     // or if it is true. E.g., "translate": true should use the default
     // event handlers for translate. However, true may be a valid value for
     // a property (e.g., "nearest": true).
-    for (let key in cfg) {
+    for (const key in cfg) {
       // A selection should contain either `encodings` or `fields`, only use
       // default values for these two values if neither of them is specified.
       if ((key === 'encodings' && selDef.fields) || (key === 'fields' && selDef.encodings)) {
@@ -75,7 +75,7 @@ export function parseUnitSelection(model: UnitModel, selDefs: Dict<SelectionDef>
       }
     }
 
-    let selCmpt = selCmpts[name] = extend({}, selDef, {
+    const selCmpt = selCmpts[name] = extend({}, selDef, {
       name: model.getName(name),
       events: isString(selDef.on) ? parseSelector(selDef.on, 'scope') : selDef.on,
       domain: 'data' as SelectionDomain, // TODO: Support def.domain
@@ -94,9 +94,9 @@ export function parseUnitSelection(model: UnitModel, selDefs: Dict<SelectionDef>
 
 export function assembleUnitSignals(model: UnitModel, signals: any[]) {
   forEachSelection(model, function(selCmpt, selCompiler) {
-    let name = selCmpt.name,
-        tupleExpr = selCompiler.tupleExpr(model, selCmpt),
-        modifyExpr = selCompiler.modifyExpr(model, selCmpt);
+    const name = selCmpt.name,
+        tupleExpr = selCompiler.tupleExpr(model, selCmpt);
+    let modifyExpr = selCompiler.modifyExpr(model, selCmpt);
 
     signals.push.apply(signals, selCompiler.signals(model, selCmpt));
 
@@ -188,7 +188,7 @@ export function assembleUnitMarks(model: UnitModel, marks: any[]): any[] {
   return selMarks;
 }
 
-let PREDICATES_OPS = {
+const PREDICATES_OPS = {
   'single': '"intersect", "all"',
   'independent': '"intersect", "unit"',
   'union': '"union", "all"',
@@ -207,10 +207,10 @@ export function predicate(selCmpt: SelectionComponent, datum?: string): string {
 // Utility functions
 
 function forEachSelection(model: Model, cb: (selCmpt: SelectionComponent, selCompiler: SelectionCompiler) => void) {
-  let selections = model.component.selection;
-  for (let name in selections) {
+  const selections = model.component.selection;
+  for (const name in selections) {
     if (selections.hasOwnProperty(name)) {
-      let sel = selections[name];
+      const sel = selections[name];
       cb(sel, compiler(sel));
     }
   }
@@ -229,7 +229,7 @@ function compiler(selCmpt: SelectionComponent): SelectionCompiler {
 }
 
 export function invert(model: UnitModel, selCmpt: SelectionComponent, channel: Channel, expr: string) {
-  let scale = stringValue(model.scaleName(channel));
+  const scale = stringValue(model.scaleName(channel));
   return selCmpt.domain === 'data' ? `invert(${scale}, ${expr})` : expr;
 }
 

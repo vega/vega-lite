@@ -14,12 +14,12 @@ import {transforms} from './transforms';
 
 export namespace source {
   function parse(model: Model): VgData {
-    let data = model.data;
+    const data = model.data;
 
     if (data) {
       // If data is explicitly provided
 
-      let sourceData: VgData = {name: model.dataName(SOURCE)};
+      const sourceData: VgData = {name: model.dataName(SOURCE)};
       if (isInlineData(data)) {
         sourceData.values = data.values;
         sourceData.format = {type: 'json'};
@@ -60,7 +60,7 @@ export namespace source {
   export const parseUnit: (model: Model) => VgData = parse;
 
   export function parseFacet(model: FacetModel) {
-    let sourceData = parse(model);
+    const sourceData = parse(model);
     if (!model.child.component.data.source) {
       // If the child does not have its own source, have to rename its source.
       model.child.renameData(model.child.dataName(SOURCE), model.dataName(SOURCE));
@@ -70,7 +70,7 @@ export namespace source {
   }
 
   export function parseLayer(model: LayerModel) {
-    let sourceData = parse(model);
+    const sourceData = parse(model);
 
     model.children.forEach((child) => {
       const childData = child.component.data;
@@ -97,7 +97,7 @@ export namespace source {
 
   export function assemble(component: DataComponent) {
     if (component.source) {
-      let sourceData: VgData = component.source;
+      const sourceData: VgData = component.source;
 
       if (component.formatParse) {
         component.source.format = component.source.format || {};

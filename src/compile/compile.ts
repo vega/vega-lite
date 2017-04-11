@@ -86,7 +86,7 @@ function assemble(model: Model, topLevelProperties: TopLevelProperties) {
 }
 
 export function assembleRootGroup(model: Model) {
-  let rootGroup:any = extend(
+  const rootGroup:any = extend(
     {
       name: model.getName('main'),
       type: 'group',

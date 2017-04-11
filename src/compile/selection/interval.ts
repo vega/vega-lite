@@ -12,14 +12,14 @@ const interval:SelectionCompiler = {
   predicate: 'vlInterval',
 
   signals: function(model, selCmpt) {
-    let signals: any[] = [],
+    const signals: any[] = [],
         intervals:any[] = [],
         name = selCmpt.name,
         size = name + SIZE;
 
     if (selCmpt.translate && !(scales.has(selCmpt))) {
       events(selCmpt, function(_: any[], evt: any) {
-        let filters = evt.between[0].filter || (evt.between[0].filter = []);
+        const filters = evt.between[0].filter || (evt.between[0].filter = []);
         filters.push('!event.item || (event.item && ' +
           `event.item.mark.name !== ${stringValue(name + BRUSH)})`);
       });
@@ -31,7 +31,7 @@ const interval:SelectionCompiler = {
         return;
       }
 
-      let cs = channelSignal(model, selCmpt, p.encoding);
+      const cs = channelSignal(model, selCmpt, p.encoding);
       signals.push(cs);
       intervals.push(`{field: ${stringValue(p.field)}, extent: ${cs.name}}`);
     });
@@ -66,12 +66,12 @@ const interval:SelectionCompiler = {
   },
 
   modifyExpr: function(model, selCmpt) {
-    let tpl = selCmpt.name + TUPLE;
+    const tpl = selCmpt.name + TUPLE;
     return `${tpl}, {unit: ${tpl}.unit}`;
   },
 
   marks: function(model, selCmpt, marks) {
-    let name = selCmpt.name,
+    const name = selCmpt.name,
         {x, y} = projections(selCmpt);
 
     // Do not add a brush if we're binding to scales.
@@ -79,7 +79,7 @@ const interval:SelectionCompiler = {
       return marks;
     }
 
-    let update = {
+    const update = {
       x: extend({}, x !== null ?
         {scale: model.scaleName(X), signal: `${name}[${x}].extent[0]`} :
         {value: 0}),
@@ -129,7 +129,7 @@ export function projections(selCmpt: SelectionComponent) {
 }
 
 function channelSignal(model: UnitModel, selCmpt: SelectionComponent, channel: Channel): any {
-  let name  = channelSignalName(selCmpt, channel),
+  const name  = channelSignalName(selCmpt, channel),
       size  = (channel === X ? 'width' : 'height'),
       coord = `${channel}(unit)`,
       invert = invertFn.bind(null, model, selCmpt, channel);

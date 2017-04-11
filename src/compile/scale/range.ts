@@ -16,7 +16,7 @@ export function parseRange(scale: Scale): VgRange {
   } else if (scale.scheme) {
     const scheme = scale.scheme;
     if (isExtendedScheme(scheme)) {
-      let r: VgRangeScheme = {scheme: scheme.name};
+      const r: VgRangeScheme = {scheme: scheme.name};
       if (scheme.count) {
         r.count = scheme.count;
       }
@@ -44,9 +44,9 @@ export default function rangeMixins(
 
   // Check if any of the range properties is specified.
   // If so, check if it is compatible and make sure that we only output one of the properties
-  for (let property of RANGE_PROPERTIES) {
+  for (const property of RANGE_PROPERTIES) {
     if (specifiedScale[property] !== undefined) {
-      let supportedByScaleType = scaleTypeSupportProperty(scaleType, property);
+      const supportedByScaleType = scaleTypeSupportProperty(scaleType, property);
       const channelIncompatability = channelScalePropertyIncompatability(channel, property);
       if (!supportedByScaleType) {
         log.warn(log.message.scalePropertyNotWorkWithScaleType(scaleType, property, channel));

@@ -5,6 +5,7 @@ import {assert} from 'chai';
 import {DataComponent} from '../../../src/compile/data/data';
 import {stack} from '../../../src/compile/data/stack';
 
+import {UnitSpec} from '../../../src/spec';
 import {parseFacetModel, parseUnitModel} from '../../util';
 import {mockDataComponent} from './datatestutil';
 
@@ -15,6 +16,7 @@ describe('compile/data/stack', () => {
         "mark": "point",
         "encoding": {}
       });
+
       const stackComponent = stack.parseUnit(model);
       assert.equal(stackComponent, undefined);
     });

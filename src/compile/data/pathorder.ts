@@ -60,7 +60,7 @@ export const pathOrder: DataComponentCompiler<VgSort> = {
     let pathOrderComponent: VgSort = null;
     let stringifiedPathOrder: string = null;
 
-    for (let child of model.children) {
+    for (const child of model.children) {
       const childDataComponent = child.component.data;
       if (model.compatibleSource(child) && childDataComponent.pathOrder !== null) {
         if (pathOrderComponent === null) {
@@ -75,7 +75,7 @@ export const pathOrder: DataComponentCompiler<VgSort> = {
 
     if (pathOrderComponent !== null) {
       // If we merge pathOrderComponent, remove them from children.
-      for (let child of model.children) {
+      for (const child of model.children) {
         delete child.component.data.pathOrder;
       }
     }

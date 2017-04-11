@@ -26,7 +26,7 @@ const compilers: Dict<TransformCompiler> = {project, toggle, scales,
   translate, zoom, inputs, nearest};
 
 export function forEachTransform(selCmpt: SelectionComponent, cb: (tx: TransformCompiler) => void) {
-  for (let t in compilers) {
+  for (const t in compilers) {
     if (compilers[t].has(selCmpt)) {
       cb(compilers[t]);
     }

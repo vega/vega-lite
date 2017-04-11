@@ -75,7 +75,7 @@ export const bin: DataComponentCompiler<Dict<VgTransform[]>> = {
   parseUnit: parse,
 
   parseFacet: function(model: FacetModel) {
-    let binComponent = parse(model);
+    const binComponent = parse(model);
 
     const childDataComponent = model.child.component.data;
 
@@ -89,7 +89,7 @@ export const bin: DataComponentCompiler<Dict<VgTransform[]>> = {
   },
 
   parseLayer: function (model: LayerModel) {
-    let binComponent = parse(model);
+    const binComponent = parse(model);
 
     model.children.forEach((child) => {
       const childDataComponent = child.component.data;

@@ -83,7 +83,7 @@ export interface SupportedMark {
   line?: boolean;
   area?: boolean;
   text?: boolean;
-};
+}
 
 /**
  * Return whether a channel supports a particular mark type.

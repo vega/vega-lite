@@ -101,7 +101,7 @@ export function unitSizeExpr(model: UnitModel, channel: Channel): string {
         // it's equivalent to have paddingInner = 1 since there is only n-1 steps between n points.
         1;
 
-      let space = cardinality +
+      const space = cardinality +
         (paddingInner ? ` - ${paddingInner}` : '') +
         (paddingOuter ? ` + 2*${paddingOuter}` : '');
 
@@ -193,7 +193,7 @@ function getDistinct(model: Model, channel: Channel): StringSet {
     if (hasDiscreteDomain(scale.type) && !(scale.domain instanceof Array)) {
       // if explicit domain is declared, use array length
       const distinctField = model.field(channel);
-      let distinct: StringSet = {};
+      const distinct: StringSet = {};
       distinct[distinctField] = true;
       return distinct;
     }

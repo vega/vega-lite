@@ -58,7 +58,7 @@ describe('Common', function() {
     });
 
     it('should not use number format for non-quantitative scale', function() {
-      for (let type of [TEMPORAL, NOMINAL, ORDINAL]) {
+      for (const type of [TEMPORAL, NOMINAL, ORDINAL]) {
         assert.equal(numberFormat({bin: true, field: 'a', type: type}, undefined, {}, X), undefined);
       }
     });

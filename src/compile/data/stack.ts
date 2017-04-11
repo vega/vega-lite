@@ -132,7 +132,7 @@ export const stack: DataComponentCompiler<StackComponent> = {
     const childDataComponent = child.component.data;
     // FIXME: Correctly support facet of layer of stack.
     if (childDataComponent.stack) {
-      let stackComponent = childDataComponent.stack;
+      const stackComponent = childDataComponent.stack;
 
       const newName = model.dataName(STACKED);
       child.renameData(stackComponent.name, newName);
@@ -160,7 +160,7 @@ export const stack: DataComponentCompiler<StackComponent> = {
       return undefined;
     }
 
-    let transform: VgTransform[] = [];
+    const transform: VgTransform[] = [];
     // Impute
     if (stackComponent.impute) {
       transform.push({

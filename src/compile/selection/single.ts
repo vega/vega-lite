@@ -8,7 +8,7 @@ const single:SelectionCompiler = {
   signals: multi.signals,
 
   topLevelSignals: function(model, selCmpt) {
-    let name = selCmpt.name;
+    const name = selCmpt.name;
     return [{
       name: name,
       update: `data(${stringValue(name + STORE)})[0]`
@@ -16,7 +16,7 @@ const single:SelectionCompiler = {
   },
 
   tupleExpr: function(model, selCmpt) {
-    let name = selCmpt.name, values = `${name}.values`;
+    const name = selCmpt.name, values = `${name}.values`;
     return `fields: ${name}.fields, values: ${values}, ` +
       selCmpt.project.map(function(p, i) {
         return `${p.field}: ${values}[${i}]`;

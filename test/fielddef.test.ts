@@ -17,13 +17,13 @@ describe('fieldDef', () => {
     });
 
     it('should return quantitative for a channel that supports measure', () => {
-      for (let c of ['x', 'y', 'size', 'opacity', 'order'] as Channel[]) {
+      for (const c of ['x', 'y', 'size', 'opacity', 'order'] as Channel[]) {
         assert.equal(defaultType({field: 'a'}, c), 'quantitative', c);
       }
     });
 
     it('should return nominal for a channel that does not support measure', () => {
-      for (let c of ['color', 'shape', 'row', 'column'] as Channel[]) {
+      for (const c of ['color', 'shape', 'row', 'column'] as Channel[]) {
         assert.equal(defaultType({field: 'a'}, c), 'nominal', c);
       }
     });

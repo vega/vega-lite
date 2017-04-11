@@ -190,7 +190,7 @@ export class FacetModel extends Model {
     // TODO: support scales for field reference of parent data (e.g., for SPLOM)
 
     // First, add scale for row and column.
-    let scaleComponent = this.component.scales = parseScaleComponent(this);
+    const scaleComponent = this.component.scales = parseScaleComponent(this);
 
     // Then, move shared/union from its child spec.
     keys(child.component.scales).forEach(function(channel) {
@@ -446,7 +446,7 @@ export function getSharedAxisGroup(model: FacetModel, channel: 'x' | 'y'): VgEnc
   const hasFacet = !!model.facet[facetChannel];
   const dataPrefix = isX ? COLUMN_AXES_DATA_PREFIX : ROW_AXES_DATA_PREFIX;
 
-  let axesGroup: VgEncodeEntry = {
+  const axesGroup: VgEncodeEntry = {
     name: model.getName(channel + '-axes'),
     type: 'group'
   };

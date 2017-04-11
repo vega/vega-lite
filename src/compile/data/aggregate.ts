@@ -53,7 +53,7 @@ export namespace summary {
         }
       } else {
         addDimension(dims, fieldDef);
-      };
+      }
     });
 
     return [{
@@ -70,7 +70,7 @@ export namespace summary {
 
     // If child doesn't have its own data source but has a summary data source, merge
     if (!childDataComponent.source && childDataComponent.summary) {
-      let summaryComponents = childDataComponent.summary.map(function(summaryComponent) {
+      const summaryComponents = childDataComponent.summary.map(function(summaryComponent) {
         // add facet fields as dimensions
         summaryComponent.dimensions = model.reduceFieldDef(addDimension, summaryComponent.dimensions);
 
@@ -107,7 +107,7 @@ export namespace summary {
 
   export function parseLayer(model: LayerModel): SummaryComponent[] {
     // Index by the fields we are grouping by
-    let summaries: {[key: string]: SummaryComponent} = {};
+    const summaries: {[key: string]: SummaryComponent} = {};
 
     // Combine summaries for children that don't have a distinct source
     // (either having its own data source, or its own tranformation of the same data source).
@@ -148,8 +148,8 @@ export namespace summary {
     return components
       .filter(comp => keys(comp.measures).length > 0)
       .map(summaryComponent => {
-        let ops: string[] = [];
-        let fields: string[] = [];
+        const ops: string[] = [];
+        const fields: string[] = [];
         keys(summaryComponent.measures).forEach(field => {
           keys(summaryComponent.measures[field]).forEach(op => {
             ops.push(op);
