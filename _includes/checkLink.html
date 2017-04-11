@@ -20,8 +20,6 @@
     {% else %}
       {{key}}
     {% endif %}
-    {% unless forloop.last %}
-      {{splitstring}}
-    {% endunless %}
+    {% unless forloop.last %} {{splitstring}} {% endunless %}
   {% endfor %}
 {% endif %}
