@@ -3,7 +3,7 @@
 import {assert} from 'chai';
 import {X, Y} from '../../../src/channel';
 import {text} from '../../../src/compile/mark/text';
-import {FacetedUnitSpec, UnitSpec} from '../../../src/spec';
+import {FacetedCompositeUnitSpec, UnitSpec} from '../../../src/spec';
 import {parseModel, parseUnitModel} from '../../util';
 
 describe('Mark: Text', function() {
@@ -107,7 +107,7 @@ describe('Mark: Text', function() {
   });
 
   describe('with row, column, text, and color', function() {
-    const spec: FacetedUnitSpec = {
+    const spec: FacetedCompositeUnitSpec = {
         "mark": "text",
         "encoding": {
           "row": {"field": "Origin", "type": "ordinal"},
