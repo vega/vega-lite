@@ -23,7 +23,7 @@
           <!--special case for anyOf-->
           {% capture type %}
             {% assign para = schema[prop].anyOf %}
-            {% include type.html types=para %}
+            {% include type-anyof.html types=para %}
           {% endcapture %}
         {% endif %}
       {% elsif type == "array" %}
