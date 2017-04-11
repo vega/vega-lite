@@ -254,16 +254,16 @@ export interface VgAxisBase {
   domain?: boolean;
 
   /**
-   * A flag indicate if gridlines should be created in addition to ticks. For `X` and `Y`, the default value is `"true"` for quantitative and time fields and `"false"` otherwise.
+   * A flag indicate if gridlines should be created in addition to ticks. For `X` and `Y`, the default value is `true` for quantitative and time fields and `"false"` otherwise.
    *
-   * __Default value:__ `"true"` for (1) quantitative fields that are not binned and (2) time fields;  otherwise, `"false"`.
+   * __Default value:__ `true` for (1) quantitative fields that are not binned and (2) time fields;  otherwise, `"false"`.
    */
   grid?: boolean;
 
   /**
    * A boolean flag indicating if labels should be included as part of the axis (default true).
    *
-   * __Default value:__  derived from [axis config](config.html#axis-config)'s `labels` (`"true"` by default).
+   * __Default value:__  derived from [axis config](config.html#axis-config)'s `labels` (`true` by default).
    */
   labels?: boolean;
 
