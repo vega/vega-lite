@@ -103,6 +103,9 @@ export namespace message {
   export function invalidFieldType(type: Type) {
     return `Invalid field type "${type}"`;
   }
+  export function invalidAggregate(aggregate: AggregateOp | string) {
+    return `Invalid aggregation operator "${aggregate}"`;
+  }
 
   export function emptyOrInvalidFieldType(type: Type | string, channel: Channel, newType: Type) {
     return `Invalid field type (${type}) for channel ${channel}, using ${newType} instead.`;

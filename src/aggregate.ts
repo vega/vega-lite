@@ -1,4 +1,4 @@
-
+import {toSet} from './util';
 export type AggregateOp = 'argmax' | 'argmin' | 'average' | 'count'
   | 'distinct' | 'max' | 'mean' | 'median' | 'min' | 'missing' | 'modeskew'
   | 'q1' | 'q3' | 'ci0' | 'ci1' | 'stdev' | 'stdevp' | 'sum' | 'valid' | 'values' | 'variance'
@@ -28,6 +28,8 @@ export const AGGREGATE_OPS: AggregateOp[] = [
     'argmin',
     'argmax',
 ];
+
+export const AGGREGATE_OP_INDEX = toSet(AGGREGATE_OPS);
 
 /** Additive-based aggregation operations.  These can be applied to stack. */
 export const SUM_OPS: AggregateOp[] = [
