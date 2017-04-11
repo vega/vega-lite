@@ -51,7 +51,7 @@ Legend properties will apply to the current encoding channel only. Axis properti
 
 #### General
 
-{% include table.html props="offset,values,format,entryPadding,zindex" source="Legend" %}
+{% include table.html props="offset,padding,values,format,entryPadding,zindex" source="Legend" %}
 
 #### Title
 
@@ -77,4 +77,8 @@ Legend Config will apply to the all encoding channel has `legend`. Legend Config
 #### Title
 
 {% include table.html props="titleColor,titleFont,titleFontSize,titleFontWeight,titleLimit,titlePadding" source="LegendConfig" %}
+
+#### Gradient
+
+{% include table.html props="gradientHeight,gradientStrokeColor,gradientStrokeWidth,gradientWidth" source="LegendConfig" %}
 
