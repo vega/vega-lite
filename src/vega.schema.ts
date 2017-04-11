@@ -501,7 +501,7 @@ export interface VgLegendConfig extends VgLegendBase {
   /**
    * The font size of legend label.
    *
-   * __Default value:__ 10.
+   * __Default value:__ `10`.
    *
    * @minimum 0
    */

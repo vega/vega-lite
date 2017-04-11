@@ -372,7 +372,7 @@
                     "type": "string"
                 },
                 "grid": {
-                    "description": "A flag indicate if gridlines should be created in addition to ticks. For `X` and `Y`, the default value is `\"true\"` for quantitative and time fields and `\"false\"` otherwise.\n\n__Default value:__ `\"true\"` for (1) quantitative fields that are not binned and (2) time fields;  otherwise, `\"false\"`.",
+                    "description": "A flag indicate if gridlines should be created in addition to ticks. For `X` and `Y`, the default value is `true` for quantitative and time fields and `\"false\"` otherwise.\n\n__Default value:__ `true` for (1) quantitative fields that are not binned and (2) time fields;  otherwise, `\"false\"`.",
                     "type": "boolean"
                 },
                 "labelAngle": {
@@ -386,7 +386,7 @@
                     "type": "number"
                 },
                 "labels": {
-                    "description": "A boolean flag indicating if labels should be included as part of the axis (default true).\n\n__Default value:__  derived from [axis config](config.html#axis-config)'s `labels` (`\"true\"` by default).",
+                    "description": "A boolean flag indicating if labels should be included as part of the axis (default true).\n\n__Default value:__  derived from [axis config](config.html#axis-config)'s `labels` (`true` by default).",
                     "type": "boolean"
                 },
                 "maxExtent": {
@@ -477,7 +477,7 @@
                     "type": "number"
                 },
                 "grid": {
-                    "description": "A flag indicate if gridlines should be created in addition to ticks. For `X` and `Y`, the default value is `\"true\"` for quantitative and time fields and `\"false\"` otherwise.\n\n__Default value:__ `\"true\"` for (1) quantitative fields that are not binned and (2) time fields;  otherwise, `\"false\"`.",
+                    "description": "A flag indicate if gridlines should be created in addition to ticks. For `X` and `Y`, the default value is `true` for quantitative and time fields and `\"false\"` otherwise.\n\n__Default value:__ `true` for (1) quantitative fields that are not binned and (2) time fields;  otherwise, `\"false\"`.",
                     "type": "boolean"
                 },
                 "gridColor": {
@@ -527,7 +527,7 @@
                     "type": "number"
                 },
                 "labels": {
-                    "description": "A boolean flag indicating if labels should be included as part of the axis (default true).\n\n__Default value:__  derived from [axis config](config.html#axis-config)'s `labels` (`\"true\"` by default).",
+                    "description": "A boolean flag indicating if labels should be included as part of the axis (default true).\n\n__Default value:__  derived from [axis config](config.html#axis-config)'s `labels` (`true` by default).",
                     "type": "boolean"
                 },
                 "maxExtent": {
@@ -2210,7 +2210,7 @@
                     "type": "string"
                 },
                 "labelFontSize": {
-                    "description": "The font size of legend label.\n\n__Default value:__ 10.",
+                    "description": "The font size of legend label.\n\n__Default value:__ `10`.",
                     "minimum": 0,
                     "type": "number"
                 },
