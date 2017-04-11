@@ -4,6 +4,7 @@ import {assert} from 'chai';
 
 import {bin} from '../../../src/compile/data/bin';
 import {vals} from '../../../src/util';
+import {VgTransform} from '../../../src/vega.schema';
 
 import {parseUnitModel} from '../../util';
 
@@ -21,7 +22,7 @@ describe('compile/data/bin', function() {
         }
       });
       const transform = vals(bin.parseUnit(model))[0];
-      assert.deepEqual(transform[0], {
+      assert.deepEqual<VgTransform>(transform[0], {
         type: 'bin',
         field: 'Acceleration',
         as: ['bin_extent_0,100_maxbins_10_Acceleration_start', 'bin_extent_0,100_maxbins_10_Acceleration_end'],
@@ -44,12 +45,12 @@ describe('compile/data/bin', function() {
       });
       const transform = vals(bin.parseUnit(model))[0];
       assert.deepEqual(transform.length, 2);
-      assert.deepEqual(transform[0], {
+      assert.deepEqual<VgTransform>(transform[0], {
         type: 'extent',
         field: 'Acceleration',
         signal: 'bin_maxbins_10_Acceleration_extent'
       });
-      assert.deepEqual(transform[1], {
+      assert.deepEqual<VgTransform>(transform[1], {
         type: 'bin',
         field: 'Acceleration',
         as: ['bin_maxbins_10_Acceleration_start', 'bin_maxbins_10_Acceleration_end'],
@@ -80,12 +81,12 @@ describe('compile/data/bin', function() {
       assert.deepEqual(transformArray.length, 1); // Generate only one
       const transform = transformArray[0];
       assert.deepEqual(transform.length, 3);
-      assert.deepEqual(transform[0], {
+      assert.deepEqual<VgTransform>(transform[0], {
         type: 'extent',
         field: 'Rotten_Tomatoes_Rating',
         signal: 'bin_maxbins_10_Rotten_Tomatoes_Rating_extent'
       });
-      assert.deepEqual(transform[1], {
+      assert.deepEqual<VgTransform>(transform[1], {
         type: 'bin',
         field: 'Rotten_Tomatoes_Rating',
         as:
@@ -95,7 +96,7 @@ describe('compile/data/bin', function() {
         maxbins: 10,
         extent: {signal: 'bin_maxbins_10_Rotten_Tomatoes_Rating_extent'}
       });
-      assert.deepEqual(transform[2], {
+      assert.deepEqual<VgTransform>(transform[2], {
         type: 'formula',
         as: 'bin_maxbins_10_Rotten_Tomatoes_Rating_range',
         expr: 'format(datum["bin_maxbins_10_Rotten_Tomatoes_Rating_start"], \'s\') + \' - \' + format(datum["bin_maxbins_10_Rotten_Tomatoes_Rating_end"], \'s\')'

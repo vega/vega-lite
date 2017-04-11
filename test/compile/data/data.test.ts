@@ -3,6 +3,7 @@
 import {assert} from 'chai';
 import {assembleData} from '../../../src/compile/data/data';
 import {Model} from '../../../src/compile/model';
+import {VgTransform} from '../../../src/vega.schema';
 import {parseUnitModel} from '../../util';
 
 function compileAssembleData(model: Model) {
@@ -42,7 +43,7 @@ describe('data', function () {
       });
       it('should have filter non-positive in source', function() {
         const sourceTransform = data[0].transform;
-        assert.deepEqual(sourceTransform[sourceTransform.length - 1], {
+        assert.deepEqual<VgTransform>(sourceTransform[sourceTransform.length - 1], {
           type: 'filter',
           expr: 'datum["b"] > 0'
         });
@@ -76,7 +77,7 @@ describe('data', function () {
 
       it('should have collect transform as the last transform in stacked', function() {
         const stackedTransform = data[2].transform;
-        assert.deepEqual(stackedTransform[stackedTransform.length - 1], {
+        assert.deepEqual<VgTransform>(stackedTransform[stackedTransform.length - 1], {
           type: 'collect',
           sort: {
             "field": "bin_maxbins_10_IMDB_Rating_start",

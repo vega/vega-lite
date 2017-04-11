@@ -4,6 +4,7 @@ import {assert} from 'chai';
 
 import {pathOrder} from '../../../src/compile/data/pathorder';
 import {LayerModel} from '../../../src/compile/layer';
+import {VgSort} from '../../../src/vega.schema';
 import {parseFacetModel, parseModel, parseUnitModel} from '../../util';
 
 describe('compile/data/pathorder', function() {
@@ -18,7 +19,7 @@ describe('compile/data/pathorder', function() {
           "order": {"field": "year","type": "temporal"}
         }
       });
-      assert.deepEqual(pathOrder.parseUnit(model), {
+      assert.deepEqual<VgSort>(pathOrder.parseUnit(model), {
         field: ['year'],
         order: ['ascending']
       });
@@ -44,7 +45,7 @@ describe('compile/data/pathorder', function() {
           }
         }
       });
-      assert.deepEqual(pathOrder.parseUnit(model), {
+      assert.deepEqual<VgSort>(pathOrder.parseUnit(model), {
         field: 'bin_maxbins_10_IMDB_Rating_start',
         order: 'descending'
       });
@@ -70,7 +71,7 @@ describe('compile/data/pathorder', function() {
           }
         }
       });
-      assert.deepEqual(pathOrder.parseUnit(model), {
+      assert.deepEqual<VgSort>(pathOrder.parseUnit(model), {
         field: 'bin_maxbins_10_IMDB_Rating_start',
         order: 'descending'
       });
@@ -107,7 +108,7 @@ describe('compile/data/pathorder', function() {
         pathOrder: pathOrder.parseUnit(child as any)
       } as any;
 
-      assert.deepEqual(pathOrder.parseFacet(model), {
+      assert.deepEqual<VgSort>(pathOrder.parseFacet(model), {
         field: 'bin_maxbins_10_IMDB_Rating_start',
         order: 'descending'
       });
@@ -148,7 +149,7 @@ describe('compile/data/pathorder', function() {
         pathOrder: pathOrder.parseUnit(children[1])
       } as any;
 
-      assert.deepEqual(pathOrder.parseLayer(model), {
+      assert.deepEqual<VgSort>(pathOrder.parseLayer(model), {
         field: 'bin_maxbins_10_IMDB_Rating_start',
         order: 'descending'
       });

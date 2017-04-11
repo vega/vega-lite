@@ -1,6 +1,7 @@
 import {assert} from 'chai';
 
 import {DETAIL, SHAPE, X} from '../../src/channel';
+import {FieldDef} from '../../src/fielddef';
 import * as log from '../../src/log';
 import {BAR} from '../../src/mark';
 import {QUANTITATIVE} from '../../src/type';
@@ -53,7 +54,7 @@ describe('UnitModel', function() {
             ]
           }
         });
-        assert.deepEqual(model.encoding.detail, [
+        assert.deepEqual<FieldDef | FieldDef[]>(model.encoding.detail, [
           {field: 'a', type: 'ordinal'},
           {value: 'b'}
         ]);
