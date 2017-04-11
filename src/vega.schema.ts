@@ -260,17 +260,23 @@ export interface VgAxisBase {
   domain?: boolean;
 
   /**
-   * A flag indicate if gridlines should be created in addition to ticks. If `grid` is unspecified, the default value is `true` for ROW and COL. For X and Y, the default value is `true` for quantitative and time fields and `false` otherwise.
+   * A flag indicate if gridlines should be created in addition to ticks. For `X` and `Y`, the default value is `true` for quantitative and time fields and `"false"` otherwise.
+   *
+   * __Default value:__ `true` for (1) quantitative fields that are not binned and (2) time fields;  otherwise, `"false"`.
    */
   grid?: boolean;
 
   /**
    * A boolean flag indicating if labels should be included as part of the axis (default true).
+   *
+   * __Default value:__  derived from [axis config](config.html#axis-config)'s `labels` (`true` by default).
    */
   labels?: boolean;
 
   /**
    * The rotation angle of the axis labels.
+   *
+   * __Default value:__ `-45` for time or ordinal axis and `0` otherwise.
    * @minimum 0
    * @maximum 360
    */
@@ -283,12 +289,18 @@ export interface VgAxisBase {
 
   /**
    * The size, in pixels, of major, minor and end ticks.
+   *
+   * __Default value:__  derived from [axis config](config.html#axis-config)'s `tickSize` (`6` by default).
+   *
    * @minimum 0
    */
   tickSize?: number;
 
   /**
    * Max length for axis title if the title is automatically generated from the field's description. By default, this is automatically based on cell size and characterWidth property.
+   *
+   * __Default value:__  automatically determined based on the cell size (`config.cell.width`, `config.cell.height`)
+   *
    * @minimum 0
    * @TJS-type integer
    */
@@ -314,11 +326,15 @@ export interface VgAxisConfig extends VgAxisBase {
  // ---------- Axis ----------
   /**
    * Stroke width of axis domain line
+   *
+   * __Default value:__  (none, using Vega default).
    */
   domainWidth?: number;
 
   /**
    * Color of axis domain line.
+   *
+   * __Default value:__  (none, using Vega default).
    */
   domainColor?: string;
 
@@ -336,6 +352,8 @@ export interface VgAxisConfig extends VgAxisBase {
 
   /**
    * The stroke opacity of grid (value between [0,1])
+   *
+   * __Default value:__ (`1` by default)
    * @minimum 0
    * @maximum 1
    */
@@ -365,6 +383,9 @@ export interface VgAxisConfig extends VgAxisBase {
 
   /**
    * The font size of label, in pixels.
+   *
+   * __Default value:__ `10`.
+   *
    * @minimum 0
    */
   labelFontSize?: number;
@@ -392,18 +413,21 @@ export interface VgAxisConfig extends VgAxisBase {
   titleColor?: string;
 
   /**
-   * Font of the title.
+   * Font of the title. (e.g., `"Helvetica Neue"`).
    */
   titleFont?: string;
 
   /**
    * Font size of the title.
+   *
+   * __Default value:__ `10`.
+   *
    * @minimum 0
    */
   titleFontSize?: number;
 
   /**
-   * Font weight of the title.
+   * Font weight of the title. (e.g., `"bold"`).
    */
   titleFontWeight?: string | number;
 }
@@ -415,12 +439,16 @@ export interface VgLegendBase {
   entryPadding?: number;
 
   /**
-   * The orientation of the legend. One of "left" or "right". This determines how the legend is positioned within the scene. The default is "right".
+   * The orientation of the legend. One of `"left"` or `"right"`. This determines how the legend is positioned within the scene. The default is `"right"`.
+   *
+   * __Default value:__  derived from [legend config](config.html#legend-config)'s `orient` (`"right"` by default).
    */
   orient?: string;
 
   /**
    * The offset, in pixels, by which to displace the legend from the edge of the enclosing group or data rectangle.
+   *
+   * __Default value:__  derived from [legend config](config.html#legend-config)'s `offset` (`0` by default).
    */
   offset?: number;
 
@@ -478,6 +506,9 @@ export interface VgLegendConfig extends VgLegendBase {
 
   /**
    * The font size of legend label.
+   *
+   * __Default value:__ `10`.
+   *
    * @minimum 0
    */
   labelFontSize?: number;

@@ -9,8 +9,10 @@ git merge master --no-edit
 # build
 npm run presite
 npm run build:images
+npm run schema
 git add data/* -f
 git add build/** -f
+git add _data/* -f
 
 # commit if things changed
 if [ -n "$(git status --porcelain)" ]; then

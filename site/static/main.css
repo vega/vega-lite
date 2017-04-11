@@ -82,6 +82,20 @@ table tr th:last-child, table tr td:last-child {
   margin-bottom: 0;
 }
 
+.page-content table {
+  width: 100%;
+}
+
+.page-content table p {
+  margin: .5em 0;
+}
+.page-content table p:first-child {
+  margin-top: 0;
+}
+.page-content table p:last-child {
+  margin-bottom: 0;
+}
+
 /* Headers */
 
 h1, h2, h3, h4 {

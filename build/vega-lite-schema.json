@@ -368,15 +368,15 @@
                     "description": "Optional mark definitions for custom axis encoding."
                 },
                 "format": {
-                    "description": "The formatting pattern for axis labels.",
+                    "description": "The formatting pattern for axis labels. This is D3's [number format pattern](https://github.com/mbostock/d3/wiki/Formatting) for quantitative axis and D3's [time format pattern](https://github.com/mbostock/d3/wiki/Time-Formatting) for time axis.\n\n__Default value:__  derived from [numberFormat](config.html#format) config for quantitative axis and from [timeFormat](config.html#format) config for time axis.",
                     "type": "string"
                 },
                 "grid": {
-                    "description": "A flag indicate if gridlines should be created in addition to ticks. If `grid` is unspecified, the default value is `true` for ROW and COL. For X and Y, the default value is `true` for quantitative and time fields and `false` otherwise.",
+                    "description": "A flag indicate if gridlines should be created in addition to ticks. For `X` and `Y`, the default value is `true` for quantitative and time fields and `\"false\"` otherwise.\n\n__Default value:__ `true` for (1) quantitative fields that are not binned and (2) time fields;  otherwise, `\"false\"`.",
                     "type": "boolean"
                 },
                 "labelAngle": {
-                    "description": "The rotation angle of the axis labels.",
+                    "description": "The rotation angle of the axis labels.\n\n__Default value:__ `-45` for time or ordinal axis and `0` otherwise.",
                     "maximum": 360,
                     "minimum": 0,
                     "type": "number"
@@ -386,7 +386,7 @@
                     "type": "number"
                 },
                 "labels": {
-                    "description": "A boolean flag indicating if labels should be included as part of the axis (default true).",
+                    "description": "A boolean flag indicating if labels should be included as part of the axis (default true).\n\n__Default value:__  derived from [axis config](config.html#axis-config)'s `labels` (`true` by default).",
                     "type": "boolean"
                 },
                 "maxExtent": {
@@ -398,12 +398,12 @@
                     "type": "number"
                 },
                 "offset": {
-                    "description": "The offset, in pixels, by which to displace the axis from the edge of the enclosing group or data rectangle.",
+                    "description": "The offset, in pixels, by which to displace the axis from the edge of the enclosing group or data rectangle.\n\n__Default value:__ derived from  [axis config](config.html#facet-scale-config)'s `offset` (`0` by default)",
                     "type": "number"
                 },
                 "orient": {
                     "$ref": "#/definitions/AxisOrient",
-                    "description": "The orientation of the axis. One of top, bottom, left or right. The orientation can be used to further specialize the axis type (e.g., a y axis oriented for the right edge of the chart)."
+                    "description": "The orientation of the axis. One of top, bottom, left or right. The orientation can be used to further specialize the axis type (e.g., a y axis oriented for the right edge of the chart).\n\n__Default value:__ `\"x\"` axis is placed on the bottom, `\"y\"` axis is placed on the left, `\"column\"`\"s x-axis is placed on the top, `\"row\"`s y-axis is placed on the right."
                 },
                 "position": {
                     "description": "The anchor position of the axis in pixels. For x-axis with top or bottom orientation, this sets the axis group x coordinate. For y-axis with left or right orientation, this sets the axis group y coordinate.\n\n__Default value__: `0`",
@@ -415,7 +415,7 @@
                     "type": "integer"
                 },
                 "tickSize": {
-                    "description": "The size, in pixels, of major, minor and end ticks.",
+                    "description": "The size, in pixels, of major, minor and end ticks.\n\n__Default value:__  derived from [axis config](config.html#axis-config)'s `tickSize` (`6` by default).",
                     "minimum": 0,
                     "type": "number"
                 },
@@ -424,11 +424,11 @@
                     "type": "boolean"
                 },
                 "title": {
-                    "description": "A title for the axis. Shows field name and its function by default.",
+                    "description": "A title for the axis. Shows field name and its function by default.\n\n__Default value:__  derived from the field's name and transformation function applied e.g, \"field_name\", \"SUM(field_name)\", \"BIN(field_name)\", \"YEAR(field_name)\".",
                     "type": "string"
                 },
                 "titleMaxLength": {
-                    "description": "Max length for axis title if the title is automatically generated from the field's description. By default, this is automatically based on cell size and characterWidth property.",
+                    "description": "Max length for axis title if the title is automatically generated from the field's description. By default, this is automatically based on cell size and characterWidth property.\n\n__Default value:__  automatically determined based on the cell size (`config.cell.width`, `config.cell.height`)",
                     "minimum": 0,
                     "type": "integer"
                 },
@@ -450,10 +450,11 @@
                             },
                             "type": "array"
                         }
-                    ]
+                    ],
+                    "description": "Explicitly set the visible axis tick values."
                 },
                 "zindex": {
-                    "description": "A non-positive integer indicating z-index of the axis.\nIf zindex is 0, axes should be drawn behind all chart elements.\nTo put them in front, use zindex = 1.",
+                    "description": "A non-positive integer indicating z-index of the axis.\nIf zindex is 0, axes should be drawn behind all chart elements.\nTo put them in front, use `\"zindex = 1\"`.\n\n__Default value:__ `0` (Behind the marks.)",
                     "minimum": 0,
                     "type": "integer"
                 }
@@ -468,15 +469,15 @@
                     "type": "boolean"
                 },
                 "domainColor": {
-                    "description": "Color of axis domain line.",
+                    "description": "Color of axis domain line.\n\n__Default value:__  (none, using Vega default).",
                     "type": "string"
                 },
                 "domainWidth": {
-                    "description": "Stroke width of axis domain line",
+                    "description": "Stroke width of axis domain line\n\n__Default value:__  (none, using Vega default).",
                     "type": "number"
                 },
                 "grid": {
-                    "description": "A flag indicate if gridlines should be created in addition to ticks. If `grid` is unspecified, the default value is `true` for ROW and COL. For X and Y, the default value is `true` for quantitative and time fields and `false` otherwise.",
+                    "description": "A flag indicate if gridlines should be created in addition to ticks. For `X` and `Y`, the default value is `true` for quantitative and time fields and `\"false\"` otherwise.\n\n__Default value:__ `true` for (1) quantitative fields that are not binned and (2) time fields;  otherwise, `\"false\"`.",
                     "type": "boolean"
                 },
                 "gridColor": {
@@ -492,7 +493,7 @@
                     "type": "array"
                 },
                 "gridOpacity": {
-                    "description": "The stroke opacity of grid (value between [0,1])",
+                    "description": "The stroke opacity of grid (value between [0,1])\n\n__Default value:__ (`1` by default)",
                     "maximum": 1,
                     "minimum": 0,
                     "type": "number"
@@ -503,7 +504,7 @@
                     "type": "number"
                 },
                 "labelAngle": {
-                    "description": "The rotation angle of the axis labels.",
+                    "description": "The rotation angle of the axis labels.\n\n__Default value:__ `-45` for time or ordinal axis and `0` otherwise.",
                     "maximum": 360,
                     "minimum": 0,
                     "type": "number"
@@ -517,7 +518,7 @@
                     "type": "string"
                 },
                 "labelFontSize": {
-                    "description": "The font size of label, in pixels.",
+                    "description": "The font size of label, in pixels.\n\n__Default value:__ `10`.",
                     "minimum": 0,
                     "type": "number"
                 },
@@ -526,7 +527,7 @@
                     "type": "number"
                 },
                 "labels": {
-                    "description": "A boolean flag indicating if labels should be included as part of the axis (default true).",
+                    "description": "A boolean flag indicating if labels should be included as part of the axis (default true).\n\n__Default value:__  derived from [axis config](config.html#axis-config)'s `labels` (`true` by default).",
                     "type": "boolean"
                 },
                 "maxExtent": {
@@ -538,7 +539,7 @@
                     "type": "number"
                 },
                 "shortTimeLabels": {
-                    "description": "Whether month names and weekday names should be abbreviated.",
+                    "description": "Whether month names and weekday names should be abbreviated.\n\n__Default value:__  derived from [axis config](config.html#axis-config)'s \"shortTimeLabels\" (`\"false\" by default).",
                     "type": "boolean"
                 },
                 "tickColor": {
@@ -546,7 +547,7 @@
                     "type": "string"
                 },
                 "tickSize": {
-                    "description": "The size, in pixels, of major, minor and end ticks.",
+                    "description": "The size, in pixels, of major, minor and end ticks.\n\n__Default value:__  derived from [axis config](config.html#axis-config)'s `tickSize` (`6` by default).",
                     "minimum": 0,
                     "type": "number"
                 },
@@ -564,16 +565,16 @@
                     "type": "string"
                 },
                 "titleFont": {
-                    "description": "Font of the title.",
+                    "description": "Font of the title. (e.g., `\"Helvetica Neue\"`).",
                     "type": "string"
                 },
                 "titleFontSize": {
-                    "description": "Font size of the title.",
+                    "description": "Font size of the title.\n\n__Default value:__ `10`.",
                     "minimum": 0,
                     "type": "number"
                 },
                 "titleFontWeight": {
-                    "description": "Font weight of the title.",
+                    "description": "Font weight of the title. (e.g., `\"bold\"`).",
                     "type": [
                         "string",
                         "number"
@@ -584,7 +585,7 @@
                     "type": "number"
                 },
                 "titleMaxLength": {
-                    "description": "Max length for axis title if the title is automatically generated from the field's description. By default, this is automatically based on cell size and characterWidth property.",
+                    "description": "Max length for axis title if the title is automatically generated from the field's description. By default, this is automatically based on cell size and characterWidth property.\n\n__Default value:__  automatically determined based on the cell size (`config.cell.width`, `config.cell.height`)",
                     "minimum": 0,
                     "type": "integer"
                 },
@@ -2095,15 +2096,15 @@
                     "type": "number"
                 },
                 "format": {
-                    "description": "An optional formatting pattern for legend labels. Vega uses D3\\'s format pattern.",
+                    "description": "An optional formatting pattern for legend labels. Vega uses D3\\'s format pattern.\n\n__Default value:__  derived from [`numberFormat`](config.html#format) config for quantitative axis and from [`timeFormat`](config.html#format) config for time axis.",
                     "type": "string"
                 },
                 "offset": {
-                    "description": "The offset, in pixels, by which to displace the legend from the edge of the enclosing group or data rectangle.",
+                    "description": "The offset, in pixels, by which to displace the legend from the edge of the enclosing group or data rectangle.\n\n__Default value:__  derived from [legend config](config.html#legend-config)'s `offset` (`0` by default).",
                     "type": "number"
                 },
                 "orient": {
-                    "description": "The orientation of the legend. One of \"left\" or \"right\". This determines how the legend is positioned within the scene. The default is \"right\".",
+                    "description": "The orientation of the legend. One of `\"left\"` or `\"right\"`. This determines how the legend is positioned within the scene. The default is `\"right\"`.\n\n__Default value:__  derived from [legend config](config.html#legend-config)'s `orient` (`\"right\"` by default).",
                     "type": "string"
                 },
                 "padding": {
@@ -2119,7 +2120,7 @@
                     "type": "number"
                 },
                 "title": {
-                    "description": "A title for the legend. (Shows field name and its function by default.)",
+                    "description": "A title for the legend. (Shows field name and its function by default.)\n\n__Default value:__  derived from the field's name and transformation function applied e.g, \"field_name\", \"SUM(field_name)\", \"BIN(field_name)\", \"YEAR(field_name)\".",
                     "type": "string"
                 },
                 "type": {
@@ -2204,7 +2205,7 @@
                     "type": "string"
                 },
                 "labelFontSize": {
-                    "description": "The font size of legend label.",
+                    "description": "The font size of legend label.\n\n__Default value:__ `10`.",
                     "minimum": 0,
                     "type": "number"
                 },
@@ -2218,11 +2219,11 @@
                     "type": "number"
                 },
                 "offset": {
-                    "description": "The offset, in pixels, by which to displace the legend from the edge of the enclosing group or data rectangle.",
+                    "description": "The offset, in pixels, by which to displace the legend from the edge of the enclosing group or data rectangle.\n\n__Default value:__  derived from [legend config](config.html#legend-config)'s `offset` (`0` by default).",
                     "type": "number"
                 },
                 "orient": {
-                    "description": "The orientation of the legend. One of \"left\" or \"right\". This determines how the legend is positioned within the scene. The default is \"right\".",
+                    "description": "The orientation of the legend. One of `\"left\"` or `\"right\"`. This determines how the legend is positioned within the scene. The default is `\"right\"`.\n\n__Default value:__  derived from [legend config](config.html#legend-config)'s `orient` (`\"right\"` by default).",
                     "type": "string"
                 },
                 "padding": {
@@ -2230,7 +2231,7 @@
                     "type": "number"
                 },
                 "shortTimeLabels": {
-                    "description": "Whether month names and weekday names should be abbreviated.",
+                    "description": "Whether month names and weekday names should be abbreviated.\n\n__Default value:__  derived from [legend config](config.html#legend-config)'s `shortTimeLabels` (`false` by default).",
                     "type": "boolean"
                 },
                 "symbolColor": {
