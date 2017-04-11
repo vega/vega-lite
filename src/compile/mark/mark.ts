@@ -55,7 +55,7 @@ function parsePathMark(model: UnitModel) {
   // FIXME: replace this with more general case for composition
   const details = detailFields(model);
 
-  let pathMarks: any = [
+  const pathMarks: any = [
     {
       name: model.getName('marks'),
       type: markCompiler[mark].vgMark,
@@ -97,7 +97,7 @@ function parseNonPathMark(model: UnitModel) {
 
   const role = model.markDef.role || markCompiler[mark].defaultRole;
 
-  let marks: any[] = []; // TODO: vgMarks
+  const marks: any[] = []; // TODO: vgMarks
 
   // TODO: for non-stacked plot, map order to zindex. (Maybe rename order for layer to zindex?)
 

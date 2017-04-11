@@ -135,7 +135,7 @@ export interface VgBinTransform extends BinBase {
   field: string;
   as: string[];
   signal?: string;
-};
+}
 
 export interface VgExtentTransform {
   type: 'extent';
@@ -207,7 +207,7 @@ export interface VgImputeTransform {
   orderby?: string[];
   method?: 'value' | 'median' | 'max' | 'min' | 'mean';
   value?: any;
-};
+}
 
 export type VgCheckboxBinding = {
   input: 'checkbox';

@@ -36,7 +36,7 @@ export const nonPositiveFilter: DataComponentCompiler<Dict<boolean>> = {
 
   parseLayer: function(model: LayerModel) {
     // note that we run this before source.parseLayer
-    let nonPositiveFilterComponent = {};
+    const nonPositiveFilterComponent = {};
 
     model.children.forEach((child) => {
       const childDataComponent = child.component.data;

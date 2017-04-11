@@ -238,7 +238,7 @@ function normalizeRangedUnit(spec: UnitSpec) {
   const hasX2 = channelHasField(spec.encoding, X2);
   const hasY2 = channelHasField(spec.encoding, Y2);
   if ((hasX2 && !hasX) || (hasY2 && !hasY)) {
-    let normalizedSpec = duplicate(spec);
+    const normalizedSpec = duplicate(spec);
     if (hasX2 && !hasX) {
       normalizedSpec.encoding.x = normalizedSpec.encoding.x2;
       delete normalizedSpec.encoding.x2;
@@ -312,7 +312,7 @@ function accumulate(dict: any, fieldDefs: FieldDef[]): any {
       }
       return f;
     }, {});
-    let key = hash(pureFieldDef);
+    const key = hash(pureFieldDef);
     dict[key] = dict[key] || fieldDef;
   });
   return dict;
@@ -341,7 +341,7 @@ function fieldDefIndex(spec: ExtendedSpec | ExtendedFacetSpec, dict: any = {}): 
 /* Returns all non-duplicate fieldDefs in a spec in a flat array */
 export function fieldDefs(spec: ExtendedSpec | ExtendedFacetSpec): FieldDef[] {
   return vals(fieldDefIndex(spec));
-};
+}
 
 export function isStacked(spec: TopLevel<FacetedUnitSpec>, config?: Config): boolean {
   config = config || spec.config;

@@ -98,7 +98,7 @@ export function title(specifiedAxis: Axis, fieldDef: FieldDef, config: Config, i
   // if not defined, automatically determine axis title from field def
   const fieldTitle = fieldDefTitle(fieldDef, config);
 
-  let maxLength: number = specifiedAxis.titleMaxLength;
+  const maxLength: number = specifiedAxis.titleMaxLength;
   return maxLength ? truncate(fieldTitle, maxLength) : fieldTitle;
 }
 
@@ -123,7 +123,7 @@ export function zindex(specifiedAxis: Axis, isGridAxis: boolean) {
     return 0;
   }
   return 1; // otherwise return undefined and use Vega's default.
-};
+}
 
 export function domainAndTicks(property: keyof VgAxis, specifiedAxis: Axis, isGridAxis: boolean, channel: Channel) {
   if (isGridAxis || channel === ROW || channel === COLUMN) {

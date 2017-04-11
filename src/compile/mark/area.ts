@@ -7,8 +7,6 @@ export const area: MarkCompiler = {
   vgMark: 'area',
   defaultRole: undefined,
   encodeEntry: (model: UnitModel) => {
-    const orient = model.markDef.orient;
-
     return {
       ...mixins.pointPosition('x', model, 'zeroOrMin'),
       ...mixins.pointPosition('y', model, 'zeroOrMin'),

@@ -44,7 +44,7 @@ export function parseScale(model: Model, channel: Channel) {
   const scale = model.scale(channel);
   const sort = model.sort(channel);
 
-  let scaleComponent: VgScale = {
+  const scaleComponent: VgScale = {
     name: model.scaleName(channel + '', true),
     type: scale.type,
     domain: parseDomain(model, channel),

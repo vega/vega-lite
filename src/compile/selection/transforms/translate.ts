@@ -16,12 +16,12 @@ const translate:TransformCompiler = {
   },
 
   signals: function(model, selCmpt, signals) {
-    let name = selCmpt.name,
+    const name = selCmpt.name,
         scales = scalesCompiler.has(selCmpt),
         size = scales ? 'unit' : name + INTERVAL_SIZE,
         anchor = name + ANCHOR,
-        events = parseSelector(selCmpt.translate, 'scope'),
         {x, y} = intervalProjections(selCmpt);
+    let events = parseSelector(selCmpt.translate, 'scope');
 
     if (!scales) {
       events = events.map((e) => (e.between[0].markname = name + INTERVAL_BRUSH, e));
@@ -73,7 +73,7 @@ function getSign(selCmpt: SelectionComponent, channel: Channel) {
 }
 
 function onDelta(model: UnitModel, selCmpt: SelectionComponent, channel: Channel, size: string, signals: any[]) {
-  let name = selCmpt.name,
+  const name = selCmpt.name,
       signal:any = signals.filter((s:any) => s.name === name + '_' + channel)[0],
       anchor = name + ANCHOR,
       delta  = name + DELTA,

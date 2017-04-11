@@ -14,7 +14,7 @@ export function color(model: UnitModel) {
   const config = model.config;
   const filled = model.markDef.filled;
 
-  let e = nonPosition('color', model, {
+  const e = nonPosition('color', model, {
     vgChannel: filled ? 'fill' : 'stroke',
     defaultValue: getMarkConfig('color', model.mark(), config) as string
   });

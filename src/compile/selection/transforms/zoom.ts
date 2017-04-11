@@ -16,12 +16,13 @@ const zoom:TransformCompiler = {
   },
 
   signals: function(model, selCmpt, signals) {
-    let name = selCmpt.name,
+    const name = selCmpt.name,
         delta = name + DELTA,
-        events = parseSelector(selCmpt.zoom, 'scope'),
         {x, y} = intervalProjections(selCmpt),
         sx = stringValue(model.scaleName(X)),
         sy = stringValue(model.scaleName(Y));
+
+    let events = parseSelector(selCmpt.zoom, 'scope');
 
     if (!scalesCompiler.has(selCmpt)) {
       events = events.map((e) => (e.markname = name + INTERVAL_BRUSH, e));
@@ -50,9 +51,9 @@ const zoom:TransformCompiler = {
       onDelta(model, selCmpt, 'y', 'height', signals);
     }
 
-    let size = signals.filter((s:any) => s.name === name + INTERVAL_SIZE);
+    const size = signals.filter((s:any) => s.name === name + INTERVAL_SIZE);
     if (size.length) {
-      let sname = size[0].name;
+      const sname = size[0].name;
       size[0].on.push({
         events: {signal: delta},
         update: `{x: ${sname}.x, y: ${sname}.y, ` +
@@ -68,7 +69,7 @@ const zoom:TransformCompiler = {
 export {zoom as default};
 
 function onDelta(model: UnitModel, selCmpt: SelectionComponent, channel: Channel, size: string, signals: any[]) {
-  let name = selCmpt.name,
+  const name = selCmpt.name,
       signal:any = signals.filter((s:any) => s.name === name + '_' + channel)[0],
       scales = scalesCompiler.has(selCmpt),
       base = scales ? domain(model, channel) : signal.name,

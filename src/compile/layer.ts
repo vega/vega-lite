@@ -111,7 +111,7 @@ export class LayerModel extends Model {
       // Also need to check whether the scales are actually compatible, e.g. use the same sort or throw error
       if (true) { // if shared/union scale
         keys(child.component.scales).forEach(function(channel) {
-          let childScale = child.component.scales[channel];
+          const childScale = child.component.scales[channel];
           const modelScale = scaleComponent[channel];
 
           if (!childScale || isSignalRefDomain(childScale.domain) || (modelScale && isSignalRefDomain(modelScale.domain))) {
@@ -145,7 +145,7 @@ export class LayerModel extends Model {
   }
 
   public parseAxis() {
-    let axisComponent = this.component.axes = {};
+    const axisComponent = this.component.axes = {};
 
     this.children.forEach(function(child) {
       child.parseAxis();
@@ -173,7 +173,7 @@ export class LayerModel extends Model {
   }
 
   public parseLegend() {
-    let legendComponent = this.component.legends = {};
+    const legendComponent = this.component.legends = {};
 
     this.children.forEach(function(child) {
       child.parseLegend();

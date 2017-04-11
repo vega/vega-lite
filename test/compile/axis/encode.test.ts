@@ -38,7 +38,7 @@ describe('compile/axis', () => {
         }
       });
       const labels = encode.labels(model, 'x', {}, {});
-      let expected = "'Q' + quarter(datum.value)";
+      const expected = "'Q' + quarter(datum.value)";
       assert.equal(labels.text.signal, expected);
     });
 
@@ -50,7 +50,7 @@ describe('compile/axis', () => {
         }
       });
       const labels = encode.labels(model, 'x', {}, {});
-      let expected = "'Q' + quarter(datum.value) + ' ' + timeFormat(datum.value, '%b %Y')";
+      const expected = "'Q' + quarter(datum.value) + ' ' + timeFormat(datum.value, '%b %Y')";
       assert.equal(labels.text.signal, expected);
     });
   });

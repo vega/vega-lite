@@ -5,7 +5,7 @@ const multi:SelectionCompiler = {
   predicate: 'vlPoint',
 
   signals: function(model, selCmpt) {
-    let proj = selCmpt.project,
+    const proj = selCmpt.project,
         datum  = '(item().isVoronoi ? datum.datum : datum)',
         fields = proj.map((p) => stringValue(p.field)).join(', '),
         values = proj.map((p) => `${datum}[${stringValue(p.field)}]`).join(', ');
@@ -20,7 +20,7 @@ const multi:SelectionCompiler = {
   },
 
   tupleExpr: function(model, selCmpt) {
-    let name = selCmpt.name;
+    const name = selCmpt.name;
     return `fields: ${name}.fields, values: ${name}.values`;
   },
 

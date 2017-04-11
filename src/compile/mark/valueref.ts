@@ -48,7 +48,7 @@ export function bin(fieldDef: FieldDef, scaleName: string, side: 'start' | 'end'
 }
 
 export function fieldRef(fieldDef: FieldDef, scaleName: string, opt: FieldRefOption, offset?: number | VgValueRef): VgValueRef {
-  let ref: VgValueRef = {
+  const ref: VgValueRef = {
     scale: scaleName,
     field: field(fieldDef, opt),
   };

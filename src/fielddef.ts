@@ -119,7 +119,7 @@ export interface TextFieldDef extends FieldDef {
   format?: string;
 
   condition?: Condition<string|number>;
-};
+}
 
 export type ChannelDef = FieldDef | ValueDef<any>;
 
@@ -151,7 +151,7 @@ export interface FieldRefOption {
 
 export function field(fieldDef: FieldDef, opt: FieldRefOption = {}) {
   let field = fieldDef.field;
-  let prefix = opt.prefix;
+  const prefix = opt.prefix;
   let suffix = opt.suffix;
 
   if (isCount(fieldDef)) {
@@ -256,7 +256,7 @@ export function normalize(channelDef: ChannelDef, channel: Channel) {
 
     // Drop invalid aggregate
     if (fieldDef.aggregate && !AGGREGATE_OP_INDEX[fieldDef.aggregate]) {
-      let {aggregate, ...fieldDefWithoutAggregate} = fieldDef;
+      const {aggregate, ...fieldDefWithoutAggregate} = fieldDef;
       log.warn(log.message.invalidAggregate(fieldDef.aggregate));
       fieldDef = fieldDefWithoutAggregate;
     }

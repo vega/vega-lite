@@ -52,7 +52,7 @@ export const nullFilter: DataComponentCompiler<Dict<FieldDef>> = {
     // note that we run this before source.parseLayer
 
     // FIXME: null filters are not properly propagated right now
-    let nullFilterComponent = parse(model);
+    const nullFilterComponent = parse(model);
 
     model.children.forEach((child) => {
       const childDataComponent = child.component.data;

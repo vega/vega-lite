@@ -1,5 +1,3 @@
-
-
 import {Axis} from '../axis';
 import {Channel, COLUMN, X} from '../channel';
 import {CellConfig, Config} from '../config';
@@ -46,6 +44,12 @@ export interface Component {
   mark: VgEncodeEntry[];
 }
 
+export interface NameMapInterface {
+  rename(oldname: string, newName: string): void;
+  has(name: string): boolean;
+  get(name: string): string;
+}
+
 export class NameMap implements NameMapInterface {
   private nameMap: Dict<string>;
 
@@ -71,12 +75,6 @@ export class NameMap implements NameMapInterface {
 
     return name;
   }
-}
-
-export interface NameMapInterface {
-  rename(oldname: string, newName: string): void;
-  has(name: string): boolean;
-  get(name: string): string;
 }
 
 export abstract class Model {
@@ -185,7 +183,7 @@ export abstract class Model {
   }
 
   public assembleGroup() {
-    let group: VgEncodeEntry = {};
+    const group: VgEncodeEntry = {};
 
     const signals = this.assembleSignals(group.signals || []);
     if (signals.length > 0) {
@@ -233,7 +231,7 @@ export abstract class Model {
   }
 
   public hasDescendantWithFieldOnChannel(channel: Channel) {
-    for (let child of this.children) {
+    for (const child of this.children) {
       if (child.isUnit()) {
         if (child.channelHasField(channel)) {
           return true;

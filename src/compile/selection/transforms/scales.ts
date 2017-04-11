@@ -39,14 +39,14 @@ const scaleBindings:TransformCompiler = {
   },
 
   signals: function(model, selCmpt, signals) {
-    let name = selCmpt.name;
+    const name = selCmpt.name;
     signals = signals.filter(function(s) {
       return s.name !== name + INTERVAL_SIZE &&
         s.name !== name + TUPLE && s.name !== MODIFY;
     });
 
     selCmpt.scales.forEach(function(channel) {
-      let signal = signals.filter((s) => s.name === name + '_' + channel)[0];
+      const signal = signals.filter((s) => s.name === name + '_' + channel)[0];
       signal.push = 'outer';
       delete signal.value;
       delete signal.update;
@@ -59,6 +59,6 @@ const scaleBindings:TransformCompiler = {
 export {scaleBindings as default};
 
 export function domain(model: UnitModel, channel: Channel) {
-  let scale = stringValue(model.scaleName(channel));
+  const scale = stringValue(model.scaleName(channel));
   return `domain(${scale})`;
 }

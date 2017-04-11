@@ -39,7 +39,7 @@ export function parseLegend(model: UnitModel, channel: Channel): VgLegend {
   const fieldDef = model.fieldDef(channel);
   const legend = model.legend(channel);
 
-  let def: VgLegend = getLegendDefWithScale(model, channel);
+  const def: VgLegend = getLegendDefWithScale(model, channel);
 
   LEGEND_PROPERTIES.forEach(function(property) {
     const value = getSpecifiedOrDefaultValue(property, legend, channel, model);
@@ -51,7 +51,7 @@ export function parseLegend(model: UnitModel, channel: Channel): VgLegend {
   // 2) Add mark property definition groups
   const encodeSpec = legend.encode || {};
   ['labels', 'legend', 'title', 'symbols'].forEach(function(part) {
-    let value = encode[part] ?
+    const value = encode[part] ?
       encode[part](fieldDef, encodeSpec[part], model, channel) : // apply rule
       encodeSpec[part]; // no rule -- just default values
     if (value !== undefined && keys(value).length > 0) {

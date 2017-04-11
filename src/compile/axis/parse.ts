@@ -70,7 +70,7 @@ export function parseMainAxis(channel: Channel, model: Model) {
 function parseAxis(channel: Channel, model: Model, isGridAxis: boolean): VgAxis {
   const axis = model.axis(channel);
 
-  let vgAxis: VgAxis = {
+  const vgAxis: VgAxis = {
     scale: model.scaleName(channel)
   };
 

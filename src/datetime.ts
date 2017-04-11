@@ -279,7 +279,7 @@ export function dateTimeExpr(d: DateTime | DateTimeExpr, normalize = false) {
 
   // Note: can't use TimeUnit enum here as importing it will create
   // circular dependency problem!
-  for (let timeUnit of ['hours', 'minutes', 'seconds', 'milliseconds']) {
+  for (const timeUnit of ['hours', 'minutes', 'seconds', 'milliseconds']) {
     if (d[timeUnit] !== undefined) {
       units.push(d[timeUnit]);
     } else {
