@@ -4,6 +4,7 @@ import {assert} from 'chai';
 
 import {summary} from '../../../src/compile/data/aggregate';
 import {DataComponent} from '../../../src/compile/data/data';
+import {VgAggregateTransform} from '../../../src/vega.schema';
 import {parseUnitModel} from '../../util';
 
 describe('compile/data/summary', function () {
@@ -97,7 +98,7 @@ describe('compile/data/summary', function () {
         measures: {'*':{count: true}, Acceleration: {sum: true}}
       }];
       const aggregates = summary.assemble(summaryComponent);
-      assert.deepEqual(aggregates, [{
+      assert.deepEqual<VgAggregateTransform[]>(aggregates, [{
         'type': 'aggregate',
         'groupby': ['Origin'],
         'fields': ['*', 'Acceleration'],
@@ -113,7 +114,7 @@ describe('compile/data/summary', function () {
         measures: {Displacement: {mean: true}}
       }];
       const aggregates = summary.assemble(summaryComponent);
-      assert.deepEqual(aggregates, [{
+      assert.deepEqual<VgAggregateTransform[]>(aggregates, [{
         'type': 'aggregate',
         'groupby': ['Origin', 'Cylinders'],
         'fields': ['Displacement'],

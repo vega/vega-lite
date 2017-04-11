@@ -3,9 +3,9 @@
 import {assert} from 'chai';
 
 import {nullFilter} from '../../../src/compile/data/nullfilter';
+import {FieldDef} from '../../../src/fielddef';
 import {UnitSpec} from '../../../src/spec';
-
-import {mergeDeep} from '../../../src/util';
+import {Dict, mergeDeep} from '../../../src/util';
 import {parseUnitModel} from '../../util';
 
 describe('compile/data/nullfilter', function() {
@@ -21,7 +21,7 @@ describe('compile/data/nullfilter', function() {
 
     it('should add filterNull for Q and T by default', function () {
       const model = parseUnitModel(spec);
-      assert.deepEqual(nullFilter.parseUnit(model), {
+      assert.deepEqual<Dict<FieldDef>>(nullFilter.parseUnit(model), {
         qq: {field: 'qq', type: "quantitative"},
         tt: {field: 'tt', type: "temporal"},
         oo: null
@@ -34,7 +34,7 @@ describe('compile/data/nullfilter', function() {
           filterInvalid: true
         }
       }));
-      assert.deepEqual(nullFilter.parseUnit(model), {
+      assert.deepEqual<Dict<FieldDef>>(nullFilter.parseUnit(model), {
         qq: {field: 'qq', type: "quantitative"},
         tt: {field: 'tt', type: "temporal"},
         oo: {field: 'oo', type: "ordinal"}

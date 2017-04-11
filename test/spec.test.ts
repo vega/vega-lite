@@ -2,7 +2,9 @@
 
 import {assert} from 'chai';
 
-import {fieldDefs, normalize} from '../src/spec';
+import {Encoding} from '../src/encoding';
+import {MarkDef} from '../src/mark';
+import {fieldDefs, GenericSpec, GenericUnitSpec, normalize} from '../src/spec';
 
 // describe('isStacked()') -- tested as part of stackOffset in stack.test.ts
 
@@ -23,7 +25,7 @@ describe('normalize()', function () {
         }
       };
 
-      assert.deepEqual(normalize(spec), {
+      assert.deepEqual<GenericSpec<GenericUnitSpec<string | MarkDef, Encoding>>>(normalize(spec), {
         "width": 123,
         "height": 234,
         "name": "faceted",
@@ -53,7 +55,7 @@ describe('normalize()', function () {
         }
       };
 
-      assert.deepEqual(normalize(spec), {
+      assert.deepEqual<GenericSpec<GenericUnitSpec<string | MarkDef, Encoding>>>(normalize(spec), {
         "data": {"url": "data/movies.json"},
         "facet": {
           "row": {"field": "MPAA_Rating","type": "ordinal"}
@@ -71,7 +73,7 @@ describe('normalize()', function () {
 
   describe('normalizeFacet', () => {
     it('should produce correct layered specs for mean point and vertical error bar', () => {
-      assert.deepEqual(normalize({
+      assert.deepEqual<GenericSpec<GenericUnitSpec<string | MarkDef, Encoding>>>(normalize({
         "description": "A error bar plot showing mean, min, and max in the US population distribution of age groups in 2000.",
         "data": {"url": "data/population.json"},
         "transform": [{"filter": "datum.year == 2000"}],
@@ -190,7 +192,7 @@ describe('normalize()', function () {
 
   describe('normalizeLayer', () => {
     it('should produce correct layered specs for mean point and vertical error bar', () => {
-      assert.deepEqual(normalize({
+      assert.deepEqual<GenericSpec<GenericUnitSpec<string | MarkDef, Encoding>>>(normalize({
         "description": "A error bar plot showing mean, min, and max in the US population distribution of age groups in 2000.",
         "data": {"url": "data/population.json"},
         "transform": [{"filter": "datum.year == 2000"}],

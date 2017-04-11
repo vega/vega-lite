@@ -39,7 +39,7 @@ describe('Selection', function() {
     assert.deepPropertyVal(component, 'three.type', 'interval');
     assert.deepPropertyVal(component, 'three.translate', '[mousedown, window:mouseup] > window:mousemove!');
     assert.deepPropertyVal(component, 'three.zoom', 'wheel');
-    assert.sameDeepMembers(component['three'].project, [{field: 'Horsepower', encoding: 'x'}, {field: 'Miles_per_Gallon', encoding: 'y'}]);
+    assert.sameDeepMembers<selection.ProjectComponent>(component['three'].project, [{field: 'Horsepower', encoding: 'x'}, {field: 'Miles_per_Gallon', encoding: 'y'}]);
     assert.sameDeepMembers(component['three'].events, parseSelector('[mousedown, window:mouseup] > window:mousemove!', 'scope'));
   });
 
@@ -70,14 +70,14 @@ describe('Selection', function() {
     assert.deepPropertyVal(component, 'two.name', 'two');
     assert.deepPropertyVal(component, 'two.type', 'multi');
     assert.deepPropertyVal(component, 'two.toggle', 'event.ctrlKey');
-    assert.sameDeepMembers(component['two'].project, [{field: 'Origin', encoding: 'color'}]);
+    assert.sameDeepMembers<selection.ProjectComponent>(component['two'].project, [{field: 'Origin', encoding: 'color'}]);
     assert.sameDeepMembers(component['two'].events, parseSelector('mouseover', 'scope'));
 
     assert.deepPropertyVal(component, 'three.name', 'three');
     assert.deepPropertyVal(component, 'three.type', 'interval');
     assert.deepPropertyVal(component, 'three.translate', false);
     assert.deepPropertyVal(component, 'three.zoom', 'wheel[event.altKey]');
-    assert.sameDeepMembers(component['three'].project, [{field: 'Miles_per_Gallon', encoding: 'y'}]);
+    assert.sameDeepMembers<selection.ProjectComponent>(component['three'].project, [{field: 'Miles_per_Gallon', encoding: 'y'}]);
     assert.sameDeepMembers(component['three'].events, parseSelector('[mousedown[!event.shiftKey], mouseup] > mousemove', 'scope'));
   });
 
@@ -108,14 +108,14 @@ describe('Selection', function() {
     assert.deepPropertyVal(component, 'two.name', 'two');
     assert.deepPropertyVal(component, 'two.type', 'multi');
     assert.deepPropertyVal(component, 'two.toggle', 'event.ctrlKey');
-    assert.sameDeepMembers(component['two'].project, [{field: 'Origin', encoding: 'color'}]);
+    assert.sameDeepMembers<selection.ProjectComponent>(component['two'].project, [{field: 'Origin', encoding: 'color'}]);
     assert.sameDeepMembers(component['two'].events, parseSelector('mouseover', 'scope'));
 
     assert.deepPropertyVal(component, 'three.name', 'three');
     assert.deepPropertyVal(component, 'three.type', 'interval');
     assert.notDeepProperty(component, 'three.translate');
     assert.deepPropertyVal(component, 'three.zoom', 'wheel[event.altKey]');
-    assert.sameDeepMembers(component['three'].project, [{field: 'Miles_per_Gallon', encoding: 'y'}]);
+    assert.sameDeepMembers<selection.ProjectComponent>(component['three'].project, [{field: 'Miles_per_Gallon', encoding: 'y'}]);
     assert.sameDeepMembers(component['three'].events, parseSelector('[mousedown[!event.shiftKey], mouseup] > mousemove', 'scope'));
   });
 });
