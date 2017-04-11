@@ -603,16 +603,26 @@ export interface VgMarkConfig {
 
   /**
    * Default Fill Color.  This has higher precedence than config.color
+   *
+   * __Default value:__ (None)
+   *
    */
   fill?: string;
 
   /**
    * Default Stroke Color.  This has higher precedence than config.color
+   *
+   * __Default value:__ (None)
+   *
    */
   stroke?: string;
 
   // ---------- Opacity ----------
   /**
+   * The overall opacity (value between [0,1]).
+   *
+   * __Default value:__ `0.7` for non-aggregate plots with `point`, `tick`, `circle`, or `square` marks or [layered `bar` charts](http://vega.github.io/vega-editor/?mode=vega-lite&spec=bar_layered_transparent&showEditor=1) and `1` otherwise.
+   *
    * @minimum 0
    * @maximum 1
    */
@@ -620,12 +630,20 @@ export interface VgMarkConfig {
 
 
   /**
+   * The fill opacity (value between [0,1]).
+   *
+   * __Default value:__ `1`
+   *
    * @minimum 0
    * @maximum 1
    */
   fillOpacity?: number;
 
   /**
+   * The stroke opacity (value between [0,1]).
+   *
+   * __Default value:__ `1`
+   *
    * @minimum 0
    * @maximum 1
    */
@@ -633,6 +651,8 @@ export interface VgMarkConfig {
 
   // ---------- Stroke Style ----------
   /**
+   * The stroke width, in pixels.
+   *
    * @minimum 0
    */
   strokeWidth?: number;
@@ -688,12 +708,18 @@ export interface VgMarkConfig {
 
   /**
    * The default symbol shape to use. One of: `"circle"` (default), `"square"`, `"cross"`, `"diamond"`, `"triangle-up"`, or `"triangle-down"`, or a custom SVG path.
+   *
+   * __Default value:__ `"circle"`
+   *
    */
   shape?: string;
 
   /**
    * The pixel area each the point/circle/square.
    * For example: in the case of circles, the radius is determined in part by the square root of the size value.
+   *
+   * __Default value:__ `30`
+   *
    * @minimum 0
    */
   size?: number;
@@ -701,7 +727,7 @@ export interface VgMarkConfig {
   // Text / Label Mark Config
 
   /**
-   * The horizontal alignment of the text. One of left, right, center.
+   * The horizontal alignment of the text. One of `"left"`, `"right"`, `"center"`.
    */
   align?: HorizontalAlign;
 
@@ -713,33 +739,36 @@ export interface VgMarkConfig {
   angle?: number;
 
   /**
-   * The vertical alignment of the text. One of top, middle, bottom.
+   * The vertical alignment of the text. One of `"top"`, `"middle"`, `"bottom"`.
+   *
+   * __Default value:__ `"middle"`
+   *
    */
   baseline?: VerticalAlign;
 
   /**
-   * The horizontal offset, in pixels, between the text label and its anchor point. The offset is applied after rotation by the angle property.
+   * The horizontal offset, in pixels, between the text label and its anchor point. The offset is applied after rotation by the _angle_ property.
    */
   dx?: number;
 
   /**
-   * The vertical offset, in pixels, between the text label and its anchor point. The offset is applied after rotation by the angle property.
+   * The vertical offset, in pixels, between the text label and its anchor point. The offset is applied after rotation by the _angle_ property.
    */
   dy?: number;
 
   /**
-   * Polar coordinate radial offset, in pixels, of the text label from the origin determined by the x and y properties.
+   * Polar coordinate radial offset, in pixels, of the text label from the origin determined by the `x` and `y` properties.
    * @minimum 0
    */
   radius?: number;
 
   /**
-   * Polar coordinate angle, in radians, of the text label from the origin determined by the x and y properties. Values for theta follow the same convention of arc mark startAngle and endAngle properties: angles are measured in radians, with 0 indicating "north".
+   * Polar coordinate angle, in radians, of the text label from the origin determined by the `x` and `y` properties. Values for `theta` follow the same convention of `arc` mark `startAngle` and `endAngle` properties: angles are measured in radians, with `0` indicating "north".
    */
   theta?: number;
 
   /**
-   * The typeface to set the text in (e.g., Helvetica Neue).
+   * The typeface to set the text in (e.g., `"Helvetica Neue"`).
    * @minimum 0
    */
   font?: string;
@@ -751,16 +780,16 @@ export interface VgMarkConfig {
   fontSize?: number;
 
   /**
-   * The font style (e.g., italic).
+   * The font style (e.g., `"italic"`).
    */
   fontStyle?: FontStyle;
   /**
-   * The font weight (e.g., `"normal"`, `"bold"`, `900`).
+   * The font weight (e.g., `"bold"`).
    */
   fontWeight?: FontWeight | FontWeightNumber;
 
   /**
-   * Placeholder Text
+   * Placeholder text if the `text` channel is not specified
    */
   text?: string;
 }

@@ -92,12 +92,17 @@ export interface ScaleConfig {
   clamp?: boolean;
   /**
    *  Default range step for `x` ordinal scale when is mark is `text`.
+   *
+   * __Default value:__ `90`
+   *
    *  @minimum 0
    */
   textXRangeStep?: number; // FIXME: consider if we will rename this "tableColumnWidth"
   /**
    * Default range step for (1) `y` ordinal scale,
    * and (2) `x` ordinal scale when the mark is not `text`.
+   *
+   * __Default value:__ `21`
    *
    * @minimum 0
    * @nullable
@@ -106,6 +111,9 @@ export interface ScaleConfig {
 
   /**
    * Default inner padding for `x` and `y` band-ordinal scales.
+   *
+   * __Default value:__ `0.1`
+   *
    * @minimum 0
    * @maximum 1
    */
@@ -121,6 +129,9 @@ export interface ScaleConfig {
 
   /**
    * Default outer padding for `x` and `y` point-ordinal scales.
+   *
+   * __Default value:__ `0.5`
+   *
    * @minimum 0
    * @maximum 1
    */
@@ -128,6 +139,9 @@ export interface ScaleConfig {
 
   /**
    * Default spacing between faceted plots.
+   *
+   * __Default value:__ `16`
+   *
    * @TJS-type integer
    * @minimum 0
    */
@@ -162,18 +176,27 @@ export interface ScaleConfig {
   /**
    * The default max value for mapping quantitative fields to text's size/fontSize.
    * If undefined (default), we will use bandSize - 1.
+   *
+   * __Default value:__ `40`
+   *
    * @minimum 0
    */
   maxFontSize?: number;
 
   /**
    * The default min value for mapping quantitative fields to tick's size/fontSize scale with zero=false
+   *
+   * __Default value:__ `8`
+   *
    * @minimum 0
    */
   minFontSize?: number;
 
   /**
    * Default minimum opacity for mapping a field to opacity.
+   *
+   * __Default value:__ `0.3`
+   *
    * @minimum 0
    * @maximum 1
    */
@@ -181,6 +204,9 @@ export interface ScaleConfig {
 
   /**
    * Default max opacity for mapping a field to opacity.
+   *
+   * __Default value:__ `0.8`
+   *
    * @minimum 0
    * @maximum 1
    */
@@ -189,6 +215,9 @@ export interface ScaleConfig {
 
   /**
    * Default minimum value for point size scale with zero=false.
+   *
+   * __Default value:__ `9`
+   *
    * @minimum 0
    */
   minSize?: number;
@@ -201,12 +230,18 @@ export interface ScaleConfig {
 
   /**
    * Default minimum strokeWidth for strokeWidth (or rule/line's size) scale with zero=false.
+   *
+   * __Default value:__ `1`
+   *
    * @minimum 0
    */
   minStrokeWidth?: number;
 
   /**
    * Default max strokeWidth for strokeWidth  (or rule/line's size) scale.
+   *
+   * __Default value:__ `4`
+   *
    * @minimum 0
    */
   maxStrokeWidth?: number;
@@ -214,6 +249,9 @@ export interface ScaleConfig {
   /**
    * The default collection of symbol shapes for mapping nominal fields to shapes of point marks (i.e., range of a `shape` scale).
    * Each value should be one of: `"circle"`, `"square"`, `"cross"`, `"diamond"`, `"triangle-up"`, or `"triangle-down"`, or a custom SVG path.
+   *
+   * __Default value:__ `["circle", "square", "cross", "diamond", "triangle-up", "triangle-down"]`
+   *
    */
   shapes?: string[];
 }

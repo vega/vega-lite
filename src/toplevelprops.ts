@@ -5,7 +5,9 @@ export interface TopLevelProperties {
   // autosize?: ...;
 
   /**
-   * CSS color property to use as background of visualization. Default is `"transparent"`.
+   * CSS color property to use as background of visualization.
+   *
+   * __Default value:__ none (transparent)
    */
   background?: string;
 

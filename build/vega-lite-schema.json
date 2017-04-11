@@ -10,7 +10,7 @@
                     "type": "string"
                 },
                 "background": {
-                    "description": "CSS color property to use as background of visualization. Default is `\"transparent\"`.",
+                    "description": "CSS color property to use as background of visualization.\n\n__Default value:__ none (transparent)",
                     "type": "string"
                 },
                 "config": {
@@ -124,7 +124,7 @@
                     "type": "string"
                 },
                 "background": {
-                    "description": "CSS color property to use as background of visualization. Default is `\"transparent\"`.",
+                    "description": "CSS color property to use as background of visualization.\n\n__Default value:__ none (transparent)",
                     "type": "string"
                 },
                 "config": {
@@ -223,7 +223,7 @@
                     "type": "string"
                 },
                 "background": {
-                    "description": "CSS color property to use as background of visualization. Default is `\"transparent\"`.",
+                    "description": "CSS color property to use as background of visualization.\n\n__Default value:__ none (transparent)",
                     "type": "string"
                 },
                 "config": {
@@ -610,7 +610,7 @@
             "properties": {
                 "align": {
                     "$ref": "#/definitions/HorizontalAlign",
-                    "description": "The horizontal alignment of the text. One of left, right, center."
+                    "description": "The horizontal alignment of the text. One of `\"left\"`, `\"right\"`, `\"center\"`."
                 },
                 "angle": {
                     "description": "The rotation angle of the text, in degrees.",
@@ -620,19 +620,19 @@
                 },
                 "baseline": {
                     "$ref": "#/definitions/VerticalAlign",
-                    "description": "The vertical alignment of the text. One of top, middle, bottom."
+                    "description": "The vertical alignment of the text. One of `\"top\"`, `\"middle\"`, `\"bottom\"`.\n\n__Default value:__ `\"middle\"`"
                 },
                 "binSpacing": {
-                    "description": "Offset between bar for binned field.  Ideal value for this is either 0 (Preferred by statisticians) or 1 (Vega-Lite Default, D3 example style).",
+                    "description": "Offset between bar for binned field.  Ideal value for this is either 0 (Preferred by statisticians) or 1 (Vega-Lite Default, D3 example style).\n\n__Default value:__ `1`",
                     "minimum": 0,
                     "type": "number"
                 },
                 "color": {
-                    "description": "Default color.",
+                    "description": "Default color.\n\n__Default value:__ <span style=\"color: #4682b4;\">&#9632;</span> `\"#4682b4\"`",
                     "type": "string"
                 },
                 "continuousBandSize": {
-                    "description": "Default size of the bars on continuous scales.",
+                    "description": "Default size of the bars on continuous scales.\n\n__Default value:__ `2`",
                     "minimum": 0,
                     "type": "number"
                 },
@@ -642,28 +642,29 @@
                     "type": "number"
                 },
                 "dx": {
-                    "description": "The horizontal offset, in pixels, between the text label and its anchor point. The offset is applied after rotation by the angle property.",
+                    "description": "The horizontal offset, in pixels, between the text label and its anchor point. The offset is applied after rotation by the _angle_ property.",
                     "type": "number"
                 },
                 "dy": {
-                    "description": "The vertical offset, in pixels, between the text label and its anchor point. The offset is applied after rotation by the angle property.",
+                    "description": "The vertical offset, in pixels, between the text label and its anchor point. The offset is applied after rotation by the _angle_ property.",
                     "type": "number"
                 },
                 "fill": {
-                    "description": "Default Fill Color.  This has higher precedence than config.color",
+                    "description": "Default Fill Color.  This has higher precedence than config.color\n\n__Default value:__ (None)",
                     "type": "string"
                 },
                 "fillOpacity": {
+                    "description": "The fill opacity (value between [0,1]).\n\n__Default value:__ `1`",
                     "maximum": 1,
                     "minimum": 0,
                     "type": "number"
                 },
                 "filled": {
-                    "description": "Whether the mark's color should be used as fill color instead of stroke color.\nAll marks except \"point\", \"line\", and \"rule\" are filled by default.",
+                    "description": "Whether the mark's color should be used as fill color instead of stroke color.\n\n__Default value:__ `true` for all marks except `point` and `false` for `point`.\n\n__Applicable for:__ `bar`, `point`, `circle`, `square`, and `area` marks.",
                     "type": "boolean"
                 },
                 "font": {
-                    "description": "The typeface to set the text in (e.g., Helvetica Neue).",
+                    "description": "The typeface to set the text in (e.g., `\"Helvetica Neue\"`).",
                     "minimum": 0,
                     "type": "string"
                 },
@@ -674,7 +675,7 @@
                 },
                 "fontStyle": {
                     "$ref": "#/definitions/FontStyle",
-                    "description": "The font style (e.g., italic)."
+                    "description": "The font style (e.g., `\"italic\"`)."
                 },
                 "fontWeight": {
                     "anyOf": [
@@ -689,13 +690,14 @@
                             "type": "number"
                         }
                     ],
-                    "description": "The font weight (e.g., `\"normal\"`, `\"bold\"`, `900`)."
+                    "description": "The font weight (e.g., `\"bold\"`)."
                 },
                 "interpolate": {
                     "$ref": "#/definitions/Interpolate",
                     "description": "The line interpolation method to use for line and area marks. One of the following:\n- `\"linear\"`: piecewise linear segments, as in a polyline.\n- `\"linear-closed\"`: close the linear segments to form a polygon.\n- `\"step\"`: alternate between horizontal and vertical segments, as in a step function.\n- `\"step-before\"`: alternate between vertical and horizontal segments, as in a step function.\n- `\"step-after\"`: alternate between horizontal and vertical segments, as in a step function.\n- `\"basis\"`: a B-spline, with control point duplication on the ends.\n- `\"basis-open\"`: an open B-spline; may not intersect the start or end.\n- `\"basis-closed\"`: a closed B-spline, as in a loop.\n- `\"cardinal\"`: a Cardinal spline, with control point duplication on the ends.\n- `\"cardinal-open\"`: an open Cardinal spline; may not intersect the start or end, but will intersect other control points.\n- `\"cardinal-closed\"`: a closed Cardinal spline, as in a loop.\n- `\"bundle\"`: equivalent to basis, except the tension parameter is used to straighten the spline.\n- `\"monotone\"`: cubic interpolation that preserves monotonicity in y."
                 },
                 "opacity": {
+                    "description": "The overall opacity (value between [0,1]).\n\n__Default value:__ `0.7` for non-aggregate plots with `point`, `tick`, `circle`, or `square` marks or [layered `bar` charts](http://vega.github.io/vega-editor/?mode=vega-lite&spec=bar_layered_transparent&showEditor=1) and `1` otherwise.",
                     "maximum": 1,
                     "minimum": 0,
                     "type": "number"
@@ -705,21 +707,21 @@
                     "description": "The orientation of a non-stacked bar, tick, area, and line charts.\nThe value is either horizontal (default) or vertical.\n- For bar, rule and tick, this determines whether the size of the bar and tick\nshould be applied to x or y dimension.\n- For area, this property determines the orient property of the Vega output.\n- For line, this property determines the sort order of the points in the line\nif `config.sortLineBy` is not specified.\nFor stacked charts, this is always determined by the orientation of the stack;\ntherefore explicitly specified value will be ignored."
                 },
                 "radius": {
-                    "description": "Polar coordinate radial offset, in pixels, of the text label from the origin determined by the x and y properties.",
+                    "description": "Polar coordinate radial offset, in pixels, of the text label from the origin determined by the `x` and `y` properties.",
                     "minimum": 0,
                     "type": "number"
                 },
                 "shape": {
-                    "description": "The default symbol shape to use. One of: `\"circle\"` (default), `\"square\"`, `\"cross\"`, `\"diamond\"`, `\"triangle-up\"`, or `\"triangle-down\"`, or a custom SVG path.",
+                    "description": "The default symbol shape to use. One of: `\"circle\"` (default), `\"square\"`, `\"cross\"`, `\"diamond\"`, `\"triangle-up\"`, or `\"triangle-down\"`, or a custom SVG path.\n\n__Default value:__ `\"circle\"`",
                     "type": "string"
                 },
                 "size": {
-                    "description": "The pixel area each the point/circle/square.\nFor example: in the case of circles, the radius is determined in part by the square root of the size value.",
+                    "description": "The pixel area each the point/circle/square.\nFor example: in the case of circles, the radius is determined in part by the square root of the size value.\n\n__Default value:__ `30`",
                     "minimum": 0,
                     "type": "number"
                 },
                 "stroke": {
-                    "description": "Default Stroke Color.  This has higher precedence than config.color",
+                    "description": "Default Stroke Color.  This has higher precedence than config.color\n\n__Default value:__ (None)",
                     "type": "string"
                 },
                 "strokeDash": {
@@ -734,11 +736,13 @@
                     "type": "number"
                 },
                 "strokeOpacity": {
+                    "description": "The stroke opacity (value between [0,1]).\n\n__Default value:__ `1`",
                     "maximum": 1,
                     "minimum": 0,
                     "type": "number"
                 },
                 "strokeWidth": {
+                    "description": "The stroke width, in pixels.",
                     "minimum": 0,
                     "type": "number"
                 },
@@ -749,11 +753,11 @@
                     "type": "number"
                 },
                 "text": {
-                    "description": "Placeholder Text",
+                    "description": "Placeholder text if the `text` channel is not specified",
                     "type": "string"
                 },
                 "theta": {
-                    "description": "Polar coordinate angle, in radians, of the text label from the origin determined by the x and y properties. Values for theta follow the same convention of arc mark startAngle and endAngle properties: angles are measured in radians, with 0 indicating \"north\".",
+                    "description": "Polar coordinate angle, in radians, of the text label from the origin determined by the `x` and `y` properties. Values for `theta` follow the same convention of `arc` mark `startAngle` and `endAngle` properties: angles are measured in radians, with `0` indicating \"north\".",
                     "type": "number"
                 }
             },
@@ -1112,43 +1116,46 @@
             "additionalProperties": false,
             "properties": {
                 "clip": {
+                    "description": "Whether the view should be clipped.",
                     "type": "boolean"
                 },
                 "fill": {
-                    "description": "The fill color.",
+                    "description": "The fill color.\n\n__Default value:__ (none)",
                     "type": "string"
                 },
                 "fillOpacity": {
-                    "description": "The fill opacity (value between [0,1]).",
+                    "description": "The fill opacity (value between [0,1]).\n\n__Default value:__ (none)",
                     "type": "number"
                 },
                 "height": {
+                    "description": "The default height of the single plot or each plot in a trellis plot when the visualization has a continuous (non-ordinal) y-scale with `rangeStep` = `null`.\n\n__Default value:__ `200`",
                     "type": "number"
                 },
                 "stroke": {
-                    "description": "The stroke color.",
+                    "description": "The stroke color.\n\n__Default value:__ (none)",
                     "type": "string"
                 },
                 "strokeDash": {
-                    "description": "An array of alternating stroke, space lengths for creating dashed or dotted lines.",
+                    "description": "An array of alternating stroke, space lengths for creating dashed or dotted lines.\n\n__Default value:__ (none)",
                     "items": {
                         "type": "number"
                     },
                     "type": "array"
                 },
                 "strokeDashOffset": {
-                    "description": "The offset (in pixels) into which to begin drawing with the stroke dash array.",
+                    "description": "The offset (in pixels) into which to begin drawing with the stroke dash array.\n\n__Default value:__ (none)",
                     "type": "number"
                 },
                 "strokeOpacity": {
-                    "description": "The stroke opacity (value between [0,1]).",
+                    "description": "The stroke opacity (value between [0,1]).\n\n__Default value:__ (none)",
                     "type": "number"
                 },
                 "strokeWidth": {
-                    "description": "The stroke width, in pixels.",
+                    "description": "The stroke width, in pixels.\n\n__Default value:__ (none)",
                     "type": "number"
                 },
                 "width": {
+                    "description": "The default width of the single plot or each plot in a trellis plot when the visualization has a continuous (non-ordinal) x-scale or ordinal x-scale with `rangeStep` = `null`.\n\n__Default value:__ `200`",
                     "type": "number"
                 }
             },
@@ -1308,7 +1315,7 @@
                     "description": "Specific axis config for x-axis along the bottom edge of the chart."
                 },
                 "background": {
-                    "description": "CSS color property to use as background of visualization. Default is `\"transparent\"`.",
+                    "description": "CSS color property to use as background of visualization.\n\n__Default value:__ none (transparent)",
                     "type": "string"
                 },
                 "bar": {
@@ -1324,7 +1331,7 @@
                     "description": "Circle-Specific Config"
                 },
                 "countTitle": {
-                    "description": "Default axis and legend title for count fields.",
+                    "description": "Default axis and legend title for count fields.\n\n__Default value:__ `'Number of Records'`.",
                     "type": "string"
                 },
                 "facet": {
@@ -1348,7 +1355,7 @@
                     "description": "Mark Config"
                 },
                 "numberFormat": {
-                    "description": "D3 Number format for axis labels and text tables. For example \"s\" for SI units.",
+                    "description": "D3 Number format for axis labels and text tables. For example \"s\" for SI units.(in the form of [D3 number format pattern](https://github.com/mbostock/d3/wiki/Formatting)).\n\n__Default value:__ `\"s\"` (except for text marks that encode a count field, the default value is `\"d\"`).",
                     "type": "string"
                 },
                 "overlay": {
@@ -1469,7 +1476,7 @@
                     "description": "Tick-Specific Config"
                 },
                 "timeFormat": {
-                    "description": "Default datetime format for axis and legend labels. The format can be set directly on each axis and legend.",
+                    "description": "Default datetime format for axis and legend labels. The format can be set directly on each axis and legend. [D3 time format pattern](https://github.com/mbostock/d3/wiki/Time-Formatting)).\n\n__Default value:__ `'%b %d, %Y'`.",
                     "type": "string"
                 }
             },
@@ -1802,12 +1809,15 @@
             "additionalProperties": false,
             "properties": {
                 "color": {
+                    "description": "Color of the grid between facets.",
                     "type": "string"
                 },
                 "offset": {
+                    "description": "Offset for grid between facets.",
                     "type": "number"
                 },
                 "opacity": {
+                    "description": "Opacity of the grid between facets.",
                     "type": "number"
                 }
             },
@@ -2437,7 +2447,7 @@
             "properties": {
                 "align": {
                     "$ref": "#/definitions/HorizontalAlign",
-                    "description": "The horizontal alignment of the text. One of left, right, center."
+                    "description": "The horizontal alignment of the text. One of `\"left\"`, `\"right\"`, `\"center\"`."
                 },
                 "angle": {
                     "description": "The rotation angle of the text, in degrees.",
@@ -2447,35 +2457,36 @@
                 },
                 "baseline": {
                     "$ref": "#/definitions/VerticalAlign",
-                    "description": "The vertical alignment of the text. One of top, middle, bottom."
+                    "description": "The vertical alignment of the text. One of `\"top\"`, `\"middle\"`, `\"bottom\"`.\n\n__Default value:__ `\"middle\"`"
                 },
                 "color": {
-                    "description": "Default color.",
+                    "description": "Default color.\n\n__Default value:__ <span style=\"color: #4682b4;\">&#9632;</span> `\"#4682b4\"`",
                     "type": "string"
                 },
                 "dx": {
-                    "description": "The horizontal offset, in pixels, between the text label and its anchor point. The offset is applied after rotation by the angle property.",
+                    "description": "The horizontal offset, in pixels, between the text label and its anchor point. The offset is applied after rotation by the _angle_ property.",
                     "type": "number"
                 },
                 "dy": {
-                    "description": "The vertical offset, in pixels, between the text label and its anchor point. The offset is applied after rotation by the angle property.",
+                    "description": "The vertical offset, in pixels, between the text label and its anchor point. The offset is applied after rotation by the _angle_ property.",
                     "type": "number"
                 },
                 "fill": {
-                    "description": "Default Fill Color.  This has higher precedence than config.color",
+                    "description": "Default Fill Color.  This has higher precedence than config.color\n\n__Default value:__ (None)",
                     "type": "string"
                 },
                 "fillOpacity": {
+                    "description": "The fill opacity (value between [0,1]).\n\n__Default value:__ `1`",
                     "maximum": 1,
                     "minimum": 0,
                     "type": "number"
                 },
                 "filled": {
-                    "description": "Whether the mark's color should be used as fill color instead of stroke color.\nAll marks except \"point\", \"line\", and \"rule\" are filled by default.",
+                    "description": "Whether the mark's color should be used as fill color instead of stroke color.\n\n__Default value:__ `true` for all marks except `point` and `false` for `point`.\n\n__Applicable for:__ `bar`, `point`, `circle`, `square`, and `area` marks.",
                     "type": "boolean"
                 },
                 "font": {
-                    "description": "The typeface to set the text in (e.g., Helvetica Neue).",
+                    "description": "The typeface to set the text in (e.g., `\"Helvetica Neue\"`).",
                     "minimum": 0,
                     "type": "string"
                 },
@@ -2486,7 +2497,7 @@
                 },
                 "fontStyle": {
                     "$ref": "#/definitions/FontStyle",
-                    "description": "The font style (e.g., italic)."
+                    "description": "The font style (e.g., `\"italic\"`)."
                 },
                 "fontWeight": {
                     "anyOf": [
@@ -2501,13 +2512,14 @@
                             "type": "number"
                         }
                     ],
-                    "description": "The font weight (e.g., `\"normal\"`, `\"bold\"`, `900`)."
+                    "description": "The font weight (e.g., `\"bold\"`)."
                 },
                 "interpolate": {
                     "$ref": "#/definitions/Interpolate",
                     "description": "The line interpolation method to use for line and area marks. One of the following:\n- `\"linear\"`: piecewise linear segments, as in a polyline.\n- `\"linear-closed\"`: close the linear segments to form a polygon.\n- `\"step\"`: alternate between horizontal and vertical segments, as in a step function.\n- `\"step-before\"`: alternate between vertical and horizontal segments, as in a step function.\n- `\"step-after\"`: alternate between horizontal and vertical segments, as in a step function.\n- `\"basis\"`: a B-spline, with control point duplication on the ends.\n- `\"basis-open\"`: an open B-spline; may not intersect the start or end.\n- `\"basis-closed\"`: a closed B-spline, as in a loop.\n- `\"cardinal\"`: a Cardinal spline, with control point duplication on the ends.\n- `\"cardinal-open\"`: an open Cardinal spline; may not intersect the start or end, but will intersect other control points.\n- `\"cardinal-closed\"`: a closed Cardinal spline, as in a loop.\n- `\"bundle\"`: equivalent to basis, except the tension parameter is used to straighten the spline.\n- `\"monotone\"`: cubic interpolation that preserves monotonicity in y."
                 },
                 "opacity": {
+                    "description": "The overall opacity (value between [0,1]).\n\n__Default value:__ `0.7` for non-aggregate plots with `point`, `tick`, `circle`, or `square` marks or [layered `bar` charts](http://vega.github.io/vega-editor/?mode=vega-lite&spec=bar_layered_transparent&showEditor=1) and `1` otherwise.",
                     "maximum": 1,
                     "minimum": 0,
                     "type": "number"
@@ -2517,21 +2529,21 @@
                     "description": "The orientation of a non-stacked bar, tick, area, and line charts.\nThe value is either horizontal (default) or vertical.\n- For bar, rule and tick, this determines whether the size of the bar and tick\nshould be applied to x or y dimension.\n- For area, this property determines the orient property of the Vega output.\n- For line, this property determines the sort order of the points in the line\nif `config.sortLineBy` is not specified.\nFor stacked charts, this is always determined by the orientation of the stack;\ntherefore explicitly specified value will be ignored."
                 },
                 "radius": {
-                    "description": "Polar coordinate radial offset, in pixels, of the text label from the origin determined by the x and y properties.",
+                    "description": "Polar coordinate radial offset, in pixels, of the text label from the origin determined by the `x` and `y` properties.",
                     "minimum": 0,
                     "type": "number"
                 },
                 "shape": {
-                    "description": "The default symbol shape to use. One of: `\"circle\"` (default), `\"square\"`, `\"cross\"`, `\"diamond\"`, `\"triangle-up\"`, or `\"triangle-down\"`, or a custom SVG path.",
+                    "description": "The default symbol shape to use. One of: `\"circle\"` (default), `\"square\"`, `\"cross\"`, `\"diamond\"`, `\"triangle-up\"`, or `\"triangle-down\"`, or a custom SVG path.\n\n__Default value:__ `\"circle\"`",
                     "type": "string"
                 },
                 "size": {
-                    "description": "The pixel area each the point/circle/square.\nFor example: in the case of circles, the radius is determined in part by the square root of the size value.",
+                    "description": "The pixel area each the point/circle/square.\nFor example: in the case of circles, the radius is determined in part by the square root of the size value.\n\n__Default value:__ `30`",
                     "minimum": 0,
                     "type": "number"
                 },
                 "stroke": {
-                    "description": "Default Stroke Color.  This has higher precedence than config.color",
+                    "description": "Default Stroke Color.  This has higher precedence than config.color\n\n__Default value:__ (None)",
                     "type": "string"
                 },
                 "strokeDash": {
@@ -2546,11 +2558,13 @@
                     "type": "number"
                 },
                 "strokeOpacity": {
+                    "description": "The stroke opacity (value between [0,1]).\n\n__Default value:__ `1`",
                     "maximum": 1,
                     "minimum": 0,
                     "type": "number"
                 },
                 "strokeWidth": {
+                    "description": "The stroke width, in pixels.",
                     "minimum": 0,
                     "type": "number"
                 },
@@ -2561,11 +2575,11 @@
                     "type": "number"
                 },
                 "text": {
-                    "description": "Placeholder Text",
+                    "description": "Placeholder text if the `text` channel is not specified",
                     "type": "string"
                 },
                 "theta": {
-                    "description": "Polar coordinate angle, in radians, of the text label from the origin determined by the x and y properties. Values for theta follow the same convention of arc mark startAngle and endAngle properties: angles are measured in radians, with 0 indicating \"north\".",
+                    "description": "Polar coordinate angle, in radians, of the text label from the origin determined by the `x` and `y` properties. Values for `theta` follow the same convention of `arc` mark `startAngle` and `endAngle` properties: angles are measured in radians, with `0` indicating \"north\".",
                     "type": "number"
                 }
             },
@@ -2580,7 +2594,7 @@
                 },
                 "interpolate": {
                     "$ref": "#/definitions/Interpolate",
-                    "description": "The line interpolation method to use for line and area marks. One of the following:\n- `\"linear\"`: piecewise linear segments, as in a polyline.\n- `\"linear-closed\"`: close the linear segments to form a polygon.\n- `\"step\"`: alternate between horizontal and vertical segments, as in a step function.\n- `\"step-before\"`: alternate between vertical and horizontal segments, as in a step function.\n- `\"step-after\"`: alternate between horizontal and vertical segments, as in a step function.\n- `\"basis\"`: a B-spline, with control point duplication on the ends.\n- `\"basis-open\"`: an open B-spline; may not intersect the start or end.\n- `\"basis-closed\"`: a closed B-spline, as in a loop.\n- `\"cardinal\"`: a Cardinal spline, with control point duplication on the ends.\n- `\"cardinal-open\"`: an open Cardinal spline; may not intersect the start or end, but will intersect other control points.\n- `\"cardinal-closed\"`: a closed Cardinal spline, as in a loop.\n- `\"bundle\"`: equivalent to basis, except the tension parameter is used to straighten the spline.\n- `\"monotone\"`: cubic interpolation that preserves monotonicity in y."
+                    "description": "The line interpolation method to use for line and area marks. One of the following:\n- `\"linear\"`: piecewise linear segments, as in a polyline.\n- `\"linear-closed\"`: close the linear segments to form a polygon.\n- `\"step\"`: alternate between horizontal and vertical segments, as in a step function.\n- `\"step-before\"`: alternate between vertical and horizontal segments, as in a step function.\n- `\"step-after\"`: alternate between horizontal and vertical segments, as in a step function.\n- `\"basis\"`: a B-spline, with control point duplication on the ends.\n- `\"basis-open\"`: an open B-spline; may not intersect the start or end.\n- `\"basis-closed\"`: a closed B-spline, as in a loop.\n- `\"cardinal\"`: a Cardinal spline, with control point duplication on the ends.\n- `\"cardinal-open\"`: an open Cardinal spline; may not intersect the start or end, but will intersect other control points.\n- `\"cardinal-closed\"`: a closed Cardinal spline, as in a loop.\n- `\"bundle\"`: equivalent to basis, except the tension parameter is used to straighten the spline.\n- `\"monotone\"`: cubic interpolation that preserves monotonicity in y.\nFor more information about each interpolation method, please see [D3's line interpolation](https://github.com/mbostock/d3/wiki/SVG-Shapes#line_interpolate)."
                 },
                 "orient": {
                     "$ref": "#/definitions/Orient",
@@ -2591,7 +2605,7 @@
                     "type": "string"
                 },
                 "tension": {
-                    "description": "Depending on the interpolation type, sets the tension parameter (for line and area marks).",
+                    "description": "Depending on the interpolation type, sets the tension parameter (for line and area marks).(See [D3's line interpolation](https://github.com/mbostock/d3/wiki/SVG-Shapes#line_interpolate).)",
                     "maximum": 1,
                     "minimum": 0,
                     "type": "number"
@@ -2710,7 +2724,7 @@
                     "description": "Type of overlay for area mark (line or linepoint)"
                 },
                 "line": {
-                    "description": "Whether to overlay line with point.",
+                    "description": "Whether to overlay line with point.\n\n__Default value:__ `false`",
                     "type": "boolean"
                 }
             },
@@ -2968,7 +2982,7 @@
             "additionalProperties": false,
             "properties": {
                 "bandPaddingInner": {
-                    "description": "Default inner padding for `x` and `y` band-ordinal scales.",
+                    "description": "Default inner padding for `x` and `y` band-ordinal scales.\n\n__Default value:__ `0.1`",
                     "maximum": 1,
                     "minimum": 0,
                     "type": "number"
@@ -2984,7 +2998,7 @@
                     "type": "boolean"
                 },
                 "facetSpacing": {
-                    "description": "Default spacing between faceted plots.",
+                    "description": "Default spacing between faceted plots.\n\n__Default value:__ `16`",
                     "minimum": 0,
                     "type": "integer"
                 },
@@ -2994,12 +3008,12 @@
                     "type": "number"
                 },
                 "maxFontSize": {
-                    "description": "The default max value for mapping quantitative fields to text's size/fontSize.\nIf undefined (default), we will use bandSize - 1.",
+                    "description": "The default max value for mapping quantitative fields to text's size/fontSize.\nIf undefined (default), we will use bandSize - 1.\n\n__Default value:__ `40`",
                     "minimum": 0,
                     "type": "number"
                 },
                 "maxOpacity": {
-                    "description": "Default max opacity for mapping a field to opacity.",
+                    "description": "Default max opacity for mapping a field to opacity.\n\n__Default value:__ `0.8`",
                     "maximum": 1,
                     "minimum": 0,
                     "type": "number"
@@ -3010,7 +3024,7 @@
                     "type": "number"
                 },
                 "maxStrokeWidth": {
-                    "description": "Default max strokeWidth for strokeWidth  (or rule/line's size) scale.",
+                    "description": "Default max strokeWidth for strokeWidth  (or rule/line's size) scale.\n\n__Default value:__ `4`",
                     "minimum": 0,
                     "type": "number"
                 },
@@ -3020,28 +3034,28 @@
                     "type": "number"
                 },
                 "minFontSize": {
-                    "description": "The default min value for mapping quantitative fields to tick's size/fontSize scale with zero=false",
+                    "description": "The default min value for mapping quantitative fields to tick's size/fontSize scale with zero=false\n\n__Default value:__ `8`",
                     "minimum": 0,
                     "type": "number"
                 },
                 "minOpacity": {
-                    "description": "Default minimum opacity for mapping a field to opacity.",
+                    "description": "Default minimum opacity for mapping a field to opacity.\n\n__Default value:__ `0.3`",
                     "maximum": 1,
                     "minimum": 0,
                     "type": "number"
                 },
                 "minSize": {
-                    "description": "Default minimum value for point size scale with zero=false.",
+                    "description": "Default minimum value for point size scale with zero=false.\n\n__Default value:__ `9`",
                     "minimum": 0,
                     "type": "number"
                 },
                 "minStrokeWidth": {
-                    "description": "Default minimum strokeWidth for strokeWidth (or rule/line's size) scale with zero=false.",
+                    "description": "Default minimum strokeWidth for strokeWidth (or rule/line's size) scale with zero=false.\n\n__Default value:__ `1`",
                     "minimum": 0,
                     "type": "number"
                 },
                 "pointPadding": {
-                    "description": "Default outer padding for `x` and `y` point-ordinal scales.",
+                    "description": "Default outer padding for `x` and `y` point-ordinal scales.\n\n__Default value:__ `0.5`",
                     "maximum": 1,
                     "minimum": 0,
                     "type": "number"
@@ -3049,7 +3063,7 @@
                 "rangeStep": {
                     "anyOf": [
                         {
-                            "description": "Default range step for (1) `y` ordinal scale,\nand (2) `x` ordinal scale when the mark is not `text`.",
+                            "description": "Default range step for (1) `y` ordinal scale,\nand (2) `x` ordinal scale when the mark is not `text`.\n\n__Default value:__ `21`",
                             "minimum": 0,
                             "type": "number"
                         },
@@ -3063,14 +3077,14 @@
                     "type": "boolean"
                 },
                 "shapes": {
-                    "description": "The default collection of symbol shapes for mapping nominal fields to shapes of point marks (i.e., range of a `shape` scale).\nEach value should be one of: `\"circle\"`, `\"square\"`, `\"cross\"`, `\"diamond\"`, `\"triangle-up\"`, or `\"triangle-down\"`, or a custom SVG path.",
+                    "description": "The default collection of symbol shapes for mapping nominal fields to shapes of point marks (i.e., range of a `shape` scale).\nEach value should be one of: `\"circle\"`, `\"square\"`, `\"cross\"`, `\"diamond\"`, `\"triangle-up\"`, or `\"triangle-down\"`, or a custom SVG path.\n\n__Default value:__ `[\"circle\", \"square\", \"cross\", \"diamond\", \"triangle-up\", \"triangle-down\"]`",
                     "items": {
                         "type": "string"
                     },
                     "type": "array"
                 },
                 "textXRangeStep": {
-                    "description": "Default range step for `x` ordinal scale when is mark is `text`.",
+                    "description": "Default range step for `x` ordinal scale when is mark is `text`.\n\n__Default value:__ `90`",
                     "minimum": 0,
                     "type": "number"
                 },
@@ -3452,7 +3466,7 @@
             "properties": {
                 "align": {
                     "$ref": "#/definitions/HorizontalAlign",
-                    "description": "The horizontal alignment of the text. One of left, right, center."
+                    "description": "The horizontal alignment of the text. One of `\"left\"`, `\"right\"`, `\"center\"`."
                 },
                 "angle": {
                     "description": "The rotation angle of the text, in degrees.",
@@ -3462,35 +3476,36 @@
                 },
                 "baseline": {
                     "$ref": "#/definitions/VerticalAlign",
-                    "description": "The vertical alignment of the text. One of top, middle, bottom."
+                    "description": "The vertical alignment of the text. One of `\"top\"`, `\"middle\"`, `\"bottom\"`.\n\n__Default value:__ `\"middle\"`"
                 },
                 "color": {
-                    "description": "Default color.",
+                    "description": "Default color.\n\n__Default value:__ <span style=\"color: #4682b4;\">&#9632;</span> `\"#4682b4\"`",
                     "type": "string"
                 },
                 "dx": {
-                    "description": "The horizontal offset, in pixels, between the text label and its anchor point. The offset is applied after rotation by the angle property.",
+                    "description": "The horizontal offset, in pixels, between the text label and its anchor point. The offset is applied after rotation by the _angle_ property.",
                     "type": "number"
                 },
                 "dy": {
-                    "description": "The vertical offset, in pixels, between the text label and its anchor point. The offset is applied after rotation by the angle property.",
+                    "description": "The vertical offset, in pixels, between the text label and its anchor point. The offset is applied after rotation by the _angle_ property.",
                     "type": "number"
                 },
                 "fill": {
-                    "description": "Default Fill Color.  This has higher precedence than config.color",
+                    "description": "Default Fill Color.  This has higher precedence than config.color\n\n__Default value:__ (None)",
                     "type": "string"
                 },
                 "fillOpacity": {
+                    "description": "The fill opacity (value between [0,1]).\n\n__Default value:__ `1`",
                     "maximum": 1,
                     "minimum": 0,
                     "type": "number"
                 },
                 "filled": {
-                    "description": "Whether the mark's color should be used as fill color instead of stroke color.\nAll marks except \"point\", \"line\", and \"rule\" are filled by default.",
+                    "description": "Whether the mark's color should be used as fill color instead of stroke color.\n\n__Default value:__ `true` for all marks except `point` and `false` for `point`.\n\n__Applicable for:__ `bar`, `point`, `circle`, `square`, and `area` marks.",
                     "type": "boolean"
                 },
                 "font": {
-                    "description": "The typeface to set the text in (e.g., Helvetica Neue).",
+                    "description": "The typeface to set the text in (e.g., `\"Helvetica Neue\"`).",
                     "minimum": 0,
                     "type": "string"
                 },
@@ -3501,7 +3516,7 @@
                 },
                 "fontStyle": {
                     "$ref": "#/definitions/FontStyle",
-                    "description": "The font style (e.g., italic)."
+                    "description": "The font style (e.g., `\"italic\"`)."
                 },
                 "fontWeight": {
                     "anyOf": [
@@ -3516,13 +3531,14 @@
                             "type": "number"
                         }
                     ],
-                    "description": "The font weight (e.g., `\"normal\"`, `\"bold\"`, `900`)."
+                    "description": "The font weight (e.g., `\"bold\"`)."
                 },
                 "interpolate": {
                     "$ref": "#/definitions/Interpolate",
                     "description": "The line interpolation method to use for line and area marks. One of the following:\n- `\"linear\"`: piecewise linear segments, as in a polyline.\n- `\"linear-closed\"`: close the linear segments to form a polygon.\n- `\"step\"`: alternate between horizontal and vertical segments, as in a step function.\n- `\"step-before\"`: alternate between vertical and horizontal segments, as in a step function.\n- `\"step-after\"`: alternate between horizontal and vertical segments, as in a step function.\n- `\"basis\"`: a B-spline, with control point duplication on the ends.\n- `\"basis-open\"`: an open B-spline; may not intersect the start or end.\n- `\"basis-closed\"`: a closed B-spline, as in a loop.\n- `\"cardinal\"`: a Cardinal spline, with control point duplication on the ends.\n- `\"cardinal-open\"`: an open Cardinal spline; may not intersect the start or end, but will intersect other control points.\n- `\"cardinal-closed\"`: a closed Cardinal spline, as in a loop.\n- `\"bundle\"`: equivalent to basis, except the tension parameter is used to straighten the spline.\n- `\"monotone\"`: cubic interpolation that preserves monotonicity in y."
                 },
                 "opacity": {
+                    "description": "The overall opacity (value between [0,1]).\n\n__Default value:__ `0.7` for non-aggregate plots with `point`, `tick`, `circle`, or `square` marks or [layered `bar` charts](http://vega.github.io/vega-editor/?mode=vega-lite&spec=bar_layered_transparent&showEditor=1) and `1` otherwise.",
                     "maximum": 1,
                     "minimum": 0,
                     "type": "number"
@@ -3532,12 +3548,12 @@
                     "description": "The orientation of a non-stacked bar, tick, area, and line charts.\nThe value is either horizontal (default) or vertical.\n- For bar, rule and tick, this determines whether the size of the bar and tick\nshould be applied to x or y dimension.\n- For area, this property determines the orient property of the Vega output.\n- For line, this property determines the sort order of the points in the line\nif `config.sortLineBy` is not specified.\nFor stacked charts, this is always determined by the orientation of the stack;\ntherefore explicitly specified value will be ignored."
                 },
                 "radius": {
-                    "description": "Polar coordinate radial offset, in pixels, of the text label from the origin determined by the x and y properties.",
+                    "description": "Polar coordinate radial offset, in pixels, of the text label from the origin determined by the `x` and `y` properties.",
                     "minimum": 0,
                     "type": "number"
                 },
                 "shape": {
-                    "description": "The default symbol shape to use. One of: `\"circle\"` (default), `\"square\"`, `\"cross\"`, `\"diamond\"`, `\"triangle-up\"`, or `\"triangle-down\"`, or a custom SVG path.",
+                    "description": "The default symbol shape to use. One of: `\"circle\"` (default), `\"square\"`, `\"cross\"`, `\"diamond\"`, `\"triangle-up\"`, or `\"triangle-down\"`, or a custom SVG path.\n\n__Default value:__ `\"circle\"`",
                     "type": "string"
                 },
                 "shortTimeLabels": {
@@ -3545,12 +3561,12 @@
                     "type": "boolean"
                 },
                 "size": {
-                    "description": "The pixel area each the point/circle/square.\nFor example: in the case of circles, the radius is determined in part by the square root of the size value.",
+                    "description": "The pixel area each the point/circle/square.\nFor example: in the case of circles, the radius is determined in part by the square root of the size value.\n\n__Default value:__ `30`",
                     "minimum": 0,
                     "type": "number"
                 },
                 "stroke": {
-                    "description": "Default Stroke Color.  This has higher precedence than config.color",
+                    "description": "Default Stroke Color.  This has higher precedence than config.color\n\n__Default value:__ (None)",
                     "type": "string"
                 },
                 "strokeDash": {
@@ -3565,11 +3581,13 @@
                     "type": "number"
                 },
                 "strokeOpacity": {
+                    "description": "The stroke opacity (value between [0,1]).\n\n__Default value:__ `1`",
                     "maximum": 1,
                     "minimum": 0,
                     "type": "number"
                 },
                 "strokeWidth": {
+                    "description": "The stroke width, in pixels.",
                     "minimum": 0,
                     "type": "number"
                 },
@@ -3580,11 +3598,11 @@
                     "type": "number"
                 },
                 "text": {
-                    "description": "Placeholder Text",
+                    "description": "Placeholder text if the `text` channel is not specified",
                     "type": "string"
                 },
                 "theta": {
-                    "description": "Polar coordinate angle, in radians, of the text label from the origin determined by the x and y properties. Values for theta follow the same convention of arc mark startAngle and endAngle properties: angles are measured in radians, with 0 indicating \"north\".",
+                    "description": "Polar coordinate angle, in radians, of the text label from the origin determined by the `x` and `y` properties. Values for `theta` follow the same convention of `arc` mark `startAngle` and `endAngle` properties: angles are measured in radians, with `0` indicating \"north\".",
                     "type": "number"
                 }
             },
@@ -3639,7 +3657,7 @@
             "properties": {
                 "align": {
                     "$ref": "#/definitions/HorizontalAlign",
-                    "description": "The horizontal alignment of the text. One of left, right, center."
+                    "description": "The horizontal alignment of the text. One of `\"left\"`, `\"right\"`, `\"center\"`."
                 },
                 "angle": {
                     "description": "The rotation angle of the text, in degrees.",
@@ -3654,35 +3672,36 @@
                 },
                 "baseline": {
                     "$ref": "#/definitions/VerticalAlign",
-                    "description": "The vertical alignment of the text. One of top, middle, bottom."
+                    "description": "The vertical alignment of the text. One of `\"top\"`, `\"middle\"`, `\"bottom\"`.\n\n__Default value:__ `\"middle\"`"
                 },
                 "color": {
-                    "description": "Default color.",
+                    "description": "Default color.\n\n__Default value:__ <span style=\"color: #4682b4;\">&#9632;</span> `\"#4682b4\"`",
                     "type": "string"
                 },
                 "dx": {
-                    "description": "The horizontal offset, in pixels, between the text label and its anchor point. The offset is applied after rotation by the angle property.",
+                    "description": "The horizontal offset, in pixels, between the text label and its anchor point. The offset is applied after rotation by the _angle_ property.",
                     "type": "number"
                 },
                 "dy": {
-                    "description": "The vertical offset, in pixels, between the text label and its anchor point. The offset is applied after rotation by the angle property.",
+                    "description": "The vertical offset, in pixels, between the text label and its anchor point. The offset is applied after rotation by the _angle_ property.",
                     "type": "number"
                 },
                 "fill": {
-                    "description": "Default Fill Color.  This has higher precedence than config.color",
+                    "description": "Default Fill Color.  This has higher precedence than config.color\n\n__Default value:__ (None)",
                     "type": "string"
                 },
                 "fillOpacity": {
+                    "description": "The fill opacity (value between [0,1]).\n\n__Default value:__ `1`",
                     "maximum": 1,
                     "minimum": 0,
                     "type": "number"
                 },
                 "filled": {
-                    "description": "Whether the mark's color should be used as fill color instead of stroke color.\nAll marks except \"point\", \"line\", and \"rule\" are filled by default.",
+                    "description": "Whether the mark's color should be used as fill color instead of stroke color.\n\n__Default value:__ `true` for all marks except `point` and `false` for `point`.\n\n__Applicable for:__ `bar`, `point`, `circle`, `square`, and `area` marks.",
                     "type": "boolean"
                 },
                 "font": {
-                    "description": "The typeface to set the text in (e.g., Helvetica Neue).",
+                    "description": "The typeface to set the text in (e.g., `\"Helvetica Neue\"`).",
                     "minimum": 0,
                     "type": "string"
                 },
@@ -3693,7 +3712,7 @@
                 },
                 "fontStyle": {
                     "$ref": "#/definitions/FontStyle",
-                    "description": "The font style (e.g., italic)."
+                    "description": "The font style (e.g., `\"italic\"`)."
                 },
                 "fontWeight": {
                     "anyOf": [
@@ -3708,13 +3727,14 @@
                             "type": "number"
                         }
                     ],
-                    "description": "The font weight (e.g., `\"normal\"`, `\"bold\"`, `900`)."
+                    "description": "The font weight (e.g., `\"bold\"`)."
                 },
                 "interpolate": {
                     "$ref": "#/definitions/Interpolate",
                     "description": "The line interpolation method to use for line and area marks. One of the following:\n- `\"linear\"`: piecewise linear segments, as in a polyline.\n- `\"linear-closed\"`: close the linear segments to form a polygon.\n- `\"step\"`: alternate between horizontal and vertical segments, as in a step function.\n- `\"step-before\"`: alternate between vertical and horizontal segments, as in a step function.\n- `\"step-after\"`: alternate between horizontal and vertical segments, as in a step function.\n- `\"basis\"`: a B-spline, with control point duplication on the ends.\n- `\"basis-open\"`: an open B-spline; may not intersect the start or end.\n- `\"basis-closed\"`: a closed B-spline, as in a loop.\n- `\"cardinal\"`: a Cardinal spline, with control point duplication on the ends.\n- `\"cardinal-open\"`: an open Cardinal spline; may not intersect the start or end, but will intersect other control points.\n- `\"cardinal-closed\"`: a closed Cardinal spline, as in a loop.\n- `\"bundle\"`: equivalent to basis, except the tension parameter is used to straighten the spline.\n- `\"monotone\"`: cubic interpolation that preserves monotonicity in y."
                 },
                 "opacity": {
+                    "description": "The overall opacity (value between [0,1]).\n\n__Default value:__ `0.7` for non-aggregate plots with `point`, `tick`, `circle`, or `square` marks or [layered `bar` charts](http://vega.github.io/vega-editor/?mode=vega-lite&spec=bar_layered_transparent&showEditor=1) and `1` otherwise.",
                     "maximum": 1,
                     "minimum": 0,
                     "type": "number"
@@ -3724,21 +3744,21 @@
                     "description": "The orientation of a non-stacked bar, tick, area, and line charts.\nThe value is either horizontal (default) or vertical.\n- For bar, rule and tick, this determines whether the size of the bar and tick\nshould be applied to x or y dimension.\n- For area, this property determines the orient property of the Vega output.\n- For line, this property determines the sort order of the points in the line\nif `config.sortLineBy` is not specified.\nFor stacked charts, this is always determined by the orientation of the stack;\ntherefore explicitly specified value will be ignored."
                 },
                 "radius": {
-                    "description": "Polar coordinate radial offset, in pixels, of the text label from the origin determined by the x and y properties.",
+                    "description": "Polar coordinate radial offset, in pixels, of the text label from the origin determined by the `x` and `y` properties.",
                     "minimum": 0,
                     "type": "number"
                 },
                 "shape": {
-                    "description": "The default symbol shape to use. One of: `\"circle\"` (default), `\"square\"`, `\"cross\"`, `\"diamond\"`, `\"triangle-up\"`, or `\"triangle-down\"`, or a custom SVG path.",
+                    "description": "The default symbol shape to use. One of: `\"circle\"` (default), `\"square\"`, `\"cross\"`, `\"diamond\"`, `\"triangle-up\"`, or `\"triangle-down\"`, or a custom SVG path.\n\n__Default value:__ `\"circle\"`",
                     "type": "string"
                 },
                 "size": {
-                    "description": "The pixel area each the point/circle/square.\nFor example: in the case of circles, the radius is determined in part by the square root of the size value.",
+                    "description": "The pixel area each the point/circle/square.\nFor example: in the case of circles, the radius is determined in part by the square root of the size value.\n\n__Default value:__ `30`",
                     "minimum": 0,
                     "type": "number"
                 },
                 "stroke": {
-                    "description": "Default Stroke Color.  This has higher precedence than config.color",
+                    "description": "Default Stroke Color.  This has higher precedence than config.color\n\n__Default value:__ (None)",
                     "type": "string"
                 },
                 "strokeDash": {
@@ -3753,11 +3773,13 @@
                     "type": "number"
                 },
                 "strokeOpacity": {
+                    "description": "The stroke opacity (value between [0,1]).\n\n__Default value:__ `1`",
                     "maximum": 1,
                     "minimum": 0,
                     "type": "number"
                 },
                 "strokeWidth": {
+                    "description": "The stroke width, in pixels.",
                     "minimum": 0,
                     "type": "number"
                 },
@@ -3768,15 +3790,15 @@
                     "type": "number"
                 },
                 "text": {
-                    "description": "Placeholder Text",
+                    "description": "Placeholder text if the `text` channel is not specified",
                     "type": "string"
                 },
                 "theta": {
-                    "description": "Polar coordinate angle, in radians, of the text label from the origin determined by the x and y properties. Values for theta follow the same convention of arc mark startAngle and endAngle properties: angles are measured in radians, with 0 indicating \"north\".",
+                    "description": "Polar coordinate angle, in radians, of the text label from the origin determined by the `x` and `y` properties. Values for `theta` follow the same convention of `arc` mark `startAngle` and `endAngle` properties: angles are measured in radians, with `0` indicating \"north\".",
                     "type": "number"
                 },
                 "thickness": {
-                    "description": "Thickness of the tick mark.",
+                    "description": "Thickness of the tick mark.\n\n__Default value:__  `1`",
                     "minimum": 0,
                     "type": "number"
                 }
