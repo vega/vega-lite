@@ -151,6 +151,14 @@ export interface FieldRefOption {
 
 export function field(fieldDef: FieldDef, opt: FieldRefOption = {}) {
   let field = fieldDef.field;
+
+  const bracketsEscaped = field.charAt(0) === '['
+    && field.charAt(field.length - 1) === ']';
+
+  if (bracketsEscaped) {
+    field = field.slice(1, field.length -1);
+  }
+
   let prefix = opt.prefix;
   let suffix = opt.suffix;
 
@@ -184,10 +192,11 @@ export function field(fieldDef: FieldDef, opt: FieldRefOption = {}) {
   }
 
   if (opt.datum) {
-    field = `datum["${field}"]`;
+    // for datum, we never have to wrap with []
+    return `datum["${field}"]`;
   }
 
-  return field;
+  return bracketsEscaped ? `[${field}]` : field;
 }
 
 export function isDiscrete(fieldDef: FieldDef) {
