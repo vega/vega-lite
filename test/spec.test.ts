@@ -3,8 +3,9 @@
 import {assert} from 'chai';
 
 import {Encoding} from '../src/encoding';
+import { FieldDef } from '../src/fielddef';
 import {MarkDef} from '../src/mark';
-import {fieldDefs, GenericSpec, GenericUnitSpec, normalize} from '../src/spec';
+import { fieldDefs, GenericSpec, GenericUnitSpec, normalize, Spec } from '../src/spec';
 
 // describe('isStacked()') -- tested as part of stackOffset in stack.test.ts
 
@@ -531,7 +532,7 @@ describe('normalizeRangedUnitSpec',  () => {
       }
     };
 
-    assert.deepEqual(normalize(spec), {
+    assert.deepEqual<Spec>(normalize(spec), {
       "data": {"url": "data/population.json"},
       "mark": "rule",
       "encoding": {
@@ -567,7 +568,7 @@ describe('normalizeRangedUnitSpec',  () => {
       }
     };
 
-    assert.deepEqual(normalize(spec), {
+    assert.deepEqual<Spec>(normalize(spec), {
       "data": {"url": "data/population.json"},
       "mark": "rule",
       "encoding": {
@@ -590,7 +591,7 @@ describe('fieldDefs()', function() {
       }
     };
 
-    assert.deepEqual(fieldDefs(spec), [
+    assert.deepEqual<FieldDef[]>(fieldDefs(spec), [
       {"field": "Horsepower","type": "quantitative"},
       {"field": "Miles_per_Gallon","type": "quantitative"}
     ]);
@@ -621,7 +622,7 @@ describe('fieldDefs()', function() {
       ]
     };
 
-    assert.deepEqual(fieldDefs(layerSpec), [
+    assert.deepEqual<FieldDef[]>(fieldDefs(layerSpec), [
       {"field": "date","type": "temporal"},
       {"field": "price","type": "quantitative"},
       {"field": "symbol", "type": "nominal"}
@@ -653,7 +654,7 @@ describe('fieldDefs()', function() {
       ]
     };
 
-    assert.deepEqual(fieldDefs(layerSpec), [
+    assert.deepEqual<FieldDef[]>(fieldDefs(layerSpec), [
       {"field": "date","type": "temporal"},
       {"field": "price","type": "quantitative"}
     ]);
@@ -672,7 +673,7 @@ describe('fieldDefs()', function() {
       }
     };
 
-    assert.deepEqual(fieldDefs(facetSpec), [
+    assert.deepEqual<FieldDef[]>(fieldDefs(facetSpec), [
       {"field": "MPAA_Rating","type": "ordinal"},
       {"field": "Worldwide_Gross","type": "quantitative"},
       {"field": "US_DVD_Sales","type": "quantitative"}

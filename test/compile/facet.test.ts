@@ -395,9 +395,9 @@ describe('compile/facet', () => {
             "y": {"field": "variety", "type": "nominal"},
           },
         },
-        config: {"facet": {"axis": {"domainWidth": 123}}}
+        config: {"facet": {"axis": {"labelPadding": 123}}}
       });
-      assert.deepEqual(model.axis(ROW), {"orient": "right", "labelAngle": 90, "offset": 30, "domainWidth": 123});
+      assert.deepEqual<Axis>(model.axis(ROW), {"orient": "right", "labelAngle": 90, "offset": 30, "labelPadding": 123});
     });
 
     it('should set the labelAngle if specified', () => {

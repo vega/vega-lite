@@ -72,7 +72,7 @@
     "url": "https://github.com/vega/vega-lite/issues"
   },
   "devDependencies": {
-    "@types/chai": "3.4.35",
+    "@types/chai": "^3.5.0",
     "@types/d3": "^4.7.0",
     "@types/highlight.js": "^9.1.9",
     "@types/json-stable-stringify": "^1.0.31",

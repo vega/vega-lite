@@ -163,6 +163,12 @@ export interface VgAggregateTransform {
   drop?: boolean;
 }
 
+export interface VgCollectTransform {
+  type: 'collect';
+  sort: VgSort;
+}
+
+
 export interface VgAxisEncode {
   ticks?: VgGuideEncode;
   labels?: VgGuideEncode;
@@ -181,7 +187,7 @@ export interface VgLegendEncode {
 
 export type VgGuideEncode = any; // TODO: replace this (See guideEncode in Vega Schema)
 
-export type VgTransform = VgBinTransform | VgExtentTransform | VgFormulaTransform | VgAggregateTransform | VgFilterTransform | VgImputeTransform | VgStackTransform;
+export type VgTransform = VgBinTransform | VgExtentTransform | VgFormulaTransform | VgAggregateTransform | VgFilterTransform | VgImputeTransform | VgStackTransform | VgCollectTransform;
 
 export interface VgStackTransform {
   type: 'stack';
