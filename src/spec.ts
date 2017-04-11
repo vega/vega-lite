@@ -82,9 +82,15 @@ export interface GenericUnitSpec<M, E extends Encoding> extends BaseSpec {
 
 export type UnitSpec = GenericUnitSpec<Mark | MarkDef, Encoding>;
 
-export type LayeredUnitSpec = GenericUnitSpec<string | MarkDef, Encoding>;
+/**
+ * Unit spec that can contain composite mark
+ */
+export type CompositeUnitSpec = GenericUnitSpec<string | MarkDef, Encoding>;
 
-export type FacetedUnitSpec = GenericUnitSpec<string | MarkDef, EncodingWithFacet>;
+/**
+ * Unit spec that can contain composite mark and row or column channels.
+ */
+export type FacetedCompositeUnitSpec = GenericUnitSpec<string | MarkDef, EncodingWithFacet>;
 
 export interface GenericLayerSpec<U extends GenericUnitSpec<any, any>> extends BaseSpec {
   // FIXME description for top-level width
@@ -96,7 +102,6 @@ export interface GenericLayerSpec<U extends GenericUnitSpec<any, any>> extends B
   /**
    * Unit specs that will be layered.
    */
-  // TODO: support layer of layer
   layer: (GenericLayerSpec<U> | U)[];
 }
 
@@ -110,15 +115,12 @@ export interface GenericFacetSpec<U extends GenericUnitSpec<any, any>> extends B
 }
 
 export type FacetSpec = GenericFacetSpec<UnitSpec>;
-export type ExtendedFacetSpec = GenericFacetSpec<FacetedUnitSpec>;
 
 export type GenericSpec<U extends GenericUnitSpec<any, any>> = U | GenericLayerSpec<U> | GenericFacetSpec<U>;
 
-export type ExtendedSpec = GenericSpec<FacetedUnitSpec>;
-
 export type Spec = GenericSpec<UnitSpec>;
 
-export type TopLevelExtendedSpec = TopLevel<ExtendedSpec>;
+export type TopLevelExtendedSpec = TopLevel<FacetedCompositeUnitSpec> | TopLevel<GenericLayerSpec<CompositeUnitSpec>> | TopLevel<GenericFacetSpec<CompositeUnitSpec>>;
 
 /* Custom type guards */
 
@@ -127,11 +129,11 @@ export function isFacetSpec(spec: GenericSpec<GenericUnitSpec<any, any>>): spec 
   return spec['facet'] !== undefined;
 }
 
-export function isUnitSpec(spec: ExtendedSpec | Spec): spec is FacetedUnitSpec | UnitSpec {
+export function isUnitSpec(spec: GenericSpec<GenericUnitSpec<any, any>>): spec is FacetedCompositeUnitSpec | UnitSpec {
   return !!spec['mark'];
 }
 
-export function isLayerSpec(spec: ExtendedSpec | Spec): spec is GenericLayerSpec<GenericUnitSpec<any, Encoding>> {
+export function isLayerSpec(spec: GenericSpec<GenericUnitSpec<any, any>>): spec is GenericLayerSpec<GenericUnitSpec<any, any>> {
   return spec['layer'] !== undefined;
 }
 
@@ -139,7 +141,7 @@ export function isLayerSpec(spec: ExtendedSpec | Spec): spec is GenericLayerSpec
  * Decompose extended unit specs into composition of pure unit specs.
  */
 // TODO: consider moving this to another file.  Maybe vl.spec.normalize or vl.normalize
-export function normalize(spec: TopLevel<ExtendedSpec>): Spec {
+export function normalize(spec: TopLevelExtendedSpec): Spec {
   if (isFacetSpec(spec)) {
     return normalizeFacet(spec, spec.config);
   }
@@ -158,14 +160,14 @@ export function normalize(spec: TopLevel<ExtendedSpec>): Spec {
   throw new Error(log.message.INVALID_SPEC);
 }
 
-function normalizeNonFacet(spec: GenericLayerSpec<LayeredUnitSpec> | LayeredUnitSpec, config: Config) {
+function normalizeNonFacet(spec: GenericLayerSpec<CompositeUnitSpec> | CompositeUnitSpec, config: Config) {
   if (isLayerSpec(spec)) {
     return normalizeLayer(spec, config);
   }
   return normalizeNonFacetUnit(spec, config);
 }
 
-function normalizeFacet(spec: GenericFacetSpec<LayeredUnitSpec>, config: Config): FacetSpec {
+function normalizeFacet(spec: GenericFacetSpec<CompositeUnitSpec>, config: Config): FacetSpec {
   const {spec: subspec, ...rest} = spec;
   return {
     ...rest,
@@ -173,7 +175,7 @@ function normalizeFacet(spec: GenericFacetSpec<LayeredUnitSpec>, config: Config)
   };
 }
 
-function normalizeLayer(spec: GenericLayerSpec<LayeredUnitSpec>, config: Config): LayerSpec {
+function normalizeLayer(spec: GenericLayerSpec<CompositeUnitSpec>, config: Config): LayerSpec {
   const {layer: layer, ...rest} = spec;
   return {
     ...rest,
@@ -181,7 +183,7 @@ function normalizeLayer(spec: GenericLayerSpec<LayeredUnitSpec>, config: Config)
   };
 }
 
-function normalizeFacetedUnit(spec: FacetedUnitSpec, config: Config): FacetSpec {
+function normalizeFacetedUnit(spec: FacetedCompositeUnitSpec, config: Config): FacetSpec {
   // New encoding in the inside spec should not contain row / column
   // as row/column should be moved to facet
   const {row: row, column: column, ...encoding} = spec.encoding;
@@ -319,7 +321,7 @@ function accumulate(dict: any, fieldDefs: FieldDef[]): any {
 }
 
 /* Recursively get fieldDefs from a spec, returns a dictionary of fieldDefs */
-function fieldDefIndex(spec: ExtendedSpec | ExtendedFacetSpec, dict: any = {}): any {
+function fieldDefIndex(spec: GenericSpec<GenericUnitSpec<any, any>>, dict: any = {}): any {
   // TODO: Support repeat and concat
   if (isLayerSpec(spec)) {
     spec.layer.forEach(function(layer) {
@@ -339,11 +341,11 @@ function fieldDefIndex(spec: ExtendedSpec | ExtendedFacetSpec, dict: any = {}): 
 }
 
 /* Returns all non-duplicate fieldDefs in a spec in a flat array */
-export function fieldDefs(spec: ExtendedSpec | ExtendedFacetSpec): FieldDef[] {
+export function fieldDefs(spec: GenericSpec<GenericUnitSpec<any, any>>): FieldDef[] {
   return vals(fieldDefIndex(spec));
 }
 
-export function isStacked(spec: TopLevel<FacetedUnitSpec>, config?: Config): boolean {
+export function isStacked(spec: TopLevel<FacetedCompositeUnitSpec>, config?: Config): boolean {
   config = config || spec.config;
   if (isPrimitiveMark(spec.mark)) {
     return stack(spec.mark, spec.encoding,
