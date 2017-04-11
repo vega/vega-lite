@@ -10,7 +10,7 @@
       {% assign element = type.items.type | append: "[]" | capitalize %}
       {{element}}
     {% endif %}
-  {% else if type.type != nil }
+  {% else %}
     {% assign element = type.type | capitalize %}
     {{element}}
   {% endif %}
