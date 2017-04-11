@@ -2,7 +2,10 @@
 
 import {assert} from 'chai';
 
-import {fieldDefs, normalize} from '../src/spec';
+import {Encoding} from '../src/encoding';
+import { FieldDef } from '../src/fielddef';
+import {MarkDef} from '../src/mark';
+import { fieldDefs, GenericSpec, GenericUnitSpec, normalize, Spec } from '../src/spec';
 
 // describe('isStacked()') -- tested as part of stackOffset in stack.test.ts
 
@@ -23,7 +26,7 @@ describe('normalize()', function () {
         }
       };
 
-      assert.deepEqual(normalize(spec), {
+      assert.deepEqual<GenericSpec<GenericUnitSpec<string | MarkDef, Encoding>>>(normalize(spec), {
         "width": 123,
         "height": 234,
         "name": "faceted",
@@ -53,7 +56,7 @@ describe('normalize()', function () {
         }
       };
 
-      assert.deepEqual(normalize(spec), {
+      assert.deepEqual<GenericSpec<GenericUnitSpec<string | MarkDef, Encoding>>>(normalize(spec), {
         "data": {"url": "data/movies.json"},
         "facet": {
           "row": {"field": "MPAA_Rating","type": "ordinal"}
@@ -71,7 +74,7 @@ describe('normalize()', function () {
 
   describe('normalizeFacet', () => {
     it('should produce correct layered specs for mean point and vertical error bar', () => {
-      assert.deepEqual(normalize({
+      assert.deepEqual<GenericSpec<GenericUnitSpec<string | MarkDef, Encoding>>>(normalize({
         "description": "A error bar plot showing mean, min, and max in the US population distribution of age groups in 2000.",
         "data": {"url": "data/population.json"},
         "transform": [{"filter": "datum.year == 2000"}],
@@ -190,7 +193,7 @@ describe('normalize()', function () {
 
   describe('normalizeLayer', () => {
     it('should produce correct layered specs for mean point and vertical error bar', () => {
-      assert.deepEqual(normalize({
+      assert.deepEqual<GenericSpec<GenericUnitSpec<string | MarkDef, Encoding>>>(normalize({
         "description": "A error bar plot showing mean, min, and max in the US population distribution of age groups in 2000.",
         "data": {"url": "data/population.json"},
         "transform": [{"filter": "datum.year == 2000"}],
@@ -309,7 +312,8 @@ describe('normalize()', function () {
         "config": {"overlay": {"line": true}}
       };
       const normalizedSpec = normalize(spec);
-      assert.deepEqual(normalizedSpec, {
+      // FIXME: remove any
+      assert.deepEqual<any>(normalizedSpec, {
         "data": {"url": "data/stocks.csv","format": {"type": "csv"}},
         "layer": [
           {
@@ -343,7 +347,8 @@ describe('normalize()', function () {
         "config": {"overlay": {"line": true}}
       };
       const normalizedSpec = normalize(spec);
-      assert.deepEqual(normalizedSpec, {
+      // FIXME: remove any
+      assert.deepEqual<any>(normalizedSpec, {
         "data": {"url": "data/stocks.csv","format": {"type": "csv"}},
         "facet": {
           "row": {"field": "symbol", "type": "nominal"},
@@ -381,7 +386,8 @@ describe('normalize()', function () {
         "config": {"overlay": {"area": 'linepoint'}}
       };
       const normalizedSpec = normalize(spec);
-      assert.deepEqual(normalizedSpec, {
+      // FIXME: remove any
+      assert.deepEqual<any>(normalizedSpec, {
         "data": {"url": "data/stocks.csv","format": {"type": "csv"}},
         "layer": [
           {
@@ -421,7 +427,8 @@ describe('normalize()', function () {
         "config": {"overlay": {"area": 'line'}}
       };
       const normalizedSpec = normalize(spec);
-      assert.deepEqual(normalizedSpec, {
+      // FIXME: remove any
+      assert.deepEqual<any>(normalizedSpec, {
         "data": {"url": "data/stocks.csv","format": {"type": "csv"}},
         "layer": [
           {
@@ -455,7 +462,8 @@ describe('normalize()', function () {
         "config": {"overlay": {"area": 'line'}}
       };
       const normalizedSpec = normalize(spec);
-      assert.deepEqual(normalizedSpec, {
+      // FIXME: remove any
+      assert.deepEqual<any>(normalizedSpec, {
         "data": {"url": "data/stocks.csv","format": {"type": "csv"}},
         "layer": [
           {
@@ -491,7 +499,8 @@ describe('normalize()', function () {
         "config": {"overlay": {"area": 'line'}}
       };
       const normalizedSpec = normalize(spec);
-      assert.deepEqual(normalizedSpec, {
+      // FIXME: remove any
+      assert.deepEqual<any>(normalizedSpec, {
         "data": {"url": "data/stocks.csv","format": {"type": "csv"}},
         "layer": [
           {
@@ -529,7 +538,7 @@ describe('normalizeRangedUnitSpec',  () => {
       }
     };
 
-    assert.deepEqual(normalize(spec), {
+    assert.deepEqual<Spec>(normalize(spec), {
       "data": {"url": "data/population.json"},
       "mark": "rule",
       "encoding": {
@@ -565,7 +574,7 @@ describe('normalizeRangedUnitSpec',  () => {
       }
     };
 
-    assert.deepEqual(normalize(spec), {
+    assert.deepEqual<Spec>(normalize(spec), {
       "data": {"url": "data/population.json"},
       "mark": "rule",
       "encoding": {
@@ -588,7 +597,7 @@ describe('fieldDefs()', function() {
       }
     };
 
-    assert.deepEqual(fieldDefs(spec), [
+    assert.deepEqual<FieldDef[]>(fieldDefs(spec), [
       {"field": "Horsepower","type": "quantitative"},
       {"field": "Miles_per_Gallon","type": "quantitative"}
     ]);
@@ -619,7 +628,7 @@ describe('fieldDefs()', function() {
       ]
     };
 
-    assert.deepEqual(fieldDefs(layerSpec), [
+    assert.deepEqual<FieldDef[]>(fieldDefs(layerSpec), [
       {"field": "date","type": "temporal"},
       {"field": "price","type": "quantitative"},
       {"field": "symbol", "type": "nominal"}
@@ -651,7 +660,7 @@ describe('fieldDefs()', function() {
       ]
     };
 
-    assert.deepEqual(fieldDefs(layerSpec), [
+    assert.deepEqual<FieldDef[]>(fieldDefs(layerSpec), [
       {"field": "date","type": "temporal"},
       {"field": "price","type": "quantitative"}
     ]);
@@ -670,7 +679,7 @@ describe('fieldDefs()', function() {
       }
     };
 
-    assert.deepEqual(fieldDefs(facetSpec), [
+    assert.deepEqual<FieldDef[]>(fieldDefs(facetSpec), [
       {"field": "MPAA_Rating","type": "ordinal"},
       {"field": "Worldwide_Gross","type": "quantitative"},
       {"field": "US_DVD_Sales","type": "quantitative"}

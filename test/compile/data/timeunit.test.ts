@@ -2,6 +2,8 @@
 
 import {assert} from 'chai';
 import {timeUnit} from '../../../src/compile/data/timeunit';
+import {Dict} from '../../../src/util';
+import {VgFormulaTransform} from '../../../src/vega.schema';
 import {parseUnitModel} from '../../util';
 
 describe('compile/data/timeunit', () => {
@@ -17,7 +19,7 @@ describe('compile/data/timeunit', () => {
         }
       });
       const timeUnitComponent = timeUnit.parseUnit(model);
-      assert.deepEqual(timeUnitComponent,
+      assert.deepEqual<Dict<VgFormulaTransform>>(timeUnitComponent,
         {
           month_a: {
             type: 'formula',

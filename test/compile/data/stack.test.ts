@@ -3,9 +3,8 @@
 import {assert} from 'chai';
 
 import {DataComponent} from '../../../src/compile/data/data';
-import {stack} from '../../../src/compile/data/stack';
+import {stack, StackComponent} from '../../../src/compile/data/stack';
 
-import {UnitSpec} from '../../../src/spec';
 import {parseFacetModel, parseUnitModel} from '../../util';
 import {mockDataComponent} from './datatestutil';
 
@@ -16,7 +15,6 @@ describe('compile/data/stack', () => {
         "mark": "point",
         "encoding": {}
       });
-
       const stackComponent = stack.parseUnit(model);
       assert.equal(stackComponent, undefined);
     });
@@ -33,7 +31,7 @@ describe('compile/data/stack', () => {
     });
 
     const stackComponent = stack.parseUnit(model);
-    assert.deepEqual(stackComponent, {
+    assert.deepEqual<StackComponent>(stackComponent, {
       name: 'stacked',
       source: 'summary',
       groupby: ['b'],
@@ -59,7 +57,7 @@ describe('compile/data/stack', () => {
     });
 
     const stackComponent = stack.parseUnit(model);
-    assert.deepEqual(stackComponent, {
+    assert.deepEqual<StackComponent>(stackComponent, {
       name: 'stacked',
       source: 'summary',
       groupby: ["bin_maxbins_10_b_start", "bin_maxbins_10_b_end"],
@@ -86,7 +84,7 @@ describe('compile/data/stack', () => {
     model.component.data.stack = stack.parseUnit(model);
 
     const stackComponent = model.component.data.stack;
-    assert.deepEqual(stackComponent, {
+    assert.deepEqual<StackComponent>(stackComponent, {
       name: 'stacked',
       source: 'summary',
       groupby: [],
@@ -113,7 +111,7 @@ describe('compile/data/stack', () => {
     });
 
     const stackComponent = stack.parseUnit(model);
-    assert.deepEqual(stackComponent, {
+    assert.deepEqual<StackComponent>(stackComponent, {
       name: 'stacked',
       source: 'summary',
       groupby: ['b'],
@@ -164,7 +162,7 @@ describe('compile/data/stack', () => {
       };
 
       const stackComponent = stack.parseFacet(model);
-      assert.deepEqual(stackComponent, {
+      assert.deepEqual<StackComponent>(stackComponent, {
         name: 'stacked',
         source: 'summary',
         groupby: ['b', 'd'],
@@ -210,7 +208,7 @@ describe('compile/data/stack', () => {
       };
 
       const stackComponent = stack.parseFacet(model);
-      assert.deepEqual(stackComponent, {
+      assert.deepEqual<StackComponent>(stackComponent, {
         name: 'stacked',
         source: 'summary',
         groupby: ['b'], // no duplicate

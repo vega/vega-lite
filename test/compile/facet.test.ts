@@ -4,12 +4,15 @@ import {assert} from 'chai';
 
 import * as log from '../../src/log';
 
+import {Axis} from '../../src/axis';
 import {ROW, SHAPE} from '../../src/channel';
 import * as facet from '../../src/compile/facet';
 import {defaultConfig} from '../../src/config';
 import {Facet} from '../../src/facet';
+import {PositionFieldDef} from '../../src/fielddef';
 import {POINT} from '../../src/mark';
 import {ORDINAL} from '../../src/type';
+import {VgData} from '../../src/vega.schema';
 import {parseFacetModel} from '../util';
 
 describe('FacetModel', function() {
@@ -70,7 +73,7 @@ describe('FacetModel', function() {
             encoding: {}
           }
         });
-        assert.deepEqual(model.facet.row, {field: 'a', type: 'quantitative'});
+        assert.deepEqual<PositionFieldDef>(model.facet.row, {field: 'a', type: 'quantitative'});
         assert.equal(localLogger.warns[0], log.message.facetChannelShouldBeDiscrete(ROW));
       });
     });
@@ -197,7 +200,7 @@ describe('compile/facet', () => {
       model.component.data = {} as any;
       model['hasSummary'] = () => false;
 
-      assert.deepEqual(
+      assert.deepEqual<VgData[]>(
         facet.assembleAxesGroupData(model, []),
         [{
           name: facet.ROW_AXES_DATA_PREFIX + 'source',
@@ -226,7 +229,7 @@ describe('compile/facet', () => {
       model.component.data = {} as any;
       model['hasSummary'] = () => false;
 
-      assert.deepEqual(
+      assert.deepEqual<VgData[]>(
         facet.assembleAxesGroupData(model, []),
         [{
           name: facet.COLUMN_AXES_DATA_PREFIX + 'source',
@@ -256,7 +259,7 @@ describe('compile/facet', () => {
       model.component.data = {} as any;
       model['hasSummary'] = () => false;
 
-      assert.deepEqual(
+      assert.deepEqual<VgData[]>(
         facet.assembleAxesGroupData(model, []),
         [{
           name: facet.COLUMN_AXES_DATA_PREFIX + 'source',
@@ -392,9 +395,9 @@ describe('compile/facet', () => {
             "y": {"field": "variety", "type": "nominal"},
           },
         },
-        config: {"facet": {"axis": {"domainWidth": 123}}}
+        config: {"facet": {"axis": {"labelPadding": 123}}}
       });
-      assert.deepEqual(model.axis(ROW), {"orient": "right", "labelAngle": 90, "offset": 30, "domainWidth": 123});
+      assert.deepEqual<Axis>(model.axis(ROW), {"orient": "right", "labelAngle": 90, "offset": 30, "labelPadding": 123});
     });
 
     it('should set the labelAngle if specified', () => {
@@ -410,7 +413,7 @@ describe('compile/facet', () => {
           },
         }
       });
-      assert.deepEqual(model.axis(ROW), {"orient": "right", "labelAngle": 0});
+      assert.deepEqual<Axis>(model.axis(ROW), {"orient": "right", "labelAngle": 0});
     });
 
     it('should set the labelAngle if labelAngle is not specified', () => {
@@ -432,7 +435,7 @@ describe('compile/facet', () => {
           },
         }
       });
-      assert.deepEqual(model.axis(ROW), {"orient": "right", "labelAngle": 90});
+      assert.deepEqual<Axis>(model.axis(ROW), {"orient": "right", "labelAngle": 90});
     });
   });
 });
