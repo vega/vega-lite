@@ -312,7 +312,8 @@ describe('normalize()', function () {
         "config": {"overlay": {"line": true}}
       };
       const normalizedSpec = normalize(spec);
-      assert.deepEqual(normalizedSpec, {
+      // FIXME: remove any
+      assert.deepEqual<any>(normalizedSpec, {
         "data": {"url": "data/stocks.csv","format": {"type": "csv"}},
         "layer": [
           {
@@ -346,7 +347,8 @@ describe('normalize()', function () {
         "config": {"overlay": {"line": true}}
       };
       const normalizedSpec = normalize(spec);
-      assert.deepEqual(normalizedSpec, {
+      // FIXME: remove any
+      assert.deepEqual<any>(normalizedSpec, {
         "data": {"url": "data/stocks.csv","format": {"type": "csv"}},
         "facet": {
           "row": {"field": "symbol", "type": "nominal"},
@@ -384,7 +386,8 @@ describe('normalize()', function () {
         "config": {"overlay": {"area": 'linepoint'}}
       };
       const normalizedSpec = normalize(spec);
-      assert.deepEqual(normalizedSpec, {
+      // FIXME: remove any
+      assert.deepEqual<any>(normalizedSpec, {
         "data": {"url": "data/stocks.csv","format": {"type": "csv"}},
         "layer": [
           {
@@ -424,7 +427,8 @@ describe('normalize()', function () {
         "config": {"overlay": {"area": 'line'}}
       };
       const normalizedSpec = normalize(spec);
-      assert.deepEqual(normalizedSpec, {
+      // FIXME: remove any
+      assert.deepEqual<any>(normalizedSpec, {
         "data": {"url": "data/stocks.csv","format": {"type": "csv"}},
         "layer": [
           {
@@ -458,7 +462,8 @@ describe('normalize()', function () {
         "config": {"overlay": {"area": 'line'}}
       };
       const normalizedSpec = normalize(spec);
-      assert.deepEqual(normalizedSpec, {
+      // FIXME: remove any
+      assert.deepEqual<any>(normalizedSpec, {
         "data": {"url": "data/stocks.csv","format": {"type": "csv"}},
         "layer": [
           {
@@ -494,7 +499,8 @@ describe('normalize()', function () {
         "config": {"overlay": {"area": 'line'}}
       };
       const normalizedSpec = normalize(spec);
-      assert.deepEqual(normalizedSpec, {
+      // FIXME: remove any
+      assert.deepEqual<any>(normalizedSpec, {
         "data": {"url": "data/stocks.csv","format": {"type": "csv"}},
         "layer": [
           {
