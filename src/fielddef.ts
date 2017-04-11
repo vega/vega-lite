@@ -1,7 +1,7 @@
 
 // utility for a field definition object
 
-import {AggregateOp} from './aggregate';
+import {AGGREGATE_OP_INDEX, AggregateOp} from './aggregate';
 import {Axis} from './axis';
 import {autoMaxBins, Bin, binToString} from './bin';
 import {Channel, rangeType} from './channel';
@@ -253,6 +253,13 @@ export function normalize(channelDef: ChannelDef, channel: Channel) {
   // If a fieldDef contains a field, we need type.
   if (isFieldDef(channelDef)) { // TODO: or datum
     let fieldDef: FieldDef = channelDef;
+
+    // Drop invalid aggregate
+    if (fieldDef.aggregate && !AGGREGATE_OP_INDEX[fieldDef.aggregate]) {
+      let {aggregate, ...fieldDefWithoutAggregate} = fieldDef;
+      log.warn(log.message.invalidAggregate(fieldDef.aggregate));
+      fieldDef = fieldDefWithoutAggregate;
+    }
 
     // Normalize bin
     if (fieldDef.bin) {
