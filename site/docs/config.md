@@ -283,11 +283,10 @@ For a full list of scale configuration and their default values, please see the 
 {:#axis-config}
 ## Axis Configuration  (`config.axis.*`)
 
-Axis configuration determines default properties for `x` and `y` [axes](axis.html). (For `row` and `column` axes, see [facet axis configuration](#facet-axis-config)).
+Axis configuration determines default properties for `x` and `y` [axes](axis.html).
+For a full list of axis configuration, please see the [Axis Config section in the axis page](axis.html#axis-config).
 
-<span class="note-line">__See Code:__
-For a full list of axis configuration and their default values, please see the `AxisConfig` interface and `defaultAxisConfig` in [axis.ts](https://github.com/vega/vega-lite/blob/master/src/axis.ts).
-</span>
+(For `row` and `column` axes, see [facet axis configuration](#facet-axis-config)).
 
 {:#legend-config}
 ## Legend Configuration  (`config.legend.*`)
