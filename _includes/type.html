@@ -1,17 +1,17 @@
 {% assign res = "" %}
 {% for type in include.types %}
-  {% if type.type == "array"%}
+  {% if type.type == "array" %}
     {% if type.items["$ref"] %}
       {% assign array = type.items["$ref"] | split: "/" %}
       {% assign last_index = array | size | minus: 1 %}
-      {% assign element = array[last_index] | append: "[]"%}
+      {% assign element = array[last_index] | append: "[]" %}
       {{element}}
     {% else %}
-      {% assign element = type.items.type | append: "[]" | capitalize%}
+      {% assign element = type.items.type | append: "[]" | capitalize %}
       {{element}}
     {% endif %}
   {% else if type.type != nil }
-    {% assign element = type.type | capitalize%}
+    {% assign element = type.type | capitalize %}
     {{element}}
   {% endif %}
 
