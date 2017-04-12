@@ -24,7 +24,7 @@
     ],
     "data": [
         {
-            "name": "source",
+            "name": "source_0",
             "url": "data/population.json",
             "format": {
                 "type": "json",
@@ -45,13 +45,7 @@
                 {
                     "type": "filter",
                     "expr": "datum[\"people\"] !== null && !isNaN(datum[\"people\"])"
-                }
-            ]
-        },
-        {
-            "source": "source",
-            "name": "summary",
-            "transform": [
+                },
                 {
                     "type": "aggregate",
                     "groupby": [
@@ -64,13 +58,7 @@
                     "fields": [
                         "people"
                     ]
-                }
-            ]
-        },
-        {
-            "name": "stacked",
-            "source": "summary",
-            "transform": [
+                },
                 {
                     "type": "stack",
                     "groupby": [
@@ -95,7 +83,7 @@
         },
         {
             "name": "layout",
-            "source": "summary",
+            "source": "source_0",
             "transform": [
                 {
                     "type": "aggregate",
@@ -121,7 +109,7 @@
     ],
     "marks": [
         {
-            "name": "main",
+            "name": "main-group",
             "type": "group",
             "description": "A bar chart showing the US population distribution of age groups and gender in 2000.",
             "from": {
@@ -146,7 +134,7 @@
                     "type": "rect",
                     "role": "bar",
                     "from": {
-                        "data": "stacked"
+                        "data": "source_0"
                     },
                     "encode": {
                         "update": {
@@ -178,7 +166,7 @@
                     "name": "x",
                     "type": "point",
                     "domain": {
-                        "data": "summary",
+                        "data": "source_0",
                         "field": "age",
                         "sort": true
                     },
@@ -192,7 +180,7 @@
                     "name": "y",
                     "type": "linear",
                     "domain": {
-                        "data": "stacked",
+                        "data": "source_0",
                         "fields": [
                             "sum_people_start",
                             "sum_people_end"
@@ -210,7 +198,7 @@
                     "name": "color",
                     "type": "ordinal",
                     "domain": {
-                        "data": "summary",
+                        "data": "source_0",
                         "field": "gender",
                         "sort": true
                     },

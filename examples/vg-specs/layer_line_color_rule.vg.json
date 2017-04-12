@@ -24,7 +24,7 @@
     ],
     "data": [
         {
-            "name": "source",
+            "name": "source_0",
             "url": "data/stocks.csv",
             "format": {
                 "type": "csv",
@@ -33,6 +33,11 @@
                     "price": "number"
                 }
             },
+            "transform": []
+        },
+        {
+            "name": "data_0",
+            "source": "source_0",
             "transform": [
                 {
                     "type": "filter",
@@ -48,24 +53,13 @@
             ]
         },
         {
-            "name": "layer_0_source",
-            "source": "source",
-            "transform": []
-        },
-        {
-            "name": "layer_1_source",
-            "source": "source",
+            "name": "data_1",
+            "source": "source_0",
             "transform": [
                 {
                     "type": "filter",
                     "expr": "datum[\"price\"] !== null && !isNaN(datum[\"price\"])"
-                }
-            ]
-        },
-        {
-            "source": "layer_1_source",
-            "name": "layer_1_summary",
-            "transform": [
+                },
                 {
                     "type": "aggregate",
                     "groupby": [
@@ -101,7 +95,7 @@
     ],
     "marks": [
         {
-            "name": "main",
+            "name": "main-group",
             "type": "group",
             "from": {
                 "data": "layout"
@@ -125,8 +119,8 @@
                     "type": "group",
                     "from": {
                         "facet": {
-                            "name": "faceted-path-layer_0_source",
-                            "data": "layer_0_source",
+                            "name": "faceted-path-layer_0_main",
+                            "data": "data_0",
                             "groupby": [
                                 "symbol"
                             ]
@@ -151,7 +145,7 @@
                             "name": "layer_0_marks",
                             "type": "line",
                             "from": {
-                                "data": "faceted-path-layer_0_source"
+                                "data": "faceted-path-layer_0_main"
                             },
                             "encode": {
                                 "update": {
@@ -176,7 +170,7 @@
                     "name": "layer_1_marks",
                     "type": "rule",
                     "from": {
-                        "data": "layer_1_summary"
+                        "data": "data_1"
                     },
                     "encode": {
                         "update": {
@@ -211,7 +205,7 @@
                     "name": "x",
                     "type": "time",
                     "domain": {
-                        "data": "layer_0_source",
+                        "data": "data_0",
                         "field": "date"
                     },
                     "range": [
@@ -226,11 +220,11 @@
                     "domain": {
                         "fields": [
                             {
-                                "data": "layer_0_source",
+                                "data": "data_0",
                                 "field": "price"
                             },
                             {
-                                "data": "layer_1_summary",
+                                "data": "data_1",
                                 "field": "mean_price"
                             }
                         ],
@@ -250,11 +244,11 @@
                     "domain": {
                         "fields": [
                             {
-                                "data": "layer_0_source",
+                                "data": "data_0",
                                 "field": "symbol"
                             },
                             {
-                                "data": "layer_1_summary",
+                                "data": "data_1",
                                 "field": "symbol"
                             }
                         ],

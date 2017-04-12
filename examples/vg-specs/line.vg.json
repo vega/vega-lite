@@ -24,7 +24,7 @@
     ],
     "data": [
         {
-            "name": "source",
+            "name": "source_0",
             "url": "data/stocks.csv",
             "format": {
                 "type": "csv",
@@ -72,7 +72,7 @@
     ],
     "marks": [
         {
-            "name": "main",
+            "name": "main-group",
             "type": "group",
             "description": "Google's stock price over time.",
             "from": {
@@ -96,7 +96,7 @@
                     "name": "marks",
                     "type": "line",
                     "from": {
-                        "data": "source"
+                        "data": "source_0"
                     },
                     "encode": {
                         "update": {
@@ -120,7 +120,7 @@
                     "name": "x",
                     "type": "time",
                     "domain": {
-                        "data": "source",
+                        "data": "source_0",
                         "field": "date"
                     },
                     "range": [
@@ -133,7 +133,7 @@
                     "name": "y",
                     "type": "linear",
                     "domain": {
-                        "data": "source",
+                        "data": "source_0",
                         "field": "price"
                     },
                     "range": [

@@ -24,7 +24,7 @@
     ],
     "data": [
         {
-            "name": "source",
+            "name": "source_0",
             "url": "data/cars.json",
             "format": {
                 "type": "json",
@@ -37,13 +37,7 @@
                 {
                     "type": "filter",
                     "expr": "datum[\"Horsepower\"] !== null && !isNaN(datum[\"Horsepower\"]) && datum[\"Displacement\"] !== null && !isNaN(datum[\"Displacement\"])"
-                }
-            ]
-        },
-        {
-            "source": "source",
-            "name": "summary",
-            "transform": [
+                },
                 {
                     "type": "aggregate",
                     "groupby": [
@@ -81,7 +75,7 @@
     ],
     "marks": [
         {
-            "name": "main",
+            "name": "main-group",
             "type": "group",
             "description": "A scatterplot showing average horsepower and displacement for cars from different origins.",
             "from": {
@@ -106,7 +100,7 @@
                     "type": "symbol",
                     "role": "point",
                     "from": {
-                        "data": "summary"
+                        "data": "source_0"
                     },
                     "encode": {
                         "update": {
@@ -133,7 +127,7 @@
                     "name": "x",
                     "type": "linear",
                     "domain": {
-                        "data": "summary",
+                        "data": "source_0",
                         "field": "mean_Horsepower"
                     },
                     "range": [
@@ -148,7 +142,7 @@
                     "name": "y",
                     "type": "linear",
                     "domain": {
-                        "data": "summary",
+                        "data": "source_0",
                         "field": "mean_Displacement"
                     },
                     "range": [

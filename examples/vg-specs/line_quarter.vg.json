@@ -24,7 +24,7 @@
     ],
     "data": [
         {
-            "name": "source",
+            "name": "source_0",
             "url": "data/stocks.csv",
             "format": {
                 "type": "csv",
@@ -36,7 +36,7 @@
             "transform": [
                 {
                     "type": "filter",
-                    "expr": "datum[\"date\"] !== null && !isNaN(datum[\"date\"]) && datum[\"price\"] !== null && !isNaN(datum[\"price\"])"
+                    "expr": "datum[\"date\"] !== null && !isNaN(datum[\"date\"])"
                 },
                 {
                     "type": "formula",
@@ -47,13 +47,11 @@
                     "type": "formula",
                     "as": "quarter_date",
                     "expr": "datetime(0, (quarter(datum[\"date\"])-1)*3, 1, 0, 0, 0, 0)"
-                }
-            ]
-        },
-        {
-            "source": "source",
-            "name": "summary",
-            "transform": [
+                },
+                {
+                    "type": "filter",
+                    "expr": "datum[\"date\"] !== null && !isNaN(datum[\"date\"]) && datum[\"price\"] !== null && !isNaN(datum[\"price\"])"
+                },
                 {
                     "type": "aggregate",
                     "groupby": [
@@ -71,8 +69,8 @@
             ]
         },
         {
-            "name": "column-summary",
-            "source": "summary",
+            "name": "column",
+            "source": "source_0",
             "transform": [
                 {
                     "type": "aggregate",
@@ -84,7 +82,7 @@
         },
         {
             "name": "layout",
-            "source": "summary",
+            "source": "source_0",
             "transform": [
                 {
                     "type": "aggregate",
@@ -122,7 +120,7 @@
     ],
     "marks": [
         {
-            "name": "main",
+            "name": "main-group",
             "type": "group",
             "description": "Stock price mean per quarter broken down by years.",
             "from": {
@@ -143,7 +141,7 @@
                     "name": "x-axes",
                     "type": "group",
                     "from": {
-                        "data": "column-summary"
+                        "data": "column"
                     },
                     "encode": {
                         "update": {
@@ -227,8 +225,8 @@
                     "type": "group",
                     "from": {
                         "facet": {
-                            "name": "faceted-data",
-                            "data": "summary",
+                            "name": "facet",
+                            "data": "source_0",
                             "groupby": [
                                 "year_date"
                             ]
@@ -271,7 +269,7 @@
                             "type": "symbol",
                             "role": "point",
                             "from": {
-                                "data": "faceted-data"
+                                "data": "facet"
                             },
                             "encode": {
                                 "update": {
@@ -314,7 +312,7 @@
                     "name": "column",
                     "type": "band",
                     "domain": {
-                        "data": "summary",
+                        "data": "source_0",
                         "field": "year_date",
                         "sort": true
                     },
@@ -325,7 +323,7 @@
                     "name": "x",
                     "type": "point",
                     "domain": {
-                        "data": "summary",
+                        "data": "source_0",
                         "field": "quarter_date",
                         "sort": true
                     },
@@ -339,7 +337,7 @@
                     "name": "y",
                     "type": "linear",
                     "domain": {
-                        "data": "summary",
+                        "data": "source_0",
                         "field": "mean_price"
                     },
                     "range": [
@@ -354,7 +352,7 @@
                     "name": "color",
                     "type": "ordinal",
                     "domain": {
-                        "data": "summary",
+                        "data": "source_0",
                         "field": "symbol",
                         "sort": true
                     },

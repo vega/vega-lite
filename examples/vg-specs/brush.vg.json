@@ -24,7 +24,7 @@
     ],
     "data": [
         {
-            "name": "source",
+            "name": "source_0",
             "url": "data/cars.json",
             "format": {
                 "type": "json",
@@ -64,7 +64,7 @@
     ],
     "marks": [
         {
-            "name": "main",
+            "name": "main-group",
             "type": "group",
             "description": "Drag out a rectangular brush to highlight points.",
             "from": {
@@ -360,7 +360,7 @@
                     "type": "symbol",
                     "role": "point",
                     "from": {
-                        "data": "source"
+                        "data": "source_0"
                     },
                     "encode": {
                         "update": {
@@ -426,7 +426,7 @@
                     "name": "x",
                     "type": "linear",
                     "domain": {
-                        "data": "source",
+                        "data": "source_0",
                         "field": "Horsepower"
                     },
                     "range": [
@@ -441,7 +441,7 @@
                     "name": "y",
                     "type": "linear",
                     "domain": {
-                        "data": "source",
+                        "data": "source_0",
                         "field": "Miles_per_Gallon"
                     },
                     "range": [
@@ -456,7 +456,7 @@
                     "name": "color",
                     "type": "ordinal",
                     "domain": {
-                        "data": "source",
+                        "data": "source_0",
                         "field": "Cylinders",
                         "sort": true
                     },

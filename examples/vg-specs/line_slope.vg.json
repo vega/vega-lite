@@ -24,7 +24,7 @@
     ],
     "data": [
         {
-            "name": "source",
+            "name": "source_0",
             "url": "data/barley.json",
             "format": {
                 "type": "json",
@@ -36,13 +36,7 @@
                 {
                     "type": "filter",
                     "expr": "datum[\"yield\"] !== null && !isNaN(datum[\"yield\"])"
-                }
-            ]
-        },
-        {
-            "source": "source",
-            "name": "summary",
-            "transform": [
+                },
                 {
                     "type": "aggregate",
                     "groupby": [
@@ -67,7 +61,7 @@
         },
         {
             "name": "layout",
-            "source": "summary",
+            "source": "source_0",
             "transform": [
                 {
                     "type": "aggregate",
@@ -93,7 +87,7 @@
     ],
     "marks": [
         {
-            "name": "main",
+            "name": "main-group",
             "type": "group",
             "description": "Slope graph showing the change in yield for different barley sites. It shows the error in the year labels for the Morris site.",
             "from": {
@@ -118,8 +112,8 @@
                     "type": "group",
                     "from": {
                         "facet": {
-                            "name": "faceted-path-summary",
-                            "data": "summary",
+                            "name": "faceted-path-main",
+                            "data": "source_0",
                             "groupby": [
                                 "site"
                             ]
@@ -144,7 +138,7 @@
                             "name": "marks",
                             "type": "line",
                             "from": {
-                                "data": "faceted-path-summary"
+                                "data": "faceted-path-main"
                             },
                             "encode": {
                                 "update": {
@@ -171,7 +165,7 @@
                     "name": "x",
                     "type": "point",
                     "domain": {
-                        "data": "summary",
+                        "data": "source_0",
                         "field": "year",
                         "sort": true
                     },
@@ -185,7 +179,7 @@
                     "name": "y",
                     "type": "linear",
                     "domain": {
-                        "data": "summary",
+                        "data": "source_0",
                         "field": "median_yield"
                     },
                     "range": [
@@ -200,7 +194,7 @@
                     "name": "color",
                     "type": "ordinal",
                     "domain": {
-                        "data": "summary",
+                        "data": "source_0",
                         "field": "site",
                         "sort": true
                     },

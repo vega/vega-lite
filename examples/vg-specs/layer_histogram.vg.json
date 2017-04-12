@@ -24,7 +24,7 @@
     ],
     "data": [
         {
-            "name": "source",
+            "name": "source_0",
             "url": "data/flights-2k.json",
             "format": {
                 "type": "json",
@@ -32,16 +32,6 @@
                     "distance": "number"
                 }
             },
-            "transform": [
-                {
-                    "type": "filter",
-                    "expr": "datum[\"distance\"] !== null && !isNaN(datum[\"distance\"])"
-                }
-            ]
-        },
-        {
-            "name": "layer_0_source",
-            "source": "source",
             "transform": [
                 {
                     "type": "extent",
@@ -60,40 +50,6 @@
                     "extent": {
                         "signal": "layer_0_bin_maxbins_10_distance_extent"
                     }
-                }
-            ]
-        },
-        {
-            "source": "layer_0_source",
-            "name": "layer_0_summary",
-            "transform": [
-                {
-                    "type": "aggregate",
-                    "groupby": [
-                        "bin_maxbins_10_distance_start",
-                        "bin_maxbins_10_distance_end",
-                        "bin_maxbins_10_distance_range"
-                    ],
-                    "ops": [
-                        "count"
-                    ],
-                    "fields": [
-                        "*"
-                    ]
-                }
-            ]
-        },
-        {
-            "name": "layer_1_source",
-            "source": "source",
-            "transform": [
-                {
-                    "type": "filter",
-                    "expr": "datum.delay < 5"
-                },
-                {
-                    "type": "filter",
-                    "expr": "datum[\"distance\"] !== null && !isNaN(datum[\"distance\"])"
                 },
                 {
                     "type": "extent",
@@ -116,9 +72,41 @@
             ]
         },
         {
-            "source": "layer_1_source",
-            "name": "layer_1_summary",
+            "name": "data_0",
+            "source": "source_0",
             "transform": [
+                {
+                    "type": "filter",
+                    "expr": "datum[\"distance\"] !== null && !isNaN(datum[\"distance\"])"
+                },
+                {
+                    "type": "aggregate",
+                    "groupby": [
+                        "bin_maxbins_10_distance_start",
+                        "bin_maxbins_10_distance_end",
+                        "bin_maxbins_10_distance_range"
+                    ],
+                    "ops": [
+                        "count"
+                    ],
+                    "fields": [
+                        "*"
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "data_1",
+            "source": "source_0",
+            "transform": [
+                {
+                    "type": "filter",
+                    "expr": "datum.delay < 5"
+                },
+                {
+                    "type": "filter",
+                    "expr": "datum[\"distance\"] !== null && !isNaN(datum[\"distance\"])"
+                },
                 {
                     "type": "aggregate",
                     "groupby": [
@@ -156,7 +144,7 @@
     ],
     "marks": [
         {
-            "name": "main",
+            "name": "main-group",
             "type": "group",
             "from": {
                 "data": "layout"
@@ -180,7 +168,7 @@
                     "type": "rect",
                     "role": "bar",
                     "from": {
-                        "data": "layer_0_summary"
+                        "data": "data_0"
                     },
                     "encode": {
                         "update": {
@@ -212,7 +200,7 @@
                     "type": "rect",
                     "role": "bar",
                     "from": {
-                        "data": "layer_1_summary"
+                        "data": "data_1"
                     },
                     "encode": {
                         "update": {
@@ -247,11 +235,11 @@
                     "domain": {
                         "fields": [
                             {
-                                "data": "layer_0_summary",
+                                "data": "data_0",
                                 "field": "count_*"
                             },
                             {
-                                "data": "layer_1_summary",
+                                "data": "data_1",
                                 "field": "count_*"
                             }
                         ],

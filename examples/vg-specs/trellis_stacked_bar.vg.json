@@ -24,7 +24,7 @@
     ],
     "data": [
         {
-            "name": "source",
+            "name": "source_0",
             "url": "data/barley.json",
             "format": {
                 "type": "json",
@@ -36,13 +36,7 @@
                 {
                     "type": "filter",
                     "expr": "datum[\"yield\"] !== null && !isNaN(datum[\"yield\"])"
-                }
-            ]
-        },
-        {
-            "source": "source",
-            "name": "summary",
-            "transform": [
+                },
                 {
                     "type": "aggregate",
                     "groupby": [
@@ -56,13 +50,7 @@
                     "fields": [
                         "yield"
                     ]
-                }
-            ]
-        },
-        {
-            "name": "stacked",
-            "source": "summary",
-            "transform": [
+                },
                 {
                     "type": "stack",
                     "groupby": [
@@ -87,8 +75,8 @@
             ]
         },
         {
-            "name": "column-stacked",
-            "source": "stacked",
+            "name": "column",
+            "source": "source_0",
             "transform": [
                 {
                     "type": "aggregate",
@@ -100,7 +88,7 @@
         },
         {
             "name": "layout",
-            "source": "stacked",
+            "source": "source_0",
             "transform": [
                 {
                     "type": "aggregate",
@@ -138,7 +126,7 @@
     ],
     "marks": [
         {
-            "name": "main",
+            "name": "main-group",
             "type": "group",
             "from": {
                 "data": "layout"
@@ -158,7 +146,7 @@
                     "name": "x-axes",
                     "type": "group",
                     "from": {
-                        "data": "column-stacked"
+                        "data": "column"
                     },
                     "encode": {
                         "update": {
@@ -224,8 +212,8 @@
                     "type": "group",
                     "from": {
                         "facet": {
-                            "name": "faceted-data",
-                            "data": "stacked",
+                            "name": "facet",
+                            "data": "source_0",
                             "groupby": [
                                 "year"
                             ]
@@ -268,7 +256,7 @@
                             "type": "rect",
                             "role": "bar",
                             "from": {
-                                "data": "faceted-data"
+                                "data": "facet"
                             },
                             "encode": {
                                 "update": {
@@ -316,7 +304,7 @@
                     "name": "column",
                     "type": "band",
                     "domain": {
-                        "data": "stacked",
+                        "data": "source_0",
                         "field": "year",
                         "sort": true
                     },
@@ -327,7 +315,7 @@
                     "name": "x",
                     "type": "linear",
                     "domain": {
-                        "data": "stacked",
+                        "data": "source_0",
                         "fields": [
                             "sum_yield_start",
                             "sum_yield_end"
@@ -345,7 +333,7 @@
                     "name": "y",
                     "type": "point",
                     "domain": {
-                        "data": "summary",
+                        "data": "source_0",
                         "field": "variety",
                         "sort": true
                     },
@@ -359,7 +347,7 @@
                     "name": "color",
                     "type": "ordinal",
                     "domain": {
-                        "data": "summary",
+                        "data": "source_0",
                         "field": "site",
                         "sort": true
                     },

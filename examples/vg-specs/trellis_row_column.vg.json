@@ -24,7 +24,7 @@
     ],
     "data": [
         {
-            "name": "source",
+            "name": "source_0",
             "url": "data/cars.json",
             "format": {
                 "type": "json",
@@ -41,8 +41,8 @@
             ]
         },
         {
-            "name": "column-source",
-            "source": "source",
+            "name": "column",
+            "source": "source_0",
             "transform": [
                 {
                     "type": "aggregate",
@@ -53,8 +53,8 @@
             ]
         },
         {
-            "name": "row-source",
-            "source": "source",
+            "name": "row",
+            "source": "source_0",
             "transform": [
                 {
                     "type": "aggregate",
@@ -66,7 +66,7 @@
         },
         {
             "name": "layout",
-            "source": "source",
+            "source": "source_0",
             "transform": [
                 {
                     "type": "aggregate",
@@ -104,7 +104,7 @@
     ],
     "marks": [
         {
-            "name": "main",
+            "name": "main-group",
             "type": "group",
             "from": {
                 "data": "layout"
@@ -124,7 +124,7 @@
                     "name": "x-axes",
                     "type": "group",
                     "from": {
-                        "data": "column-source"
+                        "data": "column"
                     },
                     "encode": {
                         "update": {
@@ -160,7 +160,7 @@
                     "name": "y-axes",
                     "type": "group",
                     "from": {
-                        "data": "row-source"
+                        "data": "row"
                     },
                     "encode": {
                         "update": {
@@ -196,8 +196,8 @@
                     "type": "group",
                     "from": {
                         "facet": {
-                            "name": "faceted-data",
-                            "data": "source",
+                            "name": "facet",
+                            "data": "source_0",
                             "groupby": [
                                 "Cylinders",
                                 "Origin"
@@ -243,7 +243,7 @@
                             "type": "symbol",
                             "role": "point",
                             "from": {
-                                "data": "faceted-data"
+                                "data": "facet"
                             },
                             "encode": {
                                 "update": {
@@ -300,7 +300,7 @@
                     "name": "row",
                     "type": "band",
                     "domain": {
-                        "data": "source",
+                        "data": "source_0",
                         "field": "Cylinders",
                         "sort": true
                     },
@@ -311,7 +311,7 @@
                     "name": "column",
                     "type": "band",
                     "domain": {
-                        "data": "source",
+                        "data": "source_0",
                         "field": "Origin",
                         "sort": true
                     },
@@ -322,7 +322,7 @@
                     "name": "x",
                     "type": "linear",
                     "domain": {
-                        "data": "source",
+                        "data": "source_0",
                         "field": "Horsepower"
                     },
                     "range": [
@@ -337,7 +337,7 @@
                     "name": "y",
                     "type": "linear",
                     "domain": {
-                        "data": "source",
+                        "data": "source_0",
                         "field": "Miles_per_Gallon"
                     },
                     "range": [

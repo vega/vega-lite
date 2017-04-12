@@ -24,7 +24,7 @@
     ],
     "data": [
         {
-            "name": "source",
+            "name": "source_0",
             "url": "data/barley.json",
             "format": {
                 "type": "json",
@@ -36,13 +36,7 @@
                 {
                     "type": "filter",
                     "expr": "datum[\"yield\"] !== null && !isNaN(datum[\"yield\"])"
-                }
-            ]
-        },
-        {
-            "source": "source",
-            "name": "summary",
-            "transform": [
+                },
                 {
                     "type": "aggregate",
                     "groupby": [
@@ -55,13 +49,7 @@
                     "fields": [
                         "yield"
                     ]
-                }
-            ]
-        },
-        {
-            "name": "stacked",
-            "source": "summary",
-            "transform": [
+                },
                 {
                     "type": "stack",
                     "groupby": [
@@ -86,7 +74,7 @@
         },
         {
             "name": "layout",
-            "source": "summary",
+            "source": "source_0",
             "transform": [
                 {
                     "type": "aggregate",
@@ -112,7 +100,7 @@
     ],
     "marks": [
         {
-            "name": "main",
+            "name": "main-group",
             "type": "group",
             "from": {
                 "data": "layout"
@@ -136,7 +124,7 @@
                     "type": "rect",
                     "role": "bar",
                     "from": {
-                        "data": "stacked"
+                        "data": "source_0"
                     },
                     "encode": {
                         "update": {
@@ -168,7 +156,7 @@
                     "name": "x",
                     "type": "linear",
                     "domain": {
-                        "data": "stacked",
+                        "data": "source_0",
                         "fields": [
                             "sum_yield_start",
                             "sum_yield_end"
@@ -186,7 +174,7 @@
                     "name": "y",
                     "type": "point",
                     "domain": {
-                        "data": "summary",
+                        "data": "source_0",
                         "field": "variety",
                         "sort": true
                     },
@@ -200,7 +188,7 @@
                     "name": "color",
                     "type": "ordinal",
                     "domain": {
-                        "data": "summary",
+                        "data": "source_0",
                         "field": "site",
                         "sort": true
                     },

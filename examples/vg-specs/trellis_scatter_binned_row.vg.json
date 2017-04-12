@@ -24,7 +24,7 @@
     ],
     "data": [
         {
-            "name": "source",
+            "name": "source_0",
             "url": "data/cars.json",
             "format": {
                 "type": "json",
@@ -37,7 +37,7 @@
             "transform": [
                 {
                     "type": "filter",
-                    "expr": "datum[\"Acceleration\"] !== null && !isNaN(datum[\"Acceleration\"]) && datum[\"Horsepower\"] !== null && !isNaN(datum[\"Horsepower\"]) && datum[\"Miles_per_Gallon\"] !== null && !isNaN(datum[\"Miles_per_Gallon\"])"
+                    "expr": "datum[\"Acceleration\"] !== null && !isNaN(datum[\"Acceleration\"])"
                 },
                 {
                     "type": "extent",
@@ -59,14 +59,18 @@
                 },
                 {
                     "type": "formula",
-                    "as": "bin_maxbins_6_Acceleration_range",
-                    "expr": "format(datum[\"bin_maxbins_6_Acceleration_start\"], 's') + ' - ' + format(datum[\"bin_maxbins_6_Acceleration_end\"], 's')"
+                    "expr": "format(datum[\"bin_maxbins_6_Acceleration_start\"], 's') + ' - ' + format(datum[\"bin_maxbins_6_Acceleration_end\"], 's')",
+                    "as": "bin_maxbins_6_Acceleration_range"
+                },
+                {
+                    "type": "filter",
+                    "expr": "datum[\"Horsepower\"] !== null && !isNaN(datum[\"Horsepower\"]) && datum[\"Miles_per_Gallon\"] !== null && !isNaN(datum[\"Miles_per_Gallon\"])"
                 }
             ]
         },
         {
-            "name": "row-source",
-            "source": "source",
+            "name": "row",
+            "source": "source_0",
             "transform": [
                 {
                     "type": "aggregate",
@@ -78,7 +82,7 @@
         },
         {
             "name": "layout",
-            "source": "source",
+            "source": "source_0",
             "transform": [
                 {
                     "type": "aggregate",
@@ -114,7 +118,7 @@
     ],
     "marks": [
         {
-            "name": "main",
+            "name": "main-group",
             "type": "group",
             "description": "A trellis scatterplot showing Horsepower and Miles per gallons, faceted by binned values of Acceleration.",
             "from": {
@@ -166,7 +170,7 @@
                     "name": "y-axes",
                     "type": "group",
                     "from": {
-                        "data": "row-source"
+                        "data": "row"
                     },
                     "encode": {
                         "update": {
@@ -202,8 +206,8 @@
                     "type": "group",
                     "from": {
                         "facet": {
-                            "name": "faceted-data",
-                            "data": "source",
+                            "name": "facet",
+                            "data": "source_0",
                             "groupby": [
                                 "bin_maxbins_6_Acceleration_range"
                             ]
@@ -246,7 +250,7 @@
                             "type": "symbol",
                             "role": "point",
                             "from": {
-                                "data": "faceted-data"
+                                "data": "facet"
                             },
                             "encode": {
                                 "update": {
@@ -303,7 +307,7 @@
                     "name": "row",
                     "type": "band",
                     "domain": {
-                        "data": "source",
+                        "data": "source_0",
                         "field": "bin_maxbins_6_Acceleration_range",
                         "sort": {
                             "field": "bin_maxbins_6_Acceleration_start",
@@ -317,7 +321,7 @@
                     "name": "x",
                     "type": "linear",
                     "domain": {
-                        "data": "source",
+                        "data": "source_0",
                         "field": "Horsepower"
                     },
                     "range": [
@@ -332,7 +336,7 @@
                     "name": "y",
                     "type": "linear",
                     "domain": {
-                        "data": "source",
+                        "data": "source_0",
                         "field": "Miles_per_Gallon"
                     },
                     "range": [

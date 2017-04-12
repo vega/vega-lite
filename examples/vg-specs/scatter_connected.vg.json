@@ -24,7 +24,7 @@
     ],
     "data": [
         {
-            "name": "source",
+            "name": "source_0",
             "url": "data/driving.json",
             "format": {
                 "type": "json",
@@ -34,6 +34,11 @@
                     "year": "date"
                 }
             },
+            "transform": []
+        },
+        {
+            "name": "data_0",
+            "source": "source_0",
             "transform": [
                 {
                     "type": "filter",
@@ -53,14 +58,14 @@
             ]
         },
         {
-            "name": "layer_0_source",
-            "source": "source",
-            "transform": []
-        },
-        {
-            "name": "layer_1_source",
-            "source": "source",
-            "transform": []
+            "name": "data_1",
+            "source": "source_0",
+            "transform": [
+                {
+                    "type": "filter",
+                    "expr": "datum[\"miles\"] !== null && !isNaN(datum[\"miles\"]) && datum[\"gas\"] !== null && !isNaN(datum[\"gas\"]) && datum[\"year\"] !== null && !isNaN(datum[\"year\"])"
+                }
+            ]
         },
         {
             "name": "layout",
@@ -83,7 +88,7 @@
     ],
     "marks": [
         {
-            "name": "main",
+            "name": "main-group",
             "type": "group",
             "from": {
                 "data": "layout"
@@ -106,7 +111,7 @@
                     "name": "layer_0_marks",
                     "type": "line",
                     "from": {
-                        "data": "layer_0_source"
+                        "data": "data_0"
                     },
                     "encode": {
                         "update": {
@@ -129,7 +134,7 @@
                     "type": "symbol",
                     "role": "pointOverlay",
                     "from": {
-                        "data": "layer_1_source"
+                        "data": "data_1"
                     },
                     "encode": {
                         "update": {
@@ -158,11 +163,11 @@
                     "domain": {
                         "fields": [
                             {
-                                "data": "layer_0_source",
+                                "data": "data_0",
                                 "field": "miles"
                             },
                             {
-                                "data": "layer_1_source",
+                                "data": "data_1",
                                 "field": "miles"
                             }
                         ],
@@ -182,11 +187,11 @@
                     "domain": {
                         "fields": [
                             {
-                                "data": "layer_0_source",
+                                "data": "data_0",
                                 "field": "gas"
                             },
                             {
-                                "data": "layer_1_source",
+                                "data": "data_1",
                                 "field": "gas"
                             }
                         ],

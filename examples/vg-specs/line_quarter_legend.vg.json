@@ -24,7 +24,7 @@
     ],
     "data": [
         {
-            "name": "source",
+            "name": "source_0",
             "url": "data/stocks.csv",
             "format": {
                 "type": "csv",
@@ -47,13 +47,7 @@
                     "type": "formula",
                     "as": "quarter_date",
                     "expr": "datetime(0, (quarter(datum[\"date\"])-1)*3, 1, 0, 0, 0, 0)"
-                }
-            ]
-        },
-        {
-            "source": "source",
-            "name": "summary",
-            "transform": [
+                },
                 {
                     "type": "aggregate",
                     "groupby": [
@@ -97,7 +91,7 @@
     ],
     "marks": [
         {
-            "name": "main",
+            "name": "main-group",
             "type": "group",
             "description": "Stock price average broken down by quarter.",
             "from": {
@@ -122,8 +116,8 @@
                     "type": "group",
                     "from": {
                         "facet": {
-                            "name": "faceted-path-summary",
-                            "data": "summary",
+                            "name": "faceted-path-main",
+                            "data": "source_0",
                             "groupby": [
                                 "quarter_date"
                             ]
@@ -148,7 +142,7 @@
                             "name": "marks",
                             "type": "line",
                             "from": {
-                                "data": "faceted-path-summary"
+                                "data": "faceted-path-main"
                             },
                             "encode": {
                                 "update": {
@@ -175,7 +169,7 @@
                     "name": "x",
                     "type": "time",
                     "domain": {
-                        "data": "summary",
+                        "data": "source_0",
                         "field": "year_date"
                     },
                     "range": [
@@ -189,7 +183,7 @@
                     "name": "y",
                     "type": "linear",
                     "domain": {
-                        "data": "summary",
+                        "data": "source_0",
                         "field": "mean_price"
                     },
                     "range": [
@@ -204,7 +198,7 @@
                     "name": "color",
                     "type": "sequential",
                     "domain": {
-                        "data": "summary",
+                        "data": "source_0",
                         "field": "quarter_date"
                     },
                     "range": "ramp",

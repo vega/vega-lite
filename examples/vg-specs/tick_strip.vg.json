@@ -24,7 +24,7 @@
     ],
     "data": [
         {
-            "name": "source",
+            "name": "source_0",
             "url": "data/cars.json",
             "format": {
                 "type": "json",
@@ -41,7 +41,7 @@
         },
         {
             "name": "layout",
-            "source": "source",
+            "source": "source_0",
             "transform": [
                 {
                     "type": "aggregate",
@@ -67,7 +67,7 @@
     ],
     "marks": [
         {
-            "name": "main",
+            "name": "main-group",
             "type": "group",
             "description": "Shows the relationship between horsepower and the numbver of cylinders using tick marks.",
             "from": {
@@ -92,7 +92,7 @@
                     "type": "rect",
                     "role": "tick",
                     "from": {
-                        "data": "source"
+                        "data": "source_0"
                     },
                     "encode": {
                         "update": {
@@ -125,7 +125,7 @@
                     "name": "x",
                     "type": "linear",
                     "domain": {
-                        "data": "source",
+                        "data": "source_0",
                         "field": "Horsepower"
                     },
                     "range": [
@@ -140,7 +140,7 @@
                     "name": "y",
                     "type": "point",
                     "domain": {
-                        "data": "source",
+                        "data": "source_0",
                         "field": "Cylinders",
                         "sort": true
                     },
