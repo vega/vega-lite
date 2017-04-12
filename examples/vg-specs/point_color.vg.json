@@ -24,7 +24,7 @@
     ],
     "data": [
         {
-            "name": "source",
+            "name": "source_0",
             "values": [
                 {
                     "a": 2
@@ -57,7 +57,7 @@
     ],
     "marks": [
         {
-            "name": "main",
+            "name": "main-group",
             "type": "group",
             "from": {
                 "data": "layout"
@@ -81,7 +81,7 @@
                     "type": "symbol",
                     "role": "point",
                     "from": {
-                        "data": "source"
+                        "data": "source_0"
                     },
                     "encode": {
                         "update": {

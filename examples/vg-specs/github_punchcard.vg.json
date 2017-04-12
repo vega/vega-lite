@@ -24,7 +24,7 @@
     ],
     "data": [
         {
-            "name": "source",
+            "name": "source_0",
             "url": "data/github.csv",
             "format": {
                 "type": "csv",
@@ -47,13 +47,7 @@
                     "type": "formula",
                     "as": "hours_time",
                     "expr": "datetime(0, 0, 1, hours(datum[\"time\"]), 0, 0, 0)"
-                }
-            ]
-        },
-        {
-            "source": "source",
-            "name": "summary",
-            "transform": [
+                },
                 {
                     "type": "aggregate",
                     "groupby": [
@@ -71,7 +65,7 @@
         },
         {
             "name": "layout",
-            "source": "summary",
+            "source": "source_0",
             "transform": [
                 {
                     "type": "aggregate",
@@ -99,7 +93,7 @@
     ],
     "marks": [
         {
-            "name": "main",
+            "name": "main-group",
             "type": "group",
             "from": {
                 "data": "layout"
@@ -123,7 +117,7 @@
                     "type": "symbol",
                     "role": "circle",
                     "from": {
-                        "data": "summary"
+                        "data": "source_0"
                     },
                     "encode": {
                         "update": {
@@ -154,7 +148,7 @@
                     "name": "x",
                     "type": "point",
                     "domain": {
-                        "data": "summary",
+                        "data": "source_0",
                         "field": "hours_time",
                         "sort": true
                     },
@@ -168,7 +162,7 @@
                     "name": "y",
                     "type": "point",
                     "domain": {
-                        "data": "summary",
+                        "data": "source_0",
                         "field": "day_time",
                         "sort": true
                     },
@@ -182,7 +176,7 @@
                     "name": "size",
                     "type": "linear",
                     "domain": {
-                        "data": "summary",
+                        "data": "source_0",
                         "field": "sum_count"
                     },
                     "range": [

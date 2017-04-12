@@ -24,7 +24,7 @@
     ],
     "data": [
         {
-            "name": "source",
+            "name": "source_0",
             "url": "data/anscombe.json",
             "format": {
                 "type": "json",
@@ -41,8 +41,8 @@
             ]
         },
         {
-            "name": "column-source",
-            "source": "source",
+            "name": "column",
+            "source": "source_0",
             "transform": [
                 {
                     "type": "aggregate",
@@ -54,7 +54,7 @@
         },
         {
             "name": "layout",
-            "source": "source",
+            "source": "source_0",
             "transform": [
                 {
                     "type": "aggregate",
@@ -90,7 +90,7 @@
     ],
     "marks": [
         {
-            "name": "main",
+            "name": "main-group",
             "type": "group",
             "description": "Anscombe's Quartet",
             "from": {
@@ -111,7 +111,7 @@
                     "name": "x-axes",
                     "type": "group",
                     "from": {
-                        "data": "column-source"
+                        "data": "column"
                     },
                     "encode": {
                         "update": {
@@ -178,8 +178,8 @@
                     "type": "group",
                     "from": {
                         "facet": {
-                            "name": "faceted-data",
-                            "data": "source",
+                            "name": "facet",
+                            "data": "source_0",
                             "groupby": [
                                 "Series"
                             ]
@@ -222,7 +222,7 @@
                             "type": "symbol",
                             "role": "circle",
                             "from": {
-                                "data": "faceted-data"
+                                "data": "facet"
                             },
                             "encode": {
                                 "update": {
@@ -276,7 +276,7 @@
                     "name": "column",
                     "type": "band",
                     "domain": {
-                        "data": "source",
+                        "data": "source_0",
                         "field": "Series",
                         "sort": true
                     },
@@ -287,7 +287,7 @@
                     "name": "x",
                     "type": "linear",
                     "domain": {
-                        "data": "source",
+                        "data": "source_0",
                         "field": "X"
                     },
                     "range": [
@@ -302,7 +302,7 @@
                     "name": "y",
                     "type": "linear",
                     "domain": {
-                        "data": "source",
+                        "data": "source_0",
                         "field": "Y"
                     },
                     "range": [

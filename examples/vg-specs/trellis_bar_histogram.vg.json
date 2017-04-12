@@ -24,7 +24,7 @@
     ],
     "data": [
         {
-            "name": "source",
+            "name": "source_0",
             "url": "data/cars.json",
             "format": {
                 "type": "json",
@@ -54,13 +54,7 @@
                     "extent": {
                         "signal": "child_bin_maxbins_15_Horsepower_extent"
                     }
-                }
-            ]
-        },
-        {
-            "source": "source",
-            "name": "summary",
-            "transform": [
+                },
                 {
                     "type": "aggregate",
                     "groupby": [
@@ -79,8 +73,8 @@
             ]
         },
         {
-            "name": "row-summary",
-            "source": "summary",
+            "name": "row",
+            "source": "source_0",
             "transform": [
                 {
                     "type": "aggregate",
@@ -92,7 +86,7 @@
         },
         {
             "name": "layout",
-            "source": "summary",
+            "source": "source_0",
             "transform": [
                 {
                     "type": "aggregate",
@@ -128,7 +122,7 @@
     ],
     "marks": [
         {
-            "name": "main",
+            "name": "main-group",
             "type": "group",
             "from": {
                 "data": "layout"
@@ -193,7 +187,7 @@
                     "name": "y-axes",
                     "type": "group",
                     "from": {
-                        "data": "row-summary"
+                        "data": "row"
                     },
                     "encode": {
                         "update": {
@@ -229,8 +223,8 @@
                     "type": "group",
                     "from": {
                         "facet": {
-                            "name": "faceted-data",
-                            "data": "summary",
+                            "name": "facet",
+                            "data": "source_0",
                             "groupby": [
                                 "Origin"
                             ]
@@ -273,7 +267,7 @@
                             "type": "rect",
                             "role": "bar",
                             "from": {
-                                "data": "faceted-data"
+                                "data": "facet"
                             },
                             "encode": {
                                 "update": {
@@ -321,7 +315,7 @@
                     "name": "row",
                     "type": "band",
                     "domain": {
-                        "data": "summary",
+                        "data": "source_0",
                         "field": "Origin",
                         "sort": true
                     },
@@ -332,7 +326,8 @@
                     "name": "x",
                     "type": "bin-linear",
                     "domain": {
-                        "signal": "sequence(child_bin_maxbins_15_Horsepower_bins.start, child_bin_maxbins_15_Horsepower_bins.stop + child_bin_maxbins_15_Horsepower_bins.step, child_bin_maxbins_15_Horsepower_bins.step)"
+                        "signal": "sequence(child_bin_maxbins_15_Horsepower_bins.start, child_bin_maxbins_15_Horsepower_bins.stop + child_bin_maxbins_15_Horsepower_bins.step, child_bin_maxbins_15_Horsepower_bins.step)",
+                        "data": "main"
                     },
                     "range": [
                         0,
@@ -345,7 +340,7 @@
                     "name": "y",
                     "type": "linear",
                     "domain": {
-                        "data": "summary",
+                        "data": "source_0",
                         "field": "count_*"
                     },
                     "range": [

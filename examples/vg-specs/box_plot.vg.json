@@ -24,7 +24,7 @@
     ],
     "data": [
         {
-            "name": "source",
+            "name": "source_0",
             "url": "data/population.json",
             "format": {
                 "type": "json",
@@ -32,22 +32,16 @@
                     "people": "number"
                 }
             },
+            "transform": []
+        },
+        {
+            "name": "data_0",
+            "source": "source_0",
             "transform": [
                 {
                     "type": "filter",
                     "expr": "datum[\"people\"] !== null && !isNaN(datum[\"people\"])"
-                }
-            ]
-        },
-        {
-            "name": "layer_0_source",
-            "source": "source",
-            "transform": []
-        },
-        {
-            "source": "layer_0_source",
-            "name": "layer_0_summary",
-            "transform": [
+                },
                 {
                     "type": "aggregate",
                     "groupby": [
@@ -65,19 +59,13 @@
             ]
         },
         {
-            "name": "layer_1_source",
-            "source": "source",
+            "name": "data_1",
+            "source": "source_0",
             "transform": [
                 {
                     "type": "filter",
                     "expr": "datum[\"people\"] !== null && !isNaN(datum[\"people\"])"
-                }
-            ]
-        },
-        {
-            "source": "layer_1_source",
-            "name": "layer_1_summary",
-            "transform": [
+                },
                 {
                     "type": "aggregate",
                     "groupby": [
@@ -93,19 +81,13 @@
             ]
         },
         {
-            "name": "layer_2_source",
-            "source": "source",
+            "name": "data_2",
+            "source": "source_0",
             "transform": [
                 {
                     "type": "filter",
                     "expr": "datum[\"people\"] !== null && !isNaN(datum[\"people\"])"
-                }
-            ]
-        },
-        {
-            "source": "layer_2_source",
-            "name": "layer_2_summary",
-            "transform": [
+                },
                 {
                     "type": "aggregate",
                     "groupby": [
@@ -121,19 +103,13 @@
             ]
         },
         {
-            "name": "layer_3_source",
-            "source": "source",
+            "name": "data_3",
+            "source": "source_0",
             "transform": [
                 {
                     "type": "filter",
                     "expr": "datum[\"people\"] !== null && !isNaN(datum[\"people\"])"
-                }
-            ]
-        },
-        {
-            "source": "layer_3_source",
-            "name": "layer_3_summary",
-            "transform": [
+                },
                 {
                     "type": "aggregate",
                     "groupby": [
@@ -151,19 +127,13 @@
             ]
         },
         {
-            "name": "layer_4_source",
-            "source": "source",
+            "name": "data_4",
+            "source": "source_0",
             "transform": [
                 {
                     "type": "filter",
                     "expr": "datum[\"people\"] !== null && !isNaN(datum[\"people\"])"
-                }
-            ]
-        },
-        {
-            "source": "layer_4_source",
-            "name": "layer_4_summary",
-            "transform": [
+                },
                 {
                     "type": "aggregate",
                     "groupby": [
@@ -180,7 +150,7 @@
         },
         {
             "name": "layout",
-            "source": "layer_0_summary",
+            "source": "source_0",
             "transform": [
                 {
                     "type": "aggregate",
@@ -206,7 +176,7 @@
     ],
     "marks": [
         {
-            "name": "main",
+            "name": "main-group",
             "type": "group",
             "description": "A box plot showing mean, min, and max in the US population distribution of age groups in 2000.",
             "from": {
@@ -230,7 +200,7 @@
                     "name": "layer_0_marks",
                     "type": "rule",
                     "from": {
-                        "data": "layer_0_summary"
+                        "data": "data_0"
                     },
                     "encode": {
                         "update": {
@@ -257,7 +227,7 @@
                     "type": "rect",
                     "role": "tick",
                     "from": {
-                        "data": "layer_1_summary"
+                        "data": "data_1"
                     },
                     "encode": {
                         "update": {
@@ -286,7 +256,7 @@
                     "type": "rect",
                     "role": "tick",
                     "from": {
-                        "data": "layer_2_summary"
+                        "data": "data_2"
                     },
                     "encode": {
                         "update": {
@@ -315,7 +285,7 @@
                     "type": "rect",
                     "role": "bar",
                     "from": {
-                        "data": "layer_3_summary"
+                        "data": "data_3"
                     },
                     "encode": {
                         "update": {
@@ -345,7 +315,7 @@
                     "type": "rect",
                     "role": "tick",
                     "from": {
-                        "data": "layer_4_summary"
+                        "data": "data_4"
                     },
                     "encode": {
                         "update": {
@@ -378,22 +348,22 @@
                         "fields": [
                             {
                                 "field": "age",
-                                "data": "layer_0_summary"
+                                "data": "data_0"
                             },
                             {
                                 "field": "age",
-                                "data": "layer_1_summary"
+                                "data": "data_1"
                             },
                             {
                                 "field": "age",
-                                "data": "layer_2_summary"
+                                "data": "data_2"
                             },
                             {
                                 "field": "age",
-                                "data": "layer_3_summary"
+                                "data": "data_3"
                             },
                             {
-                                "data": "layer_4_summary",
+                                "data": "data_4",
                                 "field": "age"
                             }
                         ],
@@ -412,30 +382,30 @@
                         "fields": [
                             {
                                 "field": "min_people",
-                                "data": "layer_0_summary"
+                                "data": "data_0"
                             },
                             {
                                 "field": "max_people",
-                                "data": "layer_0_summary"
+                                "data": "data_0"
                             },
                             {
                                 "field": "min_people",
-                                "data": "layer_1_summary"
+                                "data": "data_1"
                             },
                             {
                                 "field": "max_people",
-                                "data": "layer_2_summary"
+                                "data": "data_2"
                             },
                             {
                                 "field": "q1_people",
-                                "data": "layer_3_summary"
+                                "data": "data_3"
                             },
                             {
                                 "field": "q3_people",
-                                "data": "layer_3_summary"
+                                "data": "data_3"
                             },
                             {
-                                "data": "layer_4_summary",
+                                "data": "data_4",
                                 "field": "median_people"
                             }
                         ],

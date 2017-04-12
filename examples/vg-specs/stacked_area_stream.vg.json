@@ -24,7 +24,7 @@
     ],
     "data": [
         {
-            "name": "source",
+            "name": "source_0",
             "url": "data/unemployment-across-industries.json",
             "format": {
                 "type": "json",
@@ -42,13 +42,7 @@
                     "type": "formula",
                     "as": "yearmonth_date",
                     "expr": "datetime(year(datum[\"date\"]), month(datum[\"date\"]), 1, 0, 0, 0, 0)"
-                }
-            ]
-        },
-        {
-            "source": "source",
-            "name": "summary",
-            "transform": [
+                },
                 {
                     "type": "aggregate",
                     "groupby": [
@@ -61,13 +55,7 @@
                     "fields": [
                         "count"
                     ]
-                }
-            ]
-        },
-        {
-            "name": "stacked",
-            "source": "summary",
-            "transform": [
+                },
                 {
                     "type": "impute",
                     "field": "sum_count",
@@ -130,7 +118,7 @@
     ],
     "marks": [
         {
-            "name": "main",
+            "name": "main-group",
             "type": "group",
             "from": {
                 "data": "layout"
@@ -154,8 +142,8 @@
                     "type": "group",
                     "from": {
                         "facet": {
-                            "name": "faceted-path-stacked",
-                            "data": "stacked",
+                            "name": "faceted-path-main",
+                            "data": "source_0",
                             "groupby": [
                                 "series"
                             ]
@@ -180,7 +168,7 @@
                             "name": "marks",
                             "type": "area",
                             "from": {
-                                "data": "faceted-path-stacked"
+                                "data": "faceted-path-main"
                             },
                             "encode": {
                                 "update": {
@@ -214,7 +202,7 @@
                     "name": "x",
                     "type": "time",
                     "domain": {
-                        "data": "summary",
+                        "data": "source_0",
                         "field": "yearmonth_date"
                     },
                     "range": [
@@ -228,7 +216,7 @@
                     "name": "y",
                     "type": "linear",
                     "domain": {
-                        "data": "stacked",
+                        "data": "source_0",
                         "fields": [
                             "sum_count_start",
                             "sum_count_end"
@@ -246,7 +234,7 @@
                     "name": "color",
                     "type": "ordinal",
                     "domain": {
-                        "data": "summary",
+                        "data": "source_0",
                         "field": "series",
                         "sort": true
                     },

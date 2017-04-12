@@ -24,7 +24,7 @@
     ],
     "data": [
         {
-            "name": "source",
+            "name": "source_0",
             "url": "data/stocks.csv",
             "format": {
                 "type": "csv",
@@ -68,7 +68,7 @@
     ],
     "marks": [
         {
-            "name": "main",
+            "name": "main-group",
             "type": "group",
             "description": "Stock prices of 5 Tech Companies Over Time.",
             "from": {
@@ -93,8 +93,8 @@
                     "type": "group",
                     "from": {
                         "facet": {
-                            "name": "faceted-path-source",
-                            "data": "source",
+                            "name": "faceted-path-main",
+                            "data": "source_0",
                             "groupby": [
                                 "symbol"
                             ]
@@ -119,7 +119,7 @@
                             "name": "marks",
                             "type": "line",
                             "from": {
-                                "data": "faceted-path-source"
+                                "data": "faceted-path-main"
                             },
                             "encode": {
                                 "update": {
@@ -145,7 +145,7 @@
                     "name": "x",
                     "type": "time",
                     "domain": {
-                        "data": "source",
+                        "data": "source_0",
                         "field": "date"
                     },
                     "range": [
@@ -158,7 +158,7 @@
                     "name": "y",
                     "type": "linear",
                     "domain": {
-                        "data": "source",
+                        "data": "source_0",
                         "field": "price"
                     },
                     "range": [

@@ -24,7 +24,7 @@
     ],
     "data": [
         {
-            "name": "source",
+            "name": "source_0",
             "url": "data/cars.json",
             "format": {
                 "type": "json",
@@ -36,13 +36,7 @@
                 {
                     "type": "filter",
                     "expr": "datum[\"Horsepower\"] !== null && !isNaN(datum[\"Horsepower\"])"
-                }
-            ]
-        },
-        {
-            "source": "source",
-            "name": "summary",
-            "transform": [
+                },
                 {
                     "type": "aggregate",
                     "groupby": [
@@ -60,7 +54,7 @@
         },
         {
             "name": "layout",
-            "source": "summary",
+            "source": "source_0",
             "transform": [
                 {
                     "type": "aggregate",
@@ -88,7 +82,7 @@
     ],
     "marks": [
         {
-            "name": "main",
+            "name": "main-group",
             "type": "group",
             "from": {
                 "data": "layout"
@@ -111,7 +105,7 @@
                     "name": "marks",
                     "type": "rect",
                     "from": {
-                        "data": "summary"
+                        "data": "source_0"
                     },
                     "encode": {
                         "update": {
@@ -144,7 +138,7 @@
                     "name": "x",
                     "type": "band",
                     "domain": {
-                        "data": "summary",
+                        "data": "source_0",
                         "field": "Cylinders",
                         "sort": true
                     },
@@ -159,7 +153,7 @@
                     "name": "y",
                     "type": "band",
                     "domain": {
-                        "data": "summary",
+                        "data": "source_0",
                         "field": "Origin",
                         "sort": true
                     },
@@ -174,7 +168,7 @@
                     "name": "color",
                     "type": "sequential",
                     "domain": {
-                        "data": "summary",
+                        "data": "source_0",
                         "field": "mean_Horsepower"
                     },
                     "range": "heatmap",

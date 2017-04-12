@@ -24,7 +24,7 @@
     ],
     "data": [
         {
-            "name": "source",
+            "name": "source_0",
             "values": [
                 {
                     "a": "A",
@@ -69,6 +69,21 @@
                     "b": "number"
                 }
             },
+            "transform": []
+        },
+        {
+            "name": "data_0",
+            "source": "source_0",
+            "transform": [
+                {
+                    "type": "filter",
+                    "expr": "datum[\"b\"] !== null && !isNaN(datum[\"b\"])"
+                }
+            ]
+        },
+        {
+            "name": "data_1",
+            "source": "source_0",
             "transform": [
                 {
                     "type": "filter",
@@ -84,23 +99,8 @@
             ]
         },
         {
-            "name": "layer_0_source",
-            "source": "source",
-            "transform": []
-        },
-        {
-            "name": "layer_1_source",
-            "source": "source",
-            "transform": [
-                {
-                    "type": "filter",
-                    "expr": "datum[\"b\"] !== null && !isNaN(datum[\"b\"])"
-                }
-            ]
-        },
-        {
             "name": "layout",
-            "source": "layer_0_source",
+            "source": "source_0",
             "transform": [
                 {
                     "type": "aggregate",
@@ -126,7 +126,7 @@
     ],
     "marks": [
         {
-            "name": "main",
+            "name": "main-group",
             "type": "group",
             "from": {
                 "data": "layout"
@@ -150,7 +150,7 @@
                     "type": "rect",
                     "role": "bar",
                     "from": {
-                        "data": "layer_0_source"
+                        "data": "data_0"
                     },
                     "encode": {
                         "update": {
@@ -179,7 +179,7 @@
                     "name": "layer_1_marks",
                     "type": "line",
                     "from": {
-                        "data": "layer_1_source"
+                        "data": "data_1"
                     },
                     "encode": {
                         "update": {
@@ -205,11 +205,11 @@
                     "domain": {
                         "fields": [
                             {
-                                "data": "layer_0_source",
+                                "data": "data_0",
                                 "field": "a"
                             },
                             {
-                                "data": "layer_1_source",
+                                "data": "data_1",
                                 "field": "a"
                             }
                         ],
@@ -227,11 +227,11 @@
                     "domain": {
                         "fields": [
                             {
-                                "data": "layer_0_source",
+                                "data": "data_0",
                                 "field": "b"
                             },
                             {
-                                "data": "layer_1_source",
+                                "data": "data_1",
                                 "field": "b"
                             }
                         ],

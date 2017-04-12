@@ -24,7 +24,7 @@
     ],
     "data": [
         {
-            "name": "source",
+            "name": "source_0",
             "url": "data/seattle-weather.csv",
             "format": {
                 "type": "csv",
@@ -41,13 +41,7 @@
                     "type": "formula",
                     "as": "month_date",
                     "expr": "datetime(0, month(datum[\"date\"]), 1, 0, 0, 0, 0)"
-                }
-            ]
-        },
-        {
-            "source": "source",
-            "name": "summary",
-            "transform": [
+                },
                 {
                     "type": "aggregate",
                     "groupby": [
@@ -60,13 +54,7 @@
                     "fields": [
                         "*"
                     ]
-                }
-            ]
-        },
-        {
-            "name": "stacked",
-            "source": "summary",
-            "transform": [
+                },
                 {
                     "type": "stack",
                     "groupby": [
@@ -91,7 +79,7 @@
         },
         {
             "name": "layout",
-            "source": "summary",
+            "source": "source_0",
             "transform": [
                 {
                     "type": "aggregate",
@@ -117,7 +105,7 @@
     ],
     "marks": [
         {
-            "name": "main",
+            "name": "main-group",
             "type": "group",
             "from": {
                 "data": "layout"
@@ -141,7 +129,7 @@
                     "type": "rect",
                     "role": "bar",
                     "from": {
-                        "data": "stacked"
+                        "data": "source_0"
                     },
                     "encode": {
                         "update": {
@@ -173,7 +161,7 @@
                     "name": "x",
                     "type": "point",
                     "domain": {
-                        "data": "summary",
+                        "data": "source_0",
                         "field": "month_date",
                         "sort": true
                     },
@@ -187,7 +175,7 @@
                     "name": "y",
                     "type": "linear",
                     "domain": {
-                        "data": "stacked",
+                        "data": "source_0",
                         "fields": [
                             "count_*_start",
                             "count_*_end"

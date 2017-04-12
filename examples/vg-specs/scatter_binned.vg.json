@@ -24,7 +24,7 @@
     ],
     "data": [
         {
-            "name": "source",
+            "name": "source_0",
             "url": "data/movies.json",
             "format": {
                 "type": "json",
@@ -73,13 +73,7 @@
                     "extent": {
                         "signal": "bin_maxbins_10_Rotten_Tomatoes_Rating_extent"
                     }
-                }
-            ]
-        },
-        {
-            "source": "source",
-            "name": "summary",
-            "transform": [
+                },
                 {
                     "type": "aggregate",
                     "groupby": [
@@ -120,7 +114,7 @@
     ],
     "marks": [
         {
-            "name": "main",
+            "name": "main-group",
             "type": "group",
             "from": {
                 "data": "layout"
@@ -144,7 +138,7 @@
                     "type": "symbol",
                     "role": "circle",
                     "from": {
-                        "data": "summary"
+                        "data": "source_0"
                     },
                     "encode": {
                         "update": {
@@ -199,7 +193,7 @@
                     "name": "size",
                     "type": "linear",
                     "domain": {
-                        "data": "summary",
+                        "data": "source_0",
                         "field": "count_*"
                     },
                     "range": [
