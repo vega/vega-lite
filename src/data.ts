@@ -16,7 +16,7 @@ export interface DataFormat {
   parse?: any;
 
   /**
-   * JSON only) The JSON property containing the desired data.
+   * (JSON only) The JSON property containing the desired data.
    * This parameter can be used when the loaded JSON file may have surrounding structure or meta-data.
    * For example `"property": "values.features"` is equivalent to retrieving `json.values.features`
    * from the loaded JSON object.
@@ -44,12 +44,12 @@ export type Data = UrlData | InlineData | NamedData;
 
 export interface UrlData {
   /**
-   * An object that specifies the format for the data file or values.
+   * Type of input data: `"json"`, `"csv"`, `"tsv"`. The default format type is determined by the extension of the file url. If no extension is detected, `"json"` will be used by default.
    */
   format?: DataFormat;
 
   /**
-   * A URL from which to load the data set. Use the format.type property
+   * A URL from which to load the data set. Use the `format.type` property
    * to ensure the loaded data is correctly parsed.
    */
   url: string;
