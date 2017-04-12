@@ -31,7 +31,7 @@ function rangeFormula(model: Model, fieldDef: FieldDef, channel: Channel) {
     return {};
 }
 
-interface Component {
+interface BinComponent {
   bin: Bin;
   field: string;
   extentSignal: string;
@@ -45,12 +45,12 @@ interface Component {
 }
 
 export class BinNode extends DataFlowNode implements NewFieldNode, DependsOnNode {
-  private bins: Dict<Component>;
+  private bins: Dict<BinComponent>;
 
   constructor(model: Model) {
     super();
 
-    this.bins = model.reduceFieldDef((binComponent: Dict<Component>, fieldDef: FieldDef, channel: Channel) => {
+    this.bins = model.reduceFieldDef((binComponent: Dict<BinComponent>, fieldDef: FieldDef, channel: Channel) => {
       const fieldDefBin = model.fieldDef(channel).bin;
       if (fieldDefBin) {
         const bin: Bin = isBoolean(fieldDefBin) ? {} : fieldDefBin;

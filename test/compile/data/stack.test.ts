@@ -2,7 +2,7 @@
 
 import {assert} from 'chai';
 
-import {Stack, StackNode} from '../../../src/compile/data/stack';
+import {StackComponent, StackNode} from '../../../src/compile/data/stack';
 
 import {UnitModel} from '../../../src/compile/unit';
 import {VgTransform} from '../../../src/vega.schema';
@@ -38,7 +38,7 @@ describe('compile/data/stack', () => {
       }
     });
 
-    assert.deepEqual<Stack>(parse(model), {
+    assert.deepEqual<StackComponent>(parse(model), {
       groupby: ['b'],
       field: 'sum_a',
       stackby: ['c'],
@@ -61,7 +61,7 @@ describe('compile/data/stack', () => {
       }
     });
 
-    assert.deepEqual<Stack>(parse(model), {
+    assert.deepEqual<StackComponent>(parse(model), {
       groupby: ["bin_maxbins_10_b_start", "bin_maxbins_10_b_end"],
       field: 'sum_a',
       stackby: ['c'],
@@ -83,7 +83,7 @@ describe('compile/data/stack', () => {
       }
     });
 
-    assert.deepEqual<Stack>(parse(model), {
+    assert.deepEqual<StackComponent>(parse(model), {
       groupby: [],
       field: 'sum_a',
       stackby: ['c'],
@@ -120,7 +120,7 @@ describe('compile/data/stack', () => {
       }
     });
 
-    assert.deepEqual<Stack>(parse(model), {
+    assert.deepEqual<StackComponent>(parse(model), {
       groupby: ['b'],
       field: 'sum_a',
       stackby: ['c'],

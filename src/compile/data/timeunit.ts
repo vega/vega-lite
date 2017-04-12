@@ -9,19 +9,19 @@ import {format} from '../axis/rules';
 import {Model} from '../model';
 import {DataFlowNode, DependsOnNode, NewFieldNode} from './dataflow';
 
-interface Component {
+interface TimeUnitComponent {
     as: string;
     timeUnit: TimeUnit;
     field: string;
   }
 
 export class TimeUnitNode extends DataFlowNode implements NewFieldNode, DependsOnNode {
-  private formula: Dict<Component>;
+  private formula: Dict<TimeUnitComponent>;
 
   constructor(model: Model) {
     super();
 
-    this.formula = model.reduceFieldDef((timeUnitComponent: Component, fieldDef: FieldDef) => {
+    this.formula = model.reduceFieldDef((timeUnitComponent: TimeUnitComponent, fieldDef: FieldDef) => {
       if (fieldDef.type === TEMPORAL && fieldDef.timeUnit) {
         const f = field(fieldDef);
         timeUnitComponent[f] = {
@@ -31,7 +31,7 @@ export class TimeUnitNode extends DataFlowNode implements NewFieldNode, DependsO
         };
       }
       return timeUnitComponent;
-    }, {} as Dict<Component>);
+    }, {} as Dict<TimeUnitComponent>);
   }
 
   public size() {
