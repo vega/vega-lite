@@ -29,7 +29,7 @@ We use Github Pages to publish our documentation when we release a new version.
 To contribute changes to the documentation or website, simply submit a pull request that changes
 the corresponding markdown files in `site/`.
 
-The images that are shown on the homepage and in the gallery have to be generated with `npm run images`.
+The images that are shown on the homepage and in the gallery have to be generated with `npm run build:images`.
 To run the script, you need to install [gnu parallel](https://www.gnu.org/software/parallel/). (For Mac, you can simply do `brew install parallel`.)
 
 Since we only publish the Github Pages when we release a new version,
