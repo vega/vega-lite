@@ -25,9 +25,6 @@ describe('compile/data/nonpositivefilter', function () {
 
     assert.deepEqual<VgTransform[]>(filter.assemble(), [{
       type: 'filter',
-      expr: 'datum["a"] > 0'
-    }, {
-      type: 'filter',
       expr: 'datum["b"] > 0'
     }]);
   });

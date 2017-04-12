@@ -47,7 +47,7 @@ describe('src/compile', function() {
         assert.equal(scales.name, 'color');
         assert.equal(scales.type, 'ordinal');
         assert.deepEqual(scales.domain, {
-          data: 'source',
+          data: 'main',
           field: 'origin',
           sort: true
         });
@@ -70,7 +70,7 @@ describe('src/compile', function() {
         assert.equal(scales.type, 'ordinal');
 
         assert.deepEqual(scales.domain, {
-          data: 'source',
+          data: 'main',
           field: 'origin',
           sort: true
         });
@@ -93,7 +93,7 @@ describe('src/compile', function() {
         assert.equal(scales.range, 'ramp');
 
         assert.deepEqual(scales.domain, {
-          data: 'source',
+          data: 'main',
           field: 'origin'
         });
       });

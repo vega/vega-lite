@@ -12,7 +12,7 @@ export class SourceNode extends DataFlowNode {
   constructor(model: Model) {
     super();
 
-    const data = model.data;
+    const data = model.data || {name: 'source'};
 
     if (isInlineData(data)) {
       this._data = {
@@ -52,7 +52,11 @@ export class SourceNode extends DataFlowNode {
     return this._data;
   }
 
-  public hasName() {
+  public hasName(): boolean {
+    return !!this._name;
+  }
+
+  get dataName() {
     return this._name;
   }
 

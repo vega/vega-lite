@@ -7,7 +7,7 @@ import {Model} from '../../../src/compile/model';
 import {parseUnitModel} from '../../util';
 
 function parse(model: Model) {
-  return new SourceNode(model).data;
+  return new SourceNode(model);
 }
 
 describe('compile/data/source', function() {
@@ -24,11 +24,11 @@ describe('compile/data/source', function() {
       const source = parse(model);
 
       it('should have values', function() {
-        assert.deepEqual(source.values, [{a: 1, b:2, c:3}, {a: 4, b:5, c:6}]);
+        assert.deepEqual(source.data.values, [{a: 1, b:2, c:3}, {a: 4, b:5, c:6}]);
       });
 
       it('should have source.format.type', function(){
-        assert.deepEqual(source.format.type, 'json');
+        assert.deepEqual(source.data.format.type, 'json');
       });
     });
 
@@ -44,10 +44,10 @@ describe('compile/data/source', function() {
       const source = parse(model);
 
       it('should have format.type json', function() {
-        assert.equal(source.format.type, 'json');
+        assert.equal(source.data.format.type, 'json');
       });
       it('should have correct url', function() {
-        assert.equal(source.url, 'http://foo.bar');
+        assert.equal(source.data.url, 'http://foo.bar');
       });
     });
 
@@ -60,7 +60,7 @@ describe('compile/data/source', function() {
       const source = parse(model);
 
       it('should provide placeholder source data', function() {
-        assert.deepEqual(source, {name: 'source'});
+        assert.equal(source.dataName, 'source');
       });
     });
 
@@ -74,7 +74,7 @@ describe('compile/data/source', function() {
       const source = parse(model);
 
       it('should provide named source data', function() {
-        assert.deepEqual(source, {name: 'foo'});
+        assert.equal(source.dataName, 'foo');
       });
     });
 
@@ -92,7 +92,7 @@ describe('compile/data/source', function() {
 
           const source = parse(model);
 
-          assert.equal(source.format.property, 'baz');
+          assert.equal(source.data.format.property, 'baz');
         });
       });
 
@@ -110,11 +110,10 @@ describe('compile/data/source', function() {
           const source = parse(model);
 
           it('should have format.type topojson', function() {
-            assert.equal(source.name, 'source');
-            assert.equal(source.format.type, 'topojson');
+            assert.equal(source.data.format.type, 'topojson');
           });
           it('should have format.feature baz', function() {
-            assert.equal(source.format.feature, 'baz');
+            assert.equal(source.data.format.feature, 'baz');
           });
         });
 
@@ -131,11 +130,10 @@ describe('compile/data/source', function() {
           const source = parse(model);
 
           it('should have format.type topojson', function() {
-            assert.equal(source.name, 'source');
-            assert.equal(source.format.type, 'topojson');
+            assert.equal(source.data.format.type, 'topojson');
           });
           it('should have format.mesh baz', function() {
-            assert.equal(source.format.mesh, 'baz');
+            assert.equal(source.data.format.mesh, 'baz');
           });
         });
       });

@@ -32,10 +32,10 @@ describe('Layer', function() {
 
       assert.deepEqual(model.component.scales['x'].domain, {
         fields: [{
-          data: 'layer_0_source',
+          data: 'layer_0_main',
           field: 'a'
         },{
-          data: 'layer_1_source',
+          data: 'layer_1_main',
           field: 'b'
         }],
         sort: true
@@ -62,7 +62,7 @@ describe('Layer', function() {
         fields: [
           [1, 2, 3],
           {
-            data: 'layer_1_source',
+            data: 'layer_1_main',
             field: 'b'
           }
         ],

@@ -51,7 +51,7 @@ export function assembleLayout(model: Model, layoutData: VgData[]): VgData[] {
 
     return [
       distinctFields.length > 0 ? {
-        name: LAYOUT,
+        name: model.getName(LAYOUT),
         source: model.lookupDataSource(layoutComponent.width.source || layoutComponent.height.source),
         transform: [{
           type: 'aggregate',
@@ -59,7 +59,7 @@ export function assembleLayout(model: Model, layoutData: VgData[]): VgData[] {
           ops: distinctFields.map(() => 'distinct')
         } as VgTransform].concat(formula)
       } : {
-        name: LAYOUT,
+        name: model.getName(LAYOUT),
         values: [{}],
         transform: formula
       }

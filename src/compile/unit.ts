@@ -267,7 +267,7 @@ export class UnitModel extends Model {
   }
 
   public assembleMarks() {
-    let marks = this.component.mark;
+    let marks = this.component.mark || [];
     marks = assembleSelectionMarks(this, marks);
 
     return marks.map(this.correctDataNames);
