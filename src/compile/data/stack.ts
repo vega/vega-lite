@@ -7,7 +7,7 @@ import {VgSort, VgTransform} from '../../vega.schema';
 import {sortParams} from '../common';
 import {Model} from '../model';
 import {UnitModel} from './../unit';
-import {DataFlowNode, DependsOnNode, NewFieldNode} from './dataflow';
+import {DataFlowNode, DependentNode, NewFieldNode} from './dataflow';
 
 function getStackByFields(model: Model) {
   return model.stack.stackBy.reduce((fields, by) => {
@@ -55,7 +55,7 @@ export interface StackComponent {
   impute: boolean;
 }
 
-export class StackNode extends DataFlowNode implements NewFieldNode, DependsOnNode {
+export class StackNode extends DataFlowNode implements NewFieldNode, DependentNode {
   private _stack: StackComponent;
 
   constructor(model: UnitModel) {
@@ -110,7 +110,7 @@ export class StackNode extends DataFlowNode implements NewFieldNode, DependsOnNo
     this._stack.groupby = this._stack.groupby.concat(fields);
   }
 
-  public dependsOn() {
+  public dependentFields() {
     const out = {};
 
     out[this._stack.field] = true;
@@ -121,7 +121,7 @@ export class StackNode extends DataFlowNode implements NewFieldNode, DependsOnNo
     return out;
   }
 
-  public produces() {
+  public producedFields() {
     const out = {};
 
     out[this._stack.field + '_start'] = true;

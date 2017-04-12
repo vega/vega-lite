@@ -13,12 +13,12 @@ const DEFAULT_NULL_FILTERS = {
 };
 
 export class NullFilterNode extends DataFlowNode {
-  private _aggregator: Dict<FieldDef>;
+  private _filteredFields: Dict<FieldDef>;
 
   constructor(model: Model) {
     super();
 
-    this._aggregator = model.reduceFieldDef(function(aggregator: Dict<FieldDef>, fieldDef: FieldDef) {
+    this._filteredFields = model.reduceFieldDef((aggregator: Dict<FieldDef>, fieldDef: FieldDef) => {
       if (fieldDef.aggregate !== 'count') { // Ignore * for count(*) fields.
         if (model.config.filterInvalid ||
           (model.config.filterInvalid === undefined && (fieldDef.field && DEFAULT_NULL_FILTERS[fieldDef.type]))) {
@@ -33,23 +33,23 @@ export class NullFilterNode extends DataFlowNode {
     }, {});
   }
 
-  get aggregator() {
-      return this._aggregator;
+  get filteredFields() {
+      return this._filteredFields;
   }
 
   public merge(other: NullFilterNode) {
-    const t = Object.keys(this._aggregator).map(k => k + ' ' + hash(this._aggregator[k]));
-    const o = Object.keys(other.aggregator).map(k => k + ' ' + hash(other.aggregator[k]));
+    const t = Object.keys(this._filteredFields).map(k => k + ' ' + hash(this._filteredFields[k]));
+    const o = Object.keys(other.filteredFields).map(k => k + ' ' + hash(other.filteredFields[k]));
 
     if (!differArray(t, o)) {
-      this._aggregator = extend(this._aggregator, other._aggregator);
+      this._filteredFields = extend(this._filteredFields, other._filteredFields);
       other.remove();
     }
   }
 
   public assemble(): VgFilterTransform {
-    const filters = keys(this._aggregator).reduce((_filters, field) => {
-      const fieldDef = this._aggregator[field];
+    const filters = keys(this._filteredFields).reduce((_filters, field) => {
+      const fieldDef = this._filteredFields[field];
       if (fieldDef !== null) {
         _filters.push('datum["' + fieldDef.field + '"] !== null');
         if (contains([QUANTITATIVE, TEMPORAL], fieldDef.type)) {
