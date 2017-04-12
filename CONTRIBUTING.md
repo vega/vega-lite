@@ -150,21 +150,6 @@ If you only want subset of these actions, you can use:
 
 `npm run site`. See details in [Documentation and Website](#documentation-and-website).
 
-### Output diff
-
-We also have commands for observing changes in output Vega spec and output images.
-
-To create baseline Vega output specs from the Vega-Lite specs in `examples/`,
-check out the baseline branch (e.g., `git checkout master`) and run `npm
-x-compile`. All compiled specs will be in `examples/_original`.
-
-Once you develop some features and would like to diff the compiled specs, run `npm x-diff`.
-This will compile all examples again and output the diff for changed examples in the console.
-All compiled specs will be in `examples/_output`. For changed examples,
-SVG files will be created in `examples/_diff` for comparison.
-You can open those files to inspect visual changes, or run a diff command
-(e.g., `diff examples/_diff/area-base.svg examples/_diff/area.svg`).
-
 ### Deployment
 
 (For team members only) `npm run deploy` will publish latest code to NPM and Bower
