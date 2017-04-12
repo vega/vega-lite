@@ -25,7 +25,7 @@ function getStackByFields(model: Model) {
   }, [] as string[]);
 }
 
-export interface Stack {
+export interface StackComponent {
   /**
    * Grouping fields for stacked charts.  This includes one of x- or 'y-field and may include faceted field.
    */
@@ -56,7 +56,7 @@ export interface Stack {
 }
 
 export class StackNode extends DataFlowNode implements NewFieldNode, DependsOnNode {
-  private _stack: Stack;
+  private _stack: StackComponent;
 
   constructor(model: UnitModel) {
     super();
@@ -102,7 +102,7 @@ export class StackNode extends DataFlowNode implements NewFieldNode, DependsOnNo
     };
   }
 
-  get stack(): Stack {
+  get stack(): StackComponent {
     return this._stack;
   }
 
