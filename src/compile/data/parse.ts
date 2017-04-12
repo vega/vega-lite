@@ -18,8 +18,8 @@ import {TimeUnitNode} from './timeunit';
 import {parseTransformArray} from './transforms';
 
 function parseRoot(model: Model, sources: Dict<SourceNode>): DataFlowNode {
-  if (model.data) {
-    // If we have data, try to insert it into existing sources.
+  if (model.data || !model.parent) {
+    // if the model defines a data source or is the root, create a source node
     const source = new SourceNode(model);
     const hash = source.hash();
     if (hash in sources) {
@@ -31,7 +31,7 @@ function parseRoot(model: Model, sources: Dict<SourceNode>): DataFlowNode {
       return source;
     }
   } else {
-    // If we don't have a source defined, use the parent's facet root or main.
+    // If we don't have a source defined (overriding parent's data), use the parent's facet root or main.
     return model.parent.component.data.facetRoot ? model.parent.component.data.facetRoot : model.parent.component.data.main;
   }
 }
@@ -71,10 +71,10 @@ Description of the dataflow (http://asciiflow.com/):
        Stack
          |
          v
-     Path Order
+      >0 Filter
          |
          v
-      >0 Filter
+     Path Order
          |
          v
    +----------+----> Child data...
@@ -96,33 +96,28 @@ export function parseData(model: Model): DataComponent {
   // the current head of the tree that we are appending to
   let head = root;
 
-  // add format parse
   const parse = new ParseNode(model);
   parse.parent = root;
   head = parse;
 
-  // handle transforms array
   if (model.transforms.length > 0) {
     const {first, last} = parseTransformArray(model);
     first.parent = head;
     head = last;
   }
 
-  // add nullfilter
   const nullFilter = new NullFilterNode(model);
-  if (Object.keys(nullFilter.aggregator).length) {
+  if (Object.keys(nullFilter.filteredFields).length) {
     nullFilter.parent = head;
     head = nullFilter;
   }
 
-  // handle binning
   const bin = new BinNode(model);
   if (bin.size() > 0) {
     bin.parent = head;
     head = bin;
   }
 
-  // handle time unit
   const tu = new TimeUnitNode(model);
   if (tu.size()) {
     tu.parent = head;
@@ -136,7 +131,6 @@ export function parseData(model: Model): DataComponent {
   raw.parent = head;
   head = raw;
 
-  // handle aggregation
   if (model instanceof UnitModel) {
     const agg = new AggregateNode(model);
     if (agg.hasAggregation()) {
@@ -146,10 +140,15 @@ export function parseData(model: Model): DataComponent {
   }
 
   if (model instanceof UnitModel && model.stack) {
-    // handle stacking
     const stackTransforms = new StackNode(model);
     stackTransforms.parent = head;
     head = stackTransforms;
+  }
+
+  const nonPosFilter = new NonPositiveFilterNode(model);
+  if (nonPosFilter.size() > 0) {
+    nonPosFilter.parent = head;
+    head = nonPosFilter;
   }
 
   if (model instanceof UnitModel) {
@@ -158,13 +157,6 @@ export function parseData(model: Model): DataComponent {
       order.parent = head;
       head = order;
     }
-  }
-
-  // add filter for non-positive data if needed
-  const nonPosFilter = new NonPositiveFilterNode(model);
-  if (nonPosFilter.size() > 0) {
-    nonPosFilter.parent = head;
-    head = nonPosFilter;
   }
 
   // output node for marks

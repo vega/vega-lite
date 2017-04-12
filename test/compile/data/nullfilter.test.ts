@@ -11,7 +11,7 @@ import {Dict, mergeDeep} from '../../../src/util';
 import {parseUnitModel} from '../../util';
 
 function parse(model: Model) {
-  return (new NullFilterNode(model)).aggregator;
+  return (new NullFilterNode(model)).filteredFields;
 }
 
 describe('compile/data/nullfilter', function() {

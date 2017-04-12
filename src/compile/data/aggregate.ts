@@ -5,7 +5,7 @@ import {Dict, differ, extend, keys, StringSet} from '../../util';
 import {VgAggregateTransform} from '../../vega.schema';
 import {Model} from './../model';
 
-import {DataFlowNode, DependsOnNode, NewFieldNode} from './dataflow';
+import {DataFlowNode, DependentNode, NewFieldNode} from './dataflow';
 
 function addDimension(dims: {[field: string]: boolean}, fieldDef: FieldDef) {
   if (fieldDef.bin) {
@@ -42,7 +42,7 @@ function mergeMeasures(parentMeasures: Dict<Dict<boolean>>, childMeasures: Dict<
   }
 }
 
-export class AggregateNode extends DataFlowNode implements NewFieldNode, DependsOnNode {
+export class AggregateNode extends DataFlowNode implements NewFieldNode, DependentNode {
   /** string set for dimensions */
   private dimensions: StringSet;
 
@@ -108,7 +108,7 @@ export class AggregateNode extends DataFlowNode implements NewFieldNode, Depends
     fields.forEach(f => this.dimensions[f] = true);
   }
 
-  public dependsOn() {
+  public dependentFields() {
     const out = {};
 
     keys(this.dimensions).forEach(f => out[f] = true);
@@ -117,7 +117,7 @@ export class AggregateNode extends DataFlowNode implements NewFieldNode, Depends
     return out;
   }
 
-  public produces() {
+  public producedFields() {
     const out = {};
 
     keys(this.measures).forEach(field => {

@@ -7,7 +7,7 @@ import {Dict, extend, StringSet, vals} from '../../util';
 import {VgFormulaTransform, VgTransform} from '../../vega.schema';
 import {format} from '../axis/rules';
 import {Model} from '../model';
-import {DataFlowNode, DependsOnNode, NewFieldNode} from './dataflow';
+import {DataFlowNode, DependentNode, NewFieldNode} from './dataflow';
 
 interface TimeUnitComponent {
     as: string;
@@ -15,7 +15,7 @@ interface TimeUnitComponent {
     field: string;
   }
 
-export class TimeUnitNode extends DataFlowNode implements NewFieldNode, DependsOnNode {
+export class TimeUnitNode extends DataFlowNode implements NewFieldNode, DependentNode {
   private formula: Dict<TimeUnitComponent>;
 
   constructor(model: Model) {
@@ -43,7 +43,7 @@ export class TimeUnitNode extends DataFlowNode implements NewFieldNode, DependsO
     other.remove();
   }
 
-  public produces() {
+  public producedFields() {
     const out = {};
 
     vals(this.formula).forEach(f => {
@@ -53,7 +53,7 @@ export class TimeUnitNode extends DataFlowNode implements NewFieldNode, DependsO
     return out;
   }
 
-  public dependsOn() {
+  public dependentFields() {
     const out = {};
 
     vals(this.formula).forEach(f => {

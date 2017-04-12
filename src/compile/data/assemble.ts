@@ -18,14 +18,14 @@ import {CalculateNode, FilterNode} from './transforms';
 /**
  * Start optimization path from the root. Useful for removing nodes.
  */
-function optimizeFromRoots(node: DataFlowNode) {
+function removeUnnecessaryNodes(node: DataFlowNode) {
   // remove empty non positive filter
   if (node instanceof NonPositiveFilterNode && every(vals(node.filter), b => b === false)) {
     node.remove();
   }
 
   // remove empty null filter nodes
-  if (node instanceof NullFilterNode && every(vals(node.aggregator), f => f === null)) {
+  if (node instanceof NullFilterNode && every(vals(node.filteredFields), f => f === null)) {
     node.remove();
   }
 
@@ -34,7 +34,8 @@ function optimizeFromRoots(node: DataFlowNode) {
     node.remove();
   }
 
-  node.children.forEach(optimizeFromRoots);
+  node.children.forEach(removeUnnecessaryNodes);
+}
 }
 
 
@@ -204,7 +205,7 @@ export function assembleFacetData(root: FacetNode): VgData[] {
 export function assembleData(roots: SourceNode[]): VgData[] {
   const data: VgData[] = [];
 
-  roots.forEach(optimizeFromRoots);
+  roots.forEach(removeUnnecessaryNodes);
 
   getLeaves(roots).forEach(optimizeFromLeaves(optimizers.bin));
   getLeaves(roots).forEach(optimizeFromLeaves(optimizers.timeUnit));

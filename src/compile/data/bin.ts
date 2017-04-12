@@ -5,7 +5,7 @@ import {hasDiscreteDomain} from '../../scale';
 import {Dict, extend, flatten, hash, isBoolean, StringSet, vals, varName} from '../../util';
 import {VgBinTransform, VgTransform} from '../../vega.schema';
 import {Model} from './../model';
-import {DataFlowNode, DependsOnNode, NewFieldNode} from './dataflow';
+import {DataFlowNode, DependentNode, NewFieldNode} from './dataflow';
 
 
 function numberFormatExpr(expr: string, format: string) {
@@ -44,7 +44,7 @@ interface BinComponent {
   formulaAs?: string;
 }
 
-export class BinNode extends DataFlowNode implements NewFieldNode, DependsOnNode {
+export class BinNode extends DataFlowNode implements NewFieldNode, DependentNode {
   private bins: Dict<BinComponent>;
 
   constructor(model: Model) {
@@ -84,7 +84,7 @@ export class BinNode extends DataFlowNode implements NewFieldNode, DependsOnNode
     other.remove();
   }
 
-  public produces() {
+  public producedFields() {
     const out = {};
 
     vals(this.bins).forEach(c => {
@@ -94,7 +94,7 @@ export class BinNode extends DataFlowNode implements NewFieldNode, DependsOnNode
     return out;
   }
 
-  public dependsOn() {
+  public dependentFields() {
     const out = {};
 
     vals(this.bins).forEach(c => {
