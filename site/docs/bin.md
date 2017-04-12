@@ -27,9 +27,16 @@ The channel definition's `bin` property is for grouping quantitative, continuous
 
 If `bin` is `true`, default binning parameters are used. To customize binning parameters, you can set `bin` to a bin definition object, which can have the following properties:
 
-
-{% include table.html props="maxbins,base,step,steps,minstep,divide,extent,nice" source="Bin" %}
-
+| Property      | Type          | Description    |
+| :------------ |:-------------:| :------------- |
+| maxbins       | Integer       | The maximum number of allowable bins. <span class="note-line">__Default value:__ `6` for `row`, `column` and `shape` channels; `10` for other channels.</span> |
+| min                 | Number              | The minimum bin value to consider. <span class="note-line">__Default value:__ the minimum value of the specified field </span>|
+| max                 | Number              | The maximum bin value to consider. <span class="note-line">__Default value:__ the maximum value of the specified field is used.</span>|
+| base                | Number              | The number base to use for automatic bin determination. <span class="note-line">__Default value:__ `10`</span> |
+| step                | Number              | An exact step size to use between bins. <span class="note-line">__Note:__ If provided, options such as maxbins will be ignored. </span>|
+| steps               | Array               | An array of allowable step sizes to choose from.|
+| minstep             | Number              | A minimum allowable step size (particularly useful for integer values).|
+| div                 | Array               | Scale factors indicating allowable subdivisions. The default value is [5, 2], which indicates that for base 10 numbers (the default base), the method may consider dividing bin sizes by 5 and/or 2. For example, for an initial step size of 10, the method can check if bin sizes of 2 (= 10/5), 5 (= 10/2), or 1 (= 10/(5*2)) might also satisfy the given constraints. <span class="note-line">__Default value:__ `[5,2]`</span> |
 
 #### Examples
 
