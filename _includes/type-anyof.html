@@ -1,4 +1,5 @@
 {% assign res = "" %}
+{{type["$ref"]}}
 {% for type in include.types %}
   {% if type.type == "array" %}
     {% if type.items["$ref"] %}
@@ -10,8 +11,13 @@
       {% assign element = type.items.type | append: "[]" | capitalize %}
       {{element}}
     {% endif %}
-  {% else %}
+  {% elsif type.type %}
     {% assign element = type.type | capitalize %}
+    {{element}}
+  {% elsif type["$ref"] %}
+    {% assign array = type["$ref"] | split: "/" %}
+    {% assign last_index = array | size | minus: 1 %}
+    {% assign element = array[last_index] %}
     {{element}}
   {% endif %}
 

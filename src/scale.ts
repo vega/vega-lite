@@ -302,11 +302,18 @@ export function isExtendedScheme(scheme: string | ExtendedScheme): scheme is Ext
 }
 
 export interface Scale {
+  /**
+   * The type of scale.
+   * - For a _quantitative_ field, supported quantitative scale types  are `"linear"` (default), `"log"`, `"pow"`, `"sqrt"`, `"quantile"`, `"quantize"`, and `"threshold"`.
+   * - For a _temporal_ field without `timeUnit`, the scale type should be `"time"` (default) or `"ordinal"`.
+   * - For _ordinal_ and _nominal_ fields, the type is always `"ordinal"`.
+   * Unsupported values will be ignored.
+   */
   type?: ScaleType;
   /**
    * The domain of the scale, representing the set of data values. For quantitative data, this can take the form of a two-element array with minimum and maximum values. For ordinal/categorical data, this may be an array of valid input values.
    *
-   * If the domain is 'unaggregated', we use the source data range before aggregation as scale domain instead of aggregated data for aggregate axis.
+   * If the domain is '"unaggregated"', we use the source data range before aggregation as scale domain instead of aggregated data for aggregate axis.
    * This property only works with aggregate functions that produce values within the raw data domain (`"mean"`, `"average"`, `"median"`, `"q1"`, `"q3"`, `"min"`, `"max"`). For other aggregations that produce values outside of the raw data domain (e.g. `"count"`, `"sum"`), this property is ignored.
    */
   domain?: Domain;
@@ -317,7 +324,7 @@ export interface Scale {
   range?: Range;
 
   /**
-   * If true, rounds numeric output values to integers. This can be helpful for snapping to the pixel grid.
+   * If `true`, rounds numeric output values to integers. This can be helpful for snapping to the pixel grid.
    *
    * __Default Rule:__ `true` for `"x"`, `"y"`, `"row"`, `"column"` channels if scale config's `round` is `true`; `false` otherwise.
    */
@@ -337,12 +344,18 @@ export interface Scale {
   rangeStep?: number | null;
 
   /**
-   * Range scheme (e.g., color schemes such as "category10" or "viridis").
+   * Range scheme (e.g., color schemes such as `"category10"` or `"viridis"`).
+   *
+   * __Default value:__ [scale config](config.html#scale-config)'s `"nominalColorScheme"` for nominal field and `"sequentialColorScheme"` for other types of fields.
+   *
    */
   scheme?: Scheme;
 
   /**
    * (For `row` and `column` only) A pixel value for padding between cells in the trellis plots.
+   *
+   * __Default value:__ derived from [scale config](config.html#scale-config)'s `facetSpacing`
+   *
    * @TJS-type integer
    */
   spacing?: number;
@@ -350,6 +363,9 @@ export interface Scale {
   /**
    * Applies spacing among ordinal elements in the scale range. The actual effect depends on how the scale is configured. If the __points__ parameter is `true`, the padding value is interpreted as a multiple of the spacing between points. A reasonable value is 1.0, such that the first and last point will be offset from the minimum and maximum value by half the distance between points. Otherwise, padding is typically in the range [0, 1] and corresponds to the fraction of space in the range interval to allocate to padding. A value of 0.5 means that the band size will be equal to the padding width. For more, see the [D3 ordinal scale documentation](https://github.com/mbostock/d3/wiki/Ordinal-Scales).
    * A convenience property for setting the inner and outer padding to the same value.
+   *
+   * __Default value:__ `x` and `y` channels are derived from [scale config](config.html#scale-config)'s `pointPadding` for `point` scale and `bandPadding` for `band` scale.  Other channels has `0` padding by default.
+   *
    * @minimum 0
    * @maximum 1
    */
@@ -371,21 +387,35 @@ export interface Scale {
 
   // typical
   /**
-   * If true, values that exceed the data domain are clamped to either the minimum or maximum range value
+   * If `true`, values that exceed the data domain are clamped to either the minimum or maximum range value
+   *
+   * __Default value:__ derived from [scale config](config.html#scale-config) (`true` by default)
+   *
+   * __Supported types:__ only `linear`, `pow`, `sqrt`, and `log` (Not applicable for `quantile`, `quantize`, and `threshold` scales as they output discrete ranges.)
+   *
    */
   clamp?: boolean;
   /**
-   * If specified, modifies the scale domain to use a more human-friendly value range. If specified as a true boolean, modifies the scale domain to use a more human-friendly number range (e.g., 7 instead of 6.96). If specified as a string, modifies the scale domain to use a more human-friendly value range. For time and utc scale types only, the nice value should be a string indicating the desired time interval.
+   * As quantitative scale property, if specified, modifies the scale domain to use a more human-friendly value range. If specified as a `true` boolean, modifies the scale domain to use a more human-friendly number range (e.g., 7 instead of 6.96). If specified as a string, modifies the scale domain to use a more human-friendly value range. For time and utc scale types only, the nice value should be a string indicating the desired time interval.
+   * As time scale properties, if `true`, values that exceed the data domain are clamped to either the minimum or maximum range value. (Not applicable for `quantile`, `quantize`, and `threshold` scales as they output discrete ranges.)
+   *
+   * __Default value:__ `true` only for quantitative x and y scales and `false` otherwise.
+   *
    */
-  nice?: boolean | NiceTime;
+  nice?: boolean | string;
   /**
-   * Sets the exponent of the scale transformation. For pow scale types only, otherwise ignored.
+   * Sets the exponent of the scale transformation. For `pow` scale types only, otherwise ignored.
    */
   exponent?: number;
   /**
    * If `true`, ensures that a zero baseline value is included in the scale domain.
    * Default value: `true` for `x` and `y` channel if the quantitative field is not binned
    * and no custom `domain` is provided; `false` otherwise.
+   *
+   * __Default value:__ `true` for `x` and `y` channel if the quantitative field is not binned and no custom `domain` is provided; `false` otherwise.
+   *
+   * __Note:__  This property is always `false` for log scale.
+   *
    */
   zero?: boolean;
 

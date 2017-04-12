@@ -2836,7 +2836,7 @@
             "additionalProperties": false,
             "properties": {
                 "clamp": {
-                    "description": "If true, values that exceed the data domain are clamped to either the minimum or maximum range value",
+                    "description": "If `true`, values that exceed the data domain are clamped to either the minimum or maximum range value\n\n__Default value:__ derived from [scale config](config.html#scale-config) (`true` by default)\n\n__Supported types:__ only `linear`, `pow`, `sqrt`, and `log` (Not applicable for `quantile`, `quantize`, and `threshold` scales as they output discrete ranges.)",
                     "type": "boolean"
                 },
                 "domain": {
@@ -2866,10 +2866,10 @@
                             "type": "string"
                         }
                     ],
-                    "description": "The domain of the scale, representing the set of data values. For quantitative data, this can take the form of a two-element array with minimum and maximum values. For ordinal/categorical data, this may be an array of valid input values.\n\nIf the domain is 'unaggregated', we use the source data range before aggregation as scale domain instead of aggregated data for aggregate axis.\nThis property only works with aggregate functions that produce values within the raw data domain (`\"mean\"`, `\"average\"`, `\"median\"`, `\"q1\"`, `\"q3\"`, `\"min\"`, `\"max\"`). For other aggregations that produce values outside of the raw data domain (e.g. `\"count\"`, `\"sum\"`), this property is ignored."
+                    "description": "The domain of the scale, representing the set of data values. For quantitative data, this can take the form of a two-element array with minimum and maximum values. For ordinal/categorical data, this may be an array of valid input values.\n\nIf the domain is '\"unaggregated\"', we use the source data range before aggregation as scale domain instead of aggregated data for aggregate axis.\nThis property only works with aggregate functions that produce values within the raw data domain (`\"mean\"`, `\"average\"`, `\"median\"`, `\"q1\"`, `\"q3\"`, `\"min\"`, `\"max\"`). For other aggregations that produce values outside of the raw data domain (e.g. `\"count\"`, `\"sum\"`), this property is ignored."
                 },
                 "exponent": {
-                    "description": "Sets the exponent of the scale transformation. For pow scale types only, otherwise ignored.",
+                    "description": "Sets the exponent of the scale transformation. For `pow` scale types only, otherwise ignored.",
                     "type": "number"
                 },
                 "interpolate": {
@@ -2886,21 +2886,14 @@
                     "type": "string"
                 },
                 "nice": {
-                    "description": "If specified, modifies the scale domain to use a more human-friendly value range. If specified as a true boolean, modifies the scale domain to use a more human-friendly number range (e.g., 7 instead of 6.96). If specified as a string, modifies the scale domain to use a more human-friendly value range. For time and utc scale types only, the nice value should be a string indicating the desired time interval.",
-                    "enum": [
-                        "day",
-                        false,
-                        "hour",
-                        "minute",
-                        "month",
-                        "second",
-                        true,
-                        "week",
-                        "year"
+                    "description": "As quantitative scale property, if specified, modifies the scale domain to use a more human-friendly value range. If specified as a `true` boolean, modifies the scale domain to use a more human-friendly number range (e.g., 7 instead of 6.96). If specified as a string, modifies the scale domain to use a more human-friendly value range. For time and utc scale types only, the nice value should be a string indicating the desired time interval.\nAs time scale properties, if `true`, values that exceed the data domain are clamped to either the minimum or maximum range value. (Not applicable for `quantile`, `quantize`, and `threshold` scales as they output discrete ranges.)\n\n__Default value:__ `true` only for quantitative x and y scales and `false` otherwise.",
+                    "type": [
+                        "string",
+                        "boolean"
                     ]
                 },
                 "padding": {
-                    "description": "Applies spacing among ordinal elements in the scale range. The actual effect depends on how the scale is configured. If the __points__ parameter is `true`, the padding value is interpreted as a multiple of the spacing between points. A reasonable value is 1.0, such that the first and last point will be offset from the minimum and maximum value by half the distance between points. Otherwise, padding is typically in the range [0, 1] and corresponds to the fraction of space in the range interval to allocate to padding. A value of 0.5 means that the band size will be equal to the padding width. For more, see the [D3 ordinal scale documentation](https://github.com/mbostock/d3/wiki/Ordinal-Scales).\nA convenience property for setting the inner and outer padding to the same value.",
+                    "description": "Applies spacing among ordinal elements in the scale range. The actual effect depends on how the scale is configured. If the __points__ parameter is `true`, the padding value is interpreted as a multiple of the spacing between points. A reasonable value is 1.0, such that the first and last point will be offset from the minimum and maximum value by half the distance between points. Otherwise, padding is typically in the range [0, 1] and corresponds to the fraction of space in the range interval to allocate to padding. A value of 0.5 means that the band size will be equal to the padding width. For more, see the [D3 ordinal scale documentation](https://github.com/mbostock/d3/wiki/Ordinal-Scales).\nA convenience property for setting the inner and outer padding to the same value.\n\n__Default value:__ `x` and `y` channels are derived from [scale config](config.html#scale-config)'s `pointPadding` for `point` scale and `bandPadding` for `band` scale.  Other channels has `0` padding by default.",
                     "maximum": 1,
                     "minimum": 0,
                     "type": "number"
@@ -2950,7 +2943,7 @@
                     ]
                 },
                 "round": {
-                    "description": "If true, rounds numeric output values to integers. This can be helpful for snapping to the pixel grid.\n\n__Default Rule:__ `true` for `\"x\"`, `\"y\"`, `\"row\"`, `\"column\"` channels if scale config's `round` is `true`; `false` otherwise.",
+                    "description": "If `true`, rounds numeric output values to integers. This can be helpful for snapping to the pixel grid.\n\n__Default Rule:__ `true` for `\"x\"`, `\"y\"`, `\"row\"`, `\"column\"` channels if scale config's `round` is `true`; `false` otherwise.",
                     "type": "boolean"
                 },
                 "scheme": {
@@ -2962,17 +2955,18 @@
                             "type": "string"
                         }
                     ],
-                    "description": "Range scheme (e.g., color schemes such as \"category10\" or \"viridis\")."
+                    "description": "Range scheme (e.g., color schemes such as `\"category10\"` or `\"viridis\"`).\n\n__Default value:__ [scale config](config.html#scale-config)'s `\"nominalColorScheme\"` for nominal field and `\"sequentialColorScheme\"` for other types of fields."
                 },
                 "spacing": {
-                    "description": "(For `row` and `column` only) A pixel value for padding between cells in the trellis plots.",
+                    "description": "(For `row` and `column` only) A pixel value for padding between cells in the trellis plots.\n\n__Default value:__ derived from [scale config](config.html#scale-config)'s `facetSpacing`",
                     "type": "integer"
                 },
                 "type": {
-                    "$ref": "#/definitions/ScaleType"
+                    "$ref": "#/definitions/ScaleType",
+                    "description": "The type of scale.\n- For a _quantitative_ field, supported quantitative scale types  are `\"linear\"` (default), `\"log\"`, `\"pow\"`, `\"sqrt\"`, `\"quantile\"`, `\"quantize\"`, and `\"threshold\"`.\n- For a _temporal_ field without `timeUnit`, the scale type should be `\"time\"` (default) or `\"ordinal\"`.\n- For _ordinal_ and _nominal_ fields, the type is always `\"ordinal\"`.\nUnsupported values will be ignored."
                 },
                 "zero": {
-                    "description": "If `true`, ensures that a zero baseline value is included in the scale domain.\nDefault value: `true` for `x` and `y` channel if the quantitative field is not binned\nand no custom `domain` is provided; `false` otherwise.",
+                    "description": "If `true`, ensures that a zero baseline value is included in the scale domain.\nDefault value: `true` for `x` and `y` channel if the quantitative field is not binned\nand no custom `domain` is provided; `false` otherwise.\n\n__Default value:__ `true` for `x` and `y` channel if the quantitative field is not binned and no custom `domain` is provided; `false` otherwise.\n\n__Note:__  This property is always `false` for log scale.",
                     "type": "boolean"
                 }
             },
