@@ -1,7 +1,7 @@
 import {isFunction} from 'util';
 import {StringSet} from '../../util';
 /**
- * A node in the dataflow graph.
+ * A node in the dataflow tree.
  */
 export class DataFlowNode {
   private _children: DataFlowNode[];
@@ -57,7 +57,7 @@ export class DataFlowNode {
     this._children.forEach(c => c.parent = parent);
 
     // remove old links
-    this._children = [];  // equivalent to emoving every child link one by one
+    this._children = [];  // equivalent to removing every child link one by one
     parent.removeChild(this);
     parent.parent.removeChild(parent);
 
@@ -84,8 +84,8 @@ export class OutputNode extends DataFlowNode {
    * Request the datasource name.
    *
    * During the parsing phase, this will return the simple name such as 'main' or 'raw'.
-   * It is crucial to requet the name from an output node to mark it as a required node.
-   * If nobody ever requests the name, this datasource will not be instantiated.
+   * It is crucial to request the name from an output node to mark it as a required node.
+   * If nobody ever requests the name, this datasource will not be instantiated in the assemble phase.
    *
    * In the assemble phase, this will return the correct name.
    */

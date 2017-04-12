@@ -37,9 +37,9 @@ interface Component {
   extentSignal: string;
   signal: string;
   as: string[];
-  /**
-   * Range formula.
-   */
+
+  // Range Formula
+
   formula?: string;
   formulaAs?: string;
 }
