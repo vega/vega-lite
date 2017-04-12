@@ -1,7 +1,7 @@
-import {hasIntersection} from '../../util';
+import {hasIntersection, every, vals} from '../../util';
 import {AggregateNode} from './aggregate';
 import {BinNode} from './bin';
-import {DataFlowNode, isNewFieldNode} from './dataflow';
+import {DataFlowNode, isNewFieldNode, OutputNode} from './dataflow';
 import {FacetNode} from './facet';
 import {ParseNode} from './formatparse';
 import {NullFilterNode} from './nullfilter';
@@ -9,6 +9,31 @@ import {SourceNode} from './source';
 import {StackNode} from './stack';
 import {TimeUnitNode} from './timeunit';
 import {CalculateNode, FilterNode} from './transforms';
+import {NonPositiveFilterNode} from './nonpositivefilter';
+
+
+
+/**
+ * Start optimization path from the root. Useful for removing nodes.
+ */
+export function optimizeFromRoots(node: DataFlowNode) {
+  // remove empty non positive filter
+  if (node instanceof NonPositiveFilterNode && every(vals(node.filter), b => b === false)) {
+    node.remove();
+  }
+
+  // remove empty null filter nodes
+  if (node instanceof NullFilterNode && every(vals(node.aggregator), f => f === null)) {
+    node.remove();
+  }
+
+  // remove output nodes that are not required
+  if (node instanceof OutputNode && !node.required) {
+    node.remove();
+  }
+
+  node.children.forEach(optimizeFromRoots);
+}
 
 /**
  * Start optimization path at the leaves. Useful for merging up things.

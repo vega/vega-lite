@@ -8,35 +8,12 @@ import {ParseNode} from './formatparse';
 import {NonPositiveFilterNode} from './nonpositivefilter';
 import {NullFilterNode} from './nullfilter';
 import * as optimizers from './optimizers';
-import {optimizeFromLeaves} from './optimizers';
+import {optimizeFromLeaves, optimizeFromRoots} from './optimizers';
 import {OrderNode} from './pathorder';
 import {SourceNode} from './source';
 import {StackNode} from './stack';
 import {TimeUnitNode} from './timeunit';
 import {CalculateNode, FilterNode} from './transforms';
-
-/**
- * Start optimization path from the root. Useful for removing nodes.
- */
-function optimizeFromRoots(node: DataFlowNode) {
-  // remove empty non positive filter
-  if (node instanceof NonPositiveFilterNode && every(vals(node.filter), b => b === false)) {
-    node.remove();
-  }
-
-  // remove empty null filter nodes
-  if (node instanceof NullFilterNode && every(vals(node.aggregator), f => f === null)) {
-    node.remove();
-  }
-
-  // remove output nodes that are not required
-  if (node instanceof OutputNode && !node.required) {
-    node.remove();
-  }
-
-  node.children.forEach(optimizeFromRoots);
-}
-
 
 /**
  * Return all leaf nodes.
