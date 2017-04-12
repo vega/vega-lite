@@ -5,6 +5,9 @@ import {VgFilterTransform, VgFormulaTransform} from '../../vega.schema';
 import {Model} from '../model';
 import {DataFlowNode, DependsOnNode, NewFieldNode} from './dataflow';
 
+import * as log from '../../log';
+import {transforms} from './optimizers';
+
 export class FilterNode extends DataFlowNode {
   private filter: Filter | Filter[];
 
@@ -68,6 +71,7 @@ export function parseTransformArray(model: Model) {
     } else if (isFilter(t)) {
       node = new FilterNode(t);
     } else {
+      log.warn(log.message.invalidTransformIgnored(t));
       return;
     }
 
