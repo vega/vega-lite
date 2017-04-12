@@ -49,6 +49,7 @@ export function bin(node: DataFlowNode) {
     if (parent instanceof BinNode) {
       // Don't merge for now because we don't have a good way of merging signals yet.
       return;
+      // TODO: support merging bin node
       // parent.merge(node);
     } else if (isNewFieldNode(parent) && hasIntersection(parent.produces(), node.dependsOn())) {
       return;
@@ -63,6 +64,8 @@ export function timeUnit(node: DataFlowNode) {
 
   if (node instanceof TimeUnitNode) {
     if (node.parent instanceof TimeUnitNode) {
+
+      // FIXME: Once we support timeUnit in the `transform` array, `as` can lead to conflicting key in the `timeUnitNode`s when we merge them.
       node.parent.merge(node);
     } else if (node.parent instanceof CalculateNode) {
       // we cannot move beyond a calculate node.

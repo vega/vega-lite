@@ -206,6 +206,10 @@ export function assembleData(roots: SourceNode[]): VgData[] {
 
   roots.forEach(optimizeFromRoots);
 
+  // Optimizing the order of the nodes by moving nodes up to the root,
+  // starting from lowest predecence to the highest predecence.
+  // (The last one can pretty much move to the top of the tree if there is no obstacle.)
+
   getLeaves(roots).forEach(optimizeFromLeaves(optimizers.bin));
   getLeaves(roots).forEach(optimizeFromLeaves(optimizers.timeUnit));
 
