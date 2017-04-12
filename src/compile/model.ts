@@ -122,10 +122,14 @@ export abstract class Model {
     this.description = spec.description;
     this.transforms = spec.transform || [];
 
-    this.component = {data: {
-      sources: parent ? parent.component.data.sources : {},
-      outputNodes: parent ? parent.component.data.outputNodes : {}
-    }, layout: null, mark: null, scales: null, axes: null, axisGroups: null, gridGroups: null, legends: null, selection: null};
+    this.component = {
+      data: {
+        sources: parent ? parent.component.data.sources : {},
+        outputNodes: parent ? parent.component.data.outputNodes : {}
+      },
+      layout: null, mark: null, scales: null, axes: null,
+      axisGroups: null, gridGroups: null, legends: null, selection: null
+    };
   }
 
   public parse() {

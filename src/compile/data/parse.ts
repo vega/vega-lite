@@ -103,9 +103,9 @@ export function parseData(model: Model): DataComponent {
 
   // handle transforms array
   if (model.transforms.length > 0) {
-    const transforms = parseTransformArray(model);
-    transforms.first.parent = head;
-    head = transforms.last;
+    const {first, last} = parseTransformArray(model);
+    first.parent = head;
+    head = last;
   }
 
   // add nullfilter
