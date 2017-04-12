@@ -1,8 +1,10 @@
 import {forEach, isAggregate} from '../../encoding';
 import {field, FieldDef} from '../../fielddef';
-import {Dict, differ, extend, keys, StringSet} from '../../util';
-import {VgAggregateTransform} from '../../vega.schema';
 import {Model} from './../model';
+import * as log from '../../log';
+import {VgAggregateTransform} from '../../vega.schema';
+import {Dict, differ, extend, keys, StringSet} from '../../util';
+
 import {DataFlowNode, DependsOnNode, NewFieldNode} from './dataflow';
 
 function addDimension(dims: {[field: string]: boolean}, fieldDef: FieldDef) {
@@ -98,7 +100,7 @@ export class AggregateNode extends DataFlowNode implements NewFieldNode, Depends
       mergeMeasures(this.measures, other.measures);
       other.remove();
     } else {
-      console.log('different dimensions, cannot merge');
+      log.debug('different dimensions, cannot merge');
     }
   }
 
