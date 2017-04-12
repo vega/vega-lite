@@ -39,7 +39,7 @@ function parse(model: Model): Dict<string> {
         val = (f.oneOf || f['in'])[0];
       } // else -- for filter expression, we can't infer anything
 
-      if (!!val) {
+      if (val) {
         if (isDateTime(val)) {
           parseComponent[f['field']] = 'date';
         } else if (isNumber(val)) {

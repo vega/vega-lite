@@ -125,9 +125,9 @@ function orient(mark: Mark, encoding: Encoding, scale: Dict<Scale>, specifiedOri
           return 'horizontal';
         }
 
-        if (!xDef.aggregate && !!yDef.aggregate) {
+        if (!xDef.aggregate && yDef.aggregate) {
           return 'vertical';
-        } else if (!!xDef.aggregate && !yDef.aggregate) {
+        } else if (xDef.aggregate && !yDef.aggregate) {
           return 'horizontal';
         }
 

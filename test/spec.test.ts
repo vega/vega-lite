@@ -3,9 +3,9 @@
 import {assert} from 'chai';
 
 import {Encoding} from '../src/encoding';
-import { FieldDef } from '../src/fielddef';
+import {FieldDef} from '../src/fielddef';
 import {MarkDef} from '../src/mark';
-import { fieldDefs, GenericSpec, GenericUnitSpec, normalize, Spec } from '../src/spec';
+import {fieldDefs, GenericSpec, GenericUnitSpec, normalize, Spec} from '../src/spec';
 
 // describe('isStacked()') -- tested as part of stackOffset in stack.test.ts
 

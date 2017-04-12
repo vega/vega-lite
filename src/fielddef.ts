@@ -170,16 +170,16 @@ export function field(fieldDef: FieldDef, opt: FieldRefOption = {}) {
       }
     }
 
-    if (!!fn) {
+    if (fn) {
       field = `${fn}_${field}`;
     }
   }
 
-  if (!!suffix) {
+  if (suffix) {
     field = `${field}_${suffix}`;
   }
 
-  if (!!prefix) {
+  if (prefix) {
     field = `${prefix}_${field}`;
   }
 
@@ -228,10 +228,10 @@ export function title(fieldDef: FieldDef, config: Config) {
 }
 
 export function defaultType(fieldDef: FieldDef, channel: Channel): Type {
-  if (!!fieldDef.timeUnit) {
+  if (fieldDef.timeUnit) {
     return 'temporal';
   }
-  if (!!fieldDef.bin) {
+  if (fieldDef.bin) {
     return 'quantitative';
   }
   switch (rangeType(channel)) {

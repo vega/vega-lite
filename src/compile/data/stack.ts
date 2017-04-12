@@ -62,7 +62,7 @@ function getStackByFields(model: UnitModel) {
     const _field = field(fieldDef, {
       binSuffix: scale && hasDiscreteDomain(scale.type) ? 'range' : 'start'
     });
-    if (!!_field) {
+    if (_field) {
       fields.push(_field);
     }
     return fields;

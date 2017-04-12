@@ -54,7 +54,7 @@ export interface RangeFilter {
 }
 
 export function isRangeFilter(filter: any): filter is RangeFilter {
-  if (filter && !!filter.field) {
+  if (filter && filter.field) {
     if (isArray(filter.range) && filter.range.length === 2) {
       return true;
     }
