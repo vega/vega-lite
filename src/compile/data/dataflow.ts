@@ -4,14 +4,11 @@ import {StringSet} from '../../util';
  * A node in the dataflow tree.
  */
 export class DataFlowNode {
-  private _children: DataFlowNode[];
+  private _children: DataFlowNode[] = [];
 
-  private _parent: DataFlowNode;
+  private _parent: DataFlowNode = null;
 
-  constructor(public readonly debugName?: string) {
-    this._children = [];
-    this._parent = null;
-  }
+  constructor(public readonly debugName?: string) { }
 
   get parent() {
     return this._parent;

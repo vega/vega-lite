@@ -25,7 +25,7 @@ function optimizeFromRoots(node: DataFlowNode) {
   }
 
   // remove empty null filter nodes
-  if (node instanceof NullFilterNode && every(vals(node.aggregator), f => f === null)) {
+  if (node instanceof NullFilterNode && every(vals(node.filteredFields), f => f === null)) {
     node.remove();
   }
 
