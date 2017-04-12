@@ -118,7 +118,10 @@ export interface NewFieldNode {
   producedFields: () => StringSet;
 }
 
-export interface DependsOnNode {
+/**
+ * Trait for nodes that depends on other fields.
+ */
+export interface DependentNode {
   /**
    * Set of fields that are being created by this node.
    */
