@@ -41,7 +41,7 @@ export class CalculateNode extends DataFlowNode implements NewFieldNode {
     super();
   }
 
-  public produces() {
+  public producedFields() {
     const out = {};
     out[this.transform.as] = true;
     return out;

@@ -108,7 +108,7 @@ export class AggregateNode extends DataFlowNode implements NewFieldNode, Depends
     fields.forEach(f => this.dimensions[f] = true);
   }
 
-  public dependsOn() {
+  public dependentFields() {
     const out = {};
 
     keys(this.dimensions).forEach(f => out[f] = true);
@@ -117,7 +117,7 @@ export class AggregateNode extends DataFlowNode implements NewFieldNode, Depends
     return out;
   }
 
-  public produces() {
+  public producedFields() {
     const out = {};
 
     keys(this.measures).forEach(field => {

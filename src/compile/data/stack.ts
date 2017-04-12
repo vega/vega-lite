@@ -110,7 +110,7 @@ export class StackNode extends DataFlowNode implements NewFieldNode, DependsOnNo
     this._stack.groupby = this._stack.groupby.concat(fields);
   }
 
-  public dependsOn() {
+  public dependentFields() {
     const out = {};
 
     out[this._stack.field] = true;
@@ -121,7 +121,7 @@ export class StackNode extends DataFlowNode implements NewFieldNode, DependsOnNo
     return out;
   }
 
-  public produces() {
+  public producedFields() {
     const out = {};
 
     out[this._stack.field + '_start'] = true;

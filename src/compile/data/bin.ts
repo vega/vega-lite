@@ -84,7 +84,7 @@ export class BinNode extends DataFlowNode implements NewFieldNode, DependsOnNode
     other.remove();
   }
 
-  public produces() {
+  public producedFields() {
     const out = {};
 
     vals(this.bins).forEach(c => {
@@ -94,7 +94,7 @@ export class BinNode extends DataFlowNode implements NewFieldNode, DependsOnNode
     return out;
   }
 
-  public dependsOn() {
+  public dependentFields() {
     const out = {};
 
     vals(this.bins).forEach(c => {

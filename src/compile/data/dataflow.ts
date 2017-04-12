@@ -115,12 +115,12 @@ export interface NewFieldNode {
   /**
    * Set of fields that are being created by this node.
    */
-  produces: () => StringSet;
+  producedFields: () => StringSet;
 }
 
 export interface DependsOnNode {
   /**
    * Set of fields that are being created by this node.
    */
-  dependsOn: () => StringSet;
+  dependentFields: () => StringSet;
 }

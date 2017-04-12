@@ -43,7 +43,7 @@ export class TimeUnitNode extends DataFlowNode implements NewFieldNode, DependsO
     other.remove();
   }
 
-  public produces() {
+  public producedFields() {
     const out = {};
 
     vals(this.formula).forEach(f => {
@@ -53,7 +53,7 @@ export class TimeUnitNode extends DataFlowNode implements NewFieldNode, DependsO
     return out;
   }
 
-  public dependsOn() {
+  public dependentFields() {
     const out = {};
 
     vals(this.formula).forEach(f => {
