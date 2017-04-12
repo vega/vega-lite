@@ -23,10 +23,10 @@ describe('compile/scale', () => {
         });
 
       const xDomain = parseDomain(model, 'x');
-      assert.deepEqual(xDomain, {data: 'source', fields: ['a', 'b']});
+      assert.deepEqual(xDomain, {data: 'main', fields: ['a', 'b']});
 
       const yDomain = parseDomain(model, 'y');
-      assert.deepEqual(yDomain, {data: 'source', fields: ['c', 'd']});
+      assert.deepEqual(yDomain, {data: 'main', fields: ['c', 'd']});
     });
 
     it('should have correct domain for color', function() {
@@ -38,7 +38,7 @@ describe('compile/scale', () => {
         });
 
       const xDomain = parseDomain(model, 'color');
-      assert.deepEqual(xDomain, {data: 'source', field: 'a'});
+      assert.deepEqual(xDomain, {data: 'main', field: 'a'});
     });
 
     it('should return domain for stack', function() {
@@ -56,7 +56,7 @@ describe('compile/scale', () => {
       });
 
       assert.deepEqual(parseDomain(model,'y'), {
-        data: 'stacked',
+        data: 'main',
         fields: ['sum_origin_start', 'sum_origin_end']
       });
     });
@@ -210,7 +210,7 @@ describe('compile/scale', () => {
             }
           });
           const _domain = parseDomain(model,'y');
-          assert.deepEqual(_domain, {data: 'source', field: 'month_origin', sort: true});
+          assert.deepEqual(_domain, {data: 'main', field: 'month_origin', sort: true});
         });
 
         it('should return the correct domain for yearmonth T',
@@ -227,7 +227,7 @@ describe('compile/scale', () => {
             });
             const _domain = parseDomain(model,'y');
 
-            assert.deepEqual(_domain, {data: 'source', field: 'yearmonth_origin'});
+            assert.deepEqual(_domain, {data: 'main', field: 'yearmonth_origin'});
           });
 
 
@@ -256,7 +256,7 @@ describe('compile/scale', () => {
             const _domain = parseDomain(model,'x');
 
             assert.deepEqual(_domain, {
-              data: 'source',
+              data: 'raw',
               field: 'month_date',
               sort: {
                 op: 'mean',
@@ -296,7 +296,7 @@ describe('compile/scale', () => {
           });
 
         assert.deepEqual(parseDomain(model,'y'), {
-            data: "source",
+            data: "raw",
             field: 'origin',
             sort: sortDef
           });
@@ -311,7 +311,7 @@ describe('compile/scale', () => {
         });
 
         assert.deepEqual(parseDomain(model,'y'), {
-          data: "source",
+          data: "main",
           field: 'origin',
           sort: true
         });
