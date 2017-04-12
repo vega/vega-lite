@@ -24,7 +24,7 @@
     ],
     "data": [
         {
-            "name": "source",
+            "name": "source_0",
             "url": "data/barley.json",
             "format": {
                 "type": "json",
@@ -36,13 +36,7 @@
                 {
                     "type": "filter",
                     "expr": "datum[\"yield\"] !== null && !isNaN(datum[\"yield\"])"
-                }
-            ]
-        },
-        {
-            "source": "source",
-            "name": "summary",
-            "transform": [
+                },
                 {
                     "type": "aggregate",
                     "groupby": [
@@ -60,8 +54,8 @@
             ]
         },
         {
-            "name": "row-summary",
-            "source": "summary",
+            "name": "row",
+            "source": "source_0",
             "transform": [
                 {
                     "type": "aggregate",
@@ -73,7 +67,7 @@
         },
         {
             "name": "layout",
-            "source": "summary",
+            "source": "source_0",
             "transform": [
                 {
                     "type": "aggregate",
@@ -111,7 +105,7 @@
     ],
     "marks": [
         {
-            "name": "main",
+            "name": "main-group",
             "type": "group",
             "description": "The Trellis display by Becker et al. helped establish small multiples as a “powerful mechanism for understanding interactions in studies of how a response depends on explanatory variables”. Here we reproduce a trellis of Barley yields from the 1930s, complete with main-effects ordering to facilitate comparison.",
             "from": {
@@ -163,7 +157,7 @@
                     "name": "y-axes",
                     "type": "group",
                     "from": {
-                        "data": "row-summary"
+                        "data": "row"
                     },
                     "encode": {
                         "update": {
@@ -198,8 +192,8 @@
                     "type": "group",
                     "from": {
                         "facet": {
-                            "name": "faceted-data",
-                            "data": "summary",
+                            "name": "facet",
+                            "data": "source_0",
                             "groupby": [
                                 "site"
                             ]
@@ -242,7 +236,7 @@
                             "type": "symbol",
                             "role": "point",
                             "from": {
-                                "data": "faceted-data"
+                                "data": "facet"
                             },
                             "encode": {
                                 "update": {
@@ -286,7 +280,7 @@
                     "name": "row",
                     "type": "band",
                     "domain": {
-                        "data": "source",
+                        "data": "source_0",
                         "field": "site",
                         "sort": {
                             "op": "median",
@@ -301,7 +295,7 @@
                     "name": "x",
                     "type": "linear",
                     "domain": {
-                        "data": "summary",
+                        "data": "source_0",
                         "field": "median_yield"
                     },
                     "range": [
@@ -316,7 +310,7 @@
                     "name": "y",
                     "type": "point",
                     "domain": {
-                        "data": "source",
+                        "data": "source_0",
                         "field": "variety",
                         "sort": {
                             "op": "median",
@@ -334,7 +328,7 @@
                     "name": "color",
                     "type": "ordinal",
                     "domain": {
-                        "data": "summary",
+                        "data": "source_0",
                         "field": "year",
                         "sort": true
                     },

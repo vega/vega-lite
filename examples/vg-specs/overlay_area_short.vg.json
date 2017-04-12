@@ -24,7 +24,7 @@
     ],
     "data": [
         {
-            "name": "source",
+            "name": "source_0",
             "url": "data/stocks.csv",
             "format": {
                 "type": "csv",
@@ -37,7 +37,13 @@
                 {
                     "type": "filter",
                     "expr": "datum.symbol==='GOOG'"
-                },
+                }
+            ]
+        },
+        {
+            "name": "data_0",
+            "source": "source_0",
+            "transform": [
                 {
                     "type": "filter",
                     "expr": "datum[\"date\"] !== null && !isNaN(datum[\"date\"]) && datum[\"price\"] !== null && !isNaN(datum[\"price\"])"
@@ -52,19 +58,31 @@
             ]
         },
         {
-            "name": "layer_0_source",
-            "source": "source",
-            "transform": []
+            "name": "data_1",
+            "source": "source_0",
+            "transform": [
+                {
+                    "type": "filter",
+                    "expr": "datum[\"date\"] !== null && !isNaN(datum[\"date\"]) && datum[\"price\"] !== null && !isNaN(datum[\"price\"])"
+                },
+                {
+                    "type": "collect",
+                    "sort": {
+                        "field": "date",
+                        "order": "descending"
+                    }
+                }
+            ]
         },
         {
-            "name": "layer_1_source",
-            "source": "source",
-            "transform": []
-        },
-        {
-            "name": "layer_2_source",
-            "source": "source",
-            "transform": []
+            "name": "data_2",
+            "source": "source_0",
+            "transform": [
+                {
+                    "type": "filter",
+                    "expr": "datum[\"date\"] !== null && !isNaN(datum[\"date\"]) && datum[\"price\"] !== null && !isNaN(datum[\"price\"])"
+                }
+            ]
         },
         {
             "name": "layout",
@@ -87,7 +105,7 @@
     ],
     "marks": [
         {
-            "name": "main",
+            "name": "main-group",
             "type": "group",
             "description": "Google's stock price over time.",
             "from": {
@@ -111,7 +129,7 @@
                     "name": "layer_0_marks",
                     "type": "area",
                     "from": {
-                        "data": "layer_0_source"
+                        "data": "data_0"
                     },
                     "encode": {
                         "update": {
@@ -140,7 +158,7 @@
                     "name": "layer_1_marks",
                     "type": "line",
                     "from": {
-                        "data": "layer_1_source"
+                        "data": "data_1"
                     },
                     "encode": {
                         "update": {
@@ -163,7 +181,7 @@
                     "type": "symbol",
                     "role": "pointOverlay",
                     "from": {
-                        "data": "layer_2_source"
+                        "data": "data_2"
                     },
                     "encode": {
                         "update": {
@@ -193,14 +211,14 @@
                         "fields": [
                             {
                                 "field": "date",
-                                "data": "layer_0_source"
+                                "data": "data_0"
                             },
                             {
                                 "field": "date",
-                                "data": "layer_1_source"
+                                "data": "data_1"
                             },
                             {
-                                "data": "layer_2_source",
+                                "data": "data_2",
                                 "field": "date"
                             }
                         ],
@@ -219,14 +237,14 @@
                         "fields": [
                             {
                                 "field": "price",
-                                "data": "layer_0_source"
+                                "data": "data_0"
                             },
                             {
                                 "field": "price",
-                                "data": "layer_1_source"
+                                "data": "data_1"
                             },
                             {
-                                "data": "layer_2_source",
+                                "data": "data_2",
                                 "field": "price"
                             }
                         ],

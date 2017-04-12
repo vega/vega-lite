@@ -24,7 +24,7 @@
     ],
     "data": [
         {
-            "name": "source",
+            "name": "source_0",
             "values": [
                 {
                     "a b": 0.9228935641885049,
@@ -102,7 +102,7 @@
     ],
     "marks": [
         {
-            "name": "main",
+            "name": "main-group",
             "type": "group",
             "from": {
                 "data": "layout"
@@ -126,7 +126,7 @@
                     "type": "symbol",
                     "role": "point",
                     "from": {
-                        "data": "source"
+                        "data": "source_0"
                     },
                     "encode": {
                         "update": {
@@ -156,7 +156,7 @@
                     "name": "x",
                     "type": "linear",
                     "domain": {
-                        "data": "source",
+                        "data": "source_0",
                         "field": "a b"
                     },
                     "range": [
@@ -171,7 +171,7 @@
                     "name": "y",
                     "type": "linear",
                     "domain": {
-                        "data": "source",
+                        "data": "source_0",
                         "field": "c d"
                     },
                     "range": [

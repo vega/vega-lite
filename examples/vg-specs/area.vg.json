@@ -24,7 +24,7 @@
     ],
     "data": [
         {
-            "name": "source",
+            "name": "source_0",
             "url": "data/unemployment-across-industries.json",
             "format": {
                 "type": "json",
@@ -42,13 +42,7 @@
                     "type": "formula",
                     "as": "yearmonth_date",
                     "expr": "datetime(year(datum[\"date\"]), month(datum[\"date\"]), 1, 0, 0, 0, 0)"
-                }
-            ]
-        },
-        {
-            "source": "source",
-            "name": "summary",
-            "transform": [
+                },
                 {
                     "type": "aggregate",
                     "groupby": [
@@ -91,7 +85,7 @@
     ],
     "marks": [
         {
-            "name": "main",
+            "name": "main-group",
             "type": "group",
             "from": {
                 "data": "layout"
@@ -114,7 +108,7 @@
                     "name": "marks",
                     "type": "area",
                     "from": {
-                        "data": "summary"
+                        "data": "source_0"
                     },
                     "encode": {
                         "update": {
@@ -145,7 +139,7 @@
                     "name": "x",
                     "type": "time",
                     "domain": {
-                        "data": "summary",
+                        "data": "source_0",
                         "field": "yearmonth_date"
                     },
                     "range": [
@@ -159,7 +153,7 @@
                     "name": "y",
                     "type": "linear",
                     "domain": {
-                        "data": "summary",
+                        "data": "source_0",
                         "field": "sum_count"
                     },
                     "range": [

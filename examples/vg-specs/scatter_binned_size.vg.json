@@ -24,7 +24,7 @@
     ],
     "data": [
         {
-            "name": "source",
+            "name": "source_0",
             "url": "data/cars.json",
             "format": {
                 "type": "json",
@@ -80,7 +80,7 @@
     ],
     "marks": [
         {
-            "name": "main",
+            "name": "main-group",
             "type": "group",
             "description": "A scatterplot showing horsepower and miles per gallons with binned acceleration on size.",
             "from": {
@@ -105,7 +105,7 @@
                     "type": "symbol",
                     "role": "point",
                     "from": {
-                        "data": "source"
+                        "data": "source_0"
                     },
                     "encode": {
                         "update": {
@@ -139,7 +139,7 @@
                     "name": "x",
                     "type": "linear",
                     "domain": {
-                        "data": "source",
+                        "data": "source_0",
                         "field": "Horsepower"
                     },
                     "range": [
@@ -154,7 +154,7 @@
                     "name": "y",
                     "type": "linear",
                     "domain": {
-                        "data": "source",
+                        "data": "source_0",
                         "field": "Miles_per_Gallon"
                     },
                     "range": [

@@ -24,7 +24,7 @@
     ],
     "data": [
         {
-            "name": "source",
+            "name": "source_0",
             "values": [
                 {
                     "a": "A",
@@ -85,7 +85,7 @@
         },
         {
             "name": "layout",
-            "source": "source",
+            "source": "source_0",
             "transform": [
                 {
                     "type": "aggregate",
@@ -111,7 +111,7 @@
     ],
     "marks": [
         {
-            "name": "main",
+            "name": "main-group",
             "type": "group",
             "description": "A simple bar chart with embedded data that uses a filter and calculate.",
             "from": {
@@ -136,7 +136,7 @@
                     "type": "rect",
                     "role": "bar",
                     "from": {
-                        "data": "source"
+                        "data": "source_0"
                     },
                     "encode": {
                         "update": {
@@ -167,7 +167,7 @@
                     "name": "x",
                     "type": "point",
                     "domain": {
-                        "data": "source",
+                        "data": "source_0",
                         "field": "a",
                         "sort": true
                     },
@@ -181,7 +181,7 @@
                     "name": "y",
                     "type": "linear",
                     "domain": {
-                        "data": "source",
+                        "data": "source_0",
                         "field": "b2"
                     },
                     "range": [

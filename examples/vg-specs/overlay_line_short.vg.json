@@ -24,7 +24,7 @@
     ],
     "data": [
         {
-            "name": "source",
+            "name": "source_0",
             "url": "data/stocks.csv",
             "format": {
                 "type": "csv",
@@ -37,7 +37,13 @@
                 {
                     "type": "filter",
                     "expr": "datum.symbol==='GOOG'"
-                },
+                }
+            ]
+        },
+        {
+            "name": "data_0",
+            "source": "source_0",
+            "transform": [
                 {
                     "type": "filter",
                     "expr": "datum[\"date\"] !== null && !isNaN(datum[\"date\"]) && datum[\"price\"] !== null && !isNaN(datum[\"price\"])"
@@ -52,14 +58,14 @@
             ]
         },
         {
-            "name": "layer_0_source",
-            "source": "source",
-            "transform": []
-        },
-        {
-            "name": "layer_1_source",
-            "source": "source",
-            "transform": []
+            "name": "data_1",
+            "source": "source_0",
+            "transform": [
+                {
+                    "type": "filter",
+                    "expr": "datum[\"date\"] !== null && !isNaN(datum[\"date\"]) && datum[\"price\"] !== null && !isNaN(datum[\"price\"])"
+                }
+            ]
         },
         {
             "name": "layout",
@@ -82,7 +88,7 @@
     ],
     "marks": [
         {
-            "name": "main",
+            "name": "main-group",
             "type": "group",
             "description": "Google's stock price over time.",
             "from": {
@@ -106,7 +112,7 @@
                     "name": "layer_0_marks",
                     "type": "line",
                     "from": {
-                        "data": "layer_0_source"
+                        "data": "data_0"
                     },
                     "encode": {
                         "update": {
@@ -129,7 +135,7 @@
                     "type": "symbol",
                     "role": "pointOverlay",
                     "from": {
-                        "data": "layer_1_source"
+                        "data": "data_1"
                     },
                     "encode": {
                         "update": {
@@ -158,11 +164,11 @@
                     "domain": {
                         "fields": [
                             {
-                                "data": "layer_0_source",
+                                "data": "data_0",
                                 "field": "date"
                             },
                             {
-                                "data": "layer_1_source",
+                                "data": "data_1",
                                 "field": "date"
                             }
                         ],
@@ -180,11 +186,11 @@
                     "domain": {
                         "fields": [
                             {
-                                "data": "layer_0_source",
+                                "data": "data_0",
                                 "field": "price"
                             },
                             {
-                                "data": "layer_1_source",
+                                "data": "data_1",
                                 "field": "price"
                             }
                         ],

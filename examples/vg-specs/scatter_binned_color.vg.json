@@ -24,7 +24,7 @@
     ],
     "data": [
         {
-            "name": "source",
+            "name": "source_0",
             "url": "data/cars.json",
             "format": {
                 "type": "json",
@@ -59,8 +59,8 @@
                 },
                 {
                     "type": "formula",
-                    "as": "bin_maxbins_5_Acceleration_range",
-                    "expr": "format(datum[\"bin_maxbins_5_Acceleration_start\"], 's') + ' - ' + format(datum[\"bin_maxbins_5_Acceleration_end\"], 's')"
+                    "expr": "format(datum[\"bin_maxbins_5_Acceleration_start\"], 's') + ' - ' + format(datum[\"bin_maxbins_5_Acceleration_end\"], 's')",
+                    "as": "bin_maxbins_5_Acceleration_range"
                 }
             ]
         },
@@ -85,7 +85,7 @@
     ],
     "marks": [
         {
-            "name": "main",
+            "name": "main-group",
             "type": "group",
             "description": "A scatterplot showing horsepower and miles per gallons with binned acceleration on color.",
             "from": {
@@ -110,7 +110,7 @@
                     "type": "symbol",
                     "role": "point",
                     "from": {
-                        "data": "source"
+                        "data": "source_0"
                     },
                     "encode": {
                         "update": {
@@ -141,7 +141,7 @@
                     "name": "x",
                     "type": "linear",
                     "domain": {
-                        "data": "source",
+                        "data": "source_0",
                         "field": "Horsepower"
                     },
                     "range": [
@@ -156,7 +156,7 @@
                     "name": "y",
                     "type": "linear",
                     "domain": {
-                        "data": "source",
+                        "data": "source_0",
                         "field": "Miles_per_Gallon"
                     },
                     "range": [
