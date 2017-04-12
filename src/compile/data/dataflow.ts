@@ -50,8 +50,8 @@ export class DataFlowNode {
   }
 
   public swapWithParent() {
-    const newParent = this._parent.parent;
     const parent = this._parent;
+    const newParent = parent.parent;
 
     // reconnect the children
     this._children.forEach(c => c.parent = parent);
@@ -90,16 +90,12 @@ export class OutputNode extends DataFlowNode {
    * In the assemble phase, this will return the correct name.
    */
   get source() {
-    this.markRequired();
+    this._required = true;
     return this._source;
   }
 
   set source(source: string) {
     this._source = source;
-  }
-
-  public markRequired() {
-    this._required = true;
   }
 
   get required() {
