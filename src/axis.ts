@@ -7,7 +7,7 @@ export interface AxisConfig extends VgAxisConfig {
   /**
    * Whether month names and weekday names should be abbreviated.
    *
-   * __Default value:__  derived from [axis config](config.html#axis-config)'s "shortTimeLabels" (`"false" by default).
+   * __Default value:__  `false`
    */
   shortTimeLabels?: boolean;
 }

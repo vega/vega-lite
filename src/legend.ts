@@ -5,7 +5,7 @@ export interface LegendConfig extends VgLegendConfig {
   /**
    * Whether month names and weekday names should be abbreviated.
    *
-   * __Default value:__  derived from [legend config](config.html#legend-config)'s `shortTimeLabels` (`false` by default).
+   * __Default value:__  `false`
    */
   shortTimeLabels?: boolean;
 }
