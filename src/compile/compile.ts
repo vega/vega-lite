@@ -63,11 +63,11 @@ function assemble(model: Model, topLevelProperties: TopLevelProperties) {
       signals: [
         {
           name: 'width',
-          update: "data('layout')[0].width"
+          update: `data('${model.getName(LAYOUT)}')[0].${model.getName('width')}`
         },
         {
           name: 'height',
-          update: "data('layout')[0].height"
+          update: `data('${model.getName(LAYOUT)}')[0].${model.getName('height')}`
         }
       ].concat(assembleTopLevelSignals(model))
     },{
@@ -93,7 +93,7 @@ export function assembleRootGroup(model: Model) {
     },
     model.description ? {description: model.description} : {},
     {
-      from: {data: LAYOUT},
+      from: {data: model.getName(LAYOUT)},
       encode: {
         update: extend(
           {

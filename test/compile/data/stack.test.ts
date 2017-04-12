@@ -17,17 +17,6 @@ function assemble(model: UnitModel) {
 }
 
 describe('compile/data/stack', () => {
-  describe('parseUnit', () => {
-    it('should not produce stack component for unit without stack', () => {
-      const model = parseUnitModel({
-        "mark": "point",
-        "encoding": {}
-      });
-
-      assert.equal(parse(model), undefined);
-    });
-  });
-
   it('should produce correct stack component for bar with color', () => {
     const model = parseUnitModel({
       "mark": "bar",
@@ -97,11 +86,11 @@ describe('compile/data/stack', () => {
 
     assert.deepEqual<VgTransform[]>(assemble(model), [{
         type: 'stack',
-        groupby: ['bin_b_start'],
+        groupby: [],
         field: 'sum_a',
         sort: {
-          field: ['mean_d'],
-          order: ['ascending']
+          field: ['c'],
+          order: ['descending']
         },
         as: ['sum_a_start', 'sum_a_end'],
         offset: 'zero'
@@ -137,13 +126,13 @@ describe('compile/data/stack', () => {
         type: 'impute',
         field: 'sum_a',
         groupby: ['c'],
-        orderby: ['bin_b_start'],
+        orderby: ['b'],
         method: "value",
         value: 0
       },
       {
         type: 'stack',
-        groupby: ['bin_b_start'],
+        groupby: ['b'],
         field: 'sum_a',
         sort: {
           field: ['mean_d'],

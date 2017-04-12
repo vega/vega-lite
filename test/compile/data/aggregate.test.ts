@@ -29,8 +29,8 @@ describe('compile/data/summary', function () {
       assert.deepEqual<VgAggregateTransform>(agg.assemble(), {
         type: 'aggregate',
         groupby: ['Origin'],
-        ops: ['count', 'sum'],
-        fields: ['*', 'Acceleration']
+        ops: ['sum', 'count'],
+        fields: ['Acceleration', '*']
       });
     });
 

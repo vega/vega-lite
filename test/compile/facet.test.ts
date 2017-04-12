@@ -157,7 +157,7 @@ describe('FacetModel', function() {
         measures: {a: 1}
       }]} as any;
 
-      // assert.equal(model.dataTable(), 'summary');
+      // assert.equal(model.dataTable(), 'main');
     });
 
     it('should return source if there is no stacked nor summary data component', () => {
@@ -176,7 +176,7 @@ describe('FacetModel', function() {
       // Mock
       model.component.data = {summary: []} as any;
 
-      // assert.equal(model.dataTable(), 'source');
+      // assert.equal(model.dataTable(), 'main');
     });
   });
 });
@@ -207,7 +207,7 @@ describe('compile/facet', () => {
         it('should have correct type, name, and data source', () => {
           assert.equal(xSharedAxisGroup.name, 'x-axes');
           assert.equal(xSharedAxisGroup.type, 'group');
-          assert.deepEqual(xSharedAxisGroup.from, {data: 'column-source'});
+          assert.deepEqual(xSharedAxisGroup.from, {data: 'column'});
         });
 
         it('should have width = child width, height = group height, x = column field', () => {
@@ -257,7 +257,7 @@ describe('compile/facet', () => {
         it('should have correct type, name, and data source', () => {
           assert.equal(ySharedAxisGroup.name, 'y-axes');
           assert.equal(ySharedAxisGroup.type, 'group');
-          assert.deepEqual(ySharedAxisGroup.from, {data: 'row-source'});
+          assert.deepEqual(ySharedAxisGroup.from, {data: 'row'});
         });
 
         it('should have height = child height, width = group width, y= row field', () => {
