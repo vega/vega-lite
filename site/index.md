@@ -32,8 +32,8 @@ images:
 
 ---
 
-{:.hidden}
-# Vega-Lite: a high-level visualization grammar
+{:.page-centered title}
+# **Vega-Lite**: A High-Level Visualization Grammar
 
 {% include showcase.html %}
 
