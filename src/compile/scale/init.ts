@@ -5,8 +5,8 @@ import {Config} from '../../config';
 import {FieldDef, ScaleFieldDef} from '../../fielddef';
 import {Mark} from '../../mark';
 import {channelScalePropertyIncompatability, Scale, ScaleConfig, scaleTypeSupportProperty} from '../../scale';
-
 import * as util from '../../util';
+
 import {initDomain} from './domain';
 import rangeMixins from './range';
 import * as rules from './rules';

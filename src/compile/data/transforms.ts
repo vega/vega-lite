@@ -1,14 +1,21 @@
 import {isArray} from 'vega-util';
 import {expression, Filter} from '../../filter';
+import * as log from '../../log';
 import {CalculateTransform, FilterTransform, isCalculate, isFilter} from '../../transform';
+import {duplicate} from '../../util';
 import {VgFilterTransform, VgFormulaTransform} from '../../vega.schema';
 import {Model} from '../model';
 import {DataFlowNode, DependentNode, NewFieldNode} from './dataflow';
 
-import * as log from '../../log';
 
 export class FilterNode extends DataFlowNode {
   private filter: Filter | Filter[];
+
+  public clone(): this {
+    const cloneObj = new (<any>this.constructor);
+    cloneObj.filter = duplicate(this.filter);
+    return cloneObj;
+  }
 
   constructor(transform: FilterTransform) {
     super();
@@ -35,6 +42,12 @@ export class FilterNode extends DataFlowNode {
  * We don't know what a calculate node depends on so we should never move it beyond anything that produces fields.
  */
 export class CalculateNode extends DataFlowNode implements NewFieldNode {
+
+  public clone(): this {
+    const cloneObj = new (<any>this.constructor);
+    cloneObj.transform = duplicate(this.transform);
+    return cloneObj;
+  }
 
   constructor(private transform: CalculateTransform) {
     super();

@@ -3,20 +3,27 @@ import {forEach} from '../../encoding';
 import {field, FieldDef} from '../../fielddef';
 import {fieldExpr, TimeUnit} from '../../timeunit';
 import {TEMPORAL} from '../../type';
-import {Dict, extend, StringSet, vals} from '../../util';
+import {Dict, duplicate, extend, StringSet, vals} from '../../util';
 import {VgFormulaTransform, VgTransform} from '../../vega.schema';
 import {format} from '../axis/rules';
 import {Model} from '../model';
 import {DataFlowNode, DependentNode, NewFieldNode} from './dataflow';
 
+
 interface TimeUnitComponent {
-    as: string;
-    timeUnit: TimeUnit;
-    field: string;
-  }
+  as: string;
+  timeUnit: TimeUnit;
+  field: string;
+}
 
 export class TimeUnitNode extends DataFlowNode implements NewFieldNode, DependentNode {
   private formula: Dict<TimeUnitComponent>;
+
+  public clone(): this {
+    const cloneObj = new (<any>this.constructor);
+    cloneObj.formula = duplicate(this.formula);
+    return cloneObj;
+  }
 
   constructor(model: Model) {
     super();

@@ -7,7 +7,7 @@ export function assembleScale(model: Model) {
     return vals(model.component.scales).map(scale => {
       // correct references to data
       const domain = scale.domain;
-      if (isDataRefDomain(domain)) {
+      if (isDataRefDomain(domain) || isFieldRefUnionDomain(domain)) {
         domain.data = model.lookupDataSource(domain.data);
         return scale;
       } else if (isDataRefUnionedDomain(domain)) {
@@ -18,12 +18,7 @@ export function assembleScale(model: Model) {
           };
         });
         return scale;
-      } else if (isFieldRefUnionDomain(domain)) {
-        domain.data = model.lookupDataSource(domain.data);
-        return scale;
-      } else if (isSignalRefDomain(domain)) {
-        return scale;
-      } else if (isArray(domain)) {
+      } else if (isSignalRefDomain(domain) || isArray(domain)) {
         return scale;
       } else {
         throw new Error('invalid scale domain');

@@ -77,13 +77,13 @@ Description of the dataflow (http://asciiflow.com/):
      Path Order
          |
          v
-   +----------+----> Child data...
-   |   Main   |
-   +----------+----> Layout
+   +----------+
+   |   Main   +----> Layout
+   +----------+
          |
          v
      +-------+
-     | Facet |
+     | Facet |----> Child data...
      +-------+
 
 */
@@ -126,7 +126,7 @@ export function parseData(model: Model): DataComponent {
 
   // add an output node pre aggregation
   const rawName = model.getName(RAW);
-  const raw = new OutputNode(rawName);
+  const raw = new OutputNode(rawName, RAW);
   outputNodes[rawName] = raw;
   raw.parent = head;
   head = raw;
@@ -161,7 +161,7 @@ export function parseData(model: Model): DataComponent {
 
   // output node for marks
   const mainName = model.getName(MAIN);
-  const main = new OutputNode(mainName);
+  const main = new OutputNode(mainName, MAIN);
   outputNodes[mainName] = main;
   main.parent = head;
   head = main;

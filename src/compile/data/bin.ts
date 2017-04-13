@@ -2,12 +2,10 @@ import {autoMaxBins, Bin, binToString} from '../../bin';
 import {Channel} from '../../channel';
 import {field, FieldDef} from '../../fielddef';
 import {hasDiscreteDomain} from '../../scale';
-import {Dict, extend, flatten, hash, isBoolean, StringSet, vals, varName} from '../../util';
+import {Dict, duplicate, extend, flatten, hash, isBoolean, StringSet, vals, varName} from '../../util';
 import {VgBinTransform, VgTransform} from '../../vega.schema';
 import {Model} from './../model';
 import {DataFlowNode, DependentNode, NewFieldNode} from './dataflow';
-
-
 function numberFormatExpr(expr: string, format: string) {
   return `format(${expr}, '${format}')`;
 }
@@ -47,8 +45,19 @@ interface BinComponent {
 export class BinNode extends DataFlowNode implements NewFieldNode, DependentNode {
   private bins: Dict<BinComponent>;
 
+  public clone(): this {
+    const cloneObj = new (<any>this.constructor);
+    cloneObj.bins = duplicate(this.bins);
+    return cloneObj;
+  }
+
   constructor(model: Model) {
     super();
+
+    if (!model) {
+      // when cloning we may not have a model
+      return;
+    }
 
     this.bins = model.reduceFieldDef((binComponent: Dict<BinComponent>, fieldDef: FieldDef, channel: Channel) => {
       const fieldDefBin = model.fieldDef(channel).bin;

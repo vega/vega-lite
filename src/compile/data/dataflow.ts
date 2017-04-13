@@ -1,5 +1,8 @@
 import {isFunction} from 'util';
+import {DataSourceType} from '../../data';
 import {StringSet} from '../../util';
+
+
 /**
  * A node in the dataflow tree.
  */
@@ -69,9 +72,17 @@ export class OutputNode extends DataFlowNode {
 
   private _source: string;
 
-  private _required = false;
+  private _refcount = 0;
 
-  constructor(source: string) {
+  public clone(): this {
+    const cloneObj = new (<any>this.constructor);
+    cloneObj._source = this._source;
+    cloneObj.debugName = 'clone_' + this.debugName;
+    cloneObj._refcount = this._refcount;
+    return cloneObj;
+  }
+
+  constructor(source: string, public readonly type: DataSourceType) {
     super(source);
 
     this._source = source;
@@ -87,7 +98,7 @@ export class OutputNode extends DataFlowNode {
    * In the assemble phase, this will return the correct name.
    */
   get source() {
-    this._required = true;
+    this._refcount++;
     return this._source;
   }
 
@@ -96,7 +107,7 @@ export class OutputNode extends DataFlowNode {
   }
 
   get required() {
-    return this._required;
+    return this._refcount > 0;
   }
 }
 
@@ -104,9 +115,6 @@ export class OutputNode extends DataFlowNode {
  * Dataflow traits.
  */
 
-export function isNewFieldNode(node: any): node is NewFieldNode {
-  return 'produces' in node && isFunction(node.produces);
-}
 
 /**
  * Trait for nodes that create new fields.
@@ -126,4 +134,24 @@ export interface DependentNode {
    * Set of fields that are being created by this node.
    */
   dependentFields: () => StringSet;
+}
+
+
+/**
+ * Trait for nodes that can be cloned.
+ */
+export interface ClonableNode {
+  /**
+   * Clone this node with a deep copy.
+   */
+  clone: () => this;
+}
+
+
+export function isNewFieldNode(node: any): node is NewFieldNode {
+  return 'produces' in node && isFunction(node.produces);
+}
+
+export function isClonable(node: any): node is ClonableNode {
+  return 'clone' in node && isFunction(node.clone);
 }

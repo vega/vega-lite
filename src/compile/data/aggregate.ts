@@ -1,10 +1,9 @@
 import {forEach, isAggregate} from '../../encoding';
 import {field, FieldDef} from '../../fielddef';
 import * as log from '../../log';
-import {Dict, differ, extend, keys, StringSet} from '../../util';
+import {Dict, differ, duplicate, extend, keys, StringSet} from '../../util';
 import {VgAggregateTransform} from '../../vega.schema';
 import {Model} from './../model';
-
 import {DataFlowNode, DependentNode, NewFieldNode} from './dataflow';
 
 function addDimension(dims: {[field: string]: boolean}, fieldDef: FieldDef) {
@@ -49,8 +48,20 @@ export class AggregateNode extends DataFlowNode implements NewFieldNode, Depende
   /** dictionary mapping field name => dict set of aggregation functions */
   private measures: Dict<StringSet>;
 
+  public clone(): this {
+    const cloneObj = new (<any>this.constructor);
+    cloneObj.dimensions = duplicate(this.dimensions);
+    cloneObj.measures = duplicate(this.measures);
+    return cloneObj;
+  }
+
   constructor(model: Model) {
     super();
+
+    if (!model) {
+      // when cloning we may not have a model
+      return;
+    }
 
     let isAggregate = false;
     model.forEachFieldDef(fd => {

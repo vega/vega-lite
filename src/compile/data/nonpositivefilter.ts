@@ -1,5 +1,5 @@
 import {ScaleType} from '../../scale';
-import {Dict, keys} from '../../util';
+import {Dict, duplicate, keys} from '../../util';
 import {VgFilterTransform, VgTransform} from '../../vega.schema';
 import {Model} from './../model';
 import {DataFlowNode} from './dataflow';
@@ -7,8 +7,19 @@ import {DataFlowNode} from './dataflow';
 export class NonPositiveFilterNode extends DataFlowNode {
   private _filter: Dict<boolean>;
 
+  public clone(): this {
+    const cloneObj = new (<any>this.constructor);
+    cloneObj._filter = duplicate(this._filter);
+    return cloneObj;
+  }
+
   constructor(model: Model) {
     super();
+
+    if (!model) {
+      // when cloning we may not have a model
+      return;
+    }
 
     this._filter = model.channels().reduce(function(nonPositiveComponent, channel) {
       const scale = model.scale(channel);

@@ -1,19 +1,25 @@
-import {every, vals} from '../../util';
+import {MAIN} from '../../data';
+import {field} from '../../fielddef';
+import {every, flatten, vals} from '../../util';
 import {VgData} from '../../vega.schema';
+import {Model} from '../model';
 import {AggregateNode} from './aggregate';
 import {BinNode} from './bin';
-import {DataFlowNode, OutputNode} from './dataflow';
+import {DataFlowNode, isClonable, OutputNode} from './dataflow';
 import {FacetNode} from './facet';
 import {ParseNode} from './formatparse';
 import {NonPositiveFilterNode} from './nonpositivefilter';
 import {NullFilterNode} from './nullfilter';
-import * as optimizers from './optimizers';
 import {optimizeFromLeaves} from './optimizers';
+import * as optimizers from './optimizers';
 import {OrderNode} from './pathorder';
 import {SourceNode} from './source';
 import {StackNode} from './stack';
 import {TimeUnitNode} from './timeunit';
 import {CalculateNode, FilterNode} from './transforms';
+
+
+export const FACET_SCALE_PREFIX = 'scale_';
 
 /**
  * Start optimization path from the root. Useful for removing nodes.
@@ -36,6 +42,79 @@ function removeUnnecessaryNodes(node: DataFlowNode) {
 
   node.children.forEach(removeUnnecessaryNodes);
 }
+
+/**
+ * Clones the subtree and ignores output nodes except for the leafs, which are renamed.
+ */
+function cloneSubtree(facet: FacetNode) {
+  function clone(node: DataFlowNode): DataFlowNode[] {
+    if (isClonable(node)) {
+      const copy = node.clone();
+
+      if (copy instanceof OutputNode) {
+        const newName = FACET_SCALE_PREFIX + facet.model.getName(copy.source);
+        copy.source = newName;
+
+        facet.model.component.data.outputNodes[newName] = copy;
+
+        flatten(node.children.map(clone)).forEach((n: DataFlowNode) => n.parent = copy);
+      } else if (copy instanceof AggregateNode) {
+        copy.addDimensions(facet.fields);
+
+        flatten(node.children.map(clone)).forEach((n: DataFlowNode) => n.parent = copy);
+      } else if (copy instanceof BinNode || node instanceof NonPositiveFilterNode || node instanceof NullFilterNode || node instanceof OrderNode || node instanceof StackNode || node instanceof TimeUnitNode || node instanceof FilterNode || node instanceof CalculateNode) {
+        flatten(node.children.map(clone)).forEach((n: DataFlowNode) => n.parent = copy);
+      }
+
+      return [copy];
+    }
+
+    return flatten(node.children.map(clone));
+  }
+  return clone;
+}
+
+/**
+ * Move facet nodes down to the next fork or output node. Also pull the main output with the facet node.
+ * After moving down the facet node, make a copy of the subtree and make it a child of the main output.
+ */
+function moveFacetDown(node: DataFlowNode) {
+  if (node instanceof FacetNode) {
+    if (node.numChildren() === 1 && !(node.children[0] instanceof OutputNode)) {
+      // move down until we hit a fork or output node
+
+      const child = node.children[0];
+
+      if (child instanceof AggregateNode || child instanceof StackNode) {
+        child.addDimensions(node.fields);
+      }
+
+      child.swapWithParent();
+      moveFacetDown(node);
+    } else {
+      // move main to facet
+      moveMainDownToFacet(node.model.component.data.main);
+
+      // replicate the subtree and place it before the facet's main node
+      const copy: DataFlowNode[] = flatten(node.children.map(cloneSubtree(node)));
+      copy.forEach(c => c.parent = node.model.component.data.main);
+    }
+  } else {
+    node.children.forEach(moveFacetDown);
+  }
+}
+
+function moveMainDownToFacet(node: DataFlowNode) {
+  if (node instanceof OutputNode && node.type === MAIN) {
+    if (node.numChildren() === 1) {
+      const child = node.children[0];
+
+      if (!(child instanceof FacetNode)) {
+        child.swapWithParent();
+        moveMainDownToFacet(node);
+      }
+    }
+  }
 }
 
 
@@ -97,7 +176,7 @@ function makeWalkTree(data: VgData[]) {
         node.data = dataSource.source;
       }
 
-      node.assemble(dataSource.source).forEach(d => data.push(d));
+      node.assemble().forEach(d => data.push(d));
 
       // break here because the rest of the tree has to be taken care of by the facet.
       return;
@@ -182,6 +261,9 @@ function makeWalkTree(data: VgData[]) {
   return walkTree;
 }
 
+/**
+ * Assemble data sources that are derived from faceted data.
+ */
 export function assembleFacetData(root: FacetNode): VgData[] {
   const data: VgData[] = [];
   const walkTree = makeWalkTree(data);
@@ -196,7 +278,7 @@ export function assembleFacetData(root: FacetNode): VgData[] {
 }
 
 /**
- * Creates Vega Data array from a given compiled model and append all of them to the given array
+ * Create Vega Data array from a given compiled model and append all of them to the given array
  *
  * @param  model
  * @param  data array
@@ -207,16 +289,10 @@ export function assembleData(roots: SourceNode[]): VgData[] {
 
   roots.forEach(removeUnnecessaryNodes);
 
-  getLeaves(roots).forEach(optimizeFromLeaves(optimizers.bin));
-  getLeaves(roots).forEach(optimizeFromLeaves(optimizers.timeUnit));
-
-  getLeaves(roots).forEach(optimizeFromLeaves(optimizers.nullfilter));
-  getLeaves(roots).forEach(optimizeFromLeaves(optimizers.transforms));
-
-  getLeaves(roots).forEach(optimizeFromLeaves(optimizers.aggregate));
-  getLeaves(roots).forEach(optimizeFromLeaves(optimizers.stack));
-
+  // parse needs to be next to sources
   getLeaves(roots).forEach(optimizeFromLeaves(optimizers.parse));
+
+  roots.forEach(moveFacetDown);
 
   // roots.forEach(debug);
 

@@ -1,9 +1,10 @@
 import {FieldDef} from '../../fielddef';
 import {QUANTITATIVE, TEMPORAL} from '../../type';
-import {contains, Dict, differ, differArray, extend, hash, keys} from '../../util';
+import {contains, Dict, differ, differArray, duplicate, extend, hash, keys} from '../../util';
 import {VgFilterTransform} from '../../vega.schema';
 import {Model} from './../model';
 import {DataFlowNode} from './dataflow';
+
 
 const DEFAULT_NULL_FILTERS = {
   nominal: false,
@@ -15,8 +16,19 @@ const DEFAULT_NULL_FILTERS = {
 export class NullFilterNode extends DataFlowNode {
   private _filteredFields: Dict<FieldDef>;
 
+  public clone(): this {
+    const cloneObj = new (<any>this.constructor);
+    cloneObj._filteredFields = duplicate(this._filteredFields);
+    return cloneObj;
+  }
+
   constructor(model: Model) {
     super();
+
+    if (!model) {
+      // when cloning we may not have a model
+      return;
+    }
 
     this._filteredFields = model.reduceFieldDef((aggregator: Dict<FieldDef>, fieldDef: FieldDef) => {
       if (fieldDef.aggregate !== 'count') { // Ignore * for count(*) fields.

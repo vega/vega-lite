@@ -15,8 +15,10 @@ import {CalculateNode, FilterNode} from './transforms';
  */
 export function optimizeFromLeaves(f: (node: DataFlowNode) => void) {
   function optimizeNextFromLeaves(node: DataFlowNode) {
-    if (!node || !node.parent || node.parent instanceof SourceNode) {
+    if (node.parent instanceof SourceNode) {
       return;
+    } else if (!node || !node.parent) {
+      throw new Error('A source node cannot have parents and roots haev to be source nodes.');
     }
 
     const next = node.parent;
