@@ -2155,6 +2155,17 @@
                     ],
                     "description": "Text of the `text` mark."
                 },
+                "tooltip": {
+                    "anyOf": [
+                        {
+                            "$ref": "#/definitions/ConditionalValueDef<string>"
+                        },
+                        {
+                            "$ref": "#/definitions/TextFieldDef"
+                        }
+                    ],
+                    "description": "The tooltip text to show upon mouse hover."
+                },
                 "x": {
                     "anyOf": [
                         {
@@ -2295,6 +2306,17 @@
                         }
                     ],
                     "description": "Text of the `text` mark."
+                },
+                "tooltip": {
+                    "anyOf": [
+                        {
+                            "$ref": "#/definitions/ConditionalValueDef<string>"
+                        },
+                        {
+                            "$ref": "#/definitions/TextFieldDef"
+                        }
+                    ],
+                    "description": "The tooltip text to show upon mouse hover."
                 },
                 "x": {
                     "anyOf": [

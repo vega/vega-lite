@@ -84,9 +84,10 @@ function selectionTest(model: UnitModel, selectionName: string) {
     predicate(selection.name, selection.type, selection.resolve);
 }
 
-export function text(model: UnitModel) {
-  const channelDef = model.encoding.text;
-  return wrapCondition(model, channelDef && channelDef.condition, 'text', ref.text(channelDef, model.config));
+export function text(model: UnitModel, vgChannel: 'text' | 'tooltip' = 'text') {
+  const channelDef = model.encoding[vgChannel];
+  const valueRef = (vgChannel === 'tooltip' && !channelDef) ? undefined : ref.text(channelDef, model.config);
+  return wrapCondition(model, channelDef && channelDef.condition, vgChannel, valueRef);
 }
 
 export function bandPosition(channel: 'x'|'y', model: UnitModel) {

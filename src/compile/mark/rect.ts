@@ -17,6 +17,7 @@ export const rect: MarkCompiler = {
       ...x(model),
       ...y(model),
       ...mixins.color(model),
+      ...mixins.text(model, 'tooltip'),
       ...mixins.nonPosition('opacity', model),
     };
   }
