@@ -7,7 +7,7 @@ import {Dict, duplicate, extend, StringSet, vals} from '../../util';
 import {VgFormulaTransform, VgTransform} from '../../vega.schema';
 import {format} from '../axis/rules';
 import {Model} from '../model';
-import {DataFlowNode, DependentNode, NewFieldNode} from './dataflow';
+import {DataFlowNode} from './dataflow';
 
 
 interface TimeUnitComponent {
@@ -16,7 +16,7 @@ interface TimeUnitComponent {
   field: string;
 }
 
-export class TimeUnitNode extends DataFlowNode implements NewFieldNode, DependentNode {
+export class TimeUnitNode extends DataFlowNode {
   private formula: Dict<TimeUnitComponent>;
 
   public clone(): this {

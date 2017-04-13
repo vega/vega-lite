@@ -247,7 +247,7 @@ export abstract class Model {
 
   public abstract channelHasField(channel: Channel): boolean;
 
-  public getName = (text: string, delimiter: string = '_') => {
+  public getName(text: string, delimiter: string = '_') {
     return (this.name ? this.name + delimiter : '') + text;
   }
 

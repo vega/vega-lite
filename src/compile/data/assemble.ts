@@ -5,7 +5,7 @@ import {VgData} from '../../vega.schema';
 import {Model} from '../model';
 import {AggregateNode} from './aggregate';
 import {BinNode} from './bin';
-import {DataFlowNode, isClonable, OutputNode} from './dataflow';
+import {DataFlowNode, OutputNode} from './dataflow';
 import {FacetNode} from './facet';
 import {ParseNode} from './formatparse';
 import {NonPositiveFilterNode} from './nonpositivefilter';
@@ -48,7 +48,7 @@ function removeUnnecessaryNodes(node: DataFlowNode) {
  */
 function cloneSubtree(facet: FacetNode) {
   function clone(node: DataFlowNode): DataFlowNode[] {
-    if (isClonable(node)) {
+    if (!(node instanceof OrderNode)) {  // we can ignore order ndoes beacuse they don't change the scale domain
       const copy = node.clone();
 
       if (copy instanceof OutputNode) {
@@ -58,11 +58,11 @@ function cloneSubtree(facet: FacetNode) {
         facet.model.component.data.outputNodes[newName] = copy;
 
         flatten(node.children.map(clone)).forEach((n: DataFlowNode) => n.parent = copy);
-      } else if (copy instanceof AggregateNode) {
+      } else if (copy instanceof AggregateNode || copy instanceof StackNode) {
         copy.addDimensions(facet.fields);
 
         flatten(node.children.map(clone)).forEach((n: DataFlowNode) => n.parent = copy);
-      } else if (copy instanceof BinNode || node instanceof NonPositiveFilterNode || node instanceof NullFilterNode || node instanceof OrderNode || node instanceof StackNode || node instanceof TimeUnitNode || node instanceof FilterNode || node instanceof CalculateNode) {
+      } else {
         flatten(node.children.map(clone)).forEach((n: DataFlowNode) => n.parent = copy);
       }
 

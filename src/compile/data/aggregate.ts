@@ -4,7 +4,7 @@ import * as log from '../../log';
 import {Dict, differ, duplicate, extend, keys, StringSet} from '../../util';
 import {VgAggregateTransform} from '../../vega.schema';
 import {Model} from './../model';
-import {DataFlowNode, DependentNode, NewFieldNode} from './dataflow';
+import {DataFlowNode} from './dataflow';
 
 function addDimension(dims: {[field: string]: boolean}, fieldDef: FieldDef) {
   if (fieldDef.bin) {
@@ -41,7 +41,7 @@ function mergeMeasures(parentMeasures: Dict<Dict<boolean>>, childMeasures: Dict<
   }
 }
 
-export class AggregateNode extends DataFlowNode implements NewFieldNode, DependentNode {
+export class AggregateNode extends DataFlowNode {
   /** string set for dimensions */
   private dimensions: StringSet;
 

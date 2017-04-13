@@ -7,7 +7,7 @@ import {VgSort, VgTransform} from '../../vega.schema';
 import {sortParams} from '../common';
 import {Model} from '../model';
 import {UnitModel} from './../unit';
-import {DataFlowNode, DependentNode, NewFieldNode} from './dataflow';
+import {DataFlowNode} from './dataflow';
 
 function getStackByFields(model: Model) {
   return model.stack.stackBy.reduce((fields, by) => {
@@ -55,7 +55,7 @@ export interface StackComponent {
   impute: boolean;
 }
 
-export class StackNode extends DataFlowNode implements NewFieldNode, DependentNode {
+export class StackNode extends DataFlowNode {
   private _stack: StackComponent;
 
   public clone(): this {
