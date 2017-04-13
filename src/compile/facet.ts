@@ -11,11 +11,18 @@ import {Scale} from '../scale';
 import {FacetSpec} from '../spec';
 import {StackProperties} from '../stack';
 import {contains, Dict, extend, flatten, keys, vals} from '../util';
-import {VgData, VgEncodeEntry} from '../vega.schema';
+import {
+  isDataRefDomain,
+  isDataRefUnionedDomain,
+  isFieldRefUnionDomain,
+  VgData,
+  VgDataRef,
+  VgEncodeEntry
+} from '../vega.schema';
 import {parseAxisComponent, parseGridAxis, parseMainAxis} from './axis/parse';
 import {gridShow} from './axis/rules';
 import {buildModel} from './common';
-import {assembleData, assembleFacetData} from './data/assemble';
+import {assembleData, assembleFacetData, FACET_SCALE_PREFIX} from './data/assemble';
 import {parseData} from './data/parse';
 import {assembleLayout, parseFacetLayout} from './layout';
 import {Model} from './model';
@@ -165,8 +172,19 @@ export class FacetModel extends Model {
         child.renameScale(scale.name, newName);
         scale.name = newName;
 
-        // FIXME: this is so broken
-        (scale.domain as any).data = this.getDataName(MAIN);
+        // Replace the scale domain with data output from a cloned subtree after the facet.
+        const domain = scale.domain;
+
+        if (isDataRefDomain(domain) || isFieldRefUnionDomain(domain)) {
+          domain.data = FACET_SCALE_PREFIX + this.getName(domain.data);
+        } else if (isDataRefUnionedDomain(domain)) {
+          domain.fields = domain.fields.map((f: VgDataRef) => {
+            return {
+              ...f,
+              data: FACET_SCALE_PREFIX + this.getName(f.data)
+            };
+          });
+        }
 
         // Once put in parent, just remove the child's scale.
         delete child.component.scales[channel];
@@ -269,8 +287,10 @@ export class FacetModel extends Model {
     const data = assembleFacetData(this.component.data.facetRoot);
 
     const mark = this.component.mark[0];
+
     // correct the name of the faceted data source
-    mark.from.facet.name = this.child.lookupDataSource(mark.from.facet.name);
+    mark.from.facet.name = this.component.data.facetRoot.name;
+    mark.from.facet.data = this.component.data.facetRoot.data;
 
     const marks = [].concat(
       // axisGroup is a mapping to VgMarkGroup

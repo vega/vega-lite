@@ -14,11 +14,11 @@ export class FacetNode extends DataFlowNode {
   private readonly rowName: string;
 
   /**
-   * @param model The facet model
+   * @param model The facet model.
    * @param name The name that this facet source will have.
    * @param data The source data for this facet data.
    */
-  public constructor(model: FacetModel, public readonly name: string, public data: string) {
+  public constructor(public readonly model: FacetModel, public readonly name: string, public data: string) {
     super();
 
     if (model.facet.column) {
@@ -50,13 +50,13 @@ export class FacetNode extends DataFlowNode {
     return this.name;
   }
 
-  public assemble(source: string) {
+  public assemble() {
     const data: VgData[] = [];
 
     if (this.columnName) {
       data.push({
         name: this.columnName,
-        source: source,
+        source: this.data,
         transform: [{
           type: 'aggregate',
           groupby: [this.columnField]
@@ -67,7 +67,7 @@ export class FacetNode extends DataFlowNode {
     if (this.rowName) {
       data.push({
         name: this.rowName,
-        source: source,
+        source: this.data,
         transform: [{
           type: 'aggregate',
           groupby: [this.rowField]

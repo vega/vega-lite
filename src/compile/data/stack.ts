@@ -2,7 +2,7 @@ import {isArray} from 'vega-util';
 import {field} from '../../fielddef';
 import {hasDiscreteDomain} from '../../scale';
 import {StackOffset} from '../../stack';
-import {contains} from '../../util';
+import {contains, duplicate} from '../../util';
 import {VgSort, VgTransform} from '../../vega.schema';
 import {sortParams} from '../common';
 import {Model} from '../model';
@@ -57,6 +57,12 @@ export interface StackComponent {
 
 export class StackNode extends DataFlowNode implements NewFieldNode, DependentNode {
   private _stack: StackComponent;
+
+  public clone(): this {
+    const cloneObj = new (<any>this.constructor);
+    cloneObj._stack = duplicate(this._stack);
+    return cloneObj;
+  }
 
   constructor(model: UnitModel) {
     super();

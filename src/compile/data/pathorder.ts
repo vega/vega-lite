@@ -1,7 +1,7 @@
 import {isAggregate} from '../../encoding';
 import {field} from '../../fielddef';
 import {isSortField} from '../../sort';
-import {contains} from '../../util';
+import {contains, duplicate} from '../../util';
 
  import {VgCollectTransform, VgSort} from '../../vega.schema';
 import {sortParams} from '../common';
@@ -11,8 +11,19 @@ import {DataFlowNode} from './dataflow';
 export class OrderNode extends DataFlowNode {
   private sort: VgSort = null;
 
+  public clone(): this {
+    const cloneObj = new (<any>this.constructor);
+    cloneObj.sort = duplicate(this.sort);
+    return cloneObj;
+  }
+
   constructor(model: UnitModel) {
     super();
+
+    if (!model) {
+      // when cloning we may not have a model
+      return;
+    }
 
     if (contains(['line', 'area'], model.mark())) {
       if (model.mark() === 'line' && model.channelHasField('order')) {
