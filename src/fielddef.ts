@@ -124,7 +124,7 @@ export interface TextFieldDef extends FieldDef {
 export type ChannelDef = FieldDef | ValueDef<any>;
 
 export function isFieldDef(channelDef: ChannelDef): channelDef is FieldDef | PositionFieldDef | LegendFieldDef<any> | OrderFieldDef | TextFieldDef {
-  return channelDef && (!!channelDef['field'] || channelDef['aggregate'] === 'count');
+  return !!channelDef && (!!channelDef['field'] || channelDef['aggregate'] === 'count');
 }
 
 export function isValueDef(channelDef: ChannelDef): channelDef is ValueDef<any> {
