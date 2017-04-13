@@ -154,7 +154,6 @@ h2:hover .anchor .octicon-link, h3:hover .anchor .octicon-link, h4:hover .anchor
 code, tt {
   margin: 0 2px;
   padding: 0 4px;
-  white-space: nowrap;
   background: #f6f6f6;
   border: 1px solid #ddd;
   font-family: monospace;
