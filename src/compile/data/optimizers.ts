@@ -1,7 +1,7 @@
 import {hasIntersection} from '../../util';
 import {AggregateNode} from './aggregate';
 import {BinNode} from './bin';
-import {DataFlowNode, isNewFieldNode} from './dataflow';
+import {DataFlowNode} from './dataflow';
 import {FacetNode} from './facet';
 import {ParseNode} from './formatparse';
 import {NullFilterNode} from './nullfilter';

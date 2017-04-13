@@ -13,6 +13,24 @@ export class DataFlowNode {
 
   constructor(public readonly debugName?: string) { }
 
+  /**
+   * Clone this node with a deep copy.
+   */
+  public clone(): this {
+    throw new Error('Cannot clone node');
+  }
+
+  /**
+   * Set of fields that are being created by this node.
+   */
+  public producedFields(): StringSet {
+    return {};
+  }
+
+  public dependentFields(): StringSet {
+    return {};
+  }
+
   get parent() {
     return this._parent;
   }
@@ -109,49 +127,4 @@ export class OutputNode extends DataFlowNode {
   get required() {
     return this._refcount > 0;
   }
-}
-
-/*
- * Dataflow traits.
- */
-
-
-/**
- * Trait for nodes that create new fields.
- */
-export interface NewFieldNode {
-  /**
-   * Set of fields that are being created by this node.
-   */
-  producedFields: () => StringSet;
-}
-
-/**
- * Trait for nodes that depends on other fields.
- */
-export interface DependentNode {
-  /**
-   * Set of fields that are being created by this node.
-   */
-  dependentFields: () => StringSet;
-}
-
-
-/**
- * Trait for nodes that can be cloned.
- */
-export interface ClonableNode {
-  /**
-   * Clone this node with a deep copy.
-   */
-  clone: () => this;
-}
-
-
-export function isNewFieldNode(node: any): node is NewFieldNode {
-  return 'produces' in node && isFunction(node.produces);
-}
-
-export function isClonable(node: any): node is ClonableNode {
-  return 'clone' in node && isFunction(node.clone);
 }

@@ -5,7 +5,9 @@ import {hasDiscreteDomain} from '../../scale';
 import {Dict, duplicate, extend, flatten, hash, isBoolean, StringSet, vals, varName} from '../../util';
 import {VgBinTransform, VgTransform} from '../../vega.schema';
 import {Model} from './../model';
-import {DataFlowNode, DependentNode, NewFieldNode} from './dataflow';
+import {DataFlowNode} from './dataflow';
+
+
 function numberFormatExpr(expr: string, format: string) {
   return `format(${expr}, '${format}')`;
 }
@@ -42,7 +44,7 @@ interface BinComponent {
   formulaAs?: string;
 }
 
-export class BinNode extends DataFlowNode implements NewFieldNode, DependentNode {
+export class BinNode extends DataFlowNode {
   private bins: Dict<BinComponent>;
 
   public clone(): this {

@@ -5,7 +5,7 @@ import {CalculateTransform, FilterTransform, isCalculate, isFilter} from '../../
 import {duplicate} from '../../util';
 import {VgFilterTransform, VgFormulaTransform} from '../../vega.schema';
 import {Model} from '../model';
-import {DataFlowNode, DependentNode, NewFieldNode} from './dataflow';
+import {DataFlowNode} from './dataflow';
 
 
 export class FilterNode extends DataFlowNode {
@@ -41,7 +41,7 @@ export class FilterNode extends DataFlowNode {
 /**
  * We don't know what a calculate node depends on so we should never move it beyond anything that produces fields.
  */
-export class CalculateNode extends DataFlowNode implements NewFieldNode {
+export class CalculateNode extends DataFlowNode {
 
   public clone(): this {
     const cloneObj = new (<any>this.constructor);
