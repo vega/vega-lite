@@ -32,7 +32,16 @@
                     "distance": "number"
                 }
             },
+            "transform": []
+        },
+        {
+            "name": "data_0",
+            "source": "source_0",
             "transform": [
+                {
+                    "type": "filter",
+                    "expr": "datum[\"distance\"] !== null && !isNaN(datum[\"distance\"])"
+                },
                 {
                     "type": "extent",
                     "field": "distance",
@@ -50,34 +59,6 @@
                     "extent": {
                         "signal": "layer_0_bin_maxbins_10_distance_extent"
                     }
-                },
-                {
-                    "type": "extent",
-                    "field": "distance",
-                    "signal": "layer_1_bin_maxbins_10_distance_extent"
-                },
-                {
-                    "type": "bin",
-                    "field": "distance",
-                    "as": [
-                        "bin_maxbins_10_distance_start",
-                        "bin_maxbins_10_distance_end"
-                    ],
-                    "signal": "layer_1_bin_maxbins_10_distance_bins",
-                    "maxbins": 10,
-                    "extent": {
-                        "signal": "layer_1_bin_maxbins_10_distance_extent"
-                    }
-                }
-            ]
-        },
-        {
-            "name": "data_0",
-            "source": "source_0",
-            "transform": [
-                {
-                    "type": "filter",
-                    "expr": "datum[\"distance\"] !== null && !isNaN(datum[\"distance\"])"
                 },
                 {
                     "type": "aggregate",
@@ -106,6 +87,24 @@
                 {
                     "type": "filter",
                     "expr": "datum[\"distance\"] !== null && !isNaN(datum[\"distance\"])"
+                },
+                {
+                    "type": "extent",
+                    "field": "distance",
+                    "signal": "layer_1_bin_maxbins_10_distance_extent"
+                },
+                {
+                    "type": "bin",
+                    "field": "distance",
+                    "as": [
+                        "bin_maxbins_10_distance_start",
+                        "bin_maxbins_10_distance_end"
+                    ],
+                    "signal": "layer_1_bin_maxbins_10_distance_bins",
+                    "maxbins": 10,
+                    "extent": {
+                        "signal": "layer_1_bin_maxbins_10_distance_extent"
+                    }
                 },
                 {
                     "type": "aggregate",
