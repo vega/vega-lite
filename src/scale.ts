@@ -313,7 +313,7 @@ export interface Scale {
   /**
    * The domain of the scale, representing the set of data values. For quantitative data, this can take the form of a two-element array with minimum and maximum values. For ordinal/categorical data, this may be an array of valid input values.
    *
-   * If the domain is '"unaggregated"', we use the source data range before aggregation as scale domain instead of aggregated data for aggregate axis.
+   * If the domain is `"unaggregated"`, we use the source data range before aggregation as scale domain instead of aggregated data for aggregate axis.
    * This property only works with aggregate functions that produce values within the raw data domain (`"mean"`, `"average"`, `"median"`, `"q1"`, `"q3"`, `"min"`, `"max"`). For other aggregations that produce values outside of the raw data domain (e.g. `"count"`, `"sum"`), this property is ignored.
    */
   domain?: Domain;
