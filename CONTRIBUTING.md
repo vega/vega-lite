@@ -186,6 +186,12 @@ npm link vega-util
 
 Now all the changes you make in vega-util are reflected in your Vega-Lite automatically.
 
+## Pull Requests and Travis
+All pull requests will be tested on [Travis](https://travis-ci.org/) and if you don't pass the checks, your PR probably won't be approved. Travis' environments will first run `npm run test`, then it'll generate vega specs from your updated code and compare it with the vega specs in `examples/vg-specs/` and finally, it will check code coverage of your code. If you don't want your PR reviewed until Travis checks pass, just prepend `[WIP]` to the title of your PR and remove it when you're ready for review.
+
+### Code Coverage
+When checking for code coverage, we require that your PR tests covers at least the same percentage of code that was being covered before. To check the code coverage, you can see the link in the job log of your Travis test, from the Github page of your PR or `https://codecov.io/gh/vega/vega-lite/commits`. It'll be usually in the form of `https://codecov.io/gh/vega/vega-lite/commit/your-full-head-commit-number`. Under the *Files* and *Diff* tab, you can check your code coverage differences and total. In *Files*, you can check which lines in your files are being tested (marked in green) and which are not (marked in red). We appreciate PRs that improve our overall code coverage!
+
 # Note
 
 Vega-Lite enables a number of open-source applications including user interface tools ([PoleStar](https://github.com/uwdata/polestar) and [Voyager](https://github.com/uwdata/voyager)) and visualization recommender ([Compass](https://github.com/uwdata/compass)). Look at their contribute pages if you are interested!
