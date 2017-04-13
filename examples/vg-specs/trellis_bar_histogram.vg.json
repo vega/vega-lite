@@ -326,8 +326,7 @@
                     "name": "x",
                     "type": "bin-linear",
                     "domain": {
-                        "signal": "sequence(child_bin_maxbins_15_Horsepower_bins.start, child_bin_maxbins_15_Horsepower_bins.stop + child_bin_maxbins_15_Horsepower_bins.step, child_bin_maxbins_15_Horsepower_bins.step)",
-                        "data": "main"
+                        "signal": "sequence(child_bin_maxbins_15_Horsepower_bins.start, child_bin_maxbins_15_Horsepower_bins.stop + child_bin_maxbins_15_Horsepower_bins.step, child_bin_maxbins_15_Horsepower_bins.step)"
                     },
                     "range": [
                         0,

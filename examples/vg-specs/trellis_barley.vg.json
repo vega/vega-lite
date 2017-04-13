@@ -36,7 +36,25 @@
                 {
                     "type": "filter",
                     "expr": "datum[\"yield\"] !== null && !isNaN(datum[\"yield\"])"
-                },
+                }
+            ]
+        },
+        {
+            "name": "row",
+            "source": "source_0",
+            "transform": [
+                {
+                    "type": "aggregate",
+                    "groupby": [
+                        "site"
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "data_1",
+            "source": "source_0",
+            "transform": [
                 {
                     "type": "aggregate",
                     "groupby": [
@@ -49,18 +67,6 @@
                     ],
                     "fields": [
                         "yield"
-                    ]
-                }
-            ]
-        },
-        {
-            "name": "row",
-            "source": "source_0",
-            "transform": [
-                {
-                    "type": "aggregate",
-                    "groupby": [
-                        "site"
                     ]
                 }
             ]
@@ -230,13 +236,34 @@
                             }
                         }
                     },
+                    "data": [
+                        {
+                            "source": "facet",
+                            "name": "data_0",
+                            "transform": [
+                                {
+                                    "type": "aggregate",
+                                    "groupby": [
+                                        "variety",
+                                        "year"
+                                    ],
+                                    "ops": [
+                                        "median"
+                                    ],
+                                    "fields": [
+                                        "yield"
+                                    ]
+                                }
+                            ]
+                        }
+                    ],
                     "marks": [
                         {
                             "name": "child_marks",
                             "type": "symbol",
                             "role": "point",
                             "from": {
-                                "data": "facet"
+                                "data": "data_0"
                             },
                             "encode": {
                                 "update": {
@@ -295,7 +322,7 @@
                     "name": "x",
                     "type": "linear",
                     "domain": {
-                        "data": "source_0",
+                        "data": "data_1",
                         "field": "median_yield"
                     },
                     "range": [
@@ -328,7 +355,7 @@
                     "name": "color",
                     "type": "ordinal",
                     "domain": {
-                        "data": "source_0",
+                        "data": "data_1",
                         "field": "year",
                         "sort": true
                     },
