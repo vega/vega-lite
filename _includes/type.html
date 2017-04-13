@@ -12,10 +12,26 @@
       {% assign para = include.src.anyOf %}
       {% include type-anyof.html types=para %}
     {% endcapture %}
+  {% else %}
+    {% comment %}
+      This is a HACK when property has a type of any. any will results in property having no
+      type in schema file, so we need to assign it as Object
+      Need to be deleted when typescript-json-schema supports TypeScript 2.2 (having object data type)
+    {% endcomment %}
+    {% assign type = "Object" %}
   {% endif %}
 {% elsif type == "array" %}
     <!--special case for type is arrays of objects -->
-  {% assign type =include.src.items.type | append: "[]" | capitalize %}
+    {% if include.src.items.type %}
+      {% assign type =include.src.items.type | append: "[]" | capitalize %}
+    {% else %}
+      {% comment %}
+        This is a HACK when property has a type of any[]. any[] will results in property having no
+        type in schema file, so we need to assign it as Object[]
+        Need to be deleted when typescript-json-schema supports TypeScript 2.2 (having object data type)
+      {% endcomment %}
+      {% assign type = "Object[]" %}
+    {% endif %}
 {% elsif type.first != nil %}
   <!-- special case for type in the schema is an array of multiple types-->
   {% assign newType = "" %}
@@ -26,7 +42,7 @@
   {% assign type =  newType | remove_first: " | " %}
 {% else %}
   <!--normal case for single type-->
-  {% assign type = type | capitalize %}
+    {% assign type = type | capitalize %}
 {% endif %}
 
 {{type}}
