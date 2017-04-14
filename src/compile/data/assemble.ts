@@ -157,8 +157,11 @@ function makeWalkTree(data: VgData[]) {
    */
   function walkTree(node: DataFlowNode, dataSource: VgData) {
     if (node instanceof ParseNode) {
-      if (node.parent instanceof SourceNode && dataSource.format) {
-        dataSource.format.parse = node.assemble();
+      if (node.parent instanceof SourceNode) {
+        dataSource.format = {
+          ...dataSource.format || {},
+          parse: node.assemble()
+        };
       } else {
         throw new Error('Can only instantiate parse next to source.');
       }
@@ -230,7 +233,7 @@ function makeWalkTree(data: VgData[]) {
     switch (node.numChildren()) {
       case 0:
         // done
-        if (!dataSource.source || dataSource.transform.length > 0) {
+        if (node instanceof OutputNode && (!dataSource.source || dataSource.transform.length > 0)) {
           // do not push empty datasources that are simply references
           data.push(dataSource);
         }

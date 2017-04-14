@@ -188,7 +188,7 @@ function parseLayerSizeLayout(model: LayerModel, channel: Channel): SizeComponen
     });
 
     return {
-      source: model.getDataName(MAIN),
+      source: model.children[0].getDataName(MAIN),
       distinct: distinct,
       formula: formula
     };

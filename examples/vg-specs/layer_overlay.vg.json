@@ -25,12 +25,9 @@
     "data": [
         {
             "name": "source_0",
-            "url": "data/population.json",
+            "url": "data/cars.json",
             "format": {
-                "type": "json",
-                "parse": {
-                    "people": "number"
-                }
+                "type": "json"
             },
             "transform": []
         },
@@ -40,21 +37,26 @@
             "transform": [
                 {
                     "type": "filter",
-                    "expr": "datum[\"people\"] !== null && !isNaN(datum[\"people\"])"
+                    "expr": "datum[\"Horsepower\"] !== null && !isNaN(datum[\"Horsepower\"])"
                 },
                 {
                     "type": "aggregate",
                     "groupby": [
-                        "age"
+                        "Cylinders"
                     ],
                     "ops": [
-                        "min",
                         "max"
                     ],
                     "fields": [
-                        "people",
-                        "people"
+                        "Horsepower"
                     ]
+                },
+                {
+                    "type": "collect",
+                    "sort": {
+                        "field": "Cylinders",
+                        "order": "descending"
+                    }
                 }
             ]
         },
@@ -64,18 +66,18 @@
             "transform": [
                 {
                     "type": "filter",
-                    "expr": "datum[\"people\"] !== null && !isNaN(datum[\"people\"])"
+                    "expr": "datum[\"Horsepower\"] !== null && !isNaN(datum[\"Horsepower\"])"
                 },
                 {
                     "type": "aggregate",
                     "groupby": [
-                        "age"
+                        "Cylinders"
                     ],
                     "ops": [
-                        "min"
+                        "max"
                     ],
                     "fields": [
-                        "people"
+                        "Horsepower"
                     ]
                 }
             ]
@@ -86,19 +88,26 @@
             "transform": [
                 {
                     "type": "filter",
-                    "expr": "datum[\"people\"] !== null && !isNaN(datum[\"people\"])"
+                    "expr": "datum[\"Horsepower\"] !== null && !isNaN(datum[\"Horsepower\"])"
                 },
                 {
                     "type": "aggregate",
                     "groupby": [
-                        "age"
+                        "Cylinders"
                     ],
                     "ops": [
-                        "max"
+                        "min"
                     ],
                     "fields": [
-                        "people"
+                        "Horsepower"
                     ]
+                },
+                {
+                    "type": "collect",
+                    "sort": {
+                        "field": "Cylinders",
+                        "order": "descending"
+                    }
                 }
             ]
         },
@@ -108,54 +117,30 @@
             "transform": [
                 {
                     "type": "filter",
-                    "expr": "datum[\"people\"] !== null && !isNaN(datum[\"people\"])"
+                    "expr": "datum[\"Horsepower\"] !== null && !isNaN(datum[\"Horsepower\"])"
                 },
                 {
                     "type": "aggregate",
                     "groupby": [
-                        "age"
+                        "Cylinders"
                     ],
                     "ops": [
-                        "q1",
-                        "q3"
+                        "min"
                     ],
                     "fields": [
-                        "people",
-                        "people"
-                    ]
-                }
-            ]
-        },
-        {
-            "name": "data_4",
-            "source": "source_0",
-            "transform": [
-                {
-                    "type": "filter",
-                    "expr": "datum[\"people\"] !== null && !isNaN(datum[\"people\"])"
-                },
-                {
-                    "type": "aggregate",
-                    "groupby": [
-                        "age"
-                    ],
-                    "ops": [
-                        "median"
-                    ],
-                    "fields": [
-                        "people"
+                        "Horsepower"
                     ]
                 }
             ]
         },
         {
             "name": "layout",
-            "source": "data_0",
+            "source": "source_0",
             "transform": [
                 {
                     "type": "aggregate",
                     "fields": [
-                        "age"
+                        "Cylinders"
                     ],
                     "ops": [
                         "distinct"
@@ -164,7 +149,7 @@
                 {
                     "type": "formula",
                     "as": "width",
-                    "expr": "max(datum[\"distinct_age\"] - 1 + 2*0.5, 0) * 21"
+                    "expr": "max(datum[\"distinct_Cylinders\"] - 1 + 2*0.5, 0) * 21"
                 },
                 {
                     "type": "formula",
@@ -178,7 +163,6 @@
         {
             "name": "main-group",
             "type": "group",
-            "description": "A box plot showing mean, min, and max in the US population distribution of age groups in 2000.",
             "from": {
                 "data": "layout"
             },
@@ -197,8 +181,8 @@
             },
             "marks": [
                 {
-                    "name": "layer_0_marks",
-                    "type": "rule",
+                    "name": "layer_0_layer_0_marks",
+                    "type": "line",
                     "from": {
                         "data": "data_0"
                     },
@@ -206,15 +190,56 @@
                         "update": {
                             "x": {
                                 "scale": "x",
-                                "field": "age"
+                                "field": "Cylinders"
                             },
                             "y": {
                                 "scale": "y",
-                                "field": "min_people"
+                                "field": "max_Horsepower"
                             },
-                            "y2": {
+                            "stroke": {
+                                "value": "darkred"
+                            }
+                        }
+                    }
+                },
+                {
+                    "name": "layer_0_layer_1_marks",
+                    "type": "symbol",
+                    "role": "pointOverlay",
+                    "from": {
+                        "data": "data_1"
+                    },
+                    "encode": {
+                        "update": {
+                            "x": {
+                                "scale": "x",
+                                "field": "Cylinders"
+                            },
+                            "y": {
                                 "scale": "y",
-                                "field": "max_people"
+                                "field": "max_Horsepower"
+                            },
+                            "fill": {
+                                "value": "darkred"
+                            }
+                        }
+                    }
+                },
+                {
+                    "name": "layer_1_layer_0_marks",
+                    "type": "line",
+                    "from": {
+                        "data": "data_2"
+                    },
+                    "encode": {
+                        "update": {
+                            "x": {
+                                "scale": "x",
+                                "field": "Cylinders"
+                            },
+                            "y": {
+                                "scale": "y",
+                                "field": "min_Horsepower"
                             },
                             "stroke": {
                                 "value": "#4c78a8"
@@ -223,118 +248,24 @@
                     }
                 },
                 {
-                    "name": "layer_1_marks",
-                    "type": "rect",
-                    "role": "tick",
-                    "from": {
-                        "data": "data_1"
-                    },
-                    "encode": {
-                        "update": {
-                            "xc": {
-                                "scale": "x",
-                                "field": "age"
-                            },
-                            "yc": {
-                                "scale": "y",
-                                "field": "min_people"
-                            },
-                            "width": {
-                                "value": 5
-                            },
-                            "height": {
-                                "value": 1
-                            },
-                            "fill": {
-                                "value": "#4c78a8"
-                            }
-                        }
-                    }
-                },
-                {
-                    "name": "layer_2_marks",
-                    "type": "rect",
-                    "role": "tick",
-                    "from": {
-                        "data": "data_2"
-                    },
-                    "encode": {
-                        "update": {
-                            "xc": {
-                                "scale": "x",
-                                "field": "age"
-                            },
-                            "yc": {
-                                "scale": "y",
-                                "field": "max_people"
-                            },
-                            "width": {
-                                "value": 5
-                            },
-                            "height": {
-                                "value": 1
-                            },
-                            "fill": {
-                                "value": "#4c78a8"
-                            }
-                        }
-                    }
-                },
-                {
-                    "name": "layer_3_marks",
-                    "type": "rect",
-                    "role": "bar",
+                    "name": "layer_1_layer_1_marks",
+                    "type": "symbol",
+                    "role": "pointOverlay",
                     "from": {
                         "data": "data_3"
                     },
                     "encode": {
                         "update": {
-                            "xc": {
+                            "x": {
                                 "scale": "x",
-                                "field": "age"
-                            },
-                            "width": {
-                                "value": 5
+                                "field": "Cylinders"
                             },
                             "y": {
                                 "scale": "y",
-                                "field": "q1_people"
-                            },
-                            "y2": {
-                                "scale": "y",
-                                "field": "q3_people"
+                                "field": "min_Horsepower"
                             },
                             "fill": {
                                 "value": "#4c78a8"
-                            }
-                        }
-                    }
-                },
-                {
-                    "name": "layer_4_marks",
-                    "type": "rect",
-                    "role": "tick",
-                    "from": {
-                        "data": "data_4"
-                    },
-                    "encode": {
-                        "update": {
-                            "xc": {
-                                "scale": "x",
-                                "field": "age"
-                            },
-                            "yc": {
-                                "scale": "y",
-                                "field": "median_people"
-                            },
-                            "width": {
-                                "value": 5
-                            },
-                            "height": {
-                                "value": 1
-                            },
-                            "fill": {
-                                "value": "white"
                             }
                         }
                     }
@@ -347,24 +278,20 @@
                     "domain": {
                         "fields": [
                             {
-                                "field": "age",
+                                "field": "Cylinders",
                                 "data": "data_0"
                             },
                             {
-                                "field": "age",
+                                "field": "Cylinders",
                                 "data": "data_1"
                             },
                             {
-                                "field": "age",
+                                "field": "Cylinders",
                                 "data": "data_2"
                             },
                             {
-                                "field": "age",
+                                "field": "Cylinders",
                                 "data": "data_3"
-                            },
-                            {
-                                "data": "data_4",
-                                "field": "age"
                             }
                         ],
                         "sort": true
@@ -381,32 +308,20 @@
                     "domain": {
                         "fields": [
                             {
-                                "field": "min_people",
+                                "field": "max_Horsepower",
                                 "data": "data_0"
                             },
                             {
-                                "field": "max_people",
-                                "data": "data_0"
-                            },
-                            {
-                                "field": "min_people",
+                                "field": "max_Horsepower",
                                 "data": "data_1"
                             },
                             {
-                                "field": "max_people",
+                                "field": "min_Horsepower",
                                 "data": "data_2"
                             },
                             {
-                                "field": "q1_people",
+                                "field": "min_Horsepower",
                                 "data": "data_3"
-                            },
-                            {
-                                "field": "q3_people",
-                                "data": "data_3"
-                            },
-                            {
-                                "data": "data_4",
-                                "field": "median_people"
                             }
                         ],
                         "sort": true
@@ -425,7 +340,7 @@
                     "scale": "x",
                     "orient": "bottom",
                     "tickCount": 5,
-                    "title": "age",
+                    "title": "Cylinders",
                     "zindex": 1,
                     "encode": {
                         "labels": {
@@ -447,7 +362,7 @@
                     "scale": "y",
                     "format": "s",
                     "orient": "left",
-                    "title": "population",
+                    "title": "MAX(Horsepower)",
                     "zindex": 1
                 },
                 {
