@@ -1,41 +1,21 @@
 ---
-layout: page
+layout: home
 permalink: /
+title: A High-Level Visualization Grammar
 
 images:
  - spec: stacked_area_stream
-   bgposition: 44% 22%
  - spec: circle
-   bgposition: 75% 30%
  - spec: bar_layered_transparent
-   bgposition: 25% 0
-   bgsize: 250%
  - spec: tick_strip
-   bgposition: 75% 0%
-   bgsize: 150%
  - spec: line_color
-   bgposition: 41% 26%
-   bgsize: 170%
  - spec: scatter_colored_with_shape
-   bgposition: 50% 30%
  - spec: trellis_barley
-   bgsize: 226%
-   bgposition: 40% 5%
  - spec: bar_grouped
-   bgposition: 75% 59%
  - spec: stacked_bar_weather
-   bgsize: 170%
-   bgposition: 31% 14%
  - spec: trellis_bar_histogram
-   bgposition: 75% 82%
-   bgsize: 100%
 
 ---
-
-{:.page-centered title}
-# **Vega-Lite**: A High-Level Visualization Grammar
-
-{% include showcase.html %}
 
 {:.lead}
 **Vega-Lite** is a high-level visualization grammar. It provides a concise JSON syntax for supporting rapid generation of visualizations to support analysis. Vega-Lite specifications can be compiled to [Vega](http://vega.github.io/vega) specifications.
