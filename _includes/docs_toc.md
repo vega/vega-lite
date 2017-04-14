@@ -51,3 +51,6 @@
     - [Total Width and Height of a Trellis Plots]({{site.baseurl}}/docs/size.html#total-width-and-height-of-a-trellis-plots)
 - [Faceting]({{site.baseurl}}/docs/facet.html)
     - [Example]({{site.baseurl}}/docs/facet.html#example)
+- [Layering]({{site.baseurl}}/docs/layer.html)
+- [Repeat]({{site.baseurl}}/docs/repeat.html)
+- [Interactions]({{site.baseurl}}/docs/selection.html)
