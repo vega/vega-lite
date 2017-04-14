@@ -79,7 +79,7 @@ export interface OneOfFilter {
    * A set of values that the `field`'s value should be a member of,
    * for a data item included in the filtered data.
    */
-  oneOf: (string|number|boolean|DateTime)[];
+  oneOf: string[] | number[] | boolean[] | DateTime[];
 
 }
 
