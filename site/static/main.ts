@@ -2,8 +2,11 @@ import {json, text} from 'd3-request';
 import {select, selectAll, Selection} from 'd3-selection';
 import * as hljs from 'highlight.js';
 import embed from 'vega-embed';
+import {config} from 'vega-embed';
 
 declare const BASEURL: string;
+
+config.editor_url = 'https://vega.github.io/new-editor';
 
 function trim(str: string) {
   return str.replace(/^\s+|\s+$/g, '');
@@ -41,8 +44,7 @@ function renderExample($target: Selection<any, any, any, any>, text: string) {
     actions: {
       source: false,
       export: false
-    },
-    editor_url: 'https://vega.github.io/new-editor'
+    }
   }, (err: Error) => {
     if (err) {
       console.error(err);
@@ -103,7 +105,7 @@ function renderGallery() {
       const imageGroup = viz.enter()
         .append('a')
         .attr('class', 'imagegroup')
-        .attr('href', function(d){ return 'https://vega.github.io/vega-editor/?mode=vega-lite&spec=' + d.name;})
+        .attr('href', function(d){ return 'https://vega.github.io/new-editor/#/examples/vega_lite/' + d.name;})
         .attr('target', 'blank');
 
       imageGroup.append('div')
