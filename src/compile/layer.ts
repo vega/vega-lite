@@ -22,16 +22,6 @@ import {UnitModel} from './unit';
 export class LayerModel extends Model {
   public readonly children: UnitModel[];
 
-  protected readonly scales: Dict<Scale> = {};
-
-  protected readonly axes: Dict<Axis> = {};
-
-  protected readonly legends: Dict<Legend> = {};
-
-  public readonly config: Config;
-
-  public readonly stack: StackProperties = null;
-
   /**
    * Fixed width for the unit visualization.
    * If undefined (e.g., for ordinal scale), the width of the

@@ -36,15 +36,6 @@ export class FacetModel extends Model {
   public readonly child: Model;
 
   public readonly children: Model[];
-  protected readonly scales: Dict<Scale> = {};
-
-  protected readonly axes: Dict<Axis> = {};
-
-  protected readonly legends: Dict<Legend> = {};
-
-  public readonly config: Config;
-
-  public readonly stack: StackProperties = null;
 
   private readonly _spacing: {
     row?: number;

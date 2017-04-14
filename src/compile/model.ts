@@ -88,20 +88,19 @@ export abstract class Model {
   /** Name map for size, which can be renamed by a model's parent. */
   protected sizeNameMap: NameMapInterface;
 
-  protected readonly transform: Transform;
-  protected readonly scales: Dict<Scale> = {};
+  protected scales: Dict<Scale> = {};
 
-  protected readonly axes: Dict<Axis> = {};
+  protected axes: Dict<Axis> = {};
 
-  protected readonly legends: Dict<Legend> = {};
+  protected legends: Dict<Legend> = {};
+
+  protected _stack: StackProperties = null;
 
   public readonly config: Config;
 
   public component: Component;
 
   public abstract readonly children: Model[] = [];
-
-  public abstract stack: StackProperties;
 
   constructor(spec: BaseSpec, parent: Model, parentGivenName: string, config: Config) {
     this.parent = parent;
@@ -344,6 +343,10 @@ export abstract class Model {
 
   public legend(channel: Channel): Legend {
     return this.legends[channel];
+  }
+
+  get stack() {
+    return this._stack;
   }
 
   /**
