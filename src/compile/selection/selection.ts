@@ -3,9 +3,9 @@ import {Channel} from '../../channel';
 import {SelectionDef, SelectionDomain, SelectionResolutions, SelectionTypes} from '../../selection';
 import {Dict, extend, isString, stringValue} from '../../util';
 import {VgBinding, VgData} from '../../vega.schema';
+import {LayerModel} from '../layer';
 import {Model} from '../model';
 import {UnitModel} from '../unit';
-import {LayerModel} from '../layer';
 import intervalCompiler from './interval';
 import multiCompiler from './multi';
 import {SelectionComponent} from './selection';
@@ -181,7 +181,7 @@ export function assembleUnitMarks(model: UnitModel, marks: any[]): any[] {
 export function assembleLayerMarks(model: LayerModel, marks: any[]): any[] {
   let clipGroup = false;
   model.children.forEach((child) => {
-    let unit = assembleUnitMarks(child, marks);
+    const unit = assembleUnitMarks(child, marks);
     marks = unit[0];
     clipGroup = clipGroup || unit[1];
   });
@@ -249,5 +249,5 @@ function clippedGroup(model: Model, marks: any[]): any[] {
       }
     },
     marks: marks.map(model.correctDataNames)
-  }]
+  }];
 }

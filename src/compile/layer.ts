@@ -16,8 +16,8 @@ import {parseData} from './data/parse';
 import {assembleLayout, parseLayerLayout} from './layout';
 import {Model} from './model';
 import {unionDomains} from './scale/domain';
-import {UnitModel} from './unit';
 import {assembleLayerMarks} from './selection/selection';
+import {UnitModel} from './unit';
 
 export class LayerModel extends Model {
   public readonly children: UnitModel[];
@@ -181,11 +181,11 @@ export class LayerModel extends Model {
 
   // TODO: Support same named selections across children.
   public assembleSignals(signals: any[]): any[] {
-    return this.children.reduce((signals, child) => child.assembleSignals(signals), []);
+    return this.children.reduce((sg, child) => child.assembleSignals(sg), []);
   }
 
   public assembleSelectionData(data: VgData[]): VgData[] {
-    return this.children.reduce((data, child) => child.assembleSelectionData(data), []);
+    return this.children.reduce((db, child) => child.assembleSelectionData(db), []);
   }
 
   public assembleData(): VgData[] {
