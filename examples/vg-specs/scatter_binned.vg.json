@@ -79,10 +79,8 @@
                     "groupby": [
                         "bin_maxbins_10_IMDB_Rating_start",
                         "bin_maxbins_10_IMDB_Rating_end",
-                        "bin_maxbins_10_IMDB_Rating_range",
                         "bin_maxbins_10_Rotten_Tomatoes_Rating_start",
-                        "bin_maxbins_10_Rotten_Tomatoes_Rating_end",
-                        "bin_maxbins_10_Rotten_Tomatoes_Rating_range"
+                        "bin_maxbins_10_Rotten_Tomatoes_Rating_end"
                     ],
                     "ops": [
                         "count"
