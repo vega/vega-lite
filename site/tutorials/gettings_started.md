@@ -16,6 +16,7 @@ We suggest that you follow along the tutorial by building a visualization in the
 
 Let's say you have a tabular data set with a categorical variable in the first column `a` and a numerical variable in the second column `b`.
 
+{:.small-table}
 | a | b |
 |---|---|
 | C | 2 |
@@ -252,7 +253,7 @@ You can use [Vega-Embed](https://github.com/vega/vega-embed) to embed your Vega-
   <script src="https://d3js.org/d3.v3.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/vega/{{ site.data.versions.vega }}/vega.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/vega-lite/{{ site.data.versions.vega-lite }}/vega-lite.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/vega-embed/{{ site.data.versions.vega-embed }}/vega-embed.js" charset="utf-8"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/vega-embed/{{ site.data.versions.vega-embed }}/vega-embed.js"></script>
 
   <style media="screen">
     /* Add space between vega-embed links  */
