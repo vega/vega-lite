@@ -207,7 +207,6 @@ function makeWalkTree(data: VgData[]) {
         // Note that an output node may be required but we still do not assemble a
         // separate data source for it.
         node.source = dataSource.name;
-        throw new Error('cannot happen');
       } else {
         if (!dataSource.name) {
           dataSource.name = `data_${datasetIndex++}`;
