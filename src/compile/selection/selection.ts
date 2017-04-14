@@ -12,9 +12,9 @@ import {SelectionComponent} from './selection';
 import singleCompiler from './single';
 import {forEachTransform} from './transforms/transforms';
 
-export const STORE = '_store',
-  TUPLE  = '_tuple',
-  MODIFY = '_modify';
+export const STORE = '_store';
+export const TUPLE  = '_tuple';
+export const MODIFY = '_modify';
 
 export interface SelectionComponent {
   name: string;
@@ -83,7 +83,7 @@ export function parseUnitSelection(model: UnitModel, selDefs: Dict<SelectionDef>
       resolve: 'union' as SelectionResolutions
     }) as SelectionComponent;
 
-    forEachTransform(selCmpt, function(txCompiler) {
+    forEachTransform(selCmpt, txCompiler => {
       if (txCompiler.parse) {
         txCompiler.parse(model, selDef, selCmpt);
       }
@@ -94,14 +94,14 @@ export function parseUnitSelection(model: UnitModel, selDefs: Dict<SelectionDef>
 }
 
 export function assembleUnitSignals(model: UnitModel, signals: any[]) {
-  forEachSelection(model, function(selCmpt, selCompiler) {
+  forEachSelection(model, (selCmpt, selCompiler) => {
     const name = selCmpt.name,
         tupleExpr = selCompiler.tupleExpr(model, selCmpt);
     let modifyExpr = selCompiler.modifyExpr(model, selCmpt);
 
     signals.push.apply(signals, selCompiler.signals(model, selCmpt));
 
-    forEachTransform(selCmpt, function(txCompiler) {
+    forEachTransform(selCmpt, txCompiler => {
       if (txCompiler.signals) {
         signals = txCompiler.signals(model, selCmpt, signals);
       }
@@ -135,12 +135,12 @@ export function assembleTopLevelSignals(model: Model) {
     on: [{events: 'mousemove', update: 'group()._id ? group() : unit'}]
   }];
 
-  forEachSelection(model, function(selCmpt, selCompiler) {
+  forEachSelection(model, (selCmpt, selCompiler) => {
     if (selCompiler.topLevelSignals) {
       signals.push.apply(signals, selCompiler.topLevelSignals(model, selCmpt));
     }
 
-    forEachTransform(selCmpt, function(txCompiler) {
+    forEachTransform(selCmpt, txCompiler => {
       if (txCompiler.topLevelSignals) {
         signals = txCompiler.topLevelSignals(model, selCmpt, signals);
       }
@@ -151,8 +151,8 @@ export function assembleTopLevelSignals(model: Model) {
 }
 
 export function assembleUnitData(model: UnitModel, data: VgData[]): VgData[] {
-  forEachSelection(model, function(selCmpt, _) {
-    data.push.apply(data, [{name: selCmpt.name + STORE}]);
+  forEachSelection(model, selCmpt => {
+    data.push({name: selCmpt.name + STORE});
   });
 
   return data;
@@ -161,9 +161,9 @@ export function assembleUnitData(model: UnitModel, data: VgData[]): VgData[] {
 export function assembleUnitMarks(model: UnitModel, marks: any[]): any[] {
   let clipGroup = false,
       selMarks = marks;
-  forEachSelection(model, function(selCmpt, selCompiler) {
+  forEachSelection(model, (selCmpt, selCompiler) => {
     selMarks = selCompiler.marks ? selCompiler.marks(model, selCmpt, selMarks) : selMarks;
-    forEachTransform(selCmpt, function(txCompiler) {
+    forEachTransform(selCmpt, (txCompiler) => {
       clipGroup = clipGroup || txCompiler.clipGroup;
       if (txCompiler.marks) {
         selMarks = txCompiler.marks(model, selCmpt, marks, selMarks);
@@ -180,7 +180,7 @@ export function assembleUnitMarks(model: UnitModel, marks: any[]): any[] {
 
 export function assembleLayerMarks(model: LayerModel, marks: any[]): any[] {
   let clipGroup = false;
-  model.children.forEach((child) => {
+  model.children.forEach(child => {
     const unit = assembleUnitMarks(child, marks);
     marks = unit[0];
     clipGroup = clipGroup || unit[1];
