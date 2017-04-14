@@ -475,17 +475,16 @@ footer .edit-page {
   text-decoration: none;
 }
 .gallery .image {
-  box-sizing: border-box;
-  width: 100%;
-  /* hack to make height depend on width*/
-  padding-bottom: 100%;
-  border: 1px solid #ddd;
-  background-repeat: no-repeat;
-  background-clip: padding-box;
-  margin-bottom: 5px;
+  width: 180px;
+  height: 100px;
+  background-position: left top;
+  background-size: cover;
+  overflow: hidden;
+  transition: background-position 2s;
+  -webkit-transition: background-position 2s;
 }
 .gallery .image:hover {
-  border-color: #bfbfbf;
+  background-position: right bottom;
 }
 
 .gallery .image-title {
