@@ -37,25 +37,7 @@ Read our [introduction article on Medium](https://medium.com/p/438f9215f09e), ch
 
 This is a Vega-Lite specification to create a bar chart that shows the average temperature in Seattle for each month.
 
-<div class="vl-example">
-{
-  "data": {"url": "data/seattle-temps.csv"},
-  "mark": "bar",
-  "encoding": {
-    "x": {
-      "timeUnit": "month",
-      "field": "date",
-      "type": "temporal",
-      "axis": {"shortTimeLabels": true}
-    },
-    "y": {
-      "aggregate": "mean",
-      "field": "temp",
-      "type": "quantitative"
-    }
-  }
-}
-</div>
+<div class="vl-example" data-name="bar_month"></div>
 
 ## Additional Links
 
