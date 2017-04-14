@@ -1,6 +1,6 @@
 #!/bin/bash
 
-. ./scripts/pre-deploy.sh
+scripts/pre-deploy.sh
 
 git checkout gh-pages
 git pull
