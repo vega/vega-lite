@@ -432,9 +432,10 @@ footer .edit-page {
   box-shadow: 0px 8px 16px rgba(0,0,0,0.3);
 }
 #showcase .examples {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
+  margin: 0 auto;
+  height: 300px;
+  width: 1440px;
+  line-height: 0;
 }
 #showcase .preview {
   width: 180px;
