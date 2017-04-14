@@ -121,7 +121,7 @@ export function getSupportedMark(channel: Channel): SupportedMark {
       };
     case SIZE:
       return {
-        point: true, tick: true, rule: true, circle: true, square: true,
+        point: true, tick: true, circle: true, square: true,
         bar: true, text: true, line: true
       };
     case SHAPE:
