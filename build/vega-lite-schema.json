@@ -1339,7 +1339,7 @@
                     "description": "Facet Config"
                 },
                 "filterInvalid": {
-                    "description": "Filter all null values.",
+                    "description": "Whether to filter invalid values (`null` and `NaN`) from the data.\n- By default (`undefined`), only quantitative and temporal fields are filtered.\n- If set to `true`, all data items with null values are filtered.\n- If `false`, all data items are included. In this case, null values will be interpret as zeroes.",
                     "type": "boolean"
                 },
                 "legend": {
@@ -2641,22 +2641,33 @@
                     "type": "string"
                 },
                 "oneOf": {
-                    "description": "A set of values that the `field`'s value should be a member of,\nfor a data item included in the filtered data.",
-                    "items": {
-                        "anyOf": [
-                            {
+                    "anyOf": [
+                        {
+                            "items": {
+                                "type": "string"
+                            },
+                            "type": "array"
+                        },
+                        {
+                            "items": {
+                                "type": "number"
+                            },
+                            "type": "array"
+                        },
+                        {
+                            "items": {
                                 "$ref": "#/definitions/DateTime"
                             },
-                            {
-                                "type": [
-                                    "string",
-                                    "number",
-                                    "boolean"
-                                ]
-                            }
-                        ]
-                    },
-                    "type": "array"
+                            "type": "array"
+                        },
+                        {
+                            "items": {
+                                "type": "boolean"
+                            },
+                            "type": "array"
+                        }
+                    ],
+                    "description": "A set of values that the `field`'s value should be a member of,\nfor a data item included in the filtered data."
                 },
                 "timeUnit": {
                     "$ref": "#/definitions/TimeUnit",

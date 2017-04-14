@@ -1,5 +1,4 @@
 {% assign type = include.src.type %}
-
 {% if type == nil %}
   <!--special case for $ref-->
   {% if include.src["$ref"] %}
@@ -22,7 +21,12 @@
   {% endif %}
 {% elsif type == "array" %}
     <!--special case for type is arrays of objects -->
-    {% if include.src.items.type %}
+    {% if include.src.items.anyOf %}
+      {% capture type %}
+        {% assign para = include.src.items.anyOf %}
+        {% include type-anyof.html types=para suffix="[]"%}
+      {% endcapture %}
+    {% elsif include.src.items.type %}
       {% assign type =include.src.items.type | append: "[]" | capitalize %}
     {% else %}
       {% comment %}

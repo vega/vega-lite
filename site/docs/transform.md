@@ -17,27 +17,28 @@ The rest of this page describes the top-level `transform` property. For more inf
 ```json
 {
   "data": ... ,
-  "transform": {       // transform
-    "filterInvalid": ...,
+  "transform": [      // transform
     "calculate": ...,
     "filter": ...
-  },
+  ],
   "mark": ... ,
   "encoding": ... ,
   ...
 }
 ```
 
-The top-level `transform` object supports the following transformation properties:
+The top-level `transform` object is an array describing transformations.
+Vega-Lite supports the following types of transfomation: [calculate](#calculate) and [filter](#filter) also.
 
-| Property      | Type          | Description    |
-| :------------ |:-------------:| :------------- |
-| filterInvalid    | Boolean       | Whether to filter invalid values (`null` and `NaN`) from the data. <br/>     •By default (`undefined`), only quantitative and temporal fields are filtered. <br/>     •If set to `true`, all data items with null values are filtered. <br/>     •If `false`, all data items are included.  In this case, null values will be interpret as zeroes. |
-| calculate     | Formula[]      | An array of formula objects for deriving new fields. Each formula object has two properties: <br/>     • `as` _(String)_ – The field name in which to store the computed value. <br/>    • `expr` _(String)_  – A string containing an expression for the formula. Use the variable `datum` to refer to the current data object.|
-| [filter](#filter) | String &#124; FilterObject &#124; String[] &#124; FilterObject[]  | A filter object or a [Vega Expression](https://github.com/vega/vega/wiki/Expressions) string for filtering data items (or rows) or an array of either filter objects or expression strings. |
+supports the following transformation properties:
 
-These transforms are executed in this order: `filterInvalid`, `calculate`, and then `filter`.
-Since `calculate` is before `filter`, derived fields can be used in `filter`'s expression.
+<!-- TODO population use calc to derive Male / Female -->
+<!-- TODO example about filterInvalid -->
+
+{:#calculate}
+### Calculate
+
+{% include table.html props="calculate,as" source="CalculateTransform" %}
 
 __Example__
 
@@ -45,43 +46,38 @@ This example use `calculate` to derive a new field, then `filter` data based on 
 
 <span class="vl-example" data-name="bar_filter_calc"></span>
 
-
-<!-- TODO population use calc to derive Male / Female -->
-<!-- TODO example about filterInvalid -->
-
+{:#filter}
 ### Filter
 
-Vega-Lite's `transform.filter` property can be (1) a filter predicate object, (2) [Vega Expression](https://github.com/vega/vega/wiki/Expressions) string or (3) an array of filter predicates (either predicate object or expression string) that must be all true for a datum to be include.
+Vega-Lite filter transform the following property:
 
-#### Filter Object
+{% include table.html props="filter" source="FilterTransform" %}
+
+A `filter` property can be (1) a filter predicate object including Equal Filter, Range Filter and OneOf Filter (2) [Vega Expression](https://github.com/vega/vega/wiki/Expressions) string or (3) an array of filter predicates (either predicate object or expression string) that must be all true for a datum to be include.
+
 
 For a filter object, a `field` must be provided with one of the filter operators (`equal`, `in`, `range`).  Values of these operators can be primitive types (string, number, boolean) or a [DateTime definition object](#datetime) for describiing time. In addition, `timeUnit` can be provided to further transform a temporal `field`.
 
 The following table describes properties of a filter object.
 
-| Property      | Type          | Description    |
-| :------------ |:-------------:| :------------- |
-| field         | String        | Field to be filtered. |
-| equal         | String &#124; Number &#124; [DateTime](#datetime) &#124; Boolean | Value that the `field`'s value should be equal to. |
-| range         | Number[] &#124; [DateTime](#datetime)[] | Array of length 2 describing (inclusive) minimum and maximum values for the `field`'s value to be included in the filtered data.  If the minimum / maximum is `null`, then the ranged has unbounded minimum / maximum.  |
-| oneOf         | String[] &#124; Number[] &#124; [DateTime](#datetime)[] | A set of values that the `field`'s value should be a member of, for a data item included in the filtered data. |
+#### Equal Filter
+
+{% include table.html props="field,equal,timeUnit" source="EqualFilter" %}
+
+#### Range Filter
+
+{% include table.html props="field,range,timeUnit" source="RangeFilter" %}
+
+#### OneOf Filter
+
+{% include table.html props="field,oneOf,timeUnit" source="OneOfFilter" %}
 
 {:#datetime}
 ##### Date Time Definition Object
 
 A DateTime object must have at least one of the following properties:
 
-| Property      | Type          | Description    |
-| :------------ |:-------------:| :------------- |
-| year          | Number        | Integer value representing the year. |
-| quarter       | Number        | Integer value representing the quarter of the year (from 1-4). |
-| month         | Number &#124; string | One of: (1) integer value representing the month from `1`-`12`. `1` represents January;  (2) case-insensitive month name (e.g., `"January"`);  (3) case-insensitive, 3-character short month name (e.g., `"Jan"`). |
-| date          | Number        | Integer value representing the date from 1-31. |
-| day           | Number &#124; string | Value representing the day of week.  This can be one of: (1) integer value -- `1` represents Monday; (2) (2) case-insensitive day name (e.g., `"Monday"`);  (3) case-insensitive, 3-character short day name (e.g., `"Mon"`).   <br/> **Warning:** A DateTime definition object with `day`** should not be combined with `year`, `quarter`, `month`, or `date`. |
-| hours         | Number        | Integer value representing the hour of day from 0-23. |
-| minutes       | Number        | Integer value representing minute segment of a time from 0-59. |
-| seconds       | Number        | Integer value representing  second segment of a time from 0-59. |
-| milliseconds  | Number        | Integer value representing  millsecond segment of a time. |
+{% include table.html props="year,quarter,month,date,day,hours,minutes,seconds,milliseconds" source="DateTime" %}
 
 **Examples**
 
