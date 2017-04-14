@@ -17,7 +17,7 @@ import {assembleLayout, parseLayerLayout} from './layout';
 import {Model} from './model';
 import {unionDomains} from './scale/domain';
 import {UnitModel} from './unit';
-
+import {assembleLayerMarks} from './selection/selection';
 
 export class LayerModel extends Model {
   public readonly children: UnitModel[];
@@ -213,9 +213,9 @@ export class LayerModel extends Model {
 
   public assembleMarks(): any[] {
     // only children have marks
-    return flatten(this.children.map((child) => {
+    return assembleLayerMarks(this, flatten(this.children.map((child) => {
       return child.assembleMarks();
-    }));
+    })));
   }
 
   public channels(): Channel[] {

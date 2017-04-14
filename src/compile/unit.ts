@@ -259,7 +259,9 @@ export class UnitModel extends Model {
 
   public assembleMarks() {
     let marks = this.component.mark || [];
-    marks = assembleSelectionMarks(this, marks);
+    if (!this.parent || !this.parent.isLayer()) {
+      marks = assembleSelectionMarks(this, marks);
+    }
 
     return marks.map(this.correctDataNames);
   }

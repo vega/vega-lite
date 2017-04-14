@@ -5,6 +5,7 @@ import {Dict, extend, isString, stringValue} from '../../util';
 import {VgBinding, VgData} from '../../vega.schema';
 import {Model} from '../model';
 import {UnitModel} from '../unit';
+import {LayerModel} from '../layer';
 import intervalCompiler from './interval';
 import multiCompiler from './multi';
 import {SelectionComponent} from './selection';
@@ -158,34 +159,33 @@ export function assembleUnitData(model: UnitModel, data: VgData[]): VgData[] {
 }
 
 export function assembleUnitMarks(model: UnitModel, marks: any[]): any[] {
-  let clippedGroup = false,
+  let clipGroup = false,
       selMarks = marks;
   forEachSelection(model, function(selCmpt, selCompiler) {
     selMarks = selCompiler.marks ? selCompiler.marks(model, selCmpt, selMarks) : selMarks;
     forEachTransform(selCmpt, function(txCompiler) {
-      clippedGroup = clippedGroup || txCompiler.clippedGroup;
+      clipGroup = clipGroup || txCompiler.clipGroup;
       if (txCompiler.marks) {
         selMarks = txCompiler.marks(model, selCmpt, marks, selMarks);
       }
     });
   });
 
-  if (clippedGroup) {
-    selMarks = [{
-      type: 'group',
-      encode: {
-        enter: {
-          width: {field: {group: 'width'}},
-          height: {field: {group: 'height'}},
-          fill: {value: 'transparent'},
-          clip: {value: true}
-        }
-      },
-      marks: selMarks.map(model.correctDataNames)
-    }];
+  if (model.parent && model.parent.isLayer()) {
+    return [selMarks, clippedGroup];
+  } else {
+    return clipGroup ? clippedGroup(model, selMarks) : selMarks;
   }
+}
 
-  return selMarks;
+export function assembleLayerMarks(model: LayerModel, marks: any[]): any[] {
+  let clipGroup = false;
+  model.children.forEach((child) => {
+    let unit = assembleUnitMarks(child, marks);
+    marks = unit[0];
+    clipGroup = clipGroup || unit[1];
+  });
+  return clipGroup ? clippedGroup(model, marks) : marks;
 }
 
 const PREDICATES_OPS = {
@@ -235,4 +235,19 @@ export function invert(model: UnitModel, selCmpt: SelectionComponent, channel: C
 
 export function channelSignalName(selCmpt: SelectionComponent, channel: Channel) {
   return selCmpt.name + '_' + channel;
+}
+
+function clippedGroup(model: Model, marks: any[]): any[] {
+  return [{
+    type: 'group',
+    encode: {
+      enter: {
+        width: {field: {group: 'width'}},
+        height: {field: {group: 'height'}},
+        fill: {value: 'transparent'},
+        clip: {value: true}
+      }
+    },
+    marks: marks.map(model.correctDataNames)
+  }]
 }

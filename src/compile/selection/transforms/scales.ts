@@ -8,7 +8,7 @@ import {channelSignalName, MODIFY, TUPLE} from '../selection';
 import {TransformCompiler} from './transforms';
 
 const scaleBindings:TransformCompiler = {
-  clippedGroup: true,
+  clipGroup: true,
 
   has: function(selCmpt) {
     return selCmpt.type === 'interval' && selCmpt.bind && selCmpt.bind === 'scales';
