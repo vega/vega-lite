@@ -126,81 +126,106 @@
             },
             "marks": [
                 {
-                    "name": "layer_0_marks",
-                    "type": "area",
-                    "from": {
-                        "data": "data_0"
-                    },
+                    "type": "group",
                     "encode": {
-                        "update": {
-                            "x": {
-                                "scale": "x",
-                                "field": "date"
+                        "enter": {
+                            "width": {
+                                "field": {
+                                    "group": "width"
+                                }
                             },
-                            "y": {
-                                "scale": "y",
-                                "field": "price"
-                            },
-                            "y2": {
-                                "scale": "y",
-                                "value": 0
+                            "height": {
+                                "field": {
+                                    "group": "height"
+                                }
                             },
                             "fill": {
-                                "value": "#4c78a8"
+                                "value": "transparent"
                             },
-                            "orient": {
-                                "value": "vertical"
+                            "clip": {
+                                "value": true
                             }
                         }
-                    }
-                },
-                {
-                    "name": "layer_1_marks",
-                    "type": "line",
-                    "from": {
-                        "data": "data_1"
                     },
-                    "encode": {
-                        "update": {
-                            "x": {
-                                "scale": "x",
-                                "field": "date"
+                    "marks": [
+                        {
+                            "name": "layer_0_marks",
+                            "type": "area",
+                            "from": {
+                                "data": "data_0"
                             },
-                            "y": {
-                                "scale": "y",
-                                "field": "price"
+                            "encode": {
+                                "update": {
+                                    "x": {
+                                        "scale": "x",
+                                        "field": "date"
+                                    },
+                                    "y": {
+                                        "scale": "y",
+                                        "field": "price"
+                                    },
+                                    "y2": {
+                                        "scale": "y",
+                                        "value": 0
+                                    },
+                                    "fill": {
+                                        "value": "#4c78a8"
+                                    },
+                                    "orient": {
+                                        "value": "vertical"
+                                    }
+                                }
+                            }
+                        },
+                        {
+                            "name": "layer_1_marks",
+                            "type": "line",
+                            "from": {
+                                "data": "data_1"
                             },
-                            "fill": {
-                                "value": "#4c78a8"
+                            "encode": {
+                                "update": {
+                                    "x": {
+                                        "scale": "x",
+                                        "field": "date"
+                                    },
+                                    "y": {
+                                        "scale": "y",
+                                        "field": "price"
+                                    },
+                                    "fill": {
+                                        "value": "#4c78a8"
+                                    }
+                                }
+                            }
+                        },
+                        {
+                            "name": "layer_2_marks",
+                            "type": "symbol",
+                            "role": "point",
+                            "from": {
+                                "data": "data_2"
+                            },
+                            "encode": {
+                                "update": {
+                                    "x": {
+                                        "scale": "x",
+                                        "field": "date"
+                                    },
+                                    "y": {
+                                        "scale": "y",
+                                        "field": "price"
+                                    },
+                                    "fill": {
+                                        "value": "#4c78a8"
+                                    },
+                                    "opacity": {
+                                        "value": 0.7
+                                    }
+                                }
                             }
                         }
-                    }
-                },
-                {
-                    "name": "layer_2_marks",
-                    "type": "symbol",
-                    "role": "point",
-                    "from": {
-                        "data": "data_2"
-                    },
-                    "encode": {
-                        "update": {
-                            "x": {
-                                "scale": "x",
-                                "field": "date"
-                            },
-                            "y": {
-                                "scale": "y",
-                                "field": "price"
-                            },
-                            "fill": {
-                                "value": "#4c78a8"
-                            },
-                            "opacity": {
-                                "value": 0.7
-                            }
-                        }
-                    }
+                    ]
                 }
             ],
             "scales": [

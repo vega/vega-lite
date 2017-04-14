@@ -163,68 +163,93 @@
             },
             "marks": [
                 {
-                    "name": "layer_0_marks",
-                    "type": "rect",
-                    "role": "bar",
-                    "from": {
-                        "data": "data_0"
-                    },
+                    "type": "group",
                     "encode": {
-                        "update": {
-                            "x2": {
-                                "scale": "layer_0_x",
-                                "field": "bin_maxbins_10_distance_start",
-                                "offset": 1
+                        "enter": {
+                            "width": {
+                                "field": {
+                                    "group": "width"
+                                }
                             },
-                            "x": {
-                                "scale": "layer_0_x",
-                                "field": "bin_maxbins_10_distance_end"
-                            },
-                            "y": {
-                                "scale": "y",
-                                "field": "count_*"
-                            },
-                            "y2": {
-                                "scale": "y",
-                                "value": 0
+                            "height": {
+                                "field": {
+                                    "group": "height"
+                                }
                             },
                             "fill": {
-                                "value": "#4c78a8"
+                                "value": "transparent"
+                            },
+                            "clip": {
+                                "value": true
                             }
                         }
-                    }
-                },
-                {
-                    "name": "layer_1_marks",
-                    "type": "rect",
-                    "role": "bar",
-                    "from": {
-                        "data": "data_1"
                     },
-                    "encode": {
-                        "update": {
-                            "x2": {
-                                "scale": "layer_1_x",
-                                "field": "bin_maxbins_10_distance_start",
-                                "offset": 1
+                    "marks": [
+                        {
+                            "name": "layer_0_marks",
+                            "type": "rect",
+                            "role": "bar",
+                            "from": {
+                                "data": "data_0"
                             },
-                            "x": {
-                                "scale": "layer_1_x",
-                                "field": "bin_maxbins_10_distance_end"
+                            "encode": {
+                                "update": {
+                                    "x2": {
+                                        "scale": "layer_0_x",
+                                        "field": "bin_maxbins_10_distance_start",
+                                        "offset": 1
+                                    },
+                                    "x": {
+                                        "scale": "layer_0_x",
+                                        "field": "bin_maxbins_10_distance_end"
+                                    },
+                                    "y": {
+                                        "scale": "y",
+                                        "field": "count_*"
+                                    },
+                                    "y2": {
+                                        "scale": "y",
+                                        "value": 0
+                                    },
+                                    "fill": {
+                                        "value": "#4c78a8"
+                                    }
+                                }
+                            }
+                        },
+                        {
+                            "name": "layer_1_marks",
+                            "type": "rect",
+                            "role": "bar",
+                            "from": {
+                                "data": "data_1"
                             },
-                            "y": {
-                                "scale": "y",
-                                "field": "count_*"
-                            },
-                            "y2": {
-                                "scale": "y",
-                                "value": 0
-                            },
-                            "fill": {
-                                "value": "goldenrod"
+                            "encode": {
+                                "update": {
+                                    "x2": {
+                                        "scale": "layer_1_x",
+                                        "field": "bin_maxbins_10_distance_start",
+                                        "offset": 1
+                                    },
+                                    "x": {
+                                        "scale": "layer_1_x",
+                                        "field": "bin_maxbins_10_distance_end"
+                                    },
+                                    "y": {
+                                        "scale": "y",
+                                        "field": "count_*"
+                                    },
+                                    "y2": {
+                                        "scale": "y",
+                                        "value": 0
+                                    },
+                                    "fill": {
+                                        "value": "goldenrod"
+                                    }
+                                }
                             }
                         }
-                    }
+                    ]
                 }
             ],
             "scales": [
