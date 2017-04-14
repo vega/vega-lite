@@ -87,6 +87,9 @@ table tr th:last-child, table tr td:last-child {
 .page-content table {
   width: 100%;
 }
+.page-content .small-table {
+  width: auto;
+}
 
 .page-content table p {
   margin: .5em 0;
@@ -101,8 +104,7 @@ table tr th:last-child, table tr td:last-child {
 /* Headers */
 
 h1, h2, h3, h4 {
-  margin-top: 1.3em;
-  margin-bottom: 0.6em;
+  margin: 0.7em 0 0.3em 0;
 }
 h1 {
   vertical-align: middle;
@@ -183,7 +185,7 @@ pre {
 
 nav {
   display: flex;
-  align-items: baseline;
+  align-items: center;
   align-content: flex-start;
   flex-direction: row;
   flex-wrap: wrap;
@@ -231,18 +233,13 @@ nav a:hover {
   padding-right: .2em;
 }
 .sub-nav {
-  background-color: #F7F7F7;
+  background-color: #624e88;
 }
 
 .sidebar-nav {
   display: block;
   padding: 0;
   margin: 0;
-}
-
-.sub-sub-nav {
-  padding-left: 1em;
-  border-left: 4px solid #eee;
 }
 
 .sidebar-nav-item {
@@ -260,18 +257,15 @@ nav a:hover {
   color: black;
   text-decoration: none;
 }
-
-.page-centered .title {
+.title h1 {
   margin-top: 0.3em;
 }
+
 
 .vl-title {
   font-weight: bold;
   font-size: 1.4em;
   color: #eee;
-  margin-top: -4px;
-  /* hack */
-  margin-right: 8px;
   flex: 0 0 auto;
   display: inline-block;
   line-height: 54px;
@@ -286,7 +280,6 @@ nav a:hover {
 }
 
 .primary-links {
-  float: left;
   text-align: left;
   display: inline-block;
   flex: 1 0 auto;
@@ -299,15 +292,14 @@ nav a:hover {
 }
 
 .edit-page {
-  display: inline-block;
   font-size: 0.9em;
   color: #aaa;
   padding-top: 30px;
   line-height: 3em;
   margin: 0.7em 0 0.3em 0;
   vertical-align: text-top;
-  float: right;
   text-align: right;
+  float: right;
 }
 
 footer .edit-page {
@@ -377,6 +369,7 @@ footer .edit-page {
   display: block;
 }
 
+/* Announcement */
 .announcement {
   padding: .5em 0;
   background-color: #b53e3e;
@@ -389,35 +382,77 @@ footer .edit-page {
   text-decoration: underline;
 }
 
-/* Showcase */
-
-.showcase {
-  width: 100%;
-  clear: both;
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  margin: 20px 0;
-}
-.showcase .image {
+/* Example Gallery */
+.preview {
   display: inline-block;
-  /* Show 4 images per row, make the height depend on the width */
-  height: auto;
-  /* 12px  = 2*6px margin */
-  width: calc(20% - 12px);
-  /* hack to make height depend on width*/
-  margin: 8px 0;
-  border: 1px solid #ddd;
-  background-clip: padding-box;
-  background-position: center;
-  background-repeat: no-repeat;
+  padding: 0.5em 0;
+  padding-right: 0.5em;
+}
+.preview .image {
+  width: 180px;
+  height: 100px;
+  background-position: left top;
+  background-size: cover;
+  overflow: hidden;
+  transition: background-position 2s;
+  -webkit-transition: background-position 2s;
+}
+.preview:hover .image {
+  background-position: right bottom;
+}
+.preview a {
+  font-size: 0.9em;
 }
 
-.showcase .image:before{
-  /* fixes FF display bug */
+/* Example Showcase */
+#showcase {
+  width: 100%;
+  height: 300px;
+  overflow: hidden;
+  margin: 0;
+  padding: 0;
+  position: relative;
+}
+#showcase:after,
+#showcase:before {
   content: "";
   display: block;
-  padding-top: 100%; 	/* initial ratio of 1:1*/
+  width: 100%;
+  position: absolute;
+  background: white;
+  height: 16px;
+  z-index: 2;
+}
+#showcase:before {
+  bottom: -16px;
+  box-shadow: 0px -8px 16px rgba(0,0,0,0.3);
+}
+#showcase:after {
+  top: -16px;
+  box-shadow: 0px 8px 16px rgba(0,0,0,0.3);
+}
+#showcase .examples {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+#showcase .preview {
+  width: 180px;
+  height: 100px;
+  padding: 0;
+  outline: 1px solid #ddd;
+  background-position: left top;
+  background-size: cover;
+  overflow: hidden;
+  position: relative;
+  z-index: 0;
+  transition: background-position 2s;
+  -webkit-transition: background-position 2s;
+}
+#showcase .preview:hover {
+  background-position: right bottom;
+  outline: 2px solid #4682B4;
+  z-index: 1;
 }
 
 /* Gallery */
