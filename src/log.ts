@@ -122,7 +122,7 @@ export namespace message {
 
   export function incompatibleChannel(channel: Channel, markOrFacet: Mark | 'facet', when?: string) {
     return `${channel} dropped as it is incompatible with ${markOrFacet}` +
-      when ? `when ${when}` : '';
+      (when ? `when ${when}` : '')  + '.';
   }
 
   export function facetChannelShouldBeDiscrete(channel: string) {
