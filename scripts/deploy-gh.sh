@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -e
+
 scripts/pre-deploy.sh
 
 git checkout gh-pages
