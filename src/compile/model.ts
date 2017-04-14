@@ -368,4 +368,13 @@ export abstract class Model {
 
     return mark;
   }
+
+  /**
+   * Traverse a model's hierarchy to get the specified component.
+   * @param type Scales or Selection
+   * @param name Name of the component
+   */
+  public getComponent(type: 'scales' | 'selection', name: string): any {
+    return this.component[type][name] || this.parent.getComponent(type, name);
+  }
 }
