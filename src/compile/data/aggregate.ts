@@ -1,6 +1,7 @@
 import {isAggregate} from '../../encoding';
 import {field, FieldDef} from '../../fielddef';
 import * as log from '../../log';
+import {ORDINAL} from '../../type';
 import {Dict, differ, duplicate, extend, keys, StringSet} from '../../util';
 import {VgAggregateTransform} from '../../vega.schema';
 import {Model} from './../model';
@@ -11,11 +12,9 @@ function addDimension(dims: {[field: string]: boolean}, fieldDef: FieldDef) {
     dims[field(fieldDef, {binSuffix: 'start'})] = true;
     dims[field(fieldDef, {binSuffix: 'end'})] = true;
 
-    // const scale = model.scale(channel);
-    // if (scaleType(scale, fieldDef, channel, model.mark()) === ScaleType.ORDINAL) {
-    // also produce bin_range if the binned field use ordinal scale
-    dims[field(fieldDef, {binSuffix: 'range'})] = true;
-    // }
+    if (fieldDef.type === ORDINAL) {
+      dims[field(fieldDef, {binSuffix: 'range'})] = true;
+    }
   } else {
     dims[field(fieldDef)] = true;
   }

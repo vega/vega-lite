@@ -60,7 +60,6 @@
                     "groupby": [
                         "bin_maxbins_15_Horsepower_start",
                         "bin_maxbins_15_Horsepower_end",
-                        "bin_maxbins_15_Horsepower_range",
                         "Origin"
                     ],
                     "ops": [
