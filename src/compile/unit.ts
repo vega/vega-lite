@@ -238,10 +238,6 @@ export class UnitModel extends Model {
     return null;
   }
 
-  public parseGridGroup(): void {
-    return null;
-  }
-
   public parseLegend() {
     this.component.legends = parseLegendComponent(this);
   }
