@@ -16,21 +16,18 @@ const DEFAULT_NULL_FILTERS = {
 export class NullFilterNode extends DataFlowNode {
   private _filteredFields: Dict<FieldDef>;
 
-  public clone(): this {
-    const cloneObj = new (<any>this.constructor);
-    cloneObj._filteredFields = duplicate(this._filteredFields);
-    return cloneObj;
+  public clone() {
+    return new NullFilterNode(duplicate(this._filteredFields));
   }
 
-  constructor(model: Model) {
+  constructor(fields: Dict<FieldDef>) {
     super();
 
-    if (!model) {
-      // when cloning we may not have a model
-      return;
-    }
+    this._filteredFields = fields;
+  }
 
-    this._filteredFields = model.reduceFieldDef((aggregator: Dict<FieldDef>, fieldDef: FieldDef) => {
+  public static make(model: Model) {
+    const fields = model.reduceFieldDef((aggregator: Dict<FieldDef>, fieldDef: FieldDef) => {
       if (fieldDef.aggregate !== 'count') { // Ignore * for count(*) fields.
         if (model.config.filterInvalid ||
           (model.config.filterInvalid === undefined && (fieldDef.field && DEFAULT_NULL_FILTERS[fieldDef.type]))) {
@@ -42,7 +39,13 @@ export class NullFilterNode extends DataFlowNode {
         }
       }
       return aggregator;
-    }, {});
+    }, {} as Dict<FieldDef>);
+
+    if (Object.keys(fields).length === 0) {
+      return null;
+    }
+
+    return new NullFilterNode(fields);
   }
 
   get filteredFields() {

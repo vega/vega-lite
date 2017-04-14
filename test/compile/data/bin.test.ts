@@ -8,7 +8,7 @@ import {VgTransform} from '../../../src/vega.schema';
 import {parseUnitModel} from '../../util';
 
 function assemble(model: Model) {
-  return new BinNode(model).assemble();
+  return BinNode.make(model).assemble();
 }
 
 describe('compile/data/bin', function() {

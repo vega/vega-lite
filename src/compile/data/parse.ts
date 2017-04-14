@@ -96,7 +96,7 @@ export function parseData(model: Model): DataComponent {
   // the current head of the tree that we are appending to
   let head = root;
 
-  const parse = new ParseNode(model);
+  const parse = ParseNode.make(model);
   parse.parent = root;
   head = parse;
 
@@ -106,20 +106,20 @@ export function parseData(model: Model): DataComponent {
     head = last;
   }
 
-  const nullFilter = new NullFilterNode(model);
-  if (Object.keys(nullFilter.filteredFields).length) {
+  const nullFilter = NullFilterNode.make(model);
+  if (nullFilter) {
     nullFilter.parent = head;
     head = nullFilter;
   }
 
-  const bin = new BinNode(model);
-  if (bin.size() > 0) {
+  const bin = BinNode.make(model);
+  if (bin) {
     bin.parent = head;
     head = bin;
   }
 
-  const tu = new TimeUnitNode(model);
-  if (tu.size()) {
+  const tu = TimeUnitNode.make(model);
+  if (tu) {
     tu.parent = head;
     head = tu;
   }
@@ -132,28 +132,30 @@ export function parseData(model: Model): DataComponent {
   head = raw;
 
   if (model instanceof UnitModel) {
-    const agg = new AggregateNode(model);
-    if (agg.hasAggregation()) {
+    const agg = AggregateNode.make(model);
+    if (agg) {
       agg.parent = head;
       head = agg;
     }
   }
 
-  if (model instanceof UnitModel && model.stack) {
-    const stackTransforms = new StackNode(model);
-    stackTransforms.parent = head;
-    head = stackTransforms;
+  if (model instanceof UnitModel) {
+    const stack = StackNode.make(model);
+    if (stack) {
+      stack.parent = head;
+      head = stack;
+    }
   }
 
-  const nonPosFilter = new NonPositiveFilterNode(model);
-  if (nonPosFilter.size() > 0) {
+  const nonPosFilter = NonPositiveFilterNode.make(model);
+  if (nonPosFilter) {
     nonPosFilter.parent = head;
     head = nonPosFilter;
   }
 
   if (model instanceof UnitModel) {
-    const order = new OrderNode(model);
-    if (order.hasSort()) {
+    const order = OrderNode.make(model);
+    if (order) {
       order.parent = head;
       head = order;
     }

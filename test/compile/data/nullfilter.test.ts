@@ -11,7 +11,7 @@ import {Dict, mergeDeep} from '../../../src/util';
 import {parseUnitModel} from '../../util';
 
 function parse(model: Model) {
-  return (new NullFilterNode(model)).filteredFields;
+  return NullFilterNode.make(model);
 }
 
 describe('compile/data/nullfilter', function() {
@@ -27,7 +27,7 @@ describe('compile/data/nullfilter', function() {
 
     it('should add filterNull for Q and T by default', function () {
       const model = parseUnitModel(spec);
-      assert.deepEqual<Dict<FieldDef>>(parse(model), {
+      assert.deepEqual<Dict<FieldDef>>(parse(model).filteredFields, {
         qq: {field: 'qq', type: "quantitative"},
         tt: {field: 'tt', type: "temporal"},
         oo: null
@@ -40,7 +40,7 @@ describe('compile/data/nullfilter', function() {
           filterInvalid: true
         }
       }));
-      assert.deepEqual<Dict<FieldDef>>(parse(model), {
+      assert.deepEqual<Dict<FieldDef>>(parse(model).filteredFields, {
         qq: {field: 'qq', type: "quantitative"},
         tt: {field: 'tt', type: "temporal"},
         oo: {field: 'oo', type: "ordinal"}
@@ -53,7 +53,7 @@ describe('compile/data/nullfilter', function() {
           filterInvalid: false
         }
       }));
-      assert.deepEqual(parse(model), {
+      assert.deepEqual(parse(model).filteredFields, {
         qq: null,
         tt: null,
         oo: null
@@ -68,7 +68,7 @@ describe('compile/data/nullfilter', function() {
         }
       });
 
-      assert.deepEqual(parse(model), {});
+      assert.deepEqual(parse(model), null);
     });
   });
 

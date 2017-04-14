@@ -9,49 +9,44 @@ import {UnitModel} from '../unit';
 import {DataFlowNode} from './dataflow';
 
 export class OrderNode extends DataFlowNode {
-  private sort: VgSort = null;
-
-  public clone(): this {
-    const cloneObj = new (<any>this.constructor);
-    cloneObj.sort = duplicate(this.sort);
-    return cloneObj;
+  public clone() {
+    return new OrderNode(duplicate(this.sort));
   }
 
-  constructor(model: UnitModel) {
+  constructor(private sort: VgSort) {
     super();
+  }
 
-    if (!model) {
-      // when cloning we may not have a model
-      return;
-    }
+  public static make(model: UnitModel) {
+    let sort: VgSort = null;
 
     if (contains(['line', 'area'], model.mark())) {
       if (model.mark() === 'line' && model.channelHasField('order')) {
         // For only line, sort by the order field if it is specified.
-        this.sort = sortParams(model.encoding.order);
+        sort = sortParams(model.encoding.order);
       } else {
         // For both line and area, we sort values based on dimension by default
         const dimensionChannel: 'x' | 'y' = model.markDef.orient === 'horizontal' ? 'y' : 'x';
-        const sort = model.sort(dimensionChannel);
-        const sortField = isSortField(sort) ?
+        const s = model.sort(dimensionChannel);
+        const sortField = isSortField(s) ?
           field({
             // FIXME: this op might not already exist?
             // FIXME: what if dimensionChannel (x or y) contains custom domain?
-            aggregate: isAggregate(model.encoding) ? sort.op : undefined,
-            field: sort.field
+            aggregate: isAggregate(model.encoding) ? s.op : undefined,
+            field: s.field
           }) :
           model.field(dimensionChannel, {binSuffix: 'start'});
 
-        this.sort = {
+        sort = {
           field: sortField,
           order: 'descending'
         };
       }
+    } else {
+      return null;
     }
-  }
 
-  public hasSort() {
-    return !!this.sort;
+    return new OrderNode(sort);
   }
 
   public assemble(): VgCollectTransform {

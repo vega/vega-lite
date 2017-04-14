@@ -1,4 +1,4 @@
-import {forEach, isAggregate} from '../../encoding';
+import {isAggregate} from '../../encoding';
 import {field, FieldDef} from '../../fielddef';
 import * as log from '../../log';
 import {Dict, differ, duplicate, extend, keys, StringSet} from '../../util';
@@ -42,27 +42,19 @@ function mergeMeasures(parentMeasures: Dict<Dict<boolean>>, childMeasures: Dict<
 }
 
 export class AggregateNode extends DataFlowNode {
-  /** string set for dimensions */
-  private dimensions: StringSet;
-
-  /** dictionary mapping field name => dict set of aggregation functions */
-  private measures: Dict<StringSet>;
-
-  public clone(): this {
-    const cloneObj = new (<any>this.constructor);
-    cloneObj.dimensions = duplicate(this.dimensions);
-    cloneObj.measures = duplicate(this.measures);
-    return cloneObj;
+  public clone() {
+    return new AggregateNode(extend({}, this.dimensions), duplicate(this.measures));
   }
 
-  constructor(model: Model) {
+  /**
+   * @param dimensions string set for dimensions
+   * @param measures dictionary mapping field name => dict set of aggregation functions
+   */
+  constructor(private dimensions: StringSet, private measures: Dict<StringSet>) {
     super();
+  }
 
-    if (!model) {
-      // when cloning we may not have a model
-      return;
-    }
-
+  public static make(model: Model): AggregateNode {
     let isAggregate = false;
     model.forEachFieldDef(fd => {
       if (fd.aggregate) {
@@ -70,12 +62,12 @@ export class AggregateNode extends DataFlowNode {
       }
     });
 
-    const meas = this.measures = {};
-    const dims = this.dimensions = {};
+    const meas = {};
+    const dims = {};
 
     if (!isAggregate) {
       // no need to create this node if the model has no aggregation
-      return;
+      return null;
     }
 
     model.forEachFieldDef((fieldDef, channel) => {
@@ -100,10 +92,12 @@ export class AggregateNode extends DataFlowNode {
         addDimension(dims, fieldDef);
       }
     });
-  }
 
-  public hasAggregation() {
-    return (Object.keys(this.dimensions).length + Object.keys(this.measures).length) > 0;
+    if ((Object.keys(dims).length + Object.keys(meas).length) === 0) {
+      return null;
+    }
+
+    return new AggregateNode(dims, meas);
   }
 
   public merge(other: AggregateNode) {

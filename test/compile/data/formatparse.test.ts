@@ -6,7 +6,7 @@ import {Model} from '../../../src/compile/model';
 import {parseUnitModel} from '../../util';
 
 function parse(model: Model) {
-  return new ParseNode(model).assemble();
+  return ParseNode.make(model).assemble();
 }
 
 describe('compile/data/formatparse', () => {

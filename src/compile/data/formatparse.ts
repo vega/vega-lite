@@ -12,8 +12,14 @@ import {DataFlowNode} from './dataflow';
 export class ParseNode extends DataFlowNode {
   private _parse: Dict<string> = {};
 
-  constructor(model: Model) {
+  constructor(parse: Dict<string>) {
     super();
+
+    this._parse = parse;
+  }
+
+  public static make(model: Model) {
+    const parse = {};
 
     const calcFieldMap = model.transforms.filter(isCalculate).reduce((fieldMap, formula: CalculateTransform) => {
       fieldMap[formula.as] = true;
@@ -41,11 +47,11 @@ export class ParseNode extends DataFlowNode {
 
         if (val) {
           if (isDateTime(val)) {
-            this._parse[f['field']] = 'date';
+            parse[f['field']] = 'date';
           } else if (isNumber(val)) {
-            this._parse[f['field']] = 'number';
+            parse[f['field']] = 'number';
           } else if (isString(val)) {
-            this._parse[f['field']] = 'string';
+            parse[f['field']] = 'string';
           }
         }
       });
@@ -54,23 +60,25 @@ export class ParseNode extends DataFlowNode {
     // Parse encoded fields
     model.forEachFieldDef((fieldDef: FieldDef) => {
       if (fieldDef.type === TEMPORAL) {
-        this._parse[fieldDef.field] = 'date';
+        parse[fieldDef.field] = 'date';
       } else if (fieldDef.type === QUANTITATIVE) {
         if (isCount(fieldDef) || calcFieldMap[fieldDef.field]) {
           return;
         }
-        this._parse[fieldDef.field] = 'number';
+        parse[fieldDef.field] = 'number';
       }
     });
 
     // Custom parse should override inferred parse
     const data = model.data;
     if (data && isUrlData(data) && data.format && data.format.parse) {
-      const parse = data.format.parse;
-      keys(parse).forEach((field) => {
-        this._parse[field] = parse[field];
+      const p = data.format.parse;
+      keys(p).forEach((field) => {
+        parse[field] = p[field];
       });
     }
+
+    return new ParseNode(parse);
   }
 
   public get parse() {

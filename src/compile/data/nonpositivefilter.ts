@@ -1,5 +1,5 @@
 import {ScaleType} from '../../scale';
-import {Dict, duplicate, keys} from '../../util';
+import {Dict, duplicate, extend, keys} from '../../util';
 import {VgFilterTransform, VgTransform} from '../../vega.schema';
 import {Model} from './../model';
 import {DataFlowNode} from './dataflow';
@@ -7,21 +7,18 @@ import {DataFlowNode} from './dataflow';
 export class NonPositiveFilterNode extends DataFlowNode {
   private _filter: Dict<boolean>;
 
-  public clone(): this {
-    const cloneObj = new (<any>this.constructor);
-    cloneObj._filter = duplicate(this._filter);
-    return cloneObj;
+  public clone() {
+    return new NonPositiveFilterNode(extend({}, this._filter));
   }
 
-  constructor(model: Model) {
+  constructor(filter: Dict<boolean>) {
     super();
 
-    if (!model) {
-      // when cloning we may not have a model
-      return;
-    }
+    this._filter = filter;
+  }
 
-    this._filter = model.channels().reduce(function(nonPositiveComponent, channel) {
+  public static make(model: Model) {
+    const filter = model.channels().reduce(function(nonPositiveComponent, channel) {
       const scale = model.scale(channel);
       if (!scale || !model.field(channel)) {
         // don't set anything
@@ -30,10 +27,12 @@ export class NonPositiveFilterNode extends DataFlowNode {
       nonPositiveComponent[model.field(channel)] = scale.type === ScaleType.LOG;
       return nonPositiveComponent;
     }, {});
-  }
 
-  public size() {
-    return Object.keys(this._filter).length;
+    if (!Object.keys(filter).length) {
+      return null;
+    }
+
+    return new NonPositiveFilterNode(filter);
   }
 
   get filter() {

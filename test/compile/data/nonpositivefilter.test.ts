@@ -16,7 +16,7 @@ describe('compile/data/nonpositivefilter', function () {
       }
     });
 
-    const filter = new NonPositiveFilterNode(model);
+    const filter = NonPositiveFilterNode.make(model);
 
     assert.deepEqual(filter.filter, {
       b: true,
