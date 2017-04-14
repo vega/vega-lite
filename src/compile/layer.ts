@@ -133,7 +133,7 @@ export class LayerModel extends Model {
   }
 
   public parseMark() {
-    this.children.forEach(function(child) {
+    this.children.forEach(child => {
       child.parseMark();
     });
   }
@@ -141,12 +141,12 @@ export class LayerModel extends Model {
   public parseAxis() {
     const axisComponent = this.component.axes = {};
 
-    this.children.forEach(function(child) {
+    this.children.forEach(child => {
       child.parseAxis();
 
       // TODO: correctly implement independent axes
       if (true) { // if shared/union scale
-        keys(child.component.axes).forEach(function(channel) {
+        keys(child.component.axes).forEach(channel => {
           // TODO: support multiple axes for shared scale
 
           // just use the first axis definition for each channel
