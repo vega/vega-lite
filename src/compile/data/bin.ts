@@ -31,7 +31,7 @@ function rangeFormula(model: Model, fieldDef: FieldDef, channel: Channel) {
     return {};
 }
 
-interface BinComponent {
+export interface BinComponent {
   bin: Bin;
   field: string;
   extentSignal: string;
@@ -45,23 +45,16 @@ interface BinComponent {
 }
 
 export class BinNode extends DataFlowNode {
-  private bins: Dict<BinComponent>;
-
-  public clone(): this {
-    const cloneObj = new (<any>this.constructor);
-    cloneObj.bins = duplicate(this.bins);
-    return cloneObj;
+  public clone() {
+    return new BinNode(duplicate(this.bins));
   }
 
-  constructor(model: Model) {
+  constructor(private bins: Dict<BinComponent>) {
     super();
+  }
 
-    if (!model) {
-      // when cloning we may not have a model
-      return;
-    }
-
-    this.bins = model.reduceFieldDef((binComponent: Dict<BinComponent>, fieldDef: FieldDef, channel: Channel) => {
+  public static make(model: Model) {
+    const bins = model.reduceFieldDef((binComponent: Dict<BinComponent>, fieldDef: FieldDef, channel: Channel) => {
       const fieldDefBin = model.fieldDef(channel).bin;
       if (fieldDefBin) {
         const bin: Bin = isBoolean(fieldDefBin) ? {} : fieldDefBin;
@@ -84,10 +77,12 @@ export class BinNode extends DataFlowNode {
       }
       return binComponent;
     }, {});
-  }
 
-  public size() {
-    return Object.keys(this.bins).length;
+    if (Object.keys(bins).length === 0) {
+      return null;
+    }
+
+    return new BinNode(bins);
   }
 
   public merge(other: BinNode) {

@@ -58,16 +58,23 @@ export interface StackComponent {
 export class StackNode extends DataFlowNode {
   private _stack: StackComponent;
 
-  public clone(): this {
-    const cloneObj = new (<any>this.constructor);
-    cloneObj._stack = duplicate(this._stack);
-    return cloneObj;
+  public clone() {
+    return new StackNode(duplicate(this._stack));
   }
 
-  constructor(model: UnitModel) {
+  constructor(stack: StackComponent) {
     super();
 
+    this._stack = stack;
+  }
+
+  public static make(model: UnitModel) {
+
     const stackProperties = model.stack;
+
+    if (!stackProperties) {
+      return null;
+    }
 
     const groupby = [];
     if (stackProperties.groupbyChannel) {
@@ -98,14 +105,14 @@ export class StackNode extends DataFlowNode {
       }, {field:[], order: []});
     }
 
-    this._stack = {
+    return new StackNode({
       groupby,
       field: model.field(stackProperties.fieldChannel),
       stackby,
       sort,
       offset: stackProperties.offset,
       impute: contains(['area', 'line'], model.mark()),
-    };
+    });
   }
 
   get stack(): StackComponent {

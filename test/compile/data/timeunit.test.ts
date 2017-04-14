@@ -6,7 +6,7 @@ import {Model} from '../../../src/compile/model';
 import {parseUnitModel} from '../../util';
 
 function assemble(model: Model) {
-  return new TimeUnitNode(model).assemble();
+  return TimeUnitNode.make(model).assemble();
 }
 
 describe('compile/data/timeunit', () => {

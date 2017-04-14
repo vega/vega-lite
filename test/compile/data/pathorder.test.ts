@@ -7,7 +7,7 @@ import {VgCollectTransform} from '../../../src/vega.schema';
 import {parseUnitModel} from '../../util';
 
 function assemble(model: UnitModel) {
-  return new OrderNode(model).assemble();
+  return OrderNode.make(model).assemble();
 }
 
 describe('compile/data/pathorder', function() {

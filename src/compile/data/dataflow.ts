@@ -16,7 +16,7 @@ export class DataFlowNode {
   /**
    * Clone this node with a deep copy.
    */
-  public clone(): this {
+  public clone(): DataFlowNode {
     throw new Error('Cannot clone node');
   }
 

@@ -10,25 +10,23 @@ import {Model} from '../model';
 import {DataFlowNode} from './dataflow';
 
 
-interface TimeUnitComponent {
+export interface TimeUnitComponent {
   as: string;
   timeUnit: TimeUnit;
   field: string;
 }
 
 export class TimeUnitNode extends DataFlowNode {
-  private formula: Dict<TimeUnitComponent>;
-
-  public clone(): this {
-    const cloneObj = new (<any>this.constructor);
-    cloneObj.formula = duplicate(this.formula);
-    return cloneObj;
+  public clone() {
+    return new TimeUnitNode(duplicate(this.formula));
   }
 
-  constructor(model: Model) {
+  constructor(private formula: Dict<TimeUnitComponent>) {
     super();
+  }
 
-    this.formula = model.reduceFieldDef((timeUnitComponent: TimeUnitComponent, fieldDef: FieldDef) => {
+  public static make(model: Model) {
+    const formula = model.reduceFieldDef((timeUnitComponent: TimeUnitComponent, fieldDef: FieldDef) => {
       if (fieldDef.type === TEMPORAL && fieldDef.timeUnit) {
         const f = field(fieldDef);
         timeUnitComponent[f] = {
@@ -39,10 +37,12 @@ export class TimeUnitNode extends DataFlowNode {
       }
       return timeUnitComponent;
     }, {} as Dict<TimeUnitComponent>);
-  }
 
-  public size() {
-    return Object.keys(this.formula).length;
+    if (Object.keys(formula).length === 0) {
+      return null;
+    }
+
+    return new TimeUnitNode(formula);
   }
 
   public merge(other: TimeUnitNode) {

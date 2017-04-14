@@ -9,18 +9,12 @@ import {DataFlowNode} from './dataflow';
 
 
 export class FilterNode extends DataFlowNode {
-  private filter: Filter | Filter[];
-
-  public clone(): this {
-    const cloneObj = new (<any>this.constructor);
-    cloneObj.filter = duplicate(this.filter);
-    return cloneObj;
+  public clone() {
+    return new FilterNode(duplicate(this.filter));
   }
 
-  constructor(transform: FilterTransform) {
+  constructor(private filter: Filter | Filter[]) {
     super();
-
-    this.filter = transform.filter;
   }
 
   public merge(other: FilterNode) {
@@ -42,11 +36,8 @@ export class FilterNode extends DataFlowNode {
  * We don't know what a calculate node depends on so we should never move it beyond anything that produces fields.
  */
 export class CalculateNode extends DataFlowNode {
-
-  public clone(): this {
-    const cloneObj = new (<any>this.constructor);
-    cloneObj.transform = duplicate(this.transform);
-    return cloneObj;
+  public clone() {
+    return new CalculateNode(duplicate(this.transform));
   }
 
   constructor(private transform: CalculateTransform) {
@@ -81,7 +72,7 @@ export function parseTransformArray(model: Model) {
     if (isCalculate(t)) {
       node = new CalculateNode(t);
     } else if (isFilter(t)) {
-      node = new FilterNode(t);
+      node = new FilterNode(t.filter);
     } else {
       log.warn(log.message.invalidTransformIgnored(t));
       return;
