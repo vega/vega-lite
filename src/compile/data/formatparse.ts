@@ -71,7 +71,7 @@ export class ParseNode extends DataFlowNode {
 
     // Custom parse should override inferred parse
     const data = model.data;
-    if (data && isUrlData(data) && data.format && data.format.parse) {
+    if (data && data.format && data.format.parse) {
       const p = data.format.parse;
       keys(p).forEach((field) => {
         parse[field] = p[field];
