@@ -59774,6 +59774,8 @@ var d3_request_1 = require("d3-request");
 var d3_selection_1 = require("d3-selection");
 var hljs = require("highlight.js");
 var vega_embed_1 = require("vega-embed");
+var vega_embed_2 = require("vega-embed");
+vega_embed_2.config.editor_url = 'https://vega.github.io/new-editor';
 function trim(str) {
     return str.replace(/^\s+|\s+$/g, '');
 }
@@ -59858,7 +59860,7 @@ function renderGallery() {
             var imageGroup = viz.enter()
                 .append('a')
                 .attr('class', 'imagegroup')
-                .attr('href', function (d) { return 'https://vega.github.io/vega-editor/?mode=vega-lite&spec=' + d.name; })
+                .attr('href', function (d) { return 'https://vega.github.io/new-editor/#/examples/vega_lite/' + d.name; })
                 .attr('target', 'blank');
             imageGroup.append('div')
                 .attr('class', 'image')
