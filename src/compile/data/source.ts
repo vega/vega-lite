@@ -45,6 +45,7 @@ export class SourceNode extends DataFlowNode {
       };
     } else if (isNamedData(data)) {
       this._name = data.name;
+      this._data = {};
     }
   }
 
@@ -70,12 +71,11 @@ export class SourceNode extends DataFlowNode {
   public hash() {
     if (isInlineData(this._data)) {
       return hash(this._data);
-    } else if (isUrlData) {
+    } else if (isUrlData(this._data)) {
       return `${this._data.url} ${hash(this._data.format)}`;
-    } else if (isNamedData) {
-      return this._data.name;
+    } else {
+      return this._name;
     }
-    throw new Error('Unsupported source');
   }
 
   public assemble(): VgData {
