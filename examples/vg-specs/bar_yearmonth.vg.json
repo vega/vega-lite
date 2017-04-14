@@ -1,0 +1,221 @@
+{
+    "$schema": "http://vega.github.io/schema/vega/v3.0.json",
+    "autosize": "pad",
+    "padding": 5,
+    "signals": [
+        {
+            "name": "width",
+            "update": "data('layout')[0].width"
+        },
+        {
+            "name": "height",
+            "update": "data('layout')[0].height"
+        },
+        {
+            "name": "unit",
+            "value": {},
+            "on": [
+                {
+                    "events": "mousemove",
+                    "update": "group()._id ? group() : unit"
+                }
+            ]
+        }
+    ],
+    "data": [
+        {
+            "name": "source_0",
+            "url": "data/seattle-temps.csv",
+            "format": {
+                "type": "csv",
+                "parse": {
+                    "date": "date",
+                    "temp": "number"
+                }
+            },
+            "transform": [
+                {
+                    "type": "filter",
+                    "expr": "datum[\"date\"] !== null && !isNaN(datum[\"date\"]) && datum[\"temp\"] !== null && !isNaN(datum[\"temp\"])"
+                },
+                {
+                    "type": "formula",
+                    "as": "yearmonth_date",
+                    "expr": "datetime(year(datum[\"date\"]), month(datum[\"date\"]), 1, 0, 0, 0, 0)"
+                },
+                {
+                    "type": "aggregate",
+                    "groupby": [
+                        "yearmonth_date"
+                    ],
+                    "ops": [
+                        "mean"
+                    ],
+                    "fields": [
+                        "temp"
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "layout",
+            "values": [
+                {}
+            ],
+            "transform": [
+                {
+                    "type": "formula",
+                    "as": "width",
+                    "expr": "200"
+                },
+                {
+                    "type": "formula",
+                    "as": "height",
+                    "expr": "200"
+                }
+            ]
+        }
+    ],
+    "marks": [
+        {
+            "name": "main-group",
+            "type": "group",
+            "description": "Temperature in Seattle as a bar chart with yearmonth time unit.",
+            "from": {
+                "data": "layout"
+            },
+            "encode": {
+                "update": {
+                    "width": {
+                        "field": "width"
+                    },
+                    "height": {
+                        "field": "height"
+                    },
+                    "fill": {
+                        "value": "transparent"
+                    }
+                }
+            },
+            "marks": [
+                {
+                    "name": "marks",
+                    "type": "rect",
+                    "role": "bar",
+                    "from": {
+                        "data": "source_0"
+                    },
+                    "encode": {
+                        "update": {
+                            "xc": {
+                                "scale": "x",
+                                "field": "yearmonth_date"
+                            },
+                            "width": {
+                                "value": 2
+                            },
+                            "y": {
+                                "scale": "y",
+                                "field": "mean_temp"
+                            },
+                            "y2": {
+                                "scale": "y",
+                                "value": 0
+                            },
+                            "fill": {
+                                "value": "#4c78a8"
+                            }
+                        }
+                    }
+                }
+            ],
+            "scales": [
+                {
+                    "name": "x",
+                    "type": "time",
+                    "domain": {
+                        "data": "source_0",
+                        "field": "yearmonth_date"
+                    },
+                    "range": [
+                        0,
+                        200
+                    ],
+                    "round": true,
+                    "nice": "month"
+                },
+                {
+                    "name": "y",
+                    "type": "linear",
+                    "domain": {
+                        "data": "source_0",
+                        "field": "mean_temp"
+                    },
+                    "range": [
+                        200,
+                        0
+                    ],
+                    "round": true,
+                    "nice": true,
+                    "zero": true
+                }
+            ],
+            "axes": [
+                {
+                    "scale": "x",
+                    "orient": "bottom",
+                    "tickCount": 5,
+                    "title": "YEARMONTH(date)",
+                    "zindex": 1,
+                    "encode": {
+                        "labels": {
+                            "update": {
+                                "text": {
+                                    "signal": "timeFormat(datum.value, '%B of %Y')"
+                                },
+                                "angle": {
+                                    "value": 270
+                                },
+                                "align": {
+                                    "value": "right"
+                                },
+                                "baseline": {
+                                    "value": "middle"
+                                }
+                            }
+                        }
+                    }
+                },
+                {
+                    "scale": "x",
+                    "domain": false,
+                    "grid": true,
+                    "labels": false,
+                    "orient": "bottom",
+                    "tickCount": 5,
+                    "ticks": false,
+                    "zindex": 0,
+                    "gridScale": "y"
+                },
+                {
+                    "scale": "y",
+                    "format": "s",
+                    "orient": "left",
+                    "title": "MEAN(temp)",
+                    "zindex": 1
+                },
+                {
+                    "scale": "y",
+                    "domain": false,
+                    "format": "s",
+                    "grid": true,
+                    "labels": false,
+                    "orient": "left",
+                    "ticks": false,
+                    "zindex": 0,
+                    "gridScale": "x"
+                }
+            ]
+        }
+    ]
+}

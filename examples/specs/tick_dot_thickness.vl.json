@@ -1,0 +1,14 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v2.json",
+  "data": {"url": "data/cars.json"},
+  "mark": "tick",
+  "encoding": {
+    "x": {"field": "Horsepower","type": "quantitative"}
+  },
+  "config": {
+    "tick": {
+      "thickness": 2,
+      "bandSize": 10
+    }
+  }
+}

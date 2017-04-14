@@ -1,0 +1,12 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v2.json",
+  "description": "Stock price mean per quarter broken down by years.",
+  "data": {"url": "data/stocks.csv"},
+  "mark": "point",
+  "encoding": {
+    "x": {"field": "date", "type": "temporal", "timeUnit": "quarter"},
+    "y": {"field": "price", "type": "quantitative", "aggregate": "mean"},
+    "color": {"field": "symbol", "type": "nominal"},
+    "column": {"field": "date", "type": "temporal", "timeUnit": "year"}
+  }
+}

@@ -1,0 +1,35 @@
+{
+  "compilerOptions": {
+    "outDir": "./build",
+    "target": "es5",
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "importHelpers": true,
+    "isolatedModules": false,
+    "declaration": true,
+    "noImplicitAny": true,
+    "suppressImplicitAnyIndexErrors": true,
+    "removeComments": false,
+    "preserveConstEnums": true,
+    "noEmitOnError": true,
+    "noImplicitThis": true,
+    "noImplicitReturns": true,
+    "inlineSourceMap": true,
+    "typeRoots" : ["./typings", "node_modules/@types"]
+  },
+  "include": [
+    "src/**/*.ts",
+    "test/**/*.ts",
+    "examples/**/*.ts",
+    "typings/*.d.ts",
+    "node_modules/@types/**/*.d.ts",
+    "site/static/main.ts"
+  ],
+  "exclude": [
+    "node_modules",
+    "data",
+    "_site",
+    "site",
+    "test-gallery"
+  ]
+}

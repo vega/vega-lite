@@ -1,0 +1,390 @@
+{
+    "$schema": "http://vega.github.io/schema/vega/v3.0.json",
+    "autosize": "pad",
+    "padding": 5,
+    "signals": [
+        {
+            "name": "width",
+            "update": "data('layout')[0].width"
+        },
+        {
+            "name": "height",
+            "update": "data('layout')[0].height"
+        },
+        {
+            "name": "unit",
+            "value": {},
+            "on": [
+                {
+                    "events": "mousemove",
+                    "update": "group()._id ? group() : unit"
+                }
+            ]
+        }
+    ],
+    "data": [
+        {
+            "name": "source_0",
+            "url": "data/stocks.csv",
+            "format": {
+                "type": "csv",
+                "parse": {
+                    "date": "date",
+                    "price": "number"
+                }
+            },
+            "transform": [
+                {
+                    "type": "filter",
+                    "expr": "datum[\"date\"] !== null && !isNaN(datum[\"date\"])"
+                },
+                {
+                    "type": "formula",
+                    "as": "year_date",
+                    "expr": "datetime(year(datum[\"date\"]), 0, 1, 0, 0, 0, 0)"
+                },
+                {
+                    "type": "filter",
+                    "expr": "datum[\"date\"] !== null && !isNaN(datum[\"date\"]) && datum[\"price\"] !== null && !isNaN(datum[\"price\"])"
+                },
+                {
+                    "type": "formula",
+                    "as": "quarter_date",
+                    "expr": "datetime(0, (quarter(datum[\"date\"])-1)*3, 1, 0, 0, 0, 0)"
+                },
+                {
+                    "type": "aggregate",
+                    "groupby": [
+                        "quarter_date",
+                        "symbol",
+                        "year_date"
+                    ],
+                    "ops": [
+                        "mean"
+                    ],
+                    "fields": [
+                        "price"
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "column",
+            "source": "source_0",
+            "transform": [
+                {
+                    "type": "aggregate",
+                    "groupby": [
+                        "year_date"
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "layout",
+            "source": "source_0",
+            "transform": [
+                {
+                    "type": "aggregate",
+                    "fields": [
+                        "year_date",
+                        "quarter_date"
+                    ],
+                    "ops": [
+                        "distinct",
+                        "distinct"
+                    ]
+                },
+                {
+                    "type": "formula",
+                    "as": "child_width",
+                    "expr": "max(datum[\"distinct_quarter_date\"] - 1 + 2*0.5, 0) * 21"
+                },
+                {
+                    "type": "formula",
+                    "as": "width",
+                    "expr": "(datum[\"child_width\"] + 16) * datum[\"distinct_year_date\"]"
+                },
+                {
+                    "type": "formula",
+                    "as": "child_height",
+                    "expr": "200"
+                },
+                {
+                    "type": "formula",
+                    "as": "height",
+                    "expr": "datum[\"child_height\"] + 16"
+                }
+            ]
+        }
+    ],
+    "marks": [
+        {
+            "name": "main-group",
+            "type": "group",
+            "description": "Stock price mean per quarter broken down by years.",
+            "from": {
+                "data": "layout"
+            },
+            "encode": {
+                "update": {
+                    "width": {
+                        "field": "width"
+                    },
+                    "height": {
+                        "field": "height"
+                    }
+                }
+            },
+            "marks": [
+                {
+                    "name": "x-axes",
+                    "type": "group",
+                    "from": {
+                        "data": "column"
+                    },
+                    "encode": {
+                        "update": {
+                            "width": {
+                                "field": {
+                                    "parent": "child_width"
+                                }
+                            },
+                            "height": {
+                                "field": {
+                                    "group": "height"
+                                }
+                            },
+                            "x": {
+                                "scale": "column",
+                                "field": "year_date",
+                                "offset": 8
+                            }
+                        }
+                    },
+                    "axes": [
+                        {
+                            "scale": "x",
+                            "orient": "bottom",
+                            "tickCount": 5,
+                            "title": "QUARTER(date)",
+                            "zindex": 1,
+                            "encode": {
+                                "labels": {
+                                    "update": {
+                                        "text": {
+                                            "signal": "'Q' + quarter(datum.value)"
+                                        },
+                                        "angle": {
+                                            "value": 270
+                                        },
+                                        "align": {
+                                            "value": "right"
+                                        },
+                                        "baseline": {
+                                            "value": "middle"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "y-axes",
+                    "type": "group",
+                    "encode": {
+                        "update": {
+                            "width": {
+                                "field": {
+                                    "group": "width"
+                                }
+                            },
+                            "height": {
+                                "field": {
+                                    "parent": "child_height"
+                                }
+                            },
+                            "y": {
+                                "value": 8
+                            }
+                        }
+                    },
+                    "axes": [
+                        {
+                            "scale": "y",
+                            "format": "s",
+                            "orient": "left",
+                            "title": "MEAN(price)",
+                            "zindex": 1
+                        }
+                    ]
+                },
+                {
+                    "name": "cell",
+                    "type": "group",
+                    "from": {
+                        "facet": {
+                            "name": "facet",
+                            "data": "source_0",
+                            "groupby": [
+                                "year_date"
+                            ]
+                        }
+                    },
+                    "encode": {
+                        "update": {
+                            "x": {
+                                "scale": "column",
+                                "field": "year_date",
+                                "offset": 8
+                            },
+                            "y": {
+                                "value": 8
+                            },
+                            "width": {
+                                "field": {
+                                    "parent": "child_width"
+                                }
+                            },
+                            "height": {
+                                "field": {
+                                    "parent": "child_height"
+                                }
+                            },
+                            "stroke": {
+                                "value": "#ccc"
+                            },
+                            "strokeWidth": {
+                                "value": 1
+                            },
+                            "fill": {
+                                "value": "transparent"
+                            }
+                        }
+                    },
+                    "marks": [
+                        {
+                            "name": "child_marks",
+                            "type": "symbol",
+                            "role": "point",
+                            "from": {
+                                "data": "facet"
+                            },
+                            "encode": {
+                                "update": {
+                                    "x": {
+                                        "scale": "x",
+                                        "field": "quarter_date"
+                                    },
+                                    "y": {
+                                        "scale": "y",
+                                        "field": "mean_price"
+                                    },
+                                    "stroke": {
+                                        "scale": "color",
+                                        "field": "symbol"
+                                    },
+                                    "fill": {
+                                        "value": "transparent"
+                                    }
+                                }
+                            }
+                        }
+                    ],
+                    "axes": [
+                        {
+                            "scale": "y",
+                            "domain": false,
+                            "format": "s",
+                            "grid": true,
+                            "labels": false,
+                            "orient": "left",
+                            "ticks": false,
+                            "zindex": 0,
+                            "gridScale": "x"
+                        }
+                    ]
+                }
+            ],
+            "scales": [
+                {
+                    "name": "column",
+                    "type": "band",
+                    "domain": {
+                        "data": "source_0",
+                        "field": "year_date",
+                        "sort": true
+                    },
+                    "range": "width",
+                    "round": true
+                },
+                {
+                    "name": "x",
+                    "type": "point",
+                    "domain": {
+                        "data": "source_0",
+                        "field": "quarter_date",
+                        "sort": true
+                    },
+                    "range": {
+                        "step": 21
+                    },
+                    "round": true,
+                    "padding": 0.5
+                },
+                {
+                    "name": "y",
+                    "type": "linear",
+                    "domain": {
+                        "data": "source_0",
+                        "field": "mean_price"
+                    },
+                    "range": [
+                        200,
+                        0
+                    ],
+                    "round": true,
+                    "nice": true,
+                    "zero": true
+                },
+                {
+                    "name": "color",
+                    "type": "ordinal",
+                    "domain": {
+                        "data": "source_0",
+                        "field": "symbol",
+                        "sort": true
+                    },
+                    "range": "category"
+                }
+            ],
+            "axes": [
+                {
+                    "scale": "column",
+                    "domain": false,
+                    "grid": false,
+                    "orient": "top",
+                    "ticks": false,
+                    "title": "YEAR(date)",
+                    "zindex": 1,
+                    "encode": {
+                        "labels": {
+                            "update": {
+                                "text": {
+                                    "signal": "timeFormat(datum.value, '%Y')"
+                                }
+                            }
+                        }
+                    }
+                }
+            ],
+            "legends": [
+                {
+                    "stroke": "color",
+                    "title": "symbol"
+                }
+            ]
+        }
+    ]
+}

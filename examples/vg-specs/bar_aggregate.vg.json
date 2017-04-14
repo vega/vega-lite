@@ -1,0 +1,198 @@
+{
+    "$schema": "http://vega.github.io/schema/vega/v3.0.json",
+    "autosize": "pad",
+    "padding": 5,
+    "signals": [
+        {
+            "name": "width",
+            "update": "data('layout')[0].width"
+        },
+        {
+            "name": "height",
+            "update": "data('layout')[0].height"
+        },
+        {
+            "name": "unit",
+            "value": {},
+            "on": [
+                {
+                    "events": "mousemove",
+                    "update": "group()._id ? group() : unit"
+                }
+            ]
+        }
+    ],
+    "data": [
+        {
+            "name": "source_0",
+            "url": "data/population.json",
+            "format": {
+                "type": "json",
+                "parse": {
+                    "people": "number"
+                }
+            },
+            "transform": [
+                {
+                    "type": "filter",
+                    "expr": "datum.year == 2000"
+                },
+                {
+                    "type": "filter",
+                    "expr": "datum[\"people\"] !== null && !isNaN(datum[\"people\"])"
+                },
+                {
+                    "type": "aggregate",
+                    "groupby": [
+                        "age"
+                    ],
+                    "ops": [
+                        "sum"
+                    ],
+                    "fields": [
+                        "people"
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "layout",
+            "source": "source_0",
+            "transform": [
+                {
+                    "type": "aggregate",
+                    "fields": [
+                        "age"
+                    ],
+                    "ops": [
+                        "distinct"
+                    ]
+                },
+                {
+                    "type": "formula",
+                    "as": "width",
+                    "expr": "200"
+                },
+                {
+                    "type": "formula",
+                    "as": "height",
+                    "expr": "max(datum[\"distinct_age\"] - 1 + 2*0.5, 0) * 17"
+                }
+            ]
+        }
+    ],
+    "marks": [
+        {
+            "name": "main-group",
+            "type": "group",
+            "description": "A bar chart showing the US population distribution of age groups in 2000.",
+            "from": {
+                "data": "layout"
+            },
+            "encode": {
+                "update": {
+                    "width": {
+                        "field": "width"
+                    },
+                    "height": {
+                        "field": "height"
+                    },
+                    "fill": {
+                        "value": "transparent"
+                    }
+                }
+            },
+            "marks": [
+                {
+                    "name": "marks",
+                    "type": "rect",
+                    "role": "bar",
+                    "from": {
+                        "data": "source_0"
+                    },
+                    "encode": {
+                        "update": {
+                            "x": {
+                                "scale": "x",
+                                "field": "sum_people"
+                            },
+                            "x2": {
+                                "scale": "x",
+                                "value": 0
+                            },
+                            "yc": {
+                                "scale": "y",
+                                "field": "age"
+                            },
+                            "height": {
+                                "value": 16
+                            },
+                            "fill": {
+                                "value": "#4c78a8"
+                            }
+                        }
+                    }
+                }
+            ],
+            "scales": [
+                {
+                    "name": "x",
+                    "type": "linear",
+                    "domain": {
+                        "data": "source_0",
+                        "field": "sum_people"
+                    },
+                    "range": [
+                        0,
+                        200
+                    ],
+                    "round": true,
+                    "nice": true,
+                    "zero": true
+                },
+                {
+                    "name": "y",
+                    "type": "point",
+                    "domain": {
+                        "data": "source_0",
+                        "field": "age",
+                        "sort": true
+                    },
+                    "range": {
+                        "step": 17
+                    },
+                    "round": true,
+                    "padding": 0.5
+                }
+            ],
+            "axes": [
+                {
+                    "scale": "x",
+                    "format": "s",
+                    "orient": "bottom",
+                    "tickCount": 5,
+                    "title": "population",
+                    "zindex": 1
+                },
+                {
+                    "scale": "x",
+                    "domain": false,
+                    "format": "s",
+                    "grid": true,
+                    "labels": false,
+                    "orient": "bottom",
+                    "tickCount": 5,
+                    "ticks": false,
+                    "zindex": 0,
+                    "gridScale": "y"
+                },
+                {
+                    "scale": "y",
+                    "orient": "left",
+                    "title": "age",
+                    "zindex": 1
+                }
+            ]
+        }
+    ]
+}

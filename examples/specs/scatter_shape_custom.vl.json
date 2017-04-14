@@ -1,0 +1,14 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v2.json",
+  "description": "A scatterplot with custom star shapes.",
+  "data": {"url": "data/cars.json"},
+  "mark": "point",
+  "encoding": {
+    "x": {"field": "Horsepower","type": "quantitative"},
+    "y": {"field": "Miles_per_Gallon","type": "quantitative"},
+    "color": {"field": "Cylinders", "type": "nominal"},
+    "size": {"field": "Weight_in_lbs", "type": "quantitative"},
+    "shape": {"value": "M0,0.2L0.2351,0.3236 0.1902,0.0618 0.3804,-0.1236 0.1175,-0.1618 0,-0.4 -0.1175,-0.1618 -0.3804,-0.1236 -0.1902,0.0618 -0.2351,0.3236 0,0.2Z"}
+  }
+}
+

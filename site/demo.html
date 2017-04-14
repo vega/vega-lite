@@ -1,0 +1,60 @@
+---
+---
+<!DOCTYPE html>
+<head>
+  <title>Vega Lite Bar Chart</title>
+  <meta charset="utf-8">
+
+  <script src="https://d3js.org/d3.v3.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/vega/{{ site.data.versions.vega }}/vega.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/vega-lite/{{ site.data.versions.vega-lite }}/vega-lite.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/vega-embed/{{ site.data.versions.vega-embed }}/vega-embed.js"></script>
+
+  <style media="screen">
+    /* Add space between vega-embed links  */
+    .vega-actions a {
+      margin-right: 5px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Template for Embedding Vega-Lite Visualization</h1>
+  <div>See code at <a href="https://github.com/vega/vega-lite-demo">https://github.com/vega/vega-lite-demo</a></div>
+  <!-- Container for the visualization -->
+  <div id="vis"></div>
+
+  <script>
+  // Assign the specification to a local variable vlSpec.
+  var vlSpec = {
+    "data": {
+      "values": [
+        {"a": "C", "b": 2}, {"a": "C", "b": 7}, {"a": "C", "b": 4},
+        {"a": "D", "b": 1}, {"a": "D", "b": 2}, {"a": "D", "b": 6},
+        {"a": "E", "b": 8}, {"a": "E", "b": 4}, {"a": "E", "b": 7}
+      ]
+    },
+    "mark": "bar",
+    "encoding": {
+      "y": {"field": "a", "type": "nominal"},
+      "x": {
+        "aggregate": "average", "field": "b", "type": "quantitative",
+        "axis": {
+          "title": "Average of b"
+        }
+      }
+    }
+  };
+
+  // optional argument passed to vega-embed to specify vega-lite spec. More info at https://github.com/vega/vega-embed
+  var opt = {
+    "mode": "vega-lite"
+  };
+
+  // Embed the visualization in the container with id `vis`
+  vega.embed("#vis", vlSpec, opt, function(error, result) {
+    // Callback receiving the View instance and parsed Vega spec
+    // result.view is the View, which resides under the '#vis' element
+  });
+  </script>
+</body>
+</html>

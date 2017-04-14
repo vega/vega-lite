@@ -1,0 +1,246 @@
+{
+    "$schema": "http://vega.github.io/schema/vega/v3.0.json",
+    "autosize": "pad",
+    "padding": 5,
+    "signals": [
+        {
+            "name": "width",
+            "update": "data('layout')[0].width"
+        },
+        {
+            "name": "height",
+            "update": "data('layout')[0].height"
+        },
+        {
+            "name": "unit",
+            "value": {},
+            "on": [
+                {
+                    "events": "mousemove",
+                    "update": "group()._id ? group() : unit"
+                }
+            ]
+        }
+    ],
+    "data": [
+        {
+            "name": "source_0",
+            "url": "data/barley.json",
+            "format": {
+                "type": "json",
+                "parse": {
+                    "yield": "number"
+                }
+            },
+            "transform": [
+                {
+                    "type": "filter",
+                    "expr": "datum[\"yield\"] !== null && !isNaN(datum[\"yield\"])"
+                },
+                {
+                    "type": "aggregate",
+                    "groupby": [
+                        "variety",
+                        "site"
+                    ],
+                    "ops": [
+                        "sum"
+                    ],
+                    "fields": [
+                        "yield"
+                    ]
+                },
+                {
+                    "type": "stack",
+                    "groupby": [
+                        "variety"
+                    ],
+                    "field": "sum_yield",
+                    "sort": {
+                        "field": [
+                            "sum_yield"
+                        ],
+                        "order": [
+                            "ascending"
+                        ]
+                    },
+                    "as": [
+                        "sum_yield_start",
+                        "sum_yield_end"
+                    ],
+                    "offset": "zero"
+                }
+            ]
+        },
+        {
+            "name": "layout",
+            "source": "source_0",
+            "transform": [
+                {
+                    "type": "aggregate",
+                    "fields": [
+                        "variety"
+                    ],
+                    "ops": [
+                        "distinct"
+                    ]
+                },
+                {
+                    "type": "formula",
+                    "as": "width",
+                    "expr": "200"
+                },
+                {
+                    "type": "formula",
+                    "as": "height",
+                    "expr": "max(datum[\"distinct_variety\"] - 1 + 2*0.5, 0) * 21"
+                }
+            ]
+        }
+    ],
+    "marks": [
+        {
+            "name": "main-group",
+            "type": "group",
+            "from": {
+                "data": "layout"
+            },
+            "encode": {
+                "update": {
+                    "width": {
+                        "field": "width"
+                    },
+                    "height": {
+                        "field": "height"
+                    },
+                    "fill": {
+                        "value": "transparent"
+                    }
+                }
+            },
+            "marks": [
+                {
+                    "name": "marks",
+                    "type": "rect",
+                    "role": "bar",
+                    "from": {
+                        "data": "source_0"
+                    },
+                    "encode": {
+                        "update": {
+                            "x": {
+                                "scale": "x",
+                                "field": "sum_yield_end"
+                            },
+                            "x2": {
+                                "scale": "x",
+                                "field": "sum_yield_start"
+                            },
+                            "yc": {
+                                "scale": "y",
+                                "field": "variety"
+                            },
+                            "height": {
+                                "value": 20
+                            },
+                            "fill": {
+                                "scale": "color",
+                                "field": "site"
+                            }
+                        }
+                    }
+                }
+            ],
+            "scales": [
+                {
+                    "name": "x",
+                    "type": "linear",
+                    "domain": {
+                        "data": "source_0",
+                        "fields": [
+                            "sum_yield_start",
+                            "sum_yield_end"
+                        ]
+                    },
+                    "range": [
+                        0,
+                        200
+                    ],
+                    "round": true,
+                    "nice": true,
+                    "zero": true
+                },
+                {
+                    "name": "y",
+                    "type": "point",
+                    "domain": {
+                        "data": "source_0",
+                        "field": "variety",
+                        "sort": true
+                    },
+                    "range": {
+                        "step": 21
+                    },
+                    "round": true,
+                    "padding": 0.5
+                },
+                {
+                    "name": "color",
+                    "type": "ordinal",
+                    "domain": {
+                        "data": "source_0",
+                        "field": "site",
+                        "sort": true
+                    },
+                    "range": "category"
+                }
+            ],
+            "axes": [
+                {
+                    "scale": "x",
+                    "format": "s",
+                    "orient": "bottom",
+                    "tickCount": 5,
+                    "title": "SUM(yield)",
+                    "zindex": 1
+                },
+                {
+                    "scale": "x",
+                    "domain": false,
+                    "format": "s",
+                    "grid": true,
+                    "labels": false,
+                    "orient": "bottom",
+                    "tickCount": 5,
+                    "ticks": false,
+                    "zindex": 0,
+                    "gridScale": "y"
+                },
+                {
+                    "scale": "y",
+                    "orient": "left",
+                    "title": "variety",
+                    "zindex": 1
+                }
+            ],
+            "legends": [
+                {
+                    "fill": "color",
+                    "title": "site",
+                    "encode": {
+                        "symbols": {
+                            "update": {
+                                "shape": {
+                                    "value": "square"
+                                },
+                                "strokeWidth": {
+                                    "value": 0
+                                }
+                            }
+                        }
+                    }
+                }
+            ]
+        }
+    ]
+}

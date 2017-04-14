@@ -1,0 +1,12 @@
+type:
+  datetime: transform.html#datetime
+
+
+# Please use "" if # exists in url
+
+UrlData:
+  url: "#url"
+  format: "#format"
+
+InlineData:
+  values: "#inline"

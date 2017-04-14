@@ -1,0 +1,9 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v2.json",
+  "data": {"url": "data/cars.json"},
+  "mark": "bar",
+  "encoding": {
+    "x": {"field": "Cylinders", "type": "ordinal"},
+    "y": {"aggregate": "mean", "field": "Acceleration", "type": "quantitative"}
+  }
+}

@@ -1,0 +1,27 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v2.json",
+  "data": {"url": "data/stocks.csv","format": {"type": "csv"}},
+  "layer": [
+    {
+      "mark": "line",
+      "encoding": {
+        "x": {"field": "date","type": "temporal"},
+        "y": {"field": "price","type": "quantitative"},
+        "color": {"field": "symbol","type": "nominal"}
+      }
+    },
+    {
+      "mark": "rule",
+      "encoding": {
+        "y": {
+          "field": "price",
+          "type": "quantitative",
+          "aggregate": "mean"
+        },
+        "size": {"value": 2},
+        "color": {"field": "symbol","type": "nominal"},
+        "opacity": {"value": 0.5}
+      }
+    }
+  ]
+}

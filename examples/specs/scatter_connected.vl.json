@@ -1,0 +1,11 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v2.json",
+  "data": {"url": "data/driving.json"},
+  "mark": "line",
+  "encoding": {
+    "x": {"field": "miles","type": "quantitative", "scale": {"zero": false}},
+    "y": {"field": "gas","type": "quantitative", "scale": {"zero": false}},
+    "order": {"field": "year","type": "temporal"}
+  },
+  "config": {"overlay": {"line": true}}
+}

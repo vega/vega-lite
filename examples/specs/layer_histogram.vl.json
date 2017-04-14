@@ -1,0 +1,36 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v2.json",
+  "data": {"url": "data/flights-2k.json"},
+  "layer": [
+    {
+      "mark": "bar",
+      "encoding": {
+        "x": {
+          "field": "distance",
+          "type": "quantitative",
+          "bin": true
+        },
+        "y": {
+          "aggregate": "count",
+          "type": "quantitative"
+        }
+      }
+    },
+    {
+      "transform": [{"filter": "datum.delay < 5"}],
+      "mark": "bar",
+      "encoding": {
+        "x": {
+          "field": "distance",
+          "type": "quantitative",
+          "bin": true
+        },
+        "y": {
+          "aggregate": "count",
+          "type": "quantitative"
+        },
+        "color": {"value": "goldenrod"}
+      }
+    }
+  ]
+}
