@@ -71,8 +71,13 @@ export class LayerModel extends Model {
   }
 
   public parseSelection() {
-    // TODO: @arvind can write this
-    // We might need to split this into compileSelectionData and compileSelectionSignals?
+    this.component.selection = {};
+    this.children.forEach(child => {
+      child.parseSelection();
+      keys(child.component.selection).forEach((key) => {
+        this.component.selection[key] = child.component.selection[key];
+      });
+    });
   }
 
   public parseLayoutData() {
@@ -174,12 +179,13 @@ export class LayerModel extends Model {
     return applyConfig({}, cellConfig, FILL_STROKE_CONFIG.concat(['clip']));
   }
 
+  // TODO: Support same named selections across children.
   public assembleSignals(signals: any[]): any[] {
-    return [];
+    return this.children.reduce((signals, child) => child.assembleSignals(signals), []);
   }
 
   public assembleSelectionData(data: VgData[]): VgData[] {
-    return [];
+    return this.children.reduce((data, child) => child.assembleSelectionData(data), []);
   }
 
   public assembleData(): VgData[] {

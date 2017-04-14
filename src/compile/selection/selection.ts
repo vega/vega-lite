@@ -150,11 +150,11 @@ export function assembleTopLevelSignals(model: Model) {
 }
 
 export function assembleUnitData(model: UnitModel, data: VgData[]): VgData[] {
-  return data
-    .concat(Object.keys(model.component.selection)
-      .map(function(k: string) {
-        return {name: k + STORE};
-      }));
+  forEachSelection(model, function(selCmpt, _) {
+    data.push.apply(data, [{name: selCmpt.name + STORE}]);
+  });
+
+  return data;
 }
 
 export function assembleUnitMarks(model: UnitModel, marks: any[]): any[] {

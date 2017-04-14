@@ -15,12 +15,11 @@ const scaleBindings:TransformCompiler = {
   },
 
   parse: function(model, selDef, selCmpt) {
-    const scales = model.component.scales;
     const bound:Channel[] = selCmpt.scales = [];
 
     selCmpt.project.forEach(function(p) {
       const channel = p.encoding;
-      const scale = scales[channel];
+      const scale = model.getComponent('scales', channel);
 
       if (!scale || !hasContinuousDomain(scale.type)) {
         warn('Scale bindings are currently only supported for scales with continuous domains.');
