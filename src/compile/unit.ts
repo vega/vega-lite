@@ -47,11 +47,6 @@ export class UnitModel extends Model {
   public readonly markDef: MarkDef;
   public readonly encoding: Encoding;
   protected readonly selection: Dict<SelectionDef> = {};
-  protected readonly scales: Dict<Scale> = {};
-  protected readonly axes: Dict<Axis> = {};
-  protected readonly legends: Dict<Legend> = {};
-  public readonly config: Config;
-  public readonly stack: StackProperties;
   public children: Model[] = [];
 
   constructor(spec: UnitSpec, parent: Model, parentGivenName: string, cfg: Config) {
@@ -72,11 +67,11 @@ export class UnitModel extends Model {
     const encoding = this.encoding = normalizeEncoding(spec.encoding || {}, mark);
 
     // calculate stack properties
-    this.stack = stack(mark, encoding, this.config.stack);
+    this._stack = stack(mark, encoding, this.config.stack);
     this.scales = this.initScales(mark, encoding, providedWidth, providedHeight);
 
     this.markDef = initMarkDef(spec.mark, encoding, this.scales, this.config);
-    this.encoding = initEncoding(mark, encoding, this.stack, this.config);
+    this.encoding = initEncoding(mark, encoding, this._stack, this.config);
 
     this.axes = this.initAxes(encoding);
     this.legends = this.initLegend(encoding);
