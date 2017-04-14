@@ -14,7 +14,7 @@ export class DataFlowNode {
   constructor(public readonly debugName?: string) { }
 
   /**
-   * Clone this node with a deep copy.
+   * Clone this node with a deep copy but don't clone links to children or parents.
    */
   public clone(): DataFlowNode {
     throw new Error('Cannot clone node');

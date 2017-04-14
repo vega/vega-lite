@@ -188,7 +188,7 @@ We can also create diverging color graph by specify `range` with multiple elemen
 
 ### General Scale Properties
 
-{% include table.html props="round" source="Scale" %}
+{% include table.html props="round,paddingInner,paddingOuter" source="Scale" %}
 
 {:#quant-props}
 

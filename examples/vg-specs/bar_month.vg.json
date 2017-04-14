@@ -25,96 +25,46 @@
     "data": [
         {
             "name": "source_0",
-            "values": [
-                {
-                    "a": "A",
-                    "b": "B",
-                    "c": 28
-                },
-                {
-                    "a": "B",
-                    "b": "C",
-                    "c": 55
-                },
-                {
-                    "a": "C",
-                    "b": "D",
-                    "c": 43
-                },
-                {
-                    "a": "D",
-                    "b": "E",
-                    "c": 91
-                },
-                {
-                    "a": "E",
-                    "b": "F",
-                    "c": 81
-                },
-                {
-                    "a": "F",
-                    "b": "G",
-                    "c": 53
-                },
-                {
-                    "a": "G",
-                    "b": "H",
-                    "c": 19
-                },
-                {
-                    "a": "H",
-                    "b": "I",
-                    "c": 87
-                },
-                {
-                    "a": "I",
-                    "b": "J",
-                    "c": 52
-                }
-            ],
+            "url": "data/seattle-temps.csv",
             "format": {
-                "type": "json",
+                "type": "csv",
                 "parse": {
-                    "c": "number"
+                    "date": "date",
+                    "temp": "number"
                 }
             },
-            "transform": []
-        },
-        {
-            "name": "data_0",
-            "source": "source_0",
             "transform": [
                 {
                     "type": "filter",
-                    "expr": "datum[\"c\"] !== null && !isNaN(datum[\"c\"])"
-                }
-            ]
-        },
-        {
-            "name": "data_1",
-            "source": "source_0",
-            "transform": [
-                {
-                    "type": "filter",
-                    "expr": "datum[\"c\"] !== null && !isNaN(datum[\"c\"])"
+                    "expr": "datum[\"date\"] !== null && !isNaN(datum[\"date\"]) && datum[\"temp\"] !== null && !isNaN(datum[\"temp\"])"
                 },
                 {
-                    "type": "collect",
-                    "sort": {
-                        "field": "b",
-                        "order": "descending"
-                    }
+                    "type": "formula",
+                    "as": "month_date",
+                    "expr": "datetime(0, month(datum[\"date\"]), 1, 0, 0, 0, 0)"
+                },
+                {
+                    "type": "aggregate",
+                    "groupby": [
+                        "month_date"
+                    ],
+                    "ops": [
+                        "mean"
+                    ],
+                    "fields": [
+                        "temp"
+                    ]
                 }
             ]
         },
         {
             "name": "layout",
-            "source": "data_0",
+            "source": "source_0",
             "transform": [
                 {
                     "type": "aggregate",
                     "fields": [
-                        "a"
+                        "month_date"
                     ],
                     "ops": [
                         "distinct"
@@ -123,7 +73,7 @@
                 {
                     "type": "formula",
                     "as": "width",
-                    "expr": "max(datum[\"distinct_a\"] - 1 + 2*0.5, 0) * 21"
+                    "expr": "max(datum[\"distinct_month_date\"] - 1 + 2*0.5, 0) * 21"
                 },
                 {
                     "type": "formula",
@@ -155,24 +105,24 @@
             },
             "marks": [
                 {
-                    "name": "layer_0_marks",
+                    "name": "marks",
                     "type": "rect",
                     "role": "bar",
                     "from": {
-                        "data": "data_0"
+                        "data": "source_0"
                     },
                     "encode": {
                         "update": {
                             "xc": {
                                 "scale": "x",
-                                "field": "a"
+                                "field": "month_date"
                             },
                             "width": {
                                 "value": 20
                             },
                             "y": {
                                 "scale": "y",
-                                "field": "c"
+                                "field": "mean_temp"
                             },
                             "y2": {
                                 "scale": "y",
@@ -183,28 +133,6 @@
                             }
                         }
                     }
-                },
-                {
-                    "name": "layer_1_marks",
-                    "type": "line",
-                    "from": {
-                        "data": "data_1"
-                    },
-                    "encode": {
-                        "update": {
-                            "x": {
-                                "scale": "x",
-                                "field": "b"
-                            },
-                            "y": {
-                                "scale": "y",
-                                "field": "c"
-                            },
-                            "stroke": {
-                                "value": "red"
-                            }
-                        }
-                    }
                 }
             ],
             "scales": [
@@ -212,16 +140,8 @@
                     "name": "x",
                     "type": "point",
                     "domain": {
-                        "fields": [
-                            {
-                                "data": "data_0",
-                                "field": "a"
-                            },
-                            {
-                                "data": "data_1",
-                                "field": "b"
-                            }
-                        ],
+                        "data": "source_0",
+                        "field": "month_date",
                         "sort": true
                     },
                     "range": {
@@ -234,17 +154,8 @@
                     "name": "y",
                     "type": "linear",
                     "domain": {
-                        "fields": [
-                            {
-                                "data": "data_0",
-                                "field": "c"
-                            },
-                            {
-                                "data": "data_1",
-                                "field": "c"
-                            }
-                        ],
-                        "sort": true
+                        "data": "source_0",
+                        "field": "mean_temp"
                     },
                     "range": [
                         200,
@@ -260,11 +171,14 @@
                     "scale": "x",
                     "orient": "bottom",
                     "tickCount": 5,
-                    "title": "a",
+                    "title": "MONTH(date)",
                     "zindex": 1,
                     "encode": {
                         "labels": {
                             "update": {
+                                "text": {
+                                    "signal": "timeFormat(datum.value, '%b')"
+                                },
                                 "angle": {
                                     "value": 270
                                 },
@@ -282,7 +196,7 @@
                     "scale": "y",
                     "format": "s",
                     "orient": "left",
-                    "title": "c",
+                    "title": "MEAN(temp)",
                     "zindex": 1
                 },
                 {

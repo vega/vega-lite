@@ -162,10 +162,6 @@ export class LayerModel extends Model {
     return null;
   }
 
-  public parseGridGroup(): void {
-    return null;
-  }
-
   public parseLegend() {
     const legendComponent = this.component.legends = {};
 

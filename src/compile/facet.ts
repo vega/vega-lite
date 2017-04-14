@@ -232,18 +232,6 @@ export class FacetModel extends Model {
     );
   }
 
-  public parseGridGroup() {
-    // TODO: with nesting, we might need to consider calling child
-    // this.child.parseGridGroup();
-
-    const child = this.child;
-
-    this.component.gridGroups = extend(
-      !child.channelHasField(X) && this.channelHasField(COLUMN) ? {column: getColumnGridGroups(this)} : {},
-      !child.channelHasField(Y) && this.channelHasField(ROW) ? {row: getRowGridGroups(this)} : {}
-    );
-  }
-
   public parseLegend() {
     this.child.parseLegend();
 
@@ -295,7 +283,6 @@ export class FacetModel extends Model {
     const marks = [].concat(
       // axisGroup is a mapping to VgMarkGroup
       vals(this.component.axisGroups),
-      flatten(vals(this.component.gridGroups)),
       extend(mark, data.length > 0 ? {data: data} : {}, this.child.assembleGroup())
     );
 
@@ -449,83 +436,3 @@ export function getSharedAxisGroup(model: FacetModel, channel: 'x' | 'y'): VgEnc
   return axesGroup;
 }
 
-
-function getRowGridGroups(model: Model): any[] { // TODO: VgMarks
-  const facetGridConfig = model.config.facet.grid;
-
-  const rowGrid = {
-    name: model.getName('row-grid'),
-    type: 'rule',
-    from: {
-      data: model.getDataName(MAIN)
-    },
-    encode: {
-      update: {
-        y: {
-          scale: model.scaleName(ROW),
-          field: model.field(ROW)
-        },
-        x: {value: 0, offset: -facetGridConfig.offset},
-        x2: {field: {group: 'width'}, offset: facetGridConfig.offset},
-        stroke: {value: facetGridConfig.color},
-        strokeOpacity: {value: facetGridConfig.opacity},
-        strokeWidth: {value: 0.5}
-      }
-    }
-  };
-
-  return [rowGrid, {
-    name: model.getName('row-grid-end'),
-    type: 'rule',
-    encode: {
-      update: {
-        y: {field: {group: 'height'}},
-        x: {value: 0, offset: -facetGridConfig.offset},
-        x2: {field: {group: 'width'}, offset: facetGridConfig.offset},
-        stroke: {value: facetGridConfig.color},
-        strokeOpacity: {value: facetGridConfig.opacity},
-        strokeWidth: {value: 0.5}
-      }
-    }
-  }];
-}
-
-function getColumnGridGroups(model: Model): any { // TODO: VgMarks
-  const facetGridConfig = model.config.facet.grid;
-
-  const columnGrid = {
-    name: model.getName('column-grid'),
-    type: 'rule',
-    from: {
-      data: model.getDataName(MAIN)
-    },
-    encode: {
-      update: {
-        x: {
-          scale: model.scaleName(COLUMN),
-          field: model.field(COLUMN)
-        },
-        y: {value: 0, offset: -facetGridConfig.offset},
-        y2: {field: {group: 'height'}, offset: facetGridConfig.offset},
-        stroke: {value: facetGridConfig.color},
-        strokeOpacity: {value: facetGridConfig.opacity},
-        strokeWidth: {value: 0.5}
-      }
-    }
-  };
-
-  return [columnGrid,  {
-    name: model.getName('column-grid-end'),
-    type: 'rule',
-    encode: {
-      update: {
-        x: {field: {group: 'width'}},
-        y: {value: 0, offset: -facetGridConfig.offset},
-        y2: {field: {group: 'height'}, offset: facetGridConfig.offset},
-        stroke: {value: facetGridConfig.color},
-        strokeOpacity: {value: facetGridConfig.opacity},
-        strokeWidth: {value: 0.5}
-      }
-    }
-  }];
-}

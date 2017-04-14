@@ -38,9 +38,6 @@ export interface Component {
   /** Dictionary mapping channel to axis mark group for facet and concat */
   axisGroups: Dict<VgEncodeEntry>;
 
-  /** Dictionary mapping channel to grid mark group for facet (and concat?) */
-  gridGroups: Dict<VgEncodeEntry[]>;
-
   mark: VgEncodeEntry[];
 }
 
@@ -128,7 +125,7 @@ export abstract class Model {
         outputNodes: parent ? parent.component.data.outputNodes : {}
       },
       layout: null, mark: null, scales: null, axes: null,
-      axisGroups: null, gridGroups: null, legends: null, selection: null
+      axisGroups: null, legends: null, selection: null
     };
   }
 
@@ -140,8 +137,7 @@ export abstract class Model {
     this.parseAxis(); // depends on scale name
     this.parseLegend(); // depends on scale name
     this.parseAxisGroup(); // depends on child axis
-    this.parseGridGroup();
-    this.parseMark(); // depends on data name and scale name, axisGroup, gridGroup and children's scale, axis, legend and mark.
+    this.parseMark(); // depends on data name and scale name, axisGroup, and children's scale, axis, legend and mark.
   }
 
   public abstract parseData(): void;
@@ -160,7 +156,6 @@ export abstract class Model {
 
   // TODO: revise if these two methods make sense for shared scale concat
   public abstract parseAxisGroup(): void;
-  public abstract parseGridGroup(): void;
 
   public abstract assembleSignals(signals: any[]): any[];
 

@@ -1797,28 +1797,6 @@
                 "cell": {
                     "$ref": "#/definitions/CellConfig",
                     "description": "Facet Cell Config"
-                },
-                "grid": {
-                    "$ref": "#/definitions/FacetGridConfig",
-                    "description": "Facet Grid Config"
-                }
-            },
-            "type": "object"
-        },
-        "FacetGridConfig": {
-            "additionalProperties": false,
-            "properties": {
-                "color": {
-                    "description": "Color of the grid between facets.",
-                    "type": "string"
-                },
-                "offset": {
-                    "description": "Offset for grid between facets.",
-                    "type": "number"
-                },
-                "opacity": {
-                    "description": "Opacity of the grid between facets.",
-                    "type": "number"
                 }
             },
             "type": "object"
