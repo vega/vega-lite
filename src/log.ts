@@ -121,8 +121,7 @@ export namespace message {
   }
 
   export function incompatibleChannel(channel: Channel, markOrFacet: Mark | 'facet', when?: string) {
-    return `${channel} dropped as it is incompatible with ${markOrFacet}` +
-      (when ? `when ${when}` : '')  + '.';
+    return `${channel} dropped as it is incompatible with ${markOrFacet}${when ? ` when ${when}` : ''}.`;
   }
 
   export function facetChannelShouldBeDiscrete(channel: string) {
@@ -137,11 +136,11 @@ export namespace message {
   export const BAR_WITH_POINT_SCALE_AND_RANGESTEP_NULL = 'Bar mark should not be used with point scale when rangeStep is null. Please use band scale instead.';
 
   export function unclearOrientContinuous(mark: Mark) {
-    return 'Cannot clearly determine orientation for ' + mark + ' since both x and y channel encode continous fields. In this case, we use vertical by default';
+    return `Cannot clearly determine orientation for ${mark} since both x and y channel encode continous fields. In this case, we use vertical by default`;
   }
 
   export function unclearOrientDiscreteOrEmpty(mark: Mark) {
-    return 'Cannot clearly determine orientation for ' + mark + ' since both x and y channel encode discrete or empty fields.';
+    return `Cannot clearly determine orientation for ${mark} since both x and y channel encode discrete or empty fields.`;
   }
 
   export function orientOverridden(original: string, actual: string) {
@@ -223,13 +222,12 @@ export namespace message {
   }
 
   export function dayReplacedWithDate(fullTimeUnit: TimeUnit) {
-    return `Time unit "${fullTimeUnit}" is not supported. We are replacing it with ` +
-      (fullTimeUnit+'').replace('day', 'date') + '.';
+    return `Time unit "${fullTimeUnit}" is not supported. We are replacing it with ${
+      fullTimeUnit.replace('day', 'date')}.`;
   }
 
   export function droppedDay(d: DateTime | DateTimeExpr) {
-    return 'Dropping day from datetime ' + JSON.stringify(d) +
-          ' as day cannot be combined with other units.';
+    return `Dropping day from datetime ${JSON.stringify(d)} as day cannot be combined with other units.`;
   }
 }
 
