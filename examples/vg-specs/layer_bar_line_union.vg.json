@@ -109,7 +109,7 @@
         },
         {
             "name": "layout",
-            "source": "source_0",
+            "source": "data_0",
             "transform": [
                 {
                     "type": "aggregate",
