@@ -4,13 +4,6 @@
 
 export interface DataFormat {
   /**
-   * Type of input data: `"json"`, `"csv"`, `"tsv"`.
-   * The default format type is determined by the extension of the file url.
-   * If no extension is detected, `"json"` will be used by default.
-   */
-  type?: DataFormatType;
-
-  /**
    * A collection of parsing instructions can be used to define the data types of string-valued attributes in the JSON file. Each instruction is a name-value pair, where the name is the name of the attribute, and the value is the desired data type (one of `"number"`, `"boolean"` or `"date"`). For example, `"parse": {"modified_on":"date"}` ensures that the `modified_on` value in each row of the input data is parsed as a Date value. (See Datalib's [`dl.read.types` method](https://github.com/vega/datalib/wiki/Import#dl_read_types) for more information.)
    */
   parse?: any;
@@ -38,6 +31,15 @@ export interface DataFormat {
   mesh?: string;
 }
 
+export interface DataUrlFormat extends DataFormat {
+  /**
+   * Type of input data: `"json"`, `"csv"`, `"tsv"`.
+   * The default format type is determined by the extension of the file url.
+   * If no extension is detected, `"json"` will be used by default.
+   */
+  type?: DataFormatType;
+}
+
 export type DataFormatType = 'json' | 'csv' | 'tsv' | 'topojson';
 
 export type Data = UrlData | InlineData | NamedData;
@@ -46,7 +48,7 @@ export interface UrlData {
   /**
    * Type of input data: `"json"`, `"csv"`, `"tsv"`. The default format type is determined by the extension of the file url. If no extension is detected, `"json"` will be used by default.
    */
-  format?: DataFormat;
+  format?: DataUrlFormat;
 
   /**
    * A URL from which to load the data set. Use the `format.type` property
@@ -57,12 +59,20 @@ export interface UrlData {
 
 export interface InlineData {
   /**
+   * Parsing properties.
+   */
+  format?: DataFormat;
+  /**
    * Pass array of objects instead of a url to a file.
    */
   values: any[];
 }
 
 export interface NamedData {
+  /**
+   * Parsing properties.
+   */
+  format?: DataFormat;
   /**
    * Provide a placeholder name and bind data at runtime.
    */
