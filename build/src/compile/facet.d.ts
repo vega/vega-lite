@@ -33,7 +33,6 @@ export declare class FacetModel extends Model {
     parseMark(): void;
     parseAxis(): void;
     parseAxisGroup(): void;
-    parseGridGroup(): void;
     parseLegend(): void;
     assembleData(): VgData[];
     assembleParentGroupProperties(): any;

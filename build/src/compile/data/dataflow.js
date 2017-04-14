@@ -11,7 +11,7 @@ var DataFlowNode = (function () {
         this._parent = null;
     }
     /**
-     * Clone this node with a deep copy.
+     * Clone this node with a deep copy but don't clone links to children or parents.
      */
     DataFlowNode.prototype.clone = function () {
         throw new Error('Cannot clone node');

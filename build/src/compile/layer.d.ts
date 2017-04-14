@@ -40,7 +40,6 @@ export declare class LayerModel extends Model {
     parseMark(): void;
     parseAxis(): void;
     parseAxisGroup(): void;
-    parseGridGroup(): void;
     parseLegend(): void;
     assembleParentGroupProperties(cellConfig: CellConfig): VgEncodeEntry;
     assembleSignals(signals: any[]): any[];

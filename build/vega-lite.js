@@ -2394,6 +2394,7 @@ exports.AggregateNode = AggregateNode;
 },{"../../fielddef":78,"../../log":81,"../../util":92,"./dataflow":21,"tslib":5}],19:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+var tslib_1 = require("tslib");
 var data_1 = require("../../data");
 var util_1 = require("../../util");
 var aggregate_1 = require("./aggregate");
@@ -2527,8 +2528,8 @@ function makeWalkTree(data) {
      */
     function walkTree(node, dataSource) {
         if (node instanceof formatparse_1.ParseNode) {
-            if (node.parent instanceof source_1.SourceNode && dataSource.format) {
-                dataSource.format.parse = node.assemble();
+            if (node.parent instanceof source_1.SourceNode) {
+                dataSource.format = tslib_1.__assign({}, dataSource.format || {}, { parse: node.assemble() });
             }
             else {
                 throw new Error('Can only instantiate parse next to source.');
@@ -2594,7 +2595,7 @@ function makeWalkTree(data) {
         switch (node.numChildren()) {
             case 0:
                 // done
-                if (!dataSource.source || dataSource.transform.length > 0) {
+                if (node instanceof dataflow_1.OutputNode && (!dataSource.source || dataSource.transform.length > 0)) {
                     // do not push empty datasources that are simply references
                     data.push(dataSource);
                 }
@@ -2665,7 +2666,7 @@ function assembleData(roots) {
 }
 exports.assembleData = assembleData;
 
-},{"../../data":74,"../../util":92,"./aggregate":18,"./bin":20,"./dataflow":21,"./facet":22,"./formatparse":23,"./nonpositivefilter":24,"./nullfilter":25,"./optimizers":26,"./pathorder":28,"./source":29,"./stack":30,"./timeunit":31,"./transforms":32}],20:[function(require,module,exports){
+},{"../../data":74,"../../util":92,"./aggregate":18,"./bin":20,"./dataflow":21,"./facet":22,"./formatparse":23,"./nonpositivefilter":24,"./nullfilter":25,"./optimizers":26,"./pathorder":28,"./source":29,"./stack":30,"./timeunit":31,"./transforms":32,"tslib":5}],20:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var tslib_1 = require("tslib");
@@ -2785,7 +2786,7 @@ var DataFlowNode = (function () {
         this._parent = null;
     }
     /**
-     * Clone this node with a deep copy.
+     * Clone this node with a deep copy but don't clone links to children or parents.
      */
     DataFlowNode.prototype.clone = function () {
         throw new Error('Cannot clone node');
@@ -3528,6 +3529,7 @@ var SourceNode = (function (_super) {
         }
         else if (data_1.isNamedData(data)) {
             _this._name = data.name;
+            _this._data = {};
         }
         return _this;
     }
@@ -3558,13 +3560,12 @@ var SourceNode = (function (_super) {
         if (data_1.isInlineData(this._data)) {
             return util_1.hash(this._data);
         }
-        else if (data_1.isUrlData) {
+        else if (data_1.isUrlData(this._data)) {
             return this._data.url + " " + util_1.hash(this._data.format);
         }
-        else if (data_1.isNamedData) {
-            return this._data.name;
+        else {
+            return this._name;
         }
-        throw new Error('Unsupported source');
     };
     SourceNode.prototype.assemble = function () {
         return tslib_1.__assign({ name: this._name }, this._data, { transform: [] });
@@ -3870,7 +3871,6 @@ exports.parseTransformArray = parseTransformArray;
 Object.defineProperty(exports, "__esModule", { value: true });
 var tslib_1 = require("tslib");
 var channel_1 = require("../channel");
-var data_1 = require("../data");
 var encoding_1 = require("../encoding");
 var fielddef_1 = require("../fielddef");
 var log = require("../log");
@@ -4032,12 +4032,6 @@ var FacetModel = (function (_super) {
         var yAxisGroup = parseAxisGroups(this, channel_1.Y);
         this.component.axisGroups = util_1.extend(xAxisGroup ? { x: xAxisGroup } : {}, yAxisGroup ? { y: yAxisGroup } : {});
     };
-    FacetModel.prototype.parseGridGroup = function () {
-        // TODO: with nesting, we might need to consider calling child
-        // this.child.parseGridGroup();
-        var child = this.child;
-        this.component.gridGroups = util_1.extend(!child.channelHasField(channel_1.X) && this.channelHasField(channel_1.COLUMN) ? { column: getColumnGridGroups(this) } : {}, !child.channelHasField(channel_1.Y) && this.channelHasField(channel_1.ROW) ? { row: getRowGridGroups(this) } : {});
-    };
     FacetModel.prototype.parseLegend = function () {
         this.child.parseLegend();
         // TODO: support legend for independent non-position scale across facets
@@ -4076,7 +4070,7 @@ var FacetModel = (function (_super) {
         mark.from.facet.data = this.component.data.facetRoot.data;
         var marks = [].concat(
         // axisGroup is a mapping to VgMarkGroup
-        util_1.vals(this.component.axisGroups), util_1.flatten(util_1.vals(this.component.gridGroups)), util_1.extend(mark, data.length > 0 ? { data: data } : {}, this.child.assembleGroup()));
+        util_1.vals(this.component.axisGroups), util_1.extend(mark, data.length > 0 ? { data: data } : {}, this.child.assembleGroup()));
         return marks.map(this.correctDataNames);
     };
     FacetModel.prototype.channels = function () {
@@ -4209,82 +4203,8 @@ function getSharedAxisGroup(model, channel) {
     return axesGroup;
 }
 exports.getSharedAxisGroup = getSharedAxisGroup;
-function getRowGridGroups(model) {
-    var facetGridConfig = model.config.facet.grid;
-    var rowGrid = {
-        name: model.getName('row-grid'),
-        type: 'rule',
-        from: {
-            data: model.getDataName(data_1.MAIN)
-        },
-        encode: {
-            update: {
-                y: {
-                    scale: model.scaleName(channel_1.ROW),
-                    field: model.field(channel_1.ROW)
-                },
-                x: { value: 0, offset: -facetGridConfig.offset },
-                x2: { field: { group: 'width' }, offset: facetGridConfig.offset },
-                stroke: { value: facetGridConfig.color },
-                strokeOpacity: { value: facetGridConfig.opacity },
-                strokeWidth: { value: 0.5 }
-            }
-        }
-    };
-    return [rowGrid, {
-            name: model.getName('row-grid-end'),
-            type: 'rule',
-            encode: {
-                update: {
-                    y: { field: { group: 'height' } },
-                    x: { value: 0, offset: -facetGridConfig.offset },
-                    x2: { field: { group: 'width' }, offset: facetGridConfig.offset },
-                    stroke: { value: facetGridConfig.color },
-                    strokeOpacity: { value: facetGridConfig.opacity },
-                    strokeWidth: { value: 0.5 }
-                }
-            }
-        }];
-}
-function getColumnGridGroups(model) {
-    var facetGridConfig = model.config.facet.grid;
-    var columnGrid = {
-        name: model.getName('column-grid'),
-        type: 'rule',
-        from: {
-            data: model.getDataName(data_1.MAIN)
-        },
-        encode: {
-            update: {
-                x: {
-                    scale: model.scaleName(channel_1.COLUMN),
-                    field: model.field(channel_1.COLUMN)
-                },
-                y: { value: 0, offset: -facetGridConfig.offset },
-                y2: { field: { group: 'height' }, offset: facetGridConfig.offset },
-                stroke: { value: facetGridConfig.color },
-                strokeOpacity: { value: facetGridConfig.opacity },
-                strokeWidth: { value: 0.5 }
-            }
-        }
-    };
-    return [columnGrid, {
-            name: model.getName('column-grid-end'),
-            type: 'rule',
-            encode: {
-                update: {
-                    x: { field: { group: 'width' } },
-                    y: { value: 0, offset: -facetGridConfig.offset },
-                    y2: { field: { group: 'height' }, offset: facetGridConfig.offset },
-                    stroke: { value: facetGridConfig.color },
-                    strokeOpacity: { value: facetGridConfig.opacity },
-                    strokeWidth: { value: 0.5 }
-                }
-            }
-        }];
-}
 
-},{"../channel":12,"../data":74,"../encoding":76,"../fielddef":78,"../log":81,"../util":92,"../vega.schema":94,"./axis/parse":14,"./axis/rules":15,"./common":16,"./data/assemble":19,"./data/parse":27,"./layout":35,"./model":51,"./scale/init":54,"./scale/parse":55,"tslib":5}],34:[function(require,module,exports){
+},{"../channel":12,"../encoding":76,"../fielddef":78,"../log":81,"../util":92,"../vega.schema":94,"./axis/parse":14,"./axis/rules":15,"./common":16,"./data/assemble":19,"./data/parse":27,"./layout":35,"./model":51,"./scale/init":54,"./scale/parse":55,"tslib":5}],34:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var tslib_1 = require("tslib");
@@ -4396,9 +4316,6 @@ var LayerModel = (function (_super) {
         });
     };
     LayerModel.prototype.parseAxisGroup = function () {
-        return null;
-    };
-    LayerModel.prototype.parseGridGroup = function () {
         return null;
     };
     LayerModel.prototype.parseLegend = function () {
@@ -4608,7 +4525,7 @@ function parseLayerSizeLayout(model, channel) {
             delete child.component.layout[sizeType_1];
         });
         return {
-            source: model.getDataName(data_1.MAIN),
+            source: model.children[0].getDataName(data_1.MAIN),
             distinct: distinct,
             formula: formula
         };
@@ -5852,7 +5769,7 @@ var Model = (function () {
                 outputNodes: parent ? parent.component.data.outputNodes : {}
             },
             layout: null, mark: null, scales: null, axes: null,
-            axisGroups: null, gridGroups: null, legends: null, selection: null
+            axisGroups: null, legends: null, selection: null
         };
     }
     Model.prototype.parse = function () {
@@ -5863,8 +5780,7 @@ var Model = (function () {
         this.parseAxis(); // depends on scale name
         this.parseLegend(); // depends on scale name
         this.parseAxisGroup(); // depends on child axis
-        this.parseGridGroup();
-        this.parseMark(); // depends on data name and scale name, axisGroup, gridGroup and children's scale, axis, legend and mark.
+        this.parseMark(); // depends on data name and scale name, axisGroup, and children's scale, axis, legend and mark.
     };
     Model.prototype.assembleScales = function () {
         return assemble_1.assembleScale(this);
@@ -7768,9 +7684,6 @@ var UnitModel = (function (_super) {
     UnitModel.prototype.parseAxisGroup = function () {
         return null;
     };
-    UnitModel.prototype.parseGridGroup = function () {
-        return null;
-    };
     UnitModel.prototype.parseLegend = function () {
         this.component.legends = parse_3.parseLegendComponent(this);
     };
@@ -7920,14 +7833,8 @@ exports.defaultFacetCellConfig = {
     stroke: '#ccc',
     strokeWidth: 1
 };
-var defaultFacetGridConfig = {
-    color: '#000000',
-    opacity: 0.4,
-    offset: 0
-};
 exports.defaultFacetConfig = {
     axis: {},
-    grid: defaultFacetGridConfig,
     cell: exports.defaultFacetCellConfig
 };
 exports.defaultOverlayConfig = {

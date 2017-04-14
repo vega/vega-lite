@@ -80,24 +80,8 @@ export declare const defaultFacetCellConfig: CellConfig;
 export interface FacetConfig {
     /** Facet Axis Config */
     axis?: AxisConfig;
-    /** Facet Grid Config */
-    grid?: FacetGridConfig;
     /** Facet Cell Config */
     cell?: CellConfig;
-}
-export interface FacetGridConfig {
-    /**
-     * Color of the grid between facets.
-     */
-    color?: string;
-    /**
-     * Opacity of the grid between facets.
-     */
-    opacity?: number;
-    /**
-     * Offset for grid between facets.
-     */
-    offset?: number;
 }
 export declare const defaultFacetConfig: FacetConfig;
 export declare type AreaOverlay = 'line' | 'linepoint' | 'none';

@@ -9,7 +9,7 @@ export declare class DataFlowNode {
     private _parent;
     constructor(debugName?: string);
     /**
-     * Clone this node with a deep copy.
+     * Clone this node with a deep copy but don't clone links to children or parents.
      */
     clone(): DataFlowNode;
     /**

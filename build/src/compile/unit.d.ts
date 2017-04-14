@@ -50,7 +50,6 @@ export declare class UnitModel extends Model {
     parseMark(): void;
     parseAxis(): void;
     parseAxisGroup(): void;
-    parseGridGroup(): void;
     parseLegend(): void;
     assembleData(): VgData[];
     assembleSignals(signals: any[]): any[];

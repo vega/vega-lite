@@ -30,8 +30,6 @@ export interface Component {
     legends: Dict<VgLegend>;
     /** Dictionary mapping channel to axis mark group for facet and concat */
     axisGroups: Dict<VgEncodeEntry>;
-    /** Dictionary mapping channel to grid mark group for facet (and concat?) */
-    gridGroups: Dict<VgEncodeEntry[]>;
     mark: VgEncodeEntry[];
 }
 export interface NameMapInterface {
@@ -74,7 +72,6 @@ export declare abstract class Model {
     abstract parseAxis(): void;
     abstract parseLegend(): void;
     abstract parseAxisGroup(): void;
-    abstract parseGridGroup(): void;
     abstract assembleSignals(signals: any[]): any[];
     abstract assembleSelectionData(data: VgData[]): VgData[];
     abstract assembleData(): VgData[];
