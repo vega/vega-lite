@@ -64,7 +64,7 @@ selectAll('.vl-example').each(function(this: Element) {
       }
     });
   } else {
-    let spec = trim(sel.text());
+    const spec = trim(sel.text());
     renderExample(sel, spec);
   }
 });
@@ -95,11 +95,11 @@ function renderGallery() {
         return;
       }
 
-      let viz = selection.selectAll('.imagegroup').data(galleryGroupSpecs);
+      const viz = selection.selectAll('.imagegroup').data(galleryGroupSpecs);
 
       viz.exit().remove();
 
-      let imageGroup = viz.enter()
+      const imageGroup = viz.enter()
         .append('a')
         .attr('class', 'imagegroup')
         .attr('href', function(d){ return 'https://vega.github.io/vega-editor/?mode=vega-lite&spec=' + d.name;})
