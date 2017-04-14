@@ -2,7 +2,7 @@
 layout: docs
 menu: docs
 title: Interactive Plots with Selections
-permalink: /docs/selections.html
+permalink: /docs/selection.html
 ---
 
 TODO
