@@ -41,7 +41,8 @@ function renderExample($target: Selection<any, any, any, any>, text: string) {
     actions: {
       source: false,
       export: false
-    }
+    },
+    editor_url: 'https://vega.github.io/new-editor'
   }, (err: Error) => {
     if (err) {
       console.error(err);
