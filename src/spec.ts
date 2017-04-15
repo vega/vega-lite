@@ -8,6 +8,7 @@ import {Facet} from './facet';
 import {FieldDef} from './fielddef';
 
 import {COLUMN, ROW, X, X2, Y, Y2} from './channel';
+import {CompositeMark} from './compositemark';
 import * as vlEncoding from './encoding';
 import * as log from './log';
 import {AREA, isPrimitiveMark, LINE, Mark, MarkDef} from './mark';
@@ -85,12 +86,12 @@ export type UnitSpec = GenericUnitSpec<Mark | MarkDef, Encoding>;
 /**
  * Unit spec that can contain composite mark
  */
-export type CompositeUnitSpec = GenericUnitSpec<string | MarkDef, Encoding>;
+export type CompositeUnitSpec = GenericUnitSpec<CompositeMark | Mark | MarkDef, Encoding>;
 
 /**
  * Unit spec that can contain composite mark and row or column channels.
  */
-export type FacetedCompositeUnitSpec = GenericUnitSpec<string | MarkDef, EncodingWithFacet>;
+export type FacetedCompositeUnitSpec = GenericUnitSpec<CompositeMark | Mark | MarkDef, EncodingWithFacet>;
 
 export interface GenericLayerSpec<U extends GenericUnitSpec<any, any>> extends BaseSpec {
   // FIXME description for top-level width

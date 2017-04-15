@@ -48,6 +48,19 @@
                             "$ref": "#/definitions/MarkDef"
                         },
                         {
+                            "enum": [
+                                "area",
+                                "bar",
+                                "circle",
+                                "error-bar",
+                                "line",
+                                "point",
+                                "rect",
+                                "rule",
+                                "square",
+                                "text",
+                                "tick"
+                            ],
                             "type": "string"
                         }
                     ],
@@ -157,10 +170,10 @@
                     "items": {
                         "anyOf": [
                             {
-                                "$ref": "#/definitions/GenericUnitSpec<string | MarkDef, Encoding>"
+                                "$ref": "#/definitions/GenericUnitSpec<\"point\" | \"area\" | \"bar\" | \"line\" | \"text\" | \"tick\" | \"rect\" | \"rule\" | \"circle\" ..."
                             },
                             {
-                                "$ref": "#/definitions/GenericLayerSpec<GenericUnitSpec<string | MarkDef, Encoding>>"
+                                "$ref": "#/definitions/GenericLayerSpec<GenericUnitSpec<\"point\" | \"area\" | \"bar\" | \"line\" | \"text\" | \"tick\" | \"rect\" | \"..."
                             }
                         ]
                     },
@@ -291,10 +304,10 @@
                 "spec": {
                     "anyOf": [
                         {
-                            "$ref": "#/definitions/GenericUnitSpec<string | MarkDef, Encoding>"
+                            "$ref": "#/definitions/GenericUnitSpec<\"point\" | \"area\" | \"bar\" | \"line\" | \"text\" | \"tick\" | \"rect\" | \"rule\" | \"circle\" ..."
                         },
                         {
-                            "$ref": "#/definitions/GenericLayerSpec<GenericUnitSpec<string | MarkDef, Encoding>>"
+                            "$ref": "#/definitions/GenericLayerSpec<GenericUnitSpec<\"point\" | \"area\" | \"bar\" | \"line\" | \"text\" | \"tick\" | \"rect\" | \"..."
                         }
                     ]
                 },
@@ -2045,7 +2058,7 @@
             ],
             "type": "string"
         },
-        "GenericLayerSpec<GenericUnitSpec<string | MarkDef, Encoding>>": {
+        "GenericLayerSpec<GenericUnitSpec<\"point\" | \"area\" | \"bar\" | \"line\" | \"text\" | \"tick\" | \"rect\" | \"...": {
             "additionalProperties": false,
             "properties": {
                 "data": {
@@ -2074,10 +2087,10 @@
                     "items": {
                         "anyOf": [
                             {
-                                "$ref": "#/definitions/GenericUnitSpec<string | MarkDef, Encoding>"
+                                "$ref": "#/definitions/GenericUnitSpec<\"point\" | \"area\" | \"bar\" | \"line\" | \"text\" | \"tick\" | \"rect\" | \"rule\" | \"circle\" ..."
                             },
                             {
-                                "$ref": "#/definitions/GenericLayerSpec<GenericUnitSpec<string | MarkDef, Encoding>>"
+                                "$ref": "#/definitions/GenericLayerSpec<GenericUnitSpec<\"point\" | \"area\" | \"bar\" | \"line\" | \"text\" | \"tick\" | \"rect\" | \"..."
                             }
                         ]
                     },
@@ -2110,7 +2123,7 @@
             ],
             "type": "object"
         },
-        "GenericUnitSpec<string | MarkDef, Encoding>": {
+        "GenericUnitSpec<\"point\" | \"area\" | \"bar\" | \"line\" | \"text\" | \"tick\" | \"rect\" | \"rule\" | \"circle\" ...": {
             "additionalProperties": false,
             "properties": {
                 "data": {
@@ -2144,6 +2157,19 @@
                             "$ref": "#/definitions/MarkDef"
                         },
                         {
+                            "enum": [
+                                "area",
+                                "bar",
+                                "circle",
+                                "error-bar",
+                                "line",
+                                "point",
+                                "rect",
+                                "rule",
+                                "square",
+                                "text",
+                                "tick"
+                            ],
                             "type": "string"
                         }
                     ],
