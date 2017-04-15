@@ -141,22 +141,46 @@ describe('Layered Selections', function() {
               }
             },
             "update": {
-              "x": {
-                "scale": "x",
-                "signal": "layer_0_brush[0].extent[0]"
-              },
-              "x2": {
-                "scale": "x",
-                "signal": "layer_0_brush[0].extent[1]"
-              },
-              "y": {
-                "scale": "y",
-                "signal": "layer_0_brush[1].extent[0]"
-              },
-              "y2": {
-                "scale": "y",
-                "signal": "layer_0_brush[1].extent[1]"
-              }
+              "x": [
+                {
+                  "test": "data(\"layer_0_brush_store\").length && layer_0_brush_tuple && layer_0_brush_tuple.unit === data(\"layer_0_brush_store\")[0].unit",
+                  "scale": "x",
+                  "signal": "layer_0_brush[0].extent[0]"
+                },
+                {
+                  "value": 0
+                }
+              ],
+              "x2": [
+                {
+                  "test": "data(\"layer_0_brush_store\").length && layer_0_brush_tuple && layer_0_brush_tuple.unit === data(\"layer_0_brush_store\")[0].unit",
+                  "scale": "x",
+                  "signal": "layer_0_brush[0].extent[1]"
+                },
+                {
+                  "value": 0
+                }
+              ],
+              "y": [
+                {
+                  "test": "data(\"layer_0_brush_store\").length && layer_0_brush_tuple && layer_0_brush_tuple.unit === data(\"layer_0_brush_store\")[0].unit",
+                  "scale": "y",
+                  "signal": "layer_0_brush[1].extent[0]"
+                },
+                {
+                  "value": 0
+                }
+              ],
+              "y2": [
+                {
+                  "test": "data(\"layer_0_brush_store\").length && layer_0_brush_tuple && layer_0_brush_tuple.unit === data(\"layer_0_brush_store\")[0].unit",
+                  "scale": "y",
+                  "signal": "layer_0_brush[1].extent[1]"
+                },
+                {
+                  "value": 0
+                }
+              ]
             }
           }
         },
@@ -173,22 +197,46 @@ describe('Layered Selections', function() {
               }
             },
             "update": {
-              "x": {
-                "scale": "x",
-                "signal": "layer_0_brush[0].extent[0]"
-              },
-              "x2": {
-                "scale": "x",
-                "signal": "layer_0_brush[0].extent[1]"
-              },
-              "y": {
-                "scale": "y",
-                "signal": "layer_0_brush[1].extent[0]"
-              },
-              "y2": {
-                "scale": "y",
-                "signal": "layer_0_brush[1].extent[1]"
-              }
+              "x": [
+                {
+                  "test": "data(\"layer_0_brush_store\").length && layer_0_brush_tuple && layer_0_brush_tuple.unit === data(\"layer_0_brush_store\")[0].unit",
+                  "scale": "x",
+                  "signal": "layer_0_brush[0].extent[0]"
+                },
+                {
+                  "value": 0
+                }
+              ],
+              "x2": [
+                {
+                  "test": "data(\"layer_0_brush_store\").length && layer_0_brush_tuple && layer_0_brush_tuple.unit === data(\"layer_0_brush_store\")[0].unit",
+                  "scale": "x",
+                  "signal": "layer_0_brush[0].extent[1]"
+                },
+                {
+                  "value": 0
+                }
+              ],
+              "y": [
+                {
+                  "test": "data(\"layer_0_brush_store\").length && layer_0_brush_tuple && layer_0_brush_tuple.unit === data(\"layer_0_brush_store\")[0].unit",
+                  "scale": "y",
+                  "signal": "layer_0_brush[1].extent[0]"
+                },
+                {
+                  "value": 0
+                }
+              ],
+              "y2": [
+                {
+                  "test": "data(\"layer_0_brush_store\").length && layer_0_brush_tuple && layer_0_brush_tuple.unit === data(\"layer_0_brush_store\")[0].unit",
+                  "scale": "y",
+                  "signal": "layer_0_brush[1].extent[1]"
+                },
+                {
+                  "value": 0
+                }
+              ]
             }
           }
         }

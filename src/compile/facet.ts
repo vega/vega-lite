@@ -134,8 +134,11 @@ export class FacetModel extends Model {
   }
 
   public parseSelection() {
-    // TODO: @arvind can write this
-    // We might need to split this into compileSelectionData and compileSelectionSignals?
+    // As a facet has a single child, the selection components are the same.
+    // The child maintains its selections to assemble signals, which remain
+    // within its unit.
+    this.child.parseSelection();
+    this.component.selection = this.child.component.selection;
   }
 
   public parseLayoutData() {
@@ -253,7 +256,7 @@ export class FacetModel extends Model {
   }
 
   public assembleSelectionData(data: VgData[]): VgData[] {
-    return [];
+    return this.child.assembleSelectionData(data);
   }
 
   public assembleLayout(layoutData: VgData[]): VgData[] {

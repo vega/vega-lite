@@ -3,7 +3,8 @@ import {TransformCompiler} from './transforms';
 
 const inputBindings:TransformCompiler = {
   has: function(selCmpt) {
-    return selCmpt.type === 'single' && selCmpt.bind && selCmpt.bind !== 'scales';
+    return selCmpt.type === 'single' && selCmpt.resolve === 'global' &&
+      selCmpt.bind && selCmpt.bind !== 'scales';
   },
 
   topLevelSignals: function(model, selCmpt, signals) {

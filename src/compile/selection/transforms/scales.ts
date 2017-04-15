@@ -11,7 +11,8 @@ const scaleBindings:TransformCompiler = {
   clipGroup: true,
 
   has: function(selCmpt) {
-    return selCmpt.type === 'interval' && selCmpt.bind && selCmpt.bind === 'scales';
+    return selCmpt.type === 'interval' && selCmpt.resolve === 'global' &&
+      selCmpt.bind && selCmpt.bind === 'scales';
   },
 
   parse: function(model, selDef, selCmpt) {
