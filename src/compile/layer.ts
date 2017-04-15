@@ -8,12 +8,12 @@ import {Scale} from '../scale';
 import {LayerSpec} from '../spec';
 import {StackProperties} from '../stack';
 import {Dict, flatten, keys, vals} from '../util';
-import {isSignalRefDomain, VgData, VgEncodeEntry, VgScale} from '../vega.schema';
+import {isSignalRefDomain, VgData, VgEncodeEntry, VgLayout, VgScale} from '../vega.schema';
 
 import {applyConfig, buildModel} from './common';
 import {assembleData} from './data/assemble';
 import {parseData} from './data/parse';
-import {assembleLayout, parseLayerLayout} from './layout';
+import {assembleLayoutData, parseLayerLayout} from './layout';
 import {Model} from './model';
 import {unionDomains} from './scale/domain';
 import {assembleLayerMarks as assembleLayeredSelectionMarks} from './selection/selection';
@@ -206,12 +206,16 @@ export class LayerModel extends Model {
     }, super.assembleScales());
   }
 
-  public assembleLayout(layoutData: VgData[]): VgData[] {
+  public assembleLayout(): VgLayout {
+    return null;
+  }
+
+  public assembleLayoutData(layoutData: VgData[]): VgData[] {
     // Postfix traversal – layout is assembled bottom-up
     this.children.forEach((child) => {
-      child.assembleLayout(layoutData);
+      child.assembleLayoutData(layoutData);
     });
-    return assembleLayout(this, layoutData);
+    return assembleLayoutData(this, layoutData);
   }
 
   public assembleMarks(): any[] {

@@ -73,7 +73,7 @@ function assemble(model: Model, topLevelProperties: TopLevelProperties) {
     },{
       data: [].concat(
         model.assembleData(),
-        model.assembleLayout([]),
+        model.assembleLayoutData([]),
         model.assembleSelectionData([])
       ),
       marks: [assembleRootGroup(model)]

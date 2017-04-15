@@ -11,7 +11,7 @@ import {BaseSpec} from '../spec';
 import {StackProperties} from '../stack';
 import {Transform} from '../transform';
 import {Dict, extend, vals} from '../util';
-import {VgAxis, VgData, VgEncodeEntry, VgLegend, VgScale} from '../vega.schema';
+import {VgAxis, VgData, VgEncodeEntry, VgLayout, VgLegend, VgScale} from '../vega.schema';
 
 import {DataComponent} from './data/index';
 import {LayoutComponent} from './layout';
@@ -144,6 +144,7 @@ export abstract class Model {
 
   public abstract parseSelection(): void;
 
+  // TODO: remove
   public abstract parseLayoutData(): void;
 
   public abstract parseScale(): void;
@@ -162,7 +163,10 @@ export abstract class Model {
   public abstract assembleSelectionData(data: VgData[]): VgData[];
   public abstract assembleData(): VgData[];
 
-  public abstract assembleLayout(layoutData: VgData[]): VgData[];
+  public abstract assembleLayout(): VgLayout;
+
+  // TODO: remove
+  public abstract assembleLayoutData(layoutData: VgData[]): VgData[];
 
   public assembleScales(): VgScale[] {
     return assembleScale(this);
@@ -184,6 +188,11 @@ export abstract class Model {
     const signals = this.assembleSignals(group.signals || []);
     if (signals.length > 0) {
       group.signals = signals;
+    }
+
+    const layout = this.assembleLayout();
+    if (layout) {
+      group.layout = layout;
     }
 
     group.marks = this.assembleMarks();

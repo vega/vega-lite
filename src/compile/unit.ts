@@ -11,14 +11,14 @@ import {SelectionDef} from '../selection';
 import {UnitSpec} from '../spec';
 import {stack, StackProperties} from '../stack';
 import {Dict, duplicate, extend, vals} from '../util';
-import {VgData} from '../vega.schema';
+import {VgData, VgLayout} from '../vega.schema';
 import {parseAxisComponent} from './axis/parse';
 import {applyConfig} from './common';
 import {assembleData} from './data/assemble';
 import {parseData} from './data/parse';
 import {FacetModel} from './facet';
 import {LayerModel} from './layer';
-import {assembleLayout, parseUnitLayout} from './layout';
+import {assembleLayoutData, parseUnitLayout} from './layout';
 import {parseLegendComponent} from './legend/parse';
 import {initEncoding, initMarkDef} from './mark/init';
 import {parseMark} from './mark/mark';
@@ -254,8 +254,13 @@ export class UnitModel extends Model {
     return assembleSelectionData(this, data);
   }
 
-  public assembleLayout(layoutData: VgData[]): VgData[] {
-    return assembleLayout(this, layoutData);
+  public assembleLayout(): VgLayout {
+    return null;
+  }
+
+
+  public assembleLayoutData(layoutData: VgData[]): VgData[] {
+    return assembleLayoutData(this, layoutData);
   }
 
   public assembleMarks() {
