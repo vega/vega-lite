@@ -292,18 +292,24 @@ export function assembleData(roots: SourceNode[]): VgData[] {
   const data: VgData[] = [];
 
   roots.forEach(removeUnnecessaryNodes);
+
+  // remove source nodes that don't have any children because they also don't have output nodes
+  const filteredRoots = roots.filter(r => !(r instanceof SourceNode && !r.parent && r.numChildren() === 0));
+
+  getLeaves(filteredRoots).forEach(optimizeFromLeaves(optimizers.removeUnusedSubtrees));
+
   // If possib, move parse up to next to sources
-  getLeaves(roots).forEach(optimizeFromLeaves(optimizers.parse));
+  getLeaves(filteredRoots).forEach(optimizeFromLeaves(optimizers.parse));
 
-  roots.forEach(moveFacetDown);
+  filteredRoots.forEach(moveFacetDown);
 
-  // roots.forEach(debug);
+  // filteredRoots.forEach(debug);
 
   const walkTree = makeWalkTree(data);
 
   let sourceIndex = 0;
 
-  roots.forEach(root => {
+  filteredRoots.forEach(root => {
     // assign a name if the source does not have a name yet
     if (!root.hasName()) {
       root.dataName = `source_${sourceIndex++}`;

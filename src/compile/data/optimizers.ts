@@ -1,7 +1,7 @@
 import {hasIntersection} from '../../util';
 import {AggregateNode} from './aggregate';
 import {BinNode} from './bin';
-import {DataFlowNode} from './dataflow';
+import {DataFlowNode, OutputNode} from './dataflow';
 import {FacetNode} from './facet';
 import {ParseNode} from './formatparse';
 import {NullFilterNode} from './nullfilter';
@@ -18,7 +18,7 @@ export function optimizeFromLeaves(f: (node: DataFlowNode) => void) {
     if (node.parent instanceof SourceNode) {
       return;
     } else if (!node || !node.parent) {
-      throw new Error('A source node cannot have parents and roots haev to be source nodes.');
+      throw new Error('Bad state: a source node cannot have parents and roots have to be source nodes.');
     }
 
     const next = node.parent;
@@ -29,6 +29,10 @@ export function optimizeFromLeaves(f: (node: DataFlowNode) => void) {
   return optimizeNextFromLeaves;
 }
 
+/**
+ * Move parse nodes all the way up.
+ * TODO: only move until there is a conflict.
+ */
 export function parse(node: DataFlowNode) {
   const parent = node.parent;
 
@@ -39,5 +43,20 @@ export function parse(node: DataFlowNode) {
     } else {
       node.swapWithParent();
     }
+  }
+}
+
+/**
+ * Repeatedly remove leaf nodes that are not output nodes.
+ * The reason is that we don't need subtrees that don't have any output nodes.
+ */
+export function removeUnusedSubtrees(node: DataFlowNode) {
+  const parent = node.parent;
+
+  if (node instanceof OutputNode || node.numChildren() > 0) {
+    return;
+  } else {
+    node.remove();
+    removeUnusedSubtrees(parent);
   }
 }
