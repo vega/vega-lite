@@ -12,11 +12,11 @@ import {UnitSpec} from '../spec';
 import {stack, StackProperties} from '../stack';
 import {Dict, duplicate, extend, vals} from '../util';
 import {VgData} from '../vega.schema';
-
 import {parseAxisComponent} from './axis/parse';
 import {applyConfig} from './common';
 import {assembleData} from './data/assemble';
 import {parseData} from './data/parse';
+import {FacetModel} from './facet';
 import {assembleLayout, parseUnitLayout} from './layout';
 import {parseLegendComponent} from './legend/parse';
 import {initEncoding, initMarkDef} from './mark/init';
@@ -93,7 +93,7 @@ export class UnitModel extends Model {
     let ancestor = this.parent;
     let hasFacetAncestor = false;
     while (ancestor !== null) {
-      if (ancestor.isFacet()) {
+      if (ancestor instanceof FacetModel) {
         hasFacetAncestor = true;
         break;
       }
