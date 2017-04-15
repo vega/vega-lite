@@ -171,6 +171,9 @@ export function assembleUnitMarks(model: UnitModel, marks: any[]): any[] {
     });
   });
 
+  // In a layered spec, we want to clip all layers together rather than
+  // only the layer within which the selection is defined. Propagate
+  // our assembled state up and let the LayerModel make the right call.
   if (model.parent && model.parent instanceof LayerModel) {
     return [selMarks, clippedGroup];
   } else {

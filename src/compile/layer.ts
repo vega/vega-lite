@@ -16,7 +16,7 @@ import {parseData} from './data/parse';
 import {assembleLayout, parseLayerLayout} from './layout';
 import {Model} from './model';
 import {unionDomains} from './scale/domain';
-import {assembleLayerMarks} from './selection/selection';
+import {assembleLayerMarks as assembleLayeredSelectionMarks} from './selection/selection';
 import {UnitModel} from './unit';
 
 export class LayerModel extends Model {
@@ -71,6 +71,9 @@ export class LayerModel extends Model {
   }
 
   public parseSelection() {
+    // Merge selections up the hierarchy so that they may be referenced
+    // across unit specs. Persist their definitions within each child
+    // to assemble signals which remain within output Vega unit groups.
     this.component.selection = {};
     this.children.forEach(child => {
       child.parseSelection();
@@ -212,8 +215,7 @@ export class LayerModel extends Model {
   }
 
   public assembleMarks(): any[] {
-    // only children have marks
-    return assembleLayerMarks(this, flatten(this.children.map((child) => {
+    return assembleLayeredSelectionMarks(this, flatten(this.children.map((child) => {
       return child.assembleMarks();
     })));
   }
