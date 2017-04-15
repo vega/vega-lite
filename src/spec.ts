@@ -187,7 +187,7 @@ function normalizeFacetedUnit(spec: FacetedUnitSpec, config: Config): FacetSpec 
   const {row: row, column: column, ...encoding} = spec.encoding;
 
   // Mark and encoding should be moved into the inner spec
-  const {mark: mark, encoding: _, ...outerSpec} = spec;
+  const {mark: mark, selection: selection, encoding: _, ...outerSpec} = spec;
 
   return {
     ...outerSpec,
@@ -196,6 +196,7 @@ function normalizeFacetedUnit(spec: FacetedUnitSpec, config: Config): FacetSpec 
       ...(column ? {column}: {}),
     },
     spec: normalizeNonFacetUnit({
+      selection,
       mark,
       encoding
     }, config)

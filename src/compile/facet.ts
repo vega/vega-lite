@@ -134,8 +134,8 @@ export class FacetModel extends Model {
   }
 
   public parseSelection() {
-    // TODO: @arvind can write this
-    // We might need to split this into compileSelectionData and compileSelectionSignals?
+    this.child.parseSelection();
+    this.component.selection = this.child.component.selection;
   }
 
   public parseLayoutData() {
@@ -253,7 +253,7 @@ export class FacetModel extends Model {
   }
 
   public assembleSelectionData(data: VgData[]): VgData[] {
-    return [];
+    return this.child.assembleSelectionData(data);
   }
 
   public assembleLayout(layoutData: VgData[]): VgData[] {
