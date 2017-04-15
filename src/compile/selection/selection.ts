@@ -171,7 +171,7 @@ export function assembleUnitMarks(model: UnitModel, marks: any[]): any[] {
     });
   });
 
-  if (model.parent && model.parent.isLayer()) {
+  if (model.parent && model.parent instanceof LayerModel) {
     return [selMarks, clippedGroup];
   } else {
     return clipGroup ? clippedGroup(model, selMarks) : selMarks;

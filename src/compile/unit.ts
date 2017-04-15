@@ -17,6 +17,7 @@ import {applyConfig} from './common';
 import {assembleData} from './data/assemble';
 import {parseData} from './data/parse';
 import {FacetModel} from './facet';
+import {LayerModel} from './layer';
 import {assembleLayout, parseUnitLayout} from './layout';
 import {parseLegendComponent} from './legend/parse';
 import {initEncoding, initMarkDef} from './mark/init';
@@ -259,7 +260,7 @@ export class UnitModel extends Model {
 
   public assembleMarks() {
     let marks = this.component.mark || [];
-    if (!this.parent || !this.parent.isLayer()) {
+    if (!this.parent || !(this.parent instanceof LayerModel)) {
       marks = assembleSelectionMarks(this, marks);
     }
 
