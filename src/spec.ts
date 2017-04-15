@@ -196,9 +196,9 @@ function normalizeFacetedUnit(spec: FacetedUnitSpec, config: Config): FacetSpec 
       ...(column ? {column}: {}),
     },
     spec: normalizeNonFacetUnit({
-      selection,
       mark,
-      encoding
+      encoding,
+      ...(selection ? {selection} : {})
     }, config)
   };
 }
