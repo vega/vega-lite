@@ -224,7 +224,7 @@ For a full list of axis configuration, please see the [Axis Config section in th
 {:#legend-config}
 ## Legend Configuration  (`config.legend.*`)
 
-Legend configuration determines default properties for [legends](axis.html).
+Legend configuration determines default properties for [legends](legend.html).
 
 <span class="note-line">__See Code:__
 For a full list of legend configuration and their default values, please see the `LegendConfig` interface and `defaultLegendConfig` in [legend.ts](https://github.com/vega/vega-lite/blob/master/src/legend.ts).
