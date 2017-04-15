@@ -197,147 +197,172 @@
             },
             "marks": [
                 {
-                    "name": "layer_0_marks",
-                    "type": "rule",
-                    "from": {
-                        "data": "data_0"
-                    },
+                    "type": "group",
                     "encode": {
-                        "update": {
-                            "x": {
-                                "scale": "x",
-                                "field": "age"
-                            },
-                            "y": {
-                                "scale": "y",
-                                "field": "min_people"
-                            },
-                            "y2": {
-                                "scale": "y",
-                                "field": "max_people"
-                            },
-                            "stroke": {
-                                "value": "#4c78a8"
-                            }
-                        }
-                    }
-                },
-                {
-                    "name": "layer_1_marks",
-                    "type": "rect",
-                    "role": "tick",
-                    "from": {
-                        "data": "data_1"
-                    },
-                    "encode": {
-                        "update": {
-                            "xc": {
-                                "scale": "x",
-                                "field": "age"
-                            },
-                            "yc": {
-                                "scale": "y",
-                                "field": "min_people"
-                            },
+                        "enter": {
                             "width": {
-                                "value": 5
+                                "field": {
+                                    "group": "width"
+                                }
                             },
                             "height": {
-                                "value": 1
+                                "field": {
+                                    "group": "height"
+                                }
                             },
                             "fill": {
-                                "value": "#4c78a8"
+                                "value": "transparent"
+                            },
+                            "clip": {
+                                "value": true
                             }
                         }
-                    }
-                },
-                {
-                    "name": "layer_2_marks",
-                    "type": "rect",
-                    "role": "tick",
-                    "from": {
-                        "data": "data_2"
                     },
-                    "encode": {
-                        "update": {
-                            "xc": {
-                                "scale": "x",
-                                "field": "age"
+                    "marks": [
+                        {
+                            "name": "layer_0_marks",
+                            "type": "rule",
+                            "from": {
+                                "data": "data_0"
                             },
-                            "yc": {
-                                "scale": "y",
-                                "field": "max_people"
+                            "encode": {
+                                "update": {
+                                    "x": {
+                                        "scale": "x",
+                                        "field": "age"
+                                    },
+                                    "y": {
+                                        "scale": "y",
+                                        "field": "min_people"
+                                    },
+                                    "y2": {
+                                        "scale": "y",
+                                        "field": "max_people"
+                                    },
+                                    "stroke": {
+                                        "value": "#4c78a8"
+                                    }
+                                }
+                            }
+                        },
+                        {
+                            "name": "layer_1_marks",
+                            "type": "rect",
+                            "role": "tick",
+                            "from": {
+                                "data": "data_1"
                             },
-                            "width": {
-                                "value": 5
+                            "encode": {
+                                "update": {
+                                    "xc": {
+                                        "scale": "x",
+                                        "field": "age"
+                                    },
+                                    "yc": {
+                                        "scale": "y",
+                                        "field": "min_people"
+                                    },
+                                    "width": {
+                                        "value": 5
+                                    },
+                                    "height": {
+                                        "value": 1
+                                    },
+                                    "fill": {
+                                        "value": "#4c78a8"
+                                    }
+                                }
+                            }
+                        },
+                        {
+                            "name": "layer_2_marks",
+                            "type": "rect",
+                            "role": "tick",
+                            "from": {
+                                "data": "data_2"
                             },
-                            "height": {
-                                "value": 1
+                            "encode": {
+                                "update": {
+                                    "xc": {
+                                        "scale": "x",
+                                        "field": "age"
+                                    },
+                                    "yc": {
+                                        "scale": "y",
+                                        "field": "max_people"
+                                    },
+                                    "width": {
+                                        "value": 5
+                                    },
+                                    "height": {
+                                        "value": 1
+                                    },
+                                    "fill": {
+                                        "value": "#4c78a8"
+                                    }
+                                }
+                            }
+                        },
+                        {
+                            "name": "layer_3_marks",
+                            "type": "rect",
+                            "role": "bar",
+                            "from": {
+                                "data": "data_3"
                             },
-                            "fill": {
-                                "value": "#4c78a8"
+                            "encode": {
+                                "update": {
+                                    "xc": {
+                                        "scale": "x",
+                                        "field": "age"
+                                    },
+                                    "width": {
+                                        "value": 5
+                                    },
+                                    "y": {
+                                        "scale": "y",
+                                        "field": "q1_people"
+                                    },
+                                    "y2": {
+                                        "scale": "y",
+                                        "field": "q3_people"
+                                    },
+                                    "fill": {
+                                        "value": "#4c78a8"
+                                    }
+                                }
+                            }
+                        },
+                        {
+                            "name": "layer_4_marks",
+                            "type": "rect",
+                            "role": "tick",
+                            "from": {
+                                "data": "data_4"
+                            },
+                            "encode": {
+                                "update": {
+                                    "xc": {
+                                        "scale": "x",
+                                        "field": "age"
+                                    },
+                                    "yc": {
+                                        "scale": "y",
+                                        "field": "median_people"
+                                    },
+                                    "width": {
+                                        "value": 5
+                                    },
+                                    "height": {
+                                        "value": 1
+                                    },
+                                    "fill": {
+                                        "value": "white"
+                                    }
+                                }
                             }
                         }
-                    }
-                },
-                {
-                    "name": "layer_3_marks",
-                    "type": "rect",
-                    "role": "bar",
-                    "from": {
-                        "data": "data_3"
-                    },
-                    "encode": {
-                        "update": {
-                            "xc": {
-                                "scale": "x",
-                                "field": "age"
-                            },
-                            "width": {
-                                "value": 5
-                            },
-                            "y": {
-                                "scale": "y",
-                                "field": "q1_people"
-                            },
-                            "y2": {
-                                "scale": "y",
-                                "field": "q3_people"
-                            },
-                            "fill": {
-                                "value": "#4c78a8"
-                            }
-                        }
-                    }
-                },
-                {
-                    "name": "layer_4_marks",
-                    "type": "rect",
-                    "role": "tick",
-                    "from": {
-                        "data": "data_4"
-                    },
-                    "encode": {
-                        "update": {
-                            "xc": {
-                                "scale": "x",
-                                "field": "age"
-                            },
-                            "yc": {
-                                "scale": "y",
-                                "field": "median_people"
-                            },
-                            "width": {
-                                "value": 5
-                            },
-                            "height": {
-                                "value": 1
-                            },
-                            "fill": {
-                                "value": "white"
-                            }
-                        }
-                    }
+                    ]
                 }
             ],
             "scales": [

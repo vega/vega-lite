@@ -17,6 +17,7 @@ import {applyConfig} from './common';
 import {assembleData} from './data/assemble';
 import {parseData} from './data/parse';
 import {FacetModel} from './facet';
+import {LayerModel} from './layer';
 import {assembleLayout, parseUnitLayout} from './layout';
 import {parseLegendComponent} from './legend/parse';
 import {initEncoding, initMarkDef} from './mark/init';
@@ -24,7 +25,7 @@ import {parseMark} from './mark/mark';
 import {Model} from './model';
 import initScale from './scale/init';
 import parseScaleComponent from './scale/parse';
-import {assembleUnitData as assembleSelectionData, assembleUnitMarks as assembleSelectionMarks, assembleUnitSignals, parseUnitSelection} from './selection/selection';
+import {assembleUnitData as assembleSelectionData, assembleUnitMarks as assembleUnitSelectionMarks, assembleUnitSignals, parseUnitSelection} from './selection/selection';
 
 /**
  * Internal model of Vega-Lite specification for the compiler.
@@ -259,7 +260,13 @@ export class UnitModel extends Model {
 
   public assembleMarks() {
     let marks = this.component.mark || [];
-    marks = assembleSelectionMarks(this, marks);
+
+    // If this unit is part of a layer, selections should augment
+    // all in concert rather than each unit individually. This
+    // ensures correct interleaving of clipping and brushed marks.
+    if (!this.parent || !(this.parent instanceof LayerModel)) {
+      marks = assembleUnitSelectionMarks(this, marks);
+    }
 
     return marks.map(this.correctDataNames);
   }
