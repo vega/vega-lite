@@ -1,3 +1,4 @@
+import { LayerModel } from 'vega-lite/build/src/compile/layer';
 import {Axis} from '../axis';
 import {Channel, NONSPATIAL_SCALE_CHANNELS, UNIT_CHANNELS, UNIT_SCALE_CHANNELS, X, X2,  Y, Y2} from '../channel';
 import {CellConfig, Config} from '../config';
