@@ -14,6 +14,17 @@ images:
  - spec: bar_grouped
  - spec: stacked_bar_weather
  - spec: trellis_bar_histogram
+ - spec: area
+ - spec: square
+ - spec: stacked_bar_v
+ - spec: text_scatter_colored
+ - spec: scatter_opacity
+ - spec: trellis_anscombe
+ - spec: scatter_binned_opacity
+ - spec: rect_heatmap
+ - spec: panzoom_scatter
+ - spec: overlay_area_full
+ - spec: query_widgets
 
 ---
 
