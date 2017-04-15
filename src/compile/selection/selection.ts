@@ -80,7 +80,6 @@ export function parseUnitSelection(model: UnitModel, selDefs: Dict<SelectionDef>
       name: model.getName(name),
       events: isString(selDef.on) ? parseSelector(selDef.on, 'scope') : selDef.on,
       domain: 'data' as SelectionDomain, // TODO: Support def.domain
-      resolve: 'union' as SelectionResolutions
     }) as SelectionComponent;
 
     forEachTransform(selCmpt, txCompiler => {
@@ -192,12 +191,12 @@ export function assembleLayerMarks(model: LayerModel, marks: any[]): any[] {
 }
 
 const PREDICATES_OPS = {
-  'single': '"intersect", "all"',
+  'global': '"union", "all"',
   'independent': '"intersect", "unit"',
   'union': '"union", "all"',
   'union_others': '"union", "others"',
   'intersect': '"intersect", "all"',
-  'intersect_others': '"intersect", "others'
+  'intersect_others': '"intersect", "others"'
 };
 
 export function predicate(selCmpt: SelectionComponent, datum?: string): string {

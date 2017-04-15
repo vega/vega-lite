@@ -1,8 +1,8 @@
 import {Channel, X, Y} from '../../channel';
 import {warn} from '../../log';
-import {extend, stringValue} from '../../util';
+import {extend, stringValue, keys} from '../../util';
 import {UnitModel} from '../unit';
-import {channelSignalName, invert as invertFn, SelectionCompiler, SelectionComponent, TUPLE} from './selection';
+import {channelSignalName, invert as invertFn, SelectionCompiler, SelectionComponent, TUPLE, STORE} from './selection';
 import scales from './transforms/scales';
 
 export const BRUSH = '_brush',
@@ -67,12 +67,15 @@ const interval:SelectionCompiler = {
 
   modifyExpr: function(model, selCmpt) {
     const tpl = selCmpt.name + TUPLE;
-    return `${tpl}, {unit: ${tpl}.unit}`;
+    return tpl + ', ' +
+      (selCmpt.resolve === 'global' ? 'true' : `{unit: ${tpl}.unit}`);
   },
 
   marks: function(model, selCmpt, marks) {
     const name = selCmpt.name,
-        {x, y} = projections(selCmpt);
+        {x, y} = projections(selCmpt),
+        tpl = name + TUPLE,
+        store = `data(${stringValue(name + STORE)})`;
 
     // Do not add a brush if we're binding to scales.
     if (scales.has(selCmpt)) {
@@ -94,8 +97,17 @@ const interval:SelectionCompiler = {
 
       y2: extend({}, y !== null ?
         {scale: model.scaleName(Y), signal: `${name}[${y}].extent[1]`} :
-        {field: {group: 'height'}}),
+        {field: {group: 'height'}})
     };
+
+    if (selCmpt.resolve === 'global') {
+      keys(update).forEach(function(key) {
+        update[key] = [{
+          test: `${store}.length && ${tpl} && ${tpl}.unit === ${store}[0].unit`,
+          ...update[key]
+        }, {value: 0}]
+      });
+    }
 
     return [{
       name: undefined,
