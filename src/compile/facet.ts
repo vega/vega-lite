@@ -17,7 +17,8 @@ import {
   isFieldRefUnionDomain,
   VgData,
   VgDataRef,
-  VgEncodeEntry
+  VgEncodeEntry,
+  VgLayout
 } from '../vega.schema';
 import {parseAxisComponent, parseGridAxis, parseMainAxis} from './axis/parse';
 import {gridShow} from './axis/rules';
@@ -28,8 +29,6 @@ import {assembleLayoutData, parseFacetLayout} from './layout';
 import {Model} from './model';
 import initScale from './scale/init';
 import parseScaleComponent from './scale/parse';
-import {VgLayout} from '../vega.schema';
-
 
 export class FacetModel extends Model {
   public readonly facet: Facet;
@@ -261,8 +260,11 @@ export class FacetModel extends Model {
   }
 
   public assembleLayout(): VgLayout {
-    // TODO: add layout
-    return null;
+    return {
+      padding: {row:5, header: -1}, // TODO: allow customizing padding
+      columns: 1, // FIXME: Need to point to signal that stores column's cardinality
+      bounds: 'full' // TODO:
+    };
   }
 
   public assembleLayoutData(layoutData: VgData[]): VgData[] {
@@ -328,20 +330,6 @@ function getFacetGroupProperties(model: FacetModel) {
   const mergedCellConfig = extend({}, child.config.cell, child.config.facet.cell);
 
   return extend({
-      x: model.channelHasField(COLUMN) ? {
-          scale: model.scaleName(COLUMN),
-          field: model.field(COLUMN),
-          // offset by the spacing / 2
-          offset: model.spacing(COLUMN) / 2
-        } : {value: model.config.scale.facetSpacing / 2},
-
-      y: model.channelHasField(ROW) ? {
-        scale: model.scaleName(ROW),
-        field: model.field(ROW),
-        // offset by the spacing / 2
-        offset: model.spacing(ROW) / 2
-      } : {value: model.config.scale.facetSpacing / 2},
-
       width: {field: {parent: model.child.sizeName('width')}},
       height: {field: {parent: model.child.sizeName('height')}}
     },
@@ -383,10 +371,14 @@ export function getSharedAxisGroup(model: FacetModel, channel: 'x' | 'y'): VgEnc
   const isX = channel === 'x' ;
   const facetChannel = isX ? 'column' : 'row';
   const hasFacet = !!model.facet[facetChannel];
+  const axis = parseMainAxis(channel, model.child);
+
+  const role = facetChannel + '-' + (contains(['left', 'top'], axis.orient) ? 'header': 'footer');
 
   const axesGroup: VgEncodeEntry = {
     name: model.getName(channel + '-axes'),
-    type: 'group'
+    type: 'group',
+    role
   };
 
   if (hasFacet) {
@@ -401,38 +393,19 @@ export function getSharedAxisGroup(model: FacetModel, channel: 'x' | 'y'): VgEnc
     axesGroup.encode = {
       update: {
         width: {field: {parent: model.child.sizeName('width')}},
-        height: {field: {group: 'height'}},
-        x: hasFacet ? {
-          scale: model.scaleName(COLUMN),
-          field: model.field(COLUMN),
-          // offset by the spacing
-          offset: model.spacing(COLUMN) / 2
-        } : {
-          // TODO: support custom spacing here
-          // offset by the spacing
-          value: model.config.scale.facetSpacing / 2
-        }
+        height: {field: {group: 'height'}}
       }
     };
   } else {
     axesGroup.encode = {
       update: {
         width: {field: {group: 'width'}},
-        height: {field: {parent: model.child.sizeName('height')}},
-        y: hasFacet ? {
-          scale: model.scaleName(ROW),
-          field: model.field(ROW),
-          // offset by the spacing
-          offset: model.spacing(ROW) / 2
-        } : {
-          // offset by the spacing
-          value: model.config.scale.facetSpacing / 2
-        }
+        height: {field: {parent: model.child.sizeName('height')}}
       }
     };
   }
 
-  axesGroup.axes = [parseMainAxis(channel, model.child)];
+  axesGroup.axes = [axis];
   return axesGroup;
 }
 

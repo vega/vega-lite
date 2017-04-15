@@ -8,7 +8,7 @@ import {Scale} from '../scale';
 import {LayerSpec} from '../spec';
 import {StackProperties} from '../stack';
 import {Dict, flatten, keys, vals} from '../util';
-import {isSignalRefDomain, VgData, VgEncodeEntry, VgScale, VgLayout} from '../vega.schema';
+import {isSignalRefDomain, VgData, VgEncodeEntry, VgLayout, VgScale} from '../vega.schema';
 
 import {applyConfig, buildModel} from './common';
 import {assembleData} from './data/assemble';

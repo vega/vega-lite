@@ -207,10 +207,10 @@ describe('compile/facet', () => {
           assert.deepEqual(xSharedAxisGroup.from, {data: 'column'});
         });
 
-        it('should have width = child width, height = group height, x = column field', () => {
+        it('should have width = child width, height = group height and have no x', () => {
           assert.deepEqual(xSharedAxisGroup.encode.update.width, {field: {parent: 'child_width'}});
           assert.deepEqual(xSharedAxisGroup.encode.update.height, {field: {group: 'height'}});
-          assert.deepEqual(xSharedAxisGroup.encode.update.x, {scale: 'column', field: 'a', offset: 8});
+          assert.equal(xSharedAxisGroup.encode.update.x, undefined);
         });
       });
 
@@ -222,10 +222,10 @@ describe('compile/facet', () => {
           assert.equal(ySharedAxisGroup.from, undefined);
         });
 
-        it('should have height = child height, width = group width, y = defaultFacetSpacing / 2.', () => {
+        it('should have height = child height, width = group width, and have no y.', () => {
           assert.deepEqual(ySharedAxisGroup.encode.update.height, {field: {parent: 'child_height'}});
           assert.deepEqual(ySharedAxisGroup.encode.update.width, {field: {group: 'width'}});
-          assert.deepEqual(ySharedAxisGroup.encode.update.y, {value: 8});
+          assert.deepEqual(ySharedAxisGroup.encode.update.y, undefined);
         });
       });
     });
@@ -257,10 +257,10 @@ describe('compile/facet', () => {
           assert.deepEqual(ySharedAxisGroup.from, {data: 'row'});
         });
 
-        it('should have height = child height, width = group width, y= row field', () => {
+        it('should have height = child height, width = group width, and have no y.', () => {
           assert.deepEqual(ySharedAxisGroup.encode.update.height, {field: {parent: 'child_height'}});
           assert.deepEqual(ySharedAxisGroup.encode.update.width, {field: {group: 'width'}});
-          assert.deepEqual(ySharedAxisGroup.encode.update.y, {scale: 'row', field: 'a', offset: 8});
+          assert.deepEqual(ySharedAxisGroup.encode.update.y, undefined);
         });
       });
 
@@ -272,10 +272,10 @@ describe('compile/facet', () => {
           assert.equal(xSharedAxisGroup.from, undefined);
         });
 
-        it('should have width = child width, height = group height, x, x = defaultFacetSpacing / 2.', () => {
+        it('should have width = child width, height = group height, x, and have no y.', () => {
           assert.deepEqual(xSharedAxisGroup.encode.update.width, {field: {parent: 'child_width'}});
           assert.deepEqual(xSharedAxisGroup.encode.update.height, {field: {group: 'height'}});
-          assert.deepEqual(xSharedAxisGroup.encode.update.x, {value: 8});
+          assert.deepEqual(xSharedAxisGroup.encode.update.x, undefined);
         });
       });
     });

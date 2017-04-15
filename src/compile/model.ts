@@ -11,7 +11,7 @@ import {BaseSpec} from '../spec';
 import {StackProperties} from '../stack';
 import {Transform} from '../transform';
 import {Dict, extend, vals} from '../util';
-import {VgAxis, VgData, VgEncodeEntry, VgLegend, VgScale, VgLayout} from '../vega.schema';
+import {VgAxis, VgData, VgEncodeEntry, VgLayout, VgLegend, VgScale} from '../vega.schema';
 
 import {DataComponent} from './data/index';
 import {LayoutComponent} from './layout';
