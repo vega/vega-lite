@@ -134,6 +134,9 @@ export class FacetModel extends Model {
   }
 
   public parseSelection() {
+    // As a facet has a single child, the selection components are the same.
+    // The child maintains its selections to assemble signals, which remain
+    // within its unit.
     this.child.parseSelection();
     this.component.selection = this.child.component.selection;
   }

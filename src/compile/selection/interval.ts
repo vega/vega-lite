@@ -100,6 +100,10 @@ const interval:SelectionCompiler = {
         {field: {group: 'height'}})
     };
 
+    // If the selection is resolved to global, only a single interval is in
+    // the store. Wrap brush mark's encodings with a production rule to test
+    // this based on the `unit` property. Hide the brush mark if it corresponds
+    // to a unit different from the one in the store.
     if (selCmpt.resolve === 'global') {
       keys(update).forEach(function(key) {
         update[key] = [{

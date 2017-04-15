@@ -269,7 +269,7 @@
                             "events": {
                                 "signal": "layer_0_grid"
                             },
-                            "update": "modify(\"layer_0_grid_store\", layer_0_grid_tuple, {unit: layer_0_grid_tuple.unit})"
+                            "update": "modify(\"layer_0_grid_store\", layer_0_grid_tuple, true)"
                         }
                     ]
                 },
@@ -544,7 +544,7 @@
                             "events": {
                                 "signal": "layer_1_brush"
                             },
-                            "update": "modify(\"layer_1_brush_store\", layer_1_brush_tuple, {unit: layer_1_brush_tuple.unit})"
+                            "update": "modify(\"layer_1_brush_store\", layer_1_brush_tuple, true)"
                         }
                     ]
                 }
@@ -582,22 +582,46 @@
                                     }
                                 },
                                 "update": {
-                                    "x": {
-                                        "scale": "x",
-                                        "signal": "layer_1_brush[0].extent[0]"
-                                    },
-                                    "x2": {
-                                        "scale": "x",
-                                        "signal": "layer_1_brush[0].extent[1]"
-                                    },
-                                    "y": {
-                                        "scale": "y",
-                                        "signal": "layer_1_brush[1].extent[0]"
-                                    },
-                                    "y2": {
-                                        "scale": "y",
-                                        "signal": "layer_1_brush[1].extent[1]"
-                                    }
+                                    "x": [
+                                        {
+                                            "test": "data(\"layer_1_brush_store\").length && layer_1_brush_tuple && layer_1_brush_tuple.unit === data(\"layer_1_brush_store\")[0].unit",
+                                            "scale": "x",
+                                            "signal": "layer_1_brush[0].extent[0]"
+                                        },
+                                        {
+                                            "value": 0
+                                        }
+                                    ],
+                                    "x2": [
+                                        {
+                                            "test": "data(\"layer_1_brush_store\").length && layer_1_brush_tuple && layer_1_brush_tuple.unit === data(\"layer_1_brush_store\")[0].unit",
+                                            "scale": "x",
+                                            "signal": "layer_1_brush[0].extent[1]"
+                                        },
+                                        {
+                                            "value": 0
+                                        }
+                                    ],
+                                    "y": [
+                                        {
+                                            "test": "data(\"layer_1_brush_store\").length && layer_1_brush_tuple && layer_1_brush_tuple.unit === data(\"layer_1_brush_store\")[0].unit",
+                                            "scale": "y",
+                                            "signal": "layer_1_brush[1].extent[0]"
+                                        },
+                                        {
+                                            "value": 0
+                                        }
+                                    ],
+                                    "y2": [
+                                        {
+                                            "test": "data(\"layer_1_brush_store\").length && layer_1_brush_tuple && layer_1_brush_tuple.unit === data(\"layer_1_brush_store\")[0].unit",
+                                            "scale": "y",
+                                            "signal": "layer_1_brush[1].extent[1]"
+                                        },
+                                        {
+                                            "value": 0
+                                        }
+                                    ]
                                 }
                             }
                         },
@@ -695,22 +719,46 @@
                                     }
                                 },
                                 "update": {
-                                    "x": {
-                                        "scale": "x",
-                                        "signal": "layer_1_brush[0].extent[0]"
-                                    },
-                                    "x2": {
-                                        "scale": "x",
-                                        "signal": "layer_1_brush[0].extent[1]"
-                                    },
-                                    "y": {
-                                        "scale": "y",
-                                        "signal": "layer_1_brush[1].extent[0]"
-                                    },
-                                    "y2": {
-                                        "scale": "y",
-                                        "signal": "layer_1_brush[1].extent[1]"
-                                    }
+                                    "x": [
+                                        {
+                                            "test": "data(\"layer_1_brush_store\").length && layer_1_brush_tuple && layer_1_brush_tuple.unit === data(\"layer_1_brush_store\")[0].unit",
+                                            "scale": "x",
+                                            "signal": "layer_1_brush[0].extent[0]"
+                                        },
+                                        {
+                                            "value": 0
+                                        }
+                                    ],
+                                    "x2": [
+                                        {
+                                            "test": "data(\"layer_1_brush_store\").length && layer_1_brush_tuple && layer_1_brush_tuple.unit === data(\"layer_1_brush_store\")[0].unit",
+                                            "scale": "x",
+                                            "signal": "layer_1_brush[0].extent[1]"
+                                        },
+                                        {
+                                            "value": 0
+                                        }
+                                    ],
+                                    "y": [
+                                        {
+                                            "test": "data(\"layer_1_brush_store\").length && layer_1_brush_tuple && layer_1_brush_tuple.unit === data(\"layer_1_brush_store\")[0].unit",
+                                            "scale": "y",
+                                            "signal": "layer_1_brush[1].extent[0]"
+                                        },
+                                        {
+                                            "value": 0
+                                        }
+                                    ],
+                                    "y2": [
+                                        {
+                                            "test": "data(\"layer_1_brush_store\").length && layer_1_brush_tuple && layer_1_brush_tuple.unit === data(\"layer_1_brush_store\")[0].unit",
+                                            "scale": "y",
+                                            "signal": "layer_1_brush[1].extent[1]"
+                                        },
+                                        {
+                                            "value": 0
+                                        }
+                                    ]
                                 }
                             }
                         }
