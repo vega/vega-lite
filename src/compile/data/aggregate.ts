@@ -12,6 +12,8 @@ function addDimension(dims: {[field: string]: boolean}, fieldDef: FieldDef) {
     dims[field(fieldDef, {binSuffix: 'start'})] = true;
     dims[field(fieldDef, {binSuffix: 'end'})] = true;
 
+    // We need the range only when the user explicitly forces a binned field to be ordinal (range used in axis and legend labels).
+    // We could check whether the axis or legend exists but that seems overkill. In axes and legends, we check hasDiscreteDomain(scaleType).
     if (fieldDef.type === ORDINAL) {
       dims[field(fieldDef, {binSuffix: 'range'})] = true;
     }
