@@ -17,6 +17,7 @@ import {stack} from './stack';
 import {TopLevelProperties} from './toplevelprops';
 import {Transform} from './transform';
 import {contains, duplicate, hash, vals} from './util';
+import { GenericRepeatSpec } from './spec';
 
 export type TopLevel<S extends BaseSpec> = S & TopLevelProperties & {
   /**
@@ -117,6 +118,17 @@ export interface GenericFacetSpec<U extends GenericUnitSpec<any, any>> extends B
 
 export type FacetSpec = GenericFacetSpec<UnitSpec>;
 
+// Repeat
+
+export interface GenericRepeatSpec<U extends GenericUnitSpec<any, any>> extends BaseSpec {
+  repeat: Repeat;
+
+  spec: U;
+}
+
+export type RepeatSpec = GenericRepeatSpec<UnitSpec>;
+export type ExtendedRepeatSpec = GenericRepeatSpec<FacetedUnitSpec>;
+
 export type GenericSpec<U extends GenericUnitSpec<any, any>> = U | GenericLayerSpec<U> | GenericFacetSpec<U>;
 
 export type Spec = GenericSpec<UnitSpec>;
@@ -136,6 +148,10 @@ export function isUnitSpec(spec: GenericSpec<GenericUnitSpec<any, any>>): spec i
 
 export function isLayerSpec(spec: GenericSpec<GenericUnitSpec<any, any>>): spec is GenericLayerSpec<GenericUnitSpec<any, any>> {
   return spec['layer'] !== undefined;
+}
+
+export function isRepeatSpec(spec: ExtendedSpec | Spec): spec is GenericRepeatSpec<GenericUnitSpec<any, any>> {
+  return spec['repeat'] !== undefined;
 }
 
 /**
