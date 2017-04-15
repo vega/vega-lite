@@ -5,6 +5,8 @@ import {GenericUnitSpec, LayerSpec} from './spec';
 export const ERRORBAR: 'error-bar' = 'error-bar';
 export type ERRORBAR = typeof ERRORBAR;
 
+export type CompositeMark = ERRORBAR;
+
 export type UnitNormalizer = (spec: GenericUnitSpec<any, any>)=> LayerSpec;
 
 /**
