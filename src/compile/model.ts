@@ -7,7 +7,7 @@ import {ChannelDef, field, FieldDef, FieldRefOption, isFieldDef} from '../fieldd
 import {Legend} from '../legend';
 import {hasDiscreteDomain, Scale} from '../scale';
 import {SortField, SortOrder} from '../sort';
-import {BaseSpec, UnitSpec} from '../spec';
+import {BaseSpec} from '../spec';
 import {StackProperties} from '../stack';
 import {Transform} from '../transform';
 import {Dict, extend, vals} from '../util';
