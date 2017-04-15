@@ -66,7 +66,7 @@ export class BinNode extends DataFlowNode {
             field: fieldDef.field,
             as: [field(fieldDef, {binSuffix: 'start'}), field(fieldDef, {binSuffix: 'end'})],
             signal: varName(model.getName(`${key}_bins`)),
-            extentSignal: model.getName(key + '_extent')
+            extentSignal: varName(model.getName(key + '_extent'))
           };
         }
 

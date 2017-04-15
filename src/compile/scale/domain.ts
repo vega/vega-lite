@@ -101,7 +101,7 @@ function parseSingleChannelDomain(scale: Scale, model: Model, channel:Channel): 
     };
   } else if (fieldDef.bin) { // bin
     if (isBinScale(scale.type)) {
-      const signal = model.getName(`${binToString(fieldDef.bin)}_${fieldDef.field}_bins`);
+      const signal = varName(model.getName(`${binToString(fieldDef.bin)}_${fieldDef.field}_bins`));
       return {signal: `sequence(${signal}.start, ${signal}.stop + ${signal}.step, ${signal}.step)`};
     }
 
