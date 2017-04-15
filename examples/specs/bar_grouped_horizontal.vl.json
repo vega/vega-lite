@@ -8,9 +8,7 @@
   "mark": "bar",
   "encoding": {
     "row": {
-      "field": "age", "type": "ordinal",
-      "scale": {"spacing": 4},
-      "axis": {"orient": "left", "offset": -8}
+      "field": "age", "type": "ordinal"
     },
     "x": {
       "aggregate": "sum", "field": "people", "type": "quantitative",
