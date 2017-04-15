@@ -1020,6 +1020,9 @@
                 },
                 "on": {
                 },
+                "resolve": {
+                    "$ref": "#/definitions/SelectionResolutions"
+                },
                 "toggle": {
                     "type": [
                         "string",
@@ -3401,6 +3404,9 @@
                 },
                 "on": {
                 },
+                "resolve": {
+                    "$ref": "#/definitions/SelectionResolutions"
+                },
                 "toggle": {
                     "type": [
                         "string",
@@ -3427,6 +3433,17 @@
                 "type"
             ],
             "type": "object"
+        },
+        "SelectionResolutions": {
+            "enum": [
+                "global",
+                "independent",
+                "intersect",
+                "intersect_others",
+                "union",
+                "union_others"
+            ],
+            "type": "string"
         },
         "SelectionTypes": {
             "enum": [

@@ -31,7 +31,8 @@ describe('Interval Selections', function() {
       "type": "interval",
       "on": "[mousedown, mouseup] > mousemove, [keydown, keyup] > keypress",
       "translate": false,
-      "zoom": false
+      "zoom": false,
+      "resolve": "intersect"
     }
   });
 
@@ -224,10 +225,10 @@ describe('Interval Selections', function() {
 
   it('builds modify signals', function() {
     const oneExpr = interval.modifyExpr(model, selCmpts['one']);
-    assert.equal(oneExpr, 'one_tuple, {unit: one_tuple.unit}');
+    assert.equal(oneExpr, 'one_tuple, true');
 
     const twoExpr = interval.modifyExpr(model, selCmpts['two']);
-    assert.equal(twoExpr, 'two_tuple, {unit: two_tuple.unit}');
+    assert.equal(twoExpr, 'two_tuple, true');
 
     const threeExpr = interval.modifyExpr(model, selCmpts['three']);
     assert.equal(threeExpr, 'three_tuple, {unit: three_tuple.unit}');
@@ -273,16 +274,36 @@ describe('Interval Selections', function() {
         "encode": {
           "enter": {"fill": {"value": "#eee"}},
           "update": {
-            "x": {
-              "scale": "x",
-              "signal": "one[0].extent[0]"
-            },
-            "x2": {
-              "scale": "x",
-              "signal": "one[0].extent[1]"
-            },
-            "y": {"value": 0},
-            "y2": {"field": {"group": "height"}}
+            "x": [
+              {
+                "test": "data(\"one_store\").length && one_tuple && one_tuple.unit === data(\"one_store\")[0].unit",
+                "scale": "x",
+                "signal": "one[0].extent[0]"
+              },
+              {"value": 0}
+            ],
+            "x2": [
+              {
+                "test": "data(\"one_store\").length && one_tuple && one_tuple.unit === data(\"one_store\")[0].unit",
+                "scale": "x",
+                "signal": "one[0].extent[1]"
+              },
+              {"value": 0}
+            ],
+            "y": [
+              {
+                "test": "data(\"one_store\").length && one_tuple && one_tuple.unit === data(\"one_store\")[0].unit",
+                "value": 0
+              },
+              {"value": 0}
+            ],
+            "y2": [
+              {
+                "test": "data(\"one_store\").length && one_tuple && one_tuple.unit === data(\"one_store\")[0].unit",
+                "field": {"group": "height"}
+              },
+              {"value": 0}
+            ]
           }
         }
       },
@@ -293,16 +314,36 @@ describe('Interval Selections', function() {
         "encode": {
           "enter": {"fill": {"value": "transparent"}},
           "update": {
-            "x": {
-              "scale": "x",
-              "signal": "one[0].extent[0]"
-            },
-            "x2": {
-              "scale": "x",
-              "signal": "one[0].extent[1]"
-            },
-            "y": {"value": 0},
-            "y2": {"field": {"group": "height"}}
+            "x": [
+              {
+                "test": "data(\"one_store\").length && one_tuple && one_tuple.unit === data(\"one_store\")[0].unit",
+                "scale": "x",
+                "signal": "one[0].extent[0]"
+              },
+              {"value": 0}
+            ],
+            "x2": [
+              {
+                "test": "data(\"one_store\").length && one_tuple && one_tuple.unit === data(\"one_store\")[0].unit",
+                "scale": "x",
+                "signal": "one[0].extent[1]"
+              },
+              {"value": 0}
+            ],
+            "y": [
+              {
+                "test": "data(\"one_store\").length && one_tuple && one_tuple.unit === data(\"one_store\")[0].unit",
+                "value": 0
+              },
+              {"value": 0}
+            ],
+            "y2": [
+              {
+                "test": "data(\"one_store\").length && one_tuple && one_tuple.unit === data(\"one_store\")[0].unit",
+                "field": {"group": "height"}
+              },
+              {"value": 0}
+            ]
           }
         }
       }
