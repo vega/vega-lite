@@ -24,10 +24,11 @@ import {gridShow} from './axis/rules';
 import {buildModel} from './common';
 import {assembleData, assembleFacetData, FACET_SCALE_PREFIX} from './data/assemble';
 import {parseData} from './data/parse';
-import {assembleLayout, parseFacetLayout} from './layout';
+import {assembleLayoutData, parseFacetLayout} from './layout';
 import {Model} from './model';
 import initScale from './scale/init';
 import parseScaleComponent from './scale/parse';
+import {VgLayout} from '../vega.schema';
 
 
 export class FacetModel extends Model {
@@ -259,10 +260,15 @@ export class FacetModel extends Model {
     return this.child.assembleSelectionData(data);
   }
 
-  public assembleLayout(layoutData: VgData[]): VgData[] {
+  public assembleLayout(): VgLayout {
+    // TODO: add layout
+    return null;
+  }
+
+  public assembleLayoutData(layoutData: VgData[]): VgData[] {
     // Postfix traversal – layout is assembled bottom-up
-    this.child.assembleLayout(layoutData);
-    return assembleLayout(this, layoutData);
+    this.child.assembleLayoutData(layoutData);
+    return assembleLayoutData(this, layoutData);
   }
 
   public assembleMarks(): VgEncodeEntry[] {

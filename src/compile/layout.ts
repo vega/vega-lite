@@ -33,7 +33,7 @@ export interface SizeComponent {
   formula: Formula[];
 }
 
-export function assembleLayout(model: Model, layoutData: VgData[]): VgData[] {
+export function assembleLayoutData(model: Model, layoutData: VgData[]): VgData[] {
   const layoutComponent = model.component.layout;
   if (!layoutComponent.width && !layoutComponent.height) {
     return layoutData; // Do nothing

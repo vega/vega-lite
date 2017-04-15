@@ -89,6 +89,22 @@ export type VgScale = {
   zero?: boolean
 };
 
+export type VgLayoutAlign = 'none' | 'each' | 'all';
+
+export type VgLayout = {
+  padding: number | {
+    row?: number,
+    column?: number,
+    header?: number
+  },
+  bounds: 'full' | 'flush',
+  columns: number | {signal: string},
+  align?: VgLayoutAlign | {
+    row: VgLayoutAlign,
+    column: VgLayoutAlign
+  };
+};
+
 export function isDataRefUnionedDomain(domain: VgDomain): domain is DataRefUnionDomain {
   if (!isArray(domain)) {
     return 'fields' in domain && !('data' in domain);
