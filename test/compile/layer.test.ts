@@ -7,9 +7,7 @@ import {parseLayerModel} from '../util';
 describe('Layer', function() {
   it('should say it is layer', function() {
     const model = new LayerModel({layer: []} as LayerSpec, null, null, {});
-    assert(!model.isUnit());
-    assert(!model.isFacet());
-    assert(model.isLayer());
+    assert(model instanceof LayerModel);
   });
 
   describe('merge scale domains', () => {

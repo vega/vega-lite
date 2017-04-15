@@ -17,6 +17,7 @@ import {DataComponent} from './data/index';
 import {LayoutComponent} from './layout';
 import {assembleScale} from './scale/assemble';
 import {SelectionComponent} from './selection/selection';
+import {UnitModel} from './unit';
 
 /**
  * Composable Components that are intermediate results of the parsing phase of the
@@ -226,7 +227,7 @@ export abstract class Model {
 
   public hasDescendantWithFieldOnChannel(channel: Channel) {
     for (const child of this.children) {
-      if (child.isUnit()) {
+      if (child instanceof UnitModel) {
         if (child.channelHasField(channel)) {
           return true;
         }
@@ -366,18 +367,5 @@ export abstract class Model {
     }
 
     return mark;
-  }
-
-  /**
-   * Type checks
-   */
-  public isUnit() {
-    return false;
-  }
-  public isFacet() {
-    return false;
-  }
-  public isLayer() {
-    return false;
   }
 }

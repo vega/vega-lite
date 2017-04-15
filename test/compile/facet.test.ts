@@ -1,15 +1,14 @@
 /* tslint:disable quotemark */
 
 import {assert} from 'chai';
-
-import * as log from '../../src/log';
-
 import {Axis} from '../../src/axis';
 import {ROW, SHAPE} from '../../src/channel';
 import * as facet from '../../src/compile/facet';
+import {FacetModel} from '../../src/compile/facet';
 import {defaultConfig} from '../../src/config';
 import {Facet} from '../../src/facet';
 import {PositionFieldDef} from '../../src/fielddef';
+import * as log from '../../src/log';
 import {POINT} from '../../src/mark';
 import {ORDINAL} from '../../src/type';
 import {parseFacetModel} from '../util';
@@ -23,9 +22,7 @@ describe('FacetModel', function() {
         encoding: {}
       }
     });
-    assert(!model.isUnit());
-    assert(model.isFacet());
-    assert(!model.isLayer());
+    assert(model instanceof FacetModel);
   });
 
   describe('initFacet', () => {
