@@ -1,8 +1,8 @@
 import {Channel, X, Y} from '../../channel';
 import {warn} from '../../log';
-import {extend, stringValue, keys} from '../../util';
+import {extend, keys, stringValue} from '../../util';
 import {UnitModel} from '../unit';
-import {channelSignalName, invert as invertFn, SelectionCompiler, SelectionComponent, TUPLE, STORE} from './selection';
+import {channelSignalName, invert as invertFn, SelectionCompiler, SelectionComponent, STORE, TUPLE} from './selection';
 import scales from './transforms/scales';
 
 export const BRUSH = '_brush',
@@ -105,7 +105,7 @@ const interval:SelectionCompiler = {
         update[key] = [{
           test: `${store}.length && ${tpl} && ${tpl}.unit === ${store}[0].unit`,
           ...update[key]
-        }, {value: 0}]
+        }, {value: 0}];
       });
     }
 
