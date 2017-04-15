@@ -4,7 +4,8 @@ import {field, FieldDef} from '../../fielddef';
 import {hasDiscreteDomain} from '../../scale';
 import {Dict, duplicate, extend, flatten, hash, isBoolean, StringSet, vals, varName} from '../../util';
 import {VgBinTransform, VgTransform} from '../../vega.schema';
-import {Model} from './../model';
+import {ModelWithField} from '../model';
+import {UnitModel} from '../unit';
 import {DataFlowNode} from './dataflow';
 
 
@@ -12,13 +13,14 @@ function numberFormatExpr(expr: string, format: string) {
   return `format(${expr}, '${format}')`;
 }
 
-function rangeFormula(model: Model, fieldDef: FieldDef, channel: Channel) {
-    const discreteDomain = hasDiscreteDomain(model.scale(channel).type);
+function rangeFormula(model: ModelWithField, fieldDef: FieldDef, channel: Channel) {
+    const discreteDomain = model.hasDiscreteDomain(channel);
 
     if (discreteDomain) {
       // read format from axis or legend, if there is no format then use config.numberFormat
-      const format = (model.axis(channel) || model.legend(channel) || {}).format ||
-        model.config.numberFormat;
+
+      const guide = (model instanceof UnitModel) ? (model.axis(channel) || model.legend(channel) || {}) : {};
+      const format = guide.format || model.config.numberFormat;
 
       const startField = field(fieldDef, {datum: true, binSuffix: 'start'});
       const endField = field(fieldDef, {datum: true, binSuffix: 'end'});
@@ -53,7 +55,7 @@ export class BinNode extends DataFlowNode {
     super();
   }
 
-  public static make(model: Model) {
+  public static make(model: ModelWithField) {
     const bins = model.reduceFieldDef((binComponent: Dict<BinComponent>, fieldDef: FieldDef, channel: Channel) => {
       const fieldDefBin = model.fieldDef(channel).bin;
       if (fieldDefBin) {

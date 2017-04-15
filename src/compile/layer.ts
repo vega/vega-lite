@@ -49,20 +49,6 @@ export class LayerModel extends Model {
     });
   }
 
-  public channelHasField(channel: Channel): boolean {
-    // layer does not have any channels
-    return false;
-  }
-
-  public hasDiscreteScale(channel: Channel) {
-    // since we assume shared scales we can just ask the first child
-    return this.children[0].hasDiscreteScale(channel);
-  }
-
-  public fieldDef(channel: Channel): FieldDef {
-    return null; // layer does not have field defs
-  }
-
   public parseData() {
     this.component.data = parseData(this);
     this.children.forEach((child) => {
@@ -222,17 +208,5 @@ export class LayerModel extends Model {
     return assembleLayeredSelectionMarks(this, flatten(this.children.map((child) => {
       return child.assembleMarks();
     })));
-  }
-
-  public channels(): Channel[] {
-    return [];
-  }
-
-  protected getMapping(): any {
-    return null;
-  }
-
-  public isLayer() {
-    return true;
   }
 }

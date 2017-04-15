@@ -26,21 +26,17 @@ import {buildModel} from './common';
 import {assembleData, assembleFacetData, FACET_SCALE_PREFIX} from './data/assemble';
 import {parseData} from './data/parse';
 import {assembleLayoutData, parseFacetLayout} from './layout';
-import {Model} from './model';
+import {Model, ModelWithField} from './model';
 import initScale from './scale/init';
 import parseScaleComponent from './scale/parse';
+import {UnitModel} from './unit';
 
-export class FacetModel extends Model {
+export class FacetModel extends ModelWithField {
   public readonly facet: Facet;
 
   public readonly child: Model;
 
   public readonly children: Model[];
-
-  private readonly _spacing: {
-    row?: number;
-    column?: number;
-  } = {};
 
   constructor(spec: FacetSpec, parent: Model, parentGivenName: string, config: Config) {
     super(spec, parent, parentGivenName, config);
@@ -49,11 +45,7 @@ export class FacetModel extends Model {
     this.children = [child];
 
     const facet  = this.facet = this.initFacet(spec.facet);
-    this.scales  = this.initScalesAndSpacing(facet, this.config);
-    this.axes   = this.initAxis(facet, this.config, child);
-    this.legends = {};
   }
-
 
   private initFacet(facet: Facet) {
     // clone to prevent side effect to the original spec
@@ -64,8 +56,7 @@ export class FacetModel extends Model {
         return normalizedFacet;
       }
 
-      // TODO: array of row / column ?
-      if (fieldDef.field === undefined) { // TODO: datum
+      if (fieldDef.field === undefined) {
         log.warn(log.message.emptyFieldDef(fieldDef, channel));
         return normalizedFacet;
       }
@@ -76,52 +67,12 @@ export class FacetModel extends Model {
     }, {});
   }
 
-  private initScalesAndSpacing(facet: Facet, config: Config): Dict<Scale> {
-    const model = this;
-    return [ROW, COLUMN].reduce(function(_scale, channel) {
-      if (facet[channel]) {
-        _scale[channel] = initScale(
-          channel, facet[channel], config,
-          undefined, // Facet doesn't have one single mark
-          undefined, // TODO(#1647): support width / height here
-          [] // There is no xyRangeSteps here and there is no need to input
-        );
-
-        model._spacing[channel] = spacing(facet[channel].scale || {}, model, config);
-      }
-      return _scale;
-    }, {});
-  }
-
-  private initAxis(facet: Facet, config: Config, child: Model): Dict<Axis> {
-    const model = this;
-    return [ROW, COLUMN].reduce(function(_axis, channel) {
-      if (facet[channel]) {
-        const axisSpec = facet[channel].axis;
-        if (axisSpec !== false) {
-          const axisConfig:any = config.facet !== undefined && config.facet.axis !== undefined? config.facet.axis : {};
-          const modelAxis = _axis[channel] = {
-            ...axisSpec,
-            ...axisConfig
-          };
-
-          if (channel === ROW) {
-            const yAxis: any = child.axis(Y);
-            if (yAxis && yAxis.orient !== 'right' && modelAxis.orient === undefined) {
-              modelAxis.orient = 'right';
-            }
-            if (model.hasDescendantWithFieldOnChannel(X) && modelAxis.labelAngle === undefined) {
-              modelAxis.labelAngle = modelAxis.orient === 'right' ? 90 : 270;
-            }
-          }
-        }
-      }
-      return _axis;
-    }, {});
-  }
-
   public channelHasField(channel: Channel): boolean {
     return !!this.facet[channel];
+  }
+
+  public hasDiscreteDomain(channel: Channel) {
+    return true;
   }
 
   public fieldDef(channel: Channel): FieldDef {
@@ -152,8 +103,7 @@ export class FacetModel extends Model {
 
     child.parseScale();
 
-    // First, add scale for row and column.
-    const scaleComponent = this.component.scales = parseScaleComponent(this);
+    const scaleComponent = this.component.scales = {};
 
     // Then, move shared/union from its child spec.
     keys(child.component.scales).forEach(channel => {
@@ -210,7 +160,8 @@ export class FacetModel extends Model {
 
   public parseAxis() {
     this.child.parseAxis();
-    this.component.axes = parseAxisComponent(this, [ROW, COLUMN]);
+    // FIXME: Correct write parseAxis logic
+    this.component.axes = {};
   }
 
   public parseAxisGroup() {
@@ -298,31 +249,11 @@ export class FacetModel extends Model {
   protected getMapping() {
     return this.facet;
   }
-
-  public spacing(channel: Channel) {
-    return this._spacing[channel];
-  }
-
-  public isFacet() {
-    return true;
-  }
 }
 
 export function hasSubPlotWithXy(model: FacetModel) {
   return model.hasDescendantWithFieldOnChannel('x') ||
     model.hasDescendantWithFieldOnChannel('y');
-}
-
-export function spacing(scale: Scale, model: FacetModel, config: Config) {
-  if (scale.spacing !== undefined) {
-    return scale.spacing;
-  }
-
-  if (!hasSubPlotWithXy(model)) {
-    // If there is no subplot with x/y, it's a simple table so there should be no spacing.
-    return 0;
-  }
-  return config.scale.facetSpacing;
 }
 
 function getFacetGroupProperties(model: FacetModel) {
@@ -344,14 +275,15 @@ function parseAxisGroups(model: FacetModel, channel: 'x' | 'y') {
   let axisGroup: any = null;
 
   const child = model.child;
-  if (child.channelHasField(channel)) {
-    if (child.axis(channel)) {
+  // FIXME support non unit child
+  if (child instanceof UnitModel && child.channelHasField(channel)) {
+    if (child.component.axes[channel]) {
       if (true) { // the channel has shared axes
 
         // add a group for the shared axes
         axisGroup = getSharedAxisGroup(model, channel);
 
-        if (child.axis(channel) && gridShow(child, channel)) { // show inner grid
+        if (child.component.axes[channel] && gridShow(child, channel)) { // show inner grid
           // add inner axis (aka axis that shows only grid to )
           child.component.axes[channel] = [parseGridAxis(channel, child)];
         } else {
@@ -371,7 +303,9 @@ export function getSharedAxisGroup(model: FacetModel, channel: 'x' | 'y'): VgEnc
   const isX = channel === 'x' ;
   const facetChannel = isX ? 'column' : 'row';
   const hasFacet = !!model.facet[facetChannel];
-  const axis = parseMainAxis(channel, model.child);
+
+  // FIXME: we cannot cast like this
+  const axis = parseMainAxis(channel, model.child as UnitModel);
 
   const role = facetChannel + '-' + (contains(['left', 'top'], axis.orient) ? 'header': 'footer');
 

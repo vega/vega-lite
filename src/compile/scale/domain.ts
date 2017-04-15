@@ -22,7 +22,7 @@ import {
 
 import {MAIN, RAW} from '../../data';
 import {varName} from '../../util';
-import {Model} from '../model';
+import {UnitModel} from '../unit';
 
 export function initDomain(domain: Domain, fieldDef: FieldDef, scale: ScaleType, scaleConfig: ScaleConfig) {
   if (domain === 'unaggregated') {
@@ -43,7 +43,7 @@ export function initDomain(domain: Domain, fieldDef: FieldDef, scale: ScaleType,
 }
 
 
-export function parseDomain(model: Model, channel: Channel): VgDomain {
+export function parseDomain(model: UnitModel, channel: Channel): VgDomain {
   const scale = model.scale(channel);
 
   // If channel is either X or Y then union them with X2 & Y2 if they exist
@@ -63,7 +63,7 @@ export function parseDomain(model: Model, channel: Channel): VgDomain {
   return parseSingleChannelDomain(scale, model, channel);
 }
 
-function parseSingleChannelDomain(scale: Scale, model: Model, channel:Channel): VgDomain {
+function parseSingleChannelDomain(scale: Scale, model: UnitModel, channel:Channel): VgDomain {
   const fieldDef = model.fieldDef(channel);
 
   if (scale.domain && scale.domain !== 'unaggregated') { // explicit value
@@ -152,7 +152,7 @@ function parseSingleChannelDomain(scale: Scale, model: Model, channel:Channel): 
 }
 
 
-export function domainSort(model: Model, channel: Channel, scaleType: ScaleType): VgSortField {
+export function domainSort(model: UnitModel, channel: Channel, scaleType: ScaleType): VgSortField {
   if (!hasDiscreteDomain(scaleType)) {
     return undefined;
   }

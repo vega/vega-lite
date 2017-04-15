@@ -9,7 +9,7 @@ import {truncate} from '../../util';
 import {VgAxis} from '../../vega.schema';
 
 import {numberFormat} from '../common';
-import {Model} from '../model';
+import {UnitModel} from '../unit';
 
 export function format(specifiedAxis: Axis, channel: Channel, fieldDef: FieldDef, config: Config) {
   return numberFormat(fieldDef, specifiedAxis.format, config, channel);
@@ -20,16 +20,16 @@ export function format(specifiedAxis: Axis, channel: Channel, fieldDef: FieldDef
  * Default rules for whether to show a grid should be shown for a channel.
  * If `grid` is unspecified, the default value is `true` for ordinal scales that are not binned
  */
-export function gridShow(model: Model, channel: Channel) {
+export function gridShow(model: UnitModel, channel: Channel) {
   const grid = model.axis(channel).grid;
   if (grid !== undefined) {
     return grid;
   }
 
-  return !model.hasDiscreteScale(channel) && !model.fieldDef(channel).bin;
+  return !model.hasDiscreteDomain(channel) && !model.fieldDef(channel).bin;
 }
 
-export function grid(model: Model, channel: Channel, isGridAxis: boolean) {
+export function grid(model: UnitModel, channel: Channel, isGridAxis: boolean) {
   if (channel === ROW || channel === COLUMN) {
     // never apply grid for ROW and COLUMN since we manually create rule-group for them
     return false;
@@ -42,7 +42,7 @@ export function grid(model: Model, channel: Channel, isGridAxis: boolean) {
   return gridShow(model, channel);
 }
 
-export function gridScale(model: Model, channel: Channel, isGridAxis: boolean) {
+export function gridScale(model: UnitModel, channel: Channel, isGridAxis: boolean) {
   if (isGridAxis) {
     const gridChannel: Channel = channel === 'x' ? 'y' : 'x';
     if (model.scale(gridChannel)) {

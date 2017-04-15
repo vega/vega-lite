@@ -20,7 +20,7 @@ describe('compile/axis', () => {
     });
 
     it('should also rotate labels if the channel is column', function() {
-      const model = parseModel({
+      const model = parseUnitModel({
         mark: "point",
         encoding: {
           column: {field: "a", type: "temporal", timeUnit: "month", axis: {labelAngle: 270}}

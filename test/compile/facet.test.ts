@@ -64,41 +64,23 @@ describe('FacetModel', function() {
     });
   });
 
-  describe('spacing', () => {
-    it('should return specified spacing if specified', () => {
-      assert.equal(facet.spacing({spacing: 123}, null, null), 123);
-    });
-
-    it('should return default facetSpacing if there is a subplot and no specified spacing', () => {
+  describe('parseScale', () => {
+    it('should correctly set scale component for a model', () => {
       const model = parseFacetModel({
         facet: {
-          row: {field: 'a', type: 'ordinal'}
+          row: {field: 'a', type: 'quantitative'}
         },
         spec: {
           mark: 'point',
           encoding: {
-            "x": {"aggregate": "sum", "field": "yield", "type": "quantitative"},
-            "y": {"field": "variety", "type": "nominal"},
-            "color": {"field": "site", "type": "nominal"}
+            x: {field: 'b', type: 'quantitative'}
           }
         }
       });
-      assert.equal(facet.spacing({}, model, defaultConfig), defaultConfig.scale.facetSpacing);
-    });
 
-    it('should return 0 if it is a simple table without subplot with x/y and no specified spacing', () => {
-      const model = parseFacetModel({
-        facet: {
-          row: {field: 'a', type: 'ordinal'}
-        },
-        spec: {
-          mark: 'point',
-          encoding: {
-            "color": {"field": "site", "type": "nominal"}
-          }
-        }
-      });
-      assert.equal(facet.spacing({}, model, defaultConfig), 0);
+      model.parseScale();
+
+      assert(model.component.scales['x']);
     });
   });
 });
@@ -203,63 +185,6 @@ describe('compile/facet', () => {
           assert.deepEqual(xSharedAxisGroup.encode.update.x, undefined);
         });
       });
-    });
-  });
-
-  describe('initAxis', () => {
-    it('should include properties from axis and config.facet.axis', () => {
-      const model = parseFacetModel({
-        facet: {
-          row: {field: 'a', type: 'ordinal', axis: {offset: 30}}
-        },
-        spec: {
-          mark: 'point',
-          encoding: {
-            "x": {"aggregate": "sum", "field": "yield", "type": "quantitative"},
-            "y": {"field": "variety", "type": "nominal"},
-          },
-        },
-        config: {"facet": {"axis": {"labelPadding": 123}}}
-      });
-      assert.deepEqual<Axis>(model.axis(ROW), {"orient": "right", "labelAngle": 90, "offset": 30, "labelPadding": 123});
-    });
-
-    it('should set the labelAngle if specified', () => {
-      const model = parseFacetModel({
-        facet: {
-          row: {field: 'c', type: 'ordinal', "axis": {"labelAngle": 0}}
-        },
-        spec: {
-          mark: 'point',
-          encoding: {
-            "x": {"aggregate": "sum", "field": "yield", "type": "quantitative"},
-            "y": {"field": "variety", "type": "nominal"}
-          },
-        }
-      });
-      assert.deepEqual<Axis>(model.axis(ROW), {"orient": "right", "labelAngle": 0});
-    });
-
-    it('should set the labelAngle if labelAngle is not specified', () => {
-      const model = parseFacetModel({
-        facet: {
-          row: {field: 'a', type: 'ordinal'}
-        },
-        spec: {
-          mark: 'point',
-          encoding: {
-            "x": {"aggregate": "sum", "field": "yield", "type": "quantitative"},
-            "y": {"field": "variety", "type": "nominal"},
-            "row": {
-              "field": "c", "type": "nominal",
-              "axis": {
-                  "title": "title"
-              }
-            }
-          },
-        }
-      });
-      assert.deepEqual<Axis>(model.axis(ROW), {"orient": "right", "labelAngle": 90});
     });
   });
 });

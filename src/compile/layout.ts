@@ -2,13 +2,14 @@
 import {Channel, COLUMN, ROW, X, Y} from '../channel';
 import {LAYOUT, MAIN} from '../data';
 import {hasDiscreteDomain} from '../scale';
-import {extend, keys, StringSet} from '../util';
+import {extend, isArray, keys, StringSet} from '../util';
 import {VgData, VgFormulaTransform, VgTransform} from '../vega.schema';
 
 import {FacetModel} from './facet';
 import {LayerModel} from './layer';
-import {Model} from './model';
+import {Model, ModelWithField} from './model';
 import {UnitModel} from './unit';
+
 
 // FIXME: for nesting x and y, we need to declare x,y layout separately before joining later
 // For now, let's always assume shared scale
@@ -35,7 +36,7 @@ export interface SizeComponent {
 
 export function assembleLayoutData(model: Model, layoutData: VgData[]): VgData[] {
   const layoutComponent = model.component.layout;
-  if (!layoutComponent.width && !layoutComponent.height) {
+  if (!layoutComponent || (!layoutComponent.width && !layoutComponent.height)) {
     return layoutData; // Do nothing
   }
 
@@ -153,11 +154,12 @@ function parseFacetSizeLayout(model: FacetModel, channel: Channel): SizeComponen
   // TODO: - also consider when children have different data source
 }
 
+// FIXME remove
 function facetSizeFormula(model: FacetModel, channel: Channel, innerSize: string) {
   if (model.channelHasField(channel)) {
-    return '(datum["' + innerSize + '"] + ' + model.spacing(channel) + ')' + ' * ' + cardinalityExpr(model, channel);
+    return '(datum["' + innerSize + '"] + ' + 5 + ')' + ' * ' + cardinalityExpr(model, channel);
   } else {
-    return 'datum["' + innerSize + '"] + ' + model.config.scale.facetSpacing; // need to add outer padding for facet
+    return 'datum["' + innerSize + '"] + ' + 5; // need to add outer padding for facet
   }
 }
 
@@ -195,10 +197,16 @@ function parseLayerSizeLayout(model: LayerModel, channel: Channel): SizeComponen
   }
 }
 
-function getDistinct(model: Model, channel: Channel): StringSet {
-  if (model.channelHasField(channel) && model.hasDiscreteScale(channel)) {
-    const scale = model.scale(channel);
-    if (hasDiscreteDomain(scale.type) && !(scale.domain instanceof Array)) {
+function getDistinct(model: ModelWithField, channel: Channel): StringSet {
+  if (model.channelHasField(channel) && model.hasDiscreteDomain(channel)) {
+    if (model instanceof UnitModel) {
+      const scale = model.scale(channel);
+      if (isArray<any>(scale.domain)) {
+        return {};
+      }
+    }
+
+    if (model.hasDiscreteDomain(channel)) {
       // if explicit domain is declared, use array length
       const distinctField = model.field(channel);
       const distinct: StringSet = {};
@@ -209,10 +217,12 @@ function getDistinct(model: Model, channel: Channel): StringSet {
   return {};
 }
 
-export function cardinalityExpr(model: Model, channel: Channel):string {
-  const scale = model.scale(channel);
-  if (scale.domain instanceof Array) {
-    return scale.domain.length + '';
+export function cardinalityExpr(model: ModelWithField, channel: Channel):string {
+  if (model instanceof UnitModel) {
+    const scale = model.scale(channel);
+    if (scale.domain instanceof Array) {
+      return scale.domain.length + '';
+    }
   }
 
   return model.field(channel, {datum: true, prefix: 'distinct'});

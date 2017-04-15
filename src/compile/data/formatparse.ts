@@ -6,7 +6,7 @@ import {CalculateTransform, FilterTransform, isCalculate, isFilter} from '../../
 import {QUANTITATIVE, TEMPORAL} from '../../type';
 import {Dict, duplicate, extend, isArray, isNumber, isString, keys} from '../../util';
 import {VgFormulaTransform} from '../../vega.schema';
-import {Model} from '../model';
+import {Model, ModelWithField} from '../model';
 import {DataFlowNode} from './dataflow';
 
 
@@ -42,7 +42,7 @@ export class ParseNode extends DataFlowNode {
     this._parse = parse;
   }
 
-  public static make(model: Model) {
+  public static make(model: ModelWithField) {
     const parse = {};
 
     const calcFieldMap = model.transforms.filter(isCalculate).reduce((fieldMap, formula: CalculateTransform) => {

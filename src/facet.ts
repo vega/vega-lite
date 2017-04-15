@@ -1,4 +1,7 @@
-import {FacetFieldDef} from './fielddef';
+import {FieldDef} from './fielddef';
+
+// TODO: add more facet properties
+export type FacetFieldDef = FieldDef;
 
 export interface Facet {
 
