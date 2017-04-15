@@ -8,6 +8,7 @@ import {Legend} from '../legend';
 import {FILL_STROKE_CONFIG, isMarkDef, Mark, MarkDef, TEXT as TEXT_MARK} from '../mark';
 import {hasDiscreteDomain, Scale} from '../scale';
 import {SelectionDef} from '../selection';
+import {SortField, SortOrder} from '../sort';
 import {UnitSpec} from '../spec';
 import {stack, StackProperties} from '../stack';
 import {Dict, duplicate, extend, vals} from '../util';
@@ -22,7 +23,7 @@ import {assembleLayoutData, parseUnitLayout} from './layout';
 import {parseLegendComponent} from './legend/parse';
 import {initEncoding, initMarkDef} from './mark/init';
 import {parseMark} from './mark/mark';
-import {Model} from './model';
+import {Model, ModelWithField} from './model';
 import initScale from './scale/init';
 import parseScaleComponent from './scale/parse';
 import {assembleUnitData as assembleSelectionData, assembleUnitMarks as assembleUnitSelectionMarks, assembleUnitSignals, parseUnitSelection} from './selection/selection';
@@ -30,7 +31,7 @@ import {assembleUnitData as assembleSelectionData, assembleUnitMarks as assemble
 /**
  * Internal model of Vega-Lite specification for the compiler.
  */
-export class UnitModel extends Model {
+export class UnitModel extends ModelWithField {
   /**
    * Fixed width for the unit visualization.
    * If undefined (e.g., for ordinal scale), the width of the
@@ -47,6 +48,15 @@ export class UnitModel extends Model {
 
   public readonly markDef: MarkDef;
   public readonly encoding: Encoding;
+
+  protected scales: Dict<Scale> = {};
+
+  public readonly stack: StackProperties;
+
+  protected axes: Dict<Axis> = {};
+
+  protected legends: Dict<Legend> = {};
+
   protected readonly selection: Dict<SelectionDef> = {};
   public children: Model[] = [];
 
@@ -68,11 +78,11 @@ export class UnitModel extends Model {
     const encoding = this.encoding = normalizeEncoding(spec.encoding || {}, mark);
 
     // calculate stack properties
-    this._stack = stack(mark, encoding, this.config.stack);
+    this.stack = stack(mark, encoding, this.config.stack);
     this.scales = this.initScales(mark, encoding, providedWidth, providedHeight);
 
     this.markDef = initMarkDef(spec.mark, encoding, this.scales, this.config);
-    this.encoding = initEncoding(mark, encoding, this._stack, this.config);
+    this.encoding = initEncoding(mark, encoding, this.stack, this.config);
 
     this.axes = this.initAxes(encoding);
     this.legends = this.initLegend(encoding);
@@ -89,6 +99,27 @@ export class UnitModel extends Model {
     this.height = height;
   }
 
+  public scale(channel: Channel) {
+    return this.scales[channel];
+  }
+
+  public hasDiscreteDomain(channel: Channel) {
+    const scale = this.scale(channel);
+    return scale && hasDiscreteDomain(scale.type);
+  }
+
+
+  public sort(channel: Channel): SortField | SortOrder {
+    return (this.getMapping()[channel] || {}).sort;
+  }
+
+  public axis(channel: Channel): Axis {
+    return this.axes[channel];
+  }
+
+  public legend(channel: Channel): Legend {
+    return this.legends[channel];
+  }
   private initFacetCellConfig() {
     const config = this.config;
     let ancestor = this.parent;

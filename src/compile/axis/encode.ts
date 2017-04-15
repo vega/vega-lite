@@ -4,9 +4,9 @@ import {contains, extend, keys} from '../../util';
 import {VgAxis} from '../../vega.schema';
 
 import {timeFormatExpression} from '../common';
-import {Model} from '../model';
+import {UnitModel} from '../unit';
 
-export function labels(model: Model, channel: Channel, labelsSpec: any, def: VgAxis) {
+export function labels(model: UnitModel, channel: Channel, labelsSpec: any, def: VgAxis) {
   const fieldDef = model.fieldDef(channel);
   const axis = model.axis(channel);
   const config = model.config;

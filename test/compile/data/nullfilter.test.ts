@@ -5,12 +5,12 @@ import {assert} from 'chai';
 import {UnitSpec} from '../../../src/spec';
 
 import {NullFilterNode} from '../../../src/compile/data/nullfilter';
-import {Model} from '../../../src/compile/model';
+import {ModelWithField} from '../../../src/compile/model';
 import {FieldDef} from '../../../src/fielddef';
 import {Dict, mergeDeep} from '../../../src/util';
 import {parseUnitModel} from '../../util';
 
-function parse(model: Model) {
+function parse(model: ModelWithField) {
   return NullFilterNode.make(model);
 }
 

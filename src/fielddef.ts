@@ -131,9 +131,6 @@ export function isValueDef(channelDef: ChannelDef): channelDef is ValueDef<any> 
   return channelDef && 'value' in channelDef && channelDef['value'] !== undefined;
 }
 
-// TODO: consider if we want to distinguish ordinalOnlyScale from scale
-export type FacetFieldDef = PositionFieldDef;
-
 export interface FieldRefOption {
   /** exclude bin, aggregate, timeUnit */
   nofn?: boolean;

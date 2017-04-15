@@ -219,8 +219,6 @@ For a full list of scale configuration and their default values, please see the 
 Axis configuration determines default properties for `x` and `y` [axes](axis.html).
 For a full list of axis configuration, please see the [Axis Config section in the axis page](axis.html#axis-config).
 
-(For `row` and `column` axes, see [facet axis configuration](#facet-axis-config)).
-
 {:#legend-config}
 ## Legend Configuration  (`config.legend.*`)
 
@@ -237,16 +235,3 @@ For a full list of legend configuration and their default values, please see the
 ### Cell Configuration (`config.facet.cell.*`)
 
 Facet cell configuration overrides [cell config](#cell-config) for faceted (trellis) plots. Please see [cell config](#cell-config) for each property name and default values.
-
-{:#facet-grid-config}
-### Facet Grid Configuration (`config.facet.grid.*`)
-
-{% include table.html props="color,opacity,offset" source="FacetGridConfig" %}
-
-{:#facet-axis-config}
-### Facet Axis Configuration (`config.facet.axis.*`)
-
-Facet axis configuration determines default properties for `row` and `column` [axes](axis.html).
-<span class="note-line">__See Code:__
-For a full list of facet axis configuration and their default values, please see the `AxisConfig` interface and `defaultFacetAxisConfig` in [axis.ts](https://github.com/vega/vega-lite/blob/master/src/axis.ts).
-</span>

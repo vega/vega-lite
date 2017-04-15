@@ -2,11 +2,11 @@
 import {assert} from 'chai';
 
 import {ParseNode} from '../../../src/compile/data/formatparse';
-import {Model} from '../../../src/compile/model';
+import {ModelWithField} from '../../../src/compile/model';
 import {parseUnitModel} from '../../util';
 
-function parse(model: Model) {
-  return ParseNode.make(model).parse;
+function parse(model: ModelWithField) {
+  return ParseNode.make(model).assembleFormatParse();
 }
 
 describe('compile/data/formatparse', () => {

@@ -6,7 +6,7 @@ import {TEMPORAL} from '../../type';
 import {Dict, duplicate, extend, StringSet, vals} from '../../util';
 import {VgFormulaTransform, VgTransform} from '../../vega.schema';
 import {format} from '../axis/rules';
-import {Model} from '../model';
+import {ModelWithField} from '../model';
 import {DataFlowNode} from './dataflow';
 
 
@@ -25,7 +25,7 @@ export class TimeUnitNode extends DataFlowNode {
     super();
   }
 
-  public static make(model: Model) {
+  public static make(model: ModelWithField) {
     const formula = model.reduceFieldDef((timeUnitComponent: TimeUnitComponent, fieldDef: FieldDef) => {
       if (fieldDef.type === TEMPORAL && fieldDef.timeUnit) {
         const f = field(fieldDef);

@@ -6,12 +6,12 @@ import * as encode from './encode';
 import * as rules from './rules';
 
 import {Dict, keys, some} from '../../util';
-import {Model} from '../model';
+import {UnitModel} from '../unit';
 
 type AxisPart = 'domain' | 'grid' | 'labels' | 'ticks' | 'title';
 const AXIS_PARTS: AxisPart[] = ['domain', 'grid', 'labels', 'ticks', 'title'];
 
-export function parseAxisComponent(model: Model, axisChannels: Channel[]): Dict<VgAxis[]> {
+export function parseAxisComponent(model: UnitModel, axisChannels: Channel[]): Dict<VgAxis[]> {
   return axisChannels.reduce(function(axis, channel) {
     const vgAxes: VgAxis[] = [];
     if (model.axis(channel)) {
@@ -58,16 +58,16 @@ function hasAxisPart(axis: VgAxis, part: AxisPart) {
 /**
  * Make an inner axis for showing grid for shared axis.
  */
-export function parseGridAxis(channel: Channel, model: Model): VgAxis {
+export function parseGridAxis(channel: Channel, model: UnitModel): VgAxis {
   // FIXME: support adding ticks for grid axis that are inner axes of faceted plots.
   return parseAxis(channel, model, true);
 }
 
-export function parseMainAxis(channel: Channel, model: Model) {
+export function parseMainAxis(channel: Channel, model: UnitModel) {
   return parseAxis(channel, model, false);
 }
 
-function parseAxis(channel: Channel, model: Model, isGridAxis: boolean): VgAxis {
+function parseAxis(channel: Channel, model: UnitModel, isGridAxis: boolean): VgAxis {
   const axis = model.axis(channel);
 
   const vgAxis: VgAxis = {
@@ -114,7 +114,7 @@ function parseAxis(channel: Channel, model: Model, isGridAxis: boolean): VgAxis 
   return vgAxis;
 }
 
-function getSpecifiedOrDefaultValue(property: keyof VgAxis, specifiedAxis: Axis, channel: Channel, model: Model, isGridAxis: boolean) {
+function getSpecifiedOrDefaultValue(property: keyof VgAxis, specifiedAxis: Axis, channel: Channel, model: UnitModel, isGridAxis: boolean) {
   const fieldDef = model.fieldDef(channel);
 
   switch (property) {

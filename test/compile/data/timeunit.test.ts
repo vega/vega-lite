@@ -2,10 +2,10 @@
 
 import {assert} from 'chai';
 import {TimeUnitNode} from '../../../src/compile/data/timeunit';
-import {Model} from '../../../src/compile/model';
+import {ModelWithField} from '../../../src/compile/model';
 import {parseUnitModel} from '../../util';
 
-function assemble(model: Model) {
+function assemble(model: ModelWithField) {
   return TimeUnitNode.make(model).assemble();
 }
 

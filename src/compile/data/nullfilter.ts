@@ -2,6 +2,7 @@ import {FieldDef} from '../../fielddef';
 import {QUANTITATIVE, TEMPORAL} from '../../type';
 import {contains, Dict, differ, differArray, duplicate, extend, hash, keys} from '../../util';
 import {VgFilterTransform} from '../../vega.schema';
+import {ModelWithField} from '../model';
 import {Model} from './../model';
 import {DataFlowNode} from './dataflow';
 
@@ -26,7 +27,7 @@ export class NullFilterNode extends DataFlowNode {
     this._filteredFields = fields;
   }
 
-  public static make(model: Model) {
+  public static make(model: ModelWithField) {
     const fields = model.reduceFieldDef((aggregator: Dict<FieldDef>, fieldDef: FieldDef) => {
       if (fieldDef.aggregate !== 'count') { // Ignore * for count(*) fields.
         if (model.config.filterInvalid ||

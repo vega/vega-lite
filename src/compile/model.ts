@@ -1,5 +1,5 @@
 import {Axis} from '../axis';
-import {Channel, COLUMN, X} from '../channel';
+import {Channel, COLUMN, isChannel, X} from '../channel';
 import {CellConfig, Config} from '../config';
 import {Data, DataSourceType, MAIN, RAW} from '../data';
 import {forEach, reduce} from '../encoding';
@@ -88,14 +88,6 @@ export abstract class Model {
 
   /** Name map for size, which can be renamed by a model's parent. */
   protected sizeNameMap: NameMapInterface;
-
-  protected scales: Dict<Scale> = {};
-
-  protected axes: Dict<Axis> = {};
-
-  protected legends: Dict<Legend> = {};
-
-  protected _stack: StackProperties = null;
 
   public readonly config: Config;
 
@@ -216,24 +208,6 @@ export abstract class Model {
 
   public abstract assembleParentGroupProperties(cellConfig: CellConfig): VgEncodeEntry;
 
-  public abstract channels(): Channel[];
-
-  protected abstract getMapping(): {[key: string]: any};
-
-  public reduceFieldDef<T, U>(f: (acc: U, fd: FieldDef, c: Channel) => U, init: T, t?: any) {
-    return reduce(this.getMapping(), (acc:U , cd: ChannelDef, c: Channel) => {
-      return isFieldDef(cd) ? f(acc, cd, c) : acc;
-    }, init, t);
-  }
-
-  public forEachFieldDef(f: (fd: FieldDef, c: Channel) => void, t?: any) {
-    forEach(this.getMapping(), (cd: ChannelDef, c: Channel) => {
-      if (isFieldDef(cd)) {
-        f(cd, c);
-      }
-    }, t);
-  }
-
   public hasDescendantWithFieldOnChannel(channel: Channel) {
     for (const child of this.children) {
       if (child instanceof UnitModel) {
@@ -249,7 +223,7 @@ export abstract class Model {
     return false;
   }
 
-  public abstract channelHasField(channel: Channel): boolean;
+
 
   public getName(text: string, delimiter: string = '_') {
     return (this.name ? this.name + delimiter : '') + text;
@@ -290,34 +264,14 @@ export abstract class Model {
      return this.sizeNameMap.get(this.getName(size, '_'));
   }
 
-  /** Get "field" reference for vega */
-  public field(channel: Channel, opt: FieldRefOption = {}) {
-    const fieldDef = this.fieldDef(channel);
-
-    if (fieldDef.bin) { // bin has default suffix that depends on scaleType
-      opt = extend({
-        binSuffix: hasDiscreteDomain(this.scale(channel).type) ? 'range' : 'start'
-      }, opt);
-    }
-
-    return field(fieldDef, opt);
-  }
-
-  public abstract fieldDef(channel: Channel): FieldDef;
-
-  public scale(channel: Channel): Scale {
-    return this.scales[channel];
-  }
-
-  public hasDiscreteScale(channel: Channel) {
-    const scale = this.scale(channel);
-    return scale && hasDiscreteDomain(scale.type);
-  }
-
   public renameScale(oldName: string, newName: string) {
     this.scaleNameMap.rename(oldName, newName);
   }
 
+  // FIXME: remove this, but currently the scaleName() method below depends on this.
+  public scale(channel: Channel): Scale {
+    return null;
+  }
 
   /**
    * @return scale name for a given channel after the scale has been parsed and named.
@@ -334,29 +288,13 @@ export abstract class Model {
     // be in the _scale mapping or exist in the name map
     if (
         // in the scale map (the scale is not merged by its parent)
-        (this.scale && this.scales[originalScaleName]) ||
+        (this.scale && isChannel(originalScaleName) && this.scale(originalScaleName)) ||
         // in the scale name map (the the scale get merged by its parent)
         this.scaleNameMap.has(this.getName(originalScaleName))
       ) {
       return this.scaleNameMap.get(this.getName(originalScaleName));
     }
     return undefined;
-  }
-
-  public sort(channel: Channel): SortField | SortOrder {
-    return (this.getMapping()[channel] || {}).sort;
-  }
-
-  public axis(channel: Channel): Axis {
-    return this.axes[channel];
-  }
-
-  public legend(channel: Channel): Legend {
-    return this.legends[channel];
-  }
-
-  get stack() {
-    return this._stack;
   }
 
   /**
@@ -386,4 +324,43 @@ export abstract class Model {
   public getComponent(type: 'scales' | 'selection', name: string): any {
     return this.component[type][name] || this.parent.getComponent(type, name);
   }
+}
+
+export abstract class ModelWithField extends Model {
+  public abstract fieldDef(channel: Channel): FieldDef;
+
+  /** Get "field" reference for vega */
+  public field(channel: Channel, opt: FieldRefOption = {}) {
+    const fieldDef = this.fieldDef(channel);
+
+    if (fieldDef.bin) { // bin has default suffix that depends on scaleType
+      opt = extend({
+        binSuffix: this.hasDiscreteDomain(channel) ? 'range' : 'start'
+      }, opt);
+    }
+
+    return field(fieldDef, opt);
+  }
+
+  public abstract hasDiscreteDomain(channel: Channel): boolean;
+
+
+  public abstract channels(): Channel[];
+
+  protected abstract getMapping(): {[key: string]: any};
+
+  public reduceFieldDef<T, U>(f: (acc: U, fd: FieldDef, c: Channel) => U, init: T, t?: any) {
+    return reduce(this.getMapping(), (acc:U , cd: ChannelDef, c: Channel) => {
+      return isFieldDef(cd) ? f(acc, cd, c) : acc;
+    }, init, t);
+  }
+
+  public forEachFieldDef(f: (fd: FieldDef, c: Channel) => void, t?: any) {
+    forEach(this.getMapping(), (cd: ChannelDef, c: Channel) => {
+      if (isFieldDef(cd)) {
+        f(cd, c);
+      }
+    }, t);
+  }
+  public abstract channelHasField(channel: Channel): boolean;
 }

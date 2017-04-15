@@ -101,16 +101,12 @@ export const defaultFacetCellConfig: CellConfig = {
 };
 
 export interface FacetConfig {
-  /** Facet Axis Config */
-  axis?: AxisConfig;
-
   /** Facet Cell Config */
   cell?: CellConfig;
 }
 
 
 export const defaultFacetConfig: FacetConfig = {
-  axis: {},
   cell: defaultFacetCellConfig
 };
 
