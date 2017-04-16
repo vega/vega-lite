@@ -8,12 +8,23 @@ images:
  - spec: circle
  - spec: bar_layered_transparent
  - spec: tick_strip
- - spec: line_color
- - spec: scatter_colored_with_shape
+ - spec: layer_line_color_rule
  - spec: trellis_barley
  - spec: bar_grouped
+ - spec: github_punchcard
  - spec: stacked_bar_weather
  - spec: trellis_bar_histogram
+ - spec: area
+ - spec: stacked_bar_v
+ - spec: line_color
+ - spec: scatter_opacity
+ - spec: line_slope
+ - spec: trellis_anscombe
+ - spec: scatter_binned_opacity
+ - spec: line_month
+ - spec: rect_heatmap
+ - spec: box_plot
+ - spec: scatter_connected
 
 ---
 
