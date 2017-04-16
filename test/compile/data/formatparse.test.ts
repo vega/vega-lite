@@ -3,6 +3,7 @@ import {assert} from 'chai';
 
 import {ParseNode} from '../../../src/compile/data/formatparse';
 import {Model} from '../../../src/compile/model';
+import * as log from '../../../src/log';
 import {parseUnitModel} from '../../util';
 
 function parse(model: Model) {
@@ -108,6 +109,17 @@ describe('compile/data/formatparse', () => {
         {type: 'formula', expr: 'toDate(datum["d1"])', as: 'd1'},
         {type: 'formula', expr: 'timeParse(datum["d2"],"%y")', as: 'd2'}
       ]);
+    });
+
+    it('should show warning for unrecognized types', function() {
+      log.runLocalLogger((localLogger) => {
+        const p = new ParseNode({
+          x: 'foo',
+        });
+
+        assert.deepEqual(p.assembleTransforms(), []);
+        assert.equal(localLogger.warns[0], log.message.unrecognizedParse('foo'));
+      });
     });
   });
 });
