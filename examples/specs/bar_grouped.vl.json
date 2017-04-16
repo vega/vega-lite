@@ -16,8 +16,8 @@
     },
     "x": {
       "field": "gender", "type": "nominal",
-      "scale": {"rangeStep": 6},
-      "axis": null
+      "scale": {"rangeStep": 12},
+      "axis": {"title": ""}
     },
     "color": {
       "field": "gender", "type": "nominal",
