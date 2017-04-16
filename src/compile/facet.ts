@@ -223,7 +223,7 @@ export class FacetModel extends ModelWithField {
 
   public assembleLayout(): VgLayout {
     return {
-      padding: {row: 10, column: 10, header: 10}, // TODO: allow customizing padding
+      padding: {row: 10, column: 10, header: 10},
       columns: 1,
       bounds: 'full'
     };
@@ -297,6 +297,7 @@ export function hasSubPlotWithXy(model: FacetModel) {
 function childSizeEncodeEntryMixins(model: FacetModel, size: 'width' | 'height') {
   return {
     [size]: {
+      // TODO: replace this with signal
       field: {
         parent: model.child.sizeName(size),
         // Level 2 because we currently wrap facet's child with two level of groups
@@ -414,7 +415,7 @@ export function getTitleGroup(model: FacetModel, channel: 'row' | 'column') {
 
     // TODO: support customizing row title orientation (horizontal / vertical)
     textOrient: (channel === 'row' ? 'vertical' : undefined),
-    textRole: `${channel}-labels`,
+    textRole: `${channel}-title`,
 
     // TODO: customize title
     textRef: {value: fieldDefTitle(fieldDef, model.config)},

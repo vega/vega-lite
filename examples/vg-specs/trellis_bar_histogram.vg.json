@@ -336,7 +336,7 @@
                     "marks": [
                         {
                             "type": "text",
-                            "role": "row-labels",
+                            "role": "row-title",
                             "encode": {
                                 "update": {
                                     "y": {

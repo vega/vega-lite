@@ -835,7 +835,7 @@
                     "marks": [
                         {
                             "type": "text",
-                            "role": "column-labels",
+                            "role": "column-title",
                             "encode": {
                                 "update": {
                                     "x": {

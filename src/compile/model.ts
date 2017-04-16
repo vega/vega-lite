@@ -326,6 +326,7 @@ export abstract class Model {
   }
 }
 
+/** Abstract class for UnitModel and FacetModel.  Both of which can contain fieldDefs as a part of its own specification. */
 export abstract class ModelWithField extends Model {
   public abstract fieldDef(channel: Channel): FieldDef;
 

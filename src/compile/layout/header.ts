@@ -34,6 +34,8 @@ export function getTextHeader(params: TextHeaderParams): VgMarkGroup {
 
   const positionChannel = channel === 'row' ? 'y' : 'x';
   const offsetChannel = channel === 'row' ? 'x' : 'y';
+
+  // TODO: row could be left too for footer
   const align = channel === 'row' ? 'right' : 'center';
 
   return {
