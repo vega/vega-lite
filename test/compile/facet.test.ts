@@ -14,17 +14,6 @@ import {ORDINAL} from '../../src/type';
 import {parseFacetModel} from '../util';
 
 describe('FacetModel', function() {
-  it('should say it is facet', function() {
-    const model = parseFacetModel({
-      facet: {},
-      spec: {
-        mark: POINT,
-        encoding: {}
-      }
-    });
-    assert(model instanceof FacetModel);
-  });
-
   describe('initFacet', () => {
     it('should drop unsupported channel and throws warning', () => {
       log.runLocalLogger((localLogger) => {
