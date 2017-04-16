@@ -292,6 +292,14 @@ export function assembleData(roots: SourceNode[]): VgData[] {
   const data: VgData[] = [];
 
   roots.forEach(removeUnnecessaryNodes);
+
+  // remove source nodes that don't have any children because they also don't have output nodes
+  roots = roots.filter(r => r.numChildren() > 0);
+  getLeaves(roots).forEach(iterateFromLeaves(optimizers.removeUnusedSubtrees));
+  roots = roots.filter(r => r.numChildren() > 0);
+
+  getLeaves(roots).forEach(iterateFromLeaves(optimizers.moveParseUp));
+
   roots.forEach(moveFacetDown);
 
   // roots.forEach(debug);
@@ -309,6 +317,13 @@ export function assembleData(roots: SourceNode[]): VgData[] {
     const newData: VgData = root.assemble();
 
     walkTree(root, newData);
+  });
+
+  // remove empty transform arrays for cleaner output
+  data.forEach(d => {
+    if (d.transform.length === 0) {
+      delete d.transform;
+    }
   });
 
   return data;
