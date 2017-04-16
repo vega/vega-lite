@@ -4,7 +4,7 @@ import {isEqualFilter, isOneOfFilter, isRangeFilter} from '../../filter';
 import * as log from '../../log';
 import {CalculateTransform, FilterTransform, isCalculate, isFilter} from '../../transform';
 import {QUANTITATIVE, TEMPORAL} from '../../type';
-import {Dict, extend, isArray, isNumber, isString, keys} from '../../util';
+import {Dict, duplicate, extend, isArray, isNumber, isString, keys} from '../../util';
 import {VgFormulaTransform} from '../../vega.schema';
 import {Model} from '../model';
 import {DataFlowNode} from './dataflow';
@@ -31,6 +31,10 @@ function parseExpression(field: string, parse: string): string {
 
 export class ParseNode extends DataFlowNode {
   private _parse: Dict<string> = {};
+
+  public clone() {
+    return new ParseNode(duplicate(this.parse));
+  }
 
   constructor(parse: Dict<string>) {
     super();
