@@ -6,7 +6,7 @@ import {LAYOUT} from '../data';
 import * as log from '../log';
 import {normalize, TopLevel, TopLevelExtendedSpec} from '../spec';
 import {extractTopLevelProperties, TopLevelProperties} from '../toplevelprops';
-import {extend} from '../util';
+import {extend, keys} from '../util';
 import {buildModel} from './common';
 import {Model} from './model';
 import {assembleTopLevelSignals} from './selection/selection';
@@ -86,24 +86,24 @@ function assemble(model: Model, topLevelProperties: TopLevelProperties) {
 }
 
 export function assembleRootGroup(model: Model) {
-  const rootGroup = extend(
-    {
-      name: model.getName('main-group'),
-      type: 'group',
-    },
-    model.description ? {description: model.description} : {},
-    {
-      from: {data: model.getName(LAYOUT)},
-      encode: {
-        update: extend(
-          {
-            width: {field: model.getName('width')},
-            height: {field: model.getName('height')}
-          },
-          model.assembleParentGroupProperties(model.config.cell)
-        )
-      }
-    });
+  const hasLayout = !!model.assembleLayout();
 
-  return extend(rootGroup, model.assembleGroup());
+  const mainGroupEncodeEntry = {
+    // TODO: change this to use signal
+    ...(!hasLayout ? {
+      width: {field: model.getName('width')},
+      height: {field: model.getName('height')},
+    }: {}),
+
+    ...model.assembleParentGroupProperties(model.config.cell)
+  };
+
+  return {
+    name: model.getName('main-group'),
+    type: 'group',
+    ...(model.description ? {description: model.description} : {}),
+    from: {data: model.getName(LAYOUT)},
+    ...(keys(mainGroupEncodeEntry).length > 0 ? {encode: {update: mainGroupEncodeEntry}} : {}),
+    ...model.assembleGroup()
+  };
 }

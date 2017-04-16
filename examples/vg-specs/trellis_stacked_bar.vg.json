@@ -131,16 +131,6 @@
             "from": {
                 "data": "layout"
             },
-            "encode": {
-                "update": {
-                    "width": {
-                        "field": "width"
-                    },
-                    "height": {
-                        "field": "height"
-                    }
-                }
-            },
             "signals": [
                 {
                     "name": "column",
