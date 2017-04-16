@@ -112,12 +112,8 @@ function renderGallery() {
         .attr('class', 'image')
         .style('background-image', function(d) {return 'url(' + window.location.origin + BASEURL + '/build/examples/images/' + d.name + '.vl.svg)';})
         .style('background-size', function(d) {
-          const bgSizeDefault = 'cover';
-          if (!d.galleryParameters || !d.galleryParameters.backgroundSize) {
-            return bgSizeDefault;
-          } else {
-            return d.galleryParameters.backgroundSize;
-          }});
+          return (!d.galleryParameters || !d.galleryParameters.backgroundSize) ? 'cover' : d.galleryParameters.backgroundSize;
+      });
       imageGroup.append('div')
         .attr('class', 'image-title')
         .text(function(d) {return d.title;});

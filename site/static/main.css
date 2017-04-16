@@ -478,7 +478,6 @@ footer .edit-page {
   background-repeat: no-repeat;
   margin-bottom: 5px;
   overflow: hidden;
-  background-size: cover;
   transition: background-position 2s;
 }
 .gallery .image:hover {
