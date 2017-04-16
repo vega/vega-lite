@@ -28,11 +28,7 @@
             "url": "data/driving.json",
             "format": {
                 "type": "json",
-                "parse": {
-                    "miles": "number",
-                    "gas": "number",
-                    "year": "date"
-                }
+                "parse": {}
             },
             "transform": []
         },
@@ -40,6 +36,21 @@
             "name": "data_0",
             "source": "source_0",
             "transform": [
+                {
+                    "type": "formula",
+                    "expr": "toNumber(datum[\"miles\"])",
+                    "as": "miles"
+                },
+                {
+                    "type": "formula",
+                    "expr": "toNumber(datum[\"gas\"])",
+                    "as": "gas"
+                },
+                {
+                    "type": "formula",
+                    "expr": "toDate(datum[\"year\"])",
+                    "as": "year"
+                },
                 {
                     "type": "filter",
                     "expr": "datum[\"miles\"] !== null && !isNaN(datum[\"miles\"]) && datum[\"gas\"] !== null && !isNaN(datum[\"gas\"]) && datum[\"year\"] !== null && !isNaN(datum[\"year\"])"
@@ -61,6 +72,21 @@
             "name": "data_1",
             "source": "source_0",
             "transform": [
+                {
+                    "type": "formula",
+                    "expr": "toNumber(datum[\"miles\"])",
+                    "as": "miles"
+                },
+                {
+                    "type": "formula",
+                    "expr": "toNumber(datum[\"gas\"])",
+                    "as": "gas"
+                },
+                {
+                    "type": "formula",
+                    "expr": "toDate(datum[\"year\"])",
+                    "as": "year"
+                },
                 {
                     "type": "filter",
                     "expr": "datum[\"miles\"] !== null && !isNaN(datum[\"miles\"]) && datum[\"gas\"] !== null && !isNaN(datum[\"gas\"]) && datum[\"year\"] !== null && !isNaN(datum[\"year\"])"

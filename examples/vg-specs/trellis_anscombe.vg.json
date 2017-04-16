@@ -28,12 +28,19 @@
             "url": "data/anscombe.json",
             "format": {
                 "type": "json",
-                "parse": {
-                    "X": "number",
-                    "Y": "number"
-                }
+                "parse": {}
             },
             "transform": [
+                {
+                    "type": "formula",
+                    "expr": "toNumber(datum[\"X\"])",
+                    "as": "X"
+                },
+                {
+                    "type": "formula",
+                    "expr": "toNumber(datum[\"Y\"])",
+                    "as": "Y"
+                },
                 {
                     "type": "filter",
                     "expr": "datum[\"X\"] !== null && !isNaN(datum[\"X\"]) && datum[\"Y\"] !== null && !isNaN(datum[\"Y\"])"

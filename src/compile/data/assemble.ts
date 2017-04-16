@@ -10,7 +10,7 @@ import {FacetNode} from './facet';
 import {ParseNode} from './formatparse';
 import {NonPositiveFilterNode} from './nonpositivefilter';
 import {NullFilterNode} from './nullfilter';
-import {optimizeFromLeaves} from './optimizers';
+import {iterateFromLeaves} from './optimizers';
 import * as optimizers from './optimizers';
 import {OrderNode} from './pathorder';
 import {SourceNode} from './source';
@@ -157,13 +157,15 @@ function makeWalkTree(data: VgData[]) {
    */
   function walkTree(node: DataFlowNode, dataSource: VgData) {
     if (node instanceof ParseNode) {
-      if (node.parent instanceof SourceNode) {
+      if (node.parent instanceof SourceNode && !dataSource.source)  {
+        // If node's parent is a root source and the data source does not referencence another data source, use normal format parse
         dataSource.format = {
           ...dataSource.format || {},
-          parse: node.assemble()
+          parse: node.assembleFormatParse()
         };
       } else {
-        throw new Error('Can only instantiate parse next to source.');
+        // Otherwise use Vega expression to parse
+        dataSource.transform = dataSource.transform.concat(node.assembleTransforms());
       }
     }
 
@@ -290,10 +292,6 @@ export function assembleData(roots: SourceNode[]): VgData[] {
   const data: VgData[] = [];
 
   roots.forEach(removeUnnecessaryNodes);
-
-  // parse needs to be next to sources
-  getLeaves(roots).forEach(optimizeFromLeaves(optimizers.parse));
-
   roots.forEach(moveFacetDown);
 
   // roots.forEach(debug);

@@ -59,10 +59,7 @@
             "url": "data/cars.json",
             "format": {
                 "type": "json",
-                "parse": {
-                    "Horsepower": "number",
-                    "Miles_per_Gallon": "number"
-                }
+                "parse": {}
             },
             "transform": []
         },
@@ -70,6 +67,16 @@
             "name": "data_0",
             "source": "source_0",
             "transform": [
+                {
+                    "type": "formula",
+                    "expr": "toNumber(datum[\"Horsepower\"])",
+                    "as": "Horsepower"
+                },
+                {
+                    "type": "formula",
+                    "expr": "toNumber(datum[\"Miles_per_Gallon\"])",
+                    "as": "Miles_per_Gallon"
+                },
                 {
                     "type": "filter",
                     "expr": "datum[\"Horsepower\"] !== null && !isNaN(datum[\"Horsepower\"]) && datum[\"Miles_per_Gallon\"] !== null && !isNaN(datum[\"Miles_per_Gallon\"])"
@@ -80,6 +87,16 @@
             "name": "data_1",
             "source": "source_0",
             "transform": [
+                {
+                    "type": "formula",
+                    "expr": "toNumber(datum[\"Horsepower\"])",
+                    "as": "Horsepower"
+                },
+                {
+                    "type": "formula",
+                    "expr": "toNumber(datum[\"Miles_per_Gallon\"])",
+                    "as": "Miles_per_Gallon"
+                },
                 {
                     "type": "filter",
                     "expr": "datum[\"Horsepower\"] !== null && !isNaN(datum[\"Horsepower\"]) && datum[\"Miles_per_Gallon\"] !== null && !isNaN(datum[\"Miles_per_Gallon\"])"

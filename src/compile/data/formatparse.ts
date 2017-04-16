@@ -1,13 +1,33 @@
-import {isUrlData} from '../../data';
 import {DateTime, isDateTime} from '../../datetime';
 import {FieldDef, isCount} from '../../fielddef';
 import {isEqualFilter, isOneOfFilter, isRangeFilter} from '../../filter';
+import * as log from '../../log';
+import {CalculateTransform, FilterTransform, isCalculate, isFilter} from '../../transform';
 import {QUANTITATIVE, TEMPORAL} from '../../type';
 import {Dict, extend, isArray, isNumber, isString, keys} from '../../util';
-
-import {CalculateTransform, FilterTransform, isCalculate, isFilter} from '../../transform';
-import {Model} from './../model';
+import {VgFormulaTransform} from '../../vega.schema';
+import {Model} from '../model';
 import {DataFlowNode} from './dataflow';
+
+
+function parseExpression(field: string, parse: string): string {
+  const f = `datum["${field}"]`;
+  if (parse === 'number') {
+    return `toNumber(${f})`;
+  } else if (parse === 'boolean') {
+    return `toBoolean(${f})`;
+  } else if (parse === 'string') {
+    return `toString(${f})`;
+  } else if (parse === 'date') {
+    return `toDate(${f})`;
+  } else if (parse.indexOf('date:') === 0) {
+    const specifier = parse.slice(6, parse.length - 1);  // specifier is in ""
+    return `timeParse(${f},"${specifier}")`;
+  } else {
+    log.warn(log.message.unrecognizedParse(parse));
+    return null;
+  }
+}
 
 export class ParseNode extends DataFlowNode {
   private _parse: Dict<string> = {};
@@ -91,7 +111,23 @@ export class ParseNode extends DataFlowNode {
     other.remove();
   }
 
-  public assemble() {
+  public assembleFormatParse() {
     return this._parse;
+  }
+
+  public assembleTransforms(): VgFormulaTransform[] {
+    return Object.keys(this._parse).map(field => {
+      const expr = parseExpression(field, this._parse[field]);
+      if (!expr) {
+        return null;
+      }
+
+      const formula: VgFormulaTransform = {
+        type: 'formula',
+        expr,
+        as: field
+      };
+      return formula;
+    }).filter(t => t !== null);
   }
 }

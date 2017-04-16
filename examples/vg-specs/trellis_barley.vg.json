@@ -28,11 +28,14 @@
             "url": "data/barley.json",
             "format": {
                 "type": "json",
-                "parse": {
-                    "yield": "number"
-                }
+                "parse": {}
             },
             "transform": [
+                {
+                    "type": "formula",
+                    "expr": "toNumber(datum[\"yield\"])",
+                    "as": "yield"
+                },
                 {
                     "type": "filter",
                     "expr": "datum[\"yield\"] !== null && !isNaN(datum[\"yield\"])"

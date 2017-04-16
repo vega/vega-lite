@@ -28,9 +28,7 @@
             "url": "data/population.json",
             "format": {
                 "type": "json",
-                "parse": {
-                    "people": "number"
-                }
+                "parse": {}
             },
             "transform": []
         },
@@ -38,6 +36,11 @@
             "name": "data_0",
             "source": "source_0",
             "transform": [
+                {
+                    "type": "formula",
+                    "expr": "toNumber(datum[\"people\"])",
+                    "as": "people"
+                },
                 {
                     "type": "filter",
                     "expr": "datum[\"people\"] !== null && !isNaN(datum[\"people\"])"
@@ -63,6 +66,11 @@
             "source": "source_0",
             "transform": [
                 {
+                    "type": "formula",
+                    "expr": "toNumber(datum[\"people\"])",
+                    "as": "people"
+                },
+                {
                     "type": "filter",
                     "expr": "datum[\"people\"] !== null && !isNaN(datum[\"people\"])"
                 },
@@ -85,6 +93,11 @@
             "source": "source_0",
             "transform": [
                 {
+                    "type": "formula",
+                    "expr": "toNumber(datum[\"people\"])",
+                    "as": "people"
+                },
+                {
                     "type": "filter",
                     "expr": "datum[\"people\"] !== null && !isNaN(datum[\"people\"])"
                 },
@@ -106,6 +119,11 @@
             "name": "data_3",
             "source": "source_0",
             "transform": [
+                {
+                    "type": "formula",
+                    "expr": "toNumber(datum[\"people\"])",
+                    "as": "people"
+                },
                 {
                     "type": "filter",
                     "expr": "datum[\"people\"] !== null && !isNaN(datum[\"people\"])"
@@ -130,6 +148,11 @@
             "name": "data_4",
             "source": "source_0",
             "transform": [
+                {
+                    "type": "formula",
+                    "expr": "toNumber(datum[\"people\"])",
+                    "as": "people"
+                },
                 {
                     "type": "filter",
                     "expr": "datum[\"people\"] !== null && !isNaN(datum[\"people\"])"

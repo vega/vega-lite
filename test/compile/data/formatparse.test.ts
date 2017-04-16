@@ -6,7 +6,7 @@ import {Model} from '../../../src/compile/model';
 import {parseUnitModel} from '../../util';
 
 function parse(model: Model) {
-  return ParseNode.make(model).assemble();
+  return ParseNode.make(model).parse;
 }
 
 describe('compile/data/formatparse', () => {
@@ -88,6 +88,26 @@ describe('compile/data/formatparse', () => {
         'a': 'date',
         'b': 'number'
       });
+    });
+  });
+
+  describe('assembleTransforms', function() {
+    it('should assemble correct parse expressions', function() {
+      const p = new ParseNode({
+        n: 'number',
+        b: 'boolean',
+        s: 'string',
+        d1: 'date',
+        d2: 'date:"%y"'
+      });
+
+      assert.deepEqual(p.assembleTransforms(), [
+        {type: 'formula', expr: 'toNumber(datum["n"])', as: 'n'},
+        {type: 'formula', expr: 'toBoolean(datum["b"])', as: 'b'},
+        {type: 'formula', expr: 'toString(datum["s"])', as: 's'},
+        {type: 'formula', expr: 'toDate(datum["d1"])', as: 'd1'},
+        {type: 'formula', expr: 'timeParse(datum["d2"],"%y")', as: 'd2'}
+      ]);
     });
   });
 });

@@ -29,8 +29,7 @@
             "format": {
                 "type": "csv",
                 "parse": {
-                    "date": "date",
-                    "price": "number"
+                    "date": "date"
                 }
             },
             "transform": [
@@ -42,6 +41,16 @@
                     "type": "formula",
                     "as": "year_date",
                     "expr": "datetime(year(datum[\"date\"]), 0, 1, 0, 0, 0, 0)"
+                },
+                {
+                    "type": "formula",
+                    "expr": "toDate(datum[\"date\"])",
+                    "as": "date"
+                },
+                {
+                    "type": "formula",
+                    "expr": "toNumber(datum[\"price\"])",
+                    "as": "price"
                 },
                 {
                     "type": "filter",

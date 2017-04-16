@@ -28,11 +28,14 @@
             "url": "data/cars.json",
             "format": {
                 "type": "json",
-                "parse": {
-                    "Horsepower": "number"
-                }
+                "parse": {}
             },
             "transform": [
+                {
+                    "type": "formula",
+                    "expr": "toNumber(datum[\"Horsepower\"])",
+                    "as": "Horsepower"
+                },
                 {
                     "type": "filter",
                     "expr": "datum[\"Horsepower\"] !== null && !isNaN(datum[\"Horsepower\"])"
