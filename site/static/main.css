@@ -475,11 +475,13 @@ footer .edit-page {
   text-decoration: none;
 }
 .gallery .image {
-  width: 180px;
-  height: 100px;
-  background-position: left top;
-  background-size: cover;
+   width: 100%;
+  /* hack to make height depend on width*/
+  padding-bottom: 55%;
+  background-repeat: no-repeat;
+  margin-bottom: 5px;
   overflow: hidden;
+  background-size: cover;
   transition: background-position 2s;
   -webkit-transition: background-position 2s;
 }
