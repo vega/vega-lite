@@ -2,10 +2,13 @@ import { Channel } from '../../channel';
 import { SelectionDef, SelectionDomain, SelectionResolutions, SelectionTypes } from '../../selection';
 import { Dict } from '../../util';
 import { VgBinding, VgData } from '../../vega.schema';
+import { LayerModel } from '../layer';
 import { Model } from '../model';
 import { UnitModel } from '../unit';
 import { SelectionComponent } from './selection';
-export declare const STORE = "_store", TUPLE = "_tuple", MODIFY = "_modify";
+export declare const STORE = "_store";
+export declare const TUPLE = "_tuple";
+export declare const MODIFY = "_modify";
 export interface SelectionComponent {
     name: string;
     type: SelectionTypes;
@@ -39,6 +42,7 @@ export declare function assembleUnitSignals(model: UnitModel, signals: any[]): a
 export declare function assembleTopLevelSignals(model: Model): any[];
 export declare function assembleUnitData(model: UnitModel, data: VgData[]): VgData[];
 export declare function assembleUnitMarks(model: UnitModel, marks: any[]): any[];
+export declare function assembleLayerMarks(model: LayerModel, marks: any[]): any[];
 export declare function predicate(selCmpt: SelectionComponent, datum?: string): string;
 export declare function invert(model: UnitModel, selCmpt: SelectionComponent, channel: Channel, expr: string): string;
 export declare function channelSignalName(selCmpt: SelectionComponent, channel: Channel): string;

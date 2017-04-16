@@ -54,14 +54,13 @@ export declare abstract class Model {
     protected scaleNameMap: NameMapInterface;
     /** Name map for size, which can be renamed by a model's parent. */
     protected sizeNameMap: NameMapInterface;
-    protected readonly transform: Transform;
-    protected readonly scales: Dict<Scale>;
-    protected readonly axes: Dict<Axis>;
-    protected readonly legends: Dict<Legend>;
+    protected scales: Dict<Scale>;
+    protected axes: Dict<Axis>;
+    protected legends: Dict<Legend>;
+    protected _stack: StackProperties;
     readonly config: Config;
     component: Component;
     readonly abstract children: Model[];
-    abstract stack: StackProperties;
     constructor(spec: BaseSpec, parent: Model, parentGivenName: string, config: Config);
     parse(): void;
     abstract parseData(): void;
@@ -115,14 +114,15 @@ export declare abstract class Model {
     sort(channel: Channel): SortField | SortOrder;
     axis(channel: Channel): Axis;
     legend(channel: Channel): Legend;
+    readonly stack: StackProperties;
     /**
      * Corrects the data references in marks after assemble.
      */
     correctDataNames: (mark: any) => any;
     /**
-     * Type checks
+     * Traverse a model's hierarchy to get the specified component.
+     * @param type Scales or Selection
+     * @param name Name of the component
      */
-    isUnit(): boolean;
-    isFacet(): boolean;
-    isLayer(): boolean;
+    getComponent(type: 'scales' | 'selection', name: string): any;
 }

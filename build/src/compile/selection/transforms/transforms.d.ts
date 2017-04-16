@@ -9,6 +9,6 @@ export interface TransformCompiler {
     topLevelSignals?: (model: Model, selCmpt: SelectionComponent, signals: any[]) => any[];
     modifyExpr?: (model: UnitModel, selCmpt: SelectionComponent, expr: string) => string;
     marks?: (model: UnitModel, selCmpt: SelectionComponent, marks: any[], selMarks: any[]) => any[];
-    clippedGroup?: boolean;
+    clipGroup?: boolean;
 }
 export declare function forEachTransform(selCmpt: SelectionComponent, cb: (tx: TransformCompiler) => void): void;

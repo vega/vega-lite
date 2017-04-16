@@ -1,24 +1,15 @@
-import { Axis } from '../axis';
 import { Channel } from '../channel';
 import { Config } from '../config';
 import { Facet } from '../facet';
 import { FieldDef } from '../fielddef';
-import { Legend } from '../legend';
 import { Scale } from '../scale';
 import { FacetSpec } from '../spec';
-import { StackProperties } from '../stack';
-import { Dict } from '../util';
 import { VgData, VgEncodeEntry } from '../vega.schema';
 import { Model } from './model';
 export declare class FacetModel extends Model {
     readonly facet: Facet;
     readonly child: Model;
     readonly children: Model[];
-    protected readonly scales: Dict<Scale>;
-    protected readonly axes: Dict<Axis>;
-    protected readonly legends: Dict<Legend>;
-    readonly config: Config;
-    readonly stack: StackProperties;
     private readonly _spacing;
     constructor(spec: FacetSpec, parent: Model, parentGivenName: string, config: Config);
     private initFacet(facet);

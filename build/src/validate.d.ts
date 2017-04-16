@@ -1,4 +1,4 @@
-import { FacetedUnitSpec } from './spec';
+import { FacetedCompositeUnitSpec } from './spec';
 export interface RequiredChannelMap {
     [mark: string]: Array<string>;
 }
@@ -29,4 +29,4 @@ export declare const DEFAULT_SUPPORTED_CHANNEL_TYPE: SupportedChannelMap;
  * @return {String} Return one reason why the encoding is invalid,
  *                  or null if the encoding is valid.
  */
-export declare function getEncodingMappingError(spec: FacetedUnitSpec, requiredChannelMap?: RequiredChannelMap, supportedChannelMap?: SupportedChannelMap): string;
+export declare function getEncodingMappingError(spec: FacetedCompositeUnitSpec, requiredChannelMap?: RequiredChannelMap, supportedChannelMap?: SupportedChannelMap): string;

@@ -867,17 +867,18 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var tslib_1 = require("tslib");
 var fielddef_1 = require("../../fielddef");
 var log = require("../../log");
+var type_1 = require("../../type");
 var util_1 = require("../../util");
 var dataflow_1 = require("./dataflow");
 function addDimension(dims, fieldDef) {
     if (fieldDef.bin) {
         dims[fielddef_1.field(fieldDef, { binSuffix: 'start' })] = true;
         dims[fielddef_1.field(fieldDef, { binSuffix: 'end' })] = true;
-        // const scale = model.scale(channel);
-        // if (scaleType(scale, fieldDef, channel, model.mark()) === ScaleType.ORDINAL) {
-        // also produce bin_range if the binned field use ordinal scale
-        dims[fielddef_1.field(fieldDef, { binSuffix: 'range' })] = true;
-        // }
+        // We need the range only when the user explicitly forces a binned field to be ordinal (range used in axis and legend labels).
+        // We could check whether the axis or legend exists but that seems overkill. In axes and legends, we check hasDiscreteDomain(scaleType).
+        if (fieldDef.type === type_1.ORDINAL) {
+            dims[fielddef_1.field(fieldDef, { binSuffix: 'range' })] = true;
+        }
     }
     else {
         dims[fielddef_1.field(fieldDef)] = true;
@@ -1009,7 +1010,7 @@ var AggregateNode = (function (_super) {
 }(dataflow_1.DataFlowNode));
 exports.AggregateNode = AggregateNode;
 
-},{"../../fielddef":71,"../../log":74,"../../util":85,"./dataflow":14,"tslib":273}],12:[function(require,module,exports){
+},{"../../fielddef":71,"../../log":74,"../../type":84,"../../util":85,"./dataflow":14,"tslib":273}],12:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var tslib_1 = require("tslib");
@@ -1189,7 +1190,6 @@ function makeWalkTree(data) {
                 // Note that an output node may be required but we still do not assemble a
                 // separate data source for it.
                 node.source = dataSource.name;
-                throw new Error('cannot happen');
             }
             else {
                 if (!dataSource.name) {
@@ -1333,7 +1333,7 @@ var BinNode = (function (_super) {
                         field: fieldDef.field,
                         as: [fielddef_1.field(fieldDef, { binSuffix: 'start' }), fielddef_1.field(fieldDef, { binSuffix: 'end' })],
                         signal: util_1.varName(model.getName(key + "_bins")),
-                        extentSignal: model.getName(key + '_extent')
+                        extentSignal: util_1.varName(model.getName(key + '_extent'))
                     };
                 }
                 binComponent[key] = tslib_1.__assign({}, binComponent[key], rangeFormula(model, fieldDef, channel));
@@ -1606,7 +1606,6 @@ exports.FacetNode = FacetNode;
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var tslib_1 = require("tslib");
-var data_1 = require("../../data");
 var datetime_1 = require("../../datetime");
 var fielddef_1 = require("../../fielddef");
 var filter_1 = require("../../filter");
@@ -1675,7 +1674,7 @@ var ParseNode = (function (_super) {
         });
         // Custom parse should override inferred parse
         var data = model.data;
-        if (data && data_1.isUrlData(data) && data.format && data.format.parse) {
+        if (data && data.format && data.format.parse) {
             var p_1 = data.format.parse;
             util_1.keys(p_1).forEach(function (field) {
                 parse[field] = p_1[field];
@@ -1701,7 +1700,7 @@ var ParseNode = (function (_super) {
 }(dataflow_1.DataFlowNode));
 exports.ParseNode = ParseNode;
 
-},{"../../data":67,"../../datetime":68,"../../fielddef":71,"../../filter":72,"../../transform":83,"../../type":84,"../../util":85,"./dataflow":14,"tslib":273}],17:[function(require,module,exports){
+},{"../../datetime":68,"../../fielddef":71,"../../filter":72,"../../transform":83,"../../type":84,"../../util":85,"./dataflow":14,"tslib":273}],17:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var tslib_1 = require("tslib");
@@ -2507,10 +2506,6 @@ var FacetModel = (function (_super) {
     tslib_1.__extends(FacetModel, _super);
     function FacetModel(spec, parent, parentGivenName, config) {
         var _this = _super.call(this, spec, parent, parentGivenName, config) || this;
-        _this.scales = {};
-        _this.axes = {};
-        _this.legends = {};
-        _this.stack = null;
         _this._spacing = {};
         var child = _this.child = common_1.buildModel(spec.spec, _this, _this.getName('child'), config);
         _this.children = [child];
@@ -2584,8 +2579,11 @@ var FacetModel = (function (_super) {
         this.child.parseData();
     };
     FacetModel.prototype.parseSelection = function () {
-        // TODO: @arvind can write this
-        // We might need to split this into compileSelectionData and compileSelectionSignals?
+        // As a facet has a single child, the selection components are the same.
+        // The child maintains its selections to assemble signals, which remain
+        // within its unit.
+        this.child.parseSelection();
+        this.component.selection = this.child.component.selection;
     };
     FacetModel.prototype.parseLayoutData = function () {
         this.child.parseLayoutData();
@@ -2673,7 +2671,7 @@ var FacetModel = (function (_super) {
         return [];
     };
     FacetModel.prototype.assembleSelectionData = function (data) {
-        return [];
+        return this.child.assembleSelectionData(data);
     };
     FacetModel.prototype.assembleLayout = function (layoutData) {
         // Postfix traversal – layout is assembled bottom-up
@@ -2835,14 +2833,11 @@ var parse_1 = require("./data/parse");
 var layout_1 = require("./layout");
 var model_1 = require("./model");
 var domain_1 = require("./scale/domain");
+var selection_1 = require("./selection/selection");
 var LayerModel = (function (_super) {
     tslib_1.__extends(LayerModel, _super);
     function LayerModel(spec, parent, parentGivenName, config) {
         var _this = _super.call(this, spec, parent, parentGivenName, config) || this;
-        _this.scales = {};
-        _this.axes = {};
-        _this.legends = {};
-        _this.stack = null;
         _this.width = spec.width;
         _this.height = spec.height;
         _this.children = spec.layer.map(function (layer, i) {
@@ -2870,8 +2865,17 @@ var LayerModel = (function (_super) {
         });
     };
     LayerModel.prototype.parseSelection = function () {
-        // TODO: @arvind can write this
-        // We might need to split this into compileSelectionData and compileSelectionSignals?
+        var _this = this;
+        // Merge selections up the hierarchy so that they may be referenced
+        // across unit specs. Persist their definitions within each child
+        // to assemble signals which remain within output Vega unit groups.
+        this.component.selection = {};
+        this.children.forEach(function (child) {
+            child.parseSelection();
+            util_1.keys(child.component.selection).forEach(function (key) {
+                _this.component.selection[key] = child.component.selection[key];
+            });
+        });
     };
     LayerModel.prototype.parseLayoutData = function () {
         // TODO: correctly union ordinal scales rather than just using the layout of the first child
@@ -2954,11 +2958,12 @@ var LayerModel = (function (_super) {
     LayerModel.prototype.assembleParentGroupProperties = function (cellConfig) {
         return common_1.applyConfig({}, cellConfig, mark_1.FILL_STROKE_CONFIG.concat(['clip']));
     };
+    // TODO: Support same named selections across children.
     LayerModel.prototype.assembleSignals = function (signals) {
-        return [];
+        return this.children.reduce(function (sg, child) { return child.assembleSignals(sg); }, []);
     };
     LayerModel.prototype.assembleSelectionData = function (data) {
-        return [];
+        return this.children.reduce(function (db, child) { return child.assembleSelectionData(db); }, []);
     };
     LayerModel.prototype.assembleData = function () {
         if (!this.parent) {
@@ -2981,10 +2986,9 @@ var LayerModel = (function (_super) {
         return layout_1.assembleLayout(this, layoutData);
     };
     LayerModel.prototype.assembleMarks = function () {
-        // only children have marks
-        return util_1.flatten(this.children.map(function (child) {
+        return selection_1.assembleLayerMarks(this, util_1.flatten(this.children.map(function (child) {
             return child.assembleMarks();
-        }));
+        })));
     };
     LayerModel.prototype.channels = function () {
         return [];
@@ -2999,7 +3003,7 @@ var LayerModel = (function (_super) {
 }(model_1.Model));
 exports.LayerModel = LayerModel;
 
-},{"../mark":75,"../util":85,"../vega.schema":87,"./common":9,"./data/assemble":12,"./data/parse":20,"./layout":28,"./model":44,"./scale/domain":46,"tslib":273}],28:[function(require,module,exports){
+},{"../mark":75,"../util":85,"../vega.schema":87,"./common":9,"./data/assemble":12,"./data/parse":20,"./layout":28,"./model":44,"./scale/domain":46,"./selection/selection":54,"tslib":273}],28:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var tslib_1 = require("tslib");
@@ -3808,7 +3812,7 @@ function wrapCondition(model, condition, vgChannel, valueRef) {
 }
 function selectionTest(model, selectionName) {
     var negate = selectionName.charAt(0) === '!', name = negate ? selectionName.slice(1) : selectionName;
-    return (negate ? '!' : '') + selection_1.predicate(model.component.selection[name]);
+    return (negate ? '!' : '') + selection_1.predicate(model.getComponent('selection', name));
 }
 function text(model) {
     var channelDef = model.encoding.text;
@@ -4328,6 +4332,7 @@ var fielddef_1 = require("../fielddef");
 var scale_1 = require("../scale");
 var util_1 = require("../util");
 var assemble_1 = require("./scale/assemble");
+var unit_1 = require("./unit");
 var NameMap = (function () {
     function NameMap() {
         this.nameMap = {};
@@ -4355,6 +4360,7 @@ var Model = (function () {
         this.scales = {};
         this.axes = {};
         this.legends = {};
+        this._stack = null;
         this.children = [];
         /**
          * Corrects the data references in marks after assemble.
@@ -4445,7 +4451,7 @@ var Model = (function () {
     Model.prototype.hasDescendantWithFieldOnChannel = function (channel) {
         for (var _i = 0, _a = this.children; _i < _a.length; _i++) {
             var child = _a[_i];
-            if (child.isUnit()) {
+            if (child instanceof unit_1.UnitModel) {
                 if (child.channelHasField(channel)) {
                     return true;
                 }
@@ -4540,23 +4546,26 @@ var Model = (function () {
     Model.prototype.legend = function (channel) {
         return this.legends[channel];
     };
+    Object.defineProperty(Model.prototype, "stack", {
+        get: function () {
+            return this._stack;
+        },
+        enumerable: true,
+        configurable: true
+    });
     /**
-     * Type checks
+     * Traverse a model's hierarchy to get the specified component.
+     * @param type Scales or Selection
+     * @param name Name of the component
      */
-    Model.prototype.isUnit = function () {
-        return false;
-    };
-    Model.prototype.isFacet = function () {
-        return false;
-    };
-    Model.prototype.isLayer = function () {
-        return false;
+    Model.prototype.getComponent = function (type, name) {
+        return this.component[type][name] || this.parent.getComponent(type, name);
     };
     return Model;
 }());
 exports.Model = Model;
 
-},{"../channel":5,"../encoding":69,"../fielddef":71,"../scale":76,"../util":85,"./scale/assemble":45}],45:[function(require,module,exports){
+},{"../channel":5,"../encoding":69,"../fielddef":71,"../scale":76,"../util":85,"./scale/assemble":45,"./unit":64}],45:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var tslib_1 = require("tslib");
@@ -4599,6 +4608,7 @@ var sort_1 = require("../../sort");
 var util = require("../../util");
 var vega_schema_1 = require("../../vega.schema");
 var data_1 = require("../../data");
+var util_1 = require("../../util");
 function initDomain(domain, fieldDef, scale, scaleConfig) {
     if (domain === 'unaggregated') {
         var _a = canUseUnaggregatedDomain(fieldDef, scale), valid = _a.valid, reason = _a.reason;
@@ -4674,7 +4684,7 @@ function parseSingleChannelDomain(scale, model, channel) {
     }
     else if (fieldDef.bin) {
         if (scale_1.isBinScale(scale.type)) {
-            var signal = model.getName(bin_1.binToString(fieldDef.bin) + "_" + fieldDef.field + "_bins");
+            var signal = util_1.varName(model.getName(bin_1.binToString(fieldDef.bin) + "_" + fieldDef.field + "_bins"));
             return { signal: "sequence(" + signal + ".start, " + signal + ".stop + " + signal + ".step, " + signal + ".step)" };
         }
         if (scale_1.hasDiscreteDomain(scale.type)) {
@@ -5424,6 +5434,7 @@ exports.fieldDefMatchScaleType = fieldDefMatchScaleType;
 },{"../../channel":5,"../../log":74,"../../scale":76,"../../timeunit":81,"../../type":84,"../../util":85}],52:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+var tslib_1 = require("tslib");
 var channel_1 = require("../../channel");
 var log_1 = require("../../log");
 var util_1 = require("../../util");
@@ -5476,10 +5487,11 @@ var interval = {
     },
     modifyExpr: function (model, selCmpt) {
         var tpl = selCmpt.name + selection_1.TUPLE;
-        return tpl + ", {unit: " + tpl + ".unit}";
+        return tpl + ', ' +
+            (selCmpt.resolve === 'global' ? 'true' : "{unit: " + tpl + ".unit}");
     },
     marks: function (model, selCmpt, marks) {
-        var name = selCmpt.name, _a = projections(selCmpt), x = _a.x, y = _a.y;
+        var name = selCmpt.name, _a = projections(selCmpt), x = _a.x, y = _a.y, tpl = name + selection_1.TUPLE, store = "data(" + util_1.stringValue(name + selection_1.STORE) + ")";
         // Do not add a brush if we're binding to scales.
         if (scales_1.default.has(selCmpt)) {
             return marks;
@@ -5496,8 +5508,17 @@ var interval = {
                 { value: 0 }),
             y2: util_1.extend({}, y !== null ?
                 { scale: model.scaleName(channel_1.Y), signal: name + "[" + y + "].extent[1]" } :
-                { field: { group: 'height' } }),
+                { field: { group: 'height' } })
         };
+        // If the selection is resolved to global, only a single interval is in
+        // the store. Wrap brush mark's encodings with a production rule to test
+        // this based on the `unit` property. Hide the brush mark if it corresponds
+        // to a unit different from the one in the store.
+        if (selCmpt.resolve === 'global') {
+            util_1.keys(update).forEach(function (key) {
+                update[key] = [tslib_1.__assign({ test: store + ".length && " + tpl + " && " + tpl + ".unit === " + store + "[0].unit" }, update[key]), { value: 0 }];
+            });
+        }
         return [{
                 name: undefined,
                 type: 'rect',
@@ -5557,7 +5578,7 @@ function events(selCmpt, cb) {
     }, []);
 }
 
-},{"../../channel":5,"../../log":74,"../../util":85,"./selection":54,"./transforms/scales":59}],53:[function(require,module,exports){
+},{"../../channel":5,"../../log":74,"../../util":85,"./selection":54,"./transforms/scales":59,"tslib":273}],53:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var util_1 = require("../../util");
@@ -5580,7 +5601,9 @@ var multi = {
         return "fields: " + name + ".fields, values: " + name + ".values";
     },
     modifyExpr: function (model, selCmpt) {
-        return selCmpt.name + selection_1.TUPLE;
+        var tpl = selCmpt.name + selection_1.TUPLE;
+        return tpl + ', ' +
+            (selCmpt.resolve === 'global' ? 'null' : "{unit: " + tpl + ".unit}");
     }
 };
 exports.default = multi;
@@ -5590,11 +5613,14 @@ exports.default = multi;
 Object.defineProperty(exports, "__esModule", { value: true });
 var vega_event_selector_1 = require("vega-event-selector");
 var util_1 = require("../../util");
+var layer_1 = require("../layer");
 var interval_1 = require("./interval");
 var multi_1 = require("./multi");
 var single_1 = require("./single");
 var transforms_1 = require("./transforms/transforms");
-exports.STORE = '_store', exports.TUPLE = '_tuple', exports.MODIFY = '_modify';
+exports.STORE = '_store';
+exports.TUPLE = '_tuple';
+exports.MODIFY = '_modify';
 function parseUnitSelection(model, selDefs) {
     var selCmpts = {}, selectionConfig = model.config.selection;
     var _loop_1 = function (name_1) {
@@ -5620,7 +5646,6 @@ function parseUnitSelection(model, selDefs) {
             name: model.getName(name_1),
             events: util_1.isString(selDef.on) ? vega_event_selector_1.selector(selDef.on, 'scope') : selDef.on,
             domain: 'data',
-            resolve: 'union'
         });
         transforms_1.forEachTransform(selCmpt, function (txCompiler) {
             if (txCompiler.parse) {
@@ -5684,48 +5709,51 @@ function assembleTopLevelSignals(model) {
 }
 exports.assembleTopLevelSignals = assembleTopLevelSignals;
 function assembleUnitData(model, data) {
-    return data
-        .concat(Object.keys(model.component.selection)
-        .map(function (k) {
-        return { name: k + exports.STORE };
-    }));
+    forEachSelection(model, function (selCmpt) {
+        data.push({ name: selCmpt.name + exports.STORE });
+    });
+    return data;
 }
 exports.assembleUnitData = assembleUnitData;
 function assembleUnitMarks(model, marks) {
-    var clippedGroup = false, selMarks = marks;
+    var clipGroup = false, selMarks = marks;
     forEachSelection(model, function (selCmpt, selCompiler) {
         selMarks = selCompiler.marks ? selCompiler.marks(model, selCmpt, selMarks) : selMarks;
         transforms_1.forEachTransform(selCmpt, function (txCompiler) {
-            clippedGroup = clippedGroup || txCompiler.clippedGroup;
+            clipGroup = clipGroup || txCompiler.clipGroup;
             if (txCompiler.marks) {
                 selMarks = txCompiler.marks(model, selCmpt, marks, selMarks);
             }
         });
     });
-    if (clippedGroup) {
-        selMarks = [{
-                type: 'group',
-                encode: {
-                    enter: {
-                        width: { field: { group: 'width' } },
-                        height: { field: { group: 'height' } },
-                        fill: { value: 'transparent' },
-                        clip: { value: true }
-                    }
-                },
-                marks: selMarks.map(model.correctDataNames)
-            }];
+    // In a layered spec, we want to clip all layers together rather than
+    // only the layer within which the selection is defined. Propagate
+    // our assembled state up and let the LayerModel make the right call.
+    if (model.parent && model.parent instanceof layer_1.LayerModel) {
+        return [selMarks, clippedGroup];
     }
-    return selMarks;
+    else {
+        return clipGroup ? clippedGroup(model, selMarks) : selMarks;
+    }
 }
 exports.assembleUnitMarks = assembleUnitMarks;
+function assembleLayerMarks(model, marks) {
+    var clipGroup = false;
+    model.children.forEach(function (child) {
+        var unit = assembleUnitMarks(child, marks);
+        marks = unit[0];
+        clipGroup = clipGroup || unit[1];
+    });
+    return clipGroup ? clippedGroup(model, marks) : marks;
+}
+exports.assembleLayerMarks = assembleLayerMarks;
 var PREDICATES_OPS = {
-    'single': '"intersect", "all"',
+    'global': '"union", "all"',
     'independent': '"intersect", "unit"',
     'union': '"union", "all"',
     'union_others': '"union", "others"',
     'intersect': '"intersect", "all"',
-    'intersect_others': '"intersect", "others'
+    'intersect_others': '"intersect", "others"'
 };
 function predicate(selCmpt, datum) {
     var store = util_1.stringValue(selCmpt.name + exports.STORE), op = PREDICATES_OPS[selCmpt.resolve];
@@ -5763,8 +5791,22 @@ function channelSignalName(selCmpt, channel) {
     return selCmpt.name + '_' + channel;
 }
 exports.channelSignalName = channelSignalName;
+function clippedGroup(model, marks) {
+    return [{
+            type: 'group',
+            encode: {
+                enter: {
+                    width: { field: { group: 'width' } },
+                    height: { field: { group: 'height' } },
+                    fill: { value: 'transparent' },
+                    clip: { value: true }
+                }
+            },
+            marks: marks.map(model.correctDataNames)
+        }];
+}
 
-},{"../../util":85,"./interval":52,"./multi":53,"./single":55,"./transforms/transforms":61,"vega-event-selector":277}],55:[function(require,module,exports){
+},{"../../util":85,"../layer":27,"./interval":52,"./multi":53,"./single":55,"./transforms/transforms":61,"vega-event-selector":277}],55:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var util_1 = require("../../util");
@@ -5788,7 +5830,9 @@ var single = {
             }).join(', ');
     },
     modifyExpr: function (model, selCmpt) {
-        return selCmpt.name + selection_1.TUPLE + ', true';
+        var tpl = selCmpt.name + selection_1.TUPLE;
+        return tpl + ', ' +
+            (selCmpt.resolve === 'global' ? 'true' : "{unit: " + tpl + ".unit}");
     }
 };
 exports.default = single;
@@ -5799,7 +5843,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var util_1 = require("../../../util");
 var inputBindings = {
     has: function (selCmpt) {
-        return selCmpt.type === 'single' && selCmpt.bind && selCmpt.bind !== 'scales';
+        return selCmpt.type === 'single' && selCmpt.resolve === 'global' &&
+            selCmpt.bind && selCmpt.bind !== 'scales';
     },
     topLevelSignals: function (model, selCmpt, signals) {
         var name = selCmpt.name, proj = selCmpt.project, bind = selCmpt.bind, datum = '(item().isVoronoi ? datum.datum : datum)';
@@ -5900,16 +5945,16 @@ var util_1 = require("../../../util");
 var interval_1 = require("../interval");
 var selection_1 = require("../selection");
 var scaleBindings = {
-    clippedGroup: true,
+    clipGroup: true,
     has: function (selCmpt) {
-        return selCmpt.type === 'interval' && selCmpt.bind && selCmpt.bind === 'scales';
+        return selCmpt.type === 'interval' && selCmpt.resolve === 'global' &&
+            selCmpt.bind && selCmpt.bind === 'scales';
     },
     parse: function (model, selDef, selCmpt) {
-        var scales = model.component.scales;
         var bound = selCmpt.scales = [];
         selCmpt.project.forEach(function (p) {
             var channel = p.encoding;
-            var scale = scales[channel];
+            var scale = model.getComponent('scales', channel);
             if (!scale || !scale_1.hasContinuousDomain(scale.type)) {
                 log_1.warn('Scale bindings are currently only supported for scales with continuous domains.');
                 return;
@@ -5964,7 +6009,9 @@ var toggle = {
     modifyExpr: function (model, selCmpt, expr) {
         var tpl = selCmpt.name + selection_1.TUPLE, signal = selCmpt.name + TOGGLE;
         return signal + " ? null : " + tpl + ", " +
-            (signal + " ? null : true, ") +
+            (selCmpt.resolve === 'global' ?
+                signal + " ? null : true, " :
+                signal + " ? null : {unit: " + tpl + ".unit}, ") +
             (signal + " ? " + tpl + " : null");
     }
 };
@@ -6135,6 +6182,8 @@ var parse_1 = require("./axis/parse");
 var common_1 = require("./common");
 var assemble_1 = require("./data/assemble");
 var parse_2 = require("./data/parse");
+var facet_1 = require("./facet");
+var layer_1 = require("./layer");
 var layout_1 = require("./layout");
 var parse_3 = require("./legend/parse");
 var init_1 = require("./mark/init");
@@ -6151,9 +6200,6 @@ var UnitModel = (function (_super) {
     function UnitModel(spec, parent, parentGivenName, cfg) {
         var _this = _super.call(this, spec, parent, parentGivenName, cfg) || this;
         _this.selection = {};
-        _this.scales = {};
-        _this.axes = {};
-        _this.legends = {};
         _this.children = [];
         // FIXME(#2041): copy config.facet.cell to config.cell -- this seems incorrect and should be rewritten
         _this.initFacetCellConfig();
@@ -6166,10 +6212,10 @@ var UnitModel = (function (_super) {
         var mark = mark_1.isMarkDef(spec.mark) ? spec.mark.type : spec.mark;
         var encoding = _this.encoding = encoding_1.normalizeEncoding(spec.encoding || {}, mark);
         // calculate stack properties
-        _this.stack = stack_1.stack(mark, encoding, _this.config.stack);
+        _this._stack = stack_1.stack(mark, encoding, _this.config.stack);
         _this.scales = _this.initScales(mark, encoding, providedWidth, providedHeight);
         _this.markDef = init_1.initMarkDef(spec.mark, encoding, _this.scales, _this.config);
-        _this.encoding = init_1.initEncoding(mark, encoding, _this.stack, _this.config);
+        _this.encoding = init_1.initEncoding(mark, encoding, _this._stack, _this.config);
         _this.axes = _this.initAxes(encoding);
         _this.legends = _this.initLegend(encoding);
         // Selections will be initialized upon parse.
@@ -6185,7 +6231,7 @@ var UnitModel = (function (_super) {
         var ancestor = this.parent;
         var hasFacetAncestor = false;
         while (ancestor !== null) {
-            if (ancestor.isFacet()) {
+            if (ancestor instanceof facet_1.FacetModel) {
                 hasFacetAncestor = true;
                 break;
             }
@@ -6323,7 +6369,12 @@ var UnitModel = (function (_super) {
     };
     UnitModel.prototype.assembleMarks = function () {
         var marks = this.component.mark || [];
-        marks = selection_1.assembleUnitMarks(this, marks);
+        // If this unit is part of a layer, selections should augment
+        // all in concert rather than each unit individually. This
+        // ensures correct interleaving of clipping and brushed marks.
+        if (!this.parent || !(this.parent instanceof layer_1.LayerModel)) {
+            marks = selection_1.assembleUnitMarks(this, marks);
+        }
         return marks.map(this.correctDataNames);
     };
     UnitModel.prototype.assembleParentGroupProperties = function (cellConfig) {
@@ -6380,7 +6431,7 @@ var UnitModel = (function (_super) {
 }(model_1.Model));
 exports.UnitModel = UnitModel;
 
-},{"../channel":5,"../encoding":69,"../fielddef":71,"../mark":75,"../scale":76,"../stack":80,"../util":85,"./axis/parse":7,"./common":9,"./data/assemble":12,"./data/parse":20,"./layout":28,"./legend/parse":30,"./mark/init":34,"./mark/mark":36,"./model":44,"./scale/init":47,"./scale/parse":48,"./selection/selection":54,"tslib":273}],65:[function(require,module,exports){
+},{"../channel":5,"../encoding":69,"../fielddef":71,"../mark":75,"../scale":76,"../stack":80,"../util":85,"./axis/parse":7,"./common":9,"./data/assemble":12,"./data/parse":20,"./facet":26,"./layer":27,"./layout":28,"./legend/parse":30,"./mark/init":34,"./mark/mark":36,"./model":44,"./scale/init":47,"./scale/parse":48,"./selection/selection":54,"tslib":273}],65:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var tslib_1 = require("tslib");
@@ -7277,8 +7328,7 @@ var message;
     }
     message.emptyFieldDef = emptyFieldDef;
     function incompatibleChannel(channel, markOrFacet, when) {
-        return channel + " dropped as it is incompatible with " + markOrFacet +
-            when ? "when " + when : '';
+        return channel + " dropped as it is incompatible with " + markOrFacet + (when ? " when " + when : '') + ".";
     }
     message.incompatibleChannel = incompatibleChannel;
     function facetChannelShouldBeDiscrete(channel) {
@@ -7292,11 +7342,11 @@ var message;
     // Mark
     message.BAR_WITH_POINT_SCALE_AND_RANGESTEP_NULL = 'Bar mark should not be used with point scale when rangeStep is null. Please use band scale instead.';
     function unclearOrientContinuous(mark) {
-        return 'Cannot clearly determine orientation for ' + mark + ' since both x and y channel encode continous fields. In this case, we use vertical by default';
+        return "Cannot clearly determine orientation for " + mark + " since both x and y channel encode continous fields. In this case, we use vertical by default";
     }
     message.unclearOrientContinuous = unclearOrientContinuous;
     function unclearOrientDiscreteOrEmpty(mark) {
-        return 'Cannot clearly determine orientation for ' + mark + ' since both x and y channel encode discrete or empty fields.';
+        return "Cannot clearly determine orientation for " + mark + " since both x and y channel encode discrete or empty fields.";
     }
     message.unclearOrientDiscreteOrEmpty = unclearOrientDiscreteOrEmpty;
     function orientOverridden(original, actual) {
@@ -7370,13 +7420,11 @@ var message;
     }
     message.invalidTimeUnit = invalidTimeUnit;
     function dayReplacedWithDate(fullTimeUnit) {
-        return "Time unit \"" + fullTimeUnit + "\" is not supported. We are replacing it with " +
-            (fullTimeUnit + '').replace('day', 'date') + '.';
+        return "Time unit \"" + fullTimeUnit + "\" is not supported. We are replacing it with " + fullTimeUnit.replace('day', 'date') + ".";
     }
     message.dayReplacedWithDate = dayReplacedWithDate;
     function droppedDay(d) {
-        return 'Dropping day from datetime ' + JSON.stringify(d) +
-            ' as day cannot be combined with other units.';
+        return "Dropping day from datetime " + JSON.stringify(d) + " as day cannot be combined with other units.";
     }
     message.droppedDay = droppedDay;
 })(message = exports.message || (exports.message = {}));
@@ -7611,13 +7659,14 @@ exports.channelScalePropertyIncompatability = channelScalePropertyIncompatabilit
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.defaultConfig = {
-    single: { on: 'click', fields: ['_id'] },
-    multi: { on: 'click', fields: ['_id'], toggle: 'event.shiftKey' },
+    single: { on: 'click', fields: ['_id'], resolve: 'global' },
+    multi: { on: 'click', fields: ['_id'], toggle: 'event.shiftKey', resolve: 'global' },
     interval: {
         on: '[mousedown, window:mouseup] > window:mousemove!',
         encodings: ['x', 'y'],
         translate: '[mousedown, window:mouseup] > window:mousemove!',
-        zoom: 'wheel'
+        zoom: 'wheel',
+        resolve: 'global'
     }
 };
 
@@ -7696,11 +7745,9 @@ function normalizeFacetedUnit(spec, config) {
     // as row/column should be moved to facet
     var _a = spec.encoding, row = _a.row, column = _a.column, encoding = tslib_1.__rest(_a, ["row", "column"]);
     // Mark and encoding should be moved into the inner spec
-    var mark = spec.mark, _ = spec.encoding, outerSpec = tslib_1.__rest(spec, ["mark", "encoding"]);
-    return tslib_1.__assign({}, outerSpec, { facet: tslib_1.__assign({}, (row ? { row: row } : {}), (column ? { column: column } : {})), spec: normalizeNonFacetUnit({
-            mark: mark,
-            encoding: encoding
-        }, config) });
+    var mark = spec.mark, selection = spec.selection, _ = spec.encoding, outerSpec = tslib_1.__rest(spec, ["mark", "selection", "encoding"]);
+    return tslib_1.__assign({}, outerSpec, { facet: tslib_1.__assign({}, (row ? { row: row } : {}), (column ? { column: column } : {})), spec: normalizeNonFacetUnit(tslib_1.__assign({ mark: mark,
+            encoding: encoding }, (selection ? { selection: selection } : {})), config) });
 }
 function isNonFacetUnitSpecWithPrimitiveMark(spec) {
     return mark_1.isPrimitiveMark(spec.mark);
@@ -59773,22 +59820,7 @@ function renderGallery() {
                 .attr('class', 'image')
                 .style('background-image', function (d) { return 'url(' + window.location.origin + BASEURL + '/build/examples/images/' + d.name + '.vl.svg)'; })
                 .style('background-size', function (d) {
-                var bgSizeDefault = 'cover';
-                if (!d.galleryParameters || !d.galleryParameters.backgroundSize) {
-                    return bgSizeDefault;
-                }
-                else {
-                    return d.galleryParameters.backgroundSize;
-                }
-            })
-                .style('background-position', function (d) {
-                var bgPositionDefault = 'center';
-                if (!d.galleryParameters || !d.galleryParameters.backgroundPosition) {
-                    return bgPositionDefault;
-                }
-                else {
-                    return d.galleryParameters.backgroundPosition;
-                }
+                return (!d.galleryParameters || !d.galleryParameters.backgroundSize) ? 'cover' : d.galleryParameters.backgroundSize;
             });
             imageGroup.append('div')
                 .attr('class', 'image-title')
