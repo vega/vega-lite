@@ -384,7 +384,8 @@ footer .edit-page {
 
 /* Example Gallery */
 .preview {
-  display: inline-block;
+  display: block;
+  float: left;
   padding: 0.5em 0;
   padding-right: 0.5em;
 }
@@ -431,9 +432,10 @@ footer .edit-page {
   box-shadow: 0px 8px 16px rgba(0,0,0,0.3);
 }
 #showcase .examples {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
+  margin: 0 auto;
+  height: 300px;
+  width: 1300px;
+  line-height: 0;
 }
 #showcase .preview {
   width: 180px;
@@ -463,9 +465,11 @@ footer .edit-page {
 .gallery .imagegroup {
   display: inline-block;
   position: relative;
-  /* Show 4 images per row, each image has 18px horizontal margin*/
+  /* Show 4 images per row, each image has 18px horizontal margin */
   width: calc(25% - 36px);
   margin: 12px 18px;
+  /* For small screens */
+  min-width: 140px;
 }
 
 .gallery .imagegroup:hover {
