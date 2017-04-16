@@ -158,7 +158,7 @@ function makeWalkTree(data: VgData[]) {
   function walkTree(node: DataFlowNode, dataSource: VgData) {
     if (node instanceof ParseNode) {
       if (node.parent instanceof SourceNode && !dataSource.source)  {
-        // If node's parent is a root source and the data source does not referencence another data source, use normal format parse
+        // If node's parent is a root source and the data source does not refer to another data source, use normal format parse
         dataSource.format = {
           ...dataSource.format || {},
           parse: node.assembleFormatParse()

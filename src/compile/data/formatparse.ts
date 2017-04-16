@@ -21,7 +21,7 @@ function parseExpression(field: string, parse: string): string {
   } else if (parse === 'date') {
     return `toDate(${f})`;
   } else if (parse.indexOf('date:') === 0) {
-    const specifier = parse.slice(6, parse.length - 1);  // specifier is in ""
+    const specifier = parse.slice(6, parse.length - 1);  // specifier is in "" or ''
     return `timeParse(${f},"${specifier}")`;
   } else {
     log.warn(log.message.unrecognizedParse(parse));
