@@ -4,7 +4,7 @@ import {Config} from '../config';
 import {LAYOUT, MAIN} from '../data';
 import {reduce} from '../encoding';
 import {Facet} from '../facet';
-import {FieldDef, normalize} from '../fielddef';
+import {FieldDef, normalize, title as fieldDefTitle} from '../fielddef';
 import {Legend} from '../legend';
 import * as log from '../log';
 import {Scale} from '../scale';
@@ -220,14 +220,11 @@ export class FacetModel extends ModelWithField {
   }
 
   public assembleLayout(): VgLayout {
-    return null;
-    // const columns = this.channelHasField('column') ? {signal: this.getName('column')} : 1;
-
-    // return {
-    //   padding: {row: 10, header: 5}, // TODO: allow customizing padding
-    //   columns,
-    //   bounds: 'full' // TODO:
-    // };
+    return {
+      padding: {row: 10, column: 10, header: 10}, // TODO: allow customizing padding
+      columns: 1,
+      bounds: 'full'
+    };
   }
 
   public assembleLayoutData(layoutData: VgData[]): VgData[] {
@@ -276,6 +273,8 @@ export class FacetModel extends ModelWithField {
         },
         marks
       }],
+      this.channelHasField('column') ? [getTitleGroup(this, 'column')] : [],
+      this.channelHasField('row') ? [getTitleGroup(this, 'row')] : [],
     );
   }
 
@@ -414,6 +413,29 @@ export function getLabelGroup(model: FacetModel, channel: 'row' | 'column') {
     }]
   };
 }
+
+export function getTitleGroup(model: FacetModel, channel: 'row' | 'column') {
+  const positionChannel = channel === 'row' ? 'y' : 'x';
+  const orthogonalPositionalChannel = channel === 'row' ? 'x' : 'y';
+  const sizeChannel = channel === 'row' ? 'height' : 'width';
+  const align = channel === 'row' ? 'right' : 'center';
+  const fieldDef = model.facet[channel];
+
+  const title = fieldDefTitle(fieldDef, model.config);
+
+  return {
+    name:  model.getName(`${channel}-title`),
+    role: `${channel}-header`,
+    type: 'group',
+    marks: [{
+      type: 'text',
+      role: `${channel}-labels`,
+      encode: {
+        update: {
+          // TODO: add title align
+          [positionChannel]: {signal: `0.5 * ${sizeChannel}`},
+          align: {value: align},
+          text: {value: title},
           fill: {value: 'black'}
         }
       }
