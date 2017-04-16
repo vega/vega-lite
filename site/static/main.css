@@ -472,7 +472,7 @@ footer .edit-page {
   text-decoration: none;
 }
 .gallery .image {
-   width: 100%;
+  width: 100%;
   /* hack to make height depend on width*/
   padding-bottom: 55%;
   background-repeat: no-repeat;
