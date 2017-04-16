@@ -27,13 +27,19 @@
             "name": "source_0",
             "url": "data/cars.json",
             "format": {
-                "type": "json",
-                "parse": {
-                    "Horsepower": "number",
-                    "Displacement": "number"
-                }
+                "type": "json"
             },
             "transform": [
+                {
+                    "type": "formula",
+                    "expr": "toNumber(datum[\"Horsepower\"])",
+                    "as": "Horsepower"
+                },
+                {
+                    "type": "formula",
+                    "expr": "toNumber(datum[\"Displacement\"])",
+                    "as": "Displacement"
+                },
                 {
                     "type": "filter",
                     "expr": "datum[\"Horsepower\"] !== null && !isNaN(datum[\"Horsepower\"]) && datum[\"Displacement\"] !== null && !isNaN(datum[\"Displacement\"])"

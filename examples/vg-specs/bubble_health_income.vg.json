@@ -27,14 +27,24 @@
             "name": "source_0",
             "url": "data/gapminder-health-income.csv",
             "format": {
-                "type": "csv",
-                "parse": {
-                    "health": "number",
-                    "income": "number",
-                    "population": "number"
-                }
+                "type": "csv"
             },
             "transform": [
+                {
+                    "type": "formula",
+                    "expr": "toNumber(datum[\"health\"])",
+                    "as": "health"
+                },
+                {
+                    "type": "formula",
+                    "expr": "toNumber(datum[\"income\"])",
+                    "as": "income"
+                },
+                {
+                    "type": "formula",
+                    "expr": "toNumber(datum[\"population\"])",
+                    "as": "population"
+                },
                 {
                     "type": "filter",
                     "expr": "datum[\"health\"] !== null && !isNaN(datum[\"health\"]) && datum[\"income\"] !== null && !isNaN(datum[\"income\"]) && datum[\"population\"] !== null && !isNaN(datum[\"population\"])"

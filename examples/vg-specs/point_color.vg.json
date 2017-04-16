@@ -31,8 +31,7 @@
                 }
             ],
             "format": {
-                "type": "json",
-                "parse": {}
+                "type": "json"
             },
             "transform": []
         },

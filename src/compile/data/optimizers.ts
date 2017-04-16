@@ -11,14 +11,12 @@ import {TimeUnitNode} from './timeunit';
 import {CalculateNode, FilterNode} from './transforms';
 
 /**
- * Start optimization path at the leaves. Useful for merging up things.
+ * Start optimization path at the leaves. Useful for merging up or removing things.
  */
-export function optimizeFromLeaves(f: (node: DataFlowNode) => void) {
+export function iterateFromLeaves(f: (node: DataFlowNode) => void) {
   function optimizeNextFromLeaves(node: DataFlowNode) {
-    if (node.parent instanceof SourceNode) {
+    if (node instanceof SourceNode) {
       return;
-    } else if (!node || !node.parent) {
-      throw new Error('A source node cannot have parents and roots haev to be source nodes.');
     }
 
     const next = node.parent;
@@ -27,18 +25,4 @@ export function optimizeFromLeaves(f: (node: DataFlowNode) => void) {
   }
 
   return optimizeNextFromLeaves;
-}
-
-
-export function parse(node: DataFlowNode) {
-  const parent = node.parent;
-
-  // move parse up by merging or swapping
-  if (node instanceof ParseNode) {
-    if (parent instanceof ParseNode) {
-      parent.merge(node);
-    } else {
-      node.swapWithParent();
-    }
-  }
 }

@@ -27,13 +27,19 @@
             "name": "source_0",
             "url": "data/github.csv",
             "format": {
-                "type": "csv",
-                "parse": {
-                    "time": "date",
-                    "count": "number"
-                }
+                "type": "csv"
             },
             "transform": [
+                {
+                    "type": "formula",
+                    "expr": "toDate(datum[\"time\"])",
+                    "as": "time"
+                },
+                {
+                    "type": "formula",
+                    "expr": "toNumber(datum[\"count\"])",
+                    "as": "count"
+                },
                 {
                     "type": "filter",
                     "expr": "datum[\"time\"] !== null && !isNaN(datum[\"time\"]) && datum[\"count\"] !== null && !isNaN(datum[\"count\"])"

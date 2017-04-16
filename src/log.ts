@@ -99,6 +99,11 @@ export function debug(..._: any[]) {
 export namespace message {
   export const INVALID_SPEC = 'Invalid spec';
 
+  // DATA
+  export function unrecognizedParse(p: string) {
+    return `Unrecognized parse ${p}.`;
+  }
+
   // TRANSFORMS
   export function invalidTransformIgnored(transform: any) {
     return `Ignoring an invalid transform: ${JSON.stringify(transform)}.`;
@@ -169,7 +174,7 @@ export namespace message {
   export const CANNOT_USE_RANGE_WITH_POSITION =
     'Cannot use custom range with x or y channel.  Please customize width, height, padding, or rangeStep instead.';
 
-    export const CANNOT_USE_PADDING_WITH_FACET = 'Cannot use padding with facet\'s scale.  Please use spacing instead.';
+  export const CANNOT_USE_PADDING_WITH_FACET = 'Cannot use padding with facet\'s scale.  Please use spacing instead.';
 
   export function cannotUseRangePropertyWithFacet(propName: string) {
     return `Cannot use custom ${propName} with row or column channel. Please use width, height, or spacing instead.`;

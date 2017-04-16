@@ -10,7 +10,7 @@ import {FacetNode} from './facet';
 import {ParseNode} from './formatparse';
 import {NonPositiveFilterNode} from './nonpositivefilter';
 import {NullFilterNode} from './nullfilter';
-import {optimizeFromLeaves} from './optimizers';
+import {iterateFromLeaves} from './optimizers';
 import * as optimizers from './optimizers';
 import {OrderNode} from './pathorder';
 import {SourceNode} from './source';
@@ -156,17 +156,6 @@ function makeWalkTree(data: VgData[]) {
    * Recursively walk down the tree.
    */
   function walkTree(node: DataFlowNode, dataSource: VgData) {
-    if (node instanceof ParseNode) {
-      if (node.parent instanceof SourceNode) {
-        dataSource.format = {
-          ...dataSource.format || {},
-          parse: node.assemble()
-        };
-      } else {
-        throw new Error('Can only instantiate parse next to source.');
-      }
-    }
-
     if (node instanceof FacetNode) {
       if (!dataSource.name) {
         dataSource.name = `data_${datasetIndex++}`;
@@ -193,7 +182,8 @@ function makeWalkTree(data: VgData[]) {
       dataSource.transform.push(node.assemble());
     }
 
-    if (node instanceof NonPositiveFilterNode ||
+    if (node instanceof ParseNode ||
+      node instanceof NonPositiveFilterNode ||
       node instanceof BinNode ||
       node instanceof TimeUnitNode ||
       node instanceof StackNode) {
@@ -290,10 +280,6 @@ export function assembleData(roots: SourceNode[]): VgData[] {
   const data: VgData[] = [];
 
   roots.forEach(removeUnnecessaryNodes);
-
-  // parse needs to be next to sources
-  getLeaves(roots).forEach(optimizeFromLeaves(optimizers.parse));
-
   roots.forEach(moveFacetDown);
 
   // roots.forEach(debug);
