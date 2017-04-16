@@ -91,20 +91,6 @@ We map `symbol` variable (stock market ticker symbol) to `detail` to use them to
 **Note**: Since `order` and `path` represent actual data fields that are used to sort the data, they cannot encode constant `value`. In addition, in aggregate plots, they should have `aggregate` function specified.
 
 {:#ex-order}
-#### Example: Sorting Layer Order
-
-Given a colored scatterplot.
-
-<div class="vl-example" data-name="scatter_color"></div>
-
-By default, layer order of the data points are determined by original order of the data.
-
-Mapping the field `Origin` to `order` channel will sort the layer of data points by the field.
-
-<div class="vl-example" data-name="scatter_color_order"></div>
-
-Here we can see that data points from Origin A appear on the top.
-
 #### Example: Sorting Stack Order
 
 Given a stacked bar chart:
