@@ -484,7 +484,7 @@ footer .edit-page {
   -webkit-transition: background-position 2s;
 }
 .gallery .image:hover {
-  background-position: right bottom !important;
+  background-position: right bottom;
 }
 
 .gallery .image-title {
