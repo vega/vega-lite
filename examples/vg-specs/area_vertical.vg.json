@@ -27,19 +27,13 @@
             "name": "source_0",
             "url": "data/cars.json",
             "format": {
-                "type": "json"
+                "type": "json",
+                "parse": {
+                    "Weight_in_lbs": "number",
+                    "Year": "date"
+                }
             },
             "transform": [
-                {
-                    "type": "formula",
-                    "expr": "toNumber(datum[\"Weight_in_lbs\"])",
-                    "as": "Weight_in_lbs"
-                },
-                {
-                    "type": "formula",
-                    "expr": "toDate(datum[\"Year\"])",
-                    "as": "Year"
-                },
                 {
                     "type": "filter",
                     "expr": "datum[\"Weight_in_lbs\"] !== null && !isNaN(datum[\"Weight_in_lbs\"]) && datum[\"Year\"] !== null && !isNaN(datum[\"Year\"])"

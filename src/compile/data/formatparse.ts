@@ -111,7 +111,11 @@ export class ParseNode extends DataFlowNode {
     other.remove();
   }
 
-  public assemble(): VgFormulaTransform[] {
+  public assembleFormatParse() {
+    return this._parse;
+  }
+
+  public assembleTransforms(): VgFormulaTransform[] {
     return Object.keys(this._parse).map(field => {
       const expr = parseExpression(field, this._parse[field]);
       if (!expr) {

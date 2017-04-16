@@ -58,7 +58,8 @@
             "name": "source_0",
             "url": "data/cars.json",
             "format": {
-                "type": "json"
+                "type": "json",
+                "parse": {}
             },
             "transform": []
         },

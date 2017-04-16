@@ -27,14 +27,12 @@
             "name": "source_0",
             "url": "data/seattle-weather.csv",
             "format": {
-                "type": "csv"
+                "type": "csv",
+                "parse": {
+                    "date": "date"
+                }
             },
             "transform": [
-                {
-                    "type": "formula",
-                    "expr": "toDate(datum[\"date\"])",
-                    "as": "date"
-                },
                 {
                     "type": "filter",
                     "expr": "datum[\"date\"] !== null && !isNaN(datum[\"date\"])"

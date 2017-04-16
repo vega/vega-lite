@@ -156,6 +156,19 @@ function makeWalkTree(data: VgData[]) {
    * Recursively walk down the tree.
    */
   function walkTree(node: DataFlowNode, dataSource: VgData) {
+    if (node instanceof ParseNode) {
+      if (node.parent instanceof SourceNode && !node.parent.parent)  {
+        // If its parent is a root source node, use normal format parse
+        dataSource.format = {
+          ...dataSource.format || {},
+          parse: node.assembleFormatParse()
+        };
+      } else {
+        // Otherwise use Vega expression to parse
+        dataSource.transform = dataSource.transform.concat(node.assembleTransforms());
+      }
+    }
+
     if (node instanceof FacetNode) {
       if (!dataSource.name) {
         dataSource.name = `data_${datasetIndex++}`;
@@ -182,8 +195,7 @@ function makeWalkTree(data: VgData[]) {
       dataSource.transform.push(node.assemble());
     }
 
-    if (node instanceof ParseNode ||
-      node instanceof NonPositiveFilterNode ||
+    if (node instanceof NonPositiveFilterNode ||
       node instanceof BinNode ||
       node instanceof TimeUnitNode ||
       node instanceof StackNode) {

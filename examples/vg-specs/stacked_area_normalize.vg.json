@@ -27,19 +27,13 @@
             "name": "source_0",
             "url": "data/unemployment-across-industries.json",
             "format": {
-                "type": "json"
+                "type": "json",
+                "parse": {
+                    "date": "date",
+                    "count": "number"
+                }
             },
             "transform": [
-                {
-                    "type": "formula",
-                    "expr": "toDate(datum[\"date\"])",
-                    "as": "date"
-                },
-                {
-                    "type": "formula",
-                    "expr": "toNumber(datum[\"count\"])",
-                    "as": "count"
-                },
                 {
                     "type": "filter",
                     "expr": "datum[\"date\"] !== null && !isNaN(datum[\"date\"]) && datum[\"count\"] !== null && !isNaN(datum[\"count\"])"

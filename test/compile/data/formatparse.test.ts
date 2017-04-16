@@ -91,7 +91,7 @@ describe('compile/data/formatparse', () => {
     });
   });
 
-  describe('assemble', function() {
+  describe('assembleTransforms', function() {
     it('should assemble correct parse expressions', function() {
       const p = new ParseNode({
         n: 'number',
@@ -101,7 +101,7 @@ describe('compile/data/formatparse', () => {
         d2: 'date:"%y"'
       });
 
-      assert.deepEqual(p.assemble(), [
+      assert.deepEqual(p.assembleTransforms(), [
         {type: 'formula', expr: 'toNumber(datum["n"])', as: 'n'},
         {type: 'formula', expr: 'toBoolean(datum["b"])', as: 'b'},
         {type: 'formula', expr: 'toString(datum["s"])', as: 's'},

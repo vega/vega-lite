@@ -27,19 +27,13 @@
             "name": "source_0",
             "url": "data/stocks.csv",
             "format": {
-                "type": "csv"
+                "type": "csv",
+                "parse": {
+                    "date": "date",
+                    "price": "number"
+                }
             },
             "transform": [
-                {
-                    "type": "formula",
-                    "expr": "toDate(datum[\"date\"])",
-                    "as": "date"
-                },
-                {
-                    "type": "formula",
-                    "expr": "toNumber(datum[\"price\"])",
-                    "as": "price"
-                },
                 {
                     "type": "filter",
                     "expr": "datum[\"date\"] !== null && !isNaN(datum[\"date\"]) && datum[\"price\"] !== null && !isNaN(datum[\"price\"])"

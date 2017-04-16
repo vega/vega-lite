@@ -27,14 +27,12 @@
             "name": "source_0",
             "url": "data/cars.json",
             "format": {
-                "type": "json"
+                "type": "json",
+                "parse": {
+                    "Acceleration": "number"
+                }
             },
             "transform": [
-                {
-                    "type": "formula",
-                    "expr": "toNumber(datum[\"Acceleration\"])",
-                    "as": "Acceleration"
-                },
                 {
                     "type": "filter",
                     "expr": "datum[\"Acceleration\"] !== null && !isNaN(datum[\"Acceleration\"])"
