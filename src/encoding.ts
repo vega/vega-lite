@@ -22,13 +22,15 @@ export interface Encoding {
   y?: PositionFieldDef | ValueDef<number>;
 
   /**
-   * X2 coordinates for ranged `bar`, `rule`, `area`
+   * X2 coordinates for ranged `bar`, `rule`, `area`.
    */
+  // TODO: Ham need to add default behavior
   x2?: FieldDef | ValueDef<number>;
 
   /**
-   * Y2 coordinates for ranged `bar`, `rule`, `area`
+   * Y2 coordinates for ranged `bar`, `rule`, `area`.
    */
+  // TODO: Ham need to add default behavior
   y2?: FieldDef | ValueDef<number>;
 
   /**

@@ -1720,7 +1720,7 @@
                             "$ref": "#/definitions/ValueDef<number>"
                         }
                     ],
-                    "description": "X2 coordinates for ranged `bar`, `rule`, `area`"
+                    "description": "X2 coordinates for ranged `bar`, `rule`, `area`."
                 },
                 "y": {
                     "anyOf": [
@@ -1742,7 +1742,7 @@
                             "$ref": "#/definitions/ValueDef<number>"
                         }
                     ],
-                    "description": "Y2 coordinates for ranged `bar`, `rule`, `area`"
+                    "description": "Y2 coordinates for ranged `bar`, `rule`, `area`."
                 }
             },
             "type": "object"
@@ -1861,7 +1861,7 @@
                             "$ref": "#/definitions/ValueDef<number>"
                         }
                     ],
-                    "description": "X2 coordinates for ranged `bar`, `rule`, `area`"
+                    "description": "X2 coordinates for ranged `bar`, `rule`, `area`."
                 },
                 "y": {
                     "anyOf": [
@@ -1883,7 +1883,7 @@
                             "$ref": "#/definitions/ValueDef<number>"
                         }
                     ],
-                    "description": "Y2 coordinates for ranged `bar`, `rule`, `area`"
+                    "description": "Y2 coordinates for ranged `bar`, `rule`, `area`."
                 }
             },
             "type": "object"

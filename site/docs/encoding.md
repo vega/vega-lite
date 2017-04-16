@@ -37,26 +37,37 @@ An integral part of the data visualization process is encoding data with visual 
 The keys in the encoding object are encoding channels. This section lists supported encoding channels in Vega-Lite.
 
 {:#props-channels}
-### Mark Properties Channels
+### Position Channels
 
-Mark properties channels map data fields directly to visual properties of the marks. Unlike other channel types, they can be mapped to [constant values](#value) as well. Here are the supported mark properties:
+Position channels determine position of the marks.
+
+<!-- TODO: use the table generator, it's fine to have four rows in this table-->
 
 | Property      | Type          | Description    |
 | :------------ |:-------------:| :------------- |
 | x, x2, y, y2  | [ChannelDef](#def)| X and Y coordinates for marks.  For ranged marks such as `bar` and `area`, `x2` and `y2` will be set to zeroes for applicable scales and to snap the axes if zeroes is not applicable (e.g., if the scale domain does not include zeroes).  |
+
+### Mark Properties Channels
+
+Mark properties channels map data fields directly to visual properties of the marks. Unlike other channel types, they can be mapped to [constant values](#value) as well. Here are the supported mark properties:
+
+<!-- TODO: use the table generator and sync description -->
+
+| Property      | Type          | Description    |
+| :------------ |:-------------:| :------------- |
 | color         | [ChannelDef](#def)| Color of the marks – either fill or stroke color based on mark type. By default, fill color for `area`, `bar`, `tick`, `text`, `circle`, and `square` /   stroke color for `line` and `point`.  Supported color values include hex-color (e.g., `#0099ff`) and [standard HTML/CSS color names](http://www.w3schools.com/colors/colors_names.asp) (e.g., `"goldenrod"`).  Please see [scale range](scale.html#range) for more detail about color palettes.  |
 | opacity         | [ChannelDef](#def)| Opacity of the marks – either can be a value or in a range. <span class="note-line"> __Default value:__ `[0.3, 0.8]` </span>.  |
 | shape  | [ChannelDef](#def)| The symbol's shape (only for `point` marks). The supported values are `"circle"` (default), `"square"`, `"cross"`, `"diamond"`, `"triangle-up"`, `"triangle-down"`, or else a custom SVG path string. |
 | size  | [ChannelDef](#def)| Size of the mark. <br/>     • For `point`, `square` and `circle` – the symbol size, or pixel area of the mark. <br/> • For `bar` and `tick` – the bar and tick's size. <br/>      • For `text` – the text's font size. <br/>      • Size is currently unsupported for `line` and `area`.|
 | text  | [ChannelDef](#def)| Text of the `text` mark. |
-| column, row  | [ChannelDef](#def)| `row` and `column` are special encoding channels for [faceting](#facet). |
-
 
 ### Additional Level of Detail Channel
 
 Grouping data is another important operation in visualizing data. For [aggregated plots](aggregate.html), all encoded fields without `aggregate` functions are used as grouping fields in the aggregation (similar to fields in `GROUP BY` in SQL). For line and area marks, mapping a data field to color or shape channel will group the lines and stacked areas by the field.
 
 `detail` channel allows providing an additional grouping field (level) for grouping data in aggregation without mapping data to a specific visual channel.
+
+<!-- TODO: use the table generator and sync description -->
 
 | Property      | Type          | Description    |
 | :------------ |:-------------:| :------------- |
@@ -83,10 +94,11 @@ We map `symbol` variable (stock market ticker symbol) to `detail` to use them to
 
 `order` channel sorts the layer order or stacking order (for stacked charts) of the marks while `path` channel sorts the order of data points in line marks.
 
+<!-- TODO: use the table generator and sync description. (Order's description in encoding.ts is more updated.) -->
+
 | Property      | Type          | Description    |
 | :------------ |:-------------:| :------------- |
 | order | [ChannelDef](#def)| Layer order for non-stacked marks, or stack order for stacked marks. |
-| path   | [ChannelDef](#def)| Order of data points in line marks. |
 
 **Note**: Since `order` and `path` represent actual data fields that are used to sort the data, they cannot encode constant `value`. In addition, in aggregate plots, they should have `aggregate` function specified.
 
@@ -108,7 +120,7 @@ Here we can see that site with higher yields for each type of barley are put on 
 {:#ex-path}
 #### Example: Sorting Line Order
 
-By default, line marks order their points in their paths by the field of channel x or y. However, to show a pattern of data change over time between gasoline price and average miles driven per capita we use `path` channel to sort the points in the line by time field (`year`).
+By default, line marks order their points in their paths by the field of channel x or y. However, to show a pattern of data change over time between gasoline price and average miles driven per capita we use `order` channel to sort the points in the line by time field (`year`).
 
 <div class="vl-example" data-name="scatter_connected"></div>
 
