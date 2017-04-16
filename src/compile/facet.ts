@@ -26,6 +26,7 @@ import {buildModel} from './common';
 import {assembleData, assembleFacetData, FACET_SCALE_PREFIX} from './data/assemble';
 import {parseData} from './data/parse';
 import {assembleLayoutData, parseFacetLayout} from './layout';
+import {getTextHeader} from './layout/header';
 import {Model, ModelWithField} from './model';
 import initScale from './scale/init';
 import parseScaleComponent from './scale/parse';
@@ -379,61 +380,26 @@ export function getSharedAxisGroup(model: FacetModel, channel: 'x' | 'y'): VgEnc
 }
 
 export function getLabelGroup(model: FacetModel, channel: 'row' | 'column') {
-  const positionChannel = channel === 'row' ? 'y' : 'x';
-  const orthogonalPositionalChannel = channel === 'row' ? 'x' : 'y';
   const sizeChannel = channel === 'row' ? 'height' : 'width';
-
-  const align = channel === 'row' ? 'right' : 'center';
-
-  return {
-    name:  model.getName(`${channel}-labels`),
-    role: `${channel}-header`,
-    type: 'group',
+  return getTextHeader({
+    channel,
+    name: model.getName(`${channel}-labels`),
     from: {data: model.getName(channel)},
-    encode: {
-      update: childSizeEncodeEntryMixins(model, sizeChannel)
-    },
-    marks: [{
-      type: 'text',
-      role: `${channel}-labels`,
-      encode: {
-        update: {
-          // TODO: add label align
-          [positionChannel]: {field: {group: sizeChannel}, mult: 0.5},
-          text: {field: {parent: model.field(channel)}},
-          align: {value: align},
-          fill: {value: 'black'}
-        }
-      }
-    }]
-  };
+    groupEncode: childSizeEncodeEntryMixins(model, sizeChannel),
+    textRole: `${channel}-labels`,
+    textRef: {field: {parent: model.field(channel)}},
+    positionRef: {field: {group: sizeChannel}, mult: 0.5}
+  });
 }
 
 export function getTitleGroup(model: FacetModel, channel: 'row' | 'column') {
-  const positionChannel = channel === 'row' ? 'y' : 'x';
-  const orthogonalPositionalChannel = channel === 'row' ? 'x' : 'y';
   const sizeChannel = channel === 'row' ? 'height' : 'width';
-  const align = channel === 'row' ? 'right' : 'center';
   const fieldDef = model.facet[channel];
-
-  const title = fieldDefTitle(fieldDef, model.config);
-
-  return {
-    name:  model.getName(`${channel}-title`),
-    role: `${channel}-header`,
-    type: 'group',
-    marks: [{
-      type: 'text',
-      role: `${channel}-labels`,
-      encode: {
-        update: {
-          // TODO: add title align
-          [positionChannel]: {signal: `0.5 * ${sizeChannel}`},
-          align: {value: align},
-          text: {value: title},
-          fill: {value: 'black'}
-        }
-      }
-    }]
-  };
+  return getTextHeader({
+    channel,
+    name: model.getName(`${channel}-title`),
+    textRole: `${channel}-labels`,
+    textRef: {value: fieldDefTitle(fieldDef, model.config)},
+    positionRef: {signal: `0.5 * ${sizeChannel}`}
+  });
 }
