@@ -8,11 +8,6 @@ import {QUANTITATIVE} from '../../src/type';
 import {parseUnitModel} from '../util';
 
 describe('UnitModel', function() {
-  it('should say it is unit', function() {
-    const model = parseUnitModel({mark: 'point', encoding: {}});
-    assert(model instanceof UnitModel);
-  });
-
   describe('initEncoding', () => {
     it('should drop unsupported channel and throws warning', () => {
       log.runLocalLogger((localLogger) => {
