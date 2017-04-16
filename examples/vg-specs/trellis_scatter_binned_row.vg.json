@@ -29,7 +29,9 @@
             "format": {
                 "type": "json",
                 "parse": {
-                    "Acceleration": "number"
+                    "Acceleration": "number",
+                    "Horsepower": "number",
+                    "Miles_per_Gallon": "number"
                 }
             },
             "transform": [
@@ -59,16 +61,6 @@
                     "type": "formula",
                     "expr": "format(datum[\"bin_maxbins_6_Acceleration_start\"], 's') + ' - ' + format(datum[\"bin_maxbins_6_Acceleration_end\"], 's')",
                     "as": "bin_maxbins_6_Acceleration_range"
-                },
-                {
-                    "type": "formula",
-                    "expr": "toNumber(datum[\"Horsepower\"])",
-                    "as": "Horsepower"
-                },
-                {
-                    "type": "formula",
-                    "expr": "toNumber(datum[\"Miles_per_Gallon\"])",
-                    "as": "Miles_per_Gallon"
                 },
                 {
                     "type": "filter",

@@ -28,8 +28,7 @@
             "url": "data/cars.json",
             "format": {
                 "type": "json"
-            },
-            "transform": []
+            }
         },
         {
             "name": "data_0",

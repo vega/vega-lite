@@ -28,7 +28,9 @@
             "url": "data/population.json",
             "format": {
                 "type": "json",
-                "parse": {}
+                "parse": {
+                    "people": "number"
+                }
             },
             "transform": [
                 {
@@ -39,11 +41,6 @@
                     "type": "formula",
                     "expr": "datum.sex == 2 ? 'Female' : 'Male'",
                     "as": "gender"
-                },
-                {
-                    "type": "formula",
-                    "expr": "toNumber(datum[\"people\"])",
-                    "as": "people"
                 },
                 {
                     "type": "filter",

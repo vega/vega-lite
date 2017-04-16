@@ -29,8 +29,7 @@
             "format": {
                 "type": "csv",
                 "parse": {}
-            },
-            "transform": []
+            }
         },
         {
             "name": "data_0",

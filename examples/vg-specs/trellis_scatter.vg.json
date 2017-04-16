@@ -28,19 +28,12 @@
             "url": "data/movies.json",
             "format": {
                 "type": "json",
-                "parse": {}
+                "parse": {
+                    "Worldwide_Gross": "number",
+                    "US_DVD_Sales": "number"
+                }
             },
             "transform": [
-                {
-                    "type": "formula",
-                    "expr": "toNumber(datum[\"Worldwide_Gross\"])",
-                    "as": "Worldwide_Gross"
-                },
-                {
-                    "type": "formula",
-                    "expr": "toNumber(datum[\"US_DVD_Sales\"])",
-                    "as": "US_DVD_Sales"
-                },
                 {
                     "type": "filter",
                     "expr": "datum[\"Worldwide_Gross\"] !== null && !isNaN(datum[\"Worldwide_Gross\"]) && datum[\"US_DVD_Sales\"] !== null && !isNaN(datum[\"US_DVD_Sales\"])"

@@ -31,8 +31,7 @@
             "format": {
                 "type": "json",
                 "parse": {}
-            },
-            "transform": []
+            }
         },
         {
             "name": "layout",

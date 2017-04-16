@@ -66,8 +66,7 @@
             "format": {
                 "type": "json",
                 "parse": {}
-            },
-            "transform": []
+            }
         },
         {
             "name": "data_0",
