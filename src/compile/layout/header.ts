@@ -24,11 +24,13 @@ export interface TextHeaderParams {
 
   textRef: VgValueRef;
 
+  textEncodeMixins?: VgEncodeEntry;
+
   positionRef: VgValueRef;
 }
 
 export function getTextHeader(params: TextHeaderParams): VgMarkGroup {
-  const {channel, name, from, groupEncode, offset, textOrient, textRole, textRef, positionRef} = params;
+  const {channel, name, from, groupEncode, offset, textOrient, textRole, textEncodeMixins, textRef, positionRef} = params;
 
   const positionChannel = channel === 'row' ? 'y' : 'x';
   const offsetChannel = channel === 'row' ? 'x' : 'y';
@@ -50,7 +52,8 @@ export function getTextHeader(params: TextHeaderParams): VgMarkGroup {
           ...(textOrient === 'vertical' ? {angle: {value: 270}} : {}),
           text: textRef,
           align: {value: align},
-          fill: {value: 'black'}
+          fill: {value: 'black'},
+          ...textEncodeMixins
         }
       }
     }]

@@ -11,6 +11,7 @@ import {Scale} from '../scale';
 import {FacetSpec} from '../spec';
 import {StackProperties} from '../stack';
 import {contains, Dict, extend, flatten, keys, vals} from '../util';
+import {FontWeight} from '../vega.schema';
 import {
   isDataRefDomain,
   isDataRefUnionedDomain,
@@ -390,7 +391,11 @@ export function getLabelGroup(model: FacetModel, channel: 'row' | 'column') {
     offset: -10,
     // TODO: support customizing row title orientation (horizontal / vertical (using textOrient)
     textRole: `${channel}-labels`,
+
+    // TODO: customize axis values
     textRef: {field: {parent: model.field(channel)}},
+
+    // TODO: customize alignment
     positionRef: {field: {group: sizeChannel}, mult: 0.5}
   });
 }
@@ -402,10 +407,19 @@ export function getTitleGroup(model: FacetModel, channel: 'row' | 'column') {
     channel,
     name: model.getName(`${channel}-title`),
 
+    // TODO: support customization
+    textEncodeMixins: {
+      fontWeight: {value: 'bold'}
+    },
+
     // TODO: support customizing row title orientation (horizontal / vertical)
     textOrient: (channel === 'row' ? 'vertical' : undefined),
     textRole: `${channel}-labels`,
+
+    // TODO: customize title
     textRef: {value: fieldDefTitle(fieldDef, model.config)},
+
+    // TODO: customize alignment
     positionRef: {signal: `0.5 * ${sizeChannel}`}
   });
 }
