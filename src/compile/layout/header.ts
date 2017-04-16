@@ -1,4 +1,4 @@
-import {VgEncodeEntry, VgMarkGroup, VgValueRef} from '../../vega.schema';
+import {Orient, VgEncodeEntry, VgMarkGroup, VgValueRef} from '../../vega.schema';
 import {FacetModel} from '../facet';
 import {Model} from '../model';
 /**
@@ -16,6 +16,10 @@ export interface TextHeaderParams {
 
   groupEncode?: VgEncodeEntry;
 
+  offset?: number;
+
+  textOrient?: Orient;
+
   textRole: string;
 
   textRef: VgValueRef;
@@ -24,10 +28,10 @@ export interface TextHeaderParams {
 }
 
 export function getTextHeader(params: TextHeaderParams): VgMarkGroup {
-  const {channel, name, from, groupEncode, textRole, textRef, positionRef} = params;
+  const {channel, name, from, groupEncode, offset, textOrient, textRole, textRef, positionRef} = params;
 
   const positionChannel = channel === 'row' ? 'y' : 'x';
-  const orthogonalPositionalChannel = channel === 'row' ? 'x' : 'y';
+  const offsetChannel = channel === 'row' ? 'x' : 'y';
   const align = channel === 'row' ? 'right' : 'center';
 
   return {
@@ -35,14 +39,15 @@ export function getTextHeader(params: TextHeaderParams): VgMarkGroup {
     role: `${channel}-header`,
     type: 'group',
     ...(from ? {from} : {}),
-    ...(groupEncode ? {update: groupEncode} : {}),
+    ...(groupEncode ? {encode: {update: groupEncode}} : {}),
     marks: [{
       type: 'text',
       role: textRole,
       encode: {
         update: {
-          // TODO: add label align
           [positionChannel]: positionRef,
+          ...(offset ? {[offsetChannel]: {value: offset}} : {}),
+          ...(textOrient === 'vertical' ? {angle: {value: 270}} : {}),
           text: textRef,
           align: {value: align},
           fill: {value: 'black'}
