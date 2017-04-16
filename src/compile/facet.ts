@@ -386,6 +386,9 @@ export function getLabelGroup(model: FacetModel, channel: 'row' | 'column') {
     name: model.getName(`${channel}-labels`),
     from: {data: model.getName(channel)},
     groupEncode: childSizeEncodeEntryMixins(model, sizeChannel),
+    // TODO: support customizing + remove if Vega will provide padding for this one.
+    offset: -10,
+    // TODO: support customizing row title orientation (horizontal / vertical (using textOrient)
     textRole: `${channel}-labels`,
     textRef: {field: {parent: model.field(channel)}},
     positionRef: {field: {group: sizeChannel}, mult: 0.5}
@@ -398,6 +401,9 @@ export function getTitleGroup(model: FacetModel, channel: 'row' | 'column') {
   return getTextHeader({
     channel,
     name: model.getName(`${channel}-title`),
+
+    // TODO: support customizing row title orientation (horizontal / vertical)
+    textOrient: (channel === 'row' ? 'vertical' : undefined),
     textRole: `${channel}-labels`,
     textRef: {value: fieldDefTitle(fieldDef, model.config)},
     positionRef: {signal: `0.5 * ${sizeChannel}`}
