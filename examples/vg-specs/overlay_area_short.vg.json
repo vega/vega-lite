@@ -27,8 +27,7 @@
             "name": "source_0",
             "url": "data/stocks.csv",
             "format": {
-                "type": "csv",
-                "parse": {}
+                "type": "csv"
             },
             "transform": [
                 {

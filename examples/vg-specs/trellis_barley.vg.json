@@ -94,7 +94,7 @@
                 {
                     "type": "formula",
                     "as": "width",
-                    "expr": "datum[\"child_width\"] + 16"
+                    "expr": "datum[\"child_width\"] + 5"
                 },
                 {
                     "type": "formula",
@@ -104,7 +104,7 @@
                 {
                     "type": "formula",
                     "as": "height",
-                    "expr": "(datum[\"child_height\"] + 16) * datum[\"distinct_site\"]"
+                    "expr": "(datum[\"child_height\"] + 5) * datum[\"distinct_site\"]"
                 }
             ]
         }
@@ -127,197 +127,246 @@
                     }
                 }
             },
+            "layout": {
+                "padding": {
+                    "row": 10,
+                    "column": 10,
+                    "header": 10
+                },
+                "columns": 1,
+                "bounds": "full"
+            },
             "marks": [
                 {
-                    "name": "x-axes",
                     "type": "group",
-                    "encode": {
-                        "update": {
-                            "width": {
-                                "field": {
-                                    "parent": "child_width"
-                                }
-                            },
-                            "height": {
-                                "field": {
-                                    "group": "height"
-                                }
-                            },
-                            "x": {
-                                "value": 8
-                            }
-                        }
+                    "layout": {
+                        "padding": {
+                            "row": 10,
+                            "column": 10,
+                            "header": 10
+                        },
+                        "columns": 1,
+                        "bounds": "full"
                     },
-                    "axes": [
-                        {
-                            "scale": "x",
-                            "format": "s",
-                            "orient": "bottom",
-                            "tickCount": 5,
-                            "title": "MEDIAN(yield)",
-                            "zindex": 1
-                        }
-                    ]
-                },
-                {
-                    "name": "y-axes",
-                    "type": "group",
-                    "from": {
-                        "data": "row"
-                    },
-                    "encode": {
-                        "update": {
-                            "width": {
-                                "field": {
-                                    "group": "width"
-                                }
-                            },
-                            "height": {
-                                "field": {
-                                    "parent": "child_height"
-                                }
-                            },
-                            "y": {
-                                "scale": "row",
-                                "field": "site",
-                                "offset": 8
-                            }
-                        }
-                    },
-                    "axes": [
-                        {
-                            "scale": "y",
-                            "orient": "left",
-                            "title": "variety",
-                            "zindex": 1
-                        }
-                    ]
-                },
-                {
-                    "name": "cell",
-                    "type": "group",
-                    "from": {
-                        "facet": {
-                            "name": "facet",
-                            "data": "source_0",
-                            "groupby": [
-                                "site"
-                            ]
-                        }
-                    },
-                    "encode": {
-                        "update": {
-                            "x": {
-                                "value": 8
-                            },
-                            "y": {
-                                "scale": "row",
-                                "field": "site",
-                                "offset": 8
-                            },
-                            "width": {
-                                "field": {
-                                    "parent": "child_width"
-                                }
-                            },
-                            "height": {
-                                "field": {
-                                    "parent": "child_height"
-                                }
-                            },
-                            "stroke": {
-                                "value": "#ccc"
-                            },
-                            "strokeWidth": {
-                                "value": 1
-                            },
-                            "fill": {
-                                "value": "transparent"
-                            }
-                        }
-                    },
-                    "data": [
-                        {
-                            "source": "facet",
-                            "name": "data_0",
-                            "transform": [
-                                {
-                                    "type": "aggregate",
-                                    "groupby": [
-                                        "variety",
-                                        "year"
-                                    ],
-                                    "ops": [
-                                        "median"
-                                    ],
-                                    "fields": [
-                                        "yield"
-                                    ]
-                                }
-                            ]
-                        }
-                    ],
                     "marks": [
                         {
-                            "name": "child_marks",
-                            "type": "symbol",
-                            "role": "point",
+                            "name": "x-axes",
+                            "type": "group",
+                            "role": "column-footer",
+                            "axes": [
+                                {
+                                    "scale": "x",
+                                    "format": "s",
+                                    "orient": "bottom",
+                                    "tickCount": 5,
+                                    "title": "MEDIAN(yield)",
+                                    "zindex": 1
+                                }
+                            ]
+                        },
+                        {
+                            "name": "y-axes",
+                            "type": "group",
+                            "role": "row-header",
                             "from": {
-                                "data": "data_0"
+                                "data": "row"
+                            },
+                            "axes": [
+                                {
+                                    "scale": "y",
+                                    "orient": "left",
+                                    "title": "variety",
+                                    "zindex": 1
+                                }
+                            ]
+                        },
+                        {
+                            "name": "row-labels",
+                            "role": "row-header",
+                            "type": "group",
+                            "from": {
+                                "data": "row"
                             },
                             "encode": {
                                 "update": {
-                                    "x": {
-                                        "scale": "x",
-                                        "field": "median_yield"
+                                    "height": {
+                                        "field": {
+                                            "parent": "child_height",
+                                            "level": 2
+                                        }
+                                    }
+                                }
+                            },
+                            "marks": [
+                                {
+                                    "type": "text",
+                                    "role": "row-labels",
+                                    "encode": {
+                                        "update": {
+                                            "y": {
+                                                "field": {
+                                                    "group": "height"
+                                                },
+                                                "mult": 0.5
+                                            },
+                                            "x": {
+                                                "value": -10
+                                            },
+                                            "text": {
+                                                "field": {
+                                                    "parent": "site"
+                                                }
+                                            },
+                                            "align": {
+                                                "value": "right"
+                                            },
+                                            "fill": {
+                                                "value": "black"
+                                            }
+                                        }
+                                    }
+                                }
+                            ]
+                        },
+                        {
+                            "name": "cell",
+                            "type": "group",
+                            "from": {
+                                "facet": {
+                                    "name": "facet",
+                                    "data": "source_0",
+                                    "groupby": [
+                                        "site"
+                                    ]
+                                }
+                            },
+                            "encode": {
+                                "update": {
+                                    "width": {
+                                        "field": {
+                                            "parent": "child_width",
+                                            "level": 2
+                                        }
                                     },
-                                    "y": {
-                                        "scale": "y",
-                                        "field": "variety"
+                                    "height": {
+                                        "field": {
+                                            "parent": "child_height",
+                                            "level": 2
+                                        }
                                     },
                                     "stroke": {
-                                        "scale": "color",
-                                        "field": "year"
+                                        "value": "#ccc"
+                                    },
+                                    "strokeWidth": {
+                                        "value": 1
                                     },
                                     "fill": {
                                         "value": "transparent"
                                     }
                                 }
-                            }
+                            },
+                            "data": [
+                                {
+                                    "source": "facet",
+                                    "name": "data_0",
+                                    "transform": [
+                                        {
+                                            "type": "aggregate",
+                                            "groupby": [
+                                                "variety",
+                                                "year"
+                                            ],
+                                            "ops": [
+                                                "median"
+                                            ],
+                                            "fields": [
+                                                "yield"
+                                            ]
+                                        }
+                                    ]
+                                }
+                            ],
+                            "marks": [
+                                {
+                                    "name": "child_marks",
+                                    "type": "symbol",
+                                    "role": "point",
+                                    "from": {
+                                        "data": "data_0"
+                                    },
+                                    "encode": {
+                                        "update": {
+                                            "x": {
+                                                "scale": "x",
+                                                "field": "median_yield"
+                                            },
+                                            "y": {
+                                                "scale": "y",
+                                                "field": "variety"
+                                            },
+                                            "stroke": {
+                                                "scale": "color",
+                                                "field": "year"
+                                            },
+                                            "fill": {
+                                                "value": "transparent"
+                                            }
+                                        }
+                                    }
+                                }
+                            ],
+                            "axes": [
+                                {
+                                    "scale": "x",
+                                    "domain": false,
+                                    "format": "s",
+                                    "grid": true,
+                                    "labels": false,
+                                    "orient": "bottom",
+                                    "tickCount": 5,
+                                    "ticks": false,
+                                    "zindex": 0,
+                                    "gridScale": "y"
+                                }
+                            ]
                         }
-                    ],
-                    "axes": [
+                    ]
+                },
+                {
+                    "name": "row-title",
+                    "role": "row-header",
+                    "type": "group",
+                    "marks": [
                         {
-                            "scale": "x",
-                            "domain": false,
-                            "format": "s",
-                            "grid": true,
-                            "labels": false,
-                            "orient": "bottom",
-                            "tickCount": 5,
-                            "ticks": false,
-                            "zindex": 0,
-                            "gridScale": "y"
+                            "type": "text",
+                            "role": "row-labels",
+                            "encode": {
+                                "update": {
+                                    "y": {
+                                        "signal": "0.5 * height"
+                                    },
+                                    "angle": {
+                                        "value": 270
+                                    },
+                                    "text": {
+                                        "value": "site"
+                                    },
+                                    "align": {
+                                        "value": "right"
+                                    },
+                                    "fill": {
+                                        "value": "black"
+                                    },
+                                    "fontWeight": {
+                                        "value": "bold"
+                                    }
+                                }
+                            }
                         }
                     ]
                 }
             ],
             "scales": [
-                {
-                    "name": "row",
-                    "type": "band",
-                    "domain": {
-                        "data": "source_0",
-                        "field": "site",
-                        "sort": {
-                            "op": "median",
-                            "field": "yield"
-                        }
-                    },
-                    "range": "height",
-                    "round": true,
-                    "reverse": true
-                },
                 {
                     "name": "x",
                     "type": "linear",
@@ -360,32 +409,6 @@
                         "sort": true
                     },
                     "range": "category"
-                }
-            ],
-            "axes": [
-                {
-                    "scale": "row",
-                    "domain": false,
-                    "grid": false,
-                    "orient": "right",
-                    "ticks": false,
-                    "title": "site",
-                    "zindex": 1,
-                    "encode": {
-                        "labels": {
-                            "update": {
-                                "angle": {
-                                    "value": 90
-                                },
-                                "align": {
-                                    "value": "center"
-                                },
-                                "baseline": {
-                                    "value": "bottom"
-                                }
-                            }
-                        }
-                    }
                 }
             ],
             "legends": [

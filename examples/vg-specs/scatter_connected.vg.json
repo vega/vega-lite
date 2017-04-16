@@ -27,8 +27,7 @@
             "name": "source_0",
             "url": "data/driving.json",
             "format": {
-                "type": "json",
-                "parse": {}
+                "type": "json"
             }
         },
         {

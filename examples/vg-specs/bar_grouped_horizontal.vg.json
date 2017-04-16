@@ -117,7 +117,7 @@
                 {
                     "type": "formula",
                     "as": "width",
-                    "expr": "datum[\"child_width\"] + 16"
+                    "expr": "datum[\"child_width\"] + 5"
                 },
                 {
                     "type": "formula",
@@ -127,7 +127,7 @@
                 {
                     "type": "formula",
                     "as": "height",
-                    "expr": "(datum[\"child_height\"] + 4) * datum[\"distinct_age\"]"
+                    "expr": "(datum[\"child_height\"] + 5) * datum[\"distinct_age\"]"
                 }
             ]
         }
@@ -149,109 +149,191 @@
                     }
                 }
             },
+            "layout": {
+                "padding": {
+                    "row": 10,
+                    "column": 10,
+                    "header": 10
+                },
+                "columns": 1,
+                "bounds": "full"
+            },
             "marks": [
                 {
-                    "name": "x-axes",
                     "type": "group",
-                    "encode": {
-                        "update": {
-                            "width": {
-                                "field": {
-                                    "parent": "child_width"
-                                }
-                            },
-                            "height": {
-                                "field": {
-                                    "group": "height"
-                                }
-                            },
-                            "x": {
-                                "value": 8
-                            }
-                        }
+                    "layout": {
+                        "padding": {
+                            "row": 10,
+                            "column": 10,
+                            "header": 10
+                        },
+                        "columns": 1,
+                        "bounds": "full"
                     },
-                    "axes": [
+                    "marks": [
                         {
-                            "scale": "x",
-                            "format": "s",
-                            "orient": "bottom",
-                            "tickCount": 5,
-                            "title": "population",
-                            "zindex": 1
+                            "name": "x-axes",
+                            "type": "group",
+                            "role": "column-footer",
+                            "axes": [
+                                {
+                                    "scale": "x",
+                                    "format": "s",
+                                    "orient": "bottom",
+                                    "tickCount": 5,
+                                    "title": "population",
+                                    "zindex": 1
+                                }
+                            ]
+                        },
+                        {
+                            "name": "row-labels",
+                            "role": "row-header",
+                            "type": "group",
+                            "from": {
+                                "data": "row"
+                            },
+                            "encode": {
+                                "update": {
+                                    "height": {
+                                        "field": {
+                                            "parent": "child_height",
+                                            "level": 2
+                                        }
+                                    }
+                                }
+                            },
+                            "marks": [
+                                {
+                                    "type": "text",
+                                    "role": "row-labels",
+                                    "encode": {
+                                        "update": {
+                                            "y": {
+                                                "field": {
+                                                    "group": "height"
+                                                },
+                                                "mult": 0.5
+                                            },
+                                            "x": {
+                                                "value": -10
+                                            },
+                                            "text": {
+                                                "field": {
+                                                    "parent": "age"
+                                                }
+                                            },
+                                            "align": {
+                                                "value": "right"
+                                            },
+                                            "fill": {
+                                                "value": "black"
+                                            }
+                                        }
+                                    }
+                                }
+                            ]
+                        },
+                        {
+                            "name": "cell",
+                            "type": "group",
+                            "from": {
+                                "facet": {
+                                    "name": "facet",
+                                    "data": "source_0",
+                                    "groupby": [
+                                        "age"
+                                    ]
+                                }
+                            },
+                            "encode": {
+                                "update": {
+                                    "width": {
+                                        "field": {
+                                            "parent": "child_width",
+                                            "level": 2
+                                        }
+                                    },
+                                    "height": {
+                                        "field": {
+                                            "parent": "child_height",
+                                            "level": 2
+                                        }
+                                    },
+                                    "stroke": {
+                                        "value": "#ccc"
+                                    },
+                                    "strokeWidth": {
+                                        "value": 0
+                                    },
+                                    "fill": {
+                                        "value": "transparent"
+                                    }
+                                }
+                            },
+                            "marks": [
+                                {
+                                    "name": "child_marks",
+                                    "type": "rect",
+                                    "role": "bar",
+                                    "from": {
+                                        "data": "facet"
+                                    },
+                                    "encode": {
+                                        "update": {
+                                            "x": {
+                                                "scale": "x",
+                                                "field": "sum_people_end"
+                                            },
+                                            "x2": {
+                                                "scale": "x",
+                                                "field": "sum_people_start"
+                                            },
+                                            "yc": {
+                                                "scale": "y",
+                                                "field": "gender"
+                                            },
+                                            "height": {
+                                                "value": 5
+                                            },
+                                            "fill": {
+                                                "scale": "color",
+                                                "field": "gender"
+                                            }
+                                        }
+                                    }
+                                }
+                            ]
                         }
                     ]
                 },
                 {
-                    "name": "cell",
+                    "name": "row-title",
+                    "role": "row-header",
                     "type": "group",
-                    "from": {
-                        "facet": {
-                            "name": "facet",
-                            "data": "source_0",
-                            "groupby": [
-                                "age"
-                            ]
-                        }
-                    },
-                    "encode": {
-                        "update": {
-                            "x": {
-                                "value": 8
-                            },
-                            "y": {
-                                "scale": "row",
-                                "field": "age",
-                                "offset": 2
-                            },
-                            "width": {
-                                "field": {
-                                    "parent": "child_width"
-                                }
-                            },
-                            "height": {
-                                "field": {
-                                    "parent": "child_height"
-                                }
-                            },
-                            "stroke": {
-                                "value": "#ccc"
-                            },
-                            "strokeWidth": {
-                                "value": 0
-                            },
-                            "fill": {
-                                "value": "transparent"
-                            }
-                        }
-                    },
                     "marks": [
                         {
-                            "name": "child_marks",
-                            "type": "rect",
-                            "role": "bar",
-                            "from": {
-                                "data": "facet"
-                            },
+                            "type": "text",
+                            "role": "row-labels",
                             "encode": {
                                 "update": {
-                                    "x": {
-                                        "scale": "x",
-                                        "field": "sum_people_end"
+                                    "y": {
+                                        "signal": "0.5 * height"
                                     },
-                                    "x2": {
-                                        "scale": "x",
-                                        "field": "sum_people_start"
+                                    "angle": {
+                                        "value": 270
                                     },
-                                    "yc": {
-                                        "scale": "y",
-                                        "field": "gender"
+                                    "text": {
+                                        "value": "age"
                                     },
-                                    "height": {
-                                        "value": 5
+                                    "align": {
+                                        "value": "right"
                                     },
                                     "fill": {
-                                        "scale": "color",
-                                        "field": "gender"
+                                        "value": "black"
+                                    },
+                                    "fontWeight": {
+                                        "value": "bold"
                                     }
                                 }
                             }
@@ -260,17 +342,6 @@
                 }
             ],
             "scales": [
-                {
-                    "name": "row",
-                    "type": "band",
-                    "domain": {
-                        "data": "source_0",
-                        "field": "age",
-                        "sort": true
-                    },
-                    "range": "height",
-                    "round": true
-                },
                 {
                     "name": "x",
                     "type": "linear",
@@ -315,33 +386,6 @@
                         "#EA98D2",
                         "#659CCA"
                     ]
-                }
-            ],
-            "axes": [
-                {
-                    "scale": "row",
-                    "domain": false,
-                    "grid": false,
-                    "offset": -8,
-                    "orient": "left",
-                    "ticks": false,
-                    "title": "age",
-                    "zindex": 1,
-                    "encode": {
-                        "labels": {
-                            "update": {
-                                "angle": {
-                                    "value": 270
-                                },
-                                "align": {
-                                    "value": "center"
-                                },
-                                "baseline": {
-                                    "value": "bottom"
-                                }
-                            }
-                        }
-                    }
                 }
             ],
             "legends": [

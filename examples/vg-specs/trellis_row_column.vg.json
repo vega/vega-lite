@@ -87,7 +87,7 @@
                 {
                     "type": "formula",
                     "as": "width",
-                    "expr": "(datum[\"child_width\"] + 16) * datum[\"distinct_Origin\"]"
+                    "expr": "(datum[\"child_width\"] + 5) * datum[\"distinct_Origin\"]"
                 },
                 {
                     "type": "formula",
@@ -97,7 +97,7 @@
                 {
                     "type": "formula",
                     "as": "height",
-                    "expr": "(datum[\"child_height\"] + 16) * datum[\"distinct_Cylinders\"]"
+                    "expr": "(datum[\"child_height\"] + 5) * datum[\"distinct_Cylinders\"]"
                 }
             ]
         }
@@ -119,205 +119,329 @@
                     }
                 }
             },
+            "signals": [
+                {
+                    "name": "column",
+                    "update": "data('layout')[0].distinct_Origin"
+                }
+            ],
+            "layout": {
+                "padding": {
+                    "row": 10,
+                    "column": 10,
+                    "header": 10
+                },
+                "columns": 1,
+                "bounds": "full"
+            },
             "marks": [
                 {
-                    "name": "x-axes",
                     "type": "group",
-                    "from": {
-                        "data": "column"
-                    },
-                    "encode": {
-                        "update": {
-                            "width": {
-                                "field": {
-                                    "parent": "child_width"
-                                }
-                            },
-                            "height": {
-                                "field": {
-                                    "group": "height"
-                                }
-                            },
-                            "x": {
-                                "scale": "column",
-                                "field": "Origin",
-                                "offset": 8
-                            }
-                        }
-                    },
-                    "axes": [
-                        {
-                            "scale": "x",
-                            "format": "s",
-                            "orient": "bottom",
-                            "tickCount": 5,
-                            "title": "Horsepower",
-                            "zindex": 1
-                        }
-                    ]
-                },
-                {
-                    "name": "y-axes",
-                    "type": "group",
-                    "from": {
-                        "data": "row"
-                    },
-                    "encode": {
-                        "update": {
-                            "width": {
-                                "field": {
-                                    "group": "width"
-                                }
-                            },
-                            "height": {
-                                "field": {
-                                    "parent": "child_height"
-                                }
-                            },
-                            "y": {
-                                "scale": "row",
-                                "field": "Cylinders",
-                                "offset": 8
-                            }
-                        }
-                    },
-                    "axes": [
-                        {
-                            "scale": "y",
-                            "format": "s",
-                            "orient": "left",
-                            "title": "Miles_per_Gallon",
-                            "zindex": 1
-                        }
-                    ]
-                },
-                {
-                    "name": "cell",
-                    "type": "group",
-                    "from": {
-                        "facet": {
-                            "name": "facet",
-                            "data": "source_0",
-                            "groupby": [
-                                "Cylinders",
-                                "Origin"
-                            ]
-                        }
-                    },
-                    "encode": {
-                        "update": {
-                            "x": {
-                                "scale": "column",
-                                "field": "Origin",
-                                "offset": 8
-                            },
-                            "y": {
-                                "scale": "row",
-                                "field": "Cylinders",
-                                "offset": 8
-                            },
-                            "width": {
-                                "field": {
-                                    "parent": "child_width"
-                                }
-                            },
-                            "height": {
-                                "field": {
-                                    "parent": "child_height"
-                                }
-                            },
-                            "stroke": {
-                                "value": "#ccc"
-                            },
-                            "strokeWidth": {
-                                "value": 1
-                            },
-                            "fill": {
-                                "value": "transparent"
-                            }
-                        }
+                    "layout": {
+                        "padding": {
+                            "row": 10,
+                            "column": 10,
+                            "header": 10
+                        },
+                        "columns": {
+                            "signal": "column"
+                        },
+                        "bounds": "full"
                     },
                     "marks": [
                         {
-                            "name": "child_marks",
-                            "type": "symbol",
-                            "role": "point",
+                            "name": "x-axes",
+                            "type": "group",
+                            "role": "column-footer",
                             "from": {
-                                "data": "facet"
+                                "data": "column"
+                            },
+                            "axes": [
+                                {
+                                    "scale": "x",
+                                    "format": "s",
+                                    "orient": "bottom",
+                                    "tickCount": 5,
+                                    "title": "Horsepower",
+                                    "zindex": 1
+                                }
+                            ]
+                        },
+                        {
+                            "name": "y-axes",
+                            "type": "group",
+                            "role": "row-header",
+                            "from": {
+                                "data": "row"
+                            },
+                            "axes": [
+                                {
+                                    "scale": "y",
+                                    "format": "s",
+                                    "orient": "left",
+                                    "title": "Miles_per_Gallon",
+                                    "zindex": 1
+                                }
+                            ]
+                        },
+                        {
+                            "name": "column-labels",
+                            "role": "column-header",
+                            "type": "group",
+                            "from": {
+                                "data": "column"
                             },
                             "encode": {
                                 "update": {
-                                    "x": {
-                                        "scale": "x",
-                                        "field": "Horsepower"
+                                    "width": {
+                                        "field": {
+                                            "parent": "child_width",
+                                            "level": 2
+                                        }
+                                    }
+                                }
+                            },
+                            "marks": [
+                                {
+                                    "type": "text",
+                                    "role": "column-labels",
+                                    "encode": {
+                                        "update": {
+                                            "x": {
+                                                "field": {
+                                                    "group": "width"
+                                                },
+                                                "mult": 0.5
+                                            },
+                                            "y": {
+                                                "value": -10
+                                            },
+                                            "text": {
+                                                "field": {
+                                                    "parent": "Origin"
+                                                }
+                                            },
+                                            "align": {
+                                                "value": "center"
+                                            },
+                                            "fill": {
+                                                "value": "black"
+                                            }
+                                        }
+                                    }
+                                }
+                            ]
+                        },
+                        {
+                            "name": "row-labels",
+                            "role": "row-header",
+                            "type": "group",
+                            "from": {
+                                "data": "row"
+                            },
+                            "encode": {
+                                "update": {
+                                    "height": {
+                                        "field": {
+                                            "parent": "child_height",
+                                            "level": 2
+                                        }
+                                    }
+                                }
+                            },
+                            "marks": [
+                                {
+                                    "type": "text",
+                                    "role": "row-labels",
+                                    "encode": {
+                                        "update": {
+                                            "y": {
+                                                "field": {
+                                                    "group": "height"
+                                                },
+                                                "mult": 0.5
+                                            },
+                                            "x": {
+                                                "value": -10
+                                            },
+                                            "text": {
+                                                "field": {
+                                                    "parent": "Cylinders"
+                                                }
+                                            },
+                                            "align": {
+                                                "value": "right"
+                                            },
+                                            "fill": {
+                                                "value": "black"
+                                            }
+                                        }
+                                    }
+                                }
+                            ]
+                        },
+                        {
+                            "name": "cell",
+                            "type": "group",
+                            "from": {
+                                "facet": {
+                                    "name": "facet",
+                                    "data": "source_0",
+                                    "groupby": [
+                                        "Cylinders",
+                                        "Origin"
+                                    ]
+                                }
+                            },
+                            "encode": {
+                                "update": {
+                                    "width": {
+                                        "field": {
+                                            "parent": "child_width",
+                                            "level": 2
+                                        }
                                     },
-                                    "y": {
-                                        "scale": "y",
-                                        "field": "Miles_per_Gallon"
+                                    "height": {
+                                        "field": {
+                                            "parent": "child_height",
+                                            "level": 2
+                                        }
                                     },
                                     "stroke": {
-                                        "value": "#4c78a8"
+                                        "value": "#ccc"
+                                    },
+                                    "strokeWidth": {
+                                        "value": 1
                                     },
                                     "fill": {
                                         "value": "transparent"
+                                    }
+                                }
+                            },
+                            "marks": [
+                                {
+                                    "name": "child_marks",
+                                    "type": "symbol",
+                                    "role": "point",
+                                    "from": {
+                                        "data": "facet"
                                     },
-                                    "opacity": {
-                                        "value": 0.7
+                                    "encode": {
+                                        "update": {
+                                            "x": {
+                                                "scale": "x",
+                                                "field": "Horsepower"
+                                            },
+                                            "y": {
+                                                "scale": "y",
+                                                "field": "Miles_per_Gallon"
+                                            },
+                                            "stroke": {
+                                                "value": "#4c78a8"
+                                            },
+                                            "fill": {
+                                                "value": "transparent"
+                                            },
+                                            "opacity": {
+                                                "value": 0.7
+                                            }
+                                        }
+                                    }
+                                }
+                            ],
+                            "axes": [
+                                {
+                                    "scale": "x",
+                                    "domain": false,
+                                    "format": "s",
+                                    "grid": true,
+                                    "labels": false,
+                                    "orient": "bottom",
+                                    "tickCount": 5,
+                                    "ticks": false,
+                                    "zindex": 0,
+                                    "gridScale": "y"
+                                },
+                                {
+                                    "scale": "y",
+                                    "domain": false,
+                                    "format": "s",
+                                    "grid": true,
+                                    "labels": false,
+                                    "orient": "left",
+                                    "ticks": false,
+                                    "zindex": 0,
+                                    "gridScale": "x"
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "name": "column-title",
+                    "role": "column-header",
+                    "type": "group",
+                    "marks": [
+                        {
+                            "type": "text",
+                            "role": "column-labels",
+                            "encode": {
+                                "update": {
+                                    "x": {
+                                        "signal": "0.5 * width"
+                                    },
+                                    "text": {
+                                        "value": "Origin"
+                                    },
+                                    "align": {
+                                        "value": "center"
+                                    },
+                                    "fill": {
+                                        "value": "black"
+                                    },
+                                    "fontWeight": {
+                                        "value": "bold"
                                     }
                                 }
                             }
                         }
-                    ],
-                    "axes": [
+                    ]
+                },
+                {
+                    "name": "row-title",
+                    "role": "row-header",
+                    "type": "group",
+                    "marks": [
                         {
-                            "scale": "x",
-                            "domain": false,
-                            "format": "s",
-                            "grid": true,
-                            "labels": false,
-                            "orient": "bottom",
-                            "tickCount": 5,
-                            "ticks": false,
-                            "zindex": 0,
-                            "gridScale": "y"
-                        },
-                        {
-                            "scale": "y",
-                            "domain": false,
-                            "format": "s",
-                            "grid": true,
-                            "labels": false,
-                            "orient": "left",
-                            "ticks": false,
-                            "zindex": 0,
-                            "gridScale": "x"
+                            "type": "text",
+                            "role": "row-labels",
+                            "encode": {
+                                "update": {
+                                    "y": {
+                                        "signal": "0.5 * height"
+                                    },
+                                    "angle": {
+                                        "value": 270
+                                    },
+                                    "text": {
+                                        "value": "Cylinders"
+                                    },
+                                    "align": {
+                                        "value": "right"
+                                    },
+                                    "fill": {
+                                        "value": "black"
+                                    },
+                                    "fontWeight": {
+                                        "value": "bold"
+                                    }
+                                }
+                            }
                         }
                     ]
                 }
             ],
             "scales": [
-                {
-                    "name": "row",
-                    "type": "band",
-                    "domain": {
-                        "data": "source_0",
-                        "field": "Cylinders",
-                        "sort": true
-                    },
-                    "range": "height",
-                    "round": true
-                },
-                {
-                    "name": "column",
-                    "type": "band",
-                    "domain": {
-                        "data": "source_0",
-                        "field": "Origin",
-                        "sort": true
-                    },
-                    "range": "width",
-                    "round": true
-                },
                 {
                     "name": "x",
                     "type": "linear",
@@ -347,41 +471,6 @@
                     "round": true,
                     "nice": true,
                     "zero": true
-                }
-            ],
-            "axes": [
-                {
-                    "scale": "row",
-                    "domain": false,
-                    "grid": false,
-                    "orient": "right",
-                    "ticks": false,
-                    "title": "Cylinders",
-                    "zindex": 1,
-                    "encode": {
-                        "labels": {
-                            "update": {
-                                "angle": {
-                                    "value": 90
-                                },
-                                "align": {
-                                    "value": "center"
-                                },
-                                "baseline": {
-                                    "value": "bottom"
-                                }
-                            }
-                        }
-                    }
-                },
-                {
-                    "scale": "column",
-                    "domain": false,
-                    "grid": false,
-                    "orient": "top",
-                    "ticks": false,
-                    "title": "Origin",
-                    "zindex": 1
                 }
             ]
         }

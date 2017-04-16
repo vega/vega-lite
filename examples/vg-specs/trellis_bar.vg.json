@@ -117,7 +117,7 @@
                 {
                     "type": "formula",
                     "as": "width",
-                    "expr": "datum[\"child_width\"] + 16"
+                    "expr": "datum[\"child_width\"] + 5"
                 },
                 {
                     "type": "formula",
@@ -127,7 +127,7 @@
                 {
                     "type": "formula",
                     "as": "height",
-                    "expr": "(datum[\"child_height\"] + 16) * datum[\"distinct_gender\"]"
+                    "expr": "(datum[\"child_height\"] + 5) * datum[\"distinct_gender\"]"
                 }
             ]
         }
@@ -150,190 +150,243 @@
                     }
                 }
             },
+            "layout": {
+                "padding": {
+                    "row": 10,
+                    "column": 10,
+                    "header": 10
+                },
+                "columns": 1,
+                "bounds": "full"
+            },
             "marks": [
                 {
-                    "name": "x-axes",
                     "type": "group",
-                    "encode": {
-                        "update": {
-                            "width": {
-                                "field": {
-                                    "parent": "child_width"
-                                }
-                            },
-                            "height": {
-                                "field": {
-                                    "group": "height"
-                                }
-                            },
-                            "x": {
-                                "value": 8
-                            }
-                        }
-                    },
-                    "axes": [
-                        {
-                            "scale": "x",
-                            "orient": "bottom",
-                            "tickCount": 5,
-                            "title": "age",
-                            "zindex": 1,
-                            "encode": {
-                                "labels": {
-                                    "update": {
-                                        "angle": {
-                                            "value": 270
-                                        },
-                                        "align": {
-                                            "value": "right"
-                                        },
-                                        "baseline": {
-                                            "value": "middle"
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    ]
-                },
-                {
-                    "name": "y-axes",
-                    "type": "group",
-                    "from": {
-                        "data": "row"
-                    },
-                    "encode": {
-                        "update": {
-                            "width": {
-                                "field": {
-                                    "group": "width"
-                                }
-                            },
-                            "height": {
-                                "field": {
-                                    "parent": "child_height"
-                                }
-                            },
-                            "y": {
-                                "scale": "row",
-                                "field": "gender",
-                                "offset": 8
-                            }
-                        }
-                    },
-                    "axes": [
-                        {
-                            "scale": "y",
-                            "format": "s",
-                            "orient": "left",
-                            "title": "population",
-                            "zindex": 1
-                        }
-                    ]
-                },
-                {
-                    "name": "cell",
-                    "type": "group",
-                    "from": {
-                        "facet": {
-                            "name": "facet",
-                            "data": "source_0",
-                            "groupby": [
-                                "gender"
-                            ]
-                        }
-                    },
-                    "encode": {
-                        "update": {
-                            "x": {
-                                "value": 8
-                            },
-                            "y": {
-                                "scale": "row",
-                                "field": "gender",
-                                "offset": 8
-                            },
-                            "width": {
-                                "field": {
-                                    "parent": "child_width"
-                                }
-                            },
-                            "height": {
-                                "field": {
-                                    "parent": "child_height"
-                                }
-                            },
-                            "stroke": {
-                                "value": "#ccc"
-                            },
-                            "strokeWidth": {
-                                "value": 1
-                            },
-                            "fill": {
-                                "value": "transparent"
-                            }
-                        }
+                    "layout": {
+                        "padding": {
+                            "row": 10,
+                            "column": 10,
+                            "header": 10
+                        },
+                        "columns": 1,
+                        "bounds": "full"
                     },
                     "marks": [
                         {
-                            "name": "child_marks",
-                            "type": "rect",
-                            "role": "bar",
+                            "name": "x-axes",
+                            "type": "group",
+                            "role": "column-footer",
+                            "axes": [
+                                {
+                                    "scale": "x",
+                                    "orient": "bottom",
+                                    "tickCount": 5,
+                                    "title": "age",
+                                    "zindex": 1,
+                                    "encode": {
+                                        "labels": {
+                                            "update": {
+                                                "angle": {
+                                                    "value": 270
+                                                },
+                                                "align": {
+                                                    "value": "right"
+                                                },
+                                                "baseline": {
+                                                    "value": "middle"
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            ]
+                        },
+                        {
+                            "name": "y-axes",
+                            "type": "group",
+                            "role": "row-header",
                             "from": {
-                                "data": "facet"
+                                "data": "row"
+                            },
+                            "axes": [
+                                {
+                                    "scale": "y",
+                                    "format": "s",
+                                    "orient": "left",
+                                    "title": "population",
+                                    "zindex": 1
+                                }
+                            ]
+                        },
+                        {
+                            "name": "row-labels",
+                            "role": "row-header",
+                            "type": "group",
+                            "from": {
+                                "data": "row"
                             },
                             "encode": {
                                 "update": {
-                                    "xc": {
-                                        "scale": "x",
-                                        "field": "age"
-                                    },
+                                    "height": {
+                                        "field": {
+                                            "parent": "child_height",
+                                            "level": 2
+                                        }
+                                    }
+                                }
+                            },
+                            "marks": [
+                                {
+                                    "type": "text",
+                                    "role": "row-labels",
+                                    "encode": {
+                                        "update": {
+                                            "y": {
+                                                "field": {
+                                                    "group": "height"
+                                                },
+                                                "mult": 0.5
+                                            },
+                                            "x": {
+                                                "value": -10
+                                            },
+                                            "text": {
+                                                "field": {
+                                                    "parent": "gender"
+                                                }
+                                            },
+                                            "align": {
+                                                "value": "right"
+                                            },
+                                            "fill": {
+                                                "value": "black"
+                                            }
+                                        }
+                                    }
+                                }
+                            ]
+                        },
+                        {
+                            "name": "cell",
+                            "type": "group",
+                            "from": {
+                                "facet": {
+                                    "name": "facet",
+                                    "data": "source_0",
+                                    "groupby": [
+                                        "gender"
+                                    ]
+                                }
+                            },
+                            "encode": {
+                                "update": {
                                     "width": {
-                                        "value": 16
+                                        "field": {
+                                            "parent": "child_width",
+                                            "level": 2
+                                        }
                                     },
-                                    "y": {
-                                        "scale": "y",
-                                        "field": "sum_people_end"
+                                    "height": {
+                                        "field": {
+                                            "parent": "child_height",
+                                            "level": 2
+                                        }
                                     },
-                                    "y2": {
-                                        "scale": "y",
-                                        "field": "sum_people_start"
+                                    "stroke": {
+                                        "value": "#ccc"
+                                    },
+                                    "strokeWidth": {
+                                        "value": 1
                                     },
                                     "fill": {
-                                        "scale": "color",
-                                        "field": "gender"
+                                        "value": "transparent"
+                                    }
+                                }
+                            },
+                            "marks": [
+                                {
+                                    "name": "child_marks",
+                                    "type": "rect",
+                                    "role": "bar",
+                                    "from": {
+                                        "data": "facet"
+                                    },
+                                    "encode": {
+                                        "update": {
+                                            "xc": {
+                                                "scale": "x",
+                                                "field": "age"
+                                            },
+                                            "width": {
+                                                "value": 16
+                                            },
+                                            "y": {
+                                                "scale": "y",
+                                                "field": "sum_people_end"
+                                            },
+                                            "y2": {
+                                                "scale": "y",
+                                                "field": "sum_people_start"
+                                            },
+                                            "fill": {
+                                                "scale": "color",
+                                                "field": "gender"
+                                            }
+                                        }
+                                    }
+                                }
+                            ],
+                            "axes": [
+                                {
+                                    "scale": "y",
+                                    "domain": false,
+                                    "format": "s",
+                                    "grid": true,
+                                    "labels": false,
+                                    "orient": "left",
+                                    "ticks": false,
+                                    "zindex": 0,
+                                    "gridScale": "x"
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "name": "row-title",
+                    "role": "row-header",
+                    "type": "group",
+                    "marks": [
+                        {
+                            "type": "text",
+                            "role": "row-labels",
+                            "encode": {
+                                "update": {
+                                    "y": {
+                                        "signal": "0.5 * height"
+                                    },
+                                    "angle": {
+                                        "value": 270
+                                    },
+                                    "text": {
+                                        "value": "gender"
+                                    },
+                                    "align": {
+                                        "value": "right"
+                                    },
+                                    "fill": {
+                                        "value": "black"
+                                    },
+                                    "fontWeight": {
+                                        "value": "bold"
                                     }
                                 }
                             }
-                        }
-                    ],
-                    "axes": [
-                        {
-                            "scale": "y",
-                            "domain": false,
-                            "format": "s",
-                            "grid": true,
-                            "labels": false,
-                            "orient": "left",
-                            "ticks": false,
-                            "zindex": 0,
-                            "gridScale": "x"
                         }
                     ]
                 }
             ],
             "scales": [
-                {
-                    "name": "row",
-                    "type": "band",
-                    "domain": {
-                        "data": "source_0",
-                        "field": "gender",
-                        "sort": true
-                    },
-                    "range": "height",
-                    "round": true
-                },
                 {
                     "name": "x",
                     "type": "point",
@@ -378,32 +431,6 @@
                         "#EA98D2",
                         "#659CCA"
                     ]
-                }
-            ],
-            "axes": [
-                {
-                    "scale": "row",
-                    "domain": false,
-                    "grid": false,
-                    "orient": "right",
-                    "ticks": false,
-                    "title": "gender",
-                    "zindex": 1,
-                    "encode": {
-                        "labels": {
-                            "update": {
-                                "angle": {
-                                    "value": 90
-                                },
-                                "align": {
-                                    "value": "center"
-                                },
-                                "baseline": {
-                                    "value": "bottom"
-                                }
-                            }
-                        }
-                    }
                 }
             ],
             "legends": [

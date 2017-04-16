@@ -104,7 +104,7 @@
                 {
                     "type": "formula",
                     "as": "width",
-                    "expr": "datum[\"child_width\"] + 16"
+                    "expr": "datum[\"child_width\"] + 5"
                 },
                 {
                     "type": "formula",
@@ -114,7 +114,7 @@
                 {
                     "type": "formula",
                     "as": "height",
-                    "expr": "(datum[\"child_height\"] + 16) * datum[\"distinct_Origin\"]"
+                    "expr": "(datum[\"child_height\"] + 5) * datum[\"distinct_Origin\"]"
                 }
             ]
         }
@@ -136,191 +136,244 @@
                     }
                 }
             },
+            "layout": {
+                "padding": {
+                    "row": 10,
+                    "column": 10,
+                    "header": 10
+                },
+                "columns": 1,
+                "bounds": "full"
+            },
             "marks": [
                 {
-                    "name": "x-axes",
                     "type": "group",
-                    "encode": {
-                        "update": {
-                            "width": {
-                                "field": {
-                                    "parent": "child_width"
-                                }
-                            },
-                            "height": {
-                                "field": {
-                                    "group": "height"
-                                }
-                            },
-                            "x": {
-                                "value": 8
-                            }
-                        }
-                    },
-                    "axes": [
-                        {
-                            "scale": "x",
-                            "format": "s",
-                            "orient": "bottom",
-                            "title": "BIN(Horsepower)",
-                            "zindex": 1,
-                            "encode": {
-                                "labels": {
-                                    "update": {
-                                        "angle": {
-                                            "value": 270
-                                        },
-                                        "align": {
-                                            "value": "right"
-                                        },
-                                        "baseline": {
-                                            "value": "middle"
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    ]
-                },
-                {
-                    "name": "y-axes",
-                    "type": "group",
-                    "from": {
-                        "data": "row"
-                    },
-                    "encode": {
-                        "update": {
-                            "width": {
-                                "field": {
-                                    "group": "width"
-                                }
-                            },
-                            "height": {
-                                "field": {
-                                    "parent": "child_height"
-                                }
-                            },
-                            "y": {
-                                "scale": "row",
-                                "field": "Origin",
-                                "offset": 8
-                            }
-                        }
-                    },
-                    "axes": [
-                        {
-                            "scale": "y",
-                            "format": "s",
-                            "orient": "left",
-                            "title": "Number of Records",
-                            "zindex": 1
-                        }
-                    ]
-                },
-                {
-                    "name": "cell",
-                    "type": "group",
-                    "from": {
-                        "facet": {
-                            "name": "facet",
-                            "data": "source_0",
-                            "groupby": [
-                                "Origin"
-                            ]
-                        }
-                    },
-                    "encode": {
-                        "update": {
-                            "x": {
-                                "value": 8
-                            },
-                            "y": {
-                                "scale": "row",
-                                "field": "Origin",
-                                "offset": 8
-                            },
-                            "width": {
-                                "field": {
-                                    "parent": "child_width"
-                                }
-                            },
-                            "height": {
-                                "field": {
-                                    "parent": "child_height"
-                                }
-                            },
-                            "stroke": {
-                                "value": "#ccc"
-                            },
-                            "strokeWidth": {
-                                "value": 1
-                            },
-                            "fill": {
-                                "value": "transparent"
-                            }
-                        }
+                    "layout": {
+                        "padding": {
+                            "row": 10,
+                            "column": 10,
+                            "header": 10
+                        },
+                        "columns": 1,
+                        "bounds": "full"
                     },
                     "marks": [
                         {
-                            "name": "child_marks",
-                            "type": "rect",
-                            "role": "bar",
+                            "name": "x-axes",
+                            "type": "group",
+                            "role": "column-footer",
+                            "axes": [
+                                {
+                                    "scale": "x",
+                                    "format": "s",
+                                    "orient": "bottom",
+                                    "title": "BIN(Horsepower)",
+                                    "zindex": 1,
+                                    "encode": {
+                                        "labels": {
+                                            "update": {
+                                                "angle": {
+                                                    "value": 270
+                                                },
+                                                "align": {
+                                                    "value": "right"
+                                                },
+                                                "baseline": {
+                                                    "value": "middle"
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            ]
+                        },
+                        {
+                            "name": "y-axes",
+                            "type": "group",
+                            "role": "row-header",
                             "from": {
-                                "data": "facet"
+                                "data": "row"
+                            },
+                            "axes": [
+                                {
+                                    "scale": "y",
+                                    "format": "s",
+                                    "orient": "left",
+                                    "title": "Number of Records",
+                                    "zindex": 1
+                                }
+                            ]
+                        },
+                        {
+                            "name": "row-labels",
+                            "role": "row-header",
+                            "type": "group",
+                            "from": {
+                                "data": "row"
                             },
                             "encode": {
                                 "update": {
-                                    "x2": {
-                                        "scale": "x",
-                                        "field": "bin_maxbins_15_Horsepower_start",
-                                        "offset": 1
+                                    "height": {
+                                        "field": {
+                                            "parent": "child_height",
+                                            "level": 2
+                                        }
+                                    }
+                                }
+                            },
+                            "marks": [
+                                {
+                                    "type": "text",
+                                    "role": "row-labels",
+                                    "encode": {
+                                        "update": {
+                                            "y": {
+                                                "field": {
+                                                    "group": "height"
+                                                },
+                                                "mult": 0.5
+                                            },
+                                            "x": {
+                                                "value": -10
+                                            },
+                                            "text": {
+                                                "field": {
+                                                    "parent": "Origin"
+                                                }
+                                            },
+                                            "align": {
+                                                "value": "right"
+                                            },
+                                            "fill": {
+                                                "value": "black"
+                                            }
+                                        }
+                                    }
+                                }
+                            ]
+                        },
+                        {
+                            "name": "cell",
+                            "type": "group",
+                            "from": {
+                                "facet": {
+                                    "name": "facet",
+                                    "data": "source_0",
+                                    "groupby": [
+                                        "Origin"
+                                    ]
+                                }
+                            },
+                            "encode": {
+                                "update": {
+                                    "width": {
+                                        "field": {
+                                            "parent": "child_width",
+                                            "level": 2
+                                        }
                                     },
-                                    "x": {
-                                        "scale": "x",
-                                        "field": "bin_maxbins_15_Horsepower_end"
+                                    "height": {
+                                        "field": {
+                                            "parent": "child_height",
+                                            "level": 2
+                                        }
                                     },
-                                    "y": {
-                                        "scale": "y",
-                                        "field": "count_*"
+                                    "stroke": {
+                                        "value": "#ccc"
                                     },
-                                    "y2": {
-                                        "scale": "y",
-                                        "value": 0
+                                    "strokeWidth": {
+                                        "value": 1
                                     },
                                     "fill": {
-                                        "value": "#4c78a8"
+                                        "value": "transparent"
+                                    }
+                                }
+                            },
+                            "marks": [
+                                {
+                                    "name": "child_marks",
+                                    "type": "rect",
+                                    "role": "bar",
+                                    "from": {
+                                        "data": "facet"
+                                    },
+                                    "encode": {
+                                        "update": {
+                                            "x2": {
+                                                "scale": "x",
+                                                "field": "bin_maxbins_15_Horsepower_start",
+                                                "offset": 1
+                                            },
+                                            "x": {
+                                                "scale": "x",
+                                                "field": "bin_maxbins_15_Horsepower_end"
+                                            },
+                                            "y": {
+                                                "scale": "y",
+                                                "field": "count_*"
+                                            },
+                                            "y2": {
+                                                "scale": "y",
+                                                "value": 0
+                                            },
+                                            "fill": {
+                                                "value": "#4c78a8"
+                                            }
+                                        }
+                                    }
+                                }
+                            ],
+                            "axes": [
+                                {
+                                    "scale": "y",
+                                    "domain": false,
+                                    "format": "s",
+                                    "grid": true,
+                                    "labels": false,
+                                    "orient": "left",
+                                    "ticks": false,
+                                    "zindex": 0,
+                                    "gridScale": "x"
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "name": "row-title",
+                    "role": "row-header",
+                    "type": "group",
+                    "marks": [
+                        {
+                            "type": "text",
+                            "role": "row-labels",
+                            "encode": {
+                                "update": {
+                                    "y": {
+                                        "signal": "0.5 * height"
+                                    },
+                                    "angle": {
+                                        "value": 270
+                                    },
+                                    "text": {
+                                        "value": "Origin"
+                                    },
+                                    "align": {
+                                        "value": "right"
+                                    },
+                                    "fill": {
+                                        "value": "black"
+                                    },
+                                    "fontWeight": {
+                                        "value": "bold"
                                     }
                                 }
                             }
-                        }
-                    ],
-                    "axes": [
-                        {
-                            "scale": "y",
-                            "domain": false,
-                            "format": "s",
-                            "grid": true,
-                            "labels": false,
-                            "orient": "left",
-                            "ticks": false,
-                            "zindex": 0,
-                            "gridScale": "x"
                         }
                     ]
                 }
             ],
             "scales": [
-                {
-                    "name": "row",
-                    "type": "band",
-                    "domain": {
-                        "data": "source_0",
-                        "field": "Origin",
-                        "sort": true
-                    },
-                    "range": "height",
-                    "round": true
-                },
                 {
                     "name": "x",
                     "type": "bin-linear",
@@ -348,32 +401,6 @@
                     "round": true,
                     "nice": true,
                     "zero": true
-                }
-            ],
-            "axes": [
-                {
-                    "scale": "row",
-                    "domain": false,
-                    "grid": false,
-                    "orient": "right",
-                    "ticks": false,
-                    "title": "Origin",
-                    "zindex": 1,
-                    "encode": {
-                        "labels": {
-                            "update": {
-                                "angle": {
-                                    "value": 90
-                                },
-                                "align": {
-                                    "value": "center"
-                                },
-                                "baseline": {
-                                    "value": "bottom"
-                                }
-                            }
-                        }
-                    }
                 }
             ]
         }

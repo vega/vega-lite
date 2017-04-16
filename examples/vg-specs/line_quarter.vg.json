@@ -103,7 +103,7 @@
                 {
                     "type": "formula",
                     "as": "width",
-                    "expr": "(datum[\"child_width\"] + 16) * datum[\"distinct_year_date\"]"
+                    "expr": "(datum[\"child_width\"] + 5) * datum[\"distinct_year_date\"]"
                 },
                 {
                     "type": "formula",
@@ -113,7 +113,7 @@
                 {
                     "type": "formula",
                     "as": "height",
-                    "expr": "datum[\"child_height\"] + 16"
+                    "expr": "datum[\"child_height\"] + 5"
                 }
             ]
         }
@@ -136,189 +136,247 @@
                     }
                 }
             },
+            "signals": [
+                {
+                    "name": "column",
+                    "update": "data('layout')[0].distinct_year_date"
+                }
+            ],
+            "layout": {
+                "padding": {
+                    "row": 10,
+                    "column": 10,
+                    "header": 10
+                },
+                "columns": 1,
+                "bounds": "full"
+            },
             "marks": [
                 {
-                    "name": "x-axes",
                     "type": "group",
-                    "from": {
-                        "data": "column"
-                    },
-                    "encode": {
-                        "update": {
-                            "width": {
-                                "field": {
-                                    "parent": "child_width"
-                                }
-                            },
-                            "height": {
-                                "field": {
-                                    "group": "height"
-                                }
-                            },
-                            "x": {
-                                "scale": "column",
-                                "field": "year_date",
-                                "offset": 8
-                            }
-                        }
-                    },
-                    "axes": [
-                        {
-                            "scale": "x",
-                            "orient": "bottom",
-                            "tickCount": 5,
-                            "title": "QUARTER(date)",
-                            "zindex": 1,
-                            "encode": {
-                                "labels": {
-                                    "update": {
-                                        "text": {
-                                            "signal": "'Q' + quarter(datum.value)"
-                                        },
-                                        "angle": {
-                                            "value": 270
-                                        },
-                                        "align": {
-                                            "value": "right"
-                                        },
-                                        "baseline": {
-                                            "value": "middle"
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    ]
-                },
-                {
-                    "name": "y-axes",
-                    "type": "group",
-                    "encode": {
-                        "update": {
-                            "width": {
-                                "field": {
-                                    "group": "width"
-                                }
-                            },
-                            "height": {
-                                "field": {
-                                    "parent": "child_height"
-                                }
-                            },
-                            "y": {
-                                "value": 8
-                            }
-                        }
-                    },
-                    "axes": [
-                        {
-                            "scale": "y",
-                            "format": "s",
-                            "orient": "left",
-                            "title": "MEAN(price)",
-                            "zindex": 1
-                        }
-                    ]
-                },
-                {
-                    "name": "cell",
-                    "type": "group",
-                    "from": {
-                        "facet": {
-                            "name": "facet",
-                            "data": "source_0",
-                            "groupby": [
-                                "year_date"
-                            ]
-                        }
-                    },
-                    "encode": {
-                        "update": {
-                            "x": {
-                                "scale": "column",
-                                "field": "year_date",
-                                "offset": 8
-                            },
-                            "y": {
-                                "value": 8
-                            },
-                            "width": {
-                                "field": {
-                                    "parent": "child_width"
-                                }
-                            },
-                            "height": {
-                                "field": {
-                                    "parent": "child_height"
-                                }
-                            },
-                            "stroke": {
-                                "value": "#ccc"
-                            },
-                            "strokeWidth": {
-                                "value": 1
-                            },
-                            "fill": {
-                                "value": "transparent"
-                            }
-                        }
+                    "layout": {
+                        "padding": {
+                            "row": 10,
+                            "column": 10,
+                            "header": 10
+                        },
+                        "columns": {
+                            "signal": "column"
+                        },
+                        "bounds": "full"
                     },
                     "marks": [
                         {
-                            "name": "child_marks",
-                            "type": "symbol",
-                            "role": "point",
+                            "name": "x-axes",
+                            "type": "group",
+                            "role": "column-footer",
                             "from": {
-                                "data": "facet"
+                                "data": "column"
+                            },
+                            "axes": [
+                                {
+                                    "scale": "x",
+                                    "orient": "bottom",
+                                    "tickCount": 5,
+                                    "title": "QUARTER(date)",
+                                    "zindex": 1,
+                                    "encode": {
+                                        "labels": {
+                                            "update": {
+                                                "text": {
+                                                    "signal": "'Q' + quarter(datum.value)"
+                                                },
+                                                "angle": {
+                                                    "value": 270
+                                                },
+                                                "align": {
+                                                    "value": "right"
+                                                },
+                                                "baseline": {
+                                                    "value": "middle"
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            ]
+                        },
+                        {
+                            "name": "y-axes",
+                            "type": "group",
+                            "role": "row-header",
+                            "axes": [
+                                {
+                                    "scale": "y",
+                                    "format": "s",
+                                    "orient": "left",
+                                    "title": "MEAN(price)",
+                                    "zindex": 1
+                                }
+                            ]
+                        },
+                        {
+                            "name": "column-labels",
+                            "role": "column-header",
+                            "type": "group",
+                            "from": {
+                                "data": "column"
                             },
                             "encode": {
                                 "update": {
-                                    "x": {
-                                        "scale": "x",
-                                        "field": "quarter_date"
+                                    "width": {
+                                        "field": {
+                                            "parent": "child_width",
+                                            "level": 2
+                                        }
+                                    }
+                                }
+                            },
+                            "marks": [
+                                {
+                                    "type": "text",
+                                    "role": "column-labels",
+                                    "encode": {
+                                        "update": {
+                                            "x": {
+                                                "field": {
+                                                    "group": "width"
+                                                },
+                                                "mult": 0.5
+                                            },
+                                            "y": {
+                                                "value": -10
+                                            },
+                                            "text": {
+                                                "field": {
+                                                    "parent": "year_date"
+                                                }
+                                            },
+                                            "align": {
+                                                "value": "center"
+                                            },
+                                            "fill": {
+                                                "value": "black"
+                                            }
+                                        }
+                                    }
+                                }
+                            ]
+                        },
+                        {
+                            "name": "cell",
+                            "type": "group",
+                            "from": {
+                                "facet": {
+                                    "name": "facet",
+                                    "data": "source_0",
+                                    "groupby": [
+                                        "year_date"
+                                    ]
+                                }
+                            },
+                            "encode": {
+                                "update": {
+                                    "width": {
+                                        "field": {
+                                            "parent": "child_width",
+                                            "level": 2
+                                        }
                                     },
-                                    "y": {
-                                        "scale": "y",
-                                        "field": "mean_price"
+                                    "height": {
+                                        "field": {
+                                            "parent": "child_height",
+                                            "level": 2
+                                        }
                                     },
                                     "stroke": {
-                                        "scale": "color",
-                                        "field": "symbol"
+                                        "value": "#ccc"
+                                    },
+                                    "strokeWidth": {
+                                        "value": 1
                                     },
                                     "fill": {
                                         "value": "transparent"
                                     }
                                 }
-                            }
+                            },
+                            "marks": [
+                                {
+                                    "name": "child_marks",
+                                    "type": "symbol",
+                                    "role": "point",
+                                    "from": {
+                                        "data": "facet"
+                                    },
+                                    "encode": {
+                                        "update": {
+                                            "x": {
+                                                "scale": "x",
+                                                "field": "quarter_date"
+                                            },
+                                            "y": {
+                                                "scale": "y",
+                                                "field": "mean_price"
+                                            },
+                                            "stroke": {
+                                                "scale": "color",
+                                                "field": "symbol"
+                                            },
+                                            "fill": {
+                                                "value": "transparent"
+                                            }
+                                        }
+                                    }
+                                }
+                            ],
+                            "axes": [
+                                {
+                                    "scale": "y",
+                                    "domain": false,
+                                    "format": "s",
+                                    "grid": true,
+                                    "labels": false,
+                                    "orient": "left",
+                                    "ticks": false,
+                                    "zindex": 0,
+                                    "gridScale": "x"
+                                }
+                            ]
                         }
-                    ],
-                    "axes": [
+                    ]
+                },
+                {
+                    "name": "column-title",
+                    "role": "column-header",
+                    "type": "group",
+                    "marks": [
                         {
-                            "scale": "y",
-                            "domain": false,
-                            "format": "s",
-                            "grid": true,
-                            "labels": false,
-                            "orient": "left",
-                            "ticks": false,
-                            "zindex": 0,
-                            "gridScale": "x"
+                            "type": "text",
+                            "role": "column-labels",
+                            "encode": {
+                                "update": {
+                                    "x": {
+                                        "signal": "0.5 * width"
+                                    },
+                                    "text": {
+                                        "value": "YEAR(date)"
+                                    },
+                                    "align": {
+                                        "value": "center"
+                                    },
+                                    "fill": {
+                                        "value": "black"
+                                    },
+                                    "fontWeight": {
+                                        "value": "bold"
+                                    }
+                                }
+                            }
                         }
                     ]
                 }
             ],
             "scales": [
-                {
-                    "name": "column",
-                    "type": "band",
-                    "domain": {
-                        "data": "source_0",
-                        "field": "year_date",
-                        "sort": true
-                    },
-                    "range": "width",
-                    "round": true
-                },
                 {
                     "name": "x",
                     "type": "point",
@@ -357,26 +415,6 @@
                         "sort": true
                     },
                     "range": "category"
-                }
-            ],
-            "axes": [
-                {
-                    "scale": "column",
-                    "domain": false,
-                    "grid": false,
-                    "orient": "top",
-                    "ticks": false,
-                    "title": "YEAR(date)",
-                    "zindex": 1,
-                    "encode": {
-                        "labels": {
-                            "update": {
-                                "text": {
-                                    "signal": "timeFormat(datum.value, '%Y')"
-                                }
-                            }
-                        }
-                    }
                 }
             ],
             "legends": [
