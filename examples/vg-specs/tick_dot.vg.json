@@ -25,17 +25,17 @@
     "data": [
         {
             "name": "source_0",
-            "url": "data/cars.json",
+            "url": "data/seattle-weather.csv",
             "format": {
-                "type": "json",
+                "type": "csv",
                 "parse": {
-                    "Horsepower": "number"
+                    "precipitation": "number"
                 }
             },
             "transform": [
                 {
                     "type": "filter",
-                    "expr": "datum[\"Horsepower\"] !== null && !isNaN(datum[\"Horsepower\"])"
+                    "expr": "datum[\"precipitation\"] !== null && !isNaN(datum[\"precipitation\"])"
                 }
             ]
         },
@@ -90,7 +90,7 @@
                         "update": {
                             "xc": {
                                 "scale": "x",
-                                "field": "Horsepower"
+                                "field": "precipitation"
                             },
                             "yc": {
                                 "value": 10.5
@@ -117,7 +117,7 @@
                     "type": "linear",
                     "domain": {
                         "data": "source_0",
-                        "field": "Horsepower"
+                        "field": "precipitation"
                     },
                     "range": [
                         0,
@@ -134,7 +134,7 @@
                     "format": "s",
                     "orient": "bottom",
                     "tickCount": 5,
-                    "title": "Horsepower",
+                    "title": "precipitation",
                     "zindex": 1
                 },
                 {

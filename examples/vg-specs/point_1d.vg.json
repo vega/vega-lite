@@ -25,17 +25,17 @@
     "data": [
         {
             "name": "source_0",
-            "url": "data/cars.json",
+            "url": "data/movies.json",
             "format": {
                 "type": "json",
                 "parse": {
-                    "Horsepower": "number"
+                    "IMDB_Rating": "number"
                 }
             },
             "transform": [
                 {
                     "type": "filter",
-                    "expr": "datum[\"Horsepower\"] !== null && !isNaN(datum[\"Horsepower\"])"
+                    "expr": "datum[\"IMDB_Rating\"] !== null && !isNaN(datum[\"IMDB_Rating\"])"
                 }
             ]
         },
@@ -90,7 +90,7 @@
                         "update": {
                             "x": {
                                 "scale": "x",
-                                "field": "Horsepower"
+                                "field": "IMDB_Rating"
                             },
                             "y": {
                                 "value": 10.5
@@ -114,7 +114,7 @@
                     "type": "linear",
                     "domain": {
                         "data": "source_0",
-                        "field": "Horsepower"
+                        "field": "IMDB_Rating"
                     },
                     "range": [
                         0,
@@ -131,7 +131,7 @@
                     "format": "s",
                     "orient": "bottom",
                     "tickCount": 5,
-                    "title": "Horsepower",
+                    "title": "IMDB_Rating",
                     "zindex": 1
                 },
                 {

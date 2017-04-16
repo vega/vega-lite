@@ -67,8 +67,7 @@ selectAll('.vl-example').each(function(this: Element) {
       }
     });
   } else {
-    const spec = trim(sel.text());
-    renderExample(sel, spec);
+    console.error('No "data-name" specified to import examples from');
   }
 });
 
