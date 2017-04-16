@@ -236,6 +236,13 @@ export class FacetModel extends ModelWithField {
     return assembleLayoutData(this, layoutData);
   }
 
+  private assembleLabelGroups() {
+    return [].concat(
+      (this.channelHasField('column') ? [getLabelGroup(this, 'column')] : []),
+      (this.channelHasField('row') ? [getLabelGroup(this, 'row')] : [])
+    );
+  }
+
   public assembleMarks(): VgEncodeEntry[] {
     const data = assembleFacetData(this.component.data.facetRoot);
 
@@ -248,25 +255,28 @@ export class FacetModel extends ModelWithField {
     const marks = [].concat(
       // axisGroup is a mapping to VgMarkGroup
       vals(this.component.axisGroups),
+      this.assembleLabelGroups(),
       extend(mark, data.length > 0 ? {data: data} : {}, this.child.assembleGroup())
     ).map(this.correctDataNames);
 
     const columns = this.channelHasField('column') ? {signal: this.getName('column')} : 1;
 
-    return [{
-      type: 'group',
-      layout: {
-        padding: {
-          // TODO: allow customizing padding
-          row: 10,
-          column: 10,
-          header: 5
+    return [].concat(
+        [{
+        type: 'group',
+        layout: {
+          padding: {
+            // TODO: allow customizing padding
+            row: 10,
+            column: 10,
+            header: 10
+          },
+          columns,
+          bounds: 'full' // TODO:
         },
-        columns,
-        bounds: 'full' // TODO:
-      },
-      marks
-    }];
+        marks
+      }],
+    );
   }
 
   public channels() {
@@ -283,29 +293,29 @@ export function hasSubPlotWithXy(model: FacetModel) {
     model.hasDescendantWithFieldOnChannel('y');
 }
 
+function childSizeEncodeEntryMixins(model: FacetModel, size: 'width' | 'height') {
+  return {
+    [size]: {
+      field: {
+        parent: model.child.sizeName(size),
+        // Level 2 because we currently wrap facet's child with two level of groups
+        // The outer layout is the layout for row/column field title.
+        // The inner layout is for the layout for row/column field labels
+        level: 2
+      }
+    }
+  };
+}
+
 function getFacetGroupProperties(model: FacetModel) {
   const child = model.child;
   const mergedCellConfig = extend({}, child.config.cell, child.config.facet.cell);
 
-  return extend({
-      width: {
-        field: {
-          parent: model.child.sizeName('width'),
-          // Level 2 because we currently wrap facet's child with two level of groups
-          // The outer layout is the layout for row/column field title.
-          // The inner layout is for the layout for row/column field labels
-          level: 2
-        }
-      },
-      height: {
-        field: {
-          parent: model.child.sizeName('height'),
-          level: 2 // level 2 because we currently wrap
-        }
-      }
-    },
-    hasSubPlotWithXy(model) ? child.assembleParentGroupProperties(mergedCellConfig) : {}
-  );
+  return {
+    ...childSizeEncodeEntryMixins(model, 'width'),
+    ...childSizeEncodeEntryMixins(model, 'height'),
+    ...(hasSubPlotWithXy(model) ? child.assembleParentGroupProperties(mergedCellConfig) : {})
+  };
 }
 
 // TODO: move the rest of the file src/compile/facet/*.ts
@@ -369,3 +379,39 @@ export function getSharedAxisGroup(model: FacetModel, channel: 'x' | 'y'): VgEnc
   return axesGroup;
 }
 
+export function getLabelGroup(model: FacetModel, channel: 'row' | 'column') {
+  const positionChannel = channel === 'row' ? 'y' : 'x';
+  const orthogonalPositionalChannel = channel === 'row' ? 'x' : 'y';
+  const sizeChannel = channel === 'row' ? 'height' : 'width';
+
+  const align = channel === 'row' ? 'right' : 'center';
+
+  return {
+    name:  model.getName(`${channel}-labels`),
+    role: `${channel}-header`,
+    type: 'group',
+    from: {data: model.getName(channel)},
+    encode: {
+      update: childSizeEncodeEntryMixins(model, sizeChannel)
+    },
+    marks: [{
+      type: 'text',
+      role: `${channel}-labels`,
+      encode: {
+        update: {
+          // TODO: add label align
+          [positionChannel]: {field: {group: sizeChannel}, mult: 0.5},
+          text: {field: {parent: model.field(channel)}},
+          align: {value: align},
+          fill: {value: 'black'}
+        }
+      }
+    }]
+  };
+}
+          fill: {value: 'black'}
+        }
+      }
+    }]
+  };
+}
