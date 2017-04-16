@@ -128,7 +128,7 @@ Since the quantitative value is on y, you automatically get a vertical bar chart
 <!-- TODO need to find a way to talk about conciseness here somehow. -->
 Vega-Lite automatically provides default properties for the visualization. You can further customize these values by adding more properties. For example, to change the title of the x-axis from `MEAN(b)` to `Average of b`, we can set the title property of the axis in the `x` channel.
 
-<div class="vl-example" data-name='bar_swap_custom'></div>
+<div class='vl-example' data-name='bar_swap_custom'></div>
 
 {:#embed}
 ## Publish your Visualization Online
