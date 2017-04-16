@@ -1,6 +1,6 @@
 import * as d3 from 'd3';
 import * as vega from 'vega';
-import {ExtendedSpec} from '../src/spec';
+import {TopLevelExtendedSpec} from '../src/spec';
 
 const vl = require('../build/vega-lite.min');
 
@@ -26,7 +26,7 @@ d3.json('examples/all-examples.json', function(examples: string[]) {
     vizEnter.append('div').attr('class', 'view');
 
     examples.forEach(function(example) {
-      d3.json('examples/specs/' + example + '.vl.json', function(error: Error, vlSpec: ExtendedSpec) {
+      d3.json('examples/specs/' + example + '.vl.json', function(error: Error, vlSpec: TopLevelExtendedSpec) {
         const vgSpec = vl.compile(vlSpec);
         const runtime = vega.parse(vgSpec.spec); // may throw an Error if parsing fails
         new vega.View(runtime)

@@ -181,94 +181,169 @@
             },
             "marks": [
                 {
-                    "name": "layer_0_layer_0_marks",
-                    "type": "line",
-                    "from": {
-                        "data": "data_0"
-                    },
+                    "type": "group",
                     "encode": {
-                        "update": {
-                            "x": {
-                                "scale": "x",
-                                "field": "Cylinders"
+                        "enter": {
+                            "width": {
+                                "field": {
+                                    "group": "width"
+                                }
                             },
-                            "y": {
-                                "scale": "y",
-                                "field": "max_Horsepower"
-                            },
-                            "stroke": {
-                                "value": "darkred"
-                            }
-                        }
-                    }
-                },
-                {
-                    "name": "layer_0_layer_1_marks",
-                    "type": "symbol",
-                    "role": "pointOverlay",
-                    "from": {
-                        "data": "data_1"
-                    },
-                    "encode": {
-                        "update": {
-                            "x": {
-                                "scale": "x",
-                                "field": "Cylinders"
-                            },
-                            "y": {
-                                "scale": "y",
-                                "field": "max_Horsepower"
+                            "height": {
+                                "field": {
+                                    "group": "height"
+                                }
                             },
                             "fill": {
-                                "value": "darkred"
+                                "value": "transparent"
+                            },
+                            "clip": {
+                                "value": true
                             }
                         }
-                    }
-                },
-                {
-                    "name": "layer_1_layer_0_marks",
-                    "type": "line",
-                    "from": {
-                        "data": "data_2"
                     },
-                    "encode": {
-                        "update": {
-                            "x": {
-                                "scale": "x",
-                                "field": "Cylinders"
+                    "marks": [
+                        {
+                            "type": "group",
+                            "encode": {
+                                "enter": {
+                                    "width": {
+                                        "field": {
+                                            "group": "width"
+                                        }
+                                    },
+                                    "height": {
+                                        "field": {
+                                            "group": "height"
+                                        }
+                                    },
+                                    "fill": {
+                                        "value": "transparent"
+                                    },
+                                    "clip": {
+                                        "value": true
+                                    }
+                                }
                             },
-                            "y": {
-                                "scale": "y",
-                                "field": "min_Horsepower"
+                            "marks": [
+                                {
+                                    "name": "layer_0_layer_0_marks",
+                                    "type": "line",
+                                    "from": {
+                                        "data": "data_0"
+                                    },
+                                    "encode": {
+                                        "update": {
+                                            "x": {
+                                                "scale": "x",
+                                                "field": "Cylinders"
+                                            },
+                                            "y": {
+                                                "scale": "y",
+                                                "field": "max_Horsepower"
+                                            },
+                                            "stroke": {
+                                                "value": "darkred"
+                                            }
+                                        }
+                                    }
+                                },
+                                {
+                                    "name": "layer_0_layer_1_marks",
+                                    "type": "symbol",
+                                    "role": "pointOverlay",
+                                    "from": {
+                                        "data": "data_1"
+                                    },
+                                    "encode": {
+                                        "update": {
+                                            "x": {
+                                                "scale": "x",
+                                                "field": "Cylinders"
+                                            },
+                                            "y": {
+                                                "scale": "y",
+                                                "field": "max_Horsepower"
+                                            },
+                                            "fill": {
+                                                "value": "darkred"
+                                            }
+                                        }
+                                    }
+                                }
+                            ]
+                        },
+                        {
+                            "type": "group",
+                            "encode": {
+                                "enter": {
+                                    "width": {
+                                        "field": {
+                                            "group": "width"
+                                        }
+                                    },
+                                    "height": {
+                                        "field": {
+                                            "group": "height"
+                                        }
+                                    },
+                                    "fill": {
+                                        "value": "transparent"
+                                    },
+                                    "clip": {
+                                        "value": true
+                                    }
+                                }
                             },
-                            "stroke": {
-                                "value": "#4c78a8"
-                            }
+                            "marks": [
+                                {
+                                    "name": "layer_1_layer_0_marks",
+                                    "type": "line",
+                                    "from": {
+                                        "data": "data_2"
+                                    },
+                                    "encode": {
+                                        "update": {
+                                            "x": {
+                                                "scale": "x",
+                                                "field": "Cylinders"
+                                            },
+                                            "y": {
+                                                "scale": "y",
+                                                "field": "min_Horsepower"
+                                            },
+                                            "stroke": {
+                                                "value": "#4c78a8"
+                                            }
+                                        }
+                                    }
+                                },
+                                {
+                                    "name": "layer_1_layer_1_marks",
+                                    "type": "symbol",
+                                    "role": "pointOverlay",
+                                    "from": {
+                                        "data": "data_3"
+                                    },
+                                    "encode": {
+                                        "update": {
+                                            "x": {
+                                                "scale": "x",
+                                                "field": "Cylinders"
+                                            },
+                                            "y": {
+                                                "scale": "y",
+                                                "field": "min_Horsepower"
+                                            },
+                                            "fill": {
+                                                "value": "#4c78a8"
+                                            }
+                                        }
+                                    }
+                                }
+                            ]
                         }
-                    }
-                },
-                {
-                    "name": "layer_1_layer_1_marks",
-                    "type": "symbol",
-                    "role": "pointOverlay",
-                    "from": {
-                        "data": "data_3"
-                    },
-                    "encode": {
-                        "update": {
-                            "x": {
-                                "scale": "x",
-                                "field": "Cylinders"
-                            },
-                            "y": {
-                                "scale": "y",
-                                "field": "min_Horsepower"
-                            },
-                            "fill": {
-                                "value": "#4c78a8"
-                            }
-                        }
-                    }
+                    ]
                 }
             ],
             "scales": [

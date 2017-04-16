@@ -12,11 +12,12 @@ import {UnitSpec} from '../spec';
 import {stack, StackProperties} from '../stack';
 import {Dict, duplicate, extend, vals} from '../util';
 import {VgData} from '../vega.schema';
-
 import {parseAxisComponent} from './axis/parse';
 import {applyConfig} from './common';
 import {assembleData} from './data/assemble';
 import {parseData} from './data/parse';
+import {FacetModel} from './facet';
+import {LayerModel} from './layer';
 import {assembleLayout, parseUnitLayout} from './layout';
 import {parseLegendComponent} from './legend/parse';
 import {initEncoding, initMarkDef} from './mark/init';
@@ -24,7 +25,7 @@ import {parseMark} from './mark/mark';
 import {Model} from './model';
 import initScale from './scale/init';
 import parseScaleComponent from './scale/parse';
-import {assembleUnitData as assembleSelectionData, assembleUnitMarks as assembleSelectionMarks, assembleUnitSignals, parseUnitSelection} from './selection/selection';
+import {assembleUnitData as assembleSelectionData, assembleUnitMarks as assembleUnitSelectionMarks, assembleUnitSignals, parseUnitSelection} from './selection/selection';
 
 /**
  * Internal model of Vega-Lite specification for the compiler.
@@ -47,11 +48,6 @@ export class UnitModel extends Model {
   public readonly markDef: MarkDef;
   public readonly encoding: Encoding;
   protected readonly selection: Dict<SelectionDef> = {};
-  protected readonly scales: Dict<Scale> = {};
-  protected readonly axes: Dict<Axis> = {};
-  protected readonly legends: Dict<Legend> = {};
-  public readonly config: Config;
-  public readonly stack: StackProperties;
   public children: Model[] = [];
 
   constructor(spec: UnitSpec, parent: Model, parentGivenName: string, cfg: Config) {
@@ -72,11 +68,11 @@ export class UnitModel extends Model {
     const encoding = this.encoding = normalizeEncoding(spec.encoding || {}, mark);
 
     // calculate stack properties
-    this.stack = stack(mark, encoding, this.config.stack);
+    this._stack = stack(mark, encoding, this.config.stack);
     this.scales = this.initScales(mark, encoding, providedWidth, providedHeight);
 
     this.markDef = initMarkDef(spec.mark, encoding, this.scales, this.config);
-    this.encoding = initEncoding(mark, encoding, this.stack, this.config);
+    this.encoding = initEncoding(mark, encoding, this._stack, this.config);
 
     this.axes = this.initAxes(encoding);
     this.legends = this.initLegend(encoding);
@@ -98,7 +94,7 @@ export class UnitModel extends Model {
     let ancestor = this.parent;
     let hasFacetAncestor = false;
     while (ancestor !== null) {
-      if (ancestor.isFacet()) {
+      if (ancestor instanceof FacetModel) {
         hasFacetAncestor = true;
         break;
       }
@@ -264,7 +260,13 @@ export class UnitModel extends Model {
 
   public assembleMarks() {
     let marks = this.component.mark || [];
-    marks = assembleSelectionMarks(this, marks);
+
+    // If this unit is part of a layer, selections should augment
+    // all in concert rather than each unit individually. This
+    // ensures correct interleaving of clipping and brushed marks.
+    if (!this.parent || !(this.parent instanceof LayerModel)) {
+      marks = assembleUnitSelectionMarks(this, marks);
+    }
 
     return marks.map(this.correctDataNames);
   }

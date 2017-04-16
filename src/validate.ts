@@ -1,5 +1,5 @@
 import {isMarkDef} from './mark';
-import {FacetedUnitSpec} from './spec';
+import {FacetedCompositeUnitSpec} from './spec';
 
 // TODO: move to vl.spec.validator?
 
@@ -56,7 +56,7 @@ export const DEFAULT_SUPPORTED_CHANNEL_TYPE: SupportedChannelMap = {
  * @return {String} Return one reason why the encoding is invalid,
  *                  or null if the encoding is valid.
  */
-export function getEncodingMappingError(spec: FacetedUnitSpec,
+export function getEncodingMappingError(spec: FacetedCompositeUnitSpec,
   requiredChannelMap: RequiredChannelMap = DEFAULT_REQUIRED_CHANNEL_MAP,
   supportedChannelMap: SupportedChannelMap = DEFAULT_SUPPORTED_CHANNEL_TYPE
   ) {

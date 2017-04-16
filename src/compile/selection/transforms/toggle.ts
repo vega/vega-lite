@@ -21,7 +21,9 @@ const toggle:TransformCompiler = {
         signal = selCmpt.name + TOGGLE;
 
     return `${signal} ? null : ${tpl}, ` +
-      `${signal} ? null : true, ` +
+      (selCmpt.resolve === 'global' ?
+        `${signal} ? null : true, ` :
+        `${signal} ? null : {unit: ${tpl}.unit}, `) +
       `${signal} ? ${tpl} : null`;
   }
 };

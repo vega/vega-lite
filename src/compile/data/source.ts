@@ -26,7 +26,7 @@ export class SourceNode extends DataFlowNode {
       if (!contains(['json', 'csv', 'tsv', 'topojson'], defaultExtension)) {
         defaultExtension = 'json';
       }
-      const dataFormat: DataFormat = data.format || {};
+      const dataFormat = data.format || {};
 
       // For backward compatibility for former `data.formatType` property
       const formatType: DataFormat = dataFormat.type || data['formatType'];

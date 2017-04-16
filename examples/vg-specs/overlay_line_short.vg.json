@@ -109,52 +109,77 @@
             },
             "marks": [
                 {
-                    "name": "layer_0_marks",
-                    "type": "line",
-                    "from": {
-                        "data": "data_0"
-                    },
+                    "type": "group",
                     "encode": {
-                        "update": {
-                            "x": {
-                                "scale": "x",
-                                "field": "date"
+                        "enter": {
+                            "width": {
+                                "field": {
+                                    "group": "width"
+                                }
                             },
-                            "y": {
-                                "scale": "y",
-                                "field": "price"
-                            },
-                            "stroke": {
-                                "value": "#4c78a8"
-                            }
-                        }
-                    }
-                },
-                {
-                    "name": "layer_1_marks",
-                    "type": "symbol",
-                    "role": "pointOverlay",
-                    "from": {
-                        "data": "data_1"
-                    },
-                    "encode": {
-                        "update": {
-                            "x": {
-                                "scale": "x",
-                                "field": "date"
-                            },
-                            "y": {
-                                "scale": "y",
-                                "field": "price"
+                            "height": {
+                                "field": {
+                                    "group": "height"
+                                }
                             },
                             "fill": {
-                                "value": "#4c78a8"
+                                "value": "transparent"
                             },
-                            "opacity": {
-                                "value": 0.7
+                            "clip": {
+                                "value": true
                             }
                         }
-                    }
+                    },
+                    "marks": [
+                        {
+                            "name": "layer_0_marks",
+                            "type": "line",
+                            "from": {
+                                "data": "data_0"
+                            },
+                            "encode": {
+                                "update": {
+                                    "x": {
+                                        "scale": "x",
+                                        "field": "date"
+                                    },
+                                    "y": {
+                                        "scale": "y",
+                                        "field": "price"
+                                    },
+                                    "stroke": {
+                                        "value": "#4c78a8"
+                                    }
+                                }
+                            }
+                        },
+                        {
+                            "name": "layer_1_marks",
+                            "type": "symbol",
+                            "role": "pointOverlay",
+                            "from": {
+                                "data": "data_1"
+                            },
+                            "encode": {
+                                "update": {
+                                    "x": {
+                                        "scale": "x",
+                                        "field": "date"
+                                    },
+                                    "y": {
+                                        "scale": "y",
+                                        "field": "price"
+                                    },
+                                    "fill": {
+                                        "value": "#4c78a8"
+                                    },
+                                    "opacity": {
+                                        "value": 0.7
+                                    }
+                                }
+                            }
+                        }
+                    ]
                 }
             ],
             "scales": [

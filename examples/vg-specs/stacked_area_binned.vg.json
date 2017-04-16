@@ -61,8 +61,7 @@
                     "groupby": [
                         "Cylinders",
                         "bin_maxbins_10_Acceleration_start",
-                        "bin_maxbins_10_Acceleration_end",
-                        "bin_maxbins_10_Acceleration_range"
+                        "bin_maxbins_10_Acceleration_end"
                     ],
                     "ops": [
                         "sum"

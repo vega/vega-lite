@@ -16,21 +16,11 @@ import {parseData} from './data/parse';
 import {assembleLayout, parseLayerLayout} from './layout';
 import {Model} from './model';
 import {unionDomains} from './scale/domain';
+import {assembleLayerMarks as assembleLayeredSelectionMarks} from './selection/selection';
 import {UnitModel} from './unit';
-
 
 export class LayerModel extends Model {
   public readonly children: UnitModel[];
-
-  protected readonly scales: Dict<Scale> = {};
-
-  protected readonly axes: Dict<Axis> = {};
-
-  protected readonly legends: Dict<Legend> = {};
-
-  public readonly config: Config;
-
-  public readonly stack: StackProperties = null;
 
   /**
    * Fixed width for the unit visualization.
@@ -81,8 +71,16 @@ export class LayerModel extends Model {
   }
 
   public parseSelection() {
-    // TODO: @arvind can write this
-    // We might need to split this into compileSelectionData and compileSelectionSignals?
+    // Merge selections up the hierarchy so that they may be referenced
+    // across unit specs. Persist their definitions within each child
+    // to assemble signals which remain within output Vega unit groups.
+    this.component.selection = {};
+    this.children.forEach(child => {
+      child.parseSelection();
+      keys(child.component.selection).forEach((key) => {
+        this.component.selection[key] = child.component.selection[key];
+      });
+    });
   }
 
   public parseLayoutData() {
@@ -133,7 +131,7 @@ export class LayerModel extends Model {
   }
 
   public parseMark() {
-    this.children.forEach(function(child) {
+    this.children.forEach(child => {
       child.parseMark();
     });
   }
@@ -141,12 +139,12 @@ export class LayerModel extends Model {
   public parseAxis() {
     const axisComponent = this.component.axes = {};
 
-    this.children.forEach(function(child) {
+    this.children.forEach(child => {
       child.parseAxis();
 
       // TODO: correctly implement independent axes
       if (true) { // if shared/union scale
-        keys(child.component.axes).forEach(function(channel) {
+        keys(child.component.axes).forEach(channel => {
           // TODO: support multiple axes for shared scale
 
           // just use the first axis definition for each channel
@@ -184,12 +182,13 @@ export class LayerModel extends Model {
     return applyConfig({}, cellConfig, FILL_STROKE_CONFIG.concat(['clip']));
   }
 
+  // TODO: Support same named selections across children.
   public assembleSignals(signals: any[]): any[] {
-    return [];
+    return this.children.reduce((sg, child) => child.assembleSignals(sg), []);
   }
 
   public assembleSelectionData(data: VgData[]): VgData[] {
-    return [];
+    return this.children.reduce((db, child) => child.assembleSelectionData(db), []);
   }
 
   public assembleData(): VgData[] {
@@ -216,10 +215,9 @@ export class LayerModel extends Model {
   }
 
   public assembleMarks(): any[] {
-    // only children have marks
-    return flatten(this.children.map((child) => {
+    return assembleLayeredSelectionMarks(this, flatten(this.children.map((child) => {
       return child.assembleMarks();
-    }));
+    })));
   }
 
   public channels(): Channel[] {

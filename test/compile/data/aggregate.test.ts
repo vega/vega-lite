@@ -89,5 +89,30 @@ describe('compile/data/summary', function () {
         fields: ['Displacement', 'Displacement', 'Displacement']
       });
     });
+
+    it('should add correct dimensions when binning', function() {
+      const model = parseUnitModel({
+        mark: "point",
+        encoding: {
+          'x': {'bin': true, 'field': 'Displacement', 'type': "quantitative"},
+          'y': {'bin': true, 'field': 'Acceleration', 'type': "ordinal"},
+          'color': {'aggregate': 'count', 'type': "quantitative"}
+        }
+      });
+
+      const agg = AggregateNode.make(model);
+      assert.deepEqual<VgAggregateTransform>(agg.assemble(), {
+        type: 'aggregate',
+        groupby: [
+          'bin_maxbins_10_Displacement_start',
+          'bin_maxbins_10_Displacement_end',
+          'bin_maxbins_10_Acceleration_start',
+          'bin_maxbins_10_Acceleration_end',
+          'bin_maxbins_10_Acceleration_range'
+        ],
+        ops: ['count'],
+        fields: ['*']
+      });
+    });
   });
 });

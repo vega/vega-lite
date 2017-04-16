@@ -17,6 +17,7 @@ import {DataComponent} from './data/index';
 import {LayoutComponent} from './layout';
 import {assembleScale} from './scale/assemble';
 import {SelectionComponent} from './selection/selection';
+import {UnitModel} from './unit';
 
 /**
  * Composable Components that are intermediate results of the parsing phase of the
@@ -88,20 +89,19 @@ export abstract class Model {
   /** Name map for size, which can be renamed by a model's parent. */
   protected sizeNameMap: NameMapInterface;
 
-  protected readonly transform: Transform;
-  protected readonly scales: Dict<Scale> = {};
+  protected scales: Dict<Scale> = {};
 
-  protected readonly axes: Dict<Axis> = {};
+  protected axes: Dict<Axis> = {};
 
-  protected readonly legends: Dict<Legend> = {};
+  protected legends: Dict<Legend> = {};
+
+  protected _stack: StackProperties = null;
 
   public readonly config: Config;
 
   public component: Component;
 
   public abstract readonly children: Model[] = [];
-
-  public abstract stack: StackProperties;
 
   constructor(spec: BaseSpec, parent: Model, parentGivenName: string, config: Config) {
     this.parent = parent;
@@ -227,7 +227,7 @@ export abstract class Model {
 
   public hasDescendantWithFieldOnChannel(channel: Channel) {
     for (const child of this.children) {
-      if (child.isUnit()) {
+      if (child instanceof UnitModel) {
         if (child.channelHasField(channel)) {
           return true;
         }
@@ -346,6 +346,10 @@ export abstract class Model {
     return this.legends[channel];
   }
 
+  get stack() {
+    return this._stack;
+  }
+
   /**
    * Corrects the data references in marks after assemble.
    */
@@ -366,15 +370,11 @@ export abstract class Model {
   }
 
   /**
-   * Type checks
+   * Traverse a model's hierarchy to get the specified component.
+   * @param type Scales or Selection
+   * @param name Name of the component
    */
-  public isUnit() {
-    return false;
-  }
-  public isFacet() {
-    return false;
-  }
-  public isLayer() {
-    return false;
+  public getComponent(type: 'scales' | 'selection', name: string): any {
+    return this.component[type][name] || this.parent.getComponent(type, name);
   }
 }

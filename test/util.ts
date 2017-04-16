@@ -4,9 +4,9 @@ import {LayerModel} from '../src/compile/layer';
 import {Model} from '../src/compile/model';
 import {UnitModel} from '../src/compile/unit';
 import {initConfig} from '../src/config';
-import {ExtendedSpec, FacetSpec, LayerSpec, normalize, TopLevel, UnitSpec} from '../src/spec';
+import {FacetSpec, LayerSpec, normalize, TopLevel, TopLevelExtendedSpec, UnitSpec} from '../src/spec';
 
-export function parseModel(inputSpec: TopLevel<ExtendedSpec>): Model {
+export function parseModel(inputSpec: TopLevelExtendedSpec): Model {
   const spec = normalize(inputSpec);
   return buildModel(spec, null, '', initConfig(inputSpec.config));
 }

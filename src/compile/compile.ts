@@ -4,14 +4,14 @@
 import {Config, initConfig} from '../config';
 import {LAYOUT} from '../data';
 import * as log from '../log';
-import {ExtendedSpec, normalize, TopLevel} from '../spec';
+import {normalize, TopLevel, TopLevelExtendedSpec} from '../spec';
 import {extractTopLevelProperties, TopLevelProperties} from '../toplevelprops';
 import {extend} from '../util';
 import {buildModel} from './common';
 import {Model} from './model';
 import {assembleTopLevelSignals} from './selection/selection';
 
-export function compile(inputSpec: TopLevel<ExtendedSpec>, logger?: log.LoggerInterface) {
+export function compile(inputSpec: TopLevelExtendedSpec, logger?: log.LoggerInterface) {
   if (logger) {
     // set the singleton logger to the provided logger
     log.set(logger);

@@ -1,6 +1,6 @@
 import {assert} from 'chai';
-
 import {DETAIL, SHAPE, X} from '../../src/channel';
+import {UnitModel} from '../../src/compile/unit';
 import {FieldDef} from '../../src/fielddef';
 import * as log from '../../src/log';
 import {BAR} from '../../src/mark';
@@ -10,9 +10,7 @@ import {parseUnitModel} from '../util';
 describe('UnitModel', function() {
   it('should say it is unit', function() {
     const model = parseUnitModel({mark: 'point', encoding: {}});
-    assert(model.isUnit());
-    assert(!model.isFacet());
-    assert(!model.isLayer());
+    assert(model instanceof UnitModel);
   });
 
   describe('initEncoding', () => {

@@ -1,0 +1,50 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v2.json",
+  "description": "Drag out a rectangular brush to highlight points.",
+  "data": {"url": "data/cars.json"},
+  "layer": [{
+    "selection": {
+      "grid": {
+        "type": "interval", "bind": "scales",
+        "translate": "[mousedown[!event.shiftKey], mouseup] > mousemove"
+      },
+      "cyl": {
+        "type": "single", "fields": ["Cylinders"],
+        "bind": {"input": "range", "min": 3, "max": 8, "step": 1}
+      }
+    },
+    "mark": "point",
+    "encoding": {
+      "x": {"field": "Horsepower", "type": "quantitative"},
+      "y": {"field": "Miles_per_Gallon", "type": "quantitative"},
+      "color": {
+        "condition": {"selection": "brush", "value": "grey"},
+        "field": "Cylinders", "type": "ordinal"
+      },
+      "size": {"value": 100}
+    }
+  }, {
+    "mark": "square",
+      "selection": {
+      "brush": {
+        "type": "interval",
+        "on": "[mousedown[event.shiftKey], mouseup] > mousemove",
+        "translate": "[mousedown[event.shiftKey], mouseup] > mousemove"
+      }
+    },
+    "encoding": {
+      "x": {"field": "Horsepower", "type": "quantitative"},
+      "y": {"field": "Miles_per_Gallon", "type": "quantitative"},
+      "color": {
+        "condition": {"selection": "!brush", "value": "grey"},
+        "field": "Cylinders", "type": "ordinal"
+      },
+      "size": {
+        "value": 50,
+        "condition": {
+          "selection": "cyl", "value": 150
+        }
+      }
+    }
+  }]
+}

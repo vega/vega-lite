@@ -218,7 +218,7 @@
                             "events": {
                                 "signal": "grid"
                             },
-                            "update": "modify(\"grid_store\", grid_tuple, {unit: grid_tuple.unit})"
+                            "update": "modify(\"grid_store\", grid_tuple, true)"
                         }
                     ]
                 }
