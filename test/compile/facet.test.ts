@@ -189,11 +189,6 @@ describe('compile/facet', () => {
           assert.deepEqual(xSharedAxisGroup.from, {data: 'column'});
         });
 
-        it('should have width = child width, height = group height and have no x', () => {
-          assert.deepEqual(xSharedAxisGroup.encode.update.width, {field: {parent: 'child_width'}});
-          assert.deepEqual(xSharedAxisGroup.encode.update.height, {field: {group: 'height'}});
-          assert.equal(xSharedAxisGroup.encode.update.x, undefined);
-        });
       });
 
       describe('yAxisGroup', () => {
@@ -202,12 +197,6 @@ describe('compile/facet', () => {
           assert.equal(ySharedAxisGroup.name, 'y-axes');
           assert.equal(ySharedAxisGroup.type, 'group');
           assert.equal(ySharedAxisGroup.from, undefined);
-        });
-
-        it('should have height = child height, width = group width, and have no y.', () => {
-          assert.deepEqual(ySharedAxisGroup.encode.update.height, {field: {parent: 'child_height'}});
-          assert.deepEqual(ySharedAxisGroup.encode.update.width, {field: {group: 'width'}});
-          assert.deepEqual(ySharedAxisGroup.encode.update.y, undefined);
         });
       });
     });
@@ -238,12 +227,6 @@ describe('compile/facet', () => {
           assert.equal(ySharedAxisGroup.type, 'group');
           assert.deepEqual(ySharedAxisGroup.from, {data: 'row'});
         });
-
-        it('should have height = child height, width = group width, and have no y.', () => {
-          assert.deepEqual(ySharedAxisGroup.encode.update.height, {field: {parent: 'child_height'}});
-          assert.deepEqual(ySharedAxisGroup.encode.update.width, {field: {group: 'width'}});
-          assert.deepEqual(ySharedAxisGroup.encode.update.y, undefined);
-        });
       });
 
       describe('xAxisGroup', () => {
@@ -252,12 +235,6 @@ describe('compile/facet', () => {
           assert.equal(xSharedAxisGroup.name, 'x-axes');
           assert.equal(xSharedAxisGroup.type, 'group');
           assert.equal(xSharedAxisGroup.from, undefined);
-        });
-
-        it('should have width = child width, height = group height, x, and have no y.', () => {
-          assert.deepEqual(xSharedAxisGroup.encode.update.width, {field: {parent: 'child_width'}});
-          assert.deepEqual(xSharedAxisGroup.encode.update.height, {field: {group: 'height'}});
-          assert.deepEqual(xSharedAxisGroup.encode.update.x, undefined);
         });
       });
     });

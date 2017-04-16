@@ -328,21 +328,7 @@ export function getSharedAxisGroup(model: FacetModel, channel: 'x' | 'y'): VgEnc
     axesGroup.from = {data: channel === 'x' ? model.getName('column') : model.getName('row')};
   }
 
-  if (isX) {
-    axesGroup.encode = {
-      update: {
-        width: {field: {parent: model.child.sizeName('width')}},
-        height: {field: {group: 'height'}}
-      }
-    };
-  } else {
-    axesGroup.encode = {
-      update: {
-        width: {field: {group: 'width'}},
-        height: {field: {parent: model.child.sizeName('height')}}
-      }
-    };
-  }
+  // TODO: see if we need to setup axesGroup.encode at all
 
   axesGroup.axes = [axis];
   return axesGroup;
