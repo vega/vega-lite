@@ -1,7 +1,7 @@
 import {Axis} from '../axis';
 import {Channel, COLUMN, ROW, X, Y} from '../channel';
 import {Config} from '../config';
-import {MAIN} from '../data';
+import {LAYOUT, MAIN} from '../data';
 import {reduce} from '../encoding';
 import {Facet} from '../facet';
 import {FieldDef, normalize} from '../fielddef';
@@ -203,6 +203,15 @@ export class FacetModel extends ModelWithField {
   }
 
   public assembleSignals(signals: any): any[] {
+    if (this.channelHasField('column')) {
+      const columnDistinct = this.field('column',  {prefix: 'distinct'});
+      return [
+        {
+          name: this.getName('column'),
+          update: `data('${this.getName(LAYOUT)}')[0].${columnDistinct}`
+        }
+      ];
+    }
     return [];
   }
 
@@ -211,11 +220,14 @@ export class FacetModel extends ModelWithField {
   }
 
   public assembleLayout(): VgLayout {
-    return {
-      padding: {row:5, header: -1}, // TODO: allow customizing padding
-      columns: 1, // FIXME: Need to point to signal that stores column's cardinality
-      bounds: 'full' // TODO:
-    };
+    return null;
+    // const columns = this.channelHasField('column') ? {signal: this.getName('column')} : 1;
+
+    // return {
+    //   padding: {row: 10, header: 5}, // TODO: allow customizing padding
+    //   columns,
+    //   bounds: 'full' // TODO:
+    // };
   }
 
   public assembleLayoutData(layoutData: VgData[]): VgData[] {
@@ -237,9 +249,24 @@ export class FacetModel extends ModelWithField {
       // axisGroup is a mapping to VgMarkGroup
       vals(this.component.axisGroups),
       extend(mark, data.length > 0 ? {data: data} : {}, this.child.assembleGroup())
-    );
+    ).map(this.correctDataNames);
 
-    return marks.map(this.correctDataNames);
+    const columns = this.channelHasField('column') ? {signal: this.getName('column')} : 1;
+
+    return [{
+      type: 'group',
+      layout: {
+        padding: {
+          // TODO: allow customizing padding
+          row: 10,
+          column: 10,
+          header: 5
+        },
+        columns,
+        bounds: 'full' // TODO:
+      },
+      marks
+    }];
   }
 
   public channels() {
@@ -261,8 +288,21 @@ function getFacetGroupProperties(model: FacetModel) {
   const mergedCellConfig = extend({}, child.config.cell, child.config.facet.cell);
 
   return extend({
-      width: {field: {parent: model.child.sizeName('width')}},
-      height: {field: {parent: model.child.sizeName('height')}}
+      width: {
+        field: {
+          parent: model.child.sizeName('width'),
+          // Level 2 because we currently wrap facet's child with two level of groups
+          // The outer layout is the layout for row/column field title.
+          // The inner layout is for the layout for row/column field labels
+          level: 2
+        }
+      },
+      height: {
+        field: {
+          parent: model.child.sizeName('height'),
+          level: 2 // level 2 because we currently wrap
+        }
+      }
     },
     hasSubPlotWithXy(model) ? child.assembleParentGroupProperties(mergedCellConfig) : {}
   );
