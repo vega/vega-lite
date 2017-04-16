@@ -71,6 +71,8 @@ export type VgRange = string | VgDataRef | (number|string|VgDataRef)[] | VgRange
 
 export type VgDomain = any[] | VgDataRef | DataRefUnionDomain | FieldRefUnionDomain | VgSignalRef;
 
+export type VgMarkGroup = any;
+
 export type VgScale = {
   name: string,
   type: ScaleType,
