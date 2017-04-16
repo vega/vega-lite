@@ -38,15 +38,7 @@ If the channel has a continuous scale (quantitative or time), `sort` can have th
 
 Setting x's `sort` to `"descending"` reverses the x-axis. Thus, the following visualization's x-axis starts on the maximum value of the field "Horsepower" and ends on zero.
 
-<div class="vl-example">
-{
-  "data": {"url": "data/cars.json"},
-  "mark": "tick",
-  "encoding": {
-    "x": {"field": "Horsepower", "type": "quantitative", "sort": "descending"}
-  }
-}
-</div>
+<div class='vl-example' data-name='tick_sort'></div>
 
 
 ## Ordinal Scale
@@ -83,20 +75,7 @@ example: sorting color mapping
 
 The following example sorts x by mean of Horsepower.
 
-<div class="vl-example">
-{
-  "data": {"url": "data/cars.json"},
-  "mark": "bar",
-  "encoding": {
-    "y": {
-      "field": "Origin", "type": "ordinal",
-      "sort": {"op": "mean", "field": "Horsepower"}
-    },
-    "x": {"aggregate": "mean", "field": "Horsepower", "type": "quantitative"}
-  }
-}
-</div>
-
+<div class='vl-example' data-name='histogram_sort_mean'></div>
 
 <!-- TODO
 

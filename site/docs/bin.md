@@ -35,59 +35,17 @@ If `bin` is `true`, default binning parameters are used. To customize binning pa
 
 Given a field with quantitative continuous data values
 
-<div class="vl-example">
-{
-  "data": {"url": "data/movies.json"},
-  "mark": "point",
-  "encoding": {
-    "x": {
-      "field": "IMDB_Rating",
-      "type": "quantitative"
-    }
-  }
-}
-</div>
-
+<div class='vl-example' data-name='point_1d'></div>
 
 Setting `bin` groups the values into a smaller number of bins.
 
-<div class="vl-example">
-{
-  "data": {"url": "data/movies.json"},
-  "mark": "point",
-  "encoding": {
-    "x": {
-      "bin": {"maxbins": 10},
-      "field": "IMDB_Rating",
-      "type": "quantitative"
-    }
-  }
-}
-</div>
-
+<div class='vl-example' data-name='point_1d_bin'></div>
 
 Mapping binned values and its count to a `bar` mark produces a histogram.
 
-<span class="vl-example" data-name="histogram"></span>
+<div class='vl-example' data-name='histogram'></div>
 
 
 Setting the `maxbins` parameter changes the number of output bins.
 
-<div class="vl-example">
-{
-  "data": {"url": "data/movies.json"},
-  "mark": "bar",
-  "encoding": {
-    "x": {
-      "bin": {"maxbins": 30},
-      "field": "IMDB_Rating",
-      "type": "quantitative"
-    },
-    "y": {
-      "aggregate": "count",
-      "field": "*",
-      "type": "quantitative"
-    }
-  }
-}
-</div>
+<div class='vl-example' data-name='histogram_bin_change'></div>
