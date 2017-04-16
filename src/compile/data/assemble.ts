@@ -10,7 +10,7 @@ import {FacetNode} from './facet';
 import {ParseNode} from './formatparse';
 import {NonPositiveFilterNode} from './nonpositivefilter';
 import {NullFilterNode} from './nullfilter';
-import {iterateFromLeaves} from './optimizers';
+import {optimizeFromLeaves} from './optimizers';
 import * as optimizers from './optimizers';
 import {OrderNode} from './pathorder';
 import {SourceNode} from './source';
@@ -292,6 +292,9 @@ export function assembleData(roots: SourceNode[]): VgData[] {
   const data: VgData[] = [];
 
   roots.forEach(removeUnnecessaryNodes);
+  // If possib, move parse up to next to sources
+  getLeaves(roots).forEach(optimizeFromLeaves(optimizers.parse));
+
   roots.forEach(moveFacetDown);
 
   // roots.forEach(debug);
