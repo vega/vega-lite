@@ -12,6 +12,7 @@ import {CompositeMark} from './compositemark';
 import * as vlEncoding from './encoding';
 import * as log from './log';
 import {AREA, isPrimitiveMark, LINE, Mark, MarkDef} from './mark';
+import {Repeat} from './repeat';
 import {SelectionDef} from './selection';
 import {stack} from './stack';
 import {TopLevelProperties} from './toplevelprops';
@@ -117,7 +118,16 @@ export interface GenericFacetSpec<U extends GenericUnitSpec<any, any>> extends B
 
 export type FacetSpec = GenericFacetSpec<UnitSpec>;
 
-export type GenericSpec<U extends GenericUnitSpec<any, any>> = U | GenericLayerSpec<U> | GenericFacetSpec<U>;
+export interface GenericRepeatSpec<U extends GenericUnitSpec<any, any>> extends BaseSpec {
+  repeat: Repeat;
+
+  // TODO: add GenericFacetSpec<U>, GenericRepeatSpec<U>
+  spec: GenericLayerSpec<U> | U;
+}
+
+export type RepeatSpec = GenericRepeatSpec<UnitSpec>;
+
+export type GenericSpec<U extends GenericUnitSpec<any, any>> = U | GenericLayerSpec<U> | GenericFacetSpec<U> | GenericRepeatSpec<U>;
 
 export type Spec = GenericSpec<UnitSpec>;
 
@@ -138,6 +148,10 @@ export function isLayerSpec(spec: GenericSpec<GenericUnitSpec<any, any>>): spec 
   return spec['layer'] !== undefined;
 }
 
+export function isRepeatSpec(spec: GenericSpec<GenericUnitSpec<any, any>>): spec is GenericRepeatSpec<GenericUnitSpec<any, any>> {
+  return spec['repeat'] !== undefined;
+}
+
 /**
  * Decompose extended unit specs into composition of pure unit specs.
  */
@@ -148,6 +162,9 @@ export function normalize(spec: TopLevelExtendedSpec): Spec {
   }
   if (isLayerSpec(spec)) {
     return normalizeLayer(spec, spec.config);
+  }
+  if (isRepeatSpec(spec)) {
+    return normalizeRepeat(spec, spec.config);
   }
   if (isUnitSpec(spec)) {
     const hasRow = channelHasField(spec.encoding, ROW);
@@ -181,6 +198,14 @@ function normalizeLayer(spec: GenericLayerSpec<CompositeUnitSpec>, config: Confi
   return {
     ...rest,
     layer: layer.map((subspec) => normalizeNonFacet(subspec, config))
+  };
+}
+
+function normalizeRepeat(spec: GenericRepeatSpec<CompositeUnitSpec>, config: Config): RepeatSpec {
+  const {spec: subspec, ...rest} = spec;
+  return {
+    ...rest,
+    spec: normalizeNonFacet(subspec, config)
   };
 }
 
@@ -335,6 +360,9 @@ function fieldDefIndex(spec: GenericSpec<GenericUnitSpec<any, any>>, dict: any =
     });
   } else if (isFacetSpec(spec)) {
     accumulate(dict, vlEncoding.fieldDefs(spec.facet));
+    fieldDefIndex(spec.spec, dict);
+  } else if (isRepeatSpec(spec)) {
+    accumulate(dict, vlEncoding.fieldDefs(spec.spec));
     fieldDefIndex(spec.spec, dict);
   } else { // Unit Spec
     accumulate(dict, vlEncoding.fieldDefs(spec.encoding));

@@ -15,9 +15,11 @@ import {assembleData} from './data/assemble';
 import {parseData} from './data/parse';
 import {assembleLayoutLayerSignals} from './layout/index';
 import {Model} from './model';
+import {RepeatValues} from './repeat';
 import {unionDomains} from './scale/domain';
 import {assembleLayerSelectionMarks} from './selection/selection';
 import {UnitModel} from './unit';
+
 
 export class LayerModel extends Model {
   public readonly children: UnitModel[];
@@ -36,7 +38,8 @@ export class LayerModel extends Model {
    */
   public readonly height: number;
 
-  constructor(spec: LayerSpec, parent: Model, parentGivenName: string, config: Config) {
+  constructor(spec: LayerSpec, parent: Model, parentGivenName: string, repeatValues: RepeatValues, config: Config) {
+
     super(spec, parent, parentGivenName, config);
 
     this.width = spec.width;
@@ -45,15 +48,15 @@ export class LayerModel extends Model {
     this.children = spec.layer.map((layer, i) => {
       // FIXME: this is not always the case
       // we know that the model has to be a unit model because we pass in a unit spec
-      return buildModel(layer, this, this.getName('layer_' + i), config) as UnitModel;
+      return buildModel(layer, this, this.getName('layer_' + i), repeatValues, config) as UnitModel;
     });
   }
 
   public parseData() {
     this.component.data = parseData(this);
-    this.children.forEach((child) => {
+    for (const child of this.children) {
       child.parseData();
-    });
+    }
   }
 
   public parseSelection() {
