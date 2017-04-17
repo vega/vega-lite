@@ -3,7 +3,7 @@
 import {assert} from 'chai';
 
 import {Encoding} from '../src/encoding';
-import { FieldDef, Field } from '../src/fielddef';
+import {Field, FieldDef} from '../src/fielddef';
 import {MarkDef} from '../src/mark';
 import {fieldDefs, GenericSpec, GenericUnitSpec, normalize, Spec} from '../src/spec';
 

@@ -1,37 +1,51 @@
-import { Channel } from '../channel';
-import { CellConfig, Config } from '../config';
-import { Encoding } from '../encoding';
-import { Facet } from '../facet';
-import { Field, FieldDef, isRepeatRef } from '../fielddef';
-import { Repeat } from '../repeat';
-import { RepeatSpec } from '../spec';
-import { duplicate, vals, Dict } from '../util';
-import { VgData, VgLayout, VgScale } from '../vega.schema';
-import { buildModel } from './common';
-import { assembleData } from './data/assemble';
-import { assembleLayoutData } from './layout';
-import { Model } from './model';
+import {Channel} from '../channel';
+import {CellConfig, Config} from '../config';
+import {Encoding} from '../encoding';
+import {Facet} from '../facet';
+import {Field, FieldDef, isRepeatRef} from '../fielddef';
+import * as log from '../log';
+import {Repeat} from '../repeat';
+import {RepeatSpec} from '../spec';
+import {Dict, duplicate, vals} from '../util';
+import {VgData, VgLayout, VgScale} from '../vega.schema';
+import {buildModel} from './common';
+import {assembleData} from './data/assemble';
+import {parseData} from './data/parse';
+import {assembleLayoutData} from './layout';
+import {Model} from './model';
 
 
 export type RepeatValues = {
-  row: string,
-  column: string
+  row?: string,
+  column?: string
 };
 
-export interface EncodingOrFacet<F> extends Encoding<F>, Facet<F> {}
+export function facetRepeatResolve(facet: Facet<Field>, repeatValues: RepeatValues): Facet<string> {
+  return resolveRepeat(facet, repeatValues);
+}
 
-export function resolveRepeat(encoding: EncodingOrFacet<Field>, repeatValues: RepeatValues): EncodingOrFacet<string> {
+export function encodingRepeatResolve(encoding: Encoding<Field>, repeatValues: RepeatValues): Encoding<string> {
+  return resolveRepeat(encoding, repeatValues);
+}
+
+type EncodingOrFacet<F> = Encoding<F> | Facet<F>;
+
+function resolveRepeat(encoding: EncodingOrFacet<Field>, repeatValues: RepeatValues): EncodingOrFacet<string> {
   const out: EncodingOrFacet<string> = {};
   for (const channel in encoding) {
     if (encoding.hasOwnProperty(channel)) {
       const fieldDef: FieldDef<Field> = encoding[channel];
+      out[channel] = {...fieldDef};
+
       const field = fieldDef.field;
-      out[channel] = {
-        ...fieldDef,
-        ...(field ? {
-          field: isRepeatRef(field) ? repeatValues[field.repeat] : field
-        } : {})
-      };
+      if (isRepeatRef(field)) {
+        if (field.repeat in repeatValues) {
+          out[channel].field = repeatValues[field.repeat];
+        } else {
+          log.warn(log.message.noSuchRepeatedValue(field.repeat));
+          delete out[channel].field;
+        }
+      }
     }
   }
   return out;
@@ -92,12 +106,8 @@ export class RepeatModel extends Model {
     return children;
   }
 
-  public channelHasField(channel: Channel): boolean {
-    // repeat does not have any channels
-    return false;
-  }
-
   public parseData() {
+    this.component.data = parseData(this);
     this.children.forEach((child) => {
       child.parseData();
     });
@@ -181,7 +191,7 @@ export class RepeatModel extends Model {
   public assembleLayout(): VgLayout {
     return {
       padding: {row: 10, column: 10, header: 10},
-      columns: 1,
+      columns: this.repeat && this.repeat.row ? this.repeat.row.length : 1,
       bounds: 'full'
     };
   }
@@ -212,13 +222,5 @@ export class RepeatModel extends Model {
       },
       ...child.assembleGroup()
     }));
-  }
-
-  public channels(): Channel[] {
-    return [];
-  }
-
-  protected getMapping(): any {
-    return null;
   }
 }

@@ -1,8 +1,8 @@
 import {Axis} from '../axis';
-import {Channel, NONSPATIAL_SCALE_CHANNELS, UNIT_CHANNELS, UNIT_SCALE_CHANNELS, X, X2,  Y, Y2} from '../channel';
+import {Channel, NONSPATIAL_SCALE_CHANNELS, UNIT_CHANNELS, UNIT_SCALE_CHANNELS, X, X2, Y, Y2} from '../channel';
 import {CellConfig, Config} from '../config';
 import {Encoding, normalizeEncoding} from '../encoding';
-import * as vlEncoding from '../encoding'; // TODO: remove
+import * as vlEncoding from '../encoding';
 import {field, FieldDef, FieldRefOption, isFieldDef} from '../fielddef';
 import {Legend} from '../legend';
 import {FILL_STROKE_CONFIG, isMarkDef, Mark, MarkDef, TEXT as TEXT_MARK} from '../mark';
@@ -24,11 +24,10 @@ import {parseLegendComponent} from './legend/parse';
 import {initEncoding, initMarkDef} from './mark/init';
 import {parseMark} from './mark/mark';
 import {Model, ModelWithField} from './model';
-import {RepeatValues, resolveRepeat} from './repeat';
+import {encodingRepeatResolve, RepeatValues} from './repeat';
 import initScale from './scale/init';
 import parseScaleComponent from './scale/parse';
 import {assembleUnitSelectionData, assembleUnitSelectionMarks, assembleUnitSelectionSignals, parseUnitSelection} from './selection/selection';
-
 
 /**
  * Internal model of Vega-Lite specification for the compiler.
@@ -77,7 +76,7 @@ export class UnitModel extends ModelWithField {
       parent ? parent['height'] : undefined; // only exists if parent is layer
 
     const mark = isMarkDef(spec.mark) ? spec.mark.type : spec.mark;
-    const encoding = this.encoding = normalizeEncoding(resolveRepeat(spec.encoding || {}, repeatValues), mark);
+    const encoding = this.encoding = normalizeEncoding(encodingRepeatResolve(spec.encoding || {}, repeatValues), mark);
 
     // calculate stack properties
     this.stack = stack(mark, encoding, this.config.stack);

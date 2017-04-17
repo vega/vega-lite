@@ -1,15 +1,12 @@
-/* Package of defining Vega-lite Specification's json schema at its utility functions */
-
+import {COLUMN, ROW, X, X2, Y, Y2} from './channel';
 import * as compositeMark from './compositemark';
+import {CompositeMark} from './compositemark';
 import {Config} from './config';
 import {Data} from './data';
 import {channelHasField, Encoding, EncodingWithFacet, isRanged} from './encoding';
-import {Facet} from './facet';
-import { FieldDef, Field } from './fielddef';
-
-import {COLUMN, ROW, X, X2, Y, Y2} from './channel';
-import {CompositeMark} from './compositemark';
 import * as vlEncoding from './encoding';
+import {Facet} from './facet';
+import {Field, FieldDef} from './fielddef';
 import * as log from './log';
 import {AREA, isPrimitiveMark, LINE, Mark, MarkDef} from './mark';
 import {Repeat} from './repeat';
@@ -18,6 +15,9 @@ import {stack} from './stack';
 import {TopLevelProperties} from './toplevelprops';
 import {Transform} from './transform';
 import {contains, duplicate, hash, vals} from './util';
+
+
+/* Package of defining Vega-lite Specification's json schema at its utility functions */
 
 export type TopLevel<S extends BaseSpec> = S & TopLevelProperties & {
   /**
