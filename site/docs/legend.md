@@ -58,6 +58,7 @@ Legend properties will apply to the current encoding channel only. Axis properti
 {% include table.html props="title" source="Legend" %}
 
 
+{:#legend-config}
 ### Legend Config
 
 Legend Config will apply to the all encoding channel has `legend`. Legend Config can be customized by setting `config: {legend: {...}}`. Legend Config supports the following configurations:

@@ -209,9 +209,7 @@ vg.embed('#horizontal_line', {
 
 Scale configuration determines default properties for all [scales](scale.html).
 
-<span class="note-line">__See Code:__
-For a full list of scale configuration and their default values, please see the `ScaleConfig` interface and `defaultScaleConfig` in [scale.ts](https://github.com/vega/vega-lite/blob/master/src/scale.ts).
-</span>
+{% include table.html props="bandPaddingInner,bandPaddingOuter,clamp,facetSpacing,maxBandSize,maxFontSize,maxOpacity,maxSize,maxStrokeWidth,minBandSize,minFontSize,minOpacity,minSize,minStrokeWidth,pointPadding,rangeStep,round,shapes,textXRangeStep,useUnaggregatedDomain" source="ScaleConfig" %}
 
 {:#axis-config}
 ## Axis Configuration  (`config.axis.*`)
@@ -224,11 +222,7 @@ For a full list of axis configuration, please see the [Axis Config section in th
 {:#legend-config}
 ## Legend Configuration  (`config.legend.*`)
 
-Legend configuration determines default properties for [legends](legend.html).
-
-<span class="note-line">__See Code:__
-For a full list of legend configuration and their default values, please see the `LegendConfig` interface and `defaultLegendConfig` in [legend.ts](https://github.com/vega/vega-lite/blob/master/src/legend.ts).
-</span>
+Legend configuration determines default properties for [legends](legend.html). Please see [legend config](legend.html#legend-config) for each property name and default values.
 
 {:#facet-config}
 ## Facet Configuration  (`config.facet.*`)
@@ -241,7 +235,4 @@ Facet cell configuration overrides [cell config](#cell-config) for faceted (trel
 {:#facet-axis-config}
 ### Facet Axis Configuration (`config.facet.axis.*`)
 
-Facet axis configuration determines default properties for `row` and `column` [axes](axis.html).
-<span class="note-line">__See Code:__
-For a full list of facet axis configuration and their default values, please see the `AxisConfig` interface and `defaultFacetAxisConfig` in [axis.ts](https://github.com/vega/vega-lite/blob/master/src/axis.ts).
-</span>
+Facet axis configuration determines default properties for `row` and `column` [axes](axis.html). Please see [axis config](axis.html#axis-config) for each property name and default values.
