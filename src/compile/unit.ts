@@ -27,7 +27,7 @@ import {parseMark} from './mark/mark';
 import {Model, ModelWithField} from './model';
 import initScale from './scale/init';
 import parseScaleComponent from './scale/parse';
-import {assembleUnitData as assembleSelectionData, assembleUnitMarks as assembleUnitSelectionMarks, assembleUnitSignals, parseUnitSelection} from './selection/selection';
+import {assembleUnitSelectionData, assembleUnitSelectionMarks, assembleUnitSelectionSignals, parseUnitSelection} from './selection/selection';
 
 /**
  * Internal model of Vega-Lite specification for the compiler.
@@ -279,11 +279,11 @@ export class UnitModel extends ModelWithField {
   }
 
   public assembleSignals(): VgSignal[] {
-    return assembleUnitSignals(this, []);
+    return assembleUnitSelectionSignals(this, []);
   }
 
   public assembleSelectionData(data: VgData[]): VgData[] {
-    return assembleSelectionData(this, data);
+    return assembleUnitSelectionData(this, data);
   }
 
   public assembleLayout(): VgLayout {

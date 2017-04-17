@@ -17,7 +17,7 @@ import {parseLayerLayout} from './layout';
 import {assembleLayoutLayerSignals} from './layout/index';
 import {Model} from './model';
 import {unionDomains} from './scale/domain';
-import {assembleLayerMarks as assembleLayeredSelectionMarks} from './selection/selection';
+import {assembleLayerSelectionMarks} from './selection/selection';
 import {UnitModel} from './unit';
 
 export class LayerModel extends Model {
@@ -207,7 +207,7 @@ export class LayerModel extends Model {
   }
 
   public assembleMarks(): any[] {
-    return assembleLayeredSelectionMarks(this, flatten(this.children.map((child) => {
+    return assembleLayerSelectionMarks(this, flatten(this.children.map((child) => {
       return child.assembleMarks();
     })));
   }

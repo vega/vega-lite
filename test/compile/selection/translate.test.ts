@@ -54,7 +54,7 @@ describe('Translate Selection Transform', function() {
 
   it('builds signals for default invocation', function() {
     model.component.selection = {four: selCmpts['four']};
-    const signals = selection.assembleUnitSignals(model, []);
+    const signals = selection.assembleUnitSelectionSignals(model, []);
     assert.includeDeepMembers(signals, [
       {
         "name": "four_translate_anchor",
@@ -95,7 +95,7 @@ describe('Translate Selection Transform', function() {
 
   it('builds signals for custom events', function() {
     model.component.selection = {five: selCmpts['five']};
-    const signals = selection.assembleUnitSignals(model, []);
+    const signals = selection.assembleUnitSelectionSignals(model, []);
 
     assert.includeDeepMembers(signals, [
       {
@@ -137,7 +137,7 @@ describe('Translate Selection Transform', function() {
 
   it('builds signals for scale-bound translate', function() {
     model.component.selection = {six: selCmpts['six']};
-    const signals = selection.assembleUnitSignals(model, []);
+    const signals = selection.assembleUnitSelectionSignals(model, []);
     assert.includeDeepMembers(signals, [
       {
         "name": "six_translate_anchor",

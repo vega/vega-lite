@@ -92,8 +92,7 @@ export function parseUnitSelection(model: UnitModel, selDefs: Dict<SelectionDef>
   return selCmpts;
 }
 
-// FIXME: rename to assembleSelectionUnitSignals
-export function assembleUnitSignals(model: UnitModel, signals: any[]) {
+export function assembleUnitSelectionSignals(model: UnitModel, signals: any[]) {
   forEachSelection(model, (selCmpt, selCompiler) => {
     const name = selCmpt.name,
         tupleExpr = selCompiler.tupleExpr(model, selCmpt);
@@ -150,7 +149,7 @@ export function assembleTopLevelSignals(model: Model) {
   return signals;
 }
 
-export function assembleUnitData(model: UnitModel, data: VgData[]): VgData[] {
+export function assembleUnitSelectionData(model: UnitModel, data: VgData[]): VgData[] {
   forEachSelection(model, selCmpt => {
     data.push({name: selCmpt.name + STORE});
   });
@@ -158,7 +157,7 @@ export function assembleUnitData(model: UnitModel, data: VgData[]): VgData[] {
   return data;
 }
 
-export function assembleUnitMarks(model: UnitModel, marks: any[]): any[] {
+export function assembleUnitSelectionMarks(model: UnitModel, marks: any[]): any[] {
   let clipGroup = false,
       selMarks = marks;
   forEachSelection(model, (selCmpt, selCompiler) => {
@@ -181,10 +180,10 @@ export function assembleUnitMarks(model: UnitModel, marks: any[]): any[] {
   }
 }
 
-export function assembleLayerMarks(model: LayerModel, marks: any[]): any[] {
+export function assembleLayerSelectionMarks(model: LayerModel, marks: any[]): any[] {
   let clipGroup = false;
   model.children.forEach(child => {
-    const unit = assembleUnitMarks(child, marks);
+    const unit = assembleUnitSelectionMarks(child, marks);
     marks = unit[0];
     clipGroup = clipGroup || unit[1];
   });

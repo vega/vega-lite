@@ -191,7 +191,7 @@ describe('Interval Selections', function() {
     const threeExpr = interval.tupleExpr(model, selCmpts['three']);
     assert.equal(threeExpr, 'intervals: three');
 
-    const signals = selection.assembleUnitSignals(model, []);
+    const signals = selection.assembleUnitSelectionSignals(model, []);
     assert.includeDeepMembers(signals, [
       {
         "name": "one_tuple",
@@ -233,7 +233,7 @@ describe('Interval Selections', function() {
     const threeExpr = interval.modifyExpr(model, selCmpts['three']);
     assert.equal(threeExpr, 'three_tuple, {unit: three_tuple.unit}');
 
-    const signals = selection.assembleUnitSignals(model, []);
+    const signals = selection.assembleUnitSelectionSignals(model, []);
     assert.includeDeepMembers(signals, [
       {
         "name": "one_modify",
