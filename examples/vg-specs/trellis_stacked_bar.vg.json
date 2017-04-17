@@ -2,26 +2,6 @@
     "$schema": "http://vega.github.io/schema/vega/v3.0.json",
     "autosize": "pad",
     "padding": 5,
-    "signals": [
-        {
-            "name": "width",
-            "update": "data('layout')[0].width"
-        },
-        {
-            "name": "height",
-            "update": "data('layout')[0].height"
-        },
-        {
-            "name": "unit",
-            "value": {},
-            "on": [
-                {
-                    "events": "mousemove",
-                    "update": "group()._id ? group() : unit"
-                }
-            ]
-        }
-    ],
     "data": [
         {
             "name": "source_0",
@@ -87,339 +67,313 @@
             ]
         },
         {
-            "name": "layout",
-            "source": "source_0",
+            "name": "column-layout",
+            "source": "column",
             "transform": [
                 {
                     "type": "aggregate",
-                    "fields": [
-                        "year",
-                        "variety"
-                    ],
                     "ops": [
-                        "distinct",
                         "distinct"
+                    ],
+                    "fields": [
+                        "year"
                     ]
-                },
-                {
-                    "type": "formula",
-                    "as": "child_width",
-                    "expr": "200"
-                },
-                {
-                    "type": "formula",
-                    "as": "width",
-                    "expr": "(datum[\"child_width\"] + 5) * datum[\"distinct_year\"]"
-                },
-                {
-                    "type": "formula",
-                    "as": "child_height",
-                    "expr": "max(datum[\"distinct_variety\"] - 1 + 2*0.5, 0) * 21"
-                },
-                {
-                    "type": "formula",
-                    "as": "height",
-                    "expr": "datum[\"child_height\"] + 5"
                 }
             ]
         }
     ],
+    "signals": [
+        {
+            "name": "unit",
+            "value": {},
+            "on": [
+                {
+                    "events": "mousemove",
+                    "update": "group()._id ? group() : unit"
+                }
+            ]
+        },
+        {
+            "name": "child_width",
+            "update": "200"
+        },
+        {
+            "name": "child_height",
+            "update": "bandspace(domain('y').length, 1, 0.5) * 21"
+        }
+    ],
+    "layout": {
+        "padding": {
+            "row": 10,
+            "column": 10,
+            "header": 10
+        },
+        "columns": 1,
+        "bounds": "full"
+    },
     "marks": [
         {
-            "name": "main-group",
             "type": "group",
-            "from": {
-                "data": "layout"
-            },
-            "signals": [
-                {
-                    "name": "column",
-                    "update": "data('layout')[0].distinct_year"
-                }
-            ],
             "layout": {
                 "padding": {
                     "row": 10,
                     "column": 10,
                     "header": 10
                 },
-                "columns": 1,
+                "columns": {
+                    "signal": "data('column-layout')[0].distinct_year"
+                },
                 "bounds": "full"
             },
             "marks": [
                 {
+                    "name": "x-axes",
                     "type": "group",
-                    "layout": {
-                        "padding": {
-                            "row": 10,
-                            "column": 10,
-                            "header": 10
-                        },
-                        "columns": {
-                            "signal": "column"
-                        },
-                        "bounds": "full"
+                    "role": "column-footer",
+                    "from": {
+                        "data": "column"
                     },
-                    "marks": [
+                    "axes": [
                         {
-                            "name": "x-axes",
-                            "type": "group",
-                            "role": "column-footer",
-                            "from": {
-                                "data": "column"
-                            },
-                            "axes": [
-                                {
-                                    "scale": "x",
-                                    "format": "s",
-                                    "orient": "bottom",
-                                    "tickCount": 5,
-                                    "title": "SUM(yield)",
-                                    "zindex": 1
-                                }
-                            ]
-                        },
-                        {
-                            "name": "y-axes",
-                            "type": "group",
-                            "role": "row-header",
-                            "axes": [
-                                {
-                                    "scale": "y",
-                                    "orient": "left",
-                                    "title": "variety",
-                                    "zindex": 1
-                                }
-                            ]
-                        },
-                        {
-                            "name": "column-labels",
-                            "role": "column-header",
-                            "type": "group",
-                            "from": {
-                                "data": "column"
-                            },
-                            "encode": {
-                                "update": {
-                                    "width": {
-                                        "field": {
-                                            "parent": "child_width",
-                                            "level": 2
-                                        }
-                                    }
-                                }
-                            },
-                            "marks": [
-                                {
-                                    "type": "text",
-                                    "role": "column-labels",
-                                    "encode": {
-                                        "update": {
-                                            "x": {
-                                                "field": {
-                                                    "group": "width"
-                                                },
-                                                "mult": 0.5
-                                            },
-                                            "y": {
-                                                "value": -10
-                                            },
-                                            "text": {
-                                                "field": {
-                                                    "parent": "year"
-                                                }
-                                            },
-                                            "align": {
-                                                "value": "center"
-                                            },
-                                            "fill": {
-                                                "value": "black"
-                                            }
-                                        }
-                                    }
-                                }
-                            ]
-                        },
-                        {
-                            "name": "cell",
-                            "type": "group",
-                            "from": {
-                                "facet": {
-                                    "name": "facet",
-                                    "data": "source_0",
-                                    "groupby": [
-                                        "year"
-                                    ]
-                                }
-                            },
-                            "encode": {
-                                "update": {
-                                    "width": {
-                                        "field": {
-                                            "parent": "child_width",
-                                            "level": 2
-                                        }
-                                    },
-                                    "height": {
-                                        "field": {
-                                            "parent": "child_height",
-                                            "level": 2
-                                        }
-                                    },
-                                    "stroke": {
-                                        "value": "#ccc"
-                                    },
-                                    "strokeWidth": {
-                                        "value": 1
-                                    },
-                                    "fill": {
-                                        "value": "transparent"
-                                    }
-                                }
-                            },
-                            "marks": [
-                                {
-                                    "name": "child_marks",
-                                    "type": "rect",
-                                    "role": "bar",
-                                    "from": {
-                                        "data": "facet"
-                                    },
-                                    "encode": {
-                                        "update": {
-                                            "x": {
-                                                "scale": "x",
-                                                "field": "sum_yield_end"
-                                            },
-                                            "x2": {
-                                                "scale": "x",
-                                                "field": "sum_yield_start"
-                                            },
-                                            "yc": {
-                                                "scale": "y",
-                                                "field": "variety"
-                                            },
-                                            "height": {
-                                                "value": 20
-                                            },
-                                            "fill": {
-                                                "scale": "color",
-                                                "field": "site"
-                                            }
-                                        }
-                                    }
-                                }
-                            ],
-                            "axes": [
-                                {
-                                    "scale": "x",
-                                    "domain": false,
-                                    "format": "s",
-                                    "grid": true,
-                                    "labels": false,
-                                    "orient": "bottom",
-                                    "tickCount": 5,
-                                    "ticks": false,
-                                    "zindex": 0,
-                                    "gridScale": "y"
-                                }
-                            ]
+                            "scale": "x",
+                            "format": "s",
+                            "orient": "bottom",
+                            "tickCount": 5,
+                            "title": "SUM(yield)",
+                            "zindex": 1
                         }
                     ]
                 },
                 {
-                    "name": "column-title",
+                    "name": "y-axes",
+                    "type": "group",
+                    "role": "row-header",
+                    "axes": [
+                        {
+                            "scale": "y",
+                            "orient": "left",
+                            "title": "variety",
+                            "zindex": 1
+                        }
+                    ]
+                },
+                {
+                    "name": "column-labels",
                     "role": "column-header",
                     "type": "group",
+                    "from": {
+                        "data": "column"
+                    },
+                    "encode": {
+                        "update": {
+                            "width": {
+                                "signal": "child_width"
+                            }
+                        }
+                    },
                     "marks": [
                         {
                             "type": "text",
-                            "role": "column-title",
+                            "role": "column-labels",
                             "encode": {
                                 "update": {
                                     "x": {
-                                        "signal": "0.5 * width"
+                                        "field": {
+                                            "group": "width"
+                                        },
+                                        "mult": 0.5
+                                    },
+                                    "y": {
+                                        "value": -10
                                     },
                                     "text": {
-                                        "value": "year"
+                                        "field": {
+                                            "parent": "year"
+                                        }
                                     },
                                     "align": {
                                         "value": "center"
                                     },
                                     "fill": {
                                         "value": "black"
-                                    },
-                                    "fontWeight": {
-                                        "value": "bold"
                                     }
                                 }
                             }
                         }
                     ]
-                }
-            ],
-            "scales": [
-                {
-                    "name": "x",
-                    "type": "linear",
-                    "domain": {
-                        "data": "source_0",
-                        "fields": [
-                            "sum_yield_start",
-                            "sum_yield_end"
-                        ]
-                    },
-                    "range": [
-                        0,
-                        200
-                    ],
-                    "round": true,
-                    "nice": true,
-                    "zero": true
                 },
                 {
-                    "name": "y",
-                    "type": "point",
-                    "domain": {
-                        "data": "source_0",
-                        "field": "variety",
-                        "sort": true
+                    "name": "cell",
+                    "type": "group",
+                    "from": {
+                        "facet": {
+                            "name": "facet",
+                            "data": "source_0",
+                            "groupby": [
+                                "year"
+                            ]
+                        }
                     },
-                    "range": {
-                        "step": 21
-                    },
-                    "round": true,
-                    "padding": 0.5
-                },
-                {
-                    "name": "color",
-                    "type": "ordinal",
-                    "domain": {
-                        "data": "source_0",
-                        "field": "site",
-                        "sort": true
-                    },
-                    "range": "category"
-                }
-            ],
-            "legends": [
-                {
-                    "fill": "color",
-                    "title": "site",
                     "encode": {
-                        "symbols": {
-                            "update": {
-                                "shape": {
-                                    "value": "square"
-                                },
-                                "strokeWidth": {
-                                    "value": 0
+                        "update": {
+                            "width": {
+                                "signal": "child_width"
+                            },
+                            "height": {
+                                "signal": "child_height"
+                            },
+                            "stroke": {
+                                "value": "#ccc"
+                            },
+                            "strokeWidth": {
+                                "value": 1
+                            },
+                            "fill": {
+                                "value": "transparent"
+                            }
+                        }
+                    },
+                    "marks": [
+                        {
+                            "name": "child_marks",
+                            "type": "rect",
+                            "role": "bar",
+                            "from": {
+                                "data": "facet"
+                            },
+                            "encode": {
+                                "update": {
+                                    "x": {
+                                        "scale": "x",
+                                        "field": "sum_yield_end"
+                                    },
+                                    "x2": {
+                                        "scale": "x",
+                                        "field": "sum_yield_start"
+                                    },
+                                    "yc": {
+                                        "scale": "y",
+                                        "field": "variety"
+                                    },
+                                    "height": {
+                                        "value": 20
+                                    },
+                                    "fill": {
+                                        "scale": "color",
+                                        "field": "site"
+                                    }
                                 }
+                            }
+                        }
+                    ],
+                    "axes": [
+                        {
+                            "scale": "x",
+                            "domain": false,
+                            "format": "s",
+                            "grid": true,
+                            "labels": false,
+                            "orient": "bottom",
+                            "tickCount": 5,
+                            "ticks": false,
+                            "zindex": 0,
+                            "gridScale": "y"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "column-title",
+            "role": "column-header",
+            "type": "group",
+            "marks": [
+                {
+                    "type": "text",
+                    "role": "column-title",
+                    "encode": {
+                        "update": {
+                            "x": {
+                                "signal": "0.5 * width"
+                            },
+                            "text": {
+                                "value": "year"
+                            },
+                            "align": {
+                                "value": "center"
+                            },
+                            "fill": {
+                                "value": "black"
+                            },
+                            "fontWeight": {
+                                "value": "bold"
                             }
                         }
                     }
                 }
             ]
+        }
+    ],
+    "scales": [
+        {
+            "name": "x",
+            "type": "linear",
+            "domain": {
+                "data": "source_0",
+                "fields": [
+                    "sum_yield_start",
+                    "sum_yield_end"
+                ]
+            },
+            "range": [
+                0,
+                200
+            ],
+            "round": true,
+            "nice": true,
+            "zero": true
+        },
+        {
+            "name": "y",
+            "type": "point",
+            "domain": {
+                "data": "source_0",
+                "field": "variety",
+                "sort": true
+            },
+            "range": {
+                "step": 21
+            },
+            "round": true,
+            "padding": 0.5
+        },
+        {
+            "name": "color",
+            "type": "ordinal",
+            "domain": {
+                "data": "source_0",
+                "field": "site",
+                "sort": true
+            },
+            "range": "category"
+        }
+    ],
+    "legends": [
+        {
+            "fill": "color",
+            "title": "site",
+            "encode": {
+                "symbols": {
+                    "update": {
+                        "shape": {
+                            "value": "square"
+                        },
+                        "strokeWidth": {
+                            "value": 0
+                        }
+                    }
+                }
+            }
         }
     ]
 }

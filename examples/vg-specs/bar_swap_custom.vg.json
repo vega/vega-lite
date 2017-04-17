@@ -2,26 +2,6 @@
     "$schema": "http://vega.github.io/schema/vega/v3.0.json",
     "autosize": "pad",
     "padding": 5,
-    "signals": [
-        {
-            "name": "width",
-            "update": "data('layout')[0].width"
-        },
-        {
-            "name": "height",
-            "update": "data('layout')[0].height"
-        },
-        {
-            "name": "unit",
-            "value": {},
-            "on": [
-                {
-                    "events": "mousemove",
-                    "update": "group()._id ? group() : unit"
-                }
-            ]
-        }
-    ],
     "data": [
         {
             "name": "source_0",
@@ -87,144 +67,117 @@
                     ]
                 }
             ]
+        }
+    ],
+    "signals": [
+        {
+            "name": "width",
+            "update": "200"
         },
         {
-            "name": "layout",
-            "source": "source_0",
-            "transform": [
+            "name": "height",
+            "update": "bandspace(domain('y').length, 1, 0.5) * 21"
+        },
+        {
+            "name": "unit",
+            "value": {},
+            "on": [
                 {
-                    "type": "aggregate",
-                    "fields": [
-                        "a"
-                    ],
-                    "ops": [
-                        "distinct"
-                    ]
-                },
-                {
-                    "type": "formula",
-                    "as": "width",
-                    "expr": "200"
-                },
-                {
-                    "type": "formula",
-                    "as": "height",
-                    "expr": "max(datum[\"distinct_a\"] - 1 + 2*0.5, 0) * 21"
+                    "events": "mousemove",
+                    "update": "group()._id ? group() : unit"
                 }
             ]
         }
     ],
     "marks": [
         {
-            "name": "main-group",
-            "type": "group",
+            "name": "marks",
+            "type": "rect",
+            "role": "bar",
             "from": {
-                "data": "layout"
+                "data": "source_0"
             },
             "encode": {
                 "update": {
-                    "width": {
-                        "field": "width"
-                    },
-                    "height": {
-                        "field": "height"
-                    },
-                    "fill": {
-                        "value": "transparent"
-                    }
-                }
-            },
-            "marks": [
-                {
-                    "name": "marks",
-                    "type": "rect",
-                    "role": "bar",
-                    "from": {
-                        "data": "source_0"
-                    },
-                    "encode": {
-                        "update": {
-                            "x": {
-                                "scale": "x",
-                                "field": "average_b"
-                            },
-                            "x2": {
-                                "scale": "x",
-                                "value": 0
-                            },
-                            "yc": {
-                                "scale": "y",
-                                "field": "a"
-                            },
-                            "height": {
-                                "value": 20
-                            },
-                            "fill": {
-                                "value": "#4c78a8"
-                            }
-                        }
-                    }
-                }
-            ],
-            "scales": [
-                {
-                    "name": "x",
-                    "type": "linear",
-                    "domain": {
-                        "data": "source_0",
+                    "x": {
+                        "scale": "x",
                         "field": "average_b"
                     },
-                    "range": [
-                        0,
-                        200
-                    ],
-                    "round": true,
-                    "nice": true,
-                    "zero": true
-                },
-                {
-                    "name": "y",
-                    "type": "point",
-                    "domain": {
-                        "data": "source_0",
-                        "field": "a",
-                        "sort": true
+                    "x2": {
+                        "scale": "x",
+                        "value": 0
                     },
-                    "range": {
-                        "step": 21
+                    "yc": {
+                        "scale": "y",
+                        "field": "a"
                     },
-                    "round": true,
-                    "padding": 0.5
+                    "height": {
+                        "value": 20
+                    },
+                    "fill": {
+                        "value": "#4c78a8"
+                    }
                 }
+            }
+        }
+    ],
+    "scales": [
+        {
+            "name": "x",
+            "type": "linear",
+            "domain": {
+                "data": "source_0",
+                "field": "average_b"
+            },
+            "range": [
+                0,
+                200
             ],
-            "axes": [
-                {
-                    "scale": "x",
-                    "format": "s",
-                    "orient": "bottom",
-                    "tickCount": 5,
-                    "title": "Average of b",
-                    "zindex": 1
-                },
-                {
-                    "scale": "x",
-                    "domain": false,
-                    "format": "s",
-                    "grid": true,
-                    "labels": false,
-                    "orient": "bottom",
-                    "tickCount": 5,
-                    "ticks": false,
-                    "zindex": 0,
-                    "gridScale": "y"
-                },
-                {
-                    "scale": "y",
-                    "orient": "left",
-                    "title": "a",
-                    "zindex": 1
-                }
-            ]
+            "round": true,
+            "nice": true,
+            "zero": true
+        },
+        {
+            "name": "y",
+            "type": "point",
+            "domain": {
+                "data": "source_0",
+                "field": "a",
+                "sort": true
+            },
+            "range": {
+                "step": 21
+            },
+            "round": true,
+            "padding": 0.5
+        }
+    ],
+    "axes": [
+        {
+            "scale": "x",
+            "format": "s",
+            "orient": "bottom",
+            "tickCount": 5,
+            "title": "Average of b",
+            "zindex": 1
+        },
+        {
+            "scale": "x",
+            "domain": false,
+            "format": "s",
+            "grid": true,
+            "labels": false,
+            "orient": "bottom",
+            "tickCount": 5,
+            "ticks": false,
+            "zindex": 0,
+            "gridScale": "y"
+        },
+        {
+            "scale": "y",
+            "orient": "left",
+            "title": "a",
+            "zindex": 1
         }
     ]
 }

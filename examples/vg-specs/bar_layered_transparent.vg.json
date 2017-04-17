@@ -3,26 +3,6 @@
     "description": "A bar chart showing the US population distribution of age groups and gender in 2000.",
     "autosize": "pad",
     "padding": 5,
-    "signals": [
-        {
-            "name": "width",
-            "update": "data('layout')[0].width"
-        },
-        {
-            "name": "height",
-            "update": "data('layout')[0].height"
-        },
-        {
-            "name": "unit",
-            "value": {},
-            "on": [
-                {
-                    "events": "mousemove",
-                    "update": "group()._id ? group() : unit"
-                }
-            ]
-        }
-    ],
     "data": [
         {
             "name": "source_0",
@@ -61,194 +41,166 @@
                     ]
                 }
             ]
+        }
+    ],
+    "signals": [
+        {
+            "name": "width",
+            "update": "bandspace(domain('x').length, 1, 0.5) * 17"
         },
         {
-            "name": "layout",
-            "source": "source_0",
-            "transform": [
+            "name": "height",
+            "update": "200"
+        },
+        {
+            "name": "unit",
+            "value": {},
+            "on": [
                 {
-                    "type": "aggregate",
-                    "fields": [
-                        "age"
-                    ],
-                    "ops": [
-                        "distinct"
-                    ]
-                },
-                {
-                    "type": "formula",
-                    "as": "width",
-                    "expr": "max(datum[\"distinct_age\"] - 1 + 2*0.5, 0) * 17"
-                },
-                {
-                    "type": "formula",
-                    "as": "height",
-                    "expr": "200"
+                    "events": "mousemove",
+                    "update": "group()._id ? group() : unit"
                 }
             ]
         }
     ],
     "marks": [
         {
-            "name": "main-group",
-            "type": "group",
-            "description": "A bar chart showing the US population distribution of age groups and gender in 2000.",
+            "name": "marks",
+            "type": "rect",
+            "role": "bar",
             "from": {
-                "data": "layout"
+                "data": "source_0"
             },
             "encode": {
                 "update": {
+                    "xc": {
+                        "scale": "x",
+                        "field": "age"
+                    },
                     "width": {
-                        "field": "width"
+                        "value": 16
                     },
-                    "height": {
-                        "field": "height"
-                    },
-                    "fill": {
-                        "value": "transparent"
-                    }
-                }
-            },
-            "marks": [
-                {
-                    "name": "marks",
-                    "type": "rect",
-                    "role": "bar",
-                    "from": {
-                        "data": "source_0"
-                    },
-                    "encode": {
-                        "update": {
-                            "xc": {
-                                "scale": "x",
-                                "field": "age"
-                            },
-                            "width": {
-                                "value": 16
-                            },
-                            "y": {
-                                "scale": "y",
-                                "field": "sum_people"
-                            },
-                            "y2": {
-                                "scale": "y",
-                                "value": 0
-                            },
-                            "fill": {
-                                "scale": "color",
-                                "field": "gender"
-                            },
-                            "opacity": {
-                                "value": 0.7
-                            }
-                        }
-                    }
-                }
-            ],
-            "scales": [
-                {
-                    "name": "x",
-                    "type": "point",
-                    "domain": {
-                        "data": "source_0",
-                        "field": "age",
-                        "sort": true
-                    },
-                    "range": {
-                        "step": 17
-                    },
-                    "round": true,
-                    "padding": 0.5
-                },
-                {
-                    "name": "y",
-                    "type": "linear",
-                    "domain": {
-                        "data": "source_0",
+                    "y": {
+                        "scale": "y",
                         "field": "sum_people"
                     },
-                    "range": [
-                        200,
-                        0
-                    ],
-                    "round": true,
-                    "nice": true,
-                    "zero": true
-                },
-                {
-                    "name": "color",
-                    "type": "ordinal",
-                    "domain": {
-                        "data": "source_0",
-                        "field": "gender",
-                        "sort": true
+                    "y2": {
+                        "scale": "y",
+                        "value": 0
                     },
-                    "range": [
-                        "#e377c2",
-                        "#1f77b4"
-                    ]
-                }
-            ],
-            "axes": [
-                {
-                    "scale": "x",
-                    "orient": "bottom",
-                    "tickCount": 5,
-                    "title": "age",
-                    "zindex": 1,
-                    "encode": {
-                        "labels": {
-                            "update": {
-                                "angle": {
-                                    "value": 270
-                                },
-                                "align": {
-                                    "value": "right"
-                                },
-                                "baseline": {
-                                    "value": "middle"
-                                }
-                            }
-                        }
-                    }
-                },
-                {
-                    "scale": "y",
-                    "format": "s",
-                    "orient": "left",
-                    "title": "population",
-                    "zindex": 1
-                },
-                {
-                    "scale": "y",
-                    "domain": false,
-                    "format": "s",
-                    "grid": true,
-                    "labels": false,
-                    "orient": "left",
-                    "ticks": false,
-                    "zindex": 0,
-                    "gridScale": "x"
-                }
-            ],
-            "legends": [
-                {
-                    "fill": "color",
-                    "title": "gender",
-                    "encode": {
-                        "symbols": {
-                            "update": {
-                                "shape": {
-                                    "value": "square"
-                                },
-                                "strokeWidth": {
-                                    "value": 0
-                                }
-                            }
-                        }
+                    "fill": {
+                        "scale": "color",
+                        "field": "gender"
+                    },
+                    "opacity": {
+                        "value": 0.7
                     }
                 }
+            }
+        }
+    ],
+    "scales": [
+        {
+            "name": "x",
+            "type": "point",
+            "domain": {
+                "data": "source_0",
+                "field": "age",
+                "sort": true
+            },
+            "range": {
+                "step": 17
+            },
+            "round": true,
+            "padding": 0.5
+        },
+        {
+            "name": "y",
+            "type": "linear",
+            "domain": {
+                "data": "source_0",
+                "field": "sum_people"
+            },
+            "range": [
+                200,
+                0
+            ],
+            "round": true,
+            "nice": true,
+            "zero": true
+        },
+        {
+            "name": "color",
+            "type": "ordinal",
+            "domain": {
+                "data": "source_0",
+                "field": "gender",
+                "sort": true
+            },
+            "range": [
+                "#e377c2",
+                "#1f77b4"
             ]
+        }
+    ],
+    "axes": [
+        {
+            "scale": "x",
+            "orient": "bottom",
+            "tickCount": 5,
+            "title": "age",
+            "zindex": 1,
+            "encode": {
+                "labels": {
+                    "update": {
+                        "angle": {
+                            "value": 270
+                        },
+                        "align": {
+                            "value": "right"
+                        },
+                        "baseline": {
+                            "value": "middle"
+                        }
+                    }
+                }
+            }
+        },
+        {
+            "scale": "y",
+            "format": "s",
+            "orient": "left",
+            "title": "population",
+            "zindex": 1
+        },
+        {
+            "scale": "y",
+            "domain": false,
+            "format": "s",
+            "grid": true,
+            "labels": false,
+            "orient": "left",
+            "ticks": false,
+            "zindex": 0,
+            "gridScale": "x"
+        }
+    ],
+    "legends": [
+        {
+            "fill": "color",
+            "title": "gender",
+            "encode": {
+                "symbols": {
+                    "update": {
+                        "shape": {
+                            "value": "square"
+                        },
+                        "strokeWidth": {
+                            "value": 0
+                        }
+                    }
+                }
+            }
         }
     ]
 }

@@ -3,26 +3,6 @@
     "description": "A scatterplot with custom star shapes.",
     "autosize": "pad",
     "padding": 5,
-    "signals": [
-        {
-            "name": "width",
-            "update": "data('layout')[0].width"
-        },
-        {
-            "name": "height",
-            "update": "data('layout')[0].height"
-        },
-        {
-            "name": "unit",
-            "value": {},
-            "on": [
-                {
-                    "events": "mousemove",
-                    "update": "group()._id ? group() : unit"
-                }
-            ]
-        }
-    ],
     "data": [
         {
             "name": "source_0",
@@ -41,214 +21,193 @@
                     "expr": "datum[\"Horsepower\"] !== null && !isNaN(datum[\"Horsepower\"]) && datum[\"Miles_per_Gallon\"] !== null && !isNaN(datum[\"Miles_per_Gallon\"]) && datum[\"Weight_in_lbs\"] !== null && !isNaN(datum[\"Weight_in_lbs\"])"
                 }
             ]
+        }
+    ],
+    "signals": [
+        {
+            "name": "width",
+            "update": "200"
         },
         {
-            "name": "layout",
-            "values": [
-                {}
-            ],
-            "transform": [
+            "name": "height",
+            "update": "200"
+        },
+        {
+            "name": "unit",
+            "value": {},
+            "on": [
                 {
-                    "type": "formula",
-                    "as": "width",
-                    "expr": "200"
-                },
-                {
-                    "type": "formula",
-                    "as": "height",
-                    "expr": "200"
+                    "events": "mousemove",
+                    "update": "group()._id ? group() : unit"
                 }
             ]
         }
     ],
     "marks": [
         {
-            "name": "main-group",
-            "type": "group",
-            "description": "A scatterplot with custom star shapes.",
+            "name": "marks",
+            "type": "symbol",
+            "role": "point",
             "from": {
-                "data": "layout"
+                "data": "source_0"
             },
             "encode": {
                 "update": {
-                    "width": {
-                        "field": "width"
+                    "x": {
+                        "scale": "x",
+                        "field": "Horsepower"
                     },
-                    "height": {
-                        "field": "height"
+                    "y": {
+                        "scale": "y",
+                        "field": "Miles_per_Gallon"
+                    },
+                    "stroke": {
+                        "scale": "color",
+                        "field": "Cylinders"
                     },
                     "fill": {
                         "value": "transparent"
-                    }
-                }
-            },
-            "marks": [
-                {
-                    "name": "marks",
-                    "type": "symbol",
-                    "role": "point",
-                    "from": {
-                        "data": "source_0"
                     },
-                    "encode": {
-                        "update": {
-                            "x": {
-                                "scale": "x",
-                                "field": "Horsepower"
-                            },
-                            "y": {
-                                "scale": "y",
-                                "field": "Miles_per_Gallon"
-                            },
-                            "stroke": {
-                                "scale": "color",
-                                "field": "Cylinders"
-                            },
-                            "fill": {
-                                "value": "transparent"
-                            },
-                            "size": {
-                                "scale": "size",
-                                "field": "Weight_in_lbs"
-                            },
-                            "shape": {
-                                "value": "M0,0.2L0.2351,0.3236 0.1902,0.0618 0.3804,-0.1236 0.1175,-0.1618 0,-0.4 -0.1175,-0.1618 -0.3804,-0.1236 -0.1902,0.0618 -0.2351,0.3236 0,0.2Z"
-                            },
-                            "opacity": {
-                                "value": 0.7
-                            }
-                        }
-                    }
-                }
-            ],
-            "scales": [
-                {
-                    "name": "x",
-                    "type": "linear",
-                    "domain": {
-                        "data": "source_0",
-                        "field": "Horsepower"
-                    },
-                    "range": [
-                        0,
-                        200
-                    ],
-                    "round": true,
-                    "nice": true,
-                    "zero": true
-                },
-                {
-                    "name": "y",
-                    "type": "linear",
-                    "domain": {
-                        "data": "source_0",
-                        "field": "Miles_per_Gallon"
-                    },
-                    "range": [
-                        200,
-                        0
-                    ],
-                    "round": true,
-                    "nice": true,
-                    "zero": true
-                },
-                {
-                    "name": "size",
-                    "type": "linear",
-                    "domain": {
-                        "data": "source_0",
+                    "size": {
+                        "scale": "size",
                         "field": "Weight_in_lbs"
                     },
-                    "range": [
-                        0,
-                        361
-                    ],
-                    "nice": false,
-                    "zero": true
-                },
-                {
-                    "name": "color",
-                    "type": "ordinal",
-                    "domain": {
-                        "data": "source_0",
-                        "field": "Cylinders",
-                        "sort": true
+                    "shape": {
+                        "value": "M0,0.2L0.2351,0.3236 0.1902,0.0618 0.3804,-0.1236 0.1175,-0.1618 0,-0.4 -0.1175,-0.1618 -0.3804,-0.1236 -0.1902,0.0618 -0.2351,0.3236 0,0.2Z"
                     },
-                    "range": "category"
-                }
-            ],
-            "axes": [
-                {
-                    "scale": "x",
-                    "format": "s",
-                    "orient": "bottom",
-                    "tickCount": 5,
-                    "title": "Horsepower",
-                    "zindex": 1
-                },
-                {
-                    "scale": "x",
-                    "domain": false,
-                    "format": "s",
-                    "grid": true,
-                    "labels": false,
-                    "orient": "bottom",
-                    "tickCount": 5,
-                    "ticks": false,
-                    "zindex": 0,
-                    "gridScale": "y"
-                },
-                {
-                    "scale": "y",
-                    "format": "s",
-                    "orient": "left",
-                    "title": "Miles_per_Gallon",
-                    "zindex": 1
-                },
-                {
-                    "scale": "y",
-                    "domain": false,
-                    "format": "s",
-                    "grid": true,
-                    "labels": false,
-                    "orient": "left",
-                    "ticks": false,
-                    "zindex": 0,
-                    "gridScale": "x"
-                }
-            ],
-            "legends": [
-                {
-                    "stroke": "color",
-                    "title": "Cylinders",
-                    "encode": {
-                        "symbols": {
-                            "update": {
-                                "shape": {
-                                    "value": "M0,0.2L0.2351,0.3236 0.1902,0.0618 0.3804,-0.1236 0.1175,-0.1618 0,-0.4 -0.1175,-0.1618 -0.3804,-0.1236 -0.1902,0.0618 -0.2351,0.3236 0,0.2Z"
-                                }
-                            }
-                        }
-                    }
-                },
-                {
-                    "size": "size",
-                    "format": "s",
-                    "title": "Weight_in_lbs",
-                    "encode": {
-                        "symbols": {
-                            "update": {
-                                "stroke": {
-                                    "value": "#4c78a8"
-                                },
-                                "shape": {
-                                    "value": "M0,0.2L0.2351,0.3236 0.1902,0.0618 0.3804,-0.1236 0.1175,-0.1618 0,-0.4 -0.1175,-0.1618 -0.3804,-0.1236 -0.1902,0.0618 -0.2351,0.3236 0,0.2Z"
-                                }
-                            }
-                        }
+                    "opacity": {
+                        "value": 0.7
                     }
                 }
-            ]
+            }
+        }
+    ],
+    "scales": [
+        {
+            "name": "x",
+            "type": "linear",
+            "domain": {
+                "data": "source_0",
+                "field": "Horsepower"
+            },
+            "range": [
+                0,
+                200
+            ],
+            "round": true,
+            "nice": true,
+            "zero": true
+        },
+        {
+            "name": "y",
+            "type": "linear",
+            "domain": {
+                "data": "source_0",
+                "field": "Miles_per_Gallon"
+            },
+            "range": [
+                200,
+                0
+            ],
+            "round": true,
+            "nice": true,
+            "zero": true
+        },
+        {
+            "name": "size",
+            "type": "linear",
+            "domain": {
+                "data": "source_0",
+                "field": "Weight_in_lbs"
+            },
+            "range": [
+                0,
+                361
+            ],
+            "nice": false,
+            "zero": true
+        },
+        {
+            "name": "color",
+            "type": "ordinal",
+            "domain": {
+                "data": "source_0",
+                "field": "Cylinders",
+                "sort": true
+            },
+            "range": "category"
+        }
+    ],
+    "axes": [
+        {
+            "scale": "x",
+            "format": "s",
+            "orient": "bottom",
+            "tickCount": 5,
+            "title": "Horsepower",
+            "zindex": 1
+        },
+        {
+            "scale": "x",
+            "domain": false,
+            "format": "s",
+            "grid": true,
+            "labels": false,
+            "orient": "bottom",
+            "tickCount": 5,
+            "ticks": false,
+            "zindex": 0,
+            "gridScale": "y"
+        },
+        {
+            "scale": "y",
+            "format": "s",
+            "orient": "left",
+            "title": "Miles_per_Gallon",
+            "zindex": 1
+        },
+        {
+            "scale": "y",
+            "domain": false,
+            "format": "s",
+            "grid": true,
+            "labels": false,
+            "orient": "left",
+            "ticks": false,
+            "zindex": 0,
+            "gridScale": "x"
+        }
+    ],
+    "legends": [
+        {
+            "stroke": "color",
+            "title": "Cylinders",
+            "encode": {
+                "symbols": {
+                    "update": {
+                        "shape": {
+                            "value": "M0,0.2L0.2351,0.3236 0.1902,0.0618 0.3804,-0.1236 0.1175,-0.1618 0,-0.4 -0.1175,-0.1618 -0.3804,-0.1236 -0.1902,0.0618 -0.2351,0.3236 0,0.2Z"
+                        }
+                    }
+                }
+            }
+        },
+        {
+            "size": "size",
+            "format": "s",
+            "title": "Weight_in_lbs",
+            "encode": {
+                "symbols": {
+                    "update": {
+                        "stroke": {
+                            "value": "#4c78a8"
+                        },
+                        "shape": {
+                            "value": "M0,0.2L0.2351,0.3236 0.1902,0.0618 0.3804,-0.1236 0.1175,-0.1618 0,-0.4 -0.1175,-0.1618 -0.3804,-0.1236 -0.1902,0.0618 -0.2351,0.3236 0,0.2Z"
+                        }
+                    }
+                }
+            }
         }
     ]
 }

@@ -3,26 +3,6 @@
     "description": "Area chart showing weight of cars over time (vertical).",
     "autosize": "pad",
     "padding": 5,
-    "signals": [
-        {
-            "name": "width",
-            "update": "data('layout')[0].width"
-        },
-        {
-            "name": "height",
-            "update": "data('layout')[0].height"
-        },
-        {
-            "name": "unit",
-            "value": {},
-            "on": [
-                {
-                    "events": "mousemove",
-                    "update": "group()._id ? group() : unit"
-                }
-            ]
-        }
-    ],
     "data": [
         {
             "name": "source_0",
@@ -64,156 +44,135 @@
                     }
                 }
             ]
+        }
+    ],
+    "signals": [
+        {
+            "name": "width",
+            "update": "200"
         },
         {
-            "name": "layout",
-            "values": [
-                {}
-            ],
-            "transform": [
+            "name": "height",
+            "update": "200"
+        },
+        {
+            "name": "unit",
+            "value": {},
+            "on": [
                 {
-                    "type": "formula",
-                    "as": "width",
-                    "expr": "200"
-                },
-                {
-                    "type": "formula",
-                    "as": "height",
-                    "expr": "200"
+                    "events": "mousemove",
+                    "update": "group()._id ? group() : unit"
                 }
             ]
         }
     ],
     "marks": [
         {
-            "name": "main-group",
-            "type": "group",
-            "description": "Area chart showing weight of cars over time (vertical).",
+            "name": "marks",
+            "type": "area",
             "from": {
-                "data": "layout"
+                "data": "source_0"
             },
             "encode": {
                 "update": {
-                    "width": {
-                        "field": "width"
-                    },
-                    "height": {
-                        "field": "height"
-                    },
-                    "fill": {
-                        "value": "transparent"
-                    }
-                }
-            },
-            "marks": [
-                {
-                    "name": "marks",
-                    "type": "area",
-                    "from": {
-                        "data": "source_0"
-                    },
-                    "encode": {
-                        "update": {
-                            "x": {
-                                "scale": "x",
-                                "field": "sum_Weight_in_lbs"
-                            },
-                            "y": {
-                                "scale": "y",
-                                "field": "year_Year"
-                            },
-                            "x2": {
-                                "scale": "x",
-                                "value": 0
-                            },
-                            "fill": {
-                                "value": "#4c78a8"
-                            },
-                            "orient": {
-                                "value": "horizontal"
-                            }
-                        }
-                    }
-                }
-            ],
-            "scales": [
-                {
-                    "name": "x",
-                    "type": "linear",
-                    "domain": {
-                        "data": "source_0",
+                    "x": {
+                        "scale": "x",
                         "field": "sum_Weight_in_lbs"
                     },
-                    "range": [
-                        0,
-                        200
-                    ],
-                    "round": true,
-                    "nice": true,
-                    "zero": true
-                },
-                {
-                    "name": "y",
-                    "type": "time",
-                    "domain": {
-                        "data": "source_0",
+                    "y": {
+                        "scale": "y",
                         "field": "year_Year"
                     },
-                    "range": [
-                        200,
-                        0
-                    ],
-                    "round": true,
-                    "nice": "year"
+                    "x2": {
+                        "scale": "x",
+                        "value": 0
+                    },
+                    "fill": {
+                        "value": "#4c78a8"
+                    },
+                    "orient": {
+                        "value": "horizontal"
+                    }
                 }
+            }
+        }
+    ],
+    "scales": [
+        {
+            "name": "x",
+            "type": "linear",
+            "domain": {
+                "data": "source_0",
+                "field": "sum_Weight_in_lbs"
+            },
+            "range": [
+                0,
+                200
             ],
-            "axes": [
-                {
-                    "scale": "x",
-                    "format": "s",
-                    "orient": "bottom",
-                    "tickCount": 5,
-                    "title": "SUM(Weight_in_lbs)",
-                    "zindex": 1
-                },
-                {
-                    "scale": "x",
-                    "domain": false,
-                    "format": "s",
-                    "grid": true,
-                    "labels": false,
-                    "orient": "bottom",
-                    "tickCount": 5,
-                    "ticks": false,
-                    "zindex": 0,
-                    "gridScale": "y"
-                },
-                {
-                    "scale": "y",
-                    "orient": "left",
-                    "title": "YEAR(Year)",
-                    "zindex": 1,
-                    "encode": {
-                        "labels": {
-                            "update": {
-                                "text": {
-                                    "signal": "timeFormat(datum.value, '%Y')"
-                                }
-                            }
+            "round": true,
+            "nice": true,
+            "zero": true
+        },
+        {
+            "name": "y",
+            "type": "time",
+            "domain": {
+                "data": "source_0",
+                "field": "year_Year"
+            },
+            "range": [
+                200,
+                0
+            ],
+            "round": true,
+            "nice": "year"
+        }
+    ],
+    "axes": [
+        {
+            "scale": "x",
+            "format": "s",
+            "orient": "bottom",
+            "tickCount": 5,
+            "title": "SUM(Weight_in_lbs)",
+            "zindex": 1
+        },
+        {
+            "scale": "x",
+            "domain": false,
+            "format": "s",
+            "grid": true,
+            "labels": false,
+            "orient": "bottom",
+            "tickCount": 5,
+            "ticks": false,
+            "zindex": 0,
+            "gridScale": "y"
+        },
+        {
+            "scale": "y",
+            "orient": "left",
+            "title": "YEAR(Year)",
+            "zindex": 1,
+            "encode": {
+                "labels": {
+                    "update": {
+                        "text": {
+                            "signal": "timeFormat(datum.value, '%Y')"
                         }
                     }
-                },
-                {
-                    "scale": "y",
-                    "domain": false,
-                    "grid": true,
-                    "labels": false,
-                    "orient": "left",
-                    "ticks": false,
-                    "zindex": 0,
-                    "gridScale": "x"
                 }
-            ]
+            }
+        },
+        {
+            "scale": "y",
+            "domain": false,
+            "grid": true,
+            "labels": false,
+            "orient": "left",
+            "ticks": false,
+            "zindex": 0,
+            "gridScale": "x"
         }
     ]
 }

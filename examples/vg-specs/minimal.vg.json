@@ -2,14 +2,26 @@
     "$schema": "http://vega.github.io/schema/vega/v3.0.json",
     "autosize": "pad",
     "padding": 5,
+    "data": [
+        {
+            "name": "source_0",
+            "values": [
+                {}
+            ],
+            "format": {
+                "type": "json",
+                "parse": {}
+            }
+        }
+    ],
     "signals": [
         {
             "name": "width",
-            "update": "data('layout')[0].width"
+            "update": "21"
         },
         {
             "name": "height",
-            "update": "data('layout')[0].height"
+            "update": "21"
         },
         {
             "name": "unit",
@@ -22,85 +34,33 @@
             ]
         }
     ],
-    "data": [
-        {
-            "name": "source_0",
-            "values": [
-                {}
-            ],
-            "format": {
-                "type": "json",
-                "parse": {}
-            }
-        },
-        {
-            "name": "layout",
-            "values": [
-                {}
-            ],
-            "transform": [
-                {
-                    "type": "formula",
-                    "as": "width",
-                    "expr": "21"
-                },
-                {
-                    "type": "formula",
-                    "as": "height",
-                    "expr": "21"
-                }
-            ]
-        }
-    ],
     "marks": [
         {
-            "name": "main-group",
-            "type": "group",
+            "name": "marks",
+            "type": "symbol",
+            "role": "point",
             "from": {
-                "data": "layout"
+                "data": "source_0"
             },
             "encode": {
                 "update": {
-                    "width": {
-                        "field": "width"
+                    "x": {
+                        "value": 10.5
                     },
-                    "height": {
-                        "field": "height"
+                    "y": {
+                        "value": 10.5
+                    },
+                    "stroke": {
+                        "value": "#4c78a8"
                     },
                     "fill": {
                         "value": "transparent"
-                    }
-                }
-            },
-            "marks": [
-                {
-                    "name": "marks",
-                    "type": "symbol",
-                    "role": "point",
-                    "from": {
-                        "data": "source_0"
                     },
-                    "encode": {
-                        "update": {
-                            "x": {
-                                "value": 10.5
-                            },
-                            "y": {
-                                "value": 10.5
-                            },
-                            "stroke": {
-                                "value": "#4c78a8"
-                            },
-                            "fill": {
-                                "value": "transparent"
-                            },
-                            "opacity": {
-                                "value": 0.7
-                            }
-                        }
+                    "opacity": {
+                        "value": 0.7
                     }
                 }
-            ]
+            }
         }
     ]
 }
