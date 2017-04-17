@@ -1,17 +1,17 @@
 import {FieldDef} from './fielddef';
 
 // TODO: add more facet properties
-export type FacetFieldDef = FieldDef;
+export type FacetFieldDef<F> = FieldDef<F>;
 
-export interface Facet {
+export interface Facet<F> {
 
   /**
    * Vertical facets for trellis plots.
    */
-  row?: FacetFieldDef;
+  row?: FacetFieldDef<F>;
 
   /**
    * Horizontal facets for trellis plots.
    */
-  column?: FacetFieldDef;
+  column?: FacetFieldDef<F>;
 }

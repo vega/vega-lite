@@ -11,7 +11,7 @@ import {VgAxis} from '../../vega.schema';
 import {numberFormat} from '../common';
 import {UnitModel} from '../unit';
 
-export function format(specifiedAxis: Axis, channel: Channel, fieldDef: FieldDef, config: Config) {
+export function format(specifiedAxis: Axis, channel: Channel, fieldDef: FieldDef<string>, config: Config) {
   return numberFormat(fieldDef, specifiedAxis.format, config, channel);
 }
 
@@ -72,7 +72,7 @@ export function orient(specifiedAxis: Axis, channel: Channel) {
   throw new Error(log.message.INVALID_CHANNEL_FOR_AXIS);
 }
 
-export function tickCount(specifiedAxis: Axis, channel: Channel, fieldDef: FieldDef) {
+export function tickCount(specifiedAxis: Axis, channel: Channel, fieldDef: FieldDef<string>) {
   const count = specifiedAxis.tickCount;
   if (count !== undefined) {
     return count;
@@ -87,7 +87,7 @@ export function tickCount(specifiedAxis: Axis, channel: Channel, fieldDef: Field
   return undefined;
 }
 
-export function title(specifiedAxis: Axis, fieldDef: FieldDef, config: Config, isGridAxis: boolean) {
+export function title(specifiedAxis: Axis, fieldDef: FieldDef<string>, config: Config, isGridAxis: boolean) {
   if (isGridAxis) {
     return undefined;
   }

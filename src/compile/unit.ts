@@ -24,10 +24,11 @@ import {parseLegendComponent} from './legend/parse';
 import {initEncoding, initMarkDef} from './mark/init';
 import {parseMark} from './mark/mark';
 import {Model, ModelWithField} from './model';
-import {RepeatValues} from './repeat';
+import {RepeatValues, resolveRepeat} from './repeat';
 import initScale from './scale/init';
 import parseScaleComponent from './scale/parse';
 import {assembleUnitSelectionData, assembleUnitSelectionMarks, assembleUnitSelectionSignals, parseUnitSelection} from './selection/selection';
+
 
 /**
  * Internal model of Vega-Lite specification for the compiler.
@@ -48,7 +49,7 @@ export class UnitModel extends ModelWithField {
   public readonly height: number;
 
   public readonly markDef: MarkDef;
-  public readonly encoding: Encoding;
+  public readonly encoding: Encoding<string>;
 
   protected scales: Dict<Scale> = {};
 
@@ -76,7 +77,7 @@ export class UnitModel extends ModelWithField {
       parent ? parent['height'] : undefined; // only exists if parent is layer
 
     const mark = isMarkDef(spec.mark) ? spec.mark.type : spec.mark;
-    const encoding = this.encoding = normalizeEncoding(spec.encoding || {}, mark);
+    const encoding = this.encoding = normalizeEncoding(resolveRepeat(spec.encoding || {}, repeatValues), mark);
 
     // calculate stack properties
     this.stack = stack(mark, encoding, this.config.stack);
@@ -138,7 +139,7 @@ export class UnitModel extends ModelWithField {
     }
   }
 
-  private initScales(mark: Mark, encoding: Encoding, topLevelWidth:number, topLevelHeight: number): Dict<Scale> {
+  private initScales(mark: Mark, encoding: Encoding<string>, topLevelWidth:number, topLevelHeight: number): Dict<Scale> {
     const xyRangeSteps: number[] = [];
 
     return UNIT_SCALE_CHANNELS.reduce((scales, channel) => {
@@ -203,7 +204,7 @@ export class UnitModel extends ModelWithField {
     return {width, height};
   }
 
-  private initAxes(encoding: Encoding): Dict<Axis> {
+  private initAxes(encoding: Encoding<string>): Dict<Axis> {
     return [X, Y].reduce(function(_axis, channel) {
       // Position Axis
 
@@ -225,7 +226,7 @@ export class UnitModel extends ModelWithField {
     }, {});
   }
 
-  private initLegend(encoding: Encoding): Dict<Legend> {
+  private initLegend(encoding: Encoding<string>): Dict<Legend> {
     return NONSPATIAL_SCALE_CHANNELS.reduce(function(_legend, channel) {
       const channelDef = encoding[channel];
       if (isFieldDef(channelDef)) {
@@ -344,7 +345,7 @@ export class UnitModel extends ModelWithField {
     return vlEncoding.channelHasField(this.encoding, channel);
   }
 
-  public fieldDef(channel: Channel): FieldDef {
+  public fieldDef(channel: Channel): FieldDef<string> {
     // TODO: remove this || {}
     // Currently we have it to prevent null pointer exception.
     return this.encoding[channel] || {};

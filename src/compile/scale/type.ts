@@ -19,7 +19,7 @@ export type RangeType = 'continuous' | 'discrete' | 'flexible' | undefined;
  */
 // NOTE: CompassQL uses this method.
 export default function type(
-  specifiedType: ScaleType, channel: Channel, fieldDef: FieldDef, mark: Mark,
+  specifiedType: ScaleType, channel: Channel, fieldDef: FieldDef<string>, mark: Mark,
   hasTopLevelSize: boolean, specifiedRangeStep: number, scaleConfig: ScaleConfig): ScaleType {
 
   const defaultScaleType = defaultType(channel, fieldDef, mark, hasTopLevelSize, specifiedRangeStep, scaleConfig);
@@ -50,7 +50,7 @@ export default function type(
 /**
  * Determine appropriate default scale type.
  */
-function defaultType(channel: Channel, fieldDef: FieldDef, mark: Mark,
+function defaultType(channel: Channel, fieldDef: FieldDef<string>, mark: Mark,
   hasTopLevelSize: boolean, specifiedRangeStep: number, scaleConfig: ScaleConfig): ScaleType {
 
   if (util.contains(['row', 'column'], channel)) {
@@ -149,7 +149,7 @@ function haveRangeStep(hasTopLevelSize: boolean, specifiedRangeStep: number, sca
   return !!scaleConfig.rangeStep;
 }
 
-export function fieldDefMatchScaleType(specifiedType: ScaleType, fieldDef: FieldDef):boolean {
+export function fieldDefMatchScaleType(specifiedType: ScaleType, fieldDef: FieldDef<string>):boolean {
   const type: Type = fieldDef.type;
   if (contains([Type.ORDINAL, Type.NOMINAL], type)) {
     return specifiedType === undefined || hasDiscreteDomain(specifiedType);

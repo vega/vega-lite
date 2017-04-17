@@ -330,7 +330,7 @@ export abstract class Model {
 
 /** Abstract class for UnitModel and FacetModel.  Both of which can contain fieldDefs as a part of its own specification. */
 export abstract class ModelWithField extends Model {
-  public abstract fieldDef(channel: Channel): FieldDef;
+  public abstract fieldDef(channel: Channel): FieldDef<string>;
 
   /** Get "field" reference for vega */
   public field(channel: Channel, opt: FieldRefOption = {}) {
@@ -352,14 +352,14 @@ export abstract class ModelWithField extends Model {
 
   protected abstract getMapping(): {[key: string]: any};
 
-  public reduceFieldDef<T, U>(f: (acc: U, fd: FieldDef, c: Channel) => U, init: T, t?: any) {
-    return reduce(this.getMapping(), (acc:U , cd: ChannelDef, c: Channel) => {
+  public reduceFieldDef<T, U>(f: (acc: U, fd: FieldDef<string>, c: Channel) => U, init: T, t?: any) {
+    return reduce(this.getMapping(), (acc:U , cd: ChannelDef<string>, c: Channel) => {
       return isFieldDef(cd) ? f(acc, cd, c) : acc;
     }, init, t);
   }
 
-  public forEachFieldDef(f: (fd: FieldDef, c: Channel) => void, t?: any) {
-    forEach(this.getMapping(), (cd: ChannelDef, c: Channel) => {
+  public forEachFieldDef(f: (fd: FieldDef<string>, c: Channel) => void, t?: any) {
+    forEach(this.getMapping(), (cd: ChannelDef<string>, c: Channel) => {
       if (isFieldDef(cd)) {
         f(cd, c);
       }

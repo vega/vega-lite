@@ -13,7 +13,7 @@ function numberFormatExpr(expr: string, format: string) {
   return `format(${expr}, '${format}')`;
 }
 
-function rangeFormula(model: ModelWithField, fieldDef: FieldDef, channel: Channel) {
+function rangeFormula(model: ModelWithField, fieldDef: FieldDef<string>, channel: Channel) {
     const discreteDomain = model.hasDiscreteDomain(channel);
 
     if (discreteDomain) {
@@ -56,7 +56,7 @@ export class BinNode extends DataFlowNode {
   }
 
   public static make(model: ModelWithField) {
-    const bins = model.reduceFieldDef((binComponent: Dict<BinComponent>, fieldDef: FieldDef, channel: Channel) => {
+    const bins = model.reduceFieldDef((binComponent: Dict<BinComponent>, fieldDef, channel) => {
       const fieldDefBin = model.fieldDef(channel).bin;
       if (fieldDefBin) {
         const bin: Bin = isBoolean(fieldDefBin) ? {} : fieldDefBin;

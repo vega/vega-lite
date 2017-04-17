@@ -47,7 +47,7 @@ describe('UnitModel', function() {
             ]
           }
         });
-        assert.deepEqual<FieldDef | FieldDef[]>(model.encoding.detail, [
+        assert.deepEqual<FieldDef<string> | FieldDef<string>[]>(model.encoding.detail, [
           {field: 'a', type: 'ordinal'},
           {value: 'b'}
         ]);

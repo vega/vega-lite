@@ -5,7 +5,7 @@ import {Config} from './config';
 import {Data} from './data';
 import {channelHasField, Encoding, EncodingWithFacet, isRanged} from './encoding';
 import {Facet} from './facet';
-import {FieldDef} from './fielddef';
+import { FieldDef, Field } from './fielddef';
 
 import {COLUMN, ROW, X, X2, Y, Y2} from './channel';
 import {CompositeMark} from './compositemark';
@@ -57,7 +57,7 @@ export interface BaseSpec {
   transform?: Transform[];
 }
 
-export interface GenericUnitSpec<M, E extends Encoding> extends BaseSpec {
+export interface GenericUnitSpec<M, E extends Encoding<any>> extends BaseSpec {
   // FIXME description for top-level width
   width?: number;
 
@@ -82,17 +82,17 @@ export interface GenericUnitSpec<M, E extends Encoding> extends BaseSpec {
   selection?: {[name: string]: SelectionDef};
 }
 
-export type UnitSpec = GenericUnitSpec<Mark | MarkDef, Encoding>;
+export type UnitSpec = GenericUnitSpec<Mark | MarkDef, Encoding<Field>>;
 
 /**
  * Unit spec that can contain composite mark
  */
-export type CompositeUnitSpec = GenericUnitSpec<CompositeMark | Mark | MarkDef, Encoding>;
+export type CompositeUnitSpec = GenericUnitSpec<CompositeMark | Mark | MarkDef, Encoding<Field>>;
 
 /**
  * Unit spec that can contain composite mark and row or column channels.
  */
-export type FacetedCompositeUnitSpec = GenericUnitSpec<CompositeMark | Mark | MarkDef, EncodingWithFacet>;
+export type FacetedCompositeUnitSpec = GenericUnitSpec<CompositeMark | Mark | MarkDef, EncodingWithFacet<Field>>;
 
 export interface GenericLayerSpec<U extends GenericUnitSpec<any, any>> extends BaseSpec {
   // FIXME description for top-level width
@@ -110,7 +110,7 @@ export interface GenericLayerSpec<U extends GenericUnitSpec<any, any>> extends B
 export type LayerSpec = GenericLayerSpec<UnitSpec>;
 
 export interface GenericFacetSpec<U extends GenericUnitSpec<any, any>> extends BaseSpec {
-  facet: Facet;
+  facet: Facet<Field>;
 
   // TODO: support facet of facet
   spec: GenericLayerSpec<U> | U;
@@ -231,12 +231,12 @@ function normalizeFacetedUnit(spec: FacetedCompositeUnitSpec, config: Config): F
   };
 }
 
-function isNonFacetUnitSpecWithPrimitiveMark(spec: GenericUnitSpec<string | MarkDef, Encoding>):
-  spec is GenericUnitSpec<Mark, Encoding> {
+function isNonFacetUnitSpecWithPrimitiveMark(spec: GenericUnitSpec<string | MarkDef, Encoding<Field>>):
+  spec is GenericUnitSpec<Mark, Encoding<Field>> {
     return isPrimitiveMark(spec.mark);
 }
 
-function normalizeNonFacetUnit(spec: GenericUnitSpec<string | MarkDef, Encoding>, config: Config) {
+function normalizeNonFacetUnit(spec: GenericUnitSpec<string | MarkDef, Encoding<Field>>, config: Config) {
   if (isNonFacetUnitSpecWithPrimitiveMark(spec)) {
     // TODO: thoroughly test
     if (isRanged(spec.encoding)) {
@@ -332,7 +332,7 @@ function normalizeOverlay(spec: UnitSpec, overlayWithPoint: boolean, overlayWith
 // TODO: add vl.spec.validate & move stuff from vl.validate to here
 
 /* Accumulate non-duplicate fieldDefs in a dictionary */
-function accumulate(dict: any, fieldDefs: FieldDef[]): any {
+function accumulate(dict: any, fieldDefs: FieldDef<Field>[]): any {
   fieldDefs.forEach(function(fieldDef) {
     // Consider only pure fieldDef properties (ignoring scale, axis, legend)
     const pureFieldDef = ['field', 'type', 'value', 'timeUnit', 'bin', 'aggregate'].reduce((f, key) => {
@@ -371,7 +371,7 @@ function fieldDefIndex(spec: GenericSpec<GenericUnitSpec<any, any>>, dict: any =
 }
 
 /* Returns all non-duplicate fieldDefs in a spec in a flat array */
-export function fieldDefs(spec: GenericSpec<GenericUnitSpec<any, any>>): FieldDef[] {
+export function fieldDefs(spec: GenericSpec<GenericUnitSpec<any, any>>): FieldDef<Field>[] {
   return vals(fieldDefIndex(spec));
 }
 

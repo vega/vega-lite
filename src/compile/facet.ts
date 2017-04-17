@@ -3,8 +3,8 @@ import {Channel, COLUMN, ROW, X, Y} from '../channel';
 import {Config} from '../config';
 import {MAIN} from '../data';
 import {reduce} from '../encoding';
-import {Facet} from '../facet';
-import {FieldDef, normalize, title as fieldDefTitle} from '../fielddef';
+import { Facet } from '../facet';
+import {FieldDef, normalize, title as fieldDefTitle, Field} from '../fielddef';
 import {Legend} from '../legend';
 import * as log from '../log';
 import {Scale} from '../scale';
@@ -28,13 +28,13 @@ import {assembleData, assembleFacetData, FACET_SCALE_PREFIX} from './data/assemb
 import {parseData} from './data/parse';
 import {getTextHeader} from './layout/header';
 import {Model, ModelWithField} from './model';
-import {RepeatValues} from './repeat';
+import { RepeatValues, resolveRepeat } from './repeat';
 import initScale from './scale/init';
 import parseScaleComponent from './scale/parse';
 import {UnitModel} from './unit';
 
 export class FacetModel extends ModelWithField {
-  public readonly facet: Facet;
+  public readonly facet: Facet<string>;
 
   public readonly child: Model;
 
@@ -43,15 +43,17 @@ export class FacetModel extends ModelWithField {
   constructor(spec: FacetSpec, parent: Model, parentGivenName: string, repeatValues: RepeatValues, config: Config) {
     super(spec, parent, parentGivenName, config);
 
-    const child  = this.child = buildModel(spec.spec, this, this.getName('child'), repeatValues, config);
-    this.children = [child];
+    this.child = buildModel(spec.spec, this, this.getName('child'), repeatValues, config);
+    this.children = [this.child];
 
-    const facet  = this.facet = this.initFacet(spec.facet);
+    const facet = resolveRepeat(spec.facet, repeatValues);
+
+    this.facet = this.initFacet(facet);
   }
 
-  private initFacet(facet: Facet) {
+  private initFacet(facet: Facet<string>): Facet<string> {
     // clone to prevent side effect to the original spec
-    return reduce(facet, function(normalizedFacet, fieldDef: FieldDef, channel: Channel) {
+    return reduce(facet, function(normalizedFacet, fieldDef: FieldDef<string>, channel: Channel) {
       if (!contains([ROW, COLUMN], channel)) {
         // Drop unsupported channel
         log.warn(log.message.incompatibleChannel(channel, 'facet'));
@@ -77,7 +79,7 @@ export class FacetModel extends ModelWithField {
     return true;
   }
 
-  public fieldDef(channel: Channel): FieldDef {
+  public fieldDef(channel: Channel): FieldDef<string> {
     return this.facet[channel];
   }
 

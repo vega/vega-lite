@@ -1,5 +1,4 @@
 import {SpawnSyncOptionsWithStringEncoding} from 'child_process';
-import {forEach} from '../../encoding';
 import {field, FieldDef} from '../../fielddef';
 import {fieldExpr, TimeUnit} from '../../timeunit';
 import {TEMPORAL} from '../../type';
@@ -26,7 +25,7 @@ export class TimeUnitNode extends DataFlowNode {
   }
 
   public static make(model: ModelWithField) {
-    const formula = model.reduceFieldDef((timeUnitComponent: TimeUnitComponent, fieldDef: FieldDef) => {
+    const formula = model.reduceFieldDef((timeUnitComponent: TimeUnitComponent, fieldDef) => {
       if (fieldDef.type === TEMPORAL && fieldDef.timeUnit) {
         const f = field(fieldDef);
         timeUnitComponent[f] = {

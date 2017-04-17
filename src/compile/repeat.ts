@@ -1,21 +1,41 @@
-import {Channel} from '../channel';
-import {CellConfig, Config} from '../config';
-import {FieldDef} from '../fielddef';
-import {FILL_STROKE_CONFIG} from '../mark';
-import {Repeat} from '../repeat';
-import {RepeatSpec} from '../spec';
-import {Dict, duplicate, flatten, vals} from '../util';
-import {VgData, VgEncodeEntry, VgLayout, VgScale} from '../vega.schema';
-import {applyConfig, buildModel} from './common';
-import {assembleData} from './data/assemble';
-import {assembleLayoutData} from './layout';
-import {Model} from './model';
+import { Channel } from '../channel';
+import { CellConfig, Config } from '../config';
+import { Encoding } from '../encoding';
+import { Facet } from '../facet';
+import { Field, FieldDef, isRepeatRef } from '../fielddef';
+import { Repeat } from '../repeat';
+import { RepeatSpec } from '../spec';
+import { duplicate, vals, Dict } from '../util';
+import { VgData, VgLayout, VgScale } from '../vega.schema';
+import { buildModel } from './common';
+import { assembleData } from './data/assemble';
+import { assembleLayoutData } from './layout';
+import { Model } from './model';
 
 
 export type RepeatValues = {
   row: string,
   column: string
 };
+
+export interface EncodingOrFacet<F> extends Encoding<F>, Facet<F> {}
+
+export function resolveRepeat(encoding: EncodingOrFacet<Field>, repeatValues: RepeatValues): EncodingOrFacet<string> {
+  const out: EncodingOrFacet<string> = {};
+  for (const channel in encoding) {
+    if (encoding.hasOwnProperty(channel)) {
+      const fieldDef: FieldDef<Field> = encoding[channel];
+      const field = fieldDef.field;
+      out[channel] = {
+        ...fieldDef,
+        ...(field ? {
+          field: isRepeatRef(field) ? repeatValues[field.repeat] : field
+        } : {})
+      };
+    }
+  }
+  return out;
+}
 
 export class RepeatModel extends Model {
   public readonly repeat: Repeat;
