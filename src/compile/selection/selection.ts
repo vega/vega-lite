@@ -92,6 +92,7 @@ export function parseUnitSelection(model: UnitModel, selDefs: Dict<SelectionDef>
   return selCmpts;
 }
 
+// FIXME: rename to assembleSelectionUnitSignals
 export function assembleUnitSignals(model: UnitModel, signals: any[]) {
   forEachSelection(model, (selCmpt, selCompiler) => {
     const name = selCmpt.name,
@@ -203,7 +204,7 @@ export function predicate(selCmpt: SelectionComponent, datum?: string): string {
   const store = stringValue(selCmpt.name + STORE),
         op = PREDICATES_OPS[selCmpt.resolve];
   datum = datum || 'datum';
-  return compiler(selCmpt).predicate + `(${store}, parent._id, ${datum}, ${op})`;
+  return compiler(selCmpt).predicate + `(${store}, datum._id, ${datum}, ${op})`;
 }
 
 // Utility functions

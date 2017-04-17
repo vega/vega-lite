@@ -631,7 +631,7 @@
                             },
                             "stroke": [
                                 {
-                                    "test": "vlInterval(\"layer_1_brush_store\", parent._id, datum, \"union\", \"all\")",
+                                    "test": "vlInterval(\"layer_1_brush_store\", datum._id, datum, \"union\", \"all\")",
                                     "value": "grey"
                                 },
                                 {
@@ -670,7 +670,7 @@
                             },
                             "fill": [
                                 {
-                                    "test": "!vlInterval(\"layer_1_brush_store\", parent._id, datum, \"union\", \"all\")",
+                                    "test": "!vlInterval(\"layer_1_brush_store\", datum._id, datum, \"union\", \"all\")",
                                     "value": "grey"
                                 },
                                 {
@@ -680,7 +680,7 @@
                             ],
                             "size": [
                                 {
-                                    "test": "vlPoint(\"layer_0_cyl_store\", parent._id, datum, \"union\", \"all\")",
+                                    "test": "vlPoint(\"layer_0_cyl_store\", datum._id, datum, \"union\", \"all\")",
                                     "value": 150
                                 },
                                 {

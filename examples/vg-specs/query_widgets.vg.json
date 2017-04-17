@@ -142,7 +142,7 @@
                     },
                     "fill": [
                         {
-                            "test": "!vlPoint(\"CylYr_store\", parent._id, datum, \"union\", \"all\")",
+                            "test": "!vlPoint(\"CylYr_store\", datum._id, datum, \"union\", \"all\")",
                             "value": "grey"
                         },
                         {

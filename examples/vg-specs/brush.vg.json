@@ -358,7 +358,7 @@
                     },
                     "stroke": [
                         {
-                            "test": "!vlInterval(\"brush_store\", parent._id, datum, \"union\", \"all\")",
+                            "test": "!vlInterval(\"brush_store\", datum._id, datum, \"union\", \"all\")",
                             "value": "grey"
                         },
                         {
