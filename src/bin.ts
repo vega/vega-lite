@@ -1,7 +1,7 @@
 import {Channel, COLUMN, ROW, SHAPE, SIZE} from './channel';
 import {isBoolean} from './util';
 
-export interface BinBase {
+export interface BaseBin {
   /**
    * The number base to use for automatic bin determination (default is base 10).
    *
@@ -49,7 +49,7 @@ export interface BinBase {
 /**
  * Binning properties or boolean flag for determining whether to bin data or not.
  */
-export interface Bin extends BinBase {
+export interface Bin extends BaseBin {
   /**
    * A two-element (`[min, max]`) array indicating the range of desired bin values.
    * @minItems 2

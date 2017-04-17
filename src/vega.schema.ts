@@ -1,4 +1,4 @@
-import {BinBase} from './bin';
+import {BaseBin} from './bin';
 import {NiceTime, ScaleType} from './scale';
 import {StackOffset} from './stack';
 import {isArray} from './util';
@@ -129,7 +129,7 @@ export type VgEncodeEntry = any;
 export type VgAxis = any;
 export type VgLegend = any;
 
-export interface VgBinTransform extends BinBase {
+export interface VgBinTransform extends BaseBin {
   type: 'bin';
   extent?: number[] | {signal: string};
   field: string;
