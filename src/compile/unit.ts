@@ -24,7 +24,7 @@ import {parseLegendComponent} from './legend/parse';
 import {initEncoding, initMarkDef} from './mark/init';
 import {parseMark} from './mark/mark';
 import {Model, ModelWithField} from './model';
-import {encodingRepeatResolve, RepeatValues} from './repeat';
+import {RepeaterValue, replaceRepeaterInEncoding} from './repeat';
 import initScale from './scale/init';
 import parseScaleComponent from './scale/parse';
 import {assembleUnitSelectionData, assembleUnitSelectionMarks, assembleUnitSelectionSignals, parseUnitSelection} from './selection/selection';
@@ -61,7 +61,7 @@ export class UnitModel extends ModelWithField {
   protected readonly selection: Dict<SelectionDef> = {};
   public children: Model[] = [];
 
-  constructor(spec: UnitSpec, parent: Model, parentGivenName: string, repeatValues: RepeatValues, config: Config) {
+  constructor(spec: UnitSpec, parent: Model, parentGivenName: string, repeater: RepeaterValue, config: Config) {
     super(spec, parent, parentGivenName, config);
 
     // FIXME(#2041): copy config.facet.cell to config.cell -- this seems incorrect and should be rewritten
@@ -76,7 +76,7 @@ export class UnitModel extends ModelWithField {
       parent ? parent['height'] : undefined; // only exists if parent is layer
 
     const mark = isMarkDef(spec.mark) ? spec.mark.type : spec.mark;
-    const encoding = this.encoding = normalizeEncoding(encodingRepeatResolve(spec.encoding || {}, repeatValues), mark);
+    const encoding = this.encoding = normalizeEncoding(replaceRepeaterInEncoding(spec.encoding || {}, repeater), mark);
 
     // calculate stack properties
     this.stack = stack(mark, encoding, this.config.stack);

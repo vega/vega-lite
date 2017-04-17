@@ -15,35 +15,35 @@ import {assembleLayoutData} from './layout';
 import {Model} from './model';
 
 
-export type RepeatValues = {
+export type RepeaterValue = {
   row?: string,
   column?: string
 };
 
-export function facetRepeatResolve(facet: Facet<Field>, repeatValues: RepeatValues): Facet<string> {
-  return resolveRepeat(facet, repeatValues);
+export function replaceRepeaterInFacet(facet: Facet<Field>, repeater: RepeaterValue): Facet<string> {
+  return replaceRepeater(facet, repeater);
 }
 
-export function encodingRepeatResolve(encoding: Encoding<Field>, repeatValues: RepeatValues): Encoding<string> {
-  return resolveRepeat(encoding, repeatValues);
+export function replaceRepeaterInEncoding(encoding: Encoding<Field>, repeater: RepeaterValue): Encoding<string> {
+  return replaceRepeater(encoding, repeater);
 }
 
 type EncodingOrFacet<F> = Encoding<F> | Facet<F>;
 
-function resolveRepeat(encoding: EncodingOrFacet<Field>, repeatValues: RepeatValues): EncodingOrFacet<string> {
+function replaceRepeater(mapping: EncodingOrFacet<Field>, repeater: RepeaterValue): EncodingOrFacet<string> {
   const out: EncodingOrFacet<string> = {};
-  for (const channel in encoding) {
-    if (encoding.hasOwnProperty(channel)) {
-      const fieldDef: FieldDef<Field> = encoding[channel];
+  for (const channel in mapping) {
+    if (mapping.hasOwnProperty(channel)) {
+      const fieldDef: FieldDef<Field> = mapping[channel];
       out[channel] = {...fieldDef};
 
       const field = fieldDef.field;
       if (isRepeatRef(field)) {
-        if (field.repeat in repeatValues) {
-          out[channel].field = repeatValues[field.repeat];
+        if (field.repeat in repeater) {
+          out[channel].field = repeater[field.repeat];
         } else {
           log.warn(log.message.noSuchRepeatedValue(field.repeat));
-          delete out[channel].field;
+          delete out[channel];
         }
       }
     }
@@ -56,50 +56,29 @@ export class RepeatModel extends Model {
 
   public readonly children: Model[];
 
-  /**
-   * Fixed width for the unit visualization.
-   * If undefined (e.g., for ordinal scale), the width of the
-   * visualization will be calculated dynamically.
-   */
-  public readonly width: number;
-
-  /**
-   * Fixed height for the unit visualization.
-   * If undefined (e.g., for ordinal scale), the height of the
-   * visualization will be calculated dynamically.
-   */
-  public readonly height: number;
-
-  constructor(spec: RepeatSpec, parent: Model, parentGivenName: string, repeatValues: RepeatValues, config: Config) {
+  constructor(spec: RepeatSpec, parent: Model, parentGivenName: string, repeatValues: RepeaterValue, config: Config) {
     super(spec, parent, parentGivenName, config);
 
     this.repeat = spec.repeat;
     this.children = this._initChildren(spec, this.repeat, repeatValues, config);
   }
 
-  private _initChildren(spec: RepeatSpec, repeat: Repeat, repeatValues: RepeatValues, config: Config): Model[] {
+  private _initChildren(spec: RepeatSpec, repeat: Repeat, repeater: RepeaterValue, config: Config): Model[] {
     const children: Model[] = [];
-    const row = repeat.row || [repeatValues ? repeatValues.row : null];
-    const column = repeat.column || [repeatValues ? repeatValues.column : null];
+    const row = repeat.row || [repeater ? repeater.row : null];
+    const column = repeat.column || [repeater ? repeater.column : null];
 
     // cross product
-    for (const r in row) {
-      if (row.hasOwnProperty(r)) {
-        const rowField = row[r];
-        for (const c in column) {
-          if (column.hasOwnProperty(c)) {
-            const columnField = column[c];
+    for (const rowField of row) {
+      for (const columnField of column) {
+        const name = (rowField ? '_' + rowField : '') + (columnField ? '_' + columnField : '');
 
-            const name = (rowField ? '_' + rowField : '') + (columnField ? '_' + columnField : '');
+        const childRepeat = {
+          row: rowField,
+          column: columnField
+        };
 
-            const childRepRepeatValues = {
-              row: rowField,
-              column: columnField
-            };
-
-            children.push(buildModel(duplicate(spec.spec), this, this.getName('child' + name), childRepRepeatValues, config));
-          }
-        }
+        children.push(buildModel(spec.spec, this, this.getName('child' + name), childRepeat, config));
       }
     }
 
@@ -189,6 +168,7 @@ export class RepeatModel extends Model {
   }
 
   public assembleLayout(): VgLayout {
+    // TODO: allow customization
     return {
       padding: {row: 10, column: 10, header: 10},
       columns: this.repeat && this.repeat.row ? this.repeat.row.length : 1,

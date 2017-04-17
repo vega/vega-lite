@@ -1,12 +1,12 @@
 import {assert} from 'chai';
-import {encodingRepeatResolve} from '../../src/compile/repeat';
+import {replaceRepeaterInEncoding} from '../../src/compile/repeat';
 import * as log from '../../src/log';
 import {parseRepeatModel} from '../util';
 
 describe('Repeat', function() {
   describe('resolveRepeat', () => {
     it('should resolve repeated fields', () => {
-      const resolved = encodingRepeatResolve({
+      const resolved = replaceRepeaterInEncoding({
         x: {field: {repeat: 'row'}},
         y: {field: 'bar'}
       }, {row: 'foo'});
@@ -19,7 +19,7 @@ describe('Repeat', function() {
 
     it('should show warning if repeat cannot be resolved', () => {
       log.runLocalLogger((localLogger) => {
-        const resolved = encodingRepeatResolve({
+        const resolved = replaceRepeaterInEncoding({
           x: {field: {repeat: 'row'}},
           y: {field: 'bar'}
         }, {column: 'foo'});
