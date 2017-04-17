@@ -65,7 +65,7 @@ export class FacetNode extends DataFlowNode {
 
       // Column needs another data source to calculate cardinality as input to layout
       data.push({
-        name: this.columnName + '-layout',
+        name: this.columnName + '_layout',
         source: this.columnName,
         transform: [{
           type: 'aggregate',

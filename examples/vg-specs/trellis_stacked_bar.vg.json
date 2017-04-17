@@ -67,7 +67,7 @@
             ]
         },
         {
-            "name": "column-layout",
+            "name": "column_layout",
             "source": "column",
             "transform": [
                 {
@@ -121,7 +121,7 @@
                     "header": 10
                 },
                 "columns": {
-                    "signal": "data('column-layout')[0].distinct_year"
+                    "signal": "data('column_layout')[0].distinct_year"
                 },
                 "bounds": "full"
             },
