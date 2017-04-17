@@ -14,7 +14,6 @@ import {Dict, extend, vals} from '../util';
 import {VgAxis, VgData, VgEncodeEntry, VgLayout, VgLegend, VgScale, VgSignal, VgSignalRef, VgValueRef} from '../vega.schema';
 
 import {DataComponent} from './data/index';
-import {LayoutComponent} from './layout';
 import {assembleScale} from './scale/assemble';
 import {SelectionComponent} from './selection/selection';
 import {UnitModel} from './unit';
@@ -26,7 +25,6 @@ import {UnitModel} from './unit';
  */
 export interface Component {
   data: DataComponent;
-  layout: LayoutComponent;
   scales: Dict<VgScale>;
   selection: Dict<SelectionComponent>;
 
@@ -116,14 +114,13 @@ export abstract class Model {
         sources: parent ? parent.component.data.sources : {},
         outputNodes: parent ? parent.component.data.outputNodes : {}
       },
-      layout: null, mark: null, scales: null, axes: null,
+      mark: null, scales: null, axes: null,
       axisGroups: null, legends: null, selection: null
     };
   }
 
   public parse() {
     this.parseData();
-    this.parseLayoutData();
     this.parseScale(); // depends on data name
     this.parseSelection();
     this.parseAxis(); // depends on scale name
@@ -136,8 +133,6 @@ export abstract class Model {
 
   public abstract parseSelection(): void;
 
-  // TODO: remove
-  public abstract parseLayoutData(): void;
 
   public abstract parseScale(): void;
 

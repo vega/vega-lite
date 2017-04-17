@@ -4,35 +4,10 @@ import {assert} from 'chai';
 import {parseUnitModel} from '../../util';
 
 import {X, Y} from '../../../src/channel';
-import {cardinalityExpr, unitSizeExpr} from '../../../src/compile/layout';
+import {unitSizeExpr} from '../../../src/compile/layout';
 import * as log from '../../../src/log';
 
 describe('compile/layout', () => {
-  describe('cardinalityExpr', () => {
-    it('should return correct cardinality expr by default', () => {
-      const model = parseUnitModel({
-        mark: 'point',
-        encoding: {
-          x: {field: 'a', type: 'ordinal'}
-        }
-      });
-
-      const expr = cardinalityExpr(model, X);
-      assert.equal(expr, 'datum["distinct_a"]');
-    });
-
-    it('should return domain length if custom domain is provided', () => {
-      const model = parseUnitModel({
-        mark: 'point',
-        encoding: {
-          x: {field: 'a', type: 'ordinal', scale: {domain: ['a', 'b']}}
-        }
-      });
-      const expr = cardinalityExpr(model, X);
-      assert.equal(expr, '2');
-    });
-  });
-
   describe('unitSizeExpr', () => {
     it('should return correct formula for ordinal-point scale', () => {
       const model = parseUnitModel({

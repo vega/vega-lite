@@ -13,7 +13,6 @@ import {isSignalRefDomain, VgData, VgEncodeEntry, VgLayout, VgScale, VgSignal} f
 import {applyConfig, buildModel} from './common';
 import {assembleData} from './data/assemble';
 import {parseData} from './data/parse';
-import {parseLayerLayout} from './layout';
 import {assembleLayoutLayerSignals} from './layout/index';
 import {Model} from './model';
 import {unionDomains} from './scale/domain';
@@ -68,14 +67,6 @@ export class LayerModel extends Model {
         this.component.selection[key] = child.component.selection[key];
       });
     });
-  }
-
-  public parseLayoutData() {
-    // TODO: correctly union ordinal scales rather than just using the layout of the first child
-    this.children.forEach(child => {
-      child.parseLayoutData();
-    });
-    this.component.layout = parseLayerLayout(this);
   }
 
   public parseScale(this: LayerModel) {

@@ -19,7 +19,6 @@ import {assembleData} from './data/assemble';
 import {parseData} from './data/parse';
 import {FacetModel} from './facet';
 import {LayerModel} from './layer';
-import {parseUnitLayout} from './layout';
 import {assembleLayoutUnitSignals} from './layout/index';
 import {parseLegendComponent} from './legend/parse';
 import {initEncoding, initMarkDef} from './mark/init';
@@ -244,10 +243,6 @@ export class UnitModel extends ModelWithField {
 
   public parseSelection() {
     this.component.selection = parseUnitSelection(this, this.selection);
-  }
-
-  public parseLayoutData() {
-    this.component.layout = parseUnitLayout(this);
   }
 
   public parseScale() {

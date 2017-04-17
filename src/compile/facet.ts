@@ -26,7 +26,6 @@ import {gridShow} from './axis/rules';
 import {buildModel} from './common';
 import {assembleData, assembleFacetData, FACET_SCALE_PREFIX} from './data/assemble';
 import {parseData} from './data/parse';
-import {parseFacetLayout} from './layout';
 import {getTextHeader} from './layout/header';
 import {Model, ModelWithField} from './model';
 import initScale from './scale/init';
@@ -92,11 +91,6 @@ export class FacetModel extends ModelWithField {
     // within its unit.
     this.child.parseSelection();
     this.component.selection = this.child.component.selection;
-  }
-
-  public parseLayoutData() {
-    this.child.parseLayoutData();
-    this.component.layout = parseFacetLayout(this);
   }
 
   public parseScale() {
