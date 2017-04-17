@@ -25,7 +25,7 @@ import {assembleData, assembleFacetData, FACET_SCALE_PREFIX} from './data/assemb
 import {parseData} from './data/parse';
 import {getTextHeader} from './layout/header';
 import {Model, ModelWithField} from './model';
-import {facetRepeatResolve, RepeatValues} from './repeat';
+import {RepeaterValue, replaceRepeaterInFacet} from './repeat';
 import parseScaleComponent from './scale/parse';
 import {UnitModel} from './unit';
 
@@ -36,13 +36,13 @@ export class FacetModel extends ModelWithField {
 
   public readonly children: Model[];
 
-  constructor(spec: FacetSpec, parent: Model, parentGivenName: string, repeatValues: RepeatValues, config: Config) {
+  constructor(spec: FacetSpec, parent: Model, parentGivenName: string, repeater: RepeaterValue, config: Config) {
     super(spec, parent, parentGivenName, config);
 
-    this.child = buildModel(spec.spec, this, this.getName('child'), repeatValues, config);
+    this.child = buildModel(spec.spec, this, this.getName('child'), repeater, config);
     this.children = [this.child];
 
-    const facet: Facet<string> = facetRepeatResolve(spec.facet, repeatValues);
+    const facet: Facet<string> = replaceRepeaterInFacet(spec.facet, repeater);
 
     this.facet = this.initFacet(facet);
   }

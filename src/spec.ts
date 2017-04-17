@@ -17,8 +17,6 @@ import {Transform} from './transform';
 import {contains, duplicate, hash, vals} from './util';
 
 
-/* Package of defining Vega-lite Specification's json schema at its utility functions */
-
 export type TopLevel<S extends BaseSpec> = S & TopLevelProperties & {
   /**
    * URL to JSON schema for this Vega-Lite specification.

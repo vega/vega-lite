@@ -14,7 +14,7 @@ import {Dict, extend, vals} from '../util';
 import {VgAxis, VgData, VgEncodeEntry, VgLayout, VgLegend, VgScale, VgSignal, VgSignalRef, VgValueRef} from '../vega.schema';
 
 import {DataComponent} from './data/index';
-import {RepeatValues} from './repeat';
+import {RepeaterValue} from './repeat';
 import {assembleScale} from './scale/assemble';
 import {SelectionComponent} from './selection/selection';
 import {UnitModel} from './unit';
