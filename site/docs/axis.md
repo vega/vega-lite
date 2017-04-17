@@ -65,7 +65,7 @@ To customize axis, an `axis` object can contain the following groups of properti
 
 {% include table.html props="title,maxExtent,minExtent" source="Axis" %}
 
-
+{:#axis-config}
 ## Axis Config
 
 To provide themes for all axes, the axis config `config: {axis: {...}}` can contain the following properties:
