@@ -23,7 +23,7 @@ export function compile(inputSpec: TopLevelExtendedSpec, logger?: log.LoggerInte
 
     // 2. Instantiate the model with default config
     const config = initConfig(inputSpec.config);
-    const model = buildModel(spec, null, '', config);
+    const model = buildModel(spec, null, '', null, config);
 
     // 3. Parse each part of the model to produce components that will be assembled later
     // We traverse the whole tree to parse once for each type of components

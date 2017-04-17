@@ -1,0 +1,16 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v2.json",
+  "repeat": {"row": ["Horsepower","Miles_per_Gallon"]},
+  "spec": {
+    "data": {"url": "data/cars.json"},
+    "mark": "bar",
+    "encoding": {
+      "x": {
+        "field": "Horsepower",
+        "bin": true,
+        "type": "quantitative"
+      },
+      "y": {"aggregate": "count","type": "quantitative"}
+    }
+  }
+}

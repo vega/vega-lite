@@ -13,7 +13,7 @@ import {SortField, SortOrder} from './sort';
 import {StackOffset} from './stack';
 import {isDiscreteByDefault, TimeUnit} from './timeunit';
 import {getFullName, Type} from './type';
-import {isBoolean} from './util';
+import {isBoolean, isString} from './util';
 
 /**
  * Definition object for a constant value of an encoding channel.
@@ -27,6 +27,19 @@ export interface ValueDef<T> {
 
 export interface ConditionalValueDef<T> extends ValueDef<T> {
   condition?: Condition<T>;
+}
+
+/**
+ * Reference to a repeated value.
+ */
+export type RepeatRef = {
+  repeat: 'row' | 'column'
+};
+
+export type Field = string | RepeatRef;
+
+export function isRepeatRef(field: Field): field is RepeatRef {
+  return !isString(field);
 }
 
 /**
@@ -146,7 +159,7 @@ export interface FieldRefOption {
   aggregate?: AggregateOp;
 }
 
-export function field(fieldDef: FieldDef, opt: FieldRefOption = {}) {
+export function field(fieldDef: FieldDef, opt: FieldRefOption = {}): string {
   let field = fieldDef.field;
   const prefix = opt.prefix;
   let suffix = opt.suffix;

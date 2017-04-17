@@ -24,6 +24,7 @@ import {parseLegendComponent} from './legend/parse';
 import {initEncoding, initMarkDef} from './mark/init';
 import {parseMark} from './mark/mark';
 import {Model, ModelWithField} from './model';
+import {RepeatValues} from './repeat';
 import initScale from './scale/init';
 import parseScaleComponent from './scale/parse';
 import {assembleUnitSelectionData, assembleUnitSelectionMarks, assembleUnitSelectionSignals, parseUnitSelection} from './selection/selection';
@@ -60,8 +61,8 @@ export class UnitModel extends ModelWithField {
   protected readonly selection: Dict<SelectionDef> = {};
   public children: Model[] = [];
 
-  constructor(spec: UnitSpec, parent: Model, parentGivenName: string, cfg: Config) {
-    super(spec, parent, parentGivenName, cfg);
+  constructor(spec: UnitSpec, parent: Model, parentGivenName: string, repeatValues: RepeatValues, config: Config) {
+    super(spec, parent, parentGivenName, config);
 
     // FIXME(#2041): copy config.facet.cell to config.cell -- this seems incorrect and should be rewritten
     this.initFacetCellConfig();
