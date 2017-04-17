@@ -1,14 +1,14 @@
 
-import {Channel, COLUMN, ROW, X, Y} from '../channel';
-import {LAYOUT, MAIN} from '../data';
-import {hasDiscreteDomain} from '../scale';
-import {extend, isArray, keys, StringSet} from '../util';
-import {VgData, VgFormulaTransform, VgTransform} from '../vega.schema';
+import {Channel, COLUMN, ROW, X, Y} from '../../channel';
+import {LAYOUT, MAIN} from '../../data';
+import {hasDiscreteDomain} from '../../scale';
+import {extend, isArray, keys, StringSet} from '../../util';
+import {VgData, VgFormulaTransform, VgTransform} from '../../vega.schema';
 
-import {FacetModel} from './facet';
-import {LayerModel} from './layer';
-import {Model, ModelWithField} from './model';
-import {UnitModel} from './unit';
+import {FacetModel} from '../facet';
+import {LayerModel} from '../layer';
+import {Model, ModelWithField} from '../model';
+import {UnitModel} from '../unit';
 
 
 // FIXME: for nesting x and y, we need to declare x,y layout separately before joining later
