@@ -1,6 +1,5 @@
 {
     "$schema": "http://vega.github.io/schema/vega/v3.0.json",
-    "description": "Area chart showing weight of cars over time (vertical).",
     "autosize": "pad",
     "padding": 5,
     "signals": [
@@ -26,55 +25,74 @@
     "data": [
         {
             "name": "source_0",
-            "url": "data/cars.json",
+            "values": [
+                {
+                    "a": "C",
+                    "b": 2
+                },
+                {
+                    "a": "C",
+                    "b": 7
+                },
+                {
+                    "a": "C",
+                    "b": 4
+                },
+                {
+                    "a": "D",
+                    "b": 1
+                },
+                {
+                    "a": "D",
+                    "b": 2
+                },
+                {
+                    "a": "D",
+                    "b": 6
+                },
+                {
+                    "a": "E",
+                    "b": 8
+                },
+                {
+                    "a": "E",
+                    "b": 4
+                },
+                {
+                    "a": "E",
+                    "b": 7
+                }
+            ],
             "format": {
                 "type": "json",
                 "parse": {
-                    "Weight_in_lbs": "number",
-                    "Year": "date"
+                    "b": "number"
                 }
             },
             "transform": [
                 {
                     "type": "filter",
-                    "expr": "datum[\"Weight_in_lbs\"] !== null && !isNaN(datum[\"Weight_in_lbs\"]) && datum[\"Year\"] !== null && !isNaN(datum[\"Year\"])"
-                },
-                {
-                    "type": "formula",
-                    "as": "year_Year",
-                    "expr": "datetime(year(datum[\"Year\"]), 0, 1, 0, 0, 0, 0)"
-                },
-                {
-                    "type": "aggregate",
-                    "groupby": [
-                        "year_Year"
-                    ],
-                    "ops": [
-                        "sum"
-                    ],
-                    "fields": [
-                        "Weight_in_lbs"
-                    ]
-                },
-                {
-                    "type": "collect",
-                    "sort": {
-                        "field": "year_Year",
-                        "order": "descending"
-                    }
+                    "expr": "datum[\"b\"] !== null && !isNaN(datum[\"b\"])"
                 }
             ]
         },
         {
             "name": "layout",
-            "values": [
-                {}
-            ],
+            "source": "source_0",
             "transform": [
+                {
+                    "type": "aggregate",
+                    "fields": [
+                        "a"
+                    ],
+                    "ops": [
+                        "distinct"
+                    ]
+                },
                 {
                     "type": "formula",
                     "as": "width",
-                    "expr": "200"
+                    "expr": "max(datum[\"distinct_a\"] - 1 + 2*0.5, 0) * 21"
                 },
                 {
                     "type": "formula",
@@ -88,7 +106,6 @@
         {
             "name": "main-group",
             "type": "group",
-            "description": "Area chart showing weight of cars over time (vertical).",
             "from": {
                 "data": "layout"
             },
@@ -108,7 +125,8 @@
             "marks": [
                 {
                     "name": "marks",
-                    "type": "area",
+                    "type": "symbol",
+                    "role": "point",
                     "from": {
                         "data": "source_0"
                     },
@@ -116,21 +134,20 @@
                         "update": {
                             "x": {
                                 "scale": "x",
-                                "field": "sum_Weight_in_lbs"
+                                "field": "a"
                             },
                             "y": {
                                 "scale": "y",
-                                "field": "year_Year"
+                                "field": "b"
                             },
-                            "x2": {
-                                "scale": "x",
-                                "value": 0
-                            },
-                            "fill": {
+                            "stroke": {
                                 "value": "#4c78a8"
                             },
-                            "orient": {
-                                "value": "horizontal"
+                            "fill": {
+                                "value": "transparent"
+                            },
+                            "opacity": {
+                                "value": 0.7
                             }
                         }
                     }
@@ -139,65 +156,52 @@
             "scales": [
                 {
                     "name": "x",
-                    "type": "linear",
+                    "type": "point",
                     "domain": {
                         "data": "source_0",
-                        "field": "sum_Weight_in_lbs"
+                        "field": "a",
+                        "sort": true
                     },
-                    "range": [
-                        0,
-                        200
-                    ],
+                    "range": {
+                        "step": 21
+                    },
                     "round": true,
-                    "nice": true,
-                    "zero": true
+                    "padding": 0.5
                 },
                 {
                     "name": "y",
-                    "type": "time",
+                    "type": "linear",
                     "domain": {
                         "data": "source_0",
-                        "field": "year_Year"
+                        "field": "b"
                     },
                     "range": [
                         200,
                         0
                     ],
                     "round": true,
-                    "nice": "year"
+                    "nice": true,
+                    "zero": true
                 }
             ],
             "axes": [
                 {
                     "scale": "x",
-                    "format": "s",
                     "orient": "bottom",
                     "tickCount": 5,
-                    "title": "SUM(Weight_in_lbs)",
-                    "zindex": 1
-                },
-                {
-                    "scale": "x",
-                    "domain": false,
-                    "format": "s",
-                    "grid": true,
-                    "labels": false,
-                    "orient": "bottom",
-                    "tickCount": 5,
-                    "ticks": false,
-                    "zindex": 0,
-                    "gridScale": "y"
-                },
-                {
-                    "scale": "y",
-                    "orient": "left",
-                    "title": "YEAR(Year)",
+                    "title": "a",
                     "zindex": 1,
                     "encode": {
                         "labels": {
                             "update": {
-                                "text": {
-                                    "signal": "timeFormat(datum.value, '%Y')"
+                                "angle": {
+                                    "value": 270
+                                },
+                                "align": {
+                                    "value": "right"
+                                },
+                                "baseline": {
+                                    "value": "middle"
                                 }
                             }
                         }
@@ -205,7 +209,15 @@
                 },
                 {
                     "scale": "y",
+                    "format": "s",
+                    "orient": "left",
+                    "title": "b",
+                    "zindex": 1
+                },
+                {
+                    "scale": "y",
                     "domain": false,
+                    "format": "s",
                     "grid": true,
                     "labels": false,
                     "orient": "left",

@@ -1,5 +1,6 @@
 {
     "$schema": "http://vega.github.io/schema/vega/v3.0.json",
+    "description": "Stock price mean per quarter broken down by years.",
     "autosize": "pad",
     "padding": 5,
     "signals": [

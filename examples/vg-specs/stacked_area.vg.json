@@ -1,5 +1,6 @@
 {
     "$schema": "http://vega.github.io/schema/vega/v3.0.json",
+    "description": "Area chart showing weight of cars over time.",
     "autosize": "pad",
     "padding": 5,
     "signals": [

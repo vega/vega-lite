@@ -1,6 +1,5 @@
 {
     "$schema": "http://vega.github.io/schema/vega/v3.0.json",
-    "description": "A simple bar chart with embedded data.",
     "autosize": "pad",
     "padding": 5,
     "signals": [
@@ -26,54 +25,55 @@
     "data": [
         {
             "name": "source_0",
-            "values": [
-                {
-                    "a": "A",
-                    "b": 28
-                },
-                {
-                    "a": "B",
-                    "b": 55
-                },
-                {
-                    "a": "C",
-                    "b": 43
-                },
-                {
-                    "a": "D",
-                    "b": 91
-                },
-                {
-                    "a": "E",
-                    "b": 81
-                },
-                {
-                    "a": "F",
-                    "b": 53
-                },
-                {
-                    "a": "G",
-                    "b": 19
-                },
-                {
-                    "a": "H",
-                    "b": 87
-                },
-                {
-                    "a": "I",
-                    "b": 52
-                }
-            ],
+            "url": "data/seattle-weather.csv",
             "format": {
-                "type": "json",
+                "type": "csv",
                 "parse": {
-                    "b": "number"
+                    "date": "date"
                 }
             },
             "transform": [
                 {
                     "type": "filter",
-                    "expr": "datum[\"b\"] !== null && !isNaN(datum[\"b\"])"
+                    "expr": "datum[\"date\"] !== null && !isNaN(datum[\"date\"])"
+                },
+                {
+                    "type": "formula",
+                    "as": "month_date",
+                    "expr": "datetime(0, month(datum[\"date\"]), 1, 0, 0, 0, 0)"
+                },
+                {
+                    "type": "aggregate",
+                    "groupby": [
+                        "month_date",
+                        "weather"
+                    ],
+                    "ops": [
+                        "count"
+                    ],
+                    "fields": [
+                        "*"
+                    ]
+                },
+                {
+                    "type": "stack",
+                    "groupby": [
+                        "month_date"
+                    ],
+                    "field": "count_*",
+                    "sort": {
+                        "field": [
+                            "weather"
+                        ],
+                        "order": [
+                            "descending"
+                        ]
+                    },
+                    "as": [
+                        "count_*_start",
+                        "count_*_end"
+                    ],
+                    "offset": "zero"
                 }
             ]
         },
@@ -84,7 +84,7 @@
                 {
                     "type": "aggregate",
                     "fields": [
-                        "a"
+                        "month_date"
                     ],
                     "ops": [
                         "distinct"
@@ -93,7 +93,7 @@
                 {
                     "type": "formula",
                     "as": "width",
-                    "expr": "max(datum[\"distinct_a\"] - 1 + 2*0.5, 0) * 21"
+                    "expr": "max(datum[\"distinct_month_date\"] - 1 + 2*0.5, 0) * 21"
                 },
                 {
                     "type": "formula",
@@ -107,7 +107,6 @@
         {
             "name": "main-group",
             "type": "group",
-            "description": "A simple bar chart with embedded data.",
             "from": {
                 "data": "layout"
             },
@@ -136,21 +135,22 @@
                         "update": {
                             "xc": {
                                 "scale": "x",
-                                "field": "a"
+                                "field": "month_date"
                             },
                             "width": {
                                 "value": 20
                             },
                             "y": {
                                 "scale": "y",
-                                "field": "b"
+                                "field": "count_*_end"
                             },
                             "y2": {
                                 "scale": "y",
-                                "value": 0
+                                "field": "count_*_start"
                             },
                             "fill": {
-                                "value": "#4c78a8"
+                                "scale": "color",
+                                "field": "weather"
                             }
                         }
                     }
@@ -162,7 +162,7 @@
                     "type": "point",
                     "domain": {
                         "data": "source_0",
-                        "field": "a",
+                        "field": "month_date",
                         "sort": true
                     },
                     "range": {
@@ -176,7 +176,10 @@
                     "type": "linear",
                     "domain": {
                         "data": "source_0",
-                        "field": "b"
+                        "fields": [
+                            "count_*_start",
+                            "count_*_end"
+                        ]
                     },
                     "range": [
                         200,
@@ -185,6 +188,16 @@
                     "round": true,
                     "nice": true,
                     "zero": true
+                },
+                {
+                    "name": "color",
+                    "type": "ordinal",
+                    "domain": {
+                        "data": "source_0",
+                        "field": "weather",
+                        "sort": true
+                    },
+                    "range": "category"
                 }
             ],
             "axes": [
@@ -192,11 +205,14 @@
                     "scale": "x",
                     "orient": "bottom",
                     "tickCount": 5,
-                    "title": "a",
+                    "title": "MONTH(date)",
                     "zindex": 1,
                     "encode": {
                         "labels": {
                             "update": {
+                                "text": {
+                                    "signal": "timeFormat(datum.value, '%b')"
+                                },
                                 "angle": {
                                     "value": 270
                                 },
@@ -214,7 +230,7 @@
                     "scale": "y",
                     "format": "s",
                     "orient": "left",
-                    "title": "b",
+                    "title": "Number of Records",
                     "zindex": 1
                 },
                 {
@@ -227,6 +243,24 @@
                     "ticks": false,
                     "zindex": 0,
                     "gridScale": "x"
+                }
+            ],
+            "legends": [
+                {
+                    "fill": "color",
+                    "title": "weather",
+                    "encode": {
+                        "symbols": {
+                            "update": {
+                                "shape": {
+                                    "value": "square"
+                                },
+                                "strokeWidth": {
+                                    "value": 0
+                                }
+                            }
+                        }
+                    }
                 }
             ]
         }

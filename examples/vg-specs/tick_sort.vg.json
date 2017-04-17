@@ -1,6 +1,5 @@
 {
     "$schema": "http://vega.github.io/schema/vega/v3.0.json",
-    "description": "Area chart showing weight of cars over time (vertical).",
     "autosize": "pad",
     "padding": 5,
     "signals": [
@@ -30,38 +29,13 @@
             "format": {
                 "type": "json",
                 "parse": {
-                    "Weight_in_lbs": "number",
-                    "Year": "date"
+                    "Horsepower": "number"
                 }
             },
             "transform": [
                 {
                     "type": "filter",
-                    "expr": "datum[\"Weight_in_lbs\"] !== null && !isNaN(datum[\"Weight_in_lbs\"]) && datum[\"Year\"] !== null && !isNaN(datum[\"Year\"])"
-                },
-                {
-                    "type": "formula",
-                    "as": "year_Year",
-                    "expr": "datetime(year(datum[\"Year\"]), 0, 1, 0, 0, 0, 0)"
-                },
-                {
-                    "type": "aggregate",
-                    "groupby": [
-                        "year_Year"
-                    ],
-                    "ops": [
-                        "sum"
-                    ],
-                    "fields": [
-                        "Weight_in_lbs"
-                    ]
-                },
-                {
-                    "type": "collect",
-                    "sort": {
-                        "field": "year_Year",
-                        "order": "descending"
-                    }
+                    "expr": "datum[\"Horsepower\"] !== null && !isNaN(datum[\"Horsepower\"])"
                 }
             ]
         },
@@ -79,7 +53,7 @@
                 {
                     "type": "formula",
                     "as": "height",
-                    "expr": "200"
+                    "expr": "21"
                 }
             ]
         }
@@ -88,7 +62,6 @@
         {
             "name": "main-group",
             "type": "group",
-            "description": "Area chart showing weight of cars over time (vertical).",
             "from": {
                 "data": "layout"
             },
@@ -108,29 +81,31 @@
             "marks": [
                 {
                     "name": "marks",
-                    "type": "area",
+                    "type": "rect",
+                    "role": "tick",
                     "from": {
                         "data": "source_0"
                     },
                     "encode": {
                         "update": {
-                            "x": {
+                            "xc": {
                                 "scale": "x",
-                                "field": "sum_Weight_in_lbs"
+                                "field": "Horsepower"
                             },
-                            "y": {
-                                "scale": "y",
-                                "field": "year_Year"
+                            "yc": {
+                                "value": 10.5
                             },
-                            "x2": {
-                                "scale": "x",
-                                "value": 0
+                            "height": {
+                                "value": 14
+                            },
+                            "width": {
+                                "value": 1
                             },
                             "fill": {
                                 "value": "#4c78a8"
                             },
-                            "orient": {
-                                "value": "horizontal"
+                            "opacity": {
+                                "value": 0.7
                             }
                         }
                     }
@@ -142,7 +117,7 @@
                     "type": "linear",
                     "domain": {
                         "data": "source_0",
-                        "field": "sum_Weight_in_lbs"
+                        "field": "Horsepower"
                     },
                     "range": [
                         0,
@@ -150,21 +125,8 @@
                     ],
                     "round": true,
                     "nice": true,
-                    "zero": true
-                },
-                {
-                    "name": "y",
-                    "type": "time",
-                    "domain": {
-                        "data": "source_0",
-                        "field": "year_Year"
-                    },
-                    "range": [
-                        200,
-                        0
-                    ],
-                    "round": true,
-                    "nice": "year"
+                    "zero": true,
+                    "reverse": true
                 }
             ],
             "axes": [
@@ -173,7 +135,7 @@
                     "format": "s",
                     "orient": "bottom",
                     "tickCount": 5,
-                    "title": "SUM(Weight_in_lbs)",
+                    "title": "Horsepower",
                     "zindex": 1
                 },
                 {
@@ -185,33 +147,7 @@
                     "orient": "bottom",
                     "tickCount": 5,
                     "ticks": false,
-                    "zindex": 0,
-                    "gridScale": "y"
-                },
-                {
-                    "scale": "y",
-                    "orient": "left",
-                    "title": "YEAR(Year)",
-                    "zindex": 1,
-                    "encode": {
-                        "labels": {
-                            "update": {
-                                "text": {
-                                    "signal": "timeFormat(datum.value, '%Y')"
-                                }
-                            }
-                        }
-                    }
-                },
-                {
-                    "scale": "y",
-                    "domain": false,
-                    "grid": true,
-                    "labels": false,
-                    "orient": "left",
-                    "ticks": false,
-                    "zindex": 0,
-                    "gridScale": "x"
+                    "zindex": 0
                 }
             ]
         }

@@ -52,32 +52,29 @@ function getTopLevelProperties(topLevelSpec: TopLevel<any>, config: Config) {
 
 function assemble(model: Model, topLevelProperties: TopLevelProperties) {
   // TODO: change type to become VgSpec
-  const output = extend(
-    {
-      $schema: 'http://vega.github.io/schema/vega/v3.0.json',
-    },
-    {autosize: 'pad'}, // Currently we don't support custom autosize
-    topLevelProperties,
-    {
+  const output = {
+    $schema: 'http://vega.github.io/schema/vega/v3.0.json',
+    ...(model.description ? {description: model.description} : {}),
+    autosize: 'pad', // By using Vega layout, we don't support custom autosize
+    ...topLevelProperties,
+    signals: [
       // Map calculated layout width and height to width and height signals.
-      signals: [
-        {
-          name: 'width',
-          update: `data('${model.getName(LAYOUT)}')[0].${model.getName('width')}`
-        },
-        {
-          name: 'height',
-          update: `data('${model.getName(LAYOUT)}')[0].${model.getName('height')}`
-        }
-      ].concat(assembleTopLevelSignals(model))
-    },{
-      data: [].concat(
-        model.assembleData(),
-        model.assembleLayoutData([]),
-        model.assembleSelectionData([])
-      ),
-      marks: [assembleRootGroup(model)]
-    });
+      {
+        name: 'width',
+        update: `data('${model.getName(LAYOUT)}')[0].${model.getName('width')}`
+      },
+      {
+        name: 'height',
+        update: `data('${model.getName(LAYOUT)}')[0].${model.getName('height')}`
+      }
+    ].concat(assembleTopLevelSignals(model)),
+    data: [].concat(
+      model.assembleData(),
+      model.assembleLayoutData([]),
+      model.assembleSelectionData([])
+    ),
+    marks: [assembleRootGroup(model)]
+  };
 
   return {
     spec: output

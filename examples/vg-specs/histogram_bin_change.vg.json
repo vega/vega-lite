@@ -1,6 +1,5 @@
 {
     "$schema": "http://vega.github.io/schema/vega/v3.0.json",
-    "description": "Area chart showing weight of cars over time (vertical).",
     "autosize": "pad",
     "padding": 5,
     "signals": [
@@ -26,42 +25,48 @@
     "data": [
         {
             "name": "source_0",
-            "url": "data/cars.json",
+            "url": "data/movies.json",
             "format": {
                 "type": "json",
                 "parse": {
-                    "Weight_in_lbs": "number",
-                    "Year": "date"
+                    "IMDB_Rating": "number"
                 }
             },
             "transform": [
                 {
                     "type": "filter",
-                    "expr": "datum[\"Weight_in_lbs\"] !== null && !isNaN(datum[\"Weight_in_lbs\"]) && datum[\"Year\"] !== null && !isNaN(datum[\"Year\"])"
+                    "expr": "datum[\"IMDB_Rating\"] !== null && !isNaN(datum[\"IMDB_Rating\"])"
                 },
                 {
-                    "type": "formula",
-                    "as": "year_Year",
-                    "expr": "datetime(year(datum[\"Year\"]), 0, 1, 0, 0, 0, 0)"
+                    "type": "extent",
+                    "field": "IMDB_Rating",
+                    "signal": "bin_maxbins_30_IMDB_Rating_extent"
+                },
+                {
+                    "type": "bin",
+                    "field": "IMDB_Rating",
+                    "as": [
+                        "bin_maxbins_30_IMDB_Rating_start",
+                        "bin_maxbins_30_IMDB_Rating_end"
+                    ],
+                    "signal": "bin_maxbins_30_IMDB_Rating_bins",
+                    "maxbins": 30,
+                    "extent": {
+                        "signal": "bin_maxbins_30_IMDB_Rating_extent"
+                    }
                 },
                 {
                     "type": "aggregate",
                     "groupby": [
-                        "year_Year"
+                        "bin_maxbins_30_IMDB_Rating_start",
+                        "bin_maxbins_30_IMDB_Rating_end"
                     ],
                     "ops": [
-                        "sum"
+                        "count"
                     ],
                     "fields": [
-                        "Weight_in_lbs"
+                        "*"
                     ]
-                },
-                {
-                    "type": "collect",
-                    "sort": {
-                        "field": "year_Year",
-                        "order": "descending"
-                    }
                 }
             ]
         },
@@ -88,7 +93,6 @@
         {
             "name": "main-group",
             "type": "group",
-            "description": "Area chart showing weight of cars over time (vertical).",
             "from": {
                 "data": "layout"
             },
@@ -108,29 +112,32 @@
             "marks": [
                 {
                     "name": "marks",
-                    "type": "area",
+                    "type": "rect",
+                    "role": "bar",
                     "from": {
                         "data": "source_0"
                     },
                     "encode": {
                         "update": {
+                            "x2": {
+                                "scale": "x",
+                                "field": "bin_maxbins_30_IMDB_Rating_start",
+                                "offset": 1
+                            },
                             "x": {
                                 "scale": "x",
-                                "field": "sum_Weight_in_lbs"
+                                "field": "bin_maxbins_30_IMDB_Rating_end"
                             },
                             "y": {
                                 "scale": "y",
-                                "field": "year_Year"
+                                "field": "count_*"
                             },
-                            "x2": {
-                                "scale": "x",
+                            "y2": {
+                                "scale": "y",
                                 "value": 0
                             },
                             "fill": {
                                 "value": "#4c78a8"
-                            },
-                            "orient": {
-                                "value": "horizontal"
                             }
                         }
                     }
@@ -139,32 +146,31 @@
             "scales": [
                 {
                     "name": "x",
-                    "type": "linear",
+                    "type": "bin-linear",
                     "domain": {
-                        "data": "source_0",
-                        "field": "sum_Weight_in_lbs"
+                        "signal": "sequence(bin_maxbins_30_IMDB_Rating_bins.start, bin_maxbins_30_IMDB_Rating_bins.stop + bin_maxbins_30_IMDB_Rating_bins.step, bin_maxbins_30_IMDB_Rating_bins.step)"
                     },
                     "range": [
                         0,
                         200
                     ],
                     "round": true,
-                    "nice": true,
-                    "zero": true
+                    "nice": true
                 },
                 {
                     "name": "y",
-                    "type": "time",
+                    "type": "linear",
                     "domain": {
                         "data": "source_0",
-                        "field": "year_Year"
+                        "field": "count_*"
                     },
                     "range": [
                         200,
                         0
                     ],
                     "round": true,
-                    "nice": "year"
+                    "nice": true,
+                    "zero": true
                 }
             ],
             "axes": [
@@ -172,32 +178,19 @@
                     "scale": "x",
                     "format": "s",
                     "orient": "bottom",
-                    "tickCount": 5,
-                    "title": "SUM(Weight_in_lbs)",
-                    "zindex": 1
-                },
-                {
-                    "scale": "x",
-                    "domain": false,
-                    "format": "s",
-                    "grid": true,
-                    "labels": false,
-                    "orient": "bottom",
-                    "tickCount": 5,
-                    "ticks": false,
-                    "zindex": 0,
-                    "gridScale": "y"
-                },
-                {
-                    "scale": "y",
-                    "orient": "left",
-                    "title": "YEAR(Year)",
+                    "title": "BIN(IMDB_Rating)",
                     "zindex": 1,
                     "encode": {
                         "labels": {
                             "update": {
-                                "text": {
-                                    "signal": "timeFormat(datum.value, '%Y')"
+                                "angle": {
+                                    "value": 270
+                                },
+                                "align": {
+                                    "value": "right"
+                                },
+                                "baseline": {
+                                    "value": "middle"
                                 }
                             }
                         }
@@ -205,7 +198,15 @@
                 },
                 {
                     "scale": "y",
+                    "format": "s",
+                    "orient": "left",
+                    "title": "Number of Records",
+                    "zindex": 1
+                },
+                {
+                    "scale": "y",
                     "domain": false,
+                    "format": "s",
                     "grid": true,
                     "labels": false,
                     "orient": "left",

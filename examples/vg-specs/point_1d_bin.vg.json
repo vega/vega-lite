@@ -1,6 +1,5 @@
 {
     "$schema": "http://vega.github.io/schema/vega/v3.0.json",
-    "description": "A scatterplot showing average horsepower and displacement for cars from different origins.",
     "autosize": "pad",
     "padding": 5,
     "signals": [
@@ -26,32 +25,35 @@
     "data": [
         {
             "name": "source_0",
-            "url": "data/cars.json",
+            "url": "data/movies.json",
             "format": {
                 "type": "json",
                 "parse": {
-                    "Horsepower": "number",
-                    "Displacement": "number"
+                    "IMDB_Rating": "number"
                 }
             },
             "transform": [
                 {
                     "type": "filter",
-                    "expr": "datum[\"Horsepower\"] !== null && !isNaN(datum[\"Horsepower\"]) && datum[\"Displacement\"] !== null && !isNaN(datum[\"Displacement\"])"
+                    "expr": "datum[\"IMDB_Rating\"] !== null && !isNaN(datum[\"IMDB_Rating\"])"
                 },
                 {
-                    "type": "aggregate",
-                    "groupby": [
-                        "Origin"
+                    "type": "extent",
+                    "field": "IMDB_Rating",
+                    "signal": "bin_maxbins_10_IMDB_Rating_extent"
+                },
+                {
+                    "type": "bin",
+                    "field": "IMDB_Rating",
+                    "as": [
+                        "bin_maxbins_10_IMDB_Rating_start",
+                        "bin_maxbins_10_IMDB_Rating_end"
                     ],
-                    "ops": [
-                        "mean",
-                        "mean"
-                    ],
-                    "fields": [
-                        "Horsepower",
-                        "Displacement"
-                    ]
+                    "signal": "bin_maxbins_10_IMDB_Rating_bins",
+                    "maxbins": 10,
+                    "extent": {
+                        "signal": "bin_maxbins_10_IMDB_Rating_extent"
+                    }
                 }
             ]
         },
@@ -69,7 +71,7 @@
                 {
                     "type": "formula",
                     "as": "height",
-                    "expr": "200"
+                    "expr": "21"
                 }
             ]
         }
@@ -78,7 +80,6 @@
         {
             "name": "main-group",
             "type": "group",
-            "description": "A scatterplot showing average horsepower and displacement for cars from different origins.",
             "from": {
                 "data": "layout"
             },
@@ -106,18 +107,19 @@
                     "encode": {
                         "update": {
                             "x": {
-                                "scale": "x",
-                                "field": "mean_Horsepower"
+                                "signal": "(scale(\"x\", datum[\"bin_maxbins_10_IMDB_Rating_start\"]) + scale(\"x\", datum[\"bin_maxbins_10_IMDB_Rating_end\"]))/2"
                             },
                             "y": {
-                                "scale": "y",
-                                "field": "mean_Displacement"
+                                "value": 10.5
                             },
                             "stroke": {
                                 "value": "#4c78a8"
                             },
                             "fill": {
                                 "value": "transparent"
+                            },
+                            "opacity": {
+                                "value": 0.7
                             }
                         }
                     }
@@ -126,33 +128,16 @@
             "scales": [
                 {
                     "name": "x",
-                    "type": "linear",
+                    "type": "bin-linear",
                     "domain": {
-                        "data": "source_0",
-                        "field": "mean_Horsepower"
+                        "signal": "sequence(bin_maxbins_10_IMDB_Rating_bins.start, bin_maxbins_10_IMDB_Rating_bins.stop + bin_maxbins_10_IMDB_Rating_bins.step, bin_maxbins_10_IMDB_Rating_bins.step)"
                     },
                     "range": [
                         0,
                         200
                     ],
                     "round": true,
-                    "nice": true,
-                    "zero": true
-                },
-                {
-                    "name": "y",
-                    "type": "linear",
-                    "domain": {
-                        "data": "source_0",
-                        "field": "mean_Displacement"
-                    },
-                    "range": [
-                        200,
-                        0
-                    ],
-                    "round": true,
-                    "nice": true,
-                    "zero": true
+                    "nice": true
                 }
             ],
             "axes": [
@@ -160,39 +145,23 @@
                     "scale": "x",
                     "format": "s",
                     "orient": "bottom",
-                    "tickCount": 5,
-                    "title": "MEAN(Horsepower)",
-                    "zindex": 1
-                },
-                {
-                    "scale": "x",
-                    "domain": false,
-                    "format": "s",
-                    "grid": true,
-                    "labels": false,
-                    "orient": "bottom",
-                    "tickCount": 5,
-                    "ticks": false,
-                    "zindex": 0,
-                    "gridScale": "y"
-                },
-                {
-                    "scale": "y",
-                    "format": "s",
-                    "orient": "left",
-                    "title": "MEAN(Displacement)",
-                    "zindex": 1
-                },
-                {
-                    "scale": "y",
-                    "domain": false,
-                    "format": "s",
-                    "grid": true,
-                    "labels": false,
-                    "orient": "left",
-                    "ticks": false,
-                    "zindex": 0,
-                    "gridScale": "x"
+                    "title": "BIN(IMDB_Rating)",
+                    "zindex": 1,
+                    "encode": {
+                        "labels": {
+                            "update": {
+                                "angle": {
+                                    "value": 270
+                                },
+                                "align": {
+                                    "value": "right"
+                                },
+                                "baseline": {
+                                    "value": "middle"
+                                }
+                            }
+                        }
+                    }
                 }
             ]
         }

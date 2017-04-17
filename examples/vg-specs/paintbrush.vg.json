@@ -1,5 +1,6 @@
 {
     "$schema": "http://vega.github.io/schema/vega/v3.0.json",
+    "description": "Select multiple points with the shift key.",
     "autosize": "pad",
     "padding": 5,
     "signals": [
