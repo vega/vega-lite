@@ -238,11 +238,6 @@ For a full list of legend configuration and their default values, please see the
 
 Facet cell configuration overrides [cell config](#cell-config) for faceted (trellis) plots. Please see [cell config](#cell-config) for each property name and default values.
 
-{:#facet-grid-config}
-### Facet Grid Configuration (`config.facet.grid.*`)
-
-{% include table.html props="color,opacity,offset" source="FacetGridConfig" %}
-
 {:#facet-axis-config}
 ### Facet Axis Configuration (`config.facet.axis.*`)
 
