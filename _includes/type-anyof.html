@@ -15,7 +15,19 @@ for type in include.types %}{%
       assign element = type.items.type | strip | append: "[]" | capitalize %}{{element | strip | append: include.suffix}}{%
     endif %}{%
   elsif type.type %}{%
-    assign element = type.type | capitalize %}{{element | strip | append: include.suffix}}{%
+    if type.type.first != nil%}{% comment %}special case for type in the schema is an array of multiple types{% endcomment %}{%
+      assign newType = "" %}{%
+      for element in type.type %}{%
+        assign elem = element | capitalize %}{%
+        assign newType = newType | append: elem %}{%
+        unless forloop.last %}{%
+          assign newType = newType | append: " | "%}{%
+        endunless %}{%
+      endfor %}{%
+      assign type =  newType %}{{newType | strip | append: include.suffix}}
+    {% else %}{%
+      assign element = type.type | capitalize %}{{element | strip | append: include.suffix}}{%
+    endif%}{%
   elsif type["$ref"] %}{%
     assign array = type["$ref"] | split: "/" %}{%
     assign last_index = array | size | minus: 1 %}{%
