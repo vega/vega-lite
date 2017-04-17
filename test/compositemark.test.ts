@@ -2,9 +2,9 @@
 
 import {assert} from 'chai';
 import {Encoding} from '../src/encoding';
+import {Field} from '../src/fielddef';
 import {MarkDef} from '../src/mark';
 import {GenericSpec, GenericUnitSpec, normalize} from '../src/spec';
-import {Field} from '../src/fielddef';
 
 describe("normalizeErrorBar", () => {
 

@@ -1,5 +1,5 @@
-import { Channel, CHANNELS, supportMark } from './channel';
-import { Facet } from './facet';
+import {Channel, CHANNELS, supportMark} from './channel';
+import {Facet} from './facet';
 import {
   ChannelDef,
   ConditionalValueDef,
@@ -15,8 +15,8 @@ import {
   ValueDef
 } from './fielddef';
 import * as log from './log';
-import { Mark } from './mark';
-import { isArray, some } from './util';
+import {Mark} from './mark';
+import {isArray, some} from './util';
 
 // utility for encoding mapping
 

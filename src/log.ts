@@ -99,6 +99,11 @@ export function debug(..._: any[]) {
 export namespace message {
   export const INVALID_SPEC = 'Invalid spec';
 
+  // REPEAT
+  export function noSuchRepeatedValue(field: string) {
+    return `Unknown repeated value "${field}".`;
+  }
+
   // DATA
   export function unrecognizedParse(p: string) {
     return `Unrecognized parse ${p}.`;

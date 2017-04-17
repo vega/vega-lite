@@ -1,13 +1,10 @@
-import {Axis} from '../axis';
 import {Channel, COLUMN, ROW, X, Y} from '../channel';
 import {Config} from '../config';
 import {MAIN} from '../data';
 import {reduce} from '../encoding';
-import { Facet } from '../facet';
-import {FieldDef, normalize, title as fieldDefTitle, Field} from '../fielddef';
-import {Legend} from '../legend';
+import {Facet} from '../facet';
+import {FieldDef, normalize, title as fieldDefTitle} from '../fielddef';
 import * as log from '../log';
-import {Scale} from '../scale';
 import {FacetSpec} from '../spec';
 import {StackProperties} from '../stack';
 import {contains, Dict, extend, flatten, keys, vals} from '../util';
@@ -21,15 +18,14 @@ import {
   VgEncodeEntry,
   VgLayout
 } from '../vega.schema';
-import {parseAxisComponent, parseGridAxis, parseMainAxis} from './axis/parse';
+import {parseGridAxis, parseMainAxis} from './axis/parse';
 import {gridShow} from './axis/rules';
 import {buildModel} from './common';
 import {assembleData, assembleFacetData, FACET_SCALE_PREFIX} from './data/assemble';
 import {parseData} from './data/parse';
 import {getTextHeader} from './layout/header';
 import {Model, ModelWithField} from './model';
-import { RepeatValues, resolveRepeat } from './repeat';
-import initScale from './scale/init';
+import {facetRepeatResolve, RepeatValues} from './repeat';
 import parseScaleComponent from './scale/parse';
 import {UnitModel} from './unit';
 
@@ -46,7 +42,7 @@ export class FacetModel extends ModelWithField {
     this.child = buildModel(spec.spec, this, this.getName('child'), repeatValues, config);
     this.children = [this.child];
 
-    const facet = resolveRepeat(spec.facet, repeatValues);
+    const facet: Facet<string> = facetRepeatResolve(spec.facet, repeatValues);
 
     this.facet = this.initFacet(facet);
   }

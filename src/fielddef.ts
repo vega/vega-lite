@@ -1,4 +1,4 @@
-import { isObject } from 'vega-util';
+import {isObject} from 'vega-util';
 
 // utility for a field definition object
 

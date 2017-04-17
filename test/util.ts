@@ -2,9 +2,10 @@ import {buildModel} from '../src/compile/common';
 import {FacetModel} from '../src/compile/facet';
 import {LayerModel} from '../src/compile/layer';
 import {Model} from '../src/compile/model';
+import {RepeatModel} from '../src/compile/repeat';
 import {UnitModel} from '../src/compile/unit';
 import {initConfig} from '../src/config';
-import {FacetSpec, LayerSpec, normalize, TopLevel, TopLevelExtendedSpec, UnitSpec} from '../src/spec';
+import {FacetSpec, LayerSpec, normalize, RepeatSpec, TopLevel, TopLevelExtendedSpec, UnitSpec} from '../src/spec';
 
 export function parseModel(inputSpec: TopLevelExtendedSpec): Model {
   const spec = normalize(inputSpec);
@@ -21,4 +22,8 @@ export function parseLayerModel(spec: TopLevel<LayerSpec>) {
 
 export function parseFacetModel(spec: TopLevel<FacetSpec>) {
   return new FacetModel(spec, null, '', null, initConfig(spec.config));
+}
+
+export function parseRepeatModel(spec: TopLevel<RepeatSpec>) {
+  return new RepeatModel(spec, null, '', null, initConfig(spec.config));
 }
