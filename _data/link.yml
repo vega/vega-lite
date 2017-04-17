@@ -15,3 +15,4 @@ UrlData:
 
 InlineData:
   values: "#inline"
+  format: "#format"
