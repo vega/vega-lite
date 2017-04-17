@@ -8,7 +8,7 @@ import {UnitModel} from './../unit';
 
 import {DataFlowNode} from './dataflow';
 
-function addDimension(dims: {[field: string]: boolean}, fieldDef: FieldDef) {
+function addDimension(dims: {[field: string]: boolean}, fieldDef: FieldDef<string>) {
   if (fieldDef.bin) {
     dims[field(fieldDef, {binSuffix: 'start'})] = true;
     dims[field(fieldDef, {binSuffix: 'end'})] = true;

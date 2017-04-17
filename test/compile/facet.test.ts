@@ -21,7 +21,7 @@ describe('FacetModel', function() {
         const model = parseFacetModel({
           facet: ({
             shape: {field: 'a', type: 'quantitative'}
-          }) as Facet, // Cast to allow invalid facet type for test
+          }) as Facet<string>, // Cast to allow invalid facet type for test
           spec: {
             mark: 'point',
             encoding: {}
@@ -59,7 +59,7 @@ describe('FacetModel', function() {
             encoding: {}
           }
         });
-        assert.deepEqual<PositionFieldDef>(model.facet.row, {field: 'a', type: 'quantitative'});
+        assert.deepEqual<PositionFieldDef<string>>(model.facet.row, {field: 'a', type: 'quantitative'});
         assert.equal(localLogger.warns[0], log.message.facetChannelShouldBeDiscrete(ROW));
       });
     });

@@ -1,6 +1,7 @@
 import {Encoding} from './encoding';
 import {isMarkDef, MarkDef} from './mark';
 import {GenericUnitSpec, LayerSpec} from './spec';
+import { Field } from './fielddef';
 
 export const ERRORBAR: 'error-bar' = 'error-bar';
 export type ERRORBAR = typeof ERRORBAR;
@@ -40,7 +41,7 @@ export function normalize(
 }
 
 
-add(ERRORBAR, (spec: GenericUnitSpec<ERRORBAR, Encoding>): LayerSpec => {
+add(ERRORBAR, (spec: GenericUnitSpec<ERRORBAR, Encoding<Field>>): LayerSpec => {
   const {mark: _m, encoding: encoding, ...outerSpec} = spec;
   const {size: _s, ...encodingWithoutSize} = encoding;
   const {x2: _x2, y2: _y2, ...encodingWithoutX2Y2} = encoding;

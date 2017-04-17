@@ -121,7 +121,7 @@ export namespace message {
     return `Invalid field type (${type}) for channel ${channel}, using ${newType} instead.`;
   }
 
-  export function emptyFieldDef(fieldDef: FieldDef, channel: Channel) {
+  export function emptyFieldDef(fieldDef: FieldDef<string>, channel: Channel) {
     return `Dropping ${JSON.stringify(fieldDef)} from channel ${channel} since it does not contain data field or value.`;
   }
 
@@ -159,7 +159,7 @@ export namespace message {
     return `Cannot use ${prop} with non-color channel.`;
   }
 
-  export function unaggregateDomainHasNoEffectForRawField(fieldDef: FieldDef) {
+  export function unaggregateDomainHasNoEffectForRawField(fieldDef: FieldDef<string>) {
     return `Using unaggregated domain with raw field has no effect (${JSON.stringify(fieldDef)}).`;
   }
 
@@ -167,7 +167,7 @@ export namespace message {
     return `Unaggregated domain not applicable for ${aggregate} since it produces values outside the origin domain of the source data.`;
   }
 
-  export function unaggregatedDomainWithLogScale(fieldDef: FieldDef) {
+  export function unaggregatedDomainWithLogScale(fieldDef: FieldDef<string>) {
     return `Unaggregated domain is currently unsupported for log scale (${JSON.stringify(fieldDef)}).`;
   }
 

@@ -83,7 +83,7 @@ describe('compile/scale', () => {
 
     describe('for quantitative', function() {
       it('should return the right domain for binned Q', log.wrap((localLogger) => {
-        const fieldDef: PositionFieldDef = {
+        const fieldDef: PositionFieldDef<string> = {
           bin: {maxbins: 15},
           field: 'origin',
           scale: {domain: 'unaggregated'},

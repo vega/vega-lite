@@ -3,7 +3,7 @@
 import {assert} from 'chai';
 
 import {Encoding} from '../src/encoding';
-import {FieldDef} from '../src/fielddef';
+import { FieldDef, Field } from '../src/fielddef';
 import {MarkDef} from '../src/mark';
 import {fieldDefs, GenericSpec, GenericUnitSpec, normalize, Spec} from '../src/spec';
 
@@ -26,7 +26,7 @@ describe('normalize()', function () {
         }
       };
 
-      assert.deepEqual<GenericSpec<GenericUnitSpec<string | MarkDef, Encoding>>>(normalize(spec), {
+      assert.deepEqual<GenericSpec<GenericUnitSpec<string | MarkDef, Encoding<Field>>>>(normalize(spec), {
         "width": 123,
         "height": 234,
         "name": "faceted",
@@ -56,7 +56,7 @@ describe('normalize()', function () {
         }
       };
 
-      assert.deepEqual<GenericSpec<GenericUnitSpec<string | MarkDef, Encoding>>>(normalize(spec), {
+      assert.deepEqual<GenericSpec<GenericUnitSpec<string | MarkDef, Encoding<Field>>>>(normalize(spec), {
         "data": {"url": "data/movies.json"},
         "facet": {
           "row": {"field": "MPAA_Rating","type": "ordinal"}
@@ -74,7 +74,7 @@ describe('normalize()', function () {
 
   describe('normalizeFacet', () => {
     it('should produce correct layered specs for mean point and vertical error bar', () => {
-      assert.deepEqual<GenericSpec<GenericUnitSpec<string | MarkDef, Encoding>>>(normalize({
+      assert.deepEqual<GenericSpec<GenericUnitSpec<string | MarkDef, Encoding<Field>>>>(normalize({
         "description": "A error bar plot showing mean, min, and max in the US population distribution of age groups in 2000.",
         "data": {"url": "data/population.json"},
         "transform": [{"filter": "datum.year == 2000"}],
@@ -193,7 +193,7 @@ describe('normalize()', function () {
 
   describe('normalizeLayer', () => {
     it('should produce correct layered specs for mean point and vertical error bar', () => {
-      assert.deepEqual<GenericSpec<GenericUnitSpec<string | MarkDef, Encoding>>>(normalize({
+      assert.deepEqual<GenericSpec<GenericUnitSpec<string | MarkDef, Encoding<Field>>>>(normalize({
         "description": "A error bar plot showing mean, min, and max in the US population distribution of age groups in 2000.",
         "data": {"url": "data/population.json"},
         "transform": [{"filter": "datum.year == 2000"}],
@@ -597,7 +597,7 @@ describe('fieldDefs()', function() {
       }
     };
 
-    assert.deepEqual<FieldDef[]>(fieldDefs(spec), [
+    assert.deepEqual<FieldDef<Field>[]>(fieldDefs(spec), [
       {"field": "Horsepower","type": "quantitative"},
       {"field": "Miles_per_Gallon","type": "quantitative"}
     ]);
@@ -628,7 +628,7 @@ describe('fieldDefs()', function() {
       ]
     };
 
-    assert.deepEqual<FieldDef[]>(fieldDefs(layerSpec), [
+    assert.deepEqual<FieldDef<Field>[]>(fieldDefs(layerSpec), [
       {"field": "date","type": "temporal"},
       {"field": "price","type": "quantitative"},
       {"field": "symbol", "type": "nominal"}
@@ -660,7 +660,7 @@ describe('fieldDefs()', function() {
       ]
     };
 
-    assert.deepEqual<FieldDef[]>(fieldDefs(layerSpec), [
+    assert.deepEqual<FieldDef<Field>[]>(fieldDefs(layerSpec), [
       {"field": "date","type": "temporal"},
       {"field": "price","type": "quantitative"}
     ]);
@@ -679,7 +679,7 @@ describe('fieldDefs()', function() {
       }
     };
 
-    assert.deepEqual<FieldDef[]>(fieldDefs(facetSpec), [
+    assert.deepEqual<FieldDef<Field>[]>(fieldDefs(facetSpec), [
       {"field": "MPAA_Rating","type": "ordinal"},
       {"field": "Worldwide_Gross","type": "quantitative"},
       {"field": "US_DVD_Sales","type": "quantitative"}

@@ -34,7 +34,7 @@ export const text: MarkCompiler = {
   }
 };
 
-function xDefault(config: Config, textDef: ChannelDef): VgValueRef {
+function xDefault(config: Config, textDef: ChannelDef<string>): VgValueRef {
   if (isFieldDef(textDef) && textDef.type === QUANTITATIVE) {
     return {field: {group: 'width'}, offset: -5};
   }
@@ -42,7 +42,7 @@ function xDefault(config: Config, textDef: ChannelDef): VgValueRef {
   return {value: config.scale.textXRangeStep / 2};
 }
 
-function align(encoding: Encoding, config: Config) {
+function align(encoding: Encoding<string>, config: Config) {
   const alignConfig = getMarkConfig('align', 'text', config);
   if (alignConfig === undefined) {
     return channelHasField(encoding, X) ? 'center' : 'right';

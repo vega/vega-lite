@@ -24,7 +24,7 @@ import {MAIN, RAW} from '../../data';
 import {varName} from '../../util';
 import {UnitModel} from '../unit';
 
-export function initDomain(domain: Domain, fieldDef: FieldDef, scale: ScaleType, scaleConfig: ScaleConfig) {
+export function initDomain(domain: Domain, fieldDef: FieldDef<string>, scale: ScaleType, scaleConfig: ScaleConfig) {
   if (domain === 'unaggregated') {
     const {valid, reason} = canUseUnaggregatedDomain(fieldDef, scale);
     if(!valid) {
@@ -184,7 +184,7 @@ export function domainSort(model: UnitModel, channel: Channel, scaleType: ScaleT
  * 2. Aggregation function is not `count` or `sum`
  * 3. The scale is quantitative or time scale.
  */
-export function canUseUnaggregatedDomain(fieldDef: FieldDef, scaleType: ScaleType): {valid: boolean, reason?: string} {
+export function canUseUnaggregatedDomain(fieldDef: FieldDef<string>, scaleType: ScaleType): {valid: boolean, reason?: string} {
   if (!fieldDef.aggregate) {
     return {
       valid: false,

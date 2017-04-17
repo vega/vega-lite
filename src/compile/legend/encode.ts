@@ -9,7 +9,7 @@ import {VgValueRef} from '../../vega.schema';
 import {applyMarkConfig, timeFormatExpression} from '../common';
 import {UnitModel} from '../unit';
 
-export function symbols(fieldDef: FieldDef, symbolsSpec: any, model: UnitModel, channel: Channel) {
+export function symbols(fieldDef: FieldDef<string>, symbolsSpec: any, model: UnitModel, channel: Channel) {
   let symbols:any = {};
   const mark = model.mark();
 
@@ -88,7 +88,7 @@ export function symbols(fieldDef: FieldDef, symbolsSpec: any, model: UnitModel, 
   return keys(symbols).length > 0 ? symbols : undefined;
 }
 
-export function labels(fieldDef: FieldDef, labelsSpec: any, model: UnitModel, channel: Channel) {
+export function labels(fieldDef: FieldDef<string>, labelsSpec: any, model: UnitModel, channel: Channel) {
   const legend = model.legend(channel);
   const config = model.config;
 

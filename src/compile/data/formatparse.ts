@@ -82,7 +82,7 @@ export class ParseNode extends DataFlowNode {
     });
 
     // Parse encoded fields
-    model.forEachFieldDef((fieldDef: FieldDef) => {
+    model.forEachFieldDef(fieldDef => {
       if (fieldDef.type === TEMPORAL) {
         parse[fieldDef.field] = 'date';
       } else if (fieldDef.type === QUANTITATIVE) {

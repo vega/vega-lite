@@ -9,7 +9,7 @@ import {TEMPORAL} from '../../type';
 import {contains, Dict} from '../../util';
 import {getMarkConfig} from '../common';
 
-export function initMarkDef(mark: Mark | MarkDef, encoding: Encoding, scale: Dict<Scale>, config: Config): MarkDef {
+export function initMarkDef(mark: Mark | MarkDef, encoding: Encoding<string>, scale: Dict<Scale>, config: Config): MarkDef {
   const markDef = isMarkDef(mark) ? {...mark} : {type: mark};
 
   const specifiedOrient = markDef.orient || getMarkConfig('orient', markDef.type, config);
@@ -29,7 +29,7 @@ export function initMarkDef(mark: Mark | MarkDef, encoding: Encoding, scale: Dic
 /**
  * Initialize encoding's value with some special default values
  */
-export function initEncoding(mark: Mark, encoding: Encoding, stacked: StackProperties, config: Config): Encoding {
+export function initEncoding(mark: Mark, encoding: Encoding<string>, stacked: StackProperties, config: Config): Encoding<string> {
   const opacityConfig = getMarkConfig('opacity', mark, config);
   if (!encoding.opacity && opacityConfig === undefined) {
     const opacity = defaultOpacity(mark, encoding, stacked);
@@ -41,7 +41,7 @@ export function initEncoding(mark: Mark, encoding: Encoding, stacked: StackPrope
 }
 
 
-function defaultOpacity(mark: Mark, encoding: Encoding, stacked: StackProperties) {
+function defaultOpacity(mark: Mark, encoding: Encoding<string>, stacked: StackProperties) {
   if (contains([POINT, TICK, CIRCLE, SQUARE], mark)) {
     // point-based marks
     if (!isAggregate(encoding)) {
@@ -56,7 +56,7 @@ function filled(mark: Mark, config: Config) {
   return filledConfig !== undefined ? filledConfig : mark !== POINT && mark !== LINE && mark !== RULE;
 }
 
-function orient(mark: Mark, encoding: Encoding, scale: Dict<Scale>, specifiedOrient: Orient): Orient {
+function orient(mark: Mark, encoding: Encoding<string>, scale: Dict<Scale>, specifiedOrient: Orient): Orient {
   switch (mark) {
     case POINT:
     case CIRCLE:
@@ -112,8 +112,8 @@ function orient(mark: Mark, encoding: Encoding, scale: Dict<Scale>, specifiedOri
       } else if (!xIsContinuous && yIsContinuous) {
         return 'vertical';
       } else if (xIsContinuous && yIsContinuous) {
-        const xDef = encoding.x as FieldDef; // we can cast here since they are surely fieldDef
-        const yDef = encoding.y as FieldDef;
+        const xDef = encoding.x as FieldDef<string>; // we can cast here since they are surely fieldDef
+        const yDef = encoding.y as FieldDef<string>;
 
         const xIsTemporal = xDef.type === TEMPORAL;
         const yIsTemporal = yDef.type === TEMPORAL;

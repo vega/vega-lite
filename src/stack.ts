@@ -3,7 +3,7 @@ import * as log from './log';
 import {SUM_OPS} from './aggregate';
 import {Channel, STACK_GROUP_CHANNELS, X, X2, Y, Y2} from './channel';
 import {channelHasField, Encoding, isAggregate} from './encoding';
-import {FieldDef, isFieldDef, PositionFieldDef} from './fielddef';
+import { FieldDef, isFieldDef, PositionFieldDef, Field } from './fielddef';
 import {AREA, BAR, CIRCLE, isMarkDef, LINE, Mark, MarkDef, POINT, RULE, SQUARE, TEXT, TICK} from './mark';
 import {ScaleType} from './scale';
 import {contains, isArray} from './util';
@@ -21,7 +21,7 @@ export interface StackProperties {
 
   /** Stack-by fields e.g., color, detail */
   stackBy: {
-    fieldDef: FieldDef,
+    fieldDef: FieldDef<string>,
     channel: Channel
   }[];
 
@@ -43,7 +43,7 @@ export const STACK_BY_DEFAULT_MARKS = [BAR, AREA];
 // Note: CompassQL uses this method and only pass in required properties of each argument object.
 // If required properties change, make sure to update CompassQL.
 
-export function stack(m: Mark | MarkDef, encoding: Encoding, stackConfig: StackOffset): StackProperties {
+export function stack(m: Mark | MarkDef, encoding: Encoding<Field>, stackConfig: StackOffset): StackProperties {
   const mark = isMarkDef(m) ? m.type : m;
   // Should have stackable mark
   if (!contains(STACKABLE_MARKS, mark)) {
@@ -83,7 +83,7 @@ export function stack(m: Mark | MarkDef, encoding: Encoding, stackConfig: StackO
 
   if (xIsAggregate !== yIsAggregate) {
     const fieldChannel = xIsAggregate ? X : Y;
-    const fieldDef = encoding[fieldChannel] as PositionFieldDef;
+    const fieldDef = encoding[fieldChannel] as PositionFieldDef<string>;
     const fieldChannelAggregate = fieldDef.aggregate;
     const fieldChannelScale = fieldDef.scale;
 

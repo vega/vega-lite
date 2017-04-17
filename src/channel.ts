@@ -33,7 +33,7 @@ export namespace Channel {
   export const DETAIL: 'detail' = 'detail';
 }
 
-export type Channel = keyof Encoding | keyof Facet;
+export type Channel = keyof Encoding<any> | keyof Facet<any>;
 
 export const X = Channel.X;
 export const Y = Channel.Y;

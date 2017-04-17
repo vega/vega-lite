@@ -1,3 +1,4 @@
+import { isObject } from 'vega-util';
 
 // utility for a field definition object
 
@@ -39,17 +40,17 @@ export type RepeatRef = {
 export type Field = string | RepeatRef;
 
 export function isRepeatRef(field: Field): field is RepeatRef {
-  return !isString(field);
+  return isObject(field) && 'repeat' in field;
 }
 
 /**
  *  Definition object for a data field, its type and transformation of an encoding channel.
  */
-export interface FieldDef {
+export interface FieldDef<F> {
   /**
    * Name of the field from which to pull a data value.
    */
-  field?: string;
+  field?: F;
 
   /**
    * The encoded field's type of measurement. This can be either a full type
@@ -90,12 +91,12 @@ export interface Condition<T> {
   value: T;
 }
 
-export interface ScaleFieldDef extends FieldDef {
+export interface ScaleFieldDef<F> extends FieldDef<F> {
   scale?: Scale;
   sort?: SortField | SortOrder;
 }
 
-export interface PositionFieldDef extends ScaleFieldDef {
+export interface PositionFieldDef<F> extends ScaleFieldDef<F> {
   /**
    * @nullable
    */
@@ -107,7 +108,7 @@ export interface PositionFieldDef extends ScaleFieldDef {
    */
   stack?: StackOffset;
 }
-export interface LegendFieldDef<T> extends ScaleFieldDef {
+export interface LegendFieldDef<F, T> extends ScaleFieldDef<F> {
    /**
     * @nullable
     */
@@ -120,11 +121,11 @@ export interface LegendFieldDef<T> extends ScaleFieldDef {
 
 // Order Path have no scale
 
-export interface OrderFieldDef extends FieldDef {
+export interface OrderFieldDef<F> extends FieldDef<F> {
   sort?: SortOrder;
 }
 
-export interface TextFieldDef extends FieldDef {
+export interface TextFieldDef<F> extends FieldDef<F> {
   // FIXME: add more reference to Vega's format pattern or d3's format pattern.
   /**
    * The formatting pattern for text value. If not defined, this will be determined automatically.
@@ -134,13 +135,13 @@ export interface TextFieldDef extends FieldDef {
   condition?: Condition<string|number>;
 }
 
-export type ChannelDef = FieldDef | ValueDef<any>;
+export type ChannelDef<F> = FieldDef<F> | ValueDef<any>;
 
-export function isFieldDef(channelDef: ChannelDef): channelDef is FieldDef | PositionFieldDef | LegendFieldDef<any> | OrderFieldDef | TextFieldDef {
+export function isFieldDef(channelDef: ChannelDef<any>): channelDef is FieldDef<any> | PositionFieldDef<any> | LegendFieldDef<any, any> | OrderFieldDef<any> | TextFieldDef<any> {
   return !!channelDef && (!!channelDef['field'] || channelDef['aggregate'] === 'count');
 }
 
-export function isValueDef(channelDef: ChannelDef): channelDef is ValueDef<any> {
+export function isValueDef(channelDef: ChannelDef<any>): channelDef is ValueDef<any> {
   return channelDef && 'value' in channelDef && channelDef['value'] !== undefined;
 }
 
@@ -159,7 +160,7 @@ export interface FieldRefOption {
   aggregate?: AggregateOp;
 }
 
-export function field(fieldDef: FieldDef, opt: FieldRefOption = {}): string {
+export function field(fieldDef: FieldDef<string>, opt: FieldRefOption = {}): string {
   let field = fieldDef.field;
   const prefix = opt.prefix;
   let suffix = opt.suffix;
@@ -200,7 +201,7 @@ export function field(fieldDef: FieldDef, opt: FieldRefOption = {}): string {
   return field;
 }
 
-export function isDiscrete(fieldDef: FieldDef) {
+export function isDiscrete(fieldDef: FieldDef<string>) {
   switch (fieldDef.type) {
     case 'nominal':
     case 'ordinal':
@@ -214,15 +215,15 @@ export function isDiscrete(fieldDef: FieldDef) {
   throw new Error(log.message.invalidFieldType(fieldDef.type));
 }
 
-export function isContinuous(fieldDef: FieldDef) {
+export function isContinuous(fieldDef: FieldDef<string>) {
   return !isDiscrete(fieldDef);
 }
 
-export function isCount(fieldDef: FieldDef) {
+export function isCount(fieldDef: FieldDef<string>) {
   return fieldDef.aggregate === 'count';
 }
 
-export function title(fieldDef: FieldDef, config: Config) {
+export function title(fieldDef: FieldDef<string>, config: Config) {
   if (fieldDef.title != null) {
     return fieldDef.title;
   }
@@ -237,7 +238,7 @@ export function title(fieldDef: FieldDef, config: Config) {
   }
 }
 
-export function defaultType(fieldDef: FieldDef, channel: Channel): Type {
+export function defaultType(fieldDef: FieldDef<string>, channel: Channel): Type {
   if (fieldDef.timeUnit) {
     return 'temporal';
   }
@@ -259,10 +260,10 @@ export function defaultType(fieldDef: FieldDef, channel: Channel): Type {
 /**
  * Convert type to full, lowercase type, or augment the fieldDef with a default type if missing.
  */
-export function normalize(channelDef: ChannelDef, channel: Channel) {
+export function normalize(channelDef: ChannelDef<string>, channel: Channel) {
   // If a fieldDef contains a field, we need type.
   if (isFieldDef(channelDef)) { // TODO: or datum
-    let fieldDef: FieldDef = channelDef;
+    let fieldDef: FieldDef<string> = channelDef;
 
     // Drop invalid aggregate
     if (fieldDef.aggregate && !AGGREGATE_OP_INDEX[fieldDef.aggregate]) {
@@ -320,7 +321,7 @@ export function normalize(channelDef: ChannelDef, channel: Channel) {
 }
 
 const COMPATIBLE = {compatible: true};
-export function channelCompatibility(fieldDef: FieldDef, channel: Channel): {compatible: boolean; warning?: string;} {
+export function channelCompatibility(fieldDef: FieldDef<string>, channel: Channel): {compatible: boolean; warning?: string;} {
   switch (channel) {
     case 'row':
     case 'column':
