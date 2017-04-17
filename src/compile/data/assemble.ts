@@ -157,13 +157,15 @@ function makeWalkTree(data: VgData[]) {
    */
   function walkTree(node: DataFlowNode, dataSource: VgData) {
     if (node instanceof ParseNode) {
-      if (node.parent instanceof SourceNode) {
+      if (node.parent instanceof SourceNode && !node.parent.parent)  {
+        // If its parent is a root source node, use normal format parse
         dataSource.format = {
           ...dataSource.format || {},
-          parse: node.assemble()
+          parse: node.assembleFormatParse()
         };
       } else {
-        throw new Error('Can only instantiate parse next to source.');
+        // Otherwise use Vega expression to parse
+        dataSource.transform = dataSource.transform.concat(node.assembleTransforms());
       }
     }
 
@@ -291,18 +293,23 @@ export function assembleData(roots: SourceNode[]): VgData[] {
 
   roots.forEach(removeUnnecessaryNodes);
 
-  // parse needs to be next to sources
-  getLeaves(roots).forEach(optimizeFromLeaves(optimizers.parse));
+  // remove source nodes that don't have any children because they also don't have output nodes
+  const filteredRoots = roots.filter(r => !(r instanceof SourceNode && !r.parent && r.numChildren() === 0));
 
-  roots.forEach(moveFacetDown);
+  getLeaves(filteredRoots).forEach(optimizeFromLeaves(optimizers.removeUnusedSubtrees));
 
-  // roots.forEach(debug);
+  // If possib, move parse up to next to sources
+  getLeaves(filteredRoots).forEach(optimizeFromLeaves(optimizers.parse));
+
+  filteredRoots.forEach(moveFacetDown);
+
+  // filteredRoots.forEach(debug);
 
   const walkTree = makeWalkTree(data);
 
   let sourceIndex = 0;
 
-  roots.forEach(root => {
+  filteredRoots.forEach(root => {
     // assign a name if the source does not have a name yet
     if (!root.hasName()) {
       root.dataName = `source_${sourceIndex++}`;

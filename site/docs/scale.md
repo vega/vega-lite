@@ -207,7 +207,7 @@ We can also create diverging color graph by specify `range` with multiple elemen
 
 <!-- TODO revise -->
 
-{% include table.html props="rangeStep,scheme,padding,spacing" source="Scale" %}
+{% include table.html props="rangeStep,scheme,padding" source="Scale" %}
 
 {:#ex-bandwidth}
 #### Example: Custom Range Step

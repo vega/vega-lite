@@ -1,12 +1,12 @@
-import {Channel, COLUMN, X} from '../../channel';
+import {Channel, X} from '../../channel';
 import {NOMINAL, ORDINAL, TEMPORAL} from '../../type';
 import {contains, extend, keys} from '../../util';
 import {VgAxis} from '../../vega.schema';
 
 import {timeFormatExpression} from '../common';
-import {Model} from '../model';
+import {UnitModel} from '../unit';
 
-export function labels(model: Model, channel: Channel, labelsSpec: any, def: VgAxis) {
+export function labels(model: UnitModel, channel: Channel, labelsSpec: any, def: VgAxis) {
   const fieldDef = model.fieldDef(channel);
   const axis = model.axis(channel);
   const config = model.config;
@@ -36,7 +36,7 @@ export function labels(model: Model, channel: Channel, labelsSpec: any, def: VgA
     if (labelsSpec.angle.value === 270) {
       labelsSpec.align = {
         value: def.orient === 'top' ? 'left':
-                (channel === X || channel === COLUMN) ? 'right' :
+                (channel === X) ? 'right' :
                 'center'
       };
     } else if (labelsSpec.angle.value === 90) {
@@ -48,7 +48,7 @@ export function labels(model: Model, channel: Channel, labelsSpec: any, def: VgA
     // Auto set baseline if rotated
     // TODO: consider other value besides 270, 90
     if (labelsSpec.angle.value === 270) {
-      labelsSpec.baseline = {value: (channel === X || channel === COLUMN) ? 'middle' : 'bottom'};
+      labelsSpec.baseline = {value: (channel === X) ? 'middle' : 'bottom'};
     } else if (labelsSpec.angle.value === 90) {
       labelsSpec.baseline = {value: 'bottom'};
     }

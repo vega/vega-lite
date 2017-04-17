@@ -64,7 +64,9 @@ export class DataFlowNode {
    */
   public remove() {
     this._children.forEach(child => child.parent = this._parent);
-    this._parent.removeChild(this);
+    if (this._parent) {
+      this._parent.removeChild(this);
+    }
   }
 
   public swapWithParent() {

@@ -1,7 +1,7 @@
 import {MAIN, RAW} from '../../data';
 import {Dict} from '../../util';
 import {FacetModel} from '../facet';
-import {Model} from '../model';
+import {Model, ModelWithField} from '../model';
 import {UnitModel} from '../unit';
 import {AggregateNode} from './aggregate';
 import {BinNode} from './bin';
@@ -96,9 +96,11 @@ export function parseData(model: Model): DataComponent {
   // the current head of the tree that we are appending to
   let head = root;
 
-  const parse = ParseNode.make(model);
-  parse.parent = root;
-  head = parse;
+  if (model instanceof ModelWithField) {
+    const parse = ParseNode.make(model);
+    parse.parent = root;
+    head = parse;
+  }
 
   if (model.transforms.length > 0) {
     const {first, last} = parseTransformArray(model);
@@ -106,22 +108,24 @@ export function parseData(model: Model): DataComponent {
     head = last;
   }
 
-  const nullFilter = NullFilterNode.make(model);
-  if (nullFilter) {
-    nullFilter.parent = head;
-    head = nullFilter;
-  }
+  if (model instanceof ModelWithField) {
+    const nullFilter = NullFilterNode.make(model);
+    if (nullFilter) {
+      nullFilter.parent = head;
+      head = nullFilter;
+    }
 
-  const bin = BinNode.make(model);
-  if (bin) {
-    bin.parent = head;
-    head = bin;
-  }
+    const bin = BinNode.make(model);
+    if (bin) {
+      bin.parent = head;
+      head = bin;
+    }
 
-  const tu = TimeUnitNode.make(model);
-  if (tu) {
-    tu.parent = head;
-    head = tu;
+    const tu = TimeUnitNode.make(model);
+    if (tu) {
+      tu.parent = head;
+      head = tu;
+    }
   }
 
   // add an output node pre aggregation
@@ -137,20 +141,18 @@ export function parseData(model: Model): DataComponent {
       agg.parent = head;
       head = agg;
     }
-  }
 
-  if (model instanceof UnitModel) {
     const stack = StackNode.make(model);
     if (stack) {
       stack.parent = head;
       head = stack;
     }
-  }
 
-  const nonPosFilter = NonPositiveFilterNode.make(model);
-  if (nonPosFilter) {
-    nonPosFilter.parent = head;
-    head = nonPosFilter;
+    const nonPosFilter = NonPositiveFilterNode.make(model);
+    if (nonPosFilter) {
+      nonPosFilter.parent = head;
+      head = nonPosFilter;
+    }
   }
 
   if (model instanceof UnitModel) {

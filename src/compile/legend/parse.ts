@@ -4,7 +4,6 @@ import {Dict, keys} from '../../util';
 import {VgLegend} from '../../vega.schema';
 
 import {numberFormat} from '../common';
-import {Model} from '../model';
 import {UnitModel} from '../unit';
 
 import * as encode from './encode';
@@ -63,7 +62,7 @@ export function parseLegend(model: UnitModel, channel: Channel): VgLegend {
   return def;
 }
 
-function getSpecifiedOrDefaultValue(property: keyof VgLegend, specifiedLegend: Legend, channel: Channel, model: Model) {
+function getSpecifiedOrDefaultValue(property: keyof VgLegend, specifiedLegend: Legend, channel: Channel, model: UnitModel) {
   const fieldDef = model.fieldDef(channel);
 
   switch (property) {

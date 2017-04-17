@@ -5,11 +5,10 @@ import {StackOffset} from '../../stack';
 import {contains, duplicate} from '../../util';
 import {VgSort, VgTransform} from '../../vega.schema';
 import {sortParams} from '../common';
-import {Model} from '../model';
 import {UnitModel} from './../unit';
 import {DataFlowNode} from './dataflow';
 
-function getStackByFields(model: Model) {
+function getStackByFields(model: UnitModel) {
   return model.stack.stackBy.reduce((fields, by) => {
     const channel = by.channel;
     const fieldDef = by.fieldDef;

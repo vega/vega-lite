@@ -1762,7 +1762,7 @@
                     "description": "Color of the marks – either fill or stroke color based on mark type.\n(By default, fill color for `area`, `bar`, `tick`, `text`, `circle`, and `square` /\nstroke color for `line` and `point`.)"
                 },
                 "column": {
-                    "$ref": "#/definitions/PositionFieldDef",
+                    "$ref": "#/definitions/FieldDef",
                     "description": "Horizontal facets for trellis plots."
                 },
                 "detail": {
@@ -1805,7 +1805,7 @@
                     "description": "stack order for stacked marks or order of data points in line marks."
                 },
                 "row": {
-                    "$ref": "#/definitions/PositionFieldDef",
+                    "$ref": "#/definitions/FieldDef",
                     "description": "Vertical facets for trellis plots."
                 },
                 "shape": {
@@ -1947,11 +1947,11 @@
             "additionalProperties": false,
             "properties": {
                 "column": {
-                    "$ref": "#/definitions/PositionFieldDef",
+                    "$ref": "#/definitions/FieldDef",
                     "description": "Horizontal facets for trellis plots."
                 },
                 "row": {
-                    "$ref": "#/definitions/PositionFieldDef",
+                    "$ref": "#/definitions/FieldDef",
                     "description": "Vertical facets for trellis plots."
                 }
             },
@@ -1960,10 +1960,6 @@
         "FacetConfig": {
             "additionalProperties": false,
             "properties": {
-                "axis": {
-                    "$ref": "#/definitions/AxisConfig",
-                    "description": "Facet Axis Config"
-                },
                 "cell": {
                     "$ref": "#/definitions/CellConfig",
                     "description": "Facet Cell Config"
@@ -3137,10 +3133,6 @@
                     ],
                     "description": "Range scheme (e.g., color schemes such as `\"category10\"` or `\"viridis\"`).\n\n__Default value:__ [scale config](config.html#scale-config)'s `\"nominalColorScheme\"` for nominal field and `\"sequentialColorScheme\"` for other types of fields."
                 },
-                "spacing": {
-                    "description": "(For `row` and `column` only) A pixel value for padding between cells in the trellis plots.\n\n__Default value:__ derived from [scale config](config.html#scale-config)'s `facetSpacing`",
-                    "type": "integer"
-                },
                 "type": {
                     "$ref": "#/definitions/ScaleType",
                     "description": "The type of scale.\n- For a _quantitative_ field, supported quantitative scale types  are `\"linear\"` (default), `\"log\"`, `\"pow\"`, `\"sqrt\"`, `\"quantile\"`, `\"quantize\"`, and `\"threshold\"`.\n- For a _temporal_ field without `timeUnit`, the scale type should be `\"time\"` (default) or `\"ordinal\"`.\n- For _ordinal_ and _nominal_ fields, the type is always `\"ordinal\"`.\nUnsupported values will be ignored."
@@ -3170,11 +3162,6 @@
                 "clamp": {
                     "description": "If true, values that exceed the data domain are clamped to either the minimum or maximum range value",
                     "type": "boolean"
-                },
-                "facetSpacing": {
-                    "description": "Default spacing between faceted plots.\n\n__Default value:__ `16`",
-                    "minimum": 0,
-                    "type": "integer"
                 },
                 "maxBandSize": {
                     "description": "The default max value for mapping quantitative fields to bar's size/bandSize.\nIf undefined (default), we will use bandSize - 1.",

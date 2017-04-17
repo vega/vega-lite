@@ -51,6 +51,11 @@ export const OPACITY = Channel.OPACITY;
 
 
 export const CHANNELS = [X, Y, X2, Y2, ROW, COLUMN, SIZE, SHAPE, COLOR, ORDER, OPACITY, TEXT, DETAIL];
+const CHANNEL_INDEX = toSet(CHANNELS);
+
+export function isChannel(str: string): str is Channel {
+  return !!CHANNEL_INDEX[str];
+}
 
 // CHANNELS without COLUMN, ROW
 export const UNIT_CHANNELS = [X, Y, X2, Y2, SIZE, SHAPE, COLOR, ORDER, OPACITY, TEXT, DETAIL];

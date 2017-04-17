@@ -4,7 +4,8 @@ import * as log from '../../log';
 import {ORDINAL} from '../../type';
 import {Dict, differ, duplicate, extend, keys, StringSet} from '../../util';
 import {VgAggregateTransform} from '../../vega.schema';
-import {Model} from './../model';
+import {UnitModel} from './../unit';
+
 import {DataFlowNode} from './dataflow';
 
 function addDimension(dims: {[field: string]: boolean}, fieldDef: FieldDef) {
@@ -55,7 +56,7 @@ export class AggregateNode extends DataFlowNode {
     super();
   }
 
-  public static make(model: Model): AggregateNode {
+  public static make(model: UnitModel): AggregateNode {
     let isAggregate = false;
     model.forEachFieldDef(fd => {
       if (fd.aggregate) {

@@ -64,41 +64,23 @@ describe('FacetModel', function() {
     });
   });
 
-  describe('spacing', () => {
-    it('should return specified spacing if specified', () => {
-      assert.equal(facet.spacing({spacing: 123}, null, null), 123);
-    });
-
-    it('should return default facetSpacing if there is a subplot and no specified spacing', () => {
+  describe('parseScale', () => {
+    it('should correctly set scale component for a model', () => {
       const model = parseFacetModel({
         facet: {
-          row: {field: 'a', type: 'ordinal'}
+          row: {field: 'a', type: 'quantitative'}
         },
         spec: {
           mark: 'point',
           encoding: {
-            "x": {"aggregate": "sum", "field": "yield", "type": "quantitative"},
-            "y": {"field": "variety", "type": "nominal"},
-            "color": {"field": "site", "type": "nominal"}
+            x: {field: 'b', type: 'quantitative'}
           }
         }
       });
-      assert.equal(facet.spacing({}, model, defaultConfig), defaultConfig.scale.facetSpacing);
-    });
 
-    it('should return 0 if it is a simple table without subplot with x/y and no specified spacing', () => {
-      const model = parseFacetModel({
-        facet: {
-          row: {field: 'a', type: 'ordinal'}
-        },
-        spec: {
-          mark: 'point',
-          encoding: {
-            "color": {"field": "site", "type": "nominal"}
-          }
-        }
-      });
-      assert.equal(facet.spacing({}, model, defaultConfig), 0);
+      model.parseScale();
+
+      assert(model.component.scales['x']);
     });
   });
 });
@@ -132,11 +114,6 @@ describe('compile/facet', () => {
           assert.deepEqual(xSharedAxisGroup.from, {data: 'column'});
         });
 
-        it('should have width = child width, height = group height, x = column field', () => {
-          assert.deepEqual(xSharedAxisGroup.encode.update.width, {field: {parent: 'child_width'}});
-          assert.deepEqual(xSharedAxisGroup.encode.update.height, {field: {group: 'height'}});
-          assert.deepEqual(xSharedAxisGroup.encode.update.x, {scale: 'column', field: 'a', offset: 8});
-        });
       });
 
       describe('yAxisGroup', () => {
@@ -145,12 +122,6 @@ describe('compile/facet', () => {
           assert.equal(ySharedAxisGroup.name, 'y-axes');
           assert.equal(ySharedAxisGroup.type, 'group');
           assert.equal(ySharedAxisGroup.from, undefined);
-        });
-
-        it('should have height = child height, width = group width, y = defaultFacetSpacing / 2.', () => {
-          assert.deepEqual(ySharedAxisGroup.encode.update.height, {field: {parent: 'child_height'}});
-          assert.deepEqual(ySharedAxisGroup.encode.update.width, {field: {group: 'width'}});
-          assert.deepEqual(ySharedAxisGroup.encode.update.y, {value: 8});
         });
       });
     });
@@ -181,12 +152,6 @@ describe('compile/facet', () => {
           assert.equal(ySharedAxisGroup.type, 'group');
           assert.deepEqual(ySharedAxisGroup.from, {data: 'row'});
         });
-
-        it('should have height = child height, width = group width, y= row field', () => {
-          assert.deepEqual(ySharedAxisGroup.encode.update.height, {field: {parent: 'child_height'}});
-          assert.deepEqual(ySharedAxisGroup.encode.update.width, {field: {group: 'width'}});
-          assert.deepEqual(ySharedAxisGroup.encode.update.y, {scale: 'row', field: 'a', offset: 8});
-        });
       });
 
       describe('xAxisGroup', () => {
@@ -196,70 +161,7 @@ describe('compile/facet', () => {
           assert.equal(xSharedAxisGroup.type, 'group');
           assert.equal(xSharedAxisGroup.from, undefined);
         });
-
-        it('should have width = child width, height = group height, x, x = defaultFacetSpacing / 2.', () => {
-          assert.deepEqual(xSharedAxisGroup.encode.update.width, {field: {parent: 'child_width'}});
-          assert.deepEqual(xSharedAxisGroup.encode.update.height, {field: {group: 'height'}});
-          assert.deepEqual(xSharedAxisGroup.encode.update.x, {value: 8});
-        });
       });
-    });
-  });
-
-  describe('initAxis', () => {
-    it('should include properties from axis and config.facet.axis', () => {
-      const model = parseFacetModel({
-        facet: {
-          row: {field: 'a', type: 'ordinal', axis: {offset: 30}}
-        },
-        spec: {
-          mark: 'point',
-          encoding: {
-            "x": {"aggregate": "sum", "field": "yield", "type": "quantitative"},
-            "y": {"field": "variety", "type": "nominal"},
-          },
-        },
-        config: {"facet": {"axis": {"labelPadding": 123}}}
-      });
-      assert.deepEqual<Axis>(model.axis(ROW), {"orient": "right", "labelAngle": 90, "offset": 30, "labelPadding": 123});
-    });
-
-    it('should set the labelAngle if specified', () => {
-      const model = parseFacetModel({
-        facet: {
-          row: {field: 'c', type: 'ordinal', "axis": {"labelAngle": 0}}
-        },
-        spec: {
-          mark: 'point',
-          encoding: {
-            "x": {"aggregate": "sum", "field": "yield", "type": "quantitative"},
-            "y": {"field": "variety", "type": "nominal"}
-          },
-        }
-      });
-      assert.deepEqual<Axis>(model.axis(ROW), {"orient": "right", "labelAngle": 0});
-    });
-
-    it('should set the labelAngle if labelAngle is not specified', () => {
-      const model = parseFacetModel({
-        facet: {
-          row: {field: 'a', type: 'ordinal'}
-        },
-        spec: {
-          mark: 'point',
-          encoding: {
-            "x": {"aggregate": "sum", "field": "yield", "type": "quantitative"},
-            "y": {"field": "variety", "type": "nominal"},
-            "row": {
-              "field": "c", "type": "nominal",
-              "axis": {
-                  "title": "title"
-              }
-            }
-          },
-        }
-      });
-      assert.deepEqual<Axis>(model.axis(ROW), {"orient": "right", "labelAngle": 90});
     });
   });
 });

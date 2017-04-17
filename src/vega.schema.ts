@@ -71,6 +71,8 @@ export type VgRange = string | VgDataRef | (number|string|VgDataRef)[] | VgRange
 
 export type VgDomain = any[] | VgDataRef | DataRefUnionDomain | FieldRefUnionDomain | VgSignalRef;
 
+export type VgMarkGroup = any;
+
 export type VgScale = {
   name: string,
   type: ScaleType,
@@ -87,6 +89,22 @@ export type VgScale = {
   reverse?: boolean,
   round?: boolean,
   zero?: boolean
+};
+
+export type VgLayoutAlign = 'none' | 'each' | 'all';
+
+export type VgLayout = {
+  padding: number | {
+    row?: number,
+    column?: number,
+    header?: number
+  },
+  bounds: 'full' | 'flush',
+  columns: number | {signal: string},
+  align?: VgLayoutAlign | {
+    row: VgLayoutAlign,
+    column: VgLayoutAlign
+  };
 };
 
 export function isDataRefUnionedDomain(domain: VgDomain): domain is DataRefUnionDomain {
