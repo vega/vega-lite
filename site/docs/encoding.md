@@ -41,25 +41,13 @@ The keys in the encoding object are encoding channels. This section lists suppor
 
 Position channels determine position of the marks.
 
-<!-- TODO: use the table generator, it's fine to have four rows in this table-->
-
-| Property      | Type          | Description    |
-| :------------ |:-------------:| :------------- |
-| x, x2, y, y2  | [ChannelDef](#def)| X and Y coordinates for marks.  For ranged marks such as `bar` and `area`, `x2` and `y2` will be set to zeroes for applicable scales and to snap the axes if zeroes is not applicable (e.g., if the scale domain does not include zeroes).  |
+{% include table.html props="x,x2,y,y2" source="Encoding" %}
 
 ### Mark Properties Channels
 
 Mark properties channels map data fields directly to visual properties of the marks. Unlike other channel types, they can be mapped to [constant values](#value) as well. Here are the supported mark properties:
 
-<!-- TODO: use the table generator and sync description -->
-
-| Property      | Type          | Description    |
-| :------------ |:-------------:| :------------- |
-| color         | [ChannelDef](#def)| Color of the marks – either fill or stroke color based on mark type. By default, fill color for `area`, `bar`, `tick`, `text`, `circle`, and `square` /   stroke color for `line` and `point`.  Supported color values include hex-color (e.g., `#0099ff`) and [standard HTML/CSS color names](http://www.w3schools.com/colors/colors_names.asp) (e.g., `"goldenrod"`).  Please see [scale range](scale.html#range) for more detail about color palettes.  |
-| opacity         | [ChannelDef](#def)| Opacity of the marks – either can be a value or in a range. <span class="note-line"> __Default value:__ `[0.3, 0.8]` </span>.  |
-| shape  | [ChannelDef](#def)| The symbol's shape (only for `point` marks). The supported values are `"circle"` (default), `"square"`, `"cross"`, `"diamond"`, `"triangle-up"`, `"triangle-down"`, or else a custom SVG path string. |
-| size  | [ChannelDef](#def)| Size of the mark. <br/>     • For `point`, `square` and `circle` – the symbol size, or pixel area of the mark. <br/> • For `bar` and `tick` – the bar and tick's size. <br/>      • For `text` – the text's font size. <br/>      • Size is currently unsupported for `line` and `area`.|
-| text  | [ChannelDef](#def)| Text of the `text` mark. |
+{% include table.html props="color,opacity,shape,size,text" source="Encoding" %}
 
 ### Additional Level of Detail Channel
 
@@ -67,11 +55,7 @@ Grouping data is another important operation in visualizing data. For [aggregate
 
 `detail` channel allows providing an additional grouping field (level) for grouping data in aggregation without mapping data to a specific visual channel.
 
-<!-- TODO: use the table generator and sync description -->
-
-| Property      | Type          | Description    |
-| :------------ |:-------------:| :------------- |
-| detail | [ChannelDef](#def)| Additional levels of detail for grouping data in aggregate views and in line and area marks without mapping data to a specific visual channel. ([Example](#ex-detail).) |
+{% include table.html props="detail" source="Encoding" %}
 
 **Note**: Since `detail` represents an actual data field in the aggregation, it cannot encode a constant `value`.
 
@@ -94,11 +78,7 @@ We map `symbol` variable (stock market ticker symbol) to `detail` to use them to
 
 `order` channel sorts the layer order or stacking order (for stacked charts) of the marks while `path` channel sorts the order of data points in line marks.
 
-<!-- TODO: use the table generator and sync description. (Order's description in encoding.ts is more updated.) -->
-
-| Property      | Type          | Description    |
-| :------------ |:-------------:| :------------- |
-| order | [ChannelDef](#def)| Layer order for non-stacked marks, or stack order for stacked marks. |
+{% include table.html props="order" source="Encoding" %}
 
 **Note**: Since `order` and `path` represent actual data fields that are used to sort the data, they cannot encode constant `value`. In addition, in aggregate plots, they should have `aggregate` function specified.
 
@@ -129,9 +109,7 @@ By default, line marks order their points in their paths by the field of channel
 
 `row` and `column` are special encoding channels that facets single plots into [trellis plots (or small multiples)](https://en.wikipedia.org/wiki/Small_multiple).
 
-| Property      | Type          | Description    |
-| :------------ |:-------------:| :------------- |
-| row, column   | [ChannelDef](#def)| Vertical and horizontal facets for vertical and horizontal [trellis plots](https://en.wikipedia.org/wiki/Small_multiple). |
+{% include table.html props="row,column" source="EncodingWithFacet" %}
 
 For more information, please see [facet page](facet.html).
 
@@ -181,12 +159,8 @@ Data `type` here describes semantic of the data rather than primitive data types
 
 To facilitate data exploration, Vega-Lite provides inline field transforms as a part of the channel definition. If a `field` is provided, the channel definition supports the following transformations:
 
-| Property      | Type          | Description    |
-| :------------ |:-------------:| :------------- |
-| [bin](bin.html)<sup>1</sup> | Boolean &#124; Object | Boolean flag for binning a `quantitative` field, or a bin property object for binning parameters. <span class="note-line"> __Default value:__ `false`</span>|
-| [timeUnit](timeunit.html)<sup>1</sup>| String        | Time unit for a `temporal` field  (e.g., `year`, `yearmonth`, `month`, `hour`). <span class="note-line"> __Default value:__ `undefined` (None) </span> |
-| [aggregate](aggregate.html)<sup>1,2</sup> | String        | Aggregation function for the field (e.g., `mean`, `sum`, `median`, `min`, `max`, `count`). <span class="note-line"> __Default value:__ `undefined` (None) </span> |
-| [sort](sort.html)<sup>1,2</sup> | String &#124; Object        | Sort order for a particular field. <br/> • For quantitative or temporal fields, this can be either `"ascending"` or , `"descending"` <br/> • For quantitative or temporal fields, this can be `"ascending"`, `"descending"`, `"none"`, or a [sort field definition object](sort.html#sort-field) for sorting by an aggregate calculation of a specified sort field. <span class="note-line"> __Default value:__ `"ascending"` </span> |
+{% include table.html props="bin,timeUnit,aggregate,sort" source="PositionFieldDef" %}
+
 
 <!-- TODO: re-explain sort + make it clear that text does not support sorting -->
 

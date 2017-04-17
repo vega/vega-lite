@@ -16,3 +16,9 @@ UrlData:
 InlineData:
   values: "#inline"
   format: "#format"
+
+PositionFieldDef:
+  bin: bin.html
+  timeUnit: timeunit.html
+  aggregate: aggregate.html
+  sort: sort.html

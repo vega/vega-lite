@@ -35,6 +35,9 @@ export interface ConditionalValueDef<T> extends ValueDef<T> {
 export interface FieldDef {
   /**
    * Name of the field from which to pull a data value.
+   *
+   *  __Default value:__ `false`
+   *
    */
   field?: string;
 
@@ -51,6 +54,9 @@ export interface FieldDef {
 
   /**
    * Time unit for a `temporal` field  (e.g., `year`, `yearmonth`, `month`, `hour`).
+   *
+   * __Default value:__ `undefined` (None)
+   *
    */
   timeUnit?: TimeUnit;
 
@@ -63,6 +69,9 @@ export interface FieldDef {
   /**
    * Aggregation function for the field
    * (e.g., `mean`, `sum`, `median`, `min`, `max`, `count`).
+   *
+   * __Default value:__ `undefined` (None)
+   *
    */
   aggregate?: AggregateOp;
 
@@ -79,6 +88,14 @@ export interface Condition<T> {
 
 export interface ScaleFieldDef extends FieldDef {
   scale?: Scale;
+  /**
+   * Sort order for a particular field.
+   * For quantitative or temporal fields, this can be either `"ascending"` or , `"descending"`
+   * For quantitative or temporal fields, this can be `"ascending"`, `"descending"`, `"none"`, or a [sort field definition object](sort.html#sort-field) for sorting by an aggregate calculation of a specified sort field.
+   *
+   * __Default value:__ `"ascending"`
+   *
+   */
   sort?: SortField | SortOrder;
 }
 
