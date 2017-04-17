@@ -1,6 +1,11 @@
 type:
   datetime: transform.html#datetime
-
+  filter:   transform.html#filter
+  equalfilter: transform.html#equalfilter
+  rangefilter: transform.html#rangefilter
+  oneoffilter: transform.html#oneoffilter
+  timeunit: timeunit.html
+  scaletype: scale.html#type
 
 # Please use "" if # exists in url
 

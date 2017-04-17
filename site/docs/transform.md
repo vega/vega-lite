@@ -55,18 +55,23 @@ A `filter` property can be (1) a filter predicate object including Equal Filter,
 
 For a filter object, a `field` must be provided with one of the filter operators (`equal`, `in`, `range`).  Values of these operators can be primitive types (string, number, boolean) or a [DateTime definition object](#datetime) to describe time. In addition, `timeUnit` can be provided to further transform a temporal `field`.
 
+{:#filter}
 #### Filter Expresssion
 
 For a [Vega Expression](https://vega.github.io/vega/docs/expressions/) string, each datum object can be referred using bound variable `datum`. For example, setting `filter` to `"datum.b2 > 60"` would make the output data includes only items that have values in the field `b2` over 60.
 
+{:#equalfilter}
 #### Equal Filter
 
 {% include table.html props="field,equal,timeUnit" source="EqualFilter" %}
 
+{:#rangefilter}
 #### Range Filter
 
 {% include table.html props="field,range,timeUnit" source="RangeFilter" %}
 
+
+{:#oneoffilter}
 #### OneOf Filter
 
 {% include table.html props="field,oneOf,timeUnit" source="OneOfFilter" %}

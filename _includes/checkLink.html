@@ -1,25 +1,24 @@
-{% assign link = site.data.link %}
-
-{% if include.check == "prop"%}
-  {% if link[include.channel][include.param] != nil %}
-    <a href="{{link[include.channel][include.param]}}">{{include.param}}</a>
-  {% else %}
-    {{prop}}
-  {% endif %}
-{% elsif include.check == "type" %}
-  {% assign splitstring = " | " %}
-  {% assign keys = include.param | strip | split: " | " %}
-  {% for key in keys %}
-    {% assign trimKey = key | downcase | split: "[]" | first | strip %}
-    {% assign url = "" %}
-    {% if link.type[trimKey] != nil %}
-      {% assign url = link.type[trimKey] %}
-    {% endif %}
-    {% if url != "" %}
-      <a href="{{url}}">{{key}}</a>
-    {% else %}
-      {{key}}
-    {% endif %}
-    {% unless forloop.last %} {{splitstring}} {% endunless %}
-  {% endfor %}
-{% endif %}
+{%
+assign link = site.data.link %}{%
+if include.check == "prop"%}{%
+  if link[include.channel][include.param] != nil %}<a href="{{link[include.channel][include.param]}}">{{include.param}}</a>{%
+  else %}{{prop}}{%
+  endif %}{%
+elsif include.check == "type" %}{%
+  assign splitstring = " | " %}{%
+  assign keys = include.param | strip | split: " | " %}{%
+  for key in keys %}{%
+    assign trimKey = key | downcase | split: "[]" | first | strip %}{%
+    assign url = "" %}{%
+    if link.type[trimKey] != nil %}{{link.type.trimKey}}{%
+      assign url = link.type[trimKey] %}{%
+    endif %}{%
+    if url != "" %}<a href="{{url}}">{{key | split: "[]" | first}}</a>{%
+      if key contains "[]" %}[]
+      {% endif %}{%
+    else %}{{key}}{%
+    endif %}{%
+    unless forloop.last %}{{splitstring}}{%
+    endunless %}{%
+  endfor %}{%
+endif %}
