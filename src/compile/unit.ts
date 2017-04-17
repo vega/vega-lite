@@ -12,14 +12,15 @@ import {SortField, SortOrder} from '../sort';
 import {UnitSpec} from '../spec';
 import {stack, StackProperties} from '../stack';
 import {Dict, duplicate, extend, vals} from '../util';
-import {VgData, VgLayout} from '../vega.schema';
+import {VgData, VgLayout, VgSignal} from '../vega.schema';
 import {parseAxisComponent} from './axis/parse';
 import {applyConfig} from './common';
 import {assembleData} from './data/assemble';
 import {parseData} from './data/parse';
 import {FacetModel} from './facet';
 import {LayerModel} from './layer';
-import {assembleLayoutData, parseUnitLayout} from './layout';
+import {parseUnitLayout} from './layout';
+import {assembleLayoutUnitSignals} from './layout/index';
 import {parseLegendComponent} from './legend/parse';
 import {initEncoding, initMarkDef} from './mark/init';
 import {parseMark} from './mark/mark';
@@ -277,8 +278,8 @@ export class UnitModel extends ModelWithField {
     return [];
   }
 
-  public assembleSignals(signals: any[]): any[] {
-    return assembleUnitSignals(this, signals);
+  public assembleSignals(): VgSignal[] {
+    return assembleUnitSignals(this, []);
   }
 
   public assembleSelectionData(data: VgData[]): VgData[] {
@@ -289,9 +290,8 @@ export class UnitModel extends ModelWithField {
     return null;
   }
 
-
-  public assembleLayoutData(layoutData: VgData[]): VgData[] {
-    return assembleLayoutData(this, layoutData);
+  public assembleLayoutSignals(): VgSignal[] {
+    return assembleLayoutUnitSignals(this);
   }
 
   public assembleMarks() {

@@ -1,9 +1,9 @@
 
 import {Channel, COLUMN, ROW, X, Y} from '../../channel';
-import {LAYOUT, MAIN} from '../../data';
+import {MAIN} from '../../data';
 import {hasDiscreteDomain} from '../../scale';
 import {extend, isArray, keys, StringSet} from '../../util';
-import {VgData, VgFormulaTransform, VgTransform} from '../../vega.schema';
+import {VgData, VgFormulaTransform, VgSignal, VgTransform} from '../../vega.schema';
 
 import {FacetModel} from '../facet';
 import {LayerModel} from '../layer';
@@ -34,42 +34,6 @@ export interface SizeComponent {
   formula: Formula[];
 }
 
-export function assembleLayoutData(model: Model, layoutData: VgData[]): VgData[] {
-  const layoutComponent = model.component.layout;
-  if (!layoutComponent || (!layoutComponent.width && !layoutComponent.height)) {
-    return layoutData; // Do nothing
-  }
-
-  if (true) { // if both are shared scale, we can simply merge data source for width and for height
-    const distinctFields = keys(extend(layoutComponent.width.distinct, layoutComponent.height.distinct));
-    const formula = layoutComponent.width.formula.concat(layoutComponent.height.formula)
-      .map(f => {
-        return {
-          type: 'formula',
-          ...f
-        } as VgFormulaTransform;
-      });
-
-    return [
-      distinctFields.length > 0 ? {
-        name: model.getName(LAYOUT),
-        source: model.lookupDataSource(layoutComponent.width.source || layoutComponent.height.source),
-        transform: [{
-          type: 'aggregate',
-          fields: distinctFields,
-          ops: distinctFields.map(() => 'distinct')
-        } as VgTransform].concat(formula)
-      } : {
-        name: model.getName(LAYOUT),
-        values: [{}],
-        transform: formula
-      }
-    ];
-  }
-  // FIXME: implement
-  // otherwise, we need to join width and height (cross)
-}
-
 // FIXME: for nesting x and y, we need to declare x,y layout separately before joining later
 // For now, let's always assume shared scale
 export function parseUnitLayout(model: UnitModel): LayoutComponent {
@@ -87,12 +51,56 @@ function parseUnitSizeLayout(model: UnitModel, channel: Channel): SizeComponent 
     distinct,
     formula: [{
       as: model.channelSizeName(channel),
-      expr: unitSizeExpr(model, channel)
+      expr: oldUnitSizeExpr(model, channel)
     }]
   };
 }
 
-export function unitSizeExpr(model: UnitModel, channel: Channel): string {
+// TODO: rewrite this such that we merge redundant signals
+export function assembleLayoutLayerSignals(model: LayerModel): VgSignal[] {
+  return [
+    {name: model.getName('width'), update: layerSizeExpr(model, 'width')},
+    {name: model.getName('height'), update: layerSizeExpr(model, 'height')}
+  ];
+}
+
+export function layerSizeExpr(model: LayerModel, sizeType: 'width' | 'height'): string {
+  const childrenSizeSignals = model.children.map(child => child.getName(sizeType)).join(', ');
+  return `max(${childrenSizeSignals})`;
+}
+
+export function assembleLayoutUnitSignals(model: UnitModel): VgSignal[] {
+  return [
+    {name: model.getName('width'), update: unitSizeExpr(model, 'width')},
+    {name: model.getName('height'), update: unitSizeExpr(model, 'height')}
+  ];
+}
+
+export function unitSizeExpr(model: UnitModel, sizeType: 'width' | 'height'): string {
+  const channel = sizeType==='width' ? 'x' : 'y';
+  const scale = model.scale(channel);
+  if (scale) {
+    if (hasDiscreteDomain(scale.type) && scale.rangeStep) {
+      const scaleName = model.scaleName(channel);
+
+      const cardinality = `domain('${scaleName}').length`;
+      const paddingOuter = scale.paddingOuter !== undefined ? scale.paddingOuter : scale.padding;
+      const paddingInner = scale.type === 'band' ?
+        // only band has real paddingInner
+        (scale.paddingInner !== undefined ? scale.paddingInner : scale.padding) :
+        // For point, as calculated in https://github.com/vega/vega-scale/blob/master/src/band.js#L128,
+        // it's equivalent to have paddingInner = 1 since there is only n-1 steps between n points.
+        1;
+
+      return `bandspace(${cardinality}, ${paddingInner}, ${paddingOuter}) * ${scale.rangeStep}`;
+    }
+  }
+  return `${model[sizeType]}`;
+}
+
+
+
+export function oldUnitSizeExpr(model: UnitModel, channel: Channel): string {
   const scale = model.scale(channel);
   if (scale) {
 

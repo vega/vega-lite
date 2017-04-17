@@ -107,29 +107,6 @@ describe('FacetModel', function() {
     });
   });
 
-  describe('assembleSignals', () => {
-    it('includes signal for calculating column length when there is a column field', () => {
-      const model = parseFacetModel({
-        facet: {
-          column: {field: 'a', type: 'quantitative'}
-        },
-        spec: {
-          mark: 'point',
-          encoding: {
-            x: {field: 'b', type: 'quantitative'}
-          }
-        }
-      });
-      const signals = model.assembleSignals([]);
-      assert.includeDeepMembers(signals, [
-        {
-          name: 'column',
-          update: `data('layout')[0].distinct_a`
-        }
-      ]);
-    });
-  });
-
   describe('dataTable', () => {
     it('should return stacked if there is a stacked data component', () => {
       const model = parseFacetModel({
@@ -302,7 +279,7 @@ describe('compile/facet', () => {
           from: {data: 'column'},
           encode: {
             update: {
-              width: {field: {parent: 'child_width', level: 2}}
+              width: {signal: 'child_width'}
             }
           }
         });
@@ -339,7 +316,7 @@ describe('compile/facet', () => {
           from: {data: 'row'},
           encode: {
             update: {
-              height: {field: {parent: 'child_height', level: 2}}
+              height: {signal: 'child_height'}
             }
           }
         });

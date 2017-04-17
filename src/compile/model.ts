@@ -11,7 +11,7 @@ import {BaseSpec} from '../spec';
 import {StackProperties} from '../stack';
 import {Transform} from '../transform';
 import {Dict, extend, vals} from '../util';
-import {VgAxis, VgData, VgEncodeEntry, VgLayout, VgLegend, VgScale} from '../vega.schema';
+import {VgAxis, VgData, VgEncodeEntry, VgLayout, VgLegend, VgScale, VgSignal, VgSignalRef, VgValueRef} from '../vega.schema';
 
 import {DataComponent} from './data/index';
 import {LayoutComponent} from './layout';
@@ -77,7 +77,7 @@ export class NameMap implements NameMapInterface {
 
 export abstract class Model {
   public readonly parent: Model;
-  protected readonly name: string;
+  public readonly name: string;
   public readonly description: string;
 
   public readonly data: Data;
@@ -150,15 +150,14 @@ export abstract class Model {
   // TODO: revise if these two methods make sense for shared scale concat
   public abstract parseAxisGroup(): void;
 
-  public abstract assembleSignals(signals: any[]): any[];
+  public abstract assembleSignals(): any[];
 
   public abstract assembleSelectionData(data: VgData[]): VgData[];
   public abstract assembleData(): VgData[];
 
   public abstract assembleLayout(): VgLayout;
 
-  // TODO: remove
-  public abstract assembleLayoutData(layoutData: VgData[]): VgData[];
+  public abstract assembleLayoutSignals(): VgSignal[];
 
   public assembleScales(): VgScale[] {
     return assembleScale(this);
@@ -174,10 +173,10 @@ export abstract class Model {
     return vals(this.component.legends);
   }
 
-  public assembleGroup() {
+  public assembleGroup(signals: VgSignal[] = []) {
     const group: VgEncodeEntry = {};
 
-    const signals = this.assembleSignals(group.signals || []);
+    signals = signals.concat(this.assembleSignals());
     if (signals.length > 0) {
       group.signals = signals;
     }
@@ -223,8 +222,6 @@ export abstract class Model {
     return false;
   }
 
-
-
   public getName(text: string, delimiter: string = '_') {
     return (this.name ? this.name + delimiter : '') + text;
   }
@@ -236,6 +233,13 @@ export abstract class Model {
     const fullName = this.getName(name);
 
     return this.lookupDataSource(fullName);
+  }
+
+  public getSizeSignalRef(sizeType: 'width' | 'height'): VgValueRef {
+    // TODO: this could change in the future once we have sizeSignal merging
+    return {
+      signal: this.getName(sizeType)
+    };
   }
 
   /**

@@ -2,7 +2,6 @@
  * Module for compiling Vega-lite spec into Vega spec.
  */
 import {Config, initConfig} from '../config';
-import {LAYOUT} from '../data';
 import * as log from '../log';
 import {normalize, TopLevel, TopLevelExtendedSpec} from '../spec';
 import {extractTopLevelProperties, TopLevelProperties} from '../toplevelprops';
@@ -57,50 +56,31 @@ function assemble(model: Model, topLevelProperties: TopLevelProperties) {
     ...(model.description ? {description: model.description} : {}),
     autosize: 'pad', // By using Vega layout, we don't support custom autosize
     ...topLevelProperties,
-    signals: [
-      // Map calculated layout width and height to width and height signals.
-      {
-        name: 'width',
-        update: `data('${model.getName(LAYOUT)}')[0].${model.getName('width')}`
-      },
-      {
-        name: 'height',
-        update: `data('${model.getName(LAYOUT)}')[0].${model.getName('height')}`
-      }
-    ].concat(assembleTopLevelSignals(model)),
     data: [].concat(
       model.assembleData(),
-      model.assembleLayoutData([]),
       model.assembleSelectionData([])
     ),
-    marks: [assembleRootGroup(model)]
+    ...model.assembleGroup(
+      [].concat(
+        // TODO(https://github.com/vega/vega-lite/issues/2198):
+        // Merge the top-level's width/height signal with the top-level model
+        // so we can remove this special casing based on model.name
+        (
+          model.name ? [
+            // If model has name, its calculated width and height will not be named width and height, need to map it to the global width and height signals.
+            {name: 'width', update: model.getName('width')},
+            {name: 'height', update: model.getName('height')}
+          ] : []
+        ),
+
+        model.assembleLayoutSignals(),
+        assembleTopLevelSignals(model)
+      )
+    )
   };
 
   return {
     spec: output
     // TODO: add warning / errors here
-  };
-}
-
-export function assembleRootGroup(model: Model) {
-  const hasLayout = !!model.assembleLayout();
-
-  const mainGroupEncodeEntry = {
-    // TODO: change this to use signal
-    ...(!hasLayout ? {
-      width: {field: model.getName('width')},
-      height: {field: model.getName('height')},
-    }: {}),
-
-    ...model.assembleParentGroupProperties(model.config.cell)
-  };
-
-  return {
-    name: model.getName('main-group'),
-    type: 'group',
-    ...(model.description ? {description: model.description} : {}),
-    from: {data: model.getName(LAYOUT)},
-    ...(keys(mainGroupEncodeEntry).length > 0 ? {encode: {update: mainGroupEncodeEntry}} : {}),
-    ...model.assembleGroup()
   };
 }

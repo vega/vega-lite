@@ -135,6 +135,11 @@ export function isSignalRefDomain(domain: VgDomain): domain is VgSignalRef {
   return false;
 }
 
+export type VgSignal = {
+  name: string,
+  update: string
+};
+
 export type VgEncodeEntry = any;
 // TODO: make export interface VgEncodeEntry {
 //   x?: VgValueRef<number>
@@ -174,7 +179,7 @@ export interface VgFilterTransform {
 
 export interface VgAggregateTransform {
   type: 'aggregate';
-  groupby: VgFieldRef[];
+  groupby?: VgFieldRef[];
   fields?: VgFieldRef[];
   ops?: string[];
   as?: string[];

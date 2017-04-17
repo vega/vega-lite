@@ -91,9 +91,7 @@ export function isNamedData(data: Partial<Data>): data is NamedData {
   return !!data['name'];
 }
 
-export type DataSourceType = 'raw' | 'main' | 'layout' | 'row' | 'column';
-
+export type DataSourceType = 'raw' | 'main' | 'row' | 'column';
 
 export const MAIN: 'main' = 'main';
 export const RAW: 'raw' = 'raw';
-export const LAYOUT: 'layout' = 'layout';

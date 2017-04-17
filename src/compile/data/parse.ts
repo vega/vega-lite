@@ -78,13 +78,16 @@ Description of the dataflow (http://asciiflow.com/):
          |
          v
    +----------+
-   |   Main   +----> Layout
+   |   Main   |
    +----------+
          |
          v
      +-------+
-     | Facet |----> Child data...
+     | Facet |----> "column", "column-layout", and "row"
      +-------+
+         |
+         v
+  ...Child data...
 
 */
 

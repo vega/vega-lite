@@ -244,8 +244,8 @@ function clippedGroup(model: Model, marks: any[]): any[] {
     type: 'group',
     encode: {
       enter: {
-        width: {field: {group: 'width'}},
-        height: {field: {group: 'height'}},
+        width: model.getSizeSignalRef('width'),
+        height: model.getSizeSignalRef('height'),
         fill: {value: 'transparent'},
         clip: {value: true}
       }

@@ -1,7 +1,7 @@
 import {Axis} from '../axis';
 import {Channel, COLUMN, ROW, X, Y} from '../channel';
 import {Config} from '../config';
-import {LAYOUT, MAIN} from '../data';
+import {MAIN} from '../data';
 import {reduce} from '../encoding';
 import {Facet} from '../facet';
 import {FieldDef, normalize, title as fieldDefTitle} from '../fielddef';
@@ -11,7 +11,7 @@ import {Scale} from '../scale';
 import {FacetSpec} from '../spec';
 import {StackProperties} from '../stack';
 import {contains, Dict, extend, flatten, keys, vals} from '../util';
-import {FontWeight} from '../vega.schema';
+import {FontWeight, VgSignal} from '../vega.schema';
 import {
   isDataRefDomain,
   isDataRefUnionedDomain,
@@ -26,7 +26,7 @@ import {gridShow} from './axis/rules';
 import {buildModel} from './common';
 import {assembleData, assembleFacetData, FACET_SCALE_PREFIX} from './data/assemble';
 import {parseData} from './data/parse';
-import {assembleLayoutData, parseFacetLayout} from './layout';
+import {parseFacetLayout} from './layout';
 import {getTextHeader} from './layout/header';
 import {Model, ModelWithField} from './model';
 import initScale from './scale/init';
@@ -204,17 +204,9 @@ export class FacetModel extends ModelWithField {
     return null;
   }
 
-  public assembleSignals(signals: any): any[] {
-    if (this.channelHasField('column')) {
-      const columnDistinct = this.field('column',  {prefix: 'distinct'});
-      return [
-        {
-          name: this.getName('column'),
-          update: `data('${this.getName(LAYOUT)}')[0].${columnDistinct}`
-        }
-      ];
-    }
-    return [];
+  public assembleSignals(): VgSignal[] {
+    // FIXME(https://github.com/vega/vega-lite/issues/1193): this can be incorrect if we have independent scales.
+    return this.child.assembleLayoutSignals();
   }
 
   public assembleSelectionData(data: VgData[]): VgData[] {
@@ -229,10 +221,9 @@ export class FacetModel extends ModelWithField {
     };
   }
 
-  public assembleLayoutData(layoutData: VgData[]): VgData[] {
-    // Postfix traversal – layout is assembled bottom-up
-    this.child.assembleLayoutData(layoutData);
-    return assembleLayoutData(this, layoutData);
+  public assembleLayoutSignals(): VgSignal[] {
+    // FIXME correct this for column
+    return [];
   }
 
   private assembleLabelGroups() {
@@ -240,6 +231,13 @@ export class FacetModel extends ModelWithField {
       (this.channelHasField('column') ? [getLabelGroup(this, 'column')] : []),
       (this.channelHasField('row') ? [getLabelGroup(this, 'row')] : [])
     );
+  }
+
+  private columnDistinctSignal() {
+    // In facetNode.assemble(), the name is always this.getName('column') + '-layout'.
+    const facetLayoutDataName = this.getName('column') + '-layout';
+    const columnDistinct = this.field('column',  {prefix: 'distinct'});
+    return `data('${facetLayoutDataName}')[0].${columnDistinct}`;
   }
 
   public assembleMarks(): VgEncodeEntry[] {
@@ -258,7 +256,9 @@ export class FacetModel extends ModelWithField {
       extend(mark, data.length > 0 ? {data: data} : {}, this.child.assembleGroup())
     ).map(this.correctDataNames);
 
-    const columns = this.channelHasField('column') ? {signal: this.getName('column')} : 1;
+    const columns = this.channelHasField('column') ? {
+      signal: this.columnDistinctSignal()
+    } : 1;
 
     return [].concat(
         [{
@@ -294,19 +294,8 @@ export function hasSubPlotWithXy(model: FacetModel) {
     model.hasDescendantWithFieldOnChannel('y');
 }
 
-function childSizeEncodeEntryMixins(model: FacetModel, size: 'width' | 'height') {
-  return {
-    [size]: {
-      // TODO: replace this with signal
-      field: {
-        parent: model.child.sizeName(size),
-        // Level 2 because we currently wrap facet's child with two level of groups
-        // The outer layout is the layout for row/column field title.
-        // The inner layout is for the layout for row/column field labels
-        level: 2
-      }
-    }
-  };
+function childSizeEncodeEntryMixins(model: FacetModel, sizeType: 'width' | 'height') {
+  return {[sizeType]: model.child.getSizeSignalRef(sizeType)};
 }
 
 function getFacetGroupProperties(model: FacetModel) {
@@ -421,6 +410,7 @@ export function getTitleGroup(model: FacetModel, channel: 'row' | 'column') {
     textRef: {value: fieldDefTitle(fieldDef, model.config)},
 
     // TODO: customize alignment
+    // FIXME: this is not working.  Need to wait for Jeff's layout update that include title role
     positionRef: {signal: `0.5 * ${sizeChannel}`}
   });
 }

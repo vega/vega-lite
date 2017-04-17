@@ -3,7 +3,6 @@
 import {assert} from 'chai';
 import {parseUnitModel} from '../../util';
 
-
 import {X, Y} from '../../../src/channel';
 import {cardinalityExpr, unitSizeExpr} from '../../../src/compile/layout';
 import * as log from '../../../src/log';
@@ -43,8 +42,8 @@ describe('compile/layout', () => {
         }
       });
 
-      const sizeExpr = unitSizeExpr(model, X);
-      assert.equal(sizeExpr, 'max(datum["distinct_a"] - 1 + 2*0.5, 0) * 21');
+      const sizeExpr = unitSizeExpr(model, 'width');
+      assert.equal(sizeExpr, 'bandspace(domain(\'x\').length, 1, 0.5) * 21');
     });
 
     it('should return correct formula for ordinal-band scale with custom padding', () => {
@@ -55,8 +54,8 @@ describe('compile/layout', () => {
         }
       });
 
-      const sizeExpr = unitSizeExpr(model, X);
-      assert.equal(sizeExpr, 'max(datum["distinct_a"] - 0.3 + 2*0.3, 0) * 21');
+      const sizeExpr = unitSizeExpr(model, 'width');
+      assert.equal(sizeExpr, 'bandspace(domain(\'x\').length, 0.3, 0.3) * 21');
     });
 
     it('should return correct formula for ordinal-band scale with custom paddingInner', () => {
@@ -67,8 +66,8 @@ describe('compile/layout', () => {
         }
       });
 
-      const sizeExpr = unitSizeExpr(model, X);
-      assert.equal(sizeExpr, 'max(datum["distinct_a"] - 0.3 + 2*0.15, 0) * 21');
+      const sizeExpr = unitSizeExpr(model, 'width');
+      assert.equal(sizeExpr, 'bandspace(domain(\'x\').length, 0.3, 0.15) * 21');
     });
 
     it('should return static cell size for ordinal x-scale with null', () => {
@@ -79,7 +78,7 @@ describe('compile/layout', () => {
         }
       });
 
-      const sizeExpr = unitSizeExpr(model, X);
+      const sizeExpr = unitSizeExpr(model, 'width');
       assert.equal(sizeExpr, '200');
     });
 
@@ -92,7 +91,7 @@ describe('compile/layout', () => {
         }
       });
 
-      const sizeExpr = unitSizeExpr(model, Y);
+      const sizeExpr = unitSizeExpr(model, 'height');
       assert.equal(sizeExpr, '200');
     });
 
@@ -105,7 +104,7 @@ describe('compile/layout', () => {
         }
       });
 
-      const sizeExpr = unitSizeExpr(model, X);
+      const sizeExpr = unitSizeExpr(model, 'width');
       assert.equal(sizeExpr, '205');
     });
 
@@ -119,7 +118,7 @@ describe('compile/layout', () => {
           }
         });
 
-        const sizeExpr = unitSizeExpr(model, X);
+        const sizeExpr = unitSizeExpr(model, 'width');
         assert.equal(sizeExpr, '205');
         assert.equal(localLogger.warns[0], log.message.rangeStepDropped(X));
       });
@@ -133,7 +132,7 @@ describe('compile/layout', () => {
         }
       });
 
-      const sizeExpr = unitSizeExpr(model, X);
+      const sizeExpr = unitSizeExpr(model, 'width');
       assert.equal(sizeExpr, '200');
     });
 
@@ -146,7 +145,7 @@ describe('compile/layout', () => {
         }
       });
 
-      const sizeExpr = unitSizeExpr(model, Y);
+      const sizeExpr = unitSizeExpr(model, 'height');
       assert.equal(sizeExpr, '200');
     });
 
@@ -156,7 +155,7 @@ describe('compile/layout', () => {
         encoding: {},
         config: {scale: {rangeStep: 17}}
       });
-      const sizeExpr = unitSizeExpr(model, X);
+      const sizeExpr = unitSizeExpr(model, 'width');
       assert.equal(sizeExpr, '17');
     });
 
@@ -166,7 +165,7 @@ describe('compile/layout', () => {
         encoding: {},
         config: {scale: {textXRangeStep: 91}}
       });
-      const sizeExpr = unitSizeExpr(model, X);
+      const sizeExpr = unitSizeExpr(model, 'width');
       assert.equal(sizeExpr, '91');
     });
 

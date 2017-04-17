@@ -8,12 +8,13 @@ import {Scale} from '../scale';
 import {LayerSpec} from '../spec';
 import {StackProperties} from '../stack';
 import {Dict, flatten, keys, vals} from '../util';
-import {isSignalRefDomain, VgData, VgEncodeEntry, VgLayout, VgScale} from '../vega.schema';
+import {isSignalRefDomain, VgData, VgEncodeEntry, VgLayout, VgScale, VgSignal} from '../vega.schema';
 
 import {applyConfig, buildModel} from './common';
 import {assembleData} from './data/assemble';
 import {parseData} from './data/parse';
-import {assembleLayoutData, parseLayerLayout} from './layout';
+import {parseLayerLayout} from './layout';
+import {assembleLayoutLayerSignals} from './layout/index';
 import {Model} from './model';
 import {unionDomains} from './scale/domain';
 import {assembleLayerMarks as assembleLayeredSelectionMarks} from './selection/selection';
@@ -169,8 +170,14 @@ export class LayerModel extends Model {
   }
 
   // TODO: Support same named selections across children.
-  public assembleSignals(signals: any[]): any[] {
-    return this.children.reduce((sg, child) => child.assembleSignals(sg), []);
+  public assembleSignals(): VgSignal[] {
+    return this.children.reduce((signals, child) => {
+      return [].concat(
+        child.assembleLayoutSignals(),
+        child.assembleSignals(),
+        signals
+      );
+    }, []);
   }
 
   public assembleSelectionData(data: VgData[]): VgData[] {
@@ -195,13 +202,8 @@ export class LayerModel extends Model {
   public assembleLayout(): VgLayout {
     return null;
   }
-
-  public assembleLayoutData(layoutData: VgData[]): VgData[] {
-    // Postfix traversal – layout is assembled bottom-up
-    this.children.forEach((child) => {
-      child.assembleLayoutData(layoutData);
-    });
-    return assembleLayoutData(this, layoutData);
+  public assembleLayoutSignals(): VgSignal[] {
+    return assembleLayoutLayerSignals(this);
   }
 
   public assembleMarks(): any[] {

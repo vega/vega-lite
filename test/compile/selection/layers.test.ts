@@ -112,14 +112,10 @@ describe('Layered Selections', function() {
       "encode": {
         "enter": {
           "width": {
-            "field": {
-              "group": "width"
-            }
+            "signal": "width"
           },
           "height": {
-            "field": {
-              "group": "height"
-            }
+            "signal": "height"
           },
           "fill": {
             "value": "transparent"
