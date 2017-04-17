@@ -126,9 +126,7 @@ Each channel definition object **must** describe the [data field encoded by the 
 
 To encode a particular field in the data set with a particular channel, the channel must specify the field's name with `field` property.
 
-| Property      | Type          | Description    |
-| :------------ |:-------------:| :------------- |
-| field         | String        | Name of the field from which to pull a data value.   |
+{% include table.html props="field" source="FieldDef" %}
 
 ### Data Type
 
@@ -147,9 +145,7 @@ Ordinal
 Nominal
 : Nominal data, also known as categorical data, differentiates between values based only on their names or categories. For example, gender, nationality, music genre, names are all nominal data. Numbers maybe used to represent the variables but the number do not determine magnitude or ordering. For example, if a nominal variable contains three values 1, 2, and 3. We cannot claim that 1 is less than 2 nor 3.
 
-| Property      | Type          | Description    |
-| :------------ |:-------------:| :------------- |
-| type          | String        | The encoded field's type of measurement. This can be either a full type name (`"quantitative"`, `"temporal"`, `"ordinal"`,  and `"nominal"`) or an initial character of the type name (`"Q"`, `"T"`, `"O"`, `"N"`). This property is case insensitive. |
+{% include table.html props="type" source="FieldDef" %}
 
 **Note**:
 Data `type` here describes semantic of the data rather than primitive data types in programming language sense (`number`, `string`, etc.). The same primitive data type can have different type of measurement. For example, numeric data can represent quantitative, ordinal, or nominal data.
@@ -178,9 +174,7 @@ For more information about these field transforms, please see the following page
 
 For [mark properties channels](#props-channels), if a `field` is not specified, constant values for the properties (e.g., color, size) can be also set directly with the channel definition's `value` property.
 
-| Property      | Type          | Description    |
-| :------------ |:-------------:| :------------- |
-| value         | String &#124; Number | A constant value in visual domain. |
+{% include table.html props="value" source="ValueDef<number>" %}
 
 **Note**: `detail`, `path`, `order`, `row`, and `column` channels cannot encode constant `value`.
 
