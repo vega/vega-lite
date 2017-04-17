@@ -42,7 +42,7 @@ export class ParseNode extends DataFlowNode {
     this._parse = parse;
   }
 
-  public static make(model: ModelWithField) {
+  public static make(model: Model) {
     const parse = {};
 
     const calcFieldMap = model.transforms.filter(isCalculate).reduce((fieldMap, formula: CalculateTransform) => {
@@ -81,17 +81,19 @@ export class ParseNode extends DataFlowNode {
       });
     });
 
-    // Parse encoded fields
-    model.forEachFieldDef(fieldDef => {
-      if (fieldDef.type === TEMPORAL) {
-        parse[fieldDef.field] = 'date';
-      } else if (fieldDef.type === QUANTITATIVE) {
-        if (isCount(fieldDef) || calcFieldMap[fieldDef.field]) {
-          return;
+    if (model instanceof ModelWithField) {
+      // Parse encoded fields
+      model.forEachFieldDef(fieldDef => {
+        if (fieldDef.type === TEMPORAL) {
+          parse[fieldDef.field] = 'date';
+        } else if (fieldDef.type === QUANTITATIVE) {
+          if (isCount(fieldDef) || calcFieldMap[fieldDef.field]) {
+            return;
+          }
+          parse[fieldDef.field] = 'number';
         }
-        parse[fieldDef.field] = 'number';
-      }
-    });
+      });
+    }
 
     // Custom parse should override inferred parse
     const data = model.data;

@@ -99,11 +99,9 @@ export function parseData(model: Model): DataComponent {
   // the current head of the tree that we are appending to
   let head = root;
 
-  if (model instanceof ModelWithField) {
-    const parse = ParseNode.make(model);
-    parse.parent = root;
-    head = parse;
-  }
+  const parse = ParseNode.make(model);
+  parse.parent = root;
+  head = parse;
 
   if (model.transforms.length > 0) {
     const {first, last} = parseTransformArray(model);
