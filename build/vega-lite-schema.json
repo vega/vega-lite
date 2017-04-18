@@ -1720,7 +1720,7 @@
                             "$ref": "#/definitions/ValueDef<number>"
                         }
                     ],
-                    "description": "X2 coordinates for ranged `bar`, `rule`, `area`"
+                    "description": "X2 coordinates for ranged `bar`, `rule`, `area`."
                 },
                 "y": {
                     "anyOf": [
@@ -1742,7 +1742,7 @@
                             "$ref": "#/definitions/ValueDef<number>"
                         }
                     ],
-                    "description": "Y2 coordinates for ranged `bar`, `rule`, `area`"
+                    "description": "Y2 coordinates for ranged `bar`, `rule`, `area`."
                 }
             },
             "type": "object"
@@ -1861,7 +1861,7 @@
                             "$ref": "#/definitions/ValueDef<number>"
                         }
                     ],
-                    "description": "X2 coordinates for ranged `bar`, `rule`, `area`"
+                    "description": "X2 coordinates for ranged `bar`, `rule`, `area`."
                 },
                 "y": {
                     "anyOf": [
@@ -1883,7 +1883,7 @@
                             "$ref": "#/definitions/ValueDef<number>"
                         }
                     ],
-                    "description": "Y2 coordinates for ranged `bar`, `rule`, `area`"
+                    "description": "Y2 coordinates for ranged `bar`, `rule`, `area`."
                 }
             },
             "type": "object"
@@ -1977,7 +1977,7 @@
             "properties": {
                 "aggregate": {
                     "$ref": "#/definitions/AggregateOp",
-                    "description": "Aggregation function for the field\n(e.g., `mean`, `sum`, `median`, `min`, `max`, `count`)."
+                    "description": "Aggregation function for the field\n(e.g., `mean`, `sum`, `median`, `min`, `max`, `count`).\n\n__Default value:__ `undefined` (None)"
                 },
                 "bin": {
                     "anyOf": [
@@ -1991,12 +1991,12 @@
                     "description": "Flag for binning a `quantitative` field, or a bin property object\nfor binning parameters."
                 },
                 "field": {
-                    "description": "Name of the field from which to pull a data value.",
+                    "description": "__Required.__ Name of the field from which to pull a data value.",
                     "type": "string"
                 },
                 "timeUnit": {
                     "$ref": "#/definitions/TimeUnit",
-                    "description": "Time unit for a `temporal` field  (e.g., `year`, `yearmonth`, `month`, `hour`)."
+                    "description": "Time unit for a `temporal` field  (e.g., `year`, `yearmonth`, `month`, `hour`).\n\n__Default value:__ `undefined` (None)"
                 },
                 "title": {
                     "description": "Title for axis or legend.",
@@ -2462,7 +2462,7 @@
             "properties": {
                 "aggregate": {
                     "$ref": "#/definitions/AggregateOp",
-                    "description": "Aggregation function for the field\n(e.g., `mean`, `sum`, `median`, `min`, `max`, `count`)."
+                    "description": "Aggregation function for the field\n(e.g., `mean`, `sum`, `median`, `min`, `max`, `count`).\n\n__Default value:__ `undefined` (None)"
                 },
                 "bin": {
                     "anyOf": [
@@ -2479,7 +2479,7 @@
                     "$ref": "#/definitions/Condition<number>"
                 },
                 "field": {
-                    "description": "Name of the field from which to pull a data value.",
+                    "description": "__Required.__ Name of the field from which to pull a data value.",
                     "type": "string"
                 },
                 "legend": {
@@ -2507,11 +2507,12 @@
                             ],
                             "type": "string"
                         }
-                    ]
+                    ],
+                    "description": "Sort order for a particular field.\nFor quantitative or temporal fields, this can be either `\"ascending\"` or , `\"descending\"`\nFor quantitative or temporal fields, this can be `\"ascending\"`, `\"descending\"`, `\"none\"`, or a [sort field definition object](sort.html#sort-field) for sorting by an aggregate calculation of a specified sort field.\n\n__Default value:__ `\"ascending\"`"
                 },
                 "timeUnit": {
                     "$ref": "#/definitions/TimeUnit",
-                    "description": "Time unit for a `temporal` field  (e.g., `year`, `yearmonth`, `month`, `hour`)."
+                    "description": "Time unit for a `temporal` field  (e.g., `year`, `yearmonth`, `month`, `hour`).\n\n__Default value:__ `undefined` (None)"
                 },
                 "title": {
                     "description": "Title for axis or legend.",
@@ -2529,7 +2530,7 @@
             "properties": {
                 "aggregate": {
                     "$ref": "#/definitions/AggregateOp",
-                    "description": "Aggregation function for the field\n(e.g., `mean`, `sum`, `median`, `min`, `max`, `count`)."
+                    "description": "Aggregation function for the field\n(e.g., `mean`, `sum`, `median`, `min`, `max`, `count`).\n\n__Default value:__ `undefined` (None)"
                 },
                 "bin": {
                     "anyOf": [
@@ -2546,7 +2547,7 @@
                     "$ref": "#/definitions/Condition<string>"
                 },
                 "field": {
-                    "description": "Name of the field from which to pull a data value.",
+                    "description": "__Required.__ Name of the field from which to pull a data value.",
                     "type": "string"
                 },
                 "legend": {
@@ -2574,11 +2575,12 @@
                             ],
                             "type": "string"
                         }
-                    ]
+                    ],
+                    "description": "Sort order for a particular field.\nFor quantitative or temporal fields, this can be either `\"ascending\"` or , `\"descending\"`\nFor quantitative or temporal fields, this can be `\"ascending\"`, `\"descending\"`, `\"none\"`, or a [sort field definition object](sort.html#sort-field) for sorting by an aggregate calculation of a specified sort field.\n\n__Default value:__ `\"ascending\"`"
                 },
                 "timeUnit": {
                     "$ref": "#/definitions/TimeUnit",
-                    "description": "Time unit for a `temporal` field  (e.g., `year`, `yearmonth`, `month`, `hour`)."
+                    "description": "Time unit for a `temporal` field  (e.g., `year`, `yearmonth`, `month`, `hour`).\n\n__Default value:__ `undefined` (None)"
                 },
                 "title": {
                     "description": "Title for axis or legend.",
@@ -2854,7 +2856,7 @@
             "properties": {
                 "aggregate": {
                     "$ref": "#/definitions/AggregateOp",
-                    "description": "Aggregation function for the field\n(e.g., `mean`, `sum`, `median`, `min`, `max`, `count`)."
+                    "description": "Aggregation function for the field\n(e.g., `mean`, `sum`, `median`, `min`, `max`, `count`).\n\n__Default value:__ `undefined` (None)"
                 },
                 "bin": {
                     "anyOf": [
@@ -2868,7 +2870,7 @@
                     "description": "Flag for binning a `quantitative` field, or a bin property object\nfor binning parameters."
                 },
                 "field": {
-                    "description": "Name of the field from which to pull a data value.",
+                    "description": "__Required.__ Name of the field from which to pull a data value.",
                     "type": "string"
                 },
                 "sort": {
@@ -2876,7 +2878,7 @@
                 },
                 "timeUnit": {
                     "$ref": "#/definitions/TimeUnit",
-                    "description": "Time unit for a `temporal` field  (e.g., `year`, `yearmonth`, `month`, `hour`)."
+                    "description": "Time unit for a `temporal` field  (e.g., `year`, `yearmonth`, `month`, `hour`).\n\n__Default value:__ `undefined` (None)"
                 },
                 "title": {
                     "description": "Title for axis or legend.",
@@ -2915,7 +2917,7 @@
             "properties": {
                 "aggregate": {
                     "$ref": "#/definitions/AggregateOp",
-                    "description": "Aggregation function for the field\n(e.g., `mean`, `sum`, `median`, `min`, `max`, `count`)."
+                    "description": "Aggregation function for the field\n(e.g., `mean`, `sum`, `median`, `min`, `max`, `count`).\n\n__Default value:__ `undefined` (None)"
                 },
                 "axis": {
                     "anyOf": [
@@ -2939,7 +2941,7 @@
                     "description": "Flag for binning a `quantitative` field, or a bin property object\nfor binning parameters."
                 },
                 "field": {
-                    "description": "Name of the field from which to pull a data value.",
+                    "description": "__Required.__ Name of the field from which to pull a data value.",
                     "type": "string"
                 },
                 "scale": {
@@ -2957,7 +2959,8 @@
                             ],
                             "type": "string"
                         }
-                    ]
+                    ],
+                    "description": "Sort order for a particular field.\nFor quantitative or temporal fields, this can be either `\"ascending\"` or , `\"descending\"`\nFor quantitative or temporal fields, this can be `\"ascending\"`, `\"descending\"`, `\"none\"`, or a [sort field definition object](sort.html#sort-field) for sorting by an aggregate calculation of a specified sort field.\n\n__Default value:__ `\"ascending\"`"
                 },
                 "stack": {
                     "$ref": "#/definitions/StackOffset",
@@ -2965,7 +2968,7 @@
                 },
                 "timeUnit": {
                     "$ref": "#/definitions/TimeUnit",
-                    "description": "Time unit for a `temporal` field  (e.g., `year`, `yearmonth`, `month`, `hour`)."
+                    "description": "Time unit for a `temporal` field  (e.g., `year`, `yearmonth`, `month`, `hour`).\n\n__Default value:__ `undefined` (None)"
                 },
                 "title": {
                     "description": "Title for axis or legend.",
@@ -3801,7 +3804,7 @@
             "properties": {
                 "aggregate": {
                     "$ref": "#/definitions/AggregateOp",
-                    "description": "Aggregation function for the field\n(e.g., `mean`, `sum`, `median`, `min`, `max`, `count`)."
+                    "description": "Aggregation function for the field\n(e.g., `mean`, `sum`, `median`, `min`, `max`, `count`).\n\n__Default value:__ `undefined` (None)"
                 },
                 "bin": {
                     "anyOf": [
@@ -3818,7 +3821,7 @@
                     "$ref": "#/definitions/Condition<string | number>"
                 },
                 "field": {
-                    "description": "Name of the field from which to pull a data value.",
+                    "description": "__Required.__ Name of the field from which to pull a data value.",
                     "type": "string"
                 },
                 "format": {
@@ -3827,7 +3830,7 @@
                 },
                 "timeUnit": {
                     "$ref": "#/definitions/TimeUnit",
-                    "description": "Time unit for a `temporal` field  (e.g., `year`, `yearmonth`, `month`, `hour`)."
+                    "description": "Time unit for a `temporal` field  (e.g., `year`, `yearmonth`, `month`, `hour`).\n\n__Default value:__ `undefined` (None)"
                 },
                 "title": {
                     "description": "Title for axis or legend.",

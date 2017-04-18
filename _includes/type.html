@@ -5,6 +5,7 @@ assign type = include.src.type %}{%
       assign array = include.src["$ref"]] | split: "/" %}{%
       assign last_index = array | size | minus: 1 %}{%
       assign type = array[last_index] %}{%
+      assign type = type | split: "<" | first%}{%
     elsif include.src.anyOf %}{% comment %}special case for anyOf{% endcomment %}{%
       capture type %}{%
         assign para = include.src.anyOf %}{%

@@ -5,7 +5,7 @@ for type in include.types %}{%
     if type.items["$ref"] %}{%
       assign array = type.items["$ref"] | split: "/" %}{%
       assign last_index = array | size | minus: 1 %}{%
-      assign element = array[last_index] | append: "[]" %}{{element | strip | append: include.suffix}}{%
+      assign element = array[last_index] | split: "<" | first | append: "[]" %}{{element | strip | append: include.suffix}}{%
     elsif type.items.anyOf %}{%
       capture element %}{%
         assign para = type.items.anyOf %}{%
@@ -31,7 +31,8 @@ for type in include.types %}{%
   elsif type["$ref"] %}{%
     assign array = type["$ref"] | split: "/" %}{%
     assign last_index = array | size | minus: 1 %}{%
-    assign element = array[last_index] %}{{element | strip | append: include.suffix}}{%
+    assign element = array[last_index] %}{% assign element = element | split: "<" | first%}
+    {{element | strip | append: include.suffix}}{%
   endif %}{%
   assign splitstring = " | " %}{%
   unless forloop.last %}{{splitstring}}{%

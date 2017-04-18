@@ -14,8 +14,7 @@ elsif include.check == "type" %}{%
       assign url = link.type[trimKey] %}{%
     endif %}{%
     if url != "" %}<a href="{{url}}">{{key | split: "[]" | first}}</a>{%
-      if key contains "[]" %}[]
-      {% endif %}{%
+      if key contains "[]" %}[]{% endif %}{%
     else %}{{key}}{%
     endif %}{%
     unless forloop.last %}{{splitstring}}{%
