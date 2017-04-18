@@ -193,7 +193,10 @@ describe("normalizeBox", () => {
         "data": {"url": "data/population.json"},
         "layer": [
           {
-            "mark": "rule",
+            mark: {
+              type: 'rule',
+              role: 'boxWhisker'
+            },
             "encoding": {
               "x": {"field": "age","type": "ordinal"},
               "y": {
@@ -210,7 +213,10 @@ describe("normalizeBox", () => {
             }
           },
           {
-            "mark": "rule",
+            mark: {
+              type: 'rule',
+              role: 'boxWhisker'
+            },
             "encoding": {
               "x": {"field": "age","type": "ordinal"},
               "y": {
@@ -226,7 +232,10 @@ describe("normalizeBox", () => {
             }
           },
           {
-            "mark": "bar",
+            mark: {
+              type: 'bar',
+              role: 'box'
+            },
             "encoding": {
               "x": {"field": "age","type": "ordinal"},
               "y": {
@@ -244,7 +253,10 @@ describe("normalizeBox", () => {
             }
           },
           {
-            "mark": "tick",
+            mark: {
+              type: 'tick',
+              role: 'boxMid'
+            },
             "encoding": {
               "x": {"field": "age","type": "ordinal"},
               "y": {
@@ -280,7 +292,10 @@ describe("normalizeBox", () => {
         "data": {"url": "data/population.json"},
         "layer": [
           {
-            "mark": "rule",
+            mark: {
+              type: 'rule',
+              role: 'boxWhisker'
+            },
             "encoding": {
               "y": {"field": "age","type": "ordinal"},
               "x": {
@@ -297,7 +312,10 @@ describe("normalizeBox", () => {
             }
           },
           {
-            "mark": "rule",
+            mark: {
+              type: 'rule',
+              role: 'boxWhisker'
+            },
             "encoding": {
               "y": {"field": "age","type": "ordinal"},
               "x": {
@@ -313,7 +331,10 @@ describe("normalizeBox", () => {
             }
           },
           {
-            "mark": "bar",
+            mark: {
+              type: 'bar',
+              role: 'box'
+            },
             "encoding": {
               "y": {"field": "age","type": "ordinal"},
               "x": {
@@ -331,7 +352,10 @@ describe("normalizeBox", () => {
             }
           },
           {
-            "mark": "tick",
+            mark: {
+              type: 'tick',
+              role: 'boxMid'
+            },
             "encoding": {
               "y": {"field": "age","type": "ordinal"},
               "x": {
@@ -365,7 +389,10 @@ describe("normalizeBox", () => {
         "data": {"url": "data/population.json"},
         "layer": [
           {
-            "mark": "rule",
+            mark: {
+              type: 'rule',
+              role: 'boxWhisker'
+            },
             "encoding": {
               "y": {"field": "age","type": "ordinal"},
               "x": {
@@ -382,7 +409,10 @@ describe("normalizeBox", () => {
             }
           },
           {
-            "mark": "rule",
+            mark: {
+              type: 'rule',
+              role: 'boxWhisker'
+            },
             "encoding": {
               "y": {"field": "age","type": "ordinal"},
               "x": {
@@ -398,7 +428,10 @@ describe("normalizeBox", () => {
             }
           },
           {
-            "mark": "bar",
+            mark: {
+              type: 'bar',
+              role: 'box'
+            },
             "encoding": {
               "y": {"field": "age","type": "ordinal"},
               "x": {
@@ -415,7 +448,10 @@ describe("normalizeBox", () => {
             }
           },
           {
-            "mark": "tick",
+            mark: {
+              type: 'tick',
+              role: 'boxMid'
+            },
             "encoding": {
               "y": {"field": "age","type": "ordinal"},
               "x": {
@@ -423,7 +459,8 @@ describe("normalizeBox", () => {
                 "field": "people",
                 "type": "quantitative"
               },
-              "color": {"value" : "white"}
+              "color": {"value" : "white"},
+              "size": {"value": 14}
             }
           }
         ]
@@ -447,7 +484,10 @@ describe("normalizeBox", () => {
         "data": {"url": "data/population.json"},
         "layer": [
           {
-            "mark": "rule",
+            mark: {
+              type: 'rule',
+              role: 'boxWhisker'
+            },
             "encoding": {
               "x": {
                 "aggregate": "min",
@@ -463,7 +503,10 @@ describe("normalizeBox", () => {
             }
           },
           {
-            "mark": "rule",
+            mark: {
+              type: 'rule',
+              role: 'boxWhisker'
+            },
             "encoding": {
               "x": {
                 "aggregate": "q3",
@@ -478,7 +521,10 @@ describe("normalizeBox", () => {
             }
           },
           {
-            "mark": "bar",
+            mark: {
+              type: 'bar',
+              role: 'box'
+            },
             "encoding": {
               "x": {
                 "aggregate": "q1",
@@ -494,14 +540,18 @@ describe("normalizeBox", () => {
             }
           },
           {
-            "mark": "tick",
+            mark: {
+              type: 'tick',
+              role: 'boxMid'
+            },
             "encoding": {
               "x": {
                 "aggregate": "median",
                 "field": "people",
                 "type": "quantitative"
               },
-              "color": {"value": "white"}
+              "color": {"value": "white"},
+              "size": {"value": 14}
             }
           }
         ]
@@ -525,7 +575,10 @@ describe("normalizeBox", () => {
         "data": {"url": "data/population.json"},
         "layer": [
           {
-            "mark": "rule",
+            mark: {
+              type: 'rule',
+              role: 'boxWhisker'
+            },
             "encoding": {
               "y": {
                 "aggregate": "min",
@@ -541,7 +594,10 @@ describe("normalizeBox", () => {
             }
           },
           {
-            "mark": "rule",
+            mark: {
+              type: 'rule',
+              role: 'boxWhisker'
+            },
             "encoding": {
               "y": {
                 "aggregate": "q3",
@@ -556,7 +612,10 @@ describe("normalizeBox", () => {
             }
           },
           {
-            "mark": "bar",
+            mark: {
+              type: 'bar',
+              role: 'box'
+            },
             "encoding": {
               "y": {
                 "aggregate": "q1",
@@ -572,14 +631,18 @@ describe("normalizeBox", () => {
             }
           },
           {
-            "mark": "tick",
+            mark: {
+              type: 'tick',
+              role: 'boxMid'
+            },
             "encoding": {
               "y": {
                 "aggregate": "median",
                 "field": "people",
                 "type": "quantitative"
               },
-              "color": {"value": "white"}
+              "color": {"value": "white"},
+              "size": {"value": 14}
             }
           }
         ]

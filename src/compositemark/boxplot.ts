@@ -19,8 +19,7 @@ export function normalizeBoxPlot(spec: GenericUnitSpec<BOXPLOT, Encoding<Field>>
   const {x: _x, y: _y, ...nonPositionEncoding} = encoding;
   const {size: size, ...nonPositionEncodingWithoutSize} = nonPositionEncoding;
   const {color: _color, ...nonPositionEncodingWithoutColorSize} = nonPositionEncodingWithoutSize;
-  const midTickSizeChannelDef = size ? {size: size} : {};
-  const barSizeChannelDef = size ? {size: size} : {size: {value: config.box.size}};
+  const midTickAndBarSizeChannelDef = size ? {size: size} : {size: {value: config.box.size}};
 
   let discreteAxisFieldDef, continuousAxisChannelDef: PositionFieldDef<Field>;
   let discreteAxis, continuousAxis;
@@ -96,7 +95,10 @@ export function normalizeBoxPlot(spec: GenericUnitSpec<BOXPLOT, Encoding<Field>>
     ...outerSpec,
     layer: [
       { // lower whisker
-        mark: 'rule',
+        mark: {
+          type: 'rule',
+          role: 'boxWhisker'
+        },
         encoding: {
           ...discreteAxisEncodingMixin,
           [continuousAxis]: minWithAxisFieldDef,
@@ -104,7 +106,10 @@ export function normalizeBoxPlot(spec: GenericUnitSpec<BOXPLOT, Encoding<Field>>
           ...nonPositionEncodingWithoutColorSize
         }
       }, { // upper whisker
-        mark: 'rule',
+        mark: {
+          type: 'rule',
+          role: 'boxWhisker'
+        },
         encoding: {
           ...discreteAxisEncodingMixin,
           [continuousAxis]: q3FieldDef,
@@ -112,21 +117,27 @@ export function normalizeBoxPlot(spec: GenericUnitSpec<BOXPLOT, Encoding<Field>>
           ...nonPositionEncodingWithoutColorSize
         }
       }, { // box (q1 to q3)
-        mark: 'bar',
+        mark: {
+          type: 'bar',
+          role: 'box'
+        },
         encoding: {
           ...discreteAxisEncodingMixin,
           [continuousAxis]: q1FieldDef,
           [continuousAxis + '2']: q3FieldDef,
           ...nonPositionEncodingWithoutSize,
-          ...barSizeChannelDef
+          ...midTickAndBarSizeChannelDef
         }
       }, { // mid tick
-        mark: 'tick',
+        mark: {
+          type: 'tick',
+          role: 'boxMid'
+        },
         encoding: {
           ...discreteAxisEncodingMixin,
           [continuousAxis]: medianFieldDef,
           ...nonPositionEncoding,
-          ...midTickSizeChannelDef,
+          ...midTickAndBarSizeChannelDef,
           'color': {'value' : 'white'}
         }
       }

@@ -4,7 +4,10 @@
   "data": {"url": "data/population.json"},
   "layer": [
           {
-            "mark": "rule",
+            "mark": {
+              "type": "rule",
+              "role": "boxWhisker"
+            },
             "encoding": {
               "x": {"field": "age","type": "ordinal"},
               "y": {
@@ -21,7 +24,10 @@
             }
           },
           {
-            "mark": "rule",
+            "mark": {
+              "type": "rule",
+              "role": "boxWhisker"
+            },
             "encoding": {
               "x": {"field": "age","type": "ordinal"},
               "y": {
@@ -37,7 +43,10 @@
             }
           },
           {
-            "mark": "bar",
+            "mark": {
+              "type": "bar",
+              "role": "box"
+            },
             "encoding": {
               "x": {"field": "age","type": "ordinal"},
               "y": {
@@ -53,8 +62,12 @@
               "size": {"value": 5},
               "color": {"value" : "skyblue"}
             }
-          }, {
-            "mark": "tick",
+          },
+          {
+            "mark": {
+              "type": "tick",
+              "role": "boxMid"
+            },
             "encoding": {
               "x": {"field": "age","type": "ordinal"},
               "y": {
@@ -66,5 +79,5 @@
               "size": {"value": 5}
             }
           }
-  ]
+        ]
 }
