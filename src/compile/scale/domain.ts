@@ -241,8 +241,8 @@ function normalizeDomain(domain: UnionableDomain): (any[] | VgDataRef)[] {
         return d;
       }
       return {
-        field: d.field,
-        data: d.data
+        data: d.data,
+        field: d.field
       };
     });
   }
