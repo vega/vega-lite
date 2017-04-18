@@ -1,6 +1,8 @@
 import {assert} from 'chai';
 import {replaceRepeaterInEncoding} from '../../src/compile/repeat';
 import * as log from '../../src/log';
+import {keys} from '../../src/util';
+import {DataRefUnionDomain, isDataRefUnionedDomain} from '../../src/vega.schema';
 import {parseRepeatModel} from '../util';
 
 describe('Repeat', function() {
@@ -72,6 +74,33 @@ describe('Repeat', function() {
       });
 
       assert.equal(model.children.length, 6);
+    });
+
+    it('should union color scales and legends', () => {
+      const model = parseRepeatModel({
+        repeat: {
+          row: ['foo', 'bar'],
+          column: ['foo', 'bar']
+        },
+        spec: {
+          mark: 'point',
+          encoding: {
+            x: {field: {repeat: 'row'}, type: 'quantitative'},
+            y: {field: {repeat: 'column'}, type: 'ordinal'},
+            color: {field: 'baz', type: 'nominal'}
+          }
+        }
+      });
+
+      model.parseScale();
+      const colorScale = model.component.scales['color'];
+
+      assert(isDataRefUnionedDomain(colorScale.domain));
+      assert.deepEqual((colorScale.domain as DataRefUnionDomain).fields.length, 4);
+
+      model.parseLegend();
+
+      assert.equal(keys(model.component.legends).length, 1);
     });
   });
 });
