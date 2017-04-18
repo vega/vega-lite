@@ -5,7 +5,7 @@ describe('Concat', function() {
   describe('merge scale domains', () => {
     it('should instantiate all children', () => {
       const model = parseConcatModel({
-        concat: [{
+        vconcat: [{
           mark: 'point',
           encoding: {
             x: {field: 'a', type: 'ordinal'}

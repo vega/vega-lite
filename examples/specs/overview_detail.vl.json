@@ -1,6 +1,6 @@
 {
   "$schema": "https://vega.github.io/schema/vega-lite/v2.json",
-  "concat": [
+  "vconcat": [
     {
       "width": 480,
       "data": {"url": "data/sp500.csv"},

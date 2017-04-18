@@ -446,19 +446,6 @@
                     "description": "CSS color property to use as background of visualization.\n\n__Default value:__ none (transparent)",
                     "type": "string"
                 },
-                "concat": {
-                    "items": {
-                        "anyOf": [
-                            {
-                                "$ref": "#/definitions/GenericUnitSpec<\"point\" | \"area\" | \"bar\" | \"line\" | \"text\" | \"tick\" | \"rect\" | \"rule\" | \"circle\" ..."
-                            },
-                            {
-                                "$ref": "#/definitions/GenericLayerSpec<GenericUnitSpec<\"point\" | \"area\" | \"bar\" | \"line\" | \"text\" | \"tick\" | \"rect\" | \"..."
-                            }
-                        ]
-                    },
-                    "type": "array"
-                },
                 "config": {
                     "$ref": "#/definitions/Config",
                     "description": "Configuration object"
@@ -525,10 +512,23 @@
                         ]
                     },
                     "type": "array"
+                },
+                "vconcat": {
+                    "items": {
+                        "anyOf": [
+                            {
+                                "$ref": "#/definitions/GenericUnitSpec<\"point\" | \"area\" | \"bar\" | \"line\" | \"text\" | \"tick\" | \"rect\" | \"rule\" | \"circle\" ..."
+                            },
+                            {
+                                "$ref": "#/definitions/GenericLayerSpec<GenericUnitSpec<\"point\" | \"area\" | \"bar\" | \"line\" | \"text\" | \"tick\" | \"rect\" | \"..."
+                            }
+                        ]
+                    },
+                    "type": "array"
                 }
             },
             "required": [
-                "concat"
+                "vconcat"
             ],
             "type": "object"
         }

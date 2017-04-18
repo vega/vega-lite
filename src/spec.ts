@@ -127,7 +127,8 @@ export type RepeatSpec = GenericRepeatSpec<UnitSpec>;
 
 export interface GenericConcatSpec<U extends GenericUnitSpec<any, any>> extends BaseSpec {
   // TODO: add GenericFacetSpec<U> | GenericRepeatSpec<U> | GenericfacetSpec<U>
-  concat: (GenericLayerSpec<U> | U)[];
+  // TODO: hconcat
+  vconcat: (GenericLayerSpec<U> | U)[];
 }
 
 export type ConcatSpec = GenericConcatSpec<UnitSpec>;
@@ -158,7 +159,7 @@ export function isRepeatSpec(spec: GenericSpec<GenericUnitSpec<any, any>>): spec
 }
 
 export function isConcatSpec(spec: GenericSpec<GenericUnitSpec<any, any>>): spec is GenericConcatSpec<GenericUnitSpec<any, any>> {
-  return spec['concat'] !== undefined;
+  return spec['vconcat'] !== undefined;
 }
 
 /**
@@ -234,10 +235,10 @@ function normalizeRepeat(spec: GenericRepeatSpec<CompositeUnitSpec>, config: Con
 }
 
 function normalizeConcat(spec: GenericConcatSpec<CompositeUnitSpec>, config: Config): ConcatSpec {
-  const {concat: concat, ...rest} = spec;
+  const {vconcat: vconcat, ...rest} = spec;
   return {
     ...rest,
-    concat: concat.map((subspec) => normalizeNonFacet(subspec, config))
+    vconcat: vconcat.map((subspec) => normalizeNonFacet(subspec, config))
   };
 }
 
@@ -383,7 +384,7 @@ function accumulate(dict: any, fieldDefs: FieldDef<Field>[]): any {
 function fieldDefIndex(spec: GenericSpec<GenericUnitSpec<any, any>>, dict: any = {}): any {
   // TODO: Support repeat and concat
   if (isLayerSpec(spec)) {
-    spec.layer.forEach(function(layer) {
+    spec.layer.forEach(layer => {
       if (isUnitSpec(layer)) {
         accumulate(dict, vlEncoding.fieldDefs(layer.encoding));
       } else {
@@ -397,7 +398,7 @@ function fieldDefIndex(spec: GenericSpec<GenericUnitSpec<any, any>>, dict: any =
     accumulate(dict, vlEncoding.fieldDefs(spec.spec));
     fieldDefIndex(spec.spec, dict);
   } else if (isConcatSpec(spec)) {
-    spec.concat.forEach(function(child) {
+    spec.vconcat.forEach(child => {
       if (isUnitSpec(child)) {
         accumulate(dict, vlEncoding.fieldDefs(child.encoding));
       } else {

@@ -17,7 +17,7 @@ export class ConcatModel extends Model {
   constructor(spec: ConcatSpec, parent: Model, parentGivenName: string, repeater: RepeaterValue, config: Config) {
     super(spec, parent, parentGivenName, config);
 
-    this.children = spec.concat.map((child, i) => {
+    this.children = spec.vconcat.map((child, i) => {
       return buildModel(child, this, this.getName('concat_' + i), repeater, config);
     });
   }
