@@ -243,12 +243,12 @@
             "domain": {
                 "fields": [
                     {
-                        "field": "date",
-                        "data": "data_0"
+                        "data": "data_0",
+                        "field": "date"
                     },
                     {
-                        "field": "date",
-                        "data": "data_1"
+                        "data": "data_1",
+                        "field": "date"
                     },
                     {
                         "data": "data_2",
@@ -269,12 +269,12 @@
             "domain": {
                 "fields": [
                     {
-                        "field": "price",
-                        "data": "data_0"
+                        "data": "data_0",
+                        "field": "price"
                     },
                     {
-                        "field": "price",
-                        "data": "data_1"
+                        "data": "data_1",
+                        "field": "price"
                     },
                     {
                         "data": "data_2",
