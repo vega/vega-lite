@@ -185,7 +185,7 @@ Use the `rect` mark to create a heatmap.
 
 ## Line
 
-The `line` mark represents the data points stored in a field with a line connecting all of these points. Unlike other marks except for `area` that represents one data element per mark, one line mark represents multiple data element as a single line.
+The `line` mark represents the data points stored in a field with a line connecting all of these points. Unlike other marks that represent one data element per mark, one line mark represents multiple data element as a single line (same is true for `area`).
 
 ### Line Chart
 
