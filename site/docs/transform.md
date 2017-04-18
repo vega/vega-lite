@@ -53,7 +53,7 @@ Vega-Lite filter transform the following property:
 A `filter` property can be (1) a filter predicate object including Equal Filter, Range Filter and OneOf Filter (2) [Vega Expression](https://vega.github.io/vega/docs/expressions/) string or (3) an array of filter predicates (either predicate object or expression string) that must be all true for a datum to be include.
 
 
-For a filter object, a `field` must be provided with one of the filter operators (`equal`, `in`, `range`).  Values of these operators can be primitive types (string, number, boolean) or a [DateTime definition object](#datetime) to describe time. Also, `timeUnit` can be provided to further transform a temporal `field`.
+For a filter object, a `field` must be provided with one of the filter operators (`equal`, `in`, `range`).  Values of these operators can be primitive types (string, number, boolean) or a [DateTime definition object](#datetime) to describe time. In addition, `timeUnit` can be provided to further transform a temporal `field`.
 
 {:#filter}
 #### Filter Expression

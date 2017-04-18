@@ -80,7 +80,7 @@ We map `symbol` variable (stock market ticker symbol) to `detail` to use them to
 
 {% include table.html props="order" source="Encoding" %}
 
-**Note**: Since `order` and `path` represent actual data fields that are used to sort the data, they cannot encode the constant `value`. Also, in aggregate plots, they should have `aggregate` function specified.
+**Note**: Since `order` and `path` represent actual data fields that are used to sort the data, they cannot encode the constant `value`. In addition, in aggregate plots, they should have `aggregate` function specified.
 
 {:#ex-order}
 #### Example: Sorting Stack Order
@@ -113,12 +113,12 @@ By default, line marks order their points in their paths by the field of channel
 
 For more information, please see [facet page](facet.html).
 
-**Note**: Since `row` and `column` represent actual data fields that are used to partition the data, they cannot encode the constant `value`. Also, in aggregate plots, they should not have `aggregate` function specified.
+**Note**: Since `row` and `column` represent actual data fields that are used to partition the data, they cannot encode the constant `value`. In addition, in aggregate plots, they should not have `aggregate` function specified.
 
 {:#def}
 ## Channel Definition
 
-Each channel definition object **must** describe the [data field encoded by the channel](#field) and its [data type](#type), or a [constant value directly mapped to the mark properties](#value). Also, it can describe the mapped field's [transformation](#inline) and [properties for its scale and guide](#components).
+Each channel definition object **must** describe the [data field encoded by the channel](#field) and its [data type](#type), or a [constant value directly mapped to the mark properties](#value). In addition, it can describe the mapped field's [transformation](#inline) and [properties for its scale and guide](#components).
 
 
 {:#field}
