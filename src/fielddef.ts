@@ -34,10 +34,7 @@ export interface ConditionalValueDef<T> extends ValueDef<T> {
  */
 export interface FieldDef {
   /**
-   * Name of the field from which to pull a data value.
-   *
-   *  __Default value:__ `false`
-   *
+   * __Required.__ Name of the field from which to pull a data value.
    */
   field?: string;
 
