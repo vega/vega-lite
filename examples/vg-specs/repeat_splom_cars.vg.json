@@ -173,7 +173,7 @@
                                 "field": "Displacement"
                             },
                             "stroke": {
-                                "scale": "child_Displacement_Horsepower_color",
+                                "scale": "color",
                                 "field": "Origin"
                             },
                             "fill": {
@@ -216,16 +216,6 @@
                     "round": true,
                     "nice": true,
                     "zero": true
-                },
-                {
-                    "name": "child_Displacement_Horsepower_color",
-                    "type": "ordinal",
-                    "domain": {
-                        "data": "data_0",
-                        "field": "Origin",
-                        "sort": true
-                    },
-                    "range": "category"
                 }
             ],
             "axes": [
@@ -267,12 +257,6 @@
                     "zindex": 0,
                     "gridScale": "child_Displacement_Horsepower_x"
                 }
-            ],
-            "legends": [
-                {
-                    "stroke": "child_Displacement_Horsepower_color",
-                    "title": "Origin"
-                }
             ]
         },
         {
@@ -307,7 +291,7 @@
                                 "field": "Displacement"
                             },
                             "stroke": {
-                                "scale": "child_Displacement_Miles_per_Gallon_color",
+                                "scale": "color",
                                 "field": "Origin"
                             },
                             "fill": {
@@ -350,16 +334,6 @@
                     "round": true,
                     "nice": true,
                     "zero": true
-                },
-                {
-                    "name": "child_Displacement_Miles_per_Gallon_color",
-                    "type": "ordinal",
-                    "domain": {
-                        "data": "data_1",
-                        "field": "Origin",
-                        "sort": true
-                    },
-                    "range": "category"
                 }
             ],
             "axes": [
@@ -401,12 +375,6 @@
                     "zindex": 0,
                     "gridScale": "child_Displacement_Miles_per_Gallon_x"
                 }
-            ],
-            "legends": [
-                {
-                    "stroke": "child_Displacement_Miles_per_Gallon_color",
-                    "title": "Origin"
-                }
             ]
         },
         {
@@ -441,7 +409,7 @@
                                 "field": "Miles_per_Gallon"
                             },
                             "stroke": {
-                                "scale": "child_Miles_per_Gallon_Horsepower_color",
+                                "scale": "color",
                                 "field": "Origin"
                             },
                             "fill": {
@@ -484,16 +452,6 @@
                     "round": true,
                     "nice": true,
                     "zero": true
-                },
-                {
-                    "name": "child_Miles_per_Gallon_Horsepower_color",
-                    "type": "ordinal",
-                    "domain": {
-                        "data": "data_2",
-                        "field": "Origin",
-                        "sort": true
-                    },
-                    "range": "category"
                 }
             ],
             "axes": [
@@ -535,12 +493,6 @@
                     "zindex": 0,
                     "gridScale": "child_Miles_per_Gallon_Horsepower_x"
                 }
-            ],
-            "legends": [
-                {
-                    "stroke": "child_Miles_per_Gallon_Horsepower_color",
-                    "title": "Origin"
-                }
             ]
         },
         {
@@ -575,7 +527,7 @@
                                 "field": "Miles_per_Gallon"
                             },
                             "stroke": {
-                                "scale": "child_Miles_per_Gallon_Miles_per_Gallon_color",
+                                "scale": "color",
                                 "field": "Origin"
                             },
                             "fill": {
@@ -618,16 +570,6 @@
                     "round": true,
                     "nice": true,
                     "zero": true
-                },
-                {
-                    "name": "child_Miles_per_Gallon_Miles_per_Gallon_color",
-                    "type": "ordinal",
-                    "domain": {
-                        "data": "data_3",
-                        "field": "Origin",
-                        "sort": true
-                    },
-                    "range": "category"
                 }
             ],
             "axes": [
@@ -669,16 +611,36 @@
                     "zindex": 0,
                     "gridScale": "child_Miles_per_Gallon_Miles_per_Gallon_x"
                 }
-            ],
-            "legends": [
-                {
-                    "stroke": "child_Miles_per_Gallon_Miles_per_Gallon_color",
-                    "title": "Origin"
-                }
             ]
         }
     ],
     "scales": [
+        {
+            "name": "color",
+            "type": "ordinal",
+            "domain": {
+                "fields": [
+                    {
+                        "data": "data_0",
+                        "field": "Origin"
+                    },
+                    {
+                        "data": "data_1",
+                        "field": "Origin"
+                    },
+                    {
+                        "data": "data_2",
+                        "field": "Origin"
+                    },
+                    {
+                        "data": "data_3",
+                        "field": "Origin"
+                    }
+                ],
+                "sort": true
+            },
+            "range": "category"
+        },
         {
             "name": "child_Displacement_Horsepower_x",
             "type": "linear",
@@ -708,16 +670,6 @@
             "round": true,
             "nice": true,
             "zero": true
-        },
-        {
-            "name": "child_Displacement_Horsepower_color",
-            "type": "ordinal",
-            "domain": {
-                "data": "data_0",
-                "field": "Origin",
-                "sort": true
-            },
-            "range": "category"
         },
         {
             "name": "child_Displacement_Miles_per_Gallon_x",
@@ -750,16 +702,6 @@
             "zero": true
         },
         {
-            "name": "child_Displacement_Miles_per_Gallon_color",
-            "type": "ordinal",
-            "domain": {
-                "data": "data_1",
-                "field": "Origin",
-                "sort": true
-            },
-            "range": "category"
-        },
-        {
             "name": "child_Miles_per_Gallon_Horsepower_x",
             "type": "linear",
             "domain": {
@@ -790,16 +732,6 @@
             "zero": true
         },
         {
-            "name": "child_Miles_per_Gallon_Horsepower_color",
-            "type": "ordinal",
-            "domain": {
-                "data": "data_2",
-                "field": "Origin",
-                "sort": true
-            },
-            "range": "category"
-        },
-        {
             "name": "child_Miles_per_Gallon_Miles_per_Gallon_x",
             "type": "linear",
             "domain": {
@@ -828,16 +760,12 @@
             "round": true,
             "nice": true,
             "zero": true
-        },
+        }
+    ],
+    "legends": [
         {
-            "name": "child_Miles_per_Gallon_Miles_per_Gallon_color",
-            "type": "ordinal",
-            "domain": {
-                "data": "data_3",
-                "field": "Origin",
-                "sort": true
-            },
-            "range": "category"
+            "stroke": "color",
+            "title": "Origin"
         }
     ]
 }

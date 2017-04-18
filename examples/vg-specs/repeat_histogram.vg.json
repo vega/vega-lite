@@ -303,7 +303,7 @@
                                 "field": "count_*_start"
                             },
                             "fill": {
-                                "scale": "child_Horsepower_color",
+                                "scale": "color",
                                 "field": "Origin"
                             }
                         }
@@ -341,16 +341,6 @@
                     "round": true,
                     "nice": true,
                     "zero": true
-                },
-                {
-                    "name": "child_Horsepower_color",
-                    "type": "ordinal",
-                    "domain": {
-                        "data": "data_0",
-                        "field": "Origin",
-                        "sort": true
-                    },
-                    "range": "category"
                 }
             ],
             "axes": [
@@ -393,24 +383,6 @@
                     "ticks": false,
                     "zindex": 0,
                     "gridScale": "child_Horsepower_x"
-                }
-            ],
-            "legends": [
-                {
-                    "fill": "child_Horsepower_color",
-                    "title": "Origin",
-                    "encode": {
-                        "symbols": {
-                            "update": {
-                                "shape": {
-                                    "value": "square"
-                                },
-                                "strokeWidth": {
-                                    "value": 0
-                                }
-                            }
-                        }
-                    }
                 }
             ]
         },
@@ -455,7 +427,7 @@
                                 "field": "count_*_start"
                             },
                             "fill": {
-                                "scale": "child_Miles_per_Gallon_color",
+                                "scale": "color",
                                 "field": "Origin"
                             }
                         }
@@ -493,16 +465,6 @@
                     "round": true,
                     "nice": true,
                     "zero": true
-                },
-                {
-                    "name": "child_Miles_per_Gallon_color",
-                    "type": "ordinal",
-                    "domain": {
-                        "data": "data_1",
-                        "field": "Origin",
-                        "sort": true
-                    },
-                    "range": "category"
                 }
             ],
             "axes": [
@@ -545,24 +507,6 @@
                     "ticks": false,
                     "zindex": 0,
                     "gridScale": "child_Miles_per_Gallon_x"
-                }
-            ],
-            "legends": [
-                {
-                    "fill": "child_Miles_per_Gallon_color",
-                    "title": "Origin",
-                    "encode": {
-                        "symbols": {
-                            "update": {
-                                "shape": {
-                                    "value": "square"
-                                },
-                                "strokeWidth": {
-                                    "value": 0
-                                }
-                            }
-                        }
-                    }
                 }
             ]
         },
@@ -607,7 +551,7 @@
                                 "field": "count_*_start"
                             },
                             "fill": {
-                                "scale": "child_Acceleration_color",
+                                "scale": "color",
                                 "field": "Origin"
                             }
                         }
@@ -645,16 +589,6 @@
                     "round": true,
                     "nice": true,
                     "zero": true
-                },
-                {
-                    "name": "child_Acceleration_color",
-                    "type": "ordinal",
-                    "domain": {
-                        "data": "data_2",
-                        "field": "Origin",
-                        "sort": true
-                    },
-                    "range": "category"
                 }
             ],
             "axes": [
@@ -698,28 +632,32 @@
                     "zindex": 0,
                     "gridScale": "child_Acceleration_x"
                 }
-            ],
-            "legends": [
-                {
-                    "fill": "child_Acceleration_color",
-                    "title": "Origin",
-                    "encode": {
-                        "symbols": {
-                            "update": {
-                                "shape": {
-                                    "value": "square"
-                                },
-                                "strokeWidth": {
-                                    "value": 0
-                                }
-                            }
-                        }
-                    }
-                }
             ]
         }
     ],
     "scales": [
+        {
+            "name": "color",
+            "type": "ordinal",
+            "domain": {
+                "fields": [
+                    {
+                        "data": "data_0",
+                        "field": "Origin"
+                    },
+                    {
+                        "data": "data_1",
+                        "field": "Origin"
+                    },
+                    {
+                        "data": "data_2",
+                        "field": "Origin"
+                    }
+                ],
+                "sort": true
+            },
+            "range": "category"
+        },
         {
             "name": "child_Horsepower_x",
             "type": "bin-linear",
@@ -750,16 +688,6 @@
             "round": true,
             "nice": true,
             "zero": true
-        },
-        {
-            "name": "child_Horsepower_color",
-            "type": "ordinal",
-            "domain": {
-                "data": "data_0",
-                "field": "Origin",
-                "sort": true
-            },
-            "range": "category"
         },
         {
             "name": "child_Miles_per_Gallon_x",
@@ -793,16 +721,6 @@
             "zero": true
         },
         {
-            "name": "child_Miles_per_Gallon_color",
-            "type": "ordinal",
-            "domain": {
-                "data": "data_1",
-                "field": "Origin",
-                "sort": true
-            },
-            "range": "category"
-        },
-        {
             "name": "child_Acceleration_x",
             "type": "bin-linear",
             "domain": {
@@ -832,16 +750,24 @@
             "round": true,
             "nice": true,
             "zero": true
-        },
+        }
+    ],
+    "legends": [
         {
-            "name": "child_Acceleration_color",
-            "type": "ordinal",
-            "domain": {
-                "data": "data_2",
-                "field": "Origin",
-                "sort": true
-            },
-            "range": "category"
+            "fill": "color",
+            "title": "Origin",
+            "encode": {
+                "symbols": {
+                    "update": {
+                        "shape": {
+                            "value": "square"
+                        },
+                        "strokeWidth": {
+                            "value": 0
+                        }
+                    }
+                }
+            }
         }
     ]
 }

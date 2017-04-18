@@ -323,20 +323,20 @@
             "domain": {
                 "fields": [
                     {
-                        "field": "min_people",
-                        "data": "data_0"
+                        "data": "data_0",
+                        "field": "min_people"
                     },
                     {
-                        "field": "max_people",
-                        "data": "data_0"
+                        "data": "data_0",
+                        "field": "max_people"
                     },
                     {
-                        "field": "min_people",
-                        "data": "data_1"
+                        "data": "data_1",
+                        "field": "min_people"
                     },
                     {
-                        "field": "max_people",
-                        "data": "data_2"
+                        "data": "data_2",
+                        "field": "max_people"
                     },
                     {
                         "data": "data_3",
@@ -359,16 +359,16 @@
             "domain": {
                 "fields": [
                     {
-                        "field": "age",
-                        "data": "data_0"
+                        "data": "data_0",
+                        "field": "age"
                     },
                     {
-                        "field": "age",
-                        "data": "data_1"
+                        "data": "data_1",
+                        "field": "age"
                     },
                     {
-                        "field": "age",
-                        "data": "data_2"
+                        "data": "data_2",
+                        "field": "age"
                     },
                     {
                         "data": "data_3",
