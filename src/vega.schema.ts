@@ -283,7 +283,7 @@ export interface VgAxisBase {
   labelAngle?: number;
 
   /**
-   * boolean value that determines whether the axis should include ticks.
+   * Boolean value that determines whether the axis should include ticks.
    */
   ticks?: boolean;
 
