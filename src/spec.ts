@@ -125,11 +125,18 @@ export interface GenericRepeatSpec<U extends GenericUnitSpec<any, any>> extends 
 
 export type RepeatSpec = GenericRepeatSpec<UnitSpec>;
 
-export type GenericSpec<U extends GenericUnitSpec<any, any>> = U | GenericLayerSpec<U> | GenericFacetSpec<U> | GenericRepeatSpec<U>;
+export interface GenericConcatSpec<U extends GenericUnitSpec<any, any>> extends BaseSpec {
+  // TODO: add GenericFacetSpec<U> | GenericRepeatSpec<U> | GenericfacetSpec<U>
+  concat: (GenericLayerSpec<U> | U)[];
+}
+
+export type ConcatSpec = GenericConcatSpec<UnitSpec>;
+
+export type GenericSpec<U extends GenericUnitSpec<any, any>> = U | GenericLayerSpec<U> | GenericFacetSpec<U> | GenericRepeatSpec<U> | GenericConcatSpec<U>;
 
 export type Spec = GenericSpec<UnitSpec>;
 
-export type TopLevelExtendedSpec = TopLevel<FacetedCompositeUnitSpec> | TopLevel<GenericLayerSpec<CompositeUnitSpec>> | TopLevel<GenericFacetSpec<CompositeUnitSpec>> | TopLevel<GenericRepeatSpec<CompositeUnitSpec>>;
+export type TopLevelExtendedSpec = TopLevel<FacetedCompositeUnitSpec> | TopLevel<GenericLayerSpec<CompositeUnitSpec>> | TopLevel<GenericFacetSpec<CompositeUnitSpec>> | TopLevel<GenericRepeatSpec<CompositeUnitSpec>> | TopLevel<GenericConcatSpec<CompositeUnitSpec>>;
 
 /* Custom type guards */
 
@@ -150,6 +157,10 @@ export function isRepeatSpec(spec: GenericSpec<GenericUnitSpec<any, any>>): spec
   return spec['repeat'] !== undefined;
 }
 
+export function isConcatSpec(spec: GenericSpec<GenericUnitSpec<any, any>>): spec is GenericConcatSpec<GenericUnitSpec<any, any>> {
+  return spec['concat'] !== undefined;
+}
+
 /**
  * Decompose extended unit specs into composition of pure unit specs.
  */
@@ -163,6 +174,9 @@ export function normalize(spec: TopLevelExtendedSpec): Spec {
   }
   if (isRepeatSpec(spec)) {
     return normalizeRepeat(spec, spec.config);
+  }
+  if (isConcatSpec(spec)) {
+    return normalizeConcat(spec, spec.config);
   }
   if (isUnitSpec(spec)) {
     const hasRow = channelHasField(spec.encoding, ROW);
@@ -216,6 +230,14 @@ function normalizeRepeat(spec: GenericRepeatSpec<CompositeUnitSpec>, config: Con
   return {
     ...rest,
     spec: normalizeNonFacetWithRepeat(subspec, config)
+  };
+}
+
+function normalizeConcat(spec: GenericConcatSpec<CompositeUnitSpec>, config: Config): ConcatSpec {
+  const {concat: concat, ...rest} = spec;
+  return {
+    ...rest,
+    concat: concat.map((subspec) => normalizeNonFacet(subspec, config))
   };
 }
 
@@ -374,6 +396,14 @@ function fieldDefIndex(spec: GenericSpec<GenericUnitSpec<any, any>>, dict: any =
   } else if (isRepeatSpec(spec)) {
     accumulate(dict, vlEncoding.fieldDefs(spec.spec));
     fieldDefIndex(spec.spec, dict);
+  } else if (isConcatSpec(spec)) {
+    spec.concat.forEach(function(child) {
+      if (isUnitSpec(child)) {
+        accumulate(dict, vlEncoding.fieldDefs(child.encoding));
+      } else {
+        fieldDefIndex(child, dict);
+      }
+    });
   } else { // Unit Spec
     accumulate(dict, vlEncoding.fieldDefs(spec.encoding));
   }

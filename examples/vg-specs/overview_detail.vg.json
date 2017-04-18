@@ -1,0 +1,406 @@
+{
+    "$schema": "http://vega.github.io/schema/vega/v3.0.json",
+    "autosize": "pad",
+    "padding": 5,
+    "data": [
+        {
+            "name": "source_0",
+            "url": "data/sp500.csv",
+            "format": {
+                "type": "csv"
+            }
+        },
+        {
+            "name": "data_0",
+            "source": "source_0",
+            "transform": [
+                {
+                    "type": "formula",
+                    "expr": "toDate(datum[\"DATE\"])",
+                    "as": "DATE"
+                },
+                {
+                    "type": "formula",
+                    "expr": "toNumber(datum[\"VALUE\"])",
+                    "as": "VALUE"
+                },
+                {
+                    "type": "filter",
+                    "expr": "datum[\"DATE\"] !== null && !isNaN(datum[\"DATE\"]) && datum[\"VALUE\"] !== null && !isNaN(datum[\"VALUE\"])"
+                },
+                {
+                    "type": "collect",
+                    "sort": {
+                        "field": "DATE",
+                        "order": "descending"
+                    }
+                }
+            ]
+        },
+        {
+            "name": "data_1",
+            "source": "source_0",
+            "transform": [
+                {
+                    "type": "formula",
+                    "expr": "toDate(datum[\"DATE\"])",
+                    "as": "DATE"
+                },
+                {
+                    "type": "formula",
+                    "expr": "toNumber(datum[\"VALUE\"])",
+                    "as": "VALUE"
+                },
+                {
+                    "type": "filter",
+                    "expr": "datum[\"DATE\"] !== null && !isNaN(datum[\"DATE\"]) && datum[\"VALUE\"] !== null && !isNaN(datum[\"VALUE\"])"
+                },
+                {
+                    "type": "collect",
+                    "sort": {
+                        "field": "DATE",
+                        "order": "descending"
+                    }
+                }
+            ]
+        }
+    ],
+    "signals": [
+        {
+            "name": "unit",
+            "value": {},
+            "on": [
+                {
+                    "events": "mousemove",
+                    "update": "group()._id ? group() : unit"
+                }
+            ]
+        },
+        {
+            "name": "concat_1_width",
+            "update": "480"
+        },
+        {
+            "name": "concat_1_height",
+            "update": "60"
+        },
+        {
+            "name": "concat_0_width",
+            "update": "480"
+        },
+        {
+            "name": "concat_0_height",
+            "update": "200"
+        }
+    ],
+    "layout": {
+        "padding": {
+            "row": 10,
+            "column": 10,
+            "header": 10
+        },
+        "columns": 1,
+        "bounds": "full",
+        "align": "all"
+    },
+    "marks": [
+        {
+            "type": "group",
+            "name": "concat_0_group",
+            "encode": {
+                "update": {
+                    "height": {
+                        "signal": "concat_0_height"
+                    },
+                    "width": {
+                        "signal": "concat_0_width"
+                    }
+                }
+            },
+            "marks": [
+                {
+                    "name": "concat_0_marks",
+                    "type": "area",
+                    "from": {
+                        "data": "data_0"
+                    },
+                    "encode": {
+                        "update": {
+                            "x": {
+                                "scale": "concat_0_x",
+                                "field": "DATE"
+                            },
+                            "y": {
+                                "scale": "concat_0_y",
+                                "field": "VALUE"
+                            },
+                            "y2": {
+                                "scale": "concat_0_y",
+                                "value": 0
+                            },
+                            "fill": {
+                                "value": "#4c78a8"
+                            },
+                            "orient": {
+                                "value": "vertical"
+                            }
+                        }
+                    }
+                }
+            ],
+            "scales": [
+                {
+                    "name": "concat_0_x",
+                    "type": "time",
+                    "domain": {
+                        "data": "data_0",
+                        "field": "DATE"
+                    },
+                    "range": [
+                        0,
+                        480
+                    ],
+                    "round": true
+                },
+                {
+                    "name": "concat_0_y",
+                    "type": "linear",
+                    "domain": {
+                        "data": "data_0",
+                        "field": "VALUE"
+                    },
+                    "range": [
+                        200,
+                        0
+                    ],
+                    "round": true,
+                    "nice": true,
+                    "zero": true
+                }
+            ],
+            "axes": [
+                {
+                    "scale": "concat_0_x",
+                    "orient": "bottom",
+                    "tickCount": 5,
+                    "title": null,
+                    "zindex": 1,
+                    "encode": {
+                        "labels": {
+                            "update": {
+                                "text": {
+                                    "signal": "timeFormat(datum.value, '%b %d, %Y')"
+                                },
+                                "angle": {
+                                    "value": 0
+                                }
+                            }
+                        }
+                    }
+                },
+                {
+                    "scale": "concat_0_x",
+                    "domain": false,
+                    "grid": true,
+                    "labels": false,
+                    "orient": "bottom",
+                    "tickCount": 5,
+                    "ticks": false,
+                    "zindex": 0,
+                    "gridScale": "concat_0_y"
+                },
+                {
+                    "scale": "concat_0_y",
+                    "format": "s",
+                    "orient": "left",
+                    "title": "VALUE",
+                    "zindex": 1
+                },
+                {
+                    "scale": "concat_0_y",
+                    "domain": false,
+                    "format": "s",
+                    "grid": true,
+                    "labels": false,
+                    "orient": "left",
+                    "ticks": false,
+                    "zindex": 0,
+                    "gridScale": "concat_0_x"
+                }
+            ]
+        },
+        {
+            "type": "group",
+            "name": "concat_1_group",
+            "encode": {
+                "update": {
+                    "height": {
+                        "signal": "concat_1_height"
+                    },
+                    "width": {
+                        "signal": "concat_1_width"
+                    }
+                }
+            },
+            "marks": [
+                {
+                    "name": "concat_1_marks",
+                    "type": "area",
+                    "from": {
+                        "data": "data_1"
+                    },
+                    "encode": {
+                        "update": {
+                            "x": {
+                                "scale": "concat_1_x",
+                                "field": "DATE"
+                            },
+                            "y": {
+                                "scale": "concat_1_y",
+                                "field": "VALUE"
+                            },
+                            "y2": {
+                                "scale": "concat_1_y",
+                                "value": 0
+                            },
+                            "fill": {
+                                "value": "#4c78a8"
+                            },
+                            "orient": {
+                                "value": "vertical"
+                            }
+                        }
+                    }
+                }
+            ],
+            "scales": [
+                {
+                    "name": "concat_1_x",
+                    "type": "time",
+                    "domain": {
+                        "data": "data_1",
+                        "field": "DATE"
+                    },
+                    "range": [
+                        0,
+                        480
+                    ],
+                    "round": true
+                },
+                {
+                    "name": "concat_1_y",
+                    "type": "linear",
+                    "domain": {
+                        "data": "data_1",
+                        "field": "VALUE"
+                    },
+                    "range": [
+                        60,
+                        0
+                    ],
+                    "round": true,
+                    "nice": true,
+                    "zero": true
+                }
+            ],
+            "axes": [
+                {
+                    "scale": "concat_1_x",
+                    "orient": "bottom",
+                    "tickCount": 5,
+                    "title": "DATE",
+                    "zindex": 1,
+                    "encode": {
+                        "labels": {
+                            "update": {
+                                "text": {
+                                    "signal": "timeFormat(datum.value, '%Y')"
+                                },
+                                "angle": {
+                                    "value": 0
+                                }
+                            }
+                        }
+                    }
+                },
+                {
+                    "scale": "concat_1_x",
+                    "domain": false,
+                    "grid": true,
+                    "labels": false,
+                    "orient": "bottom",
+                    "tickCount": 5,
+                    "ticks": false,
+                    "zindex": 0,
+                    "gridScale": "concat_1_y"
+                },
+                {
+                    "scale": "concat_1_y",
+                    "format": "s",
+                    "orient": "left",
+                    "tickCount": 3,
+                    "title": "VALUE",
+                    "zindex": 1
+                }
+            ]
+        }
+    ],
+    "scales": [
+        {
+            "name": "concat_0_x",
+            "type": "time",
+            "domain": {
+                "data": "data_0",
+                "field": "DATE"
+            },
+            "range": [
+                0,
+                480
+            ],
+            "round": true
+        },
+        {
+            "name": "concat_0_y",
+            "type": "linear",
+            "domain": {
+                "data": "data_0",
+                "field": "VALUE"
+            },
+            "range": [
+                200,
+                0
+            ],
+            "round": true,
+            "nice": true,
+            "zero": true
+        },
+        {
+            "name": "concat_1_x",
+            "type": "time",
+            "domain": {
+                "data": "data_1",
+                "field": "DATE"
+            },
+            "range": [
+                0,
+                480
+            ],
+            "round": true
+        },
+        {
+            "name": "concat_1_y",
+            "type": "linear",
+            "domain": {
+                "data": "data_1",
+                "field": "VALUE"
+            },
+            "range": [
+                60,
+                0
+            ],
+            "round": true,
+            "nice": true,
+            "zero": true
+        }
+    ]
+}
