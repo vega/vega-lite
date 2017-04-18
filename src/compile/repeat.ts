@@ -1,4 +1,3 @@
-import {Channel} from '../channel';
 import {CellConfig, Config} from '../config';
 import {Encoding} from '../encoding';
 import {Facet} from '../facet';
@@ -6,12 +5,12 @@ import {Field, FieldDef, isRepeatRef} from '../fielddef';
 import * as log from '../log';
 import {Repeat} from '../repeat';
 import {RepeatSpec} from '../spec';
-import {Dict, duplicate, vals} from '../util';
-import {VgData, VgLayout, VgScale} from '../vega.schema';
+import {keys, vals} from '../util';
+import {VgData, VgLayout, VgScale, VgSignal} from '../vega.schema';
 import {buildModel} from './common';
 import {assembleData} from './data/assemble';
 import {parseData} from './data/parse';
-import {assembleLayoutData} from './layout';
+import {assembleLayoutLayerSignals} from './layout/index';
 import {Model} from './model';
 
 
@@ -97,16 +96,6 @@ export class RepeatModel extends Model {
     // We might need to split this into compileSelectionData and compileSelectionSignals?
   }
 
-  public parseLayoutData() {
-    this.children.forEach(child => {
-      child.parseLayoutData();
-    });
-    this.component.layout = {
-      width: null,
-      height: null
-    };
-  }
-
   public parseScale(this: RepeatModel) {
     const model = this;
 
@@ -152,8 +141,14 @@ export class RepeatModel extends Model {
     return null;
   }
 
-  public assembleSignals(signals: any[]): any[] {
-    return [];
+  public assembleSignals(): VgSignal[] {
+    return this.children.reduce((signals, child) => {
+      return [].concat(
+        child.assembleLayoutSignals(),
+        child.assembleSignals(),
+        signals
+      );
+    }, []);
   }
 
   public assembleSelectionData(data: VgData[]): VgData[] {
@@ -172,16 +167,13 @@ export class RepeatModel extends Model {
     return {
       padding: {row: 10, column: 10, header: 10},
       columns: this.repeat && this.repeat.row ? this.repeat.row.length : 1,
-      bounds: 'full'
+      bounds: 'full',
+      align: 'all'
     };
   }
 
-  public assembleLayoutData(layoutData: VgData[]): VgData[] {
-    // Postfix traversal – layout is assembled bottom-up
-    this.children.forEach((child) => {
-      child.assembleLayoutData(layoutData);
-    });
-    return assembleLayoutData(this, layoutData);
+  public assembleLayoutSignals(): VgSignal[] {
+    return [];
   }
 
   public assembleMarks(): any[] {
@@ -189,15 +181,9 @@ export class RepeatModel extends Model {
     return this.children.map(child => ({
       name: child.getName('group'),
       encode: {
-        enter: {
-          height: {
-            // FIXME
-            value: 200
-          },
-          width: {
-            // FIXME
-            value: 200
-          }
+        update: {
+          height: {signal: child.getName('height')},
+          width: {signal: child.getName('width')}
         }
       },
       ...child.assembleGroup()
