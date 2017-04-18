@@ -37,7 +37,7 @@ For example, the following specification embeds an inline data table with two ro
 {:#url}
 ## Data from URL
 
-Data can be specified from URL using the `url` property. Also, the format of the input data can be optionally specified using `formatType` property.
+Data can be loaded from a URL using the `url` property. Also, the format of the input data can be optionally specified using `formatType` property.
 
 {% include table.html props="feature,mesh,parse,property,type" source="DataUrlFormat" %}
 
