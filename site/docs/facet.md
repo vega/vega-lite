@@ -15,4 +15,4 @@ Below are three histograms for the horsepower of cars. Each chart shows the hist
 
 You can find more examples in the [example gallery]({{site.baseurl}}/examples/#trellis-plots).
 
-**Note** Since `row` and `column` represent actual data fields that are used to partition the data, they cannot encode constant `value`. Also, you should not facet by quantitative fields unless they are [binned](bin.html), or temporal fields unless you use [`timeUnit`](timeunit.html).
+**Note** Since `row` and `column` represent actual data fields that are used to partition the data, they cannot encode the constant `value`. Also, you should not facet by quantitative fields unless they are [binned](bin.html), or temporal fields unless you use [`timeUnit`](timeunit.html).

@@ -274,7 +274,7 @@ export interface Config  extends TopLevelProperties {
    * Whether to filter invalid values (`null` and `NaN`) from the data.
    * - By default (`undefined`), only quantitative and temporal fields are filtered.
    * - If set to `true`, all data items with null values are filtered.
-   * - If `false`, all data items are included. In this case, null values will be interpret as zeroes.
+   * - If `false`, all data items are included. In this case, null values will be interpreted as zeroes.
    */
   filterInvalid?: boolean;
 

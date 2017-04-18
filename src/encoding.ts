@@ -41,7 +41,7 @@ export interface Encoding {
   color?: LegendFieldDef<string> | ConditionalValueDef<string>;
 
   /**
-   * Opacity of the marks – either can be a value or in a range.
+   * Opacity of the marks – either can be a value or a range.
    */
   opacity?: LegendFieldDef<number> | ConditionalValueDef<number>;
 

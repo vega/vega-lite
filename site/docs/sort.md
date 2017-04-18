@@ -28,8 +28,8 @@ permalink: /docs/sort.html
 ## Continuous Scale
 
 If the channel has a continuous scale (quantitative or time), `sort` can have the following values:
-- `"ascending"` –  the field is sort by the field's value in ascending order.
-- `"descending"` –  the field is sort by the field's value in descending order.
+- `"ascending"` –  the field is sorted by the field's value in ascending order.
+- `"descending"` –  the field is sorted by the field's value in descending order.
 
 <span class="note-line">__Default value:__ `"ascending"`.</span>
 
@@ -45,7 +45,7 @@ Setting x's `sort` to `"descending"` reverses the x-axis. Thus, the following vi
 
 If the channel has an ordinal scale, the field's values of the channel can be sorted in the following ways:
 
-1) Sorting by the values's natural order in Javascript. For example, `"a"` < `"b"`. In this case, `sort` can be:
+1) Sorting by the values' natural order in Javascript. For example, `"a"` < `"b"`. In this case, `sort` can be:
 
 - `"ascending"` –  sort by the field's value in ascending order.
 - `"descending"` –  sort by the field's value in descending order.

@@ -17,7 +17,7 @@ Akin to [Vega](https://www.github.com/vega/vega)'s [data model](https://www.gith
 }
 ```
 
-Vega-Lite's optional top-level `data` property describes the visualization's data source as part of the specification, which can be either [inline data](#inline) (`values`) or [a URL from which to load the data](#url) (`url`).  Alternatively, if the `data` property is not specified, the data source can be [bound at runtime](https://github.com/vega/vega/wiki/Runtime).
+Vega-Lite's optional top-level `data` property describes the visualization's data source as part of the specification, which can be either [inline data](#inline) (`values`) or [an URL from which to load the data](#url) (`url`).  Alternatively, if the `data` property is not specified, the data source can be [bound at runtime](https://github.com/vega/vega/wiki/Runtime).
 
 Here is a list of all properties describing `data` source:
 
@@ -37,7 +37,7 @@ For example, the following specification embeds an inline data table with two ro
 {:#url}
 ## Data from URL
 
-Data can be specified from url using the `url` property. In addition, format of the input data can be optionally specified using `formatType` property.
+Data can be specified from URL using the `url` property. Also, the format of the input data can be optionally specified using `formatType` property.
 
 {% include table.html props="feature,mesh,parse,property,type" source="DataUrlFormat" %}
 
@@ -49,6 +49,6 @@ For example, the following specification loads data from a relative `url`: `data
 
 The format object has the following properties:
 
-{% include table.html props="type,parse,property,feature,mesh" source="DataFormat" %}
+{% include table.html props="type,parse,property,feature,mesh" source="DataUrlFormat" %}
 
 -----
