@@ -225,14 +225,13 @@ Using `area` mark with one ordinal field (typically on `x`) and one quantitative
 
 ### Stacked Area Chart
 
-Adding a color field to area chart creates stacked area chart by default. For example, here we split the area chart across the industry.
+Adding a color field to area chart creates stacked area chart by default. For example, here we split the area chart by industry.
 
 <span class="vl-example" data-name="stacked_area"></span>
 
 ### Normalized Stacked Area Chart
 
-You can also create a normalized stacked area chart by setting `config.mark.stacked` to `"normalize"`. Here we can easily see the percentage of unemployment across the industry.
-You can also create a normalized stacked area chart by setting `config.mark.stacked` to `"normalize"`. Here we can easily see the percentage of unemployment across the industry.
+You can also create a normalized stacked area chart by setting `config.mark.stacked` to `"normalize"`. Here we can easily see the percentage of unemployment across industries.
 
 <span class="vl-example" data-name="stacked_area_normalize"></span>
 
