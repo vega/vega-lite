@@ -170,9 +170,7 @@ export abstract class Model {
   }
 
   public assembleGroup(signals: VgSignal[] = []) {
-    const group: VgEncodeEntry = {
-      type: 'group'
-    };
+    const group: VgEncodeEntry = {};
 
     signals = signals.concat(this.assembleSignals());
     if (signals.length > 0) {

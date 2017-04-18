@@ -53,7 +53,8 @@
                 }
             ],
             "format": {
-                "type": "json"
+                "type": "json",
+                "parse": {}
             }
         },
         {

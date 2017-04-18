@@ -36,7 +36,7 @@
                     "type": "string"
                 },
                 "encoding": {
-                    "$ref": "#/definitions/EncodingWithFacet",
+                    "$ref": "#/definitions/EncodingWithFacet<Field>",
                     "description": "A key-value mapping between encoding channels and definition of fields."
                 },
                 "height": {
@@ -268,7 +268,7 @@
                     "type": "string"
                 },
                 "facet": {
-                    "$ref": "#/definitions/Facet"
+                    "$ref": "#/definitions/Facet<Field>"
                 },
                 "name": {
                     "description": "Name of the visualization for later reference.",
@@ -328,6 +328,108 @@
             },
             "required": [
                 "facet",
+                "spec"
+            ],
+            "type": "object"
+        },
+        {
+            "additionalProperties": false,
+            "properties": {
+                "$schema": {
+                    "description": "URL to JSON schema for this Vega-Lite specification.",
+                    "format": "uri",
+                    "type": "string"
+                },
+                "background": {
+                    "description": "CSS color property to use as background of visualization.\n\n__Default value:__ none (transparent)",
+                    "type": "string"
+                },
+                "config": {
+                    "$ref": "#/definitions/Config",
+                    "description": "Configuration object"
+                },
+                "data": {
+                    "anyOf": [
+                        {
+                            "$ref": "#/definitions/UrlData"
+                        },
+                        {
+                            "$ref": "#/definitions/InlineData"
+                        },
+                        {
+                            "$ref": "#/definitions/NamedData"
+                        }
+                    ],
+                    "description": "An object describing the data source"
+                },
+                "description": {
+                    "description": "An optional description of this mark for commenting purpose.\nThis property has no effect on the output visualization.",
+                    "type": "string"
+                },
+                "name": {
+                    "description": "Name of the visualization for later reference.",
+                    "type": "string"
+                },
+                "padding": {
+                    "anyOf": [
+                        {
+                            "additionalProperties": false,
+                            "properties": {
+                                "bottom": {
+                                    "type": "number"
+                                },
+                                "left": {
+                                    "type": "number"
+                                },
+                                "right": {
+                                    "type": "number"
+                                },
+                                "top": {
+                                    "type": "number"
+                                }
+                            },
+                            "type": "object"
+                        },
+                        {
+                            "type": "number"
+                        }
+                    ],
+                    "description": "The default visualization padding, in pixels, from the edge of the visualization canvas to the data rectangle. This can be a single number or an object with `\"top\"`, `\"left\"`, `\"right\"`, `\"bottom\"` properties.\n\n__Default value__: `5`",
+                    "minimum": 0
+                },
+                "repeat": {
+                    "$ref": "#/definitions/Repeat"
+                },
+                "spec": {
+                    "anyOf": [
+                        {
+                            "$ref": "#/definitions/GenericUnitSpec<\"point\" | \"area\" | \"bar\" | \"line\" | \"text\" | \"tick\" | \"rect\" | \"rule\" | \"circle\" ..."
+                        },
+                        {
+                            "$ref": "#/definitions/GenericLayerSpec<GenericUnitSpec<\"point\" | \"area\" | \"bar\" | \"line\" | \"text\" | \"tick\" | \"rect\" | \"..."
+                        },
+                        {
+                            "$ref": "#/definitions/GenericRepeatSpec<GenericUnitSpec<\"point\" | \"area\" | \"bar\" | \"line\" | \"text\" | \"tick\" | \"rect\" | ..."
+                        }
+                    ]
+                },
+                "transform": {
+                    "description": "An object describing filter and new field calculation.",
+                    "items": {
+                        "anyOf": [
+                            {
+                                "$ref": "#/definitions/FilterTransform"
+                            },
+                            {
+                                "$ref": "#/definitions/CalculateTransform"
+                            }
+                        ]
+                    },
+                    "type": "array"
+                }
+            },
+            "required": [
+                "repeat",
                 "spec"
             ],
             "type": "object"
@@ -1614,16 +1716,16 @@
             },
             "type": "object"
         },
-        "Encoding": {
+        "Encoding<Field>": {
             "additionalProperties": false,
             "properties": {
                 "color": {
                     "anyOf": [
                         {
-                            "$ref": "#/definitions/LegendFieldDef<string>"
+                            "$ref": "#/definitions/ConditionalValueDef<string>"
                         },
                         {
-                            "$ref": "#/definitions/ConditionalValueDef<string>"
+                            "$ref": "#/definitions/LegendFieldDef<Field, string>"
                         }
                     ],
                     "description": "Color of the marks – either fill or stroke color based on mark type.\n(By default, fill color for `area`, `bar`, `tick`, `text`, `circle`, and `square` /\nstroke color for `line` and `point`.)"
@@ -1631,11 +1733,11 @@
                 "detail": {
                     "anyOf": [
                         {
-                            "$ref": "#/definitions/FieldDef"
+                            "$ref": "#/definitions/FieldDef<Field>"
                         },
                         {
                             "items": {
-                                "$ref": "#/definitions/FieldDef"
+                                "$ref": "#/definitions/FieldDef<Field>"
                             },
                             "type": "array"
                         }
@@ -1645,10 +1747,10 @@
                 "opacity": {
                     "anyOf": [
                         {
-                            "$ref": "#/definitions/LegendFieldDef<number>"
+                            "$ref": "#/definitions/ConditionalValueDef<number>"
                         },
                         {
-                            "$ref": "#/definitions/ConditionalValueDef<number>"
+                            "$ref": "#/definitions/LegendFieldDef<Field, number>"
                         }
                     ],
                     "description": "Opacity of the marks – either can be a value or in a range."
@@ -1656,11 +1758,11 @@
                 "order": {
                     "anyOf": [
                         {
-                            "$ref": "#/definitions/OrderFieldDef"
+                            "$ref": "#/definitions/OrderFieldDef<Field>"
                         },
                         {
                             "items": {
-                                "$ref": "#/definitions/OrderFieldDef"
+                                "$ref": "#/definitions/OrderFieldDef<Field>"
                             },
                             "type": "array"
                         }
@@ -1670,10 +1772,10 @@
                 "shape": {
                     "anyOf": [
                         {
-                            "$ref": "#/definitions/LegendFieldDef<string>"
+                            "$ref": "#/definitions/ConditionalValueDef<string>"
                         },
                         {
-                            "$ref": "#/definitions/ConditionalValueDef<string>"
+                            "$ref": "#/definitions/LegendFieldDef<Field, string>"
                         }
                     ],
                     "description": "The symbol's shape (only for `point` marks). The supported values are\n`\"circle\"` (default), `\"square\"`, `\"cross\"`, `\"diamond\"`, `\"triangle-up\"`,\nor `\"triangle-down\"`, or else a custom SVG path string."
@@ -1681,10 +1783,10 @@
                 "size": {
                     "anyOf": [
                         {
-                            "$ref": "#/definitions/LegendFieldDef<number>"
+                            "$ref": "#/definitions/ConditionalValueDef<number>"
                         },
                         {
-                            "$ref": "#/definitions/ConditionalValueDef<number>"
+                            "$ref": "#/definitions/LegendFieldDef<Field, number>"
                         }
                     ],
                     "description": "Size of the mark.\n- For `point`, `square` and `circle`\n– the symbol size, or pixel area of the mark.\n- For `bar` and `tick` – the bar and tick's size.\n- For `text` – the text's font size.\n- Size is currently unsupported for `line` and `area`."
@@ -1692,10 +1794,10 @@
                 "text": {
                     "anyOf": [
                         {
-                            "$ref": "#/definitions/TextFieldDef"
+                            "$ref": "#/definitions/ConditionalValueDef<string | number | boolean>"
                         },
                         {
-                            "$ref": "#/definitions/ConditionalValueDef<string | number | boolean>"
+                            "$ref": "#/definitions/TextFieldDef<Field>"
                         }
                     ],
                     "description": "Text of the `text` mark."
@@ -1703,10 +1805,10 @@
                 "x": {
                     "anyOf": [
                         {
-                            "$ref": "#/definitions/PositionFieldDef"
+                            "$ref": "#/definitions/ValueDef<number>"
                         },
                         {
-                            "$ref": "#/definitions/ValueDef<number>"
+                            "$ref": "#/definitions/PositionFieldDef<Field>"
                         }
                     ],
                     "description": "X coordinates for `point`, `circle`, `square`,\n`line`, `rule`, `text`, and `tick`\n(or to width and height for `bar` and `area` marks)."
@@ -1714,10 +1816,10 @@
                 "x2": {
                     "anyOf": [
                         {
-                            "$ref": "#/definitions/FieldDef"
+                            "$ref": "#/definitions/ValueDef<number>"
                         },
                         {
-                            "$ref": "#/definitions/ValueDef<number>"
+                            "$ref": "#/definitions/FieldDef<Field>"
                         }
                     ],
                     "description": "X2 coordinates for ranged `bar`, `rule`, `area`"
@@ -1725,10 +1827,10 @@
                 "y": {
                     "anyOf": [
                         {
-                            "$ref": "#/definitions/PositionFieldDef"
+                            "$ref": "#/definitions/ValueDef<number>"
                         },
                         {
-                            "$ref": "#/definitions/ValueDef<number>"
+                            "$ref": "#/definitions/PositionFieldDef<Field>"
                         }
                     ],
                     "description": "Y coordinates for `point`, `circle`, `square`,\n`line`, `rule`, `text`, and `tick`\n(or to width and height for `bar` and `area` marks)."
@@ -1736,10 +1838,10 @@
                 "y2": {
                     "anyOf": [
                         {
-                            "$ref": "#/definitions/FieldDef"
+                            "$ref": "#/definitions/ValueDef<number>"
                         },
                         {
-                            "$ref": "#/definitions/ValueDef<number>"
+                            "$ref": "#/definitions/FieldDef<Field>"
                         }
                     ],
                     "description": "Y2 coordinates for ranged `bar`, `rule`, `area`"
@@ -1747,32 +1849,32 @@
             },
             "type": "object"
         },
-        "EncodingWithFacet": {
+        "EncodingWithFacet<Field>": {
             "additionalProperties": false,
             "properties": {
                 "color": {
                     "anyOf": [
                         {
-                            "$ref": "#/definitions/LegendFieldDef<string>"
+                            "$ref": "#/definitions/ConditionalValueDef<string>"
                         },
                         {
-                            "$ref": "#/definitions/ConditionalValueDef<string>"
+                            "$ref": "#/definitions/LegendFieldDef<Field, string>"
                         }
                     ],
                     "description": "Color of the marks – either fill or stroke color based on mark type.\n(By default, fill color for `area`, `bar`, `tick`, `text`, `circle`, and `square` /\nstroke color for `line` and `point`.)"
                 },
                 "column": {
-                    "$ref": "#/definitions/FieldDef",
+                    "$ref": "#/definitions/FieldDef<Field>",
                     "description": "Horizontal facets for trellis plots."
                 },
                 "detail": {
                     "anyOf": [
                         {
-                            "$ref": "#/definitions/FieldDef"
+                            "$ref": "#/definitions/FieldDef<Field>"
                         },
                         {
                             "items": {
-                                "$ref": "#/definitions/FieldDef"
+                                "$ref": "#/definitions/FieldDef<Field>"
                             },
                             "type": "array"
                         }
@@ -1782,10 +1884,10 @@
                 "opacity": {
                     "anyOf": [
                         {
-                            "$ref": "#/definitions/LegendFieldDef<number>"
+                            "$ref": "#/definitions/ConditionalValueDef<number>"
                         },
                         {
-                            "$ref": "#/definitions/ConditionalValueDef<number>"
+                            "$ref": "#/definitions/LegendFieldDef<Field, number>"
                         }
                     ],
                     "description": "Opacity of the marks – either can be a value or in a range."
@@ -1793,11 +1895,11 @@
                 "order": {
                     "anyOf": [
                         {
-                            "$ref": "#/definitions/OrderFieldDef"
+                            "$ref": "#/definitions/OrderFieldDef<Field>"
                         },
                         {
                             "items": {
-                                "$ref": "#/definitions/OrderFieldDef"
+                                "$ref": "#/definitions/OrderFieldDef<Field>"
                             },
                             "type": "array"
                         }
@@ -1805,16 +1907,16 @@
                     "description": "stack order for stacked marks or order of data points in line marks."
                 },
                 "row": {
-                    "$ref": "#/definitions/FieldDef",
+                    "$ref": "#/definitions/FieldDef<Field>",
                     "description": "Vertical facets for trellis plots."
                 },
                 "shape": {
                     "anyOf": [
                         {
-                            "$ref": "#/definitions/LegendFieldDef<string>"
+                            "$ref": "#/definitions/ConditionalValueDef<string>"
                         },
                         {
-                            "$ref": "#/definitions/ConditionalValueDef<string>"
+                            "$ref": "#/definitions/LegendFieldDef<Field, string>"
                         }
                     ],
                     "description": "The symbol's shape (only for `point` marks). The supported values are\n`\"circle\"` (default), `\"square\"`, `\"cross\"`, `\"diamond\"`, `\"triangle-up\"`,\nor `\"triangle-down\"`, or else a custom SVG path string."
@@ -1822,10 +1924,10 @@
                 "size": {
                     "anyOf": [
                         {
-                            "$ref": "#/definitions/LegendFieldDef<number>"
+                            "$ref": "#/definitions/ConditionalValueDef<number>"
                         },
                         {
-                            "$ref": "#/definitions/ConditionalValueDef<number>"
+                            "$ref": "#/definitions/LegendFieldDef<Field, number>"
                         }
                     ],
                     "description": "Size of the mark.\n- For `point`, `square` and `circle`\n– the symbol size, or pixel area of the mark.\n- For `bar` and `tick` – the bar and tick's size.\n- For `text` – the text's font size.\n- Size is currently unsupported for `line` and `area`."
@@ -1833,10 +1935,10 @@
                 "text": {
                     "anyOf": [
                         {
-                            "$ref": "#/definitions/TextFieldDef"
+                            "$ref": "#/definitions/ConditionalValueDef<string | number | boolean>"
                         },
                         {
-                            "$ref": "#/definitions/ConditionalValueDef<string | number | boolean>"
+                            "$ref": "#/definitions/TextFieldDef<Field>"
                         }
                     ],
                     "description": "Text of the `text` mark."
@@ -1844,10 +1946,10 @@
                 "x": {
                     "anyOf": [
                         {
-                            "$ref": "#/definitions/PositionFieldDef"
+                            "$ref": "#/definitions/ValueDef<number>"
                         },
                         {
-                            "$ref": "#/definitions/ValueDef<number>"
+                            "$ref": "#/definitions/PositionFieldDef<Field>"
                         }
                     ],
                     "description": "X coordinates for `point`, `circle`, `square`,\n`line`, `rule`, `text`, and `tick`\n(or to width and height for `bar` and `area` marks)."
@@ -1855,10 +1957,10 @@
                 "x2": {
                     "anyOf": [
                         {
-                            "$ref": "#/definitions/FieldDef"
+                            "$ref": "#/definitions/ValueDef<number>"
                         },
                         {
-                            "$ref": "#/definitions/ValueDef<number>"
+                            "$ref": "#/definitions/FieldDef<Field>"
                         }
                     ],
                     "description": "X2 coordinates for ranged `bar`, `rule`, `area`"
@@ -1866,10 +1968,10 @@
                 "y": {
                     "anyOf": [
                         {
-                            "$ref": "#/definitions/PositionFieldDef"
+                            "$ref": "#/definitions/ValueDef<number>"
                         },
                         {
-                            "$ref": "#/definitions/ValueDef<number>"
+                            "$ref": "#/definitions/PositionFieldDef<Field>"
                         }
                     ],
                     "description": "Y coordinates for `point`, `circle`, `square`,\n`line`, `rule`, `text`, and `tick`\n(or to width and height for `bar` and `area` marks)."
@@ -1877,10 +1979,10 @@
                 "y2": {
                     "anyOf": [
                         {
-                            "$ref": "#/definitions/FieldDef"
+                            "$ref": "#/definitions/ValueDef<number>"
                         },
                         {
-                            "$ref": "#/definitions/ValueDef<number>"
+                            "$ref": "#/definitions/FieldDef<Field>"
                         }
                     ],
                     "description": "Y2 coordinates for ranged `bar`, `rule`, `area`"
@@ -1943,15 +2045,15 @@
             ],
             "type": "object"
         },
-        "Facet": {
+        "Facet<Field>": {
             "additionalProperties": false,
             "properties": {
                 "column": {
-                    "$ref": "#/definitions/FieldDef",
+                    "$ref": "#/definitions/FieldDef<Field>",
                     "description": "Horizontal facets for trellis plots."
                 },
                 "row": {
-                    "$ref": "#/definitions/FieldDef",
+                    "$ref": "#/definitions/FieldDef<Field>",
                     "description": "Vertical facets for trellis plots."
                 }
             },
@@ -1967,7 +2069,7 @@
             },
             "type": "object"
         },
-        "FieldDef": {
+        "FieldDef<Field>": {
             "additionalProperties": false,
             "description": "Definition object for a data field, its type and transformation of an encoding channel.",
             "properties": {
@@ -1987,8 +2089,28 @@
                     "description": "Flag for binning a `quantitative` field, or a bin property object\nfor binning parameters."
                 },
                 "field": {
-                    "description": "Name of the field from which to pull a data value.",
-                    "type": "string"
+                    "anyOf": [
+                        {
+                            "additionalProperties": false,
+                            "properties": {
+                                "repeat": {
+                                    "enum": [
+                                        "column",
+                                        "row"
+                                    ],
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "repeat"
+                            ],
+                            "type": "object"
+                        },
+                        {
+                            "type": "string"
+                        }
+                    ],
+                    "description": "Name of the field from which to pull a data value."
                 },
                 "timeUnit": {
                     "$ref": "#/definitions/TimeUnit",
@@ -2122,6 +2244,68 @@
             ],
             "type": "object"
         },
+        "GenericRepeatSpec<GenericUnitSpec<\"point\" | \"area\" | \"bar\" | \"line\" | \"text\" | \"tick\" | \"rect\" | ...": {
+            "additionalProperties": false,
+            "properties": {
+                "data": {
+                    "anyOf": [
+                        {
+                            "$ref": "#/definitions/UrlData"
+                        },
+                        {
+                            "$ref": "#/definitions/InlineData"
+                        },
+                        {
+                            "$ref": "#/definitions/NamedData"
+                        }
+                    ],
+                    "description": "An object describing the data source"
+                },
+                "description": {
+                    "description": "An optional description of this mark for commenting purpose.\nThis property has no effect on the output visualization.",
+                    "type": "string"
+                },
+                "name": {
+                    "description": "Name of the visualization for later reference.",
+                    "type": "string"
+                },
+                "repeat": {
+                    "$ref": "#/definitions/Repeat"
+                },
+                "spec": {
+                    "anyOf": [
+                        {
+                            "$ref": "#/definitions/GenericUnitSpec<\"point\" | \"area\" | \"bar\" | \"line\" | \"text\" | \"tick\" | \"rect\" | \"rule\" | \"circle\" ..."
+                        },
+                        {
+                            "$ref": "#/definitions/GenericLayerSpec<GenericUnitSpec<\"point\" | \"area\" | \"bar\" | \"line\" | \"text\" | \"tick\" | \"rect\" | \"..."
+                        },
+                        {
+                            "$ref": "#/definitions/GenericRepeatSpec<GenericUnitSpec<\"point\" | \"area\" | \"bar\" | \"line\" | \"text\" | \"tick\" | \"rect\" | ..."
+                        }
+                    ]
+                },
+                "transform": {
+                    "description": "An object describing filter and new field calculation.",
+                    "items": {
+                        "anyOf": [
+                            {
+                                "$ref": "#/definitions/FilterTransform"
+                            },
+                            {
+                                "$ref": "#/definitions/CalculateTransform"
+                            }
+                        ]
+                    },
+                    "type": "array"
+                }
+            },
+            "required": [
+                "repeat",
+                "spec"
+            ],
+            "type": "object"
+        },
         "GenericUnitSpec<\"point\" | \"area\" | \"bar\" | \"line\" | \"text\" | \"tick\" | \"rect\" | \"rule\" | \"circle\" ...": {
             "additionalProperties": false,
             "properties": {
@@ -2144,7 +2328,7 @@
                     "type": "string"
                 },
                 "encoding": {
-                    "$ref": "#/definitions/Encoding",
+                    "$ref": "#/definitions/Encoding<Field>",
                     "description": "A key-value mapping between encoding channels and definition of fields."
                 },
                 "height": {
@@ -2453,7 +2637,7 @@
             },
             "type": "object"
         },
-        "LegendFieldDef<number>": {
+        "LegendFieldDef<Field, number>": {
             "additionalProperties": false,
             "properties": {
                 "aggregate": {
@@ -2475,8 +2659,28 @@
                     "$ref": "#/definitions/Condition<number>"
                 },
                 "field": {
-                    "description": "Name of the field from which to pull a data value.",
-                    "type": "string"
+                    "anyOf": [
+                        {
+                            "additionalProperties": false,
+                            "properties": {
+                                "repeat": {
+                                    "enum": [
+                                        "column",
+                                        "row"
+                                    ],
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "repeat"
+                            ],
+                            "type": "object"
+                        },
+                        {
+                            "type": "string"
+                        }
+                    ],
+                    "description": "Name of the field from which to pull a data value."
                 },
                 "legend": {
                     "anyOf": [
@@ -2520,7 +2724,7 @@
             },
             "type": "object"
         },
-        "LegendFieldDef<string>": {
+        "LegendFieldDef<Field, string>": {
             "additionalProperties": false,
             "properties": {
                 "aggregate": {
@@ -2542,8 +2746,28 @@
                     "$ref": "#/definitions/Condition<string>"
                 },
                 "field": {
-                    "description": "Name of the field from which to pull a data value.",
-                    "type": "string"
+                    "anyOf": [
+                        {
+                            "additionalProperties": false,
+                            "properties": {
+                                "repeat": {
+                                    "enum": [
+                                        "column",
+                                        "row"
+                                    ],
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "repeat"
+                            ],
+                            "type": "object"
+                        },
+                        {
+                            "type": "string"
+                        }
+                    ],
+                    "description": "Name of the field from which to pull a data value."
                 },
                 "legend": {
                     "anyOf": [
@@ -2845,7 +3069,7 @@
             ],
             "type": "object"
         },
-        "OrderFieldDef": {
+        "OrderFieldDef<Field>": {
             "additionalProperties": false,
             "properties": {
                 "aggregate": {
@@ -2864,8 +3088,28 @@
                     "description": "Flag for binning a `quantitative` field, or a bin property object\nfor binning parameters."
                 },
                 "field": {
-                    "description": "Name of the field from which to pull a data value.",
-                    "type": "string"
+                    "anyOf": [
+                        {
+                            "additionalProperties": false,
+                            "properties": {
+                                "repeat": {
+                                    "enum": [
+                                        "column",
+                                        "row"
+                                    ],
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "repeat"
+                            ],
+                            "type": "object"
+                        },
+                        {
+                            "type": "string"
+                        }
+                    ],
+                    "description": "Name of the field from which to pull a data value."
                 },
                 "sort": {
                     "$ref": "#/definitions/SortOrder"
@@ -2906,7 +3150,7 @@
             },
             "type": "object"
         },
-        "PositionFieldDef": {
+        "PositionFieldDef<Field>": {
             "additionalProperties": false,
             "properties": {
                 "aggregate": {
@@ -2935,8 +3179,28 @@
                     "description": "Flag for binning a `quantitative` field, or a bin property object\nfor binning parameters."
                 },
                 "field": {
-                    "description": "Name of the field from which to pull a data value.",
-                    "type": "string"
+                    "anyOf": [
+                        {
+                            "additionalProperties": false,
+                            "properties": {
+                                "repeat": {
+                                    "enum": [
+                                        "column",
+                                        "row"
+                                    ],
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "repeat"
+                            ],
+                            "type": "object"
+                        },
+                        {
+                            "type": "string"
+                        }
+                    ],
+                    "description": "Name of the field from which to pull a data value."
                 },
                 "scale": {
                     "$ref": "#/definitions/Scale"
@@ -3006,6 +3270,26 @@
                 "field",
                 "range"
             ],
+            "type": "object"
+        },
+        "Repeat": {
+            "additionalProperties": false,
+            "properties": {
+                "column": {
+                    "description": "Horizontal repeated views.",
+                    "items": {
+                        "type": "string"
+                    },
+                    "type": "array"
+                },
+                "row": {
+                    "description": "Vertical repeated views.",
+                    "items": {
+                        "type": "string"
+                    },
+                    "type": "array"
+                }
+            },
             "type": "object"
         },
         "Scale": {
@@ -3783,7 +4067,7 @@
             },
             "type": "object"
         },
-        "TextFieldDef": {
+        "TextFieldDef<Field>": {
             "additionalProperties": false,
             "properties": {
                 "aggregate": {
@@ -3805,8 +4089,28 @@
                     "$ref": "#/definitions/Condition<string | number>"
                 },
                 "field": {
-                    "description": "Name of the field from which to pull a data value.",
-                    "type": "string"
+                    "anyOf": [
+                        {
+                            "additionalProperties": false,
+                            "properties": {
+                                "repeat": {
+                                    "enum": [
+                                        "column",
+                                        "row"
+                                    ],
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "repeat"
+                            ],
+                            "type": "object"
+                        },
+                        {
+                            "type": "string"
+                        }
+                    ],
+                    "description": "Name of the field from which to pull a data value."
                 },
                 "format": {
                     "description": "The formatting pattern for text value. If not defined, this will be determined automatically.",

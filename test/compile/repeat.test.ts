@@ -27,6 +27,16 @@ describe('Repeat', function() {
         assert.equal(localLogger.warns[0], log.message.noSuchRepeatedValue('row'));
       });
     });
+
+    it('should support arrays fo field defs', () => {
+      const resolved = replaceRepeaterInEncoding({
+        detail: [{field: {repeat: 'row'}}, {field: 'bar'}]
+      }, {row: 'foo'});
+
+      assert.deepEqual(resolved, {
+        detail: [{field: 'foo'}, {field: 'bar'}]
+      });
+    });
   });
 
   describe('initialize children', () => {

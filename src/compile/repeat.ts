@@ -1,3 +1,4 @@
+import {isArray} from 'vega-util';
 import {CellConfig, Config} from '../config';
 import {Encoding} from '../encoding';
 import {Facet} from '../facet';
@@ -29,20 +30,40 @@ export function replaceRepeaterInEncoding(encoding: Encoding<Field>, repeater: R
 
 type EncodingOrFacet<F> = Encoding<F> | Facet<F>;
 
+/**
+ * Replace repeater values in a field def with the concrete field name.
+ */
+function replaceRepeaterInFieldDef(fieldDef: FieldDef<Field>, repeater: RepeaterValue): FieldDef<string> | null {
+  const field = fieldDef.field;
+  if (isRepeatRef(field)) {
+    if (field.repeat in repeater) {
+      return {
+        ...fieldDef,
+        field: repeater[field.repeat]
+      };
+    } else {
+      log.warn(log.message.noSuchRepeatedValue(field.repeat));
+      return null;
+    }
+  } else {
+    // field is not a repeat ref so we can just return the field def
+    return fieldDef as FieldDef<string>;
+  }
+}
+
 function replaceRepeater(mapping: EncodingOrFacet<Field>, repeater: RepeaterValue): EncodingOrFacet<string> {
   const out: EncodingOrFacet<string> = {};
   for (const channel in mapping) {
     if (mapping.hasOwnProperty(channel)) {
-      const fieldDef: FieldDef<Field> = mapping[channel];
-      out[channel] = {...fieldDef};
+      const fieldDef: FieldDef<Field> | FieldDef<Field>[] = mapping[channel];
 
-      const field = fieldDef.field;
-      if (isRepeatRef(field)) {
-        if (field.repeat in repeater) {
-          out[channel].field = repeater[field.repeat];
-        } else {
-          log.warn(log.message.noSuchRepeatedValue(field.repeat));
-          delete out[channel];
+      if (isArray(fieldDef)) {
+        out[channel] = fieldDef.map(fd => replaceRepeaterInFieldDef(fd, repeater))
+          .filter((fd: FieldDef<string> | null) => fd !== null);
+      } else {
+        const fd = replaceRepeaterInFieldDef(fieldDef, repeater);
+        if (fd !== null) {
+          out[channel] = fd;
         }
       }
     }
@@ -179,6 +200,7 @@ export class RepeatModel extends Model {
   public assembleMarks(): any[] {
     // only children have marks
     return this.children.map(child => ({
+      type: 'group',
       name: child.getName('group'),
       encode: {
         update: {
