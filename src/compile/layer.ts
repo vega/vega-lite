@@ -64,12 +64,12 @@ export class LayerModel extends Model {
     // across unit specs. Persist their definitions within each child
     // to assemble signals which remain within output Vega unit groups.
     this.component.selection = {};
-    this.children.forEach(child => {
+    for (const child of this.children) {
       child.parseSelection();
       keys(child.component.selection).forEach((key) => {
         this.component.selection[key] = child.component.selection[key];
       });
-    });
+    }
   }
 
   public parseScale(this: LayerModel) {
@@ -77,7 +77,7 @@ export class LayerModel extends Model {
 
     const scaleComponent: Dict<VgScale> = this.component.scales = {};
 
-    this.children.forEach(function(child) {
+    for (const child of this.children) {
       child.parseScale();
 
       // FIXME(#1602): correctly implement independent scale
@@ -108,19 +108,19 @@ export class LayerModel extends Model {
           delete child.component.scales[channel];
         });
       }
-    });
+    }
   }
 
   public parseMark() {
-    this.children.forEach(child => {
+    for (const child of this.children) {
       child.parseMark();
-    });
+    }
   }
 
   public parseAxis() {
     const axisComponent = this.component.axes = {};
 
-    this.children.forEach(child => {
+    for (const child of this.children) {
       child.parseAxis();
 
       // TODO: correctly implement independent axes
@@ -134,7 +134,7 @@ export class LayerModel extends Model {
           }
         });
       }
-    });
+    }
   }
 
   public parseAxisGroup(): void {
@@ -144,19 +144,19 @@ export class LayerModel extends Model {
   public parseLegend() {
     const legendComponent = this.component.legends = {};
 
-    this.children.forEach(function(child) {
+    for (const child of this.children) {
       child.parseLegend();
 
       // TODO: correctly implement independent axes
       if (true) { // if shared/union scale
-        keys(child.component.legends).forEach(function(channel) {
+        keys(child.component.legends).forEach(channel => {
           // just use the first legend definition for each channel
           if (!legendComponent[channel]) {
             legendComponent[channel] = child.component.legends[channel];
           }
         });
       }
-    });
+    }
   }
 
   public assembleParentGroupProperties(cellConfig: CellConfig): VgEncodeEntry {
