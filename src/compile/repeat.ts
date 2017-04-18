@@ -1,4 +1,5 @@
 import {isArray} from 'vega-util';
+import {NONSPATIAL_SCALE_CHANNELS} from '../channel';
 import {CellConfig, Config} from '../config';
 import {Encoding} from '../encoding';
 import {Facet} from '../facet';
@@ -6,13 +7,14 @@ import {Field, FieldDef, isRepeatRef} from '../fielddef';
 import * as log from '../log';
 import {Repeat} from '../repeat';
 import {RepeatSpec} from '../spec';
-import {keys, vals} from '../util';
-import {VgData, VgLayout, VgScale, VgSignal} from '../vega.schema';
+import {contains, Dict, keys, vals} from '../util';
+import {isSignalRefDomain, VgData, VgLayout, VgScale, VgSignal} from '../vega.schema';
 import {buildModel} from './common';
 import {assembleData} from './data/assemble';
 import {parseData} from './data/parse';
 import {assembleLayoutLayerSignals} from './layout/index';
 import {Model} from './model';
+import {unionDomains} from './scale/domain';
 
 
 export type RepeaterValue = {
@@ -120,10 +122,41 @@ export class RepeatModel extends Model {
   public parseScale(this: RepeatModel) {
     const model = this;
 
-    this.component.scales = {};
+    const scaleComponent: Dict<VgScale> = this.component.scales = {};
 
     this.children.forEach(function(child) {
       child.parseScale();
+
+      // FIXME(#1602): correctly implement independent scale
+      // Also need to check whether the scales are actually compatible, e.g. use the same sort or throw error
+      if (true) { // if shared/union scale
+        keys(child.component.scales).forEach(function(channel) {
+          if (contains(NONSPATIAL_SCALE_CHANNELS, channel)) {
+            const childScale = child.component.scales[channel];
+            const modelScale = scaleComponent[channel];
+
+            if (!childScale || isSignalRefDomain(childScale.domain) || (modelScale && isSignalRefDomain(modelScale.domain))) {
+              // TODO: merge signal ref domains
+              return;
+            }
+
+            if (modelScale) {
+              modelScale.domain = unionDomains(modelScale.domain, childScale.domain);
+            } else {
+              scaleComponent[channel] = childScale;
+            }
+
+            // rename child scale to parent scales
+            const scaleNameWithoutPrefix = childScale.name.substr(child.getName('').length);
+            const newName = model.scaleName(scaleNameWithoutPrefix, true);
+            child.renameScale(childScale.name, newName);
+            childScale.name = newName;
+
+            // remove merged scales from children
+            delete child.component.scales[channel];
+          }
+        });
+      }
     });
   }
 
@@ -144,8 +177,21 @@ export class RepeatModel extends Model {
   }
 
   public parseLegend() {
+    const legendComponent = this.component.legends = {};
+
     for (const child of this.children) {
       child.parseLegend();
+
+      // TODO: correctly implement independent legends
+      if (true) { // if shared/union scale
+        keys(child.component.legends).forEach(function(channel) {
+          // just use the first legend definition for each channel
+          if (!legendComponent[channel]) {
+            legendComponent[channel] = child.component.legends[channel];
+          }
+          delete child.component.legends[channel];
+        });
+      }
     }
   }
 
