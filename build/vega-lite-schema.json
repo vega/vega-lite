@@ -385,7 +385,7 @@
                     "type": "string"
                 },
                 "grid": {
-                    "description": "A flag indicates if gridlines should be created in addition to ticks. For `X` and `Y`, the default value is `true` for quantitative and time fields and `\"false\"` otherwise.\n\n__Default value:__ `true` for (1) quantitative fields that are not binned and (2) time fields;  otherwise, `\"false\"`.",
+                    "description": "A boolean flag indicating if grid lines should be included as part of the axis\n\n__Default value:__ `true` for (1) quantitative fields that are not binned and (2) time fields;  otherwise, `\"false\"`.",
                     "type": "boolean"
                 },
                 "labelAngle": {
@@ -433,7 +433,7 @@
                     "type": "number"
                 },
                 "ticks": {
-                    "description": "Boolean value to determine whether the axis should include ticks.",
+                    "description": "boolean value that determines whether the axis should include ticks.",
                     "type": "boolean"
                 },
                 "title": {
@@ -490,7 +490,7 @@
                     "type": "number"
                 },
                 "grid": {
-                    "description": "A flag indicates if gridlines should be created in addition to ticks. For `X` and `Y`, the default value is `true` for quantitative and time fields and `\"false\"` otherwise.\n\n__Default value:__ `true` for (1) quantitative fields that are not binned and (2) time fields;  otherwise, `\"false\"`.",
+                    "description": "A boolean flag indicating if grid lines should be included as part of the axis\n\n__Default value:__ `true` for (1) quantitative fields that are not binned and (2) time fields;  otherwise, `\"false\"`.",
                     "type": "boolean"
                 },
                 "gridColor": {
@@ -570,7 +570,7 @@
                     "type": "number"
                 },
                 "ticks": {
-                    "description": "Boolean value to determine whether the axis should include ticks.",
+                    "description": "boolean value that determines whether the axis should include ticks.",
                     "type": "boolean"
                 },
                 "titleColor": {
