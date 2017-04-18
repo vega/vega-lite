@@ -37,7 +37,7 @@ For example, the following specification embeds an inline data table with two ro
 {:#url}
 ## Data from URL
 
-Data can be loaded from a URL using the `url` property. In addition, the format of the input data can be optionally specified using `formatType` property.
+Data can be loaded from a URL using the `url` property. In addition, the format of the input data can be specified using the `formatType` property. By default Vega-Lite will infer the type from the file extension.
 
 {% include table.html props="feature,mesh,parse,property,type" source="DataUrlFormat" %}
 
