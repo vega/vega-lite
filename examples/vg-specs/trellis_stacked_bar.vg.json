@@ -105,202 +105,33 @@
     "layout": {
         "padding": {
             "row": 10,
-            "column": 10,
-            "header": 10
+            "column": 10
         },
-        "columns": 1,
+        "offset": 10,
+        "columns": {
+            "signal": "data('column_layout')[0].distinct_year"
+        },
         "bounds": "full"
     },
     "marks": [
         {
-            "type": "group",
-            "layout": {
-                "padding": {
-                    "row": 10,
-                    "column": 10,
-                    "header": 10
-                },
-                "columns": {
-                    "signal": "data('column_layout')[0].distinct_year"
-                },
-                "bounds": "full"
-            },
-            "marks": [
-                {
-                    "name": "x-axes",
-                    "type": "group",
-                    "role": "column-footer",
-                    "from": {
-                        "data": "column"
-                    },
-                    "axes": [
-                        {
-                            "scale": "x",
-                            "format": "s",
-                            "orient": "bottom",
-                            "tickCount": 5,
-                            "title": "SUM(yield)",
-                            "zindex": 1
-                        }
-                    ]
-                },
-                {
-                    "name": "y-axes",
-                    "type": "group",
-                    "role": "row-header",
-                    "axes": [
-                        {
-                            "scale": "y",
-                            "orient": "left",
-                            "title": "variety",
-                            "zindex": 1
-                        }
-                    ]
-                },
-                {
-                    "name": "column-labels",
-                    "role": "column-header",
-                    "type": "group",
-                    "from": {
-                        "data": "column"
-                    },
-                    "encode": {
-                        "update": {
-                            "width": {
-                                "signal": "child_width"
-                            }
-                        }
-                    },
-                    "marks": [
-                        {
-                            "type": "text",
-                            "role": "column-labels",
-                            "encode": {
-                                "update": {
-                                    "x": {
-                                        "field": {
-                                            "group": "width"
-                                        },
-                                        "mult": 0.5
-                                    },
-                                    "y": {
-                                        "value": -10
-                                    },
-                                    "text": {
-                                        "field": {
-                                            "parent": "year"
-                                        }
-                                    },
-                                    "align": {
-                                        "value": "center"
-                                    },
-                                    "fill": {
-                                        "value": "black"
-                                    }
-                                }
-                            }
-                        }
-                    ]
-                },
-                {
-                    "name": "cell",
-                    "type": "group",
-                    "from": {
-                        "facet": {
-                            "name": "facet",
-                            "data": "source_0",
-                            "groupby": [
-                                "year"
-                            ]
-                        }
-                    },
-                    "encode": {
-                        "update": {
-                            "width": {
-                                "signal": "child_width"
-                            },
-                            "height": {
-                                "signal": "child_height"
-                            },
-                            "stroke": {
-                                "value": "#ccc"
-                            },
-                            "strokeWidth": {
-                                "value": 1
-                            },
-                            "fill": {
-                                "value": "transparent"
-                            }
-                        }
-                    },
-                    "marks": [
-                        {
-                            "name": "child_marks",
-                            "type": "rect",
-                            "role": "bar",
-                            "from": {
-                                "data": "facet"
-                            },
-                            "encode": {
-                                "update": {
-                                    "x": {
-                                        "scale": "x",
-                                        "field": "sum_yield_end"
-                                    },
-                                    "x2": {
-                                        "scale": "x",
-                                        "field": "sum_yield_start"
-                                    },
-                                    "yc": {
-                                        "scale": "y",
-                                        "field": "variety"
-                                    },
-                                    "height": {
-                                        "value": 20
-                                    },
-                                    "fill": {
-                                        "scale": "color",
-                                        "field": "site"
-                                    }
-                                }
-                            }
-                        }
-                    ],
-                    "axes": [
-                        {
-                            "scale": "x",
-                            "domain": false,
-                            "format": "s",
-                            "grid": true,
-                            "labels": false,
-                            "orient": "bottom",
-                            "tickCount": 5,
-                            "ticks": false,
-                            "zindex": 0,
-                            "gridScale": "y"
-                        }
-                    ]
-                }
-            ]
-        },
-        {
             "name": "column-title",
-            "role": "column-header",
+            "role": "column-title",
             "type": "group",
             "marks": [
                 {
                     "type": "text",
-                    "role": "column-title",
+                    "role": "column-title-text",
                     "encode": {
                         "update": {
                             "x": {
                                 "signal": "0.5 * width"
                             },
-                            "text": {
-                                "value": "year"
-                            },
                             "align": {
                                 "value": "center"
+                            },
+                            "text": {
+                                "value": "year"
                             },
                             "fill": {
                                 "value": "black"
@@ -310,6 +141,167 @@
                             }
                         }
                     }
+                }
+            ]
+        },
+        {
+            "name": "row-header",
+            "type": "group",
+            "role": "row-header",
+            "encode": {
+                "update": {
+                    "height": {
+                        "signal": "child_height"
+                    }
+                }
+            },
+            "axes": [
+                {
+                    "scale": "y",
+                    "orient": "left",
+                    "title": "variety",
+                    "zindex": 1
+                }
+            ]
+        },
+        {
+            "name": "column-header",
+            "type": "group",
+            "role": "column-header",
+            "from": {
+                "data": "column"
+            },
+            "title": {
+                "offset": 10,
+                "orient": "top",
+                "encode": {
+                    "update": {
+                        "text": {
+                            "field": {
+                                "parent": "year"
+                            }
+                        },
+                        "fontWeight": {
+                            "value": "normal"
+                        },
+                        "angle": {
+                            "value": 0
+                        },
+                        "fontSize": {
+                            "value": 10
+                        }
+                    }
+                }
+            },
+            "encode": {
+                "update": {
+                    "width": {
+                        "signal": "child_width"
+                    }
+                }
+            }
+        },
+        {
+            "name": "column-footer",
+            "type": "group",
+            "role": "column-footer",
+            "from": {
+                "data": "column"
+            },
+            "encode": {
+                "update": {
+                    "width": {
+                        "signal": "child_width"
+                    }
+                }
+            },
+            "axes": [
+                {
+                    "scale": "x",
+                    "format": "s",
+                    "orient": "bottom",
+                    "tickCount": 5,
+                    "title": "SUM(yield)",
+                    "zindex": 1
+                }
+            ]
+        },
+        {
+            "name": "cell",
+            "type": "group",
+            "from": {
+                "facet": {
+                    "name": "facet",
+                    "data": "source_0",
+                    "groupby": [
+                        "year"
+                    ]
+                }
+            },
+            "encode": {
+                "update": {
+                    "width": {
+                        "signal": "child_width"
+                    },
+                    "height": {
+                        "signal": "child_height"
+                    },
+                    "stroke": {
+                        "value": "#ccc"
+                    },
+                    "strokeWidth": {
+                        "value": 1
+                    },
+                    "fill": {
+                        "value": "transparent"
+                    }
+                }
+            },
+            "marks": [
+                {
+                    "name": "child_marks",
+                    "type": "rect",
+                    "role": "bar",
+                    "from": {
+                        "data": "facet"
+                    },
+                    "encode": {
+                        "update": {
+                            "x": {
+                                "scale": "x",
+                                "field": "sum_yield_end"
+                            },
+                            "x2": {
+                                "scale": "x",
+                                "field": "sum_yield_start"
+                            },
+                            "yc": {
+                                "scale": "y",
+                                "field": "variety"
+                            },
+                            "height": {
+                                "value": 20
+                            },
+                            "fill": {
+                                "scale": "color",
+                                "field": "site"
+                            }
+                        }
+                    }
+                }
+            ],
+            "axes": [
+                {
+                    "scale": "x",
+                    "domain": false,
+                    "format": "s",
+                    "grid": true,
+                    "labels": false,
+                    "orient": "bottom",
+                    "tickCount": 5,
+                    "ticks": false,
+                    "zindex": 0,
+                    "gridScale": "y"
                 }
             ]
         }

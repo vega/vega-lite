@@ -50,9 +50,9 @@ export class ConcatModel extends Model {
     }
   }
 
-  public parseAxis() {
+  public parseAxisAndHeader() {
     for (const child of this.children) {
-      child.parseAxis();
+      child.parseAxisAndHeader();
     }
   }
 
@@ -105,7 +105,8 @@ export class ConcatModel extends Model {
   public assembleLayout(): VgLayout {
     // TODO: allow customization
     return {
-      padding: {row: 10, column: 10, header: 10},
+      padding: {row: 10, column: 10},
+      offset: 10,
       columns: 1,
       bounds: 'full',
       align: 'all'

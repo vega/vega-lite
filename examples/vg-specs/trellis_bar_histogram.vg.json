@@ -87,227 +87,210 @@
     "layout": {
         "padding": {
             "row": 10,
-            "column": 10,
-            "header": 10
+            "column": 10
         },
+        "offset": 10,
         "columns": 1,
         "bounds": "full"
     },
     "marks": [
         {
-            "type": "group",
-            "layout": {
-                "padding": {
-                    "row": 10,
-                    "column": 10,
-                    "header": 10
-                },
-                "columns": 1,
-                "bounds": "full"
-            },
-            "marks": [
-                {
-                    "name": "x-axes",
-                    "type": "group",
-                    "role": "column-footer",
-                    "axes": [
-                        {
-                            "scale": "x",
-                            "format": "s",
-                            "orient": "bottom",
-                            "title": "BIN(Horsepower)",
-                            "zindex": 1,
-                            "encode": {
-                                "labels": {
-                                    "update": {
-                                        "angle": {
-                                            "value": 270
-                                        },
-                                        "align": {
-                                            "value": "right"
-                                        },
-                                        "baseline": {
-                                            "value": "middle"
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    ]
-                },
-                {
-                    "name": "y-axes",
-                    "type": "group",
-                    "role": "row-header",
-                    "from": {
-                        "data": "row"
-                    },
-                    "axes": [
-                        {
-                            "scale": "y",
-                            "format": "s",
-                            "orient": "left",
-                            "title": "Number of Records",
-                            "zindex": 1
-                        }
-                    ]
-                },
-                {
-                    "name": "row-labels",
-                    "role": "row-header",
-                    "type": "group",
-                    "from": {
-                        "data": "row"
-                    },
-                    "encode": {
-                        "update": {
-                            "height": {
-                                "signal": "child_height"
-                            }
-                        }
-                    },
-                    "marks": [
-                        {
-                            "type": "text",
-                            "role": "row-labels",
-                            "encode": {
-                                "update": {
-                                    "y": {
-                                        "field": {
-                                            "group": "height"
-                                        },
-                                        "mult": 0.5
-                                    },
-                                    "x": {
-                                        "value": -10
-                                    },
-                                    "text": {
-                                        "field": {
-                                            "parent": "Origin"
-                                        }
-                                    },
-                                    "align": {
-                                        "value": "right"
-                                    },
-                                    "fill": {
-                                        "value": "black"
-                                    }
-                                }
-                            }
-                        }
-                    ]
-                },
-                {
-                    "name": "cell",
-                    "type": "group",
-                    "from": {
-                        "facet": {
-                            "name": "facet",
-                            "data": "source_0",
-                            "groupby": [
-                                "Origin"
-                            ]
-                        }
-                    },
-                    "encode": {
-                        "update": {
-                            "width": {
-                                "signal": "child_width"
-                            },
-                            "height": {
-                                "signal": "child_height"
-                            },
-                            "stroke": {
-                                "value": "#ccc"
-                            },
-                            "strokeWidth": {
-                                "value": 1
-                            },
-                            "fill": {
-                                "value": "transparent"
-                            }
-                        }
-                    },
-                    "marks": [
-                        {
-                            "name": "child_marks",
-                            "type": "rect",
-                            "role": "bar",
-                            "from": {
-                                "data": "facet"
-                            },
-                            "encode": {
-                                "update": {
-                                    "x2": {
-                                        "scale": "x",
-                                        "field": "bin_maxbins_15_Horsepower_start",
-                                        "offset": 1
-                                    },
-                                    "x": {
-                                        "scale": "x",
-                                        "field": "bin_maxbins_15_Horsepower_end"
-                                    },
-                                    "y": {
-                                        "scale": "y",
-                                        "field": "count_*"
-                                    },
-                                    "y2": {
-                                        "scale": "y",
-                                        "value": 0
-                                    },
-                                    "fill": {
-                                        "value": "#4c78a8"
-                                    }
-                                }
-                            }
-                        }
-                    ],
-                    "axes": [
-                        {
-                            "scale": "y",
-                            "domain": false,
-                            "format": "s",
-                            "grid": true,
-                            "labels": false,
-                            "orient": "left",
-                            "ticks": false,
-                            "zindex": 0,
-                            "gridScale": "x"
-                        }
-                    ]
-                }
-            ]
-        },
-        {
             "name": "row-title",
-            "role": "row-header",
+            "role": "row-title",
             "type": "group",
             "marks": [
                 {
                     "type": "text",
-                    "role": "row-title",
+                    "role": "row-title-text",
                     "encode": {
                         "update": {
                             "y": {
                                 "signal": "0.5 * height"
                             },
-                            "angle": {
-                                "value": 270
+                            "align": {
+                                "value": "right"
                             },
                             "text": {
                                 "value": "Origin"
-                            },
-                            "align": {
-                                "value": "right"
                             },
                             "fill": {
                                 "value": "black"
                             },
                             "fontWeight": {
                                 "value": "bold"
+                            },
+                            "angle": {
+                                "value": 270
                             }
                         }
                     }
+                }
+            ]
+        },
+        {
+            "name": "row-header",
+            "type": "group",
+            "role": "row-header",
+            "from": {
+                "data": "row"
+            },
+            "title": {
+                "offset": 10,
+                "orient": "left",
+                "encode": {
+                    "update": {
+                        "text": {
+                            "field": {
+                                "parent": "Origin"
+                            }
+                        },
+                        "fontWeight": {
+                            "value": "normal"
+                        },
+                        "angle": {
+                            "value": 0
+                        },
+                        "fontSize": {
+                            "value": 10
+                        },
+                        "align": {
+                            "value": "right"
+                        },
+                        "baseline": {
+                            "value": "middle"
+                        }
+                    }
+                }
+            },
+            "encode": {
+                "update": {
+                    "height": {
+                        "signal": "child_height"
+                    }
+                }
+            },
+            "axes": [
+                {
+                    "scale": "y",
+                    "format": "s",
+                    "orient": "left",
+                    "title": "Number of Records",
+                    "zindex": 1
+                }
+            ]
+        },
+        {
+            "name": "column-footer",
+            "type": "group",
+            "role": "column-footer",
+            "encode": {
+                "update": {
+                    "width": {
+                        "signal": "child_width"
+                    }
+                }
+            },
+            "axes": [
+                {
+                    "scale": "x",
+                    "format": "s",
+                    "orient": "bottom",
+                    "title": "BIN(Horsepower)",
+                    "zindex": 1,
+                    "encode": {
+                        "labels": {
+                            "update": {
+                                "angle": {
+                                    "value": 270
+                                },
+                                "align": {
+                                    "value": "right"
+                                },
+                                "baseline": {
+                                    "value": "middle"
+                                }
+                            }
+                        }
+                    }
+                }
+            ]
+        },
+        {
+            "name": "cell",
+            "type": "group",
+            "from": {
+                "facet": {
+                    "name": "facet",
+                    "data": "source_0",
+                    "groupby": [
+                        "Origin"
+                    ]
+                }
+            },
+            "encode": {
+                "update": {
+                    "width": {
+                        "signal": "child_width"
+                    },
+                    "height": {
+                        "signal": "child_height"
+                    },
+                    "stroke": {
+                        "value": "#ccc"
+                    },
+                    "strokeWidth": {
+                        "value": 1
+                    },
+                    "fill": {
+                        "value": "transparent"
+                    }
+                }
+            },
+            "marks": [
+                {
+                    "name": "child_marks",
+                    "type": "rect",
+                    "role": "bar",
+                    "from": {
+                        "data": "facet"
+                    },
+                    "encode": {
+                        "update": {
+                            "x2": {
+                                "scale": "x",
+                                "field": "bin_maxbins_15_Horsepower_start",
+                                "offset": 1
+                            },
+                            "x": {
+                                "scale": "x",
+                                "field": "bin_maxbins_15_Horsepower_end"
+                            },
+                            "y": {
+                                "scale": "y",
+                                "field": "count_*"
+                            },
+                            "y2": {
+                                "scale": "y",
+                                "value": 0
+                            },
+                            "fill": {
+                                "value": "#4c78a8"
+                            }
+                        }
+                    }
+                }
+            ],
+            "axes": [
+                {
+                    "scale": "y",
+                    "domain": false,
+                    "format": "s",
+                    "grid": true,
+                    "labels": false,
+                    "orient": "left",
+                    "ticks": false,
+                    "zindex": 0,
+                    "gridScale": "x"
                 }
             ]
         }
