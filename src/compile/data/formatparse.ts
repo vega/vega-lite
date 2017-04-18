@@ -104,6 +104,10 @@ export class ParseNode extends DataFlowNode {
       });
     }
 
+    if (keys(parse).length === 0) {
+      return null;
+    }
+
     return new ParseNode(parse);
   }
 
