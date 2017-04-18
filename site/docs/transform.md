@@ -56,7 +56,7 @@ A `filter` property can be (1) a filter predicate object including Equal Filter,
 For a filter object, a `field` must be provided with one of the filter operators (`equal`, `in`, `range`).  Values of these operators can be primitive types (string, number, boolean) or a [DateTime definition object](#datetime) to describe time. In addition, `timeUnit` can be provided to further transform a temporal `field`.
 
 {:#filter}
-#### Filter Expresssion
+#### Filter Expression
 
 For a [Vega Expression](https://vega.github.io/vega/docs/expressions/) string, each datum object can be referred using bound variable `datum`. For example, setting `filter` to `"datum.b2 > 60"` would make the output data includes only items that have values in the field `b2` over 60.
 
@@ -94,4 +94,4 @@ A DateTime object must have at least one of the following properties:
 
 #### Filter Array
 
-For a filter array, the array's members should be either filter objects or filter expressions.  All of member predicates should be satisfied for a data item to be included in the filtered data.  In other words, the `filter` array will form a conjunctive predicate that join all predicates with "and" operators.
+For a filter array, the array's members should be either filter objects or filter expressions.  All member predicates should be satisfied for a data item to be included in the filtered data.  In other words, the `filter` array will form a conjunctive predicate that joins all predicates with "and" operators.

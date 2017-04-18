@@ -39,7 +39,7 @@ The keys in the encoding object are encoding channels. This section lists suppor
 {:#props-channels}
 ### Position Channels
 
-Position channels determine position of the marks.
+Position channels determine the position of the marks.
 
 {% include table.html props="x,x2,y,y2" source="Encoding" %}
 
@@ -80,7 +80,7 @@ We map `symbol` variable (stock market ticker symbol) to `detail` to use them to
 
 {% include table.html props="order" source="Encoding" %}
 
-**Note**: Since `order` and `path` represent actual data fields that are used to sort the data, they cannot encode constant `value`. In addition, in aggregate plots, they should have `aggregate` function specified.
+**Note**: Since `order` and `path` represent actual data fields that are used to sort the data, they cannot encode the constant `value`. In addition, in aggregate plots, they should have `aggregate` function specified.
 
 {:#ex-order}
 #### Example: Sorting Stack Order
@@ -91,7 +91,7 @@ Given a stacked bar chart:
 
 By default, the stacked bar are sorted by the stack grouping fields (`color` in this example).
 
-Mapping the sum of yield to `order` channel will sort the layer of stacked bar by sum of yield instead.
+Mapping the sum of yield to `order` channel will sort the layer of stacked bar by the sum of yield instead.
 
 <div class="vl-example" data-name="stacked_bar_h_order"></div>
 
@@ -113,7 +113,7 @@ By default, line marks order their points in their paths by the field of channel
 
 For more information, please see [facet page](facet.html).
 
-**Note**: Since `row` and `column` represent actual data fields that are used to partition the data, they cannot encode constant `value`. In addition, in aggregate plots, they should not have `aggregate` function specified.
+**Note**: Since `row` and `column` represent actual data fields that are used to partition the data, they cannot encode the constant `value`. In addition, in aggregate plots, they should not have `aggregate` function specified.
 
 {:#def}
 ## Channel Definition
@@ -148,7 +148,7 @@ Nominal
 {% include table.html props="type" source="FieldDef" %}
 
 **Note**:
-Data `type` here describes semantic of the data rather than primitive data types in programming language sense (`number`, `string`, etc.). The same primitive data type can have different type of measurement. For example, numeric data can represent quantitative, ordinal, or nominal data.
+Data `type` here describes semantic of the data rather than primitive data types in programming language sense (`number`, `string`, etc.). The same primitive data type can have different types of measurement. For example, numeric data can represent quantitative, ordinal, or nominal data.
 
 {:#inline}
 ### Field Transforms
@@ -172,15 +172,15 @@ For more information about these field transforms, please see the following page
 {:#value}
 ### Constant Value
 
-For [mark properties channels](#props-channels), if a `field` is not specified, constant values for the properties (e.g., color, size) can be also set directly with the channel definition's `value` property.
+For [mark properties channels](#props-channels), if a `field` is not specified, constant values for the properties (e.g., color, size) can also be set directly with the channel definition's `value` property.
 
 {% include table.html props="value" source="ValueDef<number>" %}
 
-**Note**: `detail`, `path`, `order`, `row`, and `column` channels cannot encode constant `value`.
+**Note**: `detail`, `path`, `order`, `row`, and `column` channels cannot encode the constant `value`.
 
 #### Example
 
-For example, you can set `color` and `shape` of a scatter plot to constant values. Note that as the value is set directly to the color and shape values, there is no need to specify data `type`. In fact, the data `type` will be ignored if specified.
+For example, you can set `color` and `shape` of a scatter plot to constant values. Note that as the value is set directly to the color and shape values, there is no need to specify a data `type`. In fact, the data `type` will be ignored if specified.
 
 <span class="vl-example" data-name="scatter_color_shape_constant"></span>
 
@@ -197,7 +197,7 @@ Similarly, `value` for `size` channel of bar marks will adjust the bar's size. B
 
 For encoding channels that map data directly to visual properties of the marks, they must provide [scales](scale.html), or functions that transform values in the data domain (numbers, dates, strings, etc) to visual values (pixels, colors, sizes).
 
-In addition, visualizations typically provide guides to aid interpretation of scales. There are two types of guides: [axes](axis.html) and [legends](legend.html). Axes produces lines, ticks, and labels to convey how a spatial range represent a data range in position channel (`x` and `y`).   Meanwhile, legends aid interpretation of `color`, `size`, and `shape`'s scales.
+In addition, visualizations typically provide guides to aid interpretation of scales. There are two types of guides: [axes](axis.html) and [legends](legend.html). Axes produce lines, ticks, and labels to convey how a spatial range represent a data range in position channel (`x` and `y`).   Meanwhile, legends aid interpretation of `color`, `size`, and `shape`'s scales.
 
 By default, Vega-Lite automatically generates a scale and a guide for each field. If no properties are specified, scale, axis, and legend's properties are determined based on a set of rules by the compiler. `scale`, `axis`, `legend` properties of the channel definition can be used to customize their properties.
 

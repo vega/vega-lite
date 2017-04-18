@@ -42,7 +42,7 @@ export interface FieldDef {
    * The encoded field's type of measurement. This can be either a full type
    * name (`"quantitative"`, `"temporal"`, `"ordinal"`,  and `"nominal"`)
    * or an initial character of the type name (`"Q"`, `"T"`, `"O"`, `"N"`).
-   * This property is case insensitive.
+   * This property is case-insensitive.
    */
   type?: Type;
 
@@ -87,7 +87,7 @@ export interface ScaleFieldDef extends FieldDef {
   scale?: Scale;
   /**
    * Sort order for a particular field.
-   * For quantitative or temporal fields, this can be either `"ascending"` or , `"descending"`
+   * For quantitative or temporal fields, this can be either `"ascending"` or `"descending"`
    * For quantitative or temporal fields, this can be `"ascending"`, `"descending"`, `"none"`, or a [sort field definition object](sort.html#sort-field) for sorting by an aggregate calculation of a specified sort field.
    *
    * __Default value:__ `"ascending"`

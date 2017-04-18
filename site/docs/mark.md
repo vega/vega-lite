@@ -97,7 +97,7 @@ The `tick` mark represents each data point as a short line. This is a useful mar
 
 ### Dot Plot
 
-For example, the following dot plot use tick marks to show distribution of each car's Horsepower.
+For example, the following dot plot uses tick marks to show the distribution of each car's Horsepower.
 
 <span class="vl-example" data-name="tick_dot"></span>
 
@@ -123,7 +123,7 @@ Mapping a quantitative field to either `x` or `y` of the `bar` mark produces a s
 
 ### Bar Chart
 
-If we map a different ordinal field to the `y` channel, we can produce a horizontal bar chart. Specifying `scale.rangeStep` of an ordinal field will adjust the [ordinal scale's range step](https://github.com/mbostock/d3/wiki/Ordinal-Scales#ordinal_rangeBands). By default, there will be a 1 pixel offset between bars. (See [an example that customizes size of the bars](encoding.html#ex-bar-size).)
+If we map a different ordinal field to the `y` channel, we can produce a horizontal bar chart. Specifying `scale.rangeStep` of an ordinal field will adjust the [ordinal scale's range step](https://github.com/mbostock/d3/wiki/Ordinal-Scales#ordinal_rangeBands). By default, there will be a 1 pixel offset between bars. (See [an example that customizes the size of the bars](encoding.html#ex-bar-size).)
 
 <!-- TODO: Need to update docs our and Vega's scale.rangeStep property and link there instead -->
 
@@ -185,7 +185,7 @@ Use the `rect` mark to create a heatmap.
 
 ## Line
 
-The `line` mark represents the data points stored in a field with a line connecting all of these points. Unlike other marks except `area` that represents one data element per mark, one line mark represent multiple data element as a single line.
+The `line` mark represents the data points stored in a field with a line connecting all of these points. Unlike other marks that represent one data element per mark, one line mark represents multiple data element as a single line (same is true for `area`).
 
 ### Line Chart
 
@@ -219,20 +219,19 @@ By default, the line's path (order of points in the line) is determined by data 
 
 ### Area Chart
 
-Using `area` mark with one ordinal field (typically on `x`) and one quantitative field (typically on `y`) produces an area chart. For example, the following area chart shows a number of unemployment people in US over time.
+Using `area` mark with one ordinal field (typically on `x`) and one quantitative field (typically on `y`) produces an area chart. For example, the following area chart shows a number of unemployment people in the US over time.
 
 <span class="vl-example" data-name="area"></span>
 
 ### Stacked Area Chart
 
-Adding a color field to area chart creates stacked area chart by default. For example, here we split the area chart across industry.
+Adding a color field to area chart creates stacked area chart by default. For example, here we split the area chart by industry.
 
 <span class="vl-example" data-name="stacked_area"></span>
 
 ### Normalized Stacked Area Chart
 
-You can also create a normalized stacked area chart by setting `config.mark.stacked` to `"normalize"`. Here we can easily see the percentage of unemployment across industry.
-You can also create a normalized stacked area chart by setting `config.mark.stacked` to `"normalize"`. Here we can easily see the percentage of unemployment across industry.
+You can also create a normalized stacked area chart by setting `config.mark.stacked` to `"normalize"`. Here we can easily see the percentage of unemployment across industries.
 
 <span class="vl-example" data-name="stacked_area_normalize"></span>
 
