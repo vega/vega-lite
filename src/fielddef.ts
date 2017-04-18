@@ -1,5 +1,3 @@
-import {isObject} from 'vega-util';
-
 // utility for a field definition object
 
 import {AGGREGATE_OP_INDEX, AggregateOp} from './aggregate';
@@ -40,7 +38,7 @@ export type RepeatRef = {
 export type Field = string | RepeatRef;
 
 export function isRepeatRef(field: Field): field is RepeatRef {
-  return isObject(field) && 'repeat' in field;
+  return field && !isString(field) && 'repeat' in field;
 }
 
 /**

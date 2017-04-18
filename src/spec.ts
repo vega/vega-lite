@@ -119,8 +119,8 @@ export type FacetSpec = GenericFacetSpec<UnitSpec>;
 export interface GenericRepeatSpec<U extends GenericUnitSpec<any, any>> extends BaseSpec {
   repeat: Repeat;
 
-  // TODO: add GenericFacetSpec<U>, GenericRepeatSpec<U>
-  spec: GenericLayerSpec<U> | U;
+  // TODO: add GenericFacetSpec<U>
+  spec: GenericRepeatSpec<U> | GenericLayerSpec<U> | U;
 }
 
 export type RepeatSpec = GenericRepeatSpec<UnitSpec>;
@@ -129,7 +129,7 @@ export type GenericSpec<U extends GenericUnitSpec<any, any>> = U | GenericLayerS
 
 export type Spec = GenericSpec<UnitSpec>;
 
-export type TopLevelExtendedSpec = TopLevel<FacetedCompositeUnitSpec> | TopLevel<GenericLayerSpec<CompositeUnitSpec>> | TopLevel<GenericFacetSpec<CompositeUnitSpec>>;
+export type TopLevelExtendedSpec = TopLevel<FacetedCompositeUnitSpec> | TopLevel<GenericLayerSpec<CompositeUnitSpec>> | TopLevel<GenericFacetSpec<CompositeUnitSpec>> | TopLevel<GenericRepeatSpec<CompositeUnitSpec>>;
 
 /* Custom type guards */
 
@@ -183,6 +183,18 @@ function normalizeNonFacet(spec: GenericLayerSpec<CompositeUnitSpec> | Composite
   return normalizeNonFacetUnit(spec, config);
 }
 
+
+function normalizeNonFacetWithRepeat(spec: GenericLayerSpec<CompositeUnitSpec> | GenericRepeatSpec<CompositeUnitSpec> | CompositeUnitSpec, config: Config) {
+  if (isLayerSpec(spec)) {
+    return normalizeLayer(spec, config);
+  }
+  if (isRepeatSpec(spec)) {
+    return normalizeRepeat(spec, config);
+  }
+  return normalizeNonFacetUnit(spec, config);
+}
+
+
 function normalizeFacet(spec: GenericFacetSpec<CompositeUnitSpec>, config: Config): FacetSpec {
   const {spec: subspec, ...rest} = spec;
   return {
@@ -203,7 +215,7 @@ function normalizeRepeat(spec: GenericRepeatSpec<CompositeUnitSpec>, config: Con
   const {spec: subspec, ...rest} = spec;
   return {
     ...rest,
-    spec: normalizeNonFacet(subspec, config)
+    spec: normalizeNonFacetWithRepeat(subspec, config)
   };
 }
 
