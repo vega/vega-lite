@@ -75,7 +75,7 @@ export interface DateTime {
   minutes?: number;
 
   /**
-   * Integer value representing the second segment of time from 0-59.
+   * Integer value representing the second segment (0-59) of a time value
    * @minimum 0
    * @maximum 59
    * @TJS-type integer

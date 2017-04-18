@@ -260,7 +260,7 @@ export interface VgAxisBase {
   domain?: boolean;
 
   /**
-   * A flag indicates if gridlines should be created in addition to ticks. For `X` and `Y`, the default value is `true` for quantitative and time fields and `"false"` otherwise.
+   * A boolean flag indicating if grid lines should be included as part of the axis
    *
    * __Default value:__ `true` for (1) quantitative fields that are not binned and (2) time fields;  otherwise, `"false"`.
    */
@@ -283,7 +283,7 @@ export interface VgAxisBase {
   labelAngle?: number;
 
   /**
-   * Boolean value to determine whether the axis should include ticks.
+   * boolean value that determines whether the axis should include ticks.
    */
   ticks?: boolean;
 

@@ -1602,7 +1602,7 @@
                     "type": "integer"
                 },
                 "seconds": {
-                    "description": "Integer value representing the second segment of time from 0-59.",
+                    "description": "Integer value representing the second segment (0-59) of a time value",
                     "maximum": 59,
                     "minimum": 0,
                     "type": "integer"
@@ -2508,7 +2508,7 @@
                             "type": "string"
                         }
                     ],
-                    "description": "Sort order for a particular field.\nFor quantitative or temporal fields, this can be either `\"ascending\"` or, `\"descending\"`\nFor quantitative or temporal fields, this can be `\"ascending\"`, `\"descending\"`, `\"none\"`, or a [sort field definition object](sort.html#sort-field) for sorting by an aggregate calculation of a specified sort field.\n\n__Default value:__ `\"ascending\"`"
+                    "description": "Sort order for a particular field.\nFor quantitative or temporal fields, this can be either `\"ascending\"` or `\"descending\"`\nFor quantitative or temporal fields, this can be `\"ascending\"`, `\"descending\"`, `\"none\"`, or a [sort field definition object](sort.html#sort-field) for sorting by an aggregate calculation of a specified sort field.\n\n__Default value:__ `\"ascending\"`"
                 },
                 "timeUnit": {
                     "$ref": "#/definitions/TimeUnit",
@@ -2576,7 +2576,7 @@
                             "type": "string"
                         }
                     ],
-                    "description": "Sort order for a particular field.\nFor quantitative or temporal fields, this can be either `\"ascending\"` or, `\"descending\"`\nFor quantitative or temporal fields, this can be `\"ascending\"`, `\"descending\"`, `\"none\"`, or a [sort field definition object](sort.html#sort-field) for sorting by an aggregate calculation of a specified sort field.\n\n__Default value:__ `\"ascending\"`"
+                    "description": "Sort order for a particular field.\nFor quantitative or temporal fields, this can be either `\"ascending\"` or `\"descending\"`\nFor quantitative or temporal fields, this can be `\"ascending\"`, `\"descending\"`, `\"none\"`, or a [sort field definition object](sort.html#sort-field) for sorting by an aggregate calculation of a specified sort field.\n\n__Default value:__ `\"ascending\"`"
                 },
                 "timeUnit": {
                     "$ref": "#/definitions/TimeUnit",
@@ -2960,7 +2960,7 @@
                             "type": "string"
                         }
                     ],
-                    "description": "Sort order for a particular field.\nFor quantitative or temporal fields, this can be either `\"ascending\"` or, `\"descending\"`\nFor quantitative or temporal fields, this can be `\"ascending\"`, `\"descending\"`, `\"none\"`, or a [sort field definition object](sort.html#sort-field) for sorting by an aggregate calculation of a specified sort field.\n\n__Default value:__ `\"ascending\"`"
+                    "description": "Sort order for a particular field.\nFor quantitative or temporal fields, this can be either `\"ascending\"` or `\"descending\"`\nFor quantitative or temporal fields, this can be `\"ascending\"`, `\"descending\"`, `\"none\"`, or a [sort field definition object](sort.html#sort-field) for sorting by an aggregate calculation of a specified sort field.\n\n__Default value:__ `\"ascending\"`"
                 },
                 "stack": {
                     "$ref": "#/definitions/StackOffset",
