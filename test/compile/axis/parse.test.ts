@@ -41,9 +41,10 @@ describe('Axis', function() {
         }
       });
       const axisComponent = axisParse.parseAxisComponent(model, ['x', 'y']);
-      assert.equal(axisComponent['x'].length, 2);
-      assert.equal(axisComponent['x'][0].grid, undefined);
-      assert.equal(axisComponent['x'][1].grid, true);
+      assert.equal(axisComponent['x'].axes.length, 1);
+      assert.equal(axisComponent['x'].gridAxes.length, 1);
+      assert.equal(axisComponent['x'].axes[0].grid, undefined);
+      assert.equal(axisComponent['x'].gridAxes[0].grid, true);
     });
 
     it('should produce Vega grid axis objects for only main axis if grid is disabled)', function() {
@@ -58,8 +59,8 @@ describe('Axis', function() {
         }
       });
       const axisComponent = axisParse.parseAxisComponent(model, ['x', 'y']);
-      assert.equal(axisComponent['x'].length, 1);
-      assert.equal(axisComponent['x'][0].grid, undefined);
+      assert.equal(axisComponent['x'].axes.length, 1);
+      assert.equal(axisComponent['x'].axes[0].grid, undefined);
     });
   });
 

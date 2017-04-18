@@ -7,27 +7,27 @@ import * as rules from './rules';
 
 import {Dict, keys, some} from '../../util';
 import {UnitModel} from '../unit';
+import {AxesComponent, AxisComponent} from './index';
 
 type AxisPart = 'domain' | 'grid' | 'labels' | 'ticks' | 'title';
 const AXIS_PARTS: AxisPart[] = ['domain', 'grid', 'labels', 'ticks', 'title'];
 
-export function parseAxisComponent(model: UnitModel, axisChannels: Channel[]): Dict<VgAxis[]> {
+export function parseAxisComponent(model: UnitModel, axisChannels: Channel[]): AxesComponent {
   return axisChannels.reduce(function(axis, channel) {
-    const vgAxes: VgAxis[] = [];
+    const axisComponent: AxisComponent = {axes:[], gridAxes: []};
     if (model.axis(channel)) {
+      // TODO: support multiple axis
       const main = parseMainAxis(channel, model);
       if (main && isVisibleAxis(main)) {
-        vgAxes.push(main);
+        axisComponent.axes.push(main);
       }
 
       const grid = parseGridAxis(channel, model);
       if (grid && isVisibleAxis(grid)) {
-        vgAxes.push(grid);
+        axisComponent.gridAxes.push(grid);
       }
 
-      if (vgAxes.length > 0) {
-        axis[channel] = vgAxes;
-      }
+      axis[channel] = axisComponent;
     }
     return axis;
   }, {});
