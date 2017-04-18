@@ -100,8 +100,10 @@ export function parseData(model: Model): DataComponent {
   let head = root;
 
   const parse = ParseNode.make(model);
-  parse.parent = root;
-  head = parse;
+  if (parse) {
+    parse.parent = root;
+    head = parse;
+  }
 
   if (model.transforms.length > 0) {
     const {first, last} = parseTransformArray(model);
