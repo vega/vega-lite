@@ -183,7 +183,6 @@
                     "scale": "concat_0_x",
                     "orient": "bottom",
                     "tickCount": 5,
-                    "title": null,
                     "zindex": 1,
                     "encode": {
                         "labels": {

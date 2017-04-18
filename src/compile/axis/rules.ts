@@ -91,6 +91,11 @@ export function title(specifiedAxis: Axis, fieldDef: FieldDef<string>, config: C
   if (isGridAxis) {
     return undefined;
   }
+
+  if (specifiedAxis.title === '') {
+    return undefined;
+  }
+
   if (specifiedAxis.title !== undefined) {
     return specifiedAxis.title;
   }

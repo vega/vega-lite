@@ -1,7 +1,7 @@
 import {assert} from 'chai';
 
 import {Channel} from '../src/channel';
-import {channelCompatibility, defaultType, normalize, title} from '../src/fielddef';
+import {channelCompatibility, defaultType, FieldDef, normalize, title} from '../src/fielddef';
 import * as log from '../src/log';
 import {TimeUnit} from '../src/timeunit';
 import {QUANTITATIVE, TEMPORAL} from '../src/type';
@@ -121,6 +121,11 @@ describe('fieldDef', () => {
   });
 
   describe('title()', () => {
+    it('should return no title if the title is set to be empty', () => {
+      const fieldDef = {field: '2', type: QUANTITATIVE, title: ''};
+      assert.equal(title(fieldDef,{}), undefined);
+    });
+
     it('should return title if the fieldDef has title', () => {
       const fieldDef = {field: '2', type: QUANTITATIVE, title: 'baz'};
       assert.equal(title(fieldDef,{}), 'baz');

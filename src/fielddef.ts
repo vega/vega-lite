@@ -222,7 +222,11 @@ export function isCount(fieldDef: FieldDef<string>) {
 }
 
 export function title(fieldDef: FieldDef<string>, config: Config) {
-  if (fieldDef.title != null) {
+  if (fieldDef.title === '') {
+    // an empty title should not take up space
+    return undefined;
+  }
+  if (fieldDef.title !== undefined) {
     return fieldDef.title;
   }
   if (isCount(fieldDef)) {

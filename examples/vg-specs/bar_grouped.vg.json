@@ -146,7 +146,6 @@
                             "scale": "x",
                             "orient": "bottom",
                             "tickCount": 5,
-                            "title": "",
                             "zindex": 1,
                             "encode": {
                                 "labels": {

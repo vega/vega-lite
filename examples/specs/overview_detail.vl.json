@@ -9,7 +9,8 @@
         "x": {
           "field": "DATE",
           "type": "temporal",
-          "axis": {"labelAngle": 0, "title": ""}
+          "title": "",
+          "axis": {"labelAngle": 0}
         },
         "y": {"field": "VALUE","type": "quantitative"}
       }
