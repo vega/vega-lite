@@ -124,15 +124,13 @@
                 "data": "row"
             },
             "title": {
+                "text": {
+                    "signal": "parent['site']"
+                },
                 "offset": 10,
                 "orient": "left",
                 "encode": {
                     "update": {
-                        "text": {
-                            "field": {
-                                "parent": "site"
-                            }
-                        },
                         "fontWeight": {
                             "value": "normal"
                         },

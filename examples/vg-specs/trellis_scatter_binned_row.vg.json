@@ -133,15 +133,13 @@
                 "data": "row"
             },
             "title": {
+                "text": {
+                    "signal": "parent['bin_maxbins_6_Acceleration_range']"
+                },
                 "offset": 10,
                 "orient": "left",
                 "encode": {
                     "update": {
-                        "text": {
-                            "field": {
-                                "parent": "bin_maxbins_6_Acceleration_range"
-                            }
-                        },
                         "fontWeight": {
                             "value": "normal"
                         },

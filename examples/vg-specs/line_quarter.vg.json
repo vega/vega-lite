@@ -168,15 +168,13 @@
                 "data": "column"
             },
             "title": {
+                "text": {
+                    "signal": "parent['year_date']"
+                },
                 "offset": 10,
                 "orient": "top",
                 "encode": {
                     "update": {
-                        "text": {
-                            "field": {
-                                "parent": "year_date"
-                            }
-                        },
                         "fontWeight": {
                             "value": "normal"
                         },

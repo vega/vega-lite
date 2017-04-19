@@ -163,15 +163,13 @@
                 "data": "row"
             },
             "title": {
+                "text": {
+                    "signal": "parent['Cylinders']"
+                },
                 "offset": 10,
                 "orient": "left",
                 "encode": {
                     "update": {
-                        "text": {
-                            "field": {
-                                "parent": "Cylinders"
-                            }
-                        },
                         "fontWeight": {
                             "value": "normal"
                         },
@@ -215,15 +213,13 @@
                 "data": "column"
             },
             "title": {
+                "text": {
+                    "signal": "parent['Origin']"
+                },
                 "offset": 10,
                 "orient": "top",
                 "encode": {
                     "update": {
-                        "text": {
-                            "field": {
-                                "parent": "Origin"
-                            }
-                        },
                         "fontWeight": {
                             "value": "normal"
                         },

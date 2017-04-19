@@ -96,11 +96,11 @@ export function getHeaderGroup(model: Model, channel: HeaderChannel, headerType:
     let title = null;
     if (layoutHeader.field && header.labels) {
       title = {
+        text: {signal: `parent['${layoutHeader.field}']`},
         offset: 10,
         orient: channel === 'row' ? 'left' : 'top',
         encode: {
           update: {
-            text: {field: {parent: layoutHeader.field}},
             fontWeight: {value: 'normal'},
             angle: {value: 0},
             fontSize: {value: 10}, // default label font size

@@ -181,15 +181,13 @@
                 "data": "column"
             },
             "title": {
+                "text": {
+                    "signal": "parent['age']"
+                },
                 "offset": 10,
                 "orient": "top",
                 "encode": {
                     "update": {
-                        "text": {
-                            "field": {
-                                "parent": "age"
-                            }
-                        },
                         "fontWeight": {
                             "value": "normal"
                         },

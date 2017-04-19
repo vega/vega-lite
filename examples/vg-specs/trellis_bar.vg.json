@@ -147,15 +147,13 @@
                 "data": "row"
             },
             "title": {
+                "text": {
+                    "signal": "parent['gender']"
+                },
                 "offset": 10,
                 "orient": "left",
                 "encode": {
                     "update": {
-                        "text": {
-                            "field": {
-                                "parent": "gender"
-                            }
-                        },
                         "fontWeight": {
                             "value": "normal"
                         },

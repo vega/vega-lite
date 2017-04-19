@@ -139,15 +139,13 @@
                 "data": "column"
             },
             "title": {
+                "text": {
+                    "signal": "parent['MPAA_Rating']"
+                },
                 "offset": 10,
                 "orient": "top",
                 "encode": {
                     "update": {
-                        "text": {
-                            "field": {
-                                "parent": "MPAA_Rating"
-                            }
-                        },
                         "fontWeight": {
                             "value": "normal"
                         },

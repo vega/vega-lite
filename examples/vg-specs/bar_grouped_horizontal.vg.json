@@ -146,15 +146,13 @@
                 "data": "row"
             },
             "title": {
+                "text": {
+                    "signal": "parent['age']"
+                },
                 "offset": 10,
                 "orient": "left",
                 "encode": {
                     "update": {
-                        "text": {
-                            "field": {
-                                "parent": "age"
-                            }
-                        },
                         "fontWeight": {
                             "value": "normal"
                         },
