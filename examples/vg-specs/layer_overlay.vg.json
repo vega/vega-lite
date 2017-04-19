@@ -28,13 +28,17 @@
             "url": "data/cars.json",
             "format": {
                 "type": "json"
-            },
-            "transform": []
+            }
         },
         {
             "name": "data_0",
             "source": "source_0",
             "transform": [
+                {
+                    "type": "formula",
+                    "expr": "toNumber(datum[\"Horsepower\"])",
+                    "as": "Horsepower"
+                },
                 {
                     "type": "filter",
                     "expr": "datum[\"Horsepower\"] !== null && !isNaN(datum[\"Horsepower\"])"
@@ -65,6 +69,11 @@
             "source": "source_0",
             "transform": [
                 {
+                    "type": "formula",
+                    "expr": "toNumber(datum[\"Horsepower\"])",
+                    "as": "Horsepower"
+                },
+                {
                     "type": "filter",
                     "expr": "datum[\"Horsepower\"] !== null && !isNaN(datum[\"Horsepower\"])"
                 },
@@ -86,6 +95,11 @@
             "name": "data_2",
             "source": "source_0",
             "transform": [
+                {
+                    "type": "formula",
+                    "expr": "toNumber(datum[\"Horsepower\"])",
+                    "as": "Horsepower"
+                },
                 {
                     "type": "filter",
                     "expr": "datum[\"Horsepower\"] !== null && !isNaN(datum[\"Horsepower\"])"
@@ -115,6 +129,11 @@
             "name": "data_3",
             "source": "source_0",
             "transform": [
+                {
+                    "type": "formula",
+                    "expr": "toNumber(datum[\"Horsepower\"])",
+                    "as": "Horsepower"
+                },
                 {
                     "type": "filter",
                     "expr": "datum[\"Horsepower\"] !== null && !isNaN(datum[\"Horsepower\"])"

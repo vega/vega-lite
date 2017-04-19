@@ -74,16 +74,18 @@
             ],
             "format": {
                 "type": "json",
-                "parse": {
-                    "c": "number"
-                }
-            },
-            "transform": []
+                "parse": {}
+            }
         },
         {
             "name": "data_0",
             "source": "source_0",
             "transform": [
+                {
+                    "type": "formula",
+                    "expr": "toNumber(datum[\"c\"])",
+                    "as": "c"
+                },
                 {
                     "type": "filter",
                     "expr": "datum[\"c\"] !== null && !isNaN(datum[\"c\"])"
@@ -94,6 +96,11 @@
             "name": "data_1",
             "source": "source_0",
             "transform": [
+                {
+                    "type": "formula",
+                    "expr": "toNumber(datum[\"c\"])",
+                    "as": "c"
+                },
                 {
                     "type": "filter",
                     "expr": "datum[\"c\"] !== null && !isNaN(datum[\"c\"])"

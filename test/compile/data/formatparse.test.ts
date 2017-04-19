@@ -3,10 +3,11 @@ import {assert} from 'chai';
 
 import {ParseNode} from '../../../src/compile/data/formatparse';
 import {Model} from '../../../src/compile/model';
+import * as log from '../../../src/log';
 import {parseUnitModel} from '../../util';
 
 function parse(model: Model) {
-  return ParseNode.make(model).assemble();
+  return ParseNode.make(model).parse;
 }
 
 describe('compile/data/formatparse', () => {
@@ -87,6 +88,37 @@ describe('compile/data/formatparse', () => {
       assert.deepEqual(parse(model), {
         'a': 'date',
         'b': 'number'
+      });
+    });
+  });
+
+  describe('assembleTransforms', function() {
+    it('should assemble correct parse expressions', function() {
+      const p = new ParseNode({
+        n: 'number',
+        b: 'boolean',
+        s: 'string',
+        d1: 'date',
+        d2: 'date:"%y"'
+      });
+
+      assert.deepEqual(p.assembleTransforms(), [
+        {type: 'formula', expr: 'toNumber(datum["n"])', as: 'n'},
+        {type: 'formula', expr: 'toBoolean(datum["b"])', as: 'b'},
+        {type: 'formula', expr: 'toString(datum["s"])', as: 's'},
+        {type: 'formula', expr: 'toDate(datum["d1"])', as: 'd1'},
+        {type: 'formula', expr: 'timeParse(datum["d2"],"%y")', as: 'd2'}
+      ]);
+    });
+
+    it('should show warning for unrecognized types', function() {
+      log.runLocalLogger((localLogger) => {
+        const p = new ParseNode({
+          x: 'foo',
+        });
+
+        assert.deepEqual(p.assembleTransforms(), []);
+        assert.equal(localLogger.warns[0], log.message.unrecognizedParse('foo'));
       });
     });
   });

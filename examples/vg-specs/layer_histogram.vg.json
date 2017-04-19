@@ -28,16 +28,18 @@
             "url": "data/flights-2k.json",
             "format": {
                 "type": "json",
-                "parse": {
-                    "distance": "number"
-                }
-            },
-            "transform": []
+                "parse": {}
+            }
         },
         {
             "name": "data_0",
             "source": "source_0",
             "transform": [
+                {
+                    "type": "formula",
+                    "expr": "toNumber(datum[\"distance\"])",
+                    "as": "distance"
+                },
                 {
                     "type": "filter",
                     "expr": "datum[\"distance\"] !== null && !isNaN(datum[\"distance\"])"
@@ -79,6 +81,11 @@
             "name": "data_1",
             "source": "source_0",
             "transform": [
+                {
+                    "type": "formula",
+                    "expr": "toNumber(datum[\"distance\"])",
+                    "as": "distance"
+                },
                 {
                     "type": "filter",
                     "expr": "datum.delay < 5"
