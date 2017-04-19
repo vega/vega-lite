@@ -6,7 +6,7 @@ then
   exit 1
 elif grep 'Generic.*Spec<' ./build/vega-lite-schema.json
 then
-  echo "vega-lite-schema.json is different from the committed one."
+  echo "Generic*Spec in the schema have not been replaced."
   exit 1
 else
   exit 0
