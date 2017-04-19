@@ -17,21 +17,23 @@ export function compile(inputSpec: TopLevelExtendedSpec, logger?: log.LoggerInte
   }
 
   try {
-    // 1. Convert input spec into a normal form
-    // (Decompose all extended unit specs into composition of unit spec.)
-    const spec = normalize(inputSpec);
-
-    // 2. Instantiate the model with default config
+    // 1. initialize config
     const config = initConfig(inputSpec.config);
+
+    // 2. Convert input spec into a normal form
+    // (Decompose all extended unit specs into composition of unit spec.)
+    const spec = normalize(inputSpec, config);
+
+    // 3. Instantiate the model with default config
     const model = buildModel(spec, null, '', null, config);
 
-    // 3. Parse each part of the model to produce components that will be assembled later
+    // 4. Parse each part of the model to produce components that will be assembled later
     // We traverse the whole tree to parse once for each type of components
     // (e.g., data, layout, mark, scale).
     // Please see inside model.parse() for order for compilation.
     model.parse();
 
-    // 4. Assemble a Vega Spec from the parsed components in 3.
+    // 5. Assemble a Vega Spec from the parsed components in 3.
     return assemble(model, getTopLevelProperties(inputSpec, config));
   } finally {
     // Reset the singleton logger if a logger is provided

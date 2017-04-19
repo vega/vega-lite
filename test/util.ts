@@ -5,12 +5,14 @@ import {LayerModel} from '../src/compile/layer';
 import {Model} from '../src/compile/model';
 import {RepeatModel} from '../src/compile/repeat';
 import {UnitModel} from '../src/compile/unit';
+import {defaultConfig} from '../src/config';
 import {initConfig} from '../src/config';
 import {ConcatSpec, FacetSpec, LayerSpec, normalize, RepeatSpec, TopLevel, TopLevelExtendedSpec, UnitSpec} from '../src/spec';
 
 export function parseModel(inputSpec: TopLevelExtendedSpec): Model {
-  const spec = normalize(inputSpec);
-  return buildModel(spec, null, '', null, initConfig(inputSpec.config));
+  const config = initConfig(inputSpec.config);
+  const spec = normalize(inputSpec, config);
+  return buildModel(spec, null, '', null, config);
 }
 
 export function parseUnitModel(spec: TopLevel<UnitSpec>) {

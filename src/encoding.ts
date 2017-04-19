@@ -1,4 +1,7 @@
+// utility for encoding mapping
+import {AggregateOp} from './aggregate';
 import {Channel, CHANNELS, supportMark} from './channel';
+import {CompositeAggregate} from './compositemark';
 import {Facet} from './facet';
 import {
   ChannelDef,
