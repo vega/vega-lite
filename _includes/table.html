@@ -14,6 +14,7 @@
       type, we will look them up to see if there's a link assigned in link.yml
     {% endcomment %}{%
     assign schema = site.data.vega-lite-schema.definitions[include.source].properties %}{%
+    assign required = site.data.vega-lite-schema.definitions[include.source].required %}{%
     assign props = include.props | split: ","  %}{%
     for prop in props %}{%
       assign source = schema[prop] %}{%
@@ -22,7 +23,7 @@
       endcapture %}{%
       assign src=schema[prop] %}{%
       capture description %}{%
-        include description.html source=src %}{%
+        include description.html source=src param=prop required=required %}{%
       endcapture %}{%
       capture propWithLink %}{%
         include checkLink.html check="prop" channel=include.source param=prop %}{%
