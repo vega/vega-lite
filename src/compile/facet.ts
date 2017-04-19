@@ -154,7 +154,6 @@ export class FacetModel extends ModelWithField {
     }];
   }
 
-  // TODO: rename to parseAxisAndHeaders
   public parseAxisAndHeader() {
     this.child.parseAxisAndHeader();
 
