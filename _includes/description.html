@@ -3,7 +3,7 @@
     for normal case description is for all specified types
   {% endcomment %}
   {% if include.required contains include.param %}
-    {% assign desWithPrefix =  "__Required:__ " | append: include.source.description %}
+    {% assign desWithPrefix =  "***Required.*** " | append: include.source.description %}
     {{ desWithPrefix | markdownify}}
   {% else %}
     {{include.source.description | markdownify}}
