@@ -35,6 +35,8 @@ export interface ConditionalValueDef<T> extends ValueDef<T> {
 export interface FieldDef {
   /**
    * __Required.__ Name of the field from which to pull a data value.
+   *
+   * __Note:__ `field` is not required if `aggregate` is `count`.
    */
   field?: string;
 
