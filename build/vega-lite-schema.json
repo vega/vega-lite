@@ -1991,7 +1991,7 @@
                     "description": "Flag for binning a `quantitative` field, or a bin property object\nfor binning parameters."
                 },
                 "field": {
-                    "description": "__Required.__ Name of the field from which to pull a data value.",
+                    "description": "__Required.__ Name of the field from which to pull a data value.\n\n__Note:__ `field` is not required if `aggregate` is `count`.",
                     "type": "string"
                 },
                 "timeUnit": {
@@ -2479,7 +2479,7 @@
                     "$ref": "#/definitions/Condition<number>"
                 },
                 "field": {
-                    "description": "__Required.__ Name of the field from which to pull a data value.",
+                    "description": "__Required.__ Name of the field from which to pull a data value.\n\n__Note:__ `field` is not required if `aggregate` is `count`.",
                     "type": "string"
                 },
                 "legend": {
@@ -2547,7 +2547,7 @@
                     "$ref": "#/definitions/Condition<string>"
                 },
                 "field": {
-                    "description": "__Required.__ Name of the field from which to pull a data value.",
+                    "description": "__Required.__ Name of the field from which to pull a data value.\n\n__Note:__ `field` is not required if `aggregate` is `count`.",
                     "type": "string"
                 },
                 "legend": {
@@ -2870,7 +2870,7 @@
                     "description": "Flag for binning a `quantitative` field, or a bin property object\nfor binning parameters."
                 },
                 "field": {
-                    "description": "__Required.__ Name of the field from which to pull a data value.",
+                    "description": "__Required.__ Name of the field from which to pull a data value.\n\n__Note:__ `field` is not required if `aggregate` is `count`.",
                     "type": "string"
                 },
                 "sort": {
@@ -2941,7 +2941,7 @@
                     "description": "Flag for binning a `quantitative` field, or a bin property object\nfor binning parameters."
                 },
                 "field": {
-                    "description": "__Required.__ Name of the field from which to pull a data value.",
+                    "description": "__Required.__ Name of the field from which to pull a data value.\n\n__Note:__ `field` is not required if `aggregate` is `count`.",
                     "type": "string"
                 },
                 "scale": {
@@ -3821,7 +3821,7 @@
                     "$ref": "#/definitions/Condition<string | number>"
                 },
                 "field": {
-                    "description": "__Required.__ Name of the field from which to pull a data value.",
+                    "description": "__Required.__ Name of the field from which to pull a data value.\n\n__Note:__ `field` is not required if `aggregate` is `count`.",
                     "type": "string"
                 },
                 "format": {
