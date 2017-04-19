@@ -254,12 +254,8 @@ export class UnitModel extends ModelWithField {
     this.component.mark = parseMark(this);
   }
 
-  public parseAxis() {
+  public parseAxisAndHeader() {
     this.component.axes = parseAxisComponent(this, [X, Y]);
-  }
-
-  public parseAxisGroup(): void {
-    return null;
   }
 
   public parseLegend() {

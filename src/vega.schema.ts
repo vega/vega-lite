@@ -96,8 +96,15 @@ export type VgLayoutAlign = 'none' | 'each' | 'all';
 export type VgLayout = {
   padding: number | {
     row?: number,
-    column?: number,
-    header?: number
+    column?: number
+  },
+  offset: number | {
+    rowHeader: number,
+    rowFooter: number,
+    rowTitle: number,
+    columnHeader: number,
+    columnFooter: number,
+    columnTitle: number
   },
   bounds: 'full' | 'flush',
   columns: number | {signal: string},

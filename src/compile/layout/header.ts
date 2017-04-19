@@ -1,65 +1,138 @@
-import {Orient, VgEncodeEntry, VgMarkGroup, VgValueRef} from '../../vega.schema';
-import {FacetModel} from '../facet';
-import {Model} from '../model';
 /**
  * Utility for generating row / column headers
  */
+import {AxisOrient} from '../../axis';
+import {contains} from '../../util';
+import {Orient, VgAxis, VgEncodeEntry, VgMarkGroup, VgValueRef} from '../../vega.schema';
+import {FacetModel} from '../facet';
+import {Model} from '../model';
 
 
+export type HeaderChannel = 'row' | 'column';
+export const HEADER_CHANNELS: HeaderChannel[] = ['row', 'column'];
 
-export interface TextHeaderParams {
-  channel: 'row' | 'column';
+export type HeaderType = 'header' | 'footer';
+export const HEADER_TYPES: HeaderType[] = ['header', 'footer'];
 
-  name: string;
+/**
+ * A component that represents all header, footers and title of a Vega group with layout directive.
+ */
+export interface LayoutHeaderComponent {
+  title?: string;
 
-  from?: {data: string};
+  /**
+   * Field that is used to drive a header group (for facet only).
+   */
+  field?: string;
 
-  groupEncode?: VgEncodeEntry;
+  // TODO: repeat and concat can have multiple header / footer.
+  // Need to redesign this part a bit.
 
-  offset?: number;
+  /**
+   * An array of header components for headers.
+   * For facet, there should be only one header component, which is data-driven.
+   * For repeat and concat, there can be multiple header components that explicitly list different axes.
+   */
+  header?: HeaderComponent[];
 
-  textOrient?: Orient;
-
-  textRole: string;
-
-  textRef: VgValueRef;
-
-  textEncodeMixins?: VgEncodeEntry;
-
-  positionRef: VgValueRef;
+  /**
+   * An array of header components for footers.
+   * For facet, there should be only one header component, which is data-driven.
+   * For repeat and concat, there can be multiple header components that explicitly list different axes.
+   */
+  footer?: HeaderComponent[];
 }
 
-export function getTextHeader(params: TextHeaderParams): VgMarkGroup {
-  const {channel, name, from, groupEncode, offset, textOrient, textRole, textEncodeMixins, textRef, positionRef} = params;
+/**
+ * A component that represents one group of row/column-header/footer.
+ */
+export interface HeaderComponent {
 
+  labels: boolean;
+
+  sizeSignal: {signal: string};
+
+  axes: VgAxis[];
+}
+
+export function getHeaderType(orient: AxisOrient) {
+  if (orient === 'top' || orient === 'left') {
+    return 'header';
+  }
+  return 'footer';
+}
+
+export function getTitleGroup(model: Model, channel: HeaderChannel) {
+  const sizeChannel = channel === 'row' ? 'height' : 'width';
+  const title = model.component.layoutHeaders[channel].title;
   const positionChannel = channel === 'row' ? 'y' : 'x';
-  const offsetChannel = channel === 'row' ? 'x' : 'y';
-
-  // TODO: row could be left too for footer
   const align = channel === 'row' ? 'right' : 'center';
+  const textOrient = channel === 'row' ? 'vertical' : undefined;
 
   return {
-    name,
-    role: `${channel}-header`,
+    name:  model.getName(`${channel}-title`),
+    role: `${channel}-title`,
     type: 'group',
-    ...(from ? {from} : {}),
-    ...(groupEncode ? {encode: {update: groupEncode}} : {}),
     marks: [{
       type: 'text',
-      role: textRole,
+      role: `${channel}-title-text`,
       encode: {
         update: {
-          [positionChannel]: positionRef,
-          ...(offset ? {[offsetChannel]: {value: offset}} : {}),
-          ...(textOrient === 'vertical' ? {angle: {value: 270}} : {}),
-          text: textRef,
+          // TODO: add title align
+          [positionChannel]: {signal: `0.5 * ${sizeChannel}`},
           align: {value: align},
+          text: {value: title},
           fill: {value: 'black'},
-          ...textEncodeMixins
+          fontWeight: {value: 'bold'},
+          ...(textOrient === 'vertical' ? {angle: {value: 270}} : {}),
         }
       }
     }]
   };
 }
 
+export function getHeaderGroup(model: Model, channel: HeaderChannel, headerType: HeaderType, layoutHeader: LayoutHeaderComponent, header: HeaderComponent) {
+  if (header) {
+    let title = null;
+    if (layoutHeader.field && header.labels) {
+      title = {
+        text: {signal: `parent['${layoutHeader.field}']`},
+        offset: 10,
+        orient: channel === 'row' ? 'left' : 'top',
+        encode: {
+          update: {
+            fontWeight: {value: 'normal'},
+            angle: {value: 0},
+            fontSize: {value: 10}, // default label font size
+            ... (channel === 'row' ? {
+              align: {value: 'right'},
+              baseline: {value: 'middle'}
+            } : {})
+          }
+        }
+      };
+    }
 
+    const axes = header.axes;
+
+    const hasAxes = axes && axes.length > 0;
+    if (title || hasAxes) {
+      const sizeChannel = channel === 'row' ? 'height' : 'width';
+
+      return {
+        name: model.getName(`${channel}-${headerType}`),
+        type: 'group',
+        role: `${channel}-${headerType}`,
+        ...(layoutHeader.field ? {from: {data: model.getName(channel)}} : {}),
+        ...(title ? {title} : {}),
+        encode: {
+          update: {
+            [sizeChannel]: header.sizeSignal
+          }
+        },
+        ...(hasAxes ? {axes} : {})
+      };
+    }
+  }
+  return null;
+}

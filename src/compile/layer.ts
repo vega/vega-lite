@@ -117,28 +117,30 @@ export class LayerModel extends Model {
     }
   }
 
-  public parseAxis() {
+  public parseAxisAndHeader() {
     const axisComponent = this.component.axes = {};
 
     for (const child of this.children) {
-      child.parseAxis();
+      child.parseAxisAndHeader();
+      keys(child.component.axes).forEach(channel => {
+        // TODO: read these from the resolve syntax
+        const axisResolve = 'shared';
+        const scaleResolve = 'shared';
 
-      // TODO: correctly implement independent axes
-      if (true) { // if shared/union scale
-        keys(child.component.axes).forEach(channel => {
-          // TODO: support multiple axes for shared scale
+        if (scaleResolve === 'shared' && axisResolve === 'shared') {
+          // If shared/union axis (only possible if the scale is shared in the first place)
 
-          // just use the first axis definition for each channel
+          // Just use the first axes definition for each channel
+          // TODO: what if the axes from different children are not compatible
           if (!axisComponent[channel]) {
             axisComponent[channel] = child.component.axes[channel];
+            delete child.component.axes[channel];
           }
-        });
-      }
+        } else {
+          // Otherwise do nothing for independent axes
+        }
+      });
     }
-  }
-
-  public parseAxisGroup(): void {
-    return null;
   }
 
   public parseLegend() {

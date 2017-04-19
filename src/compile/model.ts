@@ -11,9 +11,11 @@ import {BaseSpec} from '../spec';
 import {StackProperties} from '../stack';
 import {Transform} from '../transform';
 import {Dict, extend, vals} from '../util';
-import {VgAxis, VgData, VgEncodeEntry, VgLayout, VgLegend, VgScale, VgSignal, VgSignalRef, VgValueRef} from '../vega.schema';
+import {VgAxis, VgData, VgEncodeEntry, VgLayout, VgLegend, VgMarkGroup, VgScale, VgSignal, VgSignalRef, VgValueRef} from '../vega.schema';
 
+import {AxesComponent, AxisComponent} from './axis/index';
 import {DataComponent} from './data/index';
+import {getHeaderGroup, getTitleGroup, HEADER_CHANNELS, HEADER_TYPES, LayoutHeaderComponent} from './layout/header';
 import {RepeaterValue} from './repeat';
 import {assembleScale} from './scale/assemble';
 import {SelectionComponent} from './selection/selection';
@@ -30,13 +32,15 @@ export interface Component {
   selection: Dict<SelectionComponent>;
 
   /** Dictionary mapping channel to VgAxis definition */
-  axes: Dict<VgAxis[]>;
+  axes: AxesComponent;
 
   /** Dictionary mapping channel to VgLegend definition */
   legends: Dict<VgLegend>;
 
-  /** Dictionary mapping channel to axis mark group for facet and concat */
-  axisGroups: Dict<VgEncodeEntry>;
+  layoutHeaders: {
+    row?: LayoutHeaderComponent,
+    column?: LayoutHeaderComponent
+  };
 
   mark: VgEncodeEntry[];
 }
@@ -115,8 +119,8 @@ export abstract class Model {
         sources: parent ? parent.component.data.sources : {},
         outputNodes: parent ? parent.component.data.outputNodes : {}
       },
-      mark: null, scales: null, axes: null,
-      axisGroups: null, legends: null, selection: null
+      mark: null, scales: null, axes: {x: null, y: null},
+      layoutHeaders:{row: {}, column: {}}, legends: null, selection: null
     };
   }
 
@@ -124,9 +128,8 @@ export abstract class Model {
     this.parseData();
     this.parseScale(); // depends on data name
     this.parseSelection();
-    this.parseAxis(); // depends on scale name
+    this.parseAxisAndHeader(); // depends on scale name
     this.parseLegend(); // depends on scale name
-    this.parseAxisGroup(); // depends on child axis
     this.parseMark(); // depends on data name and scale name, axisGroup, and children's scale, axis, legend and mark.
   }
 
@@ -139,12 +142,9 @@ export abstract class Model {
 
   public abstract parseMark(): void;
 
-  public abstract parseAxis(): void;
+  public abstract parseAxisAndHeader(): void;
 
   public abstract parseLegend(): void;
-
-  // TODO: revise if these two methods make sense for shared scale concat
-  public abstract parseAxisGroup(): void;
 
   public abstract assembleSignals(): any[];
 
@@ -159,10 +159,41 @@ export abstract class Model {
     return assembleScale(this);
   }
 
-  public abstract assembleMarks(): any[]; // TODO: VgMarkGroup[]
+  public assembleHeaderMarks(): VgMarkGroup[] {
+    const {layoutHeaders} = this.component;
+    const headerMarks = [];
+
+    for (const channel of HEADER_CHANNELS) {
+      if (layoutHeaders[channel].title) {
+        headerMarks.push(getTitleGroup(this, channel));
+      }
+    }
+
+    for (const channel of HEADER_CHANNELS) {
+      const layoutHeader = layoutHeaders[channel];
+      for (const headerType of HEADER_TYPES) {
+        if (layoutHeader[headerType]) {
+          for (const header of layoutHeader[headerType]) {
+            const headerGroup = getHeaderGroup(this, channel, headerType, layoutHeader, header);
+            if (headerGroup)  {
+              headerMarks.push(headerGroup);
+            }
+          }
+        }
+      }
+    }
+    return headerMarks;
+  }
+
+  public abstract assembleMarks(): VgMarkGroup[]; // TODO: VgMarkGroup[]
 
   public assembleAxes(): VgAxis[] {
-    return [].concat.apply([], vals(this.component.axes));
+    const {x, y} = this.component.axes;
+
+    return [
+      ...(x ? x.axes.concat(x.gridAxes) : []),
+      ...(y ? y.axes.concat(y.gridAxes) : []),
+    ];
   }
 
   public assembleLegends(): VgLegend[] {
@@ -182,7 +213,10 @@ export abstract class Model {
       group.layout = layout;
     }
 
-    group.marks = this.assembleMarks();
+    group.marks = [].concat(
+      this.assembleHeaderMarks(),
+      this.assembleMarks()
+    );
     const scales = this.assembleScales();
     if (scales.length > 0) {
       group.scales = scales;
@@ -231,7 +265,7 @@ export abstract class Model {
     return this.lookupDataSource(fullName);
   }
 
-  public getSizeSignalRef(sizeType: 'width' | 'height'): VgValueRef {
+  public getSizeSignalRef(sizeType: 'width' | 'height'): {signal: string} {
     // TODO: this could change in the future once we have sizeSignal merging
     return {
       signal: this.getName(sizeType)

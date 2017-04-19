@@ -23,7 +23,8 @@ import {gridShow} from './axis/rules';
 import {buildModel} from './common';
 import {assembleData, assembleFacetData, FACET_SCALE_PREFIX} from './data/assemble';
 import {parseData} from './data/parse';
-import {getTextHeader} from './layout/header';
+import {getHeaderType, HeaderChannel, HeaderComponent, LayoutHeaderComponent} from './layout/header';
+import {labels} from './legend/encode';
 import {Model, ModelWithField} from './model';
 import {RepeaterValue, replaceRepeaterInFacet} from './repeat';
 import parseScaleComponent from './scale/parse';
@@ -153,23 +154,69 @@ export class FacetModel extends ModelWithField {
     }];
   }
 
-  public parseAxis() {
-    this.child.parseAxis();
-    // FIXME: Correct write parseAxis logic
-    this.component.axes = {};
+  public parseAxisAndHeader() {
+    this.child.parseAxisAndHeader();
+
+    this.parseHeader('column');
+    this.parseHeader('row');
+
+    this.mergeChildAxis('x');
+    this.mergeChildAxis('y');
   }
 
-  public parseAxisGroup() {
-    // TODO: with nesting, we might need to consider calling child
-    // this.child.parseAxisGroup();
+  private parseHeader(channel: HeaderChannel) {
 
-    const xAxisGroup = parseAxisGroups(this, X);
-    const yAxisGroup = parseAxisGroups(this, Y);
+    if (this.channelHasField(channel)) {
+      let title = fieldDefTitle(this.facet[channel], this.config);
 
-    this.component.axisGroups = extend(
-      xAxisGroup ? {x: xAxisGroup} : {},
-      yAxisGroup ? {y: yAxisGroup} : {}
-    );
+      if (this.child.component.layoutHeaders[channel].title) {
+        // merge title with child to produce "Title / Subtitle / Sub-subtitle"
+        title += ' / ' + this.child.component.layoutHeaders[channel].title;
+        this.child.component.layoutHeaders[channel].title = null;
+      }
+
+      this.component.layoutHeaders[channel] = {
+        title,
+        field: this.field(channel),
+        // TODO: support adding label to footer as well
+        header: [this.makeHeaderComponent(channel, true)]
+      };
+    }
+  }
+
+  private makeHeaderComponent(channel: HeaderChannel, labels: boolean): HeaderComponent {
+    const sizeChannel = channel === 'row' ? 'height' : 'width';
+
+    return {
+      labels,
+      sizeSignal: this.child.getSizeSignalRef(sizeChannel),
+      axes: []
+    };
+  }
+
+  private mergeChildAxis(channel: 'x' | 'y') {
+    const {child} = this;
+    if (child.component.axes[channel]) {
+      // TODO: read these from the resolve syntax
+      const scaleResolve = 'shared';
+      const axisResolve = 'shared';
+
+      if (scaleResolve === 'shared' && axisResolve === 'shared') {
+        // For shared axis, move the axes to facet's header or footer
+        const headerChannel = channel === 'x' ? 'column' : 'row';
+
+        const layoutHeader = this.component.layoutHeaders[headerChannel];
+        for (const axis of child.component.axes[channel].axes) {
+          const headerType = getHeaderType(axis.orient);
+          layoutHeader[headerType] = layoutHeader[headerType] ||
+            [this.makeHeaderComponent(headerChannel, false)];
+          layoutHeader[headerType][0].axes.push(axis);
+        }
+        child.component.axes[channel].axes = [];
+      } else {
+        // Otherwise do nothing for independent axes
+      }
+    }
   }
 
   public parseLegend() {
@@ -207,23 +254,24 @@ export class FacetModel extends ModelWithField {
   }
 
   public assembleLayout(): VgLayout {
+    const columns = this.channelHasField('column') ? {
+      signal: this.columnDistinctSignal()
+    } : 1;
+
+    // TODO: determine default align based on shared / independent scales
+
     return {
-      padding: {row: 10, column: 10, header: 10},
-      columns: 1,
+      padding: {row: 10, column: 10},
+
+      // TODO: support offset for rowHeader/rowFooter/rowTitle/columnHeader/columnFooter/columnTitle
+      offset: 10,
+      columns,
       bounds: 'full'
     };
   }
 
   public assembleLayoutSignals(): VgSignal[] {
-    // FIXME correct this for column
     return [];
-  }
-
-  private assembleLabelGroups() {
-    return [].concat(
-      (this.channelHasField('column') ? [getLabelGroup(this, 'column')] : []),
-      (this.channelHasField('row') ? [getLabelGroup(this, 'row')] : [])
-    );
   }
 
   private columnDistinctSignal() {
@@ -234,43 +282,25 @@ export class FacetModel extends ModelWithField {
   }
 
   public assembleMarks(): VgEncodeEntry[] {
-    const data = assembleFacetData(this.component.data.facetRoot);
+    const facetRoot = this.component.data.facetRoot;
+    const data = assembleFacetData(facetRoot);
 
     const mark = this.component.mark[0];
 
     // correct the name of the faceted data source
-    mark.from.facet.name = this.component.data.facetRoot.name;
-    mark.from.facet.data = this.component.data.facetRoot.data;
+    mark.from.facet = {
+      ...mark.from.facet,
+      name: facetRoot.name,
+      data: facetRoot.data
+    };
 
-    const marks = [].concat(
-      // axisGroup is a mapping to VgMarkGroup
-      vals(this.component.axisGroups),
-      this.assembleLabelGroups(),
-      extend(mark, data.length > 0 ? {data: data} : {}, this.child.assembleGroup())
-    ).map(this.correctDataNames);
+    const marks = [{
+      ...(data.length > 0 ? {data: data} : {}),
+      ...mark,
+      ...this.child.assembleGroup()
+    }];
 
-    const columns = this.channelHasField('column') ? {
-      signal: this.columnDistinctSignal()
-    } : 1;
-
-    return [].concat(
-        [{
-        type: 'group',
-        layout: {
-          padding: {
-            // TODO: allow customizing padding
-            row: 10,
-            column: 10,
-            header: 10
-          },
-          columns,
-          bounds: 'full' // TODO:
-        },
-        marks
-      }],
-      this.channelHasField('column') ? [getTitleGroup(this, 'column')] : [],
-      this.channelHasField('row') ? [getTitleGroup(this, 'row')] : [],
-    );
+    return marks.map(this.correctDataNames);
   }
 
   public channels() {
@@ -291,6 +321,7 @@ function childSizeEncodeEntryMixins(model: FacetModel, sizeType: 'width' | 'heig
   return {[sizeType]: model.child.getSizeSignalRef(sizeType)};
 }
 
+// FIXME(https://github.com/vega/vega-lite/issues/2041): revise this.
 function getFacetGroupProperties(model: FacetModel) {
   const child = model.child;
   const mergedCellConfig = extend({}, child.config.cell, child.config.facet.cell);
@@ -300,110 +331,4 @@ function getFacetGroupProperties(model: FacetModel) {
     ...childSizeEncodeEntryMixins(model, 'height'),
     ...(hasSubPlotWithXy(model) ? child.assembleParentGroupProperties(mergedCellConfig) : {})
   };
-}
-
-// TODO: move the rest of the file src/compile/facet/*.ts
-
-function parseAxisGroups(model: FacetModel, channel: 'x' | 'y') {
-  // TODO: add a case where inner spec is not a unit (facet/layer/concat)
-  let axisGroup: any = null;
-
-  const child = model.child;
-  // FIXME support non unit child
-  if (child instanceof UnitModel && child.channelHasField(channel)) {
-    if (child.component.axes[channel]) {
-      if (true) { // the channel has shared axes
-
-        // add a group for the shared axes
-        axisGroup = getSharedAxisGroup(model, channel);
-
-        if (child.component.axes[channel] && gridShow(child, channel)) { // show inner grid
-          // add inner axis (aka axis that shows only grid to )
-          child.component.axes[channel] = [parseGridAxis(channel, child)];
-        } else {
-          // Delete existing child axes
-          delete child.component.axes[channel];
-        }
-      } else {
-        // TODO: implement independent axes support
-      }
-    }
-  }
-  return axisGroup;
-}
-
-
-export function getSharedAxisGroup(model: FacetModel, channel: 'x' | 'y'): VgEncodeEntry {
-  const isX = channel === 'x' ;
-  const facetChannel = isX ? 'column' : 'row';
-  const hasFacet = !!model.facet[facetChannel];
-
-  // FIXME: we cannot cast like this
-  const axis = parseMainAxis(channel, model.child as UnitModel);
-
-  const role = facetChannel + '-' + (contains(['left', 'top'], axis.orient) ? 'header': 'footer');
-
-  const axesGroup: VgEncodeEntry = {
-    name: model.getName(channel + '-axes'),
-    type: 'group',
-    role
-  };
-
-  if (hasFacet) {
-    // Need to drive this with special data source that has one item for each column/row value.
-
-    // TODO: We might only need to drive this with special data source if there are both row and column
-    // However, it might be slightly difficult as we have to merge this with the main group.
-    axesGroup.from = {data: channel === 'x' ? model.getName('column') : model.getName('row')};
-  }
-
-  // TODO: see if we need to setup axesGroup.encode at all
-
-  axesGroup.axes = [axis];
-  return axesGroup;
-}
-
-export function getLabelGroup(model: FacetModel, channel: 'row' | 'column') {
-  const sizeChannel = channel === 'row' ? 'height' : 'width';
-  return getTextHeader({
-    channel,
-    name: model.getName(`${channel}-labels`),
-    from: {data: model.getName(channel)},
-    groupEncode: childSizeEncodeEntryMixins(model, sizeChannel),
-    // TODO: support customizing + remove if Vega will provide padding for this one.
-    offset: -10,
-    // TODO: support customizing row title orientation (horizontal / vertical (using textOrient)
-    textRole: `${channel}-labels`,
-
-    // TODO: customize axis values
-    textRef: {field: {parent: model.field(channel)}},
-
-    // TODO: customize alignment
-    positionRef: {field: {group: sizeChannel}, mult: 0.5}
-  });
-}
-
-export function getTitleGroup(model: FacetModel, channel: 'row' | 'column') {
-  const sizeChannel = channel === 'row' ? 'height' : 'width';
-  const fieldDef = model.facet[channel];
-  return getTextHeader({
-    channel,
-    name: model.getName(`${channel}-title`),
-
-    // TODO: support customization
-    textEncodeMixins: {
-      fontWeight: {value: 'bold'}
-    },
-
-    // TODO: support customizing row title orientation (horizontal / vertical)
-    textOrient: (channel === 'row' ? 'vertical' : undefined),
-    textRole: `${channel}-title`,
-
-    // TODO: customize title
-    textRef: {value: fieldDefTitle(fieldDef, model.config)},
-
-    // TODO: customize alignment
-    // FIXME: this is not working.  Need to wait for Jeff's layout update that include title role
-    positionRef: {signal: `0.5 * ${sizeChannel}`}
-  });
 }
