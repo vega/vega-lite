@@ -4726,6 +4726,10 @@ vega-util@1, vega-util@^1.1, vega-util@~1.1.4:
   version "1.1.4"
   resolved "https://registry.yarnpkg.com/vega-util/-/vega-util-1.1.4.tgz#82e7b983b376db0c80c69205b5b3fdf08f44a8c8"
 
+vega-util@^1.2:
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/vega-util/-/vega-util-1.2.0.tgz#797a3bb460754edacc81a4d7cdf5657d9437b6b8"
+
 vega-view@>=1.0.0-beta:
   version "1.0.0-beta.29"
   resolved "https://registry.yarnpkg.com/vega-view/-/vega-view-1.0.0-beta.29.tgz#1fbb711da00a165c65fb0a43b7e997f5c65a7da1"
@@ -4756,7 +4760,30 @@ vega-wordcloud@>=1.0.0-beta:
   optionalDependencies:
     canvas "^1.6.0"
 
-vega@3.0.0-beta.28, vega@^3.0.0-beta.28:
+vega@3.0.0-beta.29:
+  version "3.0.0-beta.29"
+  resolved "https://registry.yarnpkg.com/vega/-/vega-3.0.0-beta.29.tgz#55d395bde6ed91877f9e223250f6e389e7fdb377"
+  dependencies:
+    vega-crossfilter ">=1.0.0-beta"
+    vega-dataflow ">=2.0.0-beta"
+    vega-encode ">=1.0.0-beta"
+    vega-expression "2"
+    vega-force ">=1.0.0-beta"
+    vega-geo ">=1.0.0-beta"
+    vega-hierarchy ">=1.0.0-beta"
+    vega-loader ">=2.0.0-beta.5"
+    vega-parser ">=1.0.0-beta"
+    vega-runtime ">=1.0.0-beta"
+    vega-scale ">=2.0.0-beta"
+    vega-scenegraph ">=2.0.0-beta.11"
+    vega-statistics "1"
+    vega-util "^1.2"
+    vega-view ">=1.0.0-beta"
+    vega-voronoi ">=1.0.0-beta"
+    vega-wordcloud ">=1.0.0-beta"
+    yargs "4"
+
+vega@^3.0.0-beta.28:
   version "3.0.0-beta.28"
   resolved "https://registry.yarnpkg.com/vega/-/vega-3.0.0-beta.28.tgz#742a9612612fbaa2541f04be489221be28fdd608"
   dependencies:
