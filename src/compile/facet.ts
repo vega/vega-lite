@@ -244,9 +244,8 @@ export class FacetModel extends ModelWithField {
     return null;
   }
 
-  public assembleSignals(): VgSignal[] {
-    // FIXME(https://github.com/vega/vega-lite/issues/1193): this can be incorrect if we have independent scales.
-    return this.child.assembleLayoutSignals();
+  public assembleSelectionSignals(): VgSignal[] {
+    return this.child.assembleSelectionSignals();
   }
 
   public assembleSelectionData(data: VgData[]): VgData[] {
@@ -271,7 +270,8 @@ export class FacetModel extends ModelWithField {
   }
 
   public assembleLayoutSignals(): VgSignal[] {
-    return [];
+    // FIXME(https://github.com/vega/vega-lite/issues/1193): this can be incorrect if we have independent scales.
+    return this.child.assembleLayoutSignals();
   }
 
   private columnDistinctSignal() {

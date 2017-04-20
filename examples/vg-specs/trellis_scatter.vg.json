@@ -50,6 +50,14 @@
     ],
     "signals": [
         {
+            "name": "child_width",
+            "update": "200"
+        },
+        {
+            "name": "child_height",
+            "update": "200"
+        },
+        {
             "name": "unit",
             "value": {},
             "on": [
@@ -58,14 +66,6 @@
                     "update": "group()._id ? group() : unit"
                 }
             ]
-        },
-        {
-            "name": "child_width",
-            "update": "200"
-        },
-        {
-            "name": "child_height",
-            "update": "200"
         }
     ],
     "layout": {

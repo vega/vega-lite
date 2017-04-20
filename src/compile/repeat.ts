@@ -208,13 +208,16 @@ export class RepeatModel extends Model {
     return null;
   }
 
-  public assembleSignals(): VgSignal[] {
+  public assembleSelectionSignals(): VgSignal[] {
     return this.children.reduce((signals, child) => {
-      return [].concat(
-        child.assembleLayoutSignals(),
-        child.assembleSignals(),
-        signals
-      );
+      return signals.concat(child.assembleSelectionSignals());
+    }, []);
+  }
+
+
+  public assembleLayoutSignals(): VgSignal[] {
+    return this.children.reduce((signals, child) => {
+      return signals.concat(child.assembleLayoutSignals());
     }, []);
   }
 
@@ -238,10 +241,6 @@ export class RepeatModel extends Model {
       bounds: 'full',
       align: 'all'
     };
-  }
-
-  public assembleLayoutSignals(): VgSignal[] {
-    return [];
   }
 
   public assembleMarks(): any[] {

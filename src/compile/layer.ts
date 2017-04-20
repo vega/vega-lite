@@ -166,14 +166,17 @@ export class LayerModel extends Model {
   }
 
   // TODO: Support same named selections across children.
-  public assembleSignals(): VgSignal[] {
+  public assembleSelectionSignals(): VgSignal[] {
     return this.children.reduce((signals, child) => {
-      return [].concat(
-        child.assembleLayoutSignals(),
-        child.assembleSignals(),
-        signals
-      );
+      return signals.concat(child.assembleSelectionSignals());
     }, []);
+  }
+
+
+  public assembleLayoutSignals(): VgSignal[] {
+    return this.children.reduce((signals, child) => {
+      return signals.concat(child.assembleLayoutSignals());
+    }, assembleLayoutLayerSignals(this));
   }
 
   public assembleSelectionData(data: VgData[]): VgData[] {
@@ -197,9 +200,6 @@ export class LayerModel extends Model {
 
   public assembleLayout(): VgLayout {
     return null;
-  }
-  public assembleLayoutSignals(): VgSignal[] {
-    return assembleLayoutLayerSignals(this);
   }
 
   public assembleMarks(): any[] {

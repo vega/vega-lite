@@ -117,14 +117,12 @@
             "update": "max(layer_0_height, layer_1_height)"
         },
         {
-            "name": "unit",
-            "value": {},
-            "on": [
-                {
-                    "events": "mousemove",
-                    "update": "group()._id ? group() : unit"
-                }
-            ]
+            "name": "layer_0_width",
+            "update": "200"
+        },
+        {
+            "name": "layer_0_height",
+            "update": "200"
         },
         {
             "name": "layer_1_width",
@@ -135,12 +133,14 @@
             "update": "200"
         },
         {
-            "name": "layer_0_width",
-            "update": "200"
-        },
-        {
-            "name": "layer_0_height",
-            "update": "200"
+            "name": "unit",
+            "value": {},
+            "on": [
+                {
+                    "events": "mousemove",
+                    "update": "group()._id ? group() : unit"
+                }
+            ]
         }
     ],
     "marks": [

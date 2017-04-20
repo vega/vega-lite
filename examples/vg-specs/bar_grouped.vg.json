@@ -92,6 +92,14 @@
     ],
     "signals": [
         {
+            "name": "child_width",
+            "update": "bandspace(domain('x').length, 1, 0.5) * 12"
+        },
+        {
+            "name": "child_height",
+            "update": "200"
+        },
+        {
             "name": "unit",
             "value": {},
             "on": [
@@ -100,14 +108,6 @@
                     "update": "group()._id ? group() : unit"
                 }
             ]
-        },
-        {
-            "name": "child_width",
-            "update": "bandspace(domain('x').length, 1, 0.5) * 12"
-        },
-        {
-            "name": "child_height",
-            "update": "200"
         }
     ],
     "layout": {

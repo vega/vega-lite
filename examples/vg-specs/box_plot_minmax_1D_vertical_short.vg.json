@@ -128,29 +128,11 @@
             "update": "max(layer_0_height, layer_1_height, layer_2_height, layer_3_height)"
         },
         {
-            "name": "unit",
-            "value": {},
-            "on": [
-                {
-                    "events": "mousemove",
-                    "update": "group()._id ? group() : unit"
-                }
-            ]
-        },
-        {
-            "name": "layer_3_width",
+            "name": "layer_0_width",
             "update": "21"
         },
         {
-            "name": "layer_3_height",
-            "update": "200"
-        },
-        {
-            "name": "layer_2_width",
-            "update": "21"
-        },
-        {
-            "name": "layer_2_height",
+            "name": "layer_0_height",
             "update": "200"
         },
         {
@@ -162,12 +144,30 @@
             "update": "200"
         },
         {
-            "name": "layer_0_width",
+            "name": "layer_2_width",
             "update": "21"
         },
         {
-            "name": "layer_0_height",
+            "name": "layer_2_height",
             "update": "200"
+        },
+        {
+            "name": "layer_3_width",
+            "update": "21"
+        },
+        {
+            "name": "layer_3_height",
+            "update": "200"
+        },
+        {
+            "name": "unit",
+            "value": {},
+            "on": [
+                {
+                    "events": "mousemove",
+                    "update": "group()._id ? group() : unit"
+                }
+            ]
         }
     ],
     "marks": [

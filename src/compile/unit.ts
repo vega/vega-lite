@@ -270,7 +270,7 @@ export class UnitModel extends ModelWithField {
     return [];
   }
 
-  public assembleSignals(): VgSignal[] {
+  public assembleSelectionSignals(): VgSignal[] {
     return assembleUnitSelectionSignals(this, []);
   }
 

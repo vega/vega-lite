@@ -313,125 +313,11 @@
     ],
     "signals": [
         {
-            "name": "unit",
-            "value": {},
-            "on": [
-                {
-                    "events": "mousemove",
-                    "update": "group()._id ? group() : unit"
-                }
-            ]
-        },
-        {
-            "name": "child_sepalLength_petalWidth_width",
+            "name": "child_petalWidth_sepalLength_width",
             "update": "200"
         },
         {
-            "name": "child_sepalLength_petalWidth_height",
-            "update": "200"
-        },
-        {
-            "name": "child_sepalLength_petalLength_width",
-            "update": "200"
-        },
-        {
-            "name": "child_sepalLength_petalLength_height",
-            "update": "200"
-        },
-        {
-            "name": "child_sepalLength_sepalWidth_width",
-            "update": "200"
-        },
-        {
-            "name": "child_sepalLength_sepalWidth_height",
-            "update": "200"
-        },
-        {
-            "name": "child_sepalLength_sepalLength_width",
-            "update": "200"
-        },
-        {
-            "name": "child_sepalLength_sepalLength_height",
-            "update": "200"
-        },
-        {
-            "name": "child_sepalWidth_petalWidth_width",
-            "update": "200"
-        },
-        {
-            "name": "child_sepalWidth_petalWidth_height",
-            "update": "200"
-        },
-        {
-            "name": "child_sepalWidth_petalLength_width",
-            "update": "200"
-        },
-        {
-            "name": "child_sepalWidth_petalLength_height",
-            "update": "200"
-        },
-        {
-            "name": "child_sepalWidth_sepalWidth_width",
-            "update": "200"
-        },
-        {
-            "name": "child_sepalWidth_sepalWidth_height",
-            "update": "200"
-        },
-        {
-            "name": "child_sepalWidth_sepalLength_width",
-            "update": "200"
-        },
-        {
-            "name": "child_sepalWidth_sepalLength_height",
-            "update": "200"
-        },
-        {
-            "name": "child_petalLength_petalWidth_width",
-            "update": "200"
-        },
-        {
-            "name": "child_petalLength_petalWidth_height",
-            "update": "200"
-        },
-        {
-            "name": "child_petalLength_petalLength_width",
-            "update": "200"
-        },
-        {
-            "name": "child_petalLength_petalLength_height",
-            "update": "200"
-        },
-        {
-            "name": "child_petalLength_sepalWidth_width",
-            "update": "200"
-        },
-        {
-            "name": "child_petalLength_sepalWidth_height",
-            "update": "200"
-        },
-        {
-            "name": "child_petalLength_sepalLength_width",
-            "update": "200"
-        },
-        {
-            "name": "child_petalLength_sepalLength_height",
-            "update": "200"
-        },
-        {
-            "name": "child_petalWidth_petalWidth_width",
-            "update": "200"
-        },
-        {
-            "name": "child_petalWidth_petalWidth_height",
-            "update": "200"
-        },
-        {
-            "name": "child_petalWidth_petalLength_width",
-            "update": "200"
-        },
-        {
-            "name": "child_petalWidth_petalLength_height",
+            "name": "child_petalWidth_sepalLength_height",
             "update": "200"
         },
         {
@@ -443,12 +329,126 @@
             "update": "200"
         },
         {
-            "name": "child_petalWidth_sepalLength_width",
+            "name": "child_petalWidth_petalLength_width",
             "update": "200"
         },
         {
-            "name": "child_petalWidth_sepalLength_height",
+            "name": "child_petalWidth_petalLength_height",
             "update": "200"
+        },
+        {
+            "name": "child_petalWidth_petalWidth_width",
+            "update": "200"
+        },
+        {
+            "name": "child_petalWidth_petalWidth_height",
+            "update": "200"
+        },
+        {
+            "name": "child_petalLength_sepalLength_width",
+            "update": "200"
+        },
+        {
+            "name": "child_petalLength_sepalLength_height",
+            "update": "200"
+        },
+        {
+            "name": "child_petalLength_sepalWidth_width",
+            "update": "200"
+        },
+        {
+            "name": "child_petalLength_sepalWidth_height",
+            "update": "200"
+        },
+        {
+            "name": "child_petalLength_petalLength_width",
+            "update": "200"
+        },
+        {
+            "name": "child_petalLength_petalLength_height",
+            "update": "200"
+        },
+        {
+            "name": "child_petalLength_petalWidth_width",
+            "update": "200"
+        },
+        {
+            "name": "child_petalLength_petalWidth_height",
+            "update": "200"
+        },
+        {
+            "name": "child_sepalWidth_sepalLength_width",
+            "update": "200"
+        },
+        {
+            "name": "child_sepalWidth_sepalLength_height",
+            "update": "200"
+        },
+        {
+            "name": "child_sepalWidth_sepalWidth_width",
+            "update": "200"
+        },
+        {
+            "name": "child_sepalWidth_sepalWidth_height",
+            "update": "200"
+        },
+        {
+            "name": "child_sepalWidth_petalLength_width",
+            "update": "200"
+        },
+        {
+            "name": "child_sepalWidth_petalLength_height",
+            "update": "200"
+        },
+        {
+            "name": "child_sepalWidth_petalWidth_width",
+            "update": "200"
+        },
+        {
+            "name": "child_sepalWidth_petalWidth_height",
+            "update": "200"
+        },
+        {
+            "name": "child_sepalLength_sepalLength_width",
+            "update": "200"
+        },
+        {
+            "name": "child_sepalLength_sepalLength_height",
+            "update": "200"
+        },
+        {
+            "name": "child_sepalLength_sepalWidth_width",
+            "update": "200"
+        },
+        {
+            "name": "child_sepalLength_sepalWidth_height",
+            "update": "200"
+        },
+        {
+            "name": "child_sepalLength_petalLength_width",
+            "update": "200"
+        },
+        {
+            "name": "child_sepalLength_petalLength_height",
+            "update": "200"
+        },
+        {
+            "name": "child_sepalLength_petalWidth_width",
+            "update": "200"
+        },
+        {
+            "name": "child_sepalLength_petalWidth_height",
+            "update": "200"
+        },
+        {
+            "name": "unit",
+            "value": {},
+            "on": [
+                {
+                    "events": "mousemove",
+                    "update": "group()._id ? group() : unit"
+                }
+            ]
         }
     ],
     "layout": {

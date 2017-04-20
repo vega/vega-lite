@@ -155,46 +155,20 @@
             "update": "max(layer_0_height, layer_1_height)"
         },
         {
-            "name": "unit",
-            "value": {},
-            "on": [
-                {
-                    "events": "mousemove",
-                    "update": "group()._id ? group() : unit"
-                }
-            ]
-        },
-        {
-            "name": "layer_1_width",
-            "update": "max(layer_1_layer_0_width, layer_1_layer_1_width)"
-        },
-        {
-            "name": "layer_1_height",
-            "update": "max(layer_1_layer_0_height, layer_1_layer_1_height)"
-        },
-        {
-            "name": "layer_1_layer_1_width",
-            "update": "bandspace(domain('x').length, 1, 0.5) * 21"
-        },
-        {
-            "name": "layer_1_layer_1_height",
-            "update": "200"
-        },
-        {
-            "name": "layer_1_layer_0_width",
-            "update": "bandspace(domain('x').length, 1, 0.5) * 21"
-        },
-        {
-            "name": "layer_1_layer_0_height",
-            "update": "200"
-        },
-        {
             "name": "layer_0_width",
             "update": "max(layer_0_layer_0_width, layer_0_layer_1_width)"
         },
         {
             "name": "layer_0_height",
             "update": "max(layer_0_layer_0_height, layer_0_layer_1_height)"
+        },
+        {
+            "name": "layer_0_layer_0_width",
+            "update": "bandspace(domain('x').length, 1, 0.5) * 21"
+        },
+        {
+            "name": "layer_0_layer_0_height",
+            "update": "200"
         },
         {
             "name": "layer_0_layer_1_width",
@@ -205,12 +179,38 @@
             "update": "200"
         },
         {
-            "name": "layer_0_layer_0_width",
+            "name": "layer_1_width",
+            "update": "max(layer_1_layer_0_width, layer_1_layer_1_width)"
+        },
+        {
+            "name": "layer_1_height",
+            "update": "max(layer_1_layer_0_height, layer_1_layer_1_height)"
+        },
+        {
+            "name": "layer_1_layer_0_width",
             "update": "bandspace(domain('x').length, 1, 0.5) * 21"
         },
         {
-            "name": "layer_0_layer_0_height",
+            "name": "layer_1_layer_0_height",
             "update": "200"
+        },
+        {
+            "name": "layer_1_layer_1_width",
+            "update": "bandspace(domain('x').length, 1, 0.5) * 21"
+        },
+        {
+            "name": "layer_1_layer_1_height",
+            "update": "200"
+        },
+        {
+            "name": "unit",
+            "value": {},
+            "on": [
+                {
+                    "events": "mousemove",
+                    "update": "group()._id ? group() : unit"
+                }
+            ]
         }
     ],
     "marks": [

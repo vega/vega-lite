@@ -88,29 +88,11 @@
     ],
     "signals": [
         {
-            "name": "unit",
-            "value": {},
-            "on": [
-                {
-                    "events": "mousemove",
-                    "update": "group()._id ? group() : unit"
-                }
-            ]
-        },
-        {
-            "name": "child_Miles_per_Gallon_Miles_per_Gallon_width",
+            "name": "child_Displacement_Horsepower_width",
             "update": "200"
         },
         {
-            "name": "child_Miles_per_Gallon_Miles_per_Gallon_height",
-            "update": "200"
-        },
-        {
-            "name": "child_Miles_per_Gallon_Horsepower_width",
-            "update": "200"
-        },
-        {
-            "name": "child_Miles_per_Gallon_Horsepower_height",
+            "name": "child_Displacement_Horsepower_height",
             "update": "200"
         },
         {
@@ -122,12 +104,30 @@
             "update": "200"
         },
         {
-            "name": "child_Displacement_Horsepower_width",
+            "name": "child_Miles_per_Gallon_Horsepower_width",
             "update": "200"
         },
         {
-            "name": "child_Displacement_Horsepower_height",
+            "name": "child_Miles_per_Gallon_Horsepower_height",
             "update": "200"
+        },
+        {
+            "name": "child_Miles_per_Gallon_Miles_per_Gallon_width",
+            "update": "200"
+        },
+        {
+            "name": "child_Miles_per_Gallon_Miles_per_Gallon_height",
+            "update": "200"
+        },
+        {
+            "name": "unit",
+            "value": {},
+            "on": [
+                {
+                    "events": "mousemove",
+                    "update": "group()._id ? group() : unit"
+                }
+            ]
         }
     ],
     "layout": {

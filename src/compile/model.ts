@@ -146,7 +146,7 @@ export abstract class Model {
 
   public abstract parseLegend(): void;
 
-  public abstract assembleSignals(): any[];
+  public abstract assembleSelectionSignals(): any[];
 
   public abstract assembleSelectionData(data: VgData[]): VgData[];
   public abstract assembleData(): VgData[];
@@ -203,7 +203,7 @@ export abstract class Model {
   public assembleGroup(signals: VgSignal[] = []) {
     const group: VgEncodeEntry = {};
 
-    signals = signals.concat(this.assembleSignals());
+    signals = signals.concat(this.assembleSelectionSignals());
     if (signals.length > 0) {
       group.signals = signals;
     }

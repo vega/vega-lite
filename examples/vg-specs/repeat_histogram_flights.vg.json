@@ -161,21 +161,11 @@
     ],
     "signals": [
         {
-            "name": "unit",
-            "value": {},
-            "on": [
-                {
-                    "events": "mousemove",
-                    "update": "group()._id ? group() : unit"
-                }
-            ]
-        },
-        {
-            "name": "child_time_width",
+            "name": "child_distance_width",
             "update": "200"
         },
         {
-            "name": "child_time_height",
+            "name": "child_distance_height",
             "update": "200"
         },
         {
@@ -187,12 +177,22 @@
             "update": "200"
         },
         {
-            "name": "child_distance_width",
+            "name": "child_time_width",
             "update": "200"
         },
         {
-            "name": "child_distance_height",
+            "name": "child_time_height",
             "update": "200"
+        },
+        {
+            "name": "unit",
+            "value": {},
+            "on": [
+                {
+                    "events": "mousemove",
+                    "update": "group()._id ? group() : unit"
+                }
+            ]
         }
     ],
     "layout": {
