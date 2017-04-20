@@ -11,13 +11,10 @@ const vlSchema = require('../../build/vega-lite-schema.json');
 const vgSchema = require('vega/build/vega-schema.json');
 
 const ajv = new Ajv({
-  validateSchema: true,
-  extendRefs: 'fail',
+  validateSchema: false,
+  extendRefs: 'ignore',
   allErrors: true
 });
-
-ajv.addMetaSchema(require('ajv/lib/refs/json-schema-draft-04.json'), 'http://json-schema.org/draft-04/schema#');
-
 const validateVl = ajv.compile(vlSchema);
 const validateVg = ajv.compile(vgSchema);
 
