@@ -60,30 +60,46 @@
     ],
     "marks": [
         {
-            "name": "marks",
-            "type": "symbol",
-            "role": "point",
-            "from": {
-                "data": "source_0"
-            },
+            "name": "nested-main-group",
+            "type": "group",
             "encode": {
                 "update": {
-                    "x": {
-                        "scale": "x",
-                        "field": "mean_temp"
+                    "width": {
+                        "signal": "width"
                     },
-                    "y": {
-                        "value": 10.5
-                    },
-                    "stroke": {
-                        "scale": "color",
-                        "field": "yearmonth_date"
-                    },
-                    "fill": {
-                        "value": "transparent"
+                    "height": {
+                        "signal": "height"
                     }
                 }
-            }
+            },
+            "marks": [
+                {
+                    "name": "marks",
+                    "type": "symbol",
+                    "role": "point",
+                    "from": {
+                        "data": "source_0"
+                    },
+                    "encode": {
+                        "update": {
+                            "x": {
+                                "scale": "x",
+                                "field": "mean_temp"
+                            },
+                            "y": {
+                                "value": 10.5
+                            },
+                            "stroke": {
+                                "scale": "color",
+                                "field": "yearmonth_date"
+                            },
+                            "fill": {
+                                "value": "transparent"
+                            }
+                        }
+                    }
+                }
+            ]
         }
     ],
     "scales": [

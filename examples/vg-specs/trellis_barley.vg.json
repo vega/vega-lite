@@ -73,213 +73,219 @@
             ]
         }
     ],
-    "layout": {
-        "padding": {
-            "row": 10,
-            "column": 10
-        },
-        "offset": 10,
-        "columns": 1,
-        "bounds": "full"
-    },
     "marks": [
         {
-            "name": "row-title",
-            "role": "row-title",
+            "name": "nested-main-group",
             "type": "group",
-            "marks": [
-                {
-                    "type": "text",
-                    "role": "row-title-text",
-                    "encode": {
-                        "update": {
-                            "y": {
-                                "signal": "0.5 * height"
-                            },
-                            "align": {
-                                "value": "right"
-                            },
-                            "text": {
-                                "value": "site"
-                            },
-                            "fill": {
-                                "value": "black"
-                            },
-                            "fontWeight": {
-                                "value": "bold"
-                            },
-                            "angle": {
-                                "value": 270
-                            }
-                        }
-                    }
-                }
-            ]
-        },
-        {
-            "name": "row-header",
-            "type": "group",
-            "role": "row-header",
-            "from": {
-                "data": "row"
-            },
-            "title": {
-                "text": {
-                    "signal": "parent['site']"
+            "layout": {
+                "padding": {
+                    "row": 10,
+                    "column": 10
                 },
                 "offset": 10,
-                "orient": "left",
-                "encode": {
-                    "update": {
-                        "fontWeight": {
-                            "value": "normal"
-                        },
-                        "angle": {
-                            "value": 0
-                        },
-                        "fontSize": {
-                            "value": 10
-                        },
-                        "align": {
-                            "value": "right"
-                        },
-                        "baseline": {
-                            "value": "middle"
-                        }
-                    }
-                }
-            },
-            "encode": {
-                "update": {
-                    "height": {
-                        "signal": "child_height"
-                    }
-                }
-            },
-            "axes": [
-                {
-                    "scale": "y",
-                    "orient": "left",
-                    "title": "variety",
-                    "zindex": 1
-                }
-            ]
-        },
-        {
-            "name": "column-footer",
-            "type": "group",
-            "role": "column-footer",
-            "encode": {
-                "update": {
-                    "width": {
-                        "signal": "child_width"
-                    }
-                }
-            },
-            "axes": [
-                {
-                    "scale": "x",
-                    "format": "s",
-                    "orient": "bottom",
-                    "tickCount": 5,
-                    "title": "MEDIAN(yield)",
-                    "zindex": 1
-                }
-            ]
-        },
-        {
-            "data": [
-                {
-                    "source": "facet",
-                    "name": "data_0",
-                    "transform": [
-                        {
-                            "type": "aggregate",
-                            "groupby": [
-                                "variety",
-                                "year"
-                            ],
-                            "ops": [
-                                "median"
-                            ],
-                            "fields": [
-                                "yield"
-                            ]
-                        }
-                    ]
-                }
-            ],
-            "name": "cell",
-            "type": "group",
-            "from": {
-                "facet": {
-                    "name": "facet",
-                    "data": "source_0",
-                    "groupby": [
-                        "site"
-                    ]
-                }
-            },
-            "encode": {
-                "update": {
-                    "width": {
-                        "signal": "child_width"
-                    },
-                    "height": {
-                        "signal": "child_height"
-                    },
-                    "stroke": {
-                        "value": "#ccc"
-                    },
-                    "strokeWidth": {
-                        "value": 1
-                    },
-                    "fill": {
-                        "value": "transparent"
-                    }
-                }
+                "columns": 1,
+                "bounds": "full"
             },
             "marks": [
                 {
-                    "name": "child_marks",
-                    "type": "symbol",
-                    "role": "point",
+                    "name": "row-title",
+                    "role": "row-title",
+                    "type": "group",
+                    "marks": [
+                        {
+                            "type": "text",
+                            "role": "row-title-text",
+                            "encode": {
+                                "update": {
+                                    "y": {
+                                        "signal": "0.5 * height"
+                                    },
+                                    "align": {
+                                        "value": "right"
+                                    },
+                                    "text": {
+                                        "value": "site"
+                                    },
+                                    "fill": {
+                                        "value": "black"
+                                    },
+                                    "fontWeight": {
+                                        "value": "bold"
+                                    },
+                                    "angle": {
+                                        "value": 270
+                                    }
+                                }
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "row-header",
+                    "type": "group",
+                    "role": "row-header",
                     "from": {
-                        "data": "data_0"
+                        "data": "row"
+                    },
+                    "title": {
+                        "text": {
+                            "signal": "parent['site']"
+                        },
+                        "offset": 10,
+                        "orient": "left",
+                        "encode": {
+                            "update": {
+                                "fontWeight": {
+                                    "value": "normal"
+                                },
+                                "angle": {
+                                    "value": 0
+                                },
+                                "fontSize": {
+                                    "value": 10
+                                },
+                                "align": {
+                                    "value": "right"
+                                },
+                                "baseline": {
+                                    "value": "middle"
+                                }
+                            }
+                        }
                     },
                     "encode": {
                         "update": {
-                            "x": {
-                                "scale": "x",
-                                "field": "median_yield"
+                            "height": {
+                                "signal": "child_height"
+                            }
+                        }
+                    },
+                    "axes": [
+                        {
+                            "scale": "y",
+                            "orient": "left",
+                            "title": "variety",
+                            "zindex": 1
+                        }
+                    ]
+                },
+                {
+                    "name": "column-footer",
+                    "type": "group",
+                    "role": "column-footer",
+                    "encode": {
+                        "update": {
+                            "width": {
+                                "signal": "child_width"
+                            }
+                        }
+                    },
+                    "axes": [
+                        {
+                            "scale": "x",
+                            "format": "s",
+                            "orient": "bottom",
+                            "tickCount": 5,
+                            "title": "MEDIAN(yield)",
+                            "zindex": 1
+                        }
+                    ]
+                },
+                {
+                    "data": [
+                        {
+                            "source": "facet",
+                            "name": "data_0",
+                            "transform": [
+                                {
+                                    "type": "aggregate",
+                                    "groupby": [
+                                        "variety",
+                                        "year"
+                                    ],
+                                    "ops": [
+                                        "median"
+                                    ],
+                                    "fields": [
+                                        "yield"
+                                    ]
+                                }
+                            ]
+                        }
+                    ],
+                    "name": "cell",
+                    "type": "group",
+                    "from": {
+                        "facet": {
+                            "name": "facet",
+                            "data": "source_0",
+                            "groupby": [
+                                "site"
+                            ]
+                        }
+                    },
+                    "encode": {
+                        "update": {
+                            "width": {
+                                "signal": "child_width"
                             },
-                            "y": {
-                                "scale": "y",
-                                "field": "variety"
+                            "height": {
+                                "signal": "child_height"
                             },
                             "stroke": {
-                                "scale": "color",
-                                "field": "year"
+                                "value": "#ccc"
+                            },
+                            "strokeWidth": {
+                                "value": 1
                             },
                             "fill": {
                                 "value": "transparent"
                             }
                         }
-                    }
-                }
-            ],
-            "axes": [
-                {
-                    "scale": "x",
-                    "domain": false,
-                    "format": "s",
-                    "grid": true,
-                    "labels": false,
-                    "orient": "bottom",
-                    "tickCount": 5,
-                    "ticks": false,
-                    "zindex": 0,
-                    "gridScale": "y"
+                    },
+                    "marks": [
+                        {
+                            "name": "child_marks",
+                            "type": "symbol",
+                            "role": "point",
+                            "from": {
+                                "data": "data_0"
+                            },
+                            "encode": {
+                                "update": {
+                                    "x": {
+                                        "scale": "x",
+                                        "field": "median_yield"
+                                    },
+                                    "y": {
+                                        "scale": "y",
+                                        "field": "variety"
+                                    },
+                                    "stroke": {
+                                        "scale": "color",
+                                        "field": "year"
+                                    },
+                                    "fill": {
+                                        "value": "transparent"
+                                    }
+                                }
+                            }
+                        }
+                    ],
+                    "axes": [
+                        {
+                            "scale": "x",
+                            "domain": false,
+                            "format": "s",
+                            "grid": true,
+                            "labels": false,
+                            "orient": "bottom",
+                            "tickCount": 5,
+                            "ticks": false,
+                            "zindex": 0,
+                            "gridScale": "y"
+                        }
+                    ]
                 }
             ]
         }

@@ -68,33 +68,49 @@
     ],
     "marks": [
         {
-            "name": "marks",
-            "type": "area",
-            "from": {
-                "data": "source_0"
-            },
+            "name": "nested-main-group",
+            "type": "group",
             "encode": {
                 "update": {
-                    "x": {
-                        "scale": "x",
-                        "field": "sum_Weight_in_lbs"
+                    "width": {
+                        "signal": "width"
                     },
-                    "y": {
-                        "scale": "y",
-                        "field": "year_Year"
-                    },
-                    "x2": {
-                        "scale": "x",
-                        "value": 0
-                    },
-                    "fill": {
-                        "value": "#4c78a8"
-                    },
-                    "orient": {
-                        "value": "horizontal"
+                    "height": {
+                        "signal": "height"
                     }
                 }
-            }
+            },
+            "marks": [
+                {
+                    "name": "marks",
+                    "type": "area",
+                    "from": {
+                        "data": "source_0"
+                    },
+                    "encode": {
+                        "update": {
+                            "x": {
+                                "scale": "x",
+                                "field": "sum_Weight_in_lbs"
+                            },
+                            "y": {
+                                "scale": "y",
+                                "field": "year_Year"
+                            },
+                            "x2": {
+                                "scale": "x",
+                                "value": 0
+                            },
+                            "fill": {
+                                "value": "#4c78a8"
+                            },
+                            "orient": {
+                                "value": "horizontal"
+                            }
+                        }
+                    }
+                }
+            ]
         }
     ],
     "scales": [

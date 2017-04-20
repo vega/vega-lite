@@ -74,54 +74,70 @@
     ],
     "marks": [
         {
-            "name": "pathgroup",
+            "name": "nested-main-group",
             "type": "group",
-            "from": {
-                "facet": {
-                    "name": "faceted-path-main",
-                    "data": "source_0",
-                    "groupby": [
-                        "quarter_date"
-                    ]
-                }
-            },
             "encode": {
                 "update": {
                     "width": {
-                        "field": {
-                            "group": "width"
-                        }
+                        "signal": "width"
                     },
                     "height": {
-                        "field": {
-                            "group": "height"
-                        }
+                        "signal": "height"
                     }
                 }
             },
             "marks": [
                 {
-                    "name": "marks",
-                    "type": "line",
+                    "name": "pathgroup",
+                    "type": "group",
                     "from": {
-                        "data": "faceted-path-main"
+                        "facet": {
+                            "name": "faceted-path-main",
+                            "data": "source_0",
+                            "groupby": [
+                                "quarter_date"
+                            ]
+                        }
                     },
                     "encode": {
                         "update": {
-                            "x": {
-                                "scale": "x",
-                                "field": "year_date"
+                            "width": {
+                                "field": {
+                                    "group": "width"
+                                }
                             },
-                            "y": {
-                                "scale": "y",
-                                "field": "mean_price"
-                            },
-                            "stroke": {
-                                "scale": "color",
-                                "field": "quarter_date"
+                            "height": {
+                                "field": {
+                                    "group": "height"
+                                }
                             }
                         }
-                    }
+                    },
+                    "marks": [
+                        {
+                            "name": "marks",
+                            "type": "line",
+                            "from": {
+                                "data": "faceted-path-main"
+                            },
+                            "encode": {
+                                "update": {
+                                    "x": {
+                                        "scale": "x",
+                                        "field": "year_date"
+                                    },
+                                    "y": {
+                                        "scale": "y",
+                                        "field": "mean_price"
+                                    },
+                                    "stroke": {
+                                        "scale": "color",
+                                        "field": "quarter_date"
+                                    }
+                                }
+                            }
+                        }
+                    ]
                 }
             ]
         }

@@ -110,71 +110,87 @@
     ],
     "marks": [
         {
+            "name": "nested-main-group",
             "type": "group",
             "encode": {
-                "enter": {
+                "update": {
                     "width": {
                         "signal": "width"
                     },
                     "height": {
                         "signal": "height"
-                    },
-                    "fill": {
-                        "value": "transparent"
-                    },
-                    "clip": {
-                        "value": true
                     }
                 }
             },
             "marks": [
                 {
-                    "name": "layer_0_marks",
-                    "type": "line",
-                    "from": {
-                        "data": "data_0"
-                    },
+                    "type": "group",
                     "encode": {
-                        "update": {
-                            "x": {
-                                "scale": "x",
-                                "field": "miles"
+                        "enter": {
+                            "width": {
+                                "signal": "width"
                             },
-                            "y": {
-                                "scale": "y",
-                                "field": "gas"
-                            },
-                            "stroke": {
-                                "value": "#4c78a8"
-                            }
-                        }
-                    }
-                },
-                {
-                    "name": "layer_1_marks",
-                    "type": "symbol",
-                    "role": "pointOverlay",
-                    "from": {
-                        "data": "data_1"
-                    },
-                    "encode": {
-                        "update": {
-                            "x": {
-                                "scale": "x",
-                                "field": "miles"
-                            },
-                            "y": {
-                                "scale": "y",
-                                "field": "gas"
+                            "height": {
+                                "signal": "height"
                             },
                             "fill": {
-                                "value": "#4c78a8"
+                                "value": "transparent"
                             },
-                            "opacity": {
-                                "value": 0.7
+                            "clip": {
+                                "value": true
                             }
                         }
-                    }
+                    },
+                    "marks": [
+                        {
+                            "name": "layer_0_marks",
+                            "type": "line",
+                            "from": {
+                                "data": "data_0"
+                            },
+                            "encode": {
+                                "update": {
+                                    "x": {
+                                        "scale": "x",
+                                        "field": "miles"
+                                    },
+                                    "y": {
+                                        "scale": "y",
+                                        "field": "gas"
+                                    },
+                                    "stroke": {
+                                        "value": "#4c78a8"
+                                    }
+                                }
+                            }
+                        },
+                        {
+                            "name": "layer_1_marks",
+                            "type": "symbol",
+                            "role": "pointOverlay",
+                            "from": {
+                                "data": "data_1"
+                            },
+                            "encode": {
+                                "update": {
+                                    "x": {
+                                        "scale": "x",
+                                        "field": "miles"
+                                    },
+                                    "y": {
+                                        "scale": "y",
+                                        "field": "gas"
+                                    },
+                                    "fill": {
+                                        "value": "#4c78a8"
+                                    },
+                                    "opacity": {
+                                        "value": 0.7
+                                    }
+                                }
+                            }
+                        }
+                    ]
                 }
             ]
         }

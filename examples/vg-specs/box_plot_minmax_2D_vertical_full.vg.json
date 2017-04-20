@@ -180,136 +180,152 @@
     ],
     "marks": [
         {
+            "name": "nested-main-group",
             "type": "group",
             "encode": {
-                "enter": {
+                "update": {
                     "width": {
                         "signal": "width"
                     },
                     "height": {
                         "signal": "height"
-                    },
-                    "fill": {
-                        "value": "transparent"
-                    },
-                    "clip": {
-                        "value": true
                     }
                 }
             },
             "marks": [
                 {
-                    "name": "layer_0_marks",
-                    "type": "rule",
-                    "role": "boxWhisker",
-                    "from": {
-                        "data": "data_0"
-                    },
+                    "type": "group",
                     "encode": {
-                        "update": {
-                            "x": {
-                                "scale": "x",
-                                "field": "age"
-                            },
-                            "y": {
-                                "scale": "y",
-                                "field": "min_people"
-                            },
-                            "y2": {
-                                "scale": "y",
-                                "field": "q1_people"
-                            },
-                            "stroke": {
-                                "value": "#4c78a8"
-                            }
-                        }
-                    }
-                },
-                {
-                    "name": "layer_1_marks",
-                    "type": "rule",
-                    "role": "boxWhisker",
-                    "from": {
-                        "data": "data_1"
-                    },
-                    "encode": {
-                        "update": {
-                            "x": {
-                                "scale": "x",
-                                "field": "age"
-                            },
-                            "y": {
-                                "scale": "y",
-                                "field": "q3_people"
-                            },
-                            "y2": {
-                                "scale": "y",
-                                "field": "max_people"
-                            },
-                            "stroke": {
-                                "value": "#4c78a8"
-                            }
-                        }
-                    }
-                },
-                {
-                    "name": "layer_2_marks",
-                    "type": "rect",
-                    "role": "box",
-                    "from": {
-                        "data": "data_2"
-                    },
-                    "encode": {
-                        "update": {
-                            "xc": {
-                                "scale": "x",
-                                "field": "age"
-                            },
+                        "enter": {
                             "width": {
-                                "value": 5
-                            },
-                            "y": {
-                                "scale": "y",
-                                "field": "q1_people"
-                            },
-                            "y2": {
-                                "scale": "y",
-                                "field": "q3_people"
-                            },
-                            "fill": {
-                                "value": "skyblue"
-                            }
-                        }
-                    }
-                },
-                {
-                    "name": "layer_3_marks",
-                    "type": "rect",
-                    "role": "boxMid",
-                    "from": {
-                        "data": "data_3"
-                    },
-                    "encode": {
-                        "update": {
-                            "xc": {
-                                "scale": "x",
-                                "field": "age"
-                            },
-                            "yc": {
-                                "scale": "y",
-                                "field": "median_people"
-                            },
-                            "width": {
-                                "value": 5
+                                "signal": "width"
                             },
                             "height": {
-                                "value": 1
+                                "signal": "height"
                             },
                             "fill": {
-                                "value": "white"
+                                "value": "transparent"
+                            },
+                            "clip": {
+                                "value": true
                             }
                         }
-                    }
+                    },
+                    "marks": [
+                        {
+                            "name": "layer_0_marks",
+                            "type": "rule",
+                            "role": "boxWhisker",
+                            "from": {
+                                "data": "data_0"
+                            },
+                            "encode": {
+                                "update": {
+                                    "x": {
+                                        "scale": "x",
+                                        "field": "age"
+                                    },
+                                    "y": {
+                                        "scale": "y",
+                                        "field": "min_people"
+                                    },
+                                    "y2": {
+                                        "scale": "y",
+                                        "field": "q1_people"
+                                    },
+                                    "stroke": {
+                                        "value": "#4c78a8"
+                                    }
+                                }
+                            }
+                        },
+                        {
+                            "name": "layer_1_marks",
+                            "type": "rule",
+                            "role": "boxWhisker",
+                            "from": {
+                                "data": "data_1"
+                            },
+                            "encode": {
+                                "update": {
+                                    "x": {
+                                        "scale": "x",
+                                        "field": "age"
+                                    },
+                                    "y": {
+                                        "scale": "y",
+                                        "field": "q3_people"
+                                    },
+                                    "y2": {
+                                        "scale": "y",
+                                        "field": "max_people"
+                                    },
+                                    "stroke": {
+                                        "value": "#4c78a8"
+                                    }
+                                }
+                            }
+                        },
+                        {
+                            "name": "layer_2_marks",
+                            "type": "rect",
+                            "role": "box",
+                            "from": {
+                                "data": "data_2"
+                            },
+                            "encode": {
+                                "update": {
+                                    "xc": {
+                                        "scale": "x",
+                                        "field": "age"
+                                    },
+                                    "width": {
+                                        "value": 5
+                                    },
+                                    "y": {
+                                        "scale": "y",
+                                        "field": "q1_people"
+                                    },
+                                    "y2": {
+                                        "scale": "y",
+                                        "field": "q3_people"
+                                    },
+                                    "fill": {
+                                        "value": "skyblue"
+                                    }
+                                }
+                            }
+                        },
+                        {
+                            "name": "layer_3_marks",
+                            "type": "rect",
+                            "role": "boxMid",
+                            "from": {
+                                "data": "data_3"
+                            },
+                            "encode": {
+                                "update": {
+                                    "xc": {
+                                        "scale": "x",
+                                        "field": "age"
+                                    },
+                                    "yc": {
+                                        "scale": "y",
+                                        "field": "median_people"
+                                    },
+                                    "width": {
+                                        "value": 5
+                                    },
+                                    "height": {
+                                        "value": 1
+                                    },
+                                    "fill": {
+                                        "value": "white"
+                                    }
+                                }
+                            }
+                        }
+                    ]
                 }
             ]
         }

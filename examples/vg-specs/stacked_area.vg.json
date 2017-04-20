@@ -101,61 +101,77 @@
     ],
     "marks": [
         {
-            "name": "pathgroup",
+            "name": "nested-main-group",
             "type": "group",
-            "from": {
-                "facet": {
-                    "name": "faceted-path-main",
-                    "data": "source_0",
-                    "groupby": [
-                        "series"
-                    ]
-                }
-            },
             "encode": {
                 "update": {
                     "width": {
-                        "field": {
-                            "group": "width"
-                        }
+                        "signal": "width"
                     },
                     "height": {
-                        "field": {
-                            "group": "height"
-                        }
+                        "signal": "height"
                     }
                 }
             },
             "marks": [
                 {
-                    "name": "marks",
-                    "type": "area",
+                    "name": "pathgroup",
+                    "type": "group",
                     "from": {
-                        "data": "faceted-path-main"
+                        "facet": {
+                            "name": "faceted-path-main",
+                            "data": "source_0",
+                            "groupby": [
+                                "series"
+                            ]
+                        }
                     },
                     "encode": {
                         "update": {
-                            "x": {
-                                "scale": "x",
-                                "field": "yearmonth_date"
+                            "width": {
+                                "field": {
+                                    "group": "width"
+                                }
                             },
-                            "y": {
-                                "scale": "y",
-                                "field": "sum_count_end"
-                            },
-                            "y2": {
-                                "scale": "y",
-                                "field": "sum_count_start"
-                            },
-                            "fill": {
-                                "scale": "color",
-                                "field": "series"
-                            },
-                            "orient": {
-                                "value": "vertical"
+                            "height": {
+                                "field": {
+                                    "group": "height"
+                                }
                             }
                         }
-                    }
+                    },
+                    "marks": [
+                        {
+                            "name": "marks",
+                            "type": "area",
+                            "from": {
+                                "data": "faceted-path-main"
+                            },
+                            "encode": {
+                                "update": {
+                                    "x": {
+                                        "scale": "x",
+                                        "field": "yearmonth_date"
+                                    },
+                                    "y": {
+                                        "scale": "y",
+                                        "field": "sum_count_end"
+                                    },
+                                    "y2": {
+                                        "scale": "y",
+                                        "field": "sum_count_start"
+                                    },
+                                    "fill": {
+                                        "scale": "color",
+                                        "field": "series"
+                                    },
+                                    "orient": {
+                                        "value": "vertical"
+                                    }
+                                }
+                            }
+                        }
+                    ]
                 }
             ]
         }

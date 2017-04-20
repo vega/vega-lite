@@ -94,70 +94,88 @@
         {
             "name": "CylYr",
             "update": "data(\"CylYr_store\")[0]"
-        },
-        {
-            "name": "CylYr",
-            "update": "{fields: [\"Cylinders\", \"Year\"], values: [CylYr_Cylinders, CylYr_Year]}"
-        },
-        {
-            "name": "CylYr_tuple",
-            "on": [
-                {
-                    "events": {
-                        "signal": "CylYr"
-                    },
-                    "update": "{unit: unit.datum && unit.datum._id, fields: CylYr.fields, values: CylYr.values, Cylinders: CylYr.values[0], Year: CylYr.values[1]}"
-                }
-            ]
-        },
-        {
-            "name": "CylYr_modify",
-            "on": [
-                {
-                    "events": {
-                        "signal": "CylYr"
-                    },
-                    "update": "modify(\"CylYr_store\", CylYr_tuple, true)"
-                }
-            ]
         }
     ],
     "marks": [
         {
-            "name": "marks",
-            "type": "symbol",
-            "role": "circle",
-            "from": {
-                "data": "source_0"
-            },
+            "name": "nested-main-group",
+            "type": "group",
+            "signals": [
+                {
+                    "name": "CylYr",
+                    "update": "{fields: [\"Cylinders\", \"Year\"], values: [CylYr_Cylinders, CylYr_Year]}"
+                },
+                {
+                    "name": "CylYr_tuple",
+                    "on": [
+                        {
+                            "events": {
+                                "signal": "CylYr"
+                            },
+                            "update": "{unit: unit.datum && unit.datum._id, fields: CylYr.fields, values: CylYr.values, Cylinders: CylYr.values[0], Year: CylYr.values[1]}"
+                        }
+                    ]
+                },
+                {
+                    "name": "CylYr_modify",
+                    "on": [
+                        {
+                            "events": {
+                                "signal": "CylYr"
+                            },
+                            "update": "modify(\"CylYr_store\", CylYr_tuple, true)"
+                        }
+                    ]
+                }
+            ],
             "encode": {
                 "update": {
-                    "x": {
-                        "scale": "x",
-                        "field": "Horsepower"
+                    "width": {
+                        "signal": "width"
                     },
-                    "y": {
-                        "scale": "y",
-                        "field": "Miles_per_Gallon"
-                    },
-                    "fill": [
-                        {
-                            "test": "!vlPoint(\"CylYr_store\", datum._id, datum, \"union\", \"all\")",
-                            "value": "grey"
-                        },
-                        {
-                            "scale": "color",
-                            "field": "Origin"
-                        }
-                    ],
-                    "shape": {
-                        "value": "circle"
-                    },
-                    "opacity": {
-                        "value": 0.7
+                    "height": {
+                        "signal": "height"
                     }
                 }
-            }
+            },
+            "marks": [
+                {
+                    "name": "marks",
+                    "type": "symbol",
+                    "role": "circle",
+                    "from": {
+                        "data": "source_0"
+                    },
+                    "encode": {
+                        "update": {
+                            "x": {
+                                "scale": "x",
+                                "field": "Horsepower"
+                            },
+                            "y": {
+                                "scale": "y",
+                                "field": "Miles_per_Gallon"
+                            },
+                            "fill": [
+                                {
+                                    "test": "!vlPoint(\"CylYr_store\", parent._id, datum, \"union\", \"all\")",
+                                    "value": "grey"
+                                },
+                                {
+                                    "scale": "color",
+                                    "field": "Origin"
+                                }
+                            ],
+                            "shape": {
+                                "value": "circle"
+                            },
+                            "opacity": {
+                                "value": 0.7
+                            }
+                        }
+                    }
+                }
+            ]
         }
     ],
     "scales": [
