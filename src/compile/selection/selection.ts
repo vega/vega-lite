@@ -203,7 +203,7 @@ export function predicate(selCmpt: SelectionComponent, datum?: string): string {
   const store = stringValue(selCmpt.name + STORE),
         op = PREDICATES_OPS[selCmpt.resolve];
   datum = datum || 'datum';
-  return compiler(selCmpt).predicate + `(${store}, datum._id, ${datum}, ${op})`;
+  return compiler(selCmpt).predicate + `(${store}, parent._id, ${datum}, ${op})`;
 }
 
 // Utility functions
