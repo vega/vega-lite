@@ -53,6 +53,7 @@ function getTopLevelProperties(topLevelSpec: TopLevel<any>, config: Config) {
 
 function assemble(model: Model, topLevelProperties: TopLevelProperties) {
   // TODO: change type to become VgSpec
+
   const output = {
     $schema: 'http://vega.github.io/schema/vega/v3.0.json',
     ...(model.description ? {description: model.description} : {}),
@@ -62,7 +63,7 @@ function assemble(model: Model, topLevelProperties: TopLevelProperties) {
       model.assembleData(),
       model.assembleSelectionData([])
     ),
-    ...model.assembleGroup(
+    signals: (
       [].concat(
         // TODO(https://github.com/vega/vega-lite/issues/2198):
         // Merge the top-level's width/height signal with the top-level model
@@ -74,15 +75,45 @@ function assemble(model: Model, topLevelProperties: TopLevelProperties) {
             {name: 'height', update: model.getName('height')}
           ] : []
         ),
-
         model.assembleLayoutSignals(),
         assembleTopLevelSignals(model)
       )
-    )
+    ),
+
+    // FIXME: get rid of the top-level `nested-main-group`
+    // HACK: this is a hack to temporarily make selections works as
+    // 1) Currently, some selection's signals rely on the main group's scope to shadow duplicate names.
+    // 2) Selection predicate depends on parent reference which may not exist for top-level mark.
+    ...assembleNestedMainGroup(model)
   };
 
   return {
     spec: output
     // TODO: add warning / errors here
+  };
+}
+
+export function assembleNestedMainGroup(model: Model) {
+  const {layout, signals, ...group} =  model.assembleGroup([]);
+  const marks = group.marks;
+  const hasLayout = !!model.assembleLayout();
+
+  return {
+    ...group,
+    marks: [{
+      name: model.getName('nested-main-group'),
+      type: 'group',
+      layout,
+      signals,
+      ...(!hasLayout ? {
+        encode: {
+          update: {
+            width: {signal: 'width'},
+            height: {signal: 'height'},
+          }
+        }
+      } : {}),
+      marks
+    }],
   };
 }
