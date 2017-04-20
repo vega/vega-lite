@@ -73,12 +73,12 @@
     "url": "https://github.com/vega/vega-lite/issues"
   },
   "devDependencies": {
-    "@types/chai": "^3.5.0",
+    "@types/chai": "^3.5.1",
     "@types/d3": "^4.7.0",
     "@types/highlight.js": "^9.1.9",
     "@types/json-stable-stringify": "^1.0.31",
-    "@types/mocha": "^2.2.40",
-    "@types/node": "^7.0.12",
+    "@types/mocha": "^2.2.41",
+    "@types/node": "^7.0.13",
     "ajv": "5.0.1-beta.1",
     "browser-sync": "~2.18.8",
     "browserify": "~14.3.0",
@@ -86,9 +86,9 @@
     "chai": "~3.5.0",
     "cheerio": "~0.22.0",
     "codecov": "~2.1.0",
-    "d3": "^4.7.4",
+    "d3": "^4.8.0",
     "exorcist": "~0.4.0",
-    "highlight.js": "^9.10.0",
+    "highlight.js": "^9.11.0",
     "mocha": "~3.2.0",
     "nodemon": "~1.11.0",
     "nyc": "~10.2.0",
@@ -107,9 +107,9 @@
   },
   "dependencies": {
     "json-stable-stringify": "~1.0.1",
-    "tslib": "^1.6.0",
+    "tslib": "^1.6.1",
     "vega-event-selector": "^2.0.0-beta",
-    "vega-util": "~1.1.4",
-    "yargs": "~7.0.2"
+    "vega-util": "~1.2.0",
+    "yargs": "~7.1.0"
   }
 }
