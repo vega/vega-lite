@@ -150,7 +150,7 @@ export interface BarConfig extends MarkConfig {
    */
   binSpacing?: number;
   /**
-   * Default size of the bars on continuous scales.
+   * The default size of the bars on continuous scales.
    *
    * __Default value:__ `2`
    *

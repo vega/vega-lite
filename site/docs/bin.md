@@ -4,7 +4,7 @@ title: Binning
 permalink: /docs/bin.html
 ---
 
-The channel definition's `bin` property is for grouping quantitative, continuous data values of a particular field into smaller number of "bins" (e.g., for a histogram).
+The channel definition's `bin` property is for grouping quantitative, continuous data values of a particular field into a smaller number of "bins" (e.g., for a histogram).
 
 {: .suppress-error}
 ```json

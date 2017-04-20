@@ -8,7 +8,7 @@ permalink: /comparison.html
 
 Vega-Lite is a higher-level grammar for visual analysis. It supports common chart types (bar chart, line chart, area chart, scatter plot, heatmap, trellis plots, ...) and common data transformations (sorting, aggregation, faceting). In Vega, you have to manually construct axis and legends and you have to decide how to map the data to visual properties. Vega-Lite automates the construction of axes, legends, and scales from a high level encoding specification. This makes Vega-Lite specifications significantly shorter (about 1/10th). Vega-Lite is compiled to Vega and some Visualizations that are expressible in Vega cannot be expressed in Vega-Lite. For instance, as of now Vega-Lite does not support interactions.
 
-Vega-Lite and Vega are visualization specification languages in JSON. The Vega wiki has a detailed [comparison of Vega and D3](https://github.com/vega/vega/wiki/Vega-and-D3).
+Vega-Lite and Vega are visualization specification languages in JSON. The Vega website has a detailed [comparison of Vega and D3](https://vega.github.io/vega/about/vega-and-d3/).
 
 
 ## Grammar of Graphics, GGPlot and Tableau

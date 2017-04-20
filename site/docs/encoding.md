@@ -37,20 +37,17 @@ An integral part of the data visualization process is encoding data with visual 
 The keys in the encoding object are encoding channels. This section lists supported encoding channels in Vega-Lite.
 
 {:#props-channels}
+### Position Channels
+
+Position channels determine the position of the marks.
+
+{% include table.html props="x,x2,y,y2" source="Encoding" %}
+
 ### Mark Properties Channels
 
 Mark properties channels map data fields directly to visual properties of the marks. Unlike other channel types, they can be mapped to [constant values](#value) as well. Here are the supported mark properties:
 
-| Property      | Type          | Description    |
-| :------------ |:-------------:| :------------- |
-| x, x2, y, y2  | [ChannelDef](#def)| X and Y coordinates for marks.  For ranged marks such as `bar` and `area`, `x2` and `y2` will be set to zeroes for applicable scales and to snap the axes if zeroes is not applicable (e.g., if the scale domain does not include zeroes).  |
-| color         | [ChannelDef](#def)| Color of the marks – either fill or stroke color based on mark type. By default, fill color for `area`, `bar`, `tick`, `text`, `circle`, and `square` /   stroke color for `line` and `point`.  Supported color values include hex-color (e.g., `#0099ff`) and [standard HTML/CSS color names](http://www.w3schools.com/colors/colors_names.asp) (e.g., `"goldenrod"`).  Please see [scale range](scale.html#range) for more detail about color palettes.  |
-| opacity         | [ChannelDef](#def)| Opacity of the marks – either can be a value or in a range. <span class="note-line"> __Default value:__ `[0.3, 0.8]` </span>.  |
-| shape  | [ChannelDef](#def)| The symbol's shape (only for `point` marks). The supported values are `"circle"` (default), `"square"`, `"cross"`, `"diamond"`, `"triangle-up"`, `"triangle-down"`, or else a custom SVG path string. |
-| size  | [ChannelDef](#def)| Size of the mark. <br/>     • For `point`, `square` and `circle` – the symbol size, or pixel area of the mark. <br/> • For `bar` and `tick` – the bar and tick's size. <br/>      • For `text` – the text's font size. <br/>      • Size is currently unsupported for `line` and `area`.|
-| text  | [ChannelDef](#def)| Text of the `text` mark. |
-| column, row  | [ChannelDef](#def)| `row` and `column` are special encoding channels for [faceting](#facet). |
-
+{% include table.html props="color,opacity,shape,size,text" source="Encoding" %}
 
 ### Additional Level of Detail Channel
 
@@ -58,9 +55,7 @@ Grouping data is another important operation in visualizing data. For [aggregate
 
 `detail` channel allows providing an additional grouping field (level) for grouping data in aggregation without mapping data to a specific visual channel.
 
-| Property      | Type          | Description    |
-| :------------ |:-------------:| :------------- |
-| detail | [ChannelDef](#def)| Additional levels of detail for grouping data in aggregate views and in line and area marks without mapping data to a specific visual channel. ([Example](#ex-detail).) |
+{% include table.html props="detail" source="Encoding" %}
 
 **Note**: Since `detail` represents an actual data field in the aggregation, it cannot encode a constant `value`.
 
@@ -83,12 +78,9 @@ We map `symbol` variable (stock market ticker symbol) to `detail` to use them to
 
 `order` channel sorts the layer order or stacking order (for stacked charts) of the marks while `path` channel sorts the order of data points in line marks.
 
-| Property      | Type          | Description    |
-| :------------ |:-------------:| :------------- |
-| order | [ChannelDef](#def)| Layer order for non-stacked marks, or stack order for stacked marks. |
-| path   | [ChannelDef](#def)| Order of data points in line marks. |
+{% include table.html props="order" source="Encoding" %}
 
-**Note**: Since `order` and `path` represent actual data fields that are used to sort the data, they cannot encode constant `value`. In addition, in aggregate plots, they should have `aggregate` function specified.
+**Note**: Since `order` and `path` represent actual data fields that are used to sort the data, they cannot encode the constant `value`. In addition, in aggregate plots, they should have `aggregate` function specified.
 
 {:#ex-order}
 #### Example: Sorting Stack Order
@@ -99,7 +91,7 @@ Given a stacked bar chart:
 
 By default, the stacked bar are sorted by the stack grouping fields (`color` in this example).
 
-Mapping the sum of yield to `order` channel will sort the layer of stacked bar by sum of yield instead.
+Mapping the sum of yield to `order` channel will sort the layer of stacked bar by the sum of yield instead.
 
 <div class="vl-example" data-name="stacked_bar_h_order"></div>
 
@@ -108,7 +100,7 @@ Here we can see that site with higher yields for each type of barley are put on 
 {:#ex-path}
 #### Example: Sorting Line Order
 
-By default, line marks order their points in their paths by the field of channel x or y. However, to show a pattern of data change over time between gasoline price and average miles driven per capita we use `path` channel to sort the points in the line by time field (`year`).
+By default, line marks order their points in their paths by the field of channel x or y. However, to show a pattern of data change over time between gasoline price and average miles driven per capita we use `order` channel to sort the points in the line by time field (`year`).
 
 <div class="vl-example" data-name="scatter_connected"></div>
 
@@ -117,13 +109,11 @@ By default, line marks order their points in their paths by the field of channel
 
 `row` and `column` are special encoding channels that facets single plots into [trellis plots (or small multiples)](https://en.wikipedia.org/wiki/Small_multiple).
 
-| Property      | Type          | Description    |
-| :------------ |:-------------:| :------------- |
-| row, column   | [ChannelDef](#def)| Vertical and horizontal facets for vertical and horizontal [trellis plots](https://en.wikipedia.org/wiki/Small_multiple). |
+{% include table.html props="row,column" source="EncodingWithFacet" %}
 
 For more information, please see [facet page](facet.html).
 
-**Note**: Since `row` and `column` represent actual data fields that are used to partition the data, they cannot encode constant `value`. In addition, in aggregate plots, they should not have `aggregate` function specified.
+**Note**: Since `row` and `column` represent actual data fields that are used to partition the data, they cannot encode the constant `value`. In addition, in aggregate plots, they should not have `aggregate` function specified.
 
 {:#def}
 ## Channel Definition
@@ -136,9 +126,7 @@ Each channel definition object **must** describe the [data field encoded by the 
 
 To encode a particular field in the data set with a particular channel, the channel must specify the field's name with `field` property.
 
-| Property      | Type          | Description    |
-| :------------ |:-------------:| :------------- |
-| field         | String        | Name of the field from which to pull a data value.   |
+{% include table.html props="field" source="FieldDef" %}
 
 ### Data Type
 
@@ -157,24 +145,18 @@ Ordinal
 Nominal
 : Nominal data, also known as categorical data, differentiates between values based only on their names or categories. For example, gender, nationality, music genre, names are all nominal data. Numbers maybe used to represent the variables but the number do not determine magnitude or ordering. For example, if a nominal variable contains three values 1, 2, and 3. We cannot claim that 1 is less than 2 nor 3.
 
-| Property      | Type          | Description    |
-| :------------ |:-------------:| :------------- |
-| type          | String        | The encoded field's type of measurement. This can be either a full type name (`"quantitative"`, `"temporal"`, `"ordinal"`,  and `"nominal"`) or an initial character of the type name (`"Q"`, `"T"`, `"O"`, `"N"`). This property is case insensitive. |
+{% include table.html props="type" source="FieldDef" %}
 
 **Note**:
-Data `type` here describes semantic of the data rather than primitive data types in programming language sense (`number`, `string`, etc.). The same primitive data type can have different type of measurement. For example, numeric data can represent quantitative, ordinal, or nominal data.
+Data `type` here describes semantic of the data rather than primitive data types in programming language sense (`number`, `string`, etc.). The same primitive data type can have different types of measurement. For example, numeric data can represent quantitative, ordinal, or nominal data.
 
 {:#inline}
 ### Field Transforms
 
 To facilitate data exploration, Vega-Lite provides inline field transforms as a part of the channel definition. If a `field` is provided, the channel definition supports the following transformations:
 
-| Property      | Type          | Description    |
-| :------------ |:-------------:| :------------- |
-| [bin](bin.html)<sup>1</sup> | Boolean &#124; Object | Boolean flag for binning a `quantitative` field, or a bin property object for binning parameters. <span class="note-line"> __Default value:__ `false`</span>|
-| [timeUnit](timeunit.html)<sup>1</sup>| String        | Time unit for a `temporal` field  (e.g., `year`, `yearmonth`, `month`, `hour`). <span class="note-line"> __Default value:__ `undefined` (None) </span> |
-| [aggregate](aggregate.html)<sup>1,2</sup> | String        | Aggregation function for the field (e.g., `mean`, `sum`, `median`, `min`, `max`, `count`). <span class="note-line"> __Default value:__ `undefined` (None) </span> |
-| [sort](sort.html)<sup>1,2</sup> | String &#124; Object        | Sort order for a particular field. <br/> • For quantitative or temporal fields, this can be either `"ascending"` or , `"descending"` <br/> • For quantitative or temporal fields, this can be `"ascending"`, `"descending"`, `"none"`, or a [sort field definition object](sort.html#sort-field) for sorting by an aggregate calculation of a specified sort field. <span class="note-line"> __Default value:__ `"ascending"` </span> |
+{% include table.html props="bin,timeUnit,aggregate,sort" source="PositionFieldDef" %}
+
 
 <!-- TODO: re-explain sort + make it clear that text does not support sorting -->
 
@@ -190,17 +172,15 @@ For more information about these field transforms, please see the following page
 {:#value}
 ### Constant Value
 
-For [mark properties channels](#props-channels), if a `field` is not specified, constant values for the properties (e.g., color, size) can be also set directly with the channel definition's `value` property.
+For [mark properties channels](#props-channels), if a `field` is not specified, constant values for the properties (e.g., color, size) can also be set directly with the channel definition's `value` property.
 
-| Property      | Type          | Description    |
-| :------------ |:-------------:| :------------- |
-| value         | String &#124; Number | A constant value in visual domain. |
+{% include table.html props="value" source="ValueDef<number>" %}
 
-**Note**: `detail`, `path`, `order`, `row`, and `column` channels cannot encode constant `value`.
+**Note**: `detail`, `path`, `order`, `row`, and `column` channels cannot encode the constant `value`.
 
 #### Example
 
-For example, you can set `color` and `shape` of a scatter plot to constant values. Note that as the value is set directly to the color and shape values, there is no need to specify data `type`. In fact, the data `type` will be ignored if specified.
+For example, you can set `color` and `shape` of a scatter plot to constant values. Note that as the value is set directly to the color and shape values, there is no need to specify a data `type`. In fact, the data `type` will be ignored if specified.
 
 <span class="vl-example" data-name="scatter_color_shape_constant"></span>
 
@@ -217,7 +197,7 @@ Similarly, `value` for `size` channel of bar marks will adjust the bar's size. B
 
 For encoding channels that map data directly to visual properties of the marks, they must provide [scales](scale.html), or functions that transform values in the data domain (numbers, dates, strings, etc) to visual values (pixels, colors, sizes).
 
-In addition, visualizations typically provide guides to aid interpretation of scales. There are two types of guides: [axes](axis.html) and [legends](legend.html). Axes produces lines, ticks, and labels to convey how a spatial range represent a data range in position channel (`x` and `y`).   Meanwhile, legends aid interpretation of `color`, `size`, and `shape`'s scales.
+In addition, visualizations typically provide guides to aid interpretation of scales. There are two types of guides: [axes](axis.html) and [legends](legend.html). Axes produce lines, ticks, and labels to convey how a spatial range represent a data range in position channel (`x` and `y`).   Meanwhile, legends aid interpretation of `color`, `size`, and `shape`'s scales.
 
 By default, Vega-Lite automatically generates a scale and a guide for each field. If no properties are specified, scale, axis, and legend's properties are determined based on a set of rules by the compiler. `scale`, `axis`, `legend` properties of the channel definition can be used to customize their properties.
 

@@ -28,7 +28,7 @@ Here is a list of all properties describing `data` source:
 
 Inline Data can be specified using `values` property.
 
-{% include table.html props="values" source="InlineData" %}
+{% include table.html props="values,format" source="InlineData" %}
 
 For example, the following specification embeds an inline data table with two rows and two columns (`a` and `b`).
 
@@ -37,7 +37,9 @@ For example, the following specification embeds an inline data table with two ro
 {:#url}
 ## Data from URL
 
-Data can be specified from url using the `url` property. In addition, format of the input data can be optionally specified using `formatType` property.
+Data can be loaded from a URL using the `url` property. In addition, the format of the input data can be specified using the `formatType` property. By default Vega-Lite will infer the type from the file extension.
+
+{% include table.html props="feature,mesh,parse,property,type" source="DataUrlFormat" %}
 
 For example, the following specification loads data from a relative `url`: `data/cars.json`. Note that the format type is implicitly json by default.
 
@@ -47,6 +49,6 @@ For example, the following specification loads data from a relative `url`: `data
 
 The format object has the following properties:
 
-{% include table.html props="type,parse,property,feature,mesh" source="DataFormat" %}
+{% include table.html props="type,parse,property,feature,mesh" source="DataUrlFormat" %}
 
 -----

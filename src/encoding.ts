@@ -39,13 +39,15 @@ export interface Encoding<F> {
   y?: PositionFieldDef<F> | ValueDef<number>;
 
   /**
-   * X2 coordinates for ranged `bar`, `rule`, `area`
+   * X2 coordinates for ranged `bar`, `rule`, `area`.
    */
+  // TODO: Ham need to add default behavior
   x2?: FieldDef<F> | ValueDef<number>;
 
   /**
-   * Y2 coordinates for ranged `bar`, `rule`, `area`
+   * Y2 coordinates for ranged `bar`, `rule`, `area`.
    */
+  // TODO: Ham need to add default behavior
   y2?: FieldDef<F> | ValueDef<number>;
 
   /**
@@ -56,7 +58,7 @@ export interface Encoding<F> {
   color?: LegendFieldDef<F, string> | ConditionalValueDef<string>;
 
   /**
-   * Opacity of the marks – either can be a value or in a range.
+   * Opacity of the marks – either can be a value or a range.
    */
   opacity?: LegendFieldDef<F, number> | ConditionalValueDef<number>;
 

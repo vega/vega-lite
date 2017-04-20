@@ -49,7 +49,7 @@ A Vega-Lite `config` object can have the following top-level properties:
 ## Cell Configuration  (`config.cell.*`)
 
 At its core, a Vega-Lite specification describes a single plot. When a [facet channel](encoding.html#facet) is added, the visualization is faceted into a trellis plot, which contains multiple plots.
-Each plot in either a single plot or a trellis plot is called a _cell_. Cell configuration allows us to customize each individual single plot and each plot in a trellis plot.
+Each plot in either a single plot or a trellis plot is called a _cell_. Cell configuration allows us to customize each single plot and each plot in a trellis plot.
 
 ### Cell Size Configuration
 
@@ -209,9 +209,7 @@ vg.embed('#horizontal_line', {
 
 Scale configuration determines default properties for all [scales](scale.html).
 
-<span class="note-line">__See Code:__
-For a full list of scale configuration and their default values, please see the `ScaleConfig` interface and `defaultScaleConfig` in [scale.ts](https://github.com/vega/vega-lite/blob/master/src/scale.ts).
-</span>
+{% include table.html props="bandPaddingInner,bandPaddingOuter,clamp,facetSpacing,maxBandSize,maxFontSize,maxOpacity,maxSize,maxStrokeWidth,minBandSize,minFontSize,minOpacity,minSize,minStrokeWidth,pointPadding,rangeStep,round,shapes,textXRangeStep,useUnaggregatedDomain" source="ScaleConfig" %}
 
 {:#axis-config}
 ## Axis Configuration  (`config.axis.*`)
@@ -222,11 +220,7 @@ For a full list of axis configuration, please see the [Axis Config section in th
 {:#legend-config}
 ## Legend Configuration  (`config.legend.*`)
 
-Legend configuration determines default properties for [legends](legend.html).
-
-<span class="note-line">__See Code:__
-For a full list of legend configuration and their default values, please see the `LegendConfig` interface and `defaultLegendConfig` in [legend.ts](https://github.com/vega/vega-lite/blob/master/src/legend.ts).
-</span>
+Legend configuration determines default properties for [legends](legend.html). Please see [legend config](legend.html#legend-config) for each property name and default values.
 
 {:#facet-config}
 ## Facet Configuration  (`config.facet.*`)

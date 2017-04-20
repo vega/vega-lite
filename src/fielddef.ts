@@ -47,7 +47,9 @@ export function isRepeatRef(field: Field): field is RepeatRef {
  */
 export interface FieldDef<F> {
   /**
-   * Name of the field from which to pull a data value.
+   * __Required.__ Name of the field from which to pull a data value.
+   *
+   * __Note:__ `field` is not required if `aggregate` is `count`.
    */
   field?: F;
 
@@ -55,7 +57,7 @@ export interface FieldDef<F> {
    * The encoded field's type of measurement. This can be either a full type
    * name (`"quantitative"`, `"temporal"`, `"ordinal"`,  and `"nominal"`)
    * or an initial character of the type name (`"Q"`, `"T"`, `"O"`, `"N"`).
-   * This property is case insensitive.
+   * This property is case-insensitive.
    */
   type?: Type;
 
@@ -64,6 +66,9 @@ export interface FieldDef<F> {
 
   /**
    * Time unit for a `temporal` field  (e.g., `year`, `yearmonth`, `month`, `hour`).
+   *
+   * __Default value:__ `undefined` (None)
+   *
    */
   timeUnit?: TimeUnit;
 
@@ -76,6 +81,9 @@ export interface FieldDef<F> {
   /**
    * Aggregation function for the field
    * (e.g., `mean`, `sum`, `median`, `min`, `max`, `count`).
+   *
+   * __Default value:__ `undefined` (None)
+   *
    */
   aggregate?: AggregateOp | CompositeAggregate;
 
@@ -92,6 +100,14 @@ export interface Condition<T> {
 
 export interface ScaleFieldDef<F> extends FieldDef<F> {
   scale?: Scale;
+  /**
+   * Sort order for a particular field.
+   * For quantitative or temporal fields, this can be either `"ascending"` or `"descending"`
+   * For quantitative or temporal fields, this can be `"ascending"`, `"descending"`, `"none"`, or a [sort field definition object](sort.html#sort-field) for sorting by an aggregate calculation of a specified sort field.
+   *
+   * __Default value:__ `"ascending"`
+   *
+   */
   sort?: SortField | SortOrder;
 }
 

@@ -1,4 +1,4 @@
-import {BinBase} from './bin';
+import {BaseBin} from './bin';
 import {NiceTime, ScaleType} from './scale';
 import {StackOffset} from './stack';
 import {isArray} from './util';
@@ -159,7 +159,7 @@ export type VgEncodeEntry = any;
 export type VgAxis = any;
 export type VgLegend = any;
 
-export interface VgBinTransform extends BinBase {
+export interface VgBinTransform extends BaseBin {
   type: 'bin';
   extent?: number[] | {signal: string};
   field: string;
@@ -290,7 +290,7 @@ export interface VgAxisBase {
   domain?: boolean;
 
   /**
-   * A flag indicate if gridlines should be created in addition to ticks. For `X` and `Y`, the default value is `true` for quantitative and time fields and `"false"` otherwise.
+   * A boolean flag indicating if grid lines should be included as part of the axis
    *
    * __Default value:__ `true` for (1) quantitative fields that are not binned and (2) time fields;  otherwise, `"false"`.
    */
@@ -313,7 +313,7 @@ export interface VgAxisBase {
   labelAngle?: number;
 
   /**
-   * Whether the axis should include ticks.
+   * Boolean value that determines whether the axis should include ticks.
    */
   ticks?: boolean;
 
@@ -412,7 +412,7 @@ export interface VgAxisConfig extends VgAxisBase {
   labelFont?: string;
 
   /**
-   * The font size of label, in pixels.
+   * The font size of the label, in pixels.
    *
    * __Default value:__ `10`.
    *

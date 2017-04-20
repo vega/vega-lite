@@ -10,7 +10,7 @@
                     "type": "string"
                 },
                 "background": {
-                    "description": "CSS color property to use as background of visualization.\n\n__Default value:__ none (transparent)",
+                    "description": "CSS color property to use as the background of visualization.\n\n__Default value:__ none (transparent)",
                     "type": "string"
                 },
                 "config": {
@@ -138,7 +138,7 @@
                     "type": "string"
                 },
                 "background": {
-                    "description": "CSS color property to use as background of visualization.\n\n__Default value:__ none (transparent)",
+                    "description": "CSS color property to use as the background of visualization.\n\n__Default value:__ none (transparent)",
                     "type": "string"
                 },
                 "config": {
@@ -243,7 +243,7 @@
                     "type": "string"
                 },
                 "background": {
-                    "description": "CSS color property to use as background of visualization.\n\n__Default value:__ none (transparent)",
+                    "description": "CSS color property to use as the background of visualization.\n\n__Default value:__ none (transparent)",
                     "type": "string"
                 },
                 "config": {
@@ -342,7 +342,7 @@
                     "type": "string"
                 },
                 "background": {
-                    "description": "CSS color property to use as background of visualization.\n\n__Default value:__ none (transparent)",
+                    "description": "CSS color property to use as the background of visualization.\n\n__Default value:__ none (transparent)",
                     "type": "string"
                 },
                 "config": {
@@ -444,7 +444,7 @@
                     "type": "string"
                 },
                 "background": {
-                    "description": "CSS color property to use as background of visualization.\n\n__Default value:__ none (transparent)",
+                    "description": "CSS color property to use as the background of visualization.\n\n__Default value:__ none (transparent)",
                     "type": "string"
                 },
                 "config": {
@@ -586,7 +586,7 @@
                     "type": "string"
                 },
                 "grid": {
-                    "description": "A flag indicate if gridlines should be created in addition to ticks. For `X` and `Y`, the default value is `true` for quantitative and time fields and `\"false\"` otherwise.\n\n__Default value:__ `true` for (1) quantitative fields that are not binned and (2) time fields;  otherwise, `\"false\"`.",
+                    "description": "A boolean flag indicating if grid lines should be included as part of the axis\n\n__Default value:__ `true` for (1) quantitative fields that are not binned and (2) time fields;  otherwise, `\"false\"`.",
                     "type": "boolean"
                 },
                 "labelAngle": {
@@ -634,7 +634,7 @@
                     "type": "number"
                 },
                 "ticks": {
-                    "description": "Whether the axis should include ticks.",
+                    "description": "Boolean value that determines whether the axis should include ticks.",
                     "type": "boolean"
                 },
                 "title": {
@@ -691,7 +691,7 @@
                     "type": "number"
                 },
                 "grid": {
-                    "description": "A flag indicate if gridlines should be created in addition to ticks. For `X` and `Y`, the default value is `true` for quantitative and time fields and `\"false\"` otherwise.\n\n__Default value:__ `true` for (1) quantitative fields that are not binned and (2) time fields;  otherwise, `\"false\"`.",
+                    "description": "A boolean flag indicating if grid lines should be included as part of the axis\n\n__Default value:__ `true` for (1) quantitative fields that are not binned and (2) time fields;  otherwise, `\"false\"`.",
                     "type": "boolean"
                 },
                 "gridColor": {
@@ -732,7 +732,7 @@
                     "type": "string"
                 },
                 "labelFontSize": {
-                    "description": "The font size of label, in pixels.\n\n__Default value:__ `10`.",
+                    "description": "The font size of the label, in pixels.\n\n__Default value:__ `10`.",
                     "minimum": 0,
                     "type": "number"
                 },
@@ -771,7 +771,7 @@
                     "type": "number"
                 },
                 "ticks": {
-                    "description": "Whether the axis should include ticks.",
+                    "description": "Boolean value that determines whether the axis should include ticks.",
                     "type": "boolean"
                 },
                 "titleColor": {
@@ -846,7 +846,7 @@
                     "type": "string"
                 },
                 "continuousBandSize": {
-                    "description": "Default size of the bars on continuous scales.\n\n__Default value:__ `2`",
+                    "description": "The default size of the bars on continuous scales.\n\n__Default value:__ `2`",
                     "minimum": 0,
                     "type": "number"
                 },
@@ -1461,7 +1461,7 @@
                     "type": "string"
                 },
                 "calculate": {
-                    "description": "A string containing a Vega Expression. Use the variable `datum` to to refer to the current data object.",
+                    "description": "A string containing a Vega Expression. Use the variable `datum` to refer to the current data object.",
                     "type": "string"
                 }
             },
@@ -1674,7 +1674,7 @@
                     "description": "Specific axis config for x-axis along the bottom edge of the chart."
                 },
                 "background": {
-                    "description": "CSS color property to use as background of visualization.\n\n__Default value:__ none (transparent)",
+                    "description": "CSS color property to use as the background of visualization.\n\n__Default value:__ none (transparent)",
                     "type": "string"
                 },
                 "bar": {
@@ -1708,7 +1708,7 @@
                     "description": "Facet Config"
                 },
                 "filterInvalid": {
-                    "description": "Whether to filter invalid values (`null` and `NaN`) from the data.\n- By default (`undefined`), only quantitative and temporal fields are filtered.\n- If set to `true`, all data items with null values are filtered.\n- If `false`, all data items are included. In this case, null values will be interpret as zeroes.",
+                    "description": "Whether to filter invalid values (`null` and `NaN`) from the data.\n- By default (`undefined`), only quantitative and temporal fields are filtered.\n- If set to `true`, all data items with null values are filtered.\n- If `false`, all data items are included. In this case, null values will be interpreted as zeroes.",
                     "type": "boolean"
                 },
                 "legend": {
@@ -1859,7 +1859,7 @@
                     "type": "string"
                 },
                 "mesh": {
-                    "description": "The name of the TopoJSON object set to convert to a mesh.\nSimilar to the `feature` option, `mesh` extracts a named TopoJSON object set.\n  Unlike the `feature` option, the corresponding geo data is returned as a single, unified mesh instance, not as individual GeoJSON features.\nExtracting a mesh is useful for more efficiently drawing borders or other geographic elements that you do not need to associate with specific regions such as individual countries, states or counties.",
+                    "description": "The name of the TopoJSON object set to convert to mesh.\nSimilar to the `feature` option, `mesh` extracts a named TopoJSON object set.\n  Unlike the `feature` option, the corresponding geo data is returned as a single, unified mesh instance, not as individual GeoJSON features.\nExtracting a mesh is useful for more efficiently drawing borders or other geographic elements that you do not need to associate with specific regions such as individual countries, states or counties.",
                     "type": "string"
                 },
                 "parse": {
@@ -1889,7 +1889,7 @@
                     "type": "string"
                 },
                 "mesh": {
-                    "description": "The name of the TopoJSON object set to convert to a mesh.\nSimilar to the `feature` option, `mesh` extracts a named TopoJSON object set.\n  Unlike the `feature` option, the corresponding geo data is returned as a single, unified mesh instance, not as individual GeoJSON features.\nExtracting a mesh is useful for more efficiently drawing borders or other geographic elements that you do not need to associate with specific regions such as individual countries, states or counties.",
+                    "description": "The name of the TopoJSON object set to convert to mesh.\nSimilar to the `feature` option, `mesh` extracts a named TopoJSON object set.\n  Unlike the `feature` option, the corresponding geo data is returned as a single, unified mesh instance, not as individual GeoJSON features.\nExtracting a mesh is useful for more efficiently drawing borders or other geographic elements that you do not need to associate with specific regions such as individual countries, states or counties.",
                     "type": "string"
                 },
                 "parse": {
@@ -1901,7 +1901,7 @@
                 },
                 "type": {
                     "$ref": "#/definitions/DataFormatType",
-                    "description": "Type of input data: `\"json\"`, `\"csv\"`, `\"tsv\"`.\nThe default format type is determined by the extension of the file url.\nIf no extension is detected, `\"json\"` will be used by default."
+                    "description": "Type of input data: `\"json\"`, `\"csv\"`, `\"tsv\"`.\nThe default format type is determined by the extension of the file URL.\nIf no extension is detected, `\"json\"` will be used by default."
                 }
             },
             "type": "object"
@@ -1917,26 +1917,26 @@
                     "type": "integer"
                 },
                 "day": {
-                    "description": "Value representing the day of week.  This can be one of: (1) integer value -- `1` represents Monday; (2) case-insensitive day name (e.g., `\"Monday\"`);  (3) case-insensitive, 3-character short day name (e.g., `\"Mon\"`).   <br/> **Warning:** A DateTime definition object with `day`** should not be combined with `year`, `quarter`, `month`, or `date`.",
+                    "description": "Value representing the day of a week.  This can be one of: (1) integer value -- `1` represents Monday; (2) case-insensitive day name (e.g., `\"Monday\"`);  (3) case-insensitive, 3-character short day name (e.g., `\"Mon\"`).   <br/> **Warning:** A DateTime definition object with `day`** should not be combined with `year`, `quarter`, `month`, or `date`.",
                     "type": [
                         "string",
                         "number"
                     ]
                 },
                 "hours": {
-                    "description": "Integer value representing the hour of day from 0-23.",
+                    "description": "Integer value representing the hour of a day from 0-23.",
                     "maximum": 23,
                     "minimum": 0,
                     "type": "integer"
                 },
                 "milliseconds": {
-                    "description": "Integer value representing millisecond segment of a time.",
+                    "description": "Integer value representing the millisecond segment of time.",
                     "maximum": 999,
                     "minimum": 0,
                     "type": "integer"
                 },
                 "minutes": {
-                    "description": "Integer value representing minute segment of a time from 0-59.",
+                    "description": "Integer value representing the minute segment of time from 0-59.",
                     "maximum": 59,
                     "minimum": 0,
                     "type": "integer"
@@ -1955,7 +1955,7 @@
                     "type": "integer"
                 },
                 "seconds": {
-                    "description": "Integer value representing second segment of a time from 0-59.",
+                    "description": "Integer value representing the second segment (0-59) of a time value",
                     "maximum": 59,
                     "minimum": 0,
                     "type": "integer"
@@ -2004,7 +2004,7 @@
                             "$ref": "#/definitions/LegendFieldDef<Field, number>"
                         }
                     ],
-                    "description": "Opacity of the marks – either can be a value or in a range."
+                    "description": "Opacity of the marks – either can be a value or a range."
                 },
                 "order": {
                     "anyOf": [
@@ -2073,7 +2073,7 @@
                             "$ref": "#/definitions/FieldDef<Field>"
                         }
                     ],
-                    "description": "X2 coordinates for ranged `bar`, `rule`, `area`"
+                    "description": "X2 coordinates for ranged `bar`, `rule`, `area`."
                 },
                 "y": {
                     "anyOf": [
@@ -2095,7 +2095,7 @@
                             "$ref": "#/definitions/FieldDef<Field>"
                         }
                     ],
-                    "description": "Y2 coordinates for ranged `bar`, `rule`, `area`"
+                    "description": "Y2 coordinates for ranged `bar`, `rule`, `area`."
                 }
             },
             "type": "object"
@@ -2141,7 +2141,7 @@
                             "$ref": "#/definitions/LegendFieldDef<Field, number>"
                         }
                     ],
-                    "description": "Opacity of the marks – either can be a value or in a range."
+                    "description": "Opacity of the marks – either can be a value or a range."
                 },
                 "order": {
                     "anyOf": [
@@ -2214,7 +2214,7 @@
                             "$ref": "#/definitions/FieldDef<Field>"
                         }
                     ],
-                    "description": "X2 coordinates for ranged `bar`, `rule`, `area`"
+                    "description": "X2 coordinates for ranged `bar`, `rule`, `area`."
                 },
                 "y": {
                     "anyOf": [
@@ -2236,7 +2236,7 @@
                             "$ref": "#/definitions/FieldDef<Field>"
                         }
                     ],
-                    "description": "Y2 coordinates for ranged `bar`, `rule`, `area`"
+                    "description": "Y2 coordinates for ranged `bar`, `rule`, `area`."
                 }
             },
             "type": "object"
@@ -2257,7 +2257,7 @@
                             ]
                         }
                     ],
-                    "description": "Value that the field should be equal to."
+                    "description": "The value that the field should be equal to."
                 },
                 "field": {
                     "description": "Field to be filtered.",
@@ -2325,7 +2325,7 @@
             "description": "Definition object for a data field, its type and transformation of an encoding channel.",
             "properties": {
                 "aggregate": {
-                    "description": "Aggregation function for the field\n(e.g., `mean`, `sum`, `median`, `min`, `max`, `count`).",
+                    "description": "Aggregation function for the field\n(e.g., `mean`, `sum`, `median`, `min`, `max`, `count`).\n\n__Default value:__ `undefined` (None)",
                     "enum": [
                         "argmax",
                         "argmin",
@@ -2386,11 +2386,11 @@
                             "type": "string"
                         }
                     ],
-                    "description": "Name of the field from which to pull a data value."
+                    "description": "__Required.__ Name of the field from which to pull a data value.\n\n__Note:__ `field` is not required if `aggregate` is `count`."
                 },
                 "timeUnit": {
                     "$ref": "#/definitions/TimeUnit",
-                    "description": "Time unit for a `temporal` field  (e.g., `year`, `yearmonth`, `month`, `hour`)."
+                    "description": "Time unit for a `temporal` field  (e.g., `year`, `yearmonth`, `month`, `hour`).\n\n__Default value:__ `undefined` (None)"
                 },
                 "title": {
                     "description": "Title for axis or legend.",
@@ -2398,7 +2398,7 @@
                 },
                 "type": {
                     "$ref": "#/definitions/Type",
-                    "description": "The encoded field's type of measurement. This can be either a full type\nname (`\"quantitative\"`, `\"temporal\"`, `\"ordinal\"`,  and `\"nominal\"`)\nor an initial character of the type name (`\"Q\"`, `\"T\"`, `\"O\"`, `\"N\"`).\nThis property is case insensitive."
+                    "description": "The encoded field's type of measurement. This can be either a full type\nname (`\"quantitative\"`, `\"temporal\"`, `\"ordinal\"`,  and `\"nominal\"`)\nor an initial character of the type name (`\"Q\"`, `\"T\"`, `\"O\"`, `\"N\"`).\nThis property is case-insensitive."
                 }
             },
             "type": "object"
@@ -2918,7 +2918,7 @@
             "additionalProperties": false,
             "properties": {
                 "aggregate": {
-                    "description": "Aggregation function for the field\n(e.g., `mean`, `sum`, `median`, `min`, `max`, `count`).",
+                    "description": "Aggregation function for the field\n(e.g., `mean`, `sum`, `median`, `min`, `max`, `count`).\n\n__Default value:__ `undefined` (None)",
                     "enum": [
                         "argmax",
                         "argmin",
@@ -2982,7 +2982,7 @@
                             "type": "string"
                         }
                     ],
-                    "description": "Name of the field from which to pull a data value."
+                    "description": "__Required.__ Name of the field from which to pull a data value.\n\n__Note:__ `field` is not required if `aggregate` is `count`."
                 },
                 "legend": {
                     "anyOf": [
@@ -3009,11 +3009,12 @@
                             ],
                             "type": "string"
                         }
-                    ]
+                    ],
+                    "description": "Sort order for a particular field.\nFor quantitative or temporal fields, this can be either `\"ascending\"` or `\"descending\"`\nFor quantitative or temporal fields, this can be `\"ascending\"`, `\"descending\"`, `\"none\"`, or a [sort field definition object](sort.html#sort-field) for sorting by an aggregate calculation of a specified sort field.\n\n__Default value:__ `\"ascending\"`"
                 },
                 "timeUnit": {
                     "$ref": "#/definitions/TimeUnit",
-                    "description": "Time unit for a `temporal` field  (e.g., `year`, `yearmonth`, `month`, `hour`)."
+                    "description": "Time unit for a `temporal` field  (e.g., `year`, `yearmonth`, `month`, `hour`).\n\n__Default value:__ `undefined` (None)"
                 },
                 "title": {
                     "description": "Title for axis or legend.",
@@ -3021,7 +3022,7 @@
                 },
                 "type": {
                     "$ref": "#/definitions/Type",
-                    "description": "The encoded field's type of measurement. This can be either a full type\nname (`\"quantitative\"`, `\"temporal\"`, `\"ordinal\"`,  and `\"nominal\"`)\nor an initial character of the type name (`\"Q\"`, `\"T\"`, `\"O\"`, `\"N\"`).\nThis property is case insensitive."
+                    "description": "The encoded field's type of measurement. This can be either a full type\nname (`\"quantitative\"`, `\"temporal\"`, `\"ordinal\"`,  and `\"nominal\"`)\nor an initial character of the type name (`\"Q\"`, `\"T\"`, `\"O\"`, `\"N\"`).\nThis property is case-insensitive."
                 }
             },
             "type": "object"
@@ -3030,7 +3031,7 @@
             "additionalProperties": false,
             "properties": {
                 "aggregate": {
-                    "description": "Aggregation function for the field\n(e.g., `mean`, `sum`, `median`, `min`, `max`, `count`).",
+                    "description": "Aggregation function for the field\n(e.g., `mean`, `sum`, `median`, `min`, `max`, `count`).\n\n__Default value:__ `undefined` (None)",
                     "enum": [
                         "argmax",
                         "argmin",
@@ -3094,7 +3095,7 @@
                             "type": "string"
                         }
                     ],
-                    "description": "Name of the field from which to pull a data value."
+                    "description": "__Required.__ Name of the field from which to pull a data value.\n\n__Note:__ `field` is not required if `aggregate` is `count`."
                 },
                 "legend": {
                     "anyOf": [
@@ -3121,11 +3122,12 @@
                             ],
                             "type": "string"
                         }
-                    ]
+                    ],
+                    "description": "Sort order for a particular field.\nFor quantitative or temporal fields, this can be either `\"ascending\"` or `\"descending\"`\nFor quantitative or temporal fields, this can be `\"ascending\"`, `\"descending\"`, `\"none\"`, or a [sort field definition object](sort.html#sort-field) for sorting by an aggregate calculation of a specified sort field.\n\n__Default value:__ `\"ascending\"`"
                 },
                 "timeUnit": {
                     "$ref": "#/definitions/TimeUnit",
-                    "description": "Time unit for a `temporal` field  (e.g., `year`, `yearmonth`, `month`, `hour`)."
+                    "description": "Time unit for a `temporal` field  (e.g., `year`, `yearmonth`, `month`, `hour`).\n\n__Default value:__ `undefined` (None)"
                 },
                 "title": {
                     "description": "Title for axis or legend.",
@@ -3133,7 +3135,7 @@
                 },
                 "type": {
                     "$ref": "#/definitions/Type",
-                    "description": "The encoded field's type of measurement. This can be either a full type\nname (`\"quantitative\"`, `\"temporal\"`, `\"ordinal\"`,  and `\"nominal\"`)\nor an initial character of the type name (`\"Q\"`, `\"T\"`, `\"O\"`, `\"N\"`).\nThis property is case insensitive."
+                    "description": "The encoded field's type of measurement. This can be either a full type\nname (`\"quantitative\"`, `\"temporal\"`, `\"ordinal\"`,  and `\"nominal\"`)\nor an initial character of the type name (`\"Q\"`, `\"T\"`, `\"O\"`, `\"N\"`).\nThis property is case-insensitive."
                 }
             },
             "type": "object"
@@ -3400,7 +3402,7 @@
             "additionalProperties": false,
             "properties": {
                 "aggregate": {
-                    "description": "Aggregation function for the field\n(e.g., `mean`, `sum`, `median`, `min`, `max`, `count`).",
+                    "description": "Aggregation function for the field\n(e.g., `mean`, `sum`, `median`, `min`, `max`, `count`).\n\n__Default value:__ `undefined` (None)",
                     "enum": [
                         "argmax",
                         "argmin",
@@ -3461,14 +3463,14 @@
                             "type": "string"
                         }
                     ],
-                    "description": "Name of the field from which to pull a data value."
+                    "description": "__Required.__ Name of the field from which to pull a data value.\n\n__Note:__ `field` is not required if `aggregate` is `count`."
                 },
                 "sort": {
                     "$ref": "#/definitions/SortOrder"
                 },
                 "timeUnit": {
                     "$ref": "#/definitions/TimeUnit",
-                    "description": "Time unit for a `temporal` field  (e.g., `year`, `yearmonth`, `month`, `hour`)."
+                    "description": "Time unit for a `temporal` field  (e.g., `year`, `yearmonth`, `month`, `hour`).\n\n__Default value:__ `undefined` (None)"
                 },
                 "title": {
                     "description": "Title for axis or legend.",
@@ -3476,7 +3478,7 @@
                 },
                 "type": {
                     "$ref": "#/definitions/Type",
-                    "description": "The encoded field's type of measurement. This can be either a full type\nname (`\"quantitative\"`, `\"temporal\"`, `\"ordinal\"`,  and `\"nominal\"`)\nor an initial character of the type name (`\"Q\"`, `\"T\"`, `\"O\"`, `\"N\"`).\nThis property is case insensitive."
+                    "description": "The encoded field's type of measurement. This can be either a full type\nname (`\"quantitative\"`, `\"temporal\"`, `\"ordinal\"`,  and `\"nominal\"`)\nor an initial character of the type name (`\"Q\"`, `\"T\"`, `\"O\"`, `\"N\"`).\nThis property is case-insensitive."
                 }
             },
             "type": "object"
@@ -3506,7 +3508,7 @@
             "additionalProperties": false,
             "properties": {
                 "aggregate": {
-                    "description": "Aggregation function for the field\n(e.g., `mean`, `sum`, `median`, `min`, `max`, `count`).",
+                    "description": "Aggregation function for the field\n(e.g., `mean`, `sum`, `median`, `min`, `max`, `count`).\n\n__Default value:__ `undefined` (None)",
                     "enum": [
                         "argmax",
                         "argmin",
@@ -3577,7 +3579,7 @@
                             "type": "string"
                         }
                     ],
-                    "description": "Name of the field from which to pull a data value."
+                    "description": "__Required.__ Name of the field from which to pull a data value.\n\n__Note:__ `field` is not required if `aggregate` is `count`."
                 },
                 "scale": {
                     "$ref": "#/definitions/Scale"
@@ -3594,7 +3596,8 @@
                             ],
                             "type": "string"
                         }
-                    ]
+                    ],
+                    "description": "Sort order for a particular field.\nFor quantitative or temporal fields, this can be either `\"ascending\"` or `\"descending\"`\nFor quantitative or temporal fields, this can be `\"ascending\"`, `\"descending\"`, `\"none\"`, or a [sort field definition object](sort.html#sort-field) for sorting by an aggregate calculation of a specified sort field.\n\n__Default value:__ `\"ascending\"`"
                 },
                 "stack": {
                     "$ref": "#/definitions/StackOffset",
@@ -3602,7 +3605,7 @@
                 },
                 "timeUnit": {
                     "$ref": "#/definitions/TimeUnit",
-                    "description": "Time unit for a `temporal` field  (e.g., `year`, `yearmonth`, `month`, `hour`)."
+                    "description": "Time unit for a `temporal` field  (e.g., `year`, `yearmonth`, `month`, `hour`).\n\n__Default value:__ `undefined` (None)"
                 },
                 "title": {
                     "description": "Title for axis or legend.",
@@ -3610,7 +3613,7 @@
                 },
                 "type": {
                     "$ref": "#/definitions/Type",
-                    "description": "The encoded field's type of measurement. This can be either a full type\nname (`\"quantitative\"`, `\"temporal\"`, `\"ordinal\"`,  and `\"nominal\"`)\nor an initial character of the type name (`\"Q\"`, `\"T\"`, `\"O\"`, `\"N\"`).\nThis property is case insensitive."
+                    "description": "The encoded field's type of measurement. This can be either a full type\nname (`\"quantitative\"`, `\"temporal\"`, `\"ordinal\"`,  and `\"nominal\"`)\nor an initial character of the type name (`\"Q\"`, `\"T\"`, `\"O\"`, `\"N\"`).\nThis property is case-insensitive."
                 }
             },
             "type": "object"
@@ -3623,7 +3626,7 @@
                     "type": "string"
                 },
                 "range": {
-                    "description": "Array of inclusive minimum and maximum values\nfor a field value of a data item to be included in the filtered data.",
+                    "description": "An array of inclusive minimum and maximum values\nfor a field value of a data item to be included in the filtered data.",
                     "items": {
                         "anyOf": [
                             {
@@ -3703,7 +3706,7 @@
                             "type": "string"
                         }
                     ],
-                    "description": "The domain of the scale, representing the set of data values. For quantitative data, this can take the form of a two-element array with minimum and maximum values. For ordinal/categorical data, this may be an array of valid input values.\n\nIf the domain is `\"unaggregated\"`, we use the source data range before aggregation as scale domain instead of aggregated data for aggregate axis.\nThis property only works with aggregate functions that produce values within the raw data domain (`\"mean\"`, `\"average\"`, `\"median\"`, `\"q1\"`, `\"q3\"`, `\"min\"`, `\"max\"`). For other aggregations that produce values outside of the raw data domain (e.g. `\"count\"`, `\"sum\"`), this property is ignored."
+                    "description": "The domain of the scale, representing the set of data values. For quantitative data, this can take the form of a two-element array with minimum and maximum values. For ordinal/categorical data, this may be an array of valid input values.\n\nIf the domain is `\"unaggregated\"`, we use the source data range before aggregation as scale domain instead of aggregated data for an aggregate axis.\nThis property only works with aggregate functions that produce values within the raw data domain (`\"mean\"`, `\"average\"`, `\"median\"`, `\"q1\"`, `\"q3\"`, `\"min\"`, `\"max\"`). For other aggregations that produce values outside of the raw data domain (e.g. `\"count\"`, `\"sum\"`), this property is ignored."
                 },
                 "exponent": {
                     "description": "Sets the exponent of the scale transformation. For `pow` scale types only, otherwise ignored.",
@@ -3730,7 +3733,7 @@
                     ]
                 },
                 "padding": {
-                    "description": "Applies spacing among ordinal elements in the scale range. The actual effect depends on how the scale is configured. If the __points__ parameter is `true`, the padding value is interpreted as a multiple of the spacing between points. A reasonable value is 1.0, such that the first and last point will be offset from the minimum and maximum value by half the distance between points. Otherwise, padding is typically in the range [0, 1] and corresponds to the fraction of space in the range interval to allocate to padding. A value of 0.5 means that the band size will be equal to the padding width. For more, see the [D3 ordinal scale documentation](https://github.com/mbostock/d3/wiki/Ordinal-Scales).\nA convenience property for setting the inner and outer padding to the same value.\n\n__Default value:__ `x` and `y` channels are derived from [scale config](config.html#scale-config)'s `pointPadding` for `point` scale and `bandPadding` for `band` scale.  Other channels has `0` padding by default.",
+                    "description": "Applies spacing among ordinal elements in the scale range. The actual effect depends on how the scale is configured. If the __points__ parameter is `true`, the padding value is interpreted as a multiple of the spacing between points. A reasonable value is 1.0, such that the first and last point will be offset from the minimum and maximum value by half the distance between points. Otherwise, padding is typically in the range [0, 1] and corresponds to the fraction of space in the range interval to allocate to padding. A value of 0.5 means that the band size will be equal to the padding width. For more, see the [D3 ordinal scale documentation](https://github.com/mbostock/d3/wiki/Ordinal-Scales).\nA convenience property for setting the inner and outer padding to the same value.\n\n__Default value:__ `x` and `y` channels are derived from [scale config](config.html#scale-config)'s `pointPadding` for `point` scale and `bandPadding` for `band` scale.  Other channels have `0` padding by default.",
                     "maximum": 1,
                     "minimum": 0,
                     "type": "number"
@@ -4448,7 +4451,7 @@
             "additionalProperties": false,
             "properties": {
                 "aggregate": {
-                    "description": "Aggregation function for the field\n(e.g., `mean`, `sum`, `median`, `min`, `max`, `count`).",
+                    "description": "Aggregation function for the field\n(e.g., `mean`, `sum`, `median`, `min`, `max`, `count`).\n\n__Default value:__ `undefined` (None)",
                     "enum": [
                         "argmax",
                         "argmin",
@@ -4512,7 +4515,7 @@
                             "type": "string"
                         }
                     ],
-                    "description": "Name of the field from which to pull a data value."
+                    "description": "__Required.__ Name of the field from which to pull a data value.\n\n__Note:__ `field` is not required if `aggregate` is `count`."
                 },
                 "format": {
                     "description": "The formatting pattern for text value. If not defined, this will be determined automatically.",
@@ -4520,7 +4523,7 @@
                 },
                 "timeUnit": {
                     "$ref": "#/definitions/TimeUnit",
-                    "description": "Time unit for a `temporal` field  (e.g., `year`, `yearmonth`, `month`, `hour`)."
+                    "description": "Time unit for a `temporal` field  (e.g., `year`, `yearmonth`, `month`, `hour`).\n\n__Default value:__ `undefined` (None)"
                 },
                 "title": {
                     "description": "Title for axis or legend.",
@@ -4528,7 +4531,7 @@
                 },
                 "type": {
                     "$ref": "#/definitions/Type",
-                    "description": "The encoded field's type of measurement. This can be either a full type\nname (`\"quantitative\"`, `\"temporal\"`, `\"ordinal\"`,  and `\"nominal\"`)\nor an initial character of the type name (`\"Q\"`, `\"T\"`, `\"O\"`, `\"N\"`).\nThis property is case insensitive."
+                    "description": "The encoded field's type of measurement. This can be either a full type\nname (`\"quantitative\"`, `\"temporal\"`, `\"ordinal\"`,  and `\"nominal\"`)\nor an initial character of the type name (`\"Q\"`, `\"T\"`, `\"O\"`, `\"N\"`).\nThis property is case-insensitive."
                 }
             },
             "type": "object"
@@ -4727,10 +4730,10 @@
             "properties": {
                 "format": {
                     "$ref": "#/definitions/DataUrlFormat",
-                    "description": "Type of input data: `\"json\"`, `\"csv\"`, `\"tsv\"`. The default format type is determined by the extension of the file url. If no extension is detected, `\"json\"` will be used by default."
+                    "description": "Type of input data: `\"json\"`, `\"csv\"`, `\"tsv\"`. The default format type is determined by the extension of the file URL. If no extension is detected, `\"json\"` will be used by default."
                 },
                 "url": {
-                    "description": "A URL from which to load the data set. Use the `format.type` property\nto ensure the loaded data is correctly parsed.",
+                    "description": "An URL from which to load the data set. Use the `format.type` property\nto ensure the loaded data is correctly parsed.",
                     "type": "string"
                 }
             },
