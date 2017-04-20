@@ -7,12 +7,12 @@
       "mark": "area",
       "encoding": {
         "x": {
-          "field": "DATE",
+          "field": "date",
           "type": "temporal",
           "title": "",
           "axis": {"labelAngle": 0}
         },
-        "y": {"field": "VALUE","type": "quantitative"}
+        "y": {"field": "price","type": "quantitative"}
       }
     },
     {
@@ -22,12 +22,12 @@
       "mark": "area",
       "encoding": {
         "x": {
-          "field": "DATE",
+          "field": "date",
           "type": "temporal",
           "axis": {"format": "%Y", "labelAngle": 0}
         },
         "y": {
-          "field": "VALUE",
+          "field": "price",
           "type": "quantitative",
           "axis": {"tickCount": 3, "grid": false}
         }

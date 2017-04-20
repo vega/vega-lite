@@ -16,22 +16,22 @@
             "transform": [
                 {
                     "type": "formula",
-                    "expr": "toDate(datum[\"DATE\"])",
-                    "as": "DATE"
+                    "expr": "toDate(datum[\"date\"])",
+                    "as": "date"
                 },
                 {
                     "type": "formula",
-                    "expr": "toNumber(datum[\"VALUE\"])",
-                    "as": "VALUE"
+                    "expr": "toNumber(datum[\"price\"])",
+                    "as": "price"
                 },
                 {
                     "type": "filter",
-                    "expr": "datum[\"DATE\"] !== null && !isNaN(datum[\"DATE\"]) && datum[\"VALUE\"] !== null && !isNaN(datum[\"VALUE\"])"
+                    "expr": "datum[\"date\"] !== null && !isNaN(datum[\"date\"]) && datum[\"price\"] !== null && !isNaN(datum[\"price\"])"
                 },
                 {
                     "type": "collect",
                     "sort": {
-                        "field": "DATE",
+                        "field": "date",
                         "order": "descending"
                     }
                 }
@@ -43,22 +43,22 @@
             "transform": [
                 {
                     "type": "formula",
-                    "expr": "toDate(datum[\"DATE\"])",
-                    "as": "DATE"
+                    "expr": "toDate(datum[\"date\"])",
+                    "as": "date"
                 },
                 {
                     "type": "formula",
-                    "expr": "toNumber(datum[\"VALUE\"])",
-                    "as": "VALUE"
+                    "expr": "toNumber(datum[\"price\"])",
+                    "as": "price"
                 },
                 {
                     "type": "filter",
-                    "expr": "datum[\"DATE\"] !== null && !isNaN(datum[\"DATE\"]) && datum[\"VALUE\"] !== null && !isNaN(datum[\"VALUE\"])"
+                    "expr": "datum[\"date\"] !== null && !isNaN(datum[\"date\"]) && datum[\"price\"] !== null && !isNaN(datum[\"price\"])"
                 },
                 {
                     "type": "collect",
                     "sort": {
-                        "field": "DATE",
+                        "field": "date",
                         "order": "descending"
                     }
                 }
@@ -132,11 +132,11 @@
                                 "update": {
                                     "x": {
                                         "scale": "concat_0_x",
-                                        "field": "DATE"
+                                        "field": "date"
                                     },
                                     "y": {
                                         "scale": "concat_0_y",
-                                        "field": "VALUE"
+                                        "field": "price"
                                     },
                                     "y2": {
                                         "scale": "concat_0_y",
@@ -158,7 +158,7 @@
                             "type": "time",
                             "domain": {
                                 "data": "data_0",
-                                "field": "DATE"
+                                "field": "date"
                             },
                             "range": [
                                 0,
@@ -171,7 +171,7 @@
                             "type": "linear",
                             "domain": {
                                 "data": "data_0",
-                                "field": "VALUE"
+                                "field": "price"
                             },
                             "range": [
                                 200,
@@ -216,7 +216,7 @@
                             "scale": "concat_0_y",
                             "format": "s",
                             "orient": "left",
-                            "title": "VALUE",
+                            "title": "price",
                             "zindex": 1
                         },
                         {
@@ -256,11 +256,11 @@
                                 "update": {
                                     "x": {
                                         "scale": "concat_1_x",
-                                        "field": "DATE"
+                                        "field": "date"
                                     },
                                     "y": {
                                         "scale": "concat_1_y",
-                                        "field": "VALUE"
+                                        "field": "price"
                                     },
                                     "y2": {
                                         "scale": "concat_1_y",
@@ -282,7 +282,7 @@
                             "type": "time",
                             "domain": {
                                 "data": "data_1",
-                                "field": "DATE"
+                                "field": "date"
                             },
                             "range": [
                                 0,
@@ -295,7 +295,7 @@
                             "type": "linear",
                             "domain": {
                                 "data": "data_1",
-                                "field": "VALUE"
+                                "field": "price"
                             },
                             "range": [
                                 60,
@@ -311,7 +311,7 @@
                             "scale": "concat_1_x",
                             "orient": "bottom",
                             "tickCount": 5,
-                            "title": "DATE",
+                            "title": "date",
                             "zindex": 1,
                             "encode": {
                                 "labels": {
@@ -342,7 +342,7 @@
                             "format": "s",
                             "orient": "left",
                             "tickCount": 3,
-                            "title": "VALUE",
+                            "title": "price",
                             "zindex": 1
                         }
                     ]
@@ -356,7 +356,7 @@
             "type": "time",
             "domain": {
                 "data": "data_0",
-                "field": "DATE"
+                "field": "date"
             },
             "range": [
                 0,
@@ -369,7 +369,7 @@
             "type": "linear",
             "domain": {
                 "data": "data_0",
-                "field": "VALUE"
+                "field": "price"
             },
             "range": [
                 200,
@@ -384,7 +384,7 @@
             "type": "time",
             "domain": {
                 "data": "data_1",
-                "field": "DATE"
+                "field": "date"
             },
             "range": [
                 0,
@@ -397,7 +397,7 @@
             "type": "linear",
             "domain": {
                 "data": "data_1",
-                "field": "VALUE"
+                "field": "price"
             },
             "range": [
                 60,
