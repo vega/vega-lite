@@ -171,10 +171,10 @@
                     "items": {
                         "anyOf": [
                             {
-                                "$ref": "#/definitions/GenericUnitSpec<\"point\" | \"area\" | \"bar\" | \"line\" | \"text\" | \"tick\" | \"rect\" | \"rule\" | \"circle\" ..."
+                                "$ref": "#/definitions/UnitSpec"
                             },
                             {
-                                "$ref": "#/definitions/GenericLayerSpec<GenericUnitSpec<\"point\" | \"area\" | \"bar\" | \"line\" | \"text\" | \"tick\" | \"rect\" | \"..."
+                                "$ref": "#/definitions/LayerSpec"
                             }
                         ]
                     },
@@ -305,10 +305,10 @@
                 "spec": {
                     "anyOf": [
                         {
-                            "$ref": "#/definitions/GenericUnitSpec<\"point\" | \"area\" | \"bar\" | \"line\" | \"text\" | \"tick\" | \"rect\" | \"rule\" | \"circle\" ..."
+                            "$ref": "#/definitions/UnitSpec"
                         },
                         {
-                            "$ref": "#/definitions/GenericLayerSpec<GenericUnitSpec<\"point\" | \"area\" | \"bar\" | \"line\" | \"text\" | \"tick\" | \"rect\" | \"..."
+                            "$ref": "#/definitions/LayerSpec"
                         }
                     ]
                 },
@@ -404,13 +404,13 @@
                 "spec": {
                     "anyOf": [
                         {
-                            "$ref": "#/definitions/GenericUnitSpec<\"point\" | \"area\" | \"bar\" | \"line\" | \"text\" | \"tick\" | \"rect\" | \"rule\" | \"circle\" ..."
+                            "$ref": "#/definitions/UnitSpec"
                         },
                         {
-                            "$ref": "#/definitions/GenericLayerSpec<GenericUnitSpec<\"point\" | \"area\" | \"bar\" | \"line\" | \"text\" | \"tick\" | \"rect\" | \"..."
+                            "$ref": "#/definitions/LayerSpec"
                         },
                         {
-                            "$ref": "#/definitions/GenericRepeatSpec<GenericUnitSpec<\"point\" | \"area\" | \"bar\" | \"line\" | \"text\" | \"tick\" | \"rect\" | ..."
+                            "$ref": "#/definitions/RepeatSpec"
                         }
                     ]
                 },
@@ -518,10 +518,10 @@
                     "items": {
                         "anyOf": [
                             {
-                                "$ref": "#/definitions/GenericUnitSpec<\"point\" | \"area\" | \"bar\" | \"line\" | \"text\" | \"tick\" | \"rect\" | \"rule\" | \"circle\" ..."
+                                "$ref": "#/definitions/UnitSpec"
                             },
                             {
-                                "$ref": "#/definitions/GenericLayerSpec<GenericUnitSpec<\"point\" | \"area\" | \"bar\" | \"line\" | \"text\" | \"tick\" | \"rect\" | \"..."
+                                "$ref": "#/definitions/LayerSpec"
                             }
                         ]
                     },
@@ -2455,7 +2455,7 @@
             ],
             "type": "string"
         },
-        "GenericLayerSpec<GenericUnitSpec<\"point\" | \"area\" | \"bar\" | \"line\" | \"text\" | \"tick\" | \"rect\" | \"...": {
+        "LayerSpec": {
             "additionalProperties": false,
             "properties": {
                 "data": {
@@ -2484,10 +2484,10 @@
                     "items": {
                         "anyOf": [
                             {
-                                "$ref": "#/definitions/GenericUnitSpec<\"point\" | \"area\" | \"bar\" | \"line\" | \"text\" | \"tick\" | \"rect\" | \"rule\" | \"circle\" ..."
+                                "$ref": "#/definitions/UnitSpec"
                             },
                             {
-                                "$ref": "#/definitions/GenericLayerSpec<GenericUnitSpec<\"point\" | \"area\" | \"bar\" | \"line\" | \"text\" | \"tick\" | \"rect\" | \"..."
+                                "$ref": "#/definitions/LayerSpec"
                             }
                         ]
                     },
@@ -2520,7 +2520,7 @@
             ],
             "type": "object"
         },
-        "GenericRepeatSpec<GenericUnitSpec<\"point\" | \"area\" | \"bar\" | \"line\" | \"text\" | \"tick\" | \"rect\" | ...": {
+        "RepeatSpec": {
             "additionalProperties": false,
             "properties": {
                 "data": {
@@ -2551,13 +2551,13 @@
                 "spec": {
                     "anyOf": [
                         {
-                            "$ref": "#/definitions/GenericUnitSpec<\"point\" | \"area\" | \"bar\" | \"line\" | \"text\" | \"tick\" | \"rect\" | \"rule\" | \"circle\" ..."
+                            "$ref": "#/definitions/UnitSpec"
                         },
                         {
-                            "$ref": "#/definitions/GenericLayerSpec<GenericUnitSpec<\"point\" | \"area\" | \"bar\" | \"line\" | \"text\" | \"tick\" | \"rect\" | \"..."
+                            "$ref": "#/definitions/LayerSpec"
                         },
                         {
-                            "$ref": "#/definitions/GenericRepeatSpec<GenericUnitSpec<\"point\" | \"area\" | \"bar\" | \"line\" | \"text\" | \"tick\" | \"rect\" | ..."
+                            "$ref": "#/definitions/RepeatSpec"
                         }
                     ]
                 },
@@ -2582,7 +2582,7 @@
             ],
             "type": "object"
         },
-        "GenericUnitSpec<\"point\" | \"area\" | \"bar\" | \"line\" | \"text\" | \"tick\" | \"rect\" | \"rule\" | \"circle\" ...": {
+        "UnitSpec": {
             "additionalProperties": false,
             "properties": {
                 "data": {
