@@ -2,7 +2,7 @@ import {autoMaxBins, Bin, binToString} from '../../bin';
 import {Channel} from '../../channel';
 import {field, FieldDef} from '../../fielddef';
 import {hasDiscreteDomain} from '../../scale';
-import {Dict, duplicate, extend, flatten, hash, isBoolean, StringSet, vals, varName} from '../../util';
+import {Dict, duplicate, extend, flatten, hash, isBoolean, StringSet, vals} from '../../util';
 import {VgBinTransform, VgTransform} from '../../vega.schema';
 import {ModelWithField} from '../model';
 import {UnitModel} from '../unit';
@@ -67,8 +67,8 @@ export class BinNode extends DataFlowNode {
             bin: bin,
             field: fieldDef.field,
             as: [field(fieldDef, {binSuffix: 'start'}), field(fieldDef, {binSuffix: 'end'})],
-            signal: varName(model.getName(`${key}_bins`)),
-            extentSignal: varName(model.getName(key + '_extent'))
+            signal: model.getName(`${key}_bins`),
+            extentSignal: model.getName(key + '_extent')
           };
         }
 

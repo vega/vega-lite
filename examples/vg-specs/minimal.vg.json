@@ -35,7 +35,7 @@
     ],
     "marks": [
         {
-            "name": "nested-main-group",
+            "name": "nested_main_group",
             "type": "group",
             "encode": {
                 "update": {

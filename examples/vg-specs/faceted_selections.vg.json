@@ -108,7 +108,7 @@
     ],
     "marks": [
         {
-            "name": "nested-main-group",
+            "name": "nested_main_group",
             "type": "group",
             "layout": {
                 "padding": {
@@ -484,7 +484,7 @@
             ],
             "marks": [
                 {
-                    "name": "column-title",
+                    "name": "column_title",
                     "role": "column-title",
                     "type": "group",
                     "marks": [
@@ -514,7 +514,7 @@
                     ]
                 },
                 {
-                    "name": "row-header",
+                    "name": "row_header",
                     "type": "group",
                     "role": "row-header",
                     "encode": {
@@ -535,7 +535,7 @@
                     ]
                 },
                 {
-                    "name": "column-header",
+                    "name": "column_header",
                     "type": "group",
                     "role": "column-header",
                     "from": {
@@ -570,7 +570,7 @@
                     }
                 },
                 {
-                    "name": "column-footer",
+                    "name": "column_footer",
                     "type": "group",
                     "role": "column-footer",
                     "from": {

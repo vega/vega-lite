@@ -37,7 +37,7 @@ export function parseMark(model: UnitModel): any[] {
   }
 }
 
-const FACETED_PATH_PREFIX = 'faceted-path-';
+const FACETED_PATH_PREFIX = 'faceted_path_';
 
 function parsePathMark(model: UnitModel) {
   const mark = model.mark();

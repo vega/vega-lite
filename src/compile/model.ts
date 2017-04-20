@@ -10,7 +10,7 @@ import {SortField, SortOrder} from '../sort';
 import {BaseSpec} from '../spec';
 import {StackProperties} from '../stack';
 import {Transform} from '../transform';
-import {Dict, extend, vals} from '../util';
+import {Dict, extend, vals, varName} from '../util';
 import {VgAxis, VgData, VgEncodeEntry, VgLayout, VgLegend, VgMarkGroup, VgScale, VgSignal, VgSignalRef, VgValueRef} from '../vega.schema';
 
 import {AxesComponent, AxisComponent} from './axis/index';
@@ -252,8 +252,8 @@ export abstract class Model {
     return false;
   }
 
-  public getName(text: string, delimiter: string = '_') {
-    return (this.name ? this.name + delimiter : '') + text;
+  public getName(text: string) {
+    return varName((this.name ? this.name + '_' : '') + text);
   }
 
   /**
@@ -295,7 +295,7 @@ export abstract class Model {
   }
 
   public sizeName(size: string): string {
-     return this.sizeNameMap.get(this.getName(size, '_'));
+     return this.sizeNameMap.get(this.getName(size));
   }
 
   public renameScale(oldName: string, newName: string) {

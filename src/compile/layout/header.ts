@@ -70,7 +70,7 @@ export function getTitleGroup(model: Model, channel: HeaderChannel) {
   const textOrient = channel === 'row' ? 'vertical' : undefined;
 
   return {
-    name:  model.getName(`${channel}-title`),
+    name:  model.getName(`${channel}_title`),
     role: `${channel}-title`,
     type: 'group',
     marks: [{
@@ -120,7 +120,7 @@ export function getHeaderGroup(model: Model, channel: HeaderChannel, headerType:
       const sizeChannel = channel === 'row' ? 'height' : 'width';
 
       return {
-        name: model.getName(`${channel}-${headerType}`),
+        name: model.getName(`${channel}_${headerType}`),
         type: 'group',
         role: `${channel}-${headerType}`,
         ...(layoutHeader.field ? {from: {data: model.getName(channel)}} : {}),

@@ -21,7 +21,6 @@ import {
 } from '../../vega.schema';
 
 import {MAIN, RAW} from '../../data';
-import {varName} from '../../util';
 import {UnitModel} from '../unit';
 
 export function initDomain(domain: Domain, fieldDef: FieldDef<string>, scale: ScaleType, scaleConfig: ScaleConfig) {
@@ -101,7 +100,7 @@ function parseSingleChannelDomain(scale: Scale, model: UnitModel, channel:Channe
     };
   } else if (fieldDef.bin) { // bin
     if (isBinScale(scale.type)) {
-      const signal = varName(model.getName(`${binToString(fieldDef.bin)}_${fieldDef.field}_bins`));
+      const signal = model.getName(`${binToString(fieldDef.bin)}_${fieldDef.field}_bins`);
       return {signal: `sequence(${signal}.start, ${signal}.stop + ${signal}.step, ${signal}.step)`};
     }
 
