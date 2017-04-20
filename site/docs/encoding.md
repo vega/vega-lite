@@ -156,7 +156,17 @@ Data `type` here describes semantic of the data rather than primitive data types
 
 To facilitate data exploration, Vega-Lite provides inline field transforms as a part of the channel definition. If a `field` is provided, the channel definition supports the following transformations:
 
-{% include table.html props="bin,timeUnit,aggregate,sort" source="PositionFieldDef" %}
+{% include table.html props="bin,timeUnit,aggregate,stack,sort" source="PositionFieldDef" %}
+
+#### Example: Stack
+Here is an example of stack area with `normalize`:
+<div class="vl-example" data-name="stacked_area_normalize"></div>
+
+And this example has a stack value of `center`:
+<div class="vl-example" data-name="stacked_area_stream"></div>
+
+Another example is to have a stack value of `none`:
+<div class="vl-example" data-name="bar_layered_transparent"></div>
 
 
 <!-- TODO: re-explain sort + make it clear that text does not support sorting -->
