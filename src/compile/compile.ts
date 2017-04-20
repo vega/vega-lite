@@ -101,7 +101,7 @@ export function assembleNestedMainGroup(model: Model) {
   return {
     ...group,
     marks: [{
-      name: model.getName('nested-main-group'),
+      name: model.getName('nested_main_group'),
       type: 'group',
       layout,
       signals,

@@ -86,7 +86,7 @@
     ],
     "marks": [
         {
-            "name": "nested-main-group",
+            "name": "nested_main_group",
             "type": "group",
             "layout": {
                 "padding": {
@@ -99,7 +99,7 @@
             },
             "marks": [
                 {
-                    "name": "row-title",
+                    "name": "row_title",
                     "role": "row-title",
                     "type": "group",
                     "marks": [
@@ -132,7 +132,7 @@
                     ]
                 },
                 {
-                    "name": "row-header",
+                    "name": "row_header",
                     "type": "group",
                     "role": "row-header",
                     "from": {
@@ -182,7 +182,7 @@
                     ]
                 },
                 {
-                    "name": "column-footer",
+                    "name": "column_footer",
                     "type": "group",
                     "role": "column-footer",
                     "encode": {

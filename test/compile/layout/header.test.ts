@@ -26,7 +26,7 @@ describe('compile/layout/header', () => {
       it('returns a header group mark with correct name, role, type, and from.', () => {
 
         assert.deepEqual(columnTitleGroupTopLevelProps, {
-          name: 'column-title',
+          name: 'column_title',
           type: 'group',
           role: 'column-title'
         });
@@ -57,7 +57,7 @@ describe('compile/layout/header', () => {
       it('returns a header group mark with correct name, role, type, from, and encode.', () => {
 
         assert.deepEqual(rowTitleGroupTopLevelProps, {
-          name: 'row-title',
+          name: 'row_title',
           type: 'group',
           role: 'row-title'
         });
