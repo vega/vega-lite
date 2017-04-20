@@ -110,204 +110,210 @@
             ]
         }
     ],
-    "layout": {
-        "padding": {
-            "row": 10,
-            "column": 10
-        },
-        "offset": 10,
-        "columns": {
-            "signal": "data('column_layout')[0].distinct_age"
-        },
-        "bounds": "full"
-    },
     "marks": [
         {
-            "name": "column-title",
-            "role": "column-title",
+            "name": "nested-main-group",
             "type": "group",
-            "marks": [
-                {
-                    "type": "text",
-                    "role": "column-title-text",
-                    "encode": {
-                        "update": {
-                            "x": {
-                                "signal": "0.5 * width"
-                            },
-                            "align": {
-                                "value": "center"
-                            },
-                            "text": {
-                                "value": "age"
-                            },
-                            "fill": {
-                                "value": "black"
-                            },
-                            "fontWeight": {
-                                "value": "bold"
-                            }
-                        }
-                    }
-                }
-            ]
-        },
-        {
-            "name": "row-header",
-            "type": "group",
-            "role": "row-header",
-            "encode": {
-                "update": {
-                    "height": {
-                        "signal": "child_height"
-                    }
-                }
-            },
-            "axes": [
-                {
-                    "scale": "y",
-                    "format": "s",
-                    "orient": "left",
-                    "title": "population",
-                    "zindex": 1
-                }
-            ]
-        },
-        {
-            "name": "column-header",
-            "type": "group",
-            "role": "column-header",
-            "from": {
-                "data": "column"
-            },
-            "title": {
-                "text": {
-                    "signal": "parent['age']"
+            "layout": {
+                "padding": {
+                    "row": 10,
+                    "column": 10
                 },
                 "offset": 10,
-                "orient": "top",
-                "encode": {
-                    "update": {
-                        "fontWeight": {
-                            "value": "normal"
-                        },
-                        "angle": {
-                            "value": 0
-                        },
-                        "fontSize": {
-                            "value": 10
-                        }
-                    }
-                }
+                "columns": {
+                    "signal": "data('column_layout')[0].distinct_age"
+                },
+                "bounds": "full"
             },
-            "encode": {
-                "update": {
-                    "width": {
-                        "signal": "child_width"
-                    }
-                }
-            }
-        },
-        {
-            "name": "column-footer",
-            "type": "group",
-            "role": "column-footer",
-            "from": {
-                "data": "column"
-            },
-            "encode": {
-                "update": {
-                    "width": {
-                        "signal": "child_width"
-                    }
-                }
-            },
-            "axes": [
+            "marks": [
                 {
-                    "scale": "x",
-                    "orient": "bottom",
-                    "tickCount": 5,
-                    "zindex": 1,
-                    "encode": {
-                        "labels": {
-                            "update": {
-                                "angle": {
-                                    "value": 270
-                                },
-                                "align": {
-                                    "value": "right"
-                                },
-                                "baseline": {
-                                    "value": "middle"
+                    "name": "column-title",
+                    "role": "column-title",
+                    "type": "group",
+                    "marks": [
+                        {
+                            "type": "text",
+                            "role": "column-title-text",
+                            "encode": {
+                                "update": {
+                                    "x": {
+                                        "signal": "0.5 * width"
+                                    },
+                                    "align": {
+                                        "value": "center"
+                                    },
+                                    "text": {
+                                        "value": "age"
+                                    },
+                                    "fill": {
+                                        "value": "black"
+                                    },
+                                    "fontWeight": {
+                                        "value": "bold"
+                                    }
                                 }
                             }
                         }
-                    }
-                }
-            ]
-        },
-        {
-            "name": "cell",
-            "type": "group",
-            "from": {
-                "facet": {
-                    "name": "facet",
-                    "data": "source_0",
-                    "groupby": [
-                        "age"
                     ]
-                }
-            },
-            "encode": {
-                "update": {
-                    "width": {
-                        "signal": "child_width"
-                    },
-                    "height": {
-                        "signal": "child_height"
-                    },
-                    "stroke": {
-                        "value": "#ccc"
-                    },
-                    "strokeWidth": {
-                        "value": 0
-                    },
-                    "fill": {
-                        "value": "transparent"
-                    }
-                }
-            },
-            "marks": [
+                },
                 {
-                    "name": "child_marks",
-                    "type": "rect",
-                    "role": "bar",
+                    "name": "row-header",
+                    "type": "group",
+                    "role": "row-header",
+                    "encode": {
+                        "update": {
+                            "height": {
+                                "signal": "child_height"
+                            }
+                        }
+                    },
+                    "axes": [
+                        {
+                            "scale": "y",
+                            "format": "s",
+                            "orient": "left",
+                            "title": "population",
+                            "zindex": 1
+                        }
+                    ]
+                },
+                {
+                    "name": "column-header",
+                    "type": "group",
+                    "role": "column-header",
                     "from": {
-                        "data": "facet"
+                        "data": "column"
+                    },
+                    "title": {
+                        "text": {
+                            "signal": "parent['age']"
+                        },
+                        "offset": 10,
+                        "orient": "top",
+                        "encode": {
+                            "update": {
+                                "fontWeight": {
+                                    "value": "normal"
+                                },
+                                "angle": {
+                                    "value": 0
+                                },
+                                "fontSize": {
+                                    "value": 10
+                                }
+                            }
+                        }
                     },
                     "encode": {
                         "update": {
-                            "xc": {
-                                "scale": "x",
-                                "field": "gender"
-                            },
                             "width": {
-                                "value": 11
-                            },
-                            "y": {
-                                "scale": "y",
-                                "field": "sum_people_end"
-                            },
-                            "y2": {
-                                "scale": "y",
-                                "field": "sum_people_start"
-                            },
-                            "fill": {
-                                "scale": "color",
-                                "field": "gender"
+                                "signal": "child_width"
                             }
                         }
                     }
+                },
+                {
+                    "name": "column-footer",
+                    "type": "group",
+                    "role": "column-footer",
+                    "from": {
+                        "data": "column"
+                    },
+                    "encode": {
+                        "update": {
+                            "width": {
+                                "signal": "child_width"
+                            }
+                        }
+                    },
+                    "axes": [
+                        {
+                            "scale": "x",
+                            "orient": "bottom",
+                            "tickCount": 5,
+                            "zindex": 1,
+                            "encode": {
+                                "labels": {
+                                    "update": {
+                                        "angle": {
+                                            "value": 270
+                                        },
+                                        "align": {
+                                            "value": "right"
+                                        },
+                                        "baseline": {
+                                            "value": "middle"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "cell",
+                    "type": "group",
+                    "from": {
+                        "facet": {
+                            "name": "facet",
+                            "data": "source_0",
+                            "groupby": [
+                                "age"
+                            ]
+                        }
+                    },
+                    "encode": {
+                        "update": {
+                            "width": {
+                                "signal": "child_width"
+                            },
+                            "height": {
+                                "signal": "child_height"
+                            },
+                            "stroke": {
+                                "value": "#ccc"
+                            },
+                            "strokeWidth": {
+                                "value": 0
+                            },
+                            "fill": {
+                                "value": "transparent"
+                            }
+                        }
+                    },
+                    "marks": [
+                        {
+                            "name": "child_marks",
+                            "type": "rect",
+                            "role": "bar",
+                            "from": {
+                                "data": "facet"
+                            },
+                            "encode": {
+                                "update": {
+                                    "xc": {
+                                        "scale": "x",
+                                        "field": "gender"
+                                    },
+                                    "width": {
+                                        "value": 11
+                                    },
+                                    "y": {
+                                        "scale": "y",
+                                        "field": "sum_people_end"
+                                    },
+                                    "y2": {
+                                        "scale": "y",
+                                        "field": "sum_people_start"
+                                    },
+                                    "fill": {
+                                        "scale": "color",
+                                        "field": "gender"
+                                    }
+                                }
+                            }
+                        }
+                    ]
                 }
             ]
         }

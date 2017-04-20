@@ -45,41 +45,57 @@
     ],
     "marks": [
         {
-            "name": "marks",
-            "type": "symbol",
-            "role": "point",
-            "from": {
-                "data": "source_0"
-            },
+            "name": "nested-main-group",
+            "type": "group",
             "encode": {
                 "update": {
-                    "x": {
-                        "scale": "x",
-                        "field": "Horsepower"
+                    "width": {
+                        "signal": "width"
                     },
-                    "y": {
-                        "scale": "y",
-                        "field": "Miles_per_Gallon"
-                    },
-                    "stroke": {
-                        "scale": "color",
-                        "field": "Cylinders"
-                    },
-                    "fill": {
-                        "value": "transparent"
-                    },
-                    "size": {
-                        "scale": "size",
-                        "field": "Weight_in_lbs"
-                    },
-                    "shape": {
-                        "value": "M0,0.2L0.2351,0.3236 0.1902,0.0618 0.3804,-0.1236 0.1175,-0.1618 0,-0.4 -0.1175,-0.1618 -0.3804,-0.1236 -0.1902,0.0618 -0.2351,0.3236 0,0.2Z"
-                    },
-                    "opacity": {
-                        "value": 0.7
+                    "height": {
+                        "signal": "height"
                     }
                 }
-            }
+            },
+            "marks": [
+                {
+                    "name": "marks",
+                    "type": "symbol",
+                    "role": "point",
+                    "from": {
+                        "data": "source_0"
+                    },
+                    "encode": {
+                        "update": {
+                            "x": {
+                                "scale": "x",
+                                "field": "Horsepower"
+                            },
+                            "y": {
+                                "scale": "y",
+                                "field": "Miles_per_Gallon"
+                            },
+                            "stroke": {
+                                "scale": "color",
+                                "field": "Cylinders"
+                            },
+                            "fill": {
+                                "value": "transparent"
+                            },
+                            "size": {
+                                "scale": "size",
+                                "field": "Weight_in_lbs"
+                            },
+                            "shape": {
+                                "value": "M0,0.2L0.2351,0.3236 0.1902,0.0618 0.3804,-0.1236 0.1175,-0.1618 0,-0.4 -0.1175,-0.1618 -0.3804,-0.1236 -0.1902,0.0618 -0.2351,0.3236 0,0.2Z"
+                            },
+                            "opacity": {
+                                "value": 0.7
+                            }
+                        }
+                    }
+                }
+            ]
         }
     ],
     "scales": [

@@ -93,253 +93,259 @@
             ]
         }
     ],
-    "layout": {
-        "padding": {
-            "row": 10,
-            "column": 10
-        },
-        "offset": 10,
-        "columns": 1,
-        "bounds": "full",
-        "align": "all"
-    },
     "marks": [
         {
+            "name": "nested-main-group",
             "type": "group",
-            "name": "concat_0_group",
-            "encode": {
-                "update": {
-                    "height": {
-                        "signal": "concat_0_height"
-                    },
-                    "width": {
-                        "signal": "concat_0_width"
-                    }
-                }
+            "layout": {
+                "padding": {
+                    "row": 10,
+                    "column": 10
+                },
+                "offset": 10,
+                "columns": 1,
+                "bounds": "full",
+                "align": "all"
             },
             "marks": [
                 {
-                    "name": "concat_0_marks",
-                    "type": "area",
-                    "from": {
-                        "data": "data_0"
-                    },
+                    "type": "group",
+                    "name": "concat_0_group",
                     "encode": {
                         "update": {
-                            "x": {
-                                "scale": "concat_0_x",
-                                "field": "DATE"
+                            "height": {
+                                "signal": "concat_0_height"
                             },
-                            "y": {
-                                "scale": "concat_0_y",
-                                "field": "VALUE"
-                            },
-                            "y2": {
-                                "scale": "concat_0_y",
-                                "value": 0
-                            },
-                            "fill": {
-                                "value": "#4c78a8"
-                            },
-                            "orient": {
-                                "value": "vertical"
+                            "width": {
+                                "signal": "concat_0_width"
                             }
                         }
-                    }
-                }
-            ],
-            "scales": [
-                {
-                    "name": "concat_0_x",
-                    "type": "time",
-                    "domain": {
-                        "data": "data_0",
-                        "field": "DATE"
                     },
-                    "range": [
-                        0,
-                        480
-                    ],
-                    "round": true
-                },
-                {
-                    "name": "concat_0_y",
-                    "type": "linear",
-                    "domain": {
-                        "data": "data_0",
-                        "field": "VALUE"
-                    },
-                    "range": [
-                        200,
-                        0
-                    ],
-                    "round": true,
-                    "nice": true,
-                    "zero": true
-                }
-            ],
-            "axes": [
-                {
-                    "scale": "concat_0_x",
-                    "orient": "bottom",
-                    "tickCount": 5,
-                    "zindex": 1,
-                    "encode": {
-                        "labels": {
-                            "update": {
-                                "text": {
-                                    "signal": "timeFormat(datum.value, '%b %d, %Y')"
-                                },
-                                "angle": {
-                                    "value": 0
+                    "marks": [
+                        {
+                            "name": "concat_0_marks",
+                            "type": "area",
+                            "from": {
+                                "data": "data_0"
+                            },
+                            "encode": {
+                                "update": {
+                                    "x": {
+                                        "scale": "concat_0_x",
+                                        "field": "DATE"
+                                    },
+                                    "y": {
+                                        "scale": "concat_0_y",
+                                        "field": "VALUE"
+                                    },
+                                    "y2": {
+                                        "scale": "concat_0_y",
+                                        "value": 0
+                                    },
+                                    "fill": {
+                                        "value": "#4c78a8"
+                                    },
+                                    "orient": {
+                                        "value": "vertical"
+                                    }
                                 }
                             }
                         }
-                    }
-                },
-                {
-                    "scale": "concat_0_x",
-                    "domain": false,
-                    "grid": true,
-                    "labels": false,
-                    "orient": "bottom",
-                    "tickCount": 5,
-                    "ticks": false,
-                    "zindex": 0,
-                    "gridScale": "concat_0_y"
-                },
-                {
-                    "scale": "concat_0_y",
-                    "format": "s",
-                    "orient": "left",
-                    "title": "VALUE",
-                    "zindex": 1
-                },
-                {
-                    "scale": "concat_0_y",
-                    "domain": false,
-                    "format": "s",
-                    "grid": true,
-                    "labels": false,
-                    "orient": "left",
-                    "ticks": false,
-                    "zindex": 0,
-                    "gridScale": "concat_0_x"
-                }
-            ]
-        },
-        {
-            "type": "group",
-            "name": "concat_1_group",
-            "encode": {
-                "update": {
-                    "height": {
-                        "signal": "concat_1_height"
-                    },
-                    "width": {
-                        "signal": "concat_1_width"
-                    }
-                }
-            },
-            "marks": [
-                {
-                    "name": "concat_1_marks",
-                    "type": "area",
-                    "from": {
-                        "data": "data_1"
-                    },
-                    "encode": {
-                        "update": {
-                            "x": {
-                                "scale": "concat_1_x",
+                    ],
+                    "scales": [
+                        {
+                            "name": "concat_0_x",
+                            "type": "time",
+                            "domain": {
+                                "data": "data_0",
                                 "field": "DATE"
                             },
-                            "y": {
-                                "scale": "concat_1_y",
+                            "range": [
+                                0,
+                                480
+                            ],
+                            "round": true
+                        },
+                        {
+                            "name": "concat_0_y",
+                            "type": "linear",
+                            "domain": {
+                                "data": "data_0",
                                 "field": "VALUE"
                             },
-                            "y2": {
-                                "scale": "concat_1_y",
-                                "value": 0
-                            },
-                            "fill": {
-                                "value": "#4c78a8"
-                            },
-                            "orient": {
-                                "value": "vertical"
-                            }
+                            "range": [
+                                200,
+                                0
+                            ],
+                            "round": true,
+                            "nice": true,
+                            "zero": true
                         }
-                    }
-                }
-            ],
-            "scales": [
-                {
-                    "name": "concat_1_x",
-                    "type": "time",
-                    "domain": {
-                        "data": "data_1",
-                        "field": "DATE"
-                    },
-                    "range": [
-                        0,
-                        480
                     ],
-                    "round": true
+                    "axes": [
+                        {
+                            "scale": "concat_0_x",
+                            "orient": "bottom",
+                            "tickCount": 5,
+                            "zindex": 1,
+                            "encode": {
+                                "labels": {
+                                    "update": {
+                                        "text": {
+                                            "signal": "timeFormat(datum.value, '%b %d, %Y')"
+                                        },
+                                        "angle": {
+                                            "value": 0
+                                        }
+                                    }
+                                }
+                            }
+                        },
+                        {
+                            "scale": "concat_0_x",
+                            "domain": false,
+                            "grid": true,
+                            "labels": false,
+                            "orient": "bottom",
+                            "tickCount": 5,
+                            "ticks": false,
+                            "zindex": 0,
+                            "gridScale": "concat_0_y"
+                        },
+                        {
+                            "scale": "concat_0_y",
+                            "format": "s",
+                            "orient": "left",
+                            "title": "VALUE",
+                            "zindex": 1
+                        },
+                        {
+                            "scale": "concat_0_y",
+                            "domain": false,
+                            "format": "s",
+                            "grid": true,
+                            "labels": false,
+                            "orient": "left",
+                            "ticks": false,
+                            "zindex": 0,
+                            "gridScale": "concat_0_x"
+                        }
+                    ]
                 },
                 {
-                    "name": "concat_1_y",
-                    "type": "linear",
-                    "domain": {
-                        "data": "data_1",
-                        "field": "VALUE"
-                    },
-                    "range": [
-                        60,
-                        0
-                    ],
-                    "round": true,
-                    "nice": true,
-                    "zero": true
-                }
-            ],
-            "axes": [
-                {
-                    "scale": "concat_1_x",
-                    "orient": "bottom",
-                    "tickCount": 5,
-                    "title": "DATE",
-                    "zindex": 1,
+                    "type": "group",
+                    "name": "concat_1_group",
                     "encode": {
-                        "labels": {
-                            "update": {
-                                "text": {
-                                    "signal": "timeFormat(datum.value, '%Y')"
-                                },
-                                "angle": {
-                                    "value": 0
+                        "update": {
+                            "height": {
+                                "signal": "concat_1_height"
+                            },
+                            "width": {
+                                "signal": "concat_1_width"
+                            }
+                        }
+                    },
+                    "marks": [
+                        {
+                            "name": "concat_1_marks",
+                            "type": "area",
+                            "from": {
+                                "data": "data_1"
+                            },
+                            "encode": {
+                                "update": {
+                                    "x": {
+                                        "scale": "concat_1_x",
+                                        "field": "DATE"
+                                    },
+                                    "y": {
+                                        "scale": "concat_1_y",
+                                        "field": "VALUE"
+                                    },
+                                    "y2": {
+                                        "scale": "concat_1_y",
+                                        "value": 0
+                                    },
+                                    "fill": {
+                                        "value": "#4c78a8"
+                                    },
+                                    "orient": {
+                                        "value": "vertical"
+                                    }
                                 }
                             }
                         }
-                    }
-                },
-                {
-                    "scale": "concat_1_x",
-                    "domain": false,
-                    "grid": true,
-                    "labels": false,
-                    "orient": "bottom",
-                    "tickCount": 5,
-                    "ticks": false,
-                    "zindex": 0,
-                    "gridScale": "concat_1_y"
-                },
-                {
-                    "scale": "concat_1_y",
-                    "format": "s",
-                    "orient": "left",
-                    "tickCount": 3,
-                    "title": "VALUE",
-                    "zindex": 1
+                    ],
+                    "scales": [
+                        {
+                            "name": "concat_1_x",
+                            "type": "time",
+                            "domain": {
+                                "data": "data_1",
+                                "field": "DATE"
+                            },
+                            "range": [
+                                0,
+                                480
+                            ],
+                            "round": true
+                        },
+                        {
+                            "name": "concat_1_y",
+                            "type": "linear",
+                            "domain": {
+                                "data": "data_1",
+                                "field": "VALUE"
+                            },
+                            "range": [
+                                60,
+                                0
+                            ],
+                            "round": true,
+                            "nice": true,
+                            "zero": true
+                        }
+                    ],
+                    "axes": [
+                        {
+                            "scale": "concat_1_x",
+                            "orient": "bottom",
+                            "tickCount": 5,
+                            "title": "DATE",
+                            "zindex": 1,
+                            "encode": {
+                                "labels": {
+                                    "update": {
+                                        "text": {
+                                            "signal": "timeFormat(datum.value, '%Y')"
+                                        },
+                                        "angle": {
+                                            "value": 0
+                                        }
+                                    }
+                                }
+                            }
+                        },
+                        {
+                            "scale": "concat_1_x",
+                            "domain": false,
+                            "grid": true,
+                            "labels": false,
+                            "orient": "bottom",
+                            "tickCount": 5,
+                            "ticks": false,
+                            "zindex": 0,
+                            "gridScale": "concat_1_y"
+                        },
+                        {
+                            "scale": "concat_1_y",
+                            "format": "s",
+                            "orient": "left",
+                            "tickCount": 3,
+                            "title": "VALUE",
+                            "zindex": 1
+                        }
+                    ]
                 }
             ]
         }

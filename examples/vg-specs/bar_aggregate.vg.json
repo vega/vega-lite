@@ -59,34 +59,50 @@
     ],
     "marks": [
         {
-            "name": "marks",
-            "type": "rect",
-            "role": "bar",
-            "from": {
-                "data": "source_0"
-            },
+            "name": "nested-main-group",
+            "type": "group",
             "encode": {
                 "update": {
-                    "x": {
-                        "scale": "x",
-                        "field": "sum_people"
-                    },
-                    "x2": {
-                        "scale": "x",
-                        "value": 0
-                    },
-                    "yc": {
-                        "scale": "y",
-                        "field": "age"
+                    "width": {
+                        "signal": "width"
                     },
                     "height": {
-                        "value": 16
-                    },
-                    "fill": {
-                        "value": "#4c78a8"
+                        "signal": "height"
                     }
                 }
-            }
+            },
+            "marks": [
+                {
+                    "name": "marks",
+                    "type": "rect",
+                    "role": "bar",
+                    "from": {
+                        "data": "source_0"
+                    },
+                    "encode": {
+                        "update": {
+                            "x": {
+                                "scale": "x",
+                                "field": "sum_people"
+                            },
+                            "x2": {
+                                "scale": "x",
+                                "value": 0
+                            },
+                            "yc": {
+                                "scale": "y",
+                                "field": "age"
+                            },
+                            "height": {
+                                "value": 16
+                            },
+                            "fill": {
+                                "value": "#4c78a8"
+                            }
+                        }
+                    }
+                }
+            ]
         }
     ],
     "scales": [

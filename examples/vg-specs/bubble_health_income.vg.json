@@ -49,37 +49,53 @@
     ],
     "marks": [
         {
-            "name": "marks",
-            "type": "symbol",
-            "role": "circle",
-            "from": {
-                "data": "source_0"
-            },
+            "name": "nested-main-group",
+            "type": "group",
             "encode": {
                 "update": {
-                    "x": {
-                        "scale": "x",
-                        "field": "income"
+                    "width": {
+                        "signal": "width"
                     },
-                    "y": {
-                        "scale": "y",
-                        "field": "health"
-                    },
-                    "fill": {
-                        "value": "#000"
-                    },
-                    "size": {
-                        "scale": "size",
-                        "field": "population"
-                    },
-                    "shape": {
-                        "value": "circle"
-                    },
-                    "opacity": {
-                        "value": 0.7
+                    "height": {
+                        "signal": "height"
                     }
                 }
-            }
+            },
+            "marks": [
+                {
+                    "name": "marks",
+                    "type": "symbol",
+                    "role": "circle",
+                    "from": {
+                        "data": "source_0"
+                    },
+                    "encode": {
+                        "update": {
+                            "x": {
+                                "scale": "x",
+                                "field": "income"
+                            },
+                            "y": {
+                                "scale": "y",
+                                "field": "health"
+                            },
+                            "fill": {
+                                "value": "#000"
+                            },
+                            "size": {
+                                "scale": "size",
+                                "field": "population"
+                            },
+                            "shape": {
+                                "value": "circle"
+                            },
+                            "opacity": {
+                                "value": 0.7
+                            }
+                        }
+                    }
+                }
+            ]
         }
     ],
     "scales": [

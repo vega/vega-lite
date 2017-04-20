@@ -85,38 +85,54 @@
     ],
     "marks": [
         {
-            "name": "marks",
-            "type": "rect",
-            "role": "bar",
-            "from": {
-                "data": "source_0"
-            },
+            "name": "nested-main-group",
+            "type": "group",
             "encode": {
                 "update": {
-                    "xc": {
-                        "scale": "x",
-                        "field": "age"
-                    },
                     "width": {
-                        "value": 16
+                        "signal": "width"
                     },
-                    "y": {
-                        "scale": "y",
-                        "field": "sum_people_end"
-                    },
-                    "y2": {
-                        "scale": "y",
-                        "field": "sum_people_start"
-                    },
-                    "fill": {
-                        "value": "#4c78a8"
-                    },
-                    "opacity": {
-                        "scale": "opacity",
-                        "field": "people"
+                    "height": {
+                        "signal": "height"
                     }
                 }
-            }
+            },
+            "marks": [
+                {
+                    "name": "marks",
+                    "type": "rect",
+                    "role": "bar",
+                    "from": {
+                        "data": "source_0"
+                    },
+                    "encode": {
+                        "update": {
+                            "xc": {
+                                "scale": "x",
+                                "field": "age"
+                            },
+                            "width": {
+                                "value": 16
+                            },
+                            "y": {
+                                "scale": "y",
+                                "field": "sum_people_end"
+                            },
+                            "y2": {
+                                "scale": "y",
+                                "field": "sum_people_start"
+                            },
+                            "fill": {
+                                "value": "#4c78a8"
+                            },
+                            "opacity": {
+                                "scale": "opacity",
+                                "field": "people"
+                            }
+                        }
+                    }
+                }
+            ]
         }
     ],
     "scales": [

@@ -67,26 +67,42 @@
     ],
     "marks": [
         {
-            "name": "marks",
-            "type": "line",
-            "from": {
-                "data": "source_0"
-            },
+            "name": "nested-main-group",
+            "type": "group",
             "encode": {
                 "update": {
-                    "x": {
-                        "scale": "x",
-                        "field": "yearmonth_date"
+                    "width": {
+                        "signal": "width"
                     },
-                    "y": {
-                        "scale": "y",
-                        "field": "max_temp_max"
-                    },
-                    "stroke": {
-                        "value": "#4c78a8"
+                    "height": {
+                        "signal": "height"
                     }
                 }
-            }
+            },
+            "marks": [
+                {
+                    "name": "marks",
+                    "type": "line",
+                    "from": {
+                        "data": "source_0"
+                    },
+                    "encode": {
+                        "update": {
+                            "x": {
+                                "scale": "x",
+                                "field": "yearmonth_date"
+                            },
+                            "y": {
+                                "scale": "y",
+                                "field": "max_temp_max"
+                            },
+                            "stroke": {
+                                "value": "#4c78a8"
+                            }
+                        }
+                    }
+                }
+            ]
         }
     ],
     "scales": [

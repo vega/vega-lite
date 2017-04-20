@@ -80,33 +80,49 @@
     ],
     "marks": [
         {
-            "name": "marks",
-            "type": "symbol",
-            "role": "point",
-            "from": {
-                "data": "source_0"
-            },
+            "name": "nested-main-group",
+            "type": "group",
             "encode": {
                 "update": {
-                    "x": {
-                        "scale": "x",
-                        "field": "x"
+                    "width": {
+                        "signal": "width"
                     },
-                    "y": {
-                        "scale": "y",
-                        "field": "y"
-                    },
-                    "stroke": {
-                        "value": "#4c78a8"
-                    },
-                    "fill": {
-                        "value": "transparent"
-                    },
-                    "opacity": {
-                        "value": 0.7
+                    "height": {
+                        "signal": "height"
                     }
                 }
-            }
+            },
+            "marks": [
+                {
+                    "name": "marks",
+                    "type": "symbol",
+                    "role": "point",
+                    "from": {
+                        "data": "source_0"
+                    },
+                    "encode": {
+                        "update": {
+                            "x": {
+                                "scale": "x",
+                                "field": "x"
+                            },
+                            "y": {
+                                "scale": "y",
+                                "field": "y"
+                            },
+                            "stroke": {
+                                "value": "#4c78a8"
+                            },
+                            "fill": {
+                                "value": "transparent"
+                            },
+                            "opacity": {
+                                "value": 0.7
+                            }
+                        }
+                    }
+                }
+            ]
         }
     ],
     "scales": [

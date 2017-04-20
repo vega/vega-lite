@@ -43,132 +43,150 @@
                     "update": "group()._id ? group() : unit"
                 }
             ]
-        },
-        {
-            "name": "paintbrush",
-            "value": {},
-            "on": [
-                {
-                    "events": [
-                        {
-                            "source": "scope",
-                            "type": "mouseover"
-                        }
-                    ],
-                    "update": "{fields: [\"_id\"], values: [(item().isVoronoi ? datum.datum : datum)[\"_id\"]]}"
-                }
-            ]
-        },
-        {
-            "name": "paintbrush_toggle",
-            "value": false,
-            "on": [
-                {
-                    "events": [
-                        {
-                            "source": "scope",
-                            "type": "mouseover"
-                        }
-                    ],
-                    "update": "event.shiftKey"
-                }
-            ]
-        },
-        {
-            "name": "paintbrush_tuple",
-            "on": [
-                {
-                    "events": {
-                        "signal": "paintbrush"
-                    },
-                    "update": "{unit: unit.datum && unit.datum._id, fields: paintbrush.fields, values: paintbrush.values}"
-                }
-            ]
-        },
-        {
-            "name": "paintbrush_modify",
-            "on": [
-                {
-                    "events": {
-                        "signal": "paintbrush"
-                    },
-                    "update": "modify(\"paintbrush_store\", paintbrush_toggle ? null : paintbrush_tuple, paintbrush_toggle ? null : true, paintbrush_toggle ? paintbrush_tuple : null)"
-                }
-            ]
         }
     ],
     "marks": [
         {
-            "name": "marks",
-            "type": "symbol",
-            "role": "point",
-            "from": {
-                "data": "source_0"
-            },
+            "name": "nested-main-group",
+            "type": "group",
+            "signals": [
+                {
+                    "name": "paintbrush",
+                    "value": {},
+                    "on": [
+                        {
+                            "events": [
+                                {
+                                    "source": "scope",
+                                    "type": "mouseover"
+                                }
+                            ],
+                            "update": "{fields: [\"_id\"], values: [(item().isVoronoi ? datum.datum : datum)[\"_id\"]]}"
+                        }
+                    ]
+                },
+                {
+                    "name": "paintbrush_toggle",
+                    "value": false,
+                    "on": [
+                        {
+                            "events": [
+                                {
+                                    "source": "scope",
+                                    "type": "mouseover"
+                                }
+                            ],
+                            "update": "event.shiftKey"
+                        }
+                    ]
+                },
+                {
+                    "name": "paintbrush_tuple",
+                    "on": [
+                        {
+                            "events": {
+                                "signal": "paintbrush"
+                            },
+                            "update": "{unit: unit.datum && unit.datum._id, fields: paintbrush.fields, values: paintbrush.values}"
+                        }
+                    ]
+                },
+                {
+                    "name": "paintbrush_modify",
+                    "on": [
+                        {
+                            "events": {
+                                "signal": "paintbrush"
+                            },
+                            "update": "modify(\"paintbrush_store\", paintbrush_toggle ? null : paintbrush_tuple, paintbrush_toggle ? null : true, paintbrush_toggle ? paintbrush_tuple : null)"
+                        }
+                    ]
+                }
+            ],
             "encode": {
                 "update": {
-                    "x": {
-                        "scale": "x",
-                        "field": "Horsepower"
+                    "width": {
+                        "signal": "width"
                     },
-                    "y": {
-                        "scale": "y",
-                        "field": "Miles_per_Gallon"
-                    },
-                    "stroke": {
-                        "value": "#4c78a8"
-                    },
-                    "fill": {
-                        "value": "transparent"
-                    },
-                    "size": [
-                        {
-                            "test": "vlPoint(\"paintbrush_store\", datum._id, datum, \"union\", \"all\")",
-                            "value": 300
-                        },
-                        {
-                            "value": 50
-                        }
-                    ],
-                    "opacity": {
-                        "value": 0.7
-                    }
-                }
-            }
-        },
-        {
-            "name": "voronoi",
-            "type": "path",
-            "from": {
-                "data": "marks"
-            },
-            "encode": {
-                "enter": {
-                    "fill": {
-                        "value": "transparent"
-                    },
-                    "strokeWidth": {
-                        "value": 0.35
-                    },
-                    "stroke": {
-                        "value": "transparent"
-                    },
-                    "isVoronoi": {
-                        "value": true
+                    "height": {
+                        "signal": "height"
                     }
                 }
             },
-            "transform": [
+            "marks": [
                 {
-                    "type": "voronoi",
-                    "x": "datum.x",
-                    "y": "datum.y",
-                    "size": [
+                    "name": "marks",
+                    "type": "symbol",
+                    "role": "point",
+                    "from": {
+                        "data": "source_0"
+                    },
+                    "encode": {
+                        "update": {
+                            "x": {
+                                "scale": "x",
+                                "field": "Horsepower"
+                            },
+                            "y": {
+                                "scale": "y",
+                                "field": "Miles_per_Gallon"
+                            },
+                            "stroke": {
+                                "value": "#4c78a8"
+                            },
+                            "fill": {
+                                "value": "transparent"
+                            },
+                            "size": [
+                                {
+                                    "test": "vlPoint(\"paintbrush_store\", parent._id, datum, \"union\", \"all\")",
+                                    "value": 300
+                                },
+                                {
+                                    "value": 50
+                                }
+                            ],
+                            "opacity": {
+                                "value": 0.7
+                            }
+                        }
+                    }
+                },
+                {
+                    "name": "voronoi",
+                    "type": "path",
+                    "from": {
+                        "data": "marks"
+                    },
+                    "encode": {
+                        "enter": {
+                            "fill": {
+                                "value": "transparent"
+                            },
+                            "strokeWidth": {
+                                "value": 0.35
+                            },
+                            "stroke": {
+                                "value": "transparent"
+                            },
+                            "isVoronoi": {
+                                "value": true
+                            }
+                        }
+                    },
+                    "transform": [
                         {
-                            "signal": "width"
-                        },
-                        {
-                            "signal": "height"
+                            "type": "voronoi",
+                            "x": "datum.x",
+                            "y": "datum.y",
+                            "size": [
+                                {
+                                    "signal": "width"
+                                },
+                                {
+                                    "signal": "height"
+                                }
+                            ]
                         }
                     ]
                 }

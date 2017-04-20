@@ -55,35 +55,51 @@
     ],
     "marks": [
         {
-            "name": "marks",
-            "type": "rect",
-            "from": {
-                "data": "source_0"
-            },
+            "name": "nested-main-group",
+            "type": "group",
             "encode": {
                 "update": {
-                    "x": {
-                        "scale": "x",
-                        "field": "Cylinders"
-                    },
                     "width": {
-                        "scale": "x",
-                        "band": true
-                    },
-                    "y": {
-                        "scale": "y",
-                        "field": "Origin"
+                        "signal": "width"
                     },
                     "height": {
-                        "scale": "y",
-                        "band": true
-                    },
-                    "fill": {
-                        "scale": "color",
-                        "field": "mean_Horsepower"
+                        "signal": "height"
                     }
                 }
-            }
+            },
+            "marks": [
+                {
+                    "name": "marks",
+                    "type": "rect",
+                    "from": {
+                        "data": "source_0"
+                    },
+                    "encode": {
+                        "update": {
+                            "x": {
+                                "scale": "x",
+                                "field": "Cylinders"
+                            },
+                            "width": {
+                                "scale": "x",
+                                "band": true
+                            },
+                            "y": {
+                                "scale": "y",
+                                "field": "Origin"
+                            },
+                            "height": {
+                                "scale": "y",
+                                "band": true
+                            },
+                            "fill": {
+                                "scale": "color",
+                                "field": "mean_Horsepower"
+                            }
+                        }
+                    }
+                }
+            ]
         }
     ],
     "scales": [
