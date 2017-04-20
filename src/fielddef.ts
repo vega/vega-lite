@@ -6,6 +6,7 @@ import {autoMaxBins, Bin, binToString} from './bin';
 import {Channel, rangeType} from './channel';
 import {CompositeAggregate} from './compositemark';
 import {Config} from './config';
+import {Field} from './fielddef';
 import {Legend} from './legend';
 import * as log from './log';
 import {Scale} from './scale';
@@ -234,7 +235,7 @@ export function isContinuous(fieldDef: FieldDef<Field>) {
   return !isDiscrete(fieldDef);
 }
 
-export function isCount(fieldDef: FieldDef<string>) {
+export function isCount(fieldDef: FieldDef<Field>) {
   return fieldDef.aggregate === 'count';
 }
 
@@ -257,7 +258,7 @@ export function title(fieldDef: FieldDef<string>, config: Config) {
   }
 }
 
-export function defaultType(fieldDef: FieldDef<string>, channel: Channel): Type {
+export function defaultType(fieldDef: FieldDef<Field>, channel: Channel): Type {
   if (fieldDef.timeUnit) {
     return 'temporal';
   }
@@ -282,7 +283,7 @@ export function defaultType(fieldDef: FieldDef<string>, channel: Channel): Type 
 export function normalize(channelDef: ChannelDef<string>, channel: Channel) {
   // If a fieldDef contains a field, we need type.
   if (isFieldDef(channelDef)) { // TODO: or datum
-    let fieldDef: FieldDef<string> = channelDef;
+    let fieldDef: FieldDef<Field> = channelDef;
 
     // Drop invalid aggregate
     if (fieldDef.aggregate && !AGGREGATE_OP_INDEX[fieldDef.aggregate]) {
@@ -340,7 +341,7 @@ export function normalize(channelDef: ChannelDef<string>, channel: Channel) {
 }
 
 const COMPATIBLE = {compatible: true};
-export function channelCompatibility(fieldDef: FieldDef<string>, channel: Channel): {compatible: boolean; warning?: string;} {
+export function channelCompatibility(fieldDef: FieldDef<Field>, channel: Channel): {compatible: boolean; warning?: string;} {
   switch (channel) {
     case 'row':
     case 'column':
