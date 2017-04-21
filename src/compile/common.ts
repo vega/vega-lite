@@ -81,7 +81,9 @@ export function getMarkConfig<P extends keyof MarkConfig>(prop: P, mark: Mark, c
  *
  * @param format explicitly specified format
  */
-export function numberFormat(fieldDef: FieldDef<string>, format: string, config: Config, channel: Channel) {
+export function numberFormat(fieldDef: FieldDef<string>, specifiedFormat: string, config: Config, channel: Channel) {
+  // Specified format in axis/legend has higher precedence than fieldDef.format
+  const format = specifiedFormat || fieldDef.format;
   if (fieldDef.type === QUANTITATIVE) {
     // add number format for quantitative type only
 

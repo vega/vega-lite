@@ -2388,6 +2388,10 @@
                     ],
                     "description": "__Required.__ Name of the field from which to pull a data value.\n\n__Note:__ `field` is not required if `aggregate` is `count`."
                 },
+                "format": {
+                    "description": "The formatting pattern for text value. If not defined, this will be determined automatically.",
+                    "type": "string"
+                },
                 "timeUnit": {
                     "$ref": "#/definitions/TimeUnit",
                     "description": "Time unit for a `temporal` field  (e.g., `year`, `yearmonth`, `month`, `hour`).\n\n__Default value:__ `undefined` (None)"
@@ -2984,6 +2988,10 @@
                     ],
                     "description": "__Required.__ Name of the field from which to pull a data value.\n\n__Note:__ `field` is not required if `aggregate` is `count`."
                 },
+                "format": {
+                    "description": "The formatting pattern for text value. If not defined, this will be determined automatically.",
+                    "type": "string"
+                },
                 "legend": {
                     "anyOf": [
                         {
@@ -3096,6 +3104,10 @@
                         }
                     ],
                     "description": "__Required.__ Name of the field from which to pull a data value.\n\n__Note:__ `field` is not required if `aggregate` is `count`."
+                },
+                "format": {
+                    "description": "The formatting pattern for text value. If not defined, this will be determined automatically.",
+                    "type": "string"
                 },
                 "legend": {
                     "anyOf": [
@@ -3465,6 +3477,10 @@
                     ],
                     "description": "__Required.__ Name of the field from which to pull a data value.\n\n__Note:__ `field` is not required if `aggregate` is `count`."
                 },
+                "format": {
+                    "description": "The formatting pattern for text value. If not defined, this will be determined automatically.",
+                    "type": "string"
+                },
                 "sort": {
                     "$ref": "#/definitions/SortOrder"
                 },
@@ -3580,6 +3596,10 @@
                         }
                     ],
                     "description": "__Required.__ Name of the field from which to pull a data value.\n\n__Note:__ `field` is not required if `aggregate` is `count`."
+                },
+                "format": {
+                    "description": "The formatting pattern for text value. If not defined, this will be determined automatically.",
+                    "type": "string"
                 },
                 "scale": {
                     "$ref": "#/definitions/Scale"
