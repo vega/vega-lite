@@ -23,7 +23,7 @@ export type VgFieldRef = string | VgParentRef | VgParentRef[];
 export type VgSortField = boolean | {
   field: VgFieldRef,
   op: string,
-  order: SortOrder
+  order?: SortOrder
 };
 
 export type VgDataRef = {

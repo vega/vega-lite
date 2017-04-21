@@ -6,7 +6,7 @@ import {parseDomain, unionDomains} from '../../../src/compile/scale/domain';
 import {SUMMARY} from '../../../src/data';
 import {PositionFieldDef} from '../../../src/fielddef';
 import * as log from '../../../src/log';
-import {FieldRefUnionDomain, VgDataRef} from '../../../src/vega.schema';
+import {FieldRefUnionDomain, VgDataRef, VgSortField} from '../../../src/vega.schema';
 import {parseUnitModel} from '../../util';
 
 describe('compile/scale', () => {
@@ -233,6 +233,7 @@ describe('compile/scale', () => {
 
         it('should return the correct domain for yearmonth T when specify sort',
           function() {
+            const sortDef = { op: 'mean', field: 'precipitation', order: 'descending'} ;
             const model = parseUnitModel({
               mark: "line",
               encoding: {
@@ -240,11 +241,7 @@ describe('compile/scale', () => {
                   timeUnit: 'month',
                   field: 'date',
                   type: 'temporal',
-                  sort: {
-                    op: 'mean',
-                    field: 'precipitation',
-                    order: 'descending'
-                  }
+                  sort: sortDef
                 },
                 y: {
                   aggregate: 'mean',
@@ -258,10 +255,7 @@ describe('compile/scale', () => {
             assert.deepEqual(_domain, {
               data: 'source',
               field: 'month_date',
-              sort: {
-                op: 'mean',
-                field: 'precipitation'
-              }
+              sort: sortDef as VgSortField
             });
         });
 
@@ -294,11 +288,26 @@ describe('compile/scale', () => {
               y: {field: 'origin', type: "ordinal", sort: sortDef}
             }
           });
+        assert.deepEqual(parseDomain(model,'y'), {
+            data: "raw",
+            field: 'origin',
+            sort: sortDef as VgSortField
+          });
+      });
+
+      it('should return correct domain with the provided sort property with order property', function() {
+        const sortDef = {op: 'min', field:'Acceleration', order: "descending"} ;
+        const model = parseUnitModel({
+            mark: "point",
+            encoding: {
+              y: {field: 'origin', type: "ordinal", sort: sortDef}
+            }
+          });
 
         assert.deepEqual(parseDomain(model,'y'), {
             data: "source",
             field: 'origin',
-            sort: sortDef
+            sort: sortDef as VgSortField
           });
       });
 
