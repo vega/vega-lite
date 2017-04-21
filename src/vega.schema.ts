@@ -3,6 +3,7 @@ import {OutputNode} from './compile/data/dataflow';
 import {NiceTime, ScaleType, SelectionDomain} from './scale';
 import {StackOffset} from './stack';
 import {isArray} from './util';
+import {SortOrder} from './sort';
 
 export interface VgData {
   name: string;
@@ -22,7 +23,8 @@ export type VgFieldRef = string | VgParentRef | VgParentRef[];
 
 export type VgSortField = boolean | {
   field: VgFieldRef,
-  op: string
+  op: string,
+  order: SortOrder
 };
 
 export type VgDataRef = {
