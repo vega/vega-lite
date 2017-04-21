@@ -81,11 +81,11 @@ export function formatSignalRef(fieldDef: FieldDef<string>, config: Config) {
     // FIXME: what happens if we have bin?
     const format = numberFormat(fieldDef, fieldDef.format, config, 'text');
     return {
-      signal: `format(${field(fieldDef, {datum: true})}, '${format}')`
+      signal: `format(${field(fieldDef, {expr: 'datum'})}, '${format}')`
     };
   } else if (fieldDef.type === 'temporal') {
     return {
-      signal: timeFormatExpression(field(fieldDef, {datum: true}), fieldDef.timeUnit, fieldDef.format, config.text.shortTimeLabels, config.timeFormat)
+      signal: timeFormatExpression(field(fieldDef, {expr: 'datum'}), fieldDef.timeUnit, fieldDef.format, config.text.shortTimeLabels, config.timeFormat)
     };
   } else {
     return {field: fieldDef.field};
