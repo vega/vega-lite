@@ -76,6 +76,22 @@ export function getMarkConfig<P extends keyof MarkConfig>(prop: P, mark: Mark, c
   return config.mark[prop];
 }
 
+export function formatSignalRef(fieldDef: FieldDef<string>, config: Config) {
+  if (fieldDef.type === 'quantitative') {
+    // FIXME: what happens if we have bin?
+    const format = numberFormat(fieldDef, fieldDef.format, config, 'text');
+    return {
+      signal: `format(${field(fieldDef, {datum: true})}, '${format}')`
+    };
+  } else if (fieldDef.type === 'temporal') {
+    return {
+      signal: timeFormatExpression(field(fieldDef, {datum: true}), fieldDef.timeUnit, fieldDef.format, config.text.shortTimeLabels, config.timeFormat)
+    };
+  } else {
+    return {field: fieldDef.field};
+  }
+}
+
 /**
  * Returns number format for a fieldDef
  *

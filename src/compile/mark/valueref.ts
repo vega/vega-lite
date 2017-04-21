@@ -9,7 +9,7 @@ import {hasDiscreteDomain, isBinScale, Scale, ScaleType} from '../../scale';
 import {StackProperties} from '../../stack';
 import {contains} from '../../util';
 import {VgValueRef} from '../../vega.schema';
-import {numberFormat, timeFormatExpression} from '../common';
+import {formatSignalRef, numberFormat, timeFormatExpression} from '../common';
 
 // TODO: we need to find a way to refactor these so that scaleName is a part of scale
 // but that's complicated.  For now, this is a huge step moving forward.
@@ -139,19 +139,7 @@ export function text(textDef: TextFieldDef<string> | ValueDef<any>, config: Conf
   // text
   if (textDef) {
     if (isFieldDef(textDef)) {
-      if (textDef.type === 'quantitative') {
-        // FIXME: what happens if we have bin?
-        const format = numberFormat(textDef, textDef.format, config, 'text');
-        return {
-          signal: `format(${field(textDef, {datum: true})}, '${format}')`
-        };
-      } else if (textDef.type === 'temporal') {
-        return {
-          signal: timeFormatExpression(field(textDef, {datum: true}), textDef.timeUnit, textDef.format, config.text.shortTimeLabels, config.timeFormat)
-        };
-      } else {
-        return {field: textDef.field};
-      }
+      return formatSignalref(textDef, config);
     } else if (textDef.value) {
       return {value: textDef.value};
     }
