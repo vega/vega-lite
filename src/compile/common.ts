@@ -76,19 +76,19 @@ export function getMarkConfig<P extends keyof MarkConfig>(prop: P, mark: Mark, c
   return config.mark[prop];
 }
 
-export function formatSignalRef(fieldDef: FieldDef<string>, config: Config) {
+export function formatSignalRef(fieldDef: FieldDef<string>, expr: 'datum' | 'parent', config: Config) {
   if (fieldDef.type === 'quantitative') {
     // FIXME: what happens if we have bin?
     const format = numberFormat(fieldDef, fieldDef.format, config, 'text');
     return {
-      signal: `format(${field(fieldDef, {expr: 'datum'})}, '${format}')`
+      signal: `format(${field(fieldDef, {expr})}, '${format}')`
     };
   } else if (fieldDef.type === 'temporal') {
     return {
-      signal: timeFormatExpression(field(fieldDef, {expr: 'datum'}), fieldDef.timeUnit, fieldDef.format, config.text.shortTimeLabels, config.timeFormat)
+      signal: timeFormatExpression(field(fieldDef, {expr}), fieldDef.timeUnit, fieldDef.format, config.text.shortTimeLabels, config.timeFormat)
     };
   } else {
-    return {field: fieldDef.field};
+    return {signal: field(fieldDef, {expr})};
   }
 }
 
