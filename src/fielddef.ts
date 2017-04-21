@@ -91,6 +91,11 @@ export interface FieldDef<F> {
    * Title for axis or legend.
    */
   title?: string;
+
+  /**
+   * The formatting pattern for text value. If not defined, this will be determined automatically.
+   */
+  format?: string;
 }
 
 export interface Condition<T> {
@@ -142,11 +147,6 @@ export interface OrderFieldDef<F> extends FieldDef<F> {
 
 export interface TextFieldDef<F> extends FieldDef<F> {
   // FIXME: add more reference to Vega's format pattern or d3's format pattern.
-  /**
-   * The formatting pattern for text value. If not defined, this will be determined automatically.
-   */
-  format?: string;
-
   condition?: Condition<string|number>;
 }
 
