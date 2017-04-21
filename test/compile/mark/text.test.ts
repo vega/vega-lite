@@ -62,6 +62,21 @@ describe('Mark: Text', function() {
     });
   });
 
+  describe('with binned quantitative', function() {
+    const spec: UnitSpec = {
+      "mark": "text",
+      "encoding": {
+        "text": {"bin": true, "field": "foo", "type": "quantitative", "format": "d"}
+      }
+    };
+    const model = parseUnitModel(spec);
+    const props = text.encodeEntry(model);
+
+    it('should output correct bin range', function() {
+      assert.deepEqual(props.text, {signal: `format(datum["bin_maxbins_10_foo_start"], 'd')+'-'+format(datum["bin_maxbins_10_foo_end"], 'd')`});
+    });
+  });
+
   describe('with temporal', function() {
     const spec: UnitSpec = {
       "mark": "text",

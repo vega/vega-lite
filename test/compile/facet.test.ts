@@ -133,6 +133,40 @@ describe('FacetModel', function() {
       model.parseAxisAndHeader();
       assert(model.component.layoutHeaders.column.fieldRef, "timeFormat(parent[\"year_date\"], '%Y')");
     });
+
+    it('applies number format for fieldref of a quantitative field', () => {
+      const model = parseFacetModel({
+        facet: {
+          column: {field: 'a', type: 'quantitative', format: 'd'}
+        },
+        spec: {
+          mark: 'point',
+          encoding: {
+            x: {field: 'b', type: 'quantitative'},
+            y: {field: 'c', type: 'quantitative'}
+          }
+        }
+      });
+      model.parseAxisAndHeader();
+      assert(model.component.layoutHeaders.column.fieldRef, "format(parent[\"a\"], 'd')");
+    });
+
+    it('ignores number format for fieldref of a binned field', () => {
+      const model = parseFacetModel({
+        facet: {
+          column: {bin: true, field: 'a', type: 'quantitative'}
+        },
+        spec: {
+          mark: 'point',
+          encoding: {
+            x: {field: 'b', type: 'quantitative'},
+            y: {field: 'c', type: 'quantitative'}
+          }
+        }
+      });
+      model.parseAxisAndHeader();
+      assert(model.component.layoutHeaders.column.fieldRef, "parent[\"a\"]");
+    });
   });
 
   // TODO: test assembleHeader
