@@ -173,7 +173,7 @@
                     },
                     "title": {
                         "text": {
-                            "signal": "parent['year_date']"
+                            "signal": "timeFormat(parent[\"year_date\"], '%Y')"
                         },
                         "offset": 10,
                         "orient": "top",

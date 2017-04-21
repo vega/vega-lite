@@ -151,7 +151,7 @@
                     },
                     "title": {
                         "text": {
-                            "signal": "parent['age']"
+                            "signal": "parent[\"age\"]"
                         },
                         "offset": 10,
                         "orient": "left",

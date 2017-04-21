@@ -1,22 +1,58 @@
 {
     "$schema": "http://vega.github.io/schema/vega/v3.0.json",
+    "description": "Stock price mean per quarter broken down by years.",
     "autosize": "pad",
     "padding": 5,
     "data": [
         {
             "name": "source_0",
-            "url": "data/movies.json",
+            "url": "data/stocks.csv",
             "format": {
-                "type": "json",
+                "type": "csv",
                 "parse": {
-                    "Worldwide_Gross": "number",
-                    "US_DVD_Sales": "number"
+                    "date": "date",
+                    "price": "number"
                 }
             },
             "transform": [
                 {
                     "type": "filter",
-                    "expr": "datum[\"Worldwide_Gross\"] !== null && !isNaN(datum[\"Worldwide_Gross\"]) && datum[\"US_DVD_Sales\"] !== null && !isNaN(datum[\"US_DVD_Sales\"])"
+                    "expr": "datum[\"date\"] !== null && !isNaN(datum[\"date\"])"
+                },
+                {
+                    "type": "formula",
+                    "as": "year_date",
+                    "expr": "datetime(year(datum[\"date\"]), 0, 1, 0, 0, 0, 0)"
+                },
+                {
+                    "type": "filter",
+                    "expr": "datum[\"date\"] !== null && !isNaN(datum[\"date\"]) && datum[\"price\"] !== null && !isNaN(datum[\"price\"])"
+                },
+                {
+                    "type": "formula",
+                    "as": "quarter_date",
+                    "expr": "datetime(0, (quarter(datum[\"date\"])-1)*3, 1, 0, 0, 0, 0)"
+                },
+                {
+                    "type": "aggregate",
+                    "groupby": [
+                        "quarter_date",
+                        "symbol",
+                        "year_date"
+                    ],
+                    "ops": [
+                        "mean"
+                    ],
+                    "fields": [
+                        "price"
+                    ]
+                },
+                {
+                    "type": "collect",
+                    "sort": {
+                        "field": "quarter_date",
+                        "order": "descending"
+                    }
                 }
             ]
         },
@@ -27,7 +63,7 @@
                 {
                     "type": "aggregate",
                     "groupby": [
-                        "MPAA_Rating"
+                        "year_date"
                     ]
                 }
             ]
@@ -42,7 +78,7 @@
                         "distinct"
                     ],
                     "fields": [
-                        "MPAA_Rating"
+                        "year_date"
                     ]
                 }
             ]
@@ -51,7 +87,7 @@
     "signals": [
         {
             "name": "child_width",
-            "update": "200"
+            "update": "bandspace(domain('x').length, 1, 0.5) * 21"
         },
         {
             "name": "child_height",
@@ -70,7 +106,7 @@
     ],
     "marks": [
         {
-            "name": "nested_main_group",
+            "name": "nested-main-group",
             "type": "group",
             "layout": {
                 "padding": {
@@ -79,13 +115,13 @@
                 },
                 "offset": 10,
                 "columns": {
-                    "signal": "data('column_layout')[0].distinct_MPAA_Rating"
+                    "signal": "data('column_layout')[0].distinct_year_date"
                 },
                 "bounds": "full"
             },
             "marks": [
                 {
-                    "name": "column_title",
+                    "name": "column-title",
                     "role": "column-title",
                     "type": "group",
                     "marks": [
@@ -101,7 +137,7 @@
                                         "value": "center"
                                     },
                                     "text": {
-                                        "value": "MPAA_Rating"
+                                        "value": "YEAR(date)"
                                     },
                                     "fill": {
                                         "value": "black"
@@ -115,7 +151,7 @@
                     ]
                 },
                 {
-                    "name": "row_header",
+                    "name": "row-header",
                     "type": "group",
                     "role": "row-header",
                     "encode": {
@@ -130,13 +166,13 @@
                             "scale": "y",
                             "format": "s",
                             "orient": "left",
-                            "title": "US_DVD_Sales",
+                            "title": "MEAN(price)",
                             "zindex": 1
                         }
                     ]
                 },
                 {
-                    "name": "column_header",
+                    "name": "column-header",
                     "type": "group",
                     "role": "column-header",
                     "from": {
@@ -144,7 +180,7 @@
                     },
                     "title": {
                         "text": {
-                            "signal": "parent[\"MPAA_Rating\"]"
+                            "signal": "timeFormat(parent[\"year_date\"], '%Y')"
                         },
                         "offset": 10,
                         "orient": "top",
@@ -171,7 +207,7 @@
                     }
                 },
                 {
-                    "name": "column_footer",
+                    "name": "column-footer",
                     "type": "group",
                     "role": "column-footer",
                     "from": {
@@ -187,11 +223,28 @@
                     "axes": [
                         {
                             "scale": "x",
-                            "format": "s",
                             "orient": "bottom",
                             "tickCount": 5,
-                            "title": "Worldwide_Gross",
-                            "zindex": 1
+                            "title": "QUARTER(date)",
+                            "zindex": 1,
+                            "encode": {
+                                "labels": {
+                                    "update": {
+                                        "text": {
+                                            "signal": "'Q' + quarter(datum.value)"
+                                        },
+                                        "angle": {
+                                            "value": 270
+                                        },
+                                        "align": {
+                                            "value": "right"
+                                        },
+                                        "baseline": {
+                                            "value": "middle"
+                                        }
+                                    }
+                                }
+                            }
                         }
                     ]
                 },
@@ -203,7 +256,7 @@
                             "name": "facet",
                             "data": "source_0",
                             "groupby": [
-                                "MPAA_Rating"
+                                "year_date"
                             ]
                         }
                     },
@@ -228,48 +281,59 @@
                     },
                     "marks": [
                         {
-                            "name": "child_marks",
-                            "type": "symbol",
-                            "role": "point",
+                            "name": "child_pathgroup",
+                            "type": "group",
                             "from": {
-                                "data": "facet"
+                                "facet": {
+                                    "name": "faceted-path-child_main",
+                                    "data": "facet",
+                                    "groupby": [
+                                        "symbol"
+                                    ]
+                                }
                             },
                             "encode": {
                                 "update": {
-                                    "x": {
-                                        "scale": "x",
-                                        "field": "Worldwide_Gross"
+                                    "width": {
+                                        "field": {
+                                            "group": "width"
+                                        }
                                     },
-                                    "y": {
-                                        "scale": "y",
-                                        "field": "US_DVD_Sales"
-                                    },
-                                    "stroke": {
-                                        "value": "#4c78a8"
-                                    },
-                                    "fill": {
-                                        "value": "transparent"
-                                    },
-                                    "opacity": {
-                                        "value": 0.7
+                                    "height": {
+                                        "field": {
+                                            "group": "height"
+                                        }
                                     }
                                 }
-                            }
+                            },
+                            "marks": [
+                                {
+                                    "name": "child_marks",
+                                    "type": "line",
+                                    "from": {
+                                        "data": "faceted-path-child_main"
+                                    },
+                                    "encode": {
+                                        "update": {
+                                            "x": {
+                                                "scale": "x",
+                                                "field": "quarter_date"
+                                            },
+                                            "y": {
+                                                "scale": "y",
+                                                "field": "mean_price"
+                                            },
+                                            "stroke": {
+                                                "scale": "color",
+                                                "field": "symbol"
+                                            }
+                                        }
+                                    }
+                                }
+                            ]
                         }
                     ],
                     "axes": [
-                        {
-                            "scale": "x",
-                            "domain": false,
-                            "format": "s",
-                            "grid": true,
-                            "labels": false,
-                            "orient": "bottom",
-                            "tickCount": 5,
-                            "ticks": false,
-                            "zindex": 0,
-                            "gridScale": "y"
-                        },
                         {
                             "scale": "y",
                             "domain": false,
@@ -289,25 +353,24 @@
     "scales": [
         {
             "name": "x",
-            "type": "linear",
+            "type": "point",
             "domain": {
                 "data": "source_0",
-                "field": "Worldwide_Gross"
+                "field": "quarter_date",
+                "sort": true
             },
-            "range": [
-                0,
-                200
-            ],
+            "range": {
+                "step": 21
+            },
             "round": true,
-            "nice": true,
-            "zero": true
+            "padding": 0.5
         },
         {
             "name": "y",
             "type": "linear",
             "domain": {
                 "data": "source_0",
-                "field": "US_DVD_Sales"
+                "field": "mean_price"
             },
             "range": [
                 200,
@@ -316,6 +379,22 @@
             "round": true,
             "nice": true,
             "zero": true
+        },
+        {
+            "name": "color",
+            "type": "ordinal",
+            "domain": {
+                "data": "source_0",
+                "field": "symbol",
+                "sort": true
+            },
+            "range": "category"
+        }
+    ],
+    "legends": [
+        {
+            "stroke": "color",
+            "title": "symbol"
         }
     ]
 }

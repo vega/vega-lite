@@ -177,7 +177,7 @@
                     },
                     "title": {
                         "text": {
-                            "signal": "parent['year']"
+                            "signal": "parent[\"year\"]"
                         },
                         "offset": 10,
                         "orient": "top",

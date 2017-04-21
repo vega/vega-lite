@@ -20,7 +20,7 @@ import {
 } from '../vega.schema';
 import {parseGridAxis, parseMainAxis} from './axis/parse';
 import {gridShow} from './axis/rules';
-import {buildModel} from './common';
+import {buildModel, formatSignalRef} from './common';
 import {assembleData, assembleFacetData, FACET_SCALE_PREFIX} from './data/assemble';
 import {parseData} from './data/parse';
 import {getHeaderType, HeaderChannel, HeaderComponent, LayoutHeaderComponent} from './layout/header';
@@ -167,7 +167,8 @@ export class FacetModel extends ModelWithField {
   private parseHeader(channel: HeaderChannel) {
 
     if (this.channelHasField(channel)) {
-      let title = fieldDefTitle(this.facet[channel], this.config);
+      const fieldDef = this.facet[channel];
+      let title = fieldDefTitle(fieldDef, this.config);
 
       if (this.child.component.layoutHeaders[channel].title) {
         // merge title with child to produce "Title / Subtitle / Sub-subtitle"
@@ -177,7 +178,7 @@ export class FacetModel extends ModelWithField {
 
       this.component.layoutHeaders[channel] = {
         title,
-        field: this.field(channel),
+        fieldRef: formatSignalRef(fieldDef, 'parent', this.config),
         // TODO: support adding label to footer as well
         header: [this.makeHeaderComponent(channel, true)]
       };
