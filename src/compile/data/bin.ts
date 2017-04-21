@@ -22,8 +22,8 @@ function rangeFormula(model: ModelWithField, fieldDef: FieldDef<string>, channel
       const guide = (model instanceof UnitModel) ? (model.axis(channel) || model.legend(channel) || {}) : {};
       const format = guide.format || model.config.numberFormat;
 
-      const startField = field(fieldDef, {datum: true, binSuffix: 'start'});
-      const endField = field(fieldDef, {datum: true, binSuffix: 'end'});
+      const startField = field(fieldDef, {expr: 'datum', binSuffix: 'start'});
+      const endField = field(fieldDef, {expr: 'datum', binSuffix: 'end'});
 
       return {
         formulaAs: field(fieldDef, {binSuffix: 'range'}),

@@ -71,9 +71,9 @@ export function band(scaleName: string, band: number|boolean = true): VgValueRef
 function binMidSignal(fieldDef: FieldDef<string>, scaleName: string) {
   return {
     signal: `(` +
-      `scale("${scaleName}", ${field(fieldDef, {binSuffix: 'start', datum: true})})` +
+      `scale("${scaleName}", ${field(fieldDef, {binSuffix: 'start', expr: 'datum'})})` +
       ` + ` +
-      `scale("${scaleName}", ${field(fieldDef, {binSuffix: 'end', datum: true})})`+
+      `scale("${scaleName}", ${field(fieldDef, {binSuffix: 'end', expr: 'datum'})})`+
     `)/2`
   };
 }
@@ -139,7 +139,7 @@ export function text(textDef: TextFieldDef<string> | ValueDef<any>, config: Conf
   // text
   if (textDef) {
     if (isFieldDef(textDef)) {
-      return formatSignalref(textDef, config);
+      return formatSignalRef(textDef, config);
     } else if (textDef.value) {
       return {value: textDef.value};
     }

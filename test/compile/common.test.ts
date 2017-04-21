@@ -12,25 +12,25 @@ describe('Common', function() {
   describe('timeFormat()', function() {
     it('should get the right time expression for month with shortTimeLabels=true', function() {
       const fieldDef = {timeUnit: TimeUnit.MONTH, field: 'a', type: TEMPORAL};
-      const expression = timeFormatExpression(field(fieldDef, {datum: true}), TimeUnit.MONTH, undefined, true, defaultConfig.timeFormat);
+      const expression = timeFormatExpression(field(fieldDef, {expr: 'datum'}), TimeUnit.MONTH, undefined, true, defaultConfig.timeFormat);
       assert.equal(expression, `timeFormat(datum["month_a"], '%b')`);
     });
 
     it('should get the right time expression for month with shortTimeLabels=false', function() {
       const fieldDef = {timeUnit: TimeUnit.MONTH, field: 'a', type: TEMPORAL};
-      const expression = timeFormatExpression(field(fieldDef, {datum: true}), TimeUnit.MONTH, undefined, false, defaultConfig.timeFormat);
+      const expression = timeFormatExpression(field(fieldDef, {expr: 'datum'}), TimeUnit.MONTH, undefined, false, defaultConfig.timeFormat);
       assert.equal(expression, `timeFormat(datum["month_a"], '%B')`);
     });
 
     it('should get the right time expression for yearmonth with custom format', function() {
       const fieldDef = {timeUnit: TimeUnit.YEARMONTH, field: 'a', type: TEMPORAL};
-      const expression = timeFormatExpression(field(fieldDef, {datum: true}), TimeUnit.MONTH, '%Y', true, defaultConfig.timeFormat);
+      const expression = timeFormatExpression(field(fieldDef, {expr: 'datum'}), TimeUnit.MONTH, '%Y', true, defaultConfig.timeFormat);
       assert.equal(expression, `timeFormat(datum["yearmonth_a"], '%Y')`);
     });
 
     it('should get the right time expression for quarter', function() {
       const fieldDef = {timeUnit: TimeUnit.QUARTER, field: 'a', type: TEMPORAL};
-      const expression = timeFormatExpression(field(fieldDef, {datum: true}), TimeUnit.QUARTER, undefined, true, defaultConfig.timeFormat);
+      const expression = timeFormatExpression(field(fieldDef, {expr: 'datum'}), TimeUnit.QUARTER, undefined, true, defaultConfig.timeFormat);
       assert.equal(expression, `'Q' + quarter(datum["quarter_a"])`);
     });
 

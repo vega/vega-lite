@@ -108,7 +108,7 @@ export function expression(filter: Filter | Filter[]): string {
         // TODO: We calculate timeUnit on the fly here. Consider if we would like to consolidate this with timeUnit pipeline
         // TODO: support utc
       ('time(' + timeUnitFieldExpr(filter.timeUnit, filter.field) + ')') :
-      field(filter, {datum: true});
+      field(filter, {expr: 'datum'});
 
     if (isEqualFilter(filter)) {
       return fieldExpr + '===' + valueExpr(filter.equal, filter.timeUnit);

@@ -163,8 +163,8 @@ export function isValueDef(channelDef: ChannelDef<any>): channelDef is ValueDef<
 export interface FieldRefOption {
   /** exclude bin, aggregate, timeUnit */
   nofn?: boolean;
-  /** Wrap the field inside datum[...] per Vega convention */
-  datum?: boolean;
+  /** Wrap the field with datum or parent (e.g., datum['...'] for Vega Expression */
+  expr?: 'datum' | 'parent';
   /** prepend fn with custom function prefix */
   prefix?: string;
   /** append suffix to the field ref for bin (default='start') */
@@ -209,8 +209,8 @@ export function field(fieldDef: FieldDef<string>, opt: FieldRefOption = {}): str
     field = `${prefix}_${field}`;
   }
 
-  if (opt.datum) {
-    field = `datum["${field}"]`;
+  if (opt.expr) {
+    field = `${opt.expr}["${field}"]`;
   }
 
   return field;
