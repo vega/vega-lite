@@ -152,7 +152,7 @@
                     },
                     "title": {
                         "text": {
-                            "signal": "parent['gender']"
+                            "signal": "parent[\"gender\"]"
                         },
                         "offset": 10,
                         "orient": "left",

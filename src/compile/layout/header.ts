@@ -23,7 +23,7 @@ export interface LayoutHeaderComponent {
   /**
    * Field that is used to drive a header group (for facet only).
    */
-  field?: string;
+  fieldRef?: {signal: string};
 
   // TODO: repeat and concat can have multiple header / footer.
   // Need to redesign this part a bit.
@@ -94,9 +94,9 @@ export function getTitleGroup(model: Model, channel: HeaderChannel) {
 export function getHeaderGroup(model: Model, channel: HeaderChannel, headerType: HeaderType, layoutHeader: LayoutHeaderComponent, header: HeaderComponent) {
   if (header) {
     let title = null;
-    if (layoutHeader.field && header.labels) {
+    if (layoutHeader.fieldRef && header.labels) {
       title = {
-        text: {signal: `parent['${layoutHeader.field}']`},
+        text: layoutHeader.fieldRef,
         offset: 10,
         orient: channel === 'row' ? 'left' : 'top',
         encode: {
@@ -123,7 +123,7 @@ export function getHeaderGroup(model: Model, channel: HeaderChannel, headerType:
         name: model.getName(`${channel}_${headerType}`),
         type: 'group',
         role: `${channel}-${headerType}`,
-        ...(layoutHeader.field ? {from: {data: model.getName(channel)}} : {}),
+        ...(layoutHeader.fieldRef ? {from: {data: model.getName(channel)}} : {}),
         ...(title ? {title} : {}),
         encode: {
           update: {

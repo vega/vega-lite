@@ -110,6 +110,33 @@ describe('FacetModel', function() {
     });
   });
 
+
+  describe('parseAxisAndHeader', () => {
+    // TODO: add more tests
+    // - correctly join title for nested facet
+    // - correctly generate headers with right labels and axes
+
+
+    it('applies text format to the fieldref of a temporal field', () => {
+      const model = parseFacetModel({
+        facet: {
+          column: {timeUnit:'year', field: 'date', type: 'ordinal'}
+        },
+        spec: {
+          mark: 'point',
+          encoding: {
+            x: {field: 'b', type: 'quantitative'},
+            y: {field: 'c', type: 'quantitative'}
+          }
+        }
+      });
+      model.parseAxisAndHeader();
+      assert(model.component.layoutHeaders.column.fieldRef, "timeFormat(parent[\"year_date\"], '%Y')");
+    });
+  });
+
+  // TODO: test assembleHeader
+
   describe('dataTable', () => {
     it('should return stacked if there is a stacked data component', () => {
       const model = parseFacetModel({
