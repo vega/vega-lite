@@ -102,7 +102,7 @@ describe('Mark: Text', function() {
     });
 
     it('should map text without template', function() {
-      assert.deepEqual(props.text, {field: "Origin"});
+      assert.deepEqual(props.text, {signal: 'datum["Origin"]'});
     });
   });
 
