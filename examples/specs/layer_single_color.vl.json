@@ -9,19 +9,6 @@
         "y": {"field": "price","type": "quantitative"},
         "color": {"field": "symbol","type": "nominal"}
       }
-    },
-    {
-      "mark": "rule",
-      "encoding": {
-        "y": {
-          "field": "price",
-          "type": "quantitative",
-          "aggregate": "mean"
-        },
-        "size": {"value": 2},
-        "color": {"field": "symbol","type": "nominal"},
-        "opacity": {"value": 0.5}
-      }
     }
   ]
 }
