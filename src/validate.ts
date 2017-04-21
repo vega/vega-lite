@@ -1,5 +1,5 @@
 import {isMarkDef} from './mark';
-import {FacetedUnitSpec} from './spec';
+import {FacetedCompositeUnitSpec} from './spec';
 
 // TODO: move to vl.spec.validator?
 
@@ -56,23 +56,23 @@ export const DEFAULT_SUPPORTED_CHANNEL_TYPE: SupportedChannelMap = {
  * @return {String} Return one reason why the encoding is invalid,
  *                  or null if the encoding is valid.
  */
-export function getEncodingMappingError(spec: FacetedUnitSpec,
+export function getEncodingMappingError(spec: FacetedCompositeUnitSpec,
   requiredChannelMap: RequiredChannelMap = DEFAULT_REQUIRED_CHANNEL_MAP,
   supportedChannelMap: SupportedChannelMap = DEFAULT_SUPPORTED_CHANNEL_TYPE
   ) {
-  let mark = isMarkDef(spec.mark) ? spec.mark.type : spec.mark;
-  let encoding = spec.encoding;
-  let requiredChannels = requiredChannelMap[mark];
-  let supportedChannels = supportedChannelMap[mark];
+  const mark = isMarkDef(spec.mark) ? spec.mark.type : spec.mark;
+  const encoding = spec.encoding;
+  const requiredChannels = requiredChannelMap[mark];
+  const supportedChannels = supportedChannelMap[mark];
 
-  for (let i in requiredChannels) { // all required channels are in encoding`
+  for (const i in requiredChannels) { // all required channels are in encoding`
     if (!(requiredChannels[i] in encoding)) {
       return 'Missing encoding channel \"' + requiredChannels[i] +
         '\" for mark \"' + mark + '\"';
     }
   }
 
-  for (let channel in encoding) { // all channels in encoding are supported
+  for (const channel in encoding) { // all channels in encoding are supported
     if (!supportedChannels[channel]) {
       return 'Encoding channel \"' + channel +
         '\" is not supported by mark type \"' + mark + '\"';

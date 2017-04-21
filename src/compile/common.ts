@@ -4,29 +4,39 @@ import {Channel, TEXT} from '../channel';
 import {CellConfig, Config} from '../config';
 import {field, FieldDef, OrderFieldDef} from '../fielddef';
 import {Mark, MarkConfig, TextConfig} from '../mark';
+import {isConcatSpec, isFacetSpec, isLayerSpec, isRepeatSpec, isUnitSpec, Spec} from '../spec';
 import {TimeUnit} from '../timeunit';
+import {formatExpression} from '../timeunit';
 import {QUANTITATIVE} from '../type';
 import {isArray} from '../util';
-
-import {isFacetSpec, isLayerSpec, isUnitSpec, Spec} from '../spec';
-import {formatExpression} from '../timeunit';
 import {VgEncodeEntry, VgSort} from '../vega.schema';
+import {ConcatModel} from './concat';
 import {FacetModel} from './facet';
 import {LayerModel} from './layer';
 import {Model} from './model';
+import {RepeaterValue, RepeatModel} from './repeat';
 import {UnitModel} from './unit';
 
-export function buildModel(spec: Spec, parent: Model, parentGivenName: string, config: Config): Model {
+
+export function buildModel(spec: Spec, parent: Model, parentGivenName: string, repeater: RepeaterValue, config: Config): Model {
   if (isFacetSpec(spec)) {
-    return new FacetModel(spec, parent, parentGivenName, config);
+    return new FacetModel(spec, parent, parentGivenName, repeater, config);
   }
 
   if (isLayerSpec(spec)) {
-    return new LayerModel(spec, parent, parentGivenName, config);
+    return new LayerModel(spec, parent, parentGivenName, repeater, config);
   }
 
   if (isUnitSpec(spec)) {
-    return new UnitModel(spec, parent, parentGivenName, config);
+    return new UnitModel(spec, parent, parentGivenName, repeater, config);
+  }
+
+  if (isRepeatSpec(spec)) {
+    return new RepeatModel(spec, parent, parentGivenName, repeater, config);
+  }
+
+  if (isConcatSpec(spec)) {
+    return new ConcatModel(spec, parent, parentGivenName, repeater, config);
   }
 
   throw new Error(log.message.INVALID_SPEC);
@@ -71,7 +81,7 @@ export function getMarkConfig<P extends keyof MarkConfig>(prop: P, mark: Mark, c
  *
  * @param format explicitly specified format
  */
-export function numberFormat(fieldDef: FieldDef, format: string, config: Config, channel: Channel) {
+export function numberFormat(fieldDef: FieldDef<string>, format: string, config: Config, channel: Channel) {
   if (fieldDef.type === QUANTITATIVE) {
     // add number format for quantitative type only
 
@@ -103,7 +113,7 @@ export function timeFormatExpression(field: string, timeUnit: TimeUnit, format: 
 /**
  * Return Vega sort parameters (tuple of field and order).
  */
-export function sortParams(orderDef: OrderFieldDef | OrderFieldDef[]): VgSort {
+export function sortParams(orderDef: OrderFieldDef<string> | OrderFieldDef<string>[]): VgSort {
   return (isArray(orderDef) ? orderDef : [orderDef]).reduce((s, orderChannelDef) => {
     s.field.push(field(orderChannelDef, {binSuffix: 'start'}));
     s.order.push(orderChannelDef.sort || 'ascending');

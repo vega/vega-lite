@@ -13,8 +13,5 @@
       "field": "*",
       "type": "quantitative"
     }
-  },
-  "config": {
-    "cell": {"width": 200, "height": 200}
   }
 }

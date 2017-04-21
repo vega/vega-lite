@@ -22,3 +22,11 @@ To see example code for embedding visualization in a webpage, please refer to [t
 ## Trellis Plots
 
 <div class="gallery" data-gallery-group="Trellis"></div>
+
+## Statistical Plots
+
+<div class="gallery" data-gallery-group="Statistical"></div>
+
+## Interactive Plots
+
+<div class="gallery" data-gallery-group="Interactive"></div>

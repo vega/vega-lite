@@ -1,4 +1,5 @@
 import {AxisConfig} from './axis';
+import {BoxPlotConfig} from './compositemark';
 import {defaultLegendConfig, LegendConfig} from './legend';
 import {BarConfig, MarkConfig, TextConfig, TickConfig} from './mark';
 import * as mark from './mark';
@@ -10,33 +11,82 @@ import {duplicate, mergeDeep} from './util';
 import {VgRangeScheme} from './vega.schema';
 
 export interface CellConfig {
+  /**
+   * The default width of the single plot or each plot in a trellis plot when the visualization has a continuous (non-ordinal) x-scale or ordinal x-scale with `rangeStep` = `null`.
+   *
+   * __Default value:__ `200`
+   *
+   */
   width?: number;
+
+  /**
+   * The default height of the single plot or each plot in a trellis plot when the visualization has a continuous (non-ordinal) y-scale with `rangeStep` = `null`.
+   *
+   * __Default value:__ `200`
+   *
+   */
   height?: number;
 
+  /**
+   * Whether the view should be clipped.
+   */
   clip?: boolean;
 
   // FILL_STROKE_CONFIG
   /**
    * The fill color.
+   *
+   * __Default value:__ (none)
+   *
    */
   fill?: string;
 
-  /** The fill opacity (value between [0,1]). */
+  /**
+   * The fill opacity (value between [0,1]).
+   *
+   * __Default value:__ (none)
+   *
+   */
   fillOpacity?: number;
 
-  /** The stroke color. */
+  /**
+   * The stroke color.
+   *
+   * __Default value:__ (none)
+   *
+   */
   stroke?: string;
 
-  /** The stroke opacity (value between [0,1]). */
+  /**
+   * The stroke opacity (value between [0,1]).
+   *
+   * __Default value:__ (none)
+   *
+   */
   strokeOpacity?: number;
 
-  /** The stroke width, in pixels. */
+  /**
+   * The stroke width, in pixels.
+   *
+   * __Default value:__ (none)
+   *
+   */
   strokeWidth?: number;
 
-  /** An array of alternating stroke, space lengths for creating dashed or dotted lines. */
+  /**
+   * An array of alternating stroke, space lengths for creating dashed or dotted lines.
+   *
+   * __Default value:__ (none)
+   *
+   */
   strokeDash?: number[];
 
-  /** The offset (in pixels) into which to begin drawing with the stroke dash array. */
+  /**
+   * The offset (in pixels) into which to begin drawing with the stroke dash array.
+   *
+   * __Default value:__ (none)
+   *
+   */
   strokeDashOffset?: number;
 }
 
@@ -52,31 +102,12 @@ export const defaultFacetCellConfig: CellConfig = {
 };
 
 export interface FacetConfig {
-  /** Facet Axis Config */
-  axis?: AxisConfig;
-
-  /** Facet Grid Config */
-  grid?: FacetGridConfig;
-
   /** Facet Cell Config */
   cell?: CellConfig;
 }
 
-export interface FacetGridConfig {
-  color?: string;
-  opacity?: number;
-  offset?: number;
-}
-
-const defaultFacetGridConfig: FacetGridConfig = {
-  color: '#000000',
-  opacity: 0.4,
-  offset: 0
-};
 
 export const defaultFacetConfig: FacetConfig = {
-  axis: {},
-  grid: defaultFacetGridConfig,
   cell: defaultFacetCellConfig
 };
 
@@ -85,6 +116,8 @@ export type AreaOverlay = 'line' | 'linepoint' | 'none';
 export interface OverlayConfig {
   /**
    * Whether to overlay line with point.
+   *
+   * __Default value:__ `false`
    */
   line?: boolean;
 
@@ -92,22 +125,10 @@ export interface OverlayConfig {
    * Type of overlay for area mark (line or linepoint)
    */
   area?: AreaOverlay;
-
-  /**
-   * Default style for the overlayed point.
-   */
-  pointStyle?: MarkConfig;
-
-  /**
-   * Default style for the overlayed point.
-   */
-  lineStyle?: MarkConfig;
 }
 
 export const defaultOverlayConfig: OverlayConfig = {
-  line: false,
-  pointStyle: {filled: true},
-  lineStyle: {}
+  line: false
 };
 
 export type RangeConfig = (number|string)[] | VgRangeScheme | {step: number};
@@ -118,17 +139,26 @@ export interface Config  extends TopLevelProperties {
   // height?: number;
 
   /**
-   * D3 Number format for axis labels and text tables. For example "s" for SI units.
+   * D3 Number format for axis labels and text tables. For example "s" for SI units.(in the form of [D3 number format pattern](https://github.com/mbostock/d3/wiki/Formatting)).
+   *
+   * __Default value:__ `"s"` (except for text marks that encode a count field, the default value is `"d"`).
+   *
    */
   numberFormat?: string;
 
   /**
-   * Default datetime format for axis and legend labels. The format can be set directly on each axis and legend.
+   * Default datetime format for axis and legend labels. The format can be set directly on each axis and legend. [D3 time format pattern](https://github.com/mbostock/d3/wiki/Time-Formatting)).
+   *
+   * __Default value:__ `'%b %d, %Y'`.
+   *
    */
   timeFormat?: string;
 
   /**
    * Default axis and legend title for count fields.
+   *
+   * __Default value:__ `'Number of Records'`.
+   *
    * @type {string}
    */
   countTitle?: string;
@@ -172,6 +202,13 @@ export interface Config  extends TopLevelProperties {
 
   /** Tick-Specific Config */
   tick?: TickConfig;
+
+  /** Box Config */
+  box?: BoxPlotConfig;
+
+  boxWhisker?: MarkConfig;
+
+  boxMid?: MarkConfig;
 
   // OTHER CONFIG
 
@@ -237,7 +274,12 @@ export interface Config  extends TopLevelProperties {
   /** Selection Config */
   selection?: SelectionConfig;
 
-  /** Filter all null values. */
+  /**
+   * Whether to filter invalid values (`null` and `NaN`) from the data.
+   * - By default (`undefined`), only quantitative and temporal fields are filtered.
+   * - If set to `true`, all data items with null values are filtered.
+   * - If `false`, all data items are included. In this case, null values will be interpreted as zeroes.
+   */
   filterInvalid?: boolean;
 
   // Support arbitrary key for role config
@@ -267,6 +309,10 @@ export const defaultConfig: Config = {
   square: {},
   text: mark.defaultTextConfig,
   tick: mark.defaultTickConfig,
+
+  box: {size: 14},
+  boxWhisker: {},
+  boxMid: {},
 
   overlay: defaultOverlayConfig,
   scale: defaultScaleConfig,

@@ -1,0 +1,50 @@
+{%
+assign type = include.src.type %}{%
+  if type == nil %}{% comment %}special case for $ref{% endcomment %}{%
+    if include.src["$ref"] %}{%
+      assign array = include.src["$ref"]] | split: "/" %}{%
+      assign last_index = array | size | minus: 1 %}{%
+      assign type = array[last_index] %}{%
+      assign type = type | split: "<" | first%}{%
+    elsif include.src.anyOf %}{% comment %}special case for anyOf{% endcomment %}{%
+      capture type %}{%
+        assign para = include.src.anyOf %}{%
+        include type-anyof.html types=para %}{%
+      endcapture %}{%
+    else %}{%
+      comment %}
+        This is a HACK when property has a type of any. any will results in property having no
+        type in schema file, so we need to assign it as Object
+        Need to be deleted when typescript-json-schema supports TypeScript 2.2 (having object data type){%
+      endcomment %}{%
+      assign type = "Object" %}{%
+    endif %}{%
+  elsif type == "array" %}{% comment %}special case for type is arrays of objects{% endcomment %}{%
+    if include.src.items.anyOf %}{%
+      capture type %}{%
+        assign para = include.src.items.anyOf %}{%
+        include type-anyof.html types=para suffix="[]"%}{%
+      endcapture %}{%
+    elsif include.src.items.type %}{%
+      assign type =include.src.items.type | append: "[]" | capitalize %}{%
+    else %}{%
+      comment %}
+        This is a HACK when property has a type of any[]. any[] will results in property having no
+        type in schema file, so we need to assign it as Object[]
+        Need to be deleted when typescript-json-schema supports TypeScript 2.2 (having object data type){%
+      endcomment %}{%
+      assign type = "Object[]" %}{%
+    endif %}{%
+  elsif type.first != nil %}{% comment %}special case for type in the schema is an array of multiple types{% endcomment %}{%
+    assign newType = "" %}{%
+    for element in type %}{%
+      assign elem = element | capitalize %}{%
+      assign newType = newType | append: elem %}{%
+      unless forloop.last %}{%
+        assign newType = newType | append: " | "%}{%
+      endunless %}{%
+    endfor %}{%
+    assign type =  newType %}{%
+  else %}{%comment%}normal case for single type{%endcomment%}{%
+    assign type = type | capitalize %}{%
+  endif %}{{type | strip}}

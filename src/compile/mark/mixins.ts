@@ -14,7 +14,7 @@ export function color(model: UnitModel) {
   const config = model.config;
   const filled = model.markDef.filled;
 
-  let e = nonPosition('color', model, {
+  const e = nonPosition('color', model, {
     vgChannel: filled ? 'fill' : 'stroke',
     defaultValue: getMarkConfig('color', model.mark(), config) as string
   });
@@ -79,7 +79,7 @@ function wrapCondition(model: UnitModel, condition: Condition<any>, vgChannel: s
 function selectionTest(model: UnitModel, selectionName: string) {
   const negate = selectionName.charAt(0) === '!',
     name = negate ? selectionName.slice(1) : selectionName;
-  return (negate ? '!' : '') + predicate(model.component.selection[name]);
+  return (negate ? '!' : '') + predicate(model.getComponent('selection', name));
 }
 
 export function text(model: UnitModel) {

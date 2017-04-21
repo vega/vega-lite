@@ -51,6 +51,12 @@ export interface MarkDef {
   role?: string;
 
   /**
+   * Whether the mark's color should be used as fill color instead of stroke color.
+   * All marks except "point", "line", and "rule" are filled by default.
+   */
+  filled?: boolean;
+
+  /**
    * The orientation of a non-stacked bar, tick, area, and line charts.
    * The value is either horizontal (default) or vertical.
    * - For bar, rule and tick, this determines whether the size of the bar and tick
@@ -78,11 +84,12 @@ export interface MarkDef {
    * - `"cardinal-closed"`: a closed Cardinal spline, as in a loop.
    * - `"bundle"`: equivalent to basis, except the tension parameter is used to straighten the spline.
    * - `"monotone"`: cubic interpolation that preserves monotonicity in y.
+   * For more information about each interpolation method, please see [D3's line interpolation](https://github.com/mbostock/d3/wiki/SVG-Shapes#line_interpolate).
    */
   interpolate?: Interpolate;
 
   /**
-   * Depending on the interpolation type, sets the tension parameter (for line and area marks).
+   * Depending on the interpolation type, sets the tension parameter (for line and area marks).(See [D3's line interpolation](https://github.com/mbostock/d3/wiki/SVG-Shapes#line_interpolate).)
    * @minimum 0
    * @maximum 1
    */
@@ -111,15 +118,20 @@ export interface MarkConfig extends VgMarkConfig {
 
   // ---------- Color ----------
   /**
-   * Whether the shape\'s color should be used as fill color instead of stroke color.
-   * This is only applicable for "bar", "point", and "area".
-   * All marks except "point", "line", and "rule" are filled by default.
+   * Whether the mark's color should be used as fill color instead of stroke color.
+   *
+   * __Default value:__ `true` for all marks except `point` and `false` for `point`.
+   *
+   * __Applicable for:__ `bar`, `point`, `circle`, `square`, and `area` marks.
+   *
    */
   filled?: boolean;
 
   // TODO: remove this once we correctly integrate theme
   /**
    * Default color.
+   *
+   * __Default value:__ <span style="color: #4682b4;">&#9632;</span> `"#4682b4"`
    */
   color?: string;
 }
@@ -131,11 +143,17 @@ export const defaultMarkConfig: MarkConfig = {
 export interface BarConfig extends MarkConfig {
   /**
    * Offset between bar for binned field.  Ideal value for this is either 0 (Preferred by statisticians) or 1 (Vega-Lite Default, D3 example style).
+   *
+   * __Default value:__ `1`
+   *
    * @minimum 0
    */
   binSpacing?: number;
   /**
-   * Default size of the bars on continuous scales.
+   * The default size of the bars on continuous scales.
+   *
+   * __Default value:__ `2`
+   *
    * @minimum 0
    */
   continuousBandSize?: number;
@@ -174,6 +192,9 @@ export interface TickConfig extends MarkConfig {
 
   /**
    * Thickness of the tick mark.
+   *
+   * __Default value:__  `1`
+   *
    * @minimum 0
    */
   thickness?: number;

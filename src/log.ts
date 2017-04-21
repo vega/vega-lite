@@ -99,22 +99,39 @@ export function debug(..._: any[]) {
 export namespace message {
   export const INVALID_SPEC = 'Invalid spec';
 
+  // REPEAT
+  export function noSuchRepeatedValue(field: string) {
+    return `Unknown repeated value "${field}".`;
+  }
+
+  // DATA
+  export function unrecognizedParse(p: string) {
+    return `Unrecognized parse ${p}.`;
+  }
+
+  // TRANSFORMS
+  export function invalidTransformIgnored(transform: any) {
+    return `Ignoring an invalid transform: ${JSON.stringify(transform)}.`;
+  }
+
   // ENCODING & FACET
   export function invalidFieldType(type: Type) {
     return `Invalid field type "${type}"`;
+  }
+  export function invalidAggregate(aggregate: AggregateOp | string) {
+    return `Invalid aggregation operator "${aggregate}"`;
   }
 
   export function emptyOrInvalidFieldType(type: Type | string, channel: Channel, newType: Type) {
     return `Invalid field type (${type}) for channel ${channel}, using ${newType} instead.`;
   }
 
-  export function emptyFieldDef(fieldDef: FieldDef, channel: Channel) {
+  export function emptyFieldDef(fieldDef: FieldDef<string>, channel: Channel) {
     return `Dropping ${JSON.stringify(fieldDef)} from channel ${channel} since it does not contain data field or value.`;
   }
 
   export function incompatibleChannel(channel: Channel, markOrFacet: Mark | 'facet', when?: string) {
-    return `${channel} dropped as it is incompatible with ${markOrFacet}` +
-      when ? `when ${when}` : '';
+    return `${channel} dropped as it is incompatible with ${markOrFacet}${when ? ` when ${when}` : ''}.`;
   }
 
   export function facetChannelShouldBeDiscrete(channel: string) {
@@ -129,11 +146,11 @@ export namespace message {
   export const BAR_WITH_POINT_SCALE_AND_RANGESTEP_NULL = 'Bar mark should not be used with point scale when rangeStep is null. Please use band scale instead.';
 
   export function unclearOrientContinuous(mark: Mark) {
-    return 'Cannot clearly determine orientation for ' + mark + ' since both x and y channel encode continous fields. In this case, we use vertical by default';
+    return `Cannot clearly determine orientation for ${mark} since both x and y channel encode continous fields. In this case, we use vertical by default`;
   }
 
   export function unclearOrientDiscreteOrEmpty(mark: Mark) {
-    return 'Cannot clearly determine orientation for ' + mark + ' since both x and y channel encode discrete or empty fields.';
+    return `Cannot clearly determine orientation for ${mark} since both x and y channel encode discrete or empty fields.`;
   }
 
   export function orientOverridden(original: string, actual: string) {
@@ -147,22 +164,22 @@ export namespace message {
     return `Cannot use ${prop} with non-color channel.`;
   }
 
-  export function unaggregateDomainHasNoEffectForRawField(fieldDef: FieldDef) {
+  export function unaggregateDomainHasNoEffectForRawField(fieldDef: FieldDef<string>) {
     return `Using unaggregated domain with raw field has no effect (${JSON.stringify(fieldDef)}).`;
   }
 
-  export function unaggregateDomainWithNonSharedDomainOp(aggregate: AggregateOp) {
+  export function unaggregateDomainWithNonSharedDomainOp(aggregate: string) {
     return `Unaggregated domain not applicable for ${aggregate} since it produces values outside the origin domain of the source data.`;
   }
 
-  export function unaggregatedDomainWithLogScale(fieldDef: FieldDef) {
+  export function unaggregatedDomainWithLogScale(fieldDef: FieldDef<string>) {
     return `Unaggregated domain is currently unsupported for log scale (${JSON.stringify(fieldDef)}).`;
   }
 
   export const CANNOT_USE_RANGE_WITH_POSITION =
     'Cannot use custom range with x or y channel.  Please customize width, height, padding, or rangeStep instead.';
 
-    export const CANNOT_USE_PADDING_WITH_FACET = 'Cannot use padding with facet\'s scale.  Please use spacing instead.';
+  export const CANNOT_USE_PADDING_WITH_FACET = 'Cannot use padding with facet\'s scale.  Please use spacing instead.';
 
   export function cannotUseRangePropertyWithFacet(propName: string) {
     return `Cannot use custom ${propName} with row or column channel. Please use width, height, or spacing instead.`;
@@ -173,12 +190,12 @@ export namespace message {
       channel === 'x' ? 'width' : 'height'} is provided.`;
   }
 
-  export function cannotOverrideBinScaleType(channel: Channel, defaultScaleType: ScaleType) {
-    return `Cannot override scale type for binned channel ${channel}. We are using ${defaultScaleType} scale instead.`;
-  }
-
   export function scaleTypeNotWorkWithChannel(channel: Channel, scaleType: ScaleType, defaultScaleType: ScaleType) {
     return `Channel ${channel} does not work with ${scaleType} scale. We are using ${defaultScaleType} scale instead.`;
+  }
+
+  export function scaleTypeNotWorkWithFieldDef(scaleType: ScaleType, defaultScaleType: ScaleType) {
+    return `FieldDef does not work with ${scaleType} scale. We are using ${defaultScaleType} scale instead.`;
   }
 
   export function scalePropertyNotWorkWithScaleType(scaleType: ScaleType, propName: string, channel: Channel) {
@@ -205,7 +222,7 @@ export namespace message {
     return `Cannot stack non-linear scale (${scaleType})`;
   }
 
-  export function cannotStackNonSummativeAggregate(aggregate: AggregateOp) {
+  export function cannotStackNonSummativeAggregate(aggregate: string) {
     return `Cannot stack when the aggregate function is non-summative (${aggregate})`;
   }
 
@@ -215,13 +232,12 @@ export namespace message {
   }
 
   export function dayReplacedWithDate(fullTimeUnit: TimeUnit) {
-    return `Time unit "${fullTimeUnit}" is not supported. We are replacing it with ` +
-      (fullTimeUnit+'').replace('day', 'date') + '.';
+    return `Time unit "${fullTimeUnit}" is not supported. We are replacing it with ${
+      fullTimeUnit.replace('day', 'date')}.`;
   }
 
   export function droppedDay(d: DateTime | DateTimeExpr) {
-    return 'Dropping day from datetime ' + JSON.stringify(d) +
-          ' as day cannot be combined with other units.';
+    return `Dropping day from datetime ${JSON.stringify(d)} as day cannot be combined with other units.`;
   }
 }
 

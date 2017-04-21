@@ -1,47 +1,66 @@
 // utility for encoding mapping
+import {AggregateOp} from './aggregate';
 import {Channel, CHANNELS, supportMark} from './channel';
+import {CompositeAggregate} from './compositemark';
 import {Facet} from './facet';
-import {ChannelDef, ConditionalValueDef, FieldDef, isFieldDef, isValueDef, LegendFieldDef, normalize, OrderFieldDef, PositionFieldDef, TextFieldDef, ValueDef} from './fielddef';
+import {
+  ChannelDef,
+  ConditionalValueDef,
+  Field,
+  FieldDef,
+  isFieldDef,
+  isValueDef,
+  LegendFieldDef,
+  normalize,
+  OrderFieldDef,
+  PositionFieldDef,
+  TextFieldDef,
+  ValueDef
+} from './fielddef';
 import * as log from './log';
 import {Mark} from './mark';
 import {isArray, some} from './util';
 
-export interface Encoding {
+// utility for encoding mapping
+
+export interface Encoding<F> {
   /**
    * X coordinates for `point`, `circle`, `square`,
    * `line`, `rule`, `text`, and `tick`
    * (or to width and height for `bar` and `area` marks).
    */
-  x?: PositionFieldDef | ValueDef<number>;
+  x?: PositionFieldDef<F> | ValueDef<number>;
 
   /**
    * Y coordinates for `point`, `circle`, `square`,
    * `line`, `rule`, `text`, and `tick`
    * (or to width and height for `bar` and `area` marks).
    */
-  y?: PositionFieldDef | ValueDef<number>;
+  y?: PositionFieldDef<F> | ValueDef<number>;
 
   /**
-   * X2 coordinates for ranged `bar`, `rule`, `area`
+   * X2 coordinates for ranged `bar`, `rule`, `area`.
    */
-  x2?: FieldDef | ValueDef<number>;
+  // TODO: Ham need to add default behavior
+  x2?: FieldDef<F> | ValueDef<number>;
 
   /**
-   * Y2 coordinates for ranged `bar`, `rule`, `area`
+   * Y2 coordinates for ranged `bar`, `rule`, `area`.
    */
-  y2?: FieldDef | ValueDef<number>;
+  // TODO: Ham need to add default behavior
+  y2?: FieldDef<F> | ValueDef<number>;
 
   /**
    * Color of the marks – either fill or stroke color based on mark type.
    * (By default, fill color for `area`, `bar`, `tick`, `text`, `circle`, and `square` /
    * stroke color for `line` and `point`.)
    */
-  color?: LegendFieldDef<string> | ConditionalValueDef<string>;
+  color?: LegendFieldDef<F, string> | ConditionalValueDef<string>;
 
   /**
-   * Opacity of the marks – either can be a value or in a range.
+   * Opacity of the marks – either can be a value or a range.
    */
-  opacity?: LegendFieldDef<number> | ConditionalValueDef<number>;
+  opacity?: LegendFieldDef<F, number> | ConditionalValueDef<number>;
 
   /**
    * Size of the mark.
@@ -51,35 +70,35 @@ export interface Encoding {
    * - For `text` – the text's font size.
    * - Size is currently unsupported for `line` and `area`.
    */
-  size?: LegendFieldDef<number> | ConditionalValueDef<number>;
+  size?: LegendFieldDef<F, number> | ConditionalValueDef<number>;
 
   /**
    * The symbol's shape (only for `point` marks). The supported values are
    * `"circle"` (default), `"square"`, `"cross"`, `"diamond"`, `"triangle-up"`,
    * or `"triangle-down"`, or else a custom SVG path string.
    */
-  shape?: LegendFieldDef<string> | ConditionalValueDef<string>; // TODO: maybe distinguish ordinal-only
+  shape?: LegendFieldDef<F, string> | ConditionalValueDef<string>; // TODO: maybe distinguish ordinal-only
 
   /**
    * Additional levels of detail for grouping data in aggregate views and
    * in line and area marks without mapping data to a specific visual channel.
    */
-  detail?: FieldDef | FieldDef[];
+  detail?: FieldDef<F> | FieldDef<F>[];
 
   /**
    * Text of the `text` mark.
    */
-  text?: TextFieldDef | ConditionalValueDef<string|number>;
+  text?: TextFieldDef<F> | ConditionalValueDef<string|number|boolean>;
 
   /**
    * stack order for stacked marks or order of data points in line marks.
    */
-  order?: OrderFieldDef | OrderFieldDef[];
+  order?: OrderFieldDef<F> | OrderFieldDef<F>[];
 }
 
-export interface EncodingWithFacet extends Encoding, Facet {}
+export interface EncodingWithFacet<F> extends Encoding<F>, Facet<F> {}
 
-export function channelHasField(encoding: EncodingWithFacet, channel: Channel): boolean {
+export function channelHasField(encoding: EncodingWithFacet<Field>, channel: Channel): boolean {
   const channelDef = encoding && encoding[channel];
   if (channelDef) {
     if (isArray(channelDef)) {
@@ -91,7 +110,7 @@ export function channelHasField(encoding: EncodingWithFacet, channel: Channel): 
   return false;
 }
 
-export function isAggregate(encoding: EncodingWithFacet) {
+export function isAggregate(encoding: EncodingWithFacet<Field>) {
   return some(CHANNELS, (channel) => {
     if (channelHasField(encoding, channel)) {
       const channelDef = encoding[channel];
@@ -105,8 +124,8 @@ export function isAggregate(encoding: EncodingWithFacet) {
   });
 }
 
-export function normalizeEncoding(encoding: Encoding, mark: Mark): Encoding {
-  return Object.keys(encoding).reduce((normalizedEncoding: Encoding, channel: Channel) => {
+export function normalizeEncoding(encoding: Encoding<string>, mark: Mark): Encoding<string> {
+  return Object.keys(encoding).reduce((normalizedEncoding: Encoding<string>, channel: Channel) => {
     if (!supportMark(channel, mark)) {
       // Drop unsupported channel
 
@@ -125,7 +144,7 @@ export function normalizeEncoding(encoding: Encoding, mark: Mark): Encoding {
 
     if (isArray(encoding[channel])) {
       // Array of fieldDefs for detail channel (or production rule)
-      normalizedEncoding[channel] = encoding[channel].reduce((channelDefs: ChannelDef[], channelDef: ChannelDef) => {
+      normalizedEncoding[channel] = encoding[channel].reduce((channelDefs: ChannelDef<string>[], channelDef: ChannelDef<string>) => {
         if (!isFieldDef(channelDef) && !isValueDef(channelDef)) { // TODO: datum
           log.warn(log.message.emptyFieldDef(channelDef, channel));
         } else {
@@ -146,12 +165,12 @@ export function normalizeEncoding(encoding: Encoding, mark: Mark): Encoding {
 }
 
 
-export function isRanged(encoding: EncodingWithFacet) {
+export function isRanged(encoding: EncodingWithFacet<any>) {
   return encoding && ((!!encoding.x && !!encoding.x2) || (!!encoding.y && !!encoding.y2));
 }
 
-export function fieldDefs(encoding: EncodingWithFacet): FieldDef[] {
-  let arr: FieldDef[] = [];
+export function fieldDefs(encoding: EncodingWithFacet<Field>): FieldDef<Field>[] {
+  const arr: FieldDef<Field>[] = [];
   CHANNELS.forEach(function(channel) {
     if (channelHasField(encoding, channel)) {
       const channelDef = encoding[channel];
@@ -161,10 +180,10 @@ export function fieldDefs(encoding: EncodingWithFacet): FieldDef[] {
     }
   });
   return arr;
-};
+}
 
 export function forEach(mapping: any,
-    f: (fd: FieldDef, c: Channel) => void,
+    f: (fd: FieldDef<string>, c: Channel) => void,
     thisArg?: any) {
   if (!mapping) {
     return;
@@ -173,7 +192,7 @@ export function forEach(mapping: any,
   Object.keys(mapping).forEach((c: any) => {
     const channel: Channel = c;
     if (isArray(mapping[channel])) {
-      mapping[channel].forEach(function(channelDef: ChannelDef) {
+      mapping[channel].forEach(function(channelDef: ChannelDef<string>) {
         f.call(thisArg, channelDef, channel);
       });
     } else {
@@ -183,7 +202,7 @@ export function forEach(mapping: any,
 }
 
 export function reduce<T, U>(mapping: U,
-    f: (acc: any, fd: FieldDef, c: Channel) => U,
+    f: (acc: any, fd: FieldDef<string>, c: Channel) => U,
     init: T, thisArg?: any) {
   if (!mapping) {
     return init;
@@ -192,7 +211,7 @@ export function reduce<T, U>(mapping: U,
   return Object.keys(mapping).reduce((r: T, c: any) => {
     const channel: Channel = c;
     if (isArray(mapping[channel])) {
-      return mapping[channel].reduce(function(r1: T, channelDef: ChannelDef) {
+      return mapping[channel].reduce(function(r1: T, channelDef: ChannelDef<string>) {
         return f.call(thisArg, r1, channelDef, channel);
       }, r);
     } else {

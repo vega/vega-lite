@@ -1,19 +1,13 @@
 import {assert} from 'chai';
-
 import {DETAIL, SHAPE, X} from '../../src/channel';
+import {UnitModel} from '../../src/compile/unit';
+import {FieldDef} from '../../src/fielddef';
 import * as log from '../../src/log';
 import {BAR} from '../../src/mark';
 import {QUANTITATIVE} from '../../src/type';
 import {parseUnitModel} from '../util';
 
 describe('UnitModel', function() {
-  it('should say it is unit', function() {
-    const model = parseUnitModel({mark: 'point', encoding: {}});
-    assert(model.isUnit());
-    assert(!model.isFacet());
-    assert(!model.isLayer());
-  });
-
   describe('initEncoding', () => {
     it('should drop unsupported channel and throws warning', () => {
       log.runLocalLogger((localLogger) => {
@@ -53,7 +47,7 @@ describe('UnitModel', function() {
             ]
           }
         });
-        assert.deepEqual(model.encoding.detail, [
+        assert.deepEqual<FieldDef<string> | FieldDef<string>[]>(model.encoding.detail, [
           {field: 'a', type: 'ordinal'},
           {value: 'b'}
         ]);

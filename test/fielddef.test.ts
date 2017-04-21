@@ -1,7 +1,7 @@
 import {assert} from 'chai';
 
 import {Channel} from '../src/channel';
-import {channelCompatibility, defaultType, normalize, title} from '../src/fielddef';
+import {channelCompatibility, defaultType, FieldDef, normalize, title} from '../src/fielddef';
 import * as log from '../src/log';
 import {TimeUnit} from '../src/timeunit';
 import {QUANTITATIVE, TEMPORAL} from '../src/type';
@@ -17,13 +17,13 @@ describe('fieldDef', () => {
     });
 
     it('should return quantitative for a channel that supports measure', () => {
-      for (let c of ['x', 'y', 'size', 'opacity', 'order'] as Channel[]) {
+      for (const c of ['x', 'y', 'size', 'opacity', 'order'] as Channel[]) {
         assert.equal(defaultType({field: 'a'}, c), 'quantitative', c);
       }
     });
 
     it('should return nominal for a channel that does not support measure', () => {
-      for (let c of ['color', 'shape', 'row', 'column'] as Channel[]) {
+      for (const c of ['color', 'shape', 'row', 'column'] as Channel[]) {
         assert.equal(defaultType({field: 'a'}, c), 'nominal', c);
       }
     });
@@ -39,6 +39,12 @@ describe('fieldDef', () => {
       const fieldDef = {field: 'a'};
       assert.deepEqual(normalize(fieldDef, 'x'), {field: 'a', type: 'quantitative'});
       assert.equal(localLogger.warns[0], log.message.emptyOrInvalidFieldType(undefined, 'x', 'quantitative'));
+    }));
+
+    it('should drop invalid aggregate ops and throw warning.', log.wrap((localLogger) => {
+      const fieldDef = {aggregate: 'boxplot', field: 'a', type: 'quantitative'};
+      assert.deepEqual(normalize(fieldDef, 'x'), {field: 'a', type: 'quantitative'});
+      assert.equal(localLogger.warns[0], log.message.invalidAggregate('boxplot'));
     }));
   });
 
@@ -115,6 +121,11 @@ describe('fieldDef', () => {
   });
 
   describe('title()', () => {
+    it('should return no title if the title is set to be empty', () => {
+      const fieldDef = {field: '2', type: QUANTITATIVE, title: ''};
+      assert.equal(title(fieldDef,{}), undefined);
+    });
+
     it('should return title if the fieldDef has title', () => {
       const fieldDef = {field: '2', type: QUANTITATIVE, title: 'baz'};
       assert.equal(title(fieldDef,{}), 'baz');

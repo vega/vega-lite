@@ -3,12 +3,12 @@
 import {assert} from 'chai';
 import {COLUMN, ROW, X} from '../../../src/channel';
 import * as rules from '../../../src/compile/axis/rules';
-import {parseModel} from '../../util';
+import {parseUnitModel} from '../../util';
 
 describe('compile/axis', ()=> {
   describe('grid()', function () {
     it('should return specified orient', function () {
-      const grid = rules.grid(parseModel({
+      const grid = rules.grid(parseUnitModel({
           mark: "point",
           encoding: {
             x: {field: 'a', type: 'quantitative', axis:{grid: false}}
@@ -18,7 +18,7 @@ describe('compile/axis', ()=> {
     });
 
     it('should return true by default', function () {
-      const grid = rules.grid(parseModel({
+      const grid = rules.grid(parseUnitModel({
           mark: "point",
           encoding: {
             x: {field: 'a', type: 'quantitative'}
@@ -28,7 +28,7 @@ describe('compile/axis', ()=> {
     });
 
     it('should return undefined for COLUMN', function () {
-      const grid = rules.grid(parseModel({
+      const grid = rules.grid(parseUnitModel({
           mark: "point",
           encoding: {
             x: {field: 'a', type: 'quantitative'}
@@ -38,7 +38,7 @@ describe('compile/axis', ()=> {
     });
 
     it('should return undefined for ROW', function () {
-      const grid = rules.grid(parseModel({
+      const grid = rules.grid(parseUnitModel({
           mark: "point",
           encoding: {
             x: {field: 'a', type: 'quantitative'}
@@ -47,7 +47,7 @@ describe('compile/axis', ()=> {
       assert.deepEqual(grid, false);
     });
     it('should return undefined for non-gridAxis', function () {
-      const grid = rules.grid(parseModel({
+      const grid = rules.grid(parseUnitModel({
           mark: "point",
           encoding: {
             x: {field: 'a', type: 'quantitative'}

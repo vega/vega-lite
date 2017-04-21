@@ -1,17 +1,17 @@
 import {Channel} from '../../channel';
 import {Scale} from '../../scale';
 import {Dict} from '../../util';
-
-import {Model} from '../model';
-
 import {VgScale} from '../../vega.schema';
+
+import {UnitModel} from '../unit';
+
 import {parseDomain} from './domain';
 import {parseRange} from './range';
 
 /**
  * Parse scales for all channels of a model.
  */
-export default function parseScaleComponent(model: Model): Dict<VgScale> {
+export default function parseScaleComponent(model: UnitModel): Dict<VgScale> {
   // TODO: should model.channels() inlcude X2/Y2?
   return model.channels().reduce(function(scaleComponentsIndex: Dict<VgScale>, channel: Channel) {
     const scaleComponents = parseScale(model, channel);
@@ -35,7 +35,7 @@ export const NON_TYPE_DOMAIN_RANGE_VEGA_SCALE_PROPERTIES: (keyof Scale)[] = [
 /**
  * Parse scales for a single channel of a model.
  */
-export function parseScale(model: Model, channel: Channel) {
+export function parseScale(model: UnitModel, channel: Channel) {
   if (!model.scale(channel)) {
     return null;
   }
@@ -43,7 +43,7 @@ export function parseScale(model: Model, channel: Channel) {
   const scale = model.scale(channel);
   const sort = model.sort(channel);
 
-  let scaleComponent: VgScale = {
+  const scaleComponent: VgScale = {
     name: model.scaleName(channel + '', true),
     type: scale.type,
     domain: parseDomain(model, channel),

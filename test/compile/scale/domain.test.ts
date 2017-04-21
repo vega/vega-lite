@@ -3,7 +3,7 @@
 
 import {assert} from 'chai';
 import {parseDomain, unionDomains} from '../../../src/compile/scale/domain';
-import {SUMMARY} from '../../../src/data';
+import {MAIN} from '../../../src/data';
 import {PositionFieldDef} from '../../../src/fielddef';
 import * as log from '../../../src/log';
 import {FieldRefUnionDomain, VgDataRef, VgSortField} from '../../../src/vega.schema';
@@ -23,10 +23,10 @@ describe('compile/scale', () => {
         });
 
       const xDomain = parseDomain(model, 'x');
-      assert.deepEqual(xDomain, {data: 'source', fields: ['a', 'b']});
+      assert.deepEqual(xDomain, {data: 'main', fields: ['a', 'b']});
 
       const yDomain = parseDomain(model, 'y');
-      assert.deepEqual(yDomain, {data: 'source', fields: ['c', 'd']});
+      assert.deepEqual(yDomain, {data: 'main', fields: ['c', 'd']});
     });
 
     it('should have correct domain for color', function() {
@@ -38,7 +38,7 @@ describe('compile/scale', () => {
         });
 
       const xDomain = parseDomain(model, 'color');
-      assert.deepEqual(xDomain, {data: 'source', field: 'a'});
+      assert.deepEqual(xDomain, {data: 'main', field: 'a'});
     });
 
     it('should return domain for stack', function() {
@@ -56,7 +56,7 @@ describe('compile/scale', () => {
       });
 
       assert.deepEqual(parseDomain(model,'y'), {
-        data: 'stacked',
+        data: 'main',
         fields: ['sum_origin_start', 'sum_origin_end']
       });
     });
@@ -83,7 +83,7 @@ describe('compile/scale', () => {
 
     describe('for quantitative', function() {
       it('should return the right domain for binned Q', log.wrap((localLogger) => {
-        const fieldDef: PositionFieldDef = {
+        const fieldDef: PositionFieldDef<string> = {
           bin: {maxbins: 15},
           field: 'origin',
           scale: {domain: 'unaggregated'},
@@ -97,7 +97,7 @@ describe('compile/scale', () => {
         });
 
         assert.deepEqual(parseDomain(model,'y'), {
-          signal: 'sequence(origin_bins.start, origin_bins.stop + origin_bins.step, origin_bins.step)'
+          signal: 'sequence(bin_maxbins_15_origin_bins.start, bin_maxbins_15_origin_bins.stop + bin_maxbins_15_origin_bins.step, bin_maxbins_15_origin_bins.step)'
         });
 
         assert.equal(localLogger.warns[0], log.message.unaggregateDomainHasNoEffectForRawField(fieldDef));
@@ -118,7 +118,7 @@ describe('compile/scale', () => {
           });
           const _domain = parseDomain(model,'y') as FieldRefUnionDomain;
 
-          assert.deepEqual(_domain.data, SUMMARY);
+          assert.deepEqual(_domain.data, MAIN);
           assert.deepEqual(_domain.fields, ['min_acceleration', 'max_acceleration']);
         });
 
@@ -135,7 +135,7 @@ describe('compile/scale', () => {
           }
         });
         const _domain = parseDomain(model,'y') as VgDataRef;
-        assert.deepEqual(_domain.data, SUMMARY);
+        assert.deepEqual(_domain.data, MAIN);
         assert.equal(
           localLogger.warns[0], log.message.unaggregateDomainWithNonSharedDomainOp('sum')
         );
@@ -170,7 +170,7 @@ describe('compile/scale', () => {
         });
         const _domain = parseDomain(model,'y') as VgDataRef;
 
-        assert.deepEqual(_domain.data, SUMMARY);
+        assert.deepEqual(_domain.data, MAIN);
       });
 
       it('should return the aggregated domain if specified in config', function() {
@@ -191,7 +191,7 @@ describe('compile/scale', () => {
         });
         const _domain = parseDomain(model,'y') as FieldRefUnionDomain;
 
-        assert.deepEqual(_domain.data, SUMMARY);
+        assert.deepEqual(_domain.data, MAIN);
         assert.deepEqual(_domain.fields, ['min_acceleration', 'max_acceleration']);
       });
     });
@@ -210,7 +210,7 @@ describe('compile/scale', () => {
             }
           });
           const _domain = parseDomain(model,'y');
-          assert.deepEqual(_domain, {data: 'source', field: 'month_origin', sort: true});
+          assert.deepEqual(_domain, {data: 'main', field: 'month_origin', sort: true});
         });
 
         it('should return the correct domain for yearmonth T',
@@ -227,7 +227,7 @@ describe('compile/scale', () => {
             });
             const _domain = parseDomain(model,'y');
 
-            assert.deepEqual(_domain, {data: 'source', field: 'yearmonth_origin'});
+            assert.deepEqual(_domain, {data: 'main', field: 'yearmonth_origin'});
           });
 
 
@@ -253,7 +253,7 @@ describe('compile/scale', () => {
             const _domain = parseDomain(model,'x');
 
             assert.deepEqual(_domain, {
-              data: 'source',
+              data: 'raw',
               field: 'month_date',
               sort: sortDef as VgSortField
             });
@@ -305,7 +305,7 @@ describe('compile/scale', () => {
           });
 
         assert.deepEqual(parseDomain(model,'y'), {
-            data: "source",
+            data: "raw",
             field: 'origin',
             sort: sortDef as VgSortField
           });
@@ -320,7 +320,7 @@ describe('compile/scale', () => {
         });
 
         assert.deepEqual(parseDomain(model,'y'), {
-          data: "source",
+          data: "main",
           field: 'origin',
           sort: true
         });

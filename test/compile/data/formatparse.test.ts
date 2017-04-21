@@ -1,8 +1,14 @@
 /* tslint:disable:quotemark */
 import {assert} from 'chai';
 
-import {formatParse} from '../../../src/compile/data/formatparse';
+import {ParseNode} from '../../../src/compile/data/formatparse';
+import {Model, ModelWithField} from '../../../src/compile/model';
+import * as log from '../../../src/log';
 import {parseUnitModel} from '../../util';
+
+function parse(model: ModelWithField) {
+  return ParseNode.make(model).assembleFormatParse();
+}
 
 describe('compile/data/formatparse', () => {
   describe('parseUnit', () => {
@@ -17,8 +23,8 @@ describe('compile/data/formatparse', () => {
           "shape": {"field": "d", "type": "nominal"}
         }
       });
-      const parseComponent = formatParse.parseUnit(model);
-      assert.deepEqual(parseComponent,{
+
+      assert.deepEqual(parse(model), {
         a: 'number',
         b: 'date'
       });
@@ -38,8 +44,8 @@ describe('compile/data/formatparse', () => {
         "mark": "point",
         encoding: {}
       });
-      const parseComponent = formatParse.parseUnit(model);
-      assert.deepEqual(parseComponent,{
+
+      assert.deepEqual(parse(model), {
         a: 'date',
         b: 'string',
         c: 'date',
@@ -58,8 +64,8 @@ describe('compile/data/formatparse', () => {
           "shape": {"field": "c", "type": "nominal"}
         }
       });
-      const parseComponent = formatParse.parseUnit(model);
-      assert.deepEqual(parseComponent,{
+
+      assert.deepEqual(parse(model), {
         a: 'number',
         b: 'date',
         c: 'number',
@@ -79,23 +85,41 @@ describe('compile/data/formatparse', () => {
         }
       });
 
-      const formatParseComponent = formatParse.parseUnit(model);
-      assert.deepEqual(formatParseComponent, {
+      assert.deepEqual(parse(model), {
         'a': 'date',
         'b': 'number'
       });
     });
   });
 
-  describe('parseLayer', function() {
-    // TODO: write test
-  });
+  describe('assembleTransforms', function() {
+    it('should assemble correct parse expressions', function() {
+      const p = new ParseNode({
+        n: 'number',
+        b: 'boolean',
+        s: 'string',
+        d1: 'date',
+        d2: 'date:"%y"'
+      });
 
-  describe('parseFacet', function() {
-    // TODO: write test
-  });
+      assert.deepEqual(p.assembleTransforms(), [
+        {type: 'formula', expr: 'toNumber(datum["n"])', as: 'n'},
+        {type: 'formula', expr: 'toBoolean(datum["b"])', as: 'b'},
+        {type: 'formula', expr: 'toString(datum["s"])', as: 's'},
+        {type: 'formula', expr: 'toDate(datum["d1"])', as: 'd1'},
+        {type: 'formula', expr: 'timeParse(datum["d2"],"%y")', as: 'd2'}
+      ]);
+    });
 
-  describe('assemble', function() {
-    // TODO: write test
+    it('should show warning for unrecognized types', function() {
+      log.runLocalLogger((localLogger) => {
+        const p = new ParseNode({
+          x: 'foo',
+        });
+
+        assert.deepEqual(p.assembleTransforms(), []);
+        assert.equal(localLogger.warns[0], log.message.unrecognizedParse('foo'));
+      });
+    });
   });
 });

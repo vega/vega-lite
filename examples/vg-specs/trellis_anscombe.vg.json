@@ -1,30 +1,11 @@
 {
     "$schema": "http://vega.github.io/schema/vega/v3.0.json",
+    "description": "Anscombe's Quartet",
     "autosize": "pad",
     "padding": 5,
-    "signals": [
-        {
-            "name": "width",
-            "update": "data('layout')[0].width"
-        },
-        {
-            "name": "height",
-            "update": "data('layout')[0].height"
-        },
-        {
-            "name": "unit",
-            "value": {},
-            "on": [
-                {
-                    "events": "mousemove",
-                    "update": "group()._id ? group() : unit"
-                }
-            ]
-        }
-    ],
     "data": [
         {
-            "name": "source",
+            "name": "source_0",
             "url": "data/anscombe.json",
             "format": {
                 "type": "json",
@@ -41,8 +22,8 @@
             ]
         },
         {
-            "name": "column-source",
-            "source": "source",
+            "name": "column",
+            "source": "source_0",
             "transform": [
                 {
                     "type": "aggregate",
@@ -53,82 +34,154 @@
             ]
         },
         {
-            "name": "layout",
-            "source": "source",
+            "name": "column_layout",
+            "source": "column",
             "transform": [
                 {
                     "type": "aggregate",
-                    "fields": [
-                        "Series"
-                    ],
                     "ops": [
                         "distinct"
+                    ],
+                    "fields": [
+                        "Series"
                     ]
-                },
+                }
+            ]
+        }
+    ],
+    "signals": [
+        {
+            "name": "child_width",
+            "update": "200"
+        },
+        {
+            "name": "child_height",
+            "update": "200"
+        },
+        {
+            "name": "unit",
+            "value": {},
+            "on": [
                 {
-                    "type": "formula",
-                    "as": "child_width",
-                    "expr": "200"
-                },
-                {
-                    "type": "formula",
-                    "as": "width",
-                    "expr": "(datum[\"child_width\"] + 16) * datum[\"distinct_Series\"]"
-                },
-                {
-                    "type": "formula",
-                    "as": "child_height",
-                    "expr": "200"
-                },
-                {
-                    "type": "formula",
-                    "as": "height",
-                    "expr": "datum[\"child_height\"] + 16"
+                    "events": "mousemove",
+                    "update": "group()._id ? group() : unit"
                 }
             ]
         }
     ],
     "marks": [
         {
-            "name": "main",
+            "name": "nested_main_group",
             "type": "group",
-            "description": "Anscombe's Quartet",
-            "from": {
-                "data": "layout"
-            },
-            "encode": {
-                "update": {
-                    "width": {
-                        "field": "width"
-                    },
-                    "height": {
-                        "field": "height"
-                    }
-                }
+            "layout": {
+                "padding": {
+                    "row": 10,
+                    "column": 10
+                },
+                "offset": 10,
+                "columns": {
+                    "signal": "data('column_layout')[0].distinct_Series"
+                },
+                "bounds": "full"
             },
             "marks": [
                 {
-                    "name": "x-axes",
+                    "name": "column_title",
+                    "role": "column-title",
                     "type": "group",
+                    "marks": [
+                        {
+                            "type": "text",
+                            "role": "column-title-text",
+                            "encode": {
+                                "update": {
+                                    "x": {
+                                        "signal": "0.5 * width"
+                                    },
+                                    "align": {
+                                        "value": "center"
+                                    },
+                                    "text": {
+                                        "value": "Series"
+                                    },
+                                    "fill": {
+                                        "value": "black"
+                                    },
+                                    "fontWeight": {
+                                        "value": "bold"
+                                    }
+                                }
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "row_header",
+                    "type": "group",
+                    "role": "row-header",
+                    "encode": {
+                        "update": {
+                            "height": {
+                                "signal": "child_height"
+                            }
+                        }
+                    },
+                    "axes": [
+                        {
+                            "scale": "y",
+                            "format": "s",
+                            "orient": "left",
+                            "title": "Y",
+                            "zindex": 1
+                        }
+                    ]
+                },
+                {
+                    "name": "column_header",
+                    "type": "group",
+                    "role": "column-header",
                     "from": {
-                        "data": "column-source"
+                        "data": "column"
+                    },
+                    "title": {
+                        "text": {
+                            "signal": "parent['Series']"
+                        },
+                        "offset": 10,
+                        "orient": "top",
+                        "encode": {
+                            "update": {
+                                "fontWeight": {
+                                    "value": "normal"
+                                },
+                                "angle": {
+                                    "value": 0
+                                },
+                                "fontSize": {
+                                    "value": 10
+                                }
+                            }
+                        }
                     },
                     "encode": {
                         "update": {
                             "width": {
-                                "field": {
-                                    "parent": "child_width"
-                                }
-                            },
-                            "height": {
-                                "field": {
-                                    "group": "height"
-                                }
-                            },
-                            "x": {
-                                "scale": "column",
-                                "field": "Series",
-                                "offset": 8
+                                "signal": "child_width"
+                            }
+                        }
+                    }
+                },
+                {
+                    "name": "column_footer",
+                    "type": "group",
+                    "role": "column-footer",
+                    "from": {
+                        "data": "column"
+                    },
+                    "encode": {
+                        "update": {
+                            "width": {
+                                "signal": "child_width"
                             }
                         }
                     },
@@ -144,42 +197,12 @@
                     ]
                 },
                 {
-                    "name": "y-axes",
-                    "type": "group",
-                    "encode": {
-                        "update": {
-                            "width": {
-                                "field": {
-                                    "group": "width"
-                                }
-                            },
-                            "height": {
-                                "field": {
-                                    "parent": "child_height"
-                                }
-                            },
-                            "y": {
-                                "value": 8
-                            }
-                        }
-                    },
-                    "axes": [
-                        {
-                            "scale": "y",
-                            "format": "s",
-                            "orient": "left",
-                            "title": "Y",
-                            "zindex": 1
-                        }
-                    ]
-                },
-                {
                     "name": "cell",
                     "type": "group",
                     "from": {
                         "facet": {
-                            "name": "faceted-data",
-                            "data": "source",
+                            "name": "facet",
+                            "data": "source_0",
                             "groupby": [
                                 "Series"
                             ]
@@ -187,23 +210,11 @@
                     },
                     "encode": {
                         "update": {
-                            "x": {
-                                "scale": "column",
-                                "field": "Series",
-                                "offset": 8
-                            },
-                            "y": {
-                                "value": 8
-                            },
                             "width": {
-                                "field": {
-                                    "parent": "child_width"
-                                }
+                                "signal": "child_width"
                             },
                             "height": {
-                                "field": {
-                                    "parent": "child_height"
-                                }
+                                "signal": "child_height"
                             },
                             "stroke": {
                                 "value": "#ccc"
@@ -222,7 +233,7 @@
                             "type": "symbol",
                             "role": "circle",
                             "from": {
-                                "data": "faceted-data"
+                                "data": "facet"
                             },
                             "encode": {
                                 "update": {
@@ -270,61 +281,39 @@
                         }
                     ]
                 }
-            ],
-            "scales": [
-                {
-                    "name": "column",
-                    "type": "band",
-                    "domain": {
-                        "data": "source",
-                        "field": "Series",
-                        "sort": true
-                    },
-                    "range": "width",
-                    "round": true
-                },
-                {
-                    "name": "x",
-                    "type": "linear",
-                    "domain": {
-                        "data": "source",
-                        "field": "X"
-                    },
-                    "range": [
-                        0,
-                        200
-                    ],
-                    "round": true,
-                    "nice": true,
-                    "zero": false
-                },
-                {
-                    "name": "y",
-                    "type": "linear",
-                    "domain": {
-                        "data": "source",
-                        "field": "Y"
-                    },
-                    "range": [
-                        200,
-                        0
-                    ],
-                    "round": true,
-                    "nice": true,
-                    "zero": false
-                }
-            ],
-            "axes": [
-                {
-                    "scale": "column",
-                    "domain": false,
-                    "grid": false,
-                    "orient": "top",
-                    "ticks": false,
-                    "title": "Series",
-                    "zindex": 1
-                }
             ]
+        }
+    ],
+    "scales": [
+        {
+            "name": "x",
+            "type": "linear",
+            "domain": {
+                "data": "source_0",
+                "field": "X"
+            },
+            "range": [
+                0,
+                200
+            ],
+            "round": true,
+            "nice": true,
+            "zero": false
+        },
+        {
+            "name": "y",
+            "type": "linear",
+            "domain": {
+                "data": "source_0",
+                "field": "Y"
+            },
+            "range": [
+                200,
+                0
+            ],
+            "round": true,
+            "nice": true,
+            "zero": false
         }
     ]
 }

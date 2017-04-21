@@ -1,11 +1,13 @@
 import * as log from '../../log';
 
-import {SHARED_DOMAIN_OPS} from '../../aggregate';
+import {SHARED_DOMAIN_OP_INDEX} from '../../aggregate';
+import {binToString} from '../../bin';
 import {Channel} from '../../channel';
-import {SOURCE} from '../../data';
 import {DateTime, isDateTime, timestamp} from '../../datetime';
+import {FieldDef} from '../../fielddef';
 import {Domain, hasDiscreteDomain, isBinScale, Scale, ScaleConfig, ScaleType} from '../../scale';
 import {isSortField} from '../../sort';
+import * as util from '../../util';
 import {
   DataRefUnionDomain,
   FieldRefUnionDomain,
@@ -18,13 +20,10 @@ import {
   VgSortField
 } from '../../vega.schema';
 
-import * as util from '../../util';
+import {MAIN, RAW} from '../../data';
+import {UnitModel} from '../unit';
 
-import {FieldDef} from '../../fielddef';
-import {varName} from '../../util';
-import {Model} from '../model';
-
-export function initDomain(domain: Domain, fieldDef: FieldDef, scale: ScaleType, scaleConfig: ScaleConfig) {
+export function initDomain(domain: Domain, fieldDef: FieldDef<string>, scale: ScaleType, scaleConfig: ScaleConfig) {
   if (domain === 'unaggregated') {
     const {valid, reason} = canUseUnaggregatedDomain(fieldDef, scale);
     if(!valid) {
@@ -43,7 +42,7 @@ export function initDomain(domain: Domain, fieldDef: FieldDef, scale: ScaleType,
 }
 
 
-export function parseDomain(model: Model, channel: Channel): VgDomain {
+export function parseDomain(model: UnitModel, channel: Channel): VgDomain {
   const scale = model.scale(channel);
 
   // If channel is either X or Y then union them with X2 & Y2 if they exist
@@ -63,7 +62,7 @@ export function parseDomain(model: Model, channel: Channel): VgDomain {
   return parseSingleChannelDomain(scale, model, channel);
 }
 
-function parseSingleChannelDomain(scale: Scale, model: Model, channel:Channel): VgDomain {
+function parseSingleChannelDomain(scale: Scale, model: UnitModel, channel:Channel): VgDomain {
   const fieldDef = model.fieldDef(channel);
 
   if (scale.domain && scale.domain !== 'unaggregated') { // explicit value
@@ -75,14 +74,13 @@ function parseSingleChannelDomain(scale: Scale, model: Model, channel:Channel): 
     return scale.domain;
   }
 
-  // For stack, use STACKED data.
   const stack = model.stack;
   if (stack && channel === stack.fieldChannel) {
     if(stack.offset === 'normalize') {
       return [0, 1];
     }
     return {
-      data: model.dataName('stacked'),
+      data: model.getDataName(MAIN),
       fields: [
         model.field(channel, {suffix: 'start'}),
         model.field(channel, {suffix: 'end'})
@@ -94,7 +92,7 @@ function parseSingleChannelDomain(scale: Scale, model: Model, channel:Channel): 
 
   if (scale.domain === 'unaggregated') {
     return {
-      data: model.dataTable(),
+      data: model.getDataName(MAIN),
       fields: [
         model.field(channel, {aggregate: 'min'}),
         model.field(channel, {aggregate: 'max'})
@@ -102,15 +100,15 @@ function parseSingleChannelDomain(scale: Scale, model: Model, channel:Channel): 
     };
   } else if (fieldDef.bin) { // bin
     if (isBinScale(scale.type)) {
-      const field = varName(model.getName(fieldDef.field + '_bins'));
-      return {signal: `sequence(${field}.start, ${field}.stop + ${field}.step, ${field}.step)`};
+      const signal = model.getName(`${binToString(fieldDef.bin)}_${fieldDef.field}_bins`);
+      return {signal: `sequence(${signal}.start, ${signal}.stop + ${signal}.step, ${signal}.step)`};
     }
 
     if (hasDiscreteDomain(scale.type)) {
       // ordinal bin scale takes domain from bin_range, ordered by bin_start
       // This is useful for both axis-based scale (x, y, column, and row) and legend-based scale (other channels).
       return {
-        data: model.dataTable(),
+        data: model.getDataName(MAIN),
         field: model.field(channel, {binSuffix: 'range'}),
         sort: {
           field: model.field(channel, {binSuffix: 'start'}),
@@ -121,7 +119,7 @@ function parseSingleChannelDomain(scale: Scale, model: Model, channel:Channel): 
       if (channel === 'x' || channel === 'y') {
         // X/Y position have to include start and end for non-ordinal scale
         return {
-          data: model.dataTable(),
+          data: model.getDataName(MAIN),
           fields: [
             model.field(channel, {binSuffix: 'start'}),
             model.field(channel, {binSuffix: 'end'})
@@ -130,29 +128,30 @@ function parseSingleChannelDomain(scale: Scale, model: Model, channel:Channel): 
       } else {
         // TODO: use bin_mid
         return {
-          data: model.dataTable(),
+          data: model.getDataName(MAIN),
           field: model.field(channel, {binSuffix: 'start'})
         };
       }
     }
   } else if (sort) { // have sort -- only for ordinal
+
     return {
-      // If sort by aggregation of a specified sort field, we need to use SOURCE table,
+      // If sort by aggregation of a specified sort field, we need to use RAW table,
       // so we can aggregate values for the scale independently from the main aggregation.
-      data: util.isBoolean(sort) ? model.dataTable(): SOURCE,
+      data: util.isBoolean(sort) ? model.getDataName(MAIN) : model.getDataName(RAW),
       field: model.field(channel),
       sort: sort
     };
   } else {
     return {
-      data: model.dataTable(),
+      data: model.getDataName(MAIN),
       field: model.field(channel),
     };
   }
 }
 
 
-export function domainSort(model: Model, channel: Channel, scaleType: ScaleType): VgSortField {
+export function domainSort(model: UnitModel, channel: Channel, scaleType: ScaleType): VgSortField {
   if (!hasDiscreteDomain(scaleType)) {
     return undefined;
   }
@@ -181,7 +180,7 @@ export function domainSort(model: Model, channel: Channel, scaleType: ScaleType)
  * 2. Aggregation function is not `count` or `sum`
  * 3. The scale is quantitative or time scale.
  */
-export function canUseUnaggregatedDomain(fieldDef: FieldDef, scaleType: ScaleType): {valid: boolean, reason?: string} {
+export function canUseUnaggregatedDomain(fieldDef: FieldDef<string>, scaleType: ScaleType): {valid: boolean, reason?: string} {
   if (!fieldDef.aggregate) {
     return {
       valid: false,
@@ -189,7 +188,7 @@ export function canUseUnaggregatedDomain(fieldDef: FieldDef, scaleType: ScaleTyp
     };
   }
 
-  if (SHARED_DOMAIN_OPS.indexOf(fieldDef.aggregate) === -1) {
+  if (!SHARED_DOMAIN_OP_INDEX[fieldDef.aggregate]) {
     return {
       valid: false,
       reason: log.message.unaggregateDomainWithNonSharedDomainOp(fieldDef.aggregate)
@@ -238,8 +237,8 @@ function normalizeDomain(domain: UnionableDomain): (any[] | VgDataRef)[] {
         return d;
       }
       return {
-        field: d.field,
-        data: d.data
+        data: d.data,
+        field: d.field
       };
     });
   }

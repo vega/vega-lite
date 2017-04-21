@@ -9,8 +9,8 @@ import {TEMPORAL} from '../../type';
 import {contains, Dict} from '../../util';
 import {getMarkConfig} from '../common';
 
-export function initMarkDef(mark: Mark | MarkDef, encoding: Encoding, scale: Dict<Scale>, config: Config): MarkDef & {filled: boolean} {
-  const markDef = isMarkDef(mark) ? mark : {type: mark};
+export function initMarkDef(mark: Mark | MarkDef, encoding: Encoding<string>, scale: Dict<Scale>, config: Config): MarkDef {
+  const markDef = isMarkDef(mark) ? {...mark} : {type: mark};
 
   const specifiedOrient = markDef.orient || getMarkConfig('orient', markDef.type, config);
   markDef.orient = orient(markDef.type, encoding, scale, specifiedOrient);
@@ -18,19 +18,18 @@ export function initMarkDef(mark: Mark | MarkDef, encoding: Encoding, scale: Dic
     log.warn(log.message.orientOverridden(markDef.orient,specifiedOrient));
   }
 
-  return {
-    ...markDef,
+  const specifiedFilled = markDef.filled;
+  if (specifiedFilled === undefined) {
+    markDef.filled = filled(markDef.type, config);
+  }
 
-    // TODO: filled could be injected to encoding too, but we don't have filled channel yet.
-    // Thus we inject it here for now.
-    filled: filled(markDef.type, config)
-  };
+  return markDef;
 }
 
 /**
  * Initialize encoding's value with some special default values
  */
-export function initEncoding(mark: Mark, encoding: Encoding, stacked: StackProperties, config: Config): Encoding {
+export function initEncoding(mark: Mark, encoding: Encoding<string>, stacked: StackProperties, config: Config): Encoding<string> {
   const opacityConfig = getMarkConfig('opacity', mark, config);
   if (!encoding.opacity && opacityConfig === undefined) {
     const opacity = defaultOpacity(mark, encoding, stacked);
@@ -42,7 +41,7 @@ export function initEncoding(mark: Mark, encoding: Encoding, stacked: StackPrope
 }
 
 
-function defaultOpacity(mark: Mark, encoding: Encoding, stacked: StackProperties) {
+function defaultOpacity(mark: Mark, encoding: Encoding<string>, stacked: StackProperties) {
   if (contains([POINT, TICK, CIRCLE, SQUARE], mark)) {
     // point-based marks
     if (!isAggregate(encoding)) {
@@ -57,7 +56,7 @@ function filled(mark: Mark, config: Config) {
   return filledConfig !== undefined ? filledConfig : mark !== POINT && mark !== LINE && mark !== RULE;
 }
 
-function orient(mark: Mark, encoding: Encoding, scale: Dict<Scale>, specifiedOrient: Orient): Orient {
+function orient(mark: Mark, encoding: Encoding<string>, scale: Dict<Scale>, specifiedOrient: Orient): Orient {
   switch (mark) {
     case POINT:
     case CIRCLE:
@@ -113,8 +112,8 @@ function orient(mark: Mark, encoding: Encoding, scale: Dict<Scale>, specifiedOri
       } else if (!xIsContinuous && yIsContinuous) {
         return 'vertical';
       } else if (xIsContinuous && yIsContinuous) {
-        const xDef = encoding.x as FieldDef; // we can cast here since they are surely fieldDef
-        const yDef = encoding.y as FieldDef;
+        const xDef = encoding.x as FieldDef<string>; // we can cast here since they are surely fieldDef
+        const yDef = encoding.y as FieldDef<string>;
 
         const xIsTemporal = xDef.type === TEMPORAL;
         const yIsTemporal = yDef.type === TEMPORAL;
@@ -126,9 +125,9 @@ function orient(mark: Mark, encoding: Encoding, scale: Dict<Scale>, specifiedOri
           return 'horizontal';
         }
 
-        if (!xDef.aggregate && !!yDef.aggregate) {
+        if (!xDef.aggregate && yDef.aggregate) {
           return 'vertical';
-        } else if (!!xDef.aggregate && !yDef.aggregate) {
+        } else if (xDef.aggregate && !yDef.aggregate) {
           return 'horizontal';
         }
 

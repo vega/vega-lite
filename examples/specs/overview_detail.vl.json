@@ -1,0 +1,37 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v2.json",
+  "vconcat": [
+    {
+      "width": 480,
+      "data": {"url": "data/sp500.csv"},
+      "mark": "area",
+      "encoding": {
+        "x": {
+          "field": "date",
+          "type": "temporal",
+          "title": "",
+          "axis": {"labelAngle": 0}
+        },
+        "y": {"field": "price","type": "quantitative"}
+      }
+    },
+    {
+      "width": 480,
+      "height": 60,
+      "data": {"url": "data/sp500.csv"},
+      "mark": "area",
+      "encoding": {
+        "x": {
+          "field": "date",
+          "type": "temporal",
+          "axis": {"format": "%Y", "labelAngle": 0}
+        },
+        "y": {
+          "field": "price",
+          "type": "quantitative",
+          "axis": {"tickCount": 3, "grid": false}
+        }
+      }
+    }
+  ]
+}

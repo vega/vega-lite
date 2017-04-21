@@ -2,29 +2,9 @@
     "$schema": "http://vega.github.io/schema/vega/v3.0.json",
     "autosize": "pad",
     "padding": 5,
-    "signals": [
-        {
-            "name": "width",
-            "update": "data('layout')[0].width"
-        },
-        {
-            "name": "height",
-            "update": "data('layout')[0].height"
-        },
-        {
-            "name": "unit",
-            "value": {},
-            "on": [
-                {
-                    "events": "mousemove",
-                    "update": "group()._id ? group() : unit"
-                }
-            ]
-        }
-    ],
     "data": [
         {
-            "name": "source",
+            "name": "source_0",
             "values": [
                 {
                     "a": "A",
@@ -64,12 +44,33 @@
                 }
             ],
             "format": {
-                "type": "json",
-                "parse": {
-                    "b": "number"
-                }
-            },
+                "type": "json"
+            }
+        },
+        {
+            "name": "data_0",
+            "source": "source_0",
             "transform": [
+                {
+                    "type": "formula",
+                    "expr": "toNumber(datum[\"b\"])",
+                    "as": "b"
+                },
+                {
+                    "type": "filter",
+                    "expr": "datum[\"b\"] !== null && !isNaN(datum[\"b\"])"
+                }
+            ]
+        },
+        {
+            "name": "data_1",
+            "source": "source_0",
+            "transform": [
+                {
+                    "type": "formula",
+                    "expr": "toNumber(datum[\"b\"])",
+                    "as": "b"
+                },
                 {
                     "type": "filter",
                     "expr": "datum[\"b\"] !== null && !isNaN(datum[\"b\"])"
@@ -82,212 +83,223 @@
                     }
                 }
             ]
+        }
+    ],
+    "signals": [
+        {
+            "name": "width",
+            "update": "max(layer_0_width, layer_1_width)"
         },
         {
-            "name": "layer_0_source",
-            "source": "source",
-            "transform": []
+            "name": "height",
+            "update": "max(layer_0_height, layer_1_height)"
         },
         {
-            "name": "layer_1_source",
-            "source": "source",
-            "transform": [
-                {
-                    "type": "filter",
-                    "expr": "datum[\"b\"] !== null && !isNaN(datum[\"b\"])"
-                }
-            ]
+            "name": "layer_0_width",
+            "update": "bandspace(domain('x').length, 1, 0.5) * 21"
         },
         {
-            "name": "layout",
-            "source": "layer_0_source",
-            "transform": [
+            "name": "layer_0_height",
+            "update": "200"
+        },
+        {
+            "name": "layer_1_width",
+            "update": "bandspace(domain('x').length, 1, 0.5) * 21"
+        },
+        {
+            "name": "layer_1_height",
+            "update": "200"
+        },
+        {
+            "name": "unit",
+            "value": {},
+            "on": [
                 {
-                    "type": "aggregate",
-                    "fields": [
-                        "a"
-                    ],
-                    "ops": [
-                        "distinct"
-                    ]
-                },
-                {
-                    "type": "formula",
-                    "as": "width",
-                    "expr": "max(datum[\"distinct_a\"] - 1 + 2*0.5, 0) * 21"
-                },
-                {
-                    "type": "formula",
-                    "as": "height",
-                    "expr": "200"
+                    "events": "mousemove",
+                    "update": "group()._id ? group() : unit"
                 }
             ]
         }
     ],
     "marks": [
         {
-            "name": "main",
+            "name": "nested_main_group",
             "type": "group",
-            "from": {
-                "data": "layout"
-            },
             "encode": {
                 "update": {
                     "width": {
-                        "field": "width"
+                        "signal": "width"
                     },
                     "height": {
-                        "field": "height"
-                    },
-                    "fill": {
-                        "value": "transparent"
+                        "signal": "height"
                     }
                 }
             },
             "marks": [
                 {
-                    "name": "layer_0_marks",
-                    "type": "rect",
-                    "role": "bar",
-                    "from": {
-                        "data": "layer_0_source"
-                    },
+                    "type": "group",
                     "encode": {
-                        "update": {
-                            "xc": {
-                                "scale": "x",
-                                "field": "a"
-                            },
+                        "enter": {
                             "width": {
-                                "value": 20
+                                "signal": "width"
                             },
-                            "y": {
-                                "scale": "y",
-                                "field": "b"
-                            },
-                            "y2": {
-                                "scale": "y",
-                                "value": 0
+                            "height": {
+                                "signal": "height"
                             },
                             "fill": {
-                                "value": "#4c78a8"
+                                "value": "transparent"
+                            },
+                            "clip": {
+                                "value": true
                             }
                         }
-                    }
-                },
-                {
-                    "name": "layer_1_marks",
-                    "type": "line",
-                    "from": {
-                        "data": "layer_1_source"
                     },
-                    "encode": {
-                        "update": {
-                            "x": {
-                                "scale": "x",
-                                "field": "a"
+                    "marks": [
+                        {
+                            "name": "layer_0_marks",
+                            "type": "rect",
+                            "role": "bar",
+                            "from": {
+                                "data": "data_0"
                             },
-                            "y": {
-                                "scale": "y",
-                                "field": "b"
-                            },
-                            "stroke": {
-                                "value": "red"
+                            "encode": {
+                                "update": {
+                                    "xc": {
+                                        "scale": "x",
+                                        "field": "a"
+                                    },
+                                    "width": {
+                                        "value": 20
+                                    },
+                                    "y": {
+                                        "scale": "y",
+                                        "field": "b"
+                                    },
+                                    "y2": {
+                                        "scale": "y",
+                                        "value": 0
+                                    },
+                                    "fill": {
+                                        "value": "#4c78a8"
+                                    }
+                                }
                             }
-                        }
-                    }
-                }
-            ],
-            "scales": [
-                {
-                    "name": "x",
-                    "type": "point",
-                    "domain": {
-                        "fields": [
-                            {
-                                "data": "layer_0_source",
-                                "field": "a"
+                        },
+                        {
+                            "name": "layer_1_marks",
+                            "type": "line",
+                            "from": {
+                                "data": "data_1"
                             },
-                            {
-                                "data": "layer_1_source",
-                                "field": "a"
-                            }
-                        ],
-                        "sort": true
-                    },
-                    "range": {
-                        "step": 21
-                    },
-                    "round": true,
-                    "padding": 0.5
-                },
-                {
-                    "name": "y",
-                    "type": "linear",
-                    "domain": {
-                        "fields": [
-                            {
-                                "data": "layer_0_source",
-                                "field": "b"
-                            },
-                            {
-                                "data": "layer_1_source",
-                                "field": "b"
-                            }
-                        ],
-                        "sort": true
-                    },
-                    "range": [
-                        200,
-                        0
-                    ],
-                    "round": true,
-                    "nice": true,
-                    "zero": true
-                }
-            ],
-            "axes": [
-                {
-                    "scale": "x",
-                    "orient": "bottom",
-                    "tickCount": 5,
-                    "title": "a",
-                    "zindex": 1,
-                    "encode": {
-                        "labels": {
-                            "update": {
-                                "angle": {
-                                    "value": 270
-                                },
-                                "align": {
-                                    "value": "right"
-                                },
-                                "baseline": {
-                                    "value": "middle"
+                            "encode": {
+                                "update": {
+                                    "x": {
+                                        "scale": "x",
+                                        "field": "a"
+                                    },
+                                    "y": {
+                                        "scale": "y",
+                                        "field": "b"
+                                    },
+                                    "stroke": {
+                                        "value": "red"
+                                    }
                                 }
                             }
                         }
-                    }
-                },
-                {
-                    "scale": "y",
-                    "format": "s",
-                    "orient": "left",
-                    "title": "b",
-                    "zindex": 1
-                },
-                {
-                    "scale": "y",
-                    "domain": false,
-                    "format": "s",
-                    "grid": true,
-                    "labels": false,
-                    "orient": "left",
-                    "ticks": false,
-                    "zindex": 0,
-                    "gridScale": "x"
+                    ]
                 }
             ]
+        }
+    ],
+    "scales": [
+        {
+            "name": "x",
+            "type": "point",
+            "domain": {
+                "fields": [
+                    {
+                        "data": "data_0",
+                        "field": "a"
+                    },
+                    {
+                        "data": "data_1",
+                        "field": "a"
+                    }
+                ],
+                "sort": true
+            },
+            "range": {
+                "step": 21
+            },
+            "round": true,
+            "padding": 0.5
+        },
+        {
+            "name": "y",
+            "type": "linear",
+            "domain": {
+                "fields": [
+                    {
+                        "data": "data_0",
+                        "field": "b"
+                    },
+                    {
+                        "data": "data_1",
+                        "field": "b"
+                    }
+                ],
+                "sort": true
+            },
+            "range": [
+                200,
+                0
+            ],
+            "round": true,
+            "nice": true,
+            "zero": true
+        }
+    ],
+    "axes": [
+        {
+            "scale": "x",
+            "orient": "bottom",
+            "tickCount": 5,
+            "title": "a",
+            "zindex": 1,
+            "encode": {
+                "labels": {
+                    "update": {
+                        "angle": {
+                            "value": 270
+                        },
+                        "align": {
+                            "value": "right"
+                        },
+                        "baseline": {
+                            "value": "middle"
+                        }
+                    }
+                }
+            }
+        },
+        {
+            "scale": "y",
+            "format": "s",
+            "orient": "left",
+            "title": "b",
+            "zindex": 1
+        },
+        {
+            "scale": "y",
+            "domain": false,
+            "format": "s",
+            "grid": true,
+            "labels": false,
+            "orient": "left",
+            "ticks": false,
+            "zindex": 0,
+            "gridScale": "x"
         }
     ]
 }

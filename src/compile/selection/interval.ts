@@ -1,8 +1,8 @@
 import {Channel, X, Y} from '../../channel';
 import {warn} from '../../log';
-import {extend, stringValue} from '../../util';
+import {extend, keys, stringValue} from '../../util';
 import {UnitModel} from '../unit';
-import {channelSignalName, invert as invertFn, SelectionCompiler, SelectionComponent, TUPLE} from './selection';
+import {channelSignalName, invert as invertFn, SelectionCompiler, SelectionComponent, STORE, TUPLE} from './selection';
 import scales from './transforms/scales';
 
 export const BRUSH = '_brush',
@@ -12,14 +12,14 @@ const interval:SelectionCompiler = {
   predicate: 'vlInterval',
 
   signals: function(model, selCmpt) {
-    let signals: any[] = [],
+    const signals: any[] = [],
         intervals:any[] = [],
         name = selCmpt.name,
         size = name + SIZE;
 
     if (selCmpt.translate && !(scales.has(selCmpt))) {
       events(selCmpt, function(_: any[], evt: any) {
-        let filters = evt.between[0].filter || (evt.between[0].filter = []);
+        const filters = evt.between[0].filter || (evt.between[0].filter = []);
         filters.push('!event.item || (event.item && ' +
           `event.item.mark.name !== ${stringValue(name + BRUSH)})`);
       });
@@ -31,7 +31,7 @@ const interval:SelectionCompiler = {
         return;
       }
 
-      let cs = channelSignal(model, selCmpt, p.encoding);
+      const cs = channelSignal(model, selCmpt, p.encoding);
       signals.push(cs);
       intervals.push(`{field: ${stringValue(p.field)}, extent: ${cs.name}}`);
     });
@@ -66,20 +66,23 @@ const interval:SelectionCompiler = {
   },
 
   modifyExpr: function(model, selCmpt) {
-    let tpl = selCmpt.name + TUPLE;
-    return `${tpl}, {unit: ${tpl}.unit}`;
+    const tpl = selCmpt.name + TUPLE;
+    return tpl + ', ' +
+      (selCmpt.resolve === 'global' ? 'true' : `{unit: ${tpl}.unit}`);
   },
 
   marks: function(model, selCmpt, marks) {
-    let name = selCmpt.name,
-        {x, y} = projections(selCmpt);
+    const name = selCmpt.name,
+        {x, y} = projections(selCmpt),
+        tpl = name + TUPLE,
+        store = `data(${stringValue(name + STORE)})`;
 
     // Do not add a brush if we're binding to scales.
     if (scales.has(selCmpt)) {
       return marks;
     }
 
-    let update = {
+    const update = {
       x: extend({}, x !== null ?
         {scale: model.scaleName(X), signal: `${name}[${x}].extent[0]`} :
         {value: 0}),
@@ -94,8 +97,21 @@ const interval:SelectionCompiler = {
 
       y2: extend({}, y !== null ?
         {scale: model.scaleName(Y), signal: `${name}[${y}].extent[1]`} :
-        {field: {group: 'height'}}),
+        {field: {group: 'height'}})
     };
+
+    // If the selection is resolved to global, only a single interval is in
+    // the store. Wrap brush mark's encodings with a production rule to test
+    // this based on the `unit` property. Hide the brush mark if it corresponds
+    // to a unit different from the one in the store.
+    if (selCmpt.resolve === 'global') {
+      keys(update).forEach(function(key) {
+        update[key] = [{
+          test: `${store}.length && ${tpl} && ${tpl}.unit === ${store}[0].unit`,
+          ...update[key]
+        }, {value: 0}];
+      });
+    }
 
     return [{
       name: undefined,
@@ -129,7 +145,7 @@ export function projections(selCmpt: SelectionComponent) {
 }
 
 function channelSignal(model: UnitModel, selCmpt: SelectionComponent, channel: Channel): any {
-  let name  = channelSignalName(selCmpt, channel),
+  const name  = channelSignalName(selCmpt, channel),
       size  = (channel === X ? 'width' : 'height'),
       coord = `${channel}(unit)`,
       invert = invertFn.bind(null, model, selCmpt, channel);

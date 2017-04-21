@@ -1,0 +1,493 @@
+{
+    "$schema": "http://vega.github.io/schema/vega/v3.0.json",
+    "autosize": "pad",
+    "padding": 5,
+    "data": [
+        {
+            "name": "source_0",
+            "url": "data/cars.json",
+            "format": {
+                "type": "json"
+            }
+        },
+        {
+            "name": "data_0",
+            "source": "source_0",
+            "transform": [
+                {
+                    "type": "formula",
+                    "expr": "toNumber(datum[\"Horsepower\"])",
+                    "as": "Horsepower"
+                },
+                {
+                    "type": "filter",
+                    "expr": "datum[\"Horsepower\"] !== null && !isNaN(datum[\"Horsepower\"])"
+                }
+            ]
+        },
+        {
+            "name": "data_1",
+            "source": "data_0",
+            "transform": [
+                {
+                    "type": "aggregate",
+                    "groupby": [
+                        "Cylinders"
+                    ],
+                    "ops": [
+                        "min"
+                    ],
+                    "fields": [
+                        "Horsepower"
+                    ]
+                },
+                {
+                    "type": "collect",
+                    "sort": {
+                        "field": "Cylinders",
+                        "order": "descending"
+                    }
+                }
+            ]
+        },
+        {
+            "name": "data_2",
+            "source": "source_0",
+            "transform": [
+                {
+                    "type": "formula",
+                    "expr": "toNumber(datum[\"Horsepower\"])",
+                    "as": "Horsepower"
+                },
+                {
+                    "type": "filter",
+                    "expr": "datum[\"Horsepower\"] !== null && !isNaN(datum[\"Horsepower\"])"
+                }
+            ]
+        },
+        {
+            "name": "data_3",
+            "source": "data_2",
+            "transform": [
+                {
+                    "type": "aggregate",
+                    "groupby": [
+                        "Cylinders"
+                    ],
+                    "ops": [
+                        "min"
+                    ],
+                    "fields": [
+                        "Horsepower"
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "data_4",
+            "source": "source_0",
+            "transform": [
+                {
+                    "type": "formula",
+                    "expr": "toNumber(datum[\"Horsepower\"])",
+                    "as": "Horsepower"
+                },
+                {
+                    "type": "filter",
+                    "expr": "datum[\"Horsepower\"] !== null && !isNaN(datum[\"Horsepower\"])"
+                },
+                {
+                    "type": "aggregate",
+                    "groupby": [
+                        "Cylinders"
+                    ],
+                    "ops": [
+                        "max"
+                    ],
+                    "fields": [
+                        "Horsepower"
+                    ]
+                },
+                {
+                    "type": "collect",
+                    "sort": {
+                        "field": "Cylinders",
+                        "order": "descending"
+                    }
+                }
+            ]
+        },
+        {
+            "name": "data_5",
+            "source": "source_0",
+            "transform": [
+                {
+                    "type": "formula",
+                    "expr": "toNumber(datum[\"Horsepower\"])",
+                    "as": "Horsepower"
+                },
+                {
+                    "type": "filter",
+                    "expr": "datum[\"Horsepower\"] !== null && !isNaN(datum[\"Horsepower\"])"
+                },
+                {
+                    "type": "aggregate",
+                    "groupby": [
+                        "Cylinders"
+                    ],
+                    "ops": [
+                        "max"
+                    ],
+                    "fields": [
+                        "Horsepower"
+                    ]
+                }
+            ]
+        }
+    ],
+    "signals": [
+        {
+            "name": "width",
+            "update": "max(layer_0_width, layer_1_width)"
+        },
+        {
+            "name": "height",
+            "update": "max(layer_0_height, layer_1_height)"
+        },
+        {
+            "name": "layer_0_width",
+            "update": "max(layer_0_layer_0_width, layer_0_layer_1_width)"
+        },
+        {
+            "name": "layer_0_height",
+            "update": "max(layer_0_layer_0_height, layer_0_layer_1_height)"
+        },
+        {
+            "name": "layer_0_layer_0_width",
+            "update": "bandspace(domain('x').length, 1, 0.5) * 21"
+        },
+        {
+            "name": "layer_0_layer_0_height",
+            "update": "200"
+        },
+        {
+            "name": "layer_0_layer_1_width",
+            "update": "bandspace(domain('x').length, 1, 0.5) * 21"
+        },
+        {
+            "name": "layer_0_layer_1_height",
+            "update": "200"
+        },
+        {
+            "name": "layer_1_width",
+            "update": "max(layer_1_layer_0_width, layer_1_layer_1_width)"
+        },
+        {
+            "name": "layer_1_height",
+            "update": "max(layer_1_layer_0_height, layer_1_layer_1_height)"
+        },
+        {
+            "name": "layer_1_layer_0_width",
+            "update": "bandspace(domain('x').length, 1, 0.5) * 21"
+        },
+        {
+            "name": "layer_1_layer_0_height",
+            "update": "200"
+        },
+        {
+            "name": "layer_1_layer_1_width",
+            "update": "bandspace(domain('x').length, 1, 0.5) * 21"
+        },
+        {
+            "name": "layer_1_layer_1_height",
+            "update": "200"
+        },
+        {
+            "name": "unit",
+            "value": {},
+            "on": [
+                {
+                    "events": "mousemove",
+                    "update": "group()._id ? group() : unit"
+                }
+            ]
+        }
+    ],
+    "marks": [
+        {
+            "name": "nested_main_group",
+            "type": "group",
+            "encode": {
+                "update": {
+                    "width": {
+                        "signal": "width"
+                    },
+                    "height": {
+                        "signal": "height"
+                    }
+                }
+            },
+            "marks": [
+                {
+                    "type": "group",
+                    "encode": {
+                        "enter": {
+                            "width": {
+                                "signal": "width"
+                            },
+                            "height": {
+                                "signal": "height"
+                            },
+                            "fill": {
+                                "value": "transparent"
+                            },
+                            "clip": {
+                                "value": true
+                            }
+                        }
+                    },
+                    "marks": [
+                        {
+                            "type": "group",
+                            "encode": {
+                                "enter": {
+                                    "width": {
+                                        "signal": "layer_0_width"
+                                    },
+                                    "height": {
+                                        "signal": "layer_0_height"
+                                    },
+                                    "fill": {
+                                        "value": "transparent"
+                                    },
+                                    "clip": {
+                                        "value": true
+                                    }
+                                }
+                            },
+                            "marks": [
+                                {
+                                    "name": "layer_0_layer_0_marks",
+                                    "type": "line",
+                                    "from": {
+                                        "data": "data_4"
+                                    },
+                                    "encode": {
+                                        "update": {
+                                            "x": {
+                                                "scale": "x",
+                                                "field": "Cylinders"
+                                            },
+                                            "y": {
+                                                "scale": "y",
+                                                "field": "max_Horsepower"
+                                            },
+                                            "stroke": {
+                                                "value": "darkred"
+                                            }
+                                        }
+                                    }
+                                },
+                                {
+                                    "name": "layer_0_layer_1_marks",
+                                    "type": "symbol",
+                                    "role": "pointOverlay",
+                                    "from": {
+                                        "data": "data_5"
+                                    },
+                                    "encode": {
+                                        "update": {
+                                            "x": {
+                                                "scale": "x",
+                                                "field": "Cylinders"
+                                            },
+                                            "y": {
+                                                "scale": "y",
+                                                "field": "max_Horsepower"
+                                            },
+                                            "fill": {
+                                                "value": "darkred"
+                                            }
+                                        }
+                                    }
+                                }
+                            ]
+                        },
+                        {
+                            "type": "group",
+                            "encode": {
+                                "enter": {
+                                    "width": {
+                                        "signal": "layer_1_width"
+                                    },
+                                    "height": {
+                                        "signal": "layer_1_height"
+                                    },
+                                    "fill": {
+                                        "value": "transparent"
+                                    },
+                                    "clip": {
+                                        "value": true
+                                    }
+                                }
+                            },
+                            "marks": [
+                                {
+                                    "name": "layer_1_layer_0_marks",
+                                    "type": "line",
+                                    "from": {
+                                        "data": "data_1"
+                                    },
+                                    "encode": {
+                                        "update": {
+                                            "x": {
+                                                "scale": "x",
+                                                "field": "Cylinders"
+                                            },
+                                            "y": {
+                                                "scale": "y",
+                                                "field": "min_Horsepower"
+                                            },
+                                            "stroke": {
+                                                "value": "#4c78a8"
+                                            }
+                                        }
+                                    }
+                                },
+                                {
+                                    "name": "layer_1_layer_1_marks",
+                                    "type": "symbol",
+                                    "role": "pointOverlay",
+                                    "from": {
+                                        "data": "data_3"
+                                    },
+                                    "encode": {
+                                        "update": {
+                                            "x": {
+                                                "scale": "x",
+                                                "field": "Cylinders"
+                                            },
+                                            "y": {
+                                                "scale": "y",
+                                                "field": "min_Horsepower"
+                                            },
+                                            "fill": {
+                                                "value": "#4c78a8"
+                                            }
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        }
+    ],
+    "scales": [
+        {
+            "name": "x",
+            "type": "point",
+            "domain": {
+                "fields": [
+                    {
+                        "data": "data_4",
+                        "field": "Cylinders"
+                    },
+                    {
+                        "data": "data_5",
+                        "field": "Cylinders"
+                    },
+                    {
+                        "data": "data_1",
+                        "field": "Cylinders"
+                    },
+                    {
+                        "data": "data_3",
+                        "field": "Cylinders"
+                    }
+                ],
+                "sort": true
+            },
+            "range": {
+                "step": 21
+            },
+            "round": true,
+            "padding": 0.5
+        },
+        {
+            "name": "y",
+            "type": "linear",
+            "domain": {
+                "fields": [
+                    {
+                        "data": "data_4",
+                        "field": "max_Horsepower"
+                    },
+                    {
+                        "data": "data_5",
+                        "field": "max_Horsepower"
+                    },
+                    {
+                        "data": "data_1",
+                        "field": "min_Horsepower"
+                    },
+                    {
+                        "data": "data_3",
+                        "field": "min_Horsepower"
+                    }
+                ],
+                "sort": true
+            },
+            "range": [
+                200,
+                0
+            ],
+            "round": true,
+            "nice": true,
+            "zero": true
+        }
+    ],
+    "axes": [
+        {
+            "scale": "x",
+            "orient": "bottom",
+            "tickCount": 5,
+            "title": "Cylinders",
+            "zindex": 1,
+            "encode": {
+                "labels": {
+                    "update": {
+                        "angle": {
+                            "value": 270
+                        },
+                        "align": {
+                            "value": "right"
+                        },
+                        "baseline": {
+                            "value": "middle"
+                        }
+                    }
+                }
+            }
+        },
+        {
+            "scale": "y",
+            "format": "s",
+            "orient": "left",
+            "title": "MAX(Horsepower)",
+            "zindex": 1
+        },
+        {
+            "scale": "y",
+            "domain": false,
+            "format": "s",
+            "grid": true,
+            "labels": false,
+            "orient": "left",
+            "ticks": false,
+            "zindex": 0,
+            "gridScale": "x"
+        }
+    ]
+}

@@ -12,6 +12,7 @@ import {rule} from './rule';
 import {text} from './text';
 import {tick} from './tick';
 
+import {MAIN} from '../../data';
 import {FacetModel} from '../facet';
 import {UnitModel} from '../unit';
 
@@ -36,32 +37,20 @@ export function parseMark(model: UnitModel): any[] {
   }
 }
 
-// FIXME: maybe this should not be here.  Need re-think and refactor, esp. after having all composition in.
-function dataFrom(model: UnitModel): string {
-  const parent = model.parent;
-  if (parent && parent.isFacet()) {
-    return (parent as FacetModel).facetedTable();
-  }
-  if (model.stack) {
-    return model.dataName('stacked');
-  }
-  return model.dataTable();
-}
-
-const FACETED_PATH_PREFIX = 'faceted-path-';
+const FACETED_PATH_PREFIX = 'faceted_path_';
 
 function parsePathMark(model: UnitModel) {
   const mark = model.mark();
   // FIXME: replace this with more general case for composition
   const details = detailFields(model);
 
-  let pathMarks: any = [
+  const pathMarks: any = [
     {
       name: model.getName('marks'),
       type: markCompiler[mark].vgMark,
       // If has subfacet for line/area group, need to use faceted data from below.
       // FIXME: support sorting path order (in connected scatterplot)
-      from: {data: (details.length > 0 ? FACETED_PATH_PREFIX : '') + dataFrom(model)},
+      from: {data: (details.length > 0 ? FACETED_PATH_PREFIX : '') + model.getDataName(MAIN)},
       encode: {update: markCompiler[mark].encodeEntry(model)}
     }
   ];
@@ -74,8 +63,8 @@ function parsePathMark(model: UnitModel) {
       type: 'group',
       from: {
         facet: {
-          name: FACETED_PATH_PREFIX + dataFrom(model),
-          data: dataFrom(model),
+          name: FACETED_PATH_PREFIX + model.getDataName(MAIN),
+          data: model.getDataName(MAIN),
           groupby: details,
         }
       },
@@ -97,7 +86,7 @@ function parseNonPathMark(model: UnitModel) {
 
   const role = model.markDef.role || markCompiler[mark].defaultRole;
 
-  let marks: any[] = []; // TODO: vgMarks
+  const marks: any[] = []; // TODO: vgMarks
 
   // TODO: for non-stacked plot, map order to zindex. (Maybe rename order for layer to zindex?)
 
@@ -105,7 +94,7 @@ function parseNonPathMark(model: UnitModel) {
     name: model.getName('marks'),
     type: markCompiler[mark].vgMark,
     ...(role? {role} : {}),
-    from: {data: dataFrom(model)},
+    from: {data: model.getDataName(MAIN)},
     encode: {update: markCompiler[mark].encodeEntry(model)}
   });
 

@@ -1,59 +1,81 @@
-import {DataComponentCompiler} from './base';
-
+import {SpawnSyncOptionsWithStringEncoding} from 'child_process';
 import {field, FieldDef} from '../../fielddef';
-import {fieldExpr} from '../../timeunit';
+import {fieldExpr, TimeUnit} from '../../timeunit';
 import {TEMPORAL} from '../../type';
-import {Dict, extend, vals} from '../../util';
-import {VgFormulaTransform} from '../../vega.schema';
+import {Dict, duplicate, extend, StringSet, vals} from '../../util';
+import {VgFormulaTransform, VgTransform} from '../../vega.schema';
+import {format} from '../axis/rules';
+import {ModelWithField} from '../model';
+import {DataFlowNode} from './dataflow';
 
-import {FacetModel} from '../facet';
-import {LayerModel} from '../layer';
-import {Model} from '../model';
 
-function parse(model: Model): Dict<VgFormulaTransform> {
-  return model.reduceFieldDef(function(timeUnitComponent: Dict<VgFormulaTransform>, fieldDef: FieldDef) {
-    if (fieldDef.type === TEMPORAL && fieldDef.timeUnit) {
-
-      const f = field(fieldDef);
-      timeUnitComponent[f] = {
-        type: 'formula',
-        as: f,
-        expr: fieldExpr(fieldDef.timeUnit, fieldDef.field)
-      };
-    }
-    return timeUnitComponent;
-  }, {});
+export interface TimeUnitComponent {
+  as: string;
+  timeUnit: TimeUnit;
+  field: string;
 }
 
-export const timeUnit: DataComponentCompiler<Dict<VgFormulaTransform>> = {
-  parseUnit: parse,
-
-  parseFacet: function (model: FacetModel) {
-    let timeUnitComponent = parse(model);
-
-    const childDataComponent = model.child.component.data;
-
-    // If child doesn't have its own data source, then merge
-    if (!childDataComponent.source) {
-      extend(timeUnitComponent, childDataComponent.timeUnit);
-      delete childDataComponent.timeUnit;
-    }
-    return timeUnitComponent;
-  },
-
-  parseLayer: function(model: LayerModel) {
-    let timeUnitComponent = parse(model);
-    model.children.forEach((child) => {
-      const childDataComponent = child.component.data;
-      if (!childDataComponent.source) {
-        extend(timeUnitComponent, childDataComponent.timeUnit);
-        delete childDataComponent.timeUnit;
-      }
-    });
-    return timeUnitComponent;
-  },
-  assemble: function(component: Dict<VgFormulaTransform>) {
-    // just join the values, which are already transforms
-    return vals(component);
+export class TimeUnitNode extends DataFlowNode {
+  public clone() {
+    return new TimeUnitNode(duplicate(this.formula));
   }
-};
+
+  constructor(private formula: Dict<TimeUnitComponent>) {
+    super();
+  }
+
+  public static make(model: ModelWithField) {
+    const formula = model.reduceFieldDef((timeUnitComponent: TimeUnitComponent, fieldDef) => {
+      if (fieldDef.type === TEMPORAL && fieldDef.timeUnit) {
+        const f = field(fieldDef);
+        timeUnitComponent[f] = {
+          as: f,
+          timeUnit: fieldDef.timeUnit,
+          field: fieldDef.field
+        };
+      }
+      return timeUnitComponent;
+    }, {} as Dict<TimeUnitComponent>);
+
+    if (Object.keys(formula).length === 0) {
+      return null;
+    }
+
+    return new TimeUnitNode(formula);
+  }
+
+  public merge(other: TimeUnitNode) {
+    this.formula = extend(this.formula, other.formula);
+    other.remove();
+  }
+
+  public producedFields() {
+    const out = {};
+
+    vals(this.formula).forEach(f => {
+      out[f.as] = true;
+    });
+
+    return out;
+  }
+
+  public dependentFields() {
+    const out = {};
+
+    vals(this.formula).forEach(f => {
+      out[f.field] = true;
+    });
+
+    return out;
+  }
+
+  public assemble() {
+    return vals(this.formula).map(c => {
+      return {
+        type: 'formula',
+        as: c.as,
+        expr: fieldExpr(c.timeUnit, c.field)
+      } as VgFormulaTransform;
+    });
+  }
+}

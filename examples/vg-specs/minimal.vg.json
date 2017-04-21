@@ -2,14 +2,25 @@
     "$schema": "http://vega.github.io/schema/vega/v3.0.json",
     "autosize": "pad",
     "padding": 5,
+    "data": [
+        {
+            "name": "source_0",
+            "values": [
+                {}
+            ],
+            "format": {
+                "type": "json"
+            }
+        }
+    ],
     "signals": [
         {
             "name": "width",
-            "update": "data('layout')[0].width"
+            "update": "21"
         },
         {
             "name": "height",
-            "update": "data('layout')[0].height"
+            "update": "21"
         },
         {
             "name": "unit",
@@ -22,54 +33,17 @@
             ]
         }
     ],
-    "data": [
-        {
-            "name": "source",
-            "values": [
-                {}
-            ],
-            "format": {
-                "type": "json",
-                "parse": {}
-            },
-            "transform": []
-        },
-        {
-            "name": "layout",
-            "values": [
-                {}
-            ],
-            "transform": [
-                {
-                    "type": "formula",
-                    "as": "width",
-                    "expr": "21"
-                },
-                {
-                    "type": "formula",
-                    "as": "height",
-                    "expr": "21"
-                }
-            ]
-        }
-    ],
     "marks": [
         {
-            "name": "main",
+            "name": "nested_main_group",
             "type": "group",
-            "from": {
-                "data": "layout"
-            },
             "encode": {
                 "update": {
                     "width": {
-                        "field": "width"
+                        "signal": "width"
                     },
                     "height": {
-                        "field": "height"
-                    },
-                    "fill": {
-                        "value": "transparent"
+                        "signal": "height"
                     }
                 }
             },
@@ -79,7 +53,7 @@
                     "type": "symbol",
                     "role": "point",
                     "from": {
-                        "data": "source"
+                        "data": "source_0"
                     },
                     "encode": {
                         "update": {

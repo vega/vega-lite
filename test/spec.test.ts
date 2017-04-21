@@ -1,8 +1,11 @@
 /* tslint:disable:quotemark */
 
 import {assert} from 'chai';
-
-import {fieldDefs, normalize} from '../src/spec';
+import {Encoding} from '../src/encoding';
+import {Field, FieldDef} from '../src/fielddef';
+import {MarkDef} from '../src/mark';
+import {fieldDefs, GenericSpec, GenericUnitSpec, normalize, Spec} from '../src/spec';
+import {Config, defaultConfig, initConfig} from './../src/config';
 
 // describe('isStacked()') -- tested as part of stackOffset in stack.test.ts
 
@@ -22,8 +25,8 @@ describe('normalize()', function () {
           "y": {"field": "US_DVD_Sales","type": "quantitative"}
         }
       };
-
-      assert.deepEqual(normalize(spec), {
+      const config = initConfig(spec.config);
+      assert.deepEqual<GenericSpec<GenericUnitSpec<string | MarkDef, Encoding<Field>>>>(normalize(spec, config), {
         "width": 123,
         "height": 234,
         "name": "faceted",
@@ -53,7 +56,8 @@ describe('normalize()', function () {
         }
       };
 
-      assert.deepEqual(normalize(spec), {
+      const config = initConfig(spec.config);
+      assert.deepEqual<GenericSpec<GenericUnitSpec<string | MarkDef, Encoding<Field>>>>(normalize(spec, spec.config), {
         "data": {"url": "data/movies.json"},
         "facet": {
           "row": {"field": "MPAA_Rating","type": "ordinal"}
@@ -71,7 +75,7 @@ describe('normalize()', function () {
 
   describe('normalizeFacet', () => {
     it('should produce correct layered specs for mean point and vertical error bar', () => {
-      assert.deepEqual(normalize({
+      assert.deepEqual<GenericSpec<GenericUnitSpec<string | MarkDef, Encoding<Field>>>>(normalize({
         "description": "A error bar plot showing mean, min, and max in the US population distribution of age groups in 2000.",
         "data": {"url": "data/population.json"},
         "transform": [{"filter": "datum.year == 2000"}],
@@ -113,7 +117,7 @@ describe('normalize()', function () {
             }
           ]
         }
-      }), {
+      }, defaultConfig), {
         "description": "A error bar plot showing mean, min, and max in the US population distribution of age groups in 2000.",
         "data": {"url": "data/population.json"},
         "transform": [{"filter": "datum.year == 2000"}],
@@ -190,7 +194,7 @@ describe('normalize()', function () {
 
   describe('normalizeLayer', () => {
     it('should produce correct layered specs for mean point and vertical error bar', () => {
-      assert.deepEqual(normalize({
+      assert.deepEqual<GenericSpec<GenericUnitSpec<string | MarkDef, Encoding<Field>>>>(normalize({
         "description": "A error bar plot showing mean, min, and max in the US population distribution of age groups in 2000.",
         "data": {"url": "data/population.json"},
         "transform": [{"filter": "datum.year == 2000"}],
@@ -227,7 +231,7 @@ describe('normalize()', function () {
             }
           }
         ]
-      }), {
+      }, defaultConfig), {
         "description": "A error bar plot showing mean, min, and max in the US population distribution of age groups in 2000.",
         "data": {"url": "data/population.json"},
         "transform": [{"filter": "datum.year == 2000"}],
@@ -298,112 +302,226 @@ describe('normalize()', function () {
   });
 
   describe('normalizeOverlay', () => {
-    describe('line', () => {
-      it('should be normalized correctly', () => {
-        const spec: any = {
-          "data": {"url": "data/stocks.csv", "format": {"type": "csv"}},
-          "mark": "line",
-          "encoding": {
-            "x": {"field": "date", "type": "temporal"},
-            "y": {"field": "price", "type": "quantitative"}
-          },
-          "config": {"overlay": {"line": true}}
-        };
-        const normalizedSpec = normalize(spec);
-        assert.deepEqual(normalizedSpec, {
-          "data": {"url": "data/stocks.csv","format": {"type": "csv"}},
-          "layer": [
-            {
-              "mark": "line",
-              "encoding": {
-                "x": {"field": "date","type": "temporal"},
-                "y": {"field": "price","type": "quantitative"}
-              }
-            },
-            {
-              "mark": "point",
-              "encoding": {
-                "x": {"field": "date","type": "temporal"},
-                "y": {"field": "price","type": "quantitative"}
-              },
-              "config": {"mark": {"filled": true}}
+    it('correctly normalizes line with overlayed point.', () => {
+      const spec: any = {
+        "data": {"url": "data/stocks.csv", "format": {"type": "csv"}},
+        "mark": "line",
+        "encoding": {
+          "x": {"field": "date", "type": "temporal"},
+          "y": {"field": "price", "type": "quantitative"}
+        },
+        "config": {"overlay": {"line": true}}
+      };
+      const normalizedSpec = normalize(spec, spec.config);
+      // FIXME: remove any
+      assert.deepEqual<any>(normalizedSpec, {
+        "data": {"url": "data/stocks.csv","format": {"type": "csv"}},
+        "layer": [
+          {
+            "mark": "line",
+            "encoding": {
+              "x": {"field": "date", "type": "temporal"},
+              "y": {"field": "price","type": "quantitative"}
             }
-          ]
-        });
+          },
+          {
+            "mark": {"type": "point", "filled": true, "role": "pointOverlay"},
+            "encoding": {
+              "x": {"field": "date","type": "temporal"},
+              "y": {"field": "price","type": "quantitative"}
+            }
+          }
+        ],
+        "config": {"overlay": {"line": true}}
       });
     });
 
-    describe('area', () => {
-      it('with linepoint should be normalized correctly', () => {
-        const spec: any = {
-          "data": {"url": "data/stocks.csv", "format": {"type": "csv"}},
-          "mark": "area",
-          "encoding": {
-            "x": {"field": "date", "type": "temporal"},
-            "y": {"field": "price", "type": "quantitative"}
-          },
-          "config": {"overlay": {"area": 'linepoint'}}
-        };
-        const normalizedSpec = normalize(spec);
-        assert.deepEqual(normalizedSpec, {
-          "data": {"url": "data/stocks.csv","format": {"type": "csv"}},
+    it('correctly normalizes faceted line plots with overlayed point.', () => {
+      const spec: any = {
+        "data": {"url": "data/stocks.csv", "format": {"type": "csv"}},
+        "mark": "line",
+        "encoding": {
+          "row": {"field": "symbol", "type": "nominal"},
+          "x": {"field": "date", "type": "temporal"},
+          "y": {"field": "price", "type": "quantitative"}
+        },
+        "config": {"overlay": {"line": true}}
+      };
+      const normalizedSpec = normalize(spec, spec.config);
+      // FIXME: remove any
+      assert.deepEqual<any>(normalizedSpec, {
+        "data": {"url": "data/stocks.csv","format": {"type": "csv"}},
+        "facet": {
+          "row": {"field": "symbol", "type": "nominal"},
+        },
+        "spec": {
           "layer": [
-            {
-              "mark": "area",
-              "encoding": {
-                "x": {"field": "date","type": "temporal"},
-                "y": {"field": "price","type": "quantitative"}
-              }
-            },
             {
               "mark": "line",
               "encoding": {
-                "x": {"field": "date","type": "temporal"},
+                "x": {"field": "date", "type": "temporal"},
                 "y": {"field": "price","type": "quantitative"}
               }
             },
             {
-              "mark": "point",
+              "mark": {"type": "point", "filled": true, "role": "pointOverlay"},
               "encoding": {
                 "x": {"field": "date","type": "temporal"},
                 "y": {"field": "price","type": "quantitative"}
-              },
-              "config": {"mark": {"filled": true}}
+              }
             }
-          ]
-        });
+          ],
+        },
+        "config": {"overlay": {"line": true}}
       });
+    });
 
-      it('with linepoint should be normalized correctly', () => {
-        const spec: any = {
-          "data": {"url": "data/stocks.csv", "format": {"type": "csv"}},
-          "mark": "area",
-          "encoding": {
-            "x": {"field": "date", "type": "temporal"},
-            "y": {"field": "price", "type": "quantitative"}
-          },
-          "config": {"overlay": {"area": 'line'}}
-        };
-        const normalizedSpec = normalize(spec);
-        assert.deepEqual(normalizedSpec, {
-          "data": {"url": "data/stocks.csv","format": {"type": "csv"}},
-          "layer": [
-            {
-              "mark": "area",
-              "encoding": {
-                "x": {"field": "date","type": "temporal"},
-                "y": {"field": "price","type": "quantitative"}
-              }
-            },
-            {
-              "mark": "line",
-              "encoding": {
-                "x": {"field": "date","type": "temporal"},
-                "y": {"field": "price","type": "quantitative"}
-              }
+    it('correctly normalizes area with overlay line and point', () => {
+      const spec: any = {
+        "data": {"url": "data/stocks.csv", "format": {"type": "csv"}},
+        "mark": "area",
+        "encoding": {
+          "x": {"field": "date", "type": "temporal"},
+          "y": {"field": "price", "type": "quantitative"}
+        },
+        "config": {"overlay": {"area": 'linepoint'}}
+      };
+      const normalizedSpec = normalize(spec, spec.config);
+      // FIXME: remove any
+      assert.deepEqual<any>(normalizedSpec, {
+        "data": {"url": "data/stocks.csv","format": {"type": "csv"}},
+        "layer": [
+          {
+            "mark": "area",
+            "encoding": {
+              "x": {"field": "date","type": "temporal"},
+              "y": {"field": "price","type": "quantitative"}
             }
-          ]
-        });
+          },
+          {
+            "mark": {"type": "line", "role": "lineOverlay"},
+            "encoding": {
+              "x": {"field": "date","type": "temporal"},
+              "y": {"field": "price","type": "quantitative"}
+            }
+          },
+          {
+            "mark": {"type": "point", "filled": true, "role": "pointOverlay"},
+            "encoding": {
+              "x": {"field": "date","type": "temporal"},
+              "y": {"field": "price","type": "quantitative"}
+            }
+          }
+        ],
+        "config": {"overlay": {"area": 'linepoint'}}
+      });
+    });
+
+    it('correctly normalizes area with overlay line', () => {
+      const spec: any = {
+        "data": {"url": "data/stocks.csv", "format": {"type": "csv"}},
+        "mark": "area",
+        "encoding": {
+          "x": {"field": "date", "type": "temporal"},
+          "y": {"field": "price", "type": "quantitative"}
+        },
+        "config": {"overlay": {"area": 'line'}}
+      };
+      const normalizedSpec = normalize(spec, spec.config);
+      // FIXME: remove any
+      assert.deepEqual<any>(normalizedSpec, {
+        "data": {"url": "data/stocks.csv","format": {"type": "csv"}},
+        "layer": [
+          {
+            "mark": "area",
+            "encoding": {
+              "x": {"field": "date","type": "temporal"},
+              "y": {"field": "price","type": "quantitative"}
+            }
+          },
+          {
+            "mark": {"type": "line", "role": "lineOverlay"},
+            "encoding": {
+              "x": {"field": "date","type": "temporal"},
+              "y": {"field": "price","type": "quantitative"}
+            }
+          }
+        ],
+        "config": {"overlay": {"area": 'line'}}
+      });
+    });
+
+    it('correctly normalizes stacked area with overlay line', () => {
+      const spec: any = {
+        "data": {"url": "data/stocks.csv", "format": {"type": "csv"}},
+        "mark": "area",
+        "encoding": {
+          "x": {"field": "date", "type": "temporal"},
+          "y": {"aggregate": "sum", "field": "price", "type": "quantitative"},
+          "color": {"field": "symbol", "type": "nominal"}
+        },
+        "config": {"overlay": {"area": 'line'}}
+      };
+      const normalizedSpec = normalize(spec, spec.config);
+      // FIXME: remove any
+      assert.deepEqual<any>(normalizedSpec, {
+        "data": {"url": "data/stocks.csv","format": {"type": "csv"}},
+        "layer": [
+          {
+            "mark": "area",
+            "encoding": {
+              "x": {"field": "date","type": "temporal"},
+              "y": {"aggregate": "sum", "field": "price","type": "quantitative"},
+              "color": {"field": "symbol", "type": "nominal"}
+            }
+          },
+          {
+            "mark": {"type": "line", "role": "lineOverlay"},
+            "encoding": {
+              "x": {"field": "date","type": "temporal"},
+              "y": {"aggregate": "sum", "field": "price","type": "quantitative", "stack": "zero"},
+              "color": {"field": "symbol", "type": "nominal"}
+            }
+          }
+        ],
+        "config": {"overlay": {"area": 'line'}}
+      });
+    });
+
+    it('correctly normalizes streamgraph with overlay line', () => {
+      const spec: any = {
+        "data": {"url": "data/stocks.csv", "format": {"type": "csv"}},
+        "mark": "area",
+        "encoding": {
+          "x": {"field": "date", "type": "temporal"},
+          "y": {"aggregate": "sum", "field": "price", "type": "quantitative", "stack": "center"},
+          "color": {"field": "symbol", "type": "nominal"}
+        },
+        "config": {"overlay": {"area": 'line'}}
+      };
+      const normalizedSpec = normalize(spec, spec.config);
+      // FIXME: remove any
+      assert.deepEqual<any>(normalizedSpec, {
+        "data": {"url": "data/stocks.csv","format": {"type": "csv"}},
+        "layer": [
+          {
+            "mark": "area",
+            "encoding": {
+              "x": {"field": "date","type": "temporal"},
+              "y": {"aggregate": "sum", "field": "price","type": "quantitative", "stack": "center"},
+              "color": {"field": "symbol", "type": "nominal"}
+            }
+          },
+          {
+            "mark": {"type": "line", "role": "lineOverlay"},
+            "encoding": {
+              "x": {"field": "date","type": "temporal"},
+              "y": {"aggregate": "sum", "field": "price","type": "quantitative", "stack": "center"},
+              "color": {"field": "symbol", "type": "nominal"}
+            }
+          }
+        ],
+        "config": {"overlay": {"area": 'line'}}
       });
     });
   });
@@ -421,7 +539,7 @@ describe('normalizeRangedUnitSpec',  () => {
       }
     };
 
-    assert.deepEqual(normalize(spec), {
+    assert.deepEqual<Spec>(normalize(spec, defaultConfig), {
       "data": {"url": "data/population.json"},
       "mark": "rule",
       "encoding": {
@@ -443,7 +561,7 @@ describe('normalizeRangedUnitSpec',  () => {
       }
     };
 
-    assert.deepEqual(normalize(spec), spec);
+    assert.deepEqual(normalize(spec, defaultConfig), spec);
   });
 
   it('should convert x2 -> x if there is no x in the encoding', function() {
@@ -457,7 +575,7 @@ describe('normalizeRangedUnitSpec',  () => {
       }
     };
 
-    assert.deepEqual(normalize(spec), {
+    assert.deepEqual<Spec>(normalize(spec, defaultConfig), {
       "data": {"url": "data/population.json"},
       "mark": "rule",
       "encoding": {
@@ -480,7 +598,7 @@ describe('fieldDefs()', function() {
       }
     };
 
-    assert.deepEqual(fieldDefs(spec), [
+    assert.deepEqual<FieldDef<Field>[]>(fieldDefs(spec), [
       {"field": "Horsepower","type": "quantitative"},
       {"field": "Miles_per_Gallon","type": "quantitative"}
     ]);
@@ -511,7 +629,7 @@ describe('fieldDefs()', function() {
       ]
     };
 
-    assert.deepEqual(fieldDefs(layerSpec), [
+    assert.deepEqual<FieldDef<Field>[]>(fieldDefs(layerSpec), [
       {"field": "date","type": "temporal"},
       {"field": "price","type": "quantitative"},
       {"field": "symbol", "type": "nominal"}
@@ -543,7 +661,7 @@ describe('fieldDefs()', function() {
       ]
     };
 
-    assert.deepEqual(fieldDefs(layerSpec), [
+    assert.deepEqual<FieldDef<Field>[]>(fieldDefs(layerSpec), [
       {"field": "date","type": "temporal"},
       {"field": "price","type": "quantitative"}
     ]);
@@ -562,7 +680,7 @@ describe('fieldDefs()', function() {
       }
     };
 
-    assert.deepEqual(fieldDefs(facetSpec), [
+    assert.deepEqual<FieldDef<Field>[]>(fieldDefs(facetSpec), [
       {"field": "MPAA_Rating","type": "ordinal"},
       {"field": "Worldwide_Gross","type": "quantitative"},
       {"field": "US_DVD_Sales","type": "quantitative"}

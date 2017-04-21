@@ -1,41 +1,32 @@
 ---
-layout: page
+layout: home
 permalink: /
+title: A High-Level Visualization Grammar
 
 images:
  - spec: stacked_area_stream
-   bgposition: 44% 22%
  - spec: circle
-   bgposition: 75% 30%
  - spec: bar_layered_transparent
-   bgposition: 25% 0
-   bgsize: 250%
  - spec: tick_strip
-   bgposition: 75% 0%
-   bgsize: 150%
- - spec: line_color
-   bgposition: 41% 26%
-   bgsize: 170%
- - spec: scatter_colored_with_shape
-   bgposition: 50% 30%
+ - spec: layer_line_color_rule
  - spec: trellis_barley
-   bgsize: 226%
-   bgposition: 40% 5%
  - spec: bar_grouped
-   bgposition: 75% 59%
+ - spec: github_punchcard
  - spec: stacked_bar_weather
-   bgsize: 170%
-   bgposition: 31% 14%
  - spec: trellis_bar_histogram
-   bgposition: 75% 82%
-   bgsize: 100%
+ - spec: area
+ - spec: stacked_bar_v
+ - spec: line_color
+ - spec: scatter_opacity
+ - spec: line_slope
+ - spec: trellis_anscombe
+ - spec: scatter_binned_opacity
+ - spec: line_month
+ - spec: rect_heatmap
+ - spec: box_plot
+ - spec: scatter_connected
 
 ---
-
-{:.hidden}
-# Vega-Lite: a high-level visualization grammar
-
-{% include showcase.html %}
 
 {:.lead}
 **Vega-Lite** is a high-level visualization grammar. It provides a concise JSON syntax for supporting rapid generation of visualizations to support analysis. Vega-Lite specifications can be compiled to [Vega](http://vega.github.io/vega) specifications.
@@ -47,42 +38,21 @@ images:
   </span>
   <span class="lead-buttons">
     [Get started]({{site.baseurl}}/tutorials/getting_started.html)
-    [Try online](https://vega.github.io/vega-editor/?mode=vega-lite)
+    [Try online](https://vega.github.io/new-editor/#/vega_lite)
   </span>
 </span>
 
 Read our [introduction article on Medium](https://medium.com/p/438f9215f09e), check out the [documentation]({{site.baseurl}}/docs/) and take a look at our [example gallery]({{site.baseurl}}/examples/).
 
-**Announcement:** We are working on extending our grammar with interaction for the 2.0 release.
-For a sneak peek, you can read our
-[award-winning research paper](http://idl.cs.washington.edu/papers/vega-lite) at VIS 2016.
-
 ## Example
 
 This is a Vega-Lite specification to create a bar chart that shows the average temperature in Seattle for each month.
 
-<div class="vl-example">
-{
-  "data": {"url": "data/seattle-temps.csv"},
-  "mark": "bar",
-  "encoding": {
-    "x": {
-      "timeUnit": "month",
-      "field": "date",
-      "type": "temporal",
-      "axis": {"shortTimeLabels": true}
-    },
-    "y": {
-      "aggregate": "mean",
-      "field": "temp",
-      "type": "quantitative"
-    }
-  }
-}
-</div>
+<div class="vl-example" data-name="bar_month"></div>
 
 ## Additional Links
 
+* Award winning [research paper](http://idl.cs.washington.edu/papers/vega-lite) on the design of Vega-Lite
 * [JSON schema](http://json-schema.org/) specification for [Vega-Lite](https://github.com/vega/schema) ([latest](https://vega.github.io/vega-lite/vega-lite-schema.json))
 * Ask questions about Vega-Lite in the [Vega Discussion Group / Mailing List](https://groups.google.com/forum/?fromgroups#!forum/vega-js)
 

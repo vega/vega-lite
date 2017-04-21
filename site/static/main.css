@@ -11,9 +11,11 @@ body {
   display: flex;
   flex-direction: column;
   max-width: 100%;
+  text-rendering: optimizeLegibility;
+  text-decoration-skip: ink;
 }
 header {
-  background-color: #E6E6E6;
+  background-color: #325;
 }
 a {
   cursor: pointer;
@@ -82,12 +84,27 @@ table tr th:last-child, table tr td:last-child {
   margin-bottom: 0;
 }
 
+.page-content table {
+  width: 100%;
+}
+.page-content .small-table {
+  width: auto;
+}
+
+.page-content table p {
+  margin: .5em 0;
+}
+.page-content table p:first-child {
+  margin-top: 0;
+}
+.page-content table p:last-child {
+  margin-bottom: 0;
+}
+
 /* Headers */
 
 h1, h2, h3, h4 {
-  margin-top: 1.3em;
-  margin-bottom: 0.6em;
-  text-rendering: optimizeLegibility;
+  margin: 0.7em 0 0.3em 0;
 }
 h1 {
   vertical-align: middle;
@@ -140,7 +157,6 @@ h2:hover .anchor .octicon-link, h3:hover .anchor .octicon-link, h4:hover .anchor
 code, tt {
   margin: 0 2px;
   padding: 0 4px;
-  white-space: nowrap;
   background: #f6f6f6;
   border: 1px solid #ddd;
   font-family: monospace;
@@ -169,7 +185,7 @@ pre {
 
 nav {
   display: flex;
-  align-items: baseline;
+  align-items: center;
   align-content: flex-start;
   flex-direction: row;
   flex-wrap: wrap;
@@ -177,7 +193,7 @@ nav {
 }
 
 nav a {
-  color: #666;
+  color: #eee;
   padding-right: 2em;
   display:inline-block;
 }
@@ -186,9 +202,10 @@ nav a:last-child {
 }
 nav a.active {
   font-weight: bold;
+  color: #fff;
 }
 nav a:hover {
-  color: black;
+  color: #e5b928;
   text-decoration: none;
 }
 
@@ -216,18 +233,13 @@ nav a:hover {
   padding-right: .2em;
 }
 .sub-nav {
-  background-color: #F7F7F7;
+  background-color: #624e88;
 }
 
 .sidebar-nav {
   display: block;
   padding: 0;
   margin: 0;
-}
-
-.sub-sub-nav {
-  padding-left: 1em;
-  border-left: 4px solid #eee;
 }
 
 .sidebar-nav-item {
@@ -245,14 +257,15 @@ nav a:hover {
   color: black;
   text-decoration: none;
 }
+.title h1 {
+  margin-top: 0.3em;
+}
+
 
 .vl-title {
   font-weight: bold;
   font-size: 1.4em;
-  color: #666;
-  margin-top: -4px;
-  /* hack */
-  margin-right: 8px;
+  color: #eee;
   flex: 0 0 auto;
   display: inline-block;
   line-height: 54px;
@@ -267,7 +280,6 @@ nav a:hover {
 }
 
 .primary-links {
-  float: left;
   text-align: left;
   display: inline-block;
   flex: 1 0 auto;
@@ -280,15 +292,14 @@ nav a:hover {
 }
 
 .edit-page {
-  display: inline-block;
   font-size: 0.9em;
   color: #aaa;
   padding-top: 30px;
   line-height: 3em;
   margin: 0.7em 0 0.3em 0;
   vertical-align: text-top;
-  float: right;
   text-align: right;
+  float: right;
 }
 
 footer .edit-page {
@@ -358,35 +369,90 @@ footer .edit-page {
   display: block;
 }
 
-/* Showcase */
+/* Announcement */
+.announcement {
+  padding: .6em 0;
+  background-color: #b53e3e;
+  color: white;
+  text-align: center;
+}
 
-.showcase {
+.announcement a {
+  color: white;
+  text-decoration: underline;
+}
+
+/* Example Gallery */
+.preview {
+  display: block;
+  float: left;
+  padding: 0.5em 0;
+  padding-right: 0.5em;
+}
+.preview .image {
+  width: 180px;
+  height: 100px;
+  background-position: left top;
+  background-size: cover;
+  overflow: hidden;
+  transition: background-position 2s;
+}
+.preview:hover .image {
+  background-position: right bottom;
+}
+.preview a {
+  font-size: 0.9em;
+}
+
+/* Example Showcase */
+#showcase {
   width: 100%;
-  clear: both;
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  margin: 20px 0;
+  height: 300px;
+  overflow: hidden;
+  margin: 0;
+  padding: 0;
+  position: relative;
 }
-.showcase .image {
-  display: inline-block;
-  /* Show 4 images per row, make the height depend on the width */
-  height: auto;
-  /* 12px  = 2*6px margin */
-  width: calc(20% - 12px);
-  /* hack to make height depend on width*/
-  margin: 8px 0;
-  border: 1px solid #ddd;
-  background-clip: padding-box;
-  background-position: center;
-  background-repeat: no-repeat;
-}
-
-.showcase .image:before{
-  /* fixes FF display bug */
+#showcase:after,
+#showcase:before {
   content: "";
   display: block;
-  padding-top: 100%; 	/* initial ratio of 1:1*/
+  width: 100%;
+  position: absolute;
+  background: white;
+  height: 16px;
+  z-index: 2;
+}
+#showcase:before {
+  bottom: -16px;
+  box-shadow: 0px -8px 16px rgba(0,0,0,0.3);
+}
+#showcase:after {
+  top: -16px;
+  box-shadow: 0px 8px 16px rgba(0,0,0,0.3);
+}
+#showcase .examples {
+  margin: 0 auto;
+  height: 300px;
+  width: 1300px;
+  line-height: 0;
+}
+#showcase .preview {
+  width: 180px;
+  height: 100px;
+  padding: 0;
+  outline: 1px solid #ddd;
+  background-position: left top;
+  background-size: cover;
+  overflow: hidden;
+  position: relative;
+  z-index: 0;
+  transition: background-position 2s;
+}
+#showcase .preview:hover {
+  background-position: right bottom;
+  outline: 2px solid #4682B4;
+  z-index: 1;
 }
 
 /* Gallery */
@@ -399,26 +465,27 @@ footer .edit-page {
 .gallery .imagegroup {
   display: inline-block;
   position: relative;
-  /* Show 4 images per row, each image has 18px horizontal margin*/
+  /* Show 4 images per row, each image has 18px horizontal margin */
   width: calc(25% - 36px);
   margin: 12px 18px;
+  /* For small screens */
+  min-width: 140px;
 }
 
 .gallery .imagegroup:hover {
   text-decoration: none;
 }
 .gallery .image {
-  box-sizing: border-box;
   width: 100%;
   /* hack to make height depend on width*/
-  padding-bottom: 100%;
-  border: 1px solid #ddd;
+  padding-bottom: 55%;
   background-repeat: no-repeat;
-  background-clip: padding-box;
   margin-bottom: 5px;
+  overflow: hidden;
+  transition: background-position 2s;
 }
 .gallery .image:hover {
-  border-color: #bfbfbf;
+  background-position: right bottom;
 }
 
 .gallery .image-title {

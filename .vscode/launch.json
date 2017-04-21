@@ -5,12 +5,8 @@
       "type": "node",
       "request": "attach",
       "name": "Attach",
-      "port": 5858,
-      "address": "localhost",
-      "restart": false,
-      "sourceMaps": true,
-      "localRoot": "${workspaceRoot}",
-      "remoteRoot": null
+      "port": 9229,
+      "protocol": "inspector"
     }
   ]
 }

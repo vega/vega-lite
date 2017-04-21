@@ -33,7 +33,7 @@ export namespace Channel {
   export const DETAIL: 'detail' = 'detail';
 }
 
-export type Channel = keyof Encoding | keyof Facet;
+export type Channel = keyof Encoding<any> | keyof Facet<any>;
 
 export const X = Channel.X;
 export const Y = Channel.Y;
@@ -51,6 +51,11 @@ export const OPACITY = Channel.OPACITY;
 
 
 export const CHANNELS = [X, Y, X2, Y2, ROW, COLUMN, SIZE, SHAPE, COLOR, ORDER, OPACITY, TEXT, DETAIL];
+const CHANNEL_INDEX = toSet(CHANNELS);
+
+export function isChannel(str: string): str is Channel {
+  return !!CHANNEL_INDEX[str];
+}
 
 // CHANNELS without COLUMN, ROW
 export const UNIT_CHANNELS = [X, Y, X2, Y2, SIZE, SHAPE, COLOR, ORDER, OPACITY, TEXT, DETAIL];
@@ -83,7 +88,7 @@ export interface SupportedMark {
   line?: boolean;
   area?: boolean;
   text?: boolean;
-};
+}
 
 /**
  * Return whether a channel supports a particular mark type.

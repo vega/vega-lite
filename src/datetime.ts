@@ -54,12 +54,12 @@ export interface DateTime {
   date?: number;
 
   /**
-   * Value representing the day of week.  This can be one of: (1) integer value -- `1` represents Monday; (2) case-insensitive day name (e.g., `"Monday"`);  (3) case-insensitive, 3-character short day name (e.g., `"Mon"`).   <br/> **Warning:** A DateTime definition object with `day`** should not be combined with `year`, `quarter`, `month`, or `date`.
+   * Value representing the day of a week.  This can be one of: (1) integer value -- `1` represents Monday; (2) case-insensitive day name (e.g., `"Monday"`);  (3) case-insensitive, 3-character short day name (e.g., `"Mon"`).   <br/> **Warning:** A DateTime definition object with `day`** should not be combined with `year`, `quarter`, `month`, or `date`.
    */
   day?: Day | string;
 
   /**
-   * Integer value representing the hour of day from 0-23.
+   * Integer value representing the hour of a day from 0-23.
    * @minimum 0
    * @maximum 23
    * @TJS-type integer
@@ -67,7 +67,7 @@ export interface DateTime {
   hours?: number;
 
   /**
-   * Integer value representing minute segment of a time from 0-59.
+   * Integer value representing the minute segment of time from 0-59.
    * @minimum 0
    * @maximum 59
    * @TJS-type integer
@@ -75,7 +75,7 @@ export interface DateTime {
   minutes?: number;
 
   /**
-   * Integer value representing second segment of a time from 0-59.
+   * Integer value representing the second segment (0-59) of a time value
    * @minimum 0
    * @maximum 59
    * @TJS-type integer
@@ -83,7 +83,7 @@ export interface DateTime {
   seconds?: number;
 
   /**
-   * Integer value representing millisecond segment of a time.
+   * Integer value representing the millisecond segment of time.
    * @minimum 0
    * @maximum 999
    * @TJS-type integer
@@ -279,7 +279,7 @@ export function dateTimeExpr(d: DateTime | DateTimeExpr, normalize = false) {
 
   // Note: can't use TimeUnit enum here as importing it will create
   // circular dependency problem!
-  for (let timeUnit of ['hours', 'minutes', 'seconds', 'milliseconds']) {
+  for (const timeUnit of ['hours', 'minutes', 'seconds', 'milliseconds']) {
     if (d[timeUnit] !== undefined) {
       units.push(d[timeUnit]);
     } else {

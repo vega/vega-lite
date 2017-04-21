@@ -2,14 +2,37 @@
     "$schema": "http://vega.github.io/schema/vega/v3.0.json",
     "autosize": "pad",
     "padding": 5,
+    "data": [
+        {
+            "name": "source_0",
+            "url": "data/cars.json",
+            "format": {
+                "type": "json",
+                "parse": {
+                    "Horsepower": "number",
+                    "Miles_per_Gallon": "number",
+                    "Cylinders": "number"
+                }
+            },
+            "transform": [
+                {
+                    "type": "filter",
+                    "expr": "datum[\"Horsepower\"] !== null && !isNaN(datum[\"Horsepower\"]) && datum[\"Miles_per_Gallon\"] !== null && !isNaN(datum[\"Miles_per_Gallon\"]) && datum[\"Cylinders\"] !== null && !isNaN(datum[\"Cylinders\"])"
+                }
+            ]
+        },
+        {
+            "name": "grid_store"
+        }
+    ],
     "signals": [
         {
             "name": "width",
-            "update": "data('layout')[0].width"
+            "update": "200"
         },
         {
             "name": "height",
-            "update": "data('layout')[0].height"
+            "update": "200"
         },
         {
             "name": "unit",
@@ -28,67 +51,10 @@
             "name": "grid_y"
         }
     ],
-    "data": [
-        {
-            "name": "source",
-            "url": "data/cars.json",
-            "format": {
-                "type": "json",
-                "parse": {
-                    "Horsepower": "number",
-                    "Miles_per_Gallon": "number",
-                    "Cylinders": "number"
-                }
-            },
-            "transform": [
-                {
-                    "type": "filter",
-                    "expr": "datum[\"Horsepower\"] !== null && !isNaN(datum[\"Horsepower\"]) && datum[\"Miles_per_Gallon\"] !== null && !isNaN(datum[\"Miles_per_Gallon\"]) && datum[\"Cylinders\"] !== null && !isNaN(datum[\"Cylinders\"])"
-                }
-            ]
-        },
-        {
-            "name": "layout",
-            "values": [
-                {}
-            ],
-            "transform": [
-                {
-                    "type": "formula",
-                    "as": "width",
-                    "expr": "200"
-                },
-                {
-                    "type": "formula",
-                    "as": "height",
-                    "expr": "200"
-                }
-            ]
-        },
-        {
-            "name": "grid_store"
-        }
-    ],
     "marks": [
         {
-            "name": "main",
+            "name": "nested_main_group",
             "type": "group",
-            "from": {
-                "data": "layout"
-            },
-            "encode": {
-                "update": {
-                    "width": {
-                        "field": "width"
-                    },
-                    "height": {
-                        "field": "height"
-                    },
-                    "fill": {
-                        "value": "transparent"
-                    }
-                }
-            },
             "signals": [
                 {
                     "name": "grid_x",
@@ -218,25 +184,31 @@
                             "events": {
                                 "signal": "grid"
                             },
-                            "update": "modify(\"grid_store\", grid_tuple, {unit: grid_tuple.unit})"
+                            "update": "modify(\"grid_store\", grid_tuple, true)"
                         }
                     ]
                 }
             ],
+            "encode": {
+                "update": {
+                    "width": {
+                        "signal": "width"
+                    },
+                    "height": {
+                        "signal": "height"
+                    }
+                }
+            },
             "marks": [
                 {
                     "type": "group",
                     "encode": {
                         "enter": {
                             "width": {
-                                "field": {
-                                    "group": "width"
-                                }
+                                "signal": "width"
                             },
                             "height": {
-                                "field": {
-                                    "group": "height"
-                                }
+                                "signal": "height"
                             },
                             "fill": {
                                 "value": "transparent"
@@ -252,7 +224,7 @@
                             "type": "symbol",
                             "role": "circle",
                             "from": {
-                                "data": "source"
+                                "data": "source_0"
                             },
                             "encode": {
                                 "update": {
@@ -282,121 +254,121 @@
                         }
                     ]
                 }
+            ]
+        }
+    ],
+    "scales": [
+        {
+            "name": "x",
+            "type": "linear",
+            "domain": [
+                75,
+                150
             ],
-            "scales": [
-                {
-                    "name": "x",
-                    "type": "linear",
-                    "domain": [
-                        75,
-                        150
-                    ],
-                    "range": [
-                        0,
-                        200
-                    ],
-                    "round": true,
-                    "nice": true,
-                    "zero": false,
-                    "domainRaw": {
-                        "signal": "grid_x"
-                    }
-                },
-                {
-                    "name": "y",
-                    "type": "linear",
-                    "domain": [
-                        20,
-                        40
-                    ],
-                    "range": [
-                        200,
-                        0
-                    ],
-                    "round": true,
-                    "nice": true,
-                    "zero": false,
-                    "domainRaw": {
-                        "signal": "grid_y"
-                    }
-                },
-                {
-                    "name": "size",
-                    "type": "linear",
-                    "domain": {
-                        "data": "source",
-                        "field": "Cylinders"
-                    },
-                    "range": [
-                        0,
-                        361
-                    ],
-                    "nice": false,
-                    "zero": true
-                }
+            "range": [
+                0,
+                200
             ],
-            "axes": [
-                {
-                    "scale": "x",
-                    "format": "s",
-                    "orient": "bottom",
-                    "tickCount": 5,
-                    "title": "Horsepower",
-                    "zindex": 1
-                },
-                {
-                    "scale": "x",
-                    "domain": false,
-                    "format": "s",
-                    "grid": true,
-                    "labels": false,
-                    "orient": "bottom",
-                    "tickCount": 5,
-                    "ticks": false,
-                    "zindex": 0,
-                    "gridScale": "y"
-                },
-                {
-                    "scale": "y",
-                    "format": "s",
-                    "orient": "left",
-                    "title": "Miles_per_Gallon",
-                    "zindex": 1
-                },
-                {
-                    "scale": "y",
-                    "domain": false,
-                    "format": "s",
-                    "grid": true,
-                    "labels": false,
-                    "orient": "left",
-                    "ticks": false,
-                    "zindex": 0,
-                    "gridScale": "x"
-                }
+            "round": true,
+            "nice": true,
+            "zero": false,
+            "domainRaw": {
+                "signal": "grid_x"
+            }
+        },
+        {
+            "name": "y",
+            "type": "linear",
+            "domain": [
+                20,
+                40
             ],
-            "legends": [
-                {
-                    "size": "size",
-                    "format": "s",
-                    "title": "Cylinders",
-                    "encode": {
-                        "symbols": {
-                            "update": {
-                                "shape": {
-                                    "value": "circle"
-                                },
-                                "strokeWidth": {
-                                    "value": 0
-                                },
-                                "fill": {
-                                    "value": "#4c78a8"
-                                }
-                            }
+            "range": [
+                200,
+                0
+            ],
+            "round": true,
+            "nice": true,
+            "zero": false,
+            "domainRaw": {
+                "signal": "grid_y"
+            }
+        },
+        {
+            "name": "size",
+            "type": "linear",
+            "domain": {
+                "data": "source_0",
+                "field": "Cylinders"
+            },
+            "range": [
+                0,
+                361
+            ],
+            "nice": false,
+            "zero": true
+        }
+    ],
+    "axes": [
+        {
+            "scale": "x",
+            "format": "s",
+            "orient": "bottom",
+            "tickCount": 5,
+            "title": "Horsepower",
+            "zindex": 1
+        },
+        {
+            "scale": "x",
+            "domain": false,
+            "format": "s",
+            "grid": true,
+            "labels": false,
+            "orient": "bottom",
+            "tickCount": 5,
+            "ticks": false,
+            "zindex": 0,
+            "gridScale": "y"
+        },
+        {
+            "scale": "y",
+            "format": "s",
+            "orient": "left",
+            "title": "Miles_per_Gallon",
+            "zindex": 1
+        },
+        {
+            "scale": "y",
+            "domain": false,
+            "format": "s",
+            "grid": true,
+            "labels": false,
+            "orient": "left",
+            "ticks": false,
+            "zindex": 0,
+            "gridScale": "x"
+        }
+    ],
+    "legends": [
+        {
+            "size": "size",
+            "format": "s",
+            "title": "Cylinders",
+            "encode": {
+                "symbols": {
+                    "update": {
+                        "shape": {
+                            "value": "circle"
+                        },
+                        "strokeWidth": {
+                            "value": 0
+                        },
+                        "fill": {
+                            "value": "#4c78a8"
                         }
                     }
                 }
-            ]
+            }
         }
     ]
 }

@@ -1,12 +1,11 @@
-import {DataComponentCompiler} from './base';
-
 import {FieldDef} from '../../fielddef';
 import {QUANTITATIVE, TEMPORAL} from '../../type';
-import {contains, Dict, differ, extend, keys} from '../../util';
-
-import {FacetModel} from './../facet';
-import {LayerModel} from './../layer';
+import {contains, Dict, differ, differArray, duplicate, extend, hash, keys} from '../../util';
+import {VgFilterTransform} from '../../vega.schema';
+import {ModelWithField} from '../model';
 import {Model} from './../model';
+import {DataFlowNode} from './dataflow';
+
 
 const DEFAULT_NULL_FILTERS = {
   nominal: false,
@@ -15,59 +14,58 @@ const DEFAULT_NULL_FILTERS = {
   temporal: true
 };
 
-/** Return Hashset of fields for null filtering (key=field, value = true). */
-function parse(model: Model): Dict<FieldDef> {
-  return model.reduceFieldDef(function(aggregator: Dict<FieldDef>, fieldDef: FieldDef) {
-    if (fieldDef.aggregate !== 'count') { // Ignore * for count(*) fields.
-      if (model.config.filterInvalid ||
-        (model.config.filterInvalid === undefined && (fieldDef.field && DEFAULT_NULL_FILTERS[fieldDef.type]))) {
-        aggregator[fieldDef.field] = fieldDef;
-      } else {
-        // define this so we know that we don't filter nulls for this field
-        // this makes it easier to merge into parents
-        aggregator[fieldDef.field] = null;
+export class NullFilterNode extends DataFlowNode {
+  private _filteredFields: Dict<FieldDef<string>>;
+
+  public clone() {
+    return new NullFilterNode(duplicate(this._filteredFields));
+  }
+
+  constructor(fields: Dict<FieldDef<string>>) {
+    super();
+
+    this._filteredFields = fields;
+  }
+
+  public static make(model: ModelWithField) {
+    const fields = model.reduceFieldDef((aggregator: Dict<FieldDef<string>>, fieldDef) => {
+      if (fieldDef.aggregate !== 'count') { // Ignore * for count(*) fields.
+        if (model.config.filterInvalid ||
+          (model.config.filterInvalid === undefined && (fieldDef.field && DEFAULT_NULL_FILTERS[fieldDef.type]))) {
+          aggregator[fieldDef.field] = fieldDef;
+        } else {
+          // define this so we know that we don't filter nulls for this field
+          // this makes it easier to merge into parents
+          aggregator[fieldDef.field] = null;
+        }
       }
+      return aggregator;
+    }, {} as Dict<FieldDef<string>>);
+
+    if (Object.keys(fields).length === 0) {
+      return null;
     }
-    return aggregator;
-  }, {});
-}
 
-export const nullFilter: DataComponentCompiler<Dict<FieldDef>> = {
-  parseUnit: parse,
+    return new NullFilterNode(fields);
+  }
 
-  parseFacet: function(model: FacetModel) {
-    const nullFilterComponent = parse(model);
+  get filteredFields() {
+      return this._filteredFields;
+  }
 
-    const childDataComponent = model.child.component.data;
+  public merge(other: NullFilterNode) {
+    const t = Object.keys(this._filteredFields).map(k => k + ' ' + hash(this._filteredFields[k]));
+    const o = Object.keys(other.filteredFields).map(k => k + ' ' + hash(other.filteredFields[k]));
 
-    // If child doesn't have its own data source, then merge
-    if (!childDataComponent.source) {
-      extend(nullFilterComponent, childDataComponent.nullFilter);
-      delete childDataComponent.nullFilter;
+    if (!differArray(t, o)) {
+      this._filteredFields = extend(this._filteredFields, other._filteredFields);
+      other.remove();
     }
-    return nullFilterComponent;
-  },
+  }
 
-  parseLayer: function(model: LayerModel) {
-    // note that we run this before source.parseLayer
-
-    // FIXME: null filters are not properly propagated right now
-    let nullFilterComponent = parse(model);
-
-    model.children.forEach((child) => {
-      const childDataComponent = child.component.data;
-      if (model.compatibleSource(child) && !differ<FieldDef>(childDataComponent.nullFilter, nullFilterComponent)) {
-        extend(nullFilterComponent, childDataComponent.nullFilter);
-        childDataComponent.nullFilter = {};
-      }
-    });
-
-    return nullFilterComponent;
-  },
-
-  assemble: function(component: Dict<FieldDef>) {
-    const filters = keys(component).reduce((_filters, field) => {
-      const fieldDef = component[field];
+  public assemble(): VgFilterTransform {
+    const filters = keys(this._filteredFields).reduce((_filters, field) => {
+      const fieldDef = this._filteredFields[field];
       if (fieldDef !== null) {
         _filters.push('datum["' + fieldDef.field + '"] !== null');
         if (contains([QUANTITATIVE, TEMPORAL], fieldDef.type)) {
@@ -81,9 +79,9 @@ export const nullFilter: DataComponentCompiler<Dict<FieldDef>> = {
     }, []);
 
     return filters.length > 0 ?
-      [{
+      {
         type: 'filter',
         expr: filters.join(' && ')
-      }] : [];
+      } : null;
   }
-};
+}

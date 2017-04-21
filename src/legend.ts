@@ -4,6 +4,8 @@ import {VgLegendBase, VgLegendConfig, VgLegendEncode} from './vega.schema';
 export interface LegendConfig extends VgLegendConfig {
   /**
    * Whether month names and weekday names should be abbreviated.
+   *
+   * __Default value:__  `false`
    */
   shortTimeLabels?: boolean;
 }
@@ -19,6 +21,8 @@ export interface Legend extends VgLegendBase {
 
   /**
    * An optional formatting pattern for legend labels. Vega uses D3\'s format pattern.
+   *
+   * __Default value:__  derived from [`numberFormat`](config.html#format) config for quantitative axis and from [`timeFormat`](config.html#format) config for time axis.
    */
   format?: string;
 
@@ -29,6 +33,8 @@ export interface Legend extends VgLegendBase {
 
   /**
    * A title for the legend. (Shows field name and its function by default.)
+   *
+   * __Default value:__  derived from the field's name and transformation function applied e.g, "field_name", "SUM(field_name)", "BIN(field_name)", "YEAR(field_name)".
    */
   title?: string;
   /**

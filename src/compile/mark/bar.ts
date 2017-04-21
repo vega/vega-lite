@@ -28,7 +28,7 @@ export const bar: MarkCompiler = {
 };
 
 function x(model: UnitModel, stack: StackProperties): VgEncodeEntry {
-  const {config} = model;
+  const {config, width} = model;
   const orient = model.markDef.orient;
   const sizeDef = model.encoding.size;
 
@@ -52,14 +52,14 @@ function x(model: UnitModel, stack: StackProperties): VgEncodeEntry {
     // sized bin, normal point-ordinal axis, quantitative x-axis, or no x
 
     return mixins.centeredBandPosition('x', model,
-      {...ref.midX(config), offset: 1}, // TODO: config.singleBarOffset,
+      {...ref.midX(width, config)},
       defaultSizeRef(xScaleName, model.scale(X), config)
     );
   }
 }
 
 function y(model: UnitModel, stack: StackProperties) {
-  const {config, encoding} = model;
+  const {config, encoding, height} = model;
   const orient = model.markDef.orient;
   const sizeDef = encoding.size;
 
@@ -80,7 +80,7 @@ function y(model: UnitModel, stack: StackProperties) {
         return mixins.bandPosition('y', model);
       }
     }
-    return mixins.centeredBandPosition('y', model, ref.midY(config), defaultSizeRef(yScaleName, model.scale(Y), config));
+    return mixins.centeredBandPosition('y', model, ref.midY(height, config), defaultSizeRef(yScaleName, model.scale(Y), config));
   }
 }
 

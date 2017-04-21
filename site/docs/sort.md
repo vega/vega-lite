@@ -28,8 +28,8 @@ permalink: /docs/sort.html
 ## Continuous Scale
 
 If the channel has a continuous scale (quantitative or time), `sort` can have the following values:
-- `"ascending"` –  the field is sort by the field's value in ascending order.
-- `"descending"` –  the field is sort by the field's value in descending order.
+- `"ascending"` –  the field is sorted by the field's value in ascending order.
+- `"descending"` –  the field is sorted by the field's value in descending order.
 
 <span class="note-line">__Default value:__ `"ascending"`.</span>
 
@@ -38,22 +38,14 @@ If the channel has a continuous scale (quantitative or time), `sort` can have th
 
 Setting x's `sort` to `"descending"` reverses the x-axis. Thus, the following visualization's x-axis starts on the maximum value of the field "Horsepower" and ends on zero.
 
-<div class="vl-example">
-{
-  "data": {"url": "data/cars.json"},
-  "mark": "tick",
-  "encoding": {
-    "x": {"field": "Horsepower", "type": "quantitative", "sort": "descending"}
-  }
-}
-</div>
+<div class="vl-example" data-name="tick_sort"></div>
 
 
 ## Ordinal Scale
 
 If the channel has an ordinal scale, the field's values of the channel can be sorted in the following ways:
 
-1) Sorting by the values's natural order in Javascript. For example, `"a"` < `"b"`. In this case, `sort` can be:
+1) Sorting by the values' natural order in Javascript. For example, `"a"` < `"b"`. In this case, `sort` can be:
 
 - `"ascending"` –  sort by the field's value in ascending order.
 - `"descending"` –  sort by the field's value in descending order.
@@ -83,20 +75,7 @@ example: sorting color mapping
 
 The following example sorts x by mean of Horsepower.
 
-<div class="vl-example">
-{
-  "data": {"url": "data/cars.json"},
-  "mark": "bar",
-  "encoding": {
-    "y": {
-      "field": "Origin", "type": "ordinal",
-      "sort": {"op": "mean", "field": "Horsepower"}
-    },
-    "x": {"aggregate": "mean", "field": "Horsepower", "type": "quantitative"}
-  }
-}
-</div>
-
+<div class="vl-example" data-name="histogram_sort_mean"></div>
 
 <!-- TODO
 

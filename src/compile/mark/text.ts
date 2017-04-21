@@ -17,12 +17,12 @@ export const text: MarkCompiler = {
   defaultRole: undefined,
 
   encodeEntry: (model: UnitModel) => {
-    const {config, encoding} = model;
+    const {config, encoding, height} = model;
     const textDef = encoding.text;
 
     return {
       ...mixins.pointPosition('x', model, xDefault(config, textDef)),
-      ...mixins.pointPosition('y', model, ref.midY(config)),
+      ...mixins.pointPosition('y', model, ref.midY(height, config)),
       ...mixins.text(model),
       ...mixins.color(model),
       ...mixins.nonPosition('opacity', model),
@@ -34,7 +34,7 @@ export const text: MarkCompiler = {
   }
 };
 
-function xDefault(config: Config, textDef: ChannelDef): VgValueRef {
+function xDefault(config: Config, textDef: ChannelDef<string>): VgValueRef {
   if (isFieldDef(textDef) && textDef.type === QUANTITATIVE) {
     return {field: {group: 'width'}, offset: -5};
   }
@@ -42,7 +42,7 @@ function xDefault(config: Config, textDef: ChannelDef): VgValueRef {
   return {value: config.scale.textXRangeStep / 2};
 }
 
-function align(encoding: Encoding, config: Config) {
+function align(encoding: Encoding<string>, config: Config) {
   const alignConfig = getMarkConfig('align', 'text', config);
   if (alignConfig === undefined) {
     return channelHasField(encoding, X) ? 'center' : 'right';

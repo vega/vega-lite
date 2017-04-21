@@ -41,23 +41,23 @@ export function hash(a: any) {
   return stringify(a);
 }
 
-export function contains<T>(array: Array<T>, item: T) {
+export function contains<T>(array: T[], item: T) {
   return array.indexOf(item) > -1;
 }
 
 /** Returns the array without the elements in item */
-export function without<T>(array: Array<T>, excludedItems: Array<T>) {
+export function without<T>(array: T[], excludedItems: T[]) {
   return array.filter(item => !contains(excludedItems, item));
 }
 
-export function union<T>(array: Array<T>, other: Array<T>) {
+export function union<T>(array: T[], other: T[]) {
   return array.concat(without(other, array));
 }
 
 /**
  * Returns true if any item returns true.
  */
-export function some<T>(arr: Array<T>, f: (d: T, k?: any, i?: any) => boolean) {
+export function some<T>(arr: T[], f: (d: T, k?: any, i?: any) => boolean) {
   let i = 0;
   for (let k = 0; k<arr.length; k++) {
     if (f(arr[k], k, i++)) {
@@ -70,7 +70,7 @@ export function some<T>(arr: Array<T>, f: (d: T, k?: any, i?: any) => boolean) {
 /**
  * Returns true if all items return true.
  */
- export function every<T>(arr: Array<T>, f: (d: T, k?: any, i?: any) => boolean) {
+ export function every<T>(arr: T[], f: (d: T, k?: any, i?: any) => boolean) {
   let i = 0;
   for (let k = 0; k<arr.length; k++) {
     if (!f(arr[k], k, i++)) {
@@ -92,7 +92,7 @@ export function mergeDeep(dest: any, ...src: any[]) {
     dest = deepMerge_(dest, s);
   }
   return dest;
-};
+}
 
 // recursively merges src into dest
 function deepMerge_(dest: any, src: any) {
@@ -131,7 +131,7 @@ export function unique<T>(values: T[], f: (item: T) => string): T[] {
     results.push(val);
   }
   return results;
-};
+}
 
 export interface Dict<T> {
   [key: string]: T;
@@ -153,6 +153,32 @@ export function differ<T>(dict: Dict<T>, other: Dict<T>) {
   return false;
 }
 
+export function hasIntersection(a: StringSet, b: StringSet) {
+  for (const key in a) {
+    if (key in b) {
+      return true;
+    }
+  }
+  return false;
+}
+
+export function differArray<T>(array: T[], other: T[]) {
+  if (array.length !== other.length) {
+    return true;
+  }
+
+  array.sort();
+  other.sort();
+
+  for (let i = 0; i < array.length; i++) {
+    if (other[i] !== array[i]) {
+      return true;
+    }
+  }
+
+  return false;
+}
+
 export const keys = Object.keys;
 
 export function vals<T>(x: {[key: string]: T}): T[] {
@@ -163,11 +189,11 @@ export function vals<T>(x: {[key: string]: T}): T[] {
     }
   }
   return _vals;
-};
+}
 
 export function duplicate<T>(obj: T): T {
   return JSON.parse(JSON.stringify(obj));
-};
+}
 
 export function isBoolean(b: any): b is boolean {
   return b === true || b === false;
@@ -176,7 +202,7 @@ export function isBoolean(b: any): b is boolean {
 /**
  * Convert a string into a valid variable name
  */
-export function varName(s: string) {
+export function varName(s: string): string {
   // Replace non-alphanumeric characters (anything besides a-zA-Z0-9_) with _
   const alphanumericS = s.replace(/\W/g, '_');
 

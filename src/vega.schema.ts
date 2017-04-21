@@ -1,4 +1,4 @@
-import {BinBase} from './bin';
+import {BaseBin} from './bin';
 import {NiceTime, ScaleType} from './scale';
 import {StackOffset} from './stack';
 import {isArray} from './util';
@@ -73,6 +73,8 @@ export type VgRange = string | VgDataRef | (number|string|VgDataRef)[] | VgRange
 
 export type VgDomain = any[] | VgDataRef | DataRefUnionDomain | FieldRefUnionDomain | VgSignalRef;
 
+export type VgMarkGroup = any;
+
 export type VgScale = {
   name: string,
   type: ScaleType,
@@ -89,6 +91,29 @@ export type VgScale = {
   reverse?: boolean,
   round?: boolean,
   zero?: boolean
+};
+
+export type VgLayoutAlign = 'none' | 'each' | 'all';
+
+export type VgLayout = {
+  padding: number | {
+    row?: number,
+    column?: number
+  },
+  offset: number | {
+    rowHeader: number,
+    rowFooter: number,
+    rowTitle: number,
+    columnHeader: number,
+    columnFooter: number,
+    columnTitle: number
+  },
+  bounds: 'full' | 'flush',
+  columns: number | {signal: string},
+  align?: VgLayoutAlign | {
+    row: VgLayoutAlign,
+    column: VgLayoutAlign
+  };
 };
 
 export function isDataRefUnionedDomain(domain: VgDomain): domain is DataRefUnionDomain {
@@ -119,6 +144,11 @@ export function isSignalRefDomain(domain: VgDomain): domain is VgSignalRef {
   return false;
 }
 
+export type VgSignal = {
+  name: string,
+  update: string
+};
+
 export type VgEncodeEntry = any;
 // TODO: make export interface VgEncodeEntry {
 //   x?: VgValueRef<number>
@@ -131,13 +161,13 @@ export type VgEncodeEntry = any;
 export type VgAxis = any;
 export type VgLegend = any;
 
-export interface VgBinTransform extends BinBase {
+export interface VgBinTransform extends BaseBin {
   type: 'bin';
   extent?: number[] | {signal: string};
   field: string;
   as: string[];
   signal?: string;
-};
+}
 
 export interface VgExtentTransform {
   type: 'extent';
@@ -158,12 +188,18 @@ export interface VgFilterTransform {
 
 export interface VgAggregateTransform {
   type: 'aggregate';
-  groupby: VgFieldRef[];
+  groupby?: VgFieldRef[];
   fields?: VgFieldRef[];
   ops?: string[];
   as?: string[];
   drop?: boolean;
 }
+
+export interface VgCollectTransform {
+  type: 'collect';
+  sort: VgSort;
+}
+
 
 export interface VgAxisEncode {
   ticks?: VgGuideEncode;
@@ -183,7 +219,7 @@ export interface VgLegendEncode {
 
 export type VgGuideEncode = any; // TODO: replace this (See guideEncode in Vega Schema)
 
-export type VgTransform = VgBinTransform | VgExtentTransform | VgFormulaTransform | VgAggregateTransform | VgFilterTransform | VgImputeTransform | VgStackTransform;
+export type VgTransform = VgBinTransform | VgExtentTransform | VgFormulaTransform | VgAggregateTransform | VgFilterTransform | VgImputeTransform | VgStackTransform | VgCollectTransform;
 
 export interface VgStackTransform {
   type: 'stack';
@@ -209,7 +245,7 @@ export interface VgImputeTransform {
   orderby?: string[];
   method?: 'value' | 'median' | 'max' | 'min' | 'mean';
   value?: any;
-};
+}
 
 export type VgCheckboxBinding = {
   input: 'checkbox';
@@ -256,35 +292,47 @@ export interface VgAxisBase {
   domain?: boolean;
 
   /**
-   * A flag indicate if gridlines should be created in addition to ticks. If `grid` is unspecified, the default value is `true` for ROW and COL. For X and Y, the default value is `true` for quantitative and time fields and `false` otherwise.
+   * A boolean flag indicating if grid lines should be included as part of the axis
+   *
+   * __Default value:__ `true` for (1) quantitative fields that are not binned and (2) time fields;  otherwise, `"false"`.
    */
   grid?: boolean;
 
   /**
    * A boolean flag indicating if labels should be included as part of the axis (default true).
+   *
+   * __Default value:__  derived from [axis config](config.html#axis-config)'s `labels` (`true` by default).
    */
   labels?: boolean;
 
   /**
    * The rotation angle of the axis labels.
+   *
+   * __Default value:__ `-45` for time or ordinal axis and `0` otherwise.
    * @minimum 0
    * @maximum 360
    */
   labelAngle?: number;
 
   /**
-   * Whether the axis should include ticks.
+   * Boolean value that determines whether the axis should include ticks.
    */
   ticks?: boolean;
 
   /**
    * The size, in pixels, of major, minor and end ticks.
+   *
+   * __Default value:__  derived from [axis config](config.html#axis-config)'s `tickSize` (`6` by default).
+   *
    * @minimum 0
    */
   tickSize?: number;
 
   /**
    * Max length for axis title if the title is automatically generated from the field's description. By default, this is automatically based on cell size and characterWidth property.
+   *
+   * __Default value:__  automatically determined based on the cell size (`config.cell.width`, `config.cell.height`)
+   *
    * @minimum 0
    * @TJS-type integer
    */
@@ -310,11 +358,15 @@ export interface VgAxisConfig extends VgAxisBase {
  // ---------- Axis ----------
   /**
    * Stroke width of axis domain line
+   *
+   * __Default value:__  (none, using Vega default).
    */
   domainWidth?: number;
 
   /**
    * Color of axis domain line.
+   *
+   * __Default value:__  (none, using Vega default).
    */
   domainColor?: string;
 
@@ -332,6 +384,8 @@ export interface VgAxisConfig extends VgAxisBase {
 
   /**
    * The stroke opacity of grid (value between [0,1])
+   *
+   * __Default value:__ (`1` by default)
    * @minimum 0
    * @maximum 1
    */
@@ -360,7 +414,10 @@ export interface VgAxisConfig extends VgAxisBase {
   labelFont?: string;
 
   /**
-   * The font size of label, in pixels.
+   * The font size of the label, in pixels.
+   *
+   * __Default value:__ `10`.
+   *
    * @minimum 0
    */
   labelFontSize?: number;
@@ -388,18 +445,21 @@ export interface VgAxisConfig extends VgAxisBase {
   titleColor?: string;
 
   /**
-   * Font of the title.
+   * Font of the title. (e.g., `"Helvetica Neue"`).
    */
   titleFont?: string;
 
   /**
    * Font size of the title.
+   *
+   * __Default value:__ `10`.
+   *
    * @minimum 0
    */
   titleFontSize?: number;
 
   /**
-   * Font weight of the title.
+   * Font weight of the title. (e.g., `"bold"`).
    */
   titleFontWeight?: string | number;
 }
@@ -411,12 +471,16 @@ export interface VgLegendBase {
   entryPadding?: number;
 
   /**
-   * The orientation of the legend. One of "left" or "right". This determines how the legend is positioned within the scene. The default is "right".
+   * The orientation of the legend. One of `"left"` or `"right"`. This determines how the legend is positioned within the scene. The default is `"right"`.
+   *
+   * __Default value:__  `"right"`
    */
   orient?: string;
 
   /**
    * The offset, in pixels, by which to displace the legend from the edge of the enclosing group or data rectangle.
+   *
+   * __Default value:__  `0`
    */
   offset?: number;
 
@@ -474,6 +538,9 @@ export interface VgLegendConfig extends VgLegendBase {
 
   /**
    * The font size of legend label.
+   *
+   * __Default value:__ `10`.
+   *
    * @minimum 0
    */
   labelFontSize?: number;
@@ -568,16 +635,26 @@ export interface VgMarkConfig {
 
   /**
    * Default Fill Color.  This has higher precedence than config.color
+   *
+   * __Default value:__ (None)
+   *
    */
   fill?: string;
 
   /**
    * Default Stroke Color.  This has higher precedence than config.color
+   *
+   * __Default value:__ (None)
+   *
    */
   stroke?: string;
 
   // ---------- Opacity ----------
   /**
+   * The overall opacity (value between [0,1]).
+   *
+   * __Default value:__ `0.7` for non-aggregate plots with `point`, `tick`, `circle`, or `square` marks or [layered `bar` charts](http://vega.github.io/new-editor/#/examples/vega_lite/bar_layered_transparent) and `1` otherwise.
+   *
    * @minimum 0
    * @maximum 1
    */
@@ -585,12 +662,20 @@ export interface VgMarkConfig {
 
 
   /**
+   * The fill opacity (value between [0,1]).
+   *
+   * __Default value:__ `1`
+   *
    * @minimum 0
    * @maximum 1
    */
   fillOpacity?: number;
 
   /**
+   * The stroke opacity (value between [0,1]).
+   *
+   * __Default value:__ `1`
+   *
    * @minimum 0
    * @maximum 1
    */
@@ -598,6 +683,8 @@ export interface VgMarkConfig {
 
   // ---------- Stroke Style ----------
   /**
+   * The stroke width, in pixels.
+   *
    * @minimum 0
    */
   strokeWidth?: number;
@@ -653,12 +740,18 @@ export interface VgMarkConfig {
 
   /**
    * The default symbol shape to use. One of: `"circle"` (default), `"square"`, `"cross"`, `"diamond"`, `"triangle-up"`, or `"triangle-down"`, or a custom SVG path.
+   *
+   * __Default value:__ `"circle"`
+   *
    */
   shape?: string;
 
   /**
    * The pixel area each the point/circle/square.
    * For example: in the case of circles, the radius is determined in part by the square root of the size value.
+   *
+   * __Default value:__ `30`
+   *
    * @minimum 0
    */
   size?: number;
@@ -666,7 +759,7 @@ export interface VgMarkConfig {
   // Text / Label Mark Config
 
   /**
-   * The horizontal alignment of the text. One of left, right, center.
+   * The horizontal alignment of the text. One of `"left"`, `"right"`, `"center"`.
    */
   align?: HorizontalAlign;
 
@@ -678,33 +771,36 @@ export interface VgMarkConfig {
   angle?: number;
 
   /**
-   * The vertical alignment of the text. One of top, middle, bottom.
+   * The vertical alignment of the text. One of `"top"`, `"middle"`, `"bottom"`.
+   *
+   * __Default value:__ `"middle"`
+   *
    */
   baseline?: VerticalAlign;
 
   /**
-   * The horizontal offset, in pixels, between the text label and its anchor point. The offset is applied after rotation by the angle property.
+   * The horizontal offset, in pixels, between the text label and its anchor point. The offset is applied after rotation by the _angle_ property.
    */
   dx?: number;
 
   /**
-   * The vertical offset, in pixels, between the text label and its anchor point. The offset is applied after rotation by the angle property.
+   * The vertical offset, in pixels, between the text label and its anchor point. The offset is applied after rotation by the _angle_ property.
    */
   dy?: number;
 
   /**
-   * Polar coordinate radial offset, in pixels, of the text label from the origin determined by the x and y properties.
+   * Polar coordinate radial offset, in pixels, of the text label from the origin determined by the `x` and `y` properties.
    * @minimum 0
    */
   radius?: number;
 
   /**
-   * Polar coordinate angle, in radians, of the text label from the origin determined by the x and y properties. Values for theta follow the same convention of arc mark startAngle and endAngle properties: angles are measured in radians, with 0 indicating "north".
+   * Polar coordinate angle, in radians, of the text label from the origin determined by the `x` and `y` properties. Values for `theta` follow the same convention of `arc` mark `startAngle` and `endAngle` properties: angles are measured in radians, with `0` indicating "north".
    */
   theta?: number;
 
   /**
-   * The typeface to set the text in (e.g., Helvetica Neue).
+   * The typeface to set the text in (e.g., `"Helvetica Neue"`).
    * @minimum 0
    */
   font?: string;
@@ -716,16 +812,16 @@ export interface VgMarkConfig {
   fontSize?: number;
 
   /**
-   * The font style (e.g., italic).
+   * The font style (e.g., `"italic"`).
    */
   fontStyle?: FontStyle;
   /**
-   * The font weight (e.g., `"normal"`, `"bold"`, `900`).
+   * The font weight (e.g., `"bold"`).
    */
   fontWeight?: FontWeight | FontWeightNumber;
 
   /**
-   * Placeholder Text
+   * Placeholder text if the `text` channel is not specified
    */
   text?: string;
 }

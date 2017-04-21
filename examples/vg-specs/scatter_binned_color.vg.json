@@ -1,30 +1,11 @@
 {
     "$schema": "http://vega.github.io/schema/vega/v3.0.json",
+    "description": "A scatterplot showing horsepower and miles per gallons with binned acceleration on color.",
     "autosize": "pad",
     "padding": 5,
-    "signals": [
-        {
-            "name": "width",
-            "update": "data('layout')[0].width"
-        },
-        {
-            "name": "height",
-            "update": "data('layout')[0].height"
-        },
-        {
-            "name": "unit",
-            "value": {},
-            "on": [
-                {
-                    "events": "mousemove",
-                    "update": "group()._id ? group() : unit"
-                }
-            ]
-        }
-    ],
     "data": [
         {
-            "name": "source",
+            "name": "source_0",
             "url": "data/cars.json",
             "format": {
                 "type": "json",
@@ -42,65 +23,60 @@
                 {
                     "type": "extent",
                     "field": "Acceleration",
-                    "signal": "Acceleration_extent"
+                    "signal": "bin_maxbins_5_Acceleration_extent"
                 },
                 {
                     "type": "bin",
                     "field": "Acceleration",
                     "as": [
-                        "bin_Acceleration_start",
-                        "bin_Acceleration_end"
+                        "bin_maxbins_5_Acceleration_start",
+                        "bin_maxbins_5_Acceleration_end"
                     ],
-                    "signal": "Acceleration_bins",
+                    "signal": "bin_maxbins_5_Acceleration_bins",
                     "maxbins": 5,
                     "extent": {
-                        "signal": "Acceleration_extent"
+                        "signal": "bin_maxbins_5_Acceleration_extent"
                     }
                 },
                 {
                     "type": "formula",
-                    "as": "bin_Acceleration_range",
-                    "expr": "format(datum[\"bin_Acceleration_start\"], 's') + ' - ' + format(datum[\"bin_Acceleration_end\"], 's')"
+                    "expr": "format(datum[\"bin_maxbins_5_Acceleration_start\"], 's') + ' - ' + format(datum[\"bin_maxbins_5_Acceleration_end\"], 's')",
+                    "as": "bin_maxbins_5_Acceleration_range"
                 }
             ]
+        }
+    ],
+    "signals": [
+        {
+            "name": "width",
+            "update": "200"
         },
         {
-            "name": "layout",
-            "values": [
-                {}
-            ],
-            "transform": [
+            "name": "height",
+            "update": "200"
+        },
+        {
+            "name": "unit",
+            "value": {},
+            "on": [
                 {
-                    "type": "formula",
-                    "as": "width",
-                    "expr": "200"
-                },
-                {
-                    "type": "formula",
-                    "as": "height",
-                    "expr": "200"
+                    "events": "mousemove",
+                    "update": "group()._id ? group() : unit"
                 }
             ]
         }
     ],
     "marks": [
         {
-            "name": "main",
+            "name": "nested_main_group",
             "type": "group",
-            "description": "A scatterplot showing horsepower and miles per gallons with binned acceleration on color.",
-            "from": {
-                "data": "layout"
-            },
             "encode": {
                 "update": {
                     "width": {
-                        "field": "width"
+                        "signal": "width"
                     },
                     "height": {
-                        "field": "height"
-                    },
-                    "fill": {
-                        "value": "transparent"
+                        "signal": "height"
                     }
                 }
             },
@@ -110,7 +86,7 @@
                     "type": "symbol",
                     "role": "point",
                     "from": {
-                        "data": "source"
+                        "data": "source_0"
                     },
                     "encode": {
                         "update": {
@@ -124,7 +100,7 @@
                             },
                             "stroke": {
                                 "scale": "color",
-                                "field": "bin_Acceleration_start"
+                                "field": "bin_maxbins_5_Acceleration_start"
                             },
                             "fill": {
                                 "value": "transparent"
@@ -135,95 +111,95 @@
                         }
                     }
                 }
-            ],
-            "scales": [
-                {
-                    "name": "x",
-                    "type": "linear",
-                    "domain": {
-                        "data": "source",
-                        "field": "Horsepower"
-                    },
-                    "range": [
-                        0,
-                        200
-                    ],
-                    "round": true,
-                    "nice": true,
-                    "zero": true
-                },
-                {
-                    "name": "y",
-                    "type": "linear",
-                    "domain": {
-                        "data": "source",
-                        "field": "Miles_per_Gallon"
-                    },
-                    "range": [
-                        200,
-                        0
-                    ],
-                    "round": true,
-                    "nice": true,
-                    "zero": true
-                },
-                {
-                    "name": "color",
-                    "type": "bin-ordinal",
-                    "domain": {
-                        "signal": "sequence(Acceleration_bins.start, Acceleration_bins.stop + Acceleration_bins.step, Acceleration_bins.step)"
-                    },
-                    "range": "ramp",
-                    "zero": false
-                }
-            ],
-            "axes": [
-                {
-                    "scale": "x",
-                    "format": "s",
-                    "orient": "bottom",
-                    "tickCount": 5,
-                    "title": "Horsepower",
-                    "zindex": 1
-                },
-                {
-                    "scale": "x",
-                    "domain": false,
-                    "format": "s",
-                    "grid": true,
-                    "labels": false,
-                    "orient": "bottom",
-                    "tickCount": 5,
-                    "ticks": false,
-                    "zindex": 0,
-                    "gridScale": "y"
-                },
-                {
-                    "scale": "y",
-                    "format": "s",
-                    "orient": "left",
-                    "title": "Miles_per_Gallon",
-                    "zindex": 1
-                },
-                {
-                    "scale": "y",
-                    "domain": false,
-                    "format": "s",
-                    "grid": true,
-                    "labels": false,
-                    "orient": "left",
-                    "ticks": false,
-                    "zindex": 0,
-                    "gridScale": "x"
-                }
-            ],
-            "legends": [
-                {
-                    "stroke": "color",
-                    "format": "s",
-                    "title": "BIN(Acceleration)"
-                }
             ]
+        }
+    ],
+    "scales": [
+        {
+            "name": "x",
+            "type": "linear",
+            "domain": {
+                "data": "source_0",
+                "field": "Horsepower"
+            },
+            "range": [
+                0,
+                200
+            ],
+            "round": true,
+            "nice": true,
+            "zero": true
+        },
+        {
+            "name": "y",
+            "type": "linear",
+            "domain": {
+                "data": "source_0",
+                "field": "Miles_per_Gallon"
+            },
+            "range": [
+                200,
+                0
+            ],
+            "round": true,
+            "nice": true,
+            "zero": true
+        },
+        {
+            "name": "color",
+            "type": "bin-ordinal",
+            "domain": {
+                "signal": "sequence(bin_maxbins_5_Acceleration_bins.start, bin_maxbins_5_Acceleration_bins.stop + bin_maxbins_5_Acceleration_bins.step, bin_maxbins_5_Acceleration_bins.step)"
+            },
+            "range": "ramp",
+            "zero": false
+        }
+    ],
+    "axes": [
+        {
+            "scale": "x",
+            "format": "s",
+            "orient": "bottom",
+            "tickCount": 5,
+            "title": "Horsepower",
+            "zindex": 1
+        },
+        {
+            "scale": "x",
+            "domain": false,
+            "format": "s",
+            "grid": true,
+            "labels": false,
+            "orient": "bottom",
+            "tickCount": 5,
+            "ticks": false,
+            "zindex": 0,
+            "gridScale": "y"
+        },
+        {
+            "scale": "y",
+            "format": "s",
+            "orient": "left",
+            "title": "Miles_per_Gallon",
+            "zindex": 1
+        },
+        {
+            "scale": "y",
+            "domain": false,
+            "format": "s",
+            "grid": true,
+            "labels": false,
+            "orient": "left",
+            "ticks": false,
+            "zindex": 0,
+            "gridScale": "x"
+        }
+    ],
+    "legends": [
+        {
+            "stroke": "color",
+            "format": "s",
+            "title": "BIN(Acceleration)"
         }
     ]
 }

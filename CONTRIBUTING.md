@@ -29,7 +29,7 @@ We use Github Pages to publish our documentation when we release a new version.
 To contribute changes to the documentation or website, simply submit a pull request that changes
 the corresponding markdown files in `site/`.
 
-The images that are shown on the homepage and in the gallery have to be generated with `npm run images`.
+The images that are shown on the homepage and in the gallery have to be generated with `npm run build:images`.
 To run the script, you need to install [gnu parallel](https://www.gnu.org/software/parallel/). (For Mac, you can simply do `brew install parallel`.)
 
 Since we only publish the Github Pages when we release a new version,
@@ -146,24 +146,13 @@ If you only want subset of these actions, you can use:
 
 - `npm run watch:build` to start a watcher task that **re-compiles Vega-Lite** when `.ts` files related to VL change.
 
+#### Fast iteration testing
+
+To quickly run tests without long compile times, run `npm run tsc -- -w` in a separate terminal session. Then run `npm run mocha:test` to quickly run tests (or `npm run mocha:test -- --inspect --debug-brk` to inspect tests). Please note that this only runs unit tests and you should run the full tests before committing code. 
+
 ### Website
 
 `npm run site`. See details in [Documentation and Website](#documentation-and-website).
-
-### Output diff
-
-We also have commands for observing changes in output Vega spec and output images.
-
-To create baseline Vega output specs from the Vega-Lite specs in `examples/`,
-check out the baseline branch (e.g., `git checkout master`) and run `npm
-x-compile`. All compiled specs will be in `examples/_original`.
-
-Once you develop some features and would like to diff the compiled specs, run `npm x-diff`.
-This will compile all examples again and output the diff for changed examples in the console.
-All compiled specs will be in `examples/_output`. For changed examples,
-SVG files will be created in `examples/_diff` for comparison.
-You can open those files to inspect visual changes, or run a diff command
-(e.g., `diff examples/_diff/area-base.svg examples/_diff/area.svg`).
 
 ### Deployment
 
@@ -200,6 +189,12 @@ npm link vega-util
 ```
 
 Now all the changes you make in vega-util are reflected in your Vega-Lite automatically.
+
+## Pull Requests and Travis
+All pull requests will be tested on [Travis](https://travis-ci.org/). If your PR does not pass the checks, your PR will not be approved. Travis' environments will run `npm run test`, generate vega specs from your updated code, compare it with the vega specs in `examples/vg-specs/`, and check code coverage of your code.  (See `.travis.yml` for all commands it executes.) If you don't want your PR reviewed until Travis checks pass, just prepend `[WIP]` to the title of your PR.Once you're ready for review, remove the `[WIP]` prefix and comment that the PR is ready for review. 
+
+### Code Coverage
+When checking for code coverage, we require that your PR tests covers at least the same percentage of code that was being covered before. To check the code coverage, you can see the link in the job log of your Travis test, from the Github page of your PR or `https://codecov.io/gh/vega/vega-lite/commits`. It'll be usually in the form of `https://codecov.io/gh/vega/vega-lite/commit/your-full-head-commit-number`. Under the *Files* and *Diff* tab, you can check your code coverage differences and total. In *Files*, you can check which lines in your files are being tested (marked in green) and which are not (marked in red). We appreciate PRs that improve our overall code coverage!
 
 # Note
 

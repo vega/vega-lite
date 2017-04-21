@@ -5,13 +5,6 @@ import {LayerSpec} from '../../src/spec';
 import {parseLayerModel} from '../util';
 
 describe('Layer', function() {
-  it('should say it is layer', function() {
-    const model = new LayerModel({layer: []} as LayerSpec, null, null, {});
-    assert(!model.isUnit());
-    assert(!model.isFacet());
-    assert(model.isLayer());
-  });
-
   describe('merge scale domains', () => {
     it('should merge domains', () => {
       const model = parseLayerModel({
@@ -32,10 +25,10 @@ describe('Layer', function() {
 
       assert.deepEqual(model.component.scales['x'].domain, {
         fields: [{
-          data: 'layer_0_source',
+          data: 'layer_0_main',
           field: 'a'
         },{
-          data: 'layer_1_source',
+          data: 'layer_1_main',
           field: 'b'
         }],
         sort: true
@@ -62,7 +55,7 @@ describe('Layer', function() {
         fields: [
           [1, 2, 3],
           {
-            data: 'layer_1_source',
+            data: 'layer_1_main',
             field: 'b'
           }
         ],

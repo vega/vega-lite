@@ -1,118 +1,96 @@
-import {DataFormat, isInlineData, isNamedData, isUrlData, SOURCE} from '../../data';
-import {contains} from '../../util';
+import {DataFormat, isInlineData, isNamedData, isUrlData} from '../../data';
+import {contains, hash} from '../../util';
 import {VgData} from '../../vega.schema';
-
-import {FacetModel} from '../facet';
-import {LayerModel} from '../layer';
 import {Model} from './../model';
+import {DataFlowNode} from './dataflow';
 
-import {bin} from './bin';
-import {DataComponent} from './data';
-import {nullFilter} from './nullfilter';
-import {timeUnit} from './timeunit';
-import {transforms} from './transforms';
+export class SourceNode extends DataFlowNode {
+  private _data: Partial<VgData>;
 
-export namespace source {
-  function parse(model: Model): VgData {
-    let data = model.data;
+  private _name: string;
 
-    if (data) {
-      // If data is explicitly provided
+  constructor(model: Model) {
+    super();
 
-      let sourceData: VgData = {name: model.dataName(SOURCE)};
-      if (isInlineData(data)) {
-        sourceData.values = data.values;
-        sourceData.format = {type: 'json'};
-      } else if (isUrlData(data)) {
-        sourceData.url = data.url;
+    const data = model.data || {name: 'source'};
 
-        // Extract extension from URL using snippet from
-        // http://stackoverflow.com/questions/680929/how-to-extract-extension-from-filename-string-in-javascript
-        let defaultExtension = /(?:\.([^.]+))?$/.exec(sourceData.url)[1];
-        if (!contains(['json', 'csv', 'tsv', 'topojson'], defaultExtension)) {
-          defaultExtension = 'json';
-        }
-        const dataFormat: DataFormat = data.format || {};
+    if (isInlineData(data)) {
+      this._data = {
+        values: data.values,
+        format: {type: 'json'}
+      };
+    } else if (isUrlData(data)) {
+      // Extract extension from URL using snippet from
+      // http://stackoverflow.com/questions/680929/how-to-extract-extension-from-filename-string-in-javascript
+      let defaultExtension = /(?:\.([^.]+))?$/.exec(data.url)[1];
+      if (!contains(['json', 'csv', 'tsv', 'topojson'], defaultExtension)) {
+        defaultExtension = 'json';
+      }
+      const dataFormat = data.format || {};
 
-        // For backward compatibility for former `data.formatType` property
-        const formatType: DataFormat = dataFormat.type || data['formatType'];
-        const {property, feature, mesh} = dataFormat;
+      // For backward compatibility for former `data.formatType` property
+      const formatType: DataFormat = dataFormat.type || data['formatType'];
+      const {property, feature, mesh} = dataFormat;
 
-        sourceData.format = {
+      const format = {
         type: formatType ? formatType : defaultExtension,
         ...(property ? {property} : {}),
         ...(feature ? {feature} : {}),
         ...(mesh ? {mesh} : {}),
-        };
-      } else if (isNamedData(data)) {
-        return {name: data.name};
-      }
+      };
 
-      return sourceData;
-    } else if (!model.parent) {
-      // If data is not explicitly provided but the model is a root,
-      // need to produce a source as well
-      return {name: model.dataName(SOURCE)};
+      this._data = {
+        url: data.url,
+        format
+      };
+    } else if (isNamedData(data)) {
+      this._name = data.name;
+      this._data = {};
     }
-    return undefined;
   }
 
-  export const parseUnit: (model: Model) => VgData = parse;
-
-  export function parseFacet(model: FacetModel) {
-    let sourceData = parse(model);
-    if (!model.child.component.data.source) {
-      // If the child does not have its own source, have to rename its source.
-      model.child.renameData(model.child.dataName(SOURCE), model.dataName(SOURCE));
-    }
-
-    return sourceData;
+  get data() {
+    return this._data;
   }
 
-  export function parseLayer(model: LayerModel) {
-    let sourceData = parse(model);
-
-    model.children.forEach((child) => {
-      const childData = child.component.data;
-
-      if (model.compatibleSource(child)) {
-        // we cannot merge if the child has transforms defined even after we tried to move them up
-        const canMerge = !childData.transforms && !childData.formatParse && !childData.nullFilter;
-        if (canMerge) {
-          // rename source because we can just remove it
-          child.renameData(child.dataName(SOURCE), model.dataName(SOURCE));
-          delete childData.source;
-        } else {
-          // child does not have data defined or the same source so just use the parents source
-          childData.source = {
-            name: child.dataName(SOURCE),
-            source: model.dataName(SOURCE)
-          };
-        }
-      }
-    });
-
-    return sourceData;
+  public hasName(): boolean {
+    return !!this._name;
   }
 
-  export function assemble(component: DataComponent) {
-    if (component.source) {
-      let sourceData: VgData = component.source;
+  get dataName() {
+    return this._name;
+  }
 
-      if (component.formatParse) {
-        component.source.format = component.source.format || {};
-        component.source.format.parse = component.formatParse;
-      }
+  set dataName(name: string) {
+    this._name = name;
+  }
 
-      sourceData.transform = [].concat(
-        transforms.assemble(component.transforms),
-        nullFilter.assemble(component.nullFilter),
-        bin.assemble(component.bin),
-        timeUnit.assemble(component.timeUnit)
-      );
+  set parent(parent: DataFlowNode) {
+    throw new Error('Source nodes have to be roots.');
+  }
 
-      return sourceData;
+  public remove() {
+    throw new Error('Source nodes are roots and cannot be removed.');
+  }
+
+  /**
+   * Return a unique identifir for this data source.
+   */
+  public hash() {
+    if (isInlineData(this._data)) {
+      return hash(this._data);
+    } else if (isUrlData(this._data)) {
+      return `${this._data.url} ${hash(this._data.format)}`;
+    } else {
+      return this._name;
     }
-    return null;
+  }
+
+  public assemble(): VgData {
+    return {
+      name: this._name,
+      ...this._data,
+      transform: []
+    };
   }
 }

@@ -3,11 +3,12 @@ import {TransformCompiler} from './transforms';
 
 const inputBindings:TransformCompiler = {
   has: function(selCmpt) {
-    return selCmpt.type === 'single' && selCmpt.bind && selCmpt.bind !== 'scales';
+    return selCmpt.type === 'single' && selCmpt.resolve === 'global' &&
+      selCmpt.bind && selCmpt.bind !== 'scales';
   },
 
   topLevelSignals: function(model, selCmpt, signals) {
-    let name = selCmpt.name,
+    const name = selCmpt.name,
         proj = selCmpt.project,
         bind = selCmpt.bind,
         datum = '(item().isVoronoi ? datum.datum : datum)';
@@ -28,7 +29,7 @@ const inputBindings:TransformCompiler = {
   },
 
   signals: function(model, selCmpt, signals) {
-    let name = selCmpt.name, proj = selCmpt.project,
+    const name = selCmpt.name, proj = selCmpt.project,
         signal = signals.filter((s) => s.name === name)[0],
         fields = proj.map((p) => stringValue(p.field)).join(', '),
         values = proj.map((p) => name + id(p.field)).join(', ');

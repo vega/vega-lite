@@ -1,28 +1,30 @@
-import {DataComponentCompiler} from './base';
-
-import {FacetModel} from './../facet';
-import {LayerModel} from './../layer';
-import {UnitModel} from './../unit';
-
-import {STACKED, SUMMARY} from '../../data';
-import {field, FieldDef} from '../../fielddef';
+import {isArray} from 'vega-util';
+import {field} from '../../fielddef';
 import {hasDiscreteDomain} from '../../scale';
 import {StackOffset} from '../../stack';
-import {contains} from '../../util';
-import {VgData, VgSort, VgTransform} from '../../vega.schema';
+import {contains, duplicate} from '../../util';
+import {VgSort, VgTransform} from '../../vega.schema';
 import {sortParams} from '../common';
+import {UnitModel} from './../unit';
+import {DataFlowNode} from './dataflow';
+
+function getStackByFields(model: UnitModel): string[] {
+  return model.stack.stackBy.reduce((fields, by) => {
+    const channel = by.channel;
+    const fieldDef = by.fieldDef;
+
+    const scale = model.scale(channel);
+    const _field = field(fieldDef, {
+      binSuffix: scale && hasDiscreteDomain(scale.type) ? 'range' : 'start'
+    });
+    if (_field) {
+      fields.push(_field);
+    }
+    return fields;
+  }, [] as string[]);
+}
 
 export interface StackComponent {
-  /**
-   * Name of the output stacked data source
-   */
-  name: string;
-
-  /**
-   * Name of the input source data for stacked data source
-   */
-  source: string;
-
   /**
    * Grouping fields for stacked charts.  This includes one of x- or 'y-field and may include faceted field.
    */
@@ -52,32 +54,25 @@ export interface StackComponent {
   impute: boolean;
 }
 
+export class StackNode extends DataFlowNode {
+  private _stack: StackComponent;
 
-function getStackByFields(model: UnitModel) {
-  return model.stack.stackBy.reduce((fields, by) => {
-    const channel = by.channel;
-    const fieldDef = by.fieldDef;
+  public clone() {
+    return new StackNode(duplicate(this._stack));
+  }
 
-    const scale = model.scale(channel);
-    const _field = field(fieldDef, {
-      binSuffix: scale && hasDiscreteDomain(scale.type) ? 'range' : 'start'
-    });
-    if (!!_field) {
-      fields.push(_field);
-    }
-    return fields;
-  }, [] as string[]);
-}
+  constructor(stack: StackComponent) {
+    super();
 
-/**
- * Stack data compiler
- */
-export const stack: DataComponentCompiler<StackComponent> = {
+    this._stack = stack;
+  }
 
-  parseUnit: function(model: UnitModel): StackComponent {
+  public static make(model: UnitModel) {
+
     const stackProperties = model.stack;
+
     if (!stackProperties) {
-      return undefined;
+      return null;
     }
 
     const groupby = [];
@@ -109,65 +104,56 @@ export const stack: DataComponentCompiler<StackComponent> = {
       }, {field:[], order: []});
     }
 
-    return {
-      name: model.dataName(STACKED),
-      source: model.dataName(SUMMARY),
-      groupby: groupby,
+    return new StackNode({
+      groupby,
       field: model.field(stackProperties.fieldChannel),
-      stackby: stackby,
-      sort: sort,
+      stackby,
+      sort,
       offset: stackProperties.offset,
-      impute: contains(['area', 'line'], model.mark())
-    };
-  },
+      impute: contains(['area', 'line'], model.mark()),
+    });
+  }
 
-  parseLayer: function(model: LayerModel): StackComponent {
-    // FIXME: merge if identical
-    // FIXME: Correctly support facet of layer of stack.
-    return undefined;
-  },
+  get stack(): StackComponent {
+    return this._stack;
+  }
 
-  parseFacet: function(model: FacetModel): StackComponent {
-    const child = model.child;
-    const childDataComponent = child.component.data;
-    // FIXME: Correctly support facet of layer of stack.
-    if (childDataComponent.stack) {
-      let stackComponent = childDataComponent.stack;
+  public addDimensions(fields: string[]) {
+    this._stack.groupby = this._stack.groupby.concat(fields);
+  }
 
-      const newName = model.dataName(STACKED);
-      child.renameData(stackComponent.name, newName);
-      stackComponent.name = newName;
+  public dependentFields() {
+    const out = {};
 
-      // Refer to facet's summary instead (always summary because stacked only works with aggregation)
-      stackComponent.source = model.dataName(SUMMARY);
+    out[this._stack.field] = true;
+    this._stack.groupby.forEach(f => out[f] = true);
+    const field = this._stack.sort.field;
+    isArray(field) ? field.forEach(f => out[f] = true) : out[field] = true;
 
-      // Add faceted field to groupby
-      stackComponent.groupby = model.reduceFieldDef((groupby: string[], fieldDef: FieldDef) => {
-        const facetedField = field(fieldDef, {binSuffix: 'start'});
-        if (!contains(groupby, facetedField)) {
-          groupby.push(facetedField);
-        }
-        return groupby;
-      }, stackComponent.groupby);
+    return out;
+  }
 
-      delete childDataComponent.stack;
-      return stackComponent;
-    }
-    return undefined;
-  },
-  assemble: (stackComponent: StackComponent): VgData => {
-    if (!stackComponent) {
-      return undefined;
-    }
+  public producedFields() {
+    const out = {};
 
-    let transform: VgTransform[] = [];
+    out[this._stack.field + '_start'] = true;
+    out[this._stack.field + '_end'] = true;
+
+    return out;
+  }
+
+  public assemble(): VgTransform[] {
+    const transform: VgTransform[] = [];
+
+    const stack = this._stack;
+
     // Impute
-    if (stackComponent.impute) {
+    if (stack.impute) {
       transform.push({
         type: 'impute',
-        field: stackComponent.field,
-        groupby: stackComponent.stackby,
-        orderby: stackComponent.groupby,
+        field: stack.field,
+        groupby: stack.stackby,
+        orderby: stack.groupby,
         method: 'value',
         value: 0
       });
@@ -176,20 +162,16 @@ export const stack: DataComponentCompiler<StackComponent> = {
     // Stack
     transform.push({
       type: 'stack',
-      groupby: stackComponent.groupby,
-      field: stackComponent.field,
-      sort: stackComponent.sort,
+      groupby: stack.groupby,
+      field: stack.field,
+      sort: stack.sort,
       as: [
-        stackComponent.field + '_start',
-        stackComponent.field + '_end'
+        stack.field + '_start',
+        stack.field + '_end'
       ],
-      offset: stackComponent.offset
+      offset: stack.offset
     });
 
-    return {
-      name: stackComponent.name,
-      source: stackComponent.source,
-      transform: transform
-    };
+    return transform;
   }
-};
+}

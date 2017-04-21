@@ -1,39 +1,78 @@
-import {SummaryComponent} from '../../compile/data/data';
-import {SUMMARY} from '../../data';
+import {isAggregate} from '../../encoding';
 import {field, FieldDef} from '../../fielddef';
-import {Dict, hash, keys, StringSet, vals} from '../../util';
+import * as log from '../../log';
+import {ORDINAL} from '../../type';
+import {Dict, differ, duplicate, extend, keys, StringSet} from '../../util';
 import {VgAggregateTransform} from '../../vega.schema';
+import {UnitModel} from './../unit';
 
-import {FacetModel} from './../facet';
-import {LayerModel} from './../layer';
-import {Model} from './../model';
+import {DataFlowNode} from './dataflow';
 
+function addDimension(dims: {[field: string]: boolean}, fieldDef: FieldDef<string>) {
+  if (fieldDef.bin) {
+    dims[field(fieldDef, {binSuffix: 'start'})] = true;
+    dims[field(fieldDef, {binSuffix: 'end'})] = true;
 
-export namespace summary {
-  function addDimension(dims: {[field: string]: boolean}, fieldDef: FieldDef) {
-    if (fieldDef.bin) {
-      dims[field(fieldDef, {binSuffix: 'start'})] = true;
-      dims[field(fieldDef, {binSuffix: 'end'})] = true;
-
-      // const scale = model.scale(channel);
-      // if (scaleType(scale, fieldDef, channel, model.mark()) === ScaleType.ORDINAL) {
-      // also produce bin_range if the binned field use ordinal scale
+    // We need the range only when the user explicitly forces a binned field to be ordinal (range used in axis and legend labels).
+    // We could check whether the axis or legend exists but that seems overkill. In axes and legends, we check hasDiscreteDomain(scaleType).
+    if (fieldDef.type === ORDINAL) {
       dims[field(fieldDef, {binSuffix: 'range'})] = true;
-      // }
-    } else {
-      dims[field(fieldDef)] = true;
     }
-    return dims;
+  } else {
+    dims[field(fieldDef)] = true;
+  }
+  return dims;
+}
+
+function mergeMeasures(parentMeasures: Dict<Dict<boolean>>, childMeasures: Dict<Dict<boolean>>) {
+  for (const field in childMeasures) {
+    if (childMeasures.hasOwnProperty(field)) {
+      // when we merge a measure, we either have to add an aggregation operator or even a new field
+      const ops = childMeasures[field];
+      for (const op in ops) {
+        if (ops.hasOwnProperty(op)) {
+          if (field in parentMeasures) {
+            // add operator to existing measure field
+            parentMeasures[field][op] = true;
+          } else {
+            parentMeasures[field] = {op: true};
+          }
+        }
+      }
+    }
+  }
+}
+
+export class AggregateNode extends DataFlowNode {
+  public clone() {
+    return new AggregateNode(extend({}, this.dimensions), duplicate(this.measures));
   }
 
-  export function parseUnit(model: Model): SummaryComponent[] {
-    /* string set for dimensions */
-    const dims: StringSet = {};
+  /**
+   * @param dimensions string set for dimensions
+   * @param measures dictionary mapping field name => dict set of aggregation functions
+   */
+  constructor(private dimensions: StringSet, private measures: Dict<StringSet>) {
+    super();
+  }
 
-    /* dictionary mapping field name => dict set of aggregation functions */
-    const meas: Dict<StringSet> = {};
+  public static make(model: UnitModel): AggregateNode {
+    let isAggregate = false;
+    model.forEachFieldDef(fd => {
+      if (fd.aggregate) {
+        isAggregate = true;
+      }
+    });
 
-    model.forEachFieldDef(function(fieldDef, channel) {
+    const meas = {};
+    const dims = {};
+
+    if (!isAggregate) {
+      // no need to create this node if the model has no aggregation
+      return null;
+    }
+
+    model.forEachFieldDef((fieldDef, channel) => {
       if (fieldDef.aggregate) {
         if (fieldDef.aggregate === 'count') {
           meas['*'] = meas['*'] || {};
@@ -53,116 +92,65 @@ export namespace summary {
         }
       } else {
         addDimension(dims, fieldDef);
-      };
-    });
-
-    return [{
-      name: model.dataName(SUMMARY),
-      dimensions: dims,
-      measures: meas
-    }];
-  }
-
-  export function parseFacet(model: FacetModel): SummaryComponent[] {
-    const childDataComponent = model.child.component.data;
-
-    // FIXME: this could be incorrect for faceted layer charts.
-
-    // If child doesn't have its own data source but has a summary data source, merge
-    if (!childDataComponent.source && childDataComponent.summary) {
-      let summaryComponents = childDataComponent.summary.map(function(summaryComponent) {
-        // add facet fields as dimensions
-        summaryComponent.dimensions = model.reduceFieldDef(addDimension, summaryComponent.dimensions);
-
-        const summaryNameWithoutPrefix = summaryComponent.name.substr(model.child.getName('').length);
-        model.child.renameData(summaryComponent.name, summaryNameWithoutPrefix);
-        summaryComponent.name = summaryNameWithoutPrefix;
-        return summaryComponent;
-      });
-
-      delete childDataComponent.summary;
-      return summaryComponents;
-    }
-    return [];
-  }
-
-  function mergeMeasures(parentMeasures: Dict<Dict<boolean>>, childMeasures: Dict<Dict<boolean>>) {
-    for (const field in childMeasures) {
-      if (childMeasures.hasOwnProperty(field)) {
-        // when we merge a measure, we either have to add an aggregation operator or even a new field
-        const ops = childMeasures[field];
-        for (const op in ops) {
-          if (ops.hasOwnProperty(op)) {
-            if (field in parentMeasures) {
-              // add operator to existing measure field
-              parentMeasures[field][op] = true;
-            } else {
-              parentMeasures[field] = {op: true};
-            }
-          }
-        }
-      }
-    }
-  }
-
-  export function parseLayer(model: LayerModel): SummaryComponent[] {
-    // Index by the fields we are grouping by
-    let summaries: {[key: string]: SummaryComponent} = {};
-
-    // Combine summaries for children that don't have a distinct source
-    // (either having its own data source, or its own tranformation of the same data source).
-    model.children.forEach((child) => {
-      const childDataComponent = child.component.data;
-      if (!childDataComponent.source && childDataComponent.summary) {
-        // Merge the summaries if we can
-        childDataComponent.summary.forEach((childSummary) => {
-          // The key is a hash based on the dimensions;
-          // we use it to find out whether we have a summary that uses the same group by fields.
-          const key = hash(childSummary.dimensions);
-          if (key in summaries) {
-            // yes, there is a summary hat we need to merge into
-            // we know that the dimensions are the same so we only need to merge the measures
-            mergeMeasures(summaries[key].measures, childSummary.measures);
-          } else {
-            // give the summary a new name
-            // FIXME: make sure that we don't have multiple datasets with the same name
-            childSummary.name = model.dataName(SUMMARY);
-            summaries[key] = childSummary;
-          }
-
-          // remove summary from child
-          child.renameData(child.dataName(SUMMARY), summaries[key].name);
-          delete childDataComponent.summary;
-        });
       }
     });
 
-    return vals(summaries);
+    if ((Object.keys(dims).length + Object.keys(meas).length) === 0) {
+      return null;
+    }
+
+    return new AggregateNode(dims, meas);
   }
 
-  /**
-   * Assemble the summary. Needs a rename function because we cannot guarantee that the
-   * parent data before the children data.
-   */
-  export function assemble(components: SummaryComponent[]): VgAggregateTransform [] {
-    return components
-      .filter(comp => keys(comp.measures).length > 0)
-      .map(summaryComponent => {
-        let ops: string[] = [];
-        let fields: string[] = [];
-        keys(summaryComponent.measures).forEach(field => {
-          keys(summaryComponent.measures[field]).forEach(op => {
-            ops.push(op);
-            fields.push(field);
-          });
-        });
+  public merge(other: AggregateNode) {
+    if (!differ(this.dimensions, other.dimensions)) {
+      mergeMeasures(this.measures, other.measures);
+      other.remove();
+    } else {
+      log.debug('different dimensions, cannot merge');
+    }
+  }
 
-        return {
-          type: 'aggregate',
-          groupby: keys(summaryComponent.dimensions),
-          ops,
-          fields
-        } as VgAggregateTransform;
+  public addDimensions(fields: string[]) {
+    fields.forEach(f => this.dimensions[f] = true);
+  }
+
+  public dependentFields() {
+    const out = {};
+
+    keys(this.dimensions).forEach(f => out[f] = true);
+    keys(this.measures).forEach(m => out[m] = true);
+
+    return out;
+  }
+
+  public producedFields() {
+    const out = {};
+
+    keys(this.measures).forEach(field => {
+      keys(this.measures[field]).forEach(op => {
+        out[`${op}_${field}`] = true;
       });
+    });
+
+    return out;
+  }
+
+  public assemble(): VgAggregateTransform {
+    const ops: string[] = [];
+    const fields: string[] = [];
+    keys(this.measures).forEach(field => {
+      keys(this.measures[field]).forEach(op => {
+        ops.push(op);
+        fields.push(field);
+      });
+    });
+
+    return {
+      type: 'aggregate',
+      groupby: keys(this.dimensions),
+      ops,
+      fields
+    };
   }
 }

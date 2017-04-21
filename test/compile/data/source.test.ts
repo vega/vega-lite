@@ -2,9 +2,13 @@
 
 import {assert} from 'chai';
 
-import {source} from '../../../src/compile/data/source';
-
+import {SourceNode} from '../../../src/compile/data/source';
+import {Model} from '../../../src/compile/model';
 import {parseUnitModel} from '../../util';
+
+function parse(model: Model) {
+  return new SourceNode(model);
+}
 
 describe('compile/data/source', function() {
   describe('compileUnit', function() {
@@ -17,15 +21,14 @@ describe('compile/data/source', function() {
         encoding: {}
       });
 
-      const sourceComponent = source.parseUnit(model);
+      const source = parse(model);
 
       it('should have values', function() {
-        assert.equal(sourceComponent.name, 'source');
-        assert.deepEqual(sourceComponent.values, [{a: 1, b:2, c:3}, {a: 4, b:5, c:6}]);
+        assert.deepEqual(source.data.values, [{a: 1, b:2, c:3}, {a: 4, b:5, c:6}]);
       });
 
       it('should have source.format.type', function(){
-        assert.deepEqual(sourceComponent.format.type, 'json');
+        assert.deepEqual(source.data.format.type, 'json');
       });
     });
 
@@ -38,14 +41,13 @@ describe('compile/data/source', function() {
           encoding: {}
         });
 
-      const sourceComponent = source.parseUnit(model);
+      const source = parse(model);
 
       it('should have format.type json', function() {
-        assert.equal(sourceComponent.name, 'source');
-        assert.equal(sourceComponent.format.type, 'json');
+        assert.equal(source.data.format.type, 'json');
       });
       it('should have correct url', function() {
-        assert.equal(sourceComponent.url, 'http://foo.bar');
+        assert.equal(source.data.url, 'http://foo.bar');
       });
     });
 
@@ -54,9 +56,11 @@ describe('compile/data/source', function() {
         mark: 'point',
         encoding: {}
       });
-      const sourceComponent = source.parseUnit(model);
+
+      const source = parse(model);
+
       it('should provide placeholder source data', function() {
-        assert.deepEqual(sourceComponent, {name: 'source'});
+        assert.equal(source.dataName, 'source');
       });
     });
 
@@ -66,9 +70,11 @@ describe('compile/data/source', function() {
         mark: 'point',
         encoding: {}
       });
-      const sourceComponent = source.parseUnit(model);
+
+      const source = parse(model);
+
       it('should provide named source data', function() {
-        assert.deepEqual(sourceComponent, {name: 'foo'});
+        assert.equal(source.dataName, 'foo');
       });
     });
 
@@ -83,8 +89,10 @@ describe('compile/data/source', function() {
             mark: 'point',
             encoding: {}
           });
-          const sourceComponent = source.parseUnit(model);
-          assert.equal(sourceComponent.format.property, 'baz');
+
+          const source = parse(model);
+
+          assert.equal(source.data.format.property, 'baz');
         });
       });
 
@@ -99,14 +107,13 @@ describe('compile/data/source', function() {
               encoding: {}
             });
 
-          const sourceComponent = source.parseUnit(model);
+          const source = parse(model);
 
           it('should have format.type topojson', function() {
-            assert.equal(sourceComponent.name, 'source');
-            assert.equal(sourceComponent.format.type, 'topojson');
+            assert.equal(source.data.format.type, 'topojson');
           });
           it('should have format.feature baz', function() {
-            assert.equal(sourceComponent.format.feature, 'baz');
+            assert.equal(source.data.format.feature, 'baz');
           });
         });
 
@@ -120,29 +127,21 @@ describe('compile/data/source', function() {
               encoding: {}
             });
 
-          const sourceComponent = source.parseUnit(model);
+          const source = parse(model);
 
           it('should have format.type topojson', function() {
-            assert.equal(sourceComponent.name, 'source');
-            assert.equal(sourceComponent.format.type, 'topojson');
+            assert.equal(source.data.format.type, 'topojson');
           });
           it('should have format.mesh baz', function() {
-            assert.equal(sourceComponent.format.mesh, 'baz');
+            assert.equal(source.data.format.mesh, 'baz');
           });
         });
       });
     });
   });
 
-  describe('parseLayer', function() {
-    // TODO: write test
-  });
-
-  describe('parseFacet', function() {
-    // TODO: write test
-  });
-
   describe('assemble', function() {
     // TODO: write test
   });
 });
+

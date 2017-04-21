@@ -1,9 +1,12 @@
-import {selectAll, select, Selection} from 'd3-selection';
 import {json, text} from 'd3-request';
+import {select, selectAll, Selection} from 'd3-selection';
 import * as hljs from 'highlight.js';
 import embed from 'vega-embed';
+import {config} from 'vega-embed';
 
 declare const BASEURL: string;
+
+config.editor_url = 'https://vega.github.io/new-editor';
 
 function trim(str: string) {
   return str.replace(/^\s+|\s+$/g, '');
@@ -64,8 +67,7 @@ selectAll('.vl-example').each(function(this: Element) {
       }
     });
   } else {
-    let spec = trim(sel.text());
-    renderExample(sel, spec);
+    console.error('No "data-name" specified to import examples from');
   }
 });
 
@@ -95,34 +97,22 @@ function renderGallery() {
         return;
       }
 
-      let viz = selection.selectAll('.imagegroup').data(galleryGroupSpecs);
+      const viz = selection.selectAll('.imagegroup').data(galleryGroupSpecs);
 
       viz.exit().remove();
 
-      let imageGroup = viz.enter()
+      const imageGroup = viz.enter()
         .append('a')
         .attr('class', 'imagegroup')
-        .attr('href', function(d){ return 'https://vega.github.io/vega-editor/?mode=vega-lite&spec=' + d.name;})
+        .attr('href', function(d){ return 'https://vega.github.io/new-editor/#/examples/vega_lite/' + d.name;})
         .attr('target', 'blank');
 
       imageGroup.append('div')
         .attr('class', 'image')
         .style('background-image', function(d) {return 'url(' + window.location.origin + BASEURL + '/build/examples/images/' + d.name + '.vl.svg)';})
         .style('background-size', function(d) {
-          const bgSizeDefault = 'cover';
-          if (!d.galleryParameters || !d.galleryParameters.backgroundSize) {
-            return bgSizeDefault;
-          } else {
-            return d.galleryParameters.backgroundSize;
-          }})
-        .style('background-position', function(d) {
-          const bgPositionDefault = 'center';
-          if (!d.galleryParameters || !d.galleryParameters.backgroundPosition) {
-            return bgPositionDefault;
-          } else {
-            return d.galleryParameters.backgroundPosition;
-          }
-        });
+          return (!d.galleryParameters || !d.galleryParameters.backgroundSize) ? 'cover' : d.galleryParameters.backgroundSize;
+      });
       imageGroup.append('div')
         .attr('class', 'image-title')
         .text(function(d) {return d.title;});

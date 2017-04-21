@@ -1,11 +1,12 @@
 #!/bin/bash
 
-. ./scripts/pre-deploy.sh
+scripts/pre-deploy.sh
 
 # 1. NPM PUBLISH
 
 npm run clean
 npm run test
+npm run build:examples
 npm run build
 
 # Check if all required files are here
@@ -71,8 +72,8 @@ git checkout master
 git push --tags
 # now the published tag contains build files which work great with bower.
 
-# TODO: re-publish to github pages when we are ready to release 2.0.
-#  3. GITHUB PAGES PUBLISH
-# . scripts/deploy-gh.sh
+# 3. GITHUB PAGES PUBLISH
+scripts/deploy-gh.sh
 
-. ./scripts/deploy-schema.sh
+# 4. SCHEMA
+scripts/deploy-schema.sh

@@ -64,7 +64,7 @@ describe('Inputs Selection Transform', function() {
 
   it('adds widget binding for default projection', function() {
     model.component.selection = {one: selCmpts['one']};
-    assert.includeDeepMembers(selection.assembleUnitSignals(model, []), [
+    assert.includeDeepMembers(selection.assembleUnitSelectionSignals(model, []), [
       {
         "name": "one",
         "update": "{fields: [\"_id\"], values: [one__id]}"
@@ -88,7 +88,7 @@ describe('Inputs Selection Transform', function() {
 
   it('adds single widget binding for compound projection', function() {
     model.component.selection = {two: selCmpts['two']};
-    assert.includeDeepMembers(selection.assembleUnitSignals(model, []), [
+    assert.includeDeepMembers(selection.assembleUnitSelectionSignals(model, []), [
       {
         "name": "two",
         "update": "{fields: [\"Cylinders\", \"Horsepower\"], values: [two_Cylinders, two_Horsepower]}"
@@ -123,7 +123,7 @@ describe('Inputs Selection Transform', function() {
 
   it('adds projection-specific widget bindings', function() {
     model.component.selection = {three: selCmpts['three']};
-    assert.includeDeepMembers(selection.assembleUnitSignals(model, []), [
+    assert.includeDeepMembers(selection.assembleUnitSelectionSignals(model, []), [
       {
         "name": "three",
         "update": "{fields: [\"Cylinders\", \"Origin\"], values: [three_Cylinders, three_Origin]}"

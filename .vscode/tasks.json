@@ -5,10 +5,10 @@
   "args": [
     "run"
   ],
-  "showOutput": "silent",
+  "showOutput": "always",
   "tasks": [
     {
-      "taskName": "build",
+      "taskName": "tsc",
       "isBuildCommand": true,
       "problemMatcher": "$tsc"
     },

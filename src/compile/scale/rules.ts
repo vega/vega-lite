@@ -5,7 +5,7 @@ import {NiceTime, Scale, ScaleConfig, ScaleType} from '../../scale';
 import {smallestUnit} from '../../timeunit';
 import * as util from '../../util';
 
-export function nice(scaleType: ScaleType, channel: Channel, fieldDef: FieldDef): boolean | NiceTime {
+export function nice(scaleType: ScaleType, channel: Channel, fieldDef: FieldDef<string>): boolean | NiceTime {
   if (util.contains([ScaleType.TIME, ScaleType.UTC], scaleType)) {
     return smallestUnit(fieldDef.timeUnit) as any;
   }
@@ -67,7 +67,7 @@ export function round(channel: Channel, scaleConfig: ScaleConfig) {
   return undefined;
 }
 
-export function zero(specifiedScale: Scale, channel: Channel, fieldDef: FieldDef) {
+export function zero(specifiedScale: Scale, channel: Channel, fieldDef: FieldDef<string>) {
   // By default, return true only for the following cases:
 
   // 1) using quantitative field with size

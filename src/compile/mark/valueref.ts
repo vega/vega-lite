@@ -17,7 +17,7 @@ import {numberFormat, timeFormatExpression} from '../common';
 /**
  * @return Vega ValueRef for stackable x or y
  */
-export function stackable(channel: 'x' | 'y', channelDef: ChannelDef, scaleName: string, scale: Scale,
+export function stackable(channel: 'x' | 'y', channelDef: ChannelDef<string>, scaleName: string, scale: Scale,
     stack: StackProperties, defaultRef: VgValueRef): VgValueRef {
   if (channelDef && stack && channel === stack.fieldChannel) {
     // x or y use stack_end so that stacked line's point mark use stack_end too.
@@ -29,7 +29,7 @@ export function stackable(channel: 'x' | 'y', channelDef: ChannelDef, scaleName:
 /**
  * @return Vega ValueRef for stackable x2 or y2
  */
-export function stackable2(channel: 'x2' | 'y2', aFieldDef: FieldDef, a2fieldDef: FieldDef, scaleName: string, scale: Scale,
+export function stackable2(channel: 'x2' | 'y2', aFieldDef: FieldDef<string>, a2fieldDef: FieldDef<string>, scaleName: string, scale: Scale,
     stack: StackProperties, defaultRef: VgValueRef): VgValueRef {
   if (aFieldDef && stack &&
       // If fieldChannel is X and channel is X2 (or Y and Y2)
@@ -43,12 +43,12 @@ export function stackable2(channel: 'x2' | 'y2', aFieldDef: FieldDef, a2fieldDef
 /**
  * Value Ref for binned fields
  */
-export function bin(fieldDef: FieldDef, scaleName: string, side: 'start' | 'end',  offset?: number) {
+export function bin(fieldDef: FieldDef<string>, scaleName: string, side: 'start' | 'end',  offset?: number) {
   return fieldRef(fieldDef, scaleName, {binSuffix: side}, offset);
 }
 
-export function fieldRef(fieldDef: FieldDef, scaleName: string, opt: FieldRefOption, offset?: number | VgValueRef): VgValueRef {
-  let ref: VgValueRef = {
+export function fieldRef(fieldDef: FieldDef<string>, scaleName: string, opt: FieldRefOption, offset?: number | VgValueRef): VgValueRef {
+  const ref: VgValueRef = {
     scale: scaleName,
     field: field(fieldDef, opt),
   };
@@ -68,7 +68,7 @@ export function band(scaleName: string, band: number|boolean = true): VgValueRef
 /**
  * Signal that returns the middle of a bin. Should only be used with x and y.
  */
-function binMidSignal(fieldDef: FieldDef, scaleName: string) {
+function binMidSignal(fieldDef: FieldDef<string>, scaleName: string) {
   return {
     signal: `(` +
       `scale("${scaleName}", ${field(fieldDef, {binSuffix: 'start', datum: true})})` +
@@ -81,7 +81,7 @@ function binMidSignal(fieldDef: FieldDef, scaleName: string) {
 /**
  * @returns {VgValueRef} Value Ref for xc / yc or mid point for other channels.
  */
-export function midPoint(channel: Channel, channelDef: ChannelDef, scaleName: string, scale: Scale,
+export function midPoint(channel: Channel, channelDef: ChannelDef<string>, scaleName: string, scale: Scale,
   defaultRef: VgValueRef | 'zeroOrMin' | 'zeroOrMax'): VgValueRef {
   // TODO: datum support
 
@@ -135,7 +135,7 @@ export function midPoint(channel: Channel, channelDef: ChannelDef, scaleName: st
   return defaultRef;
 }
 
-export function text(textDef: TextFieldDef | ValueDef<any>, config: Config): VgValueRef {
+export function text(textDef: TextFieldDef<string> | ValueDef<any>, config: Config): VgValueRef {
   // text
   if (textDef) {
     if (isFieldDef(textDef)) {
@@ -159,7 +159,10 @@ export function text(textDef: TextFieldDef | ValueDef<any>, config: Config): VgV
   return {value: config.text.text};
 }
 
-export function midX(config: Config): VgValueRef {
+export function midX(width: number, config: Config): VgValueRef {
+  if (width) {
+    return {value: width / 2};
+  }
 
   if (typeof config.scale.rangeStep === 'string') {
     // TODO: For fit-mode, use middle of the width
@@ -168,7 +171,11 @@ export function midX(config: Config): VgValueRef {
   return {value: config.scale.rangeStep / 2};
 }
 
-export function midY(config: Config): VgValueRef {
+export function midY(height: number, config: Config): VgValueRef {
+  if (height) {
+    return {value: height / 2};
+  }
+
   if (typeof config.scale.rangeStep === 'string') {
     // TODO: For fit-mode, use middle of the width
     throw new Error('midX can not handle string rangeSteps');

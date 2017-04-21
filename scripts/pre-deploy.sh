@@ -19,7 +19,7 @@ npm run build:versions
 
 # 0.3 Check if all files are committed
 if [ -z "$(git status --porcelain)" ]; then
-  echo "All tracked files are committed.  Publishing on npm and bower. \n"
+  echo "All tracked files are committed. \n"
 else
   echo "${RED}There are uncommitted files. Please commit or stash first!${NC} \n\n"
   git status

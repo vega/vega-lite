@@ -52,7 +52,7 @@ Quantitative Scale
 <!-- TODO: need to test if we support threshold scale correctly before writing about it-->
 
 Time Scale
-: A `time` scale is similar to a linear quantitative scale but takes date as input. In general, a temporal field has `time` scale by default. The exceptions are temporal fields with `hours`, `day`, `date`, `month` as time unit; they have `ordinal` scales by default.
+: A `time` scale is similar to a linear quantitative scale but takes a date as input. In general, a temporal field has `time` scale by default. The exceptions are temporal fields with `hours`, `day`, `date`, `month` as time unit; they have `ordinal` scales by default.
 <!-- <br/>`utc` is a time scale that uses [Coordinated Universal Time](https://en.wikipedia.org/wiki/Coordinated_Universal_Time) rather than local time. -->
 
 Ordinal Scale
@@ -62,9 +62,7 @@ Ordinal Scale
 - An ordinal `shape` scale always produces a categorical range since shape cannot convey order.
 - Ordinal scales for other channels (`x`, `y`, `size`) always output sequential range. The default order for nominal data is determined by Javascript's natural order. For example, `"a"` < `"b"`.
 
-| Property      | Type          | Description    |
-| :------------ |:-------------:| :------------- |
-| type          | String        | The type of scale. <br/> •  For a _quantitative_ field, supported quantitative scale types  are `"linear"` (default), `"log"`, `"pow"`, `"sqrt"`, `"quantile"`, `"quantize"`, and `"threshold"`. <br/> • For a _temporal_ field without `timeUnit`, the scale type should be `time` (default) or `ordinal`. <br/>  • For _ordinal_ and _nominal_ fields, the type is always `ordinal`. <br/>Unsupported values will be ignored. |
+{% include table.html props="type" source="Scale" %}
 
 <!-- TODO: add utc to the above table for temporal field -->
 
@@ -89,9 +87,7 @@ TODO: example utc scale with utc time unit (once implemented)
 By default, a scale draws domain values directly from the channel field.
 Custom domain values can be specified via the scale's `domain` property.
 
-| Property      | Type          | Description    |
-| :------------ |:-------------:| :------------- |
-| domain        | Array         | Custom domain values. <br/> • For _quantitative_ data, this can take the form of a two-element array with minimum and maximum values. <br/> • For _temporal_ data, this can, this can be a two-element array with minimum and maximum values in the form of either timestamp numbers or the [DateTime](transform.html#datetime) definition object.  <br/> • For _ordinal_ or _nominal_ data, this is an array representing all values and their orders.   |
+{% include table.html props="domain" source="Scale" %}
 
 <!-- TODO:
 - Decide if we should write about custom domain for ordinal scale.
@@ -115,19 +111,19 @@ TODO: Custom Domain for quantitative
 The range of the scale represents the set of output visual values. Vega-Lite automatically determines appropriate range based on the scale's channel and type, but `range` property can be provided to customize range values.
 
 `x` and `y` Scales
-: For continuous `x` and `y` scales (quantitative and time), the range are always `[0, cellWidth]` and  `[0, cellHeight]` (See [config.cell](config.html#cell-config) for customizing cell width and height). For ordinal `x` and `y` scales, the maximum range is a product of the field's cardinality and [`rangeStep`](#ordinal).
+: For continuous `x` and `y` scales (quantitative and time), the range is always `[0, cellWidth]` and  `[0, cellHeight]` (See [config.cell](config.html#cell-config) for customizing cell width and height). For ordinal `x` and `y` scales, the maximum range is a product of the field's cardinality and [`rangeStep`](#ordinal).
 <span class="note-line">
 __Not Customizable__: specified `range` will be ignored.
 </span>
 
 Nominal `color` Scales
-: A `color` scale of a nominal field has a categorical color palette as its range. Customized categorical color `range` can be either a [string literal for a palette name](#color-palette) or an array of desired output values.
+: A `color` scale of a nominal field has a categorical color palette as its range. The customized categorical color `range` can be either a [string literal for a palette name](#color-palette) or an array of desired output values.
 <span class="note-line">
 __Default value:__ derived from [scale config](config.html#scale-config)'s `nominalColorRange` (`"category10"` by default).
 </span>
 
 Sequential `color` Scales
-: A `color` scale for ordinal, temporal, and quantitative fields have a sequential color ramp as its range. Currently, Vega-Lite only supports color ramp that interpolate between two color values. Customized sequential color `range` takes a two-element array of color values for interpolation.
+: A `color` scale for ordinal, temporal, and quantitative fields have a sequential color ramp as its range. Currently, Vega-Lite only supports color ramp that interpolates between two color values. The customized sequential color `range` takes a two-element array of color values for interpolation.
 <span class="note-line">
 __Default value:__ derived from [scale config](config.html#scale-config)'s `sequentialColorRange` (green ramp between `["#AFC6A3", "#09622A"]` by default).
 </span>
@@ -148,9 +144,9 @@ __Default value:__
 <br/> • for  `tick`: derived from [scale config](config.html#scale-config)'s `tickSizeRange` (`[1, 20]` by default).
 </span>
 
-| Property      | Type          | Description    |
-| :------------ |:-------------:| :------------- |
-| range        | Array &#124; String  | Customized scale range. |
+
+{% include table.html props="range" source="Scale" %}
+
 
 {:#color-palette}
 
@@ -183,7 +179,7 @@ For ordinal, quantitative, and time fields, `range` can be a two-element array d
 
 ### Piecewise Scale Example: Diverging Color Scale
 
-We can also create diverging color graph by specify `range` with multiple elements. Number of elements of `range` should match with the number of elements in `domain`. Though continuous scale normally contains 2 elements in both `domain` and `range`, having 3 or more elements will create a piecewise scale. For more detail about a piecewise scale, please refer to [D3 documentation](https://github.com/d3/d3-scale#continuous_domain).
+We can also create a diverging color graph by specify `range` with multiple elements. The number of elements of `range` should match with the number of elements in `domain`. Though continuous scale normally contains 2 elements in both `domain` and `range`, having 3 or more elements will create a piecewise scale. For more detail about a piecewise scale, please refer to [D3 documentation](https://github.com/d3/d3-scale#continuous_domain).
 
 <div class="vl-example" data-name="diverging_color_points"></div>
 
@@ -192,41 +188,26 @@ We can also create diverging color graph by specify `range` with multiple elemen
 
 ### General Scale Properties
 
-| Property      | Type          | Description    |
-| :------------ |:-------------:| :------------- |
-| round         | Boolean       | If `true`, rounds numeric output values to integers. This can be helpful for snapping to the pixel grid. <span class="note-line">__Default value:__ True for `"x"`, `"y"`, `"row"`, `"column"` channels if scale config's `round` is `true`; false otherwise.</span> |
+{% include table.html props="round,paddingInner,paddingOuter" source="Scale" %}
 
 {:#quant-props}
 
 ### Quantitative Scale Properties
 
-| Property      | Type          | Description    |
-| :------------ |:-------------:| :------------- |
-| clamp         | Boolean       | If `true`, values that exceed the data domain are clamped to either the minimum or maximum range value. <span class="note-line">__Default value:__ derived from [scale config](config.html#scale-config) (`true` by default)<br/>__Supported types:__ only `linear`, `pow`, `sqrt`, and `log`</span> |
-| exponent      | Number        | Sets the exponent of the scale transformation. (For `pow` scale types only, otherwise ignored.) |
-| nice          | Boolean       | If `true`, modifies the scale domain to use a more human-friendly number range (e.g., 7 instead of 6.96). <span class="note-line">__Default value:__ `true` only for quantitative x and y scales and `false` otherwise.</span> |
-| zero          | Boolean       | If `true`, ensures that a zero baseline value is included in the scale domain. <span class="note-line">__Default value:__ `true` for `x` and `y` channel if the quantitative field is not binned and no custom `domain` is provided; `false` otherwise.</span><span class="note-line">__Note:__  This property is always `false` for log scale.</span> |
-| useRawDomain  | Boolean       | If `true`, set scale domain to the raw data domain. If `false`, use the aggregated data domain for scale. <span class="note-line">__Default value:__ `false`<br/>__Only valid for certain aggregations:__ This property only works with aggregate functions that produce values within the raw data domain (`"mean"`, `"average"`, `"stdev"`, `"stdevp"`, `"median"`, `"q1"`, `"q3"`, `"min"`, `"max"`). For other aggregations that produce values outside of the raw data domain (e.g. `"count"`, `"sum"`), this property is ignored. <br/>__Note:__ This property is ignored when the scale's `domain` is specified.</span>|
+{% include table.html props="clamp,exponent,nice,zero," source="Scale" %}
+
 
 ### Time Scale Properties
 
-| Property      | Type          | Description    |
-| :------------ |:-------------:| :------------- |
-| clamp         | Boolean       | If `true`, values that exceed the data domain are clamped to either the minimum or maximum range value. (Not applicable for `quantile`, `quantize`, and `threshold` scales as they output discrete ranges.) |
-| nice          | String        | If specified, modifies the scale domain to use a more human-friendly value range. For `time` and `utc` scale types only, the nice value should be a string indicating the desired time interval; legal values are `"second"`, `"minute"`, `"hour"`, `"day"`, `"week"`, `"month"`, or `"year"`.|
+{% include table.html props="clamp,nice" source="Scale" %}
+
 
 {:#ordinal}
 ### Discrete Scale Properties
 
 <!-- TODO revise -->
 
-| Property      | Type          | Description    |
-| :------------ |:-------------:| :------------- |
-| rangeStep      | Integer &#124; String | TODO: use description in code instead! |
-| scheme        |  String | Color scheme that determines output color of a color scale. <span class="note-line">__Default value:__ [scale config](config.html#scale-config)'s `nominalColorScheme` for nominal field and `sequentialColorScheme` for other types of fields.</span>|
-| padding       | Number        | Behavior depends on scale types.  (This doc is a **WORK-IN-PROGRESS**.  For now, Please refer to [d3-scale documentation](https://github.com/d3/d3-scale) for more information.) <span class="note-line">&nbsp;&nbsp; • __Default value:__ The default from `x` and `y` channels are derived from [scale config](config.html#scale-config)'s `pointPadding` for `point` scale and `bandPadding` for `band` scale.  Other channels has `0` padding by default. </span> <br/> <span class="note-line">For `row` and `column`, `padding` is ignored. Please use `spacing` instead! </span> |
-| spacing       | Integer        | (For `row` and `column` only) A pixel value for padding between cells in the trellis plots. <span class="note-line">&nbsp;&nbsp; •__Default value:__ derived from [scale config](config.html#scale-config)'s `facetSpacing`</span>
-
+{% include table.html props="rangeStep,scheme,padding" source="Scale" %}
 
 {:#ex-bandwidth}
 #### Example: Custom Range Step

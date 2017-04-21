@@ -1,109 +1,143 @@
-import {DataComponentCompiler} from './base';
-
-import {isUrlData} from '../../data';
 import {DateTime, isDateTime} from '../../datetime';
 import {FieldDef, isCount} from '../../fielddef';
 import {isEqualFilter, isOneOfFilter, isRangeFilter} from '../../filter';
-import {QUANTITATIVE, TEMPORAL} from '../../type';
-import {Dict, differ, extend, isArray, isNumber, isString, keys} from '../../util';
-
+import * as log from '../../log';
 import {CalculateTransform, FilterTransform, isCalculate, isFilter} from '../../transform';
-import {FacetModel} from './../facet';
-import {LayerModel} from './../layer';
-import {Model} from './../model';
+import {QUANTITATIVE, TEMPORAL} from '../../type';
+import {Dict, duplicate, extend, isArray, isNumber, isString, keys} from '../../util';
+import {VgFormulaTransform} from '../../vega.schema';
+import {Model, ModelWithField} from '../model';
+import {DataFlowNode} from './dataflow';
 
-function parse(model: Model): Dict<string> {
-  const calcFieldMap = model.transforms.filter(isCalculate).reduce(function(fieldMap, formula: CalculateTransform) {
-    fieldMap[formula.as] = true;
-    return fieldMap;
-  }, {});
 
-  let parseComponent: Dict<string> = {};
-
-  // Parse filter fields
-  model.transforms.filter(isFilter).forEach((transform: FilterTransform) => {
-    let filter = transform.filter;
-    if (!isArray(filter)) {
-      filter = [filter];
-    }
-    filter.forEach(f => {
-      let val: string | number | boolean | DateTime = null;
-      // For EqualFilter, just use the equal property.
-      // For RangeFilter and OneOfFilter, all array members should have
-      // the same type, so we only use the first one.
-      if (isEqualFilter(f)) {
-        val = f.equal;
-      } else if (isRangeFilter(f)) {
-        val = f.range[0];
-      } else if (isOneOfFilter(f)) {
-        val = (f.oneOf || f['in'])[0];
-      } // else -- for filter expression, we can't infer anything
-
-      if (!!val) {
-        if (isDateTime(val)) {
-          parseComponent[f['field']] = 'date';
-        } else if (isNumber(val)) {
-          parseComponent[f['field']] = 'number';
-        } else if (isString(val)) {
-          parseComponent[f['field']] = 'string';
-        }
-      }
-    });
-  });
-
-  // Parse encoded fields
-  model.forEachFieldDef(function(fieldDef: FieldDef) {
-    if (fieldDef.type === TEMPORAL) {
-      parseComponent[fieldDef.field] = 'date';
-    } else if (fieldDef.type === QUANTITATIVE) {
-      if (isCount(fieldDef) || calcFieldMap[fieldDef.field]) {
-        return;
-      }
-      parseComponent[fieldDef.field] = 'number';
-    }
-  });
-
-  // Custom parse should override inferred parse
-  const data = model.data;
-  if (data && isUrlData(data) && data.format && data.format.parse) {
-    const parse = data.format.parse;
-    keys(parse).forEach((field) => {
-      parseComponent[field] = parse[field];
-    });
+function parseExpression(field: string, parse: string): string {
+  const f = `datum["${field}"]`;
+  if (parse === 'number') {
+    return `toNumber(${f})`;
+  } else if (parse === 'boolean') {
+    return `toBoolean(${f})`;
+  } else if (parse === 'string') {
+    return `toString(${f})`;
+  } else if (parse === 'date') {
+    return `toDate(${f})`;
+  } else if (parse.indexOf('date:') === 0) {
+    const specifier = parse.slice(6, parse.length - 1);  // specifier is in "" or ''
+    return `timeParse(${f},"${specifier}")`;
+  } else {
+    log.warn(log.message.unrecognizedParse(parse));
+    return null;
   }
-
-  return parseComponent;
 }
 
-export const formatParse: DataComponentCompiler<Dict<string>> = {
-  parseUnit: parse,
+export class ParseNode extends DataFlowNode {
+  private _parse: Dict<string> = {};
 
-  parseFacet: function(model: FacetModel) {
-    let parseComponent = parse(model);
+  public clone() {
+    return new ParseNode(duplicate(this.parse));
+  }
 
-    // If child doesn't have its own data source, but has its own parse, then merge
-    const childDataComponent = model.child.component.data;
-    if (!childDataComponent.source && childDataComponent.formatParse) {
-      extend(parseComponent, childDataComponent.formatParse);
-      delete childDataComponent.formatParse;
-    }
-    return parseComponent;
-  },
+  constructor(parse: Dict<string>) {
+    super();
 
-  parseLayer: function(model: LayerModel) {
-    // note that we run this before source.parseLayer
-    let parseComponent = parse(model);
-    model.children.forEach((child) => {
-      const childDataComponent = child.component.data;
-      if (model.compatibleSource(child) && !differ(childDataComponent.formatParse, parseComponent)) {
-        // merge parse up if the child does not have an incompatible parse
-        extend(parseComponent, childDataComponent.formatParse);
-        delete childDataComponent.formatParse;
+    this._parse = parse;
+  }
+
+  public static make(model: Model) {
+    const parse = {};
+
+    const calcFieldMap = model.transforms.filter(isCalculate).reduce((fieldMap, formula: CalculateTransform) => {
+      fieldMap[formula.as] = true;
+      return fieldMap;
+    }, {});
+
+    // Parse filter fields
+    model.transforms.filter(isFilter).forEach((transform: FilterTransform) => {
+      let filter = transform.filter;
+      if (!isArray(filter)) {
+        filter = [filter];
       }
-    });
-    return parseComponent;
-  },
+      filter.forEach(f => {
+        let val: string | number | boolean | DateTime = null;
+        // For EqualFilter, just use the equal property.
+        // For RangeFilter and OneOfFilter, all array members should have
+        // the same type, so we only use the first one.
+        if (isEqualFilter(f)) {
+          val = f.equal;
+        } else if (isRangeFilter(f)) {
+          val = f.range[0];
+        } else if (isOneOfFilter(f)) {
+          val = (f.oneOf || f['in'])[0];
+        } // else -- for filter expression, we can't infer anything
 
-  // identity function
-  assemble: function (x) {return x;}
-};
+        if (val) {
+          if (isDateTime(val)) {
+            parse[f['field']] = 'date';
+          } else if (isNumber(val)) {
+            parse[f['field']] = 'number';
+          } else if (isString(val)) {
+            parse[f['field']] = 'string';
+          }
+        }
+      });
+    });
+
+    if (model instanceof ModelWithField) {
+      // Parse encoded fields
+      model.forEachFieldDef(fieldDef => {
+        if (fieldDef.type === TEMPORAL) {
+          parse[fieldDef.field] = 'date';
+        } else if (fieldDef.type === QUANTITATIVE) {
+          if (isCount(fieldDef) || calcFieldMap[fieldDef.field]) {
+            return;
+          }
+          parse[fieldDef.field] = 'number';
+        }
+      });
+    }
+
+    // Custom parse should override inferred parse
+    const data = model.data;
+    if (data && data.format && data.format.parse) {
+      const p = data.format.parse;
+      keys(p).forEach((field) => {
+        parse[field] = p[field];
+      });
+    }
+
+    if (keys(parse).length === 0) {
+      return null;
+    }
+
+    return new ParseNode(parse);
+  }
+
+  public get parse() {
+    return this._parse;
+  }
+
+
+  public merge(other: ParseNode) {
+    this._parse = extend(this._parse, other.parse);
+    other.remove();
+  }
+
+  public assembleFormatParse() {
+    return this._parse;
+  }
+
+  public assembleTransforms(): VgFormulaTransform[] {
+    return Object.keys(this._parse).map(field => {
+      const expr = parseExpression(field, this._parse[field]);
+      if (!expr) {
+        return null;
+      }
+
+      const formula: VgFormulaTransform = {
+        type: 'formula',
+        expr,
+        as: field
+      };
+      return formula;
+    }).filter(t => t !== null);
+  }
+}

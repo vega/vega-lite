@@ -1,0 +1,12 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v2.json",
+  "data": {"url": "data/cars.json"},
+  "mark": "bar",
+  "encoding": {
+    "y": {
+      "field": "Origin", "type": "ordinal",
+      "sort": {"op": "mean", "field": "Horsepower"}
+    },
+    "x": {"aggregate": "mean", "field": "Horsepower", "type": "quantitative"}
+  }
+}

@@ -1,57 +1,35 @@
 {
     "$schema": "http://vega.github.io/schema/vega/v3.0.json",
+    "description": "A bar chart showing the US population distribution of age groups in 2000.",
     "autosize": "pad",
     "padding": 5,
-    "signals": [
-        {
-            "name": "width",
-            "update": "data('layout')[0].width"
-        },
-        {
-            "name": "height",
-            "update": "data('layout')[0].height"
-        },
-        {
-            "name": "unit",
-            "value": {},
-            "on": [
-                {
-                    "events": "mousemove",
-                    "update": "group()._id ? group() : unit"
-                }
-            ]
-        }
-    ],
     "data": [
         {
-            "name": "source",
+            "name": "source_0",
             "url": "data/population.json",
             "format": {
-                "type": "json",
-                "parse": {
-                    "people": "number"
-                }
+                "type": "json"
             },
             "transform": [
                 {
                     "type": "filter",
                     "expr": "datum.year == 2000"
-                },
-                {
-                    "type": "filter",
-                    "expr": "datum[\"people\"] !== null && !isNaN(datum[\"people\"])"
                 }
             ]
         },
         {
-            "name": "layer_0_source",
-            "source": "source",
-            "transform": []
-        },
-        {
-            "source": "layer_0_source",
-            "name": "layer_0_summary",
+            "name": "data_0",
+            "source": "source_0",
             "transform": [
+                {
+                    "type": "formula",
+                    "expr": "toNumber(datum[\"people\"])",
+                    "as": "people"
+                },
+                {
+                    "type": "filter",
+                    "expr": "datum[\"people\"] !== null && !isNaN(datum[\"people\"])"
+                },
                 {
                     "type": "aggregate",
                     "groupby": [
@@ -69,19 +47,18 @@
             ]
         },
         {
-            "name": "layer_1_source",
-            "source": "source",
+            "name": "data_1",
+            "source": "source_0",
             "transform": [
+                {
+                    "type": "formula",
+                    "expr": "toNumber(datum[\"people\"])",
+                    "as": "people"
+                },
                 {
                     "type": "filter",
                     "expr": "datum[\"people\"] !== null && !isNaN(datum[\"people\"])"
-                }
-            ]
-        },
-        {
-            "source": "layer_1_source",
-            "name": "layer_1_summary",
-            "transform": [
+                },
                 {
                     "type": "aggregate",
                     "groupby": [
@@ -97,19 +74,18 @@
             ]
         },
         {
-            "name": "layer_2_source",
-            "source": "source",
+            "name": "data_2",
+            "source": "source_0",
             "transform": [
+                {
+                    "type": "formula",
+                    "expr": "toNumber(datum[\"people\"])",
+                    "as": "people"
+                },
                 {
                     "type": "filter",
                     "expr": "datum[\"people\"] !== null && !isNaN(datum[\"people\"])"
-                }
-            ]
-        },
-        {
-            "source": "layer_2_source",
-            "name": "layer_2_summary",
-            "transform": [
+                },
                 {
                     "type": "aggregate",
                     "groupby": [
@@ -125,19 +101,18 @@
             ]
         },
         {
-            "name": "layer_3_source",
-            "source": "source",
+            "name": "data_3",
+            "source": "source_0",
             "transform": [
+                {
+                    "type": "formula",
+                    "expr": "toNumber(datum[\"people\"])",
+                    "as": "people"
+                },
                 {
                     "type": "filter",
                     "expr": "datum[\"people\"] !== null && !isNaN(datum[\"people\"])"
-                }
-            ]
-        },
-        {
-            "source": "layer_3_source",
-            "name": "layer_3_summary",
-            "transform": [
+                },
                 {
                     "type": "aggregate",
                     "groupby": [
@@ -151,265 +126,306 @@
                     ]
                 }
             ]
+        }
+    ],
+    "signals": [
+        {
+            "name": "width",
+            "update": "max(layer_0_width, layer_1_width, layer_2_width, layer_3_width)"
         },
         {
-            "name": "layout",
-            "source": "layer_0_summary",
-            "transform": [
+            "name": "height",
+            "update": "max(layer_0_height, layer_1_height, layer_2_height, layer_3_height)"
+        },
+        {
+            "name": "layer_0_width",
+            "update": "200"
+        },
+        {
+            "name": "layer_0_height",
+            "update": "bandspace(domain('y').length, 1, 0.5) * 21"
+        },
+        {
+            "name": "layer_1_width",
+            "update": "200"
+        },
+        {
+            "name": "layer_1_height",
+            "update": "bandspace(domain('y').length, 1, 0.5) * 21"
+        },
+        {
+            "name": "layer_2_width",
+            "update": "200"
+        },
+        {
+            "name": "layer_2_height",
+            "update": "bandspace(domain('y').length, 1, 0.5) * 21"
+        },
+        {
+            "name": "layer_3_width",
+            "update": "200"
+        },
+        {
+            "name": "layer_3_height",
+            "update": "bandspace(domain('y').length, 1, 0.5) * 21"
+        },
+        {
+            "name": "unit",
+            "value": {},
+            "on": [
                 {
-                    "type": "aggregate",
-                    "fields": [
-                        "age"
-                    ],
-                    "ops": [
-                        "distinct"
-                    ]
-                },
-                {
-                    "type": "formula",
-                    "as": "width",
-                    "expr": "200"
-                },
-                {
-                    "type": "formula",
-                    "as": "height",
-                    "expr": "max(datum[\"distinct_age\"] - 1 + 2*0.5, 0) * 21"
+                    "events": "mousemove",
+                    "update": "group()._id ? group() : unit"
                 }
             ]
         }
     ],
     "marks": [
         {
-            "name": "main",
+            "name": "nested_main_group",
             "type": "group",
-            "description": "A bar chart showing the US population distribution of age groups in 2000.",
-            "from": {
-                "data": "layout"
-            },
             "encode": {
                 "update": {
                     "width": {
-                        "field": "width"
+                        "signal": "width"
                     },
                     "height": {
-                        "field": "height"
-                    },
-                    "fill": {
-                        "value": "transparent"
+                        "signal": "height"
                     }
                 }
             },
             "marks": [
                 {
-                    "name": "layer_0_marks",
-                    "type": "rule",
-                    "from": {
-                        "data": "layer_0_summary"
-                    },
+                    "type": "group",
                     "encode": {
-                        "update": {
-                            "x": {
-                                "scale": "x",
-                                "field": "min_people"
-                            },
-                            "y": {
-                                "scale": "y",
-                                "field": "age"
-                            },
-                            "x2": {
-                                "scale": "x",
-                                "field": "max_people"
-                            },
-                            "stroke": {
-                                "value": "#4c78a8"
-                            }
-                        }
-                    }
-                },
-                {
-                    "name": "layer_1_marks",
-                    "type": "rect",
-                    "role": "tick",
-                    "from": {
-                        "data": "layer_1_summary"
-                    },
-                    "encode": {
-                        "update": {
-                            "xc": {
-                                "scale": "x",
-                                "field": "min_people"
-                            },
-                            "yc": {
-                                "scale": "y",
-                                "field": "age"
+                        "enter": {
+                            "width": {
+                                "signal": "width"
                             },
                             "height": {
-                                "value": 5
-                            },
-                            "width": {
-                                "value": 1
-                            },
-                            "fill": {
-                                "value": "#4c78a8"
-                            }
-                        }
-                    }
-                },
-                {
-                    "name": "layer_2_marks",
-                    "type": "rect",
-                    "role": "tick",
-                    "from": {
-                        "data": "layer_2_summary"
-                    },
-                    "encode": {
-                        "update": {
-                            "xc": {
-                                "scale": "x",
-                                "field": "max_people"
-                            },
-                            "yc": {
-                                "scale": "y",
-                                "field": "age"
-                            },
-                            "height": {
-                                "value": 5
-                            },
-                            "width": {
-                                "value": 1
-                            },
-                            "fill": {
-                                "value": "#4c78a8"
-                            }
-                        }
-                    }
-                },
-                {
-                    "name": "layer_3_marks",
-                    "type": "symbol",
-                    "role": "point",
-                    "from": {
-                        "data": "layer_3_summary"
-                    },
-                    "encode": {
-                        "update": {
-                            "x": {
-                                "scale": "x",
-                                "field": "mean_people"
-                            },
-                            "y": {
-                                "scale": "y",
-                                "field": "age"
-                            },
-                            "stroke": {
-                                "value": "#4c78a8"
+                                "signal": "height"
                             },
                             "fill": {
                                 "value": "transparent"
                             },
-                            "size": {
-                                "value": 2
+                            "clip": {
+                                "value": true
                             }
                         }
-                    }
-                }
-            ],
-            "scales": [
-                {
-                    "name": "x",
-                    "type": "linear",
-                    "domain": {
-                        "fields": [
-                            {
-                                "field": "min_people",
-                                "data": "layer_0_summary"
+                    },
+                    "marks": [
+                        {
+                            "name": "layer_0_marks",
+                            "type": "rule",
+                            "from": {
+                                "data": "data_0"
                             },
-                            {
-                                "field": "max_people",
-                                "data": "layer_0_summary"
-                            },
-                            {
-                                "field": "min_people",
-                                "data": "layer_1_summary"
-                            },
-                            {
-                                "field": "max_people",
-                                "data": "layer_2_summary"
-                            },
-                            {
-                                "data": "layer_3_summary",
-                                "field": "mean_people"
+                            "encode": {
+                                "update": {
+                                    "x": {
+                                        "scale": "x",
+                                        "field": "min_people"
+                                    },
+                                    "y": {
+                                        "scale": "y",
+                                        "field": "age"
+                                    },
+                                    "x2": {
+                                        "scale": "x",
+                                        "field": "max_people"
+                                    },
+                                    "stroke": {
+                                        "value": "#4c78a8"
+                                    }
+                                }
                             }
-                        ],
-                        "sort": true
-                    },
-                    "range": [
-                        0,
-                        200
-                    ],
-                    "round": true,
-                    "nice": true,
-                    "zero": true
-                },
-                {
-                    "name": "y",
-                    "type": "point",
-                    "domain": {
-                        "fields": [
-                            {
-                                "field": "age",
-                                "data": "layer_0_summary"
+                        },
+                        {
+                            "name": "layer_1_marks",
+                            "type": "rect",
+                            "role": "tick",
+                            "from": {
+                                "data": "data_1"
                             },
-                            {
-                                "field": "age",
-                                "data": "layer_1_summary"
-                            },
-                            {
-                                "field": "age",
-                                "data": "layer_2_summary"
-                            },
-                            {
-                                "data": "layer_3_summary",
-                                "field": "age"
+                            "encode": {
+                                "update": {
+                                    "xc": {
+                                        "scale": "x",
+                                        "field": "min_people"
+                                    },
+                                    "yc": {
+                                        "scale": "y",
+                                        "field": "age"
+                                    },
+                                    "height": {
+                                        "value": 5
+                                    },
+                                    "width": {
+                                        "value": 1
+                                    },
+                                    "fill": {
+                                        "value": "#4c78a8"
+                                    }
+                                }
                             }
-                        ],
-                        "sort": true
-                    },
-                    "range": {
-                        "step": 21
-                    },
-                    "round": true,
-                    "padding": 0.5
-                }
-            ],
-            "axes": [
-                {
-                    "scale": "x",
-                    "format": "s",
-                    "orient": "bottom",
-                    "tickCount": 5,
-                    "title": "population",
-                    "zindex": 1
-                },
-                {
-                    "scale": "x",
-                    "domain": false,
-                    "format": "s",
-                    "grid": true,
-                    "labels": false,
-                    "orient": "bottom",
-                    "tickCount": 5,
-                    "ticks": false,
-                    "zindex": 0,
-                    "gridScale": "y"
-                },
-                {
-                    "scale": "y",
-                    "orient": "left",
-                    "title": "age",
-                    "zindex": 1
+                        },
+                        {
+                            "name": "layer_2_marks",
+                            "type": "rect",
+                            "role": "tick",
+                            "from": {
+                                "data": "data_2"
+                            },
+                            "encode": {
+                                "update": {
+                                    "xc": {
+                                        "scale": "x",
+                                        "field": "max_people"
+                                    },
+                                    "yc": {
+                                        "scale": "y",
+                                        "field": "age"
+                                    },
+                                    "height": {
+                                        "value": 5
+                                    },
+                                    "width": {
+                                        "value": 1
+                                    },
+                                    "fill": {
+                                        "value": "#4c78a8"
+                                    }
+                                }
+                            }
+                        },
+                        {
+                            "name": "layer_3_marks",
+                            "type": "symbol",
+                            "role": "point",
+                            "from": {
+                                "data": "data_3"
+                            },
+                            "encode": {
+                                "update": {
+                                    "x": {
+                                        "scale": "x",
+                                        "field": "mean_people"
+                                    },
+                                    "y": {
+                                        "scale": "y",
+                                        "field": "age"
+                                    },
+                                    "stroke": {
+                                        "value": "#4c78a8"
+                                    },
+                                    "fill": {
+                                        "value": "transparent"
+                                    },
+                                    "size": {
+                                        "value": 2
+                                    }
+                                }
+                            }
+                        }
+                    ]
                 }
             ]
+        }
+    ],
+    "scales": [
+        {
+            "name": "x",
+            "type": "linear",
+            "domain": {
+                "fields": [
+                    {
+                        "data": "data_0",
+                        "field": "min_people"
+                    },
+                    {
+                        "data": "data_0",
+                        "field": "max_people"
+                    },
+                    {
+                        "data": "data_1",
+                        "field": "min_people"
+                    },
+                    {
+                        "data": "data_2",
+                        "field": "max_people"
+                    },
+                    {
+                        "data": "data_3",
+                        "field": "mean_people"
+                    }
+                ],
+                "sort": true
+            },
+            "range": [
+                0,
+                200
+            ],
+            "round": true,
+            "nice": true,
+            "zero": true
+        },
+        {
+            "name": "y",
+            "type": "point",
+            "domain": {
+                "fields": [
+                    {
+                        "data": "data_0",
+                        "field": "age"
+                    },
+                    {
+                        "data": "data_1",
+                        "field": "age"
+                    },
+                    {
+                        "data": "data_2",
+                        "field": "age"
+                    },
+                    {
+                        "data": "data_3",
+                        "field": "age"
+                    }
+                ],
+                "sort": true
+            },
+            "range": {
+                "step": 21
+            },
+            "round": true,
+            "padding": 0.5
+        }
+    ],
+    "axes": [
+        {
+            "scale": "x",
+            "format": "s",
+            "orient": "bottom",
+            "tickCount": 5,
+            "title": "population",
+            "zindex": 1
+        },
+        {
+            "scale": "x",
+            "domain": false,
+            "format": "s",
+            "grid": true,
+            "labels": false,
+            "orient": "bottom",
+            "tickCount": 5,
+            "ticks": false,
+            "zindex": 0,
+            "gridScale": "y"
+        },
+        {
+            "scale": "y",
+            "orient": "left",
+            "title": "age",
+            "zindex": 1
         }
     ]
 }

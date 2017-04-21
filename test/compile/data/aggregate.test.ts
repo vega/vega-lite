@@ -2,11 +2,29 @@
 
 import {assert} from 'chai';
 
-import {summary} from '../../../src/compile/data/aggregate';
-import {DataComponent} from '../../../src/compile/data/data';
+import {AggregateNode} from '../../../src/compile/data/aggregate';
+import {StringSet} from '../../../src/util';
+import {VgAggregateTransform} from '../../../src/vega.schema';
 import {parseUnitModel} from '../../util';
 
 describe('compile/data/summary', function () {
+  describe('clone', function() {
+    it('should have correct type', function() {
+      const agg = new AggregateNode({}, {});
+      assert(agg instanceof AggregateNode);
+      const clone = agg.clone();
+      assert(clone instanceof AggregateNode);
+    });
+
+    it('should have make a deep copy', function() {
+      const agg = new AggregateNode({foo: true}, {});
+      const clone = agg.clone();
+      clone.addDimensions(['bar']);
+      assert.deepEqual<StringSet>(clone.dependentFields(), {'foo': true, 'bar': true});
+      assert.deepEqual<StringSet>(agg.dependentFields(), {'foo': true});
+    });
+  });
+
   describe('parseUnit', function() {
     it('should produce the correct summary component for sum(Acceleration) and count(*)' , () => {
       const model = parseUnitModel({
@@ -25,14 +43,13 @@ describe('compile/data/summary', function () {
         }
       });
 
-      model.component.data = {} as DataComponent;
-      model.component.data.summary = summary.parseUnit(model);
-      assert.deepEqual(model.component.data.summary, [{
-        name: 'summary',
-        // source will be added in assemble step
-        dimensions: {Origin: true},
-        measures: {'*':{count: true}, Acceleration: {sum: true}}
-      }]);
+      const agg = AggregateNode.make(model);
+      assert.deepEqual<VgAggregateTransform>(agg.assemble(), {
+        type: 'aggregate',
+        groupby: ['Origin'],
+        ops: ['sum', 'count'],
+        fields: ['Acceleration', '*']
+      });
     });
 
     it('should produce the correct summary component for aggregated plot with detail arrays', function() {
@@ -46,14 +63,14 @@ describe('compile/data/summary', function () {
           ]
         }
       });
-      model.component.data = {} as DataComponent;
-      model.component.data.summary = summary.parseUnit(model);
-      assert.deepEqual(model.component.data.summary, [{
-        name: 'summary',
-        // source will be added in assemble step
-        dimensions: {Origin: true, Cylinders: true},
-        measures: {Displacement: {mean: true}}
-      }]);
+
+      const agg = AggregateNode.make(model);
+      assert.deepEqual<VgAggregateTransform>(agg.assemble(), {
+        type: 'aggregate',
+        groupby: ['Origin', 'Cylinders'],
+        ops: ['mean'],
+        fields: ['Displacement']
+      });
     });
 
     it('should add min and max if needed for unaggregated scale domain', function() {
@@ -63,62 +80,39 @@ describe('compile/data/summary', function () {
           'x': {'aggregate': 'mean', 'field': 'Displacement', 'type': "quantitative", scale: {domain: 'unaggregated'}},
         }
       });
-      model.component.data = {} as DataComponent;
-      model.component.data.summary = summary.parseUnit(model);
-      assert.deepEqual(model.component.data.summary, [{
-        name: 'summary',
-        // source will be added in assemble step
-        dimensions: {},
-        measures: {Displacement: {mean: true, min: true, max: true}}
-      }]);
-    });
-  });
 
-  describe('parseLayer', function() {
-    // TODO: write test
-  });
-
-  describe('parseFacet', function() {
-    it('should produce child\'s filter if child has no source and the facet has no filter', function() {
-      // TODO: write
+      const agg = AggregateNode.make(model);
+      assert.deepEqual<VgAggregateTransform>(agg.assemble(), {
+        type: 'aggregate',
+        groupby: [],
+        ops: ['mean', 'min', 'max'],
+        fields: ['Displacement', 'Displacement', 'Displacement']
+      });
     });
 
-    it('should produce child\'s filter and its own filter if child has no source and the facet has filter', function() {
-      // TODO: write
-    });
-  });
+    it('should add correct dimensions when binning', function() {
+      const model = parseUnitModel({
+        mark: "point",
+        encoding: {
+          'x': {'bin': true, 'field': 'Displacement', 'type': "quantitative"},
+          'y': {'bin': true, 'field': 'Acceleration', 'type': "ordinal"},
+          'color': {'aggregate': 'count', 'type': "quantitative"}
+        }
+      });
 
-  describe('assemble', function() {
-    it('should assemble the correct summary data', function() {
-      const summaryComponent = [{
-        name: 'summary',
-        // source will be added in assemble step
-        dimensions: {Origin: true},
-        measures: {'*':{count: true}, Acceleration: {sum: true}}
-      }];
-      const aggregates = summary.assemble(summaryComponent);
-      assert.deepEqual(aggregates, [{
-        'type': 'aggregate',
-        'groupby': ['Origin'],
-        'fields': ['*', 'Acceleration'],
-        'ops': ['count', 'sum']
-      }]);
-    });
-
-    it('should assemble the correct summary data', function() {
-      const summaryComponent = [{
-        name: 'summary',
-        // source will be added in assemble step
-        dimensions: {Origin: true, Cylinders: true},
-        measures: {Displacement: {mean: true}}
-      }];
-      const aggregates = summary.assemble(summaryComponent);
-      assert.deepEqual(aggregates, [{
-        'type': 'aggregate',
-        'groupby': ['Origin', 'Cylinders'],
-        'fields': ['Displacement'],
-        'ops': ['mean']
-      }]);
+      const agg = AggregateNode.make(model);
+      assert.deepEqual<VgAggregateTransform>(agg.assemble(), {
+        type: 'aggregate',
+        groupby: [
+          'bin_maxbins_10_Displacement_start',
+          'bin_maxbins_10_Displacement_end',
+          'bin_maxbins_10_Acceleration_start',
+          'bin_maxbins_10_Acceleration_end',
+          'bin_maxbins_10_Acceleration_range'
+        ],
+        ops: ['count'],
+        fields: ['*']
+      });
     });
   });
 });

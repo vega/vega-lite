@@ -1,66 +1,53 @@
-import {DataComponentCompiler} from './base';
-
 import {ScaleType} from '../../scale';
-import {Dict, differ, extend, keys} from '../../util';
+import {Dict, duplicate, extend, keys} from '../../util';
+import {VgFilterTransform, VgTransform} from '../../vega.schema';
+import {UnitModel} from './../unit';
+import {DataFlowNode} from './dataflow';
 
-import {FacetModel} from './../facet';
-import {LayerModel} from './../layer';
-import {Model} from './../model';
+export class NonPositiveFilterNode extends DataFlowNode {
+  private _filter: Dict<boolean>;
 
+  public clone() {
+    return new NonPositiveFilterNode(extend({}, this._filter));
+  }
 
-export const nonPositiveFilter: DataComponentCompiler<Dict<boolean>> = {
-  parseUnit: function(model: Model): Dict<boolean> {
-    return model.channels().reduce(function(nonPositiveComponent, channel) {
+  constructor(filter: Dict<boolean>) {
+    super();
+
+    this._filter = filter;
+  }
+
+  public static make(model: UnitModel) {
+    const filter = model.channels().reduce(function(nonPositiveComponent, channel) {
       const scale = model.scale(channel);
-      if (!model.field(channel) || !scale) {
+      if (!scale || !model.field(channel)) {
         // don't set anything
         return nonPositiveComponent;
       }
       nonPositiveComponent[model.field(channel)] = scale.type === ScaleType.LOG;
       return nonPositiveComponent;
     }, {});
-  },
 
-  parseFacet: function(model: FacetModel) {
-    const childDataComponent = model.child.component.data;
-
-    // If child doesn't have its own data source, then consider merging
-    if (!childDataComponent.source) {
-      // For now, let's assume it always has union scale
-      const nonPositiveFilterComponent = childDataComponent.nonPositiveFilter;
-      delete childDataComponent.nonPositiveFilter;
-      return nonPositiveFilterComponent;
+    if (!Object.keys(filter).length) {
+      return null;
     }
-    return {};
-  },
 
-  parseLayer: function(model: LayerModel) {
-    // note that we run this before source.parseLayer
-    let nonPositiveFilterComponent = {};
-
-    model.children.forEach((child) => {
-      const childDataComponent = child.component.data;
-      if (model.compatibleSource(child) && !differ(childDataComponent.nonPositiveFilter, nonPositiveFilterComponent)) {
-        extend(nonPositiveFilterComponent, childDataComponent.nonPositiveFilter);
-        delete childDataComponent.nonPositiveFilter;
-      }
-    });
-
-    return nonPositiveFilterComponent;
-  },
-
-  assemble: function(nonPositiveFilterComponent: Dict<boolean>) {
-    if (nonPositiveFilterComponent) {
-      return keys(nonPositiveFilterComponent).filter((field) => {
-        // Only filter fields (keys) with value = true
-        return nonPositiveFilterComponent[field];
-      }).map(function(field) {
-        return {
-          type: 'filter',
-          expr: 'datum["' + field + '"] > 0'
-        };
-      });
-    }
-    return [];
+    return new NonPositiveFilterNode(filter);
   }
-};
+
+  get filter() {
+    return this._filter;
+  }
+
+  public assemble(): VgTransform[] {
+    return keys(this._filter).filter((field) => {
+      // Only filter fields (keys) with value = true
+      return this._filter[field];
+    }).map(function(field) {
+      return {
+        type: 'filter',
+        expr: 'datum["' + field + '"] > 0'
+      } as VgFilterTransform;
+    });
+  }
+}

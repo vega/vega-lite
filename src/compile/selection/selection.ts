@@ -3,6 +3,7 @@ import {Channel} from '../../channel';
 import {SelectionDef, SelectionDomain, SelectionResolutions, SelectionTypes} from '../../selection';
 import {Dict, extend, isString, stringValue} from '../../util';
 import {VgBinding, VgData} from '../../vega.schema';
+import {LayerModel} from '../layer';
 import {Model} from '../model';
 import {UnitModel} from '../unit';
 import intervalCompiler from './interval';
@@ -11,9 +12,9 @@ import {SelectionComponent} from './selection';
 import singleCompiler from './single';
 import {forEachTransform} from './transforms/transforms';
 
-export const STORE = '_store',
-  TUPLE  = '_tuple',
-  MODIFY = '_modify';
+export const STORE = '_store';
+export const TUPLE  = '_tuple';
+export const MODIFY = '_modify';
 
 export interface SelectionComponent {
   name: string;
@@ -48,22 +49,22 @@ export interface SelectionCompiler {
 }
 
 export function parseUnitSelection(model: UnitModel, selDefs: Dict<SelectionDef>) {
-  let selCmpts: Dict<SelectionComponent> = {},
+  const selCmpts: Dict<SelectionComponent> = {},
       selectionConfig = model.config.selection;
 
-  for (let name in selDefs) {
+  for (const name in selDefs) {
     if (!selDefs.hasOwnProperty(name)) {
       continue;
     }
 
-    let selDef = selDefs[name],
+    const selDef = selDefs[name],
         cfg = selectionConfig[selDef.type];
 
     // Set default values from config if a property hasn't been specified,
     // or if it is true. E.g., "translate": true should use the default
     // event handlers for translate. However, true may be a valid value for
     // a property (e.g., "nearest": true).
-    for (let key in cfg) {
+    for (const key in cfg) {
       // A selection should contain either `encodings` or `fields`, only use
       // default values for these two values if neither of them is specified.
       if ((key === 'encodings' && selDef.fields) || (key === 'fields' && selDef.encodings)) {
@@ -75,14 +76,13 @@ export function parseUnitSelection(model: UnitModel, selDefs: Dict<SelectionDef>
       }
     }
 
-    let selCmpt = selCmpts[name] = extend({}, selDef, {
+    const selCmpt = selCmpts[name] = extend({}, selDef, {
       name: model.getName(name),
       events: isString(selDef.on) ? parseSelector(selDef.on, 'scope') : selDef.on,
       domain: 'data' as SelectionDomain, // TODO: Support def.domain
-      resolve: 'union' as SelectionResolutions
     }) as SelectionComponent;
 
-    forEachTransform(selCmpt, function(txCompiler) {
+    forEachTransform(selCmpt, txCompiler => {
       if (txCompiler.parse) {
         txCompiler.parse(model, selDef, selCmpt);
       }
@@ -92,15 +92,15 @@ export function parseUnitSelection(model: UnitModel, selDefs: Dict<SelectionDef>
   return selCmpts;
 }
 
-export function assembleUnitSignals(model: UnitModel, signals: any[]) {
-  forEachSelection(model, function(selCmpt, selCompiler) {
-    let name = selCmpt.name,
-        tupleExpr = selCompiler.tupleExpr(model, selCmpt),
-        modifyExpr = selCompiler.modifyExpr(model, selCmpt);
+export function assembleUnitSelectionSignals(model: UnitModel, signals: any[]) {
+  forEachSelection(model, (selCmpt, selCompiler) => {
+    const name = selCmpt.name,
+        tupleExpr = selCompiler.tupleExpr(model, selCmpt);
+    let modifyExpr = selCompiler.modifyExpr(model, selCmpt);
 
     signals.push.apply(signals, selCompiler.signals(model, selCmpt));
 
-    forEachTransform(selCmpt, function(txCompiler) {
+    forEachTransform(selCmpt, txCompiler => {
       if (txCompiler.signals) {
         signals = txCompiler.signals(model, selCmpt, signals);
       }
@@ -134,12 +134,12 @@ export function assembleTopLevelSignals(model: Model) {
     on: [{events: 'mousemove', update: 'group()._id ? group() : unit'}]
   }];
 
-  forEachSelection(model, function(selCmpt, selCompiler) {
+  forEachSelection(model, (selCmpt, selCompiler) => {
     if (selCompiler.topLevelSignals) {
       signals.push.apply(signals, selCompiler.topLevelSignals(model, selCmpt));
     }
 
-    forEachTransform(selCmpt, function(txCompiler) {
+    forEachTransform(selCmpt, txCompiler => {
       if (txCompiler.topLevelSignals) {
         signals = txCompiler.topLevelSignals(model, selCmpt, signals);
       }
@@ -149,52 +149,54 @@ export function assembleTopLevelSignals(model: Model) {
   return signals;
 }
 
-export function assembleUnitData(model: UnitModel, data: VgData[]): VgData[] {
-  return data
-    .concat(Object.keys(model.component.selection)
-      .map(function(k: string) {
-        return {name: k + STORE};
-      }));
+export function assembleUnitSelectionData(model: UnitModel, data: VgData[]): VgData[] {
+  forEachSelection(model, selCmpt => {
+    data.push({name: selCmpt.name + STORE});
+  });
+
+  return data;
 }
 
-export function assembleUnitMarks(model: UnitModel, marks: any[]): any[] {
-  let clippedGroup = false,
+export function assembleUnitSelectionMarks(model: UnitModel, marks: any[]): any[] {
+  let clipGroup = false,
       selMarks = marks;
-  forEachSelection(model, function(selCmpt, selCompiler) {
+  forEachSelection(model, (selCmpt, selCompiler) => {
     selMarks = selCompiler.marks ? selCompiler.marks(model, selCmpt, selMarks) : selMarks;
-    forEachTransform(selCmpt, function(txCompiler) {
-      clippedGroup = clippedGroup || txCompiler.clippedGroup;
+    forEachTransform(selCmpt, (txCompiler) => {
+      clipGroup = clipGroup || txCompiler.clipGroup;
       if (txCompiler.marks) {
         selMarks = txCompiler.marks(model, selCmpt, marks, selMarks);
       }
     });
   });
 
-  if (clippedGroup) {
-    selMarks = [{
-      type: 'group',
-      encode: {
-        enter: {
-          width: {field: {group: 'width'}},
-          height: {field: {group: 'height'}},
-          fill: {value: 'transparent'},
-          clip: {value: true}
-        }
-      },
-      marks: selMarks
-    }];
+  // In a layered spec, we want to clip all layers together rather than
+  // only the layer within which the selection is defined. Propagate
+  // our assembled state up and let the LayerModel make the right call.
+  if (model.parent && model.parent instanceof LayerModel) {
+    return [selMarks, clippedGroup];
+  } else {
+    return clipGroup ? clippedGroup(model, selMarks) : selMarks;
   }
-
-  return selMarks;
 }
 
-let PREDICATES_OPS = {
-  'single': '"intersect", "all"',
+export function assembleLayerSelectionMarks(model: LayerModel, marks: any[]): any[] {
+  let clipGroup = false;
+  model.children.forEach(child => {
+    const unit = assembleUnitSelectionMarks(child, marks);
+    marks = unit[0];
+    clipGroup = clipGroup || unit[1];
+  });
+  return clipGroup ? clippedGroup(model, marks) : marks;
+}
+
+const PREDICATES_OPS = {
+  'global': '"union", "all"',
   'independent': '"intersect", "unit"',
   'union': '"union", "all"',
   'union_others': '"union", "others"',
   'intersect': '"intersect", "all"',
-  'intersect_others': '"intersect", "others'
+  'intersect_others': '"intersect", "others"'
 };
 
 export function predicate(selCmpt: SelectionComponent, datum?: string): string {
@@ -207,10 +209,10 @@ export function predicate(selCmpt: SelectionComponent, datum?: string): string {
 // Utility functions
 
 function forEachSelection(model: Model, cb: (selCmpt: SelectionComponent, selCompiler: SelectionCompiler) => void) {
-  let selections = model.component.selection;
-  for (let name in selections) {
+  const selections = model.component.selection;
+  for (const name in selections) {
     if (selections.hasOwnProperty(name)) {
-      let sel = selections[name];
+      const sel = selections[name];
       cb(sel, compiler(sel));
     }
   }
@@ -229,10 +231,25 @@ function compiler(selCmpt: SelectionComponent): SelectionCompiler {
 }
 
 export function invert(model: UnitModel, selCmpt: SelectionComponent, channel: Channel, expr: string) {
-  let scale = stringValue(model.scaleName(channel));
+  const scale = stringValue(model.scaleName(channel));
   return selCmpt.domain === 'data' ? `invert(${scale}, ${expr})` : expr;
 }
 
 export function channelSignalName(selCmpt: SelectionComponent, channel: Channel) {
   return selCmpt.name + '_' + channel;
+}
+
+function clippedGroup(model: Model, marks: any[]): any[] {
+  return [{
+    type: 'group',
+    encode: {
+      enter: {
+        width: model.getSizeSignalRef('width'),
+        height: model.getSizeSignalRef('height'),
+        fill: {value: 'transparent'},
+        clip: {value: true}
+      }
+    },
+    marks: marks.map(model.correctDataNames)
+  }];
 }

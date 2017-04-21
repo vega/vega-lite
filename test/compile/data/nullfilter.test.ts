@@ -2,11 +2,17 @@
 
 import {assert} from 'chai';
 
-import {nullFilter} from '../../../src/compile/data/nullfilter';
 import {UnitSpec} from '../../../src/spec';
 
-import {mergeDeep} from '../../../src/util';
+import {NullFilterNode} from '../../../src/compile/data/nullfilter';
+import {ModelWithField} from '../../../src/compile/model';
+import {FieldDef} from '../../../src/fielddef';
+import {Dict, mergeDeep} from '../../../src/util';
 import {parseUnitModel} from '../../util';
+
+function parse(model: ModelWithField) {
+  return NullFilterNode.make(model);
+}
 
 describe('compile/data/nullfilter', function() {
   describe('compileUnit', function() {
@@ -21,7 +27,7 @@ describe('compile/data/nullfilter', function() {
 
     it('should add filterNull for Q and T by default', function () {
       const model = parseUnitModel(spec);
-      assert.deepEqual(nullFilter.parseUnit(model), {
+      assert.deepEqual<Dict<FieldDef<string>>>(parse(model).filteredFields, {
         qq: {field: 'qq', type: "quantitative"},
         tt: {field: 'tt', type: "temporal"},
         oo: null
@@ -34,7 +40,7 @@ describe('compile/data/nullfilter', function() {
           filterInvalid: true
         }
       }));
-      assert.deepEqual(nullFilter.parseUnit(model), {
+      assert.deepEqual<Dict<FieldDef<string>>>(parse(model).filteredFields, {
         qq: {field: 'qq', type: "quantitative"},
         tt: {field: 'tt', type: "temporal"},
         oo: {field: 'oo', type: "ordinal"}
@@ -47,7 +53,7 @@ describe('compile/data/nullfilter', function() {
           filterInvalid: false
         }
       }));
-      assert.deepEqual(nullFilter.parseUnit(model), {
+      assert.deepEqual(parse(model).filteredFields, {
         qq: null,
         tt: null,
         oo: null
@@ -62,21 +68,7 @@ describe('compile/data/nullfilter', function() {
         }
       });
 
-      assert.deepEqual(nullFilter.parseUnit(model), {});
-    });
-  });
-
-  describe('parseLayer', function() {
-    // TODO: write test
-  });
-
-  describe('parseFacet', function() {
-    it('should produce child\'s filter if child has no source and the facet has no filter', function() {
-      // TODO: write
-    });
-
-    it('should produce child\'s filter and its own filter if child has no source and the facet has filter', function() {
-      // TODO: write
+      assert.deepEqual(parse(model), null);
     });
   });
 

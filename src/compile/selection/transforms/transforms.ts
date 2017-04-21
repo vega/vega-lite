@@ -12,7 +12,7 @@ export interface TransformCompiler {
   // tupleExpr?: (model: UnitModel, selCmpt: SelectionComponent, expr: string) => string;
   modifyExpr?: (model: UnitModel, selCmpt: SelectionComponent, expr: string) => string;
   marks?: (model: UnitModel, selCmpt:SelectionComponent, marks: any[], selMarks: any[]) => any[];
-  clippedGroup?: boolean;
+  clipGroup?: boolean;
 }
 
 import inputs from './inputs';
@@ -26,7 +26,7 @@ const compilers: Dict<TransformCompiler> = {project, toggle, scales,
   translate, zoom, inputs, nearest};
 
 export function forEachTransform(selCmpt: SelectionComponent, cb: (tx: TransformCompiler) => void) {
-  for (let t in compilers) {
+  for (const t in compilers) {
     if (compilers[t].has(selCmpt)) {
       cb(compilers[t]);
     }

@@ -5,8 +5,8 @@ import {Config} from '../../config';
 import {FieldDef, ScaleFieldDef} from '../../fielddef';
 import {Mark} from '../../mark';
 import {channelScalePropertyIncompatability, Scale, ScaleConfig, scaleTypeSupportProperty} from '../../scale';
-
 import * as util from '../../util';
+
 import {initDomain} from './domain';
 import rangeMixins from './range';
 import * as rules from './rules';
@@ -37,7 +37,7 @@ export const NON_TYPE_RANGE_SCALE_PROPERTIES: (keyof Scale)[] = [
  * - range depends on zero and size (width and height) depends on range
  */
 export default function init(
-    channel: Channel, fieldDef: ScaleFieldDef, config: Config,
+    channel: Channel, fieldDef: ScaleFieldDef<string>, config: Config,
     mark: Mark | undefined, topLevelSize: number | undefined, xyRangeSteps: number[]): Scale {
   const specifiedScale = (fieldDef || {}).scale || {};
 
@@ -80,7 +80,7 @@ export default function init(
   );
 }
 
-function getValue(specifiedValue: any, property: keyof Scale, scale: Scale, channel: Channel, fieldDef: FieldDef, scaleConfig: ScaleConfig) {
+function getValue(specifiedValue: any, property: keyof Scale, scale: Scale, channel: Channel, fieldDef: FieldDef<string>, scaleConfig: ScaleConfig) {
   // For domain, we might override specified value
   if (property === 'domain') {
     return initDomain(specifiedValue, fieldDef, scale.type, scaleConfig);
@@ -93,7 +93,7 @@ function getValue(specifiedValue: any, property: keyof Scale, scale: Scale, chan
   return getDefaultValue(property, scale, channel, fieldDef, scaleConfig);
 }
 
-function getDefaultValue(property: keyof Scale, scale: Scale, channel: Channel, fieldDef: FieldDef, scaleConfig: ScaleConfig) {
+function getDefaultValue(property: keyof Scale, scale: Scale, channel: Channel, fieldDef: FieldDef<string>, scaleConfig: ScaleConfig) {
 
   // If we have default rule-base, determine default value first
   switch (property) {

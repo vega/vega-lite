@@ -20,7 +20,7 @@ export interface EqualFilter {
   field: string;
 
   /**
-   * Value that the field should be equal to.
+   * The value that the field should be equal to.
    */
   equal: string | number | boolean | DateTime;
 
@@ -44,7 +44,7 @@ export interface RangeFilter {
   field: string;
 
   /**
-   * Array of inclusive minimum and maximum values
+   * An array of inclusive minimum and maximum values
    * for a field value of a data item to be included in the filtered data.
    * @maxItems 2
    * @minItems 2
@@ -54,7 +54,7 @@ export interface RangeFilter {
 }
 
 export function isRangeFilter(filter: any): filter is RangeFilter {
-  if (filter && !!filter.field) {
+  if (filter && filter.field) {
     if (isArray(filter.range) && filter.range.length === 2) {
       return true;
     }
@@ -79,7 +79,7 @@ export interface OneOfFilter {
    * A set of values that the `field`'s value should be a member of,
    * for a data item included in the filtered data.
    */
-  oneOf: (string|number|boolean|DateTime)[];
+  oneOf: string[] | number[] | boolean[] | DateTime[];
 
 }
 

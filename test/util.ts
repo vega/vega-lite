@@ -1,24 +1,36 @@
 import {buildModel} from '../src/compile/common';
+import {ConcatModel} from '../src/compile/concat';
 import {FacetModel} from '../src/compile/facet';
 import {LayerModel} from '../src/compile/layer';
 import {Model} from '../src/compile/model';
+import {RepeatModel} from '../src/compile/repeat';
 import {UnitModel} from '../src/compile/unit';
+import {defaultConfig} from '../src/config';
 import {initConfig} from '../src/config';
-import {ExtendedSpec, FacetSpec, LayerSpec, normalize, TopLevel, UnitSpec} from '../src/spec';
+import {ConcatSpec, FacetSpec, LayerSpec, normalize, RepeatSpec, TopLevel, TopLevelExtendedSpec, UnitSpec} from '../src/spec';
 
-export function parseModel(inputSpec: TopLevel<ExtendedSpec>): Model {
-  const spec = normalize(inputSpec);
-  return buildModel(spec, null, '', initConfig(inputSpec.config));
+export function parseModel(inputSpec: TopLevelExtendedSpec): Model {
+  const config = initConfig(inputSpec.config);
+  const spec = normalize(inputSpec, config);
+  return buildModel(spec, null, '', null, config);
 }
 
 export function parseUnitModel(spec: TopLevel<UnitSpec>) {
-  return new UnitModel(spec, null, '', initConfig(spec.config));
+  return new UnitModel(spec, null, '', null, initConfig(spec.config));
 }
 
 export function parseLayerModel(spec: TopLevel<LayerSpec>) {
-  return new LayerModel(spec, null, '', initConfig(spec.config));
+  return new LayerModel(spec, null, '', null, initConfig(spec.config));
 }
 
 export function parseFacetModel(spec: TopLevel<FacetSpec>) {
-  return new FacetModel(spec, null, '', initConfig(spec.config));
+  return new FacetModel(spec, null, '', null, initConfig(spec.config));
+}
+
+export function parseRepeatModel(spec: TopLevel<RepeatSpec>) {
+  return new RepeatModel(spec, null, '', null, initConfig(spec.config));
+}
+
+export function parseConcatModel(spec: TopLevel<ConcatSpec>) {
+  return new ConcatModel(spec, null, '', null, initConfig(spec.config));
 }

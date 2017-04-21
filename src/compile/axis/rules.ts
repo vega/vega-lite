@@ -9,9 +9,9 @@ import {truncate} from '../../util';
 import {VgAxis} from '../../vega.schema';
 
 import {numberFormat} from '../common';
-import {Model} from '../model';
+import {UnitModel} from '../unit';
 
-export function format(specifiedAxis: Axis, channel: Channel, fieldDef: FieldDef, config: Config) {
+export function format(specifiedAxis: Axis, channel: Channel, fieldDef: FieldDef<string>, config: Config) {
   return numberFormat(fieldDef, specifiedAxis.format, config, channel);
 }
 
@@ -20,16 +20,16 @@ export function format(specifiedAxis: Axis, channel: Channel, fieldDef: FieldDef
  * Default rules for whether to show a grid should be shown for a channel.
  * If `grid` is unspecified, the default value is `true` for ordinal scales that are not binned
  */
-export function gridShow(model: Model, channel: Channel) {
+export function gridShow(model: UnitModel, channel: Channel) {
   const grid = model.axis(channel).grid;
   if (grid !== undefined) {
     return grid;
   }
 
-  return !model.hasDiscreteScale(channel) && !model.fieldDef(channel).bin;
+  return !model.hasDiscreteDomain(channel) && !model.fieldDef(channel).bin;
 }
 
-export function grid(model: Model, channel: Channel, isGridAxis: boolean) {
+export function grid(model: UnitModel, channel: Channel, isGridAxis: boolean) {
   if (channel === ROW || channel === COLUMN) {
     // never apply grid for ROW and COLUMN since we manually create rule-group for them
     return false;
@@ -42,7 +42,7 @@ export function grid(model: Model, channel: Channel, isGridAxis: boolean) {
   return gridShow(model, channel);
 }
 
-export function gridScale(model: Model, channel: Channel, isGridAxis: boolean) {
+export function gridScale(model: UnitModel, channel: Channel, isGridAxis: boolean) {
   if (isGridAxis) {
     const gridChannel: Channel = channel === 'x' ? 'y' : 'x';
     if (model.scale(gridChannel)) {
@@ -72,7 +72,7 @@ export function orient(specifiedAxis: Axis, channel: Channel) {
   throw new Error(log.message.INVALID_CHANNEL_FOR_AXIS);
 }
 
-export function tickCount(specifiedAxis: Axis, channel: Channel, fieldDef: FieldDef) {
+export function tickCount(specifiedAxis: Axis, channel: Channel, fieldDef: FieldDef<string>) {
   const count = specifiedAxis.tickCount;
   if (count !== undefined) {
     return count;
@@ -87,10 +87,15 @@ export function tickCount(specifiedAxis: Axis, channel: Channel, fieldDef: Field
   return undefined;
 }
 
-export function title(specifiedAxis: Axis, fieldDef: FieldDef, config: Config, isGridAxis: boolean) {
+export function title(specifiedAxis: Axis, fieldDef: FieldDef<string>, config: Config, isGridAxis: boolean) {
   if (isGridAxis) {
     return undefined;
   }
+
+  if (specifiedAxis.title === '') {
+    return undefined;
+  }
+
   if (specifiedAxis.title !== undefined) {
     return specifiedAxis.title;
   }
@@ -98,7 +103,7 @@ export function title(specifiedAxis: Axis, fieldDef: FieldDef, config: Config, i
   // if not defined, automatically determine axis title from field def
   const fieldTitle = fieldDefTitle(fieldDef, config);
 
-  let maxLength: number = specifiedAxis.titleMaxLength;
+  const maxLength: number = specifiedAxis.titleMaxLength;
   return maxLength ? truncate(fieldTitle, maxLength) : fieldTitle;
 }
 
@@ -123,7 +128,7 @@ export function zindex(specifiedAxis: Axis, isGridAxis: boolean) {
     return 0;
   }
   return 1; // otherwise return undefined and use Vega's default.
-};
+}
 
 export function domainAndTicks(property: keyof VgAxis, specifiedAxis: Axis, isGridAxis: boolean, channel: Channel) {
   if (isGridAxis || channel === ROW || channel === COLUMN) {
