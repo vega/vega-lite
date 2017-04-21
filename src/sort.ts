@@ -16,5 +16,5 @@ export interface SortField {
 }
 
 export function isSortField(sort: SortOrder | SortField): sort is SortField {
-  return !!sort && !!sort['field'] && !!sort['op'];
+  return !!sort && (sort['op'] === 'count' || !!sort['field']) && !!sort['op'];
 }
