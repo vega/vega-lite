@@ -1,4 +1,4 @@
-import {Channel, COLUMN, ROW, SHAPE, SIZE} from './channel';
+import {Channel, COLOR, COLUMN, OPACITY, ROW, SHAPE, SIZE} from './channel';
 import {isBoolean} from './util';
 
 export interface BaseBin {
@@ -70,6 +70,8 @@ export function autoMaxBins(channel: Channel): number {
     case ROW:
     case COLUMN:
     case SIZE:
+    case COLOR:
+    case OPACITY:
       // Facets and Size shouldn't have too many bins
       // We choose 6 like shape to simplify the rule
     case SHAPE:
