@@ -163,13 +163,12 @@ export function domainSort(model: Model, channel: Channel, scaleType: ScaleType)
   if (isSortField(sort)) {
     return {
       op: sort.op,
-      field: sort.field
-      // TODO: Younghoon add order
+      field: sort.field,
+      order: sort.order
     };
   }
 
   if (util.contains(['ascending', 'descending', undefined /* default =ascending*/], sort)) {
-    // TODO: does Vega support "ascending / descending" here?
     return true;
   }
 
