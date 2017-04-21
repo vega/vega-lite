@@ -76,13 +76,24 @@ export function getMarkConfig<P extends keyof MarkConfig>(prop: P, mark: Mark, c
   return config.mark[prop];
 }
 
-export function formatSignalRef(fieldDef: FieldDef<string>, expr: 'datum' | 'parent', config: Config) {
+export function formatSignalRef(fieldDef: FieldDef<string>, expr: 'datum' | 'parent', config: Config, useBinRange?: boolean) {
   if (fieldDef.type === 'quantitative') {
-    // FIXME: what happens if we have bin?
     const format = numberFormat(fieldDef, fieldDef.format, config, 'text');
-    return {
-      signal: `format(${field(fieldDef, {expr})}, '${format}')`
-    };
+    if (fieldDef.bin) {
+      if (useBinRange) {
+        // For bin range, no need to apply format as the formula that creates range already include format
+        return {signal: field(fieldDef, {expr, binSuffix: 'range'})};
+      } else {
+        return {
+          signal: `format(${field(fieldDef, {expr, binSuffix: 'start'})}, '${format}')` + `+'-'+` +
+            `format(${field(fieldDef, {expr, binSuffix: 'end'})}, '${format}')`
+        };
+      }
+    } else {
+      return {
+        signal: `format(${field(fieldDef, {expr})}, '${format}')`
+      };
+    }
   } else if (fieldDef.type === 'temporal') {
     return {
       signal: timeFormatExpression(field(fieldDef, {expr}), fieldDef.timeUnit, fieldDef.format, config.text.shortTimeLabels, config.timeFormat)

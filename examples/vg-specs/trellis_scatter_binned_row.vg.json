@@ -138,7 +138,7 @@
                     },
                     "title": {
                         "text": {
-                            "signal": "format(parent[\"bin_maxbins_6_Acceleration\"], 's')"
+                            "signal": "parent[\"bin_maxbins_6_Acceleration_range\"]"
                         },
                         "offset": 10,
                         "orient": "left",
