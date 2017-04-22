@@ -5,12 +5,12 @@
     "format": {"parse": {"date": "date"}}
   },
   "transform": [{"calculate": "hours(datum.date)", "as": "time"}],
-  "repeat": {"row": ["distance", "delay", "time"]},
+  "repeat": {"column": ["distance", "delay", "time"]},
   "spec": {
     "mark": "bar",
     "encoding": {
       "x": {
-        "field": {"repeat": "row"},
+        "field": {"repeat": "column"},
         "bin": {"maxbins": 20},
         "type": "quantitative"
       },
@@ -18,4 +18,3 @@
     }
   }
 }
-

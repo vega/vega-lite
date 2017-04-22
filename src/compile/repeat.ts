@@ -237,7 +237,7 @@ export class RepeatModel extends Model {
     return {
       padding: {row: 10, column: 10},
       offset: 10,
-      columns: this.repeat && this.repeat.row ? this.repeat.row.length : 1,
+      columns: this.repeat && this.repeat.column ? this.repeat.column.length : 1,
       bounds: 'full',
       align: 'all'
     };
