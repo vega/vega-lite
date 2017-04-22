@@ -117,6 +117,13 @@
                 },
                 "bounds": "full"
             },
+            "encode": {
+                "update": {
+                    "fill": {
+                        "value": "transparent"
+                    }
+                }
+            },
             "marks": [
                 {
                     "name": "column_title",

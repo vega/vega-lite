@@ -132,82 +132,66 @@
                     },
                     "height": {
                         "signal": "height"
+                    },
+                    "fill": {
+                        "value": "transparent"
                     }
                 }
             },
             "marks": [
                 {
-                    "type": "group",
+                    "name": "layer_0_marks",
+                    "type": "rect",
+                    "role": "bar",
+                    "from": {
+                        "data": "data_0"
+                    },
                     "encode": {
-                        "enter": {
-                            "width": {
-                                "signal": "width"
+                        "update": {
+                            "xc": {
+                                "scale": "x",
+                                "field": "a"
                             },
-                            "height": {
-                                "signal": "height"
+                            "width": {
+                                "value": 20
+                            },
+                            "y": {
+                                "scale": "y",
+                                "field": "b"
+                            },
+                            "y2": {
+                                "scale": "y",
+                                "value": 0
                             },
                             "fill": {
-                                "value": "transparent"
-                            },
-                            "clip": {
-                                "value": true
+                                "value": "#4c78a8"
                             }
                         }
                     },
-                    "marks": [
-                        {
-                            "name": "layer_0_marks",
-                            "type": "rect",
-                            "role": "bar",
-                            "from": {
-                                "data": "data_0"
+                    "clip": true
+                },
+                {
+                    "name": "layer_1_marks",
+                    "type": "line",
+                    "from": {
+                        "data": "data_1"
+                    },
+                    "encode": {
+                        "update": {
+                            "x": {
+                                "scale": "x",
+                                "field": "a"
                             },
-                            "encode": {
-                                "update": {
-                                    "xc": {
-                                        "scale": "x",
-                                        "field": "a"
-                                    },
-                                    "width": {
-                                        "value": 20
-                                    },
-                                    "y": {
-                                        "scale": "y",
-                                        "field": "b"
-                                    },
-                                    "y2": {
-                                        "scale": "y",
-                                        "value": 0
-                                    },
-                                    "fill": {
-                                        "value": "#4c78a8"
-                                    }
-                                }
-                            }
-                        },
-                        {
-                            "name": "layer_1_marks",
-                            "type": "line",
-                            "from": {
-                                "data": "data_1"
+                            "y": {
+                                "scale": "y",
+                                "field": "b"
                             },
-                            "encode": {
-                                "update": {
-                                    "x": {
-                                        "scale": "x",
-                                        "field": "a"
-                                    },
-                                    "y": {
-                                        "scale": "y",
-                                        "field": "b"
-                                    },
-                                    "stroke": {
-                                        "value": "red"
-                                    }
-                                }
+                            "stroke": {
+                                "value": "red"
                             }
                         }
-                    ]
+                    },
+                    "clip": true
                 }
             ]
         }

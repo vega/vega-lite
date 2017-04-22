@@ -111,78 +111,62 @@
                     },
                     "height": {
                         "signal": "height"
+                    },
+                    "fill": {
+                        "value": "transparent"
                     }
                 }
             },
             "marks": [
                 {
-                    "type": "group",
+                    "name": "layer_0_marks",
+                    "type": "line",
+                    "from": {
+                        "data": "data_0"
+                    },
                     "encode": {
-                        "enter": {
-                            "width": {
-                                "signal": "width"
+                        "update": {
+                            "x": {
+                                "scale": "x",
+                                "field": "date"
                             },
-                            "height": {
-                                "signal": "height"
+                            "y": {
+                                "scale": "y",
+                                "field": "price"
                             },
-                            "fill": {
-                                "value": "transparent"
-                            },
-                            "clip": {
-                                "value": true
+                            "stroke": {
+                                "value": "#4c78a8"
                             }
                         }
                     },
-                    "marks": [
-                        {
-                            "name": "layer_0_marks",
-                            "type": "line",
-                            "from": {
-                                "data": "data_0"
+                    "clip": true
+                },
+                {
+                    "name": "layer_1_marks",
+                    "type": "symbol",
+                    "role": "point",
+                    "from": {
+                        "data": "data_1"
+                    },
+                    "encode": {
+                        "update": {
+                            "x": {
+                                "scale": "x",
+                                "field": "date"
                             },
-                            "encode": {
-                                "update": {
-                                    "x": {
-                                        "scale": "x",
-                                        "field": "date"
-                                    },
-                                    "y": {
-                                        "scale": "y",
-                                        "field": "price"
-                                    },
-                                    "stroke": {
-                                        "value": "#4c78a8"
-                                    }
-                                }
-                            }
-                        },
-                        {
-                            "name": "layer_1_marks",
-                            "type": "symbol",
-                            "role": "point",
-                            "from": {
-                                "data": "data_1"
+                            "y": {
+                                "scale": "y",
+                                "field": "price"
                             },
-                            "encode": {
-                                "update": {
-                                    "x": {
-                                        "scale": "x",
-                                        "field": "date"
-                                    },
-                                    "y": {
-                                        "scale": "y",
-                                        "field": "price"
-                                    },
-                                    "fill": {
-                                        "value": "#4c78a8"
-                                    },
-                                    "opacity": {
-                                        "value": 0.7
-                                    }
-                                }
+                            "fill": {
+                                "value": "#4c78a8"
+                            },
+                            "opacity": {
+                                "value": 0.7
                             }
                         }
-                    ]
+                    },
+                    "clip": true
                 }
             ]
         }

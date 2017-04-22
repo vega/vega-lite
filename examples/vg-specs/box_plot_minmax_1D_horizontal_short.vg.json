@@ -181,139 +181,125 @@
                     },
                     "height": {
                         "signal": "height"
+                    },
+                    "fill": {
+                        "value": "transparent"
                     }
                 }
             },
             "marks": [
                 {
-                    "type": "group",
+                    "name": "layer_0_marks",
+                    "type": "rule",
+                    "role": "boxWhisker",
+                    "from": {
+                        "data": "data_0"
+                    },
                     "encode": {
-                        "enter": {
-                            "width": {
-                                "signal": "width"
+                        "update": {
+                            "x": {
+                                "scale": "x",
+                                "field": "min_people"
                             },
-                            "height": {
-                                "signal": "height"
+                            "y": {
+                                "value": 10.5
                             },
-                            "fill": {
-                                "value": "transparent"
+                            "x2": {
+                                "scale": "x",
+                                "field": "q1_people"
                             },
-                            "clip": {
-                                "value": true
+                            "stroke": {
+                                "value": "#4c78a8"
                             }
                         }
                     },
-                    "marks": [
-                        {
-                            "name": "layer_0_marks",
-                            "type": "rule",
-                            "role": "boxWhisker",
-                            "from": {
-                                "data": "data_0"
+                    "clip": true
+                },
+                {
+                    "name": "layer_1_marks",
+                    "type": "rule",
+                    "role": "boxWhisker",
+                    "from": {
+                        "data": "data_1"
+                    },
+                    "encode": {
+                        "update": {
+                            "x": {
+                                "scale": "x",
+                                "field": "q3_people"
                             },
-                            "encode": {
-                                "update": {
-                                    "x": {
-                                        "scale": "x",
-                                        "field": "min_people"
-                                    },
-                                    "y": {
-                                        "value": 10.5
-                                    },
-                                    "x2": {
-                                        "scale": "x",
-                                        "field": "q1_people"
-                                    },
-                                    "stroke": {
-                                        "value": "#4c78a8"
-                                    }
-                                }
-                            }
-                        },
-                        {
-                            "name": "layer_1_marks",
-                            "type": "rule",
-                            "role": "boxWhisker",
-                            "from": {
-                                "data": "data_1"
+                            "y": {
+                                "value": 10.5
                             },
-                            "encode": {
-                                "update": {
-                                    "x": {
-                                        "scale": "x",
-                                        "field": "q3_people"
-                                    },
-                                    "y": {
-                                        "value": 10.5
-                                    },
-                                    "x2": {
-                                        "scale": "x",
-                                        "field": "max_people"
-                                    },
-                                    "stroke": {
-                                        "value": "#4c78a8"
-                                    }
-                                }
-                            }
-                        },
-                        {
-                            "name": "layer_2_marks",
-                            "type": "rect",
-                            "role": "box",
-                            "from": {
-                                "data": "data_2"
+                            "x2": {
+                                "scale": "x",
+                                "field": "max_people"
                             },
-                            "encode": {
-                                "update": {
-                                    "x": {
-                                        "scale": "x",
-                                        "field": "q1_people"
-                                    },
-                                    "x2": {
-                                        "scale": "x",
-                                        "field": "q3_people"
-                                    },
-                                    "yc": {
-                                        "value": 10.5
-                                    },
-                                    "height": {
-                                        "value": 14
-                                    },
-                                    "fill": {
-                                        "value": "#4c78a8"
-                                    }
-                                }
-                            }
-                        },
-                        {
-                            "name": "layer_3_marks",
-                            "type": "rect",
-                            "role": "boxMid",
-                            "from": {
-                                "data": "data_3"
-                            },
-                            "encode": {
-                                "update": {
-                                    "xc": {
-                                        "scale": "x",
-                                        "field": "median_people"
-                                    },
-                                    "yc": {
-                                        "value": 10.5
-                                    },
-                                    "height": {
-                                        "value": 14
-                                    },
-                                    "width": {
-                                        "value": 1
-                                    },
-                                    "fill": {
-                                        "value": "white"
-                                    }
-                                }
+                            "stroke": {
+                                "value": "#4c78a8"
                             }
                         }
-                    ]
+                    },
+                    "clip": true
+                },
+                {
+                    "name": "layer_2_marks",
+                    "type": "rect",
+                    "role": "box",
+                    "from": {
+                        "data": "data_2"
+                    },
+                    "encode": {
+                        "update": {
+                            "x": {
+                                "scale": "x",
+                                "field": "q1_people"
+                            },
+                            "x2": {
+                                "scale": "x",
+                                "field": "q3_people"
+                            },
+                            "yc": {
+                                "value": 10.5
+                            },
+                            "height": {
+                                "value": 14
+                            },
+                            "fill": {
+                                "value": "#4c78a8"
+                            }
+                        }
+                    },
+                    "clip": true
+                },
+                {
+                    "name": "layer_3_marks",
+                    "type": "rect",
+                    "role": "boxMid",
+                    "from": {
+                        "data": "data_3"
+                    },
+                    "encode": {
+                        "update": {
+                            "xc": {
+                                "scale": "x",
+                                "field": "median_people"
+                            },
+                            "yc": {
+                                "value": 10.5
+                            },
+                            "height": {
+                                "value": 14
+                            },
+                            "width": {
+                                "value": 1
+                            },
+                            "fill": {
+                                "value": "white"
+                            }
+                        }
+                    },
+                    "clip": true
                 }
             ]
         }

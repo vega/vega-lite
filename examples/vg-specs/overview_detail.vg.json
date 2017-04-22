@@ -107,6 +107,13 @@
                 "bounds": "full",
                 "align": "all"
             },
+            "encode": {
+                "update": {
+                    "fill": {
+                        "value": "transparent"
+                    }
+                }
+            },
             "marks": [
                 {
                     "type": "group",

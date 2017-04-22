@@ -119,78 +119,62 @@
                     },
                     "height": {
                         "signal": "height"
+                    },
+                    "fill": {
+                        "value": "transparent"
                     }
                 }
             },
             "marks": [
                 {
-                    "type": "group",
+                    "name": "layer_0_marks",
+                    "type": "line",
+                    "from": {
+                        "data": "data_0"
+                    },
                     "encode": {
-                        "enter": {
-                            "width": {
-                                "signal": "width"
+                        "update": {
+                            "x": {
+                                "scale": "x",
+                                "field": "miles"
                             },
-                            "height": {
-                                "signal": "height"
+                            "y": {
+                                "scale": "y",
+                                "field": "gas"
                             },
-                            "fill": {
-                                "value": "transparent"
-                            },
-                            "clip": {
-                                "value": true
+                            "stroke": {
+                                "value": "#4c78a8"
                             }
                         }
                     },
-                    "marks": [
-                        {
-                            "name": "layer_0_marks",
-                            "type": "line",
-                            "from": {
-                                "data": "data_0"
+                    "clip": true
+                },
+                {
+                    "name": "layer_1_marks",
+                    "type": "symbol",
+                    "role": "pointOverlay",
+                    "from": {
+                        "data": "data_1"
+                    },
+                    "encode": {
+                        "update": {
+                            "x": {
+                                "scale": "x",
+                                "field": "miles"
                             },
-                            "encode": {
-                                "update": {
-                                    "x": {
-                                        "scale": "x",
-                                        "field": "miles"
-                                    },
-                                    "y": {
-                                        "scale": "y",
-                                        "field": "gas"
-                                    },
-                                    "stroke": {
-                                        "value": "#4c78a8"
-                                    }
-                                }
-                            }
-                        },
-                        {
-                            "name": "layer_1_marks",
-                            "type": "symbol",
-                            "role": "pointOverlay",
-                            "from": {
-                                "data": "data_1"
+                            "y": {
+                                "scale": "y",
+                                "field": "gas"
                             },
-                            "encode": {
-                                "update": {
-                                    "x": {
-                                        "scale": "x",
-                                        "field": "miles"
-                                    },
-                                    "y": {
-                                        "scale": "y",
-                                        "field": "gas"
-                                    },
-                                    "fill": {
-                                        "value": "#4c78a8"
-                                    },
-                                    "opacity": {
-                                        "value": 0.7
-                                    }
-                                }
+                            "fill": {
+                                "value": "#4c78a8"
+                            },
+                            "opacity": {
+                                "value": 0.7
                             }
                         }
-                    ]
+                    },
+                    "clip": true
                 }
             ]
         }

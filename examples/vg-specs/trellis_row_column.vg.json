@@ -95,6 +95,13 @@
                 },
                 "bounds": "full"
             },
+            "encode": {
+                "update": {
+                    "fill": {
+                        "value": "transparent"
+                    }
+                }
+            },
             "marks": [
                 {
                     "name": "row_title",

@@ -330,7 +330,7 @@
                                     }
                                 ]
                             },
-                            "update": "[layer_1_brush_x[0], invert(\"x\", clamp(x(unit), 0, width))]"
+                            "update": "[layer_1_brush_x[0], invert(\"x\", clamp(x(unit), 0, layer_1_width))]"
                         },
                         {
                             "events": {
@@ -380,7 +380,7 @@
                                     }
                                 ]
                             },
-                            "update": "[layer_1_brush_y[0], invert(\"y\", clamp(y(unit), 0, height))]"
+                            "update": "[layer_1_brush_y[0], invert(\"y\", clamp(y(unit), 0, layer_1_height))]"
                         },
                         {
                             "events": {
@@ -553,219 +553,205 @@
                     },
                     "height": {
                         "signal": "height"
+                    },
+                    "fill": {
+                        "value": "transparent"
                     }
                 }
             },
             "marks": [
                 {
-                    "type": "group",
+                    "type": "rect",
                     "encode": {
                         "enter": {
-                            "width": {
-                                "signal": "width"
+                            "fill": {
+                                "value": "#eee"
+                            }
+                        },
+                        "update": {
+                            "x": [
+                                {
+                                    "test": "data(\"layer_1_brush_store\").length && layer_1_brush_tuple && layer_1_brush_tuple.unit === data(\"layer_1_brush_store\")[0].unit",
+                                    "scale": "x",
+                                    "signal": "layer_1_brush[0].extent[0]"
+                                },
+                                {
+                                    "value": 0
+                                }
+                            ],
+                            "x2": [
+                                {
+                                    "test": "data(\"layer_1_brush_store\").length && layer_1_brush_tuple && layer_1_brush_tuple.unit === data(\"layer_1_brush_store\")[0].unit",
+                                    "scale": "x",
+                                    "signal": "layer_1_brush[0].extent[1]"
+                                },
+                                {
+                                    "value": 0
+                                }
+                            ],
+                            "y": [
+                                {
+                                    "test": "data(\"layer_1_brush_store\").length && layer_1_brush_tuple && layer_1_brush_tuple.unit === data(\"layer_1_brush_store\")[0].unit",
+                                    "scale": "y",
+                                    "signal": "layer_1_brush[1].extent[0]"
+                                },
+                                {
+                                    "value": 0
+                                }
+                            ],
+                            "y2": [
+                                {
+                                    "test": "data(\"layer_1_brush_store\").length && layer_1_brush_tuple && layer_1_brush_tuple.unit === data(\"layer_1_brush_store\")[0].unit",
+                                    "scale": "y",
+                                    "signal": "layer_1_brush[1].extent[1]"
+                                },
+                                {
+                                    "value": 0
+                                }
+                            ]
+                        }
+                    },
+                    "clip": true
+                },
+                {
+                    "name": "layer_0_marks",
+                    "type": "symbol",
+                    "role": "point",
+                    "from": {
+                        "data": "data_0"
+                    },
+                    "encode": {
+                        "update": {
+                            "x": {
+                                "scale": "x",
+                                "field": "Horsepower"
                             },
-                            "height": {
-                                "signal": "height"
+                            "y": {
+                                "scale": "y",
+                                "field": "Miles_per_Gallon"
                             },
+                            "stroke": [
+                                {
+                                    "test": "vlInterval(\"layer_1_brush_store\", parent._id, datum, \"union\", \"all\")",
+                                    "value": "grey"
+                                },
+                                {
+                                    "scale": "color",
+                                    "field": "Cylinders"
+                                }
+                            ],
                             "fill": {
                                 "value": "transparent"
                             },
-                            "clip": {
-                                "value": true
+                            "size": {
+                                "value": 100
+                            },
+                            "opacity": {
+                                "value": 0.7
                             }
                         }
                     },
-                    "marks": [
-                        {
-                            "type": "rect",
-                            "encode": {
-                                "enter": {
-                                    "fill": {
-                                        "value": "#eee"
-                                    }
-                                },
-                                "update": {
-                                    "x": [
-                                        {
-                                            "test": "data(\"layer_1_brush_store\").length && layer_1_brush_tuple && layer_1_brush_tuple.unit === data(\"layer_1_brush_store\")[0].unit",
-                                            "scale": "x",
-                                            "signal": "layer_1_brush[0].extent[0]"
-                                        },
-                                        {
-                                            "value": 0
-                                        }
-                                    ],
-                                    "x2": [
-                                        {
-                                            "test": "data(\"layer_1_brush_store\").length && layer_1_brush_tuple && layer_1_brush_tuple.unit === data(\"layer_1_brush_store\")[0].unit",
-                                            "scale": "x",
-                                            "signal": "layer_1_brush[0].extent[1]"
-                                        },
-                                        {
-                                            "value": 0
-                                        }
-                                    ],
-                                    "y": [
-                                        {
-                                            "test": "data(\"layer_1_brush_store\").length && layer_1_brush_tuple && layer_1_brush_tuple.unit === data(\"layer_1_brush_store\")[0].unit",
-                                            "scale": "y",
-                                            "signal": "layer_1_brush[1].extent[0]"
-                                        },
-                                        {
-                                            "value": 0
-                                        }
-                                    ],
-                                    "y2": [
-                                        {
-                                            "test": "data(\"layer_1_brush_store\").length && layer_1_brush_tuple && layer_1_brush_tuple.unit === data(\"layer_1_brush_store\")[0].unit",
-                                            "scale": "y",
-                                            "signal": "layer_1_brush[1].extent[1]"
-                                        },
-                                        {
-                                            "value": 0
-                                        }
-                                    ]
-                                }
-                            }
-                        },
-                        {
-                            "name": "layer_0_marks",
-                            "type": "symbol",
-                            "role": "point",
-                            "from": {
-                                "data": "data_0"
+                    "clip": true
+                },
+                {
+                    "name": "layer_1_marks",
+                    "type": "symbol",
+                    "role": "square",
+                    "from": {
+                        "data": "data_1"
+                    },
+                    "encode": {
+                        "update": {
+                            "x": {
+                                "scale": "x",
+                                "field": "Horsepower"
                             },
-                            "encode": {
-                                "update": {
-                                    "x": {
-                                        "scale": "x",
-                                        "field": "Horsepower"
-                                    },
-                                    "y": {
-                                        "scale": "y",
-                                        "field": "Miles_per_Gallon"
-                                    },
-                                    "stroke": [
-                                        {
-                                            "test": "vlInterval(\"layer_1_brush_store\", parent._id, datum, \"union\", \"all\")",
-                                            "value": "grey"
-                                        },
-                                        {
-                                            "scale": "color",
-                                            "field": "Cylinders"
-                                        }
-                                    ],
-                                    "fill": {
-                                        "value": "transparent"
-                                    },
-                                    "size": {
-                                        "value": 100
-                                    },
-                                    "opacity": {
-                                        "value": 0.7
-                                    }
-                                }
-                            }
-                        },
-                        {
-                            "name": "layer_1_marks",
-                            "type": "symbol",
-                            "role": "square",
-                            "from": {
-                                "data": "data_1"
+                            "y": {
+                                "scale": "y",
+                                "field": "Miles_per_Gallon"
                             },
-                            "encode": {
-                                "update": {
-                                    "x": {
-                                        "scale": "x",
-                                        "field": "Horsepower"
-                                    },
-                                    "y": {
-                                        "scale": "y",
-                                        "field": "Miles_per_Gallon"
-                                    },
-                                    "fill": [
-                                        {
-                                            "test": "!vlInterval(\"layer_1_brush_store\", parent._id, datum, \"union\", \"all\")",
-                                            "value": "grey"
-                                        },
-                                        {
-                                            "scale": "color",
-                                            "field": "Cylinders"
-                                        }
-                                    ],
-                                    "size": [
-                                        {
-                                            "test": "vlPoint(\"layer_0_cyl_store\", parent._id, datum, \"union\", \"all\")",
-                                            "value": 150
-                                        },
-                                        {
-                                            "value": 50
-                                        }
-                                    ],
-                                    "shape": {
-                                        "value": "square"
-                                    },
-                                    "opacity": {
-                                        "value": 0.7
-                                    }
-                                }
-                            }
-                        },
-                        {
-                            "name": "layer_1_brush_brush",
-                            "type": "rect",
-                            "encode": {
-                                "enter": {
-                                    "fill": {
-                                        "value": "transparent"
-                                    }
+                            "fill": [
+                                {
+                                    "test": "!vlInterval(\"layer_1_brush_store\", parent._id, datum, \"union\", \"all\")",
+                                    "value": "grey"
                                 },
-                                "update": {
-                                    "x": [
-                                        {
-                                            "test": "data(\"layer_1_brush_store\").length && layer_1_brush_tuple && layer_1_brush_tuple.unit === data(\"layer_1_brush_store\")[0].unit",
-                                            "scale": "x",
-                                            "signal": "layer_1_brush[0].extent[0]"
-                                        },
-                                        {
-                                            "value": 0
-                                        }
-                                    ],
-                                    "x2": [
-                                        {
-                                            "test": "data(\"layer_1_brush_store\").length && layer_1_brush_tuple && layer_1_brush_tuple.unit === data(\"layer_1_brush_store\")[0].unit",
-                                            "scale": "x",
-                                            "signal": "layer_1_brush[0].extent[1]"
-                                        },
-                                        {
-                                            "value": 0
-                                        }
-                                    ],
-                                    "y": [
-                                        {
-                                            "test": "data(\"layer_1_brush_store\").length && layer_1_brush_tuple && layer_1_brush_tuple.unit === data(\"layer_1_brush_store\")[0].unit",
-                                            "scale": "y",
-                                            "signal": "layer_1_brush[1].extent[0]"
-                                        },
-                                        {
-                                            "value": 0
-                                        }
-                                    ],
-                                    "y2": [
-                                        {
-                                            "test": "data(\"layer_1_brush_store\").length && layer_1_brush_tuple && layer_1_brush_tuple.unit === data(\"layer_1_brush_store\")[0].unit",
-                                            "scale": "y",
-                                            "signal": "layer_1_brush[1].extent[1]"
-                                        },
-                                        {
-                                            "value": 0
-                                        }
-                                    ]
+                                {
+                                    "scale": "color",
+                                    "field": "Cylinders"
                                 }
+                            ],
+                            "size": [
+                                {
+                                    "test": "vlPoint(\"layer_0_cyl_store\", parent._id, datum, \"union\", \"all\")",
+                                    "value": 150
+                                },
+                                {
+                                    "value": 50
+                                }
+                            ],
+                            "shape": {
+                                "value": "square"
+                            },
+                            "opacity": {
+                                "value": 0.7
                             }
                         }
-                    ]
+                    },
+                    "clip": true
+                },
+                {
+                    "name": "layer_1_brush_brush",
+                    "type": "rect",
+                    "encode": {
+                        "enter": {
+                            "fill": {
+                                "value": "transparent"
+                            }
+                        },
+                        "update": {
+                            "x": [
+                                {
+                                    "test": "data(\"layer_1_brush_store\").length && layer_1_brush_tuple && layer_1_brush_tuple.unit === data(\"layer_1_brush_store\")[0].unit",
+                                    "scale": "x",
+                                    "signal": "layer_1_brush[0].extent[0]"
+                                },
+                                {
+                                    "value": 0
+                                }
+                            ],
+                            "x2": [
+                                {
+                                    "test": "data(\"layer_1_brush_store\").length && layer_1_brush_tuple && layer_1_brush_tuple.unit === data(\"layer_1_brush_store\")[0].unit",
+                                    "scale": "x",
+                                    "signal": "layer_1_brush[0].extent[1]"
+                                },
+                                {
+                                    "value": 0
+                                }
+                            ],
+                            "y": [
+                                {
+                                    "test": "data(\"layer_1_brush_store\").length && layer_1_brush_tuple && layer_1_brush_tuple.unit === data(\"layer_1_brush_store\")[0].unit",
+                                    "scale": "y",
+                                    "signal": "layer_1_brush[1].extent[0]"
+                                },
+                                {
+                                    "value": 0
+                                }
+                            ],
+                            "y2": [
+                                {
+                                    "test": "data(\"layer_1_brush_store\").length && layer_1_brush_tuple && layer_1_brush_tuple.unit === data(\"layer_1_brush_store\")[0].unit",
+                                    "scale": "y",
+                                    "signal": "layer_1_brush[1].extent[1]"
+                                },
+                                {
+                                    "value": 0
+                                }
+                            ]
+                        }
+                    },
+                    "clip": true
                 }
             ]
         }

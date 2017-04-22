@@ -157,7 +157,7 @@
                                     }
                                 ]
                             },
-                            "update": "[child_brush_x[0], invert(\"x\", clamp(x(unit), 0, width))]"
+                            "update": "[child_brush_x[0], invert(\"x\", clamp(x(unit), 0, child_width))]"
                         },
                         {
                             "events": {
@@ -482,6 +482,13 @@
                     ]
                 }
             ],
+            "encode": {
+                "update": {
+                    "fill": {
+                        "value": "transparent"
+                    }
+                }
+            },
             "marks": [
                 {
                     "name": "column_title",
@@ -661,7 +668,7 @@
                                             }
                                         ]
                                     },
-                                    "update": "[child_brush_x[0], invert(\"x\", clamp(x(unit), 0, width))]"
+                                    "update": "[child_brush_x[0], invert(\"x\", clamp(x(unit), 0, child_width))]"
                                 },
                                 {
                                     "events": {
@@ -988,161 +995,144 @@
                     ],
                     "marks": [
                         {
-                            "type": "group",
+                            "type": "rect",
                             "encode": {
                                 "enter": {
-                                    "width": {
-                                        "signal": "child_width"
+                                    "fill": {
+                                        "value": "#eee"
+                                    }
+                                },
+                                "update": {
+                                    "x": {
+                                        "scale": "x",
+                                        "signal": "child_brush[0].extent[0]"
                                     },
-                                    "height": {
-                                        "signal": "child_height"
+                                    "x2": {
+                                        "scale": "x",
+                                        "signal": "child_brush[0].extent[1]"
                                     },
+                                    "y": {
+                                        "value": 0
+                                    },
+                                    "y2": {
+                                        "field": {
+                                            "group": "height"
+                                        }
+                                    }
+                                }
+                            },
+                            "clip": true
+                        },
+                        {
+                            "name": "child_marks",
+                            "type": "symbol",
+                            "role": "circle",
+                            "from": {
+                                "data": "facet"
+                            },
+                            "encode": {
+                                "update": {
+                                    "x": {
+                                        "scale": "x",
+                                        "field": "X"
+                                    },
+                                    "y": {
+                                        "scale": "y",
+                                        "field": "Y"
+                                    },
+                                    "fill": [
+                                        {
+                                            "test": "vlPoint(\"child_xenc_store\", parent._id, datum, \"union\", \"all\")",
+                                            "value": "red"
+                                        },
+                                        {
+                                            "value": "steelblue"
+                                        }
+                                    ],
+                                    "size": [
+                                        {
+                                            "test": "vlInterval(\"child_brush_store\", parent._id, datum, \"intersect\", \"all\")",
+                                            "value": 250
+                                        },
+                                        {
+                                            "value": 100
+                                        }
+                                    ],
+                                    "shape": {
+                                        "value": "circle"
+                                    }
+                                }
+                            },
+                            "clip": true
+                        },
+                        {
+                            "name": "child_voronoi",
+                            "type": "path",
+                            "from": {
+                                "data": "child_marks"
+                            },
+                            "encode": {
+                                "enter": {
                                     "fill": {
                                         "value": "transparent"
                                     },
-                                    "clip": {
+                                    "strokeWidth": {
+                                        "value": 0.35
+                                    },
+                                    "stroke": {
+                                        "value": "transparent"
+                                    },
+                                    "isVoronoi": {
                                         "value": true
                                     }
                                 }
                             },
-                            "marks": [
+                            "transform": [
                                 {
-                                    "type": "rect",
-                                    "encode": {
-                                        "enter": {
-                                            "fill": {
-                                                "value": "#eee"
-                                            }
-                                        },
-                                        "update": {
-                                            "x": {
-                                                "scale": "x",
-                                                "signal": "child_brush[0].extent[0]"
-                                            },
-                                            "x2": {
-                                                "scale": "x",
-                                                "signal": "child_brush[0].extent[1]"
-                                            },
-                                            "y": {
-                                                "value": 0
-                                            },
-                                            "y2": {
-                                                "field": {
-                                                    "group": "height"
-                                                }
-                                            }
-                                        }
-                                    }
-                                },
-                                {
-                                    "name": "child_marks",
-                                    "type": "symbol",
-                                    "role": "circle",
-                                    "from": {
-                                        "data": "facet"
-                                    },
-                                    "encode": {
-                                        "update": {
-                                            "x": {
-                                                "scale": "x",
-                                                "field": "X"
-                                            },
-                                            "y": {
-                                                "scale": "y",
-                                                "field": "Y"
-                                            },
-                                            "fill": [
-                                                {
-                                                    "test": "vlPoint(\"child_xenc_store\", parent._id, datum, \"union\", \"all\")",
-                                                    "value": "red"
-                                                },
-                                                {
-                                                    "value": "steelblue"
-                                                }
-                                            ],
-                                            "size": [
-                                                {
-                                                    "test": "vlInterval(\"child_brush_store\", parent._id, datum, \"intersect\", \"all\")",
-                                                    "value": 250
-                                                },
-                                                {
-                                                    "value": 100
-                                                }
-                                            ],
-                                            "shape": {
-                                                "value": "circle"
-                                            }
-                                        }
-                                    }
-                                },
-                                {
-                                    "name": "child_voronoi",
-                                    "type": "path",
-                                    "from": {
-                                        "data": "child_marks"
-                                    },
-                                    "encode": {
-                                        "enter": {
-                                            "fill": {
-                                                "value": "transparent"
-                                            },
-                                            "strokeWidth": {
-                                                "value": 0.35
-                                            },
-                                            "stroke": {
-                                                "value": "transparent"
-                                            },
-                                            "isVoronoi": {
-                                                "value": true
-                                            }
-                                        }
-                                    },
-                                    "transform": [
+                                    "type": "voronoi",
+                                    "x": "datum.x",
+                                    "y": "datum.y",
+                                    "size": [
                                         {
-                                            "type": "voronoi",
-                                            "x": "datum.x",
-                                            "y": "datum.y",
-                                            "size": [
-                                                {
-                                                    "signal": "width"
-                                                },
-                                                {
-                                                    "signal": "height"
-                                                }
-                                            ]
+                                            "signal": "child_width"
+                                        },
+                                        {
+                                            "signal": "child_height"
                                         }
                                     ]
+                                }
+                            ],
+                            "clip": true
+                        },
+                        {
+                            "name": "child_brush_brush",
+                            "type": "rect",
+                            "encode": {
+                                "enter": {
+                                    "fill": {
+                                        "value": "transparent"
+                                    }
                                 },
-                                {
-                                    "name": "child_brush_brush",
-                                    "type": "rect",
-                                    "encode": {
-                                        "enter": {
-                                            "fill": {
-                                                "value": "transparent"
-                                            }
-                                        },
-                                        "update": {
-                                            "x": {
-                                                "scale": "x",
-                                                "signal": "child_brush[0].extent[0]"
-                                            },
-                                            "x2": {
-                                                "scale": "x",
-                                                "signal": "child_brush[0].extent[1]"
-                                            },
-                                            "y": {
-                                                "value": 0
-                                            },
-                                            "y2": {
-                                                "field": {
-                                                    "group": "height"
-                                                }
-                                            }
+                                "update": {
+                                    "x": {
+                                        "scale": "x",
+                                        "signal": "child_brush[0].extent[0]"
+                                    },
+                                    "x2": {
+                                        "scale": "x",
+                                        "signal": "child_brush[0].extent[1]"
+                                    },
+                                    "y": {
+                                        "value": 0
+                                    },
+                                    "y2": {
+                                        "field": {
+                                            "group": "height"
                                         }
                                     }
                                 }
-                            ]
+                            },
+                            "clip": true
                         }
                     ],
                     "axes": [

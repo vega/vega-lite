@@ -196,63 +196,46 @@
                     },
                     "height": {
                         "signal": "height"
+                    },
+                    "fill": {
+                        "value": "transparent"
                     }
                 }
             },
             "marks": [
                 {
-                    "type": "group",
+                    "name": "marks",
+                    "type": "symbol",
+                    "role": "circle",
+                    "from": {
+                        "data": "source_0"
+                    },
                     "encode": {
-                        "enter": {
-                            "width": {
-                                "signal": "width"
+                        "update": {
+                            "x": {
+                                "scale": "x",
+                                "field": "Horsepower"
                             },
-                            "height": {
-                                "signal": "height"
+                            "y": {
+                                "scale": "y",
+                                "field": "Miles_per_Gallon"
                             },
                             "fill": {
-                                "value": "transparent"
+                                "value": "#4c78a8"
                             },
-                            "clip": {
-                                "value": true
+                            "size": {
+                                "scale": "size",
+                                "field": "Cylinders"
+                            },
+                            "shape": {
+                                "value": "circle"
+                            },
+                            "opacity": {
+                                "value": 0.7
                             }
                         }
                     },
-                    "marks": [
-                        {
-                            "name": "marks",
-                            "type": "symbol",
-                            "role": "circle",
-                            "from": {
-                                "data": "source_0"
-                            },
-                            "encode": {
-                                "update": {
-                                    "x": {
-                                        "scale": "x",
-                                        "field": "Horsepower"
-                                    },
-                                    "y": {
-                                        "scale": "y",
-                                        "field": "Miles_per_Gallon"
-                                    },
-                                    "fill": {
-                                        "value": "#4c78a8"
-                                    },
-                                    "size": {
-                                        "scale": "size",
-                                        "field": "Cylinders"
-                                    },
-                                    "shape": {
-                                        "value": "circle"
-                                    },
-                                    "opacity": {
-                                        "value": 0.7
-                                    }
-                                }
-                            }
-                        }
-                    ]
+                    "clip": true
                 }
             ]
         }
