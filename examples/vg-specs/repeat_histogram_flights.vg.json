@@ -215,11 +215,11 @@
                     "name": "child_distance_group",
                     "encode": {
                         "update": {
-                            "height": {
-                                "signal": "child_distance_height"
-                            },
                             "width": {
                                 "signal": "child_distance_width"
+                            },
+                            "height": {
+                                "signal": "child_distance_height"
                             },
                             "fill": {
                                 "value": "transparent"
@@ -338,11 +338,11 @@
                     "name": "child_delay_group",
                     "encode": {
                         "update": {
-                            "height": {
-                                "signal": "child_delay_height"
-                            },
                             "width": {
                                 "signal": "child_delay_width"
+                            },
+                            "height": {
+                                "signal": "child_delay_height"
                             },
                             "fill": {
                                 "value": "transparent"
@@ -461,11 +461,11 @@
                     "name": "child_time_group",
                     "encode": {
                         "update": {
-                            "height": {
-                                "signal": "child_time_height"
-                            },
                             "width": {
                                 "signal": "child_time_width"
+                            },
+                            "height": {
+                                "signal": "child_time_height"
                             },
                             "fill": {
                                 "value": "transparent"

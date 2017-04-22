@@ -271,11 +271,11 @@
                     "name": "child_Horsepower_group",
                     "encode": {
                         "update": {
-                            "height": {
-                                "signal": "child_Horsepower_height"
-                            },
                             "width": {
                                 "signal": "child_Horsepower_width"
+                            },
+                            "height": {
+                                "signal": "child_Horsepower_height"
                             },
                             "fill": {
                                 "value": "transparent"
@@ -398,11 +398,11 @@
                     "name": "child_Miles_per_Gallon_group",
                     "encode": {
                         "update": {
-                            "height": {
-                                "signal": "child_Miles_per_Gallon_height"
-                            },
                             "width": {
                                 "signal": "child_Miles_per_Gallon_width"
+                            },
+                            "height": {
+                                "signal": "child_Miles_per_Gallon_height"
                             },
                             "fill": {
                                 "value": "transparent"
@@ -525,11 +525,11 @@
                     "name": "child_Acceleration_group",
                     "encode": {
                         "update": {
-                            "height": {
-                                "signal": "child_Acceleration_height"
-                            },
                             "width": {
                                 "signal": "child_Acceleration_width"
+                            },
+                            "height": {
+                                "signal": "child_Acceleration_height"
                             },
                             "fill": {
                                 "value": "transparent"
