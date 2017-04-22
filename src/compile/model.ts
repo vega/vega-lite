@@ -257,9 +257,9 @@ export abstract class Model {
   }
 
   /**
-   * Return the data source name for the given data source type. You probably want to call this in parse.
+   * Request a data source name for the given data source type and mark that the data source is used. This method should be called in parse, so that all used data source can be correctly instantiated in assembleData().
    */
-  public getDataName(name: DataSourceType) {
+  public requestDataName(name: DataSourceType) {
     const fullName = this.getName(name);
 
     return this.lookupDataSource(fullName);
