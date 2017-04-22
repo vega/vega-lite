@@ -246,6 +246,10 @@ export class FacetModel extends ModelWithField {
     return null;
   }
 
+  public assembleSelectionTopLevelSignals(signals: any[]): VgSignal[] {
+    return this.child.assembleSelectionTopLevelSignals(signals);
+  }
+
   public assembleSelectionSignals(): VgSignal[] {
     return this.child.assembleSelectionSignals();
   }

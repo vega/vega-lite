@@ -119,7 +119,7 @@ describe('Single Selection', function() {
       name: 'two', update: 'data(\"two_store\")[0]'
     }]);
 
-    const signals = selection.assembleTopLevelSignals(model);
+    const signals = selection.assembleTopLevelSignals(model, []);
     assert.includeDeepMembers(signals, oneSg.concat(twoSg));
   });
 

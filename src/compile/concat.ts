@@ -81,12 +81,15 @@ export class ConcatModel extends Model {
     return null;
   }
 
+  public assembleSelectionTopLevelSignals(signals: any[]): VgSignal[] {
+    return this.children.reduce((sg, child) => child.assembleSelectionTopLevelSignals(sg), signals);
+  }
+
   public assembleSelectionSignals(): VgSignal[] {
     return this.children.reduce((signals, child) => {
       return signals.concat(child.assembleSelectionSignals());
     }, []);
   }
-
 
   public assembleLayoutSignals(): VgSignal[] {
     return this.children.reduce((signals, child) => {

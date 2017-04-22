@@ -8,7 +8,6 @@ import {extractTopLevelProperties, TopLevelProperties} from '../toplevelprops';
 import {extend, keys} from '../util';
 import {buildModel} from './common';
 import {Model} from './model';
-import {assembleTopLevelSignals} from './selection/selection';
 
 export function compile(inputSpec: TopLevelExtendedSpec, logger?: log.LoggerInterface) {
   if (logger) {
@@ -76,7 +75,7 @@ function assemble(model: Model, topLevelProperties: TopLevelProperties) {
           ] : []
         ),
         model.assembleLayoutSignals(),
-        assembleTopLevelSignals(model)
+        model.assembleSelectionTopLevelSignals([])
       )
     ),
 

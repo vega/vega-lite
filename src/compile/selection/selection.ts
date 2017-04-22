@@ -128,12 +128,15 @@ export function assembleUnitSelectionSignals(model: UnitModel, signals: any[]) {
   return signals;
 }
 
-export function assembleTopLevelSignals(model: Model) {
-  let signals:any[] = [{
-    name: 'unit',
-    value: {},
-    on: [{events: 'mousemove', update: 'group()._id ? group() : unit'}]
-  }];
+export function assembleTopLevelSignals(model: UnitModel, signals: any[]) {
+  let hasUnit = signals.filter((s) => s.name === 'unit');
+  if (!(hasUnit.length)) {
+    signals.push({
+      name: 'unit',
+      value: {},
+      on: [{events: 'mousemove', update: 'group()._id ? group() : unit'}]
+    });
+  }
 
   forEachSelection(model, (selCmpt, selCompiler) => {
     if (selCompiler.topLevelSignals) {

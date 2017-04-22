@@ -216,6 +216,10 @@ export class RepeatModel extends Model {
     return null;
   }
 
+  public assembleSelectionTopLevelSignals(signals: any[]): VgSignal[] {
+    return this.children.reduce((sg, child) => child.assembleSelectionTopLevelSignals(sg), signals);
+  }
+
   public assembleSelectionSignals(): VgSignal[] {
     this.children.forEach((child) => child.assembleSelectionSignals());
     return [];
