@@ -110,9 +110,14 @@ export function assembleNestedMainGroup(model: Model) {
           update: {
             width: {signal: 'width'},
             height: {signal: 'height'},
+            fill: {value: 'transparent'}
           }
         }
-      } : {}),
+      } : {
+        encode: {
+          update: {fill: {value: 'transparent'}}
+        }
+      }),
       marks
     }],
   };
