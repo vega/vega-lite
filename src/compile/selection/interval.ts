@@ -146,7 +146,7 @@ export function projections(selCmpt: SelectionComponent) {
 
 function channelSignal(model: UnitModel, selCmpt: SelectionComponent, channel: Channel): any {
   const name  = channelSignalName(selCmpt, channel),
-      size  = (channel === X ? 'width' : 'height'),
+      size  = model.getSizeSignalRef(channel === X ? 'width' : 'height').signal,
       coord = `${channel}(unit)`,
       invert = invertFn.bind(null, model, selCmpt, channel);
 

@@ -72,7 +72,7 @@ function getSign(selCmpt: SelectionComponent, channel: Channel) {
   return s;
 }
 
-function onDelta(model: UnitModel, selCmpt: SelectionComponent, channel: Channel, size: string, signals: any[]) {
+function onDelta(model: UnitModel, selCmpt: SelectionComponent, channel: Channel, size: 'width' | 'height', signals: any[]) {
   const name = selCmpt.name,
       signal:any = signals.filter((s:any) => s.name === name + '_' + channel)[0],
       anchor = name + ANCHOR,
