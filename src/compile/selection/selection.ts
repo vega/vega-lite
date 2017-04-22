@@ -174,9 +174,9 @@ export function assembleUnitSelectionMarks(model: UnitModel, marks: any[]): any[
   // only the layer within which the selection is defined. Propagate
   // our assembled state up and let the LayerModel make the right call.
   if (model.parent && model.parent instanceof LayerModel) {
-    return [selMarks, clippedGroup];
+    return [selMarks, clipMarks];
   } else {
-    return clipGroup ? clippedGroup(model, selMarks) : selMarks;
+    return clipGroup ? clipMarks(selMarks) : selMarks;
   }
 }
 
@@ -187,7 +187,7 @@ export function assembleLayerSelectionMarks(model: LayerModel, marks: any[]): an
     marks = unit[0];
     clipGroup = clipGroup || unit[1];
   });
-  return clipGroup ? clippedGroup(model, marks) : marks;
+  return clipGroup ? clipMarks(marks) : marks;
 }
 
 const PREDICATES_OPS = {
@@ -239,17 +239,6 @@ export function channelSignalName(selCmpt: SelectionComponent, channel: Channel)
   return selCmpt.name + '_' + channel;
 }
 
-function clippedGroup(model: Model, marks: any[]): any[] {
-  return [{
-    type: 'group',
-    encode: {
-      enter: {
-        width: model.getSizeSignalRef('width'),
-        height: model.getSizeSignalRef('height'),
-        fill: {value: 'transparent'},
-        clip: {value: true}
-      }
-    },
-    marks: marks.map(model.correctDataNames)
-  }];
+function clipMarks(marks: any[]): any[] {
+  return marks.map((m) => (m.clip = true, m));
 }
