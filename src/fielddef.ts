@@ -211,6 +211,8 @@ export function field(fieldDef: FieldDef<string>, opt: FieldRefOption = {}): str
 
   if (opt.datum) {
     field = `datum["${field}"]`;
+  } else if (field !== undefined && field.indexOf('.') !== -1) { // dot in fieldname
+    field = `[${field}]`;
   }
 
   return field;
