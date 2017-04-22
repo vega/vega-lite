@@ -11,7 +11,7 @@ const project:TransformCompiler = {
     const fields = {};
     // TODO: find a possible channel mapping for these fields.
     (selDef.fields || []).forEach((f) => fields[f] = null);
-    (selDef.encodings || []).forEach((e: Channel) => fields[model.field(e)] = e);
+    (selDef.encodings || []).forEach((e: Channel) => fields[model.fieldDef(e).field] = e);
 
     const projection = selCmpt.project || (selCmpt.project = []);
     for (const field in fields) {
