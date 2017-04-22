@@ -27,14 +27,14 @@ const scaleBindings:TransformCompiler = {
         return;
       }
 
-      scale.domainRaw = {signal: channelSignalName(selCmpt, channel)};
+      scale.domainRaw = {signal: channelSignalName(model, selCmpt, channel)};
       bound.push(channel);
     });
   },
 
   topLevelSignals: function(model, selCmpt, signals) {
     return signals.concat(selCmpt.scales.map((channel) => {
-      return {name: channelSignalName(selCmpt, channel)};
+      return {name: channelSignalName(model, selCmpt, channel)};
     }));
   },
 
@@ -46,7 +46,7 @@ const scaleBindings:TransformCompiler = {
     });
 
     selCmpt.scales.forEach(function(channel) {
-      const signal = signals.filter((s) => s.name === name + '_' + channel)[0];
+      const signal = signals.filter((s) => s.name === channelSignalName(selCmpt, channel))[0];
       signal.push = 'outer';
       delete signal.value;
       delete signal.update;

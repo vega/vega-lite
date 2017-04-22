@@ -27,6 +27,7 @@ export interface SelectionComponent {
 
   // Transforms
   project?: ProjectComponent[];
+  fields?: any;
   scales?: Channel[];
   toggle?: any;
   translate?: any;
@@ -77,7 +78,7 @@ export function parseUnitSelection(model: UnitModel, selDefs: Dict<SelectionDef>
     }
 
     const selCmpt = selCmpts[name] = extend({}, selDef, {
-      name: model.getName(name),
+      name: name,
       events: isString(selDef.on) ? parseSelector(selDef.on, 'scope') : selDef.on,
       domain: 'data' as SelectionDomain, // TODO: Support def.domain
     }) as SelectionComponent;
@@ -119,7 +120,7 @@ export function assembleUnitSelectionSignals(model: UnitModel, signals: any[]) {
       name: name + MODIFY,
       on: [{
         events: {signal: name},
-        update: `modify(${stringValue(name + STORE)}, ${modifyExpr})`
+        update: `modify(${stringValue(selCmpt.name + STORE)}, ${modifyExpr})`
       }]
     });
   });
@@ -151,7 +152,8 @@ export function assembleTopLevelSignals(model: Model) {
 
 export function assembleUnitSelectionData(model: UnitModel, data: VgData[]): VgData[] {
   forEachSelection(model, selCmpt => {
-    data.push({name: selCmpt.name + STORE});
+    let contains = data.filter((d) => d.name === selCmpt.name + STORE);
+    if (!contains.length) data.push({name: selCmpt.name + STORE});
   });
 
   return data;
@@ -236,7 +238,7 @@ export function invert(model: UnitModel, selCmpt: SelectionComponent, channel: C
 }
 
 export function channelSignalName(selCmpt: SelectionComponent, channel: Channel) {
-  return selCmpt.name + '_' + channel;
+  return selCmpt.name + '_' + selCmpt.fields[channel];
 }
 
 function clipMarks(marks: any[]): any[] {

@@ -221,7 +221,6 @@ export class RepeatModel extends Model {
     return [];
   }
 
-
   public assembleLayoutSignals(): VgSignal[] {
     return this.children.reduce((signals, child) => {
       return signals.concat(child.assembleLayoutSignals());
