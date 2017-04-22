@@ -150,11 +150,11 @@
                     "name": "child_Displacement_Horsepower_group",
                     "encode": {
                         "update": {
-                            "height": {
-                                "signal": "child_Displacement_Horsepower_height"
-                            },
                             "width": {
                                 "signal": "child_Displacement_Horsepower_width"
+                            },
+                            "height": {
+                                "signal": "child_Displacement_Horsepower_height"
                             },
                             "fill": {
                                 "value": "transparent"
@@ -271,11 +271,11 @@
                     "name": "child_Displacement_Miles_per_Gallon_group",
                     "encode": {
                         "update": {
-                            "height": {
-                                "signal": "child_Displacement_Miles_per_Gallon_height"
-                            },
                             "width": {
                                 "signal": "child_Displacement_Miles_per_Gallon_width"
+                            },
+                            "height": {
+                                "signal": "child_Displacement_Miles_per_Gallon_height"
                             },
                             "fill": {
                                 "value": "transparent"
@@ -392,11 +392,11 @@
                     "name": "child_Miles_per_Gallon_Horsepower_group",
                     "encode": {
                         "update": {
-                            "height": {
-                                "signal": "child_Miles_per_Gallon_Horsepower_height"
-                            },
                             "width": {
                                 "signal": "child_Miles_per_Gallon_Horsepower_width"
+                            },
+                            "height": {
+                                "signal": "child_Miles_per_Gallon_Horsepower_height"
                             },
                             "fill": {
                                 "value": "transparent"
@@ -513,11 +513,11 @@
                     "name": "child_Miles_per_Gallon_Miles_per_Gallon_group",
                     "encode": {
                         "update": {
-                            "height": {
-                                "signal": "child_Miles_per_Gallon_Miles_per_Gallon_height"
-                            },
                             "width": {
                                 "signal": "child_Miles_per_Gallon_Miles_per_Gallon_width"
+                            },
+                            "height": {
+                                "signal": "child_Miles_per_Gallon_Miles_per_Gallon_height"
                             },
                             "fill": {
                                 "value": "transparent"

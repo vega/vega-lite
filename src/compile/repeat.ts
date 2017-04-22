@@ -250,8 +250,8 @@ export class RepeatModel extends Model {
       name: child.getName('group'),
       encode: {
         update: {
-          height: {signal: child.getName('height')},
-          width: {signal: child.getName('width')},
+          width: child.getSizeSignalRef('width'),
+          height: child.getSizeSignalRef('height'),
           ...child.assembleParentGroupProperties()
         }
       },

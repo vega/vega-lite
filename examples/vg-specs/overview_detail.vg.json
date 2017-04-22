@@ -113,11 +113,11 @@
                     "name": "concat_0_group",
                     "encode": {
                         "update": {
-                            "height": {
-                                "signal": "concat_0_height"
-                            },
                             "width": {
                                 "signal": "concat_0_width"
+                            },
+                            "height": {
+                                "signal": "concat_0_height"
                             },
                             "fill": {
                                 "value": "transparent"
@@ -240,11 +240,11 @@
                     "name": "concat_1_group",
                     "encode": {
                         "update": {
-                            "height": {
-                                "signal": "concat_1_height"
-                            },
                             "width": {
                                 "signal": "concat_1_width"
+                            },
+                            "height": {
+                                "signal": "concat_1_height"
                             },
                             "fill": {
                                 "value": "transparent"
