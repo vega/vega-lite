@@ -161,8 +161,8 @@ export class LayerModel extends Model {
     }
   }
 
-  public assembleParentGroupProperties(cellConfig: CellConfig): VgEncodeEntry {
-    return applyConfig({}, cellConfig, FILL_STROKE_CONFIG.concat(['clip']));
+  public assembleParentGroupProperties(): VgEncodeEntry {
+    return applyConfig({}, this.config.cell, FILL_STROKE_CONFIG.concat(['clip']));
   }
 
   // TODO: Support same named selections across children.

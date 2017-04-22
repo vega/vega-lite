@@ -299,8 +299,8 @@ export class UnitModel extends ModelWithField {
     return marks.map(this.correctDataNames);
   }
 
-  public assembleParentGroupProperties(cellConfig: CellConfig) {
-    return applyConfig({}, cellConfig, FILL_STROKE_CONFIG.concat(['clip']));
+  public assembleParentGroupProperties() {
+    return applyConfig({}, this.config.cell, FILL_STROKE_CONFIG.concat(['clip']));
   }
 
   public channels() {

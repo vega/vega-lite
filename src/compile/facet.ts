@@ -5,6 +5,7 @@ import {reduce} from '../encoding';
 import {Facet} from '../facet';
 import {FieldDef, normalize, title as fieldDefTitle} from '../fielddef';
 import * as log from '../log';
+import {FILL_STROKE_CONFIG} from '../mark';
 import {FacetSpec} from '../spec';
 import {StackProperties} from '../stack';
 import {contains, Dict, extend, flatten, keys, vals} from '../util';
@@ -20,7 +21,7 @@ import {
 } from '../vega.schema';
 import {parseGridAxis, parseMainAxis} from './axis/parse';
 import {gridShow} from './axis/rules';
-import {buildModel, formatSignalRef} from './common';
+import {applyConfig, buildModel, formatSignalRef} from './common';
 import {assembleData, assembleFacetData, FACET_SCALE_PREFIX} from './data/assemble';
 import {parseData} from './data/parse';
 import {getHeaderType, HeaderChannel, HeaderComponent, LayoutHeaderComponent} from './layout/header';
@@ -325,11 +326,14 @@ function childSizeEncodeEntryMixins(model: FacetModel, sizeType: 'width' | 'heig
 // FIXME(https://github.com/vega/vega-lite/issues/2041): revise this.
 function getFacetGroupProperties(model: FacetModel) {
   const child = model.child;
-  const mergedCellConfig = extend({}, child.config.cell, child.config.facet.cell);
 
   return {
     ...childSizeEncodeEntryMixins(model, 'width'),
     ...childSizeEncodeEntryMixins(model, 'height'),
-    ...(hasSubPlotWithXy(model) ? child.assembleParentGroupProperties(mergedCellConfig) : {})
+
+    // FIXME revise if we really need hasSubPlotWithXy()
+    ...(hasSubPlotWithXy(model) ? child.assembleParentGroupProperties() : {}),
+
+    ...applyConfig({}, model.config.facet.cell, FILL_STROKE_CONFIG.concat(['clip']))
   };
 }

@@ -144,13 +144,6 @@
                 "bounds": "full",
                 "align": "all"
             },
-            "encode": {
-                "update": {
-                    "fill": {
-                        "value": "transparent"
-                    }
-                }
-            },
             "marks": [
                 {
                     "type": "group",
@@ -162,6 +155,9 @@
                             },
                             "width": {
                                 "signal": "child_Displacement_Horsepower_width"
+                            },
+                            "fill": {
+                                "value": "transparent"
                             }
                         }
                     },
@@ -280,6 +276,9 @@
                             },
                             "width": {
                                 "signal": "child_Displacement_Miles_per_Gallon_width"
+                            },
+                            "fill": {
+                                "value": "transparent"
                             }
                         }
                     },
@@ -398,6 +397,9 @@
                             },
                             "width": {
                                 "signal": "child_Miles_per_Gallon_Horsepower_width"
+                            },
+                            "fill": {
+                                "value": "transparent"
                             }
                         }
                     },
@@ -516,6 +518,9 @@
                             },
                             "width": {
                                 "signal": "child_Miles_per_Gallon_Miles_per_Gallon_width"
+                            },
+                            "fill": {
+                                "value": "transparent"
                             }
                         }
                     },

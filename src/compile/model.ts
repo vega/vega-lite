@@ -235,7 +235,7 @@ export abstract class Model {
     return group;
   }
 
-  public abstract assembleParentGroupProperties(cellConfig: CellConfig): VgEncodeEntry;
+  public abstract assembleParentGroupProperties(): VgEncodeEntry;
 
   public hasDescendantWithFieldOnChannel(channel: Channel) {
     for (const child of this.children) {

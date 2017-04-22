@@ -209,13 +209,6 @@
                 "bounds": "full",
                 "align": "all"
             },
-            "encode": {
-                "update": {
-                    "fill": {
-                        "value": "transparent"
-                    }
-                }
-            },
             "marks": [
                 {
                     "type": "group",
@@ -227,6 +220,9 @@
                             },
                             "width": {
                                 "signal": "child_distance_width"
+                            },
+                            "fill": {
+                                "value": "transparent"
                             }
                         }
                     },
@@ -347,6 +343,9 @@
                             },
                             "width": {
                                 "signal": "child_delay_width"
+                            },
+                            "fill": {
+                                "value": "transparent"
                             }
                         }
                     },
@@ -467,6 +466,9 @@
                             },
                             "width": {
                                 "signal": "child_time_width"
+                            },
+                            "fill": {
+                                "value": "transparent"
                             }
                         }
                     },

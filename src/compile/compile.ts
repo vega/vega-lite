@@ -96,7 +96,16 @@ function assemble(model: Model, topLevelProperties: TopLevelProperties) {
 export function assembleNestedMainGroup(model: Model) {
   const {layout, signals, ...group} =  model.assembleGroup([]);
   const marks = group.marks;
+
   const hasLayout = !!model.assembleLayout();
+  const parentEncodeEntry = {
+    ...(!hasLayout ? {
+      width: {signal: 'width'},
+      height: {signal: 'height'},
+    } : {}),
+    ...model.assembleParentGroupProperties()
+  };
+
 
   return {
     ...group,
@@ -105,19 +114,11 @@ export function assembleNestedMainGroup(model: Model) {
       type: 'group',
       layout,
       signals,
-      ...(!hasLayout ? {
+      ...(keys(parentEncodeEntry).length > 0 ? {
         encode: {
-          update: {
-            width: {signal: 'width'},
-            height: {signal: 'height'},
-            fill: {value: 'transparent'}
-          }
+          update: parentEncodeEntry
         }
-      } : {
-        encode: {
-          update: {fill: {value: 'transparent'}}
-        }
-      }),
+      } : {}),
       marks
     }],
   };
