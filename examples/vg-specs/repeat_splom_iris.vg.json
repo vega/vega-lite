@@ -465,13 +465,6 @@
                 "bounds": "full",
                 "align": "all"
             },
-            "encode": {
-                "update": {
-                    "fill": {
-                        "value": "transparent"
-                    }
-                }
-            },
             "marks": [
                 {
                     "type": "group",
@@ -483,6 +476,9 @@
                             },
                             "width": {
                                 "signal": "child_petalWidth_sepalLength_width"
+                            },
+                            "fill": {
+                                "value": "transparent"
                             }
                         }
                     },
@@ -601,6 +597,9 @@
                             },
                             "width": {
                                 "signal": "child_petalWidth_sepalWidth_width"
+                            },
+                            "fill": {
+                                "value": "transparent"
                             }
                         }
                     },
@@ -719,6 +718,9 @@
                             },
                             "width": {
                                 "signal": "child_petalWidth_petalLength_width"
+                            },
+                            "fill": {
+                                "value": "transparent"
                             }
                         }
                     },
@@ -837,6 +839,9 @@
                             },
                             "width": {
                                 "signal": "child_petalWidth_petalWidth_width"
+                            },
+                            "fill": {
+                                "value": "transparent"
                             }
                         }
                     },
@@ -955,6 +960,9 @@
                             },
                             "width": {
                                 "signal": "child_petalLength_sepalLength_width"
+                            },
+                            "fill": {
+                                "value": "transparent"
                             }
                         }
                     },
@@ -1073,6 +1081,9 @@
                             },
                             "width": {
                                 "signal": "child_petalLength_sepalWidth_width"
+                            },
+                            "fill": {
+                                "value": "transparent"
                             }
                         }
                     },
@@ -1191,6 +1202,9 @@
                             },
                             "width": {
                                 "signal": "child_petalLength_petalLength_width"
+                            },
+                            "fill": {
+                                "value": "transparent"
                             }
                         }
                     },
@@ -1309,6 +1323,9 @@
                             },
                             "width": {
                                 "signal": "child_petalLength_petalWidth_width"
+                            },
+                            "fill": {
+                                "value": "transparent"
                             }
                         }
                     },
@@ -1427,6 +1444,9 @@
                             },
                             "width": {
                                 "signal": "child_sepalWidth_sepalLength_width"
+                            },
+                            "fill": {
+                                "value": "transparent"
                             }
                         }
                     },
@@ -1545,6 +1565,9 @@
                             },
                             "width": {
                                 "signal": "child_sepalWidth_sepalWidth_width"
+                            },
+                            "fill": {
+                                "value": "transparent"
                             }
                         }
                     },
@@ -1663,6 +1686,9 @@
                             },
                             "width": {
                                 "signal": "child_sepalWidth_petalLength_width"
+                            },
+                            "fill": {
+                                "value": "transparent"
                             }
                         }
                     },
@@ -1781,6 +1807,9 @@
                             },
                             "width": {
                                 "signal": "child_sepalWidth_petalWidth_width"
+                            },
+                            "fill": {
+                                "value": "transparent"
                             }
                         }
                     },
@@ -1899,6 +1928,9 @@
                             },
                             "width": {
                                 "signal": "child_sepalLength_sepalLength_width"
+                            },
+                            "fill": {
+                                "value": "transparent"
                             }
                         }
                     },
@@ -2017,6 +2049,9 @@
                             },
                             "width": {
                                 "signal": "child_sepalLength_sepalWidth_width"
+                            },
+                            "fill": {
+                                "value": "transparent"
                             }
                         }
                     },
@@ -2135,6 +2170,9 @@
                             },
                             "width": {
                                 "signal": "child_sepalLength_petalLength_width"
+                            },
+                            "fill": {
+                                "value": "transparent"
                             }
                         }
                     },
@@ -2253,6 +2291,9 @@
                             },
                             "width": {
                                 "signal": "child_sepalLength_petalWidth_width"
+                            },
+                            "fill": {
+                                "value": "transparent"
                             }
                         }
                     },

@@ -107,13 +107,6 @@
                 "bounds": "full",
                 "align": "all"
             },
-            "encode": {
-                "update": {
-                    "fill": {
-                        "value": "transparent"
-                    }
-                }
-            },
             "marks": [
                 {
                     "type": "group",
@@ -125,6 +118,9 @@
                             },
                             "width": {
                                 "signal": "concat_0_width"
+                            },
+                            "fill": {
+                                "value": "transparent"
                             }
                         }
                     },
@@ -249,6 +245,9 @@
                             },
                             "width": {
                                 "signal": "concat_1_width"
+                            },
+                            "fill": {
+                                "value": "transparent"
                             }
                         }
                     },

@@ -77,7 +77,7 @@ export class ConcatModel extends Model {
     return [];
   }
 
-  public assembleParentGroupProperties(cellConfig: CellConfig): any {
+  public assembleParentGroupProperties(): any {
     return null;
   }
 
@@ -123,7 +123,8 @@ export class ConcatModel extends Model {
       encode: {
         update: {
           height: {signal: child.getName('height')},
-          width: {signal: child.getName('width')}
+          width: {signal: child.getName('width')},
+          ...child.assembleParentGroupProperties()
         }
       },
       ...child.assembleGroup()
