@@ -2,7 +2,7 @@ import {Channel, X, Y} from '../../channel';
 import {warn} from '../../log';
 import {extend, keys, stringValue} from '../../util';
 import {UnitModel} from '../unit';
-import {channelSignalName, invert as invertFn, SelectionCompiler, SelectionComponent, STORE, TUPLE, ProjectComponent} from './selection';
+import {channelSignalName, invert as invertFn, ProjectComponent, SelectionCompiler, SelectionComponent, STORE, TUPLE} from './selection';
 import scales from './transforms/scales';
 
 export const BRUSH = '_brush',

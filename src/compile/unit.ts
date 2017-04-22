@@ -27,7 +27,7 @@ import {Model, ModelWithField} from './model';
 import {RepeaterValue, replaceRepeaterInEncoding} from './repeat';
 import initScale from './scale/init';
 import parseScaleComponent from './scale/parse';
-import {assembleUnitSelectionData, assembleUnitSelectionMarks, assembleUnitSelectionSignals, assembleTopLevelSignals, parseUnitSelection} from './selection/selection';
+import {assembleTopLevelSignals, assembleUnitSelectionData, assembleUnitSelectionMarks, assembleUnitSelectionSignals, parseUnitSelection} from './selection/selection';
 
 /**
  * Internal model of Vega-Lite specification for the compiler.

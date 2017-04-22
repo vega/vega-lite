@@ -129,7 +129,7 @@ export function assembleUnitSelectionSignals(model: UnitModel, signals: any[]) {
 }
 
 export function assembleTopLevelSignals(model: UnitModel, signals: any[]) {
-  let hasUnit = signals.filter((s) => s.name === 'unit');
+  const hasUnit = signals.filter((s) => s.name === 'unit');
   if (!(hasUnit.length)) {
     signals.push({
       name: 'unit',
@@ -155,8 +155,10 @@ export function assembleTopLevelSignals(model: UnitModel, signals: any[]) {
 
 export function assembleUnitSelectionData(model: UnitModel, data: VgData[]): VgData[] {
   forEachSelection(model, selCmpt => {
-    let contains = data.filter((d) => d.name === selCmpt.name + STORE);
-    if (!contains.length) data.push({name: selCmpt.name + STORE});
+    const contains = data.filter((d) => d.name === selCmpt.name + STORE);
+    if (!contains.length) {
+      data.push({name: selCmpt.name + STORE});
+    }
   });
 
   return data;

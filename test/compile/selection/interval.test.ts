@@ -40,7 +40,7 @@ describe('Interval Selections', function() {
     it('builds projection signals', function() {
       const oneSg = interval.signals(model, selCmpts['one']);
       assert.includeDeepMembers(oneSg, [{
-        "name": "one_x",
+        "name": "one_Horsepower",
         "value": [],
         "on": [
           {
@@ -49,14 +49,14 @@ describe('Interval Selections', function() {
           },
           {
             "events": parseSelector('[mousedown, window:mouseup] > window:mousemove!', 'scope')[0],
-            "update": "[one_x[0], invert(\"x\", clamp(x(unit), 0, width))]"
+            "update": "[one_Horsepower[0], invert(\"x\", clamp(x(unit), 0, width))]"
           }
         ]
       }]);
 
       const twoSg = interval.signals(model, selCmpts['two']);
       assert.includeDeepMembers(twoSg, [{
-        "name": "two_y",
+        "name": "two_Miles_per_Gallon",
         "on": [],
         "value": []
       }]);
@@ -64,7 +64,7 @@ describe('Interval Selections', function() {
       const threeSg = interval.signals(model, selCmpts['three']);
       assert.includeDeepMembers(threeSg, [
         {
-          "name": "three_x",
+          "name": "three_Horsepower",
           "value": [],
           "on": [
             {
@@ -73,7 +73,7 @@ describe('Interval Selections', function() {
             },
             {
               "events": parseSelector('[mousedown, mouseup] > mousemove', 'scope')[0],
-              "update": "[three_x[0], invert(\"x\", clamp(x(unit), 0, width))]"
+              "update": "[three_Horsepower[0], invert(\"x\", clamp(x(unit), 0, width))]"
             },
             {
               "events": parseSelector('keydown', 'scope')[0],
@@ -81,12 +81,12 @@ describe('Interval Selections', function() {
             },
             {
               "events": parseSelector('[keydown, keyup] > keypress', 'scope')[0],
-              "update": "[three_x[0], invert(\"x\", clamp(x(unit), 0, width))]"
+              "update": "[three_Horsepower[0], invert(\"x\", clamp(x(unit), 0, width))]"
             }
           ]
         },
         {
-          "name": "three_y",
+          "name": "three_Miles_per_Gallon",
           "value": [],
           "on": [
             {
@@ -95,7 +95,7 @@ describe('Interval Selections', function() {
             },
             {
               "events": parseSelector('[mousedown, mouseup] > mousemove', 'scope')[0],
-              "update": "[three_y[0], invert(\"y\", clamp(y(unit), 0, height))]"
+              "update": "[three_Miles_per_Gallon[0], invert(\"y\", clamp(y(unit), 0, height))]"
             },
             {
               "events": parseSelector('keydown', 'scope')[0],
@@ -103,7 +103,7 @@ describe('Interval Selections', function() {
             },
             {
               "events": parseSelector('[keydown, keyup] > keypress', 'scope')[0],
-              "update": "[three_y[0], invert(\"y\", clamp(y(unit), 0, height))]"
+              "update": "[three_Miles_per_Gallon[0], invert(\"y\", clamp(y(unit), 0, height))]"
             }
           ]
         }
@@ -159,7 +159,7 @@ describe('Interval Selections', function() {
       assert.includeDeepMembers(oneSg, [
         {
           "name": "one",
-          "update": "[{field: \"Horsepower\", extent: one_x}]"
+          "update": "[{field: \"Horsepower\", extent: one_Horsepower}]"
         }
       ]);
 
@@ -167,7 +167,7 @@ describe('Interval Selections', function() {
       assert.includeDeepMembers(twoSg, [
         {
           "name": "two",
-          "update": "[{field: \"Miles_per_Gallon\", extent: two_y}]"
+          "update": "[{field: \"Miles_per_Gallon\", extent: two_Miles_per_Gallon}]"
         }
       ]);
 
@@ -175,7 +175,7 @@ describe('Interval Selections', function() {
       assert.includeDeepMembers(threeSg, [
         {
           "name": "three",
-          "update": "[{field: \"Horsepower\", extent: three_x}, {field: \"Miles_per_Gallon\", extent: three_y}]"
+          "update": "[{field: \"Horsepower\", extent: three_Horsepower}, {field: \"Miles_per_Gallon\", extent: three_Miles_per_Gallon}]"
         }
       ]);
     });

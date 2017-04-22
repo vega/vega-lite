@@ -121,9 +121,9 @@ describe('Layered Selections', function() {
           "update": {
             "x": [
               {
-                "test": "data(\"layer_0_brush_store\").length && layer_0_brush_tuple && layer_0_brush_tuple.unit === data(\"layer_0_brush_store\")[0].unit",
+                "test": "data(\"brush_store\").length && brush_tuple && brush_tuple.unit === data(\"brush_store\")[0].unit",
                 "scale": "x",
-                "signal": "layer_0_brush[0].extent[0]"
+                "signal": "brush[0].extent[0]"
               },
               {
                 "value": 0
@@ -131,9 +131,9 @@ describe('Layered Selections', function() {
             ],
             "x2": [
               {
-                "test": "data(\"layer_0_brush_store\").length && layer_0_brush_tuple && layer_0_brush_tuple.unit === data(\"layer_0_brush_store\")[0].unit",
+                "test": "data(\"brush_store\").length && brush_tuple && brush_tuple.unit === data(\"brush_store\")[0].unit",
                 "scale": "x",
-                "signal": "layer_0_brush[0].extent[1]"
+                "signal": "brush[0].extent[1]"
               },
               {
                 "value": 0
@@ -141,9 +141,9 @@ describe('Layered Selections', function() {
             ],
             "y": [
               {
-                "test": "data(\"layer_0_brush_store\").length && layer_0_brush_tuple && layer_0_brush_tuple.unit === data(\"layer_0_brush_store\")[0].unit",
+                "test": "data(\"brush_store\").length && brush_tuple && brush_tuple.unit === data(\"brush_store\")[0].unit",
                 "scale": "y",
-                "signal": "layer_0_brush[1].extent[0]"
+                "signal": "brush[1].extent[0]"
               },
               {
                 "value": 0
@@ -151,9 +151,9 @@ describe('Layered Selections', function() {
             ],
             "y2": [
               {
-                "test": "data(\"layer_0_brush_store\").length && layer_0_brush_tuple && layer_0_brush_tuple.unit === data(\"layer_0_brush_store\")[0].unit",
+                "test": "data(\"brush_store\").length && brush_tuple && brush_tuple.unit === data(\"brush_store\")[0].unit",
                 "scale": "y",
-                "signal": "layer_0_brush[1].extent[1]"
+                "signal": "brush[1].extent[1]"
               },
               {
                 "value": 0
@@ -166,7 +166,7 @@ describe('Layered Selections', function() {
       {...child0, clip: true}, {...child1, clip: true},
       // Foreground brush mark for "brush" selection.
       {
-        "name": "layer_0_brush_brush",
+        "name": "brush_brush",
         "type": "rect",
         "clip": true,
         "encode": {
@@ -178,9 +178,9 @@ describe('Layered Selections', function() {
           "update": {
             "x": [
               {
-                "test": "data(\"layer_0_brush_store\").length && layer_0_brush_tuple && layer_0_brush_tuple.unit === data(\"layer_0_brush_store\")[0].unit",
+                "test": "data(\"brush_store\").length && brush_tuple && brush_tuple.unit === data(\"brush_store\")[0].unit",
                 "scale": "x",
-                "signal": "layer_0_brush[0].extent[0]"
+                "signal": "brush[0].extent[0]"
               },
               {
                 "value": 0
@@ -188,9 +188,9 @@ describe('Layered Selections', function() {
             ],
             "x2": [
               {
-                "test": "data(\"layer_0_brush_store\").length && layer_0_brush_tuple && layer_0_brush_tuple.unit === data(\"layer_0_brush_store\")[0].unit",
+                "test": "data(\"brush_store\").length && brush_tuple && brush_tuple.unit === data(\"brush_store\")[0].unit",
                 "scale": "x",
-                "signal": "layer_0_brush[0].extent[1]"
+                "signal": "brush[0].extent[1]"
               },
               {
                 "value": 0
@@ -198,9 +198,9 @@ describe('Layered Selections', function() {
             ],
             "y": [
               {
-                "test": "data(\"layer_0_brush_store\").length && layer_0_brush_tuple && layer_0_brush_tuple.unit === data(\"layer_0_brush_store\")[0].unit",
+                "test": "data(\"brush_store\").length && brush_tuple && brush_tuple.unit === data(\"brush_store\")[0].unit",
                 "scale": "y",
-                "signal": "layer_0_brush[1].extent[0]"
+                "signal": "brush[1].extent[0]"
               },
               {
                 "value": 0
@@ -208,9 +208,9 @@ describe('Layered Selections', function() {
             ],
             "y2": [
               {
-                "test": "data(\"layer_0_brush_store\").length && layer_0_brush_tuple && layer_0_brush_tuple.unit === data(\"layer_0_brush_store\")[0].unit",
+                "test": "data(\"brush_store\").length && brush_tuple && brush_tuple.unit === data(\"brush_store\")[0].unit",
                 "scale": "y",
-                "signal": "layer_0_brush[1].extent[1]"
+                "signal": "brush[1].extent[1]"
               },
               {
                 "value": 0

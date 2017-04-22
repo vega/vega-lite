@@ -33,12 +33,12 @@ const scaleBindings:TransformCompiler = {
   },
 
   topLevelSignals: function(model, selCmpt, signals) {
-    let channels = selCmpt.scales.filter((channel) => {
+    const channels = selCmpt.scales.filter((channel) => {
       return !(signals.filter((s) => s.name === channelSignalName(selCmpt, channel)).length);
     });
 
     return signals.concat(channels.map((channel) => {
-      return {name: channelSignalName(selCmpt, channel)}
+      return {name: channelSignalName(selCmpt, channel)};
     }));
   },
 
