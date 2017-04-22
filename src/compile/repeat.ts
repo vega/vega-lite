@@ -115,8 +115,16 @@ export class RepeatModel extends Model {
   }
 
   public parseSelection() {
-    // TODO: @arvind can write this
-    // We might need to split this into compileSelectionData and compileSelectionSignals?
+    // Merge selections up the hierarchy so that they may be referenced
+    // across unit specs. Persist their definitions within each child
+    // to assemble signals which remain within output Vega unit groups.
+    this.component.selection = {};
+    for (const child of this.children) {
+      child.parseSelection();
+      keys(child.component.selection).forEach((key) => {
+        this.component.selection[key] = child.component.selection[key];
+      });
+    }
   }
 
   public parseScale(this: RepeatModel) {
@@ -209,9 +217,8 @@ export class RepeatModel extends Model {
   }
 
   public assembleSelectionSignals(): VgSignal[] {
-    return this.children.reduce((signals, child) => {
-      return signals.concat(child.assembleSelectionSignals());
-    }, []);
+    this.children.forEach((child) => child.assembleSelectionSignals());
+    return [];
   }
 
 
@@ -222,7 +229,7 @@ export class RepeatModel extends Model {
   }
 
   public assembleSelectionData(data: VgData[]): VgData[] {
-    return [];
+    return this.children.reduce((db, child) => child.assembleSelectionData(db), []);
   }
 
   public assembleScales(): VgScale[] {
