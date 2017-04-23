@@ -3708,6 +3708,24 @@
                             "type": "array"
                         },
                         {
+                            "additionalProperties": false,
+                            "properties": {
+                                "encoding": {
+                                    "type": "string"
+                                },
+                                "field": {
+                                    "type": "string"
+                                },
+                                "selection": {
+                                    "type": "string"
+                                },
+                                "signal": {
+                                    "type": "string"
+                                }
+                            },
+                            "type": "object"
+                        },
+                        {
                             "items": {
                                 "type": "number"
                             },
