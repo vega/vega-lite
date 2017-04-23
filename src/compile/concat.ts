@@ -1,7 +1,7 @@
 import {CellConfig, Config} from '../config';
 import {Repeat} from '../repeat';
 import {ConcatSpec, RepeatSpec} from '../spec';
-import {Dict, vals} from '../util';
+import {Dict, vals, keys} from '../util';
 import {VgData, VgLayout, VgScale, VgSignal} from '../vega.schema';
 import {buildModel} from './common';
 import {assembleData} from './data/assemble';
@@ -30,8 +30,16 @@ export class ConcatModel extends Model {
   }
 
   public parseSelection() {
-    // TODO: @arvind can write this
-    // We might need to split this into compileSelectionData and compileSelectionSignals?
+    // Merge selections up the hierarchy so that they may be referenced
+    // across unit specs. Persist their definitions within each child
+    // to assemble signals which remain within output Vega unit groups.
+    this.component.selection = {};
+    for (const child of this.children) {
+      child.parseSelection();
+      keys(child.component.selection).forEach((key) => {
+        this.component.selection[key] = child.component.selection[key];
+      });
+    }
   }
 
   public parseScale() {
@@ -86,9 +94,8 @@ export class ConcatModel extends Model {
   }
 
   public assembleSelectionSignals(): VgSignal[] {
-    return this.children.reduce((signals, child) => {
-      return signals.concat(child.assembleSelectionSignals());
-    }, []);
+    this.children.forEach((child) => child.assembleSelectionSignals());
+    return [];
   }
 
   public assembleLayoutSignals(): VgSignal[] {
@@ -97,7 +104,7 @@ export class ConcatModel extends Model {
     }, []);
   }
   public assembleSelectionData(data: VgData[]): VgData[] {
-    return [];
+    return this.children.reduce((db, child) => child.assembleSelectionData(db), []);
   }
 
   public assembleScales(): VgScale[] {
