@@ -651,7 +651,7 @@ export interface VgMarkConfig {
   /**
    * The overall opacity (value between [0,1]).
    *
-   * __Default value:__ `0.7` for non-aggregate plots with `point`, `tick`, `circle`, or `square` marks or [layered `bar` charts](http://vega.github.io/new-editor/#/examples/vega_lite/bar_layered_transparent) and `1` otherwise.
+   * __Default value:__ `0.7` for non-aggregate plots with `point`, `tick`, `circle`, or `square` marks or layered `bar` charts and `1` otherwise.
    *
    * @minimum 0
    * @maximum 1

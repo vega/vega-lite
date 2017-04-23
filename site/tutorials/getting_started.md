@@ -10,7 +10,7 @@ This tutorial will guide through the process of writing a visualization specific
 * TOC
 {:toc}
 
-We suggest that you follow along the tutorial by building a visualization in the [online editor](https://vega.github.io/new-editor/#/vega_lite). Extend your specification in the editor as you read through this tutorial. If something does not work as expected, compare your specifications with ones inside this tutorial.
+We suggest that you follow along the tutorial by building a visualization in the [online editor](https://vega.github.io/new-editor/?mode=vega-lite). Extend your specification in the editor as you read through this tutorial. If something does not work as expected, compare your specifications with ones inside this tutorial.
 
 ## The Data
 
@@ -213,6 +213,6 @@ Now you can create a website that embeds a Vega-Lite specification. If you want 
 
 - Read the [next tutorial]({{site.baseurl}}/tutorials/explore.html).
 - See the [examples gallery]({{site.baseurl}}/examples/).
-- Build your own visualizations in the [online editor](https://vega.github.io/new-editor/#/vega_lite).
+- Build your own visualizations in the [online editor](https://vega.github.io/new-editor/?mode=vega-lite).
 - Browse through the [documentation]({{site.baseurl}}/docs/).
 - See the [list of applications](https://vega.github.io/vega-lite/usage/applications.html) that you can use Vega-Lite with.
