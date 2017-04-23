@@ -1,6 +1,5 @@
 import {Channel} from '../../channel';
 import {Scale} from '../../scale';
-import {isSortField} from '../../sort';
 import {Dict} from '../../util';
 import {VgScale} from '../../vega.schema';
 
@@ -55,8 +54,5 @@ export function parseScale(model: UnitModel, channel: Channel) {
     scaleComponent[property] = scale[property];
   });
 
-  if (sort && (isSortField(sort) ? sort.order : sort) === 'descending') {
-    scaleComponent.reverse = true;
-  }
   return scaleComponent;
 }

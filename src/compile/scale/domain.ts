@@ -160,10 +160,7 @@ export function domainSort(model: UnitModel, channel: Channel, scaleType: ScaleT
 
   // Sorted based on an aggregate calculation over a specified sort field (only for ordinal scale)
   if (isSortField(sort)) {
-    return {
-      op: sort.op,
-      field: sort.field
-    };
+    return sort as VgSortField;
   }
 
   if (util.contains(['ascending', 'descending', undefined /* default =ascending*/], sort)) {
