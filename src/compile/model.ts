@@ -146,6 +146,7 @@ export abstract class Model {
 
   public abstract parseLegend(): void;
 
+  public abstract assembleSelectionTopLevelSignals(signals: any[]): any[];
   public abstract assembleSelectionSignals(): any[];
 
   public abstract assembleSelectionData(data: VgData[]): VgData[];

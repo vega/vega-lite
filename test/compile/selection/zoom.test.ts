@@ -77,17 +77,17 @@ describe('Zoom Selection Transform', function() {
       }
     ]);
 
-    assert.includeDeepMembers(signals.filter((s) => s.name === 'four_x')[0].on, [
+    assert.includeDeepMembers(signals.filter((s) => s.name === 'four_Horsepower')[0].on, [
       {
         "events": {"signal": "four_zoom_delta"},
-        "update": "clampRange([four_zoom_anchor.x + (four_x[0] - four_zoom_anchor.x) * four_zoom_delta, four_zoom_anchor.x + (four_x[1] - four_zoom_anchor.x) * four_zoom_delta], invert(\"x\", 0), invert(\"x\", unit.width))"
+        "update": "clampRange([four_zoom_anchor.x + (four_Horsepower[0] - four_zoom_anchor.x) * four_zoom_delta, four_zoom_anchor.x + (four_Horsepower[1] - four_zoom_anchor.x) * four_zoom_delta], invert(\"x\", 0), invert(\"x\", unit.width))"
       }
     ]);
 
-    assert.includeDeepMembers(signals.filter((s) => s.name === 'four_y')[0].on, [
+    assert.includeDeepMembers(signals.filter((s) => s.name === 'four_Miles_per_Gallon')[0].on, [
       {
         "events": {"signal": "four_zoom_delta"},
-        "update": "clampRange([four_zoom_anchor.y + (four_y[0] - four_zoom_anchor.y) * four_zoom_delta, four_zoom_anchor.y + (four_y[1] - four_zoom_anchor.y) * four_zoom_delta], invert(\"y\", unit.height), invert(\"y\", 0))"
+        "update": "clampRange([four_zoom_anchor.y + (four_Miles_per_Gallon[0] - four_zoom_anchor.y) * four_zoom_delta, four_zoom_anchor.y + (four_Miles_per_Gallon[1] - four_zoom_anchor.y) * four_zoom_delta], invert(\"y\", unit.height), invert(\"y\", 0))"
       }
     ]);
 
@@ -124,17 +124,17 @@ describe('Zoom Selection Transform', function() {
       }
     ]);
 
-    assert.includeDeepMembers(signals.filter((s) => s.name === 'five_x')[0].on, [
+    assert.includeDeepMembers(signals.filter((s) => s.name === 'five_Horsepower')[0].on, [
       {
         "events": {"signal": "five_zoom_delta"},
-        "update": "clampRange([five_zoom_anchor.x + (five_x[0] - five_zoom_anchor.x) * five_zoom_delta, five_zoom_anchor.x + (five_x[1] - five_zoom_anchor.x) * five_zoom_delta], invert(\"x\", 0), invert(\"x\", unit.width))"
+        "update": "clampRange([five_zoom_anchor.x + (five_Horsepower[0] - five_zoom_anchor.x) * five_zoom_delta, five_zoom_anchor.x + (five_Horsepower[1] - five_zoom_anchor.x) * five_zoom_delta], invert(\"x\", 0), invert(\"x\", unit.width))"
       }
     ]);
 
-    assert.includeDeepMembers(signals.filter((s) => s.name === 'five_y')[0].on, [
+    assert.includeDeepMembers(signals.filter((s) => s.name === 'five_Miles_per_Gallon')[0].on, [
       {
         "events": {"signal": "five_zoom_delta"},
-        "update": "clampRange([five_zoom_anchor.y + (five_y[0] - five_zoom_anchor.y) * five_zoom_delta, five_zoom_anchor.y + (five_y[1] - five_zoom_anchor.y) * five_zoom_delta], invert(\"y\", unit.height), invert(\"y\", 0))"
+        "update": "clampRange([five_zoom_anchor.y + (five_Miles_per_Gallon[0] - five_zoom_anchor.y) * five_zoom_delta, five_zoom_anchor.y + (five_Miles_per_Gallon[1] - five_zoom_anchor.y) * five_zoom_delta], invert(\"y\", unit.height), invert(\"y\", 0))"
       }
     ]);
 
@@ -171,14 +171,14 @@ describe('Zoom Selection Transform', function() {
       }
     ]);
 
-    assert.includeDeepMembers(signals.filter((s) => s.name === 'six_x')[0].on, [
+    assert.includeDeepMembers(signals.filter((s) => s.name === 'six_Horsepower')[0].on, [
       {
         "events": {"signal": "six_zoom_delta"},
         "update": "[six_zoom_anchor.x + (domain(\"x\")[0] - six_zoom_anchor.x) * six_zoom_delta, six_zoom_anchor.x + (domain(\"x\")[1] - six_zoom_anchor.x) * six_zoom_delta]"
       }
     ]);
 
-    assert.includeDeepMembers(signals.filter((s) => s.name === 'six_y')[0].on, [
+    assert.includeDeepMembers(signals.filter((s) => s.name === 'six_Miles_per_Gallon')[0].on, [
       {
         "events": {"signal": "six_zoom_delta"},
         "update": "[six_zoom_anchor.y + (domain(\"y\")[0] - six_zoom_anchor.y) * six_zoom_delta, six_zoom_anchor.y + (domain(\"y\")[1] - six_zoom_anchor.y) * six_zoom_delta]"

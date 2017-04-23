@@ -49,13 +49,13 @@
             ]
         },
         {
-            "name": "child_brush_store"
+            "name": "brush_store"
         },
         {
-            "name": "child_grid_store"
+            "name": "grid_store"
         },
         {
-            "name": "child_xenc_store"
+            "name": "xenc_store"
         }
     ],
     "signals": [
@@ -68,7 +68,7 @@
             "update": "200"
         },
         {
-            "name": "child_xenc_X",
+            "name": "xenc_X",
             "value": "",
             "on": [
                 {
@@ -96,14 +96,14 @@
             ]
         },
         {
-            "name": "child_grid_x"
+            "name": "grid_X"
         },
         {
-            "name": "child_grid_y"
+            "name": "grid_Y"
         },
         {
-            "name": "child_xenc",
-            "update": "data(\"child_xenc_store\")[0]"
+            "name": "xenc",
+            "update": "data(\"xenc_store\")[0]"
         }
     ],
     "marks": [
@@ -123,7 +123,7 @@
             },
             "signals": [
                 {
-                    "name": "child_brush_x",
+                    "name": "brush_X",
                     "value": [],
                     "on": [
                         {
@@ -131,50 +131,51 @@
                                 "source": "scope",
                                 "type": "mousedown",
                                 "filter": [
-                                    "!event.item || (event.item && event.item.mark.name !== \"child_brush_brush\")",
-                                    "!event.item || (event.item && event.item.mark.name !== \"child_brush_brush\")"
+                                    "event.shiftKey",
+                                    "!event.item || (event.item && event.item.mark.name !== \"brush_brush\")",
+                                    "!event.item || (event.item && event.item.mark.name !== \"brush_brush\")"
                                 ]
                             },
                             "update": "invert(\"x\", [x(unit), x(unit)])"
                         },
                         {
                             "events": {
-                                "source": "window",
+                                "source": "scope",
                                 "type": "mousemove",
-                                "consume": true,
                                 "between": [
                                     {
                                         "source": "scope",
                                         "type": "mousedown",
                                         "filter": [
-                                            "!event.item || (event.item && event.item.mark.name !== \"child_brush_brush\")",
-                                            "!event.item || (event.item && event.item.mark.name !== \"child_brush_brush\")"
+                                            "event.shiftKey",
+                                            "!event.item || (event.item && event.item.mark.name !== \"brush_brush\")",
+                                            "!event.item || (event.item && event.item.mark.name !== \"brush_brush\")"
                                         ]
                                     },
                                     {
-                                        "source": "window",
+                                        "source": "scope",
                                         "type": "mouseup"
                                     }
                                 ]
                             },
-                            "update": "[child_brush_x[0], invert(\"x\", clamp(x(unit), 0, child_width))]"
+                            "update": "[brush_X[0], invert(\"x\", clamp(x(unit), 0, child_width))]"
                         },
                         {
                             "events": {
-                                "signal": "child_brush_translate_delta"
+                                "signal": "brush_translate_delta"
                             },
-                            "update": "clampRange([child_brush_translate_anchor.extent_x[0] + abs(span(child_brush_translate_anchor.extent_x)) * child_brush_translate_delta.x / child_brush_translate_anchor.width, child_brush_translate_anchor.extent_x[1] + abs(span(child_brush_translate_anchor.extent_x)) * child_brush_translate_delta.x / child_brush_translate_anchor.width], invert(\"x\", 0), invert(\"x\", unit.width))"
+                            "update": "clampRange([brush_translate_anchor.extent_x[0] + abs(span(brush_translate_anchor.extent_x)) * brush_translate_delta.x / brush_translate_anchor.width, brush_translate_anchor.extent_x[1] + abs(span(brush_translate_anchor.extent_x)) * brush_translate_delta.x / brush_translate_anchor.width], invert(\"x\", 0), invert(\"x\", unit.width))"
                         },
                         {
                             "events": {
-                                "signal": "child_brush_zoom_delta"
+                                "signal": "brush_zoom_delta"
                             },
-                            "update": "clampRange([child_brush_zoom_anchor.x + (child_brush_x[0] - child_brush_zoom_anchor.x) * child_brush_zoom_delta, child_brush_zoom_anchor.x + (child_brush_x[1] - child_brush_zoom_anchor.x) * child_brush_zoom_delta], invert(\"x\", 0), invert(\"x\", unit.width))"
+                            "update": "clampRange([brush_zoom_anchor.x + (brush_X[0] - brush_zoom_anchor.x) * brush_zoom_delta, brush_zoom_anchor.x + (brush_X[1] - brush_zoom_anchor.x) * brush_zoom_delta], invert(\"x\", 0), invert(\"x\", unit.width))"
                         }
                     ]
                 },
                 {
-                    "name": "child_brush_size",
+                    "name": "brush_size",
                     "value": [],
                     "on": [
                         {
@@ -182,184 +183,49 @@
                                 "source": "scope",
                                 "type": "mousedown",
                                 "filter": [
-                                    "!event.item || (event.item && event.item.mark.name !== \"child_brush_brush\")",
-                                    "!event.item || (event.item && event.item.mark.name !== \"child_brush_brush\")"
+                                    "event.shiftKey",
+                                    "!event.item || (event.item && event.item.mark.name !== \"brush_brush\")",
+                                    "!event.item || (event.item && event.item.mark.name !== \"brush_brush\")"
                                 ]
                             },
                             "update": "{x: x(unit), y: y(unit), width: 0, height: 0}"
                         },
                         {
                             "events": {
-                                "source": "window",
+                                "source": "scope",
                                 "type": "mousemove",
-                                "consume": true,
                                 "between": [
                                     {
                                         "source": "scope",
                                         "type": "mousedown",
                                         "filter": [
-                                            "!event.item || (event.item && event.item.mark.name !== \"child_brush_brush\")",
-                                            "!event.item || (event.item && event.item.mark.name !== \"child_brush_brush\")"
+                                            "event.shiftKey",
+                                            "!event.item || (event.item && event.item.mark.name !== \"brush_brush\")",
+                                            "!event.item || (event.item && event.item.mark.name !== \"brush_brush\")"
                                         ]
                                     },
                                     {
-                                        "source": "window",
+                                        "source": "scope",
                                         "type": "mouseup"
                                     }
                                 ]
                             },
-                            "update": "{x: child_brush_size.x, y: child_brush_size.y, width: abs(x(unit) - child_brush_size.x), height: abs(y(unit) - child_brush_size.y)}"
+                            "update": "{x: brush_size.x, y: brush_size.y, width: abs(x(unit) - brush_size.x), height: abs(y(unit) - brush_size.y)}"
                         },
                         {
                             "events": {
-                                "signal": "child_brush_zoom_delta"
+                                "signal": "brush_zoom_delta"
                             },
-                            "update": "{x: child_brush_size.x, y: child_brush_size.y, width: child_brush_size.width * child_brush_zoom_delta , height: child_brush_size.height * child_brush_zoom_delta}"
+                            "update": "{x: brush_size.x, y: brush_size.y, width: brush_size.width * brush_zoom_delta , height: brush_size.height * brush_zoom_delta}"
                         }
                     ]
                 },
                 {
-                    "name": "child_brush",
-                    "update": "[{field: \"X\", extent: child_brush_x}]"
+                    "name": "brush",
+                    "update": "[{field: \"X\", extent: brush_X}]"
                 },
                 {
-                    "name": "child_brush_translate_anchor",
-                    "value": {},
-                    "on": [
-                        {
-                            "events": [
-                                {
-                                    "source": "scope",
-                                    "type": "mousedown",
-                                    "markname": "child_brush_brush"
-                                }
-                            ],
-                            "update": "{x: x(unit), y: y(unit), width: child_brush_size.width, height: child_brush_size.height, extent_x: slice(child_brush_x), }"
-                        }
-                    ]
-                },
-                {
-                    "name": "child_brush_translate_delta",
-                    "value": {},
-                    "on": [
-                        {
-                            "events": [
-                                {
-                                    "source": "window",
-                                    "type": "mousemove",
-                                    "consume": true,
-                                    "between": [
-                                        {
-                                            "source": "scope",
-                                            "type": "mousedown",
-                                            "markname": "child_brush_brush"
-                                        },
-                                        {
-                                            "source": "window",
-                                            "type": "mouseup"
-                                        }
-                                    ]
-                                }
-                            ],
-                            "update": "{x: x(unit) - child_brush_translate_anchor.x, y: y(unit) - child_brush_translate_anchor.y}"
-                        }
-                    ]
-                },
-                {
-                    "name": "child_brush_zoom_anchor",
-                    "on": [
-                        {
-                            "events": [
-                                {
-                                    "source": "scope",
-                                    "type": "wheel",
-                                    "markname": "child_brush_brush"
-                                }
-                            ],
-                            "update": "{x: invert(\"x\", x(unit)), y: invert(\"y\", y(unit))}"
-                        }
-                    ]
-                },
-                {
-                    "name": "child_brush_zoom_delta",
-                    "on": [
-                        {
-                            "events": [
-                                {
-                                    "source": "scope",
-                                    "type": "wheel",
-                                    "markname": "child_brush_brush"
-                                }
-                            ],
-                            "force": true,
-                            "update": "pow(1.001, event.deltaY * pow(16, event.deltaMode))"
-                        }
-                    ]
-                },
-                {
-                    "name": "child_brush_tuple",
-                    "on": [
-                        {
-                            "events": {
-                                "signal": "child_brush"
-                            },
-                            "update": "{unit: unit.datum && unit.datum._id, intervals: child_brush}"
-                        }
-                    ]
-                },
-                {
-                    "name": "child_brush_modify",
-                    "on": [
-                        {
-                            "events": {
-                                "signal": "child_brush"
-                            },
-                            "update": "modify(\"child_brush_store\", child_brush_tuple, {unit: child_brush_tuple.unit})"
-                        }
-                    ]
-                },
-                {
-                    "name": "child_grid_x",
-                    "on": [
-                        {
-                            "events": {
-                                "signal": "child_grid_translate_delta"
-                            },
-                            "update": "[child_grid_translate_anchor.extent_x[0] - abs(span(child_grid_translate_anchor.extent_x)) * child_grid_translate_delta.x / child_grid_translate_anchor.width, child_grid_translate_anchor.extent_x[1] - abs(span(child_grid_translate_anchor.extent_x)) * child_grid_translate_delta.x / child_grid_translate_anchor.width]"
-                        },
-                        {
-                            "events": {
-                                "signal": "child_grid_zoom_delta"
-                            },
-                            "update": "[child_grid_zoom_anchor.x + (domain(\"x\")[0] - child_grid_zoom_anchor.x) * child_grid_zoom_delta, child_grid_zoom_anchor.x + (domain(\"x\")[1] - child_grid_zoom_anchor.x) * child_grid_zoom_delta]"
-                        }
-                    ],
-                    "push": "outer"
-                },
-                {
-                    "name": "child_grid_y",
-                    "on": [
-                        {
-                            "events": {
-                                "signal": "child_grid_translate_delta"
-                            },
-                            "update": "[child_grid_translate_anchor.extent_y[0] + abs(span(child_grid_translate_anchor.extent_y)) * child_grid_translate_delta.y / child_grid_translate_anchor.height, child_grid_translate_anchor.extent_y[1] + abs(span(child_grid_translate_anchor.extent_y)) * child_grid_translate_delta.y / child_grid_translate_anchor.height]"
-                        },
-                        {
-                            "events": {
-                                "signal": "child_grid_zoom_delta"
-                            },
-                            "update": "[child_grid_zoom_anchor.y + (domain(\"y\")[0] - child_grid_zoom_anchor.y) * child_grid_zoom_delta, child_grid_zoom_anchor.y + (domain(\"y\")[1] - child_grid_zoom_anchor.y) * child_grid_zoom_delta]"
-                        }
-                    ],
-                    "push": "outer"
-                },
-                {
-                    "name": "child_grid",
-                    "update": "[{field: \"X\", extent: child_grid_x}, {field: \"Y\", extent: child_grid_y}]"
-                },
-                {
-                    "name": "child_grid_translate_anchor",
+                    "name": "brush_translate_anchor",
                     "value": {},
                     "on": [
                         {
@@ -369,15 +235,16 @@
                                     "type": "mousedown",
                                     "filter": [
                                         "event.shiftKey"
-                                    ]
+                                    ],
+                                    "markname": "brush_brush"
                                 }
                             ],
-                            "update": "{x: x(unit), y: y(unit), width: unit.width, height: unit.height, extent_x: domain(\"x\"), extent_y: domain(\"y\"), }"
+                            "update": "{x: x(unit), y: y(unit), width: brush_size.width, height: brush_size.height, extent_x: slice(brush_X), }"
                         }
                     ]
                 },
                 {
-                    "name": "child_grid_translate_delta",
+                    "name": "brush_translate_delta",
                     "value": {},
                     "on": [
                         {
@@ -391,6 +258,146 @@
                                             "type": "mousedown",
                                             "filter": [
                                                 "event.shiftKey"
+                                            ],
+                                            "markname": "brush_brush"
+                                        },
+                                        {
+                                            "source": "scope",
+                                            "type": "mouseup"
+                                        }
+                                    ]
+                                }
+                            ],
+                            "update": "{x: x(unit) - brush_translate_anchor.x, y: y(unit) - brush_translate_anchor.y}"
+                        }
+                    ]
+                },
+                {
+                    "name": "brush_zoom_anchor",
+                    "on": [
+                        {
+                            "events": [
+                                {
+                                    "source": "scope",
+                                    "type": "wheel",
+                                    "markname": "brush_brush"
+                                }
+                            ],
+                            "update": "{x: invert(\"x\", x(unit)), y: invert(\"y\", y(unit))}"
+                        }
+                    ]
+                },
+                {
+                    "name": "brush_zoom_delta",
+                    "on": [
+                        {
+                            "events": [
+                                {
+                                    "source": "scope",
+                                    "type": "wheel",
+                                    "markname": "brush_brush"
+                                }
+                            ],
+                            "force": true,
+                            "update": "pow(1.001, event.deltaY * pow(16, event.deltaMode))"
+                        }
+                    ]
+                },
+                {
+                    "name": "brush_tuple",
+                    "on": [
+                        {
+                            "events": {
+                                "signal": "brush"
+                            },
+                            "update": "{unit: unit.datum && unit.datum._id, intervals: brush}"
+                        }
+                    ]
+                },
+                {
+                    "name": "brush_modify",
+                    "on": [
+                        {
+                            "events": {
+                                "signal": "brush"
+                            },
+                            "update": "modify(\"brush_store\", brush_tuple, {unit: brush_tuple.unit})"
+                        }
+                    ]
+                },
+                {
+                    "name": "grid_X",
+                    "on": [
+                        {
+                            "events": {
+                                "signal": "grid_translate_delta"
+                            },
+                            "update": "[grid_translate_anchor.extent_x[0] - abs(span(grid_translate_anchor.extent_x)) * grid_translate_delta.x / grid_translate_anchor.width, grid_translate_anchor.extent_x[1] - abs(span(grid_translate_anchor.extent_x)) * grid_translate_delta.x / grid_translate_anchor.width]"
+                        },
+                        {
+                            "events": {
+                                "signal": "grid_zoom_delta"
+                            },
+                            "update": "[grid_zoom_anchor.x + (domain(\"x\")[0] - grid_zoom_anchor.x) * grid_zoom_delta, grid_zoom_anchor.x + (domain(\"x\")[1] - grid_zoom_anchor.x) * grid_zoom_delta]"
+                        }
+                    ],
+                    "push": "outer"
+                },
+                {
+                    "name": "grid_Y",
+                    "on": [
+                        {
+                            "events": {
+                                "signal": "grid_translate_delta"
+                            },
+                            "update": "[grid_translate_anchor.extent_y[0] + abs(span(grid_translate_anchor.extent_y)) * grid_translate_delta.y / grid_translate_anchor.height, grid_translate_anchor.extent_y[1] + abs(span(grid_translate_anchor.extent_y)) * grid_translate_delta.y / grid_translate_anchor.height]"
+                        },
+                        {
+                            "events": {
+                                "signal": "grid_zoom_delta"
+                            },
+                            "update": "[grid_zoom_anchor.y + (domain(\"y\")[0] - grid_zoom_anchor.y) * grid_zoom_delta, grid_zoom_anchor.y + (domain(\"y\")[1] - grid_zoom_anchor.y) * grid_zoom_delta]"
+                        }
+                    ],
+                    "push": "outer"
+                },
+                {
+                    "name": "grid",
+                    "update": "[{field: \"X\", extent: grid_X}, {field: \"Y\", extent: grid_Y}]"
+                },
+                {
+                    "name": "grid_translate_anchor",
+                    "value": {},
+                    "on": [
+                        {
+                            "events": [
+                                {
+                                    "source": "scope",
+                                    "type": "mousedown",
+                                    "filter": [
+                                        "!event.shiftKey"
+                                    ]
+                                }
+                            ],
+                            "update": "{x: x(unit), y: y(unit), width: unit.width, height: unit.height, extent_x: domain(\"x\"), extent_y: domain(\"y\"), }"
+                        }
+                    ]
+                },
+                {
+                    "name": "grid_translate_delta",
+                    "value": {},
+                    "on": [
+                        {
+                            "events": [
+                                {
+                                    "source": "scope",
+                                    "type": "mousemove",
+                                    "between": [
+                                        {
+                                            "source": "scope",
+                                            "type": "mousedown",
+                                            "filter": [
+                                                "!event.shiftKey"
                                             ]
                                         },
                                         {
@@ -400,12 +407,12 @@
                                     ]
                                 }
                             ],
-                            "update": "{x: x(unit) - child_grid_translate_anchor.x, y: y(unit) - child_grid_translate_anchor.y}"
+                            "update": "{x: x(unit) - grid_translate_anchor.x, y: y(unit) - grid_translate_anchor.y}"
                         }
                     ]
                 },
                 {
-                    "name": "child_grid_zoom_anchor",
+                    "name": "grid_zoom_anchor",
                     "on": [
                         {
                             "events": [
@@ -419,7 +426,7 @@
                     ]
                 },
                 {
-                    "name": "child_grid_zoom_delta",
+                    "name": "grid_zoom_delta",
                     "on": [
                         {
                             "events": [
@@ -434,50 +441,50 @@
                     ]
                 },
                 {
-                    "name": "child_grid_tuple",
+                    "name": "grid_tuple",
                     "on": [
                         {
                             "events": {
-                                "signal": "child_grid"
+                                "signal": "grid"
                             },
-                            "update": "{unit: unit.datum && unit.datum._id, intervals: child_grid}"
+                            "update": "{unit: unit.datum && unit.datum._id, intervals: grid}"
                         }
                     ]
                 },
                 {
-                    "name": "child_grid_modify",
+                    "name": "grid_modify",
                     "on": [
                         {
                             "events": {
-                                "signal": "child_grid"
+                                "signal": "grid"
                             },
-                            "update": "modify(\"child_grid_store\", child_grid_tuple, true)"
+                            "update": "modify(\"grid_store\", grid_tuple, true)"
                         }
                     ]
                 },
                 {
-                    "name": "child_xenc",
-                    "update": "{fields: [\"X\"], values: [child_xenc_X]}"
+                    "name": "xenc",
+                    "update": "{fields: [\"X\"], values: [xenc_X]}"
                 },
                 {
-                    "name": "child_xenc_tuple",
+                    "name": "xenc_tuple",
                     "on": [
                         {
                             "events": {
-                                "signal": "child_xenc"
+                                "signal": "xenc"
                             },
-                            "update": "{unit: unit.datum && unit.datum._id, fields: child_xenc.fields, values: child_xenc.values, X: child_xenc.values[0]}"
+                            "update": "{unit: unit.datum && unit.datum._id, fields: xenc.fields, values: xenc.values, X: xenc.values[0]}"
                         }
                     ]
                 },
                 {
-                    "name": "child_xenc_modify",
+                    "name": "xenc_modify",
                     "on": [
                         {
                             "events": {
-                                "signal": "child_xenc"
+                                "signal": "xenc"
                             },
-                            "update": "modify(\"child_xenc_store\", child_xenc_tuple, true)"
+                            "update": "modify(\"xenc_store\", xenc_tuple, true)"
                         }
                     ]
                 }
@@ -627,7 +634,7 @@
                     },
                     "signals": [
                         {
-                            "name": "child_brush_x",
+                            "name": "brush_X",
                             "value": [],
                             "on": [
                                 {
@@ -635,50 +642,51 @@
                                         "source": "scope",
                                         "type": "mousedown",
                                         "filter": [
-                                            "!event.item || (event.item && event.item.mark.name !== \"child_brush_brush\")",
-                                            "!event.item || (event.item && event.item.mark.name !== \"child_brush_brush\")"
+                                            "event.shiftKey",
+                                            "!event.item || (event.item && event.item.mark.name !== \"brush_brush\")",
+                                            "!event.item || (event.item && event.item.mark.name !== \"brush_brush\")"
                                         ]
                                     },
                                     "update": "invert(\"x\", [x(unit), x(unit)])"
                                 },
                                 {
                                     "events": {
-                                        "source": "window",
+                                        "source": "scope",
                                         "type": "mousemove",
-                                        "consume": true,
                                         "between": [
                                             {
                                                 "source": "scope",
                                                 "type": "mousedown",
                                                 "filter": [
-                                                    "!event.item || (event.item && event.item.mark.name !== \"child_brush_brush\")",
-                                                    "!event.item || (event.item && event.item.mark.name !== \"child_brush_brush\")"
+                                                    "event.shiftKey",
+                                                    "!event.item || (event.item && event.item.mark.name !== \"brush_brush\")",
+                                                    "!event.item || (event.item && event.item.mark.name !== \"brush_brush\")"
                                                 ]
                                             },
                                             {
-                                                "source": "window",
+                                                "source": "scope",
                                                 "type": "mouseup"
                                             }
                                         ]
                                     },
-                                    "update": "[child_brush_x[0], invert(\"x\", clamp(x(unit), 0, child_width))]"
+                                    "update": "[brush_X[0], invert(\"x\", clamp(x(unit), 0, child_width))]"
                                 },
                                 {
                                     "events": {
-                                        "signal": "child_brush_translate_delta"
+                                        "signal": "brush_translate_delta"
                                     },
-                                    "update": "clampRange([child_brush_translate_anchor.extent_x[0] + abs(span(child_brush_translate_anchor.extent_x)) * child_brush_translate_delta.x / child_brush_translate_anchor.width, child_brush_translate_anchor.extent_x[1] + abs(span(child_brush_translate_anchor.extent_x)) * child_brush_translate_delta.x / child_brush_translate_anchor.width], invert(\"x\", 0), invert(\"x\", unit.width))"
+                                    "update": "clampRange([brush_translate_anchor.extent_x[0] + abs(span(brush_translate_anchor.extent_x)) * brush_translate_delta.x / brush_translate_anchor.width, brush_translate_anchor.extent_x[1] + abs(span(brush_translate_anchor.extent_x)) * brush_translate_delta.x / brush_translate_anchor.width], invert(\"x\", 0), invert(\"x\", unit.width))"
                                 },
                                 {
                                     "events": {
-                                        "signal": "child_brush_zoom_delta"
+                                        "signal": "brush_zoom_delta"
                                     },
-                                    "update": "clampRange([child_brush_zoom_anchor.x + (child_brush_x[0] - child_brush_zoom_anchor.x) * child_brush_zoom_delta, child_brush_zoom_anchor.x + (child_brush_x[1] - child_brush_zoom_anchor.x) * child_brush_zoom_delta], invert(\"x\", 0), invert(\"x\", unit.width))"
+                                    "update": "clampRange([brush_zoom_anchor.x + (brush_X[0] - brush_zoom_anchor.x) * brush_zoom_delta, brush_zoom_anchor.x + (brush_X[1] - brush_zoom_anchor.x) * brush_zoom_delta], invert(\"x\", 0), invert(\"x\", unit.width))"
                                 }
                             ]
                         },
                         {
-                            "name": "child_brush_size",
+                            "name": "brush_size",
                             "value": [],
                             "on": [
                                 {
@@ -686,184 +694,49 @@
                                         "source": "scope",
                                         "type": "mousedown",
                                         "filter": [
-                                            "!event.item || (event.item && event.item.mark.name !== \"child_brush_brush\")",
-                                            "!event.item || (event.item && event.item.mark.name !== \"child_brush_brush\")"
+                                            "event.shiftKey",
+                                            "!event.item || (event.item && event.item.mark.name !== \"brush_brush\")",
+                                            "!event.item || (event.item && event.item.mark.name !== \"brush_brush\")"
                                         ]
                                     },
                                     "update": "{x: x(unit), y: y(unit), width: 0, height: 0}"
                                 },
                                 {
                                     "events": {
-                                        "source": "window",
+                                        "source": "scope",
                                         "type": "mousemove",
-                                        "consume": true,
                                         "between": [
                                             {
                                                 "source": "scope",
                                                 "type": "mousedown",
                                                 "filter": [
-                                                    "!event.item || (event.item && event.item.mark.name !== \"child_brush_brush\")",
-                                                    "!event.item || (event.item && event.item.mark.name !== \"child_brush_brush\")"
+                                                    "event.shiftKey",
+                                                    "!event.item || (event.item && event.item.mark.name !== \"brush_brush\")",
+                                                    "!event.item || (event.item && event.item.mark.name !== \"brush_brush\")"
                                                 ]
                                             },
                                             {
-                                                "source": "window",
+                                                "source": "scope",
                                                 "type": "mouseup"
                                             }
                                         ]
                                     },
-                                    "update": "{x: child_brush_size.x, y: child_brush_size.y, width: abs(x(unit) - child_brush_size.x), height: abs(y(unit) - child_brush_size.y)}"
+                                    "update": "{x: brush_size.x, y: brush_size.y, width: abs(x(unit) - brush_size.x), height: abs(y(unit) - brush_size.y)}"
                                 },
                                 {
                                     "events": {
-                                        "signal": "child_brush_zoom_delta"
+                                        "signal": "brush_zoom_delta"
                                     },
-                                    "update": "{x: child_brush_size.x, y: child_brush_size.y, width: child_brush_size.width * child_brush_zoom_delta , height: child_brush_size.height * child_brush_zoom_delta}"
+                                    "update": "{x: brush_size.x, y: brush_size.y, width: brush_size.width * brush_zoom_delta , height: brush_size.height * brush_zoom_delta}"
                                 }
                             ]
                         },
                         {
-                            "name": "child_brush",
-                            "update": "[{field: \"X\", extent: child_brush_x}]"
+                            "name": "brush",
+                            "update": "[{field: \"X\", extent: brush_X}]"
                         },
                         {
-                            "name": "child_brush_translate_anchor",
-                            "value": {},
-                            "on": [
-                                {
-                                    "events": [
-                                        {
-                                            "source": "scope",
-                                            "type": "mousedown",
-                                            "markname": "child_brush_brush"
-                                        }
-                                    ],
-                                    "update": "{x: x(unit), y: y(unit), width: child_brush_size.width, height: child_brush_size.height, extent_x: slice(child_brush_x), }"
-                                }
-                            ]
-                        },
-                        {
-                            "name": "child_brush_translate_delta",
-                            "value": {},
-                            "on": [
-                                {
-                                    "events": [
-                                        {
-                                            "source": "window",
-                                            "type": "mousemove",
-                                            "consume": true,
-                                            "between": [
-                                                {
-                                                    "source": "scope",
-                                                    "type": "mousedown",
-                                                    "markname": "child_brush_brush"
-                                                },
-                                                {
-                                                    "source": "window",
-                                                    "type": "mouseup"
-                                                }
-                                            ]
-                                        }
-                                    ],
-                                    "update": "{x: x(unit) - child_brush_translate_anchor.x, y: y(unit) - child_brush_translate_anchor.y}"
-                                }
-                            ]
-                        },
-                        {
-                            "name": "child_brush_zoom_anchor",
-                            "on": [
-                                {
-                                    "events": [
-                                        {
-                                            "source": "scope",
-                                            "type": "wheel",
-                                            "markname": "child_brush_brush"
-                                        }
-                                    ],
-                                    "update": "{x: invert(\"x\", x(unit)), y: invert(\"y\", y(unit))}"
-                                }
-                            ]
-                        },
-                        {
-                            "name": "child_brush_zoom_delta",
-                            "on": [
-                                {
-                                    "events": [
-                                        {
-                                            "source": "scope",
-                                            "type": "wheel",
-                                            "markname": "child_brush_brush"
-                                        }
-                                    ],
-                                    "force": true,
-                                    "update": "pow(1.001, event.deltaY * pow(16, event.deltaMode))"
-                                }
-                            ]
-                        },
-                        {
-                            "name": "child_brush_tuple",
-                            "on": [
-                                {
-                                    "events": {
-                                        "signal": "child_brush"
-                                    },
-                                    "update": "{unit: unit.datum && unit.datum._id, intervals: child_brush}"
-                                }
-                            ]
-                        },
-                        {
-                            "name": "child_brush_modify",
-                            "on": [
-                                {
-                                    "events": {
-                                        "signal": "child_brush"
-                                    },
-                                    "update": "modify(\"child_brush_store\", child_brush_tuple, {unit: child_brush_tuple.unit})"
-                                }
-                            ]
-                        },
-                        {
-                            "name": "child_grid_x",
-                            "on": [
-                                {
-                                    "events": {
-                                        "signal": "child_grid_translate_delta"
-                                    },
-                                    "update": "[child_grid_translate_anchor.extent_x[0] - abs(span(child_grid_translate_anchor.extent_x)) * child_grid_translate_delta.x / child_grid_translate_anchor.width, child_grid_translate_anchor.extent_x[1] - abs(span(child_grid_translate_anchor.extent_x)) * child_grid_translate_delta.x / child_grid_translate_anchor.width]"
-                                },
-                                {
-                                    "events": {
-                                        "signal": "child_grid_zoom_delta"
-                                    },
-                                    "update": "[child_grid_zoom_anchor.x + (domain(\"x\")[0] - child_grid_zoom_anchor.x) * child_grid_zoom_delta, child_grid_zoom_anchor.x + (domain(\"x\")[1] - child_grid_zoom_anchor.x) * child_grid_zoom_delta]"
-                                }
-                            ],
-                            "push": "outer"
-                        },
-                        {
-                            "name": "child_grid_y",
-                            "on": [
-                                {
-                                    "events": {
-                                        "signal": "child_grid_translate_delta"
-                                    },
-                                    "update": "[child_grid_translate_anchor.extent_y[0] + abs(span(child_grid_translate_anchor.extent_y)) * child_grid_translate_delta.y / child_grid_translate_anchor.height, child_grid_translate_anchor.extent_y[1] + abs(span(child_grid_translate_anchor.extent_y)) * child_grid_translate_delta.y / child_grid_translate_anchor.height]"
-                                },
-                                {
-                                    "events": {
-                                        "signal": "child_grid_zoom_delta"
-                                    },
-                                    "update": "[child_grid_zoom_anchor.y + (domain(\"y\")[0] - child_grid_zoom_anchor.y) * child_grid_zoom_delta, child_grid_zoom_anchor.y + (domain(\"y\")[1] - child_grid_zoom_anchor.y) * child_grid_zoom_delta]"
-                                }
-                            ],
-                            "push": "outer"
-                        },
-                        {
-                            "name": "child_grid",
-                            "update": "[{field: \"X\", extent: child_grid_x}, {field: \"Y\", extent: child_grid_y}]"
-                        },
-                        {
-                            "name": "child_grid_translate_anchor",
+                            "name": "brush_translate_anchor",
                             "value": {},
                             "on": [
                                 {
@@ -873,15 +746,16 @@
                                             "type": "mousedown",
                                             "filter": [
                                                 "event.shiftKey"
-                                            ]
+                                            ],
+                                            "markname": "brush_brush"
                                         }
                                     ],
-                                    "update": "{x: x(unit), y: y(unit), width: unit.width, height: unit.height, extent_x: domain(\"x\"), extent_y: domain(\"y\"), }"
+                                    "update": "{x: x(unit), y: y(unit), width: brush_size.width, height: brush_size.height, extent_x: slice(brush_X), }"
                                 }
                             ]
                         },
                         {
-                            "name": "child_grid_translate_delta",
+                            "name": "brush_translate_delta",
                             "value": {},
                             "on": [
                                 {
@@ -895,6 +769,146 @@
                                                     "type": "mousedown",
                                                     "filter": [
                                                         "event.shiftKey"
+                                                    ],
+                                                    "markname": "brush_brush"
+                                                },
+                                                {
+                                                    "source": "scope",
+                                                    "type": "mouseup"
+                                                }
+                                            ]
+                                        }
+                                    ],
+                                    "update": "{x: x(unit) - brush_translate_anchor.x, y: y(unit) - brush_translate_anchor.y}"
+                                }
+                            ]
+                        },
+                        {
+                            "name": "brush_zoom_anchor",
+                            "on": [
+                                {
+                                    "events": [
+                                        {
+                                            "source": "scope",
+                                            "type": "wheel",
+                                            "markname": "brush_brush"
+                                        }
+                                    ],
+                                    "update": "{x: invert(\"x\", x(unit)), y: invert(\"y\", y(unit))}"
+                                }
+                            ]
+                        },
+                        {
+                            "name": "brush_zoom_delta",
+                            "on": [
+                                {
+                                    "events": [
+                                        {
+                                            "source": "scope",
+                                            "type": "wheel",
+                                            "markname": "brush_brush"
+                                        }
+                                    ],
+                                    "force": true,
+                                    "update": "pow(1.001, event.deltaY * pow(16, event.deltaMode))"
+                                }
+                            ]
+                        },
+                        {
+                            "name": "brush_tuple",
+                            "on": [
+                                {
+                                    "events": {
+                                        "signal": "brush"
+                                    },
+                                    "update": "{unit: unit.datum && unit.datum._id, intervals: brush}"
+                                }
+                            ]
+                        },
+                        {
+                            "name": "brush_modify",
+                            "on": [
+                                {
+                                    "events": {
+                                        "signal": "brush"
+                                    },
+                                    "update": "modify(\"brush_store\", brush_tuple, {unit: brush_tuple.unit})"
+                                }
+                            ]
+                        },
+                        {
+                            "name": "grid_X",
+                            "on": [
+                                {
+                                    "events": {
+                                        "signal": "grid_translate_delta"
+                                    },
+                                    "update": "[grid_translate_anchor.extent_x[0] - abs(span(grid_translate_anchor.extent_x)) * grid_translate_delta.x / grid_translate_anchor.width, grid_translate_anchor.extent_x[1] - abs(span(grid_translate_anchor.extent_x)) * grid_translate_delta.x / grid_translate_anchor.width]"
+                                },
+                                {
+                                    "events": {
+                                        "signal": "grid_zoom_delta"
+                                    },
+                                    "update": "[grid_zoom_anchor.x + (domain(\"x\")[0] - grid_zoom_anchor.x) * grid_zoom_delta, grid_zoom_anchor.x + (domain(\"x\")[1] - grid_zoom_anchor.x) * grid_zoom_delta]"
+                                }
+                            ],
+                            "push": "outer"
+                        },
+                        {
+                            "name": "grid_Y",
+                            "on": [
+                                {
+                                    "events": {
+                                        "signal": "grid_translate_delta"
+                                    },
+                                    "update": "[grid_translate_anchor.extent_y[0] + abs(span(grid_translate_anchor.extent_y)) * grid_translate_delta.y / grid_translate_anchor.height, grid_translate_anchor.extent_y[1] + abs(span(grid_translate_anchor.extent_y)) * grid_translate_delta.y / grid_translate_anchor.height]"
+                                },
+                                {
+                                    "events": {
+                                        "signal": "grid_zoom_delta"
+                                    },
+                                    "update": "[grid_zoom_anchor.y + (domain(\"y\")[0] - grid_zoom_anchor.y) * grid_zoom_delta, grid_zoom_anchor.y + (domain(\"y\")[1] - grid_zoom_anchor.y) * grid_zoom_delta]"
+                                }
+                            ],
+                            "push": "outer"
+                        },
+                        {
+                            "name": "grid",
+                            "update": "[{field: \"X\", extent: grid_X}, {field: \"Y\", extent: grid_Y}]"
+                        },
+                        {
+                            "name": "grid_translate_anchor",
+                            "value": {},
+                            "on": [
+                                {
+                                    "events": [
+                                        {
+                                            "source": "scope",
+                                            "type": "mousedown",
+                                            "filter": [
+                                                "!event.shiftKey"
+                                            ]
+                                        }
+                                    ],
+                                    "update": "{x: x(unit), y: y(unit), width: unit.width, height: unit.height, extent_x: domain(\"x\"), extent_y: domain(\"y\"), }"
+                                }
+                            ]
+                        },
+                        {
+                            "name": "grid_translate_delta",
+                            "value": {},
+                            "on": [
+                                {
+                                    "events": [
+                                        {
+                                            "source": "scope",
+                                            "type": "mousemove",
+                                            "between": [
+                                                {
+                                                    "source": "scope",
+                                                    "type": "mousedown",
+                                                    "filter": [
+                                                        "!event.shiftKey"
                                                     ]
                                                 },
                                                 {
@@ -904,12 +918,12 @@
                                             ]
                                         }
                                     ],
-                                    "update": "{x: x(unit) - child_grid_translate_anchor.x, y: y(unit) - child_grid_translate_anchor.y}"
+                                    "update": "{x: x(unit) - grid_translate_anchor.x, y: y(unit) - grid_translate_anchor.y}"
                                 }
                             ]
                         },
                         {
-                            "name": "child_grid_zoom_anchor",
+                            "name": "grid_zoom_anchor",
                             "on": [
                                 {
                                     "events": [
@@ -923,7 +937,7 @@
                             ]
                         },
                         {
-                            "name": "child_grid_zoom_delta",
+                            "name": "grid_zoom_delta",
                             "on": [
                                 {
                                     "events": [
@@ -938,50 +952,50 @@
                             ]
                         },
                         {
-                            "name": "child_grid_tuple",
+                            "name": "grid_tuple",
                             "on": [
                                 {
                                     "events": {
-                                        "signal": "child_grid"
+                                        "signal": "grid"
                                     },
-                                    "update": "{unit: unit.datum && unit.datum._id, intervals: child_grid}"
+                                    "update": "{unit: unit.datum && unit.datum._id, intervals: grid}"
                                 }
                             ]
                         },
                         {
-                            "name": "child_grid_modify",
+                            "name": "grid_modify",
                             "on": [
                                 {
                                     "events": {
-                                        "signal": "child_grid"
+                                        "signal": "grid"
                                     },
-                                    "update": "modify(\"child_grid_store\", child_grid_tuple, true)"
+                                    "update": "modify(\"grid_store\", grid_tuple, true)"
                                 }
                             ]
                         },
                         {
-                            "name": "child_xenc",
-                            "update": "{fields: [\"X\"], values: [child_xenc_X]}"
+                            "name": "xenc",
+                            "update": "{fields: [\"X\"], values: [xenc_X]}"
                         },
                         {
-                            "name": "child_xenc_tuple",
+                            "name": "xenc_tuple",
                             "on": [
                                 {
                                     "events": {
-                                        "signal": "child_xenc"
+                                        "signal": "xenc"
                                     },
-                                    "update": "{unit: unit.datum && unit.datum._id, fields: child_xenc.fields, values: child_xenc.values, X: child_xenc.values[0]}"
+                                    "update": "{unit: unit.datum && unit.datum._id, fields: xenc.fields, values: xenc.values, X: xenc.values[0]}"
                                 }
                             ]
                         },
                         {
-                            "name": "child_xenc_modify",
+                            "name": "xenc_modify",
                             "on": [
                                 {
                                     "events": {
-                                        "signal": "child_xenc"
+                                        "signal": "xenc"
                                     },
-                                    "update": "modify(\"child_xenc_store\", child_xenc_tuple, true)"
+                                    "update": "modify(\"xenc_store\", xenc_tuple, true)"
                                 }
                             ]
                         }
@@ -998,11 +1012,11 @@
                                 "update": {
                                     "x": {
                                         "scale": "x",
-                                        "signal": "child_brush[0].extent[0]"
+                                        "signal": "brush[0].extent[0]"
                                     },
                                     "x2": {
                                         "scale": "x",
-                                        "signal": "child_brush[0].extent[1]"
+                                        "signal": "brush[0].extent[1]"
                                     },
                                     "y": {
                                         "value": 0
@@ -1035,7 +1049,7 @@
                                     },
                                     "fill": [
                                         {
-                                            "test": "vlPoint(\"child_xenc_store\", parent._id, datum, \"union\", \"all\")",
+                                            "test": "vlPoint(\"xenc_store\", parent._id, datum, \"union\", \"all\")",
                                             "value": "red"
                                         },
                                         {
@@ -1044,7 +1058,7 @@
                                     ],
                                     "size": [
                                         {
-                                            "test": "vlInterval(\"child_brush_store\", parent._id, datum, \"intersect\", \"all\")",
+                                            "test": "vlInterval(\"brush_store\", parent._id, datum, \"intersect\", \"all\")",
                                             "value": 250
                                         },
                                         {
@@ -1098,7 +1112,7 @@
                             "clip": true
                         },
                         {
-                            "name": "child_brush_brush",
+                            "name": "brush_brush",
                             "type": "rect",
                             "encode": {
                                 "enter": {
@@ -1109,11 +1123,11 @@
                                 "update": {
                                     "x": {
                                         "scale": "x",
-                                        "signal": "child_brush[0].extent[0]"
+                                        "signal": "brush[0].extent[0]"
                                     },
                                     "x2": {
                                         "scale": "x",
-                                        "signal": "child_brush[0].extent[1]"
+                                        "signal": "brush[0].extent[1]"
                                     },
                                     "y": {
                                         "value": 0
@@ -1173,7 +1187,7 @@
             "nice": true,
             "zero": false,
             "domainRaw": {
-                "signal": "child_grid_x"
+                "signal": "grid_X"
             }
         },
         {
@@ -1191,7 +1205,7 @@
             "nice": true,
             "zero": false,
             "domainRaw": {
-                "signal": "child_grid_y"
+                "signal": "grid_Y"
             }
         }
     ]

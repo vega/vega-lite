@@ -27,7 +27,7 @@ import {Model, ModelWithField} from './model';
 import {RepeaterValue, replaceRepeaterInEncoding} from './repeat';
 import initScale from './scale/init';
 import parseScaleComponent from './scale/parse';
-import {assembleUnitSelectionData, assembleUnitSelectionMarks, assembleUnitSelectionSignals, parseUnitSelection} from './selection/selection';
+import {assembleTopLevelSignals, assembleUnitSelectionData, assembleUnitSelectionMarks, assembleUnitSelectionSignals, parseUnitSelection} from './selection/selection';
 
 /**
  * Internal model of Vega-Lite specification for the compiler.
@@ -268,6 +268,10 @@ export class UnitModel extends ModelWithField {
       return assembleData(vals(this.component.data.sources));
     }
     return [];
+  }
+
+  public assembleSelectionTopLevelSignals(signals: any[]): VgSignal[] {
+    return assembleTopLevelSignals(this, signals);
   }
 
   public assembleSelectionSignals(): VgSignal[] {

@@ -45,10 +45,10 @@
             ]
         },
         {
-            "name": "grid_x"
+            "name": "grid_Horsepower"
         },
         {
-            "name": "grid_y"
+            "name": "grid_Miles_per_Gallon"
         }
     ],
     "marks": [
@@ -57,7 +57,7 @@
             "type": "group",
             "signals": [
                 {
-                    "name": "grid_x",
+                    "name": "grid_Horsepower",
                     "on": [
                         {
                             "events": {
@@ -75,7 +75,7 @@
                     "push": "outer"
                 },
                 {
-                    "name": "grid_y",
+                    "name": "grid_Miles_per_Gallon",
                     "on": [
                         {
                             "events": {
@@ -94,7 +94,7 @@
                 },
                 {
                     "name": "grid",
-                    "update": "[{field: \"Horsepower\", extent: grid_x}, {field: \"Miles_per_Gallon\", extent: grid_y}]"
+                    "update": "[{field: \"Horsepower\", extent: grid_Horsepower}, {field: \"Miles_per_Gallon\", extent: grid_Miles_per_Gallon}]"
                 },
                 {
                     "name": "grid_translate_anchor",
@@ -256,7 +256,7 @@
             "nice": true,
             "zero": false,
             "domainRaw": {
-                "signal": "grid_x"
+                "signal": "grid_Horsepower"
             }
         },
         {
@@ -274,7 +274,7 @@
             "nice": true,
             "zero": false,
             "domainRaw": {
-                "signal": "grid_y"
+                "signal": "grid_Miles_per_Gallon"
             }
         },
         {

@@ -71,7 +71,7 @@ describe('Inputs Selection Transform', function() {
       }
     ]);
 
-    assert.includeDeepMembers(selection.assembleTopLevelSignals(model), [
+    assert.includeDeepMembers(selection.assembleTopLevelSignals(model, []), [
       {
         "name": "one__id",
         "value": "",
@@ -95,7 +95,7 @@ describe('Inputs Selection Transform', function() {
       }
     ]);
 
-    assert.includeDeepMembers(selection.assembleTopLevelSignals(model), [
+    assert.includeDeepMembers(selection.assembleTopLevelSignals(model, []), [
       {
         "name": "two_Horsepower",
         "value": "",
@@ -130,7 +130,7 @@ describe('Inputs Selection Transform', function() {
       }
     ]);
 
-    assert.includeDeepMembers(selection.assembleTopLevelSignals(model), [
+    assert.includeDeepMembers(selection.assembleTopLevelSignals(model, []), [
       {
         "name": "three_Origin",
         "value": "",

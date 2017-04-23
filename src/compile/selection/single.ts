@@ -8,10 +8,9 @@ const single:SelectionCompiler = {
   signals: multi.signals,
 
   topLevelSignals: function(model, selCmpt) {
-    const name = selCmpt.name;
     return [{
-      name: name,
-      update: `data(${stringValue(name + STORE)})[0]`
+      name: selCmpt.name,
+      update: `data(${stringValue(selCmpt.name + STORE)})[0]`
     }];
   },
 

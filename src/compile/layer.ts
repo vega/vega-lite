@@ -165,6 +165,10 @@ export class LayerModel extends Model {
     return applyConfig({}, this.config.cell, FILL_STROKE_CONFIG.concat(['clip']));
   }
 
+  public assembleSelectionTopLevelSignals(signals: any[]): VgSignal[] {
+    return this.children.reduce((sg, child) => child.assembleSelectionTopLevelSignals(sg), signals);
+  }
+
   // TODO: Support same named selections across children.
   public assembleSelectionSignals(): VgSignal[] {
     return this.children.reduce((signals, child) => {

@@ -2,7 +2,7 @@ import {selector as parseSelector} from 'vega-event-selector';
 import {Channel, X, Y} from '../../../channel';
 import {stringValue} from '../../../util';
 import {BRUSH as INTERVAL_BRUSH, projections as intervalProjections, SIZE as INTERVAL_SIZE} from '../interval';
-import {SelectionComponent} from '../selection';
+import {channelSignalName, SelectionComponent} from '../selection';
 import {UnitModel} from './../../unit';
 import {default as scalesCompiler, domain} from './scales';
 import {TransformCompiler} from './transforms';
@@ -36,10 +36,10 @@ const translate:TransformCompiler = {
           `width: ${size}.width, height: ${size}.height, ` +
 
           (x !== null ? 'extent_x: ' + (scales ? domain(model, X) :
-              `slice(${name}_x)`) + ', ' : '') +
+              `slice(${name}_${x.field})`) + ', ' : '') +
 
           (y !== null ? 'extent_y: ' + (scales ? domain(model, Y) :
-              `slice(${name}_y)`) + ', ' : '') + '}'
+              `slice(${name}_${y.field})`) + ', ' : '') + '}'
       }]
     }, {
       name: name + DELTA,
@@ -74,7 +74,7 @@ function getSign(selCmpt: SelectionComponent, channel: Channel) {
 
 function onDelta(model: UnitModel, selCmpt: SelectionComponent, channel: Channel, size: 'width' | 'height', signals: any[]) {
   const name = selCmpt.name,
-      signal:any = signals.filter((s:any) => s.name === name + '_' + channel)[0],
+      signal:any = signals.filter((s:any) => s.name === channelSignalName(selCmpt, channel))[0],
       anchor = name + ANCHOR,
       delta  = name + DELTA,
       scale  = stringValue(model.scaleName(channel)),
