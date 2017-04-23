@@ -67,8 +67,7 @@ selectAll('.vl-example').each(function(this: Element) {
       }
     });
   } else {
-    const spec = trim(sel.text());
-    renderExample(sel, spec);
+    console.error('No "data-name" specified to import examples from');
   }
 });
 
@@ -105,7 +104,7 @@ function renderGallery() {
       const imageGroup = viz.enter()
         .append('a')
         .attr('class', 'imagegroup')
-        .attr('href', function(d){ return 'https://vega.github.io/new-editor/#/examples/vega_lite/' + d.name;})
+        .attr('href', function(d){ return 'https://vega.github.io/new-editor/?mode=vega-lite&spec=' + d.name;})
         .attr('target', 'blank');
 
       imageGroup.append('div')

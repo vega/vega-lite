@@ -1,0 +1,148 @@
+{
+    "$schema": "http://vega.github.io/schema/vega/v3.0.json",
+    "autosize": "pad",
+    "padding": 5,
+    "data": [
+        {
+            "name": "source_0",
+            "url": "data/movies.json",
+            "format": {
+                "type": "json",
+                "parse": {
+                    "IMDB_Rating": "number"
+                }
+            },
+            "transform": [
+                {
+                    "type": "filter",
+                    "expr": "datum[\"IMDB_Rating\"] !== null && !isNaN(datum[\"IMDB_Rating\"])"
+                },
+                {
+                    "type": "extent",
+                    "field": "IMDB_Rating",
+                    "signal": "bin_maxbins_10_IMDB_Rating_extent"
+                },
+                {
+                    "type": "bin",
+                    "field": "IMDB_Rating",
+                    "as": [
+                        "bin_maxbins_10_IMDB_Rating_start",
+                        "bin_maxbins_10_IMDB_Rating_end"
+                    ],
+                    "signal": "bin_maxbins_10_IMDB_Rating_bins",
+                    "maxbins": 10,
+                    "extent": {
+                        "signal": "bin_maxbins_10_IMDB_Rating_extent"
+                    }
+                }
+            ]
+        }
+    ],
+    "signals": [
+        {
+            "name": "width",
+            "update": "200"
+        },
+        {
+            "name": "height",
+            "update": "21"
+        },
+        {
+            "name": "unit",
+            "value": {},
+            "on": [
+                {
+                    "events": "mousemove",
+                    "update": "group()._id ? group() : unit"
+                }
+            ]
+        }
+    ],
+    "marks": [
+        {
+            "name": "nested_main_group",
+            "type": "group",
+            "encode": {
+                "update": {
+                    "width": {
+                        "signal": "width"
+                    },
+                    "height": {
+                        "signal": "height"
+                    },
+                    "fill": {
+                        "value": "transparent"
+                    }
+                }
+            },
+            "marks": [
+                {
+                    "name": "marks",
+                    "type": "symbol",
+                    "role": "point",
+                    "from": {
+                        "data": "source_0"
+                    },
+                    "encode": {
+                        "update": {
+                            "x": {
+                                "signal": "(scale(\"x\", datum[\"bin_maxbins_10_IMDB_Rating_start\"]) + scale(\"x\", datum[\"bin_maxbins_10_IMDB_Rating_end\"]))/2"
+                            },
+                            "y": {
+                                "value": 10.5
+                            },
+                            "stroke": {
+                                "value": "#4c78a8"
+                            },
+                            "fill": {
+                                "value": "transparent"
+                            },
+                            "opacity": {
+                                "value": 0.7
+                            }
+                        }
+                    }
+                }
+            ]
+        }
+    ],
+    "scales": [
+        {
+            "name": "x",
+            "type": "bin-linear",
+            "domain": {
+                "signal": "sequence(bin_maxbins_10_IMDB_Rating_bins.start, bin_maxbins_10_IMDB_Rating_bins.stop + bin_maxbins_10_IMDB_Rating_bins.step, bin_maxbins_10_IMDB_Rating_bins.step)"
+            },
+            "range": [
+                0,
+                200
+            ],
+            "round": true,
+            "nice": true
+        }
+    ],
+    "axes": [
+        {
+            "scale": "x",
+            "format": "s",
+            "orient": "bottom",
+            "title": "BIN(IMDB_Rating)",
+            "zindex": 1,
+            "encode": {
+                "labels": {
+                    "update": {
+                        "angle": {
+                            "value": 270
+                        },
+                        "align": {
+                            "value": "right"
+                        },
+                        "baseline": {
+                            "value": "middle"
+                        }
+                    }
+                }
+            }
+        }
+    ]
+}

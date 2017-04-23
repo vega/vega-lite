@@ -1,7 +1,7 @@
-import {Channel, COLUMN, ROW, SHAPE, SIZE} from './channel';
+import {Channel, COLOR, COLUMN, OPACITY, ROW, SHAPE, SIZE} from './channel';
 import {isBoolean} from './util';
 
-export interface BinBase {
+export interface BaseBin {
   /**
    * The number base to use for automatic bin determination (default is base 10).
    *
@@ -49,7 +49,7 @@ export interface BinBase {
 /**
  * Binning properties or boolean flag for determining whether to bin data or not.
  */
-export interface Bin extends BinBase {
+export interface Bin extends BaseBin {
   /**
    * A two-element (`[min, max]`) array indicating the range of desired bin values.
    * @minItems 2
@@ -70,6 +70,8 @@ export function autoMaxBins(channel: Channel): number {
     case ROW:
     case COLUMN:
     case SIZE:
+    case COLOR:
+    case OPACITY:
       // Facets and Size shouldn't have too many bins
       // We choose 6 like shape to simplify the rule
     case SHAPE:

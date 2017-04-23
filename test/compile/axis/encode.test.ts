@@ -19,17 +19,6 @@ describe('compile/axis', () => {
       assert.equal(labels.angle.value, 270);
     });
 
-    it('should also rotate labels if the channel is column', function() {
-      const model = parseModel({
-        mark: "point",
-        encoding: {
-          column: {field: "a", type: "temporal", timeUnit: "month", axis: {labelAngle: 270}}
-        }
-      });
-      const labels = encode.labels(model, 'column', {}, {});
-      assert.equal(labels.angle.value, 270);
-    });
-
     it('should have correct text.signal for quarter timeUnits', function () {
       const model = parseUnitModel({
         mark: "point",

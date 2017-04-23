@@ -8,16 +8,18 @@ import {Scale} from '../scale';
 import {LayerSpec} from '../spec';
 import {StackProperties} from '../stack';
 import {Dict, flatten, keys, vals} from '../util';
-import {isSignalRefDomain, VgData, VgEncodeEntry, VgScale} from '../vega.schema';
+import {isSignalRefDomain, VgData, VgEncodeEntry, VgLayout, VgScale, VgSignal} from '../vega.schema';
 
 import {applyConfig, buildModel} from './common';
 import {assembleData} from './data/assemble';
 import {parseData} from './data/parse';
-import {assembleLayout, parseLayerLayout} from './layout';
+import {assembleLayoutLayerSignals} from './layout/index';
 import {Model} from './model';
+import {RepeaterValue} from './repeat';
 import {unionDomains} from './scale/domain';
-import {assembleLayerMarks as assembleLayeredSelectionMarks} from './selection/selection';
+import {assembleLayerSelectionMarks} from './selection/selection';
 import {UnitModel} from './unit';
+
 
 export class LayerModel extends Model {
   public readonly children: UnitModel[];
@@ -36,7 +38,8 @@ export class LayerModel extends Model {
    */
   public readonly height: number;
 
-  constructor(spec: LayerSpec, parent: Model, parentGivenName: string, config: Config) {
+  constructor(spec: LayerSpec, parent: Model, parentGivenName: string, repeater: RepeaterValue, config: Config) {
+
     super(spec, parent, parentGivenName, config);
 
     this.width = spec.width;
@@ -45,29 +48,15 @@ export class LayerModel extends Model {
     this.children = spec.layer.map((layer, i) => {
       // FIXME: this is not always the case
       // we know that the model has to be a unit model because we pass in a unit spec
-      return buildModel(layer, this, this.getName('layer_' + i), config) as UnitModel;
+      return buildModel(layer, this, this.getName('layer_' + i), repeater, config) as UnitModel;
     });
-  }
-
-  public channelHasField(channel: Channel): boolean {
-    // layer does not have any channels
-    return false;
-  }
-
-  public hasDiscreteScale(channel: Channel) {
-    // since we assume shared scales we can just ask the first child
-    return this.children[0].hasDiscreteScale(channel);
-  }
-
-  public fieldDef(channel: Channel): FieldDef {
-    return null; // layer does not have field defs
   }
 
   public parseData() {
     this.component.data = parseData(this);
-    this.children.forEach((child) => {
+    for (const child of this.children) {
       child.parseData();
-    });
+    }
   }
 
   public parseSelection() {
@@ -75,20 +64,12 @@ export class LayerModel extends Model {
     // across unit specs. Persist their definitions within each child
     // to assemble signals which remain within output Vega unit groups.
     this.component.selection = {};
-    this.children.forEach(child => {
+    for (const child of this.children) {
       child.parseSelection();
       keys(child.component.selection).forEach((key) => {
         this.component.selection[key] = child.component.selection[key];
       });
-    });
-  }
-
-  public parseLayoutData() {
-    // TODO: correctly union ordinal scales rather than just using the layout of the first child
-    this.children.forEach(child => {
-      child.parseLayoutData();
-    });
-    this.component.layout = parseLayerLayout(this);
+    }
   }
 
   public parseScale(this: LayerModel) {
@@ -96,7 +77,7 @@ export class LayerModel extends Model {
 
     const scaleComponent: Dict<VgScale> = this.component.scales = {};
 
-    this.children.forEach(function(child) {
+    for (const child of this.children) {
       child.parseScale();
 
       // FIXME(#1602): correctly implement independent scale
@@ -127,64 +108,79 @@ export class LayerModel extends Model {
           delete child.component.scales[channel];
         });
       }
-    });
+    }
   }
 
   public parseMark() {
-    this.children.forEach(child => {
+    for (const child of this.children) {
       child.parseMark();
-    });
+    }
   }
 
-  public parseAxis() {
+  public parseAxisAndHeader() {
     const axisComponent = this.component.axes = {};
 
-    this.children.forEach(child => {
-      child.parseAxis();
+    for (const child of this.children) {
+      child.parseAxisAndHeader();
+      keys(child.component.axes).forEach(channel => {
+        // TODO: read these from the resolve syntax
+        const axisResolve = 'shared';
+        const scaleResolve = 'shared';
 
-      // TODO: correctly implement independent axes
-      if (true) { // if shared/union scale
-        keys(child.component.axes).forEach(channel => {
-          // TODO: support multiple axes for shared scale
+        if (scaleResolve === 'shared' && axisResolve === 'shared') {
+          // If shared/union axis (only possible if the scale is shared in the first place)
 
-          // just use the first axis definition for each channel
+          // Just use the first axes definition for each channel
+          // TODO: what if the axes from different children are not compatible
           if (!axisComponent[channel]) {
             axisComponent[channel] = child.component.axes[channel];
+            delete child.component.axes[channel];
           }
-        });
-      }
-    });
-  }
-
-  public parseAxisGroup(): void {
-    return null;
+        } else {
+          // Otherwise do nothing for independent axes
+        }
+      });
+    }
   }
 
   public parseLegend() {
     const legendComponent = this.component.legends = {};
 
-    this.children.forEach(function(child) {
+    for (const child of this.children) {
       child.parseLegend();
 
       // TODO: correctly implement independent axes
       if (true) { // if shared/union scale
-        keys(child.component.legends).forEach(function(channel) {
+        keys(child.component.legends).forEach(channel => {
           // just use the first legend definition for each channel
           if (!legendComponent[channel]) {
             legendComponent[channel] = child.component.legends[channel];
           }
         });
       }
-    });
+    }
   }
 
-  public assembleParentGroupProperties(cellConfig: CellConfig): VgEncodeEntry {
-    return applyConfig({}, cellConfig, FILL_STROKE_CONFIG.concat(['clip']));
+  public assembleParentGroupProperties(): VgEncodeEntry {
+    return applyConfig({}, this.config.cell, FILL_STROKE_CONFIG.concat(['clip']));
+  }
+
+  public assembleSelectionTopLevelSignals(signals: any[]): VgSignal[] {
+    return this.children.reduce((sg, child) => child.assembleSelectionTopLevelSignals(sg), signals);
   }
 
   // TODO: Support same named selections across children.
-  public assembleSignals(signals: any[]): any[] {
-    return this.children.reduce((sg, child) => child.assembleSignals(sg), []);
+  public assembleSelectionSignals(): VgSignal[] {
+    return this.children.reduce((signals, child) => {
+      return signals.concat(child.assembleSelectionSignals());
+    }, []);
+  }
+
+
+  public assembleLayoutSignals(): VgSignal[] {
+    return this.children.reduce((signals, child) => {
+      return signals.concat(child.assembleLayoutSignals());
+    }, assembleLayoutLayerSignals(this));
   }
 
   public assembleSelectionData(data: VgData[]): VgData[] {
@@ -206,29 +202,13 @@ export class LayerModel extends Model {
     }, super.assembleScales());
   }
 
-  public assembleLayout(layoutData: VgData[]): VgData[] {
-    // Postfix traversal – layout is assembled bottom-up
-    this.children.forEach((child) => {
-      child.assembleLayout(layoutData);
-    });
-    return assembleLayout(this, layoutData);
-  }
-
-  public assembleMarks(): any[] {
-    return assembleLayeredSelectionMarks(this, flatten(this.children.map((child) => {
-      return child.assembleMarks();
-    })));
-  }
-
-  public channels(): Channel[] {
-    return [];
-  }
-
-  protected getMapping(): any {
+  public assembleLayout(): VgLayout {
     return null;
   }
 
-  public isLayer() {
-    return true;
+  public assembleMarks(): any[] {
+    return assembleLayerSelectionMarks(this, flatten(this.children.map((child) => {
+      return child.assembleMarks();
+    })));
   }
 }

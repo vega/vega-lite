@@ -106,141 +106,119 @@ describe('Layered Selections', function() {
     const child0 = layers.children[0].assembleMarks()[0],
           child1 = layers.children[1].assembleMarks()[0];
 
-    assert.sameDeepMembers(layers.assembleMarks(), [{
-      // Clipping mark introduced by "grid" selection.
-      "type": "group",
-      "encode": {
-        "enter": {
-          "width": {
-            "field": {
-              "group": "width"
+    assert.sameDeepMembers(layers.assembleMarks(), [
+      // Background brush mark for "brush" selection.
+      {
+        "name": undefined,
+        "type": "rect",
+        "clip": true,
+        "encode": {
+          "enter": {
+            "fill": {
+              "value": "#eee"
             }
           },
-          "height": {
-            "field": {
-              "group": "height"
-            }
-          },
-          "fill": {
-            "value": "transparent"
-          },
-          "clip": {
-            "value": true
+          "update": {
+            "x": [
+              {
+                "test": "data(\"brush_store\").length && brush_tuple && brush_tuple.unit === data(\"brush_store\")[0].unit",
+                "scale": "x",
+                "signal": "brush[0].extent[0]"
+              },
+              {
+                "value": 0
+              }
+            ],
+            "x2": [
+              {
+                "test": "data(\"brush_store\").length && brush_tuple && brush_tuple.unit === data(\"brush_store\")[0].unit",
+                "scale": "x",
+                "signal": "brush[0].extent[1]"
+              },
+              {
+                "value": 0
+              }
+            ],
+            "y": [
+              {
+                "test": "data(\"brush_store\").length && brush_tuple && brush_tuple.unit === data(\"brush_store\")[0].unit",
+                "scale": "y",
+                "signal": "brush[1].extent[0]"
+              },
+              {
+                "value": 0
+              }
+            ],
+            "y2": [
+              {
+                "test": "data(\"brush_store\").length && brush_tuple && brush_tuple.unit === data(\"brush_store\")[0].unit",
+                "scale": "y",
+                "signal": "brush[1].extent[1]"
+              },
+              {
+                "value": 0
+              }
+            ]
           }
         }
       },
-      "marks": [
-        // Background brush mark for "brush" selection.
-        {
-          "name": undefined,
-          "type": "rect",
-          "encode": {
-            "enter": {
-              "fill": {
-                "value": "#eee"
-              }
-            },
-            "update": {
-              "x": [
-                {
-                  "test": "data(\"layer_0_brush_store\").length && layer_0_brush_tuple && layer_0_brush_tuple.unit === data(\"layer_0_brush_store\")[0].unit",
-                  "scale": "x",
-                  "signal": "layer_0_brush[0].extent[0]"
-                },
-                {
-                  "value": 0
-                }
-              ],
-              "x2": [
-                {
-                  "test": "data(\"layer_0_brush_store\").length && layer_0_brush_tuple && layer_0_brush_tuple.unit === data(\"layer_0_brush_store\")[0].unit",
-                  "scale": "x",
-                  "signal": "layer_0_brush[0].extent[1]"
-                },
-                {
-                  "value": 0
-                }
-              ],
-              "y": [
-                {
-                  "test": "data(\"layer_0_brush_store\").length && layer_0_brush_tuple && layer_0_brush_tuple.unit === data(\"layer_0_brush_store\")[0].unit",
-                  "scale": "y",
-                  "signal": "layer_0_brush[1].extent[0]"
-                },
-                {
-                  "value": 0
-                }
-              ],
-              "y2": [
-                {
-                  "test": "data(\"layer_0_brush_store\").length && layer_0_brush_tuple && layer_0_brush_tuple.unit === data(\"layer_0_brush_store\")[0].unit",
-                  "scale": "y",
-                  "signal": "layer_0_brush[1].extent[1]"
-                },
-                {
-                  "value": 0
-                }
-              ]
+      // Layer marks
+      {...child0, clip: true}, {...child1, clip: true},
+      // Foreground brush mark for "brush" selection.
+      {
+        "name": "brush_brush",
+        "type": "rect",
+        "clip": true,
+        "encode": {
+          "enter": {
+            "fill": {
+              "value": "transparent"
             }
-          }
-        },
-        // Layer marks
-        child0, child1,
-        // Foreground brush mark for "brush" selection.
-        {
-          "name": "layer_0_brush_brush",
-          "type": "rect",
-          "encode": {
-            "enter": {
-              "fill": {
-                "value": "transparent"
+          },
+          "update": {
+            "x": [
+              {
+                "test": "data(\"brush_store\").length && brush_tuple && brush_tuple.unit === data(\"brush_store\")[0].unit",
+                "scale": "x",
+                "signal": "brush[0].extent[0]"
+              },
+              {
+                "value": 0
               }
-            },
-            "update": {
-              "x": [
-                {
-                  "test": "data(\"layer_0_brush_store\").length && layer_0_brush_tuple && layer_0_brush_tuple.unit === data(\"layer_0_brush_store\")[0].unit",
-                  "scale": "x",
-                  "signal": "layer_0_brush[0].extent[0]"
-                },
-                {
-                  "value": 0
-                }
-              ],
-              "x2": [
-                {
-                  "test": "data(\"layer_0_brush_store\").length && layer_0_brush_tuple && layer_0_brush_tuple.unit === data(\"layer_0_brush_store\")[0].unit",
-                  "scale": "x",
-                  "signal": "layer_0_brush[0].extent[1]"
-                },
-                {
-                  "value": 0
-                }
-              ],
-              "y": [
-                {
-                  "test": "data(\"layer_0_brush_store\").length && layer_0_brush_tuple && layer_0_brush_tuple.unit === data(\"layer_0_brush_store\")[0].unit",
-                  "scale": "y",
-                  "signal": "layer_0_brush[1].extent[0]"
-                },
-                {
-                  "value": 0
-                }
-              ],
-              "y2": [
-                {
-                  "test": "data(\"layer_0_brush_store\").length && layer_0_brush_tuple && layer_0_brush_tuple.unit === data(\"layer_0_brush_store\")[0].unit",
-                  "scale": "y",
-                  "signal": "layer_0_brush[1].extent[1]"
-                },
-                {
-                  "value": 0
-                }
-              ]
-            }
+            ],
+            "x2": [
+              {
+                "test": "data(\"brush_store\").length && brush_tuple && brush_tuple.unit === data(\"brush_store\")[0].unit",
+                "scale": "x",
+                "signal": "brush[0].extent[1]"
+              },
+              {
+                "value": 0
+              }
+            ],
+            "y": [
+              {
+                "test": "data(\"brush_store\").length && brush_tuple && brush_tuple.unit === data(\"brush_store\")[0].unit",
+                "scale": "y",
+                "signal": "brush[1].extent[0]"
+              },
+              {
+                "value": 0
+              }
+            ],
+            "y2": [
+              {
+                "test": "data(\"brush_store\").length && brush_tuple && brush_tuple.unit === data(\"brush_store\")[0].unit",
+                "scale": "y",
+                "signal": "brush[1].extent[1]"
+              },
+              {
+                "value": 0
+              }
+            ]
           }
         }
-      ]
-    }]);
+      }
+    ]);
   });
 });

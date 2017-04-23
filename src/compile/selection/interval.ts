@@ -2,7 +2,7 @@ import {Channel, X, Y} from '../../channel';
 import {warn} from '../../log';
 import {extend, keys, stringValue} from '../../util';
 import {UnitModel} from '../unit';
-import {channelSignalName, invert as invertFn, SelectionCompiler, SelectionComponent, STORE, TUPLE} from './selection';
+import {channelSignalName, invert as invertFn, ProjectComponent, SelectionCompiler, SelectionComponent, STORE, TUPLE} from './selection';
 import scales from './transforms/scales';
 
 export const BRUSH = '_brush',
@@ -73,9 +73,9 @@ const interval:SelectionCompiler = {
 
   marks: function(model, selCmpt, marks) {
     const name = selCmpt.name,
-        {x, y} = projections(selCmpt),
+        {xi, yi} = projections(selCmpt),
         tpl = name + TUPLE,
-        store = `data(${stringValue(name + STORE)})`;
+        store = `data(${stringValue(selCmpt.name + STORE)})`;
 
     // Do not add a brush if we're binding to scales.
     if (scales.has(selCmpt)) {
@@ -83,20 +83,20 @@ const interval:SelectionCompiler = {
     }
 
     const update = {
-      x: extend({}, x !== null ?
-        {scale: model.scaleName(X), signal: `${name}[${x}].extent[0]`} :
+      x: extend({}, xi !== null ?
+        {scale: model.scaleName(X), signal: `${name}[${xi}].extent[0]`} :
         {value: 0}),
 
-      x2: extend({}, x !== null ?
-        {scale: model.scaleName(X), signal: `${name}[${x}].extent[1]`} :
+      x2: extend({}, xi !== null ?
+        {scale: model.scaleName(X), signal: `${name}[${xi}].extent[1]`} :
         {field: {group: 'width'}}),
 
-      y: extend({}, y !== null ?
-        {scale: model.scaleName(Y), signal: `${name}[${y}].extent[0]`} :
+      y: extend({}, yi !== null ?
+        {scale: model.scaleName(Y), signal: `${name}[${yi}].extent[0]`} :
         {value: 0}),
 
-      y2: extend({}, y !== null ?
-        {scale: model.scaleName(Y), signal: `${name}[${y}].extent[1]`} :
+      y2: extend({}, yi !== null ?
+        {scale: model.scaleName(Y), signal: `${name}[${yi}].extent[1]`} :
         {field: {group: 'height'}})
     };
 
@@ -133,20 +133,23 @@ const interval:SelectionCompiler = {
 export {interval as default};
 
 export function projections(selCmpt: SelectionComponent) {
-  let x:number = null, y:number = null;
+  let x:ProjectComponent = null, xi:number = null,
+      y:ProjectComponent = null, yi: number = null;
   selCmpt.project.forEach(function(p, i) {
     if (p.encoding === X) {
-      x = i;
+      x  = p;
+      xi = i;
     } else if (p.encoding === Y) {
-      y = i;
+      y = p;
+      yi = i;
     }
   });
-  return {x: x, y: y};
+  return {x, xi, y, yi};
 }
 
 function channelSignal(model: UnitModel, selCmpt: SelectionComponent, channel: Channel): any {
   const name  = channelSignalName(selCmpt, channel),
-      size  = (channel === X ? 'width' : 'height'),
+      size  = model.getSizeSignalRef(channel === X ? 'width' : 'height').signal,
       coord = `${channel}(unit)`,
       invert = invertFn.bind(null, model, selCmpt, channel);
 

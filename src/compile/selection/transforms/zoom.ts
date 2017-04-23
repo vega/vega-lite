@@ -2,7 +2,7 @@ import {selector as parseSelector} from 'vega-event-selector';
 import {Channel, X, Y} from '../../../channel';
 import {stringValue} from '../../../util';
 import {BRUSH as INTERVAL_BRUSH, projections as intervalProjections, SIZE as INTERVAL_SIZE} from '../interval';
-import {SelectionComponent} from '../selection';
+import {channelSignalName, SelectionComponent} from '../selection';
 import {UnitModel} from './../../unit';
 import {default as scalesCompiler, domain} from './scales';
 import {TransformCompiler} from './transforms';
@@ -68,9 +68,9 @@ const zoom:TransformCompiler = {
 
 export {zoom as default};
 
-function onDelta(model: UnitModel, selCmpt: SelectionComponent, channel: Channel, size: string, signals: any[]) {
+function onDelta(model: UnitModel, selCmpt: SelectionComponent, channel: Channel, size: 'width' | 'height', signals: any[]) {
   const name = selCmpt.name,
-      signal:any = signals.filter((s:any) => s.name === name + '_' + channel)[0],
+      signal:any = signals.filter((s:any) => s.name === channelSignalName(selCmpt, channel))[0],
       scales = scalesCompiler.has(selCmpt),
       base = scales ? domain(model, channel) : signal.name,
       anchor = `${name}${ANCHOR}.${channel}`,

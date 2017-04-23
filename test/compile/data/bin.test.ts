@@ -3,11 +3,11 @@
 import {assert} from 'chai';
 
 import {BinNode} from '../../../src/compile/data/bin';
-import {Model} from '../../../src/compile/model';
+import {ModelWithField} from '../../../src/compile/model';
 import {VgTransform} from '../../../src/vega.schema';
 import {parseUnitModel} from '../../util';
 
-function assemble(model: Model) {
+function assemble(model: ModelWithField) {
   return BinNode.make(model).assemble();
 }
 

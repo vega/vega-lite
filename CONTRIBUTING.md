@@ -8,8 +8,8 @@ or even better, submit a pull request.
 
 - For major changes, please discuss with us via [our mailing list](https://groups.google.com/forum/#!forum/vega-js) and Github first,
 so we can better coordinate our efforts, prevent duplication of work,
-and help you to craft the change so that it is successfully accepted into the project. 
-  - One way to use GitHub for this purpose is to submit a pull request (PR) with a "[WIP]" prefix in the PR's title.  With a WIP PR, you can annotate your modification with questions. 
+and help you to craft the change so that it is successfully accepted into the project.
+  - One way to use GitHub for this purpose is to submit a pull request (PR) with a "[WIP]" prefix in the PR's title.  With a WIP PR, you can annotate your modification with questions.
 
 - Generally we name a branch using this pattern `<your 2-3 letters initial>/<topic>`.
 For example, @kanitw's branch regarding scale type might be called `kw/scale-type`.
@@ -148,7 +148,7 @@ If you only want subset of these actions, you can use:
 
 #### Fast iteration testing
 
-To quickly run tests without long compile times, run `npm run tsc -- -w` in a separate terminal session. Then run `npm run mocha:test` to quickly run tests (or `npm run mocha:test -- --inspect --debug-brk` to inspect tests). Please note that this only runs unit tests and you should run the full tests before committing code. 
+To quickly run tests without long compile times, run `npm run tsc -- -w` in a separate terminal session. Then run `npm run mocha:test` to quickly run tests (or `npm run mocha:test -- --inspect --debug-brk` to inspect tests). Please note that this only runs unit tests and you should run the full tests before committing code.
 
 ### Website
 
@@ -163,14 +163,14 @@ use `npm run deploy:gh`.
 
 ## Suggested Programming Environment.
 
-We use the [Visual Studio Code](http://code.visualstudio.com/) editor with TSLint plugin. 
+We use the [Visual Studio Code](http://code.visualstudio.com/) editor with TSLint plugin.
 - VSCode has a nice built-in Typescript support!
-- We already include project settings to hide compiled files  (`*.js`, `*.js.map`).  This should work automatically if you open the vega-lite folder with VSCode.  
+- We already include project settings to hide compiled files  (`*.js`, `*.js.map`).  This should work automatically if you open the vega-lite folder with VSCode.
 
 ## Manually Testing with Vega-Editor
 
 To manually test your changes locally, you should have a local instance of
-[Vega Editor](https://github.com/vega/vega-editor) and link Vega-Lite to the editor
+[Vega Editor](https://github.com/vega/new-editor) and link Vega-Lite to the editor
 (See [Vega Editor's README](https://github.com/vega/vega-editor#local-testing--debugging)
 for instructions).
 
@@ -191,7 +191,7 @@ npm link vega-util
 Now all the changes you make in vega-util are reflected in your Vega-Lite automatically.
 
 ## Pull Requests and Travis
-All pull requests will be tested on [Travis](https://travis-ci.org/). If your PR does not pass the checks, your PR will not be approved. Travis' environments will run `npm run test`, generate vega specs from your updated code, compare it with the vega specs in `examples/vg-specs/`, and check code coverage of your code.  (See `.travis.yml` for all commands it executes.) If you don't want your PR reviewed until Travis checks pass, just prepend `[WIP]` to the title of your PR.Once you're ready for review, remove the `[WIP]` prefix and comment that the PR is ready for review. 
+All pull requests will be tested on [Travis](https://travis-ci.org/). If your PR does not pass the checks, your PR will not be approved. Travis' environments will run `npm run test`, generate vega specs from your updated code, compare it with the vega specs in `examples/vg-specs/`, and check code coverage of your code.  (See `.travis.yml` for all commands it executes.) If you don't want your PR reviewed until Travis checks pass, just prepend `[WIP]` to the title of your PR.Once you're ready for review, remove the `[WIP]` prefix and comment that the PR is ready for review.
 
 ### Code Coverage
 When checking for code coverage, we require that your PR tests covers at least the same percentage of code that was being covered before. To check the code coverage, you can see the link in the job log of your Travis test, from the Github page of your PR or `https://codecov.io/gh/vega/vega-lite/commits`. It'll be usually in the form of `https://codecov.io/gh/vega/vega-lite/commit/your-full-head-commit-number`. Under the *Files* and *Diff* tab, you can check your code coverage differences and total. In *Files*, you can check which lines in your files are being tested (marked in green) and which are not (marked in red). We appreciate PRs that improve our overall code coverage!

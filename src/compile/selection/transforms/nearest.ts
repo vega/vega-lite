@@ -28,7 +28,7 @@ const nearest:TransformCompiler = {
             type: 'voronoi',
             x: 'datum.x',
             y: 'datum.y',
-            size: [{signal: 'width'}, {signal: 'height'}]
+            size: [model.getSizeSignalRef('width'), model.getSizeSignalRef('height')]
           }]
         };
 

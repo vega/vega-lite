@@ -1,0 +1,198 @@
+{
+    "$schema": "http://vega.github.io/schema/vega/v3.0.json",
+    "autosize": "pad",
+    "padding": 5,
+    "data": [
+        {
+            "name": "source_0",
+            "url": "data/seattle-weather.csv",
+            "format": {
+                "type": "csv",
+                "parse": {
+                    "date": "date",
+                    "temp_max": "number"
+                }
+            },
+            "transform": [
+                {
+                    "type": "filter",
+                    "expr": "datum[\"date\"] !== null && !isNaN(datum[\"date\"]) && datum[\"temp_max\"] !== null && !isNaN(datum[\"temp_max\"])"
+                },
+                {
+                    "type": "formula",
+                    "as": "yearmonth_date",
+                    "expr": "datetime(year(datum[\"date\"]), month(datum[\"date\"]), 1, 0, 0, 0, 0)"
+                },
+                {
+                    "type": "aggregate",
+                    "groupby": [
+                        "yearmonth_date"
+                    ],
+                    "ops": [
+                        "max"
+                    ],
+                    "fields": [
+                        "temp_max"
+                    ]
+                },
+                {
+                    "type": "collect",
+                    "sort": {
+                        "field": "yearmonth_date",
+                        "order": "descending"
+                    }
+                }
+            ]
+        }
+    ],
+    "signals": [
+        {
+            "name": "width",
+            "update": "200"
+        },
+        {
+            "name": "height",
+            "update": "200"
+        },
+        {
+            "name": "unit",
+            "value": {},
+            "on": [
+                {
+                    "events": "mousemove",
+                    "update": "group()._id ? group() : unit"
+                }
+            ]
+        }
+    ],
+    "marks": [
+        {
+            "name": "nested_main_group",
+            "type": "group",
+            "encode": {
+                "update": {
+                    "width": {
+                        "signal": "width"
+                    },
+                    "height": {
+                        "signal": "height"
+                    },
+                    "fill": {
+                        "value": "transparent"
+                    }
+                }
+            },
+            "marks": [
+                {
+                    "name": "marks",
+                    "type": "line",
+                    "from": {
+                        "data": "source_0"
+                    },
+                    "encode": {
+                        "update": {
+                            "x": {
+                                "scale": "x",
+                                "field": "yearmonth_date"
+                            },
+                            "y": {
+                                "scale": "y",
+                                "field": "max_temp_max"
+                            },
+                            "stroke": {
+                                "value": "#4c78a8"
+                            }
+                        }
+                    }
+                }
+            ]
+        }
+    ],
+    "scales": [
+        {
+            "name": "x",
+            "type": "time",
+            "domain": {
+                "data": "source_0",
+                "field": "yearmonth_date"
+            },
+            "range": [
+                0,
+                200
+            ],
+            "round": true,
+            "nice": "month"
+        },
+        {
+            "name": "y",
+            "type": "linear",
+            "domain": {
+                "data": "source_0",
+                "field": "max_temp_max"
+            },
+            "range": [
+                200,
+                0
+            ],
+            "round": true,
+            "nice": true,
+            "zero": true
+        }
+    ],
+    "axes": [
+        {
+            "scale": "x",
+            "orient": "bottom",
+            "tickCount": 5,
+            "title": "YEARMONTH(date)",
+            "zindex": 1,
+            "encode": {
+                "labels": {
+                    "update": {
+                        "text": {
+                            "signal": "timeFormat(datum.value, '%b %Y')"
+                        },
+                        "angle": {
+                            "value": 270
+                        },
+                        "align": {
+                            "value": "right"
+                        },
+                        "baseline": {
+                            "value": "middle"
+                        }
+                    }
+                }
+            }
+        },
+        {
+            "scale": "x",
+            "domain": false,
+            "grid": true,
+            "labels": false,
+            "orient": "bottom",
+            "tickCount": 5,
+            "ticks": false,
+            "zindex": 0,
+            "gridScale": "y"
+        },
+        {
+            "scale": "y",
+            "format": "s",
+            "orient": "left",
+            "title": "MAX(temp_max)",
+            "zindex": 1
+        },
+        {
+            "scale": "y",
+            "domain": false,
+            "format": "s",
+            "grid": true,
+            "labels": false,
+            "orient": "left",
+            "ticks": false,
+            "zindex": 0,
+            "gridScale": "x"
+        }
+    ]
+}

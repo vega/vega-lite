@@ -1,0 +1,671 @@
+{
+    "$schema": "http://vega.github.io/schema/vega/v3.0.json",
+    "autosize": "pad",
+    "padding": 5,
+    "data": [
+        {
+            "name": "source_0",
+            "url": "data/flights-2k.json",
+            "format": {
+                "type": "json",
+                "parse": {
+                    "date": "date"
+                }
+            },
+            "transform": [
+                {
+                    "type": "formula",
+                    "expr": "hours(datum.date)",
+                    "as": "time"
+                }
+            ]
+        },
+        {
+            "name": "data_0",
+            "source": "source_0",
+            "transform": [
+                {
+                    "type": "formula",
+                    "expr": "toNumber(datum[\"distance\"])",
+                    "as": "distance"
+                },
+                {
+                    "type": "filter",
+                    "expr": "datum[\"distance\"] !== null && !isNaN(datum[\"distance\"])"
+                },
+                {
+                    "type": "extent",
+                    "field": "distance",
+                    "signal": "child_distance_bin_maxbins_20_distance_extent"
+                },
+                {
+                    "type": "bin",
+                    "field": "distance",
+                    "as": [
+                        "bin_maxbins_20_distance_start",
+                        "bin_maxbins_20_distance_end"
+                    ],
+                    "signal": "child_distance_bin_maxbins_20_distance_bins",
+                    "maxbins": 20,
+                    "extent": {
+                        "signal": "child_distance_bin_maxbins_20_distance_extent"
+                    }
+                },
+                {
+                    "type": "aggregate",
+                    "groupby": [
+                        "bin_maxbins_20_distance_start",
+                        "bin_maxbins_20_distance_end"
+                    ],
+                    "ops": [
+                        "count"
+                    ],
+                    "fields": [
+                        "*"
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "data_1",
+            "source": "source_0",
+            "transform": [
+                {
+                    "type": "formula",
+                    "expr": "toNumber(datum[\"delay\"])",
+                    "as": "delay"
+                },
+                {
+                    "type": "filter",
+                    "expr": "datum[\"delay\"] !== null && !isNaN(datum[\"delay\"])"
+                },
+                {
+                    "type": "extent",
+                    "field": "delay",
+                    "signal": "child_delay_bin_maxbins_20_delay_extent"
+                },
+                {
+                    "type": "bin",
+                    "field": "delay",
+                    "as": [
+                        "bin_maxbins_20_delay_start",
+                        "bin_maxbins_20_delay_end"
+                    ],
+                    "signal": "child_delay_bin_maxbins_20_delay_bins",
+                    "maxbins": 20,
+                    "extent": {
+                        "signal": "child_delay_bin_maxbins_20_delay_extent"
+                    }
+                },
+                {
+                    "type": "aggregate",
+                    "groupby": [
+                        "bin_maxbins_20_delay_start",
+                        "bin_maxbins_20_delay_end"
+                    ],
+                    "ops": [
+                        "count"
+                    ],
+                    "fields": [
+                        "*"
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "data_2",
+            "source": "source_0",
+            "transform": [
+                {
+                    "type": "formula",
+                    "expr": "toNumber(datum[\"time\"])",
+                    "as": "time"
+                },
+                {
+                    "type": "filter",
+                    "expr": "datum[\"time\"] !== null && !isNaN(datum[\"time\"])"
+                },
+                {
+                    "type": "extent",
+                    "field": "time",
+                    "signal": "child_time_bin_maxbins_20_time_extent"
+                },
+                {
+                    "type": "bin",
+                    "field": "time",
+                    "as": [
+                        "bin_maxbins_20_time_start",
+                        "bin_maxbins_20_time_end"
+                    ],
+                    "signal": "child_time_bin_maxbins_20_time_bins",
+                    "maxbins": 20,
+                    "extent": {
+                        "signal": "child_time_bin_maxbins_20_time_extent"
+                    }
+                },
+                {
+                    "type": "aggregate",
+                    "groupby": [
+                        "bin_maxbins_20_time_start",
+                        "bin_maxbins_20_time_end"
+                    ],
+                    "ops": [
+                        "count"
+                    ],
+                    "fields": [
+                        "*"
+                    ]
+                }
+            ]
+        }
+    ],
+    "signals": [
+        {
+            "name": "child_distance_width",
+            "update": "200"
+        },
+        {
+            "name": "child_distance_height",
+            "update": "200"
+        },
+        {
+            "name": "child_delay_width",
+            "update": "200"
+        },
+        {
+            "name": "child_delay_height",
+            "update": "200"
+        },
+        {
+            "name": "child_time_width",
+            "update": "200"
+        },
+        {
+            "name": "child_time_height",
+            "update": "200"
+        },
+        {
+            "name": "unit",
+            "value": {},
+            "on": [
+                {
+                    "events": "mousemove",
+                    "update": "group()._id ? group() : unit"
+                }
+            ]
+        }
+    ],
+    "marks": [
+        {
+            "name": "nested_main_group",
+            "type": "group",
+            "layout": {
+                "padding": {
+                    "row": 10,
+                    "column": 10
+                },
+                "offset": 10,
+                "columns": 3,
+                "bounds": "full",
+                "align": "all"
+            },
+            "marks": [
+                {
+                    "type": "group",
+                    "name": "child_distance_group",
+                    "encode": {
+                        "update": {
+                            "width": {
+                                "signal": "child_distance_width"
+                            },
+                            "height": {
+                                "signal": "child_distance_height"
+                            },
+                            "fill": {
+                                "value": "transparent"
+                            }
+                        }
+                    },
+                    "marks": [
+                        {
+                            "name": "child_distance_marks",
+                            "type": "rect",
+                            "role": "bar",
+                            "from": {
+                                "data": "data_0"
+                            },
+                            "encode": {
+                                "update": {
+                                    "x2": {
+                                        "scale": "child_distance_x",
+                                        "field": "bin_maxbins_20_distance_start",
+                                        "offset": 1
+                                    },
+                                    "x": {
+                                        "scale": "child_distance_x",
+                                        "field": "bin_maxbins_20_distance_end"
+                                    },
+                                    "y": {
+                                        "scale": "child_distance_y",
+                                        "field": "count_*"
+                                    },
+                                    "y2": {
+                                        "scale": "child_distance_y",
+                                        "value": 0
+                                    },
+                                    "fill": {
+                                        "value": "#4c78a8"
+                                    }
+                                }
+                            }
+                        }
+                    ],
+                    "scales": [
+                        {
+                            "name": "child_distance_x",
+                            "type": "bin-linear",
+                            "domain": {
+                                "signal": "sequence(child_distance_bin_maxbins_20_distance_bins.start, child_distance_bin_maxbins_20_distance_bins.stop + child_distance_bin_maxbins_20_distance_bins.step, child_distance_bin_maxbins_20_distance_bins.step)"
+                            },
+                            "range": [
+                                0,
+                                200
+                            ],
+                            "round": true,
+                            "nice": true
+                        },
+                        {
+                            "name": "child_distance_y",
+                            "type": "linear",
+                            "domain": {
+                                "data": "data_0",
+                                "field": "count_*"
+                            },
+                            "range": [
+                                200,
+                                0
+                            ],
+                            "round": true,
+                            "nice": true,
+                            "zero": true
+                        }
+                    ],
+                    "axes": [
+                        {
+                            "scale": "child_distance_x",
+                            "format": "s",
+                            "orient": "bottom",
+                            "title": "BIN(distance)",
+                            "zindex": 1,
+                            "encode": {
+                                "labels": {
+                                    "update": {
+                                        "angle": {
+                                            "value": 270
+                                        },
+                                        "align": {
+                                            "value": "right"
+                                        },
+                                        "baseline": {
+                                            "value": "middle"
+                                        }
+                                    }
+                                }
+                            }
+                        },
+                        {
+                            "scale": "child_distance_y",
+                            "format": "s",
+                            "orient": "left",
+                            "title": "Number of Records",
+                            "zindex": 1
+                        },
+                        {
+                            "scale": "child_distance_y",
+                            "domain": false,
+                            "format": "s",
+                            "grid": true,
+                            "labels": false,
+                            "orient": "left",
+                            "ticks": false,
+                            "zindex": 0,
+                            "gridScale": "child_distance_x"
+                        }
+                    ]
+                },
+                {
+                    "type": "group",
+                    "name": "child_delay_group",
+                    "encode": {
+                        "update": {
+                            "width": {
+                                "signal": "child_delay_width"
+                            },
+                            "height": {
+                                "signal": "child_delay_height"
+                            },
+                            "fill": {
+                                "value": "transparent"
+                            }
+                        }
+                    },
+                    "marks": [
+                        {
+                            "name": "child_delay_marks",
+                            "type": "rect",
+                            "role": "bar",
+                            "from": {
+                                "data": "data_1"
+                            },
+                            "encode": {
+                                "update": {
+                                    "x2": {
+                                        "scale": "child_delay_x",
+                                        "field": "bin_maxbins_20_delay_start",
+                                        "offset": 1
+                                    },
+                                    "x": {
+                                        "scale": "child_delay_x",
+                                        "field": "bin_maxbins_20_delay_end"
+                                    },
+                                    "y": {
+                                        "scale": "child_delay_y",
+                                        "field": "count_*"
+                                    },
+                                    "y2": {
+                                        "scale": "child_delay_y",
+                                        "value": 0
+                                    },
+                                    "fill": {
+                                        "value": "#4c78a8"
+                                    }
+                                }
+                            }
+                        }
+                    ],
+                    "scales": [
+                        {
+                            "name": "child_delay_x",
+                            "type": "bin-linear",
+                            "domain": {
+                                "signal": "sequence(child_delay_bin_maxbins_20_delay_bins.start, child_delay_bin_maxbins_20_delay_bins.stop + child_delay_bin_maxbins_20_delay_bins.step, child_delay_bin_maxbins_20_delay_bins.step)"
+                            },
+                            "range": [
+                                0,
+                                200
+                            ],
+                            "round": true,
+                            "nice": true
+                        },
+                        {
+                            "name": "child_delay_y",
+                            "type": "linear",
+                            "domain": {
+                                "data": "data_1",
+                                "field": "count_*"
+                            },
+                            "range": [
+                                200,
+                                0
+                            ],
+                            "round": true,
+                            "nice": true,
+                            "zero": true
+                        }
+                    ],
+                    "axes": [
+                        {
+                            "scale": "child_delay_x",
+                            "format": "s",
+                            "orient": "bottom",
+                            "title": "BIN(delay)",
+                            "zindex": 1,
+                            "encode": {
+                                "labels": {
+                                    "update": {
+                                        "angle": {
+                                            "value": 270
+                                        },
+                                        "align": {
+                                            "value": "right"
+                                        },
+                                        "baseline": {
+                                            "value": "middle"
+                                        }
+                                    }
+                                }
+                            }
+                        },
+                        {
+                            "scale": "child_delay_y",
+                            "format": "s",
+                            "orient": "left",
+                            "title": "Number of Records",
+                            "zindex": 1
+                        },
+                        {
+                            "scale": "child_delay_y",
+                            "domain": false,
+                            "format": "s",
+                            "grid": true,
+                            "labels": false,
+                            "orient": "left",
+                            "ticks": false,
+                            "zindex": 0,
+                            "gridScale": "child_delay_x"
+                        }
+                    ]
+                },
+                {
+                    "type": "group",
+                    "name": "child_time_group",
+                    "encode": {
+                        "update": {
+                            "width": {
+                                "signal": "child_time_width"
+                            },
+                            "height": {
+                                "signal": "child_time_height"
+                            },
+                            "fill": {
+                                "value": "transparent"
+                            }
+                        }
+                    },
+                    "marks": [
+                        {
+                            "name": "child_time_marks",
+                            "type": "rect",
+                            "role": "bar",
+                            "from": {
+                                "data": "data_2"
+                            },
+                            "encode": {
+                                "update": {
+                                    "x2": {
+                                        "scale": "child_time_x",
+                                        "field": "bin_maxbins_20_time_start",
+                                        "offset": 1
+                                    },
+                                    "x": {
+                                        "scale": "child_time_x",
+                                        "field": "bin_maxbins_20_time_end"
+                                    },
+                                    "y": {
+                                        "scale": "child_time_y",
+                                        "field": "count_*"
+                                    },
+                                    "y2": {
+                                        "scale": "child_time_y",
+                                        "value": 0
+                                    },
+                                    "fill": {
+                                        "value": "#4c78a8"
+                                    }
+                                }
+                            }
+                        }
+                    ],
+                    "scales": [
+                        {
+                            "name": "child_time_x",
+                            "type": "bin-linear",
+                            "domain": {
+                                "signal": "sequence(child_time_bin_maxbins_20_time_bins.start, child_time_bin_maxbins_20_time_bins.stop + child_time_bin_maxbins_20_time_bins.step, child_time_bin_maxbins_20_time_bins.step)"
+                            },
+                            "range": [
+                                0,
+                                200
+                            ],
+                            "round": true,
+                            "nice": true
+                        },
+                        {
+                            "name": "child_time_y",
+                            "type": "linear",
+                            "domain": {
+                                "data": "data_2",
+                                "field": "count_*"
+                            },
+                            "range": [
+                                200,
+                                0
+                            ],
+                            "round": true,
+                            "nice": true,
+                            "zero": true
+                        }
+                    ],
+                    "axes": [
+                        {
+                            "scale": "child_time_x",
+                            "format": "s",
+                            "orient": "bottom",
+                            "title": "BIN(time)",
+                            "zindex": 1,
+                            "encode": {
+                                "labels": {
+                                    "update": {
+                                        "angle": {
+                                            "value": 270
+                                        },
+                                        "align": {
+                                            "value": "right"
+                                        },
+                                        "baseline": {
+                                            "value": "middle"
+                                        }
+                                    }
+                                }
+                            }
+                        },
+                        {
+                            "scale": "child_time_y",
+                            "format": "s",
+                            "orient": "left",
+                            "title": "Number of Records",
+                            "zindex": 1
+                        },
+                        {
+                            "scale": "child_time_y",
+                            "domain": false,
+                            "format": "s",
+                            "grid": true,
+                            "labels": false,
+                            "orient": "left",
+                            "ticks": false,
+                            "zindex": 0,
+                            "gridScale": "child_time_x"
+                        }
+                    ]
+                }
+            ]
+        }
+    ],
+    "scales": [
+        {
+            "name": "child_distance_x",
+            "type": "bin-linear",
+            "domain": {
+                "signal": "sequence(child_distance_bin_maxbins_20_distance_bins.start, child_distance_bin_maxbins_20_distance_bins.stop + child_distance_bin_maxbins_20_distance_bins.step, child_distance_bin_maxbins_20_distance_bins.step)"
+            },
+            "range": [
+                0,
+                200
+            ],
+            "round": true,
+            "nice": true
+        },
+        {
+            "name": "child_distance_y",
+            "type": "linear",
+            "domain": {
+                "data": "data_0",
+                "field": "count_*"
+            },
+            "range": [
+                200,
+                0
+            ],
+            "round": true,
+            "nice": true,
+            "zero": true
+        },
+        {
+            "name": "child_delay_x",
+            "type": "bin-linear",
+            "domain": {
+                "signal": "sequence(child_delay_bin_maxbins_20_delay_bins.start, child_delay_bin_maxbins_20_delay_bins.stop + child_delay_bin_maxbins_20_delay_bins.step, child_delay_bin_maxbins_20_delay_bins.step)"
+            },
+            "range": [
+                0,
+                200
+            ],
+            "round": true,
+            "nice": true
+        },
+        {
+            "name": "child_delay_y",
+            "type": "linear",
+            "domain": {
+                "data": "data_1",
+                "field": "count_*"
+            },
+            "range": [
+                200,
+                0
+            ],
+            "round": true,
+            "nice": true,
+            "zero": true
+        },
+        {
+            "name": "child_time_x",
+            "type": "bin-linear",
+            "domain": {
+                "signal": "sequence(child_time_bin_maxbins_20_time_bins.start, child_time_bin_maxbins_20_time_bins.stop + child_time_bin_maxbins_20_time_bins.step, child_time_bin_maxbins_20_time_bins.step)"
+            },
+            "range": [
+                0,
+                200
+            ],
+            "round": true,
+            "nice": true
+        },
+        {
+            "name": "child_time_y",
+            "type": "linear",
+            "domain": {
+                "data": "data_2",
+                "field": "count_*"
+            },
+            "range": [
+                200,
+                0
+            ],
+            "round": true,
+            "nice": true,
+            "zero": true
+        }
+    ]
+}

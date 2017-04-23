@@ -9,7 +9,7 @@ import {hasDiscreteDomain, isBinScale, Scale, ScaleType} from '../../scale';
 import {StackProperties} from '../../stack';
 import {contains} from '../../util';
 import {VgValueRef} from '../../vega.schema';
-import {numberFormat, timeFormatExpression} from '../common';
+import {formatSignalRef, numberFormat, timeFormatExpression} from '../common';
 
 // TODO: we need to find a way to refactor these so that scaleName is a part of scale
 // but that's complicated.  For now, this is a huge step moving forward.
@@ -17,7 +17,7 @@ import {numberFormat, timeFormatExpression} from '../common';
 /**
  * @return Vega ValueRef for stackable x or y
  */
-export function stackable(channel: 'x' | 'y', channelDef: ChannelDef, scaleName: string, scale: Scale,
+export function stackable(channel: 'x' | 'y', channelDef: ChannelDef<string>, scaleName: string, scale: Scale,
     stack: StackProperties, defaultRef: VgValueRef): VgValueRef {
   if (channelDef && stack && channel === stack.fieldChannel) {
     // x or y use stack_end so that stacked line's point mark use stack_end too.
@@ -29,7 +29,7 @@ export function stackable(channel: 'x' | 'y', channelDef: ChannelDef, scaleName:
 /**
  * @return Vega ValueRef for stackable x2 or y2
  */
-export function stackable2(channel: 'x2' | 'y2', aFieldDef: FieldDef, a2fieldDef: FieldDef, scaleName: string, scale: Scale,
+export function stackable2(channel: 'x2' | 'y2', aFieldDef: FieldDef<string>, a2fieldDef: FieldDef<string>, scaleName: string, scale: Scale,
     stack: StackProperties, defaultRef: VgValueRef): VgValueRef {
   if (aFieldDef && stack &&
       // If fieldChannel is X and channel is X2 (or Y and Y2)
@@ -43,11 +43,11 @@ export function stackable2(channel: 'x2' | 'y2', aFieldDef: FieldDef, a2fieldDef
 /**
  * Value Ref for binned fields
  */
-export function bin(fieldDef: FieldDef, scaleName: string, side: 'start' | 'end',  offset?: number) {
+export function bin(fieldDef: FieldDef<string>, scaleName: string, side: 'start' | 'end',  offset?: number) {
   return fieldRef(fieldDef, scaleName, {binSuffix: side}, offset);
 }
 
-export function fieldRef(fieldDef: FieldDef, scaleName: string, opt: FieldRefOption, offset?: number | VgValueRef): VgValueRef {
+export function fieldRef(fieldDef: FieldDef<string>, scaleName: string, opt: FieldRefOption, offset?: number | VgValueRef): VgValueRef {
   const ref: VgValueRef = {
     scale: scaleName,
     field: field(fieldDef, opt),
@@ -68,12 +68,12 @@ export function band(scaleName: string, band: number|boolean = true): VgValueRef
 /**
  * Signal that returns the middle of a bin. Should only be used with x and y.
  */
-function binMidSignal(fieldDef: FieldDef, scaleName: string) {
+function binMidSignal(fieldDef: FieldDef<string>, scaleName: string) {
   return {
     signal: `(` +
-      `scale("${scaleName}", ${field(fieldDef, {binSuffix: 'start', datum: true})})` +
+      `scale("${scaleName}", ${field(fieldDef, {binSuffix: 'start', expr: 'datum'})})` +
       ` + ` +
-      `scale("${scaleName}", ${field(fieldDef, {binSuffix: 'end', datum: true})})`+
+      `scale("${scaleName}", ${field(fieldDef, {binSuffix: 'end', expr: 'datum'})})`+
     `)/2`
   };
 }
@@ -81,7 +81,7 @@ function binMidSignal(fieldDef: FieldDef, scaleName: string) {
 /**
  * @returns {VgValueRef} Value Ref for xc / yc or mid point for other channels.
  */
-export function midPoint(channel: Channel, channelDef: ChannelDef, scaleName: string, scale: Scale,
+export function midPoint(channel: Channel, channelDef: ChannelDef<string>, scaleName: string, scale: Scale,
   defaultRef: VgValueRef | 'zeroOrMin' | 'zeroOrMax'): VgValueRef {
   // TODO: datum support
 
@@ -135,23 +135,11 @@ export function midPoint(channel: Channel, channelDef: ChannelDef, scaleName: st
   return defaultRef;
 }
 
-export function text(textDef: TextFieldDef | ValueDef<any>, config: Config): VgValueRef {
+export function text(textDef: TextFieldDef<string> | ValueDef<any>, config: Config): VgValueRef {
   // text
   if (textDef) {
     if (isFieldDef(textDef)) {
-      if (textDef.type === 'quantitative') {
-        // FIXME: what happens if we have bin?
-        const format = numberFormat(textDef, textDef.format, config, 'text');
-        return {
-          signal: `format(${field(textDef, {datum: true})}, '${format}')`
-        };
-      } else if (textDef.type === 'temporal') {
-        return {
-          signal: timeFormatExpression(field(textDef, {datum: true}), textDef.timeUnit, textDef.format, config.text.shortTimeLabels, config.timeFormat)
-        };
-      } else {
-        return {field: textDef.field};
-      }
+      return formatSignalRef(textDef, 'datum', config);
     } else if (textDef.value) {
       return {value: textDef.value};
     }

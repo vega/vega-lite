@@ -10,7 +10,7 @@
                     "type": "string"
                 },
                 "background": {
-                    "description": "CSS color property to use as background of visualization.\n\n__Default value:__ none (transparent)",
+                    "description": "CSS color property to use as the background of visualization.\n\n__Default value:__ none (transparent)",
                     "type": "string"
                 },
                 "config": {
@@ -36,7 +36,7 @@
                     "type": "string"
                 },
                 "encoding": {
-                    "$ref": "#/definitions/EncodingWithFacet",
+                    "$ref": "#/definitions/EncodingWithFacet<Field>",
                     "description": "A key-value mapping between encoding channels and definition of fields."
                 },
                 "height": {
@@ -51,6 +51,7 @@
                             "enum": [
                                 "area",
                                 "bar",
+                                "box-plot",
                                 "circle",
                                 "error-bar",
                                 "line",
@@ -137,7 +138,7 @@
                     "type": "string"
                 },
                 "background": {
-                    "description": "CSS color property to use as background of visualization.\n\n__Default value:__ none (transparent)",
+                    "description": "CSS color property to use as the background of visualization.\n\n__Default value:__ none (transparent)",
                     "type": "string"
                 },
                 "config": {
@@ -170,10 +171,10 @@
                     "items": {
                         "anyOf": [
                             {
-                                "$ref": "#/definitions/GenericUnitSpec<\"point\" | \"area\" | \"bar\" | \"line\" | \"text\" | \"tick\" | \"rect\" | \"rule\" | \"circle\" ..."
+                                "$ref": "#/definitions/UnitSpec"
                             },
                             {
-                                "$ref": "#/definitions/GenericLayerSpec<GenericUnitSpec<\"point\" | \"area\" | \"bar\" | \"line\" | \"text\" | \"tick\" | \"rect\" | \"..."
+                                "$ref": "#/definitions/LayerSpec"
                             }
                         ]
                     },
@@ -242,7 +243,7 @@
                     "type": "string"
                 },
                 "background": {
-                    "description": "CSS color property to use as background of visualization.\n\n__Default value:__ none (transparent)",
+                    "description": "CSS color property to use as the background of visualization.\n\n__Default value:__ none (transparent)",
                     "type": "string"
                 },
                 "config": {
@@ -268,7 +269,7 @@
                     "type": "string"
                 },
                 "facet": {
-                    "$ref": "#/definitions/Facet"
+                    "$ref": "#/definitions/Facet<Field>"
                 },
                 "name": {
                     "description": "Name of the visualization for later reference.",
@@ -304,10 +305,10 @@
                 "spec": {
                     "anyOf": [
                         {
-                            "$ref": "#/definitions/GenericUnitSpec<\"point\" | \"area\" | \"bar\" | \"line\" | \"text\" | \"tick\" | \"rect\" | \"rule\" | \"circle\" ..."
+                            "$ref": "#/definitions/UnitSpec"
                         },
                         {
-                            "$ref": "#/definitions/GenericLayerSpec<GenericUnitSpec<\"point\" | \"area\" | \"bar\" | \"line\" | \"text\" | \"tick\" | \"rect\" | \"..."
+                            "$ref": "#/definitions/LayerSpec"
                         }
                     ]
                 },
@@ -329,6 +330,206 @@
             "required": [
                 "facet",
                 "spec"
+            ],
+            "type": "object"
+        },
+        {
+            "additionalProperties": false,
+            "properties": {
+                "$schema": {
+                    "description": "URL to JSON schema for this Vega-Lite specification.",
+                    "format": "uri",
+                    "type": "string"
+                },
+                "background": {
+                    "description": "CSS color property to use as the background of visualization.\n\n__Default value:__ none (transparent)",
+                    "type": "string"
+                },
+                "config": {
+                    "$ref": "#/definitions/Config",
+                    "description": "Configuration object"
+                },
+                "data": {
+                    "anyOf": [
+                        {
+                            "$ref": "#/definitions/UrlData"
+                        },
+                        {
+                            "$ref": "#/definitions/InlineData"
+                        },
+                        {
+                            "$ref": "#/definitions/NamedData"
+                        }
+                    ],
+                    "description": "An object describing the data source"
+                },
+                "description": {
+                    "description": "An optional description of this mark for commenting purpose.\nThis property has no effect on the output visualization.",
+                    "type": "string"
+                },
+                "name": {
+                    "description": "Name of the visualization for later reference.",
+                    "type": "string"
+                },
+                "padding": {
+                    "anyOf": [
+                        {
+                            "additionalProperties": false,
+                            "properties": {
+                                "bottom": {
+                                    "type": "number"
+                                },
+                                "left": {
+                                    "type": "number"
+                                },
+                                "right": {
+                                    "type": "number"
+                                },
+                                "top": {
+                                    "type": "number"
+                                }
+                            },
+                            "type": "object"
+                        },
+                        {
+                            "type": "number"
+                        }
+                    ],
+                    "description": "The default visualization padding, in pixels, from the edge of the visualization canvas to the data rectangle. This can be a single number or an object with `\"top\"`, `\"left\"`, `\"right\"`, `\"bottom\"` properties.\n\n__Default value__: `5`",
+                    "minimum": 0
+                },
+                "repeat": {
+                    "$ref": "#/definitions/Repeat"
+                },
+                "spec": {
+                    "anyOf": [
+                        {
+                            "$ref": "#/definitions/UnitSpec"
+                        },
+                        {
+                            "$ref": "#/definitions/LayerSpec"
+                        },
+                        {
+                            "$ref": "#/definitions/RepeatSpec"
+                        }
+                    ]
+                },
+                "transform": {
+                    "description": "An object describing filter and new field calculation.",
+                    "items": {
+                        "anyOf": [
+                            {
+                                "$ref": "#/definitions/FilterTransform"
+                            },
+                            {
+                                "$ref": "#/definitions/CalculateTransform"
+                            }
+                        ]
+                    },
+                    "type": "array"
+                }
+            },
+            "required": [
+                "repeat",
+                "spec"
+            ],
+            "type": "object"
+        },
+        {
+            "additionalProperties": false,
+            "properties": {
+                "$schema": {
+                    "description": "URL to JSON schema for this Vega-Lite specification.",
+                    "format": "uri",
+                    "type": "string"
+                },
+                "background": {
+                    "description": "CSS color property to use as the background of visualization.\n\n__Default value:__ none (transparent)",
+                    "type": "string"
+                },
+                "config": {
+                    "$ref": "#/definitions/Config",
+                    "description": "Configuration object"
+                },
+                "data": {
+                    "anyOf": [
+                        {
+                            "$ref": "#/definitions/UrlData"
+                        },
+                        {
+                            "$ref": "#/definitions/InlineData"
+                        },
+                        {
+                            "$ref": "#/definitions/NamedData"
+                        }
+                    ],
+                    "description": "An object describing the data source"
+                },
+                "description": {
+                    "description": "An optional description of this mark for commenting purpose.\nThis property has no effect on the output visualization.",
+                    "type": "string"
+                },
+                "name": {
+                    "description": "Name of the visualization for later reference.",
+                    "type": "string"
+                },
+                "padding": {
+                    "anyOf": [
+                        {
+                            "additionalProperties": false,
+                            "properties": {
+                                "bottom": {
+                                    "type": "number"
+                                },
+                                "left": {
+                                    "type": "number"
+                                },
+                                "right": {
+                                    "type": "number"
+                                },
+                                "top": {
+                                    "type": "number"
+                                }
+                            },
+                            "type": "object"
+                        },
+                        {
+                            "type": "number"
+                        }
+                    ],
+                    "description": "The default visualization padding, in pixels, from the edge of the visualization canvas to the data rectangle. This can be a single number or an object with `\"top\"`, `\"left\"`, `\"right\"`, `\"bottom\"` properties.\n\n__Default value__: `5`",
+                    "minimum": 0
+                },
+                "transform": {
+                    "description": "An object describing filter and new field calculation.",
+                    "items": {
+                        "anyOf": [
+                            {
+                                "$ref": "#/definitions/FilterTransform"
+                            },
+                            {
+                                "$ref": "#/definitions/CalculateTransform"
+                            }
+                        ]
+                    },
+                    "type": "array"
+                },
+                "vconcat": {
+                    "items": {
+                        "anyOf": [
+                            {
+                                "$ref": "#/definitions/UnitSpec"
+                            },
+                            {
+                                "$ref": "#/definitions/LayerSpec"
+                            }
+                        ]
+                    },
+                    "type": "array"
+                }
+            },
+            "required": [
+                "vconcat"
             ],
             "type": "object"
         }
@@ -385,7 +586,7 @@
                     "type": "string"
                 },
                 "grid": {
-                    "description": "A flag indicate if gridlines should be created in addition to ticks. For `X` and `Y`, the default value is `true` for quantitative and time fields and `\"false\"` otherwise.\n\n__Default value:__ `true` for (1) quantitative fields that are not binned and (2) time fields;  otherwise, `\"false\"`.",
+                    "description": "A boolean flag indicating if grid lines should be included as part of the axis\n\n__Default value:__ `true` for (1) quantitative fields that are not binned and (2) time fields;  otherwise, `\"false\"`.",
                     "type": "boolean"
                 },
                 "labelAngle": {
@@ -433,7 +634,7 @@
                     "type": "number"
                 },
                 "ticks": {
-                    "description": "Whether the axis should include ticks.",
+                    "description": "Boolean value that determines whether the axis should include ticks.",
                     "type": "boolean"
                 },
                 "title": {
@@ -490,7 +691,7 @@
                     "type": "number"
                 },
                 "grid": {
-                    "description": "A flag indicate if gridlines should be created in addition to ticks. For `X` and `Y`, the default value is `true` for quantitative and time fields and `\"false\"` otherwise.\n\n__Default value:__ `true` for (1) quantitative fields that are not binned and (2) time fields;  otherwise, `\"false\"`.",
+                    "description": "A boolean flag indicating if grid lines should be included as part of the axis\n\n__Default value:__ `true` for (1) quantitative fields that are not binned and (2) time fields;  otherwise, `\"false\"`.",
                     "type": "boolean"
                 },
                 "gridColor": {
@@ -531,7 +732,7 @@
                     "type": "string"
                 },
                 "labelFontSize": {
-                    "description": "The font size of label, in pixels.\n\n__Default value:__ `10`.",
+                    "description": "The font size of the label, in pixels.\n\n__Default value:__ `10`.",
                     "minimum": 0,
                     "type": "number"
                 },
@@ -570,7 +771,7 @@
                     "type": "number"
                 },
                 "ticks": {
-                    "description": "Whether the axis should include ticks.",
+                    "description": "Boolean value that determines whether the axis should include ticks.",
                     "type": "boolean"
                 },
                 "titleColor": {
@@ -645,7 +846,7 @@
                     "type": "string"
                 },
                 "continuousBandSize": {
-                    "description": "Default size of the bars on continuous scales.\n\n__Default value:__ `2`",
+                    "description": "The default size of the bars on continuous scales.\n\n__Default value:__ `2`",
                     "minimum": 0,
                     "type": "number"
                 },
@@ -710,7 +911,7 @@
                     "description": "The line interpolation method to use for line and area marks. One of the following:\n- `\"linear\"`: piecewise linear segments, as in a polyline.\n- `\"linear-closed\"`: close the linear segments to form a polygon.\n- `\"step\"`: alternate between horizontal and vertical segments, as in a step function.\n- `\"step-before\"`: alternate between vertical and horizontal segments, as in a step function.\n- `\"step-after\"`: alternate between horizontal and vertical segments, as in a step function.\n- `\"basis\"`: a B-spline, with control point duplication on the ends.\n- `\"basis-open\"`: an open B-spline; may not intersect the start or end.\n- `\"basis-closed\"`: a closed B-spline, as in a loop.\n- `\"cardinal\"`: a Cardinal spline, with control point duplication on the ends.\n- `\"cardinal-open\"`: an open Cardinal spline; may not intersect the start or end, but will intersect other control points.\n- `\"cardinal-closed\"`: a closed Cardinal spline, as in a loop.\n- `\"bundle\"`: equivalent to basis, except the tension parameter is used to straighten the spline.\n- `\"monotone\"`: cubic interpolation that preserves monotonicity in y."
                 },
                 "opacity": {
-                    "description": "The overall opacity (value between [0,1]).\n\n__Default value:__ `0.7` for non-aggregate plots with `point`, `tick`, `circle`, or `square` marks or [layered `bar` charts](http://vega.github.io/new-editor/#/examples/vega_lite/bar_layered_transparent) and `1` otherwise.",
+                    "description": "The overall opacity (value between [0,1]).\n\n__Default value:__ `0.7` for non-aggregate plots with `point`, `tick`, `circle`, or `square` marks or layered `bar` charts and `1` otherwise.",
                     "maximum": 1,
                     "minimum": 0,
                     "type": "number"
@@ -1110,6 +1311,148 @@
             },
             "type": "object"
         },
+        "BoxPlotConfig": {
+            "additionalProperties": false,
+            "properties": {
+                "align": {
+                    "$ref": "#/definitions/HorizontalAlign",
+                    "description": "The horizontal alignment of the text. One of `\"left\"`, `\"right\"`, `\"center\"`."
+                },
+                "angle": {
+                    "description": "The rotation angle of the text, in degrees.",
+                    "maximum": 360,
+                    "minimum": 0,
+                    "type": "number"
+                },
+                "baseline": {
+                    "$ref": "#/definitions/VerticalAlign",
+                    "description": "The vertical alignment of the text. One of `\"top\"`, `\"middle\"`, `\"bottom\"`.\n\n__Default value:__ `\"middle\"`"
+                },
+                "color": {
+                    "description": "Default color.\n\n__Default value:__ <span style=\"color: #4682b4;\">&#9632;</span> `\"#4682b4\"`",
+                    "type": "string"
+                },
+                "dx": {
+                    "description": "The horizontal offset, in pixels, between the text label and its anchor point. The offset is applied after rotation by the _angle_ property.",
+                    "type": "number"
+                },
+                "dy": {
+                    "description": "The vertical offset, in pixels, between the text label and its anchor point. The offset is applied after rotation by the _angle_ property.",
+                    "type": "number"
+                },
+                "fill": {
+                    "description": "Default Fill Color.  This has higher precedence than config.color\n\n__Default value:__ (None)",
+                    "type": "string"
+                },
+                "fillOpacity": {
+                    "description": "The fill opacity (value between [0,1]).\n\n__Default value:__ `1`",
+                    "maximum": 1,
+                    "minimum": 0,
+                    "type": "number"
+                },
+                "filled": {
+                    "description": "Whether the mark's color should be used as fill color instead of stroke color.\n\n__Default value:__ `true` for all marks except `point` and `false` for `point`.\n\n__Applicable for:__ `bar`, `point`, `circle`, `square`, and `area` marks.",
+                    "type": "boolean"
+                },
+                "font": {
+                    "description": "The typeface to set the text in (e.g., `\"Helvetica Neue\"`).",
+                    "minimum": 0,
+                    "type": "string"
+                },
+                "fontSize": {
+                    "description": "The font size, in pixels.",
+                    "minimum": 0,
+                    "type": "number"
+                },
+                "fontStyle": {
+                    "$ref": "#/definitions/FontStyle",
+                    "description": "The font style (e.g., `\"italic\"`)."
+                },
+                "fontWeight": {
+                    "anyOf": [
+                        {
+                            "enum": [
+                                "bold",
+                                "normal"
+                            ],
+                            "type": "string"
+                        },
+                        {
+                            "type": "number"
+                        }
+                    ],
+                    "description": "The font weight (e.g., `\"bold\"`)."
+                },
+                "interpolate": {
+                    "$ref": "#/definitions/Interpolate",
+                    "description": "The line interpolation method to use for line and area marks. One of the following:\n- `\"linear\"`: piecewise linear segments, as in a polyline.\n- `\"linear-closed\"`: close the linear segments to form a polygon.\n- `\"step\"`: alternate between horizontal and vertical segments, as in a step function.\n- `\"step-before\"`: alternate between vertical and horizontal segments, as in a step function.\n- `\"step-after\"`: alternate between horizontal and vertical segments, as in a step function.\n- `\"basis\"`: a B-spline, with control point duplication on the ends.\n- `\"basis-open\"`: an open B-spline; may not intersect the start or end.\n- `\"basis-closed\"`: a closed B-spline, as in a loop.\n- `\"cardinal\"`: a Cardinal spline, with control point duplication on the ends.\n- `\"cardinal-open\"`: an open Cardinal spline; may not intersect the start or end, but will intersect other control points.\n- `\"cardinal-closed\"`: a closed Cardinal spline, as in a loop.\n- `\"bundle\"`: equivalent to basis, except the tension parameter is used to straighten the spline.\n- `\"monotone\"`: cubic interpolation that preserves monotonicity in y."
+                },
+                "opacity": {
+                    "description": "The overall opacity (value between [0,1]).\n\n__Default value:__ `0.7` for non-aggregate plots with `point`, `tick`, `circle`, or `square` marks or layered `bar` charts and `1` otherwise.",
+                    "maximum": 1,
+                    "minimum": 0,
+                    "type": "number"
+                },
+                "orient": {
+                    "$ref": "#/definitions/Orient",
+                    "description": "The orientation of a non-stacked bar, tick, area, and line charts.\nThe value is either horizontal (default) or vertical.\n- For bar, rule and tick, this determines whether the size of the bar and tick\nshould be applied to x or y dimension.\n- For area, this property determines the orient property of the Vega output.\n- For line, this property determines the sort order of the points in the line\nif `config.sortLineBy` is not specified.\nFor stacked charts, this is always determined by the orientation of the stack;\ntherefore explicitly specified value will be ignored."
+                },
+                "radius": {
+                    "description": "Polar coordinate radial offset, in pixels, of the text label from the origin determined by the `x` and `y` properties.",
+                    "minimum": 0,
+                    "type": "number"
+                },
+                "shape": {
+                    "description": "The default symbol shape to use. One of: `\"circle\"` (default), `\"square\"`, `\"cross\"`, `\"diamond\"`, `\"triangle-up\"`, or `\"triangle-down\"`, or a custom SVG path.\n\n__Default value:__ `\"circle\"`",
+                    "type": "string"
+                },
+                "size": {
+                    "description": "Size of the box and mid tick of a box plot",
+                    "type": "number"
+                },
+                "stroke": {
+                    "description": "Default Stroke Color.  This has higher precedence than config.color\n\n__Default value:__ (None)",
+                    "type": "string"
+                },
+                "strokeDash": {
+                    "description": "An array of alternating stroke, space lengths for creating dashed or dotted lines.",
+                    "items": {
+                        "type": "number"
+                    },
+                    "type": "array"
+                },
+                "strokeDashOffset": {
+                    "description": "The offset (in pixels) into which to begin drawing with the stroke dash array.",
+                    "type": "number"
+                },
+                "strokeOpacity": {
+                    "description": "The stroke opacity (value between [0,1]).\n\n__Default value:__ `1`",
+                    "maximum": 1,
+                    "minimum": 0,
+                    "type": "number"
+                },
+                "strokeWidth": {
+                    "description": "The stroke width, in pixels.",
+                    "minimum": 0,
+                    "type": "number"
+                },
+                "tension": {
+                    "description": "Depending on the interpolation type, sets the tension parameter (for line and area marks).",
+                    "maximum": 1,
+                    "minimum": 0,
+                    "type": "number"
+                },
+                "text": {
+                    "description": "Placeholder text if the `text` channel is not specified",
+                    "type": "string"
+                },
+                "theta": {
+                    "description": "Polar coordinate angle, in radians, of the text label from the origin determined by the `x` and `y` properties. Values for `theta` follow the same convention of `arc` mark `startAngle` and `endAngle` properties: angles are measured in radians, with `0` indicating \"north\".",
+                    "type": "number"
+                }
+            },
+            "type": "object"
+        },
         "CalculateTransform": {
             "additionalProperties": false,
             "properties": {
@@ -1118,7 +1461,7 @@
                     "type": "string"
                 },
                 "calculate": {
-                    "description": "A string containing a Vega Expression. Use the variable `datum` to to refer to the current data object.",
+                    "description": "A string containing a Vega Expression. Use the variable `datum` to refer to the current data object.",
                     "type": "string"
                 }
             },
@@ -1331,12 +1674,22 @@
                     "description": "Specific axis config for x-axis along the bottom edge of the chart."
                 },
                 "background": {
-                    "description": "CSS color property to use as background of visualization.\n\n__Default value:__ none (transparent)",
+                    "description": "CSS color property to use as the background of visualization.\n\n__Default value:__ none (transparent)",
                     "type": "string"
                 },
                 "bar": {
                     "$ref": "#/definitions/BarConfig",
                     "description": "Bar-Specific Config"
+                },
+                "box": {
+                    "$ref": "#/definitions/BoxPlotConfig",
+                    "description": "Box Config"
+                },
+                "boxMid": {
+                    "$ref": "#/definitions/MarkConfig"
+                },
+                "boxWhisker": {
+                    "$ref": "#/definitions/MarkConfig"
                 },
                 "cell": {
                     "$ref": "#/definitions/CellConfig",
@@ -1355,7 +1708,7 @@
                     "description": "Facet Config"
                 },
                 "filterInvalid": {
-                    "description": "Whether to filter invalid values (`null` and `NaN`) from the data.\n- By default (`undefined`), only quantitative and temporal fields are filtered.\n- If set to `true`, all data items with null values are filtered.\n- If `false`, all data items are included. In this case, null values will be interpret as zeroes.",
+                    "description": "Whether to filter invalid values (`null` and `NaN`) from the data.\n- By default (`undefined`), only quantitative and temporal fields are filtered.\n- If set to `true`, all data items with null values are filtered.\n- If `false`, all data items are included. In this case, null values will be interpreted as zeroes.",
                     "type": "boolean"
                 },
                 "legend": {
@@ -1413,6 +1766,15 @@
                     "additionalProperties": {
                         "anyOf": [
                             {
+                                "items": {
+                                    "type": [
+                                        "string",
+                                        "number"
+                                    ]
+                                },
+                                "type": "array"
+                            },
+                            {
                                 "additionalProperties": false,
                                 "properties": {
                                     "count": {
@@ -1432,15 +1794,6 @@
                                     "scheme"
                                 ],
                                 "type": "object"
-                            },
-                            {
-                                "items": {
-                                    "type": [
-                                        "string",
-                                        "number"
-                                    ]
-                                },
-                                "type": "array"
                             },
                             {
                                 "additionalProperties": false,
@@ -1506,7 +1859,7 @@
                     "type": "string"
                 },
                 "mesh": {
-                    "description": "The name of the TopoJSON object set to convert to a mesh.\nSimilar to the `feature` option, `mesh` extracts a named TopoJSON object set.\n  Unlike the `feature` option, the corresponding geo data is returned as a single, unified mesh instance, not as individual GeoJSON features.\nExtracting a mesh is useful for more efficiently drawing borders or other geographic elements that you do not need to associate with specific regions such as individual countries, states or counties.",
+                    "description": "The name of the TopoJSON object set to convert to mesh.\nSimilar to the `feature` option, `mesh` extracts a named TopoJSON object set.\n  Unlike the `feature` option, the corresponding geo data is returned as a single, unified mesh instance, not as individual GeoJSON features.\nExtracting a mesh is useful for more efficiently drawing borders or other geographic elements that you do not need to associate with specific regions such as individual countries, states or counties.",
                     "type": "string"
                 },
                 "parse": {
@@ -1536,7 +1889,7 @@
                     "type": "string"
                 },
                 "mesh": {
-                    "description": "The name of the TopoJSON object set to convert to a mesh.\nSimilar to the `feature` option, `mesh` extracts a named TopoJSON object set.\n  Unlike the `feature` option, the corresponding geo data is returned as a single, unified mesh instance, not as individual GeoJSON features.\nExtracting a mesh is useful for more efficiently drawing borders or other geographic elements that you do not need to associate with specific regions such as individual countries, states or counties.",
+                    "description": "The name of the TopoJSON object set to convert to mesh.\nSimilar to the `feature` option, `mesh` extracts a named TopoJSON object set.\n  Unlike the `feature` option, the corresponding geo data is returned as a single, unified mesh instance, not as individual GeoJSON features.\nExtracting a mesh is useful for more efficiently drawing borders or other geographic elements that you do not need to associate with specific regions such as individual countries, states or counties.",
                     "type": "string"
                 },
                 "parse": {
@@ -1548,7 +1901,7 @@
                 },
                 "type": {
                     "$ref": "#/definitions/DataFormatType",
-                    "description": "Type of input data: `\"json\"`, `\"csv\"`, `\"tsv\"`.\nThe default format type is determined by the extension of the file url.\nIf no extension is detected, `\"json\"` will be used by default."
+                    "description": "Type of input data: `\"json\"`, `\"csv\"`, `\"tsv\"`.\nThe default format type is determined by the extension of the file URL.\nIf no extension is detected, `\"json\"` will be used by default."
                 }
             },
             "type": "object"
@@ -1564,26 +1917,26 @@
                     "type": "integer"
                 },
                 "day": {
-                    "description": "Value representing the day of week.  This can be one of: (1) integer value -- `1` represents Monday; (2) case-insensitive day name (e.g., `\"Monday\"`);  (3) case-insensitive, 3-character short day name (e.g., `\"Mon\"`).   <br/> **Warning:** A DateTime definition object with `day`** should not be combined with `year`, `quarter`, `month`, or `date`.",
+                    "description": "Value representing the day of a week.  This can be one of: (1) integer value -- `1` represents Monday; (2) case-insensitive day name (e.g., `\"Monday\"`);  (3) case-insensitive, 3-character short day name (e.g., `\"Mon\"`).   <br/> **Warning:** A DateTime definition object with `day`** should not be combined with `year`, `quarter`, `month`, or `date`.",
                     "type": [
                         "string",
                         "number"
                     ]
                 },
                 "hours": {
-                    "description": "Integer value representing the hour of day from 0-23.",
+                    "description": "Integer value representing the hour of a day from 0-23.",
                     "maximum": 23,
                     "minimum": 0,
                     "type": "integer"
                 },
                 "milliseconds": {
-                    "description": "Integer value representing millisecond segment of a time.",
+                    "description": "Integer value representing the millisecond segment of time.",
                     "maximum": 999,
                     "minimum": 0,
                     "type": "integer"
                 },
                 "minutes": {
-                    "description": "Integer value representing minute segment of a time from 0-59.",
+                    "description": "Integer value representing the minute segment of time from 0-59.",
                     "maximum": 59,
                     "minimum": 0,
                     "type": "integer"
@@ -1602,7 +1955,7 @@
                     "type": "integer"
                 },
                 "seconds": {
-                    "description": "Integer value representing second segment of a time from 0-59.",
+                    "description": "Integer value representing the second segment (0-59) of a time value",
                     "maximum": 59,
                     "minimum": 0,
                     "type": "integer"
@@ -1614,16 +1967,16 @@
             },
             "type": "object"
         },
-        "Encoding": {
+        "Encoding<Field>": {
             "additionalProperties": false,
             "properties": {
                 "color": {
                     "anyOf": [
                         {
-                            "$ref": "#/definitions/LegendFieldDef<string>"
+                            "$ref": "#/definitions/ConditionalValueDef<string>"
                         },
                         {
-                            "$ref": "#/definitions/ConditionalValueDef<string>"
+                            "$ref": "#/definitions/LegendFieldDef<Field, string>"
                         }
                     ],
                     "description": "Color of the marks – either fill or stroke color based on mark type.\n(By default, fill color for `area`, `bar`, `tick`, `text`, `circle`, and `square` /\nstroke color for `line` and `point`.)"
@@ -1631,11 +1984,11 @@
                 "detail": {
                     "anyOf": [
                         {
-                            "$ref": "#/definitions/FieldDef"
+                            "$ref": "#/definitions/FieldDef<Field>"
                         },
                         {
                             "items": {
-                                "$ref": "#/definitions/FieldDef"
+                                "$ref": "#/definitions/FieldDef<Field>"
                             },
                             "type": "array"
                         }
@@ -1645,22 +1998,22 @@
                 "opacity": {
                     "anyOf": [
                         {
-                            "$ref": "#/definitions/LegendFieldDef<number>"
+                            "$ref": "#/definitions/ConditionalValueDef<number>"
                         },
                         {
-                            "$ref": "#/definitions/ConditionalValueDef<number>"
+                            "$ref": "#/definitions/LegendFieldDef<Field, number>"
                         }
                     ],
-                    "description": "Opacity of the marks – either can be a value or in a range."
+                    "description": "Opacity of the marks – either can be a value or a range."
                 },
                 "order": {
                     "anyOf": [
                         {
-                            "$ref": "#/definitions/OrderFieldDef"
+                            "$ref": "#/definitions/OrderFieldDef<Field>"
                         },
                         {
                             "items": {
-                                "$ref": "#/definitions/OrderFieldDef"
+                                "$ref": "#/definitions/OrderFieldDef<Field>"
                             },
                             "type": "array"
                         }
@@ -1670,10 +2023,10 @@
                 "shape": {
                     "anyOf": [
                         {
-                            "$ref": "#/definitions/LegendFieldDef<string>"
+                            "$ref": "#/definitions/ConditionalValueDef<string>"
                         },
                         {
-                            "$ref": "#/definitions/ConditionalValueDef<string>"
+                            "$ref": "#/definitions/LegendFieldDef<Field, string>"
                         }
                     ],
                     "description": "The symbol's shape (only for `point` marks). The supported values are\n`\"circle\"` (default), `\"square\"`, `\"cross\"`, `\"diamond\"`, `\"triangle-up\"`,\nor `\"triangle-down\"`, or else a custom SVG path string."
@@ -1681,10 +2034,10 @@
                 "size": {
                     "anyOf": [
                         {
-                            "$ref": "#/definitions/LegendFieldDef<number>"
+                            "$ref": "#/definitions/ConditionalValueDef<number>"
                         },
                         {
-                            "$ref": "#/definitions/ConditionalValueDef<number>"
+                            "$ref": "#/definitions/LegendFieldDef<Field, number>"
                         }
                     ],
                     "description": "Size of the mark.\n- For `point`, `square` and `circle`\n– the symbol size, or pixel area of the mark.\n- For `bar` and `tick` – the bar and tick's size.\n- For `text` – the text's font size.\n- Size is currently unsupported for `line` and `area`."
@@ -1692,10 +2045,10 @@
                 "text": {
                     "anyOf": [
                         {
-                            "$ref": "#/definitions/TextFieldDef"
+                            "$ref": "#/definitions/ConditionalValueDef<string | number | boolean>"
                         },
                         {
-                            "$ref": "#/definitions/ConditionalValueDef<string | number | boolean>"
+                            "$ref": "#/definitions/TextFieldDef<Field>"
                         }
                     ],
                     "description": "Text of the `text` mark."
@@ -1703,10 +2056,10 @@
                 "x": {
                     "anyOf": [
                         {
-                            "$ref": "#/definitions/PositionFieldDef"
+                            "$ref": "#/definitions/ValueDef<number>"
                         },
                         {
-                            "$ref": "#/definitions/ValueDef<number>"
+                            "$ref": "#/definitions/PositionFieldDef<Field>"
                         }
                     ],
                     "description": "X coordinates for `point`, `circle`, `square`,\n`line`, `rule`, `text`, and `tick`\n(or to width and height for `bar` and `area` marks)."
@@ -1714,21 +2067,21 @@
                 "x2": {
                     "anyOf": [
                         {
-                            "$ref": "#/definitions/FieldDef"
+                            "$ref": "#/definitions/ValueDef<number>"
                         },
                         {
-                            "$ref": "#/definitions/ValueDef<number>"
+                            "$ref": "#/definitions/FieldDef<Field>"
                         }
                     ],
-                    "description": "X2 coordinates for ranged `bar`, `rule`, `area`"
+                    "description": "X2 coordinates for ranged `bar`, `rule`, `area`."
                 },
                 "y": {
                     "anyOf": [
                         {
-                            "$ref": "#/definitions/PositionFieldDef"
+                            "$ref": "#/definitions/ValueDef<number>"
                         },
                         {
-                            "$ref": "#/definitions/ValueDef<number>"
+                            "$ref": "#/definitions/PositionFieldDef<Field>"
                         }
                     ],
                     "description": "Y coordinates for `point`, `circle`, `square`,\n`line`, `rule`, `text`, and `tick`\n(or to width and height for `bar` and `area` marks)."
@@ -1736,43 +2089,43 @@
                 "y2": {
                     "anyOf": [
                         {
-                            "$ref": "#/definitions/FieldDef"
+                            "$ref": "#/definitions/ValueDef<number>"
                         },
                         {
-                            "$ref": "#/definitions/ValueDef<number>"
+                            "$ref": "#/definitions/FieldDef<Field>"
                         }
                     ],
-                    "description": "Y2 coordinates for ranged `bar`, `rule`, `area`"
+                    "description": "Y2 coordinates for ranged `bar`, `rule`, `area`."
                 }
             },
             "type": "object"
         },
-        "EncodingWithFacet": {
+        "EncodingWithFacet<Field>": {
             "additionalProperties": false,
             "properties": {
                 "color": {
                     "anyOf": [
                         {
-                            "$ref": "#/definitions/LegendFieldDef<string>"
+                            "$ref": "#/definitions/ConditionalValueDef<string>"
                         },
                         {
-                            "$ref": "#/definitions/ConditionalValueDef<string>"
+                            "$ref": "#/definitions/LegendFieldDef<Field, string>"
                         }
                     ],
                     "description": "Color of the marks – either fill or stroke color based on mark type.\n(By default, fill color for `area`, `bar`, `tick`, `text`, `circle`, and `square` /\nstroke color for `line` and `point`.)"
                 },
                 "column": {
-                    "$ref": "#/definitions/PositionFieldDef",
+                    "$ref": "#/definitions/FieldDef<Field>",
                     "description": "Horizontal facets for trellis plots."
                 },
                 "detail": {
                     "anyOf": [
                         {
-                            "$ref": "#/definitions/FieldDef"
+                            "$ref": "#/definitions/FieldDef<Field>"
                         },
                         {
                             "items": {
-                                "$ref": "#/definitions/FieldDef"
+                                "$ref": "#/definitions/FieldDef<Field>"
                             },
                             "type": "array"
                         }
@@ -1782,22 +2135,22 @@
                 "opacity": {
                     "anyOf": [
                         {
-                            "$ref": "#/definitions/LegendFieldDef<number>"
+                            "$ref": "#/definitions/ConditionalValueDef<number>"
                         },
                         {
-                            "$ref": "#/definitions/ConditionalValueDef<number>"
+                            "$ref": "#/definitions/LegendFieldDef<Field, number>"
                         }
                     ],
-                    "description": "Opacity of the marks – either can be a value or in a range."
+                    "description": "Opacity of the marks – either can be a value or a range."
                 },
                 "order": {
                     "anyOf": [
                         {
-                            "$ref": "#/definitions/OrderFieldDef"
+                            "$ref": "#/definitions/OrderFieldDef<Field>"
                         },
                         {
                             "items": {
-                                "$ref": "#/definitions/OrderFieldDef"
+                                "$ref": "#/definitions/OrderFieldDef<Field>"
                             },
                             "type": "array"
                         }
@@ -1805,16 +2158,16 @@
                     "description": "stack order for stacked marks or order of data points in line marks."
                 },
                 "row": {
-                    "$ref": "#/definitions/PositionFieldDef",
+                    "$ref": "#/definitions/FieldDef<Field>",
                     "description": "Vertical facets for trellis plots."
                 },
                 "shape": {
                     "anyOf": [
                         {
-                            "$ref": "#/definitions/LegendFieldDef<string>"
+                            "$ref": "#/definitions/ConditionalValueDef<string>"
                         },
                         {
-                            "$ref": "#/definitions/ConditionalValueDef<string>"
+                            "$ref": "#/definitions/LegendFieldDef<Field, string>"
                         }
                     ],
                     "description": "The symbol's shape (only for `point` marks). The supported values are\n`\"circle\"` (default), `\"square\"`, `\"cross\"`, `\"diamond\"`, `\"triangle-up\"`,\nor `\"triangle-down\"`, or else a custom SVG path string."
@@ -1822,10 +2175,10 @@
                 "size": {
                     "anyOf": [
                         {
-                            "$ref": "#/definitions/LegendFieldDef<number>"
+                            "$ref": "#/definitions/ConditionalValueDef<number>"
                         },
                         {
-                            "$ref": "#/definitions/ConditionalValueDef<number>"
+                            "$ref": "#/definitions/LegendFieldDef<Field, number>"
                         }
                     ],
                     "description": "Size of the mark.\n- For `point`, `square` and `circle`\n– the symbol size, or pixel area of the mark.\n- For `bar` and `tick` – the bar and tick's size.\n- For `text` – the text's font size.\n- Size is currently unsupported for `line` and `area`."
@@ -1833,10 +2186,10 @@
                 "text": {
                     "anyOf": [
                         {
-                            "$ref": "#/definitions/TextFieldDef"
+                            "$ref": "#/definitions/ConditionalValueDef<string | number | boolean>"
                         },
                         {
-                            "$ref": "#/definitions/ConditionalValueDef<string | number | boolean>"
+                            "$ref": "#/definitions/TextFieldDef<Field>"
                         }
                     ],
                     "description": "Text of the `text` mark."
@@ -1844,10 +2197,10 @@
                 "x": {
                     "anyOf": [
                         {
-                            "$ref": "#/definitions/PositionFieldDef"
+                            "$ref": "#/definitions/ValueDef<number>"
                         },
                         {
-                            "$ref": "#/definitions/ValueDef<number>"
+                            "$ref": "#/definitions/PositionFieldDef<Field>"
                         }
                     ],
                     "description": "X coordinates for `point`, `circle`, `square`,\n`line`, `rule`, `text`, and `tick`\n(or to width and height for `bar` and `area` marks)."
@@ -1855,21 +2208,21 @@
                 "x2": {
                     "anyOf": [
                         {
-                            "$ref": "#/definitions/FieldDef"
+                            "$ref": "#/definitions/ValueDef<number>"
                         },
                         {
-                            "$ref": "#/definitions/ValueDef<number>"
+                            "$ref": "#/definitions/FieldDef<Field>"
                         }
                     ],
-                    "description": "X2 coordinates for ranged `bar`, `rule`, `area`"
+                    "description": "X2 coordinates for ranged `bar`, `rule`, `area`."
                 },
                 "y": {
                     "anyOf": [
                         {
-                            "$ref": "#/definitions/PositionFieldDef"
+                            "$ref": "#/definitions/ValueDef<number>"
                         },
                         {
-                            "$ref": "#/definitions/ValueDef<number>"
+                            "$ref": "#/definitions/PositionFieldDef<Field>"
                         }
                     ],
                     "description": "Y coordinates for `point`, `circle`, `square`,\n`line`, `rule`, `text`, and `tick`\n(or to width and height for `bar` and `area` marks)."
@@ -1877,13 +2230,13 @@
                 "y2": {
                     "anyOf": [
                         {
-                            "$ref": "#/definitions/FieldDef"
+                            "$ref": "#/definitions/ValueDef<number>"
                         },
                         {
-                            "$ref": "#/definitions/ValueDef<number>"
+                            "$ref": "#/definitions/FieldDef<Field>"
                         }
                     ],
-                    "description": "Y2 coordinates for ranged `bar`, `rule`, `area`"
+                    "description": "Y2 coordinates for ranged `bar`, `rule`, `area`."
                 }
             },
             "type": "object"
@@ -1904,7 +2257,7 @@
                             ]
                         }
                     ],
-                    "description": "Value that the field should be equal to."
+                    "description": "The value that the field should be equal to."
                 },
                 "field": {
                     "description": "Field to be filtered.",
@@ -1943,15 +2296,15 @@
             ],
             "type": "object"
         },
-        "Facet": {
+        "Facet<Field>": {
             "additionalProperties": false,
             "properties": {
                 "column": {
-                    "$ref": "#/definitions/PositionFieldDef",
+                    "$ref": "#/definitions/FieldDef<Field>",
                     "description": "Horizontal facets for trellis plots."
                 },
                 "row": {
-                    "$ref": "#/definitions/PositionFieldDef",
+                    "$ref": "#/definitions/FieldDef<Field>",
                     "description": "Vertical facets for trellis plots."
                 }
             },
@@ -1960,10 +2313,6 @@
         "FacetConfig": {
             "additionalProperties": false,
             "properties": {
-                "axis": {
-                    "$ref": "#/definitions/AxisConfig",
-                    "description": "Facet Axis Config"
-                },
                 "cell": {
                     "$ref": "#/definitions/CellConfig",
                     "description": "Facet Cell Config"
@@ -1971,13 +2320,38 @@
             },
             "type": "object"
         },
-        "FieldDef": {
+        "FieldDef<Field>": {
             "additionalProperties": false,
             "description": "Definition object for a data field, its type and transformation of an encoding channel.",
             "properties": {
                 "aggregate": {
-                    "$ref": "#/definitions/AggregateOp",
-                    "description": "Aggregation function for the field\n(e.g., `mean`, `sum`, `median`, `min`, `max`, `count`)."
+                    "description": "Aggregation function for the field\n(e.g., `mean`, `sum`, `median`, `min`, `max`, `count`).\n\n__Default value:__ `undefined` (None)",
+                    "enum": [
+                        "argmax",
+                        "argmin",
+                        "average",
+                        "box-plot",
+                        "ci0",
+                        "ci1",
+                        "count",
+                        "distinct",
+                        "max",
+                        "mean",
+                        "median",
+                        "min",
+                        "missing",
+                        "modeskew",
+                        "q1",
+                        "q3",
+                        "stdev",
+                        "stdevp",
+                        "sum",
+                        "valid",
+                        "values",
+                        "variance",
+                        "variancep"
+                    ],
+                    "type": "string"
                 },
                 "bin": {
                     "anyOf": [
@@ -1991,12 +2365,36 @@
                     "description": "Flag for binning a `quantitative` field, or a bin property object\nfor binning parameters."
                 },
                 "field": {
-                    "description": "Name of the field from which to pull a data value.",
+                    "anyOf": [
+                        {
+                            "additionalProperties": false,
+                            "properties": {
+                                "repeat": {
+                                    "enum": [
+                                        "column",
+                                        "row"
+                                    ],
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "repeat"
+                            ],
+                            "type": "object"
+                        },
+                        {
+                            "type": "string"
+                        }
+                    ],
+                    "description": "__Required.__ Name of the field from which to pull a data value.\n\n__Note:__ `field` is not required if `aggregate` is `count`."
+                },
+                "format": {
+                    "description": "The formatting pattern for text value. If not defined, this will be determined automatically.",
                     "type": "string"
                 },
                 "timeUnit": {
                     "$ref": "#/definitions/TimeUnit",
-                    "description": "Time unit for a `temporal` field  (e.g., `year`, `yearmonth`, `month`, `hour`)."
+                    "description": "Time unit for a `temporal` field  (e.g., `year`, `yearmonth`, `month`, `hour`).\n\n__Default value:__ `undefined` (None)"
                 },
                 "title": {
                     "description": "Title for axis or legend.",
@@ -2004,7 +2402,7 @@
                 },
                 "type": {
                     "$ref": "#/definitions/Type",
-                    "description": "The encoded field's type of measurement. This can be either a full type\nname (`\"quantitative\"`, `\"temporal\"`, `\"ordinal\"`,  and `\"nominal\"`)\nor an initial character of the type name (`\"Q\"`, `\"T\"`, `\"O\"`, `\"N\"`).\nThis property is case insensitive."
+                    "description": "The encoded field's type of measurement. This can be either a full type\nname (`\"quantitative\"`, `\"temporal\"`, `\"ordinal\"`,  and `\"nominal\"`)\nor an initial character of the type name (`\"Q\"`, `\"T\"`, `\"O\"`, `\"N\"`).\nThis property is case-insensitive."
                 }
             },
             "type": "object"
@@ -2061,7 +2459,7 @@
             ],
             "type": "string"
         },
-        "GenericLayerSpec<GenericUnitSpec<\"point\" | \"area\" | \"bar\" | \"line\" | \"text\" | \"tick\" | \"rect\" | \"...": {
+        "LayerSpec": {
             "additionalProperties": false,
             "properties": {
                 "data": {
@@ -2090,10 +2488,10 @@
                     "items": {
                         "anyOf": [
                             {
-                                "$ref": "#/definitions/GenericUnitSpec<\"point\" | \"area\" | \"bar\" | \"line\" | \"text\" | \"tick\" | \"rect\" | \"rule\" | \"circle\" ..."
+                                "$ref": "#/definitions/UnitSpec"
                             },
                             {
-                                "$ref": "#/definitions/GenericLayerSpec<GenericUnitSpec<\"point\" | \"area\" | \"bar\" | \"line\" | \"text\" | \"tick\" | \"rect\" | \"..."
+                                "$ref": "#/definitions/LayerSpec"
                             }
                         ]
                     },
@@ -2126,7 +2524,69 @@
             ],
             "type": "object"
         },
-        "GenericUnitSpec<\"point\" | \"area\" | \"bar\" | \"line\" | \"text\" | \"tick\" | \"rect\" | \"rule\" | \"circle\" ...": {
+        "RepeatSpec": {
+            "additionalProperties": false,
+            "properties": {
+                "data": {
+                    "anyOf": [
+                        {
+                            "$ref": "#/definitions/UrlData"
+                        },
+                        {
+                            "$ref": "#/definitions/InlineData"
+                        },
+                        {
+                            "$ref": "#/definitions/NamedData"
+                        }
+                    ],
+                    "description": "An object describing the data source"
+                },
+                "description": {
+                    "description": "An optional description of this mark for commenting purpose.\nThis property has no effect on the output visualization.",
+                    "type": "string"
+                },
+                "name": {
+                    "description": "Name of the visualization for later reference.",
+                    "type": "string"
+                },
+                "repeat": {
+                    "$ref": "#/definitions/Repeat"
+                },
+                "spec": {
+                    "anyOf": [
+                        {
+                            "$ref": "#/definitions/UnitSpec"
+                        },
+                        {
+                            "$ref": "#/definitions/LayerSpec"
+                        },
+                        {
+                            "$ref": "#/definitions/RepeatSpec"
+                        }
+                    ]
+                },
+                "transform": {
+                    "description": "An object describing filter and new field calculation.",
+                    "items": {
+                        "anyOf": [
+                            {
+                                "$ref": "#/definitions/FilterTransform"
+                            },
+                            {
+                                "$ref": "#/definitions/CalculateTransform"
+                            }
+                        ]
+                    },
+                    "type": "array"
+                }
+            },
+            "required": [
+                "repeat",
+                "spec"
+            ],
+            "type": "object"
+        },
+        "UnitSpec": {
             "additionalProperties": false,
             "properties": {
                 "data": {
@@ -2148,7 +2608,7 @@
                     "type": "string"
                 },
                 "encoding": {
-                    "$ref": "#/definitions/Encoding",
+                    "$ref": "#/definitions/Encoding<Field>",
                     "description": "A key-value mapping between encoding channels and definition of fields."
                 },
                 "height": {
@@ -2163,6 +2623,7 @@
                             "enum": [
                                 "area",
                                 "bar",
+                                "box-plot",
                                 "circle",
                                 "error-bar",
                                 "line",
@@ -2457,12 +2918,37 @@
             },
             "type": "object"
         },
-        "LegendFieldDef<number>": {
+        "LegendFieldDef<Field, number>": {
             "additionalProperties": false,
             "properties": {
                 "aggregate": {
-                    "$ref": "#/definitions/AggregateOp",
-                    "description": "Aggregation function for the field\n(e.g., `mean`, `sum`, `median`, `min`, `max`, `count`)."
+                    "description": "Aggregation function for the field\n(e.g., `mean`, `sum`, `median`, `min`, `max`, `count`).\n\n__Default value:__ `undefined` (None)",
+                    "enum": [
+                        "argmax",
+                        "argmin",
+                        "average",
+                        "box-plot",
+                        "ci0",
+                        "ci1",
+                        "count",
+                        "distinct",
+                        "max",
+                        "mean",
+                        "median",
+                        "min",
+                        "missing",
+                        "modeskew",
+                        "q1",
+                        "q3",
+                        "stdev",
+                        "stdevp",
+                        "sum",
+                        "valid",
+                        "values",
+                        "variance",
+                        "variancep"
+                    ],
+                    "type": "string"
                 },
                 "bin": {
                     "anyOf": [
@@ -2479,7 +2965,31 @@
                     "$ref": "#/definitions/Condition<number>"
                 },
                 "field": {
-                    "description": "Name of the field from which to pull a data value.",
+                    "anyOf": [
+                        {
+                            "additionalProperties": false,
+                            "properties": {
+                                "repeat": {
+                                    "enum": [
+                                        "column",
+                                        "row"
+                                    ],
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "repeat"
+                            ],
+                            "type": "object"
+                        },
+                        {
+                            "type": "string"
+                        }
+                    ],
+                    "description": "__Required.__ Name of the field from which to pull a data value.\n\n__Note:__ `field` is not required if `aggregate` is `count`."
+                },
+                "format": {
+                    "description": "The formatting pattern for text value. If not defined, this will be determined automatically.",
                     "type": "string"
                 },
                 "legend": {
@@ -2507,11 +3017,12 @@
                             ],
                             "type": "string"
                         }
-                    ]
+                    ],
+                    "description": "Sort order for a particular field.\nFor quantitative or temporal fields, this can be either `\"ascending\"` or `\"descending\"`\nFor quantitative or temporal fields, this can be `\"ascending\"`, `\"descending\"`, `\"none\"`, or a [sort field definition object](sort.html#sort-field) for sorting by an aggregate calculation of a specified sort field.\n\n__Default value:__ `\"ascending\"`"
                 },
                 "timeUnit": {
                     "$ref": "#/definitions/TimeUnit",
-                    "description": "Time unit for a `temporal` field  (e.g., `year`, `yearmonth`, `month`, `hour`)."
+                    "description": "Time unit for a `temporal` field  (e.g., `year`, `yearmonth`, `month`, `hour`).\n\n__Default value:__ `undefined` (None)"
                 },
                 "title": {
                     "description": "Title for axis or legend.",
@@ -2519,17 +3030,42 @@
                 },
                 "type": {
                     "$ref": "#/definitions/Type",
-                    "description": "The encoded field's type of measurement. This can be either a full type\nname (`\"quantitative\"`, `\"temporal\"`, `\"ordinal\"`,  and `\"nominal\"`)\nor an initial character of the type name (`\"Q\"`, `\"T\"`, `\"O\"`, `\"N\"`).\nThis property is case insensitive."
+                    "description": "The encoded field's type of measurement. This can be either a full type\nname (`\"quantitative\"`, `\"temporal\"`, `\"ordinal\"`,  and `\"nominal\"`)\nor an initial character of the type name (`\"Q\"`, `\"T\"`, `\"O\"`, `\"N\"`).\nThis property is case-insensitive."
                 }
             },
             "type": "object"
         },
-        "LegendFieldDef<string>": {
+        "LegendFieldDef<Field, string>": {
             "additionalProperties": false,
             "properties": {
                 "aggregate": {
-                    "$ref": "#/definitions/AggregateOp",
-                    "description": "Aggregation function for the field\n(e.g., `mean`, `sum`, `median`, `min`, `max`, `count`)."
+                    "description": "Aggregation function for the field\n(e.g., `mean`, `sum`, `median`, `min`, `max`, `count`).\n\n__Default value:__ `undefined` (None)",
+                    "enum": [
+                        "argmax",
+                        "argmin",
+                        "average",
+                        "box-plot",
+                        "ci0",
+                        "ci1",
+                        "count",
+                        "distinct",
+                        "max",
+                        "mean",
+                        "median",
+                        "min",
+                        "missing",
+                        "modeskew",
+                        "q1",
+                        "q3",
+                        "stdev",
+                        "stdevp",
+                        "sum",
+                        "valid",
+                        "values",
+                        "variance",
+                        "variancep"
+                    ],
+                    "type": "string"
                 },
                 "bin": {
                     "anyOf": [
@@ -2546,7 +3082,31 @@
                     "$ref": "#/definitions/Condition<string>"
                 },
                 "field": {
-                    "description": "Name of the field from which to pull a data value.",
+                    "anyOf": [
+                        {
+                            "additionalProperties": false,
+                            "properties": {
+                                "repeat": {
+                                    "enum": [
+                                        "column",
+                                        "row"
+                                    ],
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "repeat"
+                            ],
+                            "type": "object"
+                        },
+                        {
+                            "type": "string"
+                        }
+                    ],
+                    "description": "__Required.__ Name of the field from which to pull a data value.\n\n__Note:__ `field` is not required if `aggregate` is `count`."
+                },
+                "format": {
+                    "description": "The formatting pattern for text value. If not defined, this will be determined automatically.",
                     "type": "string"
                 },
                 "legend": {
@@ -2574,11 +3134,12 @@
                             ],
                             "type": "string"
                         }
-                    ]
+                    ],
+                    "description": "Sort order for a particular field.\nFor quantitative or temporal fields, this can be either `\"ascending\"` or `\"descending\"`\nFor quantitative or temporal fields, this can be `\"ascending\"`, `\"descending\"`, `\"none\"`, or a [sort field definition object](sort.html#sort-field) for sorting by an aggregate calculation of a specified sort field.\n\n__Default value:__ `\"ascending\"`"
                 },
                 "timeUnit": {
                     "$ref": "#/definitions/TimeUnit",
-                    "description": "Time unit for a `temporal` field  (e.g., `year`, `yearmonth`, `month`, `hour`)."
+                    "description": "Time unit for a `temporal` field  (e.g., `year`, `yearmonth`, `month`, `hour`).\n\n__Default value:__ `undefined` (None)"
                 },
                 "title": {
                     "description": "Title for axis or legend.",
@@ -2586,7 +3147,7 @@
                 },
                 "type": {
                     "$ref": "#/definitions/Type",
-                    "description": "The encoded field's type of measurement. This can be either a full type\nname (`\"quantitative\"`, `\"temporal\"`, `\"ordinal\"`,  and `\"nominal\"`)\nor an initial character of the type name (`\"Q\"`, `\"T\"`, `\"O\"`, `\"N\"`).\nThis property is case insensitive."
+                    "description": "The encoded field's type of measurement. This can be either a full type\nname (`\"quantitative\"`, `\"temporal\"`, `\"ordinal\"`,  and `\"nominal\"`)\nor an initial character of the type name (`\"Q\"`, `\"T\"`, `\"O\"`, `\"N\"`).\nThis property is case-insensitive."
                 }
             },
             "type": "object"
@@ -2684,7 +3245,7 @@
                     "description": "The line interpolation method to use for line and area marks. One of the following:\n- `\"linear\"`: piecewise linear segments, as in a polyline.\n- `\"linear-closed\"`: close the linear segments to form a polygon.\n- `\"step\"`: alternate between horizontal and vertical segments, as in a step function.\n- `\"step-before\"`: alternate between vertical and horizontal segments, as in a step function.\n- `\"step-after\"`: alternate between horizontal and vertical segments, as in a step function.\n- `\"basis\"`: a B-spline, with control point duplication on the ends.\n- `\"basis-open\"`: an open B-spline; may not intersect the start or end.\n- `\"basis-closed\"`: a closed B-spline, as in a loop.\n- `\"cardinal\"`: a Cardinal spline, with control point duplication on the ends.\n- `\"cardinal-open\"`: an open Cardinal spline; may not intersect the start or end, but will intersect other control points.\n- `\"cardinal-closed\"`: a closed Cardinal spline, as in a loop.\n- `\"bundle\"`: equivalent to basis, except the tension parameter is used to straighten the spline.\n- `\"monotone\"`: cubic interpolation that preserves monotonicity in y."
                 },
                 "opacity": {
-                    "description": "The overall opacity (value between [0,1]).\n\n__Default value:__ `0.7` for non-aggregate plots with `point`, `tick`, `circle`, or `square` marks or [layered `bar` charts](http://vega.github.io/new-editor/#/examples/vega_lite/bar_layered_transparent) and `1` otherwise.",
+                    "description": "The overall opacity (value between [0,1]).\n\n__Default value:__ `0.7` for non-aggregate plots with `point`, `tick`, `circle`, or `square` marks or layered `bar` charts and `1` otherwise.",
                     "maximum": 1,
                     "minimum": 0,
                     "type": "number"
@@ -2849,12 +3410,37 @@
             ],
             "type": "object"
         },
-        "OrderFieldDef": {
+        "OrderFieldDef<Field>": {
             "additionalProperties": false,
             "properties": {
                 "aggregate": {
-                    "$ref": "#/definitions/AggregateOp",
-                    "description": "Aggregation function for the field\n(e.g., `mean`, `sum`, `median`, `min`, `max`, `count`)."
+                    "description": "Aggregation function for the field\n(e.g., `mean`, `sum`, `median`, `min`, `max`, `count`).\n\n__Default value:__ `undefined` (None)",
+                    "enum": [
+                        "argmax",
+                        "argmin",
+                        "average",
+                        "box-plot",
+                        "ci0",
+                        "ci1",
+                        "count",
+                        "distinct",
+                        "max",
+                        "mean",
+                        "median",
+                        "min",
+                        "missing",
+                        "modeskew",
+                        "q1",
+                        "q3",
+                        "stdev",
+                        "stdevp",
+                        "sum",
+                        "valid",
+                        "values",
+                        "variance",
+                        "variancep"
+                    ],
+                    "type": "string"
                 },
                 "bin": {
                     "anyOf": [
@@ -2868,7 +3454,31 @@
                     "description": "Flag for binning a `quantitative` field, or a bin property object\nfor binning parameters."
                 },
                 "field": {
-                    "description": "Name of the field from which to pull a data value.",
+                    "anyOf": [
+                        {
+                            "additionalProperties": false,
+                            "properties": {
+                                "repeat": {
+                                    "enum": [
+                                        "column",
+                                        "row"
+                                    ],
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "repeat"
+                            ],
+                            "type": "object"
+                        },
+                        {
+                            "type": "string"
+                        }
+                    ],
+                    "description": "__Required.__ Name of the field from which to pull a data value.\n\n__Note:__ `field` is not required if `aggregate` is `count`."
+                },
+                "format": {
+                    "description": "The formatting pattern for text value. If not defined, this will be determined automatically.",
                     "type": "string"
                 },
                 "sort": {
@@ -2876,7 +3486,7 @@
                 },
                 "timeUnit": {
                     "$ref": "#/definitions/TimeUnit",
-                    "description": "Time unit for a `temporal` field  (e.g., `year`, `yearmonth`, `month`, `hour`)."
+                    "description": "Time unit for a `temporal` field  (e.g., `year`, `yearmonth`, `month`, `hour`).\n\n__Default value:__ `undefined` (None)"
                 },
                 "title": {
                     "description": "Title for axis or legend.",
@@ -2884,7 +3494,7 @@
                 },
                 "type": {
                     "$ref": "#/definitions/Type",
-                    "description": "The encoded field's type of measurement. This can be either a full type\nname (`\"quantitative\"`, `\"temporal\"`, `\"ordinal\"`,  and `\"nominal\"`)\nor an initial character of the type name (`\"Q\"`, `\"T\"`, `\"O\"`, `\"N\"`).\nThis property is case insensitive."
+                    "description": "The encoded field's type of measurement. This can be either a full type\nname (`\"quantitative\"`, `\"temporal\"`, `\"ordinal\"`,  and `\"nominal\"`)\nor an initial character of the type name (`\"Q\"`, `\"T\"`, `\"O\"`, `\"N\"`).\nThis property is case-insensitive."
                 }
             },
             "type": "object"
@@ -2910,12 +3520,37 @@
             },
             "type": "object"
         },
-        "PositionFieldDef": {
+        "PositionFieldDef<Field>": {
             "additionalProperties": false,
             "properties": {
                 "aggregate": {
-                    "$ref": "#/definitions/AggregateOp",
-                    "description": "Aggregation function for the field\n(e.g., `mean`, `sum`, `median`, `min`, `max`, `count`)."
+                    "description": "Aggregation function for the field\n(e.g., `mean`, `sum`, `median`, `min`, `max`, `count`).\n\n__Default value:__ `undefined` (None)",
+                    "enum": [
+                        "argmax",
+                        "argmin",
+                        "average",
+                        "box-plot",
+                        "ci0",
+                        "ci1",
+                        "count",
+                        "distinct",
+                        "max",
+                        "mean",
+                        "median",
+                        "min",
+                        "missing",
+                        "modeskew",
+                        "q1",
+                        "q3",
+                        "stdev",
+                        "stdevp",
+                        "sum",
+                        "valid",
+                        "values",
+                        "variance",
+                        "variancep"
+                    ],
+                    "type": "string"
                 },
                 "axis": {
                     "anyOf": [
@@ -2939,7 +3574,31 @@
                     "description": "Flag for binning a `quantitative` field, or a bin property object\nfor binning parameters."
                 },
                 "field": {
-                    "description": "Name of the field from which to pull a data value.",
+                    "anyOf": [
+                        {
+                            "additionalProperties": false,
+                            "properties": {
+                                "repeat": {
+                                    "enum": [
+                                        "column",
+                                        "row"
+                                    ],
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "repeat"
+                            ],
+                            "type": "object"
+                        },
+                        {
+                            "type": "string"
+                        }
+                    ],
+                    "description": "__Required.__ Name of the field from which to pull a data value.\n\n__Note:__ `field` is not required if `aggregate` is `count`."
+                },
+                "format": {
+                    "description": "The formatting pattern for text value. If not defined, this will be determined automatically.",
                     "type": "string"
                 },
                 "scale": {
@@ -2957,7 +3616,8 @@
                             ],
                             "type": "string"
                         }
-                    ]
+                    ],
+                    "description": "Sort order for a particular field.\nFor quantitative or temporal fields, this can be either `\"ascending\"` or `\"descending\"`\nFor quantitative or temporal fields, this can be `\"ascending\"`, `\"descending\"`, `\"none\"`, or a [sort field definition object](sort.html#sort-field) for sorting by an aggregate calculation of a specified sort field.\n\n__Default value:__ `\"ascending\"`"
                 },
                 "stack": {
                     "$ref": "#/definitions/StackOffset",
@@ -2965,7 +3625,7 @@
                 },
                 "timeUnit": {
                     "$ref": "#/definitions/TimeUnit",
-                    "description": "Time unit for a `temporal` field  (e.g., `year`, `yearmonth`, `month`, `hour`)."
+                    "description": "Time unit for a `temporal` field  (e.g., `year`, `yearmonth`, `month`, `hour`).\n\n__Default value:__ `undefined` (None)"
                 },
                 "title": {
                     "description": "Title for axis or legend.",
@@ -2973,7 +3633,7 @@
                 },
                 "type": {
                     "$ref": "#/definitions/Type",
-                    "description": "The encoded field's type of measurement. This can be either a full type\nname (`\"quantitative\"`, `\"temporal\"`, `\"ordinal\"`,  and `\"nominal\"`)\nor an initial character of the type name (`\"Q\"`, `\"T\"`, `\"O\"`, `\"N\"`).\nThis property is case insensitive."
+                    "description": "The encoded field's type of measurement. This can be either a full type\nname (`\"quantitative\"`, `\"temporal\"`, `\"ordinal\"`,  and `\"nominal\"`)\nor an initial character of the type name (`\"Q\"`, `\"T\"`, `\"O\"`, `\"N\"`).\nThis property is case-insensitive."
                 }
             },
             "type": "object"
@@ -2986,7 +3646,7 @@
                     "type": "string"
                 },
                 "range": {
-                    "description": "Array of inclusive minimum and maximum values\nfor a field value of a data item to be included in the filtered data.",
+                    "description": "An array of inclusive minimum and maximum values\nfor a field value of a data item to be included in the filtered data.",
                     "items": {
                         "anyOf": [
                             {
@@ -3010,6 +3670,26 @@
                 "field",
                 "range"
             ],
+            "type": "object"
+        },
+        "Repeat": {
+            "additionalProperties": false,
+            "properties": {
+                "column": {
+                    "description": "Horizontal repeated views.",
+                    "items": {
+                        "type": "string"
+                    },
+                    "type": "array"
+                },
+                "row": {
+                    "description": "Vertical repeated views.",
+                    "items": {
+                        "type": "string"
+                    },
+                    "type": "array"
+                }
+            },
             "type": "object"
         },
         "Scale": {
@@ -3046,7 +3726,7 @@
                             "type": "string"
                         }
                     ],
-                    "description": "The domain of the scale, representing the set of data values. For quantitative data, this can take the form of a two-element array with minimum and maximum values. For ordinal/categorical data, this may be an array of valid input values.\n\nIf the domain is `\"unaggregated\"`, we use the source data range before aggregation as scale domain instead of aggregated data for aggregate axis.\nThis property only works with aggregate functions that produce values within the raw data domain (`\"mean\"`, `\"average\"`, `\"median\"`, `\"q1\"`, `\"q3\"`, `\"min\"`, `\"max\"`). For other aggregations that produce values outside of the raw data domain (e.g. `\"count\"`, `\"sum\"`), this property is ignored."
+                    "description": "The domain of the scale, representing the set of data values. For quantitative data, this can take the form of a two-element array with minimum and maximum values. For ordinal/categorical data, this may be an array of valid input values.\n\nIf the domain is `\"unaggregated\"`, we use the source data range before aggregation as scale domain instead of aggregated data for an aggregate axis.\nThis property only works with aggregate functions that produce values within the raw data domain (`\"mean\"`, `\"average\"`, `\"median\"`, `\"q1\"`, `\"q3\"`, `\"min\"`, `\"max\"`). For other aggregations that produce values outside of the raw data domain (e.g. `\"count\"`, `\"sum\"`), this property is ignored."
                 },
                 "exponent": {
                     "description": "Sets the exponent of the scale transformation. For `pow` scale types only, otherwise ignored.",
@@ -3073,7 +3753,7 @@
                     ]
                 },
                 "padding": {
-                    "description": "Applies spacing among ordinal elements in the scale range. The actual effect depends on how the scale is configured. If the __points__ parameter is `true`, the padding value is interpreted as a multiple of the spacing between points. A reasonable value is 1.0, such that the first and last point will be offset from the minimum and maximum value by half the distance between points. Otherwise, padding is typically in the range [0, 1] and corresponds to the fraction of space in the range interval to allocate to padding. A value of 0.5 means that the band size will be equal to the padding width. For more, see the [D3 ordinal scale documentation](https://github.com/mbostock/d3/wiki/Ordinal-Scales).\nA convenience property for setting the inner and outer padding to the same value.\n\n__Default value:__ `x` and `y` channels are derived from [scale config](config.html#scale-config)'s `pointPadding` for `point` scale and `bandPadding` for `band` scale.  Other channels has `0` padding by default.",
+                    "description": "Applies spacing among ordinal elements in the scale range. The actual effect depends on how the scale is configured. If the __points__ parameter is `true`, the padding value is interpreted as a multiple of the spacing between points. A reasonable value is 1.0, such that the first and last point will be offset from the minimum and maximum value by half the distance between points. Otherwise, padding is typically in the range [0, 1] and corresponds to the fraction of space in the range interval to allocate to padding. A value of 0.5 means that the band size will be equal to the padding width. For more, see the [D3 ordinal scale documentation](https://github.com/mbostock/d3/wiki/Ordinal-Scales).\nA convenience property for setting the inner and outer padding to the same value.\n\n__Default value:__ `x` and `y` channels are derived from [scale config](config.html#scale-config)'s `pointPadding` for `point` scale and `bandPadding` for `band` scale.  Other channels have `0` padding by default.",
                     "maximum": 1,
                     "minimum": 0,
                     "type": "number"
@@ -3137,10 +3817,6 @@
                     ],
                     "description": "Range scheme (e.g., color schemes such as `\"category10\"` or `\"viridis\"`).\n\n__Default value:__ [scale config](config.html#scale-config)'s `\"nominalColorScheme\"` for nominal field and `\"sequentialColorScheme\"` for other types of fields."
                 },
-                "spacing": {
-                    "description": "(For `row` and `column` only) A pixel value for padding between cells in the trellis plots.\n\n__Default value:__ derived from [scale config](config.html#scale-config)'s `facetSpacing`",
-                    "type": "integer"
-                },
                 "type": {
                     "$ref": "#/definitions/ScaleType",
                     "description": "The type of scale.\n- For a _quantitative_ field, supported quantitative scale types  are `\"linear\"` (default), `\"log\"`, `\"pow\"`, `\"sqrt\"`, `\"quantile\"`, `\"quantize\"`, and `\"threshold\"`.\n- For a _temporal_ field without `timeUnit`, the scale type should be `\"time\"` (default) or `\"ordinal\"`.\n- For _ordinal_ and _nominal_ fields, the type is always `\"ordinal\"`.\nUnsupported values will be ignored."
@@ -3170,11 +3846,6 @@
                 "clamp": {
                     "description": "If true, values that exceed the data domain are clamped to either the minimum or maximum range value",
                     "type": "boolean"
-                },
-                "facetSpacing": {
-                    "description": "Default spacing between faceted plots.\n\n__Default value:__ `16`",
-                    "minimum": 0,
-                    "type": "integer"
                 },
                 "maxBandSize": {
                     "description": "The default max value for mapping quantitative fields to bar's size/bandSize.\nIf undefined (default), we will use bandSize - 1.",
@@ -3726,7 +4397,7 @@
                     "description": "The line interpolation method to use for line and area marks. One of the following:\n- `\"linear\"`: piecewise linear segments, as in a polyline.\n- `\"linear-closed\"`: close the linear segments to form a polygon.\n- `\"step\"`: alternate between horizontal and vertical segments, as in a step function.\n- `\"step-before\"`: alternate between vertical and horizontal segments, as in a step function.\n- `\"step-after\"`: alternate between horizontal and vertical segments, as in a step function.\n- `\"basis\"`: a B-spline, with control point duplication on the ends.\n- `\"basis-open\"`: an open B-spline; may not intersect the start or end.\n- `\"basis-closed\"`: a closed B-spline, as in a loop.\n- `\"cardinal\"`: a Cardinal spline, with control point duplication on the ends.\n- `\"cardinal-open\"`: an open Cardinal spline; may not intersect the start or end, but will intersect other control points.\n- `\"cardinal-closed\"`: a closed Cardinal spline, as in a loop.\n- `\"bundle\"`: equivalent to basis, except the tension parameter is used to straighten the spline.\n- `\"monotone\"`: cubic interpolation that preserves monotonicity in y."
                 },
                 "opacity": {
-                    "description": "The overall opacity (value between [0,1]).\n\n__Default value:__ `0.7` for non-aggregate plots with `point`, `tick`, `circle`, or `square` marks or [layered `bar` charts](http://vega.github.io/new-editor/#/examples/vega_lite/bar_layered_transparent) and `1` otherwise.",
+                    "description": "The overall opacity (value between [0,1]).\n\n__Default value:__ `0.7` for non-aggregate plots with `point`, `tick`, `circle`, or `square` marks or layered `bar` charts and `1` otherwise.",
                     "maximum": 1,
                     "minimum": 0,
                     "type": "number"
@@ -3796,12 +4467,37 @@
             },
             "type": "object"
         },
-        "TextFieldDef": {
+        "TextFieldDef<Field>": {
             "additionalProperties": false,
             "properties": {
                 "aggregate": {
-                    "$ref": "#/definitions/AggregateOp",
-                    "description": "Aggregation function for the field\n(e.g., `mean`, `sum`, `median`, `min`, `max`, `count`)."
+                    "description": "Aggregation function for the field\n(e.g., `mean`, `sum`, `median`, `min`, `max`, `count`).\n\n__Default value:__ `undefined` (None)",
+                    "enum": [
+                        "argmax",
+                        "argmin",
+                        "average",
+                        "box-plot",
+                        "ci0",
+                        "ci1",
+                        "count",
+                        "distinct",
+                        "max",
+                        "mean",
+                        "median",
+                        "min",
+                        "missing",
+                        "modeskew",
+                        "q1",
+                        "q3",
+                        "stdev",
+                        "stdevp",
+                        "sum",
+                        "valid",
+                        "values",
+                        "variance",
+                        "variancep"
+                    ],
+                    "type": "string"
                 },
                 "bin": {
                     "anyOf": [
@@ -3818,8 +4514,28 @@
                     "$ref": "#/definitions/Condition<string | number>"
                 },
                 "field": {
-                    "description": "Name of the field from which to pull a data value.",
-                    "type": "string"
+                    "anyOf": [
+                        {
+                            "additionalProperties": false,
+                            "properties": {
+                                "repeat": {
+                                    "enum": [
+                                        "column",
+                                        "row"
+                                    ],
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "repeat"
+                            ],
+                            "type": "object"
+                        },
+                        {
+                            "type": "string"
+                        }
+                    ],
+                    "description": "__Required.__ Name of the field from which to pull a data value.\n\n__Note:__ `field` is not required if `aggregate` is `count`."
                 },
                 "format": {
                     "description": "The formatting pattern for text value. If not defined, this will be determined automatically.",
@@ -3827,7 +4543,7 @@
                 },
                 "timeUnit": {
                     "$ref": "#/definitions/TimeUnit",
-                    "description": "Time unit for a `temporal` field  (e.g., `year`, `yearmonth`, `month`, `hour`)."
+                    "description": "Time unit for a `temporal` field  (e.g., `year`, `yearmonth`, `month`, `hour`).\n\n__Default value:__ `undefined` (None)"
                 },
                 "title": {
                     "description": "Title for axis or legend.",
@@ -3835,7 +4551,7 @@
                 },
                 "type": {
                     "$ref": "#/definitions/Type",
-                    "description": "The encoded field's type of measurement. This can be either a full type\nname (`\"quantitative\"`, `\"temporal\"`, `\"ordinal\"`,  and `\"nominal\"`)\nor an initial character of the type name (`\"Q\"`, `\"T\"`, `\"O\"`, `\"N\"`).\nThis property is case insensitive."
+                    "description": "The encoded field's type of measurement. This can be either a full type\nname (`\"quantitative\"`, `\"temporal\"`, `\"ordinal\"`,  and `\"nominal\"`)\nor an initial character of the type name (`\"Q\"`, `\"T\"`, `\"O\"`, `\"N\"`).\nThis property is case-insensitive."
                 }
             },
             "type": "object"
@@ -3922,7 +4638,7 @@
                     "description": "The line interpolation method to use for line and area marks. One of the following:\n- `\"linear\"`: piecewise linear segments, as in a polyline.\n- `\"linear-closed\"`: close the linear segments to form a polygon.\n- `\"step\"`: alternate between horizontal and vertical segments, as in a step function.\n- `\"step-before\"`: alternate between vertical and horizontal segments, as in a step function.\n- `\"step-after\"`: alternate between horizontal and vertical segments, as in a step function.\n- `\"basis\"`: a B-spline, with control point duplication on the ends.\n- `\"basis-open\"`: an open B-spline; may not intersect the start or end.\n- `\"basis-closed\"`: a closed B-spline, as in a loop.\n- `\"cardinal\"`: a Cardinal spline, with control point duplication on the ends.\n- `\"cardinal-open\"`: an open Cardinal spline; may not intersect the start or end, but will intersect other control points.\n- `\"cardinal-closed\"`: a closed Cardinal spline, as in a loop.\n- `\"bundle\"`: equivalent to basis, except the tension parameter is used to straighten the spline.\n- `\"monotone\"`: cubic interpolation that preserves monotonicity in y."
                 },
                 "opacity": {
-                    "description": "The overall opacity (value between [0,1]).\n\n__Default value:__ `0.7` for non-aggregate plots with `point`, `tick`, `circle`, or `square` marks or [layered `bar` charts](http://vega.github.io/new-editor/#/examples/vega_lite/bar_layered_transparent) and `1` otherwise.",
+                    "description": "The overall opacity (value between [0,1]).\n\n__Default value:__ `0.7` for non-aggregate plots with `point`, `tick`, `circle`, or `square` marks or layered `bar` charts and `1` otherwise.",
                     "maximum": 1,
                     "minimum": 0,
                     "type": "number"
@@ -4034,10 +4750,10 @@
             "properties": {
                 "format": {
                     "$ref": "#/definitions/DataUrlFormat",
-                    "description": "Type of input data: `\"json\"`, `\"csv\"`, `\"tsv\"`. The default format type is determined by the extension of the file url. If no extension is detected, `\"json\"` will be used by default."
+                    "description": "Type of input data: `\"json\"`, `\"csv\"`, `\"tsv\"`. The default format type is determined by the extension of the file URL. If no extension is detected, `\"json\"` will be used by default."
                 },
                 "url": {
-                    "description": "A URL from which to load the data set. Use the `format.type` property\nto ensure the loaded data is correctly parsed.",
+                    "description": "An URL from which to load the data set. Use the `format.type` property\nto ensure the loaded data is correctly parsed.",
                     "type": "string"
                 }
             },

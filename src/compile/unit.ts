@@ -1,5 +1,5 @@
 import {Axis} from '../axis';
-import {Channel, NONSPATIAL_SCALE_CHANNELS, UNIT_CHANNELS, UNIT_SCALE_CHANNELS, X, X2,  Y, Y2} from '../channel';
+import {Channel, NONSPATIAL_SCALE_CHANNELS, UNIT_CHANNELS, UNIT_SCALE_CHANNELS, X, X2, Y, Y2} from '../channel';
 import {CellConfig, Config} from '../config';
 import {Encoding, normalizeEncoding} from '../encoding';
 import * as vlEncoding from '../encoding'; // TODO: remove
@@ -8,29 +8,31 @@ import {Legend} from '../legend';
 import {FILL_STROKE_CONFIG, isMarkDef, Mark, MarkDef, TEXT as TEXT_MARK} from '../mark';
 import {hasDiscreteDomain, Scale} from '../scale';
 import {SelectionDef} from '../selection';
+import {SortField, SortOrder} from '../sort';
 import {UnitSpec} from '../spec';
 import {stack, StackProperties} from '../stack';
 import {Dict, duplicate, extend, vals} from '../util';
-import {VgData} from '../vega.schema';
+import {VgData, VgLayout, VgSignal} from '../vega.schema';
 import {parseAxisComponent} from './axis/parse';
 import {applyConfig} from './common';
 import {assembleData} from './data/assemble';
 import {parseData} from './data/parse';
 import {FacetModel} from './facet';
 import {LayerModel} from './layer';
-import {assembleLayout, parseUnitLayout} from './layout';
+import {assembleLayoutUnitSignals} from './layout/index';
 import {parseLegendComponent} from './legend/parse';
 import {initEncoding, initMarkDef} from './mark/init';
 import {parseMark} from './mark/mark';
-import {Model} from './model';
+import {Model, ModelWithField} from './model';
+import {RepeaterValue, replaceRepeaterInEncoding} from './repeat';
 import initScale from './scale/init';
 import parseScaleComponent from './scale/parse';
-import {assembleUnitData as assembleSelectionData, assembleUnitMarks as assembleUnitSelectionMarks, assembleUnitSignals, parseUnitSelection} from './selection/selection';
+import {assembleTopLevelSignals, assembleUnitSelectionData, assembleUnitSelectionMarks, assembleUnitSelectionSignals, parseUnitSelection} from './selection/selection';
 
 /**
  * Internal model of Vega-Lite specification for the compiler.
  */
-export class UnitModel extends Model {
+export class UnitModel extends ModelWithField {
   /**
    * Fixed width for the unit visualization.
    * If undefined (e.g., for ordinal scale), the width of the
@@ -46,12 +48,21 @@ export class UnitModel extends Model {
   public readonly height: number;
 
   public readonly markDef: MarkDef;
-  public readonly encoding: Encoding;
+  public readonly encoding: Encoding<string>;
+
+  protected scales: Dict<Scale> = {};
+
+  public readonly stack: StackProperties;
+
+  protected axes: Dict<Axis> = {};
+
+  protected legends: Dict<Legend> = {};
+
   protected readonly selection: Dict<SelectionDef> = {};
   public children: Model[] = [];
 
-  constructor(spec: UnitSpec, parent: Model, parentGivenName: string, cfg: Config) {
-    super(spec, parent, parentGivenName, cfg);
+  constructor(spec: UnitSpec, parent: Model, parentGivenName: string, repeater: RepeaterValue, config: Config) {
+    super(spec, parent, parentGivenName, config);
 
     // FIXME(#2041): copy config.facet.cell to config.cell -- this seems incorrect and should be rewritten
     this.initFacetCellConfig();
@@ -65,14 +76,14 @@ export class UnitModel extends Model {
       parent ? parent['height'] : undefined; // only exists if parent is layer
 
     const mark = isMarkDef(spec.mark) ? spec.mark.type : spec.mark;
-    const encoding = this.encoding = normalizeEncoding(spec.encoding || {}, mark);
+    const encoding = this.encoding = normalizeEncoding(replaceRepeaterInEncoding(spec.encoding || {}, repeater), mark);
 
     // calculate stack properties
-    this._stack = stack(mark, encoding, this.config.stack);
+    this.stack = stack(mark, encoding, this.config.stack);
     this.scales = this.initScales(mark, encoding, providedWidth, providedHeight);
 
     this.markDef = initMarkDef(spec.mark, encoding, this.scales, this.config);
-    this.encoding = initEncoding(mark, encoding, this._stack, this.config);
+    this.encoding = initEncoding(mark, encoding, this.stack, this.config);
 
     this.axes = this.initAxes(encoding);
     this.legends = this.initLegend(encoding);
@@ -89,6 +100,27 @@ export class UnitModel extends Model {
     this.height = height;
   }
 
+  public scale(channel: Channel) {
+    return this.scales[channel];
+  }
+
+  public hasDiscreteDomain(channel: Channel) {
+    const scale = this.scale(channel);
+    return scale && hasDiscreteDomain(scale.type);
+  }
+
+
+  public sort(channel: Channel): SortField | SortOrder {
+    return (this.getMapping()[channel] || {}).sort;
+  }
+
+  public axis(channel: Channel): Axis {
+    return this.axes[channel];
+  }
+
+  public legend(channel: Channel): Legend {
+    return this.legends[channel];
+  }
   private initFacetCellConfig() {
     const config = this.config;
     let ancestor = this.parent;
@@ -106,7 +138,7 @@ export class UnitModel extends Model {
     }
   }
 
-  private initScales(mark: Mark, encoding: Encoding, topLevelWidth:number, topLevelHeight: number): Dict<Scale> {
+  private initScales(mark: Mark, encoding: Encoding<string>, topLevelWidth:number, topLevelHeight: number): Dict<Scale> {
     const xyRangeSteps: number[] = [];
 
     return UNIT_SCALE_CHANNELS.reduce((scales, channel) => {
@@ -171,7 +203,7 @@ export class UnitModel extends Model {
     return {width, height};
   }
 
-  private initAxes(encoding: Encoding): Dict<Axis> {
+  private initAxes(encoding: Encoding<string>): Dict<Axis> {
     return [X, Y].reduce(function(_axis, channel) {
       // Position Axis
 
@@ -193,7 +225,7 @@ export class UnitModel extends Model {
     }, {});
   }
 
-  private initLegend(encoding: Encoding): Dict<Legend> {
+  private initLegend(encoding: Encoding<string>): Dict<Legend> {
     return NONSPATIAL_SCALE_CHANNELS.reduce(function(_legend, channel) {
       const channelDef = encoding[channel];
       if (isFieldDef(channelDef)) {
@@ -214,10 +246,6 @@ export class UnitModel extends Model {
     this.component.selection = parseUnitSelection(this, this.selection);
   }
 
-  public parseLayoutData() {
-    this.component.layout = parseUnitLayout(this);
-  }
-
   public parseScale() {
     this.component.scales = parseScaleComponent(this);
   }
@@ -226,12 +254,8 @@ export class UnitModel extends Model {
     this.component.mark = parseMark(this);
   }
 
-  public parseAxis() {
+  public parseAxisAndHeader() {
     this.component.axes = parseAxisComponent(this, [X, Y]);
-  }
-
-  public parseAxisGroup(): void {
-    return null;
   }
 
   public parseLegend() {
@@ -246,16 +270,24 @@ export class UnitModel extends Model {
     return [];
   }
 
-  public assembleSignals(signals: any[]): any[] {
-    return assembleUnitSignals(this, signals);
+  public assembleSelectionTopLevelSignals(signals: any[]): VgSignal[] {
+    return assembleTopLevelSignals(this, signals);
+  }
+
+  public assembleSelectionSignals(): VgSignal[] {
+    return assembleUnitSelectionSignals(this, []);
   }
 
   public assembleSelectionData(data: VgData[]): VgData[] {
-    return assembleSelectionData(this, data);
+    return assembleUnitSelectionData(this, data);
   }
 
-  public assembleLayout(layoutData: VgData[]): VgData[] {
-    return assembleLayout(this, layoutData);
+  public assembleLayout(): VgLayout {
+    return null;
+  }
+
+  public assembleLayoutSignals(): VgSignal[] {
+    return assembleLayoutUnitSignals(this);
   }
 
   public assembleMarks() {
@@ -271,8 +303,8 @@ export class UnitModel extends Model {
     return marks.map(this.correctDataNames);
   }
 
-  public assembleParentGroupProperties(cellConfig: CellConfig) {
-    return applyConfig({}, cellConfig, FILL_STROKE_CONFIG.concat(['clip']));
+  public assembleParentGroupProperties() {
+    return applyConfig({}, this.config.cell, FILL_STROKE_CONFIG.concat(['clip']));
   }
 
   public channels() {
@@ -312,7 +344,7 @@ export class UnitModel extends Model {
     return vlEncoding.channelHasField(this.encoding, channel);
   }
 
-  public fieldDef(channel: Channel): FieldDef {
+  public fieldDef(channel: Channel): FieldDef<string> {
     // TODO: remove this || {}
     // Currently we have it to prevent null pointer exception.
     return this.encoding[channel] || {};

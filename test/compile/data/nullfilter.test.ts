@@ -5,12 +5,12 @@ import {assert} from 'chai';
 import {UnitSpec} from '../../../src/spec';
 
 import {NullFilterNode} from '../../../src/compile/data/nullfilter';
-import {Model} from '../../../src/compile/model';
+import {ModelWithField} from '../../../src/compile/model';
 import {FieldDef} from '../../../src/fielddef';
 import {Dict, mergeDeep} from '../../../src/util';
 import {parseUnitModel} from '../../util';
 
-function parse(model: Model) {
+function parse(model: ModelWithField) {
   return NullFilterNode.make(model);
 }
 
@@ -27,7 +27,7 @@ describe('compile/data/nullfilter', function() {
 
     it('should add filterNull for Q and T by default', function () {
       const model = parseUnitModel(spec);
-      assert.deepEqual<Dict<FieldDef>>(parse(model).filteredFields, {
+      assert.deepEqual<Dict<FieldDef<string>>>(parse(model).filteredFields, {
         qq: {field: 'qq', type: "quantitative"},
         tt: {field: 'tt', type: "temporal"},
         oo: null
@@ -40,7 +40,7 @@ describe('compile/data/nullfilter', function() {
           filterInvalid: true
         }
       }));
-      assert.deepEqual<Dict<FieldDef>>(parse(model).filteredFields, {
+      assert.deepEqual<Dict<FieldDef<string>>>(parse(model).filteredFields, {
         qq: {field: 'qq', type: "quantitative"},
         tt: {field: 'tt', type: "temporal"},
         oo: {field: 'oo', type: "ordinal"}

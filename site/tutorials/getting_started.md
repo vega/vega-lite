@@ -10,7 +10,7 @@ This tutorial will guide through the process of writing a visualization specific
 * TOC
 {:toc}
 
-We suggest that you follow along the tutorial by building a visualization in the [online editor](https://vega.github.io/new-editor/#/vega_lite). Extend your specification in the editor as you read through this tutorial. If something does not work as expected, compare your specifications with ones inside this tutorial.
+We suggest that you follow along the tutorial by building a visualization in the [online editor](https://vega.github.io/new-editor/?mode=vega-lite). Extend your specification in the editor as you read through this tutorial. If something does not work as expected, compare your specifications with ones inside this tutorial.
 
 ## The Data
 
@@ -69,18 +69,7 @@ Basic graphical elements in Vega-Lite are [*marks*]({{site.baseurl}}/docs/mark.h
 
 To show the data as a point, we can set the `mark` property to `point`.
 
-<div class="vl-example">
-{
-  "data": {
-    "values": [
-      {"a": "C", "b": 2}, {"a": "C", "b": 7}, {"a": "C", "b": 4},
-      {"a": "D", "b": 1}, {"a": "D", "b": 2}, {"a": "D", "b": 6},
-      {"a": "E", "b": 8}, {"a": "E", "b": 4}, {"a": "E", "b": 7}
-    ]
-  },
-  "mark": "point"
-}
-</div>
+<div class="vl-example" data-name="point_overlap"></div>
 
 Now, it looks like we get a point. In fact, Vega-Lite renders one point for each object in the array, but they are all overlapping since we have not specified each point's position.
 
@@ -95,21 +84,7 @@ To visually separate the points, data variables can be mapped to visual properti
 ...
 ```
 
-<div class="vl-example">
-{
-  "data": {
-    "values": [
-      {"a": "C", "b": 2}, {"a": "C", "b": 7}, {"a": "C", "b": 4},
-      {"a": "D", "b": 1}, {"a": "D", "b": 2}, {"a": "D", "b": 6},
-      {"a": "E", "b": 8}, {"a": "E", "b": 4}, {"a": "E", "b": 7}
-    ]
-  },
-  "mark": "point",
-  "encoding": {
-    "x": {"field": "a", "type": "nominal"}
-  }
-}
-</div>
+<div class="vl-example" data-name="point_1d_array"></div>
 
 The [`encoding`]({{site.baseurl}}/docs/encoding.html) object is a key-value mapping between encoding channels (such as `x`, `y`) and definitions of the mapped data fields. The channel definition describes the field's name (`field`) and its [data type]({{site.baseurl}}/docs/encoding.html#type) (`type`). In this example, we map the values for field `a` to the *encoding channel* `x` (the x-location of the points) and set `a`'s data type to `nominal`, since it represents categories. (See [the documentation for more information about data types]({{site.baseurl}}/docs/encoding.html#type).)
 
@@ -124,22 +99,7 @@ In the visualization above, Vega-Lite automatically adds an axis with labels for
 
 This time we set the field type to be `quantitative` because the values in field `b` are numeric.
 
-<div class="vl-example">
-{
-  "data": {
-    "values": [
-      {"a": "C", "b": 2}, {"a": "C", "b": 7}, {"a": "C", "b": 4},
-      {"a": "D", "b": 1}, {"a": "D", "b": 2}, {"a": "D", "b": 6},
-      {"a": "E", "b": 8}, {"a": "E", "b": 4}, {"a": "E", "b": 7}
-    ]
-  },
-  "mark": "point",
-  "encoding": {
-    "x": {"field": "a", "type": "nominal"},
-    "y": {"field": "b", "type": "quantitative"}
-  }
-}
-</div>
+<div class="vl-example" data-name="point_2d_array"></div>
 
 Now we can see the raw data points. Note that Vega-Lite automatically adds grid lines to the y-axis to facilitate comparison of the `b` values.
 
@@ -147,22 +107,7 @@ Now we can see the raw data points. Note that Vega-Lite automatically adds grid 
 
 Vega-Lite also supports data transformation such as aggregation. By adding `"aggregate": "average"` to the definition of the `y` channel, we can see the average value of `a` in each category. For example, the average value of category `D` is `(1 + 2 + 6)/3 = 9/3 = 3`.
 
-<div class="vl-example">
-{
-  "data": {
-    "values": [
-      {"a": "C", "b": 2}, {"a": "C", "b": 7}, {"a": "C", "b": 4},
-      {"a": "D", "b": 1}, {"a": "D", "b": 2}, {"a": "D", "b": 6},
-      {"a": "E", "b": 8}, {"a": "E", "b": 4}, {"a": "E", "b": 7}
-    ]
-  },
-  "mark": "point",
-  "encoding": {
-    "x": {"field": "a", "type": "nominal"},
-    "y": {"aggregate": "average", "field": "b", "type": "quantitative"}
-  }
-}
-</div>
+<div class="vl-example" data-name="point_2d_aggregate"></div>
 
 Great! You computed the aggregate values for each category and visualized the resulting value as a point. Typically aggregated values for categories are visualized using bar charts. To create a bar chart, we have to change the mark type from `point` to `bar`.
 
@@ -172,68 +117,18 @@ Great! You computed the aggregate values for each category and visualized the re
 + "mark": "bar"
 ```
 
-<div class="vl-example">
-{
-  "data": {
-    "values": [
-      {"a": "C", "b": 2}, {"a": "C", "b": 7}, {"a": "C", "b": 4},
-      {"a": "D", "b": 1}, {"a": "D", "b": 2}, {"a": "D", "b": 6},
-      {"a": "E", "b": 8}, {"a": "E", "b": 4}, {"a": "E", "b": 7}
-    ]
-  },
-  "mark": "bar",
-  "encoding": {
-    "x": {"field": "a", "type": "nominal"},
-    "y": {"aggregate": "average", "field": "b", "type": "quantitative"}
-  }
-}
-</div>
+<div class="vl-example" data-name="bar_array_aggregate"></div>
 
 Since the quantitative value is on y, you automatically get a vertical bar chart. If we swap the `x` and `y` channel, we get a horizontal bar chart instead.
 
-<div class="vl-example">
-{
-  "data": {
-    "values": [
-      {"a": "C", "b": 2}, {"a": "C", "b": 7}, {"a": "C", "b": 4},
-      {"a": "D", "b": 1}, {"a": "D", "b": 2}, {"a": "D", "b": 6},
-      {"a": "E", "b": 8}, {"a": "E", "b": 4}, {"a": "E", "b": 7}
-    ]
-  },
-  "mark": "bar",
-  "encoding": {
-    "y": {"field": "a", "type": "nominal"},
-    "x": {"aggregate": "average", "field": "b", "type": "quantitative"}
-  }
-}
-</div>
+<div class="vl-example" data-name="bar_swap_axes"></div>
 
 ## Customize your Visualization
 
 <!-- TODO need to find a way to talk about conciseness here somehow. -->
 Vega-Lite automatically provides default properties for the visualization. You can further customize these values by adding more properties. For example, to change the title of the x-axis from `MEAN(b)` to `Average of b`, we can set the title property of the axis in the `x` channel.
 
-<div class="vl-example">
-{
-  "data": {
-    "values": [
-      {"a": "C", "b": 2}, {"a": "C", "b": 7}, {"a": "C", "b": 4},
-      {"a": "D", "b": 1}, {"a": "D", "b": 2}, {"a": "D", "b": 6},
-      {"a": "E", "b": 8}, {"a": "E", "b": 4}, {"a": "E", "b": 7}
-    ]
-  },
-  "mark": "bar",
-  "encoding": {
-    "y": {"field": "a", "type": "nominal"},
-    "x": {
-      "aggregate": "average", "field": "b", "type": "quantitative",
-      "axis": {
-        "title": "Average of b"
-      }
-    }
-  }
-}
-</div>
+<div class="vl-example" data-name="bar_swap_custom"></div>
 
 {:#embed}
 ## Publish your Visualization Online
@@ -318,6 +213,6 @@ Now you can create a website that embeds a Vega-Lite specification. If you want 
 
 - Read the [next tutorial]({{site.baseurl}}/tutorials/explore.html).
 - See the [examples gallery]({{site.baseurl}}/examples/).
-- Build your own visualizations in the [online editor](https://vega.github.io/new-editor/#/vega_lite).
+- Build your own visualizations in the [online editor](https://vega.github.io/new-editor/?mode=vega-lite).
 - Browse through the [documentation]({{site.baseurl}}/docs/).
 - See the [list of applications](https://vega.github.io/vega-lite/usage/applications.html) that you can use Vega-Lite with.

@@ -1,27 +1,8 @@
 {
     "$schema": "http://vega.github.io/schema/vega/v3.0.json",
+    "description": "A bubble plot showing the correlation between health and income for 187 countries in the world (modified from an example in Lisa Charlotte Rost's blog post 'One Chart, Twelve Charting Libraries' --http://lisacharlotterost.github.io/2016/05/17/one-chart-code/).",
     "autosize": "pad",
     "padding": 5,
-    "signals": [
-        {
-            "name": "width",
-            "update": "data('layout')[0].width"
-        },
-        {
-            "name": "height",
-            "update": "data('layout')[0].height"
-        },
-        {
-            "name": "unit",
-            "value": {},
-            "on": [
-                {
-                    "events": "mousemove",
-                    "update": "group()._id ? group() : unit"
-                }
-            ]
-        }
-    ],
     "data": [
         {
             "name": "source_0",
@@ -44,41 +25,39 @@
                     "expr": "datum[\"income\"] > 0"
                 }
             ]
+        }
+    ],
+    "signals": [
+        {
+            "name": "width",
+            "update": "500"
         },
         {
-            "name": "layout",
-            "values": [
-                {}
-            ],
-            "transform": [
+            "name": "height",
+            "update": "300"
+        },
+        {
+            "name": "unit",
+            "value": {},
+            "on": [
                 {
-                    "type": "formula",
-                    "as": "width",
-                    "expr": "500"
-                },
-                {
-                    "type": "formula",
-                    "as": "height",
-                    "expr": "300"
+                    "events": "mousemove",
+                    "update": "group()._id ? group() : unit"
                 }
             ]
         }
     ],
     "marks": [
         {
-            "name": "main-group",
+            "name": "nested_main_group",
             "type": "group",
-            "description": "A bubble plot showing the correlation between health and income for 187 countries in the world (modified from an example in Lisa Charlotte Rost's blog post 'One Chart, Twelve Charting Libraries' --http://lisacharlotterost.github.io/2016/05/17/one-chart-code/).",
-            "from": {
-                "data": "layout"
-            },
             "encode": {
                 "update": {
                     "width": {
-                        "field": "width"
+                        "signal": "width"
                     },
                     "height": {
-                        "field": "height"
+                        "signal": "height"
                     },
                     "fill": {
                         "value": "transparent"
@@ -119,114 +98,114 @@
                         }
                     }
                 }
+            ]
+        }
+    ],
+    "scales": [
+        {
+            "name": "x",
+            "type": "log",
+            "domain": {
+                "data": "source_0",
+                "field": "income"
+            },
+            "range": [
+                0,
+                500
             ],
-            "scales": [
-                {
-                    "name": "x",
-                    "type": "log",
-                    "domain": {
-                        "data": "source_0",
-                        "field": "income"
-                    },
-                    "range": [
-                        0,
-                        500
-                    ],
-                    "round": true,
-                    "nice": true
-                },
-                {
-                    "name": "y",
-                    "type": "linear",
-                    "domain": {
-                        "data": "source_0",
-                        "field": "health"
-                    },
-                    "range": [
-                        300,
-                        0
-                    ],
-                    "round": true,
-                    "nice": true,
-                    "zero": false
-                },
-                {
-                    "name": "size",
-                    "type": "linear",
-                    "domain": {
-                        "data": "source_0",
-                        "field": "population"
-                    },
-                    "range": [
-                        0,
-                        361
-                    ],
-                    "nice": false,
-                    "zero": true
-                }
+            "round": true,
+            "nice": true
+        },
+        {
+            "name": "y",
+            "type": "linear",
+            "domain": {
+                "data": "source_0",
+                "field": "health"
+            },
+            "range": [
+                300,
+                0
             ],
-            "axes": [
-                {
-                    "scale": "x",
-                    "format": "s",
-                    "orient": "bottom",
-                    "tickCount": 5,
-                    "title": "income",
-                    "zindex": 1
-                },
-                {
-                    "scale": "x",
-                    "domain": false,
-                    "format": "s",
-                    "grid": true,
-                    "labels": false,
-                    "orient": "bottom",
-                    "tickCount": 5,
-                    "ticks": false,
-                    "zindex": 0,
-                    "gridScale": "y"
-                },
-                {
-                    "scale": "y",
-                    "format": "s",
-                    "orient": "left",
-                    "title": "health",
-                    "zindex": 1
-                },
-                {
-                    "scale": "y",
-                    "domain": false,
-                    "format": "s",
-                    "grid": true,
-                    "labels": false,
-                    "orient": "left",
-                    "ticks": false,
-                    "zindex": 0,
-                    "gridScale": "x"
-                }
+            "round": true,
+            "nice": true,
+            "zero": false
+        },
+        {
+            "name": "size",
+            "type": "linear",
+            "domain": {
+                "data": "source_0",
+                "field": "population"
+            },
+            "range": [
+                0,
+                361
             ],
-            "legends": [
-                {
-                    "size": "size",
-                    "format": "s",
-                    "title": "population",
-                    "encode": {
-                        "symbols": {
-                            "update": {
-                                "shape": {
-                                    "value": "circle"
-                                },
-                                "strokeWidth": {
-                                    "value": 0
-                                },
-                                "fill": {
-                                    "value": "#000"
-                                }
-                            }
+            "nice": false,
+            "zero": true
+        }
+    ],
+    "axes": [
+        {
+            "scale": "x",
+            "format": "s",
+            "orient": "bottom",
+            "tickCount": 5,
+            "title": "income",
+            "zindex": 1
+        },
+        {
+            "scale": "x",
+            "domain": false,
+            "format": "s",
+            "grid": true,
+            "labels": false,
+            "orient": "bottom",
+            "tickCount": 5,
+            "ticks": false,
+            "zindex": 0,
+            "gridScale": "y"
+        },
+        {
+            "scale": "y",
+            "format": "s",
+            "orient": "left",
+            "title": "health",
+            "zindex": 1
+        },
+        {
+            "scale": "y",
+            "domain": false,
+            "format": "s",
+            "grid": true,
+            "labels": false,
+            "orient": "left",
+            "ticks": false,
+            "zindex": 0,
+            "gridScale": "x"
+        }
+    ],
+    "legends": [
+        {
+            "size": "size",
+            "format": "s",
+            "title": "population",
+            "encode": {
+                "symbols": {
+                    "update": {
+                        "shape": {
+                            "value": "circle"
+                        },
+                        "strokeWidth": {
+                            "value": 0
+                        },
+                        "fill": {
+                            "value": "#000"
                         }
                     }
                 }
-            ]
+            }
         }
     ]
 }

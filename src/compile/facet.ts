@@ -1,71 +1,64 @@
-import {Axis} from '../axis';
 import {Channel, COLUMN, ROW, X, Y} from '../channel';
 import {Config} from '../config';
 import {MAIN} from '../data';
 import {reduce} from '../encoding';
 import {Facet} from '../facet';
-import {FieldDef, normalize} from '../fielddef';
-import {Legend} from '../legend';
+import {FieldDef, normalize, title as fieldDefTitle} from '../fielddef';
 import * as log from '../log';
-import {Scale} from '../scale';
+import {FILL_STROKE_CONFIG} from '../mark';
 import {FacetSpec} from '../spec';
 import {StackProperties} from '../stack';
 import {contains, Dict, extend, flatten, keys, vals} from '../util';
+import {FontWeight, VgSignal} from '../vega.schema';
 import {
   isDataRefDomain,
   isDataRefUnionedDomain,
   isFieldRefUnionDomain,
   VgData,
   VgDataRef,
-  VgEncodeEntry
+  VgEncodeEntry,
+  VgLayout
 } from '../vega.schema';
-import {parseAxisComponent, parseGridAxis, parseMainAxis} from './axis/parse';
+import {parseGridAxis, parseMainAxis} from './axis/parse';
 import {gridShow} from './axis/rules';
-import {buildModel} from './common';
+import {applyConfig, buildModel, formatSignalRef} from './common';
 import {assembleData, assembleFacetData, FACET_SCALE_PREFIX} from './data/assemble';
 import {parseData} from './data/parse';
-import {assembleLayout, parseFacetLayout} from './layout';
-import {Model} from './model';
-import initScale from './scale/init';
+import {getHeaderType, HeaderChannel, HeaderComponent, LayoutHeaderComponent} from './layout/header';
+import {labels} from './legend/encode';
+import {Model, ModelWithField} from './model';
+import {RepeaterValue, replaceRepeaterInFacet} from './repeat';
 import parseScaleComponent from './scale/parse';
+import {UnitModel} from './unit';
 
-
-export class FacetModel extends Model {
-  public readonly facet: Facet;
+export class FacetModel extends ModelWithField {
+  public readonly facet: Facet<string>;
 
   public readonly child: Model;
 
   public readonly children: Model[];
 
-  private readonly _spacing: {
-    row?: number;
-    column?: number;
-  } = {};
-
-  constructor(spec: FacetSpec, parent: Model, parentGivenName: string, config: Config) {
+  constructor(spec: FacetSpec, parent: Model, parentGivenName: string, repeater: RepeaterValue, config: Config) {
     super(spec, parent, parentGivenName, config);
 
-    const child  = this.child = buildModel(spec.spec, this, this.getName('child'), config);
-    this.children = [child];
+    this.child = buildModel(spec.spec, this, this.getName('child'), repeater, config);
+    this.children = [this.child];
 
-    const facet  = this.facet = this.initFacet(spec.facet);
-    this.scales  = this.initScalesAndSpacing(facet, this.config);
-    this.axes   = this.initAxis(facet, this.config, child);
-    this.legends = {};
+    const facet: Facet<string> = replaceRepeaterInFacet(spec.facet, repeater);
+
+    this.facet = this.initFacet(facet);
   }
 
-
-  private initFacet(facet: Facet) {
+  private initFacet(facet: Facet<string>): Facet<string> {
     // clone to prevent side effect to the original spec
-    return reduce(facet, function(normalizedFacet, fieldDef: FieldDef, channel: Channel) {
+    return reduce(facet, function(normalizedFacet, fieldDef: FieldDef<string>, channel: Channel) {
       if (!contains([ROW, COLUMN], channel)) {
         // Drop unsupported channel
         log.warn(log.message.incompatibleChannel(channel, 'facet'));
         return normalizedFacet;
       }
 
-      // TODO: array of row / column ?
-      if (fieldDef.field === undefined) { // TODO: datum
+      if (fieldDef.field === undefined) {
         log.warn(log.message.emptyFieldDef(fieldDef, channel));
         return normalizedFacet;
       }
@@ -76,55 +69,15 @@ export class FacetModel extends Model {
     }, {});
   }
 
-  private initScalesAndSpacing(facet: Facet, config: Config): Dict<Scale> {
-    const model = this;
-    return [ROW, COLUMN].reduce(function(_scale, channel) {
-      if (facet[channel]) {
-        _scale[channel] = initScale(
-          channel, facet[channel], config,
-          undefined, // Facet doesn't have one single mark
-          undefined, // TODO(#1647): support width / height here
-          [] // There is no xyRangeSteps here and there is no need to input
-        );
-
-        model._spacing[channel] = spacing(facet[channel].scale || {}, model, config);
-      }
-      return _scale;
-    }, {});
-  }
-
-  private initAxis(facet: Facet, config: Config, child: Model): Dict<Axis> {
-    const model = this;
-    return [ROW, COLUMN].reduce(function(_axis, channel) {
-      if (facet[channel]) {
-        const axisSpec = facet[channel].axis;
-        if (axisSpec !== false) {
-          const axisConfig:any = config.facet !== undefined && config.facet.axis !== undefined? config.facet.axis : {};
-          const modelAxis = _axis[channel] = {
-            ...axisSpec,
-            ...axisConfig
-          };
-
-          if (channel === ROW) {
-            const yAxis: any = child.axis(Y);
-            if (yAxis && yAxis.orient !== 'right' && modelAxis.orient === undefined) {
-              modelAxis.orient = 'right';
-            }
-            if (model.hasDescendantWithFieldOnChannel(X) && modelAxis.labelAngle === undefined) {
-              modelAxis.labelAngle = modelAxis.orient === 'right' ? 90 : 270;
-            }
-          }
-        }
-      }
-      return _axis;
-    }, {});
-  }
-
   public channelHasField(channel: Channel): boolean {
     return !!this.facet[channel];
   }
 
-  public fieldDef(channel: Channel): FieldDef {
+  public hasDiscreteDomain(channel: Channel) {
+    return true;
+  }
+
+  public fieldDef(channel: Channel): FieldDef<string> {
     return this.facet[channel];
   }
 
@@ -141,19 +94,13 @@ export class FacetModel extends Model {
     this.component.selection = this.child.component.selection;
   }
 
-  public parseLayoutData() {
-    this.child.parseLayoutData();
-    this.component.layout = parseFacetLayout(this);
-  }
-
   public parseScale() {
     const child = this.child;
     const model = this;
 
     child.parseScale();
 
-    // First, add scale for row and column.
-    const scaleComponent = this.component.scales = parseScaleComponent(this);
+    const scaleComponent = this.component.scales = {};
 
     // Then, move shared/union from its child spec.
     keys(child.component.scales).forEach(channel => {
@@ -208,22 +155,70 @@ export class FacetModel extends Model {
     }];
   }
 
-  public parseAxis() {
-    this.child.parseAxis();
-    this.component.axes = parseAxisComponent(this, [ROW, COLUMN]);
+  public parseAxisAndHeader() {
+    this.child.parseAxisAndHeader();
+
+    this.parseHeader('column');
+    this.parseHeader('row');
+
+    this.mergeChildAxis('x');
+    this.mergeChildAxis('y');
   }
 
-  public parseAxisGroup() {
-    // TODO: with nesting, we might need to consider calling child
-    // this.child.parseAxisGroup();
+  private parseHeader(channel: HeaderChannel) {
 
-    const xAxisGroup = parseAxisGroups(this, X);
-    const yAxisGroup = parseAxisGroups(this, Y);
+    if (this.channelHasField(channel)) {
+      const fieldDef = this.facet[channel];
+      let title = fieldDefTitle(fieldDef, this.config);
 
-    this.component.axisGroups = extend(
-      xAxisGroup ? {x: xAxisGroup} : {},
-      yAxisGroup ? {y: yAxisGroup} : {}
-    );
+      if (this.child.component.layoutHeaders[channel].title) {
+        // merge title with child to produce "Title / Subtitle / Sub-subtitle"
+        title += ' / ' + this.child.component.layoutHeaders[channel].title;
+        this.child.component.layoutHeaders[channel].title = null;
+      }
+
+      this.component.layoutHeaders[channel] = {
+        title,
+        fieldRef: formatSignalRef(fieldDef, 'parent', this.config, true),
+        // TODO: support adding label to footer as well
+        header: [this.makeHeaderComponent(channel, true)]
+      };
+    }
+  }
+
+  private makeHeaderComponent(channel: HeaderChannel, labels: boolean): HeaderComponent {
+    const sizeChannel = channel === 'row' ? 'height' : 'width';
+
+    return {
+      labels,
+      sizeSignal: this.child.getSizeSignalRef(sizeChannel),
+      axes: []
+    };
+  }
+
+  private mergeChildAxis(channel: 'x' | 'y') {
+    const {child} = this;
+    if (child.component.axes[channel]) {
+      // TODO: read these from the resolve syntax
+      const scaleResolve = 'shared';
+      const axisResolve = 'shared';
+
+      if (scaleResolve === 'shared' && axisResolve === 'shared') {
+        // For shared axis, move the axes to facet's header or footer
+        const headerChannel = channel === 'x' ? 'column' : 'row';
+
+        const layoutHeader = this.component.layoutHeaders[headerChannel];
+        for (const axis of child.component.axes[channel].axes) {
+          const headerType = getHeaderType(axis.orient);
+          layoutHeader[headerType] = layoutHeader[headerType] ||
+            [this.makeHeaderComponent(headerChannel, false)];
+          layoutHeader[headerType][0].axes.push(axis);
+        }
+        child.component.axes[channel].axes = [];
+      } else {
+        // Otherwise do nothing for independent axes
+      }
+    }
   }
 
   public parseLegend() {
@@ -251,34 +246,65 @@ export class FacetModel extends Model {
     return null;
   }
 
-  public assembleSignals(signals: any): any[] {
-    return [];
+  public assembleSelectionTopLevelSignals(signals: any[]): VgSignal[] {
+    return this.child.assembleSelectionTopLevelSignals(signals);
+  }
+
+  public assembleSelectionSignals(): VgSignal[] {
+    return this.child.assembleSelectionSignals();
   }
 
   public assembleSelectionData(data: VgData[]): VgData[] {
     return this.child.assembleSelectionData(data);
   }
 
-  public assembleLayout(layoutData: VgData[]): VgData[] {
-    // Postfix traversal – layout is assembled bottom-up
-    this.child.assembleLayout(layoutData);
-    return assembleLayout(this, layoutData);
+  public assembleLayout(): VgLayout {
+    const columns = this.channelHasField('column') ? {
+      signal: this.columnDistinctSignal()
+    } : 1;
+
+    // TODO: determine default align based on shared / independent scales
+
+    return {
+      padding: {row: 10, column: 10},
+
+      // TODO: support offset for rowHeader/rowFooter/rowTitle/columnHeader/columnFooter/columnTitle
+      offset: 10,
+      columns,
+      bounds: 'full'
+    };
+  }
+
+  public assembleLayoutSignals(): VgSignal[] {
+    // FIXME(https://github.com/vega/vega-lite/issues/1193): this can be incorrect if we have independent scales.
+    return this.child.assembleLayoutSignals();
+  }
+
+  private columnDistinctSignal() {
+    // In facetNode.assemble(), the name is always this.getName('column') + '_layout'.
+    const facetLayoutDataName = this.getName('column') + '_layout';
+    const columnDistinct = this.field('column',  {prefix: 'distinct'});
+    return `data('${facetLayoutDataName}')[0].${columnDistinct}`;
   }
 
   public assembleMarks(): VgEncodeEntry[] {
-    const data = assembleFacetData(this.component.data.facetRoot);
+    const facetRoot = this.component.data.facetRoot;
+    const data = assembleFacetData(facetRoot);
 
     const mark = this.component.mark[0];
 
     // correct the name of the faceted data source
-    mark.from.facet.name = this.component.data.facetRoot.name;
-    mark.from.facet.data = this.component.data.facetRoot.data;
+    mark.from.facet = {
+      ...mark.from.facet,
+      name: facetRoot.name,
+      data: facetRoot.data
+    };
 
-    const marks = [].concat(
-      // axisGroup is a mapping to VgMarkGroup
-      vals(this.component.axisGroups),
-      extend(mark, data.length > 0 ? {data: data} : {}, this.child.assembleGroup())
-    );
+    const marks = [{
+      ...(data.length > 0 ? {data: data} : {}),
+      ...mark,
+      ...this.child.assembleGroup()
+    }];
 
     return marks.map(this.correctDataNames);
   }
@@ -290,14 +316,6 @@ export class FacetModel extends Model {
   protected getMapping() {
     return this.facet;
   }
-
-  public spacing(channel: Channel) {
-    return this._spacing[channel];
-  }
-
-  public isFacet() {
-    return true;
-  }
 }
 
 export function hasSubPlotWithXy(model: FacetModel) {
@@ -305,128 +323,21 @@ export function hasSubPlotWithXy(model: FacetModel) {
     model.hasDescendantWithFieldOnChannel('y');
 }
 
-export function spacing(scale: Scale, model: FacetModel, config: Config) {
-  if (scale.spacing !== undefined) {
-    return scale.spacing;
-  }
-
-  if (!hasSubPlotWithXy(model)) {
-    // If there is no subplot with x/y, it's a simple table so there should be no spacing.
-    return 0;
-  }
-  return config.scale.facetSpacing;
+function childSizeEncodeEntryMixins(model: FacetModel, sizeType: 'width' | 'height') {
+  return {[sizeType]: model.child.getSizeSignalRef(sizeType)};
 }
 
+// FIXME(https://github.com/vega/vega-lite/issues/2041): revise this.
 function getFacetGroupProperties(model: FacetModel) {
   const child = model.child;
-  const mergedCellConfig = extend({}, child.config.cell, child.config.facet.cell);
 
-  return extend({
-      x: model.channelHasField(COLUMN) ? {
-          scale: model.scaleName(COLUMN),
-          field: model.field(COLUMN),
-          // offset by the spacing / 2
-          offset: model.spacing(COLUMN) / 2
-        } : {value: model.config.scale.facetSpacing / 2},
+  return {
+    ...childSizeEncodeEntryMixins(model, 'width'),
+    ...childSizeEncodeEntryMixins(model, 'height'),
 
-      y: model.channelHasField(ROW) ? {
-        scale: model.scaleName(ROW),
-        field: model.field(ROW),
-        // offset by the spacing / 2
-        offset: model.spacing(ROW) / 2
-      } : {value: model.config.scale.facetSpacing / 2},
+    // FIXME revise if we really need hasSubPlotWithXy()
+    ...(hasSubPlotWithXy(model) ? child.assembleParentGroupProperties() : {}),
 
-      width: {field: {parent: model.child.sizeName('width')}},
-      height: {field: {parent: model.child.sizeName('height')}}
-    },
-    hasSubPlotWithXy(model) ? child.assembleParentGroupProperties(mergedCellConfig) : {}
-  );
-}
-
-// TODO: move the rest of the file src/compile/facet/*.ts
-
-function parseAxisGroups(model: FacetModel, channel: 'x' | 'y') {
-  // TODO: add a case where inner spec is not a unit (facet/layer/concat)
-  let axisGroup: any = null;
-
-  const child = model.child;
-  if (child.channelHasField(channel)) {
-    if (child.axis(channel)) {
-      if (true) { // the channel has shared axes
-
-        // add a group for the shared axes
-        axisGroup = getSharedAxisGroup(model, channel);
-
-        if (child.axis(channel) && gridShow(child, channel)) { // show inner grid
-          // add inner axis (aka axis that shows only grid to )
-          child.component.axes[channel] = [parseGridAxis(channel, child)];
-        } else {
-          // Delete existing child axes
-          delete child.component.axes[channel];
-        }
-      } else {
-        // TODO: implement independent axes support
-      }
-    }
-  }
-  return axisGroup;
-}
-
-
-export function getSharedAxisGroup(model: FacetModel, channel: 'x' | 'y'): VgEncodeEntry {
-  const isX = channel === 'x' ;
-  const facetChannel = isX ? 'column' : 'row';
-  const hasFacet = !!model.facet[facetChannel];
-
-  const axesGroup: VgEncodeEntry = {
-    name: model.getName(channel + '-axes'),
-    type: 'group'
+    ...applyConfig({}, model.config.facet.cell, FILL_STROKE_CONFIG.concat(['clip']))
   };
-
-  if (hasFacet) {
-    // Need to drive this with special data source that has one item for each column/row value.
-
-    // TODO: We might only need to drive this with special data source if there are both row and column
-    // However, it might be slightly difficult as we have to merge this with the main group.
-    axesGroup.from = {data: channel === 'x' ? model.getName('column') : model.getName('row')};
-  }
-
-  if (isX) {
-    axesGroup.encode = {
-      update: {
-        width: {field: {parent: model.child.sizeName('width')}},
-        height: {field: {group: 'height'}},
-        x: hasFacet ? {
-          scale: model.scaleName(COLUMN),
-          field: model.field(COLUMN),
-          // offset by the spacing
-          offset: model.spacing(COLUMN) / 2
-        } : {
-          // TODO: support custom spacing here
-          // offset by the spacing
-          value: model.config.scale.facetSpacing / 2
-        }
-      }
-    };
-  } else {
-    axesGroup.encode = {
-      update: {
-        width: {field: {group: 'width'}},
-        height: {field: {parent: model.child.sizeName('height')}},
-        y: hasFacet ? {
-          scale: model.scaleName(ROW),
-          field: model.field(ROW),
-          // offset by the spacing
-          offset: model.spacing(ROW) / 2
-        } : {
-          // offset by the spacing
-          value: model.config.scale.facetSpacing / 2
-        }
-      }
-    };
-  }
-
-  axesGroup.axes = [parseMainAxis(channel, model.child)];
-  return axesGroup;
 }
-

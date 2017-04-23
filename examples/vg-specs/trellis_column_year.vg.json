@@ -1,0 +1,400 @@
+{
+    "$schema": "http://vega.github.io/schema/vega/v3.0.json",
+    "description": "Stock price mean per quarter broken down by years.",
+    "autosize": "pad",
+    "padding": 5,
+    "data": [
+        {
+            "name": "source_0",
+            "url": "data/stocks.csv",
+            "format": {
+                "type": "csv",
+                "parse": {
+                    "date": "date",
+                    "price": "number"
+                }
+            },
+            "transform": [
+                {
+                    "type": "filter",
+                    "expr": "datum[\"date\"] !== null && !isNaN(datum[\"date\"])"
+                },
+                {
+                    "type": "formula",
+                    "as": "year_date",
+                    "expr": "datetime(year(datum[\"date\"]), 0, 1, 0, 0, 0, 0)"
+                },
+                {
+                    "type": "filter",
+                    "expr": "datum[\"date\"] !== null && !isNaN(datum[\"date\"]) && datum[\"price\"] !== null && !isNaN(datum[\"price\"])"
+                },
+                {
+                    "type": "formula",
+                    "as": "quarter_date",
+                    "expr": "datetime(0, (quarter(datum[\"date\"])-1)*3, 1, 0, 0, 0, 0)"
+                },
+                {
+                    "type": "aggregate",
+                    "groupby": [
+                        "quarter_date",
+                        "symbol",
+                        "year_date"
+                    ],
+                    "ops": [
+                        "mean"
+                    ],
+                    "fields": [
+                        "price"
+                    ]
+                },
+                {
+                    "type": "collect",
+                    "sort": {
+                        "field": "quarter_date",
+                        "order": "descending"
+                    }
+                }
+            ]
+        },
+        {
+            "name": "column",
+            "source": "source_0",
+            "transform": [
+                {
+                    "type": "aggregate",
+                    "groupby": [
+                        "year_date"
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "column_layout",
+            "source": "column",
+            "transform": [
+                {
+                    "type": "aggregate",
+                    "ops": [
+                        "distinct"
+                    ],
+                    "fields": [
+                        "year_date"
+                    ]
+                }
+            ]
+        }
+    ],
+    "signals": [
+        {
+            "name": "child_width",
+            "update": "bandspace(domain('x').length, 1, 0.5) * 21"
+        },
+        {
+            "name": "child_height",
+            "update": "200"
+        },
+        {
+            "name": "unit",
+            "value": {},
+            "on": [
+                {
+                    "events": "mousemove",
+                    "update": "group()._id ? group() : unit"
+                }
+            ]
+        }
+    ],
+    "marks": [
+        {
+            "name": "nested_main_group",
+            "type": "group",
+            "layout": {
+                "padding": {
+                    "row": 10,
+                    "column": 10
+                },
+                "offset": 10,
+                "columns": {
+                    "signal": "data('column_layout')[0].distinct_year_date"
+                },
+                "bounds": "full"
+            },
+            "marks": [
+                {
+                    "name": "column_title",
+                    "role": "column-title",
+                    "type": "group",
+                    "marks": [
+                        {
+                            "type": "text",
+                            "role": "column-title-text",
+                            "encode": {
+                                "update": {
+                                    "x": {
+                                        "signal": "0.5 * width"
+                                    },
+                                    "align": {
+                                        "value": "center"
+                                    },
+                                    "text": {
+                                        "value": "YEAR(date)"
+                                    },
+                                    "fill": {
+                                        "value": "black"
+                                    },
+                                    "fontWeight": {
+                                        "value": "bold"
+                                    }
+                                }
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "row_header",
+                    "type": "group",
+                    "role": "row-header",
+                    "encode": {
+                        "update": {
+                            "height": {
+                                "signal": "child_height"
+                            }
+                        }
+                    },
+                    "axes": [
+                        {
+                            "scale": "y",
+                            "format": "s",
+                            "orient": "left",
+                            "title": "MEAN(price)",
+                            "zindex": 1
+                        }
+                    ]
+                },
+                {
+                    "name": "column_header",
+                    "type": "group",
+                    "role": "column-header",
+                    "from": {
+                        "data": "column"
+                    },
+                    "title": {
+                        "text": {
+                            "signal": "timeFormat(parent[\"year_date\"], '%Y')"
+                        },
+                        "offset": 10,
+                        "orient": "top",
+                        "encode": {
+                            "update": {
+                                "fontWeight": {
+                                    "value": "normal"
+                                },
+                                "angle": {
+                                    "value": 0
+                                },
+                                "fontSize": {
+                                    "value": 10
+                                }
+                            }
+                        }
+                    },
+                    "encode": {
+                        "update": {
+                            "width": {
+                                "signal": "child_width"
+                            }
+                        }
+                    }
+                },
+                {
+                    "name": "column_footer",
+                    "type": "group",
+                    "role": "column-footer",
+                    "from": {
+                        "data": "column"
+                    },
+                    "encode": {
+                        "update": {
+                            "width": {
+                                "signal": "child_width"
+                            }
+                        }
+                    },
+                    "axes": [
+                        {
+                            "scale": "x",
+                            "orient": "bottom",
+                            "tickCount": 5,
+                            "title": "QUARTER(date)",
+                            "zindex": 1,
+                            "encode": {
+                                "labels": {
+                                    "update": {
+                                        "text": {
+                                            "signal": "'Q' + quarter(datum.value)"
+                                        },
+                                        "angle": {
+                                            "value": 270
+                                        },
+                                        "align": {
+                                            "value": "right"
+                                        },
+                                        "baseline": {
+                                            "value": "middle"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "cell",
+                    "type": "group",
+                    "from": {
+                        "facet": {
+                            "name": "facet",
+                            "data": "source_0",
+                            "groupby": [
+                                "year_date"
+                            ]
+                        }
+                    },
+                    "encode": {
+                        "update": {
+                            "width": {
+                                "signal": "child_width"
+                            },
+                            "height": {
+                                "signal": "child_height"
+                            },
+                            "stroke": {
+                                "value": "#ccc"
+                            },
+                            "strokeWidth": {
+                                "value": 1
+                            },
+                            "fill": {
+                                "value": "transparent"
+                            }
+                        }
+                    },
+                    "marks": [
+                        {
+                            "name": "child_pathgroup",
+                            "type": "group",
+                            "from": {
+                                "facet": {
+                                    "name": "faceted_path_child_main",
+                                    "data": "facet",
+                                    "groupby": [
+                                        "symbol"
+                                    ]
+                                }
+                            },
+                            "encode": {
+                                "update": {
+                                    "width": {
+                                        "field": {
+                                            "group": "width"
+                                        }
+                                    },
+                                    "height": {
+                                        "field": {
+                                            "group": "height"
+                                        }
+                                    }
+                                }
+                            },
+                            "marks": [
+                                {
+                                    "name": "child_marks",
+                                    "type": "line",
+                                    "from": {
+                                        "data": "faceted_path_child_main"
+                                    },
+                                    "encode": {
+                                        "update": {
+                                            "x": {
+                                                "scale": "x",
+                                                "field": "quarter_date"
+                                            },
+                                            "y": {
+                                                "scale": "y",
+                                                "field": "mean_price"
+                                            },
+                                            "stroke": {
+                                                "scale": "color",
+                                                "field": "symbol"
+                                            }
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    ],
+                    "axes": [
+                        {
+                            "scale": "y",
+                            "domain": false,
+                            "format": "s",
+                            "grid": true,
+                            "labels": false,
+                            "orient": "left",
+                            "ticks": false,
+                            "zindex": 0,
+                            "gridScale": "x"
+                        }
+                    ]
+                }
+            ]
+        }
+    ],
+    "scales": [
+        {
+            "name": "x",
+            "type": "point",
+            "domain": {
+                "data": "source_0",
+                "field": "quarter_date",
+                "sort": true
+            },
+            "range": {
+                "step": 21
+            },
+            "round": true,
+            "padding": 0.5
+        },
+        {
+            "name": "y",
+            "type": "linear",
+            "domain": {
+                "data": "source_0",
+                "field": "mean_price"
+            },
+            "range": [
+                200,
+                0
+            ],
+            "round": true,
+            "nice": true,
+            "zero": true
+        },
+        {
+            "name": "color",
+            "type": "ordinal",
+            "domain": {
+                "data": "source_0",
+                "field": "symbol",
+                "sort": true
+            },
+            "range": "category"
+        }
+    ],
+    "legends": [
+        {
+            "stroke": "color",
+            "title": "symbol"
+        }
+    ]
+}

@@ -2,9 +2,9 @@
 # yarn lockfile v1
 
 
-"@types/chai@^3.5.0":
-  version "3.5.0"
-  resolved "https://registry.yarnpkg.com/@types/chai/-/chai-3.5.0.tgz#45e2dc2af9a5727be846af6e61d08ffc45d5b2ca"
+"@types/chai@^3.5.1":
+  version "3.5.1"
+  resolved "https://registry.yarnpkg.com/@types/chai/-/chai-3.5.1.tgz#9bd77fe12503ae00648b0945b38eab666adffe2e"
 
 "@types/d3-array@*":
   version "1.1.1"
@@ -194,13 +194,13 @@
   version "1.0.31"
   resolved "https://registry.yarnpkg.com/@types/json-stable-stringify/-/json-stable-stringify-1.0.31.tgz#b6c7bc507f5267e88cd2839b3ac6a2b39b653a32"
 
-"@types/mocha@^2.2.40":
-  version "2.2.40"
-  resolved "https://registry.yarnpkg.com/@types/mocha/-/mocha-2.2.40.tgz#9811dd800ece544cd84b5b859917bf584a150c4c"
+"@types/mocha@^2.2.41":
+  version "2.2.41"
+  resolved "https://registry.yarnpkg.com/@types/mocha/-/mocha-2.2.41.tgz#e27cf0817153eb9f2713b2d3f6c68f1e1c3ca608"
 
-"@types/node@^7.0.12":
-  version "7.0.12"
-  resolved "https://registry.yarnpkg.com/@types/node/-/node-7.0.12.tgz#ae5f67a19c15f752148004db07cbbb372e69efc9"
+"@types/node@^7.0.13":
+  version "7.0.13"
+  resolved "https://registry.yarnpkg.com/@types/node/-/node-7.0.13.tgz#1b0a53fe9ef9c3a5d061b126cc9b915bca43a3f5"
 
 JSONStream@^1.0.3:
   version "1.3.1"
@@ -1199,9 +1199,9 @@ css-what@2.1:
   version "2.1.0"
   resolved "https://registry.yarnpkg.com/css-what/-/css-what-2.1.0.tgz#9467d032c38cfaefb9f2d79501253062f87fa1bd"
 
-d3-array@1, d3-array@1.1.1:
-  version "1.1.1"
-  resolved "https://registry.yarnpkg.com/d3-array/-/d3-array-1.1.1.tgz#a01abe63a25ffb91d3423c3c6d051b4d36bc8a09"
+d3-array@1, d3-array@1.2.0:
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/d3-array/-/d3-array-1.2.0.tgz#147d269720e174c4057a7f42be8b0f3f2ba53108"
 
 d3-axis@1.0.6:
   version "1.0.6"
@@ -1264,9 +1264,9 @@ d3-force@1, d3-force@1.0.6:
     d3-quadtree "1"
     d3-timer "1"
 
-d3-format@1, d3-format@1.1.1:
-  version "1.1.1"
-  resolved "https://registry.yarnpkg.com/d3-format/-/d3-format-1.1.1.tgz#26e094e7b0fa925d3615aa6f43b265c5ca82b46e"
+d3-format@1, d3-format@1.2.0:
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/d3-format/-/d3-format-1.2.0.tgz#6b480baa886885d4651dc248a8f4ac9da16db07a"
 
 d3-geo-projection@0.2:
   version "0.2.16"
@@ -1398,11 +1398,11 @@ d3@3:
   version "3.5.17"
   resolved "https://registry.yarnpkg.com/d3/-/d3-3.5.17.tgz#bc46748004378b21a360c9fc7cf5231790762fb8"
 
-d3@^4.7.4:
-  version "4.7.4"
-  resolved "https://registry.yarnpkg.com/d3/-/d3-4.7.4.tgz#a2f40eb57decc51bc469010d48ae74a20e025772"
+d3@^4.8.0:
+  version "4.8.0"
+  resolved "https://registry.yarnpkg.com/d3/-/d3-4.8.0.tgz#1ad8d18997869c90b6ad6114e9b92425cee78460"
   dependencies:
-    d3-array "1.1.1"
+    d3-array "1.2.0"
     d3-axis "1.0.6"
     d3-brush "1.0.4"
     d3-chord "1.0.4"
@@ -1413,7 +1413,7 @@ d3@^4.7.4:
     d3-dsv "1.0.5"
     d3-ease "1.0.3"
     d3-force "1.0.6"
-    d3-format "1.1.1"
+    d3-format "1.2.0"
     d3-geo "1.6.3"
     d3-hierarchy "1.1.4"
     d3-interpolate "1.1.4"
@@ -2259,9 +2259,9 @@ hawk@~3.1.3:
     hoek "2.x.x"
     sntp "1.x.x"
 
-highlight.js@^9.10.0:
-  version "9.10.0"
-  resolved "https://registry.yarnpkg.com/highlight.js/-/highlight.js-9.10.0.tgz#f9f0b14c0be00f0e4fb1e577b749fed9e6f52f55"
+highlight.js@^9.11.0:
+  version "9.11.0"
+  resolved "https://registry.yarnpkg.com/highlight.js/-/highlight.js-9.11.0.tgz#47f98c7399918700db2caf230ded12cec41a84ae"
 
 hmac-drbg@^1.0.0:
   version "1.0.0"
@@ -4387,9 +4387,9 @@ tsify@~3.0.1:
     through2 "^2.0.0"
     tsconfig "^5.0.3"
 
-tslib@^1.0.0, tslib@^1.6.0:
-  version "1.6.0"
-  resolved "https://registry.yarnpkg.com/tslib/-/tslib-1.6.0.tgz#cf36c93e02ae86a20fc131eae511162b869a6652"
+tslib@^1.0.0, tslib@^1.6.0, tslib@^1.6.1:
+  version "1.6.1"
+  resolved "https://registry.yarnpkg.com/tslib/-/tslib-1.6.1.tgz#b77b09abc5fa4935e157d838b80e36dad47152c4"
 
 tslint-eslint-rules@^4.0.0:
   version "4.0.0"
@@ -4722,7 +4722,11 @@ vega-statistics@1:
   dependencies:
     d3-array "1"
 
-vega-util@1, vega-util@^1.1, vega-util@~1.1.4:
+vega-util@1, vega-util@^1.1, vega-util@^1.2, vega-util@~1.2.0:
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/vega-util/-/vega-util-1.2.0.tgz#797a3bb460754edacc81a4d7cdf5657d9437b6b8"
+
+vega-util@~1.1.4:
   version "1.1.4"
   resolved "https://registry.yarnpkg.com/vega-util/-/vega-util-1.1.4.tgz#82e7b983b376db0c80c69205b5b3fdf08f44a8c8"
 
@@ -4756,9 +4760,9 @@ vega-wordcloud@>=1.0.0-beta:
   optionalDependencies:
     canvas "^1.6.0"
 
-vega@3.0.0-beta.28, vega@^3.0.0-beta.28:
-  version "3.0.0-beta.28"
-  resolved "https://registry.yarnpkg.com/vega/-/vega-3.0.0-beta.28.tgz#742a9612612fbaa2541f04be489221be28fdd608"
+vega@3.0.0-beta.29, vega@^3.0.0-beta.28:
+  version "3.0.0-beta.29"
+  resolved "https://registry.yarnpkg.com/vega/-/vega-3.0.0-beta.29.tgz#55d395bde6ed91877f9e223250f6e389e7fdb377"
   dependencies:
     vega-crossfilter ">=1.0.0-beta"
     vega-dataflow ">=2.0.0-beta"
@@ -4773,7 +4777,7 @@ vega@3.0.0-beta.28, vega@^3.0.0-beta.28:
     vega-scale ">=2.0.0-beta"
     vega-scenegraph ">=2.0.0-beta.11"
     vega-statistics "1"
-    vega-util "^1.1"
+    vega-util "^1.2"
     vega-view ">=1.0.0-beta"
     vega-voronoi ">=1.0.0-beta"
     vega-wordcloud ">=1.0.0-beta"
@@ -4992,9 +4996,9 @@ yargs@6.4.0:
     y18n "^3.2.1"
     yargs-parser "^4.1.0"
 
-yargs@^7.0.2, yargs@~7.0.2:
-  version "7.0.2"
-  resolved "https://registry.yarnpkg.com/yargs/-/yargs-7.0.2.tgz#115b97df1321823e8b8648e8968c782521221f67"
+yargs@^7.0.2, yargs@~7.1.0:
+  version "7.1.0"
+  resolved "https://registry.yarnpkg.com/yargs/-/yargs-7.1.0.tgz#6ba318eb16961727f5d284f8ea003e8d6154d0c8"
   dependencies:
     camelcase "^3.0.0"
     cliui "^3.2.0"
@@ -5018,6 +5022,24 @@ yargs@~3.10.0:
     cliui "^2.1.0"
     decamelize "^1.0.0"
     window-size "0.1.0"
+
+yargs@~7.0.2:
+  version "7.0.2"
+  resolved "https://registry.yarnpkg.com/yargs/-/yargs-7.0.2.tgz#115b97df1321823e8b8648e8968c782521221f67"
+  dependencies:
+    camelcase "^3.0.0"
+    cliui "^3.2.0"
+    decamelize "^1.1.1"
+    get-caller-file "^1.0.1"
+    os-locale "^1.4.0"
+    read-pkg-up "^1.0.1"
+    require-directory "^2.1.1"
+    require-main-filename "^1.0.1"
+    set-blocking "^2.0.0"
+    string-width "^1.0.2"
+    which-module "^1.0.0"
+    y18n "^3.2.1"
+    yargs-parser "^5.0.0"
 
 yeast@0.1.2:
   version "0.1.2"

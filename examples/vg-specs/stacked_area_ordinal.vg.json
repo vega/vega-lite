@@ -2,26 +2,6 @@
     "$schema": "http://vega.github.io/schema/vega/v3.0.json",
     "autosize": "pad",
     "padding": 5,
-    "signals": [
-        {
-            "name": "width",
-            "update": "data('layout')[0].width"
-        },
-        {
-            "name": "height",
-            "update": "data('layout')[0].height"
-        },
-        {
-            "name": "unit",
-            "value": {},
-            "on": [
-                {
-                    "events": "mousemove",
-                    "update": "group()._id ? group() : unit"
-                }
-            ]
-        }
-    ],
     "data": [
         {
             "name": "source_0",
@@ -96,40 +76,39 @@
                     }
                 }
             ]
+        }
+    ],
+    "signals": [
+        {
+            "name": "width",
+            "update": "200"
         },
         {
-            "name": "layout",
-            "values": [
-                {}
-            ],
-            "transform": [
+            "name": "height",
+            "update": "200"
+        },
+        {
+            "name": "unit",
+            "value": {},
+            "on": [
                 {
-                    "type": "formula",
-                    "as": "width",
-                    "expr": "200"
-                },
-                {
-                    "type": "formula",
-                    "as": "height",
-                    "expr": "200"
+                    "events": "mousemove",
+                    "update": "group()._id ? group() : unit"
                 }
             ]
         }
     ],
     "marks": [
         {
-            "name": "main-group",
+            "name": "nested_main_group",
             "type": "group",
-            "from": {
-                "data": "layout"
-            },
             "encode": {
                 "update": {
                     "width": {
-                        "field": "width"
+                        "signal": "width"
                     },
                     "height": {
-                        "field": "height"
+                        "signal": "height"
                     },
                     "fill": {
                         "value": "transparent"
@@ -142,7 +121,7 @@
                     "type": "group",
                     "from": {
                         "facet": {
-                            "name": "faceted-path-main",
+                            "name": "faceted_path_main",
                             "data": "source_0",
                             "groupby": [
                                 "Cylinders"
@@ -168,7 +147,7 @@
                             "name": "marks",
                             "type": "area",
                             "from": {
-                                "data": "faceted-path-main"
+                                "data": "faceted_path_main"
                             },
                             "encode": {
                                 "update": {
@@ -196,122 +175,122 @@
                         }
                     ]
                 }
-            ],
-            "scales": [
-                {
-                    "name": "x",
-                    "type": "time",
-                    "domain": {
-                        "data": "source_0",
-                        "field": "year_Year"
-                    },
-                    "range": [
-                        0,
-                        200
-                    ],
-                    "round": true,
-                    "nice": "year"
-                },
-                {
-                    "name": "y",
-                    "type": "linear",
-                    "domain": {
-                        "data": "source_0",
-                        "fields": [
-                            "sum_Weight_in_lbs_start",
-                            "sum_Weight_in_lbs_end"
-                        ]
-                    },
-                    "range": [
-                        200,
-                        0
-                    ],
-                    "round": true,
-                    "nice": true,
-                    "zero": true
-                },
-                {
-                    "name": "color",
-                    "type": "ordinal",
-                    "domain": {
-                        "data": "source_0",
-                        "field": "Cylinders",
-                        "sort": true
-                    },
-                    "range": "ordinal"
-                }
-            ],
-            "axes": [
-                {
-                    "scale": "x",
-                    "orient": "bottom",
-                    "tickCount": 5,
-                    "title": "YEAR(Year)",
-                    "zindex": 1,
-                    "encode": {
-                        "labels": {
-                            "update": {
-                                "text": {
-                                    "signal": "timeFormat(datum.value, '%Y')"
-                                },
-                                "angle": {
-                                    "value": 270
-                                },
-                                "align": {
-                                    "value": "right"
-                                },
-                                "baseline": {
-                                    "value": "middle"
-                                }
-                            }
-                        }
-                    }
-                },
-                {
-                    "scale": "x",
-                    "domain": false,
-                    "grid": true,
-                    "labels": false,
-                    "orient": "bottom",
-                    "tickCount": 5,
-                    "ticks": false,
-                    "zindex": 0,
-                    "gridScale": "y"
-                },
-                {
-                    "scale": "y",
-                    "format": "s",
-                    "orient": "left",
-                    "title": "SUM(Weight_in_lbs)",
-                    "zindex": 1
-                },
-                {
-                    "scale": "y",
-                    "domain": false,
-                    "format": "s",
-                    "grid": true,
-                    "labels": false,
-                    "orient": "left",
-                    "ticks": false,
-                    "zindex": 0,
-                    "gridScale": "x"
-                }
-            ],
-            "legends": [
-                {
-                    "fill": "color",
-                    "title": "Cylinders",
-                    "encode": {
-                        "symbols": {
-                            "update": {
-                                "strokeWidth": {
-                                    "value": 0
-                                }
-                            }
-                        }
-                    }
-                }
             ]
+        }
+    ],
+    "scales": [
+        {
+            "name": "x",
+            "type": "time",
+            "domain": {
+                "data": "source_0",
+                "field": "year_Year"
+            },
+            "range": [
+                0,
+                200
+            ],
+            "round": true,
+            "nice": "year"
+        },
+        {
+            "name": "y",
+            "type": "linear",
+            "domain": {
+                "data": "source_0",
+                "fields": [
+                    "sum_Weight_in_lbs_start",
+                    "sum_Weight_in_lbs_end"
+                ]
+            },
+            "range": [
+                200,
+                0
+            ],
+            "round": true,
+            "nice": true,
+            "zero": true
+        },
+        {
+            "name": "color",
+            "type": "ordinal",
+            "domain": {
+                "data": "source_0",
+                "field": "Cylinders",
+                "sort": true
+            },
+            "range": "ordinal"
+        }
+    ],
+    "axes": [
+        {
+            "scale": "x",
+            "orient": "bottom",
+            "tickCount": 5,
+            "title": "YEAR(Year)",
+            "zindex": 1,
+            "encode": {
+                "labels": {
+                    "update": {
+                        "text": {
+                            "signal": "timeFormat(datum.value, '%Y')"
+                        },
+                        "angle": {
+                            "value": 270
+                        },
+                        "align": {
+                            "value": "right"
+                        },
+                        "baseline": {
+                            "value": "middle"
+                        }
+                    }
+                }
+            }
+        },
+        {
+            "scale": "x",
+            "domain": false,
+            "grid": true,
+            "labels": false,
+            "orient": "bottom",
+            "tickCount": 5,
+            "ticks": false,
+            "zindex": 0,
+            "gridScale": "y"
+        },
+        {
+            "scale": "y",
+            "format": "s",
+            "orient": "left",
+            "title": "SUM(Weight_in_lbs)",
+            "zindex": 1
+        },
+        {
+            "scale": "y",
+            "domain": false,
+            "format": "s",
+            "grid": true,
+            "labels": false,
+            "orient": "left",
+            "ticks": false,
+            "zindex": 0,
+            "gridScale": "x"
+        }
+    ],
+    "legends": [
+        {
+            "fill": "color",
+            "title": "Cylinders",
+            "encode": {
+                "symbols": {
+                    "update": {
+                        "strokeWidth": {
+                            "value": 0
+                        }
+                    }
+                }
+            }
         }
     ]
 }

@@ -2,26 +2,6 @@
     "$schema": "http://vega.github.io/schema/vega/v3.0.json",
     "autosize": "pad",
     "padding": 5,
-    "signals": [
-        {
-            "name": "width",
-            "update": "data('layout')[0].width"
-        },
-        {
-            "name": "height",
-            "update": "data('layout')[0].height"
-        },
-        {
-            "name": "unit",
-            "value": {},
-            "on": [
-                {
-                    "events": "mousemove",
-                    "update": "group()._id ? group() : unit"
-                }
-            ]
-        }
-    ],
     "data": [
         {
             "name": "source_0",
@@ -112,40 +92,39 @@
                     }
                 }
             ]
+        }
+    ],
+    "signals": [
+        {
+            "name": "width",
+            "update": "200"
         },
         {
-            "name": "layout",
-            "values": [
-                {}
-            ],
-            "transform": [
+            "name": "height",
+            "update": "200"
+        },
+        {
+            "name": "unit",
+            "value": {},
+            "on": [
                 {
-                    "type": "formula",
-                    "as": "width",
-                    "expr": "200"
-                },
-                {
-                    "type": "formula",
-                    "as": "height",
-                    "expr": "200"
+                    "events": "mousemove",
+                    "update": "group()._id ? group() : unit"
                 }
             ]
         }
     ],
     "marks": [
         {
-            "name": "main-group",
+            "name": "nested_main_group",
             "type": "group",
-            "from": {
-                "data": "layout"
-            },
             "encode": {
                 "update": {
                     "width": {
-                        "field": "width"
+                        "signal": "width"
                     },
                     "height": {
-                        "field": "height"
+                        "signal": "height"
                     },
                     "fill": {
                         "value": "transparent"
@@ -158,7 +137,7 @@
                     "type": "group",
                     "from": {
                         "facet": {
-                            "name": "faceted-path-main",
+                            "name": "faceted_path_main",
                             "data": "source_0",
                             "groupby": [
                                 "Cylinders"
@@ -184,7 +163,7 @@
                             "name": "marks",
                             "type": "area",
                             "from": {
-                                "data": "faceted-path-main"
+                                "data": "faceted_path_main"
                             },
                             "encode": {
                                 "update": {
@@ -211,107 +190,107 @@
                         }
                     ]
                 }
-            ],
-            "scales": [
-                {
-                    "name": "x",
-                    "type": "bin-linear",
-                    "domain": {
-                        "signal": "sequence(bin_maxbins_10_Acceleration_bins.start, bin_maxbins_10_Acceleration_bins.stop + bin_maxbins_10_Acceleration_bins.step, bin_maxbins_10_Acceleration_bins.step)"
-                    },
-                    "range": [
-                        0,
-                        200
-                    ],
-                    "round": true,
-                    "nice": true
-                },
-                {
-                    "name": "y",
-                    "type": "linear",
-                    "domain": {
-                        "data": "source_0",
-                        "fields": [
-                            "sum_Horsepower_start",
-                            "sum_Horsepower_end"
-                        ]
-                    },
-                    "range": [
-                        200,
-                        0
-                    ],
-                    "round": true,
-                    "nice": true,
-                    "zero": true
-                },
-                {
-                    "name": "color",
-                    "type": "ordinal",
-                    "domain": {
-                        "data": "source_0",
-                        "field": "Cylinders",
-                        "sort": true
-                    },
-                    "range": "category"
-                }
-            ],
-            "axes": [
-                {
-                    "scale": "x",
-                    "format": "s",
-                    "orient": "bottom",
-                    "title": "BIN(Acceleration)",
-                    "zindex": 1,
-                    "encode": {
-                        "labels": {
-                            "update": {
-                                "angle": {
-                                    "value": 270
-                                },
-                                "align": {
-                                    "value": "right"
-                                },
-                                "baseline": {
-                                    "value": "middle"
-                                }
-                            }
-                        }
-                    }
-                },
-                {
-                    "scale": "y",
-                    "format": "s",
-                    "orient": "left",
-                    "title": "SUM(Horsepower)",
-                    "zindex": 1
-                },
-                {
-                    "scale": "y",
-                    "domain": false,
-                    "format": "s",
-                    "grid": true,
-                    "labels": false,
-                    "orient": "left",
-                    "ticks": false,
-                    "zindex": 0,
-                    "gridScale": "x"
-                }
-            ],
-            "legends": [
-                {
-                    "fill": "color",
-                    "title": "Cylinders",
-                    "encode": {
-                        "symbols": {
-                            "update": {
-                                "strokeWidth": {
-                                    "value": 0
-                                }
-                            }
-                        }
-                    }
-                }
             ]
+        }
+    ],
+    "scales": [
+        {
+            "name": "x",
+            "type": "bin-linear",
+            "domain": {
+                "signal": "sequence(bin_maxbins_10_Acceleration_bins.start, bin_maxbins_10_Acceleration_bins.stop + bin_maxbins_10_Acceleration_bins.step, bin_maxbins_10_Acceleration_bins.step)"
+            },
+            "range": [
+                0,
+                200
+            ],
+            "round": true,
+            "nice": true
+        },
+        {
+            "name": "y",
+            "type": "linear",
+            "domain": {
+                "data": "source_0",
+                "fields": [
+                    "sum_Horsepower_start",
+                    "sum_Horsepower_end"
+                ]
+            },
+            "range": [
+                200,
+                0
+            ],
+            "round": true,
+            "nice": true,
+            "zero": true
+        },
+        {
+            "name": "color",
+            "type": "ordinal",
+            "domain": {
+                "data": "source_0",
+                "field": "Cylinders",
+                "sort": true
+            },
+            "range": "category"
+        }
+    ],
+    "axes": [
+        {
+            "scale": "x",
+            "format": "s",
+            "orient": "bottom",
+            "title": "BIN(Acceleration)",
+            "zindex": 1,
+            "encode": {
+                "labels": {
+                    "update": {
+                        "angle": {
+                            "value": 270
+                        },
+                        "align": {
+                            "value": "right"
+                        },
+                        "baseline": {
+                            "value": "middle"
+                        }
+                    }
+                }
+            }
+        },
+        {
+            "scale": "y",
+            "format": "s",
+            "orient": "left",
+            "title": "SUM(Horsepower)",
+            "zindex": 1
+        },
+        {
+            "scale": "y",
+            "domain": false,
+            "format": "s",
+            "grid": true,
+            "labels": false,
+            "orient": "left",
+            "ticks": false,
+            "zindex": 0,
+            "gridScale": "x"
+        }
+    ],
+    "legends": [
+        {
+            "fill": "color",
+            "title": "Cylinders",
+            "encode": {
+                "symbols": {
+                    "update": {
+                        "strokeWidth": {
+                            "value": 0
+                        }
+                    }
+                }
+            }
         }
     ]
 }

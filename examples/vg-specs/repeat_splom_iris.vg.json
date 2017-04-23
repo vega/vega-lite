@@ -1,0 +1,2970 @@
+{
+    "$schema": "http://vega.github.io/schema/vega/v3.0.json",
+    "autosize": "pad",
+    "padding": 5,
+    "data": [
+        {
+            "name": "source_0",
+            "url": "data/iris.json",
+            "format": {
+                "type": "json"
+            }
+        },
+        {
+            "name": "data_0",
+            "source": "source_0",
+            "transform": [
+                {
+                    "type": "formula",
+                    "expr": "toNumber(datum[\"sepalLength\"])",
+                    "as": "sepalLength"
+                },
+                {
+                    "type": "formula",
+                    "expr": "toNumber(datum[\"petalWidth\"])",
+                    "as": "petalWidth"
+                },
+                {
+                    "type": "filter",
+                    "expr": "datum[\"sepalLength\"] !== null && !isNaN(datum[\"sepalLength\"]) && datum[\"petalWidth\"] !== null && !isNaN(datum[\"petalWidth\"])"
+                }
+            ]
+        },
+        {
+            "name": "data_1",
+            "source": "source_0",
+            "transform": [
+                {
+                    "type": "formula",
+                    "expr": "toNumber(datum[\"sepalWidth\"])",
+                    "as": "sepalWidth"
+                },
+                {
+                    "type": "formula",
+                    "expr": "toNumber(datum[\"petalWidth\"])",
+                    "as": "petalWidth"
+                },
+                {
+                    "type": "filter",
+                    "expr": "datum[\"sepalWidth\"] !== null && !isNaN(datum[\"sepalWidth\"]) && datum[\"petalWidth\"] !== null && !isNaN(datum[\"petalWidth\"])"
+                }
+            ]
+        },
+        {
+            "name": "data_2",
+            "source": "source_0",
+            "transform": [
+                {
+                    "type": "formula",
+                    "expr": "toNumber(datum[\"petalLength\"])",
+                    "as": "petalLength"
+                },
+                {
+                    "type": "formula",
+                    "expr": "toNumber(datum[\"petalWidth\"])",
+                    "as": "petalWidth"
+                },
+                {
+                    "type": "filter",
+                    "expr": "datum[\"petalLength\"] !== null && !isNaN(datum[\"petalLength\"]) && datum[\"petalWidth\"] !== null && !isNaN(datum[\"petalWidth\"])"
+                }
+            ]
+        },
+        {
+            "name": "data_3",
+            "source": "source_0",
+            "transform": [
+                {
+                    "type": "formula",
+                    "expr": "toNumber(datum[\"petalWidth\"])",
+                    "as": "petalWidth"
+                },
+                {
+                    "type": "filter",
+                    "expr": "datum[\"petalWidth\"] !== null && !isNaN(datum[\"petalWidth\"])"
+                }
+            ]
+        },
+        {
+            "name": "data_4",
+            "source": "source_0",
+            "transform": [
+                {
+                    "type": "formula",
+                    "expr": "toNumber(datum[\"sepalLength\"])",
+                    "as": "sepalLength"
+                },
+                {
+                    "type": "formula",
+                    "expr": "toNumber(datum[\"petalLength\"])",
+                    "as": "petalLength"
+                },
+                {
+                    "type": "filter",
+                    "expr": "datum[\"sepalLength\"] !== null && !isNaN(datum[\"sepalLength\"]) && datum[\"petalLength\"] !== null && !isNaN(datum[\"petalLength\"])"
+                }
+            ]
+        },
+        {
+            "name": "data_5",
+            "source": "source_0",
+            "transform": [
+                {
+                    "type": "formula",
+                    "expr": "toNumber(datum[\"sepalWidth\"])",
+                    "as": "sepalWidth"
+                },
+                {
+                    "type": "formula",
+                    "expr": "toNumber(datum[\"petalLength\"])",
+                    "as": "petalLength"
+                },
+                {
+                    "type": "filter",
+                    "expr": "datum[\"sepalWidth\"] !== null && !isNaN(datum[\"sepalWidth\"]) && datum[\"petalLength\"] !== null && !isNaN(datum[\"petalLength\"])"
+                }
+            ]
+        },
+        {
+            "name": "data_6",
+            "source": "source_0",
+            "transform": [
+                {
+                    "type": "formula",
+                    "expr": "toNumber(datum[\"petalLength\"])",
+                    "as": "petalLength"
+                },
+                {
+                    "type": "filter",
+                    "expr": "datum[\"petalLength\"] !== null && !isNaN(datum[\"petalLength\"])"
+                }
+            ]
+        },
+        {
+            "name": "data_7",
+            "source": "source_0",
+            "transform": [
+                {
+                    "type": "formula",
+                    "expr": "toNumber(datum[\"petalWidth\"])",
+                    "as": "petalWidth"
+                },
+                {
+                    "type": "formula",
+                    "expr": "toNumber(datum[\"petalLength\"])",
+                    "as": "petalLength"
+                },
+                {
+                    "type": "filter",
+                    "expr": "datum[\"petalWidth\"] !== null && !isNaN(datum[\"petalWidth\"]) && datum[\"petalLength\"] !== null && !isNaN(datum[\"petalLength\"])"
+                }
+            ]
+        },
+        {
+            "name": "data_8",
+            "source": "source_0",
+            "transform": [
+                {
+                    "type": "formula",
+                    "expr": "toNumber(datum[\"sepalLength\"])",
+                    "as": "sepalLength"
+                },
+                {
+                    "type": "formula",
+                    "expr": "toNumber(datum[\"sepalWidth\"])",
+                    "as": "sepalWidth"
+                },
+                {
+                    "type": "filter",
+                    "expr": "datum[\"sepalLength\"] !== null && !isNaN(datum[\"sepalLength\"]) && datum[\"sepalWidth\"] !== null && !isNaN(datum[\"sepalWidth\"])"
+                }
+            ]
+        },
+        {
+            "name": "data_9",
+            "source": "source_0",
+            "transform": [
+                {
+                    "type": "formula",
+                    "expr": "toNumber(datum[\"sepalWidth\"])",
+                    "as": "sepalWidth"
+                },
+                {
+                    "type": "filter",
+                    "expr": "datum[\"sepalWidth\"] !== null && !isNaN(datum[\"sepalWidth\"])"
+                }
+            ]
+        },
+        {
+            "name": "data_10",
+            "source": "source_0",
+            "transform": [
+                {
+                    "type": "formula",
+                    "expr": "toNumber(datum[\"petalLength\"])",
+                    "as": "petalLength"
+                },
+                {
+                    "type": "formula",
+                    "expr": "toNumber(datum[\"sepalWidth\"])",
+                    "as": "sepalWidth"
+                },
+                {
+                    "type": "filter",
+                    "expr": "datum[\"petalLength\"] !== null && !isNaN(datum[\"petalLength\"]) && datum[\"sepalWidth\"] !== null && !isNaN(datum[\"sepalWidth\"])"
+                }
+            ]
+        },
+        {
+            "name": "data_11",
+            "source": "source_0",
+            "transform": [
+                {
+                    "type": "formula",
+                    "expr": "toNumber(datum[\"petalWidth\"])",
+                    "as": "petalWidth"
+                },
+                {
+                    "type": "formula",
+                    "expr": "toNumber(datum[\"sepalWidth\"])",
+                    "as": "sepalWidth"
+                },
+                {
+                    "type": "filter",
+                    "expr": "datum[\"petalWidth\"] !== null && !isNaN(datum[\"petalWidth\"]) && datum[\"sepalWidth\"] !== null && !isNaN(datum[\"sepalWidth\"])"
+                }
+            ]
+        },
+        {
+            "name": "data_12",
+            "source": "source_0",
+            "transform": [
+                {
+                    "type": "formula",
+                    "expr": "toNumber(datum[\"sepalLength\"])",
+                    "as": "sepalLength"
+                },
+                {
+                    "type": "filter",
+                    "expr": "datum[\"sepalLength\"] !== null && !isNaN(datum[\"sepalLength\"])"
+                }
+            ]
+        },
+        {
+            "name": "data_13",
+            "source": "source_0",
+            "transform": [
+                {
+                    "type": "formula",
+                    "expr": "toNumber(datum[\"sepalWidth\"])",
+                    "as": "sepalWidth"
+                },
+                {
+                    "type": "formula",
+                    "expr": "toNumber(datum[\"sepalLength\"])",
+                    "as": "sepalLength"
+                },
+                {
+                    "type": "filter",
+                    "expr": "datum[\"sepalWidth\"] !== null && !isNaN(datum[\"sepalWidth\"]) && datum[\"sepalLength\"] !== null && !isNaN(datum[\"sepalLength\"])"
+                }
+            ]
+        },
+        {
+            "name": "data_14",
+            "source": "source_0",
+            "transform": [
+                {
+                    "type": "formula",
+                    "expr": "toNumber(datum[\"petalLength\"])",
+                    "as": "petalLength"
+                },
+                {
+                    "type": "formula",
+                    "expr": "toNumber(datum[\"sepalLength\"])",
+                    "as": "sepalLength"
+                },
+                {
+                    "type": "filter",
+                    "expr": "datum[\"petalLength\"] !== null && !isNaN(datum[\"petalLength\"]) && datum[\"sepalLength\"] !== null && !isNaN(datum[\"sepalLength\"])"
+                }
+            ]
+        },
+        {
+            "name": "data_15",
+            "source": "source_0",
+            "transform": [
+                {
+                    "type": "formula",
+                    "expr": "toNumber(datum[\"petalWidth\"])",
+                    "as": "petalWidth"
+                },
+                {
+                    "type": "formula",
+                    "expr": "toNumber(datum[\"sepalLength\"])",
+                    "as": "sepalLength"
+                },
+                {
+                    "type": "filter",
+                    "expr": "datum[\"petalWidth\"] !== null && !isNaN(datum[\"petalWidth\"]) && datum[\"sepalLength\"] !== null && !isNaN(datum[\"sepalLength\"])"
+                }
+            ]
+        }
+    ],
+    "signals": [
+        {
+            "name": "child_petalWidth_sepalLength_width",
+            "update": "200"
+        },
+        {
+            "name": "child_petalWidth_sepalLength_height",
+            "update": "200"
+        },
+        {
+            "name": "child_petalWidth_sepalWidth_width",
+            "update": "200"
+        },
+        {
+            "name": "child_petalWidth_sepalWidth_height",
+            "update": "200"
+        },
+        {
+            "name": "child_petalWidth_petalLength_width",
+            "update": "200"
+        },
+        {
+            "name": "child_petalWidth_petalLength_height",
+            "update": "200"
+        },
+        {
+            "name": "child_petalWidth_petalWidth_width",
+            "update": "200"
+        },
+        {
+            "name": "child_petalWidth_petalWidth_height",
+            "update": "200"
+        },
+        {
+            "name": "child_petalLength_sepalLength_width",
+            "update": "200"
+        },
+        {
+            "name": "child_petalLength_sepalLength_height",
+            "update": "200"
+        },
+        {
+            "name": "child_petalLength_sepalWidth_width",
+            "update": "200"
+        },
+        {
+            "name": "child_petalLength_sepalWidth_height",
+            "update": "200"
+        },
+        {
+            "name": "child_petalLength_petalLength_width",
+            "update": "200"
+        },
+        {
+            "name": "child_petalLength_petalLength_height",
+            "update": "200"
+        },
+        {
+            "name": "child_petalLength_petalWidth_width",
+            "update": "200"
+        },
+        {
+            "name": "child_petalLength_petalWidth_height",
+            "update": "200"
+        },
+        {
+            "name": "child_sepalWidth_sepalLength_width",
+            "update": "200"
+        },
+        {
+            "name": "child_sepalWidth_sepalLength_height",
+            "update": "200"
+        },
+        {
+            "name": "child_sepalWidth_sepalWidth_width",
+            "update": "200"
+        },
+        {
+            "name": "child_sepalWidth_sepalWidth_height",
+            "update": "200"
+        },
+        {
+            "name": "child_sepalWidth_petalLength_width",
+            "update": "200"
+        },
+        {
+            "name": "child_sepalWidth_petalLength_height",
+            "update": "200"
+        },
+        {
+            "name": "child_sepalWidth_petalWidth_width",
+            "update": "200"
+        },
+        {
+            "name": "child_sepalWidth_petalWidth_height",
+            "update": "200"
+        },
+        {
+            "name": "child_sepalLength_sepalLength_width",
+            "update": "200"
+        },
+        {
+            "name": "child_sepalLength_sepalLength_height",
+            "update": "200"
+        },
+        {
+            "name": "child_sepalLength_sepalWidth_width",
+            "update": "200"
+        },
+        {
+            "name": "child_sepalLength_sepalWidth_height",
+            "update": "200"
+        },
+        {
+            "name": "child_sepalLength_petalLength_width",
+            "update": "200"
+        },
+        {
+            "name": "child_sepalLength_petalLength_height",
+            "update": "200"
+        },
+        {
+            "name": "child_sepalLength_petalWidth_width",
+            "update": "200"
+        },
+        {
+            "name": "child_sepalLength_petalWidth_height",
+            "update": "200"
+        },
+        {
+            "name": "unit",
+            "value": {},
+            "on": [
+                {
+                    "events": "mousemove",
+                    "update": "group()._id ? group() : unit"
+                }
+            ]
+        }
+    ],
+    "marks": [
+        {
+            "name": "nested_main_group",
+            "type": "group",
+            "layout": {
+                "padding": {
+                    "row": 10,
+                    "column": 10
+                },
+                "offset": 10,
+                "columns": 4,
+                "bounds": "full",
+                "align": "all"
+            },
+            "marks": [
+                {
+                    "type": "group",
+                    "name": "child_petalWidth_sepalLength_group",
+                    "encode": {
+                        "update": {
+                            "width": {
+                                "signal": "child_petalWidth_sepalLength_width"
+                            },
+                            "height": {
+                                "signal": "child_petalWidth_sepalLength_height"
+                            },
+                            "fill": {
+                                "value": "transparent"
+                            }
+                        }
+                    },
+                    "marks": [
+                        {
+                            "name": "child_petalWidth_sepalLength_marks",
+                            "type": "symbol",
+                            "role": "point",
+                            "from": {
+                                "data": "data_0"
+                            },
+                            "encode": {
+                                "update": {
+                                    "x": {
+                                        "scale": "child_petalWidth_sepalLength_x",
+                                        "field": "sepalLength"
+                                    },
+                                    "y": {
+                                        "scale": "child_petalWidth_sepalLength_y",
+                                        "field": "petalWidth"
+                                    },
+                                    "stroke": {
+                                        "scale": "color",
+                                        "field": "species"
+                                    },
+                                    "fill": {
+                                        "value": "transparent"
+                                    },
+                                    "opacity": {
+                                        "value": 0.7
+                                    }
+                                }
+                            }
+                        }
+                    ],
+                    "scales": [
+                        {
+                            "name": "child_petalWidth_sepalLength_x",
+                            "type": "linear",
+                            "domain": {
+                                "data": "data_0",
+                                "field": "sepalLength"
+                            },
+                            "range": [
+                                0,
+                                200
+                            ],
+                            "round": true,
+                            "nice": true,
+                            "zero": false
+                        },
+                        {
+                            "name": "child_petalWidth_sepalLength_y",
+                            "type": "linear",
+                            "domain": {
+                                "data": "data_0",
+                                "field": "petalWidth"
+                            },
+                            "range": [
+                                200,
+                                0
+                            ],
+                            "round": true,
+                            "nice": true,
+                            "zero": false
+                        }
+                    ],
+                    "axes": [
+                        {
+                            "scale": "child_petalWidth_sepalLength_x",
+                            "format": "s",
+                            "orient": "bottom",
+                            "tickCount": 5,
+                            "title": "sepalLength",
+                            "zindex": 1
+                        },
+                        {
+                            "scale": "child_petalWidth_sepalLength_x",
+                            "domain": false,
+                            "format": "s",
+                            "grid": true,
+                            "labels": false,
+                            "orient": "bottom",
+                            "tickCount": 5,
+                            "ticks": false,
+                            "zindex": 0,
+                            "gridScale": "child_petalWidth_sepalLength_y"
+                        },
+                        {
+                            "scale": "child_petalWidth_sepalLength_y",
+                            "format": "s",
+                            "orient": "left",
+                            "title": "petalWidth",
+                            "zindex": 1
+                        },
+                        {
+                            "scale": "child_petalWidth_sepalLength_y",
+                            "domain": false,
+                            "format": "s",
+                            "grid": true,
+                            "labels": false,
+                            "orient": "left",
+                            "ticks": false,
+                            "zindex": 0,
+                            "gridScale": "child_petalWidth_sepalLength_x"
+                        }
+                    ]
+                },
+                {
+                    "type": "group",
+                    "name": "child_petalWidth_sepalWidth_group",
+                    "encode": {
+                        "update": {
+                            "width": {
+                                "signal": "child_petalWidth_sepalWidth_width"
+                            },
+                            "height": {
+                                "signal": "child_petalWidth_sepalWidth_height"
+                            },
+                            "fill": {
+                                "value": "transparent"
+                            }
+                        }
+                    },
+                    "marks": [
+                        {
+                            "name": "child_petalWidth_sepalWidth_marks",
+                            "type": "symbol",
+                            "role": "point",
+                            "from": {
+                                "data": "data_1"
+                            },
+                            "encode": {
+                                "update": {
+                                    "x": {
+                                        "scale": "child_petalWidth_sepalWidth_x",
+                                        "field": "sepalWidth"
+                                    },
+                                    "y": {
+                                        "scale": "child_petalWidth_sepalWidth_y",
+                                        "field": "petalWidth"
+                                    },
+                                    "stroke": {
+                                        "scale": "color",
+                                        "field": "species"
+                                    },
+                                    "fill": {
+                                        "value": "transparent"
+                                    },
+                                    "opacity": {
+                                        "value": 0.7
+                                    }
+                                }
+                            }
+                        }
+                    ],
+                    "scales": [
+                        {
+                            "name": "child_petalWidth_sepalWidth_x",
+                            "type": "linear",
+                            "domain": {
+                                "data": "data_1",
+                                "field": "sepalWidth"
+                            },
+                            "range": [
+                                0,
+                                200
+                            ],
+                            "round": true,
+                            "nice": true,
+                            "zero": false
+                        },
+                        {
+                            "name": "child_petalWidth_sepalWidth_y",
+                            "type": "linear",
+                            "domain": {
+                                "data": "data_1",
+                                "field": "petalWidth"
+                            },
+                            "range": [
+                                200,
+                                0
+                            ],
+                            "round": true,
+                            "nice": true,
+                            "zero": false
+                        }
+                    ],
+                    "axes": [
+                        {
+                            "scale": "child_petalWidth_sepalWidth_x",
+                            "format": "s",
+                            "orient": "bottom",
+                            "tickCount": 5,
+                            "title": "sepalWidth",
+                            "zindex": 1
+                        },
+                        {
+                            "scale": "child_petalWidth_sepalWidth_x",
+                            "domain": false,
+                            "format": "s",
+                            "grid": true,
+                            "labels": false,
+                            "orient": "bottom",
+                            "tickCount": 5,
+                            "ticks": false,
+                            "zindex": 0,
+                            "gridScale": "child_petalWidth_sepalWidth_y"
+                        },
+                        {
+                            "scale": "child_petalWidth_sepalWidth_y",
+                            "format": "s",
+                            "orient": "left",
+                            "title": "petalWidth",
+                            "zindex": 1
+                        },
+                        {
+                            "scale": "child_petalWidth_sepalWidth_y",
+                            "domain": false,
+                            "format": "s",
+                            "grid": true,
+                            "labels": false,
+                            "orient": "left",
+                            "ticks": false,
+                            "zindex": 0,
+                            "gridScale": "child_petalWidth_sepalWidth_x"
+                        }
+                    ]
+                },
+                {
+                    "type": "group",
+                    "name": "child_petalWidth_petalLength_group",
+                    "encode": {
+                        "update": {
+                            "width": {
+                                "signal": "child_petalWidth_petalLength_width"
+                            },
+                            "height": {
+                                "signal": "child_petalWidth_petalLength_height"
+                            },
+                            "fill": {
+                                "value": "transparent"
+                            }
+                        }
+                    },
+                    "marks": [
+                        {
+                            "name": "child_petalWidth_petalLength_marks",
+                            "type": "symbol",
+                            "role": "point",
+                            "from": {
+                                "data": "data_2"
+                            },
+                            "encode": {
+                                "update": {
+                                    "x": {
+                                        "scale": "child_petalWidth_petalLength_x",
+                                        "field": "petalLength"
+                                    },
+                                    "y": {
+                                        "scale": "child_petalWidth_petalLength_y",
+                                        "field": "petalWidth"
+                                    },
+                                    "stroke": {
+                                        "scale": "color",
+                                        "field": "species"
+                                    },
+                                    "fill": {
+                                        "value": "transparent"
+                                    },
+                                    "opacity": {
+                                        "value": 0.7
+                                    }
+                                }
+                            }
+                        }
+                    ],
+                    "scales": [
+                        {
+                            "name": "child_petalWidth_petalLength_x",
+                            "type": "linear",
+                            "domain": {
+                                "data": "data_2",
+                                "field": "petalLength"
+                            },
+                            "range": [
+                                0,
+                                200
+                            ],
+                            "round": true,
+                            "nice": true,
+                            "zero": false
+                        },
+                        {
+                            "name": "child_petalWidth_petalLength_y",
+                            "type": "linear",
+                            "domain": {
+                                "data": "data_2",
+                                "field": "petalWidth"
+                            },
+                            "range": [
+                                200,
+                                0
+                            ],
+                            "round": true,
+                            "nice": true,
+                            "zero": false
+                        }
+                    ],
+                    "axes": [
+                        {
+                            "scale": "child_petalWidth_petalLength_x",
+                            "format": "s",
+                            "orient": "bottom",
+                            "tickCount": 5,
+                            "title": "petalLength",
+                            "zindex": 1
+                        },
+                        {
+                            "scale": "child_petalWidth_petalLength_x",
+                            "domain": false,
+                            "format": "s",
+                            "grid": true,
+                            "labels": false,
+                            "orient": "bottom",
+                            "tickCount": 5,
+                            "ticks": false,
+                            "zindex": 0,
+                            "gridScale": "child_petalWidth_petalLength_y"
+                        },
+                        {
+                            "scale": "child_petalWidth_petalLength_y",
+                            "format": "s",
+                            "orient": "left",
+                            "title": "petalWidth",
+                            "zindex": 1
+                        },
+                        {
+                            "scale": "child_petalWidth_petalLength_y",
+                            "domain": false,
+                            "format": "s",
+                            "grid": true,
+                            "labels": false,
+                            "orient": "left",
+                            "ticks": false,
+                            "zindex": 0,
+                            "gridScale": "child_petalWidth_petalLength_x"
+                        }
+                    ]
+                },
+                {
+                    "type": "group",
+                    "name": "child_petalWidth_petalWidth_group",
+                    "encode": {
+                        "update": {
+                            "width": {
+                                "signal": "child_petalWidth_petalWidth_width"
+                            },
+                            "height": {
+                                "signal": "child_petalWidth_petalWidth_height"
+                            },
+                            "fill": {
+                                "value": "transparent"
+                            }
+                        }
+                    },
+                    "marks": [
+                        {
+                            "name": "child_petalWidth_petalWidth_marks",
+                            "type": "symbol",
+                            "role": "point",
+                            "from": {
+                                "data": "data_3"
+                            },
+                            "encode": {
+                                "update": {
+                                    "x": {
+                                        "scale": "child_petalWidth_petalWidth_x",
+                                        "field": "petalWidth"
+                                    },
+                                    "y": {
+                                        "scale": "child_petalWidth_petalWidth_y",
+                                        "field": "petalWidth"
+                                    },
+                                    "stroke": {
+                                        "scale": "color",
+                                        "field": "species"
+                                    },
+                                    "fill": {
+                                        "value": "transparent"
+                                    },
+                                    "opacity": {
+                                        "value": 0.7
+                                    }
+                                }
+                            }
+                        }
+                    ],
+                    "scales": [
+                        {
+                            "name": "child_petalWidth_petalWidth_x",
+                            "type": "linear",
+                            "domain": {
+                                "data": "data_3",
+                                "field": "petalWidth"
+                            },
+                            "range": [
+                                0,
+                                200
+                            ],
+                            "round": true,
+                            "nice": true,
+                            "zero": false
+                        },
+                        {
+                            "name": "child_petalWidth_petalWidth_y",
+                            "type": "linear",
+                            "domain": {
+                                "data": "data_3",
+                                "field": "petalWidth"
+                            },
+                            "range": [
+                                200,
+                                0
+                            ],
+                            "round": true,
+                            "nice": true,
+                            "zero": false
+                        }
+                    ],
+                    "axes": [
+                        {
+                            "scale": "child_petalWidth_petalWidth_x",
+                            "format": "s",
+                            "orient": "bottom",
+                            "tickCount": 5,
+                            "title": "petalWidth",
+                            "zindex": 1
+                        },
+                        {
+                            "scale": "child_petalWidth_petalWidth_x",
+                            "domain": false,
+                            "format": "s",
+                            "grid": true,
+                            "labels": false,
+                            "orient": "bottom",
+                            "tickCount": 5,
+                            "ticks": false,
+                            "zindex": 0,
+                            "gridScale": "child_petalWidth_petalWidth_y"
+                        },
+                        {
+                            "scale": "child_petalWidth_petalWidth_y",
+                            "format": "s",
+                            "orient": "left",
+                            "title": "petalWidth",
+                            "zindex": 1
+                        },
+                        {
+                            "scale": "child_petalWidth_petalWidth_y",
+                            "domain": false,
+                            "format": "s",
+                            "grid": true,
+                            "labels": false,
+                            "orient": "left",
+                            "ticks": false,
+                            "zindex": 0,
+                            "gridScale": "child_petalWidth_petalWidth_x"
+                        }
+                    ]
+                },
+                {
+                    "type": "group",
+                    "name": "child_petalLength_sepalLength_group",
+                    "encode": {
+                        "update": {
+                            "width": {
+                                "signal": "child_petalLength_sepalLength_width"
+                            },
+                            "height": {
+                                "signal": "child_petalLength_sepalLength_height"
+                            },
+                            "fill": {
+                                "value": "transparent"
+                            }
+                        }
+                    },
+                    "marks": [
+                        {
+                            "name": "child_petalLength_sepalLength_marks",
+                            "type": "symbol",
+                            "role": "point",
+                            "from": {
+                                "data": "data_4"
+                            },
+                            "encode": {
+                                "update": {
+                                    "x": {
+                                        "scale": "child_petalLength_sepalLength_x",
+                                        "field": "sepalLength"
+                                    },
+                                    "y": {
+                                        "scale": "child_petalLength_sepalLength_y",
+                                        "field": "petalLength"
+                                    },
+                                    "stroke": {
+                                        "scale": "color",
+                                        "field": "species"
+                                    },
+                                    "fill": {
+                                        "value": "transparent"
+                                    },
+                                    "opacity": {
+                                        "value": 0.7
+                                    }
+                                }
+                            }
+                        }
+                    ],
+                    "scales": [
+                        {
+                            "name": "child_petalLength_sepalLength_x",
+                            "type": "linear",
+                            "domain": {
+                                "data": "data_4",
+                                "field": "sepalLength"
+                            },
+                            "range": [
+                                0,
+                                200
+                            ],
+                            "round": true,
+                            "nice": true,
+                            "zero": false
+                        },
+                        {
+                            "name": "child_petalLength_sepalLength_y",
+                            "type": "linear",
+                            "domain": {
+                                "data": "data_4",
+                                "field": "petalLength"
+                            },
+                            "range": [
+                                200,
+                                0
+                            ],
+                            "round": true,
+                            "nice": true,
+                            "zero": false
+                        }
+                    ],
+                    "axes": [
+                        {
+                            "scale": "child_petalLength_sepalLength_x",
+                            "format": "s",
+                            "orient": "bottom",
+                            "tickCount": 5,
+                            "title": "sepalLength",
+                            "zindex": 1
+                        },
+                        {
+                            "scale": "child_petalLength_sepalLength_x",
+                            "domain": false,
+                            "format": "s",
+                            "grid": true,
+                            "labels": false,
+                            "orient": "bottom",
+                            "tickCount": 5,
+                            "ticks": false,
+                            "zindex": 0,
+                            "gridScale": "child_petalLength_sepalLength_y"
+                        },
+                        {
+                            "scale": "child_petalLength_sepalLength_y",
+                            "format": "s",
+                            "orient": "left",
+                            "title": "petalLength",
+                            "zindex": 1
+                        },
+                        {
+                            "scale": "child_petalLength_sepalLength_y",
+                            "domain": false,
+                            "format": "s",
+                            "grid": true,
+                            "labels": false,
+                            "orient": "left",
+                            "ticks": false,
+                            "zindex": 0,
+                            "gridScale": "child_petalLength_sepalLength_x"
+                        }
+                    ]
+                },
+                {
+                    "type": "group",
+                    "name": "child_petalLength_sepalWidth_group",
+                    "encode": {
+                        "update": {
+                            "width": {
+                                "signal": "child_petalLength_sepalWidth_width"
+                            },
+                            "height": {
+                                "signal": "child_petalLength_sepalWidth_height"
+                            },
+                            "fill": {
+                                "value": "transparent"
+                            }
+                        }
+                    },
+                    "marks": [
+                        {
+                            "name": "child_petalLength_sepalWidth_marks",
+                            "type": "symbol",
+                            "role": "point",
+                            "from": {
+                                "data": "data_5"
+                            },
+                            "encode": {
+                                "update": {
+                                    "x": {
+                                        "scale": "child_petalLength_sepalWidth_x",
+                                        "field": "sepalWidth"
+                                    },
+                                    "y": {
+                                        "scale": "child_petalLength_sepalWidth_y",
+                                        "field": "petalLength"
+                                    },
+                                    "stroke": {
+                                        "scale": "color",
+                                        "field": "species"
+                                    },
+                                    "fill": {
+                                        "value": "transparent"
+                                    },
+                                    "opacity": {
+                                        "value": 0.7
+                                    }
+                                }
+                            }
+                        }
+                    ],
+                    "scales": [
+                        {
+                            "name": "child_petalLength_sepalWidth_x",
+                            "type": "linear",
+                            "domain": {
+                                "data": "data_5",
+                                "field": "sepalWidth"
+                            },
+                            "range": [
+                                0,
+                                200
+                            ],
+                            "round": true,
+                            "nice": true,
+                            "zero": false
+                        },
+                        {
+                            "name": "child_petalLength_sepalWidth_y",
+                            "type": "linear",
+                            "domain": {
+                                "data": "data_5",
+                                "field": "petalLength"
+                            },
+                            "range": [
+                                200,
+                                0
+                            ],
+                            "round": true,
+                            "nice": true,
+                            "zero": false
+                        }
+                    ],
+                    "axes": [
+                        {
+                            "scale": "child_petalLength_sepalWidth_x",
+                            "format": "s",
+                            "orient": "bottom",
+                            "tickCount": 5,
+                            "title": "sepalWidth",
+                            "zindex": 1
+                        },
+                        {
+                            "scale": "child_petalLength_sepalWidth_x",
+                            "domain": false,
+                            "format": "s",
+                            "grid": true,
+                            "labels": false,
+                            "orient": "bottom",
+                            "tickCount": 5,
+                            "ticks": false,
+                            "zindex": 0,
+                            "gridScale": "child_petalLength_sepalWidth_y"
+                        },
+                        {
+                            "scale": "child_petalLength_sepalWidth_y",
+                            "format": "s",
+                            "orient": "left",
+                            "title": "petalLength",
+                            "zindex": 1
+                        },
+                        {
+                            "scale": "child_petalLength_sepalWidth_y",
+                            "domain": false,
+                            "format": "s",
+                            "grid": true,
+                            "labels": false,
+                            "orient": "left",
+                            "ticks": false,
+                            "zindex": 0,
+                            "gridScale": "child_petalLength_sepalWidth_x"
+                        }
+                    ]
+                },
+                {
+                    "type": "group",
+                    "name": "child_petalLength_petalLength_group",
+                    "encode": {
+                        "update": {
+                            "width": {
+                                "signal": "child_petalLength_petalLength_width"
+                            },
+                            "height": {
+                                "signal": "child_petalLength_petalLength_height"
+                            },
+                            "fill": {
+                                "value": "transparent"
+                            }
+                        }
+                    },
+                    "marks": [
+                        {
+                            "name": "child_petalLength_petalLength_marks",
+                            "type": "symbol",
+                            "role": "point",
+                            "from": {
+                                "data": "data_6"
+                            },
+                            "encode": {
+                                "update": {
+                                    "x": {
+                                        "scale": "child_petalLength_petalLength_x",
+                                        "field": "petalLength"
+                                    },
+                                    "y": {
+                                        "scale": "child_petalLength_petalLength_y",
+                                        "field": "petalLength"
+                                    },
+                                    "stroke": {
+                                        "scale": "color",
+                                        "field": "species"
+                                    },
+                                    "fill": {
+                                        "value": "transparent"
+                                    },
+                                    "opacity": {
+                                        "value": 0.7
+                                    }
+                                }
+                            }
+                        }
+                    ],
+                    "scales": [
+                        {
+                            "name": "child_petalLength_petalLength_x",
+                            "type": "linear",
+                            "domain": {
+                                "data": "data_6",
+                                "field": "petalLength"
+                            },
+                            "range": [
+                                0,
+                                200
+                            ],
+                            "round": true,
+                            "nice": true,
+                            "zero": false
+                        },
+                        {
+                            "name": "child_petalLength_petalLength_y",
+                            "type": "linear",
+                            "domain": {
+                                "data": "data_6",
+                                "field": "petalLength"
+                            },
+                            "range": [
+                                200,
+                                0
+                            ],
+                            "round": true,
+                            "nice": true,
+                            "zero": false
+                        }
+                    ],
+                    "axes": [
+                        {
+                            "scale": "child_petalLength_petalLength_x",
+                            "format": "s",
+                            "orient": "bottom",
+                            "tickCount": 5,
+                            "title": "petalLength",
+                            "zindex": 1
+                        },
+                        {
+                            "scale": "child_petalLength_petalLength_x",
+                            "domain": false,
+                            "format": "s",
+                            "grid": true,
+                            "labels": false,
+                            "orient": "bottom",
+                            "tickCount": 5,
+                            "ticks": false,
+                            "zindex": 0,
+                            "gridScale": "child_petalLength_petalLength_y"
+                        },
+                        {
+                            "scale": "child_petalLength_petalLength_y",
+                            "format": "s",
+                            "orient": "left",
+                            "title": "petalLength",
+                            "zindex": 1
+                        },
+                        {
+                            "scale": "child_petalLength_petalLength_y",
+                            "domain": false,
+                            "format": "s",
+                            "grid": true,
+                            "labels": false,
+                            "orient": "left",
+                            "ticks": false,
+                            "zindex": 0,
+                            "gridScale": "child_petalLength_petalLength_x"
+                        }
+                    ]
+                },
+                {
+                    "type": "group",
+                    "name": "child_petalLength_petalWidth_group",
+                    "encode": {
+                        "update": {
+                            "width": {
+                                "signal": "child_petalLength_petalWidth_width"
+                            },
+                            "height": {
+                                "signal": "child_petalLength_petalWidth_height"
+                            },
+                            "fill": {
+                                "value": "transparent"
+                            }
+                        }
+                    },
+                    "marks": [
+                        {
+                            "name": "child_petalLength_petalWidth_marks",
+                            "type": "symbol",
+                            "role": "point",
+                            "from": {
+                                "data": "data_7"
+                            },
+                            "encode": {
+                                "update": {
+                                    "x": {
+                                        "scale": "child_petalLength_petalWidth_x",
+                                        "field": "petalWidth"
+                                    },
+                                    "y": {
+                                        "scale": "child_petalLength_petalWidth_y",
+                                        "field": "petalLength"
+                                    },
+                                    "stroke": {
+                                        "scale": "color",
+                                        "field": "species"
+                                    },
+                                    "fill": {
+                                        "value": "transparent"
+                                    },
+                                    "opacity": {
+                                        "value": 0.7
+                                    }
+                                }
+                            }
+                        }
+                    ],
+                    "scales": [
+                        {
+                            "name": "child_petalLength_petalWidth_x",
+                            "type": "linear",
+                            "domain": {
+                                "data": "data_7",
+                                "field": "petalWidth"
+                            },
+                            "range": [
+                                0,
+                                200
+                            ],
+                            "round": true,
+                            "nice": true,
+                            "zero": false
+                        },
+                        {
+                            "name": "child_petalLength_petalWidth_y",
+                            "type": "linear",
+                            "domain": {
+                                "data": "data_7",
+                                "field": "petalLength"
+                            },
+                            "range": [
+                                200,
+                                0
+                            ],
+                            "round": true,
+                            "nice": true,
+                            "zero": false
+                        }
+                    ],
+                    "axes": [
+                        {
+                            "scale": "child_petalLength_petalWidth_x",
+                            "format": "s",
+                            "orient": "bottom",
+                            "tickCount": 5,
+                            "title": "petalWidth",
+                            "zindex": 1
+                        },
+                        {
+                            "scale": "child_petalLength_petalWidth_x",
+                            "domain": false,
+                            "format": "s",
+                            "grid": true,
+                            "labels": false,
+                            "orient": "bottom",
+                            "tickCount": 5,
+                            "ticks": false,
+                            "zindex": 0,
+                            "gridScale": "child_petalLength_petalWidth_y"
+                        },
+                        {
+                            "scale": "child_petalLength_petalWidth_y",
+                            "format": "s",
+                            "orient": "left",
+                            "title": "petalLength",
+                            "zindex": 1
+                        },
+                        {
+                            "scale": "child_petalLength_petalWidth_y",
+                            "domain": false,
+                            "format": "s",
+                            "grid": true,
+                            "labels": false,
+                            "orient": "left",
+                            "ticks": false,
+                            "zindex": 0,
+                            "gridScale": "child_petalLength_petalWidth_x"
+                        }
+                    ]
+                },
+                {
+                    "type": "group",
+                    "name": "child_sepalWidth_sepalLength_group",
+                    "encode": {
+                        "update": {
+                            "width": {
+                                "signal": "child_sepalWidth_sepalLength_width"
+                            },
+                            "height": {
+                                "signal": "child_sepalWidth_sepalLength_height"
+                            },
+                            "fill": {
+                                "value": "transparent"
+                            }
+                        }
+                    },
+                    "marks": [
+                        {
+                            "name": "child_sepalWidth_sepalLength_marks",
+                            "type": "symbol",
+                            "role": "point",
+                            "from": {
+                                "data": "data_8"
+                            },
+                            "encode": {
+                                "update": {
+                                    "x": {
+                                        "scale": "child_sepalWidth_sepalLength_x",
+                                        "field": "sepalLength"
+                                    },
+                                    "y": {
+                                        "scale": "child_sepalWidth_sepalLength_y",
+                                        "field": "sepalWidth"
+                                    },
+                                    "stroke": {
+                                        "scale": "color",
+                                        "field": "species"
+                                    },
+                                    "fill": {
+                                        "value": "transparent"
+                                    },
+                                    "opacity": {
+                                        "value": 0.7
+                                    }
+                                }
+                            }
+                        }
+                    ],
+                    "scales": [
+                        {
+                            "name": "child_sepalWidth_sepalLength_x",
+                            "type": "linear",
+                            "domain": {
+                                "data": "data_8",
+                                "field": "sepalLength"
+                            },
+                            "range": [
+                                0,
+                                200
+                            ],
+                            "round": true,
+                            "nice": true,
+                            "zero": false
+                        },
+                        {
+                            "name": "child_sepalWidth_sepalLength_y",
+                            "type": "linear",
+                            "domain": {
+                                "data": "data_8",
+                                "field": "sepalWidth"
+                            },
+                            "range": [
+                                200,
+                                0
+                            ],
+                            "round": true,
+                            "nice": true,
+                            "zero": false
+                        }
+                    ],
+                    "axes": [
+                        {
+                            "scale": "child_sepalWidth_sepalLength_x",
+                            "format": "s",
+                            "orient": "bottom",
+                            "tickCount": 5,
+                            "title": "sepalLength",
+                            "zindex": 1
+                        },
+                        {
+                            "scale": "child_sepalWidth_sepalLength_x",
+                            "domain": false,
+                            "format": "s",
+                            "grid": true,
+                            "labels": false,
+                            "orient": "bottom",
+                            "tickCount": 5,
+                            "ticks": false,
+                            "zindex": 0,
+                            "gridScale": "child_sepalWidth_sepalLength_y"
+                        },
+                        {
+                            "scale": "child_sepalWidth_sepalLength_y",
+                            "format": "s",
+                            "orient": "left",
+                            "title": "sepalWidth",
+                            "zindex": 1
+                        },
+                        {
+                            "scale": "child_sepalWidth_sepalLength_y",
+                            "domain": false,
+                            "format": "s",
+                            "grid": true,
+                            "labels": false,
+                            "orient": "left",
+                            "ticks": false,
+                            "zindex": 0,
+                            "gridScale": "child_sepalWidth_sepalLength_x"
+                        }
+                    ]
+                },
+                {
+                    "type": "group",
+                    "name": "child_sepalWidth_sepalWidth_group",
+                    "encode": {
+                        "update": {
+                            "width": {
+                                "signal": "child_sepalWidth_sepalWidth_width"
+                            },
+                            "height": {
+                                "signal": "child_sepalWidth_sepalWidth_height"
+                            },
+                            "fill": {
+                                "value": "transparent"
+                            }
+                        }
+                    },
+                    "marks": [
+                        {
+                            "name": "child_sepalWidth_sepalWidth_marks",
+                            "type": "symbol",
+                            "role": "point",
+                            "from": {
+                                "data": "data_9"
+                            },
+                            "encode": {
+                                "update": {
+                                    "x": {
+                                        "scale": "child_sepalWidth_sepalWidth_x",
+                                        "field": "sepalWidth"
+                                    },
+                                    "y": {
+                                        "scale": "child_sepalWidth_sepalWidth_y",
+                                        "field": "sepalWidth"
+                                    },
+                                    "stroke": {
+                                        "scale": "color",
+                                        "field": "species"
+                                    },
+                                    "fill": {
+                                        "value": "transparent"
+                                    },
+                                    "opacity": {
+                                        "value": 0.7
+                                    }
+                                }
+                            }
+                        }
+                    ],
+                    "scales": [
+                        {
+                            "name": "child_sepalWidth_sepalWidth_x",
+                            "type": "linear",
+                            "domain": {
+                                "data": "data_9",
+                                "field": "sepalWidth"
+                            },
+                            "range": [
+                                0,
+                                200
+                            ],
+                            "round": true,
+                            "nice": true,
+                            "zero": false
+                        },
+                        {
+                            "name": "child_sepalWidth_sepalWidth_y",
+                            "type": "linear",
+                            "domain": {
+                                "data": "data_9",
+                                "field": "sepalWidth"
+                            },
+                            "range": [
+                                200,
+                                0
+                            ],
+                            "round": true,
+                            "nice": true,
+                            "zero": false
+                        }
+                    ],
+                    "axes": [
+                        {
+                            "scale": "child_sepalWidth_sepalWidth_x",
+                            "format": "s",
+                            "orient": "bottom",
+                            "tickCount": 5,
+                            "title": "sepalWidth",
+                            "zindex": 1
+                        },
+                        {
+                            "scale": "child_sepalWidth_sepalWidth_x",
+                            "domain": false,
+                            "format": "s",
+                            "grid": true,
+                            "labels": false,
+                            "orient": "bottom",
+                            "tickCount": 5,
+                            "ticks": false,
+                            "zindex": 0,
+                            "gridScale": "child_sepalWidth_sepalWidth_y"
+                        },
+                        {
+                            "scale": "child_sepalWidth_sepalWidth_y",
+                            "format": "s",
+                            "orient": "left",
+                            "title": "sepalWidth",
+                            "zindex": 1
+                        },
+                        {
+                            "scale": "child_sepalWidth_sepalWidth_y",
+                            "domain": false,
+                            "format": "s",
+                            "grid": true,
+                            "labels": false,
+                            "orient": "left",
+                            "ticks": false,
+                            "zindex": 0,
+                            "gridScale": "child_sepalWidth_sepalWidth_x"
+                        }
+                    ]
+                },
+                {
+                    "type": "group",
+                    "name": "child_sepalWidth_petalLength_group",
+                    "encode": {
+                        "update": {
+                            "width": {
+                                "signal": "child_sepalWidth_petalLength_width"
+                            },
+                            "height": {
+                                "signal": "child_sepalWidth_petalLength_height"
+                            },
+                            "fill": {
+                                "value": "transparent"
+                            }
+                        }
+                    },
+                    "marks": [
+                        {
+                            "name": "child_sepalWidth_petalLength_marks",
+                            "type": "symbol",
+                            "role": "point",
+                            "from": {
+                                "data": "data_10"
+                            },
+                            "encode": {
+                                "update": {
+                                    "x": {
+                                        "scale": "child_sepalWidth_petalLength_x",
+                                        "field": "petalLength"
+                                    },
+                                    "y": {
+                                        "scale": "child_sepalWidth_petalLength_y",
+                                        "field": "sepalWidth"
+                                    },
+                                    "stroke": {
+                                        "scale": "color",
+                                        "field": "species"
+                                    },
+                                    "fill": {
+                                        "value": "transparent"
+                                    },
+                                    "opacity": {
+                                        "value": 0.7
+                                    }
+                                }
+                            }
+                        }
+                    ],
+                    "scales": [
+                        {
+                            "name": "child_sepalWidth_petalLength_x",
+                            "type": "linear",
+                            "domain": {
+                                "data": "data_10",
+                                "field": "petalLength"
+                            },
+                            "range": [
+                                0,
+                                200
+                            ],
+                            "round": true,
+                            "nice": true,
+                            "zero": false
+                        },
+                        {
+                            "name": "child_sepalWidth_petalLength_y",
+                            "type": "linear",
+                            "domain": {
+                                "data": "data_10",
+                                "field": "sepalWidth"
+                            },
+                            "range": [
+                                200,
+                                0
+                            ],
+                            "round": true,
+                            "nice": true,
+                            "zero": false
+                        }
+                    ],
+                    "axes": [
+                        {
+                            "scale": "child_sepalWidth_petalLength_x",
+                            "format": "s",
+                            "orient": "bottom",
+                            "tickCount": 5,
+                            "title": "petalLength",
+                            "zindex": 1
+                        },
+                        {
+                            "scale": "child_sepalWidth_petalLength_x",
+                            "domain": false,
+                            "format": "s",
+                            "grid": true,
+                            "labels": false,
+                            "orient": "bottom",
+                            "tickCount": 5,
+                            "ticks": false,
+                            "zindex": 0,
+                            "gridScale": "child_sepalWidth_petalLength_y"
+                        },
+                        {
+                            "scale": "child_sepalWidth_petalLength_y",
+                            "format": "s",
+                            "orient": "left",
+                            "title": "sepalWidth",
+                            "zindex": 1
+                        },
+                        {
+                            "scale": "child_sepalWidth_petalLength_y",
+                            "domain": false,
+                            "format": "s",
+                            "grid": true,
+                            "labels": false,
+                            "orient": "left",
+                            "ticks": false,
+                            "zindex": 0,
+                            "gridScale": "child_sepalWidth_petalLength_x"
+                        }
+                    ]
+                },
+                {
+                    "type": "group",
+                    "name": "child_sepalWidth_petalWidth_group",
+                    "encode": {
+                        "update": {
+                            "width": {
+                                "signal": "child_sepalWidth_petalWidth_width"
+                            },
+                            "height": {
+                                "signal": "child_sepalWidth_petalWidth_height"
+                            },
+                            "fill": {
+                                "value": "transparent"
+                            }
+                        }
+                    },
+                    "marks": [
+                        {
+                            "name": "child_sepalWidth_petalWidth_marks",
+                            "type": "symbol",
+                            "role": "point",
+                            "from": {
+                                "data": "data_11"
+                            },
+                            "encode": {
+                                "update": {
+                                    "x": {
+                                        "scale": "child_sepalWidth_petalWidth_x",
+                                        "field": "petalWidth"
+                                    },
+                                    "y": {
+                                        "scale": "child_sepalWidth_petalWidth_y",
+                                        "field": "sepalWidth"
+                                    },
+                                    "stroke": {
+                                        "scale": "color",
+                                        "field": "species"
+                                    },
+                                    "fill": {
+                                        "value": "transparent"
+                                    },
+                                    "opacity": {
+                                        "value": 0.7
+                                    }
+                                }
+                            }
+                        }
+                    ],
+                    "scales": [
+                        {
+                            "name": "child_sepalWidth_petalWidth_x",
+                            "type": "linear",
+                            "domain": {
+                                "data": "data_11",
+                                "field": "petalWidth"
+                            },
+                            "range": [
+                                0,
+                                200
+                            ],
+                            "round": true,
+                            "nice": true,
+                            "zero": false
+                        },
+                        {
+                            "name": "child_sepalWidth_petalWidth_y",
+                            "type": "linear",
+                            "domain": {
+                                "data": "data_11",
+                                "field": "sepalWidth"
+                            },
+                            "range": [
+                                200,
+                                0
+                            ],
+                            "round": true,
+                            "nice": true,
+                            "zero": false
+                        }
+                    ],
+                    "axes": [
+                        {
+                            "scale": "child_sepalWidth_petalWidth_x",
+                            "format": "s",
+                            "orient": "bottom",
+                            "tickCount": 5,
+                            "title": "petalWidth",
+                            "zindex": 1
+                        },
+                        {
+                            "scale": "child_sepalWidth_petalWidth_x",
+                            "domain": false,
+                            "format": "s",
+                            "grid": true,
+                            "labels": false,
+                            "orient": "bottom",
+                            "tickCount": 5,
+                            "ticks": false,
+                            "zindex": 0,
+                            "gridScale": "child_sepalWidth_petalWidth_y"
+                        },
+                        {
+                            "scale": "child_sepalWidth_petalWidth_y",
+                            "format": "s",
+                            "orient": "left",
+                            "title": "sepalWidth",
+                            "zindex": 1
+                        },
+                        {
+                            "scale": "child_sepalWidth_petalWidth_y",
+                            "domain": false,
+                            "format": "s",
+                            "grid": true,
+                            "labels": false,
+                            "orient": "left",
+                            "ticks": false,
+                            "zindex": 0,
+                            "gridScale": "child_sepalWidth_petalWidth_x"
+                        }
+                    ]
+                },
+                {
+                    "type": "group",
+                    "name": "child_sepalLength_sepalLength_group",
+                    "encode": {
+                        "update": {
+                            "width": {
+                                "signal": "child_sepalLength_sepalLength_width"
+                            },
+                            "height": {
+                                "signal": "child_sepalLength_sepalLength_height"
+                            },
+                            "fill": {
+                                "value": "transparent"
+                            }
+                        }
+                    },
+                    "marks": [
+                        {
+                            "name": "child_sepalLength_sepalLength_marks",
+                            "type": "symbol",
+                            "role": "point",
+                            "from": {
+                                "data": "data_12"
+                            },
+                            "encode": {
+                                "update": {
+                                    "x": {
+                                        "scale": "child_sepalLength_sepalLength_x",
+                                        "field": "sepalLength"
+                                    },
+                                    "y": {
+                                        "scale": "child_sepalLength_sepalLength_y",
+                                        "field": "sepalLength"
+                                    },
+                                    "stroke": {
+                                        "scale": "color",
+                                        "field": "species"
+                                    },
+                                    "fill": {
+                                        "value": "transparent"
+                                    },
+                                    "opacity": {
+                                        "value": 0.7
+                                    }
+                                }
+                            }
+                        }
+                    ],
+                    "scales": [
+                        {
+                            "name": "child_sepalLength_sepalLength_x",
+                            "type": "linear",
+                            "domain": {
+                                "data": "data_12",
+                                "field": "sepalLength"
+                            },
+                            "range": [
+                                0,
+                                200
+                            ],
+                            "round": true,
+                            "nice": true,
+                            "zero": false
+                        },
+                        {
+                            "name": "child_sepalLength_sepalLength_y",
+                            "type": "linear",
+                            "domain": {
+                                "data": "data_12",
+                                "field": "sepalLength"
+                            },
+                            "range": [
+                                200,
+                                0
+                            ],
+                            "round": true,
+                            "nice": true,
+                            "zero": false
+                        }
+                    ],
+                    "axes": [
+                        {
+                            "scale": "child_sepalLength_sepalLength_x",
+                            "format": "s",
+                            "orient": "bottom",
+                            "tickCount": 5,
+                            "title": "sepalLength",
+                            "zindex": 1
+                        },
+                        {
+                            "scale": "child_sepalLength_sepalLength_x",
+                            "domain": false,
+                            "format": "s",
+                            "grid": true,
+                            "labels": false,
+                            "orient": "bottom",
+                            "tickCount": 5,
+                            "ticks": false,
+                            "zindex": 0,
+                            "gridScale": "child_sepalLength_sepalLength_y"
+                        },
+                        {
+                            "scale": "child_sepalLength_sepalLength_y",
+                            "format": "s",
+                            "orient": "left",
+                            "title": "sepalLength",
+                            "zindex": 1
+                        },
+                        {
+                            "scale": "child_sepalLength_sepalLength_y",
+                            "domain": false,
+                            "format": "s",
+                            "grid": true,
+                            "labels": false,
+                            "orient": "left",
+                            "ticks": false,
+                            "zindex": 0,
+                            "gridScale": "child_sepalLength_sepalLength_x"
+                        }
+                    ]
+                },
+                {
+                    "type": "group",
+                    "name": "child_sepalLength_sepalWidth_group",
+                    "encode": {
+                        "update": {
+                            "width": {
+                                "signal": "child_sepalLength_sepalWidth_width"
+                            },
+                            "height": {
+                                "signal": "child_sepalLength_sepalWidth_height"
+                            },
+                            "fill": {
+                                "value": "transparent"
+                            }
+                        }
+                    },
+                    "marks": [
+                        {
+                            "name": "child_sepalLength_sepalWidth_marks",
+                            "type": "symbol",
+                            "role": "point",
+                            "from": {
+                                "data": "data_13"
+                            },
+                            "encode": {
+                                "update": {
+                                    "x": {
+                                        "scale": "child_sepalLength_sepalWidth_x",
+                                        "field": "sepalWidth"
+                                    },
+                                    "y": {
+                                        "scale": "child_sepalLength_sepalWidth_y",
+                                        "field": "sepalLength"
+                                    },
+                                    "stroke": {
+                                        "scale": "color",
+                                        "field": "species"
+                                    },
+                                    "fill": {
+                                        "value": "transparent"
+                                    },
+                                    "opacity": {
+                                        "value": 0.7
+                                    }
+                                }
+                            }
+                        }
+                    ],
+                    "scales": [
+                        {
+                            "name": "child_sepalLength_sepalWidth_x",
+                            "type": "linear",
+                            "domain": {
+                                "data": "data_13",
+                                "field": "sepalWidth"
+                            },
+                            "range": [
+                                0,
+                                200
+                            ],
+                            "round": true,
+                            "nice": true,
+                            "zero": false
+                        },
+                        {
+                            "name": "child_sepalLength_sepalWidth_y",
+                            "type": "linear",
+                            "domain": {
+                                "data": "data_13",
+                                "field": "sepalLength"
+                            },
+                            "range": [
+                                200,
+                                0
+                            ],
+                            "round": true,
+                            "nice": true,
+                            "zero": false
+                        }
+                    ],
+                    "axes": [
+                        {
+                            "scale": "child_sepalLength_sepalWidth_x",
+                            "format": "s",
+                            "orient": "bottom",
+                            "tickCount": 5,
+                            "title": "sepalWidth",
+                            "zindex": 1
+                        },
+                        {
+                            "scale": "child_sepalLength_sepalWidth_x",
+                            "domain": false,
+                            "format": "s",
+                            "grid": true,
+                            "labels": false,
+                            "orient": "bottom",
+                            "tickCount": 5,
+                            "ticks": false,
+                            "zindex": 0,
+                            "gridScale": "child_sepalLength_sepalWidth_y"
+                        },
+                        {
+                            "scale": "child_sepalLength_sepalWidth_y",
+                            "format": "s",
+                            "orient": "left",
+                            "title": "sepalLength",
+                            "zindex": 1
+                        },
+                        {
+                            "scale": "child_sepalLength_sepalWidth_y",
+                            "domain": false,
+                            "format": "s",
+                            "grid": true,
+                            "labels": false,
+                            "orient": "left",
+                            "ticks": false,
+                            "zindex": 0,
+                            "gridScale": "child_sepalLength_sepalWidth_x"
+                        }
+                    ]
+                },
+                {
+                    "type": "group",
+                    "name": "child_sepalLength_petalLength_group",
+                    "encode": {
+                        "update": {
+                            "width": {
+                                "signal": "child_sepalLength_petalLength_width"
+                            },
+                            "height": {
+                                "signal": "child_sepalLength_petalLength_height"
+                            },
+                            "fill": {
+                                "value": "transparent"
+                            }
+                        }
+                    },
+                    "marks": [
+                        {
+                            "name": "child_sepalLength_petalLength_marks",
+                            "type": "symbol",
+                            "role": "point",
+                            "from": {
+                                "data": "data_14"
+                            },
+                            "encode": {
+                                "update": {
+                                    "x": {
+                                        "scale": "child_sepalLength_petalLength_x",
+                                        "field": "petalLength"
+                                    },
+                                    "y": {
+                                        "scale": "child_sepalLength_petalLength_y",
+                                        "field": "sepalLength"
+                                    },
+                                    "stroke": {
+                                        "scale": "color",
+                                        "field": "species"
+                                    },
+                                    "fill": {
+                                        "value": "transparent"
+                                    },
+                                    "opacity": {
+                                        "value": 0.7
+                                    }
+                                }
+                            }
+                        }
+                    ],
+                    "scales": [
+                        {
+                            "name": "child_sepalLength_petalLength_x",
+                            "type": "linear",
+                            "domain": {
+                                "data": "data_14",
+                                "field": "petalLength"
+                            },
+                            "range": [
+                                0,
+                                200
+                            ],
+                            "round": true,
+                            "nice": true,
+                            "zero": false
+                        },
+                        {
+                            "name": "child_sepalLength_petalLength_y",
+                            "type": "linear",
+                            "domain": {
+                                "data": "data_14",
+                                "field": "sepalLength"
+                            },
+                            "range": [
+                                200,
+                                0
+                            ],
+                            "round": true,
+                            "nice": true,
+                            "zero": false
+                        }
+                    ],
+                    "axes": [
+                        {
+                            "scale": "child_sepalLength_petalLength_x",
+                            "format": "s",
+                            "orient": "bottom",
+                            "tickCount": 5,
+                            "title": "petalLength",
+                            "zindex": 1
+                        },
+                        {
+                            "scale": "child_sepalLength_petalLength_x",
+                            "domain": false,
+                            "format": "s",
+                            "grid": true,
+                            "labels": false,
+                            "orient": "bottom",
+                            "tickCount": 5,
+                            "ticks": false,
+                            "zindex": 0,
+                            "gridScale": "child_sepalLength_petalLength_y"
+                        },
+                        {
+                            "scale": "child_sepalLength_petalLength_y",
+                            "format": "s",
+                            "orient": "left",
+                            "title": "sepalLength",
+                            "zindex": 1
+                        },
+                        {
+                            "scale": "child_sepalLength_petalLength_y",
+                            "domain": false,
+                            "format": "s",
+                            "grid": true,
+                            "labels": false,
+                            "orient": "left",
+                            "ticks": false,
+                            "zindex": 0,
+                            "gridScale": "child_sepalLength_petalLength_x"
+                        }
+                    ]
+                },
+                {
+                    "type": "group",
+                    "name": "child_sepalLength_petalWidth_group",
+                    "encode": {
+                        "update": {
+                            "width": {
+                                "signal": "child_sepalLength_petalWidth_width"
+                            },
+                            "height": {
+                                "signal": "child_sepalLength_petalWidth_height"
+                            },
+                            "fill": {
+                                "value": "transparent"
+                            }
+                        }
+                    },
+                    "marks": [
+                        {
+                            "name": "child_sepalLength_petalWidth_marks",
+                            "type": "symbol",
+                            "role": "point",
+                            "from": {
+                                "data": "data_15"
+                            },
+                            "encode": {
+                                "update": {
+                                    "x": {
+                                        "scale": "child_sepalLength_petalWidth_x",
+                                        "field": "petalWidth"
+                                    },
+                                    "y": {
+                                        "scale": "child_sepalLength_petalWidth_y",
+                                        "field": "sepalLength"
+                                    },
+                                    "stroke": {
+                                        "scale": "color",
+                                        "field": "species"
+                                    },
+                                    "fill": {
+                                        "value": "transparent"
+                                    },
+                                    "opacity": {
+                                        "value": 0.7
+                                    }
+                                }
+                            }
+                        }
+                    ],
+                    "scales": [
+                        {
+                            "name": "child_sepalLength_petalWidth_x",
+                            "type": "linear",
+                            "domain": {
+                                "data": "data_15",
+                                "field": "petalWidth"
+                            },
+                            "range": [
+                                0,
+                                200
+                            ],
+                            "round": true,
+                            "nice": true,
+                            "zero": false
+                        },
+                        {
+                            "name": "child_sepalLength_petalWidth_y",
+                            "type": "linear",
+                            "domain": {
+                                "data": "data_15",
+                                "field": "sepalLength"
+                            },
+                            "range": [
+                                200,
+                                0
+                            ],
+                            "round": true,
+                            "nice": true,
+                            "zero": false
+                        }
+                    ],
+                    "axes": [
+                        {
+                            "scale": "child_sepalLength_petalWidth_x",
+                            "format": "s",
+                            "orient": "bottom",
+                            "tickCount": 5,
+                            "title": "petalWidth",
+                            "zindex": 1
+                        },
+                        {
+                            "scale": "child_sepalLength_petalWidth_x",
+                            "domain": false,
+                            "format": "s",
+                            "grid": true,
+                            "labels": false,
+                            "orient": "bottom",
+                            "tickCount": 5,
+                            "ticks": false,
+                            "zindex": 0,
+                            "gridScale": "child_sepalLength_petalWidth_y"
+                        },
+                        {
+                            "scale": "child_sepalLength_petalWidth_y",
+                            "format": "s",
+                            "orient": "left",
+                            "title": "sepalLength",
+                            "zindex": 1
+                        },
+                        {
+                            "scale": "child_sepalLength_petalWidth_y",
+                            "domain": false,
+                            "format": "s",
+                            "grid": true,
+                            "labels": false,
+                            "orient": "left",
+                            "ticks": false,
+                            "zindex": 0,
+                            "gridScale": "child_sepalLength_petalWidth_x"
+                        }
+                    ]
+                }
+            ]
+        }
+    ],
+    "scales": [
+        {
+            "name": "color",
+            "type": "ordinal",
+            "domain": {
+                "fields": [
+                    {
+                        "data": "data_0",
+                        "field": "species"
+                    },
+                    {
+                        "data": "data_1",
+                        "field": "species"
+                    },
+                    {
+                        "data": "data_2",
+                        "field": "species"
+                    },
+                    {
+                        "data": "data_3",
+                        "field": "species"
+                    },
+                    {
+                        "data": "data_4",
+                        "field": "species"
+                    },
+                    {
+                        "data": "data_5",
+                        "field": "species"
+                    },
+                    {
+                        "data": "data_6",
+                        "field": "species"
+                    },
+                    {
+                        "data": "data_7",
+                        "field": "species"
+                    },
+                    {
+                        "data": "data_8",
+                        "field": "species"
+                    },
+                    {
+                        "data": "data_9",
+                        "field": "species"
+                    },
+                    {
+                        "data": "data_10",
+                        "field": "species"
+                    },
+                    {
+                        "data": "data_11",
+                        "field": "species"
+                    },
+                    {
+                        "data": "data_12",
+                        "field": "species"
+                    },
+                    {
+                        "data": "data_13",
+                        "field": "species"
+                    },
+                    {
+                        "data": "data_14",
+                        "field": "species"
+                    },
+                    {
+                        "data": "data_15",
+                        "field": "species"
+                    }
+                ],
+                "sort": true
+            },
+            "range": "category"
+        },
+        {
+            "name": "child_petalWidth_sepalLength_x",
+            "type": "linear",
+            "domain": {
+                "data": "data_0",
+                "field": "sepalLength"
+            },
+            "range": [
+                0,
+                200
+            ],
+            "round": true,
+            "nice": true,
+            "zero": false
+        },
+        {
+            "name": "child_petalWidth_sepalLength_y",
+            "type": "linear",
+            "domain": {
+                "data": "data_0",
+                "field": "petalWidth"
+            },
+            "range": [
+                200,
+                0
+            ],
+            "round": true,
+            "nice": true,
+            "zero": false
+        },
+        {
+            "name": "child_petalWidth_sepalWidth_x",
+            "type": "linear",
+            "domain": {
+                "data": "data_1",
+                "field": "sepalWidth"
+            },
+            "range": [
+                0,
+                200
+            ],
+            "round": true,
+            "nice": true,
+            "zero": false
+        },
+        {
+            "name": "child_petalWidth_sepalWidth_y",
+            "type": "linear",
+            "domain": {
+                "data": "data_1",
+                "field": "petalWidth"
+            },
+            "range": [
+                200,
+                0
+            ],
+            "round": true,
+            "nice": true,
+            "zero": false
+        },
+        {
+            "name": "child_petalWidth_petalLength_x",
+            "type": "linear",
+            "domain": {
+                "data": "data_2",
+                "field": "petalLength"
+            },
+            "range": [
+                0,
+                200
+            ],
+            "round": true,
+            "nice": true,
+            "zero": false
+        },
+        {
+            "name": "child_petalWidth_petalLength_y",
+            "type": "linear",
+            "domain": {
+                "data": "data_2",
+                "field": "petalWidth"
+            },
+            "range": [
+                200,
+                0
+            ],
+            "round": true,
+            "nice": true,
+            "zero": false
+        },
+        {
+            "name": "child_petalWidth_petalWidth_x",
+            "type": "linear",
+            "domain": {
+                "data": "data_3",
+                "field": "petalWidth"
+            },
+            "range": [
+                0,
+                200
+            ],
+            "round": true,
+            "nice": true,
+            "zero": false
+        },
+        {
+            "name": "child_petalWidth_petalWidth_y",
+            "type": "linear",
+            "domain": {
+                "data": "data_3",
+                "field": "petalWidth"
+            },
+            "range": [
+                200,
+                0
+            ],
+            "round": true,
+            "nice": true,
+            "zero": false
+        },
+        {
+            "name": "child_petalLength_sepalLength_x",
+            "type": "linear",
+            "domain": {
+                "data": "data_4",
+                "field": "sepalLength"
+            },
+            "range": [
+                0,
+                200
+            ],
+            "round": true,
+            "nice": true,
+            "zero": false
+        },
+        {
+            "name": "child_petalLength_sepalLength_y",
+            "type": "linear",
+            "domain": {
+                "data": "data_4",
+                "field": "petalLength"
+            },
+            "range": [
+                200,
+                0
+            ],
+            "round": true,
+            "nice": true,
+            "zero": false
+        },
+        {
+            "name": "child_petalLength_sepalWidth_x",
+            "type": "linear",
+            "domain": {
+                "data": "data_5",
+                "field": "sepalWidth"
+            },
+            "range": [
+                0,
+                200
+            ],
+            "round": true,
+            "nice": true,
+            "zero": false
+        },
+        {
+            "name": "child_petalLength_sepalWidth_y",
+            "type": "linear",
+            "domain": {
+                "data": "data_5",
+                "field": "petalLength"
+            },
+            "range": [
+                200,
+                0
+            ],
+            "round": true,
+            "nice": true,
+            "zero": false
+        },
+        {
+            "name": "child_petalLength_petalLength_x",
+            "type": "linear",
+            "domain": {
+                "data": "data_6",
+                "field": "petalLength"
+            },
+            "range": [
+                0,
+                200
+            ],
+            "round": true,
+            "nice": true,
+            "zero": false
+        },
+        {
+            "name": "child_petalLength_petalLength_y",
+            "type": "linear",
+            "domain": {
+                "data": "data_6",
+                "field": "petalLength"
+            },
+            "range": [
+                200,
+                0
+            ],
+            "round": true,
+            "nice": true,
+            "zero": false
+        },
+        {
+            "name": "child_petalLength_petalWidth_x",
+            "type": "linear",
+            "domain": {
+                "data": "data_7",
+                "field": "petalWidth"
+            },
+            "range": [
+                0,
+                200
+            ],
+            "round": true,
+            "nice": true,
+            "zero": false
+        },
+        {
+            "name": "child_petalLength_petalWidth_y",
+            "type": "linear",
+            "domain": {
+                "data": "data_7",
+                "field": "petalLength"
+            },
+            "range": [
+                200,
+                0
+            ],
+            "round": true,
+            "nice": true,
+            "zero": false
+        },
+        {
+            "name": "child_sepalWidth_sepalLength_x",
+            "type": "linear",
+            "domain": {
+                "data": "data_8",
+                "field": "sepalLength"
+            },
+            "range": [
+                0,
+                200
+            ],
+            "round": true,
+            "nice": true,
+            "zero": false
+        },
+        {
+            "name": "child_sepalWidth_sepalLength_y",
+            "type": "linear",
+            "domain": {
+                "data": "data_8",
+                "field": "sepalWidth"
+            },
+            "range": [
+                200,
+                0
+            ],
+            "round": true,
+            "nice": true,
+            "zero": false
+        },
+        {
+            "name": "child_sepalWidth_sepalWidth_x",
+            "type": "linear",
+            "domain": {
+                "data": "data_9",
+                "field": "sepalWidth"
+            },
+            "range": [
+                0,
+                200
+            ],
+            "round": true,
+            "nice": true,
+            "zero": false
+        },
+        {
+            "name": "child_sepalWidth_sepalWidth_y",
+            "type": "linear",
+            "domain": {
+                "data": "data_9",
+                "field": "sepalWidth"
+            },
+            "range": [
+                200,
+                0
+            ],
+            "round": true,
+            "nice": true,
+            "zero": false
+        },
+        {
+            "name": "child_sepalWidth_petalLength_x",
+            "type": "linear",
+            "domain": {
+                "data": "data_10",
+                "field": "petalLength"
+            },
+            "range": [
+                0,
+                200
+            ],
+            "round": true,
+            "nice": true,
+            "zero": false
+        },
+        {
+            "name": "child_sepalWidth_petalLength_y",
+            "type": "linear",
+            "domain": {
+                "data": "data_10",
+                "field": "sepalWidth"
+            },
+            "range": [
+                200,
+                0
+            ],
+            "round": true,
+            "nice": true,
+            "zero": false
+        },
+        {
+            "name": "child_sepalWidth_petalWidth_x",
+            "type": "linear",
+            "domain": {
+                "data": "data_11",
+                "field": "petalWidth"
+            },
+            "range": [
+                0,
+                200
+            ],
+            "round": true,
+            "nice": true,
+            "zero": false
+        },
+        {
+            "name": "child_sepalWidth_petalWidth_y",
+            "type": "linear",
+            "domain": {
+                "data": "data_11",
+                "field": "sepalWidth"
+            },
+            "range": [
+                200,
+                0
+            ],
+            "round": true,
+            "nice": true,
+            "zero": false
+        },
+        {
+            "name": "child_sepalLength_sepalLength_x",
+            "type": "linear",
+            "domain": {
+                "data": "data_12",
+                "field": "sepalLength"
+            },
+            "range": [
+                0,
+                200
+            ],
+            "round": true,
+            "nice": true,
+            "zero": false
+        },
+        {
+            "name": "child_sepalLength_sepalLength_y",
+            "type": "linear",
+            "domain": {
+                "data": "data_12",
+                "field": "sepalLength"
+            },
+            "range": [
+                200,
+                0
+            ],
+            "round": true,
+            "nice": true,
+            "zero": false
+        },
+        {
+            "name": "child_sepalLength_sepalWidth_x",
+            "type": "linear",
+            "domain": {
+                "data": "data_13",
+                "field": "sepalWidth"
+            },
+            "range": [
+                0,
+                200
+            ],
+            "round": true,
+            "nice": true,
+            "zero": false
+        },
+        {
+            "name": "child_sepalLength_sepalWidth_y",
+            "type": "linear",
+            "domain": {
+                "data": "data_13",
+                "field": "sepalLength"
+            },
+            "range": [
+                200,
+                0
+            ],
+            "round": true,
+            "nice": true,
+            "zero": false
+        },
+        {
+            "name": "child_sepalLength_petalLength_x",
+            "type": "linear",
+            "domain": {
+                "data": "data_14",
+                "field": "petalLength"
+            },
+            "range": [
+                0,
+                200
+            ],
+            "round": true,
+            "nice": true,
+            "zero": false
+        },
+        {
+            "name": "child_sepalLength_petalLength_y",
+            "type": "linear",
+            "domain": {
+                "data": "data_14",
+                "field": "sepalLength"
+            },
+            "range": [
+                200,
+                0
+            ],
+            "round": true,
+            "nice": true,
+            "zero": false
+        },
+        {
+            "name": "child_sepalLength_petalWidth_x",
+            "type": "linear",
+            "domain": {
+                "data": "data_15",
+                "field": "petalWidth"
+            },
+            "range": [
+                0,
+                200
+            ],
+            "round": true,
+            "nice": true,
+            "zero": false
+        },
+        {
+            "name": "child_sepalLength_petalWidth_y",
+            "type": "linear",
+            "domain": {
+                "data": "data_15",
+                "field": "sepalLength"
+            },
+            "range": [
+                200,
+                0
+            ],
+            "round": true,
+            "nice": true,
+            "zero": false
+        }
+    ],
+    "legends": [
+        {
+            "stroke": "color",
+            "title": "species"
+        }
+    ]
+}

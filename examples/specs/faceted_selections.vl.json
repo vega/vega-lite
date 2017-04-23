@@ -6,12 +6,14 @@
   "selection": {
     "brush": {
       "type": "interval", "resolve": "intersect",
-      "encodings": ["x"]
+      "encodings": ["x"],
+      "on": "[mousedown[event.shiftKey], mouseup] > mousemove",
+      "translate": "[mousedown[event.shiftKey], mouseup] > mousemove"
     },
     "grid": {
       "type": "interval", "resolve": "global",
       "bind": "scales",
-      "translate": "[mousedown[event.shiftKey], mouseup] > mousemove"
+      "translate": "[mousedown[!event.shiftKey], mouseup] > mousemove"
     },
     "xenc": {
       "type": "single", "resolve": "global",

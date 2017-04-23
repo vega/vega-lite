@@ -99,6 +99,16 @@ export function debug(..._: any[]) {
 export namespace message {
   export const INVALID_SPEC = 'Invalid spec';
 
+  // REPEAT
+  export function noSuchRepeatedValue(field: string) {
+    return `Unknown repeated value "${field}".`;
+  }
+
+  // DATA
+  export function unrecognizedParse(p: string) {
+    return `Unrecognized parse ${p}.`;
+  }
+
   // TRANSFORMS
   export function invalidTransformIgnored(transform: any) {
     return `Ignoring an invalid transform: ${JSON.stringify(transform)}.`;
@@ -116,7 +126,7 @@ export namespace message {
     return `Invalid field type (${type}) for channel ${channel}, using ${newType} instead.`;
   }
 
-  export function emptyFieldDef(fieldDef: FieldDef, channel: Channel) {
+  export function emptyFieldDef(fieldDef: FieldDef<string>, channel: Channel) {
     return `Dropping ${JSON.stringify(fieldDef)} from channel ${channel} since it does not contain data field or value.`;
   }
 
@@ -154,22 +164,22 @@ export namespace message {
     return `Cannot use ${prop} with non-color channel.`;
   }
 
-  export function unaggregateDomainHasNoEffectForRawField(fieldDef: FieldDef) {
+  export function unaggregateDomainHasNoEffectForRawField(fieldDef: FieldDef<string>) {
     return `Using unaggregated domain with raw field has no effect (${JSON.stringify(fieldDef)}).`;
   }
 
-  export function unaggregateDomainWithNonSharedDomainOp(aggregate: AggregateOp) {
+  export function unaggregateDomainWithNonSharedDomainOp(aggregate: string) {
     return `Unaggregated domain not applicable for ${aggregate} since it produces values outside the origin domain of the source data.`;
   }
 
-  export function unaggregatedDomainWithLogScale(fieldDef: FieldDef) {
+  export function unaggregatedDomainWithLogScale(fieldDef: FieldDef<string>) {
     return `Unaggregated domain is currently unsupported for log scale (${JSON.stringify(fieldDef)}).`;
   }
 
   export const CANNOT_USE_RANGE_WITH_POSITION =
     'Cannot use custom range with x or y channel.  Please customize width, height, padding, or rangeStep instead.';
 
-    export const CANNOT_USE_PADDING_WITH_FACET = 'Cannot use padding with facet\'s scale.  Please use spacing instead.';
+  export const CANNOT_USE_PADDING_WITH_FACET = 'Cannot use padding with facet\'s scale.  Please use spacing instead.';
 
   export function cannotUseRangePropertyWithFacet(propName: string) {
     return `Cannot use custom ${propName} with row or column channel. Please use width, height, or spacing instead.`;
@@ -212,7 +222,7 @@ export namespace message {
     return `Cannot stack non-linear scale (${scaleType})`;
   }
 
-  export function cannotStackNonSummativeAggregate(aggregate: AggregateOp) {
+  export function cannotStackNonSummativeAggregate(aggregate: string) {
     return `Cannot stack when the aggregate function is non-summative (${aggregate})`;
   }
 

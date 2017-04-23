@@ -2,26 +2,6 @@
     "$schema": "http://vega.github.io/schema/vega/v3.0.json",
     "autosize": "pad",
     "padding": 5,
-    "signals": [
-        {
-            "name": "width",
-            "update": "data('layout')[0].width"
-        },
-        {
-            "name": "height",
-            "update": "data('layout')[0].height"
-        },
-        {
-            "name": "unit",
-            "value": {},
-            "on": [
-                {
-                    "events": "mousemove",
-                    "update": "group()._id ? group() : unit"
-                }
-            ]
-        }
-    ],
     "data": [
         {
             "name": "source_0",
@@ -82,78 +62,133 @@
                     ]
                 }
             ]
+        }
+    ],
+    "signals": [
+        {
+            "name": "child_width",
+            "update": "200"
         },
         {
-            "name": "layout",
-            "source": "source_0",
-            "transform": [
+            "name": "child_height",
+            "update": "200"
+        },
+        {
+            "name": "unit",
+            "value": {},
+            "on": [
                 {
-                    "type": "aggregate",
-                    "fields": [
-                        "Origin"
-                    ],
-                    "ops": [
-                        "distinct"
-                    ]
-                },
-                {
-                    "type": "formula",
-                    "as": "child_width",
-                    "expr": "200"
-                },
-                {
-                    "type": "formula",
-                    "as": "width",
-                    "expr": "datum[\"child_width\"] + 16"
-                },
-                {
-                    "type": "formula",
-                    "as": "child_height",
-                    "expr": "200"
-                },
-                {
-                    "type": "formula",
-                    "as": "height",
-                    "expr": "(datum[\"child_height\"] + 16) * datum[\"distinct_Origin\"]"
+                    "events": "mousemove",
+                    "update": "group()._id ? group() : unit"
                 }
             ]
         }
     ],
     "marks": [
         {
-            "name": "main-group",
+            "name": "nested_main_group",
             "type": "group",
-            "from": {
-                "data": "layout"
-            },
-            "encode": {
-                "update": {
-                    "width": {
-                        "field": "width"
-                    },
-                    "height": {
-                        "field": "height"
-                    }
-                }
+            "layout": {
+                "padding": {
+                    "row": 10,
+                    "column": 10
+                },
+                "offset": 10,
+                "columns": 1,
+                "bounds": "full"
             },
             "marks": [
                 {
-                    "name": "x-axes",
+                    "name": "row_title",
+                    "role": "row-title",
                     "type": "group",
+                    "marks": [
+                        {
+                            "type": "text",
+                            "role": "row-title-text",
+                            "encode": {
+                                "update": {
+                                    "y": {
+                                        "signal": "0.5 * height"
+                                    },
+                                    "align": {
+                                        "value": "right"
+                                    },
+                                    "text": {
+                                        "value": "Origin"
+                                    },
+                                    "fill": {
+                                        "value": "black"
+                                    },
+                                    "fontWeight": {
+                                        "value": "bold"
+                                    },
+                                    "angle": {
+                                        "value": 270
+                                    }
+                                }
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "row_header",
+                    "type": "group",
+                    "role": "row-header",
+                    "from": {
+                        "data": "row"
+                    },
+                    "title": {
+                        "text": {
+                            "signal": "parent[\"Origin\"]"
+                        },
+                        "offset": 10,
+                        "orient": "left",
+                        "encode": {
+                            "update": {
+                                "fontWeight": {
+                                    "value": "normal"
+                                },
+                                "angle": {
+                                    "value": 0
+                                },
+                                "fontSize": {
+                                    "value": 10
+                                },
+                                "align": {
+                                    "value": "right"
+                                },
+                                "baseline": {
+                                    "value": "middle"
+                                }
+                            }
+                        }
+                    },
+                    "encode": {
+                        "update": {
+                            "height": {
+                                "signal": "child_height"
+                            }
+                        }
+                    },
+                    "axes": [
+                        {
+                            "scale": "y",
+                            "format": "s",
+                            "orient": "left",
+                            "title": "Number of Records",
+                            "zindex": 1
+                        }
+                    ]
+                },
+                {
+                    "name": "column_footer",
+                    "type": "group",
+                    "role": "column-footer",
                     "encode": {
                         "update": {
                             "width": {
-                                "field": {
-                                    "parent": "child_width"
-                                }
-                            },
-                            "height": {
-                                "field": {
-                                    "group": "height"
-                                }
-                            },
-                            "x": {
-                                "value": 8
+                                "signal": "child_width"
                             }
                         }
                     },
@@ -183,41 +218,6 @@
                     ]
                 },
                 {
-                    "name": "y-axes",
-                    "type": "group",
-                    "from": {
-                        "data": "row"
-                    },
-                    "encode": {
-                        "update": {
-                            "width": {
-                                "field": {
-                                    "group": "width"
-                                }
-                            },
-                            "height": {
-                                "field": {
-                                    "parent": "child_height"
-                                }
-                            },
-                            "y": {
-                                "scale": "row",
-                                "field": "Origin",
-                                "offset": 8
-                            }
-                        }
-                    },
-                    "axes": [
-                        {
-                            "scale": "y",
-                            "format": "s",
-                            "orient": "left",
-                            "title": "Number of Records",
-                            "zindex": 1
-                        }
-                    ]
-                },
-                {
                     "name": "cell",
                     "type": "group",
                     "from": {
@@ -231,23 +231,11 @@
                     },
                     "encode": {
                         "update": {
-                            "x": {
-                                "value": 8
-                            },
-                            "y": {
-                                "scale": "row",
-                                "field": "Origin",
-                                "offset": 8
-                            },
                             "width": {
-                                "field": {
-                                    "parent": "child_width"
-                                }
+                                "signal": "child_width"
                             },
                             "height": {
-                                "field": {
-                                    "parent": "child_height"
-                                }
+                                "signal": "child_height"
                             },
                             "stroke": {
                                 "value": "#ccc"
@@ -308,74 +296,37 @@
                         }
                     ]
                 }
-            ],
-            "scales": [
-                {
-                    "name": "row",
-                    "type": "band",
-                    "domain": {
-                        "data": "source_0",
-                        "field": "Origin",
-                        "sort": true
-                    },
-                    "range": "height",
-                    "round": true
-                },
-                {
-                    "name": "x",
-                    "type": "bin-linear",
-                    "domain": {
-                        "signal": "sequence(child_bin_maxbins_15_Horsepower_bins.start, child_bin_maxbins_15_Horsepower_bins.stop + child_bin_maxbins_15_Horsepower_bins.step, child_bin_maxbins_15_Horsepower_bins.step)"
-                    },
-                    "range": [
-                        0,
-                        200
-                    ],
-                    "round": true,
-                    "nice": true
-                },
-                {
-                    "name": "y",
-                    "type": "linear",
-                    "domain": {
-                        "data": "source_0",
-                        "field": "count_*"
-                    },
-                    "range": [
-                        200,
-                        0
-                    ],
-                    "round": true,
-                    "nice": true,
-                    "zero": true
-                }
-            ],
-            "axes": [
-                {
-                    "scale": "row",
-                    "domain": false,
-                    "grid": false,
-                    "orient": "right",
-                    "ticks": false,
-                    "title": "Origin",
-                    "zindex": 1,
-                    "encode": {
-                        "labels": {
-                            "update": {
-                                "angle": {
-                                    "value": 90
-                                },
-                                "align": {
-                                    "value": "center"
-                                },
-                                "baseline": {
-                                    "value": "bottom"
-                                }
-                            }
-                        }
-                    }
-                }
             ]
+        }
+    ],
+    "scales": [
+        {
+            "name": "x",
+            "type": "bin-linear",
+            "domain": {
+                "signal": "sequence(child_bin_maxbins_15_Horsepower_bins.start, child_bin_maxbins_15_Horsepower_bins.stop + child_bin_maxbins_15_Horsepower_bins.step, child_bin_maxbins_15_Horsepower_bins.step)"
+            },
+            "range": [
+                0,
+                200
+            ],
+            "round": true,
+            "nice": true
+        },
+        {
+            "name": "y",
+            "type": "linear",
+            "domain": {
+                "data": "source_0",
+                "field": "count_*"
+            },
+            "range": [
+                200,
+                0
+            ],
+            "round": true,
+            "nice": true,
+            "zero": true
         }
     ]
 }

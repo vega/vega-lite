@@ -1,0 +1,788 @@
+{
+    "$schema": "http://vega.github.io/schema/vega/v3.0.json",
+    "autosize": "pad",
+    "padding": 5,
+    "data": [
+        {
+            "name": "source_0",
+            "url": "data/cars.json",
+            "format": {
+                "type": "json"
+            }
+        },
+        {
+            "name": "data_0",
+            "source": "source_0",
+            "transform": [
+                {
+                    "type": "formula",
+                    "expr": "toNumber(datum[\"Horsepower\"])",
+                    "as": "Horsepower"
+                },
+                {
+                    "type": "filter",
+                    "expr": "datum[\"Horsepower\"] !== null && !isNaN(datum[\"Horsepower\"])"
+                },
+                {
+                    "type": "extent",
+                    "field": "Horsepower",
+                    "signal": "child_Horsepower_bin_maxbins_10_Horsepower_extent"
+                },
+                {
+                    "type": "bin",
+                    "field": "Horsepower",
+                    "as": [
+                        "bin_maxbins_10_Horsepower_start",
+                        "bin_maxbins_10_Horsepower_end"
+                    ],
+                    "signal": "child_Horsepower_bin_maxbins_10_Horsepower_bins",
+                    "maxbins": 10,
+                    "extent": {
+                        "signal": "child_Horsepower_bin_maxbins_10_Horsepower_extent"
+                    }
+                },
+                {
+                    "type": "aggregate",
+                    "groupby": [
+                        "bin_maxbins_10_Horsepower_start",
+                        "bin_maxbins_10_Horsepower_end",
+                        "Origin"
+                    ],
+                    "ops": [
+                        "count"
+                    ],
+                    "fields": [
+                        "*"
+                    ]
+                },
+                {
+                    "type": "stack",
+                    "groupby": [
+                        "bin_maxbins_10_Horsepower_start",
+                        "bin_maxbins_10_Horsepower_end"
+                    ],
+                    "field": "count_*",
+                    "sort": {
+                        "field": [
+                            "Origin"
+                        ],
+                        "order": [
+                            "descending"
+                        ]
+                    },
+                    "as": [
+                        "count_*_start",
+                        "count_*_end"
+                    ],
+                    "offset": "zero"
+                }
+            ]
+        },
+        {
+            "name": "data_1",
+            "source": "source_0",
+            "transform": [
+                {
+                    "type": "formula",
+                    "expr": "toNumber(datum[\"Miles_per_Gallon\"])",
+                    "as": "Miles_per_Gallon"
+                },
+                {
+                    "type": "filter",
+                    "expr": "datum[\"Miles_per_Gallon\"] !== null && !isNaN(datum[\"Miles_per_Gallon\"])"
+                },
+                {
+                    "type": "extent",
+                    "field": "Miles_per_Gallon",
+                    "signal": "child_Miles_per_Gallon_bin_maxbins_10_Miles_per_Gallon_extent"
+                },
+                {
+                    "type": "bin",
+                    "field": "Miles_per_Gallon",
+                    "as": [
+                        "bin_maxbins_10_Miles_per_Gallon_start",
+                        "bin_maxbins_10_Miles_per_Gallon_end"
+                    ],
+                    "signal": "child_Miles_per_Gallon_bin_maxbins_10_Miles_per_Gallon_bins",
+                    "maxbins": 10,
+                    "extent": {
+                        "signal": "child_Miles_per_Gallon_bin_maxbins_10_Miles_per_Gallon_extent"
+                    }
+                },
+                {
+                    "type": "aggregate",
+                    "groupby": [
+                        "bin_maxbins_10_Miles_per_Gallon_start",
+                        "bin_maxbins_10_Miles_per_Gallon_end",
+                        "Origin"
+                    ],
+                    "ops": [
+                        "count"
+                    ],
+                    "fields": [
+                        "*"
+                    ]
+                },
+                {
+                    "type": "stack",
+                    "groupby": [
+                        "bin_maxbins_10_Miles_per_Gallon_start",
+                        "bin_maxbins_10_Miles_per_Gallon_end"
+                    ],
+                    "field": "count_*",
+                    "sort": {
+                        "field": [
+                            "Origin"
+                        ],
+                        "order": [
+                            "descending"
+                        ]
+                    },
+                    "as": [
+                        "count_*_start",
+                        "count_*_end"
+                    ],
+                    "offset": "zero"
+                }
+            ]
+        },
+        {
+            "name": "data_2",
+            "source": "source_0",
+            "transform": [
+                {
+                    "type": "formula",
+                    "expr": "toNumber(datum[\"Acceleration\"])",
+                    "as": "Acceleration"
+                },
+                {
+                    "type": "filter",
+                    "expr": "datum[\"Acceleration\"] !== null && !isNaN(datum[\"Acceleration\"])"
+                },
+                {
+                    "type": "extent",
+                    "field": "Acceleration",
+                    "signal": "child_Acceleration_bin_maxbins_10_Acceleration_extent"
+                },
+                {
+                    "type": "bin",
+                    "field": "Acceleration",
+                    "as": [
+                        "bin_maxbins_10_Acceleration_start",
+                        "bin_maxbins_10_Acceleration_end"
+                    ],
+                    "signal": "child_Acceleration_bin_maxbins_10_Acceleration_bins",
+                    "maxbins": 10,
+                    "extent": {
+                        "signal": "child_Acceleration_bin_maxbins_10_Acceleration_extent"
+                    }
+                },
+                {
+                    "type": "aggregate",
+                    "groupby": [
+                        "bin_maxbins_10_Acceleration_start",
+                        "bin_maxbins_10_Acceleration_end",
+                        "Origin"
+                    ],
+                    "ops": [
+                        "count"
+                    ],
+                    "fields": [
+                        "*"
+                    ]
+                },
+                {
+                    "type": "stack",
+                    "groupby": [
+                        "bin_maxbins_10_Acceleration_start",
+                        "bin_maxbins_10_Acceleration_end"
+                    ],
+                    "field": "count_*",
+                    "sort": {
+                        "field": [
+                            "Origin"
+                        ],
+                        "order": [
+                            "descending"
+                        ]
+                    },
+                    "as": [
+                        "count_*_start",
+                        "count_*_end"
+                    ],
+                    "offset": "zero"
+                }
+            ]
+        }
+    ],
+    "signals": [
+        {
+            "name": "child_Horsepower_width",
+            "update": "200"
+        },
+        {
+            "name": "child_Horsepower_height",
+            "update": "200"
+        },
+        {
+            "name": "child_Miles_per_Gallon_width",
+            "update": "200"
+        },
+        {
+            "name": "child_Miles_per_Gallon_height",
+            "update": "200"
+        },
+        {
+            "name": "child_Acceleration_width",
+            "update": "200"
+        },
+        {
+            "name": "child_Acceleration_height",
+            "update": "200"
+        },
+        {
+            "name": "unit",
+            "value": {},
+            "on": [
+                {
+                    "events": "mousemove",
+                    "update": "group()._id ? group() : unit"
+                }
+            ]
+        }
+    ],
+    "marks": [
+        {
+            "name": "nested_main_group",
+            "type": "group",
+            "layout": {
+                "padding": {
+                    "row": 10,
+                    "column": 10
+                },
+                "offset": 10,
+                "columns": 3,
+                "bounds": "full",
+                "align": "all"
+            },
+            "marks": [
+                {
+                    "type": "group",
+                    "name": "child_Horsepower_group",
+                    "encode": {
+                        "update": {
+                            "width": {
+                                "signal": "child_Horsepower_width"
+                            },
+                            "height": {
+                                "signal": "child_Horsepower_height"
+                            },
+                            "fill": {
+                                "value": "transparent"
+                            }
+                        }
+                    },
+                    "marks": [
+                        {
+                            "name": "child_Horsepower_marks",
+                            "type": "rect",
+                            "role": "bar",
+                            "from": {
+                                "data": "data_0"
+                            },
+                            "encode": {
+                                "update": {
+                                    "x2": {
+                                        "scale": "child_Horsepower_x",
+                                        "field": "bin_maxbins_10_Horsepower_start",
+                                        "offset": 1
+                                    },
+                                    "x": {
+                                        "scale": "child_Horsepower_x",
+                                        "field": "bin_maxbins_10_Horsepower_end"
+                                    },
+                                    "y": {
+                                        "scale": "child_Horsepower_y",
+                                        "field": "count_*_end"
+                                    },
+                                    "y2": {
+                                        "scale": "child_Horsepower_y",
+                                        "field": "count_*_start"
+                                    },
+                                    "fill": {
+                                        "scale": "color",
+                                        "field": "Origin"
+                                    }
+                                }
+                            }
+                        }
+                    ],
+                    "scales": [
+                        {
+                            "name": "child_Horsepower_x",
+                            "type": "bin-linear",
+                            "domain": {
+                                "signal": "sequence(child_Horsepower_bin_maxbins_10_Horsepower_bins.start, child_Horsepower_bin_maxbins_10_Horsepower_bins.stop + child_Horsepower_bin_maxbins_10_Horsepower_bins.step, child_Horsepower_bin_maxbins_10_Horsepower_bins.step)"
+                            },
+                            "range": [
+                                0,
+                                200
+                            ],
+                            "round": true,
+                            "nice": true
+                        },
+                        {
+                            "name": "child_Horsepower_y",
+                            "type": "linear",
+                            "domain": {
+                                "data": "data_0",
+                                "fields": [
+                                    "count_*_start",
+                                    "count_*_end"
+                                ]
+                            },
+                            "range": [
+                                200,
+                                0
+                            ],
+                            "round": true,
+                            "nice": true,
+                            "zero": true
+                        }
+                    ],
+                    "axes": [
+                        {
+                            "scale": "child_Horsepower_x",
+                            "format": "s",
+                            "orient": "bottom",
+                            "title": "BIN(Horsepower)",
+                            "zindex": 1,
+                            "encode": {
+                                "labels": {
+                                    "update": {
+                                        "angle": {
+                                            "value": 270
+                                        },
+                                        "align": {
+                                            "value": "right"
+                                        },
+                                        "baseline": {
+                                            "value": "middle"
+                                        }
+                                    }
+                                }
+                            }
+                        },
+                        {
+                            "scale": "child_Horsepower_y",
+                            "format": "s",
+                            "orient": "left",
+                            "title": "Number of Records",
+                            "zindex": 1
+                        },
+                        {
+                            "scale": "child_Horsepower_y",
+                            "domain": false,
+                            "format": "s",
+                            "grid": true,
+                            "labels": false,
+                            "orient": "left",
+                            "ticks": false,
+                            "zindex": 0,
+                            "gridScale": "child_Horsepower_x"
+                        }
+                    ]
+                },
+                {
+                    "type": "group",
+                    "name": "child_Miles_per_Gallon_group",
+                    "encode": {
+                        "update": {
+                            "width": {
+                                "signal": "child_Miles_per_Gallon_width"
+                            },
+                            "height": {
+                                "signal": "child_Miles_per_Gallon_height"
+                            },
+                            "fill": {
+                                "value": "transparent"
+                            }
+                        }
+                    },
+                    "marks": [
+                        {
+                            "name": "child_Miles_per_Gallon_marks",
+                            "type": "rect",
+                            "role": "bar",
+                            "from": {
+                                "data": "data_1"
+                            },
+                            "encode": {
+                                "update": {
+                                    "x2": {
+                                        "scale": "child_Miles_per_Gallon_x",
+                                        "field": "bin_maxbins_10_Miles_per_Gallon_start",
+                                        "offset": 1
+                                    },
+                                    "x": {
+                                        "scale": "child_Miles_per_Gallon_x",
+                                        "field": "bin_maxbins_10_Miles_per_Gallon_end"
+                                    },
+                                    "y": {
+                                        "scale": "child_Miles_per_Gallon_y",
+                                        "field": "count_*_end"
+                                    },
+                                    "y2": {
+                                        "scale": "child_Miles_per_Gallon_y",
+                                        "field": "count_*_start"
+                                    },
+                                    "fill": {
+                                        "scale": "color",
+                                        "field": "Origin"
+                                    }
+                                }
+                            }
+                        }
+                    ],
+                    "scales": [
+                        {
+                            "name": "child_Miles_per_Gallon_x",
+                            "type": "bin-linear",
+                            "domain": {
+                                "signal": "sequence(child_Miles_per_Gallon_bin_maxbins_10_Miles_per_Gallon_bins.start, child_Miles_per_Gallon_bin_maxbins_10_Miles_per_Gallon_bins.stop + child_Miles_per_Gallon_bin_maxbins_10_Miles_per_Gallon_bins.step, child_Miles_per_Gallon_bin_maxbins_10_Miles_per_Gallon_bins.step)"
+                            },
+                            "range": [
+                                0,
+                                200
+                            ],
+                            "round": true,
+                            "nice": true
+                        },
+                        {
+                            "name": "child_Miles_per_Gallon_y",
+                            "type": "linear",
+                            "domain": {
+                                "data": "data_1",
+                                "fields": [
+                                    "count_*_start",
+                                    "count_*_end"
+                                ]
+                            },
+                            "range": [
+                                200,
+                                0
+                            ],
+                            "round": true,
+                            "nice": true,
+                            "zero": true
+                        }
+                    ],
+                    "axes": [
+                        {
+                            "scale": "child_Miles_per_Gallon_x",
+                            "format": "s",
+                            "orient": "bottom",
+                            "title": "BIN(Miles_per_Gallon)",
+                            "zindex": 1,
+                            "encode": {
+                                "labels": {
+                                    "update": {
+                                        "angle": {
+                                            "value": 270
+                                        },
+                                        "align": {
+                                            "value": "right"
+                                        },
+                                        "baseline": {
+                                            "value": "middle"
+                                        }
+                                    }
+                                }
+                            }
+                        },
+                        {
+                            "scale": "child_Miles_per_Gallon_y",
+                            "format": "s",
+                            "orient": "left",
+                            "title": "Number of Records",
+                            "zindex": 1
+                        },
+                        {
+                            "scale": "child_Miles_per_Gallon_y",
+                            "domain": false,
+                            "format": "s",
+                            "grid": true,
+                            "labels": false,
+                            "orient": "left",
+                            "ticks": false,
+                            "zindex": 0,
+                            "gridScale": "child_Miles_per_Gallon_x"
+                        }
+                    ]
+                },
+                {
+                    "type": "group",
+                    "name": "child_Acceleration_group",
+                    "encode": {
+                        "update": {
+                            "width": {
+                                "signal": "child_Acceleration_width"
+                            },
+                            "height": {
+                                "signal": "child_Acceleration_height"
+                            },
+                            "fill": {
+                                "value": "transparent"
+                            }
+                        }
+                    },
+                    "marks": [
+                        {
+                            "name": "child_Acceleration_marks",
+                            "type": "rect",
+                            "role": "bar",
+                            "from": {
+                                "data": "data_2"
+                            },
+                            "encode": {
+                                "update": {
+                                    "x2": {
+                                        "scale": "child_Acceleration_x",
+                                        "field": "bin_maxbins_10_Acceleration_start",
+                                        "offset": 1
+                                    },
+                                    "x": {
+                                        "scale": "child_Acceleration_x",
+                                        "field": "bin_maxbins_10_Acceleration_end"
+                                    },
+                                    "y": {
+                                        "scale": "child_Acceleration_y",
+                                        "field": "count_*_end"
+                                    },
+                                    "y2": {
+                                        "scale": "child_Acceleration_y",
+                                        "field": "count_*_start"
+                                    },
+                                    "fill": {
+                                        "scale": "color",
+                                        "field": "Origin"
+                                    }
+                                }
+                            }
+                        }
+                    ],
+                    "scales": [
+                        {
+                            "name": "child_Acceleration_x",
+                            "type": "bin-linear",
+                            "domain": {
+                                "signal": "sequence(child_Acceleration_bin_maxbins_10_Acceleration_bins.start, child_Acceleration_bin_maxbins_10_Acceleration_bins.stop + child_Acceleration_bin_maxbins_10_Acceleration_bins.step, child_Acceleration_bin_maxbins_10_Acceleration_bins.step)"
+                            },
+                            "range": [
+                                0,
+                                200
+                            ],
+                            "round": true,
+                            "nice": true
+                        },
+                        {
+                            "name": "child_Acceleration_y",
+                            "type": "linear",
+                            "domain": {
+                                "data": "data_2",
+                                "fields": [
+                                    "count_*_start",
+                                    "count_*_end"
+                                ]
+                            },
+                            "range": [
+                                200,
+                                0
+                            ],
+                            "round": true,
+                            "nice": true,
+                            "zero": true
+                        }
+                    ],
+                    "axes": [
+                        {
+                            "scale": "child_Acceleration_x",
+                            "format": "s",
+                            "orient": "bottom",
+                            "title": "BIN(Acceleration)",
+                            "zindex": 1,
+                            "encode": {
+                                "labels": {
+                                    "update": {
+                                        "angle": {
+                                            "value": 270
+                                        },
+                                        "align": {
+                                            "value": "right"
+                                        },
+                                        "baseline": {
+                                            "value": "middle"
+                                        }
+                                    }
+                                }
+                            }
+                        },
+                        {
+                            "scale": "child_Acceleration_y",
+                            "format": "s",
+                            "orient": "left",
+                            "title": "Number of Records",
+                            "zindex": 1
+                        },
+                        {
+                            "scale": "child_Acceleration_y",
+                            "domain": false,
+                            "format": "s",
+                            "grid": true,
+                            "labels": false,
+                            "orient": "left",
+                            "ticks": false,
+                            "zindex": 0,
+                            "gridScale": "child_Acceleration_x"
+                        }
+                    ]
+                }
+            ]
+        }
+    ],
+    "scales": [
+        {
+            "name": "color",
+            "type": "ordinal",
+            "domain": {
+                "fields": [
+                    {
+                        "data": "data_0",
+                        "field": "Origin"
+                    },
+                    {
+                        "data": "data_1",
+                        "field": "Origin"
+                    },
+                    {
+                        "data": "data_2",
+                        "field": "Origin"
+                    }
+                ],
+                "sort": true
+            },
+            "range": "category"
+        },
+        {
+            "name": "child_Horsepower_x",
+            "type": "bin-linear",
+            "domain": {
+                "signal": "sequence(child_Horsepower_bin_maxbins_10_Horsepower_bins.start, child_Horsepower_bin_maxbins_10_Horsepower_bins.stop + child_Horsepower_bin_maxbins_10_Horsepower_bins.step, child_Horsepower_bin_maxbins_10_Horsepower_bins.step)"
+            },
+            "range": [
+                0,
+                200
+            ],
+            "round": true,
+            "nice": true
+        },
+        {
+            "name": "child_Horsepower_y",
+            "type": "linear",
+            "domain": {
+                "data": "data_0",
+                "fields": [
+                    "count_*_start",
+                    "count_*_end"
+                ]
+            },
+            "range": [
+                200,
+                0
+            ],
+            "round": true,
+            "nice": true,
+            "zero": true
+        },
+        {
+            "name": "child_Miles_per_Gallon_x",
+            "type": "bin-linear",
+            "domain": {
+                "signal": "sequence(child_Miles_per_Gallon_bin_maxbins_10_Miles_per_Gallon_bins.start, child_Miles_per_Gallon_bin_maxbins_10_Miles_per_Gallon_bins.stop + child_Miles_per_Gallon_bin_maxbins_10_Miles_per_Gallon_bins.step, child_Miles_per_Gallon_bin_maxbins_10_Miles_per_Gallon_bins.step)"
+            },
+            "range": [
+                0,
+                200
+            ],
+            "round": true,
+            "nice": true
+        },
+        {
+            "name": "child_Miles_per_Gallon_y",
+            "type": "linear",
+            "domain": {
+                "data": "data_1",
+                "fields": [
+                    "count_*_start",
+                    "count_*_end"
+                ]
+            },
+            "range": [
+                200,
+                0
+            ],
+            "round": true,
+            "nice": true,
+            "zero": true
+        },
+        {
+            "name": "child_Acceleration_x",
+            "type": "bin-linear",
+            "domain": {
+                "signal": "sequence(child_Acceleration_bin_maxbins_10_Acceleration_bins.start, child_Acceleration_bin_maxbins_10_Acceleration_bins.stop + child_Acceleration_bin_maxbins_10_Acceleration_bins.step, child_Acceleration_bin_maxbins_10_Acceleration_bins.step)"
+            },
+            "range": [
+                0,
+                200
+            ],
+            "round": true,
+            "nice": true
+        },
+        {
+            "name": "child_Acceleration_y",
+            "type": "linear",
+            "domain": {
+                "data": "data_2",
+                "fields": [
+                    "count_*_start",
+                    "count_*_end"
+                ]
+            },
+            "range": [
+                200,
+                0
+            ],
+            "round": true,
+            "nice": true,
+            "zero": true
+        }
+    ],
+    "legends": [
+        {
+            "fill": "color",
+            "title": "Origin",
+            "encode": {
+                "symbols": {
+                    "update": {
+                        "shape": {
+                            "value": "square"
+                        },
+                        "strokeWidth": {
+                            "value": 0
+                        }
+                    }
+                }
+            }
+        }
+    ]
+}

@@ -2,6 +2,7 @@ import {FieldDef} from '../../fielddef';
 import {QUANTITATIVE, TEMPORAL} from '../../type';
 import {contains, Dict, differ, differArray, duplicate, extend, hash, keys} from '../../util';
 import {VgFilterTransform} from '../../vega.schema';
+import {ModelWithField} from '../model';
 import {Model} from './../model';
 import {DataFlowNode} from './dataflow';
 
@@ -14,20 +15,20 @@ const DEFAULT_NULL_FILTERS = {
 };
 
 export class NullFilterNode extends DataFlowNode {
-  private _filteredFields: Dict<FieldDef>;
+  private _filteredFields: Dict<FieldDef<string>>;
 
   public clone() {
     return new NullFilterNode(duplicate(this._filteredFields));
   }
 
-  constructor(fields: Dict<FieldDef>) {
+  constructor(fields: Dict<FieldDef<string>>) {
     super();
 
     this._filteredFields = fields;
   }
 
-  public static make(model: Model) {
-    const fields = model.reduceFieldDef((aggregator: Dict<FieldDef>, fieldDef: FieldDef) => {
+  public static make(model: ModelWithField) {
+    const fields = model.reduceFieldDef((aggregator: Dict<FieldDef<string>>, fieldDef) => {
       if (fieldDef.aggregate !== 'count') { // Ignore * for count(*) fields.
         if (model.config.filterInvalid ||
           (model.config.filterInvalid === undefined && (fieldDef.field && DEFAULT_NULL_FILTERS[fieldDef.type]))) {
@@ -39,7 +40,7 @@ export class NullFilterNode extends DataFlowNode {
         }
       }
       return aggregator;
-    }, {} as Dict<FieldDef>);
+    }, {} as Dict<FieldDef<string>>);
 
     if (Object.keys(fields).length === 0) {
       return null;

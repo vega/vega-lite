@@ -1,10 +1,13 @@
 import {autoMaxBins, Bin, binToString} from '../../bin';
 import {Channel} from '../../channel';
+import {Config} from '../../config';
 import {field, FieldDef} from '../../fielddef';
 import {hasDiscreteDomain} from '../../scale';
-import {Dict, duplicate, extend, flatten, hash, isBoolean, StringSet, vals, varName} from '../../util';
+import {Dict, duplicate, extend, flatten, hash, isBoolean, StringSet, vals} from '../../util';
 import {VgBinTransform, VgTransform} from '../../vega.schema';
-import {Model} from './../model';
+import {numberFormat} from '../common';
+import {ModelWithField} from '../model';
+import {UnitModel} from '../unit';
 import {DataFlowNode} from './dataflow';
 
 
@@ -12,16 +15,17 @@ function numberFormatExpr(expr: string, format: string) {
   return `format(${expr}, '${format}')`;
 }
 
-function rangeFormula(model: Model, fieldDef: FieldDef, channel: Channel) {
-    const discreteDomain = hasDiscreteDomain(model.scale(channel).type);
+function rangeFormula(model: ModelWithField, fieldDef: FieldDef<string>, channel: Channel, config: Config) {
+    const discreteDomain = model.hasDiscreteDomain(channel);
 
     if (discreteDomain) {
       // read format from axis or legend, if there is no format then use config.numberFormat
-      const format = (model.axis(channel) || model.legend(channel) || {}).format ||
-        model.config.numberFormat;
 
-      const startField = field(fieldDef, {datum: true, binSuffix: 'start'});
-      const endField = field(fieldDef, {datum: true, binSuffix: 'end'});
+      const guide = (model instanceof UnitModel) ? (model.axis(channel) || model.legend(channel) || {}) : {};
+      const format = numberFormat(fieldDef, guide.format, config, channel);
+
+      const startField = field(fieldDef, {expr: 'datum', binSuffix: 'start'});
+      const endField = field(fieldDef, {expr: 'datum', binSuffix: 'end'});
 
       return {
         formulaAs: field(fieldDef, {binSuffix: 'range'}),
@@ -53,8 +57,8 @@ export class BinNode extends DataFlowNode {
     super();
   }
 
-  public static make(model: Model) {
-    const bins = model.reduceFieldDef((binComponent: Dict<BinComponent>, fieldDef: FieldDef, channel: Channel) => {
+  public static make(model: ModelWithField) {
+    const bins = model.reduceFieldDef((binComponent: Dict<BinComponent>, fieldDef, channel) => {
       const fieldDefBin = model.fieldDef(channel).bin;
       if (fieldDefBin) {
         const bin: Bin = isBoolean(fieldDefBin) ? {} : fieldDefBin;
@@ -65,14 +69,14 @@ export class BinNode extends DataFlowNode {
             bin: bin,
             field: fieldDef.field,
             as: [field(fieldDef, {binSuffix: 'start'}), field(fieldDef, {binSuffix: 'end'})],
-            signal: varName(model.getName(`${key}_bins`)),
-            extentSignal: varName(model.getName(key + '_extent'))
+            signal: model.getName(`${key}_bins`),
+            extentSignal: model.getName(key + '_extent')
           };
         }
 
         binComponent[key] = {
           ...binComponent[key],
-          ...rangeFormula(model, fieldDef, channel)
+          ...rangeFormula(model, fieldDef, channel, model.config)
         };
       }
       return binComponent;

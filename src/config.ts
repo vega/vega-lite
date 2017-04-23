@@ -1,4 +1,5 @@
 import {AxisConfig} from './axis';
+import {BoxPlotConfig} from './compositemark';
 import {defaultLegendConfig, LegendConfig} from './legend';
 import {BarConfig, MarkConfig, TextConfig, TickConfig} from './mark';
 import * as mark from './mark';
@@ -101,16 +102,12 @@ export const defaultFacetCellConfig: CellConfig = {
 };
 
 export interface FacetConfig {
-  /** Facet Axis Config */
-  axis?: AxisConfig;
-
   /** Facet Cell Config */
   cell?: CellConfig;
 }
 
 
 export const defaultFacetConfig: FacetConfig = {
-  axis: {},
   cell: defaultFacetCellConfig
 };
 
@@ -206,6 +203,13 @@ export interface Config  extends TopLevelProperties {
   /** Tick-Specific Config */
   tick?: TickConfig;
 
+  /** Box Config */
+  box?: BoxPlotConfig;
+
+  boxWhisker?: MarkConfig;
+
+  boxMid?: MarkConfig;
+
   // OTHER CONFIG
 
   // FIXME: move this to line/area
@@ -274,7 +278,7 @@ export interface Config  extends TopLevelProperties {
    * Whether to filter invalid values (`null` and `NaN`) from the data.
    * - By default (`undefined`), only quantitative and temporal fields are filtered.
    * - If set to `true`, all data items with null values are filtered.
-   * - If `false`, all data items are included. In this case, null values will be interpret as zeroes.
+   * - If `false`, all data items are included. In this case, null values will be interpreted as zeroes.
    */
   filterInvalid?: boolean;
 
@@ -305,6 +309,10 @@ export const defaultConfig: Config = {
   square: {},
   text: mark.defaultTextConfig,
   tick: mark.defaultTickConfig,
+
+  box: {size: 14},
+  boxWhisker: {},
+  boxMid: {},
 
   overlay: defaultOverlayConfig,
   scale: defaultScaleConfig,

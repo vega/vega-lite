@@ -37,7 +37,7 @@ export function parseMark(model: UnitModel): any[] {
   }
 }
 
-const FACETED_PATH_PREFIX = 'faceted-path-';
+const FACETED_PATH_PREFIX = 'faceted_path_';
 
 function parsePathMark(model: UnitModel) {
   const mark = model.mark();
@@ -50,7 +50,7 @@ function parsePathMark(model: UnitModel) {
       type: markCompiler[mark].vgMark,
       // If has subfacet for line/area group, need to use faceted data from below.
       // FIXME: support sorting path order (in connected scatterplot)
-      from: {data: (details.length > 0 ? FACETED_PATH_PREFIX : '') + model.getDataName(MAIN)},
+      from: {data: (details.length > 0 ? FACETED_PATH_PREFIX : '') + model.requestDataName(MAIN)},
       encode: {update: markCompiler[mark].encodeEntry(model)}
     }
   ];
@@ -63,8 +63,8 @@ function parsePathMark(model: UnitModel) {
       type: 'group',
       from: {
         facet: {
-          name: FACETED_PATH_PREFIX + model.getDataName(MAIN),
-          data: model.getDataName(MAIN),
+          name: FACETED_PATH_PREFIX + model.requestDataName(MAIN),
+          data: model.requestDataName(MAIN),
           groupby: details,
         }
       },
@@ -94,7 +94,7 @@ function parseNonPathMark(model: UnitModel) {
     name: model.getName('marks'),
     type: markCompiler[mark].vgMark,
     ...(role? {role} : {}),
-    from: {data: model.getDataName(MAIN)},
+    from: {data: model.requestDataName(MAIN)},
     encode: {update: markCompiler[mark].encodeEntry(model)}
   });
 

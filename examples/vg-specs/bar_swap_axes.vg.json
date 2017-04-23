@@ -1,0 +1,202 @@
+{
+    "$schema": "http://vega.github.io/schema/vega/v3.0.json",
+    "autosize": "pad",
+    "padding": 5,
+    "data": [
+        {
+            "name": "source_0",
+            "values": [
+                {
+                    "a": "C",
+                    "b": 2
+                },
+                {
+                    "a": "C",
+                    "b": 7
+                },
+                {
+                    "a": "C",
+                    "b": 4
+                },
+                {
+                    "a": "D",
+                    "b": 1
+                },
+                {
+                    "a": "D",
+                    "b": 2
+                },
+                {
+                    "a": "D",
+                    "b": 6
+                },
+                {
+                    "a": "E",
+                    "b": 8
+                },
+                {
+                    "a": "E",
+                    "b": 4
+                },
+                {
+                    "a": "E",
+                    "b": 7
+                }
+            ],
+            "format": {
+                "type": "json",
+                "parse": {
+                    "b": "number"
+                }
+            },
+            "transform": [
+                {
+                    "type": "filter",
+                    "expr": "datum[\"b\"] !== null && !isNaN(datum[\"b\"])"
+                },
+                {
+                    "type": "aggregate",
+                    "groupby": [
+                        "a"
+                    ],
+                    "ops": [
+                        "average"
+                    ],
+                    "fields": [
+                        "b"
+                    ]
+                }
+            ]
+        }
+    ],
+    "signals": [
+        {
+            "name": "width",
+            "update": "200"
+        },
+        {
+            "name": "height",
+            "update": "bandspace(domain('y').length, 1, 0.5) * 21"
+        },
+        {
+            "name": "unit",
+            "value": {},
+            "on": [
+                {
+                    "events": "mousemove",
+                    "update": "group()._id ? group() : unit"
+                }
+            ]
+        }
+    ],
+    "marks": [
+        {
+            "name": "nested_main_group",
+            "type": "group",
+            "encode": {
+                "update": {
+                    "width": {
+                        "signal": "width"
+                    },
+                    "height": {
+                        "signal": "height"
+                    },
+                    "fill": {
+                        "value": "transparent"
+                    }
+                }
+            },
+            "marks": [
+                {
+                    "name": "marks",
+                    "type": "rect",
+                    "role": "bar",
+                    "from": {
+                        "data": "source_0"
+                    },
+                    "encode": {
+                        "update": {
+                            "x": {
+                                "scale": "x",
+                                "field": "average_b"
+                            },
+                            "x2": {
+                                "scale": "x",
+                                "value": 0
+                            },
+                            "yc": {
+                                "scale": "y",
+                                "field": "a"
+                            },
+                            "height": {
+                                "value": 20
+                            },
+                            "fill": {
+                                "value": "#4c78a8"
+                            }
+                        }
+                    }
+                }
+            ]
+        }
+    ],
+    "scales": [
+        {
+            "name": "x",
+            "type": "linear",
+            "domain": {
+                "data": "source_0",
+                "field": "average_b"
+            },
+            "range": [
+                0,
+                200
+            ],
+            "round": true,
+            "nice": true,
+            "zero": true
+        },
+        {
+            "name": "y",
+            "type": "point",
+            "domain": {
+                "data": "source_0",
+                "field": "a",
+                "sort": true
+            },
+            "range": {
+                "step": 21
+            },
+            "round": true,
+            "padding": 0.5
+        }
+    ],
+    "axes": [
+        {
+            "scale": "x",
+            "format": "s",
+            "orient": "bottom",
+            "tickCount": 5,
+            "title": "AVERAGE(b)",
+            "zindex": 1
+        },
+        {
+            "scale": "x",
+            "domain": false,
+            "format": "s",
+            "grid": true,
+            "labels": false,
+            "orient": "bottom",
+            "tickCount": 5,
+            "ticks": false,
+            "zindex": 0,
+            "gridScale": "y"
+        },
+        {
+            "scale": "y",
+            "orient": "left",
+            "title": "a",
+            "zindex": 1
+        }
+    ]
+}

@@ -33,7 +33,11 @@ const scaleBindings:TransformCompiler = {
   },
 
   topLevelSignals: function(model, selCmpt, signals) {
-    return signals.concat(selCmpt.scales.map((channel) => {
+    const channels = selCmpt.scales.filter((channel) => {
+      return !(signals.filter((s) => s.name === channelSignalName(selCmpt, channel)).length);
+    });
+
+    return signals.concat(channels.map((channel) => {
       return {name: channelSignalName(selCmpt, channel)};
     }));
   },
@@ -46,7 +50,7 @@ const scaleBindings:TransformCompiler = {
     });
 
     selCmpt.scales.forEach(function(channel) {
-      const signal = signals.filter((s) => s.name === name + '_' + channel)[0];
+      const signal = signals.filter((s) => s.name === channelSignalName(selCmpt, channel))[0];
       signal.push = 'outer';
       delete signal.value;
       delete signal.update;

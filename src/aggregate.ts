@@ -52,3 +52,5 @@ export const SHARED_DOMAIN_OPS: AggregateOp[] = [
     'min',
     'max',
 ];
+
+export const SHARED_DOMAIN_OP_INDEX = toSet(SHARED_DOMAIN_OPS);

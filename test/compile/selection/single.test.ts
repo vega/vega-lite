@@ -44,7 +44,7 @@ describe('Single Selection', function() {
       }]
     }]);
 
-    const signals = selection.assembleUnitSignals(model, []);
+    const signals = selection.assembleUnitSelectionSignals(model, []);
     assert.includeDeepMembers(signals, oneSg.concat(twoSg));
   });
 
@@ -55,7 +55,7 @@ describe('Single Selection', function() {
     const twoExpr = single.tupleExpr(model, selCmpts['two']);
     assert.equal(twoExpr, 'fields: two.fields, values: two.values, Miles_per_Gallon: two.values[0], Origin: two.values[1]');
 
-    const signals = selection.assembleUnitSignals(model, []);
+    const signals = selection.assembleUnitSelectionSignals(model, []);
     assert.includeDeepMembers(signals, [
       {
         "name": "one_tuple",
@@ -85,7 +85,7 @@ describe('Single Selection', function() {
     const twoExpr = single.modifyExpr(model, selCmpts['two']);
     assert.equal(twoExpr, 'two_tuple, true');
 
-    const signals = selection.assembleUnitSignals(model, []);
+    const signals = selection.assembleUnitSelectionSignals(model, []);
     assert.includeDeepMembers(signals, [
       {
         "name": "one_modify",
@@ -119,19 +119,19 @@ describe('Single Selection', function() {
       name: 'two', update: 'data(\"two_store\")[0]'
     }]);
 
-    const signals = selection.assembleTopLevelSignals(model);
+    const signals = selection.assembleTopLevelSignals(model, []);
     assert.includeDeepMembers(signals, oneSg.concat(twoSg));
   });
 
   it('builds unit datasets', function() {
     const data: any[] = [];
-    assert.sameDeepMembers(selection.assembleUnitData(model, data), [
+    assert.sameDeepMembers(selection.assembleUnitSelectionData(model, data), [
       {name: 'one_store'}, {name: 'two_store'}
     ]);
   });
 
   it('leaves marks alone', function() {
     const marks: any[] = [];
-    assert.equal(selection.assembleUnitMarks(model, marks), marks);
+    assert.equal(selection.assembleUnitSelectionMarks(model, marks), marks);
   });
 });

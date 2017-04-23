@@ -1,11 +1,11 @@
 /* tslint:disable:quotemark */
 
 import {assert} from 'chai';
-
 import {Encoding} from '../src/encoding';
-import {FieldDef} from '../src/fielddef';
+import {Field, FieldDef} from '../src/fielddef';
 import {MarkDef} from '../src/mark';
 import {fieldDefs, GenericSpec, GenericUnitSpec, normalize, Spec} from '../src/spec';
+import {Config, defaultConfig, initConfig} from './../src/config';
 
 // describe('isStacked()') -- tested as part of stackOffset in stack.test.ts
 
@@ -25,8 +25,8 @@ describe('normalize()', function () {
           "y": {"field": "US_DVD_Sales","type": "quantitative"}
         }
       };
-
-      assert.deepEqual<GenericSpec<GenericUnitSpec<string | MarkDef, Encoding>>>(normalize(spec), {
+      const config = initConfig(spec.config);
+      assert.deepEqual<GenericSpec<GenericUnitSpec<string | MarkDef, Encoding<Field>>>>(normalize(spec, config), {
         "width": 123,
         "height": 234,
         "name": "faceted",
@@ -56,7 +56,8 @@ describe('normalize()', function () {
         }
       };
 
-      assert.deepEqual<GenericSpec<GenericUnitSpec<string | MarkDef, Encoding>>>(normalize(spec), {
+      const config = initConfig(spec.config);
+      assert.deepEqual<GenericSpec<GenericUnitSpec<string | MarkDef, Encoding<Field>>>>(normalize(spec, spec.config), {
         "data": {"url": "data/movies.json"},
         "facet": {
           "row": {"field": "MPAA_Rating","type": "ordinal"}
@@ -74,7 +75,7 @@ describe('normalize()', function () {
 
   describe('normalizeFacet', () => {
     it('should produce correct layered specs for mean point and vertical error bar', () => {
-      assert.deepEqual<GenericSpec<GenericUnitSpec<string | MarkDef, Encoding>>>(normalize({
+      assert.deepEqual<GenericSpec<GenericUnitSpec<string | MarkDef, Encoding<Field>>>>(normalize({
         "description": "A error bar plot showing mean, min, and max in the US population distribution of age groups in 2000.",
         "data": {"url": "data/population.json"},
         "transform": [{"filter": "datum.year == 2000"}],
@@ -116,7 +117,7 @@ describe('normalize()', function () {
             }
           ]
         }
-      }), {
+      }, defaultConfig), {
         "description": "A error bar plot showing mean, min, and max in the US population distribution of age groups in 2000.",
         "data": {"url": "data/population.json"},
         "transform": [{"filter": "datum.year == 2000"}],
@@ -193,7 +194,7 @@ describe('normalize()', function () {
 
   describe('normalizeLayer', () => {
     it('should produce correct layered specs for mean point and vertical error bar', () => {
-      assert.deepEqual<GenericSpec<GenericUnitSpec<string | MarkDef, Encoding>>>(normalize({
+      assert.deepEqual<GenericSpec<GenericUnitSpec<string | MarkDef, Encoding<Field>>>>(normalize({
         "description": "A error bar plot showing mean, min, and max in the US population distribution of age groups in 2000.",
         "data": {"url": "data/population.json"},
         "transform": [{"filter": "datum.year == 2000"}],
@@ -230,7 +231,7 @@ describe('normalize()', function () {
             }
           }
         ]
-      }), {
+      }, defaultConfig), {
         "description": "A error bar plot showing mean, min, and max in the US population distribution of age groups in 2000.",
         "data": {"url": "data/population.json"},
         "transform": [{"filter": "datum.year == 2000"}],
@@ -311,7 +312,7 @@ describe('normalize()', function () {
         },
         "config": {"overlay": {"line": true}}
       };
-      const normalizedSpec = normalize(spec);
+      const normalizedSpec = normalize(spec, spec.config);
       // FIXME: remove any
       assert.deepEqual<any>(normalizedSpec, {
         "data": {"url": "data/stocks.csv","format": {"type": "csv"}},
@@ -346,7 +347,7 @@ describe('normalize()', function () {
         },
         "config": {"overlay": {"line": true}}
       };
-      const normalizedSpec = normalize(spec);
+      const normalizedSpec = normalize(spec, spec.config);
       // FIXME: remove any
       assert.deepEqual<any>(normalizedSpec, {
         "data": {"url": "data/stocks.csv","format": {"type": "csv"}},
@@ -385,7 +386,7 @@ describe('normalize()', function () {
         },
         "config": {"overlay": {"area": 'linepoint'}}
       };
-      const normalizedSpec = normalize(spec);
+      const normalizedSpec = normalize(spec, spec.config);
       // FIXME: remove any
       assert.deepEqual<any>(normalizedSpec, {
         "data": {"url": "data/stocks.csv","format": {"type": "csv"}},
@@ -426,7 +427,7 @@ describe('normalize()', function () {
         },
         "config": {"overlay": {"area": 'line'}}
       };
-      const normalizedSpec = normalize(spec);
+      const normalizedSpec = normalize(spec, spec.config);
       // FIXME: remove any
       assert.deepEqual<any>(normalizedSpec, {
         "data": {"url": "data/stocks.csv","format": {"type": "csv"}},
@@ -461,7 +462,7 @@ describe('normalize()', function () {
         },
         "config": {"overlay": {"area": 'line'}}
       };
-      const normalizedSpec = normalize(spec);
+      const normalizedSpec = normalize(spec, spec.config);
       // FIXME: remove any
       assert.deepEqual<any>(normalizedSpec, {
         "data": {"url": "data/stocks.csv","format": {"type": "csv"}},
@@ -498,7 +499,7 @@ describe('normalize()', function () {
         },
         "config": {"overlay": {"area": 'line'}}
       };
-      const normalizedSpec = normalize(spec);
+      const normalizedSpec = normalize(spec, spec.config);
       // FIXME: remove any
       assert.deepEqual<any>(normalizedSpec, {
         "data": {"url": "data/stocks.csv","format": {"type": "csv"}},
@@ -538,7 +539,7 @@ describe('normalizeRangedUnitSpec',  () => {
       }
     };
 
-    assert.deepEqual<Spec>(normalize(spec), {
+    assert.deepEqual<Spec>(normalize(spec, defaultConfig), {
       "data": {"url": "data/population.json"},
       "mark": "rule",
       "encoding": {
@@ -560,7 +561,7 @@ describe('normalizeRangedUnitSpec',  () => {
       }
     };
 
-    assert.deepEqual(normalize(spec), spec);
+    assert.deepEqual(normalize(spec, defaultConfig), spec);
   });
 
   it('should convert x2 -> x if there is no x in the encoding', function() {
@@ -574,7 +575,7 @@ describe('normalizeRangedUnitSpec',  () => {
       }
     };
 
-    assert.deepEqual<Spec>(normalize(spec), {
+    assert.deepEqual<Spec>(normalize(spec, defaultConfig), {
       "data": {"url": "data/population.json"},
       "mark": "rule",
       "encoding": {
@@ -597,7 +598,7 @@ describe('fieldDefs()', function() {
       }
     };
 
-    assert.deepEqual<FieldDef[]>(fieldDefs(spec), [
+    assert.deepEqual<FieldDef<Field>[]>(fieldDefs(spec), [
       {"field": "Horsepower","type": "quantitative"},
       {"field": "Miles_per_Gallon","type": "quantitative"}
     ]);
@@ -628,7 +629,7 @@ describe('fieldDefs()', function() {
       ]
     };
 
-    assert.deepEqual<FieldDef[]>(fieldDefs(layerSpec), [
+    assert.deepEqual<FieldDef<Field>[]>(fieldDefs(layerSpec), [
       {"field": "date","type": "temporal"},
       {"field": "price","type": "quantitative"},
       {"field": "symbol", "type": "nominal"}
@@ -660,7 +661,7 @@ describe('fieldDefs()', function() {
       ]
     };
 
-    assert.deepEqual<FieldDef[]>(fieldDefs(layerSpec), [
+    assert.deepEqual<FieldDef<Field>[]>(fieldDefs(layerSpec), [
       {"field": "date","type": "temporal"},
       {"field": "price","type": "quantitative"}
     ]);
@@ -679,7 +680,7 @@ describe('fieldDefs()', function() {
       }
     };
 
-    assert.deepEqual<FieldDef[]>(fieldDefs(facetSpec), [
+    assert.deepEqual<FieldDef<Field>[]>(fieldDefs(facetSpec), [
       {"field": "MPAA_Rating","type": "ordinal"},
       {"field": "Worldwide_Gross","type": "quantitative"},
       {"field": "US_DVD_Sales","type": "quantitative"}

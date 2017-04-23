@@ -2,26 +2,6 @@
     "$schema": "http://vega.github.io/schema/vega/v3.0.json",
     "autosize": "pad",
     "padding": 5,
-    "signals": [
-        {
-            "name": "width",
-            "update": "data('layout')[0].width"
-        },
-        {
-            "name": "height",
-            "update": "data('layout')[0].height"
-        },
-        {
-            "name": "unit",
-            "value": {},
-            "on": [
-                {
-                    "events": "mousemove",
-                    "update": "group()._id ? group() : unit"
-                }
-            ]
-        }
-    ],
     "data": [
         {
             "name": "source_0",
@@ -50,40 +30,39 @@
                     }
                 }
             ]
+        }
+    ],
+    "signals": [
+        {
+            "name": "width",
+            "update": "200"
         },
         {
-            "name": "layout",
-            "values": [
-                {}
-            ],
-            "transform": [
+            "name": "height",
+            "update": "200"
+        },
+        {
+            "name": "unit",
+            "value": {},
+            "on": [
                 {
-                    "type": "formula",
-                    "as": "width",
-                    "expr": "200"
-                },
-                {
-                    "type": "formula",
-                    "as": "height",
-                    "expr": "200"
+                    "events": "mousemove",
+                    "update": "group()._id ? group() : unit"
                 }
             ]
         }
     ],
     "marks": [
         {
-            "name": "main-group",
+            "name": "nested_main_group",
             "type": "group",
-            "from": {
-                "data": "layout"
-            },
             "encode": {
                 "update": {
                     "width": {
-                        "field": "width"
+                        "signal": "width"
                     },
                     "height": {
-                        "field": "height"
+                        "signal": "height"
                     },
                     "fill": {
                         "value": "transparent"
@@ -113,93 +92,93 @@
                         }
                     }
                 }
+            ]
+        }
+    ],
+    "scales": [
+        {
+            "name": "x",
+            "type": "time",
+            "domain": {
+                "data": "source_0",
+                "field": "date"
+            },
+            "range": [
+                0,
+                200
             ],
-            "scales": [
-                {
-                    "name": "x",
-                    "type": "time",
-                    "domain": {
-                        "data": "source_0",
-                        "field": "date"
-                    },
-                    "range": [
-                        0,
-                        200
-                    ],
-                    "round": true
-                },
-                {
-                    "name": "y",
-                    "type": "linear",
-                    "domain": {
-                        "data": "source_0",
-                        "field": "price"
-                    },
-                    "range": [
-                        200,
-                        0
-                    ],
-                    "round": true,
-                    "nice": true,
-                    "zero": true
-                }
+            "round": true
+        },
+        {
+            "name": "y",
+            "type": "linear",
+            "domain": {
+                "data": "source_0",
+                "field": "price"
+            },
+            "range": [
+                200,
+                0
             ],
-            "axes": [
-                {
-                    "scale": "x",
-                    "orient": "bottom",
-                    "tickCount": 5,
-                    "title": "date",
-                    "zindex": 1,
-                    "encode": {
-                        "labels": {
-                            "update": {
-                                "text": {
-                                    "signal": "timeFormat(datum.value, '%b %d, %Y')"
-                                },
-                                "angle": {
-                                    "value": 270
-                                },
-                                "align": {
-                                    "value": "right"
-                                },
-                                "baseline": {
-                                    "value": "middle"
-                                }
-                            }
+            "round": true,
+            "nice": true,
+            "zero": true
+        }
+    ],
+    "axes": [
+        {
+            "scale": "x",
+            "orient": "bottom",
+            "tickCount": 5,
+            "title": "date",
+            "zindex": 1,
+            "encode": {
+                "labels": {
+                    "update": {
+                        "text": {
+                            "signal": "timeFormat(datum.value, '%b %d, %Y')"
+                        },
+                        "angle": {
+                            "value": 270
+                        },
+                        "align": {
+                            "value": "right"
+                        },
+                        "baseline": {
+                            "value": "middle"
                         }
                     }
-                },
-                {
-                    "scale": "x",
-                    "domain": false,
-                    "grid": true,
-                    "labels": false,
-                    "orient": "bottom",
-                    "tickCount": 5,
-                    "ticks": false,
-                    "zindex": 0,
-                    "gridScale": "y"
-                },
-                {
-                    "scale": "y",
-                    "format": "s",
-                    "orient": "left",
-                    "title": "price",
-                    "zindex": 1
-                },
-                {
-                    "scale": "y",
-                    "domain": false,
-                    "format": "s",
-                    "grid": true,
-                    "labels": false,
-                    "orient": "left",
-                    "ticks": false,
-                    "zindex": 0,
-                    "gridScale": "x"
                 }
-            ]
+            }
+        },
+        {
+            "scale": "x",
+            "domain": false,
+            "grid": true,
+            "labels": false,
+            "orient": "bottom",
+            "tickCount": 5,
+            "ticks": false,
+            "zindex": 0,
+            "gridScale": "y"
+        },
+        {
+            "scale": "y",
+            "format": "s",
+            "orient": "left",
+            "title": "price",
+            "zindex": 1
+        },
+        {
+            "scale": "y",
+            "domain": false,
+            "format": "s",
+            "grid": true,
+            "labels": false,
+            "orient": "left",
+            "ticks": false,
+            "zindex": 0,
+            "gridScale": "x"
         }
     ]
 }

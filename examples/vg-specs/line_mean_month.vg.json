@@ -1,0 +1,187 @@
+{
+    "$schema": "http://vega.github.io/schema/vega/v3.0.json",
+    "autosize": "pad",
+    "padding": 5,
+    "data": [
+        {
+            "name": "source_0",
+            "url": "data/seattle-weather.csv",
+            "format": {
+                "type": "csv",
+                "parse": {
+                    "date": "date",
+                    "precipitation": "number"
+                }
+            },
+            "transform": [
+                {
+                    "type": "filter",
+                    "expr": "datum[\"date\"] !== null && !isNaN(datum[\"date\"]) && datum[\"precipitation\"] !== null && !isNaN(datum[\"precipitation\"])"
+                },
+                {
+                    "type": "formula",
+                    "as": "month_date",
+                    "expr": "datetime(0, month(datum[\"date\"]), 1, 0, 0, 0, 0)"
+                },
+                {
+                    "type": "aggregate",
+                    "groupby": [
+                        "month_date"
+                    ],
+                    "ops": [
+                        "mean"
+                    ],
+                    "fields": [
+                        "precipitation"
+                    ]
+                },
+                {
+                    "type": "collect",
+                    "sort": {
+                        "field": "month_date",
+                        "order": "descending"
+                    }
+                }
+            ]
+        }
+    ],
+    "signals": [
+        {
+            "name": "width",
+            "update": "bandspace(domain('x').length, 1, 0.5) * 21"
+        },
+        {
+            "name": "height",
+            "update": "200"
+        },
+        {
+            "name": "unit",
+            "value": {},
+            "on": [
+                {
+                    "events": "mousemove",
+                    "update": "group()._id ? group() : unit"
+                }
+            ]
+        }
+    ],
+    "marks": [
+        {
+            "name": "nested_main_group",
+            "type": "group",
+            "encode": {
+                "update": {
+                    "width": {
+                        "signal": "width"
+                    },
+                    "height": {
+                        "signal": "height"
+                    },
+                    "fill": {
+                        "value": "transparent"
+                    }
+                }
+            },
+            "marks": [
+                {
+                    "name": "marks",
+                    "type": "line",
+                    "from": {
+                        "data": "source_0"
+                    },
+                    "encode": {
+                        "update": {
+                            "x": {
+                                "scale": "x",
+                                "field": "month_date"
+                            },
+                            "y": {
+                                "scale": "y",
+                                "field": "mean_precipitation"
+                            },
+                            "stroke": {
+                                "value": "#4c78a8"
+                            }
+                        }
+                    }
+                }
+            ]
+        }
+    ],
+    "scales": [
+        {
+            "name": "x",
+            "type": "point",
+            "domain": {
+                "data": "source_0",
+                "field": "month_date",
+                "sort": true
+            },
+            "range": {
+                "step": 21
+            },
+            "round": true,
+            "padding": 0.5
+        },
+        {
+            "name": "y",
+            "type": "linear",
+            "domain": {
+                "data": "source_0",
+                "field": "mean_precipitation"
+            },
+            "range": [
+                200,
+                0
+            ],
+            "round": true,
+            "nice": true,
+            "zero": true
+        }
+    ],
+    "axes": [
+        {
+            "scale": "x",
+            "orient": "bottom",
+            "tickCount": 5,
+            "title": "MONTH(date)",
+            "zindex": 1,
+            "encode": {
+                "labels": {
+                    "update": {
+                        "text": {
+                            "signal": "timeFormat(datum.value, '%b')"
+                        },
+                        "angle": {
+                            "value": 270
+                        },
+                        "align": {
+                            "value": "right"
+                        },
+                        "baseline": {
+                            "value": "middle"
+                        }
+                    }
+                }
+            }
+        },
+        {
+            "scale": "y",
+            "format": "s",
+            "orient": "left",
+            "title": "MEAN(precipitation)",
+            "zindex": 1
+        },
+        {
+            "scale": "y",
+            "domain": false,
+            "format": "s",
+            "grid": true,
+            "labels": false,
+            "orient": "left",
+            "ticks": false,
+            "zindex": 0,
+            "gridScale": "x"
+        }
+    ]
+}

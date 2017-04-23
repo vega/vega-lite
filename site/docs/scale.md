@@ -52,7 +52,7 @@ Quantitative Scale
 <!-- TODO: need to test if we support threshold scale correctly before writing about it-->
 
 Time Scale
-: A `time` scale is similar to a linear quantitative scale but takes date as input. In general, a temporal field has `time` scale by default. The exceptions are temporal fields with `hours`, `day`, `date`, `month` as time unit; they have `ordinal` scales by default.
+: A `time` scale is similar to a linear quantitative scale but takes a date as input. In general, a temporal field has `time` scale by default. The exceptions are temporal fields with `hours`, `day`, `date`, `month` as time unit; they have `ordinal` scales by default.
 <!-- <br/>`utc` is a time scale that uses [Coordinated Universal Time](https://en.wikipedia.org/wiki/Coordinated_Universal_Time) rather than local time. -->
 
 Ordinal Scale
@@ -111,19 +111,19 @@ TODO: Custom Domain for quantitative
 The range of the scale represents the set of output visual values. Vega-Lite automatically determines appropriate range based on the scale's channel and type, but `range` property can be provided to customize range values.
 
 `x` and `y` Scales
-: For continuous `x` and `y` scales (quantitative and time), the range are always `[0, cellWidth]` and  `[0, cellHeight]` (See [config.cell](config.html#cell-config) for customizing cell width and height). For ordinal `x` and `y` scales, the maximum range is a product of the field's cardinality and [`rangeStep`](#ordinal).
+: For continuous `x` and `y` scales (quantitative and time), the range is always `[0, cellWidth]` and  `[0, cellHeight]` (See [config.cell](config.html#cell-config) for customizing cell width and height). For ordinal `x` and `y` scales, the maximum range is a product of the field's cardinality and [`rangeStep`](#ordinal).
 <span class="note-line">
 __Not Customizable__: specified `range` will be ignored.
 </span>
 
 Nominal `color` Scales
-: A `color` scale of a nominal field has a categorical color palette as its range. Customized categorical color `range` can be either a [string literal for a palette name](#color-palette) or an array of desired output values.
+: A `color` scale of a nominal field has a categorical color palette as its range. The customized categorical color `range` can be either a [string literal for a palette name](#color-palette) or an array of desired output values.
 <span class="note-line">
 __Default value:__ derived from [scale config](config.html#scale-config)'s `nominalColorRange` (`"category10"` by default).
 </span>
 
 Sequential `color` Scales
-: A `color` scale for ordinal, temporal, and quantitative fields have a sequential color ramp as its range. Currently, Vega-Lite only supports color ramp that interpolate between two color values. Customized sequential color `range` takes a two-element array of color values for interpolation.
+: A `color` scale for ordinal, temporal, and quantitative fields have a sequential color ramp as its range. Currently, Vega-Lite only supports color ramp that interpolates between two color values. The customized sequential color `range` takes a two-element array of color values for interpolation.
 <span class="note-line">
 __Default value:__ derived from [scale config](config.html#scale-config)'s `sequentialColorRange` (green ramp between `["#AFC6A3", "#09622A"]` by default).
 </span>
@@ -179,7 +179,7 @@ For ordinal, quantitative, and time fields, `range` can be a two-element array d
 
 ### Piecewise Scale Example: Diverging Color Scale
 
-We can also create diverging color graph by specify `range` with multiple elements. Number of elements of `range` should match with the number of elements in `domain`. Though continuous scale normally contains 2 elements in both `domain` and `range`, having 3 or more elements will create a piecewise scale. For more detail about a piecewise scale, please refer to [D3 documentation](https://github.com/d3/d3-scale#continuous_domain).
+We can also create a diverging color graph by specify `range` with multiple elements. The number of elements of `range` should match with the number of elements in `domain`. Though continuous scale normally contains 2 elements in both `domain` and `range`, having 3 or more elements will create a piecewise scale. For more detail about a piecewise scale, please refer to [D3 documentation](https://github.com/d3/d3-scale#continuous_domain).
 
 <div class="vl-example" data-name="diverging_color_points"></div>
 
@@ -207,7 +207,7 @@ We can also create diverging color graph by specify `range` with multiple elemen
 
 <!-- TODO revise -->
 
-{% include table.html props="rangeStep,scheme,padding,spacing" source="Scale" %}
+{% include table.html props="rangeStep,scheme,padding" source="Scale" %}
 
 {:#ex-bandwidth}
 #### Example: Custom Range Step

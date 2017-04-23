@@ -2,26 +2,6 @@
     "$schema": "http://vega.github.io/schema/vega/v3.0.json",
     "autosize": "pad",
     "padding": 5,
-    "signals": [
-        {
-            "name": "width",
-            "update": "data('layout')[0].width"
-        },
-        {
-            "name": "height",
-            "update": "data('layout')[0].height"
-        },
-        {
-            "name": "unit",
-            "value": {},
-            "on": [
-                {
-                    "events": "mousemove",
-                    "update": "group()._id ? group() : unit"
-                }
-            ]
-        }
-    ],
     "data": [
         {
             "name": "source_0",
@@ -71,47 +51,39 @@
                     "offset": "zero"
                 }
             ]
+        }
+    ],
+    "signals": [
+        {
+            "name": "width",
+            "update": "bandspace(domain('x').length, 1, 0.5) * 21"
         },
         {
-            "name": "layout",
-            "source": "source_0",
-            "transform": [
+            "name": "height",
+            "update": "200"
+        },
+        {
+            "name": "unit",
+            "value": {},
+            "on": [
                 {
-                    "type": "aggregate",
-                    "fields": [
-                        "variety"
-                    ],
-                    "ops": [
-                        "distinct"
-                    ]
-                },
-                {
-                    "type": "formula",
-                    "as": "width",
-                    "expr": "max(datum[\"distinct_variety\"] - 1 + 2*0.5, 0) * 21"
-                },
-                {
-                    "type": "formula",
-                    "as": "height",
-                    "expr": "200"
+                    "events": "mousemove",
+                    "update": "group()._id ? group() : unit"
                 }
             ]
         }
     ],
     "marks": [
         {
-            "name": "main-group",
+            "name": "nested_main_group",
             "type": "group",
-            "from": {
-                "data": "layout"
-            },
             "encode": {
                 "update": {
                     "width": {
-                        "field": "width"
+                        "signal": "width"
                     },
                     "height": {
-                        "field": "height"
+                        "signal": "height"
                     },
                     "fill": {
                         "value": "transparent"
@@ -150,111 +122,111 @@
                         }
                     }
                 }
-            ],
-            "scales": [
-                {
-                    "name": "x",
-                    "type": "point",
-                    "domain": {
-                        "data": "source_0",
-                        "field": "variety",
-                        "sort": true
-                    },
-                    "range": {
-                        "step": 21
-                    },
-                    "round": true,
-                    "padding": 0.5
-                },
-                {
-                    "name": "y",
-                    "type": "linear",
-                    "domain": {
-                        "data": "source_0",
-                        "fields": [
-                            "sum_yield_start",
-                            "sum_yield_end"
-                        ]
-                    },
-                    "range": [
-                        200,
-                        0
-                    ],
-                    "round": true,
-                    "nice": true,
-                    "zero": true
-                },
-                {
-                    "name": "color",
-                    "type": "ordinal",
-                    "domain": {
-                        "data": "source_0",
-                        "field": "site",
-                        "sort": true
-                    },
-                    "range": "category"
-                }
-            ],
-            "axes": [
-                {
-                    "scale": "x",
-                    "orient": "bottom",
-                    "tickCount": 5,
-                    "title": "variety",
-                    "zindex": 1,
-                    "encode": {
-                        "labels": {
-                            "update": {
-                                "angle": {
-                                    "value": 270
-                                },
-                                "align": {
-                                    "value": "right"
-                                },
-                                "baseline": {
-                                    "value": "middle"
-                                }
-                            }
-                        }
-                    }
-                },
-                {
-                    "scale": "y",
-                    "format": "s",
-                    "orient": "left",
-                    "title": "SUM(yield)",
-                    "zindex": 1
-                },
-                {
-                    "scale": "y",
-                    "domain": false,
-                    "format": "s",
-                    "grid": true,
-                    "labels": false,
-                    "orient": "left",
-                    "ticks": false,
-                    "zindex": 0,
-                    "gridScale": "x"
-                }
-            ],
-            "legends": [
-                {
-                    "fill": "color",
-                    "title": "site",
-                    "encode": {
-                        "symbols": {
-                            "update": {
-                                "shape": {
-                                    "value": "square"
-                                },
-                                "strokeWidth": {
-                                    "value": 0
-                                }
-                            }
-                        }
-                    }
-                }
             ]
+        }
+    ],
+    "scales": [
+        {
+            "name": "x",
+            "type": "point",
+            "domain": {
+                "data": "source_0",
+                "field": "variety",
+                "sort": true
+            },
+            "range": {
+                "step": 21
+            },
+            "round": true,
+            "padding": 0.5
+        },
+        {
+            "name": "y",
+            "type": "linear",
+            "domain": {
+                "data": "source_0",
+                "fields": [
+                    "sum_yield_start",
+                    "sum_yield_end"
+                ]
+            },
+            "range": [
+                200,
+                0
+            ],
+            "round": true,
+            "nice": true,
+            "zero": true
+        },
+        {
+            "name": "color",
+            "type": "ordinal",
+            "domain": {
+                "data": "source_0",
+                "field": "site",
+                "sort": true
+            },
+            "range": "category"
+        }
+    ],
+    "axes": [
+        {
+            "scale": "x",
+            "orient": "bottom",
+            "tickCount": 5,
+            "title": "variety",
+            "zindex": 1,
+            "encode": {
+                "labels": {
+                    "update": {
+                        "angle": {
+                            "value": 270
+                        },
+                        "align": {
+                            "value": "right"
+                        },
+                        "baseline": {
+                            "value": "middle"
+                        }
+                    }
+                }
+            }
+        },
+        {
+            "scale": "y",
+            "format": "s",
+            "orient": "left",
+            "title": "SUM(yield)",
+            "zindex": 1
+        },
+        {
+            "scale": "y",
+            "domain": false,
+            "format": "s",
+            "grid": true,
+            "labels": false,
+            "orient": "left",
+            "ticks": false,
+            "zindex": 0,
+            "gridScale": "x"
+        }
+    ],
+    "legends": [
+        {
+            "fill": "color",
+            "title": "site",
+            "encode": {
+                "symbols": {
+                    "update": {
+                        "shape": {
+                            "value": "square"
+                        },
+                        "strokeWidth": {
+                            "value": 0
+                        }
+                    }
+                }
+            }
         }
     ]
 }

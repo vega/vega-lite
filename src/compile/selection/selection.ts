@@ -27,6 +27,7 @@ export interface SelectionComponent {
 
   // Transforms
   project?: ProjectComponent[];
+  fields?: any;
   scales?: Channel[];
   toggle?: any;
   translate?: any;
@@ -77,7 +78,7 @@ export function parseUnitSelection(model: UnitModel, selDefs: Dict<SelectionDef>
     }
 
     const selCmpt = selCmpts[name] = extend({}, selDef, {
-      name: model.getName(name),
+      name: name,
       events: isString(selDef.on) ? parseSelector(selDef.on, 'scope') : selDef.on,
       domain: 'data' as SelectionDomain, // TODO: Support def.domain
     }) as SelectionComponent;
@@ -92,7 +93,7 @@ export function parseUnitSelection(model: UnitModel, selDefs: Dict<SelectionDef>
   return selCmpts;
 }
 
-export function assembleUnitSignals(model: UnitModel, signals: any[]) {
+export function assembleUnitSelectionSignals(model: UnitModel, signals: any[]) {
   forEachSelection(model, (selCmpt, selCompiler) => {
     const name = selCmpt.name,
         tupleExpr = selCompiler.tupleExpr(model, selCmpt);
@@ -119,7 +120,7 @@ export function assembleUnitSignals(model: UnitModel, signals: any[]) {
       name: name + MODIFY,
       on: [{
         events: {signal: name},
-        update: `modify(${stringValue(name + STORE)}, ${modifyExpr})`
+        update: `modify(${stringValue(selCmpt.name + STORE)}, ${modifyExpr})`
       }]
     });
   });
@@ -127,12 +128,15 @@ export function assembleUnitSignals(model: UnitModel, signals: any[]) {
   return signals;
 }
 
-export function assembleTopLevelSignals(model: Model) {
-  let signals:any[] = [{
-    name: 'unit',
-    value: {},
-    on: [{events: 'mousemove', update: 'group()._id ? group() : unit'}]
-  }];
+export function assembleTopLevelSignals(model: UnitModel, signals: any[]) {
+  const hasUnit = signals.filter((s) => s.name === 'unit');
+  if (!(hasUnit.length)) {
+    signals.push({
+      name: 'unit',
+      value: {},
+      on: [{events: 'mousemove', update: 'group()._id ? group() : unit'}]
+    });
+  }
 
   forEachSelection(model, (selCmpt, selCompiler) => {
     if (selCompiler.topLevelSignals) {
@@ -149,15 +153,18 @@ export function assembleTopLevelSignals(model: Model) {
   return signals;
 }
 
-export function assembleUnitData(model: UnitModel, data: VgData[]): VgData[] {
+export function assembleUnitSelectionData(model: UnitModel, data: VgData[]): VgData[] {
   forEachSelection(model, selCmpt => {
-    data.push({name: selCmpt.name + STORE});
+    const contains = data.filter((d) => d.name === selCmpt.name + STORE);
+    if (!contains.length) {
+      data.push({name: selCmpt.name + STORE});
+    }
   });
 
   return data;
 }
 
-export function assembleUnitMarks(model: UnitModel, marks: any[]): any[] {
+export function assembleUnitSelectionMarks(model: UnitModel, marks: any[]): any[] {
   let clipGroup = false,
       selMarks = marks;
   forEachSelection(model, (selCmpt, selCompiler) => {
@@ -174,20 +181,20 @@ export function assembleUnitMarks(model: UnitModel, marks: any[]): any[] {
   // only the layer within which the selection is defined. Propagate
   // our assembled state up and let the LayerModel make the right call.
   if (model.parent && model.parent instanceof LayerModel) {
-    return [selMarks, clippedGroup];
+    return [selMarks, clipMarks];
   } else {
-    return clipGroup ? clippedGroup(model, selMarks) : selMarks;
+    return clipGroup ? clipMarks(selMarks) : selMarks;
   }
 }
 
-export function assembleLayerMarks(model: LayerModel, marks: any[]): any[] {
+export function assembleLayerSelectionMarks(model: LayerModel, marks: any[]): any[] {
   let clipGroup = false;
   model.children.forEach(child => {
-    const unit = assembleUnitMarks(child, marks);
+    const unit = assembleUnitSelectionMarks(child, marks);
     marks = unit[0];
     clipGroup = clipGroup || unit[1];
   });
-  return clipGroup ? clippedGroup(model, marks) : marks;
+  return clipGroup ? clipMarks(marks) : marks;
 }
 
 const PREDICATES_OPS = {
@@ -236,20 +243,9 @@ export function invert(model: UnitModel, selCmpt: SelectionComponent, channel: C
 }
 
 export function channelSignalName(selCmpt: SelectionComponent, channel: Channel) {
-  return selCmpt.name + '_' + channel;
+  return selCmpt.name + '_' + selCmpt.fields[channel];
 }
 
-function clippedGroup(model: Model, marks: any[]): any[] {
-  return [{
-    type: 'group',
-    encode: {
-      enter: {
-        width: {field: {group: 'width'}},
-        height: {field: {group: 'height'}},
-        fill: {value: 'transparent'},
-        clip: {value: true}
-      }
-    },
-    marks: marks.map(model.correctDataNames)
-  }];
+function clipMarks(marks: any[]): any[] {
+  return marks.map((m) => (m.clip = true, m));
 }
