@@ -5,7 +5,7 @@ import {binToString} from '../../bin';
 import {Channel} from '../../channel';
 import {DateTime, isDateTime, timestamp} from '../../datetime';
 import {FieldDef} from '../../fielddef';
-import {Domain, hasDiscreteDomain, isBinScale, Scale, ScaleConfig, ScaleType, isSelectionDomain} from '../../scale';
+import {Domain, hasDiscreteDomain, isBinScale, isSelectionDomain, Scale, ScaleConfig, ScaleType} from '../../scale';
 import {isSortField} from '../../sort';
 import * as util from '../../util';
 import {

@@ -1,5 +1,6 @@
 import {selector as parseSelector} from 'vega-event-selector';
 import {Channel} from '../../channel';
+import {SelectionDomain as SelectionScaleDomain} from '../../scale';
 import {SelectionDef, SelectionDomain, SelectionResolutions, SelectionTypes} from '../../selection';
 import {Dict, extend, isString, stringValue} from '../../util';
 import {VgBinding, VgData} from '../../vega.schema';
@@ -11,7 +12,6 @@ import multiCompiler from './multi';
 import {SelectionComponent} from './selection';
 import singleCompiler from './single';
 import {forEachTransform} from './transforms/transforms';
-import {SelectionDomain as SelectionScaleDomain} from '../../scale';
 
 export const STORE = '_store';
 export const TUPLE  = '_tuple';

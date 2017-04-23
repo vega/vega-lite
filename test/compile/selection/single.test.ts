@@ -30,7 +30,7 @@ describe('Single Selection', function() {
       value: {},
       on: [{
         events: selCmpts['one'].events,
-        update: "{fields: [\"_id\"], values: [(item().isVoronoi ? datum.datum : datum)[\"_id\"]]}"
+        update: "{encodings: [], fields: [\"_id\"], values: [(item().isVoronoi ? datum.datum : datum)[\"_id\"]]}"
       }]
     }]);
 
@@ -40,7 +40,7 @@ describe('Single Selection', function() {
       value: {},
       on: [{
         events: selCmpts['two'].events,
-        update: "{fields: [\"Miles_per_Gallon\", \"Origin\"], values: [(item().isVoronoi ? datum.datum : datum)[\"Miles_per_Gallon\"], (item().isVoronoi ? datum.datum : datum)[\"Origin\"]]}"
+        update: "{encodings: [\"y\", \"color\"], fields: [\"Miles_per_Gallon\", \"Origin\"], values: [(item().isVoronoi ? datum.datum : datum)[\"Miles_per_Gallon\"], (item().isVoronoi ? datum.datum : datum)[\"Origin\"]]}"
       }]
     }]);
 
@@ -50,10 +50,10 @@ describe('Single Selection', function() {
 
   it('builds tuple signals', function() {
     const oneExpr = single.tupleExpr(model, selCmpts['one']);
-    assert.equal(oneExpr, 'fields: one.fields, values: one.values, _id: one.values[0]');
+    assert.equal(oneExpr, 'encodings: one.encodings, fields: one.fields, values: one.values, _id: one.values[0]');
 
     const twoExpr = single.tupleExpr(model, selCmpts['two']);
-    assert.equal(twoExpr, 'fields: two.fields, values: two.values, Miles_per_Gallon: two.values[0], Origin: two.values[1]');
+    assert.equal(twoExpr, 'encodings: two.encodings, fields: two.fields, values: two.values, Miles_per_Gallon: two.values[0], Origin: two.values[1]');
 
     const signals = selection.assembleUnitSelectionSignals(model, []);
     assert.includeDeepMembers(signals, [

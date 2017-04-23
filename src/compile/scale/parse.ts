@@ -1,5 +1,5 @@
 import {Channel} from '../../channel';
-import {Scale, isSelectionDomain} from '../../scale';
+import {isSelectionDomain, Scale} from '../../scale';
 import {isSortField} from '../../sort';
 import {Dict} from '../../util';
 import {VgScale} from '../../vega.schema';

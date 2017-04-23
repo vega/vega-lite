@@ -1,9 +1,9 @@
 import {isArray} from 'vega-util';
-import {vals, stringValue} from '../../util';
+import * as log from '../../log';
+import {isSelectionDomain} from '../../scale';
+import {stringValue, vals} from '../../util';
 import {isDataRefDomain, isDataRefUnionedDomain, isFieldRefUnionDomain, isSignalRefDomain, VgDataRef} from '../../vega.schema';
 import {Model} from '../model';
-import {isSelectionDomain} from '../../scale';
-import * as log from '../../log';
 
 const SELECTION_OPS = {
   global: 'union', independent: 'intersect',

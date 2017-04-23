@@ -159,7 +159,7 @@ describe('Interval Selections', function() {
       assert.includeDeepMembers(oneSg, [
         {
           "name": "one",
-          "update": "[{field: \"Horsepower\", extent: one_Horsepower}]"
+          "update": "[{encoding: \"x\", field: \"Horsepower\", extent: one_Horsepower}]"
         }
       ]);
 
@@ -167,7 +167,7 @@ describe('Interval Selections', function() {
       assert.includeDeepMembers(twoSg, [
         {
           "name": "two",
-          "update": "[{field: \"Miles_per_Gallon\", extent: two_Miles_per_Gallon}]"
+          "update": "[{encoding: \"y\", field: \"Miles_per_Gallon\", extent: two_Miles_per_Gallon}]"
         }
       ]);
 
@@ -175,7 +175,7 @@ describe('Interval Selections', function() {
       assert.includeDeepMembers(threeSg, [
         {
           "name": "three",
-          "update": "[{field: \"Horsepower\", extent: three_Horsepower}, {field: \"Miles_per_Gallon\", extent: three_Miles_per_Gallon}]"
+          "update": "[{encoding: \"x\", field: \"Horsepower\", extent: three_Horsepower}, {encoding: \"y\", field: \"Miles_per_Gallon\", extent: three_Miles_per_Gallon}]"
         }
       ]);
     });
