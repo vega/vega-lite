@@ -101,7 +101,10 @@
           "type": "ordinal"
         },
         "size": {
-          "value": 14
+          "value": 5
+        },
+        "color": {
+          "value": "blue"
         }
       }
     },
@@ -123,7 +126,7 @@
           "value": "white"
         },
         "size": {
-          "value": 14
+          "value": 5
         }
       }
     }

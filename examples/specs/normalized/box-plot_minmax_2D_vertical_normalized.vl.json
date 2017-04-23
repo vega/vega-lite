@@ -101,7 +101,7 @@
           "type": "ordinal"
         },
         "size": {
-          "value": 5
+          "value": 14
         }
       }
     },
@@ -123,7 +123,7 @@
           "value": "white"
         },
         "size": {
-          "value": 5
+          "value": 14
         }
       }
     }

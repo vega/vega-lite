@@ -217,10 +217,10 @@
                         "band": 0.5
                     },
                     "height": {
-                        "value": 14
+                        "value": 5
                     },
                     "fill": {
-                        "value": "#4c78a8"
+                        "value": "blue"
                     }
                 }
             }
@@ -247,7 +247,7 @@
                         "band": 0.5
                     },
                     "height": {
-                        "value": 14
+                        "value": 5
                     },
                     "width": {
                         "value": 1
