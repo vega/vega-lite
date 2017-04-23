@@ -4,6 +4,11 @@
   "data": {
     "url": "data/population.json"
   },
+  "config": {
+    "boxMid": {
+      "color": "orange"
+    }
+  },
   "transform": [
     {
       "summarize": [
@@ -120,7 +125,7 @@
           "type": "ordinal"
         },
         "color": {
-          "value": "white"
+          "value": "orange"
         },
         "size": {
           "value": 14

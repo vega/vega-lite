@@ -21,21 +21,23 @@
           "aggregate": "median",
           "field": "people",
           "as": "midBox"
-        },
-        {
-          "aggregate": "min",
-          "field": "people",
-          "as": "lowerWhisker"
-        },
-        {
-          "aggregate": "max",
-          "field": "people",
-          "as": "upperWhisker"
         }
       ],
       "groupby": [
         "age"
       ]
+    },
+    {
+      "calculate": "datum.upperBox - datum.lowerBox",
+      "as": "IQR"
+    },
+    {
+      "calculate": "datum.lowerBox - datum.IQR * 1.5",
+      "as": "lowerWhisker"
+    },
+    {
+      "calculate": "datum.upperBox + datum.IQR * 1.5",
+      "as": "lowerWhisker"
     }
   ],
   "layer": [
