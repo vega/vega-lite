@@ -257,7 +257,10 @@
                             "data": "source_0",
                             "groupby": [
                                 "year_date"
-                            ]
+                            ],
+                            "aggregate": {
+                                "cross": true
+                            }
                         }
                     },
                     "encode": {

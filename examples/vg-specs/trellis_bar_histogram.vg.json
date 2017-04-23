@@ -226,7 +226,10 @@
                             "data": "source_0",
                             "groupby": [
                                 "Origin"
-                            ]
+                            ],
+                            "aggregate": {
+                                "cross": true
+                            }
                         }
                     },
                     "encode": {

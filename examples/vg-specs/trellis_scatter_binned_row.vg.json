@@ -210,7 +210,10 @@
                             "data": "source_0",
                             "groupby": [
                                 "bin_maxbins_6_Acceleration_range"
-                            ]
+                            ],
+                            "aggregate": {
+                                "cross": true
+                            }
                         }
                     },
                     "encode": {

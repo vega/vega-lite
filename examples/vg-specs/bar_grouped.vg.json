@@ -259,7 +259,10 @@
                             "data": "source_0",
                             "groupby": [
                                 "age"
-                            ]
+                            ],
+                            "aggregate": {
+                                "cross": true
+                            }
                         }
                     },
                     "encode": {
