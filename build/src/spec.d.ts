@@ -1,10 +1,11 @@
+import { CompositeMark } from './compositemark';
 import { Config } from './config';
 import { Data } from './data';
 import { Encoding, EncodingWithFacet } from './encoding';
 import { Facet } from './facet';
-import { FieldDef } from './fielddef';
-import { CompositeMark } from './compositemark';
+import { Field, FieldDef } from './fielddef';
 import { Mark, MarkDef } from './mark';
+import { Repeat } from './repeat';
 import { SelectionDef } from './selection';
 import { TopLevelProperties } from './toplevelprops';
 import { Transform } from './transform';
@@ -38,7 +39,7 @@ export interface BaseSpec {
      */
     transform?: Transform[];
 }
-export interface GenericUnitSpec<M, E extends Encoding> extends BaseSpec {
+export interface GenericUnitSpec<M, E extends Encoding<any>> extends BaseSpec {
     width?: number;
     height?: number;
     /**
@@ -58,15 +59,15 @@ export interface GenericUnitSpec<M, E extends Encoding> extends BaseSpec {
         [name: string]: SelectionDef;
     };
 }
-export declare type UnitSpec = GenericUnitSpec<Mark | MarkDef, Encoding>;
+export declare type UnitSpec = GenericUnitSpec<Mark | MarkDef, Encoding<Field>>;
 /**
  * Unit spec that can contain composite mark
  */
-export declare type CompositeUnitSpec = GenericUnitSpec<CompositeMark | Mark | MarkDef, Encoding>;
+export declare type CompositeUnitSpec = GenericUnitSpec<CompositeMark | Mark | MarkDef, Encoding<Field>>;
 /**
  * Unit spec that can contain composite mark and row or column channels.
  */
-export declare type FacetedCompositeUnitSpec = GenericUnitSpec<CompositeMark | Mark | MarkDef, EncodingWithFacet>;
+export declare type FacetedCompositeUnitSpec = GenericUnitSpec<CompositeMark | Mark | MarkDef, EncodingWithFacet<Field>>;
 export interface GenericLayerSpec<U extends GenericUnitSpec<any, any>> extends BaseSpec {
     width?: number;
     height?: number;
@@ -77,19 +78,30 @@ export interface GenericLayerSpec<U extends GenericUnitSpec<any, any>> extends B
 }
 export declare type LayerSpec = GenericLayerSpec<UnitSpec>;
 export interface GenericFacetSpec<U extends GenericUnitSpec<any, any>> extends BaseSpec {
-    facet: Facet;
+    facet: Facet<Field>;
     spec: GenericLayerSpec<U> | U;
 }
 export declare type FacetSpec = GenericFacetSpec<UnitSpec>;
-export declare type GenericSpec<U extends GenericUnitSpec<any, any>> = U | GenericLayerSpec<U> | GenericFacetSpec<U>;
+export interface GenericRepeatSpec<U extends GenericUnitSpec<any, any>> extends BaseSpec {
+    repeat: Repeat;
+    spec: GenericRepeatSpec<U> | GenericLayerSpec<U> | U;
+}
+export declare type RepeatSpec = GenericRepeatSpec<UnitSpec>;
+export interface GenericConcatSpec<U extends GenericUnitSpec<any, any>> extends BaseSpec {
+    vconcat: (GenericLayerSpec<U> | U)[];
+}
+export declare type ConcatSpec = GenericConcatSpec<UnitSpec>;
+export declare type GenericSpec<U extends GenericUnitSpec<any, any>> = U | GenericLayerSpec<U> | GenericFacetSpec<U> | GenericRepeatSpec<U> | GenericConcatSpec<U>;
 export declare type Spec = GenericSpec<UnitSpec>;
-export declare type TopLevelExtendedSpec = TopLevel<FacetedCompositeUnitSpec> | TopLevel<GenericLayerSpec<CompositeUnitSpec>> | TopLevel<GenericFacetSpec<CompositeUnitSpec>>;
+export declare type TopLevelExtendedSpec = TopLevel<FacetedCompositeUnitSpec> | TopLevel<GenericLayerSpec<CompositeUnitSpec>> | TopLevel<GenericFacetSpec<CompositeUnitSpec>> | TopLevel<GenericRepeatSpec<CompositeUnitSpec>> | TopLevel<GenericConcatSpec<CompositeUnitSpec>>;
 export declare function isFacetSpec(spec: GenericSpec<GenericUnitSpec<any, any>>): spec is GenericFacetSpec<GenericUnitSpec<any, any>>;
 export declare function isUnitSpec(spec: GenericSpec<GenericUnitSpec<any, any>>): spec is FacetedCompositeUnitSpec | UnitSpec;
 export declare function isLayerSpec(spec: GenericSpec<GenericUnitSpec<any, any>>): spec is GenericLayerSpec<GenericUnitSpec<any, any>>;
+export declare function isRepeatSpec(spec: GenericSpec<GenericUnitSpec<any, any>>): spec is GenericRepeatSpec<GenericUnitSpec<any, any>>;
+export declare function isConcatSpec(spec: GenericSpec<GenericUnitSpec<any, any>>): spec is GenericConcatSpec<GenericUnitSpec<any, any>>;
 /**
  * Decompose extended unit specs into composition of pure unit specs.
  */
-export declare function normalize(spec: TopLevelExtendedSpec): Spec;
-export declare function fieldDefs(spec: GenericSpec<GenericUnitSpec<any, any>>): FieldDef[];
+export declare function normalize(spec: TopLevelExtendedSpec, config: Config): Spec;
+export declare function fieldDefs(spec: GenericSpec<GenericUnitSpec<any, any>>): FieldDef<Field>[];
 export declare function isStacked(spec: TopLevel<FacetedCompositeUnitSpec>, config?: Config): boolean;

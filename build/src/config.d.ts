@@ -1,4 +1,5 @@
 import { AxisConfig } from './axis';
+import { BoxPlotConfig } from './compositemark';
 import { LegendConfig } from './legend';
 import { BarConfig, MarkConfig, TextConfig, TickConfig } from './mark';
 import { ScaleConfig } from './scale';
@@ -78,8 +79,6 @@ export interface CellConfig {
 export declare const defaultCellConfig: CellConfig;
 export declare const defaultFacetCellConfig: CellConfig;
 export interface FacetConfig {
-    /** Facet Axis Config */
-    axis?: AxisConfig;
     /** Facet Cell Config */
     cell?: CellConfig;
 }
@@ -150,6 +149,10 @@ export interface Config extends TopLevelProperties {
     text?: TextConfig;
     /** Tick-Specific Config */
     tick?: TickConfig;
+    /** Box Config */
+    box?: BoxPlotConfig;
+    boxWhisker?: MarkConfig;
+    boxMid?: MarkConfig;
     /** Mark Overlay Config */
     overlay?: OverlayConfig;
     /** Scale Config */
@@ -203,7 +206,7 @@ export interface Config extends TopLevelProperties {
      * Whether to filter invalid values (`null` and `NaN`) from the data.
      * - By default (`undefined`), only quantitative and temporal fields are filtered.
      * - If set to `true`, all data items with null values are filtered.
-     * - If `false`, all data items are included. In this case, null values will be interpret as zeroes.
+     * - If `false`, all data items are included. In this case, null values will be interpreted as zeroes.
      */
     filterInvalid?: boolean;
     [role: string]: any;

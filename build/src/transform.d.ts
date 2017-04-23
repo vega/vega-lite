@@ -8,7 +8,7 @@ export interface FilterTransform {
 export declare function isFilter(t: Transform): t is FilterTransform;
 export interface CalculateTransform {
     /**
-     * A string containing a Vega Expression. Use the variable `datum` to to refer to the current data object.
+     * A string containing a Vega Expression. Use the variable `datum` to refer to the current data object.
      */
     calculate: string;
     /**

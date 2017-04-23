@@ -4,8 +4,8 @@ import { Mark, MarkDef } from '../../mark';
 import { Scale } from '../../scale';
 import { StackProperties } from '../../stack';
 import { Dict } from '../../util';
-export declare function initMarkDef(mark: Mark | MarkDef, encoding: Encoding, scale: Dict<Scale>, config: Config): MarkDef;
+export declare function initMarkDef(mark: Mark | MarkDef, encoding: Encoding<string>, scale: Dict<Scale>, config: Config): MarkDef;
 /**
  * Initialize encoding's value with some special default values
  */
-export declare function initEncoding(mark: Mark, encoding: Encoding, stacked: StackProperties, config: Config): Encoding;
+export declare function initEncoding(mark: Mark, encoding: Encoding<string>, stacked: StackProperties, config: Config): Encoding<string>;

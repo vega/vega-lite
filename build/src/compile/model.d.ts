@@ -1,18 +1,15 @@
-import { Axis } from '../axis';
 import { Channel } from '../channel';
-import { CellConfig, Config } from '../config';
+import { Config } from '../config';
 import { Data, DataSourceType } from '../data';
 import { FieldDef, FieldRefOption } from '../fielddef';
-import { Legend } from '../legend';
 import { Scale } from '../scale';
-import { SortField, SortOrder } from '../sort';
 import { BaseSpec } from '../spec';
-import { StackProperties } from '../stack';
 import { Transform } from '../transform';
 import { Dict } from '../util';
-import { VgAxis, VgData, VgEncodeEntry, VgLegend, VgScale } from '../vega.schema';
+import { VgAxis, VgData, VgEncodeEntry, VgLayout, VgLegend, VgMarkGroup, VgScale, VgSignal } from '../vega.schema';
+import { AxesComponent } from './axis/index';
 import { DataComponent } from './data/index';
-import { LayoutComponent } from './layout';
+import { LayoutHeaderComponent } from './layout/header';
 import { SelectionComponent } from './selection/selection';
 /**
  * Composable Components that are intermediate results of the parsing phase of the
@@ -21,15 +18,16 @@ import { SelectionComponent } from './selection/selection';
  */
 export interface Component {
     data: DataComponent;
-    layout: LayoutComponent;
     scales: Dict<VgScale>;
     selection: Dict<SelectionComponent>;
     /** Dictionary mapping channel to VgAxis definition */
-    axes: Dict<VgAxis[]>;
+    axes: AxesComponent;
     /** Dictionary mapping channel to VgLegend definition */
     legends: Dict<VgLegend>;
-    /** Dictionary mapping channel to axis mark group for facet and concat */
-    axisGroups: Dict<VgEncodeEntry>;
+    layoutHeaders: {
+        row?: LayoutHeaderComponent;
+        column?: LayoutHeaderComponent;
+    };
     mark: VgEncodeEntry[];
 }
 export interface NameMapInterface {
@@ -46,7 +44,7 @@ export declare class NameMap implements NameMapInterface {
 }
 export declare abstract class Model {
     readonly parent: Model;
-    protected readonly name: string;
+    readonly name: string;
     readonly description: string;
     readonly data: Data;
     readonly transforms: Transform[];
@@ -54,10 +52,6 @@ export declare abstract class Model {
     protected scaleNameMap: NameMapInterface;
     /** Name map for size, which can be renamed by a model's parent. */
     protected sizeNameMap: NameMapInterface;
-    protected scales: Dict<Scale>;
-    protected axes: Dict<Axis>;
-    protected legends: Dict<Legend>;
-    protected _stack: StackProperties;
     readonly config: Config;
     component: Component;
     readonly abstract children: Model[];
@@ -65,35 +59,32 @@ export declare abstract class Model {
     parse(): void;
     abstract parseData(): void;
     abstract parseSelection(): void;
-    abstract parseLayoutData(): void;
     abstract parseScale(): void;
     abstract parseMark(): void;
-    abstract parseAxis(): void;
+    abstract parseAxisAndHeader(): void;
     abstract parseLegend(): void;
-    abstract parseAxisGroup(): void;
-    abstract assembleSignals(signals: any[]): any[];
+    abstract assembleSelectionTopLevelSignals(signals: any[]): any[];
+    abstract assembleSelectionSignals(): any[];
     abstract assembleSelectionData(data: VgData[]): VgData[];
     abstract assembleData(): VgData[];
-    abstract assembleLayout(layoutData: VgData[]): VgData[];
+    abstract assembleLayout(): VgLayout;
+    abstract assembleLayoutSignals(): VgSignal[];
     assembleScales(): VgScale[];
-    abstract assembleMarks(): any[];
+    assembleHeaderMarks(): VgMarkGroup[];
+    abstract assembleMarks(): VgMarkGroup[];
     assembleAxes(): VgAxis[];
     assembleLegends(): VgLegend[];
-    assembleGroup(): any;
-    abstract assembleParentGroupProperties(cellConfig: CellConfig): VgEncodeEntry;
-    abstract channels(): Channel[];
-    protected abstract getMapping(): {
-        [key: string]: any;
-    };
-    reduceFieldDef<T, U>(f: (acc: U, fd: FieldDef, c: Channel) => U, init: T, t?: any): any;
-    forEachFieldDef(f: (fd: FieldDef, c: Channel) => void, t?: any): void;
+    assembleGroup(signals?: VgSignal[]): any;
+    abstract assembleParentGroupProperties(): VgEncodeEntry;
     hasDescendantWithFieldOnChannel(channel: Channel): boolean;
-    abstract channelHasField(channel: Channel): boolean;
-    getName(text: string, delimiter?: string): string;
+    getName(text: string): string;
     /**
-     * Return the data source name for the given data source type. You probably want to call this in parse.
+     * Request a data source name for the given data source type and mark that data source as required. This method should be called in parse, so that all used data source can be correctly instantiated in assembleData().
      */
-    getDataName(name: DataSourceType): string;
+    requestDataName(name: DataSourceType): string;
+    getSizeSignalRef(sizeType: 'width' | 'height'): {
+        signal: string;
+    };
     /**
      * Lookup the name of the datasource for an output node. You probably want to call this in assemble.
      */
@@ -101,20 +92,12 @@ export declare abstract class Model {
     renameSize(oldName: string, newName: string): void;
     channelSizeName(channel: Channel): string;
     sizeName(size: string): string;
-    /** Get "field" reference for vega */
-    field(channel: Channel, opt?: FieldRefOption): string;
-    abstract fieldDef(channel: Channel): FieldDef;
-    scale(channel: Channel): Scale;
-    hasDiscreteScale(channel: Channel): boolean;
     renameScale(oldName: string, newName: string): void;
+    scale(channel: Channel): Scale;
     /**
      * @return scale name for a given channel after the scale has been parsed and named.
      */
     scaleName(this: Model, originalScaleName: Channel | string, parse?: boolean): string;
-    sort(channel: Channel): SortField | SortOrder;
-    axis(channel: Channel): Axis;
-    legend(channel: Channel): Legend;
-    readonly stack: StackProperties;
     /**
      * Corrects the data references in marks after assemble.
      */
@@ -125,4 +108,18 @@ export declare abstract class Model {
      * @param name Name of the component
      */
     getComponent(type: 'scales' | 'selection', name: string): any;
+}
+/** Abstract class for UnitModel and FacetModel.  Both of which can contain fieldDefs as a part of its own specification. */
+export declare abstract class ModelWithField extends Model {
+    abstract fieldDef(channel: Channel): FieldDef<string>;
+    /** Get "field" reference for vega */
+    field(channel: Channel, opt?: FieldRefOption): string;
+    abstract hasDiscreteDomain(channel: Channel): boolean;
+    abstract channels(): Channel[];
+    protected abstract getMapping(): {
+        [key: string]: any;
+    };
+    reduceFieldDef<T, U>(f: (acc: U, fd: FieldDef<string>, c: Channel) => U, init: T, t?: any): any;
+    forEachFieldDef(f: (fd: FieldDef<string>, c: Channel) => void, t?: any): void;
+    abstract channelHasField(channel: Channel): boolean;
 }

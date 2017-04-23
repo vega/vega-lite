@@ -18,7 +18,7 @@ export declare namespace Channel {
     const ORDER: 'order';
     const DETAIL: 'detail';
 }
-export declare type Channel = keyof Encoding | keyof Facet;
+export declare type Channel = keyof Encoding<any> | keyof Facet<any>;
 export declare const X: "x";
 export declare const Y: "y";
 export declare const X2: "x2";
@@ -33,6 +33,7 @@ export declare const DETAIL: "detail";
 export declare const ORDER: "order";
 export declare const OPACITY: "opacity";
 export declare const CHANNELS: Channel[];
+export declare function isChannel(str: string): str is Channel;
 export declare const UNIT_CHANNELS: ("text" | "x" | "y" | "x2" | "y2" | "color" | "opacity" | "size" | "shape" | "detail" | "order")[];
 export declare const UNIT_SCALE_CHANNELS: ("x" | "y" | "color" | "opacity" | "size" | "shape")[];
 export declare const SCALE_CHANNELS: ("x" | "y" | "color" | "opacity" | "size" | "shape" | "row" | "column")[];

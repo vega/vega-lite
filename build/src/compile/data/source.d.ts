@@ -8,6 +8,8 @@ export declare class SourceNode extends DataFlowNode {
     readonly data: Partial<VgData>;
     hasName(): boolean;
     dataName: string;
+    parent: DataFlowNode;
+    remove(): void;
     /**
      * Return a unique identifir for this data source.
      */

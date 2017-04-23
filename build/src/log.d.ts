@@ -42,11 +42,13 @@ export declare function debug(..._: any[]): void;
  */
 export declare namespace message {
     const INVALID_SPEC = "Invalid spec";
+    function noSuchRepeatedValue(field: string): string;
+    function unrecognizedParse(p: string): string;
     function invalidTransformIgnored(transform: any): string;
     function invalidFieldType(type: Type): string;
     function invalidAggregate(aggregate: AggregateOp | string): string;
     function emptyOrInvalidFieldType(type: Type | string, channel: Channel, newType: Type): string;
-    function emptyFieldDef(fieldDef: FieldDef, channel: Channel): string;
+    function emptyFieldDef(fieldDef: FieldDef<string>, channel: Channel): string;
     function incompatibleChannel(channel: Channel, markOrFacet: Mark | 'facet', when?: string): string;
     function facetChannelShouldBeDiscrete(channel: string): string;
     function discreteChannelCannotEncode(channel: Channel, type: Type): string;
@@ -56,9 +58,9 @@ export declare namespace message {
     function orientOverridden(original: string, actual: string): string;
     const CANNOT_UNION_CUSTOM_DOMAIN_WITH_FIELD_DOMAIN = "custom domain scale cannot be unioned with default field-based domain";
     function cannotUseScalePropertyWithNonColor(prop: string): string;
-    function unaggregateDomainHasNoEffectForRawField(fieldDef: FieldDef): string;
-    function unaggregateDomainWithNonSharedDomainOp(aggregate: AggregateOp): string;
-    function unaggregatedDomainWithLogScale(fieldDef: FieldDef): string;
+    function unaggregateDomainHasNoEffectForRawField(fieldDef: FieldDef<string>): string;
+    function unaggregateDomainWithNonSharedDomainOp(aggregate: string): string;
+    function unaggregatedDomainWithLogScale(fieldDef: FieldDef<string>): string;
     const CANNOT_USE_RANGE_WITH_POSITION = "Cannot use custom range with x or y channel.  Please customize width, height, padding, or rangeStep instead.";
     const CANNOT_USE_PADDING_WITH_FACET = "Cannot use padding with facet's scale.  Please use spacing instead.";
     function cannotUseRangePropertyWithFacet(propName: string): string;
@@ -72,7 +74,7 @@ export declare namespace message {
     const INVALID_CHANNEL_FOR_AXIS = "Invalid channel for axis.";
     function cannotStackRangedMark(channel: Channel): string;
     function cannotStackNonLinearScale(scaleType: ScaleType): string;
-    function cannotStackNonSummativeAggregate(aggregate: AggregateOp): string;
+    function cannotStackNonSummativeAggregate(aggregate: string): string;
     function invalidTimeUnit(unitName: string, value: string | number): string;
     function dayReplacedWithDate(fullTimeUnit: TimeUnit): string;
     function droppedDay(d: DateTime | DateTimeExpr): string;

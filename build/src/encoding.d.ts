@@ -1,38 +1,38 @@
 import { Channel } from './channel';
 import { Facet } from './facet';
-import { ConditionalValueDef, FieldDef, LegendFieldDef, OrderFieldDef, PositionFieldDef, TextFieldDef, ValueDef } from './fielddef';
+import { ConditionalValueDef, Field, FieldDef, LegendFieldDef, OrderFieldDef, PositionFieldDef, TextFieldDef, ValueDef } from './fielddef';
 import { Mark } from './mark';
-export interface Encoding {
+export interface Encoding<F> {
     /**
      * X coordinates for `point`, `circle`, `square`,
      * `line`, `rule`, `text`, and `tick`
      * (or to width and height for `bar` and `area` marks).
      */
-    x?: PositionFieldDef | ValueDef<number>;
+    x?: PositionFieldDef<F> | ValueDef<number>;
     /**
      * Y coordinates for `point`, `circle`, `square`,
      * `line`, `rule`, `text`, and `tick`
      * (or to width and height for `bar` and `area` marks).
      */
-    y?: PositionFieldDef | ValueDef<number>;
+    y?: PositionFieldDef<F> | ValueDef<number>;
     /**
-     * X2 coordinates for ranged `bar`, `rule`, `area`
+     * X2 coordinates for ranged `bar`, `rule`, `area`.
      */
-    x2?: FieldDef | ValueDef<number>;
+    x2?: FieldDef<F> | ValueDef<number>;
     /**
-     * Y2 coordinates for ranged `bar`, `rule`, `area`
+     * Y2 coordinates for ranged `bar`, `rule`, `area`.
      */
-    y2?: FieldDef | ValueDef<number>;
+    y2?: FieldDef<F> | ValueDef<number>;
     /**
      * Color of the marks – either fill or stroke color based on mark type.
      * (By default, fill color for `area`, `bar`, `tick`, `text`, `circle`, and `square` /
      * stroke color for `line` and `point`.)
      */
-    color?: LegendFieldDef<string> | ConditionalValueDef<string>;
+    color?: LegendFieldDef<F, string> | ConditionalValueDef<string>;
     /**
-     * Opacity of the marks – either can be a value or in a range.
+     * Opacity of the marks – either can be a value or a range.
      */
-    opacity?: LegendFieldDef<number> | ConditionalValueDef<number>;
+    opacity?: LegendFieldDef<F, number> | ConditionalValueDef<number>;
     /**
      * Size of the mark.
      * - For `point`, `square` and `circle`
@@ -41,33 +41,33 @@ export interface Encoding {
      * - For `text` – the text's font size.
      * - Size is currently unsupported for `line` and `area`.
      */
-    size?: LegendFieldDef<number> | ConditionalValueDef<number>;
+    size?: LegendFieldDef<F, number> | ConditionalValueDef<number>;
     /**
      * The symbol's shape (only for `point` marks). The supported values are
      * `"circle"` (default), `"square"`, `"cross"`, `"diamond"`, `"triangle-up"`,
      * or `"triangle-down"`, or else a custom SVG path string.
      */
-    shape?: LegendFieldDef<string> | ConditionalValueDef<string>;
+    shape?: LegendFieldDef<F, string> | ConditionalValueDef<string>;
     /**
      * Additional levels of detail for grouping data in aggregate views and
      * in line and area marks without mapping data to a specific visual channel.
      */
-    detail?: FieldDef | FieldDef[];
+    detail?: FieldDef<F> | FieldDef<F>[];
     /**
      * Text of the `text` mark.
      */
-    text?: TextFieldDef | ConditionalValueDef<string | number | boolean>;
+    text?: TextFieldDef<F> | ConditionalValueDef<string | number | boolean>;
     /**
      * stack order for stacked marks or order of data points in line marks.
      */
-    order?: OrderFieldDef | OrderFieldDef[];
+    order?: OrderFieldDef<F> | OrderFieldDef<F>[];
 }
-export interface EncodingWithFacet extends Encoding, Facet {
+export interface EncodingWithFacet<F> extends Encoding<F>, Facet<F> {
 }
-export declare function channelHasField(encoding: EncodingWithFacet, channel: Channel): boolean;
-export declare function isAggregate(encoding: EncodingWithFacet): boolean;
-export declare function normalizeEncoding(encoding: Encoding, mark: Mark): Encoding;
-export declare function isRanged(encoding: EncodingWithFacet): boolean;
-export declare function fieldDefs(encoding: EncodingWithFacet): FieldDef[];
-export declare function forEach(mapping: any, f: (fd: FieldDef, c: Channel) => void, thisArg?: any): void;
-export declare function reduce<T, U>(mapping: U, f: (acc: any, fd: FieldDef, c: Channel) => U, init: T, thisArg?: any): any;
+export declare function channelHasField(encoding: EncodingWithFacet<Field>, channel: Channel): boolean;
+export declare function isAggregate(encoding: EncodingWithFacet<Field>): boolean;
+export declare function normalizeEncoding(encoding: Encoding<string>, mark: Mark): Encoding<string>;
+export declare function isRanged(encoding: EncodingWithFacet<any>): boolean;
+export declare function fieldDefs(encoding: EncodingWithFacet<Field>): FieldDef<Field>[];
+export declare function forEach(mapping: any, f: (fd: FieldDef<string>, c: Channel) => void, thisArg?: any): void;
+export declare function reduce<T, U>(mapping: U, f: (acc: any, fd: FieldDef<string>, c: Channel) => U, init: T, thisArg?: any): any;

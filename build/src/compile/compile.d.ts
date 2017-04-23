@@ -4,4 +4,4 @@ import { Model } from './model';
 export declare function compile(inputSpec: TopLevelExtendedSpec, logger?: log.LoggerInterface): {
     spec: any;
 };
-export declare function assembleRootGroup(model: Model): any;
+export declare function assembleNestedMainGroup(model: Model): any;

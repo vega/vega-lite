@@ -19,6 +19,7 @@ export interface SelectionComponent {
     };
     resolve: SelectionResolutions;
     project?: ProjectComponent[];
+    fields?: any;
     scales?: Channel[];
     toggle?: any;
     translate?: any;
@@ -38,11 +39,11 @@ export interface SelectionCompiler {
     predicate: string;
 }
 export declare function parseUnitSelection(model: UnitModel, selDefs: Dict<SelectionDef>): Dict<SelectionComponent>;
-export declare function assembleUnitSignals(model: UnitModel, signals: any[]): any[];
-export declare function assembleTopLevelSignals(model: Model): any[];
-export declare function assembleUnitData(model: UnitModel, data: VgData[]): VgData[];
-export declare function assembleUnitMarks(model: UnitModel, marks: any[]): any[];
-export declare function assembleLayerMarks(model: LayerModel, marks: any[]): any[];
+export declare function assembleUnitSelectionSignals(model: UnitModel, signals: any[]): any[];
+export declare function assembleTopLevelSignals(model: UnitModel, signals: any[]): any[];
+export declare function assembleUnitSelectionData(model: UnitModel, data: VgData[]): VgData[];
+export declare function assembleUnitSelectionMarks(model: UnitModel, marks: any[]): any[];
+export declare function assembleLayerSelectionMarks(model: LayerModel, marks: any[]): any[];
 export declare function predicate(selCmpt: SelectionComponent, datum?: string): string;
 export declare function invert(model: UnitModel, selCmpt: SelectionComponent, channel: Channel, expr: string): string;
 export declare function channelSignalName(selCmpt: SelectionComponent, channel: Channel): string;

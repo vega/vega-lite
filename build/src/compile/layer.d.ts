@@ -1,9 +1,8 @@
-import { Channel } from '../channel';
-import { CellConfig, Config } from '../config';
-import { FieldDef } from '../fielddef';
+import { Config } from '../config';
 import { LayerSpec } from '../spec';
-import { VgData, VgEncodeEntry, VgScale } from '../vega.schema';
+import { VgData, VgEncodeEntry, VgLayout, VgScale, VgSignal } from '../vega.schema';
 import { Model } from './model';
+import { RepeaterValue } from './repeat';
 import { UnitModel } from './unit';
 export declare class LayerModel extends Model {
     readonly children: UnitModel[];
@@ -19,26 +18,20 @@ export declare class LayerModel extends Model {
      * visualization will be calculated dynamically.
      */
     readonly height: number;
-    constructor(spec: LayerSpec, parent: Model, parentGivenName: string, config: Config);
-    channelHasField(channel: Channel): boolean;
-    hasDiscreteScale(channel: Channel): boolean;
-    fieldDef(channel: Channel): FieldDef;
+    constructor(spec: LayerSpec, parent: Model, parentGivenName: string, repeater: RepeaterValue, config: Config);
     parseData(): void;
     parseSelection(): void;
-    parseLayoutData(): void;
     parseScale(this: LayerModel): void;
     parseMark(): void;
-    parseAxis(): void;
-    parseAxisGroup(): void;
+    parseAxisAndHeader(): void;
     parseLegend(): void;
-    assembleParentGroupProperties(cellConfig: CellConfig): VgEncodeEntry;
-    assembleSignals(signals: any[]): any[];
+    assembleParentGroupProperties(): VgEncodeEntry;
+    assembleSelectionTopLevelSignals(signals: any[]): VgSignal[];
+    assembleSelectionSignals(): VgSignal[];
+    assembleLayoutSignals(): VgSignal[];
     assembleSelectionData(data: VgData[]): VgData[];
     assembleData(): VgData[];
     assembleScales(): VgScale[];
-    assembleLayout(layoutData: VgData[]): VgData[];
+    assembleLayout(): VgLayout;
     assembleMarks(): any[];
-    channels(): Channel[];
-    protected getMapping(): any;
-    isLayer(): boolean;
 }

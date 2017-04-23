@@ -15,4 +15,4 @@ export declare const NON_TYPE_RANGE_SCALE_PROPERTIES: (keyof Scale)[];
  * - layout depends on padding
  * - range depends on zero and size (width and height) depends on range
  */
-export default function init(channel: Channel, fieldDef: ScaleFieldDef, config: Config, mark: Mark | undefined, topLevelSize: number | undefined, xyRangeSteps: number[]): Scale;
+export default function init(channel: Channel, fieldDef: ScaleFieldDef<string>, config: Config, mark: Mark | undefined, topLevelSize: number | undefined, xyRangeSteps: number[]): Scale;

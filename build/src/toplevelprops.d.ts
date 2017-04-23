@@ -6,7 +6,7 @@ export declare type Padding = number | {
 };
 export interface TopLevelProperties {
     /**
-     * CSS color property to use as background of visualization.
+     * CSS color property to use as the background of visualization.
      *
      * __Default value:__ none (transparent)
      */

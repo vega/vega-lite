@@ -21,7 +21,7 @@ describe('Mark', function () {
                 chai_1.assert.equal(markGroup.name, 'pathgroup');
                 chai_1.assert.deepEqual(markGroup.from, {
                     facet: {
-                        name: 'faceted-path-main',
+                        name: 'faceted_path_main',
                         data: 'main',
                         groupby: ['symbol']
                     }
@@ -29,7 +29,7 @@ describe('Mark', function () {
                 var submarkGroup = markGroup.marks[0];
                 chai_1.assert.equal(submarkGroup.name, 'marks');
                 chai_1.assert.equal(submarkGroup.type, 'line');
-                chai_1.assert.equal(submarkGroup.from.data, 'faceted-path-main');
+                chai_1.assert.equal(submarkGroup.from.data, 'faceted_path_main');
             });
         });
         describe('Single Line', function () {

@@ -5,31 +5,30 @@ var tslib_1 = require("tslib");
  * Module for compiling Vega-lite spec into Vega spec.
  */
 var config_1 = require("../config");
-var data_1 = require("../data");
 var log = require("../log");
 var spec_1 = require("../spec");
 var toplevelprops_1 = require("../toplevelprops");
 var util_1 = require("../util");
 var common_1 = require("./common");
-var selection_1 = require("./selection/selection");
 function compile(inputSpec, logger) {
     if (logger) {
         // set the singleton logger to the provided logger
         log.set(logger);
     }
     try {
-        // 1. Convert input spec into a normal form
-        // (Decompose all extended unit specs into composition of unit spec.)
-        var spec = spec_1.normalize(inputSpec);
-        // 2. Instantiate the model with default config
+        // 1. initialize config
         var config = config_1.initConfig(inputSpec.config);
-        var model = common_1.buildModel(spec, null, '', config);
-        // 3. Parse each part of the model to produce components that will be assembled later
+        // 2. Convert input spec into a normal form
+        // (Decompose all extended unit specs into composition of unit spec.)
+        var spec = spec_1.normalize(inputSpec, config);
+        // 3. Instantiate the model with default config
+        var model = common_1.buildModel(spec, null, '', null, config);
+        // 4. Parse each part of the model to produce components that will be assembled later
         // We traverse the whole tree to parse once for each type of components
         // (e.g., data, layout, mark, scale).
         // Please see inside model.parse() for order for compilation.
         model.parse();
-        // 4. Assemble a Vega Spec from the parsed components in 3.
+        // 5. Assemble a Vega Spec from the parsed components in 3.
         return assemble(model, getTopLevelProperties(inputSpec, config));
     }
     finally {
@@ -45,44 +44,34 @@ function getTopLevelProperties(topLevelSpec, config) {
 }
 function assemble(model, topLevelProperties) {
     // TODO: change type to become VgSpec
-    var output = util_1.extend({
-        $schema: 'http://vega.github.io/schema/vega/v3.0.json',
-    }, { autosize: 'pad' }, // Currently we don't support custom autosize
-    topLevelProperties, {
-        // Map calculated layout width and height to width and height signals.
-        signals: [
-            {
-                name: 'width',
-                update: "data('" + model.getName(data_1.LAYOUT) + "')[0]." + model.getName('width')
-            },
-            {
-                name: 'height',
-                update: "data('" + model.getName(data_1.LAYOUT) + "')[0]." + model.getName('height')
-            }
-        ].concat(selection_1.assembleTopLevelSignals(model))
-    }, {
-        data: [].concat(model.assembleData(), model.assembleLayout([]), model.assembleSelectionData([])),
-        marks: [assembleRootGroup(model)]
-    });
+    var output = tslib_1.__assign({ $schema: 'http://vega.github.io/schema/vega/v3.0.json' }, (model.description ? { description: model.description } : {}), { autosize: 'pad' }, topLevelProperties, { data: [].concat(model.assembleData(), model.assembleSelectionData([])), signals: ([].concat(
+        // TODO(https://github.com/vega/vega-lite/issues/2198):
+        // Merge the top-level's width/height signal with the top-level model
+        // so we can remove this special casing based on model.name
+        (model.name ? [
+            // If model has name, its calculated width and height will not be named width and height, need to map it to the global width and height signals.
+            { name: 'width', update: model.getName('width') },
+            { name: 'height', update: model.getName('height') }
+        ] : []), model.assembleLayoutSignals(), model.assembleSelectionTopLevelSignals([]))) }, assembleNestedMainGroup(model));
     return {
         spec: output
         // TODO: add warning / errors here
     };
 }
-function assembleRootGroup(model) {
-    var rootGroup = util_1.extend({
-        name: model.getName('main-group'),
-        type: 'group',
-    }, model.description ? { description: model.description } : {}, {
-        from: { data: model.getName(data_1.LAYOUT) },
-        encode: {
-            update: util_1.extend({
-                width: { field: model.getName('width') },
-                height: { field: model.getName('height') }
-            }, model.assembleParentGroupProperties(model.config.cell))
-        }
-    });
-    return util_1.extend(rootGroup, model.assembleGroup());
+function assembleNestedMainGroup(model) {
+    var _a = model.assembleGroup([]), layout = _a.layout, signals = _a.signals, group = tslib_1.__rest(_a, ["layout", "signals"]);
+    var marks = group.marks;
+    var hasLayout = !!model.assembleLayout();
+    var parentEncodeEntry = tslib_1.__assign({}, (!hasLayout ? {
+        width: { signal: 'width' },
+        height: { signal: 'height' },
+    } : {}), model.assembleParentGroupProperties());
+    return tslib_1.__assign({}, group, { marks: [tslib_1.__assign({ name: model.getName('nested_main_group'), type: 'group', layout: layout,
+                signals: signals }, (util_1.keys(parentEncodeEntry).length > 0 ? {
+                encode: {
+                    update: parentEncodeEntry
+                }
+            } : {}), { marks: marks })] });
 }
-exports.assembleRootGroup = assembleRootGroup;
-//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiY29tcGlsZS5qcyIsInNvdXJjZVJvb3QiOiIiLCJzb3VyY2VzIjpbIi4uLy4uLy4uL3NyYy9jb21waWxlL2NvbXBpbGUudHMiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6Ijs7O0FBQUE7O0dBRUc7QUFDSCxvQ0FBNkM7QUFDN0MsZ0NBQStCO0FBQy9CLDRCQUE4QjtBQUM5QixnQ0FBa0U7QUFDbEUsa0RBQStFO0FBQy9FLGdDQUErQjtBQUMvQixtQ0FBb0M7QUFFcEMsbURBQThEO0FBRTlELGlCQUF3QixTQUErQixFQUFFLE1BQTRCO0lBQ25GLEVBQUUsQ0FBQyxDQUFDLE1BQU0sQ0FBQyxDQUFDLENBQUM7UUFDWCxrREFBa0Q7UUFDbEQsR0FBRyxDQUFDLEdBQUcsQ0FBQyxNQUFNLENBQUMsQ0FBQztJQUNsQixDQUFDO0lBRUQsSUFBSSxDQUFDO1FBQ0gsMkNBQTJDO1FBQzNDLHFFQUFxRTtRQUNyRSxJQUFNLElBQUksR0FBRyxnQkFBUyxDQUFDLFNBQVMsQ0FBQyxDQUFDO1FBRWxDLCtDQUErQztRQUMvQyxJQUFNLE1BQU0sR0FBRyxtQkFBVSxDQUFDLFNBQVMsQ0FBQyxNQUFNLENBQUMsQ0FBQztRQUM1QyxJQUFNLEtBQUssR0FBRyxtQkFBVSxDQUFDLElBQUksRUFBRSxJQUFJLEVBQUUsRUFBRSxFQUFFLE1BQU0sQ0FBQyxDQUFDO1FBRWpELHFGQUFxRjtRQUNyRix1RUFBdUU7UUFDdkUscUNBQXFDO1FBQ3JDLDZEQUE2RDtRQUM3RCxLQUFLLENBQUMsS0FBSyxFQUFFLENBQUM7UUFFZCwyREFBMkQ7UUFDM0QsTUFBTSxDQUFDLFFBQVEsQ0FBQyxLQUFLLEVBQUUscUJBQXFCLENBQUMsU0FBUyxFQUFFLE1BQU0sQ0FBQyxDQUFDLENBQUM7SUFDbkUsQ0FBQztZQUFTLENBQUM7UUFDVCxxREFBcUQ7UUFDckQsRUFBRSxDQUFDLENBQUMsTUFBTSxDQUFDLENBQUMsQ0FBQztZQUNYLEdBQUcsQ0FBQyxLQUFLLEVBQUUsQ0FBQztRQUNkLENBQUM7SUFDSCxDQUFD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
+exports.assembleNestedMainGroup = assembleNestedMainGroup;
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiY29tcGlsZS5qcyIsInNvdXJjZVJvb3QiOiIiLCJzb3VyY2VzIjpbIi4uLy4uLy4uL3NyYy9jb21waWxlL2NvbXBpbGUudHMiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6Ijs7O0FBQUE7O0dBRUc7QUFDSCxvQ0FBNkM7QUFDN0MsNEJBQThCO0FBQzlCLGdDQUFrRTtBQUNsRSxrREFBK0U7QUFDL0UsZ0NBQXFDO0FBQ3JDLG1DQUFvQztBQUdwQyxpQkFBd0IsU0FBK0IsRUFBRSxNQUE0QjtJQUNuRixFQUFFLENBQUMsQ0FBQyxNQUFNLENBQUMsQ0FBQyxDQUFDO1FBQ1gsa0RBQWtEO1FBQ2xELEdBQUcsQ0FBQyxHQUFHLENBQUMsTUFBTSxDQUFDLENBQUM7SUFDbEIsQ0FBQztJQUVELElBQUksQ0FBQztRQUNILHVCQUF1QjtRQUN2QixJQUFNLE1BQU0sR0FBRyxtQkFBVSxDQUFDLFNBQVMsQ0FBQyxNQUFNLENBQUMsQ0FBQztRQUU1QywyQ0FBMkM7UUFDM0MscUVBQXFFO1FBQ3JFLElBQU0sSUFBSSxHQUFHLGdCQUFTLENBQUMsU0FBUyxFQUFFLE1BQU0sQ0FBQyxDQUFDO1FBRTFDLCtDQUErQztRQUMvQyxJQUFNLEtBQUssR0FBRyxtQkFBVSxDQUFDLElBQUksRUFBRSxJQUFJLEVBQUUsRUFBRSxFQUFFLElBQUksRUFBRSxNQUFNLENBQUMsQ0FBQztRQUV2RCxxRkFBcUY7UUFDckYsdUVBQXVFO1FBQ3ZFLHFDQUFxQztRQUNyQyw2REFBNkQ7UUFDN0QsS0FBSyxDQUFDLEtBQUssRUFBRSxDQUFDO1FBRWQsMkRBQTJEO1FBQzNELE1BQU0sQ0FBQyxRQUFRLENBQUMsS0FBSyxFQUFFLHFCQUFxQixDQUFDLFNBQVMsRUFBRSxNQUFNLENBQUMsQ0FBQyxDQUFDO0lBQ25FLENBQUM7WUFBUyxDQUFDO1FBQ1QscURBQXFEO1FBQ3JELEVBQUUsQ0FBQyxDQUFDLE1BQU0sQ0FBQyxDQUFDLENBQUM7WUFDWCxHQUFHLENBQUMsS0FBSyxFQUFFLENBQUM7UUFDZCxDQUFDO0lB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

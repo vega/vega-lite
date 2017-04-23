@@ -45,14 +45,14 @@
     "poststart": "rm examples/all-examples.json",
 
     "preschema": "npm run prebuild",
-    "schema": "typescript-json-schema --required true --noExtraProps true src/spec.ts TopLevelExtendedSpec > build/vega-lite-schema.json && rm -f _data/vega-lite-schema.json && cp build/vega-lite-schema.json _data/",
-
+    "schema": "typescript-json-schema --required true --noExtraProps true src/spec.ts TopLevelExtendedSpec > build/vega-lite-schema.json && rm -f _data/vega-lite-schema.json && npm run replaceschema && cp build/vega-lite-schema.json _data/",
+    "replaceschema": "sed -i -e 's/GenericLayerSpec<.*..\\./LayerSpec/g' build/vega-lite-schema.json && sed -i -e 's/GenericRepeatSpec<.*..\\./RepeatSpec/g' build/vega-lite-schema.json && sed -i -e 's/GenericUnitSpec<.*..\\./UnitSpec/g' build/vega-lite-schema.json",
     "presite": "npm run build && npm run data && npm run build:site && npm run build:toc && npm run build:versions",
     "site": "bundle exec jekyll serve",
 
     "lint": "tslint --project tsconfig.json -c tslint.json --type-check",
-    "pretest": "npm run tsc && npm run schema && npm run data",
-    "test": "npm run test:nocompile",
+    "test": "npm run tsc && npm run test:only && npm run lint",
+    "posttest": "npm run schema && npm run data && npm run mocha:examples",
     "test:nocompile": "npm run test:only && npm run lint && npm run mocha:examples",
     "test:only": "nyc --reporter=html --reporter=text-summary npm run mocha:test",
     "test:debug": "npm run pretest && mocha --recursive --debug-brk build/test build/examples",
@@ -73,12 +73,12 @@
     "url": "https://github.com/vega/vega-lite/issues"
   },
   "devDependencies": {
-    "@types/chai": "^3.5.0",
+    "@types/chai": "^3.5.1",
     "@types/d3": "^4.7.0",
     "@types/highlight.js": "^9.1.9",
     "@types/json-stable-stringify": "^1.0.31",
-    "@types/mocha": "^2.2.40",
-    "@types/node": "^7.0.12",
+    "@types/mocha": "^2.2.41",
+    "@types/node": "^7.0.13",
     "ajv": "5.0.1-beta.1",
     "browser-sync": "~2.18.8",
     "browserify": "~14.3.0",
@@ -86,9 +86,9 @@
     "chai": "~3.5.0",
     "cheerio": "~0.22.0",
     "codecov": "~2.1.0",
-    "d3": "^4.7.4",
+    "d3": "^4.8.0",
     "exorcist": "~0.4.0",
-    "highlight.js": "^9.10.0",
+    "highlight.js": "^9.11.0",
     "mocha": "~3.2.0",
     "nodemon": "~1.11.0",
     "nyc": "~10.2.0",
@@ -99,7 +99,7 @@
     "typescript": "^2.2.2",
     "typescript-json-schema": "^0.11.0",
     "uglify-js": "~2.8.22",
-    "vega": "3.0.0-beta.28",
+    "vega": "3.0.0-beta.29",
     "vega-datasets": "vega/vega-datasets#gh-pages",
     "vega-embed": "3.0.0-beta.10",
     "watchify": "~3.9.0",
@@ -107,9 +107,9 @@
   },
   "dependencies": {
     "json-stable-stringify": "~1.0.1",
-    "tslib": "^1.6.0",
+    "tslib": "^1.6.1",
     "vega-event-selector": "^2.0.0-beta",
-    "vega-util": "~1.1.4",
-    "yargs": "~7.0.2"
+    "vega-util": "~1.2.0",
+    "yargs": "~7.1.0"
   }
 }

@@ -9,3 +9,6 @@ export declare const SUM_OPS: AggregateOp[];
  * Aggregation operators that always produce values within the range [domainMin, domainMax].
  */
 export declare const SHARED_DOMAIN_OPS: AggregateOp[];
+export declare const SHARED_DOMAIN_OP_INDEX: {
+    [T: string]: 1;
+};
