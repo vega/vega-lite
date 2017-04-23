@@ -5,6 +5,15 @@
     "padding": 5,
     "data": [
         {
+            "name": "grid_store"
+        },
+        {
+            "name": "cyl_store"
+        },
+        {
+            "name": "brush_store"
+        },
+        {
             "name": "source_0",
             "url": "data/cars.json",
             "format": {
@@ -50,15 +59,6 @@
                     "expr": "datum[\"Horsepower\"] !== null && !isNaN(datum[\"Horsepower\"]) && datum[\"Miles_per_Gallon\"] !== null && !isNaN(datum[\"Miles_per_Gallon\"])"
                 }
             ]
-        },
-        {
-            "name": "grid_store"
-        },
-        {
-            "name": "cyl_store"
-        },
-        {
-            "name": "brush_store"
         }
     ],
     "signals": [

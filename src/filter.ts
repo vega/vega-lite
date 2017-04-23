@@ -1,10 +1,22 @@
+import {Model} from './compile/model';
+import {predicate} from './compile/selection/selection';
 import {DateTime, dateTimeExpr, isDateTime} from './datetime';
 import {field} from './fielddef';
 import {fieldExpr as timeUnitFieldExpr, isSingleTimeUnit, TimeUnit} from './timeunit';
 import {isArray, isString} from './util';
 
-export type Filter = EqualFilter | RangeFilter | OneOfFilter | string;
+export type Filter = EqualFilter | RangeFilter | OneOfFilter | SelectionFilter | string;
 
+export interface SelectionFilter {
+  /**
+   * Filter using a selection name.
+   */
+  selection: string;
+}
+
+export function isSelectionFilter(filter: Filter): filter is SelectionFilter {
+  return filter && filter['selection'];
+}
 
 export interface EqualFilter {
   // TODO: support aggregate
@@ -93,15 +105,13 @@ export function isOneOfFilter(filter: any): filter is OneOfFilter {
 /**
  * Converts a filter into an expression.
  */
-export function expression(filter: Filter | Filter[]): string {
-  if (isArray(filter)) {
-    return '(' +
-      filter.map((f) => expression(f))
-        .filter((f) => f !==undefined)
-        .join(') && (') +
-      ')';
-  } else if (isString(filter)) {
+// model is only used for selection filters.
+export function expression(model: Model, filter: Filter): string {
+  if (isString(filter)) {
     return filter;
+  } else if (isSelectionFilter(filter)) {
+    const selection = model.getComponent('selection', filter.selection);
+    return predicate(filter.selection, selection.type, selection.resolve, null, null);
   } else { // Filter Object
     const fieldExpr = filter.timeUnit ?
       // For timeUnit, cast into integer with time() so we can use ===, inrange, indexOf to compare values directly.

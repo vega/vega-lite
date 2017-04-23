@@ -59,8 +59,8 @@ function assemble(model: Model, topLevelProperties: TopLevelProperties) {
     autosize: 'pad', // By using Vega layout, we don't support custom autosize
     ...topLevelProperties,
     data: [].concat(
-      model.assembleData(),
-      model.assembleSelectionData([])
+      model.assembleSelectionData([]),
+      model.assembleData()
     ),
     signals: (
       [].concat(
