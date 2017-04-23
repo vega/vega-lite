@@ -30,7 +30,7 @@ describe('Multi Selection', function() {
       value: {},
       on: [{
         events: selCmpts['one'].events,
-        update: "{fields: [\"_id\"], values: [(item().isVoronoi ? datum.datum : datum)[\"_id\"]]}"
+        update: "{encodings: [], fields: [\"_id\"], values: [(item().isVoronoi ? datum.datum : datum)[\"_id\"]]}"
       }]
     }]);
 
@@ -40,7 +40,7 @@ describe('Multi Selection', function() {
       value: {},
       on: [{
         events: selCmpts['two'].events,
-        update: "{fields: [\"Miles_per_Gallon\", \"Origin\"], values: [(item().isVoronoi ? datum.datum : datum)[\"Miles_per_Gallon\"], (item().isVoronoi ? datum.datum : datum)[\"Origin\"]]}"
+        update: "{encodings: [\"y\", \"color\"], fields: [\"Miles_per_Gallon\", \"Origin\"], values: [(item().isVoronoi ? datum.datum : datum)[\"Miles_per_Gallon\"], (item().isVoronoi ? datum.datum : datum)[\"Origin\"]]}"
       }]
     }]);
 
@@ -50,10 +50,10 @@ describe('Multi Selection', function() {
 
   it('builds tuple signals', function() {
     const oneExpr = multi.tupleExpr(model, selCmpts['one']);
-    assert.equal(oneExpr, 'fields: one.fields, values: one.values');
+    assert.equal(oneExpr, 'encodings: one.encodings, fields: one.fields, values: one.values');
 
     const twoExpr = multi.tupleExpr(model, selCmpts['two']);
-    assert.equal(twoExpr, 'fields: two.fields, values: two.values');
+    assert.equal(twoExpr, 'encodings: two.encodings, fields: two.fields, values: two.values');
 
     const signals = selection.assembleUnitSelectionSignals(model, []);
     assert.includeDeepMembers(signals, [

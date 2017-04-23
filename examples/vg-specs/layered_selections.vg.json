@@ -171,7 +171,7 @@
                 },
                 {
                     "name": "grid",
-                    "update": "[{field: \"Horsepower\", extent: grid_Horsepower}, {field: \"Miles_per_Gallon\", extent: grid_Miles_per_Gallon}]"
+                    "update": "[{encoding: \"x\", field: \"Horsepower\", extent: grid_Horsepower}, {encoding: \"y\", field: \"Miles_per_Gallon\", extent: grid_Miles_per_Gallon}]"
                 },
                 {
                     "name": "grid_translate_anchor",
@@ -281,7 +281,7 @@
                             "events": {
                                 "signal": "cyl"
                             },
-                            "update": "{unit: unit.datum && unit.datum._id, fields: cyl.fields, values: cyl.values, Cylinders: cyl.values[0]}"
+                            "update": "{unit: unit.datum && unit.datum._id, encodings: cyl.encodings, fields: cyl.fields, values: cyl.values, Cylinders: cyl.values[0]}"
                         }
                     ]
                 },
@@ -442,7 +442,7 @@
                 },
                 {
                     "name": "brush",
-                    "update": "[{field: \"Horsepower\", extent: brush_Horsepower}, {field: \"Miles_per_Gallon\", extent: brush_Miles_per_Gallon}]"
+                    "update": "[{encoding: \"x\", field: \"Horsepower\", extent: brush_Horsepower}, {encoding: \"y\", field: \"Miles_per_Gallon\", extent: brush_Miles_per_Gallon}]"
                 },
                 {
                     "name": "brush_translate_anchor",

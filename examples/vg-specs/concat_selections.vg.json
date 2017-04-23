@@ -272,7 +272,7 @@
                         },
                         {
                             "name": "brush",
-                            "update": "[{field: \"Miles_per_Gallon\", extent: brush_Miles_per_Gallon}, {field: \"Horsepower\", extent: brush_Horsepower}]"
+                            "update": "[{encoding: \"x\", field: \"Miles_per_Gallon\", extent: brush_Miles_per_Gallon}, {encoding: \"y\", field: \"Horsepower\", extent: brush_Horsepower}]"
                         },
                         {
                             "name": "brush_translate_anchor",
@@ -635,7 +635,7 @@
                         },
                         {
                             "name": "grid",
-                            "update": "[{field: \"Displacement\", extent: grid_Displacement}, {field: \"Acceleration\", extent: grid_Acceleration}]"
+                            "update": "[{encoding: \"x\", field: \"Displacement\", extent: grid_Displacement}, {encoding: \"y\", field: \"Acceleration\", extent: grid_Acceleration}]"
                         },
                         {
                             "name": "grid_translate_anchor",

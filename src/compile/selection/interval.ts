@@ -33,7 +33,8 @@ const interval:SelectionCompiler = {
 
       const cs = channelSignal(model, selCmpt, p.encoding);
       signals.push(cs);
-      intervals.push(`{field: ${stringValue(p.field)}, extent: ${cs.name}}`);
+      intervals.push(`{encoding: ${stringValue(p.encoding)}, ` +
+      `field: ${stringValue(p.field)}, extent: ${cs.name}}`);
     });
 
     signals.push({

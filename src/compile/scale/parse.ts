@@ -1,5 +1,5 @@
 import {Channel} from '../../channel';
-import {Scale} from '../../scale';
+import {isSelectionDomain, Scale} from '../../scale';
 import {isSortField} from '../../sort';
 import {Dict} from '../../util';
 import {VgScale} from '../../vega.schema';
@@ -50,6 +50,10 @@ export function parseScale(model: UnitModel, channel: Channel) {
     domain: parseDomain(model, channel),
     range: parseRange(scale)
   };
+
+  if (isSelectionDomain(scale.domain)) {
+    scaleComponent.domainRaw = scale.domain;
+  }
 
   NON_TYPE_DOMAIN_RANGE_VEGA_SCALE_PROPERTIES.forEach((property) => {
     scaleComponent[property] = scale[property];

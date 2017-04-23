@@ -1,5 +1,5 @@
 import {BaseBin} from './bin';
-import {NiceTime, ScaleType} from './scale';
+import {NiceTime, ScaleType, SelectionDomain} from './scale';
 import {StackOffset} from './stack';
 import {isArray} from './util';
 
@@ -77,7 +77,8 @@ export type VgScale = {
   name: string,
   type: ScaleType,
   domain: VgDomain,
-  domainRaw?: VgSignalRef,
+  // FIXME: Should be a VgSignalRef.
+  domainRaw?: SelectionDomain,
   range: VgRange,
 
   clamp?: boolean,
