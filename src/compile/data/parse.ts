@@ -1,6 +1,7 @@
 import {MAIN, RAW} from '../../data';
 import {Dict} from '../../util';
 import {FacetModel} from '../facet';
+import {LayerModel} from '../layer';
 import {Model, ModelWithField} from '../model';
 import {UnitModel} from '../unit';
 import {AggregateNode} from './aggregate';
@@ -105,6 +106,19 @@ export function parseData(model: Model): DataComponent {
     head = parse;
   }
 
+  // HACK: This is equivalent for merging bin extent for union scale.
+  // FIXME(https://github.com/vega/vega-lite/issues/2270): Correctly merge extent / bin node for shared bin scale
+  const parentIsLayer = model.parent && (model.parent instanceof LayerModel);
+  if (model instanceof ModelWithField) {
+    if (parentIsLayer) {
+      const bin = BinNode.make(model);
+      if (bin) {
+        bin.parent = head;
+        head = bin;
+      }
+    }
+  }
+
   if (model.transforms.length > 0) {
     const {first, last} = parseTransformArray(model);
     first.parent = head;
@@ -118,10 +132,12 @@ export function parseData(model: Model): DataComponent {
       head = nullFilter;
     }
 
-    const bin = BinNode.make(model);
-    if (bin) {
-      bin.parent = head;
-      head = bin;
+    if (!parentIsLayer) {
+      const bin = BinNode.make(model);
+      if (bin) {
+        bin.parent = head;
+        head = bin;
+      }
     }
 
     const tu = TimeUnitNode.make(model);
