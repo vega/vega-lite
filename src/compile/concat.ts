@@ -1,7 +1,7 @@
 import {CellConfig, Config} from '../config';
 import {Repeat} from '../repeat';
 import {ConcatSpec, RepeatSpec} from '../spec';
-import {Dict, vals, keys} from '../util';
+import {Dict, keys, vals} from '../util';
 import {VgData, VgLayout, VgScale, VgSignal} from '../vega.schema';
 import {buildModel} from './common';
 import {assembleData} from './data/assemble';
