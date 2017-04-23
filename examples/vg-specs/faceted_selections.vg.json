@@ -5,6 +5,15 @@
     "padding": 5,
     "data": [
         {
+            "name": "brush_store"
+        },
+        {
+            "name": "grid_store"
+        },
+        {
+            "name": "xenc_store"
+        },
+        {
             "name": "source_0",
             "url": "data/anscombe.json",
             "format": {
@@ -47,15 +56,6 @@
                     ]
                 }
             ]
-        },
-        {
-            "name": "brush_store"
-        },
-        {
-            "name": "grid_store"
-        },
-        {
-            "name": "xenc_store"
         }
     ],
     "signals": [

@@ -2422,23 +2422,7 @@
                             "$ref": "#/definitions/OneOfFilter"
                         },
                         {
-                            "items": {
-                                "anyOf": [
-                                    {
-                                        "$ref": "#/definitions/EqualFilter"
-                                    },
-                                    {
-                                        "$ref": "#/definitions/RangeFilter"
-                                    },
-                                    {
-                                        "$ref": "#/definitions/OneOfFilter"
-                                    },
-                                    {
-                                        "type": "string"
-                                    }
-                                ]
-                            },
-                            "type": "array"
+                            "$ref": "#/definitions/SelectionFilter"
                         },
                         {
                             "type": "string"
@@ -4279,6 +4263,19 @@
             },
             "required": [
                 "type"
+            ],
+            "type": "object"
+        },
+        "SelectionFilter": {
+            "additionalProperties": false,
+            "properties": {
+                "selection": {
+                    "description": "Filter using a selection name.",
+                    "type": "string"
+                }
+            },
+            "required": [
+                "selection"
             ],
             "type": "object"
         },

@@ -52,33 +52,28 @@ export class ParseNode extends DataFlowNode {
 
     // Parse filter fields
     model.transforms.filter(isFilter).forEach((transform: FilterTransform) => {
-      let filter = transform.filter;
-      if (!isArray(filter)) {
-        filter = [filter];
-      }
-      filter.forEach(f => {
-        let val: string | number | boolean | DateTime = null;
-        // For EqualFilter, just use the equal property.
-        // For RangeFilter and OneOfFilter, all array members should have
-        // the same type, so we only use the first one.
-        if (isEqualFilter(f)) {
-          val = f.equal;
-        } else if (isRangeFilter(f)) {
-          val = f.range[0];
-        } else if (isOneOfFilter(f)) {
-          val = (f.oneOf || f['in'])[0];
-        } // else -- for filter expression, we can't infer anything
+      const filter = transform.filter;
+      let val: string | number | boolean | DateTime = null;
+      // For EqualFilter, just use the equal property.
+      // For RangeFilter and OneOfFilter, all array members should have
+      // the same type, so we only use the first one.
+      if (isEqualFilter(filter)) {
+        val = filter.equal;
+      } else if (isRangeFilter(filter)) {
+        val = filter.range[0];
+      } else if (isOneOfFilter(filter)) {
+        val = (filter.oneOf || filter['in'])[0];
+      } // else -- for filter expression, we can't infer anything
 
-        if (val) {
-          if (isDateTime(val)) {
-            parse[f['field']] = 'date';
-          } else if (isNumber(val)) {
-            parse[f['field']] = 'number';
-          } else if (isString(val)) {
-            parse[f['field']] = 'string';
-          }
+      if (val) {
+        if (isDateTime(val)) {
+          parse[filter['field']] = 'date';
+        } else if (isNumber(val)) {
+          parse[filter['field']] = 'number';
+        } else if (isString(val)) {
+          parse[filter['field']] = 'string';
         }
-      });
+      }
     });
 
     if (model instanceof ModelWithField) {

@@ -7,27 +7,19 @@ import {VgFilterTransform, VgFormulaTransform} from '../../vega.schema';
 import {Model} from '../model';
 import {DataFlowNode} from './dataflow';
 
-
 export class FilterNode extends DataFlowNode {
   public clone() {
-    return new FilterNode(duplicate(this.filter));
+    return new FilterNode(this.model, duplicate(this.filter));
   }
 
-  constructor(private filter: Filter | Filter[]) {
+  constructor(private readonly model: Model, private filter: Filter) {
     super();
-  }
-
-  public merge(other: FilterNode) {
-    this.filter = (isArray(this.filter) ? this.filter : [this.filter]).concat(
-      isArray(other.filter) ? other.filter : [other.filter]);
-
-    this.remove();
   }
 
   public assemble(): VgFilterTransform {
     return {
       type: 'filter',
-      expr: expression(this.filter)
+      expr: expression(this.model, this.filter)
     };
   }
 }
@@ -72,7 +64,7 @@ export function parseTransformArray(model: Model) {
     if (isCalculate(t)) {
       node = new CalculateNode(t);
     } else if (isFilter(t)) {
-      node = new FilterNode(t.filter);
+      node = new FilterNode(model, t.filter);
     } else {
       log.warn(log.message.invalidTransformIgnored(t));
       return;

@@ -207,11 +207,13 @@ const PREDICATES_OPS = {
   intersect_others: '"intersect", "others"'
 };
 
-export function predicate(selCmpt: SelectionComponent, datum?: string): string {
-  const store = stringValue(selCmpt.name + STORE),
-        op = PREDICATES_OPS[selCmpt.resolve];
+// TODO: How to better differentiate unit than parent._id?
+export function predicate(name: string, type: SelectionTypes, resolve?: string, datum?: string, parent?: string): string {
+  const store = stringValue(name + STORE),
+        op = PREDICATES_OPS[resolve || 'global'];
   datum = datum || 'datum';
-  return compiler(selCmpt).predicate + `(${store}, parent._id, ${datum}, ${op})`;
+  parent = parent === null ? null : 'parent._id';
+  return compiler(type).predicate + `(${store}, ${parent}, ${datum}, ${op})`;
 }
 
 // Utility functions
@@ -221,13 +223,13 @@ function forEachSelection(model: Model, cb: (selCmpt: SelectionComponent, selCom
   for (const name in selections) {
     if (selections.hasOwnProperty(name)) {
       const sel = selections[name];
-      cb(sel, compiler(sel));
+      cb(sel, compiler(sel.type));
     }
   }
 }
 
-function compiler(selCmpt: SelectionComponent): SelectionCompiler {
-  switch (selCmpt.type) {
+function compiler(type: SelectionTypes): SelectionCompiler {
+  switch (type) {
     case 'single':
       return singleCompiler;
     case 'multi':

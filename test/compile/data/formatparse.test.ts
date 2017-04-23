@@ -33,14 +33,12 @@ describe('compile/data/formatparse', () => {
     it('should return a correct parse for filtered fields', () => {
       const model = parseUnitModel({
         "data": {"url": "a.json"},
-        "transform": [{
-          "filter": [
-            {"field": "a", "equal": {year: 2000}},
-            {"field": "b", "oneOf": ["a", "b"]},
-            {"field": "c", "range": [{year: 2000}, {year: 2001}]},
-            {"field": "d", "range": [1,2]}
-          ]
-        }],
+        "transform": [
+          {"filter": {"field": "a", "equal": {year: 2000}}},
+          {"filter": {"field": "b", "oneOf": ["a", "b"]}},
+          {"filter": {"field": "c", "range": [{year: 2000}, {year: 2001}]}},
+          {"filter": {"field": "d", "range": [1,2]}}
+        ],
         "mark": "point",
         encoding: {}
       });

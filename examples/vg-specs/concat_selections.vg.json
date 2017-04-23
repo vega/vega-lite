@@ -4,6 +4,12 @@
     "padding": 5,
     "data": [
         {
+            "name": "brush_store"
+        },
+        {
+            "name": "grid_store"
+        },
+        {
             "name": "source_0",
             "url": "data/cars.json",
             "format": {
@@ -49,12 +55,6 @@
                     "expr": "datum[\"Displacement\"] !== null && !isNaN(datum[\"Displacement\"]) && datum[\"Acceleration\"] !== null && !isNaN(datum[\"Acceleration\"])"
                 }
             ]
-        },
-        {
-            "name": "brush_store"
-        },
-        {
-            "name": "grid_store"
         }
     ],
     "signals": [
