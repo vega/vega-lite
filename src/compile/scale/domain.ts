@@ -5,7 +5,7 @@ import {binToString} from '../../bin';
 import {Channel} from '../../channel';
 import {DateTime, isDateTime, timestamp} from '../../datetime';
 import {FieldDef} from '../../fielddef';
-import {Domain, hasDiscreteDomain, isBinScale, Scale, ScaleConfig, ScaleType} from '../../scale';
+import {Domain, hasDiscreteDomain, isBinScale, Scale, ScaleConfig, ScaleType, isSelectionDomain} from '../../scale';
 import {isSortField} from '../../sort';
 import * as util from '../../util';
 import {
@@ -22,6 +22,7 @@ import {
 
 import {MAIN, RAW} from '../../data';
 import {UnitModel} from '../unit';
+
 
 export function initDomain(domain: Domain, fieldDef: FieldDef<string>, scale: ScaleType, scaleConfig: ScaleConfig) {
   if (domain === 'unaggregated') {
@@ -65,7 +66,7 @@ export function parseDomain(model: UnitModel, channel: Channel): VgDomain {
 function parseSingleChannelDomain(scale: Scale, model: UnitModel, channel:Channel): VgDomain {
   const fieldDef = model.fieldDef(channel);
 
-  if (scale.domain && scale.domain !== 'unaggregated') { // explicit value
+  if (scale.domain && scale.domain !== 'unaggregated' && !isSelectionDomain(scale.domain)) { // explicit value
     if (isDateTime(scale.domain[0])) {
       return (scale.domain as DateTime[]).map((dt) => {
         return timestamp(dt, true);
@@ -145,7 +146,7 @@ function parseSingleChannelDomain(scale: Scale, model: UnitModel, channel:Channe
   } else {
     return {
       data: model.requestDataName(MAIN),
-      field: model.field(channel),
+      field: model.field(channel)
     };
   }
 }

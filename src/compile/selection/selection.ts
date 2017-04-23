@@ -11,6 +11,7 @@ import multiCompiler from './multi';
 import {SelectionComponent} from './selection';
 import singleCompiler from './single';
 import {forEachTransform} from './transforms/transforms';
+import {SelectionDomain as SelectionScaleDomain} from '../../scale';
 
 export const STORE = '_store';
 export const TUPLE  = '_tuple';
@@ -198,12 +199,12 @@ export function assembleLayerSelectionMarks(model: LayerModel, marks: any[]): an
 }
 
 const PREDICATES_OPS = {
-  'global': '"union", "all"',
-  'independent': '"intersect", "unit"',
-  'union': '"union", "all"',
-  'union_others': '"union", "others"',
-  'intersect': '"intersect", "all"',
-  'intersect_others': '"intersect", "others"'
+  global: '"union", "all"',
+  independent: '"intersect", "unit"',
+  union: '"union", "all"',
+  union_others: '"union", "others"',
+  intersect: '"intersect", "all"',
+  intersect_others: '"intersect", "others"'
 };
 
 export function predicate(selCmpt: SelectionComponent, datum?: string): string {
