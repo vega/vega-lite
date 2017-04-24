@@ -1,5 +1,6 @@
 #!/bin/bash
 
+set -x
 set -e
 
 scripts/pre-deploy.sh
