@@ -58,7 +58,7 @@ export class UnitModel extends ModelWithField {
 
   protected legends: Dict<Legend> = {};
 
-  protected readonly selection: Dict<SelectionDef> = {};
+  public readonly selection: Dict<SelectionDef> = {};
   public children: Model[] = [];
 
   constructor(spec: UnitSpec, parent: Model, parentGivenName: string, repeater: RepeaterValue, config: Config) {

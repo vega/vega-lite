@@ -108,7 +108,7 @@ export type VgLayout = {
     columnTitle: number
   },
   bounds: 'full' | 'flush',
-  columns: number | {signal: string},
+  columns?: number | {signal: string},
   align?: VgLayoutAlign | {
     row: VgLayoutAlign,
     column: VgLayoutAlign

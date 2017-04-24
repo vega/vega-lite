@@ -170,6 +170,12 @@
       "title": "Becker's Barley Trellis Plot"
     }
   ],
+  "Repeat": [
+    {
+      "name": "repeat_splom_cars",
+      "title": "Scatterplot Matrix"
+    }
+  ],
   "Interactive": [
     {
       "name": "brush",
@@ -186,6 +192,14 @@
     {
       "name": "query_widgets",
       "title": "Query Widgets"
+    },
+    {
+      "name": "overview_detail",
+      "title": "Overview and Detail"
+    },
+    {
+      "name": "layered_crossfilter",
+      "title": "Crossfilter"
     }
   ]
 }

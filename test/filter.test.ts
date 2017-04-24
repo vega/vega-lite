@@ -46,12 +46,12 @@ describe('filter', () => {
 
   describe('expression', () => {
     it('should return a correct expression for an EqualFilter', () => {
-      const expr = expression({field: 'color', equal: 'red'});
+      const expr = expression(null, {field: 'color', equal: 'red'});
       assert.equal(expr, 'datum["color"]==="red"');
     });
 
     it('should return a correct expression for an EqualFilter with datetime object', () => {
-      const expr = expression({
+      const expr = expression(null, {
         field: 'date',
         equal: {
           month: 'January'
@@ -61,7 +61,7 @@ describe('filter', () => {
     });
 
     it('should return a correct expression for an EqualFilter with time unit and datetime object', () => {
-      const expr = expression({
+      const expr = expression(null, {
         timeUnit: TimeUnit.MONTH,
         field: 'date',
         equal: {
@@ -72,7 +72,7 @@ describe('filter', () => {
     });
 
     it('should return a correct expression for an EqualFilter with datetime ojbect', () => {
-      const expr = expression({
+      const expr = expression(null, {
         timeUnit: TimeUnit.MONTH,
         field: 'date',
         equal: 'January'
@@ -81,53 +81,34 @@ describe('filter', () => {
     });
 
     it('should return a correct expression for an InFilter', () => {
-      const expr = expression({field: 'color', oneOf: ['red', 'yellow']});
+      const expr = expression(null, {field: 'color', oneOf: ['red', 'yellow']});
       assert.equal(expr, 'indexof(["red","yellow"], datum["color"]) !== -1');
     });
 
     it('should return a correct expression for a RangeFilter', () => {
-      const expr = expression({field: 'x', range: [0, 5]});
+      const expr = expression(null, {field: 'x', range: [0, 5]});
       assert.equal(expr, 'inrange(datum["x"], 0, 5)');
     });
 
     it('should return a correct expression for a RangeFilter with no lower bound', () => {
-      const expr = expression({field: 'x', range: [null, 5]});
+      const expr = expression(null, {field: 'x', range: [null, 5]});
       assert.equal(expr, 'datum["x"] <= 5');
     });
 
     it('should return a correct expression for a RangeFilter with no upper bound', () => {
-      const expr = expression({field: 'x', range: [0, null]});
+      const expr = expression(null, {field: 'x', range: [0, null]});
       assert.equal(expr, 'datum["x"] >= 0');
     });
 
 
     it('should return undefined for a RangeFilter with no bound', () => {
-      const expr = expression({field: 'x', range: [null, null]});
+      const expr = expression(null, {field: 'x', range: [null, null]});
       assert.equal(expr, undefined);
     });
 
     it('should return a correct expression for an expression filter', () => {
-      const expr = expression('datum["x"]===5');
+      const expr = expression(null, 'datum["x"]===5');
       assert.equal(expr, 'datum["x"]===5');
-    });
-
-    it('should return a correct expression for an array', () => {
-      const expr = expression(['datum["x"]===5', 'datum["y"]>=4']);
-      assert.equal(expr, '(datum["x"]===5) && (datum["y"]>=4)');
-    });
-
-    it('should return a correct expression for an array of strings and objects', () => {
-      const expr = expression([
-        {field: 'color', equal: 'red'},
-        {field: 'color', oneOf: ['red', 'yellow']},
-        {field: 'x', range: [0, 5]},
-        'datum["x"]===5',
-        {field: 'x', range: [null, null]}
-      ]);
-      assert.equal(expr, '(datum["color"]==="red") && ' +
-        '(indexof(["red","yellow"], datum["color"]) !== -1) && ' +
-        '(inrange(datum["x"], 0, 5)) && ' +
-        '(datum["x"]===5)');
     });
   });
 });
