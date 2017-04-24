@@ -10,7 +10,7 @@ import {Config, defaultConfig} from './../src/config';
 describe("normalizeErrorBar", () => {
 
     it("should produce correct layered specs for horizontal error bar", () => {
-      assert.deepEqual<GenericSpec<GenericUnitSpec<string | MarkDef, Encoding<Field>>>>(normalize({
+      assert.deepEqual<GenericSpec<GenericUnitSpec<Encoding<Field>, string | MarkDef>>>(normalize({
         "data": {"url": "data/population.json"},
         mark: "error-bar",
         encoding: {
@@ -174,7 +174,7 @@ describe("normalizeBox", () => {
   });
 
   it("should produce correct layered specs for vertical boxplot with min and max", () => {
-     assert.deepEqual<GenericSpec<GenericUnitSpec<string | MarkDef, Encoding<Field>>>>(normalize({
+     assert.deepEqual<GenericSpec<GenericUnitSpec<Encoding<Field>, string | MarkDef>>>(normalize({
         "description": "A box plot showing median, min, and max in the US population distribution of age groups in 2000.",
         "data": {"url": "data/population.json"},
         mark: "box-plot",
@@ -273,7 +273,7 @@ describe("normalizeBox", () => {
   });
 
   it("should produce correct layered specs for horizontal boxplot with min and max", () => {
-     assert.deepEqual<GenericSpec<GenericUnitSpec<string | MarkDef, Encoding<Field>>>>(normalize({
+     assert.deepEqual<GenericSpec<GenericUnitSpec<Encoding<Field>, string | MarkDef>>>(normalize({
         "description": "A box plot showing median, min, and max in the US population distribution of age groups in 2000.",
         "data": {"url": "data/population.json"},
         mark: "box-plot",
@@ -372,7 +372,7 @@ describe("normalizeBox", () => {
   });
 
   it("should produce correct layered specs for horizontal with no nonpositional encoding properties boxplot with min and max", () => {
-     assert.deepEqual<GenericSpec<GenericUnitSpec<string | MarkDef, Encoding<Field>>>>(normalize({
+     assert.deepEqual<GenericSpec<GenericUnitSpec<Encoding<Field>, string | MarkDef>>>(normalize({
         "description": "A box plot showing median, min, and max in the US population distribution of age groups in 2000.",
         "data": {"url": "data/population.json"},
         mark: "box-plot",
@@ -468,7 +468,7 @@ describe("normalizeBox", () => {
   });
 
   it("should produce correct layered specs for 1D boxplot with only x", () => {
-     assert.deepEqual<GenericSpec<GenericUnitSpec<string | MarkDef, Encoding<Field>>>>(normalize({
+     assert.deepEqual<GenericSpec<GenericUnitSpec<Encoding<Field>, string | MarkDef>>>(normalize({
         "description": "A box plot showing median, min, and max in the US population distribution of age groups in 2000.",
         "data": {"url": "data/population.json"},
         mark: "box-plot",
@@ -559,7 +559,7 @@ describe("normalizeBox", () => {
   });
 
   it("should produce correct layered specs for 1D boxplot with only y", () => {
-     assert.deepEqual<GenericSpec<GenericUnitSpec<string | MarkDef, Encoding<Field>>>>(normalize({
+     assert.deepEqual<GenericSpec<GenericUnitSpec<Encoding<Field>, string | MarkDef>>>(normalize({
         "description": "A box plot showing median, min, and max in the US population distribution of age groups in 2000.",
         "data": {"url": "data/population.json"},
         mark: "box-plot",

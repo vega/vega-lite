@@ -54,7 +54,7 @@ export interface BaseSpec {
   transform?: Transform[];
 }
 
-export interface GenericUnitSpec<M, E extends Encoding<any>> extends BaseSpec {
+export interface GenericUnitSpec<E extends Encoding<any>, M> extends BaseSpec {
   /**
    * The width of a single visualization.
    *
@@ -97,17 +97,17 @@ export interface GenericUnitSpec<M, E extends Encoding<any>> extends BaseSpec {
   selection?: {[name: string]: SelectionDef};
 }
 
-export type UnitSpec = GenericUnitSpec<Mark | MarkDef, Encoding<Field>>;
+export type UnitSpec = GenericUnitSpec<Encoding<Field>, Mark | MarkDef>;
 
 /**
  * Unit spec that can contain composite mark
  */
-export type CompositeUnitSpec = GenericUnitSpec<CompositeMark | Mark | MarkDef, Encoding<Field>>;
+export type CompositeUnitSpec = GenericUnitSpec<Encoding<Field>, CompositeMark | Mark | MarkDef>;
 
 /**
  * Unit spec that can contain composite mark and row or column channels.
  */
-export type FacetedCompositeUnitSpec = GenericUnitSpec<CompositeMark | Mark | MarkDef, EncodingWithFacet<Field>>;
+export type FacetedCompositeUnitSpec = GenericUnitSpec<EncodingWithFacet<Field>, CompositeMark | Mark | MarkDef>;
 
 export interface GenericLayerSpec<U extends GenericUnitSpec<any, any>> extends BaseSpec {
   // FIXME description for top-level width
@@ -308,12 +308,12 @@ function normalizeFacetedUnit(spec: FacetedCompositeUnitSpec, config: Config): F
   };
 }
 
-function isNonFacetUnitSpecWithPrimitiveMark(spec: GenericUnitSpec<string | MarkDef, Encoding<Field>>):
-  spec is GenericUnitSpec<Mark, Encoding<Field>> {
+function isNonFacetUnitSpecWithPrimitiveMark(spec: GenericUnitSpec<Encoding<Field>, string | MarkDef>):
+  spec is GenericUnitSpec<Encoding<Field>, Mark> {
     return isPrimitiveMark(spec.mark);
 }
 
-function normalizeNonFacetUnit(spec: GenericUnitSpec<string | MarkDef, Encoding<Field>>, config: Config) {
+function normalizeNonFacetUnit(spec: GenericUnitSpec<Encoding<Field>, string | MarkDef>, config: Config) {
   if (isNonFacetUnitSpecWithPrimitiveMark(spec)) {
     // TODO: thoroughly test
     if (isRanged(spec.encoding)) {
