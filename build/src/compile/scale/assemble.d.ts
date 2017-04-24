@@ -22,7 +22,10 @@ export declare function assembleScale(model: Model): {
         };
     };
     domainRaw?: {
-        signal: string;
+        signal?: string;
+        selection?: string;
+        field?: string;
+        encoding?: string;
     };
     range: string | {
         scheme: string;

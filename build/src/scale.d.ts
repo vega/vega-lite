@@ -196,10 +196,17 @@ export interface ExtendedScheme {
     extent?: number[];
     count?: number;
 }
-export declare type Domain = number[] | string[] | DateTime[] | 'unaggregated';
+export declare type SelectionDomain = {
+    signal?: string;
+    selection?: string;
+    field?: string;
+    encoding?: string;
+};
+export declare type Domain = number[] | string[] | DateTime[] | 'unaggregated' | SelectionDomain;
 export declare type Scheme = string | ExtendedScheme;
 export declare type Range = number[] | string[] | string;
 export declare function isExtendedScheme(scheme: string | ExtendedScheme): scheme is ExtendedScheme;
+export declare function isSelectionDomain(domain: Domain): domain is SelectionDomain;
 export interface Scale {
     /**
      * The type of scale.

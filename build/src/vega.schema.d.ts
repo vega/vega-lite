@@ -1,5 +1,5 @@
 import { BaseBin } from './bin';
-import { NiceTime, ScaleType } from './scale';
+import { NiceTime, ScaleType, SelectionDomain } from './scale';
 import { StackOffset } from './stack';
 export interface VgData {
     name: string;
@@ -65,7 +65,7 @@ export declare type VgScale = {
     name: string;
     type: ScaleType;
     domain: VgDomain;
-    domainRaw?: VgSignalRef;
+    domainRaw?: SelectionDomain;
     range: VgRange;
     clamp?: boolean;
     exponent?: number;

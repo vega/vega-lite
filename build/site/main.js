@@ -2,7 +2,7 @@
 module.exports={
   "name": "vega-lite",
   "author": "Jeffrey Heer, Dominik Moritz, Kanit \"Ham\" Wongsuphasawat",
-  "version": "2.0.0-alpha.9",
+  "version": "2.0.0-alpha.10",
   "collaborators": [
     "Kanit Wongsuphasawat <kanitw@gmail.com> (http://kanitw.yellowpigz.com)",
     "Dominik Moritz <domoritz@cs.washington.edu> (https://www.domoritz.de)",
@@ -52,8 +52,8 @@ module.exports={
     "site": "bundle exec jekyll serve",
 
     "lint": "tslint --project tsconfig.json -c tslint.json --type-check",
-    "test": "npm run tsc && npm run test:only && npm run lint",
-    "posttest": "npm run schema && npm run data && npm run mocha:examples",
+    "test": "npm run tsc && npm run schema && npm run test:only && npm run lint",
+    "posttest": "npm run data && npm run mocha:examples",
     "test:nocompile": "npm run test:only && npm run lint && npm run mocha:examples",
     "test:only": "nyc --reporter=html --reporter=text-summary npm run mocha:test",
     "test:debug": "npm run pretest && mocha --recursive --debug-brk build/test build/examples",
@@ -2139,6 +2139,7 @@ exports.removeUnusedSubtrees = removeUnusedSubtrees;
 Object.defineProperty(exports, "__esModule", { value: true });
 var data_1 = require("../../data");
 var facet_1 = require("../facet");
+var layer_1 = require("../layer");
 var model_1 = require("../model");
 var unit_1 = require("../unit");
 var aggregate_1 = require("./aggregate");
@@ -2237,6 +2238,18 @@ function parseData(model) {
         parse.parent = root;
         head = parse;
     }
+    // HACK: This is equivalent for merging bin extent for union scale.
+    // FIXME(https://github.com/vega/vega-lite/issues/2270): Correctly merge extent / bin node for shared bin scale
+    var parentIsLayer = model.parent && (model.parent instanceof layer_1.LayerModel);
+    if (model instanceof model_1.ModelWithField) {
+        if (parentIsLayer) {
+            var bin = bin_1.BinNode.make(model);
+            if (bin) {
+                bin.parent = head;
+                head = bin;
+            }
+        }
+    }
     if (model.transforms.length > 0) {
         var _a = transforms_1.parseTransformArray(model), first = _a.first, last = _a.last;
         first.parent = head;
@@ -2248,10 +2261,12 @@ function parseData(model) {
             nullFilter.parent = head;
             head = nullFilter;
         }
-        var bin = bin_1.BinNode.make(model);
-        if (bin) {
-            bin.parent = head;
-            head = bin;
+        if (!parentIsLayer) {
+            var bin = bin_1.BinNode.make(model);
+            if (bin) {
+                bin.parent = head;
+                head = bin;
+            }
         }
         var tu = timeunit_1.TimeUnitNode.make(model);
         if (tu) {
@@ -2313,7 +2328,7 @@ function parseData(model) {
 }
 exports.parseData = parseData;
 
-},{"../../data":72,"../facet":27,"../model":46,"../unit":67,"./aggregate":12,"./bin":14,"./dataflow":15,"./facet":16,"./formatparse":17,"./nonpositivefilter":18,"./nullfilter":19,"./pathorder":22,"./source":23,"./stack":24,"./timeunit":25,"./transforms":26}],22:[function(require,module,exports){
+},{"../../data":72,"../facet":27,"../layer":28,"../model":46,"../unit":67,"./aggregate":12,"./bin":14,"./dataflow":15,"./facet":16,"./formatparse":17,"./nonpositivefilter":18,"./nullfilter":19,"./pathorder":22,"./source":23,"./stack":24,"./timeunit":25,"./transforms":26}],22:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var tslib_1 = require("tslib");
@@ -2947,7 +2962,8 @@ var FacetModel = (function (_super) {
         return this.child.assembleSelectionTopLevelSignals(signals);
     };
     FacetModel.prototype.assembleSelectionSignals = function () {
-        return this.child.assembleSelectionSignals();
+        this.child.assembleSelectionSignals();
+        return [];
     };
     FacetModel.prototype.assembleSelectionData = function (data) {
         return this.child.assembleSelectionData(data);
@@ -3785,6 +3801,8 @@ var rule_1 = require("./rule");
 var text_1 = require("./text");
 var tick_1 = require("./tick");
 var data_1 = require("../../data");
+var channel_2 = require("../../channel");
+var scale_1 = require("../../scale");
 var markCompiler = {
     area: area_1.area,
     bar: bar_1.bar,
@@ -3812,14 +3830,10 @@ function parsePathMark(model) {
     // FIXME: replace this with more general case for composition
     var details = detailFields(model);
     var pathMarks = [
-        {
-            name: model.getName('marks'),
-            type: markCompiler[mark].vgMark,
+        tslib_1.__assign({ name: model.getName('marks'), type: markCompiler[mark].vgMark }, (clip(model)), { 
             // If has subfacet for line/area group, need to use faceted data from below.
             // FIXME: support sorting path order (in connected scatterplot)
-            from: { data: (details.length > 0 ? FACETED_PATH_PREFIX : '') + model.requestDataName(data_1.MAIN) },
-            encode: { update: markCompiler[mark].encodeEntry(model) }
-        }
+            from: { data: (details.length > 0 ? FACETED_PATH_PREFIX : '') + model.requestDataName(data_1.MAIN) }, encode: { update: markCompiler[mark].encodeEntry(model) } })
     ];
     if (details.length > 0) {
         // TODO: for non-stacked plot, map order to zindex. (Maybe rename order for layer to zindex?)
@@ -3851,7 +3865,7 @@ function parseNonPathMark(model) {
     var role = model.markDef.role || markCompiler[mark].defaultRole;
     var marks = []; // TODO: vgMarks
     // TODO: for non-stacked plot, map order to zindex. (Maybe rename order for layer to zindex?)
-    marks.push(tslib_1.__assign({ name: model.getName('marks'), type: markCompiler[mark].vgMark }, (role ? { role: role } : {}), { from: { data: model.requestDataName(data_1.MAIN) }, encode: { update: markCompiler[mark].encodeEntry(model) } }));
+    marks.push(tslib_1.__assign({ name: model.getName('marks'), type: markCompiler[mark].vgMark }, (clip(model)), (role ? { role: role } : {}), { from: { data: model.requestDataName(data_1.MAIN) }, encode: { update: markCompiler[mark].encodeEntry(model) } }));
     return marks;
 }
 /**
@@ -3866,8 +3880,13 @@ function detailFields(model) {
         return details;
     }, []);
 }
+function clip(model) {
+    var xscale = model.scale(channel_2.X), yscale = model.scale(channel_2.Y);
+    return (xscale && scale_1.isSelectionDomain(xscale.domain)) ||
+        (yscale && scale_1.isSelectionDomain(yscale.domain)) ? { clip: true } : {};
+}
 
-},{"../../channel":5,"../../data":72,"../../mark":80,"../../util":90,"./area":34,"./bar":35,"./line":37,"./point":40,"./rect":41,"./rule":42,"./text":43,"./tick":44,"tslib":280}],39:[function(require,module,exports){
+},{"../../channel":5,"../../data":72,"../../mark":80,"../../scale":81,"../../util":90,"./area":34,"./bar":35,"./line":37,"./point":40,"./rect":41,"./rule":42,"./text":43,"./tick":44,"tslib":280}],39:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var tslib_1 = require("tslib");
@@ -4938,10 +4957,37 @@ exports.RepeatModel = RepeatModel;
 Object.defineProperty(exports, "__esModule", { value: true });
 var tslib_1 = require("tslib");
 var vega_util_1 = require("vega-util");
+var log = require("../../log");
 var util_1 = require("../../util");
 var vega_schema_1 = require("../../vega.schema");
+var SELECTION_OPS = {
+    global: 'union', independent: 'intersect',
+    union: 'union', union_others: 'union',
+    intersect: 'intersect', intersect_others: 'intersect'
+};
 function assembleScale(model) {
     return util_1.vals(model.component.scales).map(function (scale) {
+        // As selections are parsed _after_ scales, we can only shim in a domainRaw
+        // in the output Vega during assembly. FIXME: This should be moved to
+        // selection.ts, but any reference to it throws an error. Possible circular dependency?
+        var raw = scale.domainRaw;
+        if (raw && raw.selection) {
+            raw.field = raw.field || null;
+            raw.encoding = raw.encoding || null;
+            var selName = raw.selection;
+            var selCmpt = model.component.selection && model.component.selection[selName];
+            if (selCmpt) {
+                log.warn('Use "bind": "scales" to setup a binding for scales and selections within the same view.');
+            }
+            else {
+                selCmpt = model.getComponent('selection', selName);
+                scale.domainRaw = {
+                    signal: (selCmpt.type === 'interval' ? 'vlIntervalDomain' : 'vlPointDomain') +
+                        ("(" + util_1.stringValue(selCmpt.name + '_store') + ", " + util_1.stringValue(raw.encoding) + ", " + util_1.stringValue(raw.field) + ", ") +
+                        (util_1.stringValue(SELECTION_OPS[selCmpt.resolve]) + ")")
+                };
+            }
+        }
         // correct references to data
         var domain = scale.domain;
         if (vega_schema_1.isDataRefDomain(domain) || vega_schema_1.isFieldRefUnionDomain(domain)) {
@@ -4964,7 +5010,7 @@ function assembleScale(model) {
 }
 exports.assembleScale = assembleScale;
 
-},{"../../util":90,"../../vega.schema":92,"tslib":280,"vega-util":286}],49:[function(require,module,exports){
+},{"../../log":79,"../../util":90,"../../vega.schema":92,"tslib":280,"vega-util":286}],49:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var log = require("../../log");
@@ -5018,7 +5064,7 @@ function parseDomain(model, channel) {
 exports.parseDomain = parseDomain;
 function parseSingleChannelDomain(scale, model, channel) {
     var fieldDef = model.fieldDef(channel);
-    if (scale.domain && scale.domain !== 'unaggregated') {
+    if (scale.domain && scale.domain !== 'unaggregated' && !scale_1.isSelectionDomain(scale.domain)) {
         if (datetime_1.isDateTime(scale.domain[0])) {
             return scale.domain.map(function (dt) {
                 return datetime_1.timestamp(dt, true);
@@ -5098,7 +5144,7 @@ function parseSingleChannelDomain(scale, model, channel) {
     else {
         return {
             data: model.requestDataName(data_1.MAIN),
-            field: model.field(channel),
+            field: model.field(channel)
         };
     }
 }
@@ -5317,6 +5363,7 @@ function getDefaultValue(property, scale, channel, fieldDef, scaleConfig) {
 },{"../../log":79,"../../scale":81,"../../util":90,"./domain":49,"./range":52,"./rules":53,"./type":54}],51:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+var scale_1 = require("../../scale");
 var sort_1 = require("../../sort");
 var domain_1 = require("./domain");
 var range_1 = require("./range");
@@ -5358,6 +5405,9 @@ function parseScale(model, channel) {
         domain: domain_1.parseDomain(model, channel),
         range: range_1.parseRange(scale)
     };
+    if (scale_1.isSelectionDomain(scale.domain)) {
+        scaleComponent.domainRaw = scale.domain;
+    }
     exports.NON_TYPE_DOMAIN_RANGE_VEGA_SCALE_PROPERTIES.forEach(function (property) {
         scaleComponent[property] = scale[property];
     });
@@ -5368,7 +5418,7 @@ function parseScale(model, channel) {
 }
 exports.parseScale = parseScale;
 
-},{"../../sort":83,"./domain":49,"./range":52}],52:[function(require,module,exports){
+},{"../../scale":81,"../../sort":83,"./domain":49,"./range":52}],52:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var log = require("../../log");
@@ -5826,7 +5876,8 @@ var interval = {
             }
             var cs = channelSignal(model, selCmpt, p.encoding);
             signals.push(cs);
-            intervals.push("{field: " + util_1.stringValue(p.field) + ", extent: " + cs.name + "}");
+            intervals.push("{encoding: " + util_1.stringValue(p.encoding) + ", " +
+                ("field: " + util_1.stringValue(p.field) + ", extent: " + cs.name + "}"));
         });
         signals.push({
             name: size,
@@ -5955,19 +6006,19 @@ var selection_1 = require("./selection");
 var multi = {
     predicate: 'vlPoint',
     signals: function (model, selCmpt) {
-        var proj = selCmpt.project, datum = '(item().isVoronoi ? datum.datum : datum)', fields = proj.map(function (p) { return util_1.stringValue(p.field); }).join(', '), values = proj.map(function (p) { return datum + "[" + util_1.stringValue(p.field) + "]"; }).join(', ');
+        var proj = selCmpt.project, datum = '(item().isVoronoi ? datum.datum : datum)', encodings = proj.map(function (p) { return util_1.stringValue(p.encoding); }).join(', '), fields = proj.map(function (p) { return util_1.stringValue(p.field); }).join(', '), values = proj.map(function (p) { return datum + "[" + util_1.stringValue(p.field) + "]"; }).join(', ');
         return [{
                 name: selCmpt.name,
                 value: {},
                 on: [{
                         events: selCmpt.events,
-                        update: "{fields: [" + fields + "], values: [" + values + "]}"
+                        update: "{encodings: [" + encodings + "], fields: [" + fields + "], values: [" + values + "]}"
                     }]
             }];
     },
     tupleExpr: function (model, selCmpt) {
         var name = selCmpt.name;
-        return "fields: " + name + ".fields, values: " + name + ".values";
+        return "encodings: " + name + ".encodings, fields: " + name + ".fields, values: " + name + ".values";
     },
     modifyExpr: function (model, selCmpt) {
         var tpl = selCmpt.name + selection_1.TUPLE;
@@ -6123,12 +6174,12 @@ function assembleLayerSelectionMarks(model, marks) {
 }
 exports.assembleLayerSelectionMarks = assembleLayerSelectionMarks;
 var PREDICATES_OPS = {
-    'global': '"union", "all"',
-    'independent': '"intersect", "unit"',
-    'union': '"union", "all"',
-    'union_others': '"union", "others"',
-    'intersect': '"intersect", "all"',
-    'intersect_others': '"intersect", "others"'
+    global: '"union", "all"',
+    independent: '"intersect", "unit"',
+    union: '"union", "all"',
+    union_others: '"union", "others"',
+    intersect: '"intersect", "all"',
+    intersect_others: '"intersect", "others"'
 };
 function predicate(selCmpt, datum) {
     var store = util_1.stringValue(selCmpt.name + exports.STORE), op = PREDICATES_OPS[selCmpt.resolve];
@@ -6187,7 +6238,8 @@ var single = {
     },
     tupleExpr: function (model, selCmpt) {
         var name = selCmpt.name, values = name + ".values";
-        return "fields: " + name + ".fields, values: " + values + ", " +
+        return "encodings: " + name + ".encodings, fields: " + name + ".fields, " +
+            ("values: " + values + ", ") +
             selCmpt.project.map(function (p, i) {
                 return p.field + ": " + values + "[" + i + "]";
             }).join(', ');
@@ -8076,6 +8128,10 @@ function isExtendedScheme(scheme) {
     return scheme && !!scheme['name'];
 }
 exports.isExtendedScheme = isExtendedScheme;
+function isSelectionDomain(domain) {
+    return domain && domain['selection'];
+}
+exports.isSelectionDomain = isSelectionDomain;
 exports.SCALE_PROPERTIES = [
     'type', 'domain', 'range', 'round', 'rangeStep', 'scheme', 'padding', 'paddingInner', 'paddingOuter', 'clamp', 'nice',
     'exponent', 'zero', 'interpolate'
