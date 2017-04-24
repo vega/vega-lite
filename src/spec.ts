@@ -125,11 +125,19 @@ export interface GenericRepeatSpec<U extends GenericUnitSpec<any, any>> extends 
 
 export type RepeatSpec = GenericRepeatSpec<UnitSpec>;
 
-export interface GenericConcatSpec<U extends GenericUnitSpec<any, any>> extends BaseSpec {
+export interface GenericVConcatSpec<U extends GenericUnitSpec<any, any>> extends BaseSpec {
   // TODO: add GenericFacetSpec<U> | GenericRepeatSpec<U> | GenericfacetSpec<U>
   // TODO: hconcat
   vconcat: (GenericLayerSpec<U> | U)[];
 }
+
+export interface GenericHConcatSpec<U extends GenericUnitSpec<any, any>> extends BaseSpec {
+  // TODO: add GenericFacetSpec<U> | GenericRepeatSpec<U> | GenericfacetSpec<U>
+  // TODO: hconcat
+  hconcat: (GenericLayerSpec<U> | U)[];
+}
+
+export type GenericConcatSpec<U extends GenericUnitSpec<any, any>> = GenericVConcatSpec<U> | GenericHConcatSpec<U>;
 
 export type ConcatSpec = GenericConcatSpec<UnitSpec>;
 
@@ -159,7 +167,15 @@ export function isRepeatSpec(spec: GenericSpec<GenericUnitSpec<any, any>>): spec
 }
 
 export function isConcatSpec(spec: GenericSpec<GenericUnitSpec<any, any>>): spec is GenericConcatSpec<GenericUnitSpec<any, any>> {
+  return isVConcatSpec(spec) || isHConcatSpec(spec);
+}
+
+export function isVConcatSpec(spec: GenericSpec<GenericUnitSpec<any, any>>): spec is GenericVConcatSpec<GenericUnitSpec<any, any>> {
   return spec['vconcat'] !== undefined;
+}
+
+export function isHConcatSpec(spec: GenericSpec<GenericUnitSpec<any, any>>): spec is GenericHConcatSpec<GenericUnitSpec<any, any>> {
+  return spec['hconcat'] !== undefined;
 }
 
 /**
@@ -176,8 +192,11 @@ export function normalize(spec: TopLevelExtendedSpec, config: Config): Spec {
   if (isRepeatSpec(spec)) {
     return normalizeRepeat(spec, spec.config);
   }
-  if (isConcatSpec(spec)) {
-    return normalizeConcat(spec, spec.config);
+  if (isVConcatSpec(spec)) {
+    return normalizeVConcat(spec, spec.config);
+  }
+  if (isHConcatSpec(spec)) {
+    return normalizeHConcat(spec, spec.config);
   }
   if (isUnitSpec(spec)) {
     const hasRow = channelHasField(spec.encoding, ROW);
@@ -234,11 +253,19 @@ function normalizeRepeat(spec: GenericRepeatSpec<CompositeUnitSpec>, config: Con
   };
 }
 
-function normalizeConcat(spec: GenericConcatSpec<CompositeUnitSpec>, config: Config): ConcatSpec {
+function normalizeVConcat(spec: GenericVConcatSpec<CompositeUnitSpec>, config: Config): ConcatSpec {
   const {vconcat: vconcat, ...rest} = spec;
   return {
     ...rest,
     vconcat: vconcat.map((subspec) => normalizeNonFacet(subspec, config))
+  };
+}
+
+function normalizeHConcat(spec: GenericHConcatSpec<CompositeUnitSpec>, config: Config): ConcatSpec {
+  const {hconcat: hconcat, ...rest} = spec;
+  return {
+    ...rest,
+    hconcat: hconcat.map((subspec) => normalizeNonFacet(subspec, config))
   };
 }
 
@@ -398,7 +425,8 @@ function fieldDefIndex(spec: GenericSpec<GenericUnitSpec<any, any>>, dict: any =
     accumulate(dict, vlEncoding.fieldDefs(spec.spec));
     fieldDefIndex(spec.spec, dict);
   } else if (isConcatSpec(spec)) {
-    spec.vconcat.forEach(child => {
+    const childSpec = isVConcatSpec(spec) ? spec.vconcat : spec.hconcat;
+    childSpec.forEach(child => {
       if (isUnitSpec(child)) {
         accumulate(dict, vlEncoding.fieldDefs(child.encoding));
       } else {
