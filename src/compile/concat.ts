@@ -1,6 +1,6 @@
 import {CellConfig, Config} from '../config';
 import {Repeat} from '../repeat';
-import {ConcatSpec, RepeatSpec} from '../spec';
+import {ConcatSpec, isVConcatSpec, RepeatSpec} from '../spec';
 import {Dict, keys, vals} from '../util';
 import {VgData, VgLayout, VgScale, VgSignal} from '../vega.schema';
 import {buildModel} from './common';
@@ -14,10 +14,14 @@ export class ConcatModel extends Model {
 
   public readonly children: Model[];
 
+  public readonly isVConcat: boolean;
+
   constructor(spec: ConcatSpec, parent: Model, parentGivenName: string, repeater: RepeaterValue, config: Config) {
     super(spec, parent, parentGivenName, config);
 
-    this.children = spec.vconcat.map((child, i) => {
+    this.isVConcat = isVConcatSpec(spec);
+
+    this.children = (isVConcatSpec(spec) ? spec.vconcat : spec.hconcat).map((child, i) => {
       return buildModel(child, this, this.getName('concat_' + i), repeater, config);
     });
   }
@@ -119,7 +123,7 @@ export class ConcatModel extends Model {
     return {
       padding: {row: 10, column: 10},
       offset: 10,
-      columns: 1,
+      ...(this.isVConcat ? {columns: 1} : {}),
       bounds: 'full',
       align: 'all'
     };
