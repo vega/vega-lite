@@ -1,5 +1,6 @@
 import {selector as parseSelector} from 'vega-event-selector';
 import {Channel} from '../../channel';
+import {SelectionDomain as SelectionScaleDomain} from '../../scale';
 import {SelectionDef, SelectionDomain, SelectionResolutions, SelectionTypes} from '../../selection';
 import {Dict, extend, isString, stringValue} from '../../util';
 import {VgBinding, VgData} from '../../vega.schema';
@@ -198,12 +199,12 @@ export function assembleLayerSelectionMarks(model: LayerModel, marks: any[]): an
 }
 
 const PREDICATES_OPS = {
-  'global': '"union", "all"',
-  'independent': '"intersect", "unit"',
-  'union': '"union", "all"',
-  'union_others': '"union", "others"',
-  'intersect': '"intersect", "all"',
-  'intersect_others': '"intersect", "others"'
+  global: '"union", "all"',
+  independent: '"intersect", "unit"',
+  union: '"union", "all"',
+  union_others: '"union", "others"',
+  intersect: '"intersect", "all"',
+  intersect_others: '"intersect", "others"'
 };
 
 export function predicate(selCmpt: SelectionComponent, datum?: string): string {

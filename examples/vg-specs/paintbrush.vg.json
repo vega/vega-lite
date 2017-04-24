@@ -61,7 +61,7 @@
                                     "type": "mouseover"
                                 }
                             ],
-                            "update": "{fields: [\"_id\"], values: [(item().isVoronoi ? datum.datum : datum)[\"_id\"]]}"
+                            "update": "{encodings: [], fields: [\"_id\"], values: [(item().isVoronoi ? datum.datum : datum)[\"_id\"]]}"
                         }
                     ]
                 },
@@ -87,7 +87,7 @@
                             "events": {
                                 "signal": "paintbrush"
                             },
-                            "update": "{unit: unit.datum && unit.datum._id, fields: paintbrush.fields, values: paintbrush.values}"
+                            "update": "{unit: unit.datum && unit.datum._id, encodings: paintbrush.encodings, fields: paintbrush.fields, values: paintbrush.values}"
                         }
                     ]
                 },

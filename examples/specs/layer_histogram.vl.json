@@ -17,7 +17,7 @@
       }
     },
     {
-      "transform": [{"filter": "datum.delay < 5"}],
+      "transform": [{"filter": "datum.delay < 500"}],
       "mark": "bar",
       "encoding": {
         "x": {

@@ -7,6 +7,7 @@ const multi:SelectionCompiler = {
   signals: function(model, selCmpt) {
     const proj = selCmpt.project,
         datum  = '(item().isVoronoi ? datum.datum : datum)',
+        encodings = proj.map((p) => stringValue(p.encoding)).join(', '),
         fields = proj.map((p) => stringValue(p.field)).join(', '),
         values = proj.map((p) => `${datum}[${stringValue(p.field)}]`).join(', ');
     return [{
@@ -14,14 +15,14 @@ const multi:SelectionCompiler = {
       value: {},
       on: [{
         events: selCmpt.events,
-        update: `{fields: [${fields}], values: [${values}]}`
+        update: `{encodings: [${encodings}], fields: [${fields}], values: [${values}]}`
       }]
     }];
   },
 
   tupleExpr: function(model, selCmpt) {
     const name = selCmpt.name;
-    return `fields: ${name}.fields, values: ${name}.values`;
+    return `encodings: ${name}.encodings, fields: ${name}.fields, values: ${name}.values`;
   },
 
   modifyExpr: function(model, selCmpt) {

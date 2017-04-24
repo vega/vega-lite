@@ -277,7 +277,7 @@
                         },
                         {
                             "name": "brush",
-                            "update": "[{field: \"Horsepower\", extent: brush_Horsepower}]"
+                            "update": "[{encoding: \"x\", field: \"Horsepower\", extent: brush_Horsepower}]"
                         },
                         {
                             "name": "brush_translate_anchor",
@@ -400,7 +400,7 @@
                         },
                         {
                             "name": "grid",
-                            "update": "[{field: \"Horsepower\", extent: grid_Horsepower}]"
+                            "update": "[{encoding: \"y\", field: \"Horsepower\", extent: grid_Horsepower}]"
                         },
                         {
                             "name": "grid_translate_anchor",
@@ -791,7 +791,7 @@
                         },
                         {
                             "name": "brush",
-                            "update": "[{field: \"Horsepower\", extent: brush_Horsepower}]"
+                            "update": "[{encoding: \"x\", field: \"Horsepower\", extent: brush_Horsepower}]"
                         },
                         {
                             "name": "brush_translate_anchor",
@@ -932,7 +932,7 @@
                         },
                         {
                             "name": "grid",
-                            "update": "[{field: \"Horsepower\", extent: grid_Horsepower}, {field: \"Miles_per_Gallon\", extent: grid_Miles_per_Gallon}]"
+                            "update": "[{encoding: \"x\", field: \"Horsepower\", extent: grid_Horsepower}, {encoding: \"y\", field: \"Miles_per_Gallon\", extent: grid_Miles_per_Gallon}]"
                         },
                         {
                             "name": "grid_translate_anchor",
@@ -1326,7 +1326,7 @@
                         },
                         {
                             "name": "brush",
-                            "update": "[{field: \"Acceleration\", extent: brush_Acceleration}]"
+                            "update": "[{encoding: \"x\", field: \"Acceleration\", extent: brush_Acceleration}]"
                         },
                         {
                             "name": "brush_translate_anchor",
@@ -1467,7 +1467,7 @@
                         },
                         {
                             "name": "grid",
-                            "update": "[{field: \"Acceleration\", extent: grid_Acceleration}, {field: \"Horsepower\", extent: grid_Horsepower}]"
+                            "update": "[{encoding: \"x\", field: \"Acceleration\", extent: grid_Acceleration}, {encoding: \"y\", field: \"Horsepower\", extent: grid_Horsepower}]"
                         },
                         {
                             "name": "grid_translate_anchor",
@@ -1861,7 +1861,7 @@
                         },
                         {
                             "name": "brush",
-                            "update": "[{field: \"Acceleration\", extent: brush_Acceleration}]"
+                            "update": "[{encoding: \"x\", field: \"Acceleration\", extent: brush_Acceleration}]"
                         },
                         {
                             "name": "brush_translate_anchor",
@@ -2002,7 +2002,7 @@
                         },
                         {
                             "name": "grid",
-                            "update": "[{field: \"Acceleration\", extent: grid_Acceleration}, {field: \"Miles_per_Gallon\", extent: grid_Miles_per_Gallon}]"
+                            "update": "[{encoding: \"x\", field: \"Acceleration\", extent: grid_Acceleration}, {encoding: \"y\", field: \"Miles_per_Gallon\", extent: grid_Miles_per_Gallon}]"
                         },
                         {
                             "name": "grid_translate_anchor",

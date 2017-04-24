@@ -251,7 +251,8 @@ export class FacetModel extends ModelWithField {
   }
 
   public assembleSelectionSignals(): VgSignal[] {
-    return this.child.assembleSelectionSignals();
+    this.child.assembleSelectionSignals();
+    return [];
   }
 
   public assembleSelectionData(data: VgData[]): VgData[] {
