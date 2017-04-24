@@ -14,7 +14,7 @@ export interface BoxPlotConfig extends MarkConfig {
   size?: number;
 }
 
-export function normalizeBoxPlot(spec: GenericUnitSpec<BOXPLOT, Encoding<Field>>, config: Config): LayerSpec {
+export function normalizeBoxPlot(spec: GenericUnitSpec<Encoding<Field>, BOXPLOT>, config: Config): LayerSpec {
   const {mark: _m, encoding: encoding, ...outerSpec} = spec;
   const {x: _x, y: _y, ...nonPositionEncoding} = encoding;
   const {size: size, ...nonPositionEncodingWithoutSize} = nonPositionEncoding;

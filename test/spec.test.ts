@@ -26,7 +26,7 @@ describe('normalize()', function () {
         }
       };
       const config = initConfig(spec.config);
-      assert.deepEqual<GenericSpec<GenericUnitSpec<string | MarkDef, Encoding<Field>>>>(normalize(spec, config), {
+      assert.deepEqual<GenericSpec<GenericUnitSpec<Encoding<Field>, string | MarkDef>>>(normalize(spec, config), {
         "width": 123,
         "height": 234,
         "name": "faceted",
@@ -57,7 +57,7 @@ describe('normalize()', function () {
       };
 
       const config = initConfig(spec.config);
-      assert.deepEqual<GenericSpec<GenericUnitSpec<string | MarkDef, Encoding<Field>>>>(normalize(spec, spec.config), {
+      assert.deepEqual<GenericSpec<GenericUnitSpec<Encoding<Field>, string | MarkDef>>>(normalize(spec, spec.config), {
         "data": {"url": "data/movies.json"},
         "facet": {
           "row": {"field": "MPAA_Rating","type": "ordinal"}
@@ -75,7 +75,7 @@ describe('normalize()', function () {
 
   describe('normalizeFacet', () => {
     it('should produce correct layered specs for mean point and vertical error bar', () => {
-      assert.deepEqual<GenericSpec<GenericUnitSpec<string | MarkDef, Encoding<Field>>>>(normalize({
+      assert.deepEqual<GenericSpec<GenericUnitSpec<Encoding<Field>, string | MarkDef>>>(normalize({
         "description": "A error bar plot showing mean, min, and max in the US population distribution of age groups in 2000.",
         "data": {"url": "data/population.json"},
         "transform": [{"filter": "datum.year == 2000"}],
@@ -194,7 +194,7 @@ describe('normalize()', function () {
 
   describe('normalizeLayer', () => {
     it('should produce correct layered specs for mean point and vertical error bar', () => {
-      assert.deepEqual<GenericSpec<GenericUnitSpec<string | MarkDef, Encoding<Field>>>>(normalize({
+      assert.deepEqual<GenericSpec<GenericUnitSpec<Encoding<Field>, string | MarkDef>>>(normalize({
         "description": "A error bar plot showing mean, min, and max in the US population distribution of age groups in 2000.",
         "data": {"url": "data/population.json"},
         "transform": [{"filter": "datum.year == 2000"}],
