@@ -5,6 +5,7 @@ import { Model } from './model';
 import { RepeaterValue } from './repeat';
 export declare class ConcatModel extends Model {
     readonly children: Model[];
+    readonly isVConcat: boolean;
     constructor(spec: ConcatSpec, parent: Model, parentGivenName: string, repeater: RepeaterValue, config: Config);
     parseData(): void;
     parseSelection(): void;

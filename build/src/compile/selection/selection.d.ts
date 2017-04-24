@@ -44,6 +44,6 @@ export declare function assembleTopLevelSignals(model: UnitModel, signals: any[]
 export declare function assembleUnitSelectionData(model: UnitModel, data: VgData[]): VgData[];
 export declare function assembleUnitSelectionMarks(model: UnitModel, marks: any[]): any[];
 export declare function assembleLayerSelectionMarks(model: LayerModel, marks: any[]): any[];
-export declare function predicate(selCmpt: SelectionComponent, datum?: string): string;
+export declare function predicate(name: string, type: SelectionTypes, resolve?: string, datum?: string, parent?: string): string;
 export declare function invert(model: UnitModel, selCmpt: SelectionComponent, channel: Channel, expr: string): string;
 export declare function channelSignalName(selCmpt: SelectionComponent, channel: Channel): string;

@@ -4,8 +4,6 @@ export declare function assembleScale(model: Model): {
     name: string;
     type: "time" | "linear" | "bin-linear" | "log" | "pow" | "sqrt" | "utc" | "sequential" | "ordinal" | "bin-ordinal" | "point" | "band";
     domain: any[] | VgDataRef | {
-        signal: string;
-    } | {
         fields: (any[] | VgDataRef)[];
         sort?: boolean | {
             op: "count";
@@ -20,6 +18,8 @@ export declare function assembleScale(model: Model): {
         sort?: boolean | {
             op: "count";
         };
+    } | {
+        signal: string;
     };
     domainRaw?: {
         signal?: string;
@@ -31,9 +31,9 @@ export declare function assembleScale(model: Model): {
         scheme: string;
         extent?: number[];
         count?: number;
-    } | VgDataRef | {
+    } | VgDataRef | (string | number | VgDataRef)[] | {
         step: number;
-    } | (string | number | VgDataRef)[];
+    };
     clamp?: boolean;
     exponent?: number;
     nice?: boolean | "year" | "month" | "day" | "second" | "minute" | "hour" | "week";

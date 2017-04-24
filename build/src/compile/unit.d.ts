@@ -36,7 +36,7 @@ export declare class UnitModel extends ModelWithField {
     readonly stack: StackProperties;
     protected axes: Dict<Axis>;
     protected legends: Dict<Legend>;
-    protected readonly selection: Dict<SelectionDef>;
+    readonly selection: Dict<SelectionDef>;
     children: Model[];
     constructor(spec: UnitSpec, parent: Model, parentGivenName: string, repeater: RepeaterValue, config: Config);
     scale(channel: Channel): Scale;

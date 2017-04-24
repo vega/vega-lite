@@ -92,7 +92,7 @@ export declare type VgLayout = {
         columnTitle: number;
     };
     bounds: 'full' | 'flush';
-    columns: number | {
+    columns?: number | {
         signal: string;
     };
     align?: VgLayoutAlign | {

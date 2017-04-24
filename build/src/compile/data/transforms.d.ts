@@ -4,10 +4,10 @@ import { VgFilterTransform, VgFormulaTransform } from '../../vega.schema';
 import { Model } from '../model';
 import { DataFlowNode } from './dataflow';
 export declare class FilterNode extends DataFlowNode {
+    private readonly model;
     private filter;
     clone(): FilterNode;
-    constructor(filter: Filter | Filter[]);
-    merge(other: FilterNode): void;
+    constructor(model: Model, filter: Filter);
     assemble(): VgFilterTransform;
 }
 /**

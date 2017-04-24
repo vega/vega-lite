@@ -1,6 +1,14 @@
+import { Model } from './compile/model';
 import { DateTime } from './datetime';
 import { TimeUnit } from './timeunit';
-export declare type Filter = EqualFilter | RangeFilter | OneOfFilter | string;
+export declare type Filter = EqualFilter | RangeFilter | OneOfFilter | SelectionFilter | string;
+export interface SelectionFilter {
+    /**
+     * Filter using a selection name.
+     */
+    selection: string;
+}
+export declare function isSelectionFilter(filter: Filter): filter is SelectionFilter;
 export interface EqualFilter {
     /**
      * Time unit for the field to be filtered.
@@ -53,4 +61,4 @@ export declare function isOneOfFilter(filter: any): filter is OneOfFilter;
 /**
  * Converts a filter into an expression.
  */
-export declare function expression(filter: Filter | Filter[]): string;
+export declare function expression(model: Model, filter: Filter): string;

@@ -3,7 +3,7 @@ export interface FilterTransform {
     /**
      * A string containing the filter Vega expression. Use `datum` to refer to the current data object.
      */
-    filter: Filter | Filter[];
+    filter: Filter;
 }
 export declare function isFilter(t: Transform): t is FilterTransform;
 export interface CalculateTransform {

@@ -2,7 +2,7 @@
 module.exports={
   "name": "vega-lite",
   "author": "Jeffrey Heer, Dominik Moritz, Kanit \"Ham\" Wongsuphasawat",
-  "version": "2.0.0-alpha.10",
+  "version": "2.0.0-beta.0",
   "collaborators": [
     "Kanit Wongsuphasawat <kanitw@gmail.com> (http://kanitw.yellowpigz.com)",
     "Dominik Moritz <domoritz@cs.washington.edu> (https://www.domoritz.de)",
@@ -870,7 +870,7 @@ function getTopLevelProperties(topLevelSpec, config) {
 }
 function assemble(model, topLevelProperties) {
     // TODO: change type to become VgSpec
-    var output = tslib_1.__assign({ $schema: 'http://vega.github.io/schema/vega/v3.0.json' }, (model.description ? { description: model.description } : {}), { autosize: 'pad' }, topLevelProperties, { data: [].concat(model.assembleData(), model.assembleSelectionData([])), signals: ([].concat(
+    var output = tslib_1.__assign({ $schema: 'http://vega.github.io/schema/vega/v3.0.json' }, (model.description ? { description: model.description } : {}), { autosize: 'pad' }, topLevelProperties, { data: [].concat(model.assembleSelectionData([]), model.assembleData()), signals: ([].concat(
         // TODO(https://github.com/vega/vega-lite/issues/2198):
         // Merge the top-level's width/height signal with the top-level model
         // so we can remove this special casing based on model.name
@@ -905,6 +905,7 @@ exports.assembleNestedMainGroup = assembleNestedMainGroup;
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var tslib_1 = require("tslib");
+var spec_1 = require("../spec");
 var util_1 = require("../util");
 var common_1 = require("./common");
 var assemble_1 = require("./data/assemble");
@@ -914,7 +915,8 @@ var ConcatModel = (function (_super) {
     tslib_1.__extends(ConcatModel, _super);
     function ConcatModel(spec, parent, parentGivenName, repeater, config) {
         var _this = _super.call(this, spec, parent, parentGivenName, config) || this;
-        _this.children = spec.vconcat.map(function (child, i) {
+        _this.isVConcat = spec_1.isVConcatSpec(spec);
+        _this.children = (spec_1.isVConcatSpec(spec) ? spec.vconcat : spec.hconcat).map(function (child, i) {
             return common_1.buildModel(child, _this, _this.getName('concat_' + i), repeater, config);
         });
         return _this;
@@ -1004,13 +1006,7 @@ var ConcatModel = (function (_super) {
     };
     ConcatModel.prototype.assembleLayout = function () {
         // TODO: allow customization
-        return {
-            padding: { row: 10, column: 10 },
-            offset: 10,
-            columns: 1,
-            bounds: 'full',
-            align: 'all'
-        };
+        return tslib_1.__assign({ padding: { row: 10, column: 10 }, offset: 10 }, (this.isVConcat ? { columns: 1 } : {}), { bounds: 'full', align: 'all' });
     };
     ConcatModel.prototype.assembleMarks = function () {
         // only children have marks
@@ -1022,7 +1018,7 @@ var ConcatModel = (function (_super) {
 }(model_1.Model));
 exports.ConcatModel = ConcatModel;
 
-},{"../util":90,"./common":9,"./data/assemble":13,"./data/parse":21,"./model":46,"tslib":280}],12:[function(require,module,exports){
+},{"../spec":84,"../util":90,"./common":9,"./data/assemble":13,"./data/parse":21,"./model":46,"tslib":280}],12:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var tslib_1 = require("tslib");
@@ -1841,35 +1837,30 @@ var ParseNode = (function (_super) {
         // Parse filter fields
         model.transforms.filter(transform_1.isFilter).forEach(function (transform) {
             var filter = transform.filter;
-            if (!util_1.isArray(filter)) {
-                filter = [filter];
+            var val = null;
+            // For EqualFilter, just use the equal property.
+            // For RangeFilter and OneOfFilter, all array members should have
+            // the same type, so we only use the first one.
+            if (filter_1.isEqualFilter(filter)) {
+                val = filter.equal;
             }
-            filter.forEach(function (f) {
-                var val = null;
-                // For EqualFilter, just use the equal property.
-                // For RangeFilter and OneOfFilter, all array members should have
-                // the same type, so we only use the first one.
-                if (filter_1.isEqualFilter(f)) {
-                    val = f.equal;
+            else if (filter_1.isRangeFilter(filter)) {
+                val = filter.range[0];
+            }
+            else if (filter_1.isOneOfFilter(filter)) {
+                val = (filter.oneOf || filter['in'])[0];
+            } // else -- for filter expression, we can't infer anything
+            if (val) {
+                if (datetime_1.isDateTime(val)) {
+                    parse[filter['field']] = 'date';
                 }
-                else if (filter_1.isRangeFilter(f)) {
-                    val = f.range[0];
+                else if (util_1.isNumber(val)) {
+                    parse[filter['field']] = 'number';
                 }
-                else if (filter_1.isOneOfFilter(f)) {
-                    val = (f.oneOf || f['in'])[0];
-                } // else -- for filter expression, we can't infer anything
-                if (val) {
-                    if (datetime_1.isDateTime(val)) {
-                        parse[f['field']] = 'date';
-                    }
-                    else if (util_1.isNumber(val)) {
-                        parse[f['field']] = 'number';
-                    }
-                    else if (util_1.isString(val)) {
-                        parse[f['field']] = 'string';
-                    }
+                else if (util_1.isString(val)) {
+                    parse[filter['field']] = 'string';
                 }
-            });
+            }
         });
         if (model instanceof model_1.ModelWithField) {
             // Parse encoded fields
@@ -2683,7 +2674,6 @@ exports.TimeUnitNode = TimeUnitNode;
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var tslib_1 = require("tslib");
-var vega_util_1 = require("vega-util");
 var filter_1 = require("../../filter");
 var log = require("../../log");
 var transform_1 = require("../../transform");
@@ -2691,22 +2681,19 @@ var util_1 = require("../../util");
 var dataflow_1 = require("./dataflow");
 var FilterNode = (function (_super) {
     tslib_1.__extends(FilterNode, _super);
-    function FilterNode(filter) {
+    function FilterNode(model, filter) {
         var _this = _super.call(this) || this;
+        _this.model = model;
         _this.filter = filter;
         return _this;
     }
     FilterNode.prototype.clone = function () {
-        return new FilterNode(util_1.duplicate(this.filter));
-    };
-    FilterNode.prototype.merge = function (other) {
-        this.filter = (vega_util_1.isArray(this.filter) ? this.filter : [this.filter]).concat(vega_util_1.isArray(other.filter) ? other.filter : [other.filter]);
-        this.remove();
+        return new FilterNode(this.model, util_1.duplicate(this.filter));
     };
     FilterNode.prototype.assemble = function () {
         return {
             type: 'filter',
-            expr: filter_1.expression(this.filter)
+            expr: filter_1.expression(this.model, this.filter)
         };
     };
     return FilterNode;
@@ -2753,7 +2740,7 @@ function parseTransformArray(model) {
             node = new CalculateNode(t);
         }
         else if (transform_1.isFilter(t)) {
-            node = new FilterNode(t.filter);
+            node = new FilterNode(model, t.filter);
         }
         else {
             log.warn(log.message.invalidTransformIgnored(t));
@@ -2772,7 +2759,7 @@ function parseTransformArray(model) {
 }
 exports.parseTransformArray = parseTransformArray;
 
-},{"../../filter":77,"../../log":79,"../../transform":88,"../../util":90,"./dataflow":15,"tslib":280,"vega-util":286}],27:[function(require,module,exports){
+},{"../../filter":77,"../../log":79,"../../transform":88,"../../util":90,"./dataflow":15,"tslib":280}],27:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var tslib_1 = require("tslib");
@@ -3958,8 +3945,9 @@ function wrapCondition(model, condition, vgChannel, valueRef) {
     var _a, _b;
 }
 function selectionTest(model, selectionName) {
-    var negate = selectionName.charAt(0) === '!', name = negate ? selectionName.slice(1) : selectionName;
-    return (negate ? '!' : '') + selection_1.predicate(model.getComponent('selection', name));
+    var negate = selectionName.charAt(0) === '!', name = negate ? selectionName.slice(1) : selectionName, selection = model.getComponent('selection', name);
+    return (negate ? '!' : '') +
+        selection_1.predicate(selection.name, selection.type, selection.resolve);
 }
 function text(model) {
     var channelDef = model.encoding.text;
@@ -6181,10 +6169,12 @@ var PREDICATES_OPS = {
     intersect: '"intersect", "all"',
     intersect_others: '"intersect", "others"'
 };
-function predicate(selCmpt, datum) {
-    var store = util_1.stringValue(selCmpt.name + exports.STORE), op = PREDICATES_OPS[selCmpt.resolve];
+// TODO: How to better differentiate unit than parent._id?
+function predicate(name, type, resolve, datum, parent) {
+    var store = util_1.stringValue(name + exports.STORE), op = PREDICATES_OPS[resolve || 'global'];
     datum = datum || 'datum';
-    return compiler(selCmpt).predicate + ("(" + store + ", parent._id, " + datum + ", " + op + ")");
+    parent = parent === null ? null : 'parent._id';
+    return compiler(type).predicate + ("(" + store + ", " + parent + ", " + datum + ", " + op + ")");
 }
 exports.predicate = predicate;
 // Utility functions
@@ -6193,12 +6183,12 @@ function forEachSelection(model, cb) {
     for (var name_2 in selections) {
         if (selections.hasOwnProperty(name_2)) {
             var sel = selections[name_2];
-            cb(sel, compiler(sel));
+            cb(sel, compiler(sel.type));
         }
     }
 }
-function compiler(selCmpt) {
-    switch (selCmpt.type) {
+function compiler(type) {
+    switch (type) {
         case 'single':
             return single_1.default;
         case 'multi':
@@ -7646,10 +7636,15 @@ exports.channelCompatibility = channelCompatibility;
 },{"./aggregate":2,"./bin":4,"./channel":5,"./log":79,"./timeunit":86,"./type":89,"./util":90,"tslib":280}],77:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+var selection_1 = require("./compile/selection/selection");
 var datetime_1 = require("./datetime");
 var fielddef_1 = require("./fielddef");
 var timeunit_1 = require("./timeunit");
 var util_1 = require("./util");
+function isSelectionFilter(filter) {
+    return filter && filter['selection'];
+}
+exports.isSelectionFilter = isSelectionFilter;
 function isEqualFilter(filter) {
     return filter && !!filter.field && filter.equal !== undefined;
 }
@@ -7672,16 +7667,14 @@ exports.isOneOfFilter = isOneOfFilter;
 /**
  * Converts a filter into an expression.
  */
-function expression(filter) {
-    if (util_1.isArray(filter)) {
-        return '(' +
-            filter.map(function (f) { return expression(f); })
-                .filter(function (f) { return f !== undefined; })
-                .join(') && (') +
-            ')';
-    }
-    else if (util_1.isString(filter)) {
+// model is only used for selection filters.
+function expression(model, filter) {
+    if (util_1.isString(filter)) {
         return filter;
+    }
+    else if (isSelectionFilter(filter)) {
+        var selection = model.getComponent('selection', filter.selection);
+        return selection_1.predicate(filter.selection, selection.type, selection.resolve, null, null);
     }
     else {
         var fieldExpr = filter.timeUnit ?
@@ -7733,7 +7726,7 @@ function valueExpr(v, timeUnit) {
     return JSON.stringify(v);
 }
 
-},{"./datetime":73,"./fielddef":76,"./timeunit":86,"./util":90}],78:[function(require,module,exports){
+},{"./compile/selection/selection":57,"./datetime":73,"./fielddef":76,"./timeunit":86,"./util":90}],78:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.defaultLegendConfig = {
@@ -8273,9 +8266,17 @@ function isRepeatSpec(spec) {
 }
 exports.isRepeatSpec = isRepeatSpec;
 function isConcatSpec(spec) {
-    return spec['vconcat'] !== undefined;
+    return isVConcatSpec(spec) || isHConcatSpec(spec);
 }
 exports.isConcatSpec = isConcatSpec;
+function isVConcatSpec(spec) {
+    return spec['vconcat'] !== undefined;
+}
+exports.isVConcatSpec = isVConcatSpec;
+function isHConcatSpec(spec) {
+    return spec['hconcat'] !== undefined;
+}
+exports.isHConcatSpec = isHConcatSpec;
 /**
  * Decompose extended unit specs into composition of pure unit specs.
  */
@@ -8290,8 +8291,11 @@ function normalize(spec, config) {
     if (isRepeatSpec(spec)) {
         return normalizeRepeat(spec, spec.config);
     }
-    if (isConcatSpec(spec)) {
-        return normalizeConcat(spec, spec.config);
+    if (isVConcatSpec(spec)) {
+        return normalizeVConcat(spec, spec.config);
+    }
+    if (isHConcatSpec(spec)) {
+        return normalizeHConcat(spec, spec.config);
     }
     if (isUnitSpec(spec)) {
         var hasRow = encoding_1.channelHasField(spec.encoding, channel_1.ROW);
@@ -8331,9 +8335,13 @@ function normalizeRepeat(spec, config) {
     var subspec = spec.spec, rest = tslib_1.__rest(spec, ["spec"]);
     return tslib_1.__assign({}, rest, { spec: normalizeNonFacetWithRepeat(subspec, config) });
 }
-function normalizeConcat(spec, config) {
+function normalizeVConcat(spec, config) {
     var vconcat = spec.vconcat, rest = tslib_1.__rest(spec, ["vconcat"]);
     return tslib_1.__assign({}, rest, { vconcat: vconcat.map(function (subspec) { return normalizeNonFacet(subspec, config); }) });
+}
+function normalizeHConcat(spec, config) {
+    var hconcat = spec.hconcat, rest = tslib_1.__rest(spec, ["hconcat"]);
+    return tslib_1.__assign({}, rest, { hconcat: hconcat.map(function (subspec) { return normalizeNonFacet(subspec, config); }) });
 }
 function normalizeFacetedUnit(spec, config) {
     // New encoding in the inside spec should not contain row / column
@@ -8459,7 +8467,8 @@ function fieldDefIndex(spec, dict) {
         fieldDefIndex(spec.spec, dict);
     }
     else if (isConcatSpec(spec)) {
-        spec.vconcat.forEach(function (child) {
+        var childSpec = isVConcatSpec(spec) ? spec.vconcat : spec.hconcat;
+        childSpec.forEach(function (child) {
             if (isUnitSpec(child)) {
                 accumulate(dict, vlEncoding.fieldDefs(child.encoding));
             }

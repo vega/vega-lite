@@ -87,9 +87,13 @@ export interface GenericRepeatSpec<U extends GenericUnitSpec<any, any>> extends 
     spec: GenericRepeatSpec<U> | GenericLayerSpec<U> | U;
 }
 export declare type RepeatSpec = GenericRepeatSpec<UnitSpec>;
-export interface GenericConcatSpec<U extends GenericUnitSpec<any, any>> extends BaseSpec {
+export interface GenericVConcatSpec<U extends GenericUnitSpec<any, any>> extends BaseSpec {
     vconcat: (GenericLayerSpec<U> | U)[];
 }
+export interface GenericHConcatSpec<U extends GenericUnitSpec<any, any>> extends BaseSpec {
+    hconcat: (GenericLayerSpec<U> | U)[];
+}
+export declare type GenericConcatSpec<U extends GenericUnitSpec<any, any>> = GenericVConcatSpec<U> | GenericHConcatSpec<U>;
 export declare type ConcatSpec = GenericConcatSpec<UnitSpec>;
 export declare type GenericSpec<U extends GenericUnitSpec<any, any>> = U | GenericLayerSpec<U> | GenericFacetSpec<U> | GenericRepeatSpec<U> | GenericConcatSpec<U>;
 export declare type Spec = GenericSpec<UnitSpec>;
@@ -99,6 +103,8 @@ export declare function isUnitSpec(spec: GenericSpec<GenericUnitSpec<any, any>>)
 export declare function isLayerSpec(spec: GenericSpec<GenericUnitSpec<any, any>>): spec is GenericLayerSpec<GenericUnitSpec<any, any>>;
 export declare function isRepeatSpec(spec: GenericSpec<GenericUnitSpec<any, any>>): spec is GenericRepeatSpec<GenericUnitSpec<any, any>>;
 export declare function isConcatSpec(spec: GenericSpec<GenericUnitSpec<any, any>>): spec is GenericConcatSpec<GenericUnitSpec<any, any>>;
+export declare function isVConcatSpec(spec: GenericSpec<GenericUnitSpec<any, any>>): spec is GenericVConcatSpec<GenericUnitSpec<any, any>>;
+export declare function isHConcatSpec(spec: GenericSpec<GenericUnitSpec<any, any>>): spec is GenericHConcatSpec<GenericUnitSpec<any, any>>;
 /**
  * Decompose extended unit specs into composition of pure unit specs.
  */
