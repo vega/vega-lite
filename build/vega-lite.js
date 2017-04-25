@@ -1419,7 +1419,7 @@ Object.defineProperty(exports, '__esModule', { value: true });
 module.exports={
   "name": "vega-lite",
   "author": "Jeffrey Heer, Dominik Moritz, Kanit \"Ham\" Wongsuphasawat",
-  "version": "2.0.0-beta.0",
+  "version": "2.0.0-beta.1",
   "collaborators": [
     "Kanit Wongsuphasawat <kanitw@gmail.com> (http://kanitw.yellowpigz.com)",
     "Dominik Moritz <domoritz@cs.washington.edu> (https://www.domoritz.de)",
@@ -1507,7 +1507,7 @@ module.exports={
     "d3": "^4.8.0",
     "exorcist": "~0.4.0",
     "highlight.js": "^9.11.0",
-    "mocha": "~3.2.0",
+    "mocha": "~3.3.0",
     "nodemon": "~1.11.0",
     "nyc": "~10.2.0",
     "source-map-support": "~0.4.14",
@@ -1517,9 +1517,9 @@ module.exports={
     "typescript": "^2.2.2",
     "typescript-json-schema": "^0.11.0",
     "uglify-js": "~2.8.22",
-    "vega": "3.0.0-beta.29",
+    "vega": "3.0.0-beta.30",
     "vega-datasets": "vega/vega-datasets#gh-pages",
-    "vega-embed": "3.0.0-beta.10",
+    "vega-embed": "3.0.0-beta.11",
     "watchify": "~3.9.0",
     "yaml-front-matter": "~3.4.0"
   },
