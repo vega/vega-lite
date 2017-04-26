@@ -28080,7 +28080,7 @@ module.exports = embed;
 // for es 6
 module.exports.default = embed;
 
-},{"./post":282,"./version":283,"d3-selection":99,"vega":287,"vega-lite":93,"vega-schema-url-parser":285}],282:[function(require,module,exports){
+},{"./post":282,"./version":283,"d3-selection":99,"vega":288,"vega-lite":93,"vega-schema-url-parser":285}],282:[function(require,module,exports){
 // open editor url in a new window, and pass a message
 module.exports = function(window, url, data) {
   var editor = window.open(url),
@@ -28855,6 +28855,113 @@ Object.defineProperty(exports, '__esModule', { value: true });
 })));
 
 },{}],287:[function(require,module,exports){
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+var d3_request_1 = require("d3-request");
+var d3_selection_1 = require("d3-selection");
+var hljs = require("highlight.js");
+var vega_embed_1 = require("vega-embed");
+var vega_embed_2 = require("vega-embed");
+vega_embed_2.config.editor_url = 'https://vega.github.io/new-editor';
+function trim(str) {
+    return str.replace(/^\s+|\s+$/g, '');
+}
+/* Anchors */
+d3_selection_1.selectAll('h2, h3, h4, h5, h6').each(function () {
+    var sel = d3_selection_1.select(this);
+    var name = sel.attr('id');
+    var title = sel.text();
+    sel.html('<a href="#' + name + '" class="anchor"><span class="octicon octicon-link"></span></a>' + trim(title));
+});
+/* Documentation */
+function renderExample($target, text) {
+    $target.classed('example', true);
+    $target.text('');
+    var vis = $target.append('div').attr('class', 'example-vis');
+    var code = $target.append('pre').attr('class', 'example-code')
+        .append('code').attr('class', 'json').text(text);
+    hljs.highlightBlock(code.node());
+    var spec = JSON.parse(text);
+    if (spec.data.url) {
+        // make url absolute
+        spec.data.url = window.location.origin + BASEURL + '/' + spec.data.url;
+    }
+    vega_embed_1.default(vis.node(), spec, {
+        mode: 'vega-lite',
+        renderer: 'svg',
+        actions: {
+            source: false,
+            export: false
+        }
+    }, function (err) {
+        if (err) {
+            console.error(err);
+        }
+    });
+}
+d3_selection_1.selectAll('.vl-example').each(function () {
+    var sel = d3_selection_1.select(this);
+    var name = sel.attr('data-name');
+    if (name) {
+        var dir = sel.attr('data-dir');
+        var fullUrl = BASEURL + '/examples/specs/' + (dir ? (dir + '/') : '') + name + '.vl.json';
+        d3_request_1.text(fullUrl, function (error, spec) {
+            if (error) {
+                console.error(error);
+            }
+            else {
+                renderExample(sel, spec);
+            }
+        });
+    }
+    else {
+        console.error('No "data-name" specified to import examples from');
+    }
+});
+/* Gallery */
+if (d3_selection_1.select('.gallery').empty() === false) {
+    renderGallery();
+}
+function renderGallery() {
+    d3_request_1.json(window.location.origin + BASEURL + '/examples/vl-examples.json', function (error, VL_SPECS) {
+        if (error) {
+            return console.warn(error);
+        }
+        d3_selection_1.selectAll('div.gallery').each(function () {
+            d3_selection_1.select(this).call(renderGalleryGroup);
+        });
+        function renderGalleryGroup(selection) {
+            var galleryGroupName = selection.attr('data-gallery-group');
+            var galleryGroupSpecs;
+            // try to retrieve specs for a gallery group from in vl-examples.json
+            try {
+                galleryGroupSpecs = VL_SPECS[galleryGroupName];
+            }
+            catch (error) {
+                console.log(error.message);
+                return;
+            }
+            var viz = selection.selectAll('.imagegroup').data(galleryGroupSpecs);
+            viz.exit().remove();
+            var imageGroup = viz.enter()
+                .append('a')
+                .attr('class', 'imagegroup')
+                .attr('href', function (d) { return 'https://vega.github.io/new-editor/?mode=vega-lite&spec=' + d.name; })
+                .attr('target', 'blank');
+            imageGroup.append('div')
+                .attr('class', 'image')
+                .style('background-image', function (d) { return 'url(' + window.location.origin + BASEURL + '/build/examples/images/' + d.name + '.vl.svg)'; })
+                .style('background-size', function (d) {
+                return (!d.galleryParameters || !d.galleryParameters.backgroundSize) ? 'cover' : d.galleryParameters.backgroundSize;
+            });
+            imageGroup.append('div')
+                .attr('class', 'image-title')
+                .text(function (d) { return d.title; });
+        }
+    });
+}
+
+},{"d3-request":98,"d3-selection":99,"highlight.js":101,"vega-embed":281}],288:[function(require,module,exports){
 (function (Buffer){
 (function (global, factory) {
   typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports) :
@@ -61349,112 +61456,5 @@ Object.defineProperty(exports, '__esModule', { value: true });
 })));
 }).call(this,require("buffer").Buffer)
 
-},{"buffer":94,"canvas":94,"fs":94}],288:[function(require,module,exports){
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-var d3_request_1 = require("d3-request");
-var d3_selection_1 = require("d3-selection");
-var hljs = require("highlight.js");
-var vega_embed_1 = require("vega-embed");
-var vega_embed_2 = require("vega-embed");
-vega_embed_2.config.editor_url = 'https://vega.github.io/new-editor';
-function trim(str) {
-    return str.replace(/^\s+|\s+$/g, '');
-}
-/* Anchors */
-d3_selection_1.selectAll('h2, h3, h4, h5, h6').each(function () {
-    var sel = d3_selection_1.select(this);
-    var name = sel.attr('id');
-    var title = sel.text();
-    sel.html('<a href="#' + name + '" class="anchor"><span class="octicon octicon-link"></span></a>' + trim(title));
-});
-/* Documentation */
-function renderExample($target, text) {
-    $target.classed('example', true);
-    $target.text('');
-    var vis = $target.append('div').attr('class', 'example-vis');
-    var code = $target.append('pre').attr('class', 'example-code')
-        .append('code').attr('class', 'json').text(text);
-    hljs.highlightBlock(code.node());
-    var spec = JSON.parse(text);
-    if (spec.data.url) {
-        // make url absolute
-        spec.data.url = window.location.origin + BASEURL + '/' + spec.data.url;
-    }
-    vega_embed_1.default(vis.node(), spec, {
-        mode: 'vega-lite',
-        renderer: 'svg',
-        actions: {
-            source: false,
-            export: false
-        }
-    }, function (err) {
-        if (err) {
-            console.error(err);
-        }
-    });
-}
-d3_selection_1.selectAll('.vl-example').each(function () {
-    var sel = d3_selection_1.select(this);
-    var name = sel.attr('data-name');
-    if (name) {
-        var dir = sel.attr('data-dir');
-        var fullUrl = BASEURL + '/examples/specs/' + (dir ? (dir + '/') : '') + name + '.vl.json';
-        d3_request_1.text(fullUrl, function (error, spec) {
-            if (error) {
-                console.error(error);
-            }
-            else {
-                renderExample(sel, spec);
-            }
-        });
-    }
-    else {
-        console.error('No "data-name" specified to import examples from');
-    }
-});
-/* Gallery */
-if (d3_selection_1.select('.gallery').empty() === false) {
-    renderGallery();
-}
-function renderGallery() {
-    d3_request_1.json(window.location.origin + BASEURL + '/examples/vl-examples.json', function (error, VL_SPECS) {
-        if (error) {
-            return console.warn(error);
-        }
-        d3_selection_1.selectAll('div.gallery').each(function () {
-            d3_selection_1.select(this).call(renderGalleryGroup);
-        });
-        function renderGalleryGroup(selection) {
-            var galleryGroupName = selection.attr('data-gallery-group');
-            var galleryGroupSpecs;
-            // try to retrieve specs for a gallery group from in vl-examples.json
-            try {
-                galleryGroupSpecs = VL_SPECS[galleryGroupName];
-            }
-            catch (error) {
-                console.log(error.message);
-                return;
-            }
-            var viz = selection.selectAll('.imagegroup').data(galleryGroupSpecs);
-            viz.exit().remove();
-            var imageGroup = viz.enter()
-                .append('a')
-                .attr('class', 'imagegroup')
-                .attr('href', function (d) { return 'https://vega.github.io/new-editor/?mode=vega-lite&spec=' + d.name; })
-                .attr('target', 'blank');
-            imageGroup.append('div')
-                .attr('class', 'image')
-                .style('background-image', function (d) { return 'url(' + window.location.origin + BASEURL + '/build/examples/images/' + d.name + '.vl.svg)'; })
-                .style('background-size', function (d) {
-                return (!d.galleryParameters || !d.galleryParameters.backgroundSize) ? 'cover' : d.galleryParameters.backgroundSize;
-            });
-            imageGroup.append('div')
-                .attr('class', 'image-title')
-                .text(function (d) { return d.title; });
-        }
-    });
-}
-
-},{"d3-request":98,"d3-selection":99,"highlight.js":101,"vega-embed":281}]},{},[288])
+},{"buffer":94,"canvas":94,"fs":94}]},{},[287])
 //# sourceMappingURL=main.js.map
