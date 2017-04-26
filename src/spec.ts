@@ -49,7 +49,7 @@ export interface BaseSpec {
   data?: Data;
 
   /**
-   * An array describing data transforms such as filter and new field calculation.
+   * An array of data transformations such as filter and new field calculation.
    */
   transform?: Transform[];
 }
