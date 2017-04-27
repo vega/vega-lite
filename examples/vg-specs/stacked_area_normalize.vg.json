@@ -257,16 +257,7 @@
     "legends": [
         {
             "fill": "color",
-            "title": "series",
-            "encode": {
-                "symbols": {
-                    "update": {
-                        "strokeWidth": {
-                            "value": 0
-                        }
-                    }
-                }
-            }
+            "title": "series"
         }
     ]
 }

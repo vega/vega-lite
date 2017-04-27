@@ -1,5 +1,5 @@
 import {Channel, COLOR, SHAPE} from '../../channel';
-import {FieldDef, isValueDef} from '../../fielddef';
+import {FieldDef, isFieldDef, isValueDef} from '../../fielddef';
 import {AREA, BAR, CIRCLE, FILL_STROKE_CONFIG, LINE, POINT, SQUARE, TEXT, TICK} from '../../mark';
 import {TEMPORAL} from '../../type';
 import {extend, keys, without} from '../../util';
@@ -7,6 +7,7 @@ import {extend, keys, without} from '../../util';
 import {VgValueRef} from '../../vega.schema';
 
 import {applyMarkConfig, timeFormatExpression} from '../common';
+import * as mixins from '../mark/mixins';
 import {UnitModel} from '../unit';
 
 export function symbols(fieldDef: FieldDef<string>, symbolsSpec: any, model: UnitModel, channel: Channel) {
@@ -43,41 +44,21 @@ export function symbols(fieldDef: FieldDef<string>, symbolsSpec: any, model: Uni
 
   applyMarkConfig(symbols, model, config);
 
-  if (filled) {
-    symbols.strokeWidth = {value: 0};
-  }
+  if (channel !== COLOR) {
+    const colorMixins = mixins.color(model);
 
-  let value: VgValueRef;
-  const colorDef = model.encoding.color;
-  if (isValueDef(colorDef)) {
-    value = {value: colorDef.value};
-  }
-
-  if (value !== undefined) {
-    // apply the value
-    if (filled) {
-      symbols.fill = value;
-    } else {
-      symbols.stroke = value;
+    // If there are field for fill or stroke, remove them as we already apply channels.
+    if (colorMixins.fill && isFieldDef(colorMixins.fill)) {
+      delete colorMixins.fill;
     }
-  } else if (channel !== COLOR) {
-    // For non-color legend, apply color config if there is no fill / stroke config.
-    // (For color, do not override scale specified!)
-    symbols[filled ? 'fill' : 'stroke'] = symbols[filled ? 'fill' : 'stroke'] ||
-      {value: cfg.mark.color};
-  }
-
-  if (symbols.fill === undefined) {
-    // fall back to mark config colors for legend fill
-    if (cfg.mark.fill !== undefined) {
-      symbols.fill = {value: cfg.mark.fill};
-    } else if (cfg.mark.stroke !== undefined) {
-      symbols.stroke = {value: cfg.mark.stroke};
+    if (colorMixins.stroke && isFieldDef(colorMixins.stroke)) {
+      delete colorMixins.stroke;
     }
+    extend(symbols, colorMixins);
   }
 
-  const shapeDef = model.encoding.shape;
   if (channel !== SHAPE) {
+    const shapeDef = model.encoding.shape;
     if (isValueDef(shapeDef)) {
       symbols.shape = {value: shapeDef.value};
     }

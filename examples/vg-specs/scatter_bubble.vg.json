@@ -193,6 +193,9 @@
                     "update": {
                         "stroke": {
                             "value": "#4c78a8"
+                        },
+                        "fill": {
+                            "value": "transparent"
                         }
                     }
                 }
