@@ -1,4 +1,5 @@
 import {DateTime} from './datetime';
+import {Guide} from './guide';
 import {VgAxisBase, VgAxisConfig, VgAxisEncode} from './vega.schema';
 
 export type AxisOrient = 'top' | 'right' | 'left' | 'bottom';
@@ -12,18 +13,11 @@ export interface AxisConfig extends VgAxisConfig {
   shortTimeLabels?: boolean;
 }
 
-export interface Axis extends VgAxisBase {
+export interface Axis extends VgAxisBase, Guide {
   /**
    * The padding, in pixels, between axis and text labels.
    */
   labelPadding?: number;
-
-  /**
-   * The formatting pattern for axis labels. This is D3's [number format pattern](https://github.com/mbostock/d3/wiki/Formatting) for quantitative axis and D3's [time format pattern](https://github.com/mbostock/d3/wiki/Time-Formatting) for time axis.
-   *
-   * __Default value:__  derived from [numberFormat](config.html#format) config for quantitative axis and from [timeFormat](config.html#format) config for time axis.
-   */
-  format?: string; // default value determined by config.format anyway
 
   /**
    * The orientation of the axis. One of top, bottom, left or right. The orientation can be used to further specialize the axis type (e.g., a y axis oriented for the right edge of the chart).
@@ -52,13 +46,6 @@ export interface Axis extends VgAxisBase {
    * @TJS-type integer
    */
   tickCount?: number;
-
-  /**
-   * A title for the axis. Shows field name and its function by default.
-   *
-   * __Default value:__  derived from the field's name and transformation function applied e.g, "field_name", "SUM(field_name)", "BIN(field_name)", "YEAR(field_name)".
-   */
-  title?: string;
 
   /**
    * Explicitly set the visible axis tick values.
