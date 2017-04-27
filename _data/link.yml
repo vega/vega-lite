@@ -1,3 +1,11 @@
+UnitSpec:
+  data: data.html
+  transform: transform.html
+  selection: interaction.html
+  mark: mark.html
+  encoding: encoding.html
+  config: config.html
+
 type:
   datetime: transform.html#datetime
   filter:   transform.html#filter

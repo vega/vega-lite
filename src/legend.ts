@@ -1,4 +1,5 @@
 import {DateTime} from './datetime';
+import {Guide} from './guide';
 import {VgLegendBase, VgLegendConfig, VgLegendEncode} from './vega.schema';
 
 export interface LegendConfig extends VgLegendConfig {
@@ -13,18 +14,11 @@ export interface LegendConfig extends VgLegendConfig {
 /**
  * Properties of a legend or boolean flag for determining whether to show it.
  */
-export interface Legend extends VgLegendBase {
+export interface Legend extends VgLegendBase, Guide {
   /**
    * Optional mark definitions for custom legend encoding.
    */
   encode?: VgLegendEncode;
-
-  /**
-   * An optional formatting pattern for legend labels. Vega uses D3\'s format pattern.
-   *
-   * __Default value:__  derived from [`numberFormat`](config.html#format) config for quantitative axis and from [`timeFormat`](config.html#format) config for time axis.
-   */
-  format?: string;
 
   /**
    * The desired number of tick values for quantitative legends.
@@ -32,20 +26,9 @@ export interface Legend extends VgLegendBase {
   tickCount?: number;
 
   /**
-   * A title for the legend. (Shows field name and its function by default.)
-   *
-   * __Default value:__  derived from the field's name and transformation function applied e.g, "field_name", "SUM(field_name)", "BIN(field_name)", "YEAR(field_name)".
-   */
-  title?: string;
-  /**
    * Explicitly set the visible legend values.
    */
   values?: number[] | string[] | DateTime[];
-
-  /**
-   * The name of a scale that maps to a shape value.
-   */
-  shape?: string;
 
   /**
    * The type of the legend. Use `symbol` to create a discrete legend and `gradient` for a continuous color gradient.

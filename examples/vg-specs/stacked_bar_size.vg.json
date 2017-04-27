@@ -232,9 +232,6 @@
                         "shape": {
                             "value": "square"
                         },
-                        "strokeWidth": {
-                            "value": 0
-                        },
                         "fill": {
                             "value": "#4c78a8"
                         }

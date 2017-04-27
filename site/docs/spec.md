@@ -6,15 +6,33 @@ permalink: /docs/spec.html
 ---
 
 {:#spec}
-## Vega-Lite Specifications
 
-At its core, Vega-Lite specifications are JSON objects that describe visualizations as [mappings](encoding.html) from data to properties of [graphical marks](mark.html) (e.g., points or bars). By simply providing a mark type and a mapping, Vega-Lite automatically produces other visualization components including axes, legends, and scales. Unless explicitly specified, Vega-Lite determines properties of these components based on a set of carefully designed rules. This approach allows Vega-Lite specifications to be succinct and expressive, but also provide user control.
+Vega-Lite specifications are JSON objects that describe a diverge range of interactive visualizations.  The simplest form of specification is a specification of a [single view](#single-view-spec), which describes a view that uses a single [mark type](mark.html) to visualize the data.  Besides using a single view specification as a standalone visualization, Vega-Lite also provides operators for composing multiple view specifications into a layered or multi-view specification.
+These operators include [`layer`](layer.html), [`facet`](facet.html), [`concat`](concat.html), [`repeat`](repeat.html).
 
-As it is designed for analysis, Vega-Lite also supports data transformation such as [aggregation](aggregate.html), [binning](bin.html), [time unit conversion](timeunit.html), [filtering](transform.html), and [sorting](sort.html). In addition, it also supports faceting a single plot into [trellis plots or small multiples](https://en.wikipedia.org/wiki/Small_multiple).
+* TOC
+{:toc}
+
+## Top-Level Specifications
+{:top-level-spec}
+
+Any kind of top-level specifications (such as a standalone single view specification) can contain the following properties:
+
+__TODO: Add TopLevelProperties for `$schema`, `background`, `padding`, `config`. (Please look at toplevelprops.ts for now)__
+
+## Single View Specifications
+{:#single-view-spec}
 
 {: .suppress-error}
 ```json
 {
+  // Properties for standalone single view specifications
+  "$schema": "https://vega.github.io/schema/vega-lite/v2.json",
+  "background": ...,
+  "padding": ...,
+  "config": ...,
+
+  // Properties for any single view specifications
   "description": ... ,
   "data": ... ,
   "mark": ... ,
@@ -28,21 +46,23 @@ As it is designed for analysis, Vega-Lite also supports data transformation such
     "y": ...,
     "color": ...,
     ...
-  },
-  "config": ...
+  }
 }
 ```
 
-In Vega-Lite, a specification can have the following top-level properties.
+A single view specification describes a graphical [`mark`](mark.html) type (e.g., `point`s or `bar`s) and its [`encoding`](encoding.html), or the mapping between data values and properties of the mark. By simply providing the mark type and the encoding mapping, Vega-Lite automatically produces other visualization components including [axes](axis.html), [legends](legend.html), and [scales](scale.html). Unless explicitly specified, Vega-Lite determines properties of these components based on a set of carefully designed rules. This approach allows Vega-Lite specifications to be succinct and expressive, but also enables customization.
 
-| Property             | Type          | Description    |
-| :------------        |:-------------:| :------------- |
-| description          | String     | An _optional_ description of this mark for commenting purpose. This property has no effect on the output visualization. |
-| [width](size.html)   | Integer       | The width of a single visualization.  (For faceted plot, this represents the width of a single cell.)  If not specified (`undefined`), this will be determined by the following rules: <br/>  • For x-axis with a continuous (non-ordinal) scale, the width will be the value of [`config.cell.width`](config.html#cell-config). <br/>  • For x-axis with an ordinal scale: if [`rangeStep`](scale.html#ordinal) is a numeric value (default), the width is determined by the value of `rangeStep` and the cardinality of the field mapped to x-channel.   Otherwise, if the `rangeStep` is `"fit"`, the width will be the value of [`config.cell.width`](config.html#cell-config). <br/>  • If no field is mapped to `x` channel, the `width` will be the value of [`config.scale.textXRangeStep`](size.html#default-width-and-height) for `text` mark and the value of `rangeStep` for other marks. <span class="note-line"> __Default value:__ `undefined` .</span><span class="note-line">__Examples:__ Please see [Customizing Size](size.html) page.</span> |
-| [height](size.html)  | Integer       | Height of a single visualization.  (For faceted plot, this represents the height of a single cell.)  If not specified (`undefined`), this will be determined by the following rules: <br/>  • For y-axis with a continuous (non-ordinal) scale, the height will be the value of [`config.cell.height`](config.html#cell-config). <br/>  • For y-axis with an ordinal scale: if [`rangeStep`](scale.html#ordinal) is a numeric value (default), the height is determined by the value of `rangeStep` and the cardinality of the field mapped to y-channel.   Otherwise, if the `rangeStep` is `"fit"`, the height will be the value of [`config.cell.height`](config.html#cell-config). <br/>  • If no field is mapped to `x` channel, the `height` will be the value of `rangeStep`. <span class="note-line"> __Default value:__ `undefined` .</span><span class="note-line">__Examples:__ Please see [Customizing Size](size.html) page.</span> |
-| [data](data.html)    | Object        | An object describing the data source. |
-| [transform](transform.html) | Object | An object describing filter and new field calculation. |
-| [mark](mark.html)    | String        | The mark type. One of `"bar"`, `"circle"`, `"square"`, `"tick"`, `"line"`, `"area"`, `"point"`, and `"text"`. |
-| [encoding](encoding.html) | Object   | A key-value mapping between encoding channels and definition of fields. |
-| [config](config.html)   | Object     | Configuration object. |
+As it is designed for analysis, Vega-Lite also supports data transformation such as [aggregation](aggregate.html), [binning](bin.html), [time unit conversion](timeunit.html), [filtering](transform.html), and [sorting](sort.html).
 
+To summarize, a single-view specification in Vega-Lite can have the following top-level properties:
+
+{% include table.html props="name,description,width,height,data,transform,selection,mark,encoding" source="UnitSpec" %}
+
+## Layered and Multi-view Specifications
+
+To create layered and multi-view graphics, please refer to the following pages:
+
+- [`layer`](layer.html)
+- [`facet`](facet.html)
+- [`concat`](concat.html)
+- [`repeat`](repeat.html)

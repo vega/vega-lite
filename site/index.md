@@ -42,7 +42,7 @@ images:
   </span>
 </span>
 
-Read our [introduction article on Medium](https://medium.com/p/438f9215f09e), check out the [documentation]({{site.baseurl}}/docs/) and take a look at our [example gallery]({{site.baseurl}}/examples/).
+Read our [introduction article to Vega-Lite 1 on Medium](https://medium.com/p/438f9215f09e), look at our [talk about the new features in Vega-Lite 2](https://www.domoritz.de/talks/VegaLite-OpenVisConf-2017.pdf), check out the [documentation]({{site.baseurl}}/docs/) and take a look at our [example gallery]({{site.baseurl}}/examples/).
 
 ## Example
 
@@ -53,8 +53,9 @@ This is a Vega-Lite specification to create a bar chart that shows the average t
 ## Additional Links
 
 * Award winning [research paper](http://idl.cs.washington.edu/papers/vega-lite) on the design of Vega-Lite
-* [JSON schema](http://json-schema.org/) specification for [Vega-Lite](https://github.com/vega/schema) ([latest](https://vega.github.io/vega-lite/vega-lite-schema.json))
+* [JSON schema](http://json-schema.org/) specification for [Vega-Lite](https://github.com/vega/schema) ([latest](https://vega.github.io/schema/vega-lite/v2.json))
 * Ask questions about Vega-Lite in the [Vega Discussion Group / Mailing List](https://groups.google.com/forum/?fromgroups#!forum/vega-js)
+* Fork our [Vega-Lite Block](https://bl.ocks.org/domoritz/455e1c7872c4b38a58b90df0c3d7b1b9)
 
 
 ## Team

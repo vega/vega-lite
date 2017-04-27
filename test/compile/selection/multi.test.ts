@@ -79,6 +79,7 @@ describe('Multi Selection', function() {
   });
 
   // Skipped because "toggle" transforms the modifyExpr.
+  // FIXME(#2296)
   it.skip('builds modify signals', function() {
     const oneExpr = multi.modifyExpr(model, selCmpts['one']);
     assert.equal(oneExpr, 'one_tuple');

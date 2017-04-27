@@ -25,7 +25,7 @@ export type TopLevel<S extends BaseSpec> = S & TopLevelProperties & {
   $schema?: string;
 
   /**
-   * Configuration object
+   * Vega-Lite configuration object.
    */
   config?: Config;
 };
@@ -40,7 +40,6 @@ export interface BaseSpec {
 
   /**
    * An optional description of this mark for commenting purpose.
-   * This property has no effect on the output visualization.
    */
   description?: string;
 
@@ -50,22 +49,40 @@ export interface BaseSpec {
   data?: Data;
 
   /**
-   * An object describing filter and new field calculation.
+   * An array of data transformations such as filter and new field calculation.
    */
   transform?: Transform[];
 }
 
-export interface GenericUnitSpec<M, E extends Encoding<any>> extends BaseSpec {
-  // FIXME description for top-level width
+export interface GenericUnitSpec<E extends Encoding<any>, M> extends BaseSpec {
+  /**
+   * The width of a single visualization.
+   *
+   * __Default value:__ This will be determined by the following rules:
+   *
+   * - For x-axis with a continuous (non-ordinal) scale, the width will be the value of [`config.cell.width`](config.html#cell-config).
+   * - For x-axis with an ordinal scale: if [`rangeStep`](scale.html#ordinal) is a numeric value (default), the width is determined by the value of `rangeStep` and the cardinality of the field mapped to x-channel.   Otherwise, if the `rangeStep` is `"fit"`, the width will be the value of [`config.cell.width`](config.html#cell-config).
+   * - If no field is mapped to `x` channel, the `width` will be the value of [`config.scale.textXRangeStep`](size.html#default-width-and-height) for `text` mark and the value of `rangeStep` for other marks.
+   *
+   * __Note__: For plot with `row` and `column` channels, this represents the width of a single cell.
+   */
   width?: number;
 
-  // FIXME description for top-level width
+  /**
+   * Height of a single visualization.
+   *
+   * __Default value:__
+   * - For y-axis with a continuous (non-ordinal) scale, the height will be the value of [`config.cell.height`](config.html#cell-config).
+   * - For y-axis with an ordinal scale: if [`rangeStep`](scale.html#ordinal) is a numeric value (default), the height is determined by the value of `rangeStep` and the cardinality of the field mapped to y-channel.   Otherwise, if the `rangeStep` is `"fit"`, the height will be the value of [`config.cell.height`](config.html#cell-config).
+   * - If no field is mapped to `x` channel, the `height` will be the value of `rangeStep`.
+   *
+   * __Note__: For plot with `row` and `column` channels, this represents the height of a single cell.
+   */
   height?: number;
 
   /**
-   * The mark type.
-   * One of `"bar"`, `"circle"`, `"square"`, `"tick"`, `"line"`,
-   * `"area"`, `"point"`, `"rule"`, and `"text"`.
+   * A string describing the mark type (one of `"bar"`, `"circle"`, `"square"`, `"tick"`, `"line"`,
+   * `"area"`, `"point"`, `"rule"`, and `"text"`) or a [mark definition object](mark.html#mark-def).
    */
   mark: M;
 
@@ -80,17 +97,17 @@ export interface GenericUnitSpec<M, E extends Encoding<any>> extends BaseSpec {
   selection?: {[name: string]: SelectionDef};
 }
 
-export type UnitSpec = GenericUnitSpec<Mark | MarkDef, Encoding<Field>>;
+export type UnitSpec = GenericUnitSpec<Encoding<Field>, Mark | MarkDef>;
 
 /**
  * Unit spec that can contain composite mark
  */
-export type CompositeUnitSpec = GenericUnitSpec<CompositeMark | Mark | MarkDef, Encoding<Field>>;
+export type CompositeUnitSpec = GenericUnitSpec<Encoding<Field>, CompositeMark | Mark | MarkDef>;
 
 /**
  * Unit spec that can contain composite mark and row or column channels.
  */
-export type FacetedCompositeUnitSpec = GenericUnitSpec<CompositeMark | Mark | MarkDef, EncodingWithFacet<Field>>;
+export type FacetedCompositeUnitSpec = GenericUnitSpec<EncodingWithFacet<Field>, CompositeMark | Mark | MarkDef>;
 
 export interface GenericLayerSpec<U extends GenericUnitSpec<any, any>> extends BaseSpec {
   // FIXME description for top-level width
@@ -291,12 +308,12 @@ function normalizeFacetedUnit(spec: FacetedCompositeUnitSpec, config: Config): F
   };
 }
 
-function isNonFacetUnitSpecWithPrimitiveMark(spec: GenericUnitSpec<string | MarkDef, Encoding<Field>>):
-  spec is GenericUnitSpec<Mark, Encoding<Field>> {
+function isNonFacetUnitSpecWithPrimitiveMark(spec: GenericUnitSpec<Encoding<Field>, string | MarkDef>):
+  spec is GenericUnitSpec<Encoding<Field>, Mark> {
     return isPrimitiveMark(spec.mark);
 }
 
-function normalizeNonFacetUnit(spec: GenericUnitSpec<string | MarkDef, Encoding<Field>>, config: Config) {
+function normalizeNonFacetUnit(spec: GenericUnitSpec<Encoding<Field>, string | MarkDef>, config: Config) {
   if (isNonFacetUnitSpecWithPrimitiveMark(spec)) {
     // TODO: thoroughly test
     if (isRanged(spec.encoding)) {

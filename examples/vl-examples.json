@@ -170,6 +170,12 @@
       "title": "Becker's Barley Trellis Plot"
     }
   ],
+  "Layering": [
+    {
+      "name": "layer_precipitation_mean",
+      "title": "Mean overlay over pecipitation chart"
+    }
+  ],
   "Interactive": [
     {
       "name": "brush",

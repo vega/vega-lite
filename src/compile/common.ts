@@ -76,9 +76,9 @@ export function getMarkConfig<P extends keyof MarkConfig>(prop: P, mark: Mark, c
   return config.mark[prop];
 }
 
-export function formatSignalRef(fieldDef: FieldDef<string>, expr: 'datum' | 'parent', config: Config, useBinRange?: boolean) {
+export function formatSignalRef(fieldDef: FieldDef<string>, specifiedFormat: string, expr: 'datum' | 'parent', config: Config, useBinRange?: boolean) {
   if (fieldDef.type === 'quantitative') {
-    const format = numberFormat(fieldDef, fieldDef.format, config, 'text');
+    const format = numberFormat(fieldDef, specifiedFormat, config, 'text');
     if (fieldDef.bin) {
       if (useBinRange) {
         // For bin range, no need to apply format as the formula that creates range already include format
@@ -96,7 +96,7 @@ export function formatSignalRef(fieldDef: FieldDef<string>, expr: 'datum' | 'par
     }
   } else if (fieldDef.type === 'temporal') {
     return {
-      signal: timeFormatExpression(field(fieldDef, {expr}), fieldDef.timeUnit, fieldDef.format, config.text.shortTimeLabels, config.timeFormat)
+      signal: timeFormatExpression(field(fieldDef, {expr}), fieldDef.timeUnit, specifiedFormat, config.text.shortTimeLabels, config.timeFormat)
     };
   } else {
     return {signal: field(fieldDef, {expr})};
@@ -110,7 +110,7 @@ export function formatSignalRef(fieldDef: FieldDef<string>, expr: 'datum' | 'par
  */
 export function numberFormat(fieldDef: FieldDef<string>, specifiedFormat: string, config: Config, channel: Channel) {
   // Specified format in axis/legend has higher precedence than fieldDef.format
-  const format = specifiedFormat || fieldDef.format;
+  const format = specifiedFormat;
   if (fieldDef.type === QUANTITATIVE) {
     // add number format for quantitative type only
 

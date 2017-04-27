@@ -151,7 +151,7 @@ You can use [Vega-Embed](https://github.com/vega/vega-embed) to embed your Vega-
   <script src="https://cdnjs.cloudflare.com/ajax/libs/vega-embed/{{ site.data.versions.vega-embed }}/vega-embed.js"></script>
 
   <style media="screen">
-    /* Add space between vega-embed links  */
+    /* Add space between Vega-Embed links  */
     .vega-actions a {
       margin-right: 5px;
     }
@@ -159,7 +159,6 @@ You can use [Vega-Embed](https://github.com/vega/vega-embed) to embed your Vega-
 </head>
 <body>
   <h1>Template for Embedding Vega-Lite Visualization</h1>
-  <div>See code at <a href="https://github.com/vega/vega-lite-demo">https://github.com/vega/vega-lite-demo</a></div>
   <!-- Container for the visualization -->
   <div id="vis"></div>
 
@@ -185,7 +184,7 @@ You can use [Vega-Embed](https://github.com/vega/vega-embed) to embed your Vega-
     }
   };
 
-  // optional argument passed to vega-embed to specify vega-lite spec. More info at https://github.com/vega/vega-embed
+  // optional argument passed to Vega-Embed to specify vega-lite spec. More info at https://github.com/vega/vega-embed
   var opt = {
     "mode": "vega-lite"
   };
@@ -204,8 +203,7 @@ In this webpage, we first load the dependencies for Vega-Lite (D3, Vega-Embed, V
 
 In the JavaScript code, we create a variable `vlSpec` that holds the Vega-Lite specification in JSON format. The `vl.embed` method translates a Vega-Lite specification into a Vega specification and then calls the [Vega Runtime](https://github.com/vega/vega/wiki/Runtime) to display visualization in the container `<div/>` element.
 
-If viewed in a browser, this page displays our bar chart.
-You can also see the html page [here]({{site.baseurl}}/site/demo.html), or fork it from our [vega-lite-demo](https://github.com/vega/vega-lite-demo) repository.
+If viewed in a browser, this page displays our bar chart like on our [demo page]({{site.baseurl}}/site/demo.html). You can also fork our [Vega-Lite Block example](https://bl.ocks.org/domoritz/455e1c7872c4b38a58b90df0c3d7b1b9).
 
 ## Next Steps
 

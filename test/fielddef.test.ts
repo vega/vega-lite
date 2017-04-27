@@ -121,16 +121,6 @@ describe('fieldDef', () => {
   });
 
   describe('title()', () => {
-    it('should return no title if the title is set to be empty', () => {
-      const fieldDef = {field: '2', type: QUANTITATIVE, title: ''};
-      assert.equal(title(fieldDef,{}), undefined);
-    });
-
-    it('should return title if the fieldDef has title', () => {
-      const fieldDef = {field: '2', type: QUANTITATIVE, title: 'baz'};
-      assert.equal(title(fieldDef,{}), 'baz');
-    });
-
     it('should return correct title for aggregate', () => {
       assert.equal(title({field: 'f', type: QUANTITATIVE, aggregate: 'mean'}, {}), 'MEAN(f)');
     });

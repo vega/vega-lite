@@ -183,16 +183,7 @@
             "fill": "color",
             "format": "s",
             "title": "MEAN(Horsepower)",
-            "type": "gradient",
-            "encode": {
-                "symbols": {
-                    "update": {
-                        "strokeWidth": {
-                            "value": 0
-                        }
-                    }
-                }
-            }
+            "type": "gradient"
         }
     ]
 }

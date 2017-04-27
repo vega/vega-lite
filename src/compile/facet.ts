@@ -169,7 +169,8 @@ export class FacetModel extends ModelWithField {
 
     if (this.channelHasField(channel)) {
       const fieldDef = this.facet[channel];
-      let title = fieldDefTitle(fieldDef, this.config);
+      const header = fieldDef.header || {};
+      let title = header.title !== undefined ?  header.title : fieldDefTitle(fieldDef, this.config);
 
       if (this.child.component.layoutHeaders[channel].title) {
         // merge title with child to produce "Title / Subtitle / Sub-subtitle"
@@ -179,7 +180,7 @@ export class FacetModel extends ModelWithField {
 
       this.component.layoutHeaders[channel] = {
         title,
-        fieldRef: formatSignalRef(fieldDef, 'parent', this.config, true),
+        fieldRef: formatSignalRef(fieldDef, header.format, 'parent', this.config, true),
         // TODO: support adding label to footer as well
         header: [this.makeHeaderComponent(channel, true)]
       };

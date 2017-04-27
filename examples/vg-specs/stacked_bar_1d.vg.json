@@ -181,9 +181,6 @@
                     "update": {
                         "shape": {
                             "value": "square"
-                        },
-                        "strokeWidth": {
-                            "value": 0
                         }
                     }
                 }

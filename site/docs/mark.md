@@ -5,9 +5,9 @@ title: Mark
 permalink: /docs/mark.html
 ---
 
-Marks are the basic visual building block of a visualization. They provide basic shapes whose properties (such as position, size, and color) can be used to visually encode data, either from a data field, or a constant value. The `mark` property in a Vega-Lite specification defines the visualization's mark type.
+Marks are the basic visual building block of a visualization. They provide basic shapes whose properties (such as position, size, and color) can be used to visually encode data, either from a data field, or a constant value.
 
-The supported mark types are [`point`](#point-mark), [`circle`](#circle-and-square-marks), [`square`](#circle-and-square-marks), [`text`](#text), [`tick`](#tick-mark), [`bar`](#bar-mark), [`line`](#line-mark), and [`area`](#area). In general, one mark instance is generated per input data element. However, line and area mark types represent multiple data elements as a contiguous line or shape.
+The `mark` property of a [single view specification](spec.html#single-view-spec) can either be (1) a string describing [mark type](#mark-type) or (2) a mark definition object.
 
 {: .suppress-error}
 ```json
@@ -19,7 +19,20 @@ The supported mark types are [`point`](#point-mark), [`circle`](#circle-and-squa
 }
 ```
 
-{% include table.html props="type,filled,interpolate,orient,role,tension" source="MarkDef" %}
+## Mark Definition Object
+{:#mark-def}
+
+A mark definition object can contains the following values.
+
+{% include table.html props="type,role,filled,orient,interpolate,tension" source="MarkDef" %}
+
+## Mark Types
+{:#mark-type}
+
+The `mark` property in a Vega-Lite specification defines the visualization's mark type.
+
+The supported mark types are [`point`](#point-mark), [`circle`](#circle-and-square-marks), [`square`](#circle-and-square-marks), [`text`](#text), [`tick`](#tick-mark), [`bar`](#bar-mark), [`line`](#line-mark), and [`area`](#area). In general, one mark instance is generated per input data element. However, line and area mark types represent multiple data elements as a contiguous line or shape.
+
 
 <!-- why mark-based approach over chart typology + but we support variety of chart types -->
 

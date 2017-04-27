@@ -4,7 +4,7 @@ import {assert} from 'chai';
 import {Encoding} from '../src/encoding';
 import {Field, FieldDef} from '../src/fielddef';
 import {MarkDef} from '../src/mark';
-import {fieldDefs, GenericSpec, GenericUnitSpec, normalize, Spec} from '../src/spec';
+import {fieldDefs, GenericSpec, GenericUnitSpec, normalize, Spec, TopLevelExtendedSpec} from '../src/spec';
 import {Config, defaultConfig, initConfig} from './../src/config';
 
 // describe('isStacked()') -- tested as part of stackOffset in stack.test.ts
@@ -26,7 +26,7 @@ describe('normalize()', function () {
         }
       };
       const config = initConfig(spec.config);
-      assert.deepEqual<GenericSpec<GenericUnitSpec<string | MarkDef, Encoding<Field>>>>(normalize(spec, config), {
+      assert.deepEqual<GenericSpec<GenericUnitSpec<Encoding<Field>, string | MarkDef>>>(normalize(spec, config), {
         "width": 123,
         "height": 234,
         "name": "faceted",
@@ -57,7 +57,7 @@ describe('normalize()', function () {
       };
 
       const config = initConfig(spec.config);
-      assert.deepEqual<GenericSpec<GenericUnitSpec<string | MarkDef, Encoding<Field>>>>(normalize(spec, spec.config), {
+      assert.deepEqual<GenericSpec<GenericUnitSpec<Encoding<Field>, string | MarkDef>>>(normalize(spec, spec.config), {
         "data": {"url": "data/movies.json"},
         "facet": {
           "row": {"field": "MPAA_Rating","type": "ordinal"}
@@ -75,7 +75,7 @@ describe('normalize()', function () {
 
   describe('normalizeFacet', () => {
     it('should produce correct layered specs for mean point and vertical error bar', () => {
-      assert.deepEqual<GenericSpec<GenericUnitSpec<string | MarkDef, Encoding<Field>>>>(normalize({
+      assert.deepEqual<GenericSpec<GenericUnitSpec<Encoding<Field>, string | MarkDef>>>(normalize({
         "description": "A error bar plot showing mean, min, and max in the US population distribution of age groups in 2000.",
         "data": {"url": "data/population.json"},
         "transform": [{"filter": "datum.year == 2000"}],
@@ -194,7 +194,7 @@ describe('normalize()', function () {
 
   describe('normalizeLayer', () => {
     it('should produce correct layered specs for mean point and vertical error bar', () => {
-      assert.deepEqual<GenericSpec<GenericUnitSpec<string | MarkDef, Encoding<Field>>>>(normalize({
+      assert.deepEqual<GenericSpec<GenericUnitSpec<Encoding<Field>, string | MarkDef>>>(normalize({
         "description": "A error bar plot showing mean, min, and max in the US population distribution of age groups in 2000.",
         "data": {"url": "data/population.json"},
         "transform": [{"filter": "datum.year == 2000"}],
@@ -303,7 +303,7 @@ describe('normalize()', function () {
 
   describe('normalizeOverlay', () => {
     it('correctly normalizes line with overlayed point.', () => {
-      const spec: any = {
+      const spec: TopLevelExtendedSpec = {
         "data": {"url": "data/stocks.csv", "format": {"type": "csv"}},
         "mark": "line",
         "encoding": {
@@ -313,8 +313,7 @@ describe('normalize()', function () {
         "config": {"overlay": {"line": true}}
       };
       const normalizedSpec = normalize(spec, spec.config);
-      // FIXME: remove any
-      assert.deepEqual<any>(normalizedSpec, {
+      assert.deepEqual<TopLevelExtendedSpec>(normalizedSpec, {
         "data": {"url": "data/stocks.csv","format": {"type": "csv"}},
         "layer": [
           {
@@ -337,7 +336,7 @@ describe('normalize()', function () {
     });
 
     it('correctly normalizes faceted line plots with overlayed point.', () => {
-      const spec: any = {
+      const spec: TopLevelExtendedSpec = {
         "data": {"url": "data/stocks.csv", "format": {"type": "csv"}},
         "mark": "line",
         "encoding": {
@@ -348,8 +347,7 @@ describe('normalize()', function () {
         "config": {"overlay": {"line": true}}
       };
       const normalizedSpec = normalize(spec, spec.config);
-      // FIXME: remove any
-      assert.deepEqual<any>(normalizedSpec, {
+      assert.deepEqual<TopLevelExtendedSpec>(normalizedSpec, {
         "data": {"url": "data/stocks.csv","format": {"type": "csv"}},
         "facet": {
           "row": {"field": "symbol", "type": "nominal"},
@@ -377,7 +375,7 @@ describe('normalize()', function () {
     });
 
     it('correctly normalizes area with overlay line and point', () => {
-      const spec: any = {
+      const spec: TopLevelExtendedSpec = {
         "data": {"url": "data/stocks.csv", "format": {"type": "csv"}},
         "mark": "area",
         "encoding": {
@@ -387,8 +385,7 @@ describe('normalize()', function () {
         "config": {"overlay": {"area": 'linepoint'}}
       };
       const normalizedSpec = normalize(spec, spec.config);
-      // FIXME: remove any
-      assert.deepEqual<any>(normalizedSpec, {
+      assert.deepEqual<TopLevelExtendedSpec>(normalizedSpec, {
         "data": {"url": "data/stocks.csv","format": {"type": "csv"}},
         "layer": [
           {
@@ -418,7 +415,7 @@ describe('normalize()', function () {
     });
 
     it('correctly normalizes area with overlay line', () => {
-      const spec: any = {
+      const spec: TopLevelExtendedSpec = {
         "data": {"url": "data/stocks.csv", "format": {"type": "csv"}},
         "mark": "area",
         "encoding": {
@@ -428,8 +425,7 @@ describe('normalize()', function () {
         "config": {"overlay": {"area": 'line'}}
       };
       const normalizedSpec = normalize(spec, spec.config);
-      // FIXME: remove any
-      assert.deepEqual<any>(normalizedSpec, {
+      assert.deepEqual<TopLevelExtendedSpec>(normalizedSpec, {
         "data": {"url": "data/stocks.csv","format": {"type": "csv"}},
         "layer": [
           {
@@ -452,7 +448,7 @@ describe('normalize()', function () {
     });
 
     it('correctly normalizes stacked area with overlay line', () => {
-      const spec: any = {
+      const spec: TopLevelExtendedSpec = {
         "data": {"url": "data/stocks.csv", "format": {"type": "csv"}},
         "mark": "area",
         "encoding": {
@@ -463,8 +459,7 @@ describe('normalize()', function () {
         "config": {"overlay": {"area": 'line'}}
       };
       const normalizedSpec = normalize(spec, spec.config);
-      // FIXME: remove any
-      assert.deepEqual<any>(normalizedSpec, {
+      assert.deepEqual<TopLevelExtendedSpec>(normalizedSpec, {
         "data": {"url": "data/stocks.csv","format": {"type": "csv"}},
         "layer": [
           {
@@ -489,7 +484,7 @@ describe('normalize()', function () {
     });
 
     it('correctly normalizes streamgraph with overlay line', () => {
-      const spec: any = {
+      const spec: TopLevelExtendedSpec = {
         "data": {"url": "data/stocks.csv", "format": {"type": "csv"}},
         "mark": "area",
         "encoding": {
@@ -500,8 +495,7 @@ describe('normalize()', function () {
         "config": {"overlay": {"area": 'line'}}
       };
       const normalizedSpec = normalize(spec, spec.config);
-      // FIXME: remove any
-      assert.deepEqual<any>(normalizedSpec, {
+      assert.deepEqual<TopLevelExtendedSpec>(normalizedSpec, {
         "data": {"url": "data/stocks.csv","format": {"type": "csv"}},
         "layer": [
           {
@@ -529,7 +523,7 @@ describe('normalize()', function () {
 
 describe('normalizeRangedUnitSpec',  () => {
   it('should convert y2 -> y if there is no y in the encoding', function() {
-    const spec: any = {
+    const spec: Spec = {
       "data": {"url": "data/population.json"},
       "mark": "rule",
       "encoding": {
@@ -551,7 +545,7 @@ describe('normalizeRangedUnitSpec',  () => {
   });
 
   it('should do nothing if there is no missing x or y', function() {
-    const spec: any = {
+    const spec: TopLevelExtendedSpec = {
       "data": {"url": "data/population.json"},
       "mark": "rule",
       "encoding": {
@@ -561,11 +555,11 @@ describe('normalizeRangedUnitSpec',  () => {
       }
     };
 
-    assert.deepEqual(normalize(spec, defaultConfig), spec);
+    assert.deepEqual<TopLevelExtendedSpec>(normalize(spec, defaultConfig), spec);
   });
 
   it('should convert x2 -> x if there is no x in the encoding', function() {
-    const spec: any = {
+    const spec: Spec = {
       "data": {"url": "data/population.json"},
       "mark": "rule",
       "encoding": {

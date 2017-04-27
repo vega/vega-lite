@@ -31,7 +31,7 @@ add(ERRORBAR, normalizeErrorBar);
  */
 export function normalize(
     // This GenericUnitSpec has any as Encoding because unit specs with composite mark can have additional encoding channels.
-    spec: GenericUnitSpec<string | MarkDef, any>,
+    spec: GenericUnitSpec<any, string | MarkDef>,
     config: Config
   ): LayerSpec {
 

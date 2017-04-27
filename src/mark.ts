@@ -46,26 +46,19 @@ export interface MarkDef {
   /**
    * A metadata string indicating the role of the mark.
    * This allows users to use `config.<role-name>.*` to customize properties of marks with specific roles.
-   * In addition, SVG renderers will add this role value (prepended with the prefix role-) as a CSS class name on the enclosing SVG group (g) element containing the mark instances.
+   * In addition, SVG renderers will add this role value (prepended with the prefix role-) as a CSS class name on the enclosing SVG group (`<g>`) element containing the mark instances.
    */
   role?: string;
 
   /**
    * Whether the mark's color should be used as fill color instead of stroke color.
-   * All marks except "point", "line", and "rule" are filled by default.
+   *
+   * __Default value:__ All marks except `"point"`, `"line"`, and `"rule"` are filled by default.
    */
   filled?: boolean;
 
   /**
-   * The orientation of a non-stacked bar, tick, area, and line charts.
-   * The value is either horizontal (default) or vertical.
-   * - For bar, rule and tick, this determines whether the size of the bar and tick
-   * should be applied to x or y dimension.
-   * - For area, this property determines the orient property of the Vega output.
-   * - For line, this property determines the sort order of the points in the line
-   * if `config.sortLineBy` is not specified.
-   * For stacked charts, this is always determined by the orientation of the stack;
-   * therefore explicitly specified value will be ignored.
+   * TODO
    */
   orient?: Orient;
 
@@ -84,12 +77,16 @@ export interface MarkDef {
    * - `"cardinal-closed"`: a closed Cardinal spline, as in a loop.
    * - `"bundle"`: equivalent to basis, except the tension parameter is used to straighten the spline.
    * - `"monotone"`: cubic interpolation that preserves monotonicity in y.
+   *
    * For more information about each interpolation method, please see [D3's line interpolation](https://github.com/mbostock/d3/wiki/SVG-Shapes#line_interpolate).
    */
   interpolate?: Interpolate;
 
   /**
-   * Depending on the interpolation type, sets the tension parameter (for line and area marks).(See [D3's line interpolation](https://github.com/mbostock/d3/wiki/SVG-Shapes#line_interpolate).)
+   * Depending on the interpolation type, sets the tension parameter (for line and area marks).
+   *
+   * TODO: provide the link to D3 docs.
+   *
    * @minimum 0
    * @maximum 1
    */
