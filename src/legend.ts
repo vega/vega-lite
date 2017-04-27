@@ -43,11 +43,6 @@ export interface Legend extends VgLegendBase {
   values?: number[] | string[] | DateTime[];
 
   /**
-   * The name of a scale that maps to a shape value.
-   */
-  shape?: string;
-
-  /**
    * The type of the legend. Use `symbol` to create a discrete legend and `gradient` for a continuous color gradient.
    */
   type?: 'symbol' | 'gradient';
