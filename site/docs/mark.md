@@ -18,7 +18,7 @@ The supported mark types are [`point`](#point-mark), [`circle`](#circle-and-squa
   ...
 }
 ```
-
+A Mark object has the following properties:
 {% include table.html props="type,filled,interpolate,orient,role,tension" source="MarkDef" %}
 
 <!-- why mark-based approach over chart typology + but we support variety of chart types -->
