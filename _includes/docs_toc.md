@@ -12,6 +12,8 @@
 - [Transform]({{site.baseurl}}/docs/transform.html)
     - [Top-level Transform Property]({{site.baseurl}}/docs/transform.html#top-level-transform-property)
 - [Mark]({{site.baseurl}}/docs/mark.html)
+    - [Mark Definition Object]({{site.baseurl}}/docs/mark.html#mark-def)
+    - [Mark Types]({{site.baseurl}}/docs/mark.html#mark-type)
     - [Point]({{site.baseurl}}/docs/mark.html#point)
     - [Circle and Square]({{site.baseurl}}/docs/mark.html#circle-and-square)
     - [Text]({{site.baseurl}}/docs/mark.html#text)
