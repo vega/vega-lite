@@ -110,7 +110,7 @@ export function formatSignalRef(fieldDef: FieldDef<string>, specifiedFormat: str
  */
 export function numberFormat(fieldDef: FieldDef<string>, specifiedFormat: string, config: Config, channel: Channel) {
   // Specified format in axis/legend has higher precedence than fieldDef.format
-  const format = specifiedFormat || fieldDef.format;
+  const format = specifiedFormat;
   if (fieldDef.type === QUANTITATIVE) {
     // add number format for quantitative type only
 
