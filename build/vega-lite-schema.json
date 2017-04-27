@@ -682,7 +682,7 @@
                     "description": "Optional mark definitions for custom axis encoding."
                 },
                 "format": {
-                    "description": "The formatting pattern for axis labels. This is D3's [number format pattern](https://github.com/mbostock/d3/wiki/Formatting) for quantitative axis and D3's [time format pattern](https://github.com/mbostock/d3/wiki/Time-Formatting) for time axis.\n\n__Default value:__  derived from [numberFormat](config.html#format) config for quantitative axis and from [timeFormat](config.html#format) config for time axis.",
+                    "description": "The formatting pattern for labels. This is D3's [number format pattern](https://github.com/mbostock/d3/wiki/Formatting) for quantitative fields and D3's [time format pattern](https://github.com/mbostock/d3/wiki/Time-Formatting) for time field.\n\n__Default value:__  derived from [numberFormat](config.html#format) config for quantitative fields and from [timeFormat](config.html#format) config for temporal fields.",
                     "type": "string"
                 },
                 "grid": {
@@ -738,7 +738,7 @@
                     "type": "boolean"
                 },
                 "title": {
-                    "description": "A title for the axis. Shows field name and its function by default.\n\n__Default value:__  derived from the field's name and transformation function applied e.g, \"field_name\", \"SUM(field_name)\", \"BIN(field_name)\", \"YEAR(field_name)\".",
+                    "description": "A title for the field.\n\n__Default value:__  derived from the field's name and transformation function applied e.g, \"field_name\", \"SUM(field_name)\", \"BIN(field_name)\", \"YEAR(field_name)\".",
                     "type": "string"
                 },
                 "titleMaxLength": {
@@ -2215,7 +2215,7 @@
                     "description": "Color of the marks – either fill or stroke color based on mark type.\n(By default, fill color for `area`, `bar`, `tick`, `text`, `circle`, and `square` /\nstroke color for `line` and `point`.)"
                 },
                 "column": {
-                    "$ref": "#/definitions/FieldDef<Field>",
+                    "$ref": "#/definitions/FacetFieldDef<Field>",
                     "description": "Horizontal facets for trellis plots."
                 },
                 "detail": {
@@ -2258,7 +2258,7 @@
                     "description": "stack order for stacked marks or order of data points in line marks."
                 },
                 "row": {
-                    "$ref": "#/definitions/FieldDef<Field>",
+                    "$ref": "#/definitions/FacetFieldDef<Field>",
                     "description": "Vertical facets for trellis plots."
                 },
                 "shape": {
@@ -2400,11 +2400,11 @@
             "additionalProperties": false,
             "properties": {
                 "column": {
-                    "$ref": "#/definitions/FieldDef<Field>",
+                    "$ref": "#/definitions/FacetFieldDef<Field>",
                     "description": "Horizontal facets for trellis plots."
                 },
                 "row": {
-                    "$ref": "#/definitions/FieldDef<Field>",
+                    "$ref": "#/definitions/FacetFieldDef<Field>",
                     "description": "Vertical facets for trellis plots."
                 }
             },
@@ -2416,6 +2416,87 @@
                 "cell": {
                     "$ref": "#/definitions/CellConfig",
                     "description": "Facet Cell Config"
+                }
+            },
+            "type": "object"
+        },
+        "FacetFieldDef<Field>": {
+            "additionalProperties": false,
+            "properties": {
+                "aggregate": {
+                    "description": "Aggregation function for the field\n(e.g., `mean`, `sum`, `median`, `min`, `max`, `count`).\n\n__Default value:__ `undefined` (None)",
+                    "enum": [
+                        "argmax",
+                        "argmin",
+                        "average",
+                        "box-plot",
+                        "ci0",
+                        "ci1",
+                        "count",
+                        "distinct",
+                        "max",
+                        "mean",
+                        "median",
+                        "min",
+                        "missing",
+                        "modeskew",
+                        "q1",
+                        "q3",
+                        "stdev",
+                        "stdevp",
+                        "sum",
+                        "valid",
+                        "values",
+                        "variance",
+                        "variancep"
+                    ],
+                    "type": "string"
+                },
+                "bin": {
+                    "anyOf": [
+                        {
+                            "$ref": "#/definitions/Bin"
+                        },
+                        {
+                            "type": "boolean"
+                        }
+                    ],
+                    "description": "Flag for binning a `quantitative` field, or a bin property object\nfor binning parameters."
+                },
+                "field": {
+                    "anyOf": [
+                        {
+                            "additionalProperties": false,
+                            "properties": {
+                                "repeat": {
+                                    "enum": [
+                                        "column",
+                                        "row"
+                                    ],
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "repeat"
+                            ],
+                            "type": "object"
+                        },
+                        {
+                            "type": "string"
+                        }
+                    ],
+                    "description": "__Required.__ Name of the field from which to pull a data value.\n\n__Note:__ `field` is not required if `aggregate` is `count`."
+                },
+                "header": {
+                    "$ref": "#/definitions/Header"
+                },
+                "timeUnit": {
+                    "$ref": "#/definitions/TimeUnit",
+                    "description": "Time unit for a `temporal` field  (e.g., `year`, `yearmonth`, `month`, `hour`).\n\n__Default value:__ `undefined` (None)"
+                },
+                "type": {
+                    "$ref": "#/definitions/Type",
+                    "description": "The encoded field's type of measurement. This can be either a full type\nname (`\"quantitative\"`, `\"temporal\"`, `\"ordinal\"`,  and `\"nominal\"`)\nor an initial character of the type name (`\"Q\"`, `\"T\"`, `\"O\"`, `\"N\"`).\nThis property is case-insensitive."
                 }
             },
             "type": "object"
@@ -2488,17 +2569,9 @@
                     ],
                     "description": "__Required.__ Name of the field from which to pull a data value.\n\n__Note:__ `field` is not required if `aggregate` is `count`."
                 },
-                "format": {
-                    "description": "The formatting pattern for text value. If not defined, this will be determined automatically.",
-                    "type": "string"
-                },
                 "timeUnit": {
                     "$ref": "#/definitions/TimeUnit",
                     "description": "Time unit for a `temporal` field  (e.g., `year`, `yearmonth`, `month`, `hour`).\n\n__Default value:__ `undefined` (None)"
-                },
-                "title": {
-                    "description": "Title for axis or legend.",
-                    "type": "string"
                 },
                 "type": {
                     "$ref": "#/definitions/Type",
@@ -2760,6 +2833,21 @@
             ],
             "type": "object"
         },
+        "Header": {
+            "additionalProperties": false,
+            "description": "Headers of row / column channels for faceted plots.",
+            "properties": {
+                "format": {
+                    "description": "The formatting pattern for axis labels. This is D3's [number format pattern](https://github.com/mbostock/d3/wiki/Formatting) for quantitative axis and D3's [time format pattern](https://github.com/mbostock/d3/wiki/Time-Formatting) for time axis.\n\n__Default value:__  derived from [numberFormat](config.html#format) config for quantitative axis and from [timeFormat](config.html#format) config for time axis.",
+                    "type": "string"
+                },
+                "title": {
+                    "description": "A title for the axis. Shows field name and its function by default.\n\n__Default value:__  derived from the field's name and transformation function applied e.g, \"field_name\", \"SUM(field_name)\", \"BIN(field_name)\", \"YEAR(field_name)\".",
+                    "type": "string"
+                }
+            },
+            "type": "object"
+        },
         "HorizontalAlign": {
             "enum": [
                 "center",
@@ -2818,7 +2906,7 @@
                     "type": "number"
                 },
                 "format": {
-                    "description": "An optional formatting pattern for legend labels. Vega uses D3\\'s format pattern.\n\n__Default value:__  derived from [`numberFormat`](config.html#format) config for quantitative axis and from [`timeFormat`](config.html#format) config for time axis.",
+                    "description": "The formatting pattern for labels. This is D3's [number format pattern](https://github.com/mbostock/d3/wiki/Formatting) for quantitative fields and D3's [time format pattern](https://github.com/mbostock/d3/wiki/Time-Formatting) for time field.\n\n__Default value:__  derived from [numberFormat](config.html#format) config for quantitative fields and from [timeFormat](config.html#format) config for temporal fields.",
                     "type": "string"
                 },
                 "offset": {
@@ -2833,16 +2921,12 @@
                     "description": "The padding, in pixels, between the legend and axis.",
                     "type": "number"
                 },
-                "shape": {
-                    "description": "The name of a scale that maps to a shape value.",
-                    "type": "string"
-                },
                 "tickCount": {
                     "description": "The desired number of tick values for quantitative legends.",
                     "type": "number"
                 },
                 "title": {
-                    "description": "A title for the legend. (Shows field name and its function by default.)\n\n__Default value:__  derived from the field's name and transformation function applied e.g, \"field_name\", \"SUM(field_name)\", \"BIN(field_name)\", \"YEAR(field_name)\".",
+                    "description": "A title for the field.\n\n__Default value:__  derived from the field's name and transformation function applied e.g, \"field_name\", \"SUM(field_name)\", \"BIN(field_name)\", \"YEAR(field_name)\".",
                     "type": "string"
                 },
                 "type": {
@@ -3074,10 +3158,6 @@
                     ],
                     "description": "__Required.__ Name of the field from which to pull a data value.\n\n__Note:__ `field` is not required if `aggregate` is `count`."
                 },
-                "format": {
-                    "description": "The formatting pattern for text value. If not defined, this will be determined automatically.",
-                    "type": "string"
-                },
                 "legend": {
                     "anyOf": [
                         {
@@ -3109,10 +3189,6 @@
                 "timeUnit": {
                     "$ref": "#/definitions/TimeUnit",
                     "description": "Time unit for a `temporal` field  (e.g., `year`, `yearmonth`, `month`, `hour`).\n\n__Default value:__ `undefined` (None)"
-                },
-                "title": {
-                    "description": "Title for axis or legend.",
-                    "type": "string"
                 },
                 "type": {
                     "$ref": "#/definitions/Type",
@@ -3191,10 +3267,6 @@
                     ],
                     "description": "__Required.__ Name of the field from which to pull a data value.\n\n__Note:__ `field` is not required if `aggregate` is `count`."
                 },
-                "format": {
-                    "description": "The formatting pattern for text value. If not defined, this will be determined automatically.",
-                    "type": "string"
-                },
                 "legend": {
                     "anyOf": [
                         {
@@ -3226,10 +3298,6 @@
                 "timeUnit": {
                     "$ref": "#/definitions/TimeUnit",
                     "description": "Time unit for a `temporal` field  (e.g., `year`, `yearmonth`, `month`, `hour`).\n\n__Default value:__ `undefined` (None)"
-                },
-                "title": {
-                    "description": "Title for axis or legend.",
-                    "type": "string"
                 },
                 "type": {
                     "$ref": "#/definitions/Type",
@@ -3563,20 +3631,12 @@
                     ],
                     "description": "__Required.__ Name of the field from which to pull a data value.\n\n__Note:__ `field` is not required if `aggregate` is `count`."
                 },
-                "format": {
-                    "description": "The formatting pattern for text value. If not defined, this will be determined automatically.",
-                    "type": "string"
-                },
                 "sort": {
                     "$ref": "#/definitions/SortOrder"
                 },
                 "timeUnit": {
                     "$ref": "#/definitions/TimeUnit",
                     "description": "Time unit for a `temporal` field  (e.g., `year`, `yearmonth`, `month`, `hour`).\n\n__Default value:__ `undefined` (None)"
-                },
-                "title": {
-                    "description": "Title for axis or legend.",
-                    "type": "string"
                 },
                 "type": {
                     "$ref": "#/definitions/Type",
@@ -3683,10 +3743,6 @@
                     ],
                     "description": "__Required.__ Name of the field from which to pull a data value.\n\n__Note:__ `field` is not required if `aggregate` is `count`."
                 },
-                "format": {
-                    "description": "The formatting pattern for text value. If not defined, this will be determined automatically.",
-                    "type": "string"
-                },
                 "scale": {
                     "$ref": "#/definitions/Scale"
                 },
@@ -3712,10 +3768,6 @@
                 "timeUnit": {
                     "$ref": "#/definitions/TimeUnit",
                     "description": "Time unit for a `temporal` field  (e.g., `year`, `yearmonth`, `month`, `hour`).\n\n__Default value:__ `undefined` (None)"
-                },
-                "title": {
-                    "description": "Title for axis or legend.",
-                    "type": "string"
                 },
                 "type": {
                     "$ref": "#/definitions/Type",
@@ -4661,10 +4713,6 @@
                 "timeUnit": {
                     "$ref": "#/definitions/TimeUnit",
                     "description": "Time unit for a `temporal` field  (e.g., `year`, `yearmonth`, `month`, `hour`).\n\n__Default value:__ `undefined` (None)"
-                },
-                "title": {
-                    "description": "Title for axis or legend.",
-                    "type": "string"
                 },
                 "type": {
                     "$ref": "#/definitions/Type",

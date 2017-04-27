@@ -29,9 +29,8 @@
         "x": {
           "field": "date",
           "type": "temporal",
-          "title": "",
           "scale": {"domain": {"selection": "brush", "encoding": "x"}},
-          "axis": {"labelAngle": 0}
+          "axis": {"title": "", "labelAngle": 0}
         },
         "y": {"field": "price","type": "quantitative"}
       }

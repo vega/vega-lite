@@ -87,16 +87,6 @@ export interface FieldDef<F> {
    *
    */
   aggregate?: AggregateOp | CompositeAggregate;
-
-  /**
-   * Title for axis or legend.
-   */
-  title?: string;
-
-  /**
-   * The formatting pattern for text value. If not defined, this will be determined automatically.
-   */
-  format?: string;
 }
 
 export interface Condition<T> {
@@ -149,6 +139,11 @@ export interface OrderFieldDef<F> extends FieldDef<F> {
 export interface TextFieldDef<F> extends FieldDef<F> {
   // FIXME: add more reference to Vega's format pattern or d3's format pattern.
   condition?: Condition<string|number>;
+
+  /**
+   * The formatting pattern for text value. If not defined, this will be determined automatically.
+   */
+  format?: string;
 }
 
 export type ChannelDef<F> = FieldDef<F> | ValueDef<any>;
@@ -240,13 +235,6 @@ export function isCount(fieldDef: FieldDef<Field>) {
 }
 
 export function title(fieldDef: FieldDef<string>, config: Config) {
-  if (fieldDef.title === '') {
-    // an empty title should not take up space
-    return undefined;
-  }
-  if (fieldDef.title !== undefined) {
-    return fieldDef.title;
-  }
   if (isCount(fieldDef)) {
     return config.countTitle;
   }
