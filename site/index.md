@@ -42,7 +42,7 @@ images:
   </span>
 </span>
 
-Read our [introduction article on Medium](https://medium.com/p/438f9215f09e), check out the [documentation]({{site.baseurl}}/docs/) and take a look at our [example gallery]({{site.baseurl}}/examples/).
+Read our [introduction article to Vega-Lite 1 on Medium](https://medium.com/p/438f9215f09e), look at our [talk about the new features in Vega-Lite 2](https://www.domoritz.de/talks/VegaLite-OpenVisConf-2017.pdf), check out the [documentation]({{site.baseurl}}/docs/) and take a look at our [example gallery]({{site.baseurl}}/examples/).
 
 ## Example
 
