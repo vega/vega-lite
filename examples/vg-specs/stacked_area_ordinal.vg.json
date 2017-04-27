@@ -281,16 +281,7 @@
     "legends": [
         {
             "fill": "color",
-            "title": "Cylinders",
-            "encode": {
-                "symbols": {
-                    "update": {
-                        "strokeWidth": {
-                            "value": 0
-                        }
-                    }
-                }
-            }
+            "title": "Cylinders"
         }
     ]
 }

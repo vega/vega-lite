@@ -197,9 +197,6 @@
                         "shape": {
                             "value": "circle"
                         },
-                        "strokeWidth": {
-                            "value": 0
-                        },
                         "fill": {
                             "value": "#000"
                         }
