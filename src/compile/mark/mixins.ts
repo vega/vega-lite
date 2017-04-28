@@ -1,3 +1,4 @@
+import * as log from '../../log';
 import {MarkDef} from '../../mark';
 import * as util from '../../util';
 import {VgEncodeEntry, VgValueRef} from '../../vega.schema';
@@ -7,7 +8,7 @@ import {UnitModel} from '../unit';
 import * as ref from './valueref';
 
 import {NONSPATIAL_SCALE_CHANNELS} from '../../channel';
-import {Condition} from '../../fielddef';
+import {Condition, isFieldDef, isValueDef} from '../../fielddef';
 import {predicate} from '../selection/selection';
 
 export function color(model: UnitModel) {
@@ -91,10 +92,36 @@ export function text(model: UnitModel, vgChannel: 'text' | 'tooltip' = 'text') {
 }
 
 export function bandPosition(channel: 'x'|'y', model: UnitModel) {
-  // TODO: band scale doesn't support size yet
   const fieldDef = model.encoding[channel];
   const scaleName = model.scaleName(channel);
   const sizeChannel = channel === 'x' ? 'width' : 'height';
+
+  if (model.encoding.size) {
+    const orient = model.markDef.orient;
+    if (orient) {
+      const centeredBandPositionMixins = {
+        // Use xc/yc and place the mark at the middle of the band
+        // This way we never have to deal with size's condition for x/y position.
+        [channel+'c']: ref.fieldRef(fieldDef, scaleName, {}, ref.band(scaleName, 0.5))
+      };
+
+      if (isFieldDef(model.encoding.size)) {
+        log.warn(log.message.cannotUseSizeFieldWithBandSize(channel));
+        // TODO: apply size to band and set scale range to some values between 0-1.
+        // return {
+        //   ...centeredBandPositionMixins,
+        //   ...bandSize('size', model, {vgChannel: sizeChannel})
+        // };
+      } else if (isValueDef(model.encoding.size)) {
+        return {
+          ...centeredBandPositionMixins,
+          ...nonPosition('size', model, {vgChannel: sizeChannel})
+        };
+      }
+    } else {
+      log.warn(log.message.cannotApplySizeToNonOrientedMark(model.markDef.type));
+    }
+  }
   return {
     [channel]: ref.fieldRef(fieldDef, scaleName, {}),
     [sizeChannel]: ref.band(scaleName)

@@ -50,7 +50,7 @@ export type VgValueRef = {
   scale?: string, // TODO: object
   mult?: number,
   offset?: number | VgValueRef,
-  band?: boolean | number
+  band?: boolean | number | VgValueRef;
 };
 
 // TODO: add vg prefix
