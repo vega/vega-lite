@@ -1,6 +1,10 @@
 #!/usr/bin/env node
 'use strict';
 
+/* This script normalizes all the specs in examples/specs and if after the
+normalize the spec is different then write the full normalized spec to
+examples/specs/normalized */
+
 var fs = require('fs'),
   path = require('path'),
   vl = require('vega-lite'),
@@ -20,7 +24,7 @@ examples.forEach(function(example) {
     var postNormalized = stringify(fullSpec);
 
     if (preNormalized !== postNormalized) {
-      var postNormalizedOutput = JSON.stringify(fullSpec)
+      var postNormalizedOutput = JSON.stringify(fullSpec, null, 2);
       // -8 is cutting .vl.json
       var newFilename = example.slice(0, -8) + '_full.vl.json';
       var newFilenameAndPath = DIR + SPECS + '/normalized/' + newFilename;
