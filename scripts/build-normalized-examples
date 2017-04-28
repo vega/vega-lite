@@ -1,0 +1,33 @@
+#!/usr/bin/env node
+'use strict';
+
+var fs = require('fs'),
+  path = require('path'),
+  vl = require('vega-lite'),
+  stringify = require('json-stable-stringify');
+
+var DIR = __dirname + '/..';
+var SPECS = '/examples/specs';
+var examples = fs.readdirSync(DIR + SPECS);
+
+examples.forEach(function(example) {
+  if (example && example.includes('.vl.json')) {
+    var path = DIR + SPECS + '/' + example;
+    var file = require(path);
+
+    var preNormalized = stringify(file);
+    var fullSpec = vl.spec.normalize(file, vl.config.defaultConfig);
+    var postNormalized = stringify(fullSpec);
+
+    if (preNormalized !== postNormalized) {
+      var postNormalizedOutput = JSON.stringify(fullSpec)
+      // -8 is cutting .vl.json
+      var newFilename = example.slice(0, -8) + '_full.vl.json';
+      var newFilenameAndPath = DIR + SPECS + '/normalized/' + newFilename;
+      fs.writeFile(newFilenameAndPath, postNormalizedOutput, function(err) {
+        if (err) return console.log(err);
+        console.log("Built: " + newFilename);
+      });
+    }
+  }
+});
