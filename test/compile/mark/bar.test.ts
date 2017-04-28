@@ -223,18 +223,13 @@ describe('Mark: Bar', function() {
     });
     const props = bar.encodeEntry(model);
 
-    log.wrap((localLogger) => {
-      it('should draw bar from zero to field value and with band value for x/width', function() {
-        assert.deepEqual(props.y, {scale: 'y', field: 'Origin'});
-        assert.deepEqual(props.height, {scale: 'y', band: true});
-        assert.deepEqual(props.x, {scale: 'x', field: 'mean_Acceleration'});
-        assert.deepEqual(props.x2, {scale: 'x', value: 0});
-        assert.isUndefined(props.width);
-      });
 
-      it('should throw warning', ()=> {
-        assert.equal(localLogger.warns[0], log.message.cannotUseSizeFieldWithBandSize('y'));
-      });
+    it('should draw bar from zero to field value and with band value for x/width', function() {
+      assert.deepEqual(props.yc, {scale: 'y', field: 'Origin', band: 0.5});
+      assert.deepEqual(props.height, {scale: 'size', field: 'mean_Horsepower'});
+      assert.deepEqual(props.x, {scale: 'x', field: 'mean_Acceleration'});
+      assert.deepEqual(props.x2, {scale: 'x', value: 0});
+      assert.isUndefined(props.width);
     });
   });
 
