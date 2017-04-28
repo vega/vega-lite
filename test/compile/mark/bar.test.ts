@@ -2,6 +2,7 @@
 
 import {assert} from 'chai';
 import {bar} from '../../../src/compile/mark/bar';
+import * as log from '../../../src/log';
 import {defaultBarConfig} from '../../../src/mark';
 import {defaultScaleConfig} from '../../../src/scale';
 import {parseUnitModel} from '../../util';
@@ -44,6 +45,71 @@ describe('Mark: Bar', function() {
       assert.deepEqual(props.x, {scale: 'x', field: 'mean_Acceleration'});
       assert.deepEqual(props.x2, {scale: 'x', value: 0});
       assert.isUndefined(props.width);
+    });
+  });
+
+  describe('simple horizontal with point scale', function() {
+    const model = parseUnitModel({
+      "data": {"url": 'data/cars.json'},
+      "mark": "bar",
+      "encoding": {
+        "y": {"field": "Origin", "type": "nominal", "scale": {"type": "point"}},
+        "x": {"aggregate": "mean", "field": 'Acceleration', "type": "quantitative"}
+      }
+    });
+    const props = bar.encodeEntry(model);
+
+    it('should draw bar from zero to field value and y with center position and height = rangeStep - 1', function() {
+      assert.deepEqual(props.yc, {scale: 'y', field: 'Origin'});
+      assert.deepEqual(props.height, {value: defaultScaleConfig.rangeStep - 1});
+      assert.deepEqual(props.x, {scale: 'x', field: 'mean_Acceleration'});
+      assert.deepEqual(props.x2, {scale: 'x', value: 0});
+      assert.isUndefined(props.width);
+    });
+  });
+
+  describe('simple horizontal with size value', function() {
+    const model = parseUnitModel({
+      "data": {"url": 'data/cars.json'},
+      "mark": "bar",
+      "encoding": {
+        "y": {"field": "Origin", "type": "nominal"},
+        "x": {"aggregate": "mean", "field": 'Acceleration', "type": "quantitative"},
+        "size": {"value": 5}
+      }
+    });
+    const props = bar.encodeEntry(model);
+
+    it('should set height to 5 and center y', function() {
+      assert.deepEqual(props.height, {value: 5});
+      assert.deepEqual(props.yc, {scale: 'y', field: 'Origin', offset: {scale: 'y', band: 0.5}});
+    });
+  });
+
+  describe('simple horizontal with size field', function() {
+    const model = parseUnitModel({
+      "data": {"url": 'data/cars.json'},
+      "mark": "bar",
+      "encoding": {
+        "y": {"field": "Origin", "type": "nominal"},
+        "x": {"aggregate": "mean", "field": 'Acceleration', "type": "quantitative"},
+        "size": {"aggregate": "mean", "field": "Horsepower", "type": "quantitative"}
+      }
+    });
+    const props = bar.encodeEntry(model);
+
+    log.wrap((localLogger) => {
+      it('should draw bar from zero to field value and with band value for x/width', function() {
+        assert.deepEqual(props.y, {scale: 'y', field: 'Origin'});
+        assert.deepEqual(props.height, {scale: 'y', band: true});
+        assert.deepEqual(props.x, {scale: 'x', field: 'mean_Acceleration'});
+        assert.deepEqual(props.x2, {scale: 'x', value: 0});
+        assert.isUndefined(props.width);
+      });
+
+      it('should throw warning', ()=> {
+        assert.equal(localLogger.warns[0], log.message.cannotUseSizeFieldWithBandSize('y'));
+      });
     });
   });
 
