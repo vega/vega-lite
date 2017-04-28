@@ -12,25 +12,25 @@ import {ConcatSpec, FacetSpec, LayerSpec, normalize, RepeatSpec, TopLevel, TopLe
 export function parseModel(inputSpec: TopLevelExtendedSpec): Model {
   const config = initConfig(inputSpec.config);
   const spec = normalize(inputSpec, config);
-  return buildModel(spec, null, '', null, config);
+  return buildModel(spec, null, '', undefined, undefined, config);
 }
 
 export function parseUnitModel(spec: TopLevel<UnitSpec>) {
-  return new UnitModel(spec, null, '', null, initConfig(spec.config));
+  return new UnitModel(spec, null, '', undefined, undefined, initConfig(spec.config));
 }
 
 export function parseLayerModel(spec: TopLevel<LayerSpec>) {
-  return new LayerModel(spec, null, '', null, initConfig(spec.config));
+  return new LayerModel(spec, null, '', undefined, undefined, initConfig(spec.config));
 }
 
 export function parseFacetModel(spec: TopLevel<FacetSpec>) {
-  return new FacetModel(spec, null, '', null, initConfig(spec.config));
+  return new FacetModel(spec, null, '', undefined, initConfig(spec.config));
 }
 
 export function parseRepeatModel(spec: TopLevel<RepeatSpec>) {
-  return new RepeatModel(spec, null, '', null, initConfig(spec.config));
+  return new RepeatModel(spec, null, '', undefined, initConfig(spec.config));
 }
 
 export function parseConcatModel(spec: TopLevel<ConcatSpec>) {
-  return new ConcatModel(spec, null, '', null, initConfig(spec.config));
+  return new ConcatModel(spec, null, '', undefined, initConfig(spec.config));
 }
