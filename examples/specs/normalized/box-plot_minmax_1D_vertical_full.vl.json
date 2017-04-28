@@ -1,0 +1,88 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v2.json",
+  "description": "A vertical 1D box plot showing median, min, and max in the US population distribution of age groups in 2000.",
+  "data": {
+    "url": "data/population.json"
+  },
+  "layer": [
+    {
+      "mark": {
+        "type": "rule",
+        "role": "boxWhisker"
+      },
+      "encoding": {
+        "y": {
+          "axis": {
+            "title": "population"
+          },
+          "aggregate": "min",
+          "field": "people",
+          "type": "quantitative"
+        },
+        "y2": {
+          "aggregate": "q1",
+          "field": "people",
+          "type": "quantitative"
+        }
+      }
+    },
+    {
+      "mark": {
+        "type": "rule",
+        "role": "boxWhisker"
+      },
+      "encoding": {
+        "y": {
+          "aggregate": "q3",
+          "field": "people",
+          "type": "quantitative"
+        },
+        "y2": {
+          "aggregate": "max",
+          "field": "people",
+          "type": "quantitative"
+        }
+      }
+    },
+    {
+      "mark": {
+        "type": "bar",
+        "role": "box"
+      },
+      "encoding": {
+        "y": {
+          "aggregate": "q1",
+          "field": "people",
+          "type": "quantitative"
+        },
+        "y2": {
+          "aggregate": "q3",
+          "field": "people",
+          "type": "quantitative"
+        },
+        "size": {
+          "value": 14
+        }
+      }
+    },
+    {
+      "mark": {
+        "type": "tick",
+        "role": "boxMid"
+      },
+      "encoding": {
+        "y": {
+          "aggregate": "median",
+          "field": "people",
+          "type": "quantitative"
+        },
+        "size": {
+          "value": 14
+        },
+        "color": {
+          "value": "white"
+        }
+      }
+    }
+  ]
+}

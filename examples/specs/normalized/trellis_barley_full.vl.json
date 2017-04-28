@@ -1,0 +1,42 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v2.json",
+  "description": "The Trellis display by Becker et al. helped establish small multiples as a “powerful mechanism for understanding interactions in studies of how a response depends on explanatory variables”. Here we reproduce a trellis of Barley yields from the 1930s, complete with main-effects ordering to facilitate comparison.",
+  "data": {
+    "url": "data/barley.json"
+  },
+  "facet": {
+    "row": {
+      "field": "site",
+      "type": "ordinal"
+    }
+  },
+  "spec": {
+    "mark": "point",
+    "encoding": {
+      "x": {
+        "aggregate": "median",
+        "field": "yield",
+        "type": "quantitative",
+        "scale": {
+          "zero": false
+        }
+      },
+      "y": {
+        "field": "variety",
+        "type": "ordinal",
+        "sort": {
+          "field": "yield",
+          "op": "median",
+          "order": "descending"
+        },
+        "scale": {
+          "rangeStep": 12
+        }
+      },
+      "color": {
+        "field": "year",
+        "type": "nominal"
+      }
+    }
+  }
+}

@@ -1,0 +1,80 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v2.json",
+  "description": "Anscombe's Quartet",
+  "data": {
+    "url": "data/anscombe.json"
+  },
+  "config": {
+    "mark": {
+      "opacity": 1
+    }
+  },
+  "facet": {
+    "column": {
+      "field": "Series",
+      "type": "nominal"
+    }
+  },
+  "spec": {
+    "mark": "circle",
+    "encoding": {
+      "x": {
+        "field": "X",
+        "type": "quantitative",
+        "scale": {
+          "zero": false
+        }
+      },
+      "y": {
+        "field": "Y",
+        "type": "quantitative",
+        "scale": {
+          "zero": false
+        }
+      },
+      "size": {
+        "value": 100,
+        "condition": {
+          "selection": "brush",
+          "value": 250
+        }
+      },
+      "color": {
+        "value": "steelblue",
+        "condition": {
+          "selection": "xenc",
+          "value": "red"
+        }
+      }
+    },
+    "selection": {
+      "brush": {
+        "type": "interval",
+        "resolve": "intersect",
+        "encodings": [
+          "x"
+        ],
+        "on": "[mousedown[event.shiftKey], mouseup] > mousemove",
+        "translate": "[mousedown[event.shiftKey], mouseup] > mousemove"
+      },
+      "grid": {
+        "type": "interval",
+        "resolve": "global",
+        "bind": "scales",
+        "translate": "[mousedown[!event.shiftKey], mouseup] > mousemove"
+      },
+      "xenc": {
+        "type": "single",
+        "resolve": "global",
+        "on": "mouseover",
+        "nearest": true,
+        "fields": [
+          "X"
+        ],
+        "bind": {
+          "input": "number"
+        }
+      }
+    }
+  }
+}
