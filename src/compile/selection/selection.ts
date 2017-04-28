@@ -196,9 +196,11 @@ export function assembleUnitSelectionMarks(model: UnitModel, marks: any[]): any[
 export function assembleLayerSelectionMarks(model: LayerModel, marks: any[]): any[] {
   let clipGroup = false;
   model.children.forEach(child => {
-    const unit = assembleUnitSelectionMarks(child, marks);
-    marks = unit[0];
-    clipGroup = clipGroup || unit[1];
+    if (child instanceof UnitModel) {
+      const unit = assembleUnitSelectionMarks(child, marks);
+      marks = unit[0];
+      clipGroup = clipGroup || unit[1];
+    }
   });
   return clipGroup ? clipMarks(marks) : marks;
 }
