@@ -54,7 +54,7 @@ export interface BaseSpec {
   transform?: Transform[];
 }
 
-export interface GenericUnitSpec<E extends Encoding<any>, M> extends BaseSpec {
+export interface UnitSize {
   /**
    * The width of a single visualization.
    *
@@ -79,6 +79,9 @@ export interface GenericUnitSpec<E extends Encoding<any>, M> extends BaseSpec {
    * __Note__: For plot with `row` and `column` channels, this represents the height of a single cell.
    */
   height?: number;
+}
+
+export interface GenericUnitSpec<E extends Encoding<any>, M> extends BaseSpec, UnitSize {
 
   /**
    * A string describing the mark type (one of `"bar"`, `"circle"`, `"square"`, `"tick"`, `"line"`,
@@ -109,13 +112,7 @@ export type CompositeUnitSpec = GenericUnitSpec<Encoding<Field>, CompositeMark |
  */
 export type FacetedCompositeUnitSpec = GenericUnitSpec<EncodingWithFacet<Field>, CompositeMark | Mark | MarkDef>;
 
-export interface GenericLayerSpec<U extends GenericUnitSpec<any, any>> extends BaseSpec {
-  // FIXME description for top-level width
-  width?: number;
-
-  // FIXME description for top-level width
-  height?: number;
-
+export interface GenericLayerSpec<U extends GenericUnitSpec<any, any>> extends BaseSpec, UnitSize {
   /**
    * Unit specs that will be layered.
    */

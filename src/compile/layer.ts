@@ -5,7 +5,7 @@ import {FieldDef} from '../fielddef';
 import {Legend} from '../legend';
 import {FILL_STROKE_CONFIG} from '../mark';
 import {Scale} from '../scale';
-import {LayerSpec} from '../spec';
+import {LayerSpec, UnitSize} from '../spec';
 import {StackProperties} from '../stack';
 import {Dict, flatten, keys, vals} from '../util';
 import {isSignalRefDomain, VgData, VgEncodeEntry, VgLayout, VgScale, VgSignal} from '../vega.schema';
@@ -24,31 +24,21 @@ import {UnitModel} from './unit';
 export class LayerModel extends Model {
   public readonly children: UnitModel[];
 
-  /**
-   * Fixed width for the unit visualization.
-   * If undefined (e.g., for ordinal scale), the width of the
-   * visualization will be calculated dynamically.
-   */
-  public readonly width: number;
-
-  /**
-   * Fixed height for the unit visualization.
-   * If undefined (e.g., for ordinal scale), the height of the
-   * visualization will be calculated dynamically.
-   */
-  public readonly height: number;
-
-  constructor(spec: LayerSpec, parent: Model, parentGivenName: string, repeater: RepeaterValue, config: Config) {
+  constructor(spec: LayerSpec, parent: Model, parentGivenName: string,
+    parentUnitSize: UnitSize, repeater: RepeaterValue, config: Config) {
 
     super(spec, parent, parentGivenName, config);
 
-    this.width = spec.width;
-    this.height = spec.height;
+    const unitSize = {
+      ...parentUnitSize,
+      ...(spec.width ? {width: spec.width} : {}),
+      ...(spec.height ? {height: spec.height} : {})
+    };
 
     this.children = spec.layer.map((layer, i) => {
       // FIXME: this is not always the case
       // we know that the model has to be a unit model because we pass in a unit spec
-      return buildModel(layer, this, this.getName('layer_' + i), repeater, config) as UnitModel;
+      return buildModel(layer, this, this.getName('layer_' + i), unitSize, repeater, config) as UnitModel;
     });
   }
 

@@ -4,7 +4,7 @@ import {Channel, TEXT} from '../channel';
 import {CellConfig, Config} from '../config';
 import {field, FieldDef, OrderFieldDef} from '../fielddef';
 import {Mark, MarkConfig, TextConfig} from '../mark';
-import {isConcatSpec, isFacetSpec, isLayerSpec, isRepeatSpec, isUnitSpec, Spec} from '../spec';
+import {isConcatSpec, isFacetSpec, isLayerSpec, isRepeatSpec, isUnitSpec, Spec, UnitSize} from '../spec';
 import {TimeUnit} from '../timeunit';
 import {formatExpression} from '../timeunit';
 import {QUANTITATIVE} from '../type';
@@ -18,17 +18,18 @@ import {RepeaterValue, RepeatModel} from './repeat';
 import {UnitModel} from './unit';
 
 
-export function buildModel(spec: Spec, parent: Model, parentGivenName: string, repeater: RepeaterValue, config: Config): Model {
+export function buildModel(spec: Spec, parent: Model, parentGivenName: string,
+  unitSize: UnitSize, repeater: RepeaterValue, config: Config): Model {
   if (isFacetSpec(spec)) {
     return new FacetModel(spec, parent, parentGivenName, repeater, config);
   }
 
   if (isLayerSpec(spec)) {
-    return new LayerModel(spec, parent, parentGivenName, repeater, config);
+    return new LayerModel(spec, parent, parentGivenName, unitSize, repeater, config);
   }
 
   if (isUnitSpec(spec)) {
-    return new UnitModel(spec, parent, parentGivenName, repeater, config);
+    return new UnitModel(spec, parent, parentGivenName, unitSize, repeater, config);
   }
 
   if (isRepeatSpec(spec)) {

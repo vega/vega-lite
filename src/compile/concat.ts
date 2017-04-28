@@ -22,7 +22,7 @@ export class ConcatModel extends Model {
     this.isVConcat = isVConcatSpec(spec);
 
     this.children = (isVConcatSpec(spec) ? spec.vconcat : spec.hconcat).map((child, i) => {
-      return buildModel(child, this, this.getName('concat_' + i), repeater, config);
+      return buildModel(child, this, this.getName('concat_' + i), undefined, repeater, config);
     });
   }
 

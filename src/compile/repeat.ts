@@ -100,7 +100,7 @@ export class RepeatModel extends Model {
           column: columnField
         };
 
-        children.push(buildModel(spec.spec, this, this.getName('child' + name), childRepeat, config));
+        children.push(buildModel(spec.spec, this, this.getName('child' + name), undefined, childRepeat, config));
       }
     }
 
