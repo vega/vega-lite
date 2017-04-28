@@ -56,7 +56,7 @@ module.exports={
     "posttest": "npm run data && npm run mocha:examples",
     "test:nocompile": "npm run test:only && npm run lint && npm run mocha:examples",
     "test:only": "nyc --reporter=html --reporter=text-summary npm run mocha:test",
-    "test:debug": "npm run pretest && mocha --recursive --debug-brk build/test build/examples",
+    "test:debug": "npm run tsc && npm run schema && mocha --recursive --debug-brk --inspect build/test build/examples",
     "mocha:test": "mocha --require source-map-support/register --reporter dot --recursive build/test",
     "mocha:examples": "mocha --require source-map-support/register --reporter dot --recursive build/examples",
 
@@ -75,43 +75,43 @@ module.exports={
   },
   "devDependencies": {
     "@types/chai": "^3.5.1",
-    "@types/d3": "^4.7.0",
+    "@types/d3": "^4.8.0",
     "@types/highlight.js": "^9.1.9",
     "@types/json-stable-stringify": "^1.0.31",
     "@types/mocha": "^2.2.41",
-    "@types/node": "^7.0.13",
+    "@types/node": "^7.0.14",
     "ajv": "5.0.1-beta.1",
-    "browser-sync": "~2.18.8",
-    "browserify": "~14.3.0",
+    "browser-sync": "^2.18.8",
+    "browserify": "^14.3.0",
     "browserify-shim": "^3.8.14",
-    "chai": "~3.5.0",
-    "cheerio": "~0.22.0",
-    "codecov": "~2.1.0",
+    "chai": "^3.5.0",
+    "cheerio": "^0.22.0",
+    "codecov": "^2.1.0",
     "d3": "^4.8.0",
-    "exorcist": "~0.4.0",
+    "exorcist": "^0.4.0",
     "highlight.js": "^9.11.0",
-    "mocha": "~3.3.0",
-    "nodemon": "~1.11.0",
-    "nyc": "~10.2.0",
-    "source-map-support": "~0.4.14",
-    "tsify": "~3.0.1",
-    "tslint": "~5.1.0",
+    "mocha": "^3.3.0",
+    "nodemon": "^1.11.0",
+    "nyc": "^10.2.0",
+    "source-map-support": "^0.4.14",
+    "tsify": "^3.0.1",
+    "tslint": "^5.1.0",
     "tslint-eslint-rules": "^4.0.0",
-    "typescript": "^2.2.2",
+    "typescript": "^2.3.1",
     "typescript-json-schema": "^0.11.0",
-    "uglify-js": "~2.8.22",
+    "uglify-js": "^2.8.22",
     "vega": "3.0.0-beta.30",
     "vega-datasets": "vega/vega-datasets#gh-pages",
     "vega-embed": "3.0.0-beta.11",
-    "watchify": "~3.9.0",
-    "yaml-front-matter": "~3.4.0"
+    "watchify": "^3.9.0",
+    "yaml-front-matter": "^3.4.0"
   },
   "dependencies": {
-    "json-stable-stringify": "~1.0.1",
+    "json-stable-stringify": "^1.0.1",
     "tslib": "^1.6.1",
     "vega-event-selector": "^2.0.0-beta",
-    "vega-util": "~1.2.0",
-    "yargs": "~7.1.0"
+    "vega-util": "^1.2.0",
+    "yargs": "^7.1.0"
   }
 }
 
@@ -203,11 +203,11 @@ function autoMaxBins(channel) {
 exports.autoMaxBins = autoMaxBins;
 
 },{"./channel":5,"./util":90}],5:[function(require,module,exports){
+"use strict";
 /*
  * Constants and utilities for encoding channels (Visual variables)
  * such as 'x', 'y', 'color'.
  */
-"use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var scale_1 = require("./scale");
 var util_1 = require("./util");
@@ -743,9 +743,9 @@ function getMarkConfig(prop, mark, config) {
     return config.mark[prop];
 }
 exports.getMarkConfig = getMarkConfig;
-function formatSignalRef(fieldDef, expr, config, useBinRange) {
+function formatSignalRef(fieldDef, specifiedFormat, expr, config, useBinRange) {
     if (fieldDef.type === 'quantitative') {
-        var format = numberFormat(fieldDef, fieldDef.format, config, 'text');
+        var format = numberFormat(fieldDef, specifiedFormat, config, 'text');
         if (fieldDef.bin) {
             if (useBinRange) {
                 // For bin range, no need to apply format as the formula that creates range already include format
@@ -766,7 +766,7 @@ function formatSignalRef(fieldDef, expr, config, useBinRange) {
     }
     else if (fieldDef.type === 'temporal') {
         return {
-            signal: timeFormatExpression(fielddef_1.field(fieldDef, { expr: expr }), fieldDef.timeUnit, fieldDef.format, config.text.shortTimeLabels, config.timeFormat)
+            signal: timeFormatExpression(fielddef_1.field(fieldDef, { expr: expr }), fieldDef.timeUnit, specifiedFormat, config.text.shortTimeLabels, config.timeFormat)
         };
     }
     else {
@@ -781,7 +781,7 @@ exports.formatSignalRef = formatSignalRef;
  */
 function numberFormat(fieldDef, specifiedFormat, config, channel) {
     // Specified format in axis/legend has higher precedence than fieldDef.format
-    var format = specifiedFormat || fieldDef.format;
+    var format = specifiedFormat;
     if (fieldDef.type === type_1.QUANTITATIVE) {
         // add number format for quantitative type only
         if (format) {
@@ -2880,7 +2880,8 @@ var FacetModel = (function (_super) {
     FacetModel.prototype.parseHeader = function (channel) {
         if (this.channelHasField(channel)) {
             var fieldDef = this.facet[channel];
-            var title = fielddef_1.title(fieldDef, this.config);
+            var header = fieldDef.header || {};
+            var title = header.title !== undefined ? header.title : fielddef_1.title(fieldDef, this.config);
             if (this.child.component.layoutHeaders[channel].title) {
                 // merge title with child to produce "Title / Subtitle / Sub-subtitle"
                 title += ' / ' + this.child.component.layoutHeaders[channel].title;
@@ -2888,7 +2889,7 @@ var FacetModel = (function (_super) {
             }
             this.component.layoutHeaders[channel] = {
                 title: title,
-                fieldRef: common_1.formatSignalRef(fieldDef, 'parent', this.config, true),
+                fieldRef: common_1.formatSignalRef(fieldDef, header.format, 'parent', this.config, true),
                 // TODO: support adding label to footer as well
                 header: [this.makeHeaderComponent(channel, true)]
             };
@@ -3315,6 +3316,7 @@ var mark_1 = require("../../mark");
 var type_1 = require("../../type");
 var util_1 = require("../../util");
 var common_1 = require("../common");
+var mixins = require("../mark/mixins");
 function symbols(fieldDef, symbolsSpec, model, channel) {
     var symbols = {};
     var mark = model.mark();
@@ -3343,40 +3345,19 @@ function symbols(fieldDef, symbolsSpec, model, channel) {
         mark_1.FILL_STROKE_CONFIG;
     config = util_1.without(config, ['strokeDash', 'strokeDashOffset']);
     common_1.applyMarkConfig(symbols, model, config);
-    if (filled) {
-        symbols.strokeWidth = { value: 0 };
-    }
-    var value;
-    var colorDef = model.encoding.color;
-    if (fielddef_1.isValueDef(colorDef)) {
-        value = { value: colorDef.value };
-    }
-    if (value !== undefined) {
-        // apply the value
-        if (filled) {
-            symbols.fill = value;
+    if (channel !== channel_1.COLOR) {
+        var colorMixins = mixins.color(model);
+        // If there are field for fill or stroke, remove them as we already apply channels.
+        if (colorMixins.fill && fielddef_1.isFieldDef(colorMixins.fill)) {
+            delete colorMixins.fill;
         }
-        else {
-            symbols.stroke = value;
+        if (colorMixins.stroke && fielddef_1.isFieldDef(colorMixins.stroke)) {
+            delete colorMixins.stroke;
         }
+        util_1.extend(symbols, colorMixins);
     }
-    else if (channel !== channel_1.COLOR) {
-        // For non-color legend, apply color config if there is no fill / stroke config.
-        // (For color, do not override scale specified!)
-        symbols[filled ? 'fill' : 'stroke'] = symbols[filled ? 'fill' : 'stroke'] ||
-            { value: cfg.mark.color };
-    }
-    if (symbols.fill === undefined) {
-        // fall back to mark config colors for legend fill
-        if (cfg.mark.fill !== undefined) {
-            symbols.fill = { value: cfg.mark.fill };
-        }
-        else if (cfg.mark.stroke !== undefined) {
-            symbols.stroke = { value: cfg.mark.stroke };
-        }
-    }
-    var shapeDef = model.encoding.shape;
     if (channel !== channel_1.SHAPE) {
+        var shapeDef = model.encoding.shape;
         if (fielddef_1.isValueDef(shapeDef)) {
             symbols.shape = { value: shapeDef.value };
         }
@@ -3401,7 +3382,7 @@ function labels(fieldDef, labelsSpec, model, channel) {
 }
 exports.labels = labels;
 
-},{"../../channel":5,"../../fielddef":76,"../../mark":80,"../../type":89,"../../util":90,"../common":9}],32:[function(require,module,exports){
+},{"../../channel":5,"../../fielddef":76,"../../mark":80,"../../type":89,"../../util":90,"../common":9,"../mark/mixins":39}],32:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var channel_1 = require("../../channel");
@@ -4213,10 +4194,10 @@ function defaultSize(model) {
 }
 
 },{"./mixins":39,"./valueref":45,"tslib":280}],45:[function(require,module,exports){
+"use strict";
 /**
  * Utility files for producing Vega ValueRef for marks
  */
-"use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var channel_1 = require("../../channel");
 var fielddef_1 = require("../../fielddef");
@@ -4351,7 +4332,7 @@ function text(textDef, config) {
     // text
     if (textDef) {
         if (fielddef_1.isFieldDef(textDef)) {
-            return common_1.formatSignalRef(textDef, 'datum', config);
+            return common_1.formatSignalRef(textDef, textDef.format, 'datum', config);
         }
         else if (textDef.value) {
             return { value: textDef.value };
@@ -7081,10 +7062,10 @@ function initConfig(config) {
 exports.initConfig = initConfig;
 
 },{"./legend":78,"./mark":80,"./scale":81,"./selection":82,"./util":90}],72:[function(require,module,exports){
+"use strict";
 /*
  * Constants and utilities for data.
  */
-"use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 function isUrlData(data) {
     return !!data['url'];
@@ -7102,8 +7083,8 @@ exports.MAIN = 'main';
 exports.RAW = 'raw';
 
 },{}],73:[function(require,module,exports){
-// DateTime definition object
 "use strict";
+// DateTime definition object
 Object.defineProperty(exports, "__esModule", { value: true });
 var log = require("./log");
 var util_1 = require("./util");
@@ -7413,8 +7394,8 @@ exports.reduce = reduce;
 Object.defineProperty(exports, "__esModule", { value: true });
 
 },{}],76:[function(require,module,exports){
-// utility for a field definition object
 "use strict";
+// utility for a field definition object
 Object.defineProperty(exports, "__esModule", { value: true });
 var tslib_1 = require("tslib");
 var aggregate_1 = require("./aggregate");
@@ -7497,13 +7478,6 @@ function isCount(fieldDef) {
 }
 exports.isCount = isCount;
 function title(fieldDef, config) {
-    if (fieldDef.title === '') {
-        // an empty title should not take up space
-        return undefined;
-    }
-    if (fieldDef.title !== undefined) {
-        return fieldDef.title;
-    }
     if (isCount(fieldDef)) {
         return config.countTitle;
     }
@@ -7735,8 +7709,8 @@ exports.defaultLegendConfig = {
 exports.LEGEND_PROPERTIES = ['entryPadding', 'format', 'offset', 'orient', 'tickCount', 'title', 'type', 'values', 'zindex'];
 
 },{}],79:[function(require,module,exports){
-///<reference path="../typings/vega-util.d.ts" />
 "use strict";
+///<reference path="../typings/vega-util.d.ts" />
 Object.defineProperty(exports, "__esModule", { value: true });
 /**
  * Vega-Lite's singleton logger utility.
@@ -8890,9 +8864,9 @@ function isCalculate(t) {
 exports.isCalculate = isCalculate;
 
 },{}],89:[function(require,module,exports){
+"use strict";
 /** Constants and utilities for data type */
 /** Data type based on level of measurement */
-"use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var Type;
 (function (Type) {
@@ -57184,7 +57158,9 @@ function vlIntervalDomain(name, encoding, field, op) {
     }
   }
 
-  return domain.length && (+domain[0] !== +domain[1]) ? domain : undefined;
+  return domain && domain.length && (+domain[0] !== +domain[1])
+    ? domain
+    : undefined;
 }
 
 function unionInterval(domain, lo, hi) {

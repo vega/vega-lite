@@ -68,14 +68,6 @@ export interface FieldDef<F> {
      *
      */
     aggregate?: AggregateOp | CompositeAggregate;
-    /**
-     * Title for axis or legend.
-     */
-    title?: string;
-    /**
-     * The formatting pattern for text value. If not defined, this will be determined automatically.
-     */
-    format?: string;
 }
 export interface Condition<T> {
     selection: string;
@@ -116,6 +108,10 @@ export interface OrderFieldDef<F> extends FieldDef<F> {
 }
 export interface TextFieldDef<F> extends FieldDef<F> {
     condition?: Condition<string | number>;
+    /**
+     * The formatting pattern for text value. If not defined, this will be determined automatically.
+     */
+    format?: string;
 }
 export declare type ChannelDef<F> = FieldDef<F> | ValueDef<any>;
 export declare function isFieldDef(channelDef: ChannelDef<any>): channelDef is FieldDef<any> | PositionFieldDef<any> | LegendFieldDef<any, any> | OrderFieldDef<any> | TextFieldDef<any>;

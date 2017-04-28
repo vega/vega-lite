@@ -24,6 +24,6 @@ export interface StackProperties {
      */
     offset: StackOffset;
 }
-export declare const STACKABLE_MARKS: ("area" | "circle" | "line" | "text" | "point" | "square" | "bar" | "tick" | "rule")[];
+export declare const STACKABLE_MARKS: ("area" | "circle" | "line" | "text" | "square" | "point" | "bar" | "tick" | "rule")[];
 export declare const STACK_BY_DEFAULT_MARKS: ("area" | "bar")[];
 export declare function stack(m: Mark | MarkDef, encoding: Encoding<Field>, stackConfig: StackOffset): StackProperties;

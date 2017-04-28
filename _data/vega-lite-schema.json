@@ -15,7 +15,7 @@
                 },
                 "config": {
                     "$ref": "#/definitions/Config",
-                    "description": "Configuration object"
+                    "description": "Vega-Lite configuration object."
                 },
                 "data": {
                     "anyOf": [
@@ -32,7 +32,7 @@
                     "description": "An object describing the data source"
                 },
                 "description": {
-                    "description": "An optional description of this mark for commenting purpose.\nThis property has no effect on the output visualization.",
+                    "description": "An optional description of this mark for commenting purpose.",
                     "type": "string"
                 },
                 "encoding": {
@@ -40,6 +40,7 @@
                     "description": "A key-value mapping between encoding channels and definition of fields."
                 },
                 "height": {
+                    "description": "Height of a single visualization.\n\n__Default value:__\n- For y-axis with a continuous (non-ordinal) scale, the height will be the value of [`config.cell.height`](config.html#cell-config).\n- For y-axis with an ordinal scale: if [`rangeStep`](scale.html#ordinal) is a numeric value (default), the height is determined by the value of `rangeStep` and the cardinality of the field mapped to y-channel.   Otherwise, if the `rangeStep` is `\"fit\"`, the height will be the value of [`config.cell.height`](config.html#cell-config).\n- If no field is mapped to `x` channel, the `height` will be the value of `rangeStep`.\n\n__Note__: For plot with `row` and `column` channels, this represents the height of a single cell.",
                     "type": "number"
                 },
                 "mark": {
@@ -65,7 +66,7 @@
                             "type": "string"
                         }
                     ],
-                    "description": "The mark type.\nOne of `\"bar\"`, `\"circle\"`, `\"square\"`, `\"tick\"`, `\"line\"`,\n`\"area\"`, `\"point\"`, `\"rule\"`, and `\"text\"`."
+                    "description": "A string describing the mark type (one of `\"bar\"`, `\"circle\"`, `\"square\"`, `\"tick\"`, `\"line\"`,\n`\"area\"`, `\"point\"`, `\"rule\"`, and `\"text\"`) or a [mark definition object](mark.html#mark-def)."
                 },
                 "name": {
                     "description": "Name of the visualization for later reference.",
@@ -106,7 +107,7 @@
                     "type": "object"
                 },
                 "transform": {
-                    "description": "An object describing filter and new field calculation.",
+                    "description": "An array of data transformations such as filter and new field calculation.",
                     "items": {
                         "anyOf": [
                             {
@@ -120,6 +121,7 @@
                     "type": "array"
                 },
                 "width": {
+                    "description": "The width of a single visualization.\n\n__Default value:__ This will be determined by the following rules:\n\n- For x-axis with a continuous (non-ordinal) scale, the width will be the value of [`config.cell.width`](config.html#cell-config).\n- For x-axis with an ordinal scale: if [`rangeStep`](scale.html#ordinal) is a numeric value (default), the width is determined by the value of `rangeStep` and the cardinality of the field mapped to x-channel.   Otherwise, if the `rangeStep` is `\"fit\"`, the width will be the value of [`config.cell.width`](config.html#cell-config).\n- If no field is mapped to `x` channel, the `width` will be the value of [`config.scale.textXRangeStep`](size.html#default-width-and-height) for `text` mark and the value of `rangeStep` for other marks.\n\n__Note__: For plot with `row` and `column` channels, this represents the width of a single cell.",
                     "type": "number"
                 }
             },
@@ -143,7 +145,7 @@
                 },
                 "config": {
                     "$ref": "#/definitions/Config",
-                    "description": "Configuration object"
+                    "description": "Vega-Lite configuration object."
                 },
                 "data": {
                     "anyOf": [
@@ -160,7 +162,7 @@
                     "description": "An object describing the data source"
                 },
                 "description": {
-                    "description": "An optional description of this mark for commenting purpose.\nThis property has no effect on the output visualization.",
+                    "description": "An optional description of this mark for commenting purpose.",
                     "type": "string"
                 },
                 "height": {
@@ -212,7 +214,7 @@
                     "minimum": 0
                 },
                 "transform": {
-                    "description": "An object describing filter and new field calculation.",
+                    "description": "An array of data transformations such as filter and new field calculation.",
                     "items": {
                         "anyOf": [
                             {
@@ -248,7 +250,7 @@
                 },
                 "config": {
                     "$ref": "#/definitions/Config",
-                    "description": "Configuration object"
+                    "description": "Vega-Lite configuration object."
                 },
                 "data": {
                     "anyOf": [
@@ -265,7 +267,7 @@
                     "description": "An object describing the data source"
                 },
                 "description": {
-                    "description": "An optional description of this mark for commenting purpose.\nThis property has no effect on the output visualization.",
+                    "description": "An optional description of this mark for commenting purpose.",
                     "type": "string"
                 },
                 "facet": {
@@ -313,7 +315,7 @@
                     ]
                 },
                 "transform": {
-                    "description": "An object describing filter and new field calculation.",
+                    "description": "An array of data transformations such as filter and new field calculation.",
                     "items": {
                         "anyOf": [
                             {
@@ -347,7 +349,7 @@
                 },
                 "config": {
                     "$ref": "#/definitions/Config",
-                    "description": "Configuration object"
+                    "description": "Vega-Lite configuration object."
                 },
                 "data": {
                     "anyOf": [
@@ -364,7 +366,7 @@
                     "description": "An object describing the data source"
                 },
                 "description": {
-                    "description": "An optional description of this mark for commenting purpose.\nThis property has no effect on the output visualization.",
+                    "description": "An optional description of this mark for commenting purpose.",
                     "type": "string"
                 },
                 "name": {
@@ -415,7 +417,7 @@
                     ]
                 },
                 "transform": {
-                    "description": "An object describing filter and new field calculation.",
+                    "description": "An array of data transformations such as filter and new field calculation.",
                     "items": {
                         "anyOf": [
                             {
@@ -449,7 +451,7 @@
                 },
                 "config": {
                     "$ref": "#/definitions/Config",
-                    "description": "Configuration object"
+                    "description": "Vega-Lite configuration object."
                 },
                 "data": {
                     "anyOf": [
@@ -466,7 +468,7 @@
                     "description": "An object describing the data source"
                 },
                 "description": {
-                    "description": "An optional description of this mark for commenting purpose.\nThis property has no effect on the output visualization.",
+                    "description": "An optional description of this mark for commenting purpose.",
                     "type": "string"
                 },
                 "name": {
@@ -501,7 +503,7 @@
                     "minimum": 0
                 },
                 "transform": {
-                    "description": "An object describing filter and new field calculation.",
+                    "description": "An array of data transformations such as filter and new field calculation.",
                     "items": {
                         "anyOf": [
                             {
@@ -547,7 +549,7 @@
                 },
                 "config": {
                     "$ref": "#/definitions/Config",
-                    "description": "Configuration object"
+                    "description": "Vega-Lite configuration object."
                 },
                 "data": {
                     "anyOf": [
@@ -564,7 +566,7 @@
                     "description": "An object describing the data source"
                 },
                 "description": {
-                    "description": "An optional description of this mark for commenting purpose.\nThis property has no effect on the output visualization.",
+                    "description": "An optional description of this mark for commenting purpose.",
                     "type": "string"
                 },
                 "hconcat": {
@@ -612,7 +614,7 @@
                     "minimum": 0
                 },
                 "transform": {
-                    "description": "An object describing filter and new field calculation.",
+                    "description": "An array of data transformations such as filter and new field calculation.",
                     "items": {
                         "anyOf": [
                             {
@@ -680,7 +682,7 @@
                     "description": "Optional mark definitions for custom axis encoding."
                 },
                 "format": {
-                    "description": "The formatting pattern for axis labels. This is D3's [number format pattern](https://github.com/mbostock/d3/wiki/Formatting) for quantitative axis and D3's [time format pattern](https://github.com/mbostock/d3/wiki/Time-Formatting) for time axis.\n\n__Default value:__  derived from [numberFormat](config.html#format) config for quantitative axis and from [timeFormat](config.html#format) config for time axis.",
+                    "description": "The formatting pattern for labels. This is D3's [number format pattern](https://github.com/mbostock/d3/wiki/Formatting) for quantitative fields and D3's [time format pattern](https://github.com/mbostock/d3/wiki/Time-Formatting) for time field.\n\n__Default value:__  derived from [numberFormat](config.html#format) config for quantitative fields and from [timeFormat](config.html#format) config for temporal fields.",
                     "type": "string"
                 },
                 "grid": {
@@ -736,7 +738,7 @@
                     "type": "boolean"
                 },
                 "title": {
-                    "description": "A title for the axis. Shows field name and its function by default.\n\n__Default value:__  derived from the field's name and transformation function applied e.g, \"field_name\", \"SUM(field_name)\", \"BIN(field_name)\", \"YEAR(field_name)\".",
+                    "description": "A title for the field.\n\n__Default value:__  derived from the field's name and transformation function applied e.g, \"field_name\", \"SUM(field_name)\", \"BIN(field_name)\", \"YEAR(field_name)\".",
                     "type": "string"
                 },
                 "titleMaxLength": {
@@ -2213,7 +2215,7 @@
                     "description": "Color of the marks – either fill or stroke color based on mark type.\n(By default, fill color for `area`, `bar`, `tick`, `text`, `circle`, and `square` /\nstroke color for `line` and `point`.)"
                 },
                 "column": {
-                    "$ref": "#/definitions/FieldDef<Field>",
+                    "$ref": "#/definitions/FacetFieldDef<Field>",
                     "description": "Horizontal facets for trellis plots."
                 },
                 "detail": {
@@ -2256,7 +2258,7 @@
                     "description": "stack order for stacked marks or order of data points in line marks."
                 },
                 "row": {
-                    "$ref": "#/definitions/FieldDef<Field>",
+                    "$ref": "#/definitions/FacetFieldDef<Field>",
                     "description": "Vertical facets for trellis plots."
                 },
                 "shape": {
@@ -2398,11 +2400,11 @@
             "additionalProperties": false,
             "properties": {
                 "column": {
-                    "$ref": "#/definitions/FieldDef<Field>",
+                    "$ref": "#/definitions/FacetFieldDef<Field>",
                     "description": "Horizontal facets for trellis plots."
                 },
                 "row": {
-                    "$ref": "#/definitions/FieldDef<Field>",
+                    "$ref": "#/definitions/FacetFieldDef<Field>",
                     "description": "Vertical facets for trellis plots."
                 }
             },
@@ -2414,6 +2416,87 @@
                 "cell": {
                     "$ref": "#/definitions/CellConfig",
                     "description": "Facet Cell Config"
+                }
+            },
+            "type": "object"
+        },
+        "FacetFieldDef<Field>": {
+            "additionalProperties": false,
+            "properties": {
+                "aggregate": {
+                    "description": "Aggregation function for the field\n(e.g., `mean`, `sum`, `median`, `min`, `max`, `count`).\n\n__Default value:__ `undefined` (None)",
+                    "enum": [
+                        "argmax",
+                        "argmin",
+                        "average",
+                        "box-plot",
+                        "ci0",
+                        "ci1",
+                        "count",
+                        "distinct",
+                        "max",
+                        "mean",
+                        "median",
+                        "min",
+                        "missing",
+                        "modeskew",
+                        "q1",
+                        "q3",
+                        "stdev",
+                        "stdevp",
+                        "sum",
+                        "valid",
+                        "values",
+                        "variance",
+                        "variancep"
+                    ],
+                    "type": "string"
+                },
+                "bin": {
+                    "anyOf": [
+                        {
+                            "$ref": "#/definitions/Bin"
+                        },
+                        {
+                            "type": "boolean"
+                        }
+                    ],
+                    "description": "Flag for binning a `quantitative` field, or a bin property object\nfor binning parameters."
+                },
+                "field": {
+                    "anyOf": [
+                        {
+                            "additionalProperties": false,
+                            "properties": {
+                                "repeat": {
+                                    "enum": [
+                                        "column",
+                                        "row"
+                                    ],
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "repeat"
+                            ],
+                            "type": "object"
+                        },
+                        {
+                            "type": "string"
+                        }
+                    ],
+                    "description": "__Required.__ Name of the field from which to pull a data value.\n\n__Note:__ `field` is not required if `aggregate` is `count`."
+                },
+                "header": {
+                    "$ref": "#/definitions/Header"
+                },
+                "timeUnit": {
+                    "$ref": "#/definitions/TimeUnit",
+                    "description": "Time unit for a `temporal` field  (e.g., `year`, `yearmonth`, `month`, `hour`).\n\n__Default value:__ `undefined` (None)"
+                },
+                "type": {
+                    "$ref": "#/definitions/Type",
+                    "description": "The encoded field's type of measurement. This can be either a full type\nname (`\"quantitative\"`, `\"temporal\"`, `\"ordinal\"`,  and `\"nominal\"`)\nor an initial character of the type name (`\"Q\"`, `\"T\"`, `\"O\"`, `\"N\"`).\nThis property is case-insensitive."
                 }
             },
             "type": "object"
@@ -2486,17 +2569,9 @@
                     ],
                     "description": "__Required.__ Name of the field from which to pull a data value.\n\n__Note:__ `field` is not required if `aggregate` is `count`."
                 },
-                "format": {
-                    "description": "The formatting pattern for text value. If not defined, this will be determined automatically.",
-                    "type": "string"
-                },
                 "timeUnit": {
                     "$ref": "#/definitions/TimeUnit",
                     "description": "Time unit for a `temporal` field  (e.g., `year`, `yearmonth`, `month`, `hour`).\n\n__Default value:__ `undefined` (None)"
-                },
-                "title": {
-                    "description": "Title for axis or legend.",
-                    "type": "string"
                 },
                 "type": {
                     "$ref": "#/definitions/Type",
@@ -2559,7 +2634,7 @@
                     "description": "An object describing the data source"
                 },
                 "description": {
-                    "description": "An optional description of this mark for commenting purpose.\nThis property has no effect on the output visualization.",
+                    "description": "An optional description of this mark for commenting purpose.",
                     "type": "string"
                 },
                 "height": {
@@ -2584,7 +2659,7 @@
                     "type": "string"
                 },
                 "transform": {
-                    "description": "An object describing filter and new field calculation.",
+                    "description": "An array of data transformations such as filter and new field calculation.",
                     "items": {
                         "anyOf": [
                             {
@@ -2624,7 +2699,7 @@
                     "description": "An object describing the data source"
                 },
                 "description": {
-                    "description": "An optional description of this mark for commenting purpose.\nThis property has no effect on the output visualization.",
+                    "description": "An optional description of this mark for commenting purpose.",
                     "type": "string"
                 },
                 "name": {
@@ -2648,7 +2723,7 @@
                     ]
                 },
                 "transform": {
-                    "description": "An object describing filter and new field calculation.",
+                    "description": "An array of data transformations such as filter and new field calculation.",
                     "items": {
                         "anyOf": [
                             {
@@ -2686,7 +2761,7 @@
                     "description": "An object describing the data source"
                 },
                 "description": {
-                    "description": "An optional description of this mark for commenting purpose.\nThis property has no effect on the output visualization.",
+                    "description": "An optional description of this mark for commenting purpose.",
                     "type": "string"
                 },
                 "encoding": {
@@ -2694,6 +2769,7 @@
                     "description": "A key-value mapping between encoding channels and definition of fields."
                 },
                 "height": {
+                    "description": "Height of a single visualization.\n\n__Default value:__\n- For y-axis with a continuous (non-ordinal) scale, the height will be the value of [`config.cell.height`](config.html#cell-config).\n- For y-axis with an ordinal scale: if [`rangeStep`](scale.html#ordinal) is a numeric value (default), the height is determined by the value of `rangeStep` and the cardinality of the field mapped to y-channel.   Otherwise, if the `rangeStep` is `\"fit\"`, the height will be the value of [`config.cell.height`](config.html#cell-config).\n- If no field is mapped to `x` channel, the `height` will be the value of `rangeStep`.\n\n__Note__: For plot with `row` and `column` channels, this represents the height of a single cell.",
                     "type": "number"
                 },
                 "mark": {
@@ -2719,7 +2795,7 @@
                             "type": "string"
                         }
                     ],
-                    "description": "The mark type.\nOne of `\"bar\"`, `\"circle\"`, `\"square\"`, `\"tick\"`, `\"line\"`,\n`\"area\"`, `\"point\"`, `\"rule\"`, and `\"text\"`."
+                    "description": "A string describing the mark type (one of `\"bar\"`, `\"circle\"`, `\"square\"`, `\"tick\"`, `\"line\"`,\n`\"area\"`, `\"point\"`, `\"rule\"`, and `\"text\"`) or a [mark definition object](mark.html#mark-def)."
                 },
                 "name": {
                     "description": "Name of the visualization for later reference.",
@@ -2733,7 +2809,7 @@
                     "type": "object"
                 },
                 "transform": {
-                    "description": "An object describing filter and new field calculation.",
+                    "description": "An array of data transformations such as filter and new field calculation.",
                     "items": {
                         "anyOf": [
                             {
@@ -2747,6 +2823,7 @@
                     "type": "array"
                 },
                 "width": {
+                    "description": "The width of a single visualization.\n\n__Default value:__ This will be determined by the following rules:\n\n- For x-axis with a continuous (non-ordinal) scale, the width will be the value of [`config.cell.width`](config.html#cell-config).\n- For x-axis with an ordinal scale: if [`rangeStep`](scale.html#ordinal) is a numeric value (default), the width is determined by the value of `rangeStep` and the cardinality of the field mapped to x-channel.   Otherwise, if the `rangeStep` is `\"fit\"`, the width will be the value of [`config.cell.width`](config.html#cell-config).\n- If no field is mapped to `x` channel, the `width` will be the value of [`config.scale.textXRangeStep`](size.html#default-width-and-height) for `text` mark and the value of `rangeStep` for other marks.\n\n__Note__: For plot with `row` and `column` channels, this represents the width of a single cell.",
                     "type": "number"
                 }
             },
@@ -2754,6 +2831,21 @@
                 "encoding",
                 "mark"
             ],
+            "type": "object"
+        },
+        "Header": {
+            "additionalProperties": false,
+            "description": "Headers of row / column channels for faceted plots.",
+            "properties": {
+                "format": {
+                    "description": "The formatting pattern for axis labels. This is D3's [number format pattern](https://github.com/mbostock/d3/wiki/Formatting) for quantitative axis and D3's [time format pattern](https://github.com/mbostock/d3/wiki/Time-Formatting) for time axis.\n\n__Default value:__  derived from [numberFormat](config.html#format) config for quantitative axis and from [timeFormat](config.html#format) config for time axis.",
+                    "type": "string"
+                },
+                "title": {
+                    "description": "A title for the axis. Shows field name and its function by default.\n\n__Default value:__  derived from the field's name and transformation function applied e.g, \"field_name\", \"SUM(field_name)\", \"BIN(field_name)\", \"YEAR(field_name)\".",
+                    "type": "string"
+                }
+            },
             "type": "object"
         },
         "HorizontalAlign": {
@@ -2814,7 +2906,7 @@
                     "type": "number"
                 },
                 "format": {
-                    "description": "An optional formatting pattern for legend labels. Vega uses D3\\'s format pattern.\n\n__Default value:__  derived from [`numberFormat`](config.html#format) config for quantitative axis and from [`timeFormat`](config.html#format) config for time axis.",
+                    "description": "The formatting pattern for labels. This is D3's [number format pattern](https://github.com/mbostock/d3/wiki/Formatting) for quantitative fields and D3's [time format pattern](https://github.com/mbostock/d3/wiki/Time-Formatting) for time field.\n\n__Default value:__  derived from [numberFormat](config.html#format) config for quantitative fields and from [timeFormat](config.html#format) config for temporal fields.",
                     "type": "string"
                 },
                 "offset": {
@@ -2829,16 +2921,12 @@
                     "description": "The padding, in pixels, between the legend and axis.",
                     "type": "number"
                 },
-                "shape": {
-                    "description": "The name of a scale that maps to a shape value.",
-                    "type": "string"
-                },
                 "tickCount": {
                     "description": "The desired number of tick values for quantitative legends.",
                     "type": "number"
                 },
                 "title": {
-                    "description": "A title for the legend. (Shows field name and its function by default.)\n\n__Default value:__  derived from the field's name and transformation function applied e.g, \"field_name\", \"SUM(field_name)\", \"BIN(field_name)\", \"YEAR(field_name)\".",
+                    "description": "A title for the field.\n\n__Default value:__  derived from the field's name and transformation function applied e.g, \"field_name\", \"SUM(field_name)\", \"BIN(field_name)\", \"YEAR(field_name)\".",
                     "type": "string"
                 },
                 "type": {
@@ -3070,10 +3158,6 @@
                     ],
                     "description": "__Required.__ Name of the field from which to pull a data value.\n\n__Note:__ `field` is not required if `aggregate` is `count`."
                 },
-                "format": {
-                    "description": "The formatting pattern for text value. If not defined, this will be determined automatically.",
-                    "type": "string"
-                },
                 "legend": {
                     "anyOf": [
                         {
@@ -3105,10 +3189,6 @@
                 "timeUnit": {
                     "$ref": "#/definitions/TimeUnit",
                     "description": "Time unit for a `temporal` field  (e.g., `year`, `yearmonth`, `month`, `hour`).\n\n__Default value:__ `undefined` (None)"
-                },
-                "title": {
-                    "description": "Title for axis or legend.",
-                    "type": "string"
                 },
                 "type": {
                     "$ref": "#/definitions/Type",
@@ -3187,10 +3267,6 @@
                     ],
                     "description": "__Required.__ Name of the field from which to pull a data value.\n\n__Note:__ `field` is not required if `aggregate` is `count`."
                 },
-                "format": {
-                    "description": "The formatting pattern for text value. If not defined, this will be determined automatically.",
-                    "type": "string"
-                },
                 "legend": {
                     "anyOf": [
                         {
@@ -3222,10 +3298,6 @@
                 "timeUnit": {
                     "$ref": "#/definitions/TimeUnit",
                     "description": "Time unit for a `temporal` field  (e.g., `year`, `yearmonth`, `month`, `hour`).\n\n__Default value:__ `undefined` (None)"
-                },
-                "title": {
-                    "description": "Title for axis or legend.",
-                    "type": "string"
                 },
                 "type": {
                     "$ref": "#/definitions/Type",
@@ -3397,23 +3469,23 @@
             "additionalProperties": false,
             "properties": {
                 "filled": {
-                    "description": "Whether the mark's color should be used as fill color instead of stroke color.\nAll marks except \"point\", \"line\", and \"rule\" are filled by default.",
+                    "description": "Whether the mark's color should be used as fill color instead of stroke color.\n\n__Default value:__ All marks except `\"point\"`, `\"line\"`, and `\"rule\"` are filled by default.",
                     "type": "boolean"
                 },
                 "interpolate": {
                     "$ref": "#/definitions/Interpolate",
-                    "description": "The line interpolation method to use for line and area marks. One of the following:\n- `\"linear\"`: piecewise linear segments, as in a polyline.\n- `\"linear-closed\"`: close the linear segments to form a polygon.\n- `\"step\"`: alternate between horizontal and vertical segments, as in a step function.\n- `\"step-before\"`: alternate between vertical and horizontal segments, as in a step function.\n- `\"step-after\"`: alternate between horizontal and vertical segments, as in a step function.\n- `\"basis\"`: a B-spline, with control point duplication on the ends.\n- `\"basis-open\"`: an open B-spline; may not intersect the start or end.\n- `\"basis-closed\"`: a closed B-spline, as in a loop.\n- `\"cardinal\"`: a Cardinal spline, with control point duplication on the ends.\n- `\"cardinal-open\"`: an open Cardinal spline; may not intersect the start or end, but will intersect other control points.\n- `\"cardinal-closed\"`: a closed Cardinal spline, as in a loop.\n- `\"bundle\"`: equivalent to basis, except the tension parameter is used to straighten the spline.\n- `\"monotone\"`: cubic interpolation that preserves monotonicity in y.\nFor more information about each interpolation method, please see [D3's line interpolation](https://github.com/mbostock/d3/wiki/SVG-Shapes#line_interpolate)."
+                    "description": "The line interpolation method to use for line and area marks. One of the following:\n- `\"linear\"`: piecewise linear segments, as in a polyline.\n- `\"linear-closed\"`: close the linear segments to form a polygon.\n- `\"step\"`: alternate between horizontal and vertical segments, as in a step function.\n- `\"step-before\"`: alternate between vertical and horizontal segments, as in a step function.\n- `\"step-after\"`: alternate between horizontal and vertical segments, as in a step function.\n- `\"basis\"`: a B-spline, with control point duplication on the ends.\n- `\"basis-open\"`: an open B-spline; may not intersect the start or end.\n- `\"basis-closed\"`: a closed B-spline, as in a loop.\n- `\"cardinal\"`: a Cardinal spline, with control point duplication on the ends.\n- `\"cardinal-open\"`: an open Cardinal spline; may not intersect the start or end, but will intersect other control points.\n- `\"cardinal-closed\"`: a closed Cardinal spline, as in a loop.\n- `\"bundle\"`: equivalent to basis, except the tension parameter is used to straighten the spline.\n- `\"monotone\"`: cubic interpolation that preserves monotonicity in y.\n\nFor more information about each interpolation method, please see [D3's line interpolation](https://github.com/mbostock/d3/wiki/SVG-Shapes#line_interpolate)."
                 },
                 "orient": {
                     "$ref": "#/definitions/Orient",
-                    "description": "The orientation of a non-stacked bar, tick, area, and line charts.\nThe value is either horizontal (default) or vertical.\n- For bar, rule and tick, this determines whether the size of the bar and tick\nshould be applied to x or y dimension.\n- For area, this property determines the orient property of the Vega output.\n- For line, this property determines the sort order of the points in the line\nif `config.sortLineBy` is not specified.\nFor stacked charts, this is always determined by the orientation of the stack;\ntherefore explicitly specified value will be ignored."
+                    "description": "TODO"
                 },
                 "role": {
-                    "description": "A metadata string indicating the role of the mark.\nThis allows users to use `config.<role-name>.*` to customize properties of marks with specific roles.\nIn addition, SVG renderers will add this role value (prepended with the prefix role-) as a CSS class name on the enclosing SVG group (g) element containing the mark instances.",
+                    "description": "A metadata string indicating the role of the mark.\nThis allows users to use `config.<role-name>.*` to customize properties of marks with specific roles.\nIn addition, SVG renderers will add this role value (prepended with the prefix role-) as a CSS class name on the enclosing SVG group (`<g>`) element containing the mark instances.",
                     "type": "string"
                 },
                 "tension": {
-                    "description": "Depending on the interpolation type, sets the tension parameter (for line and area marks).(See [D3's line interpolation](https://github.com/mbostock/d3/wiki/SVG-Shapes#line_interpolate).)",
+                    "description": "Depending on the interpolation type, sets the tension parameter (for line and area marks).\n\nTODO: provide the link to D3 docs.",
                     "maximum": 1,
                     "minimum": 0,
                     "type": "number"
@@ -3559,20 +3631,12 @@
                     ],
                     "description": "__Required.__ Name of the field from which to pull a data value.\n\n__Note:__ `field` is not required if `aggregate` is `count`."
                 },
-                "format": {
-                    "description": "The formatting pattern for text value. If not defined, this will be determined automatically.",
-                    "type": "string"
-                },
                 "sort": {
                     "$ref": "#/definitions/SortOrder"
                 },
                 "timeUnit": {
                     "$ref": "#/definitions/TimeUnit",
                     "description": "Time unit for a `temporal` field  (e.g., `year`, `yearmonth`, `month`, `hour`).\n\n__Default value:__ `undefined` (None)"
-                },
-                "title": {
-                    "description": "Title for axis or legend.",
-                    "type": "string"
                 },
                 "type": {
                     "$ref": "#/definitions/Type",
@@ -3679,10 +3743,6 @@
                     ],
                     "description": "__Required.__ Name of the field from which to pull a data value.\n\n__Note:__ `field` is not required if `aggregate` is `count`."
                 },
-                "format": {
-                    "description": "The formatting pattern for text value. If not defined, this will be determined automatically.",
-                    "type": "string"
-                },
                 "scale": {
                     "$ref": "#/definitions/Scale"
                 },
@@ -3708,10 +3768,6 @@
                 "timeUnit": {
                     "$ref": "#/definitions/TimeUnit",
                     "description": "Time unit for a `temporal` field  (e.g., `year`, `yearmonth`, `month`, `hour`).\n\n__Default value:__ `undefined` (None)"
-                },
-                "title": {
-                    "description": "Title for axis or legend.",
-                    "type": "string"
                 },
                 "type": {
                     "$ref": "#/definitions/Type",
@@ -4657,10 +4713,6 @@
                 "timeUnit": {
                     "$ref": "#/definitions/TimeUnit",
                     "description": "Time unit for a `temporal` field  (e.g., `year`, `yearmonth`, `month`, `hour`).\n\n__Default value:__ `undefined` (None)"
-                },
-                "title": {
-                    "description": "Title for axis or legend.",
-                    "type": "string"
                 },
                 "type": {
                     "$ref": "#/definitions/Type",

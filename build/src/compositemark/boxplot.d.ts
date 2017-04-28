@@ -9,4 +9,4 @@ export interface BoxPlotConfig extends MarkConfig {
     /** Size of the box and mid tick of a box plot */
     size?: number;
 }
-export declare function normalizeBoxPlot(spec: GenericUnitSpec<BOXPLOT, Encoding<Field>>, config: Config): LayerSpec;
+export declare function normalizeBoxPlot(spec: GenericUnitSpec<Encoding<Field>, BOXPLOT>, config: Config): LayerSpec;

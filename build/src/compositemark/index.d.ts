@@ -12,4 +12,4 @@ export declare type CompositeAggregate = BOXPLOT;
 /**
  * Transform a unit spec with composite mark into a normal layer spec.
  */
-export declare function normalize(spec: GenericUnitSpec<string | MarkDef, any>, config: Config): LayerSpec;
+export declare function normalize(spec: GenericUnitSpec<any, string | MarkDef>, config: Config): LayerSpec;

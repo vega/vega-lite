@@ -16,7 +16,7 @@ export declare function applyMarkConfig(e: VgEncodeEntry, model: UnitModel, prop
  * Otherwise, return general mark specific config.
  */
 export declare function getMarkConfig<P extends keyof MarkConfig>(prop: P, mark: Mark, config: Config): MarkConfig[P];
-export declare function formatSignalRef(fieldDef: FieldDef<string>, expr: 'datum' | 'parent', config: Config, useBinRange?: boolean): {
+export declare function formatSignalRef(fieldDef: FieldDef<string>, specifiedFormat: string, expr: 'datum' | 'parent', config: Config, useBinRange?: boolean): {
     signal: string;
 };
 /**

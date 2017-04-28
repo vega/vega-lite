@@ -13,7 +13,7 @@ export declare function format(specifiedAxis: Axis, channel: Channel, fieldDef: 
 export declare function gridShow(model: UnitModel, channel: Channel): boolean;
 export declare function grid(model: UnitModel, channel: Channel, isGridAxis: boolean): boolean;
 export declare function gridScale(model: UnitModel, channel: Channel, isGridAxis: boolean): string;
-export declare function orient(specifiedAxis: Axis, channel: Channel): "top" | "right" | "left" | "bottom";
+export declare function orient(specifiedAxis: Axis, channel: Channel): "left" | "right" | "top" | "bottom";
 export declare function tickCount(specifiedAxis: Axis, channel: Channel, fieldDef: FieldDef<string>): number;
 export declare function title(specifiedAxis: Axis, fieldDef: FieldDef<string>, config: Config, isGridAxis: boolean): string;
 export declare function values(specifiedAxis: Axis): number[] | DateTime[];
