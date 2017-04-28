@@ -1,17 +1,20 @@
 import {NonspatialScaleChannel, ScaleChannel, SpatialScaleChannel} from '../channel';
 import {Config} from '../config';
+import * as log from '../log';
 import {FILL_STROKE_CONFIG} from '../mark';
 import {initLayerResolve, NonspatialResolve, ResolveMapping, SpatialResolve} from '../resolve';
-import {LayerSpec, UnitSize} from '../spec';
+import {isLayerSpec, isUnitSpec, LayerSpec, UnitSize} from '../spec';
 import {Dict, flatten, keys, vals} from '../util';
 import {isSignalRefDomain, VgData, VgEncodeEntry, VgLayout, VgScale, VgSignal} from '../vega.schema';
+
 import {AxisComponentIndex} from './axis/component';
 import {applyConfig, buildModel} from './common';
+import {Model} from './model';
+
 import {assembleData} from './data/assemble';
 import {parseData} from './data/parse';
 import {assembleLayoutLayerSignals} from './layout/index';
 import {moveSharedLegendUp} from './legend/parse';
-import {Model} from './model';
 import {RepeaterValue} from './repeat';
 import {unionDomains} from './scale/domain';
 import {moveSharedScaleUp} from './scale/parse';
@@ -20,7 +23,10 @@ import {UnitModel} from './unit';
 
 
 export class LayerModel extends Model {
-  public readonly children: UnitModel[];
+
+  // HACK: This should be (LayerModel | UnitModel)[], but setting the correct type leads to weird error.
+  // So I'm just putting generic Model for now.
+  public readonly children: Model[];
 
   private readonly resolve: ResolveMapping;
 
@@ -38,9 +44,15 @@ export class LayerModel extends Model {
     };
 
     this.children = spec.layer.map((layer, i) => {
-      // FIXME: this is not always the case
-      // we know that the model has to be a unit model because we pass in a unit spec
-      return buildModel(layer, this, this.getName('layer_' + i), unitSize, repeater, config) as UnitModel;
+      if (isLayerSpec(layer)) {
+        return new LayerModel(layer, this, this.getName('layer_'+i), unitSize, repeater, config);
+      }
+
+      if (isUnitSpec(layer)) {
+        return new UnitModel(layer, this, this.getName('layer_'+i), unitSize, repeater, config);
+      }
+
+      throw new Error(log.message.INVALID_SPEC);
     });
   }
 
