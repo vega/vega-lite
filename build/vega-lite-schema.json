@@ -36,7 +36,7 @@
                     "type": "string"
                 },
                 "encoding": {
-                    "$ref": "#/definitions/EncodingWithFacet<Field>",
+                    "$ref": "#/definitions/EncodingWithFacet",
                     "description": "A key-value mapping between encoding channels and definition of fields."
                 },
                 "height": {
@@ -273,7 +273,7 @@
                     "type": "string"
                 },
                 "facet": {
-                    "$ref": "#/definitions/Facet<Field>"
+                    "$ref": "#/definitions/Facet"
                 },
                 "name": {
                     "description": "Name of the visualization for later reference.",
@@ -2069,7 +2069,7 @@
             },
             "type": "object"
         },
-        "Encoding<Field>": {
+        "Encoding": {
             "additionalProperties": false,
             "properties": {
                 "color": {
@@ -2086,11 +2086,11 @@
                 "detail": {
                     "anyOf": [
                         {
-                            "$ref": "#/definitions/FieldDef<Field>"
+                            "$ref": "#/definitions/FieldDef"
                         },
                         {
                             "items": {
-                                "$ref": "#/definitions/FieldDef<Field>"
+                                "$ref": "#/definitions/FieldDef"
                             },
                             "type": "array"
                         }
@@ -2111,11 +2111,11 @@
                 "order": {
                     "anyOf": [
                         {
-                            "$ref": "#/definitions/OrderFieldDef<Field>"
+                            "$ref": "#/definitions/OrderFieldDef"
                         },
                         {
                             "items": {
-                                "$ref": "#/definitions/OrderFieldDef<Field>"
+                                "$ref": "#/definitions/OrderFieldDef"
                             },
                             "type": "array"
                         }
@@ -2150,7 +2150,7 @@
                             "$ref": "#/definitions/ConditionalValueDef<string | number | boolean>"
                         },
                         {
-                            "$ref": "#/definitions/TextFieldDef<Field>"
+                            "$ref": "#/definitions/TextFieldDef"
                         }
                     ],
                     "description": "Text of the `text` mark."
@@ -2161,7 +2161,7 @@
                             "$ref": "#/definitions/ValueDef<number>"
                         },
                         {
-                            "$ref": "#/definitions/PositionFieldDef<Field>"
+                            "$ref": "#/definitions/PositionFieldDef"
                         }
                     ],
                     "description": "X coordinates for `point`, `circle`, `square`,\n`line`, `rule`, `text`, and `tick`\n(or to width and height for `bar` and `area` marks)."
@@ -2172,7 +2172,7 @@
                             "$ref": "#/definitions/ValueDef<number>"
                         },
                         {
-                            "$ref": "#/definitions/FieldDef<Field>"
+                            "$ref": "#/definitions/FieldDef"
                         }
                     ],
                     "description": "X2 coordinates for ranged `bar`, `rule`, `area`."
@@ -2183,7 +2183,7 @@
                             "$ref": "#/definitions/ValueDef<number>"
                         },
                         {
-                            "$ref": "#/definitions/PositionFieldDef<Field>"
+                            "$ref": "#/definitions/PositionFieldDef"
                         }
                     ],
                     "description": "Y coordinates for `point`, `circle`, `square`,\n`line`, `rule`, `text`, and `tick`\n(or to width and height for `bar` and `area` marks)."
@@ -2194,7 +2194,7 @@
                             "$ref": "#/definitions/ValueDef<number>"
                         },
                         {
-                            "$ref": "#/definitions/FieldDef<Field>"
+                            "$ref": "#/definitions/FieldDef"
                         }
                     ],
                     "description": "Y2 coordinates for ranged `bar`, `rule`, `area`."
@@ -2202,7 +2202,7 @@
             },
             "type": "object"
         },
-        "EncodingWithFacet<Field>": {
+        "EncodingWithFacet": {
             "additionalProperties": false,
             "properties": {
                 "color": {
@@ -2217,17 +2217,17 @@
                     "description": "Color of the marks – either fill or stroke color based on mark type.\n(By default, fill color for `area`, `bar`, `tick`, `text`, `circle`, and `square` /\nstroke color for `line` and `point`.)"
                 },
                 "column": {
-                    "$ref": "#/definitions/FacetFieldDef<Field>",
+                    "$ref": "#/definitions/FacetFieldDef",
                     "description": "Horizontal facets for trellis plots."
                 },
                 "detail": {
                     "anyOf": [
                         {
-                            "$ref": "#/definitions/FieldDef<Field>"
+                            "$ref": "#/definitions/FieldDef"
                         },
                         {
                             "items": {
-                                "$ref": "#/definitions/FieldDef<Field>"
+                                "$ref": "#/definitions/FieldDef"
                             },
                             "type": "array"
                         }
@@ -2248,11 +2248,11 @@
                 "order": {
                     "anyOf": [
                         {
-                            "$ref": "#/definitions/OrderFieldDef<Field>"
+                            "$ref": "#/definitions/OrderFieldDef"
                         },
                         {
                             "items": {
-                                "$ref": "#/definitions/OrderFieldDef<Field>"
+                                "$ref": "#/definitions/OrderFieldDef"
                             },
                             "type": "array"
                         }
@@ -2260,7 +2260,7 @@
                     "description": "stack order for stacked marks or order of data points in line marks."
                 },
                 "row": {
-                    "$ref": "#/definitions/FacetFieldDef<Field>",
+                    "$ref": "#/definitions/FacetFieldDef",
                     "description": "Vertical facets for trellis plots."
                 },
                 "shape": {
@@ -2291,7 +2291,7 @@
                             "$ref": "#/definitions/ConditionalValueDef<string | number | boolean>"
                         },
                         {
-                            "$ref": "#/definitions/TextFieldDef<Field>"
+                            "$ref": "#/definitions/TextFieldDef"
                         }
                     ],
                     "description": "Text of the `text` mark."
@@ -2302,7 +2302,7 @@
                             "$ref": "#/definitions/ValueDef<number>"
                         },
                         {
-                            "$ref": "#/definitions/PositionFieldDef<Field>"
+                            "$ref": "#/definitions/PositionFieldDef"
                         }
                     ],
                     "description": "X coordinates for `point`, `circle`, `square`,\n`line`, `rule`, `text`, and `tick`\n(or to width and height for `bar` and `area` marks)."
@@ -2313,7 +2313,7 @@
                             "$ref": "#/definitions/ValueDef<number>"
                         },
                         {
-                            "$ref": "#/definitions/FieldDef<Field>"
+                            "$ref": "#/definitions/FieldDef"
                         }
                     ],
                     "description": "X2 coordinates for ranged `bar`, `rule`, `area`."
@@ -2324,7 +2324,7 @@
                             "$ref": "#/definitions/ValueDef<number>"
                         },
                         {
-                            "$ref": "#/definitions/PositionFieldDef<Field>"
+                            "$ref": "#/definitions/PositionFieldDef"
                         }
                     ],
                     "description": "Y coordinates for `point`, `circle`, `square`,\n`line`, `rule`, `text`, and `tick`\n(or to width and height for `bar` and `area` marks)."
@@ -2335,7 +2335,7 @@
                             "$ref": "#/definitions/ValueDef<number>"
                         },
                         {
-                            "$ref": "#/definitions/FieldDef<Field>"
+                            "$ref": "#/definitions/FieldDef"
                         }
                     ],
                     "description": "Y2 coordinates for ranged `bar`, `rule`, `area`."
@@ -2398,15 +2398,15 @@
             ],
             "type": "object"
         },
-        "Facet<Field>": {
+        "Facet": {
             "additionalProperties": false,
             "properties": {
                 "column": {
-                    "$ref": "#/definitions/FacetFieldDef<Field>",
+                    "$ref": "#/definitions/FacetFieldDef",
                     "description": "Horizontal facets for trellis plots."
                 },
                 "row": {
-                    "$ref": "#/definitions/FacetFieldDef<Field>",
+                    "$ref": "#/definitions/FacetFieldDef",
                     "description": "Vertical facets for trellis plots."
                 }
             },
@@ -2422,7 +2422,7 @@
             },
             "type": "object"
         },
-        "FacetFieldDef<Field>": {
+        "FacetFieldDef": {
             "additionalProperties": false,
             "properties": {
                 "aggregate": {
@@ -2503,7 +2503,7 @@
             },
             "type": "object"
         },
-        "FieldDef<Field>": {
+        "FieldDef": {
             "additionalProperties": false,
             "description": "Definition object for a data field, its type and transformation of an encoding channel.",
             "properties": {
@@ -2769,7 +2769,7 @@
                     "type": "string"
                 },
                 "encoding": {
-                    "$ref": "#/definitions/Encoding<Field>",
+                    "$ref": "#/definitions/Encoding",
                     "description": "A key-value mapping between encoding channels and definition of fields."
                 },
                 "height": {
@@ -3568,7 +3568,7 @@
             ],
             "type": "object"
         },
-        "OrderFieldDef<Field>": {
+        "OrderFieldDef": {
             "additionalProperties": false,
             "properties": {
                 "aggregate": {
@@ -3670,7 +3670,7 @@
             },
             "type": "object"
         },
-        "PositionFieldDef<Field>": {
+        "PositionFieldDef": {
             "additionalProperties": false,
             "properties": {
                 "aggregate": {
@@ -4640,7 +4640,7 @@
             },
             "type": "object"
         },
-        "TextFieldDef<Field>": {
+        "TextFieldDef": {
             "additionalProperties": false,
             "properties": {
                 "aggregate": {
