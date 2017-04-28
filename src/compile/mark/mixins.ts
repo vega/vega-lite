@@ -249,12 +249,10 @@ export function bandPosition(fieldDef: FieldDef<string>, channel: 'x'|'y', model
       };
 
       if (getFieldDef(model.encoding.size)) {
-        log.warn(log.message.cannotUseSizeFieldWithBandSize(channel));
-        // TODO: apply size to band and set scale range to some values between 0-1.
-        // return {
-        //   ...centeredBandPositionMixins,
-        //   ...bandSize('size', model, {vgChannel: sizeChannel})
-        // };
+        return {
+          ...centeredBandPositionMixins,
+          ...nonPosition('size', model, {vgChannel: sizeChannel})
+        };
       } else if (isValueDef(model.encoding.size)) {
         return {
           ...centeredBandPositionMixins,
