@@ -121,7 +121,7 @@
                 },
                 "offset": 10,
                 "columns": {
-                    "signal": "data('column_layout')[0].distinct_age"
+                    "signal": "data('column_layout')[0]['distinct_age']"
                 },
                 "bounds": "full"
             },
