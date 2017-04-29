@@ -286,7 +286,7 @@ export class FacetModel extends ModelWithField {
     // In facetNode.assemble(), the name is always this.getName('column') + '_layout'.
     const facetLayoutDataName = this.getName('column') + '_layout';
     const columnDistinct = this.field('column',  {prefix: 'distinct'});
-    return `data('${facetLayoutDataName}')[0].${columnDistinct}`;
+    return `data('${facetLayoutDataName}')[0]['${columnDistinct}']`;
   }
 
   public assembleMarks(): VgEncodeEntry[] {
