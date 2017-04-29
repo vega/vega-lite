@@ -1,9 +1,13 @@
 #!/usr/bin/env node
 'use strict';
 
-/* This script normalizes all the specs in examples/specs and if after the
-normalize the spec is different then writes the full normalized spec to
-examples/specs/normalized */
+/*
+ * This script normalizes all the specs in examples/specs and
+ * writes the full normalized spec to `examples/specs/normalized`
+ * the normalized spec is different than the original.
+ * We output this to a different folder so that build-examples script does not generate
+ * redundant Vega output specs.
+ */
 
 var fs = require('fs'),
   path = require('path'),
@@ -26,7 +30,7 @@ examples.forEach(function(example) {
     if (preNormalized !== postNormalized) {
       var postNormalizedOutput = JSON.stringify(fullSpec, null, 2);
       // -8 is cutting .vl.json
-      var newFilename = example.slice(0, -8) + '_full.vl.json';
+      var newFilename = example.slice(0, -8) + '_normalized.vl.json';
       var newFilenameAndPath = DIR + SPECS + '/normalized/' + newFilename;
       fs.writeFile(newFilenameAndPath, postNormalizedOutput, function(err) {
         if (err) return console.log(err);
