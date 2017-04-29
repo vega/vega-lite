@@ -1,4 +1,4 @@
-# [Vega-Lite](https://vega.github.io/vega-lite/) 2 ALPHA
+# [Vega-Lite](https://vega.github.io/vega-lite/) 2 BETA
 
 **Announcement:** The `master` branch now hosts ongoing Vega-Lite 2.0 *pre-release* development.
 We have migrated Vega-Lite to use the new Vega 3 Beta and D3 v4.
