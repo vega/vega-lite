@@ -1,6 +1,6 @@
 import {FieldDef} from '../../fielddef';
 import {QUANTITATIVE, TEMPORAL} from '../../type';
-import {contains, Dict, differ, differArray, duplicate, extend, hash, keys} from '../../util';
+import {contains, Dict, differ, differArray, duplicate, extend, hash, keys, stringValue} from '../../util';
 import {VgFilterTransform} from '../../vega.schema';
 import {ModelWithField} from '../model';
 import {Model} from './../model';
@@ -67,12 +67,12 @@ export class NullFilterNode extends DataFlowNode {
     const filters = keys(this._filteredFields).reduce((_filters, field) => {
       const fieldDef = this._filteredFields[field];
       if (fieldDef !== null) {
-        _filters.push('datum["' + fieldDef.field + '"] !== null');
+        _filters.push(`datum[${stringValue(fieldDef.field)}] !== null`);
         if (contains([QUANTITATIVE, TEMPORAL], fieldDef.type)) {
           // TODO(https://github.com/vega/vega-lite/issues/1436):
           // We can be even smarter and add NaN filter for N,O that are numbers
           // based on the `parse` property once we have it.
-          _filters.push('!isNaN(datum["'+ fieldDef.field + '"])');
+          _filters.push(`!isNaN(datum[${stringValue(fieldDef.field)}])`);
         }
       }
       return _filters;
