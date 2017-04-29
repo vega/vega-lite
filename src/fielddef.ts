@@ -14,7 +14,7 @@ import {SortField, SortOrder} from './sort';
 import {StackOffset} from './stack';
 import {isDiscreteByDefault, TimeUnit} from './timeunit';
 import {getFullName, Type} from './type';
-import {isBoolean, isString} from './util';
+import {isBoolean, isString, stringValue} from './util';
 
 /**
  * Definition object for a constant value of an encoding channel.
@@ -206,7 +206,7 @@ export function field(fieldDef: FieldDef<string>, opt: FieldRefOption = {}): str
   }
 
   if (opt.expr) {
-    field = `${opt.expr}["${field}"]`;
+    field = `${opt.expr}[${stringValue(field)}]`;
   }
 
   return field;

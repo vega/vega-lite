@@ -8,7 +8,7 @@ import * as log from '../log';
 import {FILL_STROKE_CONFIG} from '../mark';
 import {FacetSpec} from '../spec';
 import {StackProperties} from '../stack';
-import {contains, Dict, extend, flatten, keys, vals} from '../util';
+import {contains, Dict, extend, flatten, keys, stringValue, vals} from '../util';
 import {FontWeight, VgSignal} from '../vega.schema';
 import {
   isDataRefDomain,
@@ -286,7 +286,7 @@ export class FacetModel extends ModelWithField {
     // In facetNode.assemble(), the name is always this.getName('column') + '_layout'.
     const facetLayoutDataName = this.getName('column') + '_layout';
     const columnDistinct = this.field('column',  {prefix: 'distinct'});
-    return `data('${facetLayoutDataName}')[0]['${columnDistinct}']`;
+    return `data('${facetLayoutDataName}')[0][${stringValue(columnDistinct)}]`;
   }
 
   public assembleMarks(): VgEncodeEntry[] {
