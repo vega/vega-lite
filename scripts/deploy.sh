@@ -42,9 +42,7 @@ if ! [ -f build/src/vl.d.ts ]; then
   exit 1;
 fi
 
-# Use NPM tag to prevent people getting this by default when running `npm install``
-# https://medium.com/@mbostock/prereleases-and-npm-e778fc5e2420#.i9ko1erii
-npm publish --tag pre
+npm publish
 
 # exit if npm publish failed
 rc=$?
