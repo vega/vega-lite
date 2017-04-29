@@ -2,7 +2,7 @@
 'use strict';
 
 /* This script normalizes all the specs in examples/specs and if after the
-normalize the spec is different then write the full normalized spec to
+normalize the spec is different then writes the full normalized spec to
 examples/specs/normalized */
 
 var fs = require('fs'),
