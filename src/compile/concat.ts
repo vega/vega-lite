@@ -135,11 +135,7 @@ export class ConcatModel extends Model {
       type: 'group',
       name: child.getName('group'),
       encode: {
-        update: {
-          width: child.getSizeSignalRef('width'),
-          height: child.getSizeSignalRef('height'),
-          ...child.assembleParentGroupProperties()
-        }
+        update: child.assembleParentGroupProperties()
       },
       ...child.assembleGroup()
     }));

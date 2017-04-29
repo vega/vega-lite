@@ -12,7 +12,6 @@ import {isSignalRefDomain, VgData, VgLayout, VgScale, VgSignal} from '../vega.sc
 import {buildModel} from './common';
 import {assembleData} from './data/assemble';
 import {parseData} from './data/parse';
-import {assembleLayoutLayerSignals} from './layout/index';
 import {Model} from './model';
 import {unionDomains} from './scale/domain';
 
@@ -259,11 +258,7 @@ export class RepeatModel extends Model {
       type: 'group',
       name: child.getName('group'),
       encode: {
-        update: {
-          width: child.getSizeSignalRef('width'),
-          height: child.getSizeSignalRef('height'),
-          ...child.assembleParentGroupProperties()
-        }
+        update: child.assembleParentGroupProperties()
       },
       ...child.assembleGroup()
     }));

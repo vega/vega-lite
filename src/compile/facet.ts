@@ -325,18 +325,11 @@ export function hasSubPlotWithXy(model: FacetModel) {
     model.hasDescendantWithFieldOnChannel('y');
 }
 
-function childSizeEncodeEntryMixins(model: FacetModel, sizeType: 'width' | 'height') {
-  return {[sizeType]: model.child.getSizeSignalRef(sizeType)};
-}
-
 // FIXME(https://github.com/vega/vega-lite/issues/2041): revise this.
 function getFacetGroupProperties(model: FacetModel) {
   const child = model.child;
 
   return {
-    ...childSizeEncodeEntryMixins(model, 'width'),
-    ...childSizeEncodeEntryMixins(model, 'height'),
-
     // FIXME revise if we really need hasSubPlotWithXy()
     ...(hasSubPlotWithXy(model) ? child.assembleParentGroupProperties() : {}),
 
