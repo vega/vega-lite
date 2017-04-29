@@ -116,7 +116,28 @@ describe("normalizeBox", () => {
           "color": {"value" : "skyblue"}
         }
       }, defaultConfig);
-    }, Error, 'Need one continuous and one discrete axis for 2D boxplots');
+    }, Error, 'Need to specify orientation with either aggregate or orient');
+  });
+
+  it("should produce an error if both axes are continuous", () => {
+    assert.throws(() => {
+      normalize({
+        "description": "A box plot showing median, min, and max in the US population distribution of age groups in 2000.",
+        "data": {"url": "data/population.json"},
+        mark: "box-plot",
+        encoding: {
+          "x": {"aggregate": "box-plot", "field": "people","type": "quantitative"},
+          "y": {
+            "aggregate": "box-plot",
+            "field": "people",
+            "type": "quantitative",
+            "axis": {"title": "population"}
+          },
+          "size": {"value": 5},
+          "color": {"value" : "skyblue"}
+        }
+      }, defaultConfig);
+    }, Error, 'Both x and y cannot have aggregate');
   });
 
   it("should produce an error if continuous axis has aggregate property", () => {
@@ -170,7 +191,7 @@ describe("normalizeBox", () => {
           "color": {"value" : "skyblue"}
         }
       }, defaultConfig);
-    }, Error, 'Need one continuous and one discrete axis');
+    }, Error, 'Both x and y cannot be discrete');
   });
 
   it("should produce correct layered specs for vertical boxplot with min and max", () => {
