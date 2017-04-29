@@ -254,13 +254,20 @@ export class RepeatModel extends Model {
 
   public assembleMarks(): any[] {
     // only children have marks
-    return this.children.map(child => ({
-      type: 'group',
-      name: child.getName('group'),
-      encode: {
-        update: child.assembleParentGroupProperties()
-      },
-      ...child.assembleGroup()
-    }));
+    return this.children.map(child => {
+
+      const encodeEntry = child.assembleParentGroupProperties();
+
+      return {
+        type: 'group',
+        name: child.getName('group'),
+        ...(encodeEntry ? {
+          encode: {
+            update: encodeEntry
+          }
+        } : {}),
+        ...child.assembleGroup()
+      };
+    });
   }
 }

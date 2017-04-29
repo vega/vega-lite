@@ -105,7 +105,7 @@ export function assembleNestedMainGroup(model: Model) {
       type: 'group',
       layout,
       signals,
-      ...(parentEncodeEntry && keys(parentEncodeEntry).length > 0 ? {
+      ...(parentEncodeEntry ? {
         encode: {
           update: parentEncodeEntry
         }

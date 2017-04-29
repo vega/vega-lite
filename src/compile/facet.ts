@@ -329,9 +329,11 @@ export function hasSubPlotWithXy(model: FacetModel) {
 function getFacetGroupProperties(model: FacetModel) {
   const child = model.child;
 
+  const encodeEntry = model.assembleParentGroupProperties();
+
   return {
     // FIXME revise if we really need hasSubPlotWithXy()
-    ...(hasSubPlotWithXy(model) ? child.assembleParentGroupProperties() : {}),
+    ...(hasSubPlotWithXy(model) && encodeEntry ? encodeEntry : {}),
 
     ...applyConfig({}, model.config.facet.cell, FILL_STROKE_CONFIG.concat(['clip']))
   };
