@@ -1,4 +1,4 @@
-import {ScaleChannel, SpatialScaleChannel} from '../channel';
+import {NonspatialScaleChannel, ScaleChannel, SpatialScaleChannel} from '../channel';
 import {Config} from '../config';
 import {FILL_STROKE_CONFIG} from '../mark';
 import {initLayerResolve, ResolveMapping} from '../resolve';
@@ -122,22 +122,24 @@ export class LayerModel extends Model {
           }
         } else {
           // If axes are independent
+          // TODO(#2251): correctly merge axis
           if (!axisComponent[channel]) {
             // copy the first axis
             axisComponent[channel] = child.component.axes[channel];
-          } else if (axisComponent[channel].axes.length === 1) {
-            // and put the second one on the right/top
+          } else {
+            // put every odd numbered axis on the right/top
             axisComponent[channel].axes.push({
               ...child.component.axes[channel].axes[0],
-              orient: channel === 'y' ? 'right' : 'top'
+              ...(axisComponent[channel].axes.length % 2 === 1 ? {orient: channel === 'y' ? 'right' : 'top'} : {})
             });
-            axisComponent[channel].gridAxes.push({
-              ...child.component.axes[channel].gridAxes[0]
-            });
+            if (child.component.axes[channel].gridAxes.length > 0) {
+              axisComponent[channel].gridAxes.push({
+                ...child.component.axes[channel].gridAxes[0]
+              });
+            }
           }
-          // Ignore all other axes.
         }
-        delete child.component.axes[channel];
+        // delete child.component.axes[channel];
       });
     }
   }
@@ -149,14 +151,16 @@ export class LayerModel extends Model {
       child.parseLegend();
 
       // TODO: correctly implement independent axes
-      if (true) { // if shared/union scale
-        keys(child.component.legends).forEach(channel => {
+      keys(child.component.legends).forEach((channel: NonspatialScaleChannel) => {
+        if (this.resolve[channel].legend === 'shared') { // if shared/union scale
           // just use the first legend definition for each channel
           if (!legendComponent[channel]) {
             legendComponent[channel] = child.component.legends[channel];
           }
-        });
-      }
+        } else {
+          // TODO: support independent legends
+        }
+      });
     }
   }
 

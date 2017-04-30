@@ -214,6 +214,16 @@
                     "description": "The default visualization padding, in pixels, from the edge of the visualization canvas to the data rectangle. This can be a single number or an object with `\"top\"`, `\"left\"`, `\"right\"`, `\"bottom\"` properties.\n\n__Default value__: `5`",
                     "minimum": 0
                 },
+                "resolve": {
+                    "anyOf": [
+                        {
+                            "$ref": "#/definitions/{ color?: NonspatialResolve; opacity?: NonspatialResolve; size?: NonspatialResolve; shape?: Nonsp..."
+                        },
+                        {
+                            "$ref": "#/definitions/{ x?: SpatialResolve; y?: SpatialResolve; }"
+                        }
+                    ]
+                },
                 "transform": {
                     "description": "An array of data transformations such as filter and new field calculation.",
                     "items": {
@@ -2692,6 +2702,16 @@
                     "description": "Name of the visualization for later reference.",
                     "type": "string"
                 },
+                "resolve": {
+                    "anyOf": [
+                        {
+                            "$ref": "#/definitions/{ color?: NonspatialResolve; opacity?: NonspatialResolve; size?: NonspatialResolve; shape?: Nonsp..."
+                        },
+                        {
+                            "$ref": "#/definitions/{ x?: SpatialResolve; y?: SpatialResolve; }"
+                        }
+                    ]
+                },
                 "transform": {
                     "description": "An array of data transformations such as filter and new field calculation.",
                     "items": {
@@ -5010,6 +5030,16 @@
                 },
                 "title": {
                 }
+            },
+            "type": "object"
+        },
+        "{ color?: NonspatialResolve; opacity?: NonspatialResolve; size?: NonspatialResolve; shape?: Nonsp...": {
+            "properties": {
+            },
+            "type": "object"
+        },
+        "{ x?: SpatialResolve; y?: SpatialResolve; }": {
+            "properties": {
             },
             "type": "object"
         }

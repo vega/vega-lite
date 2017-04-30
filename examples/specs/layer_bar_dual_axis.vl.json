@@ -31,7 +31,10 @@
         "y": {
           "aggregate": "mean",
           "field": "temp_max",
-          "type": "quantitative"
+          "type": "quantitative",
+          "axis": {
+            "grid": false
+          }
         },
         "color": {"value": "firebrick"}
       }
