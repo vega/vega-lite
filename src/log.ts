@@ -206,6 +206,10 @@ export namespace message {
     return `Scale type "${scaleType}" does not work with mark ${mark}.`;
   }
 
+  export function independentScaleMeansIndependentGuide(channel: Channel) {
+    return `Setting the scale to be independent for ${channel} means we also have to set the guide (axis or legend) to be independent.`;
+  }
+
   export const INVAID_DOMAIN = 'Invalid scale domain';
 
   export const UNABLE_TO_MERGE_DOMAINS = 'Unable to merge domains';
