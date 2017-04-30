@@ -1,6 +1,6 @@
 import {COLUMN, ROW, X, X2, Y, Y2} from './channel';
-import {CompositeMark} from './compositemark';
 import * as compositeMark from './compositemark';
+import {CompositeMark} from './compositemark';
 import {Config} from './config';
 import {Data} from './data';
 import {channelHasField, Encoding, EncodingWithFacet, isRanged} from './encoding';
@@ -10,6 +10,7 @@ import {Field, FieldDef} from './fielddef';
 import * as log from './log';
 import {AREA, isPrimitiveMark, LINE, Mark, MarkDef} from './mark';
 import {Repeat} from './repeat';
+import {ResolveMapping} from './resolve';
 import {SelectionDef} from './selection';
 import {stack} from './stack';
 import {TopLevelProperties} from './toplevelprops';
@@ -117,6 +118,8 @@ export interface GenericLayerSpec<U extends GenericUnitSpec<any, any>> extends B
    * Unit specs that will be layered.
    */
   layer: (GenericLayerSpec<U> | U)[];
+
+  resolve?: ResolveMapping;
 }
 
 export type LayerSpec = GenericLayerSpec<UnitSpec>;

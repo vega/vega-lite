@@ -67,12 +67,18 @@ export const UNIT_SCALE_CHANNELS = [X, Y, SIZE, SHAPE, COLOR, OPACITY];
 
 // UNIT_SCALE_CHANNELS with ROW, COLUMN
 export const SCALE_CHANNELS = [X, Y, SIZE, SHAPE, COLOR, OPACITY, ROW, COLUMN];
+export type ScaleChannel = typeof SCALE_CHANNELS[0];
 
 // UNIT_CHANNELS without X, Y, X2, Y2;
 export const NONSPATIAL_CHANNELS = [SIZE, SHAPE, COLOR, ORDER, OPACITY, TEXT, DETAIL, TOOLTIP];
 
+// X and Y;
+export const SPATIAL_SCALE_CHANNELS = [X, Y];
+export type SpatialScaleChannel = typeof SPATIAL_SCALE_CHANNELS[0];
+
 // UNIT_SCALE_CHANNELS without X, Y;
 export const NONSPATIAL_SCALE_CHANNELS = [SIZE, SHAPE, COLOR, OPACITY];
+export type NonspatialScaleChannel = typeof NONSPATIAL_SCALE_CHANNELS[0];
 
 export const LEVEL_OF_DETAIL_CHANNELS = without(NONSPATIAL_CHANNELS, ['order'] as Channel[]);
 
@@ -138,7 +144,6 @@ export function getSupportedMark(channel: Channel): SupportedMark {
     case TEXT:
       return {text: true};
   }
-  return {};
 }
 
 export function hasScale(channel: Channel) {

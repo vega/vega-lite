@@ -1,15 +1,11 @@
-import {Axis} from '../axis';
-import {Channel} from '../channel';
-import {CellConfig, Config} from '../config';
-import {FieldDef} from '../fielddef';
-import {Legend} from '../legend';
+import {ScaleChannel, SpatialScaleChannel} from '../channel';
+import {Config} from '../config';
 import {FILL_STROKE_CONFIG} from '../mark';
-import {Scale} from '../scale';
+import {initLayerResolve, ResolveMapping} from '../resolve';
 import {LayerSpec, UnitSize} from '../spec';
-import {StackProperties} from '../stack';
 import {Dict, flatten, keys, vals} from '../util';
 import {isSignalRefDomain, VgData, VgEncodeEntry, VgLayout, VgScale, VgSignal} from '../vega.schema';
-
+import {AxesComponent} from './axis/index';
 import {applyConfig, buildModel} from './common';
 import {assembleData} from './data/assemble';
 import {parseData} from './data/parse';
@@ -24,10 +20,14 @@ import {UnitModel} from './unit';
 export class LayerModel extends Model {
   public readonly children: UnitModel[];
 
+  private readonly resolve: ResolveMapping;
+
   constructor(spec: LayerSpec, parent: Model, parentGivenName: string,
     parentUnitSize: UnitSize, repeater: RepeaterValue, config: Config) {
 
     super(spec, parent, parentGivenName, config);
+
+    this.resolve = initLayerResolve(spec.resolve || {});
 
     const unitSize = {
       ...parentUnitSize,
@@ -70,10 +70,9 @@ export class LayerModel extends Model {
     for (const child of this.children) {
       child.parseScale();
 
-      // FIXME(#1602): correctly implement independent scale
-      // Also need to check whether the scales are actually compatible, e.g. use the same sort or throw error
-      if (true) { // if shared/union scale
-        keys(child.component.scales).forEach(function(channel) {
+      // Check whether the scales are actually compatible, e.g. use the same sort or throw error
+      keys(child.component.scales).forEach((channel: ScaleChannel) => {
+        if (this.resolve[channel].scale === 'shared') {
           const childScale = child.component.scales[channel];
           const modelScale = scaleComponent[channel];
 
@@ -96,8 +95,8 @@ export class LayerModel extends Model {
 
           // remove merged scales from children
           delete child.component.scales[channel];
-        });
-      }
+        }
+      });
     }
   }
 
@@ -108,27 +107,37 @@ export class LayerModel extends Model {
   }
 
   public parseAxisAndHeader() {
-    const axisComponent = this.component.axes = {};
+    const axisComponent: AxesComponent = this.component.axes = {};
 
     for (const child of this.children) {
       child.parseAxisAndHeader();
-      keys(child.component.axes).forEach(channel => {
-        // TODO: read these from the resolve syntax
-        const axisResolve = 'shared';
-        const scaleResolve = 'shared';
-
-        if (scaleResolve === 'shared' && axisResolve === 'shared') {
-          // If shared/union axis (only possible if the scale is shared in the first place)
+      keys(child.component.axes).forEach((channel: SpatialScaleChannel) => {
+        if (this.resolve[channel].axis === 'shared') {
+          // If shared/union axis
 
           // Just use the first axes definition for each channel
           // TODO: what if the axes from different children are not compatible
           if (!axisComponent[channel]) {
             axisComponent[channel] = child.component.axes[channel];
-            delete child.component.axes[channel];
           }
         } else {
-          // Otherwise do nothing for independent axes
+          // If axes are independent
+          if (!axisComponent[channel]) {
+            // copy the first axis
+            axisComponent[channel] = child.component.axes[channel];
+          } else if (axisComponent[channel].axes.length === 1) {
+            // and put the second one on the right/top
+            axisComponent[channel].axes.push({
+              ...child.component.axes[channel].axes[0],
+              orient: channel === 'y' ? 'right' : 'top'
+            });
+            axisComponent[channel].gridAxes.push({
+              ...child.component.axes[channel].gridAxes[0]
+            });
+          }
+          // Ignore all other axes.
         }
+        delete child.component.axes[channel];
       });
     }
   }
