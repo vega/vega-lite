@@ -242,6 +242,12 @@
                     },
                     "encode": {
                         "update": {
+                            "width": {
+                                "signal": "child_width"
+                            },
+                            "height": {
+                                "signal": "child_height"
+                            },
                             "stroke": {
                                 "value": "#ccc"
                             },

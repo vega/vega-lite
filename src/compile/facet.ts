@@ -332,6 +332,9 @@ function getFacetGroupProperties(model: FacetModel) {
   const encodeEntry = model.assembleParentGroupProperties();
 
   return {
+    width: model.child.getSizeSignalRef('width'),
+    height: model.child.getSizeSignalRef('height'),
+
     // FIXME revise if we really need hasSubPlotWithXy()
     ...(hasSubPlotWithXy(model) && encodeEntry ? encodeEntry : {}),
 
