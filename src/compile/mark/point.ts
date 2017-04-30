@@ -16,9 +16,10 @@ function encodeEntry(model: UnitModel, fixedShape?: 'circle' | 'square') {
     ...mixins.pointPosition('y', model, ref.midY(height, config)),
 
     ...mixins.color(model),
+    ...mixins.text(model, 'tooltip'),
     ...mixins.nonPosition('size', model),
     ...shapeMixins(model, config, fixedShape),
-    ...mixins.nonPosition('opacity', model)
+    ...mixins.nonPosition('opacity', model),
   };
 }
 

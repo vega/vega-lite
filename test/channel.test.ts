@@ -13,8 +13,8 @@ describe('channel', () => {
   });
 
   describe('UNIT_SCALE_CHANNELS', () => {
-    it('should be UNIT_CHANNELS without X2, Y2, ORDER, DETAIL, TEXT, LABEL', () => {
-      assert.deepEqual(UNIT_SCALE_CHANNELS, without(UNIT_CHANNELS, ['x2', 'y2', 'order', 'detail', 'text', 'label']));
+    it('should be UNIT_CHANNELS without X2, Y2, ORDER, DETAIL, TEXT, LABEL, TOOLTIP', () => {
+      assert.deepEqual(UNIT_SCALE_CHANNELS, without(UNIT_CHANNELS, ['x2', 'y2', 'order', 'detail', 'text', 'label', 'tooltip']));
     });
   });
 

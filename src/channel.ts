@@ -31,6 +31,7 @@ export namespace Channel {
   export const TEXT: 'text' = 'text';
   export const ORDER: 'order' = 'order';
   export const DETAIL: 'detail' = 'detail';
+  export const TOOLTIP: 'tooltip' = 'tooltip';
 }
 
 export type Channel = keyof Encoding<any> | keyof Facet<any>;
@@ -48,9 +49,10 @@ export const TEXT = Channel.TEXT;
 export const DETAIL = Channel.DETAIL;
 export const ORDER = Channel.ORDER;
 export const OPACITY = Channel.OPACITY;
+export const TOOLTIP = Channel.TOOLTIP;
 
 
-export const CHANNELS = [X, Y, X2, Y2, ROW, COLUMN, SIZE, SHAPE, COLOR, ORDER, OPACITY, TEXT, DETAIL];
+export const CHANNELS = [X, Y, X2, Y2, ROW, COLUMN, SIZE, SHAPE, COLOR, ORDER, OPACITY, TEXT, DETAIL, TOOLTIP];
 const CHANNEL_INDEX = toSet(CHANNELS);
 
 export function isChannel(str: string): str is Channel {
@@ -58,16 +60,16 @@ export function isChannel(str: string): str is Channel {
 }
 
 // CHANNELS without COLUMN, ROW
-export const UNIT_CHANNELS = [X, Y, X2, Y2, SIZE, SHAPE, COLOR, ORDER, OPACITY, TEXT, DETAIL];
+export const UNIT_CHANNELS = [X, Y, X2, Y2, SIZE, SHAPE, COLOR, ORDER, OPACITY, TEXT, DETAIL, TOOLTIP];
 
-// UNIT_CHANNELS without X2, Y2, ORDER, DETAIL, TEXT
+// UNIT_CHANNELS without X2, Y2, ORDER, DETAIL, TEXT, TOOLTIP
 export const UNIT_SCALE_CHANNELS = [X, Y, SIZE, SHAPE, COLOR, OPACITY];
 
 // UNIT_SCALE_CHANNELS with ROW, COLUMN
 export const SCALE_CHANNELS = [X, Y, SIZE, SHAPE, COLOR, OPACITY, ROW, COLUMN];
 
 // UNIT_CHANNELS without X, Y, X2, Y2;
-export const NONSPATIAL_CHANNELS = [SIZE, SHAPE, COLOR, ORDER, OPACITY, TEXT, DETAIL];
+export const NONSPATIAL_CHANNELS = [SIZE, SHAPE, COLOR, ORDER, OPACITY, TEXT, DETAIL, TOOLTIP];
 
 // UNIT_SCALE_CHANNELS without X, Y;
 export const NONSPATIAL_SCALE_CHANNELS = [SIZE, SHAPE, COLOR, OPACITY];
@@ -88,6 +90,7 @@ export interface SupportedMark {
   line?: boolean;
   area?: boolean;
   text?: boolean;
+  tooltip?: boolean;
 }
 
 /**
@@ -111,6 +114,7 @@ export function getSupportedMark(channel: Channel): SupportedMark {
     case Y:
     case COLOR:
     case DETAIL:
+    case TOOLTIP:
     case ORDER:    // TODO: revise (order might not support rect, which is not stackable?)
     case OPACITY:
     case ROW:
@@ -138,7 +142,7 @@ export function getSupportedMark(channel: Channel): SupportedMark {
 }
 
 export function hasScale(channel: Channel) {
-  return !contains([DETAIL, TEXT, ORDER], channel);
+  return !contains([DETAIL, TEXT, ORDER, TOOLTIP], channel);
 }
 
 // Position does not work with ordinal (lookup) scale and sequential (which is only for color)
@@ -188,6 +192,7 @@ export function rangeType(channel: Channel): RangeType {
     case DETAIL:
     case TEXT:
     case ORDER:
+    case TOOLTIP:
       return undefined;
   }
   /* istanbul ignore next: should never reach here. */
