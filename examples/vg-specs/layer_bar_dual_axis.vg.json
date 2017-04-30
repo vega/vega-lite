@@ -295,17 +295,6 @@
             "orient": "right",
             "title": "MEAN(temp_max)",
             "zindex": 1
-        },
-        {
-            "scale": "layer_1_y",
-            "domain": false,
-            "format": "s",
-            "grid": true,
-            "labels": false,
-            "orient": "left",
-            "ticks": false,
-            "zindex": 0,
-            "gridScale": "x"
         }
     ]
 }
