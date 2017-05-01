@@ -36,7 +36,7 @@
                     "type": "string"
                 },
                 "encoding": {
-                    "$ref": "#/definitions/EncodingWithFacet<Field>",
+                    "$ref": "#/definitions/EncodingWithFacet",
                     "description": "A key-value mapping between encoding channels and definition of fields."
                 },
                 "height": {
@@ -166,6 +166,7 @@
                     "type": "string"
                 },
                 "height": {
+                    "description": "Height of a single visualization.\n\n__Default value:__\n- For y-axis with a continuous (non-ordinal) scale, the height will be the value of [`config.cell.height`](config.html#cell-config).\n- For y-axis with an ordinal scale: if [`rangeStep`](scale.html#ordinal) is a numeric value (default), the height is determined by the value of `rangeStep` and the cardinality of the field mapped to y-channel.   Otherwise, if the `rangeStep` is `\"fit\"`, the height will be the value of [`config.cell.height`](config.html#cell-config).\n- If no field is mapped to `x` channel, the `height` will be the value of `rangeStep`.\n\n__Note__: For plot with `row` and `column` channels, this represents the height of a single cell.",
                     "type": "number"
                 },
                 "layer": {
@@ -213,6 +214,30 @@
                     "description": "The default visualization padding, in pixels, from the edge of the visualization canvas to the data rectangle. This can be a single number or an object with `\"top\"`, `\"left\"`, `\"right\"`, `\"bottom\"` properties.\n\n__Default value__: `5`",
                     "minimum": 0
                 },
+                "resolve": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "color": {
+                            "$ref": "#/definitions/NonspatialResolve"
+                        },
+                        "opacity": {
+                            "$ref": "#/definitions/NonspatialResolve"
+                        },
+                        "shape": {
+                            "$ref": "#/definitions/NonspatialResolve"
+                        },
+                        "size": {
+                            "$ref": "#/definitions/NonspatialResolve"
+                        },
+                        "x": {
+                            "$ref": "#/definitions/SpatialResolve"
+                        },
+                        "y": {
+                            "$ref": "#/definitions/SpatialResolve"
+                        }
+                    },
+                    "type": "object"
+                },
                 "transform": {
                     "description": "An array of data transformations such as filter and new field calculation.",
                     "items": {
@@ -228,6 +253,7 @@
                     "type": "array"
                 },
                 "width": {
+                    "description": "The width of a single visualization.\n\n__Default value:__ This will be determined by the following rules:\n\n- For x-axis with a continuous (non-ordinal) scale, the width will be the value of [`config.cell.width`](config.html#cell-config).\n- For x-axis with an ordinal scale: if [`rangeStep`](scale.html#ordinal) is a numeric value (default), the width is determined by the value of `rangeStep` and the cardinality of the field mapped to x-channel.   Otherwise, if the `rangeStep` is `\"fit\"`, the width will be the value of [`config.cell.width`](config.html#cell-config).\n- If no field is mapped to `x` channel, the `width` will be the value of [`config.scale.textXRangeStep`](size.html#default-width-and-height) for `text` mark and the value of `rangeStep` for other marks.\n\n__Note__: For plot with `row` and `column` channels, this represents the width of a single cell.",
                     "type": "number"
                 }
             },
@@ -271,7 +297,7 @@
                     "type": "string"
                 },
                 "facet": {
-                    "$ref": "#/definitions/Facet<Field>"
+                    "$ref": "#/definitions/Facet"
                 },
                 "name": {
                     "description": "Name of the visualization for later reference.",
@@ -311,6 +337,9 @@
                         },
                         {
                             "$ref": "#/definitions/LayerSpec"
+                        },
+                        {
+                            "$ref": "#/definitions/RepeatSpec"
                         }
                     ]
                 },
@@ -524,6 +553,9 @@
                             },
                             {
                                 "$ref": "#/definitions/LayerSpec"
+                            },
+                            {
+                                "$ref": "#/definitions/RepeatSpec"
                             }
                         ]
                     },
@@ -577,6 +609,9 @@
                             },
                             {
                                 "$ref": "#/definitions/LayerSpec"
+                            },
+                            {
+                                "$ref": "#/definitions/RepeatSpec"
                             }
                         ]
                     },
@@ -2067,7 +2102,7 @@
             },
             "type": "object"
         },
-        "Encoding<Field>": {
+        "Encoding": {
             "additionalProperties": false,
             "properties": {
                 "color": {
@@ -2084,11 +2119,11 @@
                 "detail": {
                     "anyOf": [
                         {
-                            "$ref": "#/definitions/FieldDef<Field>"
+                            "$ref": "#/definitions/FieldDef"
                         },
                         {
                             "items": {
-                                "$ref": "#/definitions/FieldDef<Field>"
+                                "$ref": "#/definitions/FieldDef"
                             },
                             "type": "array"
                         }
@@ -2109,11 +2144,11 @@
                 "order": {
                     "anyOf": [
                         {
-                            "$ref": "#/definitions/OrderFieldDef<Field>"
+                            "$ref": "#/definitions/OrderFieldDef"
                         },
                         {
                             "items": {
-                                "$ref": "#/definitions/OrderFieldDef<Field>"
+                                "$ref": "#/definitions/OrderFieldDef"
                             },
                             "type": "array"
                         }
@@ -2148,10 +2183,21 @@
                             "$ref": "#/definitions/ConditionalValueDef<string | number | boolean>"
                         },
                         {
-                            "$ref": "#/definitions/TextFieldDef<Field>"
+                            "$ref": "#/definitions/TextFieldDef"
                         }
                     ],
                     "description": "Text of the `text` mark."
+                },
+                "tooltip": {
+                    "anyOf": [
+                        {
+                            "$ref": "#/definitions/ConditionalValueDef<string>"
+                        },
+                        {
+                            "$ref": "#/definitions/TextFieldDef"
+                        }
+                    ],
+                    "description": "The tooltip text to show upon mouse hover."
                 },
                 "x": {
                     "anyOf": [
@@ -2159,7 +2205,7 @@
                             "$ref": "#/definitions/ValueDef<number>"
                         },
                         {
-                            "$ref": "#/definitions/PositionFieldDef<Field>"
+                            "$ref": "#/definitions/PositionFieldDef"
                         }
                     ],
                     "description": "X coordinates for `point`, `circle`, `square`,\n`line`, `rule`, `text`, and `tick`\n(or to width and height for `bar` and `area` marks)."
@@ -2170,7 +2216,7 @@
                             "$ref": "#/definitions/ValueDef<number>"
                         },
                         {
-                            "$ref": "#/definitions/FieldDef<Field>"
+                            "$ref": "#/definitions/FieldDef"
                         }
                     ],
                     "description": "X2 coordinates for ranged `bar`, `rule`, `area`."
@@ -2181,7 +2227,7 @@
                             "$ref": "#/definitions/ValueDef<number>"
                         },
                         {
-                            "$ref": "#/definitions/PositionFieldDef<Field>"
+                            "$ref": "#/definitions/PositionFieldDef"
                         }
                     ],
                     "description": "Y coordinates for `point`, `circle`, `square`,\n`line`, `rule`, `text`, and `tick`\n(or to width and height for `bar` and `area` marks)."
@@ -2192,7 +2238,7 @@
                             "$ref": "#/definitions/ValueDef<number>"
                         },
                         {
-                            "$ref": "#/definitions/FieldDef<Field>"
+                            "$ref": "#/definitions/FieldDef"
                         }
                     ],
                     "description": "Y2 coordinates for ranged `bar`, `rule`, `area`."
@@ -2200,7 +2246,7 @@
             },
             "type": "object"
         },
-        "EncodingWithFacet<Field>": {
+        "EncodingWithFacet": {
             "additionalProperties": false,
             "properties": {
                 "color": {
@@ -2215,17 +2261,17 @@
                     "description": "Color of the marks – either fill or stroke color based on mark type.\n(By default, fill color for `area`, `bar`, `tick`, `text`, `circle`, and `square` /\nstroke color for `line` and `point`.)"
                 },
                 "column": {
-                    "$ref": "#/definitions/FacetFieldDef<Field>",
+                    "$ref": "#/definitions/FacetFieldDef",
                     "description": "Horizontal facets for trellis plots."
                 },
                 "detail": {
                     "anyOf": [
                         {
-                            "$ref": "#/definitions/FieldDef<Field>"
+                            "$ref": "#/definitions/FieldDef"
                         },
                         {
                             "items": {
-                                "$ref": "#/definitions/FieldDef<Field>"
+                                "$ref": "#/definitions/FieldDef"
                             },
                             "type": "array"
                         }
@@ -2246,11 +2292,11 @@
                 "order": {
                     "anyOf": [
                         {
-                            "$ref": "#/definitions/OrderFieldDef<Field>"
+                            "$ref": "#/definitions/OrderFieldDef"
                         },
                         {
                             "items": {
-                                "$ref": "#/definitions/OrderFieldDef<Field>"
+                                "$ref": "#/definitions/OrderFieldDef"
                             },
                             "type": "array"
                         }
@@ -2258,7 +2304,7 @@
                     "description": "stack order for stacked marks or order of data points in line marks."
                 },
                 "row": {
-                    "$ref": "#/definitions/FacetFieldDef<Field>",
+                    "$ref": "#/definitions/FacetFieldDef",
                     "description": "Vertical facets for trellis plots."
                 },
                 "shape": {
@@ -2289,10 +2335,21 @@
                             "$ref": "#/definitions/ConditionalValueDef<string | number | boolean>"
                         },
                         {
-                            "$ref": "#/definitions/TextFieldDef<Field>"
+                            "$ref": "#/definitions/TextFieldDef"
                         }
                     ],
                     "description": "Text of the `text` mark."
+                },
+                "tooltip": {
+                    "anyOf": [
+                        {
+                            "$ref": "#/definitions/ConditionalValueDef<string>"
+                        },
+                        {
+                            "$ref": "#/definitions/TextFieldDef"
+                        }
+                    ],
+                    "description": "The tooltip text to show upon mouse hover."
                 },
                 "x": {
                     "anyOf": [
@@ -2300,7 +2357,7 @@
                             "$ref": "#/definitions/ValueDef<number>"
                         },
                         {
-                            "$ref": "#/definitions/PositionFieldDef<Field>"
+                            "$ref": "#/definitions/PositionFieldDef"
                         }
                     ],
                     "description": "X coordinates for `point`, `circle`, `square`,\n`line`, `rule`, `text`, and `tick`\n(or to width and height for `bar` and `area` marks)."
@@ -2311,7 +2368,7 @@
                             "$ref": "#/definitions/ValueDef<number>"
                         },
                         {
-                            "$ref": "#/definitions/FieldDef<Field>"
+                            "$ref": "#/definitions/FieldDef"
                         }
                     ],
                     "description": "X2 coordinates for ranged `bar`, `rule`, `area`."
@@ -2322,7 +2379,7 @@
                             "$ref": "#/definitions/ValueDef<number>"
                         },
                         {
-                            "$ref": "#/definitions/PositionFieldDef<Field>"
+                            "$ref": "#/definitions/PositionFieldDef"
                         }
                     ],
                     "description": "Y coordinates for `point`, `circle`, `square`,\n`line`, `rule`, `text`, and `tick`\n(or to width and height for `bar` and `area` marks)."
@@ -2333,7 +2390,7 @@
                             "$ref": "#/definitions/ValueDef<number>"
                         },
                         {
-                            "$ref": "#/definitions/FieldDef<Field>"
+                            "$ref": "#/definitions/FieldDef"
                         }
                     ],
                     "description": "Y2 coordinates for ranged `bar`, `rule`, `area`."
@@ -2396,15 +2453,15 @@
             ],
             "type": "object"
         },
-        "Facet<Field>": {
+        "Facet": {
             "additionalProperties": false,
             "properties": {
                 "column": {
-                    "$ref": "#/definitions/FacetFieldDef<Field>",
+                    "$ref": "#/definitions/FacetFieldDef",
                     "description": "Horizontal facets for trellis plots."
                 },
                 "row": {
-                    "$ref": "#/definitions/FacetFieldDef<Field>",
+                    "$ref": "#/definitions/FacetFieldDef",
                     "description": "Vertical facets for trellis plots."
                 }
             },
@@ -2420,7 +2477,7 @@
             },
             "type": "object"
         },
-        "FacetFieldDef<Field>": {
+        "FacetFieldDef": {
             "additionalProperties": false,
             "properties": {
                 "aggregate": {
@@ -2501,7 +2558,7 @@
             },
             "type": "object"
         },
-        "FieldDef<Field>": {
+        "FieldDef": {
             "additionalProperties": false,
             "description": "Definition object for a data field, its type and transformation of an encoding channel.",
             "properties": {
@@ -2638,6 +2695,7 @@
                     "type": "string"
                 },
                 "height": {
+                    "description": "Height of a single visualization.\n\n__Default value:__\n- For y-axis with a continuous (non-ordinal) scale, the height will be the value of [`config.cell.height`](config.html#cell-config).\n- For y-axis with an ordinal scale: if [`rangeStep`](scale.html#ordinal) is a numeric value (default), the height is determined by the value of `rangeStep` and the cardinality of the field mapped to y-channel.   Otherwise, if the `rangeStep` is `\"fit\"`, the height will be the value of [`config.cell.height`](config.html#cell-config).\n- If no field is mapped to `x` channel, the `height` will be the value of `rangeStep`.\n\n__Note__: For plot with `row` and `column` channels, this represents the height of a single cell.",
                     "type": "number"
                 },
                 "layer": {
@@ -2658,6 +2716,30 @@
                     "description": "Name of the visualization for later reference.",
                     "type": "string"
                 },
+                "resolve": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "color": {
+                            "$ref": "#/definitions/NonspatialResolve"
+                        },
+                        "opacity": {
+                            "$ref": "#/definitions/NonspatialResolve"
+                        },
+                        "shape": {
+                            "$ref": "#/definitions/NonspatialResolve"
+                        },
+                        "size": {
+                            "$ref": "#/definitions/NonspatialResolve"
+                        },
+                        "x": {
+                            "$ref": "#/definitions/SpatialResolve"
+                        },
+                        "y": {
+                            "$ref": "#/definitions/SpatialResolve"
+                        }
+                    },
+                    "type": "object"
+                },
                 "transform": {
                     "description": "An array of data transformations such as filter and new field calculation.",
                     "items": {
@@ -2673,6 +2755,7 @@
                     "type": "array"
                 },
                 "width": {
+                    "description": "The width of a single visualization.\n\n__Default value:__ This will be determined by the following rules:\n\n- For x-axis with a continuous (non-ordinal) scale, the width will be the value of [`config.cell.width`](config.html#cell-config).\n- For x-axis with an ordinal scale: if [`rangeStep`](scale.html#ordinal) is a numeric value (default), the width is determined by the value of `rangeStep` and the cardinality of the field mapped to x-channel.   Otherwise, if the `rangeStep` is `\"fit\"`, the width will be the value of [`config.cell.width`](config.html#cell-config).\n- If no field is mapped to `x` channel, the `width` will be the value of [`config.scale.textXRangeStep`](size.html#default-width-and-height) for `text` mark and the value of `rangeStep` for other marks.\n\n__Note__: For plot with `row` and `column` channels, this represents the width of a single cell.",
                     "type": "number"
                 }
             },
@@ -2765,7 +2848,7 @@
                     "type": "string"
                 },
                 "encoding": {
-                    "$ref": "#/definitions/Encoding<Field>",
+                    "$ref": "#/definitions/Encoding",
                     "description": "A key-value mapping between encoding channels and definition of fields."
                 },
                 "height": {
@@ -3517,6 +3600,18 @@
             ],
             "type": "object"
         },
+        "NonspatialResolve": {
+            "additionalProperties": false,
+            "properties": {
+                "legend": {
+                    "$ref": "#/definitions/ResolveMode"
+                },
+                "scale": {
+                    "$ref": "#/definitions/ResolveMode"
+                }
+            },
+            "type": "object"
+        },
         "OneOfFilter": {
             "additionalProperties": false,
             "properties": {
@@ -3564,7 +3659,7 @@
             ],
             "type": "object"
         },
-        "OrderFieldDef<Field>": {
+        "OrderFieldDef": {
             "additionalProperties": false,
             "properties": {
                 "aggregate": {
@@ -3666,7 +3761,7 @@
             },
             "type": "object"
         },
-        "PositionFieldDef<Field>": {
+        "PositionFieldDef": {
             "additionalProperties": false,
             "properties": {
                 "aggregate": {
@@ -3829,6 +3924,13 @@
                 }
             },
             "type": "object"
+        },
+        "ResolveMode": {
+            "enum": [
+                "independent",
+                "shared"
+            ],
+            "type": "string"
         },
         "Scale": {
             "additionalProperties": false,
@@ -4480,6 +4582,18 @@
             ],
             "type": "string"
         },
+        "SpatialResolve": {
+            "additionalProperties": false,
+            "properties": {
+                "axis": {
+                    "$ref": "#/definitions/ResolveMode"
+                },
+                "scale": {
+                    "$ref": "#/definitions/ResolveMode"
+                }
+            },
+            "type": "object"
+        },
         "StackOffset": {
             "enum": [
                 "center",
@@ -4636,7 +4750,7 @@
             },
             "type": "object"
         },
-        "TextFieldDef<Field>": {
+        "TextFieldDef": {
             "additionalProperties": false,
             "properties": {
                 "aggregate": {

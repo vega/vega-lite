@@ -9,7 +9,7 @@ import {FILL_STROKE_CONFIG, isMarkDef, Mark, MarkDef, TEXT as TEXT_MARK} from '.
 import {hasDiscreteDomain, Scale} from '../scale';
 import {SelectionDef} from '../selection';
 import {SortField, SortOrder} from '../sort';
-import {UnitSpec} from '../spec';
+import {UnitSize, UnitSpec} from '../spec';
 import {stack, StackProperties} from '../stack';
 import {Dict, duplicate, extend, vals} from '../util';
 import {VgData, VgLayout, VgSignal} from '../vega.schema';
@@ -61,19 +61,16 @@ export class UnitModel extends ModelWithField {
   public readonly selection: Dict<SelectionDef> = {};
   public children: Model[] = [];
 
-  constructor(spec: UnitSpec, parent: Model, parentGivenName: string, repeater: RepeaterValue, config: Config) {
+  constructor(spec: UnitSpec, parent: Model, parentGivenName: string,
+    parentUnitSize: UnitSize = {}, repeater: RepeaterValue, config: Config) {
     super(spec, parent, parentGivenName, config);
 
     // FIXME(#2041): copy config.facet.cell to config.cell -- this seems incorrect and should be rewritten
     this.initFacetCellConfig();
 
-    // use top-level width / height or parent's top-level width / height
-
-    // FIXME: once facet supports width/height, this is no longer correct!
-    const providedWidth = spec.width !== undefined ? spec.width :
-      parent ? parent['width'] : undefined; // only exists if parent is layer
-    const providedHeight = spec.height !== undefined ? spec.height :
-      parent ? parent['height'] : undefined; // only exists if parent is layer
+    // use top-level width / height or ancestor's width / height
+    const providedWidth = spec.width || parentUnitSize.width;
+    const providedHeight = spec.height || parentUnitSize.height;
 
     const mark = isMarkDef(spec.mark) ? spec.mark.type : spec.mark;
     const encoding = this.encoding = normalizeEncoding(replaceRepeaterInEncoding(spec.encoding || {}, repeater), mark);
@@ -304,7 +301,11 @@ export class UnitModel extends ModelWithField {
   }
 
   public assembleParentGroupProperties() {
-    return applyConfig({}, this.config.cell, FILL_STROKE_CONFIG.concat(['clip']));
+    return {
+      width: this.getSizeSignalRef('width'),
+      height: this.getSizeSignalRef('height'),
+      ...applyConfig({}, this.config.cell, FILL_STROKE_CONFIG.concat(['clip']))
+    };
   }
 
   public channels() {
@@ -361,9 +362,5 @@ export class UnitModel extends ModelWithField {
     }
 
     return field(fieldDef, opt);
-  }
-
-  public isUnit() {
-    return true;
   }
 }

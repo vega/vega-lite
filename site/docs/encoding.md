@@ -22,6 +22,7 @@ An integral part of the data visualization process is encoding data with visual 
     "size": ...,
     "shape": ...,
     "text": ...,
+    "tooltip": ...,
     "detail": ...
   },
   ...
@@ -47,7 +48,7 @@ Position channels determine the position of the marks.
 
 Mark properties channels map data fields directly to visual properties of the marks. Unlike other channel types, they can be mapped to [constant values](#value) as well. Here are the supported mark properties:
 
-{% include table.html props="color,opacity,shape,size,text" source="Encoding" %}
+{% include table.html props="color,opacity,shape,size,text,tooltip" source="Encoding" %}
 
 ### Additional Level of Detail Channel
 

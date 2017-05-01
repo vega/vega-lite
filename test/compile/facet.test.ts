@@ -103,7 +103,7 @@ describe('FacetModel', function() {
         padding: {row: 10, column: 10},
         offset: 10,
         columns: {
-          signal: "data('column_layout')[0].distinct_a"
+          signal: "data('column_layout')[0][\"distinct_a\"]"
         },
         bounds: 'full'
       });

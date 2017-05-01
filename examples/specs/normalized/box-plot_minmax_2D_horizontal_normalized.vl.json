@@ -1,0 +1,107 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v2.json",
+  "description": "A horizontal box plot showing median, min, and max in the US population distribution of age groups in 2000.",
+  "data": {
+    "url": "data/population.json"
+  },
+  "layer": [
+    {
+      "mark": {
+        "type": "rule",
+        "role": "boxWhisker"
+      },
+      "encoding": {
+        "y": {
+          "field": "age",
+          "type": "ordinal"
+        },
+        "x": {
+          "axis": {
+            "title": "population"
+          },
+          "aggregate": "min",
+          "field": "people",
+          "type": "quantitative"
+        },
+        "x2": {
+          "aggregate": "q1",
+          "field": "people",
+          "type": "quantitative"
+        }
+      }
+    },
+    {
+      "mark": {
+        "type": "rule",
+        "role": "boxWhisker"
+      },
+      "encoding": {
+        "y": {
+          "field": "age",
+          "type": "ordinal"
+        },
+        "x": {
+          "aggregate": "q3",
+          "field": "people",
+          "type": "quantitative"
+        },
+        "x2": {
+          "aggregate": "max",
+          "field": "people",
+          "type": "quantitative"
+        }
+      }
+    },
+    {
+      "mark": {
+        "type": "bar",
+        "role": "box"
+      },
+      "encoding": {
+        "y": {
+          "field": "age",
+          "type": "ordinal"
+        },
+        "x": {
+          "aggregate": "q1",
+          "field": "people",
+          "type": "quantitative"
+        },
+        "x2": {
+          "aggregate": "q3",
+          "field": "people",
+          "type": "quantitative"
+        },
+        "color": {
+          "value": "skyblue"
+        },
+        "size": {
+          "value": 5
+        }
+      }
+    },
+    {
+      "mark": {
+        "type": "tick",
+        "role": "boxMid"
+      },
+      "encoding": {
+        "y": {
+          "field": "age",
+          "type": "ordinal"
+        },
+        "x": {
+          "aggregate": "median",
+          "field": "people",
+          "type": "quantitative"
+        },
+        "size": {
+          "value": 5
+        },
+        "color": {
+          "value": "white"
+        }
+      }
+    }
+  ]
+}

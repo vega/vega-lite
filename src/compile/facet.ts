@@ -8,7 +8,7 @@ import * as log from '../log';
 import {FILL_STROKE_CONFIG} from '../mark';
 import {FacetSpec} from '../spec';
 import {StackProperties} from '../stack';
-import {contains, Dict, extend, flatten, keys, vals} from '../util';
+import {contains, Dict, extend, flatten, keys, stringValue, vals} from '../util';
 import {FontWeight, VgSignal} from '../vega.schema';
 import {
   isDataRefDomain,
@@ -41,7 +41,7 @@ export class FacetModel extends ModelWithField {
   constructor(spec: FacetSpec, parent: Model, parentGivenName: string, repeater: RepeaterValue, config: Config) {
     super(spec, parent, parentGivenName, config);
 
-    this.child = buildModel(spec.spec, this, this.getName('child'), repeater, config);
+    this.child = buildModel(spec.spec, this, this.getName('child'), undefined, repeater, config);
     this.children = [this.child];
 
     const facet: Facet<string> = replaceRepeaterInFacet(spec.facet, repeater);
@@ -286,7 +286,7 @@ export class FacetModel extends ModelWithField {
     // In facetNode.assemble(), the name is always this.getName('column') + '_layout'.
     const facetLayoutDataName = this.getName('column') + '_layout';
     const columnDistinct = this.field('column',  {prefix: 'distinct'});
-    return `data('${facetLayoutDataName}')[0].${columnDistinct}`;
+    return `data('${facetLayoutDataName}')[0][${stringValue(columnDistinct)}]`;
   }
 
   public assembleMarks(): VgEncodeEntry[] {
@@ -320,26 +320,12 @@ export class FacetModel extends ModelWithField {
   }
 }
 
-export function hasSubPlotWithXy(model: FacetModel) {
-  return model.hasDescendantWithFieldOnChannel('x') ||
-    model.hasDescendantWithFieldOnChannel('y');
-}
-
-function childSizeEncodeEntryMixins(model: FacetModel, sizeType: 'width' | 'height') {
-  return {[sizeType]: model.child.getSizeSignalRef(sizeType)};
-}
-
 // FIXME(https://github.com/vega/vega-lite/issues/2041): revise this.
 function getFacetGroupProperties(model: FacetModel) {
-  const child = model.child;
+  const encodeEntry = model.child.assembleParentGroupProperties();
 
   return {
-    ...childSizeEncodeEntryMixins(model, 'width'),
-    ...childSizeEncodeEntryMixins(model, 'height'),
-
-    // FIXME revise if we really need hasSubPlotWithXy()
-    ...(hasSubPlotWithXy(model) ? child.assembleParentGroupProperties() : {}),
-
+    ...(encodeEntry ? encodeEntry : {}),
     ...applyConfig({}, model.config.facet.cell, FILL_STROKE_CONFIG.concat(['clip']))
   };
 }

@@ -1,15 +1,11 @@
-import {Axis} from '../axis';
-import {Channel} from '../channel';
-import {CellConfig, Config} from '../config';
-import {FieldDef} from '../fielddef';
-import {Legend} from '../legend';
+import {NonspatialScaleChannel, ScaleChannel, SpatialScaleChannel} from '../channel';
+import {Config} from '../config';
 import {FILL_STROKE_CONFIG} from '../mark';
-import {Scale} from '../scale';
-import {LayerSpec} from '../spec';
-import {StackProperties} from '../stack';
+import {initLayerResolve, NonspatialResolve, ResolveMapping, SpatialResolve} from '../resolve';
+import {LayerSpec, UnitSize} from '../spec';
 import {Dict, flatten, keys, vals} from '../util';
 import {isSignalRefDomain, VgData, VgEncodeEntry, VgLayout, VgScale, VgSignal} from '../vega.schema';
-
+import {AxesComponent} from './axis/index';
 import {applyConfig, buildModel} from './common';
 import {assembleData} from './data/assemble';
 import {parseData} from './data/parse';
@@ -24,31 +20,25 @@ import {UnitModel} from './unit';
 export class LayerModel extends Model {
   public readonly children: UnitModel[];
 
-  /**
-   * Fixed width for the unit visualization.
-   * If undefined (e.g., for ordinal scale), the width of the
-   * visualization will be calculated dynamically.
-   */
-  public readonly width: number;
+  private readonly resolve: ResolveMapping;
 
-  /**
-   * Fixed height for the unit visualization.
-   * If undefined (e.g., for ordinal scale), the height of the
-   * visualization will be calculated dynamically.
-   */
-  public readonly height: number;
-
-  constructor(spec: LayerSpec, parent: Model, parentGivenName: string, repeater: RepeaterValue, config: Config) {
+  constructor(spec: LayerSpec, parent: Model, parentGivenName: string,
+    parentUnitSize: UnitSize, repeater: RepeaterValue, config: Config) {
 
     super(spec, parent, parentGivenName, config);
 
-    this.width = spec.width;
-    this.height = spec.height;
+    this.resolve = initLayerResolve(spec.resolve || {});
+
+    const unitSize = {
+      ...parentUnitSize,
+      ...(spec.width ? {width: spec.width} : {}),
+      ...(spec.height ? {height: spec.height} : {})
+    };
 
     this.children = spec.layer.map((layer, i) => {
       // FIXME: this is not always the case
       // we know that the model has to be a unit model because we pass in a unit spec
-      return buildModel(layer, this, this.getName('layer_' + i), repeater, config) as UnitModel;
+      return buildModel(layer, this, this.getName('layer_' + i), unitSize, repeater, config) as UnitModel;
     });
   }
 
@@ -80,10 +70,9 @@ export class LayerModel extends Model {
     for (const child of this.children) {
       child.parseScale();
 
-      // FIXME(#1602): correctly implement independent scale
-      // Also need to check whether the scales are actually compatible, e.g. use the same sort or throw error
-      if (true) { // if shared/union scale
-        keys(child.component.scales).forEach(function(channel) {
+      // Check whether the scales are actually compatible, e.g. use the same sort or throw error
+      keys(child.component.scales).forEach((channel: ScaleChannel) => {
+        if (this.resolve[channel].scale === 'shared') {
           const childScale = child.component.scales[channel];
           const modelScale = scaleComponent[channel];
 
@@ -106,8 +95,8 @@ export class LayerModel extends Model {
 
           // remove merged scales from children
           delete child.component.scales[channel];
-        });
-      }
+        }
+      });
     }
   }
 
@@ -118,27 +107,39 @@ export class LayerModel extends Model {
   }
 
   public parseAxisAndHeader() {
-    const axisComponent = this.component.axes = {};
+    const axisComponent: AxesComponent = this.component.axes = {};
 
     for (const child of this.children) {
       child.parseAxisAndHeader();
-      keys(child.component.axes).forEach(channel => {
-        // TODO: read these from the resolve syntax
-        const axisResolve = 'shared';
-        const scaleResolve = 'shared';
-
-        if (scaleResolve === 'shared' && axisResolve === 'shared') {
-          // If shared/union axis (only possible if the scale is shared in the first place)
+      keys(child.component.axes).forEach((channel: SpatialScaleChannel) => {
+        if ((this.resolve[channel] as SpatialResolve).axis === 'shared') {
+          // If shared/union axis
 
           // Just use the first axes definition for each channel
           // TODO: what if the axes from different children are not compatible
           if (!axisComponent[channel]) {
             axisComponent[channel] = child.component.axes[channel];
-            delete child.component.axes[channel];
           }
         } else {
-          // Otherwise do nothing for independent axes
+          // If axes are independent
+          // TODO(#2251): correctly merge axis
+          if (!axisComponent[channel]) {
+            // copy the first axis
+            axisComponent[channel] = child.component.axes[channel];
+          } else {
+            // put every odd numbered axis on the right/top
+            axisComponent[channel].axes.push({
+              ...child.component.axes[channel].axes[0],
+              ...(axisComponent[channel].axes.length % 2 === 1 ? {orient: channel === 'y' ? 'right' : 'top'} : {})
+            });
+            if (child.component.axes[channel].gridAxes.length > 0) {
+              axisComponent[channel].gridAxes.push({
+                ...child.component.axes[channel].gridAxes[0]
+              });
+            }
+          }
         }
+        // delete child.component.axes[channel];
       });
     }
   }
@@ -150,19 +151,25 @@ export class LayerModel extends Model {
       child.parseLegend();
 
       // TODO: correctly implement independent axes
-      if (true) { // if shared/union scale
-        keys(child.component.legends).forEach(channel => {
+      keys(child.component.legends).forEach((channel: NonspatialScaleChannel) => {
+        if ((this.resolve[channel] as NonspatialResolve).legend === 'shared') { // if shared/union scale
           // just use the first legend definition for each channel
           if (!legendComponent[channel]) {
             legendComponent[channel] = child.component.legends[channel];
           }
-        });
-      }
+        } else {
+          // TODO: support independent legends
+        }
+      });
     }
   }
 
   public assembleParentGroupProperties(): VgEncodeEntry {
-    return applyConfig({}, this.config.cell, FILL_STROKE_CONFIG.concat(['clip']));
+    return {
+      width: this.getSizeSignalRef('width'),
+      height: this.getSizeSignalRef('height'),
+      ...applyConfig({}, this.config.cell, FILL_STROKE_CONFIG.concat(['clip']))
+    };
   }
 
   public assembleSelectionTopLevelSignals(signals: any[]): VgSignal[] {

@@ -1,0 +1,30 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v2.json",
+  "data": {
+    "url": "data/barley.json"
+  },
+  "facet": {
+    "column": {
+      "field": "year",
+      "type": "ordinal"
+    }
+  },
+  "spec": {
+    "mark": "bar",
+    "encoding": {
+      "x": {
+        "field": "yield",
+        "type": "quantitative",
+        "aggregate": "sum"
+      },
+      "y": {
+        "field": "variety",
+        "type": "nominal"
+      },
+      "color": {
+        "field": "site",
+        "type": "nominal"
+      }
+    }
+  }
+}

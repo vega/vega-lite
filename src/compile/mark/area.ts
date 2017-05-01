@@ -13,6 +13,7 @@ export const area: MarkCompiler = {
       ...mixins.pointPosition2(model, 'zeroOrMin'),
 
       ...mixins.color(model),
+      ...mixins.text(model, 'tooltip'),
       ...mixins.nonPosition('opacity', model),
       ...mixins.markDefProperties(model.markDef, ['orient', 'interpolate', 'tension']),
     };

@@ -166,6 +166,7 @@ use `npm run deploy:gh`.
 We use the [Visual Studio Code](http://code.visualstudio.com/) editor with TSLint plugin.
 - VSCode has a nice built-in Typescript support!
 - We already include project settings to hide compiled files  (`*.js`, `*.js.map`).  This should work automatically if you open the vega-lite folder with VSCode.
+- Make sure to install [TypeScript Importer](https://marketplace.visualstudio.com/items?itemName=pmneo.tsimporter) and [TSLint](https://marketplace.visualstudio.com/items?itemName=eg2.tslint) extensions.
 
 ## Manually Testing with Vega-Editor
 

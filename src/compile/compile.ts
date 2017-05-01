@@ -24,7 +24,7 @@ export function compile(inputSpec: TopLevelExtendedSpec, logger?: log.LoggerInte
     const spec = normalize(inputSpec, config);
 
     // 3. Instantiate the model with default config
-    const model = buildModel(spec, null, '', null, config);
+    const model = buildModel(spec, null, '', undefined, undefined, config);
 
     // 4. Parse each part of the model to produce components that will be assembled later
     // We traverse the whole tree to parse once for each type of components
@@ -96,15 +96,7 @@ export function assembleNestedMainGroup(model: Model) {
   const {layout, signals, ...group} =  model.assembleGroup([]);
   const marks = group.marks;
 
-  const hasLayout = !!model.assembleLayout();
-  const parentEncodeEntry = {
-    ...(!hasLayout ? {
-      width: {signal: 'width'},
-      height: {signal: 'height'},
-    } : {}),
-    ...model.assembleParentGroupProperties()
-  };
-
+  const parentEncodeEntry = model.assembleParentGroupProperties();
 
   return {
     ...group,
@@ -113,7 +105,7 @@ export function assembleNestedMainGroup(model: Model) {
       type: 'group',
       layout,
       signals,
-      ...(keys(parentEncodeEntry).length > 0 ? {
+      ...(parentEncodeEntry ? {
         encode: {
           update: parentEncodeEntry
         }

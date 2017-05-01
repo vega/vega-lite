@@ -1,6 +1,6 @@
 import {DateTimeExpr, dateTimeExpr} from './datetime';
 import * as log from './log';
-import {Dict, keys} from './util';
+import {Dict, keys, stringValue} from './util';
 
 export namespace TimeUnit {
   export const YEAR: 'year' = 'year';
@@ -165,7 +165,7 @@ export function containsTimeUnit(fullTimeUnit: TimeUnit, timeUnit: TimeUnit) {
  * Returns Vega expresssion for a given timeUnit and fieldRef
  */
 export function fieldExpr(fullTimeUnit: TimeUnit, field: string): string {
-  const fieldRef =  `datum["${field}"]`;
+  const fieldRef =  `datum[${stringValue(field)}]`;
 
   function func(timeUnit: TimeUnit) {
     if (timeUnit === TimeUnit.QUARTER) {

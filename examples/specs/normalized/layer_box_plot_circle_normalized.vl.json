@@ -1,0 +1,131 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v2.json",
+  "width": 500,
+  "description": "A horizontal box plot showing median, min, and max in the US population distribution of age groups in 2000.",
+  "data": {
+    "url": "data/population.json"
+  },
+  "layer": [
+    {
+      "layer": [
+        {
+          "mark": {
+            "type": "rule",
+            "role": "boxWhisker"
+          },
+          "encoding": {
+            "y": {
+              "field": "age",
+              "type": "ordinal"
+            },
+            "x": {
+              "axis": {
+                "title": "population"
+              },
+              "aggregate": "min",
+              "field": "people",
+              "type": "quantitative"
+            },
+            "x2": {
+              "aggregate": "q1",
+              "field": "people",
+              "type": "quantitative"
+            }
+          }
+        },
+        {
+          "mark": {
+            "type": "rule",
+            "role": "boxWhisker"
+          },
+          "encoding": {
+            "y": {
+              "field": "age",
+              "type": "ordinal"
+            },
+            "x": {
+              "aggregate": "q3",
+              "field": "people",
+              "type": "quantitative"
+            },
+            "x2": {
+              "aggregate": "max",
+              "field": "people",
+              "type": "quantitative"
+            }
+          }
+        },
+        {
+          "mark": {
+            "type": "bar",
+            "role": "box"
+          },
+          "encoding": {
+            "y": {
+              "field": "age",
+              "type": "ordinal"
+            },
+            "x": {
+              "aggregate": "q1",
+              "field": "people",
+              "type": "quantitative"
+            },
+            "x2": {
+              "aggregate": "q3",
+              "field": "people",
+              "type": "quantitative"
+            },
+            "size": {
+              "value": 14
+            }
+          }
+        },
+        {
+          "mark": {
+            "type": "tick",
+            "role": "boxMid"
+          },
+          "encoding": {
+            "y": {
+              "field": "age",
+              "type": "ordinal"
+            },
+            "x": {
+              "aggregate": "median",
+              "field": "people",
+              "type": "quantitative"
+            },
+            "size": {
+              "value": 14
+            },
+            "color": {
+              "value": "white"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "mark": "circle",
+      "encoding": {
+        "y": {
+          "field": "age",
+          "type": "ordinal"
+        },
+        "x": {
+          "field": "people",
+          "type": "quantitative",
+          "axis": {
+            "title": "population"
+          }
+        },
+        "color": {
+          "value": "black"
+        },
+        "opacity": {
+          "value": 0.1
+        }
+      }
+    }
+  ]
+}
