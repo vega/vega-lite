@@ -2111,7 +2111,7 @@
                             "$ref": "#/definitions/ConditionalValueDef<string>"
                         },
                         {
-                            "$ref": "#/definitions/Legend<string>"
+                            "$ref": "#/definitions/LegendFieldDef<Field, string>"
                         }
                     ],
                     "description": "Color of the marks – either fill or stroke color based on mark type.\n(By default, fill color for `area`, `bar`, `tick`, `text`, `circle`, and `square` /\nstroke color for `line` and `point`.)"
@@ -2136,7 +2136,7 @@
                             "$ref": "#/definitions/ConditionalValueDef<number>"
                         },
                         {
-                            "$ref": "#/definitions/Legend<number>"
+                            "$ref": "#/definitions/LegendFieldDef<Field, number>"
                         }
                     ],
                     "description": "Opacity of the marks – either can be a value or a range."
@@ -2161,7 +2161,7 @@
                             "$ref": "#/definitions/ConditionalValueDef<string>"
                         },
                         {
-                            "$ref": "#/definitions/Legend<string>"
+                            "$ref": "#/definitions/LegendFieldDef<Field, string>"
                         }
                     ],
                     "description": "The symbol's shape (only for `point` marks). The supported values are\n`\"circle\"` (default), `\"square\"`, `\"cross\"`, `\"diamond\"`, `\"triangle-up\"`,\nor `\"triangle-down\"`, or else a custom SVG path string."
@@ -2172,7 +2172,7 @@
                             "$ref": "#/definitions/ConditionalValueDef<number>"
                         },
                         {
-                            "$ref": "#/definitions/Legend<number>"
+                            "$ref": "#/definitions/LegendFieldDef<Field, number>"
                         }
                     ],
                     "description": "Size of the mark.\n- For `point`, `square` and `circle`\n– the symbol size, or pixel area of the mark.\n- For `bar` and `tick` – the bar and tick's size.\n- For `text` – the text's font size.\n- Size is currently unsupported for `line` and `area`."
@@ -2255,7 +2255,7 @@
                             "$ref": "#/definitions/ConditionalValueDef<string>"
                         },
                         {
-                            "$ref": "#/definitions/Legend<string>"
+                            "$ref": "#/definitions/LegendFieldDef<Field, string>"
                         }
                     ],
                     "description": "Color of the marks – either fill or stroke color based on mark type.\n(By default, fill color for `area`, `bar`, `tick`, `text`, `circle`, and `square` /\nstroke color for `line` and `point`.)"
@@ -2284,7 +2284,7 @@
                             "$ref": "#/definitions/ConditionalValueDef<number>"
                         },
                         {
-                            "$ref": "#/definitions/Legend<number>"
+                            "$ref": "#/definitions/LegendFieldDef<Field, number>"
                         }
                     ],
                     "description": "Opacity of the marks – either can be a value or a range."
@@ -2313,7 +2313,7 @@
                             "$ref": "#/definitions/ConditionalValueDef<string>"
                         },
                         {
-                            "$ref": "#/definitions/Legend<string>"
+                            "$ref": "#/definitions/LegendFieldDef<Field, string>"
                         }
                     ],
                     "description": "The symbol's shape (only for `point` marks). The supported values are\n`\"circle\"` (default), `\"square\"`, `\"cross\"`, `\"diamond\"`, `\"triangle-up\"`,\nor `\"triangle-down\"`, or else a custom SVG path string."
@@ -2324,7 +2324,7 @@
                             "$ref": "#/definitions/ConditionalValueDef<number>"
                         },
                         {
-                            "$ref": "#/definitions/Legend<number>"
+                            "$ref": "#/definitions/LegendFieldDef<Field, number>"
                         }
                     ],
                     "description": "Size of the mark.\n- For `point`, `square` and `circle`\n– the symbol size, or pixel area of the mark.\n- For `bar` and `tick` – the bar and tick's size.\n- For `text` – the text's font size.\n- Size is currently unsupported for `line` and `area`."
@@ -3171,7 +3171,7 @@
             },
             "type": "object"
         },
-        "Legend<number>": {
+        "LegendFieldDef<Field, number>": {
             "additionalProperties": false,
             "properties": {
                 "aggregate": {
@@ -3280,7 +3280,7 @@
             },
             "type": "object"
         },
-        "Legend<string>": {
+        "LegendFieldDef<Field, string>": {
             "additionalProperties": false,
             "properties": {
                 "aggregate": {
