@@ -16,7 +16,17 @@ export interface NonspatialResolve {
 
 export type Resolve = SpatialResolve | NonspatialResolve;
 
-export type ResolveMapping = {[P in NonspatialScaleChannel]?: NonspatialResolve} & {[P in SpatialScaleChannel]?: SpatialResolve};
+// TODO: replace this with {[P in NonspatialScaleChannel]?: NonspatialResolve} & {[P in SpatialScaleChannel]?: SpatialResolve}; and make sure that the right schema is being generated
+export type ResolveMapping = {
+  // spatial channels
+  x?: SpatialResolve
+  y?: SpatialResolve
+  // non-spatial channels
+  color?: NonspatialResolve
+  opacity?: NonspatialResolve
+  size?: NonspatialResolve
+  shape?: NonspatialResolve
+};
 
 export function initLayerResolve(resolve: ResolveMapping): ResolveMapping {
   const out: ResolveMapping = {};

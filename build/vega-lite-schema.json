@@ -215,14 +215,28 @@
                     "minimum": 0
                 },
                 "resolve": {
-                    "anyOf": [
-                        {
-                            "$ref": "#/definitions/{ color?: NonspatialResolve; opacity?: NonspatialResolve; size?: NonspatialResolve; shape?: Nonsp..."
+                    "additionalProperties": false,
+                    "properties": {
+                        "color": {
+                            "$ref": "#/definitions/NonspatialResolve"
                         },
-                        {
-                            "$ref": "#/definitions/{ x?: SpatialResolve; y?: SpatialResolve; }"
+                        "opacity": {
+                            "$ref": "#/definitions/NonspatialResolve"
+                        },
+                        "shape": {
+                            "$ref": "#/definitions/NonspatialResolve"
+                        },
+                        "size": {
+                            "$ref": "#/definitions/NonspatialResolve"
+                        },
+                        "x": {
+                            "$ref": "#/definitions/SpatialResolve"
+                        },
+                        "y": {
+                            "$ref": "#/definitions/SpatialResolve"
                         }
-                    ]
+                    },
+                    "type": "object"
                 },
                 "transform": {
                     "description": "An array of data transformations such as filter and new field calculation.",
@@ -2703,14 +2717,28 @@
                     "type": "string"
                 },
                 "resolve": {
-                    "anyOf": [
-                        {
-                            "$ref": "#/definitions/{ color?: NonspatialResolve; opacity?: NonspatialResolve; size?: NonspatialResolve; shape?: Nonsp..."
+                    "additionalProperties": false,
+                    "properties": {
+                        "color": {
+                            "$ref": "#/definitions/NonspatialResolve"
                         },
-                        {
-                            "$ref": "#/definitions/{ x?: SpatialResolve; y?: SpatialResolve; }"
+                        "opacity": {
+                            "$ref": "#/definitions/NonspatialResolve"
+                        },
+                        "shape": {
+                            "$ref": "#/definitions/NonspatialResolve"
+                        },
+                        "size": {
+                            "$ref": "#/definitions/NonspatialResolve"
+                        },
+                        "x": {
+                            "$ref": "#/definitions/SpatialResolve"
+                        },
+                        "y": {
+                            "$ref": "#/definitions/SpatialResolve"
                         }
-                    ]
+                    },
+                    "type": "object"
                 },
                 "transform": {
                     "description": "An array of data transformations such as filter and new field calculation.",
@@ -3572,6 +3600,18 @@
             ],
             "type": "object"
         },
+        "NonspatialResolve": {
+            "additionalProperties": false,
+            "properties": {
+                "legend": {
+                    "$ref": "#/definitions/ResolveMode"
+                },
+                "scale": {
+                    "$ref": "#/definitions/ResolveMode"
+                }
+            },
+            "type": "object"
+        },
         "OneOfFilter": {
             "additionalProperties": false,
             "properties": {
@@ -3884,6 +3924,13 @@
                 }
             },
             "type": "object"
+        },
+        "ResolveMode": {
+            "enum": [
+                "independent",
+                "shared"
+            ],
+            "type": "string"
         },
         "Scale": {
             "additionalProperties": false,
@@ -4535,6 +4582,18 @@
             ],
             "type": "string"
         },
+        "SpatialResolve": {
+            "additionalProperties": false,
+            "properties": {
+                "axis": {
+                    "$ref": "#/definitions/ResolveMode"
+                },
+                "scale": {
+                    "$ref": "#/definitions/ResolveMode"
+                }
+            },
+            "type": "object"
+        },
         "StackOffset": {
             "enum": [
                 "center",
@@ -5030,16 +5089,6 @@
                 },
                 "title": {
                 }
-            },
-            "type": "object"
-        },
-        "{ color?: NonspatialResolve; opacity?: NonspatialResolve; size?: NonspatialResolve; shape?: Nonsp...": {
-            "properties": {
-            },
-            "type": "object"
-        },
-        "{ x?: SpatialResolve; y?: SpatialResolve; }": {
-            "properties": {
             },
             "type": "object"
         }
