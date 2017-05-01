@@ -7,12 +7,12 @@ import * as rules from './rules';
 
 import {Dict, keys, some} from '../../util';
 import {UnitModel} from '../unit';
-import {AxesComponent, AxisComponent} from './index';
+import {AxisComponent, AxisComponentIndex} from './component';
 
 type AxisPart = 'domain' | 'grid' | 'labels' | 'ticks' | 'title';
 const AXIS_PARTS: AxisPart[] = ['domain', 'grid', 'labels', 'ticks', 'title'];
 
-export function parseAxisComponent(model: UnitModel, axisChannels: Channel[]): AxesComponent {
+export function parseAxisComponent(model: UnitModel, axisChannels: Channel[]): AxisComponentIndex {
   return axisChannels.reduce(function(axis, channel) {
     const axisComponent: AxisComponent = {axes:[], gridAxes: []};
     if (model.axis(channel)) {
