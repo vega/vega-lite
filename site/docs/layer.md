@@ -29,3 +29,11 @@ Now, let's draw a simple line chart of prices of stocks.
 
 Now, let's add the chart into the layer array.
 <div class="vl-example" data-name="layer_line_color_rule"></div>
+
+And voila! You have a layered chart.
+##### Note
+When you have different scales in different layers, the layers are unioned to give a net example having one union scale.
+
+##### Advanced Example
+The population of the German city of Falkensee over time. Based on an [image from Wikipedia]((https://de.wikipedia.org/wiki/Datei:Bev%C3%B6lkerungsentwicklung_Falkensee.pdf)).
+<div class="vl-example" data-name="layered_falkensee">
