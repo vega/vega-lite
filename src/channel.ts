@@ -180,11 +180,17 @@ export function rangeType(channel: Channel): RangeType {
     case Y:
     case SIZE:
     case OPACITY:
+    // X2 and Y2 use X and Y scales, so they similarly have continuous range.
+    case X2:
+    case Y2:
       return 'continuous';
 
     case ROW:
     case COLUMN:
     case SHAPE:
+    // TEXT and TOOLTIP have no scale but have discrete output
+    case TEXT:
+    case TOOLTIP:
       return 'discrete';
 
     // Color can be either continuous or discrete, depending on scale type.
@@ -192,12 +198,8 @@ export function rangeType(channel: Channel): RangeType {
       return 'flexible';
 
     // No scale, no range type.
-    case X2:
-    case Y2:
     case DETAIL:
-    case TEXT:
     case ORDER:
-    case TOOLTIP:
       return undefined;
   }
   /* istanbul ignore next: should never reach here. */
