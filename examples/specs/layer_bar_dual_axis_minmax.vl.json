@@ -1,0 +1,64 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v2.json",
+  "description": "Barchart for precipitation overlayed with linecharts to show temperature range.",
+  "data": {"url": "data/seattle-weather.csv"},
+  "layer": [
+    {
+      "mark": "bar",
+      "encoding": {
+        "x": {
+          "timeUnit": "month",
+          "field": "date",
+          "type": "temporal"
+        },
+        "y": {
+          "aggregate": "mean",
+          "field": "precipitation",
+          "type": "quantitative",
+          "axis": {"grid": false, "title": "Mean Precipitation"}
+        }
+      }
+    },
+    {
+      "layer": [
+        {
+          "mark": "line",
+          "encoding": {
+            "x": {
+              "timeUnit": "month",
+              "field": "date",
+              "type": "temporal"
+            },
+            "y": {
+              "aggregate": "max",
+              "field": "temp_max",
+              "type": "quantitative",
+              "axis": {"grid": false, "title": "Temperature (min and max)"},
+              "scale": {"zero": false}
+            },
+            "color": {"value": "firebrick"}
+          }
+        },
+        {
+          "mark": "line",
+          "encoding": {
+            "x": {
+              "timeUnit": "month",
+              "field": "date",
+              "type": "temporal"
+            },
+            "y": {
+              "aggregate": "min",
+              "field": "temp_min",
+              "type": "quantitative",
+              "axis": {"grid": false},
+              "scale": {"zero": false}
+            },
+            "color": {"value": "firebrick"}
+          }
+        }
+      ]
+    }
+  ],
+  "resolve": {"y": {"scale": "independent"}}
+}
