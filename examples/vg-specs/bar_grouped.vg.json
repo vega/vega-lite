@@ -275,6 +275,9 @@
                             },
                             "strokeWidth": {
                                 "value": 0
+                            },
+                            "fill": {
+                                "value": "transparent"
                             }
                         }
                     },

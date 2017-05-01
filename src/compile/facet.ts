@@ -320,24 +320,12 @@ export class FacetModel extends ModelWithField {
   }
 }
 
-export function hasSubPlotWithXy(model: FacetModel) {
-  return model.hasDescendantWithFieldOnChannel('x') ||
-    model.hasDescendantWithFieldOnChannel('y');
-}
-
 // FIXME(https://github.com/vega/vega-lite/issues/2041): revise this.
 function getFacetGroupProperties(model: FacetModel) {
-  const child = model.child;
-
-  const encodeEntry = model.assembleParentGroupProperties();
+  const encodeEntry = model.child.assembleParentGroupProperties();
 
   return {
-    width: model.child.getSizeSignalRef('width'),
-    height: model.child.getSizeSignalRef('height'),
-
-    // FIXME revise if we really need hasSubPlotWithXy()
-    ...(hasSubPlotWithXy(model) && encodeEntry ? encodeEntry : {}),
-
+    ...(encodeEntry ? encodeEntry : {}),
     ...applyConfig({}, model.config.facet.cell, FILL_STROKE_CONFIG.concat(['clip']))
   };
 }
