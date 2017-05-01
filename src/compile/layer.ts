@@ -1,7 +1,7 @@
 import {NonspatialScaleChannel, ScaleChannel, SpatialScaleChannel} from '../channel';
 import {Config} from '../config';
 import {FILL_STROKE_CONFIG} from '../mark';
-import {initLayerResolve, ResolveMapping} from '../resolve';
+import {initLayerResolve, NonspatialResolve, ResolveMapping, SpatialResolve} from '../resolve';
 import {LayerSpec, UnitSize} from '../spec';
 import {Dict, flatten, keys, vals} from '../util';
 import {isSignalRefDomain, VgData, VgEncodeEntry, VgLayout, VgScale, VgSignal} from '../vega.schema';
@@ -112,7 +112,7 @@ export class LayerModel extends Model {
     for (const child of this.children) {
       child.parseAxisAndHeader();
       keys(child.component.axes).forEach((channel: SpatialScaleChannel) => {
-        if (this.resolve[channel].axis === 'shared') {
+        if ((this.resolve[channel] as SpatialResolve).axis === 'shared') {
           // If shared/union axis
 
           // Just use the first axes definition for each channel
@@ -152,7 +152,7 @@ export class LayerModel extends Model {
 
       // TODO: correctly implement independent axes
       keys(child.component.legends).forEach((channel: NonspatialScaleChannel) => {
-        if (this.resolve[channel].legend === 'shared') { // if shared/union scale
+        if ((this.resolve[channel] as NonspatialResolve).legend === 'shared') { // if shared/union scale
           // just use the first legend definition for each channel
           if (!legendComponent[channel]) {
             legendComponent[channel] = child.component.legends[channel];
