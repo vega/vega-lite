@@ -17,6 +17,7 @@ export declare namespace Channel {
     const TEXT: 'text';
     const ORDER: 'order';
     const DETAIL: 'detail';
+    const TOOLTIP: 'tooltip';
 }
 export declare type Channel = keyof Encoding<any> | keyof Facet<any>;
 export declare const X: "x";
@@ -32,13 +33,18 @@ export declare const TEXT: "text";
 export declare const DETAIL: "detail";
 export declare const ORDER: "order";
 export declare const OPACITY: "opacity";
+export declare const TOOLTIP: "tooltip";
 export declare const CHANNELS: Channel[];
 export declare function isChannel(str: string): str is Channel;
-export declare const UNIT_CHANNELS: ("text" | "x" | "y" | "x2" | "y2" | "color" | "opacity" | "size" | "shape" | "detail" | "order")[];
+export declare const UNIT_CHANNELS: ("text" | "x" | "y" | "x2" | "y2" | "color" | "opacity" | "size" | "shape" | "detail" | "tooltip" | "order")[];
 export declare const UNIT_SCALE_CHANNELS: ("x" | "y" | "color" | "opacity" | "size" | "shape")[];
 export declare const SCALE_CHANNELS: ("x" | "y" | "color" | "opacity" | "size" | "shape" | "row" | "column")[];
-export declare const NONSPATIAL_CHANNELS: ("text" | "color" | "opacity" | "size" | "shape" | "detail" | "order")[];
+export declare type ScaleChannel = typeof SCALE_CHANNELS[0];
+export declare const NONSPATIAL_CHANNELS: ("text" | "color" | "opacity" | "size" | "shape" | "detail" | "tooltip" | "order")[];
+export declare const SPATIAL_SCALE_CHANNELS: ("x" | "y")[];
+export declare type SpatialScaleChannel = typeof SPATIAL_SCALE_CHANNELS[0];
 export declare const NONSPATIAL_SCALE_CHANNELS: ("color" | "opacity" | "size" | "shape")[];
+export declare type NonspatialScaleChannel = typeof NONSPATIAL_SCALE_CHANNELS[0];
 export declare const LEVEL_OF_DETAIL_CHANNELS: Channel[];
 /** Channels that can serve as groupings for stacked charts. */
 export declare const STACK_GROUP_CHANNELS: ("color" | "opacity" | "size" | "detail" | "order")[];
@@ -53,6 +59,7 @@ export interface SupportedMark {
     line?: boolean;
     area?: boolean;
     text?: boolean;
+    tooltip?: boolean;
 }
 /**
  * Return whether a channel supports a particular mark type.

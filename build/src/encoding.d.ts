@@ -58,6 +58,10 @@ export interface Encoding<F> {
      */
     text?: TextFieldDef<F> | ConditionalValueDef<string | number | boolean>;
     /**
+     * The tooltip text to show upon mouse hover.
+     */
+    tooltip?: TextFieldDef<F> | ConditionalValueDef<string>;
+    /**
      * stack order for stacked marks or order of data points in line marks.
      */
     order?: OrderFieldDef<F> | OrderFieldDef<F>[];

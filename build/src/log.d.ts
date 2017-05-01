@@ -69,6 +69,7 @@ export declare namespace message {
     function scaleTypeNotWorkWithFieldDef(scaleType: ScaleType, defaultScaleType: ScaleType): string;
     function scalePropertyNotWorkWithScaleType(scaleType: ScaleType, propName: string, channel: Channel): string;
     function scaleTypeNotWorkWithMark(mark: Mark, scaleType: ScaleType): string;
+    function independentScaleMeansIndependentGuide(channel: Channel): string;
     const INVAID_DOMAIN = "Invalid scale domain";
     const UNABLE_TO_MERGE_DOMAINS = "Unable to merge domains";
     const INVALID_CHANNEL_FOR_AXIS = "Invalid channel for axis.";

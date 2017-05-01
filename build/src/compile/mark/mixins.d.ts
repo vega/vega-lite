@@ -13,7 +13,7 @@ export declare function nonPosition(channel: typeof NONSPATIAL_SCALE_CHANNELS[0]
     vgChannel?: string;
     defaultRef?: VgValueRef;
 }): VgEncodeEntry;
-export declare function text(model: UnitModel): any;
+export declare function text(model: UnitModel, vgChannel?: 'text' | 'tooltip'): any;
 export declare function bandPosition(channel: 'x' | 'y', model: UnitModel): {
     [x: string]: VgValueRef;
 };

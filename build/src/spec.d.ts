@@ -6,6 +6,7 @@ import { Facet } from './facet';
 import { Field, FieldDef } from './fielddef';
 import { Mark, MarkDef } from './mark';
 import { Repeat } from './repeat';
+import { ResolveMapping } from './resolve';
 import { SelectionDef } from './selection';
 import { TopLevelProperties } from './toplevelprops';
 import { Transform } from './transform';
@@ -38,7 +39,7 @@ export interface BaseSpec {
      */
     transform?: Transform[];
 }
-export interface GenericUnitSpec<E extends Encoding<any>, M> extends BaseSpec {
+export interface UnitSize {
     /**
      * The width of a single visualization.
      *
@@ -62,6 +63,8 @@ export interface GenericUnitSpec<E extends Encoding<any>, M> extends BaseSpec {
      * __Note__: For plot with `row` and `column` channels, this represents the height of a single cell.
      */
     height?: number;
+}
+export interface GenericUnitSpec<E extends Encoding<any>, M> extends BaseSpec, UnitSize {
     /**
      * A string describing the mark type (one of `"bar"`, `"circle"`, `"square"`, `"tick"`, `"line"`,
      * `"area"`, `"point"`, `"rule"`, and `"text"`) or a [mark definition object](mark.html#mark-def).
@@ -87,18 +90,17 @@ export declare type CompositeUnitSpec = GenericUnitSpec<Encoding<Field>, Composi
  * Unit spec that can contain composite mark and row or column channels.
  */
 export declare type FacetedCompositeUnitSpec = GenericUnitSpec<EncodingWithFacet<Field>, CompositeMark | Mark | MarkDef>;
-export interface GenericLayerSpec<U extends GenericUnitSpec<any, any>> extends BaseSpec {
-    width?: number;
-    height?: number;
+export interface GenericLayerSpec<U extends GenericUnitSpec<any, any>> extends BaseSpec, UnitSize {
     /**
      * Unit specs that will be layered.
      */
     layer: (GenericLayerSpec<U> | U)[];
+    resolve?: ResolveMapping;
 }
 export declare type LayerSpec = GenericLayerSpec<UnitSpec>;
 export interface GenericFacetSpec<U extends GenericUnitSpec<any, any>> extends BaseSpec {
     facet: Facet<Field>;
-    spec: GenericLayerSpec<U> | U;
+    spec: GenericLayerSpec<U> | GenericRepeatSpec<U> | U;
 }
 export declare type FacetSpec = GenericFacetSpec<UnitSpec>;
 export interface GenericRepeatSpec<U extends GenericUnitSpec<any, any>> extends BaseSpec {
@@ -107,10 +109,10 @@ export interface GenericRepeatSpec<U extends GenericUnitSpec<any, any>> extends 
 }
 export declare type RepeatSpec = GenericRepeatSpec<UnitSpec>;
 export interface GenericVConcatSpec<U extends GenericUnitSpec<any, any>> extends BaseSpec {
-    vconcat: (GenericLayerSpec<U> | U)[];
+    vconcat: (GenericLayerSpec<U> | GenericRepeatSpec<U> | U)[];
 }
 export interface GenericHConcatSpec<U extends GenericUnitSpec<any, any>> extends BaseSpec {
-    hconcat: (GenericLayerSpec<U> | U)[];
+    hconcat: (GenericLayerSpec<U> | GenericRepeatSpec<U> | U)[];
 }
 export declare type GenericConcatSpec<U extends GenericUnitSpec<any, any>> = GenericVConcatSpec<U> | GenericHConcatSpec<U>;
 export declare type ConcatSpec = GenericConcatSpec<UnitSpec>;

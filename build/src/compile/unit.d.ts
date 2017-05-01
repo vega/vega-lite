@@ -8,7 +8,7 @@ import { Mark, MarkDef } from '../mark';
 import { Scale } from '../scale';
 import { SelectionDef } from '../selection';
 import { SortField, SortOrder } from '../sort';
-import { UnitSpec } from '../spec';
+import { UnitSize, UnitSpec } from '../spec';
 import { StackProperties } from '../stack';
 import { Dict } from '../util';
 import { VgData, VgLayout, VgSignal } from '../vega.schema';
@@ -38,7 +38,7 @@ export declare class UnitModel extends ModelWithField {
     protected legends: Dict<Legend>;
     readonly selection: Dict<SelectionDef>;
     children: Model[];
-    constructor(spec: UnitSpec, parent: Model, parentGivenName: string, repeater: RepeaterValue, config: Config);
+    constructor(spec: UnitSpec, parent: Model, parentGivenName: string, parentUnitSize: UnitSize, repeater: RepeaterValue, config: Config);
     scale(channel: Channel): Scale;
     hasDiscreteDomain(channel: Channel): boolean;
     sort(channel: Channel): SortField | SortOrder;
@@ -63,7 +63,7 @@ export declare class UnitModel extends ModelWithField {
     assembleLayoutSignals(): VgSignal[];
     assembleMarks(): any[];
     assembleParentGroupProperties(): any;
-    channels(): ("text" | "x" | "y" | "x2" | "y2" | "color" | "opacity" | "size" | "shape" | "detail" | "order")[];
+    channels(): ("text" | "x" | "y" | "x2" | "y2" | "color" | "opacity" | "size" | "shape" | "detail" | "tooltip" | "order")[];
     protected getMapping(): Encoding<string>;
     toSpec(excludeConfig?: any, excludeData?: any): any;
     mark(): Mark;
@@ -71,5 +71,4 @@ export declare class UnitModel extends ModelWithField {
     fieldDef(channel: Channel): FieldDef<string>;
     /** Get "field" reference for vega */
     field(channel: Channel, opt?: FieldRefOption): string;
-    isUnit(): boolean;
 }

@@ -37,4 +37,3 @@ export declare class FacetModel extends ModelWithField {
     channels(): ("row" | "column")[];
     protected getMapping(): Facet<string>;
 }
-export declare function hasSubPlotWithXy(model: FacetModel): boolean;
