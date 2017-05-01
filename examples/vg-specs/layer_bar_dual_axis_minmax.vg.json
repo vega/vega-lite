@@ -1,5 +1,6 @@
 {
     "$schema": "http://vega.github.io/schema/vega/v3.0.json",
+    "description": "Barchart for precipitation overlayed with linecharts to show temperature range.",
     "autosize": "pad",
     "padding": 5,
     "data": [
@@ -76,10 +77,54 @@
                         "month_date"
                     ],
                     "ops": [
-                        "mean"
+                        "max"
                     ],
                     "fields": [
                         "temp_max"
+                    ]
+                },
+                {
+                    "type": "collect",
+                    "sort": {
+                        "field": "month_date",
+                        "order": "descending"
+                    }
+                }
+            ]
+        },
+        {
+            "name": "data_2",
+            "source": "source_0",
+            "transform": [
+                {
+                    "type": "formula",
+                    "expr": "toDate(datum[\"date\"])",
+                    "as": "date"
+                },
+                {
+                    "type": "formula",
+                    "expr": "toNumber(datum[\"temp_min\"])",
+                    "as": "temp_min"
+                },
+                {
+                    "type": "filter",
+                    "expr": "datum[\"date\"] !== null && !isNaN(datum[\"date\"]) && datum[\"temp_min\"] !== null && !isNaN(datum[\"temp_min\"])"
+                },
+                {
+                    "type": "formula",
+                    "as": "month_date",
+                    "expr": "datetime(0, month(datum[\"date\"]), 1, 0, 0, 0, 0)"
+                },
+                {
+                    "type": "aggregate",
+                    "groupby": [
+                        "month_date"
+                    ],
+                    "ops": [
+                        "min"
+                    ],
+                    "fields": [
+                        "temp_min"
                     ]
                 },
                 {
@@ -111,10 +156,26 @@
         },
         {
             "name": "layer_1_width",
-            "update": "bandspace(domain('x').length, 1, 0.5) * 21"
+            "update": "max(layer_1_layer_0_width, layer_1_layer_1_width)"
         },
         {
             "name": "layer_1_height",
+            "update": "max(layer_1_layer_0_height, layer_1_layer_1_height)"
+        },
+        {
+            "name": "layer_1_layer_0_width",
+            "update": "bandspace(domain('x').length, 1, 0.5) * 21"
+        },
+        {
+            "name": "layer_1_layer_0_height",
+            "update": "200"
+        },
+        {
+            "name": "layer_1_layer_1_width",
+            "update": "bandspace(domain('x').length, 1, 0.5) * 21"
+        },
+        {
+            "name": "layer_1_layer_1_height",
             "update": "200"
         },
         {
@@ -178,7 +239,7 @@
                     "clip": true
                 },
                 {
-                    "name": "layer_1_marks",
+                    "name": "layer_1_layer_0_marks",
                     "type": "line",
                     "from": {
                         "data": "data_1"
@@ -191,7 +252,30 @@
                             },
                             "y": {
                                 "scale": "layer_1_y",
-                                "field": "mean_temp_max"
+                                "field": "max_temp_max"
+                            },
+                            "stroke": {
+                                "value": "firebrick"
+                            }
+                        }
+                    },
+                    "clip": true
+                },
+                {
+                    "name": "layer_1_layer_1_marks",
+                    "type": "line",
+                    "from": {
+                        "data": "data_2"
+                    },
+                    "encode": {
+                        "update": {
+                            "x": {
+                                "scale": "x",
+                                "field": "month_date"
+                            },
+                            "y": {
+                                "scale": "layer_1_y",
+                                "field": "min_temp_min"
                             },
                             "stroke": {
                                 "value": "firebrick"
@@ -215,6 +299,10 @@
                     },
                     {
                         "data": "data_1",
+                        "field": "month_date"
+                    },
+                    {
+                        "data": "data_2",
                         "field": "month_date"
                     }
                 ],
@@ -245,8 +333,17 @@
             "name": "layer_1_y",
             "type": "linear",
             "domain": {
-                "data": "data_1",
-                "field": "mean_temp_max"
+                "fields": [
+                    {
+                        "data": "data_1",
+                        "field": "max_temp_max"
+                    },
+                    {
+                        "data": "data_2",
+                        "field": "min_temp_min"
+                    }
+                ],
+                "sort": true
             },
             "range": [
                 200,
@@ -287,14 +384,14 @@
             "scale": "layer_0_y",
             "format": "s",
             "orient": "left",
-            "title": "MEAN(precipitation)",
+            "title": "Mean Precipitation",
             "zindex": 1
         },
         {
             "scale": "layer_1_y",
             "format": "s",
             "orient": "right",
-            "title": "MEAN(temp_max)",
+            "title": "Temperature (min and max)",
             "zindex": 1
         }
     ]
