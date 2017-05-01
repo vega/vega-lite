@@ -301,7 +301,11 @@ export class UnitModel extends ModelWithField {
   }
 
   public assembleParentGroupProperties() {
-    return applyConfig({}, this.config.cell, FILL_STROKE_CONFIG.concat(['clip']));
+    return {
+      width: this.getSizeSignalRef('width'),
+      height: this.getSizeSignalRef('height'),
+      ...applyConfig({}, this.config.cell, FILL_STROKE_CONFIG.concat(['clip']))
+    };
   }
 
   public channels() {
@@ -358,9 +362,5 @@ export class UnitModel extends ModelWithField {
     }
 
     return field(fieldDef, opt);
-  }
-
-  public isUnit() {
-    return true;
   }
 }

@@ -313,6 +313,9 @@
                         },
                         {
                             "$ref": "#/definitions/LayerSpec"
+                        },
+                        {
+                            "$ref": "#/definitions/RepeatSpec"
                         }
                     ]
                 },
@@ -526,6 +529,9 @@
                             },
                             {
                                 "$ref": "#/definitions/LayerSpec"
+                            },
+                            {
+                                "$ref": "#/definitions/RepeatSpec"
                             }
                         ]
                     },
@@ -579,6 +585,9 @@
                             },
                             {
                                 "$ref": "#/definitions/LayerSpec"
+                            },
+                            {
+                                "$ref": "#/definitions/RepeatSpec"
                             }
                         ]
                     },

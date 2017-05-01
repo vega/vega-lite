@@ -12,7 +12,6 @@ import {isSignalRefDomain, VgData, VgLayout, VgScale, VgSignal} from '../vega.sc
 import {buildModel} from './common';
 import {assembleData} from './data/assemble';
 import {parseData} from './data/parse';
-import {assembleLayoutLayerSignals} from './layout/index';
 import {Model} from './model';
 import {unionDomains} from './scale/domain';
 
@@ -255,17 +254,20 @@ export class RepeatModel extends Model {
 
   public assembleMarks(): any[] {
     // only children have marks
-    return this.children.map(child => ({
-      type: 'group',
-      name: child.getName('group'),
-      encode: {
-        update: {
-          width: child.getSizeSignalRef('width'),
-          height: child.getSizeSignalRef('height'),
-          ...child.assembleParentGroupProperties()
-        }
-      },
-      ...child.assembleGroup()
-    }));
+    return this.children.map(child => {
+
+      const encodeEntry = child.assembleParentGroupProperties();
+
+      return {
+        type: 'group',
+        name: child.getName('group'),
+        ...(encodeEntry ? {
+          encode: {
+            update: encodeEntry
+          }
+        } : {}),
+        ...child.assembleGroup()
+      };
+    });
   }
 }

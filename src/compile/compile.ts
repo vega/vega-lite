@@ -96,15 +96,7 @@ export function assembleNestedMainGroup(model: Model) {
   const {layout, signals, ...group} =  model.assembleGroup([]);
   const marks = group.marks;
 
-  const hasLayout = !!model.assembleLayout();
-  const parentEncodeEntry = {
-    ...(!hasLayout ? {
-      width: {signal: 'width'},
-      height: {signal: 'height'},
-    } : {}),
-    ...model.assembleParentGroupProperties()
-  };
-
+  const parentEncodeEntry = model.assembleParentGroupProperties();
 
   return {
     ...group,
@@ -113,7 +105,7 @@ export function assembleNestedMainGroup(model: Model) {
       type: 'group',
       layout,
       signals,
-      ...(keys(parentEncodeEntry).length > 0 ? {
+      ...(parentEncodeEntry ? {
         encode: {
           update: parentEncodeEntry
         }

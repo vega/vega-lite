@@ -46,22 +46,22 @@ export function buildModel(spec: Spec, parent: Model, parentGivenName: string,
 export function applyConfig(e: VgEncodeEntry,
     config: CellConfig | MarkConfig | TextConfig, // TODO(#1842): consolidate MarkConfig | TextConfig?
     propsList: string[]) {
-  propsList.forEach((property) => {
+  for (const property of propsList) {
     const value = config[property];
     if (value !== undefined) {
       e[property] = {value: value};
     }
-  });
+  }
   return e;
 }
 
 export function applyMarkConfig(e: VgEncodeEntry, model: UnitModel, propsList: (keyof MarkConfig)[]) {
-  propsList.forEach((property) => {
+  for (const property of propsList) {
     const value = getMarkConfig(property, model.mark(), model.config);
     if (value !== undefined) {
       e[property] = {value: value};
     }
-  });
+  }
   return e;
 }
 
