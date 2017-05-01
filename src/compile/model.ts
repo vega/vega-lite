@@ -1,5 +1,5 @@
 import {Axis} from '../axis';
-import {Channel, COLUMN, isChannel, X} from '../channel';
+import {Channel, COLUMN, isChannel, NonspatialScaleChannel, ScaleChannel, X} from '../channel';
 import {CellConfig, Config} from '../config';
 import {Data, DataSourceType, MAIN, RAW} from '../data';
 import {forEach, reduce} from '../encoding';
@@ -13,11 +13,13 @@ import {Transform} from '../transform';
 import {Dict, extend, vals, varName} from '../util';
 import {VgAxis, VgData, VgEncodeEntry, VgLayout, VgLegend, VgMarkGroup, VgScale, VgSignal, VgSignalRef, VgValueRef} from '../vega.schema';
 
-import {AxesComponent, AxisComponent} from './axis/index';
+import {AxisComponent, AxisComponentIndex} from './axis/component';
 import {DataComponent} from './data/index';
 import {getHeaderGroup, getTitleGroup, HEADER_CHANNELS, HEADER_TYPES, LayoutHeaderComponent} from './layout/header';
+import {LegendComponentIndex} from './legend/component';
 import {RepeaterValue} from './repeat';
 import {assembleScale} from './scale/assemble';
+import {ScaleComponentIndex} from './scale/component';
 import {SelectionComponent} from './selection/selection';
 import {UnitModel} from './unit';
 
@@ -28,14 +30,14 @@ import {UnitModel} from './unit';
  */
 export interface Component {
   data: DataComponent;
-  scales: Dict<VgScale>;
+  scales: ScaleComponentIndex;
   selection: Dict<SelectionComponent>;
 
   /** Dictionary mapping channel to VgAxis definition */
-  axes: AxesComponent;
+  axes: AxisComponentIndex;
 
   /** Dictionary mapping channel to VgLegend definition */
-  legends: Dict<VgLegend>;
+  legends: LegendComponentIndex;
 
   layoutHeaders: {
     row?: LayoutHeaderComponent,
