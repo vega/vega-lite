@@ -1,8 +1,7 @@
 # [Vega-Lite](https://vega.github.io/vega-lite/) 2 BETA
 
 **Announcement:** The `master` branch now hosts ongoing Vega-Lite 2.0 *pre-release* development.
-We have migrated Vega-Lite to use the new Vega 3 Beta and D3 v4.
-Our next alpha releases will introduce a few syntax revisions as well as new composition and interaction features from [our research publication](http://idl.cs.washington.edu/papers/vega-lite).
+We have migrated Vega-Lite to use the new Vega 3 Beta and D3 v4 and include basic composition and interaction features from [our research publication](http://idl.cs.washington.edu/papers/vega-lite).  However, some composition and interaction features are still under development.
 
 For a more stable version, please use Vega-Lite v1. We have created branch [`1.x`](https://github.com/vega/vega-lite/tree/1.x) as our v1 maintenance branch.
 
