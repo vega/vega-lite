@@ -13,6 +13,7 @@ export interface TimeUnitComponent {
   as: string;
   timeUnit: TimeUnit;
   field: string;
+  utc: boolean;
 }
 
 export class TimeUnitNode extends DataFlowNode {
@@ -25,13 +26,15 @@ export class TimeUnitNode extends DataFlowNode {
   }
 
   public static make(model: ModelWithField) {
-    const formula = model.reduceFieldDef((timeUnitComponent: TimeUnitComponent, fieldDef) => {
+    const formula = model.reduceFieldDef((timeUnitComponent: TimeUnitComponent, fieldDef, channel) => {
+      const utc = model.scale(channel) && model.scale(channel).type === 'utc';
       if (fieldDef.type === TEMPORAL && fieldDef.timeUnit) {
-        const f = field(fieldDef);
+        const f = field(fieldDef) + (utc ? '_utc' : '');
         timeUnitComponent[f] = {
           as: f,
           timeUnit: fieldDef.timeUnit,
-          field: fieldDef.field
+          field: fieldDef.field,
+          utc: utc
         };
       }
       return timeUnitComponent;
@@ -74,7 +77,7 @@ export class TimeUnitNode extends DataFlowNode {
       return {
         type: 'formula',
         as: c.as,
-        expr: fieldExpr(c.timeUnit, c.field)
+        expr: fieldExpr(c.timeUnit, c.field, c.utc)
       } as VgFormulaTransform;
     });
   }

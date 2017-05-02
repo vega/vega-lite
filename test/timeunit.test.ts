@@ -47,7 +47,7 @@ describe('timeUnit', () => {
   describe('fieldExpr', () => {
     it('should return correct field expression for YEARMONTHDATEHOURSMINUTESSECONDS', () => {
       assert.equal(
-        fieldExpr(TimeUnit.YEARMONTHDATEHOURSMINUTESSECONDS, 'x'),
+        fieldExpr(TimeUnit.YEARMONTHDATEHOURSMINUTESSECONDS, 'x', false),
         'datetime(year(datum["x"]), month(datum["x"]), date(datum["x"]), hours(datum["x"]), minutes(datum["x"]), seconds(datum["x"]), 0)'
       );
     });
@@ -56,7 +56,7 @@ describe('timeUnit', () => {
     it('should automatically correct YEARMONTHDAY to be YEARMONTHDATE', () => {
       log.runLocalLogger((localLogger) => {
         assert.equal(
-          fieldExpr('yearmonthday' as any, 'x'),
+          fieldExpr('yearmonthday' as any, 'x', false),
           'datetime(year(datum["x"]), month(datum["x"]), date(datum["x"]), 0, 0, 0, 0)'
         );
         assert.equal(localLogger.warns[0], log.message.dayReplacedWithDate('yearmonthday' as any));
@@ -65,22 +65,34 @@ describe('timeUnit', () => {
 
     it('should return correct field expression for QUARTER', () => {
       assert.equal(
-        fieldExpr(TimeUnit.QUARTER, 'x'),
+        fieldExpr(TimeUnit.QUARTER, 'x', false),
         'datetime(0, (quarter(datum["x"])-1)*3, 1, 0, 0, 0, 0)'
       );
     });
 
     it('should return correct field expression for DAY', () => {
       assert.equal(
-        fieldExpr(TimeUnit.DAY, 'x'),
+        fieldExpr(TimeUnit.DAY, 'x', false),
         'datetime(2006, 0, day(datum["x"])+1, 0, 0, 0, 0)'
       );
     });
 
     it('should return correct field expression for MILLISECONDS', () => {
       assert.equal(
-        fieldExpr(TimeUnit.MILLISECONDS, 'x'),
+        fieldExpr(TimeUnit.MILLISECONDS, 'x', false),
         'datetime(0, 0, 1, 0, 0, 0, milliseconds(datum["x"]))'
+      );
+    });
+
+    it('should return correct field expression with utc for MILLISECONDS', () => {
+      assert.equal(
+        fieldExpr(TimeUnit.DAY, 'x', true),
+        'datetime(2006, 0, utcday(datum["x"])+1, 0, 0, 0, 0)'
+      );
+
+      assert.equal(
+        fieldExpr(TimeUnit.QUARTER, 'x', true),
+        'datetime(0, (utcquarter(datum["x"])-1)*3, 1, 0, 0, 0, 0)'
       );
     });
   });

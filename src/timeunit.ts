@@ -164,21 +164,22 @@ export function containsTimeUnit(fullTimeUnit: TimeUnit, timeUnit: TimeUnit) {
 /**
  * Returns Vega expresssion for a given timeUnit and fieldRef
  */
-export function fieldExpr(fullTimeUnit: TimeUnit, field: string): string {
+export function fieldExpr(fullTimeUnit: TimeUnit, field: string, isutc: boolean): string {
   const fieldRef =  `datum[${stringValue(field)}]`;
 
-  function func(timeUnit: TimeUnit) {
+  function func(timeUnit: TimeUnit, utc: boolean) {
+    const prefix: string = utc ? 'utc' : '';
     if (timeUnit === TimeUnit.QUARTER) {
       // quarter starting at 0 (0,3,6,9).
-      return `(quarter(${fieldRef})-1)`;
+      return `(${prefix}quarter(${fieldRef})-1)`;
     } else {
-      return `${timeUnit}(${fieldRef})`;
+      return `${prefix}${timeUnit}(${fieldRef})`;
     }
   }
 
   const d = SINGLE_TIMEUNITS.reduce((_d: DateTimeExpr, tu: TimeUnit) => {
     if (containsTimeUnit(fullTimeUnit, tu)) {
-      _d[tu] = func(tu);
+      _d[tu] = func(tu, isutc);
     }
     return _d;
   }, {});
@@ -186,7 +187,7 @@ export function fieldExpr(fullTimeUnit: TimeUnit, field: string): string {
   if (d.day && keys(d).length > 1) {
     log.warn(log.message.dayReplacedWithDate(fullTimeUnit));
     delete d.day;
-    d.date = func(TimeUnit.DATE);
+    d.date = func(TimeUnit.DATE, isutc);
   }
 
   return dateTimeExpr(d);
