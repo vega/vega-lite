@@ -116,8 +116,7 @@ export function expression(model: Model, filter: Filter): string {
     const fieldExpr = filter.timeUnit ?
       // For timeUnit, cast into integer with time() so we can use ===, inrange, indexOf to compare values directly.
         // TODO: We calculate timeUnit on the fly here. Consider if we would like to consolidate this with timeUnit pipeline
-        // TODO: support utc
-      ('time(' + timeUnitFieldExpr(filter.timeUnit, filter.field) + ')') :
+      ('time(' + timeUnitFieldExpr(filter.timeUnit, filter.field, false) + ')') :
       field(filter, {expr: 'datum'});
 
     if (isEqualFilter(filter)) {
