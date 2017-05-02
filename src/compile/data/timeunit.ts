@@ -29,7 +29,9 @@ export class TimeUnitNode extends DataFlowNode {
     const formula = model.reduceFieldDef((timeUnitComponent: TimeUnitComponent, fieldDef, channel) => {
       const utc = model.scale(channel) && model.scale(channel).type === 'utc';
       if (fieldDef.type === TEMPORAL && fieldDef.timeUnit) {
-        const f = field(fieldDef) + (utc ? '_utc' : '');
+        // const f = (utc ? 'utc' : '') + field(fieldDef);
+        const f = field(fieldDef);
+
         timeUnitComponent[f] = {
           as: f,
           timeUnit: fieldDef.timeUnit,
