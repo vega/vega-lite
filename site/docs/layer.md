@@ -10,16 +10,16 @@ permalink: /docs/layer.html
 {
   "$schema": ...,
   "layer": [ // Layer array
-    ... // - Chart Objects
+    ... // Specifications
   ]
 }
 ```
 
 Sometimes, it's useful to superimpose one chart on top of another. You can accomplish this by using the `layer` property.
-Defining a layered chart is simple. You only have to assign an array of chart objects to `layer`.
+To define a layered chart, you only have to assign an array of chart objects to `layer`.
 
 #### Example
-Let's take into account a chart that shows the mean price of individual stocks.
+Let's create a chart that shows the mean price of individual stocks.
 
 <div class="vl-example" data-name="layer_single_mean"></div>
 Of course `layer` isn't needed here, it's added only for demonstrational purposes.
@@ -35,5 +35,5 @@ And voila! You have a layered chart.
 When you have different scales in different layers, the layers are unioned to give a net example having one union scale.
 
 ##### Advanced Example
-The population of the German city of Falkensee over time. Based on an [image from Wikipedia]((https://de.wikipedia.org/wiki/Datei:Bev%C3%B6lkerungsentwicklung_Falkensee.pdf)).
+The population of the German city of Falkensee over time. Based on a [visualization built using Vega]((https://vega.github.io/vega/examples/falkensee-population/)).
 <div class="vl-example" data-name="layered_falkensee">
