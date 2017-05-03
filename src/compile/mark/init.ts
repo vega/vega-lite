@@ -40,16 +40,6 @@ export function initEncoding(mark: Mark, encoding: Encoding<string>, stacked: St
     }
   }
 
-  for (const channel in scales) {
-    if (scales[channel].type === ScaleType.UTC) {
-      if (isFieldDef(encoding[channel])) {
-        if (encoding[channel].timeUnit !== undefined && !isUTCTimeUnit(encoding[channel].timeUnit)) {
-          encoding[channel].timeUnit = convertToUTC(encoding[channel].timeUnit);
-        }
-      }
-    }
-  }
-
   return encoding;
 }
 

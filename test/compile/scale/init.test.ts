@@ -41,7 +41,7 @@ describe('compile/scale', () => {
         'x', {field: 'a', type: 'temporal', scale: {type: 'band'}, timeUnit: 'utcyear'}, {scale: {bandPaddingInner: 0.3}},
         'bar', 100, []
       );
-      assert.equal(scale.type, 'utc');
+      assert.equal(scale.type, 'band');
     });
   });
 });

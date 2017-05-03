@@ -158,12 +158,12 @@ export function fieldDefMatchScaleType(specifiedType: ScaleType, fieldDef: Field
     return specifiedType === undefined || hasDiscreteDomain(specifiedType);
   } else if (type === Type.TEMPORAL) {
     if (!fieldDef.timeUnit) {
-      return contains([ScaleType.TIME, ScaleType.UTC, undefined], specifiedType) || hasDiscreteDomain(specifiedType);
+      return contains([ScaleType.TIME, ScaleType.UTC, undefined], specifiedType);
     } else {
       if (isUTCTimeUnit(fieldDef.timeUnit)) {
-        return contains([ScaleType.UTC, undefined], specifiedType);
+        return contains([ScaleType.UTC, undefined], specifiedType) || hasDiscreteDomain(specifiedType);
       } else {
-        return contains([ScaleType.UTC, ScaleType.TIME, undefined], specifiedType);
+        return contains([ScaleType.TIME, undefined], specifiedType) || hasDiscreteDomain(specifiedType);
       }
     }
   } else if (type === Type.QUANTITATIVE) {

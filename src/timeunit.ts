@@ -77,16 +77,7 @@ export const SINGLE_TIMEUNITS = [
   TimeUnit.HOURS,
   TimeUnit.MINUTES,
   TimeUnit.SECONDS,
-  TimeUnit.MILLISECONDS,
-  TimeUnit.UTCYEAR,
-  TimeUnit.UTCQUARTER,
-  TimeUnit.UTCMONTH,
-  TimeUnit.UTCDAY,
-  TimeUnit.UTCDATE,
-  TimeUnit.UTCHOURS,
-  TimeUnit.UTCMINUTES,
-  TimeUnit.UTCSECONDS,
-  TimeUnit.UTCMILLISECONDS
+  TimeUnit.MILLISECONDS
 ];
 
 const SINGLE_TIMEUNIT_INDEX: Dict<boolean> = SINGLE_TIMEUNITS.reduce((d, timeUnit) => {
@@ -133,33 +124,6 @@ export function convert(unit: TimeUnit, date: Date): Date {
           result.setSeconds(date.getSeconds());
           break;
         case TimeUnit.MILLISECONDS:
-          result.setMilliseconds(date.getMilliseconds());
-          break;
-        case TimeUnit.UTCDAY:
-          throw new Error('Cannot convert to TimeUnits containing \'day\'');
-        case TimeUnit.UTCYEAR:
-          result.setFullYear(date.getFullYear());
-          break;
-        case TimeUnit.UTCQUARTER:
-          // indicate quarter by setting month to be the first of the quarter i.e. may (4) -> april (3)
-          result.setMonth((Math.floor(date.getMonth() / 3)) * 3);
-          break;
-        case TimeUnit.UTCMONTH:
-          result.setMonth(date.getMonth());
-          break;
-        case TimeUnit.UTCDATE:
-          result.setDate(date.getDate());
-          break;
-        case TimeUnit.UTCHOURS:
-          result.setHours(date.getHours());
-          break;
-        case TimeUnit.UTCMINUTES:
-          result.setMinutes(date.getMinutes());
-          break;
-        case TimeUnit.UTCSECONDS:
-          result.setSeconds(date.getSeconds());
-          break;
-        case TimeUnit.UTCMILLISECONDS:
           result.setMilliseconds(date.getMilliseconds());
           break;
       }
@@ -374,6 +338,6 @@ export function isUTCTimeUnit(timeUnit: TimeUnit) {
   return timeUnit.substr(0, 3) === 'utc';
 }
 
-export function convertToUTC (timeUnit: TimeUnit) {
+export function convertToUTC(timeUnit: TimeUnit) {
   return ('utc' + timeUnit) as TimeUnit;
 }

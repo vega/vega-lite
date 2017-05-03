@@ -7,7 +7,7 @@ import {Mark} from '../../mark';
 import {channelScalePropertyIncompatability, Scale, ScaleConfig, scaleTypeSupportProperty} from '../../scale';
 import * as util from '../../util';
 
-import {isUTCTimeUnit, TimeUnit} from '../../timeunit';
+import {TimeUnit} from '../../timeunit';
 import {initDomain} from './domain';
 import rangeMixins from './range';
 import * as rules from './rules';
@@ -42,7 +42,6 @@ export default function init(
     mark: Mark | undefined, topLevelSize: number | undefined, xyRangeSteps: number[]): Scale {
   const specifiedScale = (fieldDef || {}).scale || {};
 
-  // const type = fieldDef.timeUnit !== undefined && isUTCTimeUnit(fieldDef.timeUnit) ? 'utc' : specifiedScale.type;
   const scale: Scale = {
     type: scaleType(
       specifiedScale.type, channel, fieldDef, mark, topLevelSize !== undefined,
