@@ -156,6 +156,10 @@ export function isValueDef(channelDef: ChannelDef<any>): channelDef is ValueDef<
   return channelDef && 'value' in channelDef && channelDef['value'] !== undefined;
 }
 
+export function isScaleFieldDef(channelDef: ChannelDef<any>): channelDef is ScaleFieldDef<any> | PositionFieldDef<any> | LegendFieldDef<any, any> {
+  return !!channelDef && (!!channelDef['scale'] || !!channelDef['sort']);
+}
+
 export interface FieldRefOption {
   /** exclude bin, aggregate, timeUnit */
   nofn?: boolean;
@@ -319,7 +323,7 @@ export function normalize(channelDef: ChannelDef<string>, channel: Channel) {
       };
     }
 
-    if (fieldDef['scale'] !== undefined) {
+    if (isScaleFieldDef(fieldDef)) {
       const scaleFieldDef: ScaleFieldDef<Field> = fieldDef;
       if (scaleFieldDef.scale !== undefined && scaleFieldDef.scale.type === ScaleType.UTC) {
         if (fieldDef.timeUnit !== undefined && !isUTCTimeUnit(fieldDef.timeUnit)) {

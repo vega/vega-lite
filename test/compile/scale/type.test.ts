@@ -301,7 +301,7 @@ describe('compile/scale', () => {
         );
       });
 
-      it('should return default scale type if data type is temporal but specified scale type is time or utc', () => {
+      it('should return utc scale type if timeunit is utc and specified scale type is not discrete domain', () => {
         assert.equal(
           scaleType(ScaleType.LOG, 'x', {type: 'temporal', timeUnit: 'utcyear'}, 'point', undefined, undefined, defaultConfig),
           ScaleType.UTC

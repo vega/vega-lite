@@ -31,7 +31,7 @@ export function initMarkDef(mark: Mark | MarkDef, encoding: Encoding<string>, sc
 /**
  * Initialize encoding's value with some special default values
  */
-export function initEncoding(mark: Mark, encoding: Encoding<string>, stacked: StackProperties, config: Config, scales: Dict<Scale>): Encoding<string> {
+export function initEncoding(mark: Mark, encoding: Encoding<string>, stacked: StackProperties, config: Config): Encoding<string> {
   const opacityConfig = getMarkConfig('opacity', mark, config);
   if (!encoding.opacity && opacityConfig === undefined) {
     const opacity = defaultOpacity(mark, encoding, stacked);

@@ -47,7 +47,7 @@ describe('fieldDef', () => {
       assert.equal(localLogger.warns[0], log.message.invalidAggregate('boxplot'));
     }));
 
-    it('should use utc timeunit  with default type and throw warning if type is missing.',() => {
+    it('should use utc timeunit with utc scale type.',() => {
       const fieldDef = {field: 'a', type: 'temporal', timeUnit: 'year', scale: {type: 'utc'}};
       assert.deepEqual(normalize(fieldDef, 'x')['timeUnit'], 'utcyear');
     });
