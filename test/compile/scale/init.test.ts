@@ -38,10 +38,10 @@ describe('compile/scale', () => {
 
     it('should have scale type as utc if timeunit is utc', () => {
       const scale = initScale(
-        'x', {field: 'a', type: 'temporal', scale: {type: 'band'}, timeUnit: 'utcyear'}, {scale: {bandPaddingInner: 0.3}},
+        'x', {field: 'a', type: 'temporal', scale: {type: 'log'}, timeUnit: 'utcyear'}, {scale: {bandPaddingInner: 0.3}},
         'bar', 100, []
       );
-      assert.equal(scale.type, 'band');
+      assert.equal(scale.type, 'utc');
     });
   });
 });
