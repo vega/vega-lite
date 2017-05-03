@@ -294,12 +294,20 @@ describe('compile/scale', () => {
         );
       });
 
-      it('should return specified discrete scale type if data type is temporal but specified scale type is time or utc', () => {
+      it('should return default scale type if data type is temporal but specified scale type is time or utc', () => {
         assert.equal(
           scaleType(ScaleType.POINT, 'x', {type: 'temporal', timeUnit: 'year'}, 'point', undefined, undefined, defaultConfig),
-          ScaleType.POINT
+          ScaleType.TIME
         );
       });
+
+      it('should return default scale type if data type is temporal but specified scale type is time or utc', () => {
+        assert.equal(
+          scaleType(ScaleType.POINT, 'x', {type: 'temporal', timeUnit: 'utcyear'}, 'point', undefined, undefined, defaultConfig),
+          ScaleType.UTC
+        );
+      });
+
 
       it('should return default scale type if data type is temporal but specified scale type is time or utc or any discrete type', () => {
         assert.equal(

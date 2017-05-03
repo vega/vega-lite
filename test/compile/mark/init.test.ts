@@ -226,6 +226,30 @@ describe('compile/mark/init', function() {
       assert.equal(model.markDef.orient, 'vertical');
     });
   });
+
+  describe('utc', function() {
+    it('use utcyear timeunit when scale type is utc', function() {
+      const model = parseUnitModel({
+        "mark": "point",
+        "encoding": {
+          "x": {"type": "temporal", "field": "foo", "scale": {"type": "utc"}, "timeUnit": "year"},
+          "y": {"type": "quantitative", "field": "bar"},
+        },
+      });
+      assert.deepEqual(model.encoding.x, {"type": "temporal", "field": "foo", "scale": {"type": "utc"}, "timeUnit": "utcyear"});
+    });
+
+    it('use utcmilliseconds timeunit when scale type is utc', function() {
+      const model = parseUnitModel({
+        "mark": "point",
+        "encoding": {
+          "x": {"type": "temporal", "field": "foo", "scale": {"type": "utc"}, "timeUnit": "milliseconds"},
+          "y": {"type": "quantitative", "field": "bar"},
+        },
+      });
+      assert.deepEqual(model.encoding.x, {"type": "temporal", "field": "foo", "scale": {"type": "utc"}, "timeUnit": "utcmilliseconds"});
+    });
+  });
 });
 
 

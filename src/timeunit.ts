@@ -1,3 +1,4 @@
+import {TimeUnitComponent} from './compile/data/timeunit';
 import {DateTimeExpr, dateTimeExpr} from './datetime';
 import * as log from './log';
 import {Dict, keys, stringValue} from './util';
@@ -233,7 +234,7 @@ export function containsTimeUnit(fullTimeUnit: TimeUnit, timeUnit: TimeUnit) {
 export function fieldExpr(fullTimeUnit: TimeUnit, field: string): string {
   const fieldRef =  `datum[${stringValue(field)}]`;
 
-  const utc = fullTimeUnit.substr(0, 3) === 'utc' ? 'utc' : '';
+  const utc = isUTCTimeUnit(fullTimeUnit) ? 'utc' : '';
   function func(timeUnit: TimeUnit) {
     if (timeUnit === TimeUnit.QUARTER) {
       // quarter starting at 0 (0,3,6,9).
@@ -367,4 +368,12 @@ export function isDiscreteByDefault(timeUnit: TimeUnit) {
       return true;
   }
   return false;
+}
+
+export function isUTCTimeUnit(timeUnit: TimeUnit) {
+  return timeUnit.substr(0, 3) === 'utc';
+}
+
+export function convertToUTC (timeUnit: TimeUnit) {
+  return ('utc' + timeUnit) as TimeUnit;
 }

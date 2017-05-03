@@ -1,10 +1,12 @@
+import {Channel} from '../../channel';
 import {Config} from '../../config';
 import {Encoding, isAggregate} from '../../encoding';
-import {FieldDef, isContinuous, isFieldDef} from '../../fielddef';
+import {FieldDef, isContinuous, isFieldDef, PositionFieldDef} from '../../fielddef';
 import * as log from '../../log';
 import {AREA, BAR, CIRCLE, isMarkDef, LINE, Mark, MarkDef, Orient, POINT, RECT, RULE, SQUARE, TEXT, TICK} from '../../mark';
-import {hasDiscreteDomain, Scale} from '../../scale';
+import {hasDiscreteDomain, Scale, ScaleType} from '../../scale';
 import {StackProperties} from '../../stack';
+import {convertToUTC, isUTCTimeUnit} from '../../timeunit';
 import {TEMPORAL} from '../../type';
 import {contains, Dict} from '../../util';
 import {getMarkConfig} from '../common';
@@ -29,7 +31,7 @@ export function initMarkDef(mark: Mark | MarkDef, encoding: Encoding<string>, sc
 /**
  * Initialize encoding's value with some special default values
  */
-export function initEncoding(mark: Mark, encoding: Encoding<string>, stacked: StackProperties, config: Config): Encoding<string> {
+export function initEncoding(mark: Mark, encoding: Encoding<string>, stacked: StackProperties, config: Config, scales: Dict<Scale>): Encoding<string> {
   const opacityConfig = getMarkConfig('opacity', mark, config);
   if (!encoding.opacity && opacityConfig === undefined) {
     const opacity = defaultOpacity(mark, encoding, stacked);
@@ -37,6 +39,17 @@ export function initEncoding(mark: Mark, encoding: Encoding<string>, stacked: St
       encoding.opacity = {value: opacity};
     }
   }
+
+  for (const channel in scales) {
+    if (scales[channel].type === ScaleType.UTC) {
+      if (isFieldDef(encoding[channel])) {
+        if (encoding[channel].timeUnit !== undefined && !isUTCTimeUnit(encoding[channel].timeUnit)) {
+          encoding[channel].timeUnit = convertToUTC(encoding[channel].timeUnit);
+        }
+      }
+    }
+  }
+
   return encoding;
 }
 
