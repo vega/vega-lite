@@ -238,7 +238,7 @@ export function fieldExpr(fullTimeUnit: TimeUnit, field: string): string {
   function func(timeUnit: TimeUnit) {
     if (timeUnit === TimeUnit.QUARTER) {
       // quarter starting at 0 (0,3,6,9).
-      return `${utc}(quarter(${fieldRef})-1)`;
+      return `(${utc}quarter(${fieldRef})-1)`;
     } else {
       return `${utc}${timeUnit}(${fieldRef})`;
     }

@@ -83,6 +83,18 @@ describe('timeUnit', () => {
         'datetime(0, 0, 1, 0, 0, 0, milliseconds(datum["x"]))'
       );
     });
+
+    it('should return correct field expression with utc for MILLISECONDS', () => {
+      assert.equal(
+        fieldExpr(TimeUnit.UTCQUARTER, 'x'),
+        'datetime(0, (utcquarter(datum["x"])-1)*3, 1, 0, 0, 0, 0)'
+      );
+
+      assert.equal(
+        fieldExpr(TimeUnit.UTCMILLISECONDS, 'x'),
+        'datetime(0, 0, 1, 0, 0, 0, utcmilliseconds(datum["x"]))'
+      );
+    });
   });
 
   describe('convert', function () {
