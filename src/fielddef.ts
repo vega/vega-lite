@@ -156,7 +156,7 @@ export function isValueDef(channelDef: ChannelDef<any>): channelDef is ValueDef<
   return channelDef && 'value' in channelDef && channelDef['value'] !== undefined;
 }
 
-export function isScaleFieldDef(channelDef: ChannelDef<any>): channelDef is ScaleFieldDef<any> | PositionFieldDef<any> | LegendFieldDef<any, any> {
+export function isScaleFieldDef(channelDef: ChannelDef<any>): channelDef is ScaleFieldDef<any> {
   return !!channelDef && (!!channelDef['scale'] || !!channelDef['sort']);
 }
 
