@@ -9,10 +9,10 @@ import {Config} from './config';
 import {Field} from './fielddef';
 import {Legend} from './legend';
 import * as log from './log';
-import {Scale} from './scale';
+import {Scale, ScaleType} from './scale';
 import {SortField, SortOrder} from './sort';
 import {StackOffset} from './stack';
-import {isDiscreteByDefault, TimeUnit} from './timeunit';
+import {convertToUTC, isDiscreteByDefault, isUTCTimeUnit, TimeUnit} from './timeunit';
 import {getFullName, Type} from './type';
 import {isBoolean, isString, stringValue} from './util';
 
@@ -154,6 +154,10 @@ export function isFieldDef(channelDef: ChannelDef<any>): channelDef is FieldDef<
 
 export function isValueDef(channelDef: ChannelDef<any>): channelDef is ValueDef<any> {
   return channelDef && 'value' in channelDef && channelDef['value'] !== undefined;
+}
+
+export function isScaleFieldDef(channelDef: ChannelDef<any>): channelDef is ScaleFieldDef<any> {
+  return !!channelDef && (!!channelDef['scale'] || !!channelDef['sort']);
 }
 
 export interface FieldRefOption {
@@ -318,6 +322,16 @@ export function normalize(channelDef: ChannelDef<string>, channel: Channel) {
         type: newType
       };
     }
+
+    if (isScaleFieldDef(fieldDef)) {
+      const scaleFieldDef: ScaleFieldDef<Field> = fieldDef;
+      if (scaleFieldDef.scale !== undefined && scaleFieldDef.scale.type === ScaleType.UTC) {
+        if (fieldDef.timeUnit !== undefined && !isUTCTimeUnit(fieldDef.timeUnit)) {
+          fieldDef.timeUnit = convertToUTC(fieldDef.timeUnit);
+        }
+      }
+    }
+
 
     const {compatible, warning} = channelCompatibility(fieldDef, channel);
     if (!compatible) {

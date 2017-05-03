@@ -46,6 +46,11 @@ describe('fieldDef', () => {
       assert.deepEqual(normalize(fieldDef, 'x'), {field: 'a', type: 'quantitative'});
       assert.equal(localLogger.warns[0], log.message.invalidAggregate('boxplot'));
     }));
+
+    it('should use utc timeunit with utc scale type.',() => {
+      const fieldDef = {field: 'a', type: 'temporal', timeUnit: 'year', scale: {type: 'utc'}};
+      assert.deepEqual(normalize(fieldDef, 'x')['timeUnit'], 'utcyear');
+    });
   });
 
   describe('channelCompatability', () => {
