@@ -225,63 +225,27 @@
             "name": "source_1",
             "values": [
                 {
-                    "x": 1948,
-                    "y": 45000
-                },
-                {
-                    "x": 1989,
-                    "y": 45000
-                }
-            ],
-            "format": {
-                "type": "json",
-                "parse": {
-                    "x": "date",
-                    "y": "number"
-                }
-            },
-            "transform": [
-                {
-                    "type": "filter",
-                    "expr": "datum[\"x\"] !== null && !isNaN(datum[\"x\"]) && datum[\"y\"] !== null && !isNaN(datum[\"y\"])"
-                },
-                {
-                    "type": "formula",
-                    "as": "year_x",
-                    "expr": "datetime(year(datum[\"x\"]), 0, 1, 0, 0, 0, 0)"
-                },
-                {
-                    "type": "collect",
-                    "sort": {
-                        "field": "year_x",
-                        "order": "descending"
-                    }
-                }
-            ]
-        },
-        {
-            "name": "source_2",
-            "values": [
-                {
                     "x": 1933,
-                    "y": 45000
+                    "x2": 1945,
+                    "event": "Nazi Rule"
                 },
                 {
-                    "x": 1945,
-                    "y": 45000
+                    "x": 1948,
+                    "x2": 1989,
+                    "event": "GDR (East Germany)"
                 }
             ],
             "format": {
                 "type": "json",
                 "parse": {
                     "x": "date",
-                    "y": "number"
+                    "x2": "date"
                 }
             },
             "transform": [
                 {
                     "type": "filter",
-                    "expr": "datum[\"x\"] !== null && !isNaN(datum[\"x\"]) && datum[\"y\"] !== null && !isNaN(datum[\"y\"])"
+                    "expr": "datum[\"x\"] !== null && !isNaN(datum[\"x\"]) && datum[\"x2\"] !== null && !isNaN(datum[\"x2\"])"
                 },
                 {
                     "type": "formula",
@@ -289,11 +253,9 @@
                     "expr": "datetime(year(datum[\"x\"]), 0, 1, 0, 0, 0, 0)"
                 },
                 {
-                    "type": "collect",
-                    "sort": {
-                        "field": "year_x",
-                        "order": "descending"
-                    }
+                    "type": "formula",
+                    "as": "year_x2",
+                    "expr": "datetime(year(datum[\"x2\"]), 0, 1, 0, 0, 0, 0)"
                 }
             ]
         }
@@ -301,11 +263,11 @@
     "signals": [
         {
             "name": "width",
-            "update": "max(layer_0_width, layer_1_width, layer_2_width)"
+            "update": "max(layer_0_width, layer_1_width)"
         },
         {
             "name": "height",
-            "update": "max(layer_0_height, layer_1_height, layer_2_height)"
+            "update": "max(layer_0_height, layer_1_height)"
         },
         {
             "name": "layer_0_width",
@@ -313,38 +275,30 @@
         },
         {
             "name": "layer_0_height",
-            "update": "200"
+            "update": "21"
         },
         {
             "name": "layer_1_width",
-            "update": "500"
+            "update": "max(layer_1_layer_0_width, layer_1_layer_1_width)"
         },
         {
             "name": "layer_1_height",
-            "update": "200"
+            "update": "max(layer_1_layer_0_height, layer_1_layer_1_height)"
         },
         {
-            "name": "layer_2_width",
-            "update": "max(layer_2_layer_0_width, layer_2_layer_1_width)"
-        },
-        {
-            "name": "layer_2_height",
-            "update": "max(layer_2_layer_0_height, layer_2_layer_1_height)"
-        },
-        {
-            "name": "layer_2_layer_0_width",
+            "name": "layer_1_layer_0_width",
             "update": "500"
         },
         {
-            "name": "layer_2_layer_0_height",
+            "name": "layer_1_layer_0_height",
             "update": "200"
         },
         {
-            "name": "layer_2_layer_1_width",
+            "name": "layer_1_layer_1_width",
             "update": "500"
         },
         {
-            "name": "layer_2_layer_1_height",
+            "name": "layer_1_layer_1_height",
             "update": "200"
         },
         {
@@ -378,7 +332,7 @@
             "marks": [
                 {
                     "name": "layer_0_marks",
-                    "type": "area",
+                    "type": "rect",
                     "from": {
                         "data": "source_1"
                     },
@@ -388,62 +342,28 @@
                                 "scale": "x",
                                 "field": "year_x"
                             },
-                            "y": {
-                                "scale": "y",
-                                "field": "y"
-                            },
-                            "y2": {
-                                "scale": "y",
-                                "value": 0
-                            },
-                            "fill": {
-                                "value": "red"
-                            },
-                            "opacity": {
-                                "value": 0.3
-                            },
-                            "orient": {
-                                "value": "vertical"
-                            }
-                        }
-                    },
-                    "clip": true
-                },
-                {
-                    "name": "layer_1_marks",
-                    "type": "area",
-                    "from": {
-                        "data": "source_2"
-                    },
-                    "encode": {
-                        "update": {
-                            "x": {
+                            "x2": {
                                 "scale": "x",
-                                "field": "year_x"
+                                "field": "year_x2"
                             },
                             "y": {
-                                "scale": "y",
-                                "field": "y"
-                            },
-                            "y2": {
-                                "scale": "y",
                                 "value": 0
                             },
+                            "y2": {
+                                "field": {
+                                    "group": "height"
+                                }
+                            },
                             "fill": {
-                                "value": "black"
-                            },
-                            "opacity": {
-                                "value": 0.3
-                            },
-                            "orient": {
-                                "value": "vertical"
+                                "scale": "color",
+                                "field": "event"
                             }
                         }
                     },
                     "clip": true
                 },
                 {
-                    "name": "layer_2_layer_0_marks",
+                    "name": "layer_1_layer_0_marks",
                     "type": "line",
                     "from": {
                         "data": "data_0"
@@ -459,14 +379,14 @@
                                 "field": "population"
                             },
                             "stroke": {
-                                "value": "steelblue"
+                                "value": "#333"
                             }
                         }
                     },
                     "clip": true
                 },
                 {
-                    "name": "layer_2_layer_1_marks",
+                    "name": "layer_1_layer_1_marks",
                     "type": "symbol",
                     "role": "pointOverlay",
                     "from": {
@@ -483,7 +403,7 @@
                                 "field": "population"
                             },
                             "fill": {
-                                "value": "steelblue"
+                                "value": "#333"
                             },
                             "opacity": {
                                 "value": 0.7
@@ -506,8 +426,8 @@
                         "field": "year_x"
                     },
                     {
-                        "data": "source_2",
-                        "field": "year_x"
+                        "data": "source_1",
+                        "field": "year_x2"
                     },
                     {
                         "data": "data_0",
@@ -528,18 +448,20 @@
             "nice": "year"
         },
         {
+            "name": "color",
+            "type": "ordinal",
+            "domain": {
+                "data": "source_1",
+                "field": "event",
+                "sort": true
+            },
+            "range": "category"
+        },
+        {
             "name": "y",
             "type": "linear",
             "domain": {
                 "fields": [
-                    {
-                        "data": "source_1",
-                        "field": "y"
-                    },
-                    {
-                        "data": "source_2",
-                        "field": "y"
-                    },
                     {
                         "data": "data_0",
                         "field": "population"
@@ -594,14 +516,13 @@
             "orient": "bottom",
             "tickCount": 5,
             "ticks": false,
-            "zindex": 0,
-            "gridScale": "y"
+            "zindex": 0
         },
         {
             "scale": "y",
             "format": "s",
             "orient": "left",
-            "title": "y",
+            "title": "population",
             "zindex": 1
         },
         {
@@ -614,6 +535,12 @@
             "ticks": false,
             "zindex": 0,
             "gridScale": "x"
+        }
+    ],
+    "legends": [
+        {
+            "fill": "color",
+            "title": "event"
         }
     ]
 }

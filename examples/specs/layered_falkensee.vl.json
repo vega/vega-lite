@@ -46,27 +46,25 @@
   },
   "layer": [
     {
-      "mark": "area",
+      "mark": "rect",
       "data": {
-        "values": [{"x": 1948,"y": 45000},{"x": 1989,"y": 45000}]
+        "values": [
+          {"x": 1933,"x2": 1945,"event": "Nazi Rule"},
+          {
+            "x": 1948,
+            "x2": 1989,
+            "event": "GDR (East Germany)"
+          }
+        ]
       },
       "encoding": {
         "x": {"field": "x","type": "temporal","timeUnit": "year"},
-        "y": {"field": "y","type": "quantitative"},
-        "opacity": {"value": 0.3},
-        "color": {"value": "red"}
-      }
-    },
-    {
-      "mark": "area",
-      "data": {
-        "values": [{"x": 1933,"y": 45000},{"x": 1945,"y": 45000}]
-      },
-      "encoding": {
-        "x": {"field": "x","type": "temporal","timeUnit": "year"},
-        "y": {"field": "y","type": "quantitative"},
-        "opacity": {"value": 0.3},
-        "color": {"value": "black"}
+        "x2": {
+          "field": "x2",
+          "type": "temporal",
+          "timeUnit": "year"
+        },
+        "color": {"field": "event","type": "nominal"}
       }
     },
     {
@@ -77,11 +75,8 @@
           "type": "temporal",
           "timeUnit": "year"
         },
-        "y": {
-          "field": "population",
-          "type": "quantitative"
-        },
-        "color": {"value": "steelblue"}
+        "y": {"field": "population","type": "quantitative"},
+        "color": {"value": "#333"}
       }
     }
   ],
