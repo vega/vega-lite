@@ -32,7 +32,7 @@ Now, let's add the chart into the layer array.
 
 And voila! You have a layered chart.
 ##### Note
-When you have different scales in different layers, the layers are unioned to give a net example having one union scale.
+When you have different scales in different layers, the scale domains are unioned so that all layers can use the same scale. However, you might choose to avoid that by using `resolve`.
 
 ##### Advanced Example
 The population of the German city of Falkensee over time. Based on a [visualization built using Vega]((https://vega.github.io/vega/examples/falkensee-population/)).

@@ -49,18 +49,18 @@
       "mark": "rect",
       "data": {
         "values": [
-          {"x": 1933,"x2": 1945,"event": "Nazi Rule"},
+          {"start": 1933,"end": 1945,"event": "Nazi Rule"},
           {
-            "x": 1948,
-            "x2": 1989,
+            "start": 1948,
+            "end": 1989,
             "event": "GDR (East Germany)"
           }
         ]
       },
       "encoding": {
-        "x": {"field": "x","type": "temporal","timeUnit": "year"},
+        "x": {"field": "start","type": "temporal","timeUnit": "year"},
         "x2": {
-          "field": "x2",
+          "field": "end",
           "type": "temporal",
           "timeUnit": "year"
         },

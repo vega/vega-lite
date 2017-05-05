@@ -225,37 +225,37 @@
             "name": "source_1",
             "values": [
                 {
-                    "x": 1933,
-                    "x2": 1945,
+                    "start": 1933,
+                    "end": 1945,
                     "event": "Nazi Rule"
                 },
                 {
-                    "x": 1948,
-                    "x2": 1989,
+                    "start": 1948,
+                    "end": 1989,
                     "event": "GDR (East Germany)"
                 }
             ],
             "format": {
                 "type": "json",
                 "parse": {
-                    "x": "date",
-                    "x2": "date"
+                    "start": "date",
+                    "end": "date"
                 }
             },
             "transform": [
                 {
                     "type": "filter",
-                    "expr": "datum[\"x\"] !== null && !isNaN(datum[\"x\"]) && datum[\"x2\"] !== null && !isNaN(datum[\"x2\"])"
+                    "expr": "datum[\"start\"] !== null && !isNaN(datum[\"start\"]) && datum[\"end\"] !== null && !isNaN(datum[\"end\"])"
                 },
                 {
                     "type": "formula",
-                    "as": "year_x",
-                    "expr": "datetime(year(datum[\"x\"]), 0, 1, 0, 0, 0, 0)"
+                    "as": "year_start",
+                    "expr": "datetime(year(datum[\"start\"]), 0, 1, 0, 0, 0, 0)"
                 },
                 {
                     "type": "formula",
-                    "as": "year_x2",
-                    "expr": "datetime(year(datum[\"x2\"]), 0, 1, 0, 0, 0, 0)"
+                    "as": "year_end",
+                    "expr": "datetime(year(datum[\"end\"]), 0, 1, 0, 0, 0, 0)"
                 }
             ]
         }
@@ -340,11 +340,11 @@
                         "update": {
                             "x": {
                                 "scale": "x",
-                                "field": "year_x"
+                                "field": "year_start"
                             },
                             "x2": {
                                 "scale": "x",
-                                "field": "year_x2"
+                                "field": "year_end"
                             },
                             "y": {
                                 "value": 0
@@ -423,11 +423,11 @@
                 "fields": [
                     {
                         "data": "source_1",
-                        "field": "year_x"
+                        "field": "year_start"
                     },
                     {
                         "data": "source_1",
-                        "field": "year_x2"
+                        "field": "year_end"
                     },
                     {
                         "data": "data_0",
@@ -487,7 +487,7 @@
             "scale": "x",
             "orient": "bottom",
             "tickCount": 5,
-            "title": "YEAR(x)",
+            "title": "YEAR(start)",
             "zindex": 1,
             "encode": {
                 "labels": {
