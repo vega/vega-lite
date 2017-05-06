@@ -369,6 +369,7 @@ export abstract class Model {
 }
 
 // above works if we add this, though it should be already added from typescript!!!
+// See this PR https://github.com/Microsoft/TypeScript/issues/7657 which was merged in ~ TS 2.1
 // TODO: remove this before merge. If we can't figure out TS, just have getLookups return Transform[]
 declare global {
     interface Array<T> {
