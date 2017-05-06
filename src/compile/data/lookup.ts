@@ -16,7 +16,8 @@ export class LookupNode extends DataFlowNode {
     super();
   }
 
-  public static make(model: UnitModel, secondaryData: Data) {
+  public static make(model: UnitModel, secondaryData?: Data) {
+    // does secondary data make sense here?
     const transform: LookupTransform = null;
 
     // replace transform.form with some kind of object where we can collect:

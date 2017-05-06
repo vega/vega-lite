@@ -23,7 +23,7 @@ function parseRoot(model: Model, sources: Dict<SourceNode>): DataFlowNode {
   if (model.data || !model.parent) {
     // add additional sources from lookups
     // TODO: what do we return? does this even make sense here with multiple "root"
-    model.getLookups().forEach((lookup: Transform) => {
+    model.getLookups().forEach((lookup: LookupTransform) => {
       const source = new SourceNode(model, lookup);
       const hash = source.hash();
       if (hash in sources) {
