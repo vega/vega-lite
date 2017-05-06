@@ -22,16 +22,19 @@ import {parseTransformArray} from './transforms';
 function parseRoot(model: Model, sources: Dict<SourceNode>): DataFlowNode {
   if (model.data || !model.parent) {
     // add additional sources from lookups
+    // TODO: what do we return? does this even make sense here with multiple "root"
     model.getLookups().forEach((lookup: Transform) => {
       const source = new SourceNode(model, lookup);
       const hash = source.hash();
       if (hash in sources) {
         // use a reference if we already have a source
-        return sources[hash];
+        // TODO: what do we return? does this even make sense here with multiple "root"
+        // return sources[hash];
       } else {
         // otherwise add a new one
         sources[hash] = source;
-        return source;
+        // TODO: what do we return? does this even make sense here with multiple "root"
+        // return source;
       }
     });
 
@@ -141,6 +144,8 @@ export function parseData(model: Model): DataComponent {
     head = last;
   }
 
+  // where do we "make" lookup transform? How do we give it the source(s) it needs?
+
   if (model instanceof ModelWithField) {
     const nullFilter = NullFilterNode.make(model);
     if (nullFilter) {
@@ -188,9 +193,7 @@ export function parseData(model: Model): DataComponent {
       nonPosFilter.parent = head;
       head = nonPosFilter;
     }
-  }
 
-  if (model instanceof UnitModel) {
     const order = OrderNode.make(model);
     if (order) {
       order.parent = head;
