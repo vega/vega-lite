@@ -8,6 +8,7 @@ import {BinNode} from './bin';
 import {DataFlowNode, OutputNode} from './dataflow';
 import {FacetNode} from './facet';
 import {ParseNode} from './formatparse';
+import {LookupNode} from './lookup';
 import {NonPositiveFilterNode} from './nonpositivefilter';
 import {NullFilterNode} from './nullfilter';
 import {iterateFromLeaves} from './optimizers';
@@ -191,6 +192,7 @@ function makeWalkTree(data: VgData[]) {
       node instanceof NullFilterNode ||
       node instanceof CalculateNode ||
       node instanceof AggregateNode ||
+      node instanceof LookupNode ||
       node instanceof OrderNode) {
       dataSource.transform.push(node.assemble());
     }
@@ -308,7 +310,7 @@ export function assembleData(roots: SourceNode[]): VgData[] {
 
   let sourceIndex = 0;
 
-  roots.forEach(root => {
+  roots.forEach((root: SourceNode) => {
     // assign a name if the source does not have a name yet
     if (!root.hasName()) {
       root.dataName = `source_${sourceIndex++}`;

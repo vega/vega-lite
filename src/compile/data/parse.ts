@@ -1,4 +1,5 @@
 import {MAIN, RAW} from '../../data';
+import {isLookup, LookupTransform, Transform} from '../../transform';
 import {Dict} from '../../util';
 import {FacetModel} from '../facet';
 import {LayerModel} from '../layer';
@@ -20,6 +21,21 @@ import {parseTransformArray} from './transforms';
 
 function parseRoot(model: Model, sources: Dict<SourceNode>): DataFlowNode {
   if (model.data || !model.parent) {
+    // add additional sources from lookups
+    model.getLookups().forEach((lookup: Transform) => {
+      const source = new SourceNode(model, lookup);
+      const hash = source.hash();
+      if (hash in sources) {
+        // use a reference if we already have a source
+        return sources[hash];
+      } else {
+        // otherwise add a new one
+        sources[hash] = source;
+        return source;
+      }
+    });
+
+    // then do primary data
     // if the model defines a data source or is the root, create a source node
     const source = new SourceNode(model);
     const hash = source.hash();

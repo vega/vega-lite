@@ -1,4 +1,5 @@
 import {DataFormat, isInlineData, isNamedData, isUrlData} from '../../data';
+import {Transform} from '../../transform';
 import {contains, hash} from '../../util';
 import {VgData} from '../../vega.schema';
 import {Model} from './../model';
@@ -9,10 +10,10 @@ export class SourceNode extends DataFlowNode {
 
   private _name: string;
 
-  constructor(model: Model) {
+  constructor(model: Model, lookup?: Transform) {
     super();
 
-    const data = model.data || {name: 'source'};
+    const data = lookup ? model.getLookups((l) => l === lookup)[0] : model.data || {name: 'source'};
 
     if (isInlineData(data)) {
       this._data = {

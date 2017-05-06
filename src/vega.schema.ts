@@ -199,6 +199,14 @@ export interface VgCollectTransform {
   sort: VgSort;
 }
 
+export interface VgLookupTransform {
+  type: 'lookup';
+  from: string;
+  key: string;
+  fields: string[];
+  as: string[];
+  default?: string;
+}
 
 export interface VgAxisEncode {
   ticks?: VgGuideEncode;
@@ -218,7 +226,7 @@ export interface VgLegendEncode {
 
 export type VgGuideEncode = any; // TODO: replace this (See guideEncode in Vega Schema)
 
-export type VgTransform = VgBinTransform | VgExtentTransform | VgFormulaTransform | VgAggregateTransform | VgFilterTransform | VgImputeTransform | VgStackTransform | VgCollectTransform;
+export type VgTransform = VgBinTransform | VgExtentTransform | VgFormulaTransform | VgAggregateTransform | VgFilterTransform | VgImputeTransform | VgStackTransform | VgCollectTransform | VgLookupTransform;
 
 export interface VgStackTransform {
   type: 'stack';
