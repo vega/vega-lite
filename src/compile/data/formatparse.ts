@@ -94,6 +94,7 @@ export class ParseNode extends DataFlowNode {
     const data = model.data;
     if (data && data.format && data.format.parse) {
       const p = data.format.parse;
+      console.log(p);
       keys(p).forEach((field) => {
         parse[field] = p[field];
       });

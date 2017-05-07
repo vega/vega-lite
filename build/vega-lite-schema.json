@@ -3534,7 +3534,10 @@
                 },
                 "fields": {
                     "description": "(Optional) fields in foreign data to lookup\nif not specificied, the entire object is queried",
-                    "type": "string"
+                    "items": {
+                        "type": "string"
+                    },
+                    "type": "array"
                 },
                 "key": {
                     "description": "key in data to lookup",

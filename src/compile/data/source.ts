@@ -13,7 +13,7 @@ export class SourceNode extends DataFlowNode {
   constructor(model: Model, lookup?: LookupTransform) {
     super();
 
-    const data = lookup ? lookup.from : model.data || {name: 'source'};
+    const data = lookup ? lookup.from.data : model.data || {name: 'source'};
 
     if (isInlineData(data)) {
       this._data = {
@@ -66,13 +66,13 @@ export class SourceNode extends DataFlowNode {
     this._name = name;
   }
 
-  set parent(parent: DataFlowNode) {
-    throw new Error('Source nodes have to be roots.');
-  }
+  // set parent(parent: DataFlowNode) {
+  //   throw new Error('Source nodes have to be roots.');
+  // }
 
-  public remove() {
-    throw new Error('Source nodes are roots and cannot be removed.');
-  }
+  // public remove() {
+  //   throw new Error('Source nodes are roots and cannot be removed.');
+  // }
 
   /**
    * Return a unique identifir for this data source.

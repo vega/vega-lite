@@ -41,7 +41,7 @@ export interface LookupData {
    * (Optional) fields in foreign data to lookup
    * if not specificied, the entire object is queried
    */
-  fields?: string;
+  fields?: string[];
 }
 
 export interface LookupTransform {

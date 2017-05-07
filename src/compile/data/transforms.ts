@@ -6,6 +6,7 @@ import {duplicate} from '../../util';
 import {VgFilterTransform, VgFormulaTransform, VgLookupTransform} from '../../vega.schema';
 import {Model} from '../model';
 import {DataFlowNode} from './dataflow';
+import {FacetNode} from './facet';
 import {SourceNode} from './source';
 
 export class FilterNode extends DataFlowNode {
@@ -55,18 +56,24 @@ export class CalculateNode extends DataFlowNode {
 export class LookupNode extends DataFlowNode {
   private readonly secondaryDataName: string;
 
-  constructor(private transform: LookupTransform, public secondary: SourceNode) {
+  constructor(private transform: LookupTransform, public secondary: DataFlowNode) {
     super();
   }
 
   public assemble(): VgLookupTransform {
     // TODO: this.transform.from.fields isn't used
     const DEFAULT_AS = '_lookup';
-    // it'll be used either in a subsequent transform to isolate those variables and merge them in
-    // or via some object name properties trickery
+    let source: string;
+    if (this.secondary instanceof FacetNode) {
+      source = this.secondary.name;
+    } else if (this.secondary instanceof SourceNode) {
+      source = this.secondary.dataName;
+    }
+
+    console.log(this.secondary);
     return {
       type: 'lookup',
-      from: this.secondary.dataName,
+      from: source,
       key: this.transform.from.key,
       fields: [this.transform.lookup],
       as: this.transform.as
@@ -81,17 +88,19 @@ export class LookupNode extends DataFlowNode {
 /**
  * Parses a transforms array into a chain of connected dataflow nodes.
  */
-export function parseTransformArray(model: Model, lookups: SourceNode[]) {
+export function parseTransformArray(model: Model, lookups: DataFlowNode[]) {
   let first: DataFlowNode;
   let last: DataFlowNode;
   let node: DataFlowNode;
   let previous: DataFlowNode;
 
-  let l = 0;
+  let lookupIndex = -1;
   model.transforms.forEach((t, i) => {
     if (isLookup(t)) {
-      node = new LookupNode(t, lookups[l]);
-      l++;
+      node = new LookupNode(t, lookups[lookupIndex]);
+      lookupIndex++;
+      lookups[lookupIndex].addChild(node);
+      console.log(node);
     } else if (isCalculate(t)) {
       node = new CalculateNode(t);
     } else if (isFilter(t)) {

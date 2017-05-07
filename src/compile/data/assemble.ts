@@ -290,6 +290,7 @@ export function assembleFacetData(root: FacetNode): VgData[] {
  * @return modified data array
  */
 export function assembleData(roots: SourceNode[]): VgData[] {
+  console.log(roots);
   const data: VgData[] = [];
 
   roots.forEach(removeUnnecessaryNodes);
