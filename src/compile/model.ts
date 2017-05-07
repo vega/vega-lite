@@ -361,21 +361,9 @@ export abstract class Model {
   public getComponent(type: 'scales' | 'selection', name: string): any {
     return this.component[type][name] || this.parent.getComponent(type, name);
   }
-
-  public getLookups(predicate?: (lookup: LookupTransform) => boolean): LookupTransform[] {
-    const lookups: LookupTransform[] = this.transforms.filter((t: Transform): t is LookupTransform => isLookup(t) && (!predicate || predicate(t)));
-    return lookups;
-  }
 }
 
-// above works if we add this, though it should be already added from typescript!!!
-// See this PR https://github.com/Microsoft/TypeScript/issues/7657 which was merged in ~ TS 2.1
-// TODO: remove this before merge. If we can't figure out TS, just have getLookups return Transform[]
-declare global {
-    interface Array<T> {
-      filter<S extends T>(callbackfn: (value: T, index: number, array: ReadonlyArray<T>) => value is S, thisArg?: any): S[];
-    }
-}
+
 
 /** Abstract class for UnitModel and FacetModel.  Both of which can contain fieldDefs as a part of its own specification. */
 export abstract class ModelWithField extends Model {

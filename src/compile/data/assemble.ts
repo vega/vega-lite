@@ -8,7 +8,6 @@ import {BinNode} from './bin';
 import {DataFlowNode, OutputNode} from './dataflow';
 import {FacetNode} from './facet';
 import {ParseNode} from './formatparse';
-import {LookupNode} from './lookup';
 import {NonPositiveFilterNode} from './nonpositivefilter';
 import {NullFilterNode} from './nullfilter';
 import {iterateFromLeaves} from './optimizers';
@@ -17,7 +16,7 @@ import {OrderNode} from './pathorder';
 import {SourceNode} from './source';
 import {StackNode} from './stack';
 import {TimeUnitNode} from './timeunit';
-import {CalculateNode, FilterNode} from './transforms';
+import {CalculateNode, FilterNode, LookupNode} from './transforms';
 
 
 export const FACET_SCALE_PREFIX = 'scale_';

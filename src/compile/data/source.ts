@@ -13,7 +13,7 @@ export class SourceNode extends DataFlowNode {
   constructor(model: Model, lookup?: LookupTransform) {
     super();
 
-    const data = lookup ? model.getLookups((l) => l === lookup)[0] : model.data || {name: 'source'};
+    const data = lookup ? lookup.from : model.data || {name: 'source'};
 
     if (isInlineData(data)) {
       this._data = {

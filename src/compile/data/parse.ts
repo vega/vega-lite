@@ -21,24 +21,6 @@ import {parseTransformArray} from './transforms';
 
 function parseRoot(model: Model, sources: Dict<SourceNode>): DataFlowNode {
   if (model.data || !model.parent) {
-    // add additional sources from lookups
-    // TODO: what do we return? does this even make sense here with multiple "root"
-    model.getLookups().forEach((lookup: LookupTransform) => {
-      const source = new SourceNode(model, lookup);
-      const hash = source.hash();
-      if (hash in sources) {
-        // use a reference if we already have a source
-        // TODO: what do we return? does this even make sense here with multiple "root"
-        // return sources[hash];
-      } else {
-        // otherwise add a new one
-        sources[hash] = source;
-        // TODO: what do we return? does this even make sense here with multiple "root"
-        // return source;
-      }
-    });
-
-    // then do primary data
     // if the model defines a data source or is the root, create a source node
     const source = new SourceNode(model);
     const hash = source.hash();
@@ -55,6 +37,21 @@ function parseRoot(model: Model, sources: Dict<SourceNode>): DataFlowNode {
     return model.parent.component.data.facetRoot ? model.parent.component.data.facetRoot : model.parent.component.data.main;
   }
 }
+
+function parseLookups(model: Model, sources: Dict<SourceNode>): SourceNode[] {
+  // add additional sources from lookups
+  return model.transforms.filter(isLookup).reduce((lookups, lookup: LookupTransform) => {
+    const source = new SourceNode(model, lookup);
+    const hash = source.hash();
+    if (!(hash in sources)) {
+      // if we don't already have a source add a new one
+      sources[hash] = source;
+    }
+    lookups.push(sources[hash]);
+    return lookups;
+  }, [] as SourceNode[]);
+}
+
 
 /*
 Description of the dataflow (http://asciiflow.com/):
@@ -113,6 +110,7 @@ Description of the dataflow (http://asciiflow.com/):
 
 export function parseData(model: Model): DataComponent {
   const root = parseRoot(model, model.component.data.sources);
+  const lookups = parseLookups(model, model.component.data.sources);
 
   const outputNodes = model.component.data.outputNodes;
 
@@ -139,7 +137,7 @@ export function parseData(model: Model): DataComponent {
   }
 
   if (model.transforms.length > 0) {
-    const {first, last} = parseTransformArray(model);
+    const {first, last} = parseTransformArray(model, lookups);
     first.parent = head;
     head = last;
   }

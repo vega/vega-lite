@@ -8,7 +8,6 @@ import {NullFilterNode} from './nullfilter';
 import {SourceNode} from './source';
 import {StackNode} from './stack';
 import {TimeUnitNode} from './timeunit';
-import {CalculateNode, FilterNode} from './transforms';
 
 /**
  * Start optimization path at the leaves. Useful for merging up or removing things.
