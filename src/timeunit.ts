@@ -334,10 +334,6 @@ export function isDiscreteByDefault(timeUnit: TimeUnit) {
   return false;
 }
 
-export function isUTCTimeUnit(timeUnit: TimeUnit) {
+function isUTCTimeUnit(timeUnit: TimeUnit) {
   return timeUnit.substr(0, 3) === 'utc';
-}
-
-export function convertToUTC(timeUnit: TimeUnit) {
-  return ('utc' + timeUnit) as TimeUnit;
 }
