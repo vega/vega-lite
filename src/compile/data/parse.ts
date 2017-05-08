@@ -115,19 +115,19 @@ export function parseData(model: Model): DataComponent {
   const outputNodes = model.component.data.outputNodes;
 
   // the current head of the tree that we are appending to
-  let head: DataFlowNode;
+  let head: DataFlowNode = root;
 
   // add lookup data (dependent data) above main data
-  lookups.forEach(lookup => {
-    if (head) {
-      lookup.parent = head;
-    }
-    head = lookup;
-  });
-  if (head) {
-    root.parent = head;
-  }
-  head = root;
+  // lookups.forEach(lookup => {
+  //   if (head) {
+  //     lookup.parent = head;
+  //   }
+  //   head = lookup;
+  // });
+  // if (head) {
+  //   root.parent = head;
+  // }
+  // head = root;
 
   const parse = ParseNode.make(model);
   if (parse) {
