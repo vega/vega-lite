@@ -7,7 +7,6 @@ import {Mark} from '../../mark';
 import {channelScalePropertyIncompatability, Scale, ScaleConfig, scaleTypeSupportProperty} from '../../scale';
 import * as util from '../../util';
 
-import {TimeUnit} from '../../timeunit';
 import {initDomain} from './domain';
 import rangeMixins from './range';
 import * as rules from './rules';

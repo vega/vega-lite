@@ -35,13 +35,5 @@ describe('compile/scale', () => {
       assert.equal(scale.paddingOuter, 0.15);
       assert.isUndefined(scale.padding);
     });
-
-    it('should have "utc" as the default scale type if the timeunit is utc', () => {
-      const scale = initScale(
-        'x', {field: 'a', type: 'temporal', timeUnit: 'utcyear'}, {scale: {bandPaddingInner: 0.3}},
-        'bar', 100, []
-      );
-      assert.equal(scale.type, 'utc');
-    });
   });
 });

@@ -3,7 +3,7 @@ import * as log from '../../log';
 import {Channel, hasScale, rangeType, supportScaleType} from '../../channel';
 import {Mark} from '../../mark';
 import {ScaleConfig, ScaleType} from '../../scale';
-import {isDiscreteByDefault, isUTCTimeUnit} from '../../timeunit';
+import {isDiscreteByDefault} from '../../timeunit';
 
 import {field, FieldDef} from '../../fielddef';
 import {hasDiscreteDomain} from '../../scale';
@@ -86,9 +86,6 @@ function defaultType(channel: Channel, fieldDef: FieldDef<string>, mark: Mark,
       if (isDiscreteByDefault(fieldDef.timeUnit)) {
         return discreteToContinuousType(channel, mark, hasTopLevelSize, specifiedRangeStep, scaleConfig);
       }
-      if (fieldDef.timeUnit && isUTCTimeUnit(fieldDef.timeUnit)) {
-        return 'utc';
-      }
       return 'time';
 
     case 'quantitative':
@@ -160,11 +157,7 @@ export function fieldDefMatchScaleType(specifiedType: ScaleType, fieldDef: Field
     if (!fieldDef.timeUnit) {
       return contains([ScaleType.TIME, ScaleType.UTC, undefined], specifiedType);
     } else {
-      if (isUTCTimeUnit(fieldDef.timeUnit)) {
-        return contains([ScaleType.UTC, undefined], specifiedType) || hasDiscreteDomain(specifiedType);
-      } else {
-        return contains([ScaleType.TIME, undefined], specifiedType) || hasDiscreteDomain(specifiedType);
-      }
+      return contains([ScaleType.TIME, ScaleType.UTC, undefined], specifiedType) || hasDiscreteDomain(specifiedType);
     }
   } else if (type === Type.QUANTITATIVE) {
     if (fieldDef.bin) {

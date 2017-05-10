@@ -12,7 +12,7 @@ import * as log from './log';
 import {Scale, ScaleType} from './scale';
 import {SortField, SortOrder} from './sort';
 import {StackOffset} from './stack';
-import {convertToUTC, isDiscreteByDefault, isUTCTimeUnit, TimeUnit} from './timeunit';
+import {isDiscreteByDefault, TimeUnit} from './timeunit';
 import {getFullName, Type} from './type';
 import {isBoolean, isString, stringValue} from './util';
 
@@ -322,16 +322,6 @@ export function normalize(channelDef: ChannelDef<string>, channel: Channel) {
         type: newType
       };
     }
-
-    if (isScaleFieldDef(fieldDef)) {
-      const scaleFieldDef: ScaleFieldDef<Field> = fieldDef;
-      if (scaleFieldDef.scale !== undefined && scaleFieldDef.scale.type === ScaleType.UTC) {
-        if (fieldDef.timeUnit !== undefined && !isUTCTimeUnit(fieldDef.timeUnit)) {
-          fieldDef.timeUnit = convertToUTC(fieldDef.timeUnit);
-        }
-      }
-    }
-
 
     const {compatible, warning} = channelCompatibility(fieldDef, channel);
     if (!compatible) {
