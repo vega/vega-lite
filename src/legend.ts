@@ -43,6 +43,11 @@ export interface Legend extends VgLegendBase, Guide {
    * @minimum 0
    */
   zindex?: number;
+
+  /**
+   * Specifies how legend should be formatted
+   */
+  formatType?: 'number' | 'time' | 'utc';
 }
 
 export const defaultLegendConfig: LegendConfig = {
