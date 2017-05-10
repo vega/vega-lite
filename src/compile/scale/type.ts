@@ -157,7 +157,7 @@ export function fieldDefMatchScaleType(specifiedType: ScaleType, fieldDef: Field
     if (!fieldDef.timeUnit) {
       return contains([ScaleType.TIME, ScaleType.UTC, undefined], specifiedType);
     } else {
-      return contains([ScaleType.UTC, ScaleType.TIME, undefined], specifiedType) || hasDiscreteDomain(specifiedType);
+      return contains([ScaleType.TIME, ScaleType.UTC, undefined], specifiedType) || hasDiscreteDomain(specifiedType);
     }
   } else if (type === Type.QUANTITATIVE) {
     if (fieldDef.bin) {
