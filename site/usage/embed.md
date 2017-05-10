@@ -35,7 +35,12 @@ The next step is to create a DOM element that the visualization will be attached
 Then use Vega-Embed's provided function to embed your spec.
 
 ```js
-vg.embed("#vis", vlSpec, function(error, result) {
+// optional argument passed to Vega-Embed to specify vega-lite spec. More info at https://github.com/vega/vega-embed
+var opt = {
+  "mode": "vega-lite"
+};
+
+vega.embed("#vis", vlSpec, opt, function(error, result) {
   // Callback receiving the View instance and parsed Vega spec
   // result.view is the View, which resides under the '#vis' element
 });
