@@ -55,15 +55,15 @@ To customize axis, an `axis` object can contain the following groups of properti
 
 ### Labels
 
-{% include table.html props="labels,format,labelAngle" source= "Axis" %}
+{% include table.html props="labels,format,labelAngle,labelPadding" source= "Axis" %}
 
 ### Ticks
 
-{% include table.html props="ticks,labelPadding,tickCount,tickSize,values" source="Axis" %}
+{% include table.html props="ticks,tickExtra,labelPadding,tickCount,tickSize,values" source="Axis" %}
 
 ### Title
 
-{% include table.html props="title,maxExtent,minExtent" source="Axis" %}
+{% include table.html props="title,titleAlign,titleAngle,maxExtent,minExtent" source="Axis" %}
 
 {:#axis-config}
 ## Axis Config
@@ -72,7 +72,7 @@ To provide themes for all axes, the axis config `config: {axis: {...}}` can cont
 
 ### General
 
-{% include table.html props="domain,domainColor,domainWidth" source="AxisConfig" %}
+{% include table.html props="bandPosition,domain,domainColor,domainWidth,titleX,titleY" source="AxisConfig" %}
 
 ### Grid
 
@@ -84,8 +84,8 @@ To provide themes for all axes, the axis config `config: {axis: {...}}` can cont
 
 ### Ticks
 
-{% include table.html props="tickColor,labelColor,labelFont,labelFontSize,labelLimit,tickWidth" source="AxisConfig" %}
+{% include table.html props="tickColor,tickRound,labelColor,labelFont,labelFontSize,labelLimit,tickWidth" source="AxisConfig" %}
 
 ### Title
 
-{% include table.html props="titleColor,titleFont,titleLimit,titleFontWeight,titleFontSize,titlePadding,titleMaxLength" source="AxisConfig" %}
+{% include table.html props="titleBaseline,titleColor,titleFont,titleLimit,titleFontWeight,titleFontSize,titlePadding,titleMaxLength" source="AxisConfig" %}

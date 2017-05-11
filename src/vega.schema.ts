@@ -319,6 +319,11 @@ export interface VgAxisBase {
   ticks?: boolean;
 
   /**
+   * Boolean flag indicating if an extra axis tick should be added for the initial position of the axis. This flag is useful for styling axes for `band` scales such that ticks are placed on band boundaries rather in the middle of a band. Use in conjunction with `"bandPostion": 1` and an axis `"padding"` value of `0`.
+   */
+  tickExtra?: boolean;
+
+  /**
    * The size, in pixels, of major, minor and end ticks.
    *
    * __Default value:__  derived from [axis config](config.html#axis-config)'s `tickSize` (`6` by default).
@@ -326,6 +331,16 @@ export interface VgAxisBase {
    * @minimum 0
    */
   tickSize?: number;
+
+  /**
+   * Horizontal text alignment of axis titles.
+   */
+  titleAlign?: string;
+
+  /**
+   * Angle in degrees of axis titles.
+   */
+  titleAngle?: number;
 
   /**
    * Max length for axis title if the title is automatically generated from the field's description. By default, this is automatically based on cell size and characterWidth property.
@@ -354,7 +369,10 @@ export interface VgAxisBase {
 }
 
 export interface VgAxisConfig extends VgAxisBase {
- // ---------- Axis ----------
+  /**
+   * An interpolation fraction indicating where, for `band` scales, axis ticks should be positioned. A value of `0` places ticks at the left edge of their bands. A value of `0.5` places ticks in the middle of their bands.
+   */
+  bandPosition?: number;
   /**
    * Stroke width of axis domain line
    *
@@ -427,9 +445,14 @@ export interface VgAxisConfig extends VgAxisBase {
   labelLimit?: number;
 
   /**
-   * Maximum allowed pixel width of axis titles.
+   * Padding in pixels between axis ticks and tick labels.
    */
-  titleLimit?: number;
+  labelPadding?: number;
+
+  /**
+   * Boolean flag indicating if pixel position values should be rounded to the nearest integer.
+   */
+  tickRound?: boolean;
 
   /**
    * The width, in pixels, of ticks.
@@ -438,6 +461,11 @@ export interface VgAxisConfig extends VgAxisBase {
   tickWidth?: number;
 
   // ---------- Title ----------
+
+  /**
+   * Vertical text baseline for axis titles.
+   */
+  titleBaseline?: string;
   /**
    * Color of the title, can be in hex color code or regular color name.
    */
@@ -461,6 +489,21 @@ export interface VgAxisConfig extends VgAxisBase {
    * Font weight of the title. (e.g., `"bold"`).
    */
   titleFontWeight?: string | number;
+
+  /**
+   * Maximum allowed pixel width of axis titles.
+   */
+  titleLimit?: number;
+
+  /**
+   * X-coordinate of the axis title relative to the axis group.
+   */
+  titleX?: number;
+
+  /**
+   * Y-coordinate of the axis title relative to the axis group.
+   */
+  titleY?: number;
 }
 
 export interface VgLegendBase {
@@ -468,6 +511,11 @@ export interface VgLegendBase {
    * Padding (in pixels) between legend entries in a symbol legend.
    */
   entryPadding?: number;
+
+  /**
+   * Background fill color for the full legend.
+   */
+  fillColor?: string;
 
   /**
    * The orientation of the legend. One of `"left"` or `"right"`. This determines how the legend is positioned within the scene. The default is `"right"`.
@@ -487,9 +535,34 @@ export interface VgLegendBase {
    * The padding, in pixels, between the legend and axis.
    */
   padding?: number;
+
+  /**
+   * Horizontal text alignment for legend titles.
+   */
+  titleAlign?: string;
 }
 
 export interface VgLegendConfig extends VgLegendBase {
+
+  /**
+   * Corner radius for the full legend.
+   */
+  cornerRadius?: number;
+
+  /**
+   * Border stroke color for the full legend.
+   */
+  strokeColor?: string;
+
+  /**
+   * Border stroke dash pattern for the full legend.
+   */
+  strokeDash?: number[];
+
+  /**
+   * Border stroke width for the full legend.
+   */
+  strokeWidth?: number;
   // ---------- Gradient ----------
   /**
    * The color of the gradient stroke, can be in hex color code or regular color name.
@@ -507,6 +580,21 @@ export interface VgLegendConfig extends VgLegendBase {
    * @minimum 0
    */
   gradientHeight?: number;
+
+  /**
+   * Text baseline for color ramp gradient labels.
+   */
+  gradientLabelBaseline?: string;
+
+  /**
+   * The maximum allowed length in pixels of color ramp gradient labels.
+   */
+  gradientLabelLimit?: number;
+
+  /**
+   * Vertical offset in pixels for color ramp gradient labels.
+   */
+  gradientLabelOffset?: number;
 
   /**
    * The width of the gradient, in pixels.
@@ -582,6 +670,10 @@ export interface VgLegendConfig extends VgLegendBase {
   /**
    * Optional mark property definitions for custom legend styling.
    */
+   /**
+    * Vertical text baseline for legend titles.
+    */
+  titleBaseline?: string;
   /**
    * The color of the legend title, can be in hex color code or regular color name.
    */
