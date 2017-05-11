@@ -88,7 +88,7 @@
                                 "field": "Origin"
                             },
                             "align": {
-                                "value": "left"
+                                "value": "center"
                             }
                         }
                     }
