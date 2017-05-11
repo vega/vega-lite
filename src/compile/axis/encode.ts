@@ -3,6 +3,7 @@ import {NOMINAL, ORDINAL, TEMPORAL} from '../../type';
 import {contains, extend, keys} from '../../util';
 import {VgAxis} from '../../vega.schema';
 
+import {ScaleType} from '../../scale';
 import {timeFormatExpression} from '../common';
 import {UnitModel} from '../unit';
 
@@ -13,9 +14,10 @@ export function labels(model: UnitModel, channel: Channel, labelsSpec: any, def:
 
   // Text
   if (fieldDef.type === TEMPORAL) {
+    const isUTCScale = model.scale(channel).type === ScaleType.UTC;
     labelsSpec = extend({
       text: {
-        signal: timeFormatExpression('datum.value', fieldDef.timeUnit, axis.format, config.axis.shortTimeLabels, config.timeFormat)
+        signal: timeFormatExpression('datum.value', fieldDef.timeUnit, axis.format, config.axis.shortTimeLabels, config.timeFormat, isUTCScale)
       }
     }, labelsSpec);
   }

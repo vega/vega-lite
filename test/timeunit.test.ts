@@ -168,57 +168,64 @@ describe('timeUnit', () => {
   describe('template', () => {
     it('should return correct template for YEARMONTHDATEHOURSMINUTESSECONDS', () => {
       assert.equal(
-        formatExpression(TimeUnit.YEARMONTHDATEHOURSMINUTESSECONDS,'datum.x', undefined),
+        formatExpression(TimeUnit.YEARMONTHDATEHOURSMINUTESSECONDS,'datum.x', undefined, false),
         "timeFormat(datum.x, '%b %d, %Y %H:%M:%S')"
       );
     });
 
     it('should return correct template for YEARMONTH (No comma)', () => {
       assert.equal(
-        formatExpression(TimeUnit.YEARMONTH,'datum.x', undefined),
+        formatExpression(TimeUnit.YEARMONTH,'datum.x', undefined, false),
         "timeFormat(datum.x, '%b %Y')"
       );
     });
 
     it('should return correct template for DAY', () => {
       assert.equal(
-        formatExpression(TimeUnit.DAY,'datum.x', undefined),
+        formatExpression(TimeUnit.DAY,'datum.x', undefined, false),
         "timeFormat(datum.x, '%A')"
       );
     });
 
     it('should return correct template for DAY (shortened)', () => {
       assert.equal(
-        formatExpression(TimeUnit.DAY,'datum.x', true),
+        formatExpression(TimeUnit.DAY,'datum.x', true, false),
         "timeFormat(datum.x, '%a')"
       );
     });
 
     it('should return correct template for QUARTER', () => {
       assert.equal(
-        formatExpression(TimeUnit.QUARTER,'datum.x', undefined),
+        formatExpression(TimeUnit.QUARTER,'datum.x', undefined, false),
         "'Q' + quarter(datum.x)"
       );
     });
 
     it('should return correct template for YEARQUARTER', () => {
       assert.equal(
-        formatExpression(TimeUnit.YEARQUARTER,'datum.x', undefined),
+        formatExpression(TimeUnit.YEARQUARTER,'datum.x', undefined, false),
         "'Q' + quarter(datum.x) + ' ' + timeFormat(datum.x, '%Y')"
       );
     });
 
     it('should return correct template for milliseconds', () => {
       assert.equal(
-        formatExpression(TimeUnit.MILLISECONDS,'datum.x', undefined),
+        formatExpression(TimeUnit.MILLISECONDS,'datum.x', undefined, false),
         "timeFormat(datum.x, '%L')"
       );
     });
 
     it('should return correct template for no timeUnit', () => {
       assert.equal(
-        formatExpression(undefined,'datum.x', undefined),
+        formatExpression(undefined,'datum.x', undefined, false),
         undefined
+      );
+    });
+
+    it('should return correct template for YEARMONTH (No comma) with utc scale', () => {
+      assert.equal(
+        formatExpression(TimeUnit.YEARMONTH,'datum.x', undefined, true),
+        "utcFormat(datum.x, '%b %Y')"
       );
     });
   });

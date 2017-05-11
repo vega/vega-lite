@@ -258,7 +258,7 @@ export function smallestUnit(timeUnit: TimeUnit): string {
 }
 
 /** returns the signal expression used for axis labels for a time unit */
-export function formatExpression(timeUnit: TimeUnit, field: string, shortTimeLabels: boolean): string {
+export function formatExpression(timeUnit: TimeUnit, field: string, shortTimeLabels: boolean, isUTCScale: boolean): string {
   if (!timeUnit) {
     return undefined;
   }
@@ -315,7 +315,12 @@ export function formatExpression(timeUnit: TimeUnit, field: string, shortTimeLab
       // Add space between quarter and main time format
       expression += ` + ' ' + `;
     }
-    expression += `timeFormat(${field}, '${dateTimeComponents.join(' ')}')`;
+
+    if (isUTCScale) {
+      expression += `utcFormat(${field}, '${dateTimeComponents.join(' ')}')`;
+    } else {
+      expression += `timeFormat(${field}, '${dateTimeComponents.join(' ')}')`;
+    }
   }
 
   // If expression is still an empty string, return undefined instead.
