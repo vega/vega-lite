@@ -373,7 +373,6 @@ export interface VgAxisConfig extends VgAxisBase {
    * An interpolation fraction indicating where, for `band` scales, axis ticks should be positioned. A value of `0` places ticks at the left edge of their bands. A value of `0.5` places ticks in the middle of their bands.
    */
   bandPosition?: number;
-  // ---------- Axis ----------
   /**
    * Stroke width of axis domain line
    *
@@ -446,7 +445,7 @@ export interface VgAxisConfig extends VgAxisBase {
   labelLimit?: number;
 
   /**
-   * Padding in pixels betweem axis ticks and tick labels.
+   * Padding in pixels between axis ticks and tick labels.
    */
   labelPadding?: number;
 

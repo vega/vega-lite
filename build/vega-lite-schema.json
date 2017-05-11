@@ -892,7 +892,7 @@
                     "type": "number"
                 },
                 "labelPadding": {
-                    "description": "Padding in pixels betweem axis ticks and tick labels.",
+                    "description": "Padding in pixels between axis ticks and tick labels.",
                     "type": "number"
                 },
                 "labels": {
