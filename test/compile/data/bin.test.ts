@@ -132,7 +132,7 @@ describe.only('compile/data/bin', function() {
     });
   });
 
-  it('should apply the bin transform only once for a binned field encoded in multiple channels', () => {
+  it('should apply the bin transform if specified BinTransform', () => {
     const t: BinTransform = {bin: {"maxbins" : 10}, field: "Rotten_Tomatoes_Rating", as: "something"};
     const model = parseUnitModel({
       data: {url: "data/movies.json"},
