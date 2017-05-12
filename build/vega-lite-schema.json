@@ -118,6 +118,15 @@
                             },
                             {
                                 "$ref": "#/definitions/CalculateTransform"
+                            },
+                            {
+                                "$ref": "#/definitions/BinTransform"
+                            },
+                            {
+                                "$ref": "#/definitions/TimeUnitTransform"
+                            },
+                            {
+                                "$ref": "#/definitions/AggregateTransform"
                             }
                         ]
                     },
@@ -250,6 +259,15 @@
                             },
                             {
                                 "$ref": "#/definitions/CalculateTransform"
+                            },
+                            {
+                                "$ref": "#/definitions/BinTransform"
+                            },
+                            {
+                                "$ref": "#/definitions/TimeUnitTransform"
+                            },
+                            {
+                                "$ref": "#/definitions/AggregateTransform"
                             }
                         ]
                     },
@@ -355,6 +373,15 @@
                             },
                             {
                                 "$ref": "#/definitions/CalculateTransform"
+                            },
+                            {
+                                "$ref": "#/definitions/BinTransform"
+                            },
+                            {
+                                "$ref": "#/definitions/TimeUnitTransform"
+                            },
+                            {
+                                "$ref": "#/definitions/AggregateTransform"
                             }
                         ]
                     },
@@ -457,6 +484,15 @@
                             },
                             {
                                 "$ref": "#/definitions/CalculateTransform"
+                            },
+                            {
+                                "$ref": "#/definitions/BinTransform"
+                            },
+                            {
+                                "$ref": "#/definitions/TimeUnitTransform"
+                            },
+                            {
+                                "$ref": "#/definitions/AggregateTransform"
                             }
                         ]
                     },
@@ -543,6 +579,15 @@
                             },
                             {
                                 "$ref": "#/definitions/CalculateTransform"
+                            },
+                            {
+                                "$ref": "#/definitions/BinTransform"
+                            },
+                            {
+                                "$ref": "#/definitions/TimeUnitTransform"
+                            },
+                            {
+                                "$ref": "#/definitions/AggregateTransform"
                             }
                         ]
                     },
@@ -660,6 +705,15 @@
                             },
                             {
                                 "$ref": "#/definitions/CalculateTransform"
+                            },
+                            {
+                                "$ref": "#/definitions/BinTransform"
+                            },
+                            {
+                                "$ref": "#/definitions/TimeUnitTransform"
+                            },
+                            {
+                                "$ref": "#/definitions/AggregateTransform"
                             }
                         ]
                     },
@@ -699,6 +753,81 @@
                 "variancep"
             ],
             "type": "string"
+        },
+        "AggregateTransform": {
+            "additionalProperties": false,
+            "properties": {
+                "groupby": {
+                    "description": "Array of fields we will be useing for group by",
+                    "items": {
+                        "anyOf": [
+                            {
+                                "additionalProperties": false,
+                                "properties": {
+                                    "parent": {
+                                        "type": "string"
+                                    }
+                                },
+                                "required": [
+                                    "parent"
+                                ],
+                                "type": "object"
+                            },
+                            {
+                                "items": {
+                                    "additionalProperties": false,
+                                    "properties": {
+                                        "parent": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "required": [
+                                        "parent"
+                                    ],
+                                    "type": "object"
+                                },
+                                "type": "array"
+                            },
+                            {
+                                "type": "string"
+                            }
+                        ]
+                    },
+                    "type": "array"
+                },
+                "summarize": {
+                    "description": "Array of objects that contains",
+                    "items": {
+                        "$ref": "#/definitions/Aggregrate"
+                    },
+                    "type": "array"
+                }
+            },
+            "required": [
+                "groupby",
+                "summarize"
+            ],
+            "type": "object"
+        },
+        "Aggregrate": {
+            "additionalProperties": false,
+            "properties": {
+                "aggregate": {
+                    "$ref": "#/definitions/AggregateOp"
+                },
+                "as": {
+                    "type": "string"
+                },
+                "field": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "aggregate",
+                "as",
+                "field"
+            ],
+            "type": "object"
         },
         "AreaOverlay": {
             "enum": [
@@ -1495,6 +1624,36 @@
                     "type": "array"
                 }
             },
+            "type": "object"
+        },
+        "BinTransform": {
+            "additionalProperties": false,
+            "properties": {
+                "as": {
+                    "description": "The field for storing the computed formula value.",
+                    "type": "string"
+                },
+                "bin": {
+                    "anyOf": [
+                        {
+                            "$ref": "#/definitions/Bin"
+                        },
+                        {
+                            "type": "boolean"
+                        }
+                    ],
+                    "description": "Boolean flag indicating using bin transform"
+                },
+                "field": {
+                    "description": "The field to use this transform on.",
+                    "type": "string"
+                }
+            },
+            "required": [
+                "as",
+                "bin",
+                "field"
+            ],
             "type": "object"
         },
         "BoxPlotConfig": {
@@ -2819,6 +2978,15 @@
                             },
                             {
                                 "$ref": "#/definitions/CalculateTransform"
+                            },
+                            {
+                                "$ref": "#/definitions/BinTransform"
+                            },
+                            {
+                                "$ref": "#/definitions/TimeUnitTransform"
+                            },
+                            {
+                                "$ref": "#/definitions/AggregateTransform"
                             }
                         ]
                     },
@@ -2884,6 +3052,15 @@
                             },
                             {
                                 "$ref": "#/definitions/CalculateTransform"
+                            },
+                            {
+                                "$ref": "#/definitions/BinTransform"
+                            },
+                            {
+                                "$ref": "#/definitions/TimeUnitTransform"
+                            },
+                            {
+                                "$ref": "#/definitions/AggregateTransform"
                             }
                         ]
                     },
@@ -2973,6 +3150,15 @@
                             },
                             {
                                 "$ref": "#/definitions/CalculateTransform"
+                            },
+                            {
+                                "$ref": "#/definitions/BinTransform"
+                            },
+                            {
+                                "$ref": "#/definitions/TimeUnitTransform"
+                            },
+                            {
+                                "$ref": "#/definitions/AggregateTransform"
                             }
                         ]
                     },
@@ -5160,6 +5346,29 @@
                 "yearquartermonth"
             ],
             "type": "string"
+        },
+        "TimeUnitTransform": {
+            "additionalProperties": false,
+            "properties": {
+                "as": {
+                    "description": "The field for storing the computed formula value.",
+                    "type": "string"
+                },
+                "field": {
+                    "description": "The field to use this transform on.",
+                    "type": "string"
+                },
+                "timeUnit": {
+                    "$ref": "#/definitions/TimeUnit",
+                    "description": "The type of time unit for this transform."
+                }
+            },
+            "required": [
+                "as",
+                "field",
+                "timeUnit"
+            ],
+            "type": "object"
         },
         "Type": {
             "enum": [

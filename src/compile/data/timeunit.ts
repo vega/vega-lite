@@ -1,6 +1,7 @@
 import {SpawnSyncOptionsWithStringEncoding} from 'child_process';
 import {field, FieldDef} from '../../fielddef';
 import {fieldExpr, TimeUnit} from '../../timeunit';
+import {TimeUnitTransform} from '../../transform';
 import {TEMPORAL} from '../../type';
 import {Dict, duplicate, extend, StringSet, vals} from '../../util';
 import {VgFormulaTransform, VgTransform} from '../../vega.schema';

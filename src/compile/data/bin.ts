@@ -3,6 +3,7 @@ import {Channel} from '../../channel';
 import {Config} from '../../config';
 import {field, FieldDef} from '../../fielddef';
 import {hasDiscreteDomain} from '../../scale';
+import {BinTransform, Transform} from '../../transform';
 import {Dict, duplicate, extend, flatten, hash, isBoolean, StringSet, vals} from '../../util';
 import {VgBinTransform, VgTransform} from '../../vega.schema';
 import {numberFormat} from '../common';
@@ -88,6 +89,38 @@ export class BinNode extends DataFlowNode {
 
     return new BinNode(bins);
   }
+
+  public static makeTransform(model: ModelWithField, t: BinTransform) {
+    const bins: Dict<BinComponent> = {};
+    model.forEachFieldDef((fieldDef, channel) => {
+      if (fieldDef.field === t.field) {
+        const fieldDefBin = t.bin;
+        if (fieldDefBin) {
+          const bin: Bin = isBoolean(fieldDefBin) ? {} : fieldDefBin;
+          const key = `${binToString(t.bin)}_${t.field}`;
+
+            bins[key] = {
+              bin: bin,
+              field: fieldDef.field,
+              as: [field(fieldDef, {binSuffix: 'start'}), field(fieldDef, {binSuffix: 'end'})],
+              signal: model.getName(`${key}_bins`),
+              extentSignal: model.getName(key + '_extent')
+            };
+
+          bins[key] = {
+            ...bins[key],
+            ...rangeFormula(model, fieldDef, channel, model.config)
+          };
+        }
+      }
+    });
+
+    if (Object.keys(bins).length === 0) {
+      return null;
+    }
+
+    return new BinNode(bins);
+}
 
   public merge(other: BinNode) {
     this.bins = extend(other.bins);

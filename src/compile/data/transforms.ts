@@ -1,10 +1,11 @@
 import {isArray} from 'vega-util';
 import {expression, Filter} from '../../filter';
 import * as log from '../../log';
-import {CalculateTransform, FilterTransform, isCalculate, isFilter} from '../../transform';
+import {CalculateTransform, FilterTransform, isAggregate, isBin, isCalculate, isFilter, isTimeUnit} from '../../transform';
 import {duplicate} from '../../util';
 import {VgFilterTransform, VgFormulaTransform} from '../../vega.schema';
-import {Model} from '../model';
+import {Model, ModelWithField} from '../model';
+import {BinNode} from './bin';
 import {DataFlowNode} from './dataflow';
 
 export class FilterNode extends DataFlowNode {
@@ -65,6 +66,9 @@ export function parseTransformArray(model: Model) {
       node = new CalculateNode(t);
     } else if (isFilter(t)) {
       node = new FilterNode(model, t.filter);
+    } else if (isBin(t)) {
+      const modelWithField = model as ModelWithField;
+      node = BinNode.makeTransform(modelWithField, t);
     } else {
       log.warn(log.message.invalidTransformIgnored(t));
       return;

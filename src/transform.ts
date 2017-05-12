@@ -1,4 +1,8 @@
+import {AggregateOp} from './aggregate';
+import {Bin} from './bin';
 import {Filter} from './filter';
+import {TimeUnit} from './timeunit';
+import {VgFieldRef} from './vega.schema';
 
 export interface FilterTransform {
   /**
@@ -23,8 +27,74 @@ export interface CalculateTransform {
   as: string;
 }
 
+export interface BinTransform {
+  /**
+   * Boolean flag indicating using bin transform
+   */
+  bin: boolean | Bin;
+
+  /**
+   * The field to use this transform on.
+   */
+  field: string;
+
+  /**
+   * The field for storing the computed formula value.
+   */
+  as: string;
+}
+
+export interface TimeUnitTransform {
+  /**
+   * The type of time unit for this transform.
+   */
+  timeUnit: TimeUnit;
+
+  /**
+   * The field to use this transform on.
+   */
+  field: string;
+
+  /**
+   * The field for storing the computed formula value.
+   */
+  as: string;
+}
+
+export interface AggregateTransform {
+  /**
+   * Array of objects that contains
+   */
+  summarize: Aggregrate[];
+
+  /**
+   * Array of fields we will be useing for group by
+   */
+  groupby: VgFieldRef[];
+}
+
+export interface Aggregrate {
+  aggregate: AggregateOp;
+
+  field: string;
+
+  as: string;
+}
+
 export function isCalculate(t: Transform): t is CalculateTransform {
   return t['calculate'] !== undefined;
 }
 
-export type Transform = FilterTransform | CalculateTransform;
+export function isBin(t: Transform): t is BinTransform {
+  return t['bin'] !== undefined;
+}
+
+export function isTimeUnit(t: Transform): t is TimeUnitTransform {
+  return t['timeUnit'] !== undefined;
+}
+
+export function isAggregate(t: Transform): t is AggregateTransform {
+  return t['summarize'] !== undefined;
+}
+
+export type Transform = FilterTransform | CalculateTransform | BinTransform | TimeUnitTransform | AggregateTransform;
