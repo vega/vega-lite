@@ -1,5 +1,5 @@
 import {CompositeMark, CompositeMarkDef} from './compositemark/index';
-import {toSet} from './util';
+import {Dict, toSet} from './util';
 import {Interpolate, Orient, VgMarkConfig} from './vega.schema';
 
 export namespace Mark {
@@ -113,6 +113,17 @@ export const FILL_CONFIG = ['fill', 'fillOpacity'];
 
 export const FILL_STROKE_CONFIG = [].concat(STROKE_CONFIG, FILL_CONFIG);
 
+export const VL_ONLY_MARK_CONFIG_PROPERTIES: (keyof MarkConfig)[] = ['filled', 'color'];
+
+export const VL_ONLY_MARK_SPECIFIC_CONFIG_PROPERTY_INDEX: {
+  [k in (typeof PRIMITIVE_MARKS[0])]?: (keyof MarkConfigMixins[k])[]
+} = {
+  bar: ['binSpacing', 'continuousBandSize', 'discreteBandSize'],
+  text: ['shortTimeLabels'],
+  tick: ['bandSize', 'thickness']
+};
+
+
 export interface MarkConfig extends VgMarkConfig {
 
   // ---------- Color ----------
@@ -138,6 +149,42 @@ export interface MarkConfig extends VgMarkConfig {
 export const defaultMarkConfig: MarkConfig = {
   color: '#4c78a8',
 };
+
+export interface MarkConfigMixins {
+  /** Mark Config */
+  mark?: MarkConfig;
+
+  // MARK-SPECIFIC CONFIGS
+  /** Area-Specific Config */
+  area?: MarkConfig;
+
+  /** Bar-Specific Config */
+  bar?: BarConfig;
+
+  /** Circle-Specific Config */
+  circle?: MarkConfig;
+
+  /** Line-Specific Config */
+  line?: MarkConfig;
+
+  /** Point-Specific Config */
+  point?: MarkConfig;
+
+  /** Rect-Specific Config */
+  rect?: MarkConfig;
+
+  /** Rule-Specific Config */
+  rule?: MarkConfig;
+
+  /** Square-Specific Config */
+  square?: MarkConfig;
+
+  /** Text-Specific Config */
+  text?: TextConfig;
+
+  /** Tick-Specific Config */
+  tick?: TickConfig;
+}
 
 export interface BarConfig extends MarkConfig {
   /**

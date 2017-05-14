@@ -1,13 +1,13 @@
 import {AxisConfig} from './axis';
-import {BoxPlotConfig} from './compositemark';
+import {BoxPlotConfig, COMPOSITE_MARK_ROLES} from './compositemark';
 import {defaultLegendConfig, LegendConfig} from './legend';
-import {BarConfig, MarkConfig, TextConfig, TickConfig} from './mark';
+import {BarConfig, Mark, MarkConfig, MarkConfigMixins, PRIMITIVE_MARKS, TextConfig, TickConfig, VL_ONLY_MARK_SPECIFIC_CONFIG_PROPERTY_INDEX} from './mark';
 import * as mark from './mark';
 import {defaultScaleConfig, ScaleConfig} from './scale';
 import {defaultConfig as defaultSelectionConfig, SelectionConfig} from './selection';
 import {StackOffset} from './stack';
 import {TopLevelProperties} from './toplevelprops';
-import {duplicate, mergeDeep} from './util';
+import {duplicate, isObject, keys, mergeDeep} from './util';
 import {VgRangeScheme} from './vega.schema';
 
 export interface CellConfig {
@@ -133,7 +133,7 @@ export const defaultOverlayConfig: OverlayConfig = {
 
 export type RangeConfig = (number|string)[] | VgRangeScheme | {step: number};
 
-export interface Config  extends TopLevelProperties {
+export interface Config  extends TopLevelProperties, MarkConfigMixins {
   // TODO: add this back once we have top-down layout approach
   // width?: number;
   // height?: number;
@@ -169,39 +169,6 @@ export interface Config  extends TopLevelProperties {
   /** Default stack offset for stackable mark. */
   stack?: StackOffset;
 
-  /** Mark Config */
-  mark?: MarkConfig;
-
-  // MARK-SPECIFIC CONFIGS
-  /** Area-Specific Config */
-  area?: MarkConfig;
-
-  /** Bar-Specific Config */
-  bar?: BarConfig;
-
-  /** Circle-Specific Config */
-  circle?: MarkConfig;
-
-  /** Line-Specific Config */
-  line?: MarkConfig;
-
-  /** Point-Specific Config */
-  point?: MarkConfig;
-
-  /** Rect-Specific Config */
-  rect?: MarkConfig;
-
-  /** Rule-Specific Config */
-  rule?: MarkConfig;
-
-  /** Square-Specific Config */
-  square?: MarkConfig;
-
-  /** Text-Specific Config */
-  text?: TextConfig;
-
-  /** Tick-Specific Config */
-  tick?: TickConfig;
 
   /** Box Config */
   box?: BoxPlotConfig;
@@ -333,4 +300,45 @@ export const defaultConfig: Config = {
 
 export function initConfig(config: Config) {
   return mergeDeep(duplicate(defaultConfig), config);
+}
+
+const MARK_ROLES = [].concat(PRIMITIVE_MARKS, COMPOSITE_MARK_ROLES) as (Mark | typeof COMPOSITE_MARK_ROLES[0])[];
+
+const VL_ONLY_CONFIG_PROPERTIES: (keyof Config)[] = ['padding', 'numberFormat', 'timeFormat', 'countTitle', 'cell', 'stack', 'overlay', 'scale', 'facet', 'selection', 'filterInvalid'];
+
+export function stripConfig(config: Config) {
+  config = duplicate(config);
+
+  for (const prop of VL_ONLY_CONFIG_PROPERTIES) {
+    delete config[prop];
+  }
+
+  // Remove Vega-Lite only generic mark config
+  if (config.mark) {
+    for (const prop of mark.VL_ONLY_MARK_CONFIG_PROPERTIES) {
+      delete config.mark[prop];
+    }
+  }
+
+  // Remove Vega-Lite Mark/Role config
+  for (const role of MARK_ROLES) {
+    for (const prop of mark.VL_ONLY_MARK_CONFIG_PROPERTIES) {
+      delete config[role][prop];
+    }
+    const vlOnlyMarkSpecificConfigs = VL_ONLY_MARK_SPECIFIC_CONFIG_PROPERTY_INDEX[role];
+    if (vlOnlyMarkSpecificConfigs) {
+      for (const prop of vlOnlyMarkSpecificConfigs) {
+        delete config[role][prop];
+      }
+    }
+  }
+
+  // Remove empty config objects
+  for (const prop in config) {
+    if (isObject(config[prop]) && keys(config[prop]).length === 0) {
+      delete config[prop];
+    }
+  }
+
+  return keys(config).length > 0 ? config : undefined;
 }

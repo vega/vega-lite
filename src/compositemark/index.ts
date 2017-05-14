@@ -1,7 +1,7 @@
 import {Config} from './../config';
 import {AnyMark, isMarkDef, Mark, MarkDef} from './../mark';
 import {GenericUnitSpec, LayerSpec} from './../spec';
-import {BOXPLOT, BoxPlotDef, normalizeBoxPlot} from './boxplot';
+import {BOXPLOT, BOXPLOT_ROLES, BoxPlotDef, normalizeBoxPlot} from './boxplot';
 import {ERRORBAR, normalizeErrorBar} from './errorbar';
 
 export {BoxPlotConfig} from './boxplot';
@@ -25,6 +25,8 @@ export type CompositeMark = BOXPLOT | ERRORBAR;
 export type CompositeMarkDef = BoxPlotDef;
 
 export type CompositeAggregate = BOXPLOT;
+export const COMPOSITE_MARK_ROLES = BOXPLOT_ROLES;
+
 
 add(BOXPLOT, normalizeBoxPlot);
 add(ERRORBAR, normalizeErrorBar);
