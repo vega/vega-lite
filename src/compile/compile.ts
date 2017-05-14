@@ -1,7 +1,7 @@
 /**
  * Module for compiling Vega-lite spec into Vega spec.
  */
-import {Config, initConfig} from '../config';
+import {Config, initConfig, stripConfig} from '../config';
 import * as log from '../log';
 import {normalize, TopLevel, TopLevelExtendedSpec} from '../spec';
 import {extractTopLevelProperties, TopLevelProperties} from '../toplevelprops';
@@ -53,6 +53,9 @@ function getTopLevelProperties(topLevelSpec: TopLevel<any>, config: Config) {
 function assemble(model: Model, topLevelProperties: TopLevelProperties) {
   // TODO: change type to become VgSpec
 
+  // Config with Vega-Lite only config removed.
+  const vgConfig = model.config ? stripConfig(model.config) : undefined;
+
   const output = {
     $schema: 'http://vega.github.io/schema/vega/v3.0.json',
     ...(model.description ? {description: model.description} : {}),
@@ -83,7 +86,10 @@ function assemble(model: Model, topLevelProperties: TopLevelProperties) {
     // HACK: this is a hack to temporarily make selections works as
     // 1) Currently, some selection's signals rely on the main group's scope to shadow duplicate names.
     // 2) Selection predicate depends on parent reference which may not exist for top-level mark.
-    ...assembleNestedMainGroup(model)
+    ...assembleNestedMainGroup(model),
+
+
+    ...(vgConfig ? {config: vgConfig} : {})
   };
 
   return {
