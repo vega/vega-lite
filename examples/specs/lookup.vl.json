@@ -1,0 +1,18 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v2.json",
+  "description": "A simple bar chart with embedded data.",
+  "data": {"url": "data/lookup_groups.csv", "format": {"type": "csv"}},
+  "transform": [{
+    "lookup": "person",
+    "from": {
+      "data": {"url": "data/lookup_people.csv", "format": {"type": "csv"}},
+      "key": "name",
+      "fields": ["age"]
+    }
+  }],
+  "mark": "bar",
+  "encoding": {
+    "x": {"field": "group", "type": "ordinal"},
+    "y": {"field": "age", "aggregate": "mean", "type": "quantitative"}
+  }
+}

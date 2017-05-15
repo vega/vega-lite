@@ -70,15 +70,24 @@ export class LookupNode extends DataFlowNode {
       source = this.secondary.dataName;
     }
 
+    /* TODO: handle foreign data retrevial using VALUES and renaming using AS (potentially implicit) or FIELDS (see above) */
+    /* https://vega.github.io/vega/docs/transforms/lookup/ */
+    /* VALUES: The data fields to copy from the secondary stream to the primary stream. If not specified, a reference to the full data record is copied. */
+    /* AS: The output fields at which to write data found in the secondary stream. If not specified and a values parameter is supplied, the names of the fields in the values array will be used. This parameter is required if multiple fields are provided or values is unspecified. */
+
+    const foreign = {
+      as: this.transform.as
+        ? ((this.transform.as instanceof Array) ? this.transform.as : [this.transform.as])
+        : [DEFAULT_AS]
+    };
+
     console.log(this.secondary);
     return {
       type: 'lookup',
       from: source,
       key: this.transform.from.key,
       fields: [this.transform.lookup],
-      as: this.transform.as
-        ? ((this.transform.as instanceof Array) ? this.transform.as : [this.transform.as])
-        : [DEFAULT_AS],
+      ...foreign,
       ...(this.transform.default ? {default: this.transform.default} : {})
     };
   }

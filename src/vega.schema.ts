@@ -204,7 +204,8 @@ export interface VgLookupTransform {
   from: string;
   key: string;
   fields: string[];
-  as: string[];
+  values?: string[];
+  as?: string[];
   default?: string;
 }
 
