@@ -4864,38 +4864,7 @@
                 "groupby": {
                     "description": "Array of fields we will be useing for group by",
                     "items": {
-                        "anyOf": [
-                            {
-                                "additionalProperties": false,
-                                "properties": {
-                                    "parent": {
-                                        "type": "string"
-                                    }
-                                },
-                                "required": [
-                                    "parent"
-                                ],
-                                "type": "object"
-                            },
-                            {
-                                "items": {
-                                    "additionalProperties": false,
-                                    "properties": {
-                                        "parent": {
-                                            "type": "string"
-                                        }
-                                    },
-                                    "required": [
-                                        "parent"
-                                    ],
-                                    "type": "object"
-                                },
-                                "type": "array"
-                            },
-                            {
-                                "type": "string"
-                            }
-                        ]
+                        "type": "string"
                     },
                     "type": "array"
                 },

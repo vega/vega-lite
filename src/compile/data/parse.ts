@@ -155,7 +155,7 @@ export function parseData(model: Model): DataComponent {
   head = raw;
 
   if (model instanceof UnitModel) {
-    const agg = AggregateNode.make(model);
+    const agg = AggregateNode.makeFromEncoding(model);
     if (agg) {
       agg.parent = head;
       head = agg;

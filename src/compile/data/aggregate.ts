@@ -1,4 +1,4 @@
-import {isAggregate} from '../../encoding';
+import {forEach} from '../../encoding';
 import {field, FieldDef} from '../../fielddef';
 import * as log from '../../log';
 import {ORDINAL} from '../../type';
@@ -6,6 +6,8 @@ import {Dict, differ, duplicate, extend, keys, StringSet} from '../../util';
 import {VgAggregateTransform} from '../../vega.schema';
 import {UnitModel} from './../unit';
 
+import {Summarize, SummarizeTransform} from '../../transform';
+import {Model} from '../model';
 import {DataFlowNode} from './dataflow';
 
 function addDimension(dims: {[field: string]: boolean}, fieldDef: FieldDef<string>) {
@@ -45,18 +47,18 @@ function mergeMeasures(parentMeasures: Dict<Dict<boolean>>, childMeasures: Dict<
 
 export class AggregateNode extends DataFlowNode {
   public clone() {
-    return new AggregateNode(extend({}, this.dimensions), duplicate(this.measures));
+    return new AggregateNode(extend({}, this.dimensions), duplicate(this.measures), duplicate(this.as));
   }
 
   /**
    * @param dimensions string set for dimensions
    * @param measures dictionary mapping field name => dict set of aggregation functions
    */
-  constructor(private dimensions: StringSet, private measures: Dict<StringSet>) {
+  constructor(private dimensions: StringSet, private measures: Dict<StringSet>, private as: Dict<string>) {
     super();
   }
 
-  public static make(model: UnitModel): AggregateNode {
+  public static makeFromEncoding(model: UnitModel): AggregateNode {
     let isAggregate = false;
     model.forEachFieldDef(fd => {
       if (fd.aggregate) {
@@ -99,7 +101,36 @@ export class AggregateNode extends DataFlowNode {
       return null;
     }
 
-    return new AggregateNode(dims, meas);
+    return new AggregateNode(dims, meas, {});
+  }
+
+  public static makeFromTransform(model: Model, t: SummarizeTransform): AggregateNode {
+    const dims = {};
+    const meas = {};
+    const as = {};
+    for(const s of t.summarize) {
+      if (s.aggregate) {
+        if (s.aggregate === 'count') {
+          meas['*'] = meas['*'] || {};
+          meas['*']['count'] = true;
+          as['*'] = s.as;
+        } else {
+          meas[s.field] = meas[s.field] || {};
+          meas[s.field][s.aggregate] = true;
+          as[s.field] = s.as;
+        }
+      }
+    }
+
+    for(const s of t.groupby) {
+      dims[s] = true;
+    }
+
+    if ((Object.keys(dims).length + Object.keys(meas).length + Object.keys(as).length)  === 0) {
+      return null;
+    }
+
+    return new AggregateNode(dims, meas, as);
   }
 
   public merge(other: AggregateNode) {
@@ -139,18 +170,27 @@ export class AggregateNode extends DataFlowNode {
   public assemble(): VgAggregateTransform {
     const ops: string[] = [];
     const fields: string[] = [];
+    const as: string[] = [];
     keys(this.measures).forEach(field => {
+      if (Object.keys(this.as).length !== 0 && this.as[field]) {
+        as.push(this.as[field]);
+      }
       keys(this.measures[field]).forEach(op => {
         ops.push(op);
         fields.push(field);
       });
     });
 
-    return {
+    let result: VgAggregateTransform = {
       type: 'aggregate',
       groupby: keys(this.dimensions),
       ops,
       fields
     };
+
+    if (as.length !== 0) {
+      result = {...result, as};
+    }
+    return result;
   }
 }

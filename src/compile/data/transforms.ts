@@ -1,10 +1,11 @@
 import {isArray} from 'vega-util';
 import {expression, Filter} from '../../filter';
 import * as log from '../../log';
-import {CalculateTransform, FilterTransform, isAggregate, isBin, isCalculate, isFilter, isTimeUnit} from '../../transform';
+import {CalculateTransform, FilterTransform, isBin, isCalculate, isFilter, isSummarize, isTimeUnit} from '../../transform';
 import {duplicate} from '../../util';
 import {VgFilterTransform, VgFormulaTransform} from '../../vega.schema';
 import {Model, ModelWithField} from '../model';
+import {AggregateNode} from './aggregate';
 import {BinNode} from './bin';
 import {DataFlowNode} from './dataflow';
 import {TimeUnitNode} from './timeunit';
@@ -71,7 +72,9 @@ export function parseTransformArray(model: Model) {
       node = BinNode.makeBinFromTransform(model, t);
     } else if (isTimeUnit(t)) {
       node = TimeUnitNode.makeFromTransfrom(model, t);
-    }  else {
+    } else if (isSummarize(t)) {
+      node = AggregateNode.makeFromTransform(model, t);
+    } else {
       log.warn(log.message.invalidTransformIgnored(t));
       return;
     }

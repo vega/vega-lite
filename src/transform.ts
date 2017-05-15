@@ -70,7 +70,7 @@ export interface SummarizeTransform {
   /**
    * Array of fields we will be useing for group by
    */
-  groupby: VgFieldRef[];
+  groupby: string[];
 }
 
 export interface Summarize {
@@ -93,7 +93,7 @@ export function isTimeUnit(t: Transform): t is TimeUnitTransform {
   return t['timeUnit'] !== undefined;
 }
 
-export function isAggregate(t: Transform): t is SummarizeTransform {
+export function isSummarize(t: Transform): t is SummarizeTransform {
   return t['summarize'] !== undefined;
 }
 
