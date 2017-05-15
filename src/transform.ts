@@ -61,11 +61,11 @@ export interface TimeUnitTransform {
   as: string;
 }
 
-export interface AggregateTransform {
+export interface SummarizeTransform {
   /**
    * Array of objects that contains
    */
-  summarize: Aggregrate[];
+  summarize: Summarize[];
 
   /**
    * Array of fields we will be useing for group by
@@ -73,7 +73,7 @@ export interface AggregateTransform {
   groupby: VgFieldRef[];
 }
 
-export interface Aggregrate {
+export interface Summarize {
   aggregate: AggregateOp;
 
   field: string;
@@ -93,8 +93,8 @@ export function isTimeUnit(t: Transform): t is TimeUnitTransform {
   return t['timeUnit'] !== undefined;
 }
 
-export function isAggregate(t: Transform): t is AggregateTransform {
+export function isAggregate(t: Transform): t is SummarizeTransform {
   return t['summarize'] !== undefined;
 }
 
-export type Transform = FilterTransform | CalculateTransform | BinTransform | TimeUnitTransform | AggregateTransform;
+export type Transform = FilterTransform | CalculateTransform | BinTransform | TimeUnitTransform | SummarizeTransform;

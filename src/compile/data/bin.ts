@@ -7,7 +7,7 @@ import {BinTransform, Transform} from '../../transform';
 import {Dict, duplicate, extend, flatten, hash, isBoolean, StringSet, vals} from '../../util';
 import {VgBinTransform, VgTransform} from '../../vega.schema';
 import {numberFormat} from '../common';
-import {ModelWithField} from '../model';
+import {Model, ModelWithField} from '../model';
 import {UnitModel} from '../unit';
 import {DataFlowNode} from './dataflow';
 
@@ -58,7 +58,7 @@ export class BinNode extends DataFlowNode {
     super();
   }
 
-  public static make(model: ModelWithField) {
+  public static makeBinFromEncoding(model: ModelWithField) {
     const bins = model.reduceFieldDef((binComponent: Dict<BinComponent>, fieldDef, channel) => {
       const fieldDefBin = model.fieldDef(channel).bin;
       if (fieldDefBin) {
@@ -90,31 +90,20 @@ export class BinNode extends DataFlowNode {
     return new BinNode(bins);
   }
 
-  public static makeTransform(model: ModelWithField, t: BinTransform) {
+  public static makeBinFromTransform(model: Model, t: BinTransform) {
     const bins: Dict<BinComponent> = {};
-    model.forEachFieldDef((fieldDef, channel) => {
-      if (fieldDef.field === t.field) {
-        const fieldDefBin = t.bin;
-        if (fieldDefBin) {
-          const bin: Bin = isBoolean(fieldDefBin) ? {} : fieldDefBin;
-          const key = `${binToString(t.bin)}_${t.field}`;
 
-            bins[key] = {
-              bin: bin,
-              field: fieldDef.field,
-              as: [field(fieldDef, {binSuffix: 'start'}), field(fieldDef, {binSuffix: 'end'})],
-              signal: model.getName(`${key}_bins`),
-              extentSignal: model.getName(key + '_extent')
-            };
-
-          bins[key] = {
-            ...bins[key],
-            ...rangeFormula(model, fieldDef, channel, model.config)
-          };
-        }
-      }
-    });
-
+    if (t.bin) {
+      const bin: Bin = isBoolean(t.bin) ? {} : t.bin;
+      const key = `${binToString(t.bin)}_${t.field}`;
+      bins[key] = {
+        bin: bin,
+        field: t.field,
+        as: [binToString(t.bin) + '_' + t.field + '_start', binToString(t.bin) + '_' + t.field + '_end'],
+        signal: model.getName(`${key}_bins`),
+        extentSignal: model.getName(key + '_extent')
+      };
+    }
     if (Object.keys(bins).length === 0) {
       return null;
     }

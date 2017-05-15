@@ -67,8 +67,7 @@ export function parseTransformArray(model: Model) {
     } else if (isFilter(t)) {
       node = new FilterNode(model, t.filter);
     } else if (isBin(t)) {
-      const modelWithField = model as ModelWithField;
-      node = BinNode.makeTransform(modelWithField, t);
+      node = BinNode.makeBinFromTransform(model, t);
     } else {
       log.warn(log.message.invalidTransformIgnored(t));
       return;

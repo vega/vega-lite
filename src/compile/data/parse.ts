@@ -111,7 +111,7 @@ export function parseData(model: Model): DataComponent {
   const parentIsLayer = model.parent && (model.parent instanceof LayerModel);
   if (model instanceof ModelWithField) {
     if (parentIsLayer) {
-      const bin = BinNode.make(model);
+      const bin = BinNode.makeBinFromEncoding(model);
       if (bin) {
         bin.parent = head;
         head = bin;
@@ -133,7 +133,7 @@ export function parseData(model: Model): DataComponent {
     }
 
     if (!parentIsLayer) {
-      const bin = BinNode.make(model);
+      const bin = BinNode.makeBinFromEncoding(model);
       if (bin) {
         bin.parent = head;
         head = bin;

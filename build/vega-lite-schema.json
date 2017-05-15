@@ -126,7 +126,7 @@
                                 "$ref": "#/definitions/TimeUnitTransform"
                             },
                             {
-                                "$ref": "#/definitions/AggregateTransform"
+                                "$ref": "#/definitions/SummarizeTransform"
                             }
                         ]
                     },
@@ -267,7 +267,7 @@
                                 "$ref": "#/definitions/TimeUnitTransform"
                             },
                             {
-                                "$ref": "#/definitions/AggregateTransform"
+                                "$ref": "#/definitions/SummarizeTransform"
                             }
                         ]
                     },
@@ -381,7 +381,7 @@
                                 "$ref": "#/definitions/TimeUnitTransform"
                             },
                             {
-                                "$ref": "#/definitions/AggregateTransform"
+                                "$ref": "#/definitions/SummarizeTransform"
                             }
                         ]
                     },
@@ -492,7 +492,7 @@
                                 "$ref": "#/definitions/TimeUnitTransform"
                             },
                             {
-                                "$ref": "#/definitions/AggregateTransform"
+                                "$ref": "#/definitions/SummarizeTransform"
                             }
                         ]
                     },
@@ -587,7 +587,7 @@
                                 "$ref": "#/definitions/TimeUnitTransform"
                             },
                             {
-                                "$ref": "#/definitions/AggregateTransform"
+                                "$ref": "#/definitions/SummarizeTransform"
                             }
                         ]
                     },
@@ -713,7 +713,7 @@
                                 "$ref": "#/definitions/TimeUnitTransform"
                             },
                             {
-                                "$ref": "#/definitions/AggregateTransform"
+                                "$ref": "#/definitions/SummarizeTransform"
                             }
                         ]
                     },
@@ -753,81 +753,6 @@
                 "variancep"
             ],
             "type": "string"
-        },
-        "AggregateTransform": {
-            "additionalProperties": false,
-            "properties": {
-                "groupby": {
-                    "description": "Array of fields we will be useing for group by",
-                    "items": {
-                        "anyOf": [
-                            {
-                                "additionalProperties": false,
-                                "properties": {
-                                    "parent": {
-                                        "type": "string"
-                                    }
-                                },
-                                "required": [
-                                    "parent"
-                                ],
-                                "type": "object"
-                            },
-                            {
-                                "items": {
-                                    "additionalProperties": false,
-                                    "properties": {
-                                        "parent": {
-                                            "type": "string"
-                                        }
-                                    },
-                                    "required": [
-                                        "parent"
-                                    ],
-                                    "type": "object"
-                                },
-                                "type": "array"
-                            },
-                            {
-                                "type": "string"
-                            }
-                        ]
-                    },
-                    "type": "array"
-                },
-                "summarize": {
-                    "description": "Array of objects that contains",
-                    "items": {
-                        "$ref": "#/definitions/Aggregrate"
-                    },
-                    "type": "array"
-                }
-            },
-            "required": [
-                "groupby",
-                "summarize"
-            ],
-            "type": "object"
-        },
-        "Aggregrate": {
-            "additionalProperties": false,
-            "properties": {
-                "aggregate": {
-                    "$ref": "#/definitions/AggregateOp"
-                },
-                "as": {
-                    "type": "string"
-                },
-                "field": {
-                    "type": "string"
-                }
-            },
-            "required": [
-                "aggregate",
-                "as",
-                "field"
-            ],
-            "type": "object"
         },
         "AreaOverlay": {
             "enum": [
@@ -2986,7 +2911,7 @@
                                 "$ref": "#/definitions/TimeUnitTransform"
                             },
                             {
-                                "$ref": "#/definitions/AggregateTransform"
+                                "$ref": "#/definitions/SummarizeTransform"
                             }
                         ]
                     },
@@ -3060,7 +2985,7 @@
                                 "$ref": "#/definitions/TimeUnitTransform"
                             },
                             {
-                                "$ref": "#/definitions/AggregateTransform"
+                                "$ref": "#/definitions/SummarizeTransform"
                             }
                         ]
                     },
@@ -3158,7 +3083,7 @@
                                 "$ref": "#/definitions/TimeUnitTransform"
                             },
                             {
-                                "$ref": "#/definitions/AggregateTransform"
+                                "$ref": "#/definitions/SummarizeTransform"
                             }
                         ]
                     },
@@ -4912,6 +4837,81 @@
                 "zero"
             ],
             "type": "string"
+        },
+        "Summarize": {
+            "additionalProperties": false,
+            "properties": {
+                "aggregate": {
+                    "$ref": "#/definitions/AggregateOp"
+                },
+                "as": {
+                    "type": "string"
+                },
+                "field": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "aggregate",
+                "as",
+                "field"
+            ],
+            "type": "object"
+        },
+        "SummarizeTransform": {
+            "additionalProperties": false,
+            "properties": {
+                "groupby": {
+                    "description": "Array of fields we will be useing for group by",
+                    "items": {
+                        "anyOf": [
+                            {
+                                "additionalProperties": false,
+                                "properties": {
+                                    "parent": {
+                                        "type": "string"
+                                    }
+                                },
+                                "required": [
+                                    "parent"
+                                ],
+                                "type": "object"
+                            },
+                            {
+                                "items": {
+                                    "additionalProperties": false,
+                                    "properties": {
+                                        "parent": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "required": [
+                                        "parent"
+                                    ],
+                                    "type": "object"
+                                },
+                                "type": "array"
+                            },
+                            {
+                                "type": "string"
+                            }
+                        ]
+                    },
+                    "type": "array"
+                },
+                "summarize": {
+                    "description": "Array of objects that contains",
+                    "items": {
+                        "$ref": "#/definitions/Summarize"
+                    },
+                    "type": "array"
+                }
+            },
+            "required": [
+                "groupby",
+                "summarize"
+            ],
+            "type": "object"
         },
         "TextConfig": {
             "additionalProperties": false,

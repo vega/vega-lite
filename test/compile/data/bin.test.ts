@@ -3,16 +3,20 @@
 import {assert} from 'chai';
 
 import {BinNode} from '../../../src/compile/data/bin';
-import {ModelWithField} from '../../../src/compile/model';
-import {BinTransform} from '../../../src/transform';
+import {Model, ModelWithField} from '../../../src/compile/model';
+import {BinTransform, Transform} from '../../../src/transform';
 import {VgTransform} from '../../../src/vega.schema';
 import {parseUnitModel} from '../../util';
 
-function assemble(model: ModelWithField) {
-  return BinNode.make(model).assemble();
+function assembleFromEncoding(model: ModelWithField) {
+  return BinNode.makeBinFromEncoding(model).assemble();
 }
 
-describe.only('compile/data/bin', function() {
+function assembleFromTransform(model: Model, t: BinTransform) {
+  return BinNode.makeBinFromTransform(model, t).assemble();
+}
+
+describe('compile/data/bin', function() {
   it('should add bin transform and correctly apply bin with custom extent', function() {
     const model = parseUnitModel({
       mark: 'point',
@@ -25,7 +29,7 @@ describe.only('compile/data/bin', function() {
       }
     });
 
-    assert.deepEqual<VgTransform>(assemble(model)[0], {
+    assert.deepEqual<VgTransform>(assembleFromEncoding(model)[0], {
       type: 'bin',
       field: 'Acceleration',
       as: ['bin_extent_0,100_maxbins_10_Acceleration_start', 'bin_extent_0,100_maxbins_10_Acceleration_end'],
@@ -46,7 +50,7 @@ describe.only('compile/data/bin', function() {
         }
       }
     });
-    const transform = assemble(model);
+    const transform = assembleFromEncoding(model);
     assert.deepEqual(transform.length, 2);
     assert.deepEqual<VgTransform>(transform[0], {
       type: 'extent',
@@ -80,7 +84,7 @@ describe.only('compile/data/bin', function() {
         }
       }
     });
-    const transform = assemble(model);
+    const transform = assembleFromEncoding(model);
     assert.deepEqual(transform.length, 3);
     assert.deepEqual<VgTransform>(transform[0], {
       type: 'extent',
@@ -115,7 +119,7 @@ describe.only('compile/data/bin', function() {
         }
       }
     });
-    const transform = assemble(model);
+    const transform = assembleFromEncoding(model);
     assert.deepEqual(transform.length, 2);
     assert.deepEqual<VgTransform>(transform[0], {
       type: 'extent',
@@ -132,35 +136,33 @@ describe.only('compile/data/bin', function() {
     });
   });
 
-  it('should apply the bin transform if specified BinTransform', () => {
-    const t: BinTransform = {bin: {"maxbins" : 10}, field: "Rotten_Tomatoes_Rating", as: "something"};
-    const model = parseUnitModel({
+  it('should add bin transform from transform arrat and correctly apply bin with custom extent', function() {
+
+    const t: BinTransform = {bin: {extent: [0, 100]},
+                  field: 'Acceleration',
+                  as: 'Bin_Transform'};
+     const model = parseUnitModel({
       data: {url: "data/movies.json"},
       mark: "circle",
       transform: [t],
       encoding: {
         x: {
-          bin: true,
           field: "Rotten_Tomatoes_Rating",
           type: "q"
         },
         color: {
-          bin: {"maxbins": 10},
           field: "Rotten_Tomatoes_Rating",
           type: "q"
         }
       }
     });
-    const transform = BinNode.makeTransform(model, t).assemble();
-    assert.deepEqual<VgTransform>(transform[1], {
+
+    assert.deepEqual<VgTransform>(assembleFromTransform(model, t)[0], {
       type: 'bin',
-      field: 'Rotten_Tomatoes_Rating',
-      as:
-      [ 'bin_maxbins_10_Rotten_Tomatoes_Rating_start',
-        'bin_maxbins_10_Rotten_Tomatoes_Rating_end' ],
-      signal: 'bin_maxbins_10_Rotten_Tomatoes_Rating_bins',
-      maxbins: 10,
-      extent: {signal: 'bin_maxbins_10_Rotten_Tomatoes_Rating_extent'}
+      field: 'Acceleration',
+      as: ['bin_extent_0,100_Acceleration_start', 'bin_extent_0,100_Acceleration_end'],
+      extent: [0, 100],
+      signal: "bin_extent_0_100_Acceleration_bins",
     });
   });
 });
