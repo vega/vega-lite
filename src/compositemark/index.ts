@@ -1,8 +1,9 @@
 import {Config} from './../config';
 import {isMarkDef, MarkDef} from './../mark';
 import {GenericUnitSpec, LayerSpec} from './../spec';
-import {BOXPLOT, normalizeBoxPlot} from './boxplot';
+import {BOXPLOT, normalizeBoxPlot, BoxPlotDef} from './boxplot';
 import {ERRORBAR, normalizeErrorBar} from './errorbar';
+import {Mark, AnyMark} from '../mark';
 
 export {BoxPlotConfig} from './boxplot';
 export type UnitNormalizer = (spec: GenericUnitSpec<any, any>, config: Config)=> LayerSpec;
@@ -21,6 +22,9 @@ export function remove(mark: string) {
 }
 
 export type CompositeMark = BOXPLOT | ERRORBAR;
+
+export type CompositeMarkDef = BoxPlotDef;
+
 export type CompositeAggregate = BOXPLOT;
 
 add(BOXPLOT, normalizeBoxPlot);
@@ -31,7 +35,7 @@ add(ERRORBAR, normalizeErrorBar);
  */
 export function normalize(
     // This GenericUnitSpec has any as Encoding because unit specs with composite mark can have additional encoding channels.
-    spec: GenericUnitSpec<any, string | MarkDef>,
+    spec: GenericUnitSpec<any, AnyMark>,
     config: Config
   ): LayerSpec {
 

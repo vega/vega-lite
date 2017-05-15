@@ -49,6 +49,9 @@
                             "$ref": "#/definitions/MarkDef"
                         },
                         {
+                            "$ref": "#/definitions/BoxPlotDef"
+                        },
+                        {
                             "enum": [
                                 "area",
                                 "bar",
@@ -174,10 +177,10 @@
                     "items": {
                         "anyOf": [
                             {
-                                "$ref": "#/definitions/UnitSpec"
+                                "$ref": "#/definitions/GenericUnitSpec<Encoding<Field>, AnyMark>"
                             },
                             {
-                                "$ref": "#/definitions/LayerSpec"
+                                "$ref": "#/definitions/GenericLayerSpec<GenericUnitSpec<Encoding<Field>, AnyMark>>"
                             }
                         ]
                     },
@@ -333,13 +336,10 @@
                 "spec": {
                     "anyOf": [
                         {
-                            "$ref": "#/definitions/UnitSpec"
+                            "$ref": "#/definitions/GenericUnitSpec<Encoding<Field>, AnyMark>"
                         },
                         {
-                            "$ref": "#/definitions/LayerSpec"
-                        },
-                        {
-                            "$ref": "#/definitions/RepeatSpec"
+                            "$ref": "#/definitions/GenericLayerSpec<GenericUnitSpec<Encoding<Field>, AnyMark>>"
                         }
                     ]
                 },
@@ -435,13 +435,13 @@
                 "spec": {
                     "anyOf": [
                         {
-                            "$ref": "#/definitions/UnitSpec"
+                            "$ref": "#/definitions/GenericUnitSpec<Encoding<Field>, AnyMark>"
                         },
                         {
-                            "$ref": "#/definitions/LayerSpec"
+                            "$ref": "#/definitions/GenericLayerSpec<GenericUnitSpec<Encoding<Field>, AnyMark>>"
                         },
                         {
-                            "$ref": "#/definitions/RepeatSpec"
+                            "$ref": "#/definitions/GenericRepeatSpec<GenericUnitSpec<Encoding<Field>, AnyMark>>"
                         }
                     ]
                 },
@@ -549,13 +549,10 @@
                     "items": {
                         "anyOf": [
                             {
-                                "$ref": "#/definitions/UnitSpec"
+                                "$ref": "#/definitions/GenericUnitSpec<Encoding<Field>, AnyMark>"
                             },
                             {
-                                "$ref": "#/definitions/LayerSpec"
-                            },
-                            {
-                                "$ref": "#/definitions/RepeatSpec"
+                                "$ref": "#/definitions/GenericLayerSpec<GenericUnitSpec<Encoding<Field>, AnyMark>>"
                             }
                         ]
                     },
@@ -605,13 +602,10 @@
                     "items": {
                         "anyOf": [
                             {
-                                "$ref": "#/definitions/UnitSpec"
+                                "$ref": "#/definitions/GenericUnitSpec<Encoding<Field>, AnyMark>"
                             },
                             {
-                                "$ref": "#/definitions/LayerSpec"
-                            },
-                            {
-                                "$ref": "#/definitions/RepeatSpec"
+                                "$ref": "#/definitions/GenericLayerSpec<GenericUnitSpec<Encoding<Field>, AnyMark>>"
                             }
                         ]
                     },
@@ -1634,6 +1628,25 @@
                     "type": "number"
                 }
             },
+            "type": "object"
+        },
+        "BoxPlotDef": {
+            "additionalProperties": false,
+            "properties": {
+                "orient": {
+                    "$ref": "#/definitions/Orient"
+                },
+                "type": {
+                    "enum": [
+                        "box-plot"
+                    ],
+                    "type": "string"
+                }
+            },
+            "required": [
+                "orient",
+                "type"
+            ],
             "type": "object"
         },
         "CalculateTransform": {
@@ -2721,7 +2734,7 @@
             ],
             "type": "string"
         },
-        "LayerSpec": {
+        "GenericLayerSpec<GenericUnitSpec<Encoding<Field>, AnyMark>>": {
             "additionalProperties": false,
             "properties": {
                 "data": {
@@ -2751,10 +2764,10 @@
                     "items": {
                         "anyOf": [
                             {
-                                "$ref": "#/definitions/UnitSpec"
+                                "$ref": "#/definitions/GenericUnitSpec<Encoding<Field>, AnyMark>"
                             },
                             {
-                                "$ref": "#/definitions/LayerSpec"
+                                "$ref": "#/definitions/GenericLayerSpec<GenericUnitSpec<Encoding<Field>, AnyMark>>"
                             }
                         ]
                     },
@@ -2812,7 +2825,7 @@
             ],
             "type": "object"
         },
-        "RepeatSpec": {
+        "GenericRepeatSpec<GenericUnitSpec<Encoding<Field>, AnyMark>>": {
             "additionalProperties": false,
             "properties": {
                 "data": {
@@ -2843,13 +2856,13 @@
                 "spec": {
                     "anyOf": [
                         {
-                            "$ref": "#/definitions/UnitSpec"
+                            "$ref": "#/definitions/GenericUnitSpec<Encoding<Field>, AnyMark>"
                         },
                         {
-                            "$ref": "#/definitions/LayerSpec"
+                            "$ref": "#/definitions/GenericLayerSpec<GenericUnitSpec<Encoding<Field>, AnyMark>>"
                         },
                         {
-                            "$ref": "#/definitions/RepeatSpec"
+                            "$ref": "#/definitions/GenericRepeatSpec<GenericUnitSpec<Encoding<Field>, AnyMark>>"
                         }
                     ]
                 },
@@ -2874,7 +2887,7 @@
             ],
             "type": "object"
         },
-        "UnitSpec": {
+        "GenericUnitSpec<Encoding<Field>, AnyMark>": {
             "additionalProperties": false,
             "properties": {
                 "data": {
@@ -2907,6 +2920,9 @@
                     "anyOf": [
                         {
                             "$ref": "#/definitions/MarkDef"
+                        },
+                        {
+                            "$ref": "#/definitions/BoxPlotDef"
                         },
                         {
                             "enum": [

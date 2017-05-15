@@ -3,7 +3,7 @@
 import {assert} from 'chai';
 import {Encoding} from '../src/encoding';
 import {Field} from '../src/fielddef';
-import {MarkDef} from '../src/mark';
+import {MarkDef, Mark} from '../src/mark';
 import {GenericSpec, GenericUnitSpec, normalize} from '../src/spec';
 import {Config, defaultConfig} from './../src/config';
 
@@ -294,7 +294,7 @@ it("should produce correct layered specs for vertical boxplot with two quantitat
   });
 
   it("should produce correct layered specs for vertical boxplot with two quantitative axes and specify orientation with orient", () => {
-    assert.deepEqual<GenericSpec<GenericUnitSpec<Encoding<Field>, string | MarkDef>>>(normalize({
+    assert.deepEqual<GenericSpec<GenericUnitSpec<Encoding<Field>, Mark | MarkDef>>>(normalize({
         "description": "A box plot showing median, min, and max in the US population distribution of age groups in 2000.",
         "data": {"url": "data/population.json"},
         mark: {
