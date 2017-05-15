@@ -8,13 +8,14 @@ import * as vlEncoding from './encoding';
 import {Facet} from './facet';
 import {Field, FieldDef} from './fielddef';
 import * as log from './log';
-import {AREA, isPrimitiveMark, LINE, Mark, MarkDef} from './mark';
+import {AREA, isPrimitiveMark, LINE, Mark, MarkDef, AnyMark} from './mark';
 import {Repeat} from './repeat';
 import {SelectionDef} from './selection';
 import {stack} from './stack';
 import {TopLevelProperties} from './toplevelprops';
 import {Transform} from './transform';
 import {contains, duplicate, hash, vals} from './util';
+import {CompositeMarkDef} from './compositemark/index';
 
 
 export type TopLevel<S extends BaseSpec> = S & TopLevelProperties & {
@@ -105,12 +106,12 @@ export type UnitSpec = GenericUnitSpec<Encoding<Field>, Mark | MarkDef>;
 /**
  * Unit spec that can contain composite mark
  */
-export type CompositeUnitSpec = GenericUnitSpec<Encoding<Field>, CompositeMark | Mark | MarkDef>;
+export type CompositeUnitSpec = GenericUnitSpec<Encoding<Field>, AnyMark>;
 
 /**
  * Unit spec that can contain composite mark and row or column channels.
  */
-export type FacetedCompositeUnitSpec = GenericUnitSpec<EncodingWithFacet<Field>, CompositeMark | Mark | MarkDef>;
+export type FacetedCompositeUnitSpec = GenericUnitSpec<EncodingWithFacet<Field>, AnyMark>;
 
 export interface GenericLayerSpec<U extends GenericUnitSpec<any, any>> extends BaseSpec, UnitSize {
   /**
@@ -305,12 +306,12 @@ function normalizeFacetedUnit(spec: FacetedCompositeUnitSpec, config: Config): F
   };
 }
 
-function isNonFacetUnitSpecWithPrimitiveMark(spec: GenericUnitSpec<Encoding<Field>, string | MarkDef>):
+function isNonFacetUnitSpecWithPrimitiveMark(spec: GenericUnitSpec<Encoding<Field>, AnyMark>):
   spec is GenericUnitSpec<Encoding<Field>, Mark> {
     return isPrimitiveMark(spec.mark);
 }
 
-function normalizeNonFacetUnit(spec: GenericUnitSpec<Encoding<Field>, string | MarkDef>, config: Config) {
+function normalizeNonFacetUnit(spec: GenericUnitSpec<Encoding<Field>, AnyMark>, config: Config) {
   if (isNonFacetUnitSpecWithPrimitiveMark(spec)) {
     // TODO: thoroughly test
     if (isRanged(spec.encoding)) {
