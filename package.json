@@ -45,8 +45,8 @@
     "poststart": "rm examples/all-examples.json",
 
     "preschema": "npm run prebuild",
-    "schema": "typescript-json-schema --required true --noExtraProps true src/spec.ts TopLevelExtendedSpec > build/vega-lite-schema.json && rm -f _data/vega-lite-schema.json && npm run replaceschema && cp build/vega-lite-schema.json _data/",
-    "replaceschema": "sed -i -e 's/GenericLayerSpec<.*..\\./LayerSpec/g' build/vega-lite-schema.json && sed -i -e 's/GenericRepeatSpec<.*..\\./RepeatSpec/g' build/vega-lite-schema.json && sed -i -e 's/GenericUnitSpec<Encoding<.*..\\./UnitSpec/g' build/vega-lite-schema.json && sed -i -e 's/GenericUnitSpec<EncodingWithFacet<.*..\\./FacetedUnitSpec/g' build/vega-lite-schema.json && sed -i -e 's/<Field>//g' build/vega-lite-schema.json",
+    "schema": "typescript-json-schema --required true --noExtraProps true src/spec.ts TopLevelExtendedSpec > build/vega-lite-schema.json && rm -f _data/vega-lite-schema.json && npm run renameschema && cp build/vega-lite-schema.json _data/",
+    "renameschema": "scripts/rename-schema.sh",
     "presite": "npm run build && npm run data && npm run build:site && npm run build:toc && npm run build:versions",
     "site": "bundle exec jekyll serve",
 
