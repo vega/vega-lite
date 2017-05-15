@@ -108,36 +108,7 @@ describe('compile/data/bin', function() {
     });
   });
 
-  it ('should add bin transform and correctly apply bin for binned field without custom extent', () => {
-    const model = parseUnitModel({
-      mark: 'point',
-      encoding: {
-        y: {
-          bin: true,
-          'field': 'Acceleration',
-          'type': 'quantitative'
-        }
-      }
-    });
-    const transform = assembleFromEncoding(model);
-    assert.deepEqual(transform.length, 2);
-    assert.deepEqual<VgTransform>(transform[0], {
-      type: 'extent',
-      field: 'Acceleration',
-      signal: 'bin_maxbins_10_Acceleration_extent'
-    });
-    assert.deepEqual<VgTransform>(transform[1], {
-      type: 'bin',
-      field: 'Acceleration',
-      as: ['bin_maxbins_10_Acceleration_start', 'bin_maxbins_10_Acceleration_end'],
-      maxbins: 10,
-      signal: 'bin_maxbins_10_Acceleration_bins',
-      extent: {signal: 'bin_maxbins_10_Acceleration_extent'}
-    });
-  });
-
   it('should add bin transform from transform arrat and correctly apply bin with custom extent', function() {
-
     const t: BinTransform = {bin: {extent: [0, 100]},
                   field: 'Acceleration',
                   as: 'Bin_Transform'};
