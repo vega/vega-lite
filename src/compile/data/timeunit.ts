@@ -6,7 +6,7 @@ import {TEMPORAL} from '../../type';
 import {Dict, duplicate, extend, StringSet, vals} from '../../util';
 import {VgFormulaTransform, VgTransform} from '../../vega.schema';
 import {format} from '../axis/rules';
-import {ModelWithField} from '../model';
+import {Model, ModelWithField} from '../model';
 import {DataFlowNode} from './dataflow';
 
 
@@ -25,7 +25,7 @@ export class TimeUnitNode extends DataFlowNode {
     super();
   }
 
-  public static make(model: ModelWithField) {
+  public static makeFromEncoding(model: ModelWithField) {
     const formula = model.reduceFieldDef((timeUnitComponent: TimeUnitComponent, fieldDef) => {
       if (fieldDef.type === TEMPORAL && fieldDef.timeUnit) {
         const f = field(fieldDef);
@@ -43,6 +43,24 @@ export class TimeUnitNode extends DataFlowNode {
     }
 
     return new TimeUnitNode(formula);
+  }
+
+  public static makeFromTransfrom(model: Model, t: TimeUnitTransform) {
+    const timeUnitComponent: Dict<TimeUnitComponent> = {};
+      if (t.timeUnit) {
+        timeUnitComponent[t.field] = {
+          as: t.as,
+          timeUnit: t.timeUnit,
+          field: t.field
+        };
+      }
+
+
+    if (Object.keys(timeUnitComponent).length === 0) {
+      return null;
+    }
+
+    return new TimeUnitNode(timeUnitComponent);
   }
 
   public merge(other: TimeUnitNode) {

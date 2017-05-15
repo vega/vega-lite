@@ -7,6 +7,7 @@ import {VgFilterTransform, VgFormulaTransform} from '../../vega.schema';
 import {Model, ModelWithField} from '../model';
 import {BinNode} from './bin';
 import {DataFlowNode} from './dataflow';
+import {TimeUnitNode} from './timeunit';
 
 export class FilterNode extends DataFlowNode {
   public clone() {
@@ -68,7 +69,9 @@ export function parseTransformArray(model: Model) {
       node = new FilterNode(model, t.filter);
     } else if (isBin(t)) {
       node = BinNode.makeBinFromTransform(model, t);
-    } else {
+    } else if (isTimeUnit(t)) {
+      node = TimeUnitNode.makeFromTransfrom(model, t);
+    }  else {
       log.warn(log.message.invalidTransformIgnored(t));
       return;
     }

@@ -140,7 +140,7 @@ export function parseData(model: Model): DataComponent {
       }
     }
 
-    const tu = TimeUnitNode.make(model);
+    const tu = TimeUnitNode.makeFromEncoding(model);
     if (tu) {
       tu.parent = head;
       head = tu;
