@@ -201,6 +201,7 @@
     "axes": [
         {
             "domain": false,
+            "format": "%Y",
             "scale": "x",
             "labelOverlap": true,
             "orient": "bottom",
@@ -221,6 +222,7 @@
         },
         {
             "domain": false,
+            "format": "%Y",
             "scale": "x",
             "grid": true,
             "labels": false,

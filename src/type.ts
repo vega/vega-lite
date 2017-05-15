@@ -14,6 +14,7 @@ export const ORDINAL = Type.ORDINAL;
 export const TEMPORAL = Type.TEMPORAL;
 export const NOMINAL = Type.NOMINAL;
 
+export type FormatType = 'number' | 'time' | 'utc';
 /**
  * Get full, lowercase type name for a given type.
  * @param  type

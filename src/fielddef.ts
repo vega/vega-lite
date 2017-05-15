@@ -14,7 +14,7 @@ import {Scale} from './scale';
 import {SortField, SortOrder} from './sort';
 import {StackOffset} from './stack';
 import {isDiscreteByDefault, normalizeTimeUnit, TimeUnit} from './timeunit';
-import {getFullName, Type} from './type';
+import {FormatType, getFullName, Type} from './type';
 import {isBoolean, isString, stringValue} from './util';
 
 /**
@@ -217,6 +217,8 @@ export interface TextFieldDef<F> extends FieldDef<F> {
    * The [formatting pattern](format.html) for a text field. If not defined, this will be determined automatically.
    */
   format?: string;
+
+  formatType?: FormatType;
 }
 
 export type ChannelDef<F> = ConditionalChannelDef<FieldDef<F>>;

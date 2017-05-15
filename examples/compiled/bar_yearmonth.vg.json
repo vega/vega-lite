@@ -124,6 +124,7 @@
     ],
     "axes": [
         {
+            "format": "%B of %Y",
             "scale": "x",
             "labelOverlap": true,
             "orient": "bottom",
@@ -152,6 +153,7 @@
             }
         },
         {
+            "format": "%B of %Y",
             "scale": "x",
             "domain": false,
             "grid": true,
