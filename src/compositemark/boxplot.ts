@@ -1,10 +1,9 @@
 import {Config} from '../config';
-import {Field} from '../fielddef';
 import {Encoding} from './../encoding';
-import {FieldDef, isContinuous, isDiscrete, PositionFieldDef} from './../fielddef';
+import {Field, FieldDef, isContinuous, isDiscrete, PositionFieldDef} from './../fielddef';
 import {MarkConfig, MarkDef} from './../mark';
 import {GenericUnitSpec, LayerSpec} from './../spec';
-import { Orient } from '../vega.schema';
+import {Orient} from './../vega.schema';
 
 export const BOXPLOT: 'box-plot' = 'box-plot';
 export type BOXPLOT = typeof BOXPLOT;
@@ -47,43 +46,48 @@ export function normalizeBoxPlot(spec: GenericUnitSpec<Encoding<Field>, BOXPLOT 
     } else {
       if (isContinuous(encoding.x) && isContinuous(encoding.y)) {
         // need to use orient or aggregate to determine orientation
-        const xEncChannel = encoding.x as FieldDef<string>;
-        const yEncChannel = encoding.y as FieldDef<string>
+        const xEncChannel = encoding.x as FieldDef<Field>;
+        const yEncChannel = encoding.y as FieldDef<Field>;
 
-        // find axis with aggregate
         if (xEncChannel.aggregate === undefined && yEncChannel.aggregate === BOXPLOT) {
-          // vertical - TEST
+          // vertical
           discreteAxis = 'x';
           continuousAxis = 'y';
           continuousAxisChannelDef = encoding.y;
-          discreteAxisFieldDef = encoding.x
+          delete continuousAxisChannelDef['aggregate'];
+          discreteAxisFieldDef = encoding.x;
         } else if (yEncChannel.aggregate === undefined && xEncChannel.aggregate === BOXPLOT) {
-          // horizontal - TEST
+          // horizontal
           discreteAxis = 'y';
           continuousAxis = 'x';
           continuousAxisChannelDef = encoding.x;
-          discreteAxisFieldDef = encoding.y
+          delete continuousAxisChannelDef['aggregate'];
+          discreteAxisFieldDef = encoding.y;
         } else if (xEncChannel.aggregate === BOXPLOT && yEncChannel.aggregate === BOXPLOT) {
           throw new Error('Both x and y cannot have aggregate');
         } else {
-          // if none have aggregate use orient
+          // if both axes dont have aggregate use orient
           const markChannel = mark as BoxPlotDef;
-          if (markChannel.orient === 'vertical') {
+          if (markChannel && markChannel.orient) {
+            if (markChannel.orient === 'vertical') {
             // vertical - TEST
             discreteAxis = 'x';
             continuousAxis = 'y';
             continuousAxisChannelDef = encoding.y;
-            discreteAxisFieldDef = encoding.x
-          } else {
+            discreteAxisFieldDef = encoding.x;
+            } else {
             // horizontal - TEST
             discreteAxis = 'y';
             continuousAxis = 'x';
             continuousAxisChannelDef = encoding.x;
-            discreteAxisFieldDef = encoding.y
+            discreteAxisFieldDef = encoding.y;
+            }
+          } else {
+            discreteAxis = 'x';
+            continuousAxis = 'y';
+            continuousAxisChannelDef = encoding.y;
+            discreteAxisFieldDef = encoding.x;
           }
-        }
-        if (discreteAxis === undefined && continuousAxis === undefined) {
-          throw new Error('Need to specify orientation with either aggregate or orient');
         }
       } else {
         throw new Error('Both x and y cannot be discrete');
