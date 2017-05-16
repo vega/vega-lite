@@ -3,7 +3,7 @@
 import {assert} from 'chai';
 import {Encoding} from '../src/encoding';
 import {Field} from '../src/fielddef';
-import {MarkDef, Mark} from '../src/mark';
+import {Mark, MarkDef} from '../src/mark';
 import {GenericSpec, GenericUnitSpec, normalize} from '../src/spec';
 import {Config, defaultConfig} from './../src/config';
 
@@ -99,26 +99,6 @@ describe("normalizeErrorBar", () => {
  });
 
 describe("normalizeBox", () => {
-  it("should produce an error if neither axis has aggregate or orient", () => {
-    assert.throws(() => {
-      normalize({
-        "description": "A box plot showing median, min, and max in the US population distribution of age groups in 2000.",
-        "data": {"url": "data/population.json"},
-        mark: "box-plot",
-        encoding: {
-          "x": {"field": "people","type": "quantitative"},
-          "y": {
-            "field": "people",
-            "type": "quantitative",
-            "axis": {"title": "population"}
-          },
-          "size": {"value": 5},
-          "color": {"value" : "skyblue"}
-        }
-      }, defaultConfig);
-    }, Error, 'Need to specify orientation with either aggregate or orient');
-  });
-
   it("should produce an error if both axes have aggregate boxplot", () => {
     assert.throws(() => {
       normalize({
@@ -239,7 +219,27 @@ it("should produce correct layered specs for vertical boxplot with two quantitat
       });
   });
 
-  it("should produce an error if continuous axis has aggregate property", () => {
+  it("should produce an error if continuous axis has aggregate property 1D", () => {
+    assert.throws(() => {
+      normalize({
+        "description": "A box plot showing median, min, and max in the US population distribution of age groups in 2000.",
+        "data": {"url": "data/population.json"},
+        mark: "box-plot",
+        encoding: {
+          "y": {
+            "aggregate": "min",
+            "field": "people",
+            "type": "quantitative",
+            "axis": {"title": "population"}
+          },
+          "size": {"value": 5},
+          "color": {"value" : "skyblue"}
+        }
+      }, defaultConfig);
+    }, Error, 'Continuous axis should not be aggregate');
+  });
+
+  it("should produce an error if continuous axis has aggregate property 2D", () => {
     assert.throws(() => {
       normalize({
         "description": "A box plot showing median, min, and max in the US population distribution of age groups in 2000.",
@@ -389,6 +389,108 @@ it("should produce correct layered specs for vertical boxplot with two quantitat
               },
               "color": {"value" : "white"},
               "size": {"value": 5}
+            }
+          }
+        ]
+      });
+  });
+
+  it("should produce correct layered specs for horizontal boxplot with two quantitative axes and specify orientation with orient", () => {
+     assert.deepEqual<GenericSpec<GenericUnitSpec<Encoding<Field>, string | MarkDef>>>(normalize({
+        "description": "A box plot showing median, min, and max in the US population distribution of age groups in 2000.",
+        "data": {"url": "data/population.json"},
+        mark: {
+          type: "box-plot",
+          orient: "horizontal"
+        },
+        encoding: {
+          "y": {"field": "age","type": "quantitative"},
+          "x": {
+            "field": "people",
+            "type": "quantitative",
+            "axis": {"title": "population"}
+          },
+          "size": {"value": 5},
+          "color": {"value" : "skyblue"}
+        }
+      }, defaultConfig), {
+        "description": "A box plot showing median, min, and max in the US population distribution of age groups in 2000.",
+        "data": {"url": "data/population.json"},
+        "layer": [
+          {
+            mark: {
+              type: 'rule',
+              role: 'boxWhisker'
+            },
+            "encoding": {
+              "y": {"field": "age","type": "quantitative"},
+              "x": {
+                "aggregate": "min",
+                "field": "people",
+                "type": "quantitative",
+                "axis": {"title": "population"}
+              },
+              "x2": {
+                "aggregate": "q1",
+                "field": "people",
+                "type": "quantitative"
+              }
+            }
+          },
+          {
+            mark: {
+              type: 'rule',
+              role: 'boxWhisker'
+            },
+            "encoding": {
+              "y": {"field": "age","type": "quantitative"},
+              "x": {
+                "aggregate": "q3",
+                "field": "people",
+                "type": "quantitative"
+              },
+              "x2": {
+                "aggregate": "max",
+                "field": "people",
+                "type": "quantitative"
+              }
+            }
+          },
+          {
+            mark: {
+              type: 'bar',
+              role: 'box'
+            },
+            "encoding": {
+              "y": {"field": "age","type": "quantitative"},
+              "x": {
+                "aggregate": "q1",
+                "field": "people",
+                "type": "quantitative"
+              },
+              "x2": {
+                "aggregate": "q3",
+                "field": "people",
+                "type": "quantitative"
+              },
+              "size": {"value": 5},
+              "color": {"value" : "skyblue"}
+            }
+          },
+          {
+            mark: {
+              type: 'tick',
+              role: 'boxMid'
+            },
+            "encoding": {
+              "y": {"field": "age","type": "quantitative"},
+              "x": {
+                "aggregate": "median",
+                "field": "people",
+                "type": "quantitative"
+              },
+              "size": {"value": 5},
+              "color": {"value" : "white"}
             }
           }
         ]

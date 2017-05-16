@@ -1,9 +1,8 @@
 import {Config} from './../config';
-import {isMarkDef, MarkDef} from './../mark';
+import {AnyMark, isMarkDef, Mark, MarkDef} from './../mark';
 import {GenericUnitSpec, LayerSpec} from './../spec';
-import {BOXPLOT, normalizeBoxPlot, BoxPlotDef} from './boxplot';
+import {BOXPLOT, BoxPlotDef, normalizeBoxPlot} from './boxplot';
 import {ERRORBAR, normalizeErrorBar} from './errorbar';
-import {Mark, AnyMark} from '../mark';
 
 export {BoxPlotConfig} from './boxplot';
 export type UnitNormalizer = (spec: GenericUnitSpec<any, any>, config: Config)=> LayerSpec;

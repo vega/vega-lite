@@ -13,7 +13,6 @@ export interface BoxPlotDef {
   orient: Orient;
 }
 
-
 export interface BoxPlotConfig extends MarkConfig {
   /** Size of the box and mid tick of a box plot */
   size?: number;
@@ -31,68 +30,23 @@ export function normalizeBoxPlot(spec: GenericUnitSpec<Encoding<Field>, BOXPLOT 
 
   if (encoding.x && encoding.y) {
     // 2D
-    if (isDiscrete(encoding.x) && isContinuous(encoding.y)) {
-      // vertical
-      discreteAxis = 'x';
-      continuousAxis = 'y';
-      continuousAxisChannelDef = encoding.y;
-      discreteAxisFieldDef = encoding.x;
-    } else if (isDiscrete(encoding.y) && isContinuous(encoding.x)) {
-      // horizontal
-      discreteAxis = 'y';
-      continuousAxis = 'x';
-      continuousAxisChannelDef = encoding.x;
-      discreteAxisFieldDef = encoding.y;
-    } else {
-      if (isContinuous(encoding.x) && isContinuous(encoding.y)) {
-        // need to use orient or aggregate to determine orientation
-        const xEncChannel = encoding.x as FieldDef<Field>;
-        const yEncChannel = encoding.y as FieldDef<Field>;
-
-        if (xEncChannel.aggregate === undefined && yEncChannel.aggregate === BOXPLOT) {
-          // vertical
-          discreteAxis = 'x';
-          continuousAxis = 'y';
-          continuousAxisChannelDef = encoding.y;
-          delete continuousAxisChannelDef['aggregate'];
-          discreteAxisFieldDef = encoding.x;
-        } else if (yEncChannel.aggregate === undefined && xEncChannel.aggregate === BOXPLOT) {
-          // horizontal
-          discreteAxis = 'y';
-          continuousAxis = 'x';
-          continuousAxisChannelDef = encoding.x;
-          delete continuousAxisChannelDef['aggregate'];
-          discreteAxisFieldDef = encoding.y;
-        } else if (xEncChannel.aggregate === BOXPLOT && yEncChannel.aggregate === BOXPLOT) {
-          throw new Error('Both x and y cannot have aggregate');
-        } else {
-          // if both axes dont have aggregate use orient
-          const markChannel = mark as BoxPlotDef;
-          if (markChannel && markChannel.orient) {
-            if (markChannel.orient === 'vertical') {
-            // vertical - TEST
-            discreteAxis = 'x';
-            continuousAxis = 'y';
-            continuousAxisChannelDef = encoding.y;
-            discreteAxisFieldDef = encoding.x;
-            } else {
-            // horizontal - TEST
-            discreteAxis = 'y';
-            continuousAxis = 'x';
-            continuousAxisChannelDef = encoding.x;
-            discreteAxisFieldDef = encoding.y;
-            }
-          } else {
-            discreteAxis = 'x';
-            continuousAxis = 'y';
-            continuousAxisChannelDef = encoding.y;
-            discreteAxisFieldDef = encoding.x;
-          }
-        }
-      } else {
-        throw new Error('Both x and y cannot be discrete');
+    if (isContinuous(encoding.x) && isContinuous(encoding.y)) {
+      const xEncChannel = encoding.x as FieldDef<Field>;
+      const yEncChannel = encoding.y as FieldDef<Field>;
+      if (xEncChannel.aggregate === BOXPLOT && yEncChannel.aggregate === BOXPLOT) {
+        throw new Error('Both x and y cannot have aggregate');
       }
+    } else if (isDiscrete(encoding.x) && isDiscrete(encoding.y)) {
+      throw new Error('Both x and y cannot be discrete');
     }
+
+    const orient: Orient = box2DOrient(spec);
+    const params = box2DParams(spec, orient);
+    discreteAxisFieldDef = params.discreteAxisFieldDef;
+    continuousAxisChannelDef = params.continuousAxisChannelDef;
+    discreteAxis = params.discreteAxis;
+    continuousAxis = params.continuousAxis;
+
   } else if (encoding.x && isContinuous(encoding.x) && encoding.y === undefined) {
     // 1D horizontal
     continuousAxis = 'x';
@@ -195,3 +149,71 @@ export function normalizeBoxPlot(spec: GenericUnitSpec<Encoding<Field>, BOXPLOT 
   };
 }
 
+export function box2DOrient(spec: GenericUnitSpec<Encoding<Field>, BOXPLOT | BoxPlotDef>): Orient {
+  const {mark: mark, encoding: encoding, ...outerSpec} = spec;
+  const xEncChannel = encoding.x as FieldDef<Field>;
+  const yEncChannel = encoding.y as FieldDef<Field>;
+  let resultOrient: Orient;
+
+  if (isDiscrete(encoding.x) && isContinuous(encoding.y)) {
+    resultOrient = 'vertical';
+  } else if (isDiscrete(encoding.y) && isContinuous(encoding.x)) {
+    resultOrient = 'horizontal';
+  } else {
+    if (isContinuous(encoding.x) && isContinuous(encoding.y)) {
+      if (xEncChannel.aggregate === undefined && yEncChannel.aggregate === BOXPLOT) {
+        resultOrient = 'vertical';
+      } else if (yEncChannel.aggregate === undefined && xEncChannel.aggregate === BOXPLOT) {
+        resultOrient = 'horizontal';
+      } else if (xEncChannel.aggregate === BOXPLOT && yEncChannel.aggregate === BOXPLOT) {
+        return undefined; // invalid spec
+      } else {
+        const markChannel = mark as BoxPlotDef;
+        if (markChannel && markChannel.orient) {
+          resultOrient = markChannel.orient;
+        } else {
+          // default orientation = vertical
+          resultOrient = 'vertical';
+        }
+      }
+    } else {
+      resultOrient = undefined; // 2 discrete axes
+    }
+  }
+
+  return resultOrient;
+}
+
+export function box2DParams(spec: GenericUnitSpec<Encoding<Field>, BOXPLOT | BoxPlotDef>, orient: Orient) {
+  const {mark: mark, encoding: encoding, ...outerSpec} = spec;
+
+  let discreteAxisFieldDef: PositionFieldDef<Field>, continuousAxisChannelDef: PositionFieldDef<Field>;
+  let discreteAxis, continuousAxis;
+
+  if (orient === 'vertical') {
+    discreteAxis = 'x';
+    continuousAxis = 'y';
+    continuousAxisChannelDef = encoding.y;
+    discreteAxisFieldDef = encoding.x;
+  } else {
+    discreteAxis = 'y';
+    continuousAxis = 'x';
+    continuousAxisChannelDef = encoding.x;
+    discreteAxisFieldDef = encoding.y;
+  }
+
+  if (continuousAxisChannelDef && continuousAxisChannelDef.aggregate) {
+    const {aggregate: aggregate, ...continuousAxisWithoutAggregate} = continuousAxisChannelDef;
+    if (aggregate !== BOXPLOT) {
+      throw new Error('Continuous axis should not be aggregated');
+    }
+    continuousAxisChannelDef = continuousAxisWithoutAggregate;
+  }
+
+  return {
+    discreteAxisFieldDef: discreteAxisFieldDef,
+    continuousAxisChannelDef: continuousAxisChannelDef,
+    discreteAxis: discreteAxis,
+    continuousAxis: continuousAxis
+  };
+}
