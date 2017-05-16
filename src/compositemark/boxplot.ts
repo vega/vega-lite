@@ -30,15 +30,6 @@ export function normalizeBoxPlot(spec: GenericUnitSpec<Encoding<Field>, BOXPLOT 
 
   if (encoding.x && encoding.y) {
     // 2D
-    if (isContinuous(encoding.x) && isContinuous(encoding.y)) {
-      const xEncChannel = encoding.x as FieldDef<Field>;
-      const yEncChannel = encoding.y as FieldDef<Field>;
-      if (xEncChannel.aggregate === BOXPLOT && yEncChannel.aggregate === BOXPLOT) {
-        throw new Error('Both x and y cannot have aggregate');
-      }
-    } else if (isDiscrete(encoding.x) && isDiscrete(encoding.y)) {
-      throw new Error('Both x and y cannot be discrete');
-    }
 
     const orient: Orient = box2DOrient(spec);
     const params = box2DParams(spec, orient);
@@ -154,6 +145,16 @@ export function box2DOrient(spec: GenericUnitSpec<Encoding<Field>, BOXPLOT | Box
   const xEncChannel = encoding.x as FieldDef<Field>;
   const yEncChannel = encoding.y as FieldDef<Field>;
   let resultOrient: Orient;
+
+  if (isContinuous(encoding.x) && isContinuous(encoding.y)) {
+    const xEncChannel = encoding.x as FieldDef<Field>;
+    const yEncChannel = encoding.y as FieldDef<Field>;
+    if (xEncChannel.aggregate === BOXPLOT && yEncChannel.aggregate === BOXPLOT) {
+      throw new Error('Both x and y cannot have aggregate');
+    }
+  } else if (isDiscrete(encoding.x) && isDiscrete(encoding.y)) {
+    throw new Error('Both x and y cannot be discrete');
+  }
 
   if (isDiscrete(encoding.x) && isContinuous(encoding.y)) {
     resultOrient = 'vertical';
