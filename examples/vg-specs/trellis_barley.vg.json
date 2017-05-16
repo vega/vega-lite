@@ -61,16 +61,6 @@
         {
             "name": "child_height",
             "update": "bandspace(domain('y').length, 1, 0.5) * 12"
-        },
-        {
-            "name": "unit",
-            "value": {},
-            "on": [
-                {
-                    "events": "mousemove",
-                    "update": "group()._id ? group() : unit"
-                }
-            ]
         }
     ],
     "marks": [
