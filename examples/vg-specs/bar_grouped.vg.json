@@ -372,5 +372,10 @@
                 }
             }
         }
-    ]
+    ],
+    "config": {
+        "axis": {
+            "domainWidth": 1
+        }
+    }
 }

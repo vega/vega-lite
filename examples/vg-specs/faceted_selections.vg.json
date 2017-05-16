@@ -846,5 +846,10 @@
                 "signal": "grid_Y"
             }
         }
-    ]
+    ],
+    "config": {
+        "mark": {
+            "opacity": 1
+        }
+    }
 }

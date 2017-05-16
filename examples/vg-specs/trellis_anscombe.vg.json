@@ -305,5 +305,10 @@
             "nice": true,
             "zero": false
         }
-    ]
+    ],
+    "config": {
+        "mark": {
+            "opacity": 1
+        }
+    }
 }
