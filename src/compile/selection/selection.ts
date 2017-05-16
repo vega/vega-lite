@@ -43,7 +43,7 @@ export interface ProjectComponent {
 
 export interface SelectionCompiler {
   signals: (model: UnitModel, selCmpt: SelectionComponent) => any[];
-  topLevelSignals?: (model: Model, selCmpt: SelectionComponent) => any[];
+  topLevelSignals?: (model: Model, selCmpt: SelectionComponent, signals: any[]) => any[];
   tupleExpr: (model: UnitModel, selCmpt: SelectionComponent) => string;
   modifyExpr: (model: UnitModel, selCmpt: SelectionComponent) => string;
   marks?: (model: UnitModel, selCmpt:SelectionComponent, marks: any[]) => any[];
@@ -133,7 +133,7 @@ export function assembleTopLevelSignals(model: UnitModel, signals: any[]) {
   let needsUnit = false;
   forEachSelection(model, (selCmpt, selCompiler) => {
     if (selCompiler.topLevelSignals) {
-      signals.push.apply(signals, selCompiler.topLevelSignals(model, selCmpt));
+      signals = selCompiler.topLevelSignals(model, selCmpt, signals);
     }
 
     forEachTransform(selCmpt, txCompiler => {

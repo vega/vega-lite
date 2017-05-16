@@ -7,11 +7,12 @@ const single:SelectionCompiler = {
 
   signals: multi.signals,
 
-  topLevelSignals: function(model, selCmpt) {
-    return [{
+  topLevelSignals: function(model, selCmpt, signals) {
+    const hasSignal = signals.filter((s) => s.name === selCmpt.name);
+    return hasSignal.length ? signals : signals.concat({
       name: selCmpt.name,
       update: `data(${stringValue(selCmpt.name + STORE)})[0]`
-    }];
+    });
   },
 
   tupleExpr: function(model, selCmpt) {
