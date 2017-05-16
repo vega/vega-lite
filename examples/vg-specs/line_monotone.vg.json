@@ -78,6 +78,9 @@
                             },
                             "stroke": {
                                 "value": "#4c78a8"
+                            },
+                            "interpolate": {
+                                "value": "monotone"
                             }
                         }
                     }
@@ -170,10 +173,5 @@
             "zindex": 0,
             "gridScale": "x"
         }
-    ],
-    "config": {
-        "mark": {
-            "interpolate": "monotone"
-        }
-    }
+    ]
 }

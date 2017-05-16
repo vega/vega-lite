@@ -79,6 +79,9 @@
                             },
                             "stroke": {
                                 "value": "#4c78a8"
+                            },
+                            "interpolate": {
+                                "value": "step-after"
                             }
                         }
                     }
@@ -171,10 +174,5 @@
             "zindex": 0,
             "gridScale": "x"
         }
-    ],
-    "config": {
-        "mark": {
-            "interpolate": "step-after"
-        }
-    }
+    ]
 }

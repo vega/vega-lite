@@ -162,6 +162,9 @@
                                     },
                                     "orient": {
                                         "value": "vertical"
+                                    },
+                                    "interpolate": {
+                                        "value": "monotone"
                                     }
                                 }
                             }
@@ -277,10 +280,5 @@
             "fill": "color",
             "title": "Cylinders"
         }
-    ],
-    "config": {
-        "mark": {
-            "interpolate": "monotone"
-        }
-    }
+    ]
 }
