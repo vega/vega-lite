@@ -120,7 +120,13 @@ describe('Single Selection', function() {
     }]);
 
     const signals = selection.assembleTopLevelSignals(model, []);
-    assert.includeDeepMembers(signals, oneSg.concat(twoSg));
+    assert.deepEqual(signals, [
+      {
+        name: 'unit',
+        value: {},
+        on: [{events: 'mousemove', update: 'group()._id ? group() : unit'}]
+      }
+    ].concat(oneSg, twoSg));
   });
 
   it('builds unit datasets', function() {
