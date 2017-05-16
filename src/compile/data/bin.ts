@@ -85,7 +85,6 @@ export class BinNode extends DataFlowNode {
           ...binComponent[key],
           ...rangeFormula(model, fieldDef, channel, model.config)
         };
-        // createBin(binComponent, fieldDef, model, rangeFormula(model, fieldDef, channel, model.config));
       }
       return binComponent;
     }, {});
@@ -102,11 +101,9 @@ export class BinNode extends DataFlowNode {
 
     const bin = normalizeBin(t.bin, undefined) || {};
     const key = binKey(bin, t.field);
-    if (!(key in bins)) {
-      bins[key] =  createBinComponent(bin, t, model, key);
-    }
-
-    return new BinNode(bins);
+    return new BinNode({
+      [key]: createBinComponent(bin, t, model, key)
+    });
 }
 
   public merge(other: BinNode) {
