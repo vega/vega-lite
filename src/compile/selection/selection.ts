@@ -130,15 +130,7 @@ export function assembleUnitSelectionSignals(model: UnitModel, signals: any[]) {
 }
 
 export function assembleTopLevelSignals(model: UnitModel, signals: any[]) {
-  const hasUnit = signals.filter((s) => s.name === 'unit');
-  if (!(hasUnit.length)) {
-    signals.push({
-      name: 'unit',
-      value: {},
-      on: [{events: 'mousemove', update: 'group()._id ? group() : unit'}]
-    });
-  }
-
+  let needsUnit = false;
   forEachSelection(model, (selCmpt, selCompiler) => {
     if (selCompiler.topLevelSignals) {
       signals.push.apply(signals, selCompiler.topLevelSignals(model, selCmpt));
@@ -149,7 +141,20 @@ export function assembleTopLevelSignals(model: UnitModel, signals: any[]) {
         signals = txCompiler.topLevelSignals(model, selCmpt, signals);
       }
     });
+
+    needsUnit = true;
   });
+
+  if (needsUnit) {
+    const hasUnit = signals.filter((s) => s.name === 'unit');
+    if (!(hasUnit.length)) {
+      signals.unshift({
+        name: 'unit',
+        value: {},
+        on: [{events: 'mousemove', update: 'group()._id ? group() : unit'}]
+      });
+    }
+  }
 
   return signals;
 }
