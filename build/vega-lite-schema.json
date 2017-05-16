@@ -177,10 +177,10 @@
                     "items": {
                         "anyOf": [
                             {
-                                "$ref": "#/definitions/GenericUnitSpec<Encoding, AnyMark>"
+                                "$ref": "#/definitions/UnitSpec"
                             },
                             {
-                                "$ref": "#/definitions/GenericLayerSpec<GenericUnitSpec<Encoding, AnyMark>>"
+                                "$ref": "#/definitions/LayerSpec"
                             }
                         ]
                     },
@@ -336,13 +336,13 @@
                 "spec": {
                     "anyOf": [
                         {
-                            "$ref": "#/definitions/GenericUnitSpec<Encoding, AnyMark>"
+                            "$ref": "#/definitions/UnitSpec"
                         },
                         {
-                            "$ref": "#/definitions/GenericLayerSpec<GenericUnitSpec<Encoding, AnyMark>>"
+                            "$ref": "#/definitions/LayerSpec"
                         },
                         {
-                            "$ref": "#/definitions/GenericRepeatSpec<GenericUnitSpec<Encoding, AnyMark>>"
+                            "$ref": "#/definitions/RepeatSpec"
                         }
                     ]
                 },
@@ -438,13 +438,13 @@
                 "spec": {
                     "anyOf": [
                         {
-                            "$ref": "#/definitions/GenericUnitSpec<Encoding, AnyMark>"
+                            "$ref": "#/definitions/UnitSpec"
                         },
                         {
-                            "$ref": "#/definitions/GenericLayerSpec<GenericUnitSpec<Encoding, AnyMark>>"
+                            "$ref": "#/definitions/LayerSpec"
                         },
                         {
-                            "$ref": "#/definitions/GenericRepeatSpec<GenericUnitSpec<Encoding, AnyMark>>"
+                            "$ref": "#/definitions/RepeatSpec"
                         }
                     ]
                 },
@@ -552,13 +552,13 @@
                     "items": {
                         "anyOf": [
                             {
-                                "$ref": "#/definitions/GenericUnitSpec<Encoding, AnyMark>"
+                                "$ref": "#/definitions/UnitSpec"
                             },
                             {
-                                "$ref": "#/definitions/GenericLayerSpec<GenericUnitSpec<Encoding, AnyMark>>"
+                                "$ref": "#/definitions/LayerSpec"
                             },
                             {
-                                "$ref": "#/definitions/GenericRepeatSpec<GenericUnitSpec<Encoding, AnyMark>>"
+                                "$ref": "#/definitions/RepeatSpec"
                             }
                         ]
                     },
@@ -608,13 +608,13 @@
                     "items": {
                         "anyOf": [
                             {
-                                "$ref": "#/definitions/GenericUnitSpec<Encoding, AnyMark>"
+                                "$ref": "#/definitions/UnitSpec"
                             },
                             {
-                                "$ref": "#/definitions/GenericLayerSpec<GenericUnitSpec<Encoding, AnyMark>>"
+                                "$ref": "#/definitions/LayerSpec"
                             },
                             {
-                                "$ref": "#/definitions/GenericRepeatSpec<GenericUnitSpec<Encoding, AnyMark>>"
+                                "$ref": "#/definitions/RepeatSpec"
                             }
                         ]
                     },
@@ -2743,7 +2743,7 @@
             ],
             "type": "string"
         },
-        "GenericLayerSpec<GenericUnitSpec<Encoding, AnyMark>>": {
+        "LayerSpec": {
             "additionalProperties": false,
             "properties": {
                 "data": {
@@ -2773,10 +2773,10 @@
                     "items": {
                         "anyOf": [
                             {
-                                "$ref": "#/definitions/GenericUnitSpec<Encoding, AnyMark>"
+                                "$ref": "#/definitions/UnitSpec"
                             },
                             {
-                                "$ref": "#/definitions/GenericLayerSpec<GenericUnitSpec<Encoding, AnyMark>>"
+                                "$ref": "#/definitions/LayerSpec"
                             }
                         ]
                     },
@@ -2834,7 +2834,7 @@
             ],
             "type": "object"
         },
-        "GenericRepeatSpec<GenericUnitSpec<Encoding, AnyMark>>": {
+        "RepeatSpec": {
             "additionalProperties": false,
             "properties": {
                 "data": {
@@ -2865,13 +2865,13 @@
                 "spec": {
                     "anyOf": [
                         {
-                            "$ref": "#/definitions/GenericUnitSpec<Encoding, AnyMark>"
+                            "$ref": "#/definitions/UnitSpec"
                         },
                         {
-                            "$ref": "#/definitions/GenericLayerSpec<GenericUnitSpec<Encoding, AnyMark>>"
+                            "$ref": "#/definitions/LayerSpec"
                         },
                         {
-                            "$ref": "#/definitions/GenericRepeatSpec<GenericUnitSpec<Encoding, AnyMark>>"
+                            "$ref": "#/definitions/RepeatSpec"
                         }
                     ]
                 },
@@ -2896,7 +2896,7 @@
             ],
             "type": "object"
         },
-        "GenericUnitSpec<Encoding, AnyMark>": {
+        "UnitSpec": {
             "additionalProperties": false,
             "properties": {
                 "data": {
