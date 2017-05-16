@@ -277,5 +277,10 @@
             "fill": "color",
             "title": "Cylinders"
         }
-    ]
+    ],
+    "config": {
+        "mark": {
+            "interpolate": "monotone"
+        }
+    }
 }

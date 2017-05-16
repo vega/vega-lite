@@ -186,5 +186,10 @@
             "zindex": 0,
             "gridScale": "x"
         }
-    ]
+    ],
+    "config": {
+        "mark": {
+            "interpolate": "monotone"
+        }
+    }
 }
