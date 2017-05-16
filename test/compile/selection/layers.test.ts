@@ -114,9 +114,9 @@ describe('Layered Selections', function() {
         "clip": true,
         "encode": {
           "enter": {
-            "fill": {
-              "value": "#eee"
-            }
+            "fill": {"value": "#333"},
+            "fillOpacity": {"value": 0.125},
+            "stroke": undefined
           },
           "update": {
             "x": [
@@ -171,9 +171,9 @@ describe('Layered Selections', function() {
         "clip": true,
         "encode": {
           "enter": {
-            "fill": {
-              "value": "transparent"
-            }
+            "fill": {"value": "transparent"},
+            "fillOpacity": undefined,
+            "stroke": {"value": "white"}
           },
           "update": {
             "x": [
