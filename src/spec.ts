@@ -8,7 +8,7 @@ import * as vlEncoding from './encoding';
 import {Facet} from './facet';
 import {Field, FieldDef} from './fielddef';
 import * as log from './log';
-import {AREA, isPrimitiveMark, LINE, Mark, MarkDef} from './mark';
+import {AnyMark, AREA, isPrimitiveMark, LINE, Mark, MarkDef} from './mark';
 import {Repeat} from './repeat';
 import {ResolveMapping} from './resolve';
 import {SelectionDef} from './selection';
@@ -106,12 +106,12 @@ export type UnitSpec = GenericUnitSpec<Encoding<Field>, Mark | MarkDef>;
 /**
  * Unit spec that can contain composite mark
  */
-export type CompositeUnitSpec = GenericUnitSpec<Encoding<Field>, CompositeMark | Mark | MarkDef>;
+export type CompositeUnitSpec = GenericUnitSpec<Encoding<Field>, AnyMark>;
 
 /**
  * Unit spec that can contain composite mark and row or column channels.
  */
-export type FacetedCompositeUnitSpec = GenericUnitSpec<EncodingWithFacet<Field>, CompositeMark | Mark | MarkDef>;
+export type FacetedCompositeUnitSpec = GenericUnitSpec<EncodingWithFacet<Field>, AnyMark>;
 
 export interface GenericLayerSpec<U extends GenericUnitSpec<any, any>> extends BaseSpec, UnitSize {
   /**
@@ -309,12 +309,12 @@ function normalizeFacetedUnit(spec: FacetedCompositeUnitSpec, config: Config): F
   };
 }
 
-function isNonFacetUnitSpecWithPrimitiveMark(spec: GenericUnitSpec<Encoding<Field>, string | MarkDef>):
+function isNonFacetUnitSpecWithPrimitiveMark(spec: GenericUnitSpec<Encoding<Field>, AnyMark>):
   spec is GenericUnitSpec<Encoding<Field>, Mark> {
     return isPrimitiveMark(spec.mark);
 }
 
-function normalizeNonFacetUnit(spec: GenericUnitSpec<Encoding<Field>, string | MarkDef>, config: Config) {
+function normalizeNonFacetUnit(spec: GenericUnitSpec<Encoding<Field>, AnyMark>, config: Config) {
   if (isNonFacetUnitSpecWithPrimitiveMark(spec)) {
     // TODO: thoroughly test
     if (isRanged(spec.encoding)) {
