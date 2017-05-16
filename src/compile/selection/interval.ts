@@ -2,11 +2,10 @@ import {Channel, X, Y} from '../../channel';
 import {warn} from '../../log';
 import {extend, keys, stringValue} from '../../util';
 import {UnitModel} from '../unit';
-import {channelSignalName, invert, ProjectComponent, SelectionCompiler, SelectionComponent, STORE, TUPLE} from './selection';
+import {channelSignalName, ProjectComponent, SelectionCompiler, SelectionComponent, STORE, TUPLE} from './selection';
 import scales from './transforms/scales';
 
-export const BRUSH = '_brush',
-  SIZE = '_size';
+export const BRUSH = '_brush';
 
 const interval:SelectionCompiler = {
   predicate: 'vlInterval',
@@ -14,8 +13,7 @@ const interval:SelectionCompiler = {
   signals: function(model, selCmpt) {
     const signals: any[] = [],
         intervals:any[] = [],
-        name = selCmpt.name,
-        size = name + SIZE;
+        name = selCmpt.name;
 
     if (selCmpt.translate && !(scales.has(selCmpt))) {
       events(selCmpt, function(_: any[], evt: any) {
@@ -38,23 +36,6 @@ const interval:SelectionCompiler = {
     });
 
     signals.push({
-      name: size,
-      value: [],
-      on: events(selCmpt, function(on: any[], evt: any) {
-        on.push({
-          events: evt.between[0],
-          update: '{x: x(unit), y: y(unit), width: 0, height: 0}'
-        });
-
-        on.push({
-          events: evt,
-          update: `{x: ${size}.x, y: ${size}.y, ` +
-           `width: abs(x(unit) - ${size}.x), height: abs(y(unit) - ${size}.y)}`
-        });
-
-        return on;
-      })
-    }, {
       name: name,
       update: `[${intervals.join(', ')}]`
     });
@@ -147,13 +128,15 @@ export function projections(selCmpt: SelectionComponent) {
 
 function channelSignals(model: UnitModel, selCmpt: SelectionComponent, channel: Channel): any {
   const name = channelSignalName(selCmpt, channel, 'visual'),
+      hasScales = scales.has(selCmpt),
+      scale = stringValue(model.scaleName(channel)),
       size  = model.getSizeSignalRef(channel === X ? 'width' : 'height').signal,
       coord = `${channel}(unit)`;
 
   return [{
     name: name,
     value: [],
-    on: scales.has(selCmpt) ? [] : events(selCmpt, function(on: any[], evt: any) {
+    on: hasScales ? [] : events(selCmpt, function(on: any[], evt: any) {
       on.push({
         events: evt.between[0],
         update: `[${coord}, ${coord}]`
@@ -171,7 +154,7 @@ function channelSignals(model: UnitModel, selCmpt: SelectionComponent, channel: 
     on: [
       {
         events: {signal: name},
-        update: invert(model, selCmpt, channel, name)
+        update: `invert(${scale}, ${name})`
       }
     ]
   }];

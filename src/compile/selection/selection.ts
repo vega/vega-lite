@@ -245,11 +245,6 @@ function compiler(type: SelectionTypes): SelectionCompiler {
   return null;
 }
 
-export function invert(model: UnitModel, selCmpt: SelectionComponent, channel: Channel, expr: string) {
-  const scale = stringValue(model.scaleName(channel));
-  return selCmpt.domain === 'data' ? `invert(${scale}, ${expr})` : expr;
-}
-
 export function channelSignalName(selCmpt: SelectionComponent, channel: Channel, range: 'visual' | 'data') {
   return selCmpt.name + '_' + (range === 'visual' ? channel : selCmpt.fields[channel]);
 }

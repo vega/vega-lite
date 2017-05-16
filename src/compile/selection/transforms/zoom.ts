@@ -1,7 +1,7 @@
 import {selector as parseSelector} from 'vega-event-selector';
 import {Channel, X, Y} from '../../../channel';
 import {stringValue} from '../../../util';
-import {BRUSH as INTERVAL_BRUSH, projections as intervalProjections, SIZE as INTERVAL_SIZE} from '../interval';
+import {BRUSH as INTERVAL_BRUSH, projections as intervalProjections} from '../interval';
 import {channelSignalName, SelectionComponent} from '../selection';
 import {UnitModel} from './../../unit';
 import {default as scalesCompiler, domain} from './scales';
@@ -17,12 +17,15 @@ const zoom:TransformCompiler = {
 
   signals: function(model, selCmpt, signals) {
     const name = selCmpt.name,
+        hasScales = scalesCompiler.has(selCmpt),
         delta = name + DELTA,
-        {x, y} = intervalProjections(selCmpt);
+        {x, y} = intervalProjections(selCmpt),
+        sx = stringValue(model.scaleName(X)),
+        sy = stringValue(model.scaleName(Y));
 
     let events = parseSelector(selCmpt.zoom, 'scope');
 
-    if (!scalesCompiler.has(selCmpt)) {
+    if (!hasScales) {
       events = events.map((e) => (e.markname = name + INTERVAL_BRUSH, e));
     }
 
@@ -30,7 +33,9 @@ const zoom:TransformCompiler = {
       name: name + ANCHOR,
       on: [{
         events: events,
-        update: `{x: x(unit), y: y(unit)}`
+        update: hasScales ?
+          `{x: invert(${sx}, x(unit)), y: invert(${sy}, y(unit))}` :
+          `{x: x(unit), y: y(unit)}`
       }]
     }, {
       name: delta,
@@ -49,17 +54,6 @@ const zoom:TransformCompiler = {
       onDelta(model, selCmpt, 'y', 'height', signals);
     }
 
-    const size = signals.filter((s:any) => s.name === name + INTERVAL_SIZE);
-    if (size.length) {
-      const sname = size[0].name;
-      size[0].on.push({
-        events: {signal: delta},
-        update: `{x: ${sname}.x, y: ${sname}.y, ` +
-          `width: ${sname}.width * ${delta} , ` +
-          `height: ${sname}.height * ${delta}}`
-      });
-    }
-
     return signals;
   }
 };
@@ -68,9 +62,11 @@ export {zoom as default};
 
 function onDelta(model: UnitModel, selCmpt: SelectionComponent, channel: Channel, size: 'width' | 'height', signals: any[]) {
   const name = selCmpt.name,
-      signal:any = signals.filter((s:any) => s.name === channelSignalName(selCmpt, channel, 'visual'))[0],
-      scales = scalesCompiler.has(selCmpt),
-      base = scales ? domain(model, channel) : signal.name,
+      hasScales = scalesCompiler.has(selCmpt),
+      signal:any = signals.filter((s:any) => {
+        return s.name === channelSignalName(selCmpt, channel, hasScales ? 'data' : 'visual');
+      })[0],
+      base = hasScales ? domain(model, channel) : signal.name,
       anchor = `${name}${ANCHOR}.${channel}`,
       delta  = name + DELTA,
       scale  = stringValue(model.scaleName(channel)),
@@ -79,6 +75,6 @@ function onDelta(model: UnitModel, selCmpt: SelectionComponent, channel: Channel
 
   signal.on.push({
     events: {signal: delta},
-    update: scales ? range : `clampRange(${range}, 0, unit.${size})`
+    update: hasScales ? range : `clampRange(${range}, 0, unit.${size})`
   });
 }
