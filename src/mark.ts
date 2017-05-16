@@ -224,9 +224,7 @@ export interface TextConfig extends MarkConfig {
   shortTimeLabels?: boolean;
 }
 
-export const defaultTextConfig: TextConfig = {
-  baseline: 'middle',
-};
+export const defaultTextConfig: TextConfig = {};
 
 export interface TickConfig extends MarkConfig {
   /**
