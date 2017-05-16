@@ -78,38 +78,6 @@ describe('Multi Selection', function() {
     ]);
   });
 
-  // Skipped because "toggle" transforms the modifyExpr.
-  // FIXME(#2296)
-  it.skip('builds modify signals', function() {
-    const oneExpr = multi.modifyExpr(model, selCmpts['one']);
-    assert.equal(oneExpr, 'one_tuple');
-
-    const twoExpr = multi.modifyExpr(model, selCmpts['two']);
-    assert.equal(twoExpr, 'two_tuple');
-
-    const signals = selection.assembleUnitSelectionSignals(model, []);
-    assert.includeDeepMembers(signals, [
-      {
-        "name": "one_modify",
-        "on": [
-          {
-            "events": {"signal": "one"},
-            "update": `modify(\"one_store\", ${oneExpr})`
-          }
-        ]
-      },
-      {
-        "name": "two_modify",
-        "on": [
-          {
-            "events": {"signal": "two"},
-            "update": `modify(\"two_store\", ${twoExpr})`
-          }
-        ]
-      }
-    ]);
-  });
-
   it('builds unit datasets', function() {
     const data: any[] = [];
     assert.sameDeepMembers(selection.assembleUnitSelectionData(model, data), [
