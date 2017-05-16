@@ -109,12 +109,12 @@ describe('Single Selection', function() {
   });
 
   it('builds top-level signals', function() {
-    const oneSg = single.topLevelSignals(model, selCmpts['one']);
+    const oneSg = single.topLevelSignals(model, selCmpts['one'], []);
     assert.sameDeepMembers(oneSg, [{
       name: 'one', update: 'data(\"one_store\")[0]'
     }]);
 
-    const twoSg = single.topLevelSignals(model, selCmpts['two']);
+    const twoSg = single.topLevelSignals(model, selCmpts['two'], []);
     assert.sameDeepMembers(twoSg, [{
       name: 'two', update: 'data(\"two_store\")[0]'
     }]);
