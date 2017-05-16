@@ -114,6 +114,8 @@ export namespace message {
     return `Ignoring an invalid transform: ${JSON.stringify(transform)}.`;
   }
 
+  export const NO_FIELDS_NEEDS_AS = 'If `from.fields` is not specified, `as` has to be a string that specifies the key to be used for the the data from the secondary source.';
+
   // ENCODING & FACET
   export function invalidFieldType(type: Type) {
     return `Invalid field type "${type}"`;

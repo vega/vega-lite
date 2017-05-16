@@ -197,7 +197,7 @@ export class LayerModel extends Model {
   public assembleData(): VgData[] {
      if (!this.parent) {
       // only assemble data in the root
-      return assembleData(vals(this.component.data.sources));
+      return assembleData(this.component.data);
     }
     return [];
   }
