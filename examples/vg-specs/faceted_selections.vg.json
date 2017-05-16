@@ -702,6 +702,9 @@
                                     ],
                                     "shape": {
                                         "value": "circle"
+                                    },
+                                    "opacity": {
+                                        "value": 1
                                     }
                                 }
                             },
@@ -846,10 +849,5 @@
                 "signal": "grid_Y"
             }
         }
-    ],
-    "config": {
-        "mark": {
-            "opacity": 1
-        }
-    }
+    ]
 }

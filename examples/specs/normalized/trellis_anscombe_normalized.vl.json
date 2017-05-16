@@ -4,11 +4,6 @@
   "data": {
     "url": "data/anscombe.json"
   },
-  "config": {
-    "mark": {
-      "opacity": 1
-    }
-  },
   "facet": {
     "column": {
       "field": "Series",
@@ -31,6 +26,9 @@
         "scale": {
           "zero": false
         }
+      },
+      "opacity": {
+        "value": 1
       }
     }
   }

@@ -4,11 +4,6 @@
   "data": {
     "url": "data/anscombe.json"
   },
-  "config": {
-    "mark": {
-      "opacity": 1
-    }
-  },
   "facet": {
     "column": {
       "field": "Series",
@@ -45,6 +40,9 @@
           "selection": "xenc",
           "value": "red"
         }
+      },
+      "opacity": {
+        "value": 1
       }
     },
     "selection": {
