@@ -18,9 +18,7 @@ const zoom:TransformCompiler = {
   signals: function(model, selCmpt, signals) {
     const name = selCmpt.name,
         delta = name + DELTA,
-        {x, y} = intervalProjections(selCmpt),
-        sx = stringValue(model.scaleName(X)),
-        sy = stringValue(model.scaleName(Y));
+        {x, y} = intervalProjections(selCmpt);
 
     let events = parseSelector(selCmpt.zoom, 'scope');
 
@@ -32,7 +30,7 @@ const zoom:TransformCompiler = {
       name: name + ANCHOR,
       on: [{
         events: events,
-        update: `{x: invert(${sx}, x(unit)), y: invert(${sy}, y(unit))}`
+        update: `{x: x(unit), y: y(unit)}`
       }]
     }, {
       name: delta,
@@ -70,19 +68,17 @@ export {zoom as default};
 
 function onDelta(model: UnitModel, selCmpt: SelectionComponent, channel: Channel, size: 'width' | 'height', signals: any[]) {
   const name = selCmpt.name,
-      signal:any = signals.filter((s:any) => s.name === channelSignalName(selCmpt, channel))[0],
+      signal:any = signals.filter((s:any) => s.name === channelSignalName(selCmpt, channel, 'visual'))[0],
       scales = scalesCompiler.has(selCmpt),
       base = scales ? domain(model, channel) : signal.name,
       anchor = `${name}${ANCHOR}.${channel}`,
       delta  = name + DELTA,
       scale  = stringValue(model.scaleName(channel)),
       range  = `[${anchor} + (${base}[0] - ${anchor}) * ${delta}, ` +
-        `${anchor} + (${base}[1] - ${anchor}) * ${delta}]`,
-      lo = `invert(${scale}` + (channel === X ? ', 0' : `, unit.${size}`) + ')',
-      hi = `invert(${scale}` + (channel === X ? `, unit.${size}` : ', 0') + ')';
+        `${anchor} + (${base}[1] - ${anchor}) * ${delta}]`;
 
   signal.on.push({
     events: {signal: delta},
-    update: scales ? range : `clampRange(${range}, ${lo}, ${hi})`
+    update: scales ? range : `clampRange(${range}, 0, unit.${size})`
   });
 }
