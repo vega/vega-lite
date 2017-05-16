@@ -33,13 +33,13 @@ const translate:TransformCompiler = {
       on: [{
         events: events.map((e) => e.between[0]),
         update: '{x: x(unit), y: y(unit), ' +
-          `width: ${size}.width, height: ${size}.height, ` +
+          `width: ${size}.width, height: ${size}.height` +
 
-          (x !== null ? 'extent_x: ' + (scales ? domain(model, X) :
-              `slice(${name}_${x.field})`) + ', ' : '') +
+          (x !== null ? ', extent_x: ' + (scales ? domain(model, X) :
+              `slice(${channelSignalName(selCmpt, 'x', 'visual')})`) : '') +
 
-          (y !== null ? 'extent_y: ' + (scales ? domain(model, Y) :
-              `slice(${name}_${y.field})`) + ', ' : '') + '}'
+          (y !== null ? ', extent_y: ' + (scales ? domain(model, Y) :
+              `slice(${channelSignalName(selCmpt, 'y', 'visual')})`) : '') + '}'
       }]
     }, {
       name: name + DELTA,
@@ -64,31 +64,17 @@ const translate:TransformCompiler = {
 
 export {translate as default};
 
-function getSign(selCmpt: SelectionComponent, channel: Channel) {
-  let s = channel === X ? '+' : '-';
-  if (scalesCompiler.has(selCmpt)) {
-    s = s === '+' ? '-' : '+';
-  }
-  return s;
-}
-
 function onDelta(model: UnitModel, selCmpt: SelectionComponent, channel: Channel, size: 'width' | 'height', signals: any[]) {
   const name = selCmpt.name,
-      signal:any = signals.filter((s:any) => s.name === channelSignalName(selCmpt, channel))[0],
+      signal:any = signals.filter((s:any) => s.name === channelSignalName(selCmpt, channel, 'visual'))[0],
       anchor = name + ANCHOR,
       delta  = name + DELTA,
-      scale  = stringValue(model.scaleName(channel)),
-      extent = `.extent_${channel}`,
-      sign = getSign(selCmpt, channel),
-      offset = `${sign} abs(span(${anchor}${extent})) * ` +
-        `${delta}.${channel} / ${anchor}.${size}`,
-      range = `[${anchor}${extent}[0] ${offset}, ` +
-        `${anchor}${extent}[1] ${offset}]`,
-      lo = `invert(${scale}` + (channel === X ? ', 0' : `, unit.${size}`) + ')',
-      hi = `invert(${scale}` + (channel === X ? `, unit.${size}` : ', 0') + ')';
+      extent = `${anchor}.extent_${channel}`,
+      range = `[${extent}[0] + ${delta}.${channel}, ` +
+        `${extent}[1] + ${delta}.${channel}]`;
 
   signal.on.push({
     events: {signal: delta},
-    update: scalesCompiler.has(selCmpt) ? range : `clampRange(${range}, ${lo}, ${hi})`
+    update: scalesCompiler.has(selCmpt) ? range : `clampRange(${range}, 0, unit.${size})`
   });
 }
