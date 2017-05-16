@@ -25,6 +25,21 @@ export interface BoxPlotConfig extends MarkConfig {
   size?: number;
 }
 
+export interface BoxPlotConfigMixins {
+  /** Box Config */
+  box?: BoxPlotConfig;
+
+  boxWhisker?: MarkConfig;
+
+  boxMid?: MarkConfig;
+}
+
+export const VL_ONLY_BOXPLOT_CONFIG_PROPERTY_INDEX: {
+  [k in keyof BoxPlotConfigMixins]?: (keyof BoxPlotConfigMixins[k])[]
+} = {
+  box: ['size']
+};
+
 export function normalizeBoxPlot(spec: GenericUnitSpec<Encoding<Field>, BOXPLOT | BoxPlotDef>, config: Config): LayerSpec {
   const {mark: mark, encoding: encoding, ...outerSpec} = spec;
   const {x: _x, y: _y, ...nonPositionEncoding} = encoding;

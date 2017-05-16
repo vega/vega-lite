@@ -1,15 +1,8 @@
 import {DateTime} from './datetime';
-import {Guide} from './guide';
+import {Guide, VlOnlyGuideConfig} from './guide';
 import {VgLegendBase, VgLegendConfig, VgLegendEncode} from './vega.schema';
 
-export interface LegendConfig extends VgLegendConfig {
-  /**
-   * Whether month names and weekday names should be abbreviated.
-   *
-   * __Default value:__  `false`
-   */
-  shortTimeLabels?: boolean;
-}
+export interface LegendConfig extends VgLegendConfig, VlOnlyGuideConfig {}
 
 /**
  * Properties of a legend or boolean flag for determining whether to show it.
