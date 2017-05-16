@@ -47,18 +47,11 @@ export class TimeUnitNode extends DataFlowNode {
 
   public static makeFromTransfrom(model: Model, t: TimeUnitTransform) {
     const timeUnitComponent: Dict<TimeUnitComponent> = {};
-      if (t.timeUnit) {
-        timeUnitComponent[t.field] = {
-          as: t.as,
-          timeUnit: t.timeUnit,
-          field: t.field
-        };
-      }
-
-
-    if (Object.keys(timeUnitComponent).length === 0) {
-      return null;
-    }
+    timeUnitComponent[t.field] = {
+      as: t.as,
+      timeUnit: t.timeUnit,
+      field: t.field
+    };
 
     return new TimeUnitNode(timeUnitComponent);
   }

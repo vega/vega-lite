@@ -118,9 +118,9 @@ describe('compile/data/summary', function () {
 
     it('should produce the correct summary component from transform array', function() {
       const t: SummarizeTransform = {summarize: [
-                                        {aggregate: 'mean', field: 'Displacement', as: 'Displacement_mean'},
-                                        {aggregate: 'sum', field: 'Acceleration', as: 'Acceleration_sum'}],
-                                    groupby: ['Displacement_mean', 'Acceleration_sum']};
+        {aggregate: 'mean', field: 'Displacement', as: 'Displacement_mean'},
+        {aggregate: 'sum', field: 'Acceleration', as: 'Acceleration_sum'}],
+        groupby: ['Displacement_mean', 'Acceleration_sum']};
 
       const model = parseUnitModel({
         mark: "point",
@@ -137,6 +137,31 @@ describe('compile/data/summary', function () {
         ops: ['mean', 'sum'],
         fields: ['Displacement', 'Acceleration'],
         as: ['Displacement_mean', 'Acceleration_sum']
+      });
+    });
+
+    it('should produce the correct summary component from transform array with different aggregrations for the same field', function() {
+      const t: SummarizeTransform = {summarize: [
+        {aggregate: 'mean', field: 'Displacement', as: 'Displacement_mean'},
+        {aggregate: 'max', field: 'Displacement', as: 'Displacement_max'},
+        {aggregate: 'sum', field: 'Acceleration', as: 'Acceleration_sum'}],
+        groupby: ['Displacement_mean', 'Acceleration_sum']};
+
+      const model = parseUnitModel({
+        mark: "point",
+        transform: [t],
+        encoding: {
+          'x': {'field': 'Displacement', 'type': "quantitative"}
+        }
+      });
+
+      const agg = AggregateNode.makeFromTransform(model, t);
+      assert.deepEqual<VgAggregateTransform>(agg.assemble(), {
+        type: 'aggregate',
+        groupby: ['Displacement_mean', 'Acceleration_sum'],
+        ops: ['mean', 'max', 'sum'],
+        fields: ['Displacement', 'Displacement', 'Acceleration'],
+        as: ['Displacement_mean', 'Displacement_max', 'Acceleration_sum']
       });
     });
   });

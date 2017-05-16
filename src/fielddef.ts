@@ -13,6 +13,7 @@ import {Scale, ScaleType} from './scale';
 import {SortField, SortOrder} from './sort';
 import {StackOffset} from './stack';
 import {isDiscreteByDefault, TimeUnit} from './timeunit';
+import {BinTransform, SummarizeTransform, TimeUnitTransform} from './transform';
 import {getFullName, Type} from './type';
 import {isBoolean, isString, stringValue} from './util';
 
@@ -175,7 +176,7 @@ export interface FieldRefOption {
   aggregate?: AggregateOp;
 }
 
-export function field(fieldDef: FieldDef<string>, opt: FieldRefOption = {}): string {
+export function field(fieldDef: FieldDef<string>|BinTransform, opt: FieldRefOption = {}): string {
   let field = fieldDef.field;
   const prefix = opt.prefix;
   let suffix = opt.suffix;
@@ -189,9 +190,9 @@ export function field(fieldDef: FieldDef<string>, opt: FieldRefOption = {}): str
       if (fieldDef.bin) {
         fn = binToString(fieldDef.bin);
         suffix = opt.binSuffix;
-      } else if (fieldDef.aggregate) {
+      } else if (isFieldDef(fieldDef) && fieldDef.aggregate) {
         fn = String(opt.aggregate || fieldDef.aggregate);
-      } else if (fieldDef.timeUnit) {
+      } else if (isFieldDef(fieldDef)&& fieldDef.timeUnit) {
         fn = String(fieldDef.timeUnit);
       }
     }
@@ -285,22 +286,9 @@ export function normalize(channelDef: ChannelDef<string>, channel: Channel) {
     }
 
     // Normalize bin
-    if (fieldDef.bin) {
-      const bin = fieldDef.bin;
-      if (isBoolean(bin)) {
-        fieldDef = {
-          ...fieldDef,
-          bin: {maxbins: autoMaxBins(channel)}
-        };
-      } else if (!bin.maxbins && !bin.step) {
-        fieldDef = {
-          ...fieldDef,
-          bin: {
-            ...bin,
-            maxbins: autoMaxBins(channel)
-          }
-        };
-      }
+    const bin = normalizeBin(fieldDef.bin, channel);
+    if (bin) {
+      fieldDef.bin = bin;
     }
 
     // Normalize Type
@@ -330,6 +318,18 @@ export function normalize(channelDef: ChannelDef<string>, channel: Channel) {
     return fieldDef;
   }
   return channelDef;
+}
+
+export function normalizeBin(bin: Bin|boolean, channel: Channel) {
+  if (bin) {
+    if (isBoolean(bin)) {
+      return {maxbins: autoMaxBins(channel)};
+    } else if (!bin.maxbins && !bin.step) {
+      return {...bin, maxbins: autoMaxBins(channel)};
+    }
+  }
+
+  return bin;
 }
 
 const COMPATIBLE = {compatible: true};
