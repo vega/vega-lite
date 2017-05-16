@@ -117,9 +117,11 @@ describe('compile/data/summary', function () {
     });
 
     it('should produce the correct summary component from transform array', function() {
-      const t: SummarizeTransform = {summarize: [
-        {aggregate: 'mean', field: 'Displacement', as: 'Displacement_mean'},
-        {aggregate: 'sum', field: 'Acceleration', as: 'Acceleration_sum'}],
+      const t: SummarizeTransform = {
+        summarize: [
+          {aggregate: 'mean', field: 'Displacement', as: 'Displacement_mean'},
+          {aggregate: 'sum', field: 'Acceleration', as: 'Acceleration_sum'}
+        ],
         groupby: ['Displacement_mean', 'Acceleration_sum']};
 
       const model = parseUnitModel({

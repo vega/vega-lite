@@ -286,9 +286,8 @@ export function normalize(channelDef: ChannelDef<string>, channel: Channel) {
     }
 
     // Normalize bin
-    const bin = normalizeBin(fieldDef.bin, channel);
-    if (bin) {
-      fieldDef.bin = bin;
+    if (fieldDef.bin) {
+      fieldDef.bin = normalizeBin(fieldDef.bin, channel);
     }
 
     // Normalize Type
@@ -321,15 +320,13 @@ export function normalize(channelDef: ChannelDef<string>, channel: Channel) {
 }
 
 export function normalizeBin(bin: Bin|boolean, channel: Channel) {
-  if (bin) {
-    if (isBoolean(bin)) {
-      return {maxbins: autoMaxBins(channel)};
-    } else if (!bin.maxbins && !bin.step) {
-      return {...bin, maxbins: autoMaxBins(channel)};
-    }
+  if (isBoolean(bin)) {
+    return {maxbins: autoMaxBins(channel)};
+  } else if (!bin.maxbins && !bin.step) {
+    return {...bin, maxbins: autoMaxBins(channel)};
+  } else {
+    return bin;
   }
-
-  return bin;
 }
 
 const COMPATIBLE = {compatible: true};
