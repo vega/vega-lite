@@ -311,7 +311,10 @@
                     "encode": {
                         "enter": {
                             "fill": {
-                                "value": "#eee"
+                                "value": "#333"
+                            },
+                            "fillOpacity": {
+                                "value": 0.125
                             }
                         },
                         "update": {
@@ -401,6 +404,9 @@
                         "enter": {
                             "fill": {
                                 "value": "transparent"
+                            },
+                            "stroke": {
+                                "value": "white"
                             }
                         },
                         "update": {
