@@ -1,8 +1,10 @@
+import {isString} from 'vega-util';
 import {MAIN} from '../../data';
 import {field} from '../../fielddef';
 import {every, flatten, vals} from '../../util';
 import {VgData} from '../../vega.schema';
 import {Model} from '../model';
+import {DataComponent} from './';
 import {AggregateNode} from './aggregate';
 import {BinNode} from './bin';
 import {DataFlowNode, OutputNode} from './dataflow';
@@ -16,7 +18,7 @@ import {OrderNode} from './pathorder';
 import {SourceNode} from './source';
 import {StackNode} from './stack';
 import {TimeUnitNode} from './timeunit';
-import {CalculateNode, FilterNode} from './transforms';
+import {CalculateNode, FilterNode, LookupNode} from './transforms';
 
 
 export const FACET_SCALE_PREFIX = 'scale_';
@@ -191,7 +193,8 @@ function makeWalkTree(data: VgData[]) {
       node instanceof NullFilterNode ||
       node instanceof CalculateNode ||
       node instanceof AggregateNode ||
-      node instanceof OrderNode) {
+      node instanceof OrderNode ||
+      node instanceof LookupNode) {
       dataSource.transform.push(node.assemble());
     }
 
@@ -288,7 +291,8 @@ export function assembleFacetData(root: FacetNode): VgData[] {
  * @param  data array
  * @return modified data array
  */
-export function assembleData(roots: SourceNode[]): VgData[] {
+export function assembleData(dataCompomponent: DataComponent): VgData[] {
+  let roots: SourceNode[] = vals(dataCompomponent.sources);
   const data: VgData[] = [];
 
   roots.forEach(removeUnnecessaryNodes);
@@ -325,6 +329,18 @@ export function assembleData(roots: SourceNode[]): VgData[] {
       delete d.transform;
     }
   });
+
+  // move sources without transforms (the onces that are potentially need for lookups) to the beginning
+  data.sort((a, b) => (a.transform || []).length === 0 ? -1 : ((b.transform || []).length === 0 ? 1 : 0));
+
+  // now fix the from references in lookup transforms
+  for (const d of data) {
+    for (const t of d.transform || []) {
+      if (t.type === 'lookup') {
+        t.from = dataCompomponent.outputNodes[t.from].source;
+      }
+    }
+  }
 
   return data;
 }

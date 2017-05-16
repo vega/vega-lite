@@ -1,13 +1,16 @@
-import {isArray} from 'vega-util';
+import {isArray, isString} from 'vega-util';
 import {expression, Filter} from '../../filter';
 import * as log from '../../log';
-import {CalculateTransform, FilterTransform, isBin, isCalculate, isFilter, isSummarize, isTimeUnit} from '../../transform';
+import {CalculateTransform, FilterTransform, isBin, isCalculate, isFilter, isLookup, isSummarize, isTimeUnit, LookupTransform} from '../../transform';
 import {duplicate} from '../../util';
-import {VgFilterTransform, VgFormulaTransform} from '../../vega.schema';
-import {Model, ModelWithField} from '../model';
+import {VgFilterTransform, VgFormulaTransform, VgLookupTransform} from '../../vega.schema';
+import {ModelWithField} from '../model';
+import {Model} from '../model';
 import {AggregateNode} from './aggregate';
 import {BinNode} from './bin';
-import {DataFlowNode} from './dataflow';
+import {DataFlowNode, OutputNode} from './dataflow';
+import {FacetNode} from './facet';
+import {SourceNode} from './source';
 import {TimeUnitNode} from './timeunit';
 
 export class FilterNode extends DataFlowNode {
@@ -54,14 +57,70 @@ export class CalculateNode extends DataFlowNode {
   }
 }
 
+export class LookupNode extends DataFlowNode {
+  constructor(public readonly transform: LookupTransform, public readonly secondary: string) {
+    super();
+  }
+
+  public static make(model: Model, transform: LookupTransform, counter: number) {
+    const sources = model.component.data.sources;
+    const s = new SourceNode(transform.from.data);
+    let fromSource = sources[s.hash()];
+    if (!fromSource) {
+      sources[s.hash()] = s;
+      fromSource = s;
+    }
+
+    const fromOutputName = model.getName(`lookup_${counter}`);
+    const fromOutputNode = new OutputNode(fromOutputName, 'lookup');
+    fromOutputNode.parent = fromSource;
+
+    model.component.data.outputNodes[fromOutputName] = fromOutputNode;
+
+    return new LookupNode(transform, fromOutputNode.source);
+  }
+
+  public assemble(): VgLookupTransform {
+    let foreign: Partial<VgLookupTransform>;
+
+    if (this.transform.from.fields) {
+      // lookup a few fields and add create a flat output
+      foreign = {
+        values: this.transform.from.fields,
+        ... this.transform.as ? {as: ((this.transform.as instanceof Array) ? this.transform.as : [this.transform.as])} : {}
+      };
+    } else {
+      // lookup full record and nest it
+      let asName = this.transform.as;
+      if (!isString(asName)) {
+        log.warn(log.message.NO_FIELDS_NEEDS_AS);
+        asName = '_lookup';
+      }
+
+      foreign = {
+        as: [asName]
+      };
+    }
+
+    return {
+      type: 'lookup',
+      from: this.secondary,
+      key: this.transform.from.key,
+      fields: [this.transform.lookup],
+      ...foreign,
+      ...(this.transform.default ? {default: this.transform.default} : {})
+    };
+  }
+}
+
 /**
  * Parses a transforms array into a chain of connected dataflow nodes.
  */
 export function parseTransformArray(model: Model) {
   let first: DataFlowNode;
-  let last: DataFlowNode;
   let node: DataFlowNode;
   let previous: DataFlowNode;
+  let lookupCounter = 0;
 
   model.transforms.forEach((t, i) => {
     if (isCalculate(t)) {
@@ -74,6 +133,8 @@ export function parseTransformArray(model: Model) {
       node = TimeUnitNode.makeFromTransfrom(model, t);
     } else if (isSummarize(t)) {
       node = AggregateNode.makeFromTransform(model, t);
+    } else if (isLookup(t)) {
+      node = LookupNode.make(model, t, lookupCounter++);
     } else {
       log.warn(log.message.invalidTransformIgnored(t));
       return;
@@ -87,7 +148,7 @@ export function parseTransformArray(model: Model) {
     previous = node;
   });
 
-  last = node;
+  const last = node;
 
   return {first, last};
 }
