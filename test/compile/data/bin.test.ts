@@ -109,24 +109,26 @@ describe('compile/data/bin', function() {
   });
 
   it('should add bin transform from transform arrat and correctly apply bin with custom extent', function() {
-    const t: BinTransform = {bin: {extent: [0, 100]},
-                  field: 'Acceleration',
-                  as: 'Bin_Transform'};
-     const model = parseUnitModel({
-      data: {url: "data/movies.json"},
-      mark: "circle",
-      transform: [t],
-      encoding: {
-        x: {
-          field: "Rotten_Tomatoes_Rating",
-          type: "q"
-        },
-        color: {
-          field: "Rotten_Tomatoes_Rating",
-          type: "q"
-        }
+    const t: BinTransform = {
+      bin: {extent: [0, 100]},
+      field: 'Acceleration',
+      as: 'Bin_Transform'
+    };
+    const model = parseUnitModel({
+    data: {url: "data/movies.json"},
+    mark: "circle",
+    transform: [t],
+    encoding: {
+      x: {
+        field: "Rotten_Tomatoes_Rating",
+        type: "q"
+      },
+      color: {
+        field: "Rotten_Tomatoes_Rating",
+        type: "q"
       }
-    });
+    }
+  });
 
     assert.deepEqual<VgTransform>(assembleFromTransform(model, t)[0], {
       type: 'bin',
