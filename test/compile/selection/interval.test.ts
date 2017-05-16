@@ -272,7 +272,11 @@ describe('Interval Selections', function() {
         "name": undefined,
         "type": "rect",
         "encode": {
-          "enter": {"fill": {"value": "#eee"}},
+          "enter": {
+            "fill": {"value": "#333"},
+            "fillOpacity": {"value": 0.125},
+            "stroke": undefined
+          },
           "update": {
             "x": [
               {
@@ -312,7 +316,11 @@ describe('Interval Selections', function() {
         "name": "one_brush",
         "type": "rect",
         "encode": {
-          "enter": {"fill": {"value": "transparent"}},
+          "enter": {
+            "fill": {"value": "transparent"},
+            "fillOpacity": undefined,
+            "stroke": {"value": "white"}
+          },
           "update": {
             "x": [
               {
@@ -357,7 +365,11 @@ describe('Interval Selections', function() {
         "name": undefined,
         "type": "rect",
         "encode": {
-          "enter": {"fill": {"value": "#eee"}},
+          "enter": {
+            "fill": {"value": "#333"},
+            "fillOpacity": {"value": 0.125},
+            "stroke": undefined
+          },
           "update": {
             "x": {
               "scale": "x",
@@ -383,7 +395,11 @@ describe('Interval Selections', function() {
         "name": "three_brush",
         "type": "rect",
         "encode": {
-          "enter": {"fill": {"value": "transparent"}},
+          "enter": {
+            "fill": {"value": "transparent"},
+            "fillOpacity": undefined,
+            "stroke": {"value": "white"}
+          },
           "update": {
             "x": {
               "scale": "x",
