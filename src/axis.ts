@@ -1,17 +1,11 @@
 import {DateTime} from './datetime';
-import {Guide} from './guide';
+import {Guide, VlOnlyGuideConfig} from './guide';
 import {VgAxisBase, VgAxisConfig, VgAxisEncode} from './vega.schema';
 
 export type AxisOrient = 'top' | 'right' | 'left' | 'bottom';
 
-export interface AxisConfig extends VgAxisConfig {
-  /**
-   * Whether month names and weekday names should be abbreviated.
-   *
-   * __Default value:__  `false`
-   */
-  shortTimeLabels?: boolean;
-}
+
+export interface AxisConfig extends VgAxisConfig, VlOnlyGuideConfig {}
 
 export interface Axis extends VgAxisBase, Guide {
   /**
@@ -73,3 +67,45 @@ export interface Axis extends VgAxisBase, Guide {
 export const AXIS_PROPERTIES:(keyof Axis)[] = [
   'domain', 'format', 'grid', 'labelPadding', 'labels', 'maxExtent', 'minExtent', 'offset', 'orient', 'position', 'tickCount', 'ticks', 'tickSize', 'title', 'titlePadding', 'values', 'zindex'
 ];
+
+
+
+export interface AxisConfigMixins {
+  /** Generic axis config. */
+  axis?: AxisConfig;
+
+  /**
+   * X-axis specific config.
+   */
+  axisX?: VgAxisConfig;
+
+  /**
+   * Y-axis specific config.
+   */
+  axisY?: VgAxisConfig;
+
+  /**
+   * Specific axis config for y-axis along the left edge of the chart.
+   */
+  axisLeft?: VgAxisConfig;
+
+  /**
+   * Specific axis config for y-axis along the right edge of the chart.
+   */
+  axisRight?: VgAxisConfig;
+
+  /**
+   * Specific axis config for x-axis along the top edge of the chart.
+   */
+  axisTop?: VgAxisConfig;
+
+  /**
+   * Specific axis config for x-axis along the bottom edge of the chart.
+   */
+  axisBottom?: VgAxisConfig;
+
+  /**
+   * Specific axis config for axes with "band" scales.
+   */
+  axisBand?: VgAxisConfig;
+}
