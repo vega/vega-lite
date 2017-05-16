@@ -250,8 +250,8 @@ export function invert(model: UnitModel, selCmpt: SelectionComponent, channel: C
   return selCmpt.domain === 'data' ? `invert(${scale}, ${expr})` : expr;
 }
 
-export function channelSignalName(selCmpt: SelectionComponent, channel: Channel) {
-  return selCmpt.name + '_' + selCmpt.fields[channel];
+export function channelSignalName(selCmpt: SelectionComponent, channel: Channel, range: 'visual' | 'data') {
+  return selCmpt.name + '_' + (range === 'visual' ? channel : selCmpt.fields[channel]);
 }
 
 function clipMarks(marks: any[]): any[] {

@@ -2,7 +2,7 @@ import {Channel, X, Y} from '../../channel';
 import {warn} from '../../log';
 import {extend, keys, stringValue} from '../../util';
 import {UnitModel} from '../unit';
-import {channelSignalName, invert as invertFn, ProjectComponent, SelectionCompiler, SelectionComponent, STORE, TUPLE} from './selection';
+import {channelSignalName, invert, ProjectComponent, SelectionCompiler, SelectionComponent, STORE, TUPLE} from './selection';
 import scales from './transforms/scales';
 
 export const BRUSH = '_brush',
@@ -31,10 +31,10 @@ const interval:SelectionCompiler = {
         return;
       }
 
-      const cs = channelSignal(model, selCmpt, p.encoding);
-      signals.push(cs);
+      const cs = channelSignals(model, selCmpt, p.encoding);
+      signals.push.apply(signals, cs);
       intervals.push(`{encoding: ${stringValue(p.encoding)}, ` +
-      `field: ${stringValue(p.field)}, extent: ${cs.name}}`);
+      `field: ${stringValue(p.field)}, extent: ${cs[1].name}}`);
     });
 
     signals.push({
@@ -84,21 +84,10 @@ const interval:SelectionCompiler = {
     }
 
     const update = {
-      x: extend({}, xi !== null ?
-        {scale: model.scaleName(X), signal: `${name}[${xi}].extent[0]`} :
-        {value: 0}),
-
-      x2: extend({}, xi !== null ?
-        {scale: model.scaleName(X), signal: `${name}[${xi}].extent[1]`} :
-        {field: {group: 'width'}}),
-
-      y: extend({}, yi !== null ?
-        {scale: model.scaleName(Y), signal: `${name}[${yi}].extent[0]`} :
-        {value: 0}),
-
-      y2: extend({}, yi !== null ?
-        {scale: model.scaleName(Y), signal: `${name}[${yi}].extent[1]`} :
-        {field: {group: 'height'}})
+      x: extend({}, xi !== null ? {signal: `${name}_x[0]`} : {value: 0}),
+      y: extend({}, yi !== null ? {signal: `${name}_y[0]`} : {value: 0}),
+      x2: extend({}, xi !== null ? {signal: `${name}_x[1]`} : {field: {group: 'width'}}),
+      y2: extend({}, yi !== null ? {signal: `${name}_y[1]`} : {field: {group: 'height'}})
     };
 
     // If the selection is resolved to global, only a single interval is in
@@ -156,29 +145,36 @@ export function projections(selCmpt: SelectionComponent) {
   return {x, xi, y, yi};
 }
 
-function channelSignal(model: UnitModel, selCmpt: SelectionComponent, channel: Channel): any {
-  const name  = channelSignalName(selCmpt, channel),
+function channelSignals(model: UnitModel, selCmpt: SelectionComponent, channel: Channel): any {
+  const name = channelSignalName(selCmpt, channel, 'visual'),
       size  = model.getSizeSignalRef(channel === X ? 'width' : 'height').signal,
-      coord = `${channel}(unit)`,
-      invert = invertFn.bind(null, model, selCmpt, channel);
+      coord = `${channel}(unit)`;
 
-  return {
+  return [{
     name: name,
     value: [],
     on: scales.has(selCmpt) ? [] : events(selCmpt, function(on: any[], evt: any) {
       on.push({
         events: evt.between[0],
-        update: invert(`[${coord}, ${coord}]`)
+        update: `[${coord}, ${coord}]`
       });
 
       on.push({
         events: evt,
-        update: `[${name}[0], ` + invert(`clamp(${coord}, 0, ${size})`) + ']'
+        update: `[${name}[0], clamp(${coord}, 0, ${size})]`
       });
 
       return on;
     })
-  };
+  }, {
+    name: channelSignalName(selCmpt, channel, 'data'),
+    on: [
+      {
+        events: {signal: name},
+        update: invert(model, selCmpt, channel, name)
+      }
+    ]
+  }];
 }
 
 function events(selCmpt: SelectionComponent, cb: Function) {
