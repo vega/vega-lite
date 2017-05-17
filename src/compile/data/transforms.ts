@@ -1,11 +1,13 @@
 import {isArray} from 'vega-util';
 import {expression, Filter} from '../../filter';
 import * as log from '../../log';
-import {CalculateTransform, FilterTransform, isCalculate, isFilter} from '../../transform';
+import {CalculateTransform, FilterTransform, isCalculate, isFilter, isLookup, LookupTransform} from '../../transform';
 import {duplicate} from '../../util';
-import {VgFilterTransform, VgFormulaTransform} from '../../vega.schema';
+import {VgFilterTransform, VgFormulaTransform, VgLookupTransform} from '../../vega.schema';
 import {Model} from '../model';
 import {DataFlowNode} from './dataflow';
+import {FacetNode} from './facet';
+import {SourceNode} from './source';
 
 export class FilterNode extends DataFlowNode {
   public clone() {
@@ -51,17 +53,64 @@ export class CalculateNode extends DataFlowNode {
   }
 }
 
+export class LookupNode extends DataFlowNode {
+  private readonly secondaryDataName: string;
+
+  constructor(private transform: LookupTransform, public secondary: DataFlowNode) {
+    super();
+  }
+
+  public assemble(): VgLookupTransform {
+    // TODO: this.transform.from.fields isn't used
+    const DEFAULT_AS = '_lookup';
+    let source: string;
+    if (this.secondary instanceof FacetNode) {
+      source = this.secondary.name;
+    } else if (this.secondary instanceof SourceNode) {
+      source = this.secondary.dataName;
+    }
+
+    /* TODO: handle foreign data retrevial using VALUES and renaming using AS (potentially implicit) or FIELDS (see above) */
+    /* https://vega.github.io/vega/docs/transforms/lookup/ */
+    /* VALUES: The data fields to copy from the secondary stream to the primary stream. If not specified, a reference to the full data record is copied. */
+    /* AS: The output fields at which to write data found in the secondary stream. If not specified and a values parameter is supplied, the names of the fields in the values array will be used. This parameter is required if multiple fields are provided or values is unspecified. */
+
+    const foreign = {
+      as: this.transform.as
+        ? ((this.transform.as instanceof Array) ? this.transform.as : [this.transform.as])
+        : [DEFAULT_AS]
+    };
+
+    console.log(this.secondary);
+    return {
+      type: 'lookup',
+      from: source,
+      key: this.transform.from.key,
+      fields: [this.transform.lookup],
+      ...foreign,
+      ...(this.transform.default ? {default: this.transform.default} : {})
+    };
+  }
+}
+
+
 /**
  * Parses a transforms array into a chain of connected dataflow nodes.
  */
-export function parseTransformArray(model: Model) {
+export function parseTransformArray(model: Model, lookups: DataFlowNode[]) {
   let first: DataFlowNode;
   let last: DataFlowNode;
   let node: DataFlowNode;
   let previous: DataFlowNode;
 
+  let lookupIndex = -1;
   model.transforms.forEach((t, i) => {
-    if (isCalculate(t)) {
+    if (isLookup(t)) {
+      node = new LookupNode(t, lookups[lookupIndex]);
+      lookupIndex++;
+      lookups[lookupIndex].addChild(node);
+      console.log(node);
+    } else if (isCalculate(t)) {
       node = new CalculateNode(t);
     } else if (isFilter(t)) {
       node = new FilterNode(model, t.filter);

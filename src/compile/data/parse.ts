@@ -1,4 +1,5 @@
 import {MAIN, RAW} from '../../data';
+import {isLookup, LookupTransform, Transform} from '../../transform';
 import {Dict} from '../../util';
 import {FacetModel} from '../facet';
 import {LayerModel} from '../layer';
@@ -36,6 +37,21 @@ function parseRoot(model: Model, sources: Dict<SourceNode>): DataFlowNode {
     return model.parent.component.data.facetRoot ? model.parent.component.data.facetRoot : model.parent.component.data.main;
   }
 }
+
+function parseLookups(model: Model, sources: Dict<SourceNode>): SourceNode[] {
+  // add additional sources from lookups
+  return model.transforms.filter(isLookup).reduce((lookups, lookup: LookupTransform) => {
+    const source = new SourceNode(model, lookup);
+    const hash = source.hash();
+    if (!(hash in sources)) {
+      // if we don't already have a source add a new one
+      sources[hash] = source;
+    }
+    lookups.push(sources[hash]);
+    return lookups;
+  }, [] as SourceNode[]);
+}
+
 
 /*
 Description of the dataflow (http://asciiflow.com/):
@@ -94,11 +110,24 @@ Description of the dataflow (http://asciiflow.com/):
 
 export function parseData(model: Model): DataComponent {
   const root = parseRoot(model, model.component.data.sources);
+  const lookups = parseLookups(model, model.component.data.sources);
 
   const outputNodes = model.component.data.outputNodes;
 
   // the current head of the tree that we are appending to
-  let head = root;
+  let head: DataFlowNode = root;
+
+  // add lookup data (dependent data) above main data
+  // lookups.forEach(lookup => {
+  //   if (head) {
+  //     lookup.parent = head;
+  //   }
+  //   head = lookup;
+  // });
+  // if (head) {
+  //   root.parent = head;
+  // }
+  // head = root;
 
   const parse = ParseNode.make(model);
   if (parse) {
@@ -120,10 +149,17 @@ export function parseData(model: Model): DataComponent {
   }
 
   if (model.transforms.length > 0) {
-    const {first, last} = parseTransformArray(model);
+    const {first, last} = parseTransformArray(model, lookups);
+
+    // parent = head
+    // iterate over transforms
+    // if transform is lookup: parent = transform (new head basically)
+
     first.parent = head;
     head = last;
   }
+
+  // where do we "make" lookup transform? How do we give it the source(s) it needs?
 
   if (model instanceof ModelWithField) {
     const nullFilter = NullFilterNode.make(model);
@@ -172,9 +208,7 @@ export function parseData(model: Model): DataComponent {
       nonPosFilter.parent = head;
       head = nonPosFilter;
     }
-  }
 
-  if (model instanceof UnitModel) {
     const order = OrderNode.make(model);
     if (order) {
       order.parent = head;

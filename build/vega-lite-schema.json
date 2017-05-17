@@ -118,6 +118,9 @@
                             },
                             {
                                 "$ref": "#/definitions/CalculateTransform"
+                            },
+                            {
+                                "$ref": "#/definitions/LookupTransform"
                             }
                         ]
                     },
@@ -250,6 +253,9 @@
                             },
                             {
                                 "$ref": "#/definitions/CalculateTransform"
+                            },
+                            {
+                                "$ref": "#/definitions/LookupTransform"
                             }
                         ]
                     },
@@ -355,6 +361,9 @@
                             },
                             {
                                 "$ref": "#/definitions/CalculateTransform"
+                            },
+                            {
+                                "$ref": "#/definitions/LookupTransform"
                             }
                         ]
                     },
@@ -457,6 +466,9 @@
                             },
                             {
                                 "$ref": "#/definitions/CalculateTransform"
+                            },
+                            {
+                                "$ref": "#/definitions/LookupTransform"
                             }
                         ]
                     },
@@ -543,6 +555,9 @@
                             },
                             {
                                 "$ref": "#/definitions/CalculateTransform"
+                            },
+                            {
+                                "$ref": "#/definitions/LookupTransform"
                             }
                         ]
                     },
@@ -660,6 +675,9 @@
                             },
                             {
                                 "$ref": "#/definitions/CalculateTransform"
+                            },
+                            {
+                                "$ref": "#/definitions/LookupTransform"
                             }
                         ]
                     },
@@ -2819,6 +2837,9 @@
                             },
                             {
                                 "$ref": "#/definitions/CalculateTransform"
+                            },
+                            {
+                                "$ref": "#/definitions/LookupTransform"
                             }
                         ]
                     },
@@ -2884,6 +2905,9 @@
                             },
                             {
                                 "$ref": "#/definitions/CalculateTransform"
+                            },
+                            {
+                                "$ref": "#/definitions/LookupTransform"
                             }
                         ]
                     },
@@ -2973,6 +2997,9 @@
                             },
                             {
                                 "$ref": "#/definitions/CalculateTransform"
+                            },
+                            {
+                                "$ref": "#/definitions/LookupTransform"
                             }
                         ]
                     },
@@ -3511,6 +3538,77 @@
                     "description": "The encoded field's type of measurement. This can be either a full type\nname (`\"quantitative\"`, `\"temporal\"`, `\"ordinal\"`,  and `\"nominal\"`)\nor an initial character of the type name (`\"Q\"`, `\"T\"`, `\"O\"`, `\"N\"`).\nThis property is case-insensitive."
                 }
             },
+            "type": "object"
+        },
+        "LookupData": {
+            "additionalProperties": false,
+            "properties": {
+                "data": {
+                    "anyOf": [
+                        {
+                            "$ref": "#/definitions/UrlData"
+                        },
+                        {
+                            "$ref": "#/definitions/InlineData"
+                        },
+                        {
+                            "$ref": "#/definitions/NamedData"
+                        }
+                    ],
+                    "description": "secondary data source to lookup in"
+                },
+                "fields": {
+                    "description": "(Optional) fields in foreign data to lookup\nif not specificied, the entire object is queried",
+                    "items": {
+                        "type": "string"
+                    },
+                    "type": "array"
+                },
+                "key": {
+                    "description": "key in data to lookup",
+                    "type": "string"
+                }
+            },
+            "required": [
+                "data",
+                "key"
+            ],
+            "type": "object"
+        },
+        "LookupTransform": {
+            "additionalProperties": false,
+            "properties": {
+                "as": {
+                    "anyOf": [
+                        {
+                            "items": {
+                                "type": "string"
+                            },
+                            "type": "array"
+                        },
+                        {
+                            "type": "string"
+                        }
+                    ],
+                    "description": "(Optional) The field or fields for storing the computed formula value.\nIf `from.fields` is not specified, `as` has to be a string and we put the whole object into the data"
+                },
+                "default": {
+                    "description": "(Optional) The default value to use if lookup fails",
+                    "type": "string"
+                },
+                "from": {
+                    "$ref": "#/definitions/LookupData",
+                    "description": "secondary data reference"
+                },
+                "lookup": {
+                    "description": "key in primary data source",
+                    "type": "string"
+                }
+            },
+            "required": [
+                "from",
+                "lookup"
+            ],
             "type": "object"
         },
         "Mark": {

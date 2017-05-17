@@ -16,7 +16,7 @@ import {OrderNode} from './pathorder';
 import {SourceNode} from './source';
 import {StackNode} from './stack';
 import {TimeUnitNode} from './timeunit';
-import {CalculateNode, FilterNode} from './transforms';
+import {CalculateNode, FilterNode, LookupNode} from './transforms';
 
 
 export const FACET_SCALE_PREFIX = 'scale_';
@@ -191,6 +191,7 @@ function makeWalkTree(data: VgData[]) {
       node instanceof NullFilterNode ||
       node instanceof CalculateNode ||
       node instanceof AggregateNode ||
+      node instanceof LookupNode ||
       node instanceof OrderNode) {
       dataSource.transform.push(node.assemble());
     }
@@ -289,6 +290,7 @@ export function assembleFacetData(root: FacetNode): VgData[] {
  * @return modified data array
  */
 export function assembleData(roots: SourceNode[]): VgData[] {
+  console.log(roots);
   const data: VgData[] = [];
 
   roots.forEach(removeUnnecessaryNodes);
@@ -308,7 +310,7 @@ export function assembleData(roots: SourceNode[]): VgData[] {
 
   let sourceIndex = 0;
 
-  roots.forEach(root => {
+  roots.forEach((root: SourceNode) => {
     // assign a name if the source does not have a name yet
     if (!root.hasName()) {
       root.dataName = `source_${sourceIndex++}`;

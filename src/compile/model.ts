@@ -9,7 +9,7 @@ import {hasDiscreteDomain, Scale} from '../scale';
 import {SortField, SortOrder} from '../sort';
 import {BaseSpec} from '../spec';
 import {StackProperties} from '../stack';
-import {Transform} from '../transform';
+import {isLookup, LookupTransform, Transform} from '../transform';
 import {Dict, extend, vals, varName} from '../util';
 import {VgAxis, VgData, VgEncodeEntry, VgLayout, VgLegend, VgMarkGroup, VgScale, VgSignal, VgSignalRef, VgValueRef} from '../vega.schema';
 
@@ -362,6 +362,8 @@ export abstract class Model {
     return this.component[type][name] || this.parent.getComponent(type, name);
   }
 }
+
+
 
 /** Abstract class for UnitModel and FacetModel.  Both of which can contain fieldDefs as a part of its own specification. */
 export abstract class ModelWithField extends Model {
