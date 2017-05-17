@@ -4,6 +4,7 @@ import {Channel} from '../../channel';
 import {MAIN, RAW} from '../../data';
 import {DateTime, isDateTime, timestamp} from '../../datetime';
 import {FieldDef} from '../../fielddef';
+import {valueExpr} from '../../filter';
 import * as log from '../../log';
 import {Domain, hasDiscreteDomain, isBinScale, isSelectionDomain, Scale, ScaleConfig, ScaleType} from '../../scale';
 import {isSortField} from '../../sort';
@@ -67,7 +68,7 @@ function parseSingleChannelDomain(scale: Scale, model: UnitModel, channel:Channe
   if (scale.domain && scale.domain !== 'unaggregated' && !isSelectionDomain(scale.domain)) { // explicit value
     if (isDateTime(scale.domain[0])) {
       return (scale.domain as DateTime[]).map((dt) => {
-        return timestamp(dt, true);
+        return {signal: valueExpr(dt)};
       });
     }
     return scale.domain;

@@ -8,6 +8,7 @@ import {FieldDef, title as fieldDefTitle} from '../../fielddef';
 import {truncate} from '../../util';
 import {VgAxis} from '../../vega.schema';
 
+import {valueExpr} from '../../filter';
 import {numberFormat} from '../common';
 import {UnitModel} from '../unit';
 
@@ -112,7 +113,7 @@ export function values(specifiedAxis: Axis) {
   if (specifiedAxis.values && isDateTime(vals[0])) {
     return (vals as DateTime[]).map((dt) => {
       // normalize = true as end user won't put 0 = January
-      return timestamp(dt, true);
+      return {signal: valueExpr(dt)};
     });
   }
   return vals;

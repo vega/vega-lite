@@ -134,8 +134,8 @@ describe('compile/axis', ()=> {
       const values = rules.values({values: [{year: 1970}, {year: 1980}]});
 
       assert.deepEqual(values, [
-        new Date(1970, 0, 1).getTime(),
-        new Date(1980, 0, 1).getTime()
+        {"signal": "time(datetime(1970, 0, 1, 0, 0, 0, 0))"},
+        {"signal": "time(datetime(1980, 0, 1, 0, 0, 0, 0))"}
       ]);
     });
 
