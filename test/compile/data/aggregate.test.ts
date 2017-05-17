@@ -11,14 +11,14 @@ import {parseUnitModel} from '../../util';
 describe('compile/data/summary', function () {
   describe('clone', function() {
     it('should have correct type', function() {
-      const agg = new AggregateNode({}, {}, {});
+      const agg = new AggregateNode({}, {});
       assert(agg instanceof AggregateNode);
       const clone = agg.clone();
       assert(clone instanceof AggregateNode);
     });
 
     it('should have make a deep copy', function() {
-      const agg = new AggregateNode({foo: true}, {}, {});
+      const agg = new AggregateNode({foo: true}, {});
       const clone = agg.clone();
       clone.addDimensions(['bar']);
       assert.deepEqual<StringSet>(clone.dependentFields(), {'foo': true, 'bar': true});
@@ -49,7 +49,11 @@ describe('compile/data/summary', function () {
         type: 'aggregate',
         groupby: ['Origin'],
         ops: ['sum', 'count'],
-        fields: ['Acceleration', '*']
+        fields: ['Acceleration', '*'],
+        as: [
+          "sum_Acceleration",
+          "count_*"
+        ]
       });
     });
 
@@ -70,7 +74,8 @@ describe('compile/data/summary', function () {
         type: 'aggregate',
         groupby: ['Origin', 'Cylinders'],
         ops: ['mean'],
-        fields: ['Displacement']
+        fields: ['Displacement'],
+        as: ['mean_Displacement']
       });
     });
 
@@ -87,7 +92,12 @@ describe('compile/data/summary', function () {
         type: 'aggregate',
         groupby: [],
         ops: ['mean', 'min', 'max'],
-        fields: ['Displacement', 'Displacement', 'Displacement']
+        fields: ['Displacement', 'Displacement', 'Displacement'],
+        as: [
+          "mean_Displacement",
+          "min_Displacement",
+          "max_Displacement"
+        ]
       });
     });
 
@@ -112,7 +122,8 @@ describe('compile/data/summary', function () {
           'bin_maxbins_10_Acceleration_range'
         ],
         ops: ['count'],
-        fields: ['*']
+        fields: ['*'],
+        as: ['count_*']
       });
     });
 

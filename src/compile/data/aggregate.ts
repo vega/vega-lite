@@ -26,18 +26,18 @@ function addDimension(dims: {[field: string]: boolean}, fieldDef: FieldDef<strin
   return dims;
 }
 
-function mergeMeasures(parentMeasures: Dict<Dict<boolean>>, childMeasures: Dict<Dict<boolean>>) {
-  for (const field in childMeasures) {
-    if (childMeasures.hasOwnProperty(field)) {
+function mergeMeasures(parentMeasures: Dict<Dict<string>>, childMeasures: Dict<Dict<string>>) {
+  for (const f in childMeasures) {
+    if (childMeasures.hasOwnProperty(f)) {
       // when we merge a measure, we either have to add an aggregation operator or even a new field
-      const ops = childMeasures[field];
+      const ops = childMeasures[f];
       for (const op in ops) {
         if (ops.hasOwnProperty(op)) {
-          if (field in parentMeasures) {
+          if (f in parentMeasures) {
             // add operator to existing measure field
-            parentMeasures[field][op] = true;
+            parentMeasures[f][op] = field({field: f});
           } else {
-            parentMeasures[field] = {op: true};
+            parentMeasures[f] = {op: field({field: f})};
           }
         }
       }
@@ -47,14 +47,14 @@ function mergeMeasures(parentMeasures: Dict<Dict<boolean>>, childMeasures: Dict<
 
 export class AggregateNode extends DataFlowNode {
   public clone() {
-    return new AggregateNode(extend({}, this.dimensions), duplicate(this.measures), duplicate(this.as));
+    return new AggregateNode(extend({}, this.dimensions), duplicate(this.measures));
   }
 
   /**
    * @param dimensions string set for dimensions
    * @param measures dictionary mapping field name => dict set of aggregation functions
    */
-  constructor(private dimensions: StringSet, private measures: Dict<StringSet>, private as: Dict<string>) {
+  constructor(private dimensions: StringSet, private measures: Dict<Dict<string>>) {
     super();
   }
 
@@ -78,18 +78,16 @@ export class AggregateNode extends DataFlowNode {
       if (fieldDef.aggregate) {
         if (fieldDef.aggregate === 'count') {
           meas['*'] = meas['*'] || {};
-          /* tslint:disable:no-string-literal */
-          meas['*']['count'] = true;
-          /* tslint:enable:no-string-literal */
+          meas['*']['count'] = field(fieldDef, {aggregate: 'count'});
         } else {
           meas[fieldDef.field] = meas[fieldDef.field] || {};
-          meas[fieldDef.field][fieldDef.aggregate] = true;
+          meas[fieldDef.field][fieldDef.aggregate] = field(fieldDef);
 
           // add min/max so we can use their union as unaggregated domain
           const scale = model.scale(channel);
           if (scale && scale.domain === 'unaggregated') {
-            meas[fieldDef.field]['min'] = true;
-            meas[fieldDef.field]['max'] = true;
+            meas[fieldDef.field]['min'] = field(fieldDef, {aggregate: 'min'});
+            meas[fieldDef.field]['max'] = field(fieldDef, {aggregate: 'max'});
           }
         }
       } else {
@@ -101,24 +99,20 @@ export class AggregateNode extends DataFlowNode {
       return null;
     }
 
-    return new AggregateNode(dims, meas, {});
+    return new AggregateNode(dims, meas);
   }
 
   public static makeFromTransform(model: Model, t: SummarizeTransform): AggregateNode {
     const dims = {};
     const meas = {};
-    const as = {};
     for(const s of t.summarize) {
       if (s.aggregate) {
         if (s.aggregate === 'count') {
           meas['*'] = meas['*'] || {};
-          meas['*']['count'] = true;
-          as['*'] = s.as;
+          meas['*']['count'] = s.as || field(s);
         } else {
           meas[s.field] = meas[s.field] || {};
-          meas[s.field][s.aggregate] = true;
-          as[s.field] = as[s.field] || {};
-          as[s.field][s.aggregate] = s.as;
+          meas[s.field][s.aggregate] = s.as || field(s);
         }
       }
     }
@@ -127,11 +121,11 @@ export class AggregateNode extends DataFlowNode {
       dims[s] = true;
     }
 
-    if ((Object.keys(dims).length + Object.keys(meas).length + Object.keys(as).length)  === 0) {
+    if ((Object.keys(dims).length + Object.keys(meas).length)  === 0) {
       return null;
     }
 
-    return new AggregateNode(dims, meas, as);
+    return new AggregateNode(dims, meas);
   }
 
   public merge(other: AggregateNode) {
@@ -174,9 +168,7 @@ export class AggregateNode extends DataFlowNode {
     const as: string[] = [];
     keys(this.measures).forEach(field => {
       keys(this.measures[field]).forEach(op => {
-        if (this.as && this.as[field] && this.as[field][op]) {
-          as.push(this.as[field][op]);
-        }
+        as.push(this.measures[field][op]);
         ops.push(op);
         fields.push(field);
       });

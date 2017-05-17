@@ -5,6 +5,7 @@ import {TimeUnitNode} from '../../../src/compile/data/timeunit';
 import {CalculateNode, FilterNode, parseTransformArray} from '../../../src/compile/data/transforms';
 import {TimeUnit} from '../../../src/timeunit';
 import {parseUnitModel} from '../../util';
+
 describe('compile/data/transform', () => {
   describe('parseTransformArray()', () => {
     it('should return a CalculateNode and a FilterNode', () => {
@@ -26,7 +27,7 @@ describe('compile/data/transform', () => {
       const model = parseUnitModel({
         data: {values: []},
         mark: 'point',
-        transform: [{bin: true, field: 'field', as: 'as'}, {timeUnit: 'month', field: 'field', as: 'as'}],
+        transform: [{bin: true, field: 'field', as: 'a'}, {timeUnit: 'month', field: 'field', as: 'b'}],
         encoding: {
           x: {field: 'a', type: 'temporal', timeUnit: 'month'}
         }
@@ -41,7 +42,7 @@ describe('compile/data/transform', () => {
       const model = parseUnitModel({
         data: {values: []},
         mark: 'point',
-        transform: [{bin: true, field: 'field', as: 'as'}, {summarize: [{aggregate: 'count', field: 'f', as: 'a'}, {aggregate: 'sum', field: 'f', as: 'a'}], groupby: ['field']}],
+        transform: [{bin: true, field: 'field', as: 'a'}, {summarize: [{aggregate: 'count', field: 'f', as: 'b'}, {aggregate: 'sum', field: 'f', as: 'c'}], groupby: ['field']}],
         encoding: {
           x: {field: 'a', type: 'temporal', timeUnit: 'month'}
         }
