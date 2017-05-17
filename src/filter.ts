@@ -146,12 +146,12 @@ export function expression(model: Model, filter: Filter): string {
   return undefined;
 }
 
-function valueExpr(v: any, timeUnit: TimeUnit) {
+export function valueExpr(v: any, timeUnit?: TimeUnit) {
   if (isDateTime(v)) {
     const expr = dateTimeExpr(v, true);
     return 'time(' + expr + ')';
   }
-  if (isSingleTimeUnit(timeUnit)) {
+  if (isSingleTimeUnit(timeUnit) && timeUnit) {
     const datetime: DateTime = {};
     datetime[timeUnit] = v;
     const expr = dateTimeExpr(datetime, true);

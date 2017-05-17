@@ -21,6 +21,7 @@ import {
 } from '../../vega.schema';
 
 import {MAIN, RAW} from '../../data';
+import {valueExpr} from '../../filter';
 import {UnitModel} from '../unit';
 
 
@@ -69,7 +70,7 @@ function parseSingleChannelDomain(scale: Scale, model: UnitModel, channel:Channe
   if (scale.domain && scale.domain !== 'unaggregated' && !isSelectionDomain(scale.domain)) { // explicit value
     if (isDateTime(scale.domain[0])) {
       return (scale.domain as DateTime[]).map((dt) => {
-        return timestamp(dt, true);
+        return {signal: valueExpr(dt)};
       });
     }
     return scale.domain;
