@@ -27,6 +27,9 @@
                     ],
                     "fields": [
                         "Acceleration"
+                    ],
+                    "as": [
+                        "mean_Acceleration"
                     ]
                 }
             ]

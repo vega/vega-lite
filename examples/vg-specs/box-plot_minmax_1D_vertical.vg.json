@@ -34,6 +34,10 @@
                     "fields": [
                         "people",
                         "people"
+                    ],
+                    "as": [
+                        "min_people",
+                        "q1_people"
                     ]
                 }
             ]
@@ -61,6 +65,10 @@
                     "fields": [
                         "people",
                         "people"
+                    ],
+                    "as": [
+                        "q3_people",
+                        "max_people"
                     ]
                 }
             ]
@@ -88,6 +96,10 @@
                     "fields": [
                         "people",
                         "people"
+                    ],
+                    "as": [
+                        "q1_people",
+                        "q3_people"
                     ]
                 }
             ]
@@ -113,6 +125,9 @@
                     ],
                     "fields": [
                         "people"
+                    ],
+                    "as": [
+                        "median_people"
                     ]
                 }
             ]

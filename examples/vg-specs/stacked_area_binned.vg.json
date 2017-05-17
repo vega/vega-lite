@@ -48,6 +48,9 @@
                     ],
                     "fields": [
                         "Horsepower"
+                    ],
+                    "as": [
+                        "sum_Horsepower"
                     ]
                 },
                 {

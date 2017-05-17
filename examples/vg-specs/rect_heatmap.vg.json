@@ -28,6 +28,9 @@
                     ],
                     "fields": [
                         "Horsepower"
+                    ],
+                    "as": [
+                        "mean_Horsepower"
                     ]
                 }
             ]

@@ -48,6 +48,9 @@
                     ],
                     "fields": [
                         "yield"
+                    ],
+                    "as": [
+                        "median_yield"
                     ]
                 }
             ]
@@ -198,6 +201,9 @@
                                     ],
                                     "fields": [
                                         "yield"
+                                    ],
+                                    "as": [
+                                        "median_yield"
                                     ]
                                 }
                             ]
