@@ -66,7 +66,7 @@ function defaultType(channel: Channel, fieldDef: FieldDef<string>, mark: Mark,
 
     case 'ordinal':
       if (channel === 'color') {
-        return 'ordinal';
+        return 'sequential';
       } else if (rangeType(channel) === 'discrete') {
         log.warn(log.message.discreteChannelCannotEncode(channel, 'ordinal'));
         return 'ordinal';
