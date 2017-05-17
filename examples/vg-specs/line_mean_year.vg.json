@@ -33,6 +33,9 @@
                     ],
                     "fields": [
                         "temp_max"
+                    ],
+                    "as": [
+                        "mean_temp_max"
                     ]
                 },
                 {

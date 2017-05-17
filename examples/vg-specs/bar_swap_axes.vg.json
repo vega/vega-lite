@@ -64,6 +64,9 @@
                     ],
                     "fields": [
                         "b"
+                    ],
+                    "as": [
+                        "average_b"
                     ]
                 }
             ]

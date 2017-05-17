@@ -40,6 +40,9 @@
                     ],
                     "fields": [
                         "price"
+                    ],
+                    "as": [
+                        "mean_price"
                     ]
                 },
                 {

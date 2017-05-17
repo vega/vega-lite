@@ -43,6 +43,9 @@
                     ],
                     "fields": [
                         "precipitation"
+                    ],
+                    "as": [
+                        "mean_precipitation"
                     ]
                 }
             ]
@@ -68,6 +71,9 @@
                     ],
                     "fields": [
                         "precipitation"
+                    ],
+                    "as": [
+                        "mean_precipitation"
                     ]
                 }
             ]

@@ -31,6 +31,10 @@
                     "fields": [
                         "Horsepower",
                         "Displacement"
+                    ],
+                    "as": [
+                        "mean_Horsepower",
+                        "mean_Displacement"
                     ]
                 }
             ]

@@ -33,6 +33,9 @@
                     ],
                     "fields": [
                         "precipitation"
+                    ],
+                    "as": [
+                        "mean_precipitation"
                     ]
                 },
                 {

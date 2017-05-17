@@ -37,6 +37,9 @@
                     ],
                     "fields": [
                         "temp_range"
+                    ],
+                    "as": [
+                        "mean_temp_range"
                     ]
                 },
                 {

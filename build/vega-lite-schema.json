@@ -118,6 +118,15 @@
                             },
                             {
                                 "$ref": "#/definitions/CalculateTransform"
+                            },
+                            {
+                                "$ref": "#/definitions/BinTransform"
+                            },
+                            {
+                                "$ref": "#/definitions/TimeUnitTransform"
+                            },
+                            {
+                                "$ref": "#/definitions/SummarizeTransform"
                             }
                         ]
                     },
@@ -250,6 +259,15 @@
                             },
                             {
                                 "$ref": "#/definitions/CalculateTransform"
+                            },
+                            {
+                                "$ref": "#/definitions/BinTransform"
+                            },
+                            {
+                                "$ref": "#/definitions/TimeUnitTransform"
+                            },
+                            {
+                                "$ref": "#/definitions/SummarizeTransform"
                             }
                         ]
                     },
@@ -355,6 +373,15 @@
                             },
                             {
                                 "$ref": "#/definitions/CalculateTransform"
+                            },
+                            {
+                                "$ref": "#/definitions/BinTransform"
+                            },
+                            {
+                                "$ref": "#/definitions/TimeUnitTransform"
+                            },
+                            {
+                                "$ref": "#/definitions/SummarizeTransform"
                             }
                         ]
                     },
@@ -457,6 +484,15 @@
                             },
                             {
                                 "$ref": "#/definitions/CalculateTransform"
+                            },
+                            {
+                                "$ref": "#/definitions/BinTransform"
+                            },
+                            {
+                                "$ref": "#/definitions/TimeUnitTransform"
+                            },
+                            {
+                                "$ref": "#/definitions/SummarizeTransform"
                             }
                         ]
                     },
@@ -543,6 +579,15 @@
                             },
                             {
                                 "$ref": "#/definitions/CalculateTransform"
+                            },
+                            {
+                                "$ref": "#/definitions/BinTransform"
+                            },
+                            {
+                                "$ref": "#/definitions/TimeUnitTransform"
+                            },
+                            {
+                                "$ref": "#/definitions/SummarizeTransform"
                             }
                         ]
                     },
@@ -660,6 +705,15 @@
                             },
                             {
                                 "$ref": "#/definitions/CalculateTransform"
+                            },
+                            {
+                                "$ref": "#/definitions/BinTransform"
+                            },
+                            {
+                                "$ref": "#/definitions/TimeUnitTransform"
+                            },
+                            {
+                                "$ref": "#/definitions/SummarizeTransform"
                             }
                         ]
                     },
@@ -1495,6 +1549,36 @@
                     "type": "array"
                 }
             },
+            "type": "object"
+        },
+        "BinTransform": {
+            "additionalProperties": false,
+            "properties": {
+                "as": {
+                    "description": "The field for storing the computed formula value.",
+                    "type": "string"
+                },
+                "bin": {
+                    "anyOf": [
+                        {
+                            "$ref": "#/definitions/Bin"
+                        },
+                        {
+                            "type": "boolean"
+                        }
+                    ],
+                    "description": "Boolean flag indicating using bin transform"
+                },
+                "field": {
+                    "description": "The field to use this transform on.",
+                    "type": "string"
+                }
+            },
+            "required": [
+                "as",
+                "bin",
+                "field"
+            ],
             "type": "object"
         },
         "BoxPlotConfig": {
@@ -2819,6 +2903,15 @@
                             },
                             {
                                 "$ref": "#/definitions/CalculateTransform"
+                            },
+                            {
+                                "$ref": "#/definitions/BinTransform"
+                            },
+                            {
+                                "$ref": "#/definitions/TimeUnitTransform"
+                            },
+                            {
+                                "$ref": "#/definitions/SummarizeTransform"
                             }
                         ]
                     },
@@ -2884,6 +2977,15 @@
                             },
                             {
                                 "$ref": "#/definitions/CalculateTransform"
+                            },
+                            {
+                                "$ref": "#/definitions/BinTransform"
+                            },
+                            {
+                                "$ref": "#/definitions/TimeUnitTransform"
+                            },
+                            {
+                                "$ref": "#/definitions/SummarizeTransform"
                             }
                         ]
                     },
@@ -2973,6 +3075,15 @@
                             },
                             {
                                 "$ref": "#/definitions/CalculateTransform"
+                            },
+                            {
+                                "$ref": "#/definitions/BinTransform"
+                            },
+                            {
+                                "$ref": "#/definitions/TimeUnitTransform"
+                            },
+                            {
+                                "$ref": "#/definitions/SummarizeTransform"
                             }
                         ]
                     },
@@ -4727,6 +4838,50 @@
             ],
             "type": "string"
         },
+        "Summarize": {
+            "additionalProperties": false,
+            "properties": {
+                "aggregate": {
+                    "$ref": "#/definitions/AggregateOp"
+                },
+                "as": {
+                    "type": "string"
+                },
+                "field": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "aggregate",
+                "as",
+                "field"
+            ],
+            "type": "object"
+        },
+        "SummarizeTransform": {
+            "additionalProperties": false,
+            "properties": {
+                "groupby": {
+                    "description": "Array of fields we will be useing for group by",
+                    "items": {
+                        "type": "string"
+                    },
+                    "type": "array"
+                },
+                "summarize": {
+                    "description": "Array of objects that contains",
+                    "items": {
+                        "$ref": "#/definitions/Summarize"
+                    },
+                    "type": "array"
+                }
+            },
+            "required": [
+                "groupby",
+                "summarize"
+            ],
+            "type": "object"
+        },
         "TextConfig": {
             "additionalProperties": false,
             "properties": {
@@ -5160,6 +5315,29 @@
                 "yearquartermonth"
             ],
             "type": "string"
+        },
+        "TimeUnitTransform": {
+            "additionalProperties": false,
+            "properties": {
+                "as": {
+                    "description": "The field for storing the computed formula value.",
+                    "type": "string"
+                },
+                "field": {
+                    "description": "The field to use this transform on.",
+                    "type": "string"
+                },
+                "timeUnit": {
+                    "$ref": "#/definitions/TimeUnit",
+                    "description": "The type of time unit for this transform."
+                }
+            },
+            "required": [
+                "as",
+                "field",
+                "timeUnit"
+            ],
+            "type": "object"
         },
         "Type": {
             "enum": [

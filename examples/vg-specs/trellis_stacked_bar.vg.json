@@ -29,6 +29,9 @@
                     ],
                     "fields": [
                         "yield"
+                    ],
+                    "as": [
+                        "sum_yield"
                     ]
                 },
                 {

@@ -42,6 +42,10 @@
                     "fields": [
                         "people",
                         "people"
+                    ],
+                    "as": [
+                        "min_people",
+                        "max_people"
                     ]
                 }
             ]
@@ -69,6 +73,9 @@
                     ],
                     "fields": [
                         "people"
+                    ],
+                    "as": [
+                        "min_people"
                     ]
                 }
             ]
@@ -96,6 +103,9 @@
                     ],
                     "fields": [
                         "people"
+                    ],
+                    "as": [
+                        "max_people"
                     ]
                 }
             ]
@@ -123,6 +133,9 @@
                     ],
                     "fields": [
                         "people"
+                    ],
+                    "as": [
+                        "mean_people"
                     ]
                 }
             ]

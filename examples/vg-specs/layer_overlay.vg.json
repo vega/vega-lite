@@ -39,6 +39,9 @@
                     ],
                     "fields": [
                         "Horsepower"
+                    ],
+                    "as": [
+                        "min_Horsepower"
                     ]
                 },
                 {
@@ -79,6 +82,9 @@
                     ],
                     "fields": [
                         "Horsepower"
+                    ],
+                    "as": [
+                        "min_Horsepower"
                     ]
                 }
             ]
@@ -106,6 +112,9 @@
                     ],
                     "fields": [
                         "Horsepower"
+                    ],
+                    "as": [
+                        "max_Horsepower"
                     ]
                 },
                 {
@@ -140,6 +149,9 @@
                     ],
                     "fields": [
                         "Horsepower"
+                    ],
+                    "as": [
+                        "max_Horsepower"
                     ]
                 }
             ]

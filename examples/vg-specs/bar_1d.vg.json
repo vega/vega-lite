@@ -29,6 +29,9 @@
                     ],
                     "fields": [
                         "people"
+                    ],
+                    "as": [
+                        "sum_people"
                     ]
                 }
             ]

@@ -34,6 +34,9 @@
                     ],
                     "fields": [
                         "Weight_in_lbs"
+                    ],
+                    "as": [
+                        "sum_Weight_in_lbs"
                     ]
                 },
                 {

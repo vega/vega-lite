@@ -44,6 +44,9 @@
                     ],
                     "fields": [
                         "precipitation"
+                    ],
+                    "as": [
+                        "mean_precipitation"
                     ]
                 }
             ]
@@ -81,6 +84,9 @@
                     ],
                     "fields": [
                         "temp_max"
+                    ],
+                    "as": [
+                        "max_temp_max"
                     ]
                 },
                 {
@@ -125,6 +131,9 @@
                     ],
                     "fields": [
                         "temp_min"
+                    ],
+                    "as": [
+                        "min_temp_min"
                     ]
                 },
                 {

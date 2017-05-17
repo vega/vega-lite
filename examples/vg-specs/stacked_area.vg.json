@@ -35,6 +35,9 @@
                     ],
                     "fields": [
                         "count"
+                    ],
+                    "as": [
+                        "sum_count"
                     ]
                 },
                 {
