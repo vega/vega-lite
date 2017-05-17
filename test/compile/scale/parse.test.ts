@@ -65,14 +65,13 @@ describe('src/compile', function() {
 
       const scales = parseScale(model, 'color');
 
-      it('should create ordinal color scale', function() {
+      it('should create sequential color scale', function() {
         assert.equal(scales.name, 'color');
-        assert.equal(scales.type, 'ordinal');
+        assert.equal(scales.type, 'sequential');
 
         assert.deepEqual(scales.domain, {
           data: 'main',
-          field: 'origin',
-          sort: true
+          field: 'origin'
         });
       });
     });
@@ -127,7 +126,7 @@ describe('src/compile', function() {
 
       it('should add correct scales', function() {
         assert.equal(scales.name, 'color');
-        assert.equal(scales.type, 'ordinal');
+        assert.equal(scales.type, 'sequential');
       });
     });
 
