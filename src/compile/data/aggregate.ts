@@ -35,9 +35,9 @@ function mergeMeasures(parentMeasures: Dict<Dict<string>>, childMeasures: Dict<D
         if (ops.hasOwnProperty(op)) {
           if (f in parentMeasures) {
             // add operator to existing measure field
-            parentMeasures[f][op] = field({field: f});
+            parentMeasures[f][op] = ops[op];
           } else {
-            parentMeasures[f] = {op: field({field: f})};
+            parentMeasures[f] = {op: ops[op]};
           }
         }
       }
@@ -174,16 +174,14 @@ export class AggregateNode extends DataFlowNode {
       });
     });
 
-    let result: VgAggregateTransform = {
+    const result: VgAggregateTransform = {
       type: 'aggregate',
       groupby: keys(this.dimensions),
       ops,
-      fields
+      fields,
+      as
     };
 
-    if (as.length !== 0) {
-      result = {...result, as};
-    }
     return result;
   }
 }

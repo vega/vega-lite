@@ -176,7 +176,7 @@ export interface FieldRefOption {
   aggregate?: AggregateOp;
 }
 
-export function field(fieldDef: FieldDef<string>|BinTransform, opt: FieldRefOption = {}): string {
+export function field(fieldDef: FieldDef<string>, opt: FieldRefOption = {}): string {
   let field = fieldDef.field;
   const prefix = opt.prefix;
   let suffix = opt.suffix;
@@ -190,9 +190,9 @@ export function field(fieldDef: FieldDef<string>|BinTransform, opt: FieldRefOpti
       if (fieldDef.bin) {
         fn = binToString(fieldDef.bin);
         suffix = opt.binSuffix;
-      } else if (isFieldDef(fieldDef) && fieldDef.aggregate) {
+      } else if (fieldDef.aggregate) {
         fn = String(opt.aggregate || fieldDef.aggregate);
-      } else if (isFieldDef(fieldDef)&& fieldDef.timeUnit) {
+      } else if (fieldDef.timeUnit) {
         fn = String(fieldDef.timeUnit);
       }
     }
