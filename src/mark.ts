@@ -1,6 +1,6 @@
+import {CompositeMark, CompositeMarkDef} from './compositemark/index';
 import {toSet} from './util';
 import {Interpolate, Orient, VgMarkConfig} from './vega.schema';
-export {Orient} from './vega.schema';
 
 export namespace Mark {
   export const AREA: 'area' = 'area';
@@ -93,13 +93,15 @@ export interface MarkDef {
   tension?: number;
 }
 
-export function isMarkDef(mark: string | MarkDef): mark is MarkDef {
+export type AnyMark = CompositeMark | CompositeMarkDef | Mark | MarkDef;
+
+export function isMarkDef(mark: AnyMark): mark is (MarkDef | CompositeMarkDef) {
   return mark['type'];
 }
 
 const PRIMITIVE_MARK_INDEX = toSet(PRIMITIVE_MARKS);
 
-export function isPrimitiveMark(mark: string | MarkDef): mark is Mark {
+export function isPrimitiveMark(mark: CompositeMark | CompositeMarkDef | Mark | MarkDef): mark is Mark {
   const markType = isMarkDef(mark) ? mark.type : mark;
   return markType in PRIMITIVE_MARK_INDEX;
 }

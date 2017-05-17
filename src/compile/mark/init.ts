@@ -3,12 +3,13 @@ import {Config} from '../../config';
 import {Encoding, isAggregate} from '../../encoding';
 import {FieldDef, isContinuous, isFieldDef} from '../../fielddef';
 import * as log from '../../log';
-import {AREA, BAR, CIRCLE, isMarkDef, LINE, Mark, MarkDef, Orient, POINT, RECT, RULE, SQUARE, TEXT, TICK} from '../../mark';
+import {AREA, BAR, CIRCLE, isMarkDef, LINE, Mark, MarkDef, POINT, RECT, RULE, SQUARE, TEXT, TICK} from '../../mark';
 import {hasDiscreteDomain, Scale} from '../../scale';
 import {StackProperties} from '../../stack';
 import {TEMPORAL} from '../../type';
 import {contains, Dict} from '../../util';
 import {getMarkConfig} from '../common';
+import {Orient} from './../../vega.schema';
 
 export function initMarkDef(mark: Mark | MarkDef, encoding: Encoding<string>, scale: Dict<Scale>, config: Config): MarkDef {
   const markDef = isMarkDef(mark) ? {...mark} : {type: mark};

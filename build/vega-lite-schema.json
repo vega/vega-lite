@@ -49,6 +49,9 @@
                             "$ref": "#/definitions/MarkDef"
                         },
                         {
+                            "$ref": "#/definitions/BoxPlotDef"
+                        },
+                        {
                             "enum": [
                                 "area",
                                 "bar",
@@ -1636,6 +1639,25 @@
             },
             "type": "object"
         },
+        "BoxPlotDef": {
+            "additionalProperties": false,
+            "properties": {
+                "orient": {
+                    "$ref": "#/definitions/Orient"
+                },
+                "type": {
+                    "enum": [
+                        "box-plot"
+                    ],
+                    "type": "string"
+                }
+            },
+            "required": [
+                "orient",
+                "type"
+            ],
+            "type": "object"
+        },
         "CalculateTransform": {
             "additionalProperties": false,
             "properties": {
@@ -2907,6 +2929,9 @@
                     "anyOf": [
                         {
                             "$ref": "#/definitions/MarkDef"
+                        },
+                        {
+                            "$ref": "#/definitions/BoxPlotDef"
                         },
                         {
                             "enum": [
