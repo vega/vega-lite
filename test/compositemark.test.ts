@@ -236,7 +236,7 @@ it("should produce correct layered specs for vertical boxplot with two quantitat
           "color": {"value" : "skyblue"}
         }
       }, defaultConfig);
-    }, Error, 'Continuous axis should not be aggregate');
+    }, Error, 'Continuous axis should not have customized aggregation function min');
   });
 
   it("should produce an error if continuous axis has aggregate property 2D", () => {
@@ -257,7 +257,7 @@ it("should produce correct layered specs for vertical boxplot with two quantitat
           "color": {"value" : "skyblue"}
         }
       }, defaultConfig);
-    }, Error, 'Continuous axis should not be aggregate');
+    }, Error, 'Continuous axis should not have customized aggregation function min');
   });
 
   it("should produce an error if build 1D boxplot with a discrete axis", () => {

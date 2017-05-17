@@ -51,7 +51,7 @@ export function normalizeBoxPlot(spec: GenericUnitSpec<Encoding<Field>, BOXPLOT 
   }
 
   if (continuousAxisChannelDef.aggregate !== undefined && continuousAxisChannelDef.aggregate !== BOXPLOT) {
-    throw new Error('Continuous axis should not be aggregated');
+    throw new Error(`Continuous axis should not have customized aggregation function ${continuousAxisChannelDef.aggregate}`);
   }
 
   const baseContinuousFieldDef = {
@@ -146,16 +146,6 @@ export function box2DOrient(spec: GenericUnitSpec<Encoding<Field>, BOXPLOT | Box
   const yEncChannel = encoding.y as FieldDef<Field>;
   let resultOrient: Orient;
 
-  if (isContinuous(encoding.x) && isContinuous(encoding.y)) {
-    const xEncChannel = encoding.x as FieldDef<Field>;
-    const yEncChannel = encoding.y as FieldDef<Field>;
-    if (xEncChannel.aggregate === BOXPLOT && yEncChannel.aggregate === BOXPLOT) {
-      throw new Error('Both x and y cannot have aggregate');
-    }
-  } else if (isDiscrete(encoding.x) && isDiscrete(encoding.y)) {
-    throw new Error('Both x and y cannot be discrete');
-  }
-
   if (isDiscrete(encoding.x) && isContinuous(encoding.y)) {
     resultOrient = 'vertical';
   } else if (isDiscrete(encoding.y) && isContinuous(encoding.x)) {
@@ -167,22 +157,29 @@ export function box2DOrient(spec: GenericUnitSpec<Encoding<Field>, BOXPLOT | Box
       } else if (yEncChannel.aggregate === undefined && xEncChannel.aggregate === BOXPLOT) {
         resultOrient = 'horizontal';
       } else if (xEncChannel.aggregate === BOXPLOT && yEncChannel.aggregate === BOXPLOT) {
-        return undefined; // invalid spec
+        throw new Error('Both x and y cannot have aggregate');
       } else {
-        const markChannel = mark as BoxPlotDef;
-        if (markChannel && markChannel.orient) {
-          resultOrient = markChannel.orient;
+        if (instanceofBoxPlotDef(mark)) {
+          if (mark && mark.orient) {
+            resultOrient = mark.orient;
+          } else {
+            // default orientation = vertical
+            resultOrient = 'vertical';
+          }
         } else {
-          // default orientation = vertical
           resultOrient = 'vertical';
         }
       }
     } else {
-      resultOrient = undefined; // 2 discrete axes
+      throw new Error('Both x and y cannot be discrete');
     }
   }
 
   return resultOrient;
+}
+
+export function instanceofBoxPlotDef(object: any): object is BoxPlotDef {
+  return typeof object !== 'string' && 'type' in object && 'orient' in object;
 }
 
 export function box2DParams(spec: GenericUnitSpec<Encoding<Field>, BOXPLOT | BoxPlotDef>, orient: Orient) {
@@ -206,7 +203,7 @@ export function box2DParams(spec: GenericUnitSpec<Encoding<Field>, BOXPLOT | Box
   if (continuousAxisChannelDef && continuousAxisChannelDef.aggregate) {
     const {aggregate: aggregate, ...continuousAxisWithoutAggregate} = continuousAxisChannelDef;
     if (aggregate !== BOXPLOT) {
-      throw new Error('Continuous axis should not be aggregated');
+      throw new Error(`Continuous axis should not have customized aggregation function ${aggregate}`);
     }
     continuousAxisChannelDef = continuousAxisWithoutAggregate;
   }
