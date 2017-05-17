@@ -287,9 +287,9 @@ export function normalize(channelDef: ChannelDef<string>, channel: Channel) {
 
     // Normalize bin
     if (fieldDef.bin) {
-      const bin = normalizeBin(fieldDef.bin, channel);
       fieldDef = {
-        ...fieldDef, bin
+        ...fieldDef,
+        bin: normalizeBin(fieldDef.bin, channel)
       };
     }
 

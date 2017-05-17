@@ -46,7 +46,13 @@ export class TimeUnitNode extends DataFlowNode {
   }
 
   public static makeFromTransfrom(model: Model, t: TimeUnitTransform) {
-    return new TimeUnitNode({[t.field]: {as: t.as, timeUnit: t.timeUnit, field: t.field}});
+    return new TimeUnitNode({
+      [t.field]: {
+        as: t.as,
+        timeUnit: t.timeUnit,
+        field: t.field
+      }
+    });
   }
 
   public merge(other: TimeUnitNode) {
