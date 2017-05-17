@@ -13,6 +13,10 @@ export interface BoxPlotDef {
   orient: Orient;
 }
 
+export function isBoxPlotDef(object: BOXPLOT | BoxPlotDef): object is BoxPlotDef {
+  return !!object['type'];
+}
+
 export interface BoxPlotConfig extends MarkConfig {
   /** Size of the box and mid tick of a box plot */
   size?: number;
@@ -159,7 +163,7 @@ export function box2DOrient(spec: GenericUnitSpec<Encoding<Field>, BOXPLOT | Box
       } else if (xEncChannel.aggregate === BOXPLOT && yEncChannel.aggregate === BOXPLOT) {
         throw new Error('Both x and y cannot have aggregate');
       } else {
-        if (instanceofBoxPlotDef(mark)) {
+        if (isBoxPlotDef(mark)) {
           if (mark && mark.orient) {
             resultOrient = mark.orient;
           } else {
@@ -178,9 +182,6 @@ export function box2DOrient(spec: GenericUnitSpec<Encoding<Field>, BOXPLOT | Box
   return resultOrient;
 }
 
-export function instanceofBoxPlotDef(object: any): object is BoxPlotDef {
-  return typeof object !== 'string' && 'type' in object && 'orient' in object;
-}
 
 export function box2DParams(spec: GenericUnitSpec<Encoding<Field>, BOXPLOT | BoxPlotDef>, orient: Orient) {
   const {mark: mark, encoding: encoding, ...outerSpec} = spec;
