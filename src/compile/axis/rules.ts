@@ -3,7 +3,7 @@ import * as log from '../../log';
 import {Axis} from '../../axis';
 import {Channel, COLUMN, ROW, X, Y} from '../../channel';
 import {Config} from '../../config';
-import {DateTime, isDateTime, timestamp} from '../../datetime';
+import {DateTime, dateTimeExpr, isDateTime} from '../../datetime';
 import {FieldDef, title as fieldDefTitle} from '../../fielddef';
 import {truncate} from '../../util';
 import {VgAxis} from '../../vega.schema';
@@ -113,7 +113,7 @@ export function values(specifiedAxis: Axis) {
   if (specifiedAxis.values && isDateTime(vals[0])) {
     return (vals as DateTime[]).map((dt) => {
       // normalize = true as end user won't put 0 = January
-      return {signal: valueExpr(dt)};
+      return {signal: dateTimeExpr(dt, true)};
     });
   }
   return vals;
