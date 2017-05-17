@@ -114,6 +114,9 @@ const interval:SelectionCompiler = {
       });
     }
 
+    // Two brush marks ensure that fill colors and other aesthetic choices do
+    // not interefere with the core marks, but that the brushed region can still
+    // be interacted with (e.g., dragging it around).
     return [{
       name: undefined,
       type: 'rect',
