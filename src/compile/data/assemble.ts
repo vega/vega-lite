@@ -330,7 +330,7 @@ export function assembleData(dataCompomponent: DataComponent): VgData[] {
     }
   });
 
-  // move sources without transforms (the onces that are potentially need for lookups) to the beginning
+  // move sources without transforms (the ones that are potentially used in lookups) to the beginning
   data.sort((a, b) => (a.transform || []).length === 0 ? -1 : ((b.transform || []).length === 0 ? 1 : 0));
 
   // now fix the from references in lookup transforms
