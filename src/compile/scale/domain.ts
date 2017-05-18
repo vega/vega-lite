@@ -21,7 +21,6 @@ import {
 } from '../../vega.schema';
 
 import {MAIN, RAW} from '../../data';
-import {valueExpr} from '../../filter';
 import {UnitModel} from '../unit';
 
 

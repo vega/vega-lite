@@ -8,7 +8,6 @@ import {FieldDef, title as fieldDefTitle} from '../../fielddef';
 import {truncate} from '../../util';
 import {VgAxis} from '../../vega.schema';
 
-import {valueExpr} from '../../filter';
 import {numberFormat} from '../common';
 import {UnitModel} from '../unit';
 
