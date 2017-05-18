@@ -1,0 +1,198 @@
+{
+    "$schema": "http://vega.github.io/schema/vega/v3.0.json",
+    "description": "Google's stock price over time.",
+    "autosize": "pad",
+    "padding": 5,
+    "data": [
+        {
+            "name": "source_0",
+            "values": [
+                {
+                    "date": "Sun, 01 Jan 2012 23:00:00",
+                    "price": 150
+                },
+                {
+                    "date": "Sun, 02 Jan 2012 00:00:00",
+                    "price": 100
+                },
+                {
+                    "date": "Sun, 02 Jan 2012 01:00:00",
+                    "price": 170
+                },
+                {
+                    "date": "Sun, 02 Jan 2012 02:00:00",
+                    "price": 165
+                },
+                {
+                    "date": "Sun, 02 Jan 2012 03:00:00",
+                    "price": 200
+                }
+            ],
+            "format": {
+                "type": "json",
+                "parse": {
+                    "date": "date",
+                    "price": "number"
+                }
+            },
+            "transform": [
+                {
+                    "type": "filter",
+                    "expr": "datum[\"date\"] !== null && !isNaN(datum[\"date\"]) && datum[\"price\"] !== null && !isNaN(datum[\"price\"])"
+                },
+                {
+                    "type": "formula",
+                    "as": "yearmonthdatehoursminutes_date",
+                    "expr": "datetime(year(datum[\"date\"]), month(datum[\"date\"]), date(datum[\"date\"]), hours(datum[\"date\"]), minutes(datum[\"date\"]), 0, 0)"
+                },
+                {
+                    "type": "collect",
+                    "sort": {
+                        "field": "yearmonthdatehoursminutes_date",
+                        "order": "descending"
+                    }
+                }
+            ]
+        }
+    ],
+    "signals": [
+        {
+            "name": "width",
+            "update": "200"
+        },
+        {
+            "name": "height",
+            "update": "200"
+        }
+    ],
+    "marks": [
+        {
+            "name": "nested_main_group",
+            "type": "group",
+            "encode": {
+                "update": {
+                    "width": {
+                        "signal": "width"
+                    },
+                    "height": {
+                        "signal": "height"
+                    },
+                    "fill": {
+                        "value": "transparent"
+                    }
+                }
+            },
+            "marks": [
+                {
+                    "name": "marks",
+                    "type": "line",
+                    "from": {
+                        "data": "source_0"
+                    },
+                    "encode": {
+                        "update": {
+                            "x": {
+                                "scale": "x",
+                                "field": "yearmonthdatehoursminutes_date"
+                            },
+                            "y": {
+                                "scale": "y",
+                                "field": "price"
+                            },
+                            "stroke": {
+                                "value": "#4c78a8"
+                            }
+                        }
+                    }
+                }
+            ]
+        }
+    ],
+    "scales": [
+        {
+            "name": "x",
+            "type": "utc",
+            "domain": {
+                "data": "source_0",
+                "field": "yearmonthdatehoursminutes_date"
+            },
+            "range": [
+                0,
+                200
+            ],
+            "round": true,
+            "nice": "minute"
+        },
+        {
+            "name": "y",
+            "type": "linear",
+            "domain": {
+                "data": "source_0",
+                "field": "price"
+            },
+            "range": [
+                200,
+                0
+            ],
+            "round": true,
+            "nice": true,
+            "zero": true
+        }
+    ],
+    "axes": [
+        {
+            "scale": "x",
+            "orient": "bottom",
+            "tickCount": 5,
+            "title": "YEARMONTHDATEHOURSMINUTES(date)",
+            "zindex": 1,
+            "encode": {
+                "labels": {
+                    "update": {
+                        "text": {
+                            "signal": "utcFormat(datum.value, '%b %d, %Y %H:%M')"
+                        },
+                        "angle": {
+                            "value": 270
+                        },
+                        "align": {
+                            "value": "right"
+                        },
+                        "baseline": {
+                            "value": "middle"
+                        }
+                    }
+                }
+            }
+        },
+        {
+            "scale": "x",
+            "domain": false,
+            "grid": true,
+            "labels": false,
+            "orient": "bottom",
+            "tickCount": 5,
+            "ticks": false,
+            "zindex": 0,
+            "gridScale": "y"
+        },
+        {
+            "scale": "y",
+            "format": "s",
+            "orient": "left",
+            "title": "price",
+            "zindex": 1
+        },
+        {
+            "scale": "y",
+            "domain": false,
+            "format": "s",
+            "grid": true,
+            "labels": false,
+            "orient": "left",
+            "ticks": false,
+            "zindex": 0,
+            "gridScale": "x"
+        }
+    ]
+}

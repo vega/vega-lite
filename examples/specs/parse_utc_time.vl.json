@@ -1,0 +1,11 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v2.json",
+  "description": "Line chart of Horsepower over time",
+  "data": {"url": "data/cars.json"},
+  "mark": "text",
+  "encoding": {
+    "x": {"field": "Year", "type": "temporal", "timeUnit": "year"},
+    "y": {"field": "Horsepower", "type": "quantitative", "aggregate": "mean"},
+    "text": {"field": "Year", "type": "temporal", "timeUnit": "year"}
+  }
+}

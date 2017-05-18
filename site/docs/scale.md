@@ -52,8 +52,7 @@ Quantitative Scale
 <!-- TODO: need to test if we support threshold scale correctly before writing about it-->
 
 Time Scale
-: A `time` scale is similar to a linear quantitative scale but takes a date as input. In general, a temporal field has `time` scale by default. The exceptions are temporal fields with `hours`, `day`, `date`, `month` as time unit; they have `ordinal` scales by default.
-<!-- <br/>`utc` is a time scale that uses [Coordinated Universal Time](https://en.wikipedia.org/wiki/Coordinated_Universal_Time) rather than local time. -->
+: Time scales (`time` and `utc`) are [quantitative scales](#quantitative) with a temporal domain: values in the input domain are assumed to be [Date](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date) objects or timestamps. The `time` scale type uses the current local timezone setting. UTC scales (`utc`) instead use [Coordinated Universal Time](https://en.wikipedia.org/wiki/Coordinated_Universal_Time). Both `time` and `utc` scales use a default _domain_ of [2000-01-01, 2000-01-02], and a default unit _range_ [0, 1]. See more about [UTC time](timeunit.html#utc)
 
 Ordinal Scale
 : An ordinal scale (`ordinal`) takes discrete domain as their input domain.   Ordinal (ordered) and nominal (unordered/categorical) data always use `ordinal` scale.

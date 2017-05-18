@@ -33,6 +33,7 @@
         - [Ordinal Scale]({{site.baseurl}}/docs/sort.html#ordinal-scale)
     - [Time Unit]({{site.baseurl}}/docs/timeunit.html)
         - [Date/Time Units]({{site.baseurl}}/docs/timeunit.html#datetime-units)
+        - [UTC time]({{site.baseurl}}/docs/timeunit.html#utc)
     - [Scale]({{site.baseurl}}/docs/scale.html)
         - [Scale Type]({{site.baseurl}}/docs/scale.html#type)
         - [Scale Domain]({{site.baseurl}}/docs/scale.html#domain)

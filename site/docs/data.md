@@ -39,6 +39,8 @@ For example, the following specification embeds an inline data table with two ro
 
 Data can be loaded from a URL using the `url` property. In addition, the format of the input data can be specified using the `formatType` property. By default Vega-Lite will infer the type from the file extension.
 
+If time data from URL is in [ISO format](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/parse), data will be parsed in UTC time. See explaination for [UTC time](timeunit.html#utc)
+
 {% include table.html props="feature,mesh,parse,property,type" source="DataUrlFormat" %}
 
 For example, the following specification loads data from a relative `url`: `data/cars.json`. Note that the format type is implicitly json by default.
