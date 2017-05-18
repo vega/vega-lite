@@ -2249,6 +2249,10 @@
                     "minimum": 0,
                     "type": "integer"
                 },
+                "utc": {
+                    "description": "A boolean flag indicating if date time is in utc time. If false, the date time is in local time",
+                    "type": "boolean"
+                },
                 "year": {
                     "description": "Integer value representing the year.",
                     "type": "integer"
