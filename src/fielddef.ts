@@ -13,7 +13,6 @@ import {Scale, ScaleType} from './scale';
 import {SortField, SortOrder} from './sort';
 import {StackOffset} from './stack';
 import {isDiscreteByDefault, TimeUnit} from './timeunit';
-import {BinTransform, SummarizeTransform, TimeUnitTransform} from './transform';
 import {getFullName, Type} from './type';
 import {isBoolean, isString, stringValue} from './util';
 
