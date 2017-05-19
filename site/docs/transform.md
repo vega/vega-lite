@@ -7,9 +7,7 @@ permalink: /docs/transform.html
 
 Data transformations in Vega-Lite are described via either top-level transforms (the `transform` property) or [inline transforms inside `encoding`](encoding.html#inline) (`aggregate`, `bin`, `timeUnit`, and `sort`).
 
-When both types of transforms are specified, the top-level transforms are executed first in this order: `filterInvalid`, `calculate`, and then `filter`. Then the inline transforms are executed in this order: `bin`, `timeUnit`, `aggregate`, and `sort`.
-
-The rest of this page describes the top-level `transform` property. For more information about inline transforms, please see the following pages: [`bin`](bin.html), [`timeUnit`](timeUnit.html), [`aggregate`](aggregate.html), and [`sort`](sort.html).
+When both types of transforms are specified, the top-level transforms are executed first based on the order in the array. Then the inline transforms are executed in this order: `bin`, `timeUnit`, `aggregate`,and `sort`.
 
 ## Top-level Transform Property
 
@@ -27,10 +25,25 @@ The rest of this page describes the top-level `transform` property. For more inf
 ```
 
 The top-level `transform` object is an array of objects describing transformations. The transformations are executed in the order in which they are specified in the array.
-Vega-Lite supports the following types of transformations: [calculate](#calculate) and [filter](#filter).
+Vega-Lite's `transform` supports the following types of transformations:
+
+- [Bin](#bin)
+- [Calculate](#calculate)
+- [Filter](#filter)
+- [Summarize](#summarize)
+- [TimeUnit](#timeunit)
 
 <!-- TODO population use calc to derive Male / Female -->
 <!-- TODO example about filterInvalid -->
+
+
+{:#bin}
+### Bin
+
+`bin` transform in the `transform` array has the following properties:
+
+{% include table.html props="bin,field,as" source="BinTransform" %}
+
 
 {:#calculate}
 ### Calculate
@@ -92,6 +105,21 @@ A DateTime object must have at least one of the following properties:
 - `{"timeUnit": "year", "field": "date", "range": [2006, 2008] }` checks if the `date`'s value is between year 2006 and 2008.
 - `{"field": "date", "range": [{"year": 2006, "month": "jan", "date": 1}, {"year": 2008, "month": "feb", "date": 20}] }` checks if the `date`'s value is between Jan 1, 2006  and Feb 20, 2008.
 
-#### Filter Array
+{:#summarize}
+### Summarize
 
-For a filter array, the array's members should be either filter objects or filter expressions.  All member predicates should be satisfied for a data item to be included in the filtered data.  In other words, the `filter` array will form a conjunctive predicate that joins all predicates with "and" operators.
+A `summarize` transform in the `transform` array has the following properties:
+
+{% include table.html props="summarize,groupby" source="SummarizeTransform" %}
+
+#### Aggregated Field Definition for Summarize Transform
+
+{% include table.html props="aggregate,field,as" source="Summarize" %}
+
+
+{:#timeunit}
+### TimeUnit
+
+A `timeUnit` transform in the `transform` array has the following properties:
+
+{% include table.html props="timeUnit,field,as" source="TimeUnitTransform" %}
