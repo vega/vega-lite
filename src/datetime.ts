@@ -89,6 +89,11 @@ export interface DateTime {
    * @TJS-type integer
    */
   milliseconds?: number;
+
+  /**
+   * A boolean flag indicating if date time is in utc time. If false, the date time is in local time
+   */
+  utc?: boolean;
 }
 
 
@@ -108,6 +113,7 @@ export interface DateTimeExpr {
   minutes?: string;
   seconds?: string;
   milliseconds?: string;
+  utc?: boolean;
 }
 
 export function isDateTime(o: any): o is DateTime {
@@ -175,62 +181,6 @@ function normalizeDay(d: string | number) {
   }
 }
 
-export function timestamp(d: DateTime, normalize: boolean) {
-  const date = new Date(0, 0, 1, 0, 0, 0, 0); // start with uniform date
-
-  // FIXME support UTC
-
-  if (d.day !== undefined) {
-    if (keys(d).length > 1) {
-      log.warn(log.message.droppedDay(d));
-      d = duplicate(d);
-      delete d.day;
-    } else {
-      // Use a year that has 1/1 as Sunday so we can setDate below
-      date.setFullYear(SUNDAY_YEAR);
-
-      const day = normalize ? normalizeDay(d.day) : d.day;
-      date.setDate(+day + 1); // +1 since date start at 1 in JS
-    }
-  }
-
-  if (d.year !== undefined) {
-    date.setFullYear(d.year);
-  }
-
-  if (d.quarter !== undefined) {
-    const quarter = normalize ? normalizeQuarter(d.quarter) : d.quarter;
-    date.setMonth(+quarter * 3);
-  }
-
-  if (d.month !== undefined) {
-    const month = normalize ? normalizeMonth(d.month) : d.month;
-    date.setMonth(+month);
-  }
-
-  if (d.date !== undefined) {
-    date.setDate(d.date);
-  }
-
-  if (d.hours !== undefined) {
-    date.setHours(d.hours);
-  }
-
-  if (d.minutes !== undefined) {
-    date.setMinutes(d.minutes);
-  }
-
-  if (d.seconds !== undefined) {
-    date.setSeconds(d.seconds);
-  }
-
-  if (d.milliseconds !== undefined) {
-    date.setMilliseconds(d.milliseconds);
-  }
-
-  return date.getTime();
-}
-
 /**
  * Return Vega Expression for a particular date time.
  * @param d
@@ -287,5 +237,9 @@ export function dateTimeExpr(d: DateTime | DateTimeExpr, normalize = false) {
     }
   }
 
-  return 'datetime(' + units.join(', ') + ')';
+  if (d.utc) {
+    return 'utc(' + units.join(', ') + ')';
+  } else {
+    return 'datetime(' + units.join(', ') + ')';
+  }
 }

@@ -146,7 +146,7 @@ export function expression(model: Model, filter: Filter): string {
   return undefined;
 }
 
-export function valueExpr(v: any, timeUnit: TimeUnit) {
+function valueExpr(v: any, timeUnit: TimeUnit) {
   if (isDateTime(v)) {
     const expr = dateTimeExpr(v, true);
     return 'time(' + expr + ')';

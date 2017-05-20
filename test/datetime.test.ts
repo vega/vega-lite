@@ -1,5 +1,5 @@
 import {assert} from 'chai';
-import {dateTimeExpr, timestamp} from '../src/datetime';
+import {dateTimeExpr} from '../src/datetime';
 import * as log from '../src/log';
 
 describe('datetime', () => {
@@ -96,33 +96,18 @@ describe('datetime', () => {
       }, Error, log.message.invalidTimeUnit('day', 'S'));
     });
 
+    it('should use utc expression if utc is specified', () => {
+      log.runLocalLogger((localLogger) => {
+        const d = {
+          year: 2007,
+          day: 'monday',
+          utc: true
+        };
+        const expr = dateTimeExpr(d, true);
+        assert.equal(expr, 'utc(2007, 0, 1, 0, 0, 0, 0)');
+      });
+    });
+
     // Note: Other part of coverage handled by timeUnit.fieldExpr's test
-  });
-
-  describe('timestamp', () => {
-    it('should produce correct timestamp', () => {
-      assert.equal(timestamp({
-        year: 1234,
-        month: 'June', // 5 = June
-        date: 6,
-        hours: 7,
-        minutes: 8,
-        seconds: 9,
-        milliseconds: 123
-      }, true), new Date(1234, 5, 6, 7, 8, 9, 123).getTime());
-    });
-
-    it('should produce correct timestamp for quarter', () => {
-      assert.equal(timestamp({
-        year: 1234,
-        quarter: 3,
-      }, true), new Date(1234, 6, 1).getTime());
-    });
-
-    it('should produce correct timestamp for day', () => {
-      assert.equal(timestamp({
-        day: 'monday'
-      }, true), new Date(2006, 0, 2).getTime());
-    });
   });
 });
