@@ -41,7 +41,7 @@ A Vega-Lite `config` object can have the following top-level properties:
 
 {:#format}
 
-{% include table.html props="background,countTitle,filterInvalid,numberFormat,timeFormat" source="Config" %}
+{% include table.html props="background,countTitle,filterInvalid,numberFormat,padding,range,timeFormat" source="Config" %}
 
 <!-- TODO: consider adding width, height, numberFormat, timeFormat  -->
 
