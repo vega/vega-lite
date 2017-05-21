@@ -5,13 +5,14 @@ import {Data, DataSourceType, MAIN, RAW} from '../data';
 import {forEach, reduce} from '../encoding';
 import {ChannelDef, field, FieldDef, FieldRefOption, isFieldDef, isRepeatRef} from '../fielddef';
 import {Legend} from '../legend';
+import {Projection} from '../projection';
 import {hasDiscreteDomain, Scale} from '../scale';
 import {SortField, SortOrder} from '../sort';
 import {BaseSpec} from '../spec';
 import {StackProperties} from '../stack';
 import {Transform} from '../transform';
 import {Dict, extend, vals, varName} from '../util';
-import {VgAxis, VgData, VgEncodeEntry, VgLayout, VgLegend, VgMarkGroup, VgScale, VgSignal, VgSignalRef, VgValueRef} from '../vega.schema';
+import {VgAxis, VgData, VgEncodeEntry, VgLayout, VgLegend, VgMarkGroup, VgProjection, VgScale, VgSignal, VgSignalRef, VgValueRef} from '../vega.schema';
 
 import {AxisComponent, AxisComponentIndex} from './axis/component';
 import {DataComponent} from './data/index';
@@ -31,6 +32,10 @@ import {UnitModel} from './unit';
 export interface Component {
   data: DataComponent;
   scales: ScaleComponentIndex;
+
+  /** Array of projections, which don't use channel mapping */
+  projections: VgProjection[];
+
   selection: Dict<SelectionComponent>;
 
   /** Dictionary mapping channel to VgAxis definition */
@@ -96,6 +101,8 @@ export abstract class Model {
 
   public readonly config: Config;
 
+  public readonly projection: Projection;
+
   public component: Component;
 
   public abstract readonly children: Model[] = [];
@@ -121,14 +128,26 @@ export abstract class Model {
         sources: parent ? parent.component.data.sources : {},
         outputNodes: parent ? parent.component.data.outputNodes : {}
       },
-      mark: null, scales: null, axes: {x: null, y: null},
-      layoutHeaders:{row: {}, column: {}}, legends: null, selection: null
+      mark: null,
+      scales: null,
+      projections: null,
+      axes: {
+        x: null,
+        y: null
+      },
+      layoutHeaders: {
+        row: {},
+        column: {}
+      },
+      legends: null,
+      selection: null
     };
   }
 
   public parse() {
     this.parseData();
     this.parseScale(); // depends on data name
+    this.parseProjection();
     this.parseSelection();
     this.parseAxisAndHeader(); // depends on scale name
     this.parseLegend(); // depends on scale name
@@ -139,6 +158,7 @@ export abstract class Model {
 
   public abstract parseSelection(): void;
 
+  public abstract parseProjection(): void;
 
   public abstract parseScale(): void;
 
@@ -160,6 +180,11 @@ export abstract class Model {
 
   public assembleScales(): VgScale[] {
     return assembleScale(this);
+  }
+
+  // top level
+  public assembleProjections(): VgProjection[] {
+    return this.component.projections || [];
   }
 
   public assembleHeaderMarks(): VgMarkGroup[] {

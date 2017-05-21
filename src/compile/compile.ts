@@ -42,7 +42,6 @@ export function compile(inputSpec: TopLevelExtendedSpec, logger?: log.LoggerInte
   }
 }
 
-
 function getTopLevelProperties(topLevelSpec: TopLevel<any>, config: Config) {
   return {
     ...extractTopLevelProperties(config),
@@ -55,12 +54,14 @@ function assemble(model: Model, topLevelProperties: TopLevelProperties) {
 
   // Config with Vega-Lite only config removed.
   const vgConfig = model.config ? stripConfig(model.config) : undefined;
+  const projections = model.assembleProjections();
 
   const output = {
     $schema: 'http://vega.github.io/schema/vega/v3.0.json',
     ...(model.description ? {description: model.description} : {}),
     autosize: 'pad', // By using Vega layout, we don't support custom autosize
     ...topLevelProperties,
+    ...projections.length > 0 ? {projection: projections} : {},
     data: [].concat(
       model.assembleSelectionData([]),
       model.assembleData()

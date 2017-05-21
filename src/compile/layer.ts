@@ -1,16 +1,18 @@
 import {NonspatialScaleChannel, ScaleChannel, SpatialScaleChannel} from '../channel';
 import {Config} from '../config';
 import {FILL_STROKE_CONFIG} from '../mark';
+import {Projection} from '../projection';
 import {initLayerResolve, NonspatialResolve, ResolveMapping, SpatialResolve} from '../resolve';
 import {LayerSpec, UnitSize} from '../spec';
 import {Dict, flatten, keys, vals} from '../util';
-import {isSignalRefDomain, VgData, VgEncodeEntry, VgLayout, VgScale, VgSignal} from '../vega.schema';
+import {isSignalRefDomain, VgData, VgEncodeEntry, VgLayout, VgProjection, VgScale, VgSignal} from '../vega.schema';
 import {AxisComponentIndex} from './axis/component';
 import {applyConfig, buildModel} from './common';
 import {assembleData} from './data/assemble';
 import {parseData} from './data/parse';
 import {assembleLayoutLayerSignals} from './layout/index';
 import {Model} from './model';
+import {initLayerProjection} from './projection/init';
 import {RepeaterValue} from './repeat';
 import {unionDomains} from './scale/domain';
 import {assembleLayerSelectionMarks} from './selection/selection';
@@ -20,6 +22,8 @@ import {UnitModel} from './unit';
 export class LayerModel extends Model {
   public readonly children: UnitModel[];
 
+  public readonly projection: Projection;
+
   private readonly resolve: ResolveMapping;
 
   constructor(spec: LayerSpec, parent: Model, parentGivenName: string,
@@ -28,6 +32,8 @@ export class LayerModel extends Model {
     super(spec, parent, parentGivenName, config);
 
     this.resolve = initLayerResolve(spec.resolve || {});
+
+    this.projection = spec.projection || initLayerProjection(spec.layer);
 
     const unitSize = {
       ...parentUnitSize,
@@ -98,6 +104,12 @@ export class LayerModel extends Model {
         }
       });
     }
+  }
+
+  public parseProjection() {
+    this.children.forEach(child => {
+      child.parseProjection();
+    });
   }
 
   public parseMark() {
@@ -207,6 +219,14 @@ export class LayerModel extends Model {
     return this.children.reduce((scales, c) => {
       return scales.concat(c.assembleScales());
     }, super.assembleScales());
+  }
+
+  public assembleProjections(): VgProjection[] {
+    // aggregate projections from children into one array
+    // TODO: reduce redundency?
+    return this.children.reduce((projections, unit) => {
+      return projections.concat(unit.assembleProjections());
+    }, []);
   }
 
   public assembleLayout(): VgLayout {

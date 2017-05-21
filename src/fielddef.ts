@@ -14,7 +14,7 @@ import {SortField, SortOrder} from './sort';
 import {StackOffset} from './stack';
 import {isDiscreteByDefault, TimeUnit} from './timeunit';
 import {BinTransform, SummarizeTransform, TimeUnitTransform} from './transform';
-import {getFullName, Type} from './type';
+import {getFullName, LATITUDE, LONGITUDE, NOMINAL, ORDINAL, QUANTITATIVE, TEMPORAL, Type} from './type';
 import {isBoolean, isString, stringValue} from './util';
 
 /**
@@ -57,7 +57,7 @@ export interface FieldDef<F> {
 
   /**
    * The encoded field's type of measurement. This can be either a full type
-   * name (`"quantitative"`, `"temporal"`, `"ordinal"`,  and `"nominal"`)
+   * name (`"quantitative"`, `"temporal"`, `"ordinal"`, `"latitude"`, `"longitude"`  and `"nominal"`)
    * or an initial character of the type name (`"Q"`, `"T"`, `"O"`, `"N"`).
    * This property is case-insensitive.
    */
@@ -217,14 +217,21 @@ export function field(fieldDef: FieldDef<string>, opt: FieldRefOption = {}): str
   return field;
 }
 
+export function isProjection(fieldDef: FieldDef<Field>) {
+  return isFieldDef(fieldDef) && (fieldDef.type === LATITUDE || fieldDef.type === LONGITUDE);
+}
+
 export function isDiscrete(fieldDef: FieldDef<Field>) {
   switch (fieldDef.type) {
-    case 'nominal':
-    case 'ordinal':
+    case NOMINAL:
+    case ORDINAL:
       return true;
-    case 'quantitative':
+    case LATITUDE:
+    case LONGITUDE:
+      return false;
+    case QUANTITATIVE:
       return !!fieldDef.bin;
-    case 'temporal':
+    case TEMPORAL:
       // TODO: deal with custom scale type case.
       return isDiscreteByDefault(fieldDef.timeUnit);
   }
@@ -253,20 +260,20 @@ export function title(fieldDef: FieldDef<string>, config: Config) {
 
 export function defaultType(fieldDef: FieldDef<Field>, channel: Channel): Type {
   if (fieldDef.timeUnit) {
-    return 'temporal';
+    return TEMPORAL;
   }
   if (fieldDef.bin) {
-    return 'quantitative';
+    return QUANTITATIVE;
   }
   switch (rangeType(channel)) {
     case 'continuous':
-      return 'quantitative';
+      return QUANTITATIVE;
     case 'discrete':
-      return 'nominal';
+      return NOMINAL;
     case 'flexible': // color
-      return 'nominal';
+      return NOMINAL;
     default:
-      return 'quantitative';
+      return QUANTITATIVE;
   }
 }
 
@@ -304,6 +311,7 @@ export function normalize(channelDef: ChannelDef<string>, channel: Channel) {
         };
       }
     } else {
+      console.log('failed to noramlize');
       // If type is empty / invalid, then augment with default type
       const newType = defaultType(fieldDef, channel);
       log.warn(log.message.emptyOrInvalidFieldType(fieldDef.type, channel, newType));
@@ -368,7 +376,7 @@ export function channelCompatibility(fieldDef: FieldDef<Field>, channel: Channel
       return COMPATIBLE;
 
     case 'shape':
-      if (fieldDef.type !== 'nominal') {
+      if (fieldDef.type !== NOMINAL) { // TODO: allow for shape to be type GEOJSON
         return {
           compatible: false,
           warning: 'Shape channel should be used with nominal data only'
@@ -377,7 +385,7 @@ export function channelCompatibility(fieldDef: FieldDef<Field>, channel: Channel
       return COMPATIBLE;
 
     case 'order':
-      if (fieldDef.type === 'nominal') {
+      if (fieldDef.type === NOMINAL) {
         return {
           compatible: false,
           warning: `Channel order is inappropriate for nominal field, which has no inherent order.`
