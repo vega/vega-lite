@@ -5159,6 +5159,10 @@
                     ],
                     "type": "string"
                 },
+                "align": {
+                    "description": "The horizontal text alignment. One of `\"left\"` (default), `\"center\"`, or `\"right\"`",
+                    "type": "string"
+                },
                 "bin": {
                     "anyOf": [
                         {

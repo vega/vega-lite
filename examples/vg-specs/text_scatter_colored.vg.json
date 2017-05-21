@@ -78,7 +78,7 @@
                                 "field": "Origin"
                             },
                             "align": {
-                                "value": "center"
+                                "value": "left"
                             }
                         }
                     }

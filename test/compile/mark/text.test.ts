@@ -113,7 +113,7 @@ describe('Mark: Text', function() {
     });
 
     it('should be centered', function() {
-      assert.deepEqual(props.align, {value: "center"});
+      assert.deepEqual(props.align, {value: "left"});
     });
 
     it('should map text without template', function() {
@@ -162,6 +162,21 @@ describe('Mark: Text', function() {
         scale: 'child_size',
         field: 'mean_Acceleration'
       });
+    });
+  });
+
+  describe('with text alignment', function() {
+    const spec: UnitSpec = {
+      "mark": "text",
+      "encoding": {
+        "text": {"field": "foo", "type": "quantitative", "align": "right"}
+      }
+    };
+    const model = parseUnitModel(spec);
+    const props = text.encodeEntry(model);
+
+    it('should output correct bin range', function() {
+      assert.deepEqual(props.align.value, 'right');
     });
   });
 });

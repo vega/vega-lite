@@ -2,7 +2,7 @@ import {X} from '../../channel';
 import {getMarkConfig} from '../common';
 
 import {Config} from '../../config';
-import {ChannelDef, isFieldDef} from '../../fielddef';
+import {ChannelDef, isFieldDef, isTextFieldDef} from '../../fielddef';
 import {QUANTITATIVE} from '../../type';
 import {VgValueRef} from '../../vega.schema';
 import {UnitModel} from '../unit';
@@ -44,9 +44,13 @@ function xDefault(config: Config, textDef: ChannelDef<string>): VgValueRef {
 }
 
 function align(encoding: Encoding<string>, config: Config) {
+  if (isTextFieldDef(encoding.text) && encoding.text.align !== undefined) {
+    return encoding.text.align;
+  }
+
   const alignConfig = getMarkConfig('align', 'text', config);
   if (alignConfig === undefined) {
-    return channelHasField(encoding, X) ? 'center' : 'right';
+    return channelHasField(encoding, X) ? 'left' : 'right';
   }
   // If there is a config, Vega-parser will process this already.
   return undefined;

@@ -145,6 +145,11 @@ export interface TextFieldDef<F> extends FieldDef<F> {
    * The formatting pattern for text value. If not defined, this will be determined automatically.
    */
   format?: string;
+
+  /**
+   * The horizontal text alignment. One of `"left"` (default), `"center"`, or `"right"`
+   */
+  align?: string;
 }
 
 export type ChannelDef<F> = FieldDef<F> | ValueDef<any>;
@@ -159,6 +164,10 @@ export function isValueDef(channelDef: ChannelDef<any>): channelDef is ValueDef<
 
 export function isScaleFieldDef(channelDef: ChannelDef<any>): channelDef is ScaleFieldDef<any> {
     return !!channelDef && (!!channelDef['scale'] || !!channelDef['sort']);
+}
+
+export function isTextFieldDef(channelDef: ChannelDef<any>): channelDef is TextFieldDef<any> {
+  return !!channelDef && (!!channelDef['condition'] || !!channelDef['format'] || !!channelDef['align']);
 }
 
 export interface FieldRefOption {
