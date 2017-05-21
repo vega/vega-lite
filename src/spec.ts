@@ -9,6 +9,7 @@ import {Facet} from './facet';
 import {Field, FieldDef} from './fielddef';
 import * as log from './log';
 import {AnyMark, AREA, isPrimitiveMark, LINE, Mark, MarkDef} from './mark';
+import {Projection} from './projection';
 import {Repeat} from './repeat';
 import {ResolveMapping} from './resolve';
 import {SelectionDef} from './selection';
@@ -48,6 +49,11 @@ export interface BaseSpec {
    * An object describing the data source
    */
   data?: Data;
+
+  /**
+   * A geo projection
+   */
+  projection?: Projection;
 
   /**
    * An array of data transformations such as filter and new field calculation.

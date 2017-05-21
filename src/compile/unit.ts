@@ -3,14 +3,16 @@ import {Channel, NONSPATIAL_SCALE_CHANNELS, SCALE_CHANNELS, ScaleChannel, Single
 import {CellConfig, Config} from '../config';
 import * as vlEncoding from '../encoding'; // TODO: remove
 import {Encoding, normalizeEncoding} from '../encoding';
-import {ChannelDef, field, FieldDef, FieldRefOption, getFieldDef, isConditionalDef, isFieldDef} from '../fielddef';
+import {ChannelDef, field, FieldDef, FieldRefOption, getFieldDef, isConditionalDef, isFieldDef, isProjection} from '../fielddef';
 import {Legend} from '../legend';
 import {FILL_STROKE_CONFIG, isMarkDef, Mark, MarkDef, TEXT as TEXT_MARK} from '../mark';
+import {Projection} from '../projection';
 import {defaultScaleConfig, Domain, hasDiscreteDomain, Scale} from '../scale';
 import {SelectionDef} from '../selection';
 import {SortField, SortOrder} from '../sort';
 import {UnitSize, UnitSpec} from '../spec';
 import {stack, StackProperties} from '../stack';
+import {LATITUDE, LONGITUDE} from '../type';
 import {Dict, duplicate, extend, vals} from '../util';
 import {VgData, VgEncodeEntry, VgLayout, VgSignal} from '../vega.schema';
 import {AxisIndex} from './axis/component';
@@ -26,6 +28,8 @@ import {parseLegendComponent} from './legend/parse';
 import {initEncoding, initMarkDef} from './mark/init';
 import {parseMark} from './mark/mark';
 import {Model, ModelWithField} from './model';
+import {initProjection} from './projection/init';
+import {parseProjectionComponent} from './projection/parse';
 import {RepeaterValue, replaceRepeaterInEncoding} from './repeat';
 import {ScaleIndex} from './scale/component';
 import initScale from './scale/init';
@@ -52,9 +56,12 @@ export class UnitModel extends ModelWithField {
   public readonly height: number;
 
   public readonly markDef: MarkDef;
+
   public readonly encoding: Encoding<string>;
 
   protected scales: ScaleIndex = {};
+
+  public readonly projection: Projection;
 
   public readonly stack: StackProperties;
 
@@ -88,6 +95,11 @@ export class UnitModel extends ModelWithField {
 
     this.axes = this.initAxes(encoding);
     this.legends = this.initLegend(encoding);
+
+    // TODO: in parent, if no projection is specified, and some child has a projection
+    //       set projection equal to the first projection found in children (from first child to last child)
+    const parentProjection = parent ? parent.projection : {};
+    this.projection = initProjection(this.config, spec.projection, parentProjection, mark, encoding);
 
     // Selections will be initialized upon parse.
     this.selection = spec.selection;
@@ -235,11 +247,11 @@ export class UnitModel extends ModelWithField {
   private initAxes(encoding: Encoding<string>): AxisIndex {
     return [X, Y].reduce(function(_axis, channel) {
       // Position Axis
-
       const channelDef = encoding[channel];
-      if (isFieldDef(channelDef) ||
-          (channel === X && isFieldDef(encoding.x2)) ||
-          (channel === Y && isFieldDef(encoding.y2))) {
+      if ((isFieldDef(channelDef) ||
+        (channel === X && isFieldDef(encoding.x2)) ||
+        (channel === Y && isFieldDef(encoding.y2))
+      ) && !isProjection(channelDef)) {
 
         const axisSpec = isFieldDef(channelDef) ? channelDef.axis : null;
 
@@ -282,6 +294,10 @@ export class UnitModel extends ModelWithField {
     this.component.scales = parseScaleComponent(this);
   }
 
+  public parseProjection() {
+    this.component.projections = parseProjectionComponent(this);
+  }
+
   public parseMark() {
     this.component.mark = parseMark(this);
   }
@@ -295,7 +311,7 @@ export class UnitModel extends ModelWithField {
   }
 
   public assembleData(): VgData[] {
-     if (!this.parent) {
+    if (!this.parent) {
       // only assemble data in the root
       return assembleData(this.component.data);
     }

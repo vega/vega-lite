@@ -4,7 +4,7 @@ import {Repeat} from '../repeat';
 import {initConcatResolve, ResolveMapping} from '../resolve';
 import {ConcatSpec, isVConcatSpec, RepeatSpec} from '../spec';
 import {Dict, keys, vals} from '../util';
-import {VgData, VgLayout, VgScale, VgSignal} from '../vega.schema';
+import {VgData, VgLayout, VgProjection, VgScale, VgSignal} from '../vega.schema';
 import {buildModel} from './common';
 import {assembleData} from './data/assemble';
 import {parseData} from './data/parse';
@@ -103,6 +103,12 @@ export class ConcatModel extends Model {
     }
   }
 
+  public parseProjection() {
+    this.children.forEach(child => {
+      child.parseProjection();
+    });
+  }
+
   public assembleData(): VgData[] {
      if (!this.parent) {
       // only assemble data in the root
@@ -134,6 +140,13 @@ export class ConcatModel extends Model {
     return this.children.reduce((db, child) => child.assembleSelectionData(db), []);
   }
 
+  public assembleProjections(): VgProjection[] {
+    // aggregate scales from children into one array
+    // TODO: reduce redundency?
+    return this.children.reduce((projections, c) => {
+      return projections.concat(c.assembleProjections());
+    }, []);
+  }
   public assembleLayout(): VgLayout {
     // TODO: allow customization
     return {

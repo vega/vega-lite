@@ -13,6 +13,7 @@ import {
   hasConditionFieldDef,
   isConditionalDef,
   isFieldDef,
+  isProjection,
   isValueDef,
   LegendFieldDef,
   normalize,
@@ -120,6 +121,10 @@ export function channelHasField(encoding: EncodingWithFacet<Field>, channel: Cha
   return false;
 }
 
+export function channelIsProjection(encoding: EncodingWithFacet<Field>, channel: Channel) {
+  const channelDef = encoding && encoding[channel];
+  return channelDef && isFieldDef(channelDef) && isProjection(channelDef);
+}
 
 export function isAggregate(encoding: EncodingWithFacet<Field>) {
   return some(CHANNELS, (channel) => {
