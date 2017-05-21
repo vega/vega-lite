@@ -106,6 +106,13 @@ function defaultType(channel: Channel, fieldDef: FieldDef<string>, mark: Mark,
         return 'bin-linear';
       }
       return 'linear';
+
+    case 'latitude':
+    case 'longitude':
+      if (channel === 'color') {
+        return 'sequential';
+      }
+      return 'linear';
   }
 
   /* istanbul ignore next: should never reach this */

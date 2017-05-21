@@ -93,6 +93,51 @@ export type VgScale = {
   zero?: boolean
 };
 
+export type VgProjectionType = 'albers' | 'albersUsa' | 'azimuthalEqualArea' | 'azimuthalEquidistant' | 'conicConformal' | 'conicEqualArea' | 'conicEquidistant' | 'equirectangular' | 'gnomonic' | 'mercator' | 'orthographic' | 'stereographic' | 'transverseMercator';
+
+export type VgProjection = {
+  /*
+   * The name of the projection.
+   */
+  name: string,
+  /*
+   * The type of the projection.
+   */
+  type?: VgProjectionType;
+  /*
+   * The center of the projection.
+   */
+  center?: number[];
+  /*
+   * The translation of the projection.
+   */
+  translate?: number[];
+  /*
+   * The scale of the projection.
+   */
+  zoom?: number;
+  /**
+   * The rotation of the projection.
+   */
+  rotate?: number[];
+  /*
+   * The desired precision of the projection.
+   */
+  precision?: String;
+  /*
+   * The clip angle of the projection.
+   */
+  clipAngle?: number;
+  /*
+   * Sets the projection’s scale factor to the specified value
+   */
+  scale?: number;
+  /*
+   * Sets the projection’s viewport clip extent to the specified bounds in pixels
+   */
+  clipExtent?: number[];
+};
+
 export type VgLayoutAlign = 'none' | 'each' | 'all';
 
 export type VgLayout = {

@@ -5,6 +5,7 @@ import {VL_ONLY_GUIDE_CONFIG} from './guide';
 import {defaultLegendConfig, LegendConfig} from './legend';
 import {BarConfig, Mark, MarkConfig, MarkConfigMixins, PRIMITIVE_MARKS, TextConfig, TickConfig, VL_ONLY_MARK_SPECIFIC_CONFIG_PROPERTY_INDEX} from './mark';
 import * as mark from './mark';
+import {ProjectionConfig} from './projection';
 import {defaultScaleConfig, ScaleConfig} from './scale';
 import {defaultConfig as defaultSelectionConfig, SelectionConfig} from './selection';
 import {StackOffset} from './stack';
@@ -185,6 +186,9 @@ export interface VLOnlyConfig {
   /** Scale Config */
   scale?: ScaleConfig;
 
+  /** Projection Config */
+  projection?: ProjectionConfig;
+
   /** Selection Config */
   selection?: SelectionConfig;
 
@@ -193,7 +197,7 @@ export interface VLOnlyConfig {
 
 }
 
-export interface Config  extends TopLevelProperties, VLOnlyConfig, MarkConfigMixins, CompositeMarkConfigMixins, AxisConfigMixins {
+export interface Config extends TopLevelProperties, VLOnlyConfig, MarkConfigMixins, CompositeMarkConfigMixins, AxisConfigMixins {
 
   /**
    * Scale range config, or properties defining named range arrays
@@ -241,6 +245,7 @@ export const defaultConfig: Config = {
 
   overlay: defaultOverlayConfig,
   scale: defaultScaleConfig,
+  projection: {},
   axis: {},
   axisX: {},
   axisY: {},
