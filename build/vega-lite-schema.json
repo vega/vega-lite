@@ -4903,7 +4903,6 @@
                 }
             },
             "required": [
-                "field",
                 "op"
             ],
             "type": "object"

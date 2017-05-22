@@ -2,10 +2,13 @@
 
 
 import {assert} from 'chai';
-import {parseDomain, unionDomains} from '../../../src/compile/scale/domain';
+import {X} from '../../../src/channel';
+import {domainSort, parseDomain, unionDomains} from '../../../src/compile/scale/domain';
 import {MAIN} from '../../../src/data';
 import {PositionFieldDef} from '../../../src/fielddef';
 import * as log from '../../../src/log';
+import {ScaleType} from '../../../src/scale';
+import {QUANTITATIVE} from '../../../src/type';
 import {FieldRefUnionDomain, VgDataRef} from '../../../src/vega.schema';
 import {parseUnitModel} from '../../util';
 
@@ -358,6 +361,67 @@ describe('compile/scale', () => {
         data: 'foo',
         fields: ['a', 'b', 'c']
       });
+    });
+  });
+
+  describe('domainSort()', () => {
+    it('should return undefined for discrete domain', () => {
+      const model = parseUnitModel({
+          mark: 'bar',
+          encoding: {
+            x: {field: 'a', type: 'quantitative'},
+          }
+        });
+      const sort = domainSort(model, X, ScaleType.LINEAR);
+      assert.deepEqual(sort, undefined);
+    });
+
+    it('should return normal sort spec if specified and aggregration is not count', () => {
+      const model = parseUnitModel({
+        mark: 'bar',
+        encoding: {
+          x: {field: 'a', type: 'nominal', sort:{op: 'sum', field:'y'}},
+          y: {field: 'b', aggregate: 'sum', type: 'quantitative'}
+        }
+      });
+      const sort = domainSort(model, X, ScaleType.ORDINAL);
+      assert.deepEqual(sort, {op: 'sum', field: 'y'});
+    });
+
+    it('should return normal sort spec if aggregration is count and field not specified', () => {
+      const model = parseUnitModel({
+        mark: 'bar',
+        encoding: {
+          x: {field: 'a', type: 'nominal', sort:{op: 'count'}},
+          y: {field: 'b', aggregate: 'sum', type: 'quantitative'}
+        }
+      });
+      const sort = domainSort(model, X, ScaleType.ORDINAL);
+      assert.deepEqual(sort, {op: 'count', field: undefined});
+    });
+
+    it('should return true if sort specified', () => {
+      const model = parseUnitModel({
+        mark: 'bar',
+        encoding: {
+          x: {field: 'a', type: 'nominal'},
+          y: {field: 'b', aggregate: 'sum', type: 'quantitative'}
+        }
+      });
+      const sort = domainSort(model, X, ScaleType.ORDINAL);
+      assert.deepEqual(sort, true);
+    });
+
+    it('should return undefined if sort is not specified', () => {
+      const model = parseUnitModel({
+        mark: 'bar',
+        encoding: {
+          x: {field: 'a', type: 'quantitative', sort: "descending"},
+          y: {field: 'b', aggregate: 'sum', type: 'quantitative'}
+        }
+      });
+      const sort = domainSort(model, X, ScaleType.ORDINAL);
+      assert.deepEqual(sort, true);
     });
   });
 });
