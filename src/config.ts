@@ -229,6 +229,7 @@ export const defaultConfig: Config = {
   area: {},
   bar: mark.defaultBarConfig,
   circle: {},
+  geoshape: {},
   line: {},
   point: {},
   rect: {},

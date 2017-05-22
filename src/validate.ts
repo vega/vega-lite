@@ -30,14 +30,15 @@ export interface SupportedChannelMap {
  * Supported Encoding Channel for each mark type
  */
 export const DEFAULT_SUPPORTED_CHANNEL_TYPE: SupportedChannelMap = {
-  bar: toSet(['row', 'column', 'x', 'y', 'size', 'color', 'detail']),
-  line: toSet(['row', 'column', 'x', 'y', 'color', 'detail']), // TODO: add size when Vega supports
-  area: toSet(['row', 'column', 'x', 'y', 'color', 'detail']),
-  tick: toSet(['row', 'column', 'x', 'y', 'color', 'detail']),
-  circle: toSet(['row', 'column', 'x', 'y', 'color', 'size', 'detail']),
-  square: toSet(['row', 'column', 'x', 'y', 'color', 'size', 'detail']),
-  point: toSet(['row', 'column', 'x', 'y', 'color', 'size', 'detail', 'shape']),
-  text: toSet(['row', 'column', 'size', 'color', 'text']) // TODO(#724) revise
+  text:     toSet(['row', 'column', 'size', 'color', 'text']), // TODO(#724) revise
+  line:     toSet(['row', 'column', 'x', 'y', 'color', 'detail']), // TODO: add size when Vega supports
+  area:     toSet(['row', 'column', 'x', 'y', 'color', 'detail']),
+  tick:     toSet(['row', 'column', 'x', 'y', 'color', 'detail']),
+  geoshape: toSet(['row', 'column', 'x', 'y', 'color', 'detail']),
+  bar:      toSet(['row', 'column', 'x', 'y', 'size', 'color', 'detail']),
+  circle:   toSet(['row', 'column', 'x', 'y', 'color', 'size', 'detail']),
+  square:   toSet(['row', 'column', 'x', 'y', 'color', 'size', 'detail']),
+  point:    toSet(['row', 'column', 'x', 'y', 'color', 'size', 'detail', 'shape'])
 };
 
 // TODO: consider if we should add validate method and
