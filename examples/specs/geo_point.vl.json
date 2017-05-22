@@ -1,0 +1,20 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v2.json",
+  "projection": {
+    "type": "albersUsa"
+  },
+  "data": {
+    "url": "data/us-state-capitals.json"
+  },
+  "mark": "circle",
+  "encoding": {
+    "x": {
+      "field": "longitude",
+      "type": "longitude"
+    },
+    "y": {
+      "field": "latitude",
+      "type": "latitude"
+    }
+  }
+}
