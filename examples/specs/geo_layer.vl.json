@@ -1,0 +1,42 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v2.json",
+  "projection": {
+    "type": "albersUsa"
+  },
+  "layer": [
+    {
+      "data": {
+          "url": "data/us-10m.csv",
+          "format": {
+            "type": "topojson",
+            "feature": "counties"
+          }
+      },
+      "mark": "geoshape",
+      "encoding": {
+        "color": {
+          "field": "rate"
+        },
+        "opacity": {
+          "value": 0.7
+        }
+      }
+    },
+    {
+      "data": {
+        "url": "data/us-state-capitals.json"
+      },
+      "mark": "circle",
+      "encoding": {
+        "x": {
+          "field": "longitude",
+          "type": "longitude"
+        },
+        "y": {
+          "field": "latitude",
+          "type": "latitude"
+        }
+      }
+    }
+  ]
+}
