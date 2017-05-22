@@ -1,5 +1,3 @@
-
-
 import {UnitModel} from '../unit';
 import * as mixins from './mixins';
 

@@ -73,7 +73,7 @@ export interface Encoding<F> {
   size?: LegendFieldDef<F, number> | ConditionalValueDef<number>;
 
   /**
-   * The symbol's shape (only for `point` marks). The supported values are
+   * The symbol's shape (only for `point` and `geoshape` marks). The supported values are
    * `"circle"` (default), `"square"`, `"cross"`, `"diamond"`, `"triangle-up"`,
    * or `"triangle-down"`, or else a custom SVG path string.
    */
