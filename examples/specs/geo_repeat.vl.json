@@ -1,0 +1,39 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v2.json",
+  "repeat": {"column": ["var1", "var2"]},
+  "spec": {
+    "mark": "geoshape",
+    "data": {
+      "url": "data/us-10m.csv",
+      "format": {
+        "type": "topojson",
+        "feature": "counties"
+      }
+    },
+    "transform": [{
+      "lookup": "id",
+      "from": {
+        "data": {
+          "url": "data/multi.csv",
+          "format": {
+            "type": "tsv",
+            "parse": "auto"
+          }
+        },
+        "key": "id",
+        "fields": ["var1", "var2"]
+      }
+    }],
+    "projection": {
+      "type": "albersUsa"
+    },
+    "encoding": {
+      "color": {
+        "field": {"repeat": "column"}
+      },
+      "opacity": {
+        "value": 0.7
+      }
+    }
+  }
+}
