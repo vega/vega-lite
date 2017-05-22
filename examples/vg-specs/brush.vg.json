@@ -311,7 +311,10 @@
                     "encode": {
                         "enter": {
                             "fill": {
-                                "value": "#eee"
+                                "value": "#333"
+                            },
+                            "fillOpacity": {
+                                "value": 0.125
                             }
                         },
                         "update": {
@@ -401,6 +404,9 @@
                         "enter": {
                             "fill": {
                                 "value": "transparent"
+                            },
+                            "stroke": {
+                                "value": "white"
                             }
                         },
                         "update": {
@@ -483,13 +489,14 @@
         },
         {
             "name": "color",
-            "type": "ordinal",
+            "type": "sequential",
             "domain": {
                 "data": "source_0",
-                "field": "Cylinders",
-                "sort": true
+                "field": "Cylinders"
             },
-            "range": "ordinal"
+            "range": "ramp",
+            "nice": false,
+            "zero": false
         }
     ],
     "axes": [

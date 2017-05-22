@@ -6,6 +6,7 @@ import {extend, keys, without} from '../../util';
 
 import {VgValueRef} from '../../vega.schema';
 
+import {ScaleType} from '../../scale';
 import {applyMarkConfig, timeFormatExpression} from '../common';
 import * as mixins from '../mark/mixins';
 import {UnitModel} from '../unit';
@@ -76,9 +77,10 @@ export function labels(fieldDef: FieldDef<string>, labelsSpec: any, model: UnitM
   let labels:any = {};
 
   if (fieldDef.type === TEMPORAL) {
+    const isUTCScale = model.scale(channel).type === ScaleType.UTC;
     labelsSpec = extend({
       text: {
-        signal: timeFormatExpression('datum.value', fieldDef.timeUnit, legend.format, config.legend.shortTimeLabels, config.timeFormat)
+        signal: timeFormatExpression('datum.value', fieldDef.timeUnit, legend.format, config.legend.shortTimeLabels, config.timeFormat, isUTCScale)
       }
     }, labelsSpec || {});
   }

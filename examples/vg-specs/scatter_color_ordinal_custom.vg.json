@@ -29,16 +29,6 @@
         {
             "name": "height",
             "update": "200"
-        },
-        {
-            "name": "unit",
-            "value": {},
-            "on": [
-                {
-                    "events": "mousemove",
-                    "update": "group()._id ? group() : unit"
-                }
-            ]
         }
     ],
     "marks": [
@@ -125,16 +115,17 @@
         },
         {
             "name": "color",
-            "type": "ordinal",
+            "type": "sequential",
             "domain": {
                 "data": "source_0",
-                "field": "Cylinders",
-                "sort": true
+                "field": "Cylinders"
             },
             "range": [
                 "pink",
                 "red"
-            ]
+            ],
+            "nice": false,
+            "zero": false
         }
     ],
     "axes": [

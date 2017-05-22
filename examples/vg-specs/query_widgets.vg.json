@@ -40,6 +40,16 @@
             "update": "200"
         },
         {
+            "name": "unit",
+            "value": {},
+            "on": [
+                {
+                    "events": "mousemove",
+                    "update": "group()._id ? group() : unit"
+                }
+            ]
+        },
+        {
             "name": "CylYr_Year",
             "value": "",
             "on": [
@@ -80,16 +90,6 @@
                 "max": 8,
                 "step": 1
             }
-        },
-        {
-            "name": "unit",
-            "value": {},
-            "on": [
-                {
-                    "events": "mousemove",
-                    "update": "group()._id ? group() : unit"
-                }
-            ]
         },
         {
             "name": "CylYr",

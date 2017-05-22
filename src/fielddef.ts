@@ -9,10 +9,11 @@ import {Config} from './config';
 import {Field} from './fielddef';
 import {Legend} from './legend';
 import * as log from './log';
-import {Scale} from './scale';
+import {Scale, ScaleType} from './scale';
 import {SortField, SortOrder} from './sort';
 import {StackOffset} from './stack';
 import {isDiscreteByDefault, TimeUnit} from './timeunit';
+import {BinTransform, SummarizeTransform, TimeUnitTransform} from './transform';
 import {getFullName, Type} from './type';
 import {isBoolean, isString, stringValue} from './util';
 
@@ -156,6 +157,10 @@ export function isValueDef(channelDef: ChannelDef<any>): channelDef is ValueDef<
   return channelDef && 'value' in channelDef && channelDef['value'] !== undefined;
 }
 
+export function isScaleFieldDef(channelDef: ChannelDef<any>): channelDef is ScaleFieldDef<any> {
+    return !!channelDef && (!!channelDef['scale'] || !!channelDef['sort']);
+}
+
 export interface FieldRefOption {
   /** exclude bin, aggregate, timeUnit */
   nofn?: boolean;
@@ -282,21 +287,10 @@ export function normalize(channelDef: ChannelDef<string>, channel: Channel) {
 
     // Normalize bin
     if (fieldDef.bin) {
-      const bin = fieldDef.bin;
-      if (isBoolean(bin)) {
-        fieldDef = {
-          ...fieldDef,
-          bin: {maxbins: autoMaxBins(channel)}
-        };
-      } else if (!bin.maxbins && !bin.step) {
-        fieldDef = {
-          ...fieldDef,
-          bin: {
-            ...bin,
-            maxbins: autoMaxBins(channel)
-          }
-        };
-      }
+      fieldDef = {
+        ...fieldDef,
+        bin: normalizeBin(fieldDef.bin, channel)
+      };
     }
 
     // Normalize Type
@@ -326,6 +320,16 @@ export function normalize(channelDef: ChannelDef<string>, channel: Channel) {
     return fieldDef;
   }
   return channelDef;
+}
+
+export function normalizeBin(bin: Bin|boolean, channel: Channel) {
+  if (isBoolean(bin)) {
+    return {maxbins: autoMaxBins(channel)};
+  } else if (!bin.maxbins && !bin.step) {
+    return {...bin, maxbins: autoMaxBins(channel)};
+  } else {
+    return bin;
+  }
 }
 
 const COMPATIBLE = {compatible: true};

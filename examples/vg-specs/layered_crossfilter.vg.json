@@ -65,6 +65,9 @@
                     ],
                     "fields": [
                         "*"
+                    ],
+                    "as": [
+                        "count_*"
                     ]
                 }
             ]
@@ -115,6 +118,9 @@
                     ],
                     "fields": [
                         "*"
+                    ],
+                    "as": [
+                        "count_*"
                     ]
                 }
             ]
@@ -161,6 +167,9 @@
                     ],
                     "fields": [
                         "*"
+                    ],
+                    "as": [
+                        "count_*"
                     ]
                 }
             ]
@@ -211,6 +220,9 @@
                     ],
                     "fields": [
                         "*"
+                    ],
+                    "as": [
+                        "count_*"
                     ]
                 }
             ]
@@ -257,6 +269,9 @@
                     ],
                     "fields": [
                         "*"
+                    ],
+                    "as": [
+                        "count_*"
                     ]
                 }
             ]
@@ -307,6 +322,9 @@
                     ],
                     "fields": [
                         "*"
+                    ],
+                    "as": [
+                        "count_*"
                     ]
                 }
             ]
@@ -631,7 +649,10 @@
                             "encode": {
                                 "enter": {
                                     "fill": {
-                                        "value": "#eee"
+                                        "value": "#333"
+                                    },
+                                    "fillOpacity": {
+                                        "value": 0.125
                                     }
                                 },
                                 "update": {
@@ -752,6 +773,9 @@
                                 "enter": {
                                     "fill": {
                                         "value": "transparent"
+                                    },
+                                    "stroke": {
+                                        "value": "white"
                                     }
                                 },
                                 "update": {
@@ -1115,7 +1139,10 @@
                             "encode": {
                                 "enter": {
                                     "fill": {
-                                        "value": "#eee"
+                                        "value": "#333"
+                                    },
+                                    "fillOpacity": {
+                                        "value": 0.125
                                     }
                                 },
                                 "update": {
@@ -1236,6 +1263,9 @@
                                 "enter": {
                                     "fill": {
                                         "value": "transparent"
+                                    },
+                                    "stroke": {
+                                        "value": "white"
                                     }
                                 },
                                 "update": {
@@ -1599,7 +1629,10 @@
                             "encode": {
                                 "enter": {
                                     "fill": {
-                                        "value": "#eee"
+                                        "value": "#333"
+                                    },
+                                    "fillOpacity": {
+                                        "value": 0.125
                                     }
                                 },
                                 "update": {
@@ -1720,6 +1753,9 @@
                                 "enter": {
                                     "fill": {
                                         "value": "transparent"
+                                    },
+                                    "stroke": {
+                                        "value": "white"
                                     }
                                 },
                                 "update": {

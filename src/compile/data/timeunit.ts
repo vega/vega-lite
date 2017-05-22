@@ -1,11 +1,12 @@
 import {SpawnSyncOptionsWithStringEncoding} from 'child_process';
 import {field, FieldDef} from '../../fielddef';
 import {fieldExpr, TimeUnit} from '../../timeunit';
+import {TimeUnitTransform} from '../../transform';
 import {TEMPORAL} from '../../type';
 import {Dict, duplicate, extend, StringSet, vals} from '../../util';
 import {VgFormulaTransform, VgTransform} from '../../vega.schema';
 import {format} from '../axis/rules';
-import {ModelWithField} from '../model';
+import {Model, ModelWithField} from '../model';
 import {DataFlowNode} from './dataflow';
 
 
@@ -24,7 +25,7 @@ export class TimeUnitNode extends DataFlowNode {
     super();
   }
 
-  public static make(model: ModelWithField) {
+  public static makeFromEncoding(model: ModelWithField) {
     const formula = model.reduceFieldDef((timeUnitComponent: TimeUnitComponent, fieldDef) => {
       if (fieldDef.type === TEMPORAL && fieldDef.timeUnit) {
         const f = field(fieldDef);
@@ -42,6 +43,16 @@ export class TimeUnitNode extends DataFlowNode {
     }
 
     return new TimeUnitNode(formula);
+  }
+
+  public static makeFromTransfrom(model: Model, t: TimeUnitTransform) {
+    return new TimeUnitNode({
+      [t.field]: {
+        as: t.as,
+        timeUnit: t.timeUnit,
+        field: t.field
+      }
+    });
   }
 
   public merge(other: TimeUnitNode) {

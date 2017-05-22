@@ -34,6 +34,9 @@
                     ],
                     "fields": [
                         "Weight_in_lbs"
+                    ],
+                    "as": [
+                        "sum_Weight_in_lbs"
                     ]
                 },
                 {
@@ -54,16 +57,6 @@
         {
             "name": "height",
             "update": "200"
-        },
-        {
-            "name": "unit",
-            "value": {},
-            "on": [
-                {
-                    "events": "mousemove",
-                    "update": "group()._id ? group() : unit"
-                }
-            ]
         }
     ],
     "marks": [
@@ -109,6 +102,9 @@
                             },
                             "orient": {
                                 "value": "horizontal"
+                            },
+                            "interpolate": {
+                                "value": "monotone"
                             }
                         }
                     }

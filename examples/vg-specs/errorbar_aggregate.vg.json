@@ -42,6 +42,10 @@
                     "fields": [
                         "people",
                         "people"
+                    ],
+                    "as": [
+                        "min_people",
+                        "max_people"
                     ]
                 }
             ]
@@ -69,6 +73,9 @@
                     ],
                     "fields": [
                         "people"
+                    ],
+                    "as": [
+                        "min_people"
                     ]
                 }
             ]
@@ -96,6 +103,9 @@
                     ],
                     "fields": [
                         "people"
+                    ],
+                    "as": [
+                        "max_people"
                     ]
                 }
             ]
@@ -123,6 +133,9 @@
                     ],
                     "fields": [
                         "people"
+                    ],
+                    "as": [
+                        "mean_people"
                     ]
                 }
             ]
@@ -168,16 +181,6 @@
         {
             "name": "layer_3_height",
             "update": "200"
-        },
-        {
-            "name": "unit",
-            "value": {},
-            "on": [
-                {
-                    "events": "mousemove",
-                    "update": "group()._id ? group() : unit"
-                }
-            ]
         }
     ],
     "marks": [

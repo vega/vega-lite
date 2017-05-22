@@ -87,6 +87,16 @@
             "update": "200"
         },
         {
+            "name": "unit",
+            "value": {},
+            "on": [
+                {
+                    "events": "mousemove",
+                    "update": "group()._id ? group() : unit"
+                }
+            ]
+        },
+        {
             "name": "cyl_Cylinders",
             "value": "",
             "on": [
@@ -106,16 +116,6 @@
                 "max": 8,
                 "step": 1
             }
-        },
-        {
-            "name": "unit",
-            "value": {},
-            "on": [
-                {
-                    "events": "mousemove",
-                    "update": "group()._id ? group() : unit"
-                }
-            ]
         },
         {
             "name": "grid_Horsepower"
@@ -565,7 +565,10 @@
                     "encode": {
                         "enter": {
                             "fill": {
-                                "value": "#eee"
+                                "value": "#333"
+                            },
+                            "fillOpacity": {
+                                "value": 0.125
                             }
                         },
                         "update": {
@@ -706,6 +709,9 @@
                         "enter": {
                             "fill": {
                                 "value": "transparent"
+                            },
+                            "stroke": {
+                                "value": "white"
                             }
                         },
                         "update": {
@@ -813,7 +819,7 @@
         },
         {
             "name": "color",
-            "type": "ordinal",
+            "type": "sequential",
             "domain": {
                 "fields": [
                     {
@@ -827,7 +833,9 @@
                 ],
                 "sort": true
             },
-            "range": "ordinal"
+            "range": "ramp",
+            "nice": false,
+            "zero": false
         }
     ],
     "axes": [

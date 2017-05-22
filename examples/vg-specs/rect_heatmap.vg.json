@@ -28,6 +28,9 @@
                     ],
                     "fields": [
                         "Horsepower"
+                    ],
+                    "as": [
+                        "mean_Horsepower"
                     ]
                 }
             ]
@@ -41,16 +44,6 @@
         {
             "name": "height",
             "update": "bandspace(domain('y').length, 0.1, 0.05) * 21"
-        },
-        {
-            "name": "unit",
-            "value": {},
-            "on": [
-                {
-                    "events": "mousemove",
-                    "update": "group()._id ? group() : unit"
-                }
-            ]
         }
     ],
     "marks": [

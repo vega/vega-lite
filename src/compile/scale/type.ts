@@ -5,7 +5,7 @@ import {Mark} from '../../mark';
 import {ScaleConfig, ScaleType} from '../../scale';
 import {isDiscreteByDefault} from '../../timeunit';
 
-import {FieldDef} from '../../fielddef';
+import {field, FieldDef} from '../../fielddef';
 import {hasDiscreteDomain} from '../../scale';
 import {Type} from '../../type';
 import * as util from '../../util';
@@ -66,7 +66,7 @@ function defaultType(channel: Channel, fieldDef: FieldDef<string>, mark: Mark,
 
     case 'ordinal':
       if (channel === 'color') {
-        return 'ordinal';
+        return 'sequential';
       } else if (rangeType(channel) === 'discrete') {
         log.warn(log.message.discreteChannelCannotEncode(channel, 'ordinal'));
         return 'ordinal';

@@ -109,18 +109,24 @@ describe('Single Selection', function() {
   });
 
   it('builds top-level signals', function() {
-    const oneSg = single.topLevelSignals(model, selCmpts['one']);
+    const oneSg = single.topLevelSignals(model, selCmpts['one'], []);
     assert.sameDeepMembers(oneSg, [{
       name: 'one', update: 'data(\"one_store\")[0]'
     }]);
 
-    const twoSg = single.topLevelSignals(model, selCmpts['two']);
+    const twoSg = single.topLevelSignals(model, selCmpts['two'], []);
     assert.sameDeepMembers(twoSg, [{
       name: 'two', update: 'data(\"two_store\")[0]'
     }]);
 
     const signals = selection.assembleTopLevelSignals(model, []);
-    assert.includeDeepMembers(signals, oneSg.concat(twoSg));
+    assert.deepEqual(signals, [
+      {
+        name: 'unit',
+        value: {},
+        on: [{events: 'mousemove', update: 'group()._id ? group() : unit'}]
+      }
+    ].concat(oneSg, twoSg));
   });
 
   it('builds unit datasets', function() {

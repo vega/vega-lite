@@ -114,18 +114,29 @@ const interval:SelectionCompiler = {
       });
     }
 
+    // Two brush marks ensure that fill colors and other aesthetic choices do
+    // not interefere with the core marks, but that the brushed region can still
+    // be interacted with (e.g., dragging it around).
     return [{
       name: undefined,
       type: 'rect',
       encode: {
-        enter: {fill: {value: '#eee'}},
+        enter: {
+          fill: {value: '#333'},
+          fillOpacity: {value: 0.125},
+          stroke: undefined
+        },
         update: update
       }
     }].concat(marks, {
       name: name + BRUSH,
       type: 'rect',
       encode: {
-        enter: {fill: {value: 'transparent'}},
+        enter: {
+          fill: {value: 'transparent'},
+          fillOpacity: undefined,
+          stroke: {value: 'white'}
+        },
         update: update
       }
     });

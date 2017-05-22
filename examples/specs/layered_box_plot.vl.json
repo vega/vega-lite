@@ -1,0 +1,78 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v2.json",
+  "description": "A horizontal box plot showing median, min, and max in the US population distribution of age groups in 2000.",
+  "data": {"url": "data/population.json"},
+  "transform": [
+    {
+      "summarize": [
+        {
+          "aggregate": "min",
+          "field": "people",
+          "as": "people_min"
+        },
+        {
+          "aggregate": "q1",
+          "field": "people",
+          "as": "people_q1"
+        },
+        {
+          "aggregate": "q3",
+          "field": "people",
+          "as": "people_q3"
+        },
+        {
+          "aggregate": "max",
+          "field": "people",
+          "as": "people_max"
+        },
+        {
+          "aggregate": "median",
+          "field": "people",
+          "as": "people_median"
+        }
+      ],
+      "groupby": ["age"]
+    }
+  ],
+  "layer": [
+    {
+      "mark": {"type": "rule", "role": "boxWhisker"},
+      "encoding": {
+        "y": {"field": "age", "type": "ordinal"},
+        "x": {
+          "axis": {"title": "population"},
+          "field": "people_min",
+          "type": "quantitative"
+        },
+        "x2": {"field": "people_q1", "type": "quantitative"}
+      }
+    },
+    {
+      "mark": {"type": "rule", "role": "boxWhisker"},
+      "encoding": {
+        "y": {"field": "age", "type": "ordinal"},
+        "x": {"field": "people_q3", "type": "quantitative"},
+        "x2": {"field": "people_max", "type": "quantitative"}
+      }
+    },
+    {
+      "mark": {"type": "bar", "role": "box"},
+      "encoding": {
+        "y": {"field": "age", "type": "ordinal"},
+        "x": {"field": "people_q1", "type": "quantitative"},
+        "x2": {"field": "people_q3", "type": "quantitative"},
+        "color": {"value": "skyblue"},
+        "size": {"value": 5}
+      }
+    },
+    {
+      "mark": {"type": "tick", "role": "boxMid"},
+      "encoding": {
+        "y": {"field": "age", "type": "ordinal"},
+        "x": {"field": "people_median", "type": "quantitative"},
+        "size": {"value": 5},
+        "color": {"value": "white"}
+      }
+    }
+  ]
+}

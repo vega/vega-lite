@@ -5,7 +5,7 @@ import {initLayerResolve, NonspatialResolve, ResolveMapping, SpatialResolve} fro
 import {LayerSpec, UnitSize} from '../spec';
 import {Dict, flatten, keys, vals} from '../util';
 import {isSignalRefDomain, VgData, VgEncodeEntry, VgLayout, VgScale, VgSignal} from '../vega.schema';
-import {AxesComponent} from './axis/index';
+import {AxisComponentIndex} from './axis/component';
 import {applyConfig, buildModel} from './common';
 import {assembleData} from './data/assemble';
 import {parseData} from './data/parse';
@@ -107,7 +107,7 @@ export class LayerModel extends Model {
   }
 
   public parseAxisAndHeader() {
-    const axisComponent: AxesComponent = this.component.axes = {};
+    const axisComponent: AxisComponentIndex = this.component.axes = {};
 
     for (const child of this.children) {
       child.parseAxisAndHeader();
@@ -197,7 +197,7 @@ export class LayerModel extends Model {
   public assembleData(): VgData[] {
      if (!this.parent) {
       // only assemble data in the root
-      return assembleData(vals(this.component.data.sources));
+      return assembleData(this.component.data);
     }
     return [];
   }

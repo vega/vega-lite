@@ -6,10 +6,11 @@ import {VgLegend} from '../../vega.schema';
 import {numberFormat} from '../common';
 import {UnitModel} from '../unit';
 
+import {LegendComponent, LegendComponentIndex} from './component';
 import * as encode from './encode';
 import * as rules from './rules';
 
-export function parseLegendComponent(model: UnitModel): Dict<VgLegend> {
+export function parseLegendComponent(model: UnitModel): LegendComponentIndex {
   return [COLOR, SIZE, SHAPE, OPACITY].reduce(function(legendComponent, channel) {
     if (model.legend(channel)) {
       legendComponent[channel] = parseLegend(model, channel);
@@ -18,7 +19,7 @@ export function parseLegendComponent(model: UnitModel): Dict<VgLegend> {
   }, {});
 }
 
-function getLegendDefWithScale(model: UnitModel, channel: Channel): VgLegend {
+function getLegendDefWithScale(model: UnitModel, channel: Channel): LegendComponent {
   // For binned field with continuous scale, use a special scale so we can overrride the mark props and labels
   switch (channel) {
     case COLOR:
@@ -34,7 +35,7 @@ function getLegendDefWithScale(model: UnitModel, channel: Channel): VgLegend {
   return null;
 }
 
-export function parseLegend(model: UnitModel, channel: Channel): VgLegend {
+export function parseLegend(model: UnitModel, channel: Channel): LegendComponent {
   const fieldDef = model.fieldDef(channel);
   const legend = model.legend(channel);
 

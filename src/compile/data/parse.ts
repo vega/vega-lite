@@ -21,7 +21,7 @@ import {parseTransformArray} from './transforms';
 function parseRoot(model: Model, sources: Dict<SourceNode>): DataFlowNode {
   if (model.data || !model.parent) {
     // if the model defines a data source or is the root, create a source node
-    const source = new SourceNode(model);
+    const source = new SourceNode(model.data);
     const hash = source.hash();
     if (hash in sources) {
       // use a reference if we already have a source
@@ -111,7 +111,7 @@ export function parseData(model: Model): DataComponent {
   const parentIsLayer = model.parent && (model.parent instanceof LayerModel);
   if (model instanceof ModelWithField) {
     if (parentIsLayer) {
-      const bin = BinNode.make(model);
+      const bin = BinNode.makeBinFromEncoding(model);
       if (bin) {
         bin.parent = head;
         head = bin;
@@ -133,14 +133,14 @@ export function parseData(model: Model): DataComponent {
     }
 
     if (!parentIsLayer) {
-      const bin = BinNode.make(model);
+      const bin = BinNode.makeBinFromEncoding(model);
       if (bin) {
         bin.parent = head;
         head = bin;
       }
     }
 
-    const tu = TimeUnitNode.make(model);
+    const tu = TimeUnitNode.makeFromEncoding(model);
     if (tu) {
       tu.parent = head;
       head = tu;
@@ -155,7 +155,7 @@ export function parseData(model: Model): DataComponent {
   head = raw;
 
   if (model instanceof UnitModel) {
-    const agg = AggregateNode.make(model);
+    const agg = AggregateNode.makeFromEncoding(model);
     if (agg) {
       agg.parent = head;
       head = agg;

@@ -43,7 +43,7 @@
         "selection": "xenc",
         "value": "red"
       }
-    }
-  },
-  "config": {"mark": {"opacity": 1}}
+    },
+    "opacity": {"value": 1}
+  }
 }

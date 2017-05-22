@@ -1,3 +1,4 @@
+import {TimeUnitComponent} from './compile/data/timeunit';
 import {DateTimeExpr, dateTimeExpr} from './datetime';
 import * as log from './log';
 import {Dict, keys, stringValue} from './util';
@@ -27,6 +28,30 @@ export namespace TimeUnit {
   export const YEARQUARTER: 'yearquarter' = 'yearquarter';
   export const QUARTERMONTH: 'quartermonth' = 'quartermonth';
   export const YEARQUARTERMONTH: 'yearquartermonth' = 'yearquartermonth';
+  export const UTCYEAR: 'utcyear' = 'utcyear';
+  export const UTCMONTH: 'utcmonth' = 'utcmonth';
+  export const UTCDAY: 'utcday' = 'utcday';
+  export const UTCDATE: 'utcdate' = 'utcdate';
+  export const UTCHOURS: 'utchours' = 'utchours';
+  export const UTCMINUTES: 'utcminutes' = 'utcminutes';
+  export const UTCSECONDS: 'utcseconds' = 'utcseconds';
+  export const UTCMILLISECONDS: 'utcmilliseconds' = 'utcmilliseconds';
+  export const UTCYEARMONTH: 'utcyearmonth' = 'utcyearmonth';
+  export const UTCYEARMONTHDATE: 'utcyearmonthdate' = 'utcyearmonthdate';
+  export const UTCYEARMONTHDATEHOURS: 'utcyearmonthdatehours' = 'utcyearmonthdatehours';
+  export const UTCYEARMONTHDATEHOURSMINUTES: 'utcyearmonthdatehoursminutes' = 'utcyearmonthdatehoursminutes';
+  export const UTCYEARMONTHDATEHOURSMINUTESSECONDS: 'utcyearmonthdatehoursminutesseconds' = 'utcyearmonthdatehoursminutesseconds';
+
+  // MONTHDATE always include 29 February since we use year 0th (which is a leap year);
+  export const UTCMONTHDATE: 'utcmonthdate' = 'utcmonthdate';
+  export const UTCHOURSMINUTES: 'utchoursminutes' = 'utchoursminutes';
+  export const UTCHOURSMINUTESSECONDS: 'utchoursminutesseconds' = 'utchoursminutesseconds';
+  export const UTCMINUTESSECONDS: 'utcminutesseconds' = 'utcminutesseconds';
+  export const UTCSECONDSMILLISECONDS: 'utcsecondsmilliseconds' = 'utcsecondsmilliseconds';
+  export const UTCQUARTER: 'utcquarter' = 'utcquarter';
+  export const UTCYEARQUARTER: 'utcyearquarter' = 'utcyearquarter';
+  export const UTCQUARTERMONTH: 'utcquartermonth' = 'utcquartermonth';
+  export const UTCYEARQUARTERMONTH: 'utcyearquartermonth' = 'utcyearquartermonth';
 }
 
 export type TimeUnit = typeof TimeUnit.YEAR | typeof TimeUnit.MONTH | typeof TimeUnit.DAY | typeof TimeUnit.DATE | typeof TimeUnit.HOURS
@@ -34,7 +59,13 @@ export type TimeUnit = typeof TimeUnit.YEAR | typeof TimeUnit.MONTH | typeof Tim
   | typeof TimeUnit.YEARMONTHDATE | typeof TimeUnit.YEARMONTHDATEHOURS | typeof TimeUnit.YEARMONTHDATEHOURSMINUTES
   | typeof TimeUnit.YEARMONTHDATEHOURSMINUTESSECONDS | typeof TimeUnit.MONTHDATE | typeof TimeUnit.HOURSMINUTES
   | typeof TimeUnit.HOURSMINUTESSECONDS | typeof TimeUnit.MINUTESSECONDS | typeof TimeUnit.SECONDSMILLISECONDS
-  | typeof TimeUnit.QUARTER | typeof TimeUnit.YEARQUARTER | typeof TimeUnit.QUARTERMONTH | typeof TimeUnit.YEARQUARTERMONTH;
+  | typeof TimeUnit.QUARTER | typeof TimeUnit.YEARQUARTER | typeof TimeUnit.QUARTERMONTH | typeof TimeUnit.YEARQUARTERMONTH
+  | typeof TimeUnit.UTCYEAR | typeof TimeUnit.UTCMONTH | typeof TimeUnit.UTCDAY | typeof TimeUnit.UTCDATE | typeof TimeUnit.UTCHOURS
+  | typeof TimeUnit.UTCMINUTES | typeof TimeUnit.UTCSECONDS | typeof TimeUnit.UTCMILLISECONDS | typeof TimeUnit.UTCYEARMONTH
+  | typeof TimeUnit.UTCYEARMONTHDATE | typeof TimeUnit.UTCYEARMONTHDATEHOURS | typeof TimeUnit.UTCYEARMONTHDATEHOURSMINUTES
+  | typeof TimeUnit.UTCYEARMONTHDATEHOURSMINUTESSECONDS | typeof TimeUnit.UTCMONTHDATE | typeof TimeUnit.UTCHOURSMINUTES
+  | typeof TimeUnit.UTCHOURSMINUTESSECONDS | typeof TimeUnit.UTCMINUTESSECONDS | typeof TimeUnit.UTCSECONDSMILLISECONDS
+  | typeof TimeUnit.UTCQUARTER | typeof TimeUnit.UTCYEARQUARTER | typeof TimeUnit.UTCQUARTERMONTH | typeof TimeUnit.UTCYEARQUARTERMONTH;
 
 /** Time Unit that only corresponds to only one part of Date objects. */
 export const SINGLE_TIMEUNITS = [
@@ -46,7 +77,7 @@ export const SINGLE_TIMEUNITS = [
   TimeUnit.HOURS,
   TimeUnit.MINUTES,
   TimeUnit.SECONDS,
-  TimeUnit.MILLISECONDS,
+  TimeUnit.MILLISECONDS
 ];
 
 const SINGLE_TIMEUNIT_INDEX: Dict<boolean> = SINGLE_TIMEUNITS.reduce((d, timeUnit) => {
@@ -147,7 +178,7 @@ export const TIMEUNITS = [
   TimeUnit.HOURSMINUTES,
   TimeUnit.HOURSMINUTESSECONDS,
   TimeUnit.MINUTESSECONDS,
-  TimeUnit.SECONDSMILLISECONDS
+  TimeUnit.SECONDSMILLISECONDS,
 ];
 
 /** Returns true if fullTimeUnit contains the timeUnit, false otherwise. */
@@ -167,12 +198,13 @@ export function containsTimeUnit(fullTimeUnit: TimeUnit, timeUnit: TimeUnit) {
 export function fieldExpr(fullTimeUnit: TimeUnit, field: string): string {
   const fieldRef =  `datum[${stringValue(field)}]`;
 
+  const utc = isUTCTimeUnit(fullTimeUnit) ? 'utc' : '';
   function func(timeUnit: TimeUnit) {
     if (timeUnit === TimeUnit.QUARTER) {
       // quarter starting at 0 (0,3,6,9).
-      return `(quarter(${fieldRef})-1)`;
+      return `(${utc}quarter(${fieldRef})-1)`;
     } else {
-      return `${timeUnit}(${fieldRef})`;
+      return `${utc}${timeUnit}(${fieldRef})`;
     }
   }
 
@@ -226,7 +258,7 @@ export function smallestUnit(timeUnit: TimeUnit): string {
 }
 
 /** returns the signal expression used for axis labels for a time unit */
-export function formatExpression(timeUnit: TimeUnit, field: string, shortTimeLabels: boolean): string {
+export function formatExpression(timeUnit: TimeUnit, field: string, shortTimeLabels: boolean, isUTCScale: boolean): string {
   if (!timeUnit) {
     return undefined;
   }
@@ -283,7 +315,12 @@ export function formatExpression(timeUnit: TimeUnit, field: string, shortTimeLab
       // Add space between quarter and main time format
       expression += ` + ' ' + `;
     }
-    expression += `timeFormat(${field}, '${dateTimeComponents.join(' ')}')`;
+
+    if (isUTCScale) {
+      expression += `utcFormat(${field}, '${dateTimeComponents.join(' ')}')`;
+    } else {
+      expression += `timeFormat(${field}, '${dateTimeComponents.join(' ')}')`;
+    }
   }
 
   // If expression is still an empty string, return undefined instead.
@@ -300,4 +337,8 @@ export function isDiscreteByDefault(timeUnit: TimeUnit) {
       return true;
   }
   return false;
+}
+
+function isUTCTimeUnit(timeUnit: TimeUnit) {
+  return timeUnit.substr(0, 3) === 'utc';
 }

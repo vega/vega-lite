@@ -35,11 +35,6 @@ describe('Compile', function() {
         {
           name: 'height',
           update: "21"
-        },
-        {
-          name: 'unit',
-          value: {},
-          on: [{events: 'mousemove', update: 'group()._id ? group() : unit'}]
         }
       ]);
 
@@ -67,11 +62,6 @@ describe('Compile', function() {
         {
           name: 'height',
           update: "21"
-        },
-        {
-          name: 'unit',
-          value: {},
-          on: [{events: 'mousemove', update: 'group()._id ? group() : unit'}]
         }
       ]);
 

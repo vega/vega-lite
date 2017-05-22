@@ -63,7 +63,9 @@ export class DataFlowNode {
    * Remove node from the dataflow.
    */
   public remove() {
-    this._children.forEach(child => child.parent = this._parent);
+    for (const child of this._children) {
+      child.parent = this._parent;
+    }
     this._parent.removeChild(this);
   }
 
@@ -72,7 +74,9 @@ export class DataFlowNode {
     const newParent = parent.parent;
 
     // reconnect the children
-    this._children.forEach(c => c.parent = parent);
+    for (const child of this._children) {
+      child.parent = parent;
+    }
 
     // remove old links
     this._children = [];  // equivalent to removing every child link one by one

@@ -33,6 +33,9 @@
                     ],
                     "fields": [
                         "temp_max"
+                    ],
+                    "as": [
+                        "mean_temp_max"
                     ]
                 },
                 {
@@ -53,16 +56,6 @@
         {
             "name": "height",
             "update": "200"
-        },
-        {
-            "name": "unit",
-            "value": {},
-            "on": [
-                {
-                    "events": "mousemove",
-                    "update": "group()._id ? group() : unit"
-                }
-            ]
         }
     ],
     "marks": [

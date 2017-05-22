@@ -45,6 +45,9 @@
                     ],
                     "fields": [
                         "price"
+                    ],
+                    "as": [
+                        "mean_price"
                     ]
                 },
                 {
@@ -92,16 +95,6 @@
         {
             "name": "child_height",
             "update": "200"
-        },
-        {
-            "name": "unit",
-            "value": {},
-            "on": [
-                {
-                    "events": "mousemove",
-                    "update": "group()._id ? group() : unit"
-                }
-            ]
         }
     ],
     "marks": [

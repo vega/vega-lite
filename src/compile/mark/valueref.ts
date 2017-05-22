@@ -9,7 +9,7 @@ import {hasDiscreteDomain, isBinScale, Scale, ScaleType} from '../../scale';
 import {StackProperties} from '../../stack';
 import {contains} from '../../util';
 import {VgValueRef} from '../../vega.schema';
-import {formatSignalRef, numberFormat, timeFormatExpression} from '../common';
+import {formatSignalRef, numberFormat} from '../common';
 
 // TODO: we need to find a way to refactor these so that scaleName is a part of scale
 // but that's complicated.  For now, this is a huge step moving forward.

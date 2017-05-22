@@ -37,6 +37,9 @@
                     ],
                     "fields": [
                         "people"
+                    ],
+                    "as": [
+                        "sum_people"
                     ]
                 },
                 {
@@ -98,16 +101,6 @@
         {
             "name": "child_height",
             "update": "200"
-        },
-        {
-            "name": "unit",
-            "value": {},
-            "on": [
-                {
-                    "events": "mousemove",
-                    "update": "group()._id ? group() : unit"
-                }
-            ]
         }
     ],
     "marks": [
@@ -379,5 +372,10 @@
                 }
             }
         }
-    ]
+    ],
+    "config": {
+        "axis": {
+            "domainWidth": 1
+        }
+    }
 }

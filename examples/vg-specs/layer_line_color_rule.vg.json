@@ -60,6 +60,9 @@
                     ],
                     "fields": [
                         "price"
+                    ],
+                    "as": [
+                        "mean_price"
                     ]
                 }
             ]
@@ -89,16 +92,6 @@
         {
             "name": "layer_1_height",
             "update": "200"
-        },
-        {
-            "name": "unit",
-            "value": {},
-            "on": [
-                {
-                    "events": "mousemove",
-                    "update": "group()._id ? group() : unit"
-                }
-            ]
         }
     ],
     "marks": [

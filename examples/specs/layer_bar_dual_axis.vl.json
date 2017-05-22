@@ -3,7 +3,7 @@
   "data": {"url": "data/seattle-weather.csv"},
   "layer": [
     {
-      "mark": "line",
+      "mark": "bar",
       "encoding": {
         "x": {
           "timeUnit": "month",
@@ -34,7 +34,8 @@
           "type": "quantitative",
           "axis": {
             "grid": false
-          }
+          },
+          "scale": {"zero": false}
         },
         "color": {"value": "firebrick"}
       }

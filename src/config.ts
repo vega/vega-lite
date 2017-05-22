@@ -1,13 +1,15 @@
-import {AxisConfig} from './axis';
-import {BoxPlotConfig} from './compositemark';
+import {AxisConfig, AxisConfigMixins} from './axis';
+import {BoxPlotConfig, COMPOSITE_MARK_ROLES} from './compositemark';
+import {CompositeMarkConfigMixins, VL_ONLY_COMPOSITE_MARK_SPECIFIC_CONFIG_PROPERTY_INDEX} from './compositemark/index';
+import {VL_ONLY_GUIDE_CONFIG} from './guide';
 import {defaultLegendConfig, LegendConfig} from './legend';
-import {BarConfig, MarkConfig, TextConfig, TickConfig} from './mark';
+import {BarConfig, Mark, MarkConfig, MarkConfigMixins, PRIMITIVE_MARKS, TextConfig, TickConfig, VL_ONLY_MARK_SPECIFIC_CONFIG_PROPERTY_INDEX} from './mark';
 import * as mark from './mark';
 import {defaultScaleConfig, ScaleConfig} from './scale';
 import {defaultConfig as defaultSelectionConfig, SelectionConfig} from './selection';
 import {StackOffset} from './stack';
 import {TopLevelProperties} from './toplevelprops';
-import {duplicate, mergeDeep} from './util';
+import {duplicate, isObject, keys, mergeDeep} from './util';
 import {VgRangeScheme} from './vega.schema';
 
 export interface CellConfig {
@@ -133,10 +135,23 @@ export const defaultOverlayConfig: OverlayConfig = {
 
 export type RangeConfig = (number|string)[] | VgRangeScheme | {step: number};
 
-export interface Config  extends TopLevelProperties {
-  // TODO: add this back once we have top-down layout approach
-  // width?: number;
-  // height?: number;
+export interface VLOnlyConfig {
+  /**
+   * Default axis and legend title for count fields.
+   *
+   * __Default value:__ `'Number of Records'`.
+   *
+   * @type {string}
+   */
+  countTitle?: string;
+
+  /**
+   * Whether to filter invalid values (`null` and `NaN`) from the data.
+   * - By default (`undefined`), only quantitative and temporal fields are filtered.
+   * - If set to `true`, all data items with null values are filtered.
+   * - If `false`, all data items are included. In this case, null values will be interpreted as zeroes.
+   */
+  filterInvalid?: boolean;
 
   /**
    * D3 Number format for axis labels and text tables. For example "s" for SI units.(in the form of [D3 number format pattern](https://github.com/mbostock/d3/wiki/Formatting)).
@@ -154,70 +169,31 @@ export interface Config  extends TopLevelProperties {
    */
   timeFormat?: string;
 
-  /**
-   * Default axis and legend title for count fields.
-   *
-   * __Default value:__ `'Number of Records'`.
-   *
-   * @type {string}
-   */
-  countTitle?: string;
 
   /** Cell Config */
   cell?: CellConfig;
 
-  /** Default stack offset for stackable mark. */
-  stack?: StackOffset;
 
-  /** Mark Config */
-  mark?: MarkConfig;
-
-  // MARK-SPECIFIC CONFIGS
-  /** Area-Specific Config */
-  area?: MarkConfig;
-
-  /** Bar-Specific Config */
-  bar?: BarConfig;
-
-  /** Circle-Specific Config */
-  circle?: MarkConfig;
-
-  /** Line-Specific Config */
-  line?: MarkConfig;
-
-  /** Point-Specific Config */
-  point?: MarkConfig;
-
-  /** Rect-Specific Config */
-  rect?: MarkConfig;
-
-  /** Rule-Specific Config */
-  rule?: MarkConfig;
-
-  /** Square-Specific Config */
-  square?: MarkConfig;
-
-  /** Text-Specific Config */
-  text?: TextConfig;
-
-  /** Tick-Specific Config */
-  tick?: TickConfig;
-
-  /** Box Config */
-  box?: BoxPlotConfig;
-
-  boxWhisker?: MarkConfig;
-
-  boxMid?: MarkConfig;
-
-  // OTHER CONFIG
+  /** Facet Config */
+  facet?: FacetConfig;
 
   // FIXME: move this to line/area
   /** Mark Overlay Config */
   overlay?: OverlayConfig;
 
+
   /** Scale Config */
   scale?: ScaleConfig;
+
+  /** Selection Config */
+  selection?: SelectionConfig;
+
+  /** Default stack offset for stackable mark. */
+  stack?: StackOffset;
+
+}
+
+export interface Config  extends TopLevelProperties, VLOnlyConfig, MarkConfigMixins, CompositeMarkConfigMixins, AxisConfigMixins {
 
   /**
    * Scale range config, or properties defining named range arrays
@@ -227,60 +203,8 @@ export interface Config  extends TopLevelProperties {
    */
   range?: {[name: string]: RangeConfig};
 
-  /** Generic axis config. */
-  axis?: AxisConfig;
-
-  /**
-   * X-axis specific config.
-   */
-  axisX?: AxisConfig;
-
-  /**
-   * Y-axis specific config.
-   */
-  axisY?: AxisConfig;
-
-  /**
-   * Specific axis config for y-axis along the left edge of the chart.
-   */
-  axisLeft?: AxisConfig;
-
-  /**
-   * Specific axis config for y-axis along the right edge of the chart.
-   */
-  axisRight?: AxisConfig;
-
-  /**
-   * Specific axis config for x-axis along the top edge of the chart.
-   */
-  axisTop?: AxisConfig;
-
-  /**
-   * Specific axis config for x-axis along the bottom edge of the chart.
-   */
-  axixBottom?: AxisConfig;
-
-  /**
-   * Specific axis config for axes with "band" scales.
-   */
-  axisBand?: AxisConfig;
-
   /** Legend Config */
   legend?: LegendConfig;
-
-  /** Facet Config */
-  facet?: FacetConfig;
-
-  /** Selection Config */
-  selection?: SelectionConfig;
-
-  /**
-   * Whether to filter invalid values (`null` and `NaN`) from the data.
-   * - By default (`undefined`), only quantitative and temporal fields are filtered.
-   * - If set to `true`, all data items with null values are filtered.
-   * - If `false`, all data items are included. In this case, null values will be interpreted as zeroes.
-   */
-  filterInvalid?: boolean;
 
   // Support arbitrary key for role config
   // Note: Technically, the type for role config should be `MarkConfig`.
@@ -333,4 +257,62 @@ export const defaultConfig: Config = {
 
 export function initConfig(config: Config) {
   return mergeDeep(duplicate(defaultConfig), config);
+}
+
+const MARK_ROLES = [].concat(PRIMITIVE_MARKS, COMPOSITE_MARK_ROLES) as (Mark | typeof COMPOSITE_MARK_ROLES[0])[];
+
+const VL_ONLY_CONFIG_PROPERTIES: (keyof Config)[] = ['padding', 'numberFormat', 'timeFormat', 'countTitle', 'cell', 'stack', 'overlay', 'scale', 'facet', 'selection', 'filterInvalid'];
+
+const VL_ONLY_ALL_MARK_SPECIFIC_CONFIG_PROPERTY_INDEX = {
+  ...VL_ONLY_MARK_SPECIFIC_CONFIG_PROPERTY_INDEX,
+  ...VL_ONLY_COMPOSITE_MARK_SPECIFIC_CONFIG_PROPERTY_INDEX
+};
+
+export function stripConfig(config: Config) {
+  config = duplicate(config);
+
+  for (const prop of VL_ONLY_CONFIG_PROPERTIES) {
+    delete config[prop];
+  }
+
+  // Remove Vega-Lite only axis/legend config
+  if (config.axis) {
+    for (const prop of VL_ONLY_GUIDE_CONFIG) {
+      delete config.axis[prop];
+    }
+  }
+  if (config.legend) {
+    for (const prop of VL_ONLY_GUIDE_CONFIG) {
+      delete config.legend[prop];
+    }
+  }
+
+  // Remove Vega-Lite only generic mark config
+  if (config.mark) {
+    for (const prop of mark.VL_ONLY_MARK_CONFIG_PROPERTIES) {
+      delete config.mark[prop];
+    }
+  }
+
+  // Remove Vega-Lite Mark/Role config
+  for (const role of MARK_ROLES) {
+    for (const prop of mark.VL_ONLY_MARK_CONFIG_PROPERTIES) {
+      delete config[role][prop];
+    }
+    const vlOnlyMarkSpecificConfigs = VL_ONLY_ALL_MARK_SPECIFIC_CONFIG_PROPERTY_INDEX[role];
+    if (vlOnlyMarkSpecificConfigs) {
+      for (const prop of vlOnlyMarkSpecificConfigs) {
+        delete config[role][prop];
+      }
+    }
+  }
+
+  // Remove empty config objects
+  for (const prop in config) {
+    if (isObject(config[prop]) && keys(config[prop]).length === 0) {
+      delete config[prop];
+    }
+  }
+
+  return keys(config).length > 0 ? config : undefined;
 }
