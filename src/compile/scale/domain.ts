@@ -134,8 +134,7 @@ function parseSingleChannelDomain(scale: Scale, model: UnitModel, channel:Channe
         };
       }
     }
-  } else if (sort) { // have sort -- only for ordinal
-
+  } else if (sort) {
     return {
       // If sort by aggregation of a specified sort field, we need to use RAW table,
       // so we can aggregate values for the scale independently from the main aggregation.
