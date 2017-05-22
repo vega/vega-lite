@@ -1,5 +1,6 @@
 import {ScaleChannel} from '../channel';
 import {CellConfig, Config} from '../config';
+import {Projection} from '../projection';
 import {Repeat} from '../repeat';
 import {initConcatResolve, ResolveMapping} from '../resolve';
 import {ConcatSpec, isVConcatSpec, RepeatSpec} from '../spec';
@@ -18,6 +19,8 @@ export class ConcatModel extends Model {
 
   public readonly children: Model[];
 
+  public readonly projection: Projection;
+
   public readonly isVConcat: boolean;
 
   private readonly resolve: ResolveMapping;
@@ -26,6 +29,7 @@ export class ConcatModel extends Model {
     super(spec, parent, parentGivenName, config);
 
     this.resolve = initConcatResolve(spec.resolve || {});
+    this.projection = spec.projection;
 
     this.isVConcat = isVConcatSpec(spec);
 
@@ -147,7 +151,6 @@ export class ConcatModel extends Model {
   }
 
   public assembleProjections(): VgProjection[] {
-    // aggregate scales from children into one array
     // TODO: reduce redundency?
     return this.children.reduce((projections, c) => {
       return projections.concat(c.assembleProjections());

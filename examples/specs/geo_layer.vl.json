@@ -5,26 +5,29 @@
   },
   "layer": [
     {
-      "data": {
-          "url": "data/us-10m.csv",
-          "format": {
-            "type": "topojson",
-            "feature": "counties"
-          }
-      },
       "mark": "geoshape",
+      "data": {
+        "url": "data/us-10m.json",
+        "format": {
+          "type": "topojson",
+          "feature": "states"
+        }
+      },
       "encoding": {
         "color": {
-          "field": "rate"
+          "value": "black"
         },
         "opacity": {
-          "value": 0.7
+          "value": 0.8
         }
       }
     },
     {
       "data": {
-        "url": "data/us-state-capitals.json"
+        "url": "data/airports.csv",
+        "format": {
+          "type": "csv"
+        }
       },
       "mark": "circle",
       "encoding": {
@@ -35,6 +38,10 @@
         "y": {
           "field": "latitude",
           "type": "latitude"
+        },
+        "size": {"value": 10},
+        "color": {
+          "value": "steelblue"
         }
       }
     }

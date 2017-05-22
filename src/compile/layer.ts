@@ -13,7 +13,6 @@ import {parseData} from './data/parse';
 import {assembleLayoutLayerSignals} from './layout/index';
 import {moveSharedLegendUp} from './legend/parse';
 import {Model} from './model';
-import {initLayerProjection} from './projection/init';
 import {RepeaterValue} from './repeat';
 import {unionDomains} from './scale/domain';
 import {moveSharedScaleUp} from './scale/parse';
@@ -35,7 +34,7 @@ export class LayerModel extends Model {
 
     this.resolve = initLayerResolve(spec.resolve || {});
 
-    this.projection = spec.projection || initLayerProjection(spec.layer);
+    this.projection = spec.projection;
 
     const unitSize = {
       ...parentUnitSize,

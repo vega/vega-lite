@@ -6,21 +6,20 @@ import {getMarkConfig} from '../common';
 import {MarkCompiler} from './base';
 import * as ref from './valueref';
 
-import {isFieldDef, isProjection} from '../../fielddef';
+import {Field, FieldDef, isFieldDef, isProjection} from '../../fielddef';
 import {LATITUDE, LONGITUDE} from '../../type';
 import {contains, keys} from '../../util';
 
 function encodeEntry(model: UnitModel, fixedShape?: 'circle' | 'square') {
   const {config, encoding, width, height} = model;
+
   return {
-    ...(isProjection(encoding.x) || isProjection(encoding.y)) ? {
-      // TODO: obviously these can't be hardcoded like this
-      x: {'field': model.getName(LONGITUDE)},
-      y: {'field': model.getName(LATITUDE)}
-    } : {
-      x: mixins.pointPosition('x', model, ref.midX(width, config)),
-      y: mixins.pointPosition('y', model, ref.midY(height, config))
-    },
+    ...isProjection(encoding.x) ? {
+      x: {'field': (encoding.x as FieldDef<Field>).field as string + '_geo'},
+    } : mixins.pointPosition('x', model, ref.midX(width, config)),
+    ...isProjection(encoding.y) ? {
+      y: {'field': (encoding.y as FieldDef<Field>).field as string + '_geo'},
+    } : mixins.pointPosition('y', model, ref.midY(height, config)),
     ...mixins.nonPosition('size', model),
     ...mixins.color(model),
     ...mixins.text(model, 'tooltip'),

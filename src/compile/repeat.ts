@@ -5,11 +5,12 @@ import {Encoding} from '../encoding';
 import {Facet} from '../facet';
 import {Field, FieldDef, isRepeatRef} from '../fielddef';
 import * as log from '../log';
+import {Projection} from '../projection';
 import {Repeat} from '../repeat';
 import {initRepeatResolve, ResolveMapping} from '../resolve';
 import {RepeatSpec} from '../spec';
 import {Dict, keys} from '../util';
-import {isSignalRefDomain, VgData, VgLayout, VgScale, VgSignal} from '../vega.schema';
+import {isSignalRefDomain, VgData, VgLayout, VgProjection, VgScale, VgSignal} from '../vega.schema';
 import {buildModel} from './common';
 import {assembleData} from './data/assemble';
 import {parseData} from './data/parse';
@@ -79,6 +80,8 @@ function replaceRepeater(mapping: EncodingOrFacet<Field>, repeater: RepeaterValu
 export class RepeatModel extends Model {
   public readonly repeat: Repeat;
 
+  public readonly projection: Projection;
+
   public readonly children: Model[];
 
   private readonly resolve: ResolveMapping;
@@ -87,6 +90,7 @@ export class RepeatModel extends Model {
     super(spec, parent, parentGivenName, config);
 
     this.resolve = initRepeatResolve(spec.resolve || {});
+    this.projection = spec.projection;
 
     this.repeat = spec.repeat;
     this.children = this._initChildren(spec, this.repeat, repeatValues, config);
@@ -118,6 +122,12 @@ export class RepeatModel extends Model {
     this.component.data = parseData(this);
     this.children.forEach((child) => {
       child.parseData();
+    });
+  }
+
+  public parseProjection() {
+    this.children.forEach(child => {
+      child.parseProjection();
     });
   }
 
@@ -214,6 +224,13 @@ export class RepeatModel extends Model {
     return this.children.reduce((scales, c) => {
       return scales.concat(c.assembleScales());
     }, super.assembleScales());
+  }
+
+  public assembleProjections(): VgProjection[] {
+    // TODO: reduce redundency?
+    return this.children.reduce((projections, c) => {
+      return projections.concat(c.assembleProjections());
+    }, []);
   }
 
   public assembleLayout(): VgLayout {

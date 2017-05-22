@@ -2,7 +2,7 @@
   "$schema": "https://vega.github.io/schema/vega-lite/v2.json",
   "mark": "geoshape",
   "data": {
-    "url": "data/us-10m.csv",
+    "url": "data/us-10m.json",
     "format": {
       "type": "topojson",
       "feature": "counties"
@@ -12,10 +12,9 @@
     "lookup": "id",
     "from": {
       "data": {
-        "url": "data/unemployment.csv",
+        "url": "data/unemployment.tsv",
         "format": {
-          "type": "tsv",
-          "parse": "auto"
+          "type": "tsv"
         }
       },
       "key": "id",
@@ -27,7 +26,8 @@
   },
   "encoding": {
     "color": {
-      "field": "rate"
+      "field": "rate",
+      "type": "quantitative"
     },
     "opacity": {
       "value": 0.7

@@ -62,6 +62,7 @@
                                 "box-plot",
                                 "circle",
                                 "error-bar",
+                                "geoshape",
                                 "line",
                                 "point",
                                 "rect",
@@ -73,7 +74,7 @@
                             "type": "string"
                         }
                     ],
-                    "description": "A string describing the mark type (one of `\"bar\"`, `\"circle\"`, `\"square\"`, `\"tick\"`, `\"line\"`,\n`\"area\"`, `\"point\"`, `\"rule\"`, and `\"text\"`) or a [mark definition object](mark.html#mark-def)."
+                    "description": "A string describing the mark type (one of `\"bar\"`, `\"circle\"`, `\"square\"`, `\"tick\"`, `\"line\"`,\n`\"area\"`, `\"point\"`, `\"rule\"`, `\"geoshape\"`, and `\"text\"`) or a [mark definition object](mark.html#mark-def)."
                 },
                 "name": {
                     "description": "Name of the visualization for later reference.",
@@ -105,6 +106,10 @@
                     ],
                     "description": "The default visualization padding, in pixels, from the edge of the visualization canvas to the data rectangle. This can be a single number or an object with `\"top\"`, `\"left\"`, `\"right\"`, `\"bottom\"` properties.\n\n__Default value__: `5`",
                     "minimum": 0
+                },
+                "projection": {
+                    "$ref": "#/definitions/Projection",
+                    "description": "A geo projection"
                 },
                 "selection": {
                     "additionalProperties": {
@@ -237,6 +242,10 @@
                     "description": "The default visualization padding, in pixels, from the edge of the visualization canvas to the data rectangle. This can be a single number or an object with `\"top\"`, `\"left\"`, `\"right\"`, `\"bottom\"` properties.\n\n__Default value__: `5`",
                     "minimum": 0
                 },
+                "projection": {
+                    "$ref": "#/definitions/Projection",
+                    "description": "A geo projection"
+                },
                 "resolve": {
                     "additionalProperties": false,
                     "properties": {
@@ -368,6 +377,10 @@
                     ],
                     "description": "The default visualization padding, in pixels, from the edge of the visualization canvas to the data rectangle. This can be a single number or an object with `\"top\"`, `\"left\"`, `\"right\"`, `\"bottom\"` properties.\n\n__Default value__: `5`",
                     "minimum": 0
+                },
+                "projection": {
+                    "$ref": "#/definitions/Projection",
+                    "description": "A geo projection"
                 },
                 "resolve": {
                     "additionalProperties": false,
@@ -507,6 +520,10 @@
                     ],
                     "description": "The default visualization padding, in pixels, from the edge of the visualization canvas to the data rectangle. This can be a single number or an object with `\"top\"`, `\"left\"`, `\"right\"`, `\"bottom\"` properties.\n\n__Default value__: `5`",
                     "minimum": 0
+                },
+                "projection": {
+                    "$ref": "#/definitions/Projection",
+                    "description": "A geo projection"
                 },
                 "repeat": {
                     "$ref": "#/definitions/Repeat"
@@ -649,6 +666,10 @@
                     ],
                     "description": "The default visualization padding, in pixels, from the edge of the visualization canvas to the data rectangle. This can be a single number or an object with `\"top\"`, `\"left\"`, `\"right\"`, `\"bottom\"` properties.\n\n__Default value__: `5`",
                     "minimum": 0
+                },
+                "projection": {
+                    "$ref": "#/definitions/Projection",
+                    "description": "A geo projection"
                 },
                 "resolve": {
                     "additionalProperties": false,
@@ -806,6 +827,10 @@
                     ],
                     "description": "The default visualization padding, in pixels, from the edge of the visualization canvas to the data rectangle. This can be a single number or an object with `\"top\"`, `\"left\"`, `\"right\"`, `\"bottom\"` properties.\n\n__Default value__: `5`",
                     "minimum": 0
+                },
+                "projection": {
+                    "$ref": "#/definitions/Projection",
+                    "description": "A geo projection"
                 },
                 "resolve": {
                     "additionalProperties": false,
@@ -2142,6 +2167,10 @@
                     "description": "Whether to filter invalid values (`null` and `NaN`) from the data.\n- By default (`undefined`), only quantitative and temporal fields are filtered.\n- If set to `true`, all data items with null values are filtered.\n- If `false`, all data items are included. In this case, null values will be interpreted as zeroes.",
                     "type": "boolean"
                 },
+                "geoshape": {
+                    "$ref": "#/definitions/MarkConfig",
+                    "description": "Geoshape-Specific Config"
+                },
                 "legend": {
                     "$ref": "#/definitions/LegendConfig",
                     "description": "Legend Config"
@@ -2192,6 +2221,10 @@
                 "point": {
                     "$ref": "#/definitions/MarkConfig",
                     "description": "Point-Specific Config"
+                },
+                "projection": {
+                    "$ref": "#/definitions/ProjectionConfig",
+                    "description": "Projection Config"
                 },
                 "range": {
                     "additionalProperties": {
@@ -2460,7 +2493,7 @@
                             "$ref": "#/definitions/LegendFieldDef<Field, string>"
                         }
                     ],
-                    "description": "The symbol's shape (only for `point` marks). The supported values are\n`\"circle\"` (default), `\"square\"`, `\"cross\"`, `\"diamond\"`, `\"triangle-up\"`,\nor `\"triangle-down\"`, or else a custom SVG path string."
+                    "description": "The symbol's shape (only for `point` and `geoshape` marks). The supported values are\n`\"circle\"` (default), `\"square\"`, `\"cross\"`, `\"diamond\"`, `\"triangle-up\"`,\nor `\"triangle-down\"`, or else a custom SVG path string."
                 },
                 "size": {
                     "anyOf": [
@@ -2612,7 +2645,7 @@
                             "$ref": "#/definitions/LegendFieldDef<Field, string>"
                         }
                     ],
-                    "description": "The symbol's shape (only for `point` marks). The supported values are\n`\"circle\"` (default), `\"square\"`, `\"cross\"`, `\"diamond\"`, `\"triangle-up\"`,\nor `\"triangle-down\"`, or else a custom SVG path string."
+                    "description": "The symbol's shape (only for `point` and `geoshape` marks). The supported values are\n`\"circle\"` (default), `\"square\"`, `\"cross\"`, `\"diamond\"`, `\"triangle-up\"`,\nor `\"triangle-down\"`, or else a custom SVG path string."
                 },
                 "size": {
                     "anyOf": [
@@ -2849,7 +2882,7 @@
                 },
                 "type": {
                     "$ref": "#/definitions/Type",
-                    "description": "The encoded field's type of measurement. This can be either a full type\nname (`\"quantitative\"`, `\"temporal\"`, `\"ordinal\"`,  and `\"nominal\"`)\nor an initial character of the type name (`\"Q\"`, `\"T\"`, `\"O\"`, `\"N\"`).\nThis property is case-insensitive."
+                    "description": "The encoded field's type of measurement. This can be either a full type\nname (`\"quantitative\"`, `\"temporal\"`, `\"ordinal\"`, `\"latitude\"`, `\"longitude\"`  and `\"nominal\"`)\nor an initial character of the type name (`\"Q\"`, `\"T\"`, `\"O\"`, `\"N\"`).\nThis property is case-insensitive."
                 }
             },
             "type": "object"
@@ -2928,7 +2961,7 @@
                 },
                 "type": {
                     "$ref": "#/definitions/Type",
-                    "description": "The encoded field's type of measurement. This can be either a full type\nname (`\"quantitative\"`, `\"temporal\"`, `\"ordinal\"`,  and `\"nominal\"`)\nor an initial character of the type name (`\"Q\"`, `\"T\"`, `\"O\"`, `\"N\"`).\nThis property is case-insensitive."
+                    "description": "The encoded field's type of measurement. This can be either a full type\nname (`\"quantitative\"`, `\"temporal\"`, `\"ordinal\"`, `\"latitude\"`, `\"longitude\"`  and `\"nominal\"`)\nor an initial character of the type name (`\"Q\"`, `\"T\"`, `\"O\"`, `\"N\"`).\nThis property is case-insensitive."
                 }
             },
             "type": "object"
@@ -3011,6 +3044,10 @@
                 "name": {
                     "description": "Name of the visualization for later reference.",
                     "type": "string"
+                },
+                "projection": {
+                    "$ref": "#/definitions/Projection",
+                    "description": "A geo projection"
                 },
                 "resolve": {
                     "additionalProperties": false,
@@ -3096,6 +3133,10 @@
                 "name": {
                     "description": "Name of the visualization for later reference.",
                     "type": "string"
+                },
+                "projection": {
+                    "$ref": "#/definitions/Projection",
+                    "description": "A geo projection"
                 },
                 "repeat": {
                     "$ref": "#/definitions/Repeat"
@@ -3214,6 +3255,7 @@
                                 "box-plot",
                                 "circle",
                                 "error-bar",
+                                "geoshape",
                                 "line",
                                 "point",
                                 "rect",
@@ -3225,11 +3267,15 @@
                             "type": "string"
                         }
                     ],
-                    "description": "A string describing the mark type (one of `\"bar\"`, `\"circle\"`, `\"square\"`, `\"tick\"`, `\"line\"`,\n`\"area\"`, `\"point\"`, `\"rule\"`, and `\"text\"`) or a [mark definition object](mark.html#mark-def)."
+                    "description": "A string describing the mark type (one of `\"bar\"`, `\"circle\"`, `\"square\"`, `\"tick\"`, `\"line\"`,\n`\"area\"`, `\"point\"`, `\"rule\"`, `\"geoshape\"`, and `\"text\"`) or a [mark definition object](mark.html#mark-def)."
                 },
                 "name": {
                     "description": "Name of the visualization for later reference.",
                     "type": "string"
+                },
+                "projection": {
+                    "$ref": "#/definitions/Projection",
+                    "description": "A geo projection"
                 },
                 "selection": {
                     "additionalProperties": {
@@ -3685,7 +3731,7 @@
                 },
                 "type": {
                     "$ref": "#/definitions/Type",
-                    "description": "The encoded field's type of measurement. This can be either a full type\nname (`\"quantitative\"`, `\"temporal\"`, `\"ordinal\"`,  and `\"nominal\"`)\nor an initial character of the type name (`\"Q\"`, `\"T\"`, `\"O\"`, `\"N\"`).\nThis property is case-insensitive."
+                    "description": "The encoded field's type of measurement. This can be either a full type\nname (`\"quantitative\"`, `\"temporal\"`, `\"ordinal\"`, `\"latitude\"`, `\"longitude\"`  and `\"nominal\"`)\nor an initial character of the type name (`\"Q\"`, `\"T\"`, `\"O\"`, `\"N\"`).\nThis property is case-insensitive."
                 }
             },
             "type": "object"
@@ -3794,7 +3840,7 @@
                 },
                 "type": {
                     "$ref": "#/definitions/Type",
-                    "description": "The encoded field's type of measurement. This can be either a full type\nname (`\"quantitative\"`, `\"temporal\"`, `\"ordinal\"`,  and `\"nominal\"`)\nor an initial character of the type name (`\"Q\"`, `\"T\"`, `\"O\"`, `\"N\"`).\nThis property is case-insensitive."
+                    "description": "The encoded field's type of measurement. This can be either a full type\nname (`\"quantitative\"`, `\"temporal\"`, `\"ordinal\"`, `\"latitude\"`, `\"longitude\"`  and `\"nominal\"`)\nor an initial character of the type name (`\"Q\"`, `\"T\"`, `\"O\"`, `\"N\"`).\nThis property is case-insensitive."
                 }
             },
             "type": "object"
@@ -3876,6 +3922,7 @@
                 "area",
                 "bar",
                 "circle",
+                "geoshape",
                 "line",
                 "point",
                 "rect",
@@ -4056,7 +4103,7 @@
                 },
                 "type": {
                     "$ref": "#/definitions/Mark",
-                    "description": "The mark type.\nOne of `\"bar\"`, `\"circle\"`, `\"square\"`, `\"tick\"`, `\"line\"`,\n`\"area\"`, `\"point\"`, `\"rule\"`, and `\"text\"`."
+                    "description": "The mark type.\nOne of `\"bar\"`, `\"circle\"`, `\"square\"`, `\"tick\"`, `\"line\"`,\n`\"area\"`, `\"point\"`,`\"geoshape\"`, `\"rule\"`, and `\"text\"`."
                 }
             },
             "required": [
@@ -4216,7 +4263,7 @@
                 },
                 "type": {
                     "$ref": "#/definitions/Type",
-                    "description": "The encoded field's type of measurement. This can be either a full type\nname (`\"quantitative\"`, `\"temporal\"`, `\"ordinal\"`,  and `\"nominal\"`)\nor an initial character of the type name (`\"Q\"`, `\"T\"`, `\"O\"`, `\"N\"`).\nThis property is case-insensitive."
+                    "description": "The encoded field's type of measurement. This can be either a full type\nname (`\"quantitative\"`, `\"temporal\"`, `\"ordinal\"`, `\"latitude\"`, `\"longitude\"`  and `\"nominal\"`)\nor an initial character of the type name (`\"Q\"`, `\"T\"`, `\"O\"`, `\"N\"`).\nThis property is case-insensitive."
                 }
             },
             "type": "object"
@@ -4347,10 +4394,120 @@
                 },
                 "type": {
                     "$ref": "#/definitions/Type",
-                    "description": "The encoded field's type of measurement. This can be either a full type\nname (`\"quantitative\"`, `\"temporal\"`, `\"ordinal\"`,  and `\"nominal\"`)\nor an initial character of the type name (`\"Q\"`, `\"T\"`, `\"O\"`, `\"N\"`).\nThis property is case-insensitive."
+                    "description": "The encoded field's type of measurement. This can be either a full type\nname (`\"quantitative\"`, `\"temporal\"`, `\"ordinal\"`, `\"latitude\"`, `\"longitude\"`  and `\"nominal\"`)\nor an initial character of the type name (`\"Q\"`, `\"T\"`, `\"O\"`, `\"N\"`).\nThis property is case-insensitive."
                 }
             },
             "type": "object"
+        },
+        "Projection": {
+            "additionalProperties": false,
+            "properties": {
+                "center": {
+                    "items": {
+                        "type": "number"
+                    },
+                    "type": "array"
+                },
+                "clipAngle": {
+                    "type": "number"
+                },
+                "clipExtent": {
+                    "items": {
+                        "type": "number"
+                    },
+                    "type": "array"
+                },
+                "precision": {
+                    "$ref": "#/definitions/String"
+                },
+                "rotate": {
+                    "description": "The rotation of the projection.",
+                    "items": {
+                        "type": "number"
+                    },
+                    "type": "array"
+                },
+                "scale": {
+                    "type": "number"
+                },
+                "translate": {
+                    "items": {
+                        "type": "number"
+                    },
+                    "type": "array"
+                },
+                "type": {
+                    "$ref": "#/definitions/ProjectionType"
+                },
+                "zoom": {
+                    "type": "number"
+                }
+            },
+            "type": "object"
+        },
+        "ProjectionConfig": {
+            "additionalProperties": false,
+            "properties": {
+                "center": {
+                    "items": {
+                        "type": "number"
+                    },
+                    "type": "array"
+                },
+                "clipAngle": {
+                    "type": "number"
+                },
+                "clipExtent": {
+                    "items": {
+                        "type": "number"
+                    },
+                    "type": "array"
+                },
+                "precision": {
+                    "$ref": "#/definitions/String"
+                },
+                "rotate": {
+                    "description": "The rotation of the projection.",
+                    "items": {
+                        "type": "number"
+                    },
+                    "type": "array"
+                },
+                "scale": {
+                    "type": "number"
+                },
+                "translate": {
+                    "items": {
+                        "type": "number"
+                    },
+                    "type": "array"
+                },
+                "type": {
+                    "$ref": "#/definitions/ProjectionType"
+                },
+                "zoom": {
+                    "type": "number"
+                }
+            },
+            "type": "object"
+        },
+        "ProjectionType": {
+            "enum": [
+                "albers",
+                "albersUsa",
+                "azimuthalEqualArea",
+                "azimuthalEquidistant",
+                "conicConformal",
+                "conicEqualArea",
+                "conicEquidistant",
+                "equirectangular",
+                "gnomonic",
+                "mercator",
+                "orthographic",
+                "stereographic",
+                "transverseMercator"
+            ],
+            "type": "string"
         },
         "RangeFilter": {
             "additionalProperties": false,
@@ -5083,6 +5240,180 @@
             ],
             "type": "string"
         },
+        "String": {
+            "additionalProperties": false,
+            "description": "Allows manipulation and formatting of text strings and determination and location of substrings within strings.",
+            "properties": {
+                "charAt": {
+                    "additionalProperties": false,
+                    "description": "Returns the character at the specified index.",
+                    "properties": {
+                    },
+                    "type": "object"
+                },
+                "charCodeAt": {
+                    "additionalProperties": false,
+                    "description": "Returns the Unicode value of the character at the specified location.",
+                    "properties": {
+                    },
+                    "type": "object"
+                },
+                "concat": {
+                    "additionalProperties": false,
+                    "description": "Returns a string that contains the concatenation of two or more strings.",
+                    "properties": {
+                    },
+                    "type": "object"
+                },
+                "indexOf": {
+                    "additionalProperties": false,
+                    "description": "Returns the position of the first occurrence of a substring.",
+                    "properties": {
+                    },
+                    "type": "object"
+                },
+                "lastIndexOf": {
+                    "additionalProperties": false,
+                    "description": "Returns the last occurrence of a substring in the string.",
+                    "properties": {
+                    },
+                    "type": "object"
+                },
+                "length": {
+                    "description": "Returns the length of a String object.",
+                    "type": "number"
+                },
+                "localeCompare": {
+                    "additionalProperties": false,
+                    "description": "Determines whether two strings are equivalent in the current locale.\nDetermines whether two strings are equivalent in the current or specified locale.",
+                    "properties": {
+                    },
+                    "type": "object"
+                },
+                "match": {
+                    "additionalProperties": false,
+                    "description": "Matches a string with a regular expression, and returns an array containing the results of that search.\nMatches a string with a regular expression, and returns an array containing the results of that search.",
+                    "properties": {
+                    },
+                    "type": "object"
+                },
+                "replace": {
+                    "additionalProperties": false,
+                    "description": "Replaces text in a string, using a regular expression or search string.\nReplaces text in a string, using a regular expression or search string.\nReplaces text in a string, using a regular expression or search string.\nReplaces text in a string, using a regular expression or search string.",
+                    "properties": {
+                    },
+                    "type": "object"
+                },
+                "search": {
+                    "additionalProperties": false,
+                    "description": "Finds the first substring match in a regular expression search.\nFinds the first substring match in a regular expression search.",
+                    "properties": {
+                    },
+                    "type": "object"
+                },
+                "slice": {
+                    "additionalProperties": false,
+                    "description": "Returns a section of a string.",
+                    "properties": {
+                    },
+                    "type": "object"
+                },
+                "split": {
+                    "additionalProperties": false,
+                    "description": "Split a string into substrings using the specified separator and return them as an array.\nSplit a string into substrings using the specified separator and return them as an array.",
+                    "properties": {
+                    },
+                    "type": "object"
+                },
+                "substr": {
+                    "additionalProperties": false,
+                    "description": "Gets a substring beginning at the specified location and having the specified length.",
+                    "properties": {
+                    },
+                    "type": "object"
+                },
+                "substring": {
+                    "additionalProperties": false,
+                    "description": "Returns the substring at the specified location within a String object.",
+                    "properties": {
+                    },
+                    "type": "object"
+                },
+                "toLocaleLowerCase": {
+                    "additionalProperties": false,
+                    "description": "Converts all alphabetic characters to lowercase, taking into account the host environment's current locale.",
+                    "properties": {
+                    },
+                    "type": "object"
+                },
+                "toLocaleUpperCase": {
+                    "additionalProperties": false,
+                    "description": "Returns a string where all alphabetic characters have been converted to uppercase, taking into account the host environment's current locale.",
+                    "properties": {
+                    },
+                    "type": "object"
+                },
+                "toLowerCase": {
+                    "additionalProperties": false,
+                    "description": "Converts all the alphabetic characters in a string to lowercase.",
+                    "properties": {
+                    },
+                    "type": "object"
+                },
+                "toString": {
+                    "additionalProperties": false,
+                    "description": "Returns a string representation of a string.",
+                    "properties": {
+                    },
+                    "type": "object"
+                },
+                "toUpperCase": {
+                    "additionalProperties": false,
+                    "description": "Converts all the alphabetic characters in a string to uppercase.",
+                    "properties": {
+                    },
+                    "type": "object"
+                },
+                "trim": {
+                    "additionalProperties": false,
+                    "description": "Removes the leading and trailing white space and line terminator characters from a string.",
+                    "properties": {
+                    },
+                    "type": "object"
+                },
+                "valueOf": {
+                    "additionalProperties": false,
+                    "description": "Returns the primitive value of the specified object.",
+                    "properties": {
+                    },
+                    "type": "object"
+                }
+            },
+            "required": [
+                "charAt",
+                "charCodeAt",
+                "concat",
+                "indexOf",
+                "lastIndexOf",
+                "length",
+                "localeCompare",
+                "match",
+                "replace",
+                "search",
+                "slice",
+                "split",
+                "substr",
+                "substring",
+                "toLocaleLowerCase",
+                "toLocaleUpperCase",
+                "toLowerCase",
+                "toString",
+                "toUpperCase",
+                "trim",
+                "valueOf"
+            ],
+            "type": "object"
+        },
         "Summarize": {
             "additionalProperties": false,
             "properties": {
@@ -5354,7 +5685,7 @@
                 },
                 "type": {
                     "$ref": "#/definitions/Type",
-                    "description": "The encoded field's type of measurement. This can be either a full type\nname (`\"quantitative\"`, `\"temporal\"`, `\"ordinal\"`,  and `\"nominal\"`)\nor an initial character of the type name (`\"Q\"`, `\"T\"`, `\"O\"`, `\"N\"`).\nThis property is case-insensitive."
+                    "description": "The encoded field's type of measurement. This can be either a full type\nname (`\"quantitative\"`, `\"temporal\"`, `\"ordinal\"`, `\"latitude\"`, `\"longitude\"`  and `\"nominal\"`)\nor an initial character of the type name (`\"Q\"`, `\"T\"`, `\"O\"`, `\"N\"`).\nThis property is case-insensitive."
                 }
             },
             "type": "object"
@@ -5586,6 +5917,8 @@
         },
         "Type": {
             "enum": [
+                "latitude",
+                "longitude",
                 "nominal",
                 "ordinal",
                 "quantitative",

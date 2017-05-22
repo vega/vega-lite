@@ -1,7 +1,8 @@
-import {isFieldDef} from '../../fielddef';
+import {Field, FieldDef, isFieldDef, isProjection} from '../../fielddef';
 import {LATITUDE, LONGITUDE} from '../../type';
 import {contains, duplicate, keys} from '../../util';
 import {VgGeoPointTransform} from '../../vega.schema';
+import {ModelWithField} from '../model';
 import {UnitModel} from '../unit';
 import {DataFlowNode} from './dataflow';
 
@@ -20,28 +21,28 @@ export class GeoPointNode extends DataFlowNode {
     super();
   }
 
-  public static make(model: UnitModel) {
-    const {encoding} = model;
-
-    const geo = {};
-    keys(encoding).forEach(key => {
-      const def = encoding[key];
-      if (isFieldDef(def) && contains([LONGITUDE, LATITUDE], def.type)) {
-        geo[def.type] = def;
+  public static make(model: ModelWithField): GeoPointNode {
+    const geo = model.reduceFieldDef((geoFields, def, channel) => {
+      if (isProjection(def)) {
+        geoFields[def.type] = {
+          channel: channel,
+          field: def.field
+        };
       }
-    });
+      return geoFields;
+    }, {});
 
     if (keys(geo).length <= 0) { // lat lng not found
       return null;
     }
 
-    const geopoint = {
+    const transform: GeoPointTransform = {
       projection: model.getName('projection'),
       fields: [geo[LONGITUDE].field, geo[LATITUDE].field],
-      as: [model.getName(LONGITUDE), model.getName(LATITUDE)]
+      as: [geo[LONGITUDE].field + '_geo', geo[LATITUDE].field + '_geo']
     };
 
-    return new GeoPointNode(geopoint);
+    return new GeoPointNode(transform);
   }
 
   public merge(other: GeoPointNode) {

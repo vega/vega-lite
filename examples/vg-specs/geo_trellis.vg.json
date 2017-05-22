@@ -1,0 +1,244 @@
+failed to noramlize
+{
+    "$schema": "http://vega.github.io/schema/vega/v3.0.json",
+    "autosize": "pad",
+    "padding": 5,
+    "projections": [
+        {
+            "name": "child_projection",
+            "type": "albersUsa"
+        }
+    ],
+    "data": [
+        {
+            "name": "source_1",
+            "url": "data/us-10m.json",
+            "format": {
+                "type": "topojson",
+                "feature": "states"
+            }
+        },
+        {
+            "name": "source_0",
+            "url": "data/income.json",
+            "format": {
+                "type": "json",
+                "parse": {
+                    "pct": "number"
+                }
+            },
+            "transform": [
+                {
+                    "type": "lookup",
+                    "from": "source_1",
+                    "key": "id",
+                    "fields": [
+                        "id"
+                    ],
+                    "as": [
+                        "geo"
+                    ]
+                },
+                {
+                    "type": "filter",
+                    "expr": "datum[\"pct\"] !== null && !isNaN(datum[\"pct\"])"
+                }
+            ]
+        },
+        {
+            "name": "row",
+            "source": "source_0",
+            "transform": [
+                {
+                    "type": "aggregate",
+                    "groupby": [
+                        "group"
+                    ]
+                }
+            ]
+        }
+    ],
+    "signals": [
+        {
+            "name": "child_width",
+            "update": "21"
+        },
+        {
+            "name": "child_height",
+            "update": "21"
+        }
+    ],
+    "marks": [
+        {
+            "name": "nested_main_group",
+            "type": "group",
+            "layout": {
+                "padding": {
+                    "row": 10,
+                    "column": 10
+                },
+                "offset": 10,
+                "columns": 1,
+                "bounds": "full"
+            },
+            "marks": [
+                {
+                    "name": "row_title",
+                    "role": "row-title",
+                    "type": "group",
+                    "marks": [
+                        {
+                            "type": "text",
+                            "role": "row-title-text",
+                            "encode": {
+                                "update": {
+                                    "y": {
+                                        "signal": "0.5 * height"
+                                    },
+                                    "align": {
+                                        "value": "right"
+                                    },
+                                    "text": {
+                                        "value": "group"
+                                    },
+                                    "fill": {
+                                        "value": "black"
+                                    },
+                                    "fontWeight": {
+                                        "value": "bold"
+                                    },
+                                    "angle": {
+                                        "value": 270
+                                    }
+                                }
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "row_header",
+                    "type": "group",
+                    "role": "row-header",
+                    "from": {
+                        "data": "row"
+                    },
+                    "title": {
+                        "text": {
+                            "signal": "parent[\"group\"]"
+                        },
+                        "offset": 10,
+                        "orient": "left",
+                        "encode": {
+                            "update": {
+                                "fontWeight": {
+                                    "value": "normal"
+                                },
+                                "angle": {
+                                    "value": 0
+                                },
+                                "fontSize": {
+                                    "value": 10
+                                },
+                                "align": {
+                                    "value": "right"
+                                },
+                                "baseline": {
+                                    "value": "middle"
+                                }
+                            }
+                        }
+                    },
+                    "encode": {
+                        "update": {
+                            "height": {
+                                "signal": "child_height"
+                            }
+                        }
+                    }
+                },
+                {
+                    "name": "cell",
+                    "type": "group",
+                    "from": {
+                        "facet": {
+                            "name": "facet",
+                            "data": "source_0",
+                            "groupby": [
+                                "group"
+                            ]
+                        }
+                    },
+                    "encode": {
+                        "update": {
+                            "width": {
+                                "signal": "child_width"
+                            },
+                            "height": {
+                                "signal": "child_height"
+                            },
+                            "stroke": {
+                                "value": "#ccc"
+                            },
+                            "strokeWidth": {
+                                "value": 1
+                            },
+                            "fill": {
+                                "value": "transparent"
+                            }
+                        }
+                    },
+                    "marks": [
+                        {
+                            "name": "child_marks",
+                            "type": "shape",
+                            "role": "geoshape",
+                            "from": {
+                                "data": "facet"
+                            },
+                            "encode": {
+                                "update": {
+                                    "fill": {
+                                        "scale": "color",
+                                        "field": "pct"
+                                    },
+                                    "opacity": {
+                                        "value": 0.7
+                                    }
+                                }
+                            },
+                            "transform": [
+                                {
+                                    "type": "geoshape",
+                                    "projection": "child_projection",
+                                    "as": "shape",
+                                    "field": "geo"
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        }
+    ],
+    "scales": [
+        {
+            "name": "color",
+            "type": "sequential",
+            "domain": {
+                "data": "source_0",
+                "field": "pct"
+            },
+            "range": "ramp",
+            "nice": false,
+            "zero": false
+        }
+    ],
+    "legends": [
+        {
+            "fill": "color",
+            "format": "s",
+            "title": "pct",
+            "type": "gradient"
+        }
+    ]
+}

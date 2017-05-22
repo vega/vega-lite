@@ -117,8 +117,6 @@ export function supportMark(channel: Channel, mark: Mark) {
  */
 export function getSupportedMark(channel: Channel): SupportedMark {
   switch (channel) {
-    case X:
-    case Y:
     case COLOR:
     case DETAIL:
     case TOOLTIP:
@@ -130,6 +128,12 @@ export function getSupportedMark(channel: Channel): SupportedMark {
         point: true, tick: true, rule: true, circle: true, square: true,
         bar: true, rect: true, line: true, area: true, text: true, geoshape: true
       };
+    case X:
+    case Y:
+      return {
+        point: true, tick: true, rule: true, circle: true, square: true,
+        bar: true, rect: true, line: true, area: true, text: true
+      };
     case X2:
     case Y2:
       return {
@@ -138,7 +142,7 @@ export function getSupportedMark(channel: Channel): SupportedMark {
     case SIZE:
       return {
         point: true, tick: true, rule: true, circle: true, square: true,
-        bar: true, text: true, line: true
+        bar: true, text: true, line: true, geoshape: true
       };
     case SHAPE:
       return {point: true, geoshape: true};

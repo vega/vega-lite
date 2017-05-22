@@ -2,35 +2,36 @@
   "$schema": "https://vega.github.io/schema/vega-lite/v2.json",
   "mark": "geoshape",
   "data": {
-    "url": "data/us-10m.csv",
-    "format": {
-      "type": "topojson",
-      "feature": "counties"
-    }
+    "url": "data/income.json"
   },
   "transform": [{
     "lookup": "id",
     "from": {
       "data": {
-        "url": "data/unemployment.csv",
+        "url": "data/us-10m.json",
         "format": {
-          "type": "tsv",
-          "parse": "auto"
+          "type": "topojson",
+          "feature": "states"
         }
       },
-      "key": "id",
-      "fields": ["rate"]
-    }
+      "key": "id"
+    },
+    "as": "geo"
   }],
   "projection": {
     "type": "albersUsa"
   },
   "encoding": {
+    "shape": {
+      "field": "geo"
+    },
     "color": {
-      "field": "rate"
+      "field": "pct",
+      "type": "quantitative"
     },
     "row": {
-      "field": "groupVar"
+      "field": "group",
+      "type": "nominal"
     },
     "opacity": {
       "value": 0.7

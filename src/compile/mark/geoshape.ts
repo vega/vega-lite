@@ -15,7 +15,7 @@ export const geoshape: MarkCompiler = {
     return {
       ...mixins.color(model),
       ...mixins.nonPosition('opacity', model),
-      ...mixins.nonPosition('shape', model, {defaultValue: getMarkConfig('shape', 'geoshape', config) as string})
+      ...mixins.nonPosition('size', model)
     };
   },
   postEncodingTransform: (model: UnitModel): VgGeoShapeTransform[] => {

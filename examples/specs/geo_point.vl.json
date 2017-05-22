@@ -1,11 +1,16 @@
 {
   "$schema": "https://vega.github.io/schema/vega-lite/v2.json",
   "projection": {
-    "type": "albersUsa"
+    "type": "albersUsa",
+    "scale": 1100
   },
   "data": {
-    "url": "data/us-state-capitals.json"
+    "url": "data/zipcodes.csv",
+    "format": {
+      "type": "csv"
+    }
   },
+  "transform": [{"calculate": "substring(datum.zip_code, 0, 1)", "as": "digit"}],
   "mark": "circle",
   "encoding": {
     "x": {
@@ -15,6 +20,8 @@
     "y": {
       "field": "latitude",
       "type": "latitude"
-    }
+    },
+    "size": {"value": 1},
+    "color": {"field": "digit", "type": "nominal"}
   }
 }
