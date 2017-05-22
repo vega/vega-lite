@@ -165,6 +165,12 @@ export function assembleUnitSelectionData(model: UnitModel, data: VgData[]): VgD
 }
 
 export function assembleUnitSelectionMarks(model: UnitModel, marks: any[]): any[] {
+  /* TODO: remove this! Hack to make geo work */
+  if (model.projection) {
+    return marks;
+  }
+  /* REMOVE ABOVE */
+
   let clipGroup = false;
   let selMarks = marks;
   forEachSelection(model, (selCmpt, selCompiler) => {
@@ -188,6 +194,12 @@ export function assembleUnitSelectionMarks(model: UnitModel, marks: any[]): any[
 }
 
 export function assembleLayerSelectionMarks(model: LayerModel, marks: any[]): any[] {
+  /* TODO: remove this! Hack to make geo work */
+  if (model.projection) {
+    return marks;
+  }
+  /* REMOVE ABOVE */
+
   let clipGroup = false;
   model.children.forEach(child => {
     if (child instanceof UnitModel) {

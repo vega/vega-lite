@@ -64,7 +64,7 @@ function parsePathMark(model: UnitModel) {
       // FIXME: support sorting path order (in connected scatterplot)
       from: {data: (details.length > 0 ? FACETED_PATH_PREFIX : '') + model.requestDataName(MAIN)},
       encode: {update: markCompiler[mark].encodeEntry(model)},
-      transform: postEncodingTransform ? postEncodingTransform(model) : []
+      ...postEncodingTransform ? {transform: postEncodingTransform(model)} : {}
     }
   ];
 
@@ -87,7 +87,7 @@ function parsePathMark(model: UnitModel) {
           height: {field: {group: 'height'}}
         }
       },
-      transform: postEncodingTransform ? postEncodingTransform(model) : [],
+      ...postEncodingTransform ? {transform: postEncodingTransform(model)} : {},
       marks: pathMarks
     }];
   } else {
@@ -112,7 +112,7 @@ function parseNonPathMark(model: UnitModel) {
     ...(role? {role} : {}),
     from: {data: model.requestDataName(MAIN)},
     encode: {update: markCompiler[mark].encodeEntry(model)},
-    transform: postEncodingTransform ? postEncodingTransform(model) : [],
+    ...postEncodingTransform ? {transform: postEncodingTransform(model)} : {},
   });
 
   return marks;
@@ -149,6 +149,8 @@ function detailFields(model: UnitModel): string[] {
 function clip(model: UnitModel) {
   const xScaleDomain = model.scaleDomain(X);
   const yScaleDomain = model.scaleDomain(Y);
-  return (xScaleDomain && isSelectionDomain(xScaleDomain)) ||
-    (yScaleDomain && isSelectionDomain(yScaleDomain)) ? {clip: true} : {};
+  return !model.projection && (
+    (xScaleDomain && isSelectionDomain(xScaleDomain)) ||
+    (yScaleDomain && isSelectionDomain(yScaleDomain))
+  ) ? {clip: true} : {};
 }

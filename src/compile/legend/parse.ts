@@ -6,17 +6,21 @@ import {VgLegend} from '../../vega.schema';
 import {numberFormat} from '../common';
 import {UnitModel} from '../unit';
 
+import {GEOSHAPE} from '../../mark';
 import {Model} from '../model';
 import {LegendComponent, LegendComponentIndex} from './component';
 import * as encode from './encode';
 import * as rules from './rules';
 
 export function parseLegendComponent(model: UnitModel): LegendComponentIndex {
-  return [COLOR, SIZE, SHAPE, OPACITY].reduce(function(legendComponent, channel) {
+  return [COLOR, SIZE, SHAPE, OPACITY].reduce(function(legendComponentIndex, channel) {
     if (model.legend(channel)) {
-      legendComponent[channel] = parseLegend(model, channel);
+      const legendComponents = parseLegend(model, channel);
+      if (legendComponents) {
+        legendComponentIndex[channel] = legendComponents;
+      }
     }
-    return legendComponent;
+    return legendComponentIndex;
   }, {});
 }
 

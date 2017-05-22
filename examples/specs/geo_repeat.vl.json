@@ -1,27 +1,26 @@
 {
   "$schema": "https://vega.github.io/schema/vega-lite/v2.json",
-  "repeat": {"column": ["var1", "var2"]},
+  "repeat": {"row": ["population", "engineers", "hurricanes"]},
   "spec": {
     "mark": "geoshape",
     "data": {
-      "url": "data/us-10m.csv",
+      "url": "data/us-10m.json",
       "format": {
         "type": "topojson",
-        "feature": "counties"
+        "feature": "states"
       }
     },
     "transform": [{
       "lookup": "id",
       "from": {
         "data": {
-          "url": "data/multi.csv",
+          "url": "data/population_engineers_hurricanes.csv",
           "format": {
-            "type": "tsv",
-            "parse": "auto"
+            "type": "csv"
           }
         },
         "key": "id",
-        "fields": ["var1", "var2"]
+        "fields": ["population", "engineers", "hurricanes"]
       }
     }],
     "projection": {
@@ -29,7 +28,8 @@
     },
     "encoding": {
       "color": {
-        "field": {"repeat": "column"}
+        "field": {"repeat": "row"},
+        "type": "quantitative"
       },
       "opacity": {
         "value": 0.7

@@ -14,7 +14,8 @@ import {Scale, ScaleType} from './scale';
 import {SortField, SortOrder} from './sort';
 import {StackOffset} from './stack';
 import {isDiscreteByDefault, TimeUnit} from './timeunit';
-import {getFullName, LATITUDE, LONGITUDE, NOMINAL, ORDINAL, QUANTITATIVE, TEMPORAL, Type} from './type';
+import {BinTransform, SummarizeTransform, TimeUnitTransform} from './transform';
+import {getFullName, Type} from './type';
 import {isBoolean, isString, stringValue} from './util';
 
 /**
@@ -254,20 +255,20 @@ export function field(fieldDef: FieldDefBase<string>, opt: FieldRefOption = {}):
 }
 
 export function isProjection(fieldDef: FieldDef<Field>) {
-  return isFieldDef(fieldDef) && (fieldDef.type === LATITUDE || fieldDef.type === LONGITUDE);
+  return isFieldDef(fieldDef) && (fieldDef.type === 'latitude' || fieldDef.type === 'longitude');
 }
 
 export function isDiscrete(fieldDef: FieldDef<Field>) {
   switch (fieldDef.type) {
-    case NOMINAL:
-    case ORDINAL:
+    case 'nominal':
+    case 'ordinal':
       return true;
-    case LATITUDE:
-    case LONGITUDE:
+    case 'latitude':
+    case 'longitude':
       return false;
-    case QUANTITATIVE:
+    case 'quantitative':
       return !!fieldDef.bin;
-    case TEMPORAL:
+    case 'temporal':
       // TODO: deal with custom scale type case.
       return isDiscreteByDefault(fieldDef.timeUnit);
   }
@@ -296,20 +297,20 @@ export function title(fieldDef: FieldDef<string>, config: Config) {
 
 export function defaultType(fieldDef: FieldDef<Field>, channel: Channel): Type {
   if (fieldDef.timeUnit) {
-    return TEMPORAL;
+    return 'temporal';
   }
   if (fieldDef.bin) {
-    return QUANTITATIVE;
+    return 'quantitative';
   }
   switch (rangeType(channel)) {
     case 'continuous':
-      return QUANTITATIVE;
+      return 'quantitative';
     case 'discrete':
-      return NOMINAL;
+      return 'nominal';
     case 'flexible': // color
-      return NOMINAL;
+      return 'nominal';
     default:
-      return QUANTITATIVE;
+      return 'quantitative';
   }
 }
 
@@ -431,7 +432,7 @@ export function channelCompatibility(fieldDef: FieldDef<Field>, channel: Channel
       return COMPATIBLE;
 
     case 'shape':
-      if (fieldDef.type !== NOMINAL) { // TODO: allow for shape to be type GEOJSON
+      if (fieldDef.type !== 'nominal') { // TODO: allow for shape to be type GEOJSON
         return {
           compatible: false,
           warning: 'Shape channel should be used with nominal data only'
@@ -440,7 +441,7 @@ export function channelCompatibility(fieldDef: FieldDef<Field>, channel: Channel
       return COMPATIBLE;
 
     case 'order':
-      if (fieldDef.type === NOMINAL) {
+      if (fieldDef.type === 'nominal') {
         return {
           compatible: false,
           warning: `Channel order is inappropriate for nominal field, which has no inherent order.`

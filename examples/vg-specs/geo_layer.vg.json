@@ -1,0 +1,148 @@
+{
+    "$schema": "http://vega.github.io/schema/vega/v3.0.json",
+    "autosize": "pad",
+    "padding": 5,
+    "projections": [
+        {
+            "name": "layer_0_projection",
+            "type": "albersUsa"
+        },
+        {
+            "name": "layer_1_projection",
+            "type": "albersUsa"
+        }
+    ],
+    "data": [
+        {
+            "name": "source_0",
+            "url": "data/us-10m.json",
+            "format": {
+                "type": "topojson",
+                "feature": "states"
+            }
+        },
+        {
+            "name": "source_1",
+            "url": "data/airports.csv",
+            "format": {
+                "type": "csv"
+            },
+            "transform": [
+                {
+                    "type": "geopoint",
+                    "projection": "layer_1_projection",
+                    "fields": [
+                        "longitude",
+                        "latitude"
+                    ],
+                    "as": [
+                        "longitude_geo",
+                        "latitude_geo"
+                    ]
+                }
+            ]
+        }
+    ],
+    "signals": [
+        {
+            "name": "width",
+            "update": "max(layer_0_width, layer_1_width)"
+        },
+        {
+            "name": "height",
+            "update": "max(layer_0_height, layer_1_height)"
+        },
+        {
+            "name": "layer_0_width",
+            "update": "21"
+        },
+        {
+            "name": "layer_0_height",
+            "update": "21"
+        },
+        {
+            "name": "layer_1_width",
+            "update": "21"
+        },
+        {
+            "name": "layer_1_height",
+            "update": "21"
+        }
+    ],
+    "marks": [
+        {
+            "name": "nested_main_group",
+            "type": "group",
+            "encode": {
+                "update": {
+                    "width": {
+                        "signal": "width"
+                    },
+                    "height": {
+                        "signal": "height"
+                    },
+                    "fill": {
+                        "value": "transparent"
+                    }
+                }
+            },
+            "marks": [
+                {
+                    "name": "layer_0_marks",
+                    "type": "shape",
+                    "role": "geoshape",
+                    "from": {
+                        "data": "source_0"
+                    },
+                    "encode": {
+                        "update": {
+                            "fill": {
+                                "value": "black"
+                            },
+                            "opacity": {
+                                "value": 0.8
+                            }
+                        }
+                    },
+                    "transform": [
+                        {
+                            "type": "geoshape",
+                            "projection": "layer_0_projection",
+                            "as": "shape"
+                        }
+                    ]
+                },
+                {
+                    "name": "layer_1_marks",
+                    "type": "symbol",
+                    "role": "circle",
+                    "from": {
+                        "data": "source_1"
+                    },
+                    "encode": {
+                        "update": {
+                            "x": {
+                                "field": "longitude_geo"
+                            },
+                            "y": {
+                                "field": "latitude_geo"
+                            },
+                            "size": {
+                                "value": 10
+                            },
+                            "fill": {
+                                "value": "steelblue"
+                            },
+                            "shape": {
+                                "value": "circle"
+                            },
+                            "opacity": {
+                                "value": 0.7
+                            }
+                        }
+                    }
+                }
+            ]
+        }
+    ]
+}

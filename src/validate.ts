@@ -34,7 +34,7 @@ export const DEFAULT_SUPPORTED_CHANNEL_TYPE: SupportedChannelMap = {
   line:     toSet(['row', 'column', 'x', 'y', 'color', 'detail']), // TODO: add size when Vega supports
   area:     toSet(['row', 'column', 'x', 'y', 'color', 'detail']),
   tick:     toSet(['row', 'column', 'x', 'y', 'color', 'detail']),
-  geoshape: toSet(['row', 'column', 'x', 'y', 'color', 'detail']),
+  geoshape: toSet(['row', 'column', 'x', 'y', 'color', 'detail', 'shape']),
   bar:      toSet(['row', 'column', 'x', 'y', 'size', 'color', 'detail']),
   circle:   toSet(['row', 'column', 'x', 'y', 'color', 'size', 'detail']),
   square:   toSet(['row', 'column', 'x', 'y', 'color', 'size', 'detail']),

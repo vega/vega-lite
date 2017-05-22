@@ -172,6 +172,9 @@ export interface MarkConfigMixins {
   /** Point-Specific Config */
   point?: MarkConfig;
 
+  /** Geoshape-Specific Config */
+  geoshape?: MarkConfig;
+
   /** Rect-Specific Config */
   rect?: MarkConfig;
 

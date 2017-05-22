@@ -14,7 +14,7 @@ import {UnitSize, UnitSpec} from '../spec';
 import {stack, StackProperties} from '../stack';
 import {LATITUDE, LONGITUDE} from '../type';
 import {Dict, duplicate, extend, vals} from '../util';
-import {VgData, VgEncodeEntry, VgLayout, VgSignal} from '../vega.schema';
+import {VgData, VgEncodeEntry, VgLayout, VgProjection, VgSignal} from '../vega.schema';
 import {AxisIndex} from './axis/component';
 import {parseAxisComponent} from './axis/parse';
 import {applyConfig} from './common';
@@ -99,7 +99,7 @@ export class UnitModel extends ModelWithField {
     // TODO: in parent, if no projection is specified, and some child has a projection
     //       set projection equal to the first projection found in children (from first child to last child)
     const parentProjection = parent ? parent.projection : {};
-    this.projection = initProjection(this.config, spec.projection, parentProjection, mark, encoding);
+    this.projection = initProjection(spec.projection, parentProjection, this.config, mark, encoding);
 
     // Selections will be initialized upon parse.
     this.selection = spec.selection;
@@ -336,6 +336,10 @@ export class UnitModel extends ModelWithField {
 
   public assembleLayoutSignals(): VgSignal[] {
     return assembleLayoutUnitSignals(this);
+  }
+
+  public assembleProjections(): VgProjection[] {
+    return this.component.projections || [];
   }
 
   public assembleMarks() {

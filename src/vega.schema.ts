@@ -271,6 +271,13 @@ export interface VgLookupTransform {
   default?: string;
 }
 
+export interface VgGeoPointTransform {
+  type: 'geopoint';
+  projection: string; // the name of the projection
+  fields: string[];
+  as?: string[];
+}
+
 export interface VgAxisEncode {
   ticks?: VgGuideEncode;
   labels?: VgGuideEncode;
@@ -289,7 +296,7 @@ export interface VgLegendEncode {
 
 export type VgGuideEncode = any; // TODO: replace this (See guideEncode in Vega Schema)
 
-export type VgTransform = VgBinTransform | VgExtentTransform | VgFormulaTransform | VgAggregateTransform | VgFilterTransform | VgImputeTransform | VgStackTransform | VgCollectTransform | VgLookupTransform;
+export type VgTransform = VgBinTransform | VgExtentTransform | VgFormulaTransform | VgAggregateTransform | VgFilterTransform | VgImputeTransform | VgStackTransform | VgCollectTransform | VgLookupTransform | VgGeoPointTransform;
 
 export interface VgGeoShapeTransform {
   type: 'geoshape';

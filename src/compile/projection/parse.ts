@@ -24,7 +24,9 @@ export function parseProjection(model: Model): VgProjection {
   };
 
   PROJECTION_PROPERTIES.forEach((property) => {
-    projectionComponent[property] = projection[property];
+    if (property in projection) {
+      projectionComponent[property] = projection[property];
+    }
   });
 
   return projectionComponent;

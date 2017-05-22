@@ -6,6 +6,7 @@ import {isSignalRefDomain, VgScale} from '../../vega.schema';
 
 import {UnitModel} from '../unit';
 
+import {GEOSHAPE} from '../../mark';
 import {Model} from '../model';
 import {ScaleComponent, ScaleComponentIndex} from './component';
 import {parseDomain, unionDomains} from './domain';
@@ -42,6 +43,11 @@ export const NON_TYPE_DOMAIN_RANGE_VEGA_SCALE_PROPERTIES: (keyof (Scale | VgScal
  */
 export function parseScale(model: UnitModel, channel: ScaleChannel) {
   if (!model.scale(channel)) {
+    return null;
+  }
+
+  // shape is not a scale channel for geoshape mark
+  if (model.mark() === GEOSHAPE && channel === SHAPE) {
     return null;
   }
 

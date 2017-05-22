@@ -10,6 +10,7 @@ import {BinNode} from './bin';
 import {DataFlowNode, OutputNode} from './dataflow';
 import {FacetNode} from './facet';
 import {ParseNode} from './formatparse';
+import {GeoPointNode} from './geopoint';
 import {NonPositiveFilterNode} from './nonpositivefilter';
 import {NullFilterNode} from './nullfilter';
 import {iterateFromLeaves} from './optimizers';
@@ -187,6 +188,7 @@ function makeWalkTree(data: VgData[]) {
     if (node instanceof FilterNode ||
       node instanceof NullFilterNode ||
       node instanceof CalculateNode ||
+      node instanceof GeoPointNode ||
       node instanceof AggregateNode ||
       node instanceof OrderNode ||
       node instanceof LookupNode) {
