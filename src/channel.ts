@@ -94,6 +94,7 @@ export interface SupportedMark {
   bar?: boolean;
   rect?: boolean;
   line?: boolean;
+  geoshape?: boolean;
   area?: boolean;
   text?: boolean;
   tooltip?: boolean;
@@ -127,7 +128,7 @@ export function getSupportedMark(channel: Channel): SupportedMark {
     case COLUMN:
       return { // all marks
         point: true, tick: true, rule: true, circle: true, square: true,
-        bar: true, rect: true, line: true, area: true, text: true
+        bar: true, rect: true, line: true, area: true, text: true, geoshape: true
       };
     case X2:
     case Y2:
@@ -140,9 +141,10 @@ export function getSupportedMark(channel: Channel): SupportedMark {
         bar: true, text: true, line: true
       };
     case SHAPE:
-      return {point: true};
+      return {point: true, geoshape: true};
     case TEXT:
       return {text: true};
+
   }
 }
 

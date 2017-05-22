@@ -21,7 +21,7 @@ export function color(model: UnitModel) {
 
   // If there is no fill, always fill symbols
   // with transparent fills https://github.com/vega/vega-lite/issues/1316
-  if (!e.fill && util.contains(['bar', 'point', 'circle', 'square'], model.mark())) {
+  if (!e.fill && util.contains(['bar', 'point', 'circle', 'square', 'geoshape'], model.mark())) {
     e.fill = {value: 'transparent'};
   }
   return e;

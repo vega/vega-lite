@@ -230,6 +230,15 @@ export type VgGuideEncode = any; // TODO: replace this (See guideEncode in Vega 
 
 export type VgTransform = VgBinTransform | VgExtentTransform | VgFormulaTransform | VgAggregateTransform | VgFilterTransform | VgImputeTransform | VgStackTransform | VgCollectTransform | VgLookupTransform;
 
+export interface VgGeoShapeTransform {
+  type: 'geoshape';
+  projection: string; // the name of the projection
+  field?: VgFieldRef;
+  as?: string;
+}
+
+export type VgPostEncodingTransform = VgGeoShapeTransform;
+
 export interface VgStackTransform {
   type: 'stack';
   offset?: StackOffset;
