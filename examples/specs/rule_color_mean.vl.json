@@ -1,0 +1,15 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v2.json",
+  "description": "Average Stock prices of 5 Tech Companies.",
+  "data": {"url": "data/stocks.csv"},
+  "mark": "rule",
+  "encoding": {
+    "y": {
+      "field": "price",
+      "type": "quantitative",
+      "aggregate": "mean"
+    },
+    "size": {"value": 2},
+    "color": {"field": "symbol","type": "nominal"}
+  }
+}
