@@ -27,11 +27,11 @@ export declare function assembleScale(model: Model): {
         field?: string;
         encoding?: string;
     };
-    range: string | {
+    range: string | VgDataRef | (string | number | VgDataRef)[] | {
         scheme: string;
         extent?: number[];
         count?: number;
-    } | VgDataRef | (string | number | VgDataRef)[] | {
+    } | {
         step: number;
     };
     clamp?: boolean;

@@ -1,10 +1,9 @@
-import { CompositeMark } from './compositemark';
 import { Config } from './config';
 import { Data } from './data';
 import { Encoding, EncodingWithFacet } from './encoding';
 import { Facet } from './facet';
 import { Field, FieldDef } from './fielddef';
-import { Mark, MarkDef } from './mark';
+import { AnyMark, Mark, MarkDef } from './mark';
 import { Repeat } from './repeat';
 import { ResolveMapping } from './resolve';
 import { SelectionDef } from './selection';
@@ -85,11 +84,11 @@ export declare type UnitSpec = GenericUnitSpec<Encoding<Field>, Mark | MarkDef>;
 /**
  * Unit spec that can contain composite mark
  */
-export declare type CompositeUnitSpec = GenericUnitSpec<Encoding<Field>, CompositeMark | Mark | MarkDef>;
+export declare type CompositeUnitSpec = GenericUnitSpec<Encoding<Field>, AnyMark>;
 /**
  * Unit spec that can contain composite mark and row or column channels.
  */
-export declare type FacetedCompositeUnitSpec = GenericUnitSpec<EncodingWithFacet<Field>, CompositeMark | Mark | MarkDef>;
+export declare type FacetedCompositeUnitSpec = GenericUnitSpec<EncodingWithFacet<Field>, AnyMark>;
 export interface GenericLayerSpec<U extends GenericUnitSpec<any, any>> extends BaseSpec, UnitSize {
     /**
      * Unit specs that will be layered.

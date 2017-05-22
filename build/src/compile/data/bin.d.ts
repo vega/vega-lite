@@ -1,7 +1,8 @@
 import { Bin } from '../../bin';
+import { BinTransform } from '../../transform';
 import { Dict } from '../../util';
 import { VgTransform } from '../../vega.schema';
-import { ModelWithField } from '../model';
+import { Model, ModelWithField } from '../model';
 import { DataFlowNode } from './dataflow';
 export interface BinComponent {
     bin: Bin;
@@ -16,7 +17,8 @@ export declare class BinNode extends DataFlowNode {
     private bins;
     clone(): BinNode;
     constructor(bins: Dict<BinComponent>);
-    static make(model: ModelWithField): BinNode;
+    static makeBinFromEncoding(model: ModelWithField): BinNode;
+    static makeBinFromTransform(model: Model, t: BinTransform): BinNode;
     merge(other: BinNode): void;
     producedFields(): {};
     dependentFields(): {};

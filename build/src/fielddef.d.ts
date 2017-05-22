@@ -116,6 +116,7 @@ export interface TextFieldDef<F> extends FieldDef<F> {
 export declare type ChannelDef<F> = FieldDef<F> | ValueDef<any>;
 export declare function isFieldDef(channelDef: ChannelDef<any>): channelDef is FieldDef<any> | PositionFieldDef<any> | LegendFieldDef<any, any> | OrderFieldDef<any> | TextFieldDef<any>;
 export declare function isValueDef(channelDef: ChannelDef<any>): channelDef is ValueDef<any>;
+export declare function isScaleFieldDef(channelDef: ChannelDef<any>): channelDef is ScaleFieldDef<any>;
 export interface FieldRefOption {
     /** exclude bin, aggregate, timeUnit */
     nofn?: boolean;
@@ -139,7 +140,8 @@ export declare function defaultType(fieldDef: FieldDef<Field>, channel: Channel)
 /**
  * Convert type to full, lowercase type, or augment the fieldDef with a default type if missing.
  */
-export declare function normalize(channelDef: ChannelDef<string>, channel: Channel): ValueDef<any> | FieldDef<Field>;
+export declare function normalize(channelDef: ChannelDef<string>, channel: Channel): FieldDef<Field> | ValueDef<any>;
+export declare function normalizeBin(bin: Bin | boolean, channel: Channel): Bin;
 export declare function channelCompatibility(fieldDef: FieldDef<Field>, channel: Channel): {
     compatible: boolean;
     warning?: string;

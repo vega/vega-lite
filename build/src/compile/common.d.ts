@@ -28,7 +28,7 @@ export declare function numberFormat(fieldDef: FieldDef<string>, specifiedFormat
 /**
  * Returns the time expression used for axis/legend labels or text mark for a temporal field
  */
-export declare function timeFormatExpression(field: string, timeUnit: TimeUnit, format: string, shortTimeLabels: boolean, timeFormatConfig: string): string;
+export declare function timeFormatExpression(field: string, timeUnit: TimeUnit, format: string, shortTimeLabels: boolean, timeFormatConfig: string, isUTCScale: boolean): string;
 /**
  * Return Vega sort parameters (tuple of field and order).
  */

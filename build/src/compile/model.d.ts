@@ -7,9 +7,11 @@ import { BaseSpec } from '../spec';
 import { Transform } from '../transform';
 import { Dict } from '../util';
 import { VgAxis, VgData, VgEncodeEntry, VgLayout, VgLegend, VgMarkGroup, VgScale, VgSignal } from '../vega.schema';
-import { AxesComponent } from './axis/index';
+import { AxisComponentIndex } from './axis/component';
 import { DataComponent } from './data/index';
 import { LayoutHeaderComponent } from './layout/header';
+import { LegendComponentIndex } from './legend/component';
+import { ScaleComponentIndex } from './scale/component';
 import { SelectionComponent } from './selection/selection';
 /**
  * Composable Components that are intermediate results of the parsing phase of the
@@ -18,12 +20,12 @@ import { SelectionComponent } from './selection/selection';
  */
 export interface Component {
     data: DataComponent;
-    scales: Dict<VgScale>;
+    scales: ScaleComponentIndex;
     selection: Dict<SelectionComponent>;
     /** Dictionary mapping channel to VgAxis definition */
-    axes: AxesComponent;
+    axes: AxisComponentIndex;
     /** Dictionary mapping channel to VgLegend definition */
-    legends: Dict<VgLegend>;
+    legends: LegendComponentIndex;
     layoutHeaders: {
         row?: LayoutHeaderComponent;
         column?: LayoutHeaderComponent;

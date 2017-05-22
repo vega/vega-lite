@@ -1,5 +1,5 @@
+import { CompositeMark, CompositeMarkDef } from './compositemark/index';
 import { Interpolate, Orient, VgMarkConfig } from './vega.schema';
-export { Orient } from './vega.schema';
 export declare namespace Mark {
     const AREA: 'area';
     const BAR: 'bar';
@@ -79,11 +79,16 @@ export interface MarkDef {
      */
     tension?: number;
 }
-export declare function isMarkDef(mark: string | MarkDef): mark is MarkDef;
-export declare function isPrimitiveMark(mark: string | MarkDef): mark is Mark;
+export declare type AnyMark = CompositeMark | CompositeMarkDef | Mark | MarkDef;
+export declare function isMarkDef(mark: AnyMark): mark is (MarkDef | CompositeMarkDef);
+export declare function isPrimitiveMark(mark: CompositeMark | CompositeMarkDef | Mark | MarkDef): mark is Mark;
 export declare const STROKE_CONFIG: string[];
 export declare const FILL_CONFIG: string[];
 export declare const FILL_STROKE_CONFIG: any[];
+export declare const VL_ONLY_MARK_CONFIG_PROPERTIES: (keyof MarkConfig)[];
+export declare const VL_ONLY_MARK_SPECIFIC_CONFIG_PROPERTY_INDEX: {
+    [k in (typeof PRIMITIVE_MARKS[0])]?: (keyof MarkConfigMixins[k])[];
+};
 export interface MarkConfig extends VgMarkConfig {
     /**
      * Whether the mark's color should be used as fill color instead of stroke color.
@@ -102,6 +107,30 @@ export interface MarkConfig extends VgMarkConfig {
     color?: string;
 }
 export declare const defaultMarkConfig: MarkConfig;
+export interface MarkConfigMixins {
+    /** Mark Config */
+    mark?: MarkConfig;
+    /** Area-Specific Config */
+    area?: MarkConfig;
+    /** Bar-Specific Config */
+    bar?: BarConfig;
+    /** Circle-Specific Config */
+    circle?: MarkConfig;
+    /** Line-Specific Config */
+    line?: MarkConfig;
+    /** Point-Specific Config */
+    point?: MarkConfig;
+    /** Rect-Specific Config */
+    rect?: MarkConfig;
+    /** Rule-Specific Config */
+    rule?: MarkConfig;
+    /** Square-Specific Config */
+    square?: MarkConfig;
+    /** Text-Specific Config */
+    text?: TextConfig;
+    /** Tick-Specific Config */
+    tick?: TickConfig;
+}
 export interface BarConfig extends MarkConfig {
     /**
      * Offset between bar for binned field.  Ideal value for this is either 0 (Preferred by statisticians) or 1 (Vega-Lite Default, D3 example style).

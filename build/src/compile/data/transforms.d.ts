@@ -1,6 +1,6 @@
 import { Filter } from '../../filter';
-import { CalculateTransform } from '../../transform';
-import { VgFilterTransform, VgFormulaTransform } from '../../vega.schema';
+import { CalculateTransform, LookupTransform } from '../../transform';
+import { VgFilterTransform, VgFormulaTransform, VgLookupTransform } from '../../vega.schema';
 import { Model } from '../model';
 import { DataFlowNode } from './dataflow';
 export declare class FilterNode extends DataFlowNode {
@@ -19,6 +19,13 @@ export declare class CalculateNode extends DataFlowNode {
     constructor(transform: CalculateTransform);
     producedFields(): {};
     assemble(): VgFormulaTransform;
+}
+export declare class LookupNode extends DataFlowNode {
+    readonly transform: LookupTransform;
+    readonly secondary: string;
+    constructor(transform: LookupTransform, secondary: string);
+    static make(model: Model, transform: LookupTransform, counter: number): LookupNode;
+    assemble(): VgLookupTransform;
 }
 /**
  * Parses a transforms array into a chain of connected dataflow nodes.

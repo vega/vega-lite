@@ -68,6 +68,6 @@ export interface NamedData {
 export declare function isUrlData(data: Partial<Data>): data is UrlData;
 export declare function isInlineData(data: Partial<Data>): data is InlineData;
 export declare function isNamedData(data: Partial<Data>): data is NamedData;
-export declare type DataSourceType = 'raw' | 'main' | 'row' | 'column';
+export declare type DataSourceType = 'raw' | 'main' | 'row' | 'column' | 'lookup';
 export declare const MAIN: 'main';
 export declare const RAW: 'raw';

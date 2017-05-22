@@ -548,6 +548,7 @@ var __exportStar;
 var __values;
 var __read;
 var __spread;
+var __await;
 var __asyncGenerator;
 var __asyncDelegator;
 var __asyncValues;
@@ -685,24 +686,26 @@ var __asyncValues;
         return ar;
     };
 
+    __await = function (v) {
+        return this instanceof __await ? (this.v = v, this) : new __await(v);
+    };
+
     __asyncGenerator = function (thisArg, _arguments, generator) {
         if (!Symbol.asyncIterator) throw new TypeError("Symbol.asyncIterator is not defined.");
-        var g = generator.apply(thisArg, _arguments || []), q = [], c, i;
-        return i = { next: verb("next"), "throw": verb("throw"), "return": verb("return") }, i[Symbol.asyncIterator] = function () { return this; }, i;
-        function verb(n) { return function (v) { return new Promise(function (a, b) { q.push([n, v, a, b]), next(); }); }; }
-        function next() { if (!c && q.length) resume((c = q.shift())[0], c[1]); }
-        function resume(n, v) { try { step(g[n](v)); } catch (e) { settle(c[3], e); } }
-        function step(r) { r.done ? settle(c[2], r) : Promise.resolve(r.value[1]).then(r.value[0] === "yield" ? send : fulfill, reject); }
-        function send(value) { settle(c[2], { value: value, done: false }); }
+        var g = generator.apply(thisArg, _arguments || []), i, q = [];
+        return i = {}, verb("next"), verb("throw"), verb("return"), i[Symbol.asyncIterator] = function () { return this; }, i;
+        function verb(n) { if (g[n]) i[n] = function (v) { return new Promise(function (a, b) { q.push([n, v, a, b]) > 1 || resume(n, v); }); }; }
+        function resume(n, v) { try { step(g[n](v)); } catch (e) { settle(q[0][3], e); } }
+        function step(r) { r.value instanceof __await ? Promise.resolve(r.value.v).then(fulfill, reject) : settle(q[0][2], r);  }
         function fulfill(value) { resume("next", value); }
         function reject(value) { resume("throw", value); }
-        function settle(f, v) { c = void 0, f(v), next(); }
+        function settle(f, v) { if (f(v), q.shift(), q.length) resume(q[0][0], q[0][1]); }
     };
 
     __asyncDelegator = function (o) {
-        var i = { next: verb("next"), "throw": verb("throw", function (e) { throw e; }), "return": verb("return", function (v) { return { value: v, done: true }; }) }, p;
-        return o = __asyncValues(o), i[Symbol.iterator] = function () { return this; }, i;
-        function verb(n, f) { return function (v) { return v = p && n === "throw" ? f(v) : p && v.done ? v : { value: p ? ["yield", v.value] : ["await", (o[n] || f).call(o, v)], done: false }, p = !p, v; }; }
+        var i, p;
+        return i = {}, verb("next"), verb("throw"), verb("return"), i[Symbol.iterator] = function () { return this; }, i;
+        function verb(n) { if (o[n]) i[n] = function (v) { return (p = !p) ? { value: __await(o[n](v)), done: n === "return" } : v; }; }
     };
 
     __asyncValues = function (o) {
@@ -723,6 +726,7 @@ var __asyncValues;
     exporter("__values", __values);
     exporter("__read", __read);
     exporter("__spread", __spread);
+    exporter("__await", __await);
     exporter("__asyncGenerator", __asyncGenerator);
     exporter("__asyncDelegator", __asyncDelegator);
     exporter("__asyncValues", __asyncValues);
@@ -1419,7 +1423,7 @@ Object.defineProperty(exports, '__esModule', { value: true });
 module.exports={
   "name": "vega-lite",
   "author": "Jeffrey Heer, Dominik Moritz, Kanit \"Ham\" Wongsuphasawat",
-  "version": "2.0.0-beta.2",
+  "version": "2.0.0-beta.3",
   "collaborators": [
     "Kanit Wongsuphasawat <kanitw@gmail.com> (http://kanitw.yellowpigz.com)",
     "Dominik Moritz <domoritz@cs.washington.edu> (https://www.domoritz.de)",
@@ -1441,7 +1445,7 @@ module.exports={
     "tsc": "rm -rf build/*/** && tsc",
     "prebuild": "mkdir -p build/site build/examples/images build/test-gallery",
     "build": "npm run tsc && cp package.json build && browserify src/vl.ts -p tsify -d -s vl | exorcist build/vega-lite.js.map > build/vega-lite.js",
-    "postbuild": "uglifyjs build/vega-lite.js -cm --in-source-map build/vega-lite.js.map --source-map build/vega-lite.min.js.map > build/vega-lite.min.js && npm run schema",
+    "postbuild": "uglifyjs build/vega-lite.js -cm --source-map content=build/vega-lite.js.map,filename=build/vega-lite.min.js.map -o build/vega-lite.min.js && npm run schema",
     "build:examples": "./scripts/build-examples.sh && rm -rf examples/specs/normalized/* && scripts/build-normalized-examples",
     "build:images": "npm run data && scripts/generate-images.sh",
     "build:toc": "bundle exec jekyll build -q && scripts/generate-toc",
@@ -1463,8 +1467,8 @@ module.exports={
     "poststart": "rm examples/all-examples.json",
 
     "preschema": "npm run prebuild",
-    "schema": "typescript-json-schema --required true --noExtraProps true src/spec.ts TopLevelExtendedSpec > build/vega-lite-schema.json && rm -f _data/vega-lite-schema.json && npm run replaceschema && cp build/vega-lite-schema.json _data/",
-    "replaceschema": "sed -i -e 's/GenericLayerSpec<.*..\\./LayerSpec/g' build/vega-lite-schema.json && sed -i -e 's/GenericRepeatSpec<.*..\\./RepeatSpec/g' build/vega-lite-schema.json && sed -i -e 's/GenericUnitSpec<Encoding<.*..\\./UnitSpec/g' build/vega-lite-schema.json && sed -i -e 's/GenericUnitSpec<EncodingWithFacet<.*..\\./FacetedUnitSpec/g' build/vega-lite-schema.json && sed -i -e 's/<Field>//g' build/vega-lite-schema.json",
+    "schema": "typescript-json-schema --required true --noExtraProps true src/spec.ts TopLevelExtendedSpec > build/vega-lite-schema.json && rm -f _data/vega-lite-schema.json && npm run renameschema && cp build/vega-lite-schema.json _data/",
+    "renameschema": "scripts/rename-schema.sh",
     "presite": "npm run build && npm run data && npm run build:site && npm run build:toc && npm run build:versions",
     "site": "bundle exec jekyll serve",
 
@@ -1496,28 +1500,28 @@ module.exports={
     "@types/highlight.js": "^9.1.9",
     "@types/json-stable-stringify": "^1.0.31",
     "@types/mocha": "^2.2.41",
-    "@types/node": "^7.0.14",
-    "ajv": "5.0.1",
-    "browser-sync": "^2.18.8",
+    "@types/node": "^7.0.18",
+    "ajv": "5.1.1",
+    "browser-sync": "^2.18.10",
     "browserify": "^14.3.0",
     "browserify-shim": "^3.8.14",
     "chai": "^3.5.0",
     "cheerio": "^0.22.0",
-    "codecov": "^2.1.0",
+    "codecov": "^2.2.0",
     "d3": "^4.8.0",
     "exorcist": "^0.4.0",
     "highlight.js": "^9.11.0",
-    "mocha": "^3.3.0",
+    "mocha": "^3.4.1",
     "nodemon": "^1.11.0",
-    "nyc": "^10.3.0",
+    "nyc": "^10.3.2",
     "source-map-support": "^0.4.15",
     "tsify": "^3.0.1",
-    "tslint": "^5.1.0",
+    "tslint": "^5.2.0",
     "tslint-eslint-rules": "^4.0.0",
     "typescript": "^2.3.2",
     "typescript-json-schema": "^0.11.0",
-    "uglify-js": "^2.8.22",
-    "vega": "3.0.0-beta.30",
+    "uglify-js": "^3.0.5",
+    "vega": "3.0.0-beta.31",
     "vega-datasets": "vega/vega-datasets#gh-pages",
     "vega-embed": "3.0.0-beta.14",
     "watchify": "^3.9.0",
@@ -1525,15 +1529,16 @@ module.exports={
   },
   "dependencies": {
     "json-stable-stringify": "^1.0.1",
-    "tslib": "^1.6.1",
+    "tslib": "^1.7.0",
     "vega-event-selector": "^2.0.0-beta",
     "vega-util": "^1.2.0",
-    "yargs": "^7.1.0"
+    "yargs": "^8.0.1"
   }
 }
 
 },{}],9:[function(require,module,exports){
 "use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 var util_1 = require("./util");
 exports.AGGREGATE_OPS = [
     'values',
@@ -1582,14 +1587,16 @@ exports.SHARED_DOMAIN_OPS = [
 ];
 exports.SHARED_DOMAIN_OP_INDEX = util_1.toSet(exports.SHARED_DOMAIN_OPS);
 
-},{"./util":98}],10:[function(require,module,exports){
+},{"./util":99}],10:[function(require,module,exports){
 "use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 exports.AXIS_PROPERTIES = [
     'domain', 'format', 'grid', 'labelPadding', 'labels', 'maxExtent', 'minExtent', 'offset', 'orient', 'position', 'tickCount', 'ticks', 'tickSize', 'title', 'titlePadding', 'values', 'zindex'
 ];
 
 },{}],11:[function(require,module,exports){
 "use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 var channel_1 = require("./channel");
 var util_1 = require("./util");
 function binToString(bin) {
@@ -1616,12 +1623,13 @@ function autoMaxBins(channel) {
 }
 exports.autoMaxBins = autoMaxBins;
 
-},{"./channel":12,"./util":98}],12:[function(require,module,exports){
+},{"./channel":12,"./util":99}],12:[function(require,module,exports){
+"use strict";
 /*
  * Constants and utilities for encoding channels (Visual variables)
  * such as 'x', 'y', 'color'.
  */
-"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 var scale_1 = require("./scale");
 var util_1 = require("./util");
 var Channel;
@@ -1760,21 +1768,23 @@ function rangeType(channel) {
         case exports.Y:
         case exports.SIZE:
         case exports.OPACITY:
+        // X2 and Y2 use X and Y scales, so they similarly have continuous range.
+        case exports.X2:
+        case exports.Y2:
             return 'continuous';
         case exports.ROW:
         case exports.COLUMN:
         case exports.SHAPE:
+        // TEXT and TOOLTIP have no scale but have discrete output
+        case exports.TEXT:
+        case exports.TOOLTIP:
             return 'discrete';
         // Color can be either continuous or discrete, depending on scale type.
         case exports.COLOR:
             return 'flexible';
         // No scale, no range type.
-        case exports.X2:
-        case exports.Y2:
         case exports.DETAIL:
-        case exports.TEXT:
         case exports.ORDER:
-        case exports.TOOLTIP:
             return undefined;
     }
     /* istanbul ignore next: should never reach here. */
@@ -1782,11 +1792,13 @@ function rangeType(channel) {
 }
 exports.rangeType = rangeType;
 
-},{"./scale":89,"./util":98}],13:[function(require,module,exports){
+},{"./scale":90,"./util":99}],13:[function(require,module,exports){
 "use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 var channel_1 = require("../../channel");
 var type_1 = require("../../type");
 var util_1 = require("../../util");
+var scale_1 = require("../../scale");
 var common_1 = require("../common");
 function labels(model, channel, labelsSpec, def) {
     var fieldDef = model.fieldDef(channel);
@@ -1794,9 +1806,10 @@ function labels(model, channel, labelsSpec, def) {
     var config = model.config;
     // Text
     if (fieldDef.type === type_1.TEMPORAL) {
+        var isUTCScale = model.scale(channel).type === scale_1.ScaleType.UTC;
         labelsSpec = util_1.extend({
             text: {
-                signal: common_1.timeFormatExpression('datum.value', fieldDef.timeUnit, axis.format, config.axis.shortTimeLabels, config.timeFormat)
+                signal: common_1.timeFormatExpression('datum.value', fieldDef.timeUnit, axis.format, config.axis.shortTimeLabels, config.timeFormat, isUTCScale)
             }
         }, labelsSpec);
     }
@@ -1838,8 +1851,9 @@ function labels(model, channel, labelsSpec, def) {
 }
 exports.labels = labels;
 
-},{"../../channel":12,"../../type":97,"../../util":98,"../common":16}],14:[function(require,module,exports){
+},{"../../channel":12,"../../scale":90,"../../type":98,"../../util":99,"../common":16}],14:[function(require,module,exports){
 "use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 var axis_1 = require("../../axis");
 var encode = require("./encode");
 var rules = require("./rules");
@@ -1964,8 +1978,9 @@ function getSpecifiedOrDefaultValue(property, specifiedAxis, channel, model, isG
     return specifiedAxis[property];
 }
 
-},{"../../axis":10,"../../util":98,"./encode":13,"./rules":15}],15:[function(require,module,exports){
+},{"../../axis":10,"../../util":99,"./encode":13,"./rules":15}],15:[function(require,module,exports){
 "use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 var log = require("../../log");
 var channel_1 = require("../../channel");
 var datetime_1 = require("../../datetime");
@@ -2091,11 +2106,13 @@ exports.domainAndTicks = domainAndTicks;
 exports.domain = domainAndTicks;
 exports.ticks = domainAndTicks;
 
-},{"../../channel":12,"../../datetime":80,"../../fielddef":83,"../../log":86,"../../util":98,"../common":16}],16:[function(require,module,exports){
+},{"../../channel":12,"../../datetime":80,"../../fielddef":83,"../../log":87,"../../util":99,"../common":16}],16:[function(require,module,exports){
 "use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 var log = require("../log");
 var channel_1 = require("../channel");
 var fielddef_1 = require("../fielddef");
+var scale_1 = require("../scale");
 var spec_1 = require("../spec");
 var timeunit_1 = require("../timeunit");
 var type_1 = require("../type");
@@ -2181,8 +2198,9 @@ function formatSignalRef(fieldDef, specifiedFormat, expr, config, useBinRange) {
         }
     }
     else if (fieldDef.type === 'temporal') {
+        var isUTCScale = fielddef_1.isScaleFieldDef(fieldDef) && fieldDef['scale'] && fieldDef['scale'].type === scale_1.ScaleType.UTC;
         return {
-            signal: timeFormatExpression(fielddef_1.field(fieldDef, { expr: expr }), fieldDef.timeUnit, specifiedFormat, config.text.shortTimeLabels, config.timeFormat)
+            signal: timeFormatExpression(fielddef_1.field(fieldDef, { expr: expr }), fieldDef.timeUnit, specifiedFormat, config.text.shortTimeLabels, config.timeFormat, isUTCScale)
         };
     }
     else {
@@ -2216,14 +2234,19 @@ exports.numberFormat = numberFormat;
 /**
  * Returns the time expression used for axis/legend labels or text mark for a temporal field
  */
-function timeFormatExpression(field, timeUnit, format, shortTimeLabels, timeFormatConfig) {
+function timeFormatExpression(field, timeUnit, format, shortTimeLabels, timeFormatConfig, isUTCScale) {
     if (!timeUnit || format) {
         // If there is not time unit, or if user explicitly specify format for axis/legend/text.
         var _format = format || timeFormatConfig; // only use config.timeFormat if there is no timeUnit.
-        return "timeFormat(" + field + ", '" + _format + "')";
+        if (isUTCScale) {
+            return "utcFormat(" + field + ", '" + _format + "')";
+        }
+        else {
+            return "timeFormat(" + field + ", '" + _format + "')";
+        }
     }
     else {
-        return timeunit_1.formatExpression(timeUnit, field, shortTimeLabels);
+        return timeunit_1.formatExpression(timeUnit, field, shortTimeLabels, isUTCScale);
     }
 }
 exports.timeFormatExpression = timeFormatExpression;
@@ -2239,8 +2262,9 @@ function sortParams(orderDef) {
 }
 exports.sortParams = sortParams;
 
-},{"../channel":12,"../fielddef":83,"../log":86,"../spec":92,"../timeunit":94,"../type":97,"../util":98,"./concat":18,"./facet":34,"./layer":35,"./repeat":54,"./unit":74}],17:[function(require,module,exports){
+},{"../channel":12,"../fielddef":83,"../log":87,"../scale":90,"../spec":93,"../timeunit":95,"../type":98,"../util":99,"./concat":18,"./facet":34,"./layer":35,"./repeat":54,"./unit":74}],17:[function(require,module,exports){
 "use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 var tslib_1 = require("tslib");
 /**
  * Module for compiling Vega-lite spec into Vega spec.
@@ -2284,6 +2308,8 @@ function getTopLevelProperties(topLevelSpec, config) {
 }
 function assemble(model, topLevelProperties) {
     // TODO: change type to become VgSpec
+    // Config with Vega-Lite only config removed.
+    var vgConfig = model.config ? config_1.stripConfig(model.config) : undefined;
     var output = tslib_1.__assign({ $schema: 'http://vega.github.io/schema/vega/v3.0.json' }, (model.description ? { description: model.description } : {}), { autosize: 'pad' }, topLevelProperties, { data: [].concat(model.assembleSelectionData([]), model.assembleData()), signals: ([].concat(
         // TODO(https://github.com/vega/vega-lite/issues/2198):
         // Merge the top-level's width/height signal with the top-level model
@@ -2292,9 +2318,10 @@ function assemble(model, topLevelProperties) {
             // If model has name, its calculated width and height will not be named width and height, need to map it to the global width and height signals.
             { name: 'width', update: model.getName('width') },
             { name: 'height', update: model.getName('height') }
-        ] : []), model.assembleLayoutSignals(), model.assembleSelectionTopLevelSignals([]))) }, assembleNestedMainGroup(model));
+        ] : []), model.assembleLayoutSignals(), model.assembleSelectionTopLevelSignals([]))) }, assembleNestedMainGroup(model), (vgConfig ? { config: vgConfig } : {}));
     return {
         spec: output
+        // TODO: add warning / errors here
     };
 }
 function assembleNestedMainGroup(model) {
@@ -2310,8 +2337,9 @@ function assembleNestedMainGroup(model) {
 }
 exports.assembleNestedMainGroup = assembleNestedMainGroup;
 
-},{"../config":78,"../log":86,"../spec":92,"../toplevelprops":95,"./common":16,"tslib":5}],18:[function(require,module,exports){
+},{"../config":78,"../log":87,"../spec":93,"../toplevelprops":96,"./common":16,"tslib":5}],18:[function(require,module,exports){
 "use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 var tslib_1 = require("tslib");
 var spec_1 = require("../spec");
 var util_1 = require("../util");
@@ -2384,7 +2412,7 @@ var ConcatModel = (function (_super) {
     ConcatModel.prototype.assembleData = function () {
         if (!this.parent) {
             // only assemble data in the root
-            return assemble_1.assembleData(util_1.vals(this.component.data.sources));
+            return assemble_1.assembleData(this.component.data);
         }
         return [];
     };
@@ -2431,8 +2459,9 @@ var ConcatModel = (function (_super) {
 }(model_1.Model));
 exports.ConcatModel = ConcatModel;
 
-},{"../spec":92,"../util":98,"./common":16,"./data/assemble":20,"./data/parse":28,"./model":53,"tslib":5}],19:[function(require,module,exports){
+},{"../spec":93,"../util":99,"./common":16,"./data/assemble":20,"./data/parse":28,"./model":53,"tslib":5}],19:[function(require,module,exports){
 "use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 var tslib_1 = require("tslib");
 var fielddef_1 = require("../../fielddef");
 var log = require("../../log");
@@ -2455,18 +2484,18 @@ function addDimension(dims, fieldDef) {
     return dims;
 }
 function mergeMeasures(parentMeasures, childMeasures) {
-    for (var field_1 in childMeasures) {
-        if (childMeasures.hasOwnProperty(field_1)) {
+    for (var f in childMeasures) {
+        if (childMeasures.hasOwnProperty(f)) {
             // when we merge a measure, we either have to add an aggregation operator or even a new field
-            var ops = childMeasures[field_1];
+            var ops = childMeasures[f];
             for (var op in ops) {
                 if (ops.hasOwnProperty(op)) {
-                    if (field_1 in parentMeasures) {
+                    if (f in parentMeasures) {
                         // add operator to existing measure field
-                        parentMeasures[field_1][op] = true;
+                        parentMeasures[f][op] = ops[op];
                     }
                     else {
-                        parentMeasures[field_1] = { op: true };
+                        parentMeasures[f] = { op: ops[op] };
                     }
                 }
             }
@@ -2477,7 +2506,7 @@ var AggregateNode = (function (_super) {
     tslib_1.__extends(AggregateNode, _super);
     /**
      * @param dimensions string set for dimensions
-     * @param measures dictionary mapping field name => dict set of aggregation functions
+     * @param measures dictionary mapping field name => dict of aggregation functions and names to use
      */
     function AggregateNode(dimensions, measures) {
         var _this = _super.call(this) || this;
@@ -2488,7 +2517,7 @@ var AggregateNode = (function (_super) {
     AggregateNode.prototype.clone = function () {
         return new AggregateNode(util_1.extend({}, this.dimensions), util_1.duplicate(this.measures));
     };
-    AggregateNode.make = function (model) {
+    AggregateNode.makeFromEncoding = function (model) {
         var isAggregate = false;
         model.forEachFieldDef(function (fd) {
             if (fd.aggregate) {
@@ -2505,17 +2534,16 @@ var AggregateNode = (function (_super) {
             if (fieldDef.aggregate) {
                 if (fieldDef.aggregate === 'count') {
                     meas['*'] = meas['*'] || {};
-                    /* tslint:disable:no-string-literal */
-                    meas['*']['count'] = true;
+                    meas['*']['count'] = fielddef_1.field(fieldDef, { aggregate: 'count' });
                 }
                 else {
                     meas[fieldDef.field] = meas[fieldDef.field] || {};
-                    meas[fieldDef.field][fieldDef.aggregate] = true;
+                    meas[fieldDef.field][fieldDef.aggregate] = fielddef_1.field(fieldDef);
                     // add min/max so we can use their union as unaggregated domain
                     var scale = model.scale(channel);
                     if (scale && scale.domain === 'unaggregated') {
-                        meas[fieldDef.field]['min'] = true;
-                        meas[fieldDef.field]['max'] = true;
+                        meas[fieldDef.field]['min'] = fielddef_1.field(fieldDef, { aggregate: 'min' });
+                        meas[fieldDef.field]['max'] = fielddef_1.field(fieldDef, { aggregate: 'max' });
                     }
                 }
             }
@@ -2523,6 +2551,31 @@ var AggregateNode = (function (_super) {
                 addDimension(dims, fieldDef);
             }
         });
+        if ((Object.keys(dims).length + Object.keys(meas).length) === 0) {
+            return null;
+        }
+        return new AggregateNode(dims, meas);
+    };
+    AggregateNode.makeFromTransform = function (model, t) {
+        var dims = {};
+        var meas = {};
+        for (var _i = 0, _a = t.summarize; _i < _a.length; _i++) {
+            var s = _a[_i];
+            if (s.aggregate) {
+                if (s.aggregate === 'count') {
+                    meas['*'] = meas['*'] || {};
+                    meas['*']['count'] = s.as || fielddef_1.field(s);
+                }
+                else {
+                    meas[s.field] = meas[s.field] || {};
+                    meas[s.field][s.aggregate] = s.as || fielddef_1.field(s);
+                }
+            }
+        }
+        for (var _b = 0, _c = t.groupby; _b < _c.length; _b++) {
+            var s = _c[_b];
+            dims[s] = true;
+        }
         if ((Object.keys(dims).length + Object.keys(meas).length) === 0) {
             return null;
         }
@@ -2561,25 +2614,30 @@ var AggregateNode = (function (_super) {
         var _this = this;
         var ops = [];
         var fields = [];
+        var as = [];
         util_1.keys(this.measures).forEach(function (field) {
             util_1.keys(_this.measures[field]).forEach(function (op) {
+                as.push(_this.measures[field][op]);
                 ops.push(op);
                 fields.push(field);
             });
         });
-        return {
+        var result = {
             type: 'aggregate',
             groupby: util_1.keys(this.dimensions),
             ops: ops,
-            fields: fields
+            fields: fields,
+            as: as
         };
+        return result;
     };
     return AggregateNode;
 }(dataflow_1.DataFlowNode));
 exports.AggregateNode = AggregateNode;
 
-},{"../../fielddef":83,"../../log":86,"../../type":97,"../../util":98,"./dataflow":22,"tslib":5}],20:[function(require,module,exports){
+},{"../../fielddef":83,"../../log":87,"../../type":98,"../../util":99,"./dataflow":22,"tslib":5}],20:[function(require,module,exports){
 "use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 var tslib_1 = require("tslib");
 var data_1 = require("../../data");
 var util_1 = require("../../util");
@@ -2742,7 +2800,8 @@ function makeWalkTree(data) {
             node instanceof nullfilter_1.NullFilterNode ||
             node instanceof transforms_1.CalculateNode ||
             node instanceof aggregate_1.AggregateNode ||
-            node instanceof pathorder_1.OrderNode) {
+            node instanceof pathorder_1.OrderNode ||
+            node instanceof transforms_1.LookupNode) {
             dataSource.transform.push(node.assemble());
         }
         if (node instanceof nonpositivefilter_1.NonPositiveFilterNode ||
@@ -2768,7 +2827,7 @@ function makeWalkTree(data) {
                 // other assemblers can use it.
                 node.source = dataSource.name;
                 // if this node has more than one child, we will add a datasource automatically
-                if (node.numChildren() === 1 && dataSource.transform.length > 0) {
+                if (node.numChildren() === 1) {
                     data.push(dataSource);
                     var newData = {
                         name: null,
@@ -2832,7 +2891,8 @@ exports.assembleFacetData = assembleFacetData;
  * @param  data array
  * @return modified data array
  */
-function assembleData(roots) {
+function assembleData(dataCompomponent) {
+    var roots = util_1.vals(dataCompomponent.sources);
     var data = [];
     roots.forEach(removeUnnecessaryNodes);
     // remove source nodes that don't have any children because they also don't have output nodes
@@ -2858,12 +2918,25 @@ function assembleData(roots) {
             delete d.transform;
         }
     });
+    // move sources without transforms (the ones that are potentially used in lookups) to the beginning
+    data.sort(function (a, b) { return (a.transform || []).length === 0 ? -1 : ((b.transform || []).length === 0 ? 1 : 0); });
+    // now fix the from references in lookup transforms
+    for (var _i = 0, data_2 = data; _i < data_2.length; _i++) {
+        var d = data_2[_i];
+        for (var _a = 0, _b = d.transform || []; _a < _b.length; _a++) {
+            var t = _b[_a];
+            if (t.type === 'lookup') {
+                t.from = dataCompomponent.outputNodes[t.from].source;
+            }
+        }
+    }
     return data;
 }
 exports.assembleData = assembleData;
 
-},{"../../data":79,"../../util":98,"./aggregate":19,"./bin":21,"./dataflow":22,"./facet":23,"./formatparse":24,"./nonpositivefilter":25,"./nullfilter":26,"./optimizers":27,"./pathorder":29,"./source":30,"./stack":31,"./timeunit":32,"./transforms":33,"tslib":5}],21:[function(require,module,exports){
+},{"../../data":79,"../../util":99,"./aggregate":19,"./bin":21,"./dataflow":22,"./facet":23,"./formatparse":24,"./nonpositivefilter":25,"./nullfilter":26,"./optimizers":27,"./pathorder":29,"./source":30,"./stack":31,"./timeunit":32,"./transforms":33,"tslib":5}],21:[function(require,module,exports){
 "use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 var tslib_1 = require("tslib");
 var bin_1 = require("../../bin");
 var fielddef_1 = require("../../fielddef");
@@ -2889,6 +2962,18 @@ function rangeFormula(model, fieldDef, channel, config) {
     }
     return {};
 }
+function binKey(bin, field) {
+    return bin_1.binToString(bin) + "_" + field;
+}
+function createBinComponent(bin, t, model, key) {
+    return {
+        bin: bin,
+        field: t.field,
+        as: [fielddef_1.field(t, { binSuffix: 'start' }), fielddef_1.field(t, { binSuffix: 'end' })],
+        signal: model.getName(key + "_bins"),
+        extentSignal: model.getName(key + '_extent')
+    };
+}
 var BinNode = (function (_super) {
     tslib_1.__extends(BinNode, _super);
     function BinNode(bins) {
@@ -2899,20 +2984,14 @@ var BinNode = (function (_super) {
     BinNode.prototype.clone = function () {
         return new BinNode(util_1.duplicate(this.bins));
     };
-    BinNode.make = function (model) {
+    BinNode.makeBinFromEncoding = function (model) {
         var bins = model.reduceFieldDef(function (binComponent, fieldDef, channel) {
             var fieldDefBin = model.fieldDef(channel).bin;
             if (fieldDefBin) {
-                var bin = util_1.isBoolean(fieldDefBin) ? {} : fieldDefBin;
-                var key = bin_1.binToString(fieldDef.bin) + "_" + fieldDef.field;
+                var bin = fielddef_1.normalizeBin(fieldDefBin, undefined) || {};
+                var key = binKey(fieldDefBin, fieldDef.field);
                 if (!(key in binComponent)) {
-                    binComponent[key] = {
-                        bin: bin,
-                        field: fieldDef.field,
-                        as: [fielddef_1.field(fieldDef, { binSuffix: 'start' }), fielddef_1.field(fieldDef, { binSuffix: 'end' })],
-                        signal: model.getName(key + "_bins"),
-                        extentSignal: model.getName(key + '_extent')
-                    };
+                    binComponent[key] = createBinComponent(bin, fieldDef, model, key);
                 }
                 binComponent[key] = tslib_1.__assign({}, binComponent[key], rangeFormula(model, fieldDef, channel, model.config));
             }
@@ -2922,6 +3001,15 @@ var BinNode = (function (_super) {
             return null;
         }
         return new BinNode(bins);
+    };
+    BinNode.makeBinFromTransform = function (model, t) {
+        var bins = {};
+        var bin = fielddef_1.normalizeBin(t.bin, undefined) || {};
+        var key = binKey(bin, t.field);
+        return new BinNode((_a = {},
+            _a[key] = createBinComponent(bin, t, model, key),
+            _a));
+        var _a;
     };
     BinNode.prototype.merge = function (other) {
         this.bins = util_1.extend(other.bins);
@@ -2968,8 +3056,9 @@ var BinNode = (function (_super) {
 }(dataflow_1.DataFlowNode));
 exports.BinNode = BinNode;
 
-},{"../../bin":11,"../../fielddef":83,"../../util":98,"../common":16,"../unit":74,"./dataflow":22,"tslib":5}],22:[function(require,module,exports){
+},{"../../bin":11,"../../fielddef":83,"../../util":99,"../common":16,"../unit":74,"./dataflow":22,"tslib":5}],22:[function(require,module,exports){
 "use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 var tslib_1 = require("tslib");
 /**
  * A node in the dataflow tree.
@@ -3029,15 +3118,20 @@ var DataFlowNode = (function () {
      * Remove node from the dataflow.
      */
     DataFlowNode.prototype.remove = function () {
-        var _this = this;
-        this._children.forEach(function (child) { return child.parent = _this._parent; });
+        for (var _i = 0, _a = this._children; _i < _a.length; _i++) {
+            var child = _a[_i];
+            child.parent = this._parent;
+        }
         this._parent.removeChild(this);
     };
     DataFlowNode.prototype.swapWithParent = function () {
         var parent = this._parent;
         var newParent = parent.parent;
         // reconnect the children
-        this._children.forEach(function (c) { return c.parent = parent; });
+        for (var _i = 0, _a = this._children; _i < _a.length; _i++) {
+            var child = _a[_i];
+            child.parent = parent;
+        }
         // remove old links
         this._children = []; // equivalent to removing every child link one by one
         parent.removeChild(this);
@@ -3098,6 +3192,7 @@ exports.OutputNode = OutputNode;
 
 },{"tslib":5}],23:[function(require,module,exports){
 "use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 var tslib_1 = require("tslib");
 var channel_1 = require("../../channel");
 var dataflow_1 = require("./dataflow");
@@ -3190,6 +3285,7 @@ exports.FacetNode = FacetNode;
 
 },{"../../channel":12,"./dataflow":22,"tslib":5}],24:[function(require,module,exports){
 "use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 var tslib_1 = require("tslib");
 var datetime_1 = require("../../datetime");
 var fielddef_1 = require("../../fielddef");
@@ -3328,8 +3424,9 @@ var ParseNode = (function (_super) {
 }(dataflow_1.DataFlowNode));
 exports.ParseNode = ParseNode;
 
-},{"../../datetime":80,"../../fielddef":83,"../../filter":84,"../../log":86,"../../transform":96,"../../type":97,"../../util":98,"../model":53,"./dataflow":22,"tslib":5}],25:[function(require,module,exports){
+},{"../../datetime":80,"../../fielddef":83,"../../filter":84,"../../log":87,"../../transform":97,"../../type":98,"../../util":99,"../model":53,"./dataflow":22,"tslib":5}],25:[function(require,module,exports){
 "use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 var tslib_1 = require("tslib");
 var scale_1 = require("../../scale");
 var util_1 = require("../../util");
@@ -3382,8 +3479,9 @@ var NonPositiveFilterNode = (function (_super) {
 }(dataflow_1.DataFlowNode));
 exports.NonPositiveFilterNode = NonPositiveFilterNode;
 
-},{"../../scale":89,"../../util":98,"./dataflow":22,"tslib":5}],26:[function(require,module,exports){
+},{"../../scale":90,"../../util":99,"./dataflow":22,"tslib":5}],26:[function(require,module,exports){
 "use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 var tslib_1 = require("tslib");
 var type_1 = require("../../type");
 var util_1 = require("../../util");
@@ -3465,8 +3563,9 @@ var NullFilterNode = (function (_super) {
 }(dataflow_1.DataFlowNode));
 exports.NullFilterNode = NullFilterNode;
 
-},{"../../type":97,"../../util":98,"./dataflow":22,"tslib":5}],27:[function(require,module,exports){
+},{"../../type":98,"../../util":99,"./dataflow":22,"tslib":5}],27:[function(require,module,exports){
 "use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 var dataflow_1 = require("./dataflow");
 var formatparse_1 = require("./formatparse");
 var source_1 = require("./source");
@@ -3530,6 +3629,7 @@ exports.removeUnusedSubtrees = removeUnusedSubtrees;
 
 },{"./dataflow":22,"./formatparse":24,"./source":30}],28:[function(require,module,exports){
 "use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 var data_1 = require("../../data");
 var facet_1 = require("../facet");
 var layer_1 = require("../layer");
@@ -3550,7 +3650,7 @@ var transforms_1 = require("./transforms");
 function parseRoot(model, sources) {
     if (model.data || !model.parent) {
         // if the model defines a data source or is the root, create a source node
-        var source = new source_1.SourceNode(model);
+        var source = new source_1.SourceNode(model.data);
         var hash = source.hash();
         if (hash in sources) {
             // use a reference if we already have a source
@@ -3636,7 +3736,7 @@ function parseData(model) {
     var parentIsLayer = model.parent && (model.parent instanceof layer_1.LayerModel);
     if (model instanceof model_1.ModelWithField) {
         if (parentIsLayer) {
-            var bin = bin_1.BinNode.make(model);
+            var bin = bin_1.BinNode.makeBinFromEncoding(model);
             if (bin) {
                 bin.parent = head;
                 head = bin;
@@ -3655,13 +3755,13 @@ function parseData(model) {
             head = nullFilter;
         }
         if (!parentIsLayer) {
-            var bin = bin_1.BinNode.make(model);
+            var bin = bin_1.BinNode.makeBinFromEncoding(model);
             if (bin) {
                 bin.parent = head;
                 head = bin;
             }
         }
-        var tu = timeunit_1.TimeUnitNode.make(model);
+        var tu = timeunit_1.TimeUnitNode.makeFromEncoding(model);
         if (tu) {
             tu.parent = head;
             head = tu;
@@ -3674,7 +3774,7 @@ function parseData(model) {
     raw.parent = head;
     head = raw;
     if (model instanceof unit_1.UnitModel) {
-        var agg = aggregate_1.AggregateNode.make(model);
+        var agg = aggregate_1.AggregateNode.makeFromEncoding(model);
         if (agg) {
             agg.parent = head;
             head = agg;
@@ -3723,6 +3823,7 @@ exports.parseData = parseData;
 
 },{"../../data":79,"../facet":34,"../layer":35,"../model":53,"../unit":74,"./aggregate":19,"./bin":21,"./dataflow":22,"./facet":23,"./formatparse":24,"./nonpositivefilter":25,"./nullfilter":26,"./pathorder":29,"./source":30,"./stack":31,"./timeunit":32,"./transforms":33}],29:[function(require,module,exports){
 "use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 var tslib_1 = require("tslib");
 var encoding_1 = require("../../encoding");
 var fielddef_1 = require("../../fielddef");
@@ -3780,17 +3881,18 @@ var OrderNode = (function (_super) {
 }(dataflow_1.DataFlowNode));
 exports.OrderNode = OrderNode;
 
-},{"../../encoding":81,"../../fielddef":83,"../../sort":91,"../../util":98,"../common":16,"./dataflow":22,"tslib":5}],30:[function(require,module,exports){
+},{"../../encoding":81,"../../fielddef":83,"../../sort":92,"../../util":99,"../common":16,"./dataflow":22,"tslib":5}],30:[function(require,module,exports){
 "use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 var tslib_1 = require("tslib");
 var data_1 = require("../../data");
 var util_1 = require("../../util");
 var dataflow_1 = require("./dataflow");
 var SourceNode = (function (_super) {
     tslib_1.__extends(SourceNode, _super);
-    function SourceNode(model) {
+    function SourceNode(data) {
         var _this = _super.call(this) || this;
-        var data = model.data || { name: 'source' };
+        data = data || { name: 'source' };
         if (data_1.isInlineData(data)) {
             _this._data = {
                 values: data.values,
@@ -3871,8 +3973,9 @@ var SourceNode = (function (_super) {
 }(dataflow_1.DataFlowNode));
 exports.SourceNode = SourceNode;
 
-},{"../../data":79,"../../util":98,"./dataflow":22,"tslib":5}],31:[function(require,module,exports){
+},{"../../data":79,"../../util":99,"./dataflow":22,"tslib":5}],31:[function(require,module,exports){
 "use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 var tslib_1 = require("tslib");
 var vega_util_1 = require("vega-util");
 var fielddef_1 = require("../../fielddef");
@@ -4002,8 +4105,9 @@ var StackNode = (function (_super) {
 }(dataflow_1.DataFlowNode));
 exports.StackNode = StackNode;
 
-},{"../../fielddef":83,"../../scale":89,"../../util":98,"../common":16,"./dataflow":22,"tslib":5,"vega-util":7}],32:[function(require,module,exports){
+},{"../../fielddef":83,"../../scale":90,"../../util":99,"../common":16,"./dataflow":22,"tslib":5,"vega-util":7}],32:[function(require,module,exports){
 "use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 var tslib_1 = require("tslib");
 var fielddef_1 = require("../../fielddef");
 var timeunit_1 = require("../../timeunit");
@@ -4020,7 +4124,7 @@ var TimeUnitNode = (function (_super) {
     TimeUnitNode.prototype.clone = function () {
         return new TimeUnitNode(util_1.duplicate(this.formula));
     };
-    TimeUnitNode.make = function (model) {
+    TimeUnitNode.makeFromEncoding = function (model) {
         var formula = model.reduceFieldDef(function (timeUnitComponent, fieldDef) {
             if (fieldDef.type === type_1.TEMPORAL && fieldDef.timeUnit) {
                 var f = fielddef_1.field(fieldDef);
@@ -4036,6 +4140,16 @@ var TimeUnitNode = (function (_super) {
             return null;
         }
         return new TimeUnitNode(formula);
+    };
+    TimeUnitNode.makeFromTransfrom = function (model, t) {
+        return new TimeUnitNode((_a = {},
+            _a[t.field] = {
+                as: t.as,
+                timeUnit: t.timeUnit,
+                field: t.field
+            },
+            _a));
+        var _a;
     };
     TimeUnitNode.prototype.merge = function (other) {
         this.formula = util_1.extend(this.formula, other.formula);
@@ -4068,14 +4182,20 @@ var TimeUnitNode = (function (_super) {
 }(dataflow_1.DataFlowNode));
 exports.TimeUnitNode = TimeUnitNode;
 
-},{"../../fielddef":83,"../../timeunit":94,"../../type":97,"../../util":98,"./dataflow":22,"tslib":5}],33:[function(require,module,exports){
+},{"../../fielddef":83,"../../timeunit":95,"../../type":98,"../../util":99,"./dataflow":22,"tslib":5}],33:[function(require,module,exports){
 "use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 var tslib_1 = require("tslib");
+var vega_util_1 = require("vega-util");
 var filter_1 = require("../../filter");
 var log = require("../../log");
 var transform_1 = require("../../transform");
 var util_1 = require("../../util");
+var aggregate_1 = require("./aggregate");
+var bin_1 = require("./bin");
 var dataflow_1 = require("./dataflow");
+var source_1 = require("./source");
+var timeunit_1 = require("./timeunit");
 var FilterNode = (function (_super) {
     tslib_1.__extends(FilterNode, _super);
     function FilterNode(model, filter) {
@@ -4124,20 +4244,76 @@ var CalculateNode = (function (_super) {
     return CalculateNode;
 }(dataflow_1.DataFlowNode));
 exports.CalculateNode = CalculateNode;
+var LookupNode = (function (_super) {
+    tslib_1.__extends(LookupNode, _super);
+    function LookupNode(transform, secondary) {
+        var _this = _super.call(this) || this;
+        _this.transform = transform;
+        _this.secondary = secondary;
+        return _this;
+    }
+    LookupNode.make = function (model, transform, counter) {
+        var sources = model.component.data.sources;
+        var s = new source_1.SourceNode(transform.from.data);
+        var fromSource = sources[s.hash()];
+        if (!fromSource) {
+            sources[s.hash()] = s;
+            fromSource = s;
+        }
+        var fromOutputName = model.getName("lookup_" + counter);
+        var fromOutputNode = new dataflow_1.OutputNode(fromOutputName, 'lookup');
+        fromOutputNode.parent = fromSource;
+        model.component.data.outputNodes[fromOutputName] = fromOutputNode;
+        return new LookupNode(transform, fromOutputNode.source);
+    };
+    LookupNode.prototype.assemble = function () {
+        var foreign;
+        if (this.transform.from.fields) {
+            // lookup a few fields and add create a flat output
+            foreign = tslib_1.__assign({ values: this.transform.from.fields }, this.transform.as ? { as: ((this.transform.as instanceof Array) ? this.transform.as : [this.transform.as]) } : {});
+        }
+        else {
+            // lookup full record and nest it
+            var asName = this.transform.as;
+            if (!vega_util_1.isString(asName)) {
+                log.warn(log.message.NO_FIELDS_NEEDS_AS);
+                asName = '_lookup';
+            }
+            foreign = {
+                as: [asName]
+            };
+        }
+        return tslib_1.__assign({ type: 'lookup', from: this.secondary, key: this.transform.from.key, fields: [this.transform.lookup] }, foreign, (this.transform.default ? { default: this.transform.default } : {}));
+    };
+    return LookupNode;
+}(dataflow_1.DataFlowNode));
+exports.LookupNode = LookupNode;
 /**
  * Parses a transforms array into a chain of connected dataflow nodes.
  */
 function parseTransformArray(model) {
     var first;
-    var last;
     var node;
     var previous;
+    var lookupCounter = 0;
     model.transforms.forEach(function (t, i) {
         if (transform_1.isCalculate(t)) {
             node = new CalculateNode(t);
         }
         else if (transform_1.isFilter(t)) {
             node = new FilterNode(model, t.filter);
+        }
+        else if (transform_1.isBin(t)) {
+            node = bin_1.BinNode.makeBinFromTransform(model, t);
+        }
+        else if (transform_1.isTimeUnit(t)) {
+            node = timeunit_1.TimeUnitNode.makeFromTransfrom(model, t);
+        }
+        else if (transform_1.isSummarize(t)) {
+            node = aggregate_1.AggregateNode.makeFromTransform(model, t);
+        }
+        else if (transform_1.isLookup(t)) {
+            node = LookupNode.make(model, t, lookupCounter++);
         }
         else {
             log.warn(log.message.invalidTransformIgnored(t));
@@ -4151,13 +4327,14 @@ function parseTransformArray(model) {
         }
         previous = node;
     });
-    last = node;
+    var last = node;
     return { first: first, last: last };
 }
 exports.parseTransformArray = parseTransformArray;
 
-},{"../../filter":84,"../../log":86,"../../transform":96,"../../util":98,"./dataflow":22,"tslib":5}],34:[function(require,module,exports){
+},{"../../filter":84,"../../log":87,"../../transform":97,"../../util":99,"./aggregate":19,"./bin":21,"./dataflow":22,"./source":30,"./timeunit":32,"tslib":5,"vega-util":7}],34:[function(require,module,exports){
 "use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 var tslib_1 = require("tslib");
 var channel_1 = require("../channel");
 var encoding_1 = require("../encoding");
@@ -4319,6 +4496,7 @@ var FacetModel = (function (_super) {
                 child.component.axes[channel].axes = [];
             }
             else {
+                // Otherwise do nothing for independent axes
             }
         }
     };
@@ -4334,7 +4512,7 @@ var FacetModel = (function (_super) {
     FacetModel.prototype.assembleData = function () {
         if (!this.parent) {
             // only assemble data in the root
-            return assemble_1.assembleData(util_1.vals(this.component.data.sources));
+            return assemble_1.assembleData(this.component.data);
         }
         return [];
     };
@@ -4398,8 +4576,9 @@ function getFacetGroupProperties(model) {
     return tslib_1.__assign({}, (encodeEntry ? encodeEntry : {}), common_1.applyConfig({}, model.config.facet.cell, mark_1.FILL_STROKE_CONFIG.concat(['clip'])));
 }
 
-},{"../channel":12,"../encoding":81,"../fielddef":83,"../log":86,"../mark":87,"../util":98,"../vega.schema":100,"./common":16,"./data/assemble":20,"./data/parse":28,"./layout/header":36,"./model":53,"./repeat":54,"tslib":5}],35:[function(require,module,exports){
+},{"../channel":12,"../encoding":81,"../fielddef":83,"../log":87,"../mark":88,"../util":99,"../vega.schema":101,"./common":16,"./data/assemble":20,"./data/parse":28,"./layout/header":36,"./model":53,"./repeat":54,"tslib":5}],35:[function(require,module,exports){
 "use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 var tslib_1 = require("tslib");
 var mark_1 = require("../mark");
 var resolve_1 = require("../resolve");
@@ -4542,6 +4721,7 @@ var LayerModel = (function (_super) {
                     }
                 }
                 else {
+                    // TODO: support independent legends
                 }
             });
         };
@@ -4573,7 +4753,7 @@ var LayerModel = (function (_super) {
     LayerModel.prototype.assembleData = function () {
         if (!this.parent) {
             // only assemble data in the root
-            return assemble_1.assembleData(util_1.vals(this.component.data.sources));
+            return assemble_1.assembleData(this.component.data);
         }
         return [];
     };
@@ -4595,8 +4775,9 @@ var LayerModel = (function (_super) {
 }(model_1.Model));
 exports.LayerModel = LayerModel;
 
-},{"../mark":87,"../resolve":88,"../util":98,"../vega.schema":100,"./common":16,"./data/assemble":20,"./data/parse":28,"./layout/index":37,"./model":53,"./scale/domain":56,"./selection/selection":64,"tslib":5}],36:[function(require,module,exports){
+},{"../mark":88,"../resolve":89,"../util":99,"../vega.schema":101,"./common":16,"./data/assemble":20,"./data/parse":28,"./layout/index":37,"./model":53,"./scale/domain":56,"./selection/selection":64,"tslib":5}],36:[function(require,module,exports){
 "use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 var tslib_1 = require("tslib");
 exports.HEADER_CHANNELS = ['row', 'column'];
 exports.HEADER_TYPES = ['header', 'footer'];
@@ -4662,6 +4843,7 @@ exports.getHeaderGroup = getHeaderGroup;
 
 },{"tslib":5}],37:[function(require,module,exports){
 "use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 var scale_1 = require("../../scale");
 // TODO: rewrite this such that we merge redundant signals
 function assembleLayoutLayerSignals(model) {
@@ -4704,13 +4886,15 @@ function unitSizeExpr(model, sizeType) {
 }
 exports.unitSizeExpr = unitSizeExpr;
 
-},{"../../scale":89}],38:[function(require,module,exports){
+},{"../../scale":90}],38:[function(require,module,exports){
 "use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 var channel_1 = require("../../channel");
 var fielddef_1 = require("../../fielddef");
 var mark_1 = require("../../mark");
 var type_1 = require("../../type");
 var util_1 = require("../../util");
+var scale_1 = require("../../scale");
 var common_1 = require("../common");
 var mixins = require("../mark/mixins");
 function symbols(fieldDef, symbolsSpec, model, channel) {
@@ -4767,9 +4951,10 @@ function labels(fieldDef, labelsSpec, model, channel) {
     var config = model.config;
     var labels = {};
     if (fieldDef.type === type_1.TEMPORAL) {
+        var isUTCScale = model.scale(channel).type === scale_1.ScaleType.UTC;
         labelsSpec = util_1.extend({
             text: {
-                signal: common_1.timeFormatExpression('datum.value', fieldDef.timeUnit, legend.format, config.legend.shortTimeLabels, config.timeFormat)
+                signal: common_1.timeFormatExpression('datum.value', fieldDef.timeUnit, legend.format, config.legend.shortTimeLabels, config.timeFormat, isUTCScale)
             }
         }, labelsSpec || {});
     }
@@ -4778,8 +4963,9 @@ function labels(fieldDef, labelsSpec, model, channel) {
 }
 exports.labels = labels;
 
-},{"../../channel":12,"../../fielddef":83,"../../mark":87,"../../type":97,"../../util":98,"../common":16,"../mark/mixins":46}],39:[function(require,module,exports){
+},{"../../channel":12,"../../fielddef":83,"../../mark":88,"../../scale":90,"../../type":98,"../../util":99,"../common":16,"../mark/mixins":46}],39:[function(require,module,exports){
 "use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 var channel_1 = require("../../channel");
 var legend_1 = require("../../legend");
 var util_1 = require("../../util");
@@ -4850,8 +5036,9 @@ function getSpecifiedOrDefaultValue(property, specifiedLegend, channel, model) {
     return specifiedLegend[property];
 }
 
-},{"../../channel":12,"../../legend":85,"../../util":98,"../common":16,"./encode":38,"./rules":40}],40:[function(require,module,exports){
+},{"../../channel":12,"../../legend":86,"../../util":99,"../common":16,"./encode":38,"./rules":40}],40:[function(require,module,exports){
 "use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 var channel_1 = require("../../channel");
 var datetime_1 = require("../../datetime");
 var fielddef_1 = require("../../fielddef");
@@ -4886,8 +5073,9 @@ function type(legend, type, channel, scaleType) {
 }
 exports.type = type;
 
-},{"../../channel":12,"../../datetime":80,"../../fielddef":83,"../../scale":89,"../../util":98}],41:[function(require,module,exports){
+},{"../../channel":12,"../../datetime":80,"../../fielddef":83,"../../scale":90,"../../util":99}],41:[function(require,module,exports){
 "use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 var tslib_1 = require("tslib");
 var mixins = require("./mixins");
 exports.area = {
@@ -4900,6 +5088,7 @@ exports.area = {
 
 },{"./mixins":46,"tslib":5}],42:[function(require,module,exports){
 "use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 var tslib_1 = require("tslib");
 var channel_1 = require("../../channel");
 var fielddef_1 = require("../../fielddef");
@@ -4987,8 +5176,9 @@ function defaultSizeRef(scaleName, scale, config) {
     return { value: 20 };
 }
 
-},{"../../channel":12,"../../fielddef":83,"../../log":86,"../../scale":89,"./mixins":46,"./valueref":52,"tslib":5}],43:[function(require,module,exports){
+},{"../../channel":12,"../../fielddef":83,"../../log":87,"../../scale":90,"./mixins":46,"./valueref":52,"tslib":5}],43:[function(require,module,exports){
 "use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 var tslib_1 = require("tslib");
 var encoding_1 = require("../../encoding");
 var fielddef_1 = require("../../fielddef");
@@ -5129,8 +5319,9 @@ function orient(mark, encoding, scale, specifiedOrient) {
     return 'vertical';
 }
 
-},{"../../encoding":81,"../../fielddef":83,"../../log":86,"../../mark":87,"../../scale":89,"../../type":97,"../../util":98,"../common":16,"tslib":5}],44:[function(require,module,exports){
+},{"../../encoding":81,"../../fielddef":83,"../../log":87,"../../mark":88,"../../scale":90,"../../type":98,"../../util":99,"../common":16,"tslib":5}],44:[function(require,module,exports){
 "use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 var tslib_1 = require("tslib");
 var mixins = require("./mixins");
 exports.line = {
@@ -5145,6 +5336,7 @@ exports.line = {
 
 },{"./mixins":46,"tslib":5}],45:[function(require,module,exports){
 "use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 var tslib_1 = require("tslib");
 var channel_1 = require("../../channel");
 var mark_1 = require("../../mark");
@@ -5243,8 +5435,9 @@ function clip(model) {
         (yscale && scale_1.isSelectionDomain(yscale.domain)) ? { clip: true } : {};
 }
 
-},{"../../channel":12,"../../data":79,"../../mark":87,"../../scale":89,"../../util":98,"./area":41,"./bar":42,"./line":44,"./point":47,"./rect":48,"./rule":49,"./text":50,"./tick":51,"tslib":5}],46:[function(require,module,exports){
+},{"../../channel":12,"../../data":79,"../../mark":88,"../../scale":90,"../../util":99,"./area":41,"./bar":42,"./line":44,"./point":47,"./rect":48,"./rule":49,"./text":50,"./tick":51,"tslib":5}],46:[function(require,module,exports){
 "use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 var tslib_1 = require("tslib");
 var util = require("../../util");
 var common_1 = require("../common");
@@ -5387,8 +5580,9 @@ function pointPosition2(model, defaultRef, channel) {
 }
 exports.pointPosition2 = pointPosition2;
 
-},{"../../util":98,"../common":16,"../selection/selection":64,"./valueref":52,"tslib":5}],47:[function(require,module,exports){
+},{"../../util":99,"../common":16,"../selection/selection":64,"./valueref":52,"tslib":5}],47:[function(require,module,exports){
 "use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 var tslib_1 = require("tslib");
 var mixins = require("./mixins");
 var common_1 = require("../common");
@@ -5428,6 +5622,7 @@ exports.square = {
 
 },{"../common":16,"./mixins":46,"./valueref":52,"tslib":5}],48:[function(require,module,exports){
 "use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 var tslib_1 = require("tslib");
 var channel_1 = require("../../channel");
 var fielddef_1 = require("../../fielddef");
@@ -5485,8 +5680,9 @@ function y(model) {
     }
 }
 
-},{"../../channel":12,"../../fielddef":83,"../../log":86,"../../mark":87,"../../scale":89,"./mixins":46,"tslib":5}],49:[function(require,module,exports){
+},{"../../channel":12,"../../fielddef":83,"../../log":87,"../../mark":88,"../../scale":90,"./mixins":46,"tslib":5}],49:[function(require,module,exports){
 "use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 var tslib_1 = require("tslib");
 var mixins = require("./mixins");
 var ref = require("./valueref");
@@ -5504,6 +5700,7 @@ exports.rule = {
 
 },{"./mixins":46,"./valueref":52,"tslib":5}],50:[function(require,module,exports){
 "use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 var tslib_1 = require("tslib");
 var channel_1 = require("../../channel");
 var common_1 = require("../common");
@@ -5539,8 +5736,9 @@ function align(encoding, config) {
     return undefined;
 }
 
-},{"../../channel":12,"../../encoding":81,"../../fielddef":83,"../../type":97,"../common":16,"./mixins":46,"./valueref":52,"tslib":5}],51:[function(require,module,exports){
+},{"../../channel":12,"../../encoding":81,"../../fielddef":83,"../../type":98,"../common":16,"./mixins":46,"./valueref":52,"tslib":5}],51:[function(require,module,exports){
 "use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 var tslib_1 = require("tslib");
 var mixins = require("./mixins");
 var ref = require("./valueref");
@@ -5579,10 +5777,11 @@ function defaultSize(model) {
 }
 
 },{"./mixins":46,"./valueref":52,"tslib":5}],52:[function(require,module,exports){
+"use strict";
 /**
  * Utility files for producing Vega ValueRef for marks
  */
-"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 var channel_1 = require("../../channel");
 var fielddef_1 = require("../../fielddef");
 var scale_1 = require("../../scale");
@@ -5809,8 +6008,9 @@ function zeroOrMaxY(scaleName, scale) {
     return { value: 0 };
 }
 
-},{"../../channel":12,"../../fielddef":83,"../../scale":89,"../../util":98,"../common":16}],53:[function(require,module,exports){
+},{"../../channel":12,"../../fielddef":83,"../../scale":90,"../../util":99,"../common":16}],53:[function(require,module,exports){
 "use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 var tslib_1 = require("tslib");
 var channel_1 = require("../channel");
 var encoding_1 = require("../encoding");
@@ -6073,8 +6273,9 @@ var ModelWithField = (function (_super) {
 }(Model));
 exports.ModelWithField = ModelWithField;
 
-},{"../channel":12,"../encoding":81,"../fielddef":83,"../util":98,"./layout/header":36,"./scale/assemble":55,"./unit":74,"tslib":5}],54:[function(require,module,exports){
+},{"../channel":12,"../encoding":81,"../fielddef":83,"../util":99,"./layout/header":36,"./scale/assemble":55,"./unit":74,"tslib":5}],54:[function(require,module,exports){
 "use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 var tslib_1 = require("tslib");
 var vega_util_1 = require("vega-util");
 var channel_1 = require("../channel");
@@ -6255,7 +6456,7 @@ var RepeatModel = (function (_super) {
     RepeatModel.prototype.assembleData = function () {
         if (!this.parent) {
             // only assemble data in the root
-            return assemble_1.assembleData(util_1.vals(this.component.data.sources));
+            return assemble_1.assembleData(this.component.data);
         }
         return [];
     };
@@ -6308,8 +6509,9 @@ var RepeatModel = (function (_super) {
 }(model_1.Model));
 exports.RepeatModel = RepeatModel;
 
-},{"../channel":12,"../fielddef":83,"../log":86,"../util":98,"../vega.schema":100,"./common":16,"./data/assemble":20,"./data/parse":28,"./model":53,"./scale/domain":56,"tslib":5,"vega-util":7}],55:[function(require,module,exports){
+},{"../channel":12,"../fielddef":83,"../log":87,"../util":99,"../vega.schema":101,"./common":16,"./data/assemble":20,"./data/parse":28,"./model":53,"./scale/domain":56,"tslib":5,"vega-util":7}],55:[function(require,module,exports){
 "use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 var tslib_1 = require("tslib");
 var vega_util_1 = require("vega-util");
 var log = require("../../log");
@@ -6365,8 +6567,9 @@ function assembleScale(model) {
 }
 exports.assembleScale = assembleScale;
 
-},{"../../log":86,"../../util":98,"../../vega.schema":100,"tslib":5,"vega-util":7}],56:[function(require,module,exports){
+},{"../../log":87,"../../util":99,"../../vega.schema":101,"tslib":5,"vega-util":7}],56:[function(require,module,exports){
 "use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 var log = require("../../log");
 var aggregate_1 = require("../../aggregate");
 var bin_1 = require("../../bin");
@@ -6621,8 +6824,9 @@ function unionDomains(domain1, domain2) {
 }
 exports.unionDomains = unionDomains;
 
-},{"../../aggregate":9,"../../bin":11,"../../data":79,"../../datetime":80,"../../log":86,"../../scale":89,"../../sort":91,"../../util":98,"../../vega.schema":100}],57:[function(require,module,exports){
+},{"../../aggregate":9,"../../bin":11,"../../data":79,"../../datetime":80,"../../log":87,"../../scale":90,"../../sort":92,"../../util":99,"../../vega.schema":101}],57:[function(require,module,exports){
 "use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 var log = require("../../log");
 var scale_1 = require("../../scale");
 var util = require("../../util");
@@ -6681,7 +6885,6 @@ function init(channel, fieldDef, config, mark, topLevelSize, xyRangeSteps) {
     });
     return util.extend(scale, range_1.default(channel, scale.type, fieldDef.type, specifiedScale, config, scale.zero, mark, topLevelSize, xyRangeSteps));
 }
-Object.defineProperty(exports, "__esModule", { value: true });
 exports.default = init;
 function getValue(specifiedValue, property, scale, channel, fieldDef, scaleConfig) {
     // For domain, we might override specified value
@@ -6714,8 +6917,9 @@ function getDefaultValue(property, scale, channel, fieldDef, scaleConfig) {
     return scaleConfig[property];
 }
 
-},{"../../log":86,"../../scale":89,"../../util":98,"./domain":56,"./range":59,"./rules":60,"./type":61}],58:[function(require,module,exports){
+},{"../../log":87,"../../scale":90,"../../util":99,"./domain":56,"./range":59,"./rules":60,"./type":61}],58:[function(require,module,exports){
 "use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 var scale_1 = require("../../scale");
 var sort_1 = require("../../sort");
 var domain_1 = require("./domain");
@@ -6733,7 +6937,6 @@ function parseScaleComponent(model) {
         return scaleComponentsIndex;
     }, {});
 }
-Object.defineProperty(exports, "__esModule", { value: true });
 exports.default = parseScaleComponent;
 exports.NON_TYPE_DOMAIN_RANGE_VEGA_SCALE_PROPERTIES = [
     'round',
@@ -6772,8 +6975,9 @@ function parseScale(model, channel) {
 }
 exports.parseScale = parseScale;
 
-},{"../../scale":89,"../../sort":91,"./domain":56,"./range":59}],59:[function(require,module,exports){
+},{"../../scale":90,"../../sort":92,"./domain":56,"./range":59}],59:[function(require,module,exports){
 "use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 var log = require("../../log");
 var channel_1 = require("../../channel");
 var scale_1 = require("../../scale");
@@ -6885,7 +7089,6 @@ function rangeMixins(channel, scaleType, type, specifiedScale, config, zero, mar
     /* istanbul ignore next: should never reach here */
     throw new Error("Scale range undefined for channel " + channel);
 }
-Object.defineProperty(exports, "__esModule", { value: true });
 exports.default = rangeMixins;
 function defaultRange(channel, scaleType, type, mark) {
     switch (channel) {
@@ -6966,8 +7169,9 @@ function minXYRangeStep(xyRangeSteps, scaleConfig) {
     return 21; // FIXME: re-evaluate the default value here.
 }
 
-},{"../../channel":12,"../../log":86,"../../scale":89,"../../util":98}],60:[function(require,module,exports){
+},{"../../channel":12,"../../log":87,"../../scale":90,"../../util":99}],60:[function(require,module,exports){
 "use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 var channel_1 = require("../../channel");
 var scale_1 = require("../../scale");
 var timeunit_1 = require("../../timeunit");
@@ -7049,8 +7253,9 @@ function zero(specifiedScale, channel, fieldDef) {
 }
 exports.zero = zero;
 
-},{"../../channel":12,"../../scale":89,"../../timeunit":94,"../../util":98}],61:[function(require,module,exports){
+},{"../../channel":12,"../../scale":90,"../../timeunit":95,"../../util":99}],61:[function(require,module,exports){
 "use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 var log = require("../../log");
 var channel_1 = require("../../channel");
 var scale_1 = require("../../scale");
@@ -7085,7 +7290,6 @@ function type(specifiedType, channel, fieldDef, mark, hasTopLevelSize, specified
     }
     return defaultScaleType;
 }
-Object.defineProperty(exports, "__esModule", { value: true });
 exports.default = type;
 /**
  * Determine appropriate default scale type.
@@ -7102,7 +7306,7 @@ function defaultType(channel, fieldDef, mark, hasTopLevelSize, specifiedRangeSte
             return discreteToContinuousType(channel, mark, hasTopLevelSize, specifiedRangeStep, scaleConfig);
         case 'ordinal':
             if (channel === 'color') {
-                return 'ordinal';
+                return 'sequential';
             }
             else if (channel_1.rangeType(channel) === 'discrete') {
                 log.warn(log.message.discreteChannelCannotEncode(channel, 'ordinal'));
@@ -7201,8 +7405,9 @@ function fieldDefMatchScaleType(specifiedType, fieldDef) {
 }
 exports.fieldDefMatchScaleType = fieldDefMatchScaleType;
 
-},{"../../channel":12,"../../log":86,"../../scale":89,"../../timeunit":94,"../../type":97,"../../util":98}],62:[function(require,module,exports){
+},{"../../channel":12,"../../log":87,"../../scale":90,"../../timeunit":95,"../../type":98,"../../util":99}],62:[function(require,module,exports){
 "use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 var tslib_1 = require("tslib");
 var channel_1 = require("../../channel");
 var log_1 = require("../../log");
@@ -7289,24 +7494,34 @@ var interval = {
                 update[key] = [tslib_1.__assign({ test: store + ".length && " + tpl + " && " + tpl + ".unit === " + store + "[0].unit" }, update[key]), { value: 0 }];
             });
         }
+        // Two brush marks ensure that fill colors and other aesthetic choices do
+        // not interefere with the core marks, but that the brushed region can still
+        // be interacted with (e.g., dragging it around).
         return [{
                 name: undefined,
                 type: 'rect',
                 encode: {
-                    enter: { fill: { value: '#eee' } },
+                    enter: {
+                        fill: { value: '#333' },
+                        fillOpacity: { value: 0.125 },
+                        stroke: undefined
+                    },
                     update: update
                 }
             }].concat(marks, {
             name: name + exports.BRUSH,
             type: 'rect',
             encode: {
-                enter: { fill: { value: 'transparent' } },
+                enter: {
+                    fill: { value: 'transparent' },
+                    fillOpacity: undefined,
+                    stroke: { value: 'white' }
+                },
                 update: update
             }
         });
     }
 };
-Object.defineProperty(exports, "__esModule", { value: true });
 exports.default = interval;
 function projections(selCmpt) {
     var x = null, xi = null, y = null, yi = null;
@@ -7351,8 +7566,9 @@ function events(selCmpt, cb) {
     }, []);
 }
 
-},{"../../channel":12,"../../log":86,"../../util":98,"./selection":64,"./transforms/scales":69,"tslib":5}],63:[function(require,module,exports){
+},{"../../channel":12,"../../log":87,"../../util":99,"./selection":64,"./transforms/scales":69,"tslib":5}],63:[function(require,module,exports){
 "use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 var util_1 = require("../../util");
 var selection_1 = require("./selection");
 var multi = {
@@ -7378,11 +7594,11 @@ var multi = {
             (selCmpt.resolve === 'global' ? 'null' : "{unit: " + tpl + ".unit}");
     }
 };
-Object.defineProperty(exports, "__esModule", { value: true });
 exports.default = multi;
 
-},{"../../util":98,"./selection":64}],64:[function(require,module,exports){
+},{"../../util":99,"./selection":64}],64:[function(require,module,exports){
 "use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 var vega_event_selector_1 = require("vega-event-selector");
 var util_1 = require("../../util");
 var layer_1 = require("../layer");
@@ -7462,24 +7678,28 @@ function assembleUnitSelectionSignals(model, signals) {
 }
 exports.assembleUnitSelectionSignals = assembleUnitSelectionSignals;
 function assembleTopLevelSignals(model, signals) {
-    var hasUnit = signals.filter(function (s) { return s.name === 'unit'; });
-    if (!(hasUnit.length)) {
-        signals.push({
-            name: 'unit',
-            value: {},
-            on: [{ events: 'mousemove', update: 'group()._id ? group() : unit' }]
-        });
-    }
+    var needsUnit = false;
     forEachSelection(model, function (selCmpt, selCompiler) {
         if (selCompiler.topLevelSignals) {
-            signals.push.apply(signals, selCompiler.topLevelSignals(model, selCmpt));
+            signals = selCompiler.topLevelSignals(model, selCmpt, signals);
         }
         transforms_1.forEachTransform(selCmpt, function (txCompiler) {
             if (txCompiler.topLevelSignals) {
                 signals = txCompiler.topLevelSignals(model, selCmpt, signals);
             }
         });
+        needsUnit = true;
     });
+    if (needsUnit) {
+        var hasUnit = signals.filter(function (s) { return s.name === 'unit'; });
+        if (!(hasUnit.length)) {
+            signals.unshift({
+                name: 'unit',
+                value: {},
+                on: [{ events: 'mousemove', update: 'group()._id ? group() : unit' }]
+            });
+        }
+    }
     return signals;
 }
 exports.assembleTopLevelSignals = assembleTopLevelSignals;
@@ -7575,19 +7795,21 @@ function clipMarks(marks) {
     return marks.map(function (m) { return (m.clip = true, m); });
 }
 
-},{"../../util":98,"../layer":35,"./interval":62,"./multi":63,"./single":65,"./transforms/transforms":71,"vega-event-selector":6}],65:[function(require,module,exports){
+},{"../../util":99,"../layer":35,"./interval":62,"./multi":63,"./single":65,"./transforms/transforms":71,"vega-event-selector":6}],65:[function(require,module,exports){
 "use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 var util_1 = require("../../util");
 var multi_1 = require("./multi");
 var selection_1 = require("./selection");
 var single = {
     predicate: multi_1.default.predicate,
     signals: multi_1.default.signals,
-    topLevelSignals: function (model, selCmpt) {
-        return [{
-                name: selCmpt.name,
-                update: "data(" + util_1.stringValue(selCmpt.name + selection_1.STORE) + ")[0]"
-            }];
+    topLevelSignals: function (model, selCmpt, signals) {
+        var hasSignal = signals.filter(function (s) { return s.name === selCmpt.name; });
+        return hasSignal.length ? signals : signals.concat({
+            name: selCmpt.name,
+            update: "data(" + util_1.stringValue(selCmpt.name + selection_1.STORE) + ")[0]"
+        });
     },
     tupleExpr: function (model, selCmpt) {
         var name = selCmpt.name, values = name + ".values";
@@ -7603,11 +7825,11 @@ var single = {
             (selCmpt.resolve === 'global' ? 'true' : "{unit: " + tpl + ".unit}");
     }
 };
-Object.defineProperty(exports, "__esModule", { value: true });
 exports.default = single;
 
-},{"../../util":98,"./multi":63,"./selection":64}],66:[function(require,module,exports){
+},{"../../util":99,"./multi":63,"./selection":64}],66:[function(require,module,exports){
 "use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 var util_1 = require("../../../util");
 var inputBindings = {
     has: function (selCmpt) {
@@ -7637,14 +7859,14 @@ var inputBindings = {
         return signals;
     }
 };
-Object.defineProperty(exports, "__esModule", { value: true });
 exports.default = inputBindings;
 function id(str) {
     return '_' + str.replace(/\W/g, '_');
 }
 
-},{"../../../util":98}],67:[function(require,module,exports){
+},{"../../../util":99}],67:[function(require,module,exports){
 "use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 var VORONOI = 'voronoi';
 var nearest = {
     has: function (selCmpt) {
@@ -7680,11 +7902,11 @@ var nearest = {
         return selMarks;
     }
 };
-Object.defineProperty(exports, "__esModule", { value: true });
 exports.default = nearest;
 
 },{}],68:[function(require,module,exports){
 "use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 var project = {
     has: function (selDef) {
         return selDef.fields !== undefined || selDef.encodings !== undefined;
@@ -7704,11 +7926,11 @@ var project = {
         projection.filter(function (p) { return p.encoding; }).forEach(function (p) { return fields[p.encoding] = p.field; });
     }
 };
-Object.defineProperty(exports, "__esModule", { value: true });
 exports.default = project;
 
 },{}],69:[function(require,module,exports){
 "use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 var log_1 = require("../../../log");
 var scale_1 = require("../../../scale");
 var util_1 = require("../../../util");
@@ -7756,7 +7978,6 @@ var scaleBindings = {
         return signals;
     }
 };
-Object.defineProperty(exports, "__esModule", { value: true });
 exports.default = scaleBindings;
 function domain(model, channel) {
     var scale = util_1.stringValue(model.scaleName(channel));
@@ -7764,8 +7985,9 @@ function domain(model, channel) {
 }
 exports.domain = domain;
 
-},{"../../../log":86,"../../../scale":89,"../../../util":98,"../interval":62,"../selection":64}],70:[function(require,module,exports){
+},{"../../../log":87,"../../../scale":90,"../../../util":99,"../interval":62,"../selection":64}],70:[function(require,module,exports){
 "use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 var selection_1 = require("../selection");
 var TOGGLE = '_toggle';
 var toggle = {
@@ -7788,11 +8010,11 @@ var toggle = {
             (signal + " ? " + tpl + " : null");
     }
 };
-Object.defineProperty(exports, "__esModule", { value: true });
 exports.default = toggle;
 
 },{"../selection":64}],71:[function(require,module,exports){
 "use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 var inputs_1 = require("./inputs");
 var nearest_1 = require("./nearest");
 var project_1 = require("./project");
@@ -7813,6 +8035,7 @@ exports.forEachTransform = forEachTransform;
 
 },{"./inputs":66,"./nearest":67,"./project":68,"./scales":69,"./toggle":70,"./translate":72,"./zoom":73}],72:[function(require,module,exports){
 "use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 var vega_event_selector_1 = require("vega-event-selector");
 var channel_1 = require("../../../channel");
 var util_1 = require("../../../util");
@@ -7859,7 +8082,6 @@ var translate = {
         return signals;
     }
 };
-Object.defineProperty(exports, "__esModule", { value: true });
 exports.default = translate;
 function getSign(selCmpt, channel) {
     var s = channel === channel_1.X ? '+' : '-';
@@ -7878,8 +8100,9 @@ function onDelta(model, selCmpt, channel, size, signals) {
     });
 }
 
-},{"../../../channel":12,"../../../util":98,"../interval":62,"../selection":64,"./scales":69,"vega-event-selector":6}],73:[function(require,module,exports){
+},{"../../../channel":12,"../../../util":99,"../interval":62,"../selection":64,"./scales":69,"vega-event-selector":6}],73:[function(require,module,exports){
 "use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 var vega_event_selector_1 = require("vega-event-selector");
 var channel_1 = require("../../../channel");
 var util_1 = require("../../../util");
@@ -7930,7 +8153,6 @@ var zoom = {
         return signals;
     }
 };
-Object.defineProperty(exports, "__esModule", { value: true });
 exports.default = zoom;
 function onDelta(model, selCmpt, channel, size, signals) {
     var name = selCmpt.name, signal = signals.filter(function (s) { return s.name === selection_1.channelSignalName(selCmpt, channel); })[0], scales = scales_1.default.has(selCmpt), base = scales ? scales_1.domain(model, channel) : signal.name, anchor = "" + name + ANCHOR + "." + channel, delta = name + DELTA, scale = util_1.stringValue(model.scaleName(channel)), range = "[" + anchor + " + (" + base + "[0] - " + anchor + ") * " + delta + ", " +
@@ -7941,8 +8163,9 @@ function onDelta(model, selCmpt, channel, size, signals) {
     });
 }
 
-},{"../../../channel":12,"../../../util":98,"../interval":62,"../selection":64,"./scales":69,"vega-event-selector":6}],74:[function(require,module,exports){
+},{"../../../channel":12,"../../../util":99,"../interval":62,"../selection":64,"./scales":69,"vega-event-selector":6}],74:[function(require,module,exports){
 "use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 var tslib_1 = require("tslib");
 var channel_1 = require("../channel");
 var encoding_1 = require("../encoding");
@@ -8140,7 +8363,7 @@ var UnitModel = (function (_super) {
     UnitModel.prototype.assembleData = function () {
         if (!this.parent) {
             // only assemble data in the root
-            return assemble_1.assembleData(util_1.vals(this.component.data.sources));
+            return assemble_1.assembleData(this.component.data);
         }
         return [];
     };
@@ -8220,13 +8443,22 @@ var UnitModel = (function (_super) {
 }(model_1.ModelWithField));
 exports.UnitModel = UnitModel;
 
-},{"../channel":12,"../encoding":81,"../fielddef":83,"../mark":87,"../scale":89,"../stack":93,"../util":98,"./axis/parse":14,"./common":16,"./data/assemble":20,"./data/parse":28,"./facet":34,"./layer":35,"./layout/index":37,"./legend/parse":39,"./mark/init":43,"./mark/mark":45,"./model":53,"./repeat":54,"./scale/init":57,"./scale/parse":58,"./selection/selection":64,"tslib":5}],75:[function(require,module,exports){
+},{"../channel":12,"../encoding":81,"../fielddef":83,"../mark":88,"../scale":90,"../stack":94,"../util":99,"./axis/parse":14,"./common":16,"./data/assemble":20,"./data/parse":28,"./facet":34,"./layer":35,"./layout/index":37,"./legend/parse":39,"./mark/init":43,"./mark/mark":45,"./model":53,"./repeat":54,"./scale/init":57,"./scale/parse":58,"./selection/selection":64,"tslib":5}],75:[function(require,module,exports){
 "use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 var tslib_1 = require("tslib");
 var fielddef_1 = require("./../fielddef");
 exports.BOXPLOT = 'box-plot';
+function isBoxPlotDef(mark) {
+    return !!mark['type'];
+}
+exports.isBoxPlotDef = isBoxPlotDef;
+exports.BOXPLOT_ROLES = ['boxWhisker', 'box', 'boxMid'];
+exports.VL_ONLY_BOXPLOT_CONFIG_PROPERTY_INDEX = {
+    box: ['size']
+};
 function normalizeBoxPlot(spec, config) {
-    var _m = spec.mark, encoding = spec.encoding, outerSpec = tslib_1.__rest(spec, ["mark", "encoding"]);
+    var mark = spec.mark, encoding = spec.encoding, outerSpec = tslib_1.__rest(spec, ["mark", "encoding"]);
     var _x = encoding.x, _y = encoding.y, nonPositionEncoding = tslib_1.__rest(encoding, ["x", "y"]);
     var size = nonPositionEncoding.size, nonPositionEncodingWithoutSize = tslib_1.__rest(nonPositionEncoding, ["size"]);
     var _color = nonPositionEncodingWithoutSize.color, nonPositionEncodingWithoutColorSize = tslib_1.__rest(nonPositionEncodingWithoutSize, ["color"]);
@@ -8235,23 +8467,12 @@ function normalizeBoxPlot(spec, config) {
     var discreteAxis, continuousAxis;
     if (encoding.x && encoding.y) {
         // 2D
-        if (fielddef_1.isDiscrete(encoding.x) && fielddef_1.isContinuous(encoding.y)) {
-            // vertical
-            discreteAxis = 'x';
-            continuousAxis = 'y';
-            continuousAxisChannelDef = encoding.y;
-            discreteAxisFieldDef = encoding.x;
-        }
-        else if (fielddef_1.isDiscrete(encoding.y) && fielddef_1.isContinuous(encoding.x)) {
-            // horizontal
-            discreteAxis = 'y';
-            continuousAxis = 'x';
-            continuousAxisChannelDef = encoding.x;
-            discreteAxisFieldDef = encoding.y;
-        }
-        else {
-            throw new Error('Need one continuous and one discrete axis for 2D boxplots');
-        }
+        var orient = box2DOrient(spec);
+        var params = box2DParams(spec, orient);
+        discreteAxisFieldDef = params.discreteAxisFieldDef;
+        continuousAxisChannelDef = params.continuousAxisChannelDef;
+        discreteAxis = params.discreteAxis;
+        continuousAxis = params.continuousAxis;
     }
     else if (encoding.x && fielddef_1.isContinuous(encoding.x) && encoding.y === undefined) {
         // 1D horizontal
@@ -8267,7 +8488,7 @@ function normalizeBoxPlot(spec, config) {
         throw new Error('Need a continuous axis for 1D boxplots');
     }
     if (continuousAxisChannelDef.aggregate !== undefined && continuousAxisChannelDef.aggregate !== exports.BOXPLOT) {
-        throw new Error('Continuous axis should not be aggregated');
+        throw new Error("Continuous axis should not have customized aggregation function " + continuousAxisChannelDef.aggregate);
     }
     var baseContinuousFieldDef = {
         field: continuousAxisChannelDef.field,
@@ -8310,9 +8531,85 @@ function normalizeBoxPlot(spec, config) {
     var _a, _b, _c, _d, _e;
 }
 exports.normalizeBoxPlot = normalizeBoxPlot;
+function box2DOrient(spec) {
+    var mark = spec.mark, encoding = spec.encoding, outerSpec = tslib_1.__rest(spec, ["mark", "encoding"]);
+    var xEncChannel = encoding.x;
+    var yEncChannel = encoding.y;
+    var resultOrient;
+    if (fielddef_1.isDiscrete(encoding.x) && fielddef_1.isContinuous(encoding.y)) {
+        resultOrient = 'vertical';
+    }
+    else if (fielddef_1.isDiscrete(encoding.y) && fielddef_1.isContinuous(encoding.x)) {
+        resultOrient = 'horizontal';
+    }
+    else {
+        if (fielddef_1.isContinuous(encoding.x) && fielddef_1.isContinuous(encoding.y)) {
+            if (xEncChannel.aggregate === undefined && yEncChannel.aggregate === exports.BOXPLOT) {
+                resultOrient = 'vertical';
+            }
+            else if (yEncChannel.aggregate === undefined && xEncChannel.aggregate === exports.BOXPLOT) {
+                resultOrient = 'horizontal';
+            }
+            else if (xEncChannel.aggregate === exports.BOXPLOT && yEncChannel.aggregate === exports.BOXPLOT) {
+                throw new Error('Both x and y cannot have aggregate');
+            }
+            else {
+                if (isBoxPlotDef(mark)) {
+                    if (mark && mark.orient) {
+                        resultOrient = mark.orient;
+                    }
+                    else {
+                        // default orientation = vertical
+                        resultOrient = 'vertical';
+                    }
+                }
+                else {
+                    resultOrient = 'vertical';
+                }
+            }
+        }
+        else {
+            throw new Error('Both x and y cannot be discrete');
+        }
+    }
+    return resultOrient;
+}
+exports.box2DOrient = box2DOrient;
+function box2DParams(spec, orient) {
+    var mark = spec.mark, encoding = spec.encoding, outerSpec = tslib_1.__rest(spec, ["mark", "encoding"]);
+    var discreteAxisFieldDef, continuousAxisChannelDef;
+    var discreteAxis, continuousAxis;
+    if (orient === 'vertical') {
+        discreteAxis = 'x';
+        continuousAxis = 'y';
+        continuousAxisChannelDef = encoding.y;
+        discreteAxisFieldDef = encoding.x;
+    }
+    else {
+        discreteAxis = 'y';
+        continuousAxis = 'x';
+        continuousAxisChannelDef = encoding.x;
+        discreteAxisFieldDef = encoding.y;
+    }
+    if (continuousAxisChannelDef && continuousAxisChannelDef.aggregate) {
+        var aggregate = continuousAxisChannelDef.aggregate, continuousAxisWithoutAggregate = tslib_1.__rest(continuousAxisChannelDef, ["aggregate"]);
+        if (aggregate !== exports.BOXPLOT) {
+            throw new Error("Continuous axis should not have customized aggregation function " + aggregate);
+        }
+        continuousAxisChannelDef = continuousAxisWithoutAggregate;
+    }
+    return {
+        discreteAxisFieldDef: discreteAxisFieldDef,
+        continuousAxisChannelDef: continuousAxisChannelDef,
+        discreteAxis: discreteAxis,
+        continuousAxis: continuousAxis
+    };
+}
+exports.box2DParams = box2DParams;
 
 },{"./../fielddef":83,"tslib":5}],76:[function(require,module,exports){
 "use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 var tslib_1 = require("tslib");
 exports.ERRORBAR = 'error-bar';
 function normalizeErrorBar(spec) {
@@ -8340,6 +8637,8 @@ exports.normalizeErrorBar = normalizeErrorBar;
 
 },{"tslib":5}],77:[function(require,module,exports){
 "use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+var tslib_1 = require("tslib");
 var mark_1 = require("./../mark");
 var boxplot_1 = require("./boxplot");
 var errorbar_1 = require("./errorbar");
@@ -8355,6 +8654,8 @@ function remove(mark) {
     delete normalizerRegistry[mark];
 }
 exports.remove = remove;
+exports.COMPOSITE_MARK_ROLES = boxplot_1.BOXPLOT_ROLES;
+exports.VL_ONLY_COMPOSITE_MARK_SPECIFIC_CONFIG_PROPERTY_INDEX = tslib_1.__assign({}, boxplot_1.VL_ONLY_BOXPLOT_CONFIG_PROPERTY_INDEX);
 add(boxplot_1.BOXPLOT, boxplot_1.normalizeBoxPlot);
 add(errorbar_1.ERRORBAR, errorbar_1.normalizeErrorBar);
 /**
@@ -8372,9 +8673,15 @@ function normalize(
 }
 exports.normalize = normalize;
 
-},{"./../mark":87,"./boxplot":75,"./errorbar":76}],78:[function(require,module,exports){
+},{"./../mark":88,"./boxplot":75,"./errorbar":76,"tslib":5}],78:[function(require,module,exports){
 "use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+var tslib_1 = require("tslib");
+var compositemark_1 = require("./compositemark");
+var index_1 = require("./compositemark/index");
+var guide_1 = require("./guide");
 var legend_1 = require("./legend");
+var mark_1 = require("./mark");
 var mark = require("./mark");
 var scale_1 = require("./scale");
 var selection_1 = require("./selection");
@@ -8432,12 +8739,66 @@ function initConfig(config) {
     return util_1.mergeDeep(util_1.duplicate(exports.defaultConfig), config);
 }
 exports.initConfig = initConfig;
+var MARK_ROLES = [].concat(mark_1.PRIMITIVE_MARKS, compositemark_1.COMPOSITE_MARK_ROLES);
+var VL_ONLY_CONFIG_PROPERTIES = ['padding', 'numberFormat', 'timeFormat', 'countTitle', 'cell', 'stack', 'overlay', 'scale', 'facet', 'selection', 'filterInvalid'];
+var VL_ONLY_ALL_MARK_SPECIFIC_CONFIG_PROPERTY_INDEX = tslib_1.__assign({}, mark_1.VL_ONLY_MARK_SPECIFIC_CONFIG_PROPERTY_INDEX, index_1.VL_ONLY_COMPOSITE_MARK_SPECIFIC_CONFIG_PROPERTY_INDEX);
+function stripConfig(config) {
+    config = util_1.duplicate(config);
+    for (var _i = 0, VL_ONLY_CONFIG_PROPERTIES_1 = VL_ONLY_CONFIG_PROPERTIES; _i < VL_ONLY_CONFIG_PROPERTIES_1.length; _i++) {
+        var prop = VL_ONLY_CONFIG_PROPERTIES_1[_i];
+        delete config[prop];
+    }
+    // Remove Vega-Lite only axis/legend config
+    if (config.axis) {
+        for (var _a = 0, VL_ONLY_GUIDE_CONFIG_1 = guide_1.VL_ONLY_GUIDE_CONFIG; _a < VL_ONLY_GUIDE_CONFIG_1.length; _a++) {
+            var prop = VL_ONLY_GUIDE_CONFIG_1[_a];
+            delete config.axis[prop];
+        }
+    }
+    if (config.legend) {
+        for (var _b = 0, VL_ONLY_GUIDE_CONFIG_2 = guide_1.VL_ONLY_GUIDE_CONFIG; _b < VL_ONLY_GUIDE_CONFIG_2.length; _b++) {
+            var prop = VL_ONLY_GUIDE_CONFIG_2[_b];
+            delete config.legend[prop];
+        }
+    }
+    // Remove Vega-Lite only generic mark config
+    if (config.mark) {
+        for (var _c = 0, _d = mark.VL_ONLY_MARK_CONFIG_PROPERTIES; _c < _d.length; _c++) {
+            var prop = _d[_c];
+            delete config.mark[prop];
+        }
+    }
+    // Remove Vega-Lite Mark/Role config
+    for (var _e = 0, MARK_ROLES_1 = MARK_ROLES; _e < MARK_ROLES_1.length; _e++) {
+        var role = MARK_ROLES_1[_e];
+        for (var _f = 0, _g = mark.VL_ONLY_MARK_CONFIG_PROPERTIES; _f < _g.length; _f++) {
+            var prop = _g[_f];
+            delete config[role][prop];
+        }
+        var vlOnlyMarkSpecificConfigs = VL_ONLY_ALL_MARK_SPECIFIC_CONFIG_PROPERTY_INDEX[role];
+        if (vlOnlyMarkSpecificConfigs) {
+            for (var _h = 0, vlOnlyMarkSpecificConfigs_1 = vlOnlyMarkSpecificConfigs; _h < vlOnlyMarkSpecificConfigs_1.length; _h++) {
+                var prop = vlOnlyMarkSpecificConfigs_1[_h];
+                delete config[role][prop];
+            }
+        }
+    }
+    // Remove empty config objects
+    for (var prop in config) {
+        if (util_1.isObject(config[prop]) && util_1.keys(config[prop]).length === 0) {
+            delete config[prop];
+        }
+    }
+    return util_1.keys(config).length > 0 ? config : undefined;
+}
+exports.stripConfig = stripConfig;
 
-},{"./legend":85,"./mark":87,"./scale":89,"./selection":90,"./util":98}],79:[function(require,module,exports){
+},{"./compositemark":77,"./compositemark/index":77,"./guide":85,"./legend":86,"./mark":88,"./scale":90,"./selection":91,"./util":99,"tslib":5}],79:[function(require,module,exports){
+"use strict";
 /*
  * Constants and utilities for data.
  */
-"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 function isUrlData(data) {
     return !!data['url'];
 }
@@ -8454,8 +8815,9 @@ exports.MAIN = 'main';
 exports.RAW = 'raw';
 
 },{}],80:[function(require,module,exports){
-// DateTime definition object
 "use strict";
+// DateTime definition object
+Object.defineProperty(exports, "__esModule", { value: true });
 var log = require("./log");
 var util_1 = require("./util");
 /*
@@ -8633,8 +8995,9 @@ function dateTimeExpr(d, normalize) {
 }
 exports.dateTimeExpr = dateTimeExpr;
 
-},{"./log":86,"./util":98}],81:[function(require,module,exports){
+},{"./log":87,"./util":99}],81:[function(require,module,exports){
 "use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 var channel_1 = require("./channel");
 var fielddef_1 = require("./fielddef");
 var log = require("./log");
@@ -8758,12 +9121,14 @@ function reduce(mapping, f, init, thisArg) {
 }
 exports.reduce = reduce;
 
-},{"./channel":12,"./fielddef":83,"./log":86,"./util":98}],82:[function(require,module,exports){
+},{"./channel":12,"./fielddef":83,"./log":87,"./util":99}],82:[function(require,module,exports){
 "use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 
 },{}],83:[function(require,module,exports){
-// utility for a field definition object
 "use strict";
+// utility for a field definition object
+Object.defineProperty(exports, "__esModule", { value: true });
 var tslib_1 = require("tslib");
 var aggregate_1 = require("./aggregate");
 var bin_1 = require("./bin");
@@ -8784,6 +9149,10 @@ function isValueDef(channelDef) {
     return channelDef && 'value' in channelDef && channelDef['value'] !== undefined;
 }
 exports.isValueDef = isValueDef;
+function isScaleFieldDef(channelDef) {
+    return !!channelDef && (!!channelDef['scale'] || !!channelDef['sort']);
+}
+exports.isScaleFieldDef = isScaleFieldDef;
 function field(fieldDef, opt) {
     if (opt === void 0) { opt = {}; }
     var field = fieldDef.field;
@@ -8891,13 +9260,7 @@ function normalize(channelDef, channel) {
         }
         // Normalize bin
         if (fieldDef.bin) {
-            var bin = fieldDef.bin;
-            if (util_1.isBoolean(bin)) {
-                fieldDef = tslib_1.__assign({}, fieldDef, { bin: { maxbins: bin_1.autoMaxBins(channel) } });
-            }
-            else if (!bin.maxbins && !bin.step) {
-                fieldDef = tslib_1.__assign({}, fieldDef, { bin: tslib_1.__assign({}, bin, { maxbins: bin_1.autoMaxBins(channel) }) });
-            }
+            fieldDef = tslib_1.__assign({}, fieldDef, { bin: normalizeBin(fieldDef.bin, channel) });
         }
         // Normalize Type
         if (fieldDef.type) {
@@ -8922,6 +9285,18 @@ function normalize(channelDef, channel) {
     return channelDef;
 }
 exports.normalize = normalize;
+function normalizeBin(bin, channel) {
+    if (util_1.isBoolean(bin)) {
+        return { maxbins: bin_1.autoMaxBins(channel) };
+    }
+    else if (!bin.maxbins && !bin.step) {
+        return tslib_1.__assign({}, bin, { maxbins: bin_1.autoMaxBins(channel) });
+    }
+    else {
+        return bin;
+    }
+}
+exports.normalizeBin = normalizeBin;
 var COMPATIBLE = { compatible: true };
 function channelCompatibility(fieldDef, channel) {
     switch (channel) {
@@ -8975,8 +9350,9 @@ function channelCompatibility(fieldDef, channel) {
 }
 exports.channelCompatibility = channelCompatibility;
 
-},{"./aggregate":9,"./bin":11,"./channel":12,"./log":86,"./timeunit":94,"./type":97,"./util":98,"tslib":5}],84:[function(require,module,exports){
+},{"./aggregate":9,"./bin":11,"./channel":12,"./log":87,"./timeunit":95,"./type":98,"./util":99,"tslib":5}],84:[function(require,module,exports){
 "use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 var selection_1 = require("./compile/selection/selection");
 var datetime_1 = require("./datetime");
 var fielddef_1 = require("./fielddef");
@@ -9067,16 +9443,23 @@ function valueExpr(v, timeUnit) {
     return JSON.stringify(v);
 }
 
-},{"./compile/selection/selection":64,"./datetime":80,"./fielddef":83,"./timeunit":94,"./util":98}],85:[function(require,module,exports){
+},{"./compile/selection/selection":64,"./datetime":80,"./fielddef":83,"./timeunit":95,"./util":99}],85:[function(require,module,exports){
 "use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.VL_ONLY_GUIDE_CONFIG = ['shortTimeLabels'];
+
+},{}],86:[function(require,module,exports){
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 exports.defaultLegendConfig = {
     orient: undefined,
 };
 exports.LEGEND_PROPERTIES = ['entryPadding', 'format', 'offset', 'orient', 'tickCount', 'title', 'type', 'values', 'zindex'];
 
-},{}],86:[function(require,module,exports){
-///<reference path="../typings/vega-util.d.ts" />
+},{}],87:[function(require,module,exports){
 "use strict";
+///<reference path="../typings/vega-util.d.ts" />
+Object.defineProperty(exports, "__esModule", { value: true });
 /**
  * Vega-Lite's singleton logger utility.
  */
@@ -9203,6 +9586,7 @@ var message;
         return "Ignoring an invalid transform: " + JSON.stringify(transform) + ".";
     }
     message.invalidTransformIgnored = invalidTransformIgnored;
+    message.NO_FIELDS_NEEDS_AS = 'If `from.fields` is not specified, `as` has to be a string that specifies the key to be used for the the data from the secondary source.';
     // ENCODING & FACET
     function invalidFieldType(type) {
         return "Invalid field type \"" + type + "\"";
@@ -9326,8 +9710,9 @@ var message;
     message.droppedDay = droppedDay;
 })(message = exports.message || (exports.message = {}));
 
-},{"vega-util":7}],87:[function(require,module,exports){
+},{"vega-util":7}],88:[function(require,module,exports){
 "use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 var util_1 = require("./util");
 var Mark;
 (function (Mark) {
@@ -9367,6 +9752,12 @@ exports.STROKE_CONFIG = ['stroke', 'strokeWidth',
     'strokeDash', 'strokeDashOffset', 'strokeOpacity'];
 exports.FILL_CONFIG = ['fill', 'fillOpacity'];
 exports.FILL_STROKE_CONFIG = [].concat(exports.STROKE_CONFIG, exports.FILL_CONFIG);
+exports.VL_ONLY_MARK_CONFIG_PROPERTIES = ['filled', 'color'];
+exports.VL_ONLY_MARK_SPECIFIC_CONFIG_PROPERTY_INDEX = {
+    bar: ['binSpacing', 'continuousBandSize', 'discreteBandSize'],
+    text: ['shortTimeLabels'],
+    tick: ['bandSize', 'thickness']
+};
 exports.defaultMarkConfig = {
     color: '#4c78a8',
 };
@@ -9374,15 +9765,14 @@ exports.defaultBarConfig = {
     binSpacing: 1,
     continuousBandSize: 2
 };
-exports.defaultTextConfig = {
-    baseline: 'middle',
-};
+exports.defaultTextConfig = {};
 exports.defaultTickConfig = {
     thickness: 1
 };
 
-},{"./util":98}],88:[function(require,module,exports){
+},{"./util":99}],89:[function(require,module,exports){
 "use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 var channel_1 = require("./channel");
 var log = require("./log");
 var util_1 = require("./util");
@@ -9405,8 +9795,9 @@ function initLayerResolve(resolve) {
 }
 exports.initLayerResolve = initLayerResolve;
 
-},{"./channel":12,"./log":86,"./util":98}],89:[function(require,module,exports){
+},{"./channel":12,"./log":87,"./util":99}],90:[function(require,module,exports){
 "use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 var log = require("./log");
 var util_1 = require("./util");
 var ScaleType;
@@ -9578,8 +9969,9 @@ function channelScalePropertyIncompatability(channel, propName) {
 }
 exports.channelScalePropertyIncompatability = channelScalePropertyIncompatability;
 
-},{"./log":86,"./util":98}],90:[function(require,module,exports){
+},{"./log":87,"./util":99}],91:[function(require,module,exports){
 "use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 exports.defaultConfig = {
     single: { on: 'click', fields: ['_id'], resolve: 'global' },
     multi: { on: 'click', fields: ['_id'], toggle: 'event.shiftKey', resolve: 'global' },
@@ -9592,15 +9984,17 @@ exports.defaultConfig = {
     }
 };
 
-},{}],91:[function(require,module,exports){
+},{}],92:[function(require,module,exports){
 "use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 function isSortField(sort) {
-    return !!sort && !!sort['field'] && !!sort['op'];
+    return !!sort && (sort['op'] === 'count' || !!sort['field']) && !!sort['op'];
 }
 exports.isSortField = isSortField;
 
-},{}],92:[function(require,module,exports){
+},{}],93:[function(require,module,exports){
 "use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 var tslib_1 = require("tslib");
 var channel_1 = require("./channel");
 var compositeMark = require("./compositemark");
@@ -9861,8 +10255,9 @@ function isStacked(spec, config) {
 }
 exports.isStacked = isStacked;
 
-},{"./channel":12,"./compositemark":77,"./encoding":81,"./log":86,"./mark":87,"./stack":93,"./util":98,"tslib":5}],93:[function(require,module,exports){
+},{"./channel":12,"./compositemark":77,"./encoding":81,"./log":87,"./mark":88,"./stack":94,"./util":99,"tslib":5}],94:[function(require,module,exports){
 "use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 var log = require("./log");
 var aggregate_1 = require("./aggregate");
 var channel_1 = require("./channel");
@@ -9951,8 +10346,9 @@ function stack(m, encoding, stackConfig) {
 }
 exports.stack = stack;
 
-},{"./aggregate":9,"./channel":12,"./encoding":81,"./fielddef":83,"./log":86,"./mark":87,"./scale":89,"./util":98}],94:[function(require,module,exports){
+},{"./aggregate":9,"./channel":12,"./encoding":81,"./fielddef":83,"./log":87,"./mark":88,"./scale":90,"./util":99}],95:[function(require,module,exports){
 "use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 var datetime_1 = require("./datetime");
 var log = require("./log");
 var util_1 = require("./util");
@@ -9981,6 +10377,29 @@ var TimeUnit;
     TimeUnit.YEARQUARTER = 'yearquarter';
     TimeUnit.QUARTERMONTH = 'quartermonth';
     TimeUnit.YEARQUARTERMONTH = 'yearquartermonth';
+    TimeUnit.UTCYEAR = 'utcyear';
+    TimeUnit.UTCMONTH = 'utcmonth';
+    TimeUnit.UTCDAY = 'utcday';
+    TimeUnit.UTCDATE = 'utcdate';
+    TimeUnit.UTCHOURS = 'utchours';
+    TimeUnit.UTCMINUTES = 'utcminutes';
+    TimeUnit.UTCSECONDS = 'utcseconds';
+    TimeUnit.UTCMILLISECONDS = 'utcmilliseconds';
+    TimeUnit.UTCYEARMONTH = 'utcyearmonth';
+    TimeUnit.UTCYEARMONTHDATE = 'utcyearmonthdate';
+    TimeUnit.UTCYEARMONTHDATEHOURS = 'utcyearmonthdatehours';
+    TimeUnit.UTCYEARMONTHDATEHOURSMINUTES = 'utcyearmonthdatehoursminutes';
+    TimeUnit.UTCYEARMONTHDATEHOURSMINUTESSECONDS = 'utcyearmonthdatehoursminutesseconds';
+    // MONTHDATE always include 29 February since we use year 0th (which is a leap year);
+    TimeUnit.UTCMONTHDATE = 'utcmonthdate';
+    TimeUnit.UTCHOURSMINUTES = 'utchoursminutes';
+    TimeUnit.UTCHOURSMINUTESSECONDS = 'utchoursminutesseconds';
+    TimeUnit.UTCMINUTESSECONDS = 'utcminutesseconds';
+    TimeUnit.UTCSECONDSMILLISECONDS = 'utcsecondsmilliseconds';
+    TimeUnit.UTCQUARTER = 'utcquarter';
+    TimeUnit.UTCYEARQUARTER = 'utcyearquarter';
+    TimeUnit.UTCQUARTERMONTH = 'utcquartermonth';
+    TimeUnit.UTCYEARQUARTERMONTH = 'utcyearquartermonth';
 })(TimeUnit = exports.TimeUnit || (exports.TimeUnit = {}));
 /** Time Unit that only corresponds to only one part of Date objects. */
 exports.SINGLE_TIMEUNITS = [
@@ -9992,7 +10411,7 @@ exports.SINGLE_TIMEUNITS = [
     TimeUnit.HOURS,
     TimeUnit.MINUTES,
     TimeUnit.SECONDS,
-    TimeUnit.MILLISECONDS,
+    TimeUnit.MILLISECONDS
 ];
 var SINGLE_TIMEUNIT_INDEX = exports.SINGLE_TIMEUNITS.reduce(function (d, timeUnit) {
     d[timeUnit] = true;
@@ -10088,7 +10507,7 @@ exports.TIMEUNITS = [
     TimeUnit.HOURSMINUTES,
     TimeUnit.HOURSMINUTESSECONDS,
     TimeUnit.MINUTESSECONDS,
-    TimeUnit.SECONDSMILLISECONDS
+    TimeUnit.SECONDSMILLISECONDS,
 ];
 /** Returns true if fullTimeUnit contains the timeUnit, false otherwise. */
 function containsTimeUnit(fullTimeUnit, timeUnit) {
@@ -10105,13 +10524,14 @@ exports.containsTimeUnit = containsTimeUnit;
  */
 function fieldExpr(fullTimeUnit, field) {
     var fieldRef = "datum[" + util_1.stringValue(field) + "]";
+    var utc = isUTCTimeUnit(fullTimeUnit) ? 'utc' : '';
     function func(timeUnit) {
         if (timeUnit === TimeUnit.QUARTER) {
             // quarter starting at 0 (0,3,6,9).
-            return "(quarter(" + fieldRef + ")-1)";
+            return "(" + utc + "quarter(" + fieldRef + ")-1)";
         }
         else {
-            return timeUnit + "(" + fieldRef + ")";
+            return "" + utc + timeUnit + "(" + fieldRef + ")";
         }
     }
     var d = exports.SINGLE_TIMEUNITS.reduce(function (_d, tu) {
@@ -10156,7 +10576,7 @@ function smallestUnit(timeUnit) {
 }
 exports.smallestUnit = smallestUnit;
 /** returns the signal expression used for axis labels for a time unit */
-function formatExpression(timeUnit, field, shortTimeLabels) {
+function formatExpression(timeUnit, field, shortTimeLabels, isUTCScale) {
     if (!timeUnit) {
         return undefined;
     }
@@ -10205,7 +10625,12 @@ function formatExpression(timeUnit, field, shortTimeLabels) {
             // Add space between quarter and main time format
             expression += " + ' ' + ";
         }
-        expression += "timeFormat(" + field + ", '" + dateTimeComponents.join(' ') + "')";
+        if (isUTCScale) {
+            expression += "utcFormat(" + field + ", '" + dateTimeComponents.join(' ') + "')";
+        }
+        else {
+            expression += "timeFormat(" + field + ", '" + dateTimeComponents.join(' ') + "')";
+        }
     }
     // If expression is still an empty string, return undefined instead.
     return expression || undefined;
@@ -10223,9 +10648,13 @@ function isDiscreteByDefault(timeUnit) {
     return false;
 }
 exports.isDiscreteByDefault = isDiscreteByDefault;
+function isUTCTimeUnit(timeUnit) {
+    return timeUnit.substr(0, 3) === 'utc';
+}
 
-},{"./datetime":80,"./log":86,"./util":98}],95:[function(require,module,exports){
+},{"./datetime":80,"./log":87,"./util":99}],96:[function(require,module,exports){
 "use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 var TOP_LEVEL_PROPERTIES = [
     'background', 'padding'
 ];
@@ -10239,21 +10668,39 @@ function extractTopLevelProperties(t) {
 }
 exports.extractTopLevelProperties = extractTopLevelProperties;
 
-},{}],96:[function(require,module,exports){
+},{}],97:[function(require,module,exports){
 "use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 function isFilter(t) {
     return t['filter'] !== undefined;
 }
 exports.isFilter = isFilter;
+function isLookup(t) {
+    return t['lookup'] !== undefined;
+}
+exports.isLookup = isLookup;
 function isCalculate(t) {
     return t['calculate'] !== undefined;
 }
 exports.isCalculate = isCalculate;
+function isBin(t) {
+    return t['bin'] !== undefined;
+}
+exports.isBin = isBin;
+function isTimeUnit(t) {
+    return t['timeUnit'] !== undefined;
+}
+exports.isTimeUnit = isTimeUnit;
+function isSummarize(t) {
+    return t['summarize'] !== undefined;
+}
+exports.isSummarize = isSummarize;
 
-},{}],97:[function(require,module,exports){
+},{}],98:[function(require,module,exports){
+"use strict";
 /** Constants and utilities for data type */
 /** Data type based on level of measurement */
-"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 var Type;
 (function (Type) {
     Type.QUANTITATIVE = 'quantitative';
@@ -10293,8 +10740,9 @@ function getFullName(type) {
 }
 exports.getFullName = getFullName;
 
-},{}],98:[function(require,module,exports){
+},{}],99:[function(require,module,exports){
 "use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 var stringify = require("json-stable-stringify");
 var vega_util_1 = require("vega-util");
 exports.extend = vega_util_1.extend;
@@ -10510,8 +10958,9 @@ function varName(s) {
 }
 exports.varName = varName;
 
-},{"json-stable-stringify":1,"vega-util":7}],99:[function(require,module,exports){
+},{"json-stable-stringify":1,"vega-util":7}],100:[function(require,module,exports){
 "use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 var mark_1 = require("./mark");
 // TODO: move to vl.spec.validator?
 var mark_2 = require("./mark");
@@ -10579,8 +11028,9 @@ function getEncodingMappingError(spec, requiredChannelMap, supportedChannelMap) 
 }
 exports.getEncodingMappingError = getEncodingMappingError;
 
-},{"./mark":87,"./util":98}],100:[function(require,module,exports){
+},{"./mark":88,"./util":99}],101:[function(require,module,exports){
 "use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 var util_1 = require("./util");
 function isDataRefUnionedDomain(domain) {
     if (!util_1.isArray(domain)) {
@@ -10611,8 +11061,9 @@ function isSignalRefDomain(domain) {
 }
 exports.isSignalRefDomain = isSignalRefDomain;
 
-},{"./util":98}],101:[function(require,module,exports){
+},{"./util":99}],102:[function(require,module,exports){
 "use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 exports.axis = require("./axis");
 exports.aggregate = require("./aggregate");
 exports.bin = require("./bin");
@@ -10639,6 +11090,6 @@ exports.util = require("./util");
 exports.validate = require("./validate");
 exports.version = require('../package.json').version;
 
-},{"../package.json":8,"./aggregate":9,"./axis":10,"./bin":11,"./channel":12,"./compile/compile":17,"./compositemark":77,"./config":78,"./data":79,"./datetime":80,"./encoding":81,"./facet":82,"./fielddef":83,"./legend":85,"./mark":87,"./scale":89,"./sort":91,"./spec":92,"./stack":93,"./timeunit":94,"./transform":96,"./type":97,"./util":98,"./validate":99}]},{},[101])(101)
+},{"../package.json":8,"./aggregate":9,"./axis":10,"./bin":11,"./channel":12,"./compile/compile":17,"./compositemark":77,"./config":78,"./data":79,"./datetime":80,"./encoding":81,"./facet":82,"./fielddef":83,"./legend":86,"./mark":88,"./scale":90,"./sort":92,"./spec":93,"./stack":94,"./timeunit":95,"./transform":97,"./type":98,"./util":99,"./validate":100}]},{},[102])(102)
 });
 //# sourceMappingURL=vega-lite.js.map

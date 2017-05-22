@@ -4,7 +4,7 @@ export interface SortField {
     /**
      * The field name to aggregate over.
      */
-    field: string;
+    field?: string;
     /**
      * The sort aggregation operator
      */

@@ -32,7 +32,7 @@ export interface ProjectComponent {
 }
 export interface SelectionCompiler {
     signals: (model: UnitModel, selCmpt: SelectionComponent) => any[];
-    topLevelSignals?: (model: Model, selCmpt: SelectionComponent) => any[];
+    topLevelSignals?: (model: Model, selCmpt: SelectionComponent, signals: any[]) => any[];
     tupleExpr: (model: UnitModel, selCmpt: SelectionComponent) => string;
     modifyExpr: (model: UnitModel, selCmpt: SelectionComponent) => string;
     marks?: (model: UnitModel, selCmpt: SelectionComponent, marks: any[]) => any[];

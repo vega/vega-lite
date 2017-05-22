@@ -1,7 +1,7 @@
-import { AxisConfig } from './axis';
-import { BoxPlotConfig } from './compositemark';
+import { AxisConfigMixins } from './axis';
+import { CompositeMarkConfigMixins } from './compositemark/index';
 import { LegendConfig } from './legend';
-import { BarConfig, MarkConfig, TextConfig, TickConfig } from './mark';
+import { MarkConfigMixins } from './mark';
 import { ScaleConfig } from './scale';
 import { SelectionConfig } from './selection';
 import { StackOffset } from './stack';
@@ -100,7 +100,22 @@ export declare const defaultOverlayConfig: OverlayConfig;
 export declare type RangeConfig = (number | string)[] | VgRangeScheme | {
     step: number;
 };
-export interface Config extends TopLevelProperties {
+export interface VLOnlyConfig {
+    /**
+     * Default axis and legend title for count fields.
+     *
+     * __Default value:__ `'Number of Records'`.
+     *
+     * @type {string}
+     */
+    countTitle?: string;
+    /**
+     * Whether to filter invalid values (`null` and `NaN`) from the data.
+     * - By default (`undefined`), only quantitative and temporal fields are filtered.
+     * - If set to `true`, all data items with null values are filtered.
+     * - If `false`, all data items are included. In this case, null values will be interpreted as zeroes.
+     */
+    filterInvalid?: boolean;
     /**
      * D3 Number format for axis labels and text tables. For example "s" for SI units.(in the form of [D3 number format pattern](https://github.com/mbostock/d3/wiki/Formatting)).
      *
@@ -115,48 +130,20 @@ export interface Config extends TopLevelProperties {
      *
      */
     timeFormat?: string;
-    /**
-     * Default axis and legend title for count fields.
-     *
-     * __Default value:__ `'Number of Records'`.
-     *
-     * @type {string}
-     */
-    countTitle?: string;
     /** Cell Config */
     cell?: CellConfig;
-    /** Default stack offset for stackable mark. */
-    stack?: StackOffset;
-    /** Mark Config */
-    mark?: MarkConfig;
-    /** Area-Specific Config */
-    area?: MarkConfig;
-    /** Bar-Specific Config */
-    bar?: BarConfig;
-    /** Circle-Specific Config */
-    circle?: MarkConfig;
-    /** Line-Specific Config */
-    line?: MarkConfig;
-    /** Point-Specific Config */
-    point?: MarkConfig;
-    /** Rect-Specific Config */
-    rect?: MarkConfig;
-    /** Rule-Specific Config */
-    rule?: MarkConfig;
-    /** Square-Specific Config */
-    square?: MarkConfig;
-    /** Text-Specific Config */
-    text?: TextConfig;
-    /** Tick-Specific Config */
-    tick?: TickConfig;
-    /** Box Config */
-    box?: BoxPlotConfig;
-    boxWhisker?: MarkConfig;
-    boxMid?: MarkConfig;
+    /** Facet Config */
+    facet?: FacetConfig;
     /** Mark Overlay Config */
     overlay?: OverlayConfig;
     /** Scale Config */
     scale?: ScaleConfig;
+    /** Selection Config */
+    selection?: SelectionConfig;
+    /** Default stack offset for stackable mark. */
+    stack?: StackOffset;
+}
+export interface Config extends TopLevelProperties, VLOnlyConfig, MarkConfigMixins, CompositeMarkConfigMixins, AxisConfigMixins {
     /**
      * Scale range config, or properties defining named range arrays
      * that can be used within scale range definitions
@@ -166,50 +153,10 @@ export interface Config extends TopLevelProperties {
     range?: {
         [name: string]: RangeConfig;
     };
-    /** Generic axis config. */
-    axis?: AxisConfig;
-    /**
-     * X-axis specific config.
-     */
-    axisX?: AxisConfig;
-    /**
-     * Y-axis specific config.
-     */
-    axisY?: AxisConfig;
-    /**
-     * Specific axis config for y-axis along the left edge of the chart.
-     */
-    axisLeft?: AxisConfig;
-    /**
-     * Specific axis config for y-axis along the right edge of the chart.
-     */
-    axisRight?: AxisConfig;
-    /**
-     * Specific axis config for x-axis along the top edge of the chart.
-     */
-    axisTop?: AxisConfig;
-    /**
-     * Specific axis config for x-axis along the bottom edge of the chart.
-     */
-    axixBottom?: AxisConfig;
-    /**
-     * Specific axis config for axes with "band" scales.
-     */
-    axisBand?: AxisConfig;
     /** Legend Config */
     legend?: LegendConfig;
-    /** Facet Config */
-    facet?: FacetConfig;
-    /** Selection Config */
-    selection?: SelectionConfig;
-    /**
-     * Whether to filter invalid values (`null` and `NaN`) from the data.
-     * - By default (`undefined`), only quantitative and temporal fields are filtered.
-     * - If set to `true`, all data items with null values are filtered.
-     * - If `false`, all data items are included. In this case, null values will be interpreted as zeroes.
-     */
-    filterInvalid?: boolean;
     [role: string]: any;
 }
 export declare const defaultConfig: Config;
 export declare function initConfig(config: Config): any;
+export declare function stripConfig(config: Config): Config;

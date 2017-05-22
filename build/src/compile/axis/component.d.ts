@@ -3,7 +3,7 @@ export interface AxisComponent {
     axes: VgAxis[];
     gridAxes: VgAxis[];
 }
-export interface AxesComponent {
+export interface AxisComponentIndex {
     x?: AxisComponent;
     y?: AxisComponent;
 }

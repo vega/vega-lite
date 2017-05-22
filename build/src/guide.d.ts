@@ -12,3 +12,12 @@ export interface Guide {
      */
     title?: string;
 }
+export interface VlOnlyGuideConfig {
+    /**
+     * Whether month names and weekday names should be abbreviated.
+     *
+     * __Default value:__  `false`
+     */
+    shortTimeLabels?: boolean;
+}
+export declare const VL_ONLY_GUIDE_CONFIG: (keyof VlOnlyGuideConfig)[];

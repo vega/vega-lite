@@ -2,7 +2,7 @@
 module.exports={
   "name": "vega-lite",
   "author": "Jeffrey Heer, Dominik Moritz, Kanit \"Ham\" Wongsuphasawat",
-  "version": "2.0.0-beta.2",
+  "version": "2.0.0-beta.3",
   "collaborators": [
     "Kanit Wongsuphasawat <kanitw@gmail.com> (http://kanitw.yellowpigz.com)",
     "Dominik Moritz <domoritz@cs.washington.edu> (https://www.domoritz.de)",
@@ -24,7 +24,7 @@ module.exports={
     "tsc": "rm -rf build/*/** && tsc",
     "prebuild": "mkdir -p build/site build/examples/images build/test-gallery",
     "build": "npm run tsc && cp package.json build && browserify src/vl.ts -p tsify -d -s vl | exorcist build/vega-lite.js.map > build/vega-lite.js",
-    "postbuild": "uglifyjs build/vega-lite.js -cm --in-source-map build/vega-lite.js.map --source-map build/vega-lite.min.js.map > build/vega-lite.min.js && npm run schema",
+    "postbuild": "uglifyjs build/vega-lite.js -cm --source-map content=build/vega-lite.js.map,filename=build/vega-lite.min.js.map -o build/vega-lite.min.js && npm run schema",
     "build:examples": "./scripts/build-examples.sh && rm -rf examples/specs/normalized/* && scripts/build-normalized-examples",
     "build:images": "npm run data && scripts/generate-images.sh",
     "build:toc": "bundle exec jekyll build -q && scripts/generate-toc",
@@ -46,8 +46,8 @@ module.exports={
     "poststart": "rm examples/all-examples.json",
 
     "preschema": "npm run prebuild",
-    "schema": "typescript-json-schema --required true --noExtraProps true src/spec.ts TopLevelExtendedSpec > build/vega-lite-schema.json && rm -f _data/vega-lite-schema.json && npm run replaceschema && cp build/vega-lite-schema.json _data/",
-    "replaceschema": "sed -i -e 's/GenericLayerSpec<.*..\\./LayerSpec/g' build/vega-lite-schema.json && sed -i -e 's/GenericRepeatSpec<.*..\\./RepeatSpec/g' build/vega-lite-schema.json && sed -i -e 's/GenericUnitSpec<Encoding<.*..\\./UnitSpec/g' build/vega-lite-schema.json && sed -i -e 's/GenericUnitSpec<EncodingWithFacet<.*..\\./FacetedUnitSpec/g' build/vega-lite-schema.json && sed -i -e 's/<Field>//g' build/vega-lite-schema.json",
+    "schema": "typescript-json-schema --required true --noExtraProps true src/spec.ts TopLevelExtendedSpec > build/vega-lite-schema.json && rm -f _data/vega-lite-schema.json && npm run renameschema && cp build/vega-lite-schema.json _data/",
+    "renameschema": "scripts/rename-schema.sh",
     "presite": "npm run build && npm run data && npm run build:site && npm run build:toc && npm run build:versions",
     "site": "bundle exec jekyll serve",
 
@@ -79,28 +79,28 @@ module.exports={
     "@types/highlight.js": "^9.1.9",
     "@types/json-stable-stringify": "^1.0.31",
     "@types/mocha": "^2.2.41",
-    "@types/node": "^7.0.14",
-    "ajv": "5.0.1",
-    "browser-sync": "^2.18.8",
+    "@types/node": "^7.0.18",
+    "ajv": "5.1.1",
+    "browser-sync": "^2.18.10",
     "browserify": "^14.3.0",
     "browserify-shim": "^3.8.14",
     "chai": "^3.5.0",
     "cheerio": "^0.22.0",
-    "codecov": "^2.1.0",
+    "codecov": "^2.2.0",
     "d3": "^4.8.0",
     "exorcist": "^0.4.0",
     "highlight.js": "^9.11.0",
-    "mocha": "^3.3.0",
+    "mocha": "^3.4.1",
     "nodemon": "^1.11.0",
-    "nyc": "^10.3.0",
+    "nyc": "^10.3.2",
     "source-map-support": "^0.4.15",
     "tsify": "^3.0.1",
-    "tslint": "^5.1.0",
+    "tslint": "^5.2.0",
     "tslint-eslint-rules": "^4.0.0",
     "typescript": "^2.3.2",
     "typescript-json-schema": "^0.11.0",
-    "uglify-js": "^2.8.22",
-    "vega": "3.0.0-beta.30",
+    "uglify-js": "^3.0.5",
+    "vega": "3.0.0-beta.31",
     "vega-datasets": "vega/vega-datasets#gh-pages",
     "vega-embed": "3.0.0-beta.14",
     "watchify": "^3.9.0",
@@ -108,10 +108,10 @@ module.exports={
   },
   "dependencies": {
     "json-stable-stringify": "^1.0.1",
-    "tslib": "^1.6.1",
+    "tslib": "^1.7.0",
     "vega-event-selector": "^2.0.0-beta",
     "vega-util": "^1.2.0",
-    "yargs": "^7.1.0"
+    "yargs": "^8.0.1"
   }
 }
 
@@ -166,7 +166,7 @@ exports.SHARED_DOMAIN_OPS = [
 ];
 exports.SHARED_DOMAIN_OP_INDEX = util_1.toSet(exports.SHARED_DOMAIN_OPS);
 
-},{"./util":91}],3:[function(require,module,exports){
+},{"./util":92}],3:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.AXIS_PROPERTIES = [
@@ -202,7 +202,7 @@ function autoMaxBins(channel) {
 }
 exports.autoMaxBins = autoMaxBins;
 
-},{"./channel":5,"./util":91}],5:[function(require,module,exports){
+},{"./channel":5,"./util":92}],5:[function(require,module,exports){
 "use strict";
 /*
  * Constants and utilities for encoding channels (Visual variables)
@@ -347,21 +347,23 @@ function rangeType(channel) {
         case exports.Y:
         case exports.SIZE:
         case exports.OPACITY:
+        // X2 and Y2 use X and Y scales, so they similarly have continuous range.
+        case exports.X2:
+        case exports.Y2:
             return 'continuous';
         case exports.ROW:
         case exports.COLUMN:
         case exports.SHAPE:
+        // TEXT and TOOLTIP have no scale but have discrete output
+        case exports.TEXT:
+        case exports.TOOLTIP:
             return 'discrete';
         // Color can be either continuous or discrete, depending on scale type.
         case exports.COLOR:
             return 'flexible';
         // No scale, no range type.
-        case exports.X2:
-        case exports.Y2:
         case exports.DETAIL:
-        case exports.TEXT:
         case exports.ORDER:
-        case exports.TOOLTIP:
             return undefined;
     }
     /* istanbul ignore next: should never reach here. */
@@ -369,12 +371,13 @@ function rangeType(channel) {
 }
 exports.rangeType = rangeType;
 
-},{"./scale":82,"./util":91}],6:[function(require,module,exports){
+},{"./scale":83,"./util":92}],6:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var channel_1 = require("../../channel");
 var type_1 = require("../../type");
 var util_1 = require("../../util");
+var scale_1 = require("../../scale");
 var common_1 = require("../common");
 function labels(model, channel, labelsSpec, def) {
     var fieldDef = model.fieldDef(channel);
@@ -382,9 +385,10 @@ function labels(model, channel, labelsSpec, def) {
     var config = model.config;
     // Text
     if (fieldDef.type === type_1.TEMPORAL) {
+        var isUTCScale = model.scale(channel).type === scale_1.ScaleType.UTC;
         labelsSpec = util_1.extend({
             text: {
-                signal: common_1.timeFormatExpression('datum.value', fieldDef.timeUnit, axis.format, config.axis.shortTimeLabels, config.timeFormat)
+                signal: common_1.timeFormatExpression('datum.value', fieldDef.timeUnit, axis.format, config.axis.shortTimeLabels, config.timeFormat, isUTCScale)
             }
         }, labelsSpec);
     }
@@ -426,7 +430,7 @@ function labels(model, channel, labelsSpec, def) {
 }
 exports.labels = labels;
 
-},{"../../channel":5,"../../type":90,"../../util":91,"../common":9}],7:[function(require,module,exports){
+},{"../../channel":5,"../../scale":83,"../../type":91,"../../util":92,"../common":9}],7:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var axis_1 = require("../../axis");
@@ -553,7 +557,7 @@ function getSpecifiedOrDefaultValue(property, specifiedAxis, channel, model, isG
     return specifiedAxis[property];
 }
 
-},{"../../axis":3,"../../util":91,"./encode":6,"./rules":8}],8:[function(require,module,exports){
+},{"../../axis":3,"../../util":92,"./encode":6,"./rules":8}],8:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var log = require("../../log");
@@ -681,12 +685,13 @@ exports.domainAndTicks = domainAndTicks;
 exports.domain = domainAndTicks;
 exports.ticks = domainAndTicks;
 
-},{"../../channel":5,"../../datetime":73,"../../fielddef":76,"../../log":79,"../../util":91,"../common":9}],9:[function(require,module,exports){
+},{"../../channel":5,"../../datetime":73,"../../fielddef":76,"../../log":80,"../../util":92,"../common":9}],9:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var log = require("../log");
 var channel_1 = require("../channel");
 var fielddef_1 = require("../fielddef");
+var scale_1 = require("../scale");
 var spec_1 = require("../spec");
 var timeunit_1 = require("../timeunit");
 var type_1 = require("../type");
@@ -772,8 +777,9 @@ function formatSignalRef(fieldDef, specifiedFormat, expr, config, useBinRange) {
         }
     }
     else if (fieldDef.type === 'temporal') {
+        var isUTCScale = fielddef_1.isScaleFieldDef(fieldDef) && fieldDef['scale'] && fieldDef['scale'].type === scale_1.ScaleType.UTC;
         return {
-            signal: timeFormatExpression(fielddef_1.field(fieldDef, { expr: expr }), fieldDef.timeUnit, specifiedFormat, config.text.shortTimeLabels, config.timeFormat)
+            signal: timeFormatExpression(fielddef_1.field(fieldDef, { expr: expr }), fieldDef.timeUnit, specifiedFormat, config.text.shortTimeLabels, config.timeFormat, isUTCScale)
         };
     }
     else {
@@ -807,14 +813,19 @@ exports.numberFormat = numberFormat;
 /**
  * Returns the time expression used for axis/legend labels or text mark for a temporal field
  */
-function timeFormatExpression(field, timeUnit, format, shortTimeLabels, timeFormatConfig) {
+function timeFormatExpression(field, timeUnit, format, shortTimeLabels, timeFormatConfig, isUTCScale) {
     if (!timeUnit || format) {
         // If there is not time unit, or if user explicitly specify format for axis/legend/text.
         var _format = format || timeFormatConfig; // only use config.timeFormat if there is no timeUnit.
-        return "timeFormat(" + field + ", '" + _format + "')";
+        if (isUTCScale) {
+            return "utcFormat(" + field + ", '" + _format + "')";
+        }
+        else {
+            return "timeFormat(" + field + ", '" + _format + "')";
+        }
     }
     else {
-        return timeunit_1.formatExpression(timeUnit, field, shortTimeLabels);
+        return timeunit_1.formatExpression(timeUnit, field, shortTimeLabels, isUTCScale);
     }
 }
 exports.timeFormatExpression = timeFormatExpression;
@@ -830,7 +841,7 @@ function sortParams(orderDef) {
 }
 exports.sortParams = sortParams;
 
-},{"../channel":5,"../fielddef":76,"../log":79,"../spec":85,"../timeunit":87,"../type":90,"../util":91,"./concat":11,"./facet":27,"./layer":28,"./repeat":47,"./unit":67}],10:[function(require,module,exports){
+},{"../channel":5,"../fielddef":76,"../log":80,"../scale":83,"../spec":86,"../timeunit":88,"../type":91,"../util":92,"./concat":11,"./facet":27,"./layer":28,"./repeat":47,"./unit":67}],10:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var tslib_1 = require("tslib");
@@ -876,6 +887,8 @@ function getTopLevelProperties(topLevelSpec, config) {
 }
 function assemble(model, topLevelProperties) {
     // TODO: change type to become VgSpec
+    // Config with Vega-Lite only config removed.
+    var vgConfig = model.config ? config_1.stripConfig(model.config) : undefined;
     var output = tslib_1.__assign({ $schema: 'http://vega.github.io/schema/vega/v3.0.json' }, (model.description ? { description: model.description } : {}), { autosize: 'pad' }, topLevelProperties, { data: [].concat(model.assembleSelectionData([]), model.assembleData()), signals: ([].concat(
         // TODO(https://github.com/vega/vega-lite/issues/2198):
         // Merge the top-level's width/height signal with the top-level model
@@ -884,7 +897,7 @@ function assemble(model, topLevelProperties) {
             // If model has name, its calculated width and height will not be named width and height, need to map it to the global width and height signals.
             { name: 'width', update: model.getName('width') },
             { name: 'height', update: model.getName('height') }
-        ] : []), model.assembleLayoutSignals(), model.assembleSelectionTopLevelSignals([]))) }, assembleNestedMainGroup(model));
+        ] : []), model.assembleLayoutSignals(), model.assembleSelectionTopLevelSignals([]))) }, assembleNestedMainGroup(model), (vgConfig ? { config: vgConfig } : {}));
     return {
         spec: output
         // TODO: add warning / errors here
@@ -903,7 +916,7 @@ function assembleNestedMainGroup(model) {
 }
 exports.assembleNestedMainGroup = assembleNestedMainGroup;
 
-},{"../config":71,"../log":79,"../spec":85,"../toplevelprops":88,"./common":9,"tslib":281}],11:[function(require,module,exports){
+},{"../config":71,"../log":80,"../spec":86,"../toplevelprops":89,"./common":9,"tslib":282}],11:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var tslib_1 = require("tslib");
@@ -978,7 +991,7 @@ var ConcatModel = (function (_super) {
     ConcatModel.prototype.assembleData = function () {
         if (!this.parent) {
             // only assemble data in the root
-            return assemble_1.assembleData(util_1.vals(this.component.data.sources));
+            return assemble_1.assembleData(this.component.data);
         }
         return [];
     };
@@ -1025,7 +1038,7 @@ var ConcatModel = (function (_super) {
 }(model_1.Model));
 exports.ConcatModel = ConcatModel;
 
-},{"../spec":85,"../util":91,"./common":9,"./data/assemble":13,"./data/parse":21,"./model":46,"tslib":281}],12:[function(require,module,exports){
+},{"../spec":86,"../util":92,"./common":9,"./data/assemble":13,"./data/parse":21,"./model":46,"tslib":282}],12:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var tslib_1 = require("tslib");
@@ -1050,18 +1063,18 @@ function addDimension(dims, fieldDef) {
     return dims;
 }
 function mergeMeasures(parentMeasures, childMeasures) {
-    for (var field_1 in childMeasures) {
-        if (childMeasures.hasOwnProperty(field_1)) {
+    for (var f in childMeasures) {
+        if (childMeasures.hasOwnProperty(f)) {
             // when we merge a measure, we either have to add an aggregation operator or even a new field
-            var ops = childMeasures[field_1];
+            var ops = childMeasures[f];
             for (var op in ops) {
                 if (ops.hasOwnProperty(op)) {
-                    if (field_1 in parentMeasures) {
+                    if (f in parentMeasures) {
                         // add operator to existing measure field
-                        parentMeasures[field_1][op] = true;
+                        parentMeasures[f][op] = ops[op];
                     }
                     else {
-                        parentMeasures[field_1] = { op: true };
+                        parentMeasures[f] = { op: ops[op] };
                     }
                 }
             }
@@ -1072,7 +1085,7 @@ var AggregateNode = (function (_super) {
     tslib_1.__extends(AggregateNode, _super);
     /**
      * @param dimensions string set for dimensions
-     * @param measures dictionary mapping field name => dict set of aggregation functions
+     * @param measures dictionary mapping field name => dict of aggregation functions and names to use
      */
     function AggregateNode(dimensions, measures) {
         var _this = _super.call(this) || this;
@@ -1083,7 +1096,7 @@ var AggregateNode = (function (_super) {
     AggregateNode.prototype.clone = function () {
         return new AggregateNode(util_1.extend({}, this.dimensions), util_1.duplicate(this.measures));
     };
-    AggregateNode.make = function (model) {
+    AggregateNode.makeFromEncoding = function (model) {
         var isAggregate = false;
         model.forEachFieldDef(function (fd) {
             if (fd.aggregate) {
@@ -1100,18 +1113,16 @@ var AggregateNode = (function (_super) {
             if (fieldDef.aggregate) {
                 if (fieldDef.aggregate === 'count') {
                     meas['*'] = meas['*'] || {};
-                    /* tslint:disable:no-string-literal */
-                    meas['*']['count'] = true;
-                    /* tslint:enable:no-string-literal */
+                    meas['*']['count'] = fielddef_1.field(fieldDef, { aggregate: 'count' });
                 }
                 else {
                     meas[fieldDef.field] = meas[fieldDef.field] || {};
-                    meas[fieldDef.field][fieldDef.aggregate] = true;
+                    meas[fieldDef.field][fieldDef.aggregate] = fielddef_1.field(fieldDef);
                     // add min/max so we can use their union as unaggregated domain
                     var scale = model.scale(channel);
                     if (scale && scale.domain === 'unaggregated') {
-                        meas[fieldDef.field]['min'] = true;
-                        meas[fieldDef.field]['max'] = true;
+                        meas[fieldDef.field]['min'] = fielddef_1.field(fieldDef, { aggregate: 'min' });
+                        meas[fieldDef.field]['max'] = fielddef_1.field(fieldDef, { aggregate: 'max' });
                     }
                 }
             }
@@ -1119,6 +1130,31 @@ var AggregateNode = (function (_super) {
                 addDimension(dims, fieldDef);
             }
         });
+        if ((Object.keys(dims).length + Object.keys(meas).length) === 0) {
+            return null;
+        }
+        return new AggregateNode(dims, meas);
+    };
+    AggregateNode.makeFromTransform = function (model, t) {
+        var dims = {};
+        var meas = {};
+        for (var _i = 0, _a = t.summarize; _i < _a.length; _i++) {
+            var s = _a[_i];
+            if (s.aggregate) {
+                if (s.aggregate === 'count') {
+                    meas['*'] = meas['*'] || {};
+                    meas['*']['count'] = s.as || fielddef_1.field(s);
+                }
+                else {
+                    meas[s.field] = meas[s.field] || {};
+                    meas[s.field][s.aggregate] = s.as || fielddef_1.field(s);
+                }
+            }
+        }
+        for (var _b = 0, _c = t.groupby; _b < _c.length; _b++) {
+            var s = _c[_b];
+            dims[s] = true;
+        }
         if ((Object.keys(dims).length + Object.keys(meas).length) === 0) {
             return null;
         }
@@ -1157,24 +1193,28 @@ var AggregateNode = (function (_super) {
         var _this = this;
         var ops = [];
         var fields = [];
+        var as = [];
         util_1.keys(this.measures).forEach(function (field) {
             util_1.keys(_this.measures[field]).forEach(function (op) {
+                as.push(_this.measures[field][op]);
                 ops.push(op);
                 fields.push(field);
             });
         });
-        return {
+        var result = {
             type: 'aggregate',
             groupby: util_1.keys(this.dimensions),
             ops: ops,
-            fields: fields
+            fields: fields,
+            as: as
         };
+        return result;
     };
     return AggregateNode;
 }(dataflow_1.DataFlowNode));
 exports.AggregateNode = AggregateNode;
 
-},{"../../fielddef":76,"../../log":79,"../../type":90,"../../util":91,"./dataflow":15,"tslib":281}],13:[function(require,module,exports){
+},{"../../fielddef":76,"../../log":80,"../../type":91,"../../util":92,"./dataflow":15,"tslib":282}],13:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var tslib_1 = require("tslib");
@@ -1339,7 +1379,8 @@ function makeWalkTree(data) {
             node instanceof nullfilter_1.NullFilterNode ||
             node instanceof transforms_1.CalculateNode ||
             node instanceof aggregate_1.AggregateNode ||
-            node instanceof pathorder_1.OrderNode) {
+            node instanceof pathorder_1.OrderNode ||
+            node instanceof transforms_1.LookupNode) {
             dataSource.transform.push(node.assemble());
         }
         if (node instanceof nonpositivefilter_1.NonPositiveFilterNode ||
@@ -1365,7 +1406,7 @@ function makeWalkTree(data) {
                 // other assemblers can use it.
                 node.source = dataSource.name;
                 // if this node has more than one child, we will add a datasource automatically
-                if (node.numChildren() === 1 && dataSource.transform.length > 0) {
+                if (node.numChildren() === 1) {
                     data.push(dataSource);
                     var newData = {
                         name: null,
@@ -1429,7 +1470,8 @@ exports.assembleFacetData = assembleFacetData;
  * @param  data array
  * @return modified data array
  */
-function assembleData(roots) {
+function assembleData(dataCompomponent) {
+    var roots = util_1.vals(dataCompomponent.sources);
     var data = [];
     roots.forEach(removeUnnecessaryNodes);
     // remove source nodes that don't have any children because they also don't have output nodes
@@ -1455,11 +1497,23 @@ function assembleData(roots) {
             delete d.transform;
         }
     });
+    // move sources without transforms (the ones that are potentially used in lookups) to the beginning
+    data.sort(function (a, b) { return (a.transform || []).length === 0 ? -1 : ((b.transform || []).length === 0 ? 1 : 0); });
+    // now fix the from references in lookup transforms
+    for (var _i = 0, data_2 = data; _i < data_2.length; _i++) {
+        var d = data_2[_i];
+        for (var _a = 0, _b = d.transform || []; _a < _b.length; _a++) {
+            var t = _b[_a];
+            if (t.type === 'lookup') {
+                t.from = dataCompomponent.outputNodes[t.from].source;
+            }
+        }
+    }
     return data;
 }
 exports.assembleData = assembleData;
 
-},{"../../data":72,"../../util":91,"./aggregate":12,"./bin":14,"./dataflow":15,"./facet":16,"./formatparse":17,"./nonpositivefilter":18,"./nullfilter":19,"./optimizers":20,"./pathorder":22,"./source":23,"./stack":24,"./timeunit":25,"./transforms":26,"tslib":281}],14:[function(require,module,exports){
+},{"../../data":72,"../../util":92,"./aggregate":12,"./bin":14,"./dataflow":15,"./facet":16,"./formatparse":17,"./nonpositivefilter":18,"./nullfilter":19,"./optimizers":20,"./pathorder":22,"./source":23,"./stack":24,"./timeunit":25,"./transforms":26,"tslib":282}],14:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var tslib_1 = require("tslib");
@@ -1487,6 +1541,18 @@ function rangeFormula(model, fieldDef, channel, config) {
     }
     return {};
 }
+function binKey(bin, field) {
+    return bin_1.binToString(bin) + "_" + field;
+}
+function createBinComponent(bin, t, model, key) {
+    return {
+        bin: bin,
+        field: t.field,
+        as: [fielddef_1.field(t, { binSuffix: 'start' }), fielddef_1.field(t, { binSuffix: 'end' })],
+        signal: model.getName(key + "_bins"),
+        extentSignal: model.getName(key + '_extent')
+    };
+}
 var BinNode = (function (_super) {
     tslib_1.__extends(BinNode, _super);
     function BinNode(bins) {
@@ -1497,20 +1563,14 @@ var BinNode = (function (_super) {
     BinNode.prototype.clone = function () {
         return new BinNode(util_1.duplicate(this.bins));
     };
-    BinNode.make = function (model) {
+    BinNode.makeBinFromEncoding = function (model) {
         var bins = model.reduceFieldDef(function (binComponent, fieldDef, channel) {
             var fieldDefBin = model.fieldDef(channel).bin;
             if (fieldDefBin) {
-                var bin = util_1.isBoolean(fieldDefBin) ? {} : fieldDefBin;
-                var key = bin_1.binToString(fieldDef.bin) + "_" + fieldDef.field;
+                var bin = fielddef_1.normalizeBin(fieldDefBin, undefined) || {};
+                var key = binKey(fieldDefBin, fieldDef.field);
                 if (!(key in binComponent)) {
-                    binComponent[key] = {
-                        bin: bin,
-                        field: fieldDef.field,
-                        as: [fielddef_1.field(fieldDef, { binSuffix: 'start' }), fielddef_1.field(fieldDef, { binSuffix: 'end' })],
-                        signal: model.getName(key + "_bins"),
-                        extentSignal: model.getName(key + '_extent')
-                    };
+                    binComponent[key] = createBinComponent(bin, fieldDef, model, key);
                 }
                 binComponent[key] = tslib_1.__assign({}, binComponent[key], rangeFormula(model, fieldDef, channel, model.config));
             }
@@ -1520,6 +1580,15 @@ var BinNode = (function (_super) {
             return null;
         }
         return new BinNode(bins);
+    };
+    BinNode.makeBinFromTransform = function (model, t) {
+        var bins = {};
+        var bin = fielddef_1.normalizeBin(t.bin, undefined) || {};
+        var key = binKey(bin, t.field);
+        return new BinNode((_a = {},
+            _a[key] = createBinComponent(bin, t, model, key),
+            _a));
+        var _a;
     };
     BinNode.prototype.merge = function (other) {
         this.bins = util_1.extend(other.bins);
@@ -1566,7 +1635,7 @@ var BinNode = (function (_super) {
 }(dataflow_1.DataFlowNode));
 exports.BinNode = BinNode;
 
-},{"../../bin":4,"../../fielddef":76,"../../util":91,"../common":9,"../unit":67,"./dataflow":15,"tslib":281}],15:[function(require,module,exports){
+},{"../../bin":4,"../../fielddef":76,"../../util":92,"../common":9,"../unit":67,"./dataflow":15,"tslib":282}],15:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var tslib_1 = require("tslib");
@@ -1628,15 +1697,20 @@ var DataFlowNode = (function () {
      * Remove node from the dataflow.
      */
     DataFlowNode.prototype.remove = function () {
-        var _this = this;
-        this._children.forEach(function (child) { return child.parent = _this._parent; });
+        for (var _i = 0, _a = this._children; _i < _a.length; _i++) {
+            var child = _a[_i];
+            child.parent = this._parent;
+        }
         this._parent.removeChild(this);
     };
     DataFlowNode.prototype.swapWithParent = function () {
         var parent = this._parent;
         var newParent = parent.parent;
         // reconnect the children
-        this._children.forEach(function (c) { return c.parent = parent; });
+        for (var _i = 0, _a = this._children; _i < _a.length; _i++) {
+            var child = _a[_i];
+            child.parent = parent;
+        }
         // remove old links
         this._children = []; // equivalent to removing every child link one by one
         parent.removeChild(this);
@@ -1695,7 +1769,7 @@ var OutputNode = (function (_super) {
 }(DataFlowNode));
 exports.OutputNode = OutputNode;
 
-},{"tslib":281}],16:[function(require,module,exports){
+},{"tslib":282}],16:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var tslib_1 = require("tslib");
@@ -1788,7 +1862,7 @@ var FacetNode = (function (_super) {
 }(dataflow_1.DataFlowNode));
 exports.FacetNode = FacetNode;
 
-},{"../../channel":5,"./dataflow":15,"tslib":281}],17:[function(require,module,exports){
+},{"../../channel":5,"./dataflow":15,"tslib":282}],17:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var tslib_1 = require("tslib");
@@ -1929,7 +2003,7 @@ var ParseNode = (function (_super) {
 }(dataflow_1.DataFlowNode));
 exports.ParseNode = ParseNode;
 
-},{"../../datetime":73,"../../fielddef":76,"../../filter":77,"../../log":79,"../../transform":89,"../../type":90,"../../util":91,"../model":46,"./dataflow":15,"tslib":281}],18:[function(require,module,exports){
+},{"../../datetime":73,"../../fielddef":76,"../../filter":77,"../../log":80,"../../transform":90,"../../type":91,"../../util":92,"../model":46,"./dataflow":15,"tslib":282}],18:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var tslib_1 = require("tslib");
@@ -1984,7 +2058,7 @@ var NonPositiveFilterNode = (function (_super) {
 }(dataflow_1.DataFlowNode));
 exports.NonPositiveFilterNode = NonPositiveFilterNode;
 
-},{"../../scale":82,"../../util":91,"./dataflow":15,"tslib":281}],19:[function(require,module,exports){
+},{"../../scale":83,"../../util":92,"./dataflow":15,"tslib":282}],19:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var tslib_1 = require("tslib");
@@ -2068,7 +2142,7 @@ var NullFilterNode = (function (_super) {
 }(dataflow_1.DataFlowNode));
 exports.NullFilterNode = NullFilterNode;
 
-},{"../../type":90,"../../util":91,"./dataflow":15,"tslib":281}],20:[function(require,module,exports){
+},{"../../type":91,"../../util":92,"./dataflow":15,"tslib":282}],20:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var dataflow_1 = require("./dataflow");
@@ -2155,7 +2229,7 @@ var transforms_1 = require("./transforms");
 function parseRoot(model, sources) {
     if (model.data || !model.parent) {
         // if the model defines a data source or is the root, create a source node
-        var source = new source_1.SourceNode(model);
+        var source = new source_1.SourceNode(model.data);
         var hash = source.hash();
         if (hash in sources) {
             // use a reference if we already have a source
@@ -2241,7 +2315,7 @@ function parseData(model) {
     var parentIsLayer = model.parent && (model.parent instanceof layer_1.LayerModel);
     if (model instanceof model_1.ModelWithField) {
         if (parentIsLayer) {
-            var bin = bin_1.BinNode.make(model);
+            var bin = bin_1.BinNode.makeBinFromEncoding(model);
             if (bin) {
                 bin.parent = head;
                 head = bin;
@@ -2260,13 +2334,13 @@ function parseData(model) {
             head = nullFilter;
         }
         if (!parentIsLayer) {
-            var bin = bin_1.BinNode.make(model);
+            var bin = bin_1.BinNode.makeBinFromEncoding(model);
             if (bin) {
                 bin.parent = head;
                 head = bin;
             }
         }
-        var tu = timeunit_1.TimeUnitNode.make(model);
+        var tu = timeunit_1.TimeUnitNode.makeFromEncoding(model);
         if (tu) {
             tu.parent = head;
             head = tu;
@@ -2279,7 +2353,7 @@ function parseData(model) {
     raw.parent = head;
     head = raw;
     if (model instanceof unit_1.UnitModel) {
-        var agg = aggregate_1.AggregateNode.make(model);
+        var agg = aggregate_1.AggregateNode.makeFromEncoding(model);
         if (agg) {
             agg.parent = head;
             head = agg;
@@ -2386,7 +2460,7 @@ var OrderNode = (function (_super) {
 }(dataflow_1.DataFlowNode));
 exports.OrderNode = OrderNode;
 
-},{"../../encoding":74,"../../fielddef":76,"../../sort":84,"../../util":91,"../common":9,"./dataflow":15,"tslib":281}],23:[function(require,module,exports){
+},{"../../encoding":74,"../../fielddef":76,"../../sort":85,"../../util":92,"../common":9,"./dataflow":15,"tslib":282}],23:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var tslib_1 = require("tslib");
@@ -2395,9 +2469,9 @@ var util_1 = require("../../util");
 var dataflow_1 = require("./dataflow");
 var SourceNode = (function (_super) {
     tslib_1.__extends(SourceNode, _super);
-    function SourceNode(model) {
+    function SourceNode(data) {
         var _this = _super.call(this) || this;
-        var data = model.data || { name: 'source' };
+        data = data || { name: 'source' };
         if (data_1.isInlineData(data)) {
             _this._data = {
                 values: data.values,
@@ -2478,7 +2552,7 @@ var SourceNode = (function (_super) {
 }(dataflow_1.DataFlowNode));
 exports.SourceNode = SourceNode;
 
-},{"../../data":72,"../../util":91,"./dataflow":15,"tslib":281}],24:[function(require,module,exports){
+},{"../../data":72,"../../util":92,"./dataflow":15,"tslib":282}],24:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var tslib_1 = require("tslib");
@@ -2610,7 +2684,7 @@ var StackNode = (function (_super) {
 }(dataflow_1.DataFlowNode));
 exports.StackNode = StackNode;
 
-},{"../../fielddef":76,"../../scale":82,"../../util":91,"../common":9,"./dataflow":15,"tslib":281,"vega-util":287}],25:[function(require,module,exports){
+},{"../../fielddef":76,"../../scale":83,"../../util":92,"../common":9,"./dataflow":15,"tslib":282,"vega-util":288}],25:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var tslib_1 = require("tslib");
@@ -2629,7 +2703,7 @@ var TimeUnitNode = (function (_super) {
     TimeUnitNode.prototype.clone = function () {
         return new TimeUnitNode(util_1.duplicate(this.formula));
     };
-    TimeUnitNode.make = function (model) {
+    TimeUnitNode.makeFromEncoding = function (model) {
         var formula = model.reduceFieldDef(function (timeUnitComponent, fieldDef) {
             if (fieldDef.type === type_1.TEMPORAL && fieldDef.timeUnit) {
                 var f = fielddef_1.field(fieldDef);
@@ -2645,6 +2719,16 @@ var TimeUnitNode = (function (_super) {
             return null;
         }
         return new TimeUnitNode(formula);
+    };
+    TimeUnitNode.makeFromTransfrom = function (model, t) {
+        return new TimeUnitNode((_a = {},
+            _a[t.field] = {
+                as: t.as,
+                timeUnit: t.timeUnit,
+                field: t.field
+            },
+            _a));
+        var _a;
     };
     TimeUnitNode.prototype.merge = function (other) {
         this.formula = util_1.extend(this.formula, other.formula);
@@ -2677,15 +2761,20 @@ var TimeUnitNode = (function (_super) {
 }(dataflow_1.DataFlowNode));
 exports.TimeUnitNode = TimeUnitNode;
 
-},{"../../fielddef":76,"../../timeunit":87,"../../type":90,"../../util":91,"./dataflow":15,"tslib":281}],26:[function(require,module,exports){
+},{"../../fielddef":76,"../../timeunit":88,"../../type":91,"../../util":92,"./dataflow":15,"tslib":282}],26:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var tslib_1 = require("tslib");
+var vega_util_1 = require("vega-util");
 var filter_1 = require("../../filter");
 var log = require("../../log");
 var transform_1 = require("../../transform");
 var util_1 = require("../../util");
+var aggregate_1 = require("./aggregate");
+var bin_1 = require("./bin");
 var dataflow_1 = require("./dataflow");
+var source_1 = require("./source");
+var timeunit_1 = require("./timeunit");
 var FilterNode = (function (_super) {
     tslib_1.__extends(FilterNode, _super);
     function FilterNode(model, filter) {
@@ -2734,20 +2823,76 @@ var CalculateNode = (function (_super) {
     return CalculateNode;
 }(dataflow_1.DataFlowNode));
 exports.CalculateNode = CalculateNode;
+var LookupNode = (function (_super) {
+    tslib_1.__extends(LookupNode, _super);
+    function LookupNode(transform, secondary) {
+        var _this = _super.call(this) || this;
+        _this.transform = transform;
+        _this.secondary = secondary;
+        return _this;
+    }
+    LookupNode.make = function (model, transform, counter) {
+        var sources = model.component.data.sources;
+        var s = new source_1.SourceNode(transform.from.data);
+        var fromSource = sources[s.hash()];
+        if (!fromSource) {
+            sources[s.hash()] = s;
+            fromSource = s;
+        }
+        var fromOutputName = model.getName("lookup_" + counter);
+        var fromOutputNode = new dataflow_1.OutputNode(fromOutputName, 'lookup');
+        fromOutputNode.parent = fromSource;
+        model.component.data.outputNodes[fromOutputName] = fromOutputNode;
+        return new LookupNode(transform, fromOutputNode.source);
+    };
+    LookupNode.prototype.assemble = function () {
+        var foreign;
+        if (this.transform.from.fields) {
+            // lookup a few fields and add create a flat output
+            foreign = tslib_1.__assign({ values: this.transform.from.fields }, this.transform.as ? { as: ((this.transform.as instanceof Array) ? this.transform.as : [this.transform.as]) } : {});
+        }
+        else {
+            // lookup full record and nest it
+            var asName = this.transform.as;
+            if (!vega_util_1.isString(asName)) {
+                log.warn(log.message.NO_FIELDS_NEEDS_AS);
+                asName = '_lookup';
+            }
+            foreign = {
+                as: [asName]
+            };
+        }
+        return tslib_1.__assign({ type: 'lookup', from: this.secondary, key: this.transform.from.key, fields: [this.transform.lookup] }, foreign, (this.transform.default ? { default: this.transform.default } : {}));
+    };
+    return LookupNode;
+}(dataflow_1.DataFlowNode));
+exports.LookupNode = LookupNode;
 /**
  * Parses a transforms array into a chain of connected dataflow nodes.
  */
 function parseTransformArray(model) {
     var first;
-    var last;
     var node;
     var previous;
+    var lookupCounter = 0;
     model.transforms.forEach(function (t, i) {
         if (transform_1.isCalculate(t)) {
             node = new CalculateNode(t);
         }
         else if (transform_1.isFilter(t)) {
             node = new FilterNode(model, t.filter);
+        }
+        else if (transform_1.isBin(t)) {
+            node = bin_1.BinNode.makeBinFromTransform(model, t);
+        }
+        else if (transform_1.isTimeUnit(t)) {
+            node = timeunit_1.TimeUnitNode.makeFromTransfrom(model, t);
+        }
+        else if (transform_1.isSummarize(t)) {
+            node = aggregate_1.AggregateNode.makeFromTransform(model, t);
+        }
+        else if (transform_1.isLookup(t)) {
+            node = LookupNode.make(model, t, lookupCounter++);
         }
         else {
             log.warn(log.message.invalidTransformIgnored(t));
@@ -2761,12 +2906,12 @@ function parseTransformArray(model) {
         }
         previous = node;
     });
-    last = node;
+    var last = node;
     return { first: first, last: last };
 }
 exports.parseTransformArray = parseTransformArray;
 
-},{"../../filter":77,"../../log":79,"../../transform":89,"../../util":91,"./dataflow":15,"tslib":281}],27:[function(require,module,exports){
+},{"../../filter":77,"../../log":80,"../../transform":90,"../../util":92,"./aggregate":12,"./bin":14,"./dataflow":15,"./source":23,"./timeunit":25,"tslib":282,"vega-util":288}],27:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var tslib_1 = require("tslib");
@@ -2946,7 +3091,7 @@ var FacetModel = (function (_super) {
     FacetModel.prototype.assembleData = function () {
         if (!this.parent) {
             // only assemble data in the root
-            return assemble_1.assembleData(util_1.vals(this.component.data.sources));
+            return assemble_1.assembleData(this.component.data);
         }
         return [];
     };
@@ -3010,7 +3155,7 @@ function getFacetGroupProperties(model) {
     return tslib_1.__assign({}, (encodeEntry ? encodeEntry : {}), common_1.applyConfig({}, model.config.facet.cell, mark_1.FILL_STROKE_CONFIG.concat(['clip'])));
 }
 
-},{"../channel":5,"../encoding":74,"../fielddef":76,"../log":79,"../mark":80,"../util":91,"../vega.schema":93,"./common":9,"./data/assemble":13,"./data/parse":21,"./layout/header":29,"./model":46,"./repeat":47,"tslib":281}],28:[function(require,module,exports){
+},{"../channel":5,"../encoding":74,"../fielddef":76,"../log":80,"../mark":81,"../util":92,"../vega.schema":94,"./common":9,"./data/assemble":13,"./data/parse":21,"./layout/header":29,"./model":46,"./repeat":47,"tslib":282}],28:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var tslib_1 = require("tslib");
@@ -3187,7 +3332,7 @@ var LayerModel = (function (_super) {
     LayerModel.prototype.assembleData = function () {
         if (!this.parent) {
             // only assemble data in the root
-            return assemble_1.assembleData(util_1.vals(this.component.data.sources));
+            return assemble_1.assembleData(this.component.data);
         }
         return [];
     };
@@ -3209,7 +3354,7 @@ var LayerModel = (function (_super) {
 }(model_1.Model));
 exports.LayerModel = LayerModel;
 
-},{"../mark":80,"../resolve":81,"../util":91,"../vega.schema":93,"./common":9,"./data/assemble":13,"./data/parse":21,"./layout/index":30,"./model":46,"./scale/domain":49,"./selection/selection":57,"tslib":281}],29:[function(require,module,exports){
+},{"../mark":81,"../resolve":82,"../util":92,"../vega.schema":94,"./common":9,"./data/assemble":13,"./data/parse":21,"./layout/index":30,"./model":46,"./scale/domain":49,"./selection/selection":57,"tslib":282}],29:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var tslib_1 = require("tslib");
@@ -3275,7 +3420,7 @@ function getHeaderGroup(model, channel, headerType, layoutHeader, header) {
 }
 exports.getHeaderGroup = getHeaderGroup;
 
-},{"tslib":281}],30:[function(require,module,exports){
+},{"tslib":282}],30:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var scale_1 = require("../../scale");
@@ -3320,7 +3465,7 @@ function unitSizeExpr(model, sizeType) {
 }
 exports.unitSizeExpr = unitSizeExpr;
 
-},{"../../scale":82}],31:[function(require,module,exports){
+},{"../../scale":83}],31:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var channel_1 = require("../../channel");
@@ -3328,6 +3473,7 @@ var fielddef_1 = require("../../fielddef");
 var mark_1 = require("../../mark");
 var type_1 = require("../../type");
 var util_1 = require("../../util");
+var scale_1 = require("../../scale");
 var common_1 = require("../common");
 var mixins = require("../mark/mixins");
 function symbols(fieldDef, symbolsSpec, model, channel) {
@@ -3384,9 +3530,10 @@ function labels(fieldDef, labelsSpec, model, channel) {
     var config = model.config;
     var labels = {};
     if (fieldDef.type === type_1.TEMPORAL) {
+        var isUTCScale = model.scale(channel).type === scale_1.ScaleType.UTC;
         labelsSpec = util_1.extend({
             text: {
-                signal: common_1.timeFormatExpression('datum.value', fieldDef.timeUnit, legend.format, config.legend.shortTimeLabels, config.timeFormat)
+                signal: common_1.timeFormatExpression('datum.value', fieldDef.timeUnit, legend.format, config.legend.shortTimeLabels, config.timeFormat, isUTCScale)
             }
         }, labelsSpec || {});
     }
@@ -3395,7 +3542,7 @@ function labels(fieldDef, labelsSpec, model, channel) {
 }
 exports.labels = labels;
 
-},{"../../channel":5,"../../fielddef":76,"../../mark":80,"../../type":90,"../../util":91,"../common":9,"../mark/mixins":39}],32:[function(require,module,exports){
+},{"../../channel":5,"../../fielddef":76,"../../mark":81,"../../scale":83,"../../type":91,"../../util":92,"../common":9,"../mark/mixins":39}],32:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var channel_1 = require("../../channel");
@@ -3468,7 +3615,7 @@ function getSpecifiedOrDefaultValue(property, specifiedLegend, channel, model) {
     return specifiedLegend[property];
 }
 
-},{"../../channel":5,"../../legend":78,"../../util":91,"../common":9,"./encode":31,"./rules":33}],33:[function(require,module,exports){
+},{"../../channel":5,"../../legend":79,"../../util":92,"../common":9,"./encode":31,"./rules":33}],33:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var channel_1 = require("../../channel");
@@ -3505,7 +3652,7 @@ function type(legend, type, channel, scaleType) {
 }
 exports.type = type;
 
-},{"../../channel":5,"../../datetime":73,"../../fielddef":76,"../../scale":82,"../../util":91}],34:[function(require,module,exports){
+},{"../../channel":5,"../../datetime":73,"../../fielddef":76,"../../scale":83,"../../util":92}],34:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var tslib_1 = require("tslib");
@@ -3518,7 +3665,7 @@ exports.area = {
     }
 };
 
-},{"./mixins":39,"tslib":281}],35:[function(require,module,exports){
+},{"./mixins":39,"tslib":282}],35:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var tslib_1 = require("tslib");
@@ -3608,7 +3755,7 @@ function defaultSizeRef(scaleName, scale, config) {
     return { value: 20 };
 }
 
-},{"../../channel":5,"../../fielddef":76,"../../log":79,"../../scale":82,"./mixins":39,"./valueref":45,"tslib":281}],36:[function(require,module,exports){
+},{"../../channel":5,"../../fielddef":76,"../../log":80,"../../scale":83,"./mixins":39,"./valueref":45,"tslib":282}],36:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var tslib_1 = require("tslib");
@@ -3751,7 +3898,7 @@ function orient(mark, encoding, scale, specifiedOrient) {
     return 'vertical';
 }
 
-},{"../../encoding":74,"../../fielddef":76,"../../log":79,"../../mark":80,"../../scale":82,"../../type":90,"../../util":91,"../common":9,"tslib":281}],37:[function(require,module,exports){
+},{"../../encoding":74,"../../fielddef":76,"../../log":80,"../../mark":81,"../../scale":83,"../../type":91,"../../util":92,"../common":9,"tslib":282}],37:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var tslib_1 = require("tslib");
@@ -3766,7 +3913,7 @@ exports.line = {
     }
 };
 
-},{"./mixins":39,"tslib":281}],38:[function(require,module,exports){
+},{"./mixins":39,"tslib":282}],38:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var tslib_1 = require("tslib");
@@ -3867,7 +4014,7 @@ function clip(model) {
         (yscale && scale_1.isSelectionDomain(yscale.domain)) ? { clip: true } : {};
 }
 
-},{"../../channel":5,"../../data":72,"../../mark":80,"../../scale":82,"../../util":91,"./area":34,"./bar":35,"./line":37,"./point":40,"./rect":41,"./rule":42,"./text":43,"./tick":44,"tslib":281}],39:[function(require,module,exports){
+},{"../../channel":5,"../../data":72,"../../mark":81,"../../scale":83,"../../util":92,"./area":34,"./bar":35,"./line":37,"./point":40,"./rect":41,"./rule":42,"./text":43,"./tick":44,"tslib":282}],39:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var tslib_1 = require("tslib");
@@ -4012,7 +4159,7 @@ function pointPosition2(model, defaultRef, channel) {
 }
 exports.pointPosition2 = pointPosition2;
 
-},{"../../util":91,"../common":9,"../selection/selection":57,"./valueref":45,"tslib":281}],40:[function(require,module,exports){
+},{"../../util":92,"../common":9,"../selection/selection":57,"./valueref":45,"tslib":282}],40:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var tslib_1 = require("tslib");
@@ -4052,7 +4199,7 @@ exports.square = {
     }
 };
 
-},{"../common":9,"./mixins":39,"./valueref":45,"tslib":281}],41:[function(require,module,exports){
+},{"../common":9,"./mixins":39,"./valueref":45,"tslib":282}],41:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var tslib_1 = require("tslib");
@@ -4112,7 +4259,7 @@ function y(model) {
     }
 }
 
-},{"../../channel":5,"../../fielddef":76,"../../log":79,"../../mark":80,"../../scale":82,"./mixins":39,"tslib":281}],42:[function(require,module,exports){
+},{"../../channel":5,"../../fielddef":76,"../../log":80,"../../mark":81,"../../scale":83,"./mixins":39,"tslib":282}],42:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var tslib_1 = require("tslib");
@@ -4130,7 +4277,7 @@ exports.rule = {
     }
 };
 
-},{"./mixins":39,"./valueref":45,"tslib":281}],43:[function(require,module,exports){
+},{"./mixins":39,"./valueref":45,"tslib":282}],43:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var tslib_1 = require("tslib");
@@ -4168,7 +4315,7 @@ function align(encoding, config) {
     return undefined;
 }
 
-},{"../../channel":5,"../../encoding":74,"../../fielddef":76,"../../type":90,"../common":9,"./mixins":39,"./valueref":45,"tslib":281}],44:[function(require,module,exports){
+},{"../../channel":5,"../../encoding":74,"../../fielddef":76,"../../type":91,"../common":9,"./mixins":39,"./valueref":45,"tslib":282}],44:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var tslib_1 = require("tslib");
@@ -4208,7 +4355,7 @@ function defaultSize(model) {
     }
 }
 
-},{"./mixins":39,"./valueref":45,"tslib":281}],45:[function(require,module,exports){
+},{"./mixins":39,"./valueref":45,"tslib":282}],45:[function(require,module,exports){
 "use strict";
 /**
  * Utility files for producing Vega ValueRef for marks
@@ -4440,7 +4587,7 @@ function zeroOrMaxY(scaleName, scale) {
     return { value: 0 };
 }
 
-},{"../../channel":5,"../../fielddef":76,"../../scale":82,"../../util":91,"../common":9}],46:[function(require,module,exports){
+},{"../../channel":5,"../../fielddef":76,"../../scale":83,"../../util":92,"../common":9}],46:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var tslib_1 = require("tslib");
@@ -4705,7 +4852,7 @@ var ModelWithField = (function (_super) {
 }(Model));
 exports.ModelWithField = ModelWithField;
 
-},{"../channel":5,"../encoding":74,"../fielddef":76,"../util":91,"./layout/header":29,"./scale/assemble":48,"./unit":67,"tslib":281}],47:[function(require,module,exports){
+},{"../channel":5,"../encoding":74,"../fielddef":76,"../util":92,"./layout/header":29,"./scale/assemble":48,"./unit":67,"tslib":282}],47:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var tslib_1 = require("tslib");
@@ -4888,7 +5035,7 @@ var RepeatModel = (function (_super) {
     RepeatModel.prototype.assembleData = function () {
         if (!this.parent) {
             // only assemble data in the root
-            return assemble_1.assembleData(util_1.vals(this.component.data.sources));
+            return assemble_1.assembleData(this.component.data);
         }
         return [];
     };
@@ -4941,7 +5088,7 @@ var RepeatModel = (function (_super) {
 }(model_1.Model));
 exports.RepeatModel = RepeatModel;
 
-},{"../channel":5,"../fielddef":76,"../log":79,"../util":91,"../vega.schema":93,"./common":9,"./data/assemble":13,"./data/parse":21,"./model":46,"./scale/domain":49,"tslib":281,"vega-util":287}],48:[function(require,module,exports){
+},{"../channel":5,"../fielddef":76,"../log":80,"../util":92,"../vega.schema":94,"./common":9,"./data/assemble":13,"./data/parse":21,"./model":46,"./scale/domain":49,"tslib":282,"vega-util":288}],48:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var tslib_1 = require("tslib");
@@ -4999,7 +5146,7 @@ function assembleScale(model) {
 }
 exports.assembleScale = assembleScale;
 
-},{"../../log":79,"../../util":91,"../../vega.schema":93,"tslib":281,"vega-util":287}],49:[function(require,module,exports){
+},{"../../log":80,"../../util":92,"../../vega.schema":94,"tslib":282,"vega-util":288}],49:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var log = require("../../log");
@@ -5256,7 +5403,7 @@ function unionDomains(domain1, domain2) {
 }
 exports.unionDomains = unionDomains;
 
-},{"../../aggregate":2,"../../bin":4,"../../data":72,"../../datetime":73,"../../log":79,"../../scale":82,"../../sort":84,"../../util":91,"../../vega.schema":93}],50:[function(require,module,exports){
+},{"../../aggregate":2,"../../bin":4,"../../data":72,"../../datetime":73,"../../log":80,"../../scale":83,"../../sort":85,"../../util":92,"../../vega.schema":94}],50:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var log = require("../../log");
@@ -5349,7 +5496,7 @@ function getDefaultValue(property, scale, channel, fieldDef, scaleConfig) {
     return scaleConfig[property];
 }
 
-},{"../../log":79,"../../scale":82,"../../util":91,"./domain":49,"./range":52,"./rules":53,"./type":54}],51:[function(require,module,exports){
+},{"../../log":80,"../../scale":83,"../../util":92,"./domain":49,"./range":52,"./rules":53,"./type":54}],51:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var scale_1 = require("../../scale");
@@ -5407,7 +5554,7 @@ function parseScale(model, channel) {
 }
 exports.parseScale = parseScale;
 
-},{"../../scale":82,"../../sort":84,"./domain":49,"./range":52}],52:[function(require,module,exports){
+},{"../../scale":83,"../../sort":85,"./domain":49,"./range":52}],52:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var log = require("../../log");
@@ -5601,7 +5748,7 @@ function minXYRangeStep(xyRangeSteps, scaleConfig) {
     return 21; // FIXME: re-evaluate the default value here.
 }
 
-},{"../../channel":5,"../../log":79,"../../scale":82,"../../util":91}],53:[function(require,module,exports){
+},{"../../channel":5,"../../log":80,"../../scale":83,"../../util":92}],53:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var channel_1 = require("../../channel");
@@ -5685,7 +5832,7 @@ function zero(specifiedScale, channel, fieldDef) {
 }
 exports.zero = zero;
 
-},{"../../channel":5,"../../scale":82,"../../timeunit":87,"../../util":91}],54:[function(require,module,exports){
+},{"../../channel":5,"../../scale":83,"../../timeunit":88,"../../util":92}],54:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var log = require("../../log");
@@ -5738,7 +5885,7 @@ function defaultType(channel, fieldDef, mark, hasTopLevelSize, specifiedRangeSte
             return discreteToContinuousType(channel, mark, hasTopLevelSize, specifiedRangeStep, scaleConfig);
         case 'ordinal':
             if (channel === 'color') {
-                return 'ordinal';
+                return 'sequential';
             }
             else if (channel_1.rangeType(channel) === 'discrete') {
                 log.warn(log.message.discreteChannelCannotEncode(channel, 'ordinal'));
@@ -5837,7 +5984,7 @@ function fieldDefMatchScaleType(specifiedType, fieldDef) {
 }
 exports.fieldDefMatchScaleType = fieldDefMatchScaleType;
 
-},{"../../channel":5,"../../log":79,"../../scale":82,"../../timeunit":87,"../../type":90,"../../util":91}],55:[function(require,module,exports){
+},{"../../channel":5,"../../log":80,"../../scale":83,"../../timeunit":88,"../../type":91,"../../util":92}],55:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var tslib_1 = require("tslib");
@@ -5926,18 +6073,29 @@ var interval = {
                 update[key] = [tslib_1.__assign({ test: store + ".length && " + tpl + " && " + tpl + ".unit === " + store + "[0].unit" }, update[key]), { value: 0 }];
             });
         }
+        // Two brush marks ensure that fill colors and other aesthetic choices do
+        // not interefere with the core marks, but that the brushed region can still
+        // be interacted with (e.g., dragging it around).
         return [{
                 name: undefined,
                 type: 'rect',
                 encode: {
-                    enter: { fill: { value: '#eee' } },
+                    enter: {
+                        fill: { value: '#333' },
+                        fillOpacity: { value: 0.125 },
+                        stroke: undefined
+                    },
                     update: update
                 }
             }].concat(marks, {
             name: name + exports.BRUSH,
             type: 'rect',
             encode: {
-                enter: { fill: { value: 'transparent' } },
+                enter: {
+                    fill: { value: 'transparent' },
+                    fillOpacity: undefined,
+                    stroke: { value: 'white' }
+                },
                 update: update
             }
         });
@@ -5987,7 +6145,7 @@ function events(selCmpt, cb) {
     }, []);
 }
 
-},{"../../channel":5,"../../log":79,"../../util":91,"./selection":57,"./transforms/scales":62,"tslib":281}],56:[function(require,module,exports){
+},{"../../channel":5,"../../log":80,"../../util":92,"./selection":57,"./transforms/scales":62,"tslib":282}],56:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var util_1 = require("../../util");
@@ -6017,7 +6175,7 @@ var multi = {
 };
 exports.default = multi;
 
-},{"../../util":91,"./selection":57}],57:[function(require,module,exports){
+},{"../../util":92,"./selection":57}],57:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var vega_event_selector_1 = require("vega-event-selector");
@@ -6099,24 +6257,28 @@ function assembleUnitSelectionSignals(model, signals) {
 }
 exports.assembleUnitSelectionSignals = assembleUnitSelectionSignals;
 function assembleTopLevelSignals(model, signals) {
-    var hasUnit = signals.filter(function (s) { return s.name === 'unit'; });
-    if (!(hasUnit.length)) {
-        signals.push({
-            name: 'unit',
-            value: {},
-            on: [{ events: 'mousemove', update: 'group()._id ? group() : unit' }]
-        });
-    }
+    var needsUnit = false;
     forEachSelection(model, function (selCmpt, selCompiler) {
         if (selCompiler.topLevelSignals) {
-            signals.push.apply(signals, selCompiler.topLevelSignals(model, selCmpt));
+            signals = selCompiler.topLevelSignals(model, selCmpt, signals);
         }
         transforms_1.forEachTransform(selCmpt, function (txCompiler) {
             if (txCompiler.topLevelSignals) {
                 signals = txCompiler.topLevelSignals(model, selCmpt, signals);
             }
         });
+        needsUnit = true;
     });
+    if (needsUnit) {
+        var hasUnit = signals.filter(function (s) { return s.name === 'unit'; });
+        if (!(hasUnit.length)) {
+            signals.unshift({
+                name: 'unit',
+                value: {},
+                on: [{ events: 'mousemove', update: 'group()._id ? group() : unit' }]
+            });
+        }
+    }
     return signals;
 }
 exports.assembleTopLevelSignals = assembleTopLevelSignals;
@@ -6212,7 +6374,7 @@ function clipMarks(marks) {
     return marks.map(function (m) { return (m.clip = true, m); });
 }
 
-},{"../../util":91,"../layer":28,"./interval":55,"./multi":56,"./single":58,"./transforms/transforms":64,"vega-event-selector":285}],58:[function(require,module,exports){
+},{"../../util":92,"../layer":28,"./interval":55,"./multi":56,"./single":58,"./transforms/transforms":64,"vega-event-selector":286}],58:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var util_1 = require("../../util");
@@ -6221,11 +6383,12 @@ var selection_1 = require("./selection");
 var single = {
     predicate: multi_1.default.predicate,
     signals: multi_1.default.signals,
-    topLevelSignals: function (model, selCmpt) {
-        return [{
-                name: selCmpt.name,
-                update: "data(" + util_1.stringValue(selCmpt.name + selection_1.STORE) + ")[0]"
-            }];
+    topLevelSignals: function (model, selCmpt, signals) {
+        var hasSignal = signals.filter(function (s) { return s.name === selCmpt.name; });
+        return hasSignal.length ? signals : signals.concat({
+            name: selCmpt.name,
+            update: "data(" + util_1.stringValue(selCmpt.name + selection_1.STORE) + ")[0]"
+        });
     },
     tupleExpr: function (model, selCmpt) {
         var name = selCmpt.name, values = name + ".values";
@@ -6243,7 +6406,7 @@ var single = {
 };
 exports.default = single;
 
-},{"../../util":91,"./multi":56,"./selection":57}],59:[function(require,module,exports){
+},{"../../util":92,"./multi":56,"./selection":57}],59:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var util_1 = require("../../../util");
@@ -6280,7 +6443,7 @@ function id(str) {
     return '_' + str.replace(/\W/g, '_');
 }
 
-},{"../../../util":91}],60:[function(require,module,exports){
+},{"../../../util":92}],60:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var VORONOI = 'voronoi';
@@ -6401,7 +6564,7 @@ function domain(model, channel) {
 }
 exports.domain = domain;
 
-},{"../../../log":79,"../../../scale":82,"../../../util":91,"../interval":55,"../selection":57}],63:[function(require,module,exports){
+},{"../../../log":80,"../../../scale":83,"../../../util":92,"../interval":55,"../selection":57}],63:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var selection_1 = require("../selection");
@@ -6516,7 +6679,7 @@ function onDelta(model, selCmpt, channel, size, signals) {
     });
 }
 
-},{"../../../channel":5,"../../../util":91,"../interval":55,"../selection":57,"./scales":62,"vega-event-selector":285}],66:[function(require,module,exports){
+},{"../../../channel":5,"../../../util":92,"../interval":55,"../selection":57,"./scales":62,"vega-event-selector":286}],66:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var vega_event_selector_1 = require("vega-event-selector");
@@ -6579,7 +6742,7 @@ function onDelta(model, selCmpt, channel, size, signals) {
     });
 }
 
-},{"../../../channel":5,"../../../util":91,"../interval":55,"../selection":57,"./scales":62,"vega-event-selector":285}],67:[function(require,module,exports){
+},{"../../../channel":5,"../../../util":92,"../interval":55,"../selection":57,"./scales":62,"vega-event-selector":286}],67:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var tslib_1 = require("tslib");
@@ -6779,7 +6942,7 @@ var UnitModel = (function (_super) {
     UnitModel.prototype.assembleData = function () {
         if (!this.parent) {
             // only assemble data in the root
-            return assemble_1.assembleData(util_1.vals(this.component.data.sources));
+            return assemble_1.assembleData(this.component.data);
         }
         return [];
     };
@@ -6859,14 +7022,22 @@ var UnitModel = (function (_super) {
 }(model_1.ModelWithField));
 exports.UnitModel = UnitModel;
 
-},{"../channel":5,"../encoding":74,"../fielddef":76,"../mark":80,"../scale":82,"../stack":86,"../util":91,"./axis/parse":7,"./common":9,"./data/assemble":13,"./data/parse":21,"./facet":27,"./layer":28,"./layout/index":30,"./legend/parse":32,"./mark/init":36,"./mark/mark":38,"./model":46,"./repeat":47,"./scale/init":50,"./scale/parse":51,"./selection/selection":57,"tslib":281}],68:[function(require,module,exports){
+},{"../channel":5,"../encoding":74,"../fielddef":76,"../mark":81,"../scale":83,"../stack":87,"../util":92,"./axis/parse":7,"./common":9,"./data/assemble":13,"./data/parse":21,"./facet":27,"./layer":28,"./layout/index":30,"./legend/parse":32,"./mark/init":36,"./mark/mark":38,"./model":46,"./repeat":47,"./scale/init":50,"./scale/parse":51,"./selection/selection":57,"tslib":282}],68:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var tslib_1 = require("tslib");
 var fielddef_1 = require("./../fielddef");
 exports.BOXPLOT = 'box-plot';
+function isBoxPlotDef(mark) {
+    return !!mark['type'];
+}
+exports.isBoxPlotDef = isBoxPlotDef;
+exports.BOXPLOT_ROLES = ['boxWhisker', 'box', 'boxMid'];
+exports.VL_ONLY_BOXPLOT_CONFIG_PROPERTY_INDEX = {
+    box: ['size']
+};
 function normalizeBoxPlot(spec, config) {
-    var _m = spec.mark, encoding = spec.encoding, outerSpec = tslib_1.__rest(spec, ["mark", "encoding"]);
+    var mark = spec.mark, encoding = spec.encoding, outerSpec = tslib_1.__rest(spec, ["mark", "encoding"]);
     var _x = encoding.x, _y = encoding.y, nonPositionEncoding = tslib_1.__rest(encoding, ["x", "y"]);
     var size = nonPositionEncoding.size, nonPositionEncodingWithoutSize = tslib_1.__rest(nonPositionEncoding, ["size"]);
     var _color = nonPositionEncodingWithoutSize.color, nonPositionEncodingWithoutColorSize = tslib_1.__rest(nonPositionEncodingWithoutSize, ["color"]);
@@ -6875,23 +7046,12 @@ function normalizeBoxPlot(spec, config) {
     var discreteAxis, continuousAxis;
     if (encoding.x && encoding.y) {
         // 2D
-        if (fielddef_1.isDiscrete(encoding.x) && fielddef_1.isContinuous(encoding.y)) {
-            // vertical
-            discreteAxis = 'x';
-            continuousAxis = 'y';
-            continuousAxisChannelDef = encoding.y;
-            discreteAxisFieldDef = encoding.x;
-        }
-        else if (fielddef_1.isDiscrete(encoding.y) && fielddef_1.isContinuous(encoding.x)) {
-            // horizontal
-            discreteAxis = 'y';
-            continuousAxis = 'x';
-            continuousAxisChannelDef = encoding.x;
-            discreteAxisFieldDef = encoding.y;
-        }
-        else {
-            throw new Error('Need one continuous and one discrete axis for 2D boxplots');
-        }
+        var orient = box2DOrient(spec);
+        var params = box2DParams(spec, orient);
+        discreteAxisFieldDef = params.discreteAxisFieldDef;
+        continuousAxisChannelDef = params.continuousAxisChannelDef;
+        discreteAxis = params.discreteAxis;
+        continuousAxis = params.continuousAxis;
     }
     else if (encoding.x && fielddef_1.isContinuous(encoding.x) && encoding.y === undefined) {
         // 1D horizontal
@@ -6907,7 +7067,7 @@ function normalizeBoxPlot(spec, config) {
         throw new Error('Need a continuous axis for 1D boxplots');
     }
     if (continuousAxisChannelDef.aggregate !== undefined && continuousAxisChannelDef.aggregate !== exports.BOXPLOT) {
-        throw new Error('Continuous axis should not be aggregated');
+        throw new Error("Continuous axis should not have customized aggregation function " + continuousAxisChannelDef.aggregate);
     }
     var baseContinuousFieldDef = {
         field: continuousAxisChannelDef.field,
@@ -6950,8 +7110,83 @@ function normalizeBoxPlot(spec, config) {
     var _a, _b, _c, _d, _e;
 }
 exports.normalizeBoxPlot = normalizeBoxPlot;
+function box2DOrient(spec) {
+    var mark = spec.mark, encoding = spec.encoding, outerSpec = tslib_1.__rest(spec, ["mark", "encoding"]);
+    var xEncChannel = encoding.x;
+    var yEncChannel = encoding.y;
+    var resultOrient;
+    if (fielddef_1.isDiscrete(encoding.x) && fielddef_1.isContinuous(encoding.y)) {
+        resultOrient = 'vertical';
+    }
+    else if (fielddef_1.isDiscrete(encoding.y) && fielddef_1.isContinuous(encoding.x)) {
+        resultOrient = 'horizontal';
+    }
+    else {
+        if (fielddef_1.isContinuous(encoding.x) && fielddef_1.isContinuous(encoding.y)) {
+            if (xEncChannel.aggregate === undefined && yEncChannel.aggregate === exports.BOXPLOT) {
+                resultOrient = 'vertical';
+            }
+            else if (yEncChannel.aggregate === undefined && xEncChannel.aggregate === exports.BOXPLOT) {
+                resultOrient = 'horizontal';
+            }
+            else if (xEncChannel.aggregate === exports.BOXPLOT && yEncChannel.aggregate === exports.BOXPLOT) {
+                throw new Error('Both x and y cannot have aggregate');
+            }
+            else {
+                if (isBoxPlotDef(mark)) {
+                    if (mark && mark.orient) {
+                        resultOrient = mark.orient;
+                    }
+                    else {
+                        // default orientation = vertical
+                        resultOrient = 'vertical';
+                    }
+                }
+                else {
+                    resultOrient = 'vertical';
+                }
+            }
+        }
+        else {
+            throw new Error('Both x and y cannot be discrete');
+        }
+    }
+    return resultOrient;
+}
+exports.box2DOrient = box2DOrient;
+function box2DParams(spec, orient) {
+    var mark = spec.mark, encoding = spec.encoding, outerSpec = tslib_1.__rest(spec, ["mark", "encoding"]);
+    var discreteAxisFieldDef, continuousAxisChannelDef;
+    var discreteAxis, continuousAxis;
+    if (orient === 'vertical') {
+        discreteAxis = 'x';
+        continuousAxis = 'y';
+        continuousAxisChannelDef = encoding.y;
+        discreteAxisFieldDef = encoding.x;
+    }
+    else {
+        discreteAxis = 'y';
+        continuousAxis = 'x';
+        continuousAxisChannelDef = encoding.x;
+        discreteAxisFieldDef = encoding.y;
+    }
+    if (continuousAxisChannelDef && continuousAxisChannelDef.aggregate) {
+        var aggregate = continuousAxisChannelDef.aggregate, continuousAxisWithoutAggregate = tslib_1.__rest(continuousAxisChannelDef, ["aggregate"]);
+        if (aggregate !== exports.BOXPLOT) {
+            throw new Error("Continuous axis should not have customized aggregation function " + aggregate);
+        }
+        continuousAxisChannelDef = continuousAxisWithoutAggregate;
+    }
+    return {
+        discreteAxisFieldDef: discreteAxisFieldDef,
+        continuousAxisChannelDef: continuousAxisChannelDef,
+        discreteAxis: discreteAxis,
+        continuousAxis: continuousAxis
+    };
+}
+exports.box2DParams = box2DParams;
 
-},{"./../fielddef":76,"tslib":281}],69:[function(require,module,exports){
+},{"./../fielddef":76,"tslib":282}],69:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var tslib_1 = require("tslib");
@@ -6979,9 +7214,10 @@ function normalizeErrorBar(spec) {
 }
 exports.normalizeErrorBar = normalizeErrorBar;
 
-},{"tslib":281}],70:[function(require,module,exports){
+},{"tslib":282}],70:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+var tslib_1 = require("tslib");
 var mark_1 = require("./../mark");
 var boxplot_1 = require("./boxplot");
 var errorbar_1 = require("./errorbar");
@@ -6997,6 +7233,8 @@ function remove(mark) {
     delete normalizerRegistry[mark];
 }
 exports.remove = remove;
+exports.COMPOSITE_MARK_ROLES = boxplot_1.BOXPLOT_ROLES;
+exports.VL_ONLY_COMPOSITE_MARK_SPECIFIC_CONFIG_PROPERTY_INDEX = tslib_1.__assign({}, boxplot_1.VL_ONLY_BOXPLOT_CONFIG_PROPERTY_INDEX);
 add(boxplot_1.BOXPLOT, boxplot_1.normalizeBoxPlot);
 add(errorbar_1.ERRORBAR, errorbar_1.normalizeErrorBar);
 /**
@@ -7014,10 +7252,15 @@ function normalize(
 }
 exports.normalize = normalize;
 
-},{"./../mark":80,"./boxplot":68,"./errorbar":69}],71:[function(require,module,exports){
+},{"./../mark":81,"./boxplot":68,"./errorbar":69,"tslib":282}],71:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+var tslib_1 = require("tslib");
+var compositemark_1 = require("./compositemark");
+var index_1 = require("./compositemark/index");
+var guide_1 = require("./guide");
 var legend_1 = require("./legend");
+var mark_1 = require("./mark");
 var mark = require("./mark");
 var scale_1 = require("./scale");
 var selection_1 = require("./selection");
@@ -7075,8 +7318,61 @@ function initConfig(config) {
     return util_1.mergeDeep(util_1.duplicate(exports.defaultConfig), config);
 }
 exports.initConfig = initConfig;
+var MARK_ROLES = [].concat(mark_1.PRIMITIVE_MARKS, compositemark_1.COMPOSITE_MARK_ROLES);
+var VL_ONLY_CONFIG_PROPERTIES = ['padding', 'numberFormat', 'timeFormat', 'countTitle', 'cell', 'stack', 'overlay', 'scale', 'facet', 'selection', 'filterInvalid'];
+var VL_ONLY_ALL_MARK_SPECIFIC_CONFIG_PROPERTY_INDEX = tslib_1.__assign({}, mark_1.VL_ONLY_MARK_SPECIFIC_CONFIG_PROPERTY_INDEX, index_1.VL_ONLY_COMPOSITE_MARK_SPECIFIC_CONFIG_PROPERTY_INDEX);
+function stripConfig(config) {
+    config = util_1.duplicate(config);
+    for (var _i = 0, VL_ONLY_CONFIG_PROPERTIES_1 = VL_ONLY_CONFIG_PROPERTIES; _i < VL_ONLY_CONFIG_PROPERTIES_1.length; _i++) {
+        var prop = VL_ONLY_CONFIG_PROPERTIES_1[_i];
+        delete config[prop];
+    }
+    // Remove Vega-Lite only axis/legend config
+    if (config.axis) {
+        for (var _a = 0, VL_ONLY_GUIDE_CONFIG_1 = guide_1.VL_ONLY_GUIDE_CONFIG; _a < VL_ONLY_GUIDE_CONFIG_1.length; _a++) {
+            var prop = VL_ONLY_GUIDE_CONFIG_1[_a];
+            delete config.axis[prop];
+        }
+    }
+    if (config.legend) {
+        for (var _b = 0, VL_ONLY_GUIDE_CONFIG_2 = guide_1.VL_ONLY_GUIDE_CONFIG; _b < VL_ONLY_GUIDE_CONFIG_2.length; _b++) {
+            var prop = VL_ONLY_GUIDE_CONFIG_2[_b];
+            delete config.legend[prop];
+        }
+    }
+    // Remove Vega-Lite only generic mark config
+    if (config.mark) {
+        for (var _c = 0, _d = mark.VL_ONLY_MARK_CONFIG_PROPERTIES; _c < _d.length; _c++) {
+            var prop = _d[_c];
+            delete config.mark[prop];
+        }
+    }
+    // Remove Vega-Lite Mark/Role config
+    for (var _e = 0, MARK_ROLES_1 = MARK_ROLES; _e < MARK_ROLES_1.length; _e++) {
+        var role = MARK_ROLES_1[_e];
+        for (var _f = 0, _g = mark.VL_ONLY_MARK_CONFIG_PROPERTIES; _f < _g.length; _f++) {
+            var prop = _g[_f];
+            delete config[role][prop];
+        }
+        var vlOnlyMarkSpecificConfigs = VL_ONLY_ALL_MARK_SPECIFIC_CONFIG_PROPERTY_INDEX[role];
+        if (vlOnlyMarkSpecificConfigs) {
+            for (var _h = 0, vlOnlyMarkSpecificConfigs_1 = vlOnlyMarkSpecificConfigs; _h < vlOnlyMarkSpecificConfigs_1.length; _h++) {
+                var prop = vlOnlyMarkSpecificConfigs_1[_h];
+                delete config[role][prop];
+            }
+        }
+    }
+    // Remove empty config objects
+    for (var prop in config) {
+        if (util_1.isObject(config[prop]) && util_1.keys(config[prop]).length === 0) {
+            delete config[prop];
+        }
+    }
+    return util_1.keys(config).length > 0 ? config : undefined;
+}
+exports.stripConfig = stripConfig;
 
-},{"./legend":78,"./mark":80,"./scale":82,"./selection":83,"./util":91}],72:[function(require,module,exports){
+},{"./compositemark":70,"./compositemark/index":70,"./guide":78,"./legend":79,"./mark":81,"./scale":83,"./selection":84,"./util":92,"tslib":282}],72:[function(require,module,exports){
 "use strict";
 /*
  * Constants and utilities for data.
@@ -7278,7 +7574,7 @@ function dateTimeExpr(d, normalize) {
 }
 exports.dateTimeExpr = dateTimeExpr;
 
-},{"./log":79,"./util":91}],74:[function(require,module,exports){
+},{"./log":80,"./util":92}],74:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var channel_1 = require("./channel");
@@ -7404,7 +7700,7 @@ function reduce(mapping, f, init, thisArg) {
 }
 exports.reduce = reduce;
 
-},{"./channel":5,"./fielddef":76,"./log":79,"./util":91}],75:[function(require,module,exports){
+},{"./channel":5,"./fielddef":76,"./log":80,"./util":92}],75:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 
@@ -7432,6 +7728,10 @@ function isValueDef(channelDef) {
     return channelDef && 'value' in channelDef && channelDef['value'] !== undefined;
 }
 exports.isValueDef = isValueDef;
+function isScaleFieldDef(channelDef) {
+    return !!channelDef && (!!channelDef['scale'] || !!channelDef['sort']);
+}
+exports.isScaleFieldDef = isScaleFieldDef;
 function field(fieldDef, opt) {
     if (opt === void 0) { opt = {}; }
     var field = fieldDef.field;
@@ -7539,13 +7839,7 @@ function normalize(channelDef, channel) {
         }
         // Normalize bin
         if (fieldDef.bin) {
-            var bin = fieldDef.bin;
-            if (util_1.isBoolean(bin)) {
-                fieldDef = tslib_1.__assign({}, fieldDef, { bin: { maxbins: bin_1.autoMaxBins(channel) } });
-            }
-            else if (!bin.maxbins && !bin.step) {
-                fieldDef = tslib_1.__assign({}, fieldDef, { bin: tslib_1.__assign({}, bin, { maxbins: bin_1.autoMaxBins(channel) }) });
-            }
+            fieldDef = tslib_1.__assign({}, fieldDef, { bin: normalizeBin(fieldDef.bin, channel) });
         }
         // Normalize Type
         if (fieldDef.type) {
@@ -7570,6 +7864,18 @@ function normalize(channelDef, channel) {
     return channelDef;
 }
 exports.normalize = normalize;
+function normalizeBin(bin, channel) {
+    if (util_1.isBoolean(bin)) {
+        return { maxbins: bin_1.autoMaxBins(channel) };
+    }
+    else if (!bin.maxbins && !bin.step) {
+        return tslib_1.__assign({}, bin, { maxbins: bin_1.autoMaxBins(channel) });
+    }
+    else {
+        return bin;
+    }
+}
+exports.normalizeBin = normalizeBin;
 var COMPATIBLE = { compatible: true };
 function channelCompatibility(fieldDef, channel) {
     switch (channel) {
@@ -7623,7 +7929,7 @@ function channelCompatibility(fieldDef, channel) {
 }
 exports.channelCompatibility = channelCompatibility;
 
-},{"./aggregate":2,"./bin":4,"./channel":5,"./log":79,"./timeunit":87,"./type":90,"./util":91,"tslib":281}],77:[function(require,module,exports){
+},{"./aggregate":2,"./bin":4,"./channel":5,"./log":80,"./timeunit":88,"./type":91,"./util":92,"tslib":282}],77:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var selection_1 = require("./compile/selection/selection");
@@ -7716,7 +8022,12 @@ function valueExpr(v, timeUnit) {
     return JSON.stringify(v);
 }
 
-},{"./compile/selection/selection":57,"./datetime":73,"./fielddef":76,"./timeunit":87,"./util":91}],78:[function(require,module,exports){
+},{"./compile/selection/selection":57,"./datetime":73,"./fielddef":76,"./timeunit":88,"./util":92}],78:[function(require,module,exports){
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.VL_ONLY_GUIDE_CONFIG = ['shortTimeLabels'];
+
+},{}],79:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.defaultLegendConfig = {
@@ -7724,7 +8035,7 @@ exports.defaultLegendConfig = {
 };
 exports.LEGEND_PROPERTIES = ['entryPadding', 'format', 'offset', 'orient', 'tickCount', 'title', 'type', 'values', 'zindex'];
 
-},{}],79:[function(require,module,exports){
+},{}],80:[function(require,module,exports){
 "use strict";
 ///<reference path="../typings/vega-util.d.ts" />
 Object.defineProperty(exports, "__esModule", { value: true });
@@ -7854,6 +8165,7 @@ var message;
         return "Ignoring an invalid transform: " + JSON.stringify(transform) + ".";
     }
     message.invalidTransformIgnored = invalidTransformIgnored;
+    message.NO_FIELDS_NEEDS_AS = 'If `from.fields` is not specified, `as` has to be a string that specifies the key to be used for the the data from the secondary source.';
     // ENCODING & FACET
     function invalidFieldType(type) {
         return "Invalid field type \"" + type + "\"";
@@ -7977,7 +8289,7 @@ var message;
     message.droppedDay = droppedDay;
 })(message = exports.message || (exports.message = {}));
 
-},{"vega-util":287}],80:[function(require,module,exports){
+},{"vega-util":288}],81:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var util_1 = require("./util");
@@ -8019,6 +8331,12 @@ exports.STROKE_CONFIG = ['stroke', 'strokeWidth',
     'strokeDash', 'strokeDashOffset', 'strokeOpacity'];
 exports.FILL_CONFIG = ['fill', 'fillOpacity'];
 exports.FILL_STROKE_CONFIG = [].concat(exports.STROKE_CONFIG, exports.FILL_CONFIG);
+exports.VL_ONLY_MARK_CONFIG_PROPERTIES = ['filled', 'color'];
+exports.VL_ONLY_MARK_SPECIFIC_CONFIG_PROPERTY_INDEX = {
+    bar: ['binSpacing', 'continuousBandSize', 'discreteBandSize'],
+    text: ['shortTimeLabels'],
+    tick: ['bandSize', 'thickness']
+};
 exports.defaultMarkConfig = {
     color: '#4c78a8',
 };
@@ -8026,14 +8344,12 @@ exports.defaultBarConfig = {
     binSpacing: 1,
     continuousBandSize: 2
 };
-exports.defaultTextConfig = {
-    baseline: 'middle',
-};
+exports.defaultTextConfig = {};
 exports.defaultTickConfig = {
     thickness: 1
 };
 
-},{"./util":91}],81:[function(require,module,exports){
+},{"./util":92}],82:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var channel_1 = require("./channel");
@@ -8058,7 +8374,7 @@ function initLayerResolve(resolve) {
 }
 exports.initLayerResolve = initLayerResolve;
 
-},{"./channel":5,"./log":79,"./util":91}],82:[function(require,module,exports){
+},{"./channel":5,"./log":80,"./util":92}],83:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var log = require("./log");
@@ -8232,7 +8548,7 @@ function channelScalePropertyIncompatability(channel, propName) {
 }
 exports.channelScalePropertyIncompatability = channelScalePropertyIncompatability;
 
-},{"./log":79,"./util":91}],83:[function(require,module,exports){
+},{"./log":80,"./util":92}],84:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.defaultConfig = {
@@ -8247,15 +8563,15 @@ exports.defaultConfig = {
     }
 };
 
-},{}],84:[function(require,module,exports){
+},{}],85:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 function isSortField(sort) {
-    return !!sort && !!sort['field'] && !!sort['op'];
+    return !!sort && (sort['op'] === 'count' || !!sort['field']) && !!sort['op'];
 }
 exports.isSortField = isSortField;
 
-},{}],85:[function(require,module,exports){
+},{}],86:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var tslib_1 = require("tslib");
@@ -8518,7 +8834,7 @@ function isStacked(spec, config) {
 }
 exports.isStacked = isStacked;
 
-},{"./channel":5,"./compositemark":70,"./encoding":74,"./log":79,"./mark":80,"./stack":86,"./util":91,"tslib":281}],86:[function(require,module,exports){
+},{"./channel":5,"./compositemark":70,"./encoding":74,"./log":80,"./mark":81,"./stack":87,"./util":92,"tslib":282}],87:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var log = require("./log");
@@ -8609,7 +8925,7 @@ function stack(m, encoding, stackConfig) {
 }
 exports.stack = stack;
 
-},{"./aggregate":2,"./channel":5,"./encoding":74,"./fielddef":76,"./log":79,"./mark":80,"./scale":82,"./util":91}],87:[function(require,module,exports){
+},{"./aggregate":2,"./channel":5,"./encoding":74,"./fielddef":76,"./log":80,"./mark":81,"./scale":83,"./util":92}],88:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var datetime_1 = require("./datetime");
@@ -8640,6 +8956,29 @@ var TimeUnit;
     TimeUnit.YEARQUARTER = 'yearquarter';
     TimeUnit.QUARTERMONTH = 'quartermonth';
     TimeUnit.YEARQUARTERMONTH = 'yearquartermonth';
+    TimeUnit.UTCYEAR = 'utcyear';
+    TimeUnit.UTCMONTH = 'utcmonth';
+    TimeUnit.UTCDAY = 'utcday';
+    TimeUnit.UTCDATE = 'utcdate';
+    TimeUnit.UTCHOURS = 'utchours';
+    TimeUnit.UTCMINUTES = 'utcminutes';
+    TimeUnit.UTCSECONDS = 'utcseconds';
+    TimeUnit.UTCMILLISECONDS = 'utcmilliseconds';
+    TimeUnit.UTCYEARMONTH = 'utcyearmonth';
+    TimeUnit.UTCYEARMONTHDATE = 'utcyearmonthdate';
+    TimeUnit.UTCYEARMONTHDATEHOURS = 'utcyearmonthdatehours';
+    TimeUnit.UTCYEARMONTHDATEHOURSMINUTES = 'utcyearmonthdatehoursminutes';
+    TimeUnit.UTCYEARMONTHDATEHOURSMINUTESSECONDS = 'utcyearmonthdatehoursminutesseconds';
+    // MONTHDATE always include 29 February since we use year 0th (which is a leap year);
+    TimeUnit.UTCMONTHDATE = 'utcmonthdate';
+    TimeUnit.UTCHOURSMINUTES = 'utchoursminutes';
+    TimeUnit.UTCHOURSMINUTESSECONDS = 'utchoursminutesseconds';
+    TimeUnit.UTCMINUTESSECONDS = 'utcminutesseconds';
+    TimeUnit.UTCSECONDSMILLISECONDS = 'utcsecondsmilliseconds';
+    TimeUnit.UTCQUARTER = 'utcquarter';
+    TimeUnit.UTCYEARQUARTER = 'utcyearquarter';
+    TimeUnit.UTCQUARTERMONTH = 'utcquartermonth';
+    TimeUnit.UTCYEARQUARTERMONTH = 'utcyearquartermonth';
 })(TimeUnit = exports.TimeUnit || (exports.TimeUnit = {}));
 /** Time Unit that only corresponds to only one part of Date objects. */
 exports.SINGLE_TIMEUNITS = [
@@ -8651,7 +8990,7 @@ exports.SINGLE_TIMEUNITS = [
     TimeUnit.HOURS,
     TimeUnit.MINUTES,
     TimeUnit.SECONDS,
-    TimeUnit.MILLISECONDS,
+    TimeUnit.MILLISECONDS
 ];
 var SINGLE_TIMEUNIT_INDEX = exports.SINGLE_TIMEUNITS.reduce(function (d, timeUnit) {
     d[timeUnit] = true;
@@ -8747,7 +9086,7 @@ exports.TIMEUNITS = [
     TimeUnit.HOURSMINUTES,
     TimeUnit.HOURSMINUTESSECONDS,
     TimeUnit.MINUTESSECONDS,
-    TimeUnit.SECONDSMILLISECONDS
+    TimeUnit.SECONDSMILLISECONDS,
 ];
 /** Returns true if fullTimeUnit contains the timeUnit, false otherwise. */
 function containsTimeUnit(fullTimeUnit, timeUnit) {
@@ -8764,13 +9103,14 @@ exports.containsTimeUnit = containsTimeUnit;
  */
 function fieldExpr(fullTimeUnit, field) {
     var fieldRef = "datum[" + util_1.stringValue(field) + "]";
+    var utc = isUTCTimeUnit(fullTimeUnit) ? 'utc' : '';
     function func(timeUnit) {
         if (timeUnit === TimeUnit.QUARTER) {
             // quarter starting at 0 (0,3,6,9).
-            return "(quarter(" + fieldRef + ")-1)";
+            return "(" + utc + "quarter(" + fieldRef + ")-1)";
         }
         else {
-            return timeUnit + "(" + fieldRef + ")";
+            return "" + utc + timeUnit + "(" + fieldRef + ")";
         }
     }
     var d = exports.SINGLE_TIMEUNITS.reduce(function (_d, tu) {
@@ -8815,7 +9155,7 @@ function smallestUnit(timeUnit) {
 }
 exports.smallestUnit = smallestUnit;
 /** returns the signal expression used for axis labels for a time unit */
-function formatExpression(timeUnit, field, shortTimeLabels) {
+function formatExpression(timeUnit, field, shortTimeLabels, isUTCScale) {
     if (!timeUnit) {
         return undefined;
     }
@@ -8864,7 +9204,12 @@ function formatExpression(timeUnit, field, shortTimeLabels) {
             // Add space between quarter and main time format
             expression += " + ' ' + ";
         }
-        expression += "timeFormat(" + field + ", '" + dateTimeComponents.join(' ') + "')";
+        if (isUTCScale) {
+            expression += "utcFormat(" + field + ", '" + dateTimeComponents.join(' ') + "')";
+        }
+        else {
+            expression += "timeFormat(" + field + ", '" + dateTimeComponents.join(' ') + "')";
+        }
     }
     // If expression is still an empty string, return undefined instead.
     return expression || undefined;
@@ -8882,8 +9227,11 @@ function isDiscreteByDefault(timeUnit) {
     return false;
 }
 exports.isDiscreteByDefault = isDiscreteByDefault;
+function isUTCTimeUnit(timeUnit) {
+    return timeUnit.substr(0, 3) === 'utc';
+}
 
-},{"./datetime":73,"./log":79,"./util":91}],88:[function(require,module,exports){
+},{"./datetime":73,"./log":80,"./util":92}],89:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var TOP_LEVEL_PROPERTIES = [
@@ -8899,19 +9247,35 @@ function extractTopLevelProperties(t) {
 }
 exports.extractTopLevelProperties = extractTopLevelProperties;
 
-},{}],89:[function(require,module,exports){
+},{}],90:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 function isFilter(t) {
     return t['filter'] !== undefined;
 }
 exports.isFilter = isFilter;
+function isLookup(t) {
+    return t['lookup'] !== undefined;
+}
+exports.isLookup = isLookup;
 function isCalculate(t) {
     return t['calculate'] !== undefined;
 }
 exports.isCalculate = isCalculate;
+function isBin(t) {
+    return t['bin'] !== undefined;
+}
+exports.isBin = isBin;
+function isTimeUnit(t) {
+    return t['timeUnit'] !== undefined;
+}
+exports.isTimeUnit = isTimeUnit;
+function isSummarize(t) {
+    return t['summarize'] !== undefined;
+}
+exports.isSummarize = isSummarize;
 
-},{}],90:[function(require,module,exports){
+},{}],91:[function(require,module,exports){
 "use strict";
 /** Constants and utilities for data type */
 /** Data type based on level of measurement */
@@ -8955,7 +9319,7 @@ function getFullName(type) {
 }
 exports.getFullName = getFullName;
 
-},{}],91:[function(require,module,exports){
+},{}],92:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var stringify = require("json-stable-stringify");
@@ -9173,7 +9537,7 @@ function varName(s) {
 }
 exports.varName = varName;
 
-},{"json-stable-stringify":277,"vega-util":287}],92:[function(require,module,exports){
+},{"json-stable-stringify":278,"vega-util":288}],93:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var mark_1 = require("./mark");
@@ -9243,7 +9607,7 @@ function getEncodingMappingError(spec, requiredChannelMap, supportedChannelMap) 
 }
 exports.getEncodingMappingError = getEncodingMappingError;
 
-},{"./mark":80,"./util":91}],93:[function(require,module,exports){
+},{"./mark":81,"./util":92}],94:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var util_1 = require("./util");
@@ -9276,7 +9640,7 @@ function isSignalRefDomain(domain) {
 }
 exports.isSignalRefDomain = isSignalRefDomain;
 
-},{"./util":91}],94:[function(require,module,exports){
+},{"./util":92}],95:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.axis = require("./axis");
@@ -9305,9 +9669,9 @@ exports.util = require("./util");
 exports.validate = require("./validate");
 exports.version = require('../package.json').version;
 
-},{"../package.json":1,"./aggregate":2,"./axis":3,"./bin":4,"./channel":5,"./compile/compile":10,"./compositemark":70,"./config":71,"./data":72,"./datetime":73,"./encoding":74,"./facet":75,"./fielddef":76,"./legend":78,"./mark":80,"./scale":82,"./sort":84,"./spec":85,"./stack":86,"./timeunit":87,"./transform":89,"./type":90,"./util":91,"./validate":92}],95:[function(require,module,exports){
+},{"../package.json":1,"./aggregate":2,"./axis":3,"./bin":4,"./channel":5,"./compile/compile":10,"./compositemark":70,"./config":71,"./data":72,"./datetime":73,"./encoding":74,"./facet":75,"./fielddef":76,"./legend":79,"./mark":81,"./scale":83,"./sort":85,"./spec":86,"./stack":87,"./timeunit":88,"./transform":90,"./type":91,"./util":92,"./validate":93}],96:[function(require,module,exports){
 
-},{}],96:[function(require,module,exports){
+},{}],97:[function(require,module,exports){
 // https://d3js.org/d3-collection/ Version 1.0.3. Copyright 2017 Mike Bostock.
 (function (global, factory) {
 	typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports) :
@@ -9526,7 +9890,7 @@ Object.defineProperty(exports, '__esModule', { value: true });
 
 })));
 
-},{}],97:[function(require,module,exports){
+},{}],98:[function(require,module,exports){
 // https://d3js.org/d3-dispatch/ Version 1.0.3. Copyright 2017 Mike Bostock.
 (function (global, factory) {
 	typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports) :
@@ -9623,7 +9987,7 @@ Object.defineProperty(exports, '__esModule', { value: true });
 
 })));
 
-},{}],98:[function(require,module,exports){
+},{}],99:[function(require,module,exports){
 // https://d3js.org/d3-dsv/ Version 1.0.5. Copyright 2017 Mike Bostock.
 (function (global, factory) {
 	typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports) :
@@ -9794,7 +10158,7 @@ Object.defineProperty(exports, '__esModule', { value: true });
 
 })));
 
-},{}],99:[function(require,module,exports){
+},{}],100:[function(require,module,exports){
 // https://d3js.org/d3-request/ Version 1.0.5. Copyright 2017 Mike Bostock.
 (function (global, factory) {
 	typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('d3-collection'), require('d3-dispatch'), require('d3-dsv')) :
@@ -10012,7 +10376,7 @@ Object.defineProperty(exports, '__esModule', { value: true });
 
 })));
 
-},{"d3-collection":96,"d3-dispatch":97,"d3-dsv":98}],100:[function(require,module,exports){
+},{"d3-collection":97,"d3-dispatch":98,"d3-dsv":99}],101:[function(require,module,exports){
 // https://d3js.org/d3-selection/ Version 1.0.5. Copyright 2017 Mike Bostock.
 (function (global, factory) {
 	typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports) :
@@ -10987,7 +11351,7 @@ Object.defineProperty(exports, '__esModule', { value: true });
 
 })));
 
-},{}],101:[function(require,module,exports){
+},{}],102:[function(require,module,exports){
 /*
 Syntax highlighting with language autodetection.
 https://highlightjs.org/
@@ -11805,7 +12169,7 @@ https://highlightjs.org/
   return hljs;
 }));
 
-},{}],102:[function(require,module,exports){
+},{}],103:[function(require,module,exports){
 var hljs = require('./highlight');
 
 hljs.registerLanguage('1c', require('./languages/1c'));
@@ -11984,7 +12348,7 @@ hljs.registerLanguage('xquery', require('./languages/xquery'));
 hljs.registerLanguage('zephir', require('./languages/zephir'));
 
 module.exports = hljs;
-},{"./highlight":101,"./languages/1c":103,"./languages/abnf":104,"./languages/accesslog":105,"./languages/actionscript":106,"./languages/ada":107,"./languages/apache":108,"./languages/applescript":109,"./languages/arduino":110,"./languages/armasm":111,"./languages/asciidoc":112,"./languages/aspectj":113,"./languages/autohotkey":114,"./languages/autoit":115,"./languages/avrasm":116,"./languages/awk":117,"./languages/axapta":118,"./languages/bash":119,"./languages/basic":120,"./languages/bnf":121,"./languages/brainfuck":122,"./languages/cal":123,"./languages/capnproto":124,"./languages/ceylon":125,"./languages/clean":126,"./languages/clojure":128,"./languages/clojure-repl":127,"./languages/cmake":129,"./languages/coffeescript":130,"./languages/coq":131,"./languages/cos":132,"./languages/cpp":133,"./languages/crmsh":134,"./languages/crystal":135,"./languages/cs":136,"./languages/csp":137,"./languages/css":138,"./languages/d":139,"./languages/dart":140,"./languages/delphi":141,"./languages/diff":142,"./languages/django":143,"./languages/dns":144,"./languages/dockerfile":145,"./languages/dos":146,"./languages/dsconfig":147,"./languages/dts":148,"./languages/dust":149,"./languages/ebnf":150,"./languages/elixir":151,"./languages/elm":152,"./languages/erb":153,"./languages/erlang":155,"./languages/erlang-repl":154,"./languages/excel":156,"./languages/fix":157,"./languages/flix":158,"./languages/fortran":159,"./languages/fsharp":160,"./languages/gams":161,"./languages/gauss":162,"./languages/gcode":163,"./languages/gherkin":164,"./languages/glsl":165,"./languages/go":166,"./languages/golo":167,"./languages/gradle":168,"./languages/groovy":169,"./languages/haml":170,"./languages/handlebars":171,"./languages/haskell":172,"./languages/haxe":173,"./languages/hsp":174,"./languages/htmlbars":175,"./languages/http":176,"./languages/hy":177,"./languages/inform7":178,"./languages/ini":179,"./languages/irpf90":180,"./languages/java":181,"./languages/javascript":182,"./languages/jboss-cli":183,"./languages/json":184,"./languages/julia":185,"./languages/kotlin":186,"./languages/lasso":187,"./languages/ldif":188,"./languages/leaf":189,"./languages/less":190,"./languages/lisp":191,"./languages/livecodeserver":192,"./languages/livescript":193,"./languages/llvm":194,"./languages/lsl":195,"./languages/lua":196,"./languages/makefile":197,"./languages/markdown":198,"./languages/mathematica":199,"./languages/matlab":200,"./languages/maxima":201,"./languages/mel":202,"./languages/mercury":203,"./languages/mipsasm":204,"./languages/mizar":205,"./languages/mojolicious":206,"./languages/monkey":207,"./languages/moonscript":208,"./languages/n1ql":209,"./languages/nginx":210,"./languages/nimrod":211,"./languages/nix":212,"./languages/nsis":213,"./languages/objectivec":214,"./languages/ocaml":215,"./languages/openscad":216,"./languages/oxygene":217,"./languages/parser3":218,"./languages/perl":219,"./languages/pf":220,"./languages/php":221,"./languages/pony":222,"./languages/powershell":223,"./languages/processing":224,"./languages/profile":225,"./languages/prolog":226,"./languages/protobuf":227,"./languages/puppet":228,"./languages/purebasic":229,"./languages/python":230,"./languages/q":231,"./languages/qml":232,"./languages/r":233,"./languages/rib":234,"./languages/roboconf":235,"./languages/rsl":236,"./languages/ruby":237,"./languages/ruleslanguage":238,"./languages/rust":239,"./languages/scala":240,"./languages/scheme":241,"./languages/scilab":242,"./languages/scss":243,"./languages/shell":244,"./languages/smali":245,"./languages/smalltalk":246,"./languages/sml":247,"./languages/sqf":248,"./languages/sql":249,"./languages/stan":250,"./languages/stata":251,"./languages/step21":252,"./languages/stylus":253,"./languages/subunit":254,"./languages/swift":255,"./languages/taggerscript":256,"./languages/tap":257,"./languages/tcl":258,"./languages/tex":259,"./languages/thrift":260,"./languages/tp":261,"./languages/twig":262,"./languages/typescript":263,"./languages/vala":264,"./languages/vbnet":265,"./languages/vbscript":267,"./languages/vbscript-html":266,"./languages/verilog":268,"./languages/vhdl":269,"./languages/vim":270,"./languages/x86asm":271,"./languages/xl":272,"./languages/xml":273,"./languages/xquery":274,"./languages/yaml":275,"./languages/zephir":276}],103:[function(require,module,exports){
+},{"./highlight":102,"./languages/1c":104,"./languages/abnf":105,"./languages/accesslog":106,"./languages/actionscript":107,"./languages/ada":108,"./languages/apache":109,"./languages/applescript":110,"./languages/arduino":111,"./languages/armasm":112,"./languages/asciidoc":113,"./languages/aspectj":114,"./languages/autohotkey":115,"./languages/autoit":116,"./languages/avrasm":117,"./languages/awk":118,"./languages/axapta":119,"./languages/bash":120,"./languages/basic":121,"./languages/bnf":122,"./languages/brainfuck":123,"./languages/cal":124,"./languages/capnproto":125,"./languages/ceylon":126,"./languages/clean":127,"./languages/clojure":129,"./languages/clojure-repl":128,"./languages/cmake":130,"./languages/coffeescript":131,"./languages/coq":132,"./languages/cos":133,"./languages/cpp":134,"./languages/crmsh":135,"./languages/crystal":136,"./languages/cs":137,"./languages/csp":138,"./languages/css":139,"./languages/d":140,"./languages/dart":141,"./languages/delphi":142,"./languages/diff":143,"./languages/django":144,"./languages/dns":145,"./languages/dockerfile":146,"./languages/dos":147,"./languages/dsconfig":148,"./languages/dts":149,"./languages/dust":150,"./languages/ebnf":151,"./languages/elixir":152,"./languages/elm":153,"./languages/erb":154,"./languages/erlang":156,"./languages/erlang-repl":155,"./languages/excel":157,"./languages/fix":158,"./languages/flix":159,"./languages/fortran":160,"./languages/fsharp":161,"./languages/gams":162,"./languages/gauss":163,"./languages/gcode":164,"./languages/gherkin":165,"./languages/glsl":166,"./languages/go":167,"./languages/golo":168,"./languages/gradle":169,"./languages/groovy":170,"./languages/haml":171,"./languages/handlebars":172,"./languages/haskell":173,"./languages/haxe":174,"./languages/hsp":175,"./languages/htmlbars":176,"./languages/http":177,"./languages/hy":178,"./languages/inform7":179,"./languages/ini":180,"./languages/irpf90":181,"./languages/java":182,"./languages/javascript":183,"./languages/jboss-cli":184,"./languages/json":185,"./languages/julia":186,"./languages/kotlin":187,"./languages/lasso":188,"./languages/ldif":189,"./languages/leaf":190,"./languages/less":191,"./languages/lisp":192,"./languages/livecodeserver":193,"./languages/livescript":194,"./languages/llvm":195,"./languages/lsl":196,"./languages/lua":197,"./languages/makefile":198,"./languages/markdown":199,"./languages/mathematica":200,"./languages/matlab":201,"./languages/maxima":202,"./languages/mel":203,"./languages/mercury":204,"./languages/mipsasm":205,"./languages/mizar":206,"./languages/mojolicious":207,"./languages/monkey":208,"./languages/moonscript":209,"./languages/n1ql":210,"./languages/nginx":211,"./languages/nimrod":212,"./languages/nix":213,"./languages/nsis":214,"./languages/objectivec":215,"./languages/ocaml":216,"./languages/openscad":217,"./languages/oxygene":218,"./languages/parser3":219,"./languages/perl":220,"./languages/pf":221,"./languages/php":222,"./languages/pony":223,"./languages/powershell":224,"./languages/processing":225,"./languages/profile":226,"./languages/prolog":227,"./languages/protobuf":228,"./languages/puppet":229,"./languages/purebasic":230,"./languages/python":231,"./languages/q":232,"./languages/qml":233,"./languages/r":234,"./languages/rib":235,"./languages/roboconf":236,"./languages/rsl":237,"./languages/ruby":238,"./languages/ruleslanguage":239,"./languages/rust":240,"./languages/scala":241,"./languages/scheme":242,"./languages/scilab":243,"./languages/scss":244,"./languages/shell":245,"./languages/smali":246,"./languages/smalltalk":247,"./languages/sml":248,"./languages/sqf":249,"./languages/sql":250,"./languages/stan":251,"./languages/stata":252,"./languages/step21":253,"./languages/stylus":254,"./languages/subunit":255,"./languages/swift":256,"./languages/taggerscript":257,"./languages/tap":258,"./languages/tcl":259,"./languages/tex":260,"./languages/thrift":261,"./languages/tp":262,"./languages/twig":263,"./languages/typescript":264,"./languages/vala":265,"./languages/vbnet":266,"./languages/vbscript":268,"./languages/vbscript-html":267,"./languages/verilog":269,"./languages/vhdl":270,"./languages/vim":271,"./languages/x86asm":272,"./languages/xl":273,"./languages/xml":274,"./languages/xquery":275,"./languages/yaml":276,"./languages/zephir":277}],104:[function(require,module,exports){
 module.exports = function(hljs){
   var IDENT_RE_RU = '[a-zA-Zа-яА-Я][a-zA-Z0-9_а-яА-Я]*';
   var OneS_KEYWORDS = 'возврат дата для если и или иначе иначеесли исключение конецесли ' +
@@ -12063,7 +12427,7 @@ module.exports = function(hljs){
     ]
   };
 };
-},{}],104:[function(require,module,exports){
+},{}],105:[function(require,module,exports){
 module.exports = function(hljs) {
     var regexes = {
         ruleDeclaration: "^[a-zA-Z][a-zA-Z0-9-]*",
@@ -12134,7 +12498,7 @@ module.exports = function(hljs) {
       ]
     };
 };
-},{}],105:[function(require,module,exports){
+},{}],106:[function(require,module,exports){
 module.exports = function(hljs) {
   return {
     contains: [
@@ -12172,7 +12536,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],106:[function(require,module,exports){
+},{}],107:[function(require,module,exports){
 module.exports = function(hljs) {
   var IDENT_RE = '[a-zA-Z_$][a-zA-Z0-9_$]*';
   var IDENT_FUNC_RETURN_TYPE_RE = '([*]|[a-zA-Z_$][a-zA-Z0-9_$]*)';
@@ -12246,7 +12610,7 @@ module.exports = function(hljs) {
     illegal: /#/
   };
 };
-},{}],107:[function(require,module,exports){
+},{}],108:[function(require,module,exports){
 module.exports = // We try to support full Ada2012
 //
 // We highlight all appearances of types, keywords, literals (string, char, number, bool)
@@ -12419,7 +12783,7 @@ function(hljs) {
         ]
     };
 };
-},{}],108:[function(require,module,exports){
+},{}],109:[function(require,module,exports){
 module.exports = function(hljs) {
   var NUMBER = {className: 'number', begin: '[\\$%]\\d+'};
   return {
@@ -12465,7 +12829,7 @@ module.exports = function(hljs) {
     illegal: /\S/
   };
 };
-},{}],109:[function(require,module,exports){
+},{}],110:[function(require,module,exports){
 module.exports = function(hljs) {
   var STRING = hljs.inherit(hljs.QUOTE_STRING_MODE, {illegal: ''});
   var PARAMS = {
@@ -12551,7 +12915,7 @@ module.exports = function(hljs) {
     illegal: '//|->|=>|\\[\\['
   };
 };
-},{}],110:[function(require,module,exports){
+},{}],111:[function(require,module,exports){
 module.exports = function(hljs) {
   var CPP = hljs.getLanguage('cpp').exports;
 	return {
@@ -12651,7 +13015,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],111:[function(require,module,exports){
+},{}],112:[function(require,module,exports){
 module.exports = function(hljs) {
     //local labels: %?[FB]?[AT]?\d{1,2}\w+
   return {
@@ -12743,7 +13107,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],112:[function(require,module,exports){
+},{}],113:[function(require,module,exports){
 module.exports = function(hljs) {
   return {
     aliases: ['adoc'],
@@ -12931,7 +13295,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],113:[function(require,module,exports){
+},{}],114:[function(require,module,exports){
 module.exports = function (hljs) {
   var KEYWORDS =
     'false synchronized int abstract float private char boolean static null if const ' +
@@ -13076,7 +13440,7 @@ module.exports = function (hljs) {
     ]
   };
 };
-},{}],114:[function(require,module,exports){
+},{}],115:[function(require,module,exports){
 module.exports = function(hljs) {
   var BACKTICK_ESCAPE = {
     begin: /`[\s\S]/
@@ -13124,7 +13488,7 @@ module.exports = function(hljs) {
     ]
   }
 };
-},{}],115:[function(require,module,exports){
+},{}],116:[function(require,module,exports){
 module.exports = function(hljs) {
     var KEYWORDS = 'ByRef Case Const ContinueCase ContinueLoop ' +
         'Default Dim Do Else ElseIf EndFunc EndIf EndSelect ' +
@@ -13260,7 +13624,7 @@ module.exports = function(hljs) {
         ]
     }
 };
-},{}],116:[function(require,module,exports){
+},{}],117:[function(require,module,exports){
 module.exports = function(hljs) {
   return {
     case_insensitive: true,
@@ -13322,7 +13686,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],117:[function(require,module,exports){
+},{}],118:[function(require,module,exports){
 module.exports = function(hljs) {
   var VARIABLE = {
     className: 'variable',
@@ -13375,7 +13739,7 @@ module.exports = function(hljs) {
     ]
   }
 };
-},{}],118:[function(require,module,exports){
+},{}],119:[function(require,module,exports){
 module.exports = function(hljs) {
   return {
     keywords: 'false int abstract private char boolean static null if for true ' +
@@ -13406,7 +13770,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],119:[function(require,module,exports){
+},{}],120:[function(require,module,exports){
 module.exports = function(hljs) {
   var VAR = {
     className: 'variable',
@@ -13481,7 +13845,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],120:[function(require,module,exports){
+},{}],121:[function(require,module,exports){
 module.exports = function(hljs) {
   return {
     case_insensitive: true,
@@ -13532,7 +13896,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],121:[function(require,module,exports){
+},{}],122:[function(require,module,exports){
 module.exports = function(hljs){
   return {
     contains: [
@@ -13561,7 +13925,7 @@ module.exports = function(hljs){
     ]
   };
 };
-},{}],122:[function(require,module,exports){
+},{}],123:[function(require,module,exports){
 module.exports = function(hljs){
   var LITERAL = {
     className: 'literal',
@@ -13598,7 +13962,7 @@ module.exports = function(hljs){
     ]
   };
 };
-},{}],123:[function(require,module,exports){
+},{}],124:[function(require,module,exports){
 module.exports = function(hljs) {
   var KEYWORDS =
     'div mod in and or not xor asserterror begin case do downto else end exit for if of repeat then to ' +
@@ -13678,7 +14042,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],124:[function(require,module,exports){
+},{}],125:[function(require,module,exports){
 module.exports = function(hljs) {
   return {
     aliases: ['capnp'],
@@ -13727,7 +14091,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],125:[function(require,module,exports){
+},{}],126:[function(require,module,exports){
 module.exports = function(hljs) {
   // 2.3. Identifiers and keywords
   var KEYWORDS =
@@ -13794,7 +14158,7 @@ module.exports = function(hljs) {
     ].concat(EXPRESSIONS)
   };
 };
-},{}],126:[function(require,module,exports){
+},{}],127:[function(require,module,exports){
 module.exports = function(hljs) {
   return {
     aliases: ['clean','icl','dcl'],
@@ -13819,7 +14183,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],127:[function(require,module,exports){
+},{}],128:[function(require,module,exports){
 module.exports = function(hljs) {
   return {
     contains: [
@@ -13834,7 +14198,7 @@ module.exports = function(hljs) {
     ]
   }
 };
-},{}],128:[function(require,module,exports){
+},{}],129:[function(require,module,exports){
 module.exports = function(hljs) {
   var keywords = {
     'builtin-name':
@@ -13929,7 +14293,7 @@ module.exports = function(hljs) {
     contains: [LIST, STRING, HINT, HINT_COL, COMMENT, KEY, COLLECTION, NUMBER, LITERAL]
   }
 };
-},{}],129:[function(require,module,exports){
+},{}],130:[function(require,module,exports){
 module.exports = function(hljs) {
   return {
     aliases: ['cmake.in'],
@@ -13967,7 +14331,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],130:[function(require,module,exports){
+},{}],131:[function(require,module,exports){
 module.exports = function(hljs) {
   var KEYWORDS = {
     keyword:
@@ -14113,7 +14477,7 @@ module.exports = function(hljs) {
     ])
   };
 };
-},{}],131:[function(require,module,exports){
+},{}],132:[function(require,module,exports){
 module.exports = function(hljs) {
   return {
     keywords: {
@@ -14180,7 +14544,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],132:[function(require,module,exports){
+},{}],133:[function(require,module,exports){
 module.exports = function cos (hljs) {
 
   var STRINGS = {
@@ -14304,7 +14668,7 @@ module.exports = function cos (hljs) {
     ]
   };
 };
-},{}],133:[function(require,module,exports){
+},{}],134:[function(require,module,exports){
 module.exports = function(hljs) {
   var CPP_PRIMITIVE_TYPES = {
     className: 'keyword',
@@ -14479,7 +14843,7 @@ module.exports = function(hljs) {
     }
   };
 };
-},{}],134:[function(require,module,exports){
+},{}],135:[function(require,module,exports){
 module.exports = function(hljs) {
   var RESOURCES = 'primitive rsc_template';
 
@@ -14573,7 +14937,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],135:[function(require,module,exports){
+},{}],136:[function(require,module,exports){
 module.exports = function(hljs) {
   var NUM_SUFFIX = '(_[uif](8|16|32|64))?';
   var CRYSTAL_IDENT_RE = '[a-zA-Z_]\\w*[!?=]?';
@@ -14750,7 +15114,7 @@ module.exports = function(hljs) {
     contains: CRYSTAL_DEFAULT_CONTAINS
   };
 };
-},{}],136:[function(require,module,exports){
+},{}],137:[function(require,module,exports){
 module.exports = function(hljs) {
   var KEYWORDS = {
     keyword:
@@ -14917,7 +15281,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],137:[function(require,module,exports){
+},{}],138:[function(require,module,exports){
 module.exports = function(hljs) {
   return {
     case_insensitive: false,
@@ -14939,7 +15303,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],138:[function(require,module,exports){
+},{}],139:[function(require,module,exports){
 module.exports = function(hljs) {
   var IDENT_RE = '[a-zA-Z-][a-zA-Z0-9_-]*';
   var RULE = {
@@ -15044,7 +15408,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],139:[function(require,module,exports){
+},{}],140:[function(require,module,exports){
 module.exports = /**
  * Known issues:
  *
@@ -15302,7 +15666,7 @@ function(hljs) {
     ]
   };
 };
-},{}],140:[function(require,module,exports){
+},{}],141:[function(require,module,exports){
 module.exports = function (hljs) {
   var SUBST = {
     className: 'subst',
@@ -15403,7 +15767,7 @@ module.exports = function (hljs) {
     ]
   }
 };
-},{}],141:[function(require,module,exports){
+},{}],142:[function(require,module,exports){
 module.exports = function(hljs) {
   var KEYWORDS =
     'exports register file shl array record property for mod while set ally label uses raise not ' +
@@ -15472,7 +15836,7 @@ module.exports = function(hljs) {
     ].concat(COMMENT_MODES)
   };
 };
-},{}],142:[function(require,module,exports){
+},{}],143:[function(require,module,exports){
 module.exports = function(hljs) {
   return {
     aliases: ['patch'],
@@ -15512,7 +15876,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],143:[function(require,module,exports){
+},{}],144:[function(require,module,exports){
 module.exports = function(hljs) {
   var FILTER = {
     begin: /\|[A-Za-z]+:?/,
@@ -15576,7 +15940,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],144:[function(require,module,exports){
+},{}],145:[function(require,module,exports){
 module.exports = function(hljs) {
   return {
     aliases: ['bind', 'zone'],
@@ -15605,7 +15969,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],145:[function(require,module,exports){
+},{}],146:[function(require,module,exports){
 module.exports = function(hljs) {
   return {
     aliases: ['docker'],
@@ -15627,7 +15991,7 @@ module.exports = function(hljs) {
     illegal: '</'
   }
 };
-},{}],146:[function(require,module,exports){
+},{}],147:[function(require,module,exports){
 module.exports = function(hljs) {
   var COMMENT = hljs.COMMENT(
     /^\s*@?rem\b/, /$/,
@@ -15679,7 +16043,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],147:[function(require,module,exports){
+},{}],148:[function(require,module,exports){
 module.exports = function(hljs) {
   var QUOTED_PROPERTY = {
     className: 'string',
@@ -15726,7 +16090,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],148:[function(require,module,exports){
+},{}],149:[function(require,module,exports){
 module.exports = function(hljs) {
   var STRINGS = {
     className: 'string',
@@ -15850,7 +16214,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],149:[function(require,module,exports){
+},{}],150:[function(require,module,exports){
 module.exports = function(hljs) {
   var EXPRESSION_KEYWORDS = 'if eq ne lt lte gt gte select default math sep';
   return {
@@ -15882,7 +16246,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],150:[function(require,module,exports){
+},{}],151:[function(require,module,exports){
 module.exports = function(hljs) {
     var commentMode = hljs.COMMENT(/\(\*/, /\*\)/);
 
@@ -15915,7 +16279,7 @@ module.exports = function(hljs) {
         ]
     };
 };
-},{}],151:[function(require,module,exports){
+},{}],152:[function(require,module,exports){
 module.exports = function(hljs) {
   var ELIXIR_IDENT_RE = '[a-zA-Z_][a-zA-Z0-9_]*(\\!|\\?)?';
   var ELIXIR_METHOD_RE = '[a-zA-Z_]\\w*[!?=]?|[-+~]\\@|<<|>>|=~|===?|<=>|[<>]=?|\\*\\*|[-/+%^&*~`|]|\\[\\]=?';
@@ -16012,7 +16376,7 @@ module.exports = function(hljs) {
     contains: ELIXIR_DEFAULT_CONTAINS
   };
 };
-},{}],152:[function(require,module,exports){
+},{}],153:[function(require,module,exports){
 module.exports = function(hljs) {
   var COMMENT = {
     variants: [
@@ -16096,7 +16460,7 @@ module.exports = function(hljs) {
     illegal: /;/
   };
 };
-},{}],153:[function(require,module,exports){
+},{}],154:[function(require,module,exports){
 module.exports = function(hljs) {
   return {
     subLanguage: 'xml',
@@ -16111,7 +16475,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],154:[function(require,module,exports){
+},{}],155:[function(require,module,exports){
 module.exports = function(hljs) {
   return {
     keywords: {
@@ -16157,7 +16521,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],155:[function(require,module,exports){
+},{}],156:[function(require,module,exports){
 module.exports = function(hljs) {
   var BASIC_ATOM_RE = '[a-z\'][a-zA-Z0-9_\']*';
   var FUNCTION_NAME_RE = '(' + BASIC_ATOM_RE + ':' + BASIC_ATOM_RE + '|' + BASIC_ATOM_RE + ')';
@@ -16303,7 +16667,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],156:[function(require,module,exports){
+},{}],157:[function(require,module,exports){
 module.exports = function(hljs) {
   return {
     aliases: ['xlsx', 'xls'],
@@ -16351,7 +16715,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],157:[function(require,module,exports){
+},{}],158:[function(require,module,exports){
 module.exports = function(hljs) {
   return {
     contains: [
@@ -16380,7 +16744,7 @@ module.exports = function(hljs) {
     case_insensitive: true
   };
 };
-},{}],158:[function(require,module,exports){
+},{}],159:[function(require,module,exports){
 module.exports = function (hljs) {
 
     var CHAR = {
@@ -16425,7 +16789,7 @@ module.exports = function (hljs) {
         ]
     };
 };
-},{}],159:[function(require,module,exports){
+},{}],160:[function(require,module,exports){
 module.exports = function(hljs) {
   var PARAMS = {
     className: 'params',
@@ -16496,7 +16860,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],160:[function(require,module,exports){
+},{}],161:[function(require,module,exports){
 module.exports = function(hljs) {
   var TYPEPARAM = {
     begin: '<', end: '>',
@@ -16555,7 +16919,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],161:[function(require,module,exports){
+},{}],162:[function(require,module,exports){
 module.exports = function (hljs) {
   var KEYWORDS = {
     'keyword':
@@ -16709,7 +17073,7 @@ module.exports = function (hljs) {
     ]
   };
 };
-},{}],162:[function(require,module,exports){
+},{}],163:[function(require,module,exports){
 module.exports = function(hljs) {
   var KEYWORDS = {
     keyword: 'and bool break call callexe checkinterrupt clear clearg closeall cls comlog compile ' +
@@ -16933,7 +17297,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],163:[function(require,module,exports){
+},{}],164:[function(require,module,exports){
 module.exports = function(hljs) {
     var GCODE_IDENT_RE = '[A-Z_][A-Z0-9_.]*';
     var GCODE_CLOSE_RE = '\\%';
@@ -17000,7 +17364,7 @@ module.exports = function(hljs) {
         ].concat(GCODE_CODE)
     };
 };
-},{}],164:[function(require,module,exports){
+},{}],165:[function(require,module,exports){
 module.exports = function (hljs) {
   return {
     aliases: ['feature'],
@@ -17037,7 +17401,7 @@ module.exports = function (hljs) {
     ]
   };
 };
-},{}],165:[function(require,module,exports){
+},{}],166:[function(require,module,exports){
 module.exports = function(hljs) {
   return {
     keywords: {
@@ -17154,7 +17518,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],166:[function(require,module,exports){
+},{}],167:[function(require,module,exports){
 module.exports = function(hljs) {
   var GO_KEYWORDS = {
     keyword:
@@ -17208,7 +17572,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],167:[function(require,module,exports){
+},{}],168:[function(require,module,exports){
 module.exports = function(hljs) {
     return {
       keywords: {
@@ -17231,7 +17595,7 @@ module.exports = function(hljs) {
       ]
     }
 };
-},{}],168:[function(require,module,exports){
+},{}],169:[function(require,module,exports){
 module.exports = function(hljs) {
   return {
     case_insensitive: true,
@@ -17266,7 +17630,7 @@ module.exports = function(hljs) {
     ]
   }
 };
-},{}],169:[function(require,module,exports){
+},{}],170:[function(require,module,exports){
 module.exports = function(hljs) {
     return {
         keywords: {
@@ -17360,7 +17724,7 @@ module.exports = function(hljs) {
         illegal: /#|<\//
     }
 };
-},{}],170:[function(require,module,exports){
+},{}],171:[function(require,module,exports){
 module.exports = // TODO support filter tags like :javascript, support inline HTML
 function(hljs) {
   return {
@@ -17467,7 +17831,7 @@ function(hljs) {
     ]
   };
 };
-},{}],171:[function(require,module,exports){
+},{}],172:[function(require,module,exports){
 module.exports = function(hljs) {
   var BUILT_INS = {'builtin-name': 'each in with if else unless bindattr action collection debugger log outlet template unbound view yield'};
   return {
@@ -17501,7 +17865,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],172:[function(require,module,exports){
+},{}],173:[function(require,module,exports){
 module.exports = function(hljs) {
   var COMMENT = {
     variants: [
@@ -17623,7 +17987,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],173:[function(require,module,exports){
+},{}],174:[function(require,module,exports){
 module.exports = function(hljs) {
   var IDENT_RE = '[a-zA-Z_$][a-zA-Z0-9_$]*';
   var IDENT_FUNC_RETURN_TYPE_RE = '([*]|[a-zA-Z_$][a-zA-Z0-9_$]*)';
@@ -17735,7 +18099,7 @@ module.exports = function(hljs) {
     illegal: /<\//
   };
 };
-},{}],174:[function(require,module,exports){
+},{}],175:[function(require,module,exports){
 module.exports = function(hljs) {
   return {
     case_insensitive: true,
@@ -17781,7 +18145,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],175:[function(require,module,exports){
+},{}],176:[function(require,module,exports){
 module.exports = function(hljs) {
   var BUILT_INS = 'action collection component concat debugger each each-in else get hash if input link-to loc log mut outlet partial query-params render textarea unbound unless with yield view';
 
@@ -17852,7 +18216,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],176:[function(require,module,exports){
+},{}],177:[function(require,module,exports){
 module.exports = function(hljs) {
   var VERSION = 'HTTP/[0-9\\.]+';
   return {
@@ -17893,7 +18257,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],177:[function(require,module,exports){
+},{}],178:[function(require,module,exports){
 module.exports = function(hljs) {
   var keywords = {
     'builtin-name':
@@ -17995,7 +18359,7 @@ module.exports = function(hljs) {
     contains: [SHEBANG, LIST, STRING, HINT, HINT_COL, COMMENT, KEY, COLLECTION, NUMBER, LITERAL]
   }
 };
-},{}],178:[function(require,module,exports){
+},{}],179:[function(require,module,exports){
 module.exports = function(hljs) {
   var START_BRACKET = '\\[';
   var END_BRACKET = '\\]';
@@ -18052,7 +18416,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],179:[function(require,module,exports){
+},{}],180:[function(require,module,exports){
 module.exports = function(hljs) {
   var STRING = {
     className: "string",
@@ -18118,7 +18482,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],180:[function(require,module,exports){
+},{}],181:[function(require,module,exports){
 module.exports = function(hljs) {
   var PARAMS = {
     className: 'params',
@@ -18194,7 +18558,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],181:[function(require,module,exports){
+},{}],182:[function(require,module,exports){
 module.exports = function(hljs) {
   var JAVA_IDENT_RE = '[\u00C0-\u02B8a-zA-Z_$][\u00C0-\u02B8a-zA-Z_$0-9]*';
   var GENERIC_IDENT_RE = JAVA_IDENT_RE + '(<' + JAVA_IDENT_RE + '(\\s*,\\s*' + JAVA_IDENT_RE + ')*>)?';
@@ -18302,7 +18666,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],182:[function(require,module,exports){
+},{}],183:[function(require,module,exports){
 module.exports = function(hljs) {
   var IDENT_RE = '[A-Za-z$_][0-9A-Za-z$_]*';
   var KEYWORDS = {
@@ -18473,7 +18837,7 @@ module.exports = function(hljs) {
     illegal: /#(?!!)/
   };
 };
-},{}],183:[function(require,module,exports){
+},{}],184:[function(require,module,exports){
 module.exports = function (hljs) {
   var PARAM = {
     begin: /[\w-]+ *=/, returnBegin: true,
@@ -18520,7 +18884,7 @@ module.exports = function (hljs) {
     ]
   }
 };
-},{}],184:[function(require,module,exports){
+},{}],185:[function(require,module,exports){
 module.exports = function(hljs) {
   var LITERALS = {literal: 'true false null'};
   var TYPES = [
@@ -18557,7 +18921,7 @@ module.exports = function(hljs) {
     illegal: '\\S'
   };
 };
-},{}],185:[function(require,module,exports){
+},{}],186:[function(require,module,exports){
 module.exports = function(hljs) {
   // Since there are numerous special names in Julia, it is too much trouble
   // to maintain them by hand. Hence these names (i.e. keywords, literals and
@@ -18735,7 +19099,7 @@ module.exports = function(hljs) {
 
   return DEFAULT;
 };
-},{}],186:[function(require,module,exports){
+},{}],187:[function(require,module,exports){
 module.exports = function(hljs) {
   var KEYWORDS = {
     keyword:
@@ -18909,7 +19273,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],187:[function(require,module,exports){
+},{}],188:[function(require,module,exports){
 module.exports = function(hljs) {
   var LASSO_IDENT_RE = '[a-zA-Z_][\\w.]*';
   var LASSO_ANGLE_RE = '<\\?(lasso(script)?|=)';
@@ -19072,7 +19436,7 @@ module.exports = function(hljs) {
     ].concat(LASSO_CODE)
   };
 };
-},{}],188:[function(require,module,exports){
+},{}],189:[function(require,module,exports){
 module.exports = function(hljs) {
   return {
     contains: [
@@ -19095,7 +19459,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],189:[function(require,module,exports){
+},{}],190:[function(require,module,exports){
 module.exports = function (hljs) {
   return {
     contains: [
@@ -19135,7 +19499,7 @@ module.exports = function (hljs) {
     ]
   };
 };
-},{}],190:[function(require,module,exports){
+},{}],191:[function(require,module,exports){
 module.exports = function(hljs) {
   var IDENT_RE        = '[\\w-]+'; // yes, Less identifiers may begin with a digit
   var INTERP_IDENT_RE = '(' + IDENT_RE + '|@{' + IDENT_RE + '})';
@@ -19275,7 +19639,7 @@ module.exports = function(hljs) {
     contains: RULES
   };
 };
-},{}],191:[function(require,module,exports){
+},{}],192:[function(require,module,exports){
 module.exports = function(hljs) {
   var LISP_IDENT_RE = '[a-zA-Z_\\-\\+\\*\\/\\<\\=\\>\\&\\#][a-zA-Z0-9_\\-\\+\\*\\/\\<\\=\\>\\&\\#!]*';
   var MEC_RE = '\\|[^]*?\\|';
@@ -19378,7 +19742,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],192:[function(require,module,exports){
+},{}],193:[function(require,module,exports){
 module.exports = function(hljs) {
   var VARIABLE = {
     begin: '\\b[gtps][A-Z]+[A-Za-z0-9_\\-]*\\b|\\$_[A-Z]+',
@@ -19535,7 +19899,7 @@ module.exports = function(hljs) {
     illegal: ';$|^\\[|^=|&|{'
   };
 };
-},{}],193:[function(require,module,exports){
+},{}],194:[function(require,module,exports){
 module.exports = function(hljs) {
   var KEYWORDS = {
     keyword:
@@ -19684,7 +20048,7 @@ module.exports = function(hljs) {
     ])
   };
 };
-},{}],194:[function(require,module,exports){
+},{}],195:[function(require,module,exports){
 module.exports = function(hljs) {
   var identifier = '([-a-zA-Z$._][\\w\\-$.]*)';
   return {
@@ -19773,7 +20137,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],195:[function(require,module,exports){
+},{}],196:[function(require,module,exports){
 module.exports = function(hljs) {
 
     var LSL_STRING_ESCAPE_CHARS = {
@@ -19856,7 +20220,7 @@ module.exports = function(hljs) {
         ]
     };
 };
-},{}],196:[function(require,module,exports){
+},{}],197:[function(require,module,exports){
 module.exports = function(hljs) {
   var OPENING_LONG_BRACKET = '\\[=*\\[';
   var CLOSING_LONG_BRACKET = '\\]=*\\]';
@@ -19922,7 +20286,7 @@ module.exports = function(hljs) {
     ])
   };
 };
-},{}],197:[function(require,module,exports){
+},{}],198:[function(require,module,exports){
 module.exports = function(hljs) {
   /* Variables: simple (eg $(var)) and special (eg $@) */
   var VARIABLE = {
@@ -20003,7 +20367,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],198:[function(require,module,exports){
+},{}],199:[function(require,module,exports){
 module.exports = function(hljs) {
   return {
     aliases: ['md', 'mkdown', 'mkd'],
@@ -20111,7 +20475,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],199:[function(require,module,exports){
+},{}],200:[function(require,module,exports){
 module.exports = function(hljs) {
   return {
     aliases: ['mma'],
@@ -20169,7 +20533,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],200:[function(require,module,exports){
+},{}],201:[function(require,module,exports){
 module.exports = function(hljs) {
   var COMMON_CONTAINS = [
     hljs.C_NUMBER_MODE,
@@ -20257,7 +20621,7 @@ module.exports = function(hljs) {
     ].concat(COMMON_CONTAINS)
   };
 };
-},{}],201:[function(require,module,exports){
+},{}],202:[function(require,module,exports){
 module.exports = function(hljs) {
   var KEYWORDS = 'if then else elseif for thru do while unless step in and or not';
   var LITERALS = 'true false unknown inf minf ind und %e %i %pi %phi %gamma';
@@ -20663,7 +21027,7 @@ module.exports = function(hljs) {
     illegal: /@/
   }
 };
-},{}],202:[function(require,module,exports){
+},{}],203:[function(require,module,exports){
 module.exports = function(hljs) {
   return {
     keywords:
@@ -20888,7 +21252,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],203:[function(require,module,exports){
+},{}],204:[function(require,module,exports){
 module.exports = function(hljs) {
   var KEYWORDS = {
     keyword:
@@ -20970,7 +21334,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],204:[function(require,module,exports){
+},{}],205:[function(require,module,exports){
 module.exports = function(hljs) {
     //local labels: %?[FB]?[AT]?\d{1,2}\w+
   return {
@@ -21056,7 +21420,7 @@ module.exports = function(hljs) {
     illegal: '\/'
   };
 };
-},{}],205:[function(require,module,exports){
+},{}],206:[function(require,module,exports){
 module.exports = function(hljs) {
   return {
     keywords:
@@ -21075,7 +21439,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],206:[function(require,module,exports){
+},{}],207:[function(require,module,exports){
 module.exports = function(hljs) {
   return {
     subLanguage: 'xml',
@@ -21100,7 +21464,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],207:[function(require,module,exports){
+},{}],208:[function(require,module,exports){
 module.exports = function(hljs) {
   var NUMBER = {
     className: 'number', relevance: 0,
@@ -21175,7 +21539,7 @@ module.exports = function(hljs) {
     ]
   }
 };
-},{}],208:[function(require,module,exports){
+},{}],209:[function(require,module,exports){
 module.exports = function(hljs) {
   var KEYWORDS = {
     keyword:
@@ -21287,7 +21651,7 @@ module.exports = function(hljs) {
     ])
   };
 };
-},{}],209:[function(require,module,exports){
+},{}],210:[function(require,module,exports){
 module.exports = function(hljs) {
   return {
     case_insensitive: true,
@@ -21356,7 +21720,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],210:[function(require,module,exports){
+},{}],211:[function(require,module,exports){
 module.exports = function(hljs) {
   var VAR = {
     className: 'variable',
@@ -21449,7 +21813,7 @@ module.exports = function(hljs) {
     illegal: '[^\\s\\}]'
   };
 };
-},{}],211:[function(require,module,exports){
+},{}],212:[function(require,module,exports){
 module.exports = function(hljs) {
   return {
     aliases: ['nim'],
@@ -21504,7 +21868,7 @@ module.exports = function(hljs) {
     ]
   }
 };
-},{}],212:[function(require,module,exports){
+},{}],213:[function(require,module,exports){
 module.exports = function(hljs) {
   var NIX_KEYWORDS = {
     keyword:
@@ -21553,7 +21917,7 @@ module.exports = function(hljs) {
     contains: EXPRESSIONS
   };
 };
-},{}],213:[function(require,module,exports){
+},{}],214:[function(require,module,exports){
 module.exports = function(hljs) {
   var CONSTANTS = {
     className: 'variable',
@@ -21659,7 +22023,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],214:[function(require,module,exports){
+},{}],215:[function(require,module,exports){
 module.exports = function(hljs) {
   var API_CLASS = {
     className: 'built_in',
@@ -21750,7 +22114,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],215:[function(require,module,exports){
+},{}],216:[function(require,module,exports){
 module.exports = function(hljs) {
   /* missing support for heredoc-like string (OCaml 4.0.2+) */
   return {
@@ -21821,7 +22185,7 @@ module.exports = function(hljs) {
     ]
   }
 };
-},{}],216:[function(require,module,exports){
+},{}],217:[function(require,module,exports){
 module.exports = function(hljs) {
 	var SPECIAL_VARS = {
 		className: 'keyword',
@@ -21878,7 +22242,7 @@ module.exports = function(hljs) {
 		]
 	}
 };
-},{}],217:[function(require,module,exports){
+},{}],218:[function(require,module,exports){
 module.exports = function(hljs) {
   var OXYGENE_KEYWORDS = 'abstract add and array as asc aspect assembly async begin break block by case class concat const copy constructor continue '+
     'create default delegate desc distinct div do downto dynamic each else empty end ensure enum equals event except exit extension external false '+
@@ -21948,7 +22312,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],218:[function(require,module,exports){
+},{}],219:[function(require,module,exports){
 module.exports = function(hljs) {
   var CURLY_SUBCOMMENT = hljs.COMMENT(
     '{',
@@ -21996,7 +22360,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],219:[function(require,module,exports){
+},{}],220:[function(require,module,exports){
 module.exports = function(hljs) {
   var PERL_KEYWORDS = 'getpwent getservent quotemeta msgrcv scalar kill dbmclose undef lc ' +
     'ma syswrite tr send umask sysopen shmwrite vec qx utime local oct semctl localtime ' +
@@ -22153,7 +22517,7 @@ module.exports = function(hljs) {
     contains: PERL_DEFAULT_CONTAINS
   };
 };
-},{}],220:[function(require,module,exports){
+},{}],221:[function(require,module,exports){
 module.exports = function(hljs) {
   var MACRO = {
     className: 'variable',
@@ -22205,7 +22569,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],221:[function(require,module,exports){
+},{}],222:[function(require,module,exports){
 module.exports = function(hljs) {
   var VARIABLE = {
     begin: '\\$+[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*'
@@ -22332,7 +22696,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],222:[function(require,module,exports){
+},{}],223:[function(require,module,exports){
 module.exports = function(hljs) {
   var KEYWORDS = {
     keyword:
@@ -22423,7 +22787,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],223:[function(require,module,exports){
+},{}],224:[function(require,module,exports){
 module.exports = function(hljs) {
   var BACKTICK_ESCAPE = {
     begin: '`[\\s\\S]',
@@ -22504,7 +22868,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],224:[function(require,module,exports){
+},{}],225:[function(require,module,exports){
 module.exports = function(hljs) {
   return {
     keywords: {
@@ -22552,7 +22916,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],225:[function(require,module,exports){
+},{}],226:[function(require,module,exports){
 module.exports = function(hljs) {
   return {
     contains: [
@@ -22582,7 +22946,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],226:[function(require,module,exports){
+},{}],227:[function(require,module,exports){
 module.exports = function(hljs) {
 
   var ATOM = {
@@ -22670,7 +23034,7 @@ module.exports = function(hljs) {
     ])
   };
 };
-},{}],227:[function(require,module,exports){
+},{}],228:[function(require,module,exports){
 module.exports = function(hljs) {
   return {
     keywords: {
@@ -22706,7 +23070,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],228:[function(require,module,exports){
+},{}],229:[function(require,module,exports){
 module.exports = function(hljs) {
 
   var PUPPET_KEYWORDS = {
@@ -22821,7 +23185,7 @@ module.exports = function(hljs) {
     ]
   }
 };
-},{}],229:[function(require,module,exports){
+},{}],230:[function(require,module,exports){
 module.exports = // Base deafult colors in PB IDE: background: #FFFFDF; foreground: #000000;
 
 function(hljs) {
@@ -22879,7 +23243,7 @@ function(hljs) {
     ]
   };
 };
-},{}],230:[function(require,module,exports){
+},{}],231:[function(require,module,exports){
 module.exports = function(hljs) {
   var KEYWORDS = {
     keyword:
@@ -22995,7 +23359,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],231:[function(require,module,exports){
+},{}],232:[function(require,module,exports){
 module.exports = function(hljs) {
   var Q_KEYWORDS = {
   keyword:
@@ -23018,7 +23382,7 @@ module.exports = function(hljs) {
      ]
   };
 };
-},{}],232:[function(require,module,exports){
+},{}],233:[function(require,module,exports){
 module.exports = function(hljs) {
   var KEYWORDS = {
       keyword:
@@ -23187,7 +23551,7 @@ module.exports = function(hljs) {
     illegal: /#/
   };
 };
-},{}],233:[function(require,module,exports){
+},{}],234:[function(require,module,exports){
 module.exports = function(hljs) {
   var IDENT_RE = '([a-zA-Z]|\\.[a-zA-Z.])[a-zA-Z0-9._]*';
 
@@ -23257,7 +23621,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],234:[function(require,module,exports){
+},{}],235:[function(require,module,exports){
 module.exports = function(hljs) {
   return {
     keywords:
@@ -23284,7 +23648,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],235:[function(require,module,exports){
+},{}],236:[function(require,module,exports){
 module.exports = function(hljs) {
   var IDENTIFIER = '[a-zA-Z-_][^\\n{]+\\{';
 
@@ -23351,7 +23715,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],236:[function(require,module,exports){
+},{}],237:[function(require,module,exports){
 module.exports = function(hljs) {
   return {
     keywords: {
@@ -23387,7 +23751,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],237:[function(require,module,exports){
+},{}],238:[function(require,module,exports){
 module.exports = function(hljs) {
   var RUBY_METHOD_RE = '[a-zA-Z_]\\w*[!?=]?|[-+~]\\@|<<|>>|=~|===?|<=>|[<>]=?|\\*\\*|[-/+%^&*~`|]|\\[\\]=?';
   var RUBY_KEYWORDS = {
@@ -23564,7 +23928,7 @@ module.exports = function(hljs) {
     contains: COMMENT_MODES.concat(IRB_DEFAULT).concat(RUBY_DEFAULT_CONTAINS)
   };
 };
-},{}],238:[function(require,module,exports){
+},{}],239:[function(require,module,exports){
 module.exports = function(hljs) {
   return {
     keywords: {
@@ -23625,7 +23989,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],239:[function(require,module,exports){
+},{}],240:[function(require,module,exports){
 module.exports = function(hljs) {
   var NUM_SUFFIX = '([ui](8|16|32|64|128|size)|f(32|64))\?';
   var KEYWORDS =
@@ -23733,7 +24097,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],240:[function(require,module,exports){
+},{}],241:[function(require,module,exports){
 module.exports = function(hljs) {
 
   var ANNOTATION = { className: 'meta', begin: '@[A-Za-z]+' };
@@ -23848,7 +24212,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],241:[function(require,module,exports){
+},{}],242:[function(require,module,exports){
 module.exports = function(hljs) {
   var SCHEME_IDENT_RE = '[^\\(\\)\\[\\]\\{\\}",\'`;#|\\\\\\s]+';
   var SCHEME_SIMPLE_NUMBER_RE = '(\\-|\\+)?\\d+([./]\\d+)?';
@@ -23992,7 +24356,7 @@ module.exports = function(hljs) {
     contains: [SHEBANG, NUMBER, STRING, QUOTED_IDENT, QUOTED_LIST, LIST].concat(COMMENT_MODES)
   };
 };
-},{}],242:[function(require,module,exports){
+},{}],243:[function(require,module,exports){
 module.exports = function(hljs) {
 
   var COMMON_CONTAINS = [
@@ -24046,7 +24410,7 @@ module.exports = function(hljs) {
     ].concat(COMMON_CONTAINS)
   };
 };
-},{}],243:[function(require,module,exports){
+},{}],244:[function(require,module,exports){
 module.exports = function(hljs) {
   var IDENT_RE = '[a-zA-Z-][a-zA-Z0-9_-]*';
   var VARIABLE = {
@@ -24144,7 +24508,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],244:[function(require,module,exports){
+},{}],245:[function(require,module,exports){
 module.exports = function(hljs) {
   return {
     aliases: ['console'],
@@ -24159,7 +24523,7 @@ module.exports = function(hljs) {
     ]
   }
 };
-},{}],245:[function(require,module,exports){
+},{}],246:[function(require,module,exports){
 module.exports = function(hljs) {
   var smali_instr_low_prio = ['add', 'and', 'cmp', 'cmpg', 'cmpl', 'const', 'div', 'double', 'float', 'goto', 'if', 'int', 'long', 'move', 'mul', 'neg', 'new', 'nop', 'not', 'or', 'rem', 'return', 'shl', 'shr', 'sput', 'sub', 'throw', 'ushr', 'xor'];
   var smali_instr_high_prio = ['aget', 'aput', 'array', 'check', 'execute', 'fill', 'filled', 'goto/16', 'goto/32', 'iget', 'instance', 'invoke', 'iput', 'monitor', 'packed', 'sget', 'sparse'];
@@ -24215,7 +24579,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],246:[function(require,module,exports){
+},{}],247:[function(require,module,exports){
 module.exports = function(hljs) {
   var VAR_IDENT_RE = '[a-z][a-zA-Z0-9_]*';
   var CHAR = {
@@ -24265,7 +24629,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],247:[function(require,module,exports){
+},{}],248:[function(require,module,exports){
 module.exports = function(hljs) {
   return {
     aliases: ['ml'],
@@ -24331,7 +24695,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],248:[function(require,module,exports){
+},{}],249:[function(require,module,exports){
 module.exports = function(hljs) {
   var CPP = hljs.getLanguage('cpp').exports;
 
@@ -24702,7 +25066,7 @@ module.exports = function(hljs) {
     illegal: /#/
   };
 };
-},{}],249:[function(require,module,exports){
+},{}],250:[function(require,module,exports){
 module.exports = function(hljs) {
   var COMMENT_MODE = hljs.COMMENT('--', '$');
   return {
@@ -24862,7 +25226,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],250:[function(require,module,exports){
+},{}],251:[function(require,module,exports){
 module.exports = function(hljs) {
   return {
     contains: [
@@ -24945,7 +25309,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],251:[function(require,module,exports){
+},{}],252:[function(require,module,exports){
 module.exports = function(hljs) {
   return {
     aliases: ['do', 'ado'],
@@ -24983,7 +25347,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],252:[function(require,module,exports){
+},{}],253:[function(require,module,exports){
 module.exports = function(hljs) {
   var STEP21_IDENT_RE = '[A-Z_][A-Z0-9_.]*';
   var STEP21_KEYWORDS = {
@@ -25030,7 +25394,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],253:[function(require,module,exports){
+},{}],254:[function(require,module,exports){
 module.exports = function(hljs) {
 
   var VARIABLE = {
@@ -25484,7 +25848,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],254:[function(require,module,exports){
+},{}],255:[function(require,module,exports){
 module.exports = function(hljs) {
   var DETAILS = {
     className: 'string',
@@ -25518,7 +25882,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],255:[function(require,module,exports){
+},{}],256:[function(require,module,exports){
 module.exports = function(hljs) {
   var SWIFT_KEYWORDS = {
       keyword: '__COLUMN__ __FILE__ __FUNCTION__ __LINE__ as as! as? associativity ' +
@@ -25635,7 +25999,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],256:[function(require,module,exports){
+},{}],257:[function(require,module,exports){
 module.exports = function(hljs) {
 
   var COMMENT = {
@@ -25679,7 +26043,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],257:[function(require,module,exports){
+},{}],258:[function(require,module,exports){
 module.exports = function(hljs) {
   return {
     case_insensitive: true,
@@ -25715,7 +26079,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],258:[function(require,module,exports){
+},{}],259:[function(require,module,exports){
 module.exports = function(hljs) {
   return {
     aliases: ['tk'],
@@ -25776,7 +26140,7 @@ module.exports = function(hljs) {
     ]
   }
 };
-},{}],259:[function(require,module,exports){
+},{}],260:[function(require,module,exports){
 module.exports = function(hljs) {
   var COMMAND = {
     className: 'tag',
@@ -25838,7 +26202,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],260:[function(require,module,exports){
+},{}],261:[function(require,module,exports){
 module.exports = function(hljs) {
   var BUILT_IN_TYPES = 'bool byte i16 i32 i64 double string binary';
   return {
@@ -25873,7 +26237,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],261:[function(require,module,exports){
+},{}],262:[function(require,module,exports){
 module.exports = function(hljs) {
   var TPID = {
     className: 'number',
@@ -25957,7 +26321,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],262:[function(require,module,exports){
+},{}],263:[function(require,module,exports){
 module.exports = function(hljs) {
   var PARAMS = {
     className: 'params',
@@ -26023,7 +26387,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],263:[function(require,module,exports){
+},{}],264:[function(require,module,exports){
 module.exports = function(hljs) {
   var KEYWORDS = {
     keyword:
@@ -26179,7 +26543,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],264:[function(require,module,exports){
+},{}],265:[function(require,module,exports){
 module.exports = function(hljs) {
   return {
     keywords: {
@@ -26229,7 +26593,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],265:[function(require,module,exports){
+},{}],266:[function(require,module,exports){
 module.exports = function(hljs) {
   return {
     aliases: ['vb'],
@@ -26285,7 +26649,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],266:[function(require,module,exports){
+},{}],267:[function(require,module,exports){
 module.exports = function(hljs) {
   return {
     subLanguage: 'xml',
@@ -26297,7 +26661,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],267:[function(require,module,exports){
+},{}],268:[function(require,module,exports){
 module.exports = function(hljs) {
   return {
     aliases: ['vbs'],
@@ -26336,7 +26700,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],268:[function(require,module,exports){
+},{}],269:[function(require,module,exports){
 module.exports = function(hljs) {
   var SV_KEYWORDS = {
     keyword:
@@ -26435,7 +26799,7 @@ module.exports = function(hljs) {
     ]
   }; // return
 };
-},{}],269:[function(require,module,exports){
+},{}],270:[function(require,module,exports){
 module.exports = function(hljs) {
   // Regular expression for VHDL numeric literals.
 
@@ -26496,7 +26860,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],270:[function(require,module,exports){
+},{}],271:[function(require,module,exports){
 module.exports = function(hljs) {
   return {
     lexemes: /[!#@\w]+/,
@@ -26602,7 +26966,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],271:[function(require,module,exports){
+},{}],272:[function(require,module,exports){
 module.exports = function(hljs) {
   return {
     case_insensitive: true,
@@ -26738,7 +27102,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],272:[function(require,module,exports){
+},{}],273:[function(require,module,exports){
 module.exports = function(hljs) {
   var BUILTIN_MODULES =
     'ObjectLoader Animate MovieCredits Slides Filters Shading Materials LensFlare Mapping VLCAudioVideo ' +
@@ -26811,7 +27175,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],273:[function(require,module,exports){
+},{}],274:[function(require,module,exports){
 module.exports = function(hljs) {
   var XML_IDENT_RE = '[A-Za-z0-9\\._:-]+';
   var TAG_INTERNALS = {
@@ -26914,7 +27278,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],274:[function(require,module,exports){
+},{}],275:[function(require,module,exports){
 module.exports = function(hljs) {
   var KEYWORDS = 'for let if while then else return where group by xquery encoding version' +
     'module namespace boundary-space preserve strip default collation base-uri ordering' +
@@ -26985,7 +27349,7 @@ module.exports = function(hljs) {
     contains: CONTAINS
   };
 };
-},{}],275:[function(require,module,exports){
+},{}],276:[function(require,module,exports){
 module.exports = function(hljs) {
   var LITERALS = 'true false yes no null';
 
@@ -27073,7 +27437,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],276:[function(require,module,exports){
+},{}],277:[function(require,module,exports){
 module.exports = function(hljs) {
   var STRING = {
     className: 'string',
@@ -27180,7 +27544,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],277:[function(require,module,exports){
+},{}],278:[function(require,module,exports){
 var json = typeof JSON !== 'undefined' ? JSON : require('jsonify');
 
 module.exports = function (obj, opts) {
@@ -27266,11 +27630,11 @@ var objectKeys = Object.keys || function (obj) {
     return keys;
 };
 
-},{"jsonify":278}],278:[function(require,module,exports){
+},{"jsonify":279}],279:[function(require,module,exports){
 exports.parse = require('./lib/parse');
 exports.stringify = require('./lib/stringify');
 
-},{"./lib/parse":279,"./lib/stringify":280}],279:[function(require,module,exports){
+},{"./lib/parse":280,"./lib/stringify":281}],280:[function(require,module,exports){
 var at, // The index of the current character
     ch, // The current character
     escapee = {
@@ -27545,7 +27909,7 @@ module.exports = function (source, reviver) {
     }({'': result}, '')) : result;
 };
 
-},{}],280:[function(require,module,exports){
+},{}],281:[function(require,module,exports){
 var cx = /[\u0000\u00ad\u0600-\u0604\u070f\u17b4\u17b5\u200c-\u200f\u2028-\u202f\u2060-\u206f\ufeff\ufff0-\uffff]/g,
     escapable = /[\\\"\x00-\x1f\x7f-\x9f\u00ad\u0600-\u0604\u070f\u17b4\u17b5\u200c-\u200f\u2028-\u202f\u2060-\u206f\ufeff\ufff0-\uffff]/g,
     gap,
@@ -27701,7 +28065,7 @@ module.exports = function (value, replacer, space) {
     return str('', {'': value});
 };
 
-},{}],281:[function(require,module,exports){
+},{}],282:[function(require,module,exports){
 (function (global){
 /*! *****************************************************************************
 Copyright (c) Microsoft Corporation. All rights reserved.
@@ -27730,6 +28094,7 @@ var __exportStar;
 var __values;
 var __read;
 var __spread;
+var __await;
 var __asyncGenerator;
 var __asyncDelegator;
 var __asyncValues;
@@ -27867,24 +28232,26 @@ var __asyncValues;
         return ar;
     };
 
+    __await = function (v) {
+        return this instanceof __await ? (this.v = v, this) : new __await(v);
+    };
+
     __asyncGenerator = function (thisArg, _arguments, generator) {
         if (!Symbol.asyncIterator) throw new TypeError("Symbol.asyncIterator is not defined.");
-        var g = generator.apply(thisArg, _arguments || []), q = [], c, i;
-        return i = { next: verb("next"), "throw": verb("throw"), "return": verb("return") }, i[Symbol.asyncIterator] = function () { return this; }, i;
-        function verb(n) { return function (v) { return new Promise(function (a, b) { q.push([n, v, a, b]), next(); }); }; }
-        function next() { if (!c && q.length) resume((c = q.shift())[0], c[1]); }
-        function resume(n, v) { try { step(g[n](v)); } catch (e) { settle(c[3], e); } }
-        function step(r) { r.done ? settle(c[2], r) : Promise.resolve(r.value[1]).then(r.value[0] === "yield" ? send : fulfill, reject); }
-        function send(value) { settle(c[2], { value: value, done: false }); }
+        var g = generator.apply(thisArg, _arguments || []), i, q = [];
+        return i = {}, verb("next"), verb("throw"), verb("return"), i[Symbol.asyncIterator] = function () { return this; }, i;
+        function verb(n) { if (g[n]) i[n] = function (v) { return new Promise(function (a, b) { q.push([n, v, a, b]) > 1 || resume(n, v); }); }; }
+        function resume(n, v) { try { step(g[n](v)); } catch (e) { settle(q[0][3], e); } }
+        function step(r) { r.value instanceof __await ? Promise.resolve(r.value.v).then(fulfill, reject) : settle(q[0][2], r);  }
         function fulfill(value) { resume("next", value); }
         function reject(value) { resume("throw", value); }
-        function settle(f, v) { c = void 0, f(v), next(); }
+        function settle(f, v) { if (f(v), q.shift(), q.length) resume(q[0][0], q[0][1]); }
     };
 
     __asyncDelegator = function (o) {
-        var i = { next: verb("next"), "throw": verb("throw", function (e) { throw e; }), "return": verb("return", function (v) { return { value: v, done: true }; }) }, p;
-        return o = __asyncValues(o), i[Symbol.iterator] = function () { return this; }, i;
-        function verb(n, f) { return function (v) { return v = p && n === "throw" ? f(v) : p && v.done ? v : { value: p ? ["yield", v.value] : ["await", (o[n] || f).call(o, v)], done: false }, p = !p, v; }; }
+        var i, p;
+        return i = {}, verb("next"), verb("throw"), verb("return"), i[Symbol.iterator] = function () { return this; }, i;
+        function verb(n) { if (o[n]) i[n] = function (v) { return (p = !p) ? { value: __await(o[n](v)), done: n === "return" } : v; }; }
     };
 
     __asyncValues = function (o) {
@@ -27905,13 +28272,14 @@ var __asyncValues;
     exporter("__values", __values);
     exporter("__read", __read);
     exporter("__spread", __spread);
+    exporter("__await", __await);
     exporter("__asyncGenerator", __asyncGenerator);
     exporter("__asyncDelegator", __asyncDelegator);
     exporter("__asyncValues", __asyncValues);
 });
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 
-},{}],282:[function(require,module,exports){
+},{}],283:[function(require,module,exports){
 var d3 = require('d3-selection'),
     vega = require('vega'),
     vl = require('vega-lite'),
@@ -28112,7 +28480,7 @@ module.exports = embed;
 // for es 6
 module.exports.default = embed;
 
-},{"./post":283,"./version":284,"d3-selection":100,"vega":289,"vega-lite":94,"vega-schema-url-parser":286}],283:[function(require,module,exports){
+},{"./post":284,"./version":285,"d3-selection":101,"vega":289,"vega-lite":95,"vega-schema-url-parser":287}],284:[function(require,module,exports){
 // open editor url in a new window, and pass a message
 module.exports = function(window, url, data) {
   var editor = window.open(url),
@@ -28139,7 +28507,7 @@ module.exports = function(window, url, data) {
   setTimeout(send, step);
 };
 
-},{}],284:[function(require,module,exports){
+},{}],285:[function(require,module,exports){
 module.exports = function(v1, v2, options) {
     var lexicographical = options && options.lexicographical || true,
         zeroExtend = options && options.zeroExtend || true,
@@ -28187,7 +28555,7 @@ module.exports = function(v1, v2, options) {
 
     return 0;
 }
-},{}],285:[function(require,module,exports){
+},{}],286:[function(require,module,exports){
 (function (global, factory) {
   typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports) :
   typeof define === 'function' && define.amd ? define(['exports'], factory) :
@@ -28409,7 +28777,7 @@ Object.defineProperty(exports, '__esModule', { value: true });
 
 })));
 
-},{}],286:[function(require,module,exports){
+},{}],287:[function(require,module,exports){
 "use strict";
 /**
  * Parse a vega schema url into library and version.
@@ -28422,7 +28790,7 @@ function default_1(url) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.default = default_1;
 
-},{}],287:[function(require,module,exports){
+},{}],288:[function(require,module,exports){
 (function (global, factory) {
   typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports) :
   typeof define === 'function' && define.amd ? define(['exports'], factory) :
@@ -28886,113 +29254,7 @@ Object.defineProperty(exports, '__esModule', { value: true });
 
 })));
 
-},{}],288:[function(require,module,exports){
-"use strict";
-var d3_request_1 = require("d3-request");
-var d3_selection_1 = require("d3-selection");
-var hljs = require("highlight.js");
-var vega_embed_1 = require("vega-embed");
-var vega_embed_2 = require("vega-embed");
-vega_embed_2.config.editor_url = 'https://vega.github.io/new-editor';
-function trim(str) {
-    return str.replace(/^\s+|\s+$/g, '');
-}
-/* Anchors */
-d3_selection_1.selectAll('h2, h3, h4, h5, h6').each(function () {
-    var sel = d3_selection_1.select(this);
-    var name = sel.attr('id');
-    var title = sel.text();
-    sel.html('<a href="#' + name + '" class="anchor"><span class="octicon octicon-link"></span></a>' + trim(title));
-});
-/* Documentation */
-function renderExample($target, text) {
-    $target.classed('example', true);
-    $target.text('');
-    var vis = $target.append('div').attr('class', 'example-vis');
-    var code = $target.append('pre').attr('class', 'example-code')
-        .append('code').attr('class', 'json').text(text);
-    hljs.highlightBlock(code.node());
-    var spec = JSON.parse(text);
-    if (spec.data.url) {
-        // make url absolute
-        spec.data.url = window.location.origin + BASEURL + '/' + spec.data.url;
-    }
-    vega_embed_1.default(vis.node(), spec, {
-        mode: 'vega-lite',
-        renderer: 'svg',
-        actions: {
-            source: false,
-            export: false
-        }
-    }, function (err) {
-        if (err) {
-            console.error(err);
-        }
-    });
-}
-d3_selection_1.selectAll('.vl-example').each(function () {
-    var sel = d3_selection_1.select(this);
-    var name = sel.attr('data-name');
-    if (name) {
-        var dir = sel.attr('data-dir');
-        var fullUrl = BASEURL + '/examples/specs/' + (dir ? (dir + '/') : '') + name + '.vl.json';
-        d3_request_1.text(fullUrl, function (error, spec) {
-            if (error) {
-                console.error(error);
-            }
-            else {
-                renderExample(sel, spec);
-            }
-        });
-    }
-    else {
-        console.error('No "data-name" specified to import examples from');
-    }
-});
-/* Gallery */
-if (d3_selection_1.select('.gallery').empty() === false) {
-    renderGallery();
-}
-function renderGallery() {
-    d3_request_1.json(window.location.origin + BASEURL + '/examples/vl-examples.json', function (error, VL_SPECS) {
-        if (error) {
-            return console.warn(error);
-        }
-        d3_selection_1.selectAll('div.gallery').each(function () {
-            d3_selection_1.select(this).call(renderGalleryGroup);
-        });
-        function renderGalleryGroup(selection) {
-            var galleryGroupName = selection.attr('data-gallery-group');
-            var galleryGroupSpecs;
-            // try to retrieve specs for a gallery group from in vl-examples.json
-            try {
-                galleryGroupSpecs = VL_SPECS[galleryGroupName];
-            }
-            catch (error) {
-                console.log(error.message);
-                return;
-            }
-            var viz = selection.selectAll('.imagegroup').data(galleryGroupSpecs);
-            viz.exit().remove();
-            var imageGroup = viz.enter()
-                .append('a')
-                .attr('class', 'imagegroup')
-                .attr('href', function (d) { return 'https://vega.github.io/new-editor/?mode=vega-lite&spec=' + d.name; })
-                .attr('target', 'blank');
-            imageGroup.append('div')
-                .attr('class', 'image')
-                .style('background-image', function (d) { return 'url(' + window.location.origin + BASEURL + '/build/examples/images/' + d.name + '.vl.svg)'; })
-                .style('background-size', function (d) {
-                return (!d.galleryParameters || !d.galleryParameters.backgroundSize) ? 'cover' : d.galleryParameters.backgroundSize;
-            });
-            imageGroup.append('div')
-                .attr('class', 'image-title')
-                .text(function (d) { return d.title; });
-        }
-    });
-}
-
-},{"d3-request":99,"d3-selection":100,"highlight.js":102,"vega-embed":282}],289:[function(require,module,exports){
+},{}],289:[function(require,module,exports){
 (function (Buffer){
 (function (global, factory) {
   typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports) :
@@ -29000,7 +29262,7 @@ function renderGallery() {
   (factory((global.vega = global.vega || {})));
 }(this, (function (exports) { 'use strict';
 
-var version = "3.0.0-beta.30";
+var version = "3.0.0-beta.31";
 
 function bin$1(_) {
   // determine range
@@ -29249,6 +29511,10 @@ function tickStep(start, stop, count) {
   else if (error >= e5) step1 *= 5;
   else if (error >= e2) step1 *= 2;
   return stop < start ? -step1 : step1;
+}
+
+function thresholdSturges(values) {
+  return Math.ceil(Math.log(values.length) / Math.LN2) + 1;
 }
 
 function threshold(values, p, valueof) {
@@ -34616,20 +34882,25 @@ function vg_trail() {
     var r2 = w2 / 2;
 
     if (ready) {
-      // get normal vector
       var ux = y1 - y2,
-          uy = x2 - x1,
-          ud = Math.sqrt(ux * ux + uy * uy),
-          rx = (ux /= ud) * r1,
-          ry = (uy /= ud) * r1,
-          t = Math.atan2(uy, ux);
+          uy = x2 - x1;
 
-      // draw segment
-      context.moveTo(x1 - rx, y1 - ry);
-      context.lineTo(x2 - ux * r2, y2 - uy * r2);
-      context.arc(x2, y2, r2, t - pi$2, t);
-      context.lineTo(x1 + rx, y1 + ry);
-      context.arc(x1, y1, r1, t, t + pi$2);
+      if (ux || uy) {
+        // get normal vector
+        var ud = Math.sqrt(ux * ux + uy * uy),
+            rx = (ux /= ud) * r1,
+            ry = (uy /= ud) * r1,
+            t = Math.atan2(uy, ux);
+
+        // draw segment
+        context.moveTo(x1 - rx, y1 - ry);
+        context.lineTo(x2 - ux * r2, y2 - uy * r2);
+        context.arc(x2, y2, r2, t - pi$2, t);
+        context.lineTo(x1 + rx, y1 + ry);
+        context.arc(x1, y1, r1, t, t + pi$2);
+      } else {
+        context.arc(x2, y2, r2, 0, 2*pi$2);
+      }
       context.closePath();
     } else {
       ready = 1;
@@ -40751,21 +41022,38 @@ prototype$33.transform = function(_, pulse) {
       as = _.as,
       keys = _.fields,
       index = _.index,
+      values = _.values,
       defaultValue = _.default==null ? null : _.default,
       reset = _.modified(),
-      flag = pulse.ADD,
-      set, key, field, mods;
+      flag = reset ? pulse.SOURCE : pulse.ADD,
+      n = keys.length,
+      set, m, mods;
 
-  if (keys.length === 1) {
-    key = keys[0];
-    field = as[0];
+  if (values) {
+    m = values.length;
+
+    if (n > 1 && !as) {
+      error('Multi-field lookup requires explicit "as" parameter.');
+    }
+    if (as && as.length !== n * m) {
+      error('The "as" parameter has too few output field names.');
+    }
+    as = as || values.map(accessorName);
+
     set = function(t) {
-      var v = index.get(key(t));
-      t[field] = v==null ? defaultValue : v;
+      for (var i=0, k=0, j, v; i<n; ++i) {
+        v = index.get(keys[i](t));
+        if (v == null) for (j=0; j<m; ++j, ++k) t[as[k]] = defaultValue;
+        else for (j=0; j<m; ++j, ++k) t[as[k]] = values[j](v);
+      }
     };
   } else {
+    if (!as) {
+      error('Missing output field names.');
+    }
+
     set = function(t) {
-      for (var i=0, n=keys.length, v; i<n; ++i) {
+      for (var i=0, v; i<n; ++i) {
         v = index.get(keys[i](t));
         t[as[i]] = v==null ? defaultValue : v;
       }
@@ -40773,7 +41061,6 @@ prototype$33.transform = function(_, pulse) {
   }
 
   if (reset) {
-    flag = pulse.SOURCE;
     out = pulse.reflow(true);
   } else {
     mods = keys.some(function(k) { return pulse.modified(k.fields); });
@@ -41383,8 +41670,9 @@ var LookupDefinition = {
         {"name": "from", "type": "data", "required": true },
         {"name": "key", "type": "field", "required": true }
       ] },
+    { "name": "values", "type": "field", "array": true },
     { "name": "fields", "type": "field", "array": true, "required": true },
-    { "name": "as", "type": "string", "array": true, "required": true },
+    { "name": "as", "type": "string", "array": true },
     { "name": "default", "default": null }
   ]
 };
@@ -44462,128 +44750,464 @@ function method(type) {
     .join('');
 }
 
+var array$3 = Array.prototype;
+
+var slice$4 = array$3.slice;
+
+function ascending$2(a, b) {
+  return a - b;
+}
+
+function area$3(ring) {
+  var i = 0, n = ring.length, area = ring[n - 1][1] * ring[0][0] - ring[n - 1][0] * ring[0][1];
+  while (++i < n) area += ring[i - 1][1] * ring[i][0] - ring[i - 1][0] * ring[i][1];
+  return area;
+}
+
+function constant$6(x) {
+  return function() {
+    return x;
+  };
+}
+
+function contains(ring, hole) {
+  var i = -1, n = hole.length, c;
+  while (++i < n) if (c = ringContains(ring, hole[i])) return c;
+  return 0;
+}
+
+function ringContains(ring, point) {
+  var x = point[0], y = point[1], contains = -1;
+  for (var i = 0, n = ring.length, j = n - 1; i < n; j = i++) {
+    var pi = ring[i], xi = pi[0], yi = pi[1], pj = ring[j], xj = pj[0], yj = pj[1];
+    if (segmentContains(pi, pj, point)) return 0;
+    if (((yi > y) !== (yj > y)) && ((x < (xj - xi) * (y - yi) / (yj - yi) + xi))) contains = -contains;
+  }
+  return contains;
+}
+
+function segmentContains(a, b, c) {
+  var i; return collinear(a, b, c) && within(a[i = +(a[0] === b[0])], c[i], b[i]);
+}
+
+function collinear(a, b, c) {
+  return (b[0] - a[0]) * (c[1] - a[1]) === (c[0] - a[0]) * (b[1] - a[1]);
+}
+
+function within(p, q, r) {
+  return p <= q && q <= r || r <= q && q <= p;
+}
+
+function noop$4() {}
+
+var cases = [
+  [],
+  [[[1,1.5],[0.5,1]]],
+  [[[1.5,1],[1,1.5]]],
+  [[[1.5,1],[0.5,1]]],
+  [[[1,0.5],[1.5,1]]],
+  [[[1,0.5],[0.5,1]],[[1,1.5],[1.5,1]]],
+  [[[1,0.5],[1,1.5]]],
+  [[[1,0.5],[0.5,1]]],
+  [[[0.5,1],[1,0.5]]],
+  [[[1,1.5],[1,0.5]]],
+  [[[0.5,1],[1,1.5]],[[1.5,1],[1,0.5]]],
+  [[[1.5,1],[1,0.5]]],
+  [[[0.5,1],[1.5,1]]],
+  [[[1,1.5],[1.5,1]]],
+  [[[0.5,1],[1,1.5]]],
+  []
+];
+
+function contours() {
+  var dx = 1,
+      dy = 1,
+      threshold = thresholdSturges,
+      smooth = smoothLinear;
+
+  function contours(values) {
+    var tz = threshold(values);
+
+    // Convert number of thresholds into uniform thresholds.
+    if (!Array.isArray(tz)) {
+      var domain = extent(values), start = domain[0], stop = domain[1];
+      tz = tickStep(start, stop, tz);
+      tz = sequence(Math.floor(start / tz) * tz, Math.floor(stop / tz) * tz, tz);
+    } else {
+      tz = tz.slice().sort(ascending$2);
+    }
+
+    // Accumulate, smooth contour rings, assign holes to exterior rings.
+    // Based on https://github.com/mbostock/shapefile/blob/v0.6.2/shp/polygon.js
+    var layers = tz.map(function(value) {
+      var polygons = [],
+          holes = [];
+
+      isorings(values, value, function(ring) {
+        smooth(ring, values, value);
+        if (area$3(ring) > 0) polygons.push([ring]);
+        else holes.push(ring);
+      });
+
+      holes.forEach(function(hole) {
+        for (var i = 0, n = polygons.length, polygon; i < n; ++i) {
+          if (contains((polygon = polygons[i])[0], hole)) {
+            polygon.push(hole);
+            return;
+          }
+        }
+      });
+
+      return polygons;
+    });
+
+    return layers.map(function(polygons, i) {
+      return {
+        type: "MultiPolygon",
+        value: tz[i],
+        coordinates: polygons
+      };
+    });
+  }
+
+  // Marching squares with isolines stitched into rings.
+  // Based on https://github.com/topojson/topojson-client/blob/v3.0.0/src/stitch.js
+  function isorings(values, value, callback) {
+    var fragmentByStart = new Array,
+        fragmentByEnd = new Array,
+        x, y, t0, t1, t2, t3;
+
+    // Special case for the first row (y = -1, t2 = t3 = 0).
+    x = y = -1;
+    t1 = values[0] >= value;
+    cases[t1 << 1].forEach(stitch);
+    while (++x < dx - 1) {
+      t0 = t1, t1 = values[x + 1] >= value;
+      cases[t0 | t1 << 1].forEach(stitch);
+    }
+    cases[t1 << 0].forEach(stitch);
+
+    // General case for the intermediate rows.
+    while (++y < dy - 1) {
+      x = -1;
+      t1 = values[y * dx + dx] >= value;
+      t2 = values[y * dx] >= value;
+      cases[t1 << 1 | t2 << 2].forEach(stitch);
+      while (++x < dx - 1) {
+        t0 = t1, t1 = values[y * dx + dx + x + 1] >= value;
+        t3 = t2, t2 = values[y * dx + x + 1] >= value;
+        cases[t0 | t1 << 1 | t2 << 2 | t3 << 3].forEach(stitch);
+      }
+      cases[t1 | t2 << 3].forEach(stitch);
+    }
+
+    // Special case for the last row (y = dy - 1, t0 = t1 = 0).
+    x = -1;
+    t2 = values[y * dx] >= value;
+    cases[t2 << 2].forEach(stitch);
+    while (++x < dx - 1) {
+      t3 = t2, t2 = values[y * dx + x + 1] >= value;
+      cases[t2 << 2 | t3 << 3].forEach(stitch);
+    }
+    cases[t2 << 3].forEach(stitch);
+
+    function stitch(line) {
+      var start = [line[0][0] + x, line[0][1] + y],
+          end = [line[1][0] + x, line[1][1] + y],
+          startIndex = index(start),
+          endIndex = index(end),
+          f, g;
+      if (f = fragmentByEnd[startIndex]) {
+        if (g = fragmentByStart[endIndex]) {
+          delete fragmentByEnd[f.end];
+          delete fragmentByStart[g.start];
+          if (f === g) {
+            f.ring.push(end);
+            callback(f.ring);
+          } else {
+            fragmentByStart[f.start] = fragmentByEnd[g.end] = {start: f.start, end: g.end, ring: f.ring.concat(g.ring)};
+          }
+        } else {
+          delete fragmentByEnd[f.end];
+          f.ring.push(end);
+          fragmentByEnd[f.end = endIndex] = f;
+        }
+      } else if (f = fragmentByStart[endIndex]) {
+        if (g = fragmentByEnd[startIndex]) {
+          delete fragmentByStart[f.start];
+          delete fragmentByEnd[g.end];
+          if (f === g) {
+            f.ring.push(end);
+            callback(f.ring);
+          } else {
+            fragmentByStart[g.start] = fragmentByEnd[f.end] = {start: g.start, end: f.end, ring: g.ring.concat(f.ring)};
+          }
+        } else {
+          delete fragmentByStart[f.start];
+          f.ring.unshift(start);
+          fragmentByStart[f.start = startIndex] = f;
+        }
+      } else {
+        fragmentByStart[startIndex] = fragmentByEnd[endIndex] = {start: startIndex, end: endIndex, ring: [start, end]};
+      }
+    }
+  }
+
+  function index(point) {
+    return point[0] * 2 + point[1] * (dx + 1) * 4;
+  }
+
+  function smoothLinear(ring, values, value) {
+    ring.forEach(function(point) {
+      var x = point[0],
+          y = point[1],
+          xt = x | 0,
+          yt = y | 0,
+          v0,
+          v1 = values[yt * dx + xt];
+      if (x > 0 && x < dx && xt === x) {
+        v0 = values[yt * dx + xt - 1];
+        point[0] = x + (value - v0) / (v1 - v0) - 0.5;
+      }
+      if (y > 0 && y < dy && yt === y) {
+        v0 = values[(yt - 1) * dx + xt];
+        point[1] = y + (value - v0) / (v1 - v0) - 0.5;
+      }
+    });
+  }
+
+  contours.size = function(_) {
+    if (!arguments.length) return [dx, dy];
+    var _0 = Math.ceil(_[0]), _1 = Math.ceil(_[1]);
+    if (!(_0 > 0) || !(_1 > 0)) throw new Error("invalid size");
+    return dx = _0, dy = _1, contours;
+  };
+
+  contours.thresholds = function(_) {
+    return arguments.length ? (threshold = typeof _ === "function" ? _ : Array.isArray(_) ? constant$6(slice$4.call(_)) : constant$6(_), contours) : threshold;
+  };
+
+  contours.smooth = function(_) {
+    return arguments.length ? (smooth = _ ? smoothLinear : noop$4, contours) : smooth === smoothLinear;
+  };
+
+  return contours;
+}
+
+// TODO Optimize edge cases.
+// TODO Optimize index calculation.
+// TODO Optimize arguments.
+function blurX(source, target, r) {
+  var n = source.width,
+      m = source.height,
+      w = (r << 1) + 1;
+  for (var j = 0; j < m; ++j) {
+    for (var i = 0, sr = 0; i < n + r; ++i) {
+      if (i < n) {
+        sr += source.data[i + j * n];
+      }
+      if (i >= r) {
+        if (i >= w) {
+          sr -= source.data[i - w + j * n];
+        }
+        target.data[i - r + j * n] = sr / Math.min(i + 1, n - 1 + w - i, w);
+      }
+    }
+  }
+}
+
+// TODO Optimize edge cases.
+// TODO Optimize index calculation.
+// TODO Optimize arguments.
+function blurY(source, target, r) {
+  var n = source.width,
+      m = source.height,
+      w = (r << 1) + 1;
+  for (var i = 0; i < n; ++i) {
+    for (var j = 0, sr = 0; j < m + r; ++j) {
+      if (j < m) {
+        sr += source.data[i + j * n];
+      }
+      if (j >= r) {
+        if (j >= w) {
+          sr -= source.data[i + (j - w) * n];
+        }
+        target.data[i + (j - r) * n] = sr / Math.min(j + 1, m - 1 + w - j, w);
+      }
+    }
+  }
+}
+
+function defaultX(d) {
+  return d[0];
+}
+
+function defaultY(d) {
+  return d[1];
+}
+
+function contourDensity() {
+  var x = defaultX,
+      y = defaultY,
+      dx = 960,
+      dy = 500,
+      r = 20, // blur radius
+      k = 2, // log2(grid cell size)
+      o = r * 3, // grid offset, to pad for blur
+      n = (dx + o * 2) >> k, // grid width
+      m = (dy + o * 2) >> k, // grid height
+      threshold = constant$6(20);
+
+  function density(data) {
+    var values0 = new Float32Array(n * m),
+        values1 = new Float32Array(n * m);
+
+    data.forEach(function(d, i, data) {
+      var xi = (x(d, i, data) + o) >> k,
+          yi = (y(d, i, data) + o) >> k;
+      if (xi >= 0 && xi < n && yi >= 0 && yi < m) {
+        ++values0[xi + yi * n];
+      }
+    });
+
+    // TODO Optimize.
+    blurX({width: n, height: m, data: values0}, {width: n, height: m, data: values1}, r >> k);
+    blurY({width: n, height: m, data: values1}, {width: n, height: m, data: values0}, r >> k);
+    blurX({width: n, height: m, data: values0}, {width: n, height: m, data: values1}, r >> k);
+    blurY({width: n, height: m, data: values1}, {width: n, height: m, data: values0}, r >> k);
+    blurX({width: n, height: m, data: values0}, {width: n, height: m, data: values1}, r >> k);
+    blurY({width: n, height: m, data: values1}, {width: n, height: m, data: values0}, r >> k);
+
+    var tz = threshold(values0);
+
+    // Convert number of thresholds into uniform thresholds.
+    if (!Array.isArray(tz)) {
+      var stop = max(values0);
+      tz = tickStep(0, stop, tz);
+      tz = sequence(0, Math.floor(stop / tz) * tz, tz);
+      tz.shift();
+    }
+
+    return contours()
+        .thresholds(tz)
+        .size([n, m])
+      (values0)
+        .map(transform);
+  }
+
+  function transform(geometry) {
+    geometry.value *= Math.pow(2, -2 * k); // Density in points per square pixel.
+    geometry.coordinates.forEach(transformPolygon);
+    return geometry;
+  }
+
+  function transformPolygon(coordinates) {
+    coordinates.forEach(transformRing);
+  }
+
+  function transformRing(coordinates) {
+    coordinates.forEach(transformPoint);
+  }
+
+  // TODO Optimize.
+  function transformPoint(coordinates) {
+    coordinates[0] = coordinates[0] * Math.pow(2, k) - o;
+    coordinates[1] = coordinates[1] * Math.pow(2, k) - o;
+  }
+
+  function resize() {
+    o = r * 3;
+    n = (dx + o * 2) >> k;
+    m = (dy + o * 2) >> k;
+    return density;
+  }
+
+  density.x = function(_) {
+    return arguments.length ? (x = typeof _ === "function" ? _ : constant$6(+_), density) : x;
+  };
+
+  density.y = function(_) {
+    return arguments.length ? (y = typeof _ === "function" ? _ : constant$6(+_), density) : y;
+  };
+
+  density.size = function(_) {
+    if (!arguments.length) return [dx, dy];
+    var _0 = Math.ceil(_[0]), _1 = Math.ceil(_[1]);
+    if (!(_0 >= 0) && !(_0 >= 0)) throw new Error("invalid size");
+    return dx = _0, dy = _1, resize();
+  };
+
+  density.cellSize = function(_) {
+    if (!arguments.length) return 1 << k;
+    if (!((_ = +_) >= 1)) throw new Error("invalid cell size");
+    return k = Math.floor(Math.log(_) / Math.LN2), resize();
+  };
+
+  density.thresholds = function(_) {
+    return arguments.length ? (threshold = typeof _ === "function" ? _ : Array.isArray(_) ? constant$6(slice$4.call(_)) : constant$6(_), density) : threshold;
+  };
+
+  density.bandwidth = function(_) {
+    if (!arguments.length) return Math.sqrt(r * (r + 1));
+    if (!((_ = +_) >= 0)) throw new Error("invalid bandwidth");
+    return r = Math.round((Math.sqrt(4 * _ * _ + 1) - 1) / 2), resize();
+  };
+
+  return density;
+}
+
+var CONTOUR_PARAMS = ['values', 'size', 'thresholds'];
+var DENSITY_PARAMS = ['x', 'y', 'size', 'cellSize', 'bandwidth', 'thresholds'];
+
 /**
- * Map GeoJSON data to an SVG path string.
+ * Generate contours based on kernel-density estimation of point data.
  * @constructor
  * @param {object} params - The parameters for this operator.
- * @param {function(number, number): *} params.projection - The cartographic
- *   projection to apply.
- * @param {function(object): *} [params.field] - The field with GeoJSON data,
- *   or null if the tuple itself is a GeoJSON feature.
- * @param {string} [params.as='path'] - The output field in which to store
- *   the generated path data (default 'path').
+ * @param {Array<number>} params.size - The dimensions [width, height] over which to compute contours.
+ *  If the values parameter is provided, this must be the dimensions of the input data.
+ *  If density estimation is performed, this is the output view dimensions in pixels.
+ * @param {Array<number>} [params.values] - An array of numeric values representing an
+ *  width x height grid of values over which to compute contours. If unspecified, this
+ *  transform will instead attempt to compute contours for the kernel density estimate
+ *  using values drawn from data tuples in the input pulse.
+ * @param {function(object): number} [params.x] - The pixel x-coordinate accessor for density estimation.
+ * @param {function(object): number} [params.y] - The pixel y-coordinate accessor for density estimation.
+ * @param {number} [params.cellSize] - Contour density calculation cell size.
+ * @param {number} [params.bandwidth] - Kernel density estimation bandwidth.
+ * @param {number} [params.thresholds] - Contour threshold array or desired number of contours.
  */
-function GeoPath(params) {
+function Contour(params) {
   Transform.call(this, null, params);
 }
 
-var prototype$43 = inherits(GeoPath, Transform);
+var prototype$43 = inherits(Contour, Transform);
 
 prototype$43.transform = function(_, pulse) {
-  var out = pulse.fork(pulse.ALL),
-      path = this.value,
-      field = _.field || identity$1,
-      as = _.as || 'path',
-      mod;
+  if (this.value && !pulse.changed() && !_.modified())
+    return pulse.StopPropagation;
 
-  function set(t) { t[as] = path(field(t)); }
+  var out = pulse.fork(pulse.NO_SOURCE | pulse.NO_FIELDS),
+      contour, params, values;
 
-  if (!path || _.modified()) {
-    // parameters updated, reset and reflow
-    this.value = path = _.projection.path;
-    out.materialize().reflow().visit(out.SOURCE, set);
+  if (_.values) {
+    contour = contours();
+    params = CONTOUR_PARAMS;
+    values = _.values;
   } else {
-    mod = field === identity$1 || pulse.modified(field.fields);
-    out.visit(mod ? out.ADD_MOD : out.ADD, set);
+    contour = contourDensity();
+    params = DENSITY_PARAMS;
+    values = pulse.materialize(pulse.SOURCE).source;
   }
 
-  return out.modifies(as);
+  params.forEach(function(param) {
+    if (_[param] != null) contour[param](_[param]);
+  });
+
+  if (this.value) out.rem = this.value;
+  this.value = out.source = out.add = contour(values).map(ingest);
+
+  return out;
 };
-
-/**
- * Geo-code a longitude/latitude point to an x/y coordinate.
- * @constructor
- * @param {object} params - The parameters for this operator.
- * @param {function(number, number): *} params.projection - The cartographic
- *   projection to apply.
- * @param {Array<function(object): *>} params.fields - A two-element array of
- *   field accessors for the longitude and latitude values.
- * @param {Array<string>} [params.as] - A two-element array of field names
- *   under which to store the result. Defaults to ['x','y'].
- */
-function GeoPoint(params) {
-  Transform.call(this, null, params);
-}
-
-var prototype$44 = inherits(GeoPoint, Transform);
-
-prototype$44.transform = function(_, pulse) {
-  var proj = _.projection,
-      lon = _.fields[0],
-      lat = _.fields[1],
-      as = _.as || ['x', 'y'],
-      x = as[0],
-      y = as[1],
-      mod;
-
-  function set(t) {
-    var xy = proj([lon(t), lat(t)]);
-    if (xy) t[x] = xy[0], t[y] = xy[1];
-    else t[x] = undefined, t[y] = undefined;
-  }
-
-  if (_.modified()) {
-    // parameters updated, reflow
-    pulse.materialize().reflow(true).visit(pulse.SOURCE, set);
-  } else {
-    mod = pulse.modified(lon.fields) || pulse.modified(lat.fields);
-    pulse.visit(mod ? pulse.ADD_MOD : pulse.ADD, set);
-  }
-
-  return pulse.modifies(as);
-};
-
-/**
- * Annotate items with a geopath shape generator.
- * @constructor
- * @param {object} params - The parameters for this operator.
- * @param {function(number, number): *} params.projection - The cartographic
- *   projection to apply.
- * @param {function(object): *} [params.field] - The field with GeoJSON data,
- *   or null if the tuple itself is a GeoJSON feature.
- * @param {string} [params.as='path'] - The output field in which to store
- *   the generated path data (default 'path').
- */
-function GeoShape(params) {
-  Transform.call(this, null, params);
-}
-
-var prototype$45 = inherits(GeoShape, Transform);
-
-prototype$45.transform = function(_, pulse) {
-  var out = pulse.fork(pulse.ALL),
-      shape = this.value,
-      datum = _.field || field('datum'),
-      as = _.as || 'shape',
-      flag = out.ADD_MOD;
-
-  if (!shape || _.modified()) {
-    // parameters updated, reset and reflow
-    this.value = shape = shapeGenerator(_.projection.path, datum);
-    out.materialize().reflow();
-    flag = out.SOURCE;
-  }
-
-  out.visit(flag, function(t) { t[as] = shape; });
-
-  return out.modifies(as);
-};
-
-function shapeGenerator(path, field) {
-  var shape = function(_) { return path(field(_)); };
-  shape.context = function(_) { return path.context(_), shape; };
-  return shape;
-}
 
 // Adds floating point numbers with twice the normal precision.
 // Reference: J. R. Shewchuk, Adaptive Precision Floating-Point Arithmetic and
@@ -44656,7 +45280,7 @@ function asin$1(x) {
   return x > 1 ? halfPi$2 : x < -1 ? -halfPi$2 : Math.asin(x);
 }
 
-function noop$4() {}
+function noop$5() {}
 
 function streamGeometry(geometry, stream) {
   if (geometry && streamGeometryType.hasOwnProperty(geometry.type)) {
@@ -44737,9 +45361,9 @@ var lambda0;
 var cosPhi0;
 var sinPhi0;
 var areaStream = {
-  point: noop$4,
-  lineStart: noop$4,
-  lineEnd: noop$4,
+  point: noop$5,
+  lineStart: noop$5,
+  lineEnd: noop$5,
   polygonStart: function() {
     areaRingSum.reset();
     areaStream.lineStart = areaRingStart;
@@ -44748,7 +45372,7 @@ var areaStream = {
   polygonEnd: function() {
     var areaRing = +areaRingSum;
     areaSum.add(areaRing < 0 ? tau$4 + areaRing : areaRing);
-    this.lineStart = this.lineEnd = this.point = noop$4;
+    this.lineStart = this.lineEnd = this.point = noop$5;
   },
   sphere: function() {
     areaSum.add(tau$4);
@@ -44971,7 +45595,7 @@ var z0;
 // previous point
 
 var centroidStream = {
-  sphere: noop$4,
+  sphere: noop$5,
   point: centroidPoint,
   lineStart: centroidLineStart,
   lineEnd: centroidLineEnd,
@@ -45200,7 +45824,7 @@ function clipBuffer() {
     lineStart: function() {
       lines.push(line = []);
     },
-    lineEnd: noop$4,
+    lineEnd: noop$5,
     rejoin: function() {
       if (lines.length > 1) lines.push(lines.pop().concat(lines.shift()));
     },
@@ -45610,12 +46234,12 @@ var lambda0$2;
 var sinPhi0$1;
 var cosPhi0$1;
 var lengthStream = {
-  sphere: noop$4,
-  point: noop$4,
+  sphere: noop$5,
+  point: noop$5,
   lineStart: lengthLineStart,
-  lineEnd: noop$4,
-  polygonStart: noop$4,
-  polygonEnd: noop$4
+  lineEnd: noop$5,
+  polygonStart: noop$5,
+  polygonEnd: noop$5
 };
 
 function lengthLineStart() {
@@ -45624,7 +46248,7 @@ function lengthLineStart() {
 }
 
 function lengthLineEnd() {
-  lengthStream.point = lengthStream.lineEnd = noop$4;
+  lengthStream.point = lengthStream.lineEnd = noop$5;
 }
 
 function lengthPointFirst(lambda, phi) {
@@ -45757,15 +46381,15 @@ var y00;
 var x0$1;
 var y0$1;
 var areaStream$1 = {
-  point: noop$4,
-  lineStart: noop$4,
-  lineEnd: noop$4,
+  point: noop$5,
+  lineStart: noop$5,
+  lineEnd: noop$5,
   polygonStart: function() {
     areaStream$1.lineStart = areaRingStart$1;
     areaStream$1.lineEnd = areaRingEnd$1;
   },
   polygonEnd: function() {
-    areaStream$1.lineStart = areaStream$1.lineEnd = areaStream$1.point = noop$4;
+    areaStream$1.lineStart = areaStream$1.lineEnd = areaStream$1.point = noop$5;
     areaSum$1.add(abs$1(areaRingSum$1));
     areaRingSum$1.reset();
   },
@@ -45800,10 +46424,10 @@ var x1 = -x0$2;
 var y1 = x1;
 var boundsStream$1 = {
   point: boundsPoint$1,
-  lineStart: noop$4,
-  lineEnd: noop$4,
-  polygonStart: noop$4,
-  polygonEnd: noop$4,
+  lineStart: noop$5,
+  lineEnd: noop$5,
+  polygonStart: noop$5,
+  polygonEnd: noop$5,
   result: function() {
     var bounds = [[x0$2, y0$2], [x1, y1]];
     x1 = y1 = -(y0$2 = x0$2 = Infinity);
@@ -45952,7 +46576,7 @@ PathContext.prototype = {
       }
     }
   },
-  result: noop$4
+  result: noop$5
 };
 
 var lengthSum$1 = adder();
@@ -45962,13 +46586,13 @@ var y00$2;
 var x0$4;
 var y0$4;
 var lengthStream$1 = {
-  point: noop$4,
+  point: noop$5,
   lineStart: function() {
     lengthStream$1.point = lengthPointFirst$1;
   },
   lineEnd: function() {
     if (lengthRing) lengthPoint$1(x00$2, y00$2);
-    lengthStream$1.point = noop$4;
+    lengthStream$1.point = noop$5;
   },
   polygonStart: function() {
     lengthRing = true;
@@ -46654,7 +47278,7 @@ var transformRadians = transformer({
   }
 });
 
-function projection(project) {
+function projection$1(project) {
   return projectionMutator(function() { return project; })();
 }
 
@@ -46792,14 +47416,14 @@ function conicEqualAreaRaw(y0, y1) {
   return project;
 }
 
-function geoConicEqualArea() {
+function conicEqualArea() {
   return conicProjection(conicEqualAreaRaw)
       .scale(155.424)
       .center([0, 33.6442]);
 }
 
-function geoAlbers() {
-  return geoConicEqualArea()
+function albers() {
+  return conicEqualArea()
       .parallels([29.5, 45.5])
       .scale(1070)
       .translate([480, 250])
@@ -46829,9 +47453,9 @@ function multiplex(streams) {
 function geoAlbersUsa() {
   var cache,
       cacheStream,
-      lower48 = geoAlbers(), lower48Point,
-      alaska = geoConicEqualArea().rotate([154, 0]).center([-2, 58.5]).parallels([55, 65]), alaskaPoint, // EPSG:3338
-      hawaii = geoConicEqualArea().rotate([157, 0]).center([-3, 19.9]).parallels([8, 18]), hawaiiPoint, // ESRI:102007
+      lower48 = albers(), lower48Point,
+      alaska = conicEqualArea().rotate([154, 0]).center([-2, 58.5]).parallels([55, 65]), alaskaPoint, // EPSG:3338
+      hawaii = conicEqualArea().rotate([157, 0]).center([-3, 19.9]).parallels([8, 18]), hawaiiPoint, // ESRI:102007
       point, pointStream = {point: function(x, y) { point = [x, y]; }};
 
   function albersUsa(coordinates) {
@@ -46940,7 +47564,7 @@ azimuthalEqualAreaRaw.invert = azimuthalInvert(function(z) {
 });
 
 function geoAzimuthalEqualArea() {
-  return projection(azimuthalEqualAreaRaw)
+  return projection$1(azimuthalEqualAreaRaw)
       .scale(124.75)
       .clipAngle(180 - 1e-3);
 }
@@ -46954,7 +47578,7 @@ azimuthalEquidistantRaw.invert = azimuthalInvert(function(z) {
 });
 
 function geoAzimuthalEquidistant() {
-  return projection(azimuthalEquidistantRaw)
+  return projection$1(azimuthalEquidistantRaw)
       .scale(79.4188)
       .clipAngle(180 - 1e-3);
 }
@@ -46973,7 +47597,7 @@ function geoMercator() {
 }
 
 function mercatorProjection(project) {
-  var m = projection(project),
+  var m = projection$1(project),
       center = m.center,
       scale = m.scale,
       translate = m.translate,
@@ -47047,7 +47671,7 @@ function equirectangularRaw(lambda, phi) {
 equirectangularRaw.invert = equirectangularRaw;
 
 function geoEquirectangular() {
-  return projection(equirectangularRaw)
+  return projection$1(equirectangularRaw)
       .scale(152.63);
 }
 
@@ -47085,7 +47709,7 @@ function gnomonicRaw(x, y) {
 gnomonicRaw.invert = azimuthalInvert(atan);
 
 function geoGnomonic() {
-  return projection(gnomonicRaw)
+  return projection$1(gnomonicRaw)
       .scale(144.049)
       .clipAngle(60);
 }
@@ -47097,7 +47721,7 @@ function orthographicRaw(x, y) {
 orthographicRaw.invert = azimuthalInvert(asin$1);
 
 function geoOrthographic() {
-  return projection(orthographicRaw)
+  return projection$1(orthographicRaw)
       .scale(249.5)
       .clipAngle(90 + epsilon$2);
 }
@@ -47112,7 +47736,7 @@ stereographicRaw.invert = azimuthalInvert(function(z) {
 });
 
 function geoStereographic() {
-  return projection(stereographicRaw)
+  return projection$1(stereographicRaw)
       .scale(250)
       .clipAngle(142);
 }
@@ -47142,41 +47766,7 @@ function geoTransverseMercator() {
       .scale(159.155);
 }
 
-/**
- * GeoJSON feature generator for creating graticules.
- * @constructor
- */
-function Graticule(params) {
-  Transform.call(this, [], params);
-  this.generator = graticule();
-}
-
-var prototype$46 = inherits(Graticule, Transform);
-
-prototype$46.transform = function(_, pulse) {
-  var out = pulse.fork(),
-      src = this.value,
-      gen = this.generator, t;
-
-  if (!src.length || _.modified()) {
-    for (var prop in _) {
-      if (isFunction(gen[prop])) {
-        gen[prop](_[prop]);
-      }
-    }
-  }
-
-  t = gen();
-  if (src.length) {
-    t._id = src[0]._id;
-    out.mod.push(t);
-  } else {
-    out.add.push(ingest(t));
-  }
-  src[0] = t;
-
-  return out.source = src, out;
-};
+var defaultPath = geoPath();
 
 var properties = [
   // standard properties in d3-geo
@@ -47204,7 +47794,7 @@ var properties = [
 /**
  * Augment projections with their type and a copy method.
  */
-function create$2(type, constructor) {
+function create$1(type, constructor) {
   return function projection() {
     var p = constructor();
 
@@ -47225,19 +47815,23 @@ function create$2(type, constructor) {
   };
 }
 
-function projection$1(type, proj) {
-  return arguments.length > 1 ? (projections[type] = create$2(type, proj), this)
+function projection(type, proj) {
+  return arguments.length > 1 ? (projections[type] = create$1(type, proj), this)
     : projections.hasOwnProperty(type) ? projections[type] : null;
+}
+
+function getPath(proj) {
+  return (proj && proj.path) || defaultPath;
 }
 
 var projections = {
   // base d3-geo projection types
-  albers:               geoAlbers,
+  albers:               albers,
   albersusa:            geoAlbersUsa,
   azimuthalequalarea:   geoAzimuthalEqualArea,
   azimuthalequidistant: geoAzimuthalEquidistant,
   conicconformal:       geoConicConformal,
-  conicequalarea:       geoConicEqualArea,
+  conicequalarea:       conicEqualArea,
   conicequidistant:     geoConicEquidistant,
   equirectangular:      geoEquirectangular,
   gnomonic:             geoGnomonic,
@@ -47248,8 +47842,167 @@ var projections = {
 };
 
 for (var key$2 in projections) {
-  projection$1(key$2, projections[key$2]);
+  projection(key$2, projections[key$2]);
 }
+
+/**
+ * Map GeoJSON data to an SVG path string.
+ * @constructor
+ * @param {object} params - The parameters for this operator.
+ * @param {function(number, number): *} params.projection - The cartographic
+ *   projection to apply.
+ * @param {function(object): *} [params.field] - The field with GeoJSON data,
+ *   or null if the tuple itself is a GeoJSON feature.
+ * @param {string} [params.as='path'] - The output field in which to store
+ *   the generated path data (default 'path').
+ */
+function GeoPath(params) {
+  Transform.call(this, null, params);
+}
+
+var prototype$44 = inherits(GeoPath, Transform);
+
+prototype$44.transform = function(_, pulse) {
+  var out = pulse.fork(pulse.ALL),
+      path = this.value,
+      field = _.field || identity$1,
+      as = _.as || 'path',
+      mod;
+
+  function set(t) { t[as] = path(field(t)); }
+
+  if (!path || _.modified()) {
+    // parameters updated, reset and reflow
+    this.value = path = getPath(_.projection);
+    out.materialize().reflow().visit(out.SOURCE, set);
+  } else {
+    mod = field === identity$1 || pulse.modified(field.fields);
+    out.visit(mod ? out.ADD_MOD : out.ADD, set);
+  }
+
+  return out.modifies(as);
+};
+
+/**
+ * Geo-code a longitude/latitude point to an x/y coordinate.
+ * @constructor
+ * @param {object} params - The parameters for this operator.
+ * @param {function(number, number): *} params.projection - The cartographic
+ *   projection to apply.
+ * @param {Array<function(object): *>} params.fields - A two-element array of
+ *   field accessors for the longitude and latitude values.
+ * @param {Array<string>} [params.as] - A two-element array of field names
+ *   under which to store the result. Defaults to ['x','y'].
+ */
+function GeoPoint(params) {
+  Transform.call(this, null, params);
+}
+
+var prototype$45 = inherits(GeoPoint, Transform);
+
+prototype$45.transform = function(_, pulse) {
+  var proj = _.projection,
+      lon = _.fields[0],
+      lat = _.fields[1],
+      as = _.as || ['x', 'y'],
+      x = as[0],
+      y = as[1],
+      mod;
+
+  function set(t) {
+    var xy = proj([lon(t), lat(t)]);
+    if (xy) t[x] = xy[0], t[y] = xy[1];
+    else t[x] = undefined, t[y] = undefined;
+  }
+
+  if (_.modified()) {
+    // parameters updated, reflow
+    pulse.materialize().reflow(true).visit(pulse.SOURCE, set);
+  } else {
+    mod = pulse.modified(lon.fields) || pulse.modified(lat.fields);
+    pulse.visit(mod ? pulse.ADD_MOD : pulse.ADD, set);
+  }
+
+  return pulse.modifies(as);
+};
+
+/**
+ * Annotate items with a geopath shape generator.
+ * @constructor
+ * @param {object} params - The parameters for this operator.
+ * @param {function(number, number): *} params.projection - The cartographic
+ *   projection to apply.
+ * @param {function(object): *} [params.field] - The field with GeoJSON data,
+ *   or null if the tuple itself is a GeoJSON feature.
+ * @param {string} [params.as='shape'] - The output field in which to store
+ *   the generated path data (default 'shape').
+ */
+function GeoShape(params) {
+  Transform.call(this, null, params);
+}
+
+var prototype$46 = inherits(GeoShape, Transform);
+
+prototype$46.transform = function(_, pulse) {
+  var out = pulse.fork(pulse.ALL),
+      shape = this.value,
+      datum = _.field || field('datum'),
+      as = _.as || 'shape',
+      flag = out.ADD_MOD;
+
+  if (!shape || _.modified()) {
+    // parameters updated, reset and reflow
+    this.value = shape = shapeGenerator(getPath(_.projection), datum);
+    out.materialize().reflow();
+    flag = out.SOURCE;
+  }
+
+  out.visit(flag, function(t) { t[as] = shape; });
+
+  return out.modifies(as);
+};
+
+function shapeGenerator(path, field) {
+  var shape = function(_) { return path(field(_)); };
+  shape.context = function(_) { return path.context(_), shape; };
+  return shape;
+}
+
+/**
+ * GeoJSON feature generator for creating graticules.
+ * @constructor
+ */
+function Graticule(params) {
+  Transform.call(this, [], params);
+  this.generator = graticule();
+}
+
+var prototype$47 = inherits(Graticule, Transform);
+
+prototype$47.transform = function(_, pulse) {
+  var out = pulse.fork(),
+      src = this.value,
+      gen = this.generator, t;
+
+  if (!src.length || _.modified()) {
+    for (var prop in _) {
+      if (isFunction(gen[prop])) {
+        gen[prop](_[prop]);
+      }
+    }
+  }
+
+  t = gen();
+  if (src.length) {
+    t._id = src[0]._id;
+    out.mod.push(t);
+  } else {
+    out.add.push(ingest(t));
+  }
+  src[0] = t;
+
+  return out.source = src, out;
+};
 
 /**
  * Maintains a cartographic projection.
@@ -47261,13 +48014,13 @@ function Projection(params) {
   this.modified(true); // always treat as modified
 }
 
-var prototype$47 = inherits(Projection, Transform);
+var prototype$48 = inherits(Projection, Transform);
 
-prototype$47.transform = function(_) {
+prototype$48.transform = function(_) {
   var proj = this.value;
 
   if (!proj || _.modified('type')) {
-    this.value = (proj = create$1(_.type));
+    this.value = (proj = create$2(_.type));
     properties.forEach(function(prop) {
       if (_[prop] != null) set$2(proj, prop, _[prop]);
     });
@@ -47278,10 +48031,23 @@ prototype$47.transform = function(_) {
   }
 
   if (_.pointRadius != null) proj.path.pointRadius(_.pointRadius);
+  if (_.fit) fit(proj, _);
 };
 
-function create$1(type) {
-  var constructor = projection$1((type || 'mercator').toLowerCase());
+function fit(proj, _) {
+  var data = geoJSON(_.fit);
+  _.extent ? proj.fitExtent(_.extent, data)
+    : _.size ? proj.fitSize(_.size, data) : 0;
+}
+
+function geoJSON(data) {
+  return !isArray(data) ? data
+    : data.length > 1 ? {type: 'FeatureCollection', features: data}
+    : data[0];
+}
+
+function create$2(type) {
+  var constructor = projection((type || 'mercator').toLowerCase());
   if (!constructor) error('Unrecognized projection type: ' + type);
   return constructor();
 }
@@ -47290,11 +48056,25 @@ function set$2(proj, key, value) {
    if (isFunction(proj[key])) proj[key](value);
 }
 
+var ContourDefinition = {
+  "type": "Contour",
+  "metadata": {"generates": true, "source": true},
+  "params": [
+    { "name": "size", "type": "number", "array": true, "length": 2, "required": true },
+    { "name": "values", "type": "number", "array": true },
+    { "name": "x", "type": "field" },
+    { "name": "y", "type": "field" },
+    { "name": "cellSize", "type": "number" },
+    { "name": "bandwidth", "type": "number" },
+    { "name": "thresholds", "type": "number" }
+  ]
+}
+
 var GeoPathDefinition = {
   "type": "GeoPath",
   "metadata": {"modifies": true},
   "params": [
-    { "name": "projection", "type": "projection", "required": true },
+    { "name": "projection", "type": "projection" },
     { "name": "field", "type": "field" },
     { "name": "as", "type": "string", "default": "path" }
   ]
@@ -47314,7 +48094,7 @@ var GeoShapeDefinition = {
   "type": "GeoShape",
   "metadata": {"modifies": true},
   "params": [
-    { "name": "projection", "type": "projection", "required": true },
+    { "name": "projection", "type": "projection" },
     { "name": "field", "type": "field", "default": "datum" },
     { "name": "as", "type": "string", "default": "shape" }
   ]
@@ -47337,6 +48117,7 @@ var GraticuleDefinition = {
   ]
 }
 
+register(ContourDefinition, Contour);
 register(GeoPathDefinition, GeoPath);
 register(GeoPointDefinition, GeoPoint);
 register(GeoShapeDefinition, GeoShape);
@@ -47464,9 +48245,9 @@ function AxisTicks(params) {
   Transform.call(this, null, params);
 }
 
-var prototype$48 = inherits(AxisTicks, Transform);
+var prototype$49 = inherits(AxisTicks, Transform);
 
-prototype$48.transform = function(_, pulse) {
+prototype$49.transform = function(_, pulse) {
   if (this.value && !_.modified()) {
     return pulse.StopPropagation;
   }
@@ -47507,7 +48288,7 @@ function DataJoin(params) {
   Transform.call(this, null, params);
 }
 
-var prototype$49 = inherits(DataJoin, Transform);
+var prototype$50 = inherits(DataJoin, Transform);
 
 function defaultItemCreate() {
   return ingest({});
@@ -47517,7 +48298,7 @@ function isExit(t) {
   return t.exit;
 }
 
-prototype$49.transform = function(_, pulse) {
+prototype$50.transform = function(_, pulse) {
   var df = pulse.dataflow,
       out = pulse.fork(pulse.NO_SOURCE | pulse.NO_FIELDS),
       item = _.item || defaultItemCreate,
@@ -47591,9 +48372,9 @@ function Encode(params) {
   Transform.call(this, null, params);
 }
 
-var prototype$50 = inherits(Encode, Transform);
+var prototype$51 = inherits(Encode, Transform);
 
-prototype$50.transform = function(_, pulse) {
+prototype$51.transform = function(_, pulse) {
   var out = pulse.fork(pulse.ADD_REM),
       encode = pulse.encode,
       reenter = encode === 'enter',
@@ -47722,9 +48503,9 @@ function LegendEntries(params) {
   Transform.call(this, [], params);
 }
 
-var prototype$51 = inherits(LegendEntries, Transform);
+var prototype$52 = inherits(LegendEntries, Transform);
 
-prototype$51.transform = function(_, pulse) {
+prototype$52.transform = function(_, pulse) {
   if (this.value != null && !_.modified()) {
     return pulse.StopPropagation;
   }
@@ -47811,9 +48592,9 @@ function LinkPath(params) {
   Transform.call(this, {}, params);
 }
 
-var prototype$52 = inherits(LinkPath, Transform);
+var prototype$53 = inherits(LinkPath, Transform);
 
-prototype$52.transform = function(_, pulse) {
+prototype$53.transform = function(_, pulse) {
   var sx = _.sourceX || sourceX,
       sy = _.sourceY || sourceY,
       tx = _.targetX || targetX,
@@ -47948,9 +48729,9 @@ function Pie(params) {
   Transform.call(this, null, params);
 }
 
-var prototype$53 = inherits(Pie, Transform);
+var prototype$54 = inherits(Pie, Transform);
 
-prototype$53.transform = function(_, pulse) {
+prototype$54.transform = function(_, pulse) {
   var as = _.as || ['startAngle', 'endAngle'],
       startAngle = as[0],
       endAngle = as[1],
@@ -48002,9 +48783,9 @@ function Scale(params) {
   this.modified(true); // always treat as modified
 }
 
-var prototype$54 = inherits(Scale, Transform);
+var prototype$55 = inherits(Scale, Transform);
 
-prototype$54.transform = function(_, pulse) {
+prototype$55.transform = function(_, pulse) {
   var df = pulse.dataflow,
       scale = this.value,
       prop;
@@ -48163,9 +48944,9 @@ function SortItems(params) {
   Transform.call(this, null, params);
 }
 
-var prototype$55 = inherits(SortItems, Transform);
+var prototype$56 = inherits(SortItems, Transform);
 
-prototype$55.transform = function(_, pulse) {
+prototype$56.transform = function(_, pulse) {
   var mod = _.modified('sort')
          || pulse.changed(pulse.ADD)
          || pulse.modified(_.sort.fields)
@@ -48192,9 +48973,9 @@ function Stack(params) {
   Transform.call(this, null, params);
 }
 
-var prototype$56 = inherits(Stack, Transform);
+var prototype$57 = inherits(Stack, Transform);
 
-prototype$56.transform = function(_, pulse) {
+prototype$57.transform = function(_, pulse) {
   var as = _.as || ['y0', 'y1'],
       y0 = as[0],
       y1 = as[1],
@@ -48379,7 +49160,7 @@ function forceCenter(x, y) {
   return force;
 }
 
-function constant$7(x) {
+function constant$8(x) {
   return function() {
     return x;
   };
@@ -48735,7 +49516,7 @@ function tree_visitAfter(callback) {
   return this;
 }
 
-function defaultX(d) {
+function defaultX$1(d) {
   return d[0];
 }
 
@@ -48743,7 +49524,7 @@ function tree_x(_) {
   return arguments.length ? (this._x = _, this) : this._x;
 }
 
-function defaultY(d) {
+function defaultY$1(d) {
   return d[1];
 }
 
@@ -48752,7 +49533,7 @@ function tree_y(_) {
 }
 
 function quadtree(nodes, x, y) {
-  var tree = new Quadtree(x == null ? defaultX : x, y == null ? defaultY : y, NaN, NaN, NaN, NaN);
+  var tree = new Quadtree(x == null ? defaultX$1 : x, y == null ? defaultY$1 : y, NaN, NaN, NaN, NaN);
   return nodes == null ? tree : tree.addAll(nodes);
 }
 
@@ -48826,7 +49607,7 @@ function forceCollide(radius) {
       strength = 1,
       iterations = 1;
 
-  if (typeof radius !== "function") radius = constant$7(radius == null ? 1 : +radius);
+  if (typeof radius !== "function") radius = constant$8(radius == null ? 1 : +radius);
 
   function force() {
     var i, n = nodes.length,
@@ -48901,7 +49682,7 @@ function forceCollide(radius) {
   };
 
   force.radius = function(_) {
-    return arguments.length ? (radius = typeof _ === "function" ? _ : constant$7(+_), initialize(), force) : radius;
+    return arguments.length ? (radius = typeof _ === "function" ? _ : constant$8(+_), initialize(), force) : radius;
   };
 
   return force;
@@ -48921,7 +49702,7 @@ function forceLink(links) {
   var id = index,
       strength = defaultStrength,
       strengths,
-      distance = constant$7(30),
+      distance = constant$8(30),
       distances,
       nodes,
       count,
@@ -49010,11 +49791,11 @@ function forceLink(links) {
   };
 
   force.strength = function(_) {
-    return arguments.length ? (strength = typeof _ === "function" ? _ : constant$7(+_), initializeStrength(), force) : strength;
+    return arguments.length ? (strength = typeof _ === "function" ? _ : constant$8(+_), initializeStrength(), force) : strength;
   };
 
   force.distance = function(_) {
-    return arguments.length ? (distance = typeof _ === "function" ? _ : constant$7(+_), initializeDistance(), force) : distance;
+    return arguments.length ? (distance = typeof _ === "function" ? _ : constant$8(+_), initializeDistance(), force) : distance;
   };
 
   return force;
@@ -49273,7 +50054,7 @@ function forceManyBody() {
   var nodes,
       node,
       alpha,
-      strength = constant$7(-30),
+      strength = constant$8(-30),
       strengths,
       distanceMin2 = 1,
       distanceMax2 = Infinity,
@@ -49361,7 +50142,7 @@ function forceManyBody() {
   };
 
   force.strength = function(_) {
-    return arguments.length ? (strength = typeof _ === "function" ? _ : constant$7(+_), initialize(), force) : strength;
+    return arguments.length ? (strength = typeof _ === "function" ? _ : constant$8(+_), initialize(), force) : strength;
   };
 
   force.distanceMin = function(_) {
@@ -49380,12 +50161,12 @@ function forceManyBody() {
 }
 
 function forceX(x) {
-  var strength = constant$7(0.1),
+  var strength = constant$8(0.1),
       nodes,
       strengths,
       xz;
 
-  if (typeof x !== "function") x = constant$7(x == null ? 0 : +x);
+  if (typeof x !== "function") x = constant$8(x == null ? 0 : +x);
 
   function force(alpha) {
     for (var i = 0, n = nodes.length, node; i < n; ++i) {
@@ -49409,23 +50190,23 @@ function forceX(x) {
   };
 
   force.strength = function(_) {
-    return arguments.length ? (strength = typeof _ === "function" ? _ : constant$7(+_), initialize(), force) : strength;
+    return arguments.length ? (strength = typeof _ === "function" ? _ : constant$8(+_), initialize(), force) : strength;
   };
 
   force.x = function(_) {
-    return arguments.length ? (x = typeof _ === "function" ? _ : constant$7(+_), initialize(), force) : x;
+    return arguments.length ? (x = typeof _ === "function" ? _ : constant$8(+_), initialize(), force) : x;
   };
 
   return force;
 }
 
 function forceY(y) {
-  var strength = constant$7(0.1),
+  var strength = constant$8(0.1),
       nodes,
       strengths,
       yz;
 
-  if (typeof y !== "function") y = constant$7(y == null ? 0 : +y);
+  if (typeof y !== "function") y = constant$8(y == null ? 0 : +y);
 
   function force(alpha) {
     for (var i = 0, n = nodes.length, node; i < n; ++i) {
@@ -49449,11 +50230,11 @@ function forceY(y) {
   };
 
   force.strength = function(_) {
-    return arguments.length ? (strength = typeof _ === "function" ? _ : constant$7(+_), initialize(), force) : strength;
+    return arguments.length ? (strength = typeof _ === "function" ? _ : constant$8(+_), initialize(), force) : strength;
   };
 
   force.y = function(_) {
-    return arguments.length ? (y = typeof _ === "function" ? _ : constant$7(+_), initialize(), force) : y;
+    return arguments.length ? (y = typeof _ === "function" ? _ : constant$8(+_), initialize(), force) : y;
   };
 
   return force;
@@ -49485,9 +50266,9 @@ function Force(params) {
   Transform.call(this, null, params);
 }
 
-var prototype$57 = inherits(Force, Transform);
+var prototype$58 = inherits(Force, Transform);
 
-prototype$57.transform = function(_, pulse) {
+prototype$58.transform = function(_, pulse) {
   var sim = this.value,
       change = pulse.changed(pulse.ADD_REM),
       params = _.modified(ForceParams),
@@ -49522,7 +50303,7 @@ prototype$57.transform = function(_, pulse) {
   return this.finish(_, pulse);
 };
 
-prototype$57.finish = function(_, pulse) {
+prototype$58.finish = function(_, pulse) {
   var dataflow = pulse.dataflow;
 
   // inspect dependencies, touch link source data
@@ -50210,7 +50991,7 @@ function constantZero() {
   return 0;
 }
 
-function constant$8(x) {
+function constant$9(x) {
   return function() {
     return x;
   };
@@ -50250,7 +51031,7 @@ function pack$1() {
   };
 
   pack.padding = function(x) {
-    return arguments.length ? (padding = typeof x === "function" ? x : constant$8(+x), pack) : padding;
+    return arguments.length ? (padding = typeof x === "function" ? x : constant$9(+x), pack) : padding;
   };
 
   return pack;
@@ -50809,7 +51590,7 @@ function treemap() {
   };
 
   treemap.paddingInner = function(x) {
-    return arguments.length ? (paddingInner = typeof x === "function" ? x : constant$8(+x), treemap) : paddingInner;
+    return arguments.length ? (paddingInner = typeof x === "function" ? x : constant$9(+x), treemap) : paddingInner;
   };
 
   treemap.paddingOuter = function(x) {
@@ -50817,19 +51598,19 @@ function treemap() {
   };
 
   treemap.paddingTop = function(x) {
-    return arguments.length ? (paddingTop = typeof x === "function" ? x : constant$8(+x), treemap) : paddingTop;
+    return arguments.length ? (paddingTop = typeof x === "function" ? x : constant$9(+x), treemap) : paddingTop;
   };
 
   treemap.paddingRight = function(x) {
-    return arguments.length ? (paddingRight = typeof x === "function" ? x : constant$8(+x), treemap) : paddingRight;
+    return arguments.length ? (paddingRight = typeof x === "function" ? x : constant$9(+x), treemap) : paddingRight;
   };
 
   treemap.paddingBottom = function(x) {
-    return arguments.length ? (paddingBottom = typeof x === "function" ? x : constant$8(+x), treemap) : paddingBottom;
+    return arguments.length ? (paddingBottom = typeof x === "function" ? x : constant$9(+x), treemap) : paddingBottom;
   };
 
   treemap.paddingLeft = function(x) {
-    return arguments.length ? (paddingLeft = typeof x === "function" ? x : constant$8(+x), treemap) : paddingLeft;
+    return arguments.length ? (paddingLeft = typeof x === "function" ? x : constant$9(+x), treemap) : paddingLeft;
   };
 
   return treemap;
@@ -50931,13 +51712,13 @@ function Nest(params) {
   Transform.call(this, null, params);
 }
 
-var prototype$58 = inherits(Nest, Transform);
+var prototype$59 = inherits(Nest, Transform);
 
 function children(n) {
   return n.values;
 }
 
-prototype$58.transform = function(_, pulse) {
+prototype$59.transform = function(_, pulse) {
   if (!pulse.source) {
     error('Nest transform requires an upstream data source.');
   }
@@ -50973,9 +51754,9 @@ function Stratify(params) {
   Transform.call(this, null, params);
 }
 
-var prototype$59 = inherits(Stratify, Transform);
+var prototype$60 = inherits(Stratify, Transform);
 
-prototype$59.transform = function(_, pulse) {
+prototype$60.transform = function(_, pulse) {
   if (!pulse.source) {
     error('Stratify transform requires an upstream data source.');
   }
@@ -51011,7 +51792,7 @@ function TreeLinks(params) {
   Transform.call(this, {}, params);
 }
 
-var prototype$60 = inherits(TreeLinks, Transform);
+var prototype$61 = inherits(TreeLinks, Transform);
 
 function parentTuple(node) {
   var p;
@@ -51020,7 +51801,7 @@ function parentTuple(node) {
       && (tupleid(p) != null) && p;
 }
 
-prototype$60.transform = function(_, pulse) {
+prototype$61.transform = function(_, pulse) {
   if (!pulse.source || !pulse.source.root) {
     error('TreeLinks transform requires a backing tree data source.');
   }
@@ -51118,9 +51899,9 @@ function HierarchyLayout(params) {
   Transform.call(this, null, params);
 }
 
-var prototype$61 = inherits(HierarchyLayout, Transform);
+var prototype$62 = inherits(HierarchyLayout, Transform);
 
-prototype$61.transform = function(_, pulse) {
+prototype$62.transform = function(_, pulse) {
   if (!pulse.source || !pulse.source.root) {
     error(this.constructor.name
       + ' transform requires a backing tree data source.');
@@ -51315,7 +52096,7 @@ register(PartitionDefinition, Partition);
 register(TreeDefinition, Tree);
 register(TreemapDefinition, Treemap);
 
-function constant$9(x) {
+function constant$10(x) {
   return function() {
     return x;
   };
@@ -52284,11 +53065,11 @@ function voronoi() {
   };
 
   voronoi.x = function(_) {
-    return arguments.length ? (x = typeof _ === "function" ? _ : constant$9(+_), voronoi) : x;
+    return arguments.length ? (x = typeof _ === "function" ? _ : constant$10(+_), voronoi) : x;
   };
 
   voronoi.y = function(_) {
-    return arguments.length ? (y = typeof _ === "function" ? _ : constant$9(+_), voronoi) : y;
+    return arguments.length ? (y = typeof _ === "function" ? _ : constant$10(+_), voronoi) : y;
   };
 
   voronoi.extent = function(_) {
@@ -52306,11 +53087,11 @@ function Voronoi(params) {
   Transform.call(this, null, params);
 }
 
-var prototype$62 = inherits(Voronoi, Transform);
+var prototype$63 = inherits(Voronoi, Transform);
 
 var defaultExtent = [[-1e5, -1e5], [1e5, 1e5]];
 
-prototype$62.transform = function(_, pulse) {
+prototype$63.transform = function(_, pulse) {
   var as = _.as || 'path',
       data = pulse.source,
       diagram, polygons, i, n;
@@ -52706,9 +53487,9 @@ function Wordcloud(params) {
   Transform.call(this, cloud(), params);
 }
 
-var prototype$63 = inherits(Wordcloud, Transform);
+var prototype$64 = inherits(Wordcloud, Transform);
 
-prototype$63.transform = function(_, pulse) {
+prototype$64.transform = function(_, pulse) {
   function modp(param) {
     var p = _[param];
     return isFunction(p) && pulse.modified(p.fields);
@@ -52819,8 +53600,8 @@ function Bitmaps() {
   var width = 8,
       data = [],
       seen = array32(0),
-      curr = array$3(0, width),
-      prev = array$3(0, width);
+      curr = array$4(0, width),
+      prev = array$4(0, width);
 
   return {
 
@@ -52888,8 +53669,8 @@ function Bitmaps() {
       var k = curr.length;
       if (n > k || m > width) {
         width = Math.max(m, width);
-        curr = array$3(n, width, curr);
-        prev = array$3(n, width);
+        curr = array$4(n, width, curr);
+        prev = array$4(n, width);
       }
     }
   };
@@ -52902,7 +53683,7 @@ function lengthen(array, length, copy) {
   return copy;
 }
 
-function array$3(n, m, array) {
+function array$4(n, m, array) {
   var copy = (m < 0x101 ? array8 : m < 0x10001 ? array16 : array32)(n);
   if (array) copy.set(array);
   return copy;
@@ -53065,9 +53846,9 @@ function CrossFilter(params) {
   this._dims = null;
 }
 
-var prototype$64 = inherits(CrossFilter, Transform);
+var prototype$65 = inherits(CrossFilter, Transform);
 
-prototype$64.transform = function(_, pulse) {
+prototype$65.transform = function(_, pulse) {
   if (!this._dims) {
     return this.init(_, pulse);
   } else {
@@ -53080,7 +53861,7 @@ prototype$64.transform = function(_, pulse) {
   }
 };
 
-prototype$64.init = function(_, pulse) {
+prototype$65.init = function(_, pulse) {
   var fields = _.fields,
       query = _.query,
       indices = this._indices = {},
@@ -53098,7 +53879,7 @@ prototype$64.init = function(_, pulse) {
   return this.eval(_, pulse);
 };
 
-prototype$64.reinit = function(_, pulse) {
+prototype$65.reinit = function(_, pulse) {
   var output = pulse.materialize().fork(),
       fields = _.fields,
       query = _.query,
@@ -53165,7 +53946,7 @@ prototype$64.reinit = function(_, pulse) {
   return output;
 };
 
-prototype$64.eval = function(_, pulse) {
+prototype$65.eval = function(_, pulse) {
   var output = pulse.materialize().fork(),
       m = this._dims.length,
       mask = 0;
@@ -53193,7 +53974,7 @@ prototype$64.eval = function(_, pulse) {
   return output;
 };
 
-prototype$64.insert = function(_, pulse, output) {
+prototype$65.insert = function(_, pulse, output) {
   var tuples = pulse.add,
       bits = this.value,
       dims = this._dims,
@@ -53227,7 +54008,7 @@ prototype$64.insert = function(_, pulse, output) {
   }
 };
 
-prototype$64.modify = function(pulse, output) {
+prototype$65.modify = function(pulse, output) {
   var out = output.mod,
       bits = this.value,
       curr = bits.curr(),
@@ -53241,7 +54022,7 @@ prototype$64.modify = function(pulse, output) {
   }
 };
 
-prototype$64.remove = function(_, pulse, output) {
+prototype$65.remove = function(_, pulse, output) {
   var indices = this._indices,
       bits = this.value,
       curr = bits.curr(),
@@ -53270,7 +54051,7 @@ prototype$64.remove = function(_, pulse, output) {
 };
 
 // reindex filters and indices after propagation completes
-prototype$64.reindex = function(pulse, num, map) {
+prototype$65.reindex = function(pulse, num, map) {
   var indices = this._indices,
       bits = this.value;
 
@@ -53280,7 +54061,7 @@ prototype$64.reindex = function(pulse, num, map) {
   });
 };
 
-prototype$64.update = function(_, pulse, output) {
+prototype$65.update = function(_, pulse, output) {
   var dims = this._dims,
       query = _.query,
       stamp = pulse.stamp,
@@ -53310,7 +54091,7 @@ prototype$64.update = function(_, pulse, output) {
   return mask;
 };
 
-prototype$64.incrementAll = function(dim, query, stamp, out) {
+prototype$65.incrementAll = function(dim, query, stamp, out) {
   var bits = this.value,
       seen = bits.seen(),
       curr = bits.curr(),
@@ -53374,7 +54155,7 @@ prototype$64.incrementAll = function(dim, query, stamp, out) {
   dim.range = query.slice();
 };
 
-prototype$64.incrementOne = function(dim, query, add, rem) {
+prototype$65.incrementOne = function(dim, query, add, rem) {
   var bits = this.value,
       curr = bits.curr(),
       index = dim.index(),
@@ -53443,9 +54224,9 @@ function ResolveFilter(params) {
   Transform.call(this, null, params);
 }
 
-var prototype$65 = inherits(ResolveFilter, Transform);
+var prototype$66 = inherits(ResolveFilter, Transform);
 
-prototype$65.transform = function(_, pulse) {
+prototype$66.transform = function(_, pulse) {
   var ignore = ~(_.ignore || 0), // bit mask where zeros -> dims to ignore
       bitmap = _.filter,
       mask = bitmap.mask;
@@ -53516,9 +54297,9 @@ function Bound(params) {
   Transform.call(this, null, params);
 }
 
-var prototype$66 = inherits(Bound, Transform);
+var prototype$67 = inherits(Bound, Transform);
 var temp$2 = new Bounds();
-prototype$66.transform = function(_, pulse) {
+prototype$67.transform = function(_, pulse) {
   var mark = _.mark,
       type = mark.marktype,
       entry = Marks[type],
@@ -53592,9 +54373,9 @@ function Mark(params) {
   Transform.call(this, null, params);
 }
 
-var prototype$67 = inherits(Mark, Transform);
+var prototype$68 = inherits(Mark, Transform);
 
-prototype$67.transform = function(_, pulse) {
+prototype$68.transform = function(_, pulse) {
   var mark = this.value;
 
   // acquire mark on first invocation, bind context and group
@@ -53629,9 +54410,9 @@ function Render(params) {
   Transform.call(this, null, params);
 }
 
-var prototype$68 = inherits(Render, Transform);
+var prototype$69 = inherits(Render, Transform);
 
-prototype$68.transform = function(_, pulse) {
+prototype$69.transform = function(_, pulse) {
   var view = pulse.dataflow;
 
   if (pulse.changed(pulse.REM)) {
@@ -53954,9 +54735,9 @@ function ViewLayout(params) {
   Transform.call(this, null, params);
 }
 
-var prototype$69 = inherits(ViewLayout, Transform);
+var prototype$70 = inherits(ViewLayout, Transform);
 
-prototype$69.transform = function(_, pulse) {
+prototype$70.transform = function(_, pulse) {
   // TODO incremental update, output?
   var view = pulse.dataflow;
   _.mark.items.forEach(function(group) {
@@ -58530,28 +59311,26 @@ function parseParameters(def, spec, scope) {
  * Parse a data transform parameter.
  */
 function parseParameter$1(def, spec, scope) {
-  var type = def.type, value;
+  var type = def.type,
+      value = spec[def.name];
 
   if (type === 'index') {
     return parseIndexParameter(def, spec, scope);
+  } else if (value === undefined) {
+    if (def.required) {
+      error('Missing required ' + $(spec.type)
+          + ' parameter: ' + $(def.name));
+    }
+    return;
   } else if (type === 'param') {
     return parseSubParameters(def, spec, scope);
   } else if (type === 'projection') {
     return scope.projectionRef(spec[def.name]);
-  } else {
-    value = spec[def.name];
-    if (value === undefined) {
-      if (def.required) {
-        error('Missing required ' + $(spec.type)
-          + ' parameter: ' + $(def.name));
-      }
-      return;
-    }
-
-    return def.array && !isSignal(value)
-      ? value.map(function(v) { return parameterValue(def, v, scope); })
-      : parameterValue(def, value, scope);
   }
+
+  return def.array && !isSignal(value)
+    ? value.map(function(v) { return parameterValue(def, v, scope); })
+    : parameterValue(def, value, scope);
 }
 
 /**
@@ -58701,7 +59480,7 @@ function parseData(from, group, scope) {
 }
 
 function DataScope(scope, input, output, values, aggr) {
-  this.scope = scope; // parent scope object
+  this.scope = scope;   // parent scope object
   this.input = input;   // first operator in pipeline (tuple input)
   this.output = output; // last operator in pipeline (tuple output)
   this.values = values; // operator for accessing tuples (but not tuple flow)
@@ -58732,9 +59511,9 @@ DataScope.fromEntries = function(scope, entries) {
   return new DataScope(scope, input, output, values, aggr);
 };
 
-var prototype$71 = DataScope.prototype;
+var prototype$72 = DataScope.prototype;
 
-prototype$71.countsRef = function(scope, field, sort) {
+prototype$72.countsRef = function(scope, field, sort) {
   var ds = this,
       cache = ds.counts || (ds.counts = {}),
       k = fieldKey(field), v, a, p;
@@ -58808,27 +59587,27 @@ function cache(scope, ds, name, optype, field, counts, index) {
   return v;
 }
 
-prototype$71.tuplesRef = function() {
+prototype$72.tuplesRef = function() {
   return ref(this.values);
 };
 
-prototype$71.extentRef = function(scope, field) {
+prototype$72.extentRef = function(scope, field) {
   return cache(scope, this, 'extent', 'Extent', field, false);
 };
 
-prototype$71.domainRef = function(scope, field) {
+prototype$72.domainRef = function(scope, field) {
   return cache(scope, this, 'domain', 'Values', field, false);
 };
 
-prototype$71.valuesRef = function(scope, field, sort) {
+prototype$72.valuesRef = function(scope, field, sort) {
   return cache(scope, this, 'vals', 'Values', field, sort || true);
 };
 
-prototype$71.lookupRef = function(scope, field) {
+prototype$72.lookupRef = function(scope, field) {
   return cache(scope, this, 'lookup', 'TupleIndex', field, false);
 };
 
-prototype$71.indataRef = function(scope, field) {
+prototype$72.indataRef = function(scope, field) {
   return cache(scope, this, 'indata', 'TupleIndex', field, true, true);
 };
 
@@ -60016,15 +60795,15 @@ function Subscope(scope) {
   this._markpath = scope._markpath;
 }
 
-var prototype$72 = Scope.prototype = Subscope.prototype;
+var prototype$73 = Scope.prototype = Subscope.prototype;
 
 // ----
 
-prototype$72.fork = function() {
+prototype$73.fork = function() {
   return new Subscope(this);
 };
 
-prototype$72.toRuntime = function() {
+prototype$73.toRuntime = function() {
   return this.finish(), {
     background: this.background,
     operators:  this.operators,
@@ -60034,11 +60813,11 @@ prototype$72.toRuntime = function() {
   };
 };
 
-prototype$72.id = function() {
+prototype$73.id = function() {
   return (this._subid ? this._subid + ':' : 0) + this._id++;
 };
 
-prototype$72.add = function(op) {
+prototype$73.add = function(op) {
   this.operators.push(op);
   op.id = this.id();
   // if pre-registration references exist, resolve them now
@@ -60049,21 +60828,21 @@ prototype$72.add = function(op) {
   return op;
 };
 
-prototype$72.proxy = function(op) {
+prototype$73.proxy = function(op) {
   var vref = op instanceof Entry ? ref(op) : op;
   return this.add(Proxy$1({value: vref}));
 };
 
-prototype$72.addStream = function(stream) {
+prototype$73.addStream = function(stream) {
   return this.streams.push(stream), stream.id = this.id(), stream;
 };
 
-prototype$72.addUpdate = function(update) {
+prototype$73.addUpdate = function(update) {
   return this.updates.push(update), update;
 };
 
 // Apply metadata
-prototype$72.finish = function() {
+prototype$73.finish = function() {
   var name, ds;
 
   // annotate root
@@ -60103,40 +60882,40 @@ prototype$72.finish = function() {
 
 // ----
 
-prototype$72.pushState = function(encode, parent, lookup) {
+prototype$73.pushState = function(encode, parent, lookup) {
   this._encode.push(ref(this.add(Sieve$1({pulse: encode}))));
   this._parent.push(parent);
   this._lookup.push(lookup ? ref(this.proxy(lookup)) : null);
   this._markpath.push(-1);
 };
 
-prototype$72.popState = function() {
+prototype$73.popState = function() {
   this._encode.pop();
   this._parent.pop();
   this._lookup.pop();
   this._markpath.pop();
 };
 
-prototype$72.parent = function() {
+prototype$73.parent = function() {
   return peek(this._parent);
 };
 
-prototype$72.encode = function() {
+prototype$73.encode = function() {
   return peek(this._encode);
 };
 
-prototype$72.lookup = function() {
+prototype$73.lookup = function() {
   return peek(this._lookup);
 };
 
-prototype$72.markpath = function() {
+prototype$73.markpath = function() {
   var p = this._markpath;
   return ++p[p.length-1];
 };
 
 // ----
 
-prototype$72.fieldRef = function(field, name) {
+prototype$73.fieldRef = function(field, name) {
   if (isString(field)) return fieldRef(field, name);
   if (!field.signal) {
     error('Unsupported field reference: ' + $(field));
@@ -60154,7 +60933,7 @@ prototype$72.fieldRef = function(field, name) {
   return f;
 };
 
-prototype$72.compareRef = function(cmp) {
+prototype$73.compareRef = function(cmp) {
   function check(_) {
     return isSignal(_) ? (signal = true, ref(sig[_.signal])) : _;
   }
@@ -60169,7 +60948,7 @@ prototype$72.compareRef = function(cmp) {
     : compareRef(fields, orders);
 };
 
-prototype$72.keyRef = function(fields) {
+prototype$73.keyRef = function(fields) {
   function check(_) {
     return isSignal(_) ? (signal = true, ref(sig[_.signal])) : _;
   }
@@ -60183,7 +60962,7 @@ prototype$72.keyRef = function(fields) {
     : keyRef(fields);
 };
 
-prototype$72.sortRef = function(sort) {
+prototype$73.sortRef = function(sort) {
   if (!sort) return sort;
 
   // including id ensures stable sorting
@@ -60201,7 +60980,7 @@ prototype$72.sortRef = function(sort) {
 
 // ----
 
-prototype$72.event = function(source, type) {
+prototype$73.event = function(source, type) {
   var key = source + ':' + type;
   if (!this.events[key]) {
     var id = this.id();
@@ -60217,7 +60996,7 @@ prototype$72.event = function(source, type) {
 
 // ----
 
-prototype$72.addSignal = function(name, value) {
+prototype$73.addSignal = function(name, value) {
   if (this.signals.hasOwnProperty(name)) {
     error('Duplicate signal name: ' + $(name));
   }
@@ -60225,14 +61004,14 @@ prototype$72.addSignal = function(name, value) {
   return this.signals[name] = op;
 };
 
-prototype$72.getSignal = function(name) {
+prototype$73.getSignal = function(name) {
   if (!this.signals[name]) {
     error('Unrecognized signal name: ' + $(name));
   }
   return this.signals[name];
 };
 
-prototype$72.signalRef = function(s) {
+prototype$73.signalRef = function(s) {
   if (this.signals[s]) {
     return ref(this.signals[s]);
   } else if (!this.lambdas[s]) {
@@ -60241,7 +61020,7 @@ prototype$72.signalRef = function(s) {
   return ref(this.lambdas[s]);
 };
 
-prototype$72.parseLambdas = function() {
+prototype$73.parseLambdas = function() {
   var code = Object.keys(this.lambdas);
   for (var i=0, n=code.length; i<n; ++i) {
     var s = code[i],
@@ -60252,11 +61031,11 @@ prototype$72.parseLambdas = function() {
   }
 };
 
-prototype$72.property = function(spec) {
+prototype$73.property = function(spec) {
   return spec && spec.signal ? this.signalRef(spec.signal) : spec;
 };
 
-prototype$72.objectProperty = function(spec) {
+prototype$73.objectProperty = function(spec) {
   return (!spec || !isObject(spec)) ? spec
     : this.signalRef(spec.signal || objectLambda(spec));
 };
@@ -60277,7 +61056,7 @@ function objectLambda(obj) {
   return code + '}';
 }
 
-prototype$72.addBinding = function(name, bind) {
+prototype$73.addBinding = function(name, bind) {
   if (!this.bindings) {
     error('Nested signals do not support binding: ' + $(name));
   }
@@ -60286,55 +61065,55 @@ prototype$72.addBinding = function(name, bind) {
 
 // ----
 
-prototype$72.addScaleProj = function(name, transform) {
+prototype$73.addScaleProj = function(name, transform) {
   if (this.scales.hasOwnProperty(name)) {
     error('Duplicate scale or projection name: ' + $(name));
   }
   this.scales[name] = this.add(transform);
 }
 
-prototype$72.addScale = function(name, params) {
+prototype$73.addScale = function(name, params) {
   this.addScaleProj(name, Scale$1(params));
 };
 
-prototype$72.addProjection = function(name, params) {
+prototype$73.addProjection = function(name, params) {
   this.addScaleProj(name, Projection$1(params));
 };
 
-prototype$72.getScale = function(name) {
+prototype$73.getScale = function(name) {
   if (!this.scales[name]) {
     error('Unrecognized scale name: ' + $(name));
   }
   return this.scales[name];
 };
 
-prototype$72.projectionRef =
-prototype$72.scaleRef = function(name) {
+prototype$73.projectionRef =
+prototype$73.scaleRef = function(name) {
   return ref(this.getScale(name));
 };
 
-prototype$72.projectionType =
-prototype$72.scaleType = function(name) {
+prototype$73.projectionType =
+prototype$73.scaleType = function(name) {
   return this.getScale(name).params.type;
 };
 
 // ----
 
-prototype$72.addData = function(name, dataScope) {
+prototype$73.addData = function(name, dataScope) {
   if (this.data.hasOwnProperty(name)) {
     error('Duplicate data set name: ' + $(name));
   }
   return (this.data[name] = dataScope);
 };
 
-prototype$72.getData = function(name) {
+prototype$73.getData = function(name) {
   if (!this.data[name]) {
     error('Undefined data set name: ' + $(name));
   }
   return this.data[name];
 };
 
-prototype$72.addDataPipeline = function(name, entries) {
+prototype$73.addDataPipeline = function(name, entries) {
   if (this.data.hasOwnProperty(name)) {
     error('Duplicate data set name: ' + $(name));
   }
@@ -61195,11 +61974,11 @@ function View(spec, options) {
   cursor(this);
 }
 
-var prototype$70 = inherits(View, Dataflow);
+var prototype$71 = inherits(View, Dataflow);
 
 // -- DATAFLOW / RENDERING ----
 
-prototype$70.run = function(encode) {
+prototype$71.run = function(encode) {
   Dataflow.prototype.run.call(this, encode);
 
   var q = this._queue;
@@ -61211,7 +61990,7 @@ prototype$70.run = function(encode) {
   return this;
 };
 
-prototype$70.render = function(update) {
+prototype$71.render = function(update) {
   if (this._renderer) {
     if (this._resize) this._resize = 0, resizeRenderer(this);
     this._renderer.render(this._scenegraph.root, update);
@@ -61219,7 +61998,7 @@ prototype$70.render = function(update) {
   return this;
 };
 
-prototype$70.enqueue = function(items) {
+prototype$71.enqueue = function(items) {
   if (this._queue && items && items.length) {
     this._queue = this._queue.concat(items);
   }
@@ -61233,34 +62012,34 @@ function lookupSignal(view, name) {
     : view.error('Unrecognized signal name: ' + $(name));
 }
 
-prototype$70.signal = function(name, value, options) {
+prototype$71.signal = function(name, value, options) {
   var op = lookupSignal(this, name);
   return arguments.length === 1
     ? op.value
     : this.update(op, value, options);
 };
 
-prototype$70.scenegraph = function() {
+prototype$71.scenegraph = function() {
   return this._scenegraph;
 };
 
-prototype$70.background = function(_) {
+prototype$71.background = function(_) {
   return arguments.length ? (this._background = _, this._resize = 1, this) : this._background;
 };
 
-prototype$70.width = function(_) {
+prototype$71.width = function(_) {
   return arguments.length ? this.signal('width', _) : this.signal('width');
 };
 
-prototype$70.height = function(_) {
+prototype$71.height = function(_) {
   return arguments.length ? this.signal('height', _) : this.signal('height');
 };
 
-prototype$70.padding = function(_) {
+prototype$71.padding = function(_) {
   return arguments.length ? this.signal('padding', _) : this.signal('padding');
 };
 
-prototype$70.renderer = function(type) {
+prototype$71.renderer = function(type) {
   if (!arguments.length) return this._renderType;
   if (!renderModule(type)) this.error('Unrecognized renderer type: ' + type);
   if (type !== this._renderType) {
@@ -61273,7 +62052,7 @@ prototype$70.renderer = function(type) {
   return this;
 };
 
-prototype$70.loader = function(loader) {
+prototype$71.loader = function(loader) {
   if (!arguments.length) return this._loader;
   if (loader !== this._loader) {
     Dataflow.prototype.loader.call(this, loader);
@@ -61287,21 +62066,21 @@ prototype$70.loader = function(loader) {
 
 // -- EVENT HANDLING ----
 
-prototype$70.addEventListener = function(type, handler) {
+prototype$71.addEventListener = function(type, handler) {
   this._handler.on(type, handler);
 };
 
-prototype$70.removeEventListener = function(type, handler) {
+prototype$71.removeEventListener = function(type, handler) {
   this._handler.off(type, handler);
 };
 
-prototype$70.addSignalListener = function(name, handler) {
+prototype$71.addSignalListener = function(name, handler) {
   var s = lookupSignal(this, name),
       h = function() { handler(name, s.value); };
   this.on(s, null, (h.handler = handler, h));
 };
 
-prototype$70.removeSignalListener = function(name, handler) {
+prototype$71.removeSignalListener = function(name, handler) {
   var s = lookupSignal(this, name),
       t = s._targets || [],
       h = t.filter(function(op) {
@@ -61311,40 +62090,40 @@ prototype$70.removeSignalListener = function(name, handler) {
   if (h.length) t.remove(h[0]);
 };
 
-prototype$70.preventDefault = function(_) {
+prototype$71.preventDefault = function(_) {
   return arguments.length ? (this._preventDefault = _, this) : this._preventDefault;
 };
 
-prototype$70.tooltipHandler = function(_) {
+prototype$71.tooltipHandler = function(_) {
   var h = this._handler;
   return !arguments.length ? h.handleTooltip
     : (h.handleTooltip = (_ || Handler.prototype.handleTooltip), this);
 };
 
-prototype$70.events = events$1;
-prototype$70.finalize = finalize;
-prototype$70.hover = hover;
+prototype$71.events = events$1;
+prototype$71.finalize = finalize;
+prototype$71.hover = hover;
 
 // -- SIZING ----
-prototype$70.autosize = autosize;
+prototype$71.autosize = autosize;
 
 // -- DATA ----
-prototype$70.data = data;
-prototype$70.change = change;
-prototype$70.insert = insert;
-prototype$70.remove = remove;
+prototype$71.data = data;
+prototype$71.change = change;
+prototype$71.insert = insert;
+prototype$71.remove = remove;
 
 // -- INITIALIZATION ----
-prototype$70.initialize = initialize$1;
+prototype$71.initialize = initialize$1;
 
 // -- HEADLESS RENDERING ----
-prototype$70.toImageURL = renderToImageURL;
-prototype$70.toCanvas = renderToCanvas;
-prototype$70.toSVG = renderToSVG;
+prototype$71.toImageURL = renderToImageURL;
+prototype$71.toCanvas = renderToCanvas;
+prototype$71.toSVG = renderToSVG;
 
 // -- SAVE / RESTORE STATE ----
-prototype$70.getState = getState$1;
-prototype$70.setState = setState$1;
+prototype$71.getState = getState$1;
+prototype$71.setState = setState$1;
 
 transform('Bound', Bound);
 transform('Mark', Mark);
@@ -61373,7 +62152,7 @@ exports.scale = scale$1;
 exports.scheme = getScheme;
 exports.interpolate = getInterpolate;
 exports.interpolateRange = interpolateRange;
-exports.projection = projection$1;
+exports.projection = projection;
 exports.View = View;
 exports.parse = parse$2;
 exports.expressionFunction = expressionFunction;
@@ -61489,5 +62268,112 @@ Object.defineProperty(exports, '__esModule', { value: true });
 })));
 }).call(this,require("buffer").Buffer)
 
-},{"buffer":95,"canvas":95,"fs":95}]},{},[288])
+},{"buffer":96,"canvas":96,"fs":96}],290:[function(require,module,exports){
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+var d3_request_1 = require("d3-request");
+var d3_selection_1 = require("d3-selection");
+var hljs = require("highlight.js");
+var vega_embed_1 = require("vega-embed");
+var vega_embed_2 = require("vega-embed");
+vega_embed_2.config.editor_url = 'https://vega.github.io/new-editor';
+function trim(str) {
+    return str.replace(/^\s+|\s+$/g, '');
+}
+/* Anchors */
+d3_selection_1.selectAll('h2, h3, h4, h5, h6').each(function () {
+    var sel = d3_selection_1.select(this);
+    var name = sel.attr('id');
+    var title = sel.text();
+    sel.html('<a href="#' + name + '" class="anchor"><span class="octicon octicon-link"></span></a>' + trim(title));
+});
+/* Documentation */
+function renderExample($target, text) {
+    $target.classed('example', true);
+    $target.text('');
+    var vis = $target.append('div').attr('class', 'example-vis');
+    var code = $target.append('pre').attr('class', 'example-code')
+        .append('code').attr('class', 'json').text(text);
+    hljs.highlightBlock(code.node());
+    var spec = JSON.parse(text);
+    if (spec.data.url) {
+        // make url absolute
+        spec.data.url = window.location.origin + BASEURL + '/' + spec.data.url;
+    }
+    vega_embed_1.default(vis.node(), spec, {
+        mode: 'vega-lite',
+        renderer: 'svg',
+        actions: {
+            source: false,
+            export: false
+        }
+    }, function (err) {
+        if (err) {
+            console.error(err);
+        }
+    });
+}
+d3_selection_1.selectAll('.vl-example').each(function () {
+    var sel = d3_selection_1.select(this);
+    var name = sel.attr('data-name');
+    if (name) {
+        var dir = sel.attr('data-dir');
+        var fullUrl = BASEURL + '/examples/specs/' + (dir ? (dir + '/') : '') + name + '.vl.json';
+        d3_request_1.text(fullUrl, function (error, spec) {
+            if (error) {
+                console.error(error);
+            }
+            else {
+                renderExample(sel, spec);
+            }
+        });
+    }
+    else {
+        console.error('No "data-name" specified to import examples from');
+    }
+});
+/* Gallery */
+if (d3_selection_1.select('.gallery').empty() === false) {
+    renderGallery();
+}
+function renderGallery() {
+    d3_request_1.json(window.location.origin + BASEURL + '/examples/vl-examples.json', function (error, VL_SPECS) {
+        if (error) {
+            return console.warn(error);
+        }
+        d3_selection_1.selectAll('div.gallery').each(function () {
+            d3_selection_1.select(this).call(renderGalleryGroup);
+        });
+        function renderGalleryGroup(selection) {
+            var galleryGroupName = selection.attr('data-gallery-group');
+            var galleryGroupSpecs;
+            // try to retrieve specs for a gallery group from in vl-examples.json
+            try {
+                galleryGroupSpecs = VL_SPECS[galleryGroupName];
+            }
+            catch (error) {
+                console.log(error.message);
+                return;
+            }
+            var viz = selection.selectAll('.imagegroup').data(galleryGroupSpecs);
+            viz.exit().remove();
+            var imageGroup = viz.enter()
+                .append('a')
+                .attr('class', 'imagegroup')
+                .attr('href', function (d) { return 'https://vega.github.io/new-editor/?mode=vega-lite&spec=' + d.name; })
+                .attr('target', 'blank');
+            imageGroup.append('div')
+                .attr('class', 'image')
+                .style('background-image', function (d) { return 'url(' + window.location.origin + BASEURL + '/build/examples/images/' + d.name + '.vl.svg)'; })
+                .style('background-size', function (d) {
+                return (!d.galleryParameters || !d.galleryParameters.backgroundSize) ? 'cover' : d.galleryParameters.backgroundSize;
+            });
+            imageGroup.append('div')
+                .attr('class', 'image-title')
+                .text(function (d) { return d.title; });
+        }
+    });
+}
+
+},{"d3-request":100,"d3-selection":101,"highlight.js":103,"vega-embed":283}]},{},[290])
 //# sourceMappingURL=main.js.map
