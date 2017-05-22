@@ -222,7 +222,7 @@ function makeWalkTree(data: VgData[]) {
         node.source = dataSource.name;
 
         // if this node has more than one child, we will add a datasource automatically
-        if (node.numChildren() === 1 && dataSource.transform.length > 0) {
+        if (node.numChildren() === 1) {
           data.push(dataSource);
           const newData: VgData = {
             name: null,
