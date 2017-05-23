@@ -1,11 +1,9 @@
-import {SpawnSyncOptionsWithStringEncoding} from 'child_process';
-import {field, FieldDef} from '../../fielddef';
+import {field} from '../../fielddef';
 import {fieldExpr, TimeUnit} from '../../timeunit';
 import {TimeUnitTransform} from '../../transform';
 import {TEMPORAL} from '../../type';
-import {Dict, duplicate, extend, StringSet, vals} from '../../util';
-import {VgFormulaTransform, VgTransform} from '../../vega.schema';
-import {format} from '../axis/rules';
+import {Dict, duplicate, extend, vals} from '../../util';
+import {VgFormulaTransform} from '../../vega.schema';
 import {Model, ModelWithField} from '../model';
 import {DataFlowNode} from './dataflow';
 
