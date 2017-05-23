@@ -31,7 +31,7 @@
           "as": "people_median"
         }
       ],
-      "groupby": ["age"]
+      "groupBy": ["age"]
     }
   ],
   "layer": [

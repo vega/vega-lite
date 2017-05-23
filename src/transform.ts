@@ -71,7 +71,7 @@ export interface SummarizeTransform {
   /**
    * Array of fields we will be useing for group by
    */
-  groupby: string[];
+  groupBy?: string[];
 }
 
 export interface Summarize {

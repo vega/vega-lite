@@ -133,7 +133,8 @@ describe('compile/data/summary', function () {
           {aggregate: 'mean', field: 'Displacement', as: 'Displacement_mean'},
           {aggregate: 'sum', field: 'Acceleration', as: 'Acceleration_sum'}
         ],
-        groupby: ['Displacement_mean', 'Acceleration_sum']};
+        groupBy: ['Displacement_mean', 'Acceleration_sum']
+      };
 
       const model = parseUnitModel({
         mark: "point",
@@ -158,7 +159,7 @@ describe('compile/data/summary', function () {
         {aggregate: 'mean', field: 'Displacement', as: 'Displacement_mean'},
         {aggregate: 'max', field: 'Displacement', as: 'Displacement_max'},
         {aggregate: 'sum', field: 'Acceleration', as: 'Acceleration_sum'}],
-        groupby: ['Displacement_mean', 'Acceleration_sum']};
+        groupBy: ['Displacement_mean', 'Acceleration_sum']};
 
       const model = parseUnitModel({
         mark: "point",
