@@ -1,7 +1,7 @@
 {
   "$schema": "https://vega.github.io/schema/vega-lite/v2.json",
   "data": {"url": "data/cars.json"},
-  "vconcat": [{
+  "vConcat": [{
     "selection": {
       "brush": {
         "type": "interval", "encodings": ["x", "y"], "resolve": "global"

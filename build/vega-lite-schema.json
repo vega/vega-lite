@@ -608,7 +608,7 @@
                     },
                     "type": "array"
                 },
-                "vconcat": {
+                "vConcat": {
                     "items": {
                         "anyOf": [
                             {
@@ -626,7 +626,7 @@
                 }
             },
             "required": [
-                "vconcat"
+                "vConcat"
             ],
             "type": "object"
         },
@@ -664,7 +664,7 @@
                     "description": "An optional description of this mark for commenting purpose.",
                     "type": "string"
                 },
-                "hconcat": {
+                "hConcat": {
                     "items": {
                         "anyOf": [
                             {
@@ -739,7 +739,7 @@
                 }
             },
             "required": [
-                "hconcat"
+                "hConcat"
             ],
             "type": "object"
         }
