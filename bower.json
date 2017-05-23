@@ -1,6 +1,6 @@
 {
   "name": "vega-lite",
-  "main": "vega-lite.js",
+  "main": "build/vega-lite.js",
   "homepage": "https://github.com/vega/vega-lite",
   "authors": [
     "Kanit Wongsuphasawat <kanitw@gmail.com> (http://kanitw.yellowpigz.com)",
