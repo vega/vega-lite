@@ -144,12 +144,12 @@ export type RepeatSpec = GenericRepeatSpec<UnitSpec>;
 
 export interface GenericVConcatSpec<U extends GenericUnitSpec<any, any>> extends BaseSpec {
   // TODO: add GenericFacetSpec<U> | GenericfacetSpec<U>
-  vconcat: (GenericLayerSpec<U> | GenericRepeatSpec<U> | U)[];
+  vConcat: (GenericLayerSpec<U> | GenericRepeatSpec<U> | U)[];
 }
 
 export interface GenericHConcatSpec<U extends GenericUnitSpec<any, any>> extends BaseSpec {
   // TODO: add GenericFacetSpec<U> | GenericfacetSpec<U>
-  hconcat: (GenericLayerSpec<U> | GenericRepeatSpec<U> | U)[];
+  hConcat: (GenericLayerSpec<U> | GenericRepeatSpec<U> | U)[];
 }
 
 export type GenericConcatSpec<U extends GenericUnitSpec<any, any>> = GenericVConcatSpec<U> | GenericHConcatSpec<U>;
@@ -186,11 +186,11 @@ export function isConcatSpec(spec: GenericSpec<GenericUnitSpec<any, any>>): spec
 }
 
 export function isVConcatSpec(spec: GenericSpec<GenericUnitSpec<any, any>>): spec is GenericVConcatSpec<GenericUnitSpec<any, any>> {
-  return spec['vconcat'] !== undefined;
+  return spec['vConcat'] !== undefined;
 }
 
 export function isHConcatSpec(spec: GenericSpec<GenericUnitSpec<any, any>>): spec is GenericHConcatSpec<GenericUnitSpec<any, any>> {
-  return spec['hconcat'] !== undefined;
+  return spec['hConcat'] !== undefined;
 }
 
 /**
@@ -272,18 +272,18 @@ function normalizeRepeat(spec: GenericRepeatSpec<CompositeUnitSpec>, config: Con
 }
 
 function normalizeVConcat(spec: GenericVConcatSpec<CompositeUnitSpec>, config: Config): ConcatSpec {
-  const {vconcat: vconcat, ...rest} = spec;
+  const {vConcat: vConcat, ...rest} = spec;
   return {
     ...rest,
-    vconcat: vconcat.map((subspec) => normalizeNonFacet(subspec, config))
+    vConcat: vConcat.map((subspec) => normalizeNonFacet(subspec, config))
   };
 }
 
 function normalizeHConcat(spec: GenericHConcatSpec<CompositeUnitSpec>, config: Config): ConcatSpec {
-  const {hconcat: hconcat, ...rest} = spec;
+  const {hConcat: hConcat, ...rest} = spec;
   return {
     ...rest,
-    hconcat: hconcat.map((subspec) => normalizeNonFacet(subspec, config))
+    hConcat: hConcat.map((subspec) => normalizeNonFacet(subspec, config))
   };
 }
 
@@ -443,7 +443,7 @@ function fieldDefIndex(spec: GenericSpec<GenericUnitSpec<any, any>>, dict: any =
     accumulate(dict, vlEncoding.fieldDefs(spec.spec));
     fieldDefIndex(spec.spec, dict);
   } else if (isConcatSpec(spec)) {
-    const childSpec = isVConcatSpec(spec) ? spec.vconcat : spec.hconcat;
+    const childSpec = isVConcatSpec(spec) ? spec.vConcat : spec.hConcat;
     childSpec.forEach(child => {
       if (isUnitSpec(child)) {
         accumulate(dict, vlEncoding.fieldDefs(child.encoding));

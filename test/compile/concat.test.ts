@@ -4,9 +4,9 @@ import {parseConcatModel} from '../util';
 
 describe('Concat', function() {
   describe('merge scale domains', () => {
-    it('should instantiate all children in vconcat', () => {
+    it('should instantiate all children in vConcat', () => {
       const model = parseConcatModel({
-        vconcat: [{
+        vConcat: [{
           mark: 'point',
           encoding: {
             x: {field: 'a', type: 'ordinal'}
@@ -24,9 +24,9 @@ describe('Concat', function() {
       assert(model.isVConcat);
     });
 
-    it('should instantiate all children in hconcat', () => {
+    it('should instantiate all children in hConcat', () => {
       const model = parseConcatModel({
-        hconcat: [{
+        hConcat: [{
           mark: 'point',
           encoding: {
             x: {field: 'a', type: 'ordinal'}
@@ -44,9 +44,9 @@ describe('Concat', function() {
       assert(!model.isVConcat);
     });
 
-    it('should create correct layout for vconcat', () => {
+    it('should create correct layout for vConcat', () => {
       const model = parseConcatModel({
-        vconcat: [{
+        vConcat: [{
           mark: 'point',
           encoding: {
           }
@@ -66,9 +66,9 @@ describe('Concat', function() {
       });
     });
 
-    it('should create correct layout for hconcat', () => {
+    it('should create correct layout for hConcat', () => {
       const model = parseConcatModel({
-        hconcat: [{
+        hConcat: [{
           mark: 'point',
           encoding: {
           }
