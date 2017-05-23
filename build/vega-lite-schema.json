@@ -4958,7 +4958,7 @@
         "SummarizeTransform": {
             "additionalProperties": false,
             "properties": {
-                "groupby": {
+                "groupBy": {
                     "description": "Array of fields we will be useing for group by",
                     "items": {
                         "type": "string"
@@ -4974,7 +4974,6 @@
                 }
             },
             "required": [
-                "groupby",
                 "summarize"
             ],
             "type": "object"
