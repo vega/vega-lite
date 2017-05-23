@@ -1,5 +1,6 @@
 {
     "$schema": "http://vega.github.io/schema/vega/v3.0.json",
+    "description": "Average Stock prices of 5 Tech Companies.",
     "autosize": "pad",
     "padding": 5,
     "data": [
@@ -38,18 +39,10 @@
     "signals": [
         {
             "name": "width",
-            "update": "max(layer_0_width)"
-        },
-        {
-            "name": "height",
-            "update": "max(layer_0_height)"
-        },
-        {
-            "name": "layer_0_width",
             "update": "21"
         },
         {
-            "name": "layer_0_height",
+            "name": "height",
             "update": "200"
         }
     ],
@@ -72,7 +65,7 @@
             },
             "marks": [
                 {
-                    "name": "layer_0_marks",
+                    "name": "marks",
                     "type": "rule",
                     "from": {
                         "data": "source_0"
@@ -95,15 +88,11 @@
                                 "scale": "color",
                                 "field": "symbol"
                             },
-                            "opacity": {
-                                "value": 0.5
-                            },
                             "strokeWidth": {
                                 "value": 2
                             }
                         }
-                    },
-                    "clip": true
+                    }
                 }
             ]
         }
