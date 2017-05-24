@@ -47,11 +47,14 @@ function parsePathMark(model: UnitModel) {
   // FIXME: replace this with more general case for composition
   const details = detailFields(model);
 
+  const role = model.markDef.role || markCompiler[mark].defaultRole;
+
   const pathMarks: any = [
     {
       name: model.getName('marks'),
       type: markCompiler[mark].vgMark,
       ...(clip(model)),
+      ...(role? {role} : {}),
       // If has subfacet for line/area group, need to use faceted data from below.
       // FIXME: support sorting path order (in connected scatterplot)
       from: {data: (details.length > 0 ? FACETED_PATH_PREFIX : '') + model.requestDataName(MAIN)},
