@@ -3,6 +3,9 @@ import {select, selectAll, Selection} from 'd3-selection';
 import * as hljs from 'highlight.js';
 import embed from 'vega-embed';
 import {config} from 'vega-embed';
+import {runStreamingExample} from './streaming';
+
+window['runStreamingExample'] = runStreamingExample;
 
 declare const BASEURL: string;
 
