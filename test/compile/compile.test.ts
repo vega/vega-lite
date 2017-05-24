@@ -26,10 +26,7 @@ describe('Compile', function() {
       }).spec;
 
       assert.equal(spec.padding, 5);
-      assert.deepEqual(spec.autosize, {
-        type: 'pad',
-        resize: true
-      });
+      assert.equal(spec.autosize, 'pad');
       assert.deepEqual(spec.signals, [
         {
           name: 'width',
@@ -56,10 +53,7 @@ describe('Compile', function() {
       }).spec;
 
       assert.equal(spec.padding, 123);
-      assert.deepEqual(spec.autosize, {
-        type: 'pad',
-        resize: true
-      });
+      assert.equal(spec.autosize, 'pad');
       assert.deepEqual(spec.signals, [
         {
           name: 'width',
@@ -73,6 +67,16 @@ describe('Compile', function() {
 
       assert.equal(spec.data.length, 1); // just source.
       assert.equal(spec.marks.length, 1); // just the root group
+    });
+
+    it('should set resize to true if requested', () => {
+      const spec = compile({
+        "autoResize": true,
+        "mark": "point",
+        "encoding": {}
+      }).spec;
+
+      assert(spec.autosize.resize);
     });
   });
 });

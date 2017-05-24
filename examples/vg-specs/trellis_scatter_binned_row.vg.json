@@ -1,10 +1,7 @@
 {
     "$schema": "http://vega.github.io/schema/vega/v3.0.json",
     "description": "A trellis scatterplot showing Horsepower and Miles per gallons, faceted by binned values of Acceleration.",
-    "autosize": {
-        "type": "pad",
-        "resize": true
-    },
+    "autosize": "pad",
     "padding": 5,
     "data": [
         {
