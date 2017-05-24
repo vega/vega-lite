@@ -50,7 +50,7 @@ function removeUnnecessaryNodes(node: DataFlowNode) {
  */
 function cloneSubtree(facet: FacetNode) {
   function clone(node: DataFlowNode): DataFlowNode[] {
-    if (!(node instanceof OrderNode)) {  // we can ignore order ndoes beacuse they don't change the scale domain
+    if (!(node instanceof OrderNode)) {  // we can ignore order nodes beacuse they don't change the scale domain
       const copy = node.clone();
 
       if (copy instanceof OutputNode) {
@@ -58,15 +58,10 @@ function cloneSubtree(facet: FacetNode) {
         copy.source = newName;
 
         facet.model.component.data.outputNodes[newName] = copy;
-
-        flatten(node.children.map(clone)).forEach((n: DataFlowNode) => n.parent = copy);
       } else if (copy instanceof AggregateNode || copy instanceof StackNode) {
         copy.addDimensions(facet.fields);
-
-        flatten(node.children.map(clone)).forEach((n: DataFlowNode) => n.parent = copy);
-      } else {
-        flatten(node.children.map(clone)).forEach((n: DataFlowNode) => n.parent = copy);
       }
+      flatten(node.children.map(clone)).forEach((n: DataFlowNode) => n.parent = copy);
 
       return [copy];
     }
