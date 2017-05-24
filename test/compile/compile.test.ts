@@ -26,7 +26,10 @@ describe('Compile', function() {
       }).spec;
 
       assert.equal(spec.padding, 5);
-      assert.equal(spec.autosize, 'pad');
+      assert.deepEqual(spec.autosize, {
+        type: 'pad',
+        resize: true
+      });
       assert.deepEqual(spec.signals, [
         {
           name: 'width',
@@ -53,7 +56,10 @@ describe('Compile', function() {
       }).spec;
 
       assert.equal(spec.padding, 123);
-      assert.equal(spec.autosize, 'pad');
+      assert.deepEqual(spec.autosize, {
+        type: 'pad',
+        resize: true
+      });
       assert.deepEqual(spec.signals, [
         {
           name: 'width',

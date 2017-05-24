@@ -59,7 +59,10 @@ function assemble(model: Model, topLevelProperties: TopLevelProperties) {
   const output = {
     $schema: 'http://vega.github.io/schema/vega/v3.0.json',
     ...(model.description ? {description: model.description} : {}),
-    autosize: 'pad', // By using Vega layout, we don't support custom autosize
+    autosize: {
+      type: 'pad', // By using Vega layout, we don't support custom autosize
+      resize: true
+    },
     ...topLevelProperties,
     data: [].concat(
       model.assembleSelectionData([]),
