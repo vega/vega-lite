@@ -1,15 +1,13 @@
-import {Channel, COLUMN, ROW, X, Y} from '../channel';
+import {Channel, COLUMN, ROW, ScaleChannel} from '../channel';
 import {Config} from '../config';
-import {MAIN} from '../data';
 import {reduce} from '../encoding';
 import {Facet} from '../facet';
 import {FieldDef, normalize, title as fieldDefTitle} from '../fielddef';
 import * as log from '../log';
 import {FILL_STROKE_CONFIG} from '../mark';
+import {initFacetResolve, ResolveMapping} from '../resolve';
 import {FacetSpec} from '../spec';
-import {StackProperties} from '../stack';
-import {contains, Dict, extend, flatten, keys, stringValue, vals} from '../util';
-import {FontWeight, VgSignal} from '../vega.schema';
+import {contains, Dict, keys, stringValue} from '../util';
 import {
   isDataRefDomain,
   isDataRefUnionedDomain,
@@ -19,17 +17,14 @@ import {
   VgEncodeEntry,
   VgLayout
 } from '../vega.schema';
-import {parseGridAxis, parseMainAxis} from './axis/parse';
-import {gridShow} from './axis/rules';
+import {VgScale, VgSignal} from '../vega.schema';
 import {applyConfig, buildModel, formatSignalRef} from './common';
 import {assembleData, assembleFacetData, FACET_SCALE_PREFIX} from './data/assemble';
 import {parseData} from './data/parse';
-import {getHeaderType, HeaderChannel, HeaderComponent, LayoutHeaderComponent} from './layout/header';
+import {getHeaderType, HeaderChannel, HeaderComponent} from './layout/header';
 import {labels} from './legend/encode';
 import {Model, ModelWithField} from './model';
 import {RepeaterValue, replaceRepeaterInFacet} from './repeat';
-import parseScaleComponent from './scale/parse';
-import {UnitModel} from './unit';
 
 export class FacetModel extends ModelWithField {
   public readonly facet: Facet<string>;
@@ -38,8 +33,12 @@ export class FacetModel extends ModelWithField {
 
   public readonly children: Model[];
 
+  private readonly resolve: ResolveMapping;
+
   constructor(spec: FacetSpec, parent: Model, parentGivenName: string, repeater: RepeaterValue, config: Config) {
     super(spec, parent, parentGivenName, config);
+
+    this.resolve = initFacetResolve(spec.resolve || {});
 
     this.child = buildModel(spec.spec, this, this.getName('child'), undefined, repeater, config);
     this.children = [this.child];
@@ -100,12 +99,10 @@ export class FacetModel extends ModelWithField {
 
     child.parseScale();
 
-    const scaleComponent = this.component.scales = {};
+    const scaleComponent: Dict<VgScale> = this.component.scales = {};
 
-    // Then, move shared/union from its child spec.
-    keys(child.component.scales).forEach(channel => {
-      // TODO: correctly implement independent scale
-      if (true) { // if shared/union scale
+    keys(child.component.scales).forEach((channel: ScaleChannel) => {
+      if (this.resolve[channel].scale === 'shared') {
         const scale = scaleComponent[channel] = child.component.scales[channel];
 
         const scaleNameWithoutPrefix = scale.name.substr(child.getName('').length);
@@ -210,10 +207,7 @@ export class FacetModel extends ModelWithField {
   private mergeChildAxis(channel: 'x' | 'y') {
     const {child} = this;
     if (child.component.axes[channel]) {
-      // TODO: read from the resolve
-      const axisResolve = 'shared';
-
-      if (axisResolve === 'shared') {
+      if (this.resolve[channel].axis === 'shared') {
         // For shared axis, move the axes to facet's header or footer
         const headerChannel = channel === 'x' ? 'column' : 'row';
 
@@ -234,13 +228,13 @@ export class FacetModel extends ModelWithField {
   public parseLegend() {
     this.child.parseLegend();
 
-    // TODO: support legend for independent non-position scale across facets
-    // TODO: support legend for field reference of parent data (e.g., for SPLOM)
-
-    // For now, assuming that non-positional scales are always shared across facets
-    // Thus, just move all legends from its child
-    this.component.legends = this.child.component.legends;
-    this.child.component.legends = {};
+    this.component.legends = {};
+    keys(this.child.component.legends).forEach((channel: ScaleChannel) => {
+      if (this.resolve[channel].legend === 'shared') {
+        this.component.legends[channel] = this.child.component.legends[channel];
+        delete this.child.component.legends[channel];
+      }
+    });
   }
 
   public assembleData(): VgData[] {

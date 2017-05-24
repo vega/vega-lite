@@ -129,6 +129,8 @@ export interface GenericFacetSpec<U extends GenericUnitSpec<any, any>> extends B
 
   // TODO: support facet of facet
   spec: GenericLayerSpec<U> | GenericRepeatSpec<U> | U;
+
+  resolve?: ResolveMapping;
 }
 
 export type FacetSpec = GenericFacetSpec<UnitSpec>;
