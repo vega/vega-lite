@@ -63,8 +63,6 @@ export class LayerModel extends Model {
   }
 
   public parseScale(this: LayerModel) {
-    const model = this;
-
     const scaleComponent: Dict<VgScale> = this.component.scales = {};
 
     for (const child of this.children) {
@@ -89,7 +87,7 @@ export class LayerModel extends Model {
 
           // rename child scale to parent scales
           const scaleNameWithoutPrefix = childScale.name.substr(child.getName('').length);
-          const newName = model.scaleName(scaleNameWithoutPrefix, true);
+          const newName = this.scaleName(scaleNameWithoutPrefix, true);
           child.renameScale(childScale.name, newName);
           childScale.name = newName;
 
@@ -111,6 +109,7 @@ export class LayerModel extends Model {
 
     for (const child of this.children) {
       child.parseAxisAndHeader();
+
       keys(child.component.axes).forEach((channel: SpatialScaleChannel) => {
         if ((this.resolve[channel] as SpatialResolve).axis === 'shared') {
           // If shared/union axis

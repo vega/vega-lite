@@ -210,11 +210,10 @@ export class FacetModel extends ModelWithField {
   private mergeChildAxis(channel: 'x' | 'y') {
     const {child} = this;
     if (child.component.axes[channel]) {
-      // TODO: read these from the resolve syntax
-      const scaleResolve = 'shared';
+      // TODO: read from the resolve
       const axisResolve = 'shared';
 
-      if (scaleResolve === 'shared' && axisResolve === 'shared') {
+      if (axisResolve === 'shared') {
         // For shared axis, move the axes to facet's header or footer
         const headerChannel = channel === 'x' ? 'column' : 'row';
 
