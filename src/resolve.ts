@@ -1,4 +1,4 @@
-import {NonspatialScaleChannel, SCALE_CHANNELS, SPATIAL_SCALE_CHANNELS, SpatialScaleChannel, UNIT_SCALE_CHANNELS} from './channel';
+import {Channel, NONSPATIAL_SCALE_CHANNELS, SPATIAL_SCALE_CHANNELS, UNIT_SCALE_CHANNELS} from './channel';
 import * as log from './log';
 import {contains} from './util';
 
@@ -28,10 +28,10 @@ export type ResolveMapping = {
   shape?: NonspatialResolve
 };
 
-export function initLayerResolve(resolve: ResolveMapping): ResolveMapping {
+function initResolve(resolve: ResolveMapping, defaultScaleResolve: (channel: Channel) => 'shared'| 'independent') {
   const out: ResolveMapping = {};
   UNIT_SCALE_CHANNELS.forEach(channel => {
-    const res: Resolve = resolve[channel] || {scale: 'shared'};
+    const res: Resolve = resolve[channel] || {scale: defaultScaleResolve(channel)};
     const guide = contains(SPATIAL_SCALE_CHANNELS, channel) ? 'axis' : 'legend';
 
     if (res.scale === 'independent' && (res['axis'] === 'shared' || res['legend'] === 'shared')) {
@@ -45,4 +45,12 @@ export function initLayerResolve(resolve: ResolveMapping): ResolveMapping {
   });
 
   return out;
+}
+
+export function initLayerResolve(resolve: ResolveMapping): ResolveMapping {
+  return initResolve(resolve, channel => 'shared');
+}
+
+export function initRepeatResolve(resolve: ResolveMapping): ResolveMapping {
+  return initResolve(resolve, channel => (contains(NONSPATIAL_SCALE_CHANNELS, channel) ? 'shared' : 'independent'));
 }

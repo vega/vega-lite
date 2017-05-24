@@ -471,6 +471,30 @@
                 "repeat": {
                     "$ref": "#/definitions/Repeat"
                 },
+                "resolve": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "color": {
+                            "$ref": "#/definitions/NonspatialResolve"
+                        },
+                        "opacity": {
+                            "$ref": "#/definitions/NonspatialResolve"
+                        },
+                        "shape": {
+                            "$ref": "#/definitions/NonspatialResolve"
+                        },
+                        "size": {
+                            "$ref": "#/definitions/NonspatialResolve"
+                        },
+                        "x": {
+                            "$ref": "#/definitions/SpatialResolve"
+                        },
+                        "y": {
+                            "$ref": "#/definitions/SpatialResolve"
+                        }
+                    },
+                    "type": "object"
+                },
                 "spec": {
                     "anyOf": [
                         {
@@ -2975,6 +2999,30 @@
                 },
                 "repeat": {
                     "$ref": "#/definitions/Repeat"
+                },
+                "resolve": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "color": {
+                            "$ref": "#/definitions/NonspatialResolve"
+                        },
+                        "opacity": {
+                            "$ref": "#/definitions/NonspatialResolve"
+                        },
+                        "shape": {
+                            "$ref": "#/definitions/NonspatialResolve"
+                        },
+                        "size": {
+                            "$ref": "#/definitions/NonspatialResolve"
+                        },
+                        "x": {
+                            "$ref": "#/definitions/SpatialResolve"
+                        },
+                        "y": {
+                            "$ref": "#/definitions/SpatialResolve"
+                        }
+                    },
+                    "type": "object"
                 },
                 "spec": {
                     "anyOf": [
