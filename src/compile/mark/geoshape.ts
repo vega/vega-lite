@@ -20,12 +20,12 @@ export const geoshape: MarkCompiler = {
   },
   postEncodingTransform: (model: UnitModel): VgGeoShapeTransform[] => {
     const {encoding} = model;
-    const field: FieldDef<Field> = encoding.shape && isFieldDef(encoding.shape) ? encoding.shape.field : undefined;
+    const fieldDef: FieldDef<Field> = encoding.shape && isFieldDef(encoding.shape) ? encoding.shape.field : undefined;
     return [{
       type: 'geoshape',
       projection: model.getName('projection'),
       as: 'shape',
-      ...field ? {field: field} : {},
+      ...fieldDef ? {field: `datum[${fieldDef}]`} : {},
     } as VgGeoShapeTransform];
   }
 };

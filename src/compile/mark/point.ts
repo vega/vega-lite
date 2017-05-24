@@ -15,10 +15,10 @@ function encodeEntry(model: UnitModel, fixedShape?: 'circle' | 'square') {
 
   return {
     ...isProjection(encoding.x) ? {
-      x: {'field': (encoding.x as FieldDef<Field>).field as string + '_geo'},
+      x: {'field': `${(encoding.x as FieldDef<Field>).field as string}_geo`},
     } : mixins.pointPosition('x', model, ref.midX(width, config)),
     ...isProjection(encoding.y) ? {
-      y: {'field': (encoding.y as FieldDef<Field>).field as string + '_geo'},
+      y: {'field': `${(encoding.y as FieldDef<Field>).field as string}_geo`},
     } : mixins.pointPosition('y', model, ref.midY(height, config)),
     ...mixins.nonPosition('size', model),
     ...mixins.color(model),
