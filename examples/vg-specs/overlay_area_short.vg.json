@@ -177,6 +177,7 @@
                 {
                     "name": "layer_1_marks",
                     "type": "line",
+                    "role": "lineOverlay",
                     "from": {
                         "data": "data_1"
                     },
