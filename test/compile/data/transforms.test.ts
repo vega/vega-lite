@@ -69,11 +69,11 @@ describe('compile/data/transforms', () => {
           "from": {
             "data": {"url": "data/lookup_people.csv"},
             "key": "name",
-            'fields': ['age', 'height']
+            "fields": ["age", "height"]
           }
         }],
-        'mark': 'bar',
-        'encoding': {}
+        "mark": "bar",
+        "encoding": {}
       });
 
       const t = parseTransformArray(model);
@@ -88,11 +88,11 @@ describe('compile/data/transforms', () => {
 
     it('should create node for flat lookup', function () {
       const lookup = new LookupNode({
-          'lookup': 'person',
-          'from': {
-            'data': {'url': 'data/lookup_people.csv'},
-            'key': 'name',
-            'fields': ['age', 'height']
+          "lookup": "person",
+          "from": {
+            "data": {"url": "data/lookup_people.csv"},
+            "key": "name",
+            "fields": ["age", "height"]
           }
         }, 'lookup_0');
 
@@ -107,12 +107,12 @@ describe('compile/data/transforms', () => {
 
     it('should create node for nested lookup', function () {
       const lookup = new LookupNode({
-          'lookup': 'person',
-          'from': {
-            'data': {'url': 'data/lookup_people.csv'},
-            'key': 'name'
+          "lookup": "person",
+          "from": {
+            "data": {"url": "data/lookup_people.csv"},
+            "key": "name"
           },
-          'as': 'foo'
+          "as": "foo"
         }, 'lookup_0');
 
       assert.deepEqual<VgLookupTransform>(lookup.assemble(), {
@@ -127,10 +127,10 @@ describe('compile/data/transforms', () => {
     it('should warn if fields are not specified and as is missing', function () {
       log.runLocalLogger((localLogger) => {
         const lookup = new LookupNode({
-            'lookup': 'person',
-            'from': {
-              'data': {'url': 'data/lookup_people.csv'},
-              'key': 'name'
+            "lookup": "person",
+            "from": {
+              "data": {"url": "data/lookup_people.csv"},
+              "key": "name"
             }
           }, 'lookup_0');
         lookup.assemble();
