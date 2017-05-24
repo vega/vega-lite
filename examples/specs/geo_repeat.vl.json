@@ -1,6 +1,11 @@
 {
   "$schema": "https://vega.github.io/schema/vega-lite/v2.json",
   "repeat": {"row": ["population", "engineers", "hurricanes"]},
+  "resolve": {
+    "color": {
+      "scale": "independent"
+    }
+  },
   "spec": {
     "mark": "geoshape",
     "data": {
@@ -23,9 +28,7 @@
         "fields": ["population", "engineers", "hurricanes"]
       }
     }],
-    "projection": {
-      "type": "albersUsa"
-    },
+  "projection": {"type": "albersUsa","scale": 400,"translate": [-180,70]},
     "encoding": {
       "color": {
         "field": {"repeat": "row"},
