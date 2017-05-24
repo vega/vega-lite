@@ -1,40 +1,26 @@
 {
   "$schema": "https://vega.github.io/schema/vega-lite/v2.json",
   "mark": "geoshape",
-  "data": {
-    "url": "data/income.json"
-  },
-  "transform": [{
-    "lookup": "id",
-    "from": {
-      "data": {
-        "url": "data/us-10m.json",
-        "format": {
-          "type": "topojson",
-          "feature": "states"
-        }
+  "data": {"url": "data/income.json"},
+  "transform": [
+    {
+      "lookup": "id",
+      "from": {
+        "data": {
+          "url": "data/us-10m.json",
+          "format": {"type": "topojson","feature": "states"}
+        },
+        "key": "id"
       },
-      "key": "id"
-    },
-    "as": "geo"
-  }],
-  "projection": {
-    "type": "albersUsa"
-  },
-  "encoding": {
-    "shape": {
-      "field": "geo"
-    },
-    "color": {
-      "field": "pct",
-      "type": "quantitative"
-    },
-    "row": {
-      "field": "group",
-      "type": "nominal"
-    },
-    "opacity": {
-      "value": 0.7
+      "as": "geo"
     }
-  }
+  ],
+  "projection": {"type": "albersUsa","scale": 400,"translate": [150,90]},
+  "encoding": {
+    "shape": {"field": "geo"},
+    "color": {"field": "pct","type": "quantitative"},
+    "row": {"field": "group","type": "nominal"},
+    "opacity": {"value": 0.7}
+  },
+  "config": {}
 }
