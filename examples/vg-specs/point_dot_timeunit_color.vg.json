@@ -1,9 +1,6 @@
 {
     "$schema": "http://vega.github.io/schema/vega/v3.0.json",
-    "autosize": {
-        "type": "pad",
-        "resize": true
-    },
+    "autosize": "pad",
     "padding": 5,
     "data": [
         {

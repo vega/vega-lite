@@ -18,7 +18,7 @@ These operators include [`layer`](layer.html), [`facet`](facet.html), [`concat`]
 
 Any kind of top-level specifications (such as a standalone single view specification) can contain the following properties:
 
-__TODO: Add TopLevelProperties for `$schema`, `background`, `padding`, `config`. (Please look at toplevelprops.ts for now)__
+__TODO: Add TopLevelProperties for `$schema`, `background`, `padding`, `autoResize`, `config`. (Please look at toplevelprops.ts for now)__
 
 ## Single View Specifications
 {:#single-view-spec}
@@ -30,6 +30,7 @@ __TODO: Add TopLevelProperties for `$schema`, `background`, `padding`, `config`.
   "$schema": "https://vega.github.io/schema/vega-lite/v2.json",
   "background": ...,
   "padding": ...,
+  "autoResize": ...,
   "config": ...,
 
   // Properties for any single view specifications

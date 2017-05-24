@@ -56,14 +56,15 @@ function assemble(model: Model, topLevelProperties: TopLevelProperties) {
   // Config with Vega-Lite only config removed.
   const vgConfig = model.config ? stripConfig(model.config) : undefined;
 
+  // autoResize has to be put under autosize
+  const {autoResize, ...topLevelProps} = topLevelProperties;
+
   const output = {
     $schema: 'http://vega.github.io/schema/vega/v3.0.json',
     ...(model.description ? {description: model.description} : {}),
-    autosize: {
-      type: 'pad', // By using Vega layout, we don't support custom autosize
-      resize: true
-    },
-    ...topLevelProperties,
+    // By using Vega layout, we don't support custom autosize
+    autosize: topLevelProperties.autoResize ? {type: 'pad', resize: true} : 'pad',
+    ...topLevelProps,
     data: [].concat(
       model.assembleSelectionData([]),
       model.assembleData()

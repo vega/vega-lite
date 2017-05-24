@@ -1,10 +1,7 @@
 {
     "$schema": "http://vega.github.io/schema/vega/v3.0.json",
     "description": "Average Stock prices of 5 Tech Companies.",
-    "autosize": {
-        "type": "pad",
-        "resize": true
-    },
+    "autosize": "pad",
     "padding": 5,
     "data": [
         {
