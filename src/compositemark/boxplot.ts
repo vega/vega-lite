@@ -155,7 +155,7 @@ export function normalizeBoxPlot(spec: GenericUnitSpec<Encoding<Field>, BOXPLOT 
           [continuousAxis]: medianFieldDef,
           ...nonPositionEncoding,
           ...midTickAndBarSizeChannelDef,
-          'color': {'value' : 'white'}
+          color: {value : 'white'}
         }
       }
     ]
