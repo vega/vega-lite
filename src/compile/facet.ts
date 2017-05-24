@@ -146,7 +146,8 @@ export class FacetModel extends ModelWithField {
           groupby: [].concat(
             this.channelHasField(ROW) ? [this.field(ROW)] : [],
             this.channelHasField(COLUMN) ? [this.field(COLUMN)] : []
-          )
+          ),
+          aggregate:{cross: true}
         }
       },
       encode: {

@@ -269,7 +269,10 @@
                             "groupby": [
                                 "Cylinders",
                                 "Origin"
-                            ]
+                            ],
+                            "aggregate": {
+                                "cross": true
+                            }
                         }
                     },
                     "encode": {

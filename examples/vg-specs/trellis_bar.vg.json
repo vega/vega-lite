@@ -231,7 +231,10 @@
                             "data": "source_0",
                             "groupby": [
                                 "gender"
-                            ]
+                            ],
+                            "aggregate": {
+                                "cross": true
+                            }
                         }
                     },
                     "encode": {

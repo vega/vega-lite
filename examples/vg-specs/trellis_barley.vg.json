@@ -217,7 +217,10 @@
                             "data": "source_0",
                             "groupby": [
                                 "site"
-                            ]
+                            ],
+                            "aggregate": {
+                                "cross": true
+                            }
                         }
                     },
                     "encode": {

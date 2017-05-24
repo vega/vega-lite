@@ -194,7 +194,10 @@
                             "data": "source_0",
                             "groupby": [
                                 "MPAA_Rating"
-                            ]
+                            ],
+                            "aggregate": {
+                                "cross": true
+                            }
                         }
                     },
                     "encode": {

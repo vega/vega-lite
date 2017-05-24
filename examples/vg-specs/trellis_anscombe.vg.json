@@ -195,7 +195,10 @@
                             "data": "source_0",
                             "groupby": [
                                 "Series"
-                            ]
+                            ],
+                            "aggregate": {
+                                "cross": true
+                            }
                         }
                     },
                     "encode": {
