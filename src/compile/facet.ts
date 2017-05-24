@@ -136,6 +136,9 @@ export class FacetModel extends ModelWithField {
   public parseMark() {
     this.child.parseMark();
 
+    // if we facet by two dimensions, we need to add a cross operator to the aggregation
+    // so that we create all groups
+    const isCrossedFacet = this.channelHasField(ROW) && this.channelHasField(COLUMN);
     this.component.mark = [{
       name: this.getName('cell'),
       type: 'group',
@@ -146,9 +149,16 @@ export class FacetModel extends ModelWithField {
           groupby: [].concat(
             this.channelHasField(ROW) ? [this.field(ROW)] : [],
             this.channelHasField(COLUMN) ? [this.field(COLUMN)] : []
-          )
+          ),
+          ...(isCrossedFacet ? {aggregate: {
+            cross: true
+          }}: {})
         }
       },
+      ...(isCrossedFacet ? {sort: {
+        field: [this.field(ROW, {expr: 'datum'}), this.field(COLUMN, {expr: 'datum'})],
+        order: ['ascending', 'ascending']
+      }} : {}),
       encode: {
         update: getFacetGroupProperties(this)
       }
