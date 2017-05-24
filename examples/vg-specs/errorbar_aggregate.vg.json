@@ -1,7 +1,10 @@
 {
     "$schema": "http://vega.github.io/schema/vega/v3.0.json",
     "description": "A error bar plot showing mean, min, and max in the US population distribution of age groups in 2000.",
-    "autosize": "pad",
+    "autosize": {
+        "type": "pad",
+        "resize": true
+    },
     "padding": 5,
     "data": [
         {
