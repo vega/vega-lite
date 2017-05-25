@@ -17,3 +17,4 @@ export declare type ResolveMapping = {
     shape?: NonspatialResolve;
 };
 export declare function initLayerResolve(resolve: ResolveMapping): ResolveMapping;
+export declare function initRepeatResolve(resolve: ResolveMapping): ResolveMapping;

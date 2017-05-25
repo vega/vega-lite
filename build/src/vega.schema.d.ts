@@ -140,6 +140,7 @@ export interface VgAggregateTransform {
     fields?: VgFieldRef[];
     ops?: string[];
     as?: string[];
+    cross?: boolean;
     drop?: boolean;
 }
 export interface VgCollectTransform {

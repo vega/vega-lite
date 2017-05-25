@@ -15,6 +15,7 @@ export declare function replaceRepeaterInEncoding(encoding: Encoding<Field>, rep
 export declare class RepeatModel extends Model {
     readonly repeat: Repeat;
     readonly children: Model[];
+    private readonly resolve;
     constructor(spec: RepeatSpec, parent: Model, parentGivenName: string, repeatValues: RepeaterValue, config: Config);
     private _initChildren(spec, repeat, repeater, config);
     parseData(): void;
@@ -22,7 +23,6 @@ export declare class RepeatModel extends Model {
     parseScale(this: RepeatModel): void;
     parseMark(): void;
     parseAxisAndHeader(): void;
-    parseAxisGroup(): void;
     parseLegend(): void;
     assembleData(): VgData[];
     assembleParentGroupProperties(): any;

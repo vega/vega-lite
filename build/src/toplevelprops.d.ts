@@ -19,5 +19,9 @@ export interface TopLevelProperties {
      * @minimum 0
      */
     padding?: Padding;
+    /**
+     * Resize is a boolean indicating if autosize layout should be re-calculated on every update.
+     */
+    autoResize?: boolean;
 }
 export declare function extractTopLevelProperties<T extends TopLevelProperties>(t: T): {};

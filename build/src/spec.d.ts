@@ -105,6 +105,7 @@ export declare type FacetSpec = GenericFacetSpec<UnitSpec>;
 export interface GenericRepeatSpec<U extends GenericUnitSpec<any, any>> extends BaseSpec {
     repeat: Repeat;
     spec: GenericRepeatSpec<U> | GenericLayerSpec<U> | U;
+    resolve?: ResolveMapping;
 }
 export declare type RepeatSpec = GenericRepeatSpec<UnitSpec>;
 export interface GenericVConcatSpec<U extends GenericUnitSpec<any, any>> extends BaseSpec {
