@@ -2,12 +2,13 @@ import {Channel} from '../../channel';
 import {isSelectionDomain, Scale} from '../../scale';
 import {isSortField} from '../../sort';
 import {Dict} from '../../util';
-import {VgScale} from '../../vega.schema';
+import {isSignalRefDomain, VgScale} from '../../vega.schema';
 
 import {UnitModel} from '../unit';
 
-import {ScaleComponentIndex} from './component';
-import {parseDomain} from './domain';
+import {Model} from '../model';
+import {ScaleComponent, ScaleComponentIndex} from './component';
+import {parseDomain, unionDomains} from './domain';
 import {parseRange} from './range';
 
 /**
@@ -64,4 +65,28 @@ export function parseScale(model: UnitModel, channel: Channel) {
     scaleComponent.reverse = true;
   }
   return scaleComponent;
+}
+
+export function moveSharedScaleUp(model: Model, scaleComponent: Dict<ScaleComponent>, child: Model, channel: Channel) {
+  // Check whether the scales are actually compatible, e.g. use the same sort or throw error
+
+  const childScale = child.component.scales[channel];
+  let modelScale = scaleComponent[channel];
+
+  if (modelScale) {
+    modelScale.domain = unionDomains(modelScale.domain, childScale.domain);
+  } else {
+    modelScale = scaleComponent[channel] = childScale;
+  }
+
+  // rename child scale to parent scales
+  const scaleNameWithoutPrefix = childScale.name.substr(child.getName('').length);
+  const newName = model.scaleName(scaleNameWithoutPrefix, true);
+  child.renameScale(childScale.name, newName);
+  childScale.name = newName;
+
+  // remove merged scales from children
+  delete child.component.scales[channel];
+
+  return modelScale;
 }

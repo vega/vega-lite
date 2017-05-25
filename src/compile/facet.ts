@@ -25,6 +25,7 @@ import {getHeaderType, HeaderChannel, HeaderComponent} from './layout/header';
 import {labels} from './legend/encode';
 import {Model, ModelWithField} from './model';
 import {RepeaterValue, replaceRepeaterInFacet} from './repeat';
+import {moveSharedScaleUp} from './scale/parse';
 
 export class FacetModel extends ModelWithField {
   public readonly facet: Facet<string>;
@@ -103,12 +104,7 @@ export class FacetModel extends ModelWithField {
 
     keys(child.component.scales).forEach((channel: ScaleChannel) => {
       if (this.resolve[channel].scale === 'shared') {
-        const scale = scaleComponent[channel] = child.component.scales[channel];
-
-        const scaleNameWithoutPrefix = scale.name.substr(child.getName('').length);
-        const newName = model.scaleName(scaleNameWithoutPrefix, true);
-        child.renameScale(scale.name, newName);
-        scale.name = newName;
+        const scale = moveSharedScaleUp(this, scaleComponent, child, channel);
 
         // Replace the scale domain with data output from a cloned subtree after the facet.
         const domain = scale.domain;
@@ -123,9 +119,6 @@ export class FacetModel extends ModelWithField {
             };
           });
         }
-
-        // Once put in parent, just remove the child's scale.
-        delete child.component.scales[channel];
       }
     });
   }

@@ -52,7 +52,7 @@ export type VgValueRef = {
 
 // TODO: add vg prefix
 export type DataRefUnionDomain = {
-  fields: (any[] | VgDataRef)[],
+  fields: (any[] | VgDataRef | VgSignalRef)[],
   sort?: boolean | {
     op: 'count'
   }

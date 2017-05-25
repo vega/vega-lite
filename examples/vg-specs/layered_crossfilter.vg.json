@@ -459,7 +459,7 @@
                                             "!event.item || (event.item && event.item.mark.name !== \"brush_brush\")"
                                         ]
                                     },
-                                    "update": "invert(\"child_distance_layer_0_x\", [x(unit), x(unit)])"
+                                    "update": "invert(\"child_distance_x\", [x(unit), x(unit)])"
                                 },
                                 {
                                     "events": {
@@ -481,19 +481,19 @@
                                             }
                                         ]
                                     },
-                                    "update": "[brush_distance[0], invert(\"child_distance_layer_0_x\", clamp(x(unit), 0, child_distance_layer_0_width))]"
+                                    "update": "[brush_distance[0], invert(\"child_distance_x\", clamp(x(unit), 0, child_distance_layer_0_width))]"
                                 },
                                 {
                                     "events": {
                                         "signal": "brush_translate_delta"
                                     },
-                                    "update": "clampRange([brush_translate_anchor.extent_x[0] + abs(span(brush_translate_anchor.extent_x)) * brush_translate_delta.x / brush_translate_anchor.width, brush_translate_anchor.extent_x[1] + abs(span(brush_translate_anchor.extent_x)) * brush_translate_delta.x / brush_translate_anchor.width], invert(\"child_distance_layer_0_x\", 0), invert(\"child_distance_layer_0_x\", unit.width))"
+                                    "update": "clampRange([brush_translate_anchor.extent_x[0] + abs(span(brush_translate_anchor.extent_x)) * brush_translate_delta.x / brush_translate_anchor.width, brush_translate_anchor.extent_x[1] + abs(span(brush_translate_anchor.extent_x)) * brush_translate_delta.x / brush_translate_anchor.width], invert(\"child_distance_x\", 0), invert(\"child_distance_x\", unit.width))"
                                 },
                                 {
                                     "events": {
                                         "signal": "brush_zoom_delta"
                                     },
-                                    "update": "clampRange([brush_zoom_anchor.x + (brush_distance[0] - brush_zoom_anchor.x) * brush_zoom_delta, brush_zoom_anchor.x + (brush_distance[1] - brush_zoom_anchor.x) * brush_zoom_delta], invert(\"child_distance_layer_0_x\", 0), invert(\"child_distance_layer_0_x\", unit.width))"
+                                    "update": "clampRange([brush_zoom_anchor.x + (brush_distance[0] - brush_zoom_anchor.x) * brush_zoom_delta, brush_zoom_anchor.x + (brush_distance[1] - brush_zoom_anchor.x) * brush_zoom_delta], invert(\"child_distance_x\", 0), invert(\"child_distance_x\", unit.width))"
                                 }
                             ]
                         },
@@ -600,7 +600,7 @@
                                             "markname": "brush_brush"
                                         }
                                     ],
-                                    "update": "{x: invert(\"child_distance_layer_0_x\", x(unit)), y: invert(\"child_distance_y\", y(unit))}"
+                                    "update": "{x: invert(\"child_distance_x\", x(unit)), y: invert(\"child_distance_y\", y(unit))}"
                                 }
                             ]
                         },
@@ -659,7 +659,7 @@
                                     "x": [
                                         {
                                             "test": "data(\"brush_store\").length && brush_tuple && brush_tuple.unit === data(\"brush_store\")[0].unit",
-                                            "scale": "child_distance_layer_0_x",
+                                            "scale": "child_distance_x",
                                             "signal": "brush[0].extent[0]"
                                         },
                                         {
@@ -669,7 +669,7 @@
                                     "x2": [
                                         {
                                             "test": "data(\"brush_store\").length && brush_tuple && brush_tuple.unit === data(\"brush_store\")[0].unit",
-                                            "scale": "child_distance_layer_0_x",
+                                            "scale": "child_distance_x",
                                             "signal": "brush[0].extent[1]"
                                         },
                                         {
@@ -710,12 +710,12 @@
                             "encode": {
                                 "update": {
                                     "x2": {
-                                        "scale": "child_distance_layer_0_x",
+                                        "scale": "child_distance_x",
                                         "field": "bin_maxbins_20_distance_start",
                                         "offset": 1
                                     },
                                     "x": {
-                                        "scale": "child_distance_layer_0_x",
+                                        "scale": "child_distance_x",
                                         "field": "bin_maxbins_20_distance_end"
                                     },
                                     "y": {
@@ -743,12 +743,12 @@
                             "encode": {
                                 "update": {
                                     "x2": {
-                                        "scale": "child_distance_layer_1_x",
+                                        "scale": "child_distance_x",
                                         "field": "bin_maxbins_20_distance_start",
                                         "offset": 1
                                     },
                                     "x": {
-                                        "scale": "child_distance_layer_1_x",
+                                        "scale": "child_distance_x",
                                         "field": "bin_maxbins_20_distance_end"
                                     },
                                     "y": {
@@ -782,7 +782,7 @@
                                     "x": [
                                         {
                                             "test": "data(\"brush_store\").length && brush_tuple && brush_tuple.unit === data(\"brush_store\")[0].unit",
-                                            "scale": "child_distance_layer_0_x",
+                                            "scale": "child_distance_x",
                                             "signal": "brush[0].extent[0]"
                                         },
                                         {
@@ -792,7 +792,7 @@
                                     "x2": [
                                         {
                                             "test": "data(\"brush_store\").length && brush_tuple && brush_tuple.unit === data(\"brush_store\")[0].unit",
-                                            "scale": "child_distance_layer_0_x",
+                                            "scale": "child_distance_x",
                                             "signal": "brush[0].extent[1]"
                                         },
                                         {
@@ -826,6 +826,27 @@
                     ],
                     "scales": [
                         {
+                            "name": "child_distance_x",
+                            "type": "bin-linear",
+                            "domain": {
+                                "fields": [
+                                    {
+                                        "signal": "sequence(child_distance_layer_0_bin_maxbins_20_distance_bins.start, child_distance_layer_0_bin_maxbins_20_distance_bins.stop + child_distance_layer_0_bin_maxbins_20_distance_bins.step, child_distance_layer_0_bin_maxbins_20_distance_bins.step)"
+                                    },
+                                    {
+                                        "signal": "sequence(child_distance_layer_1_bin_maxbins_20_distance_bins.start, child_distance_layer_1_bin_maxbins_20_distance_bins.stop + child_distance_layer_1_bin_maxbins_20_distance_bins.step, child_distance_layer_1_bin_maxbins_20_distance_bins.step)"
+                                    }
+                                ],
+                                "sort": true
+                            },
+                            "range": [
+                                0,
+                                200
+                            ],
+                            "round": true,
+                            "nice": true
+                        },
+                        {
                             "name": "child_distance_y",
                             "type": "linear",
                             "domain": {
@@ -848,37 +869,11 @@
                             "round": true,
                             "nice": true,
                             "zero": true
-                        },
-                        {
-                            "name": "child_distance_layer_0_x",
-                            "type": "bin-linear",
-                            "domain": {
-                                "signal": "sequence(child_distance_layer_0_bin_maxbins_20_distance_bins.start, child_distance_layer_0_bin_maxbins_20_distance_bins.stop + child_distance_layer_0_bin_maxbins_20_distance_bins.step, child_distance_layer_0_bin_maxbins_20_distance_bins.step)"
-                            },
-                            "range": [
-                                0,
-                                200
-                            ],
-                            "round": true,
-                            "nice": true
-                        },
-                        {
-                            "name": "child_distance_layer_1_x",
-                            "type": "bin-linear",
-                            "domain": {
-                                "signal": "sequence(child_distance_layer_1_bin_maxbins_20_distance_bins.start, child_distance_layer_1_bin_maxbins_20_distance_bins.stop + child_distance_layer_1_bin_maxbins_20_distance_bins.step, child_distance_layer_1_bin_maxbins_20_distance_bins.step)"
-                            },
-                            "range": [
-                                0,
-                                200
-                            ],
-                            "round": true,
-                            "nice": true
                         }
                     ],
                     "axes": [
                         {
-                            "scale": "child_distance_layer_0_x",
+                            "scale": "child_distance_x",
                             "format": "s",
                             "orient": "bottom",
                             "title": "BIN(distance)",
@@ -915,7 +910,7 @@
                             "orient": "left",
                             "ticks": false,
                             "zindex": 0,
-                            "gridScale": "child_distance_layer_0_x"
+                            "gridScale": "child_distance_x"
                         }
                     ]
                 },
@@ -949,7 +944,7 @@
                                             "!event.item || (event.item && event.item.mark.name !== \"brush_brush\")"
                                         ]
                                     },
-                                    "update": "invert(\"child_delay_layer_0_x\", [x(unit), x(unit)])"
+                                    "update": "invert(\"child_delay_x\", [x(unit), x(unit)])"
                                 },
                                 {
                                     "events": {
@@ -971,19 +966,19 @@
                                             }
                                         ]
                                     },
-                                    "update": "[brush_delay[0], invert(\"child_delay_layer_0_x\", clamp(x(unit), 0, child_delay_layer_0_width))]"
+                                    "update": "[brush_delay[0], invert(\"child_delay_x\", clamp(x(unit), 0, child_delay_layer_0_width))]"
                                 },
                                 {
                                     "events": {
                                         "signal": "brush_translate_delta"
                                     },
-                                    "update": "clampRange([brush_translate_anchor.extent_x[0] + abs(span(brush_translate_anchor.extent_x)) * brush_translate_delta.x / brush_translate_anchor.width, brush_translate_anchor.extent_x[1] + abs(span(brush_translate_anchor.extent_x)) * brush_translate_delta.x / brush_translate_anchor.width], invert(\"child_delay_layer_0_x\", 0), invert(\"child_delay_layer_0_x\", unit.width))"
+                                    "update": "clampRange([brush_translate_anchor.extent_x[0] + abs(span(brush_translate_anchor.extent_x)) * brush_translate_delta.x / brush_translate_anchor.width, brush_translate_anchor.extent_x[1] + abs(span(brush_translate_anchor.extent_x)) * brush_translate_delta.x / brush_translate_anchor.width], invert(\"child_delay_x\", 0), invert(\"child_delay_x\", unit.width))"
                                 },
                                 {
                                     "events": {
                                         "signal": "brush_zoom_delta"
                                     },
-                                    "update": "clampRange([brush_zoom_anchor.x + (brush_delay[0] - brush_zoom_anchor.x) * brush_zoom_delta, brush_zoom_anchor.x + (brush_delay[1] - brush_zoom_anchor.x) * brush_zoom_delta], invert(\"child_delay_layer_0_x\", 0), invert(\"child_delay_layer_0_x\", unit.width))"
+                                    "update": "clampRange([brush_zoom_anchor.x + (brush_delay[0] - brush_zoom_anchor.x) * brush_zoom_delta, brush_zoom_anchor.x + (brush_delay[1] - brush_zoom_anchor.x) * brush_zoom_delta], invert(\"child_delay_x\", 0), invert(\"child_delay_x\", unit.width))"
                                 }
                             ]
                         },
@@ -1090,7 +1085,7 @@
                                             "markname": "brush_brush"
                                         }
                                     ],
-                                    "update": "{x: invert(\"child_delay_layer_0_x\", x(unit)), y: invert(\"child_delay_y\", y(unit))}"
+                                    "update": "{x: invert(\"child_delay_x\", x(unit)), y: invert(\"child_delay_y\", y(unit))}"
                                 }
                             ]
                         },
@@ -1149,7 +1144,7 @@
                                     "x": [
                                         {
                                             "test": "data(\"brush_store\").length && brush_tuple && brush_tuple.unit === data(\"brush_store\")[0].unit",
-                                            "scale": "child_delay_layer_0_x",
+                                            "scale": "child_delay_x",
                                             "signal": "brush[0].extent[0]"
                                         },
                                         {
@@ -1159,7 +1154,7 @@
                                     "x2": [
                                         {
                                             "test": "data(\"brush_store\").length && brush_tuple && brush_tuple.unit === data(\"brush_store\")[0].unit",
-                                            "scale": "child_delay_layer_0_x",
+                                            "scale": "child_delay_x",
                                             "signal": "brush[0].extent[1]"
                                         },
                                         {
@@ -1200,12 +1195,12 @@
                             "encode": {
                                 "update": {
                                     "x2": {
-                                        "scale": "child_delay_layer_0_x",
+                                        "scale": "child_delay_x",
                                         "field": "bin_maxbins_20_delay_start",
                                         "offset": 1
                                     },
                                     "x": {
-                                        "scale": "child_delay_layer_0_x",
+                                        "scale": "child_delay_x",
                                         "field": "bin_maxbins_20_delay_end"
                                     },
                                     "y": {
@@ -1233,12 +1228,12 @@
                             "encode": {
                                 "update": {
                                     "x2": {
-                                        "scale": "child_delay_layer_1_x",
+                                        "scale": "child_delay_x",
                                         "field": "bin_maxbins_20_delay_start",
                                         "offset": 1
                                     },
                                     "x": {
-                                        "scale": "child_delay_layer_1_x",
+                                        "scale": "child_delay_x",
                                         "field": "bin_maxbins_20_delay_end"
                                     },
                                     "y": {
@@ -1272,7 +1267,7 @@
                                     "x": [
                                         {
                                             "test": "data(\"brush_store\").length && brush_tuple && brush_tuple.unit === data(\"brush_store\")[0].unit",
-                                            "scale": "child_delay_layer_0_x",
+                                            "scale": "child_delay_x",
                                             "signal": "brush[0].extent[0]"
                                         },
                                         {
@@ -1282,7 +1277,7 @@
                                     "x2": [
                                         {
                                             "test": "data(\"brush_store\").length && brush_tuple && brush_tuple.unit === data(\"brush_store\")[0].unit",
-                                            "scale": "child_delay_layer_0_x",
+                                            "scale": "child_delay_x",
                                             "signal": "brush[0].extent[1]"
                                         },
                                         {
@@ -1316,6 +1311,27 @@
                     ],
                     "scales": [
                         {
+                            "name": "child_delay_x",
+                            "type": "bin-linear",
+                            "domain": {
+                                "fields": [
+                                    {
+                                        "signal": "sequence(child_delay_layer_0_bin_maxbins_20_delay_bins.start, child_delay_layer_0_bin_maxbins_20_delay_bins.stop + child_delay_layer_0_bin_maxbins_20_delay_bins.step, child_delay_layer_0_bin_maxbins_20_delay_bins.step)"
+                                    },
+                                    {
+                                        "signal": "sequence(child_delay_layer_1_bin_maxbins_20_delay_bins.start, child_delay_layer_1_bin_maxbins_20_delay_bins.stop + child_delay_layer_1_bin_maxbins_20_delay_bins.step, child_delay_layer_1_bin_maxbins_20_delay_bins.step)"
+                                    }
+                                ],
+                                "sort": true
+                            },
+                            "range": [
+                                0,
+                                200
+                            ],
+                            "round": true,
+                            "nice": true
+                        },
+                        {
                             "name": "child_delay_y",
                             "type": "linear",
                             "domain": {
@@ -1338,37 +1354,11 @@
                             "round": true,
                             "nice": true,
                             "zero": true
-                        },
-                        {
-                            "name": "child_delay_layer_0_x",
-                            "type": "bin-linear",
-                            "domain": {
-                                "signal": "sequence(child_delay_layer_0_bin_maxbins_20_delay_bins.start, child_delay_layer_0_bin_maxbins_20_delay_bins.stop + child_delay_layer_0_bin_maxbins_20_delay_bins.step, child_delay_layer_0_bin_maxbins_20_delay_bins.step)"
-                            },
-                            "range": [
-                                0,
-                                200
-                            ],
-                            "round": true,
-                            "nice": true
-                        },
-                        {
-                            "name": "child_delay_layer_1_x",
-                            "type": "bin-linear",
-                            "domain": {
-                                "signal": "sequence(child_delay_layer_1_bin_maxbins_20_delay_bins.start, child_delay_layer_1_bin_maxbins_20_delay_bins.stop + child_delay_layer_1_bin_maxbins_20_delay_bins.step, child_delay_layer_1_bin_maxbins_20_delay_bins.step)"
-                            },
-                            "range": [
-                                0,
-                                200
-                            ],
-                            "round": true,
-                            "nice": true
                         }
                     ],
                     "axes": [
                         {
-                            "scale": "child_delay_layer_0_x",
+                            "scale": "child_delay_x",
                             "format": "s",
                             "orient": "bottom",
                             "title": "BIN(delay)",
@@ -1405,7 +1395,7 @@
                             "orient": "left",
                             "ticks": false,
                             "zindex": 0,
-                            "gridScale": "child_delay_layer_0_x"
+                            "gridScale": "child_delay_x"
                         }
                     ]
                 },
@@ -1439,7 +1429,7 @@
                                             "!event.item || (event.item && event.item.mark.name !== \"brush_brush\")"
                                         ]
                                     },
-                                    "update": "invert(\"child_time_layer_0_x\", [x(unit), x(unit)])"
+                                    "update": "invert(\"child_time_x\", [x(unit), x(unit)])"
                                 },
                                 {
                                     "events": {
@@ -1461,19 +1451,19 @@
                                             }
                                         ]
                                     },
-                                    "update": "[brush_time[0], invert(\"child_time_layer_0_x\", clamp(x(unit), 0, child_time_layer_0_width))]"
+                                    "update": "[brush_time[0], invert(\"child_time_x\", clamp(x(unit), 0, child_time_layer_0_width))]"
                                 },
                                 {
                                     "events": {
                                         "signal": "brush_translate_delta"
                                     },
-                                    "update": "clampRange([brush_translate_anchor.extent_x[0] + abs(span(brush_translate_anchor.extent_x)) * brush_translate_delta.x / brush_translate_anchor.width, brush_translate_anchor.extent_x[1] + abs(span(brush_translate_anchor.extent_x)) * brush_translate_delta.x / brush_translate_anchor.width], invert(\"child_time_layer_0_x\", 0), invert(\"child_time_layer_0_x\", unit.width))"
+                                    "update": "clampRange([brush_translate_anchor.extent_x[0] + abs(span(brush_translate_anchor.extent_x)) * brush_translate_delta.x / brush_translate_anchor.width, brush_translate_anchor.extent_x[1] + abs(span(brush_translate_anchor.extent_x)) * brush_translate_delta.x / brush_translate_anchor.width], invert(\"child_time_x\", 0), invert(\"child_time_x\", unit.width))"
                                 },
                                 {
                                     "events": {
                                         "signal": "brush_zoom_delta"
                                     },
-                                    "update": "clampRange([brush_zoom_anchor.x + (brush_time[0] - brush_zoom_anchor.x) * brush_zoom_delta, brush_zoom_anchor.x + (brush_time[1] - brush_zoom_anchor.x) * brush_zoom_delta], invert(\"child_time_layer_0_x\", 0), invert(\"child_time_layer_0_x\", unit.width))"
+                                    "update": "clampRange([brush_zoom_anchor.x + (brush_time[0] - brush_zoom_anchor.x) * brush_zoom_delta, brush_zoom_anchor.x + (brush_time[1] - brush_zoom_anchor.x) * brush_zoom_delta], invert(\"child_time_x\", 0), invert(\"child_time_x\", unit.width))"
                                 }
                             ]
                         },
@@ -1580,7 +1570,7 @@
                                             "markname": "brush_brush"
                                         }
                                     ],
-                                    "update": "{x: invert(\"child_time_layer_0_x\", x(unit)), y: invert(\"child_time_y\", y(unit))}"
+                                    "update": "{x: invert(\"child_time_x\", x(unit)), y: invert(\"child_time_y\", y(unit))}"
                                 }
                             ]
                         },
@@ -1639,7 +1629,7 @@
                                     "x": [
                                         {
                                             "test": "data(\"brush_store\").length && brush_tuple && brush_tuple.unit === data(\"brush_store\")[0].unit",
-                                            "scale": "child_time_layer_0_x",
+                                            "scale": "child_time_x",
                                             "signal": "brush[0].extent[0]"
                                         },
                                         {
@@ -1649,7 +1639,7 @@
                                     "x2": [
                                         {
                                             "test": "data(\"brush_store\").length && brush_tuple && brush_tuple.unit === data(\"brush_store\")[0].unit",
-                                            "scale": "child_time_layer_0_x",
+                                            "scale": "child_time_x",
                                             "signal": "brush[0].extent[1]"
                                         },
                                         {
@@ -1690,12 +1680,12 @@
                             "encode": {
                                 "update": {
                                     "x2": {
-                                        "scale": "child_time_layer_0_x",
+                                        "scale": "child_time_x",
                                         "field": "bin_maxbins_20_time_start",
                                         "offset": 1
                                     },
                                     "x": {
-                                        "scale": "child_time_layer_0_x",
+                                        "scale": "child_time_x",
                                         "field": "bin_maxbins_20_time_end"
                                     },
                                     "y": {
@@ -1723,12 +1713,12 @@
                             "encode": {
                                 "update": {
                                     "x2": {
-                                        "scale": "child_time_layer_1_x",
+                                        "scale": "child_time_x",
                                         "field": "bin_maxbins_20_time_start",
                                         "offset": 1
                                     },
                                     "x": {
-                                        "scale": "child_time_layer_1_x",
+                                        "scale": "child_time_x",
                                         "field": "bin_maxbins_20_time_end"
                                     },
                                     "y": {
@@ -1762,7 +1752,7 @@
                                     "x": [
                                         {
                                             "test": "data(\"brush_store\").length && brush_tuple && brush_tuple.unit === data(\"brush_store\")[0].unit",
-                                            "scale": "child_time_layer_0_x",
+                                            "scale": "child_time_x",
                                             "signal": "brush[0].extent[0]"
                                         },
                                         {
@@ -1772,7 +1762,7 @@
                                     "x2": [
                                         {
                                             "test": "data(\"brush_store\").length && brush_tuple && brush_tuple.unit === data(\"brush_store\")[0].unit",
-                                            "scale": "child_time_layer_0_x",
+                                            "scale": "child_time_x",
                                             "signal": "brush[0].extent[1]"
                                         },
                                         {
@@ -1806,6 +1796,27 @@
                     ],
                     "scales": [
                         {
+                            "name": "child_time_x",
+                            "type": "bin-linear",
+                            "domain": {
+                                "fields": [
+                                    {
+                                        "signal": "sequence(child_time_layer_0_bin_maxbins_20_time_bins.start, child_time_layer_0_bin_maxbins_20_time_bins.stop + child_time_layer_0_bin_maxbins_20_time_bins.step, child_time_layer_0_bin_maxbins_20_time_bins.step)"
+                                    },
+                                    {
+                                        "signal": "sequence(child_time_layer_1_bin_maxbins_20_time_bins.start, child_time_layer_1_bin_maxbins_20_time_bins.stop + child_time_layer_1_bin_maxbins_20_time_bins.step, child_time_layer_1_bin_maxbins_20_time_bins.step)"
+                                    }
+                                ],
+                                "sort": true
+                            },
+                            "range": [
+                                0,
+                                200
+                            ],
+                            "round": true,
+                            "nice": true
+                        },
+                        {
                             "name": "child_time_y",
                             "type": "linear",
                             "domain": {
@@ -1828,37 +1839,11 @@
                             "round": true,
                             "nice": true,
                             "zero": true
-                        },
-                        {
-                            "name": "child_time_layer_0_x",
-                            "type": "bin-linear",
-                            "domain": {
-                                "signal": "sequence(child_time_layer_0_bin_maxbins_20_time_bins.start, child_time_layer_0_bin_maxbins_20_time_bins.stop + child_time_layer_0_bin_maxbins_20_time_bins.step, child_time_layer_0_bin_maxbins_20_time_bins.step)"
-                            },
-                            "range": [
-                                0,
-                                200
-                            ],
-                            "round": true,
-                            "nice": true
-                        },
-                        {
-                            "name": "child_time_layer_1_x",
-                            "type": "bin-linear",
-                            "domain": {
-                                "signal": "sequence(child_time_layer_1_bin_maxbins_20_time_bins.start, child_time_layer_1_bin_maxbins_20_time_bins.stop + child_time_layer_1_bin_maxbins_20_time_bins.step, child_time_layer_1_bin_maxbins_20_time_bins.step)"
-                            },
-                            "range": [
-                                0,
-                                200
-                            ],
-                            "round": true,
-                            "nice": true
                         }
                     ],
                     "axes": [
                         {
-                            "scale": "child_time_layer_0_x",
+                            "scale": "child_time_x",
                             "format": "s",
                             "orient": "bottom",
                             "title": "BIN(time)",
@@ -1895,7 +1880,7 @@
                             "orient": "left",
                             "ticks": false,
                             "zindex": 0,
-                            "gridScale": "child_time_layer_0_x"
+                            "gridScale": "child_time_x"
                         }
                     ]
                 }
@@ -1903,6 +1888,27 @@
         }
     ],
     "scales": [
+        {
+            "name": "child_distance_x",
+            "type": "bin-linear",
+            "domain": {
+                "fields": [
+                    {
+                        "signal": "sequence(child_distance_layer_0_bin_maxbins_20_distance_bins.start, child_distance_layer_0_bin_maxbins_20_distance_bins.stop + child_distance_layer_0_bin_maxbins_20_distance_bins.step, child_distance_layer_0_bin_maxbins_20_distance_bins.step)"
+                    },
+                    {
+                        "signal": "sequence(child_distance_layer_1_bin_maxbins_20_distance_bins.start, child_distance_layer_1_bin_maxbins_20_distance_bins.stop + child_distance_layer_1_bin_maxbins_20_distance_bins.step, child_distance_layer_1_bin_maxbins_20_distance_bins.step)"
+                    }
+                ],
+                "sort": true
+            },
+            "range": [
+                0,
+                200
+            ],
+            "round": true,
+            "nice": true
+        },
         {
             "name": "child_distance_y",
             "type": "linear",
@@ -1928,23 +1934,18 @@
             "zero": true
         },
         {
-            "name": "child_distance_layer_0_x",
+            "name": "child_delay_x",
             "type": "bin-linear",
             "domain": {
-                "signal": "sequence(child_distance_layer_0_bin_maxbins_20_distance_bins.start, child_distance_layer_0_bin_maxbins_20_distance_bins.stop + child_distance_layer_0_bin_maxbins_20_distance_bins.step, child_distance_layer_0_bin_maxbins_20_distance_bins.step)"
-            },
-            "range": [
-                0,
-                200
-            ],
-            "round": true,
-            "nice": true
-        },
-        {
-            "name": "child_distance_layer_1_x",
-            "type": "bin-linear",
-            "domain": {
-                "signal": "sequence(child_distance_layer_1_bin_maxbins_20_distance_bins.start, child_distance_layer_1_bin_maxbins_20_distance_bins.stop + child_distance_layer_1_bin_maxbins_20_distance_bins.step, child_distance_layer_1_bin_maxbins_20_distance_bins.step)"
+                "fields": [
+                    {
+                        "signal": "sequence(child_delay_layer_0_bin_maxbins_20_delay_bins.start, child_delay_layer_0_bin_maxbins_20_delay_bins.stop + child_delay_layer_0_bin_maxbins_20_delay_bins.step, child_delay_layer_0_bin_maxbins_20_delay_bins.step)"
+                    },
+                    {
+                        "signal": "sequence(child_delay_layer_1_bin_maxbins_20_delay_bins.start, child_delay_layer_1_bin_maxbins_20_delay_bins.stop + child_delay_layer_1_bin_maxbins_20_delay_bins.step, child_delay_layer_1_bin_maxbins_20_delay_bins.step)"
+                    }
+                ],
+                "sort": true
             },
             "range": [
                 0,
@@ -1978,23 +1979,18 @@
             "zero": true
         },
         {
-            "name": "child_delay_layer_0_x",
+            "name": "child_time_x",
             "type": "bin-linear",
             "domain": {
-                "signal": "sequence(child_delay_layer_0_bin_maxbins_20_delay_bins.start, child_delay_layer_0_bin_maxbins_20_delay_bins.stop + child_delay_layer_0_bin_maxbins_20_delay_bins.step, child_delay_layer_0_bin_maxbins_20_delay_bins.step)"
-            },
-            "range": [
-                0,
-                200
-            ],
-            "round": true,
-            "nice": true
-        },
-        {
-            "name": "child_delay_layer_1_x",
-            "type": "bin-linear",
-            "domain": {
-                "signal": "sequence(child_delay_layer_1_bin_maxbins_20_delay_bins.start, child_delay_layer_1_bin_maxbins_20_delay_bins.stop + child_delay_layer_1_bin_maxbins_20_delay_bins.step, child_delay_layer_1_bin_maxbins_20_delay_bins.step)"
+                "fields": [
+                    {
+                        "signal": "sequence(child_time_layer_0_bin_maxbins_20_time_bins.start, child_time_layer_0_bin_maxbins_20_time_bins.stop + child_time_layer_0_bin_maxbins_20_time_bins.step, child_time_layer_0_bin_maxbins_20_time_bins.step)"
+                    },
+                    {
+                        "signal": "sequence(child_time_layer_1_bin_maxbins_20_time_bins.start, child_time_layer_1_bin_maxbins_20_time_bins.stop + child_time_layer_1_bin_maxbins_20_time_bins.step, child_time_layer_1_bin_maxbins_20_time_bins.step)"
+                    }
+                ],
+                "sort": true
             },
             "range": [
                 0,
@@ -2026,32 +2022,6 @@
             "round": true,
             "nice": true,
             "zero": true
-        },
-        {
-            "name": "child_time_layer_0_x",
-            "type": "bin-linear",
-            "domain": {
-                "signal": "sequence(child_time_layer_0_bin_maxbins_20_time_bins.start, child_time_layer_0_bin_maxbins_20_time_bins.stop + child_time_layer_0_bin_maxbins_20_time_bins.step, child_time_layer_0_bin_maxbins_20_time_bins.step)"
-            },
-            "range": [
-                0,
-                200
-            ],
-            "round": true,
-            "nice": true
-        },
-        {
-            "name": "child_time_layer_1_x",
-            "type": "bin-linear",
-            "domain": {
-                "signal": "sequence(child_time_layer_1_bin_maxbins_20_time_bins.start, child_time_layer_1_bin_maxbins_20_time_bins.stop + child_time_layer_1_bin_maxbins_20_time_bins.step, child_time_layer_1_bin_maxbins_20_time_bins.step)"
-            },
-            "range": [
-                0,
-                200
-            ],
-            "round": true,
-            "nice": true
         }
     ]
 }
