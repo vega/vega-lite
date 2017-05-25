@@ -149,11 +149,15 @@ export type RepeatSpec = GenericRepeatSpec<UnitSpec>;
 export interface GenericVConcatSpec<U extends GenericUnitSpec<any, any>> extends BaseSpec {
   // TODO: add GenericFacetSpec<U> | GenericfacetSpec<U>
   vconcat: (GenericLayerSpec<U> | GenericRepeatSpec<U> | U)[];
+
+  resolve?: ResolveMapping;
 }
 
 export interface GenericHConcatSpec<U extends GenericUnitSpec<any, any>> extends BaseSpec {
   // TODO: add GenericFacetSpec<U> | GenericfacetSpec<U>
   hconcat: (GenericLayerSpec<U> | GenericRepeatSpec<U> | U)[];
+
+  resolve?: ResolveMapping;
 }
 
 export type GenericConcatSpec<U extends GenericUnitSpec<any, any>> = GenericVConcatSpec<U> | GenericHConcatSpec<U>;
