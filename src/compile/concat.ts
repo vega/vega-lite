@@ -8,6 +8,7 @@ import {VgData, VgLayout, VgScale, VgSignal} from '../vega.schema';
 import {buildModel} from './common';
 import {assembleData} from './data/assemble';
 import {parseData} from './data/parse';
+import {moveSharedLegendUp} from './legend/parse';
 import {Model} from './model';
 import {RepeaterValue} from './repeat';
 import {moveSharedScaleUp} from './scale/parse';
@@ -95,11 +96,7 @@ export class ConcatModel extends Model {
 
       keys(child.component.legends).forEach((channel: ScaleChannel) => {
         if (this.resolve[channel].legend === 'shared') {
-          // just use the first legend definition for each channel
-          if (!legendComponent[channel]) {
-            legendComponent[channel] = child.component.legends[channel];
-          }
-          delete child.component.legends[channel];
+          moveSharedLegendUp(legendComponent, child, channel);
         }
       });
     }

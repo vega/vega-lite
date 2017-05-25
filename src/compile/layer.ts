@@ -10,6 +10,7 @@ import {applyConfig, buildModel} from './common';
 import {assembleData} from './data/assemble';
 import {parseData} from './data/parse';
 import {assembleLayoutLayerSignals} from './layout/index';
+import {moveSharedLegendUp} from './legend/parse';
 import {Model} from './model';
 import {RepeaterValue} from './repeat';
 import {unionDomains} from './scale/domain';
@@ -128,15 +129,9 @@ export class LayerModel extends Model {
     for (const child of this.children) {
       child.parseLegend();
 
-      // TODO: correctly implement independent axes
-      keys(child.component.legends).forEach((channel: NonspatialScaleChannel) => {
-        if ((this.resolve[channel] as NonspatialResolve).legend === 'shared') { // if shared/union scale
-          // just use the first legend definition for each channel
-          if (!legendComponent[channel]) {
-            legendComponent[channel] = child.component.legends[channel];
-          }
-        } else {
-          // TODO: support independent legends
+      keys(child.component.legends).forEach((channel: ScaleChannel) => {
+        if (this.resolve[channel].legend === 'shared') {
+          moveSharedLegendUp(legendComponent, child, channel);
         }
       });
     }

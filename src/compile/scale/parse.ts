@@ -67,8 +67,11 @@ export function parseScale(model: UnitModel, channel: Channel) {
   return scaleComponent;
 }
 
+/**
+ * Move scale from child up.
+ */
 export function moveSharedScaleUp(model: Model, scaleComponent: Dict<ScaleComponent>, child: Model, channel: Channel) {
-  // Check whether the scales are actually compatible, e.g. use the same sort or throw error
+  // TODO: Check whether the scales are actually compatible and merge them, e.g. they shoud use the same sort or throw error
 
   const childScale = child.component.scales[channel];
   let modelScale = scaleComponent[channel];
