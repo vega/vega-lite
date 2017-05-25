@@ -23,6 +23,7 @@ import {assembleData, assembleFacetData, FACET_SCALE_PREFIX} from './data/assemb
 import {parseData} from './data/parse';
 import {getHeaderType, HeaderChannel, HeaderComponent} from './layout/header';
 import {labels} from './legend/encode';
+import {moveSharedLegendUp} from './legend/parse';
 import {Model, ModelWithField} from './model';
 import {RepeaterValue, replaceRepeaterInFacet} from './repeat';
 import {moveSharedScaleUp} from './scale/parse';
@@ -224,8 +225,7 @@ export class FacetModel extends ModelWithField {
     this.component.legends = {};
     keys(this.child.component.legends).forEach((channel: ScaleChannel) => {
       if (this.resolve[channel].legend === 'shared') {
-        this.component.legends[channel] = this.child.component.legends[channel];
-        delete this.child.component.legends[channel];
+        moveSharedLegendUp(this.component.legends, this.child, channel);
       }
     });
   }

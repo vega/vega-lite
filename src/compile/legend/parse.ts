@@ -6,6 +6,7 @@ import {VgLegend} from '../../vega.schema';
 import {numberFormat} from '../common';
 import {UnitModel} from '../unit';
 
+import {Model} from '../model';
 import {LegendComponent, LegendComponentIndex} from './component';
 import * as encode from './encode';
 import * as rules from './rules';
@@ -81,3 +82,14 @@ function getSpecifiedOrDefaultValue(property: keyof VgLegend, specifiedLegend: L
   return specifiedLegend[property];
 }
 
+
+/**
+ * Move legend from child up.
+ */
+export function moveSharedLegendUp(legendComponent: LegendComponent, child: Model, channel: Channel) {
+  // just use the first legend definition for each channel
+  if (!legendComponent[channel]) {
+    legendComponent[channel] = child.component.legends[channel];
+  }
+  delete child.component.legends[channel];
+}

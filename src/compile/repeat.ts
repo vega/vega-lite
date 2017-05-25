@@ -13,6 +13,7 @@ import {isSignalRefDomain, VgData, VgLayout, VgScale, VgSignal} from '../vega.sc
 import {buildModel} from './common';
 import {assembleData} from './data/assemble';
 import {parseData} from './data/parse';
+import {moveSharedLegendUp} from './legend/parse';
 import {Model} from './model';
 import {ScaleComponent} from './scale/component';
 import {unionDomains} from './scale/domain';
@@ -170,11 +171,7 @@ export class RepeatModel extends Model {
 
       keys(child.component.legends).forEach((channel: ScaleChannel) => {
         if (this.resolve[channel].legend === 'shared') {
-          // just use the first legend definition for each channel
-          if (!legendComponent[channel]) {
-            legendComponent[channel] = child.component.legends[channel];
-          }
-          delete child.component.legends[channel];
+          moveSharedLegendUp(this.component.legends, child, channel);
         }
       });
     }
