@@ -1,5 +1,7 @@
+import {ScaleChannel} from '../channel';
 import {CellConfig, Config} from '../config';
 import {Repeat} from '../repeat';
+import {initConcatResolve, ResolveMapping} from '../resolve';
 import {ConcatSpec, isVConcatSpec, RepeatSpec} from '../spec';
 import {Dict, keys, vals} from '../util';
 import {VgData, VgLayout, VgScale, VgSignal} from '../vega.schema';
@@ -8,6 +10,7 @@ import {assembleData} from './data/assemble';
 import {parseData} from './data/parse';
 import {Model} from './model';
 import {RepeaterValue} from './repeat';
+import {moveSharedScaleUp} from './scale/parse';
 
 
 export class ConcatModel extends Model {
@@ -16,8 +19,12 @@ export class ConcatModel extends Model {
 
   public readonly isVConcat: boolean;
 
+  private readonly resolve: ResolveMapping;
+
   constructor(spec: ConcatSpec, parent: Model, parentGivenName: string, repeater: RepeaterValue, config: Config) {
     super(spec, parent, parentGivenName, config);
+
+    this.resolve = initConcatResolve(spec.resolve || {});
 
     this.isVConcat = isVConcatSpec(spec);
 
@@ -51,9 +58,15 @@ export class ConcatModel extends Model {
 
     const scaleComponent: Dict<VgScale> = this.component.scales = {};
 
-    this.children.forEach(function(child) {
+    for (const child of this.children) {
       child.parseScale();
-    });
+
+      keys(child.component.scales).forEach((channel: ScaleChannel) => {
+        if (this.resolve[channel].scale === 'shared') {
+          moveSharedScaleUp(this, scaleComponent, child, channel);
+        }
+      });
+    }
   }
 
   public parseMark() {
@@ -66,6 +79,8 @@ export class ConcatModel extends Model {
     for (const child of this.children) {
       child.parseAxisAndHeader();
     }
+
+    // TODO(#2415): support shared axes
   }
 
   public parseAxisGroup(): void {
@@ -77,6 +92,16 @@ export class ConcatModel extends Model {
 
     for (const child of this.children) {
       child.parseLegend();
+
+      keys(child.component.legends).forEach((channel: ScaleChannel) => {
+        if (this.resolve[channel].legend === 'shared') {
+          // just use the first legend definition for each channel
+          if (!legendComponent[channel]) {
+            legendComponent[channel] = child.component.legends[channel];
+          }
+          delete child.component.legends[channel];
+        }
+      });
     }
   }
 

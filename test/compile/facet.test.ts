@@ -116,6 +116,29 @@ describe('FacetModel', function() {
 
       assert(model.component.scales['x']);
     });
+
+    it('should create independent scales if resolve is set to independent', () => {
+      const model = parseFacetModel({
+        facet: {
+          row: {field: 'a', type: 'quantitative'}
+        },
+        spec: {
+          mark: 'point',
+          encoding: {
+            x: {field: 'b', type: 'quantitative'}
+          }
+        },
+        resolve: {
+          x: {
+            scale: 'independent'
+          }
+        }
+      });
+
+      model.parseScale();
+
+      assert(!model.component.scales['x']);
+    });
   });
 
   describe('assembleLayout', () => {

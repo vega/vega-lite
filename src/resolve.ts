@@ -51,6 +51,10 @@ export function initLayerResolve(resolve: ResolveMapping): ResolveMapping {
   return initResolve(resolve, channel => 'shared');
 }
 
+export function initConcatResolve(resolve: ResolveMapping): ResolveMapping {
+  return initResolve(resolve, channel => 'independent');
+}
+
 export function initRepeatResolve(resolve: ResolveMapping): ResolveMapping {
   return initResolve(resolve, channel => (contains(NONSPATIAL_SCALE_CHANNELS, channel) ? 'shared' : 'independent'));
 }
