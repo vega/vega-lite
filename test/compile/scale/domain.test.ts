@@ -1,16 +1,15 @@
 /* tslint:disable:quotemark */
 
-
 import {assert} from 'chai';
-import {X} from '../../../src/channel';
 import {domainSort, parseDomain, unionDomains} from '../../../src/compile/scale/domain';
 import {MAIN} from '../../../src/data';
 import {PositionFieldDef} from '../../../src/fielddef';
 import * as log from '../../../src/log';
 import {ScaleType} from '../../../src/scale';
-import {QUANTITATIVE} from '../../../src/type';
-import {FieldRefUnionDomain, VgDataRef} from '../../../src/vega.schema';
+import {FieldRefUnionDomain, VgDataRef, VgDomain} from '../../../src/vega.schema';
 import {parseUnitModel} from '../../util';
+
+
 
 describe('compile/scale', () => {
   describe('parseDomain()', () => {
@@ -362,6 +361,35 @@ describe('compile/scale', () => {
         fields: ['a', 'b', 'c']
       });
     });
+
+    it('should union signal domains', () => {
+      const domain1 = {
+        signal: 'foo'
+      };
+
+      const domain2 = {
+        data: 'bar',
+        fields: ['b', 'c']
+      };
+
+      const unioned = unionDomains(domain1, domain2);
+      assert.deepEqual<VgDomain>(unioned, {
+        fields: [
+          {
+            signal: 'foo'
+          },
+          {
+            data: 'bar',
+            field: 'b'
+          },
+          {
+            data: 'bar',
+            field: 'c'
+          }
+        ],
+        sort: true
+      });
+    });
   });
 
   describe('domainSort()', () => {
@@ -372,7 +400,7 @@ describe('compile/scale', () => {
             x: {field: 'a', type: 'quantitative'},
           }
         });
-      const sort = domainSort(model, X, ScaleType.LINEAR);
+      const sort = domainSort(model, 'x', ScaleType.LINEAR);
       assert.deepEqual(sort, undefined);
     });
 
@@ -384,7 +412,7 @@ describe('compile/scale', () => {
           y: {field: 'b', aggregate: 'sum', type: 'quantitative'}
         }
       });
-      const sort = domainSort(model, X, ScaleType.ORDINAL);
+      const sort = domainSort(model, 'x', ScaleType.ORDINAL);
       assert.deepEqual(sort, {op: 'sum', field: 'y'});
     });
 
@@ -396,7 +424,7 @@ describe('compile/scale', () => {
           y: {field: 'b', aggregate: 'sum', type: 'quantitative'}
         }
       });
-      const sort = domainSort(model, X, ScaleType.ORDINAL);
+      const sort = domainSort(model, 'x', ScaleType.ORDINAL);
       assert.deepEqual(sort, {op: 'count', field: undefined});
     });
 
@@ -408,7 +436,7 @@ describe('compile/scale', () => {
           y: {field: 'b', aggregate: 'sum', type: 'quantitative'}
         }
       });
-      const sort = domainSort(model, X, ScaleType.ORDINAL);
+      const sort = domainSort(model, 'x', ScaleType.ORDINAL);
       assert.deepEqual(sort, true);
     });
 
@@ -420,7 +448,7 @@ describe('compile/scale', () => {
           y: {field: 'b', aggregate: 'sum', type: 'quantitative'}
         }
       });
-      const sort = domainSort(model, X, ScaleType.ORDINAL);
+      const sort = domainSort(model, 'x', ScaleType.ORDINAL);
       assert.deepEqual(sort, true);
     });
   });

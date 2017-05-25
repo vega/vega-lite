@@ -13,6 +13,7 @@ import {assembleLayoutLayerSignals} from './layout/index';
 import {Model} from './model';
 import {RepeaterValue} from './repeat';
 import {unionDomains} from './scale/domain';
+import {moveSharedScaleUp} from './scale/parse';
 import {assembleLayerSelectionMarks} from './selection/selection';
 import {UnitModel} from './unit';
 
@@ -68,31 +69,9 @@ export class LayerModel extends Model {
     for (const child of this.children) {
       child.parseScale();
 
-      // Check whether the scales are actually compatible, e.g. use the same sort or throw error
       keys(child.component.scales).forEach((channel: ScaleChannel) => {
         if (this.resolve[channel].scale === 'shared') {
-          const childScale = child.component.scales[channel];
-          const modelScale = scaleComponent[channel];
-
-          if (!childScale || isSignalRefDomain(childScale.domain) || (modelScale && isSignalRefDomain(modelScale.domain))) {
-            // TODO: merge signal ref domains
-            return;
-          }
-
-          if (modelScale) {
-            modelScale.domain = unionDomains(modelScale.domain, childScale.domain);
-          } else {
-            scaleComponent[channel] = childScale;
-          }
-
-          // rename child scale to parent scales
-          const scaleNameWithoutPrefix = childScale.name.substr(child.getName('').length);
-          const newName = this.scaleName(scaleNameWithoutPrefix, true);
-          child.renameScale(childScale.name, newName);
-          childScale.name = newName;
-
-          // remove merged scales from children
-          delete child.component.scales[channel];
+          moveSharedScaleUp(this, scaleComponent, child, channel);
         }
       });
     }

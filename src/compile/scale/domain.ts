@@ -1,15 +1,14 @@
-import * as log from '../../log';
-
 import {SHARED_DOMAIN_OP_INDEX} from '../../aggregate';
 import {binToString} from '../../bin';
 import {Channel} from '../../channel';
+import {MAIN, RAW} from '../../data';
 import {DateTime, isDateTime, timestamp} from '../../datetime';
 import {FieldDef} from '../../fielddef';
+import * as log from '../../log';
 import {Domain, hasDiscreteDomain, isBinScale, isSelectionDomain, Scale, ScaleConfig, ScaleType} from '../../scale';
 import {isSortField} from '../../sort';
 import * as util from '../../util';
 import {
-  DataRefUnionDomain,
   FieldRefUnionDomain,
   isDataRefDomain,
   isDataRefUnionedDomain,
@@ -19,8 +18,7 @@ import {
   VgDomain,
   VgSortField
 } from '../../vega.schema';
-
-import {MAIN, RAW} from '../../data';
+import {VgSignalRef} from '../../vega.schema';
 import {UnitModel} from '../unit';
 
 
@@ -211,18 +209,13 @@ export function canUseUnaggregatedDomain(fieldDef: FieldDef<string>, scaleType: 
 }
 
 /**
- * Scale domains that we can union. We cannot union signal domains we use for
- * binned data because they have to be exactly the same. Otherwise it doesn't
- * make any sense to union.
- */
-type UnionableDomain = any[] | VgDataRef | DataRefUnionDomain | FieldRefUnionDomain;
-
-/**
  * Convert the domain to an array of data refs or an array of values. Also, throw
  * away sorting information since we always sort the domain when we union two domains.
  */
-function normalizeDomain(domain: UnionableDomain): (any[] | VgDataRef)[] {
+function normalizeDomain(domain: VgDomain): (any[] | VgDataRef | VgSignalRef)[] {
   if (util.isArray(domain)) {
+    return [domain];
+  } else if (isSignalRefDomain(domain)) {
     return [domain];
   } else if (isDataRefDomain(domain)) {
     delete domain.sort;
@@ -235,15 +228,7 @@ function normalizeDomain(domain: UnionableDomain): (any[] | VgDataRef)[] {
       };
     });
   } else if (isDataRefUnionedDomain(domain)) {
-    return domain.fields.map(d => {
-      if (util.isArray(d)) {
-        return d;
-      }
-      return {
-        data: d.data,
-        field: d.field
-      };
-    });
+    return domain.fields;
   }
   /* istanbul ignore next: This should never happen. */
   throw new Error(log.message.INVAID_DOMAIN);
@@ -253,13 +238,6 @@ function normalizeDomain(domain: UnionableDomain): (any[] | VgDataRef)[] {
  * Union two data domains. A unioned domain is always sorted.
  */
 export function unionDomains(domain1: VgDomain, domain2: VgDomain): VgDomain {
-  if (isSignalRefDomain(domain1) || isSignalRefDomain(domain2)) {
-    if (!isSignalRefDomain(domain1) || !isSignalRefDomain(domain2) || domain1.signal !== domain2.signal) {
-      throw new Error(log.message.UNABLE_TO_MERGE_DOMAINS);
-    }
-    return domain1;
-  }
-
   const normalizedDomain1 = normalizeDomain(domain1);
   const normalizedDomain2 = normalizeDomain(domain2);
 
@@ -275,10 +253,12 @@ export function unionDomains(domain1: VgDomain, domain2: VgDomain): VgDomain {
     });
 
     if (util.unique(allData, x => x).length === 1 && allData[0] !== null) {
-      return {
+      // create a union domain of different fields with a single data source
+      const domain: FieldRefUnionDomain = {
         data: allData[0],
         fields: domains.map(d => (d as VgDataRef).field)
       };
+      return domain;
     }
 
     return {fields: domains, sort: true};
