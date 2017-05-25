@@ -8,7 +8,7 @@ import {NullFilterNode} from './nullfilter';
 import {SourceNode} from './source';
 import {StackNode} from './stack';
 import {TimeUnitNode} from './timeunit';
-import {CalculateNode, FilterNode} from './transforms';
+import {CalculateNode, FilterNode, LookupNode} from './transforms';
 
 /**
  * Start optimization path at the leaves. Useful for merging up or removing things.
@@ -38,7 +38,7 @@ export function moveParseUp(node: DataFlowNode) {
 
   // move parse up by merging or swapping
   if (node instanceof ParseNode) {
-    if (parent instanceof SourceNode) {
+    if (parent instanceof SourceNode || parent instanceof LookupNode) {
       return false;
     }
 
