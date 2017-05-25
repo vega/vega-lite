@@ -136,6 +136,9 @@ export class FacetModel extends ModelWithField {
   public parseMark() {
     this.child.parseMark();
 
+    // if we facet by two dimensions, we need to add a cross operator to the aggregation
+    // so that we create all groups
+    const isCrossedFacet = this.channelHasField(ROW) && this.channelHasField(COLUMN);
     this.component.mark = [{
       name: this.getName('cell'),
       type: 'group',
@@ -146,9 +149,16 @@ export class FacetModel extends ModelWithField {
           groupby: [].concat(
             this.channelHasField(ROW) ? [this.field(ROW)] : [],
             this.channelHasField(COLUMN) ? [this.field(COLUMN)] : []
-          )
+          ),
+          ...(isCrossedFacet ? {aggregate: {
+            cross: true
+          }}: {})
         }
       },
+      ...(isCrossedFacet ? {sort: {
+        field: [this.field(ROW, {expr: 'datum'}), this.field(COLUMN, {expr: 'datum'})],
+        order: ['ascending', 'ascending']
+      }} : {}),
       encode: {
         update: getFacetGroupProperties(this)
       }
@@ -200,11 +210,10 @@ export class FacetModel extends ModelWithField {
   private mergeChildAxis(channel: 'x' | 'y') {
     const {child} = this;
     if (child.component.axes[channel]) {
-      // TODO: read these from the resolve syntax
-      const scaleResolve = 'shared';
+      // TODO: read from the resolve
       const axisResolve = 'shared';
 
-      if (scaleResolve === 'shared' && axisResolve === 'shared') {
+      if (axisResolve === 'shared') {
         // For shared axis, move the axes to facet's header or footer
         const headerChannel = channel === 'x' ? 'column' : 'row';
 

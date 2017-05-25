@@ -3,8 +3,9 @@
 import {assert} from 'chai';
 import {Axis} from '../../src/axis';
 import {ROW, SHAPE} from '../../src/channel';
-import * as facet from '../../src/compile/facet';
+import {parseData} from '../../src/compile/data/parse';
 import {FacetModel} from '../../src/compile/facet';
+import * as facet from '../../src/compile/facet';
 import {defaultConfig} from '../../src/config';
 import {Facet} from '../../src/facet';
 import {PositionFieldDef} from '../../src/fielddef';
@@ -61,6 +62,38 @@ describe('FacetModel', function() {
         });
         assert.deepEqual<PositionFieldDef<string>>(model.facet.row, {field: 'a', type: 'quantitative'});
         assert.equal(localLogger.warns[0], log.message.facetChannelShouldBeDiscrete(ROW));
+      });
+    });
+  });
+
+  describe('parseMark', () => {
+    it('should add cross and sort if we facet my multiple dimensions', () => {
+      const model = parseFacetModel({
+        facet: {
+          row: {field: 'a', type: 'ordinal'},
+          column: {field: 'b', type: 'ordinal'}
+        },
+        spec: {
+          mark: 'point',
+          encoding: {
+            x: {field: 'c', type: 'quantitative'}
+          }
+        }
+      });
+
+      model.parseData();
+      model.parseMark();
+
+      assert(model.component.mark[0].from.facet.aggregate.cross);
+      assert.deepEqual(model.component.mark[0].sort, {
+        field: [
+          'datum["a"]',
+          'datum["b"]'
+        ],
+        order: [
+          'ascending',
+          'ascending'
+        ]
       });
     });
   });
@@ -166,72 +199,6 @@ describe('FacetModel', function() {
       });
       model.parseAxisAndHeader();
       assert(model.component.layoutHeaders.column.fieldRef, "parent[\"a\"]");
-    });
-  });
-
-  // TODO: test assembleHeader
-
-  describe('dataTable', () => {
-    it('should return stacked if there is a stacked data component', () => {
-      const model = parseFacetModel({
-        facet: {
-          row: {field: 'a', type: 'ordinal'}
-        },
-        spec: {
-          mark: 'point',
-          encoding: {
-            "x": {"aggregate": "sum", "field": "yield", "type": "quantitative"},
-            "y": {"field": "variety", "type": "nominal"},
-            "color": {"field": "site", "type": "nominal"}
-          }
-        }
-      });
-
-      // Mock
-      model.component.data = {stack: {}} as any;
-
-      // assert.equal(model.dataTable(), 'stacked');
-    });
-
-    it('should return summary if there is a summary data component and no stacked', () => {
-      const model = parseFacetModel({
-        facet: {
-          row: {field: 'a', type: 'ordinal'}
-        },
-        spec: {
-          mark: 'point',
-          encoding: {
-            "x": {"aggregate": "sum", "field": "yield", "type": "quantitative"},
-            "y": {"field": "variety", "type": "nominal"}
-          }
-        }
-      });
-
-      // Mock
-      model.component.data = {summary: [{
-        measures: {a: 1}
-      }]} as any;
-
-      // assert.equal(model.dataTable(), 'main');
-    });
-
-    it('should return source if there is no stacked nor summary data component', () => {
-      const model = parseFacetModel({
-        facet: {
-          row: {field: 'a', type: 'ordinal'}
-        },
-        spec: {
-          mark: 'point',
-          encoding: {
-            "x": {"field": "yield", "type": "quantitative"},
-            "y": {"field": "variety", "type": "nominal"}
-          }
-        }
-      });
-      // Mock
-      model.component.data = {summary: []} as any;
-
-      // assert.equal(model.dataTable(), 'main');
     });
   });
 });

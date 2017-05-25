@@ -23,6 +23,14 @@
       "y": {
         "field": "Miles_per_Gallon",
         "type": "quantitative"
+      },
+      "color": {
+        "field": "Cylinders",
+        "type": "nominal"
+      },
+      "shape": {
+        "field": "Origin",
+        "type": "nominal"
       }
     }
   }

@@ -1,9 +1,6 @@
 
 export type Padding = number | {top?: number, bottom?: number, left?: number, right?: number};
 export interface TopLevelProperties {
-  // Current we don't support autosize yet.  Once we do, we have to modify compile.ts to fix this.
-  // autosize?: ...;
-
   /**
    * CSS color property to use as the background of visualization.
    *
@@ -19,10 +16,15 @@ export interface TopLevelProperties {
    * @minimum 0
    */
   padding?: Padding;
+
+  /**
+   * Resize is a boolean indicating if autosize layout should be re-calculated on every update.
+   */
+  autoResize?: boolean;
 }
 
 const TOP_LEVEL_PROPERTIES: (keyof TopLevelProperties)[] = [
-  'background', 'padding'
+  'background', 'padding', 'autoResize'
 ];
 
 export function extractTopLevelProperties<T extends TopLevelProperties>(t: T) {

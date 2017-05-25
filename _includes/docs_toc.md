@@ -8,6 +8,7 @@
 - [Data]({{site.baseurl}}/docs/data.html)
     - [Inline Data]({{site.baseurl}}/docs/data.html#inline)
     - [Data from URL]({{site.baseurl}}/docs/data.html#url)
+    - [Named Data Sources]({{site.baseurl}}/docs/data.html#named)
     - [Format]({{site.baseurl}}/docs/data.html#format)
 - [Transform]({{site.baseurl}}/docs/transform.html)
     - [Top-level Transform Property]({{site.baseurl}}/docs/transform.html#top-level-transform-property)

@@ -269,8 +269,21 @@
                             "groupby": [
                                 "Cylinders",
                                 "Origin"
-                            ]
+                            ],
+                            "aggregate": {
+                                "cross": true
+                            }
                         }
+                    },
+                    "sort": {
+                        "field": [
+                            "datum[\"Cylinders\"]",
+                            "datum[\"Origin\"]"
+                        ],
+                        "order": [
+                            "ascending",
+                            "ascending"
+                        ]
                     },
                     "encode": {
                         "update": {
@@ -310,10 +323,15 @@
                                         "field": "Miles_per_Gallon"
                                     },
                                     "stroke": {
-                                        "value": "#4c78a8"
+                                        "scale": "color",
+                                        "field": "Cylinders"
                                     },
                                     "fill": {
                                         "value": "transparent"
+                                    },
+                                    "shape": {
+                                        "scale": "shape",
+                                        "field": "Origin"
                                     },
                                     "opacity": {
                                         "value": 0.7
@@ -381,6 +399,45 @@
             "round": true,
             "nice": true,
             "zero": true
+        },
+        {
+            "name": "shape",
+            "type": "ordinal",
+            "domain": {
+                "data": "source_0",
+                "field": "Origin",
+                "sort": true
+            },
+            "range": "symbol"
+        },
+        {
+            "name": "color",
+            "type": "ordinal",
+            "domain": {
+                "data": "source_0",
+                "field": "Cylinders",
+                "sort": true
+            },
+            "range": "category"
+        }
+    ],
+    "legends": [
+        {
+            "stroke": "color",
+            "title": "Cylinders"
+        },
+        {
+            "shape": "shape",
+            "title": "Origin",
+            "encode": {
+                "symbols": {
+                    "update": {
+                        "fill": {
+                            "value": "transparent"
+                        }
+                    }
+                }
+            }
         }
     ]
 }

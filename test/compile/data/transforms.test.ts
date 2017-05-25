@@ -1,20 +1,65 @@
 /* tslint:disable:quotemark */
 
 import {assert} from 'chai';
-
+import {AggregateNode} from '../../../src/compile/data/aggregate';
+import {BinNode} from '../../../src/compile/data/bin';
 import {NullFilterNode} from '../../../src/compile/data/nullfilter';
-import {LookupNode, parseTransformArray} from '../../../src/compile/data/transforms';
+import {TimeUnitNode} from '../../../src/compile/data/timeunit';
+import {CalculateNode, FilterNode, LookupNode, parseTransformArray} from '../../../src/compile/data/transforms';
 import {ModelWithField} from '../../../src/compile/model';
 import * as log from '../../../src/log';
+import {TimeUnit} from '../../../src/timeunit';
 import {VgLookupTransform} from '../../../src/vega.schema';
 import {parseUnitModel} from '../../util';
 
+describe('compile/data/transforms', () => {
+  describe('parseTransformArray()', () => {
+    it('should return a CalculateNode and a FilterNode', () => {
+      const model = parseUnitModel({
+        data: {values: []},
+        mark: 'point',
+        transform: [{calculate: 'calculate', as: 'as'}, {filter: 'filter'}],
+        encoding: {
+          x: {field: 'a', type: 'temporal', timeUnit: 'month'}
+        }
+      });
 
-function parse(model: ModelWithField) {
-  return NullFilterNode.make(model);
-}
+      const result = parseTransformArray(model);
+      assert.isTrue(result.first instanceof CalculateNode);
+      assert.isTrue(result.last instanceof FilterNode);
+    });
 
-describe('compile/data/transforms', function() {
+    it('should return a BinNode node and a TimeUnitNode', () => {
+      const model = parseUnitModel({
+        data: {values: []},
+        mark: 'point',
+        transform: [{bin: true, field: 'field', as: 'a'}, {timeUnit: 'month', field: 'field', as: 'b'}],
+        encoding: {
+          x: {field: 'a', type: 'temporal', timeUnit: 'month'}
+        }
+      });
+
+      const result = parseTransformArray(model);
+      assert.isTrue(result.first instanceof BinNode);
+      assert.isTrue(result.last instanceof TimeUnitNode);
+    });
+
+    it('should return a BinNode and a AggregateNode', () => {
+      const model = parseUnitModel({
+        data: {values: []},
+        mark: 'point',
+        transform: [{bin: true, field: 'field', as: 'a'}, {summarize: [{aggregate: 'count', field: 'f', as: 'b'}, {aggregate: 'sum', field: 'f', as: 'c'}], groupby: ['field']}],
+        encoding: {
+          x: {field: 'a', type: 'temporal', timeUnit: 'month'}
+        }
+      });
+
+      const result = parseTransformArray(model);
+      assert.isTrue(result.first instanceof BinNode);
+      assert.isTrue(result.last instanceof AggregateNode);
+    });
+  });
+
   describe('lookup', function() {
     it('should parse lookup from array', function () {
       const model = parseUnitModel({

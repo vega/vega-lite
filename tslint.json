@@ -73,5 +73,6 @@
     "valid-typeof": true,
     "variable-name": [true, "check-format", "allow-leading-underscore", "ban-keywords"],
     "ordered-imports": [true]
+    // "object-literal-key-quotes": [true, "as-needed"]
   }
 }

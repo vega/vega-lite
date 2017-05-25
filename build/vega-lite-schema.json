@@ -9,6 +9,10 @@
                     "format": "uri",
                     "type": "string"
                 },
+                "autoResize": {
+                    "description": "Resize is a boolean indicating if autosize layout should be re-calculated on every update.",
+                    "type": "boolean"
+                },
                 "background": {
                     "description": "CSS color property to use as the background of visualization.\n\n__Default value:__ none (transparent)",
                     "type": "string"
@@ -154,6 +158,10 @@
                     "format": "uri",
                     "type": "string"
                 },
+                "autoResize": {
+                    "description": "Resize is a boolean indicating if autosize layout should be re-calculated on every update.",
+                    "type": "boolean"
+                },
                 "background": {
                     "description": "CSS color property to use as the background of visualization.\n\n__Default value:__ none (transparent)",
                     "type": "string"
@@ -297,6 +305,10 @@
                     "format": "uri",
                     "type": "string"
                 },
+                "autoResize": {
+                    "description": "Resize is a boolean indicating if autosize layout should be re-calculated on every update.",
+                    "type": "boolean"
+                },
                 "background": {
                     "description": "CSS color property to use as the background of visualization.\n\n__Default value:__ none (transparent)",
                     "type": "string"
@@ -411,6 +423,10 @@
                     "format": "uri",
                     "type": "string"
                 },
+                "autoResize": {
+                    "description": "Resize is a boolean indicating if autosize layout should be re-calculated on every update.",
+                    "type": "boolean"
+                },
                 "background": {
                     "description": "CSS color property to use as the background of visualization.\n\n__Default value:__ none (transparent)",
                     "type": "string"
@@ -471,6 +487,30 @@
                 "repeat": {
                     "$ref": "#/definitions/Repeat"
                 },
+                "resolve": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "color": {
+                            "$ref": "#/definitions/NonspatialResolve"
+                        },
+                        "opacity": {
+                            "$ref": "#/definitions/NonspatialResolve"
+                        },
+                        "shape": {
+                            "$ref": "#/definitions/NonspatialResolve"
+                        },
+                        "size": {
+                            "$ref": "#/definitions/NonspatialResolve"
+                        },
+                        "x": {
+                            "$ref": "#/definitions/SpatialResolve"
+                        },
+                        "y": {
+                            "$ref": "#/definitions/SpatialResolve"
+                        }
+                    },
+                    "type": "object"
+                },
                 "spec": {
                     "anyOf": [
                         {
@@ -524,6 +564,10 @@
                     "description": "URL to JSON schema for this Vega-Lite specification.",
                     "format": "uri",
                     "type": "string"
+                },
+                "autoResize": {
+                    "description": "Resize is a boolean indicating if autosize layout should be re-calculated on every update.",
+                    "type": "boolean"
                 },
                 "background": {
                     "description": "CSS color property to use as the background of visualization.\n\n__Default value:__ none (transparent)",
@@ -637,6 +681,10 @@
                     "description": "URL to JSON schema for this Vega-Lite specification.",
                     "format": "uri",
                     "type": "string"
+                },
+                "autoResize": {
+                    "description": "Resize is a boolean indicating if autosize layout should be re-calculated on every update.",
+                    "type": "boolean"
                 },
                 "background": {
                     "description": "CSS color property to use as the background of visualization.\n\n__Default value:__ none (transparent)",
@@ -1948,6 +1996,10 @@
                     "$ref": "#/definitions/MarkConfig",
                     "description": "Area-Specific Config"
                 },
+                "autoResize": {
+                    "description": "Resize is a boolean indicating if autosize layout should be re-calculated on every update.",
+                    "type": "boolean"
+                },
                 "axis": {
                     "$ref": "#/definitions/AxisConfig",
                     "description": "Generic axis config."
@@ -2975,6 +3027,30 @@
                 },
                 "repeat": {
                     "$ref": "#/definitions/Repeat"
+                },
+                "resolve": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "color": {
+                            "$ref": "#/definitions/NonspatialResolve"
+                        },
+                        "opacity": {
+                            "$ref": "#/definitions/NonspatialResolve"
+                        },
+                        "shape": {
+                            "$ref": "#/definitions/NonspatialResolve"
+                        },
+                        "size": {
+                            "$ref": "#/definitions/NonspatialResolve"
+                        },
+                        "x": {
+                            "$ref": "#/definitions/SpatialResolve"
+                        },
+                        "y": {
+                            "$ref": "#/definitions/SpatialResolve"
+                        }
+                    },
+                    "type": "object"
                 },
                 "spec": {
                     "anyOf": [

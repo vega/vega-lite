@@ -138,6 +138,8 @@ export interface GenericRepeatSpec<U extends GenericUnitSpec<any, any>> extends 
 
   // TODO: add GenericFacetSpec<U>
   spec: GenericRepeatSpec<U> | GenericLayerSpec<U> | U;
+
+  resolve?: ResolveMapping;
 }
 
 export type RepeatSpec = GenericRepeatSpec<UnitSpec>;

@@ -17,7 +17,7 @@ Akin to [Vega](https://www.github.com/vega/vega)'s [data model](https://www.gith
 }
 ```
 
-Vega-Lite's optional top-level `data` property describes the visualization's data source as part of the specification, which can be either [inline data](#inline) (`values`) or [a URL from which to load the data](#url) (`url`).  Alternatively, if the `data` property is not specified, the data source can be [bound at runtime](https://github.com/vega/vega/wiki/Runtime).
+Vega-Lite's optional top-level `data` property describes the visualization's data source as part of the specification, which can be either [inline data](#inline) (`values`) or [a URL from which to load the data](#url) (`url`).  Alternatively, we can create an empty, [named data source](#named) (`name`), which can be [bound at runtime](https://vega.github.io/vega/docs/api/view/#data).
 
 Here is a list of all properties describing `data` source:
 
@@ -45,10 +45,22 @@ For example, the following specification loads data from a relative `url`: `data
 
 <span class="vl-example" data-name="scatter"></span>
 
+{:#named}
+## Named Data Sources
+
+Data can also be added at runtime through the [Vega View API](https://vega.github.io/vega/docs/api/view/#data). Data sources are referenced by name, which is specified in Vega-Lite with `name`.
+
+For example, to create a data source named `myData`, use the following data
+
+{: .suppress-error}
+```json
+{
+    "name": "myData"
+}
+```
+
 ## Format
 
 The format object has the following properties:
 
 {% include table.html props="type,parse,property,feature,mesh" source="DataUrlFormat" %}
-
------
