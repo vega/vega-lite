@@ -120,32 +120,31 @@ export function parseTransformArray(model: Model) {
   let first: DataFlowNode;
   let node: DataFlowNode;
   let previous: DataFlowNode;
-  let lookupCounter = 0;
 
   model.transforms.forEach((t, i) => {
-    if (isCalculate(t)) {
-      node = new CalculateNode(t);
-    } else if (isFilter(t)) {
-      node = new FilterNode(model, t.filter);
-    } else if (isBin(t)) {
-      node = BinNode.makeBinFromTransform(model, t);
-    } else if (isTimeUnit(t)) {
-      node = TimeUnitNode.makeFromTransfrom(model, t);
-    } else if (isSummarize(t)) {
-      node = AggregateNode.makeFromTransform(model, t);
-    } else if (isLookup(t)) {
-      node = LookupNode.make(model, t, lookupCounter++);
-    } else {
-      log.warn(log.message.invalidTransformIgnored(t));
-      return;
-    }
+    if (!isLookup(t)) {
+      if (isCalculate(t)) {
+        node = new CalculateNode(t);
+      } else if (isFilter(t)) {
+        node = new FilterNode(model, t.filter);
+      } else if (isBin(t)) {
+        node = BinNode.makeBinFromTransform(model, t);
+      } else if (isTimeUnit(t)) {
+        node = TimeUnitNode.makeFromTransfrom(model, t);
+      } else if (isSummarize(t)) {
+        node = AggregateNode.makeFromTransform(model, t);
+      } else {
+        log.warn(log.message.invalidTransformIgnored(t));
+        return;
+      }
 
-    if (i === 0) {
-      first = node;
-    } else {
-      node.parent = previous;
+      if (!first) {
+        first = node;
+      } else {
+        node.parent = previous;
+      }
+      previous = node;
     }
-    previous = node;
   });
 
   const last = node;

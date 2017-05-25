@@ -1,4 +1,5 @@
 import {MAIN, RAW} from '../../data';
+import {isLookup, LookupTransform} from '../../transform';
 import {Dict} from '../../util';
 import {FacetModel} from '../facet';
 import {LayerModel} from '../layer';
@@ -16,7 +17,7 @@ import {OrderNode} from './pathorder';
 import {SourceNode} from './source';
 import {StackNode} from './stack';
 import {TimeUnitNode} from './timeunit';
-import {parseTransformArray} from './transforms';
+import {LookupNode, parseTransformArray} from './transforms';
 
 function parseRoot(model: Model, sources: Dict<SourceNode>): DataFlowNode {
   if (model.data || !model.parent) {
@@ -43,6 +44,9 @@ Description of the dataflow (http://asciiflow.com/):
      +--------+
      | Source |
      +---+----+
+         |
+         v
+       Lookup
          |
          v
        Parse
@@ -100,6 +104,16 @@ export function parseData(model: Model): DataComponent {
   // the current head of the tree that we are appending to
   let head = root;
 
+  const lookups = model.transforms.filter(isLookup);
+  let node: DataFlowNode = head;
+  let previous: DataFlowNode = head;
+  lookups.forEach((t, i) => {
+    node = LookupNode.make(model, t as LookupTransform, i);
+    node.parent = previous;
+    previous = node;
+  });
+  head = node;
+
   const parse = ParseNode.make(model);
   if (parse) {
     parse.parent = root;
@@ -119,7 +133,7 @@ export function parseData(model: Model): DataComponent {
     }
   }
 
-  if (model.transforms.length > 0) {
+  if (model.transforms.length > lookups.length) {
     const {first, last} = parseTransformArray(model);
     first.parent = head;
     head = last;
