@@ -1,10 +1,10 @@
-import * as vega from 'vega';
 import embed from 'vega-embed';
 
 export function runStreamingExample(eleId: string) {
   const vlSpec = {
     '$schema': 'https://vega.github.io/schema/vega-lite/v2.json',
     'data': {'name': 'table'},
+    'autoResize': true,
     'width': 400,
     'mark': 'line',
     'encoding': {
@@ -14,7 +14,9 @@ export function runStreamingExample(eleId: string) {
     }
   };
 
-  function cb(err: any, res: any) {
+  function cb(err: Error, res: {view: any, spec: any}) {
+    const {view} = res;
+
     /**
      * Generates a new tuple with random walk.
      */
@@ -38,11 +40,12 @@ export function runStreamingExample(eleId: string) {
     let minimumX = -100;
     window.setInterval(() => {
       minimumX++;
-      const changeSet = vega.changeset().insert(valueGenerator()).remove((t: any) => t.x < minimumX);
-      res.view.change('table', changeSet).run();
-    }, 600);
+      const changeSet = view.changeset().insert(valueGenerator()).remove((t: {x: number}) => t.x < minimumX);
+      view.change('table', changeSet).run();
+    }, 1000);
   }
 
-  embed(eleId, vlSpec, {}, cb);
-
+  embed(eleId, vlSpec, {
+    actions: false
+  }, cb);
 }
