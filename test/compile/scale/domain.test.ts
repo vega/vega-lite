@@ -281,8 +281,8 @@ describe('compile/scale', () => {
         const _domain = parseDomain(model,'y');
 
         assert.deepEqual(_domain, [
-          new Date(1970, 0, 1).getTime(),
-          new Date(1980, 0, 1).getTime()
+          {"signal": "datetime(1970, 0, 1, 0, 0, 0, 0)"},
+          {"signal": "datetime(1980, 0, 1, 0, 0, 0, 0)"}
         ]);
       });
     });

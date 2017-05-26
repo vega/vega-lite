@@ -1,6 +1,6 @@
 import {Channel, COLOR} from '../../channel';
 import {Config} from '../../config';
-import {DateTime, isDateTime, timestamp} from '../../datetime';
+import {DateTime, dateTimeExpr, isDateTime} from '../../datetime';
 import {FieldDef} from '../../fielddef';
 import {title as fieldTitle} from '../../fielddef';
 import {Legend} from '../../legend';
@@ -21,7 +21,7 @@ export function values(legend: Legend) {
   if (vals && isDateTime(vals[0])) {
     return (vals as DateTime[]).map((dt) => {
       // normalize = true as end user won't put 0 = January
-      return timestamp(dt, true);
+      return {signal: dateTimeExpr(dt, true)};
     });
   }
   return vals;
