@@ -26,6 +26,6 @@ declare module 'vega-util' {
   export function isString(a: any): a is string;
   export function isNumber(a: any): a is number;
 
-  export function toSet<T>(array: T[]): {[T: string]: 1}
+  export function toSet<T>(array: T[]): {[T: string]: boolean}
   export function stringValue(a: any): string;
 }

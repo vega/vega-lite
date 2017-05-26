@@ -14,10 +14,7 @@
             "name": "source_0",
             "url": "data/lookup_groups.csv",
             "format": {
-                "type": "csv",
-                "parse": {
-                    "age": "number"
-                }
+                "type": "csv"
             },
             "transform": [
                 {
@@ -31,6 +28,11 @@
                         "age",
                         "height"
                     ]
+                },
+                {
+                    "type": "formula",
+                    "expr": "toNumber(datum[\"age\"])",
+                    "as": "age"
                 },
                 {
                     "type": "filter",

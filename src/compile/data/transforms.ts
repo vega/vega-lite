@@ -1,15 +1,17 @@
-import {isArray, isString} from 'vega-util';
-import {expression, Filter} from '../../filter';
+import {isArray, isNumber, isString} from 'vega-util';
+import {DateTime, isDateTime} from '../../datetime';
+import {expression, Filter, isEqualFilter, isOneOfFilter, isRangeFilter} from '../../filter';
 import * as log from '../../log';
 import {CalculateTransform, FilterTransform, isBin, isCalculate, isFilter, isLookup, isSummarize, isTimeUnit, LookupTransform} from '../../transform';
-import {duplicate} from '../../util';
+import {duplicate, keys, StringSet, toSet} from '../../util';
 import {VgFilterTransform, VgFormulaTransform, VgLookupTransform} from '../../vega.schema';
-import {ModelWithField} from '../model';
 import {Model} from '../model';
+import {ModelWithField} from '../model';
 import {AggregateNode} from './aggregate';
 import {BinNode} from './bin';
 import {DataFlowNode, OutputNode} from './dataflow';
 import {FacetNode} from './facet';
+import {ParseNode} from './formatparse';
 import {SourceNode} from './source';
 import {TimeUnitNode} from './timeunit';
 
@@ -80,6 +82,10 @@ export class LookupNode extends DataFlowNode {
     return new LookupNode(transform, fromOutputNode.source);
   }
 
+  public producedFields(): StringSet {
+    return toSet(this.transform.from.fields || ((this.transform.as instanceof Array) ? this.transform.as : [this.transform.as]));
+  }
+
   public assemble(): VgLookupTransform {
     let foreign: Partial<VgLookupTransform>;
 
@@ -117,15 +123,52 @@ export class LookupNode extends DataFlowNode {
  * Parses a transforms array into a chain of connected dataflow nodes.
  */
 export function parseTransformArray(model: Model) {
-  let first: DataFlowNode;
+  let first: DataFlowNode = null;
   let node: DataFlowNode;
   let previous: DataFlowNode;
   let lookupCounter = 0;
 
-  model.transforms.forEach((t, i) => {
+  model.transforms.forEach(t => {
     if (isCalculate(t)) {
       node = new CalculateNode(t);
     } else if (isFilter(t)) {
+
+      // Automatically add a parse node for filters with filter objects
+      const parse = {};
+      const filter = t.filter;
+      let val: string | number | boolean | DateTime = null;
+      // For EqualFilter, just use the equal property.
+      // For RangeFilter and OneOfFilter, all array members should have
+      // the same type, so we only use the first one.
+      if (isEqualFilter(filter)) {
+        val = filter.equal;
+      } else if (isRangeFilter(filter)) {
+        val = filter.range[0];
+      } else if (isOneOfFilter(filter)) {
+        val = (filter.oneOf || filter['in'])[0];
+      } // else -- for filter expression, we can't infer anything
+
+      if (val) {
+        if (isDateTime(val)) {
+          parse[filter['field']] = 'date';
+        } else if (isNumber(val)) {
+          parse[filter['field']] = 'number';
+        } else if (isString(val)) {
+          parse[filter['field']] = 'string';
+        }
+      }
+
+      if (keys(parse).length > 0) {
+        const parseNode = new ParseNode(parse);
+
+        if (!first) {
+          first = parseNode;
+        } else {
+          parseNode.parent = previous;
+        }
+        previous = parseNode;
+      }
+
       node = new FilterNode(model, t.filter);
     } else if (isBin(t)) {
       node = BinNode.makeBinFromTransform(model, t);
@@ -140,7 +183,7 @@ export function parseTransformArray(model: Model) {
       return;
     }
 
-    if (i === 0) {
+    if (!first) {
       first = node;
     } else {
       node.parent = previous;
