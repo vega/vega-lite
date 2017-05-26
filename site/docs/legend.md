@@ -51,12 +51,15 @@ Legend properties will apply to the current encoding channel only. Axis properti
 
 #### General
 
-{% include table.html props="fillColor,offset,padding,values,format,entryPadding,zindex" source="Legend" %}
+{% include table.html props="fillColor,offset,orient,padding,values,format,entryPadding,type,zindex" source="Legend" %}
 
 #### Title
 
 {% include table.html props="title,titleAlign" source="Legend" %}
 
+#### Tick
+
+{% include table.html props="tickCount" source="Legend" %}
 
 {:#legend-config}
 ### Legend Config
@@ -65,7 +68,7 @@ Legend Config will apply to the all encoding channel has `legend`. Legend Config
 
 #### General
 
-{% include table.html props="cornerRadius,orient,offset,strokeColor,strokeDash,strokeWidth" source="LegendConfig" %}
+{% include table.html props="cornerRadius,fillColor,orient,offset,strokeColor,strokeDash,strokeWidth,padding" source="LegendConfig" %}
 
 #### Labels
 
@@ -73,11 +76,11 @@ Legend Config will apply to the all encoding channel has `legend`. Legend Config
 
 #### Symbols
 
-{% include table.html props="entryPadding,symbolColor,symbolSize,symbolStrokeWidth" source="LegendConfig" %}
+{% include table.html props="entryPadding,symbolColor,symbolType,symbolSize,symbolStrokeWidth" source="LegendConfig" %}
 
 #### Title
 
-{% include table.html props="titleBaseline,titleColor,titleFont,titleFontSize,titleFontWeight,titleLimit,titlePadding" source="LegendConfig" %}
+{% include table.html props="titleAlign,titleBaseline,titleColor,titleFont,titleFontSize,titleFontWeight,titleLimit,titlePadding" source="LegendConfig" %}
 
 #### Gradient
 
