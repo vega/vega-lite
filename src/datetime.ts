@@ -238,8 +238,8 @@ export function dateTimeExpr(d: DateTime | DateTimeExpr, normalize = false) {
   }
 
   if (d.utc) {
-    return 'utc(' + units.join(', ') + ')';
+    return `utc(${units.join(', ')})`;
   } else {
-    return 'datetime(' + units.join(', ') + ')';
+    return `datetime(${units.join(', ')})`;
   }
 }
