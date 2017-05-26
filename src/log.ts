@@ -219,6 +219,7 @@ export namespace message {
   // AXIS
   export const INVALID_CHANNEL_FOR_AXIS = 'Invalid channel for axis.';
 
+  export const CANNOT_FORMAT_ORDINAL_GUIDES = 'Cannot format ordinal guides. Refer: https://github.com/vega/vega-lite/issues/1763#issuecomment-283426285';
   // STACK
   export function cannotStackRangedMark(channel: Channel) {
     return `Cannot stack ${channel} if there is already ${channel}2`;

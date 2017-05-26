@@ -6,5 +6,6 @@
     "coverage/**/*": true,
     "_site/**/*": true
   },
-  "files.trimTrailingWhitespace": true
+  "files.trimTrailingWhitespace": true,
+  "vsicons.presets.angular": false
 }

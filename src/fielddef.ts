@@ -145,6 +145,11 @@ export interface TextFieldDef<F> extends FieldDef<F> {
    * The formatting pattern for text value. If not defined, this will be determined automatically.
    */
   format?: string;
+
+  /**
+   * Specifies how a text field def should be formatted
+   */
+  formatType?: 'number' | 'time' | 'utc';
 }
 
 export type ChannelDef<F> = FieldDef<F> | ValueDef<any>;
