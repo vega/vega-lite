@@ -23,7 +23,7 @@ permalink: /docs/timeunit.html
 }
 ```
 
-`timeUnit` property of a channel definition sets the level of specificity for a temporal field. Currently supported values are:
+The `timeUnit` property of a channel definition sets the level of specificity for a temporal field. Currently supported values are:
 
 - Non-periodic Time Unit: `'year'`, `'yearmonth'`, `'yearmonthday'`, `'yearmonthdate'`, `'yearday'`, `'yeardate'`, `'yearmonthdayhours'`, `'yearmonthdayhoursminutes'`, `'utcyear'`, `'utcyearmonth'`, `'utcyearmonthday'`, `'utcyearmonthdate'`, `'utcyearday'`, `'utcyeardate'`, `'utcyearmonthdayhours'`, `'utcyearmonthdayhoursminutes'`.
   - For example the `yearmonth` of `April 4, 2016 11:52:34` is `April 2016`.
@@ -57,7 +57,7 @@ Vega-Lite supports the following time units, which can be combined into the `tim
 
 #### Example
 
-This example shows temperature in Seattle over the months.
+This example shows temperature in Seattle aggregated by month.
 
 <span class="vl-example" data-name="line_month"></span>
 
@@ -65,24 +65,26 @@ This example shows temperature in Seattle over the months.
 ## UTC time
 
 ### Input
+
 To parse data in local time or UTC time, there are three cases:
 
-1) By default, user will parse data in local time if the input data is inline data or url data is **not** in [ISO format](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/parse).
-<span class="vl-example" data-name="parse_local_time"></span>
-
-2) By default, user will parse data in UTC time if the input url data is in [ISO format](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/parse).
+1) Times are parsed as UTC time if the date strings are in [ISO format](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/parse).
 <span class="vl-example" data-name="parse_utc_time"></span>
 
-3) If the input data is inline data or url data without ISO format, to parse data in UTC time, we need to have custom `format` with `UTC`
+2) If that is not the case, by default, times are assumed to be local.
+<span class="vl-example" data-name="parse_local_time"></span>
+
+3) To parse inline data or url data without ISO format as UTC time, we need to specify the `format` to be `utc`
 <span class="vl-example" data-name="parse_utc_time_format"></span>
 
 ### Output
-By default, vega-lite will output data in local time (even when input is parsed in UTC time). To output data in UTC time, we need to let user specify either one of:
 
-1) UTC timeunit when you have input data in local time,
+By default, Vega-Lite will output data in local time (even when input is parsed as UTC time). To output data in UTC time, we need to specify either a UTC time unit or scale:
+
+1) UTC time unit when input data is in local time.
 <span class="vl-example" data-name="output_utc_timeunit"></span>
 
-2) or, UTC scale type when you have input data in UTC time
+2) UTC scale type when you have input data in UTC time.
 <span class="vl-example" data-name="output_utc_scale"></span>
 
-to have the correct UTC output in UTC time. But not **both** of UTC timeunit and UTC scale type since that will cause a trouble by shifting the output twice in vega.
+Do **not** use UTC time unit and the UTC scale type at the same time since that will cause Vega to shift the output twice.
