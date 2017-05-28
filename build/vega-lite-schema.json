@@ -4417,6 +4417,15 @@
                     },
                     "type": "array"
                 },
+                "extent": {
+                    "items": {
+                        "items": {
+                            "type": "number"
+                        },
+                        "type": "array"
+                    },
+                    "type": "array"
+                },
                 "precision": {
                     "$ref": "#/definitions/String"
                 },
@@ -4427,10 +4436,7 @@
                     },
                     "type": "array"
                 },
-                "scale": {
-                    "type": "number"
-                },
-                "translate": {
+                "size": {
                     "items": {
                         "type": "number"
                     },
@@ -4438,9 +4444,6 @@
                 },
                 "type": {
                     "$ref": "#/definitions/ProjectionType"
-                },
-                "zoom": {
-                    "type": "number"
                 }
             },
             "type": "object"
@@ -4463,6 +4466,15 @@
                     },
                     "type": "array"
                 },
+                "extent": {
+                    "items": {
+                        "items": {
+                            "type": "number"
+                        },
+                        "type": "array"
+                    },
+                    "type": "array"
+                },
                 "precision": {
                     "$ref": "#/definitions/String"
                 },
@@ -4473,10 +4485,7 @@
                     },
                     "type": "array"
                 },
-                "scale": {
-                    "type": "number"
-                },
-                "translate": {
+                "size": {
                     "items": {
                         "type": "number"
                     },
@@ -4484,9 +4493,6 @@
                 },
                 "type": {
                     "$ref": "#/definitions/ProjectionType"
-                },
-                "zoom": {
-                    "type": "number"
                 }
             },
             "type": "object"
