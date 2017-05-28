@@ -8,17 +8,17 @@ export interface Projection {
    */
   type?: ProjectionType;
   /*
+   * The clip angle of the projection.
+   */
+  clipAngle?: number;
+  /*
+   * Sets the projection’s viewport clip extent to the specified bounds in pixels
+   */
+  clipExtent?: number[];
+  /*
    * The center of the projection.
    */
   center?: number[];
-  /*
-   * The translation of the projection.
-   */
-  translate?: number[];
-  /*
-   * The scale of the projection.
-   */
-  zoom?: number;
   /**
    * The rotation of the projection.
    */
@@ -28,18 +28,18 @@ export interface Projection {
    */
   precision?: String;
   /*
-   * The clip angle of the projection.
+   * Used in conjunction with fit, provides the pixel area to which the projection should be automatically fit.
    */
-  clipAngle?: number;
+  extent?: number[][];
   /*
-   * Sets the projection’s scale factor to the specified value
+   * Used in conjunction with fit, provides the width and height in pixels of the area to which the projection should be automatically fit.
    */
-  scale?: number;
-  /*
-   * Sets the projection’s viewport clip extent to the specified bounds in pixels
-   */
-  clipExtent?: number[];
+  size?: number[];
 }
+
+export const defaultProjectionConfig = {
+  size: [300, 600]
+};
 
 /*
  * Any property of Projection can be in config
@@ -48,12 +48,11 @@ export interface ProjectionConfig extends Projection {}
 
 export const PROJECTION_PROPERTIES: (keyof Projection)[] = [
   'type',
+  'clipAngle',
+  'clipExtent',
   'center',
-  'translate',
-  'zoom',
   'rotate',
   'precision',
-  'clipAngle',
-  'scale',
-  'clipExtent'
+  'extent',
+  'size'
 ];

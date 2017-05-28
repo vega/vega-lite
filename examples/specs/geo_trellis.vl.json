@@ -15,7 +15,7 @@
       "as": "geo"
     }
   ],
-  "projection": {"type": "albersUsa","scale": 400,"translate": [150,90]},
+  "projection": {"type": "albersUsa"},
   "encoding": {
     "shape": {"field": "geo"},
     "color": {"field": "pct","type": "quantitative"},
