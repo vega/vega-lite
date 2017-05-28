@@ -28,7 +28,7 @@
         "fields": ["population", "engineers", "hurricanes"]
       }
     }],
-  "projection": {"type": "albersUsa","scale": 400,"translate": [-180,70]},
+  "projection": {"type": "albersUsa"},
     "encoding": {
       "color": {
         "field": {"repeat": "row"},

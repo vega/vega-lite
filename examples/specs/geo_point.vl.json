@@ -1,8 +1,7 @@
 {
   "$schema": "https://vega.github.io/schema/vega-lite/v2.json",
   "projection": {
-    "type": "albersUsa",
-    "scale": 1100
+    "type": "albersUsa"
   },
   "data": {
     "url": "data/zipcodes.csv",

@@ -105,27 +105,39 @@ export type VgScale = {
 
 export type VgProjectionType = 'albers' | 'albersUsa' | 'azimuthalEqualArea' | 'azimuthalEquidistant' | 'conicConformal' | 'conicEqualArea' | 'conicEquidistant' | 'equirectangular' | 'gnomonic' | 'mercator' | 'orthographic' | 'stereographic' | 'transverseMercator';
 
+export type VgProjectionFit = {
+  signal: String
+};
+
 export type VgProjection = {
   /*
    * The name of the projection.
    */
-  name: string,
+  name: string;
   /*
    * The type of the projection.
    */
   type?: VgProjectionType;
   /*
-   * The center of the projection.
+   * The clip angle of the projection.
    */
-  center?: number[];
+  clipAngle?: number;
+  /*
+   * Sets the projection’s viewport clip extent to the specified bounds in pixels
+   */
+  clipExtent?: number[];
+  /*
+   * Sets the projection’s scale factor to the specified value
+   */
+  scale?: number;
   /*
    * The translation of the projection.
    */
   translate?: number[];
   /*
-   * The scale of the projection.
+   * The center of the projection.
    */
-  zoom?: number;
+  center?: number[];
   /**
    * The rotation of the projection.
    */
@@ -135,17 +147,17 @@ export type VgProjection = {
    */
   precision?: String;
   /*
-   * The clip angle of the projection.
+   * GeoJSON data to which the projection should attempt to automatically fit the translate and scale parameters..
    */
-  clipAngle?: number;
+  fit?: VgProjectionFit | Object | any[];
   /*
-   * Sets the projection’s scale factor to the specified value
+   * Used in conjunction with fit, provides the pixel area to which the projection should be automatically fit.
    */
-  scale?: number;
+  extent?: number[][];
   /*
-   * Sets the projection’s viewport clip extent to the specified bounds in pixels
+   * Used in conjunction with fit, provides the width and height in pixels of the area to which the projection should be automatically fit.
    */
-  clipExtent?: number[];
+  size?: number[];
 };
 
 export type VgLayoutAlign = 'none' | 'each' | 'all';
