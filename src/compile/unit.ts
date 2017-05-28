@@ -102,6 +102,7 @@ export class UnitModel extends ModelWithField {
 
     // width / height
     const {width = this.width, height = this.height} = this.initSize(mark, this.scales,
+      this.projection,
       providedWidth,
       providedHeight
     );
@@ -175,7 +176,7 @@ export class UnitModel extends ModelWithField {
   // TODO: consolidate this with scale?  Current scale range is in parseScale (later),
   // but not in initScale because scale range depends on size,
   // but size depends on scale type and rangeStep
-  private initSize(mark: Mark, scale: Dict<Scale>, width: number, height: number) {
+  private initSize(mark: Mark, scale: Dict<Scale>, projection: Projection, width: number, height: number) {
     const cellConfig = this.config.cell;
     const scaleConfig = this.config.scale;
 
@@ -209,6 +210,9 @@ export class UnitModel extends ModelWithField {
         height = scaleConfig.rangeStep;
       }
     }
+
+    width = Math.max(width, projection.size[0] || 0);
+    height = Math.max(height, projection.size[1] || 0);
 
     return {width, height};
   }
