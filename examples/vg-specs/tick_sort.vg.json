@@ -96,8 +96,7 @@
             ],
             "round": true,
             "nice": true,
-            "zero": true,
-            "reverse": true
+            "zero": true
         }
     ],
     "axes": [
