@@ -212,6 +212,10 @@ export namespace message {
     return `Setting the scale to be independent for ${channel} means we also have to set the guide (axis or legend) to be independent.`;
   }
 
+  export function conflictedDomain(channel: Channel) {
+    return `${channel}-scale's "domain" is ignored as it is binned.`;
+  }
+
   export const INVAID_DOMAIN = 'Invalid scale domain';
 
   export const UNABLE_TO_MERGE_DOMAINS = 'Unable to merge domains';

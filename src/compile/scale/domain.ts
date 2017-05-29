@@ -64,13 +64,17 @@ export function parseDomain(model: UnitModel, channel: Channel): VgDomain {
 function parseSingleChannelDomain(scale: Scale, model: UnitModel, channel:Channel): VgDomain {
   const fieldDef = model.fieldDef(channel);
 
-  if (scale.domain && scale.domain !== 'unaggregated' && !isSelectionDomain(scale.domain) && !fieldDef.bin) { // explicit value
-    if (isDateTime(scale.domain[0])) {
-      return (scale.domain as DateTime[]).map((dt) => {
-        return {signal: dateTimeExpr(dt, true)};
-      });
+  if (scale.domain && scale.domain !== 'unaggregated' && !isSelectionDomain(scale.domain)) { // explicit value
+    if (fieldDef.bin) {
+      log.warn(log.message.conflictedDomain(channel));
+    } else {
+      if (isDateTime(scale.domain[0])) {
+        return (scale.domain as DateTime[]).map((dt) => {
+          return {signal: dateTimeExpr(dt, true)};
+        });
+      }
+      return scale.domain;
     }
-    return scale.domain;
   }
 
   const stack = model.stack;
