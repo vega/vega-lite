@@ -1,8 +1,10 @@
 import {BaseBin} from './bin';
 import {OutputNode} from './compile/data/dataflow';
 import {NiceTime, ScaleType, SelectionDomain} from './scale';
+import {SortOrder} from './sort';
 import {StackOffset} from './stack';
 import {isArray} from './util';
+
 
 export interface VgData {
   name: string;
@@ -21,8 +23,9 @@ export type VgParentRef = {
 export type VgFieldRef = string | VgParentRef | VgParentRef[];
 
 export type VgSortField = boolean | {
-  field: VgFieldRef,
-  op: string
+  field?: VgFieldRef,
+  op: string,
+  order?: SortOrder
 };
 
 export type VgDataRef = {

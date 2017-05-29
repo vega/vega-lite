@@ -61,9 +61,6 @@ export function parseScale(model: UnitModel, channel: Channel) {
     scaleComponent[property] = scale[property];
   });
 
-  if (sort && (isSortField(sort) ? sort.order : sort) === 'descending') {
-    scaleComponent.reverse = true;
-  }
   return scaleComponent;
 }
 

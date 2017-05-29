@@ -309,16 +309,16 @@
                 "data": "source_0",
                 "field": "variety",
                 "sort": {
+                    "field": "yield",
                     "op": "median",
-                    "field": "yield"
+                    "order": "descending"
                 }
             },
             "range": {
                 "step": 12
             },
             "round": true,
-            "padding": 0.5,
-            "reverse": true
+            "padding": 0.5
         },
         {
             "name": "color",
