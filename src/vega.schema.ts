@@ -1,9 +1,10 @@
 import {BaseBin} from './bin';
 import {OutputNode} from './compile/data/dataflow';
 import {NiceTime, ScaleType, SelectionDomain} from './scale';
+import {SortOrder} from './sort';
 import {StackOffset} from './stack';
 import {isArray} from './util';
-import {SortOrder} from './sort';
+
 
 export interface VgData {
   name: string;

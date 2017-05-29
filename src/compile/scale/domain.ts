@@ -158,6 +158,7 @@ export function domainSort(model: UnitModel, channel: Channel, scaleType: ScaleT
 
   // Sorted based on an aggregate calculation over a specified sort field (only for ordinal scale)
   if (isSortField(sort)) {
+
     return sort as VgSortField;
   }
 
