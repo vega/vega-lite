@@ -161,10 +161,12 @@ export function domainSort(model: UnitModel, channel: Channel, scaleType: ScaleT
     return {
       op: sort.op,
       field: sort.field
+      // TODO: Younghoon add order
     };
   }
 
   if (util.contains(['ascending', 'descending', undefined /* default =ascending*/], sort)) {
+    // TODO: does Vega support "ascending / descending" here?
     return true;
   }
 
