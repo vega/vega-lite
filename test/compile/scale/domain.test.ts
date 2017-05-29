@@ -235,7 +235,7 @@ describe('compile/scale', () => {
 
         it('should return the correct domain for yearmonth T when specify sort',
           function() {
-            const sortDef = {op: 'mean', field: 'precipitation', order: 'descending'} ;
+            const sortDef: VgSortField = {op: 'mean', field: 'precipitation', order: 'descending'} ;
             const model = parseUnitModel({
               mark: "line",
               encoding: {
@@ -257,7 +257,7 @@ describe('compile/scale', () => {
             assert.deepEqual(_domain, {
               data: 'raw',
               field: 'month_date',
-              sort: sortDef as VgSortField
+              sort: sortDef
             });
         });
 
@@ -283,7 +283,7 @@ describe('compile/scale', () => {
 
     describe('for ordinal', function() {
       it('should return correct domain with the provided sort property', function() {
-        const sortDef = {op: 'min' as 'min', field:'Acceleration'};
+        const sortDef: VgSortField = {op: 'min' as 'min', field:'Acceleration'};
         const model = parseUnitModel({
             mark: "point",
             encoding: {
@@ -293,12 +293,12 @@ describe('compile/scale', () => {
         assert.deepEqual(parseDomain(model,'y'), {
             data: "raw",
             field: 'origin',
-            sort: sortDef as VgSortField
+            sort: sortDef
           });
       });
 
       it('should return correct domain with the provided sort property with order property', function() {
-        const sortDef = {op: 'min', field:'Acceleration', order: "descending"} ;
+        const sortDef: VgSortField = {op: 'min', field:'Acceleration', order: "descending"} ;
         const model = parseUnitModel({
             mark: "point",
             encoding: {
@@ -309,7 +309,7 @@ describe('compile/scale', () => {
         assert.deepEqual(parseDomain(model,'y'), {
             data: "raw",
             field: 'origin',
-            sort: sortDef as VgSortField
+            sort: sortDef
           });
       });
 
@@ -434,7 +434,7 @@ describe('compile/scale', () => {
         }
       });
       const sort = domainSort(model, 'x', ScaleType.ORDINAL);
-      assert.deepEqual(sort, {op: 'count'} as VgSortField);
+      assert.deepEqual(sort, {op: 'count'});
     });
 
     it('should return true if sort specified', () => {
