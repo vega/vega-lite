@@ -213,7 +213,7 @@ export namespace message {
   }
 
   export function conflictedDomain(channel: Channel) {
-    return `Cannot set ${channel}-scale's domain as it is binned. Use "extent" instead.`;
+    return `Cannot set ${channel}-scale's domain as it is binned. Please use "bin"'s "extent" instead.`;
   }
 
   export const INVAID_DOMAIN = 'Invalid scale domain';
