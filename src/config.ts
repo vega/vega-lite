@@ -5,7 +5,7 @@ import {VL_ONLY_GUIDE_CONFIG} from './guide';
 import {defaultLegendConfig, LegendConfig} from './legend';
 import {BarConfig, Mark, MarkConfig, MarkConfigMixins, PRIMITIVE_MARKS, TextConfig, TickConfig, VL_ONLY_MARK_SPECIFIC_CONFIG_PROPERTY_INDEX} from './mark';
 import * as mark from './mark';
-import {defaultProjectionConfig, ProjectionConfig} from './projection';
+import {ProjectionConfig} from './projection';
 import {defaultScaleConfig, ScaleConfig} from './scale';
 import {defaultConfig as defaultSelectionConfig, SelectionConfig} from './selection';
 import {StackOffset} from './stack';
@@ -248,7 +248,7 @@ export const defaultConfig: Config = {
 
   overlay: defaultOverlayConfig,
   scale: defaultScaleConfig,
-  projection: defaultProjectionConfig,
+  projection: {},
   axis: {},
   axisX: {},
   axisY: {},

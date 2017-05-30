@@ -27,19 +27,7 @@ export interface Projection {
    * The desired precision of the projection.
    */
   precision?: String;
-  /*
-   * Used in conjunction with fit, provides the pixel area to which the projection should be automatically fit.
-   */
-  extent?: number[][];
-  /*
-   * Used in conjunction with fit, provides the width and height in pixels of the area to which the projection should be automatically fit.
-   */
-  size?: number[];
 }
-
-export const defaultProjectionConfig = {
-  size: [300, 600]
-};
 
 /*
  * Any property of Projection can be in config
@@ -52,7 +40,5 @@ export const PROJECTION_PROPERTIES: (keyof Projection)[] = [
   'clipExtent',
   'center',
   'rotate',
-  'precision',
-  'extent',
-  'size'
+  'precision'
 ];

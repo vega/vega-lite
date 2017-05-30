@@ -25,15 +25,14 @@ export function parseProjection(model: UnitModel): VgProjection {
     console.log('Should this ever happen?');
   }
 
-  const sources: SourceNode[] = vals(model.component.data.sources);
-  const geodata: SourceNode = sources[sources.length - 1];
   const fit: VgProjectionFit = {
-    signal: `data('${geodata.dataName}')`
+    signal: `data('${model.requestDataName('main')}')`
   };
 
   const projectionComponent: VgProjection = {
     name: model.getName('projection'),
-    fit:  fit
+    fit: fit,
+    size: [model.width, model.height]
   };
 
   PROJECTION_PROPERTIES.forEach((property) => {
