@@ -159,26 +159,6 @@ describe('compile/scale', () => {
         assert.deepEqual(_domain, [0, 200]);
       });
 
-      it('should ignore the custom domain when binned', log.wrap((localLogger) => {
-        const model = parseUnitModel({
-          mark: "point",
-          encoding: {
-            y: {
-              field: 'origin',
-              type: 'quantitative',
-              scale: {domain: [0,200]},
-              bin: {maxbins: 15}
-            }
-          }
-        });
-        const _domain = parseDomain(model,'y');
-
-        assert.deepEqual(_domain, {
-          signal: 'sequence(bin_maxbins_15_origin_bins.start, bin_maxbins_15_origin_bins.stop + bin_maxbins_15_origin_bins.step, bin_maxbins_15_origin_bins.step)'
-        });
-        assert.equal(localLogger.warns[0], log.message.conflictedDomain("y"));
-      }));
-
       it('should return the aggregated domain if we do not overrride it', function() {
         const model = parseUnitModel({
           mark: "point",
