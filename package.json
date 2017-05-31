@@ -20,7 +20,8 @@
     "test": "test"
   },
   "scripts": {
-    "tsc": "rm -rf build/*/** && tsc",
+    "pretsc": "rm -rf build/*/** && cp package.json build",
+    "tsc": "tsc",
     "prebuild": "mkdir -p build/site build/examples/images build/test-gallery",
     "build": "npm run tsc && cp package.json build && browserify src/vl.ts -p tsify -d -s vl | exorcist build/vega-lite.js.map > build/vega-lite.js",
     "postbuild": "uglifyjs build/vega-lite.js -cm --source-map content=build/vega-lite.js.map,filename=build/vega-lite.min.js.map -o build/vega-lite.min.js && npm run schema",
@@ -61,6 +62,7 @@
 
     "codecov": "nyc report --reporter=json && codecov -f coverage/*.json",
     "watch:build": "watchify src/vl.ts -p tsify -v -d -s vl -o 'exorcist build/vega-lite.js.map > build/vega-lite.js'",
+    "watch:tsc": "npm run tsc -- -w",
     "watch:test": "nodemon -x 'npm test'",
     "watch": "nodemon -x 'npm run build && npm run test:nocompile' # already ran schema in build"
   },
