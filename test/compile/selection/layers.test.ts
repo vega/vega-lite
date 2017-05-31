@@ -109,14 +109,12 @@ describe('Layered Selections', function() {
     assert.sameDeepMembers(layers.assembleMarks(), [
       // Background brush mark for "brush" selection.
       {
-        "name": undefined,
         "type": "rect",
         "clip": true,
         "encode": {
           "enter": {
             "fill": {"value": "#333"},
-            "fillOpacity": {"value": 0.125},
-            "stroke": undefined
+            "fillOpacity": {"value": 0.125}
           },
           "update": {
             "x": [
@@ -172,7 +170,6 @@ describe('Layered Selections', function() {
         "encode": {
           "enter": {
             "fill": {"value": "transparent"},
-            "fillOpacity": undefined,
             "stroke": {"value": "white"}
           },
           "update": {
