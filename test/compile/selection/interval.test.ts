@@ -269,13 +269,11 @@ describe('Interval Selections', function() {
     const marks: any[] = [{hello: "world"}];
     assert.sameDeepMembers(interval.marks(model, selCmpts['one'], marks), [
       {
-        "name": undefined,
         "type": "rect",
         "encode": {
           "enter": {
             "fill": {"value": "#333"},
-            "fillOpacity": {"value": 0.125},
-            "stroke": undefined
+            "fillOpacity": {"value": 0.125}
           },
           "update": {
             "x": [
@@ -318,7 +316,6 @@ describe('Interval Selections', function() {
         "encode": {
           "enter": {
             "fill": {"value": "transparent"},
-            "fillOpacity": undefined,
             "stroke": {"value": "white"}
           },
           "update": {
@@ -362,13 +359,11 @@ describe('Interval Selections', function() {
 
     assert.sameDeepMembers(interval.marks(model, selCmpts['three'], marks), [
       {
-        "name": undefined,
         "type": "rect",
         "encode": {
           "enter": {
             "fill": {"value": "#333"},
-            "fillOpacity": {"value": 0.125},
-            "stroke": undefined
+            "fillOpacity": {"value": 0.125}
           },
           "update": {
             "x": {
@@ -397,7 +392,6 @@ describe('Interval Selections', function() {
         "encode": {
           "enter": {
             "fill": {"value": "transparent"},
-            "fillOpacity": undefined,
             "stroke": {"value": "white"}
           },
           "update": {
