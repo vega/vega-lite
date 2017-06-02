@@ -178,7 +178,7 @@
                     },
                     "signals": [
                         {
-                            "name": "brush_Horsepower",
+                            "name": "brush_y",
                             "value": [],
                             "on": [
                                 {
@@ -187,11 +187,10 @@
                                         "type": "mousedown",
                                         "filter": [
                                             "event.shiftKey",
-                                            "!event.item || (event.item && event.item.mark.name !== \"brush_brush\")",
-                                            "!event.item || (event.item && event.item.mark.name !== \"brush_brush\")"
+                                            "!event.item || event.item.mark.name !== \"brush_brush\""
                                         ]
                                     },
-                                    "update": "invert(\"child_Horsepower_Horsepower_x\", [x(unit), x(unit)])"
+                                    "update": "[y(unit), y(unit)]"
                                 },
                                 {
                                     "events": {
@@ -203,8 +202,7 @@
                                                 "type": "mousedown",
                                                 "filter": [
                                                     "event.shiftKey",
-                                                    "!event.item || (event.item && event.item.mark.name !== \"brush_brush\")",
-                                                    "!event.item || (event.item && event.item.mark.name !== \"brush_brush\")"
+                                                    "!event.item || event.item.mark.name !== \"brush_brush\""
                                                 ]
                                             },
                                             {
@@ -213,71 +211,42 @@
                                             }
                                         ]
                                     },
-                                    "update": "[brush_Horsepower[0], invert(\"child_Horsepower_Horsepower_x\", clamp(x(unit), 0, child_Horsepower_Horsepower_width))]"
+                                    "update": "[brush_y[0], clamp(y(unit), 0, child_Horsepower_Horsepower_height)]"
+                                },
+                                {
+                                    "events": {
+                                        "scale": "child_Horsepower_Horsepower_y"
+                                    },
+                                    "update": "!isArray(brush_Horsepower) ? brush_y : [scale(\"child_Horsepower_Horsepower_y\", brush_Horsepower[0]), scale(\"child_Horsepower_Horsepower_y\", brush_Horsepower[1])]"
                                 },
                                 {
                                     "events": {
                                         "signal": "brush_translate_delta"
                                     },
-                                    "update": "clampRange([brush_translate_anchor.extent_x[0] + abs(span(brush_translate_anchor.extent_x)) * brush_translate_delta.x / brush_translate_anchor.width, brush_translate_anchor.extent_x[1] + abs(span(brush_translate_anchor.extent_x)) * brush_translate_delta.x / brush_translate_anchor.width], invert(\"child_Horsepower_Horsepower_x\", 0), invert(\"child_Horsepower_Horsepower_x\", unit.width))"
+                                    "update": "clampRange([brush_translate_anchor.extent_y[0] + brush_translate_delta.y, brush_translate_anchor.extent_y[1] + brush_translate_delta.y], 0, unit.height)"
                                 },
                                 {
                                     "events": {
                                         "signal": "brush_zoom_delta"
                                     },
-                                    "update": "clampRange([brush_zoom_anchor.x + (brush_Horsepower[0] - brush_zoom_anchor.x) * brush_zoom_delta, brush_zoom_anchor.x + (brush_Horsepower[1] - brush_zoom_anchor.x) * brush_zoom_delta], invert(\"child_Horsepower_Horsepower_x\", 0), invert(\"child_Horsepower_Horsepower_x\", unit.width))"
+                                    "update": "clampRange([brush_zoom_anchor.y + (brush_y[0] - brush_zoom_anchor.y) * brush_zoom_delta, brush_zoom_anchor.y + (brush_y[1] - brush_zoom_anchor.y) * brush_zoom_delta], 0, unit.height)"
                                 }
                             ]
                         },
                         {
-                            "name": "brush_size",
-                            "value": [],
+                            "name": "brush_Horsepower",
                             "on": [
                                 {
                                     "events": {
-                                        "source": "scope",
-                                        "type": "mousedown",
-                                        "filter": [
-                                            "event.shiftKey",
-                                            "!event.item || (event.item && event.item.mark.name !== \"brush_brush\")",
-                                            "!event.item || (event.item && event.item.mark.name !== \"brush_brush\")"
-                                        ]
+                                        "signal": "brush_y"
                                     },
-                                    "update": "{x: x(unit), y: y(unit), width: 0, height: 0}"
-                                },
-                                {
-                                    "events": {
-                                        "source": "scope",
-                                        "type": "mousemove",
-                                        "between": [
-                                            {
-                                                "source": "scope",
-                                                "type": "mousedown",
-                                                "filter": [
-                                                    "event.shiftKey",
-                                                    "!event.item || (event.item && event.item.mark.name !== \"brush_brush\")",
-                                                    "!event.item || (event.item && event.item.mark.name !== \"brush_brush\")"
-                                                ]
-                                            },
-                                            {
-                                                "source": "scope",
-                                                "type": "mouseup"
-                                            }
-                                        ]
-                                    },
-                                    "update": "{x: brush_size.x, y: brush_size.y, width: abs(x(unit) - brush_size.x), height: abs(y(unit) - brush_size.y)}"
-                                },
-                                {
-                                    "events": {
-                                        "signal": "brush_zoom_delta"
-                                    },
-                                    "update": "{x: brush_size.x, y: brush_size.y, width: brush_size.width * brush_zoom_delta , height: brush_size.height * brush_zoom_delta}"
+                                    "update": "invert(\"child_Horsepower_Horsepower_y\", brush_y)"
                                 }
                             ]
                         },
                         {
                             "name": "brush",
-                            "update": "[{encoding: \"x\", field: \"Horsepower\", extent: brush_Horsepower}]"
+                            "update": "[{encoding: \"y\", field: \"Horsepower\", extent: brush_Horsepower}]"
                         },
                         {
                             "name": "brush_translate_anchor",
@@ -294,7 +263,7 @@
                                             "markname": "brush_brush"
                                         }
                                     ],
-                                    "update": "{x: x(unit), y: y(unit), width: brush_size.width, height: brush_size.height, extent_x: slice(brush_Horsepower), }"
+                                    "update": "{x: x(unit), y: y(unit), extent_y: slice(brush_y)}"
                                 }
                             ]
                         },
@@ -335,10 +304,13 @@
                                         {
                                             "source": "scope",
                                             "type": "wheel",
+                                            "filter": [
+                                                "event.shiftKey"
+                                            ],
                                             "markname": "brush_brush"
                                         }
                                     ],
-                                    "update": "{x: invert(\"child_Horsepower_Horsepower_x\", x(unit)), y: invert(\"child_Horsepower_Horsepower_y\", y(unit))}"
+                                    "update": "{x: x(unit), y: y(unit)}"
                                 }
                             ]
                         },
@@ -350,6 +322,9 @@
                                         {
                                             "source": "scope",
                                             "type": "wheel",
+                                            "filter": [
+                                                "event.shiftKey"
+                                            ],
                                             "markname": "brush_brush"
                                         }
                                     ],
@@ -387,7 +362,7 @@
                                     "events": {
                                         "signal": "grid_translate_delta"
                                     },
-                                    "update": "[grid_translate_anchor.extent_y[0] + abs(span(grid_translate_anchor.extent_y)) * grid_translate_delta.y / grid_translate_anchor.height, grid_translate_anchor.extent_y[1] + abs(span(grid_translate_anchor.extent_y)) * grid_translate_delta.y / grid_translate_anchor.height]"
+                                    "update": "[grid_translate_anchor.extent_y[0] + span(grid_translate_anchor.extent_y) * grid_translate_delta.y / unit.height, grid_translate_anchor.extent_y[1] + span(grid_translate_anchor.extent_y) * grid_translate_delta.y / unit.height]"
                                 },
                                 {
                                     "events": {
@@ -416,7 +391,7 @@
                                             ]
                                         }
                                     ],
-                                    "update": "{x: x(unit), y: y(unit), width: unit.width, height: unit.height, extent_y: domain(\"child_Horsepower_Horsepower_y\"), }"
+                                    "update": "{x: x(unit), y: y(unit), extent_y: domain(\"child_Horsepower_Horsepower_y\")}"
                                 }
                             ]
                         },
@@ -455,7 +430,10 @@
                                     "events": [
                                         {
                                             "source": "scope",
-                                            "type": "wheel"
+                                            "type": "wheel",
+                                            "filter": [
+                                                "!event.shiftKey"
+                                            ]
                                         }
                                     ],
                                     "update": "{x: invert(\"child_Horsepower_Horsepower_x\", x(unit)), y: invert(\"child_Horsepower_Horsepower_y\", y(unit))}"
@@ -469,7 +447,10 @@
                                     "events": [
                                         {
                                             "source": "scope",
-                                            "type": "wheel"
+                                            "type": "wheel",
+                                            "filter": [
+                                                "!event.shiftKey"
+                                            ]
                                         }
                                     ],
                                     "force": true,
@@ -514,20 +495,18 @@
                                 },
                                 "update": {
                                     "x": {
-                                        "scale": "child_Horsepower_Horsepower_x",
-                                        "signal": "brush[0].extent[0]"
-                                    },
-                                    "x2": {
-                                        "scale": "child_Horsepower_Horsepower_x",
-                                        "signal": "brush[0].extent[1]"
-                                    },
-                                    "y": {
                                         "value": 0
                                     },
-                                    "y2": {
+                                    "y": {
+                                        "signal": "brush_y[0]"
+                                    },
+                                    "x2": {
                                         "field": {
-                                            "group": "height"
+                                            "group": "width"
                                         }
+                                    },
+                                    "y2": {
+                                        "signal": "brush_y[1]"
                                     }
                                 }
                             },
@@ -584,20 +563,18 @@
                                 },
                                 "update": {
                                     "x": {
-                                        "scale": "child_Horsepower_Horsepower_x",
-                                        "signal": "brush[0].extent[0]"
-                                    },
-                                    "x2": {
-                                        "scale": "child_Horsepower_Horsepower_x",
-                                        "signal": "brush[0].extent[1]"
-                                    },
-                                    "y": {
                                         "value": 0
                                     },
-                                    "y2": {
+                                    "y": {
+                                        "signal": "brush_y[0]"
+                                    },
+                                    "x2": {
                                         "field": {
-                                            "group": "height"
+                                            "group": "width"
                                         }
+                                    },
+                                    "y2": {
+                                        "signal": "brush_y[1]"
                                     }
                                 }
                             },
@@ -698,7 +675,7 @@
                     },
                     "signals": [
                         {
-                            "name": "brush_Horsepower",
+                            "name": "brush_x",
                             "value": [],
                             "on": [
                                 {
@@ -707,11 +684,10 @@
                                         "type": "mousedown",
                                         "filter": [
                                             "event.shiftKey",
-                                            "!event.item || (event.item && event.item.mark.name !== \"brush_brush\")",
-                                            "!event.item || (event.item && event.item.mark.name !== \"brush_brush\")"
+                                            "!event.item || event.item.mark.name !== \"brush_brush\""
                                         ]
                                     },
-                                    "update": "invert(\"child_Horsepower_Miles_per_Gallon_x\", [x(unit), x(unit)])"
+                                    "update": "[x(unit), x(unit)]"
                                 },
                                 {
                                     "events": {
@@ -723,8 +699,7 @@
                                                 "type": "mousedown",
                                                 "filter": [
                                                     "event.shiftKey",
-                                                    "!event.item || (event.item && event.item.mark.name !== \"brush_brush\")",
-                                                    "!event.item || (event.item && event.item.mark.name !== \"brush_brush\")"
+                                                    "!event.item || event.item.mark.name !== \"brush_brush\""
                                                 ]
                                             },
                                             {
@@ -733,24 +708,41 @@
                                             }
                                         ]
                                     },
-                                    "update": "[brush_Horsepower[0], invert(\"child_Horsepower_Miles_per_Gallon_x\", clamp(x(unit), 0, child_Horsepower_Miles_per_Gallon_width))]"
+                                    "update": "[brush_x[0], clamp(x(unit), 0, child_Horsepower_Miles_per_Gallon_width)]"
+                                },
+                                {
+                                    "events": {
+                                        "scale": "child_Horsepower_Miles_per_Gallon_x"
+                                    },
+                                    "update": "!isArray(brush_Horsepower) ? brush_x : [scale(\"child_Horsepower_Miles_per_Gallon_x\", brush_Horsepower[0]), scale(\"child_Horsepower_Miles_per_Gallon_x\", brush_Horsepower[1])]"
                                 },
                                 {
                                     "events": {
                                         "signal": "brush_translate_delta"
                                     },
-                                    "update": "clampRange([brush_translate_anchor.extent_x[0] + abs(span(brush_translate_anchor.extent_x)) * brush_translate_delta.x / brush_translate_anchor.width, brush_translate_anchor.extent_x[1] + abs(span(brush_translate_anchor.extent_x)) * brush_translate_delta.x / brush_translate_anchor.width], invert(\"child_Horsepower_Miles_per_Gallon_x\", 0), invert(\"child_Horsepower_Miles_per_Gallon_x\", unit.width))"
+                                    "update": "clampRange([brush_translate_anchor.extent_x[0] + brush_translate_delta.x, brush_translate_anchor.extent_x[1] + brush_translate_delta.x], 0, unit.width)"
                                 },
                                 {
                                     "events": {
                                         "signal": "brush_zoom_delta"
                                     },
-                                    "update": "clampRange([brush_zoom_anchor.x + (brush_Horsepower[0] - brush_zoom_anchor.x) * brush_zoom_delta, brush_zoom_anchor.x + (brush_Horsepower[1] - brush_zoom_anchor.x) * brush_zoom_delta], invert(\"child_Horsepower_Miles_per_Gallon_x\", 0), invert(\"child_Horsepower_Miles_per_Gallon_x\", unit.width))"
+                                    "update": "clampRange([brush_zoom_anchor.x + (brush_x[0] - brush_zoom_anchor.x) * brush_zoom_delta, brush_zoom_anchor.x + (brush_x[1] - brush_zoom_anchor.x) * brush_zoom_delta], 0, unit.width)"
                                 }
                             ]
                         },
                         {
-                            "name": "brush_size",
+                            "name": "brush_Horsepower",
+                            "on": [
+                                {
+                                    "events": {
+                                        "signal": "brush_x"
+                                    },
+                                    "update": "invert(\"child_Horsepower_Miles_per_Gallon_x\", brush_x)"
+                                }
+                            ]
+                        },
+                        {
+                            "name": "brush_y",
                             "value": [],
                             "on": [
                                 {
@@ -759,11 +751,10 @@
                                         "type": "mousedown",
                                         "filter": [
                                             "event.shiftKey",
-                                            "!event.item || (event.item && event.item.mark.name !== \"brush_brush\")",
-                                            "!event.item || (event.item && event.item.mark.name !== \"brush_brush\")"
+                                            "!event.item || event.item.mark.name !== \"brush_brush\""
                                         ]
                                     },
-                                    "update": "{x: x(unit), y: y(unit), width: 0, height: 0}"
+                                    "update": "[y(unit), y(unit)]"
                                 },
                                 {
                                     "events": {
@@ -775,8 +766,7 @@
                                                 "type": "mousedown",
                                                 "filter": [
                                                     "event.shiftKey",
-                                                    "!event.item || (event.item && event.item.mark.name !== \"brush_brush\")",
-                                                    "!event.item || (event.item && event.item.mark.name !== \"brush_brush\")"
+                                                    "!event.item || event.item.mark.name !== \"brush_brush\""
                                                 ]
                                             },
                                             {
@@ -785,19 +775,42 @@
                                             }
                                         ]
                                     },
-                                    "update": "{x: brush_size.x, y: brush_size.y, width: abs(x(unit) - brush_size.x), height: abs(y(unit) - brush_size.y)}"
+                                    "update": "[brush_y[0], clamp(y(unit), 0, child_Horsepower_Miles_per_Gallon_height)]"
+                                },
+                                {
+                                    "events": {
+                                        "scale": "child_Horsepower_Miles_per_Gallon_y"
+                                    },
+                                    "update": "!isArray(brush_Miles_per_Gallon) ? brush_y : [scale(\"child_Horsepower_Miles_per_Gallon_y\", brush_Miles_per_Gallon[0]), scale(\"child_Horsepower_Miles_per_Gallon_y\", brush_Miles_per_Gallon[1])]"
+                                },
+                                {
+                                    "events": {
+                                        "signal": "brush_translate_delta"
+                                    },
+                                    "update": "clampRange([brush_translate_anchor.extent_y[0] + brush_translate_delta.y, brush_translate_anchor.extent_y[1] + brush_translate_delta.y], 0, unit.height)"
                                 },
                                 {
                                     "events": {
                                         "signal": "brush_zoom_delta"
                                     },
-                                    "update": "{x: brush_size.x, y: brush_size.y, width: brush_size.width * brush_zoom_delta , height: brush_size.height * brush_zoom_delta}"
+                                    "update": "clampRange([brush_zoom_anchor.y + (brush_y[0] - brush_zoom_anchor.y) * brush_zoom_delta, brush_zoom_anchor.y + (brush_y[1] - brush_zoom_anchor.y) * brush_zoom_delta], 0, unit.height)"
+                                }
+                            ]
+                        },
+                        {
+                            "name": "brush_Miles_per_Gallon",
+                            "on": [
+                                {
+                                    "events": {
+                                        "signal": "brush_y"
+                                    },
+                                    "update": "invert(\"child_Horsepower_Miles_per_Gallon_y\", brush_y)"
                                 }
                             ]
                         },
                         {
                             "name": "brush",
-                            "update": "[{encoding: \"x\", field: \"Horsepower\", extent: brush_Horsepower}]"
+                            "update": "[{encoding: \"x\", field: \"Horsepower\", extent: brush_Horsepower}, {encoding: \"y\", field: \"Miles_per_Gallon\", extent: brush_Miles_per_Gallon}]"
                         },
                         {
                             "name": "brush_translate_anchor",
@@ -814,7 +827,7 @@
                                             "markname": "brush_brush"
                                         }
                                     ],
-                                    "update": "{x: x(unit), y: y(unit), width: brush_size.width, height: brush_size.height, extent_x: slice(brush_Horsepower), }"
+                                    "update": "{x: x(unit), y: y(unit), extent_x: slice(brush_x), extent_y: slice(brush_y)}"
                                 }
                             ]
                         },
@@ -855,10 +868,13 @@
                                         {
                                             "source": "scope",
                                             "type": "wheel",
+                                            "filter": [
+                                                "event.shiftKey"
+                                            ],
                                             "markname": "brush_brush"
                                         }
                                     ],
-                                    "update": "{x: invert(\"child_Horsepower_Miles_per_Gallon_x\", x(unit)), y: invert(\"child_Horsepower_Miles_per_Gallon_y\", y(unit))}"
+                                    "update": "{x: x(unit), y: y(unit)}"
                                 }
                             ]
                         },
@@ -870,6 +886,9 @@
                                         {
                                             "source": "scope",
                                             "type": "wheel",
+                                            "filter": [
+                                                "event.shiftKey"
+                                            ],
                                             "markname": "brush_brush"
                                         }
                                     ],
@@ -907,7 +926,7 @@
                                     "events": {
                                         "signal": "grid_translate_delta"
                                     },
-                                    "update": "[grid_translate_anchor.extent_x[0] - abs(span(grid_translate_anchor.extent_x)) * grid_translate_delta.x / grid_translate_anchor.width, grid_translate_anchor.extent_x[1] - abs(span(grid_translate_anchor.extent_x)) * grid_translate_delta.x / grid_translate_anchor.width]"
+                                    "update": "[grid_translate_anchor.extent_x[0] - span(grid_translate_anchor.extent_x) * grid_translate_delta.x / unit.width, grid_translate_anchor.extent_x[1] - span(grid_translate_anchor.extent_x) * grid_translate_delta.x / unit.width]"
                                 },
                                 {
                                     "events": {
@@ -925,7 +944,7 @@
                                     "events": {
                                         "signal": "grid_translate_delta"
                                     },
-                                    "update": "[grid_translate_anchor.extent_y[0] + abs(span(grid_translate_anchor.extent_y)) * grid_translate_delta.y / grid_translate_anchor.height, grid_translate_anchor.extent_y[1] + abs(span(grid_translate_anchor.extent_y)) * grid_translate_delta.y / grid_translate_anchor.height]"
+                                    "update": "[grid_translate_anchor.extent_y[0] + span(grid_translate_anchor.extent_y) * grid_translate_delta.y / unit.height, grid_translate_anchor.extent_y[1] + span(grid_translate_anchor.extent_y) * grid_translate_delta.y / unit.height]"
                                 },
                                 {
                                     "events": {
@@ -954,7 +973,7 @@
                                             ]
                                         }
                                     ],
-                                    "update": "{x: x(unit), y: y(unit), width: unit.width, height: unit.height, extent_x: domain(\"child_Horsepower_Miles_per_Gallon_x\"), extent_y: domain(\"child_Horsepower_Miles_per_Gallon_y\"), }"
+                                    "update": "{x: x(unit), y: y(unit), extent_x: domain(\"child_Horsepower_Miles_per_Gallon_x\"), extent_y: domain(\"child_Horsepower_Miles_per_Gallon_y\")}"
                                 }
                             ]
                         },
@@ -993,7 +1012,10 @@
                                     "events": [
                                         {
                                             "source": "scope",
-                                            "type": "wheel"
+                                            "type": "wheel",
+                                            "filter": [
+                                                "!event.shiftKey"
+                                            ]
                                         }
                                     ],
                                     "update": "{x: invert(\"child_Horsepower_Miles_per_Gallon_x\", x(unit)), y: invert(\"child_Horsepower_Miles_per_Gallon_y\", y(unit))}"
@@ -1007,7 +1029,10 @@
                                     "events": [
                                         {
                                             "source": "scope",
-                                            "type": "wheel"
+                                            "type": "wheel",
+                                            "filter": [
+                                                "!event.shiftKey"
+                                            ]
                                         }
                                     ],
                                     "force": true,
@@ -1052,20 +1077,16 @@
                                 },
                                 "update": {
                                     "x": {
-                                        "scale": "child_Horsepower_Miles_per_Gallon_x",
-                                        "signal": "brush[0].extent[0]"
-                                    },
-                                    "x2": {
-                                        "scale": "child_Horsepower_Miles_per_Gallon_x",
-                                        "signal": "brush[0].extent[1]"
+                                        "signal": "brush_x[0]"
                                     },
                                     "y": {
-                                        "value": 0
+                                        "signal": "brush_y[0]"
+                                    },
+                                    "x2": {
+                                        "signal": "brush_x[1]"
                                     },
                                     "y2": {
-                                        "field": {
-                                            "group": "height"
-                                        }
+                                        "signal": "brush_y[1]"
                                     }
                                 }
                             },
@@ -1122,20 +1143,16 @@
                                 },
                                 "update": {
                                     "x": {
-                                        "scale": "child_Horsepower_Miles_per_Gallon_x",
-                                        "signal": "brush[0].extent[0]"
-                                    },
-                                    "x2": {
-                                        "scale": "child_Horsepower_Miles_per_Gallon_x",
-                                        "signal": "brush[0].extent[1]"
+                                        "signal": "brush_x[0]"
                                     },
                                     "y": {
-                                        "value": 0
+                                        "signal": "brush_y[0]"
+                                    },
+                                    "x2": {
+                                        "signal": "brush_x[1]"
                                     },
                                     "y2": {
-                                        "field": {
-                                            "group": "height"
-                                        }
+                                        "signal": "brush_y[1]"
                                     }
                                 }
                             },
@@ -1239,7 +1256,7 @@
                     },
                     "signals": [
                         {
-                            "name": "brush_Acceleration",
+                            "name": "brush_x",
                             "value": [],
                             "on": [
                                 {
@@ -1248,11 +1265,10 @@
                                         "type": "mousedown",
                                         "filter": [
                                             "event.shiftKey",
-                                            "!event.item || (event.item && event.item.mark.name !== \"brush_brush\")",
-                                            "!event.item || (event.item && event.item.mark.name !== \"brush_brush\")"
+                                            "!event.item || event.item.mark.name !== \"brush_brush\""
                                         ]
                                     },
-                                    "update": "invert(\"child_Acceleration_Horsepower_x\", [x(unit), x(unit)])"
+                                    "update": "[x(unit), x(unit)]"
                                 },
                                 {
                                     "events": {
@@ -1264,8 +1280,7 @@
                                                 "type": "mousedown",
                                                 "filter": [
                                                     "event.shiftKey",
-                                                    "!event.item || (event.item && event.item.mark.name !== \"brush_brush\")",
-                                                    "!event.item || (event.item && event.item.mark.name !== \"brush_brush\")"
+                                                    "!event.item || event.item.mark.name !== \"brush_brush\""
                                                 ]
                                             },
                                             {
@@ -1274,24 +1289,41 @@
                                             }
                                         ]
                                     },
-                                    "update": "[brush_Acceleration[0], invert(\"child_Acceleration_Horsepower_x\", clamp(x(unit), 0, child_Acceleration_Horsepower_width))]"
+                                    "update": "[brush_x[0], clamp(x(unit), 0, child_Acceleration_Horsepower_width)]"
+                                },
+                                {
+                                    "events": {
+                                        "scale": "child_Acceleration_Horsepower_x"
+                                    },
+                                    "update": "!isArray(brush_Acceleration) ? brush_x : [scale(\"child_Acceleration_Horsepower_x\", brush_Acceleration[0]), scale(\"child_Acceleration_Horsepower_x\", brush_Acceleration[1])]"
                                 },
                                 {
                                     "events": {
                                         "signal": "brush_translate_delta"
                                     },
-                                    "update": "clampRange([brush_translate_anchor.extent_x[0] + abs(span(brush_translate_anchor.extent_x)) * brush_translate_delta.x / brush_translate_anchor.width, brush_translate_anchor.extent_x[1] + abs(span(brush_translate_anchor.extent_x)) * brush_translate_delta.x / brush_translate_anchor.width], invert(\"child_Acceleration_Horsepower_x\", 0), invert(\"child_Acceleration_Horsepower_x\", unit.width))"
+                                    "update": "clampRange([brush_translate_anchor.extent_x[0] + brush_translate_delta.x, brush_translate_anchor.extent_x[1] + brush_translate_delta.x], 0, unit.width)"
                                 },
                                 {
                                     "events": {
                                         "signal": "brush_zoom_delta"
                                     },
-                                    "update": "clampRange([brush_zoom_anchor.x + (brush_Acceleration[0] - brush_zoom_anchor.x) * brush_zoom_delta, brush_zoom_anchor.x + (brush_Acceleration[1] - brush_zoom_anchor.x) * brush_zoom_delta], invert(\"child_Acceleration_Horsepower_x\", 0), invert(\"child_Acceleration_Horsepower_x\", unit.width))"
+                                    "update": "clampRange([brush_zoom_anchor.x + (brush_x[0] - brush_zoom_anchor.x) * brush_zoom_delta, brush_zoom_anchor.x + (brush_x[1] - brush_zoom_anchor.x) * brush_zoom_delta], 0, unit.width)"
                                 }
                             ]
                         },
                         {
-                            "name": "brush_size",
+                            "name": "brush_Acceleration",
+                            "on": [
+                                {
+                                    "events": {
+                                        "signal": "brush_x"
+                                    },
+                                    "update": "invert(\"child_Acceleration_Horsepower_x\", brush_x)"
+                                }
+                            ]
+                        },
+                        {
+                            "name": "brush_y",
                             "value": [],
                             "on": [
                                 {
@@ -1300,11 +1332,10 @@
                                         "type": "mousedown",
                                         "filter": [
                                             "event.shiftKey",
-                                            "!event.item || (event.item && event.item.mark.name !== \"brush_brush\")",
-                                            "!event.item || (event.item && event.item.mark.name !== \"brush_brush\")"
+                                            "!event.item || event.item.mark.name !== \"brush_brush\""
                                         ]
                                     },
-                                    "update": "{x: x(unit), y: y(unit), width: 0, height: 0}"
+                                    "update": "[y(unit), y(unit)]"
                                 },
                                 {
                                     "events": {
@@ -1316,8 +1347,7 @@
                                                 "type": "mousedown",
                                                 "filter": [
                                                     "event.shiftKey",
-                                                    "!event.item || (event.item && event.item.mark.name !== \"brush_brush\")",
-                                                    "!event.item || (event.item && event.item.mark.name !== \"brush_brush\")"
+                                                    "!event.item || event.item.mark.name !== \"brush_brush\""
                                                 ]
                                             },
                                             {
@@ -1326,19 +1356,42 @@
                                             }
                                         ]
                                     },
-                                    "update": "{x: brush_size.x, y: brush_size.y, width: abs(x(unit) - brush_size.x), height: abs(y(unit) - brush_size.y)}"
+                                    "update": "[brush_y[0], clamp(y(unit), 0, child_Acceleration_Horsepower_height)]"
+                                },
+                                {
+                                    "events": {
+                                        "scale": "child_Acceleration_Horsepower_y"
+                                    },
+                                    "update": "!isArray(brush_Horsepower) ? brush_y : [scale(\"child_Acceleration_Horsepower_y\", brush_Horsepower[0]), scale(\"child_Acceleration_Horsepower_y\", brush_Horsepower[1])]"
+                                },
+                                {
+                                    "events": {
+                                        "signal": "brush_translate_delta"
+                                    },
+                                    "update": "clampRange([brush_translate_anchor.extent_y[0] + brush_translate_delta.y, brush_translate_anchor.extent_y[1] + brush_translate_delta.y], 0, unit.height)"
                                 },
                                 {
                                     "events": {
                                         "signal": "brush_zoom_delta"
                                     },
-                                    "update": "{x: brush_size.x, y: brush_size.y, width: brush_size.width * brush_zoom_delta , height: brush_size.height * brush_zoom_delta}"
+                                    "update": "clampRange([brush_zoom_anchor.y + (brush_y[0] - brush_zoom_anchor.y) * brush_zoom_delta, brush_zoom_anchor.y + (brush_y[1] - brush_zoom_anchor.y) * brush_zoom_delta], 0, unit.height)"
+                                }
+                            ]
+                        },
+                        {
+                            "name": "brush_Horsepower",
+                            "on": [
+                                {
+                                    "events": {
+                                        "signal": "brush_y"
+                                    },
+                                    "update": "invert(\"child_Acceleration_Horsepower_y\", brush_y)"
                                 }
                             ]
                         },
                         {
                             "name": "brush",
-                            "update": "[{encoding: \"x\", field: \"Acceleration\", extent: brush_Acceleration}]"
+                            "update": "[{encoding: \"x\", field: \"Acceleration\", extent: brush_Acceleration}, {encoding: \"y\", field: \"Horsepower\", extent: brush_Horsepower}]"
                         },
                         {
                             "name": "brush_translate_anchor",
@@ -1355,7 +1408,7 @@
                                             "markname": "brush_brush"
                                         }
                                     ],
-                                    "update": "{x: x(unit), y: y(unit), width: brush_size.width, height: brush_size.height, extent_x: slice(brush_Acceleration), }"
+                                    "update": "{x: x(unit), y: y(unit), extent_x: slice(brush_x), extent_y: slice(brush_y)}"
                                 }
                             ]
                         },
@@ -1396,10 +1449,13 @@
                                         {
                                             "source": "scope",
                                             "type": "wheel",
+                                            "filter": [
+                                                "event.shiftKey"
+                                            ],
                                             "markname": "brush_brush"
                                         }
                                     ],
-                                    "update": "{x: invert(\"child_Acceleration_Horsepower_x\", x(unit)), y: invert(\"child_Acceleration_Horsepower_y\", y(unit))}"
+                                    "update": "{x: x(unit), y: y(unit)}"
                                 }
                             ]
                         },
@@ -1411,6 +1467,9 @@
                                         {
                                             "source": "scope",
                                             "type": "wheel",
+                                            "filter": [
+                                                "event.shiftKey"
+                                            ],
                                             "markname": "brush_brush"
                                         }
                                     ],
@@ -1448,7 +1507,7 @@
                                     "events": {
                                         "signal": "grid_translate_delta"
                                     },
-                                    "update": "[grid_translate_anchor.extent_x[0] - abs(span(grid_translate_anchor.extent_x)) * grid_translate_delta.x / grid_translate_anchor.width, grid_translate_anchor.extent_x[1] - abs(span(grid_translate_anchor.extent_x)) * grid_translate_delta.x / grid_translate_anchor.width]"
+                                    "update": "[grid_translate_anchor.extent_x[0] - span(grid_translate_anchor.extent_x) * grid_translate_delta.x / unit.width, grid_translate_anchor.extent_x[1] - span(grid_translate_anchor.extent_x) * grid_translate_delta.x / unit.width]"
                                 },
                                 {
                                     "events": {
@@ -1466,7 +1525,7 @@
                                     "events": {
                                         "signal": "grid_translate_delta"
                                     },
-                                    "update": "[grid_translate_anchor.extent_y[0] + abs(span(grid_translate_anchor.extent_y)) * grid_translate_delta.y / grid_translate_anchor.height, grid_translate_anchor.extent_y[1] + abs(span(grid_translate_anchor.extent_y)) * grid_translate_delta.y / grid_translate_anchor.height]"
+                                    "update": "[grid_translate_anchor.extent_y[0] + span(grid_translate_anchor.extent_y) * grid_translate_delta.y / unit.height, grid_translate_anchor.extent_y[1] + span(grid_translate_anchor.extent_y) * grid_translate_delta.y / unit.height]"
                                 },
                                 {
                                     "events": {
@@ -1495,7 +1554,7 @@
                                             ]
                                         }
                                     ],
-                                    "update": "{x: x(unit), y: y(unit), width: unit.width, height: unit.height, extent_x: domain(\"child_Acceleration_Horsepower_x\"), extent_y: domain(\"child_Acceleration_Horsepower_y\"), }"
+                                    "update": "{x: x(unit), y: y(unit), extent_x: domain(\"child_Acceleration_Horsepower_x\"), extent_y: domain(\"child_Acceleration_Horsepower_y\")}"
                                 }
                             ]
                         },
@@ -1534,7 +1593,10 @@
                                     "events": [
                                         {
                                             "source": "scope",
-                                            "type": "wheel"
+                                            "type": "wheel",
+                                            "filter": [
+                                                "!event.shiftKey"
+                                            ]
                                         }
                                     ],
                                     "update": "{x: invert(\"child_Acceleration_Horsepower_x\", x(unit)), y: invert(\"child_Acceleration_Horsepower_y\", y(unit))}"
@@ -1548,7 +1610,10 @@
                                     "events": [
                                         {
                                             "source": "scope",
-                                            "type": "wheel"
+                                            "type": "wheel",
+                                            "filter": [
+                                                "!event.shiftKey"
+                                            ]
                                         }
                                     ],
                                     "force": true,
@@ -1593,20 +1658,16 @@
                                 },
                                 "update": {
                                     "x": {
-                                        "scale": "child_Acceleration_Horsepower_x",
-                                        "signal": "brush[0].extent[0]"
-                                    },
-                                    "x2": {
-                                        "scale": "child_Acceleration_Horsepower_x",
-                                        "signal": "brush[0].extent[1]"
+                                        "signal": "brush_x[0]"
                                     },
                                     "y": {
-                                        "value": 0
+                                        "signal": "brush_y[0]"
+                                    },
+                                    "x2": {
+                                        "signal": "brush_x[1]"
                                     },
                                     "y2": {
-                                        "field": {
-                                            "group": "height"
-                                        }
+                                        "signal": "brush_y[1]"
                                     }
                                 }
                             },
@@ -1663,20 +1724,16 @@
                                 },
                                 "update": {
                                     "x": {
-                                        "scale": "child_Acceleration_Horsepower_x",
-                                        "signal": "brush[0].extent[0]"
-                                    },
-                                    "x2": {
-                                        "scale": "child_Acceleration_Horsepower_x",
-                                        "signal": "brush[0].extent[1]"
+                                        "signal": "brush_x[0]"
                                     },
                                     "y": {
-                                        "value": 0
+                                        "signal": "brush_y[0]"
+                                    },
+                                    "x2": {
+                                        "signal": "brush_x[1]"
                                     },
                                     "y2": {
-                                        "field": {
-                                            "group": "height"
-                                        }
+                                        "signal": "brush_y[1]"
                                     }
                                 }
                             },
@@ -1780,7 +1837,7 @@
                     },
                     "signals": [
                         {
-                            "name": "brush_Acceleration",
+                            "name": "brush_x",
                             "value": [],
                             "on": [
                                 {
@@ -1789,11 +1846,10 @@
                                         "type": "mousedown",
                                         "filter": [
                                             "event.shiftKey",
-                                            "!event.item || (event.item && event.item.mark.name !== \"brush_brush\")",
-                                            "!event.item || (event.item && event.item.mark.name !== \"brush_brush\")"
+                                            "!event.item || event.item.mark.name !== \"brush_brush\""
                                         ]
                                     },
-                                    "update": "invert(\"child_Acceleration_Miles_per_Gallon_x\", [x(unit), x(unit)])"
+                                    "update": "[x(unit), x(unit)]"
                                 },
                                 {
                                     "events": {
@@ -1805,8 +1861,7 @@
                                                 "type": "mousedown",
                                                 "filter": [
                                                     "event.shiftKey",
-                                                    "!event.item || (event.item && event.item.mark.name !== \"brush_brush\")",
-                                                    "!event.item || (event.item && event.item.mark.name !== \"brush_brush\")"
+                                                    "!event.item || event.item.mark.name !== \"brush_brush\""
                                                 ]
                                             },
                                             {
@@ -1815,24 +1870,41 @@
                                             }
                                         ]
                                     },
-                                    "update": "[brush_Acceleration[0], invert(\"child_Acceleration_Miles_per_Gallon_x\", clamp(x(unit), 0, child_Acceleration_Miles_per_Gallon_width))]"
+                                    "update": "[brush_x[0], clamp(x(unit), 0, child_Acceleration_Miles_per_Gallon_width)]"
+                                },
+                                {
+                                    "events": {
+                                        "scale": "child_Acceleration_Miles_per_Gallon_x"
+                                    },
+                                    "update": "!isArray(brush_Acceleration) ? brush_x : [scale(\"child_Acceleration_Miles_per_Gallon_x\", brush_Acceleration[0]), scale(\"child_Acceleration_Miles_per_Gallon_x\", brush_Acceleration[1])]"
                                 },
                                 {
                                     "events": {
                                         "signal": "brush_translate_delta"
                                     },
-                                    "update": "clampRange([brush_translate_anchor.extent_x[0] + abs(span(brush_translate_anchor.extent_x)) * brush_translate_delta.x / brush_translate_anchor.width, brush_translate_anchor.extent_x[1] + abs(span(brush_translate_anchor.extent_x)) * brush_translate_delta.x / brush_translate_anchor.width], invert(\"child_Acceleration_Miles_per_Gallon_x\", 0), invert(\"child_Acceleration_Miles_per_Gallon_x\", unit.width))"
+                                    "update": "clampRange([brush_translate_anchor.extent_x[0] + brush_translate_delta.x, brush_translate_anchor.extent_x[1] + brush_translate_delta.x], 0, unit.width)"
                                 },
                                 {
                                     "events": {
                                         "signal": "brush_zoom_delta"
                                     },
-                                    "update": "clampRange([brush_zoom_anchor.x + (brush_Acceleration[0] - brush_zoom_anchor.x) * brush_zoom_delta, brush_zoom_anchor.x + (brush_Acceleration[1] - brush_zoom_anchor.x) * brush_zoom_delta], invert(\"child_Acceleration_Miles_per_Gallon_x\", 0), invert(\"child_Acceleration_Miles_per_Gallon_x\", unit.width))"
+                                    "update": "clampRange([brush_zoom_anchor.x + (brush_x[0] - brush_zoom_anchor.x) * brush_zoom_delta, brush_zoom_anchor.x + (brush_x[1] - brush_zoom_anchor.x) * brush_zoom_delta], 0, unit.width)"
                                 }
                             ]
                         },
                         {
-                            "name": "brush_size",
+                            "name": "brush_Acceleration",
+                            "on": [
+                                {
+                                    "events": {
+                                        "signal": "brush_x"
+                                    },
+                                    "update": "invert(\"child_Acceleration_Miles_per_Gallon_x\", brush_x)"
+                                }
+                            ]
+                        },
+                        {
+                            "name": "brush_y",
                             "value": [],
                             "on": [
                                 {
@@ -1841,11 +1913,10 @@
                                         "type": "mousedown",
                                         "filter": [
                                             "event.shiftKey",
-                                            "!event.item || (event.item && event.item.mark.name !== \"brush_brush\")",
-                                            "!event.item || (event.item && event.item.mark.name !== \"brush_brush\")"
+                                            "!event.item || event.item.mark.name !== \"brush_brush\""
                                         ]
                                     },
-                                    "update": "{x: x(unit), y: y(unit), width: 0, height: 0}"
+                                    "update": "[y(unit), y(unit)]"
                                 },
                                 {
                                     "events": {
@@ -1857,8 +1928,7 @@
                                                 "type": "mousedown",
                                                 "filter": [
                                                     "event.shiftKey",
-                                                    "!event.item || (event.item && event.item.mark.name !== \"brush_brush\")",
-                                                    "!event.item || (event.item && event.item.mark.name !== \"brush_brush\")"
+                                                    "!event.item || event.item.mark.name !== \"brush_brush\""
                                                 ]
                                             },
                                             {
@@ -1867,19 +1937,42 @@
                                             }
                                         ]
                                     },
-                                    "update": "{x: brush_size.x, y: brush_size.y, width: abs(x(unit) - brush_size.x), height: abs(y(unit) - brush_size.y)}"
+                                    "update": "[brush_y[0], clamp(y(unit), 0, child_Acceleration_Miles_per_Gallon_height)]"
+                                },
+                                {
+                                    "events": {
+                                        "scale": "child_Acceleration_Miles_per_Gallon_y"
+                                    },
+                                    "update": "!isArray(brush_Miles_per_Gallon) ? brush_y : [scale(\"child_Acceleration_Miles_per_Gallon_y\", brush_Miles_per_Gallon[0]), scale(\"child_Acceleration_Miles_per_Gallon_y\", brush_Miles_per_Gallon[1])]"
+                                },
+                                {
+                                    "events": {
+                                        "signal": "brush_translate_delta"
+                                    },
+                                    "update": "clampRange([brush_translate_anchor.extent_y[0] + brush_translate_delta.y, brush_translate_anchor.extent_y[1] + brush_translate_delta.y], 0, unit.height)"
                                 },
                                 {
                                     "events": {
                                         "signal": "brush_zoom_delta"
                                     },
-                                    "update": "{x: brush_size.x, y: brush_size.y, width: brush_size.width * brush_zoom_delta , height: brush_size.height * brush_zoom_delta}"
+                                    "update": "clampRange([brush_zoom_anchor.y + (brush_y[0] - brush_zoom_anchor.y) * brush_zoom_delta, brush_zoom_anchor.y + (brush_y[1] - brush_zoom_anchor.y) * brush_zoom_delta], 0, unit.height)"
+                                }
+                            ]
+                        },
+                        {
+                            "name": "brush_Miles_per_Gallon",
+                            "on": [
+                                {
+                                    "events": {
+                                        "signal": "brush_y"
+                                    },
+                                    "update": "invert(\"child_Acceleration_Miles_per_Gallon_y\", brush_y)"
                                 }
                             ]
                         },
                         {
                             "name": "brush",
-                            "update": "[{encoding: \"x\", field: \"Acceleration\", extent: brush_Acceleration}]"
+                            "update": "[{encoding: \"x\", field: \"Acceleration\", extent: brush_Acceleration}, {encoding: \"y\", field: \"Miles_per_Gallon\", extent: brush_Miles_per_Gallon}]"
                         },
                         {
                             "name": "brush_translate_anchor",
@@ -1896,7 +1989,7 @@
                                             "markname": "brush_brush"
                                         }
                                     ],
-                                    "update": "{x: x(unit), y: y(unit), width: brush_size.width, height: brush_size.height, extent_x: slice(brush_Acceleration), }"
+                                    "update": "{x: x(unit), y: y(unit), extent_x: slice(brush_x), extent_y: slice(brush_y)}"
                                 }
                             ]
                         },
@@ -1937,10 +2030,13 @@
                                         {
                                             "source": "scope",
                                             "type": "wheel",
+                                            "filter": [
+                                                "event.shiftKey"
+                                            ],
                                             "markname": "brush_brush"
                                         }
                                     ],
-                                    "update": "{x: invert(\"child_Acceleration_Miles_per_Gallon_x\", x(unit)), y: invert(\"child_Acceleration_Miles_per_Gallon_y\", y(unit))}"
+                                    "update": "{x: x(unit), y: y(unit)}"
                                 }
                             ]
                         },
@@ -1952,6 +2048,9 @@
                                         {
                                             "source": "scope",
                                             "type": "wheel",
+                                            "filter": [
+                                                "event.shiftKey"
+                                            ],
                                             "markname": "brush_brush"
                                         }
                                     ],
@@ -1989,7 +2088,7 @@
                                     "events": {
                                         "signal": "grid_translate_delta"
                                     },
-                                    "update": "[grid_translate_anchor.extent_x[0] - abs(span(grid_translate_anchor.extent_x)) * grid_translate_delta.x / grid_translate_anchor.width, grid_translate_anchor.extent_x[1] - abs(span(grid_translate_anchor.extent_x)) * grid_translate_delta.x / grid_translate_anchor.width]"
+                                    "update": "[grid_translate_anchor.extent_x[0] - span(grid_translate_anchor.extent_x) * grid_translate_delta.x / unit.width, grid_translate_anchor.extent_x[1] - span(grid_translate_anchor.extent_x) * grid_translate_delta.x / unit.width]"
                                 },
                                 {
                                     "events": {
@@ -2007,7 +2106,7 @@
                                     "events": {
                                         "signal": "grid_translate_delta"
                                     },
-                                    "update": "[grid_translate_anchor.extent_y[0] + abs(span(grid_translate_anchor.extent_y)) * grid_translate_delta.y / grid_translate_anchor.height, grid_translate_anchor.extent_y[1] + abs(span(grid_translate_anchor.extent_y)) * grid_translate_delta.y / grid_translate_anchor.height]"
+                                    "update": "[grid_translate_anchor.extent_y[0] + span(grid_translate_anchor.extent_y) * grid_translate_delta.y / unit.height, grid_translate_anchor.extent_y[1] + span(grid_translate_anchor.extent_y) * grid_translate_delta.y / unit.height]"
                                 },
                                 {
                                     "events": {
@@ -2036,7 +2135,7 @@
                                             ]
                                         }
                                     ],
-                                    "update": "{x: x(unit), y: y(unit), width: unit.width, height: unit.height, extent_x: domain(\"child_Acceleration_Miles_per_Gallon_x\"), extent_y: domain(\"child_Acceleration_Miles_per_Gallon_y\"), }"
+                                    "update": "{x: x(unit), y: y(unit), extent_x: domain(\"child_Acceleration_Miles_per_Gallon_x\"), extent_y: domain(\"child_Acceleration_Miles_per_Gallon_y\")}"
                                 }
                             ]
                         },
@@ -2075,7 +2174,10 @@
                                     "events": [
                                         {
                                             "source": "scope",
-                                            "type": "wheel"
+                                            "type": "wheel",
+                                            "filter": [
+                                                "!event.shiftKey"
+                                            ]
                                         }
                                     ],
                                     "update": "{x: invert(\"child_Acceleration_Miles_per_Gallon_x\", x(unit)), y: invert(\"child_Acceleration_Miles_per_Gallon_y\", y(unit))}"
@@ -2089,7 +2191,10 @@
                                     "events": [
                                         {
                                             "source": "scope",
-                                            "type": "wheel"
+                                            "type": "wheel",
+                                            "filter": [
+                                                "!event.shiftKey"
+                                            ]
                                         }
                                     ],
                                     "force": true,
@@ -2134,20 +2239,16 @@
                                 },
                                 "update": {
                                     "x": {
-                                        "scale": "child_Acceleration_Miles_per_Gallon_x",
-                                        "signal": "brush[0].extent[0]"
-                                    },
-                                    "x2": {
-                                        "scale": "child_Acceleration_Miles_per_Gallon_x",
-                                        "signal": "brush[0].extent[1]"
+                                        "signal": "brush_x[0]"
                                     },
                                     "y": {
-                                        "value": 0
+                                        "signal": "brush_y[0]"
+                                    },
+                                    "x2": {
+                                        "signal": "brush_x[1]"
                                     },
                                     "y2": {
-                                        "field": {
-                                            "group": "height"
-                                        }
+                                        "signal": "brush_y[1]"
                                     }
                                 }
                             },
@@ -2204,20 +2305,16 @@
                                 },
                                 "update": {
                                     "x": {
-                                        "scale": "child_Acceleration_Miles_per_Gallon_x",
-                                        "signal": "brush[0].extent[0]"
-                                    },
-                                    "x2": {
-                                        "scale": "child_Acceleration_Miles_per_Gallon_x",
-                                        "signal": "brush[0].extent[1]"
+                                        "signal": "brush_x[0]"
                                     },
                                     "y": {
-                                        "value": 0
+                                        "signal": "brush_y[0]"
+                                    },
+                                    "x2": {
+                                        "signal": "brush_x[1]"
                                     },
                                     "y2": {
-                                        "field": {
-                                            "group": "height"
-                                        }
+                                        "signal": "brush_y[1]"
                                     }
                                 }
                             },

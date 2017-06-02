@@ -62,7 +62,7 @@ describe('Translate Selection Transform', function() {
         "on": [
           {
             "events": parseSelector('@four_brush:mousedown', 'scope'),
-            "update": "{x: x(unit), y: y(unit), width: four_size.width, height: four_size.height, extent_x: slice(four_Horsepower), extent_y: slice(four_Miles_per_Gallon), }"
+            "update": "{x: x(unit), y: y(unit), extent_x: slice(four_x), extent_y: slice(four_y)}"
           }
         ]
       },
@@ -78,17 +78,17 @@ describe('Translate Selection Transform', function() {
       }
     ]);
 
-    assert.includeDeepMembers(signals.filter((s) => s.name === 'four_Horsepower')[0].on, [
+    assert.includeDeepMembers(signals.filter((s) => s.name === 'four_x')[0].on, [
       {
         "events": {"signal": "four_translate_delta"},
-        "update": "clampRange([four_translate_anchor.extent_x[0] + abs(span(four_translate_anchor.extent_x)) * four_translate_delta.x / four_translate_anchor.width, four_translate_anchor.extent_x[1] + abs(span(four_translate_anchor.extent_x)) * four_translate_delta.x / four_translate_anchor.width], invert(\"x\", 0), invert(\"x\", unit.width))"
+        "update": "clampRange([four_translate_anchor.extent_x[0] + four_translate_delta.x, four_translate_anchor.extent_x[1] + four_translate_delta.x], 0, unit.width)"
       }
     ]);
 
-    assert.includeDeepMembers(signals.filter((s) => s.name === 'four_Miles_per_Gallon')[0].on, [
+    assert.includeDeepMembers(signals.filter((s) => s.name === 'four_y')[0].on, [
       {
         "events": {"signal": "four_translate_delta"},
-        "update": "clampRange([four_translate_anchor.extent_y[0] - abs(span(four_translate_anchor.extent_y)) * four_translate_delta.y / four_translate_anchor.height, four_translate_anchor.extent_y[1] - abs(span(four_translate_anchor.extent_y)) * four_translate_delta.y / four_translate_anchor.height], invert(\"y\", unit.height), invert(\"y\", 0))"
+        "update": "clampRange([four_translate_anchor.extent_y[0] + four_translate_delta.y, four_translate_anchor.extent_y[1] + four_translate_delta.y], 0, unit.height)"
       }
     ]);
   });
@@ -96,7 +96,6 @@ describe('Translate Selection Transform', function() {
   it('builds signals for custom events', function() {
     model.component.selection = {five: selCmpts['five']};
     const signals = selection.assembleUnitSelectionSignals(model, []);
-
     assert.includeDeepMembers(signals, [
       {
         "name": "five_translate_anchor",
@@ -104,7 +103,7 @@ describe('Translate Selection Transform', function() {
         "on": [
           {
             "events": parseSelector('@five_brush:mousedown, @five_brush:keydown', 'scope'),
-            "update": "{x: x(unit), y: y(unit), width: five_size.width, height: five_size.height, extent_x: slice(five_Horsepower), extent_y: slice(five_Miles_per_Gallon), }"
+            "update": "{x: x(unit), y: y(unit), extent_x: slice(five_x), extent_y: slice(five_y)}"
           }
         ]
       },
@@ -120,17 +119,17 @@ describe('Translate Selection Transform', function() {
       }
     ]);
 
-    assert.includeDeepMembers(signals.filter((s) => s.name === 'five_Horsepower')[0].on, [
+    assert.includeDeepMembers(signals.filter((s) => s.name === 'five_x')[0].on, [
       {
         "events": {"signal": "five_translate_delta"},
-        "update": "clampRange([five_translate_anchor.extent_x[0] + abs(span(five_translate_anchor.extent_x)) * five_translate_delta.x / five_translate_anchor.width, five_translate_anchor.extent_x[1] + abs(span(five_translate_anchor.extent_x)) * five_translate_delta.x / five_translate_anchor.width], invert(\"x\", 0), invert(\"x\", unit.width))"
+        "update": "clampRange([five_translate_anchor.extent_x[0] + five_translate_delta.x, five_translate_anchor.extent_x[1] + five_translate_delta.x], 0, unit.width)"
       }
     ]);
 
-    assert.includeDeepMembers(signals.filter((s) => s.name === 'five_Miles_per_Gallon')[0].on, [
+    assert.includeDeepMembers(signals.filter((s) => s.name === 'five_y')[0].on, [
       {
         "events": {"signal": "five_translate_delta"},
-        "update": "clampRange([five_translate_anchor.extent_y[0] - abs(span(five_translate_anchor.extent_y)) * five_translate_delta.y / five_translate_anchor.height, five_translate_anchor.extent_y[1] - abs(span(five_translate_anchor.extent_y)) * five_translate_delta.y / five_translate_anchor.height], invert(\"y\", unit.height), invert(\"y\", 0))"
+        "update": "clampRange([five_translate_anchor.extent_y[0] + five_translate_delta.y, five_translate_anchor.extent_y[1] + five_translate_delta.y], 0, unit.height)"
       }
     ]);
   });
@@ -145,7 +144,7 @@ describe('Translate Selection Transform', function() {
         "on": [
           {
             "events": parseSelector('mousedown', 'scope'),
-            "update": "{x: x(unit), y: y(unit), width: unit.width, height: unit.height, extent_x: domain(\"x\"), extent_y: domain(\"y\"), }"
+            "update": "{x: x(unit), y: y(unit), extent_x: domain(\"x\"), extent_y: domain(\"y\")}"
           }
         ]
       },
@@ -164,14 +163,14 @@ describe('Translate Selection Transform', function() {
     assert.includeDeepMembers(signals.filter((s) => s.name === 'six_Horsepower')[0].on, [
       {
         "events": {"signal": "six_translate_delta"},
-        "update": "[six_translate_anchor.extent_x[0] - abs(span(six_translate_anchor.extent_x)) * six_translate_delta.x / six_translate_anchor.width, six_translate_anchor.extent_x[1] - abs(span(six_translate_anchor.extent_x)) * six_translate_delta.x / six_translate_anchor.width]"
+        "update": "[six_translate_anchor.extent_x[0] - span(six_translate_anchor.extent_x) * six_translate_delta.x / unit.width, six_translate_anchor.extent_x[1] - span(six_translate_anchor.extent_x) * six_translate_delta.x / unit.width]"
       }
     ]);
 
     assert.includeDeepMembers(signals.filter((s) => s.name === 'six_Miles_per_Gallon')[0].on, [
       {
         "events": {"signal": "six_translate_delta"},
-        "update": "[six_translate_anchor.extent_y[0] + abs(span(six_translate_anchor.extent_y)) * six_translate_delta.y / six_translate_anchor.height, six_translate_anchor.extent_y[1] + abs(span(six_translate_anchor.extent_y)) * six_translate_delta.y / six_translate_anchor.height]"
+        "update": "[six_translate_anchor.extent_y[0] + span(six_translate_anchor.extent_y) * six_translate_delta.y / unit.height, six_translate_anchor.extent_y[1] + span(six_translate_anchor.extent_y) * six_translate_delta.y / unit.height]"
       }
     ]);
   });

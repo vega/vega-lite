@@ -447,7 +447,7 @@
                     },
                     "signals": [
                         {
-                            "name": "brush_distance",
+                            "name": "brush_x",
                             "value": [],
                             "on": [
                                 {
@@ -455,11 +455,10 @@
                                         "source": "scope",
                                         "type": "mousedown",
                                         "filter": [
-                                            "!event.item || (event.item && event.item.mark.name !== \"brush_brush\")",
-                                            "!event.item || (event.item && event.item.mark.name !== \"brush_brush\")"
+                                            "!event.item || event.item.mark.name !== \"brush_brush\""
                                         ]
                                     },
-                                    "update": "invert(\"child_distance_x\", [x(unit), x(unit)])"
+                                    "update": "[x(unit), x(unit)]"
                                 },
                                 {
                                     "events": {
@@ -471,8 +470,7 @@
                                                 "source": "scope",
                                                 "type": "mousedown",
                                                 "filter": [
-                                                    "!event.item || (event.item && event.item.mark.name !== \"brush_brush\")",
-                                                    "!event.item || (event.item && event.item.mark.name !== \"brush_brush\")"
+                                                    "!event.item || event.item.mark.name !== \"brush_brush\""
                                                 ]
                                             },
                                             {
@@ -481,64 +479,36 @@
                                             }
                                         ]
                                     },
-                                    "update": "[brush_distance[0], invert(\"child_distance_x\", clamp(x(unit), 0, child_distance_layer_0_width))]"
+                                    "update": "[brush_x[0], clamp(x(unit), 0, child_distance_layer_0_width)]"
+                                },
+                                {
+                                    "events": {
+                                        "scale": "child_distance_x"
+                                    },
+                                    "update": "[]"
                                 },
                                 {
                                     "events": {
                                         "signal": "brush_translate_delta"
                                     },
-                                    "update": "clampRange([brush_translate_anchor.extent_x[0] + abs(span(brush_translate_anchor.extent_x)) * brush_translate_delta.x / brush_translate_anchor.width, brush_translate_anchor.extent_x[1] + abs(span(brush_translate_anchor.extent_x)) * brush_translate_delta.x / brush_translate_anchor.width], invert(\"child_distance_x\", 0), invert(\"child_distance_x\", unit.width))"
+                                    "update": "clampRange([brush_translate_anchor.extent_x[0] + brush_translate_delta.x, brush_translate_anchor.extent_x[1] + brush_translate_delta.x], 0, unit.width)"
                                 },
                                 {
                                     "events": {
                                         "signal": "brush_zoom_delta"
                                     },
-                                    "update": "clampRange([brush_zoom_anchor.x + (brush_distance[0] - brush_zoom_anchor.x) * brush_zoom_delta, brush_zoom_anchor.x + (brush_distance[1] - brush_zoom_anchor.x) * brush_zoom_delta], invert(\"child_distance_x\", 0), invert(\"child_distance_x\", unit.width))"
+                                    "update": "clampRange([brush_zoom_anchor.x + (brush_x[0] - brush_zoom_anchor.x) * brush_zoom_delta, brush_zoom_anchor.x + (brush_x[1] - brush_zoom_anchor.x) * brush_zoom_delta], 0, unit.width)"
                                 }
                             ]
                         },
                         {
-                            "name": "brush_size",
-                            "value": [],
+                            "name": "brush_distance",
                             "on": [
                                 {
                                     "events": {
-                                        "source": "scope",
-                                        "type": "mousedown",
-                                        "filter": [
-                                            "!event.item || (event.item && event.item.mark.name !== \"brush_brush\")",
-                                            "!event.item || (event.item && event.item.mark.name !== \"brush_brush\")"
-                                        ]
+                                        "signal": "brush_x"
                                     },
-                                    "update": "{x: x(unit), y: y(unit), width: 0, height: 0}"
-                                },
-                                {
-                                    "events": {
-                                        "source": "window",
-                                        "type": "mousemove",
-                                        "consume": true,
-                                        "between": [
-                                            {
-                                                "source": "scope",
-                                                "type": "mousedown",
-                                                "filter": [
-                                                    "!event.item || (event.item && event.item.mark.name !== \"brush_brush\")",
-                                                    "!event.item || (event.item && event.item.mark.name !== \"brush_brush\")"
-                                                ]
-                                            },
-                                            {
-                                                "source": "window",
-                                                "type": "mouseup"
-                                            }
-                                        ]
-                                    },
-                                    "update": "{x: brush_size.x, y: brush_size.y, width: abs(x(unit) - brush_size.x), height: abs(y(unit) - brush_size.y)}"
-                                },
-                                {
-                                    "events": {
-                                        "signal": "brush_zoom_delta"
-                                    },
-                                    "update": "{x: brush_size.x, y: brush_size.y, width: brush_size.width * brush_zoom_delta , height: brush_size.height * brush_zoom_delta}"
+                                    "update": "invert(\"child_distance_x\", brush_x)"
                                 }
                             ]
                         },
@@ -558,7 +528,7 @@
                                             "markname": "brush_brush"
                                         }
                                     ],
-                                    "update": "{x: x(unit), y: y(unit), width: brush_size.width, height: brush_size.height, extent_x: slice(brush_distance), }"
+                                    "update": "{x: x(unit), y: y(unit), extent_x: slice(brush_x)}"
                                 }
                             ]
                         },
@@ -600,7 +570,7 @@
                                             "markname": "brush_brush"
                                         }
                                     ],
-                                    "update": "{x: invert(\"child_distance_x\", x(unit)), y: invert(\"child_distance_y\", y(unit))}"
+                                    "update": "{x: x(unit), y: y(unit)}"
                                 }
                             ]
                         },
@@ -659,18 +629,7 @@
                                     "x": [
                                         {
                                             "test": "data(\"brush_store\").length && brush_tuple && brush_tuple.unit === data(\"brush_store\")[0].unit",
-                                            "scale": "child_distance_x",
-                                            "signal": "brush[0].extent[0]"
-                                        },
-                                        {
-                                            "value": 0
-                                        }
-                                    ],
-                                    "x2": [
-                                        {
-                                            "test": "data(\"brush_store\").length && brush_tuple && brush_tuple.unit === data(\"brush_store\")[0].unit",
-                                            "scale": "child_distance_x",
-                                            "signal": "brush[0].extent[1]"
+                                            "signal": "brush_x[0]"
                                         },
                                         {
                                             "value": 0
@@ -680,6 +639,15 @@
                                         {
                                             "test": "data(\"brush_store\").length && brush_tuple && brush_tuple.unit === data(\"brush_store\")[0].unit",
                                             "value": 0
+                                        },
+                                        {
+                                            "value": 0
+                                        }
+                                    ],
+                                    "x2": [
+                                        {
+                                            "test": "data(\"brush_store\").length && brush_tuple && brush_tuple.unit === data(\"brush_store\")[0].unit",
+                                            "signal": "brush_x[1]"
                                         },
                                         {
                                             "value": 0
@@ -782,18 +750,7 @@
                                     "x": [
                                         {
                                             "test": "data(\"brush_store\").length && brush_tuple && brush_tuple.unit === data(\"brush_store\")[0].unit",
-                                            "scale": "child_distance_x",
-                                            "signal": "brush[0].extent[0]"
-                                        },
-                                        {
-                                            "value": 0
-                                        }
-                                    ],
-                                    "x2": [
-                                        {
-                                            "test": "data(\"brush_store\").length && brush_tuple && brush_tuple.unit === data(\"brush_store\")[0].unit",
-                                            "scale": "child_distance_x",
-                                            "signal": "brush[0].extent[1]"
+                                            "signal": "brush_x[0]"
                                         },
                                         {
                                             "value": 0
@@ -803,6 +760,15 @@
                                         {
                                             "test": "data(\"brush_store\").length && brush_tuple && brush_tuple.unit === data(\"brush_store\")[0].unit",
                                             "value": 0
+                                        },
+                                        {
+                                            "value": 0
+                                        }
+                                    ],
+                                    "x2": [
+                                        {
+                                            "test": "data(\"brush_store\").length && brush_tuple && brush_tuple.unit === data(\"brush_store\")[0].unit",
+                                            "signal": "brush_x[1]"
                                         },
                                         {
                                             "value": 0
@@ -932,7 +898,7 @@
                     },
                     "signals": [
                         {
-                            "name": "brush_delay",
+                            "name": "brush_x",
                             "value": [],
                             "on": [
                                 {
@@ -940,11 +906,10 @@
                                         "source": "scope",
                                         "type": "mousedown",
                                         "filter": [
-                                            "!event.item || (event.item && event.item.mark.name !== \"brush_brush\")",
-                                            "!event.item || (event.item && event.item.mark.name !== \"brush_brush\")"
+                                            "!event.item || event.item.mark.name !== \"brush_brush\""
                                         ]
                                     },
-                                    "update": "invert(\"child_delay_x\", [x(unit), x(unit)])"
+                                    "update": "[x(unit), x(unit)]"
                                 },
                                 {
                                     "events": {
@@ -956,8 +921,7 @@
                                                 "source": "scope",
                                                 "type": "mousedown",
                                                 "filter": [
-                                                    "!event.item || (event.item && event.item.mark.name !== \"brush_brush\")",
-                                                    "!event.item || (event.item && event.item.mark.name !== \"brush_brush\")"
+                                                    "!event.item || event.item.mark.name !== \"brush_brush\""
                                                 ]
                                             },
                                             {
@@ -966,64 +930,36 @@
                                             }
                                         ]
                                     },
-                                    "update": "[brush_delay[0], invert(\"child_delay_x\", clamp(x(unit), 0, child_delay_layer_0_width))]"
+                                    "update": "[brush_x[0], clamp(x(unit), 0, child_delay_layer_0_width)]"
+                                },
+                                {
+                                    "events": {
+                                        "scale": "child_delay_x"
+                                    },
+                                    "update": "[]"
                                 },
                                 {
                                     "events": {
                                         "signal": "brush_translate_delta"
                                     },
-                                    "update": "clampRange([brush_translate_anchor.extent_x[0] + abs(span(brush_translate_anchor.extent_x)) * brush_translate_delta.x / brush_translate_anchor.width, brush_translate_anchor.extent_x[1] + abs(span(brush_translate_anchor.extent_x)) * brush_translate_delta.x / brush_translate_anchor.width], invert(\"child_delay_x\", 0), invert(\"child_delay_x\", unit.width))"
+                                    "update": "clampRange([brush_translate_anchor.extent_x[0] + brush_translate_delta.x, brush_translate_anchor.extent_x[1] + brush_translate_delta.x], 0, unit.width)"
                                 },
                                 {
                                     "events": {
                                         "signal": "brush_zoom_delta"
                                     },
-                                    "update": "clampRange([brush_zoom_anchor.x + (brush_delay[0] - brush_zoom_anchor.x) * brush_zoom_delta, brush_zoom_anchor.x + (brush_delay[1] - brush_zoom_anchor.x) * brush_zoom_delta], invert(\"child_delay_x\", 0), invert(\"child_delay_x\", unit.width))"
+                                    "update": "clampRange([brush_zoom_anchor.x + (brush_x[0] - brush_zoom_anchor.x) * brush_zoom_delta, brush_zoom_anchor.x + (brush_x[1] - brush_zoom_anchor.x) * brush_zoom_delta], 0, unit.width)"
                                 }
                             ]
                         },
                         {
-                            "name": "brush_size",
-                            "value": [],
+                            "name": "brush_delay",
                             "on": [
                                 {
                                     "events": {
-                                        "source": "scope",
-                                        "type": "mousedown",
-                                        "filter": [
-                                            "!event.item || (event.item && event.item.mark.name !== \"brush_brush\")",
-                                            "!event.item || (event.item && event.item.mark.name !== \"brush_brush\")"
-                                        ]
+                                        "signal": "brush_x"
                                     },
-                                    "update": "{x: x(unit), y: y(unit), width: 0, height: 0}"
-                                },
-                                {
-                                    "events": {
-                                        "source": "window",
-                                        "type": "mousemove",
-                                        "consume": true,
-                                        "between": [
-                                            {
-                                                "source": "scope",
-                                                "type": "mousedown",
-                                                "filter": [
-                                                    "!event.item || (event.item && event.item.mark.name !== \"brush_brush\")",
-                                                    "!event.item || (event.item && event.item.mark.name !== \"brush_brush\")"
-                                                ]
-                                            },
-                                            {
-                                                "source": "window",
-                                                "type": "mouseup"
-                                            }
-                                        ]
-                                    },
-                                    "update": "{x: brush_size.x, y: brush_size.y, width: abs(x(unit) - brush_size.x), height: abs(y(unit) - brush_size.y)}"
-                                },
-                                {
-                                    "events": {
-                                        "signal": "brush_zoom_delta"
-                                    },
-                                    "update": "{x: brush_size.x, y: brush_size.y, width: brush_size.width * brush_zoom_delta , height: brush_size.height * brush_zoom_delta}"
+                                    "update": "invert(\"child_delay_x\", brush_x)"
                                 }
                             ]
                         },
@@ -1043,7 +979,7 @@
                                             "markname": "brush_brush"
                                         }
                                     ],
-                                    "update": "{x: x(unit), y: y(unit), width: brush_size.width, height: brush_size.height, extent_x: slice(brush_delay), }"
+                                    "update": "{x: x(unit), y: y(unit), extent_x: slice(brush_x)}"
                                 }
                             ]
                         },
@@ -1085,7 +1021,7 @@
                                             "markname": "brush_brush"
                                         }
                                     ],
-                                    "update": "{x: invert(\"child_delay_x\", x(unit)), y: invert(\"child_delay_y\", y(unit))}"
+                                    "update": "{x: x(unit), y: y(unit)}"
                                 }
                             ]
                         },
@@ -1144,18 +1080,7 @@
                                     "x": [
                                         {
                                             "test": "data(\"brush_store\").length && brush_tuple && brush_tuple.unit === data(\"brush_store\")[0].unit",
-                                            "scale": "child_delay_x",
-                                            "signal": "brush[0].extent[0]"
-                                        },
-                                        {
-                                            "value": 0
-                                        }
-                                    ],
-                                    "x2": [
-                                        {
-                                            "test": "data(\"brush_store\").length && brush_tuple && brush_tuple.unit === data(\"brush_store\")[0].unit",
-                                            "scale": "child_delay_x",
-                                            "signal": "brush[0].extent[1]"
+                                            "signal": "brush_x[0]"
                                         },
                                         {
                                             "value": 0
@@ -1165,6 +1090,15 @@
                                         {
                                             "test": "data(\"brush_store\").length && brush_tuple && brush_tuple.unit === data(\"brush_store\")[0].unit",
                                             "value": 0
+                                        },
+                                        {
+                                            "value": 0
+                                        }
+                                    ],
+                                    "x2": [
+                                        {
+                                            "test": "data(\"brush_store\").length && brush_tuple && brush_tuple.unit === data(\"brush_store\")[0].unit",
+                                            "signal": "brush_x[1]"
                                         },
                                         {
                                             "value": 0
@@ -1267,18 +1201,7 @@
                                     "x": [
                                         {
                                             "test": "data(\"brush_store\").length && brush_tuple && brush_tuple.unit === data(\"brush_store\")[0].unit",
-                                            "scale": "child_delay_x",
-                                            "signal": "brush[0].extent[0]"
-                                        },
-                                        {
-                                            "value": 0
-                                        }
-                                    ],
-                                    "x2": [
-                                        {
-                                            "test": "data(\"brush_store\").length && brush_tuple && brush_tuple.unit === data(\"brush_store\")[0].unit",
-                                            "scale": "child_delay_x",
-                                            "signal": "brush[0].extent[1]"
+                                            "signal": "brush_x[0]"
                                         },
                                         {
                                             "value": 0
@@ -1288,6 +1211,15 @@
                                         {
                                             "test": "data(\"brush_store\").length && brush_tuple && brush_tuple.unit === data(\"brush_store\")[0].unit",
                                             "value": 0
+                                        },
+                                        {
+                                            "value": 0
+                                        }
+                                    ],
+                                    "x2": [
+                                        {
+                                            "test": "data(\"brush_store\").length && brush_tuple && brush_tuple.unit === data(\"brush_store\")[0].unit",
+                                            "signal": "brush_x[1]"
                                         },
                                         {
                                             "value": 0
@@ -1417,7 +1349,7 @@
                     },
                     "signals": [
                         {
-                            "name": "brush_time",
+                            "name": "brush_x",
                             "value": [],
                             "on": [
                                 {
@@ -1425,11 +1357,10 @@
                                         "source": "scope",
                                         "type": "mousedown",
                                         "filter": [
-                                            "!event.item || (event.item && event.item.mark.name !== \"brush_brush\")",
-                                            "!event.item || (event.item && event.item.mark.name !== \"brush_brush\")"
+                                            "!event.item || event.item.mark.name !== \"brush_brush\""
                                         ]
                                     },
-                                    "update": "invert(\"child_time_x\", [x(unit), x(unit)])"
+                                    "update": "[x(unit), x(unit)]"
                                 },
                                 {
                                     "events": {
@@ -1441,8 +1372,7 @@
                                                 "source": "scope",
                                                 "type": "mousedown",
                                                 "filter": [
-                                                    "!event.item || (event.item && event.item.mark.name !== \"brush_brush\")",
-                                                    "!event.item || (event.item && event.item.mark.name !== \"brush_brush\")"
+                                                    "!event.item || event.item.mark.name !== \"brush_brush\""
                                                 ]
                                             },
                                             {
@@ -1451,64 +1381,36 @@
                                             }
                                         ]
                                     },
-                                    "update": "[brush_time[0], invert(\"child_time_x\", clamp(x(unit), 0, child_time_layer_0_width))]"
+                                    "update": "[brush_x[0], clamp(x(unit), 0, child_time_layer_0_width)]"
+                                },
+                                {
+                                    "events": {
+                                        "scale": "child_time_x"
+                                    },
+                                    "update": "[]"
                                 },
                                 {
                                     "events": {
                                         "signal": "brush_translate_delta"
                                     },
-                                    "update": "clampRange([brush_translate_anchor.extent_x[0] + abs(span(brush_translate_anchor.extent_x)) * brush_translate_delta.x / brush_translate_anchor.width, brush_translate_anchor.extent_x[1] + abs(span(brush_translate_anchor.extent_x)) * brush_translate_delta.x / brush_translate_anchor.width], invert(\"child_time_x\", 0), invert(\"child_time_x\", unit.width))"
+                                    "update": "clampRange([brush_translate_anchor.extent_x[0] + brush_translate_delta.x, brush_translate_anchor.extent_x[1] + brush_translate_delta.x], 0, unit.width)"
                                 },
                                 {
                                     "events": {
                                         "signal": "brush_zoom_delta"
                                     },
-                                    "update": "clampRange([brush_zoom_anchor.x + (brush_time[0] - brush_zoom_anchor.x) * brush_zoom_delta, brush_zoom_anchor.x + (brush_time[1] - brush_zoom_anchor.x) * brush_zoom_delta], invert(\"child_time_x\", 0), invert(\"child_time_x\", unit.width))"
+                                    "update": "clampRange([brush_zoom_anchor.x + (brush_x[0] - brush_zoom_anchor.x) * brush_zoom_delta, brush_zoom_anchor.x + (brush_x[1] - brush_zoom_anchor.x) * brush_zoom_delta], 0, unit.width)"
                                 }
                             ]
                         },
                         {
-                            "name": "brush_size",
-                            "value": [],
+                            "name": "brush_time",
                             "on": [
                                 {
                                     "events": {
-                                        "source": "scope",
-                                        "type": "mousedown",
-                                        "filter": [
-                                            "!event.item || (event.item && event.item.mark.name !== \"brush_brush\")",
-                                            "!event.item || (event.item && event.item.mark.name !== \"brush_brush\")"
-                                        ]
+                                        "signal": "brush_x"
                                     },
-                                    "update": "{x: x(unit), y: y(unit), width: 0, height: 0}"
-                                },
-                                {
-                                    "events": {
-                                        "source": "window",
-                                        "type": "mousemove",
-                                        "consume": true,
-                                        "between": [
-                                            {
-                                                "source": "scope",
-                                                "type": "mousedown",
-                                                "filter": [
-                                                    "!event.item || (event.item && event.item.mark.name !== \"brush_brush\")",
-                                                    "!event.item || (event.item && event.item.mark.name !== \"brush_brush\")"
-                                                ]
-                                            },
-                                            {
-                                                "source": "window",
-                                                "type": "mouseup"
-                                            }
-                                        ]
-                                    },
-                                    "update": "{x: brush_size.x, y: brush_size.y, width: abs(x(unit) - brush_size.x), height: abs(y(unit) - brush_size.y)}"
-                                },
-                                {
-                                    "events": {
-                                        "signal": "brush_zoom_delta"
-                                    },
-                                    "update": "{x: brush_size.x, y: brush_size.y, width: brush_size.width * brush_zoom_delta , height: brush_size.height * brush_zoom_delta}"
+                                    "update": "invert(\"child_time_x\", brush_x)"
                                 }
                             ]
                         },
@@ -1528,7 +1430,7 @@
                                             "markname": "brush_brush"
                                         }
                                     ],
-                                    "update": "{x: x(unit), y: y(unit), width: brush_size.width, height: brush_size.height, extent_x: slice(brush_time), }"
+                                    "update": "{x: x(unit), y: y(unit), extent_x: slice(brush_x)}"
                                 }
                             ]
                         },
@@ -1570,7 +1472,7 @@
                                             "markname": "brush_brush"
                                         }
                                     ],
-                                    "update": "{x: invert(\"child_time_x\", x(unit)), y: invert(\"child_time_y\", y(unit))}"
+                                    "update": "{x: x(unit), y: y(unit)}"
                                 }
                             ]
                         },
@@ -1629,18 +1531,7 @@
                                     "x": [
                                         {
                                             "test": "data(\"brush_store\").length && brush_tuple && brush_tuple.unit === data(\"brush_store\")[0].unit",
-                                            "scale": "child_time_x",
-                                            "signal": "brush[0].extent[0]"
-                                        },
-                                        {
-                                            "value": 0
-                                        }
-                                    ],
-                                    "x2": [
-                                        {
-                                            "test": "data(\"brush_store\").length && brush_tuple && brush_tuple.unit === data(\"brush_store\")[0].unit",
-                                            "scale": "child_time_x",
-                                            "signal": "brush[0].extent[1]"
+                                            "signal": "brush_x[0]"
                                         },
                                         {
                                             "value": 0
@@ -1650,6 +1541,15 @@
                                         {
                                             "test": "data(\"brush_store\").length && brush_tuple && brush_tuple.unit === data(\"brush_store\")[0].unit",
                                             "value": 0
+                                        },
+                                        {
+                                            "value": 0
+                                        }
+                                    ],
+                                    "x2": [
+                                        {
+                                            "test": "data(\"brush_store\").length && brush_tuple && brush_tuple.unit === data(\"brush_store\")[0].unit",
+                                            "signal": "brush_x[1]"
                                         },
                                         {
                                             "value": 0
@@ -1752,18 +1652,7 @@
                                     "x": [
                                         {
                                             "test": "data(\"brush_store\").length && brush_tuple && brush_tuple.unit === data(\"brush_store\")[0].unit",
-                                            "scale": "child_time_x",
-                                            "signal": "brush[0].extent[0]"
-                                        },
-                                        {
-                                            "value": 0
-                                        }
-                                    ],
-                                    "x2": [
-                                        {
-                                            "test": "data(\"brush_store\").length && brush_tuple && brush_tuple.unit === data(\"brush_store\")[0].unit",
-                                            "scale": "child_time_x",
-                                            "signal": "brush[0].extent[1]"
+                                            "signal": "brush_x[0]"
                                         },
                                         {
                                             "value": 0
@@ -1773,6 +1662,15 @@
                                         {
                                             "test": "data(\"brush_store\").length && brush_tuple && brush_tuple.unit === data(\"brush_store\")[0].unit",
                                             "value": 0
+                                        },
+                                        {
+                                            "value": 0
+                                        }
+                                    ],
+                                    "x2": [
+                                        {
+                                            "test": "data(\"brush_store\").length && brush_tuple && brush_tuple.unit === data(\"brush_store\")[0].unit",
+                                            "signal": "brush_x[1]"
                                         },
                                         {
                                             "value": 0
