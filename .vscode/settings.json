@@ -2,9 +2,11 @@
 {
   "editor.tabSize": 2,
   "files.exclude": {
-    "build": true,
     "coverage/**/*": true,
     "_site/**/*": true
+  },
+  "search.exclude": {
+    "build": true
   },
   "files.trimTrailingWhitespace": true
 }
