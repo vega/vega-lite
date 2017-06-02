@@ -104,12 +104,12 @@ export interface GenericUnitSpec<E extends Encoding<any>, M> extends BaseSpec, U
 export type UnitSpec = GenericUnitSpec<Encoding<Field>, Mark | MarkDef>;
 
 /**
- * Unit spec that can contain composite mark
+ * Unit spec that can have a composite mark.
  */
 export type CompositeUnitSpec = GenericUnitSpec<Encoding<Field>, AnyMark>;
 
 /**
- * Unit spec that can contain composite mark and row or column channels.
+ * Unit spec that can have a composite mark and row or column channels.
  */
 export type FacetedCompositeUnitSpec = GenericUnitSpec<EncodingWithFacet<Field>, AnyMark>;
 
