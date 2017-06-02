@@ -1,6 +1,6 @@
 import {Channel} from '../../../channel';
 import {warn} from '../../../log';
-import {hasContinuousDomain} from '../../../scale';
+import {hasContinuousDomain, isBinScale} from '../../../scale';
 import {stringValue} from '../../../util';
 import {UnitModel} from '../../unit';
 import {channelSignalName, MODIFY, TUPLE} from '../selection';
@@ -21,8 +21,8 @@ const scaleBindings:TransformCompiler = {
       const channel = p.encoding;
       const scale = model.getComponent('scales', channel);
 
-      if (!scale || !hasContinuousDomain(scale.type)) {
-        warn('Scale bindings are currently only supported for scales with continuous domains.');
+      if (!scale || !hasContinuousDomain(scale.type) || isBinScale(scale.type)) {
+        warn('Scale bindings are currently only supported for scales with unbinned, continuous domains.');
         return;
       }
 

@@ -78,8 +78,8 @@ function onDelta(model: UnitModel, selCmpt: SelectionComponent, channel: Channel
       delta  = name + DELTA,
       sign = getSign(selCmpt, channel),
       offset = sign + (hasScales ?
-        `span(${anchor}.extent_${channel}) * ${delta}.${channel} / unit.${size}` :
-        `${delta}.${channel}`),
+        ` span(${anchor}.extent_${channel}) * ${delta}.${channel} / unit.${size}` :
+        ` ${delta}.${channel}`),
       extent = `${anchor}.extent_${channel}`,
       range = `[${extent}[0] ${offset}, ${extent}[1] ${offset}]`;
 

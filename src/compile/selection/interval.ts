@@ -1,5 +1,6 @@
 import {Channel, X, Y} from '../../channel';
 import {warn} from '../../log';
+import {hasContinuousDomain, isBinScale} from '../../scale';
 import {extend, keys, stringValue} from '../../util';
 import {UnitModel} from '../unit';
 import {channelSignalName, ProjectComponent, SelectionCompiler, SelectionComponent, STORE, TUPLE} from './selection';
@@ -16,10 +17,12 @@ const interval:SelectionCompiler = {
         name = selCmpt.name;
 
     if (selCmpt.translate && !(scales.has(selCmpt))) {
+      const filterExpr = `!event.item || event.item.mark.name !== ${stringValue(name + BRUSH)}`;
       events(selCmpt, function(_: any[], evt: any) {
         const filters = evt.between[0].filter || (evt.between[0].filter = []);
-        filters.push('!event.item || (event.item && ' +
-          `event.item.mark.name !== ${stringValue(name + BRUSH)})`);
+        if (filters.indexOf(filterExpr) < 0) {
+          filters.push(filterExpr);
+        }
       });
     }
 
@@ -29,18 +32,14 @@ const interval:SelectionCompiler = {
         return;
       }
 
-      const cs = channelSignals(model, selCmpt, p.encoding);
+      const cs = channelSignals(model, selCmpt, p.encoding),
+        csName = channelSignalName(selCmpt, p.encoding, 'data');
       signals.push.apply(signals, cs);
       intervals.push(`{encoding: ${stringValue(p.encoding)}, ` +
-      `field: ${stringValue(p.field)}, extent: ${cs[1].name}}`);
+      `field: ${stringValue(p.field)}, extent: ${csName}}`);
     });
 
-    signals.push({
-      name: name,
-      update: `[${intervals.join(', ')}]`
-    });
-
-    return signals;
+    return signals.concat({name: name, update: `[${intervals.join(', ')}]`});
   },
 
   tupleExpr: function(model, selCmpt) {
@@ -127,36 +126,38 @@ export function projections(selCmpt: SelectionComponent) {
 }
 
 function channelSignals(model: UnitModel, selCmpt: SelectionComponent, channel: Channel): any {
-  const name = channelSignalName(selCmpt, channel, 'visual'),
+  const vname = channelSignalName(selCmpt, channel, 'visual'),
+      dname = channelSignalName(selCmpt, channel, 'data'),
       hasScales = scales.has(selCmpt),
-      scale = stringValue(model.scaleName(channel)),
+      scaleName = model.scaleName(channel),
+      scaleStr = stringValue(scaleName),
+      scaleType = model.getComponent('scales', channel).type,
       size  = model.getSizeSignalRef(channel === X ? 'width' : 'height').signal,
       coord = `${channel}(unit)`;
 
-  return [{
-    name: name,
-    value: [],
-    on: hasScales ? [] : events(selCmpt, function(on: any[], evt: any) {
-      on.push({
-        events: evt.between[0],
-        update: `[${coord}, ${coord}]`
-      });
+  const on = events(selCmpt, function(def: any[], evt: any) {
+    return def.concat(
+      {events: evt.between[0], update: `[${coord}, ${coord}]`},           // Brush Start
+      {events: evt, update: `[${vname}[0], clamp(${coord}, 0, ${size})]`} // Brush End
+    );
+  });
 
-      on.push({
-        events: evt,
-        update: `[${name}[0], clamp(${coord}, 0, ${size})]`
-      });
+  // React to pan/zooms of continuous scales. Non-continuous scales
+  // (bin-linear, band, point) cannot be pan/zoomed and any other changes
+  // to their domains (e.g., filtering) should clear the brushes.
+  on.push({
+    events: {scale: scaleName},
+    update: hasContinuousDomain(scaleType) && !isBinScale(scaleType) ?
+      `!isArray(${dname}) ? ${vname} : ` +
+        `[scale(${scaleStr}, ${dname}[0]), scale(${scaleStr}, ${dname}[1])]` :
+      `[]`
+  });
 
-      return on;
-    })
+  return hasScales ? [{name: dname, on: []}] : [{
+    name: vname, value: [], on: on
   }, {
-    name: channelSignalName(selCmpt, channel, 'data'),
-    on: [
-      {
-        events: {signal: name},
-        update: `invert(${scale}, ${name})`
-      }
-    ]
+    name: dname,
+    on: [{events: {signal: vname}, update: `invert(${scaleStr}, ${vname})`}]
   }];
 }
 
