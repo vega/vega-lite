@@ -111,7 +111,7 @@ export function expression(model: Model, filter: Filter): string {
     return filter;
   } else if (isSelectionFilter(filter)) {
     const selection = model.getComponent('selection', filter.selection);
-    return predicate(filter.selection, selection.type, selection.resolve, null, null);
+    return predicate(model, filter.selection, selection.type, selection.resolve, null);
   } else { // Filter Object
     const fieldExpr = filter.timeUnit ?
       // For timeUnit, cast into integer with time() so we can use ===, inrange, indexOf to compare values directly.

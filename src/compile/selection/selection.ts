@@ -115,7 +115,7 @@ export function assembleUnitSelectionSignals(model: UnitModel, signals: any[]) {
       name: name + TUPLE,
       on: [{
         events: {signal: name},
-        update: `{unit: unit.datum && unit.datum._id, ${tupleExpr}}`
+        update: `{unit: ${stringValue(model.getName(''))}, ${tupleExpr}}`
       }]
     }, {
       name: name + MODIFY,
@@ -212,13 +212,11 @@ const PREDICATES_OPS = {
   intersect_others: '"intersect", "others"'
 };
 
-// TODO: How to better differentiate unit than parent._id?
-export function predicate(name: string, type: SelectionTypes, resolve?: string, datum?: string, parent?: string): string {
+export function predicate(model: Model, name: string, type: SelectionTypes, resolve?: string, datum?: string): string {
   const store = stringValue(name + STORE),
         op = PREDICATES_OPS[resolve || 'global'];
   datum = datum || 'datum';
-  parent = parent === null ? null : 'parent._id';
-  return compiler(type).predicate + `(${store}, ${parent}, ${datum}, ${op})`;
+  return compiler(type).predicate + `(${store}, ${stringValue(model.getName(''))}, ${datum}, ${op})`;
 }
 
 // Utility functions

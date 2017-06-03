@@ -27,7 +27,7 @@ const single:SelectionCompiler = {
   modifyExpr: function(model, selCmpt) {
     const tpl = selCmpt.name + TUPLE;
     return tpl + ', ' +
-      (selCmpt.resolve === 'global' ? 'true' : `{unit: ${tpl}.unit}`);
+      (selCmpt.resolve === 'global' ? 'true' : `{unit: ${stringValue(model.getName(''))}}`);
   }
 };
 

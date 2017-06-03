@@ -49,7 +49,7 @@ const interval:SelectionCompiler = {
   modifyExpr: function(model, selCmpt) {
     const tpl = selCmpt.name + TUPLE;
     return tpl + ', ' +
-      (selCmpt.resolve === 'global' ? 'true' : `{unit: ${tpl}.unit}`);
+      (selCmpt.resolve === 'global' ? 'true' : `{unit: ${stringValue(model.getName(''))}}`);
   },
 
   marks: function(model, selCmpt, marks) {
@@ -77,7 +77,7 @@ const interval:SelectionCompiler = {
     if (selCmpt.resolve === 'global') {
       keys(update).forEach(function(key) {
         update[key] = [{
-          test: `${store}.length && ${tpl} && ${tpl}.unit === ${store}[0].unit`,
+          test: `${store}.length && ${store}[0].unit === ${stringValue(model.getName(''))}`,
           ...update[key]
         }, {value: 0}];
       });
