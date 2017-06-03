@@ -74,17 +74,18 @@ function onDelta(model: UnitModel, selCmpt: SelectionComponent, channel: Channel
       signal:any = signals.filter((s:any) => {
         return s.name === channelSignalName(selCmpt, channel, hasScales ? 'data' : 'visual');
       })[0],
+      sizeSg = model.getSizeSignalRef(size).signal,
       anchor = name + ANCHOR,
       delta  = name + DELTA,
       sign = getSign(selCmpt, channel),
       offset = sign + (hasScales ?
-        ` span(${anchor}.extent_${channel}) * ${delta}.${channel} / unit.${size}` :
+        ` span(${anchor}.extent_${channel}) * ${delta}.${channel} / ${sizeSg}` :
         ` ${delta}.${channel}`),
       extent = `${anchor}.extent_${channel}`,
       range = `[${extent}[0] ${offset}, ${extent}[1] ${offset}]`;
 
   signal.on.push({
     events: {signal: delta},
-    update: hasScales ? range : `clampRange(${range}, 0, unit.${size})`
+    update: hasScales ? range : `clampRange(${range}, 0, ${sizeSg})`
   });
 }
