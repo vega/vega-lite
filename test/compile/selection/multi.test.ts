@@ -62,7 +62,7 @@ describe('Multi Selection', function() {
         "on": [
           {
             "events": {"signal": "one"},
-            "update": `{unit: unit.datum && unit.datum._id, ${oneExpr}}`
+            "update": `{unit: \"\", ${oneExpr}}`
           }
         ]
       },
@@ -71,7 +71,7 @@ describe('Multi Selection', function() {
         "on": [
           {
             "events": {"signal": "two"},
-            "update": `{unit: unit.datum && unit.datum._id, ${twoExpr}}`
+            "update": `{unit: \"\", ${twoExpr}}`
           }
         ]
       }

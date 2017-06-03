@@ -185,7 +185,7 @@ describe('Interval Selections', function() {
         "on": [
           {
             "events": {"signal": "one"},
-            "update": `{unit: unit.datum && unit.datum._id, ${oneExpr}}`
+            "update": `{unit: \"\", ${oneExpr}}`
           }
         ]
       },
@@ -194,7 +194,7 @@ describe('Interval Selections', function() {
         "on": [
           {
             "events": {"signal": "two"},
-            "update": `{unit: unit.datum && unit.datum._id, ${twoExpr}}`
+            "update": `{unit: \"\", ${twoExpr}}`
           }
         ]
       },
@@ -203,7 +203,7 @@ describe('Interval Selections', function() {
         "on": [
           {
             "events": {"signal": "three"},
-            "update": `{unit: unit.datum && unit.datum._id, ${threeExpr}}`
+            "update": `{unit: \"\", ${threeExpr}}`
           }
         ]
       }
@@ -218,7 +218,7 @@ describe('Interval Selections', function() {
     assert.equal(twoExpr, 'two_tuple, true');
 
     const threeExpr = interval.modifyExpr(model, selCmpts['three']);
-    assert.equal(threeExpr, 'three_tuple, {unit: three_tuple.unit}');
+    assert.equal(threeExpr, 'three_tuple, {unit: \"\"}');
 
     const signals = selection.assembleUnitSelectionSignals(model, []);
     assert.includeDeepMembers(signals, [
@@ -265,7 +265,7 @@ describe('Interval Selections', function() {
           "update": {
             "x": [
               {
-                "test": "data(\"one_store\").length && one_tuple && one_tuple.unit === data(\"one_store\")[0].unit",
+                "test": "data(\"one_store\").length && data(\"one_store\")[0].unit === \"\"",
                 "signal": "one_x[0]"
               },
               {
@@ -274,7 +274,7 @@ describe('Interval Selections', function() {
             ],
             "y": [
               {
-                "test": "data(\"one_store\").length && one_tuple && one_tuple.unit === data(\"one_store\")[0].unit",
+                "test": "data(\"one_store\").length && data(\"one_store\")[0].unit === \"\"",
                 "value": 0
               },
               {
@@ -283,7 +283,7 @@ describe('Interval Selections', function() {
             ],
             "x2": [
               {
-                "test": "data(\"one_store\").length && one_tuple && one_tuple.unit === data(\"one_store\")[0].unit",
+                "test": "data(\"one_store\").length && data(\"one_store\")[0].unit === \"\"",
                 "signal": "one_x[1]"
               },
               {
@@ -292,7 +292,7 @@ describe('Interval Selections', function() {
             ],
             "y2": [
               {
-                "test": "data(\"one_store\").length && one_tuple && one_tuple.unit === data(\"one_store\")[0].unit",
+                "test": "data(\"one_store\").length && data(\"one_store\")[0].unit === \"\"",
                 "field": {
                   "group": "height"
                 }
@@ -316,7 +316,7 @@ describe('Interval Selections', function() {
           "update": {
             "x": [
               {
-                "test": "data(\"one_store\").length && one_tuple && one_tuple.unit === data(\"one_store\")[0].unit",
+                "test": "data(\"one_store\").length && data(\"one_store\")[0].unit === \"\"",
                 "signal": "one_x[0]"
               },
               {
@@ -325,7 +325,7 @@ describe('Interval Selections', function() {
             ],
             "y": [
               {
-                "test": "data(\"one_store\").length && one_tuple && one_tuple.unit === data(\"one_store\")[0].unit",
+                "test": "data(\"one_store\").length && data(\"one_store\")[0].unit === \"\"",
                 "value": 0
               },
               {
@@ -334,7 +334,7 @@ describe('Interval Selections', function() {
             ],
             "x2": [
               {
-                "test": "data(\"one_store\").length && one_tuple && one_tuple.unit === data(\"one_store\")[0].unit",
+                "test": "data(\"one_store\").length && data(\"one_store\")[0].unit === \"\"",
                 "signal": "one_x[1]"
               },
               {
@@ -343,7 +343,7 @@ describe('Interval Selections', function() {
             ],
             "y2": [
               {
-                "test": "data(\"one_store\").length && one_tuple && one_tuple.unit === data(\"one_store\")[0].unit",
+                "test": "data(\"one_store\").length && data(\"one_store\")[0].unit === \"\"",
                 "field": {
                   "group": "height"
                 }

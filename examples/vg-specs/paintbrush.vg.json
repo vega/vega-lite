@@ -87,7 +87,7 @@
                             "events": {
                                 "signal": "paintbrush"
                             },
-                            "update": "{unit: unit.datum && unit.datum._id, encodings: paintbrush.encodings, fields: paintbrush.fields, values: paintbrush.values}"
+                            "update": "{unit: \"\", encodings: paintbrush.encodings, fields: paintbrush.fields, values: paintbrush.values}"
                         }
                     ]
                 },
@@ -142,7 +142,7 @@
                             },
                             "size": [
                                 {
-                                    "test": "vlPoint(\"paintbrush_store\", parent._id, datum, \"union\", \"all\")",
+                                    "test": "vlPoint(\"paintbrush_store\", \"\", datum, \"union\", \"all\")",
                                     "value": 300
                                 },
                                 {

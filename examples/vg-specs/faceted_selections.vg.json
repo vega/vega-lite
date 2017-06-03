@@ -311,13 +311,13 @@
                                     "events": {
                                         "signal": "brush_translate_delta"
                                     },
-                                    "update": "clampRange([brush_translate_anchor.extent_x[0] + brush_translate_delta.x, brush_translate_anchor.extent_x[1] + brush_translate_delta.x], 0, unit.width)"
+                                    "update": "clampRange([brush_translate_anchor.extent_x[0] + brush_translate_delta.x, brush_translate_anchor.extent_x[1] + brush_translate_delta.x], 0, child_width)"
                                 },
                                 {
                                     "events": {
                                         "signal": "brush_zoom_delta"
                                     },
-                                    "update": "clampRange([brush_zoom_anchor.x + (brush_x[0] - brush_zoom_anchor.x) * brush_zoom_delta, brush_zoom_anchor.x + (brush_x[1] - brush_zoom_anchor.x) * brush_zoom_delta], 0, unit.width)"
+                                    "update": "clampRange([brush_zoom_anchor.x + (brush_x[0] - brush_zoom_anchor.x) * brush_zoom_delta, brush_zoom_anchor.x + (brush_x[1] - brush_zoom_anchor.x) * brush_zoom_delta], 0, child_width)"
                                 }
                             ]
                         },
@@ -422,7 +422,7 @@
                                     "events": {
                                         "signal": "brush"
                                     },
-                                    "update": "{unit: unit.datum && unit.datum._id, intervals: brush}"
+                                    "update": "{unit: \"child_\", intervals: brush}"
                                 }
                             ]
                         },
@@ -433,7 +433,7 @@
                                     "events": {
                                         "signal": "brush"
                                     },
-                                    "update": "modify(\"brush_store\", brush_tuple, {unit: brush_tuple.unit})"
+                                    "update": "modify(\"brush_store\", brush_tuple, {unit: \"child_\"})"
                                 }
                             ]
                         },
@@ -444,7 +444,7 @@
                                     "events": {
                                         "signal": "grid_translate_delta"
                                     },
-                                    "update": "[grid_translate_anchor.extent_x[0] - span(grid_translate_anchor.extent_x) * grid_translate_delta.x / unit.width, grid_translate_anchor.extent_x[1] - span(grid_translate_anchor.extent_x) * grid_translate_delta.x / unit.width]"
+                                    "update": "[grid_translate_anchor.extent_x[0] - span(grid_translate_anchor.extent_x) * grid_translate_delta.x / child_width, grid_translate_anchor.extent_x[1] - span(grid_translate_anchor.extent_x) * grid_translate_delta.x / child_width]"
                                 },
                                 {
                                     "events": {
@@ -462,7 +462,7 @@
                                     "events": {
                                         "signal": "grid_translate_delta"
                                     },
-                                    "update": "[grid_translate_anchor.extent_y[0] + span(grid_translate_anchor.extent_y) * grid_translate_delta.y / unit.height, grid_translate_anchor.extent_y[1] + span(grid_translate_anchor.extent_y) * grid_translate_delta.y / unit.height]"
+                                    "update": "[grid_translate_anchor.extent_y[0] + span(grid_translate_anchor.extent_y) * grid_translate_delta.y / child_height, grid_translate_anchor.extent_y[1] + span(grid_translate_anchor.extent_y) * grid_translate_delta.y / child_height]"
                                 },
                                 {
                                     "events": {
@@ -559,7 +559,7 @@
                                     "events": {
                                         "signal": "grid"
                                     },
-                                    "update": "{unit: unit.datum && unit.datum._id, intervals: grid}"
+                                    "update": "{unit: \"child_\", intervals: grid}"
                                 }
                             ]
                         },
@@ -585,7 +585,7 @@
                                     "events": {
                                         "signal": "xenc"
                                     },
-                                    "update": "{unit: unit.datum && unit.datum._id, encodings: xenc.encodings, fields: xenc.fields, values: xenc.values, X: xenc.values[0]}"
+                                    "update": "{unit: \"child_\", encodings: xenc.encodings, fields: xenc.fields, values: xenc.values, X: xenc.values[0]}"
                                 }
                             ]
                         },
@@ -651,7 +651,7 @@
                                     },
                                     "fill": [
                                         {
-                                            "test": "vlPoint(\"xenc_store\", parent._id, datum, \"union\", \"all\")",
+                                            "test": "vlPoint(\"xenc_store\", \"child_\", datum, \"union\", \"all\")",
                                             "value": "red"
                                         },
                                         {
@@ -660,7 +660,7 @@
                                     ],
                                     "size": [
                                         {
-                                            "test": "vlInterval(\"brush_store\", parent._id, datum, \"intersect\", \"all\")",
+                                            "test": "vlInterval(\"brush_store\", \"child_\", datum, \"intersect\", \"all\")",
                                             "value": 250
                                         },
                                         {

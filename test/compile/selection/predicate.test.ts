@@ -41,14 +41,14 @@ describe('Selection Predicate', function() {
     const single = getModel({type: 'single'});
     assert.deepEqual(nonPosition('color', single), {
       color: [
-        {test: "!vlPoint(\"one_store\", parent._id, datum, \"union\", \"all\")", value: "grey"},
+        {test: "!vlPoint(\"one_store\", \"\", datum, \"union\", \"all\")", value: "grey"},
         {scale: "color", field: "Cylinders"}
       ]
     });
 
     assert.deepEqual(nonPosition('opacity', single), {
       opacity: [
-        {test: "vlPoint(\"one_store\", parent._id, datum, \"union\", \"all\")", value: 0.5},
+        {test: "vlPoint(\"one_store\", \"\", datum, \"union\", \"all\")", value: 0.5},
         {scale: "opacity", field: "Origin"}
       ]
     });
@@ -56,14 +56,14 @@ describe('Selection Predicate', function() {
     const multi = getModel({type: 'multi'});
     assert.deepEqual(nonPosition('color', multi), {
       color: [
-        {test: "!vlPoint(\"one_store\", parent._id, datum, \"union\", \"all\")", value: "grey"},
+        {test: "!vlPoint(\"one_store\", \"\", datum, \"union\", \"all\")", value: "grey"},
         {scale: "color", field: "Cylinders"}
       ]
     });
 
     assert.deepEqual(nonPosition('opacity', multi), {
       opacity: [
-        {test: "vlPoint(\"one_store\", parent._id, datum, \"union\", \"all\")", value: 0.5},
+        {test: "vlPoint(\"one_store\", \"\", datum, \"union\", \"all\")", value: 0.5},
         {scale: "opacity", field: "Origin"}
       ]
     });
@@ -71,14 +71,14 @@ describe('Selection Predicate', function() {
     const interval = getModel({type: 'interval'});
     assert.deepEqual(nonPosition('color', interval), {
       color: [
-        {test: "!vlInterval(\"one_store\", parent._id, datum, \"union\", \"all\")", value: "grey"},
+        {test: "!vlInterval(\"one_store\", \"\", datum, \"union\", \"all\")", value: "grey"},
         {scale: "color", field: "Cylinders"}
       ]
     });
 
     assert.deepEqual(nonPosition('opacity', interval), {
       opacity: [
-        {test: "vlInterval(\"one_store\", parent._id, datum, \"union\", \"all\")", value: 0.5},
+        {test: "vlInterval(\"one_store\", \"\", datum, \"union\", \"all\")", value: 0.5},
         {scale: "opacity", field: "Origin"}
       ]
     });
