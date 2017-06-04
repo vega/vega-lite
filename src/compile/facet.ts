@@ -5,9 +5,11 @@ import {Facet} from '../facet';
 import {FieldDef, normalize, title as fieldDefTitle} from '../fielddef';
 import * as log from '../log';
 import {FILL_STROKE_CONFIG} from '../mark';
+import {Projection} from '../projection';
 import {initFacetResolve, ResolveMapping} from '../resolve';
 import {FacetSpec} from '../spec';
 import {contains, Dict, keys, stringValue} from '../util';
+import {VgProjection} from '../vega.schema';
 import {
   isDataRefDomain,
   isDataRefUnionedDomain,
@@ -31,6 +33,8 @@ import {moveSharedScaleUp} from './scale/parse';
 export class FacetModel extends ModelWithField {
   public readonly facet: Facet<string>;
 
+  public readonly projection: Projection;
+
   public readonly child: Model;
 
   public readonly children: Model[];
@@ -41,6 +45,7 @@ export class FacetModel extends ModelWithField {
     super(spec, parent, parentGivenName, config);
 
     this.resolve = initFacetResolve(spec.resolve || {});
+    this.projection = spec.projection;
 
     this.child = buildModel(spec.spec, this, this.getName('child'), undefined, repeater, config);
     this.children = [this.child];
@@ -121,6 +126,12 @@ export class FacetModel extends ModelWithField {
           });
         }
       }
+    });
+  }
+
+  public parseProjection() {
+    this.children.forEach(child => {
+      child.parseProjection();
     });
   }
 
@@ -237,6 +248,13 @@ export class FacetModel extends ModelWithField {
     }
 
     return [];
+  }
+
+  public assembleProjections(): VgProjection[] {
+    // TODO: reduce redundency?
+    return this.children.reduce((projections, child) => {
+      return projections.concat(child.assembleProjections());
+    }, []);
   }
 
   public assembleParentGroupProperties(): any {

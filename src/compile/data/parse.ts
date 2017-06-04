@@ -9,6 +9,7 @@ import {BinNode} from './bin';
 import {DataFlowNode, OutputNode} from './dataflow';
 import {FacetNode} from './facet';
 import {ParseNode} from './formatparse';
+import {GeoPointNode} from './geopoint';
 import {DataComponent} from './index';
 import {NonPositiveFilterNode} from './nonpositivefilter';
 import {NullFilterNode} from './nullfilter';
@@ -138,6 +139,13 @@ export function parseData(model: Model): DataComponent {
         bin.parent = head;
         head = bin;
       }
+    }
+
+
+    const geopoint = GeoPointNode.make(model);
+    if (geopoint) {
+      geopoint.parent = head;
+      head = geopoint;
     }
 
     const tu = TimeUnitNode.makeFromEncoding(model);

@@ -1,0 +1,42 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v2.json",
+  "repeat": {"row": ["population", "engineers", "hurricanes"]},
+  "resolve": {
+    "color": {
+      "scale": "independent"
+    }
+  },
+  "spec": {
+    "mark": "geoshape",
+    "data": {
+      "url": "data/us-10m.json",
+      "format": {
+        "type": "topojson",
+        "feature": "states"
+      }
+    },
+    "transform": [{
+      "lookup": "id",
+      "from": {
+        "data": {
+          "url": "data/population_engineers_hurricanes.csv",
+          "format": {
+            "type": "csv"
+          }
+        },
+        "key": "id",
+        "fields": ["population", "engineers", "hurricanes"]
+      }
+    }],
+  "projection": {"type": "albersUsa"},
+    "encoding": {
+      "color": {
+        "field": {"repeat": "row"},
+        "type": "quantitative"
+      },
+      "opacity": {
+        "value": 0.7
+      }
+    }
+  }
+}

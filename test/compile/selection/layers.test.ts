@@ -38,7 +38,7 @@ describe('Layered Selections', function() {
   // mark individually. This ensures correct interleaving of brush and
   // clipping marks (e.g., that the brush mark appears above all layers
   // and thus can be moved around).
-  it('should pass through unit mark assembly', function() {
+  it('should pass through unit mark assembly', function () {
     assert.sameDeepMembers(layers.children[0].assembleMarks(), [{
       "name": "layer_0_marks",
       "type": "symbol",

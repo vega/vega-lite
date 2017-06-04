@@ -1,4 +1,4 @@
-import {Channel} from '../../channel';
+import {Channel, SHAPE} from '../../channel';
 import {isSelectionDomain, Scale} from '../../scale';
 import {isSortField} from '../../sort';
 import {Dict} from '../../util';
@@ -6,6 +6,7 @@ import {isSignalRefDomain, VgScale} from '../../vega.schema';
 
 import {UnitModel} from '../unit';
 
+import {GEOSHAPE} from '../../mark';
 import {Model} from '../model';
 import {ScaleComponent, ScaleComponentIndex} from './component';
 import {parseDomain, unionDomains} from './domain';
@@ -40,6 +41,11 @@ export const NON_TYPE_DOMAIN_RANGE_VEGA_SCALE_PROPERTIES: (keyof Scale)[] = [
  */
 export function parseScale(model: UnitModel, channel: Channel) {
   if (!model.scale(channel)) {
+    return null;
+  }
+
+  // shape is not a scale channel for geoshape mark
+  if (model.mark() === GEOSHAPE && channel === SHAPE) {
     return null;
   }
 

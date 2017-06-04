@@ -9,6 +9,7 @@ import {
   Field,
   FieldDef,
   isFieldDef,
+  isProjection,
   isValueDef,
   LegendFieldDef,
   normalize,
@@ -73,7 +74,7 @@ export interface Encoding<F> {
   size?: LegendFieldDef<F, number> | ConditionalValueDef<number>;
 
   /**
-   * The symbol's shape (only for `point` marks). The supported values are
+   * The symbol's shape (only for `point` and `geoshape` marks). The supported values are
    * `"circle"` (default), `"square"`, `"cross"`, `"diamond"`, `"triangle-up"`,
    * or `"triangle-down"`, or else a custom SVG path string.
    */
@@ -113,6 +114,11 @@ export function channelHasField(encoding: EncodingWithFacet<Field>, channel: Cha
     }
   }
   return false;
+}
+
+export function channelIsProjection(encoding: EncodingWithFacet<Field>, channel: Channel) {
+  const channelDef = encoding && encoding[channel];
+  return channelDef && isFieldDef(channelDef) && isProjection(channelDef);
 }
 
 export function isAggregate(encoding: EncodingWithFacet<Field>) {

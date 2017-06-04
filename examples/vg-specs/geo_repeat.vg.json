@@ -1,0 +1,333 @@
+{
+    "$schema": "http://vega.github.io/schema/vega/v3.0.json",
+    "autosize": "pad",
+    "padding": 5,
+    "projections": [
+        {
+            "name": "child_population_projection",
+            "type": "albersUsa"
+        },
+        {
+            "name": "child_engineers_projection",
+            "type": "albersUsa"
+        },
+        {
+            "name": "child_hurricanes_projection",
+            "type": "albersUsa"
+        }
+    ],
+    "data": [
+        {
+            "name": "source_0",
+            "url": "data/us-10m.json",
+            "format": {
+                "type": "topojson",
+                "feature": "states"
+            }
+        },
+        {
+            "name": "source_1",
+            "url": "data/population_engineers_hurricanes.csv",
+            "format": {
+                "type": "csv"
+            }
+        },
+        {
+            "name": "data_0",
+            "source": "source_0",
+            "transform": [
+                {
+                    "type": "formula",
+                    "expr": "toNumber(datum[\"population\"])",
+                    "as": "population"
+                },
+                {
+                    "type": "lookup",
+                    "from": "source_1",
+                    "key": "id",
+                    "fields": [
+                        "id"
+                    ],
+                    "values": [
+                        "population",
+                        "engineers",
+                        "hurricanes"
+                    ]
+                },
+                {
+                    "type": "filter",
+                    "expr": "datum[\"population\"] !== null && !isNaN(datum[\"population\"])"
+                }
+            ]
+        },
+        {
+            "name": "data_1",
+            "source": "source_0",
+            "transform": [
+                {
+                    "type": "formula",
+                    "expr": "toNumber(datum[\"engineers\"])",
+                    "as": "engineers"
+                },
+                {
+                    "type": "lookup",
+                    "from": "source_1",
+                    "key": "id",
+                    "fields": [
+                        "id"
+                    ],
+                    "values": [
+                        "population",
+                        "engineers",
+                        "hurricanes"
+                    ]
+                },
+                {
+                    "type": "filter",
+                    "expr": "datum[\"engineers\"] !== null && !isNaN(datum[\"engineers\"])"
+                }
+            ]
+        },
+        {
+            "name": "data_2",
+            "source": "source_0",
+            "transform": [
+                {
+                    "type": "formula",
+                    "expr": "toNumber(datum[\"hurricanes\"])",
+                    "as": "hurricanes"
+                },
+                {
+                    "type": "lookup",
+                    "from": "source_1",
+                    "key": "id",
+                    "fields": [
+                        "id"
+                    ],
+                    "values": [
+                        "population",
+                        "engineers",
+                        "hurricanes"
+                    ]
+                },
+                {
+                    "type": "filter",
+                    "expr": "datum[\"hurricanes\"] !== null && !isNaN(datum[\"hurricanes\"])"
+                }
+            ]
+        }
+    ],
+    "signals": [
+        {
+            "name": "child_population_width",
+            "update": "21"
+        },
+        {
+            "name": "child_population_height",
+            "update": "21"
+        },
+        {
+            "name": "child_engineers_width",
+            "update": "21"
+        },
+        {
+            "name": "child_engineers_height",
+            "update": "21"
+        },
+        {
+            "name": "child_hurricanes_width",
+            "update": "21"
+        },
+        {
+            "name": "child_hurricanes_height",
+            "update": "21"
+        }
+    ],
+    "marks": [
+        {
+            "name": "nested_main_group",
+            "type": "group",
+            "layout": {
+                "padding": {
+                    "row": 10,
+                    "column": 10
+                },
+                "offset": 10,
+                "columns": 1,
+                "bounds": "full",
+                "align": "all"
+            },
+            "marks": [
+                {
+                    "type": "group",
+                    "name": "child_population_group",
+                    "encode": {
+                        "update": {
+                            "width": {
+                                "signal": "child_population_width"
+                            },
+                            "height": {
+                                "signal": "child_population_height"
+                            },
+                            "fill": {
+                                "value": "transparent"
+                            }
+                        }
+                    },
+                    "marks": [
+                        {
+                            "name": "child_population_marks",
+                            "type": "shape",
+                            "role": "geoshape",
+                            "from": {
+                                "data": "data_0"
+                            },
+                            "encode": {
+                                "update": {
+                                    "fill": {
+                                        "scale": "color",
+                                        "field": "population"
+                                    },
+                                    "opacity": {
+                                        "value": 0.7
+                                    }
+                                }
+                            },
+                            "transform": [
+                                {
+                                    "type": "geoshape",
+                                    "projection": "child_population_projection",
+                                    "as": "shape"
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "type": "group",
+                    "name": "child_engineers_group",
+                    "encode": {
+                        "update": {
+                            "width": {
+                                "signal": "child_engineers_width"
+                            },
+                            "height": {
+                                "signal": "child_engineers_height"
+                            },
+                            "fill": {
+                                "value": "transparent"
+                            }
+                        }
+                    },
+                    "marks": [
+                        {
+                            "name": "child_engineers_marks",
+                            "type": "shape",
+                            "role": "geoshape",
+                            "from": {
+                                "data": "data_1"
+                            },
+                            "encode": {
+                                "update": {
+                                    "fill": {
+                                        "scale": "color",
+                                        "field": "engineers"
+                                    },
+                                    "opacity": {
+                                        "value": 0.7
+                                    }
+                                }
+                            },
+                            "transform": [
+                                {
+                                    "type": "geoshape",
+                                    "projection": "child_engineers_projection",
+                                    "as": "shape"
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "type": "group",
+                    "name": "child_hurricanes_group",
+                    "encode": {
+                        "update": {
+                            "width": {
+                                "signal": "child_hurricanes_width"
+                            },
+                            "height": {
+                                "signal": "child_hurricanes_height"
+                            },
+                            "fill": {
+                                "value": "transparent"
+                            }
+                        }
+                    },
+                    "marks": [
+                        {
+                            "name": "child_hurricanes_marks",
+                            "type": "shape",
+                            "role": "geoshape",
+                            "from": {
+                                "data": "data_2"
+                            },
+                            "encode": {
+                                "update": {
+                                    "fill": {
+                                        "scale": "color",
+                                        "field": "hurricanes"
+                                    },
+                                    "opacity": {
+                                        "value": 0.7
+                                    }
+                                }
+                            },
+                            "transform": [
+                                {
+                                    "type": "geoshape",
+                                    "projection": "child_hurricanes_projection",
+                                    "as": "shape"
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        }
+    ],
+    "scales": [
+        {
+            "name": "color",
+            "type": "sequential",
+            "domain": {
+                "fields": [
+                    {
+                        "data": "data_0",
+                        "field": "population"
+                    },
+                    {
+                        "data": "data_1",
+                        "field": "engineers"
+                    },
+                    {
+                        "data": "data_2",
+                        "field": "hurricanes"
+                    }
+                ],
+                "sort": true
+            },
+            "range": "ramp",
+            "nice": false,
+            "zero": false
+        }
+    ],
+    "legends": [
+        {
+            "fill": "color",
+            "format": "s",
+            "title": "population",
+            "type": "gradient"
+        }
+    ]
+}

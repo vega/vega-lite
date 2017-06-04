@@ -96,6 +96,63 @@ export type VgScale = {
   zero?: boolean
 };
 
+export type VgProjectionType = 'albers' | 'albersUsa' | 'azimuthalEqualArea' | 'azimuthalEquidistant' | 'conicConformal' | 'conicEqualArea' | 'conicEquidistant' | 'equirectangular' | 'gnomonic' | 'mercator' | 'orthographic' | 'stereographic' | 'transverseMercator';
+
+export type VgProjectionFit = {
+  signal: String
+};
+
+export type VgProjection = {
+  /*
+   * The name of the projection.
+   */
+  name: string;
+  /*
+   * The type of the projection.
+   */
+  type?: VgProjectionType;
+  /*
+   * The clip angle of the projection.
+   */
+  clipAngle?: number;
+  /*
+   * Sets the projection’s viewport clip extent to the specified bounds in pixels
+   */
+  clipExtent?: number[];
+  /*
+   * Sets the projection’s scale factor to the specified value
+   */
+  scale?: number;
+  /*
+   * The translation of the projection.
+   */
+  translate?: number[];
+  /*
+   * The center of the projection.
+   */
+  center?: number[];
+  /**
+   * The rotation of the projection.
+   */
+  rotate?: number[];
+  /*
+   * The desired precision of the projection.
+   */
+  precision?: String;
+  /*
+   * GeoJSON data to which the projection should attempt to automatically fit the translate and scale parameters..
+   */
+  fit?: VgProjectionFit | Object | any[];
+  /*
+   * Used in conjunction with fit, provides the pixel area to which the projection should be automatically fit.
+   */
+  extent?: number[][];
+  /*
+   * Used in conjunction with fit, provides the width and height in pixels of the area to which the projection should be automatically fit.
+   */
+  size?: number[];
+};
+
 export type VgLayoutAlign = 'none' | 'each' | 'all';
 
 export type VgLayout = {
@@ -214,6 +271,13 @@ export interface VgLookupTransform {
   default?: string;
 }
 
+export interface VgGeoPointTransform {
+  type: 'geopoint';
+  projection: string; // the name of the projection
+  fields: string[];
+  as?: string[];
+}
+
 export interface VgAxisEncode {
   ticks?: VgGuideEncode;
   labels?: VgGuideEncode;
@@ -232,7 +296,16 @@ export interface VgLegendEncode {
 
 export type VgGuideEncode = any; // TODO: replace this (See guideEncode in Vega Schema)
 
-export type VgTransform = VgBinTransform | VgExtentTransform | VgFormulaTransform | VgAggregateTransform | VgFilterTransform | VgImputeTransform | VgStackTransform | VgCollectTransform | VgLookupTransform;
+export type VgTransform = VgBinTransform | VgExtentTransform | VgFormulaTransform | VgAggregateTransform | VgFilterTransform | VgImputeTransform | VgStackTransform | VgCollectTransform | VgLookupTransform | VgGeoPointTransform;
+
+export interface VgGeoShapeTransform {
+  type: 'geoshape';
+  projection: string; // the name of the projection
+  field?: VgFieldRef;
+  as?: string;
+}
+
+export type VgPostEncodingTransform = VgGeoShapeTransform;
 
 export interface VgStackTransform {
   type: 'stack';

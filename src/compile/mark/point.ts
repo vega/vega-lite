@@ -1,5 +1,3 @@
-
-
 import {UnitModel} from '../unit';
 import * as mixins from './mixins';
 
@@ -8,16 +6,23 @@ import {getMarkConfig} from '../common';
 import {MarkCompiler} from './base';
 import * as ref from './valueref';
 
+import {Field, FieldDef, isFieldDef, isProjection} from '../../fielddef';
+import {LATITUDE, LONGITUDE} from '../../type';
+import {contains, keys} from '../../util';
+
 function encodeEntry(model: UnitModel, fixedShape?: 'circle' | 'square') {
-  const {config, width, height} = model;
+  const {config, encoding, width, height} = model;
 
   return {
-    ...mixins.pointPosition('x', model, ref.midX(width, config)),
-    ...mixins.pointPosition('y', model, ref.midY(height, config)),
-
+    ...isProjection(encoding.x) ? {
+      x: {'field': `${(encoding.x as FieldDef<Field>).field as string}_geo`},
+    } : mixins.pointPosition('x', model, ref.midX(width, config)),
+    ...isProjection(encoding.y) ? {
+      y: {'field': `${(encoding.y as FieldDef<Field>).field as string}_geo`},
+    } : mixins.pointPosition('y', model, ref.midY(height, config)),
+    ...mixins.nonPosition('size', model),
     ...mixins.color(model),
     ...mixins.text(model, 'tooltip'),
-    ...mixins.nonPosition('size', model),
     ...shapeMixins(model, config, fixedShape),
     ...mixins.nonPosition('opacity', model),
   };
@@ -27,7 +32,9 @@ export function shapeMixins(model: UnitModel, config: Config, fixedShape?: 'circ
   if (fixedShape) {
     return {shape: {value: fixedShape}};
   }
-  return mixins.nonPosition('shape', model, {defaultValue: getMarkConfig('shape', 'point', config) as string});
+  return mixins.nonPosition('shape', model, {
+    defaultValue: getMarkConfig('shape', 'point', config) as string
+  });
 }
 
 export const point: MarkCompiler = {
