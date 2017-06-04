@@ -12,8 +12,8 @@ const vgSchema = require('vega/build/vega-schema.json');
 
 const ajv = new Ajv({
   validateSchema: true,
-  extendRefs: 'fail',
-  allErrors: true
+  allErrors: true,
+  extendRefs: 'fail'
 });
 
 ajv.addMetaSchema(require('ajv/lib/refs/json-schema-draft-04.json'), 'http://json-schema.org/draft-04/schema#');

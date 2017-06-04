@@ -9,7 +9,8 @@ describe('Schema', function() {
   it('should be valid', function() {
     const ajv = new Ajv({
       allErrors: true,
-      verbose: true
+      verbose: true,
+      extendRefs: 'fail'
     });
 
     ajv.addMetaSchema(metaSchema, 'http://json-schema.org/draft-04/schema#');

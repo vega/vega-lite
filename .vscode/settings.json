@@ -8,5 +8,6 @@
   "search.exclude": {
     "build": true
   },
-  "files.trimTrailingWhitespace": true
+  "files.trimTrailingWhitespace": true,
+  "tsimporter.spaceBetweenBraces": false
 }
