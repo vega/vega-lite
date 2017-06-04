@@ -193,7 +193,7 @@ export interface VLOnlyConfig {
 
 }
 
-export interface Config  extends TopLevelProperties, VLOnlyConfig, MarkConfigMixins, CompositeMarkConfigMixins, AxisConfigMixins {
+export interface Config extends TopLevelProperties, VLOnlyConfig, MarkConfigMixins, CompositeMarkConfigMixins, AxisConfigMixins {
 
   /**
    * Scale range config, or properties defining named range arrays
