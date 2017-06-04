@@ -2281,6 +2281,10 @@
                 "timeFormat": {
                     "description": "Default datetime format for axis and legend labels. The format can be set directly on each axis and legend. [D3 time format pattern](https://github.com/mbostock/d3/wiki/Time-Formatting)).\n\n__Default value:__ `'%b %d, %Y'`.",
                     "type": "string"
+                },
+                "title": {
+                    "$ref": "#/definitions/VgTitleConfig",
+                    "description": "Title Config"
                 }
             },
             "type": "object"
@@ -5833,6 +5837,57 @@
                 "symbols": {
                 },
                 "title": {
+                }
+            },
+            "type": "object"
+        },
+        "VgTitleConfig": {
+            "additionalProperties": false,
+            "properties": {
+                "anchor": {
+                    "description": "Title anchor position (`\"start\"`, `\"middle\"`, or `\"end\"`).",
+                    "type": "string"
+                },
+                "angle": {
+                    "description": "Angle in degrees of title text.",
+                    "type": "number"
+                },
+                "baseline": {
+                    "description": "Vertical text baseline for title text.",
+                    "type": "string"
+                },
+                "color": {
+                    "description": "Text color for title text.",
+                    "type": "string"
+                },
+                "font": {
+                    "description": "Font name for title text.",
+                    "type": "string"
+                },
+                "fontSize": {
+                    "description": "Font size in pixels for title text.\n\n__Default value:__ `10`.",
+                    "minimum": 0,
+                    "type": "number"
+                },
+                "fontWeight": {
+                    "description": "Font weight for title text.",
+                    "type": [
+                        "string",
+                        "number"
+                    ]
+                },
+                "limit": {
+                    "description": "The maximum allowed length in pixels of legend labels.",
+                    "minimum": 0,
+                    "type": "number"
+                },
+                "offset": {
+                    "description": "Offset in pixels of the title from the chart body and axes.",
+                    "type": "number"
+                },
+                "orient": {
+                    "description": "Default title orientation (\"top\", \"bottom\", \"left\", or \"right\")",
+                    "type": "string"
                 }
             },
             "type": "object"
