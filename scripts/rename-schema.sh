@@ -1,5 +1,9 @@
-perl -pi -e s,'GenericLayerSpec<.*>','LayerSpec',g build/vega-lite-schema.json
-perl -pi -e s,'GenericRepeatSpec<.*>','RepeatSpec',g build/vega-lite-schema.json
-perl -pi -e s,'GenericUnitSpec<EncodingWithFacet<.*>','FacetedUnitSpec',g build/vega-lite-schema.json
-perl -pi -e s,'GenericUnitSpec<Encoding<.*>','UnitSpec',g build/vega-lite-schema.json
-perl -pi -e s,'<Field>',,g build/vega-lite-schema.json
+perl -pi -e s,'<Field>','',g build/vega-lite-schema.json
+perl -pi -e s,'FacetedCompositeUnitSpec','FacetedUnitSpec',g build/vega-lite-schema.json
+perl -pi -e s,'GenericLayerSpec<CompositeUnitSpec>','LayerSpec',g build/vega-lite-schema.json
+perl -pi -e s,'GenericFacetSpec<CompositeUnitSpec>','FacetedSpec',g build/vega-lite-schema.json
+perl -pi -e s,'GenericRepeatSpec<CompositeUnitSpec>','RepeatSpec',g build/vega-lite-schema.json
+perl -pi -e s,'GenericVConcatSpec<CompositeUnitSpec>','VConcatSpec',g build/vega-lite-schema.json
+perl -pi -e s,'GenericHConcatSpec<CompositeUnitSpec>','HConcatSpec',g build/vega-lite-schema.json
+perl -pi -e s,'GenericUnitSpec<EncodingWithFacet\,AnyMark>','FacetedCompositeUnitSpecAlias',g build/vega-lite-schema.json
+perl -pi -e s,'GenericUnitSpec<Encoding\,AnyMark>','CompositeUnitSpecAlias',g build/vega-lite-schema.json
