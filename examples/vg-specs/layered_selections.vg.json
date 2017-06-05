@@ -281,7 +281,7 @@
                             "events": {
                                 "signal": "cyl"
                             },
-                            "update": "{unit: \"layer_0_\", encodings: cyl.encodings, fields: cyl.fields, values: cyl.values, Cylinders: cyl.values[0]}"
+                            "update": "{unit: \"layer_0_\", encodings: cyl.encodings, fields: cyl.fields, values: cyl.values, bins: cyl.bins, Cylinders: cyl.values[0]}"
                         }
                     ]
                 },
