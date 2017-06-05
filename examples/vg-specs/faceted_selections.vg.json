@@ -585,7 +585,7 @@
                                     "events": {
                                         "signal": "xenc"
                                     },
-                                    "update": "{unit: \"child_\", encodings: xenc.encodings, fields: xenc.fields, values: xenc.values, X: xenc.values[0]}"
+                                    "update": "{unit: \"child_\", encodings: xenc.encodings, fields: xenc.fields, values: xenc.values, bins: xenc.bins, X: xenc.values[0]}"
                                 }
                             ]
                         },

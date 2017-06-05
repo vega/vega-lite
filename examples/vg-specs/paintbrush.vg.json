@@ -87,7 +87,7 @@
                             "events": {
                                 "signal": "paintbrush"
                             },
-                            "update": "{unit: \"\", encodings: paintbrush.encodings, fields: paintbrush.fields, values: paintbrush.values}"
+                            "update": "{unit: \"\", encodings: paintbrush.encodings, fields: paintbrush.fields, values: paintbrush.values, bins: paintbrush.bins}"
                         }
                     ]
                 },
