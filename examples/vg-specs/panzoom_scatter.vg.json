@@ -63,7 +63,7 @@
                             "events": {
                                 "signal": "grid_translate_delta"
                             },
-                            "update": "[grid_translate_anchor.extent_x[0] - span(grid_translate_anchor.extent_x) * grid_translate_delta.x / unit.width, grid_translate_anchor.extent_x[1] - span(grid_translate_anchor.extent_x) * grid_translate_delta.x / unit.width]"
+                            "update": "[grid_translate_anchor.extent_x[0] - span(grid_translate_anchor.extent_x) * grid_translate_delta.x / width, grid_translate_anchor.extent_x[1] - span(grid_translate_anchor.extent_x) * grid_translate_delta.x / width]"
                         },
                         {
                             "events": {
@@ -81,7 +81,7 @@
                             "events": {
                                 "signal": "grid_translate_delta"
                             },
-                            "update": "[grid_translate_anchor.extent_y[0] + span(grid_translate_anchor.extent_y) * grid_translate_delta.y / unit.height, grid_translate_anchor.extent_y[1] + span(grid_translate_anchor.extent_y) * grid_translate_delta.y / unit.height]"
+                            "update": "[grid_translate_anchor.extent_y[0] + span(grid_translate_anchor.extent_y) * grid_translate_delta.y / height, grid_translate_anchor.extent_y[1] + span(grid_translate_anchor.extent_y) * grid_translate_delta.y / height]"
                         },
                         {
                             "events": {
@@ -173,7 +173,7 @@
                             "events": {
                                 "signal": "grid"
                             },
-                            "update": "{unit: unit.datum && unit.datum._id, intervals: grid}"
+                            "update": "{unit: \"\", intervals: grid}"
                         }
                     ]
                 },

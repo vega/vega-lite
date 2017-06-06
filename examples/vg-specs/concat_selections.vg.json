@@ -168,13 +168,13 @@
                                     "events": {
                                         "signal": "brush_translate_delta"
                                     },
-                                    "update": "clampRange([brush_translate_anchor.extent_x[0] + brush_translate_delta.x, brush_translate_anchor.extent_x[1] + brush_translate_delta.x], 0, unit.width)"
+                                    "update": "clampRange([brush_translate_anchor.extent_x[0] + brush_translate_delta.x, brush_translate_anchor.extent_x[1] + brush_translate_delta.x], 0, concat_0_width)"
                                 },
                                 {
                                     "events": {
                                         "signal": "brush_zoom_delta"
                                     },
-                                    "update": "clampRange([brush_zoom_anchor.x + (brush_x[0] - brush_zoom_anchor.x) * brush_zoom_delta, brush_zoom_anchor.x + (brush_x[1] - brush_zoom_anchor.x) * brush_zoom_delta], 0, unit.width)"
+                                    "update": "clampRange([brush_zoom_anchor.x + (brush_x[0] - brush_zoom_anchor.x) * brush_zoom_delta, brush_zoom_anchor.x + (brush_x[1] - brush_zoom_anchor.x) * brush_zoom_delta], 0, concat_0_width)"
                                 }
                             ]
                         },
@@ -234,13 +234,13 @@
                                     "events": {
                                         "signal": "brush_translate_delta"
                                     },
-                                    "update": "clampRange([brush_translate_anchor.extent_y[0] + brush_translate_delta.y, brush_translate_anchor.extent_y[1] + brush_translate_delta.y], 0, unit.height)"
+                                    "update": "clampRange([brush_translate_anchor.extent_y[0] + brush_translate_delta.y, brush_translate_anchor.extent_y[1] + brush_translate_delta.y], 0, concat_0_height)"
                                 },
                                 {
                                     "events": {
                                         "signal": "brush_zoom_delta"
                                     },
-                                    "update": "clampRange([brush_zoom_anchor.y + (brush_y[0] - brush_zoom_anchor.y) * brush_zoom_delta, brush_zoom_anchor.y + (brush_y[1] - brush_zoom_anchor.y) * brush_zoom_delta], 0, unit.height)"
+                                    "update": "clampRange([brush_zoom_anchor.y + (brush_y[0] - brush_zoom_anchor.y) * brush_zoom_delta, brush_zoom_anchor.y + (brush_y[1] - brush_zoom_anchor.y) * brush_zoom_delta], 0, concat_0_height)"
                                 }
                             ]
                         },
@@ -340,7 +340,7 @@
                                     "events": {
                                         "signal": "brush"
                                     },
-                                    "update": "{unit: unit.datum && unit.datum._id, intervals: brush}"
+                                    "update": "{unit: \"concat_0_\", intervals: brush}"
                                 }
                             ]
                         },
@@ -371,7 +371,7 @@
                                 "update": {
                                     "x": [
                                         {
-                                            "test": "data(\"brush_store\").length && brush_tuple && brush_tuple.unit === data(\"brush_store\")[0].unit",
+                                            "test": "data(\"brush_store\").length && data(\"brush_store\")[0].unit === \"concat_0_\"",
                                             "signal": "brush_x[0]"
                                         },
                                         {
@@ -380,7 +380,7 @@
                                     ],
                                     "y": [
                                         {
-                                            "test": "data(\"brush_store\").length && brush_tuple && brush_tuple.unit === data(\"brush_store\")[0].unit",
+                                            "test": "data(\"brush_store\").length && data(\"brush_store\")[0].unit === \"concat_0_\"",
                                             "signal": "brush_y[0]"
                                         },
                                         {
@@ -389,7 +389,7 @@
                                     ],
                                     "x2": [
                                         {
-                                            "test": "data(\"brush_store\").length && brush_tuple && brush_tuple.unit === data(\"brush_store\")[0].unit",
+                                            "test": "data(\"brush_store\").length && data(\"brush_store\")[0].unit === \"concat_0_\"",
                                             "signal": "brush_x[1]"
                                         },
                                         {
@@ -398,7 +398,7 @@
                                     ],
                                     "y2": [
                                         {
-                                            "test": "data(\"brush_store\").length && brush_tuple && brush_tuple.unit === data(\"brush_store\")[0].unit",
+                                            "test": "data(\"brush_store\").length && data(\"brush_store\")[0].unit === \"concat_0_\"",
                                             "signal": "brush_y[1]"
                                         },
                                         {
@@ -452,7 +452,7 @@
                                 "update": {
                                     "x": [
                                         {
-                                            "test": "data(\"brush_store\").length && brush_tuple && brush_tuple.unit === data(\"brush_store\")[0].unit",
+                                            "test": "data(\"brush_store\").length && data(\"brush_store\")[0].unit === \"concat_0_\"",
                                             "signal": "brush_x[0]"
                                         },
                                         {
@@ -461,7 +461,7 @@
                                     ],
                                     "y": [
                                         {
-                                            "test": "data(\"brush_store\").length && brush_tuple && brush_tuple.unit === data(\"brush_store\")[0].unit",
+                                            "test": "data(\"brush_store\").length && data(\"brush_store\")[0].unit === \"concat_0_\"",
                                             "signal": "brush_y[0]"
                                         },
                                         {
@@ -470,7 +470,7 @@
                                     ],
                                     "x2": [
                                         {
-                                            "test": "data(\"brush_store\").length && brush_tuple && brush_tuple.unit === data(\"brush_store\")[0].unit",
+                                            "test": "data(\"brush_store\").length && data(\"brush_store\")[0].unit === \"concat_0_\"",
                                             "signal": "brush_x[1]"
                                         },
                                         {
@@ -479,7 +479,7 @@
                                     ],
                                     "y2": [
                                         {
-                                            "test": "data(\"brush_store\").length && brush_tuple && brush_tuple.unit === data(\"brush_store\")[0].unit",
+                                            "test": "data(\"brush_store\").length && data(\"brush_store\")[0].unit === \"concat_0_\"",
                                             "signal": "brush_y[1]"
                                         },
                                         {
@@ -587,7 +587,7 @@
                                     "events": {
                                         "signal": "grid_translate_delta"
                                     },
-                                    "update": "[grid_translate_anchor.extent_x[0] - span(grid_translate_anchor.extent_x) * grid_translate_delta.x / unit.width, grid_translate_anchor.extent_x[1] - span(grid_translate_anchor.extent_x) * grid_translate_delta.x / unit.width]"
+                                    "update": "[grid_translate_anchor.extent_x[0] - span(grid_translate_anchor.extent_x) * grid_translate_delta.x / concat_1_width, grid_translate_anchor.extent_x[1] - span(grid_translate_anchor.extent_x) * grid_translate_delta.x / concat_1_width]"
                                 },
                                 {
                                     "events": {
@@ -605,7 +605,7 @@
                                     "events": {
                                         "signal": "grid_translate_delta"
                                     },
-                                    "update": "[grid_translate_anchor.extent_y[0] + span(grid_translate_anchor.extent_y) * grid_translate_delta.y / unit.height, grid_translate_anchor.extent_y[1] + span(grid_translate_anchor.extent_y) * grid_translate_delta.y / unit.height]"
+                                    "update": "[grid_translate_anchor.extent_y[0] + span(grid_translate_anchor.extent_y) * grid_translate_delta.y / concat_1_height, grid_translate_anchor.extent_y[1] + span(grid_translate_anchor.extent_y) * grid_translate_delta.y / concat_1_height]"
                                 },
                                 {
                                     "events": {
@@ -697,7 +697,7 @@
                                     "events": {
                                         "signal": "grid"
                                     },
-                                    "update": "{unit: unit.datum && unit.datum._id, intervals: grid}"
+                                    "update": "{unit: \"concat_1_\", intervals: grid}"
                                 }
                             ]
                         },
@@ -733,7 +733,7 @@
                                     },
                                     "stroke": [
                                         {
-                                            "test": "vlInterval(\"brush_store\", parent._id, datum, \"union\", \"all\")",
+                                            "test": "vlInterval(\"brush_store\", \"concat_1_\", datum, \"union\", \"all\")",
                                             "value": "steelblue"
                                         },
                                         {

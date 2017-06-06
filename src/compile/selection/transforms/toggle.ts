@@ -1,3 +1,4 @@
+import {stringValue} from '../../../util';
 import {TUPLE} from '../selection';
 import {TransformCompiler} from './transforms';
 
@@ -23,7 +24,7 @@ const toggle:TransformCompiler = {
     return `${signal} ? null : ${tpl}, ` +
       (selCmpt.resolve === 'global' ?
         `${signal} ? null : true, ` :
-        `${signal} ? null : {unit: ${tpl}.unit}, `) +
+        `${signal} ? null : {unit: ${stringValue(model.getName(''))}}, `) +
       `${signal} ? ${tpl} : null`;
   }
 };

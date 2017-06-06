@@ -80,14 +80,14 @@ describe('Zoom Selection Transform', function() {
     assert.includeDeepMembers(signals.filter((s) => s.name === 'four_x')[0].on, [
       {
         "events": {"signal": "four_zoom_delta"},
-        "update": "clampRange([four_zoom_anchor.x + (four_x[0] - four_zoom_anchor.x) * four_zoom_delta, four_zoom_anchor.x + (four_x[1] - four_zoom_anchor.x) * four_zoom_delta], 0, unit.width)"
+        "update": "clampRange([four_zoom_anchor.x + (four_x[0] - four_zoom_anchor.x) * four_zoom_delta, four_zoom_anchor.x + (four_x[1] - four_zoom_anchor.x) * four_zoom_delta], 0, width)"
       }
     ]);
 
     assert.includeDeepMembers(signals.filter((s) => s.name === 'four_y')[0].on, [
       {
         "events": {"signal": "four_zoom_delta"},
-        "update": "clampRange([four_zoom_anchor.y + (four_y[0] - four_zoom_anchor.y) * four_zoom_delta, four_zoom_anchor.y + (four_y[1] - four_zoom_anchor.y) * four_zoom_delta], 0, unit.height)"
+        "update": "clampRange([four_zoom_anchor.y + (four_y[0] - four_zoom_anchor.y) * four_zoom_delta, four_zoom_anchor.y + (four_y[1] - four_zoom_anchor.y) * four_zoom_delta], 0, height)"
       }
     ]);
   });
@@ -120,14 +120,14 @@ describe('Zoom Selection Transform', function() {
     assert.includeDeepMembers(signals.filter((s) => s.name === 'five_x')[0].on, [
       {
         "events": {"signal": "five_zoom_delta"},
-        "update": "clampRange([five_zoom_anchor.x + (five_x[0] - five_zoom_anchor.x) * five_zoom_delta, five_zoom_anchor.x + (five_x[1] - five_zoom_anchor.x) * five_zoom_delta], 0, unit.width)"
+        "update": "clampRange([five_zoom_anchor.x + (five_x[0] - five_zoom_anchor.x) * five_zoom_delta, five_zoom_anchor.x + (five_x[1] - five_zoom_anchor.x) * five_zoom_delta], 0, width)"
       }
     ]);
 
     assert.includeDeepMembers(signals.filter((s) => s.name === 'five_y')[0].on, [
       {
         "events": {"signal": "five_zoom_delta"},
-        "update": "clampRange([five_zoom_anchor.y + (five_y[0] - five_zoom_anchor.y) * five_zoom_delta, five_zoom_anchor.y + (five_y[1] - five_zoom_anchor.y) * five_zoom_delta], 0, unit.height)"
+        "update": "clampRange([five_zoom_anchor.y + (five_y[0] - five_zoom_anchor.y) * five_zoom_delta, five_zoom_anchor.y + (five_y[1] - five_zoom_anchor.y) * five_zoom_delta], 0, height)"
       }
     ]);
   });

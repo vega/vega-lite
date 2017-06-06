@@ -53,7 +53,7 @@ describe('Toggle Selection Transform', function() {
     assert.equal(oneExpr, 'one_toggle ? null : one_tuple, one_toggle ? null : true, one_toggle ? one_tuple : null');
 
     const twoExpr = toggle.modifyExpr(model, selCmpts['two'], '');
-    assert.equal(twoExpr, 'two_toggle ? null : two_tuple, two_toggle ? null : {unit: two_tuple.unit}, two_toggle ? two_tuple : null');
+    assert.equal(twoExpr, 'two_toggle ? null : two_tuple, two_toggle ? null : {unit: \"\"}, two_toggle ? two_tuple : null');
 
     const signals = selection.assembleUnitSelectionSignals(model, []);
     assert.includeDeepMembers(signals, [

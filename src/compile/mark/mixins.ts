@@ -81,7 +81,7 @@ function selectionTest(model: UnitModel, selectionName: string) {
     name = negate ? selectionName.slice(1) : selectionName,
     selection = model.getComponent('selection', name);
   return (negate ? '!' : '') +
-    predicate(selection.name, selection.type, selection.resolve);
+    predicate(model, selection.name, selection.type, selection.resolve);
 }
 
 export function text(model: UnitModel, vgChannel: 'text' | 'tooltip' = 'text') {

@@ -223,13 +223,13 @@
                                     "events": {
                                         "signal": "brush_translate_delta"
                                     },
-                                    "update": "clampRange([brush_translate_anchor.extent_y[0] + brush_translate_delta.y, brush_translate_anchor.extent_y[1] + brush_translate_delta.y], 0, unit.height)"
+                                    "update": "clampRange([brush_translate_anchor.extent_y[0] + brush_translate_delta.y, brush_translate_anchor.extent_y[1] + brush_translate_delta.y], 0, child_Horsepower_Horsepower_height)"
                                 },
                                 {
                                     "events": {
                                         "signal": "brush_zoom_delta"
                                     },
-                                    "update": "clampRange([brush_zoom_anchor.y + (brush_y[0] - brush_zoom_anchor.y) * brush_zoom_delta, brush_zoom_anchor.y + (brush_y[1] - brush_zoom_anchor.y) * brush_zoom_delta], 0, unit.height)"
+                                    "update": "clampRange([brush_zoom_anchor.y + (brush_y[0] - brush_zoom_anchor.y) * brush_zoom_delta, brush_zoom_anchor.y + (brush_y[1] - brush_zoom_anchor.y) * brush_zoom_delta], 0, child_Horsepower_Horsepower_height)"
                                 }
                             ]
                         },
@@ -340,7 +340,7 @@
                                     "events": {
                                         "signal": "brush"
                                     },
-                                    "update": "{unit: unit.datum && unit.datum._id, intervals: brush}"
+                                    "update": "{unit: \"child_Horsepower_Horsepower_\", intervals: brush}"
                                 }
                             ]
                         },
@@ -351,7 +351,7 @@
                                     "events": {
                                         "signal": "brush"
                                     },
-                                    "update": "modify(\"brush_store\", brush_tuple, {unit: brush_tuple.unit})"
+                                    "update": "modify(\"brush_store\", brush_tuple, {unit: \"child_Horsepower_Horsepower_\"})"
                                 }
                             ]
                         },
@@ -362,7 +362,7 @@
                                     "events": {
                                         "signal": "grid_translate_delta"
                                     },
-                                    "update": "[grid_translate_anchor.extent_y[0] + span(grid_translate_anchor.extent_y) * grid_translate_delta.y / unit.height, grid_translate_anchor.extent_y[1] + span(grid_translate_anchor.extent_y) * grid_translate_delta.y / unit.height]"
+                                    "update": "[grid_translate_anchor.extent_y[0] + span(grid_translate_anchor.extent_y) * grid_translate_delta.y / child_Horsepower_Horsepower_height, grid_translate_anchor.extent_y[1] + span(grid_translate_anchor.extent_y) * grid_translate_delta.y / child_Horsepower_Horsepower_height]"
                                 },
                                 {
                                     "events": {
@@ -465,7 +465,7 @@
                                     "events": {
                                         "signal": "grid"
                                     },
-                                    "update": "{unit: unit.datum && unit.datum._id, intervals: grid}"
+                                    "update": "{unit: \"child_Horsepower_Horsepower_\", intervals: grid}"
                                 }
                             ]
                         },
@@ -531,7 +531,7 @@
                                     },
                                     "stroke": [
                                         {
-                                            "test": "!vlInterval(\"brush_store\", parent._id, datum, \"union\", \"all\")",
+                                            "test": "!vlInterval(\"brush_store\", \"child_Horsepower_Horsepower_\", datum, \"union\", \"all\")",
                                             "value": "grey"
                                         },
                                         {
@@ -720,13 +720,13 @@
                                     "events": {
                                         "signal": "brush_translate_delta"
                                     },
-                                    "update": "clampRange([brush_translate_anchor.extent_x[0] + brush_translate_delta.x, brush_translate_anchor.extent_x[1] + brush_translate_delta.x], 0, unit.width)"
+                                    "update": "clampRange([brush_translate_anchor.extent_x[0] + brush_translate_delta.x, brush_translate_anchor.extent_x[1] + brush_translate_delta.x], 0, child_Horsepower_Miles_per_Gallon_width)"
                                 },
                                 {
                                     "events": {
                                         "signal": "brush_zoom_delta"
                                     },
-                                    "update": "clampRange([brush_zoom_anchor.x + (brush_x[0] - brush_zoom_anchor.x) * brush_zoom_delta, brush_zoom_anchor.x + (brush_x[1] - brush_zoom_anchor.x) * brush_zoom_delta], 0, unit.width)"
+                                    "update": "clampRange([brush_zoom_anchor.x + (brush_x[0] - brush_zoom_anchor.x) * brush_zoom_delta, brush_zoom_anchor.x + (brush_x[1] - brush_zoom_anchor.x) * brush_zoom_delta], 0, child_Horsepower_Miles_per_Gallon_width)"
                                 }
                             ]
                         },
@@ -787,13 +787,13 @@
                                     "events": {
                                         "signal": "brush_translate_delta"
                                     },
-                                    "update": "clampRange([brush_translate_anchor.extent_y[0] + brush_translate_delta.y, brush_translate_anchor.extent_y[1] + brush_translate_delta.y], 0, unit.height)"
+                                    "update": "clampRange([brush_translate_anchor.extent_y[0] + brush_translate_delta.y, brush_translate_anchor.extent_y[1] + brush_translate_delta.y], 0, child_Horsepower_Miles_per_Gallon_height)"
                                 },
                                 {
                                     "events": {
                                         "signal": "brush_zoom_delta"
                                     },
-                                    "update": "clampRange([brush_zoom_anchor.y + (brush_y[0] - brush_zoom_anchor.y) * brush_zoom_delta, brush_zoom_anchor.y + (brush_y[1] - brush_zoom_anchor.y) * brush_zoom_delta], 0, unit.height)"
+                                    "update": "clampRange([brush_zoom_anchor.y + (brush_y[0] - brush_zoom_anchor.y) * brush_zoom_delta, brush_zoom_anchor.y + (brush_y[1] - brush_zoom_anchor.y) * brush_zoom_delta], 0, child_Horsepower_Miles_per_Gallon_height)"
                                 }
                             ]
                         },
@@ -904,7 +904,7 @@
                                     "events": {
                                         "signal": "brush"
                                     },
-                                    "update": "{unit: unit.datum && unit.datum._id, intervals: brush}"
+                                    "update": "{unit: \"child_Horsepower_Miles_per_Gallon_\", intervals: brush}"
                                 }
                             ]
                         },
@@ -915,7 +915,7 @@
                                     "events": {
                                         "signal": "brush"
                                     },
-                                    "update": "modify(\"brush_store\", brush_tuple, {unit: brush_tuple.unit})"
+                                    "update": "modify(\"brush_store\", brush_tuple, {unit: \"child_Horsepower_Miles_per_Gallon_\"})"
                                 }
                             ]
                         },
@@ -926,7 +926,7 @@
                                     "events": {
                                         "signal": "grid_translate_delta"
                                     },
-                                    "update": "[grid_translate_anchor.extent_x[0] - span(grid_translate_anchor.extent_x) * grid_translate_delta.x / unit.width, grid_translate_anchor.extent_x[1] - span(grid_translate_anchor.extent_x) * grid_translate_delta.x / unit.width]"
+                                    "update": "[grid_translate_anchor.extent_x[0] - span(grid_translate_anchor.extent_x) * grid_translate_delta.x / child_Horsepower_Miles_per_Gallon_width, grid_translate_anchor.extent_x[1] - span(grid_translate_anchor.extent_x) * grid_translate_delta.x / child_Horsepower_Miles_per_Gallon_width]"
                                 },
                                 {
                                     "events": {
@@ -944,7 +944,7 @@
                                     "events": {
                                         "signal": "grid_translate_delta"
                                     },
-                                    "update": "[grid_translate_anchor.extent_y[0] + span(grid_translate_anchor.extent_y) * grid_translate_delta.y / unit.height, grid_translate_anchor.extent_y[1] + span(grid_translate_anchor.extent_y) * grid_translate_delta.y / unit.height]"
+                                    "update": "[grid_translate_anchor.extent_y[0] + span(grid_translate_anchor.extent_y) * grid_translate_delta.y / child_Horsepower_Miles_per_Gallon_height, grid_translate_anchor.extent_y[1] + span(grid_translate_anchor.extent_y) * grid_translate_delta.y / child_Horsepower_Miles_per_Gallon_height]"
                                 },
                                 {
                                     "events": {
@@ -1047,7 +1047,7 @@
                                     "events": {
                                         "signal": "grid"
                                     },
-                                    "update": "{unit: unit.datum && unit.datum._id, intervals: grid}"
+                                    "update": "{unit: \"child_Horsepower_Miles_per_Gallon_\", intervals: grid}"
                                 }
                             ]
                         },
@@ -1111,7 +1111,7 @@
                                     },
                                     "stroke": [
                                         {
-                                            "test": "!vlInterval(\"brush_store\", parent._id, datum, \"union\", \"all\")",
+                                            "test": "!vlInterval(\"brush_store\", \"child_Horsepower_Miles_per_Gallon_\", datum, \"union\", \"all\")",
                                             "value": "grey"
                                         },
                                         {
@@ -1301,13 +1301,13 @@
                                     "events": {
                                         "signal": "brush_translate_delta"
                                     },
-                                    "update": "clampRange([brush_translate_anchor.extent_x[0] + brush_translate_delta.x, brush_translate_anchor.extent_x[1] + brush_translate_delta.x], 0, unit.width)"
+                                    "update": "clampRange([brush_translate_anchor.extent_x[0] + brush_translate_delta.x, brush_translate_anchor.extent_x[1] + brush_translate_delta.x], 0, child_Acceleration_Horsepower_width)"
                                 },
                                 {
                                     "events": {
                                         "signal": "brush_zoom_delta"
                                     },
-                                    "update": "clampRange([brush_zoom_anchor.x + (brush_x[0] - brush_zoom_anchor.x) * brush_zoom_delta, brush_zoom_anchor.x + (brush_x[1] - brush_zoom_anchor.x) * brush_zoom_delta], 0, unit.width)"
+                                    "update": "clampRange([brush_zoom_anchor.x + (brush_x[0] - brush_zoom_anchor.x) * brush_zoom_delta, brush_zoom_anchor.x + (brush_x[1] - brush_zoom_anchor.x) * brush_zoom_delta], 0, child_Acceleration_Horsepower_width)"
                                 }
                             ]
                         },
@@ -1368,13 +1368,13 @@
                                     "events": {
                                         "signal": "brush_translate_delta"
                                     },
-                                    "update": "clampRange([brush_translate_anchor.extent_y[0] + brush_translate_delta.y, brush_translate_anchor.extent_y[1] + brush_translate_delta.y], 0, unit.height)"
+                                    "update": "clampRange([brush_translate_anchor.extent_y[0] + brush_translate_delta.y, brush_translate_anchor.extent_y[1] + brush_translate_delta.y], 0, child_Acceleration_Horsepower_height)"
                                 },
                                 {
                                     "events": {
                                         "signal": "brush_zoom_delta"
                                     },
-                                    "update": "clampRange([brush_zoom_anchor.y + (brush_y[0] - brush_zoom_anchor.y) * brush_zoom_delta, brush_zoom_anchor.y + (brush_y[1] - brush_zoom_anchor.y) * brush_zoom_delta], 0, unit.height)"
+                                    "update": "clampRange([brush_zoom_anchor.y + (brush_y[0] - brush_zoom_anchor.y) * brush_zoom_delta, brush_zoom_anchor.y + (brush_y[1] - brush_zoom_anchor.y) * brush_zoom_delta], 0, child_Acceleration_Horsepower_height)"
                                 }
                             ]
                         },
@@ -1485,7 +1485,7 @@
                                     "events": {
                                         "signal": "brush"
                                     },
-                                    "update": "{unit: unit.datum && unit.datum._id, intervals: brush}"
+                                    "update": "{unit: \"child_Acceleration_Horsepower_\", intervals: brush}"
                                 }
                             ]
                         },
@@ -1496,7 +1496,7 @@
                                     "events": {
                                         "signal": "brush"
                                     },
-                                    "update": "modify(\"brush_store\", brush_tuple, {unit: brush_tuple.unit})"
+                                    "update": "modify(\"brush_store\", brush_tuple, {unit: \"child_Acceleration_Horsepower_\"})"
                                 }
                             ]
                         },
@@ -1507,7 +1507,7 @@
                                     "events": {
                                         "signal": "grid_translate_delta"
                                     },
-                                    "update": "[grid_translate_anchor.extent_x[0] - span(grid_translate_anchor.extent_x) * grid_translate_delta.x / unit.width, grid_translate_anchor.extent_x[1] - span(grid_translate_anchor.extent_x) * grid_translate_delta.x / unit.width]"
+                                    "update": "[grid_translate_anchor.extent_x[0] - span(grid_translate_anchor.extent_x) * grid_translate_delta.x / child_Acceleration_Horsepower_width, grid_translate_anchor.extent_x[1] - span(grid_translate_anchor.extent_x) * grid_translate_delta.x / child_Acceleration_Horsepower_width]"
                                 },
                                 {
                                     "events": {
@@ -1525,7 +1525,7 @@
                                     "events": {
                                         "signal": "grid_translate_delta"
                                     },
-                                    "update": "[grid_translate_anchor.extent_y[0] + span(grid_translate_anchor.extent_y) * grid_translate_delta.y / unit.height, grid_translate_anchor.extent_y[1] + span(grid_translate_anchor.extent_y) * grid_translate_delta.y / unit.height]"
+                                    "update": "[grid_translate_anchor.extent_y[0] + span(grid_translate_anchor.extent_y) * grid_translate_delta.y / child_Acceleration_Horsepower_height, grid_translate_anchor.extent_y[1] + span(grid_translate_anchor.extent_y) * grid_translate_delta.y / child_Acceleration_Horsepower_height]"
                                 },
                                 {
                                     "events": {
@@ -1628,7 +1628,7 @@
                                     "events": {
                                         "signal": "grid"
                                     },
-                                    "update": "{unit: unit.datum && unit.datum._id, intervals: grid}"
+                                    "update": "{unit: \"child_Acceleration_Horsepower_\", intervals: grid}"
                                 }
                             ]
                         },
@@ -1692,7 +1692,7 @@
                                     },
                                     "stroke": [
                                         {
-                                            "test": "!vlInterval(\"brush_store\", parent._id, datum, \"union\", \"all\")",
+                                            "test": "!vlInterval(\"brush_store\", \"child_Acceleration_Horsepower_\", datum, \"union\", \"all\")",
                                             "value": "grey"
                                         },
                                         {
@@ -1882,13 +1882,13 @@
                                     "events": {
                                         "signal": "brush_translate_delta"
                                     },
-                                    "update": "clampRange([brush_translate_anchor.extent_x[0] + brush_translate_delta.x, brush_translate_anchor.extent_x[1] + brush_translate_delta.x], 0, unit.width)"
+                                    "update": "clampRange([brush_translate_anchor.extent_x[0] + brush_translate_delta.x, brush_translate_anchor.extent_x[1] + brush_translate_delta.x], 0, child_Acceleration_Miles_per_Gallon_width)"
                                 },
                                 {
                                     "events": {
                                         "signal": "brush_zoom_delta"
                                     },
-                                    "update": "clampRange([brush_zoom_anchor.x + (brush_x[0] - brush_zoom_anchor.x) * brush_zoom_delta, brush_zoom_anchor.x + (brush_x[1] - brush_zoom_anchor.x) * brush_zoom_delta], 0, unit.width)"
+                                    "update": "clampRange([brush_zoom_anchor.x + (brush_x[0] - brush_zoom_anchor.x) * brush_zoom_delta, brush_zoom_anchor.x + (brush_x[1] - brush_zoom_anchor.x) * brush_zoom_delta], 0, child_Acceleration_Miles_per_Gallon_width)"
                                 }
                             ]
                         },
@@ -1949,13 +1949,13 @@
                                     "events": {
                                         "signal": "brush_translate_delta"
                                     },
-                                    "update": "clampRange([brush_translate_anchor.extent_y[0] + brush_translate_delta.y, brush_translate_anchor.extent_y[1] + brush_translate_delta.y], 0, unit.height)"
+                                    "update": "clampRange([brush_translate_anchor.extent_y[0] + brush_translate_delta.y, brush_translate_anchor.extent_y[1] + brush_translate_delta.y], 0, child_Acceleration_Miles_per_Gallon_height)"
                                 },
                                 {
                                     "events": {
                                         "signal": "brush_zoom_delta"
                                     },
-                                    "update": "clampRange([brush_zoom_anchor.y + (brush_y[0] - brush_zoom_anchor.y) * brush_zoom_delta, brush_zoom_anchor.y + (brush_y[1] - brush_zoom_anchor.y) * brush_zoom_delta], 0, unit.height)"
+                                    "update": "clampRange([brush_zoom_anchor.y + (brush_y[0] - brush_zoom_anchor.y) * brush_zoom_delta, brush_zoom_anchor.y + (brush_y[1] - brush_zoom_anchor.y) * brush_zoom_delta], 0, child_Acceleration_Miles_per_Gallon_height)"
                                 }
                             ]
                         },
@@ -2066,7 +2066,7 @@
                                     "events": {
                                         "signal": "brush"
                                     },
-                                    "update": "{unit: unit.datum && unit.datum._id, intervals: brush}"
+                                    "update": "{unit: \"child_Acceleration_Miles_per_Gallon_\", intervals: brush}"
                                 }
                             ]
                         },
@@ -2077,7 +2077,7 @@
                                     "events": {
                                         "signal": "brush"
                                     },
-                                    "update": "modify(\"brush_store\", brush_tuple, {unit: brush_tuple.unit})"
+                                    "update": "modify(\"brush_store\", brush_tuple, {unit: \"child_Acceleration_Miles_per_Gallon_\"})"
                                 }
                             ]
                         },
@@ -2088,7 +2088,7 @@
                                     "events": {
                                         "signal": "grid_translate_delta"
                                     },
-                                    "update": "[grid_translate_anchor.extent_x[0] - span(grid_translate_anchor.extent_x) * grid_translate_delta.x / unit.width, grid_translate_anchor.extent_x[1] - span(grid_translate_anchor.extent_x) * grid_translate_delta.x / unit.width]"
+                                    "update": "[grid_translate_anchor.extent_x[0] - span(grid_translate_anchor.extent_x) * grid_translate_delta.x / child_Acceleration_Miles_per_Gallon_width, grid_translate_anchor.extent_x[1] - span(grid_translate_anchor.extent_x) * grid_translate_delta.x / child_Acceleration_Miles_per_Gallon_width]"
                                 },
                                 {
                                     "events": {
@@ -2106,7 +2106,7 @@
                                     "events": {
                                         "signal": "grid_translate_delta"
                                     },
-                                    "update": "[grid_translate_anchor.extent_y[0] + span(grid_translate_anchor.extent_y) * grid_translate_delta.y / unit.height, grid_translate_anchor.extent_y[1] + span(grid_translate_anchor.extent_y) * grid_translate_delta.y / unit.height]"
+                                    "update": "[grid_translate_anchor.extent_y[0] + span(grid_translate_anchor.extent_y) * grid_translate_delta.y / child_Acceleration_Miles_per_Gallon_height, grid_translate_anchor.extent_y[1] + span(grid_translate_anchor.extent_y) * grid_translate_delta.y / child_Acceleration_Miles_per_Gallon_height]"
                                 },
                                 {
                                     "events": {
@@ -2209,7 +2209,7 @@
                                     "events": {
                                         "signal": "grid"
                                     },
-                                    "update": "{unit: unit.datum && unit.datum._id, intervals: grid}"
+                                    "update": "{unit: \"child_Acceleration_Miles_per_Gallon_\", intervals: grid}"
                                 }
                             ]
                         },
@@ -2273,7 +2273,7 @@
                                     },
                                     "stroke": [
                                         {
-                                            "test": "!vlInterval(\"brush_store\", parent._id, datum, \"union\", \"all\")",
+                                            "test": "!vlInterval(\"brush_store\", \"child_Acceleration_Miles_per_Gallon_\", datum, \"union\", \"all\")",
                                             "value": "grey"
                                         },
                                         {

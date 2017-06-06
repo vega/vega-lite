@@ -112,7 +112,7 @@
                             "events": {
                                 "signal": "CylYr"
                             },
-                            "update": "{unit: unit.datum && unit.datum._id, encodings: CylYr.encodings, fields: CylYr.fields, values: CylYr.values, Cylinders: CylYr.values[0], Year: CylYr.values[1]}"
+                            "update": "{unit: \"\", encodings: CylYr.encodings, fields: CylYr.fields, values: CylYr.values, Cylinders: CylYr.values[0], Year: CylYr.values[1]}"
                         }
                     ]
                 },
@@ -161,7 +161,7 @@
                             },
                             "fill": [
                                 {
-                                    "test": "!vlPoint(\"CylYr_store\", parent._id, datum, \"union\", \"all\")",
+                                    "test": "!vlPoint(\"CylYr_store\", \"\", datum, \"union\", \"all\")",
                                     "value": "grey"
                                 },
                                 {

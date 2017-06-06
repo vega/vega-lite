@@ -81,14 +81,14 @@ describe('Translate Selection Transform', function() {
     assert.includeDeepMembers(signals.filter((s) => s.name === 'four_x')[0].on, [
       {
         "events": {"signal": "four_translate_delta"},
-        "update": "clampRange([four_translate_anchor.extent_x[0] + four_translate_delta.x, four_translate_anchor.extent_x[1] + four_translate_delta.x], 0, unit.width)"
+        "update": "clampRange([four_translate_anchor.extent_x[0] + four_translate_delta.x, four_translate_anchor.extent_x[1] + four_translate_delta.x], 0, width)"
       }
     ]);
 
     assert.includeDeepMembers(signals.filter((s) => s.name === 'four_y')[0].on, [
       {
         "events": {"signal": "four_translate_delta"},
-        "update": "clampRange([four_translate_anchor.extent_y[0] + four_translate_delta.y, four_translate_anchor.extent_y[1] + four_translate_delta.y], 0, unit.height)"
+        "update": "clampRange([four_translate_anchor.extent_y[0] + four_translate_delta.y, four_translate_anchor.extent_y[1] + four_translate_delta.y], 0, height)"
       }
     ]);
   });
@@ -122,14 +122,14 @@ describe('Translate Selection Transform', function() {
     assert.includeDeepMembers(signals.filter((s) => s.name === 'five_x')[0].on, [
       {
         "events": {"signal": "five_translate_delta"},
-        "update": "clampRange([five_translate_anchor.extent_x[0] + five_translate_delta.x, five_translate_anchor.extent_x[1] + five_translate_delta.x], 0, unit.width)"
+        "update": "clampRange([five_translate_anchor.extent_x[0] + five_translate_delta.x, five_translate_anchor.extent_x[1] + five_translate_delta.x], 0, width)"
       }
     ]);
 
     assert.includeDeepMembers(signals.filter((s) => s.name === 'five_y')[0].on, [
       {
         "events": {"signal": "five_translate_delta"},
-        "update": "clampRange([five_translate_anchor.extent_y[0] + five_translate_delta.y, five_translate_anchor.extent_y[1] + five_translate_delta.y], 0, unit.height)"
+        "update": "clampRange([five_translate_anchor.extent_y[0] + five_translate_delta.y, five_translate_anchor.extent_y[1] + five_translate_delta.y], 0, height)"
       }
     ]);
   });
@@ -163,14 +163,14 @@ describe('Translate Selection Transform', function() {
     assert.includeDeepMembers(signals.filter((s) => s.name === 'six_Horsepower')[0].on, [
       {
         "events": {"signal": "six_translate_delta"},
-        "update": "[six_translate_anchor.extent_x[0] - span(six_translate_anchor.extent_x) * six_translate_delta.x / unit.width, six_translate_anchor.extent_x[1] - span(six_translate_anchor.extent_x) * six_translate_delta.x / unit.width]"
+        "update": "[six_translate_anchor.extent_x[0] - span(six_translate_anchor.extent_x) * six_translate_delta.x / width, six_translate_anchor.extent_x[1] - span(six_translate_anchor.extent_x) * six_translate_delta.x / width]"
       }
     ]);
 
     assert.includeDeepMembers(signals.filter((s) => s.name === 'six_Miles_per_Gallon')[0].on, [
       {
         "events": {"signal": "six_translate_delta"},
-        "update": "[six_translate_anchor.extent_y[0] + span(six_translate_anchor.extent_y) * six_translate_delta.y / unit.height, six_translate_anchor.extent_y[1] + span(six_translate_anchor.extent_y) * six_translate_delta.y / unit.height]"
+        "update": "[six_translate_anchor.extent_y[0] + span(six_translate_anchor.extent_y) * six_translate_delta.y / height, six_translate_anchor.extent_y[1] + span(six_translate_anchor.extent_y) * six_translate_delta.y / height]"
       }
     ]);
   });

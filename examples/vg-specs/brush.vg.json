@@ -95,13 +95,13 @@
                             "events": {
                                 "signal": "brush_translate_delta"
                             },
-                            "update": "clampRange([brush_translate_anchor.extent_x[0] + brush_translate_delta.x, brush_translate_anchor.extent_x[1] + brush_translate_delta.x], 0, unit.width)"
+                            "update": "clampRange([brush_translate_anchor.extent_x[0] + brush_translate_delta.x, brush_translate_anchor.extent_x[1] + brush_translate_delta.x], 0, width)"
                         },
                         {
                             "events": {
                                 "signal": "brush_zoom_delta"
                             },
-                            "update": "clampRange([brush_zoom_anchor.x + (brush_x[0] - brush_zoom_anchor.x) * brush_zoom_delta, brush_zoom_anchor.x + (brush_x[1] - brush_zoom_anchor.x) * brush_zoom_delta], 0, unit.width)"
+                            "update": "clampRange([brush_zoom_anchor.x + (brush_x[0] - brush_zoom_anchor.x) * brush_zoom_delta, brush_zoom_anchor.x + (brush_x[1] - brush_zoom_anchor.x) * brush_zoom_delta], 0, width)"
                         }
                     ]
                 },
@@ -161,13 +161,13 @@
                             "events": {
                                 "signal": "brush_translate_delta"
                             },
-                            "update": "clampRange([brush_translate_anchor.extent_y[0] + brush_translate_delta.y, brush_translate_anchor.extent_y[1] + brush_translate_delta.y], 0, unit.height)"
+                            "update": "clampRange([brush_translate_anchor.extent_y[0] + brush_translate_delta.y, brush_translate_anchor.extent_y[1] + brush_translate_delta.y], 0, height)"
                         },
                         {
                             "events": {
                                 "signal": "brush_zoom_delta"
                             },
-                            "update": "clampRange([brush_zoom_anchor.y + (brush_y[0] - brush_zoom_anchor.y) * brush_zoom_delta, brush_zoom_anchor.y + (brush_y[1] - brush_zoom_anchor.y) * brush_zoom_delta], 0, unit.height)"
+                            "update": "clampRange([brush_zoom_anchor.y + (brush_y[0] - brush_zoom_anchor.y) * brush_zoom_delta, brush_zoom_anchor.y + (brush_y[1] - brush_zoom_anchor.y) * brush_zoom_delta], 0, height)"
                         }
                     ]
                 },
@@ -267,7 +267,7 @@
                             "events": {
                                 "signal": "brush"
                             },
-                            "update": "{unit: unit.datum && unit.datum._id, intervals: brush}"
+                            "update": "{unit: \"\", intervals: brush}"
                         }
                     ]
                 },
@@ -311,7 +311,7 @@
                         "update": {
                             "x": [
                                 {
-                                    "test": "data(\"brush_store\").length && brush_tuple && brush_tuple.unit === data(\"brush_store\")[0].unit",
+                                    "test": "data(\"brush_store\").length && data(\"brush_store\")[0].unit === \"\"",
                                     "signal": "brush_x[0]"
                                 },
                                 {
@@ -320,7 +320,7 @@
                             ],
                             "y": [
                                 {
-                                    "test": "data(\"brush_store\").length && brush_tuple && brush_tuple.unit === data(\"brush_store\")[0].unit",
+                                    "test": "data(\"brush_store\").length && data(\"brush_store\")[0].unit === \"\"",
                                     "signal": "brush_y[0]"
                                 },
                                 {
@@ -329,7 +329,7 @@
                             ],
                             "x2": [
                                 {
-                                    "test": "data(\"brush_store\").length && brush_tuple && brush_tuple.unit === data(\"brush_store\")[0].unit",
+                                    "test": "data(\"brush_store\").length && data(\"brush_store\")[0].unit === \"\"",
                                     "signal": "brush_x[1]"
                                 },
                                 {
@@ -338,7 +338,7 @@
                             ],
                             "y2": [
                                 {
-                                    "test": "data(\"brush_store\").length && brush_tuple && brush_tuple.unit === data(\"brush_store\")[0].unit",
+                                    "test": "data(\"brush_store\").length && data(\"brush_store\")[0].unit === \"\"",
                                     "signal": "brush_y[1]"
                                 },
                                 {
@@ -367,7 +367,7 @@
                             },
                             "stroke": [
                                 {
-                                    "test": "!vlInterval(\"brush_store\", parent._id, datum, \"union\", \"all\")",
+                                    "test": "!vlInterval(\"brush_store\", \"\", datum, \"union\", \"all\")",
                                     "value": "grey"
                                 },
                                 {
@@ -399,7 +399,7 @@
                         "update": {
                             "x": [
                                 {
-                                    "test": "data(\"brush_store\").length && brush_tuple && brush_tuple.unit === data(\"brush_store\")[0].unit",
+                                    "test": "data(\"brush_store\").length && data(\"brush_store\")[0].unit === \"\"",
                                     "signal": "brush_x[0]"
                                 },
                                 {
@@ -408,7 +408,7 @@
                             ],
                             "y": [
                                 {
-                                    "test": "data(\"brush_store\").length && brush_tuple && brush_tuple.unit === data(\"brush_store\")[0].unit",
+                                    "test": "data(\"brush_store\").length && data(\"brush_store\")[0].unit === \"\"",
                                     "signal": "brush_y[0]"
                                 },
                                 {
@@ -417,7 +417,7 @@
                             ],
                             "x2": [
                                 {
-                                    "test": "data(\"brush_store\").length && brush_tuple && brush_tuple.unit === data(\"brush_store\")[0].unit",
+                                    "test": "data(\"brush_store\").length && data(\"brush_store\")[0].unit === \"\"",
                                     "signal": "brush_x[1]"
                                 },
                                 {
@@ -426,7 +426,7 @@
                             ],
                             "y2": [
                                 {
-                                    "test": "data(\"brush_store\").length && brush_tuple && brush_tuple.unit === data(\"brush_store\")[0].unit",
+                                    "test": "data(\"brush_store\").length && data(\"brush_store\")[0].unit === \"\"",
                                     "signal": "brush_y[1]"
                                 },
                                 {
