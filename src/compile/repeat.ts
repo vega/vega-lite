@@ -209,13 +209,6 @@ export class RepeatModel extends Model {
     return this.children.reduce((db, child) => child.assembleSelectionData(db), []);
   }
 
-  public assembleScales(): VgScale[] {
-    // combine with scales from children
-    return this.children.reduce((scales, c) => {
-      return scales.concat(c.assembleScales());
-    }, super.assembleScales());
-  }
-
   public assembleLayout(): VgLayout {
     // TODO: allow customization
     return {
