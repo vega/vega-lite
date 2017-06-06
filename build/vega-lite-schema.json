@@ -615,8 +615,6 @@
               "additionalProperties": {
                 "$ref": "#/definitions/VgBinding"
               },
-              "properties": {
-              },
               "type": "object"
             }
           ]
@@ -1149,8 +1147,6 @@
       "type": "object"
     },
     "Config": {
-      "additionalProperties": {
-      },
       "properties": {
         "area": {
           "$ref": "#/definitions/MarkConfig",
@@ -1253,8 +1249,6 @@
             "$ref": "#/definitions/RangeConfig"
           },
           "description": "Scale range config, or properties defining named range arrays\nthat can be used within scale range definitions\n(such as `{\"type\": \"ordinal\", \"range\": \"category\"}`).\nFor default range that Vega-Lite adopts from Vega, see https://github.com/vega/vega-parser#scale-range-properties.",
-          "properties": {
-          },
           "type": "object"
         },
         "rect": {
@@ -2243,8 +2237,6 @@
             "$ref": "#/definitions/SelectionDef"
           },
           "description": "A key-value mapping between selection names and definitions.",
-          "properties": {
-          },
           "type": "object"
         },
         "transform": {
@@ -2297,8 +2289,6 @@
             "$ref": "#/definitions/SelectionDef"
           },
           "description": "A key-value mapping between selection names and definitions.",
-          "properties": {
-          },
           "type": "object"
         },
         "transform": {
@@ -3838,8 +3828,6 @@
               "additionalProperties": {
                 "$ref": "#/definitions/VgBinding"
               },
-              "properties": {
-              },
               "type": "object"
             }
           ]
@@ -4516,8 +4504,6 @@
             "$ref": "#/definitions/SelectionDef"
           },
           "description": "A key-value mapping between selection names and definitions.",
-          "properties": {
-          },
           "type": "object"
         },
         "transform": {
