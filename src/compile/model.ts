@@ -19,7 +19,7 @@ import {getHeaderGroup, getTitleGroup, HEADER_CHANNELS, HEADER_TYPES, LayoutHead
 import {LegendComponentIndex} from './legend/component';
 import {RepeaterValue} from './repeat';
 import {assembleScale} from './scale/assemble';
-import {ScaleComponentIndex} from './scale/component';
+import {ScaleComponent, ScaleComponentIndex} from './scale/component';
 import {SelectionComponent} from './selection/selection';
 import {UnitModel} from './unit';
 
@@ -358,8 +358,12 @@ export abstract class Model {
    * @param type Scales or Selection
    * @param name Name of the component
    */
-  public getComponent(type: 'scales' | 'selection', name: string): any {
-    return this.component[type][name] || this.parent.getComponent(type, name);
+  public getScaleComponent(name: string): ScaleComponent {
+    return this.component.scales[name] || this.parent.getScaleComponent(name);
+  }
+
+  public getSelectionComponent(name: string): SelectionComponent {
+    return this.component.selection[name] || this.parent.getSelectionComponent(name);
   }
 }
 

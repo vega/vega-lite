@@ -19,7 +19,7 @@ const scaleBindings:TransformCompiler = {
 
     selCmpt.project.forEach(function(p) {
       const channel = p.encoding;
-      const scale = model.getComponent('scales', channel);
+      const scale = model.getScaleComponent(channel);
 
       if (!scale || !hasContinuousDomain(scale.type) || isBinScale(scale.type)) {
         warn('Scale bindings are currently only supported for scales with unbinned, continuous domains.');
