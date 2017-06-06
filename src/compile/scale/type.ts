@@ -75,8 +75,11 @@ function defaultType(channel: Channel, fieldDef: FieldDef<string>, mark: Mark,
 
     case 'temporal':
       if (channel === 'color') {
-        // Always use `sequential` as the default color scale for continuous data
-        // since it supports both array range and scheme range.
+        if (isDiscreteByDefault(fieldDef.timeUnit)) {
+          // For discrete timeUnit, use ordinal scale so that legend produces correct value.
+          // (See https://github.com/vega/vega-lite/issues/2045.)
+          return 'ordinal';
+        }
         return 'sequential';
       } else if (rangeType(channel) === 'discrete') {
         log.warn(log.message.discreteChannelCannotEncode(channel, 'temporal'));

@@ -190,6 +190,14 @@ describe('compile/scale', () => {
         );
       });
 
+
+      it('should return ordinal scale for temporal color field with discrete timeUnit by default.', () => {
+        assert.equal(
+          scaleType(undefined, 'color', {timeUnit: 'quarter', type: 'temporal'}, 'point', undefined, undefined, defaultConfig),
+          ScaleType.ORDINAL
+        );
+      });
+
       it('should return ordinal for temporal field and throw a warning.', log.wrap((localLogger) => {
         assert.deepEqual(
           scaleType(undefined, 'shape', {type: 'temporal', timeUnit: 'yearmonth'}, 'point', undefined, undefined, defaultConfig),
