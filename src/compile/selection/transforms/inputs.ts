@@ -1,5 +1,6 @@
 import {stringValue} from '../../../util';
 import {TransformCompiler} from './transforms';
+import {TUPLE} from '../selection';
 
 const inputBindings:TransformCompiler = {
   has: function(selCmpt) {
@@ -31,7 +32,7 @@ const inputBindings:TransformCompiler = {
   signals: function(model, selCmpt, signals) {
     const name = selCmpt.name;
     const proj = selCmpt.project;
-    const signal = signals.filter((s) => s.name === name)[0];
+    const signal = signals.filter((s) => s.name === name + TUPLE)[0];
     const fields = proj.map((p) => stringValue(p.field)).join(', ');
     const values = proj.map((p) => name + id(p.field)).join(', ');
 

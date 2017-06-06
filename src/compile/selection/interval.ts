@@ -40,11 +40,10 @@ const interval:SelectionCompiler = {
       `field: ${stringValue(p.field)}, extent: ${csName}}`);
     });
 
-    return signals.concat({name: name, update: `[${intervals.join(', ')}]`});
-  },
-
-  tupleExpr: function(model, selCmpt) {
-    return `intervals: ${selCmpt.name}`;
+    return signals.concat({
+      name: name + TUPLE,
+      update: `{unit: ${stringValue(model.getName(''))}, intervals: [${intervals.join(', ')}]}`
+    });
   },
 
   modifyExpr: function(model, selCmpt) {

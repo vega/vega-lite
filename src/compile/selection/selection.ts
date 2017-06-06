@@ -44,7 +44,6 @@ export interface ProjectComponent {
 export interface SelectionCompiler {
   signals: (model: UnitModel, selCmpt: SelectionComponent) => any[];
   topLevelSignals?: (model: Model, selCmpt: SelectionComponent, signals: any[]) => any[];
-  tupleExpr: (model: UnitModel, selCmpt: SelectionComponent) => string;
   modifyExpr: (model: UnitModel, selCmpt: SelectionComponent) => string;
   marks?: (model: UnitModel, selCmpt:SelectionComponent, marks: any[]) => any[];
   predicate: string;  // Vega expr string to determine inclusion in selection.
@@ -97,7 +96,6 @@ export function parseUnitSelection(model: UnitModel, selDefs: Dict<SelectionDef>
 export function assembleUnitSelectionSignals(model: UnitModel, signals: any[]) {
   forEachSelection(model, (selCmpt, selCompiler) => {
     const name = selCmpt.name;
-    const tupleExpr = selCompiler.tupleExpr(model, selCmpt);
     let modifyExpr = selCompiler.modifyExpr(model, selCmpt);
 
     signals.push.apply(signals, selCompiler.signals(model, selCmpt));
@@ -112,15 +110,9 @@ export function assembleUnitSelectionSignals(model: UnitModel, signals: any[]) {
     });
 
     signals.push({
-      name: name + TUPLE,
-      on: [{
-        events: {signal: name},
-        update: `{unit: ${stringValue(model.getName(''))}, ${tupleExpr}}`
-      }]
-    }, {
       name: name + MODIFY,
       on: [{
-        events: {signal: name},
+        events: {signal: name + TUPLE},
         update: `modify(${stringValue(selCmpt.name + STORE)}, ${modifyExpr})`
       }]
     });

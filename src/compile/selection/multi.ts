@@ -20,7 +20,7 @@ const multi:SelectionCompiler = {
     }).join(', ');
 
     return [{
-      name: selCmpt.name,
+      name: selCmpt.name + TUPLE,
       value: {},
       on: [{
         events: selCmpt.events,
@@ -28,12 +28,6 @@ const multi:SelectionCompiler = {
           (keys(bins).length ? `, bins: ${JSON.stringify(bins)}}` : '}')
       }]
     }];
-  },
-
-  tupleExpr: function(model, selCmpt) {
-    const name = selCmpt.name;
-    return `encodings: ${name}.encodings, fields: ${name}.fields, ` +
-      `values: ${name}.values, bins: ${name}.bins`;
   },
 
   modifyExpr: function(model, selCmpt) {
