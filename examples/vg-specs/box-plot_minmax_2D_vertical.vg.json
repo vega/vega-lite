@@ -269,10 +269,7 @@
                             "xc": {
                                 "scale": "x",
                                 "field": "age",
-                                "offset": {
-                                    "scale": "x",
-                                    "band": 0.5
-                                }
+                                "band": 0.5
                             },
                             "width": {
                                 "value": 5
