@@ -3,7 +3,7 @@ import {Channel} from '../../channel';
 import {SelectionDomain as SelectionScaleDomain} from '../../scale';
 import {SelectionDef, SelectionDomain, SelectionResolutions, SelectionTypes} from '../../selection';
 import {Dict, extend, isString, stringValue} from '../../util';
-import {VgBinding, VgData} from '../../vega.schema';
+import {VgBinding, VgData, VgEventStream} from '../../vega.schema';
 import {LayerModel} from '../layer';
 import {Model} from '../model';
 import {UnitModel} from '../unit';
@@ -21,7 +21,7 @@ export interface SelectionComponent {
   name: string;
   type: SelectionTypes;
   domain: SelectionDomain;
-  events: any;
+  events: VgEventStream;
   // predicate?: string;
   bind?: 'scales' | VgBinding | {[key: string]: VgBinding};
   resolve: SelectionResolutions;
@@ -247,13 +247,8 @@ function compiler(type: SelectionTypes): SelectionCompiler {
   return null;
 }
 
-export function invert(model: UnitModel, selCmpt: SelectionComponent, channel: Channel, expr: string) {
-  const scale = stringValue(model.scaleName(channel));
-  return selCmpt.domain === 'data' ? `invert(${scale}, ${expr})` : expr;
-}
-
-export function channelSignalName(selCmpt: SelectionComponent, channel: Channel) {
-  return selCmpt.name + '_' + selCmpt.fields[channel];
+export function channelSignalName(selCmpt: SelectionComponent, channel: Channel, range: 'visual' | 'data') {
+  return selCmpt.name + '_' + (range === 'visual' ? channel : selCmpt.fields[channel]);
 }
 
 function clipMarks(marks: any[]): any[] {
