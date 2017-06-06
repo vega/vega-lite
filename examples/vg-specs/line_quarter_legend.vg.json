@@ -170,14 +170,13 @@
         },
         {
             "name": "color",
-            "type": "sequential",
+            "type": "ordinal",
             "domain": {
                 "data": "source_0",
-                "field": "quarter_date"
+                "field": "quarter_date",
+                "sort": true
             },
-            "range": "ramp",
-            "nice": false,
-            "zero": false
+            "range": "ordinal"
         }
     ],
     "axes": [
