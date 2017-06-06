@@ -23,59 +23,29 @@ describe('Multi Selection', function() {
     }
   });
 
-  it('builds trigger signals', function() {
+  it('builds tuple signals', function() {
     const oneSg = multi.signals(model, selCmpts['one']);
     assert.sameDeepMembers(oneSg, [{
-      name: 'one',
+      name: 'one_tuple',
       value: {},
       on: [{
         events: selCmpts['one'].events,
-        update: "{encodings: [], fields: [\"_id\"], values: [(item().isVoronoi ? datum.datum : datum)[\"_id\"]]}"
+        update: "{unit: \"\", encodings: [], fields: [\"_id\"], values: [(item().isVoronoi ? datum.datum : datum)[\"_id\"]]}"
       }]
     }]);
 
     const twoSg = multi.signals(model, selCmpts['two']);
     assert.sameDeepMembers(twoSg, [{
-      name: 'two',
+      name: 'two_tuple',
       value: {},
       on: [{
         events: selCmpts['two'].events,
-        "update": "{encodings: [\"y\", \"color\"], fields: [\"Miles_per_Gallon\", \"Origin\"], values: [[(item().isVoronoi ? datum.datum : datum)[\"bin_maxbins_10_Miles_per_Gallon_start\"], (item().isVoronoi ? datum.datum : datum)[\"bin_maxbins_10_Miles_per_Gallon_end\"]], (item().isVoronoi ? datum.datum : datum)[\"Origin\"]], bins: {\"Miles_per_Gallon\":1}}"
+        "update": "{unit: \"\", encodings: [\"y\", \"color\"], fields: [\"Miles_per_Gallon\", \"Origin\"], values: [[(item().isVoronoi ? datum.datum : datum)[\"bin_maxbins_10_Miles_per_Gallon_start\"], (item().isVoronoi ? datum.datum : datum)[\"bin_maxbins_10_Miles_per_Gallon_end\"]], (item().isVoronoi ? datum.datum : datum)[\"Origin\"]], bins: {\"Miles_per_Gallon\":1}}"
       }]
     }]);
 
     const signals = selection.assembleUnitSelectionSignals(model, []);
     assert.includeDeepMembers(signals, oneSg.concat(twoSg));
-  });
-
-  it('builds tuple signals', function() {
-    const oneExpr = multi.tupleExpr(model, selCmpts['one']);
-    assert.equal(oneExpr, 'encodings: one.encodings, fields: one.fields, values: one.values, bins: one.bins');
-
-    const twoExpr = multi.tupleExpr(model, selCmpts['two']);
-    assert.equal(twoExpr, 'encodings: two.encodings, fields: two.fields, values: two.values, bins: two.bins');
-
-    const signals = selection.assembleUnitSelectionSignals(model, []);
-    assert.includeDeepMembers(signals, [
-      {
-        "name": "one_tuple",
-        "on": [
-          {
-            "events": {"signal": "one"},
-            "update": `{unit: \"\", ${oneExpr}}`
-          }
-        ]
-      },
-      {
-        "name": "two_tuple",
-        "on": [
-          {
-            "events": {"signal": "two"},
-            "update": `{unit: \"\", ${twoExpr}}`
-          }
-        ]
-      }
-    ]);
   });
 
   it('builds unit datasets', function() {

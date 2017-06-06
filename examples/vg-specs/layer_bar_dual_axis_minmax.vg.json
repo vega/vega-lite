@@ -3,6 +3,13 @@
     "description": "Barchart for precipitation overlayed with linecharts to show temperature range.",
     "autosize": "pad",
     "padding": 5,
+    "encode": {
+        "update": {
+            "fill": {
+                "value": "transparent"
+            }
+        }
+    },
     "data": [
         {
             "name": "source_0",
@@ -190,101 +197,82 @@
     ],
     "marks": [
         {
-            "name": "nested_main_group",
-            "type": "group",
+            "name": "layer_0_marks",
+            "type": "rect",
+            "role": "bar",
+            "from": {
+                "data": "data_0"
+            },
             "encode": {
                 "update": {
-                    "width": {
-                        "signal": "width"
+                    "x": {
+                        "scale": "x",
+                        "field": "month_date"
                     },
-                    "height": {
-                        "signal": "height"
+                    "width": {
+                        "scale": "x",
+                        "band": true
+                    },
+                    "y": {
+                        "scale": "layer_0_y",
+                        "field": "mean_precipitation"
+                    },
+                    "y2": {
+                        "scale": "layer_0_y",
+                        "value": 0
                     },
                     "fill": {
-                        "value": "transparent"
+                        "value": "#4c78a8"
                     }
                 }
             },
-            "marks": [
-                {
-                    "name": "layer_0_marks",
-                    "type": "rect",
-                    "role": "bar",
-                    "from": {
-                        "data": "data_0"
+            "clip": true
+        },
+        {
+            "name": "layer_1_layer_0_marks",
+            "type": "line",
+            "from": {
+                "data": "data_1"
+            },
+            "encode": {
+                "update": {
+                    "x": {
+                        "scale": "x",
+                        "field": "month_date"
                     },
-                    "encode": {
-                        "update": {
-                            "x": {
-                                "scale": "x",
-                                "field": "month_date"
-                            },
-                            "width": {
-                                "scale": "x",
-                                "band": true
-                            },
-                            "y": {
-                                "scale": "layer_0_y",
-                                "field": "mean_precipitation"
-                            },
-                            "y2": {
-                                "scale": "layer_0_y",
-                                "value": 0
-                            },
-                            "fill": {
-                                "value": "#4c78a8"
-                            }
-                        }
+                    "y": {
+                        "scale": "layer_1_y",
+                        "field": "max_temp_max"
                     },
-                    "clip": true
-                },
-                {
-                    "name": "layer_1_layer_0_marks",
-                    "type": "line",
-                    "from": {
-                        "data": "data_1"
-                    },
-                    "encode": {
-                        "update": {
-                            "x": {
-                                "scale": "x",
-                                "field": "month_date"
-                            },
-                            "y": {
-                                "scale": "layer_1_y",
-                                "field": "max_temp_max"
-                            },
-                            "stroke": {
-                                "value": "firebrick"
-                            }
-                        }
-                    },
-                    "clip": true
-                },
-                {
-                    "name": "layer_1_layer_1_marks",
-                    "type": "line",
-                    "from": {
-                        "data": "data_2"
-                    },
-                    "encode": {
-                        "update": {
-                            "x": {
-                                "scale": "x",
-                                "field": "month_date"
-                            },
-                            "y": {
-                                "scale": "layer_1_y",
-                                "field": "min_temp_min"
-                            },
-                            "stroke": {
-                                "value": "firebrick"
-                            }
-                        }
-                    },
-                    "clip": true
+                    "stroke": {
+                        "value": "firebrick"
+                    }
                 }
-            ]
+            },
+            "clip": true
+        },
+        {
+            "name": "layer_1_layer_1_marks",
+            "type": "line",
+            "from": {
+                "data": "data_2"
+            },
+            "encode": {
+                "update": {
+                    "x": {
+                        "scale": "x",
+                        "field": "month_date"
+                    },
+                    "y": {
+                        "scale": "layer_1_y",
+                        "field": "min_temp_min"
+                    },
+                    "stroke": {
+                        "value": "firebrick"
+                    }
+                }
+            },
+            "clip": true
         }
     ],
     "scales": [

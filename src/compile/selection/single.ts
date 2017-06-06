@@ -14,7 +14,7 @@ const single:SelectionCompiler = {
     return hasSignal.length ? signals : signals.concat({
       name: selCmpt.name,
       update: `${data}.length && {` +
-        selCmpt.project.map((p, i) => `${p.field}: ${values}[${i}]`).join(',') + '}'
+        selCmpt.project.map((p, i) => `${p.field}: ${values}[${i}]`).join(', ') + '}'
     });
   },
 

@@ -3,6 +3,13 @@
     "description": "A bar chart showing the US population distribution of age groups in 2000.",
     "autosize": "pad",
     "padding": 5,
+    "encode": {
+        "update": {
+            "fill": {
+                "value": "transparent"
+            }
+        }
+    },
     "data": [
         {
             "name": "source_0",
@@ -52,54 +59,35 @@
     ],
     "marks": [
         {
-            "name": "nested_main_group",
-            "type": "group",
+            "name": "marks",
+            "type": "rect",
+            "role": "bar",
+            "from": {
+                "data": "source_0"
+            },
             "encode": {
                 "update": {
-                    "width": {
-                        "signal": "width"
+                    "x": {
+                        "scale": "x",
+                        "field": "sum_people"
+                    },
+                    "x2": {
+                        "scale": "x",
+                        "value": 0
+                    },
+                    "y": {
+                        "scale": "y",
+                        "field": "age"
                     },
                     "height": {
-                        "signal": "height"
+                        "scale": "y",
+                        "band": true
                     },
                     "fill": {
-                        "value": "transparent"
+                        "value": "#4c78a8"
                     }
                 }
-            },
-            "marks": [
-                {
-                    "name": "marks",
-                    "type": "rect",
-                    "role": "bar",
-                    "from": {
-                        "data": "source_0"
-                    },
-                    "encode": {
-                        "update": {
-                            "x": {
-                                "scale": "x",
-                                "field": "sum_people"
-                            },
-                            "x2": {
-                                "scale": "x",
-                                "value": 0
-                            },
-                            "y": {
-                                "scale": "y",
-                                "field": "age"
-                            },
-                            "height": {
-                                "scale": "y",
-                                "band": true
-                            },
-                            "fill": {
-                                "value": "#4c78a8"
-                            }
-                        }
-                    }
-                }
-            ]
+            }
         }
     ],
     "scales": [

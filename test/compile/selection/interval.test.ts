@@ -36,7 +36,7 @@ describe('Interval Selections', function() {
     }
   });
 
-  describe('Trigger Signals', function() {
+  describe('Tuple Signals', function() {
     it('builds projection signals', function() {
       const oneSg = interval.signals(model, selCmpts['one']);
       assert.includeDeepMembers(oneSg, [{
@@ -145,69 +145,27 @@ describe('Interval Selections', function() {
       const oneSg = interval.signals(model, selCmpts['one']);
       assert.includeDeepMembers(oneSg, [
         {
-          "name": "one",
-          "update": "[{encoding: \"x\", field: \"Horsepower\", extent: one_Horsepower}]"
+          "name": "one_tuple",
+          "update": "{unit: \"\", intervals: [{encoding: \"x\", field: \"Horsepower\", extent: one_Horsepower}]}"
         }
       ]);
 
       const twoSg = interval.signals(model, selCmpts['two']);
       assert.includeDeepMembers(twoSg, [
         {
-          "name": "two",
-          "update": "[{encoding: \"y\", field: \"Miles_per_Gallon\", extent: two_Miles_per_Gallon}]"
+          "name": "two_tuple",
+          "update": "{unit: \"\", intervals: [{encoding: \"y\", field: \"Miles_per_Gallon\", extent: two_Miles_per_Gallon}]}"
         }
       ]);
 
       const threeSg = interval.signals(model, selCmpts['three']);
       assert.includeDeepMembers(threeSg, [
         {
-          "name": "three",
-          "update": "[{encoding: \"x\", field: \"Horsepower\", extent: three_Horsepower}, {encoding: \"y\", field: \"Miles_per_Gallon\", extent: three_Miles_per_Gallon}]"
+          "name": "three_tuple",
+          "update": "{unit: \"\", intervals: [{encoding: \"x\", field: \"Horsepower\", extent: three_Horsepower}, {encoding: \"y\", field: \"Miles_per_Gallon\", extent: three_Miles_per_Gallon}]}"
         }
       ]);
     });
-  });
-
-  it('builds tuple signals', function() {
-    const oneExpr = interval.tupleExpr(model, selCmpts['one']);
-    assert.equal(oneExpr, 'intervals: one');
-
-    const twoExpr = interval.tupleExpr(model, selCmpts['two']);
-    assert.equal(twoExpr, 'intervals: two');
-
-    const threeExpr = interval.tupleExpr(model, selCmpts['three']);
-    assert.equal(threeExpr, 'intervals: three');
-
-    const signals = selection.assembleUnitSelectionSignals(model, []);
-    assert.includeDeepMembers(signals, [
-      {
-        "name": "one_tuple",
-        "on": [
-          {
-            "events": {"signal": "one"},
-            "update": `{unit: \"\", ${oneExpr}}`
-          }
-        ]
-      },
-      {
-        "name": "two_tuple",
-        "on": [
-          {
-            "events": {"signal": "two"},
-            "update": `{unit: \"\", ${twoExpr}}`
-          }
-        ]
-      },
-      {
-        "name": "three_tuple",
-        "on": [
-          {
-            "events": {"signal": "three"},
-            "update": `{unit: \"\", ${threeExpr}}`
-          }
-        ]
-      }
-    ]);
   });
 
   it('builds modify signals', function() {
@@ -226,7 +184,7 @@ describe('Interval Selections', function() {
         "name": "one_modify",
         "on": [
           {
-            "events": {"signal": "one"},
+            "events": {"signal": "one_tuple"},
             "update": `modify(\"one_store\", ${oneExpr})`
           }
         ]
@@ -235,7 +193,7 @@ describe('Interval Selections', function() {
         "name": "two_modify",
         "on": [
           {
-            "events": {"signal": "two"},
+            "events": {"signal": "two_tuple"},
             "update": `modify(\"two_store\", ${twoExpr})`
           }
         ]
@@ -244,7 +202,7 @@ describe('Interval Selections', function() {
         "name": "three_modify",
         "on": [
           {
-            "events": {"signal": "three"},
+            "events": {"signal": "three_tuple"},
             "update": `modify(\"three_store\", ${threeExpr})`
           }
         ]

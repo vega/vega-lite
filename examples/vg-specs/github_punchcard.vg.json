@@ -2,6 +2,13 @@
     "$schema": "http://vega.github.io/schema/vega/v3.0.json",
     "autosize": "pad",
     "padding": 5,
+    "encode": {
+        "update": {
+            "fill": {
+                "value": "transparent"
+            }
+        }
+    },
     "data": [
         {
             "name": "source_0",
@@ -59,53 +66,34 @@
     ],
     "marks": [
         {
-            "name": "nested_main_group",
-            "type": "group",
+            "name": "marks",
+            "type": "symbol",
+            "role": "circle",
+            "from": {
+                "data": "source_0"
+            },
             "encode": {
                 "update": {
-                    "width": {
-                        "signal": "width"
+                    "x": {
+                        "scale": "x",
+                        "field": "hours_time"
                     },
-                    "height": {
-                        "signal": "height"
+                    "y": {
+                        "scale": "y",
+                        "field": "day_time"
                     },
                     "fill": {
-                        "value": "transparent"
-                    }
-                }
-            },
-            "marks": [
-                {
-                    "name": "marks",
-                    "type": "symbol",
-                    "role": "circle",
-                    "from": {
-                        "data": "source_0"
+                        "value": "#4c78a8"
                     },
-                    "encode": {
-                        "update": {
-                            "x": {
-                                "scale": "x",
-                                "field": "hours_time"
-                            },
-                            "y": {
-                                "scale": "y",
-                                "field": "day_time"
-                            },
-                            "fill": {
-                                "value": "#4c78a8"
-                            },
-                            "size": {
-                                "scale": "size",
-                                "field": "sum_count"
-                            },
-                            "shape": {
-                                "value": "circle"
-                            }
-                        }
+                    "size": {
+                        "scale": "size",
+                        "field": "sum_count"
+                    },
+                    "shape": {
+                        "value": "circle"
                     }
                 }
-            ]
+            }
         }
     ],
     "scales": [

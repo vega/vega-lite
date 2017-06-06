@@ -3,6 +3,13 @@
     "description": "A bar chart showing the US population distribution of age groups in 2000.",
     "autosize": "pad",
     "padding": 5,
+    "encode": {
+        "update": {
+            "fill": {
+                "value": "transparent"
+            }
+        }
+    },
     "data": [
         {
             "name": "source_0",
@@ -52,54 +59,35 @@
     ],
     "marks": [
         {
-            "name": "nested_main_group",
-            "type": "group",
+            "name": "marks",
+            "type": "rect",
+            "role": "bar",
+            "from": {
+                "data": "source_0"
+            },
             "encode": {
                 "update": {
-                    "width": {
-                        "signal": "width"
+                    "xc": {
+                        "scale": "x",
+                        "field": "age",
+                        "band": 0.5
                     },
-                    "height": {
-                        "signal": "height"
+                    "width": {
+                        "value": 10
+                    },
+                    "y": {
+                        "scale": "y",
+                        "field": "sum_people"
+                    },
+                    "y2": {
+                        "scale": "y",
+                        "value": 0
                     },
                     "fill": {
-                        "value": "transparent"
+                        "value": "#4c78a8"
                     }
                 }
-            },
-            "marks": [
-                {
-                    "name": "marks",
-                    "type": "rect",
-                    "role": "bar",
-                    "from": {
-                        "data": "source_0"
-                    },
-                    "encode": {
-                        "update": {
-                            "xc": {
-                                "scale": "x",
-                                "field": "age",
-                                "band": 0.5
-                            },
-                            "width": {
-                                "value": 10
-                            },
-                            "y": {
-                                "scale": "y",
-                                "field": "sum_people"
-                            },
-                            "y2": {
-                                "scale": "y",
-                                "value": 0
-                            },
-                            "fill": {
-                                "value": "#4c78a8"
-                            }
-                        }
-                    }
-                }
-            ]
+            }
         }
     ],
     "scales": [

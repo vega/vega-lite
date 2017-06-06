@@ -3,6 +3,13 @@
     "description": "A bar chart showing the US population distribution of age groups in 2000.",
     "autosize": "pad",
     "padding": 5,
+    "encode": {
+        "update": {
+            "fill": {
+                "value": "transparent"
+            }
+        }
+    },
     "data": [
         {
             "name": "source_0",
@@ -185,140 +192,121 @@
     ],
     "marks": [
         {
-            "name": "nested_main_group",
-            "type": "group",
+            "name": "layer_0_marks",
+            "type": "rule",
+            "from": {
+                "data": "data_0"
+            },
             "encode": {
                 "update": {
-                    "width": {
-                        "signal": "width"
+                    "x": {
+                        "scale": "x",
+                        "field": "min_people"
                     },
-                    "height": {
-                        "signal": "height"
+                    "y": {
+                        "scale": "y",
+                        "field": "age"
                     },
-                    "fill": {
-                        "value": "transparent"
+                    "x2": {
+                        "scale": "x",
+                        "field": "max_people"
+                    },
+                    "stroke": {
+                        "value": "#4c78a8"
                     }
                 }
             },
-            "marks": [
-                {
-                    "name": "layer_0_marks",
-                    "type": "rule",
-                    "from": {
-                        "data": "data_0"
+            "clip": true
+        },
+        {
+            "name": "layer_1_marks",
+            "type": "rect",
+            "role": "tick",
+            "from": {
+                "data": "data_1"
+            },
+            "encode": {
+                "update": {
+                    "xc": {
+                        "scale": "x",
+                        "field": "min_people"
                     },
-                    "encode": {
-                        "update": {
-                            "x": {
-                                "scale": "x",
-                                "field": "min_people"
-                            },
-                            "y": {
-                                "scale": "y",
-                                "field": "age"
-                            },
-                            "x2": {
-                                "scale": "x",
-                                "field": "max_people"
-                            },
-                            "stroke": {
-                                "value": "#4c78a8"
-                            }
-                        }
+                    "yc": {
+                        "scale": "y",
+                        "field": "age"
                     },
-                    "clip": true
-                },
-                {
-                    "name": "layer_1_marks",
-                    "type": "rect",
-                    "role": "tick",
-                    "from": {
-                        "data": "data_1"
+                    "height": {
+                        "value": 5
                     },
-                    "encode": {
-                        "update": {
-                            "xc": {
-                                "scale": "x",
-                                "field": "min_people"
-                            },
-                            "yc": {
-                                "scale": "y",
-                                "field": "age"
-                            },
-                            "height": {
-                                "value": 5
-                            },
-                            "width": {
-                                "value": 1
-                            },
-                            "fill": {
-                                "value": "#4c78a8"
-                            }
-                        }
+                    "width": {
+                        "value": 1
                     },
-                    "clip": true
-                },
-                {
-                    "name": "layer_2_marks",
-                    "type": "rect",
-                    "role": "tick",
-                    "from": {
-                        "data": "data_2"
-                    },
-                    "encode": {
-                        "update": {
-                            "xc": {
-                                "scale": "x",
-                                "field": "max_people"
-                            },
-                            "yc": {
-                                "scale": "y",
-                                "field": "age"
-                            },
-                            "height": {
-                                "value": 5
-                            },
-                            "width": {
-                                "value": 1
-                            },
-                            "fill": {
-                                "value": "#4c78a8"
-                            }
-                        }
-                    },
-                    "clip": true
-                },
-                {
-                    "name": "layer_3_marks",
-                    "type": "symbol",
-                    "role": "point",
-                    "from": {
-                        "data": "data_3"
-                    },
-                    "encode": {
-                        "update": {
-                            "x": {
-                                "scale": "x",
-                                "field": "mean_people"
-                            },
-                            "y": {
-                                "scale": "y",
-                                "field": "age"
-                            },
-                            "stroke": {
-                                "value": "#4c78a8"
-                            },
-                            "fill": {
-                                "value": "transparent"
-                            },
-                            "size": {
-                                "value": 2
-                            }
-                        }
-                    },
-                    "clip": true
+                    "fill": {
+                        "value": "#4c78a8"
+                    }
                 }
-            ]
+            },
+            "clip": true
+        },
+        {
+            "name": "layer_2_marks",
+            "type": "rect",
+            "role": "tick",
+            "from": {
+                "data": "data_2"
+            },
+            "encode": {
+                "update": {
+                    "xc": {
+                        "scale": "x",
+                        "field": "max_people"
+                    },
+                    "yc": {
+                        "scale": "y",
+                        "field": "age"
+                    },
+                    "height": {
+                        "value": 5
+                    },
+                    "width": {
+                        "value": 1
+                    },
+                    "fill": {
+                        "value": "#4c78a8"
+                    }
+                }
+            },
+            "clip": true
+        },
+        {
+            "name": "layer_3_marks",
+            "type": "symbol",
+            "role": "point",
+            "from": {
+                "data": "data_3"
+            },
+            "encode": {
+                "update": {
+                    "x": {
+                        "scale": "x",
+                        "field": "mean_people"
+                    },
+                    "y": {
+                        "scale": "y",
+                        "field": "age"
+                    },
+                    "stroke": {
+                        "value": "#4c78a8"
+                    },
+                    "fill": {
+                        "value": "transparent"
+                    },
+                    "size": {
+                        "value": 2
+                    }
+                }
+            },
+            "clip": true
         }
     ],
     "scales": [

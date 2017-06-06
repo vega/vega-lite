@@ -3,6 +3,13 @@
     "description": "The population of the German city of Falkensee over time",
     "autosize": "pad",
     "padding": 5,
+    "encode": {
+        "update": {
+            "fill": {
+                "value": "transparent"
+            }
+        }
+    },
     "data": [
         {
             "name": "source_0",
@@ -304,105 +311,86 @@
     ],
     "marks": [
         {
-            "name": "nested_main_group",
-            "type": "group",
+            "name": "layer_0_marks",
+            "type": "rect",
+            "from": {
+                "data": "source_1"
+            },
             "encode": {
                 "update": {
-                    "width": {
-                        "signal": "width"
+                    "x": {
+                        "scale": "x",
+                        "field": "year_start"
                     },
-                    "height": {
-                        "signal": "height"
+                    "x2": {
+                        "scale": "x",
+                        "field": "year_end"
+                    },
+                    "y": {
+                        "value": 0
+                    },
+                    "y2": {
+                        "field": {
+                            "group": "height"
+                        }
                     },
                     "fill": {
-                        "value": "transparent"
+                        "scale": "color",
+                        "field": "event"
                     }
                 }
             },
-            "marks": [
-                {
-                    "name": "layer_0_marks",
-                    "type": "rect",
-                    "from": {
-                        "data": "source_1"
+            "clip": true
+        },
+        {
+            "name": "layer_1_layer_0_marks",
+            "type": "line",
+            "from": {
+                "data": "data_0"
+            },
+            "encode": {
+                "update": {
+                    "x": {
+                        "scale": "x",
+                        "field": "year_year"
                     },
-                    "encode": {
-                        "update": {
-                            "x": {
-                                "scale": "x",
-                                "field": "year_start"
-                            },
-                            "x2": {
-                                "scale": "x",
-                                "field": "year_end"
-                            },
-                            "y": {
-                                "value": 0
-                            },
-                            "y2": {
-                                "field": {
-                                    "group": "height"
-                                }
-                            },
-                            "fill": {
-                                "scale": "color",
-                                "field": "event"
-                            }
-                        }
+                    "y": {
+                        "scale": "y",
+                        "field": "population"
                     },
-                    "clip": true
-                },
-                {
-                    "name": "layer_1_layer_0_marks",
-                    "type": "line",
-                    "from": {
-                        "data": "data_0"
-                    },
-                    "encode": {
-                        "update": {
-                            "x": {
-                                "scale": "x",
-                                "field": "year_year"
-                            },
-                            "y": {
-                                "scale": "y",
-                                "field": "population"
-                            },
-                            "stroke": {
-                                "value": "#333"
-                            }
-                        }
-                    },
-                    "clip": true
-                },
-                {
-                    "name": "layer_1_layer_1_marks",
-                    "type": "symbol",
-                    "role": "pointOverlay",
-                    "from": {
-                        "data": "data_1"
-                    },
-                    "encode": {
-                        "update": {
-                            "x": {
-                                "scale": "x",
-                                "field": "year_year"
-                            },
-                            "y": {
-                                "scale": "y",
-                                "field": "population"
-                            },
-                            "fill": {
-                                "value": "#333"
-                            },
-                            "opacity": {
-                                "value": 0.7
-                            }
-                        }
-                    },
-                    "clip": true
+                    "stroke": {
+                        "value": "#333"
+                    }
                 }
-            ]
+            },
+            "clip": true
+        },
+        {
+            "name": "layer_1_layer_1_marks",
+            "type": "symbol",
+            "role": "pointOverlay",
+            "from": {
+                "data": "data_1"
+            },
+            "encode": {
+                "update": {
+                    "x": {
+                        "scale": "x",
+                        "field": "year_year"
+                    },
+                    "y": {
+                        "scale": "y",
+                        "field": "population"
+                    },
+                    "fill": {
+                        "value": "#333"
+                    },
+                    "opacity": {
+                        "value": 0.7
+                    }
+                }
+            },
+            "clip": true
         }
     ],
     "scales": [

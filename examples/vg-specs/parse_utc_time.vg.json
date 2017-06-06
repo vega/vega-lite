@@ -3,6 +3,13 @@
     "description": "Line chart of Horsepower over time",
     "autosize": "pad",
     "padding": 5,
+    "encode": {
+        "update": {
+            "fill": {
+                "value": "transparent"
+            }
+        }
+    },
     "data": [
         {
             "name": "source_0",
@@ -54,51 +61,32 @@
     ],
     "marks": [
         {
-            "name": "nested_main_group",
-            "type": "group",
+            "name": "marks",
+            "type": "text",
+            "from": {
+                "data": "source_0"
+            },
             "encode": {
                 "update": {
-                    "width": {
-                        "signal": "width"
+                    "x": {
+                        "scale": "x",
+                        "field": "year_Year"
                     },
-                    "height": {
-                        "signal": "height"
+                    "y": {
+                        "scale": "y",
+                        "field": "mean_Horsepower"
+                    },
+                    "text": {
+                        "signal": "timeFormat(datum[\"year_Year\"], '%Y')"
                     },
                     "fill": {
-                        "value": "transparent"
-                    }
-                }
-            },
-            "marks": [
-                {
-                    "name": "marks",
-                    "type": "text",
-                    "from": {
-                        "data": "source_0"
+                        "value": "#4c78a8"
                     },
-                    "encode": {
-                        "update": {
-                            "x": {
-                                "scale": "x",
-                                "field": "year_Year"
-                            },
-                            "y": {
-                                "scale": "y",
-                                "field": "mean_Horsepower"
-                            },
-                            "text": {
-                                "signal": "timeFormat(datum[\"year_Year\"], '%Y')"
-                            },
-                            "fill": {
-                                "value": "#4c78a8"
-                            },
-                            "align": {
-                                "value": "center"
-                            }
-                        }
+                    "align": {
+                        "value": "center"
                     }
                 }
-            ]
+            }
         }
     ],
     "scales": [

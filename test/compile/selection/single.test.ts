@@ -23,59 +23,29 @@ describe('Single Selection', function() {
     }
   });
 
-  it('builds trigger signals', function() {
+  it('builds tuple signals', function() {
     const oneSg = single.signals(model, selCmpts['one']);
     assert.sameDeepMembers(oneSg, [{
-      name: 'one',
+      name: 'one_tuple',
       value: {},
       on: [{
         events: selCmpts['one'].events,
-        update: "{encodings: [], fields: [\"_id\"], values: [(item().isVoronoi ? datum.datum : datum)[\"_id\"]]}"
+        update: "{unit: \"\", encodings: [], fields: [\"_id\"], values: [(item().isVoronoi ? datum.datum : datum)[\"_id\"]]}"
       }]
     }]);
 
     const twoSg = single.signals(model, selCmpts['two']);
     assert.sameDeepMembers(twoSg, [{
-      name: 'two',
+      name: 'two_tuple',
       value: {},
       on: [{
         events: selCmpts['two'].events,
-        "update": "{encodings: [\"y\", \"color\"], fields: [\"Miles_per_Gallon\", \"Origin\"], values: [[(item().isVoronoi ? datum.datum : datum)[\"bin_maxbins_10_Miles_per_Gallon_start\"], (item().isVoronoi ? datum.datum : datum)[\"bin_maxbins_10_Miles_per_Gallon_end\"]], (item().isVoronoi ? datum.datum : datum)[\"Origin\"]], bins: {\"Miles_per_Gallon\":1}}"
+        "update": "{unit: \"\", encodings: [\"y\", \"color\"], fields: [\"Miles_per_Gallon\", \"Origin\"], values: [[(item().isVoronoi ? datum.datum : datum)[\"bin_maxbins_10_Miles_per_Gallon_start\"], (item().isVoronoi ? datum.datum : datum)[\"bin_maxbins_10_Miles_per_Gallon_end\"]], (item().isVoronoi ? datum.datum : datum)[\"Origin\"]], bins: {\"Miles_per_Gallon\":1}}"
       }]
     }]);
 
     const signals = selection.assembleUnitSelectionSignals(model, []);
     assert.includeDeepMembers(signals, oneSg.concat(twoSg));
-  });
-
-  it('builds tuple signals', function() {
-    const oneExpr = single.tupleExpr(model, selCmpts['one']);
-    assert.equal(oneExpr, 'encodings: one.encodings, fields: one.fields, values: one.values, bins: one.bins, _id: one.values[0]');
-
-    const twoExpr = single.tupleExpr(model, selCmpts['two']);
-    assert.equal(twoExpr, 'encodings: two.encodings, fields: two.fields, values: two.values, bins: two.bins, Miles_per_Gallon: two.values[0], Origin: two.values[1]');
-
-    const signals = selection.assembleUnitSelectionSignals(model, []);
-    assert.includeDeepMembers(signals, [
-      {
-        "name": "one_tuple",
-        "on": [
-          {
-            "events": {"signal": "one"},
-            "update": `{unit: \"\", ${oneExpr}}`
-          }
-        ]
-      },
-      {
-        "name": "two_tuple",
-        "on": [
-          {
-            "events": {"signal": "two"},
-            "update": `{unit: \"\", ${twoExpr}}`
-          }
-        ]
-      }
-    ]);
   });
 
   it('builds modify signals', function() {
@@ -91,7 +61,7 @@ describe('Single Selection', function() {
         "name": "one_modify",
         "on": [
           {
-            "events": {"signal": "one"},
+            "events": {"signal": "one_tuple"},
             "update": `modify(\"one_store\", ${oneExpr})`
           }
         ]
@@ -100,7 +70,7 @@ describe('Single Selection', function() {
         "name": "two_modify",
         "on": [
           {
-            "events": {"signal": "two"},
+            "events": {"signal": "two_tuple"},
             "update": `modify(\"two_store\", ${twoExpr})`
           }
         ]
@@ -111,12 +81,12 @@ describe('Single Selection', function() {
   it('builds top-level signals', function() {
     const oneSg = single.topLevelSignals(model, selCmpts['one'], []);
     assert.sameDeepMembers(oneSg, [{
-      name: 'one', update: 'data(\"one_store\")[0]'
+      name: 'one', update: 'data(\"one_store\").length && {_id: data(\"one_store\")[0].values[0]}'
     }]);
 
     const twoSg = single.topLevelSignals(model, selCmpts['two'], []);
     assert.sameDeepMembers(twoSg, [{
-      name: 'two', update: 'data(\"two_store\")[0]'
+      name: 'two', update: 'data(\"two_store\").length && {Miles_per_Gallon: data(\"two_store\")[0].values[0], Origin: data(\"two_store\")[0].values[1]}'
     }]);
 
     const signals = selection.assembleTopLevelSignals(model, []);

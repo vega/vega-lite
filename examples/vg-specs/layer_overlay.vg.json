@@ -2,6 +2,13 @@
     "$schema": "http://vega.github.io/schema/vega/v3.0.json",
     "autosize": "pad",
     "padding": 5,
+    "encode": {
+        "update": {
+            "fill": {
+                "value": "transparent"
+            }
+        }
+    },
     "data": [
         {
             "name": "source_0",
@@ -217,117 +224,98 @@
     ],
     "marks": [
         {
-            "name": "nested_main_group",
-            "type": "group",
+            "name": "layer_0_layer_0_marks",
+            "type": "line",
+            "from": {
+                "data": "data_4"
+            },
             "encode": {
                 "update": {
-                    "width": {
-                        "signal": "width"
+                    "x": {
+                        "scale": "x",
+                        "field": "Cylinders"
                     },
-                    "height": {
-                        "signal": "height"
+                    "y": {
+                        "scale": "y",
+                        "field": "max_Horsepower"
                     },
-                    "fill": {
-                        "value": "transparent"
+                    "stroke": {
+                        "value": "darkred"
                     }
                 }
             },
-            "marks": [
-                {
-                    "name": "layer_0_layer_0_marks",
-                    "type": "line",
-                    "from": {
-                        "data": "data_4"
+            "clip": true
+        },
+        {
+            "name": "layer_0_layer_1_marks",
+            "type": "symbol",
+            "role": "pointOverlay",
+            "from": {
+                "data": "data_5"
+            },
+            "encode": {
+                "update": {
+                    "x": {
+                        "scale": "x",
+                        "field": "Cylinders"
                     },
-                    "encode": {
-                        "update": {
-                            "x": {
-                                "scale": "x",
-                                "field": "Cylinders"
-                            },
-                            "y": {
-                                "scale": "y",
-                                "field": "max_Horsepower"
-                            },
-                            "stroke": {
-                                "value": "darkred"
-                            }
-                        }
+                    "y": {
+                        "scale": "y",
+                        "field": "max_Horsepower"
                     },
-                    "clip": true
-                },
-                {
-                    "name": "layer_0_layer_1_marks",
-                    "type": "symbol",
-                    "role": "pointOverlay",
-                    "from": {
-                        "data": "data_5"
-                    },
-                    "encode": {
-                        "update": {
-                            "x": {
-                                "scale": "x",
-                                "field": "Cylinders"
-                            },
-                            "y": {
-                                "scale": "y",
-                                "field": "max_Horsepower"
-                            },
-                            "fill": {
-                                "value": "darkred"
-                            }
-                        }
-                    },
-                    "clip": true
-                },
-                {
-                    "name": "layer_1_layer_0_marks",
-                    "type": "line",
-                    "from": {
-                        "data": "data_1"
-                    },
-                    "encode": {
-                        "update": {
-                            "x": {
-                                "scale": "x",
-                                "field": "Cylinders"
-                            },
-                            "y": {
-                                "scale": "y",
-                                "field": "min_Horsepower"
-                            },
-                            "stroke": {
-                                "value": "#4c78a8"
-                            }
-                        }
-                    },
-                    "clip": true
-                },
-                {
-                    "name": "layer_1_layer_1_marks",
-                    "type": "symbol",
-                    "role": "pointOverlay",
-                    "from": {
-                        "data": "data_3"
-                    },
-                    "encode": {
-                        "update": {
-                            "x": {
-                                "scale": "x",
-                                "field": "Cylinders"
-                            },
-                            "y": {
-                                "scale": "y",
-                                "field": "min_Horsepower"
-                            },
-                            "fill": {
-                                "value": "#4c78a8"
-                            }
-                        }
-                    },
-                    "clip": true
+                    "fill": {
+                        "value": "darkred"
+                    }
                 }
-            ]
+            },
+            "clip": true
+        },
+        {
+            "name": "layer_1_layer_0_marks",
+            "type": "line",
+            "from": {
+                "data": "data_1"
+            },
+            "encode": {
+                "update": {
+                    "x": {
+                        "scale": "x",
+                        "field": "Cylinders"
+                    },
+                    "y": {
+                        "scale": "y",
+                        "field": "min_Horsepower"
+                    },
+                    "stroke": {
+                        "value": "#4c78a8"
+                    }
+                }
+            },
+            "clip": true
+        },
+        {
+            "name": "layer_1_layer_1_marks",
+            "type": "symbol",
+            "role": "pointOverlay",
+            "from": {
+                "data": "data_3"
+            },
+            "encode": {
+                "update": {
+                    "x": {
+                        "scale": "x",
+                        "field": "Cylinders"
+                    },
+                    "y": {
+                        "scale": "y",
+                        "field": "min_Horsepower"
+                    },
+                    "fill": {
+                        "value": "#4c78a8"
+                    }
+                }
+            },
+            "clip": true
         }
     ],
     "scales": [

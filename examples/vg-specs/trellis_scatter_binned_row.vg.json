@@ -72,212 +72,206 @@
             "update": "200"
         }
     ],
+    "layout": {
+        "padding": {
+            "row": 10,
+            "column": 10
+        },
+        "offset": 10,
+        "columns": 1,
+        "bounds": "full"
+    },
     "marks": [
         {
-            "name": "nested_main_group",
+            "name": "row_title",
+            "role": "row-title",
             "type": "group",
-            "layout": {
-                "padding": {
-                    "row": 10,
-                    "column": 10
+            "marks": [
+                {
+                    "type": "text",
+                    "role": "row-title-text",
+                    "encode": {
+                        "update": {
+                            "y": {
+                                "signal": "0.5 * height"
+                            },
+                            "align": {
+                                "value": "right"
+                            },
+                            "text": {
+                                "value": "BIN(Acceleration)"
+                            },
+                            "fill": {
+                                "value": "black"
+                            },
+                            "fontWeight": {
+                                "value": "bold"
+                            },
+                            "angle": {
+                                "value": 270
+                            }
+                        }
+                    }
+                }
+            ]
+        },
+        {
+            "name": "row_header",
+            "type": "group",
+            "role": "row-header",
+            "from": {
+                "data": "row"
+            },
+            "title": {
+                "text": {
+                    "signal": "parent[\"bin_maxbins_6_Acceleration_range\"]"
                 },
                 "offset": 10,
-                "columns": 1,
-                "bounds": "full"
+                "orient": "left",
+                "encode": {
+                    "update": {
+                        "fontWeight": {
+                            "value": "normal"
+                        },
+                        "angle": {
+                            "value": 0
+                        },
+                        "fontSize": {
+                            "value": 10
+                        },
+                        "align": {
+                            "value": "right"
+                        },
+                        "baseline": {
+                            "value": "middle"
+                        }
+                    }
+                }
+            },
+            "encode": {
+                "update": {
+                    "height": {
+                        "signal": "child_height"
+                    }
+                }
+            },
+            "axes": [
+                {
+                    "scale": "y",
+                    "format": "s",
+                    "orient": "left",
+                    "title": "Miles_per_Gallon",
+                    "zindex": 1
+                }
+            ]
+        },
+        {
+            "name": "column_footer",
+            "type": "group",
+            "role": "column-footer",
+            "encode": {
+                "update": {
+                    "width": {
+                        "signal": "child_width"
+                    }
+                }
+            },
+            "axes": [
+                {
+                    "scale": "x",
+                    "format": "s",
+                    "orient": "bottom",
+                    "tickCount": 5,
+                    "title": "Horsepower",
+                    "zindex": 1
+                }
+            ]
+        },
+        {
+            "name": "cell",
+            "type": "group",
+            "from": {
+                "facet": {
+                    "name": "facet",
+                    "data": "source_0",
+                    "groupby": [
+                        "bin_maxbins_6_Acceleration_range"
+                    ]
+                }
+            },
+            "encode": {
+                "update": {
+                    "width": {
+                        "signal": "child_width"
+                    },
+                    "height": {
+                        "signal": "child_height"
+                    },
+                    "stroke": {
+                        "value": "#ccc"
+                    },
+                    "strokeWidth": {
+                        "value": 1
+                    },
+                    "fill": {
+                        "value": "transparent"
+                    }
+                }
             },
             "marks": [
                 {
-                    "name": "row_title",
-                    "role": "row-title",
-                    "type": "group",
-                    "marks": [
-                        {
-                            "type": "text",
-                            "role": "row-title-text",
-                            "encode": {
-                                "update": {
-                                    "y": {
-                                        "signal": "0.5 * height"
-                                    },
-                                    "align": {
-                                        "value": "right"
-                                    },
-                                    "text": {
-                                        "value": "BIN(Acceleration)"
-                                    },
-                                    "fill": {
-                                        "value": "black"
-                                    },
-                                    "fontWeight": {
-                                        "value": "bold"
-                                    },
-                                    "angle": {
-                                        "value": 270
-                                    }
-                                }
-                            }
-                        }
-                    ]
-                },
-                {
-                    "name": "row_header",
-                    "type": "group",
-                    "role": "row-header",
+                    "name": "child_marks",
+                    "type": "symbol",
+                    "role": "point",
                     "from": {
-                        "data": "row"
-                    },
-                    "title": {
-                        "text": {
-                            "signal": "parent[\"bin_maxbins_6_Acceleration_range\"]"
-                        },
-                        "offset": 10,
-                        "orient": "left",
-                        "encode": {
-                            "update": {
-                                "fontWeight": {
-                                    "value": "normal"
-                                },
-                                "angle": {
-                                    "value": 0
-                                },
-                                "fontSize": {
-                                    "value": 10
-                                },
-                                "align": {
-                                    "value": "right"
-                                },
-                                "baseline": {
-                                    "value": "middle"
-                                }
-                            }
-                        }
+                        "data": "facet"
                     },
                     "encode": {
                         "update": {
-                            "height": {
-                                "signal": "child_height"
-                            }
-                        }
-                    },
-                    "axes": [
-                        {
-                            "scale": "y",
-                            "format": "s",
-                            "orient": "left",
-                            "title": "Miles_per_Gallon",
-                            "zindex": 1
-                        }
-                    ]
-                },
-                {
-                    "name": "column_footer",
-                    "type": "group",
-                    "role": "column-footer",
-                    "encode": {
-                        "update": {
-                            "width": {
-                                "signal": "child_width"
-                            }
-                        }
-                    },
-                    "axes": [
-                        {
-                            "scale": "x",
-                            "format": "s",
-                            "orient": "bottom",
-                            "tickCount": 5,
-                            "title": "Horsepower",
-                            "zindex": 1
-                        }
-                    ]
-                },
-                {
-                    "name": "cell",
-                    "type": "group",
-                    "from": {
-                        "facet": {
-                            "name": "facet",
-                            "data": "source_0",
-                            "groupby": [
-                                "bin_maxbins_6_Acceleration_range"
-                            ]
-                        }
-                    },
-                    "encode": {
-                        "update": {
-                            "width": {
-                                "signal": "child_width"
+                            "x": {
+                                "scale": "x",
+                                "field": "Horsepower"
                             },
-                            "height": {
-                                "signal": "child_height"
+                            "y": {
+                                "scale": "y",
+                                "field": "Miles_per_Gallon"
                             },
                             "stroke": {
-                                "value": "#ccc"
-                            },
-                            "strokeWidth": {
-                                "value": 1
+                                "value": "#4c78a8"
                             },
                             "fill": {
                                 "value": "transparent"
-                            }
-                        }
-                    },
-                    "marks": [
-                        {
-                            "name": "child_marks",
-                            "type": "symbol",
-                            "role": "point",
-                            "from": {
-                                "data": "facet"
                             },
-                            "encode": {
-                                "update": {
-                                    "x": {
-                                        "scale": "x",
-                                        "field": "Horsepower"
-                                    },
-                                    "y": {
-                                        "scale": "y",
-                                        "field": "Miles_per_Gallon"
-                                    },
-                                    "stroke": {
-                                        "value": "#4c78a8"
-                                    },
-                                    "fill": {
-                                        "value": "transparent"
-                                    },
-                                    "opacity": {
-                                        "value": 0.7
-                                    }
-                                }
+                            "opacity": {
+                                "value": 0.7
                             }
                         }
-                    ],
-                    "axes": [
-                        {
-                            "scale": "x",
-                            "domain": false,
-                            "format": "s",
-                            "grid": true,
-                            "labels": false,
-                            "orient": "bottom",
-                            "tickCount": 5,
-                            "ticks": false,
-                            "zindex": 0,
-                            "gridScale": "y"
-                        },
-                        {
-                            "scale": "y",
-                            "domain": false,
-                            "format": "s",
-                            "grid": true,
-                            "labels": false,
-                            "orient": "left",
-                            "ticks": false,
-                            "zindex": 0,
-                            "gridScale": "x"
-                        }
-                    ]
+                    }
+                }
+            ],
+            "axes": [
+                {
+                    "scale": "x",
+                    "domain": false,
+                    "format": "s",
+                    "grid": true,
+                    "labels": false,
+                    "orient": "bottom",
+                    "tickCount": 5,
+                    "ticks": false,
+                    "zindex": 0,
+                    "gridScale": "y"
+                },
+                {
+                    "scale": "y",
+                    "domain": false,
+                    "format": "s",
+                    "grid": true,
+                    "labels": false,
+                    "orient": "left",
+                    "ticks": false,
+                    "zindex": 0,
+                    "gridScale": "x"
                 }
             ]
         }
