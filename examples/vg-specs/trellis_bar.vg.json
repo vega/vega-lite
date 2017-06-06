@@ -82,7 +82,7 @@
     "signals": [
         {
             "name": "child_width",
-            "update": "bandspace(domain('x').length, 1, 0.5) * 17"
+            "update": "bandspace(domain('x').length, 0.1, 0.05) * 17"
         },
         {
             "name": "child_height",
@@ -263,12 +263,13 @@
                             },
                             "encode": {
                                 "update": {
-                                    "xc": {
+                                    "x": {
                                         "scale": "x",
                                         "field": "age"
                                     },
                                     "width": {
-                                        "value": 16
+                                        "scale": "x",
+                                        "band": true
                                     },
                                     "y": {
                                         "scale": "y",
@@ -306,7 +307,7 @@
     "scales": [
         {
             "name": "x",
-            "type": "point",
+            "type": "band",
             "domain": {
                 "data": "source_0",
                 "field": "age",
@@ -316,7 +317,8 @@
                 "step": 17
             },
             "round": true,
-            "padding": 0.5
+            "paddingInner": 0.1,
+            "paddingOuter": 0.05
         },
         {
             "name": "y",
