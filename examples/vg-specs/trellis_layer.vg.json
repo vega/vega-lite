@@ -1,0 +1,472 @@
+{
+    "$schema": "http://vega.github.io/schema/vega/v3.0.json",
+    "description": "The Trellis display by Becker et al. helped establish small multiples as a “powerful mechanism for understanding interactions in studies of how a response depends on explanatory variables”. Here we reproduce a trellis of Barley yields from the 1930s, complete with main-effects ordering to facilitate comparison.",
+    "autosize": "pad",
+    "padding": 5,
+    "data": [
+        {
+            "name": "source_0",
+            "url": "data/barley.json",
+            "format": {
+                "type": "json"
+            }
+        },
+        {
+            "name": "row",
+            "source": "source_0",
+            "transform": [
+                {
+                    "type": "aggregate",
+                    "groupby": [
+                        "site"
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "data_1",
+            "source": "source_0",
+            "transform": [
+                {
+                    "type": "formula",
+                    "expr": "toNumber(datum[\"yield\"])",
+                    "as": "yield"
+                },
+                {
+                    "type": "filter",
+                    "expr": "datum[\"yield\"] !== null && !isNaN(datum[\"yield\"])"
+                }
+            ]
+        },
+        {
+            "name": "data_2",
+            "source": "data_1",
+            "transform": [
+                {
+                    "type": "aggregate",
+                    "groupby": [
+                        "variety",
+                        "year",
+                        "site"
+                    ],
+                    "ops": [
+                        "median"
+                    ],
+                    "fields": [
+                        "yield"
+                    ],
+                    "as": [
+                        "median_yield"
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "data_3",
+            "source": "source_0",
+            "transform": [
+                {
+                    "type": "formula",
+                    "expr": "toNumber(datum[\"yield\"])",
+                    "as": "yield"
+                },
+                {
+                    "type": "filter",
+                    "expr": "datum[\"yield\"] !== null && !isNaN(datum[\"yield\"])"
+                },
+                {
+                    "type": "aggregate",
+                    "groupby": [
+                        "site"
+                    ],
+                    "ops": [
+                        "median"
+                    ],
+                    "fields": [
+                        "yield"
+                    ],
+                    "as": [
+                        "median_yield"
+                    ]
+                }
+            ]
+        }
+    ],
+    "signals": [
+        {
+            "name": "child_width",
+            "update": "max(child_layer_0_width, child_layer_1_width)"
+        },
+        {
+            "name": "child_height",
+            "update": "max(child_layer_0_height, child_layer_1_height)"
+        },
+        {
+            "name": "child_layer_0_width",
+            "update": "200"
+        },
+        {
+            "name": "child_layer_0_height",
+            "update": "bandspace(domain('y').length, 1, 0.5) * 12"
+        },
+        {
+            "name": "child_layer_1_width",
+            "update": "200"
+        },
+        {
+            "name": "child_layer_1_height",
+            "update": "21"
+        }
+    ],
+    "marks": [
+        {
+            "name": "nested_main_group",
+            "type": "group",
+            "layout": {
+                "padding": {
+                    "row": 10,
+                    "column": 10
+                },
+                "offset": 10,
+                "columns": 1,
+                "bounds": "full"
+            },
+            "marks": [
+                {
+                    "name": "row_title",
+                    "role": "row-title",
+                    "type": "group",
+                    "marks": [
+                        {
+                            "type": "text",
+                            "role": "row-title-text",
+                            "encode": {
+                                "update": {
+                                    "y": {
+                                        "signal": "0.5 * height"
+                                    },
+                                    "align": {
+                                        "value": "right"
+                                    },
+                                    "text": {
+                                        "value": "site"
+                                    },
+                                    "fill": {
+                                        "value": "black"
+                                    },
+                                    "fontWeight": {
+                                        "value": "bold"
+                                    },
+                                    "angle": {
+                                        "value": 270
+                                    }
+                                }
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "row_header",
+                    "type": "group",
+                    "role": "row-header",
+                    "from": {
+                        "data": "row"
+                    },
+                    "title": {
+                        "text": {
+                            "signal": "parent[\"site\"]"
+                        },
+                        "offset": 10,
+                        "orient": "left",
+                        "encode": {
+                            "update": {
+                                "fontWeight": {
+                                    "value": "normal"
+                                },
+                                "angle": {
+                                    "value": 0
+                                },
+                                "fontSize": {
+                                    "value": 10
+                                },
+                                "align": {
+                                    "value": "right"
+                                },
+                                "baseline": {
+                                    "value": "middle"
+                                }
+                            }
+                        }
+                    },
+                    "encode": {
+                        "update": {
+                            "height": {
+                                "signal": "child_height"
+                            }
+                        }
+                    },
+                    "axes": [
+                        {
+                            "scale": "y",
+                            "orient": "left",
+                            "title": "variety",
+                            "zindex": 1
+                        }
+                    ]
+                },
+                {
+                    "name": "column_footer",
+                    "type": "group",
+                    "role": "column-footer",
+                    "encode": {
+                        "update": {
+                            "width": {
+                                "signal": "child_width"
+                            }
+                        }
+                    },
+                    "axes": [
+                        {
+                            "scale": "x",
+                            "format": "s",
+                            "orient": "bottom",
+                            "tickCount": 5,
+                            "title": "MEDIAN(yield)",
+                            "zindex": 1
+                        }
+                    ]
+                },
+                {
+                    "data": [
+                        {
+                            "source": "facet",
+                            "name": "data_0",
+                            "transform": [
+                                {
+                                    "type": "formula",
+                                    "expr": "toNumber(datum[\"yield\"])",
+                                    "as": "yield"
+                                },
+                                {
+                                    "type": "filter",
+                                    "expr": "datum[\"yield\"] !== null && !isNaN(datum[\"yield\"])"
+                                }
+                            ]
+                        },
+                        {
+                            "name": "data_1",
+                            "source": "data_0",
+                            "transform": [
+                                {
+                                    "type": "aggregate",
+                                    "groupby": [
+                                        "variety",
+                                        "year"
+                                    ],
+                                    "ops": [
+                                        "median"
+                                    ],
+                                    "fields": [
+                                        "yield"
+                                    ],
+                                    "as": [
+                                        "median_yield"
+                                    ]
+                                }
+                            ]
+                        },
+                        {
+                            "source": "facet",
+                            "name": "data_2",
+                            "transform": [
+                                {
+                                    "type": "formula",
+                                    "expr": "toNumber(datum[\"yield\"])",
+                                    "as": "yield"
+                                },
+                                {
+                                    "type": "filter",
+                                    "expr": "datum[\"yield\"] !== null && !isNaN(datum[\"yield\"])"
+                                },
+                                {
+                                    "type": "aggregate",
+                                    "groupby": [],
+                                    "ops": [
+                                        "median"
+                                    ],
+                                    "fields": [
+                                        "yield"
+                                    ],
+                                    "as": [
+                                        "median_yield"
+                                    ]
+                                }
+                            ]
+                        }
+                    ],
+                    "name": "cell",
+                    "type": "group",
+                    "from": {
+                        "facet": {
+                            "name": "facet",
+                            "data": "source_0",
+                            "groupby": [
+                                "site"
+                            ]
+                        }
+                    },
+                    "encode": {
+                        "update": {
+                            "width": {
+                                "signal": "child_width"
+                            },
+                            "height": {
+                                "signal": "child_height"
+                            },
+                            "stroke": {
+                                "value": "#ccc"
+                            },
+                            "strokeWidth": {
+                                "value": 1
+                            },
+                            "fill": {
+                                "value": "transparent"
+                            }
+                        }
+                    },
+                    "marks": [
+                        {
+                            "name": "child_layer_0_marks",
+                            "type": "symbol",
+                            "role": "point",
+                            "from": {
+                                "data": "data_1"
+                            },
+                            "encode": {
+                                "update": {
+                                    "x": {
+                                        "scale": "x",
+                                        "field": "median_yield"
+                                    },
+                                    "y": {
+                                        "scale": "y",
+                                        "field": "variety"
+                                    },
+                                    "stroke": {
+                                        "scale": "color",
+                                        "field": "year"
+                                    },
+                                    "fill": {
+                                        "value": "transparent"
+                                    }
+                                }
+                            },
+                            "clip": true
+                        },
+                        {
+                            "name": "child_layer_1_marks",
+                            "type": "rule",
+                            "from": {
+                                "data": "data_2"
+                            },
+                            "encode": {
+                                "update": {
+                                    "x": {
+                                        "scale": "x",
+                                        "field": "median_yield"
+                                    },
+                                    "y": {
+                                        "field": {
+                                            "group": "height"
+                                        }
+                                    },
+                                    "y2": {
+                                        "value": 0
+                                    },
+                                    "stroke": {
+                                        "value": "red"
+                                    }
+                                }
+                            },
+                            "clip": true
+                        }
+                    ],
+                    "axes": [
+                        {
+                            "scale": "x",
+                            "domain": false,
+                            "format": "s",
+                            "grid": true,
+                            "labels": false,
+                            "orient": "bottom",
+                            "tickCount": 5,
+                            "ticks": false,
+                            "zindex": 0,
+                            "gridScale": "y"
+                        }
+                    ]
+                }
+            ]
+        }
+    ],
+    "scales": [
+        {
+            "name": "x",
+            "type": "linear",
+            "domain": {
+                "fields": [
+                    {
+                        "data": "data_2",
+                        "field": "median_yield"
+                    },
+                    {
+                        "data": "data_3",
+                        "field": "median_yield"
+                    }
+                ],
+                "sort": true
+            },
+            "range": [
+                0,
+                200
+            ],
+            "round": true,
+            "nice": true,
+            "zero": false
+        },
+        {
+            "name": "y",
+            "type": "point",
+            "domain": {
+                "data": "data_1",
+                "field": "variety",
+                "sort": {
+                    "field": "yield",
+                    "op": "median",
+                    "order": "descending"
+                }
+            },
+            "range": {
+                "step": 12
+            },
+            "round": true,
+            "padding": 0.5
+        },
+        {
+            "name": "color",
+            "type": "ordinal",
+            "domain": {
+                "data": "data_2",
+                "field": "year",
+                "sort": true
+            },
+            "range": "category"
+        }
+    ],
+    "legends": [
+        {
+            "stroke": "color",
+            "title": "year"
+        }
+    ]
+}
