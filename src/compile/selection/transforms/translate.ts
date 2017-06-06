@@ -7,8 +7,8 @@ import {UnitModel} from './../../unit';
 import {default as scalesCompiler, domain} from './scales';
 import {TransformCompiler} from './transforms';
 
-const ANCHOR = '_translate_anchor',
-      DELTA  = '_translate_delta';
+const ANCHOR = '_translate_anchor';
+const DELTA  = '_translate_delta';
 
 const translate:TransformCompiler = {
   has: function(selCmpt) {
@@ -16,10 +16,10 @@ const translate:TransformCompiler = {
   },
 
   signals: function(model, selCmpt, signals) {
-    const name = selCmpt.name,
-        hasScales = scalesCompiler.has(selCmpt),
-        anchor = name + ANCHOR,
-        {x, y} = intervalProjections(selCmpt);
+    const name = selCmpt.name;
+    const hasScales = scalesCompiler.has(selCmpt);
+    const anchor = name + ANCHOR;
+    const {x, y} = intervalProjections(selCmpt);
     let events = parseSelector(selCmpt.translate, 'scope');
 
     if (!hasScales) {
@@ -69,20 +69,20 @@ function getSign(selCmpt: SelectionComponent, channel: Channel) {
 }
 
 function onDelta(model: UnitModel, selCmpt: SelectionComponent, channel: Channel, size: 'width' | 'height', signals: any[]) {
-  const name = selCmpt.name,
-      hasScales = scalesCompiler.has(selCmpt),
-      signal:any = signals.filter((s:any) => {
-        return s.name === channelSignalName(selCmpt, channel, hasScales ? 'data' : 'visual');
-      })[0],
-      sizeSg = model.getSizeSignalRef(size).signal,
-      anchor = name + ANCHOR,
-      delta  = name + DELTA,
-      sign = getSign(selCmpt, channel),
-      offset = sign + (hasScales ?
-        ` span(${anchor}.extent_${channel}) * ${delta}.${channel} / ${sizeSg}` :
-        ` ${delta}.${channel}`),
-      extent = `${anchor}.extent_${channel}`,
-      range = `[${extent}[0] ${offset}, ${extent}[1] ${offset}]`;
+  const name = selCmpt.name;
+  const hasScales = scalesCompiler.has(selCmpt);
+  const signal:any = signals.filter((s:any) => {
+    return s.name === channelSignalName(selCmpt, channel, hasScales ? 'data' : 'visual');
+  })[0];
+  const sizeSg = model.getSizeSignalRef(size).signal;
+  const anchor = name + ANCHOR;
+  const delta  = name + DELTA;
+  const sign = getSign(selCmpt, channel);
+  const offset = sign + (hasScales ?
+    ` span(${anchor}.extent_${channel}) * ${delta}.${channel} / ${sizeSg}` :
+    ` ${delta}.${channel}`);
+  const extent = `${anchor}.extent_${channel}`;
+  const range = `[${extent}[0] ${offset}, ${extent}[1] ${offset}]`;
 
   signal.on.push({
     events: {signal: delta},

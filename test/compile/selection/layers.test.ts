@@ -103,8 +103,8 @@ describe('Layered Selections', function() {
   });
 
   it('should assemble selection marks across layers', function() {
-    const child0 = layers.children[0].assembleMarks()[0],
-          child1 = layers.children[1].assembleMarks()[0];
+    const child0 = layers.children[0].assembleMarks()[0];
+    const child1 = layers.children[1].assembleMarks()[0];
 
     assert.sameDeepMembers(layers.assembleMarks(), [
       // Background brush mark for "brush" selection.

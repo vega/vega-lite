@@ -37,9 +37,9 @@ describe('Nearest Selection Transform', function() {
   });
 
   it('adds voronoi for non-path marks', function() {
-    const model = getModel('circle'),
-      selCmpts = model.component.selection,
-      marks: any[] = [{hello: "world"}];
+    const model = getModel('circle');
+    const selCmpts = model.component.selection;
+    const marks: any[] = [{hello: "world"}];
 
     assert.sameDeepMembers(nearest.marks(model, selCmpts['one'], marks, marks), [
       {hello: "world"},
@@ -68,9 +68,9 @@ describe('Nearest Selection Transform', function() {
   });
 
   it('adds voronoi for path marks', function() {
-    const model = getModel('line'),
-      selCmpts = model.component.selection,
-      marks: any[] = [{name: "pathgroup", hello: "world", marks: [{foo: "bar"}]}];
+    const model = getModel('line');
+    const selCmpts = model.component.selection;
+    const marks: any[] = [{name: "pathgroup", hello: "world", marks: [{foo: "bar"}]}];
 
     assert.sameDeepMembers(nearest.marks(model, selCmpts['one'], marks, marks), [
       {
@@ -105,9 +105,9 @@ describe('Nearest Selection Transform', function() {
   });
 
   it('limits to a single voronoi per unit', function() {
-    let model = getModel('circle'),
-      selCmpts = model.component.selection,
-      marks: any[] = [{hello: "world"}];
+    let model = getModel('circle');
+    let selCmpts = model.component.selection;
+    let marks: any[] = [{hello: "world"}];
 
     let marks2 = nearest.marks(model, selCmpts['one'], marks, marks);
     assert.sameDeepMembers(nearest.marks(model, selCmpts['two'], marks, marks2), [

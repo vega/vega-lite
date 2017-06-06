@@ -47,8 +47,10 @@ export function normalizeBoxPlot(spec: GenericUnitSpec<Encoding<Field>, BOXPLOT 
   const {color: _color, ...nonPositionEncodingWithoutColorSize} = nonPositionEncodingWithoutSize;
   const midTickAndBarSizeChannelDef = size ? {size: size} : {size: {value: config.box.size}};
 
-  let discreteAxisFieldDef, continuousAxisChannelDef: PositionFieldDef<Field>;
-  let discreteAxis, continuousAxis;
+  let discreteAxisFieldDef;
+  let continuousAxisChannelDef: PositionFieldDef<Field>;
+  let discreteAxis;
+  let continuousAxis;
 
   if (encoding.x && encoding.y) {
     // 2D
@@ -204,8 +206,10 @@ export function box2DOrient(spec: GenericUnitSpec<Encoding<Field>, BOXPLOT | Box
 export function box2DParams(spec: GenericUnitSpec<Encoding<Field>, BOXPLOT | BoxPlotDef>, orient: Orient) {
   const {mark: mark, encoding: encoding, ...outerSpec} = spec;
 
-  let discreteAxisFieldDef: PositionFieldDef<Field>, continuousAxisChannelDef: PositionFieldDef<Field>;
-  let discreteAxis, continuousAxis;
+  let discreteAxisFieldDef: PositionFieldDef<Field>;
+  let continuousAxisChannelDef: PositionFieldDef<Field>;
+  let discreteAxis;
+  let continuousAxis;
 
   if (orient === 'vertical') {
     discreteAxis = 'x';

@@ -16,7 +16,8 @@ const single:SelectionCompiler = {
   },
 
   tupleExpr: function(model, selCmpt) {
-    const name = selCmpt.name, values = `${name}.values`;
+    const name = selCmpt.name;
+    const values = `${name}.values`;
     return `encodings: ${name}.encodings, fields: ${name}.fields, ` +
       `values: ${values}, bins: ${name}.bins, ` +
       selCmpt.project.map(function(p, i) {
