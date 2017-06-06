@@ -4557,9 +4557,9 @@ typedarray@^0.0.6, typedarray@~0.0.5:
   version "0.0.6"
   resolved "https://registry.yarnpkg.com/typedarray/-/typedarray-0.0.6.tgz#867ac74e3864187b1d3d47d996a78ec5c8830777"
 
-typescript-to-json-schema@vega/typescript-to-json-schema#release:
+typescript-to-json-schema@vega/typescript-to-json-schema#v0.3.0:
   version "0.3.0"
-  resolved "https://codeload.github.com/vega/typescript-to-json-schema/tar.gz/b8bf815d4e66644341255a909685303a454d0e89"
+  resolved "https://codeload.github.com/vega/typescript-to-json-schema/tar.gz/5738883d9bbbfa3fdf6a1b8807a863d00f51f3be"
   dependencies:
     commander "~2.9.0"
     glob "~7.1.2"
@@ -4713,7 +4713,7 @@ vega-dataflow@>=2.0.0-beta, vega-dataflow@>=2.0.0-beta.4:
     vega-statistics "1"
     vega-util "^1.1"
 
-"vega-datasets@github:vega/vega-datasets#gh-pages", vega-datasets@vega/vega-datasets#gh-pages:
+vega-datasets@vega/vega-datasets#gh-pages:
   version "1.8.0"
   resolved "https://codeload.github.com/vega/vega-datasets/tar.gz/26bddc53d6112cff239436cdc85f56249c39e9e0"
 
@@ -4879,36 +4879,13 @@ vega-wordcloud@>=1.0.0-beta:
   optionalDependencies:
     canvas "^1.6.0"
 
-vega@3.0.0-beta.33:
+vega@3.0.0-beta.33, vega@^3.0.0-beta.32:
   version "3.0.0-beta.33"
   resolved "https://registry.yarnpkg.com/vega/-/vega-3.0.0-beta.33.tgz#1ed389a04dc8f33d9313b0b24cc3804012853647"
   dependencies:
     vega-crossfilter ">=1.0.0-beta"
     vega-dataflow ">=2.0.0-beta"
     vega-datasets vega/vega-datasets#gh-pages
-    vega-encode ">=1.0.0-beta"
-    vega-expression "2"
-    vega-force ">=1.0.0-beta"
-    vega-geo ">=1.0.0-beta"
-    vega-hierarchy ">=1.0.0-beta"
-    vega-loader ">=2.0.0-beta.5"
-    vega-parser ">=1.0.0-beta"
-    vega-runtime ">=1.0.0-beta"
-    vega-scale ">=2.0.0-beta"
-    vega-scenegraph ">=2.0.0-beta.11"
-    vega-statistics "1"
-    vega-util "^1.2"
-    vega-view ">=1.0.0-beta"
-    vega-voronoi ">=1.0.0-beta"
-    vega-wordcloud ">=1.0.0-beta"
-    yargs "4"
-
-vega@^3.0.0-beta.32:
-  version "3.0.0-beta.32"
-  resolved "https://registry.yarnpkg.com/vega/-/vega-3.0.0-beta.32.tgz#4c94fac2ddb6238073bacfb4e6ae4dd40fd09a8a"
-  dependencies:
-    vega-crossfilter ">=1.0.0-beta"
-    vega-dataflow ">=2.0.0-beta"
     vega-encode ">=1.0.0-beta"
     vega-expression "2"
     vega-force ">=1.0.0-beta"
