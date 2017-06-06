@@ -20,7 +20,7 @@
     "test": "test"
   },
   "scripts": {
-    "pretsc": "rm -rf build/*/** && cp package.json build",
+    "pretsc": "mkdir -p build && rm -rf build/*/** && cp package.json build/",
     "tsc": "tsc",
     "prebuild": "mkdir -p build/site build/examples/images build/test-gallery",
     "build": "npm run tsc && cp package.json build && browserify src/vl.ts -p tsify -d -s vl | exorcist build/vega-lite.js.map > build/vega-lite.js",
