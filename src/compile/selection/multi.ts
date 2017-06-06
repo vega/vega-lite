@@ -5,19 +5,19 @@ const multi:SelectionCompiler = {
   predicate: 'vlPoint',
 
   signals: function(model, selCmpt) {
-    const proj = selCmpt.project,
-        datum  = '(item().isVoronoi ? datum.datum : datum)',
-        bins = {},
-        encodings = proj.map((p) => stringValue(p.encoding)).filter((e) => e).join(', '),
-        fields = proj.map((p) => stringValue(p.field)).join(', '),
-        values = proj.map((p) => {
-          const channel = p.encoding;
-          // Binned fields should capture extents, for a range test against the raw field.
-          return model.fieldDef(channel).bin ? (bins[p.field] = 1,
-            `[${datum}[${stringValue(model.field(channel, {binSuffix: 'start'}))}], ` +
-               `${datum}[${stringValue(model.field(channel, {binSuffix: 'end'}))}]]`) :
-            `${datum}[${stringValue(p.field)}]`;
-        }).join(', ');
+    const proj = selCmpt.project;
+    const datum = '(item().isVoronoi ? datum.datum : datum)';
+    const bins = {};
+    const encodings = proj.map((p) => stringValue(p.encoding)).filter((e) => e).join(', ');
+    const fields = proj.map((p) => stringValue(p.field)).join(', ');
+    const values = proj.map((p) => {
+      const channel = p.encoding;
+      // Binned fields should capture extents, for a range test against the raw field.
+      return model.fieldDef(channel).bin ? (bins[p.field] = 1,
+        `[${datum}[${stringValue(model.field(channel, {binSuffix: 'start'}))}], ` +
+            `${datum}[${stringValue(model.field(channel, {binSuffix: 'end'}))}]]`) :
+        `${datum}[${stringValue(p.field)}]`;
+    }).join(', ');
 
     return [{
       name: selCmpt.name,

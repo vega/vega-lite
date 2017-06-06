@@ -18,8 +18,8 @@ const toggle:TransformCompiler = {
   },
 
   modifyExpr: function(model, selCmpt, expr) {
-    const tpl = selCmpt.name + TUPLE,
-        signal = selCmpt.name + TOGGLE;
+    const tpl = selCmpt.name + TUPLE;
+    const signal = selCmpt.name + TOGGLE;
 
     return `${signal} ? null : ${tpl}, ` +
       (selCmpt.resolve === 'global' ?

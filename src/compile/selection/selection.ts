@@ -51,16 +51,16 @@ export interface SelectionCompiler {
 }
 
 export function parseUnitSelection(model: UnitModel, selDefs: Dict<SelectionDef>) {
-  const selCmpts: Dict<SelectionComponent> = {},
-      selectionConfig = model.config.selection;
+  const selCmpts: Dict<SelectionComponent> = {};
+  const selectionConfig = model.config.selection;
 
   for (const name in selDefs) {
     if (!selDefs.hasOwnProperty(name)) {
       continue;
     }
 
-    const selDef = selDefs[name],
-        cfg = selectionConfig[selDef.type];
+    const selDef = selDefs[name];
+    const cfg = selectionConfig[selDef.type];
 
     // Set default values from config if a property hasn't been specified,
     // or if it is true. E.g., "translate": true should use the default
@@ -96,8 +96,8 @@ export function parseUnitSelection(model: UnitModel, selDefs: Dict<SelectionDef>
 
 export function assembleUnitSelectionSignals(model: UnitModel, signals: any[]) {
   forEachSelection(model, (selCmpt, selCompiler) => {
-    const name = selCmpt.name,
-        tupleExpr = selCompiler.tupleExpr(model, selCmpt);
+    const name = selCmpt.name;
+    const tupleExpr = selCompiler.tupleExpr(model, selCmpt);
     let modifyExpr = selCompiler.modifyExpr(model, selCmpt);
 
     signals.push.apply(signals, selCompiler.signals(model, selCmpt));
@@ -171,8 +171,8 @@ export function assembleUnitSelectionData(model: UnitModel, data: VgData[]): VgD
 }
 
 export function assembleUnitSelectionMarks(model: UnitModel, marks: any[]): any[] {
-  let clipGroup = false,
-      selMarks = marks;
+  let clipGroup = false;
+  let selMarks = marks;
   forEachSelection(model, (selCmpt, selCompiler) => {
     selMarks = selCompiler.marks ? selCompiler.marks(model, selCmpt, selMarks) : selMarks;
     forEachTransform(selCmpt, (txCompiler) => {
@@ -215,8 +215,8 @@ const PREDICATES_OPS = {
 };
 
 export function predicate(model: Model, name: string, type: SelectionTypes, resolve?: string, datum?: string): string {
-  const store = stringValue(name + STORE),
-        op = PREDICATES_OPS[resolve || 'global'];
+  const store = stringValue(name + STORE);
+  const op = PREDICATES_OPS[resolve || 'global'];
   datum = datum || 'datum';
   return compiler(type).predicate + `(${store}, ${stringValue(model.getName(''))}, ${datum}, ${op})`;
 }

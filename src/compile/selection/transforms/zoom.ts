@@ -7,8 +7,8 @@ import {UnitModel} from './../../unit';
 import {default as scalesCompiler, domain} from './scales';
 import {TransformCompiler} from './transforms';
 
-const ANCHOR = '_zoom_anchor',
-      DELTA  = '_zoom_delta';
+const ANCHOR = '_zoom_anchor';
+const DELTA  = '_zoom_delta';
 
 const zoom:TransformCompiler = {
   has: function(selCmpt) {
@@ -16,13 +16,12 @@ const zoom:TransformCompiler = {
   },
 
   signals: function(model, selCmpt, signals) {
-    const name = selCmpt.name,
-        hasScales = scalesCompiler.has(selCmpt),
-        delta = name + DELTA,
-        {x, y} = intervalProjections(selCmpt),
-        sx = stringValue(model.scaleName(X)),
-        sy = stringValue(model.scaleName(Y));
-
+    const name = selCmpt.name;
+    const hasScales = scalesCompiler.has(selCmpt);
+    const delta = name + DELTA;
+    const {x, y} = intervalProjections(selCmpt);
+    const sx = stringValue(model.scaleName(X));
+    const sy = stringValue(model.scaleName(Y));
     let events = parseSelector(selCmpt.zoom, 'scope');
 
     if (!hasScales) {
@@ -61,18 +60,18 @@ const zoom:TransformCompiler = {
 export {zoom as default};
 
 function onDelta(model: UnitModel, selCmpt: SelectionComponent, channel: Channel, size: 'width' | 'height', signals: any[]) {
-  const name = selCmpt.name,
-      hasScales = scalesCompiler.has(selCmpt),
-      signal:any = signals.filter((s:any) => {
-        return s.name === channelSignalName(selCmpt, channel, hasScales ? 'data' : 'visual');
-      })[0],
-      sizeSg = model.getSizeSignalRef(size).signal,
-      base = hasScales ? domain(model, channel) : signal.name,
-      anchor = `${name}${ANCHOR}.${channel}`,
-      delta  = name + DELTA,
-      scale  = stringValue(model.scaleName(channel)),
-      range  = `[${anchor} + (${base}[0] - ${anchor}) * ${delta}, ` +
-        `${anchor} + (${base}[1] - ${anchor}) * ${delta}]`;
+  const name = selCmpt.name;
+  const hasScales = scalesCompiler.has(selCmpt);
+  const signal:any = signals.filter((s:any) => {
+    return s.name === channelSignalName(selCmpt, channel, hasScales ? 'data' : 'visual');
+  })[0];
+  const sizeSg = model.getSizeSignalRef(size).signal;
+  const base = hasScales ? domain(model, channel) : signal.name;
+  const anchor = `${name}${ANCHOR}.${channel}`;
+  const delta  = name + DELTA;
+  const scale  = stringValue(model.scaleName(channel));
+  const range  = `[${anchor} + (${base}[0] - ${anchor}) * ${delta}, ` +
+    `${anchor} + (${base}[1] - ${anchor}) * ${delta}]`;
 
   signal.on.push({
     events: {signal: delta},
