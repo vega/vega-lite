@@ -138,7 +138,7 @@ function channelSignals(model: UnitModel, selCmpt: SelectionComponent, channel: 
   const hasScales = scales.has(selCmpt);
   const scaleName = model.scaleName(channel);
   const scaleStr = stringValue(scaleName);
-  const scaleType = model.getComponent('scales', channel).type;
+  const scaleType = model.getScaleComponent(channel).type;
   const size  = model.getSizeSignalRef(channel === X ? 'width' : 'height').signal;
   const coord = `${channel}(unit)`;
 

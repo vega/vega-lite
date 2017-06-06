@@ -110,7 +110,7 @@ export function expression(model: Model, filter: Filter): string {
   if (isString(filter)) {
     return filter;
   } else if (isSelectionFilter(filter)) {
-    const selection = model.getComponent('selection', filter.selection);
+    const selection = model.getSelectionComponent(filter.selection);
     return predicate(model, filter.selection, selection.type, selection.resolve, null);
   } else { // Filter Object
     const fieldExpr = filter.timeUnit ?

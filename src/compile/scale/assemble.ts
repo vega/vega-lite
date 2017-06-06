@@ -25,7 +25,7 @@ export function assembleScale(model: Model) {
         if (selCmpt) {
           log.warn('Use "bind": "scales" to setup a binding for scales and selections within the same view.');
         } else {
-          selCmpt = model.getComponent('selection', selName);
+          selCmpt = model.getSelectionComponent(selName);
           scale.domainRaw = {
             signal: (selCmpt.type === 'interval' ? 'vlIntervalDomain' : 'vlPointDomain') +
             `(${stringValue(selCmpt.name + '_store')}, ${stringValue(raw.encoding)}, ${stringValue(raw.field)}, ` +

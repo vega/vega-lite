@@ -80,7 +80,8 @@ function wrapCondition(model: UnitModel, condition: Condition<any>, vgChannel: s
 function selectionTest(model: UnitModel, selectionName: string) {
   const negate = selectionName.charAt(0) === '!';
   const name = negate ? selectionName.slice(1) : selectionName;
-  const selection = model.getComponent('selection', name);
+  const selection = model.getSelectionComponent(name);
+
   return (negate ? '!' : '') +
     predicate(model, selection.name, selection.type, selection.resolve);
 }
