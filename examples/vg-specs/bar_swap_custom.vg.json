@@ -79,7 +79,7 @@
         },
         {
             "name": "height",
-            "update": "bandspace(domain('y').length, 1, 0.5) * 21"
+            "update": "bandspace(domain('y').length, 0.1, 0.05) * 21"
         }
     ],
     "marks": [
@@ -117,12 +117,13 @@
                                 "scale": "x",
                                 "value": 0
                             },
-                            "yc": {
+                            "y": {
                                 "scale": "y",
                                 "field": "a"
                             },
                             "height": {
-                                "value": 20
+                                "scale": "y",
+                                "band": true
                             },
                             "fill": {
                                 "value": "#4c78a8"
@@ -151,7 +152,7 @@
         },
         {
             "name": "y",
-            "type": "point",
+            "type": "band",
             "domain": {
                 "data": "source_0",
                 "field": "a",
@@ -161,7 +162,8 @@
                 "step": 21
             },
             "round": true,
-            "padding": 0.5
+            "paddingInner": 0.1,
+            "paddingOuter": 0.05
         }
     ],
     "axes": [

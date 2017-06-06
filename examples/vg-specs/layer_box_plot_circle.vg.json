@@ -195,7 +195,7 @@
         },
         {
             "name": "layer_0_layer_2_height",
-            "update": "bandspace(domain('y').length, 1, 0.5) * 21"
+            "update": "bandspace(domain('y').length, 0.1, 0.05) * 21"
         },
         {
             "name": "layer_0_layer_3_width",
@@ -307,7 +307,11 @@
                             },
                             "yc": {
                                 "scale": "y",
-                                "field": "age"
+                                "field": "age",
+                                "offset": {
+                                    "scale": "y",
+                                    "band": 0.5
+                                }
                             },
                             "height": {
                                 "value": 14

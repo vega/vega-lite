@@ -85,7 +85,7 @@
         },
         {
             "name": "child_height",
-            "update": "bandspace(domain('y').length, 1, 0.5) * 6"
+            "update": "bandspace(domain('y').length, 0.1, 0.05) * 6"
         }
     ],
     "marks": [
@@ -247,12 +247,13 @@
                                         "scale": "x",
                                         "field": "sum_people_start"
                                     },
-                                    "yc": {
+                                    "y": {
                                         "scale": "y",
                                         "field": "gender"
                                     },
                                     "height": {
-                                        "value": 5
+                                        "scale": "y",
+                                        "band": true
                                     },
                                     "fill": {
                                         "scale": "color",
@@ -287,7 +288,7 @@
         },
         {
             "name": "y",
-            "type": "point",
+            "type": "band",
             "domain": {
                 "data": "source_0",
                 "field": "gender",
@@ -297,7 +298,8 @@
                 "step": 6
             },
             "round": true,
-            "padding": 0.5
+            "paddingInner": 0.1,
+            "paddingOuter": 0.05
         },
         {
             "name": "color",

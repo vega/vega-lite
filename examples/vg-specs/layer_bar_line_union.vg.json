@@ -105,7 +105,7 @@
         },
         {
             "name": "layer_0_width",
-            "update": "bandspace(domain('x').length, 1, 0.5) * 21"
+            "update": "bandspace(domain('x').length, 0.1, 0.05) * 21"
         },
         {
             "name": "layer_0_height",
@@ -147,12 +147,13 @@
                     },
                     "encode": {
                         "update": {
-                            "xc": {
+                            "x": {
                                 "scale": "x",
                                 "field": "a"
                             },
                             "width": {
-                                "value": 20
+                                "scale": "x",
+                                "band": true
                             },
                             "y": {
                                 "scale": "y",
@@ -198,7 +199,7 @@
     "scales": [
         {
             "name": "x",
-            "type": "point",
+            "type": "band",
             "domain": {
                 "fields": [
                     {
@@ -216,7 +217,8 @@
                 "step": 21
             },
             "round": true,
-            "padding": 0.5
+            "paddingInner": 0.1,
+            "paddingOuter": 0.05
         },
         {
             "name": "y",
