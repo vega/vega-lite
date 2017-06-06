@@ -18,9 +18,9 @@ describe('Mark: Bar', function() {
     });
     const props = bar.encodeEntry(model);
 
-    it('should draw bar, with y from zero to field value and x with center position and width = rangeStep - 1', function() {
-      assert.deepEqual(props.xc, {scale: 'x', field: 'Origin'});
-      assert.deepEqual(props.width, {value: defaultScaleConfig.rangeStep - 1});
+    it('should draw bar, with y from zero to field value and with band value for x/width ', function() {
+      assert.deepEqual(props.x, {scale: 'x', field: 'Origin'});
+      assert.deepEqual(props.width, {scale: 'x', band: true});
       assert.deepEqual(props.y, {scale: 'y', field: 'mean_Acceleration'});
       assert.deepEqual(props.y2, {scale: 'y', value: 0});
       assert.isUndefined(props.height);
@@ -38,9 +38,9 @@ describe('Mark: Bar', function() {
     });
     const props = bar.encodeEntry(model);
 
-    it('should draw bar from zero to field value and y with center position  and height = rangeStep - 1', function() {
-      assert.deepEqual(props.yc, {scale: 'y', field: 'Origin'});
-      assert.deepEqual(props.height, {value: defaultScaleConfig.rangeStep - 1});
+    it('should draw bar from zero to field value and with band value for x/width', function() {
+      assert.deepEqual(props.y, {scale: 'y', field: 'Origin'});
+      assert.deepEqual(props.height, {scale: 'y', band: true});
       assert.deepEqual(props.x, {scale: 'x', field: 'mean_Acceleration'});
       assert.deepEqual(props.x2, {scale: 'x', value: 0});
       assert.isUndefined(props.width);
@@ -398,7 +398,7 @@ describe('Mark: Bar', function() {
   describe('OxN', function() {
     // This is generally a terrible idea, but we should still test
     // if the output show expected results
-    it('should produce vertical bar using x, x2', function() {
+    it('should produce vertical bar using x, width', function() {
       const model = parseUnitModel({
         "data": {"url": 'data/cars.json'},
         "mark": "bar",
@@ -409,10 +409,10 @@ describe('Mark: Bar', function() {
       });
       const props = bar.encodeEntry(model);
 
-      assert.deepEqual(props.xc, {scale: 'x', field: 'Origin'});
-      assert.deepEqual(props.width, {value: 20});
-      assert.deepEqual(props.yc, {scale: 'y', field: 'Cylinders'});
-      assert.deepEqual(props.height, {value: 20});
+      assert.deepEqual(props.x, {scale: 'x', field: 'Origin'});
+      assert.deepEqual(props.width, {scale: 'x', band: true});
+      assert.deepEqual(props.y, {scale: 'y', field: 'Cylinders'});
+      assert.deepEqual(props.height, {scale: 'y', band: true});
     });
   });
 
@@ -433,7 +433,7 @@ describe('Mark: Bar', function() {
       });
 
       const props = bar.encodeEntry(model);
-      assert.deepEqual(props.xc, {scale: 'x', field: 'age'});
+      assert.deepEqual(props.x, {scale: 'x', field: 'age'});
       assert.deepEqual(props.y, {scale: 'y', field: 'q1_people'});
       assert.deepEqual(props.y2, {scale: 'y', field: 'q3_people'});
     });
@@ -450,7 +450,7 @@ describe('Mark: Bar', function() {
       });
 
       const props = bar.encodeEntry(model);
-      assert.deepEqual(props.yc, {scale: 'y', field: 'age'});
+      assert.deepEqual(props.y, {scale: 'y', field: 'age'});
       assert.deepEqual(props.x, {scale: 'x', field: 'q1_people'});
       assert.deepEqual(props.x2, {scale: 'x', field: 'q3_people'});
     });
