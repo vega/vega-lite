@@ -59,17 +59,24 @@ function assemble(model: Model, topLevelProperties: TopLevelProperties) {
   // autoResize has to be put under autosize
   const {autoResize, ...topLevelProps} = topLevelProperties;
 
+  const encode = model.assembleParentGroupProperties();
+  let width, height, scene:object;
+  if (encode) {
+    ({width, height, ...scene} = encode);
+  }
+
   const output = {
     $schema: 'http://vega.github.io/schema/vega/v3.0.json',
     ...(model.description ? {description: model.description} : {}),
     // By using Vega layout, we don't support custom autosize
     autosize: topLevelProperties.autoResize ? {type: 'pad', resize: true} : 'pad',
     ...topLevelProps,
+    ...(scene ? {encode: {update: scene}} : {}),
     data: [].concat(
       model.assembleSelectionData([]),
       model.assembleData()
     ),
-    signals: (
+    ...model.assembleGroup(
       [].concat(
         // TODO(https://github.com/vega/vega-lite/issues/2198):
         // Merge the top-level's width/height signal with the top-level model
@@ -85,42 +92,11 @@ function assemble(model: Model, topLevelProperties: TopLevelProperties) {
         model.assembleSelectionTopLevelSignals([])
       )
     ),
-
-    // FIXME: get rid of the top-level `nested-main-group`
-    // HACK: this is a hack to temporarily make selections works as
-    // 1) Currently, some selection's signals rely on the main group's scope to shadow duplicate names.
-    // 2) Selection predicate depends on parent reference which may not exist for top-level mark.
-    ...assembleNestedMainGroup(model),
-
-
     ...(vgConfig ? {config: vgConfig} : {})
   };
 
   return {
     spec: output
     // TODO: add warning / errors here
-  };
-}
-
-export function assembleNestedMainGroup(model: Model) {
-  const {layout, signals, ...group} =  model.assembleGroup([]);
-  const marks = group.marks;
-
-  const parentEncodeEntry = model.assembleParentGroupProperties();
-
-  return {
-    ...group,
-    marks: [{
-      name: model.getName('nested_main_group'),
-      type: 'group',
-      layout,
-      signals,
-      ...(parentEncodeEntry ? {
-        encode: {
-          update: parentEncodeEntry
-        }
-      } : {}),
-      marks
-    }],
   };
 }
