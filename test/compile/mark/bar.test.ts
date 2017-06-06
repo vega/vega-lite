@@ -82,7 +82,7 @@ describe('Mark: Bar', function() {
 
     it('should set height to 5 and center y', function() {
       assert.deepEqual(props.height, {value: 5});
-      assert.deepEqual(props.yc, {scale: 'y', field: 'Origin', offset: {scale: 'y', band: 0.5}});
+      assert.deepEqual(props.yc, {scale: 'y', field: 'Origin', band: 0.5});
     });
   });
 

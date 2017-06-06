@@ -277,10 +277,7 @@
                             "yc": {
                                 "scale": "y",
                                 "field": "age",
-                                "offset": {
-                                    "scale": "y",
-                                    "band": 0.5
-                                }
+                                "band": 0.5
                             },
                             "height": {
                                 "value": 5

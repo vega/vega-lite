@@ -129,7 +129,7 @@ describe('Mark: Point', function() {
         }
       });
       const props = point.encodeEntry(model);
-      assert.deepEqual(props.x, {scale: 'x', field: 'year', offset: {scale: 'x', band: 0.5}});
+      assert.deepEqual(props.x, {scale: 'x', field: 'year', band: 0.5});
     });
   });
 
