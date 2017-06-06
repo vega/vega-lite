@@ -40,118 +40,105 @@ describe('Interval Selections', function() {
     it('builds projection signals', function() {
       const oneSg = interval.signals(model, selCmpts['one']);
       assert.includeDeepMembers(oneSg, [{
-        "name": "one_Horsepower",
+        "name": "one_x",
         "value": [],
         "on": [
           {
             "events": parseSelector('mousedown', 'scope')[0],
-            "update": "invert(\"x\", [x(unit), x(unit)])"
+            "update": "[x(unit), x(unit)]"
           },
           {
             "events": parseSelector('[mousedown, window:mouseup] > window:mousemove!', 'scope')[0],
-            "update": "[one_Horsepower[0], invert(\"x\", clamp(x(unit), 0, width))]"
+            "update": "[one_x[0], clamp(x(unit), 0, width)]"
+          },
+          {
+            "events": {"scale": "x"},
+            "update": "!isArray(one_Horsepower) ? one_x : [scale(\"x\", one_Horsepower[0]), scale(\"x\", one_Horsepower[1])]"
           }
         ]
+      }, {
+        "name": "one_Horsepower",
+        "on": [{
+          "events": {"signal": "one_x"},
+          "update": "invert(\"x\", one_x)"
+        }]
       }]);
 
       const twoSg = interval.signals(model, selCmpts['two']);
       assert.includeDeepMembers(twoSg, [{
         "name": "two_Miles_per_Gallon",
-        "on": [],
-        "value": []
+        "on": []
       }]);
 
       const threeSg = interval.signals(model, selCmpts['three']);
       assert.includeDeepMembers(threeSg, [
         {
-          "name": "three_Horsepower",
+          "name": "three_x",
           "value": [],
           "on": [
             {
               "events": parseSelector('mousedown', 'scope')[0],
-              "update": "invert(\"x\", [x(unit), x(unit)])"
+              "update": "[x(unit), x(unit)]"
             },
             {
               "events": parseSelector('[mousedown, mouseup] > mousemove', 'scope')[0],
-              "update": "[three_Horsepower[0], invert(\"x\", clamp(x(unit), 0, width))]"
+              "update": "[three_x[0], clamp(x(unit), 0, width)]"
             },
             {
               "events": parseSelector('keydown', 'scope')[0],
-              "update": "invert(\"x\", [x(unit), x(unit)])"
+              "update": "[x(unit), x(unit)]"
             },
             {
               "events": parseSelector('[keydown, keyup] > keypress', 'scope')[0],
-              "update": "[three_Horsepower[0], invert(\"x\", clamp(x(unit), 0, width))]"
+              "update": "[three_x[0], clamp(x(unit), 0, width)]"
+            },
+            {
+              "events": {"scale": "x"},
+              "update": "!isArray(three_Horsepower) ? three_x : [scale(\"x\", three_Horsepower[0]), scale(\"x\", three_Horsepower[1])]"
+            }
+          ]
+        },
+        {
+          "name": "three_Horsepower",
+          "on": [{
+            "events": {"signal": "three_x"},
+            "update": "invert(\"x\", three_x)"
+          }]
+        },
+        {
+          "name": "three_y",
+          "value": [],
+          "on": [
+            {
+              "events": parseSelector('mousedown', 'scope')[0],
+              "update": "[y(unit), y(unit)]"
+            },
+            {
+              "events": parseSelector('[mousedown, mouseup] > mousemove', 'scope')[0],
+              "update": "[three_y[0], clamp(y(unit), 0, height)]"
+            },
+            {
+              "events": parseSelector('keydown', 'scope')[0],
+              "update": "[y(unit), y(unit)]"
+            },
+            {
+              "events": parseSelector('[keydown, keyup] > keypress', 'scope')[0],
+              "update": "[three_y[0], clamp(y(unit), 0, height)]"
+            },
+            {
+              "events": {"scale": "y"},
+              "update": "!isArray(three_Miles_per_Gallon) ? three_y : [scale(\"y\", three_Miles_per_Gallon[0]), scale(\"y\", three_Miles_per_Gallon[1])]"
             }
           ]
         },
         {
           "name": "three_Miles_per_Gallon",
-          "value": [],
-          "on": [
-            {
-              "events": parseSelector('mousedown', 'scope')[0],
-              "update": "invert(\"y\", [y(unit), y(unit)])"
-            },
-            {
-              "events": parseSelector('[mousedown, mouseup] > mousemove', 'scope')[0],
-              "update": "[three_Miles_per_Gallon[0], invert(\"y\", clamp(y(unit), 0, height))]"
-            },
-            {
-              "events": parseSelector('keydown', 'scope')[0],
-              "update": "invert(\"y\", [y(unit), y(unit)])"
-            },
-            {
-              "events": parseSelector('[keydown, keyup] > keypress', 'scope')[0],
-              "update": "[three_Miles_per_Gallon[0], invert(\"y\", clamp(y(unit), 0, height))]"
-            }
-          ]
+          "on": [{
+            "events": {"signal": "three_y"},
+            "update": "invert(\"y\", three_y)"
+          }]
         }
       ]);
-    });
-
-    it('builds size signals', function() {
-      const oneSg = interval.signals(model, selCmpts['one']);
-      assert.includeDeepMembers(oneSg, [{
-        "name": "one_size",
-        "value": [],
-        "on": [
-          {
-            "events": parseSelector('mousedown', 'scope')[0],
-            "update": "{x: x(unit), y: y(unit), width: 0, height: 0}"
-          },
-          {
-            "events": parseSelector('[mousedown, window:mouseup] > window:mousemove!', 'scope')[0],
-            "update": "{x: one_size.x, y: one_size.y, width: abs(x(unit) - one_size.x), height: abs(y(unit) - one_size.y)}"
-          }
-        ]
-      }]);
-
-      // Skip twoSg because bindScales should remove the size.
-
-      const threeSg = interval.signals(model, selCmpts['three']);
-      assert.includeDeepMembers(threeSg, [{
-        "name": "three_size",
-        "value": [],
-        "on": [
-          {
-            "events": parseSelector('mousedown', 'scope')[0],
-            "update": "{x: x(unit), y: y(unit), width: 0, height: 0}"
-          },
-          {
-            "events": parseSelector('[mousedown, mouseup] > mousemove', 'scope')[0],
-            "update": "{x: three_size.x, y: three_size.y, width: abs(x(unit) - three_size.x), height: abs(y(unit) - three_size.y)}"
-          },
-          {
-            "events": parseSelector('keydown', 'scope')[0],
-            "update": "{x: x(unit), y: y(unit), width: 0, height: 0}"
-          },
-          {
-            "events": parseSelector('[keydown, keyup] > keypress', 'scope')[0],
-            "update": "{x: three_size.x, y: three_size.y, width: abs(x(unit) - three_size.x), height: abs(y(unit) - three_size.y)}"
-          }
-        ]
-      }]);
     });
 
     it('builds trigger signals', function() {
@@ -198,7 +185,7 @@ describe('Interval Selections', function() {
         "on": [
           {
             "events": {"signal": "one"},
-            "update": `{unit: unit.datum && unit.datum._id, ${oneExpr}}`
+            "update": `{unit: \"\", ${oneExpr}}`
           }
         ]
       },
@@ -207,7 +194,7 @@ describe('Interval Selections', function() {
         "on": [
           {
             "events": {"signal": "two"},
-            "update": `{unit: unit.datum && unit.datum._id, ${twoExpr}}`
+            "update": `{unit: \"\", ${twoExpr}}`
           }
         ]
       },
@@ -216,7 +203,7 @@ describe('Interval Selections', function() {
         "on": [
           {
             "events": {"signal": "three"},
-            "update": `{unit: unit.datum && unit.datum._id, ${threeExpr}}`
+            "update": `{unit: \"\", ${threeExpr}}`
           }
         ]
       }
@@ -231,7 +218,7 @@ describe('Interval Selections', function() {
     assert.equal(twoExpr, 'two_tuple, true');
 
     const threeExpr = interval.modifyExpr(model, selCmpts['three']);
-    assert.equal(threeExpr, 'three_tuple, {unit: three_tuple.unit}');
+    assert.equal(threeExpr, 'three_tuple, {unit: \"\"}');
 
     const signals = selection.assembleUnitSelectionSignals(model, []);
     assert.includeDeepMembers(signals, [
@@ -269,44 +256,50 @@ describe('Interval Selections', function() {
     const marks: any[] = [{hello: "world"}];
     assert.sameDeepMembers(interval.marks(model, selCmpts['one'], marks), [
       {
-        "name": undefined,
         "type": "rect",
         "encode": {
           "enter": {
             "fill": {"value": "#333"},
-            "fillOpacity": {"value": 0.125},
-            "stroke": undefined
+            "fillOpacity": {"value": 0.125}
           },
           "update": {
             "x": [
               {
-                "test": "data(\"one_store\").length && one_tuple && one_tuple.unit === data(\"one_store\")[0].unit",
-                "scale": "x",
-                "signal": "one[0].extent[0]"
+                "test": "data(\"one_store\").length && data(\"one_store\")[0].unit === \"\"",
+                "signal": "one_x[0]"
               },
-              {"value": 0}
-            ],
-            "x2": [
               {
-                "test": "data(\"one_store\").length && one_tuple && one_tuple.unit === data(\"one_store\")[0].unit",
-                "scale": "x",
-                "signal": "one[0].extent[1]"
-              },
-              {"value": 0}
+                "value": 0
+              }
             ],
             "y": [
               {
-                "test": "data(\"one_store\").length && one_tuple && one_tuple.unit === data(\"one_store\")[0].unit",
+                "test": "data(\"one_store\").length && data(\"one_store\")[0].unit === \"\"",
                 "value": 0
               },
-              {"value": 0}
+              {
+                "value": 0
+              }
+            ],
+            "x2": [
+              {
+                "test": "data(\"one_store\").length && data(\"one_store\")[0].unit === \"\"",
+                "signal": "one_x[1]"
+              },
+              {
+                "value": 0
+              }
             ],
             "y2": [
               {
-                "test": "data(\"one_store\").length && one_tuple && one_tuple.unit === data(\"one_store\")[0].unit",
-                "field": {"group": "height"}
+                "test": "data(\"one_store\").length && data(\"one_store\")[0].unit === \"\"",
+                "field": {
+                  "group": "height"
+                }
               },
-              {"value": 0}
+              {
+                "value": 0
+              }
             ]
           }
         }
@@ -318,39 +311,46 @@ describe('Interval Selections', function() {
         "encode": {
           "enter": {
             "fill": {"value": "transparent"},
-            "fillOpacity": undefined,
             "stroke": {"value": "white"}
           },
           "update": {
             "x": [
               {
-                "test": "data(\"one_store\").length && one_tuple && one_tuple.unit === data(\"one_store\")[0].unit",
-                "scale": "x",
-                "signal": "one[0].extent[0]"
+                "test": "data(\"one_store\").length && data(\"one_store\")[0].unit === \"\"",
+                "signal": "one_x[0]"
               },
-              {"value": 0}
-            ],
-            "x2": [
               {
-                "test": "data(\"one_store\").length && one_tuple && one_tuple.unit === data(\"one_store\")[0].unit",
-                "scale": "x",
-                "signal": "one[0].extent[1]"
-              },
-              {"value": 0}
+                "value": 0
+              }
             ],
             "y": [
               {
-                "test": "data(\"one_store\").length && one_tuple && one_tuple.unit === data(\"one_store\")[0].unit",
+                "test": "data(\"one_store\").length && data(\"one_store\")[0].unit === \"\"",
                 "value": 0
               },
-              {"value": 0}
+              {
+                "value": 0
+              }
+            ],
+            "x2": [
+              {
+                "test": "data(\"one_store\").length && data(\"one_store\")[0].unit === \"\"",
+                "signal": "one_x[1]"
+              },
+              {
+                "value": 0
+              }
             ],
             "y2": [
               {
-                "test": "data(\"one_store\").length && one_tuple && one_tuple.unit === data(\"one_store\")[0].unit",
-                "field": {"group": "height"}
+                "test": "data(\"one_store\").length && data(\"one_store\")[0].unit === \"\"",
+                "field": {
+                  "group": "height"
+                }
               },
-              {"value": 0}
+              {
+                "value": 0
+              }
             ]
           }
         }
@@ -362,30 +362,24 @@ describe('Interval Selections', function() {
 
     assert.sameDeepMembers(interval.marks(model, selCmpts['three'], marks), [
       {
-        "name": undefined,
         "type": "rect",
         "encode": {
           "enter": {
             "fill": {"value": "#333"},
-            "fillOpacity": {"value": 0.125},
-            "stroke": undefined
+            "fillOpacity": {"value": 0.125}
           },
           "update": {
             "x": {
-              "scale": "x",
-              "signal": "three[0].extent[0]"
-            },
-            "x2": {
-              "scale": "x",
-              "signal": "three[0].extent[1]"
+              "signal": "three_x[0]"
             },
             "y": {
-              "scale": "y",
-              "signal": "three[1].extent[0]"
+              "signal": "three_y[0]"
+            },
+            "x2": {
+              "signal": "three_x[1]"
             },
             "y2": {
-              "scale": "y",
-              "signal": "three[1].extent[1]"
+              "signal": "three_y[1]"
             }
           }
         }
@@ -397,25 +391,20 @@ describe('Interval Selections', function() {
         "encode": {
           "enter": {
             "fill": {"value": "transparent"},
-            "fillOpacity": undefined,
             "stroke": {"value": "white"}
           },
           "update": {
             "x": {
-              "scale": "x",
-              "signal": "three[0].extent[0]"
-            },
-            "x2": {
-              "scale": "x",
-              "signal": "three[0].extent[1]"
+              "signal": "three_x[0]"
             },
             "y": {
-              "scale": "y",
-              "signal": "three[1].extent[0]"
+              "signal": "three_y[0]"
+            },
+            "x2": {
+              "signal": "three_x[1]"
             },
             "y2": {
-              "scale": "y",
-              "signal": "three[1].extent[1]"
+              "signal": "three_y[1]"
             }
           }
         }

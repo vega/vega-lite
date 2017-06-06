@@ -36,7 +36,7 @@
     "signals": [
         {
             "name": "width",
-            "update": "bandspace(domain('x').length, 1, 0.5) * 21"
+            "update": "bandspace(domain('x').length, 0.1, 0.05) * 21"
         },
         {
             "name": "height",
@@ -70,12 +70,13 @@
                     },
                     "encode": {
                         "update": {
-                            "xc": {
+                            "x": {
                                 "scale": "x",
                                 "field": "Cylinders"
                             },
                             "width": {
-                                "value": 20
+                                "scale": "x",
+                                "band": true
                             },
                             "y": {
                                 "scale": "y",
@@ -97,20 +98,21 @@
     "scales": [
         {
             "name": "x",
-            "type": "point",
+            "type": "band",
             "domain": {
                 "data": "source_0",
                 "field": "Cylinders",
                 "sort": {
-                    "op": "count"
+                    "op": "count",
+                    "order": "descending"
                 }
             },
             "range": {
                 "step": 21
             },
             "round": true,
-            "padding": 0.5,
-            "reverse": true
+            "paddingInner": 0.1,
+            "paddingOuter": 0.05
         },
         {
             "name": "y",

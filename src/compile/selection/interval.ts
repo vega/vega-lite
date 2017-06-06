@@ -1,12 +1,13 @@
 import {Channel, X, Y} from '../../channel';
 import {warn} from '../../log';
+import {hasContinuousDomain, isBinScale} from '../../scale';
 import {extend, keys, stringValue} from '../../util';
+import {VgEventStream} from '../../vega.schema';
 import {UnitModel} from '../unit';
-import {channelSignalName, invert as invertFn, ProjectComponent, SelectionCompiler, SelectionComponent, STORE, TUPLE} from './selection';
+import {channelSignalName, ProjectComponent, SelectionCompiler, SelectionComponent, STORE, TUPLE} from './selection';
 import scales from './transforms/scales';
 
-export const BRUSH = '_brush',
-  SIZE = '_size';
+export const BRUSH = '_brush';
 
 const interval:SelectionCompiler = {
   predicate: 'vlInterval',
@@ -14,14 +15,15 @@ const interval:SelectionCompiler = {
   signals: function(model, selCmpt) {
     const signals: any[] = [],
         intervals:any[] = [],
-        name = selCmpt.name,
-        size = name + SIZE;
+        name = selCmpt.name;
 
     if (selCmpt.translate && !(scales.has(selCmpt))) {
-      events(selCmpt, function(_: any[], evt: any) {
+      const filterExpr = `!event.item || event.item.mark.name !== ${stringValue(name + BRUSH)}`;
+      events(selCmpt, function(_: any[], evt: VgEventStream) {
         const filters = evt.between[0].filter || (evt.between[0].filter = []);
-        filters.push('!event.item || (event.item && ' +
-          `event.item.mark.name !== ${stringValue(name + BRUSH)})`);
+        if (filters.indexOf(filterExpr) < 0) {
+          filters.push(filterExpr);
+        }
       });
     }
 
@@ -31,35 +33,14 @@ const interval:SelectionCompiler = {
         return;
       }
 
-      const cs = channelSignal(model, selCmpt, p.encoding);
-      signals.push(cs);
+      const cs = channelSignals(model, selCmpt, p.encoding),
+        csName = channelSignalName(selCmpt, p.encoding, 'data');
+      signals.push.apply(signals, cs);
       intervals.push(`{encoding: ${stringValue(p.encoding)}, ` +
-      `field: ${stringValue(p.field)}, extent: ${cs.name}}`);
+      `field: ${stringValue(p.field)}, extent: ${csName}}`);
     });
 
-    signals.push({
-      name: size,
-      value: [],
-      on: events(selCmpt, function(on: any[], evt: any) {
-        on.push({
-          events: evt.between[0],
-          update: '{x: x(unit), y: y(unit), width: 0, height: 0}'
-        });
-
-        on.push({
-          events: evt,
-          update: `{x: ${size}.x, y: ${size}.y, ` +
-           `width: abs(x(unit) - ${size}.x), height: abs(y(unit) - ${size}.y)}`
-        });
-
-        return on;
-      })
-    }, {
-      name: name,
-      update: `[${intervals.join(', ')}]`
-    });
-
-    return signals;
+    return signals.concat({name: name, update: `[${intervals.join(', ')}]`});
   },
 
   tupleExpr: function(model, selCmpt) {
@@ -69,7 +50,7 @@ const interval:SelectionCompiler = {
   modifyExpr: function(model, selCmpt) {
     const tpl = selCmpt.name + TUPLE;
     return tpl + ', ' +
-      (selCmpt.resolve === 'global' ? 'true' : `{unit: ${tpl}.unit}`);
+      (selCmpt.resolve === 'global' ? 'true' : `{unit: ${stringValue(model.getName(''))}}`);
   },
 
   marks: function(model, selCmpt, marks) {
@@ -84,21 +65,10 @@ const interval:SelectionCompiler = {
     }
 
     const update = {
-      x: extend({}, xi !== null ?
-        {scale: model.scaleName(X), signal: `${name}[${xi}].extent[0]`} :
-        {value: 0}),
-
-      x2: extend({}, xi !== null ?
-        {scale: model.scaleName(X), signal: `${name}[${xi}].extent[1]`} :
-        {field: {group: 'width'}}),
-
-      y: extend({}, yi !== null ?
-        {scale: model.scaleName(Y), signal: `${name}[${yi}].extent[0]`} :
-        {value: 0}),
-
-      y2: extend({}, yi !== null ?
-        {scale: model.scaleName(Y), signal: `${name}[${yi}].extent[1]`} :
-        {field: {group: 'height'}})
+      x: xi !== null ? {signal: `${name}_x[0]`} : {value: 0},
+      y: yi !== null ? {signal: `${name}_y[0]`} : {value: 0},
+      x2: xi !== null ? {signal: `${name}_x[1]`} : {field: {group: 'width'}},
+      y2: yi !== null ? {signal: `${name}_y[1]`} : {field: {group: 'height'}}
     };
 
     // If the selection is resolved to global, only a single interval is in
@@ -108,7 +78,7 @@ const interval:SelectionCompiler = {
     if (selCmpt.resolve === 'global') {
       keys(update).forEach(function(key) {
         update[key] = [{
-          test: `${store}.length && ${tpl} && ${tpl}.unit === ${store}[0].unit`,
+          test: `${store}.length && ${store}[0].unit === ${stringValue(model.getName(''))}`,
           ...update[key]
         }, {value: 0}];
       });
@@ -118,23 +88,20 @@ const interval:SelectionCompiler = {
     // not interefere with the core marks, but that the brushed region can still
     // be interacted with (e.g., dragging it around).
     return [{
-      name: undefined,
       type: 'rect',
       encode: {
         enter: {
           fill: {value: '#333'},
-          fillOpacity: {value: 0.125},
-          stroke: undefined
+          fillOpacity: {value: 0.125}
         },
         update: update
       }
-    }].concat(marks, {
+    } as any].concat(marks, {
       name: name + BRUSH,
       type: 'rect',
       encode: {
         enter: {
           fill: {value: 'transparent'},
-          fillOpacity: undefined,
           stroke: {value: 'white'}
         },
         update: update
@@ -159,33 +126,47 @@ export function projections(selCmpt: SelectionComponent) {
   return {x, xi, y, yi};
 }
 
-function channelSignal(model: UnitModel, selCmpt: SelectionComponent, channel: Channel): any {
-  const name  = channelSignalName(selCmpt, channel),
+/**
+ * Returns the visual and data signals for an interval selection.
+ */
+function channelSignals(model: UnitModel, selCmpt: SelectionComponent, channel: Channel): any {
+  const vname = channelSignalName(selCmpt, channel, 'visual'),
+      dname = channelSignalName(selCmpt, channel, 'data'),
+      hasScales = scales.has(selCmpt),
+      scaleName = model.scaleName(channel),
+      scaleStr = stringValue(scaleName),
+      scaleType = model.getComponent('scales', channel).type,
       size  = model.getSizeSignalRef(channel === X ? 'width' : 'height').signal,
-      coord = `${channel}(unit)`,
-      invert = invertFn.bind(null, model, selCmpt, channel);
+      coord = `${channel}(unit)`;
 
-  return {
-    name: name,
-    value: [],
-    on: scales.has(selCmpt) ? [] : events(selCmpt, function(on: any[], evt: any) {
-      on.push({
-        events: evt.between[0],
-        update: invert(`[${coord}, ${coord}]`)
-      });
+  const on = events(selCmpt, function(def: any[], evt: VgEventStream) {
+    return def.concat(
+      {events: evt.between[0], update: `[${coord}, ${coord}]`},           // Brush Start
+      {events: evt, update: `[${vname}[0], clamp(${coord}, 0, ${size})]`} // Brush End
+    );
+  });
 
-      on.push({
-        events: evt,
-        update: `[${name}[0], ` + invert(`clamp(${coord}, 0, ${size})`) + ']'
-      });
+  // React to pan/zooms of continuous scales. Non-continuous scales
+  // (bin-linear, band, point) cannot be pan/zoomed and any other changes
+  // to their domains (e.g., filtering) should clear the brushes.
+  on.push({
+    events: {scale: scaleName},
+    update: hasContinuousDomain(scaleType) && !isBinScale(scaleType) ?
+      `!isArray(${dname}) ? ${vname} : ` +
+        `[scale(${scaleStr}, ${dname}[0]), scale(${scaleStr}, ${dname}[1])]` :
+      `[]`
+  });
 
-      return on;
-    })
-  };
+  return hasScales ? [{name: dname, on: []}] : [{
+    name: vname, value: [], on: on
+  }, {
+    name: dname,
+    on: [{events: {signal: vname}, update: `invert(${scaleStr}, ${vname})`}]
+  }];
 }
 
 function events(selCmpt: SelectionComponent, cb: Function) {
-  return selCmpt.events.reduce(function(on: any[], evt: any) {
+  return selCmpt.events.reduce(function(on: any[], evt: VgEventStream) {
     if (!evt.between) {
       warn(`${evt} is not an ordered event stream for interval selections`);
       return on;

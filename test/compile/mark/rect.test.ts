@@ -1,7 +1,7 @@
 /* tslint:disable quotemark */
-
 import {assert} from 'chai';
 import {rect} from '../../../src/compile/mark/rect';
+import * as log from '../../../src/log';
 import {parseUnitModel} from '../../util';
 
 describe('Mark: Rect', function() {
@@ -42,6 +42,33 @@ describe('Mark: Rect', function() {
       assert.deepEqual(props.x, {scale: 'x', field: 'mean_Acceleration'});
       assert.deepEqual(props.x2, {scale: 'x', value: 0});
       assert.isUndefined(props.width);
+    });
+  });
+
+  describe('simple horizontal with size field', function() {
+    const model = parseUnitModel({
+      "data": {"url": 'data/cars.json'},
+      "mark": "rect",
+      "encoding": {
+        "y": {"field": "Origin", "type": "nominal"},
+        "x": {"aggregate": "mean", "field": 'Acceleration', "type": "quantitative"},
+        "size": {"aggregate": "mean", "field": "Horsepower", "type": "quantitative"}
+      }
+    });
+    const props = rect.encodeEntry(model);
+
+    log.wrap((localLogger) => {
+      it('should draw bar from zero to field value and with band value for x/width', function() {
+        assert.deepEqual(props.y, {scale: 'y', field: 'Origin'});
+        assert.deepEqual(props.height, {scale: 'y', band: true});
+        assert.deepEqual(props.x, {scale: 'x', field: 'mean_Acceleration'});
+        assert.deepEqual(props.x2, {scale: 'x', value: 0});
+        assert.isUndefined(props.width);
+      });
+
+      it('should throw warning', ()=> {
+        assert.equal(localLogger.warns[0], log.message.cannotApplySizeToNonOrientedMark('rect'));
+      });
     });
   });
 

@@ -12,13 +12,14 @@ permalink: /docs/config.html
   "mark": ... ,
   "encoding": ... ,
   "config": {          // Configuration Object
-    ...               // - Top-level Configuration
+    ...                // - Top-level Configuration
     "cell": { ... },   // - Cell Configuration
     "mark": { ... },   // - Mark Configuration
     "scale": { ... },  // - Scale Configuration
     "axis": { ... },   // - Axis Configuration
     "legend": { ... }, // - Legend Configuration
-    "facet": { ... }   // - Facet Configuration
+    "facet": { ... },   // - Facet Configuration
+    "title": { ... }   // - title Configuration
   }
 }
 ```
@@ -33,6 +34,7 @@ This page outlines different types of config properties:
 - [Axis Configuration](#axis-config)
 - [Legend Configuration](#legend-config)
 - [Facet Configuration](#facet-config)
+- [Title Configuration](#title-config)
 
 {:#top-level-config}
 ## Top-level Configuration  (`config.*`)
@@ -41,7 +43,7 @@ A Vega-Lite `config` object can have the following top-level properties:
 
 {:#format}
 
-{% include table.html props="background,countTitle,filterInvalid,numberFormat,timeFormat" source="Config" %}
+{% include table.html props="background,countTitle,filterInvalid,numberFormat,padding,range,timeFormat" source="Config" %}
 
 <!-- TODO: consider adding width, height, numberFormat, timeFormat  -->
 
@@ -229,3 +231,8 @@ Legend configuration determines default properties for [legends](legend.html). P
 ### Cell Configuration (`config.facet.cell.*`)
 
 Facet cell configuration overrides [cell config](#cell-config) for faceted (trellis) plots. Please see [cell config](#cell-config) for each property name and default values.
+
+{:#title-config}
+## Title Configuration  (`config.title.*`)
+
+{% include table.html props="anchor,angle,baseline,color,font,fontSize,fontWeight,limit,offset,orient" source="VgTitleConfig" %}

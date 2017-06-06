@@ -104,12 +104,12 @@ export interface GenericUnitSpec<E extends Encoding<any>, M> extends BaseSpec, U
 export type UnitSpec = GenericUnitSpec<Encoding<Field>, Mark | MarkDef>;
 
 /**
- * Unit spec that can contain composite mark
+ * Unit spec that can have a composite mark.
  */
 export type CompositeUnitSpec = GenericUnitSpec<Encoding<Field>, AnyMark>;
 
 /**
- * Unit spec that can contain composite mark and row or column channels.
+ * Unit spec that can have a composite mark and row or column channels.
  */
 export type FacetedCompositeUnitSpec = GenericUnitSpec<EncodingWithFacet<Field>, AnyMark>;
 
@@ -129,6 +129,8 @@ export interface GenericFacetSpec<U extends GenericUnitSpec<any, any>> extends B
 
   // TODO: support facet of facet
   spec: GenericLayerSpec<U> | GenericRepeatSpec<U> | U;
+
+  resolve?: ResolveMapping;
 }
 
 export type FacetSpec = GenericFacetSpec<UnitSpec>;
@@ -147,22 +149,24 @@ export type RepeatSpec = GenericRepeatSpec<UnitSpec>;
 export interface GenericVConcatSpec<U extends GenericUnitSpec<any, any>> extends BaseSpec {
   // TODO: add GenericFacetSpec<U> | GenericfacetSpec<U>
   vconcat: (GenericLayerSpec<U> | GenericRepeatSpec<U> | U)[];
+
+  resolve?: ResolveMapping;
 }
 
 export interface GenericHConcatSpec<U extends GenericUnitSpec<any, any>> extends BaseSpec {
   // TODO: add GenericFacetSpec<U> | GenericfacetSpec<U>
   hconcat: (GenericLayerSpec<U> | GenericRepeatSpec<U> | U)[];
+
+  resolve?: ResolveMapping;
 }
 
-export type GenericConcatSpec<U extends GenericUnitSpec<any, any>> = GenericVConcatSpec<U> | GenericHConcatSpec<U>;
+export type ConcatSpec = GenericVConcatSpec<UnitSpec> | GenericHConcatSpec<UnitSpec>;
 
-export type ConcatSpec = GenericConcatSpec<UnitSpec>;
-
-export type GenericSpec<U extends GenericUnitSpec<any, any>> = U | GenericLayerSpec<U> | GenericFacetSpec<U> | GenericRepeatSpec<U> | GenericConcatSpec<U>;
+export type GenericSpec<U extends GenericUnitSpec<any, any>> = U | GenericLayerSpec<U> | GenericFacetSpec<U> | GenericRepeatSpec<U> | GenericVConcatSpec<U> | GenericHConcatSpec<U>;
 
 export type Spec = GenericSpec<UnitSpec>;
 
-export type TopLevelExtendedSpec = TopLevel<FacetedCompositeUnitSpec> | TopLevel<GenericLayerSpec<CompositeUnitSpec>> | TopLevel<GenericFacetSpec<CompositeUnitSpec>> | TopLevel<GenericRepeatSpec<CompositeUnitSpec>> | TopLevel<GenericConcatSpec<CompositeUnitSpec>>;
+export type TopLevelExtendedSpec = TopLevel<FacetedCompositeUnitSpec> | TopLevel<GenericLayerSpec<CompositeUnitSpec>> | TopLevel<GenericFacetSpec<CompositeUnitSpec>> | TopLevel<GenericRepeatSpec<CompositeUnitSpec>> | TopLevel<GenericVConcatSpec<CompositeUnitSpec>> | TopLevel<GenericHConcatSpec<CompositeUnitSpec>>;
 
 /* Custom type guards */
 
@@ -183,7 +187,7 @@ export function isRepeatSpec(spec: GenericSpec<GenericUnitSpec<any, any>>): spec
   return spec['repeat'] !== undefined;
 }
 
-export function isConcatSpec(spec: GenericSpec<GenericUnitSpec<any, any>>): spec is GenericConcatSpec<GenericUnitSpec<any, any>> {
+export function isConcatSpec(spec: GenericSpec<GenericUnitSpec<any, any>>): spec is GenericVConcatSpec<GenericUnitSpec<any, any>> | GenericHConcatSpec<GenericUnitSpec<any, any>> {
   return isVConcatSpec(spec) || isHConcatSpec(spec);
 }
 

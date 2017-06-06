@@ -10,14 +10,15 @@
     "selection": {
       "brush": {
         "type": "interval", "resolve": "union",
-        "encodings": ["x"],
         "on": "[mousedown[event.shiftKey], mouseup] > mousemove",
-        "translate": "[mousedown[event.shiftKey], mouseup] > mousemove"
+        "translate": "[mousedown[event.shiftKey], mouseup] > mousemove",
+        "zoom": "wheel[event.shiftKey]"
       },
       "grid": {
         "type": "interval", "resolve": "global",
         "bind": "scales",
-        "translate": "[mousedown[!event.shiftKey], mouseup] > mousemove"
+        "translate": "[mousedown[!event.shiftKey], mouseup] > mousemove",
+        "zoom": "wheel[!event.shiftKey]"
       }
     },
     "encoding": {

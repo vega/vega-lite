@@ -1,0 +1,19 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v2.json",
+  "description": "Google's stock price over time.",
+  "data": {
+    "values": [
+      {"date": "10 Oct 2011 22:48:00"},
+      {"date": "11 Oct 2022 23:00:00"}
+    ]
+  },
+  "mark": "point",
+  "encoding": {
+    "y": {
+      "timeUnit": "hours",
+      "field": "date",
+      "type": "temporal",
+      "axis": {"title": "time"}
+    }
+  }
+}

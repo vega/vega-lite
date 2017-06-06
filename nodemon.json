@@ -4,8 +4,7 @@
     "node_modules/*",
     "data/*",
     "vega-lite-schema.json",
-    "examples/_original/*",
-    "examples/_output/*",
+    "examples/vg-specs/*",
     "_site/*",
     "build/*"
   ]

@@ -181,6 +181,14 @@ export namespace message {
   export const CANNOT_USE_RANGE_WITH_POSITION =
     'Cannot use custom range with x or y channel.  Please customize width, height, padding, or rangeStep instead.';
 
+  export function cannotUseSizeFieldWithBandSize(positionChannel: 'x'|'y') {
+    return `Using size field when ${positionChannel}-channel has a band scale is not supported.`;
+  }
+
+  export function cannotApplySizeToNonOrientedMark(mark: Mark) {
+    return `Cannot apply size to non-oriented mark ${mark}.`;
+  }
+
   export const CANNOT_USE_PADDING_WITH_FACET = 'Cannot use padding with facet\'s scale.  Please use spacing instead.';
 
   export function cannotUseRangePropertyWithFacet(propName: string) {
@@ -210,6 +218,10 @@ export namespace message {
 
   export function independentScaleMeansIndependentGuide(channel: Channel) {
     return `Setting the scale to be independent for ${channel} means we also have to set the guide (axis or legend) to be independent.`;
+  }
+
+  export function conflictedDomain(channel: Channel) {
+    return `Cannot set ${channel}-scale's "domain" as it is binned. Please use "bin"'s "extent" instead.`;
   }
 
   export const INVAID_DOMAIN = 'Invalid scale domain';

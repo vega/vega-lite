@@ -3,7 +3,7 @@ import {Channel} from '../../channel';
 import {SelectionDomain as SelectionScaleDomain} from '../../scale';
 import {SelectionDef, SelectionDomain, SelectionResolutions, SelectionTypes} from '../../selection';
 import {Dict, extend, isString, stringValue} from '../../util';
-import {VgBinding, VgData} from '../../vega.schema';
+import {VgBinding, VgData, VgEventStream} from '../../vega.schema';
 import {LayerModel} from '../layer';
 import {Model} from '../model';
 import {UnitModel} from '../unit';
@@ -21,7 +21,7 @@ export interface SelectionComponent {
   name: string;
   type: SelectionTypes;
   domain: SelectionDomain;
-  events: any;
+  events: VgEventStream;
   // predicate?: string;
   bind?: 'scales' | VgBinding | {[key: string]: VgBinding};
   resolve: SelectionResolutions;
@@ -115,7 +115,7 @@ export function assembleUnitSelectionSignals(model: UnitModel, signals: any[]) {
       name: name + TUPLE,
       on: [{
         events: {signal: name},
-        update: `{unit: unit.datum && unit.datum._id, ${tupleExpr}}`
+        update: `{unit: ${stringValue(model.getName(''))}, ${tupleExpr}}`
       }]
     }, {
       name: name + MODIFY,
@@ -196,9 +196,11 @@ export function assembleUnitSelectionMarks(model: UnitModel, marks: any[]): any[
 export function assembleLayerSelectionMarks(model: LayerModel, marks: any[]): any[] {
   let clipGroup = false;
   model.children.forEach(child => {
-    const unit = assembleUnitSelectionMarks(child, marks);
-    marks = unit[0];
-    clipGroup = clipGroup || unit[1];
+    if (child instanceof UnitModel) {
+      const unit = assembleUnitSelectionMarks(child, marks);
+      marks = unit[0];
+      clipGroup = clipGroup || unit[1];
+    }
   });
   return clipGroup ? clipMarks(marks) : marks;
 }
@@ -212,13 +214,11 @@ const PREDICATES_OPS = {
   intersect_others: '"intersect", "others"'
 };
 
-// TODO: How to better differentiate unit than parent._id?
-export function predicate(name: string, type: SelectionTypes, resolve?: string, datum?: string, parent?: string): string {
+export function predicate(model: Model, name: string, type: SelectionTypes, resolve?: string, datum?: string): string {
   const store = stringValue(name + STORE),
         op = PREDICATES_OPS[resolve || 'global'];
   datum = datum || 'datum';
-  parent = parent === null ? null : 'parent._id';
-  return compiler(type).predicate + `(${store}, ${parent}, ${datum}, ${op})`;
+  return compiler(type).predicate + `(${store}, ${stringValue(model.getName(''))}, ${datum}, ${op})`;
 }
 
 // Utility functions
@@ -245,13 +245,8 @@ function compiler(type: SelectionTypes): SelectionCompiler {
   return null;
 }
 
-export function invert(model: UnitModel, selCmpt: SelectionComponent, channel: Channel, expr: string) {
-  const scale = stringValue(model.scaleName(channel));
-  return selCmpt.domain === 'data' ? `invert(${scale}, ${expr})` : expr;
-}
-
-export function channelSignalName(selCmpt: SelectionComponent, channel: Channel) {
-  return selCmpt.name + '_' + selCmpt.fields[channel];
+export function channelSignalName(selCmpt: SelectionComponent, channel: Channel, range: 'visual' | 'data') {
+  return selCmpt.name + '_' + (range === 'visual' ? channel : selCmpt.fields[channel]);
 }
 
 function clipMarks(marks: any[]): any[] {

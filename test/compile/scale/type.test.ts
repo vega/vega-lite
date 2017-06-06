@@ -138,10 +138,10 @@ describe('compile/scale', () => {
           });
         });
 
-        it('should return point scale for X,Y when mark is bar and rangeStep is defined', () => {
+        it('should return band scale for X,Y when mark is bar and rangeStep is defined', () => {
           [ORDINAL, NOMINAL].forEach((t) => {
             [X, Y].forEach((channel) => {
-              assert.equal(scaleType(undefined, channel, {type: t}, 'bar', undefined, 21, defaultConfig), ScaleType.POINT);
+              assert.equal(scaleType(undefined, channel, {type: t}, 'bar', undefined, 21, defaultConfig), ScaleType.BAND);
             });
           });
         });

@@ -10,7 +10,7 @@ import {defaultConfig as defaultSelectionConfig, SelectionConfig} from './select
 import {StackOffset} from './stack';
 import {TopLevelProperties} from './toplevelprops';
 import {duplicate, isObject, keys, mergeDeep} from './util';
-import {VgRangeScheme} from './vega.schema';
+import {VgRangeScheme, VgTitleConfig} from './vega.schema';
 
 export interface CellConfig {
   /**
@@ -193,7 +193,7 @@ export interface VLOnlyConfig {
 
 }
 
-export interface Config  extends TopLevelProperties, VLOnlyConfig, MarkConfigMixins, CompositeMarkConfigMixins, AxisConfigMixins {
+export interface Config extends TopLevelProperties, VLOnlyConfig, MarkConfigMixins, CompositeMarkConfigMixins, AxisConfigMixins {
 
   /**
    * Scale range config, or properties defining named range arrays
@@ -205,6 +205,9 @@ export interface Config  extends TopLevelProperties, VLOnlyConfig, MarkConfigMix
 
   /** Legend Config */
   legend?: LegendConfig;
+
+  /** Title Config */
+  title?: VgTitleConfig;
 
   // Support arbitrary key for role config
   // Note: Technically, the type for role config should be `MarkConfig`.
@@ -253,6 +256,8 @@ export const defaultConfig: Config = {
   facet: defaultFacetConfig,
 
   selection: defaultSelectionConfig,
+
+  title: {},
 };
 
 export function initConfig(config: Config) {

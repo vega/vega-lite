@@ -2,9 +2,14 @@
 {
   "editor.tabSize": 2,
   "files.exclude": {
-    "build": true,
     "coverage/**/*": true,
-    "_site/**/*": true
+    "_site/**/*": true,
+    ".nyc_output": true
   },
-  "files.trimTrailingWhitespace": true
+  "search.exclude": {
+    "build": true
+  },
+  "files.trimTrailingWhitespace": true,
+  "tsimporter.spaceBetweenBraces": false,
+  "typescriptHero.resolver.insertSpaceBeforeAndAfterImportBraces": false
 }

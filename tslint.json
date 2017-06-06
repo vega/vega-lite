@@ -67,6 +67,7 @@
         "variable-declaration": "nospace"
       }
     ],
+    "use-default-type-parameter": true,
     "no-switch-case-fall-through": true,
     "quotemark": [true, "single", "avoid-escape"],
     "triple-equals": [true, "allow-null-check"],

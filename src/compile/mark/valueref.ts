@@ -44,16 +44,22 @@ export function stackable2(channel: 'x2' | 'y2', aFieldDef: FieldDef<string>, a2
  * Value Ref for binned fields
  */
 export function bin(fieldDef: FieldDef<string>, scaleName: string, side: 'start' | 'end',  offset?: number) {
-  return fieldRef(fieldDef, scaleName, {binSuffix: side}, offset);
+  return fieldRef(fieldDef, scaleName, {binSuffix: side}, offset ? {offset} : {});
 }
 
-export function fieldRef(fieldDef: FieldDef<string>, scaleName: string, opt: FieldRefOption, offset?: number | VgValueRef): VgValueRef {
+export function fieldRef(
+    fieldDef: FieldDef<string>, scaleName: string, opt: FieldRefOption,
+    mixins?: {offset?: number | VgValueRef, band?: number|boolean}
+  ): VgValueRef {
   const ref: VgValueRef = {
     scale: scaleName,
     field: field(fieldDef, opt),
   };
-  if (offset) {
-    ref.offset = offset;
+  if (mixins) {
+    return {
+      ...ref,
+      ...mixins
+    };
   }
   return ref;
 }
@@ -100,7 +106,7 @@ export function midPoint(channel: Channel, channelDef: ChannelDef<string>, scale
       if (hasDiscreteDomain(scale.type)) {
         if (scale.type === 'band') {
           // For band, to get mid point, need to offset by half of the band
-          return fieldRef(channelDef, scaleName, {binSuffix: 'range'}, band(scaleName, 0.5));
+          return fieldRef(channelDef, scaleName, {binSuffix: 'range'}, {band: 0.5});
         }
         return fieldRef(channelDef, scaleName, {binSuffix: 'range'});
       } else {

@@ -126,11 +126,6 @@ function discreteToContinuousType(
       return 'band';
     }
     if (mark === 'bar') {
-      // For bar, use band only if there is no rangeStep since we need to use band for fit mode.
-      // However, for non-fit mode, point scale provides better center position.
-      if (haveRangeStep(hasTopLevelSize, specifiedRangeStep, scaleConfig)) {
-        return 'point';
-      }
       return 'band';
     }
   }

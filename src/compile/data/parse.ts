@@ -45,11 +45,11 @@ Description of the dataflow (http://asciiflow.com/):
      +---+----+
          |
          v
-       Parse
-         |
-         v
      Transforms
 (Filter, Compute, ...)
+         |
+         v
+       Parse
          |
          v
      Null Filter
@@ -100,12 +100,6 @@ export function parseData(model: Model): DataComponent {
   // the current head of the tree that we are appending to
   let head = root;
 
-  const parse = ParseNode.make(model);
-  if (parse) {
-    parse.parent = root;
-    head = parse;
-  }
-
   // HACK: This is equivalent for merging bin extent for union scale.
   // FIXME(https://github.com/vega/vega-lite/issues/2270): Correctly merge extent / bin node for shared bin scale
   const parentIsLayer = model.parent && (model.parent instanceof LayerModel);
@@ -123,6 +117,12 @@ export function parseData(model: Model): DataComponent {
     const {first, last} = parseTransformArray(model);
     first.parent = head;
     head = last;
+  }
+
+  const parse = ParseNode.make(model);
+  if (parse) {
+    parse.parent = head;
+    head = parse;
   }
 
   if (model instanceof ModelWithField) {

@@ -6,7 +6,7 @@ import * as vlEncoding from '../encoding'; // TODO: remove
 import {field, FieldDef, FieldRefOption, isFieldDef} from '../fielddef';
 import {Legend} from '../legend';
 import {FILL_STROKE_CONFIG, isMarkDef, Mark, MarkDef, TEXT as TEXT_MARK} from '../mark';
-import {hasDiscreteDomain, Scale} from '../scale';
+import {defaultScaleConfig, hasDiscreteDomain, Scale} from '../scale';
 import {SelectionDef} from '../selection';
 import {SortField, SortOrder} from '../sort';
 import {UnitSize, UnitSpec} from '../spec';
@@ -176,10 +176,12 @@ export class UnitModel extends ModelWithField {
           // for text table without x/y scale we need wider rangeStep
           width = scaleConfig.textXRangeStep;
         } else {
-          if (typeof scaleConfig.rangeStep === 'string') {
-            throw new Error('_initSize does not handle string rangeSteps');
+          // Set height equal to rangeStep config or if rangeStep is null, use value from default scale config.
+          if (scaleConfig.rangeStep) {
+            width = scaleConfig.rangeStep;
+          } else {
+            width = defaultScaleConfig.rangeStep;
           }
-          width = scaleConfig.rangeStep;
         }
       }
     }
@@ -190,10 +192,12 @@ export class UnitModel extends ModelWithField {
           height = cellConfig.height;
         } // else: Do nothing, use dynamic height .
       } else {
-        if (typeof scaleConfig.rangeStep === 'string') {
-          throw new Error('_initSize does not handle string rangeSteps');
+        // Set height equal to rangeStep config or if rangeStep is null, use value from default scale config.
+        if (scaleConfig.rangeStep) {
+          height = scaleConfig.rangeStep;
+        } else {
+          height = defaultScaleConfig.rangeStep;
         }
-        height = scaleConfig.rangeStep;
       }
     }
 

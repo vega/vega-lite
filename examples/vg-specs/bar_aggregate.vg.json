@@ -47,7 +47,7 @@
         },
         {
             "name": "height",
-            "update": "bandspace(domain('y').length, 1, 0.5) * 17"
+            "update": "bandspace(domain('y').length, 0.1, 0.05) * 17"
         }
     ],
     "marks": [
@@ -85,12 +85,13 @@
                                 "scale": "x",
                                 "value": 0
                             },
-                            "yc": {
+                            "y": {
                                 "scale": "y",
                                 "field": "age"
                             },
                             "height": {
-                                "value": 16
+                                "scale": "y",
+                                "band": true
                             },
                             "fill": {
                                 "value": "#4c78a8"
@@ -119,7 +120,7 @@
         },
         {
             "name": "y",
-            "type": "point",
+            "type": "band",
             "domain": {
                 "data": "source_0",
                 "field": "age",
@@ -129,7 +130,8 @@
                 "step": 17
             },
             "round": true,
-            "padding": 0.5
+            "paddingInner": 0.1,
+            "paddingOuter": 0.05
         }
     ],
     "axes": [

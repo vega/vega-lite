@@ -13,8 +13,11 @@ import {isSignalRefDomain, VgData, VgLayout, VgScale, VgSignal} from '../vega.sc
 import {buildModel} from './common';
 import {assembleData} from './data/assemble';
 import {parseData} from './data/parse';
+import {moveSharedLegendUp} from './legend/parse';
 import {Model} from './model';
+import {ScaleComponent} from './scale/component';
 import {unionDomains} from './scale/domain';
+import {moveSharedScaleUp} from './scale/parse';
 
 
 export type RepeaterValue = {
@@ -132,7 +135,7 @@ export class RepeatModel extends Model {
   }
 
   public parseScale(this: RepeatModel) {
-    const scaleComponent: Dict<VgScale> = this.component.scales = {};
+    const scaleComponent: Dict<ScaleComponent> = this.component.scales = {};
 
     for (const child of this.children) {
       child.parseScale();
@@ -140,28 +143,7 @@ export class RepeatModel extends Model {
       // Check whether the scales are actually compatible, e.g. use the same sort or throw error
       keys(child.component.scales).forEach((channel: ScaleChannel) => {
         if (this.resolve[channel].scale === 'shared') {
-          const childScale = child.component.scales[channel];
-          const modelScale = scaleComponent[channel];
-
-          if (!childScale || isSignalRefDomain(childScale.domain) || (modelScale && isSignalRefDomain(modelScale.domain))) {
-            // TODO: merge signal ref domains
-            return;
-          }
-
-          if (modelScale) {
-            modelScale.domain = unionDomains(modelScale.domain, childScale.domain);
-          } else {
-            scaleComponent[channel] = childScale;
-          }
-
-          // rename child scale to parent scales
-          const scaleNameWithoutPrefix = childScale.name.substr(child.getName('').length);
-          const newName = this.scaleName(scaleNameWithoutPrefix, true);
-          child.renameScale(childScale.name, newName);
-          childScale.name = newName;
-
-          // remove merged scales from children
-          delete child.component.scales[channel];
+          moveSharedScaleUp(this, scaleComponent, child, channel);
         }
       });
     }
@@ -189,11 +171,7 @@ export class RepeatModel extends Model {
 
       keys(child.component.legends).forEach((channel: ScaleChannel) => {
         if (this.resolve[channel].legend === 'shared') {
-          // just use the first legend definition for each channel
-          if (!legendComponent[channel]) {
-            legendComponent[channel] = child.component.legends[channel];
-          }
-          delete child.component.legends[channel];
+          moveSharedLegendUp(this.component.legends, child, channel);
         }
       });
     }
@@ -229,13 +207,6 @@ export class RepeatModel extends Model {
 
   public assembleSelectionData(data: VgData[]): VgData[] {
     return this.children.reduce((db, child) => child.assembleSelectionData(db), []);
-  }
-
-  public assembleScales(): VgScale[] {
-    // combine with scales from children
-    return this.children.reduce((scales, c) => {
-      return scales.concat(c.assembleScales());
-    }, super.assembleScales());
   }
 
   public assembleLayout(): VgLayout {

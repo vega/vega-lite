@@ -10,8 +10,15 @@ const project:TransformCompiler = {
   parse: function(model, selDef, selCmpt) {
     let fields = {};
     // TODO: find a possible channel mapping for these fields.
-    (selDef.fields || []).forEach((f) => fields[f] = null);
-    (selDef.encodings || []).forEach((c: Channel) => fields[model.fieldDef(c).field] = c);
+    (selDef.fields || []).forEach((field) => fields[field] = null);
+    (selDef.encodings || []).forEach((channel: Channel) => {
+      const fieldDef = model.fieldDef(channel);
+      if (fieldDef.timeUnit) {
+        fields[model.field(channel)] = channel;
+      } else {
+        fields[fieldDef.field] = channel;
+      }
+    });
 
     const projection = selCmpt.project || (selCmpt.project = []);
     for (const field in fields) {
