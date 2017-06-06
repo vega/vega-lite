@@ -483,12 +483,6 @@
                                 },
                                 {
                                     "events": {
-                                        "scale": "child_distance_x"
-                                    },
-                                    "update": "[]"
-                                },
-                                {
-                                    "events": {
                                         "signal": "brush_translate_delta"
                                     },
                                     "update": "clampRange([brush_translate_anchor.extent_x[0] + brush_translate_delta.x, brush_translate_anchor.extent_x[1] + brush_translate_delta.x], 0, child_distance_layer_0_width)"
@@ -934,12 +928,6 @@
                                 },
                                 {
                                     "events": {
-                                        "scale": "child_delay_x"
-                                    },
-                                    "update": "[]"
-                                },
-                                {
-                                    "events": {
                                         "signal": "brush_translate_delta"
                                     },
                                     "update": "clampRange([brush_translate_anchor.extent_x[0] + brush_translate_delta.x, brush_translate_anchor.extent_x[1] + brush_translate_delta.x], 0, child_delay_layer_0_width)"
@@ -1382,12 +1370,6 @@
                                         ]
                                     },
                                     "update": "[brush_x[0], clamp(x(unit), 0, child_time_layer_0_width)]"
-                                },
-                                {
-                                    "events": {
-                                        "scale": "child_time_x"
-                                    },
-                                    "update": "[]"
                                 },
                                 {
                                     "events": {
