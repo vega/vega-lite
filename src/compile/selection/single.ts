@@ -9,20 +9,13 @@ const single:SelectionCompiler = {
 
   topLevelSignals: function(model, selCmpt, signals) {
     const hasSignal = signals.filter((s) => s.name === selCmpt.name);
+    const data = `data(${stringValue(selCmpt.name + STORE)})`;
+    const values = `${data}[0].values`;
     return hasSignal.length ? signals : signals.concat({
       name: selCmpt.name,
-      update: `data(${stringValue(selCmpt.name + STORE)})[0]`
+      update: `${data}.length && {` +
+        selCmpt.project.map((p, i) => `${p.field}: ${values}[${i}]`).join(',') + '}'
     });
-  },
-
-  tupleExpr: function(model, selCmpt) {
-    const name = selCmpt.name;
-    const values = `${name}.values`;
-    return `encodings: ${name}.encodings, fields: ${name}.fields, ` +
-      `values: ${values}, bins: ${name}.bins, ` +
-      selCmpt.project.map(function(p, i) {
-        return `${p.field}: ${values}[${i}]`;
-      }).join(', ');
   },
 
   modifyExpr: function(model, selCmpt) {
