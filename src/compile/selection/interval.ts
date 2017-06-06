@@ -152,13 +152,13 @@ function channelSignals(model: UnitModel, selCmpt: SelectionComponent, channel: 
   // React to pan/zooms of continuous scales. Non-continuous scales
   // (bin-linear, band, point) cannot be pan/zoomed and any other changes
   // to their domains (e.g., filtering) should clear the brushes.
-  on.push({
-    events: {scale: scaleName},
-    update: hasContinuousDomain(scaleType) && !isBinScale(scaleType) ?
-      `!isArray(${dname}) ? ${vname} : ` +
-        `[scale(${scaleStr}, ${dname}[0]), scale(${scaleStr}, ${dname}[1])]` :
-      `[]`
-  });
+  if (hasContinuousDomain(scaleType) && !isBinScale(scaleType)) {
+    on.push({
+      events: {scale: scaleName},
+      update: `!isArray(${dname}) ? ${vname} : ` +
+          `[scale(${scaleStr}, ${dname}[0]), scale(${scaleStr}, ${dname}[1])]`
+    });
+  }
 
   return hasScales ? [{name: dname, on: []}] : [{
     name: vname, value: [], on: on
