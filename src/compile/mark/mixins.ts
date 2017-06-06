@@ -54,7 +54,7 @@ export function nonPosition(channel: typeof NONSPATIAL_SCALE_CHANNELS[0], model:
   const defaultRef = opt.defaultRef || (defaultValue !== undefined ? {value: defaultValue} : undefined);
 
   const channelDef = model.encoding[channel];
-  const valueRef = ref.midPoint(channel, channelDef, model.scaleName(channel), model.scale(channel), defaultRef);
+  const valueRef = ref.midPoint(channel, channelDef, model.scaleName(channel), model.getScaleComponent(channel), defaultRef);
 
   return wrapCondition(model, channelDef && channelDef.condition, vgChannel || channel, valueRef);
 }
@@ -161,7 +161,7 @@ export function pointPosition(channel: 'x'|'y', model: UnitModel, defaultRef: Vg
   // TODO: refactor how refer to scale as discussed in https://github.com/vega/vega-lite/pull/1613
 
   const {encoding, stack} = model;
-  const valueRef = ref.stackable(channel, encoding[channel], model.scaleName(channel), model.scale(channel), stack, defaultRef);
+  const valueRef = ref.stackable(channel, encoding[channel], model.scaleName(channel), model.getScaleComponent(channel), stack, defaultRef);
 
   return {
     [vgChannel || channel]: valueRef
@@ -177,6 +177,6 @@ export function pointPosition2(model: UnitModel, defaultRef: 'zeroOrMin' | 'zero
   channel = channel || (markDef.orient === 'horizontal' ? 'x2' : 'y2');
   const baseChannel = channel === 'x2' ? 'x' : 'y';
 
-  const valueRef = ref.stackable2(channel, encoding[baseChannel], encoding[channel], model.scaleName(baseChannel), model.scale(baseChannel), stack, defaultRef);
+  const valueRef = ref.stackable2(channel, encoding[baseChannel], encoding[channel], model.scaleName(baseChannel), model.getScaleComponent(baseChannel), stack, defaultRef);
   return {[channel]: valueRef};
 }

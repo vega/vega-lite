@@ -33,6 +33,8 @@ export function assembleLayoutUnitSignals(model: UnitModel): VgSignal[] {
 
 export function unitSizeExpr(model: UnitModel, sizeType: 'width' | 'height'): string {
   const channel = sizeType==='width' ? 'x' : 'y';
+
+  // TODO: remove this once rangeStep is a part of scale component
   const scale = model.scale(channel);
   if (scale) {
     if (hasDiscreteDomain(scale.type) && scale.rangeStep) {

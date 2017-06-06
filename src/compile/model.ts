@@ -122,7 +122,7 @@ export abstract class Model {
         outputNodes: parent ? parent.component.data.outputNodes : {},
         outputNodeRefCounts: parent ? parent.component.data.outputNodeRefCounts : {}
       },
-      mark: null, scales: null, axes: {x: null, y: null},
+      mark: null, scales: {}, axes: {x: null, y: null},
       layoutHeaders:{row: {}, column: {}}, legends: null, selection: null
     };
   }
@@ -366,7 +366,7 @@ export abstract class Model {
    * @param name Name of the component
    */
   public getScaleComponent(name: string): ScaleComponent {
-    return this.component.scales[name] || this.parent.getScaleComponent(name);
+    return this.component.scales[name] || (this.parent ? this.parent.getScaleComponent(name) : undefined);
   }
 
   public getSelectionComponent(name: string): SelectionComponent {
