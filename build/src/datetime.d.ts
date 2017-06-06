@@ -69,6 +69,10 @@ export interface DateTime {
      * @TJS-type integer
      */
     milliseconds?: number;
+    /**
+     * A boolean flag indicating if date time is in utc time. If false, the date time is in local time
+     */
+    utc?: boolean;
 }
 /**
  * Internal Object for defining datetime expressions.
@@ -86,13 +90,13 @@ export interface DateTimeExpr {
     minutes?: string;
     seconds?: string;
     milliseconds?: string;
+    utc?: boolean;
 }
 export declare function isDateTime(o: any): o is DateTime;
 export declare const MONTHS: string[];
 export declare const SHORT_MONTHS: string[];
 export declare const DAYS: string[];
 export declare const SHORT_DAYS: string[];
-export declare function timestamp(d: DateTime, normalize: boolean): number;
 /**
  * Return Vega Expression for a particular date time.
  * @param d

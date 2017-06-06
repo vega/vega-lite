@@ -1,5 +1,6 @@
 import { BaseBin } from './bin';
 import { NiceTime, ScaleType, SelectionDomain } from './scale';
+import { SortOrder } from './sort';
 import { StackOffset } from './stack';
 export interface VgData {
     name: string;
@@ -14,8 +15,9 @@ export declare type VgParentRef = {
 };
 export declare type VgFieldRef = string | VgParentRef | VgParentRef[];
 export declare type VgSortField = boolean | {
-    field: VgFieldRef;
+    field?: VgFieldRef;
     op: string;
+    order?: SortOrder;
 };
 export declare type VgDataRef = {
     data: string;
@@ -25,6 +27,7 @@ export declare type VgDataRef = {
 export declare type VgSignalRef = {
     signal: string;
 };
+export declare type VgEventStream = any;
 export declare type VgValueRef = {
     value?: number | string | boolean;
     field?: string | {
@@ -36,10 +39,10 @@ export declare type VgValueRef = {
     scale?: string;
     mult?: number;
     offset?: number | VgValueRef;
-    band?: boolean | number;
+    band?: boolean | number | VgValueRef;
 };
 export declare type DataRefUnionDomain = {
-    fields: (any[] | VgDataRef)[];
+    fields: (any[] | VgDataRef | VgSignalRef)[];
     sort?: boolean | {
         op: 'count';
     };
@@ -369,6 +372,7 @@ export interface VgAxisConfig extends VgAxisBase {
     tickRound?: boolean;
     /**
      * The width, in pixels, of ticks.
+     *
      * @minimum 0
      */
     tickWidth?: number;
@@ -745,4 +749,52 @@ export interface VgMarkConfig {
      * Placeholder text if the `text` channel is not specified
      */
     text?: string;
+}
+export interface VgTitleConfig {
+    /**
+     * Title anchor position (`"start"`, `"middle"`, or `"end"`).
+     */
+    anchor?: string;
+    /**
+     * Angle in degrees of title text.
+     */
+    angle?: number;
+    /**
+     * Vertical text baseline for title text.
+     */
+    baseline?: string;
+    /**
+     * Text color for title text.
+     */
+    color?: string;
+    /**
+     * Font name for title text.
+     */
+    font?: string;
+    /**
+     * Font size in pixels for title text.
+     *
+     * __Default value:__ `10`.
+     *
+     * @minimum 0
+     */
+    fontSize?: number;
+    /**
+     * Font weight for title text.
+     */
+    fontWeight?: string | number;
+    /**
+     * The maximum allowed length in pixels of legend labels.
+     *
+     * @minimum 0
+     */
+    limit?: number;
+    /**
+     * Offset in pixels of the title from the chart body and axes.
+     */
+    offset?: number;
+    /**
+     * Default title orientation ("top", "bottom", "left", or "right")
+     */
+    orient?: string;
 }

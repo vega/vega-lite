@@ -9,7 +9,7 @@ export interface RequiredChannelMap {
 export declare const DEFAULT_REQUIRED_CHANNEL_MAP: RequiredChannelMap;
 export interface SupportedChannelMap {
     [mark: string]: {
-        [channel: string]: number;
+        [channel: string]: boolean;
     };
 }
 /**

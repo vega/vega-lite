@@ -22,45 +22,54 @@ export interface CalculateTransform {
 }
 export interface BinTransform {
     /**
-     * Boolean flag indicating using bin transform
+     * An object indicating bin properties, or simply `true` for using default bin values..
      */
-    bin: boolean | Bin;
+    bin: Bin | true;
     /**
-     * The field to use this transform on.
+     * The data field to bin.
      */
     field: string;
     /**
-     * The field for storing the computed formula value.
+     * The output fields at which to write the start and end bin values.
      */
     as: string;
 }
 export interface TimeUnitTransform {
     /**
-     * The type of time unit for this transform.
+     * The timeUnit.
      */
     timeUnit: TimeUnit;
     /**
-     * The field to use this transform on.
+     * The data field to apply time unit.
      */
     field: string;
     /**
-     * The field for storing the computed formula value.
+     * The output field to write the timeUnit value.
      */
     as: string;
 }
 export interface SummarizeTransform {
     /**
-     * Array of objects that contains
+     * Array of objects that contains aggregate information for the transform.
      */
     summarize: Summarize[];
     /**
-     * Array of fields we will be useing for group by
+     * The data fields to group by. If not specified, a single group containing all data objects will be used.
      */
-    groupby: string[];
+    groupby?: string[];
 }
 export interface Summarize {
+    /**
+     * The aggregation operations to apply to the fields, such as sum, average or count. See the aggregate operation reference for more.
+     */
     aggregate: AggregateOp;
+    /**
+     * The data field for which to compute aggregate function.
+     */
     field: string;
+    /**
+     * The output field names to use for each aggregated field.
+     */
     as: string;
 }
 export interface LookupData {

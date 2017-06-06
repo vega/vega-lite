@@ -1,7 +1,7 @@
 import { Channel } from '../../channel';
 import { SelectionDef, SelectionDomain, SelectionResolutions, SelectionTypes } from '../../selection';
 import { Dict } from '../../util';
-import { VgBinding, VgData } from '../../vega.schema';
+import { VgBinding, VgData, VgEventStream } from '../../vega.schema';
 import { LayerModel } from '../layer';
 import { Model } from '../model';
 import { UnitModel } from '../unit';
@@ -13,7 +13,7 @@ export interface SelectionComponent {
     name: string;
     type: SelectionTypes;
     domain: SelectionDomain;
-    events: any;
+    events: VgEventStream;
     bind?: 'scales' | VgBinding | {
         [key: string]: VgBinding;
     };
@@ -44,6 +44,5 @@ export declare function assembleTopLevelSignals(model: UnitModel, signals: any[]
 export declare function assembleUnitSelectionData(model: UnitModel, data: VgData[]): VgData[];
 export declare function assembleUnitSelectionMarks(model: UnitModel, marks: any[]): any[];
 export declare function assembleLayerSelectionMarks(model: LayerModel, marks: any[]): any[];
-export declare function predicate(name: string, type: SelectionTypes, resolve?: string, datum?: string, parent?: string): string;
-export declare function invert(model: UnitModel, selCmpt: SelectionComponent, channel: Channel, expr: string): string;
-export declare function channelSignalName(selCmpt: SelectionComponent, channel: Channel): string;
+export declare function predicate(model: Model, name: string, type: SelectionTypes, resolve?: string, datum?: string): string;
+export declare function channelSignalName(selCmpt: SelectionComponent, channel: Channel, range: 'visual' | 'data'): string;

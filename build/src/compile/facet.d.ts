@@ -3,14 +3,15 @@ import { Config } from '../config';
 import { Facet } from '../facet';
 import { FieldDef } from '../fielddef';
 import { FacetSpec } from '../spec';
-import { VgSignal } from '../vega.schema';
 import { VgData, VgEncodeEntry, VgLayout } from '../vega.schema';
+import { VgSignal } from '../vega.schema';
 import { Model, ModelWithField } from './model';
 import { RepeaterValue } from './repeat';
 export declare class FacetModel extends ModelWithField {
     readonly facet: Facet<string>;
     readonly child: Model;
     readonly children: Model[];
+    private readonly resolve;
     constructor(spec: FacetSpec, parent: Model, parentGivenName: string, repeater: RepeaterValue, config: Config);
     private initFacet(facet);
     channelHasField(channel: Channel): boolean;

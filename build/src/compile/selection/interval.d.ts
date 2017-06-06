@@ -1,5 +1,5 @@
 import { ProjectComponent, SelectionCompiler, SelectionComponent } from './selection';
-export declare const BRUSH = "_brush", SIZE = "_size";
+export declare const BRUSH = "_brush";
 declare const interval: SelectionCompiler;
 export { interval as default };
 export declare function projections(selCmpt: SelectionComponent): {

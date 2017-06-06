@@ -16,7 +16,9 @@ export declare function gridScale(model: UnitModel, channel: Channel, isGridAxis
 export declare function orient(specifiedAxis: Axis, channel: Channel): "left" | "right" | "top" | "bottom";
 export declare function tickCount(specifiedAxis: Axis, channel: Channel, fieldDef: FieldDef<string>): number;
 export declare function title(specifiedAxis: Axis, fieldDef: FieldDef<string>, config: Config, isGridAxis: boolean): string;
-export declare function values(specifiedAxis: Axis): number[] | DateTime[];
+export declare function values(specifiedAxis: Axis): number[] | DateTime[] | {
+    signal: string;
+}[];
 export declare function zindex(specifiedAxis: Axis, isGridAxis: boolean): number;
 export declare function domainAndTicks(property: keyof VgAxis, specifiedAxis: Axis, isGridAxis: boolean, channel: Channel): any;
 export declare const domain: typeof domainAndTicks;

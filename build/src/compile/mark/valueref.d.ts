@@ -19,7 +19,10 @@ export declare function stackable2(channel: 'x2' | 'y2', aFieldDef: FieldDef<str
  * Value Ref for binned fields
  */
 export declare function bin(fieldDef: FieldDef<string>, scaleName: string, side: 'start' | 'end', offset?: number): VgValueRef;
-export declare function fieldRef(fieldDef: FieldDef<string>, scaleName: string, opt: FieldRefOption, offset?: number | VgValueRef): VgValueRef;
+export declare function fieldRef(fieldDef: FieldDef<string>, scaleName: string, opt: FieldRefOption, mixins?: {
+    offset?: number | VgValueRef;
+    band?: number | boolean;
+}): VgValueRef;
 export declare function band(scaleName: string, band?: number | boolean): VgValueRef;
 /**
  * @returns {VgValueRef} Value Ref for xc / yc or mid point for other channels.

@@ -3,9 +3,8 @@ import { LayerSpec, UnitSize } from '../spec';
 import { VgData, VgEncodeEntry, VgLayout, VgScale, VgSignal } from '../vega.schema';
 import { Model } from './model';
 import { RepeaterValue } from './repeat';
-import { UnitModel } from './unit';
 export declare class LayerModel extends Model {
-    readonly children: UnitModel[];
+    readonly children: Model[];
     private readonly resolve;
     constructor(spec: LayerSpec, parent: Model, parentGivenName: string, parentUnitSize: UnitSize, repeater: RepeaterValue, config: Config);
     parseData(): void;

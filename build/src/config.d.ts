@@ -6,7 +6,7 @@ import { ScaleConfig } from './scale';
 import { SelectionConfig } from './selection';
 import { StackOffset } from './stack';
 import { TopLevelProperties } from './toplevelprops';
-import { VgRangeScheme } from './vega.schema';
+import { VgRangeScheme, VgTitleConfig } from './vega.schema';
 export interface CellConfig {
     /**
      * The default width of the single plot or each plot in a trellis plot when the visualization has a continuous (non-ordinal) x-scale or ordinal x-scale with `rangeStep` = `null`.
@@ -155,6 +155,8 @@ export interface Config extends TopLevelProperties, VLOnlyConfig, MarkConfigMixi
     };
     /** Legend Config */
     legend?: LegendConfig;
+    /** Title Config */
+    title?: VgTitleConfig;
     [role: string]: any;
 }
 export declare const defaultConfig: Config;

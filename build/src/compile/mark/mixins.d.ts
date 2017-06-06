@@ -14,9 +14,7 @@ export declare function nonPosition(channel: typeof NONSPATIAL_SCALE_CHANNELS[0]
     defaultRef?: VgValueRef;
 }): VgEncodeEntry;
 export declare function text(model: UnitModel, vgChannel?: 'text' | 'tooltip'): any;
-export declare function bandPosition(channel: 'x' | 'y', model: UnitModel): {
-    [x: string]: VgValueRef;
-};
+export declare function bandPosition(channel: 'x' | 'y', model: UnitModel): any;
 export declare function centeredBandPosition(channel: 'x' | 'y', model: UnitModel, defaultPosRef: VgValueRef, defaultSizeRef: VgValueRef): any;
 export declare function binnedPosition(channel: 'x' | 'y', model: UnitModel, spacing: number): {
     x2: VgValueRef;

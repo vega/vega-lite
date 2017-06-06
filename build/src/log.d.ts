@@ -63,6 +63,8 @@ export declare namespace message {
     function unaggregateDomainWithNonSharedDomainOp(aggregate: string): string;
     function unaggregatedDomainWithLogScale(fieldDef: FieldDef<string>): string;
     const CANNOT_USE_RANGE_WITH_POSITION = "Cannot use custom range with x or y channel.  Please customize width, height, padding, or rangeStep instead.";
+    function cannotUseSizeFieldWithBandSize(positionChannel: 'x' | 'y'): string;
+    function cannotApplySizeToNonOrientedMark(mark: Mark): string;
     const CANNOT_USE_PADDING_WITH_FACET = "Cannot use padding with facet's scale.  Please use spacing instead.";
     function cannotUseRangePropertyWithFacet(propName: string): string;
     function rangeStepDropped(channel: Channel): string;
@@ -71,6 +73,7 @@ export declare namespace message {
     function scalePropertyNotWorkWithScaleType(scaleType: ScaleType, propName: string, channel: Channel): string;
     function scaleTypeNotWorkWithMark(mark: Mark, scaleType: ScaleType): string;
     function independentScaleMeansIndependentGuide(channel: Channel): string;
+    function conflictedDomain(channel: Channel): string;
     const INVAID_DOMAIN = "Invalid scale domain";
     const UNABLE_TO_MERGE_DOMAINS = "Unable to merge domains";
     const INVALID_CHANNEL_FOR_AXIS = "Invalid channel for axis.";

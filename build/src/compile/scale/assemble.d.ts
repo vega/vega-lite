@@ -4,7 +4,9 @@ export declare function assembleScale(model: Model): {
     name: string;
     type: "time" | "linear" | "bin-linear" | "log" | "pow" | "sqrt" | "utc" | "sequential" | "ordinal" | "bin-ordinal" | "point" | "band";
     domain: any[] | VgDataRef | {
-        fields: (any[] | VgDataRef)[];
+        fields: (any[] | VgDataRef | {
+            signal: string;
+        })[];
         sort?: boolean | {
             op: "count";
         };

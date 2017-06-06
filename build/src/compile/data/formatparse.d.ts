@@ -10,5 +10,11 @@ export declare class ParseNode extends DataFlowNode {
     readonly parse: Dict<string>;
     merge(other: ParseNode): void;
     assembleFormatParse(): Dict<string>;
+    producedFields(): {
+        [T: string]: boolean;
+    };
+    dependentFields(): {
+        [T: string]: boolean;
+    };
     assembleTransforms(): VgFormulaTransform[];
 }

@@ -1,3 +1,6 @@
+/**
+ * @minimum 0
+ */
 export declare type Padding = number | {
     top?: number;
     bottom?: number;
@@ -15,8 +18,6 @@ export interface TopLevelProperties {
      * The default visualization padding, in pixels, from the edge of the visualization canvas to the data rectangle. This can be a single number or an object with `"top"`, `"left"`, `"right"`, `"bottom"` properties.
      *
      * __Default value__: `5`
-     *
-     * @minimum 0
      */
     padding?: Padding;
     /**
