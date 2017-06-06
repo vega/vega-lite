@@ -3,7 +3,8 @@
   "editor.tabSize": 2,
   "files.exclude": {
     "coverage/**/*": true,
-    "_site/**/*": true
+    "_site/**/*": true,
+    ".nyc_output": true
   },
   "search.exclude": {
     "build": true
