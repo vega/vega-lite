@@ -316,7 +316,6 @@ export class FacetModel extends ModelWithField {
   }
 }
 
-// FIXME(https://github.com/vega/vega-lite/issues/2041): revise this.
 function getFacetGroupProperties(model: FacetModel) {
   const encodeEntry = model.child.assembleParentGroupProperties();
 
