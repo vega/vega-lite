@@ -13,7 +13,7 @@ function getStackByFields(model: UnitModel): string[] {
     const channel = by.channel;
     const fieldDef = by.fieldDef;
 
-    const scale = model.scale(channel);
+    const scale = model.getScaleComponent(channel);
     const _field = field(fieldDef, {
       binSuffix: scale && hasDiscreteDomain(scale.type) ? 'range' : 'start'
     });

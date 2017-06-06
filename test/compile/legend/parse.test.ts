@@ -16,6 +16,8 @@ describe('compile/legend', function() {
           color: {field: "a", type: "quantitative"}
         }
       });
+      model.parseScale();
+
       const def = legendParse.parseLegend(model, COLOR);
       assert.isObject(def);
       assert.equal(def.title, 'a');
@@ -32,7 +34,9 @@ describe('compile/legend', function() {
           }
         };
         s.encoding[channel] = {field: "a", type: "nominal"};
+
         const model = parseUnitModel(s);
+        model.parseScale();
 
         const def = legendParse.parseLegend(model, channel);
         assert.isObject(def);

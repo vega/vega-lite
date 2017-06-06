@@ -26,7 +26,7 @@ export const rect: MarkCompiler = {
 function x(model: UnitModel) {
   const xDef = model.encoding.x;
   const x2Def = model.encoding.x2;
-  const xScale = model.scale(X);
+  const xScale = model.getScaleComponent(X);
 
   if (isFieldDef(xDef) && xDef.bin && !x2Def) {
     return mixins.binnedPosition('x', model, 0);
@@ -49,7 +49,7 @@ function x(model: UnitModel) {
 function y(model: UnitModel) {
   const yDef = model.encoding.y;
   const y2Def = model.encoding.y2;
-  const yScale = model.scale(Y);
+  const yScale = model.getScaleComponent(Y);
 
   if (isFieldDef(yDef) && yDef.bin && !y2Def) {
     return mixins.binnedPosition('y', model, 0);

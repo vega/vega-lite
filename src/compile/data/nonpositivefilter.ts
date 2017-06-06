@@ -19,7 +19,7 @@ export class NonPositiveFilterNode extends DataFlowNode {
 
   public static make(model: UnitModel) {
     const filter = model.channels().reduce(function(nonPositiveComponent, channel) {
-      const scale = model.scale(channel);
+      const scale = model.getScaleComponent(channel);
       if (!scale || !model.field(channel)) {
         // don't set anything
         return nonPositiveComponent;

@@ -35,7 +35,7 @@ function x(model: UnitModel, stack: StackProperties): VgEncodeEntry {
 
   const xDef = model.encoding.x;
   const xScaleName = model.scaleName(X);
-  const xScale = model.scale(X);
+  const xScale = model.getScaleComponent(X);
   // x, x2, and width -- we must specify two of these in all conditions
   if (orient === 'horizontal') {
     return {
@@ -54,6 +54,7 @@ function x(model: UnitModel, stack: StackProperties): VgEncodeEntry {
 
     return mixins.centeredBandPosition('x', model,
       {...ref.midX(width, config)},
+      // TODO: replace model.scale(X) with model.getScaleComponent once rangeStep is a part of scale component
       defaultSizeRef(xScaleName, model.scale(X), config)
     );
   }
@@ -66,7 +67,7 @@ function y(model: UnitModel, stack: StackProperties) {
 
   const yDef = encoding.y;
   const yScaleName = model.scaleName(Y);
-  const yScale = model.scale(Y);
+  const yScale = model.getScaleComponent(Y);
   // y, y2 & height -- we must specify two of these in all conditions
   if (orient === 'vertical') {
     return {
@@ -81,6 +82,7 @@ function y(model: UnitModel, stack: StackProperties) {
         return mixins.bandPosition('y', model);
       }
     }
+    // TODO: replace model.scale(X) with model.getScaleComponent once rangeStep is a part of scale component
     return mixins.centeredBandPosition('y', model, ref.midY(height, config), defaultSizeRef(yScaleName, model.scale(Y), config));
   }
 }

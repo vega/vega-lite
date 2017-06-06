@@ -48,8 +48,11 @@ describe('compile/legend', function() {
         mark: "point",
         encoding: {
           x: {field: "a", type: "temporal"},
-          color: {field: "a", type: "temporal", timeUnit: "month"}}
+          color: {field: "a", type: "temporal", timeUnit: "month"}
+        }
       });
+      model.parseScale();
+
       const fieldDef = {field: 'a', type: TEMPORAL, timeUnit: TimeUnit.MONTH};
       const label = encode.labels(fieldDef, {}, model, COLOR);
       const expected = `timeFormat(datum.value, '%b')`;
@@ -63,6 +66,8 @@ describe('compile/legend', function() {
           x: {field: "a", type: "temporal"},
           color: {field: "a", type: "temporal", timeUnit: "quarter"}}
       });
+      model.parseScale();
+
       const fieldDef = {field: 'a', type: TEMPORAL, timeUnit: TimeUnit.QUARTER};
       const label = encode.labels(fieldDef, {}, model, COLOR);
       const expected = `'Q' + quarter(datum.value)`;

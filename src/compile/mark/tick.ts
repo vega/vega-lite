@@ -38,6 +38,7 @@ function defaultSize(model: UnitModel): number {
   const {config} = model;
   const orient = model.markDef.orient;
 
+  // TODO: replace model.scale() with model.getScaleComponent() once rangeStep is a part of scale component
   const scaleRangeStep: number | null = (model.scale(orient === 'horizontal' ? 'x' : 'y') || {}).rangeStep;
 
   if (config.tick.bandSize !== undefined) {

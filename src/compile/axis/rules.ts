@@ -45,7 +45,7 @@ export function grid(model: UnitModel, channel: Channel, isGridAxis: boolean) {
 export function gridScale(model: UnitModel, channel: Channel, isGridAxis: boolean) {
   if (isGridAxis) {
     const gridChannel: Channel = channel === 'x' ? 'y' : 'x';
-    if (model.scale(gridChannel)) {
+    if (model.getScaleComponent(gridChannel)) {
       return model.scaleName(gridChannel);
     }
   }
