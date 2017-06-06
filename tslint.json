@@ -57,6 +57,7 @@
       "check-else",
       "check-whitespace"
     ],
+    "one-variable-per-declaration": [true],
     "typedef-whitespace": [
       true,
       {
