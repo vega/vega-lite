@@ -9,5 +9,6 @@
     "build": true
   },
   "files.trimTrailingWhitespace": true,
-  "tsimporter.spaceBetweenBraces": false
+  "tsimporter.spaceBetweenBraces": false,
+  "typescriptHero.resolver.insertSpaceBeforeAndAfterImportBraces": false
 }
