@@ -64,10 +64,10 @@ const interval:SelectionCompiler = {
     }
 
     const update = {
-      x: extend({}, xi !== null ? {signal: `${name}_x[0]`} : {value: 0}),
-      y: extend({}, yi !== null ? {signal: `${name}_y[0]`} : {value: 0}),
-      x2: extend({}, xi !== null ? {signal: `${name}_x[1]`} : {field: {group: 'width'}}),
-      y2: extend({}, yi !== null ? {signal: `${name}_y[1]`} : {field: {group: 'height'}})
+      x: xi !== null ? {signal: `${name}_x[0]`} : {value: 0},
+      y: yi !== null ? {signal: `${name}_y[0]`} : {value: 0},
+      x2: xi !== null ? {signal: `${name}_x[1]`} : {field: {group: 'width'}},
+      y2: yi !== null ? {signal: `${name}_y[1]`} : {field: {group: 'height'}}
     };
 
     // If the selection is resolved to global, only a single interval is in
@@ -125,6 +125,9 @@ export function projections(selCmpt: SelectionComponent) {
   return {x, xi, y, yi};
 }
 
+/**
+ * Returns the visual and data signals for an interval selection.
+ */
 function channelSignals(model: UnitModel, selCmpt: SelectionComponent, channel: Channel): any {
   const vname = channelSignalName(selCmpt, channel, 'visual'),
       dname = channelSignalName(selCmpt, channel, 'data'),
