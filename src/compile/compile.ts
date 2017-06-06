@@ -60,7 +60,9 @@ function assemble(model: Model, topLevelProperties: TopLevelProperties) {
   const {autoResize, ...topLevelProps} = topLevelProperties;
 
   const encode = model.assembleParentGroupProperties();
-  let width, height, scene:object;
+  let width;
+  let height;
+  let scene:object;
   if (encode) {
     ({width, height, ...scene} = encode);
   }

@@ -3,6 +3,13 @@
     "description": "Area chart showing weight of cars over time (vertical).",
     "autosize": "pad",
     "padding": 5,
+    "encode": {
+        "update": {
+            "fill": {
+                "value": "transparent"
+            }
+        }
+    },
     "data": [
         {
             "name": "source_0",
@@ -61,55 +68,36 @@
     ],
     "marks": [
         {
-            "name": "nested_main_group",
-            "type": "group",
+            "name": "marks",
+            "type": "area",
+            "from": {
+                "data": "source_0"
+            },
             "encode": {
                 "update": {
-                    "width": {
-                        "signal": "width"
+                    "x": {
+                        "scale": "x",
+                        "field": "sum_Weight_in_lbs"
                     },
-                    "height": {
-                        "signal": "height"
+                    "y": {
+                        "scale": "y",
+                        "field": "year_Year"
+                    },
+                    "x2": {
+                        "scale": "x",
+                        "value": 0
                     },
                     "fill": {
-                        "value": "transparent"
-                    }
-                }
-            },
-            "marks": [
-                {
-                    "name": "marks",
-                    "type": "area",
-                    "from": {
-                        "data": "source_0"
+                        "value": "#4c78a8"
                     },
-                    "encode": {
-                        "update": {
-                            "x": {
-                                "scale": "x",
-                                "field": "sum_Weight_in_lbs"
-                            },
-                            "y": {
-                                "scale": "y",
-                                "field": "year_Year"
-                            },
-                            "x2": {
-                                "scale": "x",
-                                "value": 0
-                            },
-                            "fill": {
-                                "value": "#4c78a8"
-                            },
-                            "orient": {
-                                "value": "horizontal"
-                            },
-                            "interpolate": {
-                                "value": "monotone"
-                            }
-                        }
+                    "orient": {
+                        "value": "horizontal"
+                    },
+                    "interpolate": {
+                        "value": "monotone"
                     }
                 }
-            ]
+            }
         }
     ],
     "scales": [

@@ -66,7 +66,7 @@ describe('Inputs Selection Transform', function() {
     model.component.selection = {one: selCmpts['one']};
     assert.includeDeepMembers(selection.assembleUnitSelectionSignals(model, []), [
       {
-        "name": "one",
+        "name": "one_tuple",
         "update": "{fields: [\"_id\"], values: [one__id]}"
       }
     ]);
@@ -90,7 +90,7 @@ describe('Inputs Selection Transform', function() {
     model.component.selection = {two: selCmpts['two']};
     assert.includeDeepMembers(selection.assembleUnitSelectionSignals(model, []), [
       {
-        "name": "two",
+        "name": "two_tuple",
         "update": "{fields: [\"Cylinders\", \"Horsepower\"], values: [two_Cylinders, two_Horsepower]}"
       }
     ]);
@@ -125,7 +125,7 @@ describe('Inputs Selection Transform', function() {
     model.component.selection = {three: selCmpts['three']};
     assert.includeDeepMembers(selection.assembleUnitSelectionSignals(model, []), [
       {
-        "name": "three",
+        "name": "three_tuple",
         "update": "{fields: [\"Cylinders\", \"Origin\"], values: [three_Cylinders, three_Origin]}"
       }
     ]);

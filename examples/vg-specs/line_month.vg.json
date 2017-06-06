@@ -2,6 +2,13 @@
     "$schema": "http://vega.github.io/schema/vega/v3.0.json",
     "autosize": "pad",
     "padding": 5,
+    "encode": {
+        "update": {
+            "fill": {
+                "value": "transparent"
+            }
+        }
+    },
     "data": [
         {
             "name": "source_0",
@@ -60,48 +67,29 @@
     ],
     "marks": [
         {
-            "name": "nested_main_group",
-            "type": "group",
+            "name": "marks",
+            "type": "line",
+            "from": {
+                "data": "source_0"
+            },
             "encode": {
                 "update": {
-                    "width": {
-                        "signal": "width"
+                    "x": {
+                        "scale": "x",
+                        "field": "month_date"
                     },
-                    "height": {
-                        "signal": "height"
+                    "y": {
+                        "scale": "y",
+                        "field": "mean_temp"
                     },
-                    "fill": {
-                        "value": "transparent"
+                    "stroke": {
+                        "value": "#4c78a8"
+                    },
+                    "interpolate": {
+                        "value": "monotone"
                     }
                 }
-            },
-            "marks": [
-                {
-                    "name": "marks",
-                    "type": "line",
-                    "from": {
-                        "data": "source_0"
-                    },
-                    "encode": {
-                        "update": {
-                            "x": {
-                                "scale": "x",
-                                "field": "month_date"
-                            },
-                            "y": {
-                                "scale": "y",
-                                "field": "mean_temp"
-                            },
-                            "stroke": {
-                                "value": "#4c78a8"
-                            },
-                            "interpolate": {
-                                "value": "monotone"
-                            }
-                        }
-                    }
-                }
-            ]
+            }
         }
     ],
     "scales": [

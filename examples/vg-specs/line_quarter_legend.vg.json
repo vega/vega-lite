@@ -3,6 +3,13 @@
     "description": "Stock price average broken down by quarter.",
     "autosize": "pad",
     "padding": 5,
+    "encode": {
+        "update": {
+            "fill": {
+                "value": "transparent"
+            }
+        }
+    },
     "data": [
         {
             "name": "source_0",
@@ -67,73 +74,54 @@
     ],
     "marks": [
         {
-            "name": "nested_main_group",
+            "name": "pathgroup",
             "type": "group",
+            "from": {
+                "facet": {
+                    "name": "faceted_path_main",
+                    "data": "source_0",
+                    "groupby": [
+                        "quarter_date"
+                    ]
+                }
+            },
             "encode": {
                 "update": {
                     "width": {
-                        "signal": "width"
+                        "field": {
+                            "group": "width"
+                        }
                     },
                     "height": {
-                        "signal": "height"
-                    },
-                    "fill": {
-                        "value": "transparent"
+                        "field": {
+                            "group": "height"
+                        }
                     }
                 }
             },
             "marks": [
                 {
-                    "name": "pathgroup",
-                    "type": "group",
+                    "name": "marks",
+                    "type": "line",
                     "from": {
-                        "facet": {
-                            "name": "faceted_path_main",
-                            "data": "source_0",
-                            "groupby": [
-                                "quarter_date"
-                            ]
-                        }
+                        "data": "faceted_path_main"
                     },
                     "encode": {
                         "update": {
-                            "width": {
-                                "field": {
-                                    "group": "width"
-                                }
+                            "x": {
+                                "scale": "x",
+                                "field": "year_date"
                             },
-                            "height": {
-                                "field": {
-                                    "group": "height"
-                                }
+                            "y": {
+                                "scale": "y",
+                                "field": "mean_price"
+                            },
+                            "stroke": {
+                                "scale": "color",
+                                "field": "quarter_date"
                             }
                         }
-                    },
-                    "marks": [
-                        {
-                            "name": "marks",
-                            "type": "line",
-                            "from": {
-                                "data": "faceted_path_main"
-                            },
-                            "encode": {
-                                "update": {
-                                    "x": {
-                                        "scale": "x",
-                                        "field": "year_date"
-                                    },
-                                    "y": {
-                                        "scale": "y",
-                                        "field": "mean_price"
-                                    },
-                                    "stroke": {
-                                        "scale": "color",
-                                        "field": "quarter_date"
-                                    }
-                                }
-                            }
-                        }
-                    ]
+                    }
                 }
             ]
         }

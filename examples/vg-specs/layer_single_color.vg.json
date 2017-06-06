@@ -2,6 +2,13 @@
     "$schema": "http://vega.github.io/schema/vega/v3.0.json",
     "autosize": "pad",
     "padding": 5,
+    "encode": {
+        "update": {
+            "fill": {
+                "value": "transparent"
+            }
+        }
+    },
     "data": [
         {
             "name": "source_0",
@@ -48,76 +55,57 @@
     ],
     "marks": [
         {
-            "name": "nested_main_group",
+            "name": "layer_0_pathgroup",
             "type": "group",
+            "from": {
+                "facet": {
+                    "name": "faceted_path_layer_0_main",
+                    "data": "source_0",
+                    "groupby": [
+                        "symbol"
+                    ]
+                }
+            },
             "encode": {
                 "update": {
                     "width": {
-                        "signal": "width"
+                        "field": {
+                            "group": "width"
+                        }
                     },
                     "height": {
-                        "signal": "height"
-                    },
-                    "fill": {
-                        "value": "transparent"
+                        "field": {
+                            "group": "height"
+                        }
                     }
                 }
             },
             "marks": [
                 {
-                    "name": "layer_0_pathgroup",
-                    "type": "group",
+                    "name": "layer_0_marks",
+                    "type": "line",
                     "from": {
-                        "facet": {
-                            "name": "faceted_path_layer_0_main",
-                            "data": "source_0",
-                            "groupby": [
-                                "symbol"
-                            ]
-                        }
+                        "data": "faceted_path_layer_0_main"
                     },
                     "encode": {
                         "update": {
-                            "width": {
-                                "field": {
-                                    "group": "width"
-                                }
+                            "x": {
+                                "scale": "x",
+                                "field": "date"
                             },
-                            "height": {
-                                "field": {
-                                    "group": "height"
-                                }
+                            "y": {
+                                "scale": "y",
+                                "field": "price"
+                            },
+                            "stroke": {
+                                "scale": "color",
+                                "field": "symbol"
                             }
                         }
-                    },
-                    "marks": [
-                        {
-                            "name": "layer_0_marks",
-                            "type": "line",
-                            "from": {
-                                "data": "faceted_path_layer_0_main"
-                            },
-                            "encode": {
-                                "update": {
-                                    "x": {
-                                        "scale": "x",
-                                        "field": "date"
-                                    },
-                                    "y": {
-                                        "scale": "y",
-                                        "field": "price"
-                                    },
-                                    "stroke": {
-                                        "scale": "color",
-                                        "field": "symbol"
-                                    }
-                                }
-                            }
-                        }
-                    ],
-                    "clip": true
+                    }
                 }
-            ]
+            ],
+            "clip": true
         }
     ],
     "scales": [

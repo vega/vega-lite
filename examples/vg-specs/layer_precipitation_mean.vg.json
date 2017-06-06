@@ -2,6 +2,13 @@
     "$schema": "http://vega.github.io/schema/vega/v3.0.json",
     "autosize": "pad",
     "padding": 5,
+    "encode": {
+        "update": {
+            "fill": {
+                "value": "transparent"
+            }
+        }
+    },
     "data": [
         {
             "name": "source_0",
@@ -107,85 +114,66 @@
     ],
     "marks": [
         {
-            "name": "nested_main_group",
-            "type": "group",
+            "name": "layer_0_marks",
+            "type": "rect",
+            "role": "bar",
+            "from": {
+                "data": "data_0"
+            },
             "encode": {
                 "update": {
-                    "width": {
-                        "signal": "width"
+                    "x": {
+                        "scale": "x",
+                        "field": "month_date"
                     },
-                    "height": {
-                        "signal": "height"
+                    "width": {
+                        "scale": "x",
+                        "band": true
+                    },
+                    "y": {
+                        "scale": "y",
+                        "field": "mean_precipitation"
+                    },
+                    "y2": {
+                        "scale": "y",
+                        "value": 0
                     },
                     "fill": {
-                        "value": "transparent"
+                        "value": "#4c78a8"
                     }
                 }
             },
-            "marks": [
-                {
-                    "name": "layer_0_marks",
-                    "type": "rect",
-                    "role": "bar",
-                    "from": {
-                        "data": "data_0"
+            "clip": true
+        },
+        {
+            "name": "layer_1_marks",
+            "type": "rule",
+            "from": {
+                "data": "data_1"
+            },
+            "encode": {
+                "update": {
+                    "x": {
+                        "value": 0
                     },
-                    "encode": {
-                        "update": {
-                            "x": {
-                                "scale": "x",
-                                "field": "month_date"
-                            },
-                            "width": {
-                                "scale": "x",
-                                "band": true
-                            },
-                            "y": {
-                                "scale": "y",
-                                "field": "mean_precipitation"
-                            },
-                            "y2": {
-                                "scale": "y",
-                                "value": 0
-                            },
-                            "fill": {
-                                "value": "#4c78a8"
-                            }
+                    "y": {
+                        "scale": "y",
+                        "field": "mean_precipitation"
+                    },
+                    "x2": {
+                        "field": {
+                            "group": "width"
                         }
                     },
-                    "clip": true
-                },
-                {
-                    "name": "layer_1_marks",
-                    "type": "rule",
-                    "from": {
-                        "data": "data_1"
+                    "stroke": {
+                        "value": "red"
                     },
-                    "encode": {
-                        "update": {
-                            "x": {
-                                "value": 0
-                            },
-                            "y": {
-                                "scale": "y",
-                                "field": "mean_precipitation"
-                            },
-                            "x2": {
-                                "field": {
-                                    "group": "width"
-                                }
-                            },
-                            "stroke": {
-                                "value": "red"
-                            },
-                            "strokeWidth": {
-                                "value": 3
-                            }
-                        }
-                    },
-                    "clip": true
+                    "strokeWidth": {
+                        "value": 3
+                    }
                 }
-            ]
+            },
+            "clip": true
         }
     ],
     "scales": [

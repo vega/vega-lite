@@ -24,7 +24,8 @@ const multi:SelectionCompiler = {
       value: {},
       on: [{
         events: selCmpt.events,
-        update: `{encodings: [${encodings}], fields: [${fields}], values: [${values}]` +
+        update: `{unit: ${stringValue(model.getName(''))}, ` +
+          `encodings: [${encodings}], fields: [${fields}], values: [${values}]` +
           (keys(bins).length ? `, bins: ${JSON.stringify(bins)}}` : '}')
       }]
     }];

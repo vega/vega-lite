@@ -2,6 +2,13 @@
     "$schema": "http://vega.github.io/schema/vega/v3.0.json",
     "autosize": "pad",
     "padding": 5,
+    "encode": {
+        "update": {
+            "fill": {
+                "value": "transparent"
+            }
+        }
+    },
     "data": [
         {
             "name": "source_0",
@@ -49,52 +56,33 @@
     ],
     "marks": [
         {
-            "name": "nested_main_group",
-            "type": "group",
+            "name": "marks",
+            "type": "rect",
+            "role": "bar",
+            "from": {
+                "data": "source_0"
+            },
             "encode": {
                 "update": {
-                    "width": {
-                        "signal": "width"
+                    "x": {
+                        "scale": "x",
+                        "field": "sum_people"
+                    },
+                    "x2": {
+                        "scale": "x",
+                        "value": 0
+                    },
+                    "yc": {
+                        "value": 10.5
                     },
                     "height": {
-                        "signal": "height"
+                        "value": 20
                     },
                     "fill": {
-                        "value": "transparent"
+                        "value": "#4c78a8"
                     }
                 }
-            },
-            "marks": [
-                {
-                    "name": "marks",
-                    "type": "rect",
-                    "role": "bar",
-                    "from": {
-                        "data": "source_0"
-                    },
-                    "encode": {
-                        "update": {
-                            "x": {
-                                "scale": "x",
-                                "field": "sum_people"
-                            },
-                            "x2": {
-                                "scale": "x",
-                                "value": 0
-                            },
-                            "yc": {
-                                "value": 10.5
-                            },
-                            "height": {
-                                "value": 20
-                            },
-                            "fill": {
-                                "value": "#4c78a8"
-                            }
-                        }
-                    }
-                }
-            ]
+            }
         }
     ],
     "scales": [

@@ -3,6 +3,13 @@
     "description": "Shows the relationship between horsepower and the numbver of cylinders using tick marks.",
     "autosize": "pad",
     "padding": 5,
+    "encode": {
+        "update": {
+            "fill": {
+                "value": "transparent"
+            }
+        }
+    },
     "data": [
         {
             "name": "source_0",
@@ -33,55 +40,36 @@
     ],
     "marks": [
         {
-            "name": "nested_main_group",
-            "type": "group",
+            "name": "marks",
+            "type": "rect",
+            "role": "tick",
+            "from": {
+                "data": "source_0"
+            },
             "encode": {
                 "update": {
-                    "width": {
-                        "signal": "width"
+                    "xc": {
+                        "scale": "x",
+                        "field": "Horsepower"
+                    },
+                    "yc": {
+                        "scale": "y",
+                        "field": "Cylinders"
                     },
                     "height": {
-                        "signal": "height"
+                        "value": 14
+                    },
+                    "width": {
+                        "value": 1
                     },
                     "fill": {
-                        "value": "transparent"
-                    }
-                }
-            },
-            "marks": [
-                {
-                    "name": "marks",
-                    "type": "rect",
-                    "role": "tick",
-                    "from": {
-                        "data": "source_0"
+                        "value": "#4c78a8"
                     },
-                    "encode": {
-                        "update": {
-                            "xc": {
-                                "scale": "x",
-                                "field": "Horsepower"
-                            },
-                            "yc": {
-                                "scale": "y",
-                                "field": "Cylinders"
-                            },
-                            "height": {
-                                "value": 14
-                            },
-                            "width": {
-                                "value": 1
-                            },
-                            "fill": {
-                                "value": "#4c78a8"
-                            },
-                            "opacity": {
-                                "value": 0.7
-                            }
-                        }
+                    "opacity": {
+                        "value": 0.7
                     }
                 }
-            ]
+            }
         }
     ],
     "scales": [

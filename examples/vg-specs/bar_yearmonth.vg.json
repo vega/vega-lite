@@ -3,6 +3,13 @@
     "description": "Temperature in Seattle as a bar chart with yearmonth time unit.",
     "autosize": "pad",
     "padding": 5,
+    "encode": {
+        "update": {
+            "fill": {
+                "value": "transparent"
+            }
+        }
+    },
     "data": [
         {
             "name": "source_0",
@@ -54,53 +61,34 @@
     ],
     "marks": [
         {
-            "name": "nested_main_group",
-            "type": "group",
+            "name": "marks",
+            "type": "rect",
+            "role": "bar",
+            "from": {
+                "data": "source_0"
+            },
             "encode": {
                 "update": {
-                    "width": {
-                        "signal": "width"
+                    "xc": {
+                        "scale": "x",
+                        "field": "yearmonth_date"
                     },
-                    "height": {
-                        "signal": "height"
+                    "width": {
+                        "value": 2
+                    },
+                    "y": {
+                        "scale": "y",
+                        "field": "mean_temp"
+                    },
+                    "y2": {
+                        "scale": "y",
+                        "value": 0
                     },
                     "fill": {
-                        "value": "transparent"
+                        "value": "#4c78a8"
                     }
                 }
-            },
-            "marks": [
-                {
-                    "name": "marks",
-                    "type": "rect",
-                    "role": "bar",
-                    "from": {
-                        "data": "source_0"
-                    },
-                    "encode": {
-                        "update": {
-                            "xc": {
-                                "scale": "x",
-                                "field": "yearmonth_date"
-                            },
-                            "width": {
-                                "value": 2
-                            },
-                            "y": {
-                                "scale": "y",
-                                "field": "mean_temp"
-                            },
-                            "y2": {
-                                "scale": "y",
-                                "value": 0
-                            },
-                            "fill": {
-                                "value": "#4c78a8"
-                            }
-                        }
-                    }
-                }
-            ]
+            }
         }
     ],
     "scales": [

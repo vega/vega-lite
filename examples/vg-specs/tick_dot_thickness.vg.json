@@ -2,6 +2,13 @@
     "$schema": "http://vega.github.io/schema/vega/v3.0.json",
     "autosize": "pad",
     "padding": 5,
+    "encode": {
+        "update": {
+            "fill": {
+                "value": "transparent"
+            }
+        }
+    },
     "data": [
         {
             "name": "source_0",
@@ -32,54 +39,35 @@
     ],
     "marks": [
         {
-            "name": "nested_main_group",
-            "type": "group",
+            "name": "marks",
+            "type": "rect",
+            "role": "tick",
+            "from": {
+                "data": "source_0"
+            },
             "encode": {
                 "update": {
-                    "width": {
-                        "signal": "width"
+                    "xc": {
+                        "scale": "x",
+                        "field": "Horsepower"
+                    },
+                    "yc": {
+                        "value": 10.5
                     },
                     "height": {
-                        "signal": "height"
+                        "value": 10
+                    },
+                    "width": {
+                        "value": 2
                     },
                     "fill": {
-                        "value": "transparent"
-                    }
-                }
-            },
-            "marks": [
-                {
-                    "name": "marks",
-                    "type": "rect",
-                    "role": "tick",
-                    "from": {
-                        "data": "source_0"
+                        "value": "#4c78a8"
                     },
-                    "encode": {
-                        "update": {
-                            "xc": {
-                                "scale": "x",
-                                "field": "Horsepower"
-                            },
-                            "yc": {
-                                "value": 10.5
-                            },
-                            "height": {
-                                "value": 10
-                            },
-                            "width": {
-                                "value": 2
-                            },
-                            "fill": {
-                                "value": "#4c78a8"
-                            },
-                            "opacity": {
-                                "value": 0.7
-                            }
-                        }
+                    "opacity": {
+                        "value": 0.7
                     }
                 }
-            ]
+            }
         }
     ],
     "scales": [

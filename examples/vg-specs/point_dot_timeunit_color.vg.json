@@ -2,6 +2,13 @@
     "$schema": "http://vega.github.io/schema/vega/v3.0.json",
     "autosize": "pad",
     "padding": 5,
+    "encode": {
+        "update": {
+            "fill": {
+                "value": "transparent"
+            }
+        }
+    },
     "data": [
         {
             "name": "source_0",
@@ -53,49 +60,30 @@
     ],
     "marks": [
         {
-            "name": "nested_main_group",
-            "type": "group",
+            "name": "marks",
+            "type": "symbol",
+            "role": "point",
+            "from": {
+                "data": "source_0"
+            },
             "encode": {
                 "update": {
-                    "width": {
-                        "signal": "width"
+                    "x": {
+                        "scale": "x",
+                        "field": "mean_temp"
                     },
-                    "height": {
-                        "signal": "height"
+                    "y": {
+                        "value": 10.5
+                    },
+                    "stroke": {
+                        "scale": "color",
+                        "field": "yearmonth_date"
                     },
                     "fill": {
                         "value": "transparent"
                     }
                 }
-            },
-            "marks": [
-                {
-                    "name": "marks",
-                    "type": "symbol",
-                    "role": "point",
-                    "from": {
-                        "data": "source_0"
-                    },
-                    "encode": {
-                        "update": {
-                            "x": {
-                                "scale": "x",
-                                "field": "mean_temp"
-                            },
-                            "y": {
-                                "value": 10.5
-                            },
-                            "stroke": {
-                                "scale": "color",
-                                "field": "yearmonth_date"
-                            },
-                            "fill": {
-                                "value": "transparent"
-                            }
-                        }
-                    }
-                }
-            ]
+            }
         }
     ],
     "scales": [

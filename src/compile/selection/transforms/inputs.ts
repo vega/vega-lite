@@ -1,6 +1,6 @@
 import {stringValue} from '../../../util';
-import {TransformCompiler} from './transforms';
 import {TUPLE} from '../selection';
+import {TransformCompiler} from './transforms';
 
 const inputBindings:TransformCompiler = {
   has: function(selCmpt) {

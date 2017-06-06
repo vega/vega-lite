@@ -3,6 +3,13 @@
     "description": "Drag the sliders to highlight points.",
     "autosize": "pad",
     "padding": 5,
+    "encode": {
+        "update": {
+            "fill": {
+                "value": "transparent"
+            }
+        }
+    },
     "data": [
         {
             "name": "CylYr_store"
@@ -93,92 +100,60 @@
         },
         {
             "name": "CylYr",
-            "update": "data(\"CylYr_store\")[0]"
+            "update": "data(\"CylYr_store\").length && {Cylinders: data(\"CylYr_store\")[0].values[0], Year: data(\"CylYr_store\")[0].values[1]}"
+        },
+        {
+            "name": "CylYr_tuple",
+            "update": "{fields: [\"Cylinders\", \"Year\"], values: [CylYr_Cylinders, CylYr_Year]}"
+        },
+        {
+            "name": "CylYr_modify",
+            "on": [
+                {
+                    "events": {
+                        "signal": "CylYr_tuple"
+                    },
+                    "update": "modify(\"CylYr_store\", CylYr_tuple, true)"
+                }
+            ]
         }
     ],
     "marks": [
         {
-            "name": "nested_main_group",
-            "type": "group",
-            "signals": [
-                {
-                    "name": "CylYr",
-                    "update": "{fields: [\"Cylinders\", \"Year\"], values: [CylYr_Cylinders, CylYr_Year]}"
-                },
-                {
-                    "name": "CylYr_tuple",
-                    "on": [
-                        {
-                            "events": {
-                                "signal": "CylYr"
-                            },
-                            "update": "{unit: \"\", encodings: CylYr.encodings, fields: CylYr.fields, values: CylYr.values, bins: CylYr.bins, Cylinders: CylYr.values[0], Year: CylYr.values[1]}"
-                        }
-                    ]
-                },
-                {
-                    "name": "CylYr_modify",
-                    "on": [
-                        {
-                            "events": {
-                                "signal": "CylYr"
-                            },
-                            "update": "modify(\"CylYr_store\", CylYr_tuple, true)"
-                        }
-                    ]
-                }
-            ],
+            "name": "marks",
+            "type": "symbol",
+            "role": "circle",
+            "from": {
+                "data": "source_0"
+            },
             "encode": {
                 "update": {
-                    "width": {
-                        "signal": "width"
+                    "x": {
+                        "scale": "x",
+                        "field": "Horsepower"
                     },
-                    "height": {
-                        "signal": "height"
+                    "y": {
+                        "scale": "y",
+                        "field": "Miles_per_Gallon"
                     },
-                    "fill": {
-                        "value": "transparent"
-                    }
-                }
-            },
-            "marks": [
-                {
-                    "name": "marks",
-                    "type": "symbol",
-                    "role": "circle",
-                    "from": {
-                        "data": "source_0"
-                    },
-                    "encode": {
-                        "update": {
-                            "x": {
-                                "scale": "x",
-                                "field": "Horsepower"
-                            },
-                            "y": {
-                                "scale": "y",
-                                "field": "Miles_per_Gallon"
-                            },
-                            "fill": [
-                                {
-                                    "test": "!vlPoint(\"CylYr_store\", \"\", datum, \"union\", \"all\")",
-                                    "value": "grey"
-                                },
-                                {
-                                    "scale": "color",
-                                    "field": "Origin"
-                                }
-                            ],
-                            "shape": {
-                                "value": "circle"
-                            },
-                            "opacity": {
-                                "value": 0.7
-                            }
+                    "fill": [
+                        {
+                            "test": "!vlPoint(\"CylYr_store\", \"\", datum, \"union\", \"all\")",
+                            "value": "grey"
+                        },
+                        {
+                            "scale": "color",
+                            "field": "Origin"
                         }
+                    ],
+                    "shape": {
+                        "value": "circle"
+                    },
+                    "opacity": {
+                        "value": 0.7
                     }
                 }
-            ]
+            }
         }
     ],
     "scales": [

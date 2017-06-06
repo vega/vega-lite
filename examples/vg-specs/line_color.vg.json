@@ -3,6 +3,13 @@
     "description": "Stock prices of 5 Tech Companies over Time.",
     "autosize": "pad",
     "padding": 5,
+    "encode": {
+        "update": {
+            "fill": {
+                "value": "transparent"
+            }
+        }
+    },
     "data": [
         {
             "name": "source_0",
@@ -41,73 +48,54 @@
     ],
     "marks": [
         {
-            "name": "nested_main_group",
+            "name": "pathgroup",
             "type": "group",
+            "from": {
+                "facet": {
+                    "name": "faceted_path_main",
+                    "data": "source_0",
+                    "groupby": [
+                        "symbol"
+                    ]
+                }
+            },
             "encode": {
                 "update": {
                     "width": {
-                        "signal": "width"
+                        "field": {
+                            "group": "width"
+                        }
                     },
                     "height": {
-                        "signal": "height"
-                    },
-                    "fill": {
-                        "value": "transparent"
+                        "field": {
+                            "group": "height"
+                        }
                     }
                 }
             },
             "marks": [
                 {
-                    "name": "pathgroup",
-                    "type": "group",
+                    "name": "marks",
+                    "type": "line",
                     "from": {
-                        "facet": {
-                            "name": "faceted_path_main",
-                            "data": "source_0",
-                            "groupby": [
-                                "symbol"
-                            ]
-                        }
+                        "data": "faceted_path_main"
                     },
                     "encode": {
                         "update": {
-                            "width": {
-                                "field": {
-                                    "group": "width"
-                                }
+                            "x": {
+                                "scale": "x",
+                                "field": "date"
                             },
-                            "height": {
-                                "field": {
-                                    "group": "height"
-                                }
+                            "y": {
+                                "scale": "y",
+                                "field": "price"
+                            },
+                            "stroke": {
+                                "scale": "color",
+                                "field": "symbol"
                             }
                         }
-                    },
-                    "marks": [
-                        {
-                            "name": "marks",
-                            "type": "line",
-                            "from": {
-                                "data": "faceted_path_main"
-                            },
-                            "encode": {
-                                "update": {
-                                    "x": {
-                                        "scale": "x",
-                                        "field": "date"
-                                    },
-                                    "y": {
-                                        "scale": "y",
-                                        "field": "price"
-                                    },
-                                    "stroke": {
-                                        "scale": "color",
-                                        "field": "symbol"
-                                    }
-                                }
-                            }
-                        }
-                    ]
+                    }
                 }
             ]
         }

@@ -194,389 +194,383 @@
             "update": "200"
         }
     ],
+    "layout": {
+        "padding": {
+            "row": 10,
+            "column": 10
+        },
+        "offset": 10,
+        "columns": 3,
+        "bounds": "full",
+        "align": "all"
+    },
     "marks": [
         {
-            "name": "nested_main_group",
             "type": "group",
-            "layout": {
-                "padding": {
-                    "row": 10,
-                    "column": 10
-                },
-                "offset": 10,
-                "columns": 3,
-                "bounds": "full",
-                "align": "all"
+            "name": "child_distance_group",
+            "encode": {
+                "update": {
+                    "width": {
+                        "signal": "child_distance_width"
+                    },
+                    "height": {
+                        "signal": "child_distance_height"
+                    },
+                    "fill": {
+                        "value": "transparent"
+                    }
+                }
             },
             "marks": [
                 {
-                    "type": "group",
-                    "name": "child_distance_group",
+                    "name": "child_distance_marks",
+                    "type": "rect",
+                    "role": "bar",
+                    "from": {
+                        "data": "data_0"
+                    },
                     "encode": {
                         "update": {
-                            "width": {
-                                "signal": "child_distance_width"
+                            "x2": {
+                                "scale": "child_distance_x",
+                                "field": "bin_maxbins_20_distance_start",
+                                "offset": 1
                             },
-                            "height": {
-                                "signal": "child_distance_height"
+                            "x": {
+                                "scale": "child_distance_x",
+                                "field": "bin_maxbins_20_distance_end"
                             },
-                            "fill": {
-                                "value": "transparent"
-                            }
-                        }
-                    },
-                    "marks": [
-                        {
-                            "name": "child_distance_marks",
-                            "type": "rect",
-                            "role": "bar",
-                            "from": {
-                                "data": "data_0"
-                            },
-                            "encode": {
-                                "update": {
-                                    "x2": {
-                                        "scale": "child_distance_x",
-                                        "field": "bin_maxbins_20_distance_start",
-                                        "offset": 1
-                                    },
-                                    "x": {
-                                        "scale": "child_distance_x",
-                                        "field": "bin_maxbins_20_distance_end"
-                                    },
-                                    "y": {
-                                        "scale": "child_distance_y",
-                                        "field": "count_*"
-                                    },
-                                    "y2": {
-                                        "scale": "child_distance_y",
-                                        "value": 0
-                                    },
-                                    "fill": {
-                                        "value": "#4c78a8"
-                                    }
-                                }
-                            }
-                        }
-                    ],
-                    "scales": [
-                        {
-                            "name": "child_distance_x",
-                            "type": "bin-linear",
-                            "domain": {
-                                "signal": "sequence(child_distance_bin_maxbins_20_distance_bins.start, child_distance_bin_maxbins_20_distance_bins.stop + child_distance_bin_maxbins_20_distance_bins.step, child_distance_bin_maxbins_20_distance_bins.step)"
-                            },
-                            "range": [
-                                0,
-                                200
-                            ],
-                            "round": true,
-                            "nice": true
-                        },
-                        {
-                            "name": "child_distance_y",
-                            "type": "linear",
-                            "domain": {
-                                "data": "data_0",
+                            "y": {
+                                "scale": "child_distance_y",
                                 "field": "count_*"
                             },
-                            "range": [
-                                200,
-                                0
-                            ],
-                            "round": true,
-                            "nice": true,
-                            "zero": true
-                        }
-                    ],
-                    "axes": [
-                        {
-                            "scale": "child_distance_x",
-                            "format": "s",
-                            "orient": "bottom",
-                            "title": "BIN(distance)",
-                            "zindex": 1,
-                            "encode": {
-                                "labels": {
-                                    "update": {
-                                        "angle": {
-                                            "value": 270
-                                        },
-                                        "align": {
-                                            "value": "right"
-                                        },
-                                        "baseline": {
-                                            "value": "middle"
-                                        }
-                                    }
-                                }
+                            "y2": {
+                                "scale": "child_distance_y",
+                                "value": 0
+                            },
+                            "fill": {
+                                "value": "#4c78a8"
                             }
-                        },
-                        {
-                            "scale": "child_distance_y",
-                            "format": "s",
-                            "orient": "left",
-                            "title": "Number of Records",
-                            "zindex": 1
-                        },
-                        {
-                            "scale": "child_distance_y",
-                            "domain": false,
-                            "format": "s",
-                            "grid": true,
-                            "labels": false,
-                            "orient": "left",
-                            "ticks": false,
-                            "zindex": 0,
-                            "gridScale": "child_distance_x"
                         }
-                    ]
+                    }
+                }
+            ],
+            "scales": [
+                {
+                    "name": "child_distance_x",
+                    "type": "bin-linear",
+                    "domain": {
+                        "signal": "sequence(child_distance_bin_maxbins_20_distance_bins.start, child_distance_bin_maxbins_20_distance_bins.stop + child_distance_bin_maxbins_20_distance_bins.step, child_distance_bin_maxbins_20_distance_bins.step)"
+                    },
+                    "range": [
+                        0,
+                        200
+                    ],
+                    "round": true,
+                    "nice": true
                 },
                 {
-                    "type": "group",
-                    "name": "child_delay_group",
-                    "encode": {
-                        "update": {
-                            "width": {
-                                "signal": "child_delay_width"
-                            },
-                            "height": {
-                                "signal": "child_delay_height"
-                            },
-                            "fill": {
-                                "value": "transparent"
-                            }
-                        }
+                    "name": "child_distance_y",
+                    "type": "linear",
+                    "domain": {
+                        "data": "data_0",
+                        "field": "count_*"
                     },
-                    "marks": [
-                        {
-                            "name": "child_delay_marks",
-                            "type": "rect",
-                            "role": "bar",
-                            "from": {
-                                "data": "data_1"
-                            },
-                            "encode": {
-                                "update": {
-                                    "x2": {
-                                        "scale": "child_delay_x",
-                                        "field": "bin_maxbins_20_delay_start",
-                                        "offset": 1
-                                    },
-                                    "x": {
-                                        "scale": "child_delay_x",
-                                        "field": "bin_maxbins_20_delay_end"
-                                    },
-                                    "y": {
-                                        "scale": "child_delay_y",
-                                        "field": "count_*"
-                                    },
-                                    "y2": {
-                                        "scale": "child_delay_y",
-                                        "value": 0
-                                    },
-                                    "fill": {
-                                        "value": "#4c78a8"
-                                    }
+                    "range": [
+                        200,
+                        0
+                    ],
+                    "round": true,
+                    "nice": true,
+                    "zero": true
+                }
+            ],
+            "axes": [
+                {
+                    "scale": "child_distance_x",
+                    "format": "s",
+                    "orient": "bottom",
+                    "title": "BIN(distance)",
+                    "zindex": 1,
+                    "encode": {
+                        "labels": {
+                            "update": {
+                                "angle": {
+                                    "value": 270
+                                },
+                                "align": {
+                                    "value": "right"
+                                },
+                                "baseline": {
+                                    "value": "middle"
                                 }
                             }
                         }
-                    ],
-                    "scales": [
-                        {
-                            "name": "child_delay_x",
-                            "type": "bin-linear",
-                            "domain": {
-                                "signal": "sequence(child_delay_bin_maxbins_20_delay_bins.start, child_delay_bin_maxbins_20_delay_bins.stop + child_delay_bin_maxbins_20_delay_bins.step, child_delay_bin_maxbins_20_delay_bins.step)"
-                            },
-                            "range": [
-                                0,
-                                200
-                            ],
-                            "round": true,
-                            "nice": true
-                        },
-                        {
-                            "name": "child_delay_y",
-                            "type": "linear",
-                            "domain": {
-                                "data": "data_1",
-                                "field": "count_*"
-                            },
-                            "range": [
-                                200,
-                                0
-                            ],
-                            "round": true,
-                            "nice": true,
-                            "zero": true
-                        }
-                    ],
-                    "axes": [
-                        {
-                            "scale": "child_delay_x",
-                            "format": "s",
-                            "orient": "bottom",
-                            "title": "BIN(delay)",
-                            "zindex": 1,
-                            "encode": {
-                                "labels": {
-                                    "update": {
-                                        "angle": {
-                                            "value": 270
-                                        },
-                                        "align": {
-                                            "value": "right"
-                                        },
-                                        "baseline": {
-                                            "value": "middle"
-                                        }
-                                    }
-                                }
-                            }
-                        },
-                        {
-                            "scale": "child_delay_y",
-                            "format": "s",
-                            "orient": "left",
-                            "title": "Number of Records",
-                            "zindex": 1
-                        },
-                        {
-                            "scale": "child_delay_y",
-                            "domain": false,
-                            "format": "s",
-                            "grid": true,
-                            "labels": false,
-                            "orient": "left",
-                            "ticks": false,
-                            "zindex": 0,
-                            "gridScale": "child_delay_x"
-                        }
-                    ]
+                    }
                 },
                 {
-                    "type": "group",
-                    "name": "child_time_group",
+                    "scale": "child_distance_y",
+                    "format": "s",
+                    "orient": "left",
+                    "title": "Number of Records",
+                    "zindex": 1
+                },
+                {
+                    "scale": "child_distance_y",
+                    "domain": false,
+                    "format": "s",
+                    "grid": true,
+                    "labels": false,
+                    "orient": "left",
+                    "ticks": false,
+                    "zindex": 0,
+                    "gridScale": "child_distance_x"
+                }
+            ]
+        },
+        {
+            "type": "group",
+            "name": "child_delay_group",
+            "encode": {
+                "update": {
+                    "width": {
+                        "signal": "child_delay_width"
+                    },
+                    "height": {
+                        "signal": "child_delay_height"
+                    },
+                    "fill": {
+                        "value": "transparent"
+                    }
+                }
+            },
+            "marks": [
+                {
+                    "name": "child_delay_marks",
+                    "type": "rect",
+                    "role": "bar",
+                    "from": {
+                        "data": "data_1"
+                    },
                     "encode": {
                         "update": {
-                            "width": {
-                                "signal": "child_time_width"
+                            "x2": {
+                                "scale": "child_delay_x",
+                                "field": "bin_maxbins_20_delay_start",
+                                "offset": 1
                             },
-                            "height": {
-                                "signal": "child_time_height"
+                            "x": {
+                                "scale": "child_delay_x",
+                                "field": "bin_maxbins_20_delay_end"
                             },
-                            "fill": {
-                                "value": "transparent"
-                            }
-                        }
-                    },
-                    "marks": [
-                        {
-                            "name": "child_time_marks",
-                            "type": "rect",
-                            "role": "bar",
-                            "from": {
-                                "data": "data_2"
-                            },
-                            "encode": {
-                                "update": {
-                                    "x2": {
-                                        "scale": "child_time_x",
-                                        "field": "bin_maxbins_20_time_start",
-                                        "offset": 1
-                                    },
-                                    "x": {
-                                        "scale": "child_time_x",
-                                        "field": "bin_maxbins_20_time_end"
-                                    },
-                                    "y": {
-                                        "scale": "child_time_y",
-                                        "field": "count_*"
-                                    },
-                                    "y2": {
-                                        "scale": "child_time_y",
-                                        "value": 0
-                                    },
-                                    "fill": {
-                                        "value": "#4c78a8"
-                                    }
-                                }
-                            }
-                        }
-                    ],
-                    "scales": [
-                        {
-                            "name": "child_time_x",
-                            "type": "bin-linear",
-                            "domain": {
-                                "signal": "sequence(child_time_bin_maxbins_20_time_bins.start, child_time_bin_maxbins_20_time_bins.stop + child_time_bin_maxbins_20_time_bins.step, child_time_bin_maxbins_20_time_bins.step)"
-                            },
-                            "range": [
-                                0,
-                                200
-                            ],
-                            "round": true,
-                            "nice": true
-                        },
-                        {
-                            "name": "child_time_y",
-                            "type": "linear",
-                            "domain": {
-                                "data": "data_2",
+                            "y": {
+                                "scale": "child_delay_y",
                                 "field": "count_*"
                             },
-                            "range": [
-                                200,
-                                0
-                            ],
-                            "round": true,
-                            "nice": true,
-                            "zero": true
+                            "y2": {
+                                "scale": "child_delay_y",
+                                "value": 0
+                            },
+                            "fill": {
+                                "value": "#4c78a8"
+                            }
                         }
+                    }
+                }
+            ],
+            "scales": [
+                {
+                    "name": "child_delay_x",
+                    "type": "bin-linear",
+                    "domain": {
+                        "signal": "sequence(child_delay_bin_maxbins_20_delay_bins.start, child_delay_bin_maxbins_20_delay_bins.stop + child_delay_bin_maxbins_20_delay_bins.step, child_delay_bin_maxbins_20_delay_bins.step)"
+                    },
+                    "range": [
+                        0,
+                        200
                     ],
-                    "axes": [
-                        {
-                            "scale": "child_time_x",
-                            "format": "s",
-                            "orient": "bottom",
-                            "title": "BIN(time)",
-                            "zindex": 1,
-                            "encode": {
-                                "labels": {
-                                    "update": {
-                                        "angle": {
-                                            "value": 270
-                                        },
-                                        "align": {
-                                            "value": "right"
-                                        },
-                                        "baseline": {
-                                            "value": "middle"
-                                        }
-                                    }
+                    "round": true,
+                    "nice": true
+                },
+                {
+                    "name": "child_delay_y",
+                    "type": "linear",
+                    "domain": {
+                        "data": "data_1",
+                        "field": "count_*"
+                    },
+                    "range": [
+                        200,
+                        0
+                    ],
+                    "round": true,
+                    "nice": true,
+                    "zero": true
+                }
+            ],
+            "axes": [
+                {
+                    "scale": "child_delay_x",
+                    "format": "s",
+                    "orient": "bottom",
+                    "title": "BIN(delay)",
+                    "zindex": 1,
+                    "encode": {
+                        "labels": {
+                            "update": {
+                                "angle": {
+                                    "value": 270
+                                },
+                                "align": {
+                                    "value": "right"
+                                },
+                                "baseline": {
+                                    "value": "middle"
                                 }
                             }
-                        },
-                        {
-                            "scale": "child_time_y",
-                            "format": "s",
-                            "orient": "left",
-                            "title": "Number of Records",
-                            "zindex": 1
-                        },
-                        {
-                            "scale": "child_time_y",
-                            "domain": false,
-                            "format": "s",
-                            "grid": true,
-                            "labels": false,
-                            "orient": "left",
-                            "ticks": false,
-                            "zindex": 0,
-                            "gridScale": "child_time_x"
                         }
-                    ]
+                    }
+                },
+                {
+                    "scale": "child_delay_y",
+                    "format": "s",
+                    "orient": "left",
+                    "title": "Number of Records",
+                    "zindex": 1
+                },
+                {
+                    "scale": "child_delay_y",
+                    "domain": false,
+                    "format": "s",
+                    "grid": true,
+                    "labels": false,
+                    "orient": "left",
+                    "ticks": false,
+                    "zindex": 0,
+                    "gridScale": "child_delay_x"
+                }
+            ]
+        },
+        {
+            "type": "group",
+            "name": "child_time_group",
+            "encode": {
+                "update": {
+                    "width": {
+                        "signal": "child_time_width"
+                    },
+                    "height": {
+                        "signal": "child_time_height"
+                    },
+                    "fill": {
+                        "value": "transparent"
+                    }
+                }
+            },
+            "marks": [
+                {
+                    "name": "child_time_marks",
+                    "type": "rect",
+                    "role": "bar",
+                    "from": {
+                        "data": "data_2"
+                    },
+                    "encode": {
+                        "update": {
+                            "x2": {
+                                "scale": "child_time_x",
+                                "field": "bin_maxbins_20_time_start",
+                                "offset": 1
+                            },
+                            "x": {
+                                "scale": "child_time_x",
+                                "field": "bin_maxbins_20_time_end"
+                            },
+                            "y": {
+                                "scale": "child_time_y",
+                                "field": "count_*"
+                            },
+                            "y2": {
+                                "scale": "child_time_y",
+                                "value": 0
+                            },
+                            "fill": {
+                                "value": "#4c78a8"
+                            }
+                        }
+                    }
+                }
+            ],
+            "scales": [
+                {
+                    "name": "child_time_x",
+                    "type": "bin-linear",
+                    "domain": {
+                        "signal": "sequence(child_time_bin_maxbins_20_time_bins.start, child_time_bin_maxbins_20_time_bins.stop + child_time_bin_maxbins_20_time_bins.step, child_time_bin_maxbins_20_time_bins.step)"
+                    },
+                    "range": [
+                        0,
+                        200
+                    ],
+                    "round": true,
+                    "nice": true
+                },
+                {
+                    "name": "child_time_y",
+                    "type": "linear",
+                    "domain": {
+                        "data": "data_2",
+                        "field": "count_*"
+                    },
+                    "range": [
+                        200,
+                        0
+                    ],
+                    "round": true,
+                    "nice": true,
+                    "zero": true
+                }
+            ],
+            "axes": [
+                {
+                    "scale": "child_time_x",
+                    "format": "s",
+                    "orient": "bottom",
+                    "title": "BIN(time)",
+                    "zindex": 1,
+                    "encode": {
+                        "labels": {
+                            "update": {
+                                "angle": {
+                                    "value": 270
+                                },
+                                "align": {
+                                    "value": "right"
+                                },
+                                "baseline": {
+                                    "value": "middle"
+                                }
+                            }
+                        }
+                    }
+                },
+                {
+                    "scale": "child_time_y",
+                    "format": "s",
+                    "orient": "left",
+                    "title": "Number of Records",
+                    "zindex": 1
+                },
+                {
+                    "scale": "child_time_y",
+                    "domain": false,
+                    "format": "s",
+                    "grid": true,
+                    "labels": false,
+                    "orient": "left",
+                    "ticks": false,
+                    "zindex": 0,
+                    "gridScale": "child_time_x"
                 }
             ]
         }
