@@ -3,7 +3,7 @@ import {Channel} from '../../channel';
 import {SelectionDomain as SelectionScaleDomain} from '../../scale';
 import {SelectionDef, SelectionDomain, SelectionResolutions, SelectionTypes} from '../../selection';
 import {Dict, extend, isString, stringValue} from '../../util';
-import {VgBinding, VgData} from '../../vega.schema';
+import {VgBinding, VgData, VgEventStream} from '../../vega.schema';
 import {LayerModel} from '../layer';
 import {Model} from '../model';
 import {UnitModel} from '../unit';
@@ -21,7 +21,7 @@ export interface SelectionComponent {
   name: string;
   type: SelectionTypes;
   domain: SelectionDomain;
-  events: any;
+  events: VgEventStream;
   // predicate?: string;
   bind?: 'scales' | VgBinding | {[key: string]: VgBinding};
   resolve: SelectionResolutions;

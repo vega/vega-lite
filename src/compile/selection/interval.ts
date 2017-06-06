@@ -2,6 +2,7 @@ import {Channel, X, Y} from '../../channel';
 import {warn} from '../../log';
 import {hasContinuousDomain, isBinScale} from '../../scale';
 import {extend, keys, stringValue} from '../../util';
+import {VgEventStream} from '../../vega.schema';
 import {UnitModel} from '../unit';
 import {channelSignalName, ProjectComponent, SelectionCompiler, SelectionComponent, STORE, TUPLE} from './selection';
 import scales from './transforms/scales';
@@ -18,7 +19,7 @@ const interval:SelectionCompiler = {
 
     if (selCmpt.translate && !(scales.has(selCmpt))) {
       const filterExpr = `!event.item || event.item.mark.name !== ${stringValue(name + BRUSH)}`;
-      events(selCmpt, function(_: any[], evt: any) {
+      events(selCmpt, function(_: any[], evt: VgEventStream) {
         const filters = evt.between[0].filter || (evt.between[0].filter = []);
         if (filters.indexOf(filterExpr) < 0) {
           filters.push(filterExpr);
@@ -138,7 +139,7 @@ function channelSignals(model: UnitModel, selCmpt: SelectionComponent, channel: 
       size  = model.getSizeSignalRef(channel === X ? 'width' : 'height').signal,
       coord = `${channel}(unit)`;
 
-  const on = events(selCmpt, function(def: any[], evt: any) {
+  const on = events(selCmpt, function(def: any[], evt: VgEventStream) {
     return def.concat(
       {events: evt.between[0], update: `[${coord}, ${coord}]`},           // Brush Start
       {events: evt, update: `[${vname}[0], clamp(${coord}, 0, ${size})]`} // Brush End
@@ -165,7 +166,7 @@ function channelSignals(model: UnitModel, selCmpt: SelectionComponent, channel: 
 }
 
 function events(selCmpt: SelectionComponent, cb: Function) {
-  return selCmpt.events.reduce(function(on: any[], evt: any) {
+  return selCmpt.events.reduce(function(on: any[], evt: VgEventStream) {
     if (!evt.between) {
       warn(`${evt} is not an ordered event stream for interval selections`);
       return on;
