@@ -114,7 +114,7 @@
                             "type": "click"
                         }
                     ],
-                    "update": "(item().isVoronoi ? datum.datum : datum)[\"Cylinders\"]"
+                    "update": "datum && datum[\"Cylinders\"]"
                 }
             ],
             "bind": {

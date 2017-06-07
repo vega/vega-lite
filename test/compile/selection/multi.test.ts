@@ -18,7 +18,7 @@ describe('Multi Selection', function() {
   const selCmpts = model.component.selection = selection.parseUnitSelection(model, {
     "one": {"type": "multi"},
     "two": {
-      "type": "multi",
+      "type": "multi", "nearest": true,
       "on": "mouseover", "toggle": "event.ctrlKey", "encodings": ["y", "color"]
     }
   });
@@ -30,7 +30,7 @@ describe('Multi Selection', function() {
       value: {},
       on: [{
         events: selCmpts['one'].events,
-        update: "{unit: \"\", encodings: [], fields: [\"_id\"], values: [(item().isVoronoi ? datum.datum : datum)[\"_id\"]]}"
+        update: "datum && {unit: \"\", encodings: [], fields: [\"_id\"], values: [datum[\"_id\"]]}"
       }]
     }]);
 
@@ -40,7 +40,7 @@ describe('Multi Selection', function() {
       value: {},
       on: [{
         events: selCmpts['two'].events,
-        "update": "{unit: \"\", encodings: [\"y\", \"color\"], fields: [\"Miles_per_Gallon\", \"Origin\"], values: [[(item().isVoronoi ? datum.datum : datum)[\"bin_maxbins_10_Miles_per_Gallon_start\"], (item().isVoronoi ? datum.datum : datum)[\"bin_maxbins_10_Miles_per_Gallon_end\"]], (item().isVoronoi ? datum.datum : datum)[\"Origin\"]], bins: {\"Miles_per_Gallon\":1}}"
+        "update": "datum && {unit: \"\", encodings: [\"y\", \"color\"], fields: [\"Miles_per_Gallon\", \"Origin\"], values: [[(item().isVoronoi ? datum.datum : datum)[\"bin_maxbins_10_Miles_per_Gallon_start\"], (item().isVoronoi ? datum.datum : datum)[\"bin_maxbins_10_Miles_per_Gallon_end\"]], (item().isVoronoi ? datum.datum : datum)[\"Origin\"]], bins: {\"Miles_per_Gallon\":1}}"
       }]
     }]);
 
@@ -57,6 +57,7 @@ describe('Multi Selection', function() {
 
   it('leaves marks alone', function() {
     const marks: any[] = [];
+    model.component.selection = {one: selCmpts['one']};
     assert.equal(selection.assembleUnitSelectionMarks(model, marks), marks);
   });
 });

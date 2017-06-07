@@ -1,5 +1,6 @@
 import {stringValue} from '../../../util';
 import {TUPLE} from '../selection';
+import nearest from './nearest';
 import {TransformCompiler} from './transforms';
 
 const inputBindings:TransformCompiler = {
@@ -12,7 +13,8 @@ const inputBindings:TransformCompiler = {
     const name = selCmpt.name;
     const proj = selCmpt.project;
     const bind = selCmpt.bind;
-    const datum = '(item().isVoronoi ? datum.datum : datum)';
+    const datum = nearest.has(selCmpt) ?
+      '(item().isVoronoi ? datum.datum : datum)' : 'datum';
 
     proj.forEach(function(p) {
       signals.unshift({
@@ -20,7 +22,7 @@ const inputBindings:TransformCompiler = {
         value: '',
         on: [{
           events: selCmpt.events,
-          update: `${datum}[${stringValue(p.field)}]`
+          update: `datum && ${datum}[${stringValue(p.field)}]`
         }],
         bind: bind[p.field] || bind[p.encoding] || bind
       });

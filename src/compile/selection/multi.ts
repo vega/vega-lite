@@ -1,12 +1,14 @@
 import {keys, stringValue} from '../../util';
 import {SelectionCompiler, TUPLE} from './selection';
+import nearest from './transforms/nearest';
 
 const multi:SelectionCompiler = {
   predicate: 'vlPoint',
 
   signals: function(model, selCmpt) {
     const proj = selCmpt.project;
-    const datum = '(item().isVoronoi ? datum.datum : datum)';
+    const datum = nearest.has(selCmpt) ?
+      '(item().isVoronoi ? datum.datum : datum)' : 'datum';
     const bins = {};
     const encodings = proj.map((p) => stringValue(p.encoding)).filter((e) => e).join(', ');
     const fields = proj.map((p) => stringValue(p.field)).join(', ');
@@ -24,7 +26,7 @@ const multi:SelectionCompiler = {
       value: {},
       on: [{
         events: selCmpt.events,
-        update: `{unit: ${stringValue(model.getName(''))}, ` +
+        update: `datum && {unit: ${stringValue(model.getName(''))}, ` +
           `encodings: [${encodings}], fields: [${fields}], values: [${values}]` +
           (keys(bins).length ? `, bins: ${JSON.stringify(bins)}}` : '}')
       }]
