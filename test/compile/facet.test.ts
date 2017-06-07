@@ -81,6 +81,7 @@ describe('FacetModel', function() {
         }
       });
 
+      model.parseScale();
       model.parseData();
       model.parseMark();
 

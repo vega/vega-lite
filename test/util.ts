@@ -15,8 +15,20 @@ export function parseModel(inputSpec: TopLevelExtendedSpec): Model {
   return buildModel(spec, null, '', undefined, undefined, config);
 }
 
+export function parseModelWithScale(inputSpec: TopLevelExtendedSpec): Model {
+  const model = parseModel(inputSpec);
+  model.parseScale();
+  return model;
+}
+
 export function parseUnitModel(spec: TopLevel<UnitSpec>) {
   return new UnitModel(spec, null, '', undefined, undefined, initConfig(spec.config));
+}
+
+export function parseUnitModelWithScale(spec: TopLevel<UnitSpec>) {
+  const model = parseUnitModel(spec);
+  model.parseScale();
+  return model;
 }
 
 export function parseLayerModel(spec: TopLevel<LayerSpec>) {

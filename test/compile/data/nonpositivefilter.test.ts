@@ -4,11 +4,11 @@ import {assert} from 'chai';
 
 import {NonPositiveFilterNode} from '../../../src/compile/data/nonpositivefilter';
 import {VgTransform} from '../../../src/vega.schema';
-import {parseUnitModel} from '../../util';
+import {parseUnitModelWithScale} from '../../util';
 
 describe('compile/data/nonpositivefilter', function () {
   it('should produce the correct nonPositiveFilter' ,function () {
-    const model = parseUnitModel({
+    const model = parseUnitModelWithScale({
       mark: "point",
       encoding: {
         x: {field: 'a', type: "temporal"},

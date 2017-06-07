@@ -39,6 +39,8 @@ function getModel(selectionDef: any) {
 describe('Selection Predicate', function() {
   it('generates Vega production rules', function() {
     const single = getModel({type: 'single'});
+    single.parseScale();
+
     assert.deepEqual(nonPosition('color', single), {
       color: [
         {test: "!vlPoint(\"one_store\", \"\", datum, \"union\", \"all\")", value: "grey"},
@@ -54,6 +56,8 @@ describe('Selection Predicate', function() {
     });
 
     const multi = getModel({type: 'multi'});
+    multi.parseScale();
+
     assert.deepEqual(nonPosition('color', multi), {
       color: [
         {test: "!vlPoint(\"one_store\", \"\", datum, \"union\", \"all\")", value: "grey"},
@@ -69,6 +73,8 @@ describe('Selection Predicate', function() {
     });
 
     const interval = getModel({type: 'interval'});
+    interval.parseScale();
+
     assert.deepEqual(nonPosition('color', interval), {
       color: [
         {test: "!vlInterval(\"one_store\", \"\", datum, \"union\", \"all\")", value: "grey"},

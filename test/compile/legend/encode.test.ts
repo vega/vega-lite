@@ -5,7 +5,7 @@ import {COLOR, SHAPE} from '../../../src/channel';
 import * as encode from '../../../src/compile/legend/encode';
 import {TimeUnit} from '../../../src/timeunit';
 import {TEMPORAL} from '../../../src/type';
-import {parseUnitModel} from '../../util';
+import {parseUnitModel, parseUnitModelWithScale} from '../../util';
 
 describe('compile/legend', function() {
   describe('encode.symbols', function() {
@@ -44,14 +44,13 @@ describe('compile/legend', function() {
 
   describe('encode.labels', function() {
     it('should return correct expression for the timeUnit: TimeUnit.MONTH', function() {
-      const model = parseUnitModel({
+      const model = parseUnitModelWithScale({
         mark: "point",
         encoding: {
           x: {field: "a", type: "temporal"},
           color: {field: "a", type: "temporal", timeUnit: "month"}
         }
       });
-      model.parseScale();
 
       const fieldDef = {field: 'a', type: TEMPORAL, timeUnit: TimeUnit.MONTH};
       const label = encode.labels(fieldDef, {}, model, COLOR);
@@ -60,13 +59,12 @@ describe('compile/legend', function() {
     });
 
     it('should return correct expression for the timeUnit: TimeUnit.QUARTER', function() {
-      const model = parseUnitModel({
+      const model = parseUnitModelWithScale({
         mark: "point",
         encoding: {
           x: {field: "a", type: "temporal"},
           color: {field: "a", type: "temporal", timeUnit: "quarter"}}
       });
-      model.parseScale();
 
       const fieldDef = {field: 'a', type: TEMPORAL, timeUnit: TimeUnit.QUARTER};
       const label = encode.labels(fieldDef, {}, model, COLOR);

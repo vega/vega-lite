@@ -1,7 +1,7 @@
 /* tslint:disable quotemark */
 
 import {assert} from 'chai';
-import {parseUnitModel} from '../../util';
+import {parseUnitModelWithScale} from '../../util';
 
 import * as log from '../../../src/log';
 
@@ -12,7 +12,7 @@ import {LINE} from '../../../src/mark';
 describe('Mark: Line', function() {
 
   describe('with x, y', function() {
-    const model = parseUnitModel({
+    const model = parseUnitModelWithScale({
       "data": {"url": "data/barley.json"},
       "mark": "line",
       "encoding": {
@@ -32,7 +32,7 @@ describe('Mark: Line', function() {
   });
 
   describe('with x, y, color', function () {
-    const model = parseUnitModel({
+    const model = parseUnitModelWithScale({
       "data": {"url": "data/barley.json"},
       "mark": "line",
       "encoding": {
@@ -52,7 +52,7 @@ describe('Mark: Line', function() {
   describe('with x, y, size', function () {
     it('should have scale for size', function () {
       log.runLocalLogger((localLogger) => {
-        const model = parseUnitModel({
+        const model = parseUnitModelWithScale({
           "data": {"url": "data/barley.json"},
           "mark": "line",
           "encoding": {
@@ -69,7 +69,7 @@ describe('Mark: Line', function() {
 
     it('should drop aggregate size field', function () {
       log.runLocalLogger((localLogger) => {
-        const model = parseUnitModel({
+        const model = parseUnitModelWithScale({
           "data": {"url": "data/barley.json"},
           "mark": "line",
           "encoding": {
@@ -88,7 +88,7 @@ describe('Mark: Line', function() {
   });
 
   describe('with stacked y', function() {
-    const model = parseUnitModel({
+    const model = parseUnitModelWithScale({
       "data": {"url": "data/barley.json"},
       "mark": "line",
       "encoding": {
@@ -106,7 +106,7 @@ describe('Mark: Line', function() {
   });
 
   describe('with stacked x', function() {
-    const model = parseUnitModel({
+    const model = parseUnitModelWithScale({
       "data": {"url": "data/barley.json"},
       "mark": "line",
       "encoding": {
