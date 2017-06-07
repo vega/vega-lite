@@ -7,7 +7,9 @@ import {normalize, TopLevel, TopLevelExtendedSpec} from '../spec';
 import {extractTopLevelProperties, TopLevelProperties} from '../toplevelprops';
 import {extend, keys} from '../util';
 import {buildModel} from './common';
+import {LayerModel} from './layer';
 import {Model} from './model';
+import {UnitModel} from './unit';
 
 export function compile(inputSpec: TopLevelExtendedSpec, logger?: log.LoggerInterface) {
   if (logger) {
@@ -82,7 +84,7 @@ function assemble(model: Model, topLevelProperties: TopLevelProperties) {
         // Merge the top-level's width/height signal with the top-level model
         // so we can remove this special casing based on model.name
         (
-          model.name ? [
+          (model.name && ((model instanceof LayerModel) || (model instanceof UnitModel))) ? [
             // If model has name, its calculated width and height will not be named width and height, need to map it to the global width and height signals.
             {name: 'width', update: model.getName('width')},
             {name: 'height', update: model.getName('height')}

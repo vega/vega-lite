@@ -58,14 +58,6 @@
     ],
     "signals": [
         {
-            "name": "width",
-            "update": "trellis_barley_width"
-        },
-        {
-            "name": "height",
-            "update": "trellis_barley_height"
-        },
-        {
             "name": "trellis_barley_child_width",
             "update": "200"
         },
