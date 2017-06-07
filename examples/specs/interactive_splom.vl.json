@@ -33,7 +33,7 @@
       "color": {
         "field": "Origin","type": "nominal",
         "condition": {
-          "selection": "!brush", "value": "grey"
+          "selection": {"not": "brush"}, "value": "grey"
         }
       }
     }

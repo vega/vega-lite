@@ -2,9 +2,9 @@ import {Model} from './compile/model';
 import {predicate} from './compile/selection/selection';
 import {DateTime, dateTimeExpr, isDateTime} from './datetime';
 import {field} from './fielddef';
+import {LogicalOperand} from './logical';
 import {fieldExpr as timeUnitFieldExpr, isSingleTimeUnit, TimeUnit} from './timeunit';
 import {isArray, isString} from './util';
-import {LogicalOperand} from './logical';
 
 export type Filter = EqualFilter | RangeFilter | OneOfFilter | SelectionFilter | string;
 

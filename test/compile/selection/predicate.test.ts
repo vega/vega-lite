@@ -3,9 +3,12 @@
 import {assert} from 'chai';
 import {nonPosition} from '../../../src/compile/mark/mixins';
 import * as selection from '../../../src/compile/selection/selection';
+import {expression} from '../../../src/filter';
 import {parseUnitModel} from '../../util';
 
-function getModel(selectionDef: any) {
+const predicate = selection.predicate;
+
+describe('Selection Predicate', function() {
   const model = parseUnitModel({
     "mark": "circle",
     "encoding": {
@@ -14,79 +17,88 @@ function getModel(selectionDef: any) {
       "color": {
         "field": "Cylinders", "type": "O",
         "condition": {
-          "selection": "!one",
+          "selection": "one",
           "value": "grey"
         }
       },
       "opacity": {
         "field": "Origin", "type": "N",
         "condition": {
-          "selection": "one",
+          "selection": {"or": ["one", {"and": ["two", {"not": "three"}]}]},
           "value": 0.5
         }
       }
     }
   });
 
+  model.parseScale();
+
   model.component.selection = selection.parseUnitSelection(model, {
-    "one": selectionDef
+    "one": {"type": "single"},
+    "two": {"type": "multi", "resolve": "union"},
+    "three": {"type": "interval", "resolve": "intersect_others"}
   });
 
-  return model;
-}
+  it('generates the predicate expression', function() {
+    assert.equal(predicate(model, "one"),
+      'vlPoint("one_store", "", datum, "union", "all")');
 
+    assert.equal(predicate(model, {"not": "one"}),
+      '!vlPoint("one_store", "", datum, "union", "all")');
 
-describe('Selection Predicate', function() {
+    assert.equal(predicate(model, {"not": {"and": ["one", "two"]}}),
+      '!(vlPoint("one_store", "", datum, "union", "all") && ' +
+      'vlPoint("two_store", "", datum, "union", "all"))');
+
+    assert.equal(predicate(model, {"and": ["one", "two", {"not": "three"}]}),
+      '(vlPoint("one_store", "", datum, "union", "all") && ' +
+      'vlPoint("two_store", "", datum, "union", "all") && ' +
+      '!vlInterval("three_store", "", datum, "intersect", "others"))');
+
+    assert.equal(predicate(model, {"or": ["one", {"and": ["two", {"not": "three"}]}]}),
+      '(vlPoint("one_store", "", datum, "union", "all") || ' +
+      '(vlPoint("two_store", "", datum, "union", "all") && ' +
+      '!vlInterval("three_store", "", datum, "intersect", "others")))');
+  });
+
   it('generates Vega production rules', function() {
-    const single = getModel({type: 'single'});
-    single.parseScale();
-
-    assert.deepEqual(nonPosition('color', single), {
+    assert.deepEqual(nonPosition('color', model), {
       color: [
-        {test: "!vlPoint(\"one_store\", \"\", datum, \"union\", \"all\")", value: "grey"},
+        {test: 'vlPoint("one_store", "", datum, "union", "all")', value: "grey"},
         {scale: "color", field: "Cylinders"}
       ]
     });
 
-    assert.deepEqual(nonPosition('opacity', single), {
+    assert.deepEqual(nonPosition('opacity', model), {
       opacity: [
-        {test: "vlPoint(\"one_store\", \"\", datum, \"union\", \"all\")", value: 0.5},
+        {test: '(vlPoint("one_store", "", datum, "union", "all") || ' +
+              '(vlPoint("two_store", "", datum, "union", "all") && ' +
+              '!vlInterval("three_store", "", datum, "intersect", "others")))',
+          value: 0.5},
         {scale: "opacity", field: "Origin"}
       ]
     });
+  });
 
-    const multi = getModel({type: 'multi'});
-    multi.parseScale();
+  it('generates a selection filter', function() {
+    assert.equal(expression(model, {"selection": "one"}),
+      'vlPoint("one_store", "", datum, "union", "all")');
 
-    assert.deepEqual(nonPosition('color', multi), {
-      color: [
-        {test: "!vlPoint(\"one_store\", \"\", datum, \"union\", \"all\")", value: "grey"},
-        {scale: "color", field: "Cylinders"}
-      ]
-    });
+    assert.equal(expression(model, {"selection": {"not": "one"}}),
+      '!vlPoint("one_store", "", datum, "union", "all")');
 
-    assert.deepEqual(nonPosition('opacity', multi), {
-      opacity: [
-        {test: "vlPoint(\"one_store\", \"\", datum, \"union\", \"all\")", value: 0.5},
-        {scale: "opacity", field: "Origin"}
-      ]
-    });
+    assert.equal(expression(model, {"selection": {"not": {"and": ["one", "two"]}}}),
+      '!(vlPoint("one_store", "", datum, "union", "all") && ' +
+      'vlPoint("two_store", "", datum, "union", "all"))');
 
-    const interval = getModel({type: 'interval'});
-    interval.parseScale();
+    assert.equal(expression(model, {"selection": {"and": ["one", "two", {"not": "three"}]}}),
+      '(vlPoint("one_store", "", datum, "union", "all") && ' +
+      'vlPoint("two_store", "", datum, "union", "all") && ' +
+      '!vlInterval("three_store", "", datum, "intersect", "others"))');
 
-    assert.deepEqual(nonPosition('color', interval), {
-      color: [
-        {test: "!vlInterval(\"one_store\", \"\", datum, \"union\", \"all\")", value: "grey"},
-        {scale: "color", field: "Cylinders"}
-      ]
-    });
-
-    assert.deepEqual(nonPosition('opacity', interval), {
-      opacity: [
-        {test: "vlInterval(\"one_store\", \"\", datum, \"union\", \"all\")", value: 0.5},
-        {scale: "opacity", field: "Origin"}
-      ]
-    });
+    assert.equal(expression(model, {"selection": {"or": ["one", {"and": ["two", {"not": "three"}]}]}}),
+      '(vlPoint("one_store", "", datum, "union", "all") || ' +
+      '(vlPoint("two_store", "", datum, "union", "all") && ' +
+      '!vlInterval("three_store", "", datum, "intersect", "others")))');
   });
 });
