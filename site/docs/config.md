@@ -235,4 +235,6 @@ Facet cell configuration overrides [cell config](#cell-config) for faceted (trel
 {:#title-config}
 ## Title Configuration  (`config.title.*`)
 
+See the (Vega documentation)[https://vega.github.io/vega/docs/config/#title) for more details.
+
 {% include table.html props="anchor,angle,baseline,color,font,fontSize,fontWeight,limit,offset,orient" source="VgTitleConfig" %}
