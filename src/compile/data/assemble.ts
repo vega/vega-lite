@@ -38,7 +38,7 @@ function removeUnnecessaryNodes(node: DataFlowNode) {
   }
 
   // remove output nodes that are not required
-  if (node instanceof OutputNode && !node.required) {
+  if (node instanceof OutputNode && !node.isRequired()) {
     node.remove();
   }
 
@@ -54,8 +54,8 @@ function cloneSubtree(facet: FacetNode) {
       const copy = node.clone();
 
       if (copy instanceof OutputNode) {
-        const newName = FACET_SCALE_PREFIX + facet.model.getName(copy.source);
-        copy.source = newName;
+        const newName = FACET_SCALE_PREFIX + facet.model.getName(copy.getSource());
+        copy.setSource(newName);
 
         facet.model.component.data.outputNodes[newName] = copy;
       } else if (copy instanceof AggregateNode || copy instanceof StackNode) {
@@ -202,11 +202,11 @@ function makeWalkTree(data: VgData[]) {
 
     if (node instanceof OutputNode) {
       if (dataSource.source && dataSource.transform.length === 0) {
-        node.source = dataSource.source;
+        node.setSource(dataSource.source);
       } else if (node.parent instanceof OutputNode) {
         // Note that an output node may be required but we still do not assemble a
         // separate data source for it.
-        node.source = dataSource.name;
+        node.setSource(dataSource.name);
       } else {
         if (!dataSource.name) {
           dataSource.name = `data_${datasetIndex++}`;
@@ -214,7 +214,7 @@ function makeWalkTree(data: VgData[]) {
 
         // Here we set the name of the datasource we generated. From now on
         // other assemblers can use it.
-        node.source = dataSource.name;
+        node.setSource(dataSource.name);
 
         // if this node has more than one child, we will add a datasource automatically
         if (node.numChildren() === 1) {
@@ -332,7 +332,7 @@ export function assembleData(dataCompomponent: DataComponent): VgData[] {
   for (const d of data) {
     for (const t of d.transform || []) {
       if (t.type === 'lookup') {
-        t.from = dataCompomponent.outputNodes[t.from].source;
+        t.from = dataCompomponent.outputNodes[t.from].getSource();
       }
     }
   }

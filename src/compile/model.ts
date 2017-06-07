@@ -119,7 +119,8 @@ export abstract class Model {
     this.component = {
       data: {
         sources: parent ? parent.component.data.sources : {},
-        outputNodes: parent ? parent.component.data.outputNodes : {}
+        outputNodes: parent ? parent.component.data.outputNodes : {},
+        outputNodeRefCounts: parent ? parent.component.data.outputNodeRefCounts : {}
       },
       mark: null, scales: null, axes: {x: null, y: null},
       layoutHeaders:{row: {}, column: {}}, legends: null, selection: null
@@ -265,7 +266,12 @@ export abstract class Model {
   public requestDataName(name: DataSourceType) {
     const fullName = this.getName(name);
 
-    return this.lookupDataSource(fullName);
+    // Increase ref count. This is critical because otherwise we won't create a data source.
+    // We also increase the ref counts on OutputNode.getSource() calls.
+    const refCounts = this.component.data.outputNodeRefCounts;
+    refCounts[fullName]++;
+
+    return fullName;
   }
 
   public getSizeSignalRef(sizeType: 'width' | 'height'): {signal: string} {
@@ -282,11 +288,12 @@ export abstract class Model {
     const node = this.component.data.outputNodes[name];
 
     if (!node) {
-      // name not found in map so let's just return what we got
+      // Name not found in map so let's just return what we got.
+      // This can happen if we already have the correct name.
       return name;
     }
 
-    return node.source;
+    return node.getSource();
   }
 
   public renameSize(oldName: string, newName: string) {

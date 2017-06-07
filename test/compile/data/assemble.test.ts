@@ -12,14 +12,16 @@ describe('compile/data/assemble', () => {
   describe('assembleData', () => {
     it('should assemble named data source', () => {
       const src = new SourceNode({name: 'foo'});
-      const main = new OutputNode('mainOut', 'main');
+      const outputNodeRefCounts = {};
+      const main = new OutputNode('mainOut', 'main', outputNodeRefCounts);
       main.parent = src;
 
-      assert.equal(main.source, 'mainOut');
+      assert.equal(main.getSource(), 'mainOut');
 
       const data = assembleData({
         sources: {named: src},
-        outputNodes: {out: main}
+        outputNodes: {out: main},
+        outputNodeRefCounts
       });
 
       assert.deepEqual(data, [{
@@ -29,19 +31,21 @@ describe('compile/data/assemble', () => {
 
     it('should assemble raw and main output', () => {
       const src = new SourceNode({url: 'foo.csv'});
-      const raw = new OutputNode('rawOut', 'raw');
+      const outputNodeRefCounts = {};
+      const raw = new OutputNode('rawOut', 'raw', outputNodeRefCounts);
       raw.parent = src;
       const agg = new AggregateNode({a: true}, {b: {count: 'count_*'}});
       agg.parent = raw;
-      const main = new OutputNode('mainOut', 'main');
+      const main = new OutputNode('mainOut', 'main', outputNodeRefCounts);
       main.parent = agg;
 
-      assert.equal(raw.source, 'rawOut');
-      assert.equal(main.source, 'mainOut');
+      assert.equal(raw.getSource(), 'rawOut');
+      assert.equal(main.getSource(), 'mainOut');
 
       const data = assembleData({
         sources: {named: src},
-        outputNodes: {out: main}
+        outputNodes: {out: main},
+        outputNodeRefCounts
       });
 
       assert.deepEqual<VgData[]>(data, [{

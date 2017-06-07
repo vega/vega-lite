@@ -1,6 +1,6 @@
 import {isFunction} from 'util';
 import {DataSourceType} from '../../data';
-import {StringSet} from '../../util';
+import {Dict, StringSet} from '../../util';
 
 
 /**
@@ -91,27 +91,31 @@ export class DataFlowNode {
 }
 
 export class OutputNode extends DataFlowNode {
-
   private _source: string;
 
-  private _refcount = 0;
+  private _name: string;
 
   public clone(): this {
     const cloneObj = new (<any>this.constructor);
-    cloneObj._source = this._source;
     cloneObj.debugName = 'clone_' + this.debugName;
-    cloneObj._refcount = this._refcount;
+    cloneObj._source = this._source;
+    cloneObj.type = this.type;
+    cloneObj.refCounts = this.refCounts;
     return cloneObj;
   }
 
-  constructor(source: string, public readonly type: DataSourceType) {
+  constructor(source: string, public readonly type: DataSourceType, private readonly refCounts: Dict<number>) {
     super(source);
 
-    this._source = source;
+    this._source = this._name = source;
+
+    if (this.refCounts && !(this._name in this.refCounts)) {
+      this.refCounts[this._name] = 0;
+    }
   }
 
   /**
-   * Request the datasource name.
+   * Request the datasource name and increase the ref counter.
    *
    * During the parsing phase, this will return the simple name such as 'main' or 'raw'.
    * It is crucial to request the name from an output node to mark it as a required node.
@@ -119,16 +123,16 @@ export class OutputNode extends DataFlowNode {
    *
    * In the assemble phase, this will return the correct name.
    */
-  get source() {
-    this._refcount++;
+  public getSource() {
+    this.refCounts[this._name]++;
     return this._source;
   }
 
-  set source(source: string) {
-    this._source = source;
+  public isRequired(): boolean {
+    return !!this.refCounts[this._name];
   }
 
-  get required() {
-    return this._refcount > 0;
+  public setSource(source: string) {
+    this._source = source;
   }
 }

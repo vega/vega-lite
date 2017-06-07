@@ -74,12 +74,12 @@ export class LookupNode extends DataFlowNode {
     }
 
     const fromOutputName = model.getName(`lookup_${counter}`);
-    const fromOutputNode = new OutputNode(fromOutputName, 'lookup');
+    const fromOutputNode = new OutputNode(fromOutputName, 'lookup', model.component.data.outputNodeRefCounts);
     fromOutputNode.parent = fromSource;
 
     model.component.data.outputNodes[fromOutputName] = fromOutputNode;
 
-    return new LookupNode(transform, fromOutputNode.source);
+    return new LookupNode(transform, fromOutputNode.getSource());
   }
 
   public producedFields(): StringSet {
