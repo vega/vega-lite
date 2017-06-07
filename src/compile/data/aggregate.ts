@@ -84,8 +84,7 @@ export class AggregateNode extends DataFlowNode {
           meas[fieldDef.field][fieldDef.aggregate] = field(fieldDef);
 
           // add min/max so we can use their union as unaggregated domain
-          const scale = model.scale(channel);
-          if (scale && scale.domain === 'unaggregated') {
+          if (model.scaleDomain(channel) === 'unaggregated') {
             meas[fieldDef.field]['min'] = field(fieldDef, {aggregate: 'min'});
             meas[fieldDef.field]['max'] = field(fieldDef, {aggregate: 'max'});
           }
