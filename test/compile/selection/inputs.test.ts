@@ -27,7 +27,7 @@ describe('Inputs Selection Transform', function() {
       "bind": {"input": "range", "min": 0, "max": 10, "step": 1}
     },
     "three": {
-      "type": "single",
+      "type": "single", "nearest": true,
       "fields": ["Cylinders", "Origin"],
       "bind": {
         "Horsepower": {"input": "range", "min": 0, "max": 10, "step": 1},
@@ -78,7 +78,7 @@ describe('Inputs Selection Transform', function() {
         "on": [
           {
             "events": [{"source": "scope","type": "click"}],
-            "update": "(item().isVoronoi ? datum.datum : datum)[\"_id\"]"
+            "update": "datum && datum[\"_id\"]"
           }
         ],
         "bind": {"input": "range","min": 0,"max": 10,"step": 1}
@@ -102,7 +102,7 @@ describe('Inputs Selection Transform', function() {
         "on": [
           {
             "events": [{"source": "scope","type": "click"}],
-            "update": "(item().isVoronoi ? datum.datum : datum)[\"Horsepower\"]"
+            "update": "datum && datum[\"Horsepower\"]"
           }
         ],
         "bind": {"input": "range","min": 0,"max": 10,"step": 1}
@@ -113,7 +113,7 @@ describe('Inputs Selection Transform', function() {
         "on": [
           {
             "events": [{"source": "scope","type": "click"}],
-            "update": "(item().isVoronoi ? datum.datum : datum)[\"Cylinders\"]"
+            "update": "datum && datum[\"Cylinders\"]"
           }
         ],
         "bind": {"input": "range","min": 0,"max": 10,"step": 1}
@@ -137,7 +137,7 @@ describe('Inputs Selection Transform', function() {
         "on": [
           {
             "events": [{"source": "scope","type": "click"}],
-            "update": "(item().isVoronoi ? datum.datum : datum)[\"Origin\"]"
+            "update": "datum && (item().isVoronoi ? datum.datum : datum)[\"Origin\"]"
           }
         ],
         "bind": {
@@ -151,7 +151,7 @@ describe('Inputs Selection Transform', function() {
         "on": [
           {
             "events": [{"source": "scope","type": "click"}],
-            "update": "(item().isVoronoi ? datum.datum : datum)[\"Cylinders\"]"
+            "update": "datum && (item().isVoronoi ? datum.datum : datum)[\"Cylinders\"]"
           }
         ],
         "bind": {

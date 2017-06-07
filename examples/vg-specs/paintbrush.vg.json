@@ -62,7 +62,7 @@
                             "type": "mouseover"
                         }
                     ],
-                    "update": "{unit: \"\", encodings: [], fields: [\"_id\"], values: [(item().isVoronoi ? datum.datum : datum)[\"_id\"]]}"
+                    "update": "datum && {unit: \"\", encodings: [], fields: [\"_id\"], values: [(item().isVoronoi ? datum.datum : datum)[\"_id\"]]}"
                 }
             ]
         },
