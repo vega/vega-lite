@@ -60,11 +60,9 @@ function assemble(model: Model, topLevelProperties: TopLevelProperties) {
   const {autoResize, ...topLevelProps} = topLevelProperties;
 
   const encode = model.assembleParentGroupProperties();
-  let width;
-  let height;
-  let scene:object;
   if (encode) {
-    ({width, height, ...scene} = encode);
+    delete encode.width;
+    delete encode.height;
   }
 
   const output = {
@@ -73,7 +71,7 @@ function assemble(model: Model, topLevelProperties: TopLevelProperties) {
     // By using Vega layout, we don't support custom autosize
     autosize: topLevelProperties.autoResize ? {type: 'pad', resize: true} : 'pad',
     ...topLevelProps,
-    ...(scene ? {encode: {update: scene}} : {}),
+    ...(encode ? {encode: {update: encode}} : {}),
     data: [].concat(
       model.assembleSelectionData([]),
       model.assembleData()
