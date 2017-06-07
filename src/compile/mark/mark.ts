@@ -125,8 +125,8 @@ function detailFields(model: UnitModel): string[] {
 }
 
 function clip(model: UnitModel) {
-  const xscale = model.scale(X);
-  const yscale = model.scale(Y);
-  return (xscale && isSelectionDomain(xscale.domain)) ||
-    (yscale && isSelectionDomain(yscale.domain)) ? {clip: true} : {};
+  const xScaleDomain = model.scaleDomain(X);
+  const yScaleDomain = model.scaleDomain(Y);
+  return (xScaleDomain && isSelectionDomain(xScaleDomain)) ||
+    (yScaleDomain && isSelectionDomain(yScaleDomain)) ? {clip: true} : {};
 }

@@ -6,7 +6,7 @@ import * as vlEncoding from '../encoding'; // TODO: remove
 import {field, FieldDef, FieldRefOption, isFieldDef} from '../fielddef';
 import {Legend} from '../legend';
 import {FILL_STROKE_CONFIG, isMarkDef, Mark, MarkDef, TEXT as TEXT_MARK} from '../mark';
-import {defaultScaleConfig, hasDiscreteDomain, Scale} from '../scale';
+import {defaultScaleConfig, Domain, hasDiscreteDomain, Scale} from '../scale';
 import {SelectionDef} from '../selection';
 import {SortField, SortOrder} from '../sort';
 import {UnitSize, UnitSpec} from '../spec';
@@ -99,6 +99,15 @@ export class UnitModel extends ModelWithField {
 
   public scale(channel: Channel) {
     return this.scales[channel];
+  }
+
+  /**
+   * Return specified Vega-lite scale domain for a particular channel
+   * @param channel
+   */
+  public scaleDomain(channel: Channel): Domain {
+    const scale = this.scales[channel];
+    return scale ? scale.domain : undefined;
   }
 
   public hasDiscreteDomain(channel: Channel) {
