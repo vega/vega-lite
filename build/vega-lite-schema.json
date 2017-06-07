@@ -3938,22 +3938,40 @@
       "type": "object"
     },
     "SelectionDomain": {
-      "additionalProperties": false,
-      "properties": {
-        "encoding": {
-          "type": "string"
+      "anyOf": [
+        {
+          "additionalProperties": false,
+          "properties": {
+            "field": {
+              "type": "string"
+            },
+            "selection": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "selection",
+            "field"
+          ],
+          "type": "object"
         },
-        "field": {
-          "type": "string"
-        },
-        "selection": {
-          "type": "string"
+        {
+          "additionalProperties": false,
+          "properties": {
+            "encoding": {
+              "type": "string"
+            },
+            "selection": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "selection",
+            "encoding"
+          ],
+          "type": "object"
         }
-      },
-      "required": [
-        "selection"
-      ],
-      "type": "object"
+      ]
     },
     "SelectionFilter": {
       "additionalProperties": false,
