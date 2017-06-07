@@ -128,8 +128,8 @@ export abstract class Model {
   }
 
   public parse() {
+    this.parseScale();
     this.parseData();
-    this.parseScale(); // depends on data name
     this.parseSelection();
     this.parseAxisAndHeader(); // depends on scale name
     this.parseLegend(); // depends on scale name
