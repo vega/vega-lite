@@ -44,9 +44,9 @@ export class FacetNode extends DataFlowNode {
   }
 
   /**
-   * The name to reference this source is its name
+   * The name to reference this source is its name.
    */
-  get source() {
+  public getSource() {
     return this.name;
   }
 

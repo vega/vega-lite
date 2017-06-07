@@ -304,7 +304,7 @@ export class FacetModel extends ModelWithField {
       ...this.child.assembleGroup()
     }];
 
-    return marks.map(this.correctDataNames);
+    return marks;
   }
 
   public channels() {

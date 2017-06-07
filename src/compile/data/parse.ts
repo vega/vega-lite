@@ -96,6 +96,7 @@ export function parseData(model: Model): DataComponent {
   const root = parseRoot(model, model.component.data.sources);
 
   const outputNodes = model.component.data.outputNodes;
+  const outputNodeRefCounts = model.component.data.outputNodeRefCounts;
 
   // the current head of the tree that we are appending to
   let head = root;
@@ -149,7 +150,7 @@ export function parseData(model: Model): DataComponent {
 
   // add an output node pre aggregation
   const rawName = model.getName(RAW);
-  const raw = new OutputNode(rawName, RAW);
+  const raw = new OutputNode(rawName, RAW, outputNodeRefCounts);
   outputNodes[rawName] = raw;
   raw.parent = head;
   head = raw;
@@ -184,7 +185,7 @@ export function parseData(model: Model): DataComponent {
 
   // output node for marks
   const mainName = model.getName(MAIN);
-  const main = new OutputNode(mainName, MAIN);
+  const main = new OutputNode(mainName, MAIN, outputNodeRefCounts);
   outputNodes[mainName] = main;
   main.parent = head;
   head = main;
@@ -193,7 +194,7 @@ export function parseData(model: Model): DataComponent {
   let facetRoot = null;
   if (model instanceof FacetModel) {
     const facetName = model.getName('facet');
-    facetRoot = new FacetNode(model, facetName, main.source);
+    facetRoot = new FacetNode(model, facetName, main.getSource());
     outputNodes[facetName] = facetRoot;
     facetRoot.parent = head;
     head = facetRoot;
@@ -202,6 +203,7 @@ export function parseData(model: Model): DataComponent {
   return {
     sources: model.component.data.sources,
     outputNodes,
+    outputNodeRefCounts,
     main,
     facetRoot
   };
