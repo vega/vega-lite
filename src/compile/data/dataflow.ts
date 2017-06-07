@@ -104,6 +104,11 @@ export class OutputNode extends DataFlowNode {
     return cloneObj;
   }
 
+  /**
+   * @param source The name of the source. Will change in assemble.
+   * @param type The type of the output node.
+   * @param refCounts A global ref counter map.
+   */
   constructor(source: string, public readonly type: DataSourceType, private readonly refCounts: Dict<number>) {
     super(source);
 

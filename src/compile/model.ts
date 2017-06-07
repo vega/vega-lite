@@ -269,11 +269,7 @@ export abstract class Model {
     // Increase ref count. This is critical because otherwise we won't create a data source.
     // We also increase the ref counts on OutputNode.getSource() calls.
     const refCounts = this.component.data.outputNodeRefCounts;
-    if (!(fullName in refCounts)) {
-      refCounts[fullName] = 1;
-    } else {
-      refCounts[fullName]++;
-    }
+    refCounts[fullName] = (refCounts[fullName] || 0) + 1;
 
     return fullName;
   }
