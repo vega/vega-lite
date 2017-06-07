@@ -11,6 +11,7 @@ export const BRUSH = '_brush';
 
 const interval:SelectionCompiler = {
   predicate: 'vlInterval',
+  scaleDomain: 'vlIntervalDomain',
 
   signals: function(model, selCmpt) {
     const signals: any[] = [];

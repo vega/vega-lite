@@ -4,6 +4,7 @@ import {SelectionCompiler, STORE, TUPLE} from './selection';
 
 const single:SelectionCompiler = {
   predicate: multi.predicate,
+  scaleDomain: multi.scaleDomain,
 
   signals: multi.signals,
 

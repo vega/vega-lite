@@ -83,8 +83,7 @@ export type VgScale = {
   name: string,
   type: ScaleType,
   domain: VgDomain,
-  // FIXME: Should be a VgSignalRef.
-  domainRaw?: SelectionDomain,
+  domainRaw?: VgSignalRef,
   range: VgRange,
 
   clamp?: boolean,
