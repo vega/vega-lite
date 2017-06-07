@@ -1,8 +1,9 @@
 import {selector as parseSelector} from 'vega-event-selector';
 import {Channel} from '../../channel';
+import {LogicalOperand} from '../../logical';
 import {SelectionDomain as SelectionScaleDomain} from '../../scale';
 import {SelectionDef, SelectionDomain, SelectionResolutions, SelectionTypes} from '../../selection';
-import {Dict, extend, isString, stringValue} from '../../util';
+import {Dict, extend, isString, logicalExpr, stringValue} from '../../util';
 import {VgBinding, VgData, VgEventStream} from '../../vega.schema';
 import {LayerModel} from '../layer';
 import {Model} from '../model';
@@ -206,11 +207,17 @@ const PREDICATES_OPS = {
   intersect_others: '"intersect", "others"'
 };
 
-export function predicate(model: Model, name: string, type: SelectionTypes, resolve?: string, datum?: string): string {
-  const store = stringValue(name + STORE);
-  const op = PREDICATES_OPS[resolve || 'global'];
-  datum = datum || 'datum';
-  return compiler(type).predicate + `(${store}, ${stringValue(model.getName(''))}, ${datum}, ${op})`;
+export function predicate(model: Model, selections: LogicalOperand<string>): string {
+  function expr(name: string): string {
+    const selCmpt = model.getSelectionComponent(name);
+    const store = stringValue(name + STORE);
+    const op = PREDICATES_OPS[selCmpt.resolve];
+
+    return compiler(selCmpt.type).predicate +
+      `(${store}, ${stringValue(model.getName(''))}, datum, ${op})`;
+  }
+
+  return logicalExpr(selections, expr);
 }
 
 // Utility functions

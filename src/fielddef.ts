@@ -9,13 +9,13 @@ import {Config} from './config';
 import {Field} from './fielddef';
 import {Legend} from './legend';
 import * as log from './log';
+import {LogicalOperand} from './logical';
 import {Scale, ScaleType} from './scale';
 import {SortField, SortOrder} from './sort';
 import {StackOffset} from './stack';
 import {isDiscreteByDefault, TimeUnit} from './timeunit';
 import {getFullName, Type} from './type';
 import {isBoolean, isString, stringValue} from './util';
-
 /**
  * Definition object for a constant value of an encoding channel.
  */
@@ -90,7 +90,7 @@ export interface FieldDef<F> {
 }
 
 export interface Condition<T> {
-  selection: string;
+  selection: LogicalOperand<string>;
   value: T;
 }
 
