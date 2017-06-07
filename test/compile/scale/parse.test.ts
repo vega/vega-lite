@@ -4,8 +4,8 @@ import {assert} from 'chai';
 
 import {parseScale} from '../../../src/compile/scale/parse';
 import {NON_TYPE_DOMAIN_RANGE_VEGA_SCALE_PROPERTIES} from '../../../src/compile/scale/parse';
+import {SELECTION_DOMAIN} from '../../../src/compile/selection/selection';
 import {parseUnitModel} from '../../util';
-
 
 import {SCALE_PROPERTIES} from '../../../src/scale';
 import {toSet, without} from '../../../src/util';
@@ -175,6 +175,34 @@ describe('src/compile', function() {
       it('should add correct scales', function() {
         assert.equal(scales.name, 'color');
         assert.equal(scales.type, 'sequential');
+      });
+    });
+
+    describe('selection domain', function() {
+      const model = parseUnitModel({
+        mark: "area",
+        encoding: {
+          x: {
+            field: "date", type: "temporal",
+            scale: {domain: {selection: "brush", encoding: "x"}},
+          },
+          y: {
+            field: "date", type: "temporal",
+            scale: {domain: {selection: "foobar", field: "Miles_per_Gallon"}},
+          }
+        }
+      });
+
+      const xscale = parseScale(model, 'x');
+      const yscale = parseScale(model, 'y');
+      it('should add a raw selection domain', function() {
+        assert.property(xscale, 'domainRaw');
+        assert.propertyVal(xscale.domainRaw, 'signal',
+          SELECTION_DOMAIN + '{"selection":"brush","encoding":"x"}');
+
+        assert.property(yscale, 'domainRaw');
+        assert.propertyVal(yscale.domainRaw, 'signal',
+          SELECTION_DOMAIN + '{"selection":"foobar","field":"Miles_per_Gallon"}');
       });
     });
   });

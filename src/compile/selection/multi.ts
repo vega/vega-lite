@@ -4,7 +4,7 @@ import nearest from './transforms/nearest';
 
 const multi:SelectionCompiler = {
   predicate: 'vlPoint',
-  scaleDomain: 'VlPointDomain',
+  scaleDomain: 'vlPointDomain',
 
   signals: function(model, selCmpt) {
     const proj = selCmpt.project;
