@@ -40,40 +40,43 @@ export function initDomain(domain: Domain, fieldDef: FieldDef<string>, scale: Sc
   return domain;
 }
 
-
+// FIXME(https://github.com/vega/vega-lite/issues/2251#issuecomment-306683920)
+// parseDomain must be called separately after parseScale
 export function parseDomain(model: UnitModel, channel: Channel): VgDomain {
-  const scale = model.scale(channel);
+  // FIXME replace this with getScaleComponent once parseScaleDomain a separate parseStep from scale
+  const scaleType = model.scale(channel).type;
+  const domain = model.scaleDomain(channel);
 
   // If channel is either X or Y then union them with X2 & Y2 if they exist
   if (channel === 'x' && model.channelHasField('x2')) {
     if (model.channelHasField('x')) {
-      return unionDomains(parseSingleChannelDomain(scale, model, 'x'), parseSingleChannelDomain(scale, model, 'x2'));
+      return unionDomains(parseSingleChannelDomain(scaleType, domain, model, 'x'), parseSingleChannelDomain(scaleType, domain, model, 'x2'));
     } else {
-      return parseSingleChannelDomain(scale, model, 'x2');
+      return parseSingleChannelDomain(scaleType, domain, model, 'x2');
     }
   } else if (channel === 'y' && model.channelHasField('y2')) {
     if (model.channelHasField('y')) {
-      return unionDomains(parseSingleChannelDomain(scale, model, 'y'), parseSingleChannelDomain(scale, model, 'y2'));
+      return unionDomains(parseSingleChannelDomain(scaleType, domain, model, 'y'), parseSingleChannelDomain(scaleType, domain, model, 'y2'));
     } else {
-      return parseSingleChannelDomain(scale, model, 'y2');
+      return parseSingleChannelDomain(scaleType, domain, model, 'y2');
     }
   }
-  return parseSingleChannelDomain(scale, model, channel);
+  return parseSingleChannelDomain(scaleType, domain, model, channel);
 }
 
-function parseSingleChannelDomain(scale: Scale, model: UnitModel, channel:Channel): VgDomain {
+function parseSingleChannelDomain(scaleType: ScaleType, domain: Domain, model: UnitModel, channel:Channel): VgDomain {
   const fieldDef = model.fieldDef(channel);
 
-  if (scale.domain && scale.domain !== 'unaggregated' && !isSelectionDomain(scale.domain)) { // explicit value
+  if (domain && domain !== 'unaggregated' && !isSelectionDomain(domain)) { // explicit value
     if (fieldDef.bin) {
       log.warn(log.message.conflictedDomain(channel));
     } else {
-      if (isDateTime(scale.domain[0])) {
-        return (scale.domain as DateTime[]).map((dt) => {
+      if (isDateTime(domain[0])) {
+        return (domain as DateTime[]).map((dt) => {
           return {signal: dateTimeExpr(dt, true)};
         });
       }
-      return scale.domain;
+      return domain;
     }
   }
 
@@ -91,9 +94,9 @@ function parseSingleChannelDomain(scale: Scale, model: UnitModel, channel:Channe
     };
   }
 
-  const sort = domainSort(model, channel, scale.type);
+  const sort = domainSort(model, channel, scaleType);
 
-  if (scale.domain === 'unaggregated') {
+  if (domain === 'unaggregated') {
     return {
       data: model.requestDataName(MAIN),
       fields: [
@@ -102,12 +105,12 @@ function parseSingleChannelDomain(scale: Scale, model: UnitModel, channel:Channe
       ]
     };
   } else if (fieldDef.bin) { // bin
-    if (isBinScale(scale.type)) {
+    if (isBinScale(scaleType)) {
       const signal = model.getName(`${binToString(fieldDef.bin)}_${fieldDef.field}_bins`);
       return {signal: `sequence(${signal}.start, ${signal}.stop + ${signal}.step, ${signal}.step)`};
     }
 
-    if (hasDiscreteDomain(scale.type)) {
+    if (hasDiscreteDomain(scaleType)) {
       // ordinal bin scale takes domain from bin_range, ordered by bin_start
       // This is useful for both axis-based scale (x, y, column, and row) and legend-based scale (other channels).
       return {
