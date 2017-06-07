@@ -344,7 +344,7 @@
                     },
                     "stroke": [
                         {
-                            "test": "!vlInterval(\"brush_store\", \"\", datum, \"union\", \"all\")",
+                            "test": "!(vlInterval(\"brush_store\", \"\", datum, \"union\", \"all\"))",
                             "value": "grey"
                         },
                         {

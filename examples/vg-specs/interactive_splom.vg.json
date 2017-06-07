@@ -505,7 +505,7 @@
                             },
                             "stroke": [
                                 {
-                                    "test": "!vlInterval(\"brush_store\", \"child_Horsepower_Horsepower_\", datum, \"union\", \"all\")",
+                                    "test": "!(vlInterval(\"brush_store\", \"child_Horsepower_Horsepower_\", datum, \"union\", \"all\"))",
                                     "value": "grey"
                                 },
                                 {
@@ -1063,7 +1063,7 @@
                             },
                             "stroke": [
                                 {
-                                    "test": "!vlInterval(\"brush_store\", \"child_Horsepower_Miles_per_Gallon_\", datum, \"union\", \"all\")",
+                                    "test": "!(vlInterval(\"brush_store\", \"child_Horsepower_Miles_per_Gallon_\", datum, \"union\", \"all\"))",
                                     "value": "grey"
                                 },
                                 {
@@ -1622,7 +1622,7 @@
                             },
                             "stroke": [
                                 {
-                                    "test": "!vlInterval(\"brush_store\", \"child_Acceleration_Horsepower_\", datum, \"union\", \"all\")",
+                                    "test": "!(vlInterval(\"brush_store\", \"child_Acceleration_Horsepower_\", datum, \"union\", \"all\"))",
                                     "value": "grey"
                                 },
                                 {
@@ -2181,7 +2181,7 @@
                             },
                             "stroke": [
                                 {
-                                    "test": "!vlInterval(\"brush_store\", \"child_Acceleration_Miles_per_Gallon_\", datum, \"union\", \"all\")",
+                                    "test": "!(vlInterval(\"brush_store\", \"child_Acceleration_Miles_per_Gallon_\", datum, \"union\", \"all\"))",
                                     "value": "grey"
                                 },
                                 {

@@ -616,7 +616,7 @@
                     },
                     "fill": [
                         {
-                            "test": "!vlInterval(\"brush_store\", \"layer_1_\", datum, \"union\", \"all\")",
+                            "test": "!(vlInterval(\"brush_store\", \"layer_1_\", datum, \"union\", \"all\"))",
                             "value": "grey"
                         },
                         {

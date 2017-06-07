@@ -190,7 +190,7 @@
                     },
                     "fill": [
                         {
-                            "test": "!vlPoint(\"CylYr_store\", \"layer_0_\", datum, \"union\", \"all\")",
+                            "test": "!(vlPoint(\"CylYr_store\", \"layer_0_\", datum, \"union\", \"all\"))",
                             "value": "grey"
                         },
                         {
