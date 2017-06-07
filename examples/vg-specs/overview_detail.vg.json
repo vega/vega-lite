@@ -550,7 +550,7 @@
                         480
                     ],
                     "domainRaw": {
-                        "signal": "vlIntervalDomain(\"brush_store\", \"x\", null, \"union\")"
+                        "signal": "vlIntervalDomain(\"brush_store\", \"x\", null, \"union\", \"all\")"
                     },
                     "round": true
                 },

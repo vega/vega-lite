@@ -1,10 +1,11 @@
 import {selector as parseSelector} from 'vega-event-selector';
 import {Channel} from '../../channel';
+import {warn} from '../../log';
 import {LogicalOperand} from '../../logical';
 import {SelectionDomain} from '../../scale';
 import {SelectionDef, SelectionResolutions, SelectionTypes} from '../../selection';
 import {Dict, extend, isString, logicalExpr, stringValue} from '../../util';
-import {VgBinding, VgData, VgEventStream, VgSignalRef, VgScale, VgDomain, isSignalRefDomain} from '../../vega.schema';
+import {isSignalRefDomain, VgBinding, VgData, VgDomain, VgEventStream, VgScale, VgSignalRef} from '../../vega.schema';
 import {LayerModel} from '../layer';
 import {Model} from '../model';
 import {UnitModel} from '../unit';
@@ -13,7 +14,6 @@ import multiCompiler from './multi';
 import {SelectionComponent} from './selection';
 import singleCompiler from './single';
 import {forEachTransform} from './transforms/transforms';
-import {warn} from '../../log';
 
 export const STORE = '_store';
 export const TUPLE  = '_tuple';
