@@ -3,13 +3,13 @@
 import {assert} from 'chai';
 
 import * as encode from '../../../src/compile/axis/encode';
-import {parseModel, parseUnitModel} from '../../util';
+import {parseUnitModelWithScale} from '../../util';
 
 
 describe('compile/axis', () => {
   describe('encode.labels()', function () {
     it('should rotate label', function() {
-      const model = parseUnitModel({
+      const model = parseUnitModelWithScale({
         mark: "point",
         encoding: {
           x: {field: "a", type: "temporal", timeUnit: "month"}
@@ -20,7 +20,7 @@ describe('compile/axis', () => {
     });
 
     it('should have correct text.signal for quarter timeUnits', function () {
-      const model = parseUnitModel({
+      const model = parseUnitModelWithScale({
         mark: "point",
         encoding: {
           x: {field: "a", type: "temporal", timeUnit: "quarter"}
@@ -32,7 +32,7 @@ describe('compile/axis', () => {
     });
 
     it('should have correct text.signal for yearquartermonth timeUnits', function () {
-      const model = parseUnitModel({
+      const model = parseUnitModelWithScale({
         mark: "point",
         encoding: {
           x: {field: "a", type: "temporal", timeUnit: "yearquartermonth"}
