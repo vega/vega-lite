@@ -170,7 +170,8 @@
                 "update": {
                     "x": {
                         "scale": "x",
-                        "field": "b"
+                        "field": "b",
+                        "band": 0.5
                     },
                     "y": {
                         "scale": "y",

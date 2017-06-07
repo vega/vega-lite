@@ -241,8 +241,7 @@
                     },
                     "yc": {
                         "scale": "y",
-                        "field": "age",
-                        "band": 0.5
+                        "field": "age"
                     },
                     "height": {
                         "value": 5

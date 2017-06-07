@@ -258,8 +258,7 @@
                 "update": {
                     "xc": {
                         "scale": "x",
-                        "field": "age",
-                        "band": 0.5
+                        "field": "age"
                     },
                     "width": {
                         "value": 5
