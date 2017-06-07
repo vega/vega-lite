@@ -1977,7 +1977,7 @@
       "additionalProperties": false,
       "properties": {
         "filter": {
-          "$ref": "#/definitions/Filter",
+          "$ref": "#/definitions/FilterOperand",
           "description": "A string containing the filter Vega expression. Use `datum` to refer to the current data object."
         }
       },
@@ -2816,6 +2816,21 @@
       },
       "type": "object"
     },
+    "AndFilter": {
+      "additionalProperties": false,
+      "properties": {
+        "and": {
+          "items": {
+            "$ref": "#/definitions/FilterOperand"
+          },
+          "type": "array"
+        }
+      },
+      "required": [
+        "and"
+      ],
+      "type": "object"
+    },
     "LogicalAnd": {
       "additionalProperties": false,
       "properties": {
@@ -2831,6 +2846,18 @@
       ],
       "type": "object"
     },
+    "NotFilter": {
+      "additionalProperties": false,
+      "properties": {
+        "not": {
+          "$ref": "#/definitions/FilterOperand"
+        }
+      },
+      "required": [
+        "not"
+      ],
+      "type": "object"
+    },
     "LogicalNot": {
       "additionalProperties": false,
       "properties": {
@@ -2842,6 +2869,22 @@
         "not"
       ],
       "type": "object"
+    },
+    "FilterOperand": {
+      "anyOf": [
+        {
+          "$ref": "#/definitions/NotFilter"
+        },
+        {
+          "$ref": "#/definitions/AndFilter"
+        },
+        {
+          "$ref": "#/definitions/OrFilter"
+        },
+        {
+          "$ref": "#/definitions/Filter"
+        }
+      ]
     },
     "LogicalOperand": {
       "anyOf": [
@@ -2858,6 +2901,21 @@
           "type": "string"
         }
       ]
+    },
+    "OrFilter": {
+      "additionalProperties": false,
+      "properties": {
+        "or": {
+          "items": {
+            "$ref": "#/definitions/FilterOperand"
+          },
+          "type": "array"
+        }
+      },
+      "required": [
+        "or"
+      ],
+      "type": "object"
     },
     "LogicalOr": {
       "additionalProperties": false,
