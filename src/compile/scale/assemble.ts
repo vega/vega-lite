@@ -8,12 +8,17 @@ import {isRawSelectionDomain, scaleDomain} from '../selection/selection';
 
 export function assembleScale(model: Model) {
     return vals(model.component.scales).map(scale => {
-      // Correct any raw selection domains.
+      // As scale parsing occurs before selection parsing, a temporary signal
+      // is used for domainRaw. Here, we detect if this temporary signal
+      // is set, and replace it with the correct domainRaw signal.
+      // For more information, see isRawSelectionDomain in selection.ts.
       if (scale.domainRaw && isRawSelectionDomain(scale.domainRaw)) {
         scale.domainRaw = scaleDomain(model, scale.domainRaw);
       }
 
-      // Correct references to data
+      // Correct references to data as the original domain's data was determined
+      // in parseScale, which happens before parseData. Thus the original data
+      // reference can be incorrect.
       const domain = scale.domain;
       if (isDataRefDomain(domain) || isFieldRefUnionDomain(domain)) {
         domain.data = model.lookupDataSource(domain.data);

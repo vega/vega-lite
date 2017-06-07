@@ -55,8 +55,11 @@ export function parseScale(model: UnitModel, channel: Channel) {
     range: parseRange(scale)
   };
 
-  // See comment in selection.ts for why such a hack is necessary.
   if (isSelectionDomain(scale.domain)) {
+    // As scale parsing occurs before selection parsing, we use a temporary
+    // signal here and append the scale.domain definition. This is replaced
+    // with the correct domainRaw signal during scale assembly.
+    // For more information, see isRawSelectionDomain in selection.ts.
     scaleComponent.domainRaw = {
       signal: SELECTION_DOMAIN + JSON.stringify(scale.domain)
     };
