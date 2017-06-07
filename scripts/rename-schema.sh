@@ -7,3 +7,7 @@ perl -pi -e s,'GenericVConcatSpec<CompositeUnitSpec>','VConcatSpec',g build/vega
 perl -pi -e s,'GenericHConcatSpec<CompositeUnitSpec>','HConcatSpec',g build/vega-lite-schema.json
 perl -pi -e s,'GenericUnitSpec<EncodingWithFacet\,AnyMark>','FacetedCompositeUnitSpecAlias',g build/vega-lite-schema.json
 perl -pi -e s,'GenericUnitSpec<Encoding\,AnyMark>','CompositeUnitSpecAlias',g build/vega-lite-schema.json
+perl -pi -e s,'LogicalOperand<string>','LogicalOperand',g build/vega-lite-schema.json
+perl -pi -e s,'LogicalAnd<string>','LogicalAnd',g build/vega-lite-schema.json
+perl -pi -e s,'LogicalOr<string>','LogicalOr',g build/vega-lite-schema.json
+perl -pi -e s,'LogicalNot<string>','LogicalNot',g build/vega-lite-schema.json
