@@ -174,7 +174,8 @@
                 "update": {
                     "x": {
                         "scale": "x",
-                        "field": "month_date"
+                        "field": "month_date",
+                        "band": 0.5
                     },
                     "y": {
                         "scale": "layer_1_y",
