@@ -11,6 +11,8 @@ import {ScaleComponent, ScaleComponentIndex} from './component';
 import {parseDomain, unionDomains} from './domain';
 import {parseRange} from './range';
 
+import {SELECTION_DOMAIN} from '../selection/selection';
+
 /**
  * Parse scales for all channels of a model.
  */
@@ -53,8 +55,11 @@ export function parseScale(model: UnitModel, channel: Channel) {
     range: parseRange(scale)
   };
 
+  // See comment in selection.ts for why such a hack is necessary.
   if (isSelectionDomain(scale.domain)) {
-    scaleComponent.domainRaw = scale.domain;
+    scaleComponent.domainRaw = {
+      signal: SELECTION_DOMAIN + JSON.stringify(scale.domain)
+    };
   }
 
   NON_TYPE_DOMAIN_RANGE_VEGA_SCALE_PROPERTIES.forEach((property) => {

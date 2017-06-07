@@ -3948,11 +3948,11 @@
         },
         "selection": {
           "type": "string"
-        },
-        "signal": {
-          "type": "string"
         }
       },
+      "required": [
+        "selection"
+      ],
       "type": "object"
     },
     "SelectionFilter": {

@@ -282,8 +282,7 @@ export interface ExtendedScheme {
   count?: number;
 }
 
-// FIXME: Once `domainRaw` is a simple VgSignalRef, we can drop signal here.
-export type SelectionDomain = {signal?: string, selection?: string, field?: string, encoding?: string};
+export type SelectionDomain = {selection: string, field?: string, encoding?: string};
 export type Domain = number[] | string[] | DateTime[] | 'unaggregated' | SelectionDomain;
 export type Scheme = string | ExtendedScheme;
 
