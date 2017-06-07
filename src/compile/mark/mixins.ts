@@ -68,22 +68,13 @@ function wrapCondition(model: UnitModel, condition: Condition<any>, vgChannel: s
     const {selection, value} = condition;
     return {
       [vgChannel]: [
-        {test: selectionTest(model, selection), value},
+        {test: predicate(model, selection), value},
         ...(valueRef !== undefined ? [valueRef] : [])
       ]
     };
   } else {
     return valueRef !== undefined ? {[vgChannel]: valueRef} : {};
   }
-}
-
-function selectionTest(model: UnitModel, selectionName: string) {
-  const negate = selectionName.charAt(0) === '!';
-  const name = negate ? selectionName.slice(1) : selectionName;
-  const selection = model.getSelectionComponent(name);
-
-  return (negate ? '!' : '') +
-    predicate(model, selection.name, selection.type, selection.resolve);
 }
 
 export function text(model: UnitModel, vgChannel: 'text' | 'tooltip' = 'text') {

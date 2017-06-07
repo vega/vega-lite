@@ -4,6 +4,7 @@ import {DateTime, dateTimeExpr, isDateTime} from './datetime';
 import {field} from './fielddef';
 import {fieldExpr as timeUnitFieldExpr, isSingleTimeUnit, TimeUnit} from './timeunit';
 import {isArray, isString} from './util';
+import {LogicalOperand} from './logical';
 
 export type Filter = EqualFilter | RangeFilter | OneOfFilter | SelectionFilter | string;
 
@@ -11,7 +12,7 @@ export interface SelectionFilter {
   /**
    * Filter using a selection name.
    */
-  selection: string;
+  selection: LogicalOperand<string>;
 }
 
 export function isSelectionFilter(filter: Filter): filter is SelectionFilter {
@@ -110,8 +111,7 @@ export function expression(model: Model, filter: Filter): string {
   if (isString(filter)) {
     return filter;
   } else if (isSelectionFilter(filter)) {
-    const selection = model.getSelectionComponent(filter.selection);
-    return predicate(model, filter.selection, selection.type, selection.resolve, null);
+    return predicate(model, filter.selection);
   } else { // Filter Object
     const fieldExpr = filter.timeUnit ?
       // For timeUnit, cast into integer with time() so we can use ===, inrange, indexOf to compare values directly.

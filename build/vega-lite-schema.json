@@ -1036,7 +1036,7 @@
       "additionalProperties": false,
       "properties": {
         "selection": {
-          "type": "string"
+          "$ref": "#/definitions/LogicalOperand"
         },
         "value": {
           "type": [
@@ -1055,7 +1055,7 @@
       "additionalProperties": false,
       "properties": {
         "selection": {
-          "type": "string"
+          "$ref": "#/definitions/LogicalOperand"
         },
         "value": {
           "type": [
@@ -1075,7 +1075,7 @@
       "additionalProperties": false,
       "properties": {
         "selection": {
-          "type": "string"
+          "$ref": "#/definitions/LogicalOperand"
         },
         "value": {
           "type": "number"
@@ -1091,7 +1091,7 @@
       "additionalProperties": false,
       "properties": {
         "selection": {
-          "type": "string"
+          "$ref": "#/definitions/LogicalOperand"
         },
         "value": {
           "type": "string"
@@ -2816,6 +2816,64 @@
       },
       "type": "object"
     },
+    "LogicalAnd": {
+      "additionalProperties": false,
+      "properties": {
+        "and": {
+          "items": {
+            "$ref": "#/definitions/LogicalOperand"
+          },
+          "type": "array"
+        }
+      },
+      "required": [
+        "and"
+      ],
+      "type": "object"
+    },
+    "LogicalNot": {
+      "additionalProperties": false,
+      "properties": {
+        "not": {
+          "$ref": "#/definitions/LogicalOperand"
+        }
+      },
+      "required": [
+        "not"
+      ],
+      "type": "object"
+    },
+    "LogicalOperand": {
+      "anyOf": [
+        {
+          "$ref": "#/definitions/LogicalNot"
+        },
+        {
+          "$ref": "#/definitions/LogicalAnd"
+        },
+        {
+          "$ref": "#/definitions/LogicalOr"
+        },
+        {
+          "type": "string"
+        }
+      ]
+    },
+    "LogicalOr": {
+      "additionalProperties": false,
+      "properties": {
+        "or": {
+          "items": {
+            "$ref": "#/definitions/LogicalOperand"
+          },
+          "type": "array"
+        }
+      },
+      "required": [
+        "or"
+      ],
+      "type": "object"
+    },
     "LookupData": {
       "additionalProperties": false,
       "properties": {
@@ -3901,8 +3959,8 @@
       "additionalProperties": false,
       "properties": {
         "selection": {
-          "description": "Filter using a selection name.",
-          "type": "string"
+          "$ref": "#/definitions/LogicalOperand",
+          "description": "Filter using a selection name."
         }
       },
       "required": [
