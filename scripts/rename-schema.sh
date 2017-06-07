@@ -11,3 +11,7 @@ perl -pi -e s,'LogicalOperand<string>','LogicalOperand',g build/vega-lite-schema
 perl -pi -e s,'LogicalAnd<string>','LogicalAnd',g build/vega-lite-schema.json
 perl -pi -e s,'LogicalOr<string>','LogicalOr',g build/vega-lite-schema.json
 perl -pi -e s,'LogicalNot<string>','LogicalNot',g build/vega-lite-schema.json
+perl -pi -e s,'LogicalOperand<Filter>','FilterOperand',g build/vega-lite-schema.json
+perl -pi -e s,'LogicalAnd<Filter>','AndFilter',g build/vega-lite-schema.json
+perl -pi -e s,'LogicalOr<Filter>','OrFilter',g build/vega-lite-schema.json
+perl -pi -e s,'LogicalNot<Filter>','NotFilter',g build/vega-lite-schema.json
