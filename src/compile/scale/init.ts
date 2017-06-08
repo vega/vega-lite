@@ -37,9 +37,8 @@ export const NON_TYPE_RANGE_SCALE_PROPERTIES: (keyof Scale)[] = [
  * - range depends on zero and size (width and height) depends on range
  */
 export default function init(
-    channel: Channel, fieldDef: ScaleFieldDef<string>, config: Config,
+    channel: Channel, fieldDef: FieldDef<string>, specifiedScale: Scale = {}, config: Config,
     mark: Mark | undefined, topLevelSize: number | undefined, xyRangeSteps: number[]): Scale {
-  const specifiedScale = (fieldDef || {}).scale || {};
 
   const scale: Scale = {
     type: scaleType(

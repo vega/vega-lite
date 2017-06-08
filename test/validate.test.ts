@@ -8,23 +8,23 @@ describe('vl.validate', function() {
       assert.isNull(getEncodingMappingError({
         mark: BAR,
         encoding: {
-          x: {field: 'a'}
+          x: {field: 'a', type: 'quantitative'}
         }
       }));
 
       assert.isNull(getEncodingMappingError({
         mark: LINE,
         encoding: {
-          x: {field: 'b'},
-          y: {field: 'a'}
+          x: {field: 'b', type: 'quantitative'},
+          y: {field: 'a', type: 'quantitative'}
         }
       }));
 
       assert.isNull(getEncodingMappingError({
         mark: AREA,
         encoding: {
-          x: {field: 'a'},
-          y: {field: 'b'}
+          x: {field: 'a', type: 'quantitative'},
+          y: {field: 'b', type: 'quantitative'}
         }
       }));
     });
@@ -33,42 +33,42 @@ describe('vl.validate', function() {
       assert.isNotNull(getEncodingMappingError({
         mark: LINE,
         encoding: {
-          x: {field: 'b'} // missing y
+          x: {field: 'b', type: 'quantitative'} // missing y
         }
       }));
 
       assert.isNotNull(getEncodingMappingError({
         mark: AREA,
         encoding: {
-          y: {field: 'b'} // missing x
+          y: {field: 'b', type: 'quantitative'} // missing x
         }
       }));
 
       assert.isNotNull(getEncodingMappingError({
         mark: TEXT,
         encoding: {
-          y: {field: 'b'} // missing text
+          y: {field: 'b', type: 'quantitative'} // missing text
         }
       }));
 
       assert.isNotNull(getEncodingMappingError({
         mark: LINE,
         encoding: {
-          shape: {field: 'b'} // using shape with line
+          shape: {field: 'b', type: 'quantitative'} // using shape with line
         }
       }));
 
       assert.isNotNull(getEncodingMappingError({
         mark: AREA,
         encoding: {
-          shape: {field: 'b'} // using shape with area
+          shape: {field: 'b', type: 'quantitative'} // using shape with area
         }
       }));
 
       assert.isNotNull(getEncodingMappingError({
         mark: BAR,
         encoding: {
-          shape: {field: 'b'} // using shape with bar
+          shape: {field: 'b', type: 'quantitative'} // using shape with bar
         }
       }));
     });

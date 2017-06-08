@@ -11,7 +11,7 @@ describe('Single Selection', function() {
     "encoding": {
       "x": {"field": "Horsepower","type": "quantitative"},
       "y": {"field": "Miles_per_Gallon","type": "quantitative", "bin": true},
-      "color": {"field": "Origin", "type": "N"}
+      "color": {"field": "Origin", "type": "nominal"}
     }
   });
 

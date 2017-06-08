@@ -148,12 +148,23 @@ export class UnitModel extends ModelWithField {
     const xyRangeSteps: number[] = [];
 
     return UNIT_SCALE_CHANNELS.reduce((scales, channel) => {
-      if (vlEncoding.channelHasField(encoding, channel) ||
-          (channel === X && vlEncoding.channelHasField(encoding, X2)) ||
-          (channel === Y && vlEncoding.channelHasField(encoding, Y2))
-        ) {
+      let fieldDef: FieldDef<string>;
+      let specifiedScale: Scale;
+
+      const channelDef = encoding[channel];
+
+      if (isFieldDef(channelDef)) {
+        fieldDef = channelDef;
+        specifiedScale = channelDef.scale;
+      } else if (channel === 'x') {
+        fieldDef = vlEncoding.getFieldDef(encoding, 'x2');
+      } else if (channel === 'y') {
+        fieldDef = vlEncoding.getFieldDef(encoding, 'y2');
+      }
+
+      if (fieldDef) {
         const scale = scales[channel] = initScale(
-          channel, encoding[channel], this.config, mark,
+          channel, fieldDef, specifiedScale, this.config, mark,
           channel === X ? topLevelWidth : channel === Y ? topLevelHeight : undefined,
           xyRangeSteps // for determine point / bar size
         );

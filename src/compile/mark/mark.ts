@@ -16,7 +16,10 @@ import {MAIN} from '../../data';
 import {FacetModel} from '../facet';
 import {UnitModel} from '../unit';
 
+import {isArray} from 'vega-util';
 import {X, Y} from '../../channel';
+import {getFieldDef} from '../../encoding';
+import {field} from '../../fielddef';
 import {isSelectionDomain} from '../../scale';
 
 const markCompiler: {[type: string]: MarkCompiler} = {
@@ -117,8 +120,22 @@ function parseNonPathMark(model: UnitModel) {
  */
 function detailFields(model: UnitModel): string[] {
   return LEVEL_OF_DETAIL_CHANNELS.reduce(function(details, channel) {
-    if (model.channelHasField(channel) && !model.fieldDef(channel).aggregate) {
-      details.push(model.field(channel));
+    const {encoding} = model;
+    if (channel === 'detail' || channel === 'order') {
+      const channelDef = encoding[channel];
+      if (channelDef) {
+        (isArray(channelDef) ? channelDef : [channelDef]).forEach((fieldDef) => {
+          // FIXME: check if this is correct for bin
+          if (!fieldDef.aggregate) {
+            details.push(field(fieldDef));
+          }
+        });
+      }
+    } else {
+      const fieldDef = getFieldDef(encoding, channel);
+      if (fieldDef && !fieldDef.aggregate) {
+        details.push(field(fieldDef));
+      }
     }
     return details;
   }, []);

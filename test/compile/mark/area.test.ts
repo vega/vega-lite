@@ -3,12 +3,13 @@
 import {assert} from 'chai';
 import {COLOR, X, Y} from '../../../src/channel';
 import {area} from '../../../src/compile/mark/area';
+import {Encoding} from '../../../src/encoding';
 import {UnitSpec} from '../../../src/spec';
 import {extend} from '../../../src/util';
 import {parseUnitModelWithScale} from '../../util';
 
 describe('Mark: Area', function() {
-  function verticalArea(moreEncoding = {}): UnitSpec {
+  function verticalArea(moreEncoding: Encoding<string> = {}): UnitSpec {
     return {
       "mark": "area",
       "encoding": extend(
@@ -100,7 +101,7 @@ describe('Mark: Area', function() {
     });
   });
 
-  function horizontalArea(moreEncoding = {}): UnitSpec {
+  function horizontalArea(moreEncoding: Encoding<string> = {}): UnitSpec {
     return {
       "mark": "area",
       "encoding": extend(

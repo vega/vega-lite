@@ -10,7 +10,7 @@ import {parseUnitModel, parseUnitModelWithScale} from '../../util';
 describe('compile/legend', function() {
   describe('encode.symbols', function() {
     it('should not have strokeDash and strokeDashOffset', function() {
-      const symbol = encode.symbols({field: 'a'}, {}, parseUnitModel({
+      const symbol = encode.symbols({field: 'a', type: 'nominal'}, {}, parseUnitModel({
           mark: "point",
           encoding: {
             x: {field: "a", type: "nominal"},
@@ -22,7 +22,7 @@ describe('compile/legend', function() {
     });
 
     it('should return not override size of the symbol for shape channel', function() {
-      const symbol = encode.symbols({field: 'a'}, {}, parseUnitModel({
+      const symbol = encode.symbols({field: 'a', type: 'nominal'}, {}, parseUnitModel({
           mark: "point",
           encoding: {
             x: {field: "a", type: "nominal"},
@@ -32,7 +32,7 @@ describe('compile/legend', function() {
     });
 
     it('should return specific symbols.shape.value if user has specified', function() {
-      const symbol = encode.symbols({field: 'a'}, {}, parseUnitModel({
+      const symbol = encode.symbols({field: 'a', type: 'nominal'}, {}, parseUnitModel({
           mark: "point",
           encoding: {
             x: {field: "a", type: "nominal"},

@@ -1,7 +1,7 @@
 import {assert} from 'chai';
 
 import {Channel} from '../src/channel';
-import {channelCompatibility, defaultType, FieldDef, normalize, title} from '../src/fielddef';
+import {channelCompatibility, ChannelDef, defaultType, FieldDef, normalize, title} from '../src/fielddef';
 import * as log from '../src/log';
 import {TimeUnit} from '../src/timeunit';
 import {QUANTITATIVE, TEMPORAL} from '../src/type';
@@ -9,42 +9,42 @@ import {QUANTITATIVE, TEMPORAL} from '../src/type';
 describe('fieldDef', () => {
   describe('defaultType()', () => {
     it('should return temporal if there is timeUnit', () => {
-      assert.equal(defaultType({timeUnit: 'month', field: 'a'}, 'x'), 'temporal');
+      assert.equal(defaultType({timeUnit: 'month', field: 'a'} as FieldDef<string>, 'x'), 'temporal');
     });
 
     it('should return quantitative if there is bin', () => {
-      assert.equal(defaultType({bin: 'true', field: 'a'}, 'x'), 'quantitative');
+      assert.equal(defaultType({bin: true, field: 'a'} as FieldDef<string>, 'x'), 'quantitative');
     });
 
     it('should return quantitative for a channel that supports measure', () => {
       for (const c of ['x', 'y', 'size', 'opacity', 'order'] as Channel[]) {
-        assert.equal(defaultType({field: 'a'}, c), 'quantitative', c);
+        assert.equal(defaultType({field: 'a'} as FieldDef<string>, c), 'quantitative', c);
       }
     });
 
     it('should return nominal for a channel that does not support measure', () => {
       for (const c of ['color', 'shape', 'row', 'column'] as Channel[]) {
-        assert.equal(defaultType({field: 'a'}, c), 'nominal', c);
+        assert.equal(defaultType({field: 'a'} as FieldDef<string>, c), 'nominal', c);
       }
     });
   });
 
   describe('normalize()', () => {
     it('should return fieldDef with full type name.', () => {
-      const fieldDef = {field: 'a', type: 'q' as any};
-      assert.deepEqual(normalize(fieldDef, 'x'), {field: 'a', type: 'quantitative'});
+      const fieldDef: FieldDef<string> = {field: 'a', type: 'q' as any};
+      assert.deepEqual<ChannelDef<string>>(normalize(fieldDef, 'x'), {field: 'a', type: 'quantitative'});
     });
 
     it('should return fieldDef with default type and throw warning if type is missing.', log.wrap((localLogger) => {
-      const fieldDef = {field: 'a'};
-      assert.deepEqual(normalize(fieldDef, 'x'), {field: 'a', type: 'quantitative'});
+      const fieldDef = {field: 'a'} as FieldDef<string>;
+      assert.deepEqual<ChannelDef<string>>(normalize(fieldDef, 'x'), {field: 'a', type: 'quantitative'});
       assert.equal(localLogger.warns[0], log.message.emptyOrInvalidFieldType(undefined, 'x', 'quantitative'));
     }));
 
     it('should drop invalid aggregate ops and throw warning.', log.wrap((localLogger) => {
-      const fieldDef = {aggregate: 'boxplot', field: 'a', type: 'quantitative'};
-      assert.deepEqual(normalize(fieldDef, 'x'), {field: 'a', type: 'quantitative'});
-      assert.equal(localLogger.warns[0], log.message.invalidAggregate('boxplot'));
+      const fieldDef: FieldDef<string> = {aggregate: 'box-plot', field: 'a', type: 'quantitative'};
+      assert.deepEqual<ChannelDef<string>>(normalize(fieldDef, 'x'), {field: 'a', type: 'quantitative'});
+      assert.equal(localLogger.warns[0], log.message.invalidAggregate('box-plot'));
     }));
   });
 

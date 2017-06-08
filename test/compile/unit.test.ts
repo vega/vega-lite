@@ -42,14 +42,12 @@ describe('UnitModel', function() {
           encoding: {
             detail: [
               {field: 'a', type: 'ordinal'},
-              {value: 'b'},
               {type: 'quantitative'}
             ]
           }
         });
         assert.deepEqual<FieldDef<string> | FieldDef<string>[]>(model.encoding.detail, [
-          {field: 'a', type: 'ordinal'},
-          {value: 'b'}
+          {field: 'a', type: 'ordinal'}
         ]);
         assert.equal(localLogger.warns[0], log.message.emptyFieldDef({type: QUANTITATIVE}, DETAIL));
       });
