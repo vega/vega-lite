@@ -1032,82 +1032,44 @@
       "$ref": "#/definitions/CompositeUnitSpecAlias",
       "description": "Unit spec that can have a composite mark."
     },
-    "Condition<(string|number)>": {
+    "Condition<(LegendFieldDef<Field,number>|ValueDef<number>)>": {
+      "properties": {
+        "selection": {
+          "$ref": "#/definitions/LogicalOperand"
+        }
+      },
+      "required": [
+        "selection"
+      ],
+      "type": "object"
+    },
+    "Condition<(LegendFieldDef<Field,string>|ValueDef<string>)>": {
+      "properties": {
+        "selection": {
+          "$ref": "#/definitions/LogicalOperand"
+        }
+      },
+      "required": [
+        "selection"
+      ],
+      "type": "object"
+    },
+    "Condition<(TextFieldDef|ValueDef<(string|number|boolean)>)>": {
+      "properties": {
+        "selection": {
+          "$ref": "#/definitions/LogicalOperand"
+        }
+      },
+      "required": [
+        "selection"
+      ],
+      "type": "object"
+    },
+    "Condition<ValueDef<(string|number|boolean)>>": {
       "additionalProperties": false,
       "properties": {
         "selection": {
           "$ref": "#/definitions/LogicalOperand"
-        },
-        "value": {
-          "type": [
-            "string",
-            "number"
-          ]
-        }
-      },
-      "required": [
-        "selection",
-        "value"
-      ],
-      "type": "object"
-    },
-    "Condition<(string|number|boolean)>": {
-      "additionalProperties": false,
-      "properties": {
-        "selection": {
-          "$ref": "#/definitions/LogicalOperand"
-        },
-        "value": {
-          "type": [
-            "string",
-            "number",
-            "boolean"
-          ]
-        }
-      },
-      "required": [
-        "selection",
-        "value"
-      ],
-      "type": "object"
-    },
-    "Condition<number>": {
-      "additionalProperties": false,
-      "properties": {
-        "selection": {
-          "$ref": "#/definitions/LogicalOperand"
-        },
-        "value": {
-          "type": "number"
-        }
-      },
-      "required": [
-        "selection",
-        "value"
-      ],
-      "type": "object"
-    },
-    "Condition<string>": {
-      "additionalProperties": false,
-      "properties": {
-        "selection": {
-          "$ref": "#/definitions/LogicalOperand"
-        },
-        "value": {
-          "type": "string"
-        }
-      },
-      "required": [
-        "selection",
-        "value"
-      ],
-      "type": "object"
-    },
-    "ConditionalValueDef<(string|number|boolean)>": {
-      "additionalProperties": false,
-      "properties": {
-        "condition": {
-          "$ref": "#/definitions/Condition<(string|number|boolean)>"
         },
         "value": {
           "description": "A constant value in visual domain.",
@@ -1119,15 +1081,277 @@
         }
       },
       "required": [
+        "selection",
         "value"
       ],
       "type": "object"
     },
-    "ConditionalValueDef<number>": {
+    "Condition<ValueDef<number>>": {
       "additionalProperties": false,
       "properties": {
+        "selection": {
+          "$ref": "#/definitions/LogicalOperand"
+        },
+        "value": {
+          "description": "A constant value in visual domain.",
+          "type": "number"
+        }
+      },
+      "required": [
+        "selection",
+        "value"
+      ],
+      "type": "object"
+    },
+    "Condition<ValueDef<string>>": {
+      "additionalProperties": false,
+      "properties": {
+        "selection": {
+          "$ref": "#/definitions/LogicalOperand"
+        },
+        "value": {
+          "description": "A constant value in visual domain.",
+          "type": "string"
+        }
+      },
+      "required": [
+        "selection",
+        "value"
+      ],
+      "type": "object"
+    },
+    "Conditional<LegendFieldDef<Field,number>,ValueDef<number>>": {
+      "anyOf": [
+        {
+          "$ref": "#/definitions/ConditionalFieldDef<LegendFieldDef<Field,number>,ValueDef<number>>"
+        },
+        {
+          "$ref": "#/definitions/ConditionalValueDef<LegendFieldDef<Field,number>,ValueDef<number>>"
+        }
+      ],
+      "description": "Generic type for conditional channelDef.\nF defines the underlying FieldDef type while V defines the underlying ValueDef type."
+    },
+    "Conditional<LegendFieldDef<Field,string>,ValueDef<string>>": {
+      "anyOf": [
+        {
+          "$ref": "#/definitions/ConditionalFieldDef<LegendFieldDef<Field,string>,ValueDef<string>>"
+        },
+        {
+          "$ref": "#/definitions/ConditionalValueDef<LegendFieldDef<Field,string>,ValueDef<string>>"
+        }
+      ],
+      "description": "Generic type for conditional channelDef.\nF defines the underlying FieldDef type while V defines the underlying ValueDef type."
+    },
+    "Conditional<TextFieldDef,ValueDef<(string|number|boolean)>>": {
+      "anyOf": [
+        {
+          "$ref": "#/definitions/ConditionalFieldDef<TextFieldDef,ValueDef<(string|number|boolean)>>"
+        },
+        {
+          "$ref": "#/definitions/ConditionalValueDef<TextFieldDef,ValueDef<(string|number|boolean)>>"
+        }
+      ],
+      "description": "Generic type for conditional channelDef.\nF defines the underlying FieldDef type while V defines the underlying ValueDef type."
+    },
+    "ConditionalFieldDef<LegendFieldDef<Field,number>,ValueDef<number>>": {
+      "additionalProperties": false,
+      "description": "A FieldDef with Condition<ValueDef>\n{\n   condition: {value: ...},\n   field: ...,\n   ...\n}",
+      "properties": {
+        "aggregate": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/AggregateOp"
+            },
+            {
+              "$ref": "#/definitions/CompositeAggregate"
+            }
+          ],
+          "description": "Aggregation function for the field\n(e.g., `mean`, `sum`, `median`, `min`, `max`, `count`).\n\n__Default value:__ `undefined` (None)"
+        },
+        "bin": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "$ref": "#/definitions/Bin"
+            }
+          ],
+          "description": "Flag for binning a `quantitative` field, or a bin property object\nfor binning parameters."
+        },
         "condition": {
-          "$ref": "#/definitions/Condition<number>"
+          "$ref": "#/definitions/Condition<ValueDef<number>>"
+        },
+        "field": {
+          "$ref": "#/definitions/Field",
+          "description": "__Required.__ Name of the field from which to pull a data value.\n\n__Note:__ `field` is not required if `aggregate` is `count`."
+        },
+        "legend": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/Legend"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "scale": {
+          "$ref": "#/definitions/Scale"
+        },
+        "sort": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/SortField"
+            },
+            {
+              "$ref": "#/definitions/SortOrder"
+            }
+          ],
+          "description": "Sort order for a particular field.\nFor quantitative or temporal fields, this can be either `\"ascending\"` or `\"descending\"`\nFor quantitative or temporal fields, this can be `\"ascending\"`, `\"descending\"`, `\"none\"`, or a [sort field definition object](sort.html#sort-field) for sorting by an aggregate calculation of a specified sort field.\n\n__Default value:__ `\"ascending\"`"
+        },
+        "timeUnit": {
+          "$ref": "#/definitions/TimeUnit",
+          "description": "Time unit for a `temporal` field  (e.g., `year`, `yearmonth`, `month`, `hour`).\n\n__Default value:__ `undefined` (None)"
+        },
+        "type": {
+          "$ref": "#/definitions/Type",
+          "description": "The encoded field's type of measurement. This can be either a full type\nname (`\"quantitative\"`, `\"temporal\"`, `\"ordinal\"`,  and `\"nominal\"`)\nor an initial character of the type name (`\"Q\"`, `\"T\"`, `\"O\"`, `\"N\"`).\nThis property is case-insensitive."
+        }
+      },
+      "required": [
+        "type"
+      ],
+      "type": "object"
+    },
+    "ConditionalFieldDef<LegendFieldDef<Field,string>,ValueDef<string>>": {
+      "additionalProperties": false,
+      "description": "A FieldDef with Condition<ValueDef>\n{\n   condition: {value: ...},\n   field: ...,\n   ...\n}",
+      "properties": {
+        "aggregate": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/AggregateOp"
+            },
+            {
+              "$ref": "#/definitions/CompositeAggregate"
+            }
+          ],
+          "description": "Aggregation function for the field\n(e.g., `mean`, `sum`, `median`, `min`, `max`, `count`).\n\n__Default value:__ `undefined` (None)"
+        },
+        "bin": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "$ref": "#/definitions/Bin"
+            }
+          ],
+          "description": "Flag for binning a `quantitative` field, or a bin property object\nfor binning parameters."
+        },
+        "condition": {
+          "$ref": "#/definitions/Condition<ValueDef<string>>"
+        },
+        "field": {
+          "$ref": "#/definitions/Field",
+          "description": "__Required.__ Name of the field from which to pull a data value.\n\n__Note:__ `field` is not required if `aggregate` is `count`."
+        },
+        "legend": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/Legend"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "scale": {
+          "$ref": "#/definitions/Scale"
+        },
+        "sort": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/SortField"
+            },
+            {
+              "$ref": "#/definitions/SortOrder"
+            }
+          ],
+          "description": "Sort order for a particular field.\nFor quantitative or temporal fields, this can be either `\"ascending\"` or `\"descending\"`\nFor quantitative or temporal fields, this can be `\"ascending\"`, `\"descending\"`, `\"none\"`, or a [sort field definition object](sort.html#sort-field) for sorting by an aggregate calculation of a specified sort field.\n\n__Default value:__ `\"ascending\"`"
+        },
+        "timeUnit": {
+          "$ref": "#/definitions/TimeUnit",
+          "description": "Time unit for a `temporal` field  (e.g., `year`, `yearmonth`, `month`, `hour`).\n\n__Default value:__ `undefined` (None)"
+        },
+        "type": {
+          "$ref": "#/definitions/Type",
+          "description": "The encoded field's type of measurement. This can be either a full type\nname (`\"quantitative\"`, `\"temporal\"`, `\"ordinal\"`,  and `\"nominal\"`)\nor an initial character of the type name (`\"Q\"`, `\"T\"`, `\"O\"`, `\"N\"`).\nThis property is case-insensitive."
+        }
+      },
+      "required": [
+        "type"
+      ],
+      "type": "object"
+    },
+    "ConditionalFieldDef<TextFieldDef,ValueDef<(string|number|boolean)>>": {
+      "additionalProperties": false,
+      "description": "A FieldDef with Condition<ValueDef>\n{\n   condition: {value: ...},\n   field: ...,\n   ...\n}",
+      "properties": {
+        "aggregate": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/AggregateOp"
+            },
+            {
+              "$ref": "#/definitions/CompositeAggregate"
+            }
+          ],
+          "description": "Aggregation function for the field\n(e.g., `mean`, `sum`, `median`, `min`, `max`, `count`).\n\n__Default value:__ `undefined` (None)"
+        },
+        "bin": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "$ref": "#/definitions/Bin"
+            }
+          ],
+          "description": "Flag for binning a `quantitative` field, or a bin property object\nfor binning parameters."
+        },
+        "condition": {
+          "$ref": "#/definitions/Condition<ValueDef<(string|number|boolean)>>"
+        },
+        "field": {
+          "$ref": "#/definitions/Field",
+          "description": "__Required.__ Name of the field from which to pull a data value.\n\n__Note:__ `field` is not required if `aggregate` is `count`."
+        },
+        "format": {
+          "description": "The formatting pattern for text value. If not defined, this will be determined automatically.",
+          "type": "string"
+        },
+        "timeUnit": {
+          "$ref": "#/definitions/TimeUnit",
+          "description": "Time unit for a `temporal` field  (e.g., `year`, `yearmonth`, `month`, `hour`).\n\n__Default value:__ `undefined` (None)"
+        },
+        "type": {
+          "$ref": "#/definitions/Type",
+          "description": "The encoded field's type of measurement. This can be either a full type\nname (`\"quantitative\"`, `\"temporal\"`, `\"ordinal\"`,  and `\"nominal\"`)\nor an initial character of the type name (`\"Q\"`, `\"T\"`, `\"O\"`, `\"N\"`).\nThis property is case-insensitive."
+        }
+      },
+      "required": [
+        "type"
+      ],
+      "type": "object"
+    },
+    "ConditionalValueDef<LegendFieldDef<Field,number>,ValueDef<number>>": {
+      "additionalProperties": false,
+      "description": "A ValueDef with Condition<ValueDef | FieldDef>\n{\n   condition: {field: ...} | {value: ...},\n   value: ...,\n}",
+      "properties": {
+        "condition": {
+          "$ref": "#/definitions/Condition<(LegendFieldDef<Field,number>|ValueDef<number>)>"
         },
         "value": {
           "description": "A constant value in visual domain.",
@@ -1139,15 +1363,37 @@
       ],
       "type": "object"
     },
-    "ConditionalValueDef<string>": {
+    "ConditionalValueDef<LegendFieldDef<Field,string>,ValueDef<string>>": {
       "additionalProperties": false,
+      "description": "A ValueDef with Condition<ValueDef | FieldDef>\n{\n   condition: {field: ...} | {value: ...},\n   value: ...,\n}",
       "properties": {
         "condition": {
-          "$ref": "#/definitions/Condition<string>"
+          "$ref": "#/definitions/Condition<(LegendFieldDef<Field,string>|ValueDef<string>)>"
         },
         "value": {
           "description": "A constant value in visual domain.",
           "type": "string"
+        }
+      },
+      "required": [
+        "value"
+      ],
+      "type": "object"
+    },
+    "ConditionalValueDef<TextFieldDef,ValueDef<(string|number|boolean)>>": {
+      "additionalProperties": false,
+      "description": "A ValueDef with Condition<ValueDef | FieldDef>\n{\n   condition: {field: ...} | {value: ...},\n   value: ...,\n}",
+      "properties": {
+        "condition": {
+          "$ref": "#/definitions/Condition<(TextFieldDef|ValueDef<(string|number|boolean)>)>"
+        },
+        "value": {
+          "description": "A constant value in visual domain.",
+          "type": [
+            "string",
+            "number",
+            "boolean"
+          ]
         }
       },
       "required": [
@@ -1492,14 +1738,7 @@
       "additionalProperties": false,
       "properties": {
         "color": {
-          "anyOf": [
-            {
-              "$ref": "#/definitions/LegendFieldDef<Field,string>"
-            },
-            {
-              "$ref": "#/definitions/ConditionalValueDef<string>"
-            }
-          ],
+          "$ref": "#/definitions/Conditional<LegendFieldDef<Field,string>,ValueDef<string>>",
           "description": "Color of the marks – either fill or stroke color based on mark type.\n(By default, fill color for `area`, `bar`, `tick`, `text`, `circle`, and `square` /\nstroke color for `line` and `point`.)"
         },
         "detail": {
@@ -1517,14 +1756,7 @@
           "description": "Additional levels of detail for grouping data in aggregate views and\nin line and area marks without mapping data to a specific visual channel."
         },
         "opacity": {
-          "anyOf": [
-            {
-              "$ref": "#/definitions/LegendFieldDef<Field,number>"
-            },
-            {
-              "$ref": "#/definitions/ConditionalValueDef<number>"
-            }
-          ],
+          "$ref": "#/definitions/Conditional<LegendFieldDef<Field,number>,ValueDef<number>>",
           "description": "Opacity of the marks – either can be a value or a range."
         },
         "order": {
@@ -1542,47 +1774,19 @@
           "description": "stack order for stacked marks or order of data points in line marks."
         },
         "shape": {
-          "anyOf": [
-            {
-              "$ref": "#/definitions/LegendFieldDef<Field,string>"
-            },
-            {
-              "$ref": "#/definitions/ConditionalValueDef<string>"
-            }
-          ],
+          "$ref": "#/definitions/Conditional<LegendFieldDef<Field,string>,ValueDef<string>>",
           "description": "The symbol's shape (only for `point` marks). The supported values are\n`\"circle\"` (default), `\"square\"`, `\"cross\"`, `\"diamond\"`, `\"triangle-up\"`,\nor `\"triangle-down\"`, or else a custom SVG path string."
         },
         "size": {
-          "anyOf": [
-            {
-              "$ref": "#/definitions/LegendFieldDef<Field,number>"
-            },
-            {
-              "$ref": "#/definitions/ConditionalValueDef<number>"
-            }
-          ],
+          "$ref": "#/definitions/Conditional<LegendFieldDef<Field,number>,ValueDef<number>>",
           "description": "Size of the mark.\n- For `point`, `square` and `circle`\n– the symbol size, or pixel area of the mark.\n- For `bar` and `tick` – the bar and tick's size.\n- For `text` – the text's font size.\n- Size is currently unsupported for `line` and `area`."
         },
         "text": {
-          "anyOf": [
-            {
-              "$ref": "#/definitions/TextFieldDef"
-            },
-            {
-              "$ref": "#/definitions/ConditionalValueDef<(string|number|boolean)>"
-            }
-          ],
+          "$ref": "#/definitions/Conditional<TextFieldDef,ValueDef<(string|number|boolean)>>",
           "description": "Text of the `text` mark."
         },
         "tooltip": {
-          "anyOf": [
-            {
-              "$ref": "#/definitions/TextFieldDef"
-            },
-            {
-              "$ref": "#/definitions/ConditionalValueDef<string>"
-            }
-          ],
+          "$ref": "#/definitions/Conditional<TextFieldDef,ValueDef<(string|number|boolean)>>",
           "description": "The tooltip text to show upon mouse hover."
         },
         "x": {
@@ -1636,14 +1840,7 @@
       "additionalProperties": false,
       "properties": {
         "color": {
-          "anyOf": [
-            {
-              "$ref": "#/definitions/LegendFieldDef<Field,string>"
-            },
-            {
-              "$ref": "#/definitions/ConditionalValueDef<string>"
-            }
-          ],
+          "$ref": "#/definitions/Conditional<LegendFieldDef<Field,string>,ValueDef<string>>",
           "description": "Color of the marks – either fill or stroke color based on mark type.\n(By default, fill color for `area`, `bar`, `tick`, `text`, `circle`, and `square` /\nstroke color for `line` and `point`.)"
         },
         "column": {
@@ -1665,14 +1862,7 @@
           "description": "Additional levels of detail for grouping data in aggregate views and\nin line and area marks without mapping data to a specific visual channel."
         },
         "opacity": {
-          "anyOf": [
-            {
-              "$ref": "#/definitions/LegendFieldDef<Field,number>"
-            },
-            {
-              "$ref": "#/definitions/ConditionalValueDef<number>"
-            }
-          ],
+          "$ref": "#/definitions/Conditional<LegendFieldDef<Field,number>,ValueDef<number>>",
           "description": "Opacity of the marks – either can be a value or a range."
         },
         "order": {
@@ -1694,47 +1884,19 @@
           "description": "Vertical facets for trellis plots."
         },
         "shape": {
-          "anyOf": [
-            {
-              "$ref": "#/definitions/LegendFieldDef<Field,string>"
-            },
-            {
-              "$ref": "#/definitions/ConditionalValueDef<string>"
-            }
-          ],
+          "$ref": "#/definitions/Conditional<LegendFieldDef<Field,string>,ValueDef<string>>",
           "description": "The symbol's shape (only for `point` marks). The supported values are\n`\"circle\"` (default), `\"square\"`, `\"cross\"`, `\"diamond\"`, `\"triangle-up\"`,\nor `\"triangle-down\"`, or else a custom SVG path string."
         },
         "size": {
-          "anyOf": [
-            {
-              "$ref": "#/definitions/LegendFieldDef<Field,number>"
-            },
-            {
-              "$ref": "#/definitions/ConditionalValueDef<number>"
-            }
-          ],
+          "$ref": "#/definitions/Conditional<LegendFieldDef<Field,number>,ValueDef<number>>",
           "description": "Size of the mark.\n- For `point`, `square` and `circle`\n– the symbol size, or pixel area of the mark.\n- For `bar` and `tick` – the bar and tick's size.\n- For `text` – the text's font size.\n- Size is currently unsupported for `line` and `area`."
         },
         "text": {
-          "anyOf": [
-            {
-              "$ref": "#/definitions/TextFieldDef"
-            },
-            {
-              "$ref": "#/definitions/ConditionalValueDef<(string|number|boolean)>"
-            }
-          ],
+          "$ref": "#/definitions/Conditional<TextFieldDef,ValueDef<(string|number|boolean)>>",
           "description": "Text of the `text` mark."
         },
         "tooltip": {
-          "anyOf": [
-            {
-              "$ref": "#/definitions/TextFieldDef"
-            },
-            {
-              "$ref": "#/definitions/ConditionalValueDef<string>"
-            }
-          ],
+          "$ref": "#/definitions/Conditional<TextFieldDef,ValueDef<(string|number|boolean)>>",
           "description": "The tooltip text to show upon mouse hover."
         },
         "x": {
@@ -2758,9 +2920,6 @@
           ],
           "description": "Flag for binning a `quantitative` field, or a bin property object\nfor binning parameters."
         },
-        "condition": {
-          "$ref": "#/definitions/Condition<number>"
-        },
         "field": {
           "$ref": "#/definitions/Field",
           "description": "__Required.__ Name of the field from which to pull a data value.\n\n__Note:__ `field` is not required if `aggregate` is `count`."
@@ -2827,9 +2986,6 @@
             }
           ],
           "description": "Flag for binning a `quantitative` field, or a bin property object\nfor binning parameters."
-        },
-        "condition": {
-          "$ref": "#/definitions/Condition<string>"
         },
         "field": {
           "$ref": "#/definitions/Field",
@@ -4408,9 +4564,6 @@
             }
           ],
           "description": "Flag for binning a `quantitative` field, or a bin property object\nfor binning parameters."
-        },
-        "condition": {
-          "$ref": "#/definitions/Condition<(string|number)>"
         },
         "field": {
           "$ref": "#/definitions/Field",

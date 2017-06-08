@@ -27,9 +27,35 @@ export interface ValueDef<T> {
   value: T;
 }
 
-export interface ConditionalValueDef<T> extends ValueDef<T> {
-  condition?: Condition<T>;
-}
+/**
+ * Generic type for conditional channelDef.
+ * F defines the underlying FieldDef type while V defines the underlying ValueDef type.
+ */
+export type Conditional<F extends FieldDef<any>, V extends ValueDef<any>> = ConditionalFieldDef<F, V> | ConditionalValueDef<F, V>;
+
+
+export type Condition<T> = {
+  selection: LogicalOperand<string>;
+} & T;
+
+/**
+ * A FieldDef with Condition<ValueDef>
+ * {
+ *   condition: {value: ...},
+ *   field: ...,
+ *   ...
+ * }
+ */
+export type ConditionalFieldDef<F, V> = F & {condition?: Condition<V>};
+
+/**
+ * A ValueDef with Condition<ValueDef | FieldDef>
+ * {
+ *   condition: {field: ...} | {value: ...},
+ *   value: ...,
+ * }
+ */
+export type ConditionalValueDef<F, V> = V & {condition?: Condition<F | V>};
 
 /**
  * Reference to a repeated value.
@@ -92,11 +118,6 @@ export interface FieldDef<F> extends FieldDefBase<F> {
   type: Type;
 }
 
-export interface Condition<T> {
-  selection: LogicalOperand<string>;
-  value: T;
-}
-
 export interface ScaleFieldDef<F> extends FieldDef<F> {
   scale?: Scale;
   /**
@@ -127,8 +148,6 @@ export interface LegendFieldDef<F, T> extends ScaleFieldDef<F> {
     * @nullable
     */
   legend?: Legend;
-
-  condition?: Condition<T>;
 }
 
 // Detail
@@ -141,8 +160,6 @@ export interface OrderFieldDef<F> extends FieldDef<F> {
 
 export interface TextFieldDef<F> extends FieldDef<F> {
   // FIXME: add more reference to Vega's format pattern or d3's format pattern.
-  condition?: Condition<string|number>;
-
   /**
    * The formatting pattern for text value. If not defined, this will be determined automatically.
    */
