@@ -46,7 +46,7 @@ export type Condition<T> = {
  *   ...
  * }
  */
-export type ConditionalFieldDef<F, V> = F & {condition?: Condition<V>};
+export type ConditionalFieldDef<F extends FieldDef<any>, V extends ValueDef<any>> = F & {condition?: Condition<V>};
 
 /**
  * A ValueDef with Condition<ValueDef | FieldDef>
@@ -55,7 +55,7 @@ export type ConditionalFieldDef<F, V> = F & {condition?: Condition<V>};
  *   value: ...,
  * }
  */
-export type ConditionalValueDef<F, V> = V & {condition?: Condition<F | V>};
+export type ConditionalValueDef<F extends FieldDef<any>, V extends ValueDef<any>> = V & {condition?: Condition<F | V>};
 
 /**
  * Reference to a repeated value.
@@ -173,7 +173,18 @@ export interface TextFieldDef<F> extends FieldDef<F> {
 
 export type ConditionalTextDef<F> = Conditional<TextFieldDef<F>, ValueDef<string|number|boolean>>;
 
-export type ChannelDef<F> = FieldDef<F> | ValueDef<any>;
+export type ChannelDef<F> = Conditional<FieldDef<F>, ValueDef<any>>;
+
+export function isConditionalDef<F>(channelDef: ChannelDef<F>): channelDef is Conditional<FieldDef<F>, ValueDef<any>> {
+  return !!channelDef && !!channelDef.condition;
+}
+
+/**
+ * Return if a channelDef is a ConditionalValueDef with ConditionFieldDef
+ */
+export function hasConditionFieldDef<F>(channelDef: ChannelDef<F>): channelDef is (ValueDef<any> & {condition: FieldDef<F>}) {
+  return !!channelDef && !!channelDef.condition && isFieldDef(channelDef.condition);
+}
 
 export function isFieldDef<F>(channelDef: ChannelDef<F>): channelDef is FieldDef<F> | PositionFieldDef<F> | LegendFieldDef<F, any> | OrderFieldDef<F> | TextFieldDef<F> {
   return !!channelDef && (!!channelDef['field'] || channelDef['aggregate'] === 'count');
@@ -297,12 +308,31 @@ export function defaultType(fieldDef: FieldDef<Field>, channel: Channel): Type {
 }
 
 /**
+ * Returns the fieldDef -- either from the outer channelDef or from the condition of channelDef.
+ * @param channelDef
+ */
+export function getFieldDef<F>(channelDef: ChannelDef<F>): FieldDef<F> {
+  if (isFieldDef(channelDef)) {
+    return channelDef;
+  } else if (hasConditionFieldDef(channelDef)) {
+    return channelDef.condition;
+  }
+  return undefined;
+}
+
+/**
  * Convert type to full, lowercase type, or augment the fieldDef with a default type if missing.
  */
-export function normalize(channelDef: ChannelDef<string>, channel: Channel) {
+export function normalize(channelDef: ChannelDef<string>, channel: Channel): ChannelDef<any> {
   // If a fieldDef contains a field, we need type.
   if (isFieldDef(channelDef)) {
     return normalizeFieldDef(channelDef, channel);
+  } else if (hasConditionFieldDef(channelDef)) {
+    return {
+      ...channelDef,
+      // Need to cast as normalizeFieldDef normally return FieldDef, but here we know that it is definitely Condition<FieldDef>
+      condition: normalizeFieldDef(channelDef.condition, channel) as Condition<FieldDef<string>>
+    };
   }
   return channelDef;
 }
@@ -347,7 +377,6 @@ export function normalizeFieldDef(fieldDef: FieldDef<string>, channel: Channel) 
     log.warn(warning);
   }
   return fieldDef;
-
 }
 
 export function normalizeBin(bin: Bin|boolean, channel: Channel) {

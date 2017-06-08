@@ -93,6 +93,7 @@ export function midPoint(channel: Channel, channelDef: ChannelDef<string>, scale
 
   if (channelDef) {
     /* istanbul ignore else */
+
     if (isFieldDef(channelDef)) {
       if (isBinScale(scale.type)) {
         // Use middle only for x an y to place marks in the center between start and end of the bin range.

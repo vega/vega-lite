@@ -5,19 +5,21 @@ import {CompositeAggregate} from './compositemark';
 import {Facet} from './facet';
 import {
   ChannelDef,
+  Condition,
+  ConditionalLegendDef,
+  ConditionalTextDef,
   ConditionalValueDef,
   Field,
   FieldDef,
   isFieldDef,
   isValueDef,
-  LegendFieldDef,
   normalize,
+  normalizeFieldDef,
   OrderFieldDef,
-  PositionFieldDef,
-  TextFieldDef,
+  PositionDef,
   ValueDef
 } from './fielddef';
-import {Conditional, ConditionalLegendDef, ConditionalTextDef, normalizeFieldDef, PositionDef} from './fielddef';
+import {getFieldDef, hasConditionFieldDef} from './fielddef';
 import * as log from './log';
 import {Mark} from './mark';
 import {isArray, some} from './util';
@@ -110,23 +112,12 @@ export function channelHasField(encoding: EncodingWithFacet<Field>, channel: Cha
     if (isArray(channelDef)) {
       return some(channelDef, (fieldDef) => !!fieldDef.field);
     } else {
-      return isFieldDef(channelDef);
+      return isFieldDef(channelDef) || hasConditionFieldDef(channelDef);
     }
   }
   return false;
 }
 
-export function getFieldDef<T>(encoding: EncodingWithFacet<T>, channel: Channel): FieldDef<T> {
-  const channelDef = encoding[channel];
-  if (isArray(channelDef)) {
-    throw new Error('getFieldDef should be never used with detail or order when they have multiple fields');
-  } else if (isFieldDef(channelDef)) {
-      return channelDef;
-  }
-  // TODO: if hasConditionFieldDef
-
-  return undefined;
-}
 
 export function isAggregate(encoding: EncodingWithFacet<Field>) {
   return some(CHANNELS, (channel) => {
@@ -135,7 +126,8 @@ export function isAggregate(encoding: EncodingWithFacet<Field>) {
       if (isArray(channelDef)) {
         return some(channelDef, (fieldDef) => !!fieldDef.aggregate);
       } else {
-        return isFieldDef(channelDef) && !!channelDef.aggregate;
+        const fieldDef = getFieldDef(channelDef);
+        return fieldDef && !!fieldDef.aggregate;
       }
     }
     return false;
@@ -153,8 +145,8 @@ export function normalizeEncoding(encoding: Encoding<string>, mark: Mark): Encod
 
     // Drop line's size if the field is aggregated.
     if (channel === 'size' && mark === 'line') {
-      const channelDef = encoding[channel];
-      if (isFieldDef(channelDef) && channelDef.aggregate) {
+      const fieldDef = getFieldDef(encoding[channel]);
+      if (fieldDef && fieldDef.aggregate) {
         log.warn(log.message.incompatibleChannel(channel, mark, 'when the field is aggregated.'));
         return normalizedEncoding;
       }
@@ -200,6 +192,8 @@ export function fieldDefs(encoding: EncodingWithFacet<Field>): FieldDef<Field>[]
       (isArray(channelDef) ? channelDef : [channelDef]).forEach((def) => {
         if (isFieldDef(def)) {
           arr.push(def);
+        } else if (hasConditionFieldDef(def)) {
+          arr.push(def.condition);
         }
       });
     }

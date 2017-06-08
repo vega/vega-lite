@@ -3,7 +3,7 @@ import {Channel, NONSPATIAL_SCALE_CHANNELS, UNIT_CHANNELS, UNIT_SCALE_CHANNELS, 
 import {CellConfig, Config} from '../config';
 import {Encoding, normalizeEncoding} from '../encoding';
 import * as vlEncoding from '../encoding'; // TODO: remove
-import {field, FieldDef, FieldRefOption, isFieldDef} from '../fielddef';
+import {field, FieldDef, FieldRefOption, getFieldDef, isConditionalDef, isFieldDef} from '../fielddef';
 import {Legend} from '../legend';
 import {FILL_STROKE_CONFIG, isMarkDef, Mark, MarkDef, TEXT as TEXT_MARK} from '../mark';
 import {defaultScaleConfig, Domain, hasDiscreteDomain, Scale} from '../scale';
@@ -156,10 +156,13 @@ export class UnitModel extends ModelWithField {
       if (isFieldDef(channelDef)) {
         fieldDef = channelDef;
         specifiedScale = channelDef.scale;
+      } else if (isConditionalDef(channelDef) && isFieldDef(channelDef.condition)) {
+        fieldDef = channelDef.condition;
+        specifiedScale = channelDef.condition.scale;
       } else if (channel === 'x') {
-        fieldDef = vlEncoding.getFieldDef(encoding, 'x2');
+        fieldDef = getFieldDef(encoding.x2);
       } else if (channel === 'y') {
-        fieldDef = vlEncoding.getFieldDef(encoding, 'y2');
+        fieldDef = getFieldDef(encoding.y2);
       }
 
       if (fieldDef) {
@@ -249,12 +252,15 @@ export class UnitModel extends ModelWithField {
   private initLegend(encoding: Encoding<string>): Dict<Legend> {
     return NONSPATIAL_SCALE_CHANNELS.reduce(function(_legend, channel) {
       const channelDef = encoding[channel];
-      if (isFieldDef(channelDef)) {
-        const legendSpec = channelDef.legend;
-        if (legendSpec !== null && legendSpec !== false) {
-          _legend[channel] = {...legendSpec};
+      if (channelDef) {
+        const legend = isFieldDef(channelDef) ? channelDef.legend :
+          (channelDef.condition && isFieldDef(channelDef.condition)) ? channelDef.condition.legend : null;
+
+        if (legend !== null && legend !== false) {
+          _legend[channel] = {...legend};
         }
       }
+
       return _legend;
     }, {});
   }
