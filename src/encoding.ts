@@ -17,7 +17,7 @@ import {
   TextFieldDef,
   ValueDef
 } from './fielddef';
-import {normalizeFieldDef} from './fielddef';
+import {Conditional, normalizeFieldDef} from './fielddef';
 import * as log from './log';
 import {Mark} from './mark';
 import {isArray, some} from './util';
@@ -56,12 +56,12 @@ export interface Encoding<F> {
    * (By default, fill color for `area`, `bar`, `tick`, `text`, `circle`, and `square` /
    * stroke color for `line` and `point`.)
    */
-  color?: LegendFieldDef<F, string> | ConditionalValueDef<string>;
+  color?: Conditional<LegendFieldDef<F, string>, ValueDef<string>>;
 
   /**
    * Opacity of the marks – either can be a value or a range.
    */
-  opacity?: LegendFieldDef<F, number> | ConditionalValueDef<number>;
+  opacity?: Conditional<LegendFieldDef<F, number>, ValueDef<number>>;
 
   /**
    * Size of the mark.
@@ -71,14 +71,14 @@ export interface Encoding<F> {
    * - For `text` – the text's font size.
    * - Size is currently unsupported for `line` and `area`.
    */
-  size?: LegendFieldDef<F, number> | ConditionalValueDef<number>;
+  size?: Conditional<LegendFieldDef<F, number>, ValueDef<number>>;
 
   /**
    * The symbol's shape (only for `point` marks). The supported values are
    * `"circle"` (default), `"square"`, `"cross"`, `"diamond"`, `"triangle-up"`,
    * or `"triangle-down"`, or else a custom SVG path string.
    */
-  shape?: LegendFieldDef<F, string> | ConditionalValueDef<string>; // TODO: maybe distinguish ordinal-only
+  shape?: Conditional<LegendFieldDef<F, string>, ValueDef<string>>; // TODO: maybe distinguish ordinal-only
 
   /**
    * Additional levels of detail for grouping data in aggregate views and
@@ -89,12 +89,12 @@ export interface Encoding<F> {
   /**
    * Text of the `text` mark.
    */
-  text?: TextFieldDef<F> | ConditionalValueDef<string|number|boolean>;
+  text?: Conditional<TextFieldDef<F>, ValueDef<string|number|boolean>>;
 
   /**
    * The tooltip text to show upon mouse hover.
    */
-  tooltip?: TextFieldDef<F> | ConditionalValueDef<string>;
+  tooltip?: Conditional<TextFieldDef<F>, ValueDef<string|number|boolean>>;
 
   /**
    * stack order for stacked marks or order of data points in line marks.
