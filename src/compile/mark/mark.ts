@@ -18,8 +18,7 @@ import {UnitModel} from '../unit';
 
 import {isArray} from 'vega-util';
 import {X, Y} from '../../channel';
-import {getFieldDef} from '../../encoding';
-import {field} from '../../fielddef';
+import {field, getFieldDef} from '../../fielddef';
 import {isSelectionDomain} from '../../scale';
 
 const markCompiler: {[type: string]: MarkCompiler} = {
@@ -131,7 +130,7 @@ function detailFields(model: UnitModel): string[] {
         });
       }
     } else {
-      const fieldDef = getFieldDef(encoding, channel);
+      const fieldDef = getFieldDef<string>(encoding[channel]);
       if (fieldDef && !fieldDef.aggregate) {
         details.push(field(fieldDef, {binSuffix: 'start'}));
       }

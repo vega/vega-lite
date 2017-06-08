@@ -8,7 +8,7 @@ import {UnitModel} from '../unit';
 import * as ref from './valueref';
 
 import {NONSPATIAL_SCALE_CHANNELS} from '../../channel';
-import {Condition, FieldDef, isFieldDef, isValueDef} from '../../fielddef';
+import {Condition, FieldDef, getFieldDef, isValueDef} from '../../fielddef';
 import {predicate} from '../selection/selection';
 
 export function color(model: UnitModel) {
@@ -63,6 +63,7 @@ export function nonPosition(channel: typeof NONSPATIAL_SCALE_CHANNELS[0], model:
  * Return a mixin that include a Vega production rule for a Vega-Lite conditional channel definition.
  * or a simple mixin if channel def has no condition.
  */
+// FIXME support ConditionFieldDef
 function wrapCondition(model: UnitModel, condition: Condition<any>, vgChannel: string, valueRef: VgValueRef): VgEncodeEntry {
   if (condition) {
     const {selection, value} = condition;
@@ -77,6 +78,7 @@ function wrapCondition(model: UnitModel, condition: Condition<any>, vgChannel: s
   }
 }
 
+// FIXME support ConditionFieldDef
 export function text(model: UnitModel, vgChannel: 'text' | 'tooltip' = 'text') {
   const channelDef = model.encoding[vgChannel];
   const valueRef = (vgChannel === 'tooltip' && !channelDef) ? undefined : ref.text(channelDef, model.config);
@@ -96,7 +98,7 @@ export function bandPosition(fieldDef: FieldDef<string>, channel: 'x'|'y', model
         [channel+'c']: ref.fieldRef(fieldDef, scaleName, {}, {band: 0.5})
       };
 
-      if (isFieldDef(model.encoding.size)) {
+      if (getFieldDef(model.encoding.size)) {
         log.warn(log.message.cannotUseSizeFieldWithBandSize(channel));
         // TODO: apply size to band and set scale range to some values between 0-1.
         // return {

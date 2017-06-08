@@ -3,7 +3,7 @@ import {Channel, COLUMN, isChannel, NonspatialScaleChannel, ScaleChannel, X} fro
 import {CellConfig, Config} from '../config';
 import {Data, DataSourceType, MAIN, RAW} from '../data';
 import {forEach, reduce} from '../encoding';
-import {ChannelDef, field, FieldDef, FieldRefOption, isFieldDef, isRepeatRef} from '../fielddef';
+import {ChannelDef, field, FieldDef, FieldRefOption, getFieldDef, isFieldDef, isRepeatRef} from '../fielddef';
 import {Legend} from '../legend';
 import {hasDiscreteDomain, Scale} from '../scale';
 import {SortField, SortOrder} from '../sort';
@@ -400,14 +400,19 @@ export abstract class ModelWithField extends Model {
 
   public reduceFieldDef<T, U>(f: (acc: U, fd: FieldDef<string>, c: Channel) => U, init: T, t?: any) {
     return reduce(this.getMapping(), (acc:U , cd: ChannelDef<string>, c: Channel) => {
-      return isFieldDef(cd) ? f(acc, cd, c) : acc;
+      const fieldDef = getFieldDef(cd);
+      if (fieldDef) {
+        return f(acc, fieldDef, c);
+      }
+      return acc;
     }, init, t);
   }
 
   public forEachFieldDef(f: (fd: FieldDef<string>, c: Channel) => void, t?: any) {
     forEach(this.getMapping(), (cd: ChannelDef<string>, c: Channel) => {
-      if (isFieldDef(cd)) {
-        f(cd, c);
+      const fieldDef = getFieldDef(cd);
+      if (fieldDef) {
+        f(fieldDef, c);
       }
     }, t);
   }
