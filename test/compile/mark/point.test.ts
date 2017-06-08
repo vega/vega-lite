@@ -3,6 +3,7 @@
 import {assert} from 'chai';
 import {COLOR, SHAPE, SIZE, X, Y} from '../../../src/channel';
 import {circle, point, square} from '../../../src/compile/mark/point';
+import {Encoding} from '../../../src/encoding';
 import {defaultMarkConfig} from '../../../src/mark';
 import {UnitSpec} from '../../../src/spec';
 import {extend} from '../../../src/util';
@@ -10,7 +11,7 @@ import {parseUnitModelWithScale} from '../../util';
 
 describe('Mark: Point', function() {
 
-  function pointXY(moreEncoding = {}): UnitSpec {
+  function pointXY(moreEncoding: Encoding<string> = {}): UnitSpec {
     return {
       "mark": "point",
       "encoding": extend(

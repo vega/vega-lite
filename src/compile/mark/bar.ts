@@ -45,9 +45,9 @@ function x(model: UnitModel, stack: StackProperties): VgEncodeEntry {
   } else { // vertical
     if (isFieldDef(xDef)) {
       if (!sizeDef && isBinScale(xScale.type)) {
-        return mixins.binnedPosition('x', model, config.bar.binSpacing);
+        return mixins.binnedPosition(xDef, 'x', model.scaleName('x'), config.bar.binSpacing);
       } else if (xScale.type === ScaleType.BAND) {
-        return mixins.bandPosition('x', model);
+        return mixins.bandPosition(xDef, 'x', model);
       }
     }
     // sized bin, normal point-ordinal axis, quantitative x-axis, or no x
@@ -77,9 +77,9 @@ function y(model: UnitModel, stack: StackProperties) {
   } else {
     if (isFieldDef(yDef)) {
       if (yDef.bin && !sizeDef) {
-        return mixins.binnedPosition('y', model, config.bar.binSpacing);
+        return mixins.binnedPosition(yDef, 'y', model.scaleName('y'), config.bar.binSpacing);
       } else if (yScale.type === ScaleType.BAND) {
-        return mixins.bandPosition('y', model);
+        return mixins.bandPosition(yDef, 'y', model);
       }
     }
     // TODO: replace model.scale(X) with model.getScaleComponent once rangeStep is a part of scale component

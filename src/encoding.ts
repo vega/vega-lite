@@ -17,6 +17,7 @@ import {
   TextFieldDef,
   ValueDef
 } from './fielddef';
+import {normalizeFieldDef} from './fielddef';
 import * as log from './log';
 import {Mark} from './mark';
 import {isArray, some} from './util';
@@ -115,6 +116,18 @@ export function channelHasField(encoding: EncodingWithFacet<Field>, channel: Cha
   return false;
 }
 
+export function getFieldDef<T>(encoding: EncodingWithFacet<T>, channel: Channel): FieldDef<T> {
+  const channelDef = encoding[channel];
+  if (isArray(channelDef)) {
+    throw new Error('getFieldDef should be never used with detail or order when they have multiple fields');
+  } else if (isFieldDef(channelDef)) {
+      return channelDef;
+  }
+  // TODO: if hasConditionFieldDef
+
+  return undefined;
+}
+
 export function isAggregate(encoding: EncodingWithFacet<Field>) {
   return some(CHANNELS, (channel) => {
     if (channelHasField(encoding, channel)) {
@@ -147,19 +160,24 @@ export function normalizeEncoding(encoding: Encoding<string>, mark: Mark): Encod
       }
     }
 
-    if (isArray(encoding[channel])) {
-      // Array of fieldDefs for detail channel (or production rule)
-      normalizedEncoding[channel] = encoding[channel].reduce((channelDefs: ChannelDef<string>[], channelDef: ChannelDef<string>) => {
-        if (!isFieldDef(channelDef) && !isValueDef(channelDef)) { // TODO: datum
-          log.warn(log.message.emptyFieldDef(channelDef, channel));
-        } else {
-          channelDefs.push(normalize(channelDef, channel));
-        }
-        return channelDefs;
-      }, []);
-    } else {
+    if (channel === 'detail' || channel === 'order') {
       const channelDef = encoding[channel];
-      if (!isFieldDef(channelDef) && !isValueDef(channelDef)) { // TODO: datum
+      if (channelDef) {
+        // Array of fieldDefs for detail channel (or production rule)
+        normalizedEncoding[channel] = (isArray(channelDef) ? channelDef : [channelDef])
+          .reduce((fieldDefs: FieldDef<string>[], fieldDef: FieldDef<string>) => {
+            if (!isFieldDef(fieldDef)) {
+              log.warn(log.message.emptyFieldDef(fieldDef, channel));
+            } else {
+              fieldDefs.push(normalizeFieldDef(fieldDef, channel));
+            }
+            return fieldDefs;
+          }, []);
+      }
+    } else {
+      // FIXME: remove this casting.  (I don't know why Typescript doesn't infer this correctly here.)
+      const channelDef = encoding[channel] as ChannelDef<string>;
+      if (!isFieldDef(channelDef) && !isValueDef(channelDef)) {
         log.warn(log.message.emptyFieldDef(channelDef, channel));
         return normalizedEncoding;
       }
@@ -179,8 +197,10 @@ export function fieldDefs(encoding: EncodingWithFacet<Field>): FieldDef<Field>[]
   CHANNELS.forEach(function(channel) {
     if (channelHasField(encoding, channel)) {
       const channelDef = encoding[channel];
-      (isArray(channelDef) ? channelDef : [channelDef]).forEach((fieldDef) => {
-        arr.push(fieldDef);
+      (isArray(channelDef) ? channelDef : [channelDef]).forEach((def) => {
+        if (isFieldDef(def)) {
+          arr.push(def);
+        }
       });
     }
   });

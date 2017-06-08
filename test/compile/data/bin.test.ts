@@ -75,12 +75,12 @@ describe('compile/data/bin', function() {
         x: {
           bin: true,
           field: "Rotten_Tomatoes_Rating",
-          type: "q"
+          type: "quantitative"
         },
         color: {
           bin: {"maxbins": 10},
           field: "Rotten_Tomatoes_Rating",
-          type: "q"
+          type: "quantitative"
         }
       }
     });
@@ -121,11 +121,11 @@ describe('compile/data/bin', function() {
     encoding: {
       x: {
         field: "Rotten_Tomatoes_Rating",
-        type: "q"
+        type: "quantitative"
       },
       color: {
         field: "Rotten_Tomatoes_Rating",
-        type: "q"
+        type: "quantitative"
       }
     }
   });
@@ -150,11 +150,11 @@ describe('compile/data/bin', function() {
     encoding: {
       x: {
         field: "Rotten_Tomatoes_Rating",
-        type: "q"
+        type: "quantitative"
       },
       color: {
         field: "Rotten_Tomatoes_Rating",
-        type: "q"
+        type: "quantitative"
       }
     }
   });

@@ -8,12 +8,12 @@ import {defaultConfig} from '../../../src/config';
 describe('compile/legend', function() {
   describe('title()', function () {
     it('should add explicitly specified title', function () {
-      const title = rules.title({title: 'Custom'}, {field: 'a'}, defaultConfig);
+      const title = rules.title({title: 'Custom'}, {field: 'a', type: 'nominal'}, defaultConfig);
       assert.equal(title, 'Custom');
     });
 
     it('should add return fieldTitle by default', function () {
-      const title = rules.title({}, {field: 'a'}, defaultConfig);
+      const title = rules.title({}, {field: 'a', type: 'nominal'}, defaultConfig);
       assert.equal(title, 'a');
     });
   });

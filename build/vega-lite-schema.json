@@ -1118,6 +1118,9 @@
           ]
         }
       },
+      "required": [
+        "value"
+      ],
       "type": "object"
     },
     "ConditionalValueDef<number>": {
@@ -1131,6 +1134,9 @@
           "type": "number"
         }
       },
+      "required": [
+        "value"
+      ],
       "type": "object"
     },
     "ConditionalValueDef<string>": {
@@ -1144,6 +1150,9 @@
           "type": "string"
         }
       },
+      "required": [
+        "value"
+      ],
       "type": "object"
     },
     "Config": {
@@ -1897,6 +1906,9 @@
           "description": "The encoded field's type of measurement. This can be either a full type\nname (`\"quantitative\"`, `\"temporal\"`, `\"ordinal\"`,  and `\"nominal\"`)\nor an initial character of the type name (`\"Q\"`, `\"T\"`, `\"O\"`, `\"N\"`).\nThis property is case-insensitive."
         }
       },
+      "required": [
+        "type"
+      ],
       "type": "object"
     },
     "FacetedUnitSpec": {
@@ -1950,6 +1962,45 @@
         "type": {
           "$ref": "#/definitions/Type",
           "description": "The encoded field's type of measurement. This can be either a full type\nname (`\"quantitative\"`, `\"temporal\"`, `\"ordinal\"`,  and `\"nominal\"`)\nor an initial character of the type name (`\"Q\"`, `\"T\"`, `\"O\"`, `\"N\"`).\nThis property is case-insensitive."
+        }
+      },
+      "required": [
+        "type"
+      ],
+      "type": "object"
+    },
+    "FieldDefBase": {
+      "additionalProperties": false,
+      "properties": {
+        "aggregate": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/AggregateOp"
+            },
+            {
+              "$ref": "#/definitions/CompositeAggregate"
+            }
+          ],
+          "description": "Aggregation function for the field\n(e.g., `mean`, `sum`, `median`, `min`, `max`, `count`).\n\n__Default value:__ `undefined` (None)"
+        },
+        "bin": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "$ref": "#/definitions/Bin"
+            }
+          ],
+          "description": "Flag for binning a `quantitative` field, or a bin property object\nfor binning parameters."
+        },
+        "field": {
+          "$ref": "#/definitions/Field",
+          "description": "__Required.__ Name of the field from which to pull a data value.\n\n__Note:__ `field` is not required if `aggregate` is `count`."
+        },
+        "timeUnit": {
+          "$ref": "#/definitions/TimeUnit",
+          "description": "Time unit for a `temporal` field  (e.g., `year`, `yearmonth`, `month`, `hour`).\n\n__Default value:__ `undefined` (None)"
         }
       },
       "type": "object"
@@ -2747,6 +2798,9 @@
           "description": "The encoded field's type of measurement. This can be either a full type\nname (`\"quantitative\"`, `\"temporal\"`, `\"ordinal\"`,  and `\"nominal\"`)\nor an initial character of the type name (`\"Q\"`, `\"T\"`, `\"O\"`, `\"N\"`).\nThis property is case-insensitive."
         }
       },
+      "required": [
+        "type"
+      ],
       "type": "object"
     },
     "LegendFieldDef<Field,string>": {
@@ -2814,6 +2868,9 @@
           "description": "The encoded field's type of measurement. This can be either a full type\nname (`\"quantitative\"`, `\"temporal\"`, `\"ordinal\"`,  and `\"nominal\"`)\nor an initial character of the type name (`\"Q\"`, `\"T\"`, `\"O\"`, `\"N\"`).\nThis property is case-insensitive."
         }
       },
+      "required": [
+        "type"
+      ],
       "type": "object"
     },
     "AndFilter": {
@@ -3357,6 +3414,9 @@
           "description": "The encoded field's type of measurement. This can be either a full type\nname (`\"quantitative\"`, `\"temporal\"`, `\"ordinal\"`,  and `\"nominal\"`)\nor an initial character of the type name (`\"Q\"`, `\"T\"`, `\"O\"`, `\"N\"`).\nThis property is case-insensitive."
         }
       },
+      "required": [
+        "type"
+      ],
       "type": "object"
     },
     "Orient": {
@@ -3474,6 +3534,9 @@
           "description": "The encoded field's type of measurement. This can be either a full type\nname (`\"quantitative\"`, `\"temporal\"`, `\"ordinal\"`,  and `\"nominal\"`)\nor an initial character of the type name (`\"Q\"`, `\"T\"`, `\"O\"`, `\"N\"`).\nThis property is case-insensitive."
         }
       },
+      "required": [
+        "type"
+      ],
       "type": "object"
     },
     "Range": {
@@ -3875,6 +3938,9 @@
           "description": "The encoded field's type of measurement. This can be either a full type\nname (`\"quantitative\"`, `\"temporal\"`, `\"ordinal\"`,  and `\"nominal\"`)\nor an initial character of the type name (`\"Q\"`, `\"T\"`, `\"O\"`, `\"N\"`).\nThis property is case-insensitive."
         }
       },
+      "required": [
+        "type"
+      ],
       "type": "object"
     },
     "ScaleType": {
@@ -4363,6 +4429,9 @@
           "description": "The encoded field's type of measurement. This can be either a full type\nname (`\"quantitative\"`, `\"temporal\"`, `\"ordinal\"`,  and `\"nominal\"`)\nor an initial character of the type name (`\"Q\"`, `\"T\"`, `\"O\"`, `\"N\"`).\nThis property is case-insensitive."
         }
       },
+      "required": [
+        "type"
+      ],
       "type": "object"
     },
     "TickConfig": {
@@ -5155,6 +5224,9 @@
           ]
         }
       },
+      "required": [
+        "value"
+      ],
       "type": "object"
     },
     "ValueDef<number>": {
@@ -5166,6 +5238,9 @@
           "type": "number"
         }
       },
+      "required": [
+        "value"
+      ],
       "type": "object"
     },
     "ValueDef<string>": {
@@ -5177,6 +5252,9 @@
           "type": "string"
         }
       },
+      "required": [
+        "value"
+      ],
       "type": "object"
     },
     "VerticalAlign": {

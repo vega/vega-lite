@@ -15,14 +15,14 @@ describe('Selection Predicate', function() {
       "x": {"field": "Horsepower","type": "quantitative"},
       "y": {"field": "Miles_per_Gallon","type": "quantitative"},
       "color": {
-        "field": "Cylinders", "type": "O",
+        "field": "Cylinders", "type": "ordinal",
         "condition": {
           "selection": "one",
           "value": "grey"
         }
       },
       "opacity": {
-        "field": "Origin", "type": "N",
+        "field": "Origin", "type": "nominal",
         "condition": {
           "selection": {"or": ["one", {"and": ["two", {"not": "three"}]}]},
           "value": 0.5

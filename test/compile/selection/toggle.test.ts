@@ -11,7 +11,7 @@ describe('Toggle Selection Transform', function() {
     "encoding": {
       "x": {"field": "Horsepower","type": "quantitative"},
       "y": {"field": "Miles_per_Gallon","type": "quantitative"},
-      "color": {"field": "Origin", "type": "N"}
+      "color": {"field": "Origin", "type": "nominal"}
     }
   });
 

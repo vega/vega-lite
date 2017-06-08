@@ -8,7 +8,7 @@ import {UnitModel} from '../unit';
 import * as ref from './valueref';
 
 import {NONSPATIAL_SCALE_CHANNELS} from '../../channel';
-import {Condition, isFieldDef, isValueDef} from '../../fielddef';
+import {Condition, FieldDef, isFieldDef, isValueDef} from '../../fielddef';
 import {predicate} from '../selection/selection';
 
 export function color(model: UnitModel) {
@@ -83,8 +83,7 @@ export function text(model: UnitModel, vgChannel: 'text' | 'tooltip' = 'text') {
   return wrapCondition(model, channelDef && channelDef.condition, vgChannel, valueRef);
 }
 
-export function bandPosition(channel: 'x'|'y', model: UnitModel) {
-  const fieldDef = model.encoding[channel];
+export function bandPosition(fieldDef: FieldDef<string>, channel: 'x'|'y', model: UnitModel) {
   const scaleName = model.scaleName(channel);
   const sizeChannel = channel === 'x' ? 'width' : 'height';
 
@@ -129,9 +128,7 @@ export function centeredBandPosition(channel: 'x' | 'y', model: UnitModel, defau
   };
 }
 
-export function binnedPosition(channel: 'x'|'y', model: UnitModel, spacing: number) {
-  const fieldDef = model.encoding[channel];
-  const scaleName = model.scaleName(channel);
+export function binnedPosition(fieldDef: FieldDef<string>, channel: 'x'|'y', scaleName: string, spacing: number) {
   if (channel === 'x') {
     return {
       x2: ref.bin(fieldDef, scaleName, 'start', spacing),

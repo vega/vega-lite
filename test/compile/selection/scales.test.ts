@@ -3,6 +3,7 @@
 import {assert} from 'chai';
 import {assembleScale} from '../../../src/compile/scale/assemble';
 import {parseScale} from '../../../src/compile/scale/parse';
+import {Domain} from '../../../src/scale';
 import {parseConcatModel} from '../../util';
 
 describe('Selection + Scales', function() {
@@ -36,11 +37,11 @@ describe('Selection + Scales', function() {
             },
             color: {
               field: "symbol", type: "nominal",
-              scale: {domain: {selection: "brush2"}}
+              scale: {domain: {selection: "brush2"} as Domain}
             },
             opacity: {
               field: "symbol", type: "nominal",
-              scale: {domain: {selection: "brush3"}}
+              scale: {domain: {selection: "brush3"} as Domain}
             }
           }
         }

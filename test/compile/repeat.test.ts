@@ -1,5 +1,6 @@
 import {assert} from 'chai';
 import {replaceRepeaterInEncoding} from '../../src/compile/repeat';
+import {Encoding} from '../../src/encoding';
 import * as log from '../../src/log';
 import {keys} from '../../src/util';
 import {DataRefUnionDomain, isDataRefUnionedDomain} from '../../src/vega.schema';
@@ -9,21 +10,21 @@ describe('Repeat', function() {
   describe('resolveRepeat', () => {
     it('should resolve repeated fields', () => {
       const resolved = replaceRepeaterInEncoding({
-        x: {field: {repeat: 'row'}},
-        y: {field: 'bar'}
+        x: {field: {repeat: 'row'}, type: 'quantitative'},
+        y: {field: 'bar', type: 'quantitative'}
       }, {row: 'foo'});
 
-      assert.deepEqual(resolved, {
-        x: {field: 'foo'},
-        y: {field: 'bar'}
+      assert.deepEqual<Encoding<string>>(resolved, {
+        x: {field: 'foo', type: 'quantitative'},
+        y: {field: 'bar', type: 'quantitative'}
       });
     });
 
     it('should show warning if repeat cannot be resolved', () => {
       log.runLocalLogger((localLogger) => {
         const resolved = replaceRepeaterInEncoding({
-          x: {field: {repeat: 'row'}},
-          y: {field: 'bar'}
+          x: {field: {repeat: 'row'}, type: 'quantitative'},
+          y: {field: 'bar', type: 'quantitative'}
         }, {column: 'foo'});
 
         assert.equal(localLogger.warns[0], log.message.noSuchRepeatedValue('row'));
@@ -32,11 +33,14 @@ describe('Repeat', function() {
 
     it('should support arrays fo field defs', () => {
       const resolved = replaceRepeaterInEncoding({
-        detail: [{field: {repeat: 'row'}}, {field: 'bar'}]
+        detail: [
+          {field: {repeat: 'row'}, type: 'quantitative'},
+          {field: 'bar', type: 'quantitative'}
+        ]
       }, {row: 'foo'});
 
-      assert.deepEqual(resolved, {
-        detail: [{field: 'foo'}, {field: 'bar'}]
+      assert.deepEqual<Encoding<string>>(resolved, {
+        detail: [{field: 'foo', type: 'quantitative'}, {field: 'bar', type: 'quantitative'}]
       });
     });
   });
