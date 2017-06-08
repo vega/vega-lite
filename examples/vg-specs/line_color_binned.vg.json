@@ -1,0 +1,246 @@
+{
+    "$schema": "http://vega.github.io/schema/vega/v3.0.json",
+    "description": "A scatterplot showing horsepower and miles per gallons for various cars.",
+    "autosize": "pad",
+    "padding": 5,
+    "encode": {
+        "update": {
+            "fill": {
+                "value": "transparent"
+            }
+        }
+    },
+    "data": [
+        {
+            "name": "source_0",
+            "url": "data/cars.json",
+            "format": {
+                "type": "json",
+                "parse": {
+                    "Horsepower": "number",
+                    "Year": "date",
+                    "Acceleration": "number"
+                }
+            },
+            "transform": [
+                {
+                    "type": "filter",
+                    "expr": "datum[\"Horsepower\"] !== null && !isNaN(datum[\"Horsepower\"]) && datum[\"Year\"] !== null && !isNaN(datum[\"Year\"]) && datum[\"Acceleration\"] !== null && !isNaN(datum[\"Acceleration\"])"
+                },
+                {
+                    "type": "extent",
+                    "field": "Acceleration",
+                    "signal": "bin_maxbins_6_Acceleration_extent"
+                },
+                {
+                    "type": "bin",
+                    "field": "Acceleration",
+                    "as": [
+                        "bin_maxbins_6_Acceleration_start",
+                        "bin_maxbins_6_Acceleration_end"
+                    ],
+                    "signal": "bin_maxbins_6_Acceleration_bins",
+                    "maxbins": 6,
+                    "extent": {
+                        "signal": "bin_maxbins_6_Acceleration_extent"
+                    }
+                },
+                {
+                    "type": "formula",
+                    "expr": "format(datum[\"bin_maxbins_6_Acceleration_start\"], 's') + ' - ' + format(datum[\"bin_maxbins_6_Acceleration_end\"], 's')",
+                    "as": "bin_maxbins_6_Acceleration_range"
+                },
+                {
+                    "type": "aggregate",
+                    "groupby": [
+                        "Year",
+                        "bin_maxbins_6_Acceleration_start",
+                        "bin_maxbins_6_Acceleration_end"
+                    ],
+                    "ops": [
+                        "mean"
+                    ],
+                    "fields": [
+                        "Horsepower"
+                    ],
+                    "as": [
+                        "mean_Horsepower"
+                    ]
+                },
+                {
+                    "type": "collect",
+                    "sort": {
+                        "field": "Year",
+                        "order": "descending"
+                    }
+                }
+            ]
+        }
+    ],
+    "signals": [
+        {
+            "name": "width",
+            "update": "200"
+        },
+        {
+            "name": "height",
+            "update": "200"
+        }
+    ],
+    "marks": [
+        {
+            "name": "pathgroup",
+            "type": "group",
+            "from": {
+                "facet": {
+                    "name": "faceted_path_main",
+                    "data": "source_0",
+                    "groupby": [
+                        "bin_maxbins_6_Acceleration_start"
+                    ]
+                }
+            },
+            "encode": {
+                "update": {
+                    "width": {
+                        "field": {
+                            "group": "width"
+                        }
+                    },
+                    "height": {
+                        "field": {
+                            "group": "height"
+                        }
+                    }
+                }
+            },
+            "marks": [
+                {
+                    "name": "marks",
+                    "type": "line",
+                    "from": {
+                        "data": "faceted_path_main"
+                    },
+                    "encode": {
+                        "update": {
+                            "x": {
+                                "scale": "x",
+                                "field": "Year"
+                            },
+                            "y": {
+                                "scale": "y",
+                                "field": "mean_Horsepower"
+                            },
+                            "stroke": {
+                                "scale": "color",
+                                "field": "bin_maxbins_6_Acceleration_start"
+                            }
+                        }
+                    }
+                }
+            ]
+        }
+    ],
+    "scales": [
+        {
+            "name": "x",
+            "type": "time",
+            "domain": {
+                "data": "source_0",
+                "field": "Year"
+            },
+            "range": [
+                0,
+                200
+            ],
+            "round": true
+        },
+        {
+            "name": "y",
+            "type": "linear",
+            "domain": {
+                "data": "source_0",
+                "field": "mean_Horsepower"
+            },
+            "range": [
+                200,
+                0
+            ],
+            "round": true,
+            "nice": true,
+            "zero": true
+        },
+        {
+            "name": "color",
+            "type": "bin-ordinal",
+            "domain": {
+                "signal": "sequence(bin_maxbins_6_Acceleration_bins.start, bin_maxbins_6_Acceleration_bins.stop + bin_maxbins_6_Acceleration_bins.step, bin_maxbins_6_Acceleration_bins.step)"
+            },
+            "range": "ramp",
+            "zero": false
+        }
+    ],
+    "axes": [
+        {
+            "scale": "x",
+            "orient": "bottom",
+            "tickCount": 5,
+            "title": "Year",
+            "zindex": 1,
+            "encode": {
+                "labels": {
+                    "update": {
+                        "text": {
+                            "signal": "timeFormat(datum.value, '%b %d, %Y')"
+                        },
+                        "angle": {
+                            "value": 270
+                        },
+                        "align": {
+                            "value": "right"
+                        },
+                        "baseline": {
+                            "value": "middle"
+                        }
+                    }
+                }
+            }
+        },
+        {
+            "scale": "x",
+            "domain": false,
+            "grid": true,
+            "labels": false,
+            "orient": "bottom",
+            "tickCount": 5,
+            "ticks": false,
+            "zindex": 0,
+            "gridScale": "y"
+        },
+        {
+            "scale": "y",
+            "format": "s",
+            "orient": "left",
+            "title": "MEAN(Horsepower)",
+            "zindex": 1
+        },
+        {
+            "scale": "y",
+            "domain": false,
+            "format": "s",
+            "grid": true,
+            "labels": false,
+            "orient": "left",
+            "ticks": false,
+            "zindex": 0,
+            "gridScale": "x"
+        }
+    ],
+    "legends": [
+        {
+            "stroke": "color",
+            "format": "s",
+            "title": "BIN(Acceleration)"
+        }
+    ]
+}
