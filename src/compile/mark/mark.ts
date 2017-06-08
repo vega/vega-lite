@@ -125,16 +125,15 @@ function detailFields(model: UnitModel): string[] {
       const channelDef = encoding[channel];
       if (channelDef) {
         (isArray(channelDef) ? channelDef : [channelDef]).forEach((fieldDef) => {
-          // FIXME: check if this is correct for bin
           if (!fieldDef.aggregate) {
-            details.push(field(fieldDef));
+            details.push(field(fieldDef, {binSuffix: 'start'}));
           }
         });
       }
     } else {
       const fieldDef = getFieldDef(encoding, channel);
       if (fieldDef && !fieldDef.aggregate) {
-        details.push(field(fieldDef));
+        details.push(field(fieldDef, {binSuffix: 'start'}));
       }
     }
     return details;
