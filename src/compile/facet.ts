@@ -307,10 +307,6 @@ export class FacetModel extends ModelWithField {
     return marks;
   }
 
-  public channels() {
-    return [ROW, COLUMN];
-  }
-
   protected getMapping() {
     return this.facet;
   }
