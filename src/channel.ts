@@ -57,7 +57,10 @@ const CHANNEL_INDEX = toSet(CHANNELS);
 
 export const SINGLE_DEF_CHANNELS = [X, Y, X2, Y2, ROW, COLUMN, SIZE, SHAPE, COLOR, OPACITY, TEXT, TOOLTIP];
 
-export type SingleDefChannel = typeof SINGLE_DEF_CHANNELS[0];
+// export type SingleDefChannel = typeof SINGLE_DEF_CHANNELS[0];
+// FIXME somehow the typeof above leads to the following error when running npm run schema
+// UnknownNodeError: Unknown node "SingleDefChannel" (ts.SyntaxKind = 171) at /Users/kanitw/Documents/_code/_idl/_visrec/vega-lite/src/selection.ts(17,14)
+export type SingleDefChannel = 'x' | 'y' | 'x2' | 'y2' | 'row' | 'column' | 'size' | 'shape' | 'color' | 'opacity' | 'text' | 'tooltip';
 
 export function isChannel(str: string): str is Channel {
   return !!CHANNEL_INDEX[str];
