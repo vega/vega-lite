@@ -616,12 +616,12 @@
                     },
                     "fill": [
                         {
-                            "test": "!(vlInterval(\"brush_store\", \"layer_1_\", datum, \"union\", \"all\"))",
-                            "value": "grey"
-                        },
-                        {
+                            "test": "vlInterval(\"brush_store\", \"layer_1_\", datum, \"union\", \"all\")",
                             "scale": "color",
                             "field": "Cylinders"
+                        },
+                        {
+                            "value": "grey"
                         }
                     ],
                     "size": [

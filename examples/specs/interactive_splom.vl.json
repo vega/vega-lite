@@ -31,10 +31,11 @@
         "type": "quantitative"
       },
       "color": {
-        "field": "Origin","type": "nominal",
         "condition": {
-          "selection": {"not": "brush"}, "value": "grey"
-        }
+          "selection": "brush",
+          "field": "Origin","type": "nominal"
+        },
+        "value": "grey"
       }
     }
   }

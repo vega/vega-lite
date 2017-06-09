@@ -344,12 +344,12 @@
                     },
                     "stroke": [
                         {
-                            "test": "!(vlInterval(\"brush_store\", \"\", datum, \"union\", \"all\"))",
-                            "value": "grey"
-                        },
-                        {
+                            "test": "vlInterval(\"brush_store\", \"\", datum, \"union\", \"all\")",
                             "scale": "color",
                             "field": "Cylinders"
+                        },
+                        {
+                            "value": "grey"
                         }
                     ],
                     "fill": {
