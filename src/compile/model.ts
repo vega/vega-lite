@@ -394,7 +394,6 @@ export abstract class ModelWithField extends Model {
   public abstract hasDiscreteDomain(channel: Channel): boolean;
 
 
-  public abstract channels(): Channel[];
 
   protected abstract getMapping(): {[key: string]: any};
 

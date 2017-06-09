@@ -338,10 +338,6 @@ export class UnitModel extends ModelWithField {
     };
   }
 
-  public channels() {
-    return UNIT_CHANNELS;
-  }
-
   protected getMapping() {
     return this.encoding;
   }
