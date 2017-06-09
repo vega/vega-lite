@@ -3,6 +3,7 @@
 import {assert} from 'chai';
 
 import {AggregateNode} from '../../../src/compile/data/aggregate';
+import {Condition} from '../../../src/fielddef';
 import {SummarizeTransform} from '../../../src/transform';
 import {StringSet} from '../../../src/util';
 import {VgAggregateTransform} from '../../../src/vega.schema';
@@ -73,6 +74,28 @@ describe('compile/data/summary', function () {
       assert.deepEqual<VgAggregateTransform>(agg.assemble(), {
         type: 'aggregate',
         groupby: ['Origin', 'Cylinders'],
+        ops: ['mean'],
+        fields: ['Displacement'],
+        as: ['mean_Displacement']
+      });
+    });
+
+    it('should include conditional field in the summary component', function() {
+      const model = parseUnitModel({
+        mark: "point",
+        encoding: {
+          'x': {'aggregate': 'mean', 'field': 'Displacement', 'type': "quantitative"},
+          color: {
+            condition: {selection: 'a', field: 'Origin', 'type': "ordinal"},
+            value: 'red'
+          }
+        }
+      });
+
+      const agg = AggregateNode.makeFromEncoding(model);
+      assert.deepEqual<VgAggregateTransform>(agg.assemble(), {
+        type: 'aggregate',
+        groupby: ['Origin'],
         ops: ['mean'],
         fields: ['Displacement'],
         as: ['mean_Displacement']
