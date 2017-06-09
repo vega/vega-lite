@@ -1120,6 +1120,42 @@
       ],
       "type": "object"
     },
+    "ConditionOnlyDef<LegendFieldDef<Field,number>,ValueDef<number>>": {
+      "additionalProperties": false,
+      "properties": {
+        "condition": {
+          "$ref": "#/definitions/Condition<(LegendFieldDef<Field,number>|ValueDef<number>)>"
+        }
+      },
+      "required": [
+        "condition"
+      ],
+      "type": "object"
+    },
+    "ConditionOnlyDef<LegendFieldDef<Field,string>,ValueDef<string>>": {
+      "additionalProperties": false,
+      "properties": {
+        "condition": {
+          "$ref": "#/definitions/Condition<(LegendFieldDef<Field,string>|ValueDef<string>)>"
+        }
+      },
+      "required": [
+        "condition"
+      ],
+      "type": "object"
+    },
+    "ConditionOnlyDef<TextFieldDef,ValueDef<(string|number|boolean)>>": {
+      "additionalProperties": false,
+      "properties": {
+        "condition": {
+          "$ref": "#/definitions/Condition<(TextFieldDef|ValueDef<(string|number|boolean)>)>"
+        }
+      },
+      "required": [
+        "condition"
+      ],
+      "type": "object"
+    },
     "Conditional<LegendFieldDef<Field,number>,ValueDef<number>>": {
       "anyOf": [
         {
@@ -1127,6 +1163,9 @@
         },
         {
           "$ref": "#/definitions/ConditionalValueDef<LegendFieldDef<Field,number>,ValueDef<number>>"
+        },
+        {
+          "$ref": "#/definitions/ConditionOnlyDef<LegendFieldDef<Field,number>,ValueDef<number>>"
         }
       ],
       "description": "Generic type for conditional channelDef.\nF defines the underlying FieldDef type while V defines the underlying ValueDef type."
@@ -1138,6 +1177,9 @@
         },
         {
           "$ref": "#/definitions/ConditionalValueDef<LegendFieldDef<Field,string>,ValueDef<string>>"
+        },
+        {
+          "$ref": "#/definitions/ConditionOnlyDef<LegendFieldDef<Field,string>,ValueDef<string>>"
         }
       ],
       "description": "Generic type for conditional channelDef.\nF defines the underlying FieldDef type while V defines the underlying ValueDef type."
@@ -1149,6 +1191,9 @@
         },
         {
           "$ref": "#/definitions/ConditionalValueDef<TextFieldDef,ValueDef<(string|number|boolean)>>"
+        },
+        {
+          "$ref": "#/definitions/ConditionOnlyDef<TextFieldDef,ValueDef<(string|number|boolean)>>"
         }
       ],
       "description": "Generic type for conditional channelDef.\nF defines the underlying FieldDef type while V defines the underlying ValueDef type."

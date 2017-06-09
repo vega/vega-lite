@@ -4,7 +4,7 @@
 
 import {Channel, X, X2, Y, Y2} from '../../channel';
 import {Config} from '../../config';
-import {ChannelDef, field, FieldDef, FieldRefOption, isFieldDef, TextFieldDef, ValueDef} from '../../fielddef';
+import {ChannelDef, Conditional, field, FieldDef, FieldRefOption, isFieldDef, isValueDef, TextFieldDef, ValueDef} from '../../fielddef';
 import {hasDiscreteDomain, isBinScale, ScaleType} from '../../scale';
 import {StackProperties} from '../../stack';
 import {contains} from '../../util';
@@ -113,7 +113,7 @@ export function midPoint(channel: Channel, channelDef: ChannelDef<string>, scale
       } else {
         return fieldRef(channelDef, scaleName, {}); // no need for bin suffix
       }
-    } else if (channelDef.value !== undefined) {
+    } else if (isValueDef(channelDef)) {
       return {value: channelDef.value};
     } else {
       throw new Error('FieldDef without field or value.'); // FIXME add this to log.message
@@ -142,12 +142,12 @@ export function midPoint(channel: Channel, channelDef: ChannelDef<string>, scale
   return defaultRef;
 }
 
-export function text(textDef: TextFieldDef<string> | ValueDef<any>, config: Config): VgValueRef {
+export function text(textDef: Conditional<TextFieldDef<string>, ValueDef<any>>, config: Config): VgValueRef {
   // text
   if (textDef) {
     if (isFieldDef(textDef)) {
       return formatSignalRef(textDef, textDef.format, 'datum', config);
-    } else if (textDef.value) {
+    } else if (isValueDef(textDef)) {
       return {value: textDef.value};
     }
   }

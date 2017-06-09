@@ -31,7 +31,7 @@ export interface ValueDef<T> {
  * Generic type for conditional channelDef.
  * F defines the underlying FieldDef type while V defines the underlying ValueDef type.
  */
-export type Conditional<F extends FieldDef<any>, V extends ValueDef<any>> = ConditionalFieldDef<F, V> | ConditionalValueDef<F, V>;
+export type Conditional<F extends FieldDef<any>, V extends ValueDef<any>> = ConditionalFieldDef<F, V> | ConditionalValueDef<F, V> | ConditionOnlyDef<F, V>;
 
 
 export type Condition<T> = {
@@ -48,6 +48,11 @@ export type Condition<T> = {
  */
 export type ConditionalFieldDef<F extends FieldDef<any>, V extends ValueDef<any>> = F & {condition?: Condition<V>};
 
+export interface ConditionOnlyDef <F extends FieldDef<any>, V extends ValueDef<any>> {
+  condition: Condition<F | V>;
+}
+
+
 /**
  * A ValueDef with Condition<ValueDef | FieldDef>
  * {
@@ -55,7 +60,7 @@ export type ConditionalFieldDef<F extends FieldDef<any>, V extends ValueDef<any>
  *   value: ...,
  * }
  */
-export type ConditionalValueDef<F extends FieldDef<any>, V extends ValueDef<any>> = V & {condition?: Condition<F | V>};
+export type ConditionalValueDef<F extends FieldDef<any>, V extends ValueDef<any>> = V & {condition?: Condition<F | V>;};
 
 /**
  * Reference to a repeated value.
