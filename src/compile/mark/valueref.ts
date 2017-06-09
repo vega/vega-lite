@@ -151,7 +151,7 @@ export function text(textDef: Conditional<TextFieldDef<string>, ValueDef<any>>, 
       return {value: textDef.value};
     }
   }
-  return {value: config.text.text};
+  return undefined;
 }
 
 export function midX(width: number, config: Config): VgValueRef {
