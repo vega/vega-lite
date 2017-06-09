@@ -19,7 +19,7 @@ import {
   PositionDef,
   ValueDef
 } from './fielddef';
-import {getFieldDef, hasConditionFieldDef} from './fielddef';
+import {getFieldDef, hasConditionFieldDef, isConditionalDef} from './fielddef';
 import * as log from './log';
 import {Mark} from './mark';
 import {isArray, some} from './util';
@@ -169,7 +169,7 @@ export function normalizeEncoding(encoding: Encoding<string>, mark: Mark): Encod
     } else {
       // FIXME: remove this casting.  (I don't know why Typescript doesn't infer this correctly here.)
       const channelDef = encoding[channel] as ChannelDef<string>;
-      if (!isFieldDef(channelDef) && !isValueDef(channelDef)) {
+      if (!isFieldDef(channelDef) && !isValueDef(channelDef) && !isConditionalDef(channelDef)) {
         log.warn(log.message.emptyFieldDef(channelDef, channel));
         return normalizedEncoding;
       }
