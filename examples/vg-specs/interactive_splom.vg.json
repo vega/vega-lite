@@ -505,12 +505,12 @@
                             },
                             "stroke": [
                                 {
-                                    "test": "!(vlInterval(\"brush_store\", \"child_Horsepower_Horsepower_\", datum, \"union\", \"all\"))",
-                                    "value": "grey"
-                                },
-                                {
+                                    "test": "vlInterval(\"brush_store\", \"child_Horsepower_Horsepower_\", datum, \"union\", \"all\")",
                                     "scale": "color",
                                     "field": "Origin"
+                                },
+                                {
+                                    "value": "grey"
                                 }
                             ],
                             "fill": {
@@ -1063,12 +1063,12 @@
                             },
                             "stroke": [
                                 {
-                                    "test": "!(vlInterval(\"brush_store\", \"child_Horsepower_Miles_per_Gallon_\", datum, \"union\", \"all\"))",
-                                    "value": "grey"
-                                },
-                                {
+                                    "test": "vlInterval(\"brush_store\", \"child_Horsepower_Miles_per_Gallon_\", datum, \"union\", \"all\")",
                                     "scale": "color",
                                     "field": "Origin"
+                                },
+                                {
+                                    "value": "grey"
                                 }
                             ],
                             "fill": {
@@ -1622,12 +1622,12 @@
                             },
                             "stroke": [
                                 {
-                                    "test": "!(vlInterval(\"brush_store\", \"child_Acceleration_Horsepower_\", datum, \"union\", \"all\"))",
-                                    "value": "grey"
-                                },
-                                {
+                                    "test": "vlInterval(\"brush_store\", \"child_Acceleration_Horsepower_\", datum, \"union\", \"all\")",
                                     "scale": "color",
                                     "field": "Origin"
+                                },
+                                {
+                                    "value": "grey"
                                 }
                             ],
                             "fill": {
@@ -2181,12 +2181,12 @@
                             },
                             "stroke": [
                                 {
-                                    "test": "!(vlInterval(\"brush_store\", \"child_Acceleration_Miles_per_Gallon_\", datum, \"union\", \"all\"))",
-                                    "value": "grey"
-                                },
-                                {
+                                    "test": "vlInterval(\"brush_store\", \"child_Acceleration_Miles_per_Gallon_\", datum, \"union\", \"all\")",
                                     "scale": "color",
                                     "field": "Origin"
+                                },
+                                {
+                                    "value": "grey"
                                 }
                             ],
                             "fill": {
