@@ -621,7 +621,7 @@
         },
         "encodings": {
           "items": {
-            "type": "string"
+            "$ref": "#/definitions/SingleDefChannel"
           },
           "type": "array"
         },
@@ -4208,7 +4208,7 @@
         },
         "encodings": {
           "items": {
-            "type": "string"
+            "$ref": "#/definitions/SingleDefChannel"
           },
           "type": "array"
         },
@@ -4320,6 +4320,25 @@
         "single",
         "multi",
         "interval"
+      ],
+      "type": [
+        "string"
+      ]
+    },
+    "SingleDefChannel": {
+      "enum": [
+        "x",
+        "y",
+        "x2",
+        "y2",
+        "row",
+        "column",
+        "size",
+        "shape",
+        "color",
+        "opacity",
+        "text",
+        "tooltip"
       ],
       "type": [
         "string"
