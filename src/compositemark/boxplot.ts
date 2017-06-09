@@ -13,7 +13,8 @@ export type BoxPlotRole = 'boxWhisker' | 'box' | 'boxMid';
 
 export interface BoxPlotDef {
   type: BOXPLOT;
-  orient: Orient;
+  orient?: Orient;
+  extent?: 'min-max' | number;
 }
 
 export function isBoxPlotDef(mark: BOXPLOT | BoxPlotDef): mark is BoxPlotDef {
@@ -49,13 +50,25 @@ export function normalizeBoxPlot(spec: GenericUnitSpec<Encoding<Field>, BOXPLOT 
   const {color: _color, ...nonPositionEncodingWithoutColorSize} = nonPositionEncodingWithoutSize;
   const midTickAndBarSizeChannelDef = size ? {size: size} : {size: {value: config.box.size}};
 
-  let discreteAxisFieldDef;
-  let continuousAxisChannelDef: PositionFieldDef<Field>;
-  let discreteAxis;
-  let continuousAxis;
+  let kIQRScalar: number = undefined;
+  if (isBoxPlotDef(mark)) {
+    if (mark && mark.extent) {
+      if(typeof(mark.extent) === 'number') {
+        kIQRScalar = mark.extent;
+      }
+    }
+  }
+  const isMinMax = kIQRScalar === undefined;
 
-  if (isFieldDef(encoding.x) && isFieldDef(encoding.y)) {
+  let discreteAxisFieldDef: PositionFieldDef<Field>, continuousAxisChannelDef: PositionFieldDef<Field>;
+  let discreteAxis, continuousAxis;
+
+  let is1D = true;
+
+  if (encoding.x && encoding.y) {
     // 2D
+
+    is1D = false;
 
     const orient: Orient = box2DOrient(spec);
     const params = box2DParams(spec, orient);
@@ -80,40 +93,13 @@ export function normalizeBoxPlot(spec: GenericUnitSpec<Encoding<Field>, BOXPLOT 
     throw new Error(`Continuous axis should not have customized aggregation function ${continuousAxisChannelDef.aggregate}`);
   }
 
-  const baseContinuousFieldDef = {
-      field: continuousAxisChannelDef.field,
-      type: continuousAxisChannelDef.type
-  };
-
-  const minFieldDef = {
-    aggregate: 'min',
-    ...baseContinuousFieldDef
-  };
-  const minWithAxisFieldDef = {
-    axis: continuousAxisChannelDef.axis,
-    ...minFieldDef
-  };
-  const q1FieldDef = {
-    aggregate: 'q1',
-    ...baseContinuousFieldDef
-  };
-  const medianFieldDef = {
-    aggregate: 'median',
-    ...baseContinuousFieldDef
-  };
-  const q3FieldDef = {
-    aggregate: 'q3',
-    ...baseContinuousFieldDef
-  };
-  const maxFieldDef = {
-    aggregate: 'max',
-    ...baseContinuousFieldDef
-  };
+  const transformDef = boxTransform(encoding, discreteAxisFieldDef, continuousAxisChannelDef, kIQRScalar, is1D);
 
   const discreteAxisEncodingMixin = discreteAxisFieldDef !== undefined ? {[discreteAxis]: discreteAxisFieldDef} : {};
 
   return {
     ...outerSpec,
+    transform: transformDef,
     layer: [
       { // lower whisker
         mark: {
@@ -122,8 +108,15 @@ export function normalizeBoxPlot(spec: GenericUnitSpec<Encoding<Field>, BOXPLOT 
         },
         encoding: {
           ...discreteAxisEncodingMixin,
-          [continuousAxis]: minWithAxisFieldDef,
-          [continuousAxis + '2']: q1FieldDef,
+          [continuousAxis]: {
+            axis: continuousAxisChannelDef.axis,
+            field: 'lowerWhisker',
+            type: continuousAxisChannelDef.type
+          },
+          [continuousAxis + '2']: {
+            field: 'lowerBox',
+            type: continuousAxisChannelDef.type
+          },
           ...nonPositionEncodingWithoutColorSize
         }
       }, { // upper whisker
@@ -133,8 +126,14 @@ export function normalizeBoxPlot(spec: GenericUnitSpec<Encoding<Field>, BOXPLOT 
         },
         encoding: {
           ...discreteAxisEncodingMixin,
-          [continuousAxis]: q3FieldDef,
-          [continuousAxis + '2']: maxFieldDef,
+          [continuousAxis]: {
+            field: 'upperBox',
+            type: continuousAxisChannelDef.type
+          },
+          [continuousAxis + '2']: {
+            field: 'upperWhisker',
+            type: continuousAxisChannelDef.type
+          },
           ...nonPositionEncodingWithoutColorSize
         }
       }, { // box (q1 to q3)
@@ -144,8 +143,14 @@ export function normalizeBoxPlot(spec: GenericUnitSpec<Encoding<Field>, BOXPLOT 
         },
         encoding: {
           ...discreteAxisEncodingMixin,
-          [continuousAxis]: q1FieldDef,
-          [continuousAxis + '2']: q3FieldDef,
+          [continuousAxis]: {
+            field: 'lowerBox',
+            type: continuousAxisChannelDef.type
+          },
+          [continuousAxis + '2']: {
+            field: 'upperBox',
+            type: continuousAxisChannelDef.type
+          },
           ...nonPositionEncodingWithoutSize,
           ...midTickAndBarSizeChannelDef
         }
@@ -156,7 +161,10 @@ export function normalizeBoxPlot(spec: GenericUnitSpec<Encoding<Field>, BOXPLOT 
         },
         encoding: {
           ...discreteAxisEncodingMixin,
-          [continuousAxis]: medianFieldDef,
+          [continuousAxis]: {
+            field: 'midBox',
+            type: continuousAxisChannelDef.type
+          },
           ...nonPositionEncoding,
           ...midTickAndBarSizeChannelDef,
           color: {value : 'white'}
@@ -248,4 +256,86 @@ export function box2DParams(spec: GenericUnitSpec<Encoding<Field>, BOXPLOT | Box
     discreteAxis: discreteAxis,
     continuousAxis: continuousAxis
   };
+}
+
+export function boxTransform(encoding: Encoding<Field>, discreteAxisFieldDef: PositionFieldDef<Field>, continuousAxisChannelDef: PositionFieldDef<Field>, kIQRScalar: 'min-max' | number, is1D: boolean) {
+  const isMinMax = kIQRScalar === undefined;
+  const groupbyDef = boxTransformGroupby(discreteAxisFieldDef, encoding);
+
+  let transformDef:any = [
+      {
+        summarize: [
+          {
+            aggregate: 'q1',
+            field: continuousAxisChannelDef.field,
+            as: 'lowerBox'
+          },
+          {
+            aggregate: 'q3',
+            field: continuousAxisChannelDef.field,
+            as: 'upperBox'
+          },
+          {
+            aggregate: 'median',
+            field: continuousAxisChannelDef.field,
+            as: 'midBox'
+          }
+        ]
+      }
+  ];
+
+  if (isMinMax) {
+    transformDef[0].summarize = transformDef[0].summarize.concat([
+      {
+        aggregate: 'min',
+        field: continuousAxisChannelDef.field,
+        as: 'lowerWhisker'
+      },
+      {
+        aggregate: 'max',
+        field: continuousAxisChannelDef.field,
+        as: 'upperWhisker'
+      }
+    ]);
+  } else {
+    transformDef = transformDef.concat([
+      {
+        calculate: 'datum.upperBox - datum.lowerBox',
+        as: 'IQR'
+      },
+      {
+        calculate: 'datum.lowerBox - datum.IQR * ' + kIQRScalar,
+        as: 'lowerWhisker'
+      },
+      {
+        calculate: 'datum.upperBox + datum.IQR * ' + kIQRScalar,
+        as: 'lowerWhisker'
+      }
+    ]);
+  }
+
+  if (groupbyDef !== undefined) {
+    transformDef[0].groupby = groupbyDef;
+  }
+
+  return transformDef;
+}
+
+export function boxTransformGroupby(discreteAxisFieldDef: PositionFieldDef<Field>, encoding: Encoding<Field>): Array<Field | string> {
+  const result: Array<Field | string> = [];
+  if (discreteAxisFieldDef !== undefined) {
+    result.push(discreteAxisFieldDef.field);
+  }
+  const supportedEncChannels = ['size', 'color', 'opacity'];
+
+  for (const fieldName in encoding) {
+    if (supportedEncChannels.indexOf(fieldName) > -1) {
+      const fieldDef = encoding[fieldName];
+      if (fieldDef.field && fieldDef.aggregate !== BOXPLOT) {
+        result.push(fieldName);
+      }
+    }
+  }
+
+  return result;
 }

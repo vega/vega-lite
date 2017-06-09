@@ -117,8 +117,10 @@ export class AggregateNode extends DataFlowNode {
       }
     }
 
-    for(const s of t.groupby) {
-      dims[s] = true;
+    if (t.groupby) {
+      for(const s of t.groupby) {
+        dims[s] = true;
+      }
     }
 
     if ((keys(dims).length + keys(meas).length)  === 0) {
