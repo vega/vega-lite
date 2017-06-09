@@ -8,7 +8,7 @@ import {UnitModel} from '../unit';
 import * as ref from './valueref';
 
 import {NONSPATIAL_SCALE_CHANNELS} from '../../channel';
-import {Condition, FieldDef, getFieldDef, isValueDef} from '../../fielddef';
+import {ChannelDef, Condition, ConditionalValueDef, FieldDef, getFieldDef, isValueDef} from '../../fielddef';
 import {predicate} from '../selection/selection';
 
 export function color(model: UnitModel) {
@@ -54,22 +54,27 @@ export function nonPosition(channel: typeof NONSPATIAL_SCALE_CHANNELS[0], model:
   const defaultRef = opt.defaultRef || (defaultValue !== undefined ? {value: defaultValue} : undefined);
 
   const channelDef = model.encoding[channel];
-  const valueRef = ref.midPoint(channel, channelDef, model.scaleName(channel), model.getScaleComponent(channel), defaultRef);
 
-  return wrapCondition(model, channelDef && channelDef.condition, vgChannel || channel, valueRef);
+  return wrapCondition(model, channelDef, vgChannel || channel, (cDef) => {
+    return ref.midPoint(channel, cDef, model.scaleName(channel), model.getScaleComponent(channel), defaultRef);
+  });
 }
 
 /**
  * Return a mixin that include a Vega production rule for a Vega-Lite conditional channel definition.
  * or a simple mixin if channel def has no condition.
  */
-// FIXME support ConditionFieldDef
-function wrapCondition(model: UnitModel, condition: Condition<any>, vgChannel: string, valueRef: VgValueRef): VgEncodeEntry {
+function wrapCondition(
+    model: UnitModel, channelDef: ChannelDef<string>, vgChannel: string,
+    refFn: (cDef: ChannelDef<string>) => VgValueRef
+  ): VgEncodeEntry {
+  const condition = channelDef && channelDef.condition;
+  const valueRef = refFn(channelDef);
   if (condition) {
-    const {selection, value} = condition;
+    const conditionValueRef = refFn(condition);
     return {
       [vgChannel]: [
-        {test: predicate(model, selection), value},
+        {test: predicate(model, condition.selection), ...conditionValueRef},
         ...(valueRef !== undefined ? [valueRef] : [])
       ]
     };
@@ -78,11 +83,9 @@ function wrapCondition(model: UnitModel, condition: Condition<any>, vgChannel: s
   }
 }
 
-// FIXME support ConditionFieldDef
-export function text(model: UnitModel, vgChannel: 'text' | 'tooltip' = 'text') {
-  const channelDef = model.encoding[vgChannel];
-  const valueRef = (vgChannel === 'tooltip' && !channelDef) ? undefined : ref.text(channelDef, model.config);
-  return wrapCondition(model, channelDef && channelDef.condition, vgChannel, valueRef);
+export function text(model: UnitModel, channel: 'text' | 'tooltip' = 'text') {
+  const channelDef = model.encoding[channel];
+  return wrapCondition(model, channelDef, channel, (cDef) => ref.text(cDef, model.config));
 }
 
 export function bandPosition(fieldDef: FieldDef<string>, channel: 'x'|'y', model: UnitModel) {
