@@ -15,8 +15,10 @@ const multi:SelectionCompiler = {
     const fields = proj.map((p) => stringValue(p.field)).join(', ');
     const values = proj.map((p) => {
       const channel = p.encoding;
+      const fieldDef = model.fieldDef(channel);
       // Binned fields should capture extents, for a range test against the raw field.
-      return model.fieldDef(channel).bin ? (bins[p.field] = 1,
+      // FIXME: Arvind -- please log proper warning when the specified encoding channel has no field
+      return (fieldDef && fieldDef.bin) ? (bins[p.field] = 1,
         `[${datum}[${stringValue(model.field(channel, {binSuffix: 'start'}))}], ` +
             `${datum}[${stringValue(model.field(channel, {binSuffix: 'end'}))}]]`) :
         `${datum}[${stringValue(p.field)}]`;

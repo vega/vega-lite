@@ -44,6 +44,20 @@ describe('compile/scale', () => {
       assert.deepEqual(xDomain, {data: 'main', field: 'a'});
     });
 
+    it('should have correct domain for color ConditionField', function() {
+      const model = parseUnitModel({
+          mark: 'bar',
+          encoding: {
+            color: {
+              condition: {selection: 'sel', field: 'a', type: 'quantitative'}
+            }
+          }
+        });
+
+      const xDomain = parseDomain(model, 'color');
+      assert.deepEqual(xDomain, {data: 'main', field: 'a'});
+    });
+
     it('should return domain for stack', function() {
       const model = parseUnitModel({
         mark: "bar",

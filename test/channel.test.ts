@@ -1,5 +1,5 @@
 import {assert} from 'chai';
-import {Channel, hasScale, rangeType, supportScaleType} from '../src/channel';
+import {Channel, hasScale, rangeType, SINGLE_DEF_CHANNELS, supportScaleType} from '../src/channel';
 import {CHANNELS, NONSPATIAL_CHANNELS, NONSPATIAL_SCALE_CHANNELS, SCALE_CHANNELS, UNIT_CHANNELS, UNIT_SCALE_CHANNELS} from '../src/channel';
 import {SCALE_TYPES, ScaleType} from '../src/scale';
 import {some, without} from '../src/util';
@@ -9,6 +9,12 @@ describe('channel', () => {
   describe('UNIT_CHANNELS', () => {
     it('should be CHANNELS without row and column', () => {
       assert.deepEqual(UNIT_CHANNELS, without(CHANNELS, ['row', 'column']));
+    });
+  });
+
+  describe('SINGLE_DEF_CHANNELS', () => {
+    it('should be CHANNELS without detail and order', () => {
+      assert.deepEqual(SINGLE_DEF_CHANNELS, without(CHANNELS, ['detail', 'order']));
     });
   });
 

@@ -1,4 +1,4 @@
-import {Channel, X} from '../../channel';
+import {Channel, SpatialScaleChannel, X} from '../../channel';
 import {NOMINAL, ORDINAL, TEMPORAL} from '../../type';
 import {contains, extend, keys} from '../../util';
 import {VgAxis} from '../../vega.schema';
@@ -7,8 +7,13 @@ import {ScaleType} from '../../scale';
 import {timeFormatExpression} from '../common';
 import {UnitModel} from '../unit';
 
-export function labels(model: UnitModel, channel: Channel, labelsSpec: any, def: VgAxis) {
-  const fieldDef = model.fieldDef(channel);
+export function labels(model: UnitModel, channel: SpatialScaleChannel, labelsSpec: any, def: VgAxis) {
+  const fieldDef = model.fieldDef(channel) ||
+    (
+      channel === 'x' ? model.fieldDef('x2') :
+      channel === 'y' ? model.fieldDef('y2') :
+      undefined
+    );
   const axis = model.axis(channel);
   const config = model.config;
 

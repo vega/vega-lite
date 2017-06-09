@@ -25,27 +25,9 @@ describe('compile/axis', ()=> {
           }
         }), X, true);
       assert.deepEqual(grid, true);
+
     });
 
-    it('should return undefined for COLUMN', function () {
-      const grid = rules.grid(parseUnitModel({
-          mark: "point",
-          encoding: {
-            x: {field: 'a', type: 'quantitative'}
-          }
-        }), COLUMN, true);
-      assert.deepEqual(grid, false);
-    });
-
-    it('should return undefined for ROW', function () {
-      const grid = rules.grid(parseUnitModel({
-          mark: "point",
-          encoding: {
-            x: {field: 'a', type: 'quantitative'}
-          }
-        }), ROW, true);
-      assert.deepEqual(grid, false);
-    });
     it('should return undefined for non-gridAxis', function () {
       const grid = rules.grid(parseUnitModel({
           mark: "point",

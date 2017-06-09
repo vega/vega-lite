@@ -55,6 +55,10 @@ export const TOOLTIP = Channel.TOOLTIP;
 export const CHANNELS = [X, Y, X2, Y2, ROW, COLUMN, SIZE, SHAPE, COLOR, ORDER, OPACITY, TEXT, DETAIL, TOOLTIP];
 const CHANNEL_INDEX = toSet(CHANNELS);
 
+export const SINGLE_DEF_CHANNELS = [X, Y, X2, Y2, ROW, COLUMN, SIZE, SHAPE, COLOR, OPACITY, TEXT, TOOLTIP];
+
+export type SingleDefChannel = typeof SINGLE_DEF_CHANNELS[0];
+
 export function isChannel(str: string): str is Channel {
   return !!CHANNEL_INDEX[str];
 }

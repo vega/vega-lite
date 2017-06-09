@@ -1,7 +1,7 @@
 import * as log from '../../log';
 
 import {Axis} from '../../axis';
-import {Channel, COLUMN, ROW, X, Y} from '../../channel';
+import {Channel, COLUMN, ROW, SpatialScaleChannel, X, Y} from '../../channel';
 import {Config} from '../../config';
 import {DateTime, dateTimeExpr, isDateTime} from '../../datetime';
 import {FieldDef, title as fieldDefTitle} from '../../fielddef';
@@ -20,7 +20,7 @@ export function format(specifiedAxis: Axis, channel: Channel, fieldDef: FieldDef
  * Default rules for whether to show a grid should be shown for a channel.
  * If `grid` is unspecified, the default value is `true` for ordinal scales that are not binned
  */
-export function gridShow(model: UnitModel, channel: Channel) {
+export function gridShow(model: UnitModel, channel: SpatialScaleChannel) {
   const grid = model.axis(channel).grid;
   if (grid !== undefined) {
     return grid;
@@ -29,12 +29,7 @@ export function gridShow(model: UnitModel, channel: Channel) {
   return !model.hasDiscreteDomain(channel) && !model.fieldDef(channel).bin;
 }
 
-export function grid(model: UnitModel, channel: Channel, isGridAxis: boolean) {
-  if (channel === ROW || channel === COLUMN) {
-    // never apply grid for ROW and COLUMN since we manually create rule-group for them
-    return false;
-  }
-
+export function grid(model: UnitModel, channel: SpatialScaleChannel, isGridAxis: boolean) {
   if (!isGridAxis) {
     return undefined;
   }

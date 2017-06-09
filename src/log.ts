@@ -99,6 +99,11 @@ export function debug(..._: any[]) {
 export namespace message {
   export const INVALID_SPEC = 'Invalid spec';
 
+  // SELECTION
+  export function cannotProjectOnChannelWithoutField(channel: Channel) {
+    return `Cannot project a selection on encoding channel ${channel}, which has no field.`;
+  }
+
   // REPEAT
   export function noSuchRepeatedValue(field: string) {
     return `Unknown repeated value "${field}".`;

@@ -1,5 +1,5 @@
 import {Axis} from '../axis';
-import {Channel, COLUMN, isChannel, NonspatialScaleChannel, ScaleChannel, X} from '../channel';
+import {Channel, COLUMN, isChannel, NonspatialScaleChannel, ScaleChannel, SingleDefChannel, X} from '../channel';
 import {CellConfig, Config} from '../config';
 import {Data, DataSourceType, MAIN, RAW} from '../data';
 import {forEach, reduce} from '../encoding';
@@ -376,10 +376,10 @@ export abstract class Model {
 
 /** Abstract class for UnitModel and FacetModel.  Both of which can contain fieldDefs as a part of its own specification. */
 export abstract class ModelWithField extends Model {
-  public abstract fieldDef(channel: Channel): FieldDef<string>;
+  public abstract fieldDef(channel: SingleDefChannel): FieldDef<string>;
 
   /** Get "field" reference for vega */
-  public field(channel: Channel, opt: FieldRefOption = {}) {
+  public field(channel: SingleDefChannel, opt: FieldRefOption = {}) {
     const fieldDef = this.fieldDef(channel);
 
     if (fieldDef.bin) { // bin has default suffix that depends on scaleType

@@ -1,9 +1,9 @@
 import {Axis} from '../axis';
-import {Channel, NONSPATIAL_SCALE_CHANNELS, UNIT_CHANNELS, UNIT_SCALE_CHANNELS, X, X2, Y, Y2} from '../channel';
+import {Channel, NONSPATIAL_SCALE_CHANNELS, SingleDefChannel, UNIT_CHANNELS, UNIT_SCALE_CHANNELS, X, X2, Y, Y2} from '../channel';
 import {CellConfig, Config} from '../config';
 import {Encoding, normalizeEncoding} from '../encoding';
 import * as vlEncoding from '../encoding'; // TODO: remove
-import {field, FieldDef, FieldRefOption, getFieldDef, isConditionalDef, isFieldDef} from '../fielddef';
+import {ChannelDef, field, FieldDef, FieldRefOption, getFieldDef, isConditionalDef, isFieldDef} from '../fielddef';
 import {Legend} from '../legend';
 import {FILL_STROKE_CONFIG, isMarkDef, Mark, MarkDef, TEXT as TEXT_MARK} from '../mark';
 import {defaultScaleConfig, Domain, hasDiscreteDomain, Scale} from '../scale';
@@ -375,15 +375,18 @@ export class UnitModel extends ModelWithField {
     return vlEncoding.channelHasField(this.encoding, channel);
   }
 
-  public fieldDef(channel: Channel): FieldDef<string> {
-    // TODO: remove this || {}
-    // Currently we have it to prevent null pointer exception.
-    return this.encoding[channel] || {};
+  public fieldDef(channel: SingleDefChannel): FieldDef<string> {
+    const channelDef = this.encoding[channel] as ChannelDef<string>;
+    return getFieldDef(channelDef);
   }
 
   /** Get "field" reference for vega */
-  public field(channel: Channel, opt: FieldRefOption = {}) {
+  public field(channel: SingleDefChannel, opt: FieldRefOption = {}) {
     const fieldDef = this.fieldDef(channel);
+
+    if (!fieldDef) {
+      return undefined;
+    }
 
     if (fieldDef.bin) { // bin has default suffix that depends on scaleType
       opt = extend({

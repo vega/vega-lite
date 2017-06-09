@@ -1,3 +1,4 @@
+import {SCALE_CHANNELS} from '../../channel';
 import {ScaleType} from '../../scale';
 import {Dict, duplicate, extend, keys} from '../../util';
 import {VgFilterTransform, VgTransform} from '../../vega.schema';
@@ -18,7 +19,7 @@ export class NonPositiveFilterNode extends DataFlowNode {
   }
 
   public static make(model: UnitModel) {
-    const filter = model.channels().reduce(function(nonPositiveComponent, channel) {
+    const filter = SCALE_CHANNELS.reduce(function(nonPositiveComponent, channel) {
       const scale = model.getScaleComponent(channel);
       if (!scale || !model.field(channel)) {
         // don't set anything

@@ -1,4 +1,4 @@
-import {Channel} from '../../channel';
+import {Channel, SCALE_CHANNELS, ScaleChannel} from '../../channel';
 import {isSelectionDomain, Scale} from '../../scale';
 import {isSortField} from '../../sort';
 import {Dict} from '../../util';
@@ -17,8 +17,7 @@ import {SELECTION_DOMAIN} from '../selection/selection';
  * Parse scales for all channels of a model.
  */
 export default function parseScaleComponent(model: UnitModel): ScaleComponentIndex {
-  // TODO: should model.channels() inlcude X2/Y2?
-  return model.channels().reduce(function(scaleComponentsIndex: ScaleComponentIndex, channel: Channel) {
+  return SCALE_CHANNELS.reduce(function(scaleComponentsIndex: ScaleComponentIndex, channel: ScaleChannel) {
     const scaleComponents = parseScale(model, channel);
     if (scaleComponents) {
       scaleComponentsIndex[channel] = scaleComponents;
@@ -40,7 +39,7 @@ export const NON_TYPE_DOMAIN_RANGE_VEGA_SCALE_PROPERTIES: (keyof Scale)[] = [
 /**
  * Parse scales for a single channel of a model.
  */
-export function parseScale(model: UnitModel, channel: Channel) {
+export function parseScale(model: UnitModel, channel: ScaleChannel) {
   if (!model.scale(channel)) {
     return null;
   }
