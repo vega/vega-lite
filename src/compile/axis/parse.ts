@@ -1,5 +1,5 @@
 import {Axis, AXIS_PROPERTIES} from '../../axis';
-import {Channel} from '../../channel';
+import {Channel, SpatialScaleChannel} from '../../channel';
 import {VgAxis} from '../../vega.schema';
 
 import * as encode from './encode';
@@ -12,7 +12,7 @@ import {AxisComponent, AxisComponentIndex} from './component';
 type AxisPart = 'domain' | 'grid' | 'labels' | 'ticks' | 'title';
 const AXIS_PARTS: AxisPart[] = ['domain', 'grid', 'labels', 'ticks', 'title'];
 
-export function parseAxisComponent(model: UnitModel, axisChannels: Channel[]): AxisComponentIndex {
+export function parseAxisComponent(model: UnitModel, axisChannels: SpatialScaleChannel[]): AxisComponentIndex {
   return axisChannels.reduce(function(axis, channel) {
     const axisComponent: AxisComponent = {axes:[], gridAxes: []};
     if (model.axis(channel)) {
@@ -58,16 +58,16 @@ function hasAxisPart(axis: VgAxis, part: AxisPart) {
 /**
  * Make an inner axis for showing grid for shared axis.
  */
-export function parseGridAxis(channel: Channel, model: UnitModel): VgAxis {
+export function parseGridAxis(channel: SpatialScaleChannel, model: UnitModel): VgAxis {
   // FIXME: support adding ticks for grid axis that are inner axes of faceted plots.
   return parseAxis(channel, model, true);
 }
 
-export function parseMainAxis(channel: Channel, model: UnitModel) {
+export function parseMainAxis(channel: SpatialScaleChannel, model: UnitModel) {
   return parseAxis(channel, model, false);
 }
 
-function parseAxis(channel: Channel, model: UnitModel, isGridAxis: boolean): VgAxis {
+function parseAxis(channel: SpatialScaleChannel, model: UnitModel, isGridAxis: boolean): VgAxis {
   const axis = model.axis(channel);
 
   const vgAxis: VgAxis = {
@@ -114,7 +114,7 @@ function parseAxis(channel: Channel, model: UnitModel, isGridAxis: boolean): VgA
   return vgAxis;
 }
 
-function getSpecifiedOrDefaultValue(property: keyof VgAxis, specifiedAxis: Axis, channel: Channel, model: UnitModel, isGridAxis: boolean) {
+function getSpecifiedOrDefaultValue(property: keyof VgAxis, specifiedAxis: Axis, channel: SpatialScaleChannel, model: UnitModel, isGridAxis: boolean) {
   const fieldDef = model.fieldDef(channel);
 
   switch (property) {

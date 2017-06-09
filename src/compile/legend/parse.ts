@@ -1,4 +1,4 @@
-import {Channel, COLOR, OPACITY, SHAPE, SIZE} from '../../channel';
+import {Channel, COLOR, NonspatialScaleChannel, OPACITY, SHAPE, SIZE} from '../../channel';
 import {Legend, LEGEND_PROPERTIES} from '../../legend';
 import {Dict, keys} from '../../util';
 import {VgLegend} from '../../vega.schema';
@@ -36,7 +36,7 @@ function getLegendDefWithScale(model: UnitModel, channel: Channel): LegendCompon
   return null;
 }
 
-export function parseLegend(model: UnitModel, channel: Channel): LegendComponent {
+export function parseLegend(model: UnitModel, channel: NonspatialScaleChannel): LegendComponent {
   const fieldDef = model.fieldDef(channel);
   const legend = model.legend(channel);
 
@@ -64,7 +64,7 @@ export function parseLegend(model: UnitModel, channel: Channel): LegendComponent
   return def;
 }
 
-function getSpecifiedOrDefaultValue(property: keyof VgLegend, specifiedLegend: Legend, channel: Channel, model: UnitModel) {
+function getSpecifiedOrDefaultValue(property: keyof VgLegend, specifiedLegend: Legend, channel: NonspatialScaleChannel, model: UnitModel) {
   const fieldDef = model.fieldDef(channel);
 
   switch (property) {

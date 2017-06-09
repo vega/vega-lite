@@ -1,5 +1,5 @@
 import {selector as parseSelector} from 'vega-event-selector';
-import {Channel} from '../../channel';
+import {Channel, SingleDefChannel} from '../../channel';
 import {warn} from '../../log';
 import {LogicalOperand} from '../../logical';
 import {SelectionDomain} from '../../scale';
@@ -40,7 +40,7 @@ export interface SelectionComponent {
 
 export interface ProjectComponent {
   field?: string;
-  encoding?: Channel;
+  encoding?: SingleDefChannel;
 }
 
 export interface SelectionCompiler {

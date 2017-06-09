@@ -1,4 +1,5 @@
-import {Channel} from '../../../channel';
+import {Channel, SingleDefChannel} from '../../../channel';
+import * as log from '../../../log';
 import {SelectionDef} from '../../../selection';
 import {TransformCompiler} from './transforms';
 
@@ -11,12 +12,16 @@ const project:TransformCompiler = {
     let fields = {};
     // TODO: find a possible channel mapping for these fields.
     (selDef.fields || []).forEach((field) => fields[field] = null);
-    (selDef.encodings || []).forEach((channel: Channel) => {
+    (selDef.encodings || []).forEach((channel: SingleDefChannel) => {
       const fieldDef = model.fieldDef(channel);
-      if (fieldDef.timeUnit) {
-        fields[model.field(channel)] = channel;
+      if (fieldDef) {
+        if (fieldDef.timeUnit) {
+          fields[model.field(channel)] = channel;
+        } else {
+          fields[fieldDef.field] = channel;
+        }
       } else {
-        fields[fieldDef.field] = channel;
+        log.warn(log.message.cannotProjectOnChannelWithoutField(channel));
       }
     });
 

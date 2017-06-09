@@ -1,6 +1,6 @@
 import {SHARED_DOMAIN_OP_INDEX} from '../../aggregate';
 import {binToString} from '../../bin';
-import {Channel} from '../../channel';
+import {Channel, ScaleChannel} from '../../channel';
 import {MAIN, RAW} from '../../data';
 import {DateTime, dateTimeExpr, isDateTime} from '../../datetime';
 import {FieldDef} from '../../fielddef';
@@ -42,7 +42,7 @@ export function initDomain(domain: Domain, fieldDef: FieldDef<string>, scale: Sc
 
 // FIXME(https://github.com/vega/vega-lite/issues/2251#issuecomment-306683920)
 // parseDomain must be called separately after parseScale
-export function parseDomain(model: UnitModel, channel: Channel): VgDomain {
+export function parseDomain(model: UnitModel, channel: ScaleChannel): VgDomain {
   // FIXME replace this with getScaleComponent once parseScaleDomain a separate parseStep from scale
   const scaleType = model.scale(channel).type;
   const domain = model.scaleDomain(channel);
@@ -64,7 +64,7 @@ export function parseDomain(model: UnitModel, channel: Channel): VgDomain {
   return parseSingleChannelDomain(scaleType, domain, model, channel);
 }
 
-function parseSingleChannelDomain(scaleType: ScaleType, domain: Domain, model: UnitModel, channel:Channel): VgDomain {
+function parseSingleChannelDomain(scaleType: ScaleType, domain: Domain, model: UnitModel, channel: ScaleChannel | 'x2' | 'y2'): VgDomain {
   const fieldDef = model.fieldDef(channel);
 
   if (domain && domain !== 'unaggregated' && !isSelectionDomain(domain)) { // explicit value
