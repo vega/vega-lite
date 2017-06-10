@@ -151,14 +151,14 @@ export interface PositionFieldDef<F> extends ScaleFieldDef<F> {
 
 export type PositionDef<F> = PositionFieldDef<F> | ValueDef<number>;
 
-export interface LegendFieldDef<F, T> extends ScaleFieldDef<F> {
+export interface LegendFieldDef<F> extends ScaleFieldDef<F> {
    /**
     * @nullable
     */
   legend?: Legend;
 }
 
-export type ConditionalLegendDef<F, T> = Conditional<LegendFieldDef<F, T>, ValueDef<T>>;
+export type ConditionalLegendDef<F, T> = Conditional<LegendFieldDef<F>, ValueDef<T>>;
 
 // Detail
 
@@ -191,7 +191,7 @@ export function hasConditionFieldDef<F>(channelDef: ChannelDef<F>): channelDef i
   return !!channelDef && !!channelDef.condition && isFieldDef(channelDef.condition);
 }
 
-export function isFieldDef<F>(channelDef: ChannelDef<F>): channelDef is FieldDef<F> | PositionFieldDef<F> | LegendFieldDef<F, any> | OrderFieldDef<F> | TextFieldDef<F> {
+export function isFieldDef<F>(channelDef: ChannelDef<F>): channelDef is FieldDef<F> | PositionFieldDef<F> | LegendFieldDef<F> | OrderFieldDef<F> | TextFieldDef<F> {
   return !!channelDef && (!!channelDef['field'] || channelDef['aggregate'] === 'count');
 }
 
