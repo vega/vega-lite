@@ -55,6 +55,14 @@ export const TOOLTIP = Channel.TOOLTIP;
 export const CHANNELS = [X, Y, X2, Y2, ROW, COLUMN, SIZE, SHAPE, COLOR, ORDER, OPACITY, TEXT, DETAIL, TOOLTIP];
 const CHANNEL_INDEX = toSet(CHANNELS);
 
+/**
+ * Channels cannot have an array of channelDef.
+ * model.fieldDef, getFieldDef only work for these channels.
+ *
+ * (The only two channels that can have an array of channelDefs are "detail" and "order".
+ * Since there can be multiple fieldDefs for detail and order, getFieldDef/model.fieldDef
+ * are not applicable for them.  Similarly, selection projecttion won't work with "detail" and "order".)
+ */
 export const SINGLE_DEF_CHANNELS = [X, Y, X2, Y2, ROW, COLUMN, SIZE, SHAPE, COLOR, OPACITY, TEXT, TOOLTIP];
 
 // export type SingleDefChannel = typeof SINGLE_DEF_CHANNELS[0];
