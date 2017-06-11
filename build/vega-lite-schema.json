@@ -1075,7 +1075,7 @@
           "$ref": "#/definitions/Scale"
         },
         "selection": {
-          "$ref": "#/definitions/LogicalOperand"
+          "$ref": "#/definitions/SelectionOperand"
         },
         "sort": {
           "anyOf": [
@@ -1137,7 +1137,7 @@
           "type": "string"
         },
         "selection": {
-          "$ref": "#/definitions/LogicalOperand"
+          "$ref": "#/definitions/SelectionOperand"
         },
         "timeUnit": {
           "$ref": "#/definitions/TimeUnit",
@@ -1158,7 +1158,7 @@
       "additionalProperties": false,
       "properties": {
         "selection": {
-          "$ref": "#/definitions/LogicalOperand"
+          "$ref": "#/definitions/SelectionOperand"
         },
         "value": {
           "description": "A constant value in visual domain.",
@@ -1179,7 +1179,7 @@
       "additionalProperties": false,
       "properties": {
         "selection": {
-          "$ref": "#/definitions/LogicalOperand"
+          "$ref": "#/definitions/SelectionOperand"
         },
         "value": {
           "description": "A constant value in visual domain.",
@@ -1196,7 +1196,7 @@
       "additionalProperties": false,
       "properties": {
         "selection": {
-          "$ref": "#/definitions/LogicalOperand"
+          "$ref": "#/definitions/SelectionOperand"
         },
         "value": {
           "description": "A constant value in visual domain.",
@@ -3153,12 +3153,12 @@
       ],
       "type": "object"
     },
-    "LogicalAnd": {
+    "SelectionAnd": {
       "additionalProperties": false,
       "properties": {
         "and": {
           "items": {
-            "$ref": "#/definitions/LogicalOperand"
+            "$ref": "#/definitions/SelectionOperand"
           },
           "type": "array"
         }
@@ -3180,11 +3180,11 @@
       ],
       "type": "object"
     },
-    "LogicalNot": {
+    "SelectionNot": {
       "additionalProperties": false,
       "properties": {
         "not": {
-          "$ref": "#/definitions/LogicalOperand"
+          "$ref": "#/definitions/SelectionOperand"
         }
       },
       "required": [
@@ -3208,16 +3208,16 @@
         }
       ]
     },
-    "LogicalOperand": {
+    "SelectionOperand": {
       "anyOf": [
         {
-          "$ref": "#/definitions/LogicalNot"
+          "$ref": "#/definitions/SelectionNot"
         },
         {
-          "$ref": "#/definitions/LogicalAnd"
+          "$ref": "#/definitions/SelectionAnd"
         },
         {
-          "$ref": "#/definitions/LogicalOr"
+          "$ref": "#/definitions/SelectionOr"
         },
         {
           "type": "string"
@@ -3239,12 +3239,12 @@
       ],
       "type": "object"
     },
-    "LogicalOr": {
+    "SelectionOr": {
       "additionalProperties": false,
       "properties": {
         "or": {
           "items": {
-            "$ref": "#/definitions/LogicalOperand"
+            "$ref": "#/definitions/SelectionOperand"
           },
           "type": "array"
         }
@@ -4366,7 +4366,7 @@
       "additionalProperties": false,
       "properties": {
         "selection": {
-          "$ref": "#/definitions/LogicalOperand",
+          "$ref": "#/definitions/SelectionOperand",
           "description": "Filter using a selection name."
         }
       },
