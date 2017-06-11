@@ -1156,7 +1156,7 @@
       ],
       "type": "object"
     },
-    "ConditionLegendDefAlias<NumberValueDef>": {
+    "ConditionLegendDef<NumberValueDef>": {
       "anyOf": [
         {
           "$ref": "#/definitions/ConditionLegendFieldDef<NumberValueDef>"
@@ -1170,7 +1170,7 @@
       ],
       "description": "Generic type for conditional channelDef.\nF defines the underlying FieldDef type while V defines the underlying ValueDef type."
     },
-    "ConditionLegendDefAlias<StringValueDef>": {
+    "ConditionLegendDef<StringValueDef>": {
       "anyOf": [
         {
           "$ref": "#/definitions/ConditionLegendFieldDef<StringValueDef>"
@@ -1184,7 +1184,7 @@
       ],
       "description": "Generic type for conditional channelDef.\nF defines the underlying FieldDef type while V defines the underlying ValueDef type."
     },
-    "ConditionTextDefAlias": {
+    "ConditionTextDef": {
       "anyOf": [
         {
           "$ref": "#/definitions/ConditionTextFieldDef"
@@ -1390,15 +1390,6 @@
         "type"
       ],
       "type": "object"
-    },
-    "ConditionalLegendDef<number>": {
-      "$ref": "#/definitions/ConditionLegendDefAlias<NumberValueDef>"
-    },
-    "ConditionalLegendDef<string>": {
-      "$ref": "#/definitions/ConditionLegendDefAlias<StringValueDef>"
-    },
-    "ConditionalTextDef": {
-      "$ref": "#/definitions/ConditionTextDefAlias"
     },
     "ConditionLegendValueDef<NumberValueDef>": {
       "additionalProperties": false,
@@ -1792,7 +1783,7 @@
       "additionalProperties": false,
       "properties": {
         "color": {
-          "$ref": "#/definitions/ConditionalLegendDef<string>",
+          "$ref": "#/definitions/ConditionLegendDef<StringValueDef>",
           "description": "Color of the marks – either fill or stroke color based on mark type.\n(By default, fill color for `area`, `bar`, `tick`, `text`, `circle`, and `square` /\nstroke color for `line` and `point`.)"
         },
         "detail": {
@@ -1810,7 +1801,7 @@
           "description": "Additional levels of detail for grouping data in aggregate views and\nin line and area marks without mapping data to a specific visual channel."
         },
         "opacity": {
-          "$ref": "#/definitions/ConditionalLegendDef<number>",
+          "$ref": "#/definitions/ConditionLegendDef<NumberValueDef>",
           "description": "Opacity of the marks – either can be a value or a range."
         },
         "order": {
@@ -1828,23 +1819,30 @@
           "description": "stack order for stacked marks or order of data points in line marks."
         },
         "shape": {
-          "$ref": "#/definitions/ConditionalLegendDef<string>",
+          "$ref": "#/definitions/ConditionLegendDef<StringValueDef>",
           "description": "The symbol's shape (only for `point` marks). The supported values are\n`\"circle\"` (default), `\"square\"`, `\"cross\"`, `\"diamond\"`, `\"triangle-up\"`,\nor `\"triangle-down\"`, or else a custom SVG path string."
         },
         "size": {
-          "$ref": "#/definitions/ConditionalLegendDef<number>",
+          "$ref": "#/definitions/ConditionLegendDef<NumberValueDef>",
           "description": "Size of the mark.\n- For `point`, `square` and `circle`\n– the symbol size, or pixel area of the mark.\n- For `bar` and `tick` – the bar and tick's size.\n- For `text` – the text's font size.\n- Size is currently unsupported for `line` and `area`."
         },
         "text": {
-          "$ref": "#/definitions/ConditionalTextDef",
+          "$ref": "#/definitions/ConditionTextDef",
           "description": "Text of the `text` mark."
         },
         "tooltip": {
-          "$ref": "#/definitions/ConditionalTextDef",
+          "$ref": "#/definitions/ConditionTextDef",
           "description": "The tooltip text to show upon mouse hover."
         },
         "x": {
-          "$ref": "#/definitions/PositionDef",
+          "anyOf": [
+            {
+              "$ref": "#/definitions/PositionFieldDef"
+            },
+            {
+              "$ref": "#/definitions/NumberValueDef"
+            }
+          ],
           "description": "X coordinates for `point`, `circle`, `square`,\n`line`, `rule`, `text`, and `tick`\n(or to width and height for `bar` and `area` marks)."
         },
         "x2": {
@@ -1859,7 +1857,14 @@
           "description": "X2 coordinates for ranged `bar`, `rule`, `area`."
         },
         "y": {
-          "$ref": "#/definitions/PositionDef",
+          "anyOf": [
+            {
+              "$ref": "#/definitions/PositionFieldDef"
+            },
+            {
+              "$ref": "#/definitions/NumberValueDef"
+            }
+          ],
           "description": "Y coordinates for `point`, `circle`, `square`,\n`line`, `rule`, `text`, and `tick`\n(or to width and height for `bar` and `area` marks)."
         },
         "y2": {
@@ -1880,7 +1885,7 @@
       "additionalProperties": false,
       "properties": {
         "color": {
-          "$ref": "#/definitions/ConditionalLegendDef<string>",
+          "$ref": "#/definitions/ConditionLegendDef<StringValueDef>",
           "description": "Color of the marks – either fill or stroke color based on mark type.\n(By default, fill color for `area`, `bar`, `tick`, `text`, `circle`, and `square` /\nstroke color for `line` and `point`.)"
         },
         "column": {
@@ -1902,7 +1907,7 @@
           "description": "Additional levels of detail for grouping data in aggregate views and\nin line and area marks without mapping data to a specific visual channel."
         },
         "opacity": {
-          "$ref": "#/definitions/ConditionalLegendDef<number>",
+          "$ref": "#/definitions/ConditionLegendDef<NumberValueDef>",
           "description": "Opacity of the marks – either can be a value or a range."
         },
         "order": {
@@ -1924,23 +1929,30 @@
           "description": "Vertical facets for trellis plots."
         },
         "shape": {
-          "$ref": "#/definitions/ConditionalLegendDef<string>",
+          "$ref": "#/definitions/ConditionLegendDef<StringValueDef>",
           "description": "The symbol's shape (only for `point` marks). The supported values are\n`\"circle\"` (default), `\"square\"`, `\"cross\"`, `\"diamond\"`, `\"triangle-up\"`,\nor `\"triangle-down\"`, or else a custom SVG path string."
         },
         "size": {
-          "$ref": "#/definitions/ConditionalLegendDef<number>",
+          "$ref": "#/definitions/ConditionLegendDef<NumberValueDef>",
           "description": "Size of the mark.\n- For `point`, `square` and `circle`\n– the symbol size, or pixel area of the mark.\n- For `bar` and `tick` – the bar and tick's size.\n- For `text` – the text's font size.\n- Size is currently unsupported for `line` and `area`."
         },
         "text": {
-          "$ref": "#/definitions/ConditionalTextDef",
+          "$ref": "#/definitions/ConditionTextDef",
           "description": "Text of the `text` mark."
         },
         "tooltip": {
-          "$ref": "#/definitions/ConditionalTextDef",
+          "$ref": "#/definitions/ConditionTextDef",
           "description": "The tooltip text to show upon mouse hover."
         },
         "x": {
-          "$ref": "#/definitions/PositionDef",
+          "anyOf": [
+            {
+              "$ref": "#/definitions/PositionFieldDef"
+            },
+            {
+              "$ref": "#/definitions/NumberValueDef"
+            }
+          ],
           "description": "X coordinates for `point`, `circle`, `square`,\n`line`, `rule`, `text`, and `tick`\n(or to width and height for `bar` and `area` marks)."
         },
         "x2": {
@@ -1955,7 +1967,14 @@
           "description": "X2 coordinates for ranged `bar`, `rule`, `area`."
         },
         "y": {
-          "$ref": "#/definitions/PositionDef",
+          "anyOf": [
+            {
+              "$ref": "#/definitions/PositionFieldDef"
+            },
+            {
+              "$ref": "#/definitions/NumberValueDef"
+            }
+          ],
           "description": "Y coordinates for `point`, `circle`, `square`,\n`line`, `rule`, `text`, and `tick`\n(or to width and height for `bar` and `area` marks)."
         },
         "y2": {
@@ -3582,16 +3601,6 @@
         }
       ],
       "minimum": 0
-    },
-    "PositionDef": {
-      "anyOf": [
-        {
-          "$ref": "#/definitions/PositionFieldDef"
-        },
-        {
-          "$ref": "#/definitions/NumberValueDef"
-        }
-      ]
     },
     "PositionFieldDef": {
       "additionalProperties": false,

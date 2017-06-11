@@ -6,20 +6,22 @@ import {Facet} from './facet';
 import {
   ChannelDef,
   Condition,
-  ConditionalLegendDef,
-  ConditionalTextDef,
-  ConditionalValueDef,
+  Conditional,
   Field,
   FieldDef,
+  getFieldDef,
+  hasConditionFieldDef,
+  isConditionalDef,
   isFieldDef,
   isValueDef,
+  LegendFieldDef,
   normalize,
   normalizeFieldDef,
   OrderFieldDef,
-  PositionDef,
+  PositionFieldDef,
+  TextFieldDef,
   ValueDef
 } from './fielddef';
-import {getFieldDef, hasConditionFieldDef, isConditionalDef} from './fielddef';
 import * as log from './log';
 import {Mark} from './mark';
 import {isArray, some} from './util';
@@ -32,14 +34,14 @@ export interface Encoding<F> {
    * `line`, `rule`, `text`, and `tick`
    * (or to width and height for `bar` and `area` marks).
    */
-  x?: PositionDef<F>;
+  x?: PositionFieldDef<F> | ValueDef<number>;
 
   /**
    * Y coordinates for `point`, `circle`, `square`,
    * `line`, `rule`, `text`, and `tick`
    * (or to width and height for `bar` and `area` marks).
    */
-  y?: PositionDef<F>;
+  y?: PositionFieldDef<F> | ValueDef<number>;
 
   /**
    * X2 coordinates for ranged `bar`, `rule`, `area`.
@@ -58,12 +60,12 @@ export interface Encoding<F> {
    * (By default, fill color for `area`, `bar`, `tick`, `text`, `circle`, and `square` /
    * stroke color for `line` and `point`.)
    */
-  color?: ConditionalLegendDef<F, string>;
+  color?: Conditional<LegendFieldDef<F>, ValueDef<string>>;
 
   /**
    * Opacity of the marks – either can be a value or a range.
    */
-  opacity?: ConditionalLegendDef<F, number>;
+  opacity?: Conditional<LegendFieldDef<F>, ValueDef<number>>;
 
   /**
    * Size of the mark.
@@ -73,14 +75,14 @@ export interface Encoding<F> {
    * - For `text` – the text's font size.
    * - Size is currently unsupported for `line` and `area`.
    */
-  size?: ConditionalLegendDef<F, number>;
+  size?: Conditional<LegendFieldDef<F>, ValueDef<number>>;
 
   /**
    * The symbol's shape (only for `point` marks). The supported values are
    * `"circle"` (default), `"square"`, `"cross"`, `"diamond"`, `"triangle-up"`,
    * or `"triangle-down"`, or else a custom SVG path string.
    */
-  shape?: ConditionalLegendDef<F, string>; // TODO: maybe distinguish ordinal-only
+  shape?: Conditional<LegendFieldDef<F>, ValueDef<string>>; // TODO: maybe distinguish ordinal-only
 
   /**
    * Additional levels of detail for grouping data in aggregate views and
@@ -91,12 +93,12 @@ export interface Encoding<F> {
   /**
    * Text of the `text` mark.
    */
-  text?: ConditionalTextDef<F>;
+  text?: Conditional<TextFieldDef<F>, ValueDef<string|number|boolean>>;
 
   /**
    * The tooltip text to show upon mouse hover.
    */
-  tooltip?: ConditionalTextDef<F>;
+  tooltip?: Conditional<TextFieldDef<F>, ValueDef<string|number|boolean>>;
 
   /**
    * stack order for stacked marks or order of data points in line marks.
