@@ -11,6 +11,7 @@ perl -pi -e s,'GenericHConcatSpec<CompositeUnitSpec>','HConcatSpec',g build/vega
 perl -pi -e s,'GenericUnitSpec<EncodingWithFacet\,AnyMark>','FacetedCompositeUnitSpecAlias',g build/vega-lite-schema.json
 perl -pi -e s,'GenericUnitSpec<Encoding\,AnyMark>','CompositeUnitSpecAlias',g build/vega-lite-schema.json
 
+perl -pi -e s,'TopLevel<(.*)>','TopLevel\1',g build/vega-lite-schema.json
 
 perl -pi -e s,'ValueDef<\(string\|number\|boolean\)>','TextValueDef',g build/vega-lite-schema.json
 perl -pi -e s,'ValueDef<string>','StringValueDef',g build/vega-lite-schema.json
@@ -23,10 +24,10 @@ perl -pi -e s,'ConditionalFieldDef<TextFieldDef\,TextValueDef>','ConditionTextFi
 perl -pi -e s,'ConditionalValueDef<TextFieldDef\,TextValueDef>','ConditionTextValueDef',g build/vega-lite-schema.json
 perl -pi -e s,'ConditionOnlyDef<TextFieldDef\,TextValueDef>','ConditionOnlyTextDef',g build/vega-lite-schema.json
 
-perl -pi -e s,'Conditional<LegendFieldDef\,','ConditionLegendDef<',g build/vega-lite-schema.json
-perl -pi -e s,'ConditionalFieldDef<LegendFieldDef\,','ConditionLegendFieldDef<',g build/vega-lite-schema.json
-perl -pi -e s,'ConditionalValueDef<LegendFieldDef\,','ConditionLegendValueDef<',g build/vega-lite-schema.json
-perl -pi -e s,'ConditionOnlyDef<LegendFieldDef\,','ConditionOnlyLegendDef<',g build/vega-lite-schema.json
+perl -pi -e s,'Conditional<LegendFieldDef\,(.*)ValueDef>','Condition\1LegendDef',g build/vega-lite-schema.json
+perl -pi -e s,'ConditionalFieldDef<LegendFieldDef\,(.*)ValueDef>','Condition\1LegendFieldDef',g build/vega-lite-schema.json
+perl -pi -e s,'ConditionalValueDef<LegendFieldDef\,(.*)ValueDef>','Condition\1LegendValueDef',g build/vega-lite-schema.json
+perl -pi -e s,'ConditionOnlyDef<LegendFieldDef\,(.*)ValueDef>','ConditionOnly\1LegendDef',g build/vega-lite-schema.json
 
 perl -pi -e s,'LogicalOperand<string>','LogicalOperand',g build/vega-lite-schema.json
 perl -pi -e s,'LogicalAnd<string>','LogicalAnd',g build/vega-lite-schema.json

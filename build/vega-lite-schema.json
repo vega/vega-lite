@@ -1209,7 +1209,7 @@
       ],
       "type": "object"
     },
-    "ConditionOnlyLegendDef<NumberValueDef>": {
+    "ConditionOnlyNumberLegendDef": {
       "additionalProperties": false,
       "properties": {
         "condition": {
@@ -1228,7 +1228,7 @@
       ],
       "type": "object"
     },
-    "ConditionOnlyLegendDef<StringValueDef>": {
+    "ConditionOnlyStringLegendDef": {
       "additionalProperties": false,
       "properties": {
         "condition": {
@@ -1266,30 +1266,30 @@
       ],
       "type": "object"
     },
-    "ConditionLegendDef<NumberValueDef>": {
+    "ConditionNumberLegendDef": {
       "anyOf": [
         {
-          "$ref": "#/definitions/ConditionLegendFieldDef<NumberValueDef>"
+          "$ref": "#/definitions/ConditionNumberLegendFieldDef"
         },
         {
-          "$ref": "#/definitions/ConditionLegendValueDef<NumberValueDef>"
+          "$ref": "#/definitions/ConditionNumberLegendValueDef"
         },
         {
-          "$ref": "#/definitions/ConditionOnlyLegendDef<NumberValueDef>"
+          "$ref": "#/definitions/ConditionOnlyNumberLegendDef"
         }
       ],
       "description": "Generic type for conditional channelDef.\nF defines the underlying FieldDef type while V defines the underlying ValueDef type."
     },
-    "ConditionLegendDef<StringValueDef>": {
+    "ConditionStringLegendDef": {
       "anyOf": [
         {
-          "$ref": "#/definitions/ConditionLegendFieldDef<StringValueDef>"
+          "$ref": "#/definitions/ConditionStringLegendFieldDef"
         },
         {
-          "$ref": "#/definitions/ConditionLegendValueDef<StringValueDef>"
+          "$ref": "#/definitions/ConditionStringLegendValueDef"
         },
         {
-          "$ref": "#/definitions/ConditionOnlyLegendDef<StringValueDef>"
+          "$ref": "#/definitions/ConditionOnlyStringLegendDef"
         }
       ],
       "description": "Generic type for conditional channelDef.\nF defines the underlying FieldDef type while V defines the underlying ValueDef type."
@@ -1308,7 +1308,7 @@
       ],
       "description": "Generic type for conditional channelDef.\nF defines the underlying FieldDef type while V defines the underlying ValueDef type."
     },
-    "ConditionLegendFieldDef<NumberValueDef>": {
+    "ConditionNumberLegendFieldDef": {
       "additionalProperties": false,
       "description": "A FieldDef with ConditionValueDef\n{\n   condition: {value: ...},\n   field: ...,\n   ...\n}",
       "properties": {
@@ -1379,7 +1379,7 @@
       ],
       "type": "object"
     },
-    "ConditionLegendFieldDef<StringValueDef>": {
+    "ConditionStringLegendFieldDef": {
       "additionalProperties": false,
       "description": "A FieldDef with ConditionValueDef\n{\n   condition: {value: ...},\n   field: ...,\n   ...\n}",
       "properties": {
@@ -1501,7 +1501,7 @@
       ],
       "type": "object"
     },
-    "ConditionLegendValueDef<NumberValueDef>": {
+    "ConditionNumberLegendValueDef": {
       "additionalProperties": false,
       "description": "A ValueDef with ConditionValueDef | FieldDef\n{\n   condition: {field: ...} | {value: ...},\n   value: ...,\n}",
       "properties": {
@@ -1525,7 +1525,7 @@
       ],
       "type": "object"
     },
-    "ConditionLegendValueDef<StringValueDef>": {
+    "ConditionStringLegendValueDef": {
       "additionalProperties": false,
       "description": "A ValueDef with ConditionValueDef | FieldDef\n{\n   condition: {field: ...} | {value: ...},\n   value: ...,\n}",
       "properties": {
@@ -1914,7 +1914,7 @@
       "additionalProperties": false,
       "properties": {
         "color": {
-          "$ref": "#/definitions/ConditionLegendDef<StringValueDef>",
+          "$ref": "#/definitions/ConditionStringLegendDef",
           "description": "Color of the marks – either fill or stroke color based on mark type.\n(By default, fill color for `area`, `bar`, `tick`, `text`, `circle`, and `square` /\nstroke color for `line` and `point`.)"
         },
         "detail": {
@@ -1932,7 +1932,7 @@
           "description": "Additional levels of detail for grouping data in aggregate views and\nin line and area marks without mapping data to a specific visual channel."
         },
         "opacity": {
-          "$ref": "#/definitions/ConditionLegendDef<NumberValueDef>",
+          "$ref": "#/definitions/ConditionNumberLegendDef",
           "description": "Opacity of the marks – either can be a value or a range."
         },
         "order": {
@@ -1950,11 +1950,11 @@
           "description": "stack order for stacked marks or order of data points in line marks."
         },
         "shape": {
-          "$ref": "#/definitions/ConditionLegendDef<StringValueDef>",
+          "$ref": "#/definitions/ConditionStringLegendDef",
           "description": "The symbol's shape (only for `point` marks). The supported values are\n`\"circle\"` (default), `\"square\"`, `\"cross\"`, `\"diamond\"`, `\"triangle-up\"`,\nor `\"triangle-down\"`, or else a custom SVG path string."
         },
         "size": {
-          "$ref": "#/definitions/ConditionLegendDef<NumberValueDef>",
+          "$ref": "#/definitions/ConditionNumberLegendDef",
           "description": "Size of the mark.\n- For `point`, `square` and `circle`\n– the symbol size, or pixel area of the mark.\n- For `bar` and `tick` – the bar and tick's size.\n- For `text` – the text's font size.\n- Size is currently unsupported for `line` and `area`."
         },
         "text": {
@@ -2016,7 +2016,7 @@
       "additionalProperties": false,
       "properties": {
         "color": {
-          "$ref": "#/definitions/ConditionLegendDef<StringValueDef>",
+          "$ref": "#/definitions/ConditionStringLegendDef",
           "description": "Color of the marks – either fill or stroke color based on mark type.\n(By default, fill color for `area`, `bar`, `tick`, `text`, `circle`, and `square` /\nstroke color for `line` and `point`.)"
         },
         "column": {
@@ -2038,7 +2038,7 @@
           "description": "Additional levels of detail for grouping data in aggregate views and\nin line and area marks without mapping data to a specific visual channel."
         },
         "opacity": {
-          "$ref": "#/definitions/ConditionLegendDef<NumberValueDef>",
+          "$ref": "#/definitions/ConditionNumberLegendDef",
           "description": "Opacity of the marks – either can be a value or a range."
         },
         "order": {
@@ -2060,11 +2060,11 @@
           "description": "Vertical facets for trellis plots."
         },
         "shape": {
-          "$ref": "#/definitions/ConditionLegendDef<StringValueDef>",
+          "$ref": "#/definitions/ConditionStringLegendDef",
           "description": "The symbol's shape (only for `point` marks). The supported values are\n`\"circle\"` (default), `\"square\"`, `\"cross\"`, `\"diamond\"`, `\"triangle-up\"`,\nor `\"triangle-down\"`, or else a custom SVG path string."
         },
         "size": {
-          "$ref": "#/definitions/ConditionLegendDef<NumberValueDef>",
+          "$ref": "#/definitions/ConditionNumberLegendDef",
           "description": "Size of the mark.\n- For `point`, `square` and `circle`\n– the symbol size, or pixel area of the mark.\n- For `bar` and `tick` – the bar and tick's size.\n- For `text` – the text's font size.\n- Size is currently unsupported for `line` and `area`."
         },
         "text": {
@@ -4938,7 +4938,7 @@
       ],
       "type": "object"
     },
-    "TopLevel<FacetedUnitSpec>": {
+    "TopLevelFacetedUnitSpec": {
       "additionalProperties": false,
       "properties": {
         "$schema": {
@@ -5008,7 +5008,7 @@
       ],
       "type": "object"
     },
-    "TopLevel<FacetedSpec>": {
+    "TopLevelFacetedSpec": {
       "additionalProperties": false,
       "properties": {
         "$schema": {
@@ -5074,7 +5074,7 @@
       ],
       "type": "object"
     },
-    "TopLevel<HConcatSpec>": {
+    "TopLevelHConcatSpec": {
       "additionalProperties": false,
       "properties": {
         "$schema": {
@@ -5139,7 +5139,7 @@
       ],
       "type": "object"
     },
-    "TopLevel<LayerSpec>": {
+    "TopLevelLayerSpec": {
       "additionalProperties": false,
       "properties": {
         "$schema": {
@@ -5210,7 +5210,7 @@
       ],
       "type": "object"
     },
-    "TopLevel<RepeatSpec>": {
+    "TopLevelRepeatSpec": {
       "additionalProperties": false,
       "properties": {
         "$schema": {
@@ -5276,7 +5276,7 @@
       ],
       "type": "object"
     },
-    "TopLevel<VConcatSpec>": {
+    "TopLevelVConcatSpec": {
       "additionalProperties": false,
       "properties": {
         "$schema": {
@@ -5344,22 +5344,22 @@
     "TopLevelExtendedSpec": {
       "anyOf": [
         {
-          "$ref": "#/definitions/TopLevel<FacetedUnitSpec>"
+          "$ref": "#/definitions/TopLevelFacetedUnitSpec"
         },
         {
-          "$ref": "#/definitions/TopLevel<LayerSpec>"
+          "$ref": "#/definitions/TopLevelLayerSpec"
         },
         {
-          "$ref": "#/definitions/TopLevel<FacetedSpec>"
+          "$ref": "#/definitions/TopLevelFacetedSpec"
         },
         {
-          "$ref": "#/definitions/TopLevel<RepeatSpec>"
+          "$ref": "#/definitions/TopLevelRepeatSpec"
         },
         {
-          "$ref": "#/definitions/TopLevel<VConcatSpec>"
+          "$ref": "#/definitions/TopLevelVConcatSpec"
         },
         {
-          "$ref": "#/definitions/TopLevel<HConcatSpec>"
+          "$ref": "#/definitions/TopLevelHConcatSpec"
         }
       ]
     },
