@@ -19,14 +19,14 @@ perl -pi -e s,'ValueDef<number>','NumberValueDef',g build/vega-lite-schema.json
 
 perl -pi -e s,'Condition<(.*)>','Condition\1',g build/vega-lite-schema.json
 
-perl -pi -e s,'Conditional<TextFieldDef\,TextValueDef>','ConditionTextDef',g build/vega-lite-schema.json
-perl -pi -e s,'ConditionalFieldDef<TextFieldDef\,TextValueDef>','ConditionTextFieldDef',g build/vega-lite-schema.json
-perl -pi -e s,'ConditionalValueDef<TextFieldDef\,TextValueDef>','ConditionTextValueDef',g build/vega-lite-schema.json
+perl -pi -e s,'Conditional<TextFieldDef\,TextValueDef>','ConditionalTextDef',g build/vega-lite-schema.json
+perl -pi -e s,'ConditionalFieldDef<TextFieldDef\,TextValueDef>','ConditionalTextFieldDef',g build/vega-lite-schema.json
+perl -pi -e s,'ConditionalValueDef<TextFieldDef\,TextValueDef>','ConditionalTextValueDef',g build/vega-lite-schema.json
 perl -pi -e s,'ConditionOnlyDef<TextFieldDef\,TextValueDef>','ConditionOnlyTextDef',g build/vega-lite-schema.json
 
-perl -pi -e s,'Conditional<LegendFieldDef\,(.*)ValueDef>','Condition\1LegendDef',g build/vega-lite-schema.json
-perl -pi -e s,'ConditionalFieldDef<LegendFieldDef\,(.*)ValueDef>','Condition\1LegendFieldDef',g build/vega-lite-schema.json
-perl -pi -e s,'ConditionalValueDef<LegendFieldDef\,(.*)ValueDef>','Condition\1LegendValueDef',g build/vega-lite-schema.json
+perl -pi -e s,'Conditional<LegendFieldDef\,(.*)ValueDef>','Conditional\1LegendDef',g build/vega-lite-schema.json
+perl -pi -e s,'ConditionalFieldDef<LegendFieldDef\,(.*)ValueDef>','Conditional\1LegendFieldDef',g build/vega-lite-schema.json
+perl -pi -e s,'ConditionalValueDef<LegendFieldDef\,(.*)ValueDef>','Conditional\1LegendValueDef',g build/vega-lite-schema.json
 perl -pi -e s,'ConditionOnlyDef<LegendFieldDef\,(.*)ValueDef>','ConditionOnly\1LegendDef',g build/vega-lite-schema.json
 
 perl -pi -e s,'LogicalOperand<string>','LogicalOperand',g build/vega-lite-schema.json

@@ -1266,13 +1266,13 @@
       ],
       "type": "object"
     },
-    "ConditionNumberLegendDef": {
+    "ConditionalNumberLegendDef": {
       "anyOf": [
         {
-          "$ref": "#/definitions/ConditionNumberLegendFieldDef"
+          "$ref": "#/definitions/ConditionalNumberLegendFieldDef"
         },
         {
-          "$ref": "#/definitions/ConditionNumberLegendValueDef"
+          "$ref": "#/definitions/ConditionalNumberLegendValueDef"
         },
         {
           "$ref": "#/definitions/ConditionOnlyNumberLegendDef"
@@ -1280,13 +1280,13 @@
       ],
       "description": "Generic type for conditional channelDef.\nF defines the underlying FieldDef type while V defines the underlying ValueDef type."
     },
-    "ConditionStringLegendDef": {
+    "ConditionalStringLegendDef": {
       "anyOf": [
         {
-          "$ref": "#/definitions/ConditionStringLegendFieldDef"
+          "$ref": "#/definitions/ConditionalStringLegendFieldDef"
         },
         {
-          "$ref": "#/definitions/ConditionStringLegendValueDef"
+          "$ref": "#/definitions/ConditionalStringLegendValueDef"
         },
         {
           "$ref": "#/definitions/ConditionOnlyStringLegendDef"
@@ -1294,13 +1294,13 @@
       ],
       "description": "Generic type for conditional channelDef.\nF defines the underlying FieldDef type while V defines the underlying ValueDef type."
     },
-    "ConditionTextDef": {
+    "ConditionalTextDef": {
       "anyOf": [
         {
-          "$ref": "#/definitions/ConditionTextFieldDef"
+          "$ref": "#/definitions/ConditionalTextFieldDef"
         },
         {
-          "$ref": "#/definitions/ConditionTextValueDef"
+          "$ref": "#/definitions/ConditionalTextValueDef"
         },
         {
           "$ref": "#/definitions/ConditionOnlyTextDef"
@@ -1308,7 +1308,7 @@
       ],
       "description": "Generic type for conditional channelDef.\nF defines the underlying FieldDef type while V defines the underlying ValueDef type."
     },
-    "ConditionNumberLegendFieldDef": {
+    "ConditionalNumberLegendFieldDef": {
       "additionalProperties": false,
       "description": "A FieldDef with ConditionValueDef\n{\n   condition: {value: ...},\n   field: ...,\n   ...\n}",
       "properties": {
@@ -1379,7 +1379,7 @@
       ],
       "type": "object"
     },
-    "ConditionStringLegendFieldDef": {
+    "ConditionalStringLegendFieldDef": {
       "additionalProperties": false,
       "description": "A FieldDef with ConditionValueDef\n{\n   condition: {value: ...},\n   field: ...,\n   ...\n}",
       "properties": {
@@ -1450,7 +1450,7 @@
       ],
       "type": "object"
     },
-    "ConditionTextFieldDef": {
+    "ConditionalTextFieldDef": {
       "additionalProperties": false,
       "description": "A FieldDef with ConditionValueDef\n{\n   condition: {value: ...},\n   field: ...,\n   ...\n}",
       "properties": {
@@ -1501,7 +1501,7 @@
       ],
       "type": "object"
     },
-    "ConditionNumberLegendValueDef": {
+    "ConditionalNumberLegendValueDef": {
       "additionalProperties": false,
       "description": "A ValueDef with ConditionValueDef | FieldDef\n{\n   condition: {field: ...} | {value: ...},\n   value: ...,\n}",
       "properties": {
@@ -1525,7 +1525,7 @@
       ],
       "type": "object"
     },
-    "ConditionStringLegendValueDef": {
+    "ConditionalStringLegendValueDef": {
       "additionalProperties": false,
       "description": "A ValueDef with ConditionValueDef | FieldDef\n{\n   condition: {field: ...} | {value: ...},\n   value: ...,\n}",
       "properties": {
@@ -1549,7 +1549,7 @@
       ],
       "type": "object"
     },
-    "ConditionTextValueDef": {
+    "ConditionalTextValueDef": {
       "additionalProperties": false,
       "description": "A ValueDef with ConditionValueDef | FieldDef\n{\n   condition: {field: ...} | {value: ...},\n   value: ...,\n}",
       "properties": {
@@ -1914,7 +1914,7 @@
       "additionalProperties": false,
       "properties": {
         "color": {
-          "$ref": "#/definitions/ConditionStringLegendDef",
+          "$ref": "#/definitions/ConditionalStringLegendDef",
           "description": "Color of the marks – either fill or stroke color based on mark type.\n(By default, fill color for `area`, `bar`, `tick`, `text`, `circle`, and `square` /\nstroke color for `line` and `point`.)"
         },
         "detail": {
@@ -1932,7 +1932,7 @@
           "description": "Additional levels of detail for grouping data in aggregate views and\nin line and area marks without mapping data to a specific visual channel."
         },
         "opacity": {
-          "$ref": "#/definitions/ConditionNumberLegendDef",
+          "$ref": "#/definitions/ConditionalNumberLegendDef",
           "description": "Opacity of the marks – either can be a value or a range."
         },
         "order": {
@@ -1950,19 +1950,19 @@
           "description": "stack order for stacked marks or order of data points in line marks."
         },
         "shape": {
-          "$ref": "#/definitions/ConditionStringLegendDef",
+          "$ref": "#/definitions/ConditionalStringLegendDef",
           "description": "The symbol's shape (only for `point` marks). The supported values are\n`\"circle\"` (default), `\"square\"`, `\"cross\"`, `\"diamond\"`, `\"triangle-up\"`,\nor `\"triangle-down\"`, or else a custom SVG path string."
         },
         "size": {
-          "$ref": "#/definitions/ConditionNumberLegendDef",
+          "$ref": "#/definitions/ConditionalNumberLegendDef",
           "description": "Size of the mark.\n- For `point`, `square` and `circle`\n– the symbol size, or pixel area of the mark.\n- For `bar` and `tick` – the bar and tick's size.\n- For `text` – the text's font size.\n- Size is currently unsupported for `line` and `area`."
         },
         "text": {
-          "$ref": "#/definitions/ConditionTextDef",
+          "$ref": "#/definitions/ConditionalTextDef",
           "description": "Text of the `text` mark."
         },
         "tooltip": {
-          "$ref": "#/definitions/ConditionTextDef",
+          "$ref": "#/definitions/ConditionalTextDef",
           "description": "The tooltip text to show upon mouse hover."
         },
         "x": {
@@ -2016,7 +2016,7 @@
       "additionalProperties": false,
       "properties": {
         "color": {
-          "$ref": "#/definitions/ConditionStringLegendDef",
+          "$ref": "#/definitions/ConditionalStringLegendDef",
           "description": "Color of the marks – either fill or stroke color based on mark type.\n(By default, fill color for `area`, `bar`, `tick`, `text`, `circle`, and `square` /\nstroke color for `line` and `point`.)"
         },
         "column": {
@@ -2038,7 +2038,7 @@
           "description": "Additional levels of detail for grouping data in aggregate views and\nin line and area marks without mapping data to a specific visual channel."
         },
         "opacity": {
-          "$ref": "#/definitions/ConditionNumberLegendDef",
+          "$ref": "#/definitions/ConditionalNumberLegendDef",
           "description": "Opacity of the marks – either can be a value or a range."
         },
         "order": {
@@ -2060,19 +2060,19 @@
           "description": "Vertical facets for trellis plots."
         },
         "shape": {
-          "$ref": "#/definitions/ConditionStringLegendDef",
+          "$ref": "#/definitions/ConditionalStringLegendDef",
           "description": "The symbol's shape (only for `point` marks). The supported values are\n`\"circle\"` (default), `\"square\"`, `\"cross\"`, `\"diamond\"`, `\"triangle-up\"`,\nor `\"triangle-down\"`, or else a custom SVG path string."
         },
         "size": {
-          "$ref": "#/definitions/ConditionNumberLegendDef",
+          "$ref": "#/definitions/ConditionalNumberLegendDef",
           "description": "Size of the mark.\n- For `point`, `square` and `circle`\n– the symbol size, or pixel area of the mark.\n- For `bar` and `tick` – the bar and tick's size.\n- For `text` – the text's font size.\n- Size is currently unsupported for `line` and `area`."
         },
         "text": {
-          "$ref": "#/definitions/ConditionTextDef",
+          "$ref": "#/definitions/ConditionalTextDef",
           "description": "Text of the `text` mark."
         },
         "tooltip": {
-          "$ref": "#/definitions/ConditionTextDef",
+          "$ref": "#/definitions/ConditionalTextDef",
           "description": "The tooltip text to show upon mouse hover."
         },
         "x": {
