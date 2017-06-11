@@ -149,16 +149,12 @@ export interface PositionFieldDef<F> extends ScaleFieldDef<F> {
   stack?: StackOffset;
 }
 
-export type PositionDef<F> = PositionFieldDef<F> | ValueDef<number>;
-
 export interface LegendFieldDef<F> extends ScaleFieldDef<F> {
    /**
     * @nullable
     */
   legend?: Legend;
 }
-
-export type ConditionalLegendDef<F, T> = Conditional<LegendFieldDef<F>, ValueDef<T>>;
 
 // Detail
 
@@ -175,8 +171,6 @@ export interface TextFieldDef<F> extends FieldDef<F> {
    */
   format?: string;
 }
-
-export type ConditionalTextDef<F> = Conditional<TextFieldDef<F>, ValueDef<string|number|boolean>>;
 
 export type ChannelDef<F> = Conditional<FieldDef<F>, ValueDef<any>>;
 
