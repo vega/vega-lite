@@ -1032,40 +1032,129 @@
       "$ref": "#/definitions/CompositeUnitSpecAlias",
       "description": "Unit spec that can have a composite mark."
     },
-    "Condition<(LegendFieldDef|NumberValueDef)>": {
+    "ConditionLegendFieldDef": {
+      "additionalProperties": false,
       "properties": {
+        "aggregate": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/AggregateOp"
+            },
+            {
+              "$ref": "#/definitions/CompositeAggregate"
+            }
+          ],
+          "description": "Aggregation function for the field\n(e.g., `mean`, `sum`, `median`, `min`, `max`, `count`).\n\n__Default value:__ `undefined` (None)"
+        },
+        "bin": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "$ref": "#/definitions/Bin"
+            }
+          ],
+          "description": "Flag for binning a `quantitative` field, or a bin property object\nfor binning parameters."
+        },
+        "field": {
+          "$ref": "#/definitions/Field",
+          "description": "__Required.__ Name of the field from which to pull a data value.\n\n__Note:__ `field` is not required if `aggregate` is `count`."
+        },
+        "legend": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/Legend"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "scale": {
+          "$ref": "#/definitions/Scale"
+        },
         "selection": {
           "$ref": "#/definitions/LogicalOperand"
+        },
+        "sort": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/SortField"
+            },
+            {
+              "$ref": "#/definitions/SortOrder"
+            }
+          ],
+          "description": "Sort order for a particular field.\nFor quantitative or temporal fields, this can be either `\"ascending\"` or `\"descending\"`\nFor quantitative or temporal fields, this can be `\"ascending\"`, `\"descending\"`, `\"none\"`, or a [sort field definition object](sort.html#sort-field) for sorting by an aggregate calculation of a specified sort field.\n\n__Default value:__ `\"ascending\"`"
+        },
+        "timeUnit": {
+          "$ref": "#/definitions/TimeUnit",
+          "description": "Time unit for a `temporal` field  (e.g., `year`, `yearmonth`, `month`, `hour`).\n\n__Default value:__ `undefined` (None)"
+        },
+        "type": {
+          "$ref": "#/definitions/Type",
+          "description": "The encoded field's type of measurement. This can be either a full type\nname (`\"quantitative\"`, `\"temporal\"`, `\"ordinal\"`,  and `\"nominal\"`)\nor an initial character of the type name (`\"Q\"`, `\"T\"`, `\"O\"`, `\"N\"`).\nThis property is case-insensitive."
         }
       },
       "required": [
-        "selection"
+        "selection",
+        "type"
       ],
       "type": "object"
     },
-    "Condition<(LegendFieldDef|StringValueDef)>": {
+    "ConditionTextFieldDef": {
+      "additionalProperties": false,
       "properties": {
+        "aggregate": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/AggregateOp"
+            },
+            {
+              "$ref": "#/definitions/CompositeAggregate"
+            }
+          ],
+          "description": "Aggregation function for the field\n(e.g., `mean`, `sum`, `median`, `min`, `max`, `count`).\n\n__Default value:__ `undefined` (None)"
+        },
+        "bin": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "$ref": "#/definitions/Bin"
+            }
+          ],
+          "description": "Flag for binning a `quantitative` field, or a bin property object\nfor binning parameters."
+        },
+        "field": {
+          "$ref": "#/definitions/Field",
+          "description": "__Required.__ Name of the field from which to pull a data value.\n\n__Note:__ `field` is not required if `aggregate` is `count`."
+        },
+        "format": {
+          "description": "The formatting pattern for text value. If not defined, this will be determined automatically.",
+          "type": "string"
+        },
         "selection": {
           "$ref": "#/definitions/LogicalOperand"
+        },
+        "timeUnit": {
+          "$ref": "#/definitions/TimeUnit",
+          "description": "Time unit for a `temporal` field  (e.g., `year`, `yearmonth`, `month`, `hour`).\n\n__Default value:__ `undefined` (None)"
+        },
+        "type": {
+          "$ref": "#/definitions/Type",
+          "description": "The encoded field's type of measurement. This can be either a full type\nname (`\"quantitative\"`, `\"temporal\"`, `\"ordinal\"`,  and `\"nominal\"`)\nor an initial character of the type name (`\"Q\"`, `\"T\"`, `\"O\"`, `\"N\"`).\nThis property is case-insensitive."
         }
       },
       "required": [
-        "selection"
+        "selection",
+        "type"
       ],
       "type": "object"
     },
-    "Condition<(TextFieldDef|TextValueDef)>": {
-      "properties": {
-        "selection": {
-          "$ref": "#/definitions/LogicalOperand"
-        }
-      },
-      "required": [
-        "selection"
-      ],
-      "type": "object"
-    },
-    "Condition<TextValueDef>": {
+    "ConditionTextValueDef": {
       "additionalProperties": false,
       "properties": {
         "selection": {
@@ -1086,7 +1175,7 @@
       ],
       "type": "object"
     },
-    "Condition<NumberValueDef>": {
+    "ConditionNumberValueDef": {
       "additionalProperties": false,
       "properties": {
         "selection": {
@@ -1103,7 +1192,7 @@
       ],
       "type": "object"
     },
-    "Condition<StringValueDef>": {
+    "ConditionStringValueDef": {
       "additionalProperties": false,
       "properties": {
         "selection": {
@@ -1124,7 +1213,14 @@
       "additionalProperties": false,
       "properties": {
         "condition": {
-          "$ref": "#/definitions/Condition<(LegendFieldDef|NumberValueDef)>"
+          "anyOf": [
+            {
+              "$ref": "#/definitions/ConditionLegendFieldDef"
+            },
+            {
+              "$ref": "#/definitions/ConditionNumberValueDef"
+            }
+          ]
         }
       },
       "required": [
@@ -1136,7 +1232,14 @@
       "additionalProperties": false,
       "properties": {
         "condition": {
-          "$ref": "#/definitions/Condition<(LegendFieldDef|StringValueDef)>"
+          "anyOf": [
+            {
+              "$ref": "#/definitions/ConditionLegendFieldDef"
+            },
+            {
+              "$ref": "#/definitions/ConditionStringValueDef"
+            }
+          ]
         }
       },
       "required": [
@@ -1148,7 +1251,14 @@
       "additionalProperties": false,
       "properties": {
         "condition": {
-          "$ref": "#/definitions/Condition<(TextFieldDef|TextValueDef)>"
+          "anyOf": [
+            {
+              "$ref": "#/definitions/ConditionTextFieldDef"
+            },
+            {
+              "$ref": "#/definitions/ConditionTextValueDef"
+            }
+          ]
         }
       },
       "required": [
@@ -1200,7 +1310,7 @@
     },
     "ConditionLegendFieldDef<NumberValueDef>": {
       "additionalProperties": false,
-      "description": "A FieldDef with Condition<ValueDef>\n{\n   condition: {value: ...},\n   field: ...,\n   ...\n}",
+      "description": "A FieldDef with ConditionValueDef\n{\n   condition: {value: ...},\n   field: ...,\n   ...\n}",
       "properties": {
         "aggregate": {
           "anyOf": [
@@ -1225,7 +1335,7 @@
           "description": "Flag for binning a `quantitative` field, or a bin property object\nfor binning parameters."
         },
         "condition": {
-          "$ref": "#/definitions/Condition<NumberValueDef>"
+          "$ref": "#/definitions/ConditionNumberValueDef"
         },
         "field": {
           "$ref": "#/definitions/Field",
@@ -1271,7 +1381,7 @@
     },
     "ConditionLegendFieldDef<StringValueDef>": {
       "additionalProperties": false,
-      "description": "A FieldDef with Condition<ValueDef>\n{\n   condition: {value: ...},\n   field: ...,\n   ...\n}",
+      "description": "A FieldDef with ConditionValueDef\n{\n   condition: {value: ...},\n   field: ...,\n   ...\n}",
       "properties": {
         "aggregate": {
           "anyOf": [
@@ -1296,7 +1406,7 @@
           "description": "Flag for binning a `quantitative` field, or a bin property object\nfor binning parameters."
         },
         "condition": {
-          "$ref": "#/definitions/Condition<StringValueDef>"
+          "$ref": "#/definitions/ConditionStringValueDef"
         },
         "field": {
           "$ref": "#/definitions/Field",
@@ -1342,7 +1452,7 @@
     },
     "ConditionTextFieldDef": {
       "additionalProperties": false,
-      "description": "A FieldDef with Condition<ValueDef>\n{\n   condition: {value: ...},\n   field: ...,\n   ...\n}",
+      "description": "A FieldDef with ConditionValueDef\n{\n   condition: {value: ...},\n   field: ...,\n   ...\n}",
       "properties": {
         "aggregate": {
           "anyOf": [
@@ -1367,7 +1477,7 @@
           "description": "Flag for binning a `quantitative` field, or a bin property object\nfor binning parameters."
         },
         "condition": {
-          "$ref": "#/definitions/Condition<TextValueDef>"
+          "$ref": "#/definitions/ConditionTextValueDef"
         },
         "field": {
           "$ref": "#/definitions/Field",
@@ -1393,10 +1503,17 @@
     },
     "ConditionLegendValueDef<NumberValueDef>": {
       "additionalProperties": false,
-      "description": "A ValueDef with Condition<ValueDef | FieldDef>\n{\n   condition: {field: ...} | {value: ...},\n   value: ...,\n}",
+      "description": "A ValueDef with ConditionValueDef | FieldDef\n{\n   condition: {field: ...} | {value: ...},\n   value: ...,\n}",
       "properties": {
         "condition": {
-          "$ref": "#/definitions/Condition<(LegendFieldDef|NumberValueDef)>"
+          "anyOf": [
+            {
+              "$ref": "#/definitions/ConditionLegendFieldDef"
+            },
+            {
+              "$ref": "#/definitions/ConditionNumberValueDef"
+            }
+          ]
         },
         "value": {
           "description": "A constant value in visual domain.",
@@ -1410,10 +1527,17 @@
     },
     "ConditionLegendValueDef<StringValueDef>": {
       "additionalProperties": false,
-      "description": "A ValueDef with Condition<ValueDef | FieldDef>\n{\n   condition: {field: ...} | {value: ...},\n   value: ...,\n}",
+      "description": "A ValueDef with ConditionValueDef | FieldDef\n{\n   condition: {field: ...} | {value: ...},\n   value: ...,\n}",
       "properties": {
         "condition": {
-          "$ref": "#/definitions/Condition<(LegendFieldDef|StringValueDef)>"
+          "anyOf": [
+            {
+              "$ref": "#/definitions/ConditionLegendFieldDef"
+            },
+            {
+              "$ref": "#/definitions/ConditionStringValueDef"
+            }
+          ]
         },
         "value": {
           "description": "A constant value in visual domain.",
@@ -1427,10 +1551,17 @@
     },
     "ConditionTextValueDef": {
       "additionalProperties": false,
-      "description": "A ValueDef with Condition<ValueDef | FieldDef>\n{\n   condition: {field: ...} | {value: ...},\n   value: ...,\n}",
+      "description": "A ValueDef with ConditionValueDef | FieldDef\n{\n   condition: {field: ...} | {value: ...},\n   value: ...,\n}",
       "properties": {
         "condition": {
-          "$ref": "#/definitions/Condition<(TextFieldDef|TextValueDef)>"
+          "anyOf": [
+            {
+              "$ref": "#/definitions/ConditionTextFieldDef"
+            },
+            {
+              "$ref": "#/definitions/ConditionTextValueDef"
+            }
+          ]
         },
         "value": {
           "description": "A constant value in visual domain.",
