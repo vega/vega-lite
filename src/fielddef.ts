@@ -49,7 +49,7 @@ export type Condition<T> = {
 export type ConditionalFieldDef<F extends FieldDef<any>, V extends ValueDef<any>> = F & {condition?: Condition<V>};
 
 export interface ConditionOnlyDef <F extends FieldDef<any>, V extends ValueDef<any>> {
-  condition: Condition<F | V>;
+  condition: Condition<F> | Condition<V>;
 }
 
 
@@ -60,7 +60,7 @@ export interface ConditionOnlyDef <F extends FieldDef<any>, V extends ValueDef<a
  *   value: ...,
  * }
  */
-export type ConditionalValueDef<F extends FieldDef<any>, V extends ValueDef<any>> = V & {condition?: Condition<F | V>;};
+export type ConditionalValueDef<F extends FieldDef<any>, V extends ValueDef<any>> = V & {condition?: Condition<F> | Condition<V>;};
 
 /**
  * Reference to a repeated value.

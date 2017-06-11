@@ -16,6 +16,8 @@ perl -pi -e s,'ValueDef<\(string\|number\|boolean\)>','TextValueDef',g build/veg
 perl -pi -e s,'ValueDef<string>','StringValueDef',g build/vega-lite-schema.json
 perl -pi -e s,'ValueDef<number>','NumberValueDef',g build/vega-lite-schema.json
 
+perl -pi -e s,'Condition<(.*)>','Condition\1',g build/vega-lite-schema.json
+
 perl -pi -e s,'Conditional<TextFieldDef\,TextValueDef>','ConditionTextDef',g build/vega-lite-schema.json
 perl -pi -e s,'ConditionalFieldDef<TextFieldDef\,TextValueDef>','ConditionTextFieldDef',g build/vega-lite-schema.json
 perl -pi -e s,'ConditionalValueDef<TextFieldDef\,TextValueDef>','ConditionTextValueDef',g build/vega-lite-schema.json
