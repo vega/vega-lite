@@ -73,7 +73,12 @@ export type FieldRefUnionDomain = {
 };
 
 export type VgRangeScheme = {scheme: string, extent?: number[], count?: number};
-export type VgRange = string | VgDataRef | (number|string|VgDataRef)[] | VgRangeScheme | {step: number};
+export type VgRange = string | VgDataRef | (number|string|VgDataRef)[] | VgRangeScheme | VgRangeStep;
+
+export type VgRangeStep = {step: number};
+export function isVgRangeStep(range: VgRange): range is VgRangeStep {
+  return !!range['step'];
+}
 
 export type VgDomain = any[] | VgDataRef | DataRefUnionDomain | FieldRefUnionDomain | VgSignalRef;
 

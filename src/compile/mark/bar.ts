@@ -4,12 +4,13 @@ import {isFieldDef} from '../../fielddef';
 import * as log from '../../log';
 import {isBinScale, Scale, ScaleType} from '../../scale';
 import {StackProperties} from '../../stack';
-import {VgEncodeEntry} from '../../vega.schema';
+import {isVgRangeStep, VgEncodeEntry} from '../../vega.schema';
 
 import {VgValueRef} from '../../vega.schema';
 import {UnitModel} from '../unit';
 import * as mixins from './mixins';
 
+import {ScaleComponent} from '../scale/component';
 import {Split} from '../split';
 import {MarkCompiler} from './base';
 import * as ref from './valueref';
@@ -55,8 +56,7 @@ function x(model: UnitModel, stack: StackProperties): VgEncodeEntry {
 
     return mixins.centeredBandPosition('x', model,
       {...ref.midX(width, config)},
-      // TODO: replace model.scale(X) with model.getScaleComponent once rangeStep is a part of scale component
-      defaultSizeRef(xScaleName, model.scale(X), config)
+      defaultSizeRef(xScaleName, xScale, config)
     );
   }
 }
@@ -84,22 +84,20 @@ function y(model: UnitModel, stack: StackProperties) {
       }
     }
     return mixins.centeredBandPosition('y', model, ref.midY(height, config),
-      // TODO: replace model.scale(X) with model.getScaleComponent once rangeStep is a part of scale component
-      defaultSizeRef(yScaleName, model.scale(Y), config)
+      defaultSizeRef(yScaleName, yScale, config)
     );
   }
 }
 
-function defaultSizeRef(scaleName: string, splitScale: Split<Scale>, config: Config): VgValueRef {
+function defaultSizeRef(scaleName: string, scale: ScaleComponent, config: Config): VgValueRef {
   if (config.bar.discreteBandSize) {
     return {value: config.bar.discreteBandSize};
   }
 
-  if (splitScale) {
-    const scale = splitScale.combine();
+  if (scale) {
     if (scale.type === ScaleType.POINT) {
-      if (scale.rangeStep !== null) {
-        return {value: scale.rangeStep - 1};
+      if (isVgRangeStep(scale.range)) {
+        return {value: scale.range.step - 1};
       }
       log.warn(log.message.BAR_WITH_POINT_SCALE_AND_RANGESTEP_NULL);
     } else if (scale.type === ScaleType.BAND) {
