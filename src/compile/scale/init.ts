@@ -6,6 +6,7 @@ import {FieldDef, ScaleFieldDef} from '../../fielddef';
 import {Mark} from '../../mark';
 import {channelScalePropertyIncompatability, Scale, ScaleConfig, scaleTypeSupportProperty} from '../../scale';
 import * as util from '../../util';
+import {Split} from '../split';
 
 import {initDomain} from './domain';
 import rangeMixins from './range';
@@ -38,51 +39,53 @@ export const NON_TYPE_RANGE_SCALE_PROPERTIES: (keyof Scale)[] = [
  */
 export default function init(
     channel: Channel, fieldDef: FieldDef<string>, specifiedScale: Scale = {}, config: Config,
-    mark: Mark | undefined, topLevelSize: number | undefined, xyRangeSteps: number[]): Scale {
+    mark: Mark | undefined, topLevelSize: number | undefined, xyRangeSteps: number[]): Split<Scale> {
 
-  const scale: Scale = {
-    type: scaleType(
-      specifiedScale.type, channel, fieldDef, mark, topLevelSize !== undefined,
-      specifiedScale.rangeStep, config.scale
-    )
-  };
+  const splitScale = new Split<Scale>();
+
+  const sType = scaleType(
+    specifiedScale.type, channel, fieldDef, mark, topLevelSize !== undefined,
+    specifiedScale.rangeStep, config.scale
+  );
+  splitScale.set('type', sType, sType === specifiedScale.type);
+
 
   // Use specified value if compatible or determine default values for each property
   NON_TYPE_RANGE_SCALE_PROPERTIES.forEach(function(property) {
     const specifiedValue = specifiedScale[property];
 
-    const supportedByScaleType = scaleTypeSupportProperty(scale.type, property);
+    const supportedByScaleType = scaleTypeSupportProperty(sType, property);
     const channelIncompatability = channelScalePropertyIncompatability(channel, property);
 
     if (specifiedValue !== undefined) {
       // If there is a specified value, check if it is compatible with scale type and channel
       if (!supportedByScaleType) {
-        log.warn(log.message.scalePropertyNotWorkWithScaleType(scale.type, property, channel));
+        log.warn(log.message.scalePropertyNotWorkWithScaleType(sType, property, channel));
       } else if (channelIncompatability) { // channel
         log.warn(channelIncompatability);
       }
     }
     if (supportedByScaleType && channelIncompatability === undefined) {
-      const value = getValue(specifiedValue, property, scale, channel, fieldDef, config.scale);
-      if (value !== undefined) { // use the default value
-        scale[property] = value;
+      const value = getValue(specifiedValue, property, splitScale, channel, fieldDef, config.scale);
+      if (value !== undefined) {
+        splitScale.set(property, value, value === specifiedValue);
       }
     }
   });
 
-  return util.extend(
-    scale,
-    rangeMixins(
-      channel, scale.type, fieldDef.type, specifiedScale, config,
-      scale.zero, mark, topLevelSize, xyRangeSteps
-    )
+
+  const {explicit, mixins} = rangeMixins(
+    channel, sType, fieldDef.type, specifiedScale, config,
+    splitScale.get('zero'), mark, topLevelSize, xyRangeSteps
   );
+
+  return splitScale.extend(mixins, explicit);
 }
 
-function getValue(specifiedValue: any, property: keyof Scale, scale: Scale, channel: Channel, fieldDef: FieldDef<string>, scaleConfig: ScaleConfig) {
+function getValue(specifiedValue: any, property: keyof Scale, scale: Split<Scale>, channel: Channel, fieldDef: FieldDef<string>, scaleConfig: ScaleConfig) {
   // For domain, we might override specified value
   if (property === 'domain') {
-    return initDomain(specifiedValue, fieldDef, scale.type, scaleConfig);
+    return initDomain(specifiedValue, fieldDef, scale.get('type'), scaleConfig);
   }
 
   // Other properties, no overriding default values
@@ -92,18 +95,18 @@ function getValue(specifiedValue: any, property: keyof Scale, scale: Scale, chan
   return getDefaultValue(property, scale, channel, fieldDef, scaleConfig);
 }
 
-function getDefaultValue(property: keyof Scale, scale: Scale, channel: Channel, fieldDef: FieldDef<string>, scaleConfig: ScaleConfig) {
+function getDefaultValue(property: keyof Scale, scale: Split<Scale>, channel: Channel, fieldDef: FieldDef<string>, scaleConfig: ScaleConfig) {
 
   // If we have default rule-base, determine default value first
   switch (property) {
     case 'nice':
-      return rules.nice(scale.type, channel, fieldDef);
+      return rules.nice(scale.get('type'), channel, fieldDef);
     case 'padding':
-      return rules.padding(channel, scale.type, scaleConfig);
+      return rules.padding(channel, scale.get('type'), scaleConfig);
     case 'paddingInner':
-      return rules.paddingInner(scale.padding, channel, scaleConfig);
+      return rules.paddingInner(scale.get('padding'), channel, scaleConfig);
     case 'paddingOuter':
-      return rules.paddingOuter(scale.padding, channel, scale.type, scale.paddingInner, scaleConfig);
+      return rules.paddingOuter(scale.get('padding'), channel, scale.get('type'), scale.get('paddingInner'), scaleConfig);
     case 'round':
       return rules.round(channel, scaleConfig);
     case 'zero':

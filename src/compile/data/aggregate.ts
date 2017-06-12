@@ -6,6 +6,7 @@ import {Dict, differ, duplicate, extend, keys, StringSet} from '../../util';
 import {VgAggregateTransform} from '../../vega.schema';
 import {UnitModel} from './../unit';
 
+import {isScaleChannel} from '../../channel';
 import {Summarize, SummarizeTransform} from '../../transform';
 import {Model} from '../model';
 import {DataFlowNode} from './dataflow';
@@ -83,8 +84,8 @@ export class AggregateNode extends DataFlowNode {
           meas[fieldDef.field] = meas[fieldDef.field] || {};
           meas[fieldDef.field][fieldDef.aggregate] = field(fieldDef);
 
-          // add min/max so we can use their union as unaggregated domain
-          if (model.scaleDomain(channel) === 'unaggregated') {
+          // For scale channel with domain === 'unaggregated', add min/max so we can use their union as unaggregated domain
+          if (isScaleChannel(channel) && model.scaleDomain(channel) === 'unaggregated') {
             meas[fieldDef.field]['min'] = field(fieldDef, {aggregate: 'min'});
             meas[fieldDef.field]['max'] = field(fieldDef, {aggregate: 'max'});
           }

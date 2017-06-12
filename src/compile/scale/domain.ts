@@ -22,16 +22,16 @@ import {VgSignalRef} from '../../vega.schema';
 import {UnitModel} from '../unit';
 
 
-export function initDomain(domain: Domain, fieldDef: FieldDef<string>, scale: ScaleType, scaleConfig: ScaleConfig) {
+export function initDomain(domain: Domain, fieldDef: FieldDef<string>, scaleType: ScaleType, scaleConfig: ScaleConfig) {
   if (domain === 'unaggregated') {
-    const {valid, reason} = canUseUnaggregatedDomain(fieldDef, scale);
+    const {valid, reason} = canUseUnaggregatedDomain(fieldDef, scaleType);
     if(!valid) {
       log.warn(reason);
       return undefined;
     }
   } else if (domain === undefined && scaleConfig.useUnaggregatedDomain) {
     // Apply config if domain is not specified.
-    const {valid} = canUseUnaggregatedDomain(fieldDef, scale);
+    const {valid} = canUseUnaggregatedDomain(fieldDef, scaleType);
     if (valid) {
       return 'unaggregated';
     }
@@ -44,7 +44,7 @@ export function initDomain(domain: Domain, fieldDef: FieldDef<string>, scale: Sc
 // parseDomain must be called separately after parseScale
 export function parseDomain(model: UnitModel, channel: ScaleChannel): VgDomain {
   // FIXME replace this with getScaleComponent once parseScaleDomain a separate parseStep from scale
-  const scaleType = model.scale(channel).type;
+  const scaleType = model.scale(channel).get('type');
   const domain = model.scaleDomain(channel);
 
   // If channel is either X or Y then union them with X2 & Y2 if they exist

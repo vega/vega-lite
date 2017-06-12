@@ -3,9 +3,10 @@
 import {assert} from 'chai';
 
 import {Channel, NONSPATIAL_SCALE_CHANNELS} from '../../../src/channel';
-import {ScaleType} from '../../../src/scale';
+import {Scale, ScaleType} from '../../../src/scale';
 
 import * as rules from '../../../src/compile/scale/rules';
+import {Split} from '../../../src/compile/split';
 
 describe('compile/scale', () => {
   describe('nice', () => {
@@ -94,28 +95,28 @@ describe('compile/scale', () => {
 
   describe('zero', () => {
     it('should return true when mapping a quantitative field to size', () => {
-      assert(rules.zero({}, 'size', {field: 'a', type: 'quantitative'}));
+      assert(rules.zero(new Split<Scale>(), 'size', {field: 'a', type: 'quantitative'}));
     });
 
     it('should return false when mapping a ordinal field to size', () => {
-      assert(!rules.zero({}, 'size', {field: 'a', type: 'ordinal'}));
+      assert(!rules.zero(new Split<Scale>(), 'size', {field: 'a', type: 'ordinal'}));
     });
 
     it('should return true when mapping a non-binned quantitative field to x/y', () => {
       for (const channel of ['x', 'y'] as Channel[]) {
-        assert(rules.zero({}, channel, {field: 'a', type: 'quantitative'}));
+        assert(rules.zero(new Split<Scale>(), channel, {field: 'a', type: 'quantitative'}));
       }
     });
 
     it('should return false when mapping a binned quantitative field to x/y', () => {
       for (const channel of ['x', 'y'] as Channel[]) {
-        assert(!rules.zero({}, channel, {bin: true, field: 'a', type: 'quantitative'}));
+        assert(!rules.zero(new Split<Scale>(), channel, {bin: true, field: 'a', type: 'quantitative'}));
       }
     });
 
     it('should return false when mapping a non-binned quantitative field with custom domain to x/y', () => {
       for (const channel of ['x', 'y'] as Channel[]) {
-        assert(!rules.zero({domain: [1, 5]}, channel, {
+        assert(!rules.zero(new Split<Scale>({domain: [1, 5]}), channel, {
           bin: true, field: 'a', type: 'quantitative'
         }));
       }

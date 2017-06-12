@@ -47,25 +47,28 @@ export function parseScale(model: UnitModel, channel: ScaleChannel) {
   const scale = model.scale(channel);
   const sort = model.sort(channel);
 
+  // FIXME parseScale should return something similar to Split<VgScale>
   const scaleComponent: VgScale = {
     name: model.scaleName(channel + '', true),
-    type: scale.type,
+    type: scale.get('type'),
     domain: parseDomain(model, channel),
     range: parseRange(scale)
   };
 
-  if (isSelectionDomain(scale.domain)) {
+  if (isSelectionDomain(scale.get('domain'))) {
     // As scale parsing occurs before selection parsing, we use a temporary
     // signal here and append the scale.domain definition. This is replaced
     // with the correct domainRaw signal during scale assembly.
     // For more information, see isRawSelectionDomain in selection.ts.
+
+    // FIXME: replace this with an explicit property in the scaleComponent
     scaleComponent.domainRaw = {
-      signal: SELECTION_DOMAIN + JSON.stringify(scale.domain)
+      signal: SELECTION_DOMAIN + JSON.stringify(scale.get('domain'))
     };
   }
 
   NON_TYPE_DOMAIN_RANGE_VEGA_SCALE_PROPERTIES.forEach((property) => {
-    scaleComponent[property] = scale[property];
+    scaleComponent[property] = scale.get(property);
   });
 
   return scaleComponent;

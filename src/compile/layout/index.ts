@@ -35,8 +35,9 @@ export function unitSizeExpr(model: UnitModel, sizeType: 'width' | 'height'): st
   const channel = sizeType==='width' ? 'x' : 'y';
 
   // TODO: remove this once rangeStep is a part of scale component
-  const scale = model.scale(channel);
-  if (scale) {
+  const splitScale = model.scale(channel);
+  if (splitScale) {
+    const scale = splitScale.combine();
     if (hasDiscreteDomain(scale.type) && scale.rangeStep) {
       const scaleName = model.scaleName(channel);
 
