@@ -76,8 +76,8 @@ function orient(mark: Mark, encoding: Encoding<string>, scales: ScaleIndex, spec
 
   switch (mark) {
     case TICK:
-      const xScaleType = scales['x'] ? scales['x'].type : null;
-      const yScaleType = scales['y'] ? scales['y'].type : null;
+      const xScaleType = scales['x'] ? scales['x'].get('type') : null;
+      const yScaleType = scales['y'] ? scales['y'].get('type') : null;
 
       // Tick is opposite to bar, line, area and never have ranged mark.
       if (!hasDiscreteDomain(xScaleType) && (

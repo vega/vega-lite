@@ -10,6 +10,7 @@ import {VgValueRef} from '../../vega.schema';
 import {UnitModel} from '../unit';
 import * as mixins from './mixins';
 
+import {Split} from '../split';
 import {MarkCompiler} from './base';
 import * as ref from './valueref';
 
@@ -82,17 +83,20 @@ function y(model: UnitModel, stack: StackProperties) {
         return mixins.bandPosition(yDef, 'y', model);
       }
     }
-    // TODO: replace model.scale(X) with model.getScaleComponent once rangeStep is a part of scale component
-    return mixins.centeredBandPosition('y', model, ref.midY(height, config), defaultSizeRef(yScaleName, model.scale(Y), config));
+    return mixins.centeredBandPosition('y', model, ref.midY(height, config),
+      // TODO: replace model.scale(X) with model.getScaleComponent once rangeStep is a part of scale component
+      defaultSizeRef(yScaleName, model.scale(Y), config)
+    );
   }
 }
 
-function defaultSizeRef(scaleName: string, scale: Scale, config: Config): VgValueRef {
+function defaultSizeRef(scaleName: string, splitScale: Split<Scale>, config: Config): VgValueRef {
   if (config.bar.discreteBandSize) {
     return {value: config.bar.discreteBandSize};
   }
 
-  if (scale) {
+  if (splitScale) {
+    const scale = splitScale.combine();
     if (scale.type === ScaleType.POINT) {
       if (scale.rangeStep !== null) {
         return {value: scale.rangeStep - 1};

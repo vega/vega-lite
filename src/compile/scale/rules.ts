@@ -4,6 +4,7 @@ import {FieldDef} from '../../fielddef';
 import {NiceTime, Scale, ScaleConfig, ScaleType} from '../../scale';
 import {smallestUnit} from '../../timeunit';
 import * as util from '../../util';
+import {Split} from '../split';
 
 export function nice(scaleType: ScaleType, channel: Channel, fieldDef: FieldDef<string>): boolean | NiceTime {
   if (util.contains([ScaleType.TIME, ScaleType.UTC], scaleType)) {
@@ -70,7 +71,7 @@ export function round(channel: Channel, scaleConfig: ScaleConfig) {
   return undefined;
 }
 
-export function zero(specifiedScale: Scale, channel: Channel, fieldDef: FieldDef<string>) {
+export function zero(splitScale: Split<Scale>, channel: Channel, fieldDef: FieldDef<string>) {
   // By default, return true only for the following cases:
 
   // 1) using quantitative field with size
@@ -83,7 +84,7 @@ export function zero(specifiedScale: Scale, channel: Channel, fieldDef: FieldDef
   // 2) non-binned, quantitative x-scale or y-scale if no custom domain is provided.
   // (For binning, we should not include zero by default because binning are calculated without zero.
   // Similar, if users explicitly provide a domain range, we should not augment zero as that will be unexpected.)
-  if (!specifiedScale.domain && !fieldDef.bin && util.contains([X, Y], channel)) {
+  if (!splitScale.get('domain') && !fieldDef.bin && util.contains([X, Y], channel)) {
     return true;
   }
   return false;

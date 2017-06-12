@@ -21,6 +21,7 @@ import {RepeaterValue} from './repeat';
 import {assembleScale} from './scale/assemble';
 import {ScaleComponent, ScaleComponentIndex} from './scale/component';
 import {SelectionComponent} from './selection/selection';
+import {Split} from './split';
 import {UnitModel} from './unit';
 
 /**
@@ -313,7 +314,7 @@ export abstract class Model {
   }
 
   // FIXME: remove this, but currently the scaleName() method below depends on this.
-  public scale(channel: Channel): Scale {
+  public scale(channel: Channel): Split<Scale> {
     return null;
   }
 

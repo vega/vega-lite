@@ -1,5 +1,5 @@
 import {Axis} from '../axis';
-import {Channel, NONSPATIAL_SCALE_CHANNELS, SingleDefChannel, UNIT_CHANNELS, UNIT_SCALE_CHANNELS, X, X2, Y, Y2} from '../channel';
+import {Channel, NONSPATIAL_SCALE_CHANNELS, ScaleChannel, SingleDefChannel, UNIT_CHANNELS, UNIT_SCALE_CHANNELS, X, X2, Y, Y2} from '../channel';
 import {CellConfig, Config} from '../config';
 import * as vlEncoding from '../encoding'; // TODO: remove
 import {Encoding, normalizeEncoding} from '../encoding';
@@ -31,6 +31,7 @@ import {ScaleIndex} from './scale/component';
 import initScale from './scale/init';
 import parseScaleComponent from './scale/parse';
 import {assembleTopLevelSignals, assembleUnitSelectionData, assembleUnitSelectionMarks, assembleUnitSelectionSignals, parseUnitSelection} from './selection/selection';
+import {Split} from './split';
 
 /**
  * Internal model of Vega-Lite specification for the compiler.
@@ -100,7 +101,7 @@ export class UnitModel extends ModelWithField {
     this.height = height;
   }
 
-  public scale(channel: Channel) {
+  public scale(channel: Channel): Split<Scale> {
     return this.scales[channel];
   }
 
@@ -108,14 +109,14 @@ export class UnitModel extends ModelWithField {
    * Return specified Vega-lite scale domain for a particular channel
    * @param channel
    */
-  public scaleDomain(channel: Channel): Domain {
+  public scaleDomain(channel: ScaleChannel): Domain {
     const scale = this.scales[channel];
-    return scale ? scale.domain : undefined;
+    return scale ? scale.get('domain') : undefined;
   }
 
-  public hasDiscreteDomain(channel: Channel) {
+  public hasDiscreteDomain(channel: ScaleChannel) {
     const scale = this.scale(channel);
-    return scale && hasDiscreteDomain(scale.type);
+    return scale && hasDiscreteDomain(scale.get('type'));
   }
 
 
@@ -169,20 +170,21 @@ export class UnitModel extends ModelWithField {
       }
 
       if (fieldDef) {
-        const scale = scales[channel] = initScale(
+        const splitScale = scales[channel] = initScale(
           channel, fieldDef, specifiedScale, this.config, mark,
           channel === X ? topLevelWidth : channel === Y ? topLevelHeight : undefined,
           xyRangeSteps // for determine point / bar size
         );
 
         if (channel === X || channel === Y) {
-          if (scale.rangeStep) {
-            xyRangeSteps.push(scale.rangeStep);
+          const rangeStep = splitScale.get('rangeStep');
+          if (rangeStep) {
+            xyRangeSteps.push(rangeStep);
           }
         }
       }
       return scales;
-    }, {});
+    }, {} as ScaleIndex);
   }
 
   // TODO: consolidate this with scale?  Current scale range is in parseScale (later),
@@ -193,8 +195,8 @@ export class UnitModel extends ModelWithField {
     const scaleConfig = this.config.scale;
 
     if (width === undefined) {
-      if (scales[X]) {
-        if (!hasDiscreteDomain(scales[X].type) || !scales[X].rangeStep) {
+      if (scales.x) {
+        if (!hasDiscreteDomain(scales.x.get('type')) || !scales.x.get('rangeStep')) {
           width = cellConfig.width;
         } // else: Do nothing, use dynamic width.
       } else { // No scale X
@@ -213,8 +215,8 @@ export class UnitModel extends ModelWithField {
     }
 
     if (height === undefined) {
-      if (scales[Y]) {
-        if (!hasDiscreteDomain(scales[Y].type) || !scales[Y].rangeStep) {
+      if (scales.y) {
+        if (!hasDiscreteDomain(scales.y.get('type')) || !scales.y.get('rangeStep')) {
           height = cellConfig.height;
         } // else: Do nothing, use dynamic height .
       } else {
@@ -389,7 +391,7 @@ export class UnitModel extends ModelWithField {
 
     if (fieldDef.bin) { // bin has default suffix that depends on scaleType
       opt = extend({
-        binSuffix: hasDiscreteDomain(this.scale(channel).type) ? 'range' : 'start'
+        binSuffix: hasDiscreteDomain(this.scale(channel).get('type')) ? 'range' : 'start'
       }, opt);
     }
 

@@ -84,6 +84,12 @@ export const UNIT_SCALE_CHANNELS = [X, Y, SIZE, SHAPE, COLOR, OPACITY];
 export const SCALE_CHANNELS = [X, Y, SIZE, SHAPE, COLOR, OPACITY, ROW, COLUMN];
 export type ScaleChannel = typeof SCALE_CHANNELS[0];
 
+const SCALE_CHANNEL_INDEX = toSet(SCALE_CHANNELS);
+
+export function isScaleChannel(channel: Channel): channel is ScaleChannel {
+  return !!SCALE_CHANNEL_INDEX[channel];
+}
+
 // UNIT_CHANNELS without X, Y, X2, Y2;
 export const NONSPATIAL_CHANNELS = [SIZE, SHAPE, COLOR, ORDER, OPACITY, TEXT, DETAIL, TOOLTIP];
 

@@ -7,10 +7,13 @@ import {channelScalePropertyIncompatability, isExtendedScheme, Range, Scale, Sca
 import {Type} from '../../type';
 import * as util from '../../util';
 import {VgRange, VgRangeScheme} from '../../vega.schema';
+import {Split} from '../split';
 
 export type RangeMixins = {range: Range} | {rangeStep: number} | {scheme: Scheme};
 
-export function parseRange(scale: Scale): VgRange {
+export function parseRange(splitScale: Split<Scale>): VgRange {
+  // FIXME: reimplement this once we refactor scaleComponent
+  const scale = splitScale.combine();
   if (scale.rangeStep) {
     return {step: scale.rangeStep};
   } else if (scale.scheme) {
@@ -33,12 +36,20 @@ export function parseRange(scale: Scale): VgRange {
 
 export const RANGE_PROPERTIES: (keyof Scale)[] = ['range', 'rangeStep', 'scheme'];
 
+function implicit(mixins: RangeMixins) {
+  return {
+    explicit: false,
+    mixins
+  };
+}
+
 /**
  * Return mixins that includes one of the range properties (range, rangeStep, scheme).
  */
 export default function rangeMixins(
-  channel: Channel, scaleType: ScaleType, type: Type, specifiedScale: Scale, config: Config,
-  zero: boolean, mark: Mark, topLevelSize: number | undefined, xyRangeSteps: number[]): RangeMixins {
+    channel: Channel, scaleType: ScaleType, type: Type, specifiedScale: Scale, config: Config,
+    zero: boolean, mark: Mark, topLevelSize: number | undefined, xyRangeSteps: number[]
+  ): {explicit: boolean, mixins: RangeMixins} {
 
   let specifiedRangeStepIsNull = false;
 
@@ -55,14 +66,14 @@ export default function rangeMixins(
       } else {
         switch (property) {
           case 'range':
-            return {range: specifiedScale[property]};
+            return implicit({range: specifiedScale[property]});
           case 'scheme':
-            return {scheme: specifiedScale[property]};
+            return implicit({scheme: specifiedScale[property]});
           case 'rangeStep':
             if (topLevelSize === undefined) {
               const stepSize = specifiedScale[property];
               if (stepSize !== null) {
-                return {rangeStep: stepSize};
+                return implicit({rangeStep: stepSize});
               } else {
                 specifiedRangeStepIsNull = true;
               }
@@ -74,7 +85,15 @@ export default function rangeMixins(
       }
     }
   }
+  return {
+    explicit: false,
+    mixins: defaultRangeMixins(channel, scaleType, type, config, zero, mark, topLevelSize, xyRangeSteps, specifiedRangeStepIsNull)
+  };
+}
 
+function defaultRangeMixins(channel: Channel, scaleType: ScaleType, type: Type, config: Config,
+  zero: boolean, mark: Mark, topLevelSize: number | undefined, xyRangeSteps: number[],
+  specifiedRangeStepIsNull: boolean): RangeMixins {
   switch (channel) {
     // TODO: revise row/column when facetSpec has top-level width/height
     case ROW:
