@@ -9,7 +9,6 @@ scripts/pre-deploy.sh
 
 npm run clean
 npm run test
-npm run build
 npm run build:examples
 
 # Check if all required files are here
