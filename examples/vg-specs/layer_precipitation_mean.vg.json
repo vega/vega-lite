@@ -105,7 +105,7 @@
         },
         {
             "name": "layer_1_width",
-            "update": "21"
+            "update": "bandspace(domain('undefined').length, 0.1, 0.05) * 21"
         },
         {
             "name": "layer_1_height",
