@@ -27,9 +27,9 @@ describe('src/compile', function() {
             x: {field: 'origin', type: "nominal"}
           }
         });
-        const scales = parseScale(model, 'x');
-        assert.equal(scales.type, 'point');
-        assert.deepEqual(scales.range, {step: 21});
+        const scale = parseScale(model, 'x');
+        assert.equal(scale.implicit.type, 'point');
+        assert.deepEqual(scale.implicit.range, {step: 21});
       });
     });
 
@@ -41,17 +41,17 @@ describe('src/compile', function() {
         }
       });
 
-      const scales = parseScale(model, 'color');
+      const scale = parseScale(model, 'color');
 
       it('should create correct color scale', function() {
-        assert.equal(scales.name, 'color');
-        assert.equal(scales.type, 'ordinal');
-        assert.deepEqual(scales.domain, {
+        assert.equal(scale.implicit.name, 'color');
+        assert.equal(scale.implicit.type, 'ordinal');
+        assert.deepEqual(scale.implicit.domain, {
           data: 'main',
           field: 'origin',
           sort: true
         });
-        assert.equal(scales.range, 'category');
+        assert.equal(scale.implicit.range, 'category');
       });
     });
 
@@ -63,13 +63,13 @@ describe('src/compile', function() {
         }
       });
 
-      const scales = parseScale(model, 'color');
+      const scale = parseScale(model, 'color');
 
       it('should create sequential color scale', function() {
-        assert.equal(scales.name, 'color');
-        assert.equal(scales.type, 'sequential');
+        assert.equal(scale.implicit.name, 'color');
+        assert.equal(scale.implicit.type, 'sequential');
 
-        assert.deepEqual(scales.domain, {
+        assert.deepEqual(scale.implicit.domain, {
           data: 'main',
           field: 'origin'
         });
@@ -84,14 +84,14 @@ describe('src/compile', function() {
           }
         });
 
-      const scales = parseScale(model, 'color');
+      const scale = parseScale(model, 'color');
 
       it('should create linear color scale', function() {
-        assert.equal(scales.name, 'color');
-        assert.equal(scales.type, 'sequential');
-        assert.equal(scales.range, 'ramp');
+        assert.equal(scale.implicit.name, 'color');
+        assert.equal(scale.implicit.type, 'sequential');
+        assert.equal(scale.implicit.range, 'ramp');
 
-        assert.deepEqual(scales.domain, {
+        assert.deepEqual(scale.implicit.domain, {
           data: 'main',
           field: 'origin'
         });
@@ -106,11 +106,11 @@ describe('src/compile', function() {
           }
         });
 
-      const scales = parseScale(model, 'color');
+      const scale = parseScale(model, 'color');
 
       it('should add correct scales', function() {
-        assert.equal(scales.name, 'color');
-        assert.equal(scales.type, 'bin-ordinal');
+        assert.equal(scale.implicit.name, 'color');
+        assert.equal(scale.implicit.type, 'bin-ordinal');
       });
     });
 
@@ -122,11 +122,11 @@ describe('src/compile', function() {
           }
         });
 
-      const scales = parseScale(model, 'color');
+      const scale = parseScale(model, 'color');
 
       it('should add correct scales', function() {
-        assert.equal(scales.name, 'color');
-        assert.equal(scales.type, 'sequential');
+        assert.equal(scale.implicit.name, 'color');
+        assert.equal(scale.implicit.type, 'sequential');
       });
     });
 
@@ -138,11 +138,11 @@ describe('src/compile', function() {
           }
         });
 
-      const scales = parseScale(model, 'opacity');
+      const scale = parseScale(model, 'opacity');
 
       it('should add correct scales', function() {
-        assert.equal(scales.name, 'opacity');
-        assert.equal(scales.type, 'bin-linear');
+        assert.equal(scale.implicit.name, 'opacity');
+        assert.equal(scale.implicit.type, 'bin-linear');
       });
     });
 
@@ -154,11 +154,11 @@ describe('src/compile', function() {
           }
         });
 
-      const scales = parseScale(model, 'size');
+      const scale = parseScale(model, 'size');
 
       it('should add correct scales', function() {
-        assert.equal(scales.name, 'size');
-        assert.equal(scales.type, 'bin-linear');
+        assert.equal(scale.implicit.name, 'size');
+        assert.equal(scale.implicit.type, 'bin-linear');
       });
     });
 
@@ -170,11 +170,11 @@ describe('src/compile', function() {
           }
         });
 
-      const scales = parseScale(model, 'color');
+      const scale = parseScale(model, 'color');
 
       it('should add correct scales', function() {
-        assert.equal(scales.name, 'color');
-        assert.equal(scales.type, 'sequential');
+        assert.equal(scale.implicit.name, 'color');
+        assert.equal(scale.implicit.type, 'sequential');
       });
     });
 
@@ -193,15 +193,15 @@ describe('src/compile', function() {
         }
       });
 
-      const xscale = parseScale(model, 'x');
+      const xScale = parseScale(model, 'x');
       const yscale = parseScale(model, 'y');
       it('should add a raw selection domain', function() {
-        assert.property(xscale, 'domainRaw');
-        assert.propertyVal(xscale.domainRaw, 'signal',
+        assert.property(xScale.explicit, 'domainRaw');
+        assert.propertyVal(xScale.explicit.domainRaw, 'signal',
           SELECTION_DOMAIN + '{"selection":"brush","encoding":"x"}');
 
-        assert.property(yscale, 'domainRaw');
-        assert.propertyVal(yscale.domainRaw, 'signal',
+        assert.property(yscale.explicit, 'domainRaw');
+        assert.propertyVal(yscale.explicit.domainRaw, 'signal',
           SELECTION_DOMAIN + '{"selection":"foobar","field":"Miles_per_Gallon"}');
       });
     });

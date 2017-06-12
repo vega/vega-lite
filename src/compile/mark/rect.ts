@@ -27,16 +27,17 @@ function x(model: UnitModel) {
   const xDef = model.encoding.x;
   const x2Def = model.encoding.x2;
   const xScale = model.getScaleComponent(X);
+  const xScaleType = xScale ? xScale.get('type') : undefined;
 
   if (isFieldDef(xDef) && xDef.bin && !x2Def) {
     return mixins.binnedPosition(xDef, 'x', model.scaleName('x'), 0);
-  } else if (isFieldDef(xDef) && xScale && hasDiscreteDomain(xScale.type)) {
+  } else if (isFieldDef(xDef) && xScale && hasDiscreteDomain(xScaleType)) {
     /* istanbul ignore else */
-    if (xScale.type === ScaleType.BAND) {
+    if (xScaleType === ScaleType.BAND) {
       return mixins.bandPosition(xDef, 'x', model);
     } else {
       // We don't support rect mark with point/ordinal scale
-      throw new Error(log.message.scaleTypeNotWorkWithMark(RECT, xScale.type));
+      throw new Error(log.message.scaleTypeNotWorkWithMark(RECT, xScaleType));
     }
   } else { // continuous scale or no scale
     return {
@@ -50,16 +51,17 @@ function y(model: UnitModel) {
   const yDef = model.encoding.y;
   const y2Def = model.encoding.y2;
   const yScale = model.getScaleComponent(Y);
+  const yScaleType = yScale ? yScale.get('type') : undefined;
 
   if (isFieldDef(yDef) && yDef.bin && !y2Def) {
     return mixins.binnedPosition(yDef, 'y', model.scaleName('y'), 0);
-  } else if (isFieldDef(yDef) && yScale && hasDiscreteDomain(yScale.type)) {
+  } else if (isFieldDef(yDef) && yScale && hasDiscreteDomain(yScaleType)) {
     /* istanbul ignore else */
-    if (yScale.type === ScaleType.BAND) {
+    if (yScaleType === ScaleType.BAND) {
       return mixins.bandPosition(yDef, 'y', model);
     } else {
       // We don't support rect mark with point/ordinal scale
-      throw new Error(log.message.scaleTypeNotWorkWithMark(RECT, yScale.type));
+      throw new Error(log.message.scaleTypeNotWorkWithMark(RECT, yScaleType));
     }
   } else { // continuous scale or no scale
     return {

@@ -2,7 +2,7 @@
  * Utility files for producing Vega ValueRef for marks
  */
 
-import {Channel, X, X2, Y, Y2} from '../../channel';
+import {Channel, ScaleChannel, X, X2, Y, Y2} from '../../channel';
 import {Config} from '../../config';
 import {ChannelDef, Conditional, field, FieldDef, FieldRefOption, isFieldDef, isValueDef, TextFieldDef, ValueDef} from '../../fielddef';
 import {hasDiscreteDomain, ScaleType} from '../../scale';
@@ -10,6 +10,7 @@ import {StackProperties} from '../../stack';
 import {contains} from '../../util';
 import {VgScale, VgValueRef} from '../../vega.schema';
 import {formatSignalRef, numberFormat} from '../common';
+import {ScaleComponent} from '../scale/component';
 
 // TODO: we need to find a way to refactor these so that scaleName is a part of scale
 // but that's complicated.  For now, this is a huge step moving forward.
@@ -17,7 +18,7 @@ import {formatSignalRef, numberFormat} from '../common';
 /**
  * @return Vega ValueRef for stackable x or y
  */
-export function stackable(channel: 'x' | 'y', channelDef: ChannelDef<string>, scaleName: string, scale: VgScale,
+export function stackable(channel: 'x' | 'y', channelDef: ChannelDef<string>, scaleName: string, scale: ScaleComponent,
     stack: StackProperties, defaultRef: VgValueRef): VgValueRef {
   if (isFieldDef(channelDef) && stack && channel === stack.fieldChannel) {
     // x or y use stack_end so that stacked line's point mark use stack_end too.
@@ -29,7 +30,7 @@ export function stackable(channel: 'x' | 'y', channelDef: ChannelDef<string>, sc
 /**
  * @return Vega ValueRef for stackable x2 or y2
  */
-export function stackable2(channel: 'x2' | 'y2', aFieldDef: ChannelDef<string>, a2fieldDef: ChannelDef<string>, scaleName: string, scale: VgScale,
+export function stackable2(channel: 'x2' | 'y2', aFieldDef: ChannelDef<string>, a2fieldDef: ChannelDef<string>, scaleName: string, scale: ScaleComponent,
     stack: StackProperties, defaultRef: VgValueRef): VgValueRef {
   if (isFieldDef(aFieldDef) && stack &&
       // If fieldChannel is X and channel is X2 (or Y and Y2)
@@ -87,7 +88,7 @@ function binMidSignal(fieldDef: FieldDef<string>, scaleName: string) {
 /**
  * @returns {VgValueRef} Value Ref for xc / yc or mid point for other channels.
  */
-export function midPoint(channel: Channel, channelDef: ChannelDef<string>, scaleName: string, scale: VgScale,
+export function midPoint(channel: Channel, channelDef: ChannelDef<string>, scaleName: string, scale: ScaleComponent,
   defaultRef: VgValueRef | 'zeroOrMin' | 'zeroOrMax'): VgValueRef {
   // TODO: datum support
 
@@ -104,8 +105,9 @@ export function midPoint(channel: Channel, channelDef: ChannelDef<string>, scale
         return fieldRef(channelDef, scaleName, {binSuffix: 'start'});
       }
 
-      if (hasDiscreteDomain(scale.type)) {
-        if (scale.type === 'band') {
+      const scaleType = scale.get('type');
+      if (hasDiscreteDomain(scaleType)) {
+        if (scaleType === 'band') {
           // For band, to get mid point, need to offset by half of the band
           return fieldRef(channelDef, scaleName, {binSuffix: 'range'}, {band: 0.5});
         }
@@ -178,11 +180,11 @@ export function midY(height: number, config: Config): VgValueRef {
   return {value: config.scale.rangeStep / 2};
 }
 
-function zeroOrMinX(scaleName: string, scale: VgScale): VgValueRef {
+function zeroOrMinX(scaleName: string, scale: ScaleComponent): VgValueRef {
   if (scaleName) {
     // Log / Time / UTC scale do not support zero
-    if (!contains([ScaleType.LOG, ScaleType.TIME, ScaleType.UTC], scale.type) &&
-      scale.zero !== false) {
+    if (!contains([ScaleType.LOG, ScaleType.TIME, ScaleType.UTC], scale.get('type')) &&
+      scale.get('zero') !== false) {
 
       return {
         scale: scaleName,
@@ -197,11 +199,11 @@ function zeroOrMinX(scaleName: string, scale: VgScale): VgValueRef {
 /**
  * @returns {VgValueRef} base value if scale exists and return max value if scale does not exist
  */
-function zeroOrMaxX(scaleName: string, scale: VgScale): VgValueRef {
+function zeroOrMaxX(scaleName: string, scale: ScaleComponent): VgValueRef {
   if (scaleName) {
     // Log / Time / UTC scale do not support zero
-    if (!contains([ScaleType.LOG, ScaleType.TIME, ScaleType.UTC], scale.type) &&
-      scale.zero !== false) {
+    if (!contains([ScaleType.LOG, ScaleType.TIME, ScaleType.UTC], scale.get('type')) &&
+      scale.get('zero') !== false) {
 
       return {
         scale: scaleName,
@@ -212,11 +214,11 @@ function zeroOrMaxX(scaleName: string, scale: VgScale): VgValueRef {
   return {field: {group: 'width'}};
 }
 
-function zeroOrMinY(scaleName: string, scale: VgScale): VgValueRef {
+function zeroOrMinY(scaleName: string, scale: ScaleComponent): VgValueRef {
   if (scaleName) {
     // Log / Time / UTC scale do not support zero
-    if (!contains([ScaleType.LOG, ScaleType.TIME, ScaleType.UTC], scale.type) &&
-      scale.zero !== false) {
+    if (!contains([ScaleType.LOG, ScaleType.TIME, ScaleType.UTC], scale.get('type')) &&
+      scale.get('zero') !== false) {
 
       return {
         scale: scaleName,
@@ -231,11 +233,11 @@ function zeroOrMinY(scaleName: string, scale: VgScale): VgValueRef {
 /**
  * @returns {VgValueRef} base value if scale exists and return max value if scale does not exist
  */
-function zeroOrMaxY(scaleName: string, scale: VgScale): VgValueRef {
+function zeroOrMaxY(scaleName: string, scale: ScaleComponent): VgValueRef {
   if (scaleName) {
     // Log / Time / UTC scale do not support zero
-    if (!contains([ScaleType.LOG, ScaleType.TIME, ScaleType.UTC], scale.type) &&
-      scale.zero !== false) {
+    if (!contains([ScaleType.LOG, ScaleType.TIME, ScaleType.UTC], scale.get('type')) &&
+      scale.get('zero') !== false) {
 
       return {
         scale: scaleName,

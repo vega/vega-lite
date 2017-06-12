@@ -8,16 +8,25 @@ import {Type} from '../../type';
 import * as util from '../../util';
 import {VgRange, VgRangeScheme} from '../../vega.schema';
 import {Split} from '../split';
+import {ScaleComponent} from './component';
 
 export type RangeMixins = {range: Range} | {rangeStep: number} | {scheme: Scheme};
 
-export function parseRange(splitScale: Split<Scale>): VgRange {
-  // FIXME: reimplement this once we refactor scaleComponent
-  const scale = splitScale.combine();
-  if (scale.rangeStep) {
-    return {step: scale.rangeStep};
-  } else if (scale.scheme) {
-    const scheme = scale.scheme;
+export function parseRange(splitScale: Split<Scale>): {explicit: boolean, range: VgRange} {
+  let explicit;
+
+
+  // rangeStep => range.step
+  let rangeStep;
+  ({explicit, value: rangeStep} = splitScale.getWithType('rangeStep'));
+  if (rangeStep) {
+    return {explicit, range: {step: rangeStep}};
+  }
+
+  // Scheme => range.scheme
+  let scheme;
+  ({explicit, value: scheme} = splitScale.getWithType('scheme'));
+  if (scheme) {
     if (isExtendedScheme(scheme)) {
       const r: VgRangeScheme = {scheme: scheme.name};
       if (scheme.count) {
@@ -26,12 +35,15 @@ export function parseRange(splitScale: Split<Scale>): VgRange {
       if (scheme.extent) {
         r.extent = scheme.extent;
       }
-      return r;
+      return {explicit, range: r};
     } else {
-      return {scheme};
+      return {explicit, range: {scheme}};
     }
   }
-  return scale.range;
+
+  let range;
+  ({explicit, value: range} = splitScale.getWithType('range'));
+  return {explicit, range};
 }
 
 export const RANGE_PROPERTIES: (keyof Scale)[] = ['range', 'rangeStep', 'scheme'];

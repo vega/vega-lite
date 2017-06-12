@@ -26,6 +26,7 @@ import {labels} from './legend/encode';
 import {moveSharedLegendUp} from './legend/parse';
 import {Model, ModelWithField} from './model';
 import {RepeaterValue, replaceRepeaterInFacet} from './repeat';
+import {ScaleComponentIndex} from './scale/component';
 import {moveSharedScaleUp} from './scale/parse';
 
 export class FacetModel extends ModelWithField {
@@ -101,14 +102,14 @@ export class FacetModel extends ModelWithField {
 
     child.parseScale();
 
-    const scaleComponent: Dict<VgScale> = this.component.scales = {};
+    const scaleComponent: ScaleComponentIndex = this.component.scales = {};
 
     keys(child.component.scales).forEach((channel: ScaleChannel) => {
       if (this.resolve[channel].scale === 'shared') {
         const scale = moveSharedScaleUp(this, scaleComponent, child, channel);
 
         // Replace the scale domain with data output from a cloned subtree after the facet.
-        const domain = scale.domain;
+        const domain = scale.get('domain');
 
         if (isDataRefDomain(domain) || isFieldRefUnionDomain(domain)) {
           domain.data = FACET_SCALE_PREFIX + this.getName(domain.data);
