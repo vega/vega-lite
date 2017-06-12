@@ -9,13 +9,14 @@ import {StackProperties} from '../../stack';
 import {TEMPORAL} from '../../type';
 import {contains, Dict} from '../../util';
 import {getMarkConfig} from '../common';
+import {ScaleIndex} from '../scale/component';
 import {Orient} from './../../vega.schema';
 
-export function initMarkDef(mark: Mark | MarkDef, encoding: Encoding<string>, scale: Dict<Scale>, config: Config): MarkDef {
+export function initMarkDef(mark: Mark | MarkDef, encoding: Encoding<string>, scales: ScaleIndex, config: Config): MarkDef {
   const markDef = isMarkDef(mark) ? {...mark} : {type: mark};
 
   const specifiedOrient = markDef.orient || getMarkConfig('orient', markDef.type, config);
-  markDef.orient = orient(markDef.type, encoding, scale, specifiedOrient);
+  markDef.orient = orient(markDef.type, encoding, scales, specifiedOrient);
   if (specifiedOrient !== undefined && specifiedOrient !== markDef.orient) {
     log.warn(log.message.orientOverridden(markDef.orient,specifiedOrient));
   }
@@ -59,7 +60,7 @@ function filled(mark: Mark, config: Config) {
   return filledConfig !== undefined ? filledConfig : mark !== POINT && mark !== LINE && mark !== RULE;
 }
 
-function orient(mark: Mark, encoding: Encoding<string>, scale: Dict<Scale>, specifiedOrient: Orient): Orient {
+function orient(mark: Mark, encoding: Encoding<string>, scales: ScaleIndex, specifiedOrient: Orient): Orient {
   switch (mark) {
     case POINT:
     case CIRCLE:
@@ -75,8 +76,8 @@ function orient(mark: Mark, encoding: Encoding<string>, scale: Dict<Scale>, spec
 
   switch (mark) {
     case TICK:
-      const xScaleType = scale['x'] ? scale['x'].type : null;
-      const yScaleType = scale['y'] ? scale['y'].type : null;
+      const xScaleType = scales['x'] ? scales['x'].type : null;
+      const yScaleType = scales['y'] ? scales['y'].type : null;
 
       // Tick is opposite to bar, line, area and never have ranged mark.
       if (!hasDiscreteDomain(xScaleType) && (

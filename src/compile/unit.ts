@@ -1,8 +1,8 @@
 import {Axis} from '../axis';
 import {Channel, NONSPATIAL_SCALE_CHANNELS, SingleDefChannel, UNIT_CHANNELS, UNIT_SCALE_CHANNELS, X, X2, Y, Y2} from '../channel';
 import {CellConfig, Config} from '../config';
-import {Encoding, normalizeEncoding} from '../encoding';
 import * as vlEncoding from '../encoding'; // TODO: remove
+import {Encoding, normalizeEncoding} from '../encoding';
 import {ChannelDef, field, FieldDef, FieldRefOption, getFieldDef, isConditionalDef, isFieldDef} from '../fielddef';
 import {Legend} from '../legend';
 import {FILL_STROKE_CONFIG, isMarkDef, Mark, MarkDef, TEXT as TEXT_MARK} from '../mark';
@@ -13,6 +13,7 @@ import {UnitSize, UnitSpec} from '../spec';
 import {stack, StackProperties} from '../stack';
 import {Dict, duplicate, extend, vals} from '../util';
 import {VgData, VgLayout, VgSignal} from '../vega.schema';
+import {AxisIndex} from './axis/component';
 import {parseAxisComponent} from './axis/parse';
 import {applyConfig} from './common';
 import {assembleData} from './data/assemble';
@@ -20,11 +21,13 @@ import {parseData} from './data/parse';
 import {FacetModel} from './facet';
 import {LayerModel} from './layer';
 import {assembleLayoutUnitSignals} from './layout/index';
+import {LegendIndex} from './legend/component';
 import {parseLegendComponent} from './legend/parse';
 import {initEncoding, initMarkDef} from './mark/init';
 import {parseMark} from './mark/mark';
 import {Model, ModelWithField} from './model';
 import {RepeaterValue, replaceRepeaterInEncoding} from './repeat';
+import {ScaleIndex} from './scale/component';
 import initScale from './scale/init';
 import parseScaleComponent from './scale/parse';
 import {assembleTopLevelSignals, assembleUnitSelectionData, assembleUnitSelectionMarks, assembleUnitSelectionSignals, parseUnitSelection} from './selection/selection';
@@ -50,13 +53,13 @@ export class UnitModel extends ModelWithField {
   public readonly markDef: MarkDef;
   public readonly encoding: Encoding<string>;
 
-  protected scales: Dict<Scale> = {};
+  protected scales: ScaleIndex = {};
 
   public readonly stack: StackProperties;
 
-  protected axes: Dict<Axis> = {};
+  protected axes: AxisIndex = {};
 
-  protected legends: Dict<Legend> = {};
+  protected legends: LegendIndex = {};
 
   public readonly selection: Dict<SelectionDef> = {};
   public children: Model[] = [];
@@ -144,7 +147,7 @@ export class UnitModel extends ModelWithField {
     }
   }
 
-  private initScales(mark: Mark, encoding: Encoding<string>, topLevelWidth:number, topLevelHeight: number): Dict<Scale> {
+  private initScales(mark: Mark, encoding: Encoding<string>, topLevelWidth:number, topLevelHeight: number): ScaleIndex {
     const xyRangeSteps: number[] = [];
 
     return UNIT_SCALE_CHANNELS.reduce((scales, channel) => {
@@ -185,13 +188,13 @@ export class UnitModel extends ModelWithField {
   // TODO: consolidate this with scale?  Current scale range is in parseScale (later),
   // but not in initScale because scale range depends on size,
   // but size depends on scale type and rangeStep
-  private initSize(mark: Mark, scale: Dict<Scale>, width: number, height: number) {
+  private initSize(mark: Mark, scales: ScaleIndex, width: number, height: number) {
     const cellConfig = this.config.cell;
     const scaleConfig = this.config.scale;
 
     if (width === undefined) {
-      if (scale[X]) {
-        if (!hasDiscreteDomain(scale[X].type) || !scale[X].rangeStep) {
+      if (scales[X]) {
+        if (!hasDiscreteDomain(scales[X].type) || !scales[X].rangeStep) {
           width = cellConfig.width;
         } // else: Do nothing, use dynamic width.
       } else { // No scale X
@@ -210,8 +213,8 @@ export class UnitModel extends ModelWithField {
     }
 
     if (height === undefined) {
-      if (scale[Y]) {
-        if (!hasDiscreteDomain(scale[Y].type) || !scale[Y].rangeStep) {
+      if (scales[Y]) {
+        if (!hasDiscreteDomain(scales[Y].type) || !scales[Y].rangeStep) {
           height = cellConfig.height;
         } // else: Do nothing, use dynamic height .
       } else {
@@ -227,7 +230,7 @@ export class UnitModel extends ModelWithField {
     return {width, height};
   }
 
-  private initAxes(encoding: Encoding<string>): Dict<Axis> {
+  private initAxes(encoding: Encoding<string>): AxisIndex {
     return [X, Y].reduce(function(_axis, channel) {
       // Position Axis
 
@@ -249,7 +252,7 @@ export class UnitModel extends ModelWithField {
     }, {});
   }
 
-  private initLegend(encoding: Encoding<string>): Dict<Legend> {
+  private initLegend(encoding: Encoding<string>): LegendIndex {
     return NONSPATIAL_SCALE_CHANNELS.reduce(function(_legend, channel) {
       const channelDef = encoding[channel];
       if (channelDef) {
