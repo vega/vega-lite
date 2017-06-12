@@ -3,7 +3,7 @@ import {Channel, COLUMN, ROW, X, Y} from '../../channel';
 import {MAIN} from '../../data';
 import {hasDiscreteDomain} from '../../scale';
 import {extend, isArray, keys, StringSet} from '../../util';
-import {VgData, VgFormulaTransform, VgSignal, VgTransform} from '../../vega.schema';
+import {isVgRangeStep, VgData, VgFormulaTransform, VgSignal, VgTransform} from '../../vega.schema';
 
 import {FacetModel} from '../facet';
 import {LayerModel} from '../layer';
@@ -34,11 +34,9 @@ export function assembleLayoutUnitSignals(model: UnitModel): VgSignal[] {
 export function unitSizeExpr(model: UnitModel, sizeType: 'width' | 'height'): string {
   const channel = sizeType==='width' ? 'x' : 'y';
 
-  // TODO: remove this once rangeStep is a part of scale component
-  const splitScale = model.scale(channel);
-  if (splitScale) {
-    const scale = splitScale.combine();
-    if (hasDiscreteDomain(scale.type) && scale.rangeStep) {
+  const scale = model.getScaleComponent(channel);
+  if (scale) {
+    if (hasDiscreteDomain(scale.type) && isVgRangeStep(scale.range)) {
       const scaleName = model.scaleName(channel);
 
       const cardinality = `domain('${scaleName}').length`;
@@ -50,7 +48,7 @@ export function unitSizeExpr(model: UnitModel, sizeType: 'width' | 'height'): st
         // it's equivalent to have paddingInner = 1 since there is only n-1 steps between n points.
         1;
 
-      return `bandspace(${cardinality}, ${paddingInner}, ${paddingOuter}) * ${scale.rangeStep}`;
+      return `bandspace(${cardinality}, ${paddingInner}, ${paddingOuter}) * ${scale.range.step}`;
     }
   }
   return `${model[sizeType]}`;

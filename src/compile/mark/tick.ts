@@ -3,6 +3,7 @@
 import {UnitModel} from '../unit';
 import * as mixins from './mixins';
 
+import {isVgRangeStep} from '../../vega.schema';
 import {MarkCompiler} from './base';
 import * as ref from './valueref';
 
@@ -37,16 +38,13 @@ export const tick: MarkCompiler = {
 function defaultSize(model: UnitModel): number {
   const {config} = model;
   const orient = model.markDef.orient;
-
-  // TODO: replace model.scale() with model.getScaleComponent() once rangeStep is a part of scale component
-  const splitScale = model.scale(orient === 'horizontal' ? 'x' : 'y');
-  const scaleRangeStep: number | null = splitScale ? splitScale.get('rangeStep') : undefined;
+  const scale = model.getScaleComponent(orient === 'horizontal' ? 'x' : 'y');
 
   if (config.tick.bandSize !== undefined) {
     return config.tick.bandSize;
   } else {
-    const rangeStep = scaleRangeStep !== undefined ?
-      scaleRangeStep :
+    const rangeStep = scale && isVgRangeStep(scale.range) ?
+      scale.range.step :
       config.scale.rangeStep;
     if (typeof rangeStep !== 'number') {
       // FIXME consolidate this log
