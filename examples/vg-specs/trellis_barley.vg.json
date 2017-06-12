@@ -21,7 +21,7 @@
             ]
         },
         {
-            "name": "row",
+            "name": "trellis_barley_row",
             "source": "source_0",
             "transform": [
                 {
@@ -58,12 +58,20 @@
     ],
     "signals": [
         {
-            "name": "child_width",
+            "name": "width",
+            "update": "trellis_barley_width"
+        },
+        {
+            "name": "height",
+            "update": "trellis_barley_height"
+        },
+        {
+            "name": "trellis_barley_child_width",
             "update": "200"
         },
         {
-            "name": "child_height",
-            "update": "bandspace(domain('y').length, 1, 0.5) * 12"
+            "name": "trellis_barley_child_height",
+            "update": "bandspace(domain('trellis_barley_y').length, 1, 0.5) * 12"
         }
     ],
     "layout": {
@@ -77,7 +85,7 @@
     },
     "marks": [
         {
-            "name": "row_title",
+            "name": "trellis_barley_row_title",
             "role": "row-title",
             "type": "group",
             "marks": [
@@ -110,11 +118,11 @@
             ]
         },
         {
-            "name": "row_header",
+            "name": "trellis_barley_row_header",
             "type": "group",
             "role": "row-header",
             "from": {
-                "data": "row"
+                "data": "trellis_barley_row"
             },
             "title": {
                 "text": {
@@ -145,13 +153,13 @@
             "encode": {
                 "update": {
                     "height": {
-                        "signal": "child_height"
+                        "signal": "trellis_barley_child_height"
                     }
                 }
             },
             "axes": [
                 {
-                    "scale": "y",
+                    "scale": "trellis_barley_y",
                     "orient": "left",
                     "title": "variety",
                     "zindex": 1
@@ -159,19 +167,19 @@
             ]
         },
         {
-            "name": "column_footer",
+            "name": "trellis_barley_column_footer",
             "type": "group",
             "role": "column-footer",
             "encode": {
                 "update": {
                     "width": {
-                        "signal": "child_width"
+                        "signal": "trellis_barley_child_width"
                     }
                 }
             },
             "axes": [
                 {
-                    "scale": "x",
+                    "scale": "trellis_barley_x",
                     "format": "s",
                     "orient": "bottom",
                     "tickCount": 5,
@@ -183,7 +191,7 @@
         {
             "data": [
                 {
-                    "source": "facet",
+                    "source": "trellis_barley_facet",
                     "name": "data_0",
                     "transform": [
                         {
@@ -205,11 +213,11 @@
                     ]
                 }
             ],
-            "name": "cell",
+            "name": "trellis_barley_cell",
             "type": "group",
             "from": {
                 "facet": {
-                    "name": "facet",
+                    "name": "trellis_barley_facet",
                     "data": "source_0",
                     "groupby": [
                         "site"
@@ -219,10 +227,10 @@
             "encode": {
                 "update": {
                     "width": {
-                        "signal": "child_width"
+                        "signal": "trellis_barley_child_width"
                     },
                     "height": {
-                        "signal": "child_height"
+                        "signal": "trellis_barley_child_height"
                     },
                     "stroke": {
                         "value": "#ccc"
@@ -237,7 +245,7 @@
             },
             "marks": [
                 {
-                    "name": "child_marks",
+                    "name": "trellis_barley_child_marks",
                     "type": "symbol",
                     "role": "point",
                     "from": {
@@ -246,15 +254,15 @@
                     "encode": {
                         "update": {
                             "x": {
-                                "scale": "x",
+                                "scale": "trellis_barley_x",
                                 "field": "median_yield"
                             },
                             "y": {
-                                "scale": "y",
+                                "scale": "trellis_barley_y",
                                 "field": "variety"
                             },
                             "stroke": {
-                                "scale": "color",
+                                "scale": "trellis_barley_color",
                                 "field": "year"
                             },
                             "fill": {
@@ -266,7 +274,7 @@
             ],
             "axes": [
                 {
-                    "scale": "x",
+                    "scale": "trellis_barley_x",
                     "domain": false,
                     "format": "s",
                     "grid": true,
@@ -275,14 +283,14 @@
                     "tickCount": 5,
                     "ticks": false,
                     "zindex": 0,
-                    "gridScale": "y"
+                    "gridScale": "trellis_barley_y"
                 }
             ]
         }
     ],
     "scales": [
         {
-            "name": "x",
+            "name": "trellis_barley_x",
             "type": "linear",
             "domain": {
                 "data": "data_1",
@@ -297,7 +305,7 @@
             "zero": false
         },
         {
-            "name": "y",
+            "name": "trellis_barley_y",
             "type": "point",
             "domain": {
                 "data": "source_0",
@@ -315,7 +323,7 @@
             "padding": 0.5
         },
         {
-            "name": "color",
+            "name": "trellis_barley_color",
             "type": "ordinal",
             "domain": {
                 "data": "data_1",
@@ -327,7 +335,7 @@
     ],
     "legends": [
         {
-            "stroke": "color",
+            "stroke": "trellis_barley_color",
             "title": "year"
         }
     ]
