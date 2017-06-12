@@ -11,6 +11,7 @@ import {parseData} from './data/parse';
 import {moveSharedLegendUp} from './legend/parse';
 import {Model} from './model';
 import {RepeaterValue} from './repeat';
+import {ScaleComponentIndex} from './scale/component';
 import {moveSharedScaleUp} from './scale/parse';
 
 
@@ -57,7 +58,7 @@ export class ConcatModel extends Model {
   public parseScale() {
     const model = this;
 
-    const scaleComponent: Dict<VgScale> = this.component.scales = {};
+    const scaleComponent: ScaleComponentIndex = this.component.scales = {};
 
     for (const child of this.children) {
       child.parseScale();

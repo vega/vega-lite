@@ -20,13 +20,14 @@ const scaleBindings:TransformCompiler = {
     selCmpt.project.forEach(function(p) {
       const channel = p.encoding;
       const scale = model.getScaleComponent(channel);
+      const scaleType = scale ? scale.get('type') : undefined;
 
-      if (!scale || !hasContinuousDomain(scale.type) || isBinScale(scale.type)) {
+      if (!scale || !hasContinuousDomain(scaleType) || isBinScale(scaleType)) {
         warn('Scale bindings are currently only supported for scales with unbinned, continuous domains.');
         return;
       }
 
-      scale.domainRaw = {signal: channelSignalName(selCmpt, channel, 'data')};
+      scale.set('domainRaw', {signal: channelSignalName(selCmpt, channel, 'data')}, true);
       bound.push(channel);
     });
   },

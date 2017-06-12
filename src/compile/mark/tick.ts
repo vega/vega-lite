@@ -43,8 +43,9 @@ function defaultSize(model: UnitModel): number {
   if (config.tick.bandSize !== undefined) {
     return config.tick.bandSize;
   } else {
-    const rangeStep = scale && isVgRangeStep(scale.range) ?
-      scale.range.step :
+    const scaleRange = scale ? scale.get('range') : undefined;
+    const rangeStep = scaleRange && isVgRangeStep(scaleRange) ?
+      scaleRange.step :
       config.scale.rangeStep;
     if (typeof rangeStep !== 'number') {
       // FIXME consolidate this log

@@ -77,7 +77,7 @@ export function labels(fieldDef: FieldDef<string>, labelsSpec: any, model: UnitM
   let labels:any = {};
 
   if (fieldDef.type === TEMPORAL) {
-    const isUTCScale = model.getScaleComponent(channel).type === ScaleType.UTC;
+    const isUTCScale = model.getScaleComponent(channel).get('type') === ScaleType.UTC;
     labelsSpec = extend({
       text: {
         signal: timeFormatExpression('datum.value', fieldDef.timeUnit, legend.format, config.legend.shortTimeLabels, config.timeFormat, isUTCScale)

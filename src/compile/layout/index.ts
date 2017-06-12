@@ -8,6 +8,7 @@ import {isVgRangeStep, VgData, VgFormulaTransform, VgSignal, VgTransform} from '
 import {FacetModel} from '../facet';
 import {LayerModel} from '../layer';
 import {Model, ModelWithField} from '../model';
+import {ScaleComponent} from '../scale/component';
 import {UnitModel} from '../unit';
 
 
@@ -34,8 +35,9 @@ export function assembleLayoutUnitSignals(model: UnitModel): VgSignal[] {
 export function unitSizeExpr(model: UnitModel, sizeType: 'width' | 'height'): string {
   const channel = sizeType==='width' ? 'x' : 'y';
 
-  const scale = model.getScaleComponent(channel);
-  if (scale) {
+  const scaleComponent = model.getScaleComponent(channel);
+  if (scaleComponent) {
+    const scale = scaleComponent.combine();
     if (hasDiscreteDomain(scale.type) && isVgRangeStep(scale.range)) {
       const scaleName = model.scaleName(channel);
 

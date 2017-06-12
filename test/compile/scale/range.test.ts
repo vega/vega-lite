@@ -4,17 +4,19 @@ import {assert} from 'chai';
 
 import {default as rangeMixins, parseRange} from '../../../src/compile/scale/range';
 
+import {ScaleComponent} from '../../../src/compile/scale/component';
 import {Split} from '../../../src/compile/split';
 import {defaultConfig} from '../../../src/config';
 import * as log from '../../../src/log';
 import {Mark} from '../../../src/mark';
 import {CONTINUOUS_TO_CONTINUOUS_SCALES, Scale, ScaleType} from '../../../src/scale';
 import {NOMINAL, ORDINAL, QUANTITATIVE} from '../../../src/type';
+import {VgScale} from '../../../src/vega.schema';
 
 describe('compile/scale', () => {
   describe('parseRange()', () => {
     function testParseRange(scale: Scale) {
-      return parseRange(new Split<Scale>(scale));
+      return parseRange(new Split<Scale>(scale)).range;
     }
     it('should return correct range.step', () => {
       assert.deepEqual(testParseRange({rangeStep: 123}), {step: 123});

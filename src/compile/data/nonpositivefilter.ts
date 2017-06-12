@@ -25,7 +25,7 @@ export class NonPositiveFilterNode extends DataFlowNode {
         // don't set anything
         return nonPositiveComponent;
       }
-      nonPositiveComponent[model.field(channel)] = scale.type === ScaleType.LOG;
+      nonPositiveComponent[model.field(channel)] = scale.get('type') === ScaleType.LOG;
       return nonPositiveComponent;
     }, {});
 

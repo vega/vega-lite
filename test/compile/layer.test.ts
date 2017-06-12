@@ -24,7 +24,7 @@ describe('Layer', function() {
       assert.equal(model.children.length, 2);
       model.parseScale();
 
-      assert.deepEqual(model.component.scales['x'].domain, {
+      assert.deepEqual(model.component.scales['x'].implicit.domain, {
         fields: [{
           data: 'layer_0_main',
           field: 'a'
@@ -52,7 +52,7 @@ describe('Layer', function() {
       });
       model.parseScale();
 
-      assert.deepEqual(model.component.scales['x'].domain, {
+      assert.deepEqual(model.component.scales['x'].explicit.domain, {
         fields: [
           [1, 2, 3],
           {
@@ -91,11 +91,11 @@ describe('Layer', function() {
       model.parseScale();
 
       assert.equal(model.component.scales['x'], undefined);
-      assert.deepEqual(model.children[0].component.scales['x'].domain, {
+      assert.deepEqual(model.children[0].component.scales['x'].implicit.domain, {
         data: 'layer_0_main',
         field: 'a'
       });
-      assert.deepEqual(model.children[1].component.scales['x'].domain, {
+      assert.deepEqual(model.children[1].component.scales['x'].implicit.domain, {
         data: 'layer_1_main',
         field: 'b'
       });

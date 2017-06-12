@@ -48,8 +48,12 @@ function x(model: UnitModel, stack: StackProperties): VgEncodeEntry {
     if (isFieldDef(xDef)) {
       if (xDef.bin && !sizeDef) {
         return mixins.binnedPosition(xDef, 'x', model.scaleName('x'), config.bar.binSpacing);
-      } else if (xScale.type === ScaleType.BAND) {
-        return mixins.bandPosition(xDef, 'x', model);
+      } else {
+        const xScaleType = xScale.get('type');
+
+        if (xScaleType === ScaleType.BAND) {
+          return mixins.bandPosition(xDef, 'x', model);
+        }
       }
     }
     // sized bin, normal point-ordinal axis, quantitative x-axis, or no x
@@ -77,9 +81,10 @@ function y(model: UnitModel, stack: StackProperties) {
     };
   } else {
     if (isFieldDef(yDef)) {
+      const yScaleType = yScale.get('type');
       if (yDef.bin && !sizeDef) {
         return mixins.binnedPosition(yDef, 'y', model.scaleName('y'), config.bar.binSpacing);
-      } else if (yScale.type === ScaleType.BAND) {
+      } else if (yScaleType === ScaleType.BAND) {
         return mixins.bandPosition(yDef, 'y', model);
       }
     }
@@ -95,12 +100,14 @@ function defaultSizeRef(scaleName: string, scale: ScaleComponent, config: Config
   }
 
   if (scale) {
-    if (scale.type === ScaleType.POINT) {
-      if (isVgRangeStep(scale.range)) {
-        return {value: scale.range.step - 1};
+    const scaleType = scale.get('type');
+    if (scaleType === ScaleType.POINT) {
+      const scaleRange = scale.get('range');
+      if (isVgRangeStep(scaleRange)) {
+        return {value: scaleRange.step - 1};
       }
       log.warn(log.message.BAR_WITH_POINT_SCALE_AND_RANGESTEP_NULL);
-    } else if (scale.type === ScaleType.BAND) {
+    } else if (scaleType === ScaleType.BAND) {
       return ref.band(scaleName);
     } else { // non-ordinal scale
       return {value: config.bar.continuousBandSize};

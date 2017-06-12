@@ -12,6 +12,7 @@ import {parseDomain, unionDomains} from './domain';
 import {parseRange} from './range';
 
 import {SELECTION_DOMAIN} from '../selection/selection';
+import {Split} from '../split';
 
 /**
  * Parse scales for all channels of a model.
@@ -26,7 +27,7 @@ export default function parseScaleComponent(model: UnitModel): ScaleComponentInd
   }, {});
 }
 
-export const NON_TYPE_DOMAIN_RANGE_VEGA_SCALE_PROPERTIES: (keyof Scale)[] = [
+export const NON_TYPE_DOMAIN_RANGE_VEGA_SCALE_PROPERTIES: (keyof (Scale | VgScale))[] = [
   'round',
   // quantitative / time
   'clamp', 'nice',
@@ -47,13 +48,18 @@ export function parseScale(model: UnitModel, channel: ScaleChannel) {
   const scale = model.scale(channel);
   const sort = model.sort(channel);
 
-  // FIXME parseScale should return something similar to Split<VgScale>
-  const scaleComponent: VgScale = {
-    name: model.scaleName(channel + '', true),
-    type: scale.get('type'),
-    domain: parseDomain(model, channel),
-    range: parseRange(scale)
-  };
+  const scaleComponent: ScaleComponent = new Split<Partial<VgScale>>(
+    {},
+    // Implicit
+    {
+      name: model.scaleName(channel + '', true)
+    }
+  );
+  scaleComponent.copyKeyFrom('type', scale);
+
+  // FIXME(https://github.com/vega/vega-lite/issues/2497): this condition to be implicit/explicit may be incorrect
+  const domain = parseDomain(model, channel);
+  scaleComponent.set('domain', domain, domain === model.scaleDomain(channel));
 
   if (isSelectionDomain(scale.get('domain'))) {
     // As scale parsing occurs before selection parsing, we use a temporary
@@ -61,14 +67,17 @@ export function parseScale(model: UnitModel, channel: ScaleChannel) {
     // with the correct domainRaw signal during scale assembly.
     // For more information, see isRawSelectionDomain in selection.ts.
 
-    // FIXME: replace this with an explicit property in the scaleComponent
-    scaleComponent.domainRaw = {
+    // FIXME: replace this with a special property in the scaleComponent
+    scaleComponent.set('domainRaw', {
       signal: SELECTION_DOMAIN + JSON.stringify(scale.get('domain'))
-    };
+    }, true);
   }
 
+  const {explicit, range} = parseRange(scale);
+  scaleComponent.set('range', range, explicit);
+
   NON_TYPE_DOMAIN_RANGE_VEGA_SCALE_PROPERTIES.forEach((property) => {
-    scaleComponent[property] = scale.get(property);
+    scaleComponent.copyKeyFrom(property, scale);
   });
 
   return scaleComponent;
@@ -77,23 +86,26 @@ export function parseScale(model: UnitModel, channel: ScaleChannel) {
 /**
  * Move scale from child up.
  */
-export function moveSharedScaleUp(model: Model, scaleComponent: Dict<ScaleComponent>, child: Model, channel: Channel) {
+export function moveSharedScaleUp(model: Model, scaleComponent: Dict<ScaleComponent>, child: Model, channel: ScaleChannel) {
   // TODO: Check whether the scales are actually compatible and merge them, e.g. they shoud use the same sort or throw error
 
   const childScale = child.component.scales[channel];
   let modelScale = scaleComponent[channel];
 
   if (modelScale) {
-    modelScale.domain = unionDomains(modelScale.domain, childScale.domain);
+    const {explicit, value: domain} = modelScale.getWithType('domain');
+    const {explicit: childExplicit, value: childDomain} = childScale.getWithType('domain');
+
+    modelScale.set('domain', unionDomains(domain, childDomain), explicit || childExplicit);
   } else {
     modelScale = scaleComponent[channel] = childScale;
   }
 
   // rename child scale to parent scales
-  const scaleNameWithoutPrefix = childScale.name.substr(child.getName('').length);
+  const scaleNameWithoutPrefix = childScale.get('name').substr(child.getName('').length);
   const newName = model.scaleName(scaleNameWithoutPrefix, true);
-  child.renameScale(childScale.name, newName);
-  childScale.name = newName;
+  child.renameScale(childScale.get('name'), newName);
+  childScale.set('name', newName, false);
 
   // remove merged scales from children
   delete child.component.scales[channel];
