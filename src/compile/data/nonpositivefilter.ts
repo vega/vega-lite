@@ -29,7 +29,7 @@ export class NonPositiveFilterNode extends DataFlowNode {
       return nonPositiveComponent;
     }, {});
 
-    if (!Object.keys(filter).length) {
+    if (!keys(filter).length) {
       return null;
     }
 

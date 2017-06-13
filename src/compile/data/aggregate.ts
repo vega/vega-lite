@@ -95,7 +95,7 @@ export class AggregateNode extends DataFlowNode {
       }
     });
 
-    if ((Object.keys(dims).length + Object.keys(meas).length) === 0) {
+    if ((keys(dims).length + keys(meas).length) === 0) {
       return null;
     }
 
@@ -121,7 +121,7 @@ export class AggregateNode extends DataFlowNode {
       dims[s] = true;
     }
 
-    if ((Object.keys(dims).length + Object.keys(meas).length)  === 0) {
+    if ((keys(dims).length + keys(meas).length)  === 0) {
       return null;
     }
 

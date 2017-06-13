@@ -42,7 +42,7 @@ export class NullFilterNode extends DataFlowNode {
       return aggregator;
     }, {} as Dict<FieldDef<string>>);
 
-    if (Object.keys(fields).length === 0) {
+    if (keys(fields).length === 0) {
       return null;
     }
 
@@ -54,8 +54,8 @@ export class NullFilterNode extends DataFlowNode {
   }
 
   public merge(other: NullFilterNode) {
-    const t = Object.keys(this._filteredFields).map(k => k + ' ' + hash(this._filteredFields[k]));
-    const o = Object.keys(other.filteredFields).map(k => k + ' ' + hash(other.filteredFields[k]));
+    const t = keys(this._filteredFields).map(k => k + ' ' + hash(this._filteredFields[k]));
+    const o = keys(other.filteredFields).map(k => k + ' ' + hash(other.filteredFields[k]));
 
     if (!differArray(t, o)) {
       this._filteredFields = extend(this._filteredFields, other._filteredFields);
