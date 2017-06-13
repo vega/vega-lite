@@ -114,6 +114,10 @@ export namespace message {
     return `Unrecognized parse ${p}.`;
   }
 
+  export function differentParse(field: string, local: string, ancestor: string) {
+    return `An ancestor parsed field ${field} as ${ancestor} but a child wants to parse the field as ${local}.`;
+  }
+
   // TRANSFORMS
   export function invalidTransformIgnored(transform: any) {
     return `Ignoring an invalid transform: ${JSON.stringify(transform)}.`;

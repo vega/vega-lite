@@ -200,11 +200,15 @@ export function parseData(model: Model): DataComponent {
     head = facetRoot;
   }
 
+  // add the format parse from this model so that children don't parse the same field again
+  const modelParse = {...model.component.data.modelParse, ...(parse ? parse.parse : {})};
+
   return {
-    sources: model.component.data.sources,
+    ...model.component.data,
     outputNodes,
     outputNodeRefCounts,
     main,
-    facetRoot
+    facetRoot,
+    modelParse
   };
 }

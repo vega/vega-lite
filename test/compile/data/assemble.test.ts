@@ -21,7 +21,8 @@ describe('compile/data/assemble', () => {
       const data = assembleData({
         sources: {named: src},
         outputNodes: {out: main},
-        outputNodeRefCounts
+        outputNodeRefCounts,
+        modelParse: {}
       });
 
       assert.deepEqual(data, [{
@@ -45,7 +46,8 @@ describe('compile/data/assemble', () => {
       const data = assembleData({
         sources: {named: src},
         outputNodes: {out: main},
-        outputNodeRefCounts
+        outputNodeRefCounts,
+        modelParse: {}
       });
 
       assert.deepEqual<VgData[]>(data, [{

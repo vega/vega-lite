@@ -68,10 +68,20 @@ export class ParseNode extends DataFlowNode {
     const data = model.data;
     if (data && data.format && data.format.parse) {
       const p = data.format.parse;
-      keys(p).forEach((field) => {
+      keys(p).forEach(field => {
         parse[field] = p[field];
       });
     }
+
+    // We should not parse what has already been parsed in a parent
+    const modelParse = model.component.data.modelParse;
+    keys(modelParse).forEach(field => {
+      if (parse[field] !== modelParse[field]) {
+        log.warn(log.message.differentParse(field, parse[field], modelParse[field]));
+      } else {
+        delete parse[field];
+      }
+    });
 
     if (keys(parse).length === 0) {
       return null;
@@ -84,12 +94,10 @@ export class ParseNode extends DataFlowNode {
     return this._parse;
   }
 
-
   public merge(other: ParseNode) {
     this._parse = extend(this._parse, other.parse);
     other.remove();
   }
-
   public assembleFormatParse() {
     return this._parse;
   }
