@@ -2,7 +2,7 @@ import {X, Y} from '../../channel';
 import {Config} from '../../config';
 import {isFieldDef} from '../../fielddef';
 import * as log from '../../log';
-import {isBinScale, Scale, ScaleType} from '../../scale';
+import {Scale, ScaleType} from '../../scale';
 import {StackProperties} from '../../stack';
 import {VgEncodeEntry} from '../../vega.schema';
 
