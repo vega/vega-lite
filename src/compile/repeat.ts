@@ -1,5 +1,5 @@
 import {isArray} from 'vega-util';
-import {ScaleChannel} from '../channel';
+import {NonspatialScaleChannel, ScaleChannel} from '../channel';
 import {Config} from '../config';
 import {Encoding} from '../encoding';
 import {Facet} from '../facet';
@@ -169,7 +169,7 @@ export class RepeatModel extends Model {
     for (const child of this.children) {
       child.parseLegend();
 
-      keys(child.component.legends).forEach((channel: ScaleChannel) => {
+      keys(child.component.legends).forEach((channel: NonspatialScaleChannel) => {
         if (this.resolve[channel].legend === 'shared') {
           moveSharedLegendUp(this.component.legends, child, channel);
         }

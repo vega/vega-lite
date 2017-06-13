@@ -1,4 +1,4 @@
-import {Channel, COLUMN, ROW, ScaleChannel} from '../channel';
+import {Channel, COLUMN, NonspatialScaleChannel, ROW, ScaleChannel} from '../channel';
 import {Config} from '../config';
 import {reduce} from '../encoding';
 import {Facet} from '../facet';
@@ -224,7 +224,7 @@ export class FacetModel extends ModelWithField {
     this.child.parseLegend();
 
     this.component.legends = {};
-    keys(this.child.component.legends).forEach((channel: ScaleChannel) => {
+    keys(this.child.component.legends).forEach((channel: NonspatialScaleChannel) => {
       if (this.resolve[channel].legend === 'shared') {
         moveSharedLegendUp(this.component.legends, this.child, channel);
       }

@@ -77,11 +77,8 @@ export function isChannel(str: string): str is Channel {
 // CHANNELS without COLUMN, ROW
 export const UNIT_CHANNELS = [X, Y, X2, Y2, SIZE, SHAPE, COLOR, ORDER, OPACITY, TEXT, DETAIL, TOOLTIP];
 
-// UNIT_CHANNELS without X2, Y2, ORDER, DETAIL, TEXT, TOOLTIP
-export const UNIT_SCALE_CHANNELS = [X, Y, SIZE, SHAPE, COLOR, OPACITY];
-
-// UNIT_SCALE_CHANNELS with ROW, COLUMN
-export const SCALE_CHANNELS = [X, Y, SIZE, SHAPE, COLOR, OPACITY, ROW, COLUMN];
+/** List of channels with scales */
+export const SCALE_CHANNELS = [X, Y, SIZE, SHAPE, COLOR, OPACITY];
 export type ScaleChannel = typeof SCALE_CHANNELS[0];
 
 const SCALE_CHANNEL_INDEX = toSet(SCALE_CHANNELS);
@@ -97,7 +94,7 @@ export const NONSPATIAL_CHANNELS = [SIZE, SHAPE, COLOR, ORDER, OPACITY, TEXT, DE
 export const SPATIAL_SCALE_CHANNELS = [X, Y];
 export type SpatialScaleChannel = typeof SPATIAL_SCALE_CHANNELS[0];
 
-// UNIT_SCALE_CHANNELS without X, Y;
+// SCALE_CHANNELS without X, Y;
 export const NONSPATIAL_SCALE_CHANNELS = [SIZE, SHAPE, COLOR, OPACITY];
 export type NonspatialScaleChannel = typeof NONSPATIAL_SCALE_CHANNELS[0];
 
