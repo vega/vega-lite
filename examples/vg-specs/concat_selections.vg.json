@@ -733,16 +733,16 @@
                         "data": "data_1",
                         "field": "Displacement"
                     },
+                    "domainRaw": {
+                        "signal": "grid_Displacement"
+                    },
                     "range": [
                         0,
                         200
                     ],
                     "round": true,
                     "nice": true,
-                    "zero": true,
-                    "domainRaw": {
-                        "signal": "grid_Displacement"
-                    }
+                    "zero": true
                 },
                 {
                     "name": "concat_1_y",
@@ -751,16 +751,16 @@
                         "data": "data_1",
                         "field": "Acceleration"
                     },
+                    "domainRaw": {
+                        "signal": "grid_Acceleration"
+                    },
                     "range": [
                         200,
                         0
                     ],
                     "round": true,
                     "nice": true,
-                    "zero": true,
-                    "domainRaw": {
-                        "signal": "grid_Acceleration"
-                    }
+                    "zero": true
                 }
             ],
             "axes": [

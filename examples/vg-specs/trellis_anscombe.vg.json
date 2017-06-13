@@ -283,9 +283,9 @@
                 0,
                 200
             ],
+            "zero": false,
             "round": true,
-            "nice": true,
-            "zero": false
+            "nice": true
         },
         {
             "name": "y",
@@ -298,9 +298,9 @@
                 200,
                 0
             ],
+            "zero": false,
             "round": true,
-            "nice": true,
-            "zero": false
+            "nice": true
         }
     ]
 }

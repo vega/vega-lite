@@ -714,16 +714,16 @@
                 ],
                 "sort": true
             },
+            "domainRaw": {
+                "signal": "grid_Horsepower"
+            },
             "range": [
                 0,
                 200
             ],
             "round": true,
             "nice": true,
-            "zero": true,
-            "domainRaw": {
-                "signal": "grid_Horsepower"
-            }
+            "zero": true
         },
         {
             "name": "y",
@@ -741,16 +741,16 @@
                 ],
                 "sort": true
             },
+            "domainRaw": {
+                "signal": "grid_Miles_per_Gallon"
+            },
             "range": [
                 200,
                 0
             ],
             "round": true,
             "nice": true,
-            "zero": true,
-            "domainRaw": {
-                "signal": "grid_Miles_per_Gallon"
-            }
+            "zero": true
         },
         {
             "name": "color",

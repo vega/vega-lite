@@ -9,7 +9,7 @@ import {isRawSelectionDomain, scaleDomain} from '../selection/selection';
 export function assembleScale(model: Model): VgScale[] {
     return vals(model.component.scales).map(scaleComponent => {
       // We need to cast here as combine returns Partial<VgScale> by default.
-      const scale = scaleComponent.combine() as VgScale;
+      const scale = scaleComponent.combine(['name', 'type', 'domain', 'domainRaw', 'range']) as VgScale;
 
       const domainRaw = scaleComponent.get('domainRaw');
       // As scale parsing occurs before selection parsing, a temporary signal

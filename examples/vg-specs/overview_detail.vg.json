@@ -545,13 +545,13 @@
                         "data": "data_1",
                         "field": "date"
                     },
+                    "domainRaw": {
+                        "signal": "vlIntervalDomain(\"brush_store\", \"x\", null, \"union\", \"all\")"
+                    },
                     "range": [
                         0,
                         480
                     ],
-                    "domainRaw": {
-                        "signal": "vlIntervalDomain(\"brush_store\", \"x\", null, \"union\", \"all\")"
-                    },
                     "round": true
                 },
                 {
