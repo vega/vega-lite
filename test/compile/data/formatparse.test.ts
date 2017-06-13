@@ -4,7 +4,7 @@ import {assert} from 'chai';
 import {ParseNode} from '../../../src/compile/data/formatparse';
 import {Model, ModelWithField} from '../../../src/compile/model';
 import * as log from '../../../src/log';
-import {parseUnitModel} from '../../util';
+import {parseFacetModel, parseUnitModel} from '../../util';
 
 function parse(model: ModelWithField) {
   return ParseNode.make(model).assembleFormatParse();
@@ -65,6 +65,46 @@ describe('compile/data/formatparse', () => {
       assert.deepEqual(parse(model), {
         'a': 'date',
         'b': 'number'
+      });
+    });
+
+    it('should not parse the same field twice', function() {
+      const model = parseFacetModel({
+        data: {
+          values: [],
+          format: {
+            parse: {
+              a: 'number'
+            }
+          }
+        },
+        facet: {
+          row: {field: 'a', type: 'ordinal'}
+        },
+        spec: {
+          mark: "point",
+          encoding: {
+            x: {field: 'a', type: "quantitative"},
+            y: {field: 'b', type: "temporal"}
+          }
+        }
+      });
+
+      assert.deepEqual(parse(model), {
+        'a': 'number'
+      });
+
+      model.parseData();
+
+      assert.deepEqual(model.child.component.data.ancestorParse, {
+        'a': 'number',
+        'b': 'date'
+      });
+
+      // set the ancestor parse to see whether fields from it are not parsed
+      model.child.component.data.ancestorParse = {a: 'number'};
+      assert.deepEqual(parse(model.child as ModelWithField), {
+        'b': 'date'
       });
     });
   });

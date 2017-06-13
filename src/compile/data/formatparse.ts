@@ -74,7 +74,7 @@ export class ParseNode extends DataFlowNode {
     }
 
     // We should not parse what has already been parsed in a parent
-    const modelParse = model.component.data.modelParse;
+    const modelParse = model.component.data.ancestorParse;
     keys(modelParse).forEach(field => {
       if (parse[field] !== modelParse[field]) {
         log.warn(log.message.differentParse(field, parse[field], modelParse[field]));

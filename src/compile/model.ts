@@ -122,7 +122,7 @@ export abstract class Model {
         sources: parent ? parent.component.data.sources : {},
         outputNodes: parent ? parent.component.data.outputNodes : {},
         outputNodeRefCounts: parent ? parent.component.data.outputNodeRefCounts : {},
-        modelParse: parent ? {...parent.component.data.modelParse} : {}
+        ancestorParse: parent ? {...parent.component.data.ancestorParse} : {}
       },
       mark: null, scales: {}, axes: {x: null, y: null},
       layoutHeaders:{row: {}, column: {}}, legends: null, selection: null
