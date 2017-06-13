@@ -1,13 +1,12 @@
-import * as log from '../../log';
-
 import {Axis} from '../../axis';
+import {binToString} from '../../bin';
 import {Channel, COLUMN, ROW, SpatialScaleChannel, X, Y} from '../../channel';
 import {Config} from '../../config';
 import {DateTime, dateTimeExpr, isDateTime} from '../../datetime';
 import {FieldDef, title as fieldDefTitle} from '../../fielddef';
+import * as log from '../../log';
 import {truncate} from '../../util';
 import {VgAxis} from '../../vega.schema';
-
 import {numberFormat} from '../common';
 import {UnitModel} from '../unit';
 
@@ -102,13 +101,17 @@ export function title(specifiedAxis: Axis, fieldDef: FieldDef<string>, config: C
   return maxLength ? truncate(fieldTitle, maxLength) : fieldTitle;
 }
 
-export function values(specifiedAxis: Axis) {
+export function values(specifiedAxis: Axis, model: UnitModel, fieldDef: FieldDef<string>) {
   const vals = specifiedAxis.values;
   if (specifiedAxis.values && isDateTime(vals[0])) {
     return (vals as DateTime[]).map((dt) => {
       // normalize = true as end user won't put 0 = January
       return {signal: dateTimeExpr(dt, true)};
     });
+  }
+  if (!vals && fieldDef.bin) {
+    const signal = model.getName(`${binToString(fieldDef.bin)}_${fieldDef.field}_bins`);
+    return {signal: `sequence(${signal}.start, ${signal}.stop + ${signal}.step, ${signal}.step)`};
   }
   return vals;
 }

@@ -5,7 +5,7 @@
 import {Channel, X, X2, Y, Y2} from '../../channel';
 import {Config} from '../../config';
 import {ChannelDef, Conditional, field, FieldDef, FieldRefOption, isFieldDef, isValueDef, TextFieldDef, ValueDef} from '../../fielddef';
-import {hasDiscreteDomain, isBinScale, ScaleType} from '../../scale';
+import {hasDiscreteDomain, ScaleType} from '../../scale';
 import {StackProperties} from '../../stack';
 import {contains} from '../../util';
 import {VgScale, VgValueRef} from '../../vega.schema';
@@ -95,7 +95,7 @@ export function midPoint(channel: Channel, channelDef: ChannelDef<string>, scale
     /* istanbul ignore else */
 
     if (isFieldDef(channelDef)) {
-      if (isBinScale(scale.type)) {
+      if (channelDef.bin) {
         // Use middle only for x an y to place marks in the center between start and end of the bin range.
         // We do not use the mid point for other channels (e.g. size) so that properties of legends and marks match.
         if (contains(['x', 'y'], channel)) {

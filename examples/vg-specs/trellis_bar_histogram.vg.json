@@ -187,6 +187,9 @@
                     "format": "s",
                     "orient": "bottom",
                     "title": "BIN(Horsepower)",
+                    "values": {
+                        "signal": "sequence(child_bin_maxbins_15_Horsepower_bins.start, child_bin_maxbins_15_Horsepower_bins.stop + child_bin_maxbins_15_Horsepower_bins.step, child_bin_maxbins_15_Horsepower_bins.step)"
+                    },
                     "zindex": 1,
                     "encode": {
                         "labels": {
@@ -289,16 +292,20 @@
     "scales": [
         {
             "name": "x",
-            "type": "bin-linear",
+            "type": "linear",
             "domain": {
-                "signal": "sequence(child_bin_maxbins_15_Horsepower_bins.start, child_bin_maxbins_15_Horsepower_bins.stop + child_bin_maxbins_15_Horsepower_bins.step, child_bin_maxbins_15_Horsepower_bins.step)"
+                "data": "source_0",
+                "fields": [
+                    "bin_maxbins_15_Horsepower_start",
+                    "bin_maxbins_15_Horsepower_end"
+                ]
             },
             "range": [
                 0,
                 200
             ],
             "round": true,
-            "nice": true
+            "zero": false
         },
         {
             "name": "y",

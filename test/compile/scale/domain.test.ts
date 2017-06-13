@@ -114,8 +114,11 @@ describe('compile/scale', () => {
         });
 
         assert.deepEqual(parseDomain(model,'y'), {
-          signal: 'sequence(bin_maxbins_15_origin_bins.start, bin_maxbins_15_origin_bins.stop + bin_maxbins_15_origin_bins.step, bin_maxbins_15_origin_bins.step)'
-        });
+          data: 'main',
+          fields: [
+            'bin_maxbins_15_origin_start',
+            'bin_maxbins_15_origin_end'
+        ]});
 
         assert.equal(localLogger.warns[0], log.message.unaggregateDomainHasNoEffectForRawField(fieldDef));
       }));
@@ -189,8 +192,11 @@ describe('compile/scale', () => {
         const _domain = parseDomain(model,'y');
 
         assert.deepEqual(_domain, {
-          signal: 'sequence(bin_maxbins_15_origin_bins.start, bin_maxbins_15_origin_bins.stop + bin_maxbins_15_origin_bins.step, bin_maxbins_15_origin_bins.step)'
-        });
+          data: 'main',
+          fields: [
+            'bin_maxbins_15_origin_start',
+            'bin_maxbins_15_origin_end'
+        ]});
         assert.equal(localLogger.warns[0], log.message.conflictedDomain("y"));
       }));
 

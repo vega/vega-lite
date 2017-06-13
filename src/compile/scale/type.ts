@@ -105,7 +105,8 @@ function defaultType(channel: Channel, fieldDef: FieldDef<string>, mark: Mark,
         return 'ordinal';
       }
 
-      if (fieldDef.bin) {
+      // x and y use a linear scale because selections don't work with bin scales
+      if (fieldDef.bin && channel !== 'x' && channel !== 'y') {
         return 'bin-linear';
       }
       return 'linear';

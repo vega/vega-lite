@@ -44,7 +44,7 @@ function x(model: UnitModel, stack: StackProperties): VgEncodeEntry {
     };
   } else { // vertical
     if (isFieldDef(xDef)) {
-      if (!sizeDef && isBinScale(xScale.type)) {
+      if (xDef.bin && !sizeDef) {
         return mixins.binnedPosition(xDef, 'x', model.scaleName('x'), config.bar.binSpacing);
       } else if (xScale.type === ScaleType.BAND) {
         return mixins.bandPosition(xDef, 'x', model);
