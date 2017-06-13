@@ -127,8 +127,8 @@
             "range": {
                 "step": 50
             },
-            "round": true,
-            "padding": 0.5
+            "padding": 0.5,
+            "round": true
         },
         {
             "name": "y",

@@ -108,8 +108,8 @@
                 0,
                 300
             ],
-            "round": true,
-            "nice": "month"
+            "nice": "month",
+            "round": true
         },
         {
             "name": "y",

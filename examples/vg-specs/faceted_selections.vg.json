@@ -746,16 +746,16 @@
                 "data": "source_0",
                 "field": "X"
             },
+            "domainRaw": {
+                "signal": "grid_X"
+            },
             "range": [
                 0,
                 200
             ],
-            "round": true,
-            "nice": true,
             "zero": false,
-            "domainRaw": {
-                "signal": "grid_X"
-            }
+            "round": true,
+            "nice": true
         },
         {
             "name": "y",
@@ -764,16 +764,16 @@
                 "data": "source_0",
                 "field": "Y"
             },
+            "domainRaw": {
+                "signal": "grid_Y"
+            },
             "range": [
                 200,
                 0
             ],
-            "round": true,
-            "nice": true,
             "zero": false,
-            "domainRaw": {
-                "signal": "grid_Y"
-            }
+            "round": true,
+            "nice": true
         }
     ]
 }
