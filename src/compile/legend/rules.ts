@@ -31,7 +31,12 @@ export function type(legend: Legend, type: Type, channel: Channel, scaleType: Sc
   if (legend.type) {
     return legend.type;
   }
-  if (channel === COLOR && ((type === 'quantitative' && !isBinScale(scaleType)) || (type === 'temporal' && contains<ScaleType>(['time', 'utc'], scaleType)))) {
+  if (
+      channel === COLOR && (
+        (type === 'quantitative' && !isBinScale(scaleType)) ||
+        (type === 'temporal' && contains<ScaleType>(['time', 'utc'], scaleType))
+      )
+    ) {
     return 'gradient';
   }
   return undefined;
