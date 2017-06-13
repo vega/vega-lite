@@ -201,7 +201,7 @@ export function parseData(model: Model): DataComponent {
   }
 
   // add the format parse from this model so that children don't parse the same field again
-  const modelParse = {...model.component.data.modelParse, ...(parse ? parse.parse : {})};
+  const ancestorParse = {...model.component.data.ancestorParse, ...(parse ? parse.parse : {})};
 
   return {
     ...model.component.data,
@@ -209,6 +209,6 @@ export function parseData(model: Model): DataComponent {
     outputNodeRefCounts,
     main,
     facetRoot,
-    modelParse
+    ancestorParse
   };
 }

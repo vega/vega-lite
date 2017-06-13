@@ -33,5 +33,5 @@ export interface DataComponent {
   /**
    * Parse properties passed down from ancestors.
    */
-  modelParse: Dict<string>;
+  ancestorParse: Dict<string>;
 }
