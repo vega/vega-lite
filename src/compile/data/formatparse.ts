@@ -104,7 +104,7 @@ export class ParseNode extends DataFlowNode {
   }
 
   public assembleTransforms(): VgFormulaTransform[] {
-    return Object.keys(this._parse).map(field => {
+    return keys(this._parse).map(field => {
       const expr = parseExpression(field, this._parse[field]);
       if (!expr) {
         return null;

@@ -4,7 +4,7 @@ import {Config} from '../../config';
 import {field, FieldDef, normalizeBin} from '../../fielddef';
 import {hasDiscreteDomain} from '../../scale';
 import {BinTransform, Transform} from '../../transform';
-import {Dict, duplicate, extend, flatten, hash, isBoolean, StringSet, vals} from '../../util';
+import {Dict, duplicate, extend, flatten, hash, isBoolean, keys, StringSet, vals} from '../../util';
 import {VgBinTransform, VgTransform} from '../../vega.schema';
 import {numberFormat} from '../common';
 import {Model, ModelWithField} from '../model';
@@ -89,7 +89,7 @@ export class BinNode extends DataFlowNode {
       return binComponent;
     }, {});
 
-    if (Object.keys(bins).length === 0) {
+    if (keys(bins).length === 0) {
       return null;
     }
 

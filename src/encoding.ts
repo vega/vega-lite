@@ -24,7 +24,7 @@ import {
 } from './fielddef';
 import * as log from './log';
 import {Mark} from './mark';
-import {isArray, some} from './util';
+import {isArray, keys, some} from './util';
 
 // utility for encoding mapping
 
@@ -137,7 +137,7 @@ export function isAggregate(encoding: EncodingWithFacet<Field>) {
 }
 
 export function normalizeEncoding(encoding: Encoding<string>, mark: Mark): Encoding<string> {
-  return Object.keys(encoding).reduce((normalizedEncoding: Encoding<string>, channel: Channel) => {
+  return keys(encoding).reduce((normalizedEncoding: Encoding<string>, channel: Channel) => {
     if (!supportMark(channel, mark)) {
       // Drop unsupported channel
 
@@ -210,7 +210,7 @@ export function forEach(mapping: any,
     return;
   }
 
-  Object.keys(mapping).forEach((c: any) => {
+  keys(mapping).forEach((c: any) => {
     const channel: Channel = c;
     if (isArray(mapping[channel])) {
       mapping[channel].forEach(function(channelDef: ChannelDef<string>) {
@@ -229,7 +229,7 @@ export function reduce<T, U>(mapping: U,
     return init;
   }
 
-  return Object.keys(mapping).reduce((r: T, c: any) => {
+  return keys(mapping).reduce((r: T, c: any) => {
     const channel: Channel = c;
     if (isArray(mapping[channel])) {
       return mapping[channel].reduce(function(r1: T, channelDef: ChannelDef<string>) {

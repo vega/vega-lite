@@ -2,7 +2,7 @@ import {field} from '../../fielddef';
 import {fieldExpr, TimeUnit} from '../../timeunit';
 import {TimeUnitTransform} from '../../transform';
 import {TEMPORAL} from '../../type';
-import {Dict, duplicate, extend, vals} from '../../util';
+import {Dict, duplicate, extend, keys, vals} from '../../util';
 import {VgFormulaTransform} from '../../vega.schema';
 import {Model, ModelWithField} from '../model';
 import {DataFlowNode} from './dataflow';
@@ -36,7 +36,7 @@ export class TimeUnitNode extends DataFlowNode {
       return timeUnitComponent;
     }, {} as Dict<TimeUnitComponent>);
 
-    if (Object.keys(formula).length === 0) {
+    if (keys(formula).length === 0) {
       return null;
     }
 

@@ -3,6 +3,7 @@
 import {assert} from 'chai';
 import {selector as parseSelector} from 'vega-event-selector';
 import * as selection from '../../../src/compile/selection/selection';
+import {keys} from '../../../src/util';
 import {parseUnitModel} from '../../util';
 
 describe('Selection', function() {
@@ -22,7 +23,7 @@ describe('Selection', function() {
       "three": {"type": "interval"}
     });
 
-    assert.sameMembers(Object.keys(component), ['one', 'two', 'three']);
+    assert.sameMembers(keys(component), ['one', 'two', 'three']);
 
     assert.equal(component.one.name, 'one');
     assert.equal(component.one.type, 'single');
@@ -60,7 +61,7 @@ describe('Selection', function() {
       }
     });
 
-    assert.sameMembers(Object.keys(component), ['one', 'two', 'three']);
+    assert.sameMembers(keys(component), ['one', 'two', 'three']);
 
     assert.equal(component.one.name, 'one');
     assert.equal(component.one.type, 'single');
@@ -98,7 +99,7 @@ describe('Selection', function() {
       "three": {"type": "interval"}
     });
 
-    assert.sameMembers(Object.keys(component), ['one', 'two', 'three']);
+    assert.sameMembers(keys(component), ['one', 'two', 'three']);
 
     assert.equal(component.one.name, 'one');
     assert.equal(component.one.type, 'single');
