@@ -29,4 +29,9 @@ export interface DataComponent {
    * For facets, we store the reference to the root node.
    */
   facetRoot?: FacetNode;
+
+  /**
+   * Parse properties passed down from ancestors.
+   */
+  modelParse: Dict<string>;
 }
