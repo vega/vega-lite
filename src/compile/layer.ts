@@ -142,7 +142,7 @@ export class LayerModel extends Model {
     for (const child of this.children) {
       child.parseLegend();
 
-      keys(child.component.legends).forEach((channel: ScaleChannel) => {
+      keys(child.component.legends).forEach((channel: NonspatialScaleChannel) => {
         if (this.resolve[channel].legend === 'shared') {
           moveSharedLegendUp(legendComponent, child, channel);
         }

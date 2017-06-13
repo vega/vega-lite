@@ -1,5 +1,5 @@
 import {Axis} from '../axis';
-import {Channel, NONSPATIAL_SCALE_CHANNELS, ScaleChannel, SingleDefChannel, UNIT_CHANNELS, UNIT_SCALE_CHANNELS, X, X2, Y, Y2} from '../channel';
+import {Channel, NONSPATIAL_SCALE_CHANNELS, SCALE_CHANNELS, ScaleChannel, SingleDefChannel, UNIT_CHANNELS, X, X2, Y, Y2} from '../channel';
 import {CellConfig, Config} from '../config';
 import * as vlEncoding from '../encoding'; // TODO: remove
 import {Encoding, normalizeEncoding} from '../encoding';
@@ -151,7 +151,7 @@ export class UnitModel extends ModelWithField {
   private initScales(mark: Mark, encoding: Encoding<string>, topLevelWidth:number, topLevelHeight: number): ScaleIndex {
     const xyRangeSteps: number[] = [];
 
-    return UNIT_SCALE_CHANNELS.reduce((scales, channel) => {
+    return SCALE_CHANNELS.reduce((scales, channel) => {
       let fieldDef: FieldDef<string>;
       let specifiedScale: Scale;
 

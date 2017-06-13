@@ -1,6 +1,6 @@
 import {assert} from 'chai';
 import {Channel, hasScale, rangeType, SINGLE_DEF_CHANNELS, supportScaleType} from '../src/channel';
-import {CHANNELS, NONSPATIAL_CHANNELS, NONSPATIAL_SCALE_CHANNELS, SCALE_CHANNELS, UNIT_CHANNELS, UNIT_SCALE_CHANNELS} from '../src/channel';
+import {CHANNELS, NONSPATIAL_CHANNELS, NONSPATIAL_SCALE_CHANNELS, SCALE_CHANNELS, UNIT_CHANNELS} from '../src/channel';
 import {SCALE_TYPES, ScaleType} from '../src/scale';
 import {some, without} from '../src/util';
 
@@ -18,15 +18,9 @@ describe('channel', () => {
     });
   });
 
-  describe('UNIT_SCALE_CHANNELS', () => {
-    it('should be UNIT_CHANNELS without X2, Y2, ORDER, DETAIL, TEXT, LABEL, TOOLTIP', () => {
-      assert.deepEqual(UNIT_SCALE_CHANNELS, without(UNIT_CHANNELS, ['x2', 'y2', 'order', 'detail', 'text', 'label', 'tooltip']));
-    });
-  });
-
   describe('SCALE_CHANNELS', () => {
-    it('should be UNIT_SCALE_CHANNELS and ROW and COLUMN', () => {
-      assert.deepEqual(SCALE_CHANNELS, [].concat(UNIT_SCALE_CHANNELS, ['row', 'column']));
+    it('should be UNIT_CHANNELS without X2, Y2, ORDER, DETAIL, TEXT, LABEL, TOOLTIP', () => {
+      assert.deepEqual(SCALE_CHANNELS, without(UNIT_CHANNELS, ['x2', 'y2', 'order', 'detail', 'text', 'label', 'tooltip']));
     });
   });
 
@@ -37,8 +31,8 @@ describe('channel', () => {
   });
 
   describe('NONSPATIAL_SCALE_CHANNELS', () => {
-    it('should be UNIT_SCALE_CHANNELS without x, y, x2, y2', () => {
-      assert.deepEqual(NONSPATIAL_SCALE_CHANNELS, without(UNIT_SCALE_CHANNELS, ['x', 'y']));
+    it('should be SCALE_CHANNELS without x, y, x2, y2', () => {
+      assert.deepEqual(NONSPATIAL_SCALE_CHANNELS, without(SCALE_CHANNELS, ['x', 'y']));
     });
   });
 
