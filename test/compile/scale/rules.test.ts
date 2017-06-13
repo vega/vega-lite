@@ -9,7 +9,19 @@ import * as rules from '../../../src/compile/scale/rules';
 
 describe('compile/scale', () => {
   describe('nice', () => {
-    // TODO:
+    it('should return nice for x and y.', () => {
+      for (const c of ['x', 'y'] as Channel[]) {
+        assert.equal(rules.nice('linear', c, {type: 'quantitative'}), true);
+      }
+    });
+
+    it('should not return nice for binned x and y.', () => {
+      for (const c of ['x', 'y'] as Channel[]) {
+        assert.equal(rules.nice('linear', c, {type: 'quantitative', bin: true}), undefined);
+      }
+    });
+
+    // TODO
   });
 
   describe('padding', () => {

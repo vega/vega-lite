@@ -217,14 +217,24 @@
     "scales": [
         {
             "name": "x",
-            "type": "bin-linear",
+            "type": "linear",
             "domain": {
                 "fields": [
                     {
-                        "signal": "sequence(layer_0_bin_maxbins_10_distance_bins.start, layer_0_bin_maxbins_10_distance_bins.stop + layer_0_bin_maxbins_10_distance_bins.step, layer_0_bin_maxbins_10_distance_bins.step)"
+                        "data": "data_0",
+                        "field": "bin_maxbins_10_distance_start"
                     },
                     {
-                        "signal": "sequence(layer_1_bin_maxbins_10_distance_bins.start, layer_1_bin_maxbins_10_distance_bins.stop + layer_1_bin_maxbins_10_distance_bins.step, layer_1_bin_maxbins_10_distance_bins.step)"
+                        "data": "data_0",
+                        "field": "bin_maxbins_10_distance_end"
+                    },
+                    {
+                        "data": "data_1",
+                        "field": "bin_maxbins_10_distance_start"
+                    },
+                    {
+                        "data": "data_1",
+                        "field": "bin_maxbins_10_distance_end"
                     }
                 ],
                 "sort": true
@@ -234,7 +244,7 @@
                 200
             ],
             "round": true,
-            "nice": true
+            "zero": false
         },
         {
             "name": "y",
@@ -267,6 +277,9 @@
             "format": "s",
             "orient": "bottom",
             "title": "BIN(distance)",
+            "values": {
+                "signal": "sequence(layer_0_bin_maxbins_10_distance_bins.start, layer_0_bin_maxbins_10_distance_bins.stop + layer_0_bin_maxbins_10_distance_bins.step, layer_0_bin_maxbins_10_distance_bins.step)"
+            },
             "zindex": 1,
             "encode": {
                 "labels": {

@@ -479,6 +479,12 @@
                         },
                         {
                             "events": {
+                                "scale": "child_distance_x"
+                            },
+                            "update": "!isArray(brush_distance) ? brush_x : [scale(\"child_distance_x\", brush_distance[0]), scale(\"child_distance_x\", brush_distance[1])]"
+                        },
+                        {
+                            "events": {
                                 "signal": "brush_translate_delta"
                             },
                             "update": "clampRange([brush_translate_anchor.extent_x[0] + brush_translate_delta.x, brush_translate_anchor.extent_x[1] + brush_translate_delta.x], 0, child_distance_layer_0_width)"
@@ -772,14 +778,24 @@
             "scales": [
                 {
                     "name": "child_distance_x",
-                    "type": "bin-linear",
+                    "type": "linear",
                     "domain": {
                         "fields": [
                             {
-                                "signal": "sequence(child_distance_layer_0_bin_maxbins_20_distance_bins.start, child_distance_layer_0_bin_maxbins_20_distance_bins.stop + child_distance_layer_0_bin_maxbins_20_distance_bins.step, child_distance_layer_0_bin_maxbins_20_distance_bins.step)"
+                                "data": "data_0",
+                                "field": "bin_maxbins_20_distance_start"
                             },
                             {
-                                "signal": "sequence(child_distance_layer_1_bin_maxbins_20_distance_bins.start, child_distance_layer_1_bin_maxbins_20_distance_bins.stop + child_distance_layer_1_bin_maxbins_20_distance_bins.step, child_distance_layer_1_bin_maxbins_20_distance_bins.step)"
+                                "data": "data_0",
+                                "field": "bin_maxbins_20_distance_end"
+                            },
+                            {
+                                "data": "data_1",
+                                "field": "bin_maxbins_20_distance_start"
+                            },
+                            {
+                                "data": "data_1",
+                                "field": "bin_maxbins_20_distance_end"
                             }
                         ],
                         "sort": true
@@ -789,7 +805,7 @@
                         200
                     ],
                     "round": true,
-                    "nice": true
+                    "zero": false
                 },
                 {
                     "name": "child_distance_y",
@@ -822,6 +838,9 @@
                     "format": "s",
                     "orient": "bottom",
                     "title": "BIN(distance)",
+                    "values": {
+                        "signal": "sequence(child_distance_layer_0_bin_maxbins_20_distance_bins.start, child_distance_layer_0_bin_maxbins_20_distance_bins.stop + child_distance_layer_0_bin_maxbins_20_distance_bins.step, child_distance_layer_0_bin_maxbins_20_distance_bins.step)"
+                    },
                     "zindex": 1,
                     "encode": {
                         "labels": {
@@ -910,6 +929,12 @@
                                 ]
                             },
                             "update": "[brush_x[0], clamp(x(unit), 0, child_delay_layer_0_width)]"
+                        },
+                        {
+                            "events": {
+                                "scale": "child_delay_x"
+                            },
+                            "update": "!isArray(brush_delay) ? brush_x : [scale(\"child_delay_x\", brush_delay[0]), scale(\"child_delay_x\", brush_delay[1])]"
                         },
                         {
                             "events": {
@@ -1206,14 +1231,24 @@
             "scales": [
                 {
                     "name": "child_delay_x",
-                    "type": "bin-linear",
+                    "type": "linear",
                     "domain": {
                         "fields": [
                             {
-                                "signal": "sequence(child_delay_layer_0_bin_maxbins_20_delay_bins.start, child_delay_layer_0_bin_maxbins_20_delay_bins.stop + child_delay_layer_0_bin_maxbins_20_delay_bins.step, child_delay_layer_0_bin_maxbins_20_delay_bins.step)"
+                                "data": "data_2",
+                                "field": "bin_maxbins_20_delay_start"
                             },
                             {
-                                "signal": "sequence(child_delay_layer_1_bin_maxbins_20_delay_bins.start, child_delay_layer_1_bin_maxbins_20_delay_bins.stop + child_delay_layer_1_bin_maxbins_20_delay_bins.step, child_delay_layer_1_bin_maxbins_20_delay_bins.step)"
+                                "data": "data_2",
+                                "field": "bin_maxbins_20_delay_end"
+                            },
+                            {
+                                "data": "data_3",
+                                "field": "bin_maxbins_20_delay_start"
+                            },
+                            {
+                                "data": "data_3",
+                                "field": "bin_maxbins_20_delay_end"
                             }
                         ],
                         "sort": true
@@ -1223,7 +1258,7 @@
                         200
                     ],
                     "round": true,
-                    "nice": true
+                    "zero": false
                 },
                 {
                     "name": "child_delay_y",
@@ -1256,6 +1291,9 @@
                     "format": "s",
                     "orient": "bottom",
                     "title": "BIN(delay)",
+                    "values": {
+                        "signal": "sequence(child_delay_layer_0_bin_maxbins_20_delay_bins.start, child_delay_layer_0_bin_maxbins_20_delay_bins.stop + child_delay_layer_0_bin_maxbins_20_delay_bins.step, child_delay_layer_0_bin_maxbins_20_delay_bins.step)"
+                    },
                     "zindex": 1,
                     "encode": {
                         "labels": {
@@ -1344,6 +1382,12 @@
                                 ]
                             },
                             "update": "[brush_x[0], clamp(x(unit), 0, child_time_layer_0_width)]"
+                        },
+                        {
+                            "events": {
+                                "scale": "child_time_x"
+                            },
+                            "update": "!isArray(brush_time) ? brush_x : [scale(\"child_time_x\", brush_time[0]), scale(\"child_time_x\", brush_time[1])]"
                         },
                         {
                             "events": {
@@ -1640,14 +1684,24 @@
             "scales": [
                 {
                     "name": "child_time_x",
-                    "type": "bin-linear",
+                    "type": "linear",
                     "domain": {
                         "fields": [
                             {
-                                "signal": "sequence(child_time_layer_0_bin_maxbins_20_time_bins.start, child_time_layer_0_bin_maxbins_20_time_bins.stop + child_time_layer_0_bin_maxbins_20_time_bins.step, child_time_layer_0_bin_maxbins_20_time_bins.step)"
+                                "data": "data_4",
+                                "field": "bin_maxbins_20_time_start"
                             },
                             {
-                                "signal": "sequence(child_time_layer_1_bin_maxbins_20_time_bins.start, child_time_layer_1_bin_maxbins_20_time_bins.stop + child_time_layer_1_bin_maxbins_20_time_bins.step, child_time_layer_1_bin_maxbins_20_time_bins.step)"
+                                "data": "data_4",
+                                "field": "bin_maxbins_20_time_end"
+                            },
+                            {
+                                "data": "data_5",
+                                "field": "bin_maxbins_20_time_start"
+                            },
+                            {
+                                "data": "data_5",
+                                "field": "bin_maxbins_20_time_end"
                             }
                         ],
                         "sort": true
@@ -1657,7 +1711,7 @@
                         200
                     ],
                     "round": true,
-                    "nice": true
+                    "zero": false
                 },
                 {
                     "name": "child_time_y",
@@ -1690,6 +1744,9 @@
                     "format": "s",
                     "orient": "bottom",
                     "title": "BIN(time)",
+                    "values": {
+                        "signal": "sequence(child_time_layer_0_bin_maxbins_20_time_bins.start, child_time_layer_0_bin_maxbins_20_time_bins.stop + child_time_layer_0_bin_maxbins_20_time_bins.step, child_time_layer_0_bin_maxbins_20_time_bins.step)"
+                    },
                     "zindex": 1,
                     "encode": {
                         "labels": {

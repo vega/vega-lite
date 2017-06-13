@@ -137,7 +137,7 @@ function getSpecifiedOrDefaultValue(property: keyof VgAxis, specifiedAxis: Axis,
     case 'title':
       return rules.title(specifiedAxis, fieldDef, model.config, isGridAxis);
     case 'values':
-      return rules.values(specifiedAxis);
+      return rules.values(specifiedAxis, model, fieldDef);
     case 'zindex':
       return rules.zindex(specifiedAxis, isGridAxis);
   }

@@ -108,16 +108,20 @@
     "scales": [
         {
             "name": "x",
-            "type": "bin-linear",
+            "type": "linear",
             "domain": {
-                "signal": "sequence(bin_maxbins_10_IMDB_Rating_bins.start, bin_maxbins_10_IMDB_Rating_bins.stop + bin_maxbins_10_IMDB_Rating_bins.step, bin_maxbins_10_IMDB_Rating_bins.step)"
+                "data": "source_0",
+                "fields": [
+                    "bin_maxbins_10_IMDB_Rating_start",
+                    "bin_maxbins_10_IMDB_Rating_end"
+                ]
             },
             "range": [
                 0,
                 200
             ],
             "round": true,
-            "nice": true
+            "zero": false
         },
         {
             "name": "y",
@@ -141,6 +145,9 @@
             "format": "s",
             "orient": "bottom",
             "title": "BIN(IMDB_Rating)",
+            "values": {
+                "signal": "sequence(bin_maxbins_10_IMDB_Rating_bins.start, bin_maxbins_10_IMDB_Rating_bins.stop + bin_maxbins_10_IMDB_Rating_bins.step, bin_maxbins_10_IMDB_Rating_bins.step)"
+            },
             "zindex": 1,
             "encode": {
                 "labels": {

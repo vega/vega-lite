@@ -258,16 +258,20 @@
             "scales": [
                 {
                     "name": "child_distance_x",
-                    "type": "bin-linear",
+                    "type": "linear",
                     "domain": {
-                        "signal": "sequence(child_distance_bin_maxbins_20_distance_bins.start, child_distance_bin_maxbins_20_distance_bins.stop + child_distance_bin_maxbins_20_distance_bins.step, child_distance_bin_maxbins_20_distance_bins.step)"
+                        "data": "data_0",
+                        "fields": [
+                            "bin_maxbins_20_distance_start",
+                            "bin_maxbins_20_distance_end"
+                        ]
                     },
                     "range": [
                         0,
                         200
                     ],
                     "round": true,
-                    "nice": true
+                    "zero": false
                 },
                 {
                     "name": "child_distance_y",
@@ -291,6 +295,9 @@
                     "format": "s",
                     "orient": "bottom",
                     "title": "BIN(distance)",
+                    "values": {
+                        "signal": "sequence(child_distance_bin_maxbins_20_distance_bins.start, child_distance_bin_maxbins_20_distance_bins.stop + child_distance_bin_maxbins_20_distance_bins.step, child_distance_bin_maxbins_20_distance_bins.step)"
+                    },
                     "zindex": 1,
                     "encode": {
                         "labels": {
@@ -381,16 +388,20 @@
             "scales": [
                 {
                     "name": "child_delay_x",
-                    "type": "bin-linear",
+                    "type": "linear",
                     "domain": {
-                        "signal": "sequence(child_delay_bin_maxbins_20_delay_bins.start, child_delay_bin_maxbins_20_delay_bins.stop + child_delay_bin_maxbins_20_delay_bins.step, child_delay_bin_maxbins_20_delay_bins.step)"
+                        "data": "data_1",
+                        "fields": [
+                            "bin_maxbins_20_delay_start",
+                            "bin_maxbins_20_delay_end"
+                        ]
                     },
                     "range": [
                         0,
                         200
                     ],
                     "round": true,
-                    "nice": true
+                    "zero": false
                 },
                 {
                     "name": "child_delay_y",
@@ -414,6 +425,9 @@
                     "format": "s",
                     "orient": "bottom",
                     "title": "BIN(delay)",
+                    "values": {
+                        "signal": "sequence(child_delay_bin_maxbins_20_delay_bins.start, child_delay_bin_maxbins_20_delay_bins.stop + child_delay_bin_maxbins_20_delay_bins.step, child_delay_bin_maxbins_20_delay_bins.step)"
+                    },
                     "zindex": 1,
                     "encode": {
                         "labels": {
@@ -504,16 +518,20 @@
             "scales": [
                 {
                     "name": "child_time_x",
-                    "type": "bin-linear",
+                    "type": "linear",
                     "domain": {
-                        "signal": "sequence(child_time_bin_maxbins_20_time_bins.start, child_time_bin_maxbins_20_time_bins.stop + child_time_bin_maxbins_20_time_bins.step, child_time_bin_maxbins_20_time_bins.step)"
+                        "data": "data_2",
+                        "fields": [
+                            "bin_maxbins_20_time_start",
+                            "bin_maxbins_20_time_end"
+                        ]
                     },
                     "range": [
                         0,
                         200
                     ],
                     "round": true,
-                    "nice": true
+                    "zero": false
                 },
                 {
                     "name": "child_time_y",
@@ -537,6 +555,9 @@
                     "format": "s",
                     "orient": "bottom",
                     "title": "BIN(time)",
+                    "values": {
+                        "signal": "sequence(child_time_bin_maxbins_20_time_bins.start, child_time_bin_maxbins_20_time_bins.stop + child_time_bin_maxbins_20_time_bins.step, child_time_bin_maxbins_20_time_bins.step)"
+                    },
                     "zindex": 1,
                     "encode": {
                         "labels": {

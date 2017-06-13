@@ -276,8 +276,15 @@ describe('compile/scale', () => {
 
       it('should return bin linear scale for quantitative by default.', () => {
         assert.equal(
-          scaleType(undefined, 'x', {type: 'quantitative', bin: true}, 'point', undefined, undefined, defaultConfig),
+          scaleType(undefined, 'opacity', {type: 'quantitative', bin: true}, 'point', undefined, undefined, defaultConfig),
           ScaleType.BIN_LINEAR
+        );
+      });
+
+      it('should return linear scale for quantitative x and y.', () => {
+        assert.equal(
+          scaleType(undefined, 'x', {type: 'quantitative', bin: true}, 'point', undefined, undefined, defaultConfig),
+          ScaleType.LINEAR
         );
       });
     });

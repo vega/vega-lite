@@ -1,3 +1,4 @@
+import {UnitModel} from '../../../src/compile/unit';
 /* tslint:disable:quotemark */
 
 import {assert} from 'chai';
@@ -113,7 +114,7 @@ describe('compile/axis', ()=> {
 
   describe('values', () => {
     it('should return correct timestamp values for DateTimes', () => {
-      const values = rules.values({values: [{year: 1970}, {year: 1980}]});
+      const values = rules.values({values: [{year: 1970}, {year: 1980}]}, null, null);
 
       assert.deepEqual(values, [
         {"signal": "datetime(1970, 0, 1, 0, 0, 0, 0)"},
@@ -122,9 +123,18 @@ describe('compile/axis', ()=> {
     });
 
     it('should simply return values for non-DateTime', () => {
-      const values = rules.values({values: [1,2,3,4]});
+      const values = rules.values({values: [1,2,3,4]}, null, null);
 
       assert.deepEqual(values, [1,2,3,4]);
+    });
+
+    it('should return bin values if binned', () => {
+      const model = {getName: x => x} as UnitModel;
+      const values = rules.values({}, model, {field: 'foo', type: 'quantitative', bin: {maxbins: 5}});
+
+      assert.deepEqual(values, {
+        signal: 'sequence(bin_maxbins_5_foo_bins.start, bin_maxbins_5_foo_bins.stop + bin_maxbins_5_foo_bins.step, bin_maxbins_5_foo_bins.step)'
+      });
     });
   });
 

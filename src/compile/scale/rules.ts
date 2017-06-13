@@ -9,7 +9,10 @@ export function nice(scaleType: ScaleType, channel: Channel, fieldDef: FieldDef<
   if (util.contains([ScaleType.TIME, ScaleType.UTC], scaleType)) {
     return smallestUnit(fieldDef.timeUnit) as any;
   }
-  return util.contains([X, Y], channel); // return true for quantitative X/Y
+  if (fieldDef.bin) {
+    return undefined;
+  }
+  return util.contains([X, Y], channel); // return true for quantitative X/Y unless binned
 }
 
 export function padding(channel: Channel, scaleType: ScaleType, scaleConfig: ScaleConfig) {

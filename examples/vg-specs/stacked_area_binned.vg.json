@@ -177,16 +177,20 @@
     "scales": [
         {
             "name": "x",
-            "type": "bin-linear",
+            "type": "linear",
             "domain": {
-                "signal": "sequence(bin_maxbins_10_Acceleration_bins.start, bin_maxbins_10_Acceleration_bins.stop + bin_maxbins_10_Acceleration_bins.step, bin_maxbins_10_Acceleration_bins.step)"
+                "data": "source_0",
+                "fields": [
+                    "bin_maxbins_10_Acceleration_start",
+                    "bin_maxbins_10_Acceleration_end"
+                ]
             },
             "range": [
                 0,
                 200
             ],
             "round": true,
-            "nice": true
+            "zero": false
         },
         {
             "name": "y",
@@ -223,6 +227,9 @@
             "format": "s",
             "orient": "bottom",
             "title": "BIN(Acceleration)",
+            "values": {
+                "signal": "sequence(bin_maxbins_10_Acceleration_bins.start, bin_maxbins_10_Acceleration_bins.stop + bin_maxbins_10_Acceleration_bins.step, bin_maxbins_10_Acceleration_bins.step)"
+            },
             "zindex": 1,
             "encode": {
                 "labels": {
