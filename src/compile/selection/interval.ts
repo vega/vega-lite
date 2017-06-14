@@ -9,17 +9,20 @@ import scales from './transforms/scales';
 
 
 export const BRUSH = '_brush';
+export const SCALE_TRIGGER = '_scale_trigger';
 
 const interval:SelectionCompiler = {
   predicate: 'vlInterval',
   scaleDomain: 'vlIntervalDomain',
 
   signals: function(model, selCmpt) {
+    const name = selCmpt.name;
+    const hasScales = scales.has(selCmpt);
     const signals: any[] = [];
     const intervals:any[] = [];
-    const name = selCmpt.name;
+    const scaleTriggers: any[] = [];
 
-    if (selCmpt.translate && !(scales.has(selCmpt))) {
+    if (selCmpt.translate && !hasScales) {
       const filterExpr = `!event.item || event.item.mark.name !== ${stringValue(name + BRUSH)}`;
       events(selCmpt, function(_: any[], evt: VgEventStream) {
         const filters = evt.between[0].filter || (evt.between[0].filter = []);
@@ -30,17 +33,42 @@ const interval:SelectionCompiler = {
     }
 
     selCmpt.project.forEach(function(p) {
-      if (p.encoding !== X && p.encoding !== Y) {
+      const channel = p.encoding;
+      if (channel !== X && channel !== Y) {
         warn('Interval selections only support x and y encoding channels.');
         return;
       }
 
-      const cs = channelSignals(model, selCmpt, p.encoding);
-      const csName = channelSignalName(selCmpt, p.encoding, 'data');
+      const cs = channelSignals(model, selCmpt, channel);
+      const dname = channelSignalName(selCmpt, channel, 'data');
+      const vname = channelSignalName(selCmpt, channel, 'visual');
+      const scaleStr = stringValue(model.scaleName(channel));
+
       signals.push.apply(signals, cs);
-      intervals.push(`{encoding: ${stringValue(p.encoding)}, ` +
-      `field: ${stringValue(p.field)}, extent: ${csName}}`);
+      intervals.push(`{encoding: ${stringValue(channel)}, ` +
+        `field: ${stringValue(p.field)}, extent: ${dname}}`);
+
+      scaleTriggers.push({
+        scaleName: model.scaleName(channel),
+        expr: `(!isArray(${dname}) || ` +
+          `(invert(${scaleStr}, ${vname})[0] === ${dname}[0] && ` +
+            `invert(${scaleStr}, ${vname})[1] === ${dname}[1]))`
+      });
     });
+
+    // Proxy scale reactions to ensure that an infinite loop doesn't occur
+    // when an interval selection filter touches the scale.
+    if (!hasScales) {
+      signals.push({
+        name: name + SCALE_TRIGGER,
+        value: {},
+        on: [{
+          events: scaleTriggers.map((t) => { return {scale: t.scaleName}; }),
+          update: scaleTriggers.map((t) => t.expr).join(' && ') +
+            ` ? ${name + SCALE_TRIGGER} : {}`
+        }]
+      });
+    }
 
     return signals.concat({
       name: name + TUPLE,
@@ -156,9 +184,8 @@ function channelSignals(model: UnitModel, selCmpt: SelectionComponent, channel: 
   // to their domains (e.g., filtering) should clear the brushes.
   if (hasContinuousDomain(scaleType) && !isBinScale(scaleType)) {
     on.push({
-      events: {scale: scaleName},
-      update: `!isArray(${dname}) ? ${vname} : ` +
-          `[scale(${scaleStr}, ${dname}[0]), scale(${scaleStr}, ${dname}[1])]`
+      events: {signal: selCmpt.name + SCALE_TRIGGER},
+      update: `[scale(${scaleStr}, ${dname}[0]), scale(${scaleStr}, ${dname}[1])]`
     });
   }
 
