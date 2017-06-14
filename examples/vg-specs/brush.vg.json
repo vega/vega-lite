@@ -88,9 +88,9 @@
                 },
                 {
                     "events": {
-                        "scale": "x"
+                        "signal": "brush_scale_trigger"
                     },
-                    "update": "!isArray(brush_Horsepower) ? brush_x : [scale(\"x\", brush_Horsepower[0]), scale(\"x\", brush_Horsepower[1])]"
+                    "update": "[scale(\"x\", brush_Horsepower[0]), scale(\"x\", brush_Horsepower[1])]"
                 },
                 {
                     "events": {
@@ -154,9 +154,9 @@
                 },
                 {
                     "events": {
-                        "scale": "y"
+                        "signal": "brush_scale_trigger"
                     },
-                    "update": "!isArray(brush_Miles_per_Gallon) ? brush_y : [scale(\"y\", brush_Miles_per_Gallon[0]), scale(\"y\", brush_Miles_per_Gallon[1])]"
+                    "update": "[scale(\"y\", brush_Miles_per_Gallon[0]), scale(\"y\", brush_Miles_per_Gallon[1])]"
                 },
                 {
                     "events": {
@@ -180,6 +180,23 @@
                         "signal": "brush_y"
                     },
                     "update": "invert(\"y\", brush_y)"
+                }
+            ]
+        },
+        {
+            "name": "brush_scale_trigger",
+            "value": {},
+            "on": [
+                {
+                    "events": [
+                        {
+                            "scale": "x"
+                        },
+                        {
+                            "scale": "y"
+                        }
+                    ],
+                    "update": "(!isArray(brush_Horsepower) || (invert(\"x\", brush_x)[0] === brush_Horsepower[0] && invert(\"x\", brush_x)[1] === brush_Horsepower[1])) && (!isArray(brush_Miles_per_Gallon) || (invert(\"y\", brush_y)[0] === brush_Miles_per_Gallon[0] && invert(\"y\", brush_y)[1] === brush_Miles_per_Gallon[1])) ? brush_scale_trigger : {}"
                 }
             ]
         },
