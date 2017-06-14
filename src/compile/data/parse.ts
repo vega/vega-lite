@@ -46,10 +46,10 @@ Description of the dataflow (http://asciiflow.com/):
          |
          v
      Transforms
-(Filter, Compute, ...)
+(Filter, Calculate, ...)
          |
          v
-       Parse
+     FormatParse
          |
          v
      Null Filter
@@ -58,7 +58,7 @@ Description of the dataflow (http://asciiflow.com/):
       Binning
          |
          v
-     Timeunit
+      Timeunit
          |
          v
       +--+--+
