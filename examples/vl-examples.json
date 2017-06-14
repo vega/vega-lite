@@ -173,7 +173,7 @@
   "Layering": [
     {
       "name": "layer_precipitation_mean",
-      "title": "Mean overlay over pecipitation chart"
+      "title": "Mean overlay over precipitation chart"
     }
   ],
   "Interactive": [
