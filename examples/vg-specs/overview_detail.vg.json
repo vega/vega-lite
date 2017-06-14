@@ -161,9 +161,9 @@
                         },
                         {
                             "events": {
-                                "scale": "concat_0_x"
+                                "signal": "brush_scale_trigger"
                             },
-                            "update": "!isArray(brush_date) ? brush_x : [scale(\"concat_0_x\", brush_date[0]), scale(\"concat_0_x\", brush_date[1])]"
+                            "update": "[scale(\"concat_0_x\", brush_date[0]), scale(\"concat_0_x\", brush_date[1])]"
                         },
                         {
                             "events": {
@@ -187,6 +187,20 @@
                                 "signal": "brush_x"
                             },
                             "update": "invert(\"concat_0_x\", brush_x)"
+                        }
+                    ]
+                },
+                {
+                    "name": "brush_scale_trigger",
+                    "value": {},
+                    "on": [
+                        {
+                            "events": [
+                                {
+                                    "scale": "concat_0_x"
+                                }
+                            ],
+                            "update": "(!isArray(brush_date) || (invert(\"concat_0_x\", brush_x)[0] === brush_date[0] && invert(\"concat_0_x\", brush_x)[1] === brush_date[1])) ? brush_scale_trigger : {}"
                         }
                     ]
                 },
