@@ -75,7 +75,7 @@
         "labelAngle": {
           "description": "The rotation angle of the axis labels.\n\n__Default value:__ `-45` for time or ordinal axis and `0` otherwise.",
           "maximum": 360,
-          "minimum": 0,
+          "minimum": -360,
           "type": "number"
         },
         "labelPadding": {
@@ -219,7 +219,7 @@
         "labelAngle": {
           "description": "The rotation angle of the axis labels.\n\n__Default value:__ `-45` for time or ordinal axis and `0` otherwise.",
           "maximum": 360,
-          "minimum": 0,
+          "minimum": -360,
           "type": "number"
         },
         "labelColor": {
@@ -5520,7 +5520,7 @@
         "labelAngle": {
           "description": "The rotation angle of the axis labels.\n\n__Default value:__ `-45` for time or ordinal axis and `0` otherwise.",
           "maximum": 360,
-          "minimum": 0,
+          "minimum": -360,
           "type": "number"
         },
         "labels": {
@@ -5617,7 +5617,7 @@
         "labelAngle": {
           "description": "The rotation angle of the axis labels.\n\n__Default value:__ `-45` for time or ordinal axis and `0` otherwise.",
           "maximum": 360,
-          "minimum": 0,
+          "minimum": -360,
           "type": "number"
         },
         "labelColor": {

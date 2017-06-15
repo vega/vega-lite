@@ -334,7 +334,7 @@ export interface VgAxisBase {
    * The rotation angle of the axis labels.
    *
    * __Default value:__ `-45` for time or ordinal axis and `0` otherwise.
-   * @minimum 0
+   * @minimum -360
    * @maximum 360
    */
   labelAngle?: number;
