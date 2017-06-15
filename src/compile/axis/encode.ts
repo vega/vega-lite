@@ -37,27 +37,10 @@ export function labels(model: UnitModel, channel: SpatialScaleChannel, labelsSpe
     }
   }
 
-  // Auto set align if rotated
-  // TODO: consider other value besides 270, 90
-  if (labelsSpec.angle) {
-    if (labelsSpec.angle.value === 270) {
-      labelsSpec.align = {
-        value: def.orient === 'top' ? 'left':
-                (channel === X) ? 'right' :
-                'center'
-      };
-    } else if (labelsSpec.angle.value === 90) {
-      labelsSpec.align = {value: 'center'};
-    }
-  }
-
-  if (labelsSpec.angle) {
-    // Auto set baseline if rotated
-    // TODO: consider other value besides 270, 90
-    if (labelsSpec.angle.value === 270) {
-      labelsSpec.baseline = {value: (channel === X) ? 'middle' : 'bottom'};
-    } else if (labelsSpec.angle.value === 90) {
-      labelsSpec.baseline = {value: 'bottom'};
+  if (labelsSpec.angle && channel === 'x') {
+    // Auto set baseline if x is rotated by 90, or -90
+    if (contains([270, 90, -90], labelsSpec.angle.value)) {
+      labelsSpec.baseline = {value: 'middle'};
     }
   }
 
