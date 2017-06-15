@@ -6,15 +6,10 @@ import {hasDiscreteDomain} from '../../scale';
 import {BinTransform, Transform} from '../../transform';
 import {Dict, duplicate, extend, flatten, hash, isBoolean, keys, StringSet, vals} from '../../util';
 import {VgBinTransform, VgTransform} from '../../vega.schema';
-import {numberFormat} from '../common';
+import {numberFormatExpr} from '../common';
 import {Model, ModelWithField} from '../model';
 import {UnitModel} from '../unit';
 import {DataFlowNode} from './dataflow';
-
-
-function numberFormatExpr(expr: string, format: string) {
-  return `format(${expr}, '${format}')`;
-}
 
 function rangeFormula(model: ModelWithField, fieldDef: FieldDef<string>, channel: Channel, config: Config) {
     const discreteDomain = model.hasDiscreteDomain(channel);
@@ -23,14 +18,13 @@ function rangeFormula(model: ModelWithField, fieldDef: FieldDef<string>, channel
       // read format from axis or legend, if there is no format then use config.numberFormat
 
       const guide = (model instanceof UnitModel) ? (model.axis(channel) || model.legend(channel) || {}) : {};
-      const format = numberFormat(fieldDef, guide.format, config, channel);
 
       const startField = field(fieldDef, {expr: 'datum', binSuffix: 'start'});
       const endField = field(fieldDef, {expr: 'datum', binSuffix: 'end'});
 
       return {
         formulaAs: field(fieldDef, {binSuffix: 'range'}),
-        formula: `${numberFormatExpr(startField, format)} + ' - ' + ${numberFormatExpr(endField, format)}`
+        formula: `${numberFormatExpr(startField, guide.format, config)} + " - " + ${numberFormatExpr(endField, guide.format, config)}`
       };
     }
     return {};

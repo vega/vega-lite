@@ -175,7 +175,6 @@
     "axes": [
         {
             "scale": "x",
-            "format": "s",
             "orient": "bottom",
             "title": "BIN(IMDB_Rating)",
             "values": {
@@ -200,7 +199,6 @@
         },
         {
             "scale": "y",
-            "format": "s",
             "orient": "left",
             "title": "BIN(Rotten_Tomatoes_Rating)",
             "values": {
@@ -212,7 +210,6 @@
     "legends": [
         {
             "size": "size",
-            "format": "s",
             "title": "Number of Records",
             "encode": {
                 "symbols": {

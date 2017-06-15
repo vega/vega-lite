@@ -48,24 +48,24 @@ describe('Common', function() {
 
   describe('numberFormat()', function() {
     it('should use number format for quantitative scale', function() {
-      assert.equal(numberFormat({field: 'a', type: QUANTITATIVE}, undefined, {numberFormat: 'd'}, X), 'd');
+      assert.equal(numberFormat({field: 'a', type: QUANTITATIVE}, undefined, {numberFormat: 'd'}), 'd');
     });
 
     it('should support empty number format', function() {
-      assert.equal(numberFormat({field: 'a', type: QUANTITATIVE}, undefined, {numberFormat: ''}, X), '');
+      assert.equal(numberFormat({field: 'a', type: QUANTITATIVE}, undefined, {numberFormat: ''}), '');
     });
 
     it('should use format if provided', function() {
-      assert.equal(numberFormat({field: 'a', type: QUANTITATIVE}, 'a', {}, X), 'a');
+      assert.equal(numberFormat({field: 'a', type: QUANTITATIVE}, 'a', {}), 'a');
     });
 
     it('should not use number format for binned quantitative scale', function() {
-      assert.equal(numberFormat({bin: true, field: 'a', type: QUANTITATIVE}, undefined, {}, X), undefined);
+      assert.equal(numberFormat({bin: true, field: 'a', type: QUANTITATIVE}, undefined, {}), undefined);
     });
 
     it('should not use number format for non-quantitative scale', function() {
       for (const type of [TEMPORAL, NOMINAL, ORDINAL]) {
-        assert.equal(numberFormat({bin: true, field: 'a', type: type}, undefined, {}, X), undefined);
+        assert.equal(numberFormat({bin: true, field: 'a', type: type}, undefined, {}), undefined);
       }
     });
   });

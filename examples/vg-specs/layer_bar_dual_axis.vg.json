@@ -272,14 +272,12 @@
         },
         {
             "scale": "layer_0_y",
-            "format": "s",
             "orient": "left",
             "title": "MEAN(precipitation)",
             "zindex": 1
         },
         {
             "scale": "layer_1_y",
-            "format": "s",
             "orient": "right",
             "title": "MEAN(temp_max)",
             "zindex": 1

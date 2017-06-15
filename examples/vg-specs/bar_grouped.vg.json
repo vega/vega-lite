@@ -159,7 +159,6 @@
             "axes": [
                 {
                     "scale": "y",
-                    "format": "s",
                     "orient": "left",
                     "title": "population",
                     "zindex": 1

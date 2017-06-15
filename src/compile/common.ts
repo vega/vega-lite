@@ -79,20 +79,19 @@ export function getMarkConfig<P extends keyof MarkConfig>(prop: P, mark: Mark, c
 
 export function formatSignalRef(fieldDef: FieldDef<string>, specifiedFormat: string, expr: 'datum' | 'parent', config: Config, useBinRange?: boolean) {
   if (fieldDef.type === 'quantitative') {
-    const format = numberFormat(fieldDef, specifiedFormat, config, 'text');
+    const format = numberFormat(fieldDef, specifiedFormat, config);
     if (fieldDef.bin) {
       if (useBinRange) {
         // For bin range, no need to apply format as the formula that creates range already include format
         return {signal: field(fieldDef, {expr, binSuffix: 'range'})};
       } else {
         return {
-          signal: `format(${field(fieldDef, {expr, binSuffix: 'start'})}, '${format}')` + `+'-'+` +
-            `format(${field(fieldDef, {expr, binSuffix: 'end'})}, '${format}')`
+          signal: `${formatExpr(field(fieldDef, {expr, binSuffix: 'start'}), format)} + '-' + ${formatExpr(field(fieldDef, {expr, binSuffix: 'end'}), format)}`
         };
       }
     } else {
       return {
-        signal: `format(${field(fieldDef, {expr})}, '${format}')`
+        signal: `${formatExpr(field(fieldDef, {expr}), format)}`
       };
     }
   } else if (fieldDef.type === 'temporal') {
@@ -110,22 +109,27 @@ export function formatSignalRef(fieldDef: FieldDef<string>, specifiedFormat: str
  *
  * @param format explicitly specified format
  */
-export function numberFormat(fieldDef: FieldDef<string>, specifiedFormat: string, config: Config, channel: Channel) {
-  // Specified format in axis/legend has higher precedence than fieldDef.format
-  const format = specifiedFormat;
+export function numberFormat(fieldDef: FieldDef<string>, specifiedFormat: string, config: Config) {
   if (fieldDef.type === QUANTITATIVE) {
     // add number format for quantitative type only
 
-    if (format) {
-      return format;
-    } else if (fieldDef.aggregate === 'count' && channel === TEXT) {
-      // FIXME: need a more holistic way to deal with this.
-      return 'd';
+    // Specified format in axis/legend has higher precedence than fieldDef.format
+    if (specifiedFormat) {
+      return specifiedFormat;
     }
+
     // TODO: need to make this work correctly for numeric ordinal / nominal type
     return config.numberFormat;
   }
   return undefined;
+}
+
+function formatExpr(field: string, format: string) {
+  return `format(${field}, ${format ? `'${format}'` : null})`;
+}
+
+export function numberFormatExpr(field: string, specifiedFormat: string, config: Config) {
+  return formatExpr(field, specifiedFormat || config.numberFormat);
 }
 
 /**

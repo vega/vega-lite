@@ -172,7 +172,6 @@
             "axes": [
                 {
                     "scale": "trellis_barley_x",
-                    "format": "s",
                     "orient": "bottom",
                     "tickCount": 5,
                     "title": "MEDIAN(yield)",
@@ -268,7 +267,6 @@
                 {
                     "scale": "trellis_barley_x",
                     "domain": false,
-                    "format": "s",
                     "grid": true,
                     "labels": false,
                     "orient": "bottom",

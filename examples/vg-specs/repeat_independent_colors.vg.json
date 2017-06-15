@@ -173,7 +173,6 @@
             "axes": [
                 {
                     "scale": "child_Origin_x",
-                    "format": "s",
                     "orient": "bottom",
                     "tickCount": 5,
                     "title": "Horsepower",
@@ -182,7 +181,6 @@
                 {
                     "scale": "child_Origin_x",
                     "domain": false,
-                    "format": "s",
                     "grid": true,
                     "labels": false,
                     "orient": "bottom",
@@ -193,7 +191,6 @@
                 },
                 {
                     "scale": "child_Origin_y",
-                    "format": "s",
                     "orient": "left",
                     "title": "Miles_per_Gallon",
                     "zindex": 1
@@ -201,7 +198,6 @@
                 {
                     "scale": "child_Origin_y",
                     "domain": false,
-                    "format": "s",
                     "grid": true,
                     "labels": false,
                     "orient": "left",
@@ -310,7 +306,6 @@
             "axes": [
                 {
                     "scale": "child_Cylinders_x",
-                    "format": "s",
                     "orient": "bottom",
                     "tickCount": 5,
                     "title": "Horsepower",
@@ -319,7 +314,6 @@
                 {
                     "scale": "child_Cylinders_x",
                     "domain": false,
-                    "format": "s",
                     "grid": true,
                     "labels": false,
                     "orient": "bottom",
@@ -330,7 +324,6 @@
                 },
                 {
                     "scale": "child_Cylinders_y",
-                    "format": "s",
                     "orient": "left",
                     "title": "Miles_per_Gallon",
                     "zindex": 1
@@ -338,7 +331,6 @@
                 {
                     "scale": "child_Cylinders_y",
                     "domain": false,
-                    "format": "s",
                     "grid": true,
                     "labels": false,
                     "orient": "left",

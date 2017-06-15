@@ -76,7 +76,7 @@ describe('Mark: Text', function() {
     const props = text.encodeEntry(model);
 
     it('should output correct bin range', function() {
-      assert.deepEqual(props.text, {signal: `format(datum["bin_maxbins_10_foo_start"], 'd')+'-'+format(datum["bin_maxbins_10_foo_end"], 'd')`});
+      assert.deepEqual(props.text, {signal: `format(datum["bin_maxbins_10_foo_start"], 'd') + '-' + format(datum["bin_maxbins_10_foo_end"], 'd')`});
     });
   });
 
@@ -153,7 +153,7 @@ describe('Mark: Text', function() {
 
     it('should map text to expression', function() {
       assert.deepEqual(props.text, {
-        signal: `format(datum["mean_Acceleration"], 's')`
+        signal: `format(datum["mean_Acceleration"], null)`
       });
     });
 

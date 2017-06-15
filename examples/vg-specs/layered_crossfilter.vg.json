@@ -849,7 +849,6 @@
             "axes": [
                 {
                     "scale": "child_distance_x",
-                    "format": "s",
                     "orient": "bottom",
                     "title": "BIN(distance)",
                     "values": {
@@ -874,7 +873,6 @@
                 },
                 {
                     "scale": "child_distance_y",
-                    "format": "s",
                     "orient": "left",
                     "title": "Number of Records",
                     "zindex": 1
@@ -882,7 +880,6 @@
                 {
                     "scale": "child_distance_y",
                     "domain": false,
-                    "format": "s",
                     "grid": true,
                     "labels": false,
                     "orient": "left",
@@ -1316,7 +1313,6 @@
             "axes": [
                 {
                     "scale": "child_delay_x",
-                    "format": "s",
                     "orient": "bottom",
                     "title": "BIN(delay)",
                     "values": {
@@ -1341,7 +1337,6 @@
                 },
                 {
                     "scale": "child_delay_y",
-                    "format": "s",
                     "orient": "left",
                     "title": "Number of Records",
                     "zindex": 1
@@ -1349,7 +1344,6 @@
                 {
                     "scale": "child_delay_y",
                     "domain": false,
-                    "format": "s",
                     "grid": true,
                     "labels": false,
                     "orient": "left",
@@ -1783,7 +1777,6 @@
             "axes": [
                 {
                     "scale": "child_time_x",
-                    "format": "s",
                     "orient": "bottom",
                     "title": "BIN(time)",
                     "values": {
@@ -1808,7 +1801,6 @@
                 },
                 {
                     "scale": "child_time_y",
-                    "format": "s",
                     "orient": "left",
                     "title": "Number of Records",
                     "zindex": 1
@@ -1816,7 +1808,6 @@
                 {
                     "scale": "child_time_y",
                     "domain": false,
-                    "format": "s",
                     "grid": true,
                     "labels": false,
                     "orient": "left",

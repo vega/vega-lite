@@ -495,7 +495,6 @@
                 },
                 {
                     "scale": "concat_0_y",
-                    "format": "s",
                     "orient": "left",
                     "tickCount": 3,
                     "title": "price",
@@ -616,7 +615,6 @@
                 },
                 {
                     "scale": "concat_1_y",
-                    "format": "s",
                     "orient": "left",
                     "title": "price",
                     "zindex": 1
@@ -624,7 +622,6 @@
                 {
                     "scale": "concat_1_y",
                     "domain": false,
-                    "format": "s",
                     "grid": true,
                     "labels": false,
                     "orient": "left",

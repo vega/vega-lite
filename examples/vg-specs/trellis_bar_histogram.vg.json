@@ -163,7 +163,6 @@
             "axes": [
                 {
                     "scale": "y",
-                    "format": "s",
                     "orient": "left",
                     "title": "Number of Records",
                     "zindex": 1
@@ -184,7 +183,6 @@
             "axes": [
                 {
                     "scale": "x",
-                    "format": "s",
                     "orient": "bottom",
                     "title": "BIN(Horsepower)",
                     "values": {
@@ -278,7 +276,6 @@
                 {
                     "scale": "y",
                     "domain": false,
-                    "format": "s",
                     "grid": true,
                     "labels": false,
                     "orient": "left",

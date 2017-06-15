@@ -185,7 +185,6 @@
     "legends": [
         {
             "size": "size",
-            "format": "s",
             "title": "SUM(count)",
             "encode": {
                 "symbols": {

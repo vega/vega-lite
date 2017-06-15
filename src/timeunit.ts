@@ -258,7 +258,9 @@ export function smallestUnit(timeUnit: TimeUnit): string {
   return undefined;
 }
 
-/** returns the signal expression used for axis labels for a time unit */
+/**
+ * returns the signal expression used for axis labels for a time unit
+ */
 export function formatExpression(timeUnit: TimeUnit, field: string, shortTimeLabels: boolean, isUTCScale: boolean): string {
   if (!timeUnit) {
     return undefined;

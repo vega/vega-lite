@@ -123,7 +123,7 @@ function getSpecifiedOrDefaultValue(property: keyof VgAxis, specifiedAxis: Axis,
     case 'ticks':
       return rules.ticks(property, specifiedAxis, isGridAxis, channel);
     case 'format':
-      return rules.format(specifiedAxis, channel, fieldDef, model.config);
+      return rules.format(specifiedAxis, fieldDef, model.config);
     case 'grid':
       return rules.grid(model, channel, isGridAxis); // FIXME: refactor this
     case 'gridScale':

@@ -140,7 +140,7 @@
                         "band": 0.5
                     },
                     "text": {
-                        "signal": "format(datum[\"count_*\"], 'd')"
+                        "signal": "format(datum[\"count_*\"], null)"
                     },
                     "fill": {
                         "value": "white"
@@ -245,7 +245,6 @@
     "legends": [
         {
             "fill": "color",
-            "format": "s",
             "title": "Number of Records",
             "type": "gradient"
         }

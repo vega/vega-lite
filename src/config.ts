@@ -220,7 +220,6 @@ export interface Config extends TopLevelProperties, VLOnlyConfig, MarkConfigMixi
 
 export const defaultConfig: Config = {
   padding: 5,
-  numberFormat: 's',
   timeFormat: '%b %d, %Y',
   countTitle: 'Number of Records',
 

@@ -68,7 +68,7 @@ function getSpecifiedOrDefaultValue(property: keyof VgLegend, specifiedLegend: L
 
   switch (property) {
     case 'format':
-      return numberFormat(fieldDef, specifiedLegend.format, model.config, channel);
+      return numberFormat(fieldDef, specifiedLegend.format, model.config);
     case 'title':
       return rules.title(specifiedLegend, fieldDef, model.config);
     case 'values':

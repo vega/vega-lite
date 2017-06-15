@@ -147,7 +147,6 @@
     "axes": [
         {
             "scale": "x",
-            "format": "s",
             "orient": "bottom",
             "tickCount": 5,
             "title": "x",
@@ -156,7 +155,6 @@
         {
             "scale": "x",
             "domain": false,
-            "format": "s",
             "grid": true,
             "labels": false,
             "orient": "bottom",
@@ -167,7 +165,6 @@
         },
         {
             "scale": "y",
-            "format": "s",
             "orient": "left",
             "title": "y",
             "zindex": 1
@@ -175,7 +172,6 @@
         {
             "scale": "y",
             "domain": false,
-            "format": "s",
             "grid": true,
             "labels": false,
             "orient": "left",

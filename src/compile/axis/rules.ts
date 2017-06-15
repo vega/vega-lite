@@ -10,8 +10,8 @@ import {VgAxis} from '../../vega.schema';
 import {numberFormat} from '../common';
 import {UnitModel} from '../unit';
 
-export function format(specifiedAxis: Axis, channel: Channel, fieldDef: FieldDef<string>, config: Config) {
-  return numberFormat(fieldDef, specifiedAxis.format, config, channel);
+export function format(specifiedAxis: Axis, fieldDef: FieldDef<string>, config: Config) {
+  return numberFormat(fieldDef, specifiedAxis.format, config);
 }
 
 // TODO: we need to refactor this method after we take care of config refactoring

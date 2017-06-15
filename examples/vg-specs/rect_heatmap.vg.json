@@ -162,7 +162,6 @@
     "legends": [
         {
             "fill": "color",
-            "format": "s",
             "title": "MEAN(Horsepower)",
             "type": "gradient"
         }

@@ -527,7 +527,6 @@
             "axes": [
                 {
                     "scale": "concat_0_x",
-                    "format": "s",
                     "orient": "bottom",
                     "tickCount": 5,
                     "title": "Miles_per_Gallon",
@@ -536,7 +535,6 @@
                 {
                     "scale": "concat_0_x",
                     "domain": false,
-                    "format": "s",
                     "grid": true,
                     "labels": false,
                     "orient": "bottom",
@@ -547,7 +545,6 @@
                 },
                 {
                     "scale": "concat_0_y",
-                    "format": "s",
                     "orient": "left",
                     "title": "Horsepower",
                     "zindex": 1
@@ -555,7 +552,6 @@
                 {
                     "scale": "concat_0_y",
                     "domain": false,
-                    "format": "s",
                     "grid": true,
                     "labels": false,
                     "orient": "left",
@@ -783,7 +779,6 @@
             "axes": [
                 {
                     "scale": "concat_1_x",
-                    "format": "s",
                     "orient": "bottom",
                     "tickCount": 5,
                     "title": "Displacement",
@@ -792,7 +787,6 @@
                 {
                     "scale": "concat_1_x",
                     "domain": false,
-                    "format": "s",
                     "grid": true,
                     "labels": false,
                     "orient": "bottom",
@@ -803,7 +797,6 @@
                 },
                 {
                     "scale": "concat_1_y",
-                    "format": "s",
                     "orient": "left",
                     "title": "Acceleration",
                     "zindex": 1
@@ -811,7 +804,6 @@
                 {
                     "scale": "concat_1_y",
                     "domain": false,
-                    "format": "s",
                     "grid": true,
                     "labels": false,
                     "orient": "left",
