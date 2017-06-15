@@ -81,7 +81,7 @@ describe('Mark: Line', function() {
         const props = line.encodeEntry(model);
 
         // If size field is dropped, then strokeWidth only have value
-        assert.isNotOk(props.strokeWidth && props.strokeWidth.scale);
+        assert.isNotOk(props.strokeWidth && props.strokeWidth['scale']);
         assert.equal(localLogger.warns[0], log.message.incompatibleChannel(SIZE, LINE, 'when the field is aggregated.'));
       });
     });

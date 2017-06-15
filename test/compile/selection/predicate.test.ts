@@ -4,6 +4,7 @@ import {assert} from 'chai';
 import {nonPosition} from '../../../src/compile/mark/mixins';
 import * as selection from '../../../src/compile/selection/selection';
 import {expression} from '../../../src/filter';
+import {VgEncodeEntry} from '../../../src/vega.schema';
 import {parseUnitModel} from '../../util';
 
 const predicate = selection.predicate;
@@ -62,14 +63,14 @@ describe('Selection Predicate', function() {
   });
 
   it('generates Vega production rules', function() {
-    assert.deepEqual(nonPosition('color', model), {
-      color: [
+    assert.deepEqual<VgEncodeEntry>(nonPosition('color', model, {vgChannel: 'fill'}), {
+      fill: [
         {test: 'vlPoint("one_store", "", datum, "union", "all")', value: "grey"},
         {scale: "color", field: "Cylinders"}
       ]
     });
 
-    assert.deepEqual(nonPosition('opacity', model), {
+    assert.deepEqual<VgEncodeEntry>(nonPosition('opacity', model), {
       opacity: [
         {test: '(vlPoint("one_store", "", datum, "union", "all")) || ' +
               '((vlPoint("two_store", "", datum, "union", "all")) && ' +

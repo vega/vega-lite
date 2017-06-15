@@ -233,7 +233,7 @@ describe('Mark: Square', function() {
     });
     const props = square.encodeEntry(model);
 
-    assert.equal(props.shape.value, 'square');
+    assert.propertyVal(props.shape, 'value', 'square');
   });
 
   it('should be filled by default', function() {
@@ -245,7 +245,7 @@ describe('Mark: Square', function() {
     });
     const props = square.encodeEntry(model);
 
-    assert.equal(props.fill.value, 'blue');
+    assert.propertyVal(props.fill, 'value', 'blue');
   });
 
   it('with config.mark.filled:false should have transparent fill', function() {
@@ -263,8 +263,8 @@ describe('Mark: Square', function() {
 
     const props = square.encodeEntry(model);
 
-    assert.equal(props.stroke.value, 'blue');
-    assert.equal(props.fill.value, 'transparent');
+    assert.propertyVal(props.stroke, 'value', 'blue');
+    assert.propertyVal(props.fill, 'value', 'transparent');
   });
 });
 
@@ -278,11 +278,11 @@ describe('Mark: Circle', function() {
   const props = circle.encodeEntry(model);
 
   it('should have correct shape', function() {
-    assert.equal(props.shape.value, 'circle');
+    assert.propertyVal(props.shape, 'value', 'circle');
   });
 
   it('should be filled by default', function() {
-    assert.equal(props.fill.value, 'blue');
+    assert.propertyVal(props.fill, 'value', 'blue');
   });
 
   it('with config.mark.filled:false should have transparent fill', function() {
@@ -300,7 +300,7 @@ describe('Mark: Circle', function() {
 
     const filledCircleProps = circle.encodeEntry(filledCircleModel);
 
-    assert.equal(filledCircleProps.stroke.value, 'blue');
-    assert.equal(filledCircleProps.fill.value, 'transparent');
+    assert.propertyVal(filledCircleProps.stroke, 'value', 'blue');
+    assert.propertyVal(filledCircleProps.fill, 'value', 'transparent');
   });
 });

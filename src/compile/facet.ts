@@ -17,7 +17,7 @@ import {
   VgEncodeEntry,
   VgLayout
 } from '../vega.schema';
-import {VgScale, VgSignal} from '../vega.schema';
+import {VgMarkGroup, VgScale, VgSignal} from '../vega.schema';
 import {applyConfig, buildModel, formatSignalRef} from './common';
 import {assembleData, assembleFacetData, FACET_SCALE_PREFIX} from './data/assemble';
 import {parseData} from './data/parse';
@@ -286,7 +286,7 @@ export class FacetModel extends ModelWithField {
     return `data('${facetLayoutDataName}')[0][${stringValue(columnDistinct)}]`;
   }
 
-  public assembleMarks(): VgEncodeEntry[] {
+  public assembleMarks(): VgMarkGroup[] {
     const facetRoot = this.component.data.facetRoot;
     const data = assembleFacetData(facetRoot);
 
