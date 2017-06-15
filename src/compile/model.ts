@@ -45,7 +45,7 @@ export interface Component {
     column?: LayoutHeaderComponent
   };
 
-  mark: VgEncodeEntry[];
+  mark: VgMarkGroup[];
 }
 
 export interface NameMapInterface {
@@ -207,7 +207,7 @@ export abstract class Model {
   }
 
   public assembleGroup(signals: VgSignal[] = []) {
-    const group: VgEncodeEntry = {};
+    const group: VgMarkGroup = {};
 
     signals = signals.concat(this.assembleSelectionSignals());
     if (signals.length > 0) {
@@ -346,7 +346,7 @@ export abstract class Model {
   /**
    * Corrects the data references in marks after assemble.
    */
-  public correctDataNames = (mark: VgEncodeEntry) => {
+  public correctDataNames = (mark: VgMarkGroup) => {
     // TODO: make this correct
 
     // for normal data references

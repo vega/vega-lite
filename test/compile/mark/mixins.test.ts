@@ -46,7 +46,7 @@ describe('compile/mark/mixins', () => {
 
       const colorMixins = color(model);
       assert.deepEqual(colorMixins.stroke, {"field": "gender", "scale": "color"});
-      assert.deepEqual(colorMixins.fill.value, "transparent");
+      assert.propertyVal(colorMixins.fill, 'value', "transparent");
     });
   });
 });

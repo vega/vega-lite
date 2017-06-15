@@ -12,7 +12,7 @@ import {SortField, SortOrder} from '../sort';
 import {UnitSize, UnitSpec} from '../spec';
 import {stack, StackProperties} from '../stack';
 import {Dict, duplicate, extend, vals} from '../util';
-import {VgData, VgLayout, VgSignal} from '../vega.schema';
+import {VgData, VgEncodeEntry, VgLayout, VgSignal} from '../vega.schema';
 import {AxisIndex} from './axis/component';
 import {parseAxisComponent} from './axis/parse';
 import {applyConfig} from './common';
@@ -335,7 +335,7 @@ export class UnitModel extends ModelWithField {
     return marks.map(this.correctDataNames);
   }
 
-  public assembleParentGroupProperties() {
+  public assembleParentGroupProperties(): VgEncodeEntry {
     return {
       width: this.getSizeSignalRef('width'),
       height: this.getSizeSignalRef('height'),
