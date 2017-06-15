@@ -1,4 +1,4 @@
-import {Axis, AXIS_PROPERTIES} from '../../axis';
+import {Axis, AXIS_PROPERTIES, AxisEncoding} from '../../axis';
 import {Channel, SpatialScaleChannel} from '../../channel';
 import {VgAxis} from '../../vega.schema';
 
@@ -9,7 +9,7 @@ import {Dict, keys, some} from '../../util';
 import {UnitModel} from '../unit';
 import {AxisComponent, AxisComponentIndex} from './component';
 
-type AxisPart = 'domain' | 'grid' | 'labels' | 'ticks' | 'title';
+type AxisPart = keyof AxisEncoding;
 const AXIS_PARTS: AxisPart[] = ['domain', 'grid', 'labels', 'ticks', 'title'];
 
 export function parseAxisComponent(model: UnitModel, axisChannels: SpatialScaleChannel[]): AxisComponentIndex {
@@ -90,7 +90,7 @@ function parseAxis(channel: SpatialScaleChannel, model: UnitModel, isGridAxis: b
 
   // 2) Add guide encode definition groups
 
-  const encodeSpec = axis.encode || {};
+  const axisEncoding = axis.encoding || {};
   AXIS_PARTS.forEach(function(part) {
     if (!hasAxisPart(vgAxis, part)) {
       // No need to create encode for a disabled part.
@@ -100,9 +100,9 @@ function parseAxis(channel: SpatialScaleChannel, model: UnitModel, isGridAxis: b
     // as different require different parameters.
     let value;
     if (part === 'labels') {
-        value = encode.labels(model, channel, encodeSpec.labels || {}, vgAxis);
+      value = encode.labels(model, channel, axisEncoding.labels || {}, vgAxis);
     } else {
-        value = encodeSpec[part] || {};
+      value = axisEncoding[part] || {};
     }
 
     if (value !== undefined && keys(value).length > 0) {

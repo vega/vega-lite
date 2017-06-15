@@ -50,11 +50,11 @@ export function parseLegend(model: UnitModel, channel: NonspatialScaleChannel): 
   });
 
   // 2) Add mark property definition groups
-  const encodeSpec = legend.encode || {};
+  const legendEncoding = legend.encoding || {};
   ['labels', 'legend', 'title', 'symbols'].forEach(function(part) {
     const value = encode[part] ?
-      encode[part](fieldDef, encodeSpec[part], model, channel) : // apply rule
-      encodeSpec[part]; // no rule -- just default values
+      encode[part](fieldDef, legendEncoding[part], model, channel) : // apply rule
+      legendEncoding[part]; // no rule -- just default values
     if (value !== undefined && keys(value).length > 0) {
       def.encode = def.encode || {};
       def.encode[part] = {update: value};

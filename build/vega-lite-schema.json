@@ -60,8 +60,8 @@
           "description": "A boolean flag indicating if the domain (the axis baseline) should be included as part of the axis (default true).",
           "type": "boolean"
         },
-        "encode": {
-          "$ref": "#/definitions/VgAxisEncode",
+        "encoding": {
+          "$ref": "#/definitions/AxisEncoding",
           "description": "Optional mark definitions for custom axis encoding."
         },
         "format": {
@@ -375,6 +375,36 @@
         "axisY": {
           "$ref": "#/definitions/VgAxisConfig",
           "description": "Y-axis specific config."
+        }
+      },
+      "type": "object"
+    },
+    "AxisEncoding": {
+      "additionalProperties": false,
+      "properties": {
+        "axis": {
+          "$ref": "#/definitions/GuideEncodingEntry",
+          "description": "Custom encoding for the axis container."
+        },
+        "domain": {
+          "$ref": "#/definitions/GuideEncodingEntry",
+          "description": "Custom encoding for the axis domain rule mark."
+        },
+        "grid": {
+          "$ref": "#/definitions/GuideEncodingEntry",
+          "description": "Custom encoding for axis gridline rule marks."
+        },
+        "labels": {
+          "$ref": "#/definitions/GuideEncodingEntry",
+          "description": "Custom encoding for axis label text marks."
+        },
+        "ticks": {
+          "$ref": "#/definitions/GuideEncodingEntry",
+          "description": "Custom encoding for axis tick rule marks."
+        },
+        "title": {
+          "$ref": "#/definitions/GuideEncodingEntry",
+          "description": "Custom encoding for the axis title text mark."
         }
       },
       "type": "object"
@@ -2748,6 +2778,190 @@
       },
       "type": "object"
     },
+    "GuideEncodingEntry": {
+      "additionalProperties": false,
+      "properties": {
+        "align": {
+          "$ref": "#/definitions/ValueDef"
+        },
+        "angle": {
+          "$ref": "#/definitions/ValueDef"
+        },
+        "baseline": {
+          "$ref": "#/definitions/ValueDef"
+        },
+        "clip": {
+          "$ref": "#/definitions/ValueDef"
+        },
+        "cursor": {
+          "$ref": "#/definitions/ValueDef"
+        },
+        "dir": {
+          "$ref": "#/definitions/ValueDef"
+        },
+        "dx": {
+          "$ref": "#/definitions/ValueDef"
+        },
+        "dy": {
+          "$ref": "#/definitions/ValueDef"
+        },
+        "ellipsis": {
+          "$ref": "#/definitions/ValueDef"
+        },
+        "endAngle": {
+          "$ref": "#/definitions/ValueDef"
+        },
+        "fill": {
+          "$ref": "#/definitions/ValueDef"
+        },
+        "fillOpacity": {
+          "$ref": "#/definitions/ValueDef"
+        },
+        "font": {
+          "$ref": "#/definitions/ValueDef"
+        },
+        "fontSize": {
+          "$ref": "#/definitions/ValueDef"
+        },
+        "fontStyle": {
+          "$ref": "#/definitions/ValueDef"
+        },
+        "fontWeight": {
+          "$ref": "#/definitions/ValueDef"
+        },
+        "height": {
+          "$ref": "#/definitions/ValueDef"
+        },
+        "innerRadius": {
+          "$ref": "#/definitions/ValueDef"
+        },
+        "interpolate": {
+          "$ref": "#/definitions/ValueDef"
+        },
+        "limit": {
+          "$ref": "#/definitions/ValueDef"
+        },
+        "opacity": {
+          "$ref": "#/definitions/ValueDef"
+        },
+        "orient": {
+          "$ref": "#/definitions/ValueDef"
+        },
+        "outerRadius": {
+          "$ref": "#/definitions/ValueDef"
+        },
+        "path": {
+          "$ref": "#/definitions/ValueDef"
+        },
+        "radius": {
+          "$ref": "#/definitions/ValueDef"
+        },
+        "shape": {
+          "$ref": "#/definitions/ValueDef"
+        },
+        "size": {
+          "$ref": "#/definitions/ValueDef"
+        },
+        "startAngle": {
+          "$ref": "#/definitions/ValueDef"
+        },
+        "stroke": {
+          "$ref": "#/definitions/ValueDef"
+        },
+        "strokeDash": {
+          "$ref": "#/definitions/ValueDef"
+        },
+        "strokeDashOffset": {
+          "$ref": "#/definitions/ValueDef"
+        },
+        "strokeOpacity": {
+          "$ref": "#/definitions/ValueDef"
+        },
+        "strokeWidth": {
+          "$ref": "#/definitions/ValueDef"
+        },
+        "tension": {
+          "$ref": "#/definitions/ValueDef"
+        },
+        "text": {
+          "$ref": "#/definitions/ValueDef"
+        },
+        "theta": {
+          "$ref": "#/definitions/ValueDef"
+        },
+        "url": {
+          "$ref": "#/definitions/ValueDef"
+        },
+        "width": {
+          "$ref": "#/definitions/ValueDef"
+        },
+        "x": {
+          "$ref": "#/definitions/ValueDef"
+        },
+        "x2": {
+          "$ref": "#/definitions/ValueDef"
+        },
+        "xc": {
+          "$ref": "#/definitions/ValueDef"
+        },
+        "y": {
+          "$ref": "#/definitions/ValueDef"
+        },
+        "y2": {
+          "$ref": "#/definitions/ValueDef"
+        },
+        "yc": {
+          "$ref": "#/definitions/ValueDef"
+        }
+      },
+      "required": [
+        "x",
+        "x2",
+        "xc",
+        "width",
+        "y",
+        "y2",
+        "yc",
+        "height",
+        "opacity",
+        "fill",
+        "fillOpacity",
+        "stroke",
+        "strokeWidth",
+        "strokeOpacity",
+        "strokeDash",
+        "strokeDashOffset",
+        "cursor",
+        "clip",
+        "size",
+        "shape",
+        "path",
+        "innerRadius",
+        "outerRadius",
+        "startAngle",
+        "endAngle",
+        "interpolate",
+        "tension",
+        "orient",
+        "url",
+        "align",
+        "baseline",
+        "text",
+        "dir",
+        "ellipsis",
+        "limit",
+        "dx",
+        "dy",
+        "radius",
+        "theta",
+        "angle",
+        "font",
+        "fontSize",
+        "fontWeight",
+        "fontStyle"
+      ],
+      "type": "object"
+    },
     "Header": {
       "additionalProperties": false,
       "description": "Headers of row / column channels for faceted plots.",
@@ -2812,8 +3026,8 @@
       "additionalProperties": false,
       "description": "Properties of a legend or boolean flag for determining whether to show it.",
       "properties": {
-        "encode": {
-          "$ref": "#/definitions/VgLegendEncode",
+        "encoding": {
+          "$ref": "#/definitions/LegendEncoding",
           "description": "Optional mark definitions for custom legend encoding."
         },
         "entryPadding": {
@@ -2834,6 +3048,15 @@
         },
         "orient": {
           "description": "The orientation of the legend. One of `\"left\"` or `\"right\"`. This determines how the legend is positioned within the scene. The default is `\"right\"`.\n\n__Default value:__  `\"right\"`",
+          "enum": [
+            "left",
+            "right",
+            "top-left",
+            "top-right",
+            "bottom-left",
+            "bottom-right",
+            "none"
+          ],
           "type": "string"
         },
         "padding": {
@@ -2973,6 +3196,15 @@
         },
         "orient": {
           "description": "The orientation of the legend. One of `\"left\"` or `\"right\"`. This determines how the legend is positioned within the scene. The default is `\"right\"`.\n\n__Default value:__  `\"right\"`",
+          "enum": [
+            "left",
+            "right",
+            "top-left",
+            "top-right",
+            "bottom-left",
+            "bottom-right",
+            "none"
+          ],
           "type": "string"
         },
         "padding": {
@@ -3050,6 +3282,27 @@
         "titlePadding": {
           "description": "The padding, in pixels, between title and legend.",
           "type": "number"
+        }
+      },
+      "type": "object"
+    },
+    "LegendEncoding": {
+      "additionalProperties": false,
+      "properties": {
+        "gradient": {
+          "$ref": "#/definitions/GuideEncodingEntry"
+        },
+        "labels": {
+          "$ref": "#/definitions/GuideEncodingEntry"
+        },
+        "legend": {
+          "$ref": "#/definitions/GuideEncodingEntry"
+        },
+        "symbols": {
+          "$ref": "#/definitions/GuideEncodingEntry"
+        },
+        "title": {
+          "$ref": "#/definitions/GuideEncodingEntry"
         }
       },
       "type": "object"
@@ -5469,6 +5722,19 @@
       ],
       "type": "object"
     },
+    "ValueDef": {
+      "additionalProperties": false,
+      "description": "Definition object for a constant value of an encoding channel.",
+      "properties": {
+        "value": {
+          "description": "A constant value in visual domain."
+        }
+      },
+      "required": [
+        "value"
+      ],
+      "type": "object"
+    },
     "NumberValueDef": {
       "additionalProperties": false,
       "description": "Definition object for a constant value of an encoding channel.",
@@ -5735,27 +6001,6 @@
       },
       "type": "object"
     },
-    "VgAxisEncode": {
-      "additionalProperties": false,
-      "properties": {
-        "domain": {
-          "$ref": "#/definitions/VgGuideEncode"
-        },
-        "grid": {
-          "$ref": "#/definitions/VgGuideEncode"
-        },
-        "labels": {
-          "$ref": "#/definitions/VgGuideEncode"
-        },
-        "ticks": {
-          "$ref": "#/definitions/VgGuideEncode"
-        },
-        "title": {
-          "$ref": "#/definitions/VgGuideEncode"
-        }
-      },
-      "type": "object"
-    },
     "VgBinding": {
       "anyOf": [
         {
@@ -5808,8 +6053,6 @@
       ],
       "type": "object"
     },
-    "VgGuideEncode": {
-    },
     "VgLegendBase": {
       "additionalProperties": false,
       "properties": {
@@ -5827,6 +6070,15 @@
         },
         "orient": {
           "description": "The orientation of the legend. One of `\"left\"` or `\"right\"`. This determines how the legend is positioned within the scene. The default is `\"right\"`.\n\n__Default value:__  `\"right\"`",
+          "enum": [
+            "left",
+            "right",
+            "top-left",
+            "top-right",
+            "bottom-left",
+            "bottom-right",
+            "none"
+          ],
           "type": "string"
         },
         "padding": {
@@ -5922,6 +6174,15 @@
         },
         "orient": {
           "description": "The orientation of the legend. One of `\"left\"` or `\"right\"`. This determines how the legend is positioned within the scene. The default is `\"right\"`.\n\n__Default value:__  `\"right\"`",
+          "enum": [
+            "left",
+            "right",
+            "top-left",
+            "top-right",
+            "bottom-left",
+            "bottom-right",
+            "none"
+          ],
           "type": "string"
         },
         "padding": {
@@ -5995,27 +6256,6 @@
         "titlePadding": {
           "description": "The padding, in pixels, between title and legend.",
           "type": "number"
-        }
-      },
-      "type": "object"
-    },
-    "VgLegendEncode": {
-      "additionalProperties": false,
-      "properties": {
-        "gradient": {
-          "$ref": "#/definitions/VgGuideEncode"
-        },
-        "labels": {
-          "$ref": "#/definitions/VgGuideEncode"
-        },
-        "legend": {
-          "$ref": "#/definitions/VgGuideEncode"
-        },
-        "symbols": {
-          "$ref": "#/definitions/VgGuideEncode"
-        },
-        "title": {
-          "$ref": "#/definitions/VgGuideEncode"
         }
       },
       "type": "object"
