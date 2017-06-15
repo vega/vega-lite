@@ -206,6 +206,7 @@
         {
             "scale": "x",
             "domain": false,
+            "labelOverlap": true,
             "orient": "bottom",
             "tickCount": 5,
             "title": "YEARMONTH(date)",
@@ -215,9 +216,6 @@
                     "update": {
                         "text": {
                             "signal": "timeFormat(datum.value, '%Y')"
-                        },
-                        "angle": {
-                            "value": 0
                         }
                     }
                 }

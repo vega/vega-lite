@@ -172,6 +172,7 @@
             "axes": [
                 {
                     "scale": "trellis_barley_x",
+                    "labelOverlap": true,
                     "orient": "bottom",
                     "tickCount": 5,
                     "title": "MEDIAN(yield)",

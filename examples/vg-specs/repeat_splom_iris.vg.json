@@ -535,6 +535,7 @@
             "axes": [
                 {
                     "scale": "child_petalWidth_sepalLength_x",
+                    "labelOverlap": true,
                     "orient": "bottom",
                     "tickCount": 5,
                     "title": "sepalLength",
@@ -652,6 +653,7 @@
             "axes": [
                 {
                     "scale": "child_petalWidth_sepalWidth_x",
+                    "labelOverlap": true,
                     "orient": "bottom",
                     "tickCount": 5,
                     "title": "sepalWidth",
@@ -769,6 +771,7 @@
             "axes": [
                 {
                     "scale": "child_petalWidth_petalLength_x",
+                    "labelOverlap": true,
                     "orient": "bottom",
                     "tickCount": 5,
                     "title": "petalLength",
@@ -886,6 +889,7 @@
             "axes": [
                 {
                     "scale": "child_petalWidth_petalWidth_x",
+                    "labelOverlap": true,
                     "orient": "bottom",
                     "tickCount": 5,
                     "title": "petalWidth",
@@ -1003,6 +1007,7 @@
             "axes": [
                 {
                     "scale": "child_petalLength_sepalLength_x",
+                    "labelOverlap": true,
                     "orient": "bottom",
                     "tickCount": 5,
                     "title": "sepalLength",
@@ -1120,6 +1125,7 @@
             "axes": [
                 {
                     "scale": "child_petalLength_sepalWidth_x",
+                    "labelOverlap": true,
                     "orient": "bottom",
                     "tickCount": 5,
                     "title": "sepalWidth",
@@ -1237,6 +1243,7 @@
             "axes": [
                 {
                     "scale": "child_petalLength_petalLength_x",
+                    "labelOverlap": true,
                     "orient": "bottom",
                     "tickCount": 5,
                     "title": "petalLength",
@@ -1354,6 +1361,7 @@
             "axes": [
                 {
                     "scale": "child_petalLength_petalWidth_x",
+                    "labelOverlap": true,
                     "orient": "bottom",
                     "tickCount": 5,
                     "title": "petalWidth",
@@ -1471,6 +1479,7 @@
             "axes": [
                 {
                     "scale": "child_sepalWidth_sepalLength_x",
+                    "labelOverlap": true,
                     "orient": "bottom",
                     "tickCount": 5,
                     "title": "sepalLength",
@@ -1588,6 +1597,7 @@
             "axes": [
                 {
                     "scale": "child_sepalWidth_sepalWidth_x",
+                    "labelOverlap": true,
                     "orient": "bottom",
                     "tickCount": 5,
                     "title": "sepalWidth",
@@ -1705,6 +1715,7 @@
             "axes": [
                 {
                     "scale": "child_sepalWidth_petalLength_x",
+                    "labelOverlap": true,
                     "orient": "bottom",
                     "tickCount": 5,
                     "title": "petalLength",
@@ -1822,6 +1833,7 @@
             "axes": [
                 {
                     "scale": "child_sepalWidth_petalWidth_x",
+                    "labelOverlap": true,
                     "orient": "bottom",
                     "tickCount": 5,
                     "title": "petalWidth",
@@ -1939,6 +1951,7 @@
             "axes": [
                 {
                     "scale": "child_sepalLength_sepalLength_x",
+                    "labelOverlap": true,
                     "orient": "bottom",
                     "tickCount": 5,
                     "title": "sepalLength",
@@ -2056,6 +2069,7 @@
             "axes": [
                 {
                     "scale": "child_sepalLength_sepalWidth_x",
+                    "labelOverlap": true,
                     "orient": "bottom",
                     "tickCount": 5,
                     "title": "sepalWidth",
@@ -2173,6 +2187,7 @@
             "axes": [
                 {
                     "scale": "child_sepalLength_petalLength_x",
+                    "labelOverlap": true,
                     "orient": "bottom",
                     "tickCount": 5,
                     "title": "petalLength",
@@ -2290,6 +2305,7 @@
             "axes": [
                 {
                     "scale": "child_sepalLength_petalWidth_x",
+                    "labelOverlap": true,
                     "orient": "bottom",
                     "tickCount": 5,
                     "title": "petalWidth",

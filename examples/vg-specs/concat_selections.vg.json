@@ -527,6 +527,7 @@
             "axes": [
                 {
                     "scale": "concat_0_x",
+                    "labelOverlap": true,
                     "orient": "bottom",
                     "tickCount": 5,
                     "title": "Miles_per_Gallon",
@@ -779,6 +780,7 @@
             "axes": [
                 {
                     "scale": "concat_1_x",
+                    "labelOverlap": true,
                     "orient": "bottom",
                     "tickCount": 5,
                     "title": "Displacement",

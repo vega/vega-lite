@@ -118,6 +118,8 @@ function getSpecifiedOrDefaultValue(property: keyof VgAxis, specifiedAxis: Axis,
   switch (property) {
     case 'labels':
       return isGridAxis ? false : specifiedAxis[property];
+    case 'labelOverlap':
+      return rules.labelOverlap(fieldDef, specifiedAxis, channel, isGridAxis);  // TODO: scaleType
     case 'domain':
       return rules.domain(property, specifiedAxis, isGridAxis, channel);
     case 'ticks':

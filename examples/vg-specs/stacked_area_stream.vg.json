@@ -209,6 +209,7 @@
         {
             "scale": "x",
             "domain": false,
+            "labelOverlap": true,
             "orient": "bottom",
             "tickCount": 5,
             "tickSize": 0,
@@ -219,9 +220,6 @@
                     "update": {
                         "text": {
                             "signal": "timeFormat(datum.value, '%Y')"
-                        },
-                        "angle": {
-                            "value": 0
                         }
                     }
                 }

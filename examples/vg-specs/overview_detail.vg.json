@@ -465,6 +465,7 @@
             "axes": [
                 {
                     "scale": "concat_0_x",
+                    "labelOverlap": true,
                     "orient": "bottom",
                     "tickCount": 5,
                     "title": "date",
@@ -474,9 +475,6 @@
                             "update": {
                                 "text": {
                                     "signal": "timeFormat(datum.value, '%Y')"
-                                },
-                                "angle": {
-                                    "value": 0
                                 }
                             }
                         }
@@ -586,6 +584,7 @@
             "axes": [
                 {
                     "scale": "concat_1_x",
+                    "labelOverlap": true,
                     "orient": "bottom",
                     "tickCount": 5,
                     "zindex": 1,
@@ -594,9 +593,6 @@
                             "update": {
                                 "text": {
                                     "signal": "timeFormat(datum.value, '%b %d, %Y')"
-                                },
-                                "angle": {
-                                    "value": 0
                                 }
                             }
                         }

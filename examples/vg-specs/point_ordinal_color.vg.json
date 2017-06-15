@@ -154,6 +154,7 @@
     "axes": [
         {
             "scale": "x",
+            "labelOverlap": true,
             "orient": "bottom",
             "tickCount": 5,
             "title": "x",

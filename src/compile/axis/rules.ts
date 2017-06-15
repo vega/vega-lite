@@ -9,6 +9,7 @@ import {truncate} from '../../util';
 import {VgAxis} from '../../vega.schema';
 import {numberFormat} from '../common';
 import {UnitModel} from '../unit';
+import {labelAngle} from './encode';
 
 export function format(specifiedAxis: Axis, fieldDef: FieldDef<string>, config: Config) {
   return numberFormat(fieldDef, specifiedAxis.format, config);
@@ -133,6 +134,14 @@ export function domainAndTicks(property: keyof VgAxis, specifiedAxis: Axis, isGr
     return false;
   }
   return specifiedAxis[property];
+}
+
+export function labelOverlap(fieldDef: FieldDef<string>, specifiedAxis: Axis, channel: Channel, isGridAxis: boolean) {
+  // TODO: use true for non-log continuous scales, and use "greedy" for log scales
+  if (!isGridAxis && channel === 'x' && !labelAngle(specifiedAxis, channel, fieldDef)) {
+    return true;
+  }
+  return undefined;
 }
 
 export const domain = domainAndTicks;
