@@ -413,20 +413,20 @@
   ],
   "layer": [
     {
-      "mark": {"type": "rule"},
+      "mark": "rule",
       "encoding": {
         "y": {
           "field": "mid",
           "type": "quantitative",
           "aggregate": "mean",
           "scale": {"zero": false},
-          "axis": {"title": null}
+          "axis": {"title": ""}
         },
         "color": {"value": "fff"}
       }
     },
     {
-      "mark": {"type": "rule"},
+      "mark": "rule",
       "encoding": {
         "x": {
           "field": "date",
@@ -444,12 +444,12 @@
           "field": "isIncrease",
           "type": "nominal",
           "scale": {"range": ["#ae1325","#06982d"]},
-          "legend": false
+          "legend": null
         }
       }
     },
     {
-      "mark": {"type": "bar"},
+      "mark": "bar",
       "encoding": {
         "x": {
           "field": "date",
@@ -463,7 +463,7 @@
           "field": "isIncrease",
           "type": "nominal",
           "scale": {"range": ["#ae1325","#06982d"]},
-          "legend": false
+          "legend": null
         }
       }
     }

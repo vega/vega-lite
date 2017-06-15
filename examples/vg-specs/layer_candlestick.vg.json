@@ -755,7 +755,6 @@
             "scale": "y",
             "format": "s",
             "orient": "left",
-            "title": null,
             "zindex": 1
         },
         {
