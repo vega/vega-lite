@@ -549,7 +549,7 @@ export interface VgLegendBase {
    *
    * __Default value:__  `"right"`
    */
-  orient?: string;
+  orient?: 'left' | 'right' | 'top-left' | 'top-right' | 'bottom-left' | 'bottom-right' | 'none';
 
   /**
    * The offset, in pixels, by which to displace the legend from the edge of the enclosing group or data rectangle.

@@ -89,3 +89,4 @@ To provide themes for all axes, the axis config `config: {axis: {...}}` can cont
 ### Title
 
 {% include table.html props="maxExtent,minExtent,titleAlign,titleAngle,titleBaseline,titleColor,titleFont,titleLimit,titleFontWeight,titleFontSize,titlePadding,titleMaxLength" source="AxisConfig" %}
+

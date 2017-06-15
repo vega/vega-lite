@@ -16,6 +16,7 @@ perl -pi -e s,'TopLevel<(.*)>','TopLevel\1',g build/vega-lite-schema.json
 perl -pi -e s,'ValueDef<\(string\|number\|boolean\)>','TextValueDef',g build/vega-lite-schema.json
 perl -pi -e s,'ValueDef<string>','StringValueDef',g build/vega-lite-schema.json
 perl -pi -e s,'ValueDef<number>','NumberValueDef',g build/vega-lite-schema.json
+perl -pi -e s,'ValueDef<any>','ValueDef',g build/vega-lite-schema.json
 
 perl -pi -e s,'Condition<(.*)>','Condition\1',g build/vega-lite-schema.json
 
