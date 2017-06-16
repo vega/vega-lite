@@ -27,9 +27,7 @@
         "variance",
         "variancep"
       ],
-      "type": [
-        "string"
-      ]
+      "type": "string"
     },
     "AnyMark": {
       "anyOf": [
@@ -53,9 +51,7 @@
         "linepoint",
         "none"
       ],
-      "type": [
-        "string"
-      ]
+      "type": "string"
     },
     "Axis": {
       "additionalProperties": false,
@@ -390,9 +386,7 @@
         "left",
         "bottom"
       ],
-      "type": [
-        "string"
-      ]
+      "type": "string"
     },
     "BOXPLOT": {
       "enum": [
@@ -1578,6 +1572,7 @@
       "type": "object"
     },
     "Config": {
+      "additionalProperties": true,
       "properties": {
         "area": {
           "$ref": "#/definitions/MarkConfig",
@@ -1766,9 +1761,7 @@
         "tsv",
         "topojson"
       ],
-      "type": [
-        "string"
-      ]
+      "type": "string"
     },
     "DataUrlFormat": {
       "additionalProperties": false,
@@ -2380,18 +2373,14 @@
         "normal",
         "italic"
       ],
-      "type": [
-        "string"
-      ]
+      "type": "string"
     },
     "FontWeight": {
       "enum": [
         "normal",
         "bold"
       ],
-      "type": [
-        "string"
-      ]
+      "type": "string"
     },
     "FontWeightNumber": {
       "maximum": 900,
@@ -2780,9 +2769,7 @@
         "right",
         "center"
       ],
-      "type": [
-        "string"
-      ]
+      "type": "string"
     },
     "InlineData": {
       "additionalProperties": false,
@@ -2819,9 +2806,7 @@
         "bundle",
         "monotone"
       ],
-      "type": [
-        "string"
-      ]
+      "type": "string"
     },
     "Legend": {
       "additionalProperties": false,
@@ -2873,9 +2858,7 @@
             "symbol",
             "gradient"
           ],
-          "type": [
-            "string"
-          ]
+          "type": "string"
         },
         "values": {
           "anyOf": [
@@ -3329,9 +3312,7 @@
         "circle",
         "square"
       ],
-      "type": [
-        "string"
-      ]
+      "type": "string"
     },
     "MarkConfig": {
       "additionalProperties": false,
@@ -3689,9 +3670,7 @@
         "horizontal",
         "vertical"
       ],
-      "type": [
-        "string"
-      ]
+      "type": "string"
     },
     "OverlayConfig": {
       "additionalProperties": false,
@@ -3914,9 +3893,7 @@
             "row",
             "column"
           ],
-          "type": [
-            "string"
-          ]
+          "type": "string"
         }
       },
       "required": [
@@ -3953,9 +3930,7 @@
         "independent",
         "shared"
       ],
-      "type": [
-        "string"
-      ]
+      "type": "string"
     },
     "Scale": {
       "additionalProperties": false,
@@ -3983,9 +3958,7 @@
             "cubehelix",
             "cubehelix-long"
           ],
-          "type": [
-            "string"
-          ]
+          "type": "string"
         },
         "nice": {
           "description": "As quantitative scale property, if specified, modifies the scale domain to use a more human-friendly value range. If specified as a `true` boolean, modifies the scale domain to use a more human-friendly number range (e.g., 7 instead of 6.96). If specified as a string, modifies the scale domain to use a more human-friendly value range. For time and utc scale types only, the nice value should be a string indicating the desired time interval.\nAs time scale properties, if `true`, values that exceed the data domain are clamped to either the minimum or maximum range value. (Not applicable for `quantile`, `quantize`, and `threshold` scales as they output discrete ranges.)\n\n__Default value:__ `true` only for quantitative x and y scales and `false` otherwise.",
@@ -4223,9 +4196,7 @@
         "point",
         "band"
       ],
-      "type": [
-        "string"
-      ]
+      "type": "string"
     },
     "Scheme": {
       "anyOf": [
@@ -4384,9 +4355,7 @@
         "intersect",
         "intersect_others"
       ],
-      "type": [
-        "string"
-      ]
+      "type": "string"
     },
     "SelectionTypes": {
       "enum": [
@@ -4394,9 +4363,7 @@
         "multi",
         "interval"
       ],
-      "type": [
-        "string"
-      ]
+      "type": "string"
     },
     "SingleDefChannel": {
       "enum": [
@@ -4413,9 +4380,7 @@
         "text",
         "tooltip"
       ],
-      "type": [
-        "string"
-      ]
+      "type": "string"
     },
     "SortField": {
       "additionalProperties": false,
@@ -4475,9 +4440,7 @@
         "normalize",
         "none"
       ],
-      "type": [
-        "string"
-      ]
+      "type": "string"
     },
     "Summarize": {
       "additionalProperties": false,
@@ -4911,9 +4874,7 @@
         "utcquartermonth",
         "utcyearquartermonth"
       ],
-      "type": [
-        "string"
-      ]
+      "type": "string"
     },
     "TimeUnitTransform": {
       "additionalProperties": false,
@@ -5411,9 +5372,7 @@
         "temporal",
         "nominal"
       ],
-      "type": [
-        "string"
-      ]
+      "type": "string"
     },
     "UnitSize": {
       "additionalProperties": false,
@@ -5544,9 +5503,7 @@
         "middle",
         "bottom"
       ],
-      "type": [
-        "string"
-      ]
+      "type": "string"
     },
     "VgAxisBase": {
       "additionalProperties": false,
