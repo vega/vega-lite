@@ -14,7 +14,7 @@ import {assembleLayoutLayerSignals} from './layout/index';
 import {moveSharedLegendUp} from './legend/parse';
 import {Model} from './model';
 import {RepeaterValue} from './repeat';
-import {ScaleComponent} from './scale/component';
+import {ScaleComponent, ScaleComponentIndex} from './scale/component';
 import {unionDomains} from './scale/domain';
 import {moveSharedScaleUp} from './scale/parse';
 import {assembleLayerSelectionMarks} from './selection/selection';
@@ -76,7 +76,7 @@ export class LayerModel extends Model {
   }
 
   public parseScale(this: LayerModel) {
-    const scaleComponent: Dict<ScaleComponent> = this.component.scales = {};
+    const scaleComponent: ScaleComponentIndex = this.component.scales = {};
 
     for (const child of this.children) {
       child.parseScale();

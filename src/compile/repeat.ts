@@ -15,7 +15,7 @@ import {assembleData} from './data/assemble';
 import {parseData} from './data/parse';
 import {moveSharedLegendUp} from './legend/parse';
 import {Model} from './model';
-import {ScaleComponent} from './scale/component';
+import {ScaleComponent, ScaleComponentIndex} from './scale/component';
 import {unionDomains} from './scale/domain';
 import {moveSharedScaleUp} from './scale/parse';
 
@@ -135,7 +135,7 @@ export class RepeatModel extends Model {
   }
 
   public parseScale(this: RepeatModel) {
-    const scaleComponent: Dict<ScaleComponent> = this.component.scales = {};
+    const scaleComponent: ScaleComponentIndex = this.component.scales = {};
 
     for (const child of this.children) {
       child.parseScale();
