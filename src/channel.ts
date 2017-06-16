@@ -101,7 +101,8 @@ export type NonspatialScaleChannel = typeof NONSPATIAL_SCALE_CHANNELS[0];
 export const LEVEL_OF_DETAIL_CHANNELS = without(NONSPATIAL_CHANNELS, ['order'] as Channel[]);
 
 /** Channels that can serve as groupings for stacked charts. */
-export const STACK_GROUP_CHANNELS = [COLOR, DETAIL, ORDER, OPACITY, SIZE];
+export const STACK_BY_CHANNELS = [COLOR, DETAIL, ORDER, OPACITY, SIZE];
+export type StackByChannel = typeof STACK_BY_CHANNELS[0];
 
 export interface SupportedMark {
   point?: boolean;

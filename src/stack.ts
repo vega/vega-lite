@@ -1,7 +1,7 @@
 import * as log from './log';
 
 import {SUM_OPS} from './aggregate';
-import {Channel, STACK_GROUP_CHANNELS, X, X2, Y, Y2} from './channel';
+import {Channel, STACK_BY_CHANNELS, StackByChannel, X, X2, Y, Y2} from './channel';
 import {channelHasField, Encoding, isAggregate} from './encoding';
 import {Field, FieldDef, getFieldDef, isFieldDef, PositionFieldDef} from './fielddef';
 import {AREA, BAR, CIRCLE, isMarkDef, LINE, Mark, MarkDef, POINT, RULE, SQUARE, TEXT, TICK} from './mark';
@@ -20,7 +20,7 @@ export interface StackProperties {
   /** Stack-by fields e.g., color, detail */
   stackBy: {
     fieldDef: FieldDef<string>,
-    channel: Channel
+    channel: StackByChannel
   }[];
 
   /**
@@ -54,7 +54,7 @@ export function stack(m: Mark | MarkDef, encoding: Encoding<Field>, stackConfig:
   }
 
   // Should have grouping level of detail
-  const stackBy = STACK_GROUP_CHANNELS.reduce((sc, channel) => {
+  const stackBy = STACK_BY_CHANNELS.reduce((sc, channel) => {
     if (channelHasField(encoding, channel)) {
       const channelDef = encoding[channel];
       (isArray(channelDef) ? channelDef : [channelDef]).forEach((cDef) => {

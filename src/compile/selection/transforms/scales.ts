@@ -15,7 +15,7 @@ const scaleBindings:TransformCompiler = {
   },
 
   parse: function(model, selDef, selCmpt) {
-    const bound:Channel[] = selCmpt.scales = [];
+    const bound: Channel[] = selCmpt.scales = [];
 
     selCmpt.project.forEach(function(p) {
       const channel = p.encoding;

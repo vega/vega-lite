@@ -1,4 +1,4 @@
-import {Channel, COLOR, SHAPE} from '../../channel';
+import {Channel, COLOR, NonspatialScaleChannel, SHAPE} from '../../channel';
 import {FieldDef, isFieldDef, isValueDef} from '../../fielddef';
 import {AREA, BAR, CIRCLE, FILL_STROKE_CONFIG, LINE, POINT, SQUARE, TEXT, TICK} from '../../mark';
 import {TEMPORAL} from '../../type';
@@ -70,7 +70,7 @@ export function symbols(fieldDef: FieldDef<string>, symbolsSpec: any, model: Uni
   return keys(symbols).length > 0 ? symbols : undefined;
 }
 
-export function labels(fieldDef: FieldDef<string>, labelsSpec: any, model: UnitModel, channel: Channel) {
+export function labels(fieldDef: FieldDef<string>, labelsSpec: any, model: UnitModel, channel: NonspatialScaleChannel) {
   const legend = model.legend(channel);
   const config = model.config;
 

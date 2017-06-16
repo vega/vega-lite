@@ -363,14 +363,15 @@ export abstract class Model {
   }
 
   /**
-   * Traverse a model's hierarchy to get the specified component.
-   * @param type Scales or Selection
-   * @param name Name of the component
+   * Traverse a model's hierarchy to get the scale component for a particular channel.
    */
-  public getScaleComponent(name: string): ScaleComponent {
-    return this.component.scales[name] || (this.parent ? this.parent.getScaleComponent(name) : undefined);
+  public getScaleComponent(channel: ScaleChannel): ScaleComponent {
+    return this.component.scales[channel] || (this.parent ? this.parent.getScaleComponent(channel) : undefined);
   }
 
+  /**
+   * Traverse a model's hierarchy to get a particular selection component.
+   */
   public getSelectionComponent(name: string): SelectionComponent {
     return this.component.selection[name] || this.parent.getSelectionComponent(name);
   }
