@@ -4557,9 +4557,9 @@ typedarray@^0.0.6, typedarray@~0.0.5:
   version "0.0.6"
   resolved "https://registry.yarnpkg.com/typedarray/-/typedarray-0.0.6.tgz#867ac74e3864187b1d3d47d996a78ec5c8830777"
 
-typescript-to-json-schema@vega/typescript-to-json-schema#v0.4.0:
-  version "0.4.0"
-  resolved "https://codeload.github.com/vega/typescript-to-json-schema/tar.gz/8321e3fe848b15e8fd3d9f81a3276111a85891d4"
+typescript-to-json-schema@vega/typescript-to-json-schema#v0.5.0:
+  version "0.5.0"
+  resolved "https://codeload.github.com/vega/typescript-to-json-schema/tar.gz/2378273d2427bec1cf41b71b569c06bb4a272701"
   dependencies:
     commander "~2.9.0"
     glob "~7.1.2"
