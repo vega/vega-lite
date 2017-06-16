@@ -132,7 +132,7 @@ export function projections(selCmpt: SelectionComponent) {
 /**
  * Returns the visual and data signals for an interval selection.
  */
-function channelSignals(model: UnitModel, selCmpt: SelectionComponent, channel: Channel): any {
+function channelSignals(model: UnitModel, selCmpt: SelectionComponent, channel: 'x'|'y'): any {
   const vname = channelSignalName(selCmpt, channel, 'visual');
   const dname = channelSignalName(selCmpt, channel, 'data');
   const hasScales = scales.has(selCmpt);
