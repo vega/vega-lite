@@ -113,10 +113,8 @@ function defaultType(channel: Channel, fieldDef: FieldDef<string>, mark: Mark,
 
     case 'latitude':
     case 'longitude':
-      if (channel === 'color') {
-        return 'sequential';
-      }
-      return 'linear';
+    case 'geojson':
+      return undefined;
   }
 
   /* istanbul ignore next: should never reach this */

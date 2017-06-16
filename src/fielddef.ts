@@ -194,6 +194,10 @@ export function isValueDef<F>(channelDef: ChannelDef<F>): channelDef is ValueDef
   return channelDef && 'value' in channelDef && channelDef['value'] !== undefined;
 }
 
+export function isLegendFieldDef(channelDef: ChannelDef<any>): channelDef is LegendFieldDef<any> {
+  return channelDef && channelDef['legend'];
+}
+
 export function isScaleFieldDef(channelDef: ChannelDef<any>): channelDef is ScaleFieldDef<any> {
     return !!channelDef && (!!channelDef['scale'] || !!channelDef['sort']);
 }
@@ -432,10 +436,10 @@ export function channelCompatibility(fieldDef: FieldDef<Field>, channel: Channel
       return COMPATIBLE;
 
     case 'shape':
-      if (fieldDef.type !== 'nominal') { // TODO: allow for shape to be type GEOJSON
+      if (fieldDef.type !== 'nominal' && fieldDef.type !== 'geojson') { // TODO: allow for shape to be type GEOJSON
         return {
           compatible: false,
-          warning: 'Shape channel should be used with nominal data only'
+          warning: 'Shape channel should be used with nominal or geojson data only'
         };
       }
       return COMPATIBLE;

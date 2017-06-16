@@ -11,10 +11,11 @@ export namespace Type {
   /** Geo */
   export const LATITUDE: 'latitude' = 'latitude';
   export const LONGITUDE: 'longitude' = 'longitude';
+  export const GEOJSON: 'geojson' = 'geojson';
 }
 
 export type BasicType = typeof Type.QUANTITATIVE | typeof Type.ORDINAL | typeof Type.TEMPORAL | typeof Type.NOMINAL;
-export type GeoType = typeof Type.LATITUDE | typeof Type.LONGITUDE;
+export type GeoType = typeof Type.LATITUDE | typeof Type.LONGITUDE | typeof Type.GEOJSON;
 
 export type Type = BasicType | GeoType;
 
@@ -25,6 +26,7 @@ export const NOMINAL = Type.NOMINAL;
 
 export const LATITUDE = Type.LATITUDE;
 export const LONGITUDE = Type.LONGITUDE;
+export const GEOJSON = Type.GEOJSON;
 
 /**
  * Get full, lowercase type name for a given type.
@@ -51,6 +53,8 @@ export function getFullName(type: Type|string): Type {
         return 'latitude';
       case LONGITUDE:
         return 'longitude';
+      case GEOJSON:
+        return 'geojson';
     }
   }
   // If we get invalid input, return undefined type.
