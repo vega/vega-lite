@@ -6,6 +6,7 @@ import {isDataRefDomain, isDataRefUnionedDomain, isFieldRefUnionDomain, isSignal
 import {Model} from '../model';
 import {isRawSelectionDomain, scaleDomain} from '../selection/selection';
 
+
 export function assembleScale(model: Model): VgScale[] {
     return vals(model.component.scales).map(scaleComponent => {
       // We need to cast here as combine returns Partial<VgScale> by default.

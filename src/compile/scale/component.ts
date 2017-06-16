@@ -3,6 +3,7 @@ import {Scale} from '../../scale';
 import {VgScale} from '../../vega.schema';
 import {Split} from '../split';
 
+
 export type ScaleComponent = Split<Partial<VgScale>>;
 
 export type ScaleComponentIndex = {[P in ScaleChannel]?: ScaleComponent};

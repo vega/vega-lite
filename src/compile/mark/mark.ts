@@ -1,7 +1,13 @@
+import {isArray} from 'vega-util';
 import {LEVEL_OF_DETAIL_CHANNELS} from '../../channel';
+import {X, Y} from '../../channel';
+import {MAIN} from '../../data';
+import {field, getFieldDef} from '../../fielddef';
 import {AREA, LINE} from '../../mark';
+import {isSelectionDomain} from '../../scale';
 import {contains} from '../../util';
-
+import {FacetModel} from '../facet';
+import {UnitModel} from '../unit';
 import {area} from './area';
 import {bar} from './bar';
 import {MarkCompiler} from './base';
@@ -12,14 +18,6 @@ import {rule} from './rule';
 import {text} from './text';
 import {tick} from './tick';
 
-import {MAIN} from '../../data';
-import {FacetModel} from '../facet';
-import {UnitModel} from '../unit';
-
-import {isArray} from 'vega-util';
-import {X, Y} from '../../channel';
-import {field, getFieldDef} from '../../fielddef';
-import {isSelectionDomain} from '../../scale';
 
 const markCompiler: {[type: string]: MarkCompiler} = {
   area: area,

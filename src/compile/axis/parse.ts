@@ -1,13 +1,11 @@
 import {Axis, AXIS_PROPERTIES, AxisEncoding} from '../../axis';
 import {Channel, SpatialScaleChannel} from '../../channel';
-import {VgAxis} from '../../vega.schema';
-
-import * as encode from './encode';
-import * as rules from './rules';
-
 import {Dict, keys, some} from '../../util';
+import {VgAxis} from '../../vega.schema';
 import {UnitModel} from '../unit';
 import {AxisComponent, AxisComponentIndex} from './component';
+import * as encode from './encode';
+import * as rules from './rules';
 
 type AxisPart = keyof AxisEncoding;
 const AXIS_PARTS: AxisPart[] = ['domain', 'grid', 'labels', 'ticks', 'title'];

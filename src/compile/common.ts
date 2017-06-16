@@ -1,8 +1,7 @@
-import * as log from '../log';
-
 import {Channel, TEXT} from '../channel';
 import {CellConfig, Config} from '../config';
 import {field, FieldDef, isScaleFieldDef, OrderFieldDef} from '../fielddef';
+import * as log from '../log';
 import {Mark, MarkConfig, TextConfig} from '../mark';
 import {ScaleType} from '../scale';
 import {isConcatSpec, isFacetSpec, isLayerSpec, isRepeatSpec, isUnitSpec, Spec, UnitSize} from '../spec';

@@ -4,6 +4,7 @@ import {GenericUnitSpec, LayerSpec} from './../spec';
 import {BOXPLOT, BOXPLOT_ROLES, BoxPlotConfigMixins, BoxPlotDef, normalizeBoxPlot, VL_ONLY_BOXPLOT_CONFIG_PROPERTY_INDEX} from './boxplot';
 import {ERRORBAR, normalizeErrorBar} from './errorbar';
 
+
 export {BoxPlotConfig} from './boxplot';
 export type UnitNormalizer = (spec: GenericUnitSpec<any, any>, config: Config)=> LayerSpec;
 

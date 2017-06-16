@@ -2,11 +2,11 @@ import {isAggregate} from '../../encoding';
 import {field} from '../../fielddef';
 import {isSortField} from '../../sort';
 import {contains, duplicate} from '../../util';
-
- import {VgCollectTransform, VgSort} from '../../vega.schema';
+import {VgCollectTransform, VgSort} from '../../vega.schema';
 import {sortParams} from '../common';
 import {UnitModel} from '../unit';
 import {DataFlowNode} from './dataflow';
+
 
 export class OrderNode extends DataFlowNode {
   public clone() {

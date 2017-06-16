@@ -6,15 +6,13 @@ import {initLayerResolve, NonspatialResolve, ResolveMapping, SpatialResolve} fro
 import {isLayerSpec, isUnitSpec, LayerSpec, UnitSize} from '../spec';
 import {Dict, flatten, keys, vals} from '../util';
 import {isSignalRefDomain, VgData, VgEncodeEntry, VgLayout, VgScale, VgSignal} from '../vega.schema';
-
 import {AxisComponentIndex} from './axis/component';
 import {applyConfig, buildModel} from './common';
-import {Model} from './model';
-
 import {assembleData} from './data/assemble';
 import {parseData} from './data/parse';
 import {assembleLayoutLayerSignals} from './layout/index';
 import {moveSharedLegendUp} from './legend/parse';
+import {Model} from './model';
 import {RepeaterValue} from './repeat';
 import {ScaleComponent} from './scale/component';
 import {unionDomains} from './scale/domain';

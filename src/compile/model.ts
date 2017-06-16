@@ -12,7 +12,6 @@ import {StackProperties} from '../stack';
 import {Transform} from '../transform';
 import {Dict, extend, vals, varName} from '../util';
 import {VgAxis, VgData, VgEncodeEntry, VgLayout, VgLegend, VgMarkGroup, VgScale, VgSignal, VgSignalRef, VgValueRef} from '../vega.schema';
-
 import {AxisComponent, AxisComponentIndex} from './axis/component';
 import {DataComponent} from './data/index';
 import {getHeaderGroup, getTitleGroup, HEADER_CHANNELS, HEADER_TYPES, LayoutHeaderComponent} from './layout/header';
@@ -23,6 +22,7 @@ import {ScaleComponent, ScaleComponentIndex} from './scale/component';
 import {SelectionComponent} from './selection/selection';
 import {Split} from './split';
 import {UnitModel} from './unit';
+
 
 /**
  * Composable Components that are intermediate results of the parsing phase of the

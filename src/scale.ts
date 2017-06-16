@@ -3,6 +3,7 @@ import {DateTime} from './datetime';
 import * as log from './log';
 import {contains, toSet} from './util';
 
+
 export namespace ScaleType {
   // Continuous - Quantitative
   export const LINEAR: 'linear' = 'linear';

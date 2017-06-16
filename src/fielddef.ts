@@ -17,6 +17,7 @@ import {isDiscreteByDefault, TimeUnit} from './timeunit';
 import {getFullName, Type} from './type';
 import {isBoolean, isString, stringValue} from './util';
 
+
 /**
  * Definition object for a constant value of an encoding channel.
  */

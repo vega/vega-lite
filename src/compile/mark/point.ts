@@ -1,13 +1,11 @@
-
-
-import {UnitModel} from '../unit';
-import * as mixins from './mixins';
-
 import {Config} from '../../config';
 import {VgEncodeEntry} from '../../vega.schema';
 import {getMarkConfig} from '../common';
+import {UnitModel} from '../unit';
 import {MarkCompiler} from './base';
+import * as mixins from './mixins';
 import * as ref from './valueref';
+
 
 function encodeEntry(model: UnitModel, fixedShape?: 'circle' | 'square') {
   const {config, width, height} = model;

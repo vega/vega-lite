@@ -1,17 +1,16 @@
-import * as log from '../../log';
-
 import {Channel} from '../../channel';
 import {Config} from '../../config';
 import {FieldDef, ScaleFieldDef} from '../../fielddef';
+import * as log from '../../log';
 import {Mark} from '../../mark';
 import {channelScalePropertyIncompatability, Scale, ScaleConfig, scaleTypeSupportProperty} from '../../scale';
 import * as util from '../../util';
 import {Split} from '../split';
-
 import {initDomain} from './domain';
 import rangeMixins from './range';
 import * as rules from './rules';
 import scaleType from './type';
+
 
 /**
  * All scale properties except type and all range properties.

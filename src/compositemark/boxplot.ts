@@ -6,6 +6,7 @@ import {MarkConfig, MarkDef} from './../mark';
 import {GenericUnitSpec, LayerSpec} from './../spec';
 import {Orient} from './../vega.schema';
 
+
 export const BOXPLOT: 'box-plot' = 'box-plot';
 export type BOXPLOT = typeof BOXPLOT;
 export type BoxPlotRole = 'boxWhisker' | 'box' | 'boxMid';

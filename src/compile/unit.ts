@@ -33,6 +33,7 @@ import parseScaleComponent from './scale/parse';
 import {assembleTopLevelSignals, assembleUnitSelectionData, assembleUnitSelectionMarks, assembleUnitSelectionSignals, parseUnitSelection} from './selection/selection';
 import {Split} from './split';
 
+
 /**
  * Internal model of Vega-Lite specification for the compiler.
  */

@@ -1,10 +1,10 @@
-
 import {Channel, X, Y} from '../../channel';
 import {FieldDef} from '../../fielddef';
 import {NiceTime, Scale, ScaleConfig, ScaleType} from '../../scale';
 import {smallestUnit} from '../../timeunit';
 import * as util from '../../util';
 import {Split} from '../split';
+
 
 export function nice(scaleType: ScaleType, channel: Channel, fieldDef: FieldDef<string>): boolean | NiceTime {
   if (util.contains([ScaleType.TIME, ScaleType.UTC], scaleType)) {

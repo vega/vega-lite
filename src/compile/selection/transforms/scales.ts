@@ -6,6 +6,7 @@ import {UnitModel} from '../../unit';
 import {channelSignalName, MODIFY, TUPLE} from '../selection';
 import {TransformCompiler} from './transforms';
 
+
 const scaleBindings:TransformCompiler = {
   clipGroup: true,
 

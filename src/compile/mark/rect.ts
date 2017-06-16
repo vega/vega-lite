@@ -3,11 +3,10 @@ import {isFieldDef} from '../../fielddef';
 import * as log from '../../log';
 import {RECT} from '../../mark';
 import {hasDiscreteDomain, ScaleType} from '../../scale';
-
 import {UnitModel} from '../unit';
+import {MarkCompiler} from './base';
 import * as mixins from './mixins';
 
-import {MarkCompiler} from './base';
 
 export const rect: MarkCompiler = {
   vgMark: 'rect',

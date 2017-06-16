@@ -3,6 +3,7 @@ import {TUPLE} from '../selection';
 import nearest from './nearest';
 import {TransformCompiler} from './transforms';
 
+
 const inputBindings:TransformCompiler = {
   has: function(selCmpt) {
     return selCmpt.type === 'single' && selCmpt.resolve === 'global' &&

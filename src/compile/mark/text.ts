@@ -1,16 +1,15 @@
 import {X} from '../../channel';
-import {getMarkConfig} from '../common';
-
 import {Config} from '../../config';
+import {channelHasField, Encoding} from '../../encoding';
 import {ChannelDef, isFieldDef} from '../../fielddef';
 import {QUANTITATIVE} from '../../type';
 import {VgValueRef} from '../../vega.schema';
+import {getMarkConfig} from '../common';
 import {UnitModel} from '../unit';
-import * as mixins from './mixins';
-
-import {channelHasField, Encoding} from '../../encoding';
 import {MarkCompiler} from './base';
+import * as mixins from './mixins';
 import * as ref from './valueref';
+
 
 export const text: MarkCompiler = {
   vgMark: 'text',

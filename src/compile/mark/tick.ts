@@ -1,11 +1,9 @@
-
-
-import {UnitModel} from '../unit';
-import * as mixins from './mixins';
-
 import {isVgRangeStep} from '../../vega.schema';
+import {UnitModel} from '../unit';
 import {MarkCompiler} from './base';
+import * as mixins from './mixins';
 import * as ref from './valueref';
+
 
 export const tick: MarkCompiler = {
   vgMark: 'rect',

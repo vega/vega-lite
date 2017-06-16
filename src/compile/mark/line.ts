@@ -1,7 +1,7 @@
 import {UnitModel} from '../unit';
+import {MarkCompiler} from './base';
 import * as mixins from './mixins';
 
-import {MarkCompiler} from './base';
 
 export const line: MarkCompiler = {
   vgMark: 'line',

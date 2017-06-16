@@ -16,6 +16,7 @@ import {ParseNode} from './formatparse';
 import {SourceNode} from './source';
 import {TimeUnitNode} from './timeunit';
 
+
 export class FilterNode extends DataFlowNode {
   public clone() {
     return new FilterNode(this.model, duplicate(this.filter));

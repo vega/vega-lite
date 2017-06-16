@@ -1,11 +1,8 @@
-///<reference path="../typings/vega-util.d.ts" />
-
 /**
  * Vega-Lite's singleton logger utility.
  */
 
 import {logger, LoggerInterface, Warn} from 'vega-util';
-
 import {AggregateOp} from './aggregate';
 import {Channel} from './channel';
 import {DateTime, DateTimeExpr} from './datetime';
@@ -14,6 +11,7 @@ import {Mark} from './mark';
 import {ScaleType} from './scale';
 import {TimeUnit} from './timeunit';
 import {Type} from './type';
+
 
 export {LoggerInterface} from 'vega-util';
 

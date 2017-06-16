@@ -2,6 +2,7 @@ import {DateTime} from './datetime';
 import {Guide, GuideEncodingEntry, VlOnlyGuideConfig} from './guide';
 import {VgLegendBase, VgLegendConfig, VgLegendEncode} from './vega.schema';
 
+
 export interface LegendConfig extends VgLegendConfig, VlOnlyGuideConfig {}
 
 /**

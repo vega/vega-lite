@@ -1,7 +1,6 @@
-import * as log from '../../log';
-
 import {Channel, COLOR, COLUMN, OPACITY, ROW, SHAPE, SIZE, X, Y} from '../../channel';
 import {Config} from '../../config';
+import * as log from '../../log';
 import {Mark} from '../../mark';
 import {channelScalePropertyIncompatability, isExtendedScheme, Range, Scale, ScaleConfig, ScaleType, scaleTypeSupportProperty, Scheme} from '../../scale';
 import {Type} from '../../type';
@@ -9,6 +8,7 @@ import * as util from '../../util';
 import {VgRange, VgRangeScheme} from '../../vega.schema';
 import {Split} from '../split';
 import {ScaleComponent} from './component';
+
 
 export type RangeMixins = {range: Range} | {rangeStep: number} | {scheme: Scheme};
 

@@ -1,12 +1,12 @@
-import * as log from './log';
-
 import {SUM_OPS} from './aggregate';
 import {Channel, STACK_BY_CHANNELS, StackByChannel, X, X2, Y, Y2} from './channel';
 import {channelHasField, Encoding, isAggregate} from './encoding';
 import {Field, FieldDef, getFieldDef, isFieldDef, PositionFieldDef} from './fielddef';
+import * as log from './log';
 import {AREA, BAR, CIRCLE, isMarkDef, LINE, Mark, MarkDef, POINT, RULE, SQUARE, TEXT, TICK} from './mark';
 import {ScaleType} from './scale';
 import {contains, isArray} from './util';
+
 
 export type StackOffset = 'zero' | 'center' | 'normalize' | 'none';
 
