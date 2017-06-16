@@ -63,31 +63,17 @@ export function normalizeBoxPlot(spec: GenericUnitSpec<Encoding<Field>, BOXPLOT 
   let discreteAxisFieldDef: PositionFieldDef<Field>, continuousAxisChannelDef: PositionFieldDef<Field>;
   let discreteAxis, continuousAxis;
 
-  let is1D = true;
-
-  if (encoding.x && encoding.y) {
-    // 2D
-
-    is1D = false;
-
-    const orient: Orient = box2DOrient(spec);
-    const params = box2DParams(spec, orient);
-    discreteAxisFieldDef = params.discreteAxisFieldDef;
-    continuousAxisChannelDef = params.continuousAxisChannelDef;
-    discreteAxis = params.discreteAxis;
-    continuousAxis = params.continuousAxis;
-
-  } else if (isFieldDef(encoding.x) && isContinuous(encoding.x) && encoding.y === undefined) {
-    // 1D horizontal
-    continuousAxis = 'x';
-    continuousAxisChannelDef = encoding.x;
-  } else if (encoding.x === undefined && isFieldDef(encoding.y) && isContinuous(encoding.y)) {
-    // 1D vertical
-    continuousAxis = 'y';
-    continuousAxisChannelDef = encoding.y;
-  } else {
-    throw new Error('Need a continuous axis for 1D boxplots');
+  if (encoding.x === undefined && encoding.y === undefined) {
+    throw new Error('Need at least one axis');
   }
+
+  const orient: Orient = boxOrient(spec);
+  const params = boxParams(spec, orient);
+  discreteAxisFieldDef = params.discreteAxisFieldDef;
+  continuousAxisChannelDef = params.continuousAxisChannelDef;
+  discreteAxis = params.discreteAxis;
+  continuousAxis = params.continuousAxis;
+  const is1D = params.is1D;
 
   if (continuousAxisChannelDef.aggregate !== undefined && continuousAxisChannelDef.aggregate !== BOXPLOT) {
     throw new Error(`Continuous axis should not have customized aggregation function ${continuousAxisChannelDef.aggregate}`);
@@ -174,8 +160,20 @@ export function normalizeBoxPlot(spec: GenericUnitSpec<Encoding<Field>, BOXPLOT 
   };
 }
 
-export function box2DOrient(spec: GenericUnitSpec<Encoding<Field>, BOXPLOT | BoxPlotDef>): Orient {
+export function boxOrient(spec: GenericUnitSpec<Encoding<Field>, BOXPLOT | BoxPlotDef>): Orient {
   const {mark: mark, encoding: encoding, ...outerSpec} = spec;
+
+  const is2D = encoding.x && encoding.y;
+
+  if (!is2D) {
+    if (isFieldDef(encoding.x) && isContinuous(encoding.x) && encoding.y === undefined) {
+      return 'horizontal';
+    } else if (encoding.x === undefined && isFieldDef(encoding.y) && isContinuous(encoding.y)) {
+      return 'vertical';
+    } else {
+      throw new Error('Need a continuous axis for 1D boxplots');
+    }
+  }
 
   // FIXME: refactor code such that we don't have to do this casting
   // We can cast here as we already check from outside that both x and y are FieldDef
@@ -216,7 +214,7 @@ export function box2DOrient(spec: GenericUnitSpec<Encoding<Field>, BOXPLOT | Box
 }
 
 
-export function box2DParams(spec: GenericUnitSpec<Encoding<Field>, BOXPLOT | BoxPlotDef>, orient: Orient) {
+export function boxParams(spec: GenericUnitSpec<Encoding<Field>, BOXPLOT | BoxPlotDef>, orient: Orient) {
   const {mark: mark, encoding: encoding, ...outerSpec} = spec;
 
   let discreteAxisFieldDef: PositionFieldDef<Field>;
@@ -229,32 +227,44 @@ export function box2DParams(spec: GenericUnitSpec<Encoding<Field>, BOXPLOT | Box
   const xDef = encoding.x as FieldDef<Field>;
   const yDef = encoding.y as FieldDef<Field>;
 
+  const is2D = encoding.x && encoding.y;
 
-  if (orient === 'vertical') {
-    discreteAxis = 'x';
-    continuousAxis = 'y';
-    continuousAxisChannelDef = yDef;
-    discreteAxisFieldDef = xDef;
-  } else {
-    discreteAxis = 'y';
-    continuousAxis = 'x';
-    continuousAxisChannelDef = xDef;
-    discreteAxisFieldDef = yDef;
-  }
-
-  if (continuousAxisChannelDef && continuousAxisChannelDef.aggregate) {
-    const {aggregate: aggregate, ...continuousAxisWithoutAggregate} = continuousAxisChannelDef;
-    if (aggregate !== BOXPLOT) {
-      throw new Error(`Continuous axis should not have customized aggregation function ${aggregate}`);
+  if (!is2D) {
+    if (orient === 'horizontal') {
+      continuousAxis = 'x';
+      continuousAxisChannelDef = xDef;
+    } else {
+      continuousAxis = 'y';
+      continuousAxisChannelDef = yDef;
     }
-    continuousAxisChannelDef = continuousAxisWithoutAggregate;
+  } else {
+    if (orient === 'vertical') {
+      discreteAxis = 'x';
+      continuousAxis = 'y';
+      continuousAxisChannelDef = yDef;
+      discreteAxisFieldDef = xDef;
+    } else {
+      discreteAxis = 'y';
+      continuousAxis = 'x';
+      continuousAxisChannelDef = xDef;
+      discreteAxisFieldDef = yDef;
+    }
+
+    if (continuousAxisChannelDef && continuousAxisChannelDef.aggregate) {
+      const {aggregate: aggregate, ...continuousAxisWithoutAggregate} = continuousAxisChannelDef;
+      if (aggregate !== BOXPLOT) {
+        throw new Error(`Continuous axis should not have customized aggregation function ${aggregate}`);
+      }
+      continuousAxisChannelDef = continuousAxisWithoutAggregate;
+    }
   }
 
   return {
     discreteAxisFieldDef: discreteAxisFieldDef,
     continuousAxisChannelDef: continuousAxisChannelDef,
     discreteAxis: discreteAxis,
-    continuousAxis: continuousAxis
+    continuousAxis: continuousAxis,
+    is1D: !is2D
   };
 }
 
