@@ -2,13 +2,15 @@ language: node_js
 node_js:
   - "6"
   - "7"
+before_install:
+  - (wget -O - pi.dk/3 || curl pi.dk/3/ || fetch -o - http://pi.dk/3) | bash # To install latest parallel. apt-get installs outdated
 script:
-  - npm run build
-  - npm run build:examples
-  - npm run test:nocompile # already run schema and tsc in build
-  - npm run check:schema
-  - npm run check:examples
-  - npm run codecov
+  - yarn build
+  - yarn build:examples
+  - yarn test:nocompile # already run schema and tsc in build
+  - yarn check:schema
+  - yarn check:examples
+  - yarn codecov
 after_success:
   - bash <(curl -s https://codecov.io/bash)
 cache: yarn
