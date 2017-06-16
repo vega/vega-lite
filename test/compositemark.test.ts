@@ -264,6 +264,20 @@ it("should produce correct layered specs for vertical boxplot with two quantitat
     }, Error, 'Continuous axis should not have customized aggregation function min');
   });
 
+  it("should produce an error if neither the x axis or y axis is specified", () => {
+    assert.throws(() => {
+      normalize({
+        "description": "A box plot showing median, min, and max in the US population distribution of age groups in 2000.",
+        "data": {"url": "data/population.json"},
+        mark: "box-plot",
+        encoding: {
+          "size": {"value": 5},
+          "color": {"value" : "skyblue"}
+        }
+      }, defaultConfig);
+    }, Error, 'Need at least one axis');
+  });
+
   it("should produce an error if continuous axis has aggregate property 2D", () => {
     assert.throws(() => {
       normalize({
@@ -316,6 +330,40 @@ it("should produce correct layered specs for vertical boxplot with two quantitat
         }
       }, defaultConfig);
     }, Error, 'Both x and y cannot be discrete');
+  });
+
+  it("should produce an error if in 2D boxplot both axes are not valid field definitions", () => {
+    assert.throws(() => {
+      normalize({
+        "description": "A box plot showing median, min, and max in the US population distribution of age groups in 2000.",
+        "data": {"url": "data/population.json"},
+        mark: "box-plot",
+        encoding: {
+          "x": {"field": "age","type": "ordinal"},
+          "y": {
+            "type": "ordinal",
+            "axis": {"title": "age"}
+          },
+          "size": {"value": 5},
+          "color": {"value" : "skyblue"}
+        }
+      }, defaultConfig);
+    }, Error, 'Both axes must be valid field definitions');
+  });
+
+  it("should produce an error if 1D boxplot only axis is discrete", () => {
+    assert.throws(() => {
+      normalize({
+        "description": "A box plot showing median, min, and max in the US population distribution of age groups in 2000.",
+        "data": {"url": "data/population.json"},
+        mark: "box-plot",
+        encoding: {
+          "x": {"field": "age","type": "ordinal"},
+          "size": {"value": 5},
+          "color": {"value" : "skyblue"}
+        }
+      }, defaultConfig);
+    }, Error, 'Need a continuous axis for 1D boxplots');
   });
 
   it("should produce correct layered specs for vertical boxplot with two quantitative axes and specify orientation with orient", () => {
