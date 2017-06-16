@@ -12,6 +12,7 @@ import {getMarkConfig} from '../common';
 import {ScaleIndex} from '../scale/component';
 import {Orient} from './../../vega.schema';
 
+
 export function initMarkDef(mark: Mark | MarkDef, encoding: Encoding<string>, scales: ScaleIndex, config: Config): MarkDef {
   const markDef = isMarkDef(mark) ? {...mark} : {type: mark};
 

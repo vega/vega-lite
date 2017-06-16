@@ -4,6 +4,7 @@ import {Model} from '../../model';
 import {UnitModel} from '../../unit';
 import {SelectionComponent} from '../selection';
 
+
 export interface TransformCompiler {
   has: (selCmpt: SelectionComponent | SelectionDef) => boolean;
   parse?: (model: UnitModel, def: SelectionDef, selCmpt: SelectionComponent) => void;

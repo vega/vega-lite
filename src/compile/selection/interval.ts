@@ -7,6 +7,7 @@ import {UnitModel} from '../unit';
 import {channelSignalName, ProjectComponent, SelectionCompiler, SelectionComponent, STORE, TUPLE} from './selection';
 import scales from './transforms/scales';
 
+
 export const BRUSH = '_brush';
 
 const interval:SelectionCompiler = {

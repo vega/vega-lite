@@ -1,15 +1,15 @@
+import {isScaleChannel} from '../../channel';
 import {forEach} from '../../encoding';
 import {field, FieldDef} from '../../fielddef';
 import * as log from '../../log';
+import {Summarize, SummarizeTransform} from '../../transform';
 import {ORDINAL} from '../../type';
 import {Dict, differ, duplicate, extend, keys, StringSet} from '../../util';
 import {VgAggregateTransform} from '../../vega.schema';
-import {UnitModel} from './../unit';
-
-import {isScaleChannel} from '../../channel';
-import {Summarize, SummarizeTransform} from '../../transform';
 import {Model} from '../model';
+import {UnitModel} from './../unit';
 import {DataFlowNode} from './dataflow';
+
 
 function addDimension(dims: {[field: string]: boolean}, fieldDef: FieldDef<string>) {
   if (fieldDef.bin) {

@@ -1,10 +1,8 @@
-
 import {Channel, COLUMN, ROW, X, Y} from '../../channel';
 import {MAIN} from '../../data';
 import {hasDiscreteDomain} from '../../scale';
 import {extend, isArray, keys, StringSet} from '../../util';
 import {isVgRangeStep, VgData, VgFormulaTransform, VgSignal, VgTransform} from '../../vega.schema';
-
 import {FacetModel} from '../facet';
 import {LayerModel} from '../layer';
 import {Model, ModelWithField} from '../model';

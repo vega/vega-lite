@@ -2,6 +2,7 @@ import {keys, stringValue} from '../../util';
 import {SelectionCompiler, TUPLE} from './selection';
 import nearest from './transforms/nearest';
 
+
 const multi:SelectionCompiler = {
   predicate: 'vlPoint',
   scaleDomain: 'vlPointDomain',

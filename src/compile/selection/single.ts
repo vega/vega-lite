@@ -2,6 +2,7 @@ import {stringValue} from '../../util';
 import multi from './multi';
 import {SelectionCompiler, STORE, TUPLE} from './selection';
 
+
 const single:SelectionCompiler = {
   predicate: multi.predicate,
   scaleDomain: multi.scaleDomain,

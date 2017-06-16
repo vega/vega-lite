@@ -18,6 +18,7 @@ import {StackNode} from './stack';
 import {TimeUnitNode} from './timeunit';
 import {parseTransformArray} from './transforms';
 
+
 function parseRoot(model: Model, sources: Dict<SourceNode>): DataFlowNode {
   if (model.data || !model.parent) {
     // if the model defines a data source or is the root, create a source node

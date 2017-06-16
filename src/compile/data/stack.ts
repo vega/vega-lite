@@ -9,6 +9,7 @@ import {sortParams} from '../common';
 import {UnitModel} from './../unit';
 import {DataFlowNode} from './dataflow';
 
+
 function getStackByFields(model: UnitModel): string[] {
   return model.stack.stackBy.reduce((fields, by) => {
     const channel = by.channel;

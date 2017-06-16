@@ -3,6 +3,7 @@
 import * as log from './log';
 import {duplicate, isNumber, keys} from './util';
 
+
 /*
  * A designated year that starts on Sunday.
  */

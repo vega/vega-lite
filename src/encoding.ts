@@ -26,7 +26,6 @@ import * as log from './log';
 import {Mark} from './mark';
 import {isArray, keys, some} from './util';
 
-// utility for encoding mapping
 
 export interface Encoding<F> {
   /**

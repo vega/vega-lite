@@ -11,6 +11,7 @@ import {LayerModel} from './layer';
 import {Model} from './model';
 import {UnitModel} from './unit';
 
+
 export function compile(inputSpec: TopLevelExtendedSpec, logger?: log.LoggerInterface) {
   if (logger) {
     // set the singleton logger to the provided logger

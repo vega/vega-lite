@@ -10,6 +10,7 @@ import {Mark} from './mark';
 import {SCALE_TYPES, ScaleType} from './scale';
 import {contains, toSet, without} from './util';
 
+
 export namespace Channel {
   // Facet
   export const ROW: 'row' = 'row';

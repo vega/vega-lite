@@ -1,15 +1,14 @@
+import {NONSPATIAL_SCALE_CHANNELS} from '../../channel';
+import {ChannelDef, Condition, ConditionalValueDef, FieldDef, getFieldDef, isValueDef} from '../../fielddef';
 import * as log from '../../log';
 import {MarkDef} from '../../mark';
 import * as util from '../../util';
 import {VgEncodeEntry, VgValueRef} from '../../vega.schema';
 import {getMarkConfig} from '../common';
+import {predicate} from '../selection/selection';
 import {UnitModel} from '../unit';
-
 import * as ref from './valueref';
 
-import {NONSPATIAL_SCALE_CHANNELS} from '../../channel';
-import {ChannelDef, Condition, ConditionalValueDef, FieldDef, getFieldDef, isValueDef} from '../../fielddef';
-import {predicate} from '../selection/selection';
 
 export function color(model: UnitModel) {
   const config = model.config;

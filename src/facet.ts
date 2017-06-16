@@ -1,5 +1,6 @@
 import {FieldDef} from './fielddef';
 
+
 /**
  * Headers of row / column channels for faceted plots.
  */

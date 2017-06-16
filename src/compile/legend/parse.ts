@@ -2,14 +2,13 @@ import {Channel, COLOR, NonspatialScaleChannel, OPACITY, SHAPE, SIZE} from '../.
 import {Legend, LEGEND_PROPERTIES} from '../../legend';
 import {Dict, keys} from '../../util';
 import {VgLegend} from '../../vega.schema';
-
 import {numberFormat} from '../common';
-import {UnitModel} from '../unit';
-
 import {Model} from '../model';
+import {UnitModel} from '../unit';
 import {LegendComponent, LegendComponentIndex} from './component';
 import * as encode from './encode';
 import * as rules from './rules';
+
 
 export function parseLegendComponent(model: UnitModel): LegendComponentIndex {
   return [COLOR, SIZE, SHAPE, OPACITY].reduce(function(legendComponent, channel) {

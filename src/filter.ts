@@ -6,6 +6,7 @@ import {LogicalOperand} from './logical';
 import {fieldExpr as timeUnitFieldExpr, isSingleTimeUnit, TimeUnit} from './timeunit';
 import {isArray, isString, logicalExpr} from './util';
 
+
 export type Filter = EqualFilter | RangeFilter | OneOfFilter | SelectionFilter | string;
 
 export interface SelectionFilter {

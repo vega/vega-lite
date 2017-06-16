@@ -12,6 +12,7 @@ import {TopLevelProperties} from './toplevelprops';
 import {duplicate, isObject, keys, mergeDeep} from './util';
 import {VgRangeScheme, VgTitleConfig} from './vega.schema';
 
+
 export interface CellConfig {
   /**
    * The default width of the single plot or each plot in a trellis plot when the visualization has a continuous (non-ordinal) x-scale or ordinal x-scale with `rangeStep` = `null`.

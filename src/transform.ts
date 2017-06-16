@@ -6,6 +6,7 @@ import {LogicalOperand} from './logical';
 import {TimeUnit} from './timeunit';
 import {VgFieldRef} from './vega.schema';
 
+
 export interface FilterTransform {
   /**
    * A string containing the filter Vega expression. Use `datum` to refer to the current data object.

@@ -2,8 +2,8 @@ import {DateTime} from './datetime';
 import {Guide, GuideEncodingEntry, VlOnlyGuideConfig} from './guide';
 import {VgAxisBase, VgAxisConfig, VgAxisEncode} from './vega.schema';
 
-export type AxisOrient = 'top' | 'right' | 'left' | 'bottom';
 
+export type AxisOrient = 'top' | 'right' | 'left' | 'bottom';
 
 export interface AxisConfig extends VgAxisConfig, VlOnlyGuideConfig {}
 

@@ -15,6 +15,7 @@ import {SelectionComponent} from './selection';
 import singleCompiler from './single';
 import {forEachTransform} from './transforms/transforms';
 
+
 export const STORE = '_store';
 export const TUPLE  = '_tuple';
 export const MODIFY = '_modify';

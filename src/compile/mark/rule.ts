@@ -3,6 +3,7 @@ import {MarkCompiler} from './base';
 import * as mixins from './mixins';
 import * as ref from './valueref';
 
+
 export const rule: MarkCompiler = {
   vgMark: 'rule',
   defaultRole: undefined,

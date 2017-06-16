@@ -2,6 +2,7 @@ import {Channel, NONSPATIAL_SCALE_CHANNELS, SCALE_CHANNELS, SPATIAL_SCALE_CHANNE
 import * as log from './log';
 import {contains} from './util';
 
+
 export type ResolveMode = 'independent' | 'shared';
 
 export interface SpatialResolve {

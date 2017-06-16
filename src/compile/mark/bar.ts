@@ -5,15 +5,14 @@ import * as log from '../../log';
 import {Scale, ScaleType} from '../../scale';
 import {StackProperties} from '../../stack';
 import {isVgRangeStep, VgEncodeEntry} from '../../vega.schema';
-
 import {VgValueRef} from '../../vega.schema';
-import {UnitModel} from '../unit';
-import * as mixins from './mixins';
-
 import {ScaleComponent} from '../scale/component';
 import {Split} from '../split';
+import {UnitModel} from '../unit';
 import {MarkCompiler} from './base';
+import * as mixins from './mixins';
 import * as ref from './valueref';
+
 
 export const bar: MarkCompiler = {
   vgMark: 'rect',

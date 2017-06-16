@@ -1,15 +1,14 @@
-import * as log from '../../log';
-
 import {Channel, hasScale, rangeType, supportScaleType} from '../../channel';
+import {field, FieldDef} from '../../fielddef';
+import * as log from '../../log';
 import {Mark} from '../../mark';
 import {ScaleConfig, ScaleType} from '../../scale';
-import {isDiscreteByDefault} from '../../timeunit';
-
-import {field, FieldDef} from '../../fielddef';
 import {hasDiscreteDomain} from '../../scale';
+import {isDiscreteByDefault} from '../../timeunit';
 import {Type} from '../../type';
 import * as util from '../../util';
 import {contains} from '../../util';
+
 
 export type RangeType = 'continuous' | 'discrete' | 'flexible' | undefined;
 

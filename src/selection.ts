@@ -1,6 +1,7 @@
 import {SingleDefChannel} from './channel';
 import {VgBinding} from './vega.schema';
 
+
 export type SelectionTypes = 'single' | 'multi' | 'interval';
 export type SelectionResolutions = 'global' | 'independent' | 'union' |
   'union_others' | 'intersect' | 'intersect_others';

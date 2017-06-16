@@ -29,6 +29,7 @@ import {RepeaterValue, replaceRepeaterInFacet} from './repeat';
 import {ScaleComponentIndex} from './scale/component';
 import {moveSharedScaleUp} from './scale/parse';
 
+
 export class FacetModel extends ModelWithField {
   public readonly facet: Facet<string>;
 

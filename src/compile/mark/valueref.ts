@@ -12,6 +12,7 @@ import {VgScale, VgValueRef} from '../../vega.schema';
 import {formatSignalRef, numberFormat} from '../common';
 import {ScaleComponent} from '../scale/component';
 
+
 // TODO: we need to find a way to refactor these so that scaleName is a part of scale
 // but that's complicated.  For now, this is a huge step moving forward.
 

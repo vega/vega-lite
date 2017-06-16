@@ -3,16 +3,14 @@ import {isSelectionDomain, Scale} from '../../scale';
 import {isSortField} from '../../sort';
 import {Dict} from '../../util';
 import {isSignalRefDomain, VgScale} from '../../vega.schema';
-
-import {UnitModel} from '../unit';
-
 import {Model} from '../model';
+import {SELECTION_DOMAIN} from '../selection/selection';
+import {Split} from '../split';
+import {UnitModel} from '../unit';
 import {ScaleComponent, ScaleComponentIndex} from './component';
 import {parseDomain, unionDomains} from './domain';
 import {parseRange} from './range';
 
-import {SELECTION_DOMAIN} from '../selection/selection';
-import {Split} from '../split';
 
 /**
  * Parse scales for all channels of a model.

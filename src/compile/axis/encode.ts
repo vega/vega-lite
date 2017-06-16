@@ -1,9 +1,8 @@
 import {Channel, SpatialScaleChannel, X} from '../../channel';
+import {ScaleType} from '../../scale';
 import {NOMINAL, ORDINAL, TEMPORAL} from '../../type';
 import {contains, extend, keys} from '../../util';
 import {VgAxis} from '../../vega.schema';
-
-import {ScaleType} from '../../scale';
 import {timeFormatExpression} from '../common';
 import {UnitModel} from '../unit';
 

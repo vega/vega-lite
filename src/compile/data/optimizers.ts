@@ -10,6 +10,7 @@ import {StackNode} from './stack';
 import {TimeUnitNode} from './timeunit';
 import {CalculateNode, FilterNode, LookupNode} from './transforms';
 
+
 /**
  * Start optimization path at the leaves. Useful for merging up or removing things.
  *

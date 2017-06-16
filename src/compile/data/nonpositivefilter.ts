@@ -5,6 +5,7 @@ import {VgFilterTransform, VgTransform} from '../../vega.schema';
 import {UnitModel} from './../unit';
 import {DataFlowNode} from './dataflow';
 
+
 export class NonPositiveFilterNode extends DataFlowNode {
   private _filter: Dict<boolean>;
 
