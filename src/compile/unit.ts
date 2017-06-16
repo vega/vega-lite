@@ -3,7 +3,7 @@ import {Channel, NONSPATIAL_SCALE_CHANNELS, SCALE_CHANNELS, ScaleChannel, Single
 import {CellConfig, Config} from '../config';
 import * as vlEncoding from '../encoding'; // TODO: remove
 import {Encoding, normalizeEncoding} from '../encoding';
-import {ChannelDef, field, FieldDef, FieldRefOption, getFieldDef, isConditionalDef, isFieldDef, isProjection} from '../fielddef';
+import {ChannelDef, field, FieldDef, FieldRefOption, getFieldDef, hasConditionFieldDef, isConditionalDef, isFieldDef, isLegendFieldDef, isProjection, isScaleFieldDef} from '../fielddef';
 import {Legend} from '../legend';
 import {FILL_STROKE_CONFIG, isMarkDef, Mark, MarkDef, TEXT as TEXT_MARK} from '../mark';
 import {Projection} from '../projection';
@@ -12,7 +12,6 @@ import {SelectionDef} from '../selection';
 import {SortField, SortOrder} from '../sort';
 import {UnitSize, UnitSpec} from '../spec';
 import {stack, StackProperties} from '../stack';
-import {LATITUDE, LONGITUDE} from '../type';
 import {Dict, duplicate, extend, vals} from '../util';
 import {VgData, VgEncodeEntry, VgLayout, VgProjection, VgSignal} from '../vega.schema';
 import {AxisIndex} from './axis/component';
@@ -169,10 +168,10 @@ export class UnitModel extends ModelWithField {
 
       const channelDef = encoding[channel];
 
-      if (isFieldDef(channelDef)) {
+      if (isFieldDef(channelDef) && isScaleFieldDef(channelDef)) {
         fieldDef = channelDef;
         specifiedScale = channelDef.scale;
-      } else if (isConditionalDef(channelDef) && isFieldDef(channelDef.condition)) {
+      } else if (isConditionalDef(channelDef) && isFieldDef(channelDef.condition) && isScaleFieldDef(channelDef.condition)) {
         fieldDef = channelDef.condition;
         specifiedScale = channelDef.condition.scale;
       } else if (channel === 'x') {
@@ -269,8 +268,8 @@ export class UnitModel extends ModelWithField {
     return NONSPATIAL_SCALE_CHANNELS.reduce(function(_legend, channel) {
       const channelDef = encoding[channel];
       if (channelDef) {
-        const legend = isFieldDef(channelDef) ? channelDef.legend :
-          (channelDef.condition && isFieldDef(channelDef.condition)) ? channelDef.condition.legend : null;
+        const legend = isFieldDef(channelDef) && isLegendFieldDef(channelDef) ? channelDef.legend :
+          (hasConditionFieldDef(channelDef) && channelDef.condition && isFieldDef(channelDef.condition) && isLegendFieldDef(channelDef.condition)) ?channelDef.condition.legend : null;
 
         if (legend !== null && legend !== false) {
           _legend[channel] = {...legend};

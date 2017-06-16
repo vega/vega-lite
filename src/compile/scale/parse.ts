@@ -1,4 +1,4 @@
-import {Channel, SCALE_CHANNELS, ScaleChannel} from '../../channel';
+import {Channel, SCALE_CHANNELS, ScaleChannel, SHAPE} from '../../channel';
 import {isSelectionDomain, Scale} from '../../scale';
 import {isSortField} from '../../sort';
 import {Dict} from '../../util';

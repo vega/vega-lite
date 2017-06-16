@@ -8,17 +8,16 @@ import {MarkCompiler} from './base';
 import * as ref from './valueref';
 
 import {Field, FieldDef, isFieldDef, isProjection} from '../../fielddef';
-import {LATITUDE, LONGITUDE} from '../../type';
 import {contains, keys} from '../../util';
 
 function encodeEntry(model: UnitModel, fixedShape?: 'circle' | 'square') {
   const {config, encoding, width, height} = model;
 
   return {
-    ...isProjection(encoding.x) ? {
+    ...encoding.x && isFieldDef(encoding.x) && isProjection(encoding.x) ? {
       x: {'field': `${(encoding.x as FieldDef<Field>).field as string}_geo`},
     } : mixins.pointPosition('x', model, ref.midX(width, config)),
-    ...isProjection(encoding.y) ? {
+    ...encoding.y && isFieldDef(encoding.y) && isProjection(encoding.y) ? {
       y: {'field': `${(encoding.y as FieldDef<Field>).field as string}_geo`},
     } : mixins.pointPosition('y', model, ref.midY(height, config)),
     ...mixins.nonPosition('size', model),
