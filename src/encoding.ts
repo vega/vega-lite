@@ -123,7 +123,14 @@ export function channelHasField(encoding: EncodingWithFacet<Field>, channel: Cha
 
 export function channelIsProjection(encoding: EncodingWithFacet<Field>, channel: Channel) {
   const channelDef = encoding && encoding[channel];
-  return channelDef && isFieldDef(channelDef) && isProjection(channelDef);
+  if (channelDef) {
+    if (isArray(channelDef)) {
+      return some(channelDef, isProjection);
+    } else {
+      return isFieldDef(channelDef) && isProjection(channelDef);
+    }
+  }
+  return false;
 }
 
 export function isAggregate(encoding: EncodingWithFacet<Field>) {

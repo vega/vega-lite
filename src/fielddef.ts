@@ -117,7 +117,7 @@ export interface FieldDefBase<F> {
 export interface FieldDef<F> extends FieldDefBase<F> {
   /**
    * The encoded field's type of measurement. This can be either a full type
-   * name (`"quantitative"`, `"temporal"`, `"ordinal"`,  and `"nominal"`)
+   * name (`"quantitative"`, `"temporal"`, `"ordinal"`, `"latitude"`, `"longitude"`,  and `"nominal"`)
    * or an initial character of the type name (`"Q"`, `"T"`, `"O"`, `"N"`).
    * This property is case-insensitive.
    */
@@ -255,7 +255,7 @@ export function field(fieldDef: FieldDefBase<string>, opt: FieldRefOption = {}):
 }
 
 export function isProjection(fieldDef: FieldDef<Field>) {
-  return isFieldDef(fieldDef) && (fieldDef.type === 'latitude' || fieldDef.type === 'longitude');
+  return fieldDef && isFieldDef(fieldDef) && (fieldDef.type === 'latitude' || fieldDef.type === 'longitude');
 }
 
 export function isDiscrete(fieldDef: FieldDef<Field>) {

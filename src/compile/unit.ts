@@ -248,18 +248,17 @@ export class UnitModel extends ModelWithField {
     return [X, Y].reduce(function(_axis, channel) {
       // Position Axis
       const channelDef = encoding[channel];
-      if ((isFieldDef(channelDef) ||
-        (channel === X && isFieldDef(encoding.x2)) ||
-        (channel === Y && isFieldDef(encoding.y2))
-      ) && !isProjection(channelDef)) {
-
-        const axisSpec = isFieldDef(channelDef) ? channelDef.axis : null;
-
-        // We no longer support false in the schema, but we keep false here for backward compatability.
-        if (axisSpec !== null && axisSpec !== false) {
-          _axis[channel] = {
-            ...axisSpec
-          };
+      if (channelDef && isFieldDef(channelDef)) {
+        if (((channel === X && isFieldDef(encoding.x2)) ||
+          (channel === Y && isFieldDef(encoding.y2))
+        ) && !isProjection(channelDef)) {
+          const axisSpec = isFieldDef(channelDef) ? channelDef.axis : null;
+          // We no longer support false in the schema, but we keep false here for backward compatability.
+          if (axisSpec !== null && axisSpec !== false) {
+            _axis[channel] = {
+              ...axisSpec
+            };
+          }
         }
       }
       return _axis;
