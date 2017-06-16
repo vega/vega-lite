@@ -2,10 +2,9 @@
 
 import {assert} from 'chai';
 
-import {parseScale} from '../../../src/compile/scale/parse';
 import {NON_TYPE_DOMAIN_RANGE_VEGA_SCALE_PROPERTIES} from '../../../src/compile/scale/parse';
 import {SELECTION_DOMAIN} from '../../../src/compile/selection/selection';
-import {parseUnitModel} from '../../util';
+import {parseUnitModelWithScale} from '../../util';
 
 import {SCALE_PROPERTIES} from '../../../src/scale';
 import {toSet, without} from '../../../src/util';
@@ -21,27 +20,27 @@ describe('src/compile', function() {
   describe('parseScale', () => {
     describe('x ordinal point', () => {
       it('should create an x point scale with rangeStep and no range', () => {
-        const model = parseUnitModel({
+        const model = parseUnitModelWithScale({
           mark: "point",
           encoding: {
             x: {field: 'origin', type: "nominal"}
           }
         });
-        const scale = parseScale(model, 'x');
+        const scale = model.getScaleComponent('x');
         assert.equal(scale.implicit.type, 'point');
         assert.deepEqual(scale.implicit.range, {step: 21});
       });
     });
 
     describe('nominal with color', function() {
-      const model = parseUnitModel({
+      const model = parseUnitModelWithScale({
         mark: "point",
         encoding: {
           color: {field: 'origin', type: "nominal"}
         }
       });
 
-      const scale = parseScale(model, 'color');
+      const scale = model.getScaleComponent('color');
 
       it('should create correct color scale', function() {
         assert.equal(scale.implicit.name, 'color');
@@ -56,14 +55,14 @@ describe('src/compile', function() {
     });
 
     describe('ordinal with color', function() {
-      const model = parseUnitModel({
+      const model = parseUnitModelWithScale({
         mark: "point",
         encoding: {
           color: {field: 'origin', type: "ordinal"}
         }
       });
 
-      const scale = parseScale(model, 'color');
+      const scale = model.getScaleComponent('color');
 
       it('should create sequential color scale', function() {
         assert.equal(scale.implicit.name, 'color');
@@ -77,14 +76,14 @@ describe('src/compile', function() {
     });
 
     describe('quantitative with color', function() {
-      const model = parseUnitModel({
+      const model = parseUnitModelWithScale({
           mark: "point",
           encoding: {
             color: {field: "origin", type: "quantitative"}
           }
         });
 
-      const scale = parseScale(model, 'color');
+      const scale = model.getScaleComponent('color');
 
       it('should create linear color scale', function() {
         assert.equal(scale.implicit.name, 'color');
@@ -99,14 +98,14 @@ describe('src/compile', function() {
     });
 
     describe('color with bin', function() {
-      const model = parseUnitModel({
+      const model = parseUnitModelWithScale({
           mark: "point",
           encoding: {
             color: {field: "origin", type: "quantitative", bin: true}
           }
         });
 
-      const scale = parseScale(model, 'color');
+      const scale = model.getScaleComponent('color');
 
       it('should add correct scales', function() {
         assert.equal(scale.implicit.name, 'color');
@@ -115,14 +114,14 @@ describe('src/compile', function() {
     });
 
     describe('ordinal color with bin', function() {
-      const model = parseUnitModel({
+      const model = parseUnitModelWithScale({
           mark: "point",
           encoding: {
             color: {field: "origin", type: "ordinal", bin: true}
           }
         });
 
-      const scale = parseScale(model, 'color');
+      const scale = model.getScaleComponent('color');
 
       it('should add correct scales', function() {
         assert.equal(scale.implicit.name, 'color');
@@ -131,14 +130,14 @@ describe('src/compile', function() {
     });
 
     describe('opacity with bin', function() {
-      const model = parseUnitModel({
+      const model = parseUnitModelWithScale({
           mark: "point",
           encoding: {
             opacity: {field: "origin", type: "quantitative", bin: true}
           }
         });
 
-      const scale = parseScale(model, 'opacity');
+      const scale = model.getScaleComponent('opacity');
 
       it('should add correct scales', function() {
         assert.equal(scale.implicit.name, 'opacity');
@@ -147,14 +146,14 @@ describe('src/compile', function() {
     });
 
     describe('size with bin', function() {
-      const model = parseUnitModel({
+      const model = parseUnitModelWithScale({
           mark: "point",
           encoding: {
             size: {field: "origin", type: "quantitative", bin: true}
           }
         });
 
-      const scale = parseScale(model, 'size');
+      const scale = model.getScaleComponent('size');
 
       it('should add correct scales', function() {
         assert.equal(scale.implicit.name, 'size');
@@ -163,14 +162,14 @@ describe('src/compile', function() {
     });
 
     describe('color with time unit', function() {
-      const model = parseUnitModel({
+      const model = parseUnitModelWithScale({
           mark: "point",
           encoding: {
             color: {field: 'origin', type: "temporal", timeUnit: "year"}
           }
         });
 
-      const scale = parseScale(model, 'color');
+      const scale = model.getScaleComponent('color');
 
       it('should add correct scales', function() {
         assert.equal(scale.implicit.name, 'color');
@@ -179,7 +178,7 @@ describe('src/compile', function() {
     });
 
     describe('selection domain', function() {
-      const model = parseUnitModel({
+      const model = parseUnitModelWithScale({
         mark: "area",
         encoding: {
           x: {
@@ -193,8 +192,8 @@ describe('src/compile', function() {
         }
       });
 
-      const xScale = parseScale(model, 'x');
-      const yscale = parseScale(model, 'y');
+      const xScale = model.getScaleComponent('x');
+      const yscale = model.getScaleComponent('y');
       it('should add a raw selection domain', function() {
         assert.property(xScale.explicit, 'domainRaw');
         assert.propertyVal(xScale.explicit.domainRaw, 'signal',
