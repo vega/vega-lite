@@ -17,8 +17,7 @@ export class SourceNode extends DataFlowNode {
 
     if (isInlineData(data)) {
       this._data = {
-        values: data.values,
-        format: {type: 'json'}
+        values: data.values
       };
     } else if (isUrlData(data)) {
       // Extract extension from URL using snippet from
