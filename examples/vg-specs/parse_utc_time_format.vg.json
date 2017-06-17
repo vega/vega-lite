@@ -24,7 +24,7 @@
             "format": {
                 "type": "json",
                 "parse": {
-                    "date": "utc:%d %b %Y %H:%M:%S"
+                    "date": "utc:'%d %b %Y %H:%M:%S'"
                 }
             },
             "transform": [
