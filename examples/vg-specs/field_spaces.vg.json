@@ -53,15 +53,22 @@
                     "a b": 0.7457746080337384,
                     "c d": 0.15435369511584507
                 }
-            ],
-            "format": {
-                "type": "json",
-                "parse": {
-                    "a b": "number",
-                    "c d": "number"
-                }
-            },
+            ]
+        },
+        {
+            "name": "data_0",
+            "source": "source_0",
             "transform": [
+                {
+                    "type": "formula",
+                    "expr": "toNumber(datum[\"a b\"])",
+                    "as": "a b"
+                },
+                {
+                    "type": "formula",
+                    "expr": "toNumber(datum[\"c d\"])",
+                    "as": "c d"
+                },
                 {
                     "type": "filter",
                     "expr": "datum[\"a b\"] !== null && !isNaN(datum[\"a b\"]) && datum[\"c d\"] !== null && !isNaN(datum[\"c d\"])"
@@ -85,7 +92,7 @@
             "type": "symbol",
             "role": "point",
             "from": {
-                "data": "source_0"
+                "data": "data_0"
             },
             "encode": {
                 "update": {
@@ -115,7 +122,7 @@
             "name": "x",
             "type": "linear",
             "domain": {
-                "data": "source_0",
+                "data": "data_0",
                 "field": "a b"
             },
             "range": [
@@ -130,7 +137,7 @@
             "name": "y",
             "type": "linear",
             "domain": {
-                "data": "source_0",
+                "data": "data_0",
                 "field": "c d"
             },
             "range": [

@@ -43,15 +43,22 @@
                     "x": 6,
                     "y": 6
                 }
-            ],
-            "format": {
-                "type": "json",
-                "parse": {
-                    "x": "number",
-                    "y": "number"
-                }
-            },
+            ]
+        },
+        {
+            "name": "data_0",
+            "source": "source_0",
             "transform": [
+                {
+                    "type": "formula",
+                    "expr": "toNumber(datum[\"x\"])",
+                    "as": "x"
+                },
+                {
+                    "type": "formula",
+                    "expr": "toNumber(datum[\"y\"])",
+                    "as": "y"
+                },
                 {
                     "type": "filter",
                     "expr": "datum[\"x\"] !== null && !isNaN(datum[\"x\"]) && datum[\"y\"] !== null && !isNaN(datum[\"y\"])"
@@ -75,7 +82,7 @@
             "type": "symbol",
             "role": "point",
             "from": {
-                "data": "source_0"
+                "data": "data_0"
             },
             "encode": {
                 "update": {
@@ -106,7 +113,7 @@
             "name": "x",
             "type": "linear",
             "domain": {
-                "data": "source_0",
+                "data": "data_0",
                 "field": "x"
             },
             "range": [
@@ -121,7 +128,7 @@
             "name": "y",
             "type": "linear",
             "domain": {
-                "data": "source_0",
+                "data": "data_0",
                 "field": "y"
             },
             "range": [
@@ -136,7 +143,7 @@
             "name": "color",
             "type": "sequential",
             "domain": {
-                "data": "source_0",
+                "data": "data_0",
                 "field": "a"
             },
             "range": "ramp",

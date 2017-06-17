@@ -49,14 +49,17 @@
                     "a": "E",
                     "b": 7
                 }
-            ],
-            "format": {
-                "type": "json",
-                "parse": {
-                    "b": "number"
-                }
-            },
+            ]
+        },
+        {
+            "name": "data_0",
+            "source": "source_0",
             "transform": [
+                {
+                    "type": "formula",
+                    "expr": "toNumber(datum[\"b\"])",
+                    "as": "b"
+                },
                 {
                     "type": "filter",
                     "expr": "datum[\"b\"] !== null && !isNaN(datum[\"b\"])"
@@ -95,7 +98,7 @@
             "type": "symbol",
             "role": "point",
             "from": {
-                "data": "source_0"
+                "data": "data_0"
             },
             "encode": {
                 "update": {
@@ -122,7 +125,7 @@
             "name": "x",
             "type": "point",
             "domain": {
-                "data": "source_0",
+                "data": "data_0",
                 "field": "a",
                 "sort": true
             },
@@ -136,7 +139,7 @@
             "name": "y",
             "type": "linear",
             "domain": {
-                "data": "source_0",
+                "data": "data_0",
                 "field": "average_b"
             },
             "range": [

@@ -56,7 +56,7 @@
             "type": "symbol",
             "role": "point",
             "from": {
-                "data": "source_0"
+                "data": "data_0"
             },
             "encode": {
                 "update": {
@@ -85,7 +85,7 @@
             "name": "y",
             "type": "point",
             "domain": {
-                "data": "source_0",
+                "data": "data_0",
                 "field": "hours_date",
                 "sort": true
             },

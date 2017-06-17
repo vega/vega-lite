@@ -34,15 +34,22 @@
                     "date": "Sun, 02 Jan 2012 03:00:00",
                     "price": 200
                 }
-            ],
-            "format": {
-                "type": "json",
-                "parse": {
-                    "date": "date",
-                    "price": "number"
-                }
-            },
+            ]
+        },
+        {
+            "name": "data_0",
+            "source": "source_0",
             "transform": [
+                {
+                    "type": "formula",
+                    "expr": "toDate(datum[\"date\"])",
+                    "as": "date"
+                },
+                {
+                    "type": "formula",
+                    "expr": "toNumber(datum[\"price\"])",
+                    "as": "price"
+                },
                 {
                     "type": "filter",
                     "expr": "datum[\"date\"] !== null && !isNaN(datum[\"date\"]) && datum[\"price\"] !== null && !isNaN(datum[\"price\"])"
@@ -77,7 +84,7 @@
             "name": "marks",
             "type": "line",
             "from": {
-                "data": "source_0"
+                "data": "data_0"
             },
             "encode": {
                 "update": {
@@ -101,7 +108,7 @@
             "name": "x",
             "type": "utc",
             "domain": {
-                "data": "source_0",
+                "data": "data_0",
                 "field": "yearmonthdatehoursminutes_date"
             },
             "range": [
@@ -115,7 +122,7 @@
             "name": "y",
             "type": "linear",
             "domain": {
-                "data": "source_0",
+                "data": "data_0",
                 "field": "price"
             },
             "range": [
