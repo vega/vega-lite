@@ -1,3 +1,4 @@
+import {isNumber} from 'vega-util';
 import {Config} from '../config';
 import {Encoding} from './../encoding';
 import {Field, FieldDef, isContinuous, isDiscrete, isFieldDef, PositionFieldDef} from './../fielddef';
@@ -9,6 +10,7 @@ import {Orient} from './../vega.schema';
 export const BOXPLOT: 'box-plot' = 'box-plot';
 export type BOXPLOT = typeof BOXPLOT;
 export type BoxPlotRole = 'boxWhisker' | 'box' | 'boxMid';
+export const supportedEncChannels = ['color', 'detail', 'opacity', 'size'];
 
 export interface BoxPlotDef {
   type: BOXPLOT;
@@ -51,42 +53,33 @@ export function normalizeBoxPlot(spec: GenericUnitSpec<Encoding<Field>, BOXPLOT 
 
   let kIQRScalar: number = undefined;
   if (isBoxPlotDef(mark)) {
-    if (mark && mark.extent) {
-      if(typeof(mark.extent) === 'number') {
+    if (mark.extent) {
+      if(isNumber(mark.extent)) {
         kIQRScalar = mark.extent;
       }
     }
   }
   const isMinMax = kIQRScalar === undefined;
 
-  let discreteAxisFieldDef: PositionFieldDef<Field>;
-  let continuousAxisChannelDef: PositionFieldDef<Field>;
-  let discreteAxis;
-  let continuousAxis;
-
   if (encoding.x === undefined && encoding.y === undefined) {
     throw new Error('Need at least one axis');
   }
 
   const orient: Orient = boxOrient(spec);
+  const {discreteAxisChannelDef, continuousAxisChannelDef, discreteAxis, continuousAxis, is1D} = boxParams(spec, orient);
   const params = boxParams(spec, orient);
-  discreteAxisFieldDef = params.discreteAxisFieldDef;
-  continuousAxisChannelDef = params.continuousAxisChannelDef;
-  discreteAxis = params.discreteAxis;
-  continuousAxis = params.continuousAxis;
-  const is1D = params.is1D;
 
   if (continuousAxisChannelDef.aggregate !== undefined && continuousAxisChannelDef.aggregate !== BOXPLOT) {
     throw new Error(`Continuous axis should not have customized aggregation function ${continuousAxisChannelDef.aggregate}`);
   }
 
-  const transformDef = boxTransform(encoding, discreteAxisFieldDef, continuousAxisChannelDef, kIQRScalar, is1D);
+  const transform = boxTransform(encoding, discreteAxisChannelDef, continuousAxisChannelDef, kIQRScalar, is1D);
 
-  const discreteAxisEncodingMixin = discreteAxisFieldDef !== undefined ? {[discreteAxis]: discreteAxisFieldDef} : {};
+  const discreteAxisEncodingMixin = discreteAxisChannelDef !== undefined ? {[discreteAxis]: discreteAxisChannelDef} : {};
 
   return {
     ...outerSpec,
-    transform: transformDef,
+    transform: transform,
     layer: [
       { // lower whisker
         mark: {
@@ -165,114 +158,89 @@ export function boxOrient(spec: GenericUnitSpec<Encoding<Field>, BOXPLOT | BoxPl
   const {mark: mark, encoding: encoding, ...outerSpec} = spec;
 
   const is2D = encoding.x && encoding.y;
+  const continuousXAxis = isFieldDef(encoding.x) && isContinuous(encoding.x);
+  const continuousYAxis = isFieldDef(encoding.y) && isContinuous(encoding.y);
 
-  if (!is2D) {
-    if (isFieldDef(encoding.x) && isContinuous(encoding.x) && encoding.y === undefined) {
-      return 'horizontal';
-    } else if (encoding.x === undefined && isFieldDef(encoding.y) && isContinuous(encoding.y)) {
+  if (continuousXAxis
+      && (encoding.y === undefined || (isFieldDef(encoding.y) && isDiscrete(encoding.y)))) {
+    return 'horizontal';
+  } else if (continuousYAxis
+      && (encoding.x === undefined || (isFieldDef(encoding.x) && isDiscrete(encoding.x)))) {
+    return 'vertical';
+  }
+
+  if (!continuousXAxis && !continuousYAxis) {
+    throw new Error('Need a valid continuous axis for boxplots');
+  }
+
+  if (isFieldDef(encoding.x) && isFieldDef(encoding.y) && isContinuous(encoding.x) && isContinuous(encoding.y)) {
+    if (encoding.x.aggregate === undefined && encoding.y.aggregate === BOXPLOT) {
       return 'vertical';
+    } else if (encoding.y.aggregate === undefined && encoding.x.aggregate === BOXPLOT) {
+      return 'horizontal';
+    } else if (encoding.x.aggregate === BOXPLOT && encoding.y.aggregate === BOXPLOT) {
+      throw new Error('Both x and y cannot have aggregate');
     } else {
-      throw new Error('Need a continuous axis for 1D boxplots');
-    }
-  } else {
-    if (isFieldDef(encoding.x) && isFieldDef(encoding.y)) {
-      let resultOrient: Orient;
-
-      if (isDiscrete(encoding.x) && isContinuous(encoding.y)) {
-        resultOrient = 'vertical';
-      } else if (isDiscrete(encoding.y) && isContinuous(encoding.x)) {
-        resultOrient = 'horizontal';
-      } else {
-        if (isContinuous(encoding.x) && isContinuous(encoding.y)) {
-          if (encoding.x.aggregate === undefined && encoding.y.aggregate === BOXPLOT) {
-            resultOrient = 'vertical';
-          } else if (encoding.y.aggregate === undefined && encoding.x.aggregate === BOXPLOT) {
-            resultOrient = 'horizontal';
-          } else if (encoding.x.aggregate === BOXPLOT && encoding.y.aggregate === BOXPLOT) {
-            throw new Error('Both x and y cannot have aggregate');
-          } else {
-            if (isBoxPlotDef(mark)) {
-              if (mark && mark.orient) {
-                resultOrient = mark.orient;
-              } else {
-                // default orientation = vertical
-                resultOrient = 'vertical';
-              }
-            } else {
-              resultOrient = 'vertical';
-            }
-          }
-        } else {
-          throw new Error('Both x and y cannot be discrete');
-        }
+      if (isBoxPlotDef(mark) && mark.orient) {
+        return mark.orient;
       }
-
-      return resultOrient;
-    } else {
-      throw new Error('Both axes must be valid field definitions');
     }
   }
+
+  // default orientation = vertical
+  return 'vertical';
 }
 
 
 export function boxParams(spec: GenericUnitSpec<Encoding<Field>, BOXPLOT | BoxPlotDef>, orient: Orient) {
   const {mark: mark, encoding: encoding, ...outerSpec} = spec;
 
-  let discreteAxisFieldDef: PositionFieldDef<Field>;
+  let discreteAxisChannelDef: PositionFieldDef<Field>;
   let continuousAxisChannelDef: PositionFieldDef<Field>;
   let discreteAxis;
   let continuousAxis;
 
-  const is2D = encoding.x && encoding.y;
-
-  if (!is2D) {
-    if (orient === 'horizontal') {
-      continuousAxis = 'x';
-      if (isFieldDef(encoding.x)) {
-        continuousAxisChannelDef = encoding.x;
-      }
-    } else {
+  if (orient === 'vertical') {
+    if (isFieldDef(encoding.y)) {
       continuousAxis = 'y';
-      if (isFieldDef(encoding.y)) {
-        continuousAxisChannelDef = encoding.y;
-      }
+      continuousAxisChannelDef = encoding.y;
+    }
+
+    if (isFieldDef(encoding.x)) {
+      discreteAxis = 'x';
+      discreteAxisChannelDef = encoding.x;
     }
   } else {
-    if (isFieldDef(encoding.x) && isFieldDef(encoding.y)) {
-      if (orient === 'vertical') {
-        discreteAxis = 'x';
-        continuousAxis = 'y';
-        continuousAxisChannelDef = encoding.y;
-        discreteAxisFieldDef = encoding.x;
-      } else {
-        discreteAxis = 'y';
-        continuousAxis = 'x';
-        continuousAxisChannelDef = encoding.x;
-        discreteAxisFieldDef = encoding.y;
-      }
+    if (isFieldDef(encoding.x)) {
+      continuousAxis = 'x';
+      continuousAxisChannelDef = encoding.x;
     }
 
-    if (continuousAxisChannelDef && continuousAxisChannelDef.aggregate) {
-      const {aggregate: aggregate, ...continuousAxisWithoutAggregate} = continuousAxisChannelDef;
-      if (aggregate !== BOXPLOT) {
-        throw new Error(`Continuous axis should not have customized aggregation function ${aggregate}`);
-      }
-      continuousAxisChannelDef = continuousAxisWithoutAggregate;
+    if (isFieldDef(encoding.y)) {
+      discreteAxis = 'y';
+      discreteAxisChannelDef = encoding.y;
     }
   }
 
+  if (continuousAxisChannelDef && continuousAxisChannelDef.aggregate) {
+    const {aggregate: aggregate, ...continuousAxisWithoutAggregate} = continuousAxisChannelDef;
+    if (aggregate !== BOXPLOT) {
+      throw new Error(`Continuous axis should not have customized aggregation function ${aggregate}`);
+    }
+    continuousAxisChannelDef = continuousAxisWithoutAggregate;
+  }
+
   return {
-    discreteAxisFieldDef: discreteAxisFieldDef,
+    discreteAxisChannelDef: discreteAxisChannelDef,
     continuousAxisChannelDef: continuousAxisChannelDef,
     discreteAxis: discreteAxis,
     continuousAxis: continuousAxis,
-    is1D: !is2D
+    is1D: !(isFieldDef(encoding.x) && isFieldDef(encoding.y))
   };
 }
 
 export function boxTransform(encoding: Encoding<Field>, discreteAxisFieldDef: PositionFieldDef<Field>, continuousAxisChannelDef: PositionFieldDef<Field>, kIQRScalar: 'min-max' | number, is1D: boolean) {
   const isMinMax = kIQRScalar === undefined;
-  const groupbyDef = boxTransformGroupby(discreteAxisFieldDef, encoding);
 
   let transformDef:any = [
       {
@@ -326,28 +294,38 @@ export function boxTransform(encoding: Encoding<Field>, discreteAxisFieldDef: Po
     ]);
   }
 
-  if (groupbyDef !== undefined) {
-    transformDef[0].groupby = groupbyDef;
+  for (const fieldName in encoding) {
+    if (supportedEncChannels.indexOf(fieldName) > -1) {
+      const fieldDef = encoding[fieldName];
+      if (fieldDef.field && fieldDef.aggregate !== BOXPLOT) {
+        transformDef[0].summarize = transformDef[0].summarize.push({
+          aggregate: fieldDef.aggregate,
+          field: fieldDef.field,
+          as: 'fieldName_' + fieldDef.field
+        });
+      }
+    }
   }
+
+  transformDef[0].groupby = boxTransformGroupby(discreteAxisFieldDef, encoding);
 
   return transformDef;
 }
 
 export function boxTransformGroupby(discreteAxisFieldDef: PositionFieldDef<Field>, encoding: Encoding<Field>): Array<Field | string> {
-  const result: Array<Field | string> = [];
+  const groupby: Array<Field | string> = [];
   if (discreteAxisFieldDef !== undefined) {
-    result.push(discreteAxisFieldDef.field);
+    groupby.push(discreteAxisFieldDef.field);
   }
-  const supportedEncChannels = ['size', 'color', 'opacity'];
 
   for (const fieldName in encoding) {
     if (supportedEncChannels.indexOf(fieldName) > -1) {
       const fieldDef = encoding[fieldName];
-      if (fieldDef.field && fieldDef.aggregate !== BOXPLOT) {
-        result.push(fieldName);
+      if (fieldDef.field && fieldDef.aggregate === undefined) {
+        groupby.push(fieldName);
       }
     }
   }
 
-  return result;
+  return groupby;
 }

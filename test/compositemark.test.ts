@@ -309,7 +309,7 @@ it("should produce correct layered specs for vertical boxplot with two quantitat
           "x": {"field": "age", "type": "ordinal"}
         }
       }, defaultConfig);
-    }, Error, 'Need a continuous axis for 1D boxplot');
+    }, Error, 'Need a valid continuous axis for boxplots');
   });
 
   it("should produce an error if both axes are discrete", () => {
@@ -329,7 +329,7 @@ it("should produce correct layered specs for vertical boxplot with two quantitat
           "color": {"value" : "skyblue"}
         }
       }, defaultConfig);
-    }, Error, 'Both x and y cannot be discrete');
+    }, Error, 'Need a valid continuous axis for boxplots');
   });
 
   it("should produce an error if in 2D boxplot both axes are not valid field definitions", () => {
@@ -348,7 +348,7 @@ it("should produce correct layered specs for vertical boxplot with two quantitat
           "color": {"value" : "skyblue"}
         }
       }, defaultConfig);
-    }, Error, 'Both axes must be valid field definitions');
+    }, Error, 'Need a valid continuous axis for boxplots');
   });
 
   it("should produce an error if 1D boxplot only axis is discrete", () => {
@@ -363,7 +363,7 @@ it("should produce correct layered specs for vertical boxplot with two quantitat
           "color": {"value" : "skyblue"}
         }
       }, defaultConfig);
-    }, Error, 'Need a continuous axis for 1D boxplots');
+    }, Error, 'Need a valid continuous axis for boxplots');
   });
 
   it("should produce correct layered specs for vertical boxplot with two quantitative axes and specify orientation with orient", () => {
