@@ -91,8 +91,8 @@ export function moveSharedScaleUp(model: Model, scaleComponent: ScaleComponentIn
   let modelScale = scaleComponent[channel];
 
   if (modelScale) {
-    const {explicit, value: domain} = modelScale.getWithType('domain');
-    const {explicit: childExplicit, value: childDomain} = childScale.getWithType('domain');
+    const {explicit, value: domain} = modelScale.getWithExplicit('domain');
+    const {explicit: childExplicit, value: childDomain} = childScale.getWithExplicit('domain');
 
     modelScale.set('domain', unionDomains(domain, childDomain), explicit || childExplicit);
   } else {

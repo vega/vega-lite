@@ -29,7 +29,7 @@ export class Split<T extends Object> {
     return this.explicit[key] !== undefined ? this.explicit[key] : this.implicit[key];
   }
 
-  public getWithType<K extends keyof T>(key: K): {explicit: boolean, value: T[K]} {
+  public getWithExplicit<K extends keyof T>(key: K): Explicit<T[K]> {
     // Explicit has higher precedence
     if (this.explicit[key] !== undefined) {
       return {explicit: true, value: this.explicit[key]};
@@ -68,4 +68,9 @@ export class Split<T extends Object> {
       }
     );
   }
+}
+
+export interface Explicit<T> {
+  explicit: boolean;
+  value: T;
 }

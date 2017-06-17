@@ -18,14 +18,14 @@ export function parseRange(splitScale: Split<Scale>): {explicit: boolean, range:
 
   // rangeStep => range.step
   let rangeStep;
-  ({explicit, value: rangeStep} = splitScale.getWithType('rangeStep'));
+  ({explicit, value: rangeStep} = splitScale.getWithExplicit('rangeStep'));
   if (rangeStep) {
     return {explicit, range: {step: rangeStep}};
   }
 
   // Scheme => range.scheme
   let scheme;
-  ({explicit, value: scheme} = splitScale.getWithType('scheme'));
+  ({explicit, value: scheme} = splitScale.getWithExplicit('scheme'));
   if (scheme) {
     if (isExtendedScheme(scheme)) {
       const r: VgRangeScheme = {scheme: scheme.name};
@@ -42,7 +42,7 @@ export function parseRange(splitScale: Split<Scale>): {explicit: boolean, range:
   }
 
   let range;
-  ({explicit, value: range} = splitScale.getWithType('range'));
+  ({explicit, value: range} = splitScale.getWithExplicit('range'));
   return {explicit, range};
 }
 
