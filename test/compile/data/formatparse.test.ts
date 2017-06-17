@@ -116,7 +116,8 @@ describe('compile/data/formatparse', () => {
         b: 'boolean',
         s: 'string',
         d1: 'date',
-        d2: 'date:"%y"'
+        d2: 'date:"%y"',
+        d3: 'utc:"%y"'
       });
 
       assert.deepEqual(p.assembleTransforms(), [
@@ -124,7 +125,8 @@ describe('compile/data/formatparse', () => {
         {type: 'formula', expr: 'toBoolean(datum["b"])', as: 'b'},
         {type: 'formula', expr: 'toString(datum["s"])', as: 's'},
         {type: 'formula', expr: 'toDate(datum["d1"])', as: 'd1'},
-        {type: 'formula', expr: 'timeParse(datum["d2"],"%y")', as: 'd2'}
+        {type: 'formula', expr: 'timeParse(datum["d2"],"%y")', as: 'd2'},
+        {type: 'formula', expr: 'utcParse(datum["d3"],"%y")', as: 'd3'}
       ]);
     });
 
