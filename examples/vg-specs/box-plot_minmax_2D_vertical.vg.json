@@ -159,7 +159,7 @@
         },
         {
             "name": "layer_0_width",
-            "update": "bandspace(domain('x').length, 1, 0.5) * 21"
+            "update": "bandspace(domain('x').length, 0.1, 0.05) * 21"
         },
         {
             "name": "layer_0_height",
@@ -167,7 +167,7 @@
         },
         {
             "name": "layer_1_width",
-            "update": "bandspace(domain('x').length, 1, 0.5) * 21"
+            "update": "bandspace(domain('x').length, 0.1, 0.05) * 21"
         },
         {
             "name": "layer_1_height",
@@ -175,7 +175,7 @@
         },
         {
             "name": "layer_2_width",
-            "update": "bandspace(domain('x').length, 1, 0.5) * 21"
+            "update": "bandspace(domain('x').length, 0.1, 0.05) * 21"
         },
         {
             "name": "layer_2_height",
@@ -183,7 +183,7 @@
         },
         {
             "name": "layer_3_width",
-            "update": "bandspace(domain('x').length, 1, 0.5) * 21"
+            "update": "bandspace(domain('x').length, 0.1, 0.05) * 21"
         },
         {
             "name": "layer_3_height",
@@ -202,7 +202,8 @@
                 "update": {
                     "x": {
                         "scale": "x",
-                        "field": "age"
+                        "field": "age",
+                        "band": 0.5
                     },
                     "y": {
                         "scale": "y",
@@ -230,7 +231,8 @@
                 "update": {
                     "x": {
                         "scale": "x",
-                        "field": "age"
+                        "field": "age",
+                        "band": 0.5
                     },
                     "y": {
                         "scale": "y",
@@ -258,7 +260,8 @@
                 "update": {
                     "xc": {
                         "scale": "x",
-                        "field": "age"
+                        "field": "age",
+                        "band": 0.5
                     },
                     "width": {
                         "value": 5
@@ -289,7 +292,8 @@
                 "update": {
                     "xc": {
                         "scale": "x",
-                        "field": "age"
+                        "field": "age",
+                        "band": 0.5
                     },
                     "yc": {
                         "scale": "y",
@@ -312,7 +316,7 @@
     "scales": [
         {
             "name": "x",
-            "type": "point",
+            "type": "band",
             "domain": {
                 "fields": [
                     {
@@ -338,7 +342,8 @@
                 "step": 21
             },
             "round": true,
-            "padding": 0.5
+            "paddingInner": 0.1,
+            "paddingOuter": 0.05
         },
         {
             "name": "y",

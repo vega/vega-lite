@@ -95,30 +95,30 @@ describe('compile/scale', () => {
 
   describe('zero', () => {
     it('should return true when mapping a quantitative field to size', () => {
-      assert(rules.zero(new Split<Scale>(), 'size', {field: 'a', type: 'quantitative'}));
+      assert(rules.zero('size', {field: 'a', type: 'quantitative'}, false));
     });
 
     it('should return false when mapping a ordinal field to size', () => {
-      assert(!rules.zero(new Split<Scale>(), 'size', {field: 'a', type: 'ordinal'}));
+      assert(!rules.zero('size', {field: 'a', type: 'ordinal'}, false));
     });
 
     it('should return true when mapping a non-binned quantitative field to x/y', () => {
       for (const channel of ['x', 'y'] as Channel[]) {
-        assert(rules.zero(new Split<Scale>(), channel, {field: 'a', type: 'quantitative'}));
+        assert(rules.zero(channel, {field: 'a', type: 'quantitative'}, false));
       }
     });
 
     it('should return false when mapping a binned quantitative field to x/y', () => {
       for (const channel of ['x', 'y'] as Channel[]) {
-        assert(!rules.zero(new Split<Scale>(), channel, {bin: true, field: 'a', type: 'quantitative'}));
+        assert(!rules.zero(channel, {bin: true, field: 'a', type: 'quantitative'}, false));
       }
     });
 
     it('should return false when mapping a non-binned quantitative field with custom domain to x/y', () => {
       for (const channel of ['x', 'y'] as Channel[]) {
-        assert(!rules.zero(new Split<Scale>({domain: [1, 5]}), channel, {
+        assert(!rules.zero(channel, {
           bin: true, field: 'a', type: 'quantitative'
-        }));
+        }, true));
       }
     });
   });

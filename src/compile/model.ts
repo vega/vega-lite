@@ -5,6 +5,7 @@ import {Data, DataSourceType, MAIN, RAW} from '../data';
 import {forEach, reduce} from '../encoding';
 import {ChannelDef, field, FieldDef, FieldRefOption, getFieldDef, isFieldDef, isRepeatRef} from '../fielddef';
 import {Legend} from '../legend';
+import {ResolveMapping} from '../resolve';
 import {hasDiscreteDomain, Scale} from '../scale';
 import {SortField, SortOrder} from '../sort';
 import {BaseSpec} from '../spec';
@@ -14,11 +15,14 @@ import {Dict, extend, vals, varName} from '../util';
 import {VgAxis, VgData, VgEncodeEntry, VgLayout, VgLegend, VgMarkGroup, VgScale, VgSignal, VgSignalRef, VgValueRef} from '../vega.schema';
 import {AxisComponent, AxisComponentIndex} from './axis/component';
 import {DataComponent} from './data/index';
+import {LayoutSizeComponent} from './layout/component';
 import {getHeaderGroup, getTitleGroup, HEADER_CHANNELS, HEADER_TYPES, LayoutHeaderComponent} from './layout/header';
+import {parseLayoutSize} from './layout/parse';
 import {LegendComponentIndex} from './legend/component';
 import {RepeaterValue} from './repeat';
 import {assembleScale} from './scale/assemble';
 import {ScaleComponent, ScaleComponentIndex} from './scale/component';
+import {NON_TYPE_DOMAIN_RANGE_VEGA_SCALE_PROPERTIES, parseScale} from './scale/parse';
 import {SelectionComponent} from './selection/selection';
 import {Split} from './split';
 import {UnitModel} from './unit';
@@ -39,6 +43,8 @@ export interface Component {
 
   /** Dictionary mapping channel to VgLegend definition */
   legends: LegendComponentIndex;
+
+  layoutSize: LayoutSizeComponent;
 
   layoutHeaders: {
     row?: LayoutHeaderComponent,
@@ -95,13 +101,15 @@ export abstract class Model {
   /** Name map for size, which can be renamed by a model's parent. */
   protected sizeNameMap: NameMapInterface;
 
+
   public readonly config: Config;
 
-  public component: Component;
+  public readonly component: Component;
 
   public abstract readonly children: Model[] = [];
 
-  constructor(spec: BaseSpec, parent: Model, parentGivenName: string, config: Config) {
+  constructor(spec: BaseSpec, parent: Model, parentGivenName: string, config: Config,
+    public readonly resolve: ResolveMapping) {
     this.parent = parent;
     this.config = config;
 
@@ -125,17 +133,20 @@ export abstract class Model {
         ancestorParse: parent ? {...parent.component.data.ancestorParse} : {}
       },
       mark: null, scales: {}, axes: {x: null, y: null},
-      layoutHeaders:{row: {}, column: {}}, legends: null, selection: null
+      layoutSize: null,
+      layoutHeaders:{row: {}, column: {}},
+      legends: null, selection: null
     };
   }
 
   public parse() {
     this.parseScale();
+    this.parseLayoutSize(); // depends on scale
     this.parseData();
     this.parseSelection();
-    this.parseAxisAndHeader(); // depends on scale name
-    this.parseLegend(); // depends on scale name
-    this.parseMark(); // depends on data name and scale name, axisGroup, and children's scale, axis, legend and mark.
+    this.parseAxisAndHeader(); // depends on scale
+    this.parseLegend(); // depends on scale
+    this.parseMark(); // depends on data name, scale, size, axisGroup, and children's scale, axis, legend and mark.
   }
 
   public abstract parseData(): void;
@@ -143,7 +154,13 @@ export abstract class Model {
   public abstract parseSelection(): void;
 
 
-  public abstract parseScale(): void;
+  public parseScale() {
+    parseScale(this);
+  }
+
+  public parseLayoutSize() {
+    parseLayoutSize(this);
+  }
 
   public abstract parseMark(): void;
 
@@ -315,7 +332,7 @@ export abstract class Model {
   }
 
   // FIXME: remove this, but currently the scaleName() method below depends on this.
-  public scale(channel: Channel): Split<Scale> {
+  protected scale(channel: Channel): Split<Scale> {
     return null;
   }
 
@@ -366,7 +383,11 @@ export abstract class Model {
    * Traverse a model's hierarchy to get the scale component for a particular channel.
    */
   public getScaleComponent(channel: ScaleChannel): ScaleComponent {
-    return this.component.scales[channel] || (this.parent ? this.parent.getScaleComponent(channel) : undefined);
+    const localScaleComponent = this.component.scales[channel];
+    if (localScaleComponent && !localScaleComponent.merged) {
+      return localScaleComponent;
+    }
+    return  (this.parent ? this.parent.getScaleComponent(channel) : undefined);
   }
 
   /**

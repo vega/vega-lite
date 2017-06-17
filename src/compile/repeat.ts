@@ -17,7 +17,6 @@ import {moveSharedLegendUp} from './legend/parse';
 import {Model} from './model';
 import {ScaleComponent, ScaleComponentIndex} from './scale/component';
 import {unionDomains} from './scale/domain';
-import {moveSharedScaleUp} from './scale/parse';
 
 
 export type RepeaterValue = {
@@ -81,12 +80,11 @@ export class RepeatModel extends Model {
 
   public readonly children: Model[];
 
-  private readonly resolve: ResolveMapping;
-
   constructor(spec: RepeatSpec, parent: Model, parentGivenName: string, repeatValues: RepeaterValue, config: Config) {
-    super(spec, parent, parentGivenName, config);
-
-    this.resolve = initRepeatResolve(spec.resolve || {});
+    super(
+      spec, parent, parentGivenName, config,
+      initRepeatResolve(spec.resolve || {})
+    );
 
     this.repeat = spec.repeat;
     this.children = this._initChildren(spec, this.repeat, repeatValues, config);
@@ -130,21 +128,6 @@ export class RepeatModel extends Model {
       child.parseSelection();
       keys(child.component.selection).forEach((key) => {
         this.component.selection[key] = child.component.selection[key];
-      });
-    }
-  }
-
-  public parseScale(this: RepeatModel) {
-    const scaleComponent: ScaleComponentIndex = this.component.scales = {};
-
-    for (const child of this.children) {
-      child.parseScale();
-
-      // Check whether the scales are actually compatible, e.g. use the same sort or throw error
-      keys(child.component.scales).forEach((channel: ScaleChannel) => {
-        if (this.resolve[channel].scale === 'shared') {
-          moveSharedScaleUp(this, scaleComponent, child, channel);
-        }
       });
     }
   }

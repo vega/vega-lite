@@ -231,7 +231,7 @@ export function predicate(model: Model, selections: LogicalOperand<string>): str
 export function isRawSelectionDomain(domainRaw: VgSignalRef) {
   return domainRaw.signal.indexOf(SELECTION_DOMAIN) >= 0;
 }
-export function scaleDomain(model: Model, domainRaw: VgSignalRef): VgSignalRef {
+export function selectionScaleDomain(model: Model, domainRaw: VgSignalRef): VgSignalRef {
   const selDomain = JSON.parse(domainRaw.signal.replace(SELECTION_DOMAIN, ''));
   const name = selDomain.selection;
 

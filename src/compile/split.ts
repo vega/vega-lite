@@ -1,8 +1,6 @@
 /**
  * Generic classs for storing properties that are explicitly specified and implicitly determined by the compiler.
  */
-
-
 export class Split<T extends Object> {
   constructor(public readonly explicit: T = {} as T, public readonly implicit: T = {} as T) {}
 
@@ -36,7 +34,13 @@ export class Split<T extends Object> {
     } else if (this.implicit[key] !== undefined) {
       return {explicit: false, value: this.implicit[key]};
     }
-    return {explicit: null, value: null};
+    return {explicit: false, value: undefined};
+  }
+
+  public setWithExplicit<K extends keyof T>(key: K, value: Explicit<T[K]>) {
+    if (value.value !== undefined) {
+      this.set(key, value.value, value.explicit);
+    }
   }
 
   public set<K extends keyof T>(key: K, value: T[K], explicit: boolean) {
@@ -73,4 +77,48 @@ export class Split<T extends Object> {
 export interface Explicit<T> {
   explicit: boolean;
   value: T;
+}
+
+
+export function makeExplicit<T>(value: T): Explicit<T> {
+  return {
+    explicit: true,
+    value
+  };
+}
+
+export function makeImplicit<T>(value: T): Explicit<T> {
+  return {
+    explicit: false,
+    value
+  };
+}
+
+export function mergeValuesWithExplicit<T>(
+    v1: Explicit<T>, v2: Explicit<T>,
+    scoringFn?: (v: T) => number
+  ) {
+  if (v1 === undefined || v1.value === undefined) {
+    // For first run
+    return v2;
+  }
+
+  if (v1.explicit && !v2.explicit) {
+    return v1;
+  } else if (v2.explicit && !v1.explicit) {
+    return v2;
+  } else {
+    const score1 = scoringFn ? scoringFn(v1.value) : 0;
+    const score2 = scoringFn ? scoringFn(v2.value) : 0;
+
+    if (score2 > score1) {
+      return v2;
+    } else if (score1 > score2) {
+      return v1;
+    } else {
+      // FIXME more warning
+      // If equal score, prefer v1.
+      return v1;
+    }
+  }
 }

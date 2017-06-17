@@ -31,6 +31,13 @@ export function parseUnitModelWithScale(spec: TopLevel<UnitSpec>) {
   return model;
 }
 
+export function parseUnitModelWithScaleAndLayoutSize(spec: TopLevel<UnitSpec>) {
+  const model = parseUnitModelWithScale(spec);
+  model.parseLayoutSize();
+  return model;
+}
+
+
 export function parseLayerModel(spec: TopLevel<LayerSpec>) {
   return new LayerModel(spec, null, '', undefined, undefined, initConfig(spec.config));
 }

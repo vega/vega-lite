@@ -19,9 +19,9 @@ export type RangeType = 'continuous' | 'discrete' | 'flexible' | undefined;
 // NOTE: CompassQL uses this method.
 export default function type(
   specifiedType: ScaleType, channel: Channel, fieldDef: FieldDef<string>, mark: Mark,
-  hasTopLevelSize: boolean, specifiedRangeStep: number, scaleConfig: ScaleConfig): ScaleType {
+  specifiedRangeStep: number, scaleConfig: ScaleConfig): ScaleType {
 
-  const defaultScaleType = defaultType(channel, fieldDef, mark, hasTopLevelSize, specifiedRangeStep, scaleConfig);
+  const defaultScaleType = defaultType(channel, fieldDef, mark, specifiedRangeStep, scaleConfig);
 
   if (!hasScale(channel)) {
     // There is no scale for these channels
@@ -50,7 +50,7 @@ export default function type(
  * Determine appropriate default scale type.
  */
 function defaultType(channel: Channel, fieldDef: FieldDef<string>, mark: Mark,
-  hasTopLevelSize: boolean, specifiedRangeStep: number, scaleConfig: ScaleConfig): ScaleType {
+  specifiedRangeStep: number, scaleConfig: ScaleConfig): ScaleType {
 
   if (util.contains(['row', 'column'], channel)) {
     return 'band';
@@ -61,7 +61,7 @@ function defaultType(channel: Channel, fieldDef: FieldDef<string>, mark: Mark,
       if (channel === 'color' || rangeType(channel) === 'discrete') {
         return 'ordinal';
       }
-      return discreteToContinuousType(channel, mark, hasTopLevelSize, specifiedRangeStep, scaleConfig);
+      return discreteToContinuousType(channel, mark, specifiedRangeStep, scaleConfig);
 
     case 'ordinal':
       if (channel === 'color') {
@@ -70,7 +70,7 @@ function defaultType(channel: Channel, fieldDef: FieldDef<string>, mark: Mark,
         log.warn(log.message.discreteChannelCannotEncode(channel, 'ordinal'));
         return 'ordinal';
       }
-      return discreteToContinuousType(channel, mark, hasTopLevelSize, specifiedRangeStep, scaleConfig);
+      return discreteToContinuousType(channel, mark, specifiedRangeStep, scaleConfig);
 
     case 'temporal':
       if (channel === 'color') {
@@ -86,7 +86,7 @@ function defaultType(channel: Channel, fieldDef: FieldDef<string>, mark: Mark,
         return 'ordinal';
       }
       if (isDiscreteByDefault(fieldDef.timeUnit)) {
-        return discreteToContinuousType(channel, mark, hasTopLevelSize, specifiedRangeStep, scaleConfig);
+        return discreteToContinuousType(channel, mark, specifiedRangeStep, scaleConfig);
       }
       return 'time';
 
@@ -120,8 +120,10 @@ function defaultType(channel: Channel, fieldDef: FieldDef<string>, mark: Mark,
  * @returns BAND or POINT scale based on channel, mark, and rangeStep
  */
 function discreteToContinuousType(
-    channel: Channel, mark: Mark, hasTopLevelSize: boolean,
-    specifiedRangeStep: number, scaleConfig: ScaleConfig): ScaleType {
+    channel: Channel, mark: Mark,
+    specifiedRangeStep: number,
+    scaleConfig: ScaleConfig
+  ): ScaleType {
 
   if (util.contains(['x', 'y'], channel)) {
     if (mark === 'rect') {
@@ -134,17 +136,6 @@ function discreteToContinuousType(
   }
   // Otherwise, use ordinal point scale so we can easily get center positions of the marks.
   return 'point';
-}
-
-function haveRangeStep(hasTopLevelSize: boolean, specifiedRangeStep: number, scaleConfig: ScaleConfig) {
-  if (hasTopLevelSize) {
-    // if topLevelSize is provided, rangeStep will be dropped.
-    return false;
-  }
-  if (specifiedRangeStep !== undefined) {
-    return specifiedRangeStep !== null;
-  }
-  return !!scaleConfig.rangeStep;
 }
 
 export function fieldDefMatchScaleType(specifiedType: ScaleType, fieldDef: FieldDef<string>):boolean {

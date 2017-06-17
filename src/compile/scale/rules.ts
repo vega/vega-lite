@@ -1,9 +1,113 @@
-import {Channel, X, Y} from '../../channel';
+import {Channel, ScaleChannel, X, Y} from '../../channel';
 import {FieldDef} from '../../fielddef';
-import {NiceTime, Scale, ScaleConfig, ScaleType} from '../../scale';
+import * as log from '../../log';
+import {channelScalePropertyIncompatability, NiceTime, Scale, ScaleConfig, ScaleType, scaleTypeSupportProperty} from '../../scale';
 import {smallestUnit} from '../../timeunit';
 import * as util from '../../util';
-import {Split} from '../split';
+import {keys} from '../../util';
+import {VgScale} from '../../vega.schema';
+import {Model} from '../model';
+import {Explicit, mergeValuesWithExplicit, Split} from '../split';
+import {UnitModel} from '../unit';
+import {ScaleComponent, ScaleComponentIndex} from './component';
+import {parseScaleRange} from './range';
+
+
+export function parseScaleProperty(model: Model, property: keyof (Scale | VgScale)) {
+  if (model instanceof UnitModel) {
+    parseUnitScaleProperty(model, property);
+  } else {
+    parseNonUnitScaleProperty(model, property);
+  }
+}
+
+function parseUnitScaleProperty(model: UnitModel, property: keyof (Scale | VgScale)) {
+  const localScaleComponents: ScaleComponentIndex = model.component.scales;
+
+  keys(localScaleComponents).forEach((channel: ScaleChannel) => {
+    const specifiedScale = model.scales[channel];
+    const localScaleCmpt = localScaleComponents[channel];
+    const mergedScaleCmpt = model.getScaleComponent(channel);
+    const fieldDef = model.fieldDef(channel);
+    const config = model.config;
+
+    const specifiedValue = specifiedScale.get(property);
+    const sType = mergedScaleCmpt.get('type');
+
+    const supportedByScaleType = scaleTypeSupportProperty(sType, property);
+    const channelIncompatability = channelScalePropertyIncompatability(channel, property);
+
+    if (specifiedValue !== undefined) {
+      // If there is a specified value, check if it is compatible with scale type and channel
+      if (!supportedByScaleType) {
+        log.warn(log.message.scalePropertyNotWorkWithScaleType(sType, property, channel));
+      } else if (channelIncompatability) { // channel
+        log.warn(channelIncompatability);
+      }
+    }
+    if (supportedByScaleType && channelIncompatability === undefined) {
+      if (specifiedValue !== undefined) {
+        // copyKeyFrom ensure type safety
+        // FIXME: specifiedScale will become Scale, not Split<Scale>
+        localScaleCmpt.copyKeyFrom(property, specifiedScale);
+      } else {
+        const value = getDefaultValue(property, specifiedScale, mergedScaleCmpt, channel, fieldDef, config.scale);
+        if (value !== undefined) {
+          localScaleCmpt.set(property, value, false);
+        }
+      }
+
+    }
+  });
+}
+
+function getDefaultValue(property: keyof Scale, scale: Split<Scale>, scaleCmpt: ScaleComponent, channel: Channel, fieldDef: FieldDef<string>, scaleConfig: ScaleConfig) {
+
+  // If we have default rule-base, determine default value first
+  switch (property) {
+    case 'nice':
+      return nice(scaleCmpt.get('type'), channel, fieldDef);
+    case 'padding':
+      return padding(channel, scaleCmpt.get('type'), scaleConfig);
+    case 'paddingInner':
+      return paddingInner(scaleCmpt.get('padding'), channel, scaleConfig);
+    case 'paddingOuter':
+      return paddingOuter(scaleCmpt.get('padding'), channel, scaleCmpt.get('type'), scaleCmpt.get('paddingInner'), scaleConfig);
+    case 'round':
+      return round(channel, scaleConfig);
+    case 'zero':
+      return zero(channel, fieldDef, !!scale.get('domain'));
+  }
+  // Otherwise, use scale config
+  return scaleConfig[property];
+}
+
+export function parseNonUnitScaleProperty(model: Model, property: keyof (Scale | VgScale)) {
+  const localScaleComponents: ScaleComponentIndex = model.component.scales;
+
+  for (const child of model.children) {
+    if (property === 'range') {
+      parseScaleRange(child);
+    }  else {
+      parseScaleProperty(child, property);
+    }
+  }
+
+  keys(localScaleComponents).forEach((channel: ScaleChannel) => {
+    let valueWithExplicit: Explicit<any>;
+
+    for (const child of model.children) {
+      const childComponent = child.component.scales[channel];
+      if (childComponent) {
+        const childValueWithExplicit = childComponent.getWithExplicit(property);
+        // TODO: precedence rule
+        valueWithExplicit = mergeValuesWithExplicit(valueWithExplicit, childValueWithExplicit);
+      }
+    }
+    localScaleComponents[channel].setWithExplicit(property, valueWithExplicit);
+  });
+}
+
 
 
 export function nice(scaleType: ScaleType, channel: Channel, fieldDef: FieldDef<string>): boolean | NiceTime {
@@ -71,7 +175,7 @@ export function round(channel: Channel, scaleConfig: ScaleConfig) {
   return undefined;
 }
 
-export function zero(splitScale: Split<Scale>, channel: Channel, fieldDef: FieldDef<string>) {
+export function zero(channel: Channel, fieldDef: FieldDef<string>, hasCustomDomain: boolean) {
   // By default, return true only for the following cases:
 
   // 1) using quantitative field with size
@@ -84,7 +188,7 @@ export function zero(splitScale: Split<Scale>, channel: Channel, fieldDef: Field
   // 2) non-binned, quantitative x-scale or y-scale if no custom domain is provided.
   // (For binning, we should not include zero by default because binning are calculated without zero.
   // Similar, if users explicitly provide a domain range, we should not augment zero as that will be unexpected.)
-  if (!splitScale.get('domain') && !fieldDef.bin && util.contains([X, Y], channel)) {
+  if (!hasCustomDomain && !fieldDef.bin && util.contains([X, Y], channel)) {
     return true;
   }
   return false;

@@ -4,11 +4,16 @@ import {isSelectionDomain} from '../../scale';
 import {stringValue, vals} from '../../util';
 import {isDataRefDomain, isDataRefUnionedDomain, isFieldRefUnionDomain, isSignalRefDomain, VgDataRef, VgScale} from '../../vega.schema';
 import {Model} from '../model';
-import {isRawSelectionDomain, scaleDomain} from '../selection/selection';
+import {isRawSelectionDomain, selectionScaleDomain} from '../selection/selection';
 
 
 export function assembleScale(model: Model): VgScale[] {
-    return vals(model.component.scales).map(scaleComponent => {
+    return vals(model.component.scales).reduce((scales: VgScale[], scaleComponent) => {
+      if (scaleComponent.merged) {
+        // Skipped merged scales
+        return scales;
+      }
+
       // We need to cast here as combine returns Partial<VgScale> by default.
       const scale = scaleComponent.combine(['name', 'type', 'domain', 'domainRaw', 'range']) as VgScale;
 
@@ -18,7 +23,7 @@ export function assembleScale(model: Model): VgScale[] {
       // is set, and replace it with the correct domainRaw signal.
       // For more information, see isRawSelectionDomain in selection.ts.
       if (domainRaw && isRawSelectionDomain(domainRaw)) {
-        scale.domainRaw = scaleDomain(model, domainRaw);
+        scale.domainRaw = selectionScaleDomain(model, domainRaw);
       }
 
       // Correct references to data as the original domain's data was determined
@@ -27,7 +32,7 @@ export function assembleScale(model: Model): VgScale[] {
       const domain = scaleComponent.get('domain');
       if (isDataRefDomain(domain) || isFieldRefUnionDomain(domain)) {
         domain.data = model.lookupDataSource(domain.data);
-        return scale;
+        scales.push(scale);
       } else if (isDataRefUnionedDomain(domain)) {
         domain.fields = domain.fields.map((f: VgDataRef) => {
           return {
@@ -35,11 +40,12 @@ export function assembleScale(model: Model): VgScale[] {
             data: model.lookupDataSource(f.data)
           };
         });
-        return scale;
+        scales.push(scale);
       } else if (isSignalRefDomain(domain) || isArray(domain)) {
-        return scale;
+        scales.push(scale);
       } else {
         throw new Error('invalid scale domain');
       }
-    });
+      return scales;
+    }, []);
 }

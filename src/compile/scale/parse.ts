@@ -1,29 +1,15 @@
-import {Channel, SCALE_CHANNELS, ScaleChannel} from '../../channel';
-import {isSelectionDomain, Scale} from '../../scale';
-import {isSortField} from '../../sort';
-import {Dict} from '../../util';
-import {isSignalRefDomain, VgScale} from '../../vega.schema';
+import {ScaleChannel} from '../../channel';
+import {Scale} from '../../scale';
+import {scaleCompatible, ScaleType, scaleTypePrecedence} from '../../scale';
+import {keys} from '../../util';
+import {VgScale} from '../../vega.schema';
 import {Model} from '../model';
-import {SELECTION_DOMAIN} from '../selection/selection';
-import {Split} from '../split';
+import {Explicit, mergeValuesWithExplicit} from '../split';
 import {UnitModel} from '../unit';
 import {ScaleComponent, ScaleComponentIndex} from './component';
-import {parseDomain, unionDomains} from './domain';
-import {parseRange} from './range';
-
-
-/**
- * Parse scales for all channels of a model.
- */
-export default function parseScaleComponent(model: UnitModel): ScaleComponentIndex {
-  return SCALE_CHANNELS.reduce(function(scaleComponentsIndex: ScaleComponentIndex, channel: ScaleChannel) {
-    const scaleComponents = parseScale(model, channel);
-    if (scaleComponents) {
-      scaleComponentsIndex[channel] = scaleComponents;
-    }
-    return scaleComponentsIndex;
-  }, {});
-}
+import {parseScaleDomain} from './domain';
+import {parseScaleRange} from './range';
+import {parseScaleProperty} from './rules';
 
 export const NON_TYPE_DOMAIN_RANGE_VEGA_SCALE_PROPERTIES: (keyof (Scale | VgScale))[] = [
   'round',
@@ -35,78 +21,94 @@ export const NON_TYPE_DOMAIN_RANGE_VEGA_SCALE_PROPERTIES: (keyof (Scale | VgScal
   'padding', 'paddingInner', 'paddingOuter', // padding
 ];
 
-/**
- * Parse scales for a single channel of a model.
- */
-export function parseScale(model: UnitModel, channel: ScaleChannel) {
-  if (!model.scale(channel)) {
-    return null;
+export function parseScale(model: Model) {
+  parseScaleCore(model);
+  parseScaleDomain(model);
+  for (const prop of NON_TYPE_DOMAIN_RANGE_VEGA_SCALE_PROPERTIES) {
+    parseScaleProperty(model, prop);
   }
+  // range depends on zero
+  parseScaleRange(model);
+}
 
-  const scale = model.scale(channel);
-  const sort = model.sort(channel);
-
-  const scaleComponent: ScaleComponent = new Split<Partial<VgScale>>(
-    {},
-    // Implicit
-    {
-      name: model.scaleName(channel + '', true)
-    }
-  );
-  scaleComponent.copyKeyFrom('type', scale);
-
-  // FIXME(https://github.com/vega/vega-lite/issues/2497): this condition to be implicit/explicit may be incorrect
-  const domain = parseDomain(model, channel);
-  scaleComponent.set('domain', domain, domain === model.scaleDomain(channel));
-
-  if (isSelectionDomain(scale.get('domain'))) {
-    // As scale parsing occurs before selection parsing, we use a temporary
-    // signal here and append the scale.domain definition. This is replaced
-    // with the correct domainRaw signal during scale assembly.
-    // For more information, see isRawSelectionDomain in selection.ts.
-
-    // FIXME: replace this with a special property in the scaleComponent
-    scaleComponent.set('domainRaw', {
-      signal: SELECTION_DOMAIN + JSON.stringify(scale.get('domain'))
-    }, true);
+export function parseScaleCore(model: Model) {
+  if (model instanceof UnitModel) {
+    model.component.scales = parseUnitScaleCore(model);
+  } else {
+    model.component.scales = parseNonUnitScaleCore(model);
   }
-
-  const {explicit, range} = parseRange(scale);
-  scaleComponent.set('range', range, explicit);
-
-  NON_TYPE_DOMAIN_RANGE_VEGA_SCALE_PROPERTIES.forEach((property) => {
-    scaleComponent.copyKeyFrom(property, scale);
-  });
-
-  return scaleComponent;
 }
 
 /**
- * Move scale from child up.
+ * Parse scales for all channels of a model.
  */
-export function moveSharedScaleUp(model: Model, scaleComponent: ScaleComponentIndex, child: Model, channel: ScaleChannel) {
-  // TODO: Check whether the scales are actually compatible and merge them, e.g. they shoud use the same sort or throw error
+function parseUnitScaleCore(model: UnitModel): ScaleComponentIndex {
+  const scales = model.scales;
 
-  const childScale = child.component.scales[channel];
-  let modelScale = scaleComponent[channel];
+  return keys(scales)
+    .reduce((scaleComponents: ScaleComponentIndex, channel: ScaleChannel) => {
+      scaleComponents[channel] = new ScaleComponent(
+        model.scaleName(channel + '', true),
+        scales[channel].getWithExplicit('type')
+      );
+      return scaleComponents;
+    }, {});
+}
 
-  if (modelScale) {
-    const {explicit, value: domain} = modelScale.getWithExplicit('domain');
-    const {explicit: childExplicit, value: childDomain} = childScale.getWithExplicit('domain');
+function parseNonUnitScaleCore(model: Model) {
+  const scaleComponents: ScaleComponentIndex = model.component.scales = {};
 
-    modelScale.set('domain', unionDomains(domain, childDomain), explicit || childExplicit);
-  } else {
-    modelScale = scaleComponent[channel] = childScale;
+  const scaleTypeWithExplicitIndex: {[k in ScaleChannel]?: Explicit<ScaleType>} = {};
+  const channelHasConflict: {[k in ScaleChannel]?: true} = {};
+
+  // Parse each child scale and determine if a particular channel can be merged.
+  for (const child of model.children) {
+    parseScaleCore(child);
+
+    // Instead of always merging right away -- check if it is compatible to merge first!
+    keys(child.component.scales).forEach((channel: ScaleChannel) => {
+      if (model.resolve[channel].scale === 'shared') {
+        if (channelHasConflict[channel]) {
+          return;
+        }
+
+        const scaleType = scaleTypeWithExplicitIndex[channel];
+        const childScaleType = child.component.scales[channel].getWithExplicit('type');
+
+        if (scaleType) {
+          if (scaleCompatible(scaleType.value, childScaleType.value)) {
+            // merge scale component if type are compatible
+            scaleTypeWithExplicitIndex[channel] = mergeValuesWithExplicit(
+              scaleType, childScaleType, scaleTypePrecedence
+            );
+          } else {
+            // Otherwise, mark as conflict and remove from the index so they don't get merged
+            channelHasConflict[channel] = true;
+            delete scaleTypeWithExplicitIndex[channel];
+          }
+        } else {
+          scaleTypeWithExplicitIndex[channel] = childScaleType;
+        }
+      }
+    });
   }
 
-  // rename child scale to parent scales
-  const scaleNameWithoutPrefix = childScale.get('name').substr(child.getName('').length);
-  const newName = model.scaleName(scaleNameWithoutPrefix, true);
-  child.renameScale(childScale.get('name'), newName);
-  childScale.set('name', newName, false);
+  // Merge each channel listed in the index
+  keys(scaleTypeWithExplicitIndex).forEach((channel: ScaleChannel) => {
+    // Create new merged scale component
+    const name = model.scaleName(channel, true);
+    const typeWithExplicit = scaleTypeWithExplicitIndex[channel];
+    const modelScale = scaleComponents[channel] = new ScaleComponent(name, typeWithExplicit);
 
-  // remove merged scales from children
-  delete child.component.scales[channel];
+    // rename each child and mark them as merged
+    for (const child of model.children) {
+      const childScale = child.component.scales[channel];
+      if (childScale) {
+        child.renameScale(childScale.get('name'), name);
+        childScale.merged = true;
+      }
+    }
+  });
 
-  return modelScale;
+  return scaleComponents;
 }

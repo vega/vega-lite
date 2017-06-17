@@ -1,7 +1,10 @@
 /* tslint:disable:quotemark */
 
 import {assert} from 'chai';
-import {domainSort, parseDomain, unionDomains} from '../../../src/compile/scale/domain';
+import {ScaleChannel} from '../../../src/channel';
+import {domainSort, parseDomainForChannel, unionDomains} from '../../../src/compile/scale/domain';
+import {parseScaleCore} from '../../../src/compile/scale/parse';
+import {UnitModel} from '../../../src/compile/unit';
 import {MAIN} from '../../../src/data';
 import {PositionFieldDef} from '../../../src/fielddef';
 import * as log from '../../../src/log';
@@ -10,10 +13,14 @@ import {SortField} from '../../../src/sort';
 import {FieldRefUnionDomain, VgDataRef, VgDomain} from '../../../src/vega.schema';
 import {parseUnitModel} from '../../util';
 
-
-
 describe('compile/scale', () => {
-  describe('parseDomain()', () => {
+  describe('parseDomainForChannel()', () => {
+    function testParseDomainForChannel(model: UnitModel, channel: ScaleChannel) {
+      // Cannot parseDomain before parseScaleCore
+      parseScaleCore(model);
+      return parseDomainForChannel(model, channel);
+    }
+
     it('should have correct domain with x and x2 channel', function() {
       const model = parseUnitModel({
           mark: 'bar',
@@ -25,10 +32,10 @@ describe('compile/scale', () => {
           }
         });
 
-      const xDomain = parseDomain(model, 'x');
+      const xDomain = testParseDomainForChannel(model, 'x');
       assert.deepEqual(xDomain, {data: 'main', fields: ['a', 'b']});
 
-      const yDomain = parseDomain(model, 'y');
+      const yDomain = testParseDomainForChannel(model, 'y');
       assert.deepEqual(yDomain, {data: 'main', fields: ['c', 'd']});
     });
 
@@ -40,7 +47,7 @@ describe('compile/scale', () => {
           }
         });
 
-      const xDomain = parseDomain(model, 'color');
+      const xDomain = testParseDomainForChannel(model, 'color');
       assert.deepEqual(xDomain, {data: 'main', field: 'a'});
     });
 
@@ -54,7 +61,7 @@ describe('compile/scale', () => {
           }
         });
 
-      const xDomain = parseDomain(model, 'color');
+      const xDomain = testParseDomainForChannel(model, 'color');
       assert.deepEqual(xDomain, {data: 'main', field: 'a'});
     });
 
@@ -72,7 +79,7 @@ describe('compile/scale', () => {
         }
       });
 
-      assert.deepEqual(parseDomain(model,'y'), {
+      assert.deepEqual(testParseDomainForChannel(model,'y'), {
         data: 'main',
         fields: ['sum_origin_start', 'sum_origin_end']
       });
@@ -95,7 +102,7 @@ describe('compile/scale', () => {
         }
       });
 
-      assert.deepEqual(parseDomain(model,'y'), [0, 1]);
+      assert.deepEqual(testParseDomainForChannel(model,'y'), [0, 1]);
     });
 
     describe('for quantitative', function() {
@@ -113,7 +120,7 @@ describe('compile/scale', () => {
           }
         });
 
-        assert.deepEqual(parseDomain(model,'y'), {
+        assert.deepEqual(testParseDomainForChannel(model,'y'), {
           data: 'main',
           fields: [
             'bin_maxbins_15_origin_start',
@@ -136,7 +143,7 @@ describe('compile/scale', () => {
               }
             }
           });
-          const _domain = parseDomain(model,'y') as FieldRefUnionDomain;
+          const _domain = testParseDomainForChannel(model,'y') as FieldRefUnionDomain;
 
           assert.deepEqual(_domain.data, MAIN);
           assert.deepEqual(_domain.fields, ['min_acceleration', 'max_acceleration']);
@@ -154,7 +161,7 @@ describe('compile/scale', () => {
             }
           }
         });
-        const _domain = parseDomain(model,'y') as VgDataRef;
+        const _domain = testParseDomainForChannel(model,'y') as VgDataRef;
         assert.deepEqual(_domain.data, MAIN);
         assert.equal(
           localLogger.warns[0], log.message.unaggregateDomainWithNonSharedDomainOp('sum')
@@ -172,7 +179,7 @@ describe('compile/scale', () => {
             }
           }
         });
-        const _domain = parseDomain(model,'y');
+        const _domain = testParseDomainForChannel(model,'y');
 
         assert.deepEqual(_domain, [0, 200]);
       });
@@ -189,7 +196,7 @@ describe('compile/scale', () => {
             }
           }
         });
-        const _domain = parseDomain(model,'y');
+        const _domain = testParseDomainForChannel(model,'y');
 
         assert.deepEqual(_domain, {
           data: 'main',
@@ -211,7 +218,7 @@ describe('compile/scale', () => {
             }
           }
         });
-        const _domain = parseDomain(model,'y') as VgDataRef;
+        const _domain = testParseDomainForChannel(model,'y') as VgDataRef;
 
         assert.deepEqual(_domain.data, MAIN);
       });
@@ -232,7 +239,7 @@ describe('compile/scale', () => {
             }
           }
         });
-        const _domain = parseDomain(model,'y') as FieldRefUnionDomain;
+        const _domain = testParseDomainForChannel(model,'y') as FieldRefUnionDomain;
 
         assert.deepEqual(_domain.data, MAIN);
         assert.deepEqual(_domain.fields, ['min_acceleration', 'max_acceleration']);
@@ -252,7 +259,7 @@ describe('compile/scale', () => {
               }
             }
           });
-          const _domain = parseDomain(model,'y');
+          const _domain = testParseDomainForChannel(model,'y');
           assert.deepEqual(_domain, {data: 'main', field: 'month_origin', sort: true});
         });
 
@@ -268,7 +275,7 @@ describe('compile/scale', () => {
                 }
               }
             });
-            const _domain = parseDomain(model,'y');
+            const _domain = testParseDomainForChannel(model,'y');
 
             assert.deepEqual(_domain, {data: 'main', field: 'yearmonth_origin'});
           });
@@ -293,7 +300,7 @@ describe('compile/scale', () => {
                 }
               }
             });
-            const _domain = parseDomain(model,'x');
+            const _domain = testParseDomainForChannel(model,'x');
 
             assert.deepEqual(_domain, {
               data: 'raw',
@@ -313,7 +320,7 @@ describe('compile/scale', () => {
             }
           }
         });
-        const _domain = parseDomain(model,'y');
+        const _domain = testParseDomainForChannel(model,'y');
 
         assert.deepEqual(_domain, [
           {"signal": "datetime(1970, 0, 1, 0, 0, 0, 0)"},
@@ -331,7 +338,7 @@ describe('compile/scale', () => {
               y: {field: 'origin', type: "ordinal", sort: sortDef}
             }
           });
-        assert.deepEqual(parseDomain(model,'y'), {
+        assert.deepEqual(testParseDomainForChannel(model,'y'), {
             data: "raw",
             field: 'origin',
             sort: sortDef
@@ -347,7 +354,7 @@ describe('compile/scale', () => {
             }
           });
 
-        assert.deepEqual(parseDomain(model,'y'), {
+        assert.deepEqual(testParseDomainForChannel(model,'y'), {
             data: "raw",
             field: 'origin',
             sort: sortDef
@@ -362,7 +369,7 @@ describe('compile/scale', () => {
           }
         });
 
-        assert.deepEqual(parseDomain(model,'y'), {
+        assert.deepEqual(testParseDomainForChannel(model,'y'), {
           data: "main",
           field: 'origin',
           sort: true

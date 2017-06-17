@@ -16,7 +16,6 @@ import {Model} from './model';
 import {RepeaterValue} from './repeat';
 import {ScaleComponent, ScaleComponentIndex} from './scale/component';
 import {unionDomains} from './scale/domain';
-import {moveSharedScaleUp} from './scale/parse';
 import {assembleLayerSelectionMarks} from './selection/selection';
 import {UnitModel} from './unit';
 
@@ -27,14 +26,15 @@ export class LayerModel extends Model {
   // So I'm just putting generic Model for now.
   public readonly children: Model[];
 
-  private readonly resolve: ResolveMapping;
+
 
   constructor(spec: LayerSpec, parent: Model, parentGivenName: string,
     parentUnitSize: UnitSize, repeater: RepeaterValue, config: Config) {
 
-    super(spec, parent, parentGivenName, config);
-
-    this.resolve = initLayerResolve(spec.resolve || {});
+    super(
+      spec, parent, parentGivenName, config,
+      initLayerResolve(spec.resolve || {})
+    );
 
     const unitSize = {
       ...parentUnitSize,
@@ -71,20 +71,6 @@ export class LayerModel extends Model {
       child.parseSelection();
       keys(child.component.selection).forEach((key) => {
         this.component.selection[key] = child.component.selection[key];
-      });
-    }
-  }
-
-  public parseScale(this: LayerModel) {
-    const scaleComponent: ScaleComponentIndex = this.component.scales = {};
-
-    for (const child of this.children) {
-      child.parseScale();
-
-      keys(child.component.scales).forEach((channel: ScaleChannel) => {
-        if (this.resolve[channel].scale === 'shared') {
-          moveSharedScaleUp(this, scaleComponent, child, channel);
-        }
       });
     }
   }

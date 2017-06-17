@@ -12,7 +12,7 @@ import {SortField, SortOrder} from '../sort';
 import {UnitSize, UnitSpec} from '../spec';
 import {stack, StackProperties} from '../stack';
 import {Dict, duplicate, extend, vals} from '../util';
-import {VgData, VgEncodeEntry, VgLayout, VgSignal} from '../vega.schema';
+import {VgData, VgEncodeEntry, VgLayout, VgScale, VgSignal} from '../vega.schema';
 import {AxisIndex} from './axis/component';
 import {parseAxisComponent} from './axis/parse';
 import {applyConfig} from './common';
@@ -29,7 +29,6 @@ import {Model, ModelWithField} from './model';
 import {RepeaterValue, replaceRepeaterInEncoding} from './repeat';
 import {ScaleIndex} from './scale/component';
 import initScale from './scale/init';
-import parseScaleComponent from './scale/parse';
 import {assembleTopLevelSignals, assembleUnitSelectionData, assembleUnitSelectionMarks, assembleUnitSelectionSignals, parseUnitSelection} from './selection/selection';
 import {Split} from './split';
 
@@ -55,7 +54,7 @@ export class UnitModel extends ModelWithField {
   public readonly markDef: MarkDef;
   public readonly encoding: Encoding<string>;
 
-  protected scales: ScaleIndex = {};
+  public readonly scales: ScaleIndex = {};
 
   public readonly stack: StackProperties;
 
@@ -68,21 +67,21 @@ export class UnitModel extends ModelWithField {
 
   constructor(spec: UnitSpec, parent: Model, parentGivenName: string,
     parentUnitSize: UnitSize = {}, repeater: RepeaterValue, config: Config) {
-    super(spec, parent, parentGivenName, config);
+    super(spec, parent, parentGivenName, config, {});
 
     // FIXME(#2041): copy config.facet.cell to config.cell -- this seems incorrect and should be rewritten
     this.initFacetCellConfig();
 
     // use top-level width / height or ancestor's width / height
-    const providedWidth = spec.width || parentUnitSize.width;
-    const providedHeight = spec.height || parentUnitSize.height;
+    this.width = spec.width || parentUnitSize.width;
+    this.height = spec.height || parentUnitSize.height;
 
     const mark = isMarkDef(spec.mark) ? spec.mark.type : spec.mark;
     const encoding = this.encoding = normalizeEncoding(replaceRepeaterInEncoding(spec.encoding || {}, repeater), mark);
 
     // calculate stack properties
     this.stack = stack(mark, encoding, this.config.stack);
-    this.scales = this.initScales(mark, encoding, providedWidth, providedHeight);
+    this.scales = this.initScales(mark, encoding);
 
     this.markDef = initMarkDef(spec.mark, encoding, this.scales, this.config);
     this.encoding = initEncoding(mark, encoding, this.stack, this.config);
@@ -92,17 +91,9 @@ export class UnitModel extends ModelWithField {
 
     // Selections will be initialized upon parse.
     this.selection = spec.selection;
-
-    // width / height
-    const {width = this.width, height = this.height} = this.initSize(mark, this.scales,
-      providedWidth,
-      providedHeight
-    );
-    this.width = width;
-    this.height = height;
   }
 
-  public scale(channel: Channel): Split<Scale> {
+  protected scale(channel: Channel): Split<Scale> {
     return this.scales[channel];
   }
 
@@ -149,9 +140,7 @@ export class UnitModel extends ModelWithField {
     }
   }
 
-  private initScales(mark: Mark, encoding: Encoding<string>, topLevelWidth:number, topLevelHeight: number): ScaleIndex {
-    const xyRangeSteps: number[] = [];
-
+  private initScales(mark: Mark, encoding: Encoding<string>): ScaleIndex {
     return SCALE_CHANNELS.reduce((scales, channel) => {
       let fieldDef: FieldDef<string>;
       let specifiedScale: Scale;
@@ -172,65 +161,11 @@ export class UnitModel extends ModelWithField {
 
       if (fieldDef) {
         const splitScale = scales[channel] = initScale(
-          channel, fieldDef, specifiedScale, this.config, mark,
-          channel === X ? topLevelWidth : channel === Y ? topLevelHeight : undefined,
-          xyRangeSteps // for determine point / bar size
+          channel, fieldDef, specifiedScale, this.config, mark
         );
-
-        if (channel === X || channel === Y) {
-          const rangeStep = splitScale.get('rangeStep');
-          if (rangeStep) {
-            xyRangeSteps.push(rangeStep);
-          }
-        }
       }
       return scales;
     }, {} as ScaleIndex);
-  }
-
-  // TODO: consolidate this with scale?  Current scale range is in parseScale (later),
-  // but not in initScale because scale range depends on size,
-  // but size depends on scale type and rangeStep
-  private initSize(mark: Mark, scales: ScaleIndex, width: number, height: number) {
-    const cellConfig = this.config.cell;
-    const scaleConfig = this.config.scale;
-
-    if (width === undefined) {
-      if (scales.x) {
-        if (!hasDiscreteDomain(scales.x.get('type')) || !scales.x.get('rangeStep')) {
-          width = cellConfig.width;
-        } // else: Do nothing, use dynamic width.
-      } else { // No scale X
-        if (mark === TEXT_MARK) {
-          // for text table without x/y scale we need wider rangeStep
-          width = scaleConfig.textXRangeStep;
-        } else {
-          // Set height equal to rangeStep config or if rangeStep is null, use value from default scale config.
-          if (scaleConfig.rangeStep) {
-            width = scaleConfig.rangeStep;
-          } else {
-            width = defaultScaleConfig.rangeStep;
-          }
-        }
-      }
-    }
-
-    if (height === undefined) {
-      if (scales.y) {
-        if (!hasDiscreteDomain(scales.y.get('type')) || !scales.y.get('rangeStep')) {
-          height = cellConfig.height;
-        } // else: Do nothing, use dynamic height .
-      } else {
-        // Set height equal to rangeStep config or if rangeStep is null, use value from default scale config.
-        if (scaleConfig.rangeStep) {
-          height = scaleConfig.rangeStep;
-        } else {
-          height = defaultScaleConfig.rangeStep;
-        }
-      }
-    }
-
-    return {width, height};
   }
 
   private initAxes(encoding: Encoding<string>): AxisIndex {
@@ -277,10 +212,6 @@ export class UnitModel extends ModelWithField {
 
   public parseSelection() {
     this.component.selection = parseUnitSelection(this, this.selection);
-  }
-
-  public parseScale() {
-    this.component.scales = parseScaleComponent(this);
   }
 
   public parseMark() {
