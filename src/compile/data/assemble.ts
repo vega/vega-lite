@@ -252,6 +252,10 @@ function makeWalkTree(data: VgData[]) {
         walkTree(node.children[0], dataSource);
         break;
       default:
+        if (!dataSource.name) {
+          dataSource.name = `data_${datasetIndex++}`;
+        }
+
         let source = dataSource.name;
         if (!dataSource.source || dataSource.transform.length > 0) {
           data.push(dataSource);
