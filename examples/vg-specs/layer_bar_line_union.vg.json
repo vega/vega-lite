@@ -58,13 +58,10 @@
                     "b": "J",
                     "c": 52
                 }
-            ],
-            "format": {
-                "type": "json"
-            }
+            ]
         },
         {
-            "name": "data_0",
+            "name": "data_1",
             "source": "source_0",
             "transform": [
                 {
@@ -79,7 +76,7 @@
             ]
         },
         {
-            "name": "data_1",
+            "name": "data_2",
             "source": "source_0",
             "transform": [
                 {
@@ -133,7 +130,7 @@
             "type": "rect",
             "role": "bar",
             "from": {
-                "data": "data_0"
+                "data": "data_1"
             },
             "encode": {
                 "update": {
@@ -164,7 +161,7 @@
             "name": "layer_1_marks",
             "type": "line",
             "from": {
-                "data": "data_1"
+                "data": "data_2"
             },
             "encode": {
                 "update": {
@@ -192,11 +189,11 @@
             "domain": {
                 "fields": [
                     {
-                        "data": "data_0",
+                        "data": "data_1",
                         "field": "a"
                     },
                     {
-                        "data": "data_1",
+                        "data": "data_2",
                         "field": "b"
                     }
                 ],
@@ -215,11 +212,11 @@
             "domain": {
                 "fields": [
                     {
-                        "data": "data_0",
+                        "data": "data_1",
                         "field": "c"
                     },
                     {
-                        "data": "data_1",
+                        "data": "data_2",
                         "field": "c"
                     }
                 ],

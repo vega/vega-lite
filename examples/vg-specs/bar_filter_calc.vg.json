@@ -50,10 +50,11 @@
                     "a": "F",
                     "b": 53
                 }
-            ],
-            "format": {
-                "type": "json"
-            },
+            ]
+        },
+        {
+            "name": "data_0",
+            "source": "source_0",
             "transform": [
                 {
                     "type": "formula",
@@ -87,7 +88,7 @@
             "type": "rect",
             "role": "bar",
             "from": {
-                "data": "source_0"
+                "data": "data_0"
             },
             "encode": {
                 "update": {
@@ -119,7 +120,7 @@
             "name": "x",
             "type": "band",
             "domain": {
-                "data": "source_0",
+                "data": "data_0",
                 "field": "a",
                 "sort": true
             },
@@ -134,7 +135,7 @@
             "name": "y",
             "type": "linear",
             "domain": {
-                "data": "source_0",
+                "data": "data_0",
                 "field": "b2"
             },
             "range": [

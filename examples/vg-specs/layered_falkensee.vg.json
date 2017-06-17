@@ -166,17 +166,37 @@
                     "year": "2014",
                     "population": 41777
                 }
-            ],
-            "format": {
-                "type": "json",
-                "parse": {
-                    "year": "date:'%Y'"
+            ]
+        },
+        {
+            "name": "source_1",
+            "values": [
+                {
+                    "start": "1933",
+                    "end": "1945",
+                    "event": "Nazi Rule"
+                },
+                {
+                    "start": "1948",
+                    "end": "1989",
+                    "event": "GDR (East Germany)"
                 }
-            }
+            ]
         },
         {
             "name": "data_0",
             "source": "source_0",
+            "transform": [
+                {
+                    "type": "formula",
+                    "expr": "timeParse(datum[\"year\"],\"%Y\")",
+                    "as": "year"
+                }
+            ]
+        },
+        {
+            "name": "data_1",
+            "source": "data_0",
             "transform": [
                 {
                     "type": "formula",
@@ -207,8 +227,8 @@
             ]
         },
         {
-            "name": "data_1",
-            "source": "source_0",
+            "name": "data_2",
+            "source": "data_0",
             "transform": [
                 {
                     "type": "formula",
@@ -232,27 +252,19 @@
             ]
         },
         {
-            "name": "source_1",
-            "values": [
+            "name": "data_3",
+            "source": "source_1",
+            "transform": [
                 {
-                    "start": "1933",
-                    "end": "1945",
-                    "event": "Nazi Rule"
+                    "type": "formula",
+                    "expr": "timeParse(datum[\"start\"],\"%Y\")",
+                    "as": "start"
                 },
                 {
-                    "start": "1948",
-                    "end": "1989",
-                    "event": "GDR (East Germany)"
-                }
-            ],
-            "format": {
-                "type": "json",
-                "parse": {
-                    "start": "date:'%Y'",
-                    "end": "date:'%Y'"
-                }
-            },
-            "transform": [
+                    "type": "formula",
+                    "expr": "timeParse(datum[\"end\"],\"%Y\")",
+                    "as": "end"
+                },
                 {
                     "type": "filter",
                     "expr": "datum[\"start\"] !== null && !isNaN(datum[\"start\"]) && datum[\"end\"] !== null && !isNaN(datum[\"end\"])"
@@ -317,7 +329,7 @@
             "name": "layer_0_marks",
             "type": "rect",
             "from": {
-                "data": "source_1"
+                "data": "data_3"
             },
             "encode": {
                 "update": {
@@ -349,7 +361,7 @@
             "name": "layer_1_layer_0_marks",
             "type": "line",
             "from": {
-                "data": "data_0"
+                "data": "data_1"
             },
             "encode": {
                 "update": {
@@ -373,7 +385,7 @@
             "type": "symbol",
             "role": "pointOverlay",
             "from": {
-                "data": "data_1"
+                "data": "data_2"
             },
             "encode": {
                 "update": {
@@ -403,19 +415,19 @@
             "domain": {
                 "fields": [
                     {
-                        "data": "source_1",
+                        "data": "data_3",
                         "field": "year_start"
                     },
                     {
-                        "data": "source_1",
+                        "data": "data_3",
                         "field": "year_end"
                     },
                     {
-                        "data": "data_0",
+                        "data": "data_1",
                         "field": "year_year"
                     },
                     {
-                        "data": "data_1",
+                        "data": "data_2",
                         "field": "year_year"
                     }
                 ],
@@ -432,7 +444,7 @@
             "name": "color",
             "type": "ordinal",
             "domain": {
-                "data": "source_1",
+                "data": "data_3",
                 "field": "event",
                 "sort": true
             },
@@ -444,11 +456,11 @@
             "domain": {
                 "fields": [
                     {
-                        "data": "data_0",
+                        "data": "data_1",
                         "field": "population"
                     },
                     {
-                        "data": "data_1",
+                        "data": "data_2",
                         "field": "population"
                     }
                 ],
