@@ -1,9 +1,6 @@
-import {isString} from 'vega-util';
-import {MAIN} from '../../data';
-import {field} from '../../fielddef';
+import {isUrlData, MAIN} from '../../data';
 import {every, flatten, vals} from '../../util';
 import {VgData} from '../../vega.schema';
-import {Model} from '../model';
 import {DataComponent} from './';
 import {AggregateNode} from './aggregate';
 import {BinNode} from './bin';
@@ -153,6 +150,20 @@ function makeWalkTree(data: VgData[]) {
    * Recursively walk down the tree.
    */
   function walkTree(node: DataFlowNode, dataSource: VgData) {
+    if (node instanceof SourceNode) {
+      // If the source is a named data source or a data source with values, we need
+      // to put it in a different data source. Otherwise, Vega may override the data.
+      if (!isUrlData(node.data)) {
+        data.push(dataSource);
+        const newData: VgData = {
+          name: null,
+          source: dataSource.name,
+          transform: []
+        };
+        dataSource = newData;
+      }
+    }
+
     if (node instanceof ParseNode) {
       if (node.parent instanceof SourceNode && !dataSource.source)  {
         // If node's parent is a root source and the data source does not refer to another data source, use normal format parse
