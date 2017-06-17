@@ -23,6 +23,9 @@ function parseExpression(field: string, parse: string): string {
   } else if (parse.indexOf('date:') === 0) {
     const specifier = parse.slice(6, parse.length - 1);  // specifier is in "" or ''
     return `timeParse(${f},"${specifier}")`;
+  } else if (parse.indexOf('utc:') === 0) {
+    const specifier = parse.slice(5, parse.length - 1);  // specifier is in "" or ''
+    return `utcParse(${f},"${specifier}")`;
   } else {
     log.warn(log.message.unrecognizedParse(parse));
     return null;
