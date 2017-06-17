@@ -157,7 +157,6 @@ export function normalizeBoxPlot(spec: GenericUnitSpec<Encoding<Field>, BOXPLOT 
 export function boxOrient(spec: GenericUnitSpec<Encoding<Field>, BOXPLOT | BoxPlotDef>): Orient {
   const {mark: mark, encoding: encoding, ...outerSpec} = spec;
 
-  const is2D = encoding.x && encoding.y;
   const continuousXAxis = isFieldDef(encoding.x) && isContinuous(encoding.x);
   const continuousYAxis = isFieldDef(encoding.y) && isContinuous(encoding.y);
 
