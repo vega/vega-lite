@@ -13,9 +13,7 @@ import {ScaleIndex} from '../scale/component';
 import {Orient} from './../../vega.schema';
 
 
-export function initMarkDef(mark: Mark | MarkDef, encoding: Encoding<string>, scales: ScaleIndex, config: Config): MarkDef {
-  const markDef = isMarkDef(mark) ? {...mark} : {type: mark};
-
+export function normalizeMarkDef(markDef: MarkDef, encoding: Encoding<string>, scales: ScaleIndex, config: Config) {
   const specifiedOrient = markDef.orient || getMarkConfig('orient', markDef.type, config);
   markDef.orient = orient(markDef.type, encoding, scales, specifiedOrient);
   if (specifiedOrient !== undefined && specifiedOrient !== markDef.orient) {
@@ -26,8 +24,6 @@ export function initMarkDef(mark: Mark | MarkDef, encoding: Encoding<string>, sc
   if (specifiedFilled === undefined) {
     markDef.filled = filled(markDef.type, config);
   }
-
-  return markDef;
 }
 
 /**

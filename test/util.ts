@@ -2,6 +2,8 @@ import {buildModel} from '../src/compile/common';
 import {ConcatModel} from '../src/compile/concat';
 import {FacetModel} from '../src/compile/facet';
 import {LayerModel} from '../src/compile/layer';
+import {normalizeMarkDef} from '../src/compile/mark/init';
+import {parseMarkDef} from '../src/compile/mark/mark';
 import {Model} from '../src/compile/model';
 import {RepeatModel} from '../src/compile/repeat';
 import {UnitModel} from '../src/compile/unit';
@@ -28,6 +30,12 @@ export function parseUnitModel(spec: TopLevel<UnitSpec>) {
 export function parseUnitModelWithScale(spec: TopLevel<UnitSpec>) {
   const model = parseUnitModel(spec);
   model.parseScale();
+  return model;
+}
+
+export function parseUnitModelWithScaleAndMarkDef(spec: TopLevel<UnitSpec>) {
+  const model = parseUnitModelWithScale(spec);
+  parseMarkDef(model);
   return model;
 }
 

@@ -23,7 +23,7 @@ import {LayerModel} from './layer';
 import {assembleLayoutUnitSignals} from './layout/index';
 import {LegendIndex} from './legend/component';
 import {parseLegendComponent} from './legend/parse';
-import {initEncoding, initMarkDef} from './mark/init';
+import {initEncoding} from './mark/init';
 import {parseMark} from './mark/mark';
 import {Model, ModelWithField} from './model';
 import {RepeaterValue, replaceRepeaterInEncoding} from './repeat';
@@ -76,14 +76,15 @@ export class UnitModel extends ModelWithField {
     this.width = spec.width || parentUnitSize.width;
     this.height = spec.height || parentUnitSize.height;
 
-    const mark = isMarkDef(spec.mark) ? spec.mark.type : spec.mark;
+    this.markDef = isMarkDef(spec.mark) ? {...spec.mark} : {type: spec.mark};
+    const mark = this.markDef.type;
     const encoding = this.encoding = normalizeEncoding(replaceRepeaterInEncoding(spec.encoding || {}, repeater), mark);
 
     // calculate stack properties
     this.stack = stack(mark, encoding, this.config.stack);
     this.scales = this.initScales(mark, encoding);
 
-    this.markDef = initMarkDef(spec.mark, encoding, this.scales, this.config);
+    // FIXME: this one seems out of place!
     this.encoding = initEncoding(mark, encoding, this.stack, this.config);
 
     this.axes = this.initAxes(encoding);

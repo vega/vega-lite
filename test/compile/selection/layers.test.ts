@@ -31,6 +31,7 @@ describe('Layered Selections', function() {
   });
 
   layers.parseScale();
+  layers.parseMarkDef();
   layers.parseSelection();
   layers.parseMark();
 

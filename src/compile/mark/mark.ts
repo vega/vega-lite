@@ -7,10 +7,12 @@ import {AREA, LINE} from '../../mark';
 import {isSelectionDomain} from '../../scale';
 import {contains} from '../../util';
 import {FacetModel} from '../facet';
+import {Model} from '../model';
 import {UnitModel} from '../unit';
 import {area} from './area';
 import {bar} from './bar';
 import {MarkCompiler} from './base';
+import {normalizeMarkDef} from './init';
 import {line} from './line';
 import {circle, point, square} from './point';
 import {rect} from './rect';
@@ -31,6 +33,16 @@ const markCompiler: {[type: string]: MarkCompiler} = {
   circle: circle,
   square: square
 };
+
+export function parseMarkDef(model: Model) {
+  if (model instanceof UnitModel) {
+    normalizeMarkDef(model.markDef, model.encoding, model.scales, model.config);
+  } else {
+    for (const child of model.children) {
+      parseMarkDef(child);
+    }
+  }
+}
 
 export function parseMark(model: UnitModel): any[] {
   if (contains([LINE, AREA], model.mark())) {

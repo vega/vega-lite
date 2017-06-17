@@ -19,6 +19,7 @@ import {LayoutSizeComponent} from './layout/component';
 import {getHeaderGroup, getTitleGroup, HEADER_CHANNELS, HEADER_TYPES, LayoutHeaderComponent} from './layout/header';
 import {parseLayoutSize} from './layout/parse';
 import {LegendComponentIndex} from './legend/component';
+import {parseMarkDef} from './mark/mark';
 import {RepeaterValue} from './repeat';
 import {assembleScale} from './scale/assemble';
 import {ScaleComponent, ScaleComponentIndex} from './scale/component';
@@ -141,11 +142,12 @@ export abstract class Model {
 
   public parse() {
     this.parseScale();
+    this.parseMarkDef();
     this.parseLayoutSize(); // depends on scale
-    this.parseData();
+    this.parseData(); // (pathorder) depends on markDef
     this.parseSelection();
     this.parseAxisAndHeader(); // depends on scale
-    this.parseLegend(); // depends on scale
+    this.parseLegend(); // depends on scale, markDef
     this.parseMark(); // depends on data name, scale, size, axisGroup, and children's scale, axis, legend and mark.
   }
 
@@ -160,6 +162,10 @@ export abstract class Model {
 
   public parseLayoutSize() {
     parseLayoutSize(this);
+  }
+
+  public parseMarkDef() {
+    parseMarkDef(this);
   }
 
   public abstract parseMark(): void;

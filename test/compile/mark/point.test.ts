@@ -7,7 +7,7 @@ import {Encoding} from '../../../src/encoding';
 import {defaultMarkConfig} from '../../../src/mark';
 import {UnitSpec} from '../../../src/spec';
 import {extend} from '../../../src/util';
-import {parseUnitModelWithScale} from '../../util';
+import {parseUnitModelWithScaleAndMarkDef} from '../../util';
 
 describe('Mark: Point', function() {
 
@@ -26,7 +26,7 @@ describe('Mark: Point', function() {
   }
 
   describe('with x', function() {
-    const model = parseUnitModelWithScale({
+    const model = parseUnitModelWithScaleAndMarkDef({
       "mark": "point",
       "encoding": {"x": {"field": "year", "type": "ordinal"}},
       "data": {"url": "data/barley.json"}
@@ -46,7 +46,7 @@ describe('Mark: Point', function() {
   describe('with stacked x', function() {
     // This is a simplified example for stacked point.
     // In reality this will be used as stacked's overlayed marker
-    const model = parseUnitModelWithScale({
+    const model = parseUnitModelWithScaleAndMarkDef({
       "mark": "point",
       "encoding": {
         "x": {"aggregate": "sum", "field": "a", "type": "quantitative"},
@@ -64,7 +64,7 @@ describe('Mark: Point', function() {
   });
 
   describe('with y', function() {
-    const model = parseUnitModelWithScale({
+    const model = parseUnitModelWithScaleAndMarkDef({
       "mark": "point",
       "encoding": {"y": {"field": "year", "type": "ordinal"}},
       "data": {"url": "data/barley.json"}
@@ -84,7 +84,7 @@ describe('Mark: Point', function() {
   describe('with stacked y', function() {
     // This is a simplified example for stacked point.
     // In reality this will be used as stacked's overlayed marker
-    const model = parseUnitModelWithScale({
+    const model = parseUnitModelWithScaleAndMarkDef({
       "mark": "point",
       "encoding": {
         "y": {"aggregate": "sum", "field": "a", "type": "quantitative"},
@@ -102,7 +102,7 @@ describe('Mark: Point', function() {
   });
 
   describe('with x and y', function() {
-    const model = parseUnitModelWithScale(pointXY());
+    const model = parseUnitModelWithScaleAndMarkDef(pointXY());
     const props = point.encodeEntry(model);
 
     it('should scale on x', function() {
@@ -121,7 +121,7 @@ describe('Mark: Point', function() {
 
   describe('with band x and quantitative y', () => {
     it('should offset band position by half band', () => {
-      const model = parseUnitModelWithScale({
+      const model = parseUnitModelWithScaleAndMarkDef({
         "data": {"url": "data/barley.json"},
         "mark": "point",
         "encoding":{
@@ -135,7 +135,7 @@ describe('Mark: Point', function() {
   });
 
   describe('with x, y, size', function () {
-    const model = parseUnitModelWithScale(pointXY({
+    const model = parseUnitModelWithScaleAndMarkDef(pointXY({
       "size": {"aggregate": "count", "type": "quantitative"}
     }));
     const props = point.encodeEntry(model);
@@ -146,7 +146,7 @@ describe('Mark: Point', function() {
   });
 
   describe('with x, y, color', function () {
-    const model = parseUnitModelWithScale(pointXY({
+    const model = parseUnitModelWithScaleAndMarkDef(pointXY({
       "color": {"field": "yield", "type": "quantitative"}
     }));
     const props = point.encodeEntry(model);
@@ -157,7 +157,7 @@ describe('Mark: Point', function() {
   });
 
   describe('with x, y, shape', function () {
-    const model = parseUnitModelWithScale(pointXY({
+    const model = parseUnitModelWithScaleAndMarkDef(pointXY({
       "shape": {"field": "site", "type": "nominal"}
     }));
     const props = point.encodeEntry(model);
@@ -168,7 +168,7 @@ describe('Mark: Point', function() {
   });
 
   describe('with constant color, shape, and size', function() {
-    const model = parseUnitModelWithScale(pointXY({
+    const model = parseUnitModelWithScaleAndMarkDef(pointXY({
       "shape": {"value": "circle"},
       "color": {"value": "red"},
       "size": {"value": 23}
@@ -183,7 +183,7 @@ describe('Mark: Point', function() {
 
   describe('with configs', function() {
     it('should apply color from mark-specific config over general mark config', function() {
-      const model = parseUnitModelWithScale({
+      const model = parseUnitModelWithScaleAndMarkDef({
         "mark": "point",
         "encoding": {
           "x": {"field": "Horsepower","type": "quantitative"},
@@ -196,7 +196,7 @@ describe('Mark: Point', function() {
     });
 
     it('should apply color config and not apply stroke config', function() {
-      const model = parseUnitModelWithScale({
+      const model = parseUnitModelWithScaleAndMarkDef({
         "mark": "point",
         "encoding": {
           "x": {"field": "Horsepower","type": "quantitative"},
@@ -209,7 +209,7 @@ describe('Mark: Point', function() {
     });
 
     it('should not apply stroke config but instead output default color', function() {
-      const model = parseUnitModelWithScale({
+      const model = parseUnitModelWithScaleAndMarkDef({
         "mark": "point",
         "encoding": {
           "x": {"field": "Horsepower","type": "quantitative"},
@@ -225,7 +225,7 @@ describe('Mark: Point', function() {
 
 describe('Mark: Square', function() {
   it('should have correct shape', function() {
-    const model = parseUnitModelWithScale({
+    const model = parseUnitModelWithScaleAndMarkDef({
       "mark": "square",
       "encoding": {
         "color": {"value": "blue"}
@@ -237,7 +237,7 @@ describe('Mark: Square', function() {
   });
 
   it('should be filled by default', function() {
-    const model = parseUnitModelWithScale({
+    const model = parseUnitModelWithScaleAndMarkDef({
       "mark": "square",
       "encoding": {
         "color": {"value": "blue"}
@@ -249,7 +249,7 @@ describe('Mark: Square', function() {
   });
 
   it('with config.mark.filled:false should have transparent fill', function() {
-    const model = parseUnitModelWithScale({
+    const model = parseUnitModelWithScaleAndMarkDef({
       "mark": "square",
       "encoding": {
         "color": {"value": "blue"}
@@ -269,7 +269,7 @@ describe('Mark: Square', function() {
 });
 
 describe('Mark: Circle', function() {
-  const model = parseUnitModelWithScale({
+  const model = parseUnitModelWithScaleAndMarkDef({
     "mark": "circle",
     "encoding": {
       "color": {"value": "blue"}
@@ -286,7 +286,7 @@ describe('Mark: Circle', function() {
   });
 
   it('with config.mark.filled:false should have transparent fill', function() {
-    const filledCircleModel = parseUnitModelWithScale({
+    const filledCircleModel = parseUnitModelWithScaleAndMarkDef({
       "mark": "circle",
       "encoding": {
         "color": {"value": "blue"}
