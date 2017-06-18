@@ -2,7 +2,6 @@ import {buildModel} from '../src/compile/common';
 import {ConcatModel} from '../src/compile/concat';
 import {FacetModel} from '../src/compile/facet';
 import {LayerModel} from '../src/compile/layer';
-import {normalizeMarkDef} from '../src/compile/mark/init';
 import {parseMarkDef} from '../src/compile/mark/mark';
 import {Model} from '../src/compile/model';
 import {RepeatModel} from '../src/compile/repeat';

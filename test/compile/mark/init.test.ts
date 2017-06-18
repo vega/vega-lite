@@ -3,7 +3,6 @@
 import * as log from '../../../src/log';
 
 import {assert} from 'chai';
-import {normalizeMarkDef} from '../../../src/compile/mark/init';
 import {BAR} from '../../../src/mark';
 import {normalize, TopLevel, UnitSpec} from '../../../src/spec';
 import {parseUnitModelWithScaleAndMarkDef} from '../../util';

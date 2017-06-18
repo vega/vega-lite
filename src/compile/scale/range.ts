@@ -71,7 +71,7 @@ function getXYRangeStep(model: UnitModel) {
  * Return mixins that includes one of the range properties (range, rangeStep, scheme).
  */
 export function parseRangeForChannel(
-    channel: Channel, scaleType: ScaleType, type: Type, specifiedScale: Split<Scale>, config: Config,
+    channel: Channel, scaleType: ScaleType, type: Type, specifiedScale: Scale, config: Config,
     zero: boolean, mark: Mark, topLevelSize: number | undefined, xyRangeSteps: number[]
   ): Explicit<VgRange> {
 
@@ -80,7 +80,7 @@ export function parseRangeForChannel(
   // Check if any of the range properties is specified.
   // If so, check if it is compatible and make sure that we only output one of the properties
   for (const property of RANGE_PROPERTIES) {
-    if (specifiedScale.get(property) !== undefined) {
+    if (specifiedScale[property] !== undefined) {
       const supportedByScaleType = scaleTypeSupportProperty(scaleType, property);
       const channelIncompatability = channelScalePropertyIncompatability(channel, property);
       if (!supportedByScaleType) {
@@ -90,12 +90,12 @@ export function parseRangeForChannel(
       } else {
         switch (property) {
           case 'range':
-            return makeImplicit(specifiedScale.get(property));
+            return makeImplicit(specifiedScale[property]);
           case 'scheme':
-            return makeImplicit(parseScheme(specifiedScale.get(property)));
+            return makeImplicit(parseScheme(specifiedScale[property]));
           case 'rangeStep':
             if (topLevelSize === undefined) {
-              const rangeStep = specifiedScale.get(property);
+              const rangeStep = specifiedScale[property];
               if (rangeStep !== null) {
                 return makeImplicit({step: rangeStep});
               } else {

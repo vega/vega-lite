@@ -3,7 +3,7 @@ import {assert} from 'chai';
 import * as log from '../../../src/log';
 
 import {CHANNELS, COLUMN, rangeType, ROW, X, Y} from '../../../src/channel';
-import scaleType from '../../../src/compile/scale/type';
+import {scaleType} from '../../../src/compile/scale/type';
 import {defaultConfig} from '../../../src/config';
 import {PRIMITIVE_MARKS} from '../../../src/mark';
 import {ScaleType} from '../../../src/scale';

@@ -20,4 +20,4 @@ export class ScaleComponent extends Split<Partial<VgScale>> {
 
 export type ScaleComponentIndex = {[P in ScaleChannel]?: ScaleComponent};
 
-export type ScaleIndex = {[P in ScaleChannel]?: Split<Scale>};
+export type ScaleIndex = {[P in ScaleChannel]?: Scale};

@@ -1,6 +1,6 @@
 import {isArray} from 'vega-util';
-import {LEVEL_OF_DETAIL_CHANNELS} from '../../channel';
 import {X, Y} from '../../channel';
+import {LEVEL_OF_DETAIL_CHANNELS} from '../../channel';
 import {MAIN} from '../../data';
 import {field, getFieldDef} from '../../fielddef';
 import {AREA, LINE} from '../../mark';
@@ -36,7 +36,7 @@ const markCompiler: {[type: string]: MarkCompiler} = {
 
 export function parseMarkDef(model: Model) {
   if (model instanceof UnitModel) {
-    normalizeMarkDef(model.markDef, model.encoding, model.scales, model.config);
+    normalizeMarkDef(model.markDef, model.encoding, model.component.scales, model.config);
   } else {
     for (const child of model.children) {
       parseMarkDef(child);

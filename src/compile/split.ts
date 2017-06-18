@@ -51,12 +51,18 @@ export class Split<T extends Object> {
     return this;
   }
 
-  public copyKeyFrom<S, K extends keyof (T|S)>(key: K, s: Split<S>) {
+  public copyKeyFromSplit<S, K extends keyof (T|S)>(key: K, s: Split<S>) {
     // Explicit has higher precedence
     if (s.explicit[key] !== undefined) {
       this.set(key, s.explicit[key], true);
     } else if (s.implicit[key] !== undefined) {
       this.set(key, s.implicit[key], false);
+    }
+  }
+  public copyKeyFromObject<S, K extends keyof (T|S)>(key: K, s: S) {
+    // Explicit has higher precedence
+    if (s[key] !== undefined) {
+      this.set(key, s[key], true);
     }
   }
 

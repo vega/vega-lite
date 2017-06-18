@@ -31,7 +31,7 @@ function parseUnitScaleProperty(model: UnitModel, property: keyof (Scale | VgSca
     const fieldDef = model.fieldDef(channel);
     const config = model.config;
 
-    const specifiedValue = specifiedScale.get(property);
+    const specifiedValue = specifiedScale[property];
     const sType = mergedScaleCmpt.get('type');
 
     const supportedByScaleType = scaleTypeSupportProperty(sType, property);
@@ -47,9 +47,8 @@ function parseUnitScaleProperty(model: UnitModel, property: keyof (Scale | VgSca
     }
     if (supportedByScaleType && channelIncompatability === undefined) {
       if (specifiedValue !== undefined) {
-        // copyKeyFrom ensure type safety
-        // FIXME: specifiedScale will become Scale, not Split<Scale>
-        localScaleCmpt.copyKeyFrom(property, specifiedScale);
+        // copyKeyFromObject ensure type safety
+        localScaleCmpt.copyKeyFromObject(property, specifiedScale);
       } else {
         const value = getDefaultValue(property, specifiedScale, mergedScaleCmpt, channel, fieldDef, config.scale);
         if (value !== undefined) {
@@ -61,7 +60,7 @@ function parseUnitScaleProperty(model: UnitModel, property: keyof (Scale | VgSca
   });
 }
 
-function getDefaultValue(property: keyof Scale, scale: Split<Scale>, scaleCmpt: ScaleComponent, channel: Channel, fieldDef: FieldDef<string>, scaleConfig: ScaleConfig) {
+function getDefaultValue(property: keyof Scale, scale: Scale, scaleCmpt: ScaleComponent, channel: Channel, fieldDef: FieldDef<string>, scaleConfig: ScaleConfig) {
 
   // If we have default rule-base, determine default value first
   switch (property) {
@@ -76,7 +75,7 @@ function getDefaultValue(property: keyof Scale, scale: Split<Scale>, scaleCmpt: 
     case 'round':
       return round(channel, scaleConfig);
     case 'zero':
-      return zero(channel, fieldDef, !!scale.get('domain'));
+      return zero(channel, fieldDef, !!scale.domain);
   }
   // Otherwise, use scale config
   return scaleConfig[property];

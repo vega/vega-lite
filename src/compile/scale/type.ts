@@ -17,7 +17,7 @@ export type RangeType = 'continuous' | 'discrete' | 'flexible' | undefined;
  * or determine default type if type is unspecified or inappropriate.
  */
 // NOTE: CompassQL uses this method.
-export default function type(
+export function scaleType(
   specifiedType: ScaleType, channel: Channel, fieldDef: FieldDef<string>, mark: Mark,
   specifiedRangeStep: number, scaleConfig: ScaleConfig): ScaleType {
 

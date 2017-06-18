@@ -28,7 +28,6 @@ import {parseMark} from './mark/mark';
 import {Model, ModelWithField} from './model';
 import {RepeaterValue, replaceRepeaterInEncoding} from './repeat';
 import {ScaleIndex} from './scale/component';
-import initScale from './scale/init';
 import {assembleTopLevelSignals, assembleUnitSelectionData, assembleUnitSelectionMarks, assembleUnitSelectionSignals, parseUnitSelection} from './selection/selection';
 import {Split} from './split';
 
@@ -100,7 +99,7 @@ export class UnitModel extends ModelWithField {
    */
   public scaleDomain(channel: ScaleChannel): Domain {
     const scale = this.scales[channel];
-    return scale ? scale.get('domain') : undefined;
+    return scale ? scale.domain : undefined;
   }
 
   public hasDiscreteDomain(channel: Channel) {
@@ -160,9 +159,7 @@ export class UnitModel extends ModelWithField {
       }
 
       if (fieldDef) {
-        const splitScale = scales[channel] = initScale(
-          channel, fieldDef, specifiedScale, this.config, mark
-        );
+        scales[channel] = specifiedScale || {};
       }
       return scales;
     }, {} as ScaleIndex);

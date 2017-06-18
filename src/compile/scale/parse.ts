@@ -1,4 +1,5 @@
-import {ScaleChannel} from '../../channel';
+import {SCALE_CHANNELS, ScaleChannel} from '../../channel';
+import {FieldDef, getFieldDef, isConditionalDef, isFieldDef} from '../../fielddef';
 import {Scale} from '../../scale';
 import {scaleCompatible, ScaleType, scaleTypePrecedence} from '../../scale';
 import {keys} from '../../util';
@@ -10,6 +11,7 @@ import {ScaleComponent, ScaleComponentIndex} from './component';
 import {parseScaleDomain} from './domain';
 import {parseScaleRange} from './range';
 import {parseScaleProperty} from './rules';
+import {scaleType} from './type';
 
 export const NON_TYPE_DOMAIN_RANGE_VEGA_SCALE_PROPERTIES: (keyof (Scale | VgScale))[] = [
   'round',
@@ -43,16 +45,40 @@ export function parseScaleCore(model: Model) {
  * Parse scales for all channels of a model.
  */
 function parseUnitScaleCore(model: UnitModel): ScaleComponentIndex {
-  const scales = model.scales;
+  const {encoding, config} = model;
+  const mark = model.mark();
 
-  return keys(scales)
-    .reduce((scaleComponents: ScaleComponentIndex, channel: ScaleChannel) => {
+  return SCALE_CHANNELS.reduce((scaleComponents: ScaleComponentIndex, channel: ScaleChannel) => {
+    let fieldDef: FieldDef<string>;
+    let specifiedScale: Scale = {};
+
+    const channelDef = encoding[channel];
+
+    if (isFieldDef(channelDef)) {
+      fieldDef = channelDef;
+      specifiedScale = channelDef.scale || {};
+    } else if (isConditionalDef(channelDef) && isFieldDef(channelDef.condition)) {
+      fieldDef = channelDef.condition;
+      specifiedScale = channelDef.condition.scale || {};
+    } else if (channel === 'x') {
+      fieldDef = getFieldDef(encoding.x2);
+    } else if (channel === 'y') {
+      fieldDef = getFieldDef(encoding.y2);
+    }
+
+    if (fieldDef) {
+      const specifiedScaleType = specifiedScale.type;
+      const sType = scaleType(
+        specifiedScale.type, channel, fieldDef, mark,
+        specifiedScale.rangeStep, config.scale
+      );
       scaleComponents[channel] = new ScaleComponent(
         model.scaleName(channel + '', true),
-        scales[channel].getWithExplicit('type')
+        {value: sType, explicit: specifiedScaleType === sType}
       );
-      return scaleComponents;
-    }, {});
+    }
+    return scaleComponents;
+  }, {});
 }
 
 function parseNonUnitScaleCore(model: Model) {

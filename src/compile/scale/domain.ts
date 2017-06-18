@@ -41,7 +41,7 @@ function parseUnitScaleDomain(model: UnitModel) {
 
   keys(localScaleComponents).forEach((channel: ScaleChannel) => {
     const specifiedScale = scales[channel];
-    const specifiedDomain = specifiedScale ? specifiedScale.get('domain') : undefined;
+    const specifiedDomain = specifiedScale ? specifiedScale.domain : undefined;
 
     const hasSpecifiedDomain = specifiedDomain && !isSelectionDomain(specifiedDomain);
 
@@ -134,7 +134,10 @@ export function parseDomainForChannel(model: UnitModel, channel: ScaleChannel): 
 
   const domain = normalizeUnaggregatedDomain(model.scaleDomain(channel), model.fieldDef(channel), scaleType, model.config.scale);
   if (domain !== model.scaleDomain(channel)) {
-    model.scales[channel].set('domain', domain, false);
+    model.scales[channel] = {
+      ...model.scales[channel],
+      domain
+    };
   }
 
   // If channel is either X or Y then union them with X2 & Y2 if they exist
