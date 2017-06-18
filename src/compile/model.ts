@@ -15,7 +15,7 @@ import {Dict, extend, vals, varName} from '../util';
 import {VgAxis, VgData, VgEncodeEntry, VgLayout, VgLegend, VgMarkGroup, VgScale, VgSignal, VgSignalRef, VgValueRef} from '../vega.schema';
 import {AxisComponent, AxisComponentIndex} from './axis/component';
 import {DataComponent} from './data/index';
-import {LayoutSizeComponent} from './layout/component';
+import {LayoutSize, LayoutSizeComponent} from './layout/component';
 import {getHeaderGroup, getTitleGroup, HEADER_CHANNELS, HEADER_TYPES, LayoutHeaderComponent} from './layout/header';
 import {parseLayoutSize} from './layout/parse';
 import {LegendComponentIndex} from './legend/component';
@@ -134,10 +134,40 @@ export abstract class Model {
         ancestorParse: parent ? {...parent.component.data.ancestorParse} : {}
       },
       mark: null, scales: null, axes: {x: null, y: null},
-      layoutSize: null,
+      layoutSize: new Split<LayoutSize>(),
       layoutHeaders:{row: {}, column: {}},
       legends: null, selection: null
     };
+  }
+
+  public get width() {
+    /* istanbul ignore else: Condition should not happen -- only for warning in development. */
+    const w = this.component.layoutSize.get('width');
+    if (w !== undefined) {
+      return w;
+    }
+    throw new Error('calling model.width before parseLayoutSize()');
+  }
+
+
+  public get height() {
+    /* istanbul ignore else: Condition should not happen -- only for warning in development. */
+    const h = this.component.layoutSize.get('height');
+    if (h !== undefined) {
+      return h;
+    }
+    throw new Error('calling model.height before parseLayoutSize()');
+  }
+
+  protected initSize(size: LayoutSize) {
+    const {width, height} = size;
+    if (width) {
+      this.component.layoutSize.set('width', width, true);
+    }
+
+    if (height) {
+      this.component.layoutSize.set('height', height, true);
+    }
   }
 
   public parse() {
@@ -148,7 +178,7 @@ export abstract class Model {
     this.parseSelection();
     this.parseAxisAndHeader(); // depends on scale
     this.parseLegend(); // depends on scale, markDef
-    this.parseMarkGroup(); // depends on data name, scale, size, axisGroup, and children's scale, axis, legend and mark.
+    this.parseMarkGroup(); // depends on data name, scale, layoutSize, axisGroup, and children's scale, axis, legend and mark.
   }
 
   public abstract parseData(): void;

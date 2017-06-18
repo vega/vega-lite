@@ -81,7 +81,9 @@ describe('FacetModel', function() {
         }
       });
       model.parseData();
+      model.parseLayoutSize();
       model.parseMarkGroup();
+
 
       assert(model.component.mark[0].from.facet.aggregate.cross);
       assert.deepEqual(model.component.mark[0].sort, {

@@ -3,7 +3,7 @@ import {Config} from '../config';
 import * as log from '../log';
 import {FILL_STROKE_CONFIG} from '../mark';
 import {initLayerResolve, NonspatialResolve, ResolveMapping, SpatialResolve} from '../resolve';
-import {isLayerSpec, isUnitSpec, LayerSpec, UnitSize} from '../spec';
+import {isLayerSpec, isUnitSpec, LayerSpec, LayoutSize} from '../spec';
 import {Dict, flatten, keys, vals} from '../util';
 import {isSignalRefDomain, VgData, VgEncodeEntry, VgLayout, VgScale, VgSignal} from '../vega.schema';
 import {AxisComponentIndex} from './axis/component';
@@ -29,26 +29,28 @@ export class LayerModel extends Model {
 
 
   constructor(spec: LayerSpec, parent: Model, parentGivenName: string,
-    parentUnitSize: UnitSize, repeater: RepeaterValue, config: Config) {
+    parentGivenSize: LayoutSize, repeater: RepeaterValue, config: Config) {
 
     super(
       spec, parent, parentGivenName, config,
       initLayerResolve(spec.resolve || {})
     );
 
-    const unitSize = {
-      ...parentUnitSize,
+    const layoutSize = {
+      ...parentGivenSize,
       ...(spec.width ? {width: spec.width} : {}),
       ...(spec.height ? {height: spec.height} : {})
     };
 
+    this.initSize(layoutSize);
+
     this.children = spec.layer.map((layer, i) => {
       if (isLayerSpec(layer)) {
-        return new LayerModel(layer, this, this.getName('layer_'+i), unitSize, repeater, config);
+        return new LayerModel(layer, this, this.getName('layer_'+i), layoutSize, repeater, config);
       }
 
       if (isUnitSpec(layer)) {
-        return new UnitModel(layer, this, this.getName('layer_'+i), unitSize, repeater, config);
+        return new UnitModel(layer, this, this.getName('layer_'+i), layoutSize, repeater, config);
       }
 
       throw new Error(log.message.INVALID_SPEC);

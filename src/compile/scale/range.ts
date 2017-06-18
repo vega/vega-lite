@@ -39,11 +39,14 @@ function parseUnitScaleRange(model: UnitModel) {
     const specifiedScale = model.specifiedScales[channel];
     const fieldDef = model.fieldDef(channel);
 
-    const topLevelSize = channel === 'x' ? model.width : channel === 'y' ? model.height : undefined;
+    // Read if there is a specified width/height
+    const specifiedSize = channel === 'x' ? model.component.layoutSize.get('width') :
+      channel === 'y' ? model.component.layoutSize.get('height') : undefined;
+
     const xyRangeSteps = getXYRangeStep(model);
 
     const rangeWithExplicit = parseRangeForChannel(
-      channel, localScaleCmpt.get('type'), fieldDef.type, specifiedScale, model.config,  localScaleCmpt.get('zero'), model.mark(), topLevelSize, xyRangeSteps);
+      channel, localScaleCmpt.get('type'), fieldDef.type, specifiedScale, model.config,  localScaleCmpt.get('zero'), model.mark(), specifiedSize, xyRangeSteps);
 
     localScaleCmpt.setWithExplicit('range', rangeWithExplicit);
   });
@@ -72,7 +75,7 @@ function getXYRangeStep(model: UnitModel) {
  */
 export function parseRangeForChannel(
     channel: Channel, scaleType: ScaleType, type: Type, specifiedScale: Scale, config: Config,
-    zero: boolean, mark: Mark, topLevelSize: number | undefined, xyRangeSteps: number[]
+    zero: boolean, mark: Mark, specifiedSize: number | undefined, xyRangeSteps: number[]
   ): Explicit<VgRange> {
 
   let specifiedRangeStepIsNull = false;
@@ -94,7 +97,7 @@ export function parseRangeForChannel(
           case 'scheme':
             return makeImplicit(parseScheme(specifiedScale[property]));
           case 'rangeStep':
-            if (topLevelSize === undefined) {
+            if (specifiedSize === undefined) {
               const rangeStep = specifiedScale[property];
               if (rangeStep !== null) {
                 return makeImplicit({step: rangeStep});
@@ -111,7 +114,7 @@ export function parseRangeForChannel(
   }
   return {
     explicit: false,
-    value: defaultRange(channel, scaleType, type, config, zero, mark, topLevelSize, xyRangeSteps, specifiedRangeStepIsNull)
+    value: defaultRange(channel, scaleType, type, config, zero, mark, specifiedSize, xyRangeSteps, specifiedRangeStepIsNull)
   };
 }
 

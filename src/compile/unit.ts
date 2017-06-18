@@ -9,7 +9,7 @@ import {FILL_STROKE_CONFIG, isMarkDef, Mark, MarkDef, TEXT as TEXT_MARK} from '.
 import {defaultScaleConfig, Domain, hasDiscreteDomain, Scale} from '../scale';
 import {SelectionDef} from '../selection';
 import {SortField, SortOrder} from '../sort';
-import {UnitSize, UnitSpec} from '../spec';
+import {LayoutSize, UnitSpec} from '../spec';
 import {stack, StackProperties} from '../stack';
 import {Dict, duplicate, extend, vals} from '../util';
 import {VgData, VgEncodeEntry, VgLayout, VgScale, VgSignal} from '../vega.schema';
@@ -36,20 +36,6 @@ import {Split} from './split';
  * Internal model of Vega-Lite specification for the compiler.
  */
 export class UnitModel extends ModelWithField {
-  /**
-   * Fixed width for the unit visualization.
-   * If undefined (e.g., for ordinal scale), the width of the
-   * visualization will be calculated dynamically.
-   */
-  public readonly width: number;
-
-  /**
-   * Fixed height for the unit visualization.
-   * If undefined (e.g., for ordinal scale), the height of the
-   * visualization will be calculated dynamically.
-   */
-  public readonly height: number;
-
   public readonly markDef: MarkDef;
   public readonly encoding: Encoding<string>;
 
@@ -65,15 +51,17 @@ export class UnitModel extends ModelWithField {
   public children: Model[] = [];
 
   constructor(spec: UnitSpec, parent: Model, parentGivenName: string,
-    parentUnitSize: UnitSize = {}, repeater: RepeaterValue, config: Config) {
+    parentGivenSize: LayoutSize = {}, repeater: RepeaterValue, config: Config) {
+
     super(spec, parent, parentGivenName, config, {});
+    this.initSize({
+      ...parentGivenSize,
+      ...(spec.width ? {width: spec.width} : {}),
+      ...(spec.height ? {height: spec.height} : {})
+    });
 
     // FIXME(#2041): copy config.facet.cell to config.cell -- this seems incorrect and should be rewritten
     this.initFacetCellConfig();
-
-    // use top-level width / height or ancestor's width / height
-    this.width = spec.width || parentUnitSize.width;
-    this.height = spec.height || parentUnitSize.height;
 
     this.markDef = isMarkDef(spec.mark) ? {...spec.mark} : {type: spec.mark};
     const mark = this.markDef.type;
