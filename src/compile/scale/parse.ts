@@ -1,7 +1,6 @@
 import {SCALE_CHANNELS, ScaleChannel} from '../../channel';
 import {FieldDef, getFieldDef, isConditionalDef, isFieldDef} from '../../fielddef';
-import {Scale} from '../../scale';
-import {scaleCompatible, ScaleType, scaleTypePrecedence} from '../../scale';
+import {Scale, scaleCompatible, ScaleType, scaleTypePrecedence} from '../../scale';
 import {keys} from '../../util';
 import {VgScale} from '../../vega.schema';
 import {Model} from '../model';
@@ -105,7 +104,8 @@ function parseNonUnitScaleCore(model: Model) {
           if (scaleCompatible(scaleType.value, childScaleType.value)) {
             // merge scale component if type are compatible
             scaleTypeWithExplicitIndex[channel] = mergeValuesWithExplicit(
-              scaleType, childScaleType, scaleTypePrecedence
+              scaleType, childScaleType,
+              (st1: ScaleType, st2: ScaleType) => (scaleTypePrecedence(st1) - scaleTypePrecedence(st2))
             );
           } else {
             // Otherwise, mark as conflict and remove from the index so they don't get merged

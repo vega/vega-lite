@@ -102,7 +102,7 @@ export function makeImplicit<T>(value: T): Explicit<T> {
 
 export function mergeValuesWithExplicit<T>(
     v1: Explicit<T>, v2: Explicit<T>,
-    scoringFn?: (v: T) => number
+    compare: (v1: T, v2: T) => number = () => 0
   ) {
   if (v1 === undefined || v1.value === undefined) {
     // For first run
@@ -114,13 +114,12 @@ export function mergeValuesWithExplicit<T>(
   } else if (v2.explicit && !v1.explicit) {
     return v2;
   } else {
-    const score1 = scoringFn ? scoringFn(v1.value) : 0;
-    const score2 = scoringFn ? scoringFn(v2.value) : 0;
 
-    if (score2 > score1) {
-      return v2;
-    } else if (score1 > score2) {
+    const diff = compare(v1.value, v2.value);
+    if (diff > 0) {
       return v1;
+    } else if (diff < 0) {
+      return v2;
     } else {
       // FIXME more warning
       // If equal score, prefer v1.
