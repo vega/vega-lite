@@ -4,7 +4,7 @@ import {assert} from 'chai';
 import {parseUnitModelWithScaleAndLayoutSize} from '../../util';
 
 import {X, Y} from '../../../src/channel';
-import {unitSizeExpr} from '../../../src/compile/layout';
+import {unitSizeExpr} from '../../../src/compile/layout/assemble';
 import * as log from '../../../src/log';
 
 describe('compile/layout', () => {

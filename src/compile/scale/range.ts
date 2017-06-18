@@ -10,7 +10,7 @@ import {Model} from '../model';
 import {Explicit, makeImplicit, Split} from '../split';
 import {UnitModel} from '../unit';
 import {ScaleComponent, ScaleComponentIndex} from './component';
-import {parseNonUnitScaleProperty} from './rules';
+import {parseNonUnitScaleProperty} from './properties';
 
 
 export type RangeMixins = {range: Range} | {rangeStep: number} | {scheme: Scheme};

@@ -9,8 +9,8 @@ import {Explicit, mergeValuesWithExplicit} from '../split';
 import {UnitModel} from '../unit';
 import {ScaleComponent, ScaleComponentIndex} from './component';
 import {parseScaleDomain} from './domain';
+import {parseScaleProperty} from './properties';
 import {parseScaleRange} from './range';
-import {parseScaleProperty} from './rules';
 import {scaleType} from './type';
 
 export const NON_TYPE_DOMAIN_RANGE_VEGA_SCALE_PROPERTIES: (keyof (Scale | VgScale))[] = [

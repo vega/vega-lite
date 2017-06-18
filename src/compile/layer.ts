@@ -10,7 +10,7 @@ import {AxisComponentIndex} from './axis/component';
 import {applyConfig, buildModel} from './common';
 import {assembleData} from './data/assemble';
 import {parseData} from './data/parse';
-import {assembleLayoutLayerSignals} from './layout/index';
+import {assembleLayoutLayerSignals} from './layout/assemble';
 import {moveSharedLegendUp} from './legend/parse';
 import {Model} from './model';
 import {RepeaterValue} from './repeat';
