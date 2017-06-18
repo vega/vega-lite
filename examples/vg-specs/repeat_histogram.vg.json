@@ -365,6 +365,9 @@
                                 "angle": {
                                     "value": 270
                                 },
+                                "align": {
+                                    "value": "right"
+                                },
                                 "baseline": {
                                     "value": "middle"
                                 }
@@ -496,6 +499,9 @@
                                 "angle": {
                                     "value": 270
                                 },
+                                "align": {
+                                    "value": "right"
+                                },
                                 "baseline": {
                                     "value": "middle"
                                 }
@@ -626,6 +632,9 @@
                             "update": {
                                 "angle": {
                                     "value": 270
+                                },
+                                "align": {
+                                    "value": "right"
                                 },
                                 "baseline": {
                                     "value": "middle"
