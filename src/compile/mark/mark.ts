@@ -44,7 +44,7 @@ export function parseMarkDef(model: Model) {
   }
 }
 
-export function parseMark(model: UnitModel): any[] {
+export function parseMarkGroup(model: UnitModel): any[] {
   if (contains([LINE, AREA], model.mark())) {
     return parsePathMark(model);
   } else {

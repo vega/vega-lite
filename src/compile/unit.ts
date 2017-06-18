@@ -24,7 +24,7 @@ import {assembleLayoutUnitSignals} from './layout/index';
 import {LegendIndex} from './legend/component';
 import {parseLegendComponent} from './legend/parse';
 import {initEncoding} from './mark/init';
-import {parseMark} from './mark/mark';
+import {parseMarkGroup} from './mark/mark';
 import {Model, ModelWithField} from './model';
 import {RepeaterValue, replaceRepeaterInEncoding} from './repeat';
 import {ScaleIndex} from './scale/component';
@@ -211,8 +211,8 @@ export class UnitModel extends ModelWithField {
     this.component.selection = parseUnitSelection(this, this.selection);
   }
 
-  public parseMark() {
-    this.component.mark = parseMark(this);
+  public parseMarkGroup() {
+    this.component.mark = parseMarkGroup(this);
   }
 
   public parseAxisAndHeader() {

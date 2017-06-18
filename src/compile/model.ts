@@ -148,7 +148,7 @@ export abstract class Model {
     this.parseSelection();
     this.parseAxisAndHeader(); // depends on scale
     this.parseLegend(); // depends on scale, markDef
-    this.parseMark(); // depends on data name, scale, size, axisGroup, and children's scale, axis, legend and mark.
+    this.parseMarkGroup(); // depends on data name, scale, size, axisGroup, and children's scale, axis, legend and mark.
   }
 
   public abstract parseData(): void;
@@ -168,7 +168,7 @@ export abstract class Model {
     parseMarkDef(this);
   }
 
-  public abstract parseMark(): void;
+  public abstract parseMarkGroup(): void;
 
   public abstract parseAxisAndHeader(): void;
 

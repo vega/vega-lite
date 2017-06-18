@@ -66,7 +66,7 @@ describe('FacetModel', function() {
     });
   });
 
-  describe('parseMark', () => {
+  describe('parseMarkGroup', () => {
     it('should add cross and sort if we facet my multiple dimensions', () => {
       const model = parseFacetModelWithScale({
         facet: {
@@ -81,7 +81,7 @@ describe('FacetModel', function() {
         }
       });
       model.parseData();
-      model.parseMark();
+      model.parseMarkGroup();
 
       assert(model.component.mark[0].from.facet.aggregate.cross);
       assert.deepEqual(model.component.mark[0].sort, {

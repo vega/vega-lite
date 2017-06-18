@@ -51,9 +51,9 @@ export class ConcatModel extends Model {
     }
   }
 
-  public parseMark() {
+  public parseMarkGroup() {
     for (const child of this.children) {
-      child.parseMark();
+      child.parseMarkGroup();
     }
   }
 

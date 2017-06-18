@@ -33,7 +33,7 @@ describe('Layered Selections', function() {
   layers.parseScale();
   layers.parseMarkDef();
   layers.parseSelection();
-  layers.parseMark();
+  layers.parseMarkGroup();
 
   // Selections should augment layered marks together, rather than each
   // mark individually. This ensures correct interleaving of brush and

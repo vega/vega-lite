@@ -2,12 +2,12 @@
 
 import {assert} from 'chai';
 
-import {parseMark} from '../../../src/compile/mark/mark';
+import {parseMarkGroup} from '../../../src/compile/mark/mark';
 import {UnitModel} from '../../../src/compile/unit';
 import {parseFacetModel, parseUnitModelWithScaleAndMarkDef} from '../../util';
 
 describe('Mark', function() {
-  describe('parseMark', function() {
+  describe('parseMarkGroup', function() {
     // PATH
     describe('Multi-series Line', () => {
       it('should have a facet directive and a nested mark group that uses the faceted data.', () => {
@@ -19,7 +19,7 @@ describe('Mark', function() {
             "color": {"field": "symbol", "type": "nominal"}
           }
         });
-        const markGroup = parseMark(model)[0];
+        const markGroup = parseMarkGroup(model)[0];
         assert.equal(markGroup.name, 'pathgroup');
         assert.deepEqual(markGroup.from, {
           facet: {
@@ -45,7 +45,7 @@ describe('Mark', function() {
             "y": {"field": "price", "type": "quantitative"}
           }
         });
-        const markGroup = parseMark(model)[0];
+        const markGroup = parseMarkGroup(model)[0];
         assert.equal(markGroup.name, 'marks');
         assert.equal(markGroup.type, 'line');
         assert.equal(markGroup.from.data, 'main');
@@ -63,7 +63,7 @@ describe('Mark', function() {
             "color": {"type": "ordinal", "field": "Effect__Amount_of_damage"}
           }
         });
-        const markGroup = parseMark(model);
+        const markGroup = parseMarkGroup(model);
         assert.equal(markGroup[0].from.data, 'main');
         assert.equal(markGroup[0].role, 'bar');
       });
@@ -86,7 +86,7 @@ describe('Mark', function() {
         });
         model.parseScale();
 
-        const markGroup = parseMark(model.child as UnitModel);
+        const markGroup = parseMarkGroup(model.child as UnitModel);
         assert.equal(markGroup[0].from.data, 'child_main');
       });
     });
@@ -100,7 +100,7 @@ describe('Mark', function() {
             "y": {"bin": true, "type": "quantitative", "field": "Cost__Total_$"}
           }
         });
-        const markGroup = parseMark(model);
+        const markGroup = parseMarkGroup(model);
         assert.equal(markGroup[0].from.data, 'main');
       });
     });
@@ -115,7 +115,7 @@ describe('Mark', function() {
             "tooltip": {"value": "foo"}
           }
         });
-        const markGroup = parseMark(model);
+        const markGroup = parseMarkGroup(model);
         assert.equal(markGroup[0].encode.update.tooltip.value, 'foo');
       });
     });

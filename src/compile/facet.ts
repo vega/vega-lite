@@ -97,8 +97,8 @@ export class FacetModel extends ModelWithField {
     this.component.selection = this.child.component.selection;
   }
 
-  public parseMark() {
-    this.child.parseMark();
+  public parseMarkGroup() {
+    this.child.parseMarkGroup();
 
     // if we facet by two dimensions, we need to add a cross operator to the aggregation
     // so that we create all groups
