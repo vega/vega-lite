@@ -4,13 +4,13 @@ import {assert} from 'chai';
 
 import {X, Y} from '../../../src/channel';
 import * as axisParse from '../../../src/compile/axis/parse';
-import {parseUnitModel} from '../../util';
+import {parseUnitModelWithScale} from '../../util';
 
 describe('Axis', function() {
   // TODO: move this to model.test.ts
   describe('= true', function() {
     it('should produce default properties for axis', function() {
-      const model1 = parseUnitModel({
+      const model1 = parseUnitModelWithScale({
         "mark": "bar",
         "encoding": {
           "y": {"type": "quantitative", "field": 'US_Gross', "aggregate": "sum", "axis": true}
@@ -18,7 +18,7 @@ describe('Axis', function() {
         "data": {"url": "data/movies.json"}
       });
 
-      const model2 = parseUnitModel({
+      const model2 = parseUnitModelWithScale({
         "mark": "bar",
         "encoding": {
           "y": {"type": "quantitative", "field": 'US_Gross', "aggregate": "sum"}
@@ -30,7 +30,7 @@ describe('Axis', function() {
   });
   describe('parseAxisComponent', function() {
     it('should produce Vega grid axis objects for both main axis and for grid axis)', function() {
-      const model = parseUnitModel({
+      const model = parseUnitModelWithScale({
         mark: "point",
         encoding: {
           x: {
@@ -48,7 +48,7 @@ describe('Axis', function() {
     });
 
     it('should produce Vega grid axis objects for only main axis if grid is disabled)', function() {
-      const model = parseUnitModel({
+      const model = parseUnitModelWithScale({
         mark: "point",
         encoding: {
           x: {
@@ -66,7 +66,7 @@ describe('Axis', function() {
 
   describe('parseGridAxis', function() {
     it('should produce a Vega grid axis object with correct type, scale and grid properties', function() {
-      const model = parseUnitModel({
+      const model = parseUnitModelWithScale({
         mark: "point",
         encoding: {
           x: {
@@ -85,7 +85,7 @@ describe('Axis', function() {
 
   describe('parseMainAxis', function() {
     it('should produce a Vega axis object with correct type and scale', function() {
-      const model = parseUnitModel({
+      const model = parseUnitModelWithScale({
         mark: "point",
         encoding: {
           x: {field: "a", type: "quantitative"}

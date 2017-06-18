@@ -1,5 +1,5 @@
 import {Axis} from '../axis';
-import {Channel, NONSPATIAL_SCALE_CHANNELS, SCALE_CHANNELS, ScaleChannel, SingleDefChannel, UNIT_CHANNELS, X, X2, Y, Y2} from '../channel';
+import {Channel, isScaleChannel, NONSPATIAL_SCALE_CHANNELS, SCALE_CHANNELS, ScaleChannel, SingleDefChannel, UNIT_CHANNELS, X, X2, Y, Y2} from '../channel';
 import {CellConfig, Config} from '../config';
 import * as vlEncoding from '../encoding'; // TODO: remove
 import {Encoding, normalizeEncoding} from '../encoding';
@@ -94,10 +94,6 @@ export class UnitModel extends ModelWithField {
     this.selection = spec.selection;
   }
 
-  protected scale(channel: Channel): Split<Scale> {
-    return this.scales[channel];
-  }
-
   /**
    * Return specified Vega-lite scale domain for a particular channel
    * @param channel
@@ -107,9 +103,12 @@ export class UnitModel extends ModelWithField {
     return scale ? scale.get('domain') : undefined;
   }
 
-  public hasDiscreteDomain(channel: ScaleChannel) {
-    const scale = this.scale(channel);
-    return scale && hasDiscreteDomain(scale.get('type'));
+  public hasDiscreteDomain(channel: Channel) {
+    if (isScaleChannel(channel)) {
+      const scaleCmpt = this.getScaleComponent(channel);
+      return scaleCmpt && hasDiscreteDomain(scaleCmpt.get('type'));
+    }
+    return false;
   }
 
 
@@ -324,7 +323,7 @@ export class UnitModel extends ModelWithField {
 
     if (fieldDef.bin) { // bin has default suffix that depends on scaleType
       opt = extend({
-        binSuffix: hasDiscreteDomain(this.scale(channel).get('type')) ? 'range' : 'start'
+        binSuffix: this.hasDiscreteDomain(channel) ? 'range' : 'start'
       }, opt);
     }
 

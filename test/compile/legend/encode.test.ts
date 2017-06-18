@@ -5,12 +5,12 @@ import {COLOR, SHAPE} from '../../../src/channel';
 import * as encode from '../../../src/compile/legend/encode';
 import {TimeUnit} from '../../../src/timeunit';
 import {TEMPORAL} from '../../../src/type';
-import {parseUnitModel, parseUnitModelWithScale} from '../../util';
+import {parseUnitModelWithScale} from '../../util';
 
 describe('compile/legend', function() {
   describe('encode.symbols', function() {
     it('should not have strokeDash and strokeDashOffset', function() {
-      const symbol = encode.symbols({field: 'a', type: 'nominal'}, {}, parseUnitModel({
+      const symbol = encode.symbols({field: 'a', type: 'nominal'}, {}, parseUnitModelWithScale({
           mark: "point",
           encoding: {
             x: {field: "a", type: "nominal"},
@@ -22,7 +22,7 @@ describe('compile/legend', function() {
     });
 
     it('should return not override size of the symbol for shape channel', function() {
-      const symbol = encode.symbols({field: 'a', type: 'nominal'}, {}, parseUnitModel({
+      const symbol = encode.symbols({field: 'a', type: 'nominal'}, {}, parseUnitModelWithScale({
           mark: "point",
           encoding: {
             x: {field: "a", type: "nominal"},
@@ -32,7 +32,7 @@ describe('compile/legend', function() {
     });
 
     it('should return specific symbols.shape.value if user has specified', function() {
-      const symbol = encode.symbols({field: 'a', type: 'nominal'}, {}, parseUnitModel({
+      const symbol = encode.symbols({field: 'a', type: 'nominal'}, {}, parseUnitModelWithScale({
           mark: "point",
           encoding: {
             x: {field: "a", type: "nominal"},

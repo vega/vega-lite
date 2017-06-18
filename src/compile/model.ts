@@ -1,5 +1,5 @@
 import {Axis} from '../axis';
-import {Channel, COLUMN, isChannel, NonspatialScaleChannel, ScaleChannel, SingleDefChannel, X} from '../channel';
+import {Channel, COLUMN, isChannel, isScaleChannel, NonspatialScaleChannel, ScaleChannel, SingleDefChannel, X} from '../channel';
 import {CellConfig, Config} from '../config';
 import {Data, DataSourceType, MAIN, RAW} from '../data';
 import {forEach, reduce} from '../encoding';
@@ -133,7 +133,7 @@ export abstract class Model {
         outputNodeRefCounts: parent ? parent.component.data.outputNodeRefCounts : {},
         ancestorParse: parent ? {...parent.component.data.ancestorParse} : {}
       },
-      mark: null, scales: {}, axes: {x: null, y: null},
+      mark: null, scales: null, axes: {x: null, y: null},
       layoutSize: null,
       layoutHeaders:{row: {}, column: {}},
       legends: null, selection: null
@@ -337,11 +337,6 @@ export abstract class Model {
     this.scaleNameMap.rename(oldName, newName);
   }
 
-  // FIXME: remove this, but currently the scaleName() method below depends on this.
-  protected scale(channel: Channel): Split<Scale> {
-    return null;
-  }
-
   /**
    * @return scale name for a given channel after the scale has been parsed and named.
    */
@@ -354,10 +349,10 @@ export abstract class Model {
     }
 
     // If there is a scale for the channel, it should either
-    // be in the _scale mapping or exist in the name map
+    // be in the scale component or exist in the name map
     if (
-        // in the scale map (the scale is not merged by its parent)
-        (this.scale && isChannel(originalScaleName) && this.scale(originalScaleName)) ||
+        // If there is a scale for the channel, there should be a local scale component for it
+        isChannel(originalScaleName) && isScaleChannel(originalScaleName) && this.component.scales[originalScaleName] ||
         // in the scale name map (the the scale get merged by its parent)
         this.scaleNameMap.has(this.getName(originalScaleName))
       ) {
@@ -389,6 +384,11 @@ export abstract class Model {
    * Traverse a model's hierarchy to get the scale component for a particular channel.
    */
   public getScaleComponent(channel: ScaleChannel): ScaleComponent {
+    /* istanbul ignore next: This is warning for debugging test */
+    if (!this.component.scales) {
+      throw new Error('getScaleComponent cannot be called before parseScale().  Make sure you have called parseScale or use parseUnitModelWithScale().');
+    }
+
     const localScaleComponent = this.component.scales[channel];
     if (localScaleComponent && !localScaleComponent.merged) {
       return localScaleComponent;
@@ -411,6 +411,7 @@ export abstract class ModelWithField extends Model {
   /** Get "field" reference for vega */
   public field(channel: SingleDefChannel, opt: FieldRefOption = {}) {
     const fieldDef = this.fieldDef(channel);
+
 
     if (fieldDef.bin) { // bin has default suffix that depends on scaleType
       opt = extend({

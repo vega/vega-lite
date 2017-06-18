@@ -18,6 +18,7 @@ describe('compile/layout/header', () => {
         }
       }
     });
+    model.parseScale();
     model.parseAxisAndHeader();
 
     describe('for column', () => {

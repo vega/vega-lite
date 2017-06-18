@@ -93,7 +93,7 @@ describe('compile/data/formatparse', () => {
       assert.deepEqual(parse(model), {
         'a': 'number'
       });
-
+      model.parseScale();
       model.parseData();
 
       assert.deepEqual(model.child.component.data.ancestorParse, {

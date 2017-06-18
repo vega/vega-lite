@@ -54,6 +54,12 @@ export function parseFacetModel(spec: TopLevel<FacetSpec>) {
   return new FacetModel(spec, null, '', undefined, initConfig(spec.config));
 }
 
+export function parseFacetModelWithScale(spec: TopLevel<FacetSpec>) {
+  const model = parseFacetModel(spec);
+  model.parseScale();
+  return model;
+}
+
 export function parseRepeatModel(spec: TopLevel<RepeatSpec>) {
   return new RepeatModel(spec, null, '', undefined, initConfig(spec.config));
 }

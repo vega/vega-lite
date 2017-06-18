@@ -13,7 +13,7 @@ import * as log from '../../src/log';
 import {POINT} from '../../src/mark';
 import {ORDINAL} from '../../src/type';
 import {VgLayout} from '../../src/vega.schema';
-import {parseFacetModel} from '../util';
+import {parseFacetModel, parseFacetModelWithScale} from '../util';
 
 describe('FacetModel', function() {
   describe('initFacet', () => {
@@ -68,7 +68,7 @@ describe('FacetModel', function() {
 
   describe('parseMark', () => {
     it('should add cross and sort if we facet my multiple dimensions', () => {
-      const model = parseFacetModel({
+      const model = parseFacetModelWithScale({
         facet: {
           row: {field: 'a', type: 'ordinal'},
           column: {field: 'b', type: 'ordinal'}
@@ -80,8 +80,6 @@ describe('FacetModel', function() {
           }
         }
       });
-
-      model.parseScale();
       model.parseData();
       model.parseMark();
 
@@ -101,7 +99,7 @@ describe('FacetModel', function() {
 
   describe('parseScale', () => {
     it('should correctly set scale component for a model', () => {
-      const model = parseFacetModel({
+      const model = parseFacetModelWithScale({
         facet: {
           row: {field: 'a', type: 'quantitative'}
         },
@@ -113,13 +111,12 @@ describe('FacetModel', function() {
         }
       });
 
-      model.parseScale();
 
       assert(model.component.scales['x']);
     });
 
     it('should create independent scales if resolve is set to independent', () => {
-      const model = parseFacetModel({
+      const model = parseFacetModelWithScale({
         facet: {
           row: {field: 'a', type: 'quantitative'}
         },
@@ -136,15 +133,13 @@ describe('FacetModel', function() {
         }
       });
 
-      model.parseScale();
-
       assert(!model.component.scales['x']);
     });
   });
 
   describe('assembleLayout', () => {
     it('returns a layout with only one column', () => {
-      const model = parseFacetModel({
+      const model = parseFacetModelWithScale({
         facet: {
           column: {field: 'a', type: 'quantitative'}
         },
@@ -175,7 +170,7 @@ describe('FacetModel', function() {
 
 
     it('applies text format to the fieldref of a temporal field', () => {
-      const model = parseFacetModel({
+      const model = parseFacetModelWithScale({
         facet: {
           column: {timeUnit:'year', field: 'date', type: 'ordinal'}
         },
@@ -192,7 +187,7 @@ describe('FacetModel', function() {
     });
 
     it('applies number format for fieldref of a quantitative field', () => {
-      const model = parseFacetModel({
+      const model = parseFacetModelWithScale({
         facet: {
           column: {field: 'a', type: 'quantitative', format: 'd'}
         },
@@ -209,7 +204,7 @@ describe('FacetModel', function() {
     });
 
     it('ignores number format for fieldref of a binned field', () => {
-      const model = parseFacetModel({
+      const model = parseFacetModelWithScale({
         facet: {
           column: {bin: true, field: 'a', type: 'quantitative'}
         },
