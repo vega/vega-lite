@@ -25,7 +25,7 @@ function parseUnitScaleProperty(model: UnitModel, property: keyof (Scale | VgSca
   const localScaleComponents: ScaleComponentIndex = model.component.scales;
 
   keys(localScaleComponents).forEach((channel: ScaleChannel) => {
-    const specifiedScale = model.scales[channel];
+    const specifiedScale = model.specifiedScales[channel];
     const localScaleCmpt = localScaleComponents[channel];
     const mergedScaleCmpt = model.getScaleComponent(channel);
     const fieldDef = model.fieldDef(channel);

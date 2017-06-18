@@ -36,7 +36,7 @@ export function parseScaleDomain(model: Model) {
 }
 
 function parseUnitScaleDomain(model: UnitModel) {
-  const scales = model.scales;
+  const scales = model.specifiedScales;
   const localScaleComponents: ScaleComponentIndex = model.component.scales;
 
   keys(localScaleComponents).forEach((channel: ScaleChannel) => {
@@ -134,8 +134,8 @@ export function parseDomainForChannel(model: UnitModel, channel: ScaleChannel): 
 
   const domain = normalizeUnaggregatedDomain(model.scaleDomain(channel), model.fieldDef(channel), scaleType, model.config.scale);
   if (domain !== model.scaleDomain(channel)) {
-    model.scales[channel] = {
-      ...model.scales[channel],
+    model.specifiedScales[channel] = {
+      ...model.specifiedScales[channel],
       domain
     };
   }

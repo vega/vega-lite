@@ -53,13 +53,13 @@ export class UnitModel extends ModelWithField {
   public readonly markDef: MarkDef;
   public readonly encoding: Encoding<string>;
 
-  public readonly scales: ScaleIndex = {};
+  public readonly specifiedScales: ScaleIndex = {};
 
   public readonly stack: StackProperties;
 
-  protected axes: AxisIndex = {};
+  protected specifiedAxes: AxisIndex = {};
 
-  protected legends: LegendIndex = {};
+  protected specifiedLegends: LegendIndex = {};
 
   public readonly selection: Dict<SelectionDef> = {};
   public children: Model[] = [];
@@ -81,13 +81,13 @@ export class UnitModel extends ModelWithField {
 
     // calculate stack properties
     this.stack = stack(mark, encoding, this.config.stack);
-    this.scales = this.initScales(mark, encoding);
+    this.specifiedScales = this.initScales(mark, encoding);
 
     // FIXME: this one seems out of place!
     this.encoding = initEncoding(mark, encoding, this.stack, this.config);
 
-    this.axes = this.initAxes(encoding);
-    this.legends = this.initLegend(encoding);
+    this.specifiedAxes = this.initAxes(encoding);
+    this.specifiedLegends = this.initLegend(encoding);
 
     // Selections will be initialized upon parse.
     this.selection = spec.selection;
@@ -98,7 +98,7 @@ export class UnitModel extends ModelWithField {
    * @param channel
    */
   public scaleDomain(channel: ScaleChannel): Domain {
-    const scale = this.scales[channel];
+    const scale = this.specifiedScales[channel];
     return scale ? scale.domain : undefined;
   }
 
@@ -116,11 +116,11 @@ export class UnitModel extends ModelWithField {
   }
 
   public axis(channel: Channel): Axis {
-    return this.axes[channel];
+    return this.specifiedAxes[channel];
   }
 
   public legend(channel: Channel): Legend {
-    return this.legends[channel];
+    return this.specifiedLegends[channel];
   }
   private initFacetCellConfig() {
     const config = this.config;
@@ -169,6 +169,7 @@ export class UnitModel extends ModelWithField {
     return [X, Y].reduce(function(_axis, channel) {
       // Position Axis
 
+      // TODO: handle ConditionFieldDef
       const channelDef = encoding[channel];
       if (isFieldDef(channelDef) ||
           (channel === X && isFieldDef(encoding.x2)) ||

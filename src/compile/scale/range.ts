@@ -36,7 +36,7 @@ function parseUnitScaleRange(model: UnitModel) {
       return;
     }
 
-    const specifiedScale = model.scales[channel];
+    const specifiedScale = model.specifiedScales[channel];
     const fieldDef = model.fieldDef(channel);
 
     const topLevelSize = channel === 'x' ? model.width : channel === 'y' ? model.height : undefined;
