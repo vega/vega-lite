@@ -513,27 +513,13 @@ export function channelScalePropertyIncompatability(channel: Channel, propName: 
       if (channel === 'x' || channel === 'y') {
         return log.message.CANNOT_USE_RANGE_WITH_POSITION;
       }
-      if (channel === 'row' || channel === 'column') {
-        return log.message.cannotUseRangePropertyWithFacet('range');
-      }
       return undefined; // GOOD!
     // band / point
     case 'rangeStep':
-      if (channel === 'row' || channel === 'column') {
-        return log.message.cannotUseRangePropertyWithFacet('rangeStep');
-      }
       return undefined; // GOOD!
     case 'padding':
     case 'paddingInner':
     case 'paddingOuter':
-      if (channel === 'row' || channel === 'column') {
-        /*
-         * We do not use d3 scale's padding for row/column because padding there
-         * is a ratio ([0, 1]) and it causes the padding to be decimals.
-         * Therefore, we manually calculate "spacing" in the layout by ourselves.
-         */
-        return log.message.CANNOT_USE_PADDING_WITH_FACET;
-      }
       return undefined; // GOOD!
     case 'interpolate':
     case 'scheme':
