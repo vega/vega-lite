@@ -21,10 +21,6 @@
             },
             "transform": [
                 {
-                    "type": "filter",
-                    "expr": "datum[\"Horsepower\"] !== null && !isNaN(datum[\"Horsepower\"])"
-                },
-                {
                     "type": "aggregate",
                     "groupby": [
                         "Origin",

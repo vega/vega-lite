@@ -17,10 +17,6 @@
             },
             "transform": [
                 {
-                    "type": "filter",
-                    "expr": "datum[\"Acceleration\"] !== null && !isNaN(datum[\"Acceleration\"])"
-                },
-                {
                     "type": "extent",
                     "field": "Acceleration",
                     "signal": "bin_maxbins_6_Acceleration_extent"

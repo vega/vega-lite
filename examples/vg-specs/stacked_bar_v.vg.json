@@ -21,10 +21,6 @@
             },
             "transform": [
                 {
-                    "type": "filter",
-                    "expr": "datum[\"yield\"] !== null && !isNaN(datum[\"yield\"])"
-                },
-                {
                     "type": "aggregate",
                     "groupby": [
                         "variety",

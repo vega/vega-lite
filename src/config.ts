@@ -148,9 +148,8 @@ export interface VLOnlyConfig {
 
   /**
    * Whether to filter invalid values (`null` and `NaN`) from the data.
-   * - By default (`undefined`), only quantitative and temporal fields are filtered.
-   * - If set to `true`, all data items with null values are filtered.
-   * - If `false`, all data items are included. In this case, null values will be interpreted as zeroes.
+   * - If set to `true` (default), all data items with null values are filtered.
+   * - If `false`, all data items are included. In this case, invalid values will be interpreted as zeroes.
    */
   filterInvalid?: boolean;
 
@@ -222,6 +221,8 @@ export const defaultConfig: Config = {
   padding: 5,
   timeFormat: '%b %d, %Y',
   countTitle: 'Number of Records',
+
+  filterInvalid: true,
 
   cell: defaultCellConfig,
 

@@ -18,10 +18,6 @@
             },
             "transform": [
                 {
-                    "type": "filter",
-                    "expr": "datum[\"Name\"] !== null"
-                },
-                {
                     "type": "aggregate",
                     "groupby": [
                         "Origin"

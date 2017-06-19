@@ -22,10 +22,6 @@
             },
             "transform": [
                 {
-                    "type": "filter",
-                    "expr": "datum[\"price\"] !== null && !isNaN(datum[\"price\"])"
-                },
-                {
                     "type": "aggregate",
                     "groupby": [
                         "symbol"

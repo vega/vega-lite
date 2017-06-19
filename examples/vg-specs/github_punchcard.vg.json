@@ -22,10 +22,6 @@
             },
             "transform": [
                 {
-                    "type": "filter",
-                    "expr": "datum[\"time\"] !== null && !isNaN(datum[\"time\"]) && datum[\"count\"] !== null && !isNaN(datum[\"count\"])"
-                },
-                {
                     "type": "formula",
                     "as": "day_time",
                     "expr": "datetime(2006, 0, day(datum[\"time\"])+1, 0, 0, 0, 0)"

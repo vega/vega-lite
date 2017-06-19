@@ -267,7 +267,7 @@
                 },
                 {
                     "type": "filter",
-                    "expr": "datum[\"start\"] !== null && !isNaN(datum[\"start\"]) && datum[\"end\"] !== null && !isNaN(datum[\"end\"])"
+                    "expr": "datum[\"start\"] !== null && !isNaN(datum[\"start\"])"
                 },
                 {
                     "type": "formula",

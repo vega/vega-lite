@@ -25,10 +25,6 @@
                     "expr": "datum.year == 2000"
                 },
                 {
-                    "type": "filter",
-                    "expr": "datum[\"people\"] !== null && !isNaN(datum[\"people\"])"
-                },
-                {
                     "type": "aggregate",
                     "groupby": [],
                     "ops": [

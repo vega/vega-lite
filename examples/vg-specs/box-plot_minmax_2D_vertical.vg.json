@@ -28,10 +28,6 @@
                     "as": "people"
                 },
                 {
-                    "type": "filter",
-                    "expr": "datum[\"people\"] !== null && !isNaN(datum[\"people\"])"
-                },
-                {
                     "type": "aggregate",
                     "groupby": [
                         "age"
@@ -59,10 +55,6 @@
                     "type": "formula",
                     "expr": "toNumber(datum[\"people\"])",
                     "as": "people"
-                },
-                {
-                    "type": "filter",
-                    "expr": "datum[\"people\"] !== null && !isNaN(datum[\"people\"])"
                 },
                 {
                     "type": "aggregate",
@@ -94,10 +86,6 @@
                     "as": "people"
                 },
                 {
-                    "type": "filter",
-                    "expr": "datum[\"people\"] !== null && !isNaN(datum[\"people\"])"
-                },
-                {
                     "type": "aggregate",
                     "groupby": [
                         "age"
@@ -125,10 +113,6 @@
                     "type": "formula",
                     "expr": "toNumber(datum[\"people\"])",
                     "as": "people"
-                },
-                {
-                    "type": "filter",
-                    "expr": "datum[\"people\"] !== null && !isNaN(datum[\"people\"])"
                 },
                 {
                     "type": "aggregate",
