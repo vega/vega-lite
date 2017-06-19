@@ -1,13 +1,12 @@
 /* tslint:disable:quotemark */
 
 import {assert} from 'chai';
-
 import {parseScaleCore} from '../../../src/compile/scale/parse';
 import {SELECTION_DOMAIN} from '../../../src/compile/selection/selection';
-import {parseModel, parseUnitModelWithScale} from '../../util';
-
+import * as log from '../../../src/log';
 import {NON_TYPE_DOMAIN_RANGE_VEGA_SCALE_PROPERTIES, SCALE_PROPERTIES} from '../../../src/scale';
 import {toSet, without} from '../../../src/util';
+import {parseModel, parseUnitModelWithScale} from '../../util';
 
 describe('src/compile', function() {
   it('NON_TYPE_RANGE_SCALE_PROPERTIES should be SCALE_PROPERTIES wihtout type, domain, and range properties', () => {
@@ -81,7 +80,7 @@ describe('src/compile', function() {
     });
 
     // TODO: this actually shouldn't get merged
-    it('favors the first explicit scale type', () => {
+    it('favors the first explicit scale type', log.wrap((localLogger) => {
       const model = parseModel({
         "data": {"url": "data/seattle-weather.csv"},
         "layer": [
@@ -111,7 +110,8 @@ describe('src/compile', function() {
       });
       parseScaleCore(model);
       assert.equal(model.getScaleComponent('y').explicit.type, 'log');
-    });
+      assert.equal(localLogger.warns[0], log.message.mergeConflictingScaleProperty('type', 'log', 'pow'));
+    }));
 
     it('favors the band over point', () => {
       const model = parseModel({

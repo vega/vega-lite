@@ -8,7 +8,7 @@ import {Channel} from './channel';
 import {DateTime, DateTimeExpr} from './datetime';
 import {FieldDef} from './fielddef';
 import {Mark} from './mark';
-import {ScaleType} from './scale';
+import {Scale, ScaleType} from './scale';
 import {TimeUnit} from './timeunit';
 import {Type} from './type';
 
@@ -220,6 +220,10 @@ export namespace message {
 
   export function scaleTypeNotWorkWithMark(mark: Mark, scaleType: ScaleType) {
     return `Scale type "${scaleType}" does not work with mark ${mark}.`;
+  }
+
+  export function mergeConflictingScaleProperty<T>(property: keyof Scale, v1: T, v2: T) {
+    return `Conflicting scale property ${property} (${v1} and ${v2}).  Using ${v1}.`;
   }
 
   export function independentScaleMeansIndependentGuide(channel: Channel) {
