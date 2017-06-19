@@ -1,15 +1,14 @@
-import {Channel, COLOR, SHAPE} from '../../channel';
+import {Channel, COLOR, NonspatialScaleChannel, SHAPE} from '../../channel';
 import {FieldDef, isFieldDef, isValueDef} from '../../fielddef';
 import {AREA, BAR, CIRCLE, FILL_STROKE_CONFIG, LINE, POINT, SQUARE, TEXT, TICK} from '../../mark';
+import {ScaleType} from '../../scale';
 import {TEMPORAL} from '../../type';
 import {extend, keys, without} from '../../util';
-
 import {VgValueRef} from '../../vega.schema';
-
-import {ScaleType} from '../../scale';
 import {applyMarkConfig, timeFormatExpression} from '../common';
 import * as mixins from '../mark/mixins';
 import {UnitModel} from '../unit';
+
 
 export function symbols(fieldDef: FieldDef<string>, symbolsSpec: any, model: UnitModel, channel: Channel) {
   let symbols:any = {};
@@ -49,10 +48,10 @@ export function symbols(fieldDef: FieldDef<string>, symbolsSpec: any, model: Uni
     const colorMixins = mixins.color(model);
 
     // If there are field for fill or stroke, remove them as we already apply channels.
-    if (colorMixins.fill && isFieldDef(colorMixins.fill)) {
+    if (colorMixins.fill && colorMixins.fill['field']) {
       delete colorMixins.fill;
     }
-    if (colorMixins.stroke && isFieldDef(colorMixins.stroke)) {
+    if (colorMixins.stroke && colorMixins.stroke['field']) {
       delete colorMixins.stroke;
     }
     extend(symbols, colorMixins);
@@ -70,14 +69,14 @@ export function symbols(fieldDef: FieldDef<string>, symbolsSpec: any, model: Uni
   return keys(symbols).length > 0 ? symbols : undefined;
 }
 
-export function labels(fieldDef: FieldDef<string>, labelsSpec: any, model: UnitModel, channel: Channel) {
+export function labels(fieldDef: FieldDef<string>, labelsSpec: any, model: UnitModel, channel: NonspatialScaleChannel) {
   const legend = model.legend(channel);
   const config = model.config;
 
   let labels:any = {};
 
   if (fieldDef.type === TEMPORAL) {
-    const isUTCScale = model.scale(channel).type === ScaleType.UTC;
+    const isUTCScale = model.getScaleComponent(channel).get('type') === ScaleType.UTC;
     labelsSpec = extend({
       text: {
         signal: timeFormatExpression('datum.value', fieldDef.timeUnit, legend.format, config.legend.shortTimeLabels, config.timeFormat, isUTCScale)

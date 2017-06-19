@@ -2,6 +2,13 @@
     "$schema": "http://vega.github.io/schema/vega/v3.0.json",
     "autosize": "pad",
     "padding": 5,
+    "encode": {
+        "update": {
+            "fill": {
+                "value": "transparent"
+            }
+        }
+    },
     "data": [
         {
             "name": "source_0",
@@ -100,73 +107,54 @@
     ],
     "marks": [
         {
-            "name": "nested_main_group",
-            "type": "group",
+            "name": "layer_0_marks",
+            "type": "line",
+            "from": {
+                "data": "data_0"
+            },
             "encode": {
                 "update": {
-                    "width": {
-                        "signal": "width"
+                    "x": {
+                        "scale": "x",
+                        "field": "miles"
                     },
-                    "height": {
-                        "signal": "height"
+                    "y": {
+                        "scale": "y",
+                        "field": "gas"
                     },
-                    "fill": {
-                        "value": "transparent"
+                    "stroke": {
+                        "value": "#4c78a8"
                     }
                 }
             },
-            "marks": [
-                {
-                    "name": "layer_0_marks",
-                    "type": "line",
-                    "from": {
-                        "data": "data_0"
+            "clip": true
+        },
+        {
+            "name": "layer_1_marks",
+            "type": "symbol",
+            "role": "pointOverlay",
+            "from": {
+                "data": "data_1"
+            },
+            "encode": {
+                "update": {
+                    "x": {
+                        "scale": "x",
+                        "field": "miles"
                     },
-                    "encode": {
-                        "update": {
-                            "x": {
-                                "scale": "x",
-                                "field": "miles"
-                            },
-                            "y": {
-                                "scale": "y",
-                                "field": "gas"
-                            },
-                            "stroke": {
-                                "value": "#4c78a8"
-                            }
-                        }
+                    "y": {
+                        "scale": "y",
+                        "field": "gas"
                     },
-                    "clip": true
-                },
-                {
-                    "name": "layer_1_marks",
-                    "type": "symbol",
-                    "role": "pointOverlay",
-                    "from": {
-                        "data": "data_1"
+                    "fill": {
+                        "value": "#4c78a8"
                     },
-                    "encode": {
-                        "update": {
-                            "x": {
-                                "scale": "x",
-                                "field": "miles"
-                            },
-                            "y": {
-                                "scale": "y",
-                                "field": "gas"
-                            },
-                            "fill": {
-                                "value": "#4c78a8"
-                            },
-                            "opacity": {
-                                "value": 0.7
-                            }
-                        }
-                    },
-                    "clip": true
+                    "opacity": {
+                        "value": 0.7
+                    }
                 }
-            ]
+            },
+            "clip": true
         }
     ],
     "scales": [
@@ -190,9 +178,9 @@
                 0,
                 200
             ],
+            "zero": false,
             "round": true,
-            "nice": true,
-            "zero": false
+            "nice": true
         },
         {
             "name": "y",
@@ -214,9 +202,9 @@
                 200,
                 0
             ],
+            "zero": false,
             "round": true,
-            "nice": true,
-            "zero": false
+            "nice": true
         }
     ],
     "axes": [

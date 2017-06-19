@@ -2,12 +2,12 @@
 
 import {assert} from 'chai';
 import {color} from '../../../src/compile/mark/mixins';
-import {parseUnitModel} from '../../util';
+import {parseUnitModelWithScaleMarkDefLayoutSize} from '../../util';
 
 describe('compile/mark/mixins', () => {
   describe('color()', function() {
     it('color should be mapped to fill for bar', function() {
-      const model = parseUnitModel({
+      const model = parseUnitModelWithScaleMarkDefLayoutSize({
         "mark": "bar",
         "encoding": {
           "x": {
@@ -28,7 +28,7 @@ describe('compile/mark/mixins', () => {
     });
 
     it('color should be mapped to stroke for point', function() {
-      const model = parseUnitModel({
+      const model = parseUnitModelWithScaleMarkDefLayoutSize({
         "mark": "point",
         "encoding": {
           "x": {
@@ -46,7 +46,7 @@ describe('compile/mark/mixins', () => {
 
       const colorMixins = color(model);
       assert.deepEqual(colorMixins.stroke, {"field": "gender", "scale": "color"});
-      assert.deepEqual(colorMixins.fill.value, "transparent");
+      assert.propertyVal(colorMixins.fill, 'value', "transparent");
     });
   });
 });

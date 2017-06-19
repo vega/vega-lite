@@ -1,6 +1,7 @@
-import {Channel, NONSPATIAL_SCALE_CHANNELS, SPATIAL_SCALE_CHANNELS, UNIT_SCALE_CHANNELS} from './channel';
+import {Channel, NONSPATIAL_SCALE_CHANNELS, SCALE_CHANNELS, SPATIAL_SCALE_CHANNELS} from './channel';
 import * as log from './log';
 import {contains} from './util';
+
 
 export type ResolveMode = 'independent' | 'shared';
 
@@ -30,7 +31,7 @@ export type ResolveMapping = {
 
 function initResolve(resolve: ResolveMapping, defaultScaleResolve: (channel: Channel) => 'shared'| 'independent') {
   const out: ResolveMapping = {};
-  UNIT_SCALE_CHANNELS.forEach(channel => {
+  SCALE_CHANNELS.forEach(channel => {
     const res: Resolve = resolve[channel] || {scale: defaultScaleResolve(channel)};
     const guide = contains(SPATIAL_SCALE_CHANNELS, channel) ? 'axis' : 'legend';
 

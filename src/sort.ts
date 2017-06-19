@@ -1,5 +1,6 @@
 import {AggregateOp} from './aggregate';
 
+
 export type SortOrder = 'ascending' | 'descending' | null;
 
 export interface SortField {

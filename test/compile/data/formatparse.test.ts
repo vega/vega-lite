@@ -4,7 +4,7 @@ import {assert} from 'chai';
 import {ParseNode} from '../../../src/compile/data/formatparse';
 import {Model, ModelWithField} from '../../../src/compile/model';
 import * as log from '../../../src/log';
-import {parseUnitModel} from '../../util';
+import {parseFacetModel, parseUnitModel} from '../../util';
 
 function parse(model: ModelWithField) {
   return ParseNode.make(model).assembleFormatParse();
@@ -67,6 +67,46 @@ describe('compile/data/formatparse', () => {
         'b': 'number'
       });
     });
+
+    it('should not parse the same field twice', function() {
+      const model = parseFacetModel({
+        data: {
+          values: [],
+          format: {
+            parse: {
+              a: 'number'
+            }
+          }
+        },
+        facet: {
+          row: {field: 'a', type: 'ordinal'}
+        },
+        spec: {
+          mark: "point",
+          encoding: {
+            x: {field: 'a', type: "quantitative"},
+            y: {field: 'b', type: "temporal"}
+          }
+        }
+      });
+
+      assert.deepEqual(parse(model), {
+        'a': 'number'
+      });
+      model.parseScale();
+      model.parseData();
+
+      assert.deepEqual(model.child.component.data.ancestorParse, {
+        'a': 'number',
+        'b': 'date'
+      });
+
+      // set the ancestor parse to see whether fields from it are not parsed
+      model.child.component.data.ancestorParse = {a: 'number'};
+      assert.deepEqual(parse(model.child as ModelWithField), {
+        'b': 'date'
+      });
+    });
   });
 
   describe('assembleTransforms', function() {
@@ -76,7 +116,8 @@ describe('compile/data/formatparse', () => {
         b: 'boolean',
         s: 'string',
         d1: 'date',
-        d2: 'date:"%y"'
+        d2: 'date:"%y"',
+        d3: 'utc:"%y"'
       });
 
       assert.deepEqual(p.assembleTransforms(), [
@@ -84,7 +125,8 @@ describe('compile/data/formatparse', () => {
         {type: 'formula', expr: 'toBoolean(datum["b"])', as: 'b'},
         {type: 'formula', expr: 'toString(datum["s"])', as: 's'},
         {type: 'formula', expr: 'toDate(datum["d1"])', as: 'd1'},
-        {type: 'formula', expr: 'timeParse(datum["d2"],"%y")', as: 'd2'}
+        {type: 'formula', expr: 'timeParse(datum["d2"],"%y")', as: 'd2'},
+        {type: 'formula', expr: 'utcParse(datum["d3"],"%y")', as: 'd3'}
       ]);
     });
 

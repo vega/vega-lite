@@ -2,11 +2,12 @@ import {isArray, isNumber, isString} from 'vega-util';
 import {DateTime, isDateTime} from '../../datetime';
 import {expression, Filter, isEqualFilter, isOneOfFilter, isRangeFilter} from '../../filter';
 import * as log from '../../log';
+import {LogicalOperand} from '../../logical';
 import {CalculateTransform, FilterTransform, isBin, isCalculate, isFilter, isLookup, isSummarize, isTimeUnit, LookupTransform} from '../../transform';
 import {duplicate, keys, StringSet, toSet} from '../../util';
 import {VgFilterTransform, VgFormulaTransform, VgLookupTransform} from '../../vega.schema';
-import {Model} from '../model';
 import {ModelWithField} from '../model';
+import {Model} from '../model';
 import {AggregateNode} from './aggregate';
 import {BinNode} from './bin';
 import {DataFlowNode, OutputNode} from './dataflow';
@@ -15,12 +16,13 @@ import {ParseNode} from './formatparse';
 import {SourceNode} from './source';
 import {TimeUnitNode} from './timeunit';
 
+
 export class FilterNode extends DataFlowNode {
   public clone() {
     return new FilterNode(this.model, duplicate(this.filter));
   }
 
-  constructor(private readonly model: Model, private filter: Filter) {
+  constructor(private readonly model: Model, private filter: LogicalOperand<Filter>) {
     super();
   }
 
@@ -74,12 +76,12 @@ export class LookupNode extends DataFlowNode {
     }
 
     const fromOutputName = model.getName(`lookup_${counter}`);
-    const fromOutputNode = new OutputNode(fromOutputName, 'lookup');
+    const fromOutputNode = new OutputNode(fromOutputName, 'lookup', model.component.data.outputNodeRefCounts);
     fromOutputNode.parent = fromSource;
 
     model.component.data.outputNodes[fromOutputName] = fromOutputNode;
 
-    return new LookupNode(transform, fromOutputNode.source);
+    return new LookupNode(transform, fromOutputNode.getSource());
   }
 
   public producedFields(): StringSet {

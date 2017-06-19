@@ -21,8 +21,11 @@ function parseExpression(field: string, parse: string): string {
   } else if (parse === 'date') {
     return `toDate(${f})`;
   } else if (parse.indexOf('date:') === 0) {
-    const specifier = parse.slice(6, parse.length - 1);  // specifier is in "" or ''
-    return `timeParse(${f},"${specifier}")`;
+    const specifier = parse.slice(5, parse.length);
+    return `timeParse(${f},${specifier})`;
+  } else if (parse.indexOf('utc:') === 0) {
+    const specifier = parse.slice(4, parse.length);
+    return `utcParse(${f},${specifier})`;
   } else {
     log.warn(log.message.unrecognizedParse(parse));
     return null;
@@ -68,10 +71,20 @@ export class ParseNode extends DataFlowNode {
     const data = model.data;
     if (data && data.format && data.format.parse) {
       const p = data.format.parse;
-      keys(p).forEach((field) => {
+      keys(p).forEach(field => {
         parse[field] = p[field];
       });
     }
+
+    // We should not parse what has already been parsed in a parent
+    const modelParse = model.component.data.ancestorParse;
+    keys(modelParse).forEach(field => {
+      if (parse[field] !== modelParse[field]) {
+        log.warn(log.message.differentParse(field, parse[field], modelParse[field]));
+      } else {
+        delete parse[field];
+      }
+    });
 
     if (keys(parse).length === 0) {
       return null;
@@ -84,12 +97,10 @@ export class ParseNode extends DataFlowNode {
     return this._parse;
   }
 
-
   public merge(other: ParseNode) {
     this._parse = extend(this._parse, other.parse);
     other.remove();
   }
-
   public assembleFormatParse() {
     return this._parse;
   }
@@ -104,7 +115,7 @@ export class ParseNode extends DataFlowNode {
   }
 
   public assembleTransforms(): VgFormulaTransform[] {
-    return Object.keys(this._parse).map(field => {
+    return keys(this._parse).map(field => {
       const expr = parseExpression(field, this._parse[field]);
       if (!expr) {
         return null;

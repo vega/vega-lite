@@ -2,6 +2,13 @@
     "$schema": "http://vega.github.io/schema/vega/v3.0.json",
     "autosize": "pad",
     "padding": 5,
+    "encode": {
+        "update": {
+            "fill": {
+                "value": "transparent"
+            }
+        }
+    },
     "data": [
         {
             "name": "source_0",
@@ -51,13 +58,10 @@
                     "b": "J",
                     "c": 52
                 }
-            ],
-            "format": {
-                "type": "json"
-            }
+            ]
         },
         {
-            "name": "data_0",
+            "name": "data_1",
             "source": "source_0",
             "transform": [
                 {
@@ -72,7 +76,7 @@
             ]
         },
         {
-            "name": "data_1",
+            "name": "data_2",
             "source": "source_0",
             "transform": [
                 {
@@ -113,7 +117,7 @@
         },
         {
             "name": "layer_1_width",
-            "update": "bandspace(domain('x').length, 1, 0.5) * 21"
+            "update": "bandspace(domain('x').length, 0.1, 0.05) * 21"
         },
         {
             "name": "layer_1_height",
@@ -122,78 +126,60 @@
     ],
     "marks": [
         {
-            "name": "nested_main_group",
-            "type": "group",
+            "name": "layer_0_marks",
+            "type": "rect",
+            "role": "bar",
+            "from": {
+                "data": "data_1"
+            },
             "encode": {
                 "update": {
-                    "width": {
-                        "signal": "width"
+                    "x": {
+                        "scale": "x",
+                        "field": "a"
                     },
-                    "height": {
-                        "signal": "height"
+                    "width": {
+                        "scale": "x",
+                        "band": true
+                    },
+                    "y": {
+                        "scale": "y",
+                        "field": "c"
+                    },
+                    "y2": {
+                        "scale": "y",
+                        "value": 0
                     },
                     "fill": {
-                        "value": "transparent"
+                        "value": "#4c78a8"
                     }
                 }
             },
-            "marks": [
-                {
-                    "name": "layer_0_marks",
-                    "type": "rect",
-                    "role": "bar",
-                    "from": {
-                        "data": "data_0"
+            "clip": true
+        },
+        {
+            "name": "layer_1_marks",
+            "type": "line",
+            "from": {
+                "data": "data_2"
+            },
+            "encode": {
+                "update": {
+                    "x": {
+                        "scale": "x",
+                        "field": "b",
+                        "band": 0.5
                     },
-                    "encode": {
-                        "update": {
-                            "x": {
-                                "scale": "x",
-                                "field": "a"
-                            },
-                            "width": {
-                                "scale": "x",
-                                "band": true
-                            },
-                            "y": {
-                                "scale": "y",
-                                "field": "c"
-                            },
-                            "y2": {
-                                "scale": "y",
-                                "value": 0
-                            },
-                            "fill": {
-                                "value": "#4c78a8"
-                            }
-                        }
+                    "y": {
+                        "scale": "y",
+                        "field": "c"
                     },
-                    "clip": true
-                },
-                {
-                    "name": "layer_1_marks",
-                    "type": "line",
-                    "from": {
-                        "data": "data_1"
-                    },
-                    "encode": {
-                        "update": {
-                            "x": {
-                                "scale": "x",
-                                "field": "b"
-                            },
-                            "y": {
-                                "scale": "y",
-                                "field": "c"
-                            },
-                            "stroke": {
-                                "value": "red"
-                            }
-                        }
-                    },
-                    "clip": true
+                    "stroke": {
+                        "value": "red"
+                    }
                 }
-            ]
+            },
+            "clip": true
         }
     ],
     "scales": [
@@ -203,11 +189,11 @@
             "domain": {
                 "fields": [
                     {
-                        "data": "data_0",
+                        "data": "data_1",
                         "field": "a"
                     },
                     {
-                        "data": "data_1",
+                        "data": "data_2",
                         "field": "b"
                     }
                 ],
@@ -226,11 +212,11 @@
             "domain": {
                 "fields": [
                     {
-                        "data": "data_0",
+                        "data": "data_1",
                         "field": "c"
                     },
                     {
-                        "data": "data_1",
+                        "data": "data_2",
                         "field": "c"
                     }
                 ],

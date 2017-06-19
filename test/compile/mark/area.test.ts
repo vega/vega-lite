@@ -3,12 +3,13 @@
 import {assert} from 'chai';
 import {COLOR, X, Y} from '../../../src/channel';
 import {area} from '../../../src/compile/mark/area';
+import {Encoding} from '../../../src/encoding';
 import {UnitSpec} from '../../../src/spec';
 import {extend} from '../../../src/util';
-import {parseUnitModel} from '../../util';
+import {parseUnitModelWithScaleMarkDefLayoutSize} from '../../util';
 
 describe('Mark: Area', function() {
-  function verticalArea(moreEncoding = {}): UnitSpec {
+  function verticalArea(moreEncoding: Encoding<string> = {}): UnitSpec {
     return {
       "mark": "area",
       "encoding": extend(
@@ -23,7 +24,7 @@ describe('Mark: Area', function() {
   }
 
   describe('vertical area, with log', function() {
-    const model = parseUnitModel({
+    const model = parseUnitModelWithScaleMarkDefLayoutSize({
       "mark": "area",
       "encoding": {
         "x": {"bin": true, "type": "quantitative", "field": "IMDB_Rating"},
@@ -43,7 +44,7 @@ describe('Mark: Area', function() {
   });
 
   describe('vertical area, with zero=false', function() {
-    const model = parseUnitModel({
+    const model = parseUnitModelWithScaleMarkDefLayoutSize({
       "mark": "area",
       "encoding": {
         "x": {"bin": true, "type": "quantitative", "field": "IMDB_Rating"},
@@ -63,7 +64,7 @@ describe('Mark: Area', function() {
   });
 
   describe('vertical area', function() {
-    const model = parseUnitModel(verticalArea());
+    const model = parseUnitModelWithScaleMarkDefLayoutSize(verticalArea());
     const props = area.encodeEntry(model);
 
     it('should have scale for x', function() {
@@ -80,7 +81,7 @@ describe('Mark: Area', function() {
   });
 
   describe('vertical stacked area with color', function () {
-    const model = parseUnitModel(verticalArea({
+    const model = parseUnitModelWithScaleMarkDefLayoutSize(verticalArea({
       "color": {"field": "Origin", "type": "quantitative"}
     }));
 
@@ -100,7 +101,7 @@ describe('Mark: Area', function() {
     });
   });
 
-  function horizontalArea(moreEncoding = {}): UnitSpec {
+  function horizontalArea(moreEncoding: Encoding<string> = {}): UnitSpec {
     return {
       "mark": "area",
       "encoding": extend(
@@ -115,7 +116,7 @@ describe('Mark: Area', function() {
   }
 
   describe('horizontal area', function() {
-    const model = parseUnitModel(horizontalArea());
+    const model = parseUnitModelWithScaleMarkDefLayoutSize(horizontalArea());
     const props = area.encodeEntry(model);
 
     it('should have scale for y', function() {
@@ -132,7 +133,7 @@ describe('Mark: Area', function() {
   });
 
   describe('horizontal area, with log', function() {
-    const model = parseUnitModel({
+    const model = parseUnitModelWithScaleMarkDefLayoutSize({
       "mark": "area",
       "encoding": {
         "y": {"bin": true, "type": "quantitative", "field": "IMDB_Rating"},
@@ -153,7 +154,7 @@ describe('Mark: Area', function() {
   });
 
   describe('horizontal area, with zero=false', function() {
-    const model = parseUnitModel({
+    const model = parseUnitModelWithScaleMarkDefLayoutSize({
       "mark": "area",
       "encoding": {
         "y": {"bin": true, "type": "quantitative", "field": "IMDB_Rating"},
@@ -174,7 +175,7 @@ describe('Mark: Area', function() {
   });
 
   describe('horizontal stacked area with color', function () {
-    const model = parseUnitModel(horizontalArea({
+    const model = parseUnitModelWithScaleMarkDefLayoutSize(horizontalArea({
       "color": {"field": "Origin", "type": "nominal"}
     }));
 
@@ -196,7 +197,7 @@ describe('Mark: Area', function() {
 
   describe('ranged area', function () {
     it ('vertical area should work with aggregate', function() {
-      const model = parseUnitModel({
+      const model = parseUnitModelWithScaleMarkDefLayoutSize({
         "data": {"url": "data/cars.json"},
         "mark": "area",
         "encoding": {
@@ -212,7 +213,7 @@ describe('Mark: Area', function() {
     });
 
     it ('horizontal area should work with aggregate', function() {
-      const model = parseUnitModel({
+      const model = parseUnitModelWithScaleMarkDefLayoutSize({
         "data": {"url": "data/cars.json"},
         "mark": "area",
         "encoding": {

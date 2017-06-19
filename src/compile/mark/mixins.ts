@@ -1,15 +1,14 @@
+import {NONSPATIAL_SCALE_CHANNELS} from '../../channel';
+import {ChannelDef, Condition, ConditionalValueDef, FieldDef, getFieldDef, isValueDef} from '../../fielddef';
 import * as log from '../../log';
 import {MarkDef} from '../../mark';
 import * as util from '../../util';
 import {VgEncodeEntry, VgValueRef} from '../../vega.schema';
 import {getMarkConfig} from '../common';
+import {predicate} from '../selection/selection';
 import {UnitModel} from '../unit';
-
 import * as ref from './valueref';
 
-import {NONSPATIAL_SCALE_CHANNELS} from '../../channel';
-import {Condition, isFieldDef, isValueDef} from '../../fielddef';
-import {predicate} from '../selection/selection';
 
 export function color(model: UnitModel) {
   const config = model.config;
@@ -48,27 +47,33 @@ export function valueIfDefined(prop: string, value: VgValueRef): VgEncodeEntry {
  * Return mixins for non-positional channels with scales.  (Text doesn't have scale.)
  */
 export function nonPosition(channel: typeof NONSPATIAL_SCALE_CHANNELS[0], model: UnitModel, opt: {defaultValue?: number | string | boolean, vgChannel?: string, defaultRef?: VgValueRef} = {}): VgEncodeEntry {
-  // TODO: refactor how refer to scale as discussed in https://github.com/vega/vega-lite/pull/1613
+  // TODO: refactor how we refer to scale as discussed in https://github.com/vega/vega-lite/pull/1613
 
   const {defaultValue, vgChannel} = opt;
   const defaultRef = opt.defaultRef || (defaultValue !== undefined ? {value: defaultValue} : undefined);
 
   const channelDef = model.encoding[channel];
-  const valueRef = ref.midPoint(channel, channelDef, model.scaleName(channel), model.scale(channel), defaultRef);
 
-  return wrapCondition(model, channelDef && channelDef.condition, vgChannel || channel, valueRef);
+  return wrapCondition(model, channelDef, vgChannel || channel, (cDef) => {
+    return ref.midPoint(channel, cDef, model.scaleName(channel), model.getScaleComponent(channel), defaultRef);
+  });
 }
 
 /**
  * Return a mixin that include a Vega production rule for a Vega-Lite conditional channel definition.
  * or a simple mixin if channel def has no condition.
  */
-function wrapCondition(model: UnitModel, condition: Condition<any>, vgChannel: string, valueRef: VgValueRef): VgEncodeEntry {
+function wrapCondition(
+    model: UnitModel, channelDef: ChannelDef<string>, vgChannel: string,
+    refFn: (cDef: ChannelDef<string>) => VgValueRef
+  ): VgEncodeEntry {
+  const condition = channelDef && channelDef.condition;
+  const valueRef = refFn(channelDef);
   if (condition) {
-    const {selection, value} = condition;
+    const conditionValueRef = refFn(condition);
     return {
       [vgChannel]: [
-        {test: selectionTest(model, selection), value},
+        {test: predicate(model, condition.selection), ...conditionValueRef},
         ...(valueRef !== undefined ? [valueRef] : [])
       ]
     };
@@ -77,22 +82,12 @@ function wrapCondition(model: UnitModel, condition: Condition<any>, vgChannel: s
   }
 }
 
-function selectionTest(model: UnitModel, selectionName: string) {
-  const negate = selectionName.charAt(0) === '!',
-    name = negate ? selectionName.slice(1) : selectionName,
-    selection = model.getComponent('selection', name);
-  return (negate ? '!' : '') +
-    predicate(model, selection.name, selection.type, selection.resolve);
+export function text(model: UnitModel, channel: 'text' | 'tooltip' = 'text') {
+  const channelDef = model.encoding[channel];
+  return wrapCondition(model, channelDef, channel, (cDef) => ref.text(cDef, model.config));
 }
 
-export function text(model: UnitModel, vgChannel: 'text' | 'tooltip' = 'text') {
-  const channelDef = model.encoding[vgChannel];
-  const valueRef = (vgChannel === 'tooltip' && !channelDef) ? undefined : ref.text(channelDef, model.config);
-  return wrapCondition(model, channelDef && channelDef.condition, vgChannel, valueRef);
-}
-
-export function bandPosition(channel: 'x'|'y', model: UnitModel) {
-  const fieldDef = model.encoding[channel];
+export function bandPosition(fieldDef: FieldDef<string>, channel: 'x'|'y', model: UnitModel) {
   const scaleName = model.scaleName(channel);
   const sizeChannel = channel === 'x' ? 'width' : 'height';
 
@@ -105,7 +100,7 @@ export function bandPosition(channel: 'x'|'y', model: UnitModel) {
         [channel+'c']: ref.fieldRef(fieldDef, scaleName, {}, {band: 0.5})
       };
 
-      if (isFieldDef(model.encoding.size)) {
+      if (getFieldDef(model.encoding.size)) {
         log.warn(log.message.cannotUseSizeFieldWithBandSize(channel));
         // TODO: apply size to band and set scale range to some values between 0-1.
         // return {
@@ -137,9 +132,7 @@ export function centeredBandPosition(channel: 'x' | 'y', model: UnitModel, defau
   };
 }
 
-export function binnedPosition(channel: 'x'|'y', model: UnitModel, spacing: number) {
-  const fieldDef = model.encoding[channel];
-  const scaleName = model.scaleName(channel);
+export function binnedPosition(fieldDef: FieldDef<string>, channel: 'x'|'y', scaleName: string, spacing: number) {
   if (channel === 'x') {
     return {
       x2: ref.bin(fieldDef, scaleName, 'start', spacing),
@@ -160,7 +153,7 @@ export function pointPosition(channel: 'x'|'y', model: UnitModel, defaultRef: Vg
   // TODO: refactor how refer to scale as discussed in https://github.com/vega/vega-lite/pull/1613
 
   const {encoding, stack} = model;
-  const valueRef = ref.stackable(channel, encoding[channel], model.scaleName(channel), model.scale(channel), stack, defaultRef);
+  const valueRef = ref.stackable(channel, encoding[channel], model.scaleName(channel), model.getScaleComponent(channel), stack, defaultRef);
 
   return {
     [vgChannel || channel]: valueRef
@@ -176,6 +169,6 @@ export function pointPosition2(model: UnitModel, defaultRef: 'zeroOrMin' | 'zero
   channel = channel || (markDef.orient === 'horizontal' ? 'x2' : 'y2');
   const baseChannel = channel === 'x2' ? 'x' : 'y';
 
-  const valueRef = ref.stackable2(channel, encoding[baseChannel], encoding[channel], model.scaleName(baseChannel), model.scale(baseChannel), stack, defaultRef);
+  const valueRef = ref.stackable2(channel, encoding[baseChannel], encoding[channel], model.scaleName(baseChannel), model.getScaleComponent(baseChannel), stack, defaultRef);
   return {[channel]: valueRef};
 }

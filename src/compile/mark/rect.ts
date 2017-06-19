@@ -3,11 +3,10 @@ import {isFieldDef} from '../../fielddef';
 import * as log from '../../log';
 import {RECT} from '../../mark';
 import {hasDiscreteDomain, ScaleType} from '../../scale';
-
 import {UnitModel} from '../unit';
+import {MarkCompiler} from './base';
 import * as mixins from './mixins';
 
-import {MarkCompiler} from './base';
 
 export const rect: MarkCompiler = {
   vgMark: 'rect',
@@ -26,17 +25,18 @@ export const rect: MarkCompiler = {
 function x(model: UnitModel) {
   const xDef = model.encoding.x;
   const x2Def = model.encoding.x2;
-  const xScale = model.scale(X);
+  const xScale = model.getScaleComponent(X);
+  const xScaleType = xScale ? xScale.get('type') : undefined;
 
   if (isFieldDef(xDef) && xDef.bin && !x2Def) {
-    return mixins.binnedPosition('x', model, 0);
-  } else if (xScale && hasDiscreteDomain(xScale.type)) {
+    return mixins.binnedPosition(xDef, 'x', model.scaleName('x'), 0);
+  } else if (isFieldDef(xDef) && xScale && hasDiscreteDomain(xScaleType)) {
     /* istanbul ignore else */
-    if (xScale.type === ScaleType.BAND) {
-      return mixins.bandPosition('x', model);
+    if (xScaleType === ScaleType.BAND) {
+      return mixins.bandPosition(xDef, 'x', model);
     } else {
       // We don't support rect mark with point/ordinal scale
-      throw new Error(log.message.scaleTypeNotWorkWithMark(RECT, xScale.type));
+      throw new Error(log.message.scaleTypeNotWorkWithMark(RECT, xScaleType));
     }
   } else { // continuous scale or no scale
     return {
@@ -49,17 +49,18 @@ function x(model: UnitModel) {
 function y(model: UnitModel) {
   const yDef = model.encoding.y;
   const y2Def = model.encoding.y2;
-  const yScale = model.scale(Y);
+  const yScale = model.getScaleComponent(Y);
+  const yScaleType = yScale ? yScale.get('type') : undefined;
 
   if (isFieldDef(yDef) && yDef.bin && !y2Def) {
-    return mixins.binnedPosition('y', model, 0);
-  } else if (yScale && hasDiscreteDomain(yScale.type)) {
+    return mixins.binnedPosition(yDef, 'y', model.scaleName('y'), 0);
+  } else if (isFieldDef(yDef) && yScale && hasDiscreteDomain(yScaleType)) {
     /* istanbul ignore else */
-    if (yScale.type === ScaleType.BAND) {
-      return mixins.bandPosition('y', model);
+    if (yScaleType === ScaleType.BAND) {
+      return mixins.bandPosition(yDef, 'y', model);
     } else {
       // We don't support rect mark with point/ordinal scale
-      throw new Error(log.message.scaleTypeNotWorkWithMark(RECT, yScale.type));
+      throw new Error(log.message.scaleTypeNotWorkWithMark(RECT, yScaleType));
     }
   } else { // continuous scale or no scale
     return {

@@ -1,12 +1,12 @@
-import * as log from './log';
-
 import {SUM_OPS} from './aggregate';
-import {Channel, STACK_GROUP_CHANNELS, X, X2, Y, Y2} from './channel';
+import {Channel, STACK_BY_CHANNELS, StackByChannel, X, X2, Y, Y2} from './channel';
 import {channelHasField, Encoding, isAggregate} from './encoding';
-import {Field, FieldDef, isFieldDef, PositionFieldDef} from './fielddef';
+import {Field, FieldDef, getFieldDef, isFieldDef, PositionFieldDef} from './fielddef';
+import * as log from './log';
 import {AREA, BAR, CIRCLE, isMarkDef, LINE, Mark, MarkDef, POINT, RULE, SQUARE, TEXT, TICK} from './mark';
 import {ScaleType} from './scale';
 import {contains, isArray} from './util';
+
 
 export type StackOffset = 'zero' | 'center' | 'normalize' | 'none';
 
@@ -20,7 +20,7 @@ export interface StackProperties {
   /** Stack-by fields e.g., color, detail */
   stackBy: {
     fieldDef: FieldDef<string>,
-    channel: Channel
+    channel: StackByChannel
   }[];
 
   /**
@@ -54,11 +54,12 @@ export function stack(m: Mark | MarkDef, encoding: Encoding<Field>, stackConfig:
   }
 
   // Should have grouping level of detail
-  const stackBy = STACK_GROUP_CHANNELS.reduce((sc, channel) => {
+  const stackBy = STACK_BY_CHANNELS.reduce((sc, channel) => {
     if (channelHasField(encoding, channel)) {
       const channelDef = encoding[channel];
-      (isArray(channelDef) ? channelDef : [channelDef]).forEach((fieldDef) => {
-        if (isFieldDef(fieldDef) && !fieldDef.aggregate) {
+      (isArray(channelDef) ? channelDef : [channelDef]).forEach((cDef) => {
+        const fieldDef = getFieldDef(cDef);
+        if (!fieldDef.aggregate) {
           sc.push({
             channel: channel,
             fieldDef: fieldDef

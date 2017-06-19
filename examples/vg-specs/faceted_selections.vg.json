@@ -88,7 +88,7 @@
                             "type": "mouseover"
                         }
                     ],
-                    "update": "(item().isVoronoi ? datum.datum : datum)[\"X\"]"
+                    "update": "datum && (item().isVoronoi ? datum.datum : datum)[\"X\"]"
                 }
             ],
             "bind": {
@@ -103,174 +103,185 @@
         },
         {
             "name": "xenc",
-            "update": "data(\"xenc_store\")[0]"
+            "update": "data(\"xenc_store\").length && {X: data(\"xenc_store\")[0].values[0]}"
         }
     ],
+    "layout": {
+        "padding": {
+            "row": 10,
+            "column": 10
+        },
+        "offset": 10,
+        "columns": {
+            "signal": "data('column_layout')[0][\"distinct_Series\"]"
+        },
+        "bounds": "full"
+    },
     "marks": [
         {
-            "name": "nested_main_group",
+            "name": "column_title",
+            "role": "column-title",
             "type": "group",
-            "layout": {
-                "padding": {
-                    "row": 10,
-                    "column": 10
-                },
-                "offset": 10,
-                "columns": {
-                    "signal": "data('column_layout')[0][\"distinct_Series\"]"
-                },
-                "bounds": "full"
-            },
             "marks": [
                 {
-                    "name": "column_title",
-                    "role": "column-title",
-                    "type": "group",
-                    "marks": [
-                        {
-                            "type": "text",
-                            "role": "column-title-text",
-                            "encode": {
-                                "update": {
-                                    "x": {
-                                        "signal": "0.5 * width"
-                                    },
-                                    "align": {
-                                        "value": "center"
-                                    },
-                                    "text": {
-                                        "value": "Series"
-                                    },
-                                    "fill": {
-                                        "value": "black"
-                                    },
-                                    "fontWeight": {
-                                        "value": "bold"
-                                    }
-                                }
-                            }
-                        }
-                    ]
-                },
-                {
-                    "name": "row_header",
-                    "type": "group",
-                    "role": "row-header",
+                    "type": "text",
+                    "role": "column-title-text",
                     "encode": {
                         "update": {
-                            "height": {
-                                "signal": "child_height"
-                            }
-                        }
-                    },
-                    "axes": [
-                        {
-                            "scale": "y",
-                            "format": "s",
-                            "orient": "left",
-                            "title": "Y",
-                            "zindex": 1
-                        }
-                    ]
-                },
-                {
-                    "name": "column_header",
-                    "type": "group",
-                    "role": "column-header",
-                    "from": {
-                        "data": "column"
-                    },
-                    "title": {
-                        "text": {
-                            "signal": "parent[\"Series\"]"
-                        },
-                        "offset": 10,
-                        "orient": "top",
-                        "encode": {
-                            "update": {
-                                "fontWeight": {
-                                    "value": "normal"
-                                },
-                                "angle": {
-                                    "value": 0
-                                },
-                                "fontSize": {
-                                    "value": 10
-                                }
-                            }
-                        }
-                    },
-                    "encode": {
-                        "update": {
-                            "width": {
-                                "signal": "child_width"
+                            "x": {
+                                "signal": "0.5 * width"
+                            },
+                            "align": {
+                                "value": "center"
+                            },
+                            "text": {
+                                "value": "Series"
+                            },
+                            "fill": {
+                                "value": "black"
+                            },
+                            "fontWeight": {
+                                "value": "bold"
                             }
                         }
                     }
-                },
+                }
+            ]
+        },
+        {
+            "name": "row_header",
+            "type": "group",
+            "role": "row-header",
+            "encode": {
+                "update": {
+                    "height": {
+                        "signal": "child_height"
+                    }
+                }
+            },
+            "axes": [
                 {
-                    "name": "column_footer",
-                    "type": "group",
-                    "role": "column-footer",
-                    "from": {
-                        "data": "column"
-                    },
-                    "encode": {
-                        "update": {
-                            "width": {
-                                "signal": "child_width"
-                            }
+                    "scale": "y",
+                    "format": "s",
+                    "orient": "left",
+                    "title": "Y",
+                    "zindex": 1
+                }
+            ]
+        },
+        {
+            "name": "column_header",
+            "type": "group",
+            "role": "column-header",
+            "from": {
+                "data": "column"
+            },
+            "title": {
+                "text": {
+                    "signal": "parent[\"Series\"]"
+                },
+                "offset": 10,
+                "orient": "top",
+                "encode": {
+                    "update": {
+                        "fontWeight": {
+                            "value": "normal"
+                        },
+                        "angle": {
+                            "value": 0
+                        },
+                        "fontSize": {
+                            "value": 10
                         }
-                    },
-                    "axes": [
-                        {
-                            "scale": "x",
-                            "format": "s",
-                            "orient": "bottom",
-                            "tickCount": 5,
-                            "title": "X",
-                            "zindex": 1
-                        }
+                    }
+                }
+            },
+            "encode": {
+                "update": {
+                    "width": {
+                        "signal": "child_width"
+                    }
+                }
+            }
+        },
+        {
+            "name": "column_footer",
+            "type": "group",
+            "role": "column-footer",
+            "from": {
+                "data": "column"
+            },
+            "encode": {
+                "update": {
+                    "width": {
+                        "signal": "child_width"
+                    }
+                }
+            },
+            "axes": [
+                {
+                    "scale": "x",
+                    "format": "s",
+                    "orient": "bottom",
+                    "tickCount": 5,
+                    "title": "X",
+                    "zindex": 1
+                }
+            ]
+        },
+        {
+            "name": "cell",
+            "type": "group",
+            "from": {
+                "facet": {
+                    "name": "facet",
+                    "data": "source_0",
+                    "groupby": [
+                        "Series"
                     ]
-                },
+                }
+            },
+            "encode": {
+                "update": {
+                    "width": {
+                        "signal": "child_width"
+                    },
+                    "height": {
+                        "signal": "child_height"
+                    },
+                    "stroke": {
+                        "value": "#ccc"
+                    },
+                    "strokeWidth": {
+                        "value": 1
+                    },
+                    "fill": {
+                        "value": "transparent"
+                    }
+                }
+            },
+            "signals": [
                 {
-                    "name": "cell",
-                    "type": "group",
-                    "from": {
-                        "facet": {
-                            "name": "facet",
-                            "data": "source_0",
-                            "groupby": [
-                                "Series"
-                            ]
-                        }
-                    },
-                    "encode": {
-                        "update": {
-                            "width": {
-                                "signal": "child_width"
-                            },
-                            "height": {
-                                "signal": "child_height"
-                            },
-                            "stroke": {
-                                "value": "#ccc"
-                            },
-                            "strokeWidth": {
-                                "value": 1
-                            },
-                            "fill": {
-                                "value": "transparent"
-                            }
-                        }
-                    },
-                    "signals": [
+                    "name": "brush_x",
+                    "value": [],
+                    "on": [
                         {
-                            "name": "brush_x",
-                            "value": [],
-                            "on": [
-                                {
-                                    "events": {
+                            "events": {
+                                "source": "scope",
+                                "type": "mousedown",
+                                "filter": [
+                                    "event.shiftKey",
+                                    "!event.item || event.item.mark.name !== \"brush_brush\""
+                                ]
+                            },
+                            "update": "[x(unit), x(unit)]"
+                        },
+                        {
+                            "events": {
+                                "source": "scope",
+                                "type": "mousemove",
+                                "between": [
+                                    {
                                         "source": "scope",
                                         "type": "mousedown",
                                         "filter": [
@@ -278,70 +289,78 @@
                                             "!event.item || event.item.mark.name !== \"brush_brush\""
                                         ]
                                     },
-                                    "update": "[x(unit), x(unit)]"
-                                },
-                                {
-                                    "events": {
+                                    {
                                         "source": "scope",
-                                        "type": "mousemove",
-                                        "between": [
-                                            {
-                                                "source": "scope",
-                                                "type": "mousedown",
-                                                "filter": [
-                                                    "event.shiftKey",
-                                                    "!event.item || event.item.mark.name !== \"brush_brush\""
-                                                ]
-                                            },
-                                            {
-                                                "source": "scope",
-                                                "type": "mouseup"
-                                            }
-                                        ]
-                                    },
-                                    "update": "[brush_x[0], clamp(x(unit), 0, child_width)]"
-                                },
+                                        "type": "mouseup"
+                                    }
+                                ]
+                            },
+                            "update": "[brush_x[0], clamp(x(unit), 0, child_width)]"
+                        },
+                        {
+                            "events": {
+                                "scale": "x"
+                            },
+                            "update": "!isArray(brush_X) ? brush_x : [scale(\"x\", brush_X[0]), scale(\"x\", brush_X[1])]"
+                        },
+                        {
+                            "events": {
+                                "signal": "brush_translate_delta"
+                            },
+                            "update": "clampRange([brush_translate_anchor.extent_x[0] + brush_translate_delta.x, brush_translate_anchor.extent_x[1] + brush_translate_delta.x], 0, child_width)"
+                        },
+                        {
+                            "events": {
+                                "signal": "brush_zoom_delta"
+                            },
+                            "update": "clampRange([brush_zoom_anchor.x + (brush_x[0] - brush_zoom_anchor.x) * brush_zoom_delta, brush_zoom_anchor.x + (brush_x[1] - brush_zoom_anchor.x) * brush_zoom_delta], 0, child_width)"
+                        }
+                    ]
+                },
+                {
+                    "name": "brush_X",
+                    "on": [
+                        {
+                            "events": {
+                                "signal": "brush_x"
+                            },
+                            "update": "invert(\"x\", brush_x)"
+                        }
+                    ]
+                },
+                {
+                    "name": "brush_tuple",
+                    "update": "{unit: \"child_\", intervals: [{encoding: \"x\", field: \"X\", extent: brush_X}]}"
+                },
+                {
+                    "name": "brush_translate_anchor",
+                    "value": {},
+                    "on": [
+                        {
+                            "events": [
                                 {
-                                    "events": {
-                                        "scale": "x"
-                                    },
-                                    "update": "!isArray(brush_X) ? brush_x : [scale(\"x\", brush_X[0]), scale(\"x\", brush_X[1])]"
-                                },
-                                {
-                                    "events": {
-                                        "signal": "brush_translate_delta"
-                                    },
-                                    "update": "clampRange([brush_translate_anchor.extent_x[0] + brush_translate_delta.x, brush_translate_anchor.extent_x[1] + brush_translate_delta.x], 0, child_width)"
-                                },
-                                {
-                                    "events": {
-                                        "signal": "brush_zoom_delta"
-                                    },
-                                    "update": "clampRange([brush_zoom_anchor.x + (brush_x[0] - brush_zoom_anchor.x) * brush_zoom_delta, brush_zoom_anchor.x + (brush_x[1] - brush_zoom_anchor.x) * brush_zoom_delta], 0, child_width)"
+                                    "source": "scope",
+                                    "type": "mousedown",
+                                    "filter": [
+                                        "event.shiftKey"
+                                    ],
+                                    "markname": "brush_brush"
                                 }
-                            ]
-                        },
+                            ],
+                            "update": "{x: x(unit), y: y(unit), extent_x: slice(brush_x)}"
+                        }
+                    ]
+                },
+                {
+                    "name": "brush_translate_delta",
+                    "value": {},
+                    "on": [
                         {
-                            "name": "brush_X",
-                            "on": [
+                            "events": [
                                 {
-                                    "events": {
-                                        "signal": "brush_x"
-                                    },
-                                    "update": "invert(\"x\", brush_x)"
-                                }
-                            ]
-                        },
-                        {
-                            "name": "brush",
-                            "update": "[{encoding: \"x\", field: \"X\", extent: brush_X}]"
-                        },
-                        {
-                            "name": "brush_translate_anchor",
-                            "value": {},
-                            "on": [
-                                {
-                                    "events": [
+                                    "source": "scope",
+                                    "type": "mousemove",
+                                    "between": [
                                         {
                                             "source": "scope",
                                             "type": "mousedown",
@@ -349,430 +368,372 @@
                                                 "event.shiftKey"
                                             ],
                                             "markname": "brush_brush"
-                                        }
-                                    ],
-                                    "update": "{x: x(unit), y: y(unit), extent_x: slice(brush_x)}"
-                                }
-                            ]
-                        },
-                        {
-                            "name": "brush_translate_delta",
-                            "value": {},
-                            "on": [
-                                {
-                                    "events": [
+                                        },
                                         {
                                             "source": "scope",
-                                            "type": "mousemove",
-                                            "between": [
-                                                {
-                                                    "source": "scope",
-                                                    "type": "mousedown",
-                                                    "filter": [
-                                                        "event.shiftKey"
-                                                    ],
-                                                    "markname": "brush_brush"
-                                                },
-                                                {
-                                                    "source": "scope",
-                                                    "type": "mouseup"
-                                                }
-                                            ]
+                                            "type": "mouseup"
                                         }
-                                    ],
-                                    "update": "{x: x(unit) - brush_translate_anchor.x, y: y(unit) - brush_translate_anchor.y}"
-                                }
-                            ]
-                        },
-                        {
-                            "name": "brush_zoom_anchor",
-                            "on": [
-                                {
-                                    "events": [
-                                        {
-                                            "source": "scope",
-                                            "type": "wheel",
-                                            "markname": "brush_brush"
-                                        }
-                                    ],
-                                    "update": "{x: x(unit), y: y(unit)}"
-                                }
-                            ]
-                        },
-                        {
-                            "name": "brush_zoom_delta",
-                            "on": [
-                                {
-                                    "events": [
-                                        {
-                                            "source": "scope",
-                                            "type": "wheel",
-                                            "markname": "brush_brush"
-                                        }
-                                    ],
-                                    "force": true,
-                                    "update": "pow(1.001, event.deltaY * pow(16, event.deltaMode))"
-                                }
-                            ]
-                        },
-                        {
-                            "name": "brush_tuple",
-                            "on": [
-                                {
-                                    "events": {
-                                        "signal": "brush"
-                                    },
-                                    "update": "{unit: \"child_\", intervals: brush}"
-                                }
-                            ]
-                        },
-                        {
-                            "name": "brush_modify",
-                            "on": [
-                                {
-                                    "events": {
-                                        "signal": "brush"
-                                    },
-                                    "update": "modify(\"brush_store\", brush_tuple, {unit: \"child_\"})"
-                                }
-                            ]
-                        },
-                        {
-                            "name": "grid_X",
-                            "on": [
-                                {
-                                    "events": {
-                                        "signal": "grid_translate_delta"
-                                    },
-                                    "update": "[grid_translate_anchor.extent_x[0] - span(grid_translate_anchor.extent_x) * grid_translate_delta.x / child_width, grid_translate_anchor.extent_x[1] - span(grid_translate_anchor.extent_x) * grid_translate_delta.x / child_width]"
-                                },
-                                {
-                                    "events": {
-                                        "signal": "grid_zoom_delta"
-                                    },
-                                    "update": "[grid_zoom_anchor.x + (domain(\"x\")[0] - grid_zoom_anchor.x) * grid_zoom_delta, grid_zoom_anchor.x + (domain(\"x\")[1] - grid_zoom_anchor.x) * grid_zoom_delta]"
+                                    ]
                                 }
                             ],
-                            "push": "outer"
-                        },
+                            "update": "{x: x(unit) - brush_translate_anchor.x, y: y(unit) - brush_translate_anchor.y}"
+                        }
+                    ]
+                },
+                {
+                    "name": "brush_zoom_anchor",
+                    "on": [
                         {
-                            "name": "grid_Y",
-                            "on": [
+                            "events": [
                                 {
-                                    "events": {
-                                        "signal": "grid_translate_delta"
-                                    },
-                                    "update": "[grid_translate_anchor.extent_y[0] + span(grid_translate_anchor.extent_y) * grid_translate_delta.y / child_height, grid_translate_anchor.extent_y[1] + span(grid_translate_anchor.extent_y) * grid_translate_delta.y / child_height]"
-                                },
-                                {
-                                    "events": {
-                                        "signal": "grid_zoom_delta"
-                                    },
-                                    "update": "[grid_zoom_anchor.y + (domain(\"y\")[0] - grid_zoom_anchor.y) * grid_zoom_delta, grid_zoom_anchor.y + (domain(\"y\")[1] - grid_zoom_anchor.y) * grid_zoom_delta]"
+                                    "source": "scope",
+                                    "type": "wheel",
+                                    "markname": "brush_brush"
                                 }
                             ],
-                            "push": "outer"
-                        },
+                            "update": "{x: x(unit), y: y(unit)}"
+                        }
+                    ]
+                },
+                {
+                    "name": "brush_zoom_delta",
+                    "on": [
                         {
-                            "name": "grid",
-                            "update": "[{encoding: \"x\", field: \"X\", extent: grid_X}, {encoding: \"y\", field: \"Y\", extent: grid_Y}]"
-                        },
-                        {
-                            "name": "grid_translate_anchor",
-                            "value": {},
-                            "on": [
+                            "events": [
                                 {
-                                    "events": [
+                                    "source": "scope",
+                                    "type": "wheel",
+                                    "markname": "brush_brush"
+                                }
+                            ],
+                            "force": true,
+                            "update": "pow(1.001, event.deltaY * pow(16, event.deltaMode))"
+                        }
+                    ]
+                },
+                {
+                    "name": "brush_modify",
+                    "on": [
+                        {
+                            "events": {
+                                "signal": "brush_tuple"
+                            },
+                            "update": "modify(\"brush_store\", brush_tuple, {unit: \"child_\"})"
+                        }
+                    ]
+                },
+                {
+                    "name": "grid_X",
+                    "on": [
+                        {
+                            "events": {
+                                "signal": "grid_translate_delta"
+                            },
+                            "update": "[grid_translate_anchor.extent_x[0] - span(grid_translate_anchor.extent_x) * grid_translate_delta.x / child_width, grid_translate_anchor.extent_x[1] - span(grid_translate_anchor.extent_x) * grid_translate_delta.x / child_width]"
+                        },
+                        {
+                            "events": {
+                                "signal": "grid_zoom_delta"
+                            },
+                            "update": "[grid_zoom_anchor.x + (domain(\"x\")[0] - grid_zoom_anchor.x) * grid_zoom_delta, grid_zoom_anchor.x + (domain(\"x\")[1] - grid_zoom_anchor.x) * grid_zoom_delta]"
+                        }
+                    ],
+                    "push": "outer"
+                },
+                {
+                    "name": "grid_Y",
+                    "on": [
+                        {
+                            "events": {
+                                "signal": "grid_translate_delta"
+                            },
+                            "update": "[grid_translate_anchor.extent_y[0] + span(grid_translate_anchor.extent_y) * grid_translate_delta.y / child_height, grid_translate_anchor.extent_y[1] + span(grid_translate_anchor.extent_y) * grid_translate_delta.y / child_height]"
+                        },
+                        {
+                            "events": {
+                                "signal": "grid_zoom_delta"
+                            },
+                            "update": "[grid_zoom_anchor.y + (domain(\"y\")[0] - grid_zoom_anchor.y) * grid_zoom_delta, grid_zoom_anchor.y + (domain(\"y\")[1] - grid_zoom_anchor.y) * grid_zoom_delta]"
+                        }
+                    ],
+                    "push": "outer"
+                },
+                {
+                    "name": "grid_tuple",
+                    "update": "{unit: \"child_\", intervals: [{encoding: \"x\", field: \"X\", extent: grid_X}, {encoding: \"y\", field: \"Y\", extent: grid_Y}]}"
+                },
+                {
+                    "name": "grid_translate_anchor",
+                    "value": {},
+                    "on": [
+                        {
+                            "events": [
+                                {
+                                    "source": "scope",
+                                    "type": "mousedown",
+                                    "filter": [
+                                        "!event.shiftKey"
+                                    ]
+                                }
+                            ],
+                            "update": "{x: x(unit), y: y(unit), extent_x: domain(\"x\"), extent_y: domain(\"y\")}"
+                        }
+                    ]
+                },
+                {
+                    "name": "grid_translate_delta",
+                    "value": {},
+                    "on": [
+                        {
+                            "events": [
+                                {
+                                    "source": "scope",
+                                    "type": "mousemove",
+                                    "between": [
                                         {
                                             "source": "scope",
                                             "type": "mousedown",
                                             "filter": [
                                                 "!event.shiftKey"
                                             ]
-                                        }
-                                    ],
-                                    "update": "{x: x(unit), y: y(unit), extent_x: domain(\"x\"), extent_y: domain(\"y\")}"
-                                }
-                            ]
-                        },
-                        {
-                            "name": "grid_translate_delta",
-                            "value": {},
-                            "on": [
-                                {
-                                    "events": [
-                                        {
-                                            "source": "scope",
-                                            "type": "mousemove",
-                                            "between": [
-                                                {
-                                                    "source": "scope",
-                                                    "type": "mousedown",
-                                                    "filter": [
-                                                        "!event.shiftKey"
-                                                    ]
-                                                },
-                                                {
-                                                    "source": "scope",
-                                                    "type": "mouseup"
-                                                }
-                                            ]
-                                        }
-                                    ],
-                                    "update": "{x: x(unit) - grid_translate_anchor.x, y: y(unit) - grid_translate_anchor.y}"
-                                }
-                            ]
-                        },
-                        {
-                            "name": "grid_zoom_anchor",
-                            "on": [
-                                {
-                                    "events": [
-                                        {
-                                            "source": "scope",
-                                            "type": "wheel"
-                                        }
-                                    ],
-                                    "update": "{x: invert(\"x\", x(unit)), y: invert(\"y\", y(unit))}"
-                                }
-                            ]
-                        },
-                        {
-                            "name": "grid_zoom_delta",
-                            "on": [
-                                {
-                                    "events": [
-                                        {
-                                            "source": "scope",
-                                            "type": "wheel"
-                                        }
-                                    ],
-                                    "force": true,
-                                    "update": "pow(1.001, event.deltaY * pow(16, event.deltaMode))"
-                                }
-                            ]
-                        },
-                        {
-                            "name": "grid_tuple",
-                            "on": [
-                                {
-                                    "events": {
-                                        "signal": "grid"
-                                    },
-                                    "update": "{unit: \"child_\", intervals: grid}"
-                                }
-                            ]
-                        },
-                        {
-                            "name": "grid_modify",
-                            "on": [
-                                {
-                                    "events": {
-                                        "signal": "grid"
-                                    },
-                                    "update": "modify(\"grid_store\", grid_tuple, true)"
-                                }
-                            ]
-                        },
-                        {
-                            "name": "xenc",
-                            "update": "{fields: [\"X\"], values: [xenc_X]}"
-                        },
-                        {
-                            "name": "xenc_tuple",
-                            "on": [
-                                {
-                                    "events": {
-                                        "signal": "xenc"
-                                    },
-                                    "update": "{unit: \"child_\", encodings: xenc.encodings, fields: xenc.fields, values: xenc.values, bins: xenc.bins, X: xenc.values[0]}"
-                                }
-                            ]
-                        },
-                        {
-                            "name": "xenc_modify",
-                            "on": [
-                                {
-                                    "events": {
-                                        "signal": "xenc"
-                                    },
-                                    "update": "modify(\"xenc_store\", xenc_tuple, true)"
-                                }
-                            ]
-                        }
-                    ],
-                    "marks": [
-                        {
-                            "type": "rect",
-                            "encode": {
-                                "enter": {
-                                    "fill": {
-                                        "value": "#333"
-                                    },
-                                    "fillOpacity": {
-                                        "value": 0.125
-                                    }
-                                },
-                                "update": {
-                                    "x": {
-                                        "signal": "brush_x[0]"
-                                    },
-                                    "y": {
-                                        "value": 0
-                                    },
-                                    "x2": {
-                                        "signal": "brush_x[1]"
-                                    },
-                                    "y2": {
-                                        "field": {
-                                            "group": "height"
-                                        }
-                                    }
-                                }
-                            },
-                            "clip": true
-                        },
-                        {
-                            "name": "child_marks",
-                            "type": "symbol",
-                            "role": "circle",
-                            "from": {
-                                "data": "facet"
-                            },
-                            "encode": {
-                                "update": {
-                                    "x": {
-                                        "scale": "x",
-                                        "field": "X"
-                                    },
-                                    "y": {
-                                        "scale": "y",
-                                        "field": "Y"
-                                    },
-                                    "fill": [
-                                        {
-                                            "test": "vlPoint(\"xenc_store\", \"child_\", datum, \"union\", \"all\")",
-                                            "value": "red"
                                         },
                                         {
-                                            "value": "steelblue"
-                                        }
-                                    ],
-                                    "size": [
-                                        {
-                                            "test": "vlInterval(\"brush_store\", \"child_\", datum, \"intersect\", \"all\")",
-                                            "value": 250
-                                        },
-                                        {
-                                            "value": 100
-                                        }
-                                    ],
-                                    "shape": {
-                                        "value": "circle"
-                                    },
-                                    "opacity": {
-                                        "value": 1
-                                    }
-                                }
-                            },
-                            "clip": true
-                        },
-                        {
-                            "name": "child_voronoi",
-                            "type": "path",
-                            "from": {
-                                "data": "child_marks"
-                            },
-                            "encode": {
-                                "enter": {
-                                    "fill": {
-                                        "value": "transparent"
-                                    },
-                                    "strokeWidth": {
-                                        "value": 0.35
-                                    },
-                                    "stroke": {
-                                        "value": "transparent"
-                                    },
-                                    "isVoronoi": {
-                                        "value": true
-                                    }
-                                }
-                            },
-                            "transform": [
-                                {
-                                    "type": "voronoi",
-                                    "x": "datum.x",
-                                    "y": "datum.y",
-                                    "size": [
-                                        {
-                                            "signal": "child_width"
-                                        },
-                                        {
-                                            "signal": "child_height"
+                                            "source": "scope",
+                                            "type": "mouseup"
                                         }
                                     ]
                                 }
                             ],
-                            "clip": true
-                        },
-                        {
-                            "name": "brush_brush",
-                            "type": "rect",
-                            "encode": {
-                                "enter": {
-                                    "fill": {
-                                        "value": "transparent"
-                                    },
-                                    "stroke": {
-                                        "value": "white"
-                                    }
-                                },
-                                "update": {
-                                    "x": {
-                                        "signal": "brush_x[0]"
-                                    },
-                                    "y": {
-                                        "value": 0
-                                    },
-                                    "x2": {
-                                        "signal": "brush_x[1]"
-                                    },
-                                    "y2": {
-                                        "field": {
-                                            "group": "height"
-                                        }
-                                    }
-                                }
-                            },
-                            "clip": true
-                        }
-                    ],
-                    "axes": [
-                        {
-                            "scale": "x",
-                            "domain": false,
-                            "format": "s",
-                            "grid": true,
-                            "labels": false,
-                            "orient": "bottom",
-                            "tickCount": 5,
-                            "ticks": false,
-                            "zindex": 0,
-                            "gridScale": "y"
-                        },
-                        {
-                            "scale": "y",
-                            "domain": false,
-                            "format": "s",
-                            "grid": true,
-                            "labels": false,
-                            "orient": "left",
-                            "ticks": false,
-                            "zindex": 0,
-                            "gridScale": "x"
+                            "update": "{x: x(unit) - grid_translate_anchor.x, y: y(unit) - grid_translate_anchor.y}"
                         }
                     ]
+                },
+                {
+                    "name": "grid_zoom_anchor",
+                    "on": [
+                        {
+                            "events": [
+                                {
+                                    "source": "scope",
+                                    "type": "wheel"
+                                }
+                            ],
+                            "update": "{x: invert(\"x\", x(unit)), y: invert(\"y\", y(unit))}"
+                        }
+                    ]
+                },
+                {
+                    "name": "grid_zoom_delta",
+                    "on": [
+                        {
+                            "events": [
+                                {
+                                    "source": "scope",
+                                    "type": "wheel"
+                                }
+                            ],
+                            "force": true,
+                            "update": "pow(1.001, event.deltaY * pow(16, event.deltaMode))"
+                        }
+                    ]
+                },
+                {
+                    "name": "grid_modify",
+                    "on": [
+                        {
+                            "events": {
+                                "signal": "grid_tuple"
+                            },
+                            "update": "modify(\"grid_store\", grid_tuple, true)"
+                        }
+                    ]
+                },
+                {
+                    "name": "xenc_tuple",
+                    "update": "{fields: [\"X\"], values: [xenc_X]}"
+                },
+                {
+                    "name": "xenc_modify",
+                    "on": [
+                        {
+                            "events": {
+                                "signal": "xenc_tuple"
+                            },
+                            "update": "modify(\"xenc_store\", xenc_tuple, true)"
+                        }
+                    ]
+                }
+            ],
+            "marks": [
+                {
+                    "type": "rect",
+                    "encode": {
+                        "enter": {
+                            "fill": {
+                                "value": "#333"
+                            },
+                            "fillOpacity": {
+                                "value": 0.125
+                            }
+                        },
+                        "update": {
+                            "x": {
+                                "signal": "brush_x[0]"
+                            },
+                            "y": {
+                                "value": 0
+                            },
+                            "x2": {
+                                "signal": "brush_x[1]"
+                            },
+                            "y2": {
+                                "field": {
+                                    "group": "height"
+                                }
+                            }
+                        }
+                    },
+                    "clip": true
+                },
+                {
+                    "name": "child_marks",
+                    "type": "symbol",
+                    "role": "circle",
+                    "from": {
+                        "data": "facet"
+                    },
+                    "encode": {
+                        "update": {
+                            "x": {
+                                "scale": "x",
+                                "field": "X"
+                            },
+                            "y": {
+                                "scale": "y",
+                                "field": "Y"
+                            },
+                            "fill": [
+                                {
+                                    "test": "vlPoint(\"xenc_store\", \"child_\", datum, \"union\", \"all\")",
+                                    "value": "red"
+                                },
+                                {
+                                    "value": "steelblue"
+                                }
+                            ],
+                            "size": [
+                                {
+                                    "test": "vlInterval(\"brush_store\", \"child_\", datum, \"intersect\", \"all\")",
+                                    "value": 250
+                                },
+                                {
+                                    "value": 100
+                                }
+                            ],
+                            "shape": {
+                                "value": "circle"
+                            },
+                            "opacity": {
+                                "value": 1
+                            }
+                        }
+                    },
+                    "clip": true
+                },
+                {
+                    "name": "child_voronoi",
+                    "type": "path",
+                    "from": {
+                        "data": "child_marks"
+                    },
+                    "encode": {
+                        "enter": {
+                            "fill": {
+                                "value": "transparent"
+                            },
+                            "strokeWidth": {
+                                "value": 0.35
+                            },
+                            "stroke": {
+                                "value": "transparent"
+                            },
+                            "isVoronoi": {
+                                "value": true
+                            }
+                        }
+                    },
+                    "transform": [
+                        {
+                            "type": "voronoi",
+                            "x": "datum.x",
+                            "y": "datum.y",
+                            "size": [
+                                {
+                                    "signal": "child_width"
+                                },
+                                {
+                                    "signal": "child_height"
+                                }
+                            ]
+                        }
+                    ],
+                    "clip": true
+                },
+                {
+                    "name": "brush_brush",
+                    "type": "rect",
+                    "encode": {
+                        "enter": {
+                            "fill": {
+                                "value": "transparent"
+                            },
+                            "stroke": {
+                                "value": "white"
+                            }
+                        },
+                        "update": {
+                            "x": {
+                                "signal": "brush_x[0]"
+                            },
+                            "y": {
+                                "value": 0
+                            },
+                            "x2": {
+                                "signal": "brush_x[1]"
+                            },
+                            "y2": {
+                                "field": {
+                                    "group": "height"
+                                }
+                            }
+                        }
+                    },
+                    "clip": true
+                }
+            ],
+            "axes": [
+                {
+                    "scale": "x",
+                    "domain": false,
+                    "format": "s",
+                    "grid": true,
+                    "labels": false,
+                    "orient": "bottom",
+                    "tickCount": 5,
+                    "ticks": false,
+                    "zindex": 0,
+                    "gridScale": "y"
+                },
+                {
+                    "scale": "y",
+                    "domain": false,
+                    "format": "s",
+                    "grid": true,
+                    "labels": false,
+                    "orient": "left",
+                    "ticks": false,
+                    "zindex": 0,
+                    "gridScale": "x"
                 }
             ]
         }
@@ -785,16 +746,16 @@
                 "data": "source_0",
                 "field": "X"
             },
+            "domainRaw": {
+                "signal": "grid_X"
+            },
             "range": [
                 0,
                 200
             ],
-            "round": true,
-            "nice": true,
             "zero": false,
-            "domainRaw": {
-                "signal": "grid_X"
-            }
+            "round": true,
+            "nice": true
         },
         {
             "name": "y",
@@ -803,16 +764,16 @@
                 "data": "source_0",
                 "field": "Y"
             },
+            "domainRaw": {
+                "signal": "grid_Y"
+            },
             "range": [
                 200,
                 0
             ],
-            "round": true,
-            "nice": true,
             "zero": false,
-            "domainRaw": {
-                "signal": "grid_Y"
-            }
+            "round": true,
+            "nice": true
         }
     ]
 }

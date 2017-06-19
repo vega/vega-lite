@@ -2,6 +2,13 @@
     "$schema": "http://vega.github.io/schema/vega/v3.0.json",
     "autosize": "pad",
     "padding": 5,
+    "encode": {
+        "update": {
+            "fill": {
+                "value": "transparent"
+            }
+        }
+    },
     "data": [
         {
             "name": "source_0",
@@ -109,79 +116,60 @@
     ],
     "marks": [
         {
-            "name": "nested_main_group",
+            "name": "pathgroup",
             "type": "group",
+            "from": {
+                "facet": {
+                    "name": "faceted_path_main",
+                    "data": "source_0",
+                    "groupby": [
+                        "Cylinders"
+                    ]
+                }
+            },
             "encode": {
                 "update": {
                     "width": {
-                        "signal": "width"
+                        "field": {
+                            "group": "width"
+                        }
                     },
                     "height": {
-                        "signal": "height"
-                    },
-                    "fill": {
-                        "value": "transparent"
+                        "field": {
+                            "group": "height"
+                        }
                     }
                 }
             },
             "marks": [
                 {
-                    "name": "pathgroup",
-                    "type": "group",
+                    "name": "marks",
+                    "type": "area",
                     "from": {
-                        "facet": {
-                            "name": "faceted_path_main",
-                            "data": "source_0",
-                            "groupby": [
-                                "Cylinders"
-                            ]
-                        }
+                        "data": "faceted_path_main"
                     },
                     "encode": {
                         "update": {
-                            "width": {
-                                "field": {
-                                    "group": "width"
-                                }
+                            "x": {
+                                "signal": "(scale(\"x\", datum[\"bin_maxbins_10_Acceleration_start\"]) + scale(\"x\", datum[\"bin_maxbins_10_Acceleration_end\"]))/2"
                             },
-                            "height": {
-                                "field": {
-                                    "group": "height"
-                                }
+                            "y": {
+                                "scale": "y",
+                                "field": "sum_Horsepower_end"
+                            },
+                            "y2": {
+                                "scale": "y",
+                                "field": "sum_Horsepower_start"
+                            },
+                            "fill": {
+                                "scale": "color",
+                                "field": "Cylinders"
+                            },
+                            "orient": {
+                                "value": "vertical"
                             }
                         }
-                    },
-                    "marks": [
-                        {
-                            "name": "marks",
-                            "type": "area",
-                            "from": {
-                                "data": "faceted_path_main"
-                            },
-                            "encode": {
-                                "update": {
-                                    "x": {
-                                        "signal": "(scale(\"x\", datum[\"bin_maxbins_10_Acceleration_start\"]) + scale(\"x\", datum[\"bin_maxbins_10_Acceleration_end\"]))/2"
-                                    },
-                                    "y": {
-                                        "scale": "y",
-                                        "field": "sum_Horsepower_end"
-                                    },
-                                    "y2": {
-                                        "scale": "y",
-                                        "field": "sum_Horsepower_start"
-                                    },
-                                    "fill": {
-                                        "scale": "color",
-                                        "field": "Cylinders"
-                                    },
-                                    "orient": {
-                                        "value": "vertical"
-                                    }
-                                }
-                            }
-                        }
-                    ]
+                    }
                 }
             ]
         }
@@ -189,16 +177,20 @@
     "scales": [
         {
             "name": "x",
-            "type": "bin-linear",
+            "type": "linear",
             "domain": {
-                "signal": "sequence(bin_maxbins_10_Acceleration_bins.start, bin_maxbins_10_Acceleration_bins.stop + bin_maxbins_10_Acceleration_bins.step, bin_maxbins_10_Acceleration_bins.step)"
+                "data": "source_0",
+                "fields": [
+                    "bin_maxbins_10_Acceleration_start",
+                    "bin_maxbins_10_Acceleration_end"
+                ]
             },
             "range": [
                 0,
                 200
             ],
             "round": true,
-            "nice": true
+            "zero": false
         },
         {
             "name": "y",
@@ -235,6 +227,9 @@
             "format": "s",
             "orient": "bottom",
             "title": "BIN(Acceleration)",
+            "values": {
+                "signal": "sequence(bin_maxbins_10_Acceleration_bins.start, bin_maxbins_10_Acceleration_bins.stop + bin_maxbins_10_Acceleration_bins.step, bin_maxbins_10_Acceleration_bins.step)"
+            },
             "zindex": 1,
             "encode": {
                 "labels": {

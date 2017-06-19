@@ -3,6 +3,13 @@
     "description": "Google's stock price over time.",
     "autosize": "pad",
     "padding": 5,
+    "encode": {
+        "update": {
+            "fill": {
+                "value": "transparent"
+            }
+        }
+    },
     "data": [
         {
             "name": "source_0",
@@ -128,103 +135,84 @@
     ],
     "marks": [
         {
-            "name": "nested_main_group",
-            "type": "group",
+            "name": "layer_0_marks",
+            "type": "area",
+            "from": {
+                "data": "data_0"
+            },
             "encode": {
                 "update": {
-                    "width": {
-                        "signal": "width"
+                    "x": {
+                        "scale": "x",
+                        "field": "date"
                     },
-                    "height": {
-                        "signal": "height"
+                    "y": {
+                        "scale": "y",
+                        "field": "price"
+                    },
+                    "y2": {
+                        "scale": "y",
+                        "value": 0
                     },
                     "fill": {
-                        "value": "transparent"
+                        "value": "#4c78a8"
+                    },
+                    "orient": {
+                        "value": "vertical"
                     }
                 }
             },
-            "marks": [
-                {
-                    "name": "layer_0_marks",
-                    "type": "area",
-                    "from": {
-                        "data": "data_0"
+            "clip": true
+        },
+        {
+            "name": "layer_1_marks",
+            "type": "line",
+            "from": {
+                "data": "data_1"
+            },
+            "encode": {
+                "update": {
+                    "x": {
+                        "scale": "x",
+                        "field": "date"
                     },
-                    "encode": {
-                        "update": {
-                            "x": {
-                                "scale": "x",
-                                "field": "date"
-                            },
-                            "y": {
-                                "scale": "y",
-                                "field": "price"
-                            },
-                            "y2": {
-                                "scale": "y",
-                                "value": 0
-                            },
-                            "fill": {
-                                "value": "#4c78a8"
-                            },
-                            "orient": {
-                                "value": "vertical"
-                            }
-                        }
+                    "y": {
+                        "scale": "y",
+                        "field": "price"
                     },
-                    "clip": true
-                },
-                {
-                    "name": "layer_1_marks",
-                    "type": "line",
-                    "from": {
-                        "data": "data_1"
-                    },
-                    "encode": {
-                        "update": {
-                            "x": {
-                                "scale": "x",
-                                "field": "date"
-                            },
-                            "y": {
-                                "scale": "y",
-                                "field": "price"
-                            },
-                            "fill": {
-                                "value": "#4c78a8"
-                            }
-                        }
-                    },
-                    "clip": true
-                },
-                {
-                    "name": "layer_2_marks",
-                    "type": "symbol",
-                    "role": "point",
-                    "from": {
-                        "data": "data_2"
-                    },
-                    "encode": {
-                        "update": {
-                            "x": {
-                                "scale": "x",
-                                "field": "date"
-                            },
-                            "y": {
-                                "scale": "y",
-                                "field": "price"
-                            },
-                            "fill": {
-                                "value": "#4c78a8"
-                            },
-                            "opacity": {
-                                "value": 0.7
-                            }
-                        }
-                    },
-                    "clip": true
+                    "fill": {
+                        "value": "#4c78a8"
+                    }
                 }
-            ]
+            },
+            "clip": true
+        },
+        {
+            "name": "layer_2_marks",
+            "type": "symbol",
+            "role": "point",
+            "from": {
+                "data": "data_2"
+            },
+            "encode": {
+                "update": {
+                    "x": {
+                        "scale": "x",
+                        "field": "date"
+                    },
+                    "y": {
+                        "scale": "y",
+                        "field": "price"
+                    },
+                    "fill": {
+                        "value": "#4c78a8"
+                    },
+                    "opacity": {
+                        "value": 0.7
+                    }
+                }
+            },
+            "clip": true
         }
     ],
     "scales": [

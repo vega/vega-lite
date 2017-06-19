@@ -1,8 +1,10 @@
+import {SCALE_CHANNELS} from '../../channel';
 import {ScaleType} from '../../scale';
 import {Dict, duplicate, extend, keys} from '../../util';
 import {VgFilterTransform, VgTransform} from '../../vega.schema';
 import {UnitModel} from './../unit';
 import {DataFlowNode} from './dataflow';
+
 
 export class NonPositiveFilterNode extends DataFlowNode {
   private _filter: Dict<boolean>;
@@ -18,17 +20,17 @@ export class NonPositiveFilterNode extends DataFlowNode {
   }
 
   public static make(model: UnitModel) {
-    const filter = model.channels().reduce(function(nonPositiveComponent, channel) {
-      const scale = model.scale(channel);
+    const filter = SCALE_CHANNELS.reduce(function(nonPositiveComponent, channel) {
+      const scale = model.getScaleComponent(channel);
       if (!scale || !model.field(channel)) {
         // don't set anything
         return nonPositiveComponent;
       }
-      nonPositiveComponent[model.field(channel)] = scale.type === ScaleType.LOG;
+      nonPositiveComponent[model.field(channel)] = scale.get('type') === ScaleType.LOG;
       return nonPositiveComponent;
     }, {});
 
-    if (!Object.keys(filter).length) {
+    if (!keys(filter).length) {
       return null;
     }
 

@@ -2,6 +2,13 @@
     "$schema": "http://vega.github.io/schema/vega/v3.0.json",
     "autosize": "pad",
     "padding": 5,
+    "encode": {
+        "update": {
+            "fill": {
+                "value": "transparent"
+            }
+        }
+    },
     "data": [
         {
             "name": "source_0",
@@ -77,55 +84,36 @@
     ],
     "marks": [
         {
-            "name": "nested_main_group",
-            "type": "group",
+            "name": "marks",
+            "type": "rect",
+            "role": "bar",
+            "from": {
+                "data": "source_0"
+            },
             "encode": {
                 "update": {
-                    "width": {
-                        "signal": "width"
+                    "x": {
+                        "scale": "x",
+                        "field": "age"
                     },
-                    "height": {
-                        "signal": "height"
+                    "width": {
+                        "scale": "x",
+                        "band": true
+                    },
+                    "y": {
+                        "scale": "y",
+                        "field": "sum_people_end"
+                    },
+                    "y2": {
+                        "scale": "y",
+                        "field": "sum_people_start"
                     },
                     "fill": {
-                        "value": "transparent"
+                        "scale": "color",
+                        "field": "gender"
                     }
                 }
-            },
-            "marks": [
-                {
-                    "name": "marks",
-                    "type": "rect",
-                    "role": "bar",
-                    "from": {
-                        "data": "source_0"
-                    },
-                    "encode": {
-                        "update": {
-                            "x": {
-                                "scale": "x",
-                                "field": "age"
-                            },
-                            "width": {
-                                "scale": "x",
-                                "band": true
-                            },
-                            "y": {
-                                "scale": "y",
-                                "field": "sum_people_end"
-                            },
-                            "y2": {
-                                "scale": "y",
-                                "field": "sum_people_start"
-                            },
-                            "fill": {
-                                "scale": "color",
-                                "field": "gender"
-                            }
-                        }
-                    }
-                }
-            ]
+            }
         }
     ],
     "scales": [

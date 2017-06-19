@@ -3,6 +3,13 @@
     "description": "A scatterplot showing horsepower and miles per gallons with binned acceleration on size.",
     "autosize": "pad",
     "padding": 5,
+    "encode": {
+        "update": {
+            "fill": {
+                "value": "transparent"
+            }
+        }
+    },
     "data": [
         {
             "name": "source_0",
@@ -53,56 +60,37 @@
     ],
     "marks": [
         {
-            "name": "nested_main_group",
-            "type": "group",
+            "name": "marks",
+            "type": "symbol",
+            "role": "point",
+            "from": {
+                "data": "source_0"
+            },
             "encode": {
                 "update": {
-                    "width": {
-                        "signal": "width"
+                    "x": {
+                        "scale": "x",
+                        "field": "Horsepower"
                     },
-                    "height": {
-                        "signal": "height"
+                    "y": {
+                        "scale": "y",
+                        "field": "Miles_per_Gallon"
+                    },
+                    "stroke": {
+                        "value": "#4c78a8"
                     },
                     "fill": {
                         "value": "transparent"
-                    }
-                }
-            },
-            "marks": [
-                {
-                    "name": "marks",
-                    "type": "symbol",
-                    "role": "point",
-                    "from": {
-                        "data": "source_0"
                     },
-                    "encode": {
-                        "update": {
-                            "x": {
-                                "scale": "x",
-                                "field": "Horsepower"
-                            },
-                            "y": {
-                                "scale": "y",
-                                "field": "Miles_per_Gallon"
-                            },
-                            "stroke": {
-                                "value": "#4c78a8"
-                            },
-                            "fill": {
-                                "value": "transparent"
-                            },
-                            "size": {
-                                "scale": "size",
-                                "field": "bin_maxbins_6_Acceleration_start"
-                            },
-                            "opacity": {
-                                "value": 0.7
-                            }
-                        }
+                    "size": {
+                        "scale": "size",
+                        "field": "bin_maxbins_6_Acceleration_start"
+                    },
+                    "opacity": {
+                        "value": 0.7
                     }
                 }
-            ]
+            }
         }
     ],
     "scales": [
@@ -145,8 +133,7 @@
             "range": [
                 9,
                 361
-            ],
-            "nice": false
+            ]
         }
     ],
     "axes": [

@@ -3,6 +3,13 @@
     "description": "Average Stock prices of 5 Tech Companies.",
     "autosize": "pad",
     "padding": 5,
+    "encode": {
+        "update": {
+            "fill": {
+                "value": "transparent"
+            }
+        }
+    },
     "data": [
         {
             "name": "source_0",
@@ -48,53 +55,34 @@
     ],
     "marks": [
         {
-            "name": "nested_main_group",
-            "type": "group",
+            "name": "marks",
+            "type": "rule",
+            "from": {
+                "data": "source_0"
+            },
             "encode": {
                 "update": {
-                    "width": {
-                        "signal": "width"
+                    "x": {
+                        "value": 0
                     },
-                    "height": {
-                        "signal": "height"
+                    "y": {
+                        "scale": "y",
+                        "field": "mean_price"
                     },
-                    "fill": {
-                        "value": "transparent"
-                    }
-                }
-            },
-            "marks": [
-                {
-                    "name": "marks",
-                    "type": "rule",
-                    "from": {
-                        "data": "source_0"
-                    },
-                    "encode": {
-                        "update": {
-                            "x": {
-                                "value": 0
-                            },
-                            "y": {
-                                "scale": "y",
-                                "field": "mean_price"
-                            },
-                            "x2": {
-                                "field": {
-                                    "group": "width"
-                                }
-                            },
-                            "stroke": {
-                                "scale": "color",
-                                "field": "symbol"
-                            },
-                            "strokeWidth": {
-                                "value": 2
-                            }
+                    "x2": {
+                        "field": {
+                            "group": "width"
                         }
+                    },
+                    "stroke": {
+                        "scale": "color",
+                        "field": "symbol"
+                    },
+                    "strokeWidth": {
+                        "value": 2
                     }
                 }
-            ]
+            }
         }
     ],
     "scales": [

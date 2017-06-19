@@ -10,6 +10,7 @@ import {Mark} from './mark';
 import {SCALE_TYPES, ScaleType} from './scale';
 import {contains, toSet, without} from './util';
 
+
 export namespace Channel {
   // Facet
   export const ROW: 'row' = 'row';
@@ -55,6 +56,21 @@ export const TOOLTIP = Channel.TOOLTIP;
 export const CHANNELS = [X, Y, X2, Y2, ROW, COLUMN, SIZE, SHAPE, COLOR, ORDER, OPACITY, TEXT, DETAIL, TOOLTIP];
 const CHANNEL_INDEX = toSet(CHANNELS);
 
+/**
+ * Channels cannot have an array of channelDef.
+ * model.fieldDef, getFieldDef only work for these channels.
+ *
+ * (The only two channels that can have an array of channelDefs are "detail" and "order".
+ * Since there can be multiple fieldDefs for detail and order, getFieldDef/model.fieldDef
+ * are not applicable for them.  Similarly, selection projecttion won't work with "detail" and "order".)
+ */
+export const SINGLE_DEF_CHANNELS = [X, Y, X2, Y2, ROW, COLUMN, SIZE, SHAPE, COLOR, OPACITY, TEXT, TOOLTIP];
+
+// export type SingleDefChannel = typeof SINGLE_DEF_CHANNELS[0];
+// FIXME somehow the typeof above leads to the following error when running npm run schema
+// UnknownNodeError: Unknown node "SingleDefChannel" (ts.SyntaxKind = 171) at /Users/kanitw/Documents/_code/_idl/_visrec/vega-lite/src/selection.ts(17,14)
+export type SingleDefChannel = 'x' | 'y' | 'x2' | 'y2' | 'row' | 'column' | 'size' | 'shape' | 'color' | 'opacity' | 'text' | 'tooltip';
+
 export function isChannel(str: string): str is Channel {
   return !!CHANNEL_INDEX[str];
 }
@@ -62,12 +78,15 @@ export function isChannel(str: string): str is Channel {
 // CHANNELS without COLUMN, ROW
 export const UNIT_CHANNELS = [X, Y, X2, Y2, SIZE, SHAPE, COLOR, ORDER, OPACITY, TEXT, DETAIL, TOOLTIP];
 
-// UNIT_CHANNELS without X2, Y2, ORDER, DETAIL, TEXT, TOOLTIP
-export const UNIT_SCALE_CHANNELS = [X, Y, SIZE, SHAPE, COLOR, OPACITY];
-
-// UNIT_SCALE_CHANNELS with ROW, COLUMN
-export const SCALE_CHANNELS = [X, Y, SIZE, SHAPE, COLOR, OPACITY, ROW, COLUMN];
+/** List of channels with scales */
+export const SCALE_CHANNELS = [X, Y, SIZE, SHAPE, COLOR, OPACITY];
 export type ScaleChannel = typeof SCALE_CHANNELS[0];
+
+const SCALE_CHANNEL_INDEX = toSet(SCALE_CHANNELS);
+
+export function isScaleChannel(channel: Channel): channel is ScaleChannel {
+  return !!SCALE_CHANNEL_INDEX[channel];
+}
 
 // UNIT_CHANNELS without X, Y, X2, Y2;
 export const NONSPATIAL_CHANNELS = [SIZE, SHAPE, COLOR, ORDER, OPACITY, TEXT, DETAIL, TOOLTIP];
@@ -76,14 +95,15 @@ export const NONSPATIAL_CHANNELS = [SIZE, SHAPE, COLOR, ORDER, OPACITY, TEXT, DE
 export const SPATIAL_SCALE_CHANNELS = [X, Y];
 export type SpatialScaleChannel = typeof SPATIAL_SCALE_CHANNELS[0];
 
-// UNIT_SCALE_CHANNELS without X, Y;
+// SCALE_CHANNELS without X, Y;
 export const NONSPATIAL_SCALE_CHANNELS = [SIZE, SHAPE, COLOR, OPACITY];
 export type NonspatialScaleChannel = typeof NONSPATIAL_SCALE_CHANNELS[0];
 
 export const LEVEL_OF_DETAIL_CHANNELS = without(NONSPATIAL_CHANNELS, ['order'] as Channel[]);
 
 /** Channels that can serve as groupings for stacked charts. */
-export const STACK_GROUP_CHANNELS = [COLOR, DETAIL, ORDER, OPACITY, SIZE];
+export const STACK_BY_CHANNELS = [COLOR, DETAIL, ORDER, OPACITY, SIZE];
+export type StackByChannel = typeof STACK_BY_CHANNELS[0];
 
 export interface SupportedMark {
   point?: boolean;

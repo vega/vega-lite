@@ -5,13 +5,18 @@ import {CompositeAggregate} from './compositemark';
 import {Facet} from './facet';
 import {
   ChannelDef,
-  ConditionalValueDef,
+  Condition,
+  Conditional,
   Field,
   FieldDef,
+  getFieldDef,
+  hasConditionFieldDef,
+  isConditionalDef,
   isFieldDef,
   isValueDef,
   LegendFieldDef,
   normalize,
+  normalizeFieldDef,
   OrderFieldDef,
   PositionFieldDef,
   TextFieldDef,
@@ -19,9 +24,8 @@ import {
 } from './fielddef';
 import * as log from './log';
 import {Mark} from './mark';
-import {isArray, some} from './util';
+import {isArray, keys, some} from './util';
 
-// utility for encoding mapping
 
 export interface Encoding<F> {
   /**
@@ -55,12 +59,12 @@ export interface Encoding<F> {
    * (By default, fill color for `area`, `bar`, `tick`, `text`, `circle`, and `square` /
    * stroke color for `line` and `point`.)
    */
-  color?: LegendFieldDef<F, string> | ConditionalValueDef<string>;
+  color?: Conditional<LegendFieldDef<F>, ValueDef<string>>;
 
   /**
    * Opacity of the marks – either can be a value or a range.
    */
-  opacity?: LegendFieldDef<F, number> | ConditionalValueDef<number>;
+  opacity?: Conditional<LegendFieldDef<F>, ValueDef<number>>;
 
   /**
    * Size of the mark.
@@ -70,14 +74,14 @@ export interface Encoding<F> {
    * - For `text` – the text's font size.
    * - Size is currently unsupported for `line` and `area`.
    */
-  size?: LegendFieldDef<F, number> | ConditionalValueDef<number>;
+  size?: Conditional<LegendFieldDef<F>, ValueDef<number>>;
 
   /**
    * The symbol's shape (only for `point` marks). The supported values are
    * `"circle"` (default), `"square"`, `"cross"`, `"diamond"`, `"triangle-up"`,
    * or `"triangle-down"`, or else a custom SVG path string.
    */
-  shape?: LegendFieldDef<F, string> | ConditionalValueDef<string>; // TODO: maybe distinguish ordinal-only
+  shape?: Conditional<LegendFieldDef<F>, ValueDef<string>>; // TODO: maybe distinguish ordinal-only
 
   /**
    * Additional levels of detail for grouping data in aggregate views and
@@ -88,12 +92,12 @@ export interface Encoding<F> {
   /**
    * Text of the `text` mark.
    */
-  text?: TextFieldDef<F> | ConditionalValueDef<string|number|boolean>;
+  text?: Conditional<TextFieldDef<F>, ValueDef<string|number|boolean>>;
 
   /**
    * The tooltip text to show upon mouse hover.
    */
-  tooltip?: TextFieldDef<F> | ConditionalValueDef<string>;
+  tooltip?: Conditional<TextFieldDef<F>, ValueDef<string|number|boolean>>;
 
   /**
    * stack order for stacked marks or order of data points in line marks.
@@ -109,11 +113,12 @@ export function channelHasField(encoding: EncodingWithFacet<Field>, channel: Cha
     if (isArray(channelDef)) {
       return some(channelDef, (fieldDef) => !!fieldDef.field);
     } else {
-      return isFieldDef(channelDef);
+      return isFieldDef(channelDef) || hasConditionFieldDef(channelDef);
     }
   }
   return false;
 }
+
 
 export function isAggregate(encoding: EncodingWithFacet<Field>) {
   return some(CHANNELS, (channel) => {
@@ -122,7 +127,8 @@ export function isAggregate(encoding: EncodingWithFacet<Field>) {
       if (isArray(channelDef)) {
         return some(channelDef, (fieldDef) => !!fieldDef.aggregate);
       } else {
-        return isFieldDef(channelDef) && !!channelDef.aggregate;
+        const fieldDef = getFieldDef(channelDef);
+        return fieldDef && !!fieldDef.aggregate;
       }
     }
     return false;
@@ -130,7 +136,7 @@ export function isAggregate(encoding: EncodingWithFacet<Field>) {
 }
 
 export function normalizeEncoding(encoding: Encoding<string>, mark: Mark): Encoding<string> {
-  return Object.keys(encoding).reduce((normalizedEncoding: Encoding<string>, channel: Channel) => {
+  return keys(encoding).reduce((normalizedEncoding: Encoding<string>, channel: Channel) => {
     if (!supportMark(channel, mark)) {
       // Drop unsupported channel
 
@@ -140,26 +146,31 @@ export function normalizeEncoding(encoding: Encoding<string>, mark: Mark): Encod
 
     // Drop line's size if the field is aggregated.
     if (channel === 'size' && mark === 'line') {
-      const channelDef = encoding[channel];
-      if (isFieldDef(channelDef) && channelDef.aggregate) {
+      const fieldDef = getFieldDef(encoding[channel]);
+      if (fieldDef && fieldDef.aggregate) {
         log.warn(log.message.incompatibleChannel(channel, mark, 'when the field is aggregated.'));
         return normalizedEncoding;
       }
     }
 
-    if (isArray(encoding[channel])) {
-      // Array of fieldDefs for detail channel (or production rule)
-      normalizedEncoding[channel] = encoding[channel].reduce((channelDefs: ChannelDef<string>[], channelDef: ChannelDef<string>) => {
-        if (!isFieldDef(channelDef) && !isValueDef(channelDef)) { // TODO: datum
-          log.warn(log.message.emptyFieldDef(channelDef, channel));
-        } else {
-          channelDefs.push(normalize(channelDef, channel));
-        }
-        return channelDefs;
-      }, []);
-    } else {
+    if (channel === 'detail' || channel === 'order') {
       const channelDef = encoding[channel];
-      if (!isFieldDef(channelDef) && !isValueDef(channelDef)) { // TODO: datum
+      if (channelDef) {
+        // Array of fieldDefs for detail channel (or production rule)
+        normalizedEncoding[channel] = (isArray(channelDef) ? channelDef : [channelDef])
+          .reduce((fieldDefs: FieldDef<string>[], fieldDef: FieldDef<string>) => {
+            if (!isFieldDef(fieldDef)) {
+              log.warn(log.message.emptyFieldDef(fieldDef, channel));
+            } else {
+              fieldDefs.push(normalizeFieldDef(fieldDef, channel));
+            }
+            return fieldDefs;
+          }, []);
+      }
+    } else {
+      // FIXME: remove this casting.  (I don't know why Typescript doesn't infer this correctly here.)
+      const channelDef = encoding[channel] as ChannelDef<string>;
+      if (!isFieldDef(channelDef) && !isValueDef(channelDef) && !isConditionalDef(channelDef)) {
         log.warn(log.message.emptyFieldDef(channelDef, channel));
         return normalizedEncoding;
       }
@@ -179,8 +190,12 @@ export function fieldDefs(encoding: EncodingWithFacet<Field>): FieldDef<Field>[]
   CHANNELS.forEach(function(channel) {
     if (channelHasField(encoding, channel)) {
       const channelDef = encoding[channel];
-      (isArray(channelDef) ? channelDef : [channelDef]).forEach((fieldDef) => {
-        arr.push(fieldDef);
+      (isArray(channelDef) ? channelDef : [channelDef]).forEach((def) => {
+        if (isFieldDef(def)) {
+          arr.push(def);
+        } else if (hasConditionFieldDef(def)) {
+          arr.push(def.condition);
+        }
       });
     }
   });
@@ -194,7 +209,7 @@ export function forEach(mapping: any,
     return;
   }
 
-  Object.keys(mapping).forEach((c: any) => {
+  keys(mapping).forEach((c: any) => {
     const channel: Channel = c;
     if (isArray(mapping[channel])) {
       mapping[channel].forEach(function(channelDef: ChannelDef<string>) {
@@ -213,7 +228,7 @@ export function reduce<T, U>(mapping: U,
     return init;
   }
 
-  return Object.keys(mapping).reduce((r: T, c: any) => {
+  return keys(mapping).reduce((r: T, c: any) => {
     const channel: Channel = c;
     if (isArray(mapping[channel])) {
       return mapping[channel].reduce(function(r1: T, channelDef: ChannelDef<string>) {

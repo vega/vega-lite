@@ -59,220 +59,214 @@
             "update": "200"
         }
     ],
+    "layout": {
+        "padding": {
+            "row": 10,
+            "column": 10
+        },
+        "offset": 10,
+        "columns": {
+            "signal": "data('column_layout')[0][\"distinct_Series\"]"
+        },
+        "bounds": "full"
+    },
     "marks": [
         {
-            "name": "nested_main_group",
+            "name": "column_title",
+            "role": "column-title",
             "type": "group",
-            "layout": {
-                "padding": {
-                    "row": 10,
-                    "column": 10
-                },
-                "offset": 10,
-                "columns": {
-                    "signal": "data('column_layout')[0][\"distinct_Series\"]"
-                },
-                "bounds": "full"
-            },
             "marks": [
                 {
-                    "name": "column_title",
-                    "role": "column-title",
-                    "type": "group",
-                    "marks": [
-                        {
-                            "type": "text",
-                            "role": "column-title-text",
-                            "encode": {
-                                "update": {
-                                    "x": {
-                                        "signal": "0.5 * width"
-                                    },
-                                    "align": {
-                                        "value": "center"
-                                    },
-                                    "text": {
-                                        "value": "Series"
-                                    },
-                                    "fill": {
-                                        "value": "black"
-                                    },
-                                    "fontWeight": {
-                                        "value": "bold"
-                                    }
-                                }
-                            }
-                        }
-                    ]
-                },
-                {
-                    "name": "row_header",
-                    "type": "group",
-                    "role": "row-header",
+                    "type": "text",
+                    "role": "column-title-text",
                     "encode": {
                         "update": {
-                            "height": {
-                                "signal": "child_height"
-                            }
-                        }
-                    },
-                    "axes": [
-                        {
-                            "scale": "y",
-                            "format": "s",
-                            "orient": "left",
-                            "title": "Y",
-                            "zindex": 1
-                        }
-                    ]
-                },
-                {
-                    "name": "column_header",
-                    "type": "group",
-                    "role": "column-header",
-                    "from": {
-                        "data": "column"
-                    },
-                    "title": {
-                        "text": {
-                            "signal": "parent[\"Series\"]"
-                        },
-                        "offset": 10,
-                        "orient": "top",
-                        "encode": {
-                            "update": {
-                                "fontWeight": {
-                                    "value": "normal"
-                                },
-                                "angle": {
-                                    "value": 0
-                                },
-                                "fontSize": {
-                                    "value": 10
-                                }
-                            }
-                        }
-                    },
-                    "encode": {
-                        "update": {
-                            "width": {
-                                "signal": "child_width"
+                            "x": {
+                                "signal": "0.5 * width"
+                            },
+                            "align": {
+                                "value": "center"
+                            },
+                            "text": {
+                                "value": "Series"
+                            },
+                            "fill": {
+                                "value": "black"
+                            },
+                            "fontWeight": {
+                                "value": "bold"
                             }
                         }
                     }
-                },
+                }
+            ]
+        },
+        {
+            "name": "row_header",
+            "type": "group",
+            "role": "row-header",
+            "encode": {
+                "update": {
+                    "height": {
+                        "signal": "child_height"
+                    }
+                }
+            },
+            "axes": [
                 {
-                    "name": "column_footer",
-                    "type": "group",
-                    "role": "column-footer",
-                    "from": {
-                        "data": "column"
-                    },
-                    "encode": {
-                        "update": {
-                            "width": {
-                                "signal": "child_width"
-                            }
+                    "scale": "y",
+                    "format": "s",
+                    "orient": "left",
+                    "title": "Y",
+                    "zindex": 1
+                }
+            ]
+        },
+        {
+            "name": "column_header",
+            "type": "group",
+            "role": "column-header",
+            "from": {
+                "data": "column"
+            },
+            "title": {
+                "text": {
+                    "signal": "parent[\"Series\"]"
+                },
+                "offset": 10,
+                "orient": "top",
+                "encode": {
+                    "update": {
+                        "fontWeight": {
+                            "value": "normal"
+                        },
+                        "angle": {
+                            "value": 0
+                        },
+                        "fontSize": {
+                            "value": 10
                         }
-                    },
-                    "axes": [
-                        {
-                            "scale": "x",
-                            "format": "s",
-                            "orient": "bottom",
-                            "tickCount": 5,
-                            "title": "X",
-                            "zindex": 1
-                        }
+                    }
+                }
+            },
+            "encode": {
+                "update": {
+                    "width": {
+                        "signal": "child_width"
+                    }
+                }
+            }
+        },
+        {
+            "name": "column_footer",
+            "type": "group",
+            "role": "column-footer",
+            "from": {
+                "data": "column"
+            },
+            "encode": {
+                "update": {
+                    "width": {
+                        "signal": "child_width"
+                    }
+                }
+            },
+            "axes": [
+                {
+                    "scale": "x",
+                    "format": "s",
+                    "orient": "bottom",
+                    "tickCount": 5,
+                    "title": "X",
+                    "zindex": 1
+                }
+            ]
+        },
+        {
+            "name": "cell",
+            "type": "group",
+            "from": {
+                "facet": {
+                    "name": "facet",
+                    "data": "source_0",
+                    "groupby": [
+                        "Series"
                     ]
-                },
+                }
+            },
+            "encode": {
+                "update": {
+                    "width": {
+                        "signal": "child_width"
+                    },
+                    "height": {
+                        "signal": "child_height"
+                    },
+                    "stroke": {
+                        "value": "#ccc"
+                    },
+                    "strokeWidth": {
+                        "value": 1
+                    },
+                    "fill": {
+                        "value": "transparent"
+                    }
+                }
+            },
+            "marks": [
                 {
-                    "name": "cell",
-                    "type": "group",
+                    "name": "child_marks",
+                    "type": "symbol",
+                    "role": "circle",
                     "from": {
-                        "facet": {
-                            "name": "facet",
-                            "data": "source_0",
-                            "groupby": [
-                                "Series"
-                            ]
-                        }
+                        "data": "facet"
                     },
                     "encode": {
                         "update": {
-                            "width": {
-                                "signal": "child_width"
+                            "x": {
+                                "scale": "x",
+                                "field": "X"
                             },
-                            "height": {
-                                "signal": "child_height"
-                            },
-                            "stroke": {
-                                "value": "#ccc"
-                            },
-                            "strokeWidth": {
-                                "value": 1
+                            "y": {
+                                "scale": "y",
+                                "field": "Y"
                             },
                             "fill": {
-                                "value": "transparent"
-                            }
-                        }
-                    },
-                    "marks": [
-                        {
-                            "name": "child_marks",
-                            "type": "symbol",
-                            "role": "circle",
-                            "from": {
-                                "data": "facet"
+                                "value": "#4c78a8"
                             },
-                            "encode": {
-                                "update": {
-                                    "x": {
-                                        "scale": "x",
-                                        "field": "X"
-                                    },
-                                    "y": {
-                                        "scale": "y",
-                                        "field": "Y"
-                                    },
-                                    "fill": {
-                                        "value": "#4c78a8"
-                                    },
-                                    "shape": {
-                                        "value": "circle"
-                                    },
-                                    "opacity": {
-                                        "value": 1
-                                    }
-                                }
+                            "shape": {
+                                "value": "circle"
+                            },
+                            "opacity": {
+                                "value": 1
                             }
                         }
-                    ],
-                    "axes": [
-                        {
-                            "scale": "x",
-                            "domain": false,
-                            "format": "s",
-                            "grid": true,
-                            "labels": false,
-                            "orient": "bottom",
-                            "tickCount": 5,
-                            "ticks": false,
-                            "zindex": 0,
-                            "gridScale": "y"
-                        },
-                        {
-                            "scale": "y",
-                            "domain": false,
-                            "format": "s",
-                            "grid": true,
-                            "labels": false,
-                            "orient": "left",
-                            "ticks": false,
-                            "zindex": 0,
-                            "gridScale": "x"
-                        }
-                    ]
+                    }
+                }
+            ],
+            "axes": [
+                {
+                    "scale": "x",
+                    "domain": false,
+                    "format": "s",
+                    "grid": true,
+                    "labels": false,
+                    "orient": "bottom",
+                    "tickCount": 5,
+                    "ticks": false,
+                    "zindex": 0,
+                    "gridScale": "y"
+                },
+                {
+                    "scale": "y",
+                    "domain": false,
+                    "format": "s",
+                    "grid": true,
+                    "labels": false,
+                    "orient": "left",
+                    "ticks": false,
+                    "zindex": 0,
+                    "gridScale": "x"
                 }
             ]
         }
@@ -289,9 +283,9 @@
                 0,
                 200
             ],
+            "zero": false,
             "round": true,
-            "nice": true,
-            "zero": false
+            "nice": true
         },
         {
             "name": "y",
@@ -304,9 +298,9 @@
                 200,
                 0
             ],
+            "zero": false,
             "round": true,
-            "nice": true,
-            "zero": false
+            "nice": true
         }
     ]
 }

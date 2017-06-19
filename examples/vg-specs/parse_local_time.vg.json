@@ -3,6 +3,13 @@
     "description": "Google's stock price over time.",
     "autosize": "pad",
     "padding": 5,
+    "encode": {
+        "update": {
+            "fill": {
+                "value": "transparent"
+            }
+        }
+    },
     "data": [
         {
             "name": "source_0",
@@ -13,14 +20,17 @@
                 {
                     "date": "11 Oct 2022 23:00:00"
                 }
-            ],
-            "format": {
-                "type": "json",
-                "parse": {
-                    "date": "date"
-                }
-            },
+            ]
+        },
+        {
+            "name": "data_0",
+            "source": "source_0",
             "transform": [
+                {
+                    "type": "formula",
+                    "expr": "toDate(datum[\"date\"])",
+                    "as": "date"
+                },
                 {
                     "type": "filter",
                     "expr": "datum[\"date\"] !== null && !isNaN(datum[\"date\"])"
@@ -45,51 +55,32 @@
     ],
     "marks": [
         {
-            "name": "nested_main_group",
-            "type": "group",
+            "name": "marks",
+            "type": "symbol",
+            "role": "point",
+            "from": {
+                "data": "data_0"
+            },
             "encode": {
                 "update": {
-                    "width": {
-                        "signal": "width"
+                    "x": {
+                        "value": 10.5
                     },
-                    "height": {
-                        "signal": "height"
+                    "y": {
+                        "scale": "y",
+                        "field": "hours_date"
+                    },
+                    "stroke": {
+                        "value": "#4c78a8"
                     },
                     "fill": {
                         "value": "transparent"
-                    }
-                }
-            },
-            "marks": [
-                {
-                    "name": "marks",
-                    "type": "symbol",
-                    "role": "point",
-                    "from": {
-                        "data": "source_0"
                     },
-                    "encode": {
-                        "update": {
-                            "x": {
-                                "value": 10.5
-                            },
-                            "y": {
-                                "scale": "y",
-                                "field": "hours_date"
-                            },
-                            "stroke": {
-                                "value": "#4c78a8"
-                            },
-                            "fill": {
-                                "value": "transparent"
-                            },
-                            "opacity": {
-                                "value": 0.7
-                            }
-                        }
+                    "opacity": {
+                        "value": 0.7
                     }
                 }
-            ]
+            }
         }
     ],
     "scales": [
@@ -97,7 +88,7 @@
             "name": "y",
             "type": "point",
             "domain": {
-                "data": "source_0",
+                "data": "data_0",
                 "field": "hours_date",
                 "sort": true
             },

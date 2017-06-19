@@ -3,21 +3,19 @@ import {Config} from '../config';
 import * as log from '../log';
 import {FILL_STROKE_CONFIG} from '../mark';
 import {initLayerResolve, NonspatialResolve, ResolveMapping, SpatialResolve} from '../resolve';
-import {isLayerSpec, isUnitSpec, LayerSpec, UnitSize} from '../spec';
+import {isLayerSpec, isUnitSpec, LayerSpec, LayoutSize} from '../spec';
 import {Dict, flatten, keys, vals} from '../util';
 import {isSignalRefDomain, VgData, VgEncodeEntry, VgLayout, VgScale, VgSignal} from '../vega.schema';
-
 import {AxisComponentIndex} from './axis/component';
 import {applyConfig, buildModel} from './common';
-import {Model} from './model';
-
 import {assembleData} from './data/assemble';
 import {parseData} from './data/parse';
-import {assembleLayoutLayerSignals} from './layout/index';
+import {assembleLayoutLayerSignals} from './layout/assemble';
 import {moveSharedLegendUp} from './legend/parse';
+import {Model} from './model';
 import {RepeaterValue} from './repeat';
+import {ScaleComponent, ScaleComponentIndex} from './scale/component';
 import {unionDomains} from './scale/domain';
-import {moveSharedScaleUp} from './scale/parse';
 import {assembleLayerSelectionMarks} from './selection/selection';
 import {UnitModel} from './unit';
 
@@ -28,28 +26,31 @@ export class LayerModel extends Model {
   // So I'm just putting generic Model for now.
   public readonly children: Model[];
 
-  private readonly resolve: ResolveMapping;
+
 
   constructor(spec: LayerSpec, parent: Model, parentGivenName: string,
-    parentUnitSize: UnitSize, repeater: RepeaterValue, config: Config) {
+    parentGivenSize: LayoutSize, repeater: RepeaterValue, config: Config) {
 
-    super(spec, parent, parentGivenName, config);
+    super(
+      spec, parent, parentGivenName, config,
+      initLayerResolve(spec.resolve || {})
+    );
 
-    this.resolve = initLayerResolve(spec.resolve || {});
-
-    const unitSize = {
-      ...parentUnitSize,
+    const layoutSize = {
+      ...parentGivenSize,
       ...(spec.width ? {width: spec.width} : {}),
       ...(spec.height ? {height: spec.height} : {})
     };
 
+    this.initSize(layoutSize);
+
     this.children = spec.layer.map((layer, i) => {
       if (isLayerSpec(layer)) {
-        return new LayerModel(layer, this, this.getName('layer_'+i), unitSize, repeater, config);
+        return new LayerModel(layer, this, this.getName('layer_'+i), layoutSize, repeater, config);
       }
 
       if (isUnitSpec(layer)) {
-        return new UnitModel(layer, this, this.getName('layer_'+i), unitSize, repeater, config);
+        return new UnitModel(layer, this, this.getName('layer_'+i), layoutSize, repeater, config);
       }
 
       throw new Error(log.message.INVALID_SPEC);
@@ -76,23 +77,9 @@ export class LayerModel extends Model {
     }
   }
 
-  public parseScale(this: LayerModel) {
-    const scaleComponent: Dict<VgScale> = this.component.scales = {};
-
+  public parseMarkGroup() {
     for (const child of this.children) {
-      child.parseScale();
-
-      keys(child.component.scales).forEach((channel: ScaleChannel) => {
-        if (this.resolve[channel].scale === 'shared') {
-          moveSharedScaleUp(this, scaleComponent, child, channel);
-        }
-      });
-    }
-  }
-
-  public parseMark() {
-    for (const child of this.children) {
-      child.parseMark();
+      child.parseMarkGroup();
     }
   }
 
@@ -141,7 +128,7 @@ export class LayerModel extends Model {
     for (const child of this.children) {
       child.parseLegend();
 
-      keys(child.component.legends).forEach((channel: ScaleChannel) => {
+      keys(child.component.legends).forEach((channel: NonspatialScaleChannel) => {
         if (this.resolve[channel].legend === 'shared') {
           moveSharedLegendUp(legendComponent, child, channel);
         }

@@ -2,8 +2,10 @@ import {Model} from './compile/model';
 import {predicate} from './compile/selection/selection';
 import {DateTime, dateTimeExpr, isDateTime} from './datetime';
 import {field} from './fielddef';
+import {LogicalOperand} from './logical';
 import {fieldExpr as timeUnitFieldExpr, isSingleTimeUnit, TimeUnit} from './timeunit';
-import {isArray, isString} from './util';
+import {isArray, isString, logicalExpr} from './util';
+
 
 export type Filter = EqualFilter | RangeFilter | OneOfFilter | SelectionFilter | string;
 
@@ -11,10 +13,10 @@ export interface SelectionFilter {
   /**
    * Filter using a selection name.
    */
-  selection: string;
+  selection: LogicalOperand<string>;
 }
 
-export function isSelectionFilter(filter: Filter): filter is SelectionFilter {
+export function isSelectionFilter(filter: LogicalOperand<Filter>): filter is SelectionFilter {
   return filter && filter['selection'];
 }
 
@@ -106,44 +108,45 @@ export function isOneOfFilter(filter: any): filter is OneOfFilter {
  * Converts a filter into an expression.
  */
 // model is only used for selection filters.
-export function expression(model: Model, filter: Filter): string {
-  if (isString(filter)) {
-    return filter;
-  } else if (isSelectionFilter(filter)) {
-    const selection = model.getComponent('selection', filter.selection);
-    return predicate(model, filter.selection, selection.type, selection.resolve, null);
-  } else { // Filter Object
-    const fieldExpr = filter.timeUnit ?
-      // For timeUnit, cast into integer with time() so we can use ===, inrange, indexOf to compare values directly.
-        // TODO: We calculate timeUnit on the fly here. Consider if we would like to consolidate this with timeUnit pipeline
-        // TODO: support utc
-      ('time(' + timeUnitFieldExpr(filter.timeUnit, filter.field) + ')') :
-      field(filter, {expr: 'datum'});
+export function expression(model: Model, filterOp: LogicalOperand<Filter>): string {
+  return logicalExpr(filterOp, (filter: Filter) => {
+    if (isString(filter)) {
+      return filter;
+    } else if (isSelectionFilter(filter)) {
+      return predicate(model, filter.selection);
+    } else { // Filter Object
+      const fieldExpr = filter.timeUnit ?
+        // For timeUnit, cast into integer with time() so we can use ===, inrange, indexOf to compare values directly.
+          // TODO: We calculate timeUnit on the fly here. Consider if we would like to consolidate this with timeUnit pipeline
+          // TODO: support utc
+        ('time(' + timeUnitFieldExpr(filter.timeUnit, filter.field) + ')') :
+        field(filter, {expr: 'datum'});
 
-    if (isEqualFilter(filter)) {
-      return fieldExpr + '===' + valueExpr(filter.equal, filter.timeUnit);
-    } else if (isOneOfFilter(filter)) {
-      // "oneOf" was formerly "in" -- so we need to add backward compatibility
-      const oneOf: OneOfFilter[] = filter.oneOf || filter['in'];
-      return 'indexof([' +
-        oneOf.map((v) => valueExpr(v, filter.timeUnit)).join(',') +
-        '], ' + fieldExpr + ') !== -1';
-    } else if (isRangeFilter(filter)) {
-      const lower = filter.range[0];
-      const upper = filter.range[1];
+      if (isEqualFilter(filter)) {
+        return fieldExpr + '===' + valueExpr(filter.equal, filter.timeUnit);
+      } else if (isOneOfFilter(filter)) {
+        // "oneOf" was formerly "in" -- so we need to add backward compatibility
+        const oneOf: OneOfFilter[] = filter.oneOf || filter['in'];
+        return 'indexof([' +
+          oneOf.map((v) => valueExpr(v, filter.timeUnit)).join(',') +
+          '], ' + fieldExpr + ') !== -1';
+      } else if (isRangeFilter(filter)) {
+        const lower = filter.range[0];
+        const upper = filter.range[1];
 
-      if (lower !== null &&  upper !== null) {
-        return 'inrange(' + fieldExpr + ', ' +
-          valueExpr(lower, filter.timeUnit) + ', ' +
-          valueExpr(upper, filter.timeUnit) + ')';
-      } else if (lower !== null) {
-        return fieldExpr + ' >= ' + lower;
-      } else if (upper !== null) {
-        return fieldExpr + ' <= ' + upper;
+        if (lower !== null &&  upper !== null) {
+          return 'inrange(' + fieldExpr + ', ' +
+            valueExpr(lower, filter.timeUnit) + ', ' +
+            valueExpr(upper, filter.timeUnit) + ')';
+        } else if (lower !== null) {
+          return fieldExpr + ' >= ' + lower;
+        } else if (upper !== null) {
+          return fieldExpr + ' <= ' + upper;
+        }
       }
     }
-  }
-  return undefined;
+    return undefined;
+  });
 }
 
 function valueExpr(v: any, timeUnit: TimeUnit) {

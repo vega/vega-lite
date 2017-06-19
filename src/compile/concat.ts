@@ -1,7 +1,8 @@
-import {ScaleChannel} from '../channel';
+import {NonspatialScaleChannel, ScaleChannel} from '../channel';
 import {CellConfig, Config} from '../config';
 import {Repeat} from '../repeat';
 import {initConcatResolve, ResolveMapping} from '../resolve';
+import {Scale} from '../scale';
 import {ConcatSpec, isVConcatSpec, RepeatSpec} from '../spec';
 import {Dict, keys, vals} from '../util';
 import {VgData, VgLayout, VgScale, VgSignal} from '../vega.schema';
@@ -11,7 +12,7 @@ import {parseData} from './data/parse';
 import {moveSharedLegendUp} from './legend/parse';
 import {Model} from './model';
 import {RepeaterValue} from './repeat';
-import {moveSharedScaleUp} from './scale/parse';
+import {ScaleComponentIndex} from './scale/component';
 
 
 export class ConcatModel extends Model {
@@ -20,12 +21,8 @@ export class ConcatModel extends Model {
 
   public readonly isVConcat: boolean;
 
-  private readonly resolve: ResolveMapping;
-
   constructor(spec: ConcatSpec, parent: Model, parentGivenName: string, repeater: RepeaterValue, config: Config) {
-    super(spec, parent, parentGivenName, config);
-
-    this.resolve = initConcatResolve(spec.resolve || {});
+    super(spec, parent, parentGivenName, config, initConcatResolve(spec.resolve || {}));
 
     this.isVConcat = isVConcatSpec(spec);
 
@@ -54,25 +51,9 @@ export class ConcatModel extends Model {
     }
   }
 
-  public parseScale() {
-    const model = this;
-
-    const scaleComponent: Dict<VgScale> = this.component.scales = {};
-
+  public parseMarkGroup() {
     for (const child of this.children) {
-      child.parseScale();
-
-      keys(child.component.scales).forEach((channel: ScaleChannel) => {
-        if (this.resolve[channel].scale === 'shared') {
-          moveSharedScaleUp(this, scaleComponent, child, channel);
-        }
-      });
-    }
-  }
-
-  public parseMark() {
-    for (const child of this.children) {
-      child.parseMark();
+      child.parseMarkGroup();
     }
   }
 
@@ -94,7 +75,7 @@ export class ConcatModel extends Model {
     for (const child of this.children) {
       child.parseLegend();
 
-      keys(child.component.legends).forEach((channel: ScaleChannel) => {
+      keys(child.component.legends).forEach((channel: NonspatialScaleChannel) => {
         if (this.resolve[channel].legend === 'shared') {
           moveSharedLegendUp(legendComponent, child, channel);
         }

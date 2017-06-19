@@ -1,5 +1,6 @@
 import {TransformCompiler} from './transforms';
 
+
 const VORONOI = 'voronoi';
 
 const nearest:TransformCompiler = {
@@ -8,29 +9,29 @@ const nearest:TransformCompiler = {
   },
 
   marks: function(model, selCmpt, marks, selMarks) {
-    const mark = marks[0],
-        index = selMarks.indexOf(mark),
-        isPathgroup = mark.name === model.getName('pathgroup'),
-        exists = ((m: any) => m.name && m.name.indexOf(VORONOI) >= 0),
-        cellDef = {
-          name: model.getName(VORONOI),
-          type: 'path',
-          from: {data: model.getName('marks')},
-          encode: {
-            enter: {
-              fill: {value: 'transparent'},
-              strokeWidth: {value: 0.35},
-              stroke: {value: 'transparent'},
-              isVoronoi: {value: true}
-            }
-          },
-          transform: [{
-            type: 'voronoi',
-            x: 'datum.x',
-            y: 'datum.y',
-            size: [model.getSizeSignalRef('width'), model.getSizeSignalRef('height')]
-          }]
-        };
+    const mark = marks[0];
+    const index = selMarks.indexOf(mark);
+    const isPathgroup = mark.name === model.getName('pathgroup');
+    const exists = ((m: any) => m.name && m.name.indexOf(VORONOI) >= 0);
+    const cellDef = {
+      name: model.getName(VORONOI),
+      type: 'path',
+      from: {data: model.getName('marks')},
+      encode: {
+        enter: {
+          fill: {value: 'transparent'},
+          strokeWidth: {value: 0.35},
+          stroke: {value: 'transparent'},
+          isVoronoi: {value: true}
+        }
+      },
+      transform: [{
+        type: 'voronoi',
+        x: 'datum.x',
+        y: 'datum.y',
+        size: [model.getSizeSignalRef('width'), model.getSizeSignalRef('height')]
+      }]
+    };
 
     if (isPathgroup && !mark.marks.filter(exists).length) {
       mark.marks.push(cellDef);

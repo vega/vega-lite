@@ -2,6 +2,7 @@ import {stringValue} from '../../../util';
 import {TUPLE} from '../selection';
 import {TransformCompiler} from './transforms';
 
+
 const TOGGLE = '_toggle';
 
 const toggle:TransformCompiler = {
@@ -18,8 +19,8 @@ const toggle:TransformCompiler = {
   },
 
   modifyExpr: function(model, selCmpt, expr) {
-    const tpl = selCmpt.name + TUPLE,
-        signal = selCmpt.name + TOGGLE;
+    const tpl = selCmpt.name + TUPLE;
+    const signal = selCmpt.name + TOGGLE;
 
     return `${signal} ? null : ${tpl}, ` +
       (selCmpt.resolve === 'global' ?

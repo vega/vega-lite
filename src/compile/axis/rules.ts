@@ -1,13 +1,12 @@
-import * as log from '../../log';
-
 import {Axis} from '../../axis';
-import {Channel, COLUMN, ROW, X, Y} from '../../channel';
+import {binToString} from '../../bin';
+import {Channel, COLUMN, ROW, SpatialScaleChannel, X, Y} from '../../channel';
 import {Config} from '../../config';
 import {DateTime, dateTimeExpr, isDateTime} from '../../datetime';
 import {FieldDef, title as fieldDefTitle} from '../../fielddef';
+import * as log from '../../log';
 import {truncate} from '../../util';
 import {VgAxis} from '../../vega.schema';
-
 import {numberFormat} from '../common';
 import {UnitModel} from '../unit';
 
@@ -20,7 +19,7 @@ export function format(specifiedAxis: Axis, channel: Channel, fieldDef: FieldDef
  * Default rules for whether to show a grid should be shown for a channel.
  * If `grid` is unspecified, the default value is `true` for ordinal scales that are not binned
  */
-export function gridShow(model: UnitModel, channel: Channel) {
+export function gridShow(model: UnitModel, channel: SpatialScaleChannel) {
   const grid = model.axis(channel).grid;
   if (grid !== undefined) {
     return grid;
@@ -29,12 +28,7 @@ export function gridShow(model: UnitModel, channel: Channel) {
   return !model.hasDiscreteDomain(channel) && !model.fieldDef(channel).bin;
 }
 
-export function grid(model: UnitModel, channel: Channel, isGridAxis: boolean) {
-  if (channel === ROW || channel === COLUMN) {
-    // never apply grid for ROW and COLUMN since we manually create rule-group for them
-    return false;
-  }
-
+export function grid(model: UnitModel, channel: SpatialScaleChannel, isGridAxis: boolean) {
   if (!isGridAxis) {
     return undefined;
   }
@@ -45,7 +39,7 @@ export function grid(model: UnitModel, channel: Channel, isGridAxis: boolean) {
 export function gridScale(model: UnitModel, channel: Channel, isGridAxis: boolean) {
   if (isGridAxis) {
     const gridChannel: Channel = channel === 'x' ? 'y' : 'x';
-    if (model.scale(gridChannel)) {
+    if (model.getScaleComponent(gridChannel)) {
       return model.scaleName(gridChannel);
     }
   }
@@ -107,13 +101,17 @@ export function title(specifiedAxis: Axis, fieldDef: FieldDef<string>, config: C
   return maxLength ? truncate(fieldTitle, maxLength) : fieldTitle;
 }
 
-export function values(specifiedAxis: Axis) {
+export function values(specifiedAxis: Axis, model: UnitModel, fieldDef: FieldDef<string>) {
   const vals = specifiedAxis.values;
   if (specifiedAxis.values && isDateTime(vals[0])) {
     return (vals as DateTime[]).map((dt) => {
       // normalize = true as end user won't put 0 = January
       return {signal: dateTimeExpr(dt, true)};
     });
+  }
+  if (!vals && fieldDef.bin) {
+    const signal = model.getName(`${binToString(fieldDef.bin)}_${fieldDef.field}_bins`);
+    return {signal: `sequence(${signal}.start, ${signal}.stop + ${signal}.step, ${signal}.step)`};
   }
   return vals;
 }

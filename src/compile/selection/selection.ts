@@ -1,9 +1,11 @@
 import {selector as parseSelector} from 'vega-event-selector';
-import {Channel} from '../../channel';
-import {SelectionDomain as SelectionScaleDomain} from '../../scale';
-import {SelectionDef, SelectionDomain, SelectionResolutions, SelectionTypes} from '../../selection';
-import {Dict, extend, isString, stringValue} from '../../util';
-import {VgBinding, VgData, VgEventStream} from '../../vega.schema';
+import {Channel, ScaleChannel, SingleDefChannel} from '../../channel';
+import {warn} from '../../log';
+import {LogicalOperand} from '../../logical';
+import {SelectionDomain} from '../../scale';
+import {SelectionDef, SelectionResolutions, SelectionTypes} from '../../selection';
+import {Dict, extend, isString, logicalExpr, stringValue} from '../../util';
+import {isSignalRefDomain, VgBinding, VgData, VgDomain, VgEventStream, VgScale, VgSignalRef} from '../../vega.schema';
 import {LayerModel} from '../layer';
 import {Model} from '../model';
 import {UnitModel} from '../unit';
@@ -13,14 +15,15 @@ import {SelectionComponent} from './selection';
 import singleCompiler from './single';
 import {forEachTransform} from './transforms/transforms';
 
+
 export const STORE = '_store';
 export const TUPLE  = '_tuple';
 export const MODIFY = '_modify';
+export const SELECTION_DOMAIN = '_selection_domain_';
 
 export interface SelectionComponent {
   name: string;
   type: SelectionTypes;
-  domain: SelectionDomain;
   events: VgEventStream;
   // predicate?: string;
   bind?: 'scales' | VgBinding | {[key: string]: VgBinding};
@@ -38,29 +41,29 @@ export interface SelectionComponent {
 
 export interface ProjectComponent {
   field?: string;
-  encoding?: Channel;
+  encoding?: ScaleChannel;
 }
 
 export interface SelectionCompiler {
   signals: (model: UnitModel, selCmpt: SelectionComponent) => any[];
   topLevelSignals?: (model: Model, selCmpt: SelectionComponent, signals: any[]) => any[];
-  tupleExpr: (model: UnitModel, selCmpt: SelectionComponent) => string;
   modifyExpr: (model: UnitModel, selCmpt: SelectionComponent) => string;
   marks?: (model: UnitModel, selCmpt:SelectionComponent, marks: any[]) => any[];
   predicate: string;  // Vega expr string to determine inclusion in selection.
+  scaleDomain: string;  // Vega expr string to materialize a scale domain.
 }
 
 export function parseUnitSelection(model: UnitModel, selDefs: Dict<SelectionDef>) {
-  const selCmpts: Dict<SelectionComponent> = {},
-      selectionConfig = model.config.selection;
+  const selCmpts: Dict<SelectionComponent> = {};
+  const selectionConfig = model.config.selection;
 
   for (const name in selDefs) {
     if (!selDefs.hasOwnProperty(name)) {
       continue;
     }
 
-    const selDef = selDefs[name],
-        cfg = selectionConfig[selDef.type];
+    const selDef = selDefs[name];
+    const cfg = selectionConfig[selDef.type];
 
     // Set default values from config if a property hasn't been specified,
     // or if it is true. E.g., "translate": true should use the default
@@ -81,7 +84,6 @@ export function parseUnitSelection(model: UnitModel, selDefs: Dict<SelectionDef>
     const selCmpt = selCmpts[name] = extend({}, selDef, {
       name: name,
       events: isString(selDef.on) ? parseSelector(selDef.on, 'scope') : selDef.on,
-      domain: 'data' as SelectionDomain, // TODO: Support def.domain
     }) as SelectionComponent;
 
     forEachTransform(selCmpt, txCompiler => {
@@ -96,8 +98,7 @@ export function parseUnitSelection(model: UnitModel, selDefs: Dict<SelectionDef>
 
 export function assembleUnitSelectionSignals(model: UnitModel, signals: any[]) {
   forEachSelection(model, (selCmpt, selCompiler) => {
-    const name = selCmpt.name,
-        tupleExpr = selCompiler.tupleExpr(model, selCmpt);
+    const name = selCmpt.name;
     let modifyExpr = selCompiler.modifyExpr(model, selCmpt);
 
     signals.push.apply(signals, selCompiler.signals(model, selCmpt));
@@ -112,15 +113,9 @@ export function assembleUnitSelectionSignals(model: UnitModel, signals: any[]) {
     });
 
     signals.push({
-      name: name + TUPLE,
-      on: [{
-        events: {signal: name},
-        update: `{unit: ${stringValue(model.getName(''))}, ${tupleExpr}}`
-      }]
-    }, {
       name: name + MODIFY,
       on: [{
-        events: {signal: name},
+        events: {signal: name + TUPLE},
         update: `modify(${stringValue(selCmpt.name + STORE)}, ${modifyExpr})`
       }]
     });
@@ -171,8 +166,8 @@ export function assembleUnitSelectionData(model: UnitModel, data: VgData[]): VgD
 }
 
 export function assembleUnitSelectionMarks(model: UnitModel, marks: any[]): any[] {
-  let clipGroup = false,
-      selMarks = marks;
+  let clipGroup = false;
+  let selMarks = marks;
   forEachSelection(model, (selCmpt, selCompiler) => {
     selMarks = selCompiler.marks ? selCompiler.marks(model, selCmpt, selMarks) : selMarks;
     forEachTransform(selCmpt, (txCompiler) => {
@@ -214,11 +209,47 @@ const PREDICATES_OPS = {
   intersect_others: '"intersect", "others"'
 };
 
-export function predicate(model: Model, name: string, type: SelectionTypes, resolve?: string, datum?: string): string {
-  const store = stringValue(name + STORE),
-        op = PREDICATES_OPS[resolve || 'global'];
-  datum = datum || 'datum';
-  return compiler(type).predicate + `(${store}, ${stringValue(model.getName(''))}, ${datum}, ${op})`;
+export function predicate(model: Model, selections: LogicalOperand<string>): string {
+  function expr(name: string): string {
+    const selCmpt = model.getSelectionComponent(name);
+    const store = stringValue(name + STORE);
+    const op = PREDICATES_OPS[selCmpt.resolve];
+
+    return compiler(selCmpt.type).predicate +
+      `(${store}, ${stringValue(model.getName(''))}, datum, ${op})`;
+  }
+
+  return logicalExpr(selections, expr);
+}
+
+// Selections are parsed _after_ scales. If a scale domain is set to
+// use a selection, the SELECTION_DOMAIN constant is used as the
+// domainRaw.signal during scale.parse and then replaced with the necessary
+// selection expression function during scale.assemble. To not pollute the
+// type signatures to account for this setup, the selection domain definition
+// is coerced to a string and appended to SELECTION_DOMAIN.
+export function isRawSelectionDomain(domainRaw: VgSignalRef) {
+  return domainRaw.signal.indexOf(SELECTION_DOMAIN) >= 0;
+}
+export function selectionScaleDomain(model: Model, domainRaw: VgSignalRef): VgSignalRef {
+  const selDomain = JSON.parse(domainRaw.signal.replace(SELECTION_DOMAIN, ''));
+  const name = selDomain.selection;
+
+  let selCmpt = model.component.selection && model.component.selection[name];
+  if (selCmpt) {
+    warn('Use "bind": "scales" to setup a binding for scales and selections within the same view.');
+  } else if (!selDomain.encoding && !selDomain.field) {
+    warn('A "field" or "encoding" must be specified when using a selection as a scale domain.');
+  } else {
+    selCmpt = model.getSelectionComponent(name);
+    return {
+      signal: compiler(selCmpt.type).scaleDomain +
+        `(${stringValue(name + STORE)}, ${stringValue(selDomain.encoding || null)}, ` +
+          `${stringValue(selDomain.field || null)}, ${PREDICATES_OPS[selCmpt.resolve]})`
+    };
+  }
+
+  return {signal: 'null'};
 }
 
 // Utility functions

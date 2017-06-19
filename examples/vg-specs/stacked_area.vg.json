@@ -3,6 +3,13 @@
     "description": "Area chart showing weight of cars over time.",
     "autosize": "pad",
     "padding": 5,
+    "encode": {
+        "update": {
+            "fill": {
+                "value": "transparent"
+            }
+        }
+    },
     "data": [
         {
             "name": "source_0",
@@ -94,80 +101,61 @@
     ],
     "marks": [
         {
-            "name": "nested_main_group",
+            "name": "pathgroup",
             "type": "group",
+            "from": {
+                "facet": {
+                    "name": "faceted_path_main",
+                    "data": "source_0",
+                    "groupby": [
+                        "series"
+                    ]
+                }
+            },
             "encode": {
                 "update": {
                     "width": {
-                        "signal": "width"
+                        "field": {
+                            "group": "width"
+                        }
                     },
                     "height": {
-                        "signal": "height"
-                    },
-                    "fill": {
-                        "value": "transparent"
+                        "field": {
+                            "group": "height"
+                        }
                     }
                 }
             },
             "marks": [
                 {
-                    "name": "pathgroup",
-                    "type": "group",
+                    "name": "marks",
+                    "type": "area",
                     "from": {
-                        "facet": {
-                            "name": "faceted_path_main",
-                            "data": "source_0",
-                            "groupby": [
-                                "series"
-                            ]
-                        }
+                        "data": "faceted_path_main"
                     },
                     "encode": {
                         "update": {
-                            "width": {
-                                "field": {
-                                    "group": "width"
-                                }
+                            "x": {
+                                "scale": "x",
+                                "field": "yearmonth_date"
                             },
-                            "height": {
-                                "field": {
-                                    "group": "height"
-                                }
+                            "y": {
+                                "scale": "y",
+                                "field": "sum_count_end"
+                            },
+                            "y2": {
+                                "scale": "y",
+                                "field": "sum_count_start"
+                            },
+                            "fill": {
+                                "scale": "color",
+                                "field": "series"
+                            },
+                            "orient": {
+                                "value": "vertical"
                             }
                         }
-                    },
-                    "marks": [
-                        {
-                            "name": "marks",
-                            "type": "area",
-                            "from": {
-                                "data": "faceted_path_main"
-                            },
-                            "encode": {
-                                "update": {
-                                    "x": {
-                                        "scale": "x",
-                                        "field": "yearmonth_date"
-                                    },
-                                    "y": {
-                                        "scale": "y",
-                                        "field": "sum_count_end"
-                                    },
-                                    "y2": {
-                                        "scale": "y",
-                                        "field": "sum_count_start"
-                                    },
-                                    "fill": {
-                                        "scale": "color",
-                                        "field": "series"
-                                    },
-                                    "orient": {
-                                        "value": "vertical"
-                                    }
-                                }
-                            }
-                        }
-                    ]
+                    }
                 }
             ]
         }
@@ -184,8 +172,8 @@
                 0,
                 300
             ],
-            "round": true,
-            "nice": "month"
+            "nice": "month",
+            "round": true
         },
         {
             "name": "y",

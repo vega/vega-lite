@@ -6,7 +6,7 @@ import {StackComponent, StackNode} from '../../../src/compile/data/stack';
 
 import {UnitModel} from '../../../src/compile/unit';
 import {VgTransform} from '../../../src/vega.schema';
-import {parseUnitModel} from '../../util';
+import {parseUnitModelWithScale} from '../../util';
 
 function parse(model: UnitModel) {
   return StackNode.make(model).stack;
@@ -18,7 +18,7 @@ function assemble(model: UnitModel) {
 
 describe('compile/data/stack', () => {
   it('should produce correct stack component for bar with color', () => {
-    const model = parseUnitModel({
+    const model = parseUnitModelWithScale({
       "mark": "bar",
       "encoding": {
         "x": {"aggregate": "sum", "field": "a", "type": "quantitative"},
@@ -41,7 +41,7 @@ describe('compile/data/stack', () => {
   });
 
   it('should produce correct stack component with both start and end of the binned field for bar with color and binned y', () => {
-    const model = parseUnitModel({
+    const model = parseUnitModelWithScale({
       "mark": "bar",
       "encoding": {
         "x": {"aggregate": "sum", "field": "a", "type": "quantitative"},
@@ -64,7 +64,7 @@ describe('compile/data/stack', () => {
   });
 
   it('should produce correct stack component for 1D bar with color', () => {
-    const model = parseUnitModel({
+    const model = parseUnitModelWithScale({
       "mark": "bar",
       "encoding": {
         "x": {"aggregate": "sum", "field": "a", "type": "quantitative"},
@@ -99,7 +99,7 @@ describe('compile/data/stack', () => {
   });
 
   it('should produce correct stack component for area with color and order', function() {
-    const model = parseUnitModel({
+    const model = parseUnitModelWithScale({
       "mark": "area",
       "encoding": {
         "x": {"aggregate": "sum", "field": "a", "type": "quantitative"},

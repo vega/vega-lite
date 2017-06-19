@@ -3,6 +3,13 @@
     "description": "A simple bar chart with embedded data.",
     "autosize": "pad",
     "padding": 5,
+    "encode": {
+        "update": {
+            "fill": {
+                "value": "transparent"
+            }
+        }
+    },
     "data": [
         {
             "name": "source_0",
@@ -43,14 +50,17 @@
                     "a": "I",
                     "b": 52
                 }
-            ],
-            "format": {
-                "type": "json",
-                "parse": {
-                    "b": "number"
-                }
-            },
+            ]
+        },
+        {
+            "name": "data_0",
+            "source": "source_0",
             "transform": [
+                {
+                    "type": "formula",
+                    "expr": "toNumber(datum[\"b\"])",
+                    "as": "b"
+                },
                 {
                     "type": "filter",
                     "expr": "datum[\"b\"] !== null && !isNaN(datum[\"b\"])"
@@ -70,54 +80,35 @@
     ],
     "marks": [
         {
-            "name": "nested_main_group",
-            "type": "group",
+            "name": "marks",
+            "type": "rect",
+            "role": "bar",
+            "from": {
+                "data": "data_0"
+            },
             "encode": {
                 "update": {
-                    "width": {
-                        "signal": "width"
+                    "x": {
+                        "scale": "x",
+                        "field": "a"
                     },
-                    "height": {
-                        "signal": "height"
+                    "width": {
+                        "scale": "x",
+                        "band": true
+                    },
+                    "y": {
+                        "scale": "y",
+                        "field": "b"
+                    },
+                    "y2": {
+                        "scale": "y",
+                        "value": 0
                     },
                     "fill": {
-                        "value": "transparent"
+                        "value": "#4c78a8"
                     }
                 }
-            },
-            "marks": [
-                {
-                    "name": "marks",
-                    "type": "rect",
-                    "role": "bar",
-                    "from": {
-                        "data": "source_0"
-                    },
-                    "encode": {
-                        "update": {
-                            "x": {
-                                "scale": "x",
-                                "field": "a"
-                            },
-                            "width": {
-                                "scale": "x",
-                                "band": true
-                            },
-                            "y": {
-                                "scale": "y",
-                                "field": "b"
-                            },
-                            "y2": {
-                                "scale": "y",
-                                "value": 0
-                            },
-                            "fill": {
-                                "value": "#4c78a8"
-                            }
-                        }
-                    }
-                }
-            ]
+            }
         }
     ],
     "scales": [
@@ -125,7 +116,7 @@
             "name": "x",
             "type": "band",
             "domain": {
-                "data": "source_0",
+                "data": "data_0",
                 "field": "a",
                 "sort": true
             },
@@ -140,7 +131,7 @@
             "name": "y",
             "type": "linear",
             "domain": {
-                "data": "source_0",
+                "data": "data_0",
                 "field": "b"
             },
             "range": [

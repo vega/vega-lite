@@ -2,6 +2,13 @@
     "$schema": "http://vega.github.io/schema/vega/v3.0.json",
     "autosize": "pad",
     "padding": 5,
+    "encode": {
+        "update": {
+            "fill": {
+                "value": "transparent"
+            }
+        }
+    },
     "data": [
         {
             "name": "source_0",
@@ -50,65 +57,50 @@
     ],
     "marks": [
         {
-            "name": "nested_main_group",
-            "type": "group",
+            "name": "marks",
+            "type": "symbol",
+            "role": "point",
+            "from": {
+                "data": "source_0"
+            },
             "encode": {
                 "update": {
-                    "width": {
-                        "signal": "width"
+                    "x": {
+                        "signal": "(scale(\"x\", datum[\"bin_maxbins_10_IMDB_Rating_start\"]) + scale(\"x\", datum[\"bin_maxbins_10_IMDB_Rating_end\"]))/2"
                     },
-                    "height": {
-                        "signal": "height"
+                    "y": {
+                        "value": 10.5
+                    },
+                    "stroke": {
+                        "value": "#4c78a8"
                     },
                     "fill": {
                         "value": "transparent"
-                    }
-                }
-            },
-            "marks": [
-                {
-                    "name": "marks",
-                    "type": "symbol",
-                    "role": "point",
-                    "from": {
-                        "data": "source_0"
                     },
-                    "encode": {
-                        "update": {
-                            "x": {
-                                "signal": "(scale(\"x\", datum[\"bin_maxbins_10_IMDB_Rating_start\"]) + scale(\"x\", datum[\"bin_maxbins_10_IMDB_Rating_end\"]))/2"
-                            },
-                            "y": {
-                                "value": 10.5
-                            },
-                            "stroke": {
-                                "value": "#4c78a8"
-                            },
-                            "fill": {
-                                "value": "transparent"
-                            },
-                            "opacity": {
-                                "value": 0.7
-                            }
-                        }
+                    "opacity": {
+                        "value": 0.7
                     }
                 }
-            ]
+            }
         }
     ],
     "scales": [
         {
             "name": "x",
-            "type": "bin-linear",
+            "type": "linear",
             "domain": {
-                "signal": "sequence(bin_maxbins_10_IMDB_Rating_bins.start, bin_maxbins_10_IMDB_Rating_bins.stop + bin_maxbins_10_IMDB_Rating_bins.step, bin_maxbins_10_IMDB_Rating_bins.step)"
+                "data": "source_0",
+                "fields": [
+                    "bin_maxbins_10_IMDB_Rating_start",
+                    "bin_maxbins_10_IMDB_Rating_end"
+                ]
             },
             "range": [
                 0,
                 200
             ],
             "round": true,
-            "nice": true
+            "zero": false
         }
     ],
     "axes": [
@@ -117,6 +109,9 @@
             "format": "s",
             "orient": "bottom",
             "title": "BIN(IMDB_Rating)",
+            "values": {
+                "signal": "sequence(bin_maxbins_10_IMDB_Rating_bins.start, bin_maxbins_10_IMDB_Rating_bins.stop + bin_maxbins_10_IMDB_Rating_bins.step, bin_maxbins_10_IMDB_Rating_bins.step)"
+            },
             "zindex": 1,
             "encode": {
                 "labels": {

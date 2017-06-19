@@ -59,7 +59,7 @@ To customize axis, an `axis` object can contain the following groups of properti
 
 ### Ticks
 
-{% include table.html props="ticks,tickExtra,labelPadding,tickCount,tickSize,values" source="Axis" %}
+{% include table.html props="ticks,tickExtra,tickCount,tickSize,values" source="Axis" %}
 
 ### Title
 
@@ -80,12 +80,13 @@ To provide themes for all axes, the axis config `config: {axis: {...}}` can cont
 
 ### Labels
 
-{% include table.html props="labels,labelAngle,labelPadding,shortTimeLabels" source="AxisConfig" %}
+{% include table.html props="labels,labelAngle,labelPadding,labelColor,labelFont,labelFontSize,labelLimit,shortTimeLabels" source="AxisConfig" %}
 
 ### Ticks
 
-{% include table.html props="ticks,tickColor,tickExtra,tickRound,tickSize,labelColor,labelFont,labelFontSize,labelLimit,tickWidth" source="AxisConfig" %}
+{% include table.html props="ticks,tickColor,tickExtra,tickRound,tickSize,tickWidth" source="AxisConfig" %}
 
 ### Title
 
 {% include table.html props="maxExtent,minExtent,titleAlign,titleAngle,titleBaseline,titleColor,titleFont,titleLimit,titleFontWeight,titleFontSize,titlePadding,titleMaxLength" source="AxisConfig" %}
+

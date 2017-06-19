@@ -1,18 +1,16 @@
-import {Axis, AXIS_PROPERTIES} from '../../axis';
-import {Channel} from '../../channel';
+import {Axis, AXIS_PROPERTIES, AxisEncoding} from '../../axis';
+import {Channel, SpatialScaleChannel} from '../../channel';
+import {Dict, keys, some} from '../../util';
 import {VgAxis} from '../../vega.schema';
-
+import {UnitModel} from '../unit';
+import {AxisComponent, AxisComponentIndex} from './component';
 import * as encode from './encode';
 import * as rules from './rules';
 
-import {Dict, keys, some} from '../../util';
-import {UnitModel} from '../unit';
-import {AxisComponent, AxisComponentIndex} from './component';
-
-type AxisPart = 'domain' | 'grid' | 'labels' | 'ticks' | 'title';
+type AxisPart = keyof AxisEncoding;
 const AXIS_PARTS: AxisPart[] = ['domain', 'grid', 'labels', 'ticks', 'title'];
 
-export function parseAxisComponent(model: UnitModel, axisChannels: Channel[]): AxisComponentIndex {
+export function parseAxisComponent(model: UnitModel, axisChannels: SpatialScaleChannel[]): AxisComponentIndex {
   return axisChannels.reduce(function(axis, channel) {
     const axisComponent: AxisComponent = {axes:[], gridAxes: []};
     if (model.axis(channel)) {
@@ -58,16 +56,16 @@ function hasAxisPart(axis: VgAxis, part: AxisPart) {
 /**
  * Make an inner axis for showing grid for shared axis.
  */
-export function parseGridAxis(channel: Channel, model: UnitModel): VgAxis {
+export function parseGridAxis(channel: SpatialScaleChannel, model: UnitModel): VgAxis {
   // FIXME: support adding ticks for grid axis that are inner axes of faceted plots.
   return parseAxis(channel, model, true);
 }
 
-export function parseMainAxis(channel: Channel, model: UnitModel) {
+export function parseMainAxis(channel: SpatialScaleChannel, model: UnitModel) {
   return parseAxis(channel, model, false);
 }
 
-function parseAxis(channel: Channel, model: UnitModel, isGridAxis: boolean): VgAxis {
+function parseAxis(channel: SpatialScaleChannel, model: UnitModel, isGridAxis: boolean): VgAxis {
   const axis = model.axis(channel);
 
   const vgAxis: VgAxis = {
@@ -90,7 +88,7 @@ function parseAxis(channel: Channel, model: UnitModel, isGridAxis: boolean): VgA
 
   // 2) Add guide encode definition groups
 
-  const encodeSpec = axis.encode || {};
+  const axisEncoding = axis.encoding || {};
   AXIS_PARTS.forEach(function(part) {
     if (!hasAxisPart(vgAxis, part)) {
       // No need to create encode for a disabled part.
@@ -100,9 +98,9 @@ function parseAxis(channel: Channel, model: UnitModel, isGridAxis: boolean): VgA
     // as different require different parameters.
     let value;
     if (part === 'labels') {
-        value = encode.labels(model, channel, encodeSpec.labels || {}, vgAxis);
+      value = encode.labels(model, channel, axisEncoding.labels || {}, vgAxis);
     } else {
-        value = encodeSpec[part] || {};
+      value = axisEncoding[part] || {};
     }
 
     if (value !== undefined && keys(value).length > 0) {
@@ -114,7 +112,7 @@ function parseAxis(channel: Channel, model: UnitModel, isGridAxis: boolean): VgA
   return vgAxis;
 }
 
-function getSpecifiedOrDefaultValue(property: keyof VgAxis, specifiedAxis: Axis, channel: Channel, model: UnitModel, isGridAxis: boolean) {
+function getSpecifiedOrDefaultValue(property: keyof VgAxis, specifiedAxis: Axis, channel: SpatialScaleChannel, model: UnitModel, isGridAxis: boolean) {
   const fieldDef = model.fieldDef(channel);
 
   switch (property) {
@@ -137,7 +135,7 @@ function getSpecifiedOrDefaultValue(property: keyof VgAxis, specifiedAxis: Axis,
     case 'title':
       return rules.title(specifiedAxis, fieldDef, model.config, isGridAxis);
     case 'values':
-      return rules.values(specifiedAxis);
+      return rules.values(specifiedAxis, model, fieldDef);
     case 'zindex':
       return rules.zindex(specifiedAxis, isGridAxis);
   }

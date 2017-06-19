@@ -3,6 +3,13 @@
     "description": "A bubbleplot showing horsepower on x, miles per gallons on y, and weight with a diverging color scale.",
     "autosize": "pad",
     "padding": 5,
+    "encode": {
+        "update": {
+            "fill": {
+                "value": "transparent"
+            }
+        }
+    },
     "data": [
         {
             "name": "source_0",
@@ -35,53 +42,34 @@
     ],
     "marks": [
         {
-            "name": "nested_main_group",
-            "type": "group",
+            "name": "marks",
+            "type": "symbol",
+            "role": "point",
+            "from": {
+                "data": "source_0"
+            },
             "encode": {
                 "update": {
-                    "width": {
-                        "signal": "width"
+                    "x": {
+                        "scale": "x",
+                        "field": "Horsepower"
                     },
-                    "height": {
-                        "signal": "height"
+                    "y": {
+                        "scale": "y",
+                        "field": "Miles_per_Gallon"
+                    },
+                    "stroke": {
+                        "scale": "color",
+                        "field": "Weight_in_lbs"
                     },
                     "fill": {
                         "value": "transparent"
-                    }
-                }
-            },
-            "marks": [
-                {
-                    "name": "marks",
-                    "type": "symbol",
-                    "role": "point",
-                    "from": {
-                        "data": "source_0"
                     },
-                    "encode": {
-                        "update": {
-                            "x": {
-                                "scale": "x",
-                                "field": "Horsepower"
-                            },
-                            "y": {
-                                "scale": "y",
-                                "field": "Miles_per_Gallon"
-                            },
-                            "stroke": {
-                                "scale": "color",
-                                "field": "Weight_in_lbs"
-                            },
-                            "fill": {
-                                "value": "transparent"
-                            },
-                            "opacity": {
-                                "value": 0.7
-                            }
-                        }
+                    "opacity": {
+                        "value": 0.7
                     }
                 }
-            ]
+            }
         }
     ],
     "scales": [

@@ -1,10 +1,9 @@
-
-
+import {isVgRangeStep} from '../../vega.schema';
 import {UnitModel} from '../unit';
-import * as mixins from './mixins';
-
 import {MarkCompiler} from './base';
+import * as mixins from './mixins';
 import * as ref from './valueref';
+
 
 export const tick: MarkCompiler = {
   vgMark: 'rect',
@@ -37,14 +36,14 @@ export const tick: MarkCompiler = {
 function defaultSize(model: UnitModel): number {
   const {config} = model;
   const orient = model.markDef.orient;
-
-  const scaleRangeStep: number | null = (model.scale(orient === 'horizontal' ? 'x' : 'y') || {}).rangeStep;
+  const scale = model.getScaleComponent(orient === 'horizontal' ? 'x' : 'y');
 
   if (config.tick.bandSize !== undefined) {
     return config.tick.bandSize;
   } else {
-    const rangeStep = scaleRangeStep !== undefined ?
-      scaleRangeStep :
+    const scaleRange = scale ? scale.get('range') : undefined;
+    const rangeStep = scaleRange && isVgRangeStep(scaleRange) ?
+      scaleRange.step :
       config.scale.rangeStep;
     if (typeof rangeStep !== 'number') {
       // FIXME consolidate this log

@@ -2,6 +2,13 @@
     "$schema": "http://vega.github.io/schema/vega/v3.0.json",
     "autosize": "pad",
     "padding": 5,
+    "encode": {
+        "update": {
+            "fill": {
+                "value": "transparent"
+            }
+        }
+    },
     "data": [
         {
             "name": "source_0",
@@ -36,15 +43,22 @@
                     "x": 6,
                     "y": 6
                 }
-            ],
-            "format": {
-                "type": "json",
-                "parse": {
-                    "x": "number",
-                    "y": "number"
-                }
-            },
+            ]
+        },
+        {
+            "name": "data_0",
+            "source": "source_0",
             "transform": [
+                {
+                    "type": "formula",
+                    "expr": "toNumber(datum[\"x\"])",
+                    "as": "x"
+                },
+                {
+                    "type": "formula",
+                    "expr": "toNumber(datum[\"y\"])",
+                    "as": "y"
+                },
                 {
                     "type": "filter",
                     "expr": "datum[\"x\"] !== null && !isNaN(datum[\"x\"]) && datum[\"y\"] !== null && !isNaN(datum[\"y\"])"
@@ -64,53 +78,34 @@
     ],
     "marks": [
         {
-            "name": "nested_main_group",
-            "type": "group",
+            "name": "marks",
+            "type": "symbol",
+            "role": "point",
+            "from": {
+                "data": "data_0"
+            },
             "encode": {
                 "update": {
-                    "width": {
-                        "signal": "width"
+                    "x": {
+                        "scale": "x",
+                        "field": "x"
                     },
-                    "height": {
-                        "signal": "height"
+                    "y": {
+                        "scale": "y",
+                        "field": "y"
+                    },
+                    "stroke": {
+                        "scale": "color",
+                        "field": "a"
                     },
                     "fill": {
                         "value": "transparent"
-                    }
-                }
-            },
-            "marks": [
-                {
-                    "name": "marks",
-                    "type": "symbol",
-                    "role": "point",
-                    "from": {
-                        "data": "source_0"
                     },
-                    "encode": {
-                        "update": {
-                            "x": {
-                                "scale": "x",
-                                "field": "x"
-                            },
-                            "y": {
-                                "scale": "y",
-                                "field": "y"
-                            },
-                            "stroke": {
-                                "scale": "color",
-                                "field": "a"
-                            },
-                            "fill": {
-                                "value": "transparent"
-                            },
-                            "opacity": {
-                                "value": 0.7
-                            }
-                        }
+                    "opacity": {
+                        "value": 0.7
                     }
                 }
-            ]
+            }
         }
     ],
     "scales": [
@@ -118,7 +113,7 @@
             "name": "x",
             "type": "linear",
             "domain": {
-                "data": "source_0",
+                "data": "data_0",
                 "field": "x"
             },
             "range": [
@@ -133,7 +128,7 @@
             "name": "y",
             "type": "linear",
             "domain": {
-                "data": "source_0",
+                "data": "data_0",
                 "field": "y"
             },
             "range": [
@@ -148,7 +143,7 @@
             "name": "color",
             "type": "sequential",
             "domain": {
-                "data": "source_0",
+                "data": "data_0",
                 "field": "a"
             },
             "range": "ramp",

@@ -1,10 +1,18 @@
+import {isArray} from 'vega-util';
+import {X, Y} from '../../channel';
 import {LEVEL_OF_DETAIL_CHANNELS} from '../../channel';
+import {MAIN} from '../../data';
+import {field, getFieldDef} from '../../fielddef';
 import {AREA, LINE} from '../../mark';
+import {isSelectionDomain} from '../../scale';
 import {contains} from '../../util';
-
+import {FacetModel} from '../facet';
+import {Model} from '../model';
+import {UnitModel} from '../unit';
 import {area} from './area';
 import {bar} from './bar';
 import {MarkCompiler} from './base';
+import {normalizeMarkDef} from './init';
 import {line} from './line';
 import {circle, point, square} from './point';
 import {rect} from './rect';
@@ -12,12 +20,6 @@ import {rule} from './rule';
 import {text} from './text';
 import {tick} from './tick';
 
-import {MAIN} from '../../data';
-import {FacetModel} from '../facet';
-import {UnitModel} from '../unit';
-
-import {X, Y} from '../../channel';
-import {isSelectionDomain} from '../../scale';
 
 const markCompiler: {[type: string]: MarkCompiler} = {
   area: area,
@@ -32,7 +34,17 @@ const markCompiler: {[type: string]: MarkCompiler} = {
   square: square
 };
 
-export function parseMark(model: UnitModel): any[] {
+export function parseMarkDef(model: Model) {
+  if (model instanceof UnitModel) {
+    normalizeMarkDef(model.markDef, model.encoding, model.component.scales, model.config);
+  } else {
+    for (const child of model.children) {
+      parseMarkDef(child);
+    }
+  }
+}
+
+export function parseMarkGroup(model: UnitModel): any[] {
   if (contains([LINE, AREA], model.mark())) {
     return parsePathMark(model);
   } else {
@@ -117,15 +129,29 @@ function parseNonPathMark(model: UnitModel) {
  */
 function detailFields(model: UnitModel): string[] {
   return LEVEL_OF_DETAIL_CHANNELS.reduce(function(details, channel) {
-    if (model.channelHasField(channel) && !model.fieldDef(channel).aggregate) {
-      details.push(model.field(channel));
+    const {encoding} = model;
+    if (channel === 'detail' || channel === 'order') {
+      const channelDef = encoding[channel];
+      if (channelDef) {
+        (isArray(channelDef) ? channelDef : [channelDef]).forEach((fieldDef) => {
+          if (!fieldDef.aggregate) {
+            details.push(field(fieldDef, {binSuffix: 'start'}));
+          }
+        });
+      }
+    } else {
+      const fieldDef = getFieldDef<string>(encoding[channel]);
+      if (fieldDef && !fieldDef.aggregate) {
+        details.push(field(fieldDef, {binSuffix: 'start'}));
+      }
     }
     return details;
   }, []);
 }
 
 function clip(model: UnitModel) {
-  const xscale = model.scale(X), yscale = model.scale(Y);
-  return (xscale && isSelectionDomain(xscale.domain)) ||
-    (yscale && isSelectionDomain(yscale.domain)) ? {clip: true} : {};
+  const xScaleDomain = model.scaleDomain(X);
+  const yScaleDomain = model.scaleDomain(Y);
+  return (xScaleDomain && isSelectionDomain(xScaleDomain)) ||
+    (yScaleDomain && isSelectionDomain(yScaleDomain)) ? {clip: true} : {};
 }

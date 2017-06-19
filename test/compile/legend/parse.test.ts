@@ -4,18 +4,19 @@ import {assert} from 'chai';
 import {COLOR, OPACITY, SHAPE, SIZE} from '../../../src/channel';
 import * as legendParse from '../../../src/compile/legend/parse';
 import {UnitSpec} from '../../../src/spec';
-import {parseUnitModel} from '../../util';
+import {parseUnitModel, parseUnitModelWithScale} from '../../util';
 
 describe('compile/legend', function() {
   describe('parseLegend()', function() {
     it('should produce a Vega legend object with correct type and scale for color', function() {
-      const model = parseUnitModel({
+      const model = parseUnitModelWithScale({
         mark: "point",
         encoding: {
           x: {field: "a", type: "nominal"},
           color: {field: "a", type: "quantitative"}
         }
       });
+
       const def = legendParse.parseLegend(model, COLOR);
       assert.isObject(def);
       assert.equal(def.title, 'a');
@@ -32,7 +33,8 @@ describe('compile/legend', function() {
           }
         };
         s.encoding[channel] = {field: "a", type: "nominal"};
-        const model = parseUnitModel(s);
+
+        const model = parseUnitModelWithScale(s);
 
         const def = legendParse.parseLegend(model, channel);
         assert.isObject(def);

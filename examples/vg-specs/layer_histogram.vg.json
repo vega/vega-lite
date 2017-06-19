@@ -2,6 +2,13 @@
     "$schema": "http://vega.github.io/schema/vega/v3.0.json",
     "autosize": "pad",
     "padding": 5,
+    "encode": {
+        "update": {
+            "fill": {
+                "value": "transparent"
+            }
+        }
+    },
     "data": [
         {
             "name": "source_0",
@@ -141,102 +148,93 @@
     ],
     "marks": [
         {
-            "name": "nested_main_group",
-            "type": "group",
+            "name": "layer_0_marks",
+            "type": "rect",
+            "role": "bar",
+            "from": {
+                "data": "data_0"
+            },
             "encode": {
                 "update": {
-                    "width": {
-                        "signal": "width"
+                    "x2": {
+                        "scale": "x",
+                        "field": "bin_maxbins_10_distance_start",
+                        "offset": 1
                     },
-                    "height": {
-                        "signal": "height"
+                    "x": {
+                        "scale": "x",
+                        "field": "bin_maxbins_10_distance_end"
+                    },
+                    "y": {
+                        "scale": "y",
+                        "field": "count_*"
+                    },
+                    "y2": {
+                        "scale": "y",
+                        "value": 0
                     },
                     "fill": {
-                        "value": "transparent"
+                        "value": "#4c78a8"
                     }
                 }
             },
-            "marks": [
-                {
-                    "name": "layer_0_marks",
-                    "type": "rect",
-                    "role": "bar",
-                    "from": {
-                        "data": "data_0"
+            "clip": true
+        },
+        {
+            "name": "layer_1_marks",
+            "type": "rect",
+            "role": "bar",
+            "from": {
+                "data": "data_1"
+            },
+            "encode": {
+                "update": {
+                    "x2": {
+                        "scale": "x",
+                        "field": "bin_maxbins_10_distance_start",
+                        "offset": 1
                     },
-                    "encode": {
-                        "update": {
-                            "x2": {
-                                "scale": "x",
-                                "field": "bin_maxbins_10_distance_start",
-                                "offset": 1
-                            },
-                            "x": {
-                                "scale": "x",
-                                "field": "bin_maxbins_10_distance_end"
-                            },
-                            "y": {
-                                "scale": "y",
-                                "field": "count_*"
-                            },
-                            "y2": {
-                                "scale": "y",
-                                "value": 0
-                            },
-                            "fill": {
-                                "value": "#4c78a8"
-                            }
-                        }
+                    "x": {
+                        "scale": "x",
+                        "field": "bin_maxbins_10_distance_end"
                     },
-                    "clip": true
-                },
-                {
-                    "name": "layer_1_marks",
-                    "type": "rect",
-                    "role": "bar",
-                    "from": {
-                        "data": "data_1"
+                    "y": {
+                        "scale": "y",
+                        "field": "count_*"
                     },
-                    "encode": {
-                        "update": {
-                            "x2": {
-                                "scale": "x",
-                                "field": "bin_maxbins_10_distance_start",
-                                "offset": 1
-                            },
-                            "x": {
-                                "scale": "x",
-                                "field": "bin_maxbins_10_distance_end"
-                            },
-                            "y": {
-                                "scale": "y",
-                                "field": "count_*"
-                            },
-                            "y2": {
-                                "scale": "y",
-                                "value": 0
-                            },
-                            "fill": {
-                                "value": "goldenrod"
-                            }
-                        }
+                    "y2": {
+                        "scale": "y",
+                        "value": 0
                     },
-                    "clip": true
+                    "fill": {
+                        "value": "goldenrod"
+                    }
                 }
-            ]
+            },
+            "clip": true
         }
     ],
     "scales": [
         {
             "name": "x",
-            "type": "bin-linear",
+            "type": "linear",
             "domain": {
                 "fields": [
                     {
-                        "signal": "sequence(layer_0_bin_maxbins_10_distance_bins.start, layer_0_bin_maxbins_10_distance_bins.stop + layer_0_bin_maxbins_10_distance_bins.step, layer_0_bin_maxbins_10_distance_bins.step)"
+                        "data": "data_0",
+                        "field": "bin_maxbins_10_distance_start"
                     },
                     {
-                        "signal": "sequence(layer_1_bin_maxbins_10_distance_bins.start, layer_1_bin_maxbins_10_distance_bins.stop + layer_1_bin_maxbins_10_distance_bins.step, layer_1_bin_maxbins_10_distance_bins.step)"
+                        "data": "data_0",
+                        "field": "bin_maxbins_10_distance_end"
+                    },
+                    {
+                        "data": "data_1",
+                        "field": "bin_maxbins_10_distance_start"
+                    },
+                    {
+                        "data": "data_1",
+                        "field": "bin_maxbins_10_distance_end"
                     }
                 ],
                 "sort": true
@@ -246,7 +244,7 @@
                 200
             ],
             "round": true,
-            "nice": true
+            "zero": false
         },
         {
             "name": "y",
@@ -279,6 +277,9 @@
             "format": "s",
             "orient": "bottom",
             "title": "BIN(distance)",
+            "values": {
+                "signal": "sequence(layer_0_bin_maxbins_10_distance_bins.start, layer_0_bin_maxbins_10_distance_bins.stop + layer_0_bin_maxbins_10_distance_bins.step, layer_0_bin_maxbins_10_distance_bins.step)"
+            },
             "zindex": 1,
             "encode": {
                 "labels": {

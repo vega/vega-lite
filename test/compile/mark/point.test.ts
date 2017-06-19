@@ -3,14 +3,15 @@
 import {assert} from 'chai';
 import {COLOR, SHAPE, SIZE, X, Y} from '../../../src/channel';
 import {circle, point, square} from '../../../src/compile/mark/point';
+import {Encoding} from '../../../src/encoding';
 import {defaultMarkConfig} from '../../../src/mark';
 import {UnitSpec} from '../../../src/spec';
 import {extend} from '../../../src/util';
-import {parseUnitModel} from '../../util';
+import {parseUnitModelWithScaleMarkDefLayoutSize} from '../../util';
 
 describe('Mark: Point', function() {
 
-  function pointXY(moreEncoding = {}): UnitSpec {
+  function pointXY(moreEncoding: Encoding<string> = {}): UnitSpec {
     return {
       "mark": "point",
       "encoding": extend(
@@ -25,7 +26,7 @@ describe('Mark: Point', function() {
   }
 
   describe('with x', function() {
-    const model = parseUnitModel({
+    const model = parseUnitModelWithScaleMarkDefLayoutSize({
       "mark": "point",
       "encoding": {"x": {"field": "year", "type": "ordinal"}},
       "data": {"url": "data/barley.json"}
@@ -45,7 +46,7 @@ describe('Mark: Point', function() {
   describe('with stacked x', function() {
     // This is a simplified example for stacked point.
     // In reality this will be used as stacked's overlayed marker
-    const model = parseUnitModel({
+    const model = parseUnitModelWithScaleMarkDefLayoutSize({
       "mark": "point",
       "encoding": {
         "x": {"aggregate": "sum", "field": "a", "type": "quantitative"},
@@ -63,7 +64,7 @@ describe('Mark: Point', function() {
   });
 
   describe('with y', function() {
-    const model = parseUnitModel({
+    const model = parseUnitModelWithScaleMarkDefLayoutSize({
       "mark": "point",
       "encoding": {"y": {"field": "year", "type": "ordinal"}},
       "data": {"url": "data/barley.json"}
@@ -83,7 +84,7 @@ describe('Mark: Point', function() {
   describe('with stacked y', function() {
     // This is a simplified example for stacked point.
     // In reality this will be used as stacked's overlayed marker
-    const model = parseUnitModel({
+    const model = parseUnitModelWithScaleMarkDefLayoutSize({
       "mark": "point",
       "encoding": {
         "y": {"aggregate": "sum", "field": "a", "type": "quantitative"},
@@ -101,7 +102,7 @@ describe('Mark: Point', function() {
   });
 
   describe('with x and y', function() {
-    const model = parseUnitModel(pointXY());
+    const model = parseUnitModelWithScaleMarkDefLayoutSize(pointXY());
     const props = point.encodeEntry(model);
 
     it('should scale on x', function() {
@@ -120,7 +121,7 @@ describe('Mark: Point', function() {
 
   describe('with band x and quantitative y', () => {
     it('should offset band position by half band', () => {
-      const model = parseUnitModel({
+      const model = parseUnitModelWithScaleMarkDefLayoutSize({
         "data": {"url": "data/barley.json"},
         "mark": "point",
         "encoding":{
@@ -134,7 +135,7 @@ describe('Mark: Point', function() {
   });
 
   describe('with x, y, size', function () {
-    const model = parseUnitModel(pointXY({
+    const model = parseUnitModelWithScaleMarkDefLayoutSize(pointXY({
       "size": {"aggregate": "count", "type": "quantitative"}
     }));
     const props = point.encodeEntry(model);
@@ -145,7 +146,7 @@ describe('Mark: Point', function() {
   });
 
   describe('with x, y, color', function () {
-    const model = parseUnitModel(pointXY({
+    const model = parseUnitModelWithScaleMarkDefLayoutSize(pointXY({
       "color": {"field": "yield", "type": "quantitative"}
     }));
     const props = point.encodeEntry(model);
@@ -156,7 +157,7 @@ describe('Mark: Point', function() {
   });
 
   describe('with x, y, shape', function () {
-    const model = parseUnitModel(pointXY({
+    const model = parseUnitModelWithScaleMarkDefLayoutSize(pointXY({
       "shape": {"field": "site", "type": "nominal"}
     }));
     const props = point.encodeEntry(model);
@@ -167,7 +168,7 @@ describe('Mark: Point', function() {
   });
 
   describe('with constant color, shape, and size', function() {
-    const model = parseUnitModel(pointXY({
+    const model = parseUnitModelWithScaleMarkDefLayoutSize(pointXY({
       "shape": {"value": "circle"},
       "color": {"value": "red"},
       "size": {"value": 23}
@@ -182,7 +183,7 @@ describe('Mark: Point', function() {
 
   describe('with configs', function() {
     it('should apply color from mark-specific config over general mark config', function() {
-      const model = parseUnitModel({
+      const model = parseUnitModelWithScaleMarkDefLayoutSize({
         "mark": "point",
         "encoding": {
           "x": {"field": "Horsepower","type": "quantitative"},
@@ -195,7 +196,7 @@ describe('Mark: Point', function() {
     });
 
     it('should apply color config and not apply stroke config', function() {
-      const model = parseUnitModel({
+      const model = parseUnitModelWithScaleMarkDefLayoutSize({
         "mark": "point",
         "encoding": {
           "x": {"field": "Horsepower","type": "quantitative"},
@@ -208,7 +209,7 @@ describe('Mark: Point', function() {
     });
 
     it('should not apply stroke config but instead output default color', function() {
-      const model = parseUnitModel({
+      const model = parseUnitModelWithScaleMarkDefLayoutSize({
         "mark": "point",
         "encoding": {
           "x": {"field": "Horsepower","type": "quantitative"},
@@ -224,7 +225,7 @@ describe('Mark: Point', function() {
 
 describe('Mark: Square', function() {
   it('should have correct shape', function() {
-    const model = parseUnitModel({
+    const model = parseUnitModelWithScaleMarkDefLayoutSize({
       "mark": "square",
       "encoding": {
         "color": {"value": "blue"}
@@ -232,11 +233,11 @@ describe('Mark: Square', function() {
     });
     const props = square.encodeEntry(model);
 
-    assert.equal(props.shape.value, 'square');
+    assert.propertyVal(props.shape, 'value', 'square');
   });
 
   it('should be filled by default', function() {
-    const model = parseUnitModel({
+    const model = parseUnitModelWithScaleMarkDefLayoutSize({
       "mark": "square",
       "encoding": {
         "color": {"value": "blue"}
@@ -244,11 +245,11 @@ describe('Mark: Square', function() {
     });
     const props = square.encodeEntry(model);
 
-    assert.equal(props.fill.value, 'blue');
+    assert.propertyVal(props.fill, 'value', 'blue');
   });
 
   it('with config.mark.filled:false should have transparent fill', function() {
-    const model = parseUnitModel({
+    const model = parseUnitModelWithScaleMarkDefLayoutSize({
       "mark": "square",
       "encoding": {
         "color": {"value": "blue"}
@@ -262,13 +263,13 @@ describe('Mark: Square', function() {
 
     const props = square.encodeEntry(model);
 
-    assert.equal(props.stroke.value, 'blue');
-    assert.equal(props.fill.value, 'transparent');
+    assert.propertyVal(props.stroke, 'value', 'blue');
+    assert.propertyVal(props.fill, 'value', 'transparent');
   });
 });
 
 describe('Mark: Circle', function() {
-  const model = parseUnitModel({
+  const model = parseUnitModelWithScaleMarkDefLayoutSize({
     "mark": "circle",
     "encoding": {
       "color": {"value": "blue"}
@@ -277,15 +278,15 @@ describe('Mark: Circle', function() {
   const props = circle.encodeEntry(model);
 
   it('should have correct shape', function() {
-    assert.equal(props.shape.value, 'circle');
+    assert.propertyVal(props.shape, 'value', 'circle');
   });
 
   it('should be filled by default', function() {
-    assert.equal(props.fill.value, 'blue');
+    assert.propertyVal(props.fill, 'value', 'blue');
   });
 
   it('with config.mark.filled:false should have transparent fill', function() {
-    const filledCircleModel = parseUnitModel({
+    const filledCircleModel = parseUnitModelWithScaleMarkDefLayoutSize({
       "mark": "circle",
       "encoding": {
         "color": {"value": "blue"}
@@ -299,7 +300,7 @@ describe('Mark: Circle', function() {
 
     const filledCircleProps = circle.encodeEntry(filledCircleModel);
 
-    assert.equal(filledCircleProps.stroke.value, 'blue');
-    assert.equal(filledCircleProps.fill.value, 'transparent');
+    assert.propertyVal(filledCircleProps.stroke, 'value', 'blue');
+    assert.propertyVal(filledCircleProps.fill, 'value', 'transparent');
   });
 });

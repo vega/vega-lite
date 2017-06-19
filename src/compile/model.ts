@@ -1,10 +1,11 @@
 import {Axis} from '../axis';
-import {Channel, COLUMN, isChannel, NonspatialScaleChannel, ScaleChannel, X} from '../channel';
+import {Channel, COLUMN, isChannel, isScaleChannel, NonspatialScaleChannel, ScaleChannel, SingleDefChannel, X} from '../channel';
 import {CellConfig, Config} from '../config';
 import {Data, DataSourceType, MAIN, RAW} from '../data';
 import {forEach, reduce} from '../encoding';
-import {ChannelDef, field, FieldDef, FieldRefOption, isFieldDef, isRepeatRef} from '../fielddef';
+import {ChannelDef, field, FieldDef, FieldRefOption, getFieldDef, isFieldDef, isRepeatRef} from '../fielddef';
 import {Legend} from '../legend';
+import {ResolveMapping} from '../resolve';
 import {hasDiscreteDomain, Scale} from '../scale';
 import {SortField, SortOrder} from '../sort';
 import {BaseSpec} from '../spec';
@@ -12,16 +13,21 @@ import {StackProperties} from '../stack';
 import {Transform} from '../transform';
 import {Dict, extend, vals, varName} from '../util';
 import {VgAxis, VgData, VgEncodeEntry, VgLayout, VgLegend, VgMarkGroup, VgScale, VgSignal, VgSignalRef, VgValueRef} from '../vega.schema';
-
 import {AxisComponent, AxisComponentIndex} from './axis/component';
 import {DataComponent} from './data/index';
+import {LayoutSize, LayoutSizeComponent} from './layout/component';
 import {getHeaderGroup, getTitleGroup, HEADER_CHANNELS, HEADER_TYPES, LayoutHeaderComponent} from './layout/header';
+import {parseLayoutSize} from './layout/parse';
 import {LegendComponentIndex} from './legend/component';
+import {parseMarkDef} from './mark/mark';
 import {RepeaterValue} from './repeat';
 import {assembleScale} from './scale/assemble';
-import {ScaleComponentIndex} from './scale/component';
+import {ScaleComponent, ScaleComponentIndex} from './scale/component';
+import {NON_TYPE_DOMAIN_RANGE_VEGA_SCALE_PROPERTIES, parseScale} from './scale/parse';
 import {SelectionComponent} from './selection/selection';
+import {Split} from './split';
 import {UnitModel} from './unit';
+
 
 /**
  * Composable Components that are intermediate results of the parsing phase of the
@@ -39,12 +45,14 @@ export interface Component {
   /** Dictionary mapping channel to VgLegend definition */
   legends: LegendComponentIndex;
 
+  layoutSize: LayoutSizeComponent;
+
   layoutHeaders: {
     row?: LayoutHeaderComponent,
     column?: LayoutHeaderComponent
   };
 
-  mark: VgEncodeEntry[];
+  mark: VgMarkGroup[];
 }
 
 export interface NameMapInterface {
@@ -94,13 +102,15 @@ export abstract class Model {
   /** Name map for size, which can be renamed by a model's parent. */
   protected sizeNameMap: NameMapInterface;
 
+
   public readonly config: Config;
 
-  public component: Component;
+  public readonly component: Component;
 
   public abstract readonly children: Model[] = [];
 
-  constructor(spec: BaseSpec, parent: Model, parentGivenName: string, config: Config) {
+  constructor(spec: BaseSpec, parent: Model, parentGivenName: string, config: Config,
+    public readonly resolve: ResolveMapping) {
     this.parent = parent;
     this.config = config;
 
@@ -119,20 +129,56 @@ export abstract class Model {
     this.component = {
       data: {
         sources: parent ? parent.component.data.sources : {},
-        outputNodes: parent ? parent.component.data.outputNodes : {}
+        outputNodes: parent ? parent.component.data.outputNodes : {},
+        outputNodeRefCounts: parent ? parent.component.data.outputNodeRefCounts : {},
+        ancestorParse: parent ? {...parent.component.data.ancestorParse} : {}
       },
       mark: null, scales: null, axes: {x: null, y: null},
-      layoutHeaders:{row: {}, column: {}}, legends: null, selection: null
+      layoutSize: new Split<LayoutSize>(),
+      layoutHeaders:{row: {}, column: {}},
+      legends: null, selection: null
     };
   }
 
+  public get width() {
+    /* istanbul ignore else: Condition should not happen -- only for warning in development. */
+    const w = this.component.layoutSize.get('width');
+    if (w !== undefined) {
+      return w;
+    }
+    throw new Error('calling model.width before parseLayoutSize()');
+  }
+
+
+  public get height() {
+    /* istanbul ignore else: Condition should not happen -- only for warning in development. */
+    const h = this.component.layoutSize.get('height');
+    if (h !== undefined) {
+      return h;
+    }
+    throw new Error('calling model.height before parseLayoutSize()');
+  }
+
+  protected initSize(size: LayoutSize) {
+    const {width, height} = size;
+    if (width) {
+      this.component.layoutSize.set('width', width, true);
+    }
+
+    if (height) {
+      this.component.layoutSize.set('height', height, true);
+    }
+  }
+
   public parse() {
-    this.parseData();
-    this.parseScale(); // depends on data name
+    this.parseScale();
+    this.parseMarkDef();
+    this.parseLayoutSize(); // depends on scale
+    this.parseData(); // (pathorder) depends on markDef
     this.parseSelection();
-    this.parseAxisAndHeader(); // depends on scale name
-    this.parseLegend(); // depends on scale name
-    this.parseMark(); // depends on data name and scale name, axisGroup, and children's scale, axis, legend and mark.
+    this.parseAxisAndHeader(); // depends on scale
+    this.parseLegend(); // depends on scale, markDef
+    this.parseMarkGroup(); // depends on data name, scale, layoutSize, axisGroup, and children's scale, axis, legend and mark.
   }
 
   public abstract parseData(): void;
@@ -140,9 +186,19 @@ export abstract class Model {
   public abstract parseSelection(): void;
 
 
-  public abstract parseScale(): void;
+  public parseScale() {
+    parseScale(this);
+  }
 
-  public abstract parseMark(): void;
+  public parseLayoutSize() {
+    parseLayoutSize(this);
+  }
+
+  public parseMarkDef() {
+    parseMarkDef(this);
+  }
+
+  public abstract parseMarkGroup(): void;
 
   public abstract parseAxisAndHeader(): void;
 
@@ -204,7 +260,7 @@ export abstract class Model {
   }
 
   public assembleGroup(signals: VgSignal[] = []) {
-    const group: VgEncodeEntry = {};
+    const group: VgMarkGroup = {};
 
     signals = signals.concat(this.assembleSelectionSignals());
     if (signals.length > 0) {
@@ -265,7 +321,12 @@ export abstract class Model {
   public requestDataName(name: DataSourceType) {
     const fullName = this.getName(name);
 
-    return this.lookupDataSource(fullName);
+    // Increase ref count. This is critical because otherwise we won't create a data source.
+    // We also increase the ref counts on OutputNode.getSource() calls.
+    const refCounts = this.component.data.outputNodeRefCounts;
+    refCounts[fullName] = (refCounts[fullName] || 0) + 1;
+
+    return fullName;
   }
 
   public getSizeSignalRef(sizeType: 'width' | 'height'): {signal: string} {
@@ -282,11 +343,12 @@ export abstract class Model {
     const node = this.component.data.outputNodes[name];
 
     if (!node) {
-      // name not found in map so let's just return what we got
+      // Name not found in map so let's just return what we got.
+      // This can happen if we already have the correct name.
       return name;
     }
 
-    return node.source;
+    return node.getSource();
   }
 
   public renameSize(oldName: string, newName: string) {
@@ -305,11 +367,6 @@ export abstract class Model {
     this.scaleNameMap.rename(oldName, newName);
   }
 
-  // FIXME: remove this, but currently the scaleName() method below depends on this.
-  public scale(channel: Channel): Scale {
-    return null;
-  }
-
   /**
    * @return scale name for a given channel after the scale has been parsed and named.
    */
@@ -322,10 +379,10 @@ export abstract class Model {
     }
 
     // If there is a scale for the channel, it should either
-    // be in the _scale mapping or exist in the name map
+    // be in the scale component or exist in the name map
     if (
-        // in the scale map (the scale is not merged by its parent)
-        (this.scale && isChannel(originalScaleName) && this.scale(originalScaleName)) ||
+        // If there is a scale for the channel, there should be a local scale component for it
+        isChannel(originalScaleName) && isScaleChannel(originalScaleName) && this.component.scales[originalScaleName] ||
         // in the scale name map (the the scale get merged by its parent)
         this.scaleNameMap.has(this.getName(originalScaleName))
       ) {
@@ -337,7 +394,7 @@ export abstract class Model {
   /**
    * Corrects the data references in marks after assemble.
    */
-  public correctDataNames = (mark: VgEncodeEntry) => {
+  public correctDataNames = (mark: VgMarkGroup) => {
     // TODO: make this correct
 
     // for normal data references
@@ -354,22 +411,37 @@ export abstract class Model {
   }
 
   /**
-   * Traverse a model's hierarchy to get the specified component.
-   * @param type Scales or Selection
-   * @param name Name of the component
+   * Traverse a model's hierarchy to get the scale component for a particular channel.
    */
-  public getComponent(type: 'scales' | 'selection', name: string): any {
-    return this.component[type][name] || this.parent.getComponent(type, name);
+  public getScaleComponent(channel: ScaleChannel): ScaleComponent {
+    /* istanbul ignore next: This is warning for debugging test */
+    if (!this.component.scales) {
+      throw new Error('getScaleComponent cannot be called before parseScale().  Make sure you have called parseScale or use parseUnitModelWithScale().');
+    }
+
+    const localScaleComponent = this.component.scales[channel];
+    if (localScaleComponent && !localScaleComponent.merged) {
+      return localScaleComponent;
+    }
+    return  (this.parent ? this.parent.getScaleComponent(channel) : undefined);
+  }
+
+  /**
+   * Traverse a model's hierarchy to get a particular selection component.
+   */
+  public getSelectionComponent(name: string): SelectionComponent {
+    return this.component.selection[name] || this.parent.getSelectionComponent(name);
   }
 }
 
 /** Abstract class for UnitModel and FacetModel.  Both of which can contain fieldDefs as a part of its own specification. */
 export abstract class ModelWithField extends Model {
-  public abstract fieldDef(channel: Channel): FieldDef<string>;
+  public abstract fieldDef(channel: SingleDefChannel): FieldDef<string>;
 
   /** Get "field" reference for vega */
-  public field(channel: Channel, opt: FieldRefOption = {}) {
+  public field(channel: SingleDefChannel, opt: FieldRefOption = {}) {
     const fieldDef = this.fieldDef(channel);
+
 
     if (fieldDef.bin) { // bin has default suffix that depends on scaleType
       opt = extend({
@@ -383,20 +455,24 @@ export abstract class ModelWithField extends Model {
   public abstract hasDiscreteDomain(channel: Channel): boolean;
 
 
-  public abstract channels(): Channel[];
 
   protected abstract getMapping(): {[key: string]: any};
 
   public reduceFieldDef<T, U>(f: (acc: U, fd: FieldDef<string>, c: Channel) => U, init: T, t?: any) {
     return reduce(this.getMapping(), (acc:U , cd: ChannelDef<string>, c: Channel) => {
-      return isFieldDef(cd) ? f(acc, cd, c) : acc;
+      const fieldDef = getFieldDef(cd);
+      if (fieldDef) {
+        return f(acc, fieldDef, c);
+      }
+      return acc;
     }, init, t);
   }
 
   public forEachFieldDef(f: (fd: FieldDef<string>, c: Channel) => void, t?: any) {
     forEach(this.getMapping(), (cd: ChannelDef<string>, c: Channel) => {
-      if (isFieldDef(cd)) {
-        f(cd, c);
+      const fieldDef = getFieldDef(cd);
+      if (fieldDef) {
+        f(fieldDef, c);
       }
     }, t);
   }

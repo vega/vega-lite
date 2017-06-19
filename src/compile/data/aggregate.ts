@@ -1,14 +1,15 @@
+import {isScaleChannel} from '../../channel';
 import {forEach} from '../../encoding';
 import {field, FieldDef} from '../../fielddef';
 import * as log from '../../log';
+import {Summarize, SummarizeTransform} from '../../transform';
 import {ORDINAL} from '../../type';
 import {Dict, differ, duplicate, extend, keys, StringSet} from '../../util';
 import {VgAggregateTransform} from '../../vega.schema';
-import {UnitModel} from './../unit';
-
-import {Summarize, SummarizeTransform} from '../../transform';
 import {Model} from '../model';
+import {UnitModel} from './../unit';
 import {DataFlowNode} from './dataflow';
+
 
 function addDimension(dims: {[field: string]: boolean}, fieldDef: FieldDef<string>) {
   if (fieldDef.bin) {
@@ -83,9 +84,8 @@ export class AggregateNode extends DataFlowNode {
           meas[fieldDef.field] = meas[fieldDef.field] || {};
           meas[fieldDef.field][fieldDef.aggregate] = field(fieldDef);
 
-          // add min/max so we can use their union as unaggregated domain
-          const scale = model.scale(channel);
-          if (scale && scale.domain === 'unaggregated') {
+          // For scale channel with domain === 'unaggregated', add min/max so we can use their union as unaggregated domain
+          if (isScaleChannel(channel) && model.scaleDomain(channel) === 'unaggregated') {
             meas[fieldDef.field]['min'] = field(fieldDef, {aggregate: 'min'});
             meas[fieldDef.field]['max'] = field(fieldDef, {aggregate: 'max'});
           }
@@ -95,7 +95,7 @@ export class AggregateNode extends DataFlowNode {
       }
     });
 
-    if ((Object.keys(dims).length + Object.keys(meas).length) === 0) {
+    if ((keys(dims).length + keys(meas).length) === 0) {
       return null;
     }
 
@@ -121,7 +121,7 @@ export class AggregateNode extends DataFlowNode {
       dims[s] = true;
     }
 
-    if ((Object.keys(dims).length + Object.keys(meas).length)  === 0) {
+    if ((keys(dims).length + keys(meas).length)  === 0) {
       return null;
     }
 

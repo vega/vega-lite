@@ -1,6 +1,9 @@
 import * as stringify from 'json-stable-stringify';
+import {isArray, isNumber, isObject, isString} from 'vega-util';
+import {isLogicalAnd, isLogicalNot, isLogicalOr, LogicalOperand} from './logical';
+
+
 export {extend, isArray, isObject, isNumber, isString, truncate, toSet, stringValue} from 'vega-util';
-import {isArray, isNumber, isString} from 'vega-util';
 
 /**
  * Creates an object composed of the picked object properties.
@@ -208,4 +211,16 @@ export function varName(s: string): string {
 
   // Add _ if the string has leading numbers.
   return (s.match(/^\d+/) ? '_' : '') + alphanumericS;
+}
+
+export function logicalExpr<T>(op: LogicalOperand<T>, cb: Function): string {
+  if (isLogicalNot(op)) {
+    return '!(' + logicalExpr(op.not, cb) + ')';
+  } else if (isLogicalAnd(op)) {
+    return '(' + op.and.map((and: LogicalOperand<T>) => logicalExpr(and, cb)).join(') && (') + ')';
+  } else if (isLogicalOr(op)) {
+    return '(' + op.or.map((or: LogicalOperand<T>) => logicalExpr(or, cb)).join(') || (') + ')';
+  } else {
+    return cb(op);
+  }
 }

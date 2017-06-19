@@ -1,6 +1,6 @@
 import {COLUMN, ROW, X, X2, Y, Y2} from './channel';
-import * as compositeMark from './compositemark';
 import {CompositeMark} from './compositemark';
+import * as compositeMark from './compositemark';
 import {Config} from './config';
 import {Data} from './data';
 import {channelHasField, Encoding, EncodingWithFacet, isRanged} from './encoding';
@@ -15,7 +15,7 @@ import {SelectionDef} from './selection';
 import {stack} from './stack';
 import {TopLevelProperties} from './toplevelprops';
 import {Transform} from './transform';
-import {contains, duplicate, hash, vals} from './util';
+import {contains, Dict, duplicate, hash, vals} from './util';
 
 
 export type TopLevel<S extends BaseSpec> = S & TopLevelProperties & {
@@ -55,9 +55,10 @@ export interface BaseSpec {
   transform?: Transform[];
 }
 
-export interface UnitSize {
+// TODO(https://github.com/vega/vega-lite/issues/2503): Make this generic so we can support some form of top-down sizing.
+export interface LayoutSize {
   /**
-   * The width of a single visualization.
+   * The width of a visualization.
    *
    * __Default value:__ This will be determined by the following rules:
    *
@@ -70,7 +71,7 @@ export interface UnitSize {
   width?: number;
 
   /**
-   * Height of a single visualization.
+   * The height of a visualization.
    *
    * __Default value:__
    * - For y-axis with a continuous (non-ordinal) scale, the height will be the value of [`config.cell.height`](config.html#cell-config).
@@ -82,7 +83,7 @@ export interface UnitSize {
   height?: number;
 }
 
-export interface GenericUnitSpec<E extends Encoding<any>, M> extends BaseSpec, UnitSize {
+export interface GenericUnitSpec<E extends Encoding<any>, M> extends BaseSpec, LayoutSize {
 
   /**
    * A string describing the mark type (one of `"bar"`, `"circle"`, `"square"`, `"tick"`, `"line"`,
@@ -113,7 +114,7 @@ export type CompositeUnitSpec = GenericUnitSpec<Encoding<Field>, AnyMark>;
  */
 export type FacetedCompositeUnitSpec = GenericUnitSpec<EncodingWithFacet<Field>, AnyMark>;
 
-export interface GenericLayerSpec<U extends GenericUnitSpec<any, any>> extends BaseSpec, UnitSize {
+export interface GenericLayerSpec<U extends GenericUnitSpec<any, any>> extends BaseSpec, LayoutSize {
   /**
    * Unit specs that will be layered.
    */
@@ -432,8 +433,8 @@ function accumulate(dict: any, fieldDefs: FieldDef<Field>[]): any {
 }
 
 /* Recursively get fieldDefs from a spec, returns a dictionary of fieldDefs */
-function fieldDefIndex(spec: GenericSpec<GenericUnitSpec<any, any>>, dict: any = {}): any {
-  // TODO: Support repeat and concat
+function fieldDefIndex<T>(spec: GenericSpec<GenericUnitSpec<any, any>>, dict: Dict<FieldDef<T>> = {}): Dict<FieldDef<T>> {
+  // FIXME(https://github.com/vega/vega-lite/issues/2207): Support fieldDefIndex for repeat
   if (isLayerSpec(spec)) {
     spec.layer.forEach(layer => {
       if (isUnitSpec(layer)) {
@@ -464,7 +465,7 @@ function fieldDefIndex(spec: GenericSpec<GenericUnitSpec<any, any>>, dict: any =
 }
 
 /* Returns all non-duplicate fieldDefs in a spec in a flat array */
-export function fieldDefs(spec: GenericSpec<GenericUnitSpec<any, any>>): FieldDef<Field>[] {
+export function fieldDefs(spec: GenericSpec<GenericUnitSpec<any, any>>): FieldDef<any>[] {
   return vals(fieldDefIndex(spec));
 }
 

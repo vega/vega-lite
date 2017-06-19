@@ -15,7 +15,7 @@ describe('Layered Selections', function() {
       "encoding": {
         "x": {"field": "Horsepower","type": "quantitative"},
         "y": {"field": "Miles_per_Gallon","type": "quantitative"},
-        "color": {"field": "Origin", "type": "N"}
+        "color": {"field": "Origin", "type": "nominal"}
       }
     }, {
       "selection": {
@@ -25,14 +25,16 @@ describe('Layered Selections', function() {
       "encoding": {
         "x": {"field": "Horsepower","type": "quantitative"},
         "y": {"field": "Miles_per_Gallon","type": "quantitative"},
-        "color": {"field": "Origin", "type": "N"}
+        "color": {"field": "Origin", "type": "nominal"}
       }
     }]
   });
 
   layers.parseScale();
+  layers.parseMarkDef();
+  layers.parseLayoutSize();
   layers.parseSelection();
-  layers.parseMark();
+  layers.parseMarkGroup();
 
   // Selections should augment layered marks together, rather than each
   // mark individually. This ensures correct interleaving of brush and
@@ -103,8 +105,8 @@ describe('Layered Selections', function() {
   });
 
   it('should assemble selection marks across layers', function() {
-    const child0 = layers.children[0].assembleMarks()[0],
-          child1 = layers.children[1].assembleMarks()[0];
+    const child0 = layers.children[0].assembleMarks()[0];
+    const child1 = layers.children[1].assembleMarks()[0];
 
     assert.sameDeepMembers(layers.assembleMarks(), [
       // Background brush mark for "brush" selection.

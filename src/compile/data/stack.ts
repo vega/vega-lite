@@ -1,4 +1,5 @@
 import {isArray} from 'vega-util';
+import {isScaleChannel} from '../../channel';
 import {field} from '../../fielddef';
 import {hasDiscreteDomain} from '../../scale';
 import {StackOffset} from '../../stack';
@@ -8,14 +9,15 @@ import {sortParams} from '../common';
 import {UnitModel} from './../unit';
 import {DataFlowNode} from './dataflow';
 
+
 function getStackByFields(model: UnitModel): string[] {
   return model.stack.stackBy.reduce((fields, by) => {
     const channel = by.channel;
     const fieldDef = by.fieldDef;
 
-    const scale = model.scale(channel);
+    const scale = isScaleChannel(channel) ? model.getScaleComponent(channel) : undefined;
     const _field = field(fieldDef, {
-      binSuffix: scale && hasDiscreteDomain(scale.type) ? 'range' : 'start'
+      binSuffix: scale && hasDiscreteDomain(scale.get('type')) ? 'range' : 'start'
     });
     if (_field) {
       fields.push(_field);

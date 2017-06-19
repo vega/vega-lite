@@ -3,6 +3,13 @@
     "description": "A scatterplot showing average horsepower and displacement for cars from different origins.",
     "autosize": "pad",
     "padding": 5,
+    "encode": {
+        "update": {
+            "fill": {
+                "value": "transparent"
+            }
+        }
+    },
     "data": [
         {
             "name": "source_0",
@@ -52,49 +59,30 @@
     ],
     "marks": [
         {
-            "name": "nested_main_group",
-            "type": "group",
+            "name": "marks",
+            "type": "symbol",
+            "role": "point",
+            "from": {
+                "data": "source_0"
+            },
             "encode": {
                 "update": {
-                    "width": {
-                        "signal": "width"
+                    "x": {
+                        "scale": "x",
+                        "field": "mean_Horsepower"
                     },
-                    "height": {
-                        "signal": "height"
+                    "y": {
+                        "scale": "y",
+                        "field": "mean_Displacement"
+                    },
+                    "stroke": {
+                        "value": "#4c78a8"
                     },
                     "fill": {
                         "value": "transparent"
                     }
                 }
-            },
-            "marks": [
-                {
-                    "name": "marks",
-                    "type": "symbol",
-                    "role": "point",
-                    "from": {
-                        "data": "source_0"
-                    },
-                    "encode": {
-                        "update": {
-                            "x": {
-                                "scale": "x",
-                                "field": "mean_Horsepower"
-                            },
-                            "y": {
-                                "scale": "y",
-                                "field": "mean_Displacement"
-                            },
-                            "stroke": {
-                                "value": "#4c78a8"
-                            },
-                            "fill": {
-                                "value": "transparent"
-                            }
-                        }
-                    }
-                }
-            ]
+            }
         }
     ],
     "scales": [

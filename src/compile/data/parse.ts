@@ -18,6 +18,7 @@ import {StackNode} from './stack';
 import {TimeUnitNode} from './timeunit';
 import {parseTransformArray} from './transforms';
 
+
 function parseRoot(model: Model, sources: Dict<SourceNode>): DataFlowNode {
   if (model.data || !model.parent) {
     // if the model defines a data source or is the root, create a source node
@@ -46,10 +47,10 @@ Description of the dataflow (http://asciiflow.com/):
          |
          v
      Transforms
-(Filter, Compute, ...)
+(Filter, Calculate, ...)
          |
          v
-       Parse
+     FormatParse
          |
          v
      Null Filter
@@ -58,7 +59,7 @@ Description of the dataflow (http://asciiflow.com/):
       Binning
          |
          v
-     Timeunit
+      Timeunit
          |
          v
       +--+--+
@@ -96,6 +97,7 @@ export function parseData(model: Model): DataComponent {
   const root = parseRoot(model, model.component.data.sources);
 
   const outputNodes = model.component.data.outputNodes;
+  const outputNodeRefCounts = model.component.data.outputNodeRefCounts;
 
   // the current head of the tree that we are appending to
   let head = root;
@@ -149,7 +151,7 @@ export function parseData(model: Model): DataComponent {
 
   // add an output node pre aggregation
   const rawName = model.getName(RAW);
-  const raw = new OutputNode(rawName, RAW);
+  const raw = new OutputNode(rawName, RAW, outputNodeRefCounts);
   outputNodes[rawName] = raw;
   raw.parent = head;
   head = raw;
@@ -184,7 +186,7 @@ export function parseData(model: Model): DataComponent {
 
   // output node for marks
   const mainName = model.getName(MAIN);
-  const main = new OutputNode(mainName, MAIN);
+  const main = new OutputNode(mainName, MAIN, outputNodeRefCounts);
   outputNodes[mainName] = main;
   main.parent = head;
   head = main;
@@ -193,16 +195,21 @@ export function parseData(model: Model): DataComponent {
   let facetRoot = null;
   if (model instanceof FacetModel) {
     const facetName = model.getName('facet');
-    facetRoot = new FacetNode(model, facetName, main.source);
+    facetRoot = new FacetNode(model, facetName, main.getSource());
     outputNodes[facetName] = facetRoot;
     facetRoot.parent = head;
     head = facetRoot;
   }
 
+  // add the format parse from this model so that children don't parse the same field again
+  const ancestorParse = {...model.component.data.ancestorParse, ...(parse ? parse.parse : {})};
+
   return {
-    sources: model.component.data.sources,
+    ...model.component.data,
     outputNodes,
+    outputNodeRefCounts,
     main,
-    facetRoot
+    facetRoot,
+    ancestorParse
   };
 }

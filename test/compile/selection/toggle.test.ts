@@ -11,7 +11,7 @@ describe('Toggle Selection Transform', function() {
     "encoding": {
       "x": {"field": "Horsepower","type": "quantitative"},
       "y": {"field": "Miles_per_Gallon","type": "quantitative"},
-      "color": {"field": "Origin", "type": "N"}
+      "color": {"field": "Origin", "type": "nominal"}
     }
   });
 
@@ -61,7 +61,7 @@ describe('Toggle Selection Transform', function() {
         "name": "one_modify",
         "on": [
           {
-            "events": {"signal": "one"},
+            "events": {"signal": "one_tuple"},
             "update": `modify(\"one_store\", ${oneExpr})`
           }
         ]
@@ -70,7 +70,7 @@ describe('Toggle Selection Transform', function() {
         "name": "two_modify",
         "on": [
           {
-            "events": {"signal": "two"},
+            "events": {"signal": "two_tuple"},
             "update": `modify(\"two_store\", ${twoExpr})`
           }
         ]

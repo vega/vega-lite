@@ -1,9 +1,11 @@
 import {Config} from '../config';
+import {isFieldDef} from '../fielddef';
 import {Encoding} from './../encoding';
 import {Field, FieldDef, isContinuous, isDiscrete, PositionFieldDef} from './../fielddef';
 import {MarkConfig, MarkDef} from './../mark';
 import {GenericUnitSpec, LayerSpec} from './../spec';
 import {Orient} from './../vega.schema';
+
 
 export const BOXPLOT: 'box-plot' = 'box-plot';
 export type BOXPLOT = typeof BOXPLOT;
@@ -47,10 +49,12 @@ export function normalizeBoxPlot(spec: GenericUnitSpec<Encoding<Field>, BOXPLOT 
   const {color: _color, ...nonPositionEncodingWithoutColorSize} = nonPositionEncodingWithoutSize;
   const midTickAndBarSizeChannelDef = size ? {size: size} : {size: {value: config.box.size}};
 
-  let discreteAxisFieldDef, continuousAxisChannelDef: PositionFieldDef<Field>;
-  let discreteAxis, continuousAxis;
+  let discreteAxisFieldDef;
+  let continuousAxisChannelDef: PositionFieldDef<Field>;
+  let discreteAxis;
+  let continuousAxis;
 
-  if (encoding.x && encoding.y) {
+  if (isFieldDef(encoding.x) && isFieldDef(encoding.y)) {
     // 2D
 
     const orient: Orient = box2DOrient(spec);
@@ -60,11 +64,11 @@ export function normalizeBoxPlot(spec: GenericUnitSpec<Encoding<Field>, BOXPLOT 
     discreteAxis = params.discreteAxis;
     continuousAxis = params.continuousAxis;
 
-  } else if (encoding.x && isContinuous(encoding.x) && encoding.y === undefined) {
+  } else if (isFieldDef(encoding.x) && isContinuous(encoding.x) && encoding.y === undefined) {
     // 1D horizontal
     continuousAxis = 'x';
     continuousAxisChannelDef = encoding.x;
-  } else if (encoding.x === undefined && encoding.y && isContinuous(encoding.y)) {
+  } else if (encoding.x === undefined && isFieldDef(encoding.y) && isContinuous(encoding.y)) {
     // 1D vertical
     continuousAxis = 'y';
     continuousAxisChannelDef = encoding.y;
@@ -164,21 +168,24 @@ export function normalizeBoxPlot(spec: GenericUnitSpec<Encoding<Field>, BOXPLOT 
 
 export function box2DOrient(spec: GenericUnitSpec<Encoding<Field>, BOXPLOT | BoxPlotDef>): Orient {
   const {mark: mark, encoding: encoding, ...outerSpec} = spec;
-  const xEncChannel = encoding.x as FieldDef<Field>;
-  const yEncChannel = encoding.y as FieldDef<Field>;
+
+  // FIXME: refactor code such that we don't have to do this casting
+  // We can cast here as we already check from outside that both x and y are FieldDef
+  const xDef = encoding.x as FieldDef<Field>;
+  const yDef = encoding.y as FieldDef<Field>;
   let resultOrient: Orient;
 
-  if (isDiscrete(encoding.x) && isContinuous(encoding.y)) {
+  if (isDiscrete(xDef) && isContinuous(yDef)) {
     resultOrient = 'vertical';
-  } else if (isDiscrete(encoding.y) && isContinuous(encoding.x)) {
+  } else if (isDiscrete(yDef) && isContinuous(xDef)) {
     resultOrient = 'horizontal';
   } else {
-    if (isContinuous(encoding.x) && isContinuous(encoding.y)) {
-      if (xEncChannel.aggregate === undefined && yEncChannel.aggregate === BOXPLOT) {
+    if (isContinuous(xDef) && isContinuous(yDef)) {
+      if (xDef.aggregate === undefined && yDef.aggregate === BOXPLOT) {
         resultOrient = 'vertical';
-      } else if (yEncChannel.aggregate === undefined && xEncChannel.aggregate === BOXPLOT) {
+      } else if (yDef.aggregate === undefined && xDef.aggregate === BOXPLOT) {
         resultOrient = 'horizontal';
-      } else if (xEncChannel.aggregate === BOXPLOT && yEncChannel.aggregate === BOXPLOT) {
+      } else if (xDef.aggregate === BOXPLOT && yDef.aggregate === BOXPLOT) {
         throw new Error('Both x and y cannot have aggregate');
       } else {
         if (isBoxPlotDef(mark)) {
@@ -204,19 +211,27 @@ export function box2DOrient(spec: GenericUnitSpec<Encoding<Field>, BOXPLOT | Box
 export function box2DParams(spec: GenericUnitSpec<Encoding<Field>, BOXPLOT | BoxPlotDef>, orient: Orient) {
   const {mark: mark, encoding: encoding, ...outerSpec} = spec;
 
-  let discreteAxisFieldDef: PositionFieldDef<Field>, continuousAxisChannelDef: PositionFieldDef<Field>;
-  let discreteAxis, continuousAxis;
+  let discreteAxisFieldDef: PositionFieldDef<Field>;
+  let continuousAxisChannelDef: PositionFieldDef<Field>;
+  let discreteAxis;
+  let continuousAxis;
+
+  // FIXME: refactor code such that we don't have to do this casting
+  // We can cast here as we already check from outside that both x and y are FieldDef
+  const xDef = encoding.x as FieldDef<Field>;
+  const yDef = encoding.y as FieldDef<Field>;
+
 
   if (orient === 'vertical') {
     discreteAxis = 'x';
     continuousAxis = 'y';
-    continuousAxisChannelDef = encoding.y;
-    discreteAxisFieldDef = encoding.x;
+    continuousAxisChannelDef = yDef;
+    discreteAxisFieldDef = xDef;
   } else {
     discreteAxis = 'y';
     continuousAxis = 'x';
-    continuousAxisChannelDef = encoding.x;
-    discreteAxisFieldDef = encoding.y;
+    continuousAxisChannelDef = xDef;
+    discreteAxisFieldDef = yDef;
   }
 
   if (continuousAxisChannelDef && continuousAxisChannelDef.aggregate) {

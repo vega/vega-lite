@@ -15,9 +15,35 @@ export function parseModel(inputSpec: TopLevelExtendedSpec): Model {
   return buildModel(spec, null, '', undefined, undefined, config);
 }
 
+export function parseModelWithScale(inputSpec: TopLevelExtendedSpec): Model {
+  const model = parseModel(inputSpec);
+  model.parseScale();
+  return model;
+}
+
 export function parseUnitModel(spec: TopLevel<UnitSpec>) {
   return new UnitModel(spec, null, '', undefined, undefined, initConfig(spec.config));
 }
+
+export function parseUnitModelWithScale(spec: TopLevel<UnitSpec>) {
+  const model = parseUnitModel(spec);
+  model.parseScale();
+  return model;
+}
+
+export function parseUnitModelWithScaleMarkDefLayoutSize(spec: TopLevel<UnitSpec>) {
+  const model = parseUnitModelWithScale(spec);
+  model.parseMarkDef();
+  model.parseLayoutSize();
+  return model;
+}
+
+export function parseUnitModelWithScaleAndLayoutSize(spec: TopLevel<UnitSpec>) {
+  const model = parseUnitModelWithScale(spec);
+  model.parseLayoutSize();
+  return model;
+}
+
 
 export function parseLayerModel(spec: TopLevel<LayerSpec>) {
   return new LayerModel(spec, null, '', undefined, undefined, initConfig(spec.config));
@@ -25,6 +51,12 @@ export function parseLayerModel(spec: TopLevel<LayerSpec>) {
 
 export function parseFacetModel(spec: TopLevel<FacetSpec>) {
   return new FacetModel(spec, null, '', undefined, initConfig(spec.config));
+}
+
+export function parseFacetModelWithScale(spec: TopLevel<FacetSpec>) {
+  const model = parseFacetModel(spec);
+  model.parseScale();
+  return model;
 }
 
 export function parseRepeatModel(spec: TopLevel<RepeatSpec>) {

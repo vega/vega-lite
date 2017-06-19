@@ -73,7 +73,12 @@ export type FieldRefUnionDomain = {
 };
 
 export type VgRangeScheme = {scheme: string, extent?: number[], count?: number};
-export type VgRange = string | VgDataRef | (number|string|VgDataRef)[] | VgRangeScheme | {step: number};
+export type VgRange = string | VgDataRef | (number|string|VgDataRef)[] | VgRangeScheme | VgRangeStep;
+
+export type VgRangeStep = {step: number};
+export function isVgRangeStep(range: VgRange): range is VgRangeStep {
+  return !!range['step'];
+}
 
 export type VgDomain = any[] | VgDataRef | DataRefUnionDomain | FieldRefUnionDomain | VgSignalRef;
 
@@ -83,12 +88,12 @@ export type VgScale = {
   name: string,
   type: ScaleType,
   domain: VgDomain,
-  // FIXME: Should be a VgSignalRef.
-  domainRaw?: SelectionDomain,
+  domainRaw?: VgSignalRef,
   range: VgRange,
 
   clamp?: boolean,
   exponent?: number,
+  interpolate?: 'rgb'| 'lab' | 'hcl' | 'hsl' | 'hsl-long' | 'hcl-long' | 'cubehelix' | 'cubehelix-long';
   nice?: boolean | NiceTime,
   padding?: number,
   paddingInner?: number,
@@ -154,7 +159,12 @@ export type VgSignal = {
   update: string
 };
 
-export type VgEncodeEntry = any;
+export type VgEncodeChannel = 'x'|'x2'|'xc'|'width'|'y'|'y2'|'yc'|'height'|'opacity'|'fill'|'fillOpacity'|'stroke'|'strokeWidth'|'strokeOpacity'|'strokeDash'|'strokeDashOffset'|'cursor'|'clip'|'size'|'shape'|'path'|'innerRadius'|'outerRadius'|'startAngle'|'endAngle'|'interpolate'|'tension'|'orient'|'url'|'align'|'baseline'|'text'|'dir'|'ellipsis'|'limit'|'dx'|'dy'|'radius'|'theta'|'angle'|'font'|'fontSize'|'fontWeight'|'fontStyle';
+export type VgEncodeEntry = {
+  [k in VgEncodeChannel]?: VgValueRef | (VgValueRef & {test: string})[];
+};
+
+
 // TODO: make export interface VgEncodeEntry {
 //   x?: VgValueRef<number>
 //   y?: VgValueRef<number>
@@ -324,7 +334,7 @@ export interface VgAxisBase {
    * The rotation angle of the axis labels.
    *
    * __Default value:__ `-45` for time or ordinal axis and `0` otherwise.
-   * @minimum 0
+   * @minimum -360
    * @maximum 360
    */
   labelAngle?: number;
@@ -539,7 +549,7 @@ export interface VgLegendBase {
    *
    * __Default value:__  `"right"`
    */
-  orient?: string;
+  orient?: 'left' | 'right' | 'top-left' | 'top-right' | 'bottom-left' | 'bottom-right' | 'none';
 
   /**
    * The offset, in pixels, by which to displace the legend from the edge of the enclosing group or data rectangle.

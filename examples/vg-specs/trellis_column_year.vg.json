@@ -97,248 +97,242 @@
             "update": "200"
         }
     ],
+    "layout": {
+        "padding": {
+            "row": 10,
+            "column": 10
+        },
+        "offset": 10,
+        "columns": {
+            "signal": "data('column_layout')[0][\"distinct_year_date\"]"
+        },
+        "bounds": "full"
+    },
     "marks": [
         {
-            "name": "nested_main_group",
+            "name": "column_title",
+            "role": "column-title",
             "type": "group",
-            "layout": {
-                "padding": {
-                    "row": 10,
-                    "column": 10
-                },
-                "offset": 10,
-                "columns": {
-                    "signal": "data('column_layout')[0][\"distinct_year_date\"]"
-                },
-                "bounds": "full"
-            },
             "marks": [
                 {
-                    "name": "column_title",
-                    "role": "column-title",
-                    "type": "group",
-                    "marks": [
-                        {
-                            "type": "text",
-                            "role": "column-title-text",
-                            "encode": {
-                                "update": {
-                                    "x": {
-                                        "signal": "0.5 * width"
-                                    },
-                                    "align": {
-                                        "value": "center"
-                                    },
-                                    "text": {
-                                        "value": "YEAR(date)"
-                                    },
-                                    "fill": {
-                                        "value": "black"
-                                    },
-                                    "fontWeight": {
-                                        "value": "bold"
-                                    }
-                                }
-                            }
-                        }
-                    ]
-                },
-                {
-                    "name": "row_header",
-                    "type": "group",
-                    "role": "row-header",
+                    "type": "text",
+                    "role": "column-title-text",
                     "encode": {
                         "update": {
-                            "height": {
-                                "signal": "child_height"
-                            }
-                        }
-                    },
-                    "axes": [
-                        {
-                            "scale": "y",
-                            "format": "s",
-                            "orient": "left",
-                            "title": "MEAN(price)",
-                            "zindex": 1
-                        }
-                    ]
-                },
-                {
-                    "name": "column_header",
-                    "type": "group",
-                    "role": "column-header",
-                    "from": {
-                        "data": "column"
-                    },
-                    "title": {
-                        "text": {
-                            "signal": "timeFormat(parent[\"year_date\"], '%Y')"
-                        },
-                        "offset": 10,
-                        "orient": "top",
-                        "encode": {
-                            "update": {
-                                "fontWeight": {
-                                    "value": "normal"
-                                },
-                                "angle": {
-                                    "value": 0
-                                },
-                                "fontSize": {
-                                    "value": 10
-                                }
-                            }
-                        }
-                    },
-                    "encode": {
-                        "update": {
-                            "width": {
-                                "signal": "child_width"
+                            "x": {
+                                "signal": "0.5 * width"
+                            },
+                            "align": {
+                                "value": "center"
+                            },
+                            "text": {
+                                "value": "YEAR(date)"
+                            },
+                            "fill": {
+                                "value": "black"
+                            },
+                            "fontWeight": {
+                                "value": "bold"
                             }
                         }
                     }
-                },
+                }
+            ]
+        },
+        {
+            "name": "row_header",
+            "type": "group",
+            "role": "row-header",
+            "encode": {
+                "update": {
+                    "height": {
+                        "signal": "child_height"
+                    }
+                }
+            },
+            "axes": [
                 {
-                    "name": "column_footer",
-                    "type": "group",
-                    "role": "column-footer",
-                    "from": {
-                        "data": "column"
-                    },
-                    "encode": {
-                        "update": {
-                            "width": {
-                                "signal": "child_width"
-                            }
+                    "scale": "y",
+                    "format": "s",
+                    "orient": "left",
+                    "title": "MEAN(price)",
+                    "zindex": 1
+                }
+            ]
+        },
+        {
+            "name": "column_header",
+            "type": "group",
+            "role": "column-header",
+            "from": {
+                "data": "column"
+            },
+            "title": {
+                "text": {
+                    "signal": "timeFormat(parent[\"year_date\"], '%Y')"
+                },
+                "offset": 10,
+                "orient": "top",
+                "encode": {
+                    "update": {
+                        "fontWeight": {
+                            "value": "normal"
+                        },
+                        "angle": {
+                            "value": 0
+                        },
+                        "fontSize": {
+                            "value": 10
                         }
-                    },
-                    "axes": [
-                        {
-                            "scale": "x",
-                            "orient": "bottom",
-                            "tickCount": 5,
-                            "title": "QUARTER(date)",
-                            "zindex": 1,
-                            "encode": {
-                                "labels": {
-                                    "update": {
-                                        "text": {
-                                            "signal": "'Q' + quarter(datum.value)"
-                                        },
-                                        "angle": {
-                                            "value": 270
-                                        },
-                                        "align": {
-                                            "value": "right"
-                                        },
-                                        "baseline": {
-                                            "value": "middle"
-                                        }
-                                    }
+                    }
+                }
+            },
+            "encode": {
+                "update": {
+                    "width": {
+                        "signal": "child_width"
+                    }
+                }
+            }
+        },
+        {
+            "name": "column_footer",
+            "type": "group",
+            "role": "column-footer",
+            "from": {
+                "data": "column"
+            },
+            "encode": {
+                "update": {
+                    "width": {
+                        "signal": "child_width"
+                    }
+                }
+            },
+            "axes": [
+                {
+                    "scale": "x",
+                    "orient": "bottom",
+                    "tickCount": 5,
+                    "title": "QUARTER(date)",
+                    "zindex": 1,
+                    "encode": {
+                        "labels": {
+                            "update": {
+                                "text": {
+                                    "signal": "'Q' + quarter(datum.value)"
+                                },
+                                "angle": {
+                                    "value": 270
+                                },
+                                "align": {
+                                    "value": "right"
+                                },
+                                "baseline": {
+                                    "value": "middle"
                                 }
                             }
                         }
+                    }
+                }
+            ]
+        },
+        {
+            "name": "cell",
+            "type": "group",
+            "from": {
+                "facet": {
+                    "name": "facet",
+                    "data": "source_0",
+                    "groupby": [
+                        "year_date"
                     ]
-                },
+                }
+            },
+            "encode": {
+                "update": {
+                    "width": {
+                        "signal": "child_width"
+                    },
+                    "height": {
+                        "signal": "child_height"
+                    },
+                    "stroke": {
+                        "value": "#ccc"
+                    },
+                    "strokeWidth": {
+                        "value": 1
+                    },
+                    "fill": {
+                        "value": "transparent"
+                    }
+                }
+            },
+            "marks": [
                 {
-                    "name": "cell",
+                    "name": "child_pathgroup",
                     "type": "group",
                     "from": {
                         "facet": {
-                            "name": "facet",
-                            "data": "source_0",
+                            "name": "faceted_path_child_main",
+                            "data": "facet",
                             "groupby": [
-                                "year_date"
+                                "symbol"
                             ]
                         }
                     },
                     "encode": {
                         "update": {
                             "width": {
-                                "signal": "child_width"
+                                "field": {
+                                    "group": "width"
+                                }
                             },
                             "height": {
-                                "signal": "child_height"
-                            },
-                            "stroke": {
-                                "value": "#ccc"
-                            },
-                            "strokeWidth": {
-                                "value": 1
-                            },
-                            "fill": {
-                                "value": "transparent"
+                                "field": {
+                                    "group": "height"
+                                }
                             }
                         }
                     },
                     "marks": [
                         {
-                            "name": "child_pathgroup",
-                            "type": "group",
+                            "name": "child_marks",
+                            "type": "line",
                             "from": {
-                                "facet": {
-                                    "name": "faceted_path_child_main",
-                                    "data": "facet",
-                                    "groupby": [
-                                        "symbol"
-                                    ]
-                                }
+                                "data": "faceted_path_child_main"
                             },
                             "encode": {
                                 "update": {
-                                    "width": {
-                                        "field": {
-                                            "group": "width"
-                                        }
+                                    "x": {
+                                        "scale": "x",
+                                        "field": "quarter_date"
                                     },
-                                    "height": {
-                                        "field": {
-                                            "group": "height"
-                                        }
+                                    "y": {
+                                        "scale": "y",
+                                        "field": "mean_price"
+                                    },
+                                    "stroke": {
+                                        "scale": "color",
+                                        "field": "symbol"
                                     }
                                 }
-                            },
-                            "marks": [
-                                {
-                                    "name": "child_marks",
-                                    "type": "line",
-                                    "from": {
-                                        "data": "faceted_path_child_main"
-                                    },
-                                    "encode": {
-                                        "update": {
-                                            "x": {
-                                                "scale": "x",
-                                                "field": "quarter_date"
-                                            },
-                                            "y": {
-                                                "scale": "y",
-                                                "field": "mean_price"
-                                            },
-                                            "stroke": {
-                                                "scale": "color",
-                                                "field": "symbol"
-                                            }
-                                        }
-                                    }
-                                }
-                            ]
-                        }
-                    ],
-                    "axes": [
-                        {
-                            "scale": "y",
-                            "domain": false,
-                            "format": "s",
-                            "grid": true,
-                            "labels": false,
-                            "orient": "left",
-                            "ticks": false,
-                            "zindex": 0,
-                            "gridScale": "x"
+                            }
                         }
                     ]
+                }
+            ],
+            "axes": [
+                {
+                    "scale": "y",
+                    "domain": false,
+                    "format": "s",
+                    "grid": true,
+                    "labels": false,
+                    "orient": "left",
+                    "ticks": false,
+                    "zindex": 0,
+                    "gridScale": "x"
                 }
             ]
         }

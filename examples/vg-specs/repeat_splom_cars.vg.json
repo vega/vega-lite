@@ -120,504 +120,498 @@
             "update": "200"
         }
     ],
+    "layout": {
+        "padding": {
+            "row": 10,
+            "column": 10
+        },
+        "offset": 10,
+        "columns": 2,
+        "bounds": "full",
+        "align": "all"
+    },
     "marks": [
         {
-            "name": "nested_main_group",
             "type": "group",
-            "layout": {
-                "padding": {
-                    "row": 10,
-                    "column": 10
-                },
-                "offset": 10,
-                "columns": 2,
-                "bounds": "full",
-                "align": "all"
+            "name": "child_Displacement_Horsepower_group",
+            "encode": {
+                "update": {
+                    "width": {
+                        "signal": "child_Displacement_Horsepower_width"
+                    },
+                    "height": {
+                        "signal": "child_Displacement_Horsepower_height"
+                    },
+                    "fill": {
+                        "value": "transparent"
+                    }
+                }
             },
             "marks": [
                 {
-                    "type": "group",
-                    "name": "child_Displacement_Horsepower_group",
+                    "name": "child_Displacement_Horsepower_marks",
+                    "type": "symbol",
+                    "role": "point",
+                    "from": {
+                        "data": "data_0"
+                    },
                     "encode": {
                         "update": {
-                            "width": {
-                                "signal": "child_Displacement_Horsepower_width"
-                            },
-                            "height": {
-                                "signal": "child_Displacement_Horsepower_height"
-                            },
-                            "fill": {
-                                "value": "transparent"
-                            }
-                        }
-                    },
-                    "marks": [
-                        {
-                            "name": "child_Displacement_Horsepower_marks",
-                            "type": "symbol",
-                            "role": "point",
-                            "from": {
-                                "data": "data_0"
-                            },
-                            "encode": {
-                                "update": {
-                                    "x": {
-                                        "scale": "child_Displacement_Horsepower_x",
-                                        "field": "Horsepower"
-                                    },
-                                    "y": {
-                                        "scale": "child_Displacement_Horsepower_y",
-                                        "field": "Displacement"
-                                    },
-                                    "stroke": {
-                                        "scale": "color",
-                                        "field": "Origin"
-                                    },
-                                    "fill": {
-                                        "value": "transparent"
-                                    },
-                                    "opacity": {
-                                        "value": 0.7
-                                    }
-                                }
-                            }
-                        }
-                    ],
-                    "scales": [
-                        {
-                            "name": "child_Displacement_Horsepower_x",
-                            "type": "linear",
-                            "domain": {
-                                "data": "data_0",
+                            "x": {
+                                "scale": "child_Displacement_Horsepower_x",
                                 "field": "Horsepower"
                             },
-                            "range": [
-                                0,
-                                200
-                            ],
-                            "round": true,
-                            "nice": true,
-                            "zero": true
-                        },
-                        {
-                            "name": "child_Displacement_Horsepower_y",
-                            "type": "linear",
-                            "domain": {
-                                "data": "data_0",
+                            "y": {
+                                "scale": "child_Displacement_Horsepower_y",
                                 "field": "Displacement"
                             },
-                            "range": [
-                                200,
-                                0
-                            ],
-                            "round": true,
-                            "nice": true,
-                            "zero": true
-                        }
-                    ],
-                    "axes": [
-                        {
-                            "scale": "child_Displacement_Horsepower_x",
-                            "format": "s",
-                            "orient": "bottom",
-                            "tickCount": 5,
-                            "title": "Horsepower",
-                            "zindex": 1
-                        },
-                        {
-                            "scale": "child_Displacement_Horsepower_x",
-                            "domain": false,
-                            "format": "s",
-                            "grid": true,
-                            "labels": false,
-                            "orient": "bottom",
-                            "tickCount": 5,
-                            "ticks": false,
-                            "zindex": 0,
-                            "gridScale": "child_Displacement_Horsepower_y"
-                        },
-                        {
-                            "scale": "child_Displacement_Horsepower_y",
-                            "format": "s",
-                            "orient": "left",
-                            "title": "Displacement",
-                            "zindex": 1
-                        },
-                        {
-                            "scale": "child_Displacement_Horsepower_y",
-                            "domain": false,
-                            "format": "s",
-                            "grid": true,
-                            "labels": false,
-                            "orient": "left",
-                            "ticks": false,
-                            "zindex": 0,
-                            "gridScale": "child_Displacement_Horsepower_x"
-                        }
-                    ]
-                },
-                {
-                    "type": "group",
-                    "name": "child_Displacement_Miles_per_Gallon_group",
-                    "encode": {
-                        "update": {
-                            "width": {
-                                "signal": "child_Displacement_Miles_per_Gallon_width"
-                            },
-                            "height": {
-                                "signal": "child_Displacement_Miles_per_Gallon_height"
+                            "stroke": {
+                                "scale": "color",
+                                "field": "Origin"
                             },
                             "fill": {
                                 "value": "transparent"
-                            }
-                        }
-                    },
-                    "marks": [
-                        {
-                            "name": "child_Displacement_Miles_per_Gallon_marks",
-                            "type": "symbol",
-                            "role": "point",
-                            "from": {
-                                "data": "data_1"
                             },
-                            "encode": {
-                                "update": {
-                                    "x": {
-                                        "scale": "child_Displacement_Miles_per_Gallon_x",
-                                        "field": "Miles_per_Gallon"
-                                    },
-                                    "y": {
-                                        "scale": "child_Displacement_Miles_per_Gallon_y",
-                                        "field": "Displacement"
-                                    },
-                                    "stroke": {
-                                        "scale": "color",
-                                        "field": "Origin"
-                                    },
-                                    "fill": {
-                                        "value": "transparent"
-                                    },
-                                    "opacity": {
-                                        "value": 0.7
-                                    }
-                                }
+                            "opacity": {
+                                "value": 0.7
                             }
                         }
+                    }
+                }
+            ],
+            "scales": [
+                {
+                    "name": "child_Displacement_Horsepower_x",
+                    "type": "linear",
+                    "domain": {
+                        "data": "data_0",
+                        "field": "Horsepower"
+                    },
+                    "range": [
+                        0,
+                        200
                     ],
-                    "scales": [
-                        {
-                            "name": "child_Displacement_Miles_per_Gallon_x",
-                            "type": "linear",
-                            "domain": {
-                                "data": "data_1",
+                    "round": true,
+                    "nice": true,
+                    "zero": true
+                },
+                {
+                    "name": "child_Displacement_Horsepower_y",
+                    "type": "linear",
+                    "domain": {
+                        "data": "data_0",
+                        "field": "Displacement"
+                    },
+                    "range": [
+                        200,
+                        0
+                    ],
+                    "round": true,
+                    "nice": true,
+                    "zero": true
+                }
+            ],
+            "axes": [
+                {
+                    "scale": "child_Displacement_Horsepower_x",
+                    "format": "s",
+                    "orient": "bottom",
+                    "tickCount": 5,
+                    "title": "Horsepower",
+                    "zindex": 1
+                },
+                {
+                    "scale": "child_Displacement_Horsepower_x",
+                    "domain": false,
+                    "format": "s",
+                    "grid": true,
+                    "labels": false,
+                    "orient": "bottom",
+                    "tickCount": 5,
+                    "ticks": false,
+                    "zindex": 0,
+                    "gridScale": "child_Displacement_Horsepower_y"
+                },
+                {
+                    "scale": "child_Displacement_Horsepower_y",
+                    "format": "s",
+                    "orient": "left",
+                    "title": "Displacement",
+                    "zindex": 1
+                },
+                {
+                    "scale": "child_Displacement_Horsepower_y",
+                    "domain": false,
+                    "format": "s",
+                    "grid": true,
+                    "labels": false,
+                    "orient": "left",
+                    "ticks": false,
+                    "zindex": 0,
+                    "gridScale": "child_Displacement_Horsepower_x"
+                }
+            ]
+        },
+        {
+            "type": "group",
+            "name": "child_Displacement_Miles_per_Gallon_group",
+            "encode": {
+                "update": {
+                    "width": {
+                        "signal": "child_Displacement_Miles_per_Gallon_width"
+                    },
+                    "height": {
+                        "signal": "child_Displacement_Miles_per_Gallon_height"
+                    },
+                    "fill": {
+                        "value": "transparent"
+                    }
+                }
+            },
+            "marks": [
+                {
+                    "name": "child_Displacement_Miles_per_Gallon_marks",
+                    "type": "symbol",
+                    "role": "point",
+                    "from": {
+                        "data": "data_1"
+                    },
+                    "encode": {
+                        "update": {
+                            "x": {
+                                "scale": "child_Displacement_Miles_per_Gallon_x",
                                 "field": "Miles_per_Gallon"
                             },
-                            "range": [
-                                0,
-                                200
-                            ],
-                            "round": true,
-                            "nice": true,
-                            "zero": true
-                        },
-                        {
-                            "name": "child_Displacement_Miles_per_Gallon_y",
-                            "type": "linear",
-                            "domain": {
-                                "data": "data_1",
+                            "y": {
+                                "scale": "child_Displacement_Miles_per_Gallon_y",
                                 "field": "Displacement"
                             },
-                            "range": [
-                                200,
-                                0
-                            ],
-                            "round": true,
-                            "nice": true,
-                            "zero": true
-                        }
-                    ],
-                    "axes": [
-                        {
-                            "scale": "child_Displacement_Miles_per_Gallon_x",
-                            "format": "s",
-                            "orient": "bottom",
-                            "tickCount": 5,
-                            "title": "Miles_per_Gallon",
-                            "zindex": 1
-                        },
-                        {
-                            "scale": "child_Displacement_Miles_per_Gallon_x",
-                            "domain": false,
-                            "format": "s",
-                            "grid": true,
-                            "labels": false,
-                            "orient": "bottom",
-                            "tickCount": 5,
-                            "ticks": false,
-                            "zindex": 0,
-                            "gridScale": "child_Displacement_Miles_per_Gallon_y"
-                        },
-                        {
-                            "scale": "child_Displacement_Miles_per_Gallon_y",
-                            "format": "s",
-                            "orient": "left",
-                            "title": "Displacement",
-                            "zindex": 1
-                        },
-                        {
-                            "scale": "child_Displacement_Miles_per_Gallon_y",
-                            "domain": false,
-                            "format": "s",
-                            "grid": true,
-                            "labels": false,
-                            "orient": "left",
-                            "ticks": false,
-                            "zindex": 0,
-                            "gridScale": "child_Displacement_Miles_per_Gallon_x"
-                        }
-                    ]
-                },
-                {
-                    "type": "group",
-                    "name": "child_Miles_per_Gallon_Horsepower_group",
-                    "encode": {
-                        "update": {
-                            "width": {
-                                "signal": "child_Miles_per_Gallon_Horsepower_width"
-                            },
-                            "height": {
-                                "signal": "child_Miles_per_Gallon_Horsepower_height"
+                            "stroke": {
+                                "scale": "color",
+                                "field": "Origin"
                             },
                             "fill": {
                                 "value": "transparent"
-                            }
-                        }
-                    },
-                    "marks": [
-                        {
-                            "name": "child_Miles_per_Gallon_Horsepower_marks",
-                            "type": "symbol",
-                            "role": "point",
-                            "from": {
-                                "data": "data_2"
                             },
-                            "encode": {
-                                "update": {
-                                    "x": {
-                                        "scale": "child_Miles_per_Gallon_Horsepower_x",
-                                        "field": "Horsepower"
-                                    },
-                                    "y": {
-                                        "scale": "child_Miles_per_Gallon_Horsepower_y",
-                                        "field": "Miles_per_Gallon"
-                                    },
-                                    "stroke": {
-                                        "scale": "color",
-                                        "field": "Origin"
-                                    },
-                                    "fill": {
-                                        "value": "transparent"
-                                    },
-                                    "opacity": {
-                                        "value": 0.7
-                                    }
-                                }
+                            "opacity": {
+                                "value": 0.7
                             }
                         }
+                    }
+                }
+            ],
+            "scales": [
+                {
+                    "name": "child_Displacement_Miles_per_Gallon_x",
+                    "type": "linear",
+                    "domain": {
+                        "data": "data_1",
+                        "field": "Miles_per_Gallon"
+                    },
+                    "range": [
+                        0,
+                        200
                     ],
-                    "scales": [
-                        {
-                            "name": "child_Miles_per_Gallon_Horsepower_x",
-                            "type": "linear",
-                            "domain": {
-                                "data": "data_2",
+                    "round": true,
+                    "nice": true,
+                    "zero": true
+                },
+                {
+                    "name": "child_Displacement_Miles_per_Gallon_y",
+                    "type": "linear",
+                    "domain": {
+                        "data": "data_1",
+                        "field": "Displacement"
+                    },
+                    "range": [
+                        200,
+                        0
+                    ],
+                    "round": true,
+                    "nice": true,
+                    "zero": true
+                }
+            ],
+            "axes": [
+                {
+                    "scale": "child_Displacement_Miles_per_Gallon_x",
+                    "format": "s",
+                    "orient": "bottom",
+                    "tickCount": 5,
+                    "title": "Miles_per_Gallon",
+                    "zindex": 1
+                },
+                {
+                    "scale": "child_Displacement_Miles_per_Gallon_x",
+                    "domain": false,
+                    "format": "s",
+                    "grid": true,
+                    "labels": false,
+                    "orient": "bottom",
+                    "tickCount": 5,
+                    "ticks": false,
+                    "zindex": 0,
+                    "gridScale": "child_Displacement_Miles_per_Gallon_y"
+                },
+                {
+                    "scale": "child_Displacement_Miles_per_Gallon_y",
+                    "format": "s",
+                    "orient": "left",
+                    "title": "Displacement",
+                    "zindex": 1
+                },
+                {
+                    "scale": "child_Displacement_Miles_per_Gallon_y",
+                    "domain": false,
+                    "format": "s",
+                    "grid": true,
+                    "labels": false,
+                    "orient": "left",
+                    "ticks": false,
+                    "zindex": 0,
+                    "gridScale": "child_Displacement_Miles_per_Gallon_x"
+                }
+            ]
+        },
+        {
+            "type": "group",
+            "name": "child_Miles_per_Gallon_Horsepower_group",
+            "encode": {
+                "update": {
+                    "width": {
+                        "signal": "child_Miles_per_Gallon_Horsepower_width"
+                    },
+                    "height": {
+                        "signal": "child_Miles_per_Gallon_Horsepower_height"
+                    },
+                    "fill": {
+                        "value": "transparent"
+                    }
+                }
+            },
+            "marks": [
+                {
+                    "name": "child_Miles_per_Gallon_Horsepower_marks",
+                    "type": "symbol",
+                    "role": "point",
+                    "from": {
+                        "data": "data_2"
+                    },
+                    "encode": {
+                        "update": {
+                            "x": {
+                                "scale": "child_Miles_per_Gallon_Horsepower_x",
                                 "field": "Horsepower"
                             },
-                            "range": [
-                                0,
-                                200
-                            ],
-                            "round": true,
-                            "nice": true,
-                            "zero": true
-                        },
-                        {
-                            "name": "child_Miles_per_Gallon_Horsepower_y",
-                            "type": "linear",
-                            "domain": {
-                                "data": "data_2",
+                            "y": {
+                                "scale": "child_Miles_per_Gallon_Horsepower_y",
                                 "field": "Miles_per_Gallon"
                             },
-                            "range": [
-                                200,
-                                0
-                            ],
-                            "round": true,
-                            "nice": true,
-                            "zero": true
-                        }
-                    ],
-                    "axes": [
-                        {
-                            "scale": "child_Miles_per_Gallon_Horsepower_x",
-                            "format": "s",
-                            "orient": "bottom",
-                            "tickCount": 5,
-                            "title": "Horsepower",
-                            "zindex": 1
-                        },
-                        {
-                            "scale": "child_Miles_per_Gallon_Horsepower_x",
-                            "domain": false,
-                            "format": "s",
-                            "grid": true,
-                            "labels": false,
-                            "orient": "bottom",
-                            "tickCount": 5,
-                            "ticks": false,
-                            "zindex": 0,
-                            "gridScale": "child_Miles_per_Gallon_Horsepower_y"
-                        },
-                        {
-                            "scale": "child_Miles_per_Gallon_Horsepower_y",
-                            "format": "s",
-                            "orient": "left",
-                            "title": "Miles_per_Gallon",
-                            "zindex": 1
-                        },
-                        {
-                            "scale": "child_Miles_per_Gallon_Horsepower_y",
-                            "domain": false,
-                            "format": "s",
-                            "grid": true,
-                            "labels": false,
-                            "orient": "left",
-                            "ticks": false,
-                            "zindex": 0,
-                            "gridScale": "child_Miles_per_Gallon_Horsepower_x"
-                        }
-                    ]
-                },
-                {
-                    "type": "group",
-                    "name": "child_Miles_per_Gallon_Miles_per_Gallon_group",
-                    "encode": {
-                        "update": {
-                            "width": {
-                                "signal": "child_Miles_per_Gallon_Miles_per_Gallon_width"
-                            },
-                            "height": {
-                                "signal": "child_Miles_per_Gallon_Miles_per_Gallon_height"
+                            "stroke": {
+                                "scale": "color",
+                                "field": "Origin"
                             },
                             "fill": {
                                 "value": "transparent"
+                            },
+                            "opacity": {
+                                "value": 0.7
                             }
                         }
+                    }
+                }
+            ],
+            "scales": [
+                {
+                    "name": "child_Miles_per_Gallon_Horsepower_x",
+                    "type": "linear",
+                    "domain": {
+                        "data": "data_2",
+                        "field": "Horsepower"
                     },
-                    "marks": [
-                        {
-                            "name": "child_Miles_per_Gallon_Miles_per_Gallon_marks",
-                            "type": "symbol",
-                            "role": "point",
-                            "from": {
-                                "data": "data_3"
+                    "range": [
+                        0,
+                        200
+                    ],
+                    "round": true,
+                    "nice": true,
+                    "zero": true
+                },
+                {
+                    "name": "child_Miles_per_Gallon_Horsepower_y",
+                    "type": "linear",
+                    "domain": {
+                        "data": "data_2",
+                        "field": "Miles_per_Gallon"
+                    },
+                    "range": [
+                        200,
+                        0
+                    ],
+                    "round": true,
+                    "nice": true,
+                    "zero": true
+                }
+            ],
+            "axes": [
+                {
+                    "scale": "child_Miles_per_Gallon_Horsepower_x",
+                    "format": "s",
+                    "orient": "bottom",
+                    "tickCount": 5,
+                    "title": "Horsepower",
+                    "zindex": 1
+                },
+                {
+                    "scale": "child_Miles_per_Gallon_Horsepower_x",
+                    "domain": false,
+                    "format": "s",
+                    "grid": true,
+                    "labels": false,
+                    "orient": "bottom",
+                    "tickCount": 5,
+                    "ticks": false,
+                    "zindex": 0,
+                    "gridScale": "child_Miles_per_Gallon_Horsepower_y"
+                },
+                {
+                    "scale": "child_Miles_per_Gallon_Horsepower_y",
+                    "format": "s",
+                    "orient": "left",
+                    "title": "Miles_per_Gallon",
+                    "zindex": 1
+                },
+                {
+                    "scale": "child_Miles_per_Gallon_Horsepower_y",
+                    "domain": false,
+                    "format": "s",
+                    "grid": true,
+                    "labels": false,
+                    "orient": "left",
+                    "ticks": false,
+                    "zindex": 0,
+                    "gridScale": "child_Miles_per_Gallon_Horsepower_x"
+                }
+            ]
+        },
+        {
+            "type": "group",
+            "name": "child_Miles_per_Gallon_Miles_per_Gallon_group",
+            "encode": {
+                "update": {
+                    "width": {
+                        "signal": "child_Miles_per_Gallon_Miles_per_Gallon_width"
+                    },
+                    "height": {
+                        "signal": "child_Miles_per_Gallon_Miles_per_Gallon_height"
+                    },
+                    "fill": {
+                        "value": "transparent"
+                    }
+                }
+            },
+            "marks": [
+                {
+                    "name": "child_Miles_per_Gallon_Miles_per_Gallon_marks",
+                    "type": "symbol",
+                    "role": "point",
+                    "from": {
+                        "data": "data_3"
+                    },
+                    "encode": {
+                        "update": {
+                            "x": {
+                                "scale": "child_Miles_per_Gallon_Miles_per_Gallon_x",
+                                "field": "Miles_per_Gallon"
                             },
-                            "encode": {
-                                "update": {
-                                    "x": {
-                                        "scale": "child_Miles_per_Gallon_Miles_per_Gallon_x",
-                                        "field": "Miles_per_Gallon"
-                                    },
-                                    "y": {
-                                        "scale": "child_Miles_per_Gallon_Miles_per_Gallon_y",
-                                        "field": "Miles_per_Gallon"
-                                    },
-                                    "stroke": {
-                                        "scale": "color",
-                                        "field": "Origin"
-                                    },
-                                    "fill": {
-                                        "value": "transparent"
-                                    },
-                                    "opacity": {
-                                        "value": 0.7
-                                    }
-                                }
+                            "y": {
+                                "scale": "child_Miles_per_Gallon_Miles_per_Gallon_y",
+                                "field": "Miles_per_Gallon"
+                            },
+                            "stroke": {
+                                "scale": "color",
+                                "field": "Origin"
+                            },
+                            "fill": {
+                                "value": "transparent"
+                            },
+                            "opacity": {
+                                "value": 0.7
                             }
                         }
+                    }
+                }
+            ],
+            "scales": [
+                {
+                    "name": "child_Miles_per_Gallon_Miles_per_Gallon_x",
+                    "type": "linear",
+                    "domain": {
+                        "data": "data_3",
+                        "field": "Miles_per_Gallon"
+                    },
+                    "range": [
+                        0,
+                        200
                     ],
-                    "scales": [
-                        {
-                            "name": "child_Miles_per_Gallon_Miles_per_Gallon_x",
-                            "type": "linear",
-                            "domain": {
-                                "data": "data_3",
-                                "field": "Miles_per_Gallon"
-                            },
-                            "range": [
-                                0,
-                                200
-                            ],
-                            "round": true,
-                            "nice": true,
-                            "zero": true
-                        },
-                        {
-                            "name": "child_Miles_per_Gallon_Miles_per_Gallon_y",
-                            "type": "linear",
-                            "domain": {
-                                "data": "data_3",
-                                "field": "Miles_per_Gallon"
-                            },
-                            "range": [
-                                200,
-                                0
-                            ],
-                            "round": true,
-                            "nice": true,
-                            "zero": true
-                        }
+                    "round": true,
+                    "nice": true,
+                    "zero": true
+                },
+                {
+                    "name": "child_Miles_per_Gallon_Miles_per_Gallon_y",
+                    "type": "linear",
+                    "domain": {
+                        "data": "data_3",
+                        "field": "Miles_per_Gallon"
+                    },
+                    "range": [
+                        200,
+                        0
                     ],
-                    "axes": [
-                        {
-                            "scale": "child_Miles_per_Gallon_Miles_per_Gallon_x",
-                            "format": "s",
-                            "orient": "bottom",
-                            "tickCount": 5,
-                            "title": "Miles_per_Gallon",
-                            "zindex": 1
-                        },
-                        {
-                            "scale": "child_Miles_per_Gallon_Miles_per_Gallon_x",
-                            "domain": false,
-                            "format": "s",
-                            "grid": true,
-                            "labels": false,
-                            "orient": "bottom",
-                            "tickCount": 5,
-                            "ticks": false,
-                            "zindex": 0,
-                            "gridScale": "child_Miles_per_Gallon_Miles_per_Gallon_y"
-                        },
-                        {
-                            "scale": "child_Miles_per_Gallon_Miles_per_Gallon_y",
-                            "format": "s",
-                            "orient": "left",
-                            "title": "Miles_per_Gallon",
-                            "zindex": 1
-                        },
-                        {
-                            "scale": "child_Miles_per_Gallon_Miles_per_Gallon_y",
-                            "domain": false,
-                            "format": "s",
-                            "grid": true,
-                            "labels": false,
-                            "orient": "left",
-                            "ticks": false,
-                            "zindex": 0,
-                            "gridScale": "child_Miles_per_Gallon_Miles_per_Gallon_x"
-                        }
-                    ]
+                    "round": true,
+                    "nice": true,
+                    "zero": true
+                }
+            ],
+            "axes": [
+                {
+                    "scale": "child_Miles_per_Gallon_Miles_per_Gallon_x",
+                    "format": "s",
+                    "orient": "bottom",
+                    "tickCount": 5,
+                    "title": "Miles_per_Gallon",
+                    "zindex": 1
+                },
+                {
+                    "scale": "child_Miles_per_Gallon_Miles_per_Gallon_x",
+                    "domain": false,
+                    "format": "s",
+                    "grid": true,
+                    "labels": false,
+                    "orient": "bottom",
+                    "tickCount": 5,
+                    "ticks": false,
+                    "zindex": 0,
+                    "gridScale": "child_Miles_per_Gallon_Miles_per_Gallon_y"
+                },
+                {
+                    "scale": "child_Miles_per_Gallon_Miles_per_Gallon_y",
+                    "format": "s",
+                    "orient": "left",
+                    "title": "Miles_per_Gallon",
+                    "zindex": 1
+                },
+                {
+                    "scale": "child_Miles_per_Gallon_Miles_per_Gallon_y",
+                    "domain": false,
+                    "format": "s",
+                    "grid": true,
+                    "labels": false,
+                    "orient": "left",
+                    "ticks": false,
+                    "zindex": 0,
+                    "gridScale": "child_Miles_per_Gallon_Miles_per_Gallon_x"
                 }
             ]
         }

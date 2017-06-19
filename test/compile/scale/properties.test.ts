@@ -3,13 +3,26 @@
 import {assert} from 'chai';
 
 import {Channel, NONSPATIAL_SCALE_CHANNELS} from '../../../src/channel';
-import {ScaleType} from '../../../src/scale';
+import {Scale, ScaleType} from '../../../src/scale';
 
-import * as rules from '../../../src/compile/scale/rules';
+import * as rules from '../../../src/compile/scale/properties';
+import {Split} from '../../../src/compile/split';
 
 describe('compile/scale', () => {
   describe('nice', () => {
-    // TODO:
+    it('should return nice for x and y.', () => {
+      for (const c of ['x', 'y'] as Channel[]) {
+        assert.equal(rules.nice('linear', c, {type: 'quantitative'}), true);
+      }
+    });
+
+    it('should not return nice for binned x and y.', () => {
+      for (const c of ['x', 'y'] as Channel[]) {
+        assert.equal(rules.nice('linear', c, {type: 'quantitative', bin: true}), undefined);
+      }
+    });
+
+    // TODO
   });
 
   describe('padding', () => {
@@ -82,30 +95,30 @@ describe('compile/scale', () => {
 
   describe('zero', () => {
     it('should return true when mapping a quantitative field to size', () => {
-      assert(rules.zero({}, 'size', {field: 'a', type: 'quantitative'}));
+      assert(rules.zero('size', {field: 'a', type: 'quantitative'}, false));
     });
 
     it('should return false when mapping a ordinal field to size', () => {
-      assert(!rules.zero({}, 'size', {field: 'a', type: 'ordinal'}));
+      assert(!rules.zero('size', {field: 'a', type: 'ordinal'}, false));
     });
 
     it('should return true when mapping a non-binned quantitative field to x/y', () => {
       for (const channel of ['x', 'y'] as Channel[]) {
-        assert(rules.zero({}, channel, {field: 'a', type: 'quantitative'}));
+        assert(rules.zero(channel, {field: 'a', type: 'quantitative'}, false));
       }
     });
 
     it('should return false when mapping a binned quantitative field to x/y', () => {
       for (const channel of ['x', 'y'] as Channel[]) {
-        assert(!rules.zero({}, channel, {bin: true, field: 'a', type: 'quantitative'}));
+        assert(!rules.zero(channel, {bin: true, field: 'a', type: 'quantitative'}, false));
       }
     });
 
     it('should return false when mapping a non-binned quantitative field with custom domain to x/y', () => {
       for (const channel of ['x', 'y'] as Channel[]) {
-        assert(!rules.zero({domain: [1, 5]}, channel, {
+        assert(!rules.zero(channel, {
           bin: true, field: 'a', type: 'quantitative'
-        }));
+        }, true));
       }
     });
   });

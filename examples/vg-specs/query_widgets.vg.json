@@ -3,6 +3,13 @@
     "description": "Drag the sliders to highlight points.",
     "autosize": "pad",
     "padding": 5,
+    "encode": {
+        "update": {
+            "fill": {
+                "value": "transparent"
+            }
+        }
+    },
     "data": [
         {
             "name": "CylYr_store"
@@ -11,17 +18,53 @@
             "name": "source_0",
             "url": "data/cars.json",
             "format": {
-                "type": "json",
-                "parse": {
-                    "Horsepower": "number",
-                    "Miles_per_Gallon": "number"
-                }
+                "type": "json"
             },
             "transform": [
                 {
                     "type": "formula",
                     "expr": "year(datum.Year)",
                     "as": "Year"
+                }
+            ]
+        },
+        {
+            "name": "data_0",
+            "source": "source_0",
+            "transform": [
+                {
+                    "type": "formula",
+                    "expr": "toNumber(datum[\"Horsepower\"])",
+                    "as": "Horsepower"
+                },
+                {
+                    "type": "formula",
+                    "expr": "toNumber(datum[\"Miles_per_Gallon\"])",
+                    "as": "Miles_per_Gallon"
+                },
+                {
+                    "type": "filter",
+                    "expr": "datum[\"Horsepower\"] !== null && !isNaN(datum[\"Horsepower\"]) && datum[\"Miles_per_Gallon\"] !== null && !isNaN(datum[\"Miles_per_Gallon\"])"
+                }
+            ]
+        },
+        {
+            "name": "data_1",
+            "source": "source_0",
+            "transform": [
+                {
+                    "type": "formula",
+                    "expr": "toNumber(datum[\"Horsepower\"])",
+                    "as": "Horsepower"
+                },
+                {
+                    "type": "formula",
+                    "expr": "toNumber(datum[\"Miles_per_Gallon\"])",
+                    "as": "Miles_per_Gallon"
+                },
+                {
+                    "type": "filter",
+                    "expr": "vlPoint(\"CylYr_store\", \"layer_1_\", datum, \"union\", \"all\")"
                 },
                 {
                     "type": "filter",
@@ -33,10 +76,26 @@
     "signals": [
         {
             "name": "width",
-            "update": "200"
+            "update": "max(layer_0_width, layer_1_width)"
         },
         {
             "name": "height",
+            "update": "max(layer_0_height, layer_1_height)"
+        },
+        {
+            "name": "layer_0_width",
+            "update": "200"
+        },
+        {
+            "name": "layer_0_height",
+            "update": "200"
+        },
+        {
+            "name": "layer_1_width",
+            "update": "200"
+        },
+        {
+            "name": "layer_1_height",
             "update": "200"
         },
         {
@@ -60,7 +119,7 @@
                             "type": "click"
                         }
                     ],
-                    "update": "(item().isVoronoi ? datum.datum : datum)[\"Year\"]"
+                    "update": "datum && datum[\"Year\"]"
                 }
             ],
             "bind": {
@@ -81,7 +140,7 @@
                             "type": "click"
                         }
                     ],
-                    "update": "(item().isVoronoi ? datum.datum : datum)[\"Cylinders\"]"
+                    "update": "datum && datum[\"Cylinders\"]"
                 }
             ],
             "bind": {
@@ -93,92 +152,95 @@
         },
         {
             "name": "CylYr",
-            "update": "data(\"CylYr_store\")[0]"
+            "update": "data(\"CylYr_store\").length && {Cylinders: data(\"CylYr_store\")[0].values[0], Year: data(\"CylYr_store\")[0].values[1]}"
+        },
+        {
+            "name": "CylYr_tuple",
+            "update": "{fields: [\"Cylinders\", \"Year\"], values: [CylYr_Cylinders, CylYr_Year]}"
+        },
+        {
+            "name": "CylYr_modify",
+            "on": [
+                {
+                    "events": {
+                        "signal": "CylYr_tuple"
+                    },
+                    "update": "modify(\"CylYr_store\", CylYr_tuple, true)"
+                }
+            ]
         }
     ],
     "marks": [
         {
-            "name": "nested_main_group",
-            "type": "group",
-            "signals": [
-                {
-                    "name": "CylYr",
-                    "update": "{fields: [\"Cylinders\", \"Year\"], values: [CylYr_Cylinders, CylYr_Year]}"
-                },
-                {
-                    "name": "CylYr_tuple",
-                    "on": [
-                        {
-                            "events": {
-                                "signal": "CylYr"
-                            },
-                            "update": "{unit: \"\", encodings: CylYr.encodings, fields: CylYr.fields, values: CylYr.values, bins: CylYr.bins, Cylinders: CylYr.values[0], Year: CylYr.values[1]}"
-                        }
-                    ]
-                },
-                {
-                    "name": "CylYr_modify",
-                    "on": [
-                        {
-                            "events": {
-                                "signal": "CylYr"
-                            },
-                            "update": "modify(\"CylYr_store\", CylYr_tuple, true)"
-                        }
-                    ]
-                }
-            ],
+            "name": "layer_0_marks",
+            "type": "symbol",
+            "role": "circle",
+            "from": {
+                "data": "data_0"
+            },
             "encode": {
                 "update": {
-                    "width": {
-                        "signal": "width"
+                    "x": {
+                        "scale": "x",
+                        "field": "Horsepower"
                     },
-                    "height": {
-                        "signal": "height"
+                    "y": {
+                        "scale": "y",
+                        "field": "Miles_per_Gallon"
                     },
-                    "fill": {
-                        "value": "transparent"
+                    "fill": [
+                        {
+                            "test": "vlPoint(\"CylYr_store\", \"layer_0_\", datum, \"union\", \"all\")",
+                            "scale": "color",
+                            "field": "Origin"
+                        },
+                        {
+                            "value": "grey"
+                        }
+                    ],
+                    "shape": {
+                        "value": "circle"
+                    },
+                    "opacity": {
+                        "value": 0.7
                     }
                 }
             },
-            "marks": [
-                {
-                    "name": "marks",
-                    "type": "symbol",
-                    "role": "circle",
-                    "from": {
-                        "data": "source_0"
+            "clip": true
+        },
+        {
+            "name": "layer_1_marks",
+            "type": "symbol",
+            "role": "circle",
+            "from": {
+                "data": "data_1"
+            },
+            "encode": {
+                "update": {
+                    "x": {
+                        "scale": "x",
+                        "field": "Horsepower"
                     },
-                    "encode": {
-                        "update": {
-                            "x": {
-                                "scale": "x",
-                                "field": "Horsepower"
-                            },
-                            "y": {
-                                "scale": "y",
-                                "field": "Miles_per_Gallon"
-                            },
-                            "fill": [
-                                {
-                                    "test": "!vlPoint(\"CylYr_store\", \"\", datum, \"union\", \"all\")",
-                                    "value": "grey"
-                                },
-                                {
-                                    "scale": "color",
-                                    "field": "Origin"
-                                }
-                            ],
-                            "shape": {
-                                "value": "circle"
-                            },
-                            "opacity": {
-                                "value": 0.7
-                            }
-                        }
+                    "y": {
+                        "scale": "y",
+                        "field": "Miles_per_Gallon"
+                    },
+                    "fill": {
+                        "scale": "color",
+                        "field": "Origin"
+                    },
+                    "size": {
+                        "value": 100
+                    },
+                    "shape": {
+                        "value": "circle"
+                    },
+                    "opacity": {
+                        "value": 0.7
                     }
                 }
-            ]
+            },
+            "clip": true
         }
     ],
     "scales": [
@@ -186,8 +248,17 @@
             "name": "x",
             "type": "linear",
             "domain": {
-                "data": "source_0",
-                "field": "Horsepower"
+                "fields": [
+                    {
+                        "data": "data_0",
+                        "field": "Horsepower"
+                    },
+                    {
+                        "data": "data_1",
+                        "field": "Horsepower"
+                    }
+                ],
+                "sort": true
             },
             "range": [
                 0,
@@ -201,8 +272,17 @@
             "name": "y",
             "type": "linear",
             "domain": {
-                "data": "source_0",
-                "field": "Miles_per_Gallon"
+                "fields": [
+                    {
+                        "data": "data_0",
+                        "field": "Miles_per_Gallon"
+                    },
+                    {
+                        "data": "data_1",
+                        "field": "Miles_per_Gallon"
+                    }
+                ],
+                "sort": true
             },
             "range": [
                 200,
@@ -216,8 +296,16 @@
             "name": "color",
             "type": "ordinal",
             "domain": {
-                "data": "source_0",
-                "field": "Origin",
+                "fields": [
+                    {
+                        "data": "data_0",
+                        "field": "Origin"
+                    },
+                    {
+                        "data": "data_1",
+                        "field": "Origin"
+                    }
+                ],
                 "sort": true
             },
             "range": "category"

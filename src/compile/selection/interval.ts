@@ -7,15 +7,17 @@ import {UnitModel} from '../unit';
 import {channelSignalName, ProjectComponent, SelectionCompiler, SelectionComponent, STORE, TUPLE} from './selection';
 import scales from './transforms/scales';
 
+
 export const BRUSH = '_brush';
 
 const interval:SelectionCompiler = {
   predicate: 'vlInterval',
+  scaleDomain: 'vlIntervalDomain',
 
   signals: function(model, selCmpt) {
-    const signals: any[] = [],
-        intervals:any[] = [],
-        name = selCmpt.name;
+    const signals: any[] = [];
+    const intervals:any[] = [];
+    const name = selCmpt.name;
 
     if (selCmpt.translate && !(scales.has(selCmpt))) {
       const filterExpr = `!event.item || event.item.mark.name !== ${stringValue(name + BRUSH)}`;
@@ -33,18 +35,17 @@ const interval:SelectionCompiler = {
         return;
       }
 
-      const cs = channelSignals(model, selCmpt, p.encoding),
-        csName = channelSignalName(selCmpt, p.encoding, 'data');
+      const cs = channelSignals(model, selCmpt, p.encoding);
+      const csName = channelSignalName(selCmpt, p.encoding, 'data');
       signals.push.apply(signals, cs);
       intervals.push(`{encoding: ${stringValue(p.encoding)}, ` +
       `field: ${stringValue(p.field)}, extent: ${csName}}`);
     });
 
-    return signals.concat({name: name, update: `[${intervals.join(', ')}]`});
-  },
-
-  tupleExpr: function(model, selCmpt) {
-    return `intervals: ${selCmpt.name}`;
+    return signals.concat({
+      name: name + TUPLE,
+      update: `{unit: ${stringValue(model.getName(''))}, intervals: [${intervals.join(', ')}]}`
+    });
   },
 
   modifyExpr: function(model, selCmpt) {
@@ -54,10 +55,10 @@ const interval:SelectionCompiler = {
   },
 
   marks: function(model, selCmpt, marks) {
-    const name = selCmpt.name,
-        {xi, yi} = projections(selCmpt),
-        tpl = name + TUPLE,
-        store = `data(${stringValue(selCmpt.name + STORE)})`;
+    const name = selCmpt.name;
+    const {xi, yi} = projections(selCmpt);
+    const tpl = name + TUPLE;
+    const store = `data(${stringValue(selCmpt.name + STORE)})`;
 
     // Do not add a brush if we're binding to scales.
     if (scales.has(selCmpt)) {
@@ -112,8 +113,11 @@ const interval:SelectionCompiler = {
 export {interval as default};
 
 export function projections(selCmpt: SelectionComponent) {
-  let x:ProjectComponent = null, xi:number = null,
-      y:ProjectComponent = null, yi: number = null;
+  let x:ProjectComponent = null;
+  let xi:number = null;
+  let y:ProjectComponent = null;
+  let yi: number = null;
+
   selCmpt.project.forEach(function(p, i) {
     if (p.encoding === X) {
       x  = p;
@@ -129,15 +133,16 @@ export function projections(selCmpt: SelectionComponent) {
 /**
  * Returns the visual and data signals for an interval selection.
  */
-function channelSignals(model: UnitModel, selCmpt: SelectionComponent, channel: Channel): any {
-  const vname = channelSignalName(selCmpt, channel, 'visual'),
-      dname = channelSignalName(selCmpt, channel, 'data'),
-      hasScales = scales.has(selCmpt),
-      scaleName = model.scaleName(channel),
-      scaleStr = stringValue(scaleName),
-      scaleType = model.getComponent('scales', channel).type,
-      size  = model.getSizeSignalRef(channel === X ? 'width' : 'height').signal,
-      coord = `${channel}(unit)`;
+function channelSignals(model: UnitModel, selCmpt: SelectionComponent, channel: 'x'|'y'): any {
+  const vname = channelSignalName(selCmpt, channel, 'visual');
+  const dname = channelSignalName(selCmpt, channel, 'data');
+  const hasScales = scales.has(selCmpt);
+  const scaleName = model.scaleName(channel);
+  const scaleStr = stringValue(scaleName);
+  const scale = model.getScaleComponent(channel);
+  const scaleType = scale ? scale.get('type') : undefined;
+  const size  = model.getSizeSignalRef(channel === X ? 'width' : 'height').signal;
+  const coord = `${channel}(unit)`;
 
   const on = events(selCmpt, function(def: any[], evt: VgEventStream) {
     return def.concat(
@@ -149,13 +154,13 @@ function channelSignals(model: UnitModel, selCmpt: SelectionComponent, channel: 
   // React to pan/zooms of continuous scales. Non-continuous scales
   // (bin-linear, band, point) cannot be pan/zoomed and any other changes
   // to their domains (e.g., filtering) should clear the brushes.
-  on.push({
-    events: {scale: scaleName},
-    update: hasContinuousDomain(scaleType) && !isBinScale(scaleType) ?
-      `!isArray(${dname}) ? ${vname} : ` +
-        `[scale(${scaleStr}, ${dname}[0]), scale(${scaleStr}, ${dname}[1])]` :
-      `[]`
-  });
+  if (hasContinuousDomain(scaleType) && !isBinScale(scaleType)) {
+    on.push({
+      events: {scale: scaleName},
+      update: `!isArray(${dname}) ? ${vname} : ` +
+          `[scale(${scaleStr}, ${dname}[0]), scale(${scaleStr}, ${dname}[1])]`
+    });
+  }
 
   return hasScales ? [{name: dname, on: []}] : [{
     name: vname, value: [], on: on

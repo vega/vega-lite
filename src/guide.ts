@@ -1,3 +1,7 @@
+import {ValueDef} from './fielddef';
+import {VgEncodeChannel} from './vega.schema';
+
+
 export interface Guide {
   /**
    * The formatting pattern for labels. This is D3's [number format pattern](https://github.com/mbostock/d3/wiki/Formatting) for quantitative fields and D3's [time format pattern](https://github.com/mbostock/d3/wiki/Time-Formatting) for time field.
@@ -23,5 +27,9 @@ export interface VlOnlyGuideConfig {
   shortTimeLabels?: boolean;
 }
 
+
+export type GuideEncodingEntry = {
+  [k in VgEncodeChannel]: ValueDef<any>;
+};
 
 export const VL_ONLY_GUIDE_CONFIG: (keyof VlOnlyGuideConfig)[] = ['shortTimeLabels'];

@@ -2,6 +2,7 @@ import {Field} from '../fielddef';
 import {Encoding} from './../encoding';
 import {GenericUnitSpec, LayerSpec} from './../spec';
 
+
 export const ERRORBAR: 'error-bar' = 'error-bar';
 export type ERRORBAR = typeof ERRORBAR;
 

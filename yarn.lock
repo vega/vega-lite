@@ -202,9 +202,9 @@
   version "6.0.77"
   resolved "https://registry.yarnpkg.com/@types/node/-/node-6.0.77.tgz#3e4d569a427f17085e1ee4ecd3c31befb56af7b5"
 
-"@types/node@^7.0.27":
-  version "7.0.27"
-  resolved "https://registry.yarnpkg.com/@types/node/-/node-7.0.27.tgz#ba5e1a87aca2b4f5817289615ffe56472927687e"
+"@types/node@^7.0.28":
+  version "7.0.31"
+  resolved "https://registry.yarnpkg.com/@types/node/-/node-7.0.31.tgz#80ea4d175599b2a00149c29a10a4eb2dff592e86"
 
 JSONStream@^1.0.3:
   version "1.3.1"
@@ -4504,9 +4504,9 @@ tslint-eslint-rules@^4.1.1:
     tslib "^1.0.0"
     tsutils "^1.4.0"
 
-tslint@^5.4.2:
-  version "5.4.2"
-  resolved "https://registry.yarnpkg.com/tslint/-/tslint-5.4.2.tgz#609b6640cc0424f4a395a9adf68c375563c549c7"
+tslint@^5.4.3:
+  version "5.4.3"
+  resolved "https://registry.yarnpkg.com/tslint/-/tslint-5.4.3.tgz#761c8402b80e347b7733a04390a757b253580467"
   dependencies:
     babel-code-frame "^6.22.0"
     colors "^1.1.2"
@@ -4557,9 +4557,9 @@ typedarray@^0.0.6, typedarray@~0.0.5:
   version "0.0.6"
   resolved "https://registry.yarnpkg.com/typedarray/-/typedarray-0.0.6.tgz#867ac74e3864187b1d3d47d996a78ec5c8830777"
 
-typescript-to-json-schema@vega/typescript-to-json-schema#v0.3.0:
-  version "0.3.0"
-  resolved "https://codeload.github.com/vega/typescript-to-json-schema/tar.gz/5738883d9bbbfa3fdf6a1b8807a863d00f51f3be"
+typescript-to-json-schema@vega/typescript-to-json-schema#v0.5.0:
+  version "0.5.0"
+  resolved "https://codeload.github.com/vega/typescript-to-json-schema/tar.gz/2378273d2427bec1cf41b71b569c06bb4a272701"
   dependencies:
     commander "~2.9.0"
     glob "~7.1.2"

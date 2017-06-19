@@ -2,16 +2,17 @@ import {X, Y} from '../../channel';
 import {Config} from '../../config';
 import {isFieldDef} from '../../fielddef';
 import * as log from '../../log';
-import {isBinScale, Scale, ScaleType} from '../../scale';
+import {Scale, ScaleType} from '../../scale';
 import {StackProperties} from '../../stack';
-import {VgEncodeEntry} from '../../vega.schema';
-
+import {isVgRangeStep, VgEncodeEntry} from '../../vega.schema';
 import {VgValueRef} from '../../vega.schema';
+import {ScaleComponent} from '../scale/component';
+import {Split} from '../split';
 import {UnitModel} from '../unit';
-import * as mixins from './mixins';
-
 import {MarkCompiler} from './base';
+import * as mixins from './mixins';
 import * as ref from './valueref';
+
 
 export const bar: MarkCompiler = {
   vgMark: 'rect',
@@ -35,7 +36,7 @@ function x(model: UnitModel, stack: StackProperties): VgEncodeEntry {
 
   const xDef = model.encoding.x;
   const xScaleName = model.scaleName(X);
-  const xScale = model.scale(X);
+  const xScale = model.getScaleComponent(X);
   // x, x2, and width -- we must specify two of these in all conditions
   if (orient === 'horizontal') {
     return {
@@ -44,17 +45,21 @@ function x(model: UnitModel, stack: StackProperties): VgEncodeEntry {
     };
   } else { // vertical
     if (isFieldDef(xDef)) {
-      if (!sizeDef && isBinScale(xScale.type)) {
-        return mixins.binnedPosition('x', model, config.bar.binSpacing);
-      } else if (xScale.type === ScaleType.BAND) {
-        return mixins.bandPosition('x', model);
+      if (xDef.bin && !sizeDef) {
+        return mixins.binnedPosition(xDef, 'x', model.scaleName('x'), config.bar.binSpacing);
+      } else {
+        const xScaleType = xScale.get('type');
+
+        if (xScaleType === ScaleType.BAND) {
+          return mixins.bandPosition(xDef, 'x', model);
+        }
       }
     }
     // sized bin, normal point-ordinal axis, quantitative x-axis, or no x
 
     return mixins.centeredBandPosition('x', model,
       {...ref.midX(width, config)},
-      defaultSizeRef(xScaleName, model.scale(X), config)
+      defaultSizeRef(xScaleName, xScale, config)
     );
   }
 }
@@ -66,7 +71,7 @@ function y(model: UnitModel, stack: StackProperties) {
 
   const yDef = encoding.y;
   const yScaleName = model.scaleName(Y);
-  const yScale = model.scale(Y);
+  const yScale = model.getScaleComponent(Y);
   // y, y2 & height -- we must specify two of these in all conditions
   if (orient === 'vertical') {
     return {
@@ -75,28 +80,33 @@ function y(model: UnitModel, stack: StackProperties) {
     };
   } else {
     if (isFieldDef(yDef)) {
+      const yScaleType = yScale.get('type');
       if (yDef.bin && !sizeDef) {
-        return mixins.binnedPosition('y', model, config.bar.binSpacing);
-      } else if (yScale.type === ScaleType.BAND) {
-        return mixins.bandPosition('y', model);
+        return mixins.binnedPosition(yDef, 'y', model.scaleName('y'), config.bar.binSpacing);
+      } else if (yScaleType === ScaleType.BAND) {
+        return mixins.bandPosition(yDef, 'y', model);
       }
     }
-    return mixins.centeredBandPosition('y', model, ref.midY(height, config), defaultSizeRef(yScaleName, model.scale(Y), config));
+    return mixins.centeredBandPosition('y', model, ref.midY(height, config),
+      defaultSizeRef(yScaleName, yScale, config)
+    );
   }
 }
 
-function defaultSizeRef(scaleName: string, scale: Scale, config: Config): VgValueRef {
+function defaultSizeRef(scaleName: string, scale: ScaleComponent, config: Config): VgValueRef {
   if (config.bar.discreteBandSize) {
     return {value: config.bar.discreteBandSize};
   }
 
   if (scale) {
-    if (scale.type === ScaleType.POINT) {
-      if (scale.rangeStep !== null) {
-        return {value: scale.rangeStep - 1};
+    const scaleType = scale.get('type');
+    if (scaleType === ScaleType.POINT) {
+      const scaleRange = scale.get('range');
+      if (isVgRangeStep(scaleRange)) {
+        return {value: scaleRange.step - 1};
       }
       log.warn(log.message.BAR_WITH_POINT_SCALE_AND_RANGESTEP_NULL);
-    } else if (scale.type === ScaleType.BAND) {
+    } else if (scaleType === ScaleType.BAND) {
       return ref.band(scaleName);
     } else { // non-ordinal scale
       return {value: config.bar.continuousBandSize};

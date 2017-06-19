@@ -1,7 +1,8 @@
+import {SingleDefChannel} from './channel';
 import {VgBinding} from './vega.schema';
 
+
 export type SelectionTypes = 'single' | 'multi' | 'interval';
-export type SelectionDomain = 'data' | 'visual';
 export type SelectionResolutions = 'global' | 'independent' | 'union' |
   'union_others' | 'intersect' | 'intersect_others';
 
@@ -14,7 +15,7 @@ export interface BaseSelectionDef {
 
   // Transforms
   fields?: string[];
-  encodings?: string[];
+  encodings?: SingleDefChannel[];
   toggle?: string | boolean;
   translate?: string | boolean;
   zoom?: string | boolean;

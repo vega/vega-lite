@@ -8,6 +8,7 @@ import {isBinScale, ScaleType} from '../../scale';
 import {Type} from '../../type';
 import {contains} from '../../util';
 
+
 export function title(legend: Legend, fieldDef: FieldDef<string>, config: Config) {
   if (legend.title !== undefined) {
     return legend.title;
@@ -31,7 +32,12 @@ export function type(legend: Legend, type: Type, channel: Channel, scaleType: Sc
   if (legend.type) {
     return legend.type;
   }
-  if (channel === COLOR && ((type === 'quantitative' && !isBinScale(scaleType)) || (type === 'temporal' && contains<ScaleType>(['time', 'utc'], scaleType)))) {
+  if (
+      channel === COLOR && (
+        (type === 'quantitative' && !isBinScale(scaleType)) ||
+        (type === 'temporal' && contains<ScaleType>(['time', 'utc'], scaleType))
+      )
+    ) {
     return 'gradient';
   }
   return undefined;

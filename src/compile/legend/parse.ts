@@ -1,15 +1,14 @@
-import {Channel, COLOR, OPACITY, SHAPE, SIZE} from '../../channel';
+import {Channel, COLOR, NonspatialScaleChannel, OPACITY, SHAPE, SIZE} from '../../channel';
 import {Legend, LEGEND_PROPERTIES} from '../../legend';
 import {Dict, keys} from '../../util';
 import {VgLegend} from '../../vega.schema';
-
 import {numberFormat} from '../common';
-import {UnitModel} from '../unit';
-
 import {Model} from '../model';
+import {UnitModel} from '../unit';
 import {LegendComponent, LegendComponentIndex} from './component';
 import * as encode from './encode';
 import * as rules from './rules';
+
 
 export function parseLegendComponent(model: UnitModel): LegendComponentIndex {
   return [COLOR, SIZE, SHAPE, OPACITY].reduce(function(legendComponent, channel) {
@@ -36,7 +35,7 @@ function getLegendDefWithScale(model: UnitModel, channel: Channel): LegendCompon
   return null;
 }
 
-export function parseLegend(model: UnitModel, channel: Channel): LegendComponent {
+export function parseLegend(model: UnitModel, channel: NonspatialScaleChannel): LegendComponent {
   const fieldDef = model.fieldDef(channel);
   const legend = model.legend(channel);
 
@@ -50,11 +49,11 @@ export function parseLegend(model: UnitModel, channel: Channel): LegendComponent
   });
 
   // 2) Add mark property definition groups
-  const encodeSpec = legend.encode || {};
+  const legendEncoding = legend.encoding || {};
   ['labels', 'legend', 'title', 'symbols'].forEach(function(part) {
     const value = encode[part] ?
-      encode[part](fieldDef, encodeSpec[part], model, channel) : // apply rule
-      encodeSpec[part]; // no rule -- just default values
+      encode[part](fieldDef, legendEncoding[part], model, channel) : // apply rule
+      legendEncoding[part]; // no rule -- just default values
     if (value !== undefined && keys(value).length > 0) {
       def.encode = def.encode || {};
       def.encode[part] = {update: value};
@@ -64,7 +63,7 @@ export function parseLegend(model: UnitModel, channel: Channel): LegendComponent
   return def;
 }
 
-function getSpecifiedOrDefaultValue(property: keyof VgLegend, specifiedLegend: Legend, channel: Channel, model: UnitModel) {
+function getSpecifiedOrDefaultValue(property: keyof VgLegend, specifiedLegend: Legend, channel: NonspatialScaleChannel, model: UnitModel) {
   const fieldDef = model.fieldDef(channel);
 
   switch (property) {
@@ -75,7 +74,7 @@ function getSpecifiedOrDefaultValue(property: keyof VgLegend, specifiedLegend: L
     case 'values':
       return rules.values(specifiedLegend);
     case 'type':
-      return rules.type(specifiedLegend, fieldDef.type, channel, model.scale(channel).type);
+      return rules.type(specifiedLegend, fieldDef.type, channel, model.getScaleComponent(channel).get('type'));
   }
 
   // Otherwise, return specified property.

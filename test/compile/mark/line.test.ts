@@ -1,7 +1,7 @@
 /* tslint:disable quotemark */
 
 import {assert} from 'chai';
-import {parseUnitModel} from '../../util';
+import {parseUnitModelWithScaleMarkDefLayoutSize} from '../../util';
 
 import * as log from '../../../src/log';
 
@@ -12,7 +12,7 @@ import {LINE} from '../../../src/mark';
 describe('Mark: Line', function() {
 
   describe('with x, y', function() {
-    const model = parseUnitModel({
+    const model = parseUnitModelWithScaleMarkDefLayoutSize({
       "data": {"url": "data/barley.json"},
       "mark": "line",
       "encoding": {
@@ -32,7 +32,7 @@ describe('Mark: Line', function() {
   });
 
   describe('with x, y, color', function () {
-    const model = parseUnitModel({
+    const model = parseUnitModelWithScaleMarkDefLayoutSize({
       "data": {"url": "data/barley.json"},
       "mark": "line",
       "encoding": {
@@ -52,7 +52,7 @@ describe('Mark: Line', function() {
   describe('with x, y, size', function () {
     it('should have scale for size', function () {
       log.runLocalLogger((localLogger) => {
-        const model = parseUnitModel({
+        const model = parseUnitModelWithScaleMarkDefLayoutSize({
           "data": {"url": "data/barley.json"},
           "mark": "line",
           "encoding": {
@@ -69,7 +69,7 @@ describe('Mark: Line', function() {
 
     it('should drop aggregate size field', function () {
       log.runLocalLogger((localLogger) => {
-        const model = parseUnitModel({
+        const model = parseUnitModelWithScaleMarkDefLayoutSize({
           "data": {"url": "data/barley.json"},
           "mark": "line",
           "encoding": {
@@ -81,14 +81,14 @@ describe('Mark: Line', function() {
         const props = line.encodeEntry(model);
 
         // If size field is dropped, then strokeWidth only have value
-        assert.isNotOk(props.strokeWidth && props.strokeWidth.scale);
+        assert.isNotOk(props.strokeWidth && props.strokeWidth['scale']);
         assert.equal(localLogger.warns[0], log.message.incompatibleChannel(SIZE, LINE, 'when the field is aggregated.'));
       });
     });
   });
 
   describe('with stacked y', function() {
-    const model = parseUnitModel({
+    const model = parseUnitModelWithScaleMarkDefLayoutSize({
       "data": {"url": "data/barley.json"},
       "mark": "line",
       "encoding": {
@@ -106,7 +106,7 @@ describe('Mark: Line', function() {
   });
 
   describe('with stacked x', function() {
-    const model = parseUnitModel({
+    const model = parseUnitModelWithScaleMarkDefLayoutSize({
       "data": {"url": "data/barley.json"},
       "mark": "line",
       "encoding": {

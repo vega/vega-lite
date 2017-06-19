@@ -1,5 +1,6 @@
 import {Channel, COLOR, COLUMN, OPACITY, ROW, SHAPE, SIZE} from './channel';
-import {isBoolean} from './util';
+import {isBoolean, keys} from './util';
+
 
 export interface BaseBin {
   /**
@@ -62,7 +63,7 @@ export function binToString(bin: Bin | boolean) {
   if (isBoolean(bin)) {
     return 'bin';
   }
-  return 'bin' + Object.keys(bin).map(p => `_${p}_${bin[p]}`).join('');
+  return 'bin' + keys(bin).map(p => `_${p}_${bin[p]}`).join('');
 }
 
 export function autoMaxBins(channel: Channel): number {

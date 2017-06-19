@@ -9,12 +9,14 @@ import {Config} from './config';
 import {Field} from './fielddef';
 import {Legend} from './legend';
 import * as log from './log';
+import {LogicalOperand} from './logical';
 import {Scale, ScaleType} from './scale';
 import {SortField, SortOrder} from './sort';
 import {StackOffset} from './stack';
 import {isDiscreteByDefault, TimeUnit} from './timeunit';
 import {getFullName, Type} from './type';
 import {isBoolean, isString, stringValue} from './util';
+
 
 /**
  * Definition object for a constant value of an encoding channel.
@@ -23,12 +25,43 @@ export interface ValueDef<T> {
   /**
    * A constant value in visual domain.
    */
-  value?: T;
+  value: T;
 }
 
-export interface ConditionalValueDef<T> extends ValueDef<T> {
-  condition?: Condition<T>;
+/**
+ * Generic type for conditional channelDef.
+ * F defines the underlying FieldDef type while V defines the underlying ValueDef type.
+ */
+export type Conditional<F extends FieldDef<any>, V extends ValueDef<any>> = ConditionalFieldDef<F, V> | ConditionalValueDef<F, V> | ConditionOnlyDef<F, V>;
+
+
+export type Condition<T> = {
+  selection: LogicalOperand<string>;
+} & T;
+
+/**
+ * A FieldDef with Condition<ValueDef>
+ * {
+ *   condition: {value: ...},
+ *   field: ...,
+ *   ...
+ * }
+ */
+export type ConditionalFieldDef<F extends FieldDef<any>, V extends ValueDef<any>> = F & {condition?: Condition<V>};
+
+export interface ConditionOnlyDef <F extends FieldDef<any>, V extends ValueDef<any>> {
+  condition: Condition<F> | Condition<V>;
 }
+
+
+/**
+ * A ValueDef with Condition<ValueDef | FieldDef>
+ * {
+ *   condition: {field: ...} | {value: ...},
+ *   value: ...,
+ * }
+ */
+export type ConditionalValueDef<F extends FieldDef<any>, V extends ValueDef<any>> = V & {condition?: Condition<F> | Condition<V>;};
 
 /**
  * Reference to a repeated value.
@@ -43,25 +76,14 @@ export function isRepeatRef(field: Field): field is RepeatRef {
   return field && !isString(field) && 'repeat' in field;
 }
 
-/**
- *  Definition object for a data field, its type and transformation of an encoding channel.
- */
-export interface FieldDef<F> {
+export interface FieldDefBase<F> {
+
   /**
    * __Required.__ Name of the field from which to pull a data value.
    *
    * __Note:__ `field` is not required if `aggregate` is `count`.
    */
   field?: F;
-
-  /**
-   * The encoded field's type of measurement. This can be either a full type
-   * name (`"quantitative"`, `"temporal"`, `"ordinal"`,  and `"nominal"`)
-   * or an initial character of the type name (`"Q"`, `"T"`, `"O"`, `"N"`).
-   * This property is case-insensitive.
-   */
-  type?: Type;
-
 
   // function
 
@@ -89,9 +111,17 @@ export interface FieldDef<F> {
   aggregate?: AggregateOp | CompositeAggregate;
 }
 
-export interface Condition<T> {
-  selection: string;
-  value: T;
+/**
+ *  Definition object for a data field, its type and transformation of an encoding channel.
+ */
+export interface FieldDef<F> extends FieldDefBase<F> {
+  /**
+   * The encoded field's type of measurement. This can be either a full type
+   * name (`"quantitative"`, `"temporal"`, `"ordinal"`,  and `"nominal"`)
+   * or an initial character of the type name (`"Q"`, `"T"`, `"O"`, `"N"`).
+   * This property is case-insensitive.
+   */
+  type: Type;
 }
 
 export interface ScaleFieldDef<F> extends FieldDef<F> {
@@ -119,13 +149,12 @@ export interface PositionFieldDef<F> extends ScaleFieldDef<F> {
    */
   stack?: StackOffset;
 }
-export interface LegendFieldDef<F, T> extends ScaleFieldDef<F> {
+
+export interface LegendFieldDef<F> extends ScaleFieldDef<F> {
    /**
     * @nullable
     */
   legend?: Legend;
-
-  condition?: Condition<T>;
 }
 
 // Detail
@@ -138,21 +167,30 @@ export interface OrderFieldDef<F> extends FieldDef<F> {
 
 export interface TextFieldDef<F> extends FieldDef<F> {
   // FIXME: add more reference to Vega's format pattern or d3's format pattern.
-  condition?: Condition<string|number>;
-
   /**
    * The formatting pattern for text value. If not defined, this will be determined automatically.
    */
   format?: string;
 }
 
-export type ChannelDef<F> = FieldDef<F> | ValueDef<any>;
+export type ChannelDef<F> = Conditional<FieldDef<F>, ValueDef<any>>;
 
-export function isFieldDef(channelDef: ChannelDef<any>): channelDef is FieldDef<any> | PositionFieldDef<any> | LegendFieldDef<any, any> | OrderFieldDef<any> | TextFieldDef<any> {
+export function isConditionalDef<F>(channelDef: ChannelDef<F>): channelDef is Conditional<FieldDef<F>, ValueDef<any>> {
+  return !!channelDef && !!channelDef.condition;
+}
+
+/**
+ * Return if a channelDef is a ConditionalValueDef with ConditionFieldDef
+ */
+export function hasConditionFieldDef<F>(channelDef: ChannelDef<F>): channelDef is (ValueDef<any> & {condition: FieldDef<F>}) {
+  return !!channelDef && !!channelDef.condition && isFieldDef(channelDef.condition);
+}
+
+export function isFieldDef<F>(channelDef: ChannelDef<F>): channelDef is FieldDef<F> | PositionFieldDef<F> | LegendFieldDef<F> | OrderFieldDef<F> | TextFieldDef<F> {
   return !!channelDef && (!!channelDef['field'] || channelDef['aggregate'] === 'count');
 }
 
-export function isValueDef(channelDef: ChannelDef<any>): channelDef is ValueDef<any> {
+export function isValueDef<F>(channelDef: ChannelDef<F>): channelDef is ValueDef<any> {
   return channelDef && 'value' in channelDef && channelDef['value'] !== undefined;
 }
 
@@ -175,7 +213,7 @@ export interface FieldRefOption {
   aggregate?: AggregateOp;
 }
 
-export function field(fieldDef: FieldDef<string>, opt: FieldRefOption = {}): string {
+export function field(fieldDef: FieldDefBase<string>, opt: FieldRefOption = {}): string {
   let field = fieldDef.field;
   const prefix = opt.prefix;
   let suffix = opt.suffix;
@@ -234,7 +272,7 @@ export function isContinuous(fieldDef: FieldDef<Field>) {
   return !isDiscrete(fieldDef);
 }
 
-export function isCount(fieldDef: FieldDef<Field>) {
+export function isCount(fieldDef: FieldDefBase<Field>) {
   return fieldDef.aggregate === 'count';
 }
 
@@ -270,55 +308,75 @@ export function defaultType(fieldDef: FieldDef<Field>, channel: Channel): Type {
 }
 
 /**
+ * Returns the fieldDef -- either from the outer channelDef or from the condition of channelDef.
+ * @param channelDef
+ */
+export function getFieldDef<F>(channelDef: ChannelDef<F>): FieldDef<F> {
+  if (isFieldDef(channelDef)) {
+    return channelDef;
+  } else if (hasConditionFieldDef(channelDef)) {
+    return channelDef.condition;
+  }
+  return undefined;
+}
+
+/**
  * Convert type to full, lowercase type, or augment the fieldDef with a default type if missing.
  */
-export function normalize(channelDef: ChannelDef<string>, channel: Channel) {
+export function normalize(channelDef: ChannelDef<string>, channel: Channel): ChannelDef<any> {
   // If a fieldDef contains a field, we need type.
-  if (isFieldDef(channelDef)) { // TODO: or datum
-    let fieldDef: FieldDef<Field> = channelDef;
-
-    // Drop invalid aggregate
-    if (fieldDef.aggregate && !AGGREGATE_OP_INDEX[fieldDef.aggregate]) {
-      const {aggregate, ...fieldDefWithoutAggregate} = fieldDef;
-      log.warn(log.message.invalidAggregate(fieldDef.aggregate));
-      fieldDef = fieldDefWithoutAggregate;
-    }
-
-    // Normalize bin
-    if (fieldDef.bin) {
-      fieldDef = {
-        ...fieldDef,
-        bin: normalizeBin(fieldDef.bin, channel)
-      };
-    }
-
-    // Normalize Type
-    if (fieldDef.type) {
-      const fullType = getFullName(fieldDef.type);
-      if (fieldDef.type !== fullType) {
-        // convert short type to full type
-        fieldDef = {
-          ...fieldDef,
-          type: fullType
-        };
-      }
-    } else {
-      // If type is empty / invalid, then augment with default type
-      const newType = defaultType(fieldDef, channel);
-      log.warn(log.message.emptyOrInvalidFieldType(fieldDef.type, channel, newType));
-      fieldDef = {
-          ...fieldDef,
-        type: newType
-      };
-    }
-
-    const {compatible, warning} = channelCompatibility(fieldDef, channel);
-    if (!compatible) {
-      log.warn(warning);
-    }
-    return fieldDef;
+  if (isFieldDef(channelDef)) {
+    return normalizeFieldDef(channelDef, channel);
+  } else if (hasConditionFieldDef(channelDef)) {
+    return {
+      ...channelDef,
+      // Need to cast as normalizeFieldDef normally return FieldDef, but here we know that it is definitely Condition<FieldDef>
+      condition: normalizeFieldDef(channelDef.condition, channel) as Condition<FieldDef<string>>
+    };
   }
   return channelDef;
+}
+export function normalizeFieldDef(fieldDef: FieldDef<string>, channel: Channel) {
+  // Drop invalid aggregate
+  if (fieldDef.aggregate && !AGGREGATE_OP_INDEX[fieldDef.aggregate]) {
+    const {aggregate, ...fieldDefWithoutAggregate} = fieldDef;
+    log.warn(log.message.invalidAggregate(fieldDef.aggregate));
+    fieldDef = fieldDefWithoutAggregate;
+  }
+
+  // Normalize bin
+  if (fieldDef.bin) {
+    fieldDef = {
+      ...fieldDef,
+      bin: normalizeBin(fieldDef.bin, channel)
+    };
+  }
+
+  // Normalize Type
+  if (fieldDef.type) {
+    const fullType = getFullName(fieldDef.type);
+    if (fieldDef.type !== fullType) {
+      // convert short type to full type
+      fieldDef = {
+        ...fieldDef,
+        type: fullType
+      };
+    }
+  } else {
+    // If type is empty / invalid, then augment with default type
+    const newType = defaultType(fieldDef, channel);
+    log.warn(log.message.emptyOrInvalidFieldType(fieldDef.type, channel, newType));
+    fieldDef = {
+        ...fieldDef,
+      type: newType
+    };
+  }
+
+  const {compatible, warning} = channelCompatibility(fieldDef, channel);
+  if (!compatible) {
+    log.warn(warning);
+  }
+  return fieldDef;
 }
 
 export function normalizeBin(bin: Bin|boolean, channel: Channel) {

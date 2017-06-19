@@ -3,6 +3,13 @@
     "description": "Slope graph showing the change in yield for different barley sites. It shows the error in the year labels for the Morris site.",
     "autosize": "pad",
     "padding": 5,
+    "encode": {
+        "update": {
+            "fill": {
+                "value": "transparent"
+            }
+        }
+    },
     "data": [
         {
             "name": "source_0",
@@ -56,73 +63,54 @@
     ],
     "marks": [
         {
-            "name": "nested_main_group",
+            "name": "pathgroup",
             "type": "group",
+            "from": {
+                "facet": {
+                    "name": "faceted_path_main",
+                    "data": "source_0",
+                    "groupby": [
+                        "site"
+                    ]
+                }
+            },
             "encode": {
                 "update": {
                     "width": {
-                        "signal": "width"
+                        "field": {
+                            "group": "width"
+                        }
                     },
                     "height": {
-                        "signal": "height"
-                    },
-                    "fill": {
-                        "value": "transparent"
+                        "field": {
+                            "group": "height"
+                        }
                     }
                 }
             },
             "marks": [
                 {
-                    "name": "pathgroup",
-                    "type": "group",
+                    "name": "marks",
+                    "type": "line",
                     "from": {
-                        "facet": {
-                            "name": "faceted_path_main",
-                            "data": "source_0",
-                            "groupby": [
-                                "site"
-                            ]
-                        }
+                        "data": "faceted_path_main"
                     },
                     "encode": {
                         "update": {
-                            "width": {
-                                "field": {
-                                    "group": "width"
-                                }
+                            "x": {
+                                "scale": "x",
+                                "field": "year"
                             },
-                            "height": {
-                                "field": {
-                                    "group": "height"
-                                }
+                            "y": {
+                                "scale": "y",
+                                "field": "median_yield"
+                            },
+                            "stroke": {
+                                "scale": "color",
+                                "field": "site"
                             }
                         }
-                    },
-                    "marks": [
-                        {
-                            "name": "marks",
-                            "type": "line",
-                            "from": {
-                                "data": "faceted_path_main"
-                            },
-                            "encode": {
-                                "update": {
-                                    "x": {
-                                        "scale": "x",
-                                        "field": "year"
-                                    },
-                                    "y": {
-                                        "scale": "y",
-                                        "field": "median_yield"
-                                    },
-                                    "stroke": {
-                                        "scale": "color",
-                                        "field": "site"
-                                    }
-                                }
-                            }
-                        }
-                    ]
+                    }
                 }
             ]
         }
@@ -139,8 +127,8 @@
             "range": {
                 "step": 50
             },
-            "round": true,
-            "padding": 0.5
+            "padding": 0.5,
+            "round": true
         },
         {
             "name": "y",

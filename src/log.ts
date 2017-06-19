@@ -1,11 +1,8 @@
-///<reference path="../typings/vega-util.d.ts" />
-
 /**
  * Vega-Lite's singleton logger utility.
  */
 
 import {logger, LoggerInterface, Warn} from 'vega-util';
-
 import {AggregateOp} from './aggregate';
 import {Channel} from './channel';
 import {DateTime, DateTimeExpr} from './datetime';
@@ -14,6 +11,7 @@ import {Mark} from './mark';
 import {ScaleType} from './scale';
 import {TimeUnit} from './timeunit';
 import {Type} from './type';
+
 
 export {LoggerInterface} from 'vega-util';
 
@@ -99,6 +97,11 @@ export function debug(..._: any[]) {
 export namespace message {
   export const INVALID_SPEC = 'Invalid spec';
 
+  // SELECTION
+  export function cannotProjectOnChannelWithoutField(channel: Channel) {
+    return `Cannot project a selection on encoding channel ${channel}, which has no field.`;
+  }
+
   // REPEAT
   export function noSuchRepeatedValue(field: string) {
     return `Unknown repeated value "${field}".`;
@@ -107,6 +110,10 @@ export namespace message {
   // DATA
   export function unrecognizedParse(p: string) {
     return `Unrecognized parse ${p}.`;
+  }
+
+  export function differentParse(field: string, local: string, ancestor: string) {
+    return `An ancestor parsed field ${field} as ${ancestor} but a child wants to parse the field as ${local}.`;
   }
 
   // TRANSFORMS
@@ -187,12 +194,6 @@ export namespace message {
 
   export function cannotApplySizeToNonOrientedMark(mark: Mark) {
     return `Cannot apply size to non-oriented mark ${mark}.`;
-  }
-
-  export const CANNOT_USE_PADDING_WITH_FACET = 'Cannot use padding with facet\'s scale.  Please use spacing instead.';
-
-  export function cannotUseRangePropertyWithFacet(propName: string) {
-    return `Cannot use custom ${propName} with row or column channel. Please use width, height, or spacing instead.`;
   }
 
   export function rangeStepDropped(channel: Channel) {
