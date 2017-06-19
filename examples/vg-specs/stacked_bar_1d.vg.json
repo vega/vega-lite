@@ -21,10 +21,6 @@
             },
             "transform": [
                 {
-                    "type": "filter",
-                    "expr": "datum[\"Acceleration\"] !== null && !isNaN(datum[\"Acceleration\"])"
-                },
-                {
                     "type": "aggregate",
                     "groupby": [
                         "Origin"

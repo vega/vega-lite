@@ -61,10 +61,6 @@
                     "as": "b"
                 },
                 {
-                    "type": "filter",
-                    "expr": "datum[\"b\"] !== null && !isNaN(datum[\"b\"])"
-                },
-                {
                     "type": "aggregate",
                     "groupby": [
                         "a"

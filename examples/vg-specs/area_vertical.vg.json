@@ -24,7 +24,7 @@
             "transform": [
                 {
                     "type": "filter",
-                    "expr": "datum[\"Weight_in_lbs\"] !== null && !isNaN(datum[\"Weight_in_lbs\"]) && datum[\"Year\"] !== null && !isNaN(datum[\"Year\"])"
+                    "expr": "datum[\"Year\"] !== null && !isNaN(datum[\"Year\"])"
                 },
                 {
                     "type": "formula",

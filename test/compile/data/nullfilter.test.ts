@@ -8,7 +8,7 @@ import {NullFilterNode} from '../../../src/compile/data/nullfilter';
 import {ModelWithField} from '../../../src/compile/model';
 import {FieldDef} from '../../../src/fielddef';
 import {Dict, mergeDeep} from '../../../src/util';
-import {parseUnitModel} from '../../util';
+import {parseUnitModelWithScale} from '../../util';
 
 function parse(model: ModelWithField) {
   return NullFilterNode.make(model);
@@ -21,47 +21,42 @@ describe('compile/data/nullfilter', function() {
       encoding: {
         y: {field: 'qq', type: "quantitative"},
         x: {field: 'tt', type: "temporal"},
-        color: {field: 'oo', type: "ordinal"}
+        color: {field: 'oo', type: "ordinal"},
+        shape: {field: 'nn', type: "nominal"}
       }
     };
 
     it('should add filterNull for Q and T by default', function () {
-      const model = parseUnitModel(spec);
+      const model = parseUnitModelWithScale(spec);
       assert.deepEqual<Dict<FieldDef<string>>>(parse(model).filteredFields, {
         qq: {field: 'qq', type: "quantitative"},
-        tt: {field: 'tt', type: "temporal"},
-        oo: null
+        tt: {field: 'tt', type: "temporal"}
       });
     });
 
-    it('should add filterNull for O when specified', function () {
-      const model = parseUnitModel(mergeDeep(spec, {
+    it('should add filterNull for Q and T when filterInvalid is specified true.', function () {
+      const model = parseUnitModelWithScale(mergeDeep(spec, {
         config: {
           filterInvalid: true
         }
       }));
       assert.deepEqual<Dict<FieldDef<string>>>(parse(model).filteredFields, {
         qq: {field: 'qq', type: "quantitative"},
-        tt: {field: 'tt', type: "temporal"},
-        oo: {field: 'oo', type: "ordinal"}
+        tt: {field: 'tt', type: "temporal"}
       });
     });
 
     it('should add no null filter if filterInvalid is false', function () {
-      const model = parseUnitModel(mergeDeep(spec, {
+      const model = parseUnitModelWithScale(mergeDeep(spec, {
         config: {
           filterInvalid: false
         }
       }));
-      assert.deepEqual(parse(model).filteredFields, {
-        qq: null,
-        tt: null,
-        oo: null
-      });
+      assert.deepEqual(parse(model), null);
     });
 
     it ('should add no null filter for count field', () => {
-      const model = parseUnitModel({
+      const model = parseUnitModelWithScale({
         mark: "point",
         encoding: {
           y: {aggregate: 'count', field: '*', type: "quantitative"}

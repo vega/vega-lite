@@ -1701,7 +1701,7 @@
           "description": "Facet Config "
         },
         "filterInvalid": {
-          "description": "Whether to filter invalid values (`null` and `NaN`) from the data.\n- By default (`undefined`), only quantitative and temporal fields are filtered.\n- If set to `true`, all data items with null values are filtered.\n- If `false`, all data items are included. In this case, null values will be interpreted as zeroes.",
+          "description": "Whether to filter invalid values (`null` and `NaN`) from the data.\n- If set to `true` (default), all data items with null values are filtered.\n- If `false`, all data items are included. In this case, invalid values will be interpreted as zeroes.",
           "type": "boolean"
         },
         "legend": {
@@ -5686,7 +5686,7 @@
           "description": "Facet Config "
         },
         "filterInvalid": {
-          "description": "Whether to filter invalid values (`null` and `NaN`) from the data.\n- By default (`undefined`), only quantitative and temporal fields are filtered.\n- If set to `true`, all data items with null values are filtered.\n- If `false`, all data items are included. In this case, null values will be interpreted as zeroes.",
+          "description": "Whether to filter invalid values (`null` and `NaN`) from the data.\n- If set to `true` (default), all data items with null values are filtered.\n- If `false`, all data items are included. In this case, invalid values will be interpreted as zeroes.",
           "type": "boolean"
         },
         "numberFormat": {

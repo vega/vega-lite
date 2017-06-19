@@ -23,7 +23,7 @@
             "transform": [
                 {
                     "type": "filter",
-                    "expr": "datum[\"date\"] !== null && !isNaN(datum[\"date\"]) && datum[\"temp_max\"] !== null && !isNaN(datum[\"temp_max\"])"
+                    "expr": "datum[\"date\"] !== null && !isNaN(datum[\"date\"])"
                 },
                 {
                     "type": "formula",

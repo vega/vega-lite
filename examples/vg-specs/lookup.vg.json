@@ -42,10 +42,6 @@
                     "as": "age"
                 },
                 {
-                    "type": "filter",
-                    "expr": "datum[\"age\"] !== null && !isNaN(datum[\"age\"])"
-                },
-                {
                     "type": "aggregate",
                     "groupby": [
                         "group"

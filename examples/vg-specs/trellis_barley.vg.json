@@ -12,13 +12,7 @@
                 "parse": {
                     "yield": "number"
                 }
-            },
-            "transform": [
-                {
-                    "type": "filter",
-                    "expr": "datum[\"yield\"] !== null && !isNaN(datum[\"yield\"])"
-                }
-            ]
+            }
         },
         {
             "name": "trellis_barley_row",

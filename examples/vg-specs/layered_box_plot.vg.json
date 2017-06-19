@@ -63,7 +63,7 @@
                 },
                 {
                     "type": "filter",
-                    "expr": "datum[\"people_min\"] !== null && !isNaN(datum[\"people_min\"]) && datum[\"people_q1\"] !== null && !isNaN(datum[\"people_q1\"])"
+                    "expr": "datum[\"people_min\"] !== null && !isNaN(datum[\"people_min\"])"
                 }
             ]
         },
@@ -83,7 +83,7 @@
                 },
                 {
                     "type": "filter",
-                    "expr": "datum[\"people_q3\"] !== null && !isNaN(datum[\"people_q3\"]) && datum[\"people_max\"] !== null && !isNaN(datum[\"people_max\"])"
+                    "expr": "datum[\"people_q3\"] !== null && !isNaN(datum[\"people_q3\"])"
                 }
             ]
         },
@@ -103,7 +103,7 @@
                 },
                 {
                     "type": "filter",
-                    "expr": "datum[\"people_q1\"] !== null && !isNaN(datum[\"people_q1\"]) && datum[\"people_q3\"] !== null && !isNaN(datum[\"people_q3\"])"
+                    "expr": "datum[\"people_q1\"] !== null && !isNaN(datum[\"people_q1\"])"
                 }
             ]
         },
