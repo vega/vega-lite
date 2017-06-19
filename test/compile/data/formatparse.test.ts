@@ -6,10 +6,6 @@ import {Model, ModelWithField} from '../../../src/compile/model';
 import * as log from '../../../src/log';
 import {parseFacetModel, parseUnitModel} from '../../util';
 
-function parse(model: ModelWithField) {
-  return ParseNode.make(model).assembleFormatParse();
-}
-
 describe('compile/data/formatparse', () => {
   describe('parseUnit', () => {
     it('should return a correct parse for encoding mapping', () => {
@@ -24,7 +20,7 @@ describe('compile/data/formatparse', () => {
         }
       });
 
-      assert.deepEqual(parse(model), {
+      assert.deepEqual(ParseNode.make(model).parse, {
         a: 'number',
         b: 'date'
       });
@@ -42,7 +38,7 @@ describe('compile/data/formatparse', () => {
         }
       });
 
-      assert.deepEqual(parse(model), {
+      assert.deepEqual(ParseNode.make(model).parse, {
         a: 'number',
         b: 'date',
         c: 'number',
@@ -62,10 +58,23 @@ describe('compile/data/formatparse', () => {
         }
       });
 
-      assert.deepEqual(parse(model), {
+      assert.deepEqual(ParseNode.make(model).parse, {
         'a': 'date',
         'b': 'number'
       });
+    });
+
+    it('should not parse fields with aggregate=missing/valid/distinct', function() {
+      const model = parseUnitModel({
+        mark: "point",
+        encoding: {
+          x: {aggregate: 'missing', field: 'b', type: "quantitative"},
+          y: {aggregate: 'valid', field: 'b', type: "quantitative"},
+          color: {aggregate: 'distinct', field: 'b', type: "quantitative"}
+        }
+      });
+
+      assert.deepEqual(ParseNode.make(model), null);
     });
 
     it('should not parse the same field twice', function() {
@@ -90,7 +99,7 @@ describe('compile/data/formatparse', () => {
         }
       });
 
-      assert.deepEqual(parse(model), {
+      assert.deepEqual(ParseNode.make(model).parse, {
         'a': 'number'
       });
       model.parseScale();
@@ -103,7 +112,7 @@ describe('compile/data/formatparse', () => {
 
       // set the ancestor parse to see whether fields from it are not parsed
       model.child.component.data.ancestorParse = {a: 'number'};
-      assert.deepEqual(parse(model.child as ModelWithField), {
+      assert.deepEqual(ParseNode.make(model.child as ModelWithField).parse, {
         'b': 'date'
       });
     });

@@ -1,3 +1,4 @@
+import {isCountingAggregateOp} from '../../aggregate';
 import {FieldDef} from '../../fielddef';
 import {QUANTITATIVE, TEMPORAL} from '../../type';
 import {contains, Dict, differ, differArray, duplicate, extend, hash, keys, stringValue} from '../../util';
@@ -68,7 +69,7 @@ export class NullFilterNode extends DataFlowNode {
       const fieldDef = this._filteredFields[field];
       if (fieldDef !== null) {
         _filters.push(`datum[${stringValue(fieldDef.field)}] !== null`);
-        if (contains([QUANTITATIVE, TEMPORAL], fieldDef.type)) {
+        if (contains([QUANTITATIVE, TEMPORAL], fieldDef.type) && !isCountingAggregateOp(fieldDef.aggregate)) {
           // TODO(https://github.com/vega/vega-lite/issues/1436):
           // We can be even smarter and add NaN filter for N,O that are numbers
           // based on the `parse` property once we have it.
