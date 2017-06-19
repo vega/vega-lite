@@ -95,7 +95,7 @@ function parseNonUnitScaleCore(model: Model) {
           if (scaleCompatible(scaleType.value, childScaleType.value)) {
             // merge scale component if type are compatible
             scaleTypeWithExplicitIndex[channel] = mergeValuesWithExplicit(
-              scaleType, childScaleType,
+              scaleType, childScaleType, 'type',
               (st1: ScaleType, st2: ScaleType) => (scaleTypePrecedence(st1) - scaleTypePrecedence(st2))
             );
           } else {

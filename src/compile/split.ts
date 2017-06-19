@@ -1,3 +1,7 @@
+import * as log from '../log';
+import {Scale} from '../scale';
+
+
 /**
  * Generic classs for storing properties that are explicitly specified and implicitly determined by the compiler.
  */
@@ -102,6 +106,7 @@ export function makeImplicit<T>(value: T): Explicit<T> {
 
 export function mergeValuesWithExplicit<T>(
     v1: Explicit<T>, v2: Explicit<T>,
+    property: keyof Scale,
     compare: (v1: T, v2: T) => number = () => 0
   ) {
   if (v1 === undefined || v1.value === undefined) {
@@ -121,7 +126,9 @@ export function mergeValuesWithExplicit<T>(
     } else if (diff < 0) {
       return v2;
     } else {
-      // FIXME more warning
+      if (v1.explicit && v2.explicit) {
+        log.warn(log.message.mergeConflictingScaleProperty(property, v1.value, v2.value));
+      }
       // If equal score, prefer v1.
       return v1;
     }

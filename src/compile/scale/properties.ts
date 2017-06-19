@@ -102,6 +102,7 @@ export function parseNonUnitScaleProperty(model: Model, property: keyof (Scale |
         // TODO: precedence rule
         valueWithExplicit = mergeValuesWithExplicit(
           valueWithExplicit, childValueWithExplicit,
+          property,
           (v1, v2) => {
             switch (property) {
               case 'range':
