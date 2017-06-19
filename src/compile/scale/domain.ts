@@ -89,7 +89,8 @@ function parseNonUnitScaleDomain(model: Model) {
       domains.forEach((domain) => {
         // Replace the scale domain with data output from a cloned subtree after the facet.
         if (isDataRefDomain(domain)) {
-          domain.data = FACET_SCALE_PREFIX + model.getName(domain.data);
+          // use data from cloned subtree (which is the same as data but with a prefix added once)
+          domain.data = FACET_SCALE_PREFIX + domain.data.replace(FACET_SCALE_PREFIX, '');
         }
       });
     }

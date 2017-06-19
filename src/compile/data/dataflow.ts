@@ -109,8 +109,10 @@ export class OutputNode extends DataFlowNode {
     const cloneObj = new (<any>this.constructor);
     cloneObj.debugName = 'clone_' + this.debugName;
     cloneObj._source = this._source;
+    cloneObj._name = 'clone_' + this._name;
     cloneObj.type = this.type;
     cloneObj.refCounts = this.refCounts;
+    cloneObj.refCounts[cloneObj._name] = 0;
     return cloneObj;
   }
 
