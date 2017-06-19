@@ -174,6 +174,9 @@
     {
       "name": "layer_precipitation_mean",
       "title": "Mean overlay over precipitation chart"
+    },{
+      "name": "layer_text_heatmap",
+      "title": "Layering text over heatmap"
     }
   ],
   "Interactive": [

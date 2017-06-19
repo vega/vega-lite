@@ -100,7 +100,20 @@ export function parseNonUnitScaleProperty(model: Model, property: keyof (Scale |
       if (childComponent) {
         const childValueWithExplicit = childComponent.getWithExplicit(property);
         // TODO: precedence rule
-        valueWithExplicit = mergeValuesWithExplicit(valueWithExplicit, childValueWithExplicit);
+        valueWithExplicit = mergeValuesWithExplicit(
+          valueWithExplicit, childValueWithExplicit,
+          (v1, v2) => {
+            switch (property) {
+              case 'range':
+                // For range step, prefer larger step
+                if (v1.step && v2.step) {
+                  return v1.step - v2.step;
+                }
+                return 0;
+            }
+            return 0;
+          }
+        );
       }
     }
     localScaleComponents[channel].setWithExplicit(property, valueWithExplicit);
