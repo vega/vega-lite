@@ -1,27 +1,14 @@
-import {Channel, COLUMN, NonspatialScaleChannel, ROW, ScaleChannel} from '../channel';
+import {Channel, COLUMN, ROW} from '../channel';
 import {Config} from '../config';
 import {reduce} from '../encoding';
 import {Facet} from '../facet';
 import {FieldDef, normalize, title as fieldDefTitle} from '../fielddef';
 import * as log from '../log';
-import {FILL_STROKE_CONFIG} from '../mark';
-import {ResolveMapping} from '../resolve';
-import {Scale} from '../scale';
 import {FacetSpec} from '../spec';
-import {contains, Dict, keys, stringValue} from '../util';
-import {VgAxis} from '../vega.schema';
-import {VgDomain, VgMarkGroup, VgScale, VgSignal} from '../vega.schema';
-import {
-  isDataRefDomain,
-  isDataRefUnionedDomain,
-  isFieldRefUnionDomain,
-  VgData,
-  VgDataRef,
-  VgEncodeEntry,
-  VgLayout
-} from '../vega.schema';
-import {applyConfig, buildModel, formatSignalRef} from './common';
-import {assembleData, assembleFacetData, FACET_SCALE_PREFIX} from './data/assemble';
+import {contains, stringValue} from '../util';
+import {VgAxis, VgData, VgLayout, VgMarkGroup, VgSignal} from '../vega.schema';
+import {buildModel} from './common';
+import {assembleData, assembleFacetData} from './data/assemble';
 import {parseData} from './data/parse';
 import {getHeaderType, HeaderChannel, HeaderComponent} from './layout/header';
 import {parseChildrenLayoutSize} from './layout/parse';
@@ -31,7 +18,6 @@ import {Model, ModelWithField} from './model';
 import {RepeaterValue, replaceRepeaterInFacet} from './repeat';
 import {parseGuideResolve} from './resolve';
 import {assembleScalesForModel} from './scale/assemble';
-import {ScaleComponent, ScaleComponentIndex} from './scale/component';
 
 
 export class FacetModel extends ModelWithField {
