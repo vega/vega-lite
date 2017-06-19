@@ -127,6 +127,11 @@ export namespace message {
   export function invalidFieldType(type: Type) {
     return `Invalid field type "${type}"`;
   }
+
+  export function invalidFieldTypeForCountAggregate(type: Type, aggregate: string) {
+    return `Invalid field type "${type}" for aggregate: "${aggregate}", using "quantitative" instead.`;
+  }
+
   export function invalidAggregate(aggregate: AggregateOp | string) {
     return `Invalid aggregation operator "${aggregate}"`;
   }

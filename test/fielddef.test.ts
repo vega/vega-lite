@@ -1,8 +1,10 @@
 import {assert} from 'chai';
 
+import {COUNTING_OPS} from '../src/aggregate';
 import {Channel} from '../src/channel';
 import {channelCompatibility, ChannelDef, defaultType, FieldDef, normalize, title} from '../src/fielddef';
 import * as log from '../src/log';
+import {LocalLogger} from '../src/log';
 import {TimeUnit} from '../src/timeunit';
 import {QUANTITATIVE, TEMPORAL} from '../src/type';
 
@@ -34,6 +36,15 @@ describe('fieldDef', () => {
       const fieldDef: FieldDef<string> = {field: 'a', type: 'q' as any};
       assert.deepEqual<ChannelDef<string>>(normalize(fieldDef, 'x'), {field: 'a', type: 'quantitative'});
     });
+
+    it('should replace other type with quantitative for a field with counting aggregate.', log.wrap((localLogger) => {
+      for (const aggregate of COUNTING_OPS) {
+        const fieldDef: FieldDef<string> = {aggregate, field: 'a', type: 'nominal'};
+        assert.deepEqual<ChannelDef<string>>(normalize(fieldDef, 'x'), {aggregate, field: 'a', type: 'quantitative'});
+      }
+      assert.equal(localLogger.warns.length, 4);
+    }));
+
 
     it('should return fieldDef with default type and throw warning if type is missing.', log.wrap((localLogger) => {
       const fieldDef = {field: 'a'} as FieldDef<string>;

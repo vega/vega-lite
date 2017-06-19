@@ -1,6 +1,6 @@
 // utility for a field definition object
 
-import {AGGREGATE_OP_INDEX, AggregateOp} from './aggregate';
+import {AGGREGATE_OP_INDEX, AggregateOp, isCountingAggregateOp} from './aggregate';
 import {Axis} from './axis';
 import {autoMaxBins, Bin, binToString} from './bin';
 import {Channel, rangeType} from './channel';
@@ -360,6 +360,13 @@ export function normalizeFieldDef(fieldDef: FieldDef<string>, channel: Channel) 
       fieldDef = {
         ...fieldDef,
         type: fullType
+      };
+    }
+    if (isCountingAggregateOp(fieldDef.aggregate) && fieldDef.type !== 'quantitative') {
+      log.warn(log.message.invalidFieldTypeForCountAggregate(fieldDef.type, fieldDef.aggregate));
+      fieldDef = {
+        ...fieldDef,
+        type: 'quantitative'
       };
     }
   } else {

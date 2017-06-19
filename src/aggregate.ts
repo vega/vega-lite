@@ -1,4 +1,4 @@
-import {toSet} from './util';
+import {contains, toSet} from './util';
 
 
 export type AggregateOp = 'argmax' | 'argmin' | 'average' | 'count'
@@ -32,6 +32,12 @@ export const AGGREGATE_OPS: AggregateOp[] = [
 ];
 
 export const AGGREGATE_OP_INDEX = toSet(AGGREGATE_OPS);
+
+export const COUNTING_OPS: AggregateOp[] = ['count', 'valid', 'missing', 'distinct'];
+
+export function isCountingAggregateOp(aggregate: string): boolean {
+  return aggregate && contains(COUNTING_OPS, aggregate);
+}
 
 /** Additive-based aggregation operations.  These can be applied to stack. */
 export const SUM_OPS: AggregateOp[] = [
