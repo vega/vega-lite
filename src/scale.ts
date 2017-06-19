@@ -46,6 +46,62 @@ export const SCALE_TYPES: ScaleType[] = [
   'ordinal', 'bin-ordinal', 'point', 'band',
 ];
 
+/**
+ * Index for scale categories -- only scale of the same categories can be merged together.
+ * Current implementation is trying to be conservative and avoid merging scale type that might not work together
+ */
+const SCALE_CATEGORY_INDEX: {[k in ScaleType]: ScaleType | 'numeric' | 'ordinal-position'} = {
+  linear: 'numeric',
+  log: 'numeric',
+  pow: 'numeric',
+  sqrt: 'numeric',
+  'bin-linear': 'bin-linear', // TODO: should bin-linear support merging with other
+  time: 'time',
+  utc: 'time',
+  sequential: 'sequential',
+  ordinal: 'ordinal',
+  'bin-ordinal': 'bin-ordinal', // TODO: should bin-ordinal support merging with other
+  point: 'ordinal-position',
+  band: 'ordinal-position'
+};
+
+/**
+ * Whether the two given scale types can be merged together.
+ */
+export function scaleCompatible(scaleType1: ScaleType, scaleType2: ScaleType) {
+  return SCALE_CATEGORY_INDEX[scaleType1] === SCALE_CATEGORY_INDEX[scaleType2];
+}
+
+
+/**
+ * Index for scale predecence -- high score = higher priority for merging.
+ */
+const SCALE_PRECEDENCE_INDEX: {[k in ScaleType]: number} = {
+  // numeric
+  linear: 0,
+  log: 1,
+  pow: 1,
+  sqrt: 1,
+  // time
+  time: 0,
+  utc: 0,
+  // ordinal-position
+  point: 0,
+  band: 1, // band has higher precedence as it is better for interaction
+  // non grouped types
+  'bin-linear': 0,
+  sequential: 0,
+  ordinal: 0,
+  'bin-ordinal': 0,
+};
+
+/**
+ * Return scale categories -- only scale of the same categories can be merged together.
+ */
+export function scaleTypePrecedence(scaleType: ScaleType): number {
+  return SCALE_PRECEDENCE_INDEX[scaleType];
+}
+
 export const CONTINUOUS_TO_CONTINUOUS_SCALES: ScaleType[] = ['linear', 'bin-linear', 'log', 'pow', 'sqrt', 'time', 'utc'];
 const CONTINUOUS_TO_CONTINUOUS_INDEX = toSet(CONTINUOUS_TO_CONTINUOUS_SCALES);
 
@@ -457,27 +513,13 @@ export function channelScalePropertyIncompatability(channel: Channel, propName: 
       if (channel === 'x' || channel === 'y') {
         return log.message.CANNOT_USE_RANGE_WITH_POSITION;
       }
-      if (channel === 'row' || channel === 'column') {
-        return log.message.cannotUseRangePropertyWithFacet('range');
-      }
       return undefined; // GOOD!
     // band / point
     case 'rangeStep':
-      if (channel === 'row' || channel === 'column') {
-        return log.message.cannotUseRangePropertyWithFacet('rangeStep');
-      }
       return undefined; // GOOD!
     case 'padding':
     case 'paddingInner':
     case 'paddingOuter':
-      if (channel === 'row' || channel === 'column') {
-        /*
-         * We do not use d3 scale's padding for row/column because padding there
-         * is a ratio ([0, 1]) and it causes the padding to be decimals.
-         * Therefore, we manually calculate "spacing" in the layout by ourselves.
-         */
-        return log.message.CANNOT_USE_PADDING_WITH_FACET;
-      }
       return undefined; // GOOD!
     case 'interpolate':
     case 'scheme':

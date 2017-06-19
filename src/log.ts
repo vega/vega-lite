@@ -196,12 +196,6 @@ export namespace message {
     return `Cannot apply size to non-oriented mark ${mark}.`;
   }
 
-  export const CANNOT_USE_PADDING_WITH_FACET = 'Cannot use padding with facet\'s scale.  Please use spacing instead.';
-
-  export function cannotUseRangePropertyWithFacet(propName: string) {
-    return `Cannot use custom ${propName} with row or column channel. Please use width, height, or spacing instead.`;
-  }
-
   export function rangeStepDropped(channel: Channel) {
     return `rangeStep for ${channel} is dropped as top-level ${
       channel === 'x' ? 'width' : 'height'} is provided.`;

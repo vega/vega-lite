@@ -3,10 +3,10 @@
 import {assert} from 'chai';
 import multi from '../../../src/compile/selection/multi';
 import * as selection from '../../../src/compile/selection/selection';
-import {parseUnitModel} from '../../util';
+import {parseUnitModelWithScale} from '../../util';
 
 describe('Multi Selection', function() {
-  const model = parseUnitModel({
+  const model = parseUnitModelWithScale({
     "mark": "circle",
     "encoding": {
       "x": {"field": "Horsepower","type": "quantitative"},

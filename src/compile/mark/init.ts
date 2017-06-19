@@ -9,13 +9,11 @@ import {StackProperties} from '../../stack';
 import {TEMPORAL} from '../../type';
 import {contains, Dict} from '../../util';
 import {getMarkConfig} from '../common';
-import {ScaleIndex} from '../scale/component';
+import {ScaleComponentIndex, ScaleIndex} from '../scale/component';
 import {Orient} from './../../vega.schema';
 
 
-export function initMarkDef(mark: Mark | MarkDef, encoding: Encoding<string>, scales: ScaleIndex, config: Config): MarkDef {
-  const markDef = isMarkDef(mark) ? {...mark} : {type: mark};
-
+export function normalizeMarkDef(markDef: MarkDef, encoding: Encoding<string>, scales: ScaleComponentIndex, config: Config) {
   const specifiedOrient = markDef.orient || getMarkConfig('orient', markDef.type, config);
   markDef.orient = orient(markDef.type, encoding, scales, specifiedOrient);
   if (specifiedOrient !== undefined && specifiedOrient !== markDef.orient) {
@@ -26,8 +24,6 @@ export function initMarkDef(mark: Mark | MarkDef, encoding: Encoding<string>, sc
   if (specifiedFilled === undefined) {
     markDef.filled = filled(markDef.type, config);
   }
-
-  return markDef;
 }
 
 /**
@@ -61,7 +57,7 @@ function filled(mark: Mark, config: Config) {
   return filledConfig !== undefined ? filledConfig : mark !== POINT && mark !== LINE && mark !== RULE;
 }
 
-function orient(mark: Mark, encoding: Encoding<string>, scales: ScaleIndex, specifiedOrient: Orient): Orient {
+function orient(mark: Mark, encoding: Encoding<string>, scales: ScaleComponentIndex, specifiedOrient: Orient): Orient {
   switch (mark) {
     case POINT:
     case CIRCLE:
@@ -77,8 +73,8 @@ function orient(mark: Mark, encoding: Encoding<string>, scales: ScaleIndex, spec
 
   switch (mark) {
     case TICK:
-      const xScaleType = scales['x'] ? scales['x'].get('type') : null;
-      const yScaleType = scales['y'] ? scales['y'].get('type') : null;
+      const xScaleType = scales.x ? scales.x.get('type') : null;
+      const yScaleType = scales.y ? scales.y.get('type') : null;
 
       // Tick is opposite to bar, line, area and never have ranged mark.
       if (!hasDiscreteDomain(xScaleType) && (

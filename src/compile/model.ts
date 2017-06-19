@@ -1,10 +1,11 @@
 import {Axis} from '../axis';
-import {Channel, COLUMN, isChannel, NonspatialScaleChannel, ScaleChannel, SingleDefChannel, X} from '../channel';
+import {Channel, COLUMN, isChannel, isScaleChannel, NonspatialScaleChannel, ScaleChannel, SingleDefChannel, X} from '../channel';
 import {CellConfig, Config} from '../config';
 import {Data, DataSourceType, MAIN, RAW} from '../data';
 import {forEach, reduce} from '../encoding';
 import {ChannelDef, field, FieldDef, FieldRefOption, getFieldDef, isFieldDef, isRepeatRef} from '../fielddef';
 import {Legend} from '../legend';
+import {ResolveMapping} from '../resolve';
 import {hasDiscreteDomain, Scale} from '../scale';
 import {SortField, SortOrder} from '../sort';
 import {BaseSpec} from '../spec';
@@ -14,11 +15,15 @@ import {Dict, extend, vals, varName} from '../util';
 import {VgAxis, VgData, VgEncodeEntry, VgLayout, VgLegend, VgMarkGroup, VgScale, VgSignal, VgSignalRef, VgValueRef} from '../vega.schema';
 import {AxisComponent, AxisComponentIndex} from './axis/component';
 import {DataComponent} from './data/index';
+import {LayoutSizeComponent} from './layout/component';
 import {getHeaderGroup, getTitleGroup, HEADER_CHANNELS, HEADER_TYPES, LayoutHeaderComponent} from './layout/header';
+import {parseLayoutSize} from './layout/parse';
 import {LegendComponentIndex} from './legend/component';
+import {parseMarkDef} from './mark/mark';
 import {RepeaterValue} from './repeat';
 import {assembleScale} from './scale/assemble';
 import {ScaleComponent, ScaleComponentIndex} from './scale/component';
+import {NON_TYPE_DOMAIN_RANGE_VEGA_SCALE_PROPERTIES, parseScale} from './scale/parse';
 import {SelectionComponent} from './selection/selection';
 import {Split} from './split';
 import {UnitModel} from './unit';
@@ -39,6 +44,8 @@ export interface Component {
 
   /** Dictionary mapping channel to VgLegend definition */
   legends: LegendComponentIndex;
+
+  layoutSize: LayoutSizeComponent;
 
   layoutHeaders: {
     row?: LayoutHeaderComponent,
@@ -95,13 +102,15 @@ export abstract class Model {
   /** Name map for size, which can be renamed by a model's parent. */
   protected sizeNameMap: NameMapInterface;
 
+
   public readonly config: Config;
 
-  public component: Component;
+  public readonly component: Component;
 
   public abstract readonly children: Model[] = [];
 
-  constructor(spec: BaseSpec, parent: Model, parentGivenName: string, config: Config) {
+  constructor(spec: BaseSpec, parent: Model, parentGivenName: string, config: Config,
+    public readonly resolve: ResolveMapping) {
     this.parent = parent;
     this.config = config;
 
@@ -124,18 +133,22 @@ export abstract class Model {
         outputNodeRefCounts: parent ? parent.component.data.outputNodeRefCounts : {},
         ancestorParse: parent ? {...parent.component.data.ancestorParse} : {}
       },
-      mark: null, scales: {}, axes: {x: null, y: null},
-      layoutHeaders:{row: {}, column: {}}, legends: null, selection: null
+      mark: null, scales: null, axes: {x: null, y: null},
+      layoutSize: null,
+      layoutHeaders:{row: {}, column: {}},
+      legends: null, selection: null
     };
   }
 
   public parse() {
     this.parseScale();
-    this.parseData();
+    this.parseMarkDef();
+    this.parseLayoutSize(); // depends on scale
+    this.parseData(); // (pathorder) depends on markDef
     this.parseSelection();
-    this.parseAxisAndHeader(); // depends on scale name
-    this.parseLegend(); // depends on scale name
-    this.parseMark(); // depends on data name and scale name, axisGroup, and children's scale, axis, legend and mark.
+    this.parseAxisAndHeader(); // depends on scale
+    this.parseLegend(); // depends on scale, markDef
+    this.parseMarkGroup(); // depends on data name, scale, size, axisGroup, and children's scale, axis, legend and mark.
   }
 
   public abstract parseData(): void;
@@ -143,9 +156,19 @@ export abstract class Model {
   public abstract parseSelection(): void;
 
 
-  public abstract parseScale(): void;
+  public parseScale() {
+    parseScale(this);
+  }
 
-  public abstract parseMark(): void;
+  public parseLayoutSize() {
+    parseLayoutSize(this);
+  }
+
+  public parseMarkDef() {
+    parseMarkDef(this);
+  }
+
+  public abstract parseMarkGroup(): void;
 
   public abstract parseAxisAndHeader(): void;
 
@@ -314,11 +337,6 @@ export abstract class Model {
     this.scaleNameMap.rename(oldName, newName);
   }
 
-  // FIXME: remove this, but currently the scaleName() method below depends on this.
-  public scale(channel: Channel): Split<Scale> {
-    return null;
-  }
-
   /**
    * @return scale name for a given channel after the scale has been parsed and named.
    */
@@ -331,10 +349,10 @@ export abstract class Model {
     }
 
     // If there is a scale for the channel, it should either
-    // be in the _scale mapping or exist in the name map
+    // be in the scale component or exist in the name map
     if (
-        // in the scale map (the scale is not merged by its parent)
-        (this.scale && isChannel(originalScaleName) && this.scale(originalScaleName)) ||
+        // If there is a scale for the channel, there should be a local scale component for it
+        isChannel(originalScaleName) && isScaleChannel(originalScaleName) && this.component.scales[originalScaleName] ||
         // in the scale name map (the the scale get merged by its parent)
         this.scaleNameMap.has(this.getName(originalScaleName))
       ) {
@@ -366,7 +384,16 @@ export abstract class Model {
    * Traverse a model's hierarchy to get the scale component for a particular channel.
    */
   public getScaleComponent(channel: ScaleChannel): ScaleComponent {
-    return this.component.scales[channel] || (this.parent ? this.parent.getScaleComponent(channel) : undefined);
+    /* istanbul ignore next: This is warning for debugging test */
+    if (!this.component.scales) {
+      throw new Error('getScaleComponent cannot be called before parseScale().  Make sure you have called parseScale or use parseUnitModelWithScale().');
+    }
+
+    const localScaleComponent = this.component.scales[channel];
+    if (localScaleComponent && !localScaleComponent.merged) {
+      return localScaleComponent;
+    }
+    return  (this.parent ? this.parent.getScaleComponent(channel) : undefined);
   }
 
   /**
@@ -384,6 +411,7 @@ export abstract class ModelWithField extends Model {
   /** Get "field" reference for vega */
   public field(channel: SingleDefChannel, opt: FieldRefOption = {}) {
     const fieldDef = this.fieldDef(channel);
+
 
     if (fieldDef.bin) { // bin has default suffix that depends on scaleType
       opt = extend({

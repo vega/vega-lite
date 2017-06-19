@@ -4,7 +4,7 @@ import {assert} from 'chai';
 import {OrderNode} from '../../../src/compile/data/pathorder';
 import {UnitModel} from '../../../src/compile/unit';
 import {VgCollectTransform} from '../../../src/vega.schema';
-import {parseUnitModel} from '../../util';
+import {parseUnitModel, parseUnitModelWithScale} from '../../util';
 
 function assemble(model: UnitModel) {
   return OrderNode.make(model).assemble();
@@ -32,7 +32,7 @@ describe('compile/data/pathorder', function() {
     });
 
     it('should order by x by default if x is the dimension', function () {
-      const model = parseUnitModel({
+      const model = parseUnitModelWithScale({
         "data": {"url": "data/movies.json"},
         "mark": "line",
         "encoding": {

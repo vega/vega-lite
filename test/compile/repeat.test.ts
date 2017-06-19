@@ -99,8 +99,8 @@ describe('Repeat', function() {
       model.parseScale();
       const colorScale = model.component.scales['color'];
 
-      assert(isDataRefUnionedDomain(colorScale.implicit.domain));
-      assert.deepEqual((colorScale.implicit.domain as DataRefUnionDomain).fields.length, 4);
+      assert(isDataRefUnionedDomain(colorScale.get('domain')));
+      assert.deepEqual((colorScale.get('domain') as DataRefUnionDomain).fields.length, 4);
 
       model.parseLegend();
 

@@ -186,7 +186,7 @@
         },
         {
             "name": "layer_0_layer_0_height",
-            "update": "bandspace(domain('y').length, 1, 0.5) * 21"
+            "update": "bandspace(domain('y').length, 0.1, 0.05) * 21"
         },
         {
             "name": "layer_0_layer_1_width",
@@ -194,7 +194,7 @@
         },
         {
             "name": "layer_0_layer_1_height",
-            "update": "bandspace(domain('y').length, 1, 0.5) * 21"
+            "update": "bandspace(domain('y').length, 0.1, 0.05) * 21"
         },
         {
             "name": "layer_0_layer_2_width",
@@ -202,7 +202,7 @@
         },
         {
             "name": "layer_0_layer_2_height",
-            "update": "bandspace(domain('y').length, 1, 0.5) * 21"
+            "update": "bandspace(domain('y').length, 0.1, 0.05) * 21"
         },
         {
             "name": "layer_0_layer_3_width",
@@ -210,7 +210,7 @@
         },
         {
             "name": "layer_0_layer_3_height",
-            "update": "bandspace(domain('y').length, 1, 0.5) * 21"
+            "update": "bandspace(domain('y').length, 0.1, 0.05) * 21"
         },
         {
             "name": "layer_1_width",
@@ -218,7 +218,7 @@
         },
         {
             "name": "layer_1_height",
-            "update": "bandspace(domain('y').length, 1, 0.5) * 21"
+            "update": "bandspace(domain('y').length, 0.1, 0.05) * 21"
         }
     ],
     "marks": [
@@ -237,7 +237,8 @@
                     },
                     "y": {
                         "scale": "y",
-                        "field": "age"
+                        "field": "age",
+                        "band": 0.5
                     },
                     "x2": {
                         "scale": "x",
@@ -265,7 +266,8 @@
                     },
                     "y": {
                         "scale": "y",
-                        "field": "age"
+                        "field": "age",
+                        "band": 0.5
                     },
                     "x2": {
                         "scale": "x",
@@ -297,7 +299,8 @@
                     },
                     "yc": {
                         "scale": "y",
-                        "field": "age"
+                        "field": "age",
+                        "band": 0.5
                     },
                     "height": {
                         "value": 14
@@ -324,7 +327,8 @@
                     },
                     "yc": {
                         "scale": "y",
-                        "field": "age"
+                        "field": "age",
+                        "band": 0.5
                     },
                     "height": {
                         "value": 14
@@ -354,7 +358,8 @@
                     },
                     "y": {
                         "scale": "y",
-                        "field": "age"
+                        "field": "age",
+                        "band": 0.5
                     },
                     "fill": {
                         "value": "black"
@@ -421,7 +426,7 @@
         },
         {
             "name": "y",
-            "type": "point",
+            "type": "band",
             "domain": {
                 "fields": [
                     {
@@ -451,7 +456,8 @@
                 "step": 21
             },
             "round": true,
-            "padding": 0.5
+            "paddingInner": 0.1,
+            "paddingOuter": 0.05
         }
     ],
     "axes": [

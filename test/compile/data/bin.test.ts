@@ -6,7 +6,7 @@ import {BinNode} from '../../../src/compile/data/bin';
 import {Model, ModelWithField} from '../../../src/compile/model';
 import {BinTransform, Transform} from '../../../src/transform';
 import {VgTransform} from '../../../src/vega.schema';
-import {parseUnitModel} from '../../util';
+import {parseUnitModelWithScale} from '../../util';
 
 function assembleFromEncoding(model: ModelWithField) {
   return BinNode.makeBinFromEncoding(model).assemble();
@@ -18,7 +18,7 @@ function assembleFromTransform(model: Model, t: BinTransform) {
 
 describe('compile/data/bin', function() {
   it('should add bin transform and correctly apply bin with custom extent', function() {
-    const model = parseUnitModel({
+    const model = parseUnitModelWithScale({
       mark: 'point',
       encoding: {
         y: {
@@ -40,7 +40,7 @@ describe('compile/data/bin', function() {
   });
 
   it ('should add bin transform and correctly apply bin for binned field without custom extent', () => {
-    const model = parseUnitModel({
+    const model = parseUnitModelWithScale({
       mark: 'point',
       encoding: {
         y: {
@@ -68,7 +68,7 @@ describe('compile/data/bin', function() {
   });
 
   it('should apply the bin transform only once for a binned field encoded in multiple channels', () => {
-    const model = parseUnitModel({
+    const model = parseUnitModelWithScale({
       data: {url: "data/movies.json"},
       mark: "circle",
       encoding: {
@@ -114,7 +114,7 @@ describe('compile/data/bin', function() {
       field: 'Acceleration',
       as: 'Bin_Transform'
     };
-    const model = parseUnitModel({
+    const model = parseUnitModelWithScale({
     data: {url: "data/movies.json"},
     mark: "circle",
     transform: [t],
@@ -143,7 +143,7 @@ describe('compile/data/bin', function() {
   it('should add bin transform from transform arrat and correctly apply bin with custom extent', function() {
     const t: BinTransform = {bin: {extent: [0, 100], maxbins: 20},
     field: 'Acceleration',as: 'Bin_Transform'};
-    const model = parseUnitModel({
+    const model = parseUnitModelWithScale({
     data: {url: "data/movies.json"},
     mark: "circle",
     transform: [t],

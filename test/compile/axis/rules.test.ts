@@ -4,12 +4,12 @@ import {UnitModel} from '../../../src/compile/unit';
 import {assert} from 'chai';
 import {COLUMN, ROW, X} from '../../../src/channel';
 import * as rules from '../../../src/compile/axis/rules';
-import {parseUnitModel} from '../../util';
+import {parseUnitModelWithScale} from '../../util';
 
 describe('compile/axis', ()=> {
   describe('grid()', function () {
     it('should return specified orient', function () {
-      const grid = rules.grid(parseUnitModel({
+      const grid = rules.grid(parseUnitModelWithScale({
           mark: "point",
           encoding: {
             x: {field: 'a', type: 'quantitative', axis:{grid: false}}
@@ -19,7 +19,7 @@ describe('compile/axis', ()=> {
     });
 
     it('should return true by default', function () {
-      const grid = rules.grid(parseUnitModel({
+      const grid = rules.grid(parseUnitModelWithScale({
           mark: "point",
           encoding: {
             x: {field: 'a', type: 'quantitative'}
@@ -30,7 +30,7 @@ describe('compile/axis', ()=> {
     });
 
     it('should return undefined for non-gridAxis', function () {
-      const grid = rules.grid(parseUnitModel({
+      const grid = rules.grid(parseUnitModelWithScale({
           mark: "point",
           encoding: {
             x: {field: 'a', type: 'quantitative'}

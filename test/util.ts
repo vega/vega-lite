@@ -2,6 +2,7 @@ import {buildModel} from '../src/compile/common';
 import {ConcatModel} from '../src/compile/concat';
 import {FacetModel} from '../src/compile/facet';
 import {LayerModel} from '../src/compile/layer';
+import {parseMarkDef} from '../src/compile/mark/mark';
 import {Model} from '../src/compile/model';
 import {RepeatModel} from '../src/compile/repeat';
 import {UnitModel} from '../src/compile/unit';
@@ -31,12 +32,31 @@ export function parseUnitModelWithScale(spec: TopLevel<UnitSpec>) {
   return model;
 }
 
+export function parseUnitModelWithScaleAndMarkDef(spec: TopLevel<UnitSpec>) {
+  const model = parseUnitModelWithScale(spec);
+  parseMarkDef(model);
+  return model;
+}
+
+export function parseUnitModelWithScaleAndLayoutSize(spec: TopLevel<UnitSpec>) {
+  const model = parseUnitModelWithScale(spec);
+  model.parseLayoutSize();
+  return model;
+}
+
+
 export function parseLayerModel(spec: TopLevel<LayerSpec>) {
   return new LayerModel(spec, null, '', undefined, undefined, initConfig(spec.config));
 }
 
 export function parseFacetModel(spec: TopLevel<FacetSpec>) {
   return new FacetModel(spec, null, '', undefined, initConfig(spec.config));
+}
+
+export function parseFacetModelWithScale(spec: TopLevel<FacetSpec>) {
+  const model = parseFacetModel(spec);
+  model.parseScale();
+  return model;
 }
 
 export function parseRepeatModel(spec: TopLevel<RepeatSpec>) {

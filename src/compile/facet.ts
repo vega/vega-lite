@@ -6,8 +6,10 @@ import {FieldDef, normalize, title as fieldDefTitle} from '../fielddef';
 import * as log from '../log';
 import {FILL_STROKE_CONFIG} from '../mark';
 import {initFacetResolve, ResolveMapping} from '../resolve';
+import {Scale} from '../scale';
 import {FacetSpec} from '../spec';
 import {contains, Dict, keys, stringValue} from '../util';
+import {VgDomain, VgMarkGroup, VgScale, VgSignal} from '../vega.schema';
 import {
   isDataRefDomain,
   isDataRefUnionedDomain,
@@ -17,7 +19,6 @@ import {
   VgEncodeEntry,
   VgLayout
 } from '../vega.schema';
-import {VgMarkGroup, VgScale, VgSignal} from '../vega.schema';
 import {applyConfig, buildModel, formatSignalRef} from './common';
 import {assembleData, assembleFacetData, FACET_SCALE_PREFIX} from './data/assemble';
 import {parseData} from './data/parse';
@@ -26,8 +27,7 @@ import {labels} from './legend/encode';
 import {moveSharedLegendUp} from './legend/parse';
 import {Model, ModelWithField} from './model';
 import {RepeaterValue, replaceRepeaterInFacet} from './repeat';
-import {ScaleComponentIndex} from './scale/component';
-import {moveSharedScaleUp} from './scale/parse';
+import {ScaleComponent, ScaleComponentIndex} from './scale/component';
 
 
 export class FacetModel extends ModelWithField {
@@ -37,12 +37,12 @@ export class FacetModel extends ModelWithField {
 
   public readonly children: Model[];
 
-  private readonly resolve: ResolveMapping;
-
   constructor(spec: FacetSpec, parent: Model, parentGivenName: string, repeater: RepeaterValue, config: Config) {
-    super(spec, parent, parentGivenName, config);
+    super(
+      spec, parent, parentGivenName, config,
+      initFacetResolve(spec.resolve || {})
+    );
 
-    this.resolve = initFacetResolve(spec.resolve || {});
 
     this.child = buildModel(spec.spec, this, this.getName('child'), undefined, repeater, config);
     this.children = [this.child];
@@ -97,37 +97,8 @@ export class FacetModel extends ModelWithField {
     this.component.selection = this.child.component.selection;
   }
 
-  public parseScale() {
-    const child = this.child;
-    const model = this;
-
-    child.parseScale();
-
-    const scaleComponent: ScaleComponentIndex = this.component.scales = {};
-
-    keys(child.component.scales).forEach((channel: ScaleChannel) => {
-      if (this.resolve[channel].scale === 'shared') {
-        const scale = moveSharedScaleUp(this, scaleComponent, child, channel);
-
-        // Replace the scale domain with data output from a cloned subtree after the facet.
-        const domain = scale.get('domain');
-
-        if (isDataRefDomain(domain) || isFieldRefUnionDomain(domain)) {
-          domain.data = FACET_SCALE_PREFIX + this.getName(domain.data);
-        } else if (isDataRefUnionedDomain(domain)) {
-          domain.fields = domain.fields.map((f: VgDataRef) => {
-            return {
-              ...f,
-              data: FACET_SCALE_PREFIX + this.getName(f.data)
-            };
-          });
-        }
-      }
-    });
-  }
-
-  public parseMark() {
-    this.child.parseMark();
+  public parseMarkGroup() {
+    this.child.parseMarkGroup();
 
     // if we facet by two dimensions, we need to add a cross operator to the aggregation
     // so that we create all groups

@@ -1,67 +1,79 @@
-import {Channel, COLOR, COLUMN, OPACITY, ROW, SHAPE, SIZE, X, Y} from '../../channel';
+import {Channel, COLOR, COLUMN, OPACITY, ROW, SCALE_CHANNELS, ScaleChannel, SHAPE, SIZE, X, Y} from '../../channel';
 import {Config} from '../../config';
 import * as log from '../../log';
 import {Mark} from '../../mark';
 import {channelScalePropertyIncompatability, isExtendedScheme, Range, Scale, ScaleConfig, ScaleType, scaleTypeSupportProperty, Scheme} from '../../scale';
 import {Type} from '../../type';
 import * as util from '../../util';
-import {VgRange, VgRangeScheme} from '../../vega.schema';
-import {Split} from '../split';
-import {ScaleComponent} from './component';
+import {isVgRangeStep, VgRange, VgRangeScheme} from '../../vega.schema';
+import {Model} from '../model';
+import {Explicit, makeImplicit, Split} from '../split';
+import {UnitModel} from '../unit';
+import {ScaleComponent, ScaleComponentIndex} from './component';
+import {parseNonUnitScaleProperty} from './rules';
 
 
 export type RangeMixins = {range: Range} | {rangeStep: number} | {scheme: Scheme};
 
-export function parseRange(splitScale: Split<Scale>): {explicit: boolean, range: VgRange} {
-  let explicit;
-
-
-  // rangeStep => range.step
-  let rangeStep;
-  ({explicit, value: rangeStep} = splitScale.getWithType('rangeStep'));
-  if (rangeStep) {
-    return {explicit, range: {step: rangeStep}};
-  }
-
-  // Scheme => range.scheme
-  let scheme;
-  ({explicit, value: scheme} = splitScale.getWithType('scheme'));
-  if (scheme) {
-    if (isExtendedScheme(scheme)) {
-      const r: VgRangeScheme = {scheme: scheme.name};
-      if (scheme.count) {
-        r.count = scheme.count;
-      }
-      if (scheme.extent) {
-        r.extent = scheme.extent;
-      }
-      return {explicit, range: r};
-    } else {
-      return {explicit, range: {scheme}};
-    }
-  }
-
-  let range;
-  ({explicit, value: range} = splitScale.getWithType('range'));
-  return {explicit, range};
-}
-
 export const RANGE_PROPERTIES: (keyof Scale)[] = ['range', 'rangeStep', 'scheme'];
 
-function implicit(mixins: RangeMixins) {
-  return {
-    explicit: false,
-    mixins
-  };
+
+export function parseScaleRange(model: Model) {
+  if (model instanceof UnitModel) {
+    parseUnitScaleRange(model);
+  } else {
+    parseNonUnitScaleProperty(model, 'range');
+  }
+}
+
+function parseUnitScaleRange(model: UnitModel) {
+  const  localScaleComponents: ScaleComponentIndex = model.component.scales;
+
+  // use SCALE_CHANNELS instead of scales[channel] to ensure that x, y come first!
+  SCALE_CHANNELS.forEach((channel: ScaleChannel) => {
+    const localScaleCmpt = localScaleComponents[channel];
+    if (!localScaleCmpt) {
+      return;
+    }
+
+    const specifiedScale = model.specifiedScales[channel];
+    const fieldDef = model.fieldDef(channel);
+
+    const topLevelSize = channel === 'x' ? model.width : channel === 'y' ? model.height : undefined;
+    const xyRangeSteps = getXYRangeStep(model);
+
+    const rangeWithExplicit = parseRangeForChannel(
+      channel, localScaleCmpt.get('type'), fieldDef.type, specifiedScale, model.config,  localScaleCmpt.get('zero'), model.mark(), topLevelSize, xyRangeSteps);
+
+    localScaleCmpt.setWithExplicit('range', rangeWithExplicit);
+  });
+}
+
+function getXYRangeStep(model: UnitModel) {
+  const xyRangeSteps = [];
+
+  const xScale = model.getScaleComponent('x');
+  const xRange = xScale && xScale.get('range');
+  if (xRange && isVgRangeStep(xRange)) {
+    xyRangeSteps.push(xRange.step);
+  }
+
+  const yScale = model.getScaleComponent('y');
+  const yRange = yScale && yScale.get('range');
+  if (yRange && isVgRangeStep(yRange)) {
+    xyRangeSteps.push(yRange.step);
+  }
+
+  return xyRangeSteps;
 }
 
 /**
  * Return mixins that includes one of the range properties (range, rangeStep, scheme).
  */
-export default function rangeMixins(
+export function parseRangeForChannel(
     channel: Channel, scaleType: ScaleType, type: Type, specifiedScale: Scale, config: Config,
     zero: boolean, mark: Mark, topLevelSize: number | undefined, xyRangeSteps: number[]
-  ): {explicit: boolean, mixins: RangeMixins} {
+  ): Explicit<VgRange> {
 
   let specifiedRangeStepIsNull = false;
 
@@ -78,14 +90,14 @@ export default function rangeMixins(
       } else {
         switch (property) {
           case 'range':
-            return implicit({range: specifiedScale[property]});
+            return makeImplicit(specifiedScale[property]);
           case 'scheme':
-            return implicit({scheme: specifiedScale[property]});
+            return makeImplicit(parseScheme(specifiedScale[property]));
           case 'rangeStep':
             if (topLevelSize === undefined) {
-              const stepSize = specifiedScale[property];
-              if (stepSize !== null) {
-                return implicit({rangeStep: stepSize});
+              const rangeStep = specifiedScale[property];
+              if (rangeStep !== null) {
+                return makeImplicit({step: rangeStep});
               } else {
                 specifiedRangeStepIsNull = true;
               }
@@ -99,30 +111,44 @@ export default function rangeMixins(
   }
   return {
     explicit: false,
-    mixins: defaultRangeMixins(channel, scaleType, type, config, zero, mark, topLevelSize, xyRangeSteps, specifiedRangeStepIsNull)
+    value: defaultRange(channel, scaleType, type, config, zero, mark, topLevelSize, xyRangeSteps, specifiedRangeStepIsNull)
   };
 }
 
-function defaultRangeMixins(channel: Channel, scaleType: ScaleType, type: Type, config: Config,
+function parseScheme(scheme: Scheme) {
+  if (isExtendedScheme(scheme)) {
+    const r: VgRangeScheme = {scheme: scheme.name};
+    if (scheme.count) {
+      r.count = scheme.count;
+    }
+    if (scheme.extent) {
+      r.extent = scheme.extent;
+    }
+    return r;
+  }
+  return {scheme: scheme};
+}
+
+export function defaultRange(channel: Channel, scaleType: ScaleType, type: Type, config: Config,
   zero: boolean, mark: Mark, topLevelSize: number | undefined, xyRangeSteps: number[],
-  specifiedRangeStepIsNull: boolean): RangeMixins {
+  specifiedRangeStepIsNull: boolean): VgRange {
   switch (channel) {
     // TODO: revise row/column when facetSpec has top-level width/height
     case ROW:
-      return {range: 'height'};
+      return 'height';
     case COLUMN:
-      return {range: 'width'};
+      return 'width';
     case X:
     case Y:
       if (topLevelSize === undefined) {
-        if (util.contains(['point', 'band'], scaleType) && !specifiedRangeStepIsNull) { // FIXME isDiscrete blah blah
+        if (util.contains(['point', 'band'], scaleType) && !specifiedRangeStepIsNull) {
           if (channel === X && mark === 'text') {
             if (config.scale.textXRangeStep) {
-              return {rangeStep: config.scale.textXRangeStep};
+              return {step: config.scale.textXRangeStep};
             }
           } else {
             if (config.scale.rangeStep) {
-              return {rangeStep: config.scale.rangeStep};
+              return {step: config.scale.rangeStep};
             }
           }
         }
@@ -130,28 +156,13 @@ function defaultRangeMixins(channel: Channel, scaleType: ScaleType, type: Type, 
         // Use default topLevelSize rule/config
         topLevelSize = channel === X ? config.cell.width : config.cell.height;
       }
-      return {range: channel === X ? [0, topLevelSize] : [topLevelSize, 0]};
+      return channel === X ? [0, topLevelSize] : [topLevelSize, 0];
 
     case SIZE:
       // TODO: support custom rangeMin, rangeMax
       const rangeMin = sizeRangeMin(mark, zero, config);
       const rangeMax = sizeRangeMax(mark, xyRangeSteps, config);
-      return {range: [rangeMin, rangeMax]};
-    case SHAPE:
-    case COLOR:
-      return {range: defaultRange(channel, scaleType, type, mark)};
-
-
-    case OPACITY:
-      // TODO: support custom rangeMin, rangeMax
-      return {range: [config.scale.minOpacity, config.scale.maxOpacity]};
-  }
-  /* istanbul ignore next: should never reach here */
-  throw new Error(`Scale range undefined for channel ${channel}`);
-}
-
-function defaultRange(channel: 'shape' | 'color', scaleType: ScaleType, type: Type, mark: Mark) {
-  switch (channel) {
+      return [rangeMin, rangeMax];
     case SHAPE:
       return 'symbol';
     case COLOR:
@@ -160,7 +171,12 @@ function defaultRange(channel: 'shape' | 'color', scaleType: ScaleType, type: Ty
         return type === 'nominal' ? 'category' : 'ordinal';
       }
       return mark === 'rect' ? 'heatmap' : 'ramp';
+    case OPACITY:
+      // TODO: support custom rangeMin, rangeMax
+      return [config.scale.minOpacity, config.scale.maxOpacity];
   }
+  /* istanbul ignore next: should never reach here */
+  throw new Error(`Scale range undefined for channel ${channel}`);
 }
 
 function sizeRangeMin(mark: Mark, zero: boolean, config: Config) {

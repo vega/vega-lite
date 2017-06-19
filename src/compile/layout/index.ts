@@ -1,6 +1,6 @@
 import {Channel, COLUMN, ROW, X, Y} from '../../channel';
 import {MAIN} from '../../data';
-import {hasDiscreteDomain} from '../../scale';
+import {hasDiscreteDomain, scaleCompatible} from '../../scale';
 import {extend, isArray, keys, StringSet} from '../../util';
 import {isVgRangeStep, VgData, VgFormulaTransform, VgSignal, VgTransform} from '../../vega.schema';
 import {FacetModel} from '../facet';
@@ -9,7 +9,7 @@ import {Model, ModelWithField} from '../model';
 import {ScaleComponent} from '../scale/component';
 import {UnitModel} from '../unit';
 
-
+// FIXME: rename this file to assemble.ts
 // TODO: rewrite this such that we merge redundant signals
 export function assembleLayoutLayerSignals(model: LayerModel): VgSignal[] {
   return [
@@ -35,22 +35,28 @@ export function unitSizeExpr(model: UnitModel, sizeType: 'width' | 'height'): st
 
   const scaleComponent = model.getScaleComponent(channel);
   if (scaleComponent) {
-    const scale = scaleComponent.combine();
-    if (hasDiscreteDomain(scale.type) && isVgRangeStep(scale.range)) {
+    const type = scaleComponent.get('type');
+    const range = scaleComponent.get('range');
+
+    if (hasDiscreteDomain(type) && isVgRangeStep(range)) {
       const scaleName = model.scaleName(channel);
 
       const cardinality = `domain('${scaleName}').length`;
-      const paddingOuter = scale.paddingOuter !== undefined ? scale.paddingOuter : scale.padding;
-      const paddingInner = scale.type === 'band' ?
+      const padding = scaleComponent.get('padding');
+      let paddingOuter = scaleComponent.get('paddingOuter');
+      paddingOuter = paddingOuter !== undefined ? paddingOuter : padding;
+
+      let paddingInner = scaleComponent.get('paddingInner');
+      paddingInner = type === 'band' ?
         // only band has real paddingInner
-        (scale.paddingInner !== undefined ? scale.paddingInner : scale.padding) :
+        (paddingInner !== undefined ? paddingInner : padding) :
         // For point, as calculated in https://github.com/vega/vega-scale/blob/master/src/band.js#L128,
         // it's equivalent to have paddingInner = 1 since there is only n-1 steps between n points.
         1;
 
-      return `bandspace(${cardinality}, ${paddingInner}, ${paddingOuter}) * ${scale.range.step}`;
+      return `bandspace(${cardinality}, ${paddingInner}, ${paddingOuter}) * ${range.step}`;
     }
   }
-  return `${model[sizeType]}`;
+  return `${model.component.layoutSize.get(sizeType)}`;
 }
 
