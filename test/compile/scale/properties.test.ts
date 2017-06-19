@@ -5,7 +5,7 @@ import {assert} from 'chai';
 import {Channel, NONSPATIAL_SCALE_CHANNELS} from '../../../src/channel';
 import {Scale, ScaleType} from '../../../src/scale';
 
-import * as rules from '../../../src/compile/scale/rules';
+import * as rules from '../../../src/compile/scale/properties';
 import {Split} from '../../../src/compile/split';
 
 describe('compile/scale', () => {

@@ -55,9 +55,10 @@ export interface BaseSpec {
   transform?: Transform[];
 }
 
-export interface UnitSize {
+// TODO(https://github.com/vega/vega-lite/issues/2503): Make this generic so we can support some form of top-down sizing.
+export interface LayoutSize {
   /**
-   * The width of a single visualization.
+   * The width of a visualization.
    *
    * __Default value:__ This will be determined by the following rules:
    *
@@ -70,7 +71,7 @@ export interface UnitSize {
   width?: number;
 
   /**
-   * Height of a single visualization.
+   * The height of a visualization.
    *
    * __Default value:__
    * - For y-axis with a continuous (non-ordinal) scale, the height will be the value of [`config.cell.height`](config.html#cell-config).
@@ -82,7 +83,7 @@ export interface UnitSize {
   height?: number;
 }
 
-export interface GenericUnitSpec<E extends Encoding<any>, M> extends BaseSpec, UnitSize {
+export interface GenericUnitSpec<E extends Encoding<any>, M> extends BaseSpec, LayoutSize {
 
   /**
    * A string describing the mark type (one of `"bar"`, `"circle"`, `"square"`, `"tick"`, `"line"`,
@@ -113,7 +114,7 @@ export type CompositeUnitSpec = GenericUnitSpec<Encoding<Field>, AnyMark>;
  */
 export type FacetedCompositeUnitSpec = GenericUnitSpec<EncodingWithFacet<Field>, AnyMark>;
 
-export interface GenericLayerSpec<U extends GenericUnitSpec<any, any>> extends BaseSpec, UnitSize {
+export interface GenericLayerSpec<U extends GenericUnitSpec<any, any>> extends BaseSpec, LayoutSize {
   /**
    * Unit specs that will be layered.
    */

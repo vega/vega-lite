@@ -23,43 +23,44 @@ function parseNonUnitLayoutSize(model: Model) {
 }
 
 function parseUnitLayoutSize(model: UnitModel) {
-  const layoutSizeComponent = model.component.layoutSize = new Split<LayoutSize>();
-  const width = parseUnitLayoutSizeForChannel(model, 'width');
-  const height = parseUnitLayoutSizeForChannel(model, 'height');
-  layoutSizeComponent.setWithExplicit('width', width);
-  layoutSizeComponent.setWithExplicit('height', height);
+  const layoutSizeComponent = model.component.layoutSize;
+  if (!layoutSizeComponent.explicit.width) {
+    const width = defaultUnitSize(model, 'width');
+    layoutSizeComponent.set('width', width, false);
+  }
+
+  if (!layoutSizeComponent.explicit.height) {
+    const height = defaultUnitSize(model, 'height');
+    layoutSizeComponent.set('height', height, false);
+  }
 }
 
-function parseUnitLayoutSizeForChannel(model: UnitModel, sizeType: 'width' | 'height') {
-  if (model[sizeType]) {
-    return {explicit: true, value: model[sizeType]};
-  } else {
-    const channel = sizeType === 'width' ? 'x' : 'y';
-    const config = model.config;
-    const scaleComponent = model.getScaleComponent(channel);
+function defaultUnitSize(model: UnitModel, sizeType: 'width' | 'height') {
+  const channel = sizeType === 'width' ? 'x' : 'y';
+  const config = model.config;
+  const scaleComponent = model.getScaleComponent(channel);
 
+  if (scaleComponent) {
+    const scaleType = scaleComponent.get('type');
+    const range = scaleComponent.get('range');
 
-    if (scaleComponent) {
-      const scaleType = scaleComponent.get('type');
-      const range = scaleComponent.get('range');
-
-      if (hasDiscreteDomain(scaleType) && isVgRangeStep(range)) {
-        // For discrete domain with range.step, use dynamic width/height
-        return makeImplicit(undefined);
-      } else {
-        // FIXME(https://github.com/vega/vega-lite/issues/1975): revise config.cell name
-        // Otherwise, read this from cell config
-        return makeImplicit(config.cell[sizeType]);
-      }
+    if (hasDiscreteDomain(scaleType) && isVgRangeStep(range)) {
+      // For discrete domain with range.step, use dynamic width/height
+      return null;
     } else {
-      // No scale - set default size
-      if (sizeType === 'width' && model.mark() === 'text') {
-        // width for text mark without x-field is a bit wider than typical range step
-        return makeImplicit(config.scale.textXRangeStep);
-      }
-
-      // Set width/height equal to rangeStep config or if rangeStep is null, use value from default scale config.
-      return makeImplicit(config.scale.rangeStep || defaultScaleConfig.rangeStep);
+      // FIXME(https://github.com/vega/vega-lite/issues/1975): revise config.cell name
+      // Otherwise, read this from cell config
+      return config.cell[sizeType];
     }
+  } else {
+    // No scale - set default size
+    if (sizeType === 'width' && model.mark() === 'text') {
+      // width for text mark without x-field is a bit wider than typical range step
+      return config.scale.textXRangeStep;
+    }
+
+    // Set width/height equal to rangeStep config or if rangeStep is null, use value from default scale config.
+    return config.scale.rangeStep || defaultScaleConfig.rangeStep;
   }
+
 }

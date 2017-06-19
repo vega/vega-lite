@@ -2,17 +2,18 @@
 
 import {assert} from 'chai';
 import {X, Y} from '../../../src/channel';
+import {parseLayoutSize} from '../../../src/compile/layout/parse';
 import {parseMarkDef} from '../../../src/compile/mark/mark';
 import {text} from '../../../src/compile/mark/text';
 import {UnitModel} from '../../../src/compile/unit';
 import {FacetedCompositeUnitSpec, UnitSpec} from '../../../src/spec';
-import {parseModelWithScale, parseUnitModelWithScaleAndMarkDef} from '../../util';
+import {parseModelWithScale, parseUnitModelWithScaleMarkDefLayoutSize} from '../../util';
 
 describe('Mark: Text', function() {
   describe('with stacked x', function() {
     // This is a simplified example for stacked text.
     // In reality this will be used as stacked's overlayed marker
-    const model = parseUnitModelWithScaleAndMarkDef({
+    const model = parseUnitModelWithScaleMarkDefLayoutSize({
       "mark": "text",
       "encoding": {
         "x": {"aggregate": "sum", "field": "a", "type": "quantitative"},
@@ -32,7 +33,7 @@ describe('Mark: Text', function() {
   describe('with stacked y', function() {
     // This is a simplified example for stacked text.
     // In reality this will be used as stacked's overlayed marker
-    const model = parseUnitModelWithScaleAndMarkDef({
+    const model = parseUnitModelWithScaleMarkDefLayoutSize({
       "mark": "text",
       "encoding": {
         "y": {"aggregate": "sum", "field": "a", "type": "quantitative"},
@@ -56,7 +57,7 @@ describe('Mark: Text', function() {
         "text": {"field": "foo", "type": "quantitative", "format": "d"}
       }
     };
-    const model = parseUnitModelWithScaleAndMarkDef(spec);
+    const model = parseUnitModelWithScaleMarkDefLayoutSize(spec);
     const props = text.encodeEntry(model);
 
     it('should use number template', function() {
@@ -71,7 +72,7 @@ describe('Mark: Text', function() {
         "text": {"bin": true, "field": "foo", "type": "quantitative", "format": "d"}
       }
     };
-    const model = parseUnitModelWithScaleAndMarkDef(spec);
+    const model = parseUnitModelWithScaleMarkDefLayoutSize(spec);
     const props = text.encodeEntry(model);
 
     it('should output correct bin range', function() {
@@ -86,7 +87,7 @@ describe('Mark: Text', function() {
         "text": {"field": "foo", "type": "temporal"}
       }
     };
-    const model = parseUnitModelWithScaleAndMarkDef(spec);
+    const model = parseUnitModelWithScaleMarkDefLayoutSize(spec);
     const props = text.encodeEntry(model);
 
     it('should use date template', function() {
@@ -104,7 +105,7 @@ describe('Mark: Text', function() {
       },
       "data": {"url": "data/cars.json"}
     };
-    const model = parseUnitModelWithScaleAndMarkDef(spec);
+    const model = parseUnitModelWithScaleMarkDefLayoutSize(spec);
     const props = text.encodeEntry(model);
 
     it('should scale on x', function() {
@@ -136,9 +137,10 @@ describe('Mark: Text', function() {
         "data": {"url": "data/cars.json"}
       };
     const model = parseModelWithScale(spec);
-    const childModel = model.children[0] as UnitModel;
-    parseMarkDef(childModel);
+    model.parseMarkDef();
+    model.parseLayoutSize();
 
+    const childModel = model.children[0] as UnitModel;
     const props = text.encodeEntry(childModel);
 
     it('should fit cell on x', function() {
