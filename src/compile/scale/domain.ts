@@ -47,7 +47,7 @@ function parseUnitScaleDomain(model: UnitModel) {
 
     const domain = parseDomainForChannel(model, channel);
     const localScaleCmpt = localScaleComponents[channel];
-    localScaleCmpt.set('domain', domain, hasSpecifiedDomain);
+    localScaleCmpt.set('domains', [domain], hasSpecifiedDomain);
 
     if (isSelectionDomain(specifiedDomain)) {
       // As scale parsing occurs before selection parsing, we use a temporary
@@ -73,35 +73,38 @@ function parseNonUnitScaleDomain(model: Model) {
   keys(localScaleComponents).forEach((channel: ScaleChannel) => {
     // FIXME: Arvind -- Please revise logic for merging selectionDomain / domainRaw
 
-    let domain: VgDomain;
+    let domains: VgDomain[];
 
     for (const child of model.children) {
       const childComponent = child.component.scales[channel];
       if (childComponent) {
-        const childDomain = childComponent.get('domain');
-        if (domain === undefined) {
-          domain = childDomain;
+        const childDomains = childComponent.get('domains');
+        if (domains === undefined) {
+          domains = childDomains;
         } else {
-          domain = unionDomains(domain, childDomain);
+          domains = domains.concat(childDomains);
         }
       }
     }
 
+    // TODO: domoritz -- please check if using forEach below is correct
     if (model instanceof FacetModel) {
-      // Replace the scale domain with data output from a cloned subtree after the facet.
-      if (isDataRefDomain(domain) || isFieldRefUnionDomain(domain)) {
-        domain.data = FACET_SCALE_PREFIX + model.getName(domain.data);
-      } else if (isDataRefUnionedDomain(domain)) {
-        domain.fields = domain.fields.map((f: VgDataRef) => {
-          return {
-            ...f,
-            data: FACET_SCALE_PREFIX + model.getName(f.data)
-          };
-        });
-      }
+      domains.forEach((domain) => {
+        // Replace the scale domain with data output from a cloned subtree after the facet.
+        if (isDataRefDomain(domain) || isFieldRefUnionDomain(domain)) {
+          domain.data = FACET_SCALE_PREFIX + model.getName(domain.data);
+        } else if (isDataRefUnionedDomain(domain)) {
+          domain.fields = domain.fields.map((f: VgDataRef) => {
+            return {
+              ...f,
+              data: FACET_SCALE_PREFIX + model.getName(f.data)
+            };
+          });
+        }
+      });
     }
 
-    localScaleComponents[channel].set('domain', domain, true);
+    localScaleComponents[channel].set('domains', domains, true);
   });
 }
 

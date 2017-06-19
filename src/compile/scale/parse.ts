@@ -8,12 +8,11 @@ import {Model} from '../model';
 import {defaultScaleResolve} from '../resolve';
 import {Explicit, mergeValuesWithExplicit, tieBreakByComparing} from '../split';
 import {UnitModel} from '../unit';
-import {ScaleComponent, ScaleComponentIndex} from './component';
+import {ScaleComponent, ScaleComponentIndex, ScaleComponentProps} from './component';
 import {parseScaleDomain} from './domain';
 import {parseScaleProperty} from './properties';
 import {parseScaleRange} from './range';
 import {scaleType} from './type';
-
 
 export function parseScale(model: Model) {
   parseScaleCore(model);

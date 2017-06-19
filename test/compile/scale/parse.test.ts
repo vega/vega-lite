@@ -202,11 +202,11 @@ describe('src/compile', function() {
       it('should create correct color scale', function() {
         assert.equal(scale.implicit.name, 'color');
         assert.equal(scale.implicit.type, 'ordinal');
-        assert.deepEqual(scale.implicit.domain, {
+        assert.deepEqual(scale.implicit.domains, [{
           data: 'main',
           field: 'origin',
           sort: true
-        });
+        }]);
         assert.equal(scale.implicit.range, 'category');
       });
     });
@@ -225,11 +225,11 @@ describe('src/compile', function() {
         assert.equal(scale.implicit.name, 'color');
         assert.equal(scale.implicit.type, 'ordinal');
 
-        assert.deepEqual(scale.implicit.domain, {
+        assert.deepEqual(scale.implicit.domains, [{
           data: 'main',
           field: 'origin',
           sort: true
-        });
+        }]);
       });
     });
 
@@ -248,10 +248,10 @@ describe('src/compile', function() {
         assert.equal(scale.implicit.type, 'sequential');
         assert.equal(scale.implicit.range, 'ramp');
 
-        assert.deepEqual(scale.implicit.domain, {
+        assert.deepEqual(scale.implicit.domains, [{
           data: 'main',
           field: 'origin'
-        });
+        }]);
       });
     });
 
