@@ -1,16 +1,14 @@
 import { Config } from '../config';
-import { LayerSpec, UnitSize } from '../spec';
+import { LayerSpec, LayoutSize } from '../spec';
 import { VgData, VgEncodeEntry, VgLayout, VgScale, VgSignal } from '../vega.schema';
 import { Model } from './model';
 import { RepeaterValue } from './repeat';
 export declare class LayerModel extends Model {
     readonly children: Model[];
-    private readonly resolve;
-    constructor(spec: LayerSpec, parent: Model, parentGivenName: string, parentUnitSize: UnitSize, repeater: RepeaterValue, config: Config);
+    constructor(spec: LayerSpec, parent: Model, parentGivenName: string, parentGivenSize: LayoutSize, repeater: RepeaterValue, config: Config);
     parseData(): void;
     parseSelection(): void;
-    parseScale(this: LayerModel): void;
-    parseMark(): void;
+    parseMarkGroup(): void;
     parseAxisAndHeader(): void;
     parseLegend(): void;
     assembleParentGroupProperties(): VgEncodeEntry;

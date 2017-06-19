@@ -35,11 +35,22 @@ export declare const ORDER: "order";
 export declare const OPACITY: "opacity";
 export declare const TOOLTIP: "tooltip";
 export declare const CHANNELS: Channel[];
+/**
+ * Channels cannot have an array of channelDef.
+ * model.fieldDef, getFieldDef only work for these channels.
+ *
+ * (The only two channels that can have an array of channelDefs are "detail" and "order".
+ * Since there can be multiple fieldDefs for detail and order, getFieldDef/model.fieldDef
+ * are not applicable for them.  Similarly, selection projecttion won't work with "detail" and "order".)
+ */
+export declare const SINGLE_DEF_CHANNELS: ("text" | "x" | "y" | "x2" | "y2" | "color" | "opacity" | "size" | "shape" | "tooltip" | "row" | "column")[];
+export declare type SingleDefChannel = 'x' | 'y' | 'x2' | 'y2' | 'row' | 'column' | 'size' | 'shape' | 'color' | 'opacity' | 'text' | 'tooltip';
 export declare function isChannel(str: string): str is Channel;
 export declare const UNIT_CHANNELS: ("text" | "x" | "y" | "x2" | "y2" | "color" | "opacity" | "size" | "shape" | "detail" | "tooltip" | "order")[];
-export declare const UNIT_SCALE_CHANNELS: ("x" | "y" | "color" | "opacity" | "size" | "shape")[];
-export declare const SCALE_CHANNELS: ("x" | "y" | "color" | "opacity" | "size" | "shape" | "row" | "column")[];
+/** List of channels with scales */
+export declare const SCALE_CHANNELS: ("x" | "y" | "color" | "opacity" | "size" | "shape")[];
 export declare type ScaleChannel = typeof SCALE_CHANNELS[0];
+export declare function isScaleChannel(channel: Channel): channel is ScaleChannel;
 export declare const NONSPATIAL_CHANNELS: ("text" | "color" | "opacity" | "size" | "shape" | "detail" | "tooltip" | "order")[];
 export declare const SPATIAL_SCALE_CHANNELS: ("x" | "y")[];
 export declare type SpatialScaleChannel = typeof SPATIAL_SCALE_CHANNELS[0];
@@ -47,7 +58,8 @@ export declare const NONSPATIAL_SCALE_CHANNELS: ("color" | "opacity" | "size" | 
 export declare type NonspatialScaleChannel = typeof NONSPATIAL_SCALE_CHANNELS[0];
 export declare const LEVEL_OF_DETAIL_CHANNELS: Channel[];
 /** Channels that can serve as groupings for stacked charts. */
-export declare const STACK_GROUP_CHANNELS: ("color" | "opacity" | "size" | "detail" | "order")[];
+export declare const STACK_BY_CHANNELS: ("color" | "opacity" | "size" | "detail" | "order")[];
+export declare type StackByChannel = typeof STACK_BY_CHANNELS[0];
 export interface SupportedMark {
     point?: boolean;
     tick?: boolean;

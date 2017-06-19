@@ -1,3 +1,4 @@
+import { Axis } from '../../axis';
 import { VgAxis } from '../../vega.schema';
 export interface AxisComponent {
     axes: VgAxis[];
@@ -6,4 +7,8 @@ export interface AxisComponent {
 export interface AxisComponentIndex {
     x?: AxisComponent;
     y?: AxisComponent;
+}
+export interface AxisIndex {
+    x?: Axis;
+    y?: Axis;
 }

@@ -1,4 +1,5 @@
 import { Filter } from '../../filter';
+import { LogicalOperand } from '../../logical';
 import { CalculateTransform, LookupTransform } from '../../transform';
 import { StringSet } from '../../util';
 import { VgFilterTransform, VgFormulaTransform, VgLookupTransform } from '../../vega.schema';
@@ -8,7 +9,7 @@ export declare class FilterNode extends DataFlowNode {
     private readonly model;
     private filter;
     clone(): FilterNode;
-    constructor(model: Model, filter: Filter);
+    constructor(model: Model, filter: LogicalOperand<Filter>);
     assemble(): VgFilterTransform;
 }
 /**

@@ -1,10 +1,11 @@
-import { Channel } from '../../channel';
+import { Channel, ScaleChannel } from '../../channel';
 import { FieldDef } from '../../fielddef';
-import { Domain, ScaleConfig, ScaleType } from '../../scale';
+import { ScaleType } from '../../scale';
 import { VgDomain, VgSortField } from '../../vega.schema';
+import { Model } from '../model';
 import { UnitModel } from '../unit';
-export declare function initDomain(domain: Domain, fieldDef: FieldDef<string>, scale: ScaleType, scaleConfig: ScaleConfig): Domain;
-export declare function parseDomain(model: UnitModel, channel: Channel): VgDomain;
+export declare function parseScaleDomain(model: Model): void;
+export declare function parseDomainForChannel(model: UnitModel, channel: ScaleChannel): VgDomain;
 export declare function domainSort(model: UnitModel, channel: Channel, scaleType: ScaleType): VgSortField;
 /**
  * Determine if a scale can use unaggregated domain.

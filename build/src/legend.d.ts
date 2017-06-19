@@ -1,6 +1,6 @@
 import { DateTime } from './datetime';
-import { Guide, VlOnlyGuideConfig } from './guide';
-import { VgLegendBase, VgLegendConfig, VgLegendEncode } from './vega.schema';
+import { Guide, GuideEncodingEntry, VlOnlyGuideConfig } from './guide';
+import { VgLegendBase, VgLegendConfig } from './vega.schema';
 export interface LegendConfig extends VgLegendConfig, VlOnlyGuideConfig {
 }
 /**
@@ -10,7 +10,7 @@ export interface Legend extends VgLegendBase, Guide {
     /**
      * Optional mark definitions for custom legend encoding.
      */
-    encode?: VgLegendEncode;
+    encoding?: LegendEncoding;
     /**
      * The desired number of tick values for quantitative legends.
      */
@@ -32,5 +32,28 @@ export interface Legend extends VgLegendBase, Guide {
      */
     zindex?: number;
 }
+export declare type LegendEncoding = {
+    /**
+     * Custom encoding for the legend container.
+     * This can be useful for creating legend with custom x, y position.
+     */
+    legend?: GuideEncodingEntry;
+    /**
+     * Custom encoding for the legend title text mark.
+     */
+    title?: GuideEncodingEntry;
+    /**
+     * Custom encoding for legend label text marks.
+     */
+    labels?: GuideEncodingEntry;
+    /**
+     * Custom encoding for legend symbol marks.
+     */
+    symbols?: GuideEncodingEntry;
+    /**
+     * Custom encoding for legend gradient filled rect marks.
+     */
+    gradient?: GuideEncodingEntry;
+};
 export declare const defaultLegendConfig: LegendConfig;
 export declare const LEGEND_PROPERTIES: (keyof Legend)[];

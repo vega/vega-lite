@@ -3,15 +3,14 @@ import { Config } from '../config';
 import { Facet } from '../facet';
 import { FieldDef } from '../fielddef';
 import { FacetSpec } from '../spec';
-import { VgData, VgEncodeEntry, VgLayout } from '../vega.schema';
-import { VgSignal } from '../vega.schema';
+import { VgMarkGroup, VgSignal } from '../vega.schema';
+import { VgData, VgLayout } from '../vega.schema';
 import { Model, ModelWithField } from './model';
 import { RepeaterValue } from './repeat';
 export declare class FacetModel extends ModelWithField {
     readonly facet: Facet<string>;
     readonly child: Model;
     readonly children: Model[];
-    private readonly resolve;
     constructor(spec: FacetSpec, parent: Model, parentGivenName: string, repeater: RepeaterValue, config: Config);
     private initFacet(facet);
     channelHasField(channel: Channel): boolean;
@@ -19,8 +18,7 @@ export declare class FacetModel extends ModelWithField {
     fieldDef(channel: Channel): FieldDef<string>;
     parseData(): void;
     parseSelection(): void;
-    parseScale(): void;
-    parseMark(): void;
+    parseMarkGroup(): void;
     parseAxisAndHeader(): void;
     private parseHeader(channel);
     private makeHeaderComponent(channel, labels);
@@ -34,7 +32,6 @@ export declare class FacetModel extends ModelWithField {
     assembleLayout(): VgLayout;
     assembleLayoutSignals(): VgSignal[];
     private columnDistinctSignal();
-    assembleMarks(): VgEncodeEntry[];
-    channels(): ("row" | "column")[];
+    assembleMarks(): VgMarkGroup[];
     protected getMapping(): Facet<string>;
 }

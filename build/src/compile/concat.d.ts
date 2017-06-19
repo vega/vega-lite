@@ -6,12 +6,10 @@ import { RepeaterValue } from './repeat';
 export declare class ConcatModel extends Model {
     readonly children: Model[];
     readonly isVConcat: boolean;
-    private readonly resolve;
     constructor(spec: ConcatSpec, parent: Model, parentGivenName: string, repeater: RepeaterValue, config: Config);
     parseData(): void;
     parseSelection(): void;
-    parseScale(): void;
-    parseMark(): void;
+    parseMarkGroup(): void;
     parseAxisAndHeader(): void;
     parseAxisGroup(): void;
     parseLegend(): void;

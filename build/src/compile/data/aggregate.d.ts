@@ -1,8 +1,8 @@
+import { SummarizeTransform } from '../../transform';
 import { Dict, StringSet } from '../../util';
 import { VgAggregateTransform } from '../../vega.schema';
-import { UnitModel } from './../unit';
-import { SummarizeTransform } from '../../transform';
 import { Model } from '../model';
+import { UnitModel } from './../unit';
 import { DataFlowNode } from './dataflow';
 export declare class AggregateNode extends DataFlowNode {
     private dimensions;

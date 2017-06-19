@@ -12,6 +12,11 @@ export interface DataComponent {
      */
     outputNodes: Dict<OutputNode | FacetNode>;
     /**
+     * How often is an output node used. If it is not used, we don't need to
+     * instantiate it in the assemble step.
+     */
+    outputNodeRefCounts: Dict<number>;
+    /**
      * The main output node.
      */
     main?: OutputNode;
@@ -19,4 +24,8 @@ export interface DataComponent {
      * For facets, we store the reference to the root node.
      */
     facetRoot?: FacetNode;
+    /**
+     * Parse properties passed down from ancestors.
+     */
+    ancestorParse: Dict<string>;
 }

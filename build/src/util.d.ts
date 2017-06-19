@@ -1,3 +1,4 @@
+import { LogicalOperand } from './logical';
 export { extend, isArray, isObject, isNumber, isString, truncate, toSet, stringValue } from 'vega-util';
 /**
  * Creates an object composed of the picked object properties.
@@ -54,3 +55,4 @@ export declare function isBoolean(b: any): b is boolean;
  * Convert a string into a valid variable name
  */
 export declare function varName(s: string): string;
+export declare function logicalExpr<T>(op: LogicalOperand<T>, cb: Function): string;

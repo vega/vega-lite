@@ -38,9 +38,9 @@ export interface BaseSpec {
      */
     transform?: Transform[];
 }
-export interface UnitSize {
+export interface LayoutSize {
     /**
-     * The width of a single visualization.
+     * The width of a visualization.
      *
      * __Default value:__ This will be determined by the following rules:
      *
@@ -52,7 +52,7 @@ export interface UnitSize {
      */
     width?: number;
     /**
-     * Height of a single visualization.
+     * The height of a visualization.
      *
      * __Default value:__
      * - For y-axis with a continuous (non-ordinal) scale, the height will be the value of [`config.cell.height`](config.html#cell-config).
@@ -63,7 +63,7 @@ export interface UnitSize {
      */
     height?: number;
 }
-export interface GenericUnitSpec<E extends Encoding<any>, M> extends BaseSpec, UnitSize {
+export interface GenericUnitSpec<E extends Encoding<any>, M> extends BaseSpec, LayoutSize {
     /**
      * A string describing the mark type (one of `"bar"`, `"circle"`, `"square"`, `"tick"`, `"line"`,
      * `"area"`, `"point"`, `"rule"`, and `"text"`) or a [mark definition object](mark.html#mark-def).
@@ -89,7 +89,7 @@ export declare type CompositeUnitSpec = GenericUnitSpec<Encoding<Field>, AnyMark
  * Unit spec that can have a composite mark and row or column channels.
  */
 export declare type FacetedCompositeUnitSpec = GenericUnitSpec<EncodingWithFacet<Field>, AnyMark>;
-export interface GenericLayerSpec<U extends GenericUnitSpec<any, any>> extends BaseSpec, UnitSize {
+export interface GenericLayerSpec<U extends GenericUnitSpec<any, any>> extends BaseSpec, LayoutSize {
     /**
      * Unit specs that will be layered.
      */
@@ -132,5 +132,5 @@ export declare function isHConcatSpec(spec: GenericSpec<GenericUnitSpec<any, any
  * Decompose extended unit specs into composition of pure unit specs.
  */
 export declare function normalize(spec: TopLevelExtendedSpec, config: Config): Spec;
-export declare function fieldDefs(spec: GenericSpec<GenericUnitSpec<any, any>>): FieldDef<Field>[];
+export declare function fieldDefs(spec: GenericSpec<GenericUnitSpec<any, any>>): FieldDef<any>[];
 export declare function isStacked(spec: TopLevel<FacetedCompositeUnitSpec>, config?: Config): boolean;

@@ -1,5 +1,5 @@
 import { BaseBin } from './bin';
-import { NiceTime, ScaleType, SelectionDomain } from './scale';
+import { NiceTime, ScaleType } from './scale';
 import { SortOrder } from './sort';
 import { StackOffset } from './stack';
 export interface VgData {
@@ -59,19 +59,22 @@ export declare type VgRangeScheme = {
     extent?: number[];
     count?: number;
 };
-export declare type VgRange = string | VgDataRef | (number | string | VgDataRef)[] | VgRangeScheme | {
+export declare type VgRange = string | VgDataRef | (number | string | VgDataRef)[] | VgRangeScheme | VgRangeStep;
+export declare type VgRangeStep = {
     step: number;
 };
+export declare function isVgRangeStep(range: VgRange): range is VgRangeStep;
 export declare type VgDomain = any[] | VgDataRef | DataRefUnionDomain | FieldRefUnionDomain | VgSignalRef;
 export declare type VgMarkGroup = any;
 export declare type VgScale = {
     name: string;
     type: ScaleType;
     domain: VgDomain;
-    domainRaw?: SelectionDomain;
+    domainRaw?: VgSignalRef;
     range: VgRange;
     clamp?: boolean;
     exponent?: number;
+    interpolate?: 'rgb' | 'lab' | 'hcl' | 'hsl' | 'hsl-long' | 'hcl-long' | 'cubehelix' | 'cubehelix-long';
     nice?: boolean | NiceTime;
     padding?: number;
     paddingInner?: number;
@@ -111,7 +114,12 @@ export declare type VgSignal = {
     name: string;
     update: string;
 };
-export declare type VgEncodeEntry = any;
+export declare type VgEncodeChannel = 'x' | 'x2' | 'xc' | 'width' | 'y' | 'y2' | 'yc' | 'height' | 'opacity' | 'fill' | 'fillOpacity' | 'stroke' | 'strokeWidth' | 'strokeOpacity' | 'strokeDash' | 'strokeDashOffset' | 'cursor' | 'clip' | 'size' | 'shape' | 'path' | 'innerRadius' | 'outerRadius' | 'startAngle' | 'endAngle' | 'interpolate' | 'tension' | 'orient' | 'url' | 'align' | 'baseline' | 'text' | 'dir' | 'ellipsis' | 'limit' | 'dx' | 'dy' | 'radius' | 'theta' | 'angle' | 'font' | 'fontSize' | 'fontWeight' | 'fontStyle';
+export declare type VgEncodeEntry = {
+    [k in VgEncodeChannel]?: VgValueRef | (VgValueRef & {
+        test: string;
+    })[];
+};
 export declare type VgAxis = any;
 export declare type VgLegend = any;
 export interface VgBinTransform extends BaseBin {
@@ -249,7 +257,7 @@ export interface VgAxisBase {
      * The rotation angle of the axis labels.
      *
      * __Default value:__ `-45` for time or ordinal axis and `0` otherwise.
-     * @minimum 0
+     * @minimum -360
      * @maximum 360
      */
     labelAngle?: number;
@@ -427,7 +435,7 @@ export interface VgLegendBase {
      *
      * __Default value:__  `"right"`
      */
-    orient?: string;
+    orient?: 'left' | 'right' | 'top-left' | 'top-right' | 'bottom-left' | 'bottom-right' | 'none';
     /**
      * The offset, in pixels, by which to displace the legend from the edge of the enclosing group or data rectangle.
      *

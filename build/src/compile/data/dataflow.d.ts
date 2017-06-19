@@ -1,5 +1,5 @@
 import { DataSourceType } from '../../data';
-import { StringSet } from '../../util';
+import { Dict, StringSet } from '../../util';
 /**
  * A node in the dataflow tree.
  */
@@ -33,12 +33,18 @@ export declare class DataFlowNode {
 }
 export declare class OutputNode extends DataFlowNode {
     readonly type: DataSourceType;
+    private readonly refCounts;
     private _source;
-    private _refcount;
+    private _name;
     clone(): this;
-    constructor(source: string, type: DataSourceType);
     /**
-     * Request the datasource name.
+     * @param source The name of the source. Will change in assemble.
+     * @param type The type of the output node.
+     * @param refCounts A global ref counter map.
+     */
+    constructor(source: string, type: DataSourceType, refCounts: Dict<number>);
+    /**
+     * Request the datasource name and increase the ref counter.
      *
      * During the parsing phase, this will return the simple name such as 'main' or 'raw'.
      * It is crucial to request the name from an output node to mark it as a required node.
@@ -46,6 +52,7 @@ export declare class OutputNode extends DataFlowNode {
      *
      * In the assemble phase, this will return the correct name.
      */
-    source: string;
-    readonly required: boolean;
+    getSource(): string;
+    isRequired(): boolean;
+    setSource(source: string): void;
 }

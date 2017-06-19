@@ -19,6 +19,14 @@ export declare namespace ScaleType {
 }
 export declare type ScaleType = typeof ScaleType.LINEAR | typeof ScaleType.BIN_LINEAR | typeof ScaleType.LOG | typeof ScaleType.POW | typeof ScaleType.SQRT | typeof ScaleType.TIME | typeof ScaleType.UTC | typeof ScaleType.SEQUENTIAL | typeof ScaleType.ORDINAL | typeof ScaleType.BIN_ORDINAL | typeof ScaleType.POINT | typeof ScaleType.BAND;
 export declare const SCALE_TYPES: ScaleType[];
+/**
+ * Whether the two given scale types can be merged together.
+ */
+export declare function scaleCompatible(scaleType1: ScaleType, scaleType2: ScaleType): boolean;
+/**
+ * Return scale categories -- only scale of the same categories can be merged together.
+ */
+export declare function scaleTypePrecedence(scaleType: ScaleType): number;
 export declare const CONTINUOUS_TO_CONTINUOUS_SCALES: ScaleType[];
 export declare const CONTINUOUS_DOMAIN_SCALES: ScaleType[];
 export declare const DISCRETE_DOMAIN_SCALES: ScaleType[];
@@ -197,10 +205,11 @@ export interface ExtendedScheme {
     count?: number;
 }
 export declare type SelectionDomain = {
-    signal?: string;
-    selection?: string;
-    field?: string;
-    encoding?: string;
+    selection: string;
+    field: string;
+} | {
+    selection: string;
+    encoding: string;
 };
 export declare type Domain = number[] | string[] | DateTime[] | 'unaggregated' | SelectionDomain;
 export declare type Scheme = string | ExtendedScheme;

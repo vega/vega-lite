@@ -20,8 +20,8 @@ export declare class FacetNode extends DataFlowNode {
     constructor(model: FacetModel, name: string, data: string);
     readonly fields: string[];
     /**
-     * The name to reference this source is its name
+     * The name to reference this source is its name.
      */
-    readonly source: string;
+    getSource(): string;
     assemble(): VgData[];
 }

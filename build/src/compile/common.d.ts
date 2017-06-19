@@ -2,15 +2,15 @@ import { Channel } from '../channel';
 import { CellConfig, Config } from '../config';
 import { FieldDef, OrderFieldDef } from '../fielddef';
 import { Mark, MarkConfig, TextConfig } from '../mark';
-import { Spec, UnitSize } from '../spec';
+import { LayoutSize, Spec } from '../spec';
 import { TimeUnit } from '../timeunit';
 import { VgEncodeEntry, VgSort } from '../vega.schema';
 import { Model } from './model';
 import { RepeaterValue } from './repeat';
 import { UnitModel } from './unit';
-export declare function buildModel(spec: Spec, parent: Model, parentGivenName: string, unitSize: UnitSize, repeater: RepeaterValue, config: Config): Model;
-export declare function applyConfig(e: VgEncodeEntry, config: CellConfig | MarkConfig | TextConfig, propsList: string[]): any;
-export declare function applyMarkConfig(e: VgEncodeEntry, model: UnitModel, propsList: (keyof MarkConfig)[]): any;
+export declare function buildModel(spec: Spec, parent: Model, parentGivenName: string, unitSize: LayoutSize, repeater: RepeaterValue, config: Config): Model;
+export declare function applyConfig(e: VgEncodeEntry, config: CellConfig | MarkConfig | TextConfig, propsList: string[]): VgEncodeEntry;
+export declare function applyMarkConfig(e: VgEncodeEntry, model: UnitModel, propsList: (keyof MarkConfig)[]): VgEncodeEntry;
 /**
  * Return value mark specific config property if exists.
  * Otherwise, return general mark specific config.

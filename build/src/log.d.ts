@@ -1,4 +1,3 @@
-/// <reference path="../../typings/vega-util.d.ts" />
 /**
  * Vega-Lite's singleton logger utility.
  */
@@ -42,8 +41,10 @@ export declare function debug(..._: any[]): void;
  */
 export declare namespace message {
     const INVALID_SPEC = "Invalid spec";
+    function cannotProjectOnChannelWithoutField(channel: Channel): string;
     function noSuchRepeatedValue(field: string): string;
     function unrecognizedParse(p: string): string;
+    function differentParse(field: string, local: string, ancestor: string): string;
     function invalidTransformIgnored(transform: any): string;
     const NO_FIELDS_NEEDS_AS = "If `from.fields` is not specified, `as` has to be a string that specifies the key to be used for the the data from the secondary source.";
     function invalidFieldType(type: Type): string;
@@ -65,8 +66,6 @@ export declare namespace message {
     const CANNOT_USE_RANGE_WITH_POSITION = "Cannot use custom range with x or y channel.  Please customize width, height, padding, or rangeStep instead.";
     function cannotUseSizeFieldWithBandSize(positionChannel: 'x' | 'y'): string;
     function cannotApplySizeToNonOrientedMark(mark: Mark): string;
-    const CANNOT_USE_PADDING_WITH_FACET = "Cannot use padding with facet's scale.  Please use spacing instead.";
-    function cannotUseRangePropertyWithFacet(propName: string): string;
     function rangeStepDropped(channel: Channel): string;
     function scaleTypeNotWorkWithChannel(channel: Channel, scaleType: ScaleType, defaultScaleType: ScaleType): string;
     function scaleTypeNotWorkWithFieldDef(scaleType: ScaleType, defaultScaleType: ScaleType): string;

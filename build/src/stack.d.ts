@@ -1,4 +1,4 @@
-import { Channel } from './channel';
+import { StackByChannel } from './channel';
 import { Encoding } from './encoding';
 import { Field, FieldDef } from './fielddef';
 import { Mark, MarkDef } from './mark';
@@ -11,7 +11,7 @@ export interface StackProperties {
     /** Stack-by fields e.g., color, detail */
     stackBy: {
         fieldDef: FieldDef<string>;
-        channel: Channel;
+        channel: StackByChannel;
     }[];
     /**
      * Modes for stacking marks:
@@ -24,6 +24,6 @@ export interface StackProperties {
      */
     offset: StackOffset;
 }
-export declare const STACKABLE_MARKS: ("area" | "circle" | "line" | "text" | "square" | "point" | "bar" | "tick" | "rule")[];
+export declare const STACKABLE_MARKS: ("area" | "circle" | "line" | "text" | "square" | "point" | "bar" | "rule" | "tick")[];
 export declare const STACK_BY_DEFAULT_MARKS: ("area" | "bar")[];
 export declare function stack(m: Mark | MarkDef, encoding: Encoding<Field>, stackConfig: StackOffset): StackProperties;

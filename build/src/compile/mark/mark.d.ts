@@ -1,2 +1,4 @@
+import { Model } from '../model';
 import { UnitModel } from '../unit';
-export declare function parseMark(model: UnitModel): any[];
+export declare function parseMarkDef(model: Model): void;
+export declare function parseMarkGroup(model: UnitModel): any[];

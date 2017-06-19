@@ -2,12 +2,13 @@ import { AggregateOp } from './aggregate';
 import { Bin } from './bin';
 import { Data } from './data';
 import { Filter } from './filter';
+import { LogicalOperand } from './logical';
 import { TimeUnit } from './timeunit';
 export interface FilterTransform {
     /**
      * A string containing the filter Vega expression. Use `datum` to refer to the current data object.
      */
-    filter: Filter;
+    filter: LogicalOperand<Filter>;
 }
 export declare function isFilter(t: Transform): t is FilterTransform;
 export interface CalculateTransform {

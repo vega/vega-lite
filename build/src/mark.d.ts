@@ -26,7 +26,7 @@ export declare const RECT: "rect";
 export declare const RULE: "rule";
 export declare const CIRCLE: "circle";
 export declare const SQUARE: "square";
-export declare const PRIMITIVE_MARKS: Mark[];
+export declare const PRIMITIVE_MARKS: ("area" | "circle" | "line" | "rect" | "text" | "square" | "point" | "bar" | "rule" | "tick")[];
 export interface MarkDef {
     /**
      * The mark type.

@@ -1,6 +1,6 @@
+import { SingleDefChannel } from './channel';
 import { VgBinding } from './vega.schema';
 export declare type SelectionTypes = 'single' | 'multi' | 'interval';
-export declare type SelectionDomain = 'data' | 'visual';
 export declare type SelectionResolutions = 'global' | 'independent' | 'union' | 'union_others' | 'intersect' | 'intersect_others';
 export interface BaseSelectionDef {
     resolve?: SelectionResolutions;
@@ -9,7 +9,7 @@ export interface BaseSelectionDef {
         [key: string]: VgBinding;
     };
     fields?: string[];
-    encodings?: string[];
+    encodings?: SingleDefChannel[];
     toggle?: string | boolean;
     translate?: string | boolean;
     zoom?: string | boolean;

@@ -1,6 +1,6 @@
 import { DateTime } from './datetime';
-import { Guide, VlOnlyGuideConfig } from './guide';
-import { VgAxisBase, VgAxisConfig, VgAxisEncode } from './vega.schema';
+import { Guide, GuideEncodingEntry, VlOnlyGuideConfig } from './guide';
+import { VgAxisBase, VgAxisConfig } from './vega.schema';
 export declare type AxisOrient = 'top' | 'right' | 'left' | 'bottom';
 export interface AxisConfig extends VgAxisConfig, VlOnlyGuideConfig {
 }
@@ -51,7 +51,33 @@ export interface Axis extends VgAxisBase, Guide {
     /**
      * Optional mark definitions for custom axis encoding.
      */
-    encode?: VgAxisEncode;
+    encoding?: AxisEncoding;
+}
+export interface AxisEncoding {
+    /**
+     * Custom encoding for the axis container.
+     */
+    axis?: GuideEncodingEntry;
+    /**
+     * Custom encoding for the axis domain rule mark.
+     */
+    domain?: GuideEncodingEntry;
+    /**
+     * Custom encoding for axis gridline rule marks.
+     */
+    grid?: GuideEncodingEntry;
+    /**
+     * Custom encoding for axis label text marks.
+     */
+    labels?: GuideEncodingEntry;
+    /**
+     * Custom encoding for axis tick rule marks.
+     */
+    ticks?: GuideEncodingEntry;
+    /**
+     * Custom encoding for the axis title text mark.
+     */
+    title?: GuideEncodingEntry;
 }
 export declare const AXIS_PROPERTIES: (keyof Axis)[];
 export interface AxisConfigMixins {
