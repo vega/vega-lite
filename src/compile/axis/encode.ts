@@ -36,8 +36,6 @@ export function labels(model: UnitModel, channel: SpatialScaleChannel, specified
   }
 
   if (labelsSpec.angle && channel === 'x') {
-    // Make angle within [0,360)
-    const angle = ((labelsSpec.angle.value % 360) + 360) % 360;
     const align = labelAlign(angle, def.orient);
     if (align) {
       labelsSpec.align = {value: align};
@@ -58,7 +56,8 @@ export function labels(model: UnitModel, channel: SpatialScaleChannel, specified
 }
 export function labelAngle(axis: Axis, channel: Channel, fieldDef: FieldDef<string>) {
   if (axis.labelAngle !== undefined) {
-    return axis.labelAngle;
+    // Make angle within [0,360)
+    return ((axis.labelAngle % 360) + 360) % 360;
   } else {
     // auto rotate for X
     if (channel === X && (contains([NOMINAL, ORDINAL], fieldDef.type) || !!fieldDef.bin || fieldDef.type === TEMPORAL)) {
