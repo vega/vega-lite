@@ -103,7 +103,7 @@
     "typescript": "^2.3.4",
     "typescript-to-json-schema": "vega/typescript-to-json-schema#v0.5.0",
     "uglify-js": "^3.0.15",
-    "vega": "3.0.0-beta.33",
+    "vega": "^3.0.0-beta.35",
     "vega-datasets": "vega/vega-datasets#gh-pages",
     "vega-embed": "3.0.0-beta.17",
     "watchify": "^3.9.0",
