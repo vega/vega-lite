@@ -25,7 +25,7 @@ describe('Selection Predicate', function() {
       "opacity": {
         "field": "Origin", "type": "nominal",
         "condition": {
-          "selection": {"or": ["one", {"and": ["two", {"not": "three"}]}]},
+          "selection": {"or": ["one", {"and": ["two", {"not": "thr-ee"}]}]},
           "value": 0.5
         }
       }
@@ -37,7 +37,7 @@ describe('Selection Predicate', function() {
   model.component.selection = selection.parseUnitSelection(model, {
     "one": {"type": "single"},
     "two": {"type": "multi", "resolve": "union"},
-    "three": {"type": "interval", "resolve": "intersect_others"}
+    "thr-ee": {"type": "interval", "resolve": "intersect_others"}
   });
 
   it('generates the predicate expression', function() {
@@ -51,15 +51,15 @@ describe('Selection Predicate', function() {
       '!((vlPoint("one_store", "", datum, "union", "all")) && ' +
       '(vlPoint("two_store", "", datum, "union", "all")))');
 
-    assert.equal(predicate(model, {"and": ["one", "two", {"not": "three"}]}),
+    assert.equal(predicate(model, {"and": ["one", "two", {"not": "thr-ee"}]}),
       '(vlPoint("one_store", "", datum, "union", "all")) && ' +
       '(vlPoint("two_store", "", datum, "union", "all")) && ' +
-      '(!(vlInterval("three_store", "", datum, "intersect", "others")))');
+      '(!(vlInterval("thr_ee_store", "", datum, "intersect", "others")))');
 
-    assert.equal(predicate(model, {"or": ["one", {"and": ["two", {"not": "three"}]}]}),
+    assert.equal(predicate(model, {"or": ["one", {"and": ["two", {"not": "thr-ee"}]}]}),
       '(vlPoint("one_store", "", datum, "union", "all")) || ' +
       '((vlPoint("two_store", "", datum, "union", "all")) && ' +
-      '(!(vlInterval("three_store", "", datum, "intersect", "others"))))');
+      '(!(vlInterval("thr_ee_store", "", datum, "intersect", "others"))))');
   });
 
   it('generates Vega production rules', function() {
@@ -74,7 +74,7 @@ describe('Selection Predicate', function() {
       opacity: [
         {test: '(vlPoint("one_store", "", datum, "union", "all")) || ' +
               '((vlPoint("two_store", "", datum, "union", "all")) && ' +
-              '(!(vlInterval("three_store", "", datum, "intersect", "others"))))',
+              '(!(vlInterval("thr_ee_store", "", datum, "intersect", "others"))))',
           value: 0.5},
         {scale: "opacity", field: "Origin"}
       ]
@@ -92,14 +92,14 @@ describe('Selection Predicate', function() {
       '!((vlPoint("one_store", "", datum, "union", "all")) && ' +
       '(vlPoint("two_store", "", datum, "union", "all")))');
 
-    assert.equal(expression(model, {"selection": {"and": ["one", "two", {"not": "three"}]}}),
+    assert.equal(expression(model, {"selection": {"and": ["one", "two", {"not": "thr-ee"}]}}),
       '(vlPoint("one_store", "", datum, "union", "all")) && ' +
       '(vlPoint("two_store", "", datum, "union", "all")) && ' +
-      '(!(vlInterval("three_store", "", datum, "intersect", "others")))');
+      '(!(vlInterval("thr_ee_store", "", datum, "intersect", "others")))');
 
-    assert.equal(expression(model, {"selection": {"or": ["one", {"and": ["two", {"not": "three"}]}]}}),
+    assert.equal(expression(model, {"selection": {"or": ["one", {"and": ["two", {"not": "thr-ee"}]}]}}),
       '(vlPoint("one_store", "", datum, "union", "all")) || ' +
       '((vlPoint("two_store", "", datum, "union", "all")) && ' +
-      '(!(vlInterval("three_store", "", datum, "intersect", "others"))))');
+      '(!(vlInterval("thr_ee_store", "", datum, "intersect", "others"))))');
   });
 });

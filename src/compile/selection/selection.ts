@@ -4,7 +4,7 @@ import {warn} from '../../log';
 import {LogicalOperand} from '../../logical';
 import {SelectionDomain} from '../../scale';
 import {SelectionDef, SelectionResolutions, SelectionTypes} from '../../selection';
-import {Dict, extend, isString, logicalExpr, stringValue} from '../../util';
+import {Dict, extend, isString, logicalExpr, stringValue, varName} from '../../util';
 import {isSignalRefDomain, VgBinding, VgData, VgDomain, VgEventStream, VgScale, VgSignalRef} from '../../vega.schema';
 import {LayerModel} from '../layer';
 import {Model} from '../model';
@@ -57,7 +57,7 @@ export function parseUnitSelection(model: UnitModel, selDefs: Dict<SelectionDef>
   const selCmpts: Dict<SelectionComponent> = {};
   const selectionConfig = model.config.selection;
 
-  for (const name in selDefs) {
+  for (let name in selDefs) {
     if (!selDefs.hasOwnProperty(name)) {
       continue;
     }
@@ -81,6 +81,7 @@ export function parseUnitSelection(model: UnitModel, selDefs: Dict<SelectionDef>
       }
     }
 
+    name = varName(name);
     const selCmpt = selCmpts[name] = extend({}, selDef, {
       name: name,
       events: isString(selDef.on) ? parseSelector(selDef.on, 'scope') : selDef.on,
@@ -211,6 +212,7 @@ const PREDICATES_OPS = {
 
 export function predicate(model: Model, selections: LogicalOperand<string>): string {
   function expr(name: string): string {
+    name = varName(name);
     const selCmpt = model.getSelectionComponent(name);
     const store = stringValue(name + STORE);
     const op = PREDICATES_OPS[selCmpt.resolve];
@@ -233,7 +235,7 @@ export function isRawSelectionDomain(domainRaw: VgSignalRef) {
 }
 export function selectionScaleDomain(model: Model, domainRaw: VgSignalRef): VgSignalRef {
   const selDomain = JSON.parse(domainRaw.signal.replace(SELECTION_DOMAIN, ''));
-  const name = selDomain.selection;
+  const name = varName(selDomain.selection);
 
   let selCmpt = model.component.selection && model.component.selection[name];
   if (selCmpt) {
@@ -277,7 +279,7 @@ function compiler(type: SelectionTypes): SelectionCompiler {
 }
 
 export function channelSignalName(selCmpt: SelectionComponent, channel: Channel, range: 'visual' | 'data') {
-  return selCmpt.name + '_' + (range === 'visual' ? channel : selCmpt.fields[channel]);
+  return varName(selCmpt.name + '_' + (range === 'visual' ? channel : selCmpt.fields[channel]));
 }
 
 function clipMarks(marks: any[]): any[] {
