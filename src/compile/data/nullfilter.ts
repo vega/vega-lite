@@ -24,7 +24,7 @@ export class NullFilterNode extends DataFlowNode {
 
   public static make(model: ModelWithField) {
     const fields = model.reduceFieldDef((aggregator: Dict<FieldDef<string>>, fieldDef, channel) => {
-      if (model.config.filterInvalid && !fieldDef.aggregate && fieldDef.field) {
+      if (model.config.invalidValues === 'filter' && !fieldDef.aggregate && fieldDef.field) {
         // Vega's aggregate operator already handle invalid values, so we only have to consider non-aggregate field here.
 
         const scaleComponent = isScaleChannel(channel) && model.getScaleComponent(channel);

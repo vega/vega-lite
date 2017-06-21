@@ -34,10 +34,10 @@ describe('compile/data/nullfilter', function() {
       });
     });
 
-    it('should add filterNull for Q and T when filterInvalid is specified true.', function () {
+    it('should add filterNull for Q and T when invalidValues is "filter".', function () {
       const model = parseUnitModelWithScale(mergeDeep(spec, {
         config: {
-          filterInvalid: true
+          invalidValues: 'filter'
         }
       }));
       assert.deepEqual<Dict<FieldDef<string>>>(parse(model).filteredFields, {
@@ -46,10 +46,10 @@ describe('compile/data/nullfilter', function() {
       });
     });
 
-    it('should add no null filter if filterInvalid is false', function () {
+    it('should add no null filter if when invalidValues is null', function () {
       const model = parseUnitModelWithScale(mergeDeep(spec, {
         config: {
-          filterInvalid: false
+          invalidValues: null
         }
       }));
       assert.deepEqual(parse(model), null);

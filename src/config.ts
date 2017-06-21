@@ -147,11 +147,11 @@ export interface VLOnlyConfig {
   countTitle?: string;
 
   /**
-   * Whether to filter invalid values (`null` and `NaN`) from the data.
-   * - If set to `true` (default), all data items with null values are filtered.
-   * - If `false`, all data items are included. In this case, invalid values will be interpreted as zeroes.
+   * Defines how Vega-Lite should handle invalid values (`null` and `NaN`).
+   * - If set to `"filter"` (default), all data items with null values are filtered.
+   * - If `null`, all data items are included. In this case, invalid values will be interpreted as zeroes.
    */
-  filterInvalid?: boolean;
+  invalidValues?: 'filter';
 
   /**
    * D3 Number format for axis labels and text tables. For example "s" for SI units.(in the form of [D3 number format pattern](https://github.com/mbostock/d3/wiki/Formatting)).
@@ -222,7 +222,7 @@ export const defaultConfig: Config = {
   timeFormat: '%b %d, %Y',
   countTitle: 'Number of Records',
 
-  filterInvalid: true,
+  invalidValues: 'filter',
 
   cell: defaultCellConfig,
 
@@ -267,7 +267,7 @@ export function initConfig(config: Config) {
 
 const MARK_ROLES = [].concat(PRIMITIVE_MARKS, COMPOSITE_MARK_ROLES) as (Mark | typeof COMPOSITE_MARK_ROLES[0])[];
 
-const VL_ONLY_CONFIG_PROPERTIES: (keyof Config)[] = ['padding', 'numberFormat', 'timeFormat', 'countTitle', 'cell', 'stack', 'overlay', 'scale', 'facet', 'selection', 'filterInvalid'];
+const VL_ONLY_CONFIG_PROPERTIES: (keyof Config)[] = ['padding', 'numberFormat', 'timeFormat', 'countTitle', 'cell', 'stack', 'overlay', 'scale', 'facet', 'selection', 'invalidValues'];
 
 const VL_ONLY_ALL_MARK_SPECIFIC_CONFIG_PROPERTY_INDEX = {
   ...VL_ONLY_MARK_SPECIFIC_CONFIG_PROPERTY_INDEX,
