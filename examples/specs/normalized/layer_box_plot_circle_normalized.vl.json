@@ -7,6 +7,40 @@
   },
   "layer": [
     {
+      "transform": [
+        {
+          "summarize": [
+            {
+              "aggregate": "q1",
+              "field": "people",
+              "as": "lowerBox"
+            },
+            {
+              "aggregate": "q3",
+              "field": "people",
+              "as": "upperBox"
+            },
+            {
+              "aggregate": "median",
+              "field": "people",
+              "as": "midBox"
+            },
+            {
+              "aggregate": "min",
+              "field": "people",
+              "as": "lowerWhisker"
+            },
+            {
+              "aggregate": "max",
+              "field": "people",
+              "as": "upperWhisker"
+            }
+          ],
+          "groupby": [
+            "age"
+          ]
+        }
+      ],
       "layer": [
         {
           "mark": {
@@ -22,13 +56,11 @@
               "axis": {
                 "title": "population"
               },
-              "aggregate": "min",
-              "field": "people",
+              "field": "lowerWhisker",
               "type": "quantitative"
             },
             "x2": {
-              "aggregate": "q1",
-              "field": "people",
+              "field": "lowerBox",
               "type": "quantitative"
             }
           }
@@ -44,13 +76,11 @@
               "type": "ordinal"
             },
             "x": {
-              "aggregate": "q3",
-              "field": "people",
+              "field": "upperBox",
               "type": "quantitative"
             },
             "x2": {
-              "aggregate": "max",
-              "field": "people",
+              "field": "upperWhisker",
               "type": "quantitative"
             }
           }
@@ -66,13 +96,11 @@
               "type": "ordinal"
             },
             "x": {
-              "aggregate": "q1",
-              "field": "people",
+              "field": "lowerBox",
               "type": "quantitative"
             },
             "x2": {
-              "aggregate": "q3",
-              "field": "people",
+              "field": "upperBox",
               "type": "quantitative"
             },
             "size": {
@@ -91,8 +119,7 @@
               "type": "ordinal"
             },
             "x": {
-              "aggregate": "median",
-              "field": "people",
+              "field": "midBox",
               "type": "quantitative"
             },
             "size": {

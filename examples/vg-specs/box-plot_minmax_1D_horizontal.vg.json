@@ -16,11 +16,7 @@
             "url": "data/population.json",
             "format": {
                 "type": "json"
-            }
-        },
-        {
-            "name": "data_0",
-            "source": "source_0",
+            },
             "transform": [
                 {
                     "type": "formula",
@@ -31,28 +27,42 @@
                     "type": "aggregate",
                     "groupby": [],
                     "ops": [
+                        "q1",
+                        "q3",
+                        "median",
                         "min",
-                        "q1"
+                        "max"
                     ],
                     "fields": [
+                        "people",
+                        "people",
+                        "people",
                         "people",
                         "people"
                     ],
                     "as": [
-                        "min_people",
-                        "q1_people"
+                        "lowerBox",
+                        "upperBox",
+                        "midBox",
+                        "lowerWhisker",
+                        "upperWhisker"
                     ]
                 }
             ]
         },
         {
-            "name": "data_1",
+            "name": "data_0",
             "source": "source_0",
             "transform": [
                 {
                     "type": "formula",
-                    "expr": "toNumber(datum[\"people\"])",
-                    "as": "people"
+                    "expr": "toNumber(datum[\"lowerWhisker\"])",
+                    "as": "lowerWhisker"
+                },
+                {
+                    "type": "formula",
+                    "expr": "toNumber(datum[\"lowerBox\"])",
+                    "as": "lowerBox"
                 },
                 {
                     "type": "aggregate",
@@ -78,8 +88,8 @@
             "transform": [
                 {
                     "type": "formula",
-                    "expr": "toNumber(datum[\"people\"])",
-                    "as": "people"
+                    "expr": "toNumber(datum[\"lowerBox\"])",
+                    "as": "lowerBox"
                 },
                 {
                     "type": "aggregate",
@@ -105,8 +115,8 @@
             "transform": [
                 {
                     "type": "formula",
-                    "expr": "toNumber(datum[\"people\"])",
-                    "as": "people"
+                    "expr": "toNumber(datum[\"midBox\"])",
+                    "as": "midBox"
                 },
                 {
                     "type": "aggregate",
@@ -178,14 +188,14 @@
                 "update": {
                     "x": {
                         "scale": "x",
-                        "field": "min_people"
+                        "field": "lowerWhisker"
                     },
                     "y": {
                         "value": 10.5
                     },
                     "x2": {
                         "scale": "x",
-                        "field": "q1_people"
+                        "field": "lowerBox"
                     },
                     "stroke": {
                         "value": "#4c78a8"
@@ -205,14 +215,14 @@
                 "update": {
                     "x": {
                         "scale": "x",
-                        "field": "q3_people"
+                        "field": "upperBox"
                     },
                     "y": {
                         "value": 10.5
                     },
                     "x2": {
                         "scale": "x",
-                        "field": "max_people"
+                        "field": "upperWhisker"
                     },
                     "stroke": {
                         "value": "#4c78a8"
@@ -232,11 +242,11 @@
                 "update": {
                     "x": {
                         "scale": "x",
-                        "field": "q1_people"
+                        "field": "lowerBox"
                     },
                     "x2": {
                         "scale": "x",
-                        "field": "q3_people"
+                        "field": "upperBox"
                     },
                     "yc": {
                         "value": 10.5
@@ -262,7 +272,7 @@
                 "update": {
                     "xc": {
                         "scale": "x",
-                        "field": "median_people"
+                        "field": "midBox"
                     },
                     "yc": {
                         "value": 10.5
@@ -275,6 +285,9 @@
                     },
                     "fill": {
                         "value": "white"
+                    },
+                    "opacity": {
+                        "value": 0.7
                     }
                 }
             },
@@ -289,31 +302,31 @@
                 "fields": [
                     {
                         "data": "data_0",
-                        "field": "min_people"
+                        "field": "lowerWhisker"
                     },
                     {
                         "data": "data_0",
-                        "field": "q1_people"
+                        "field": "lowerBox"
                     },
                     {
                         "data": "data_1",
-                        "field": "q3_people"
+                        "field": "upperBox"
                     },
                     {
                         "data": "data_1",
-                        "field": "max_people"
+                        "field": "upperWhisker"
                     },
                     {
                         "data": "data_2",
-                        "field": "q1_people"
+                        "field": "lowerBox"
                     },
                     {
                         "data": "data_2",
-                        "field": "q3_people"
+                        "field": "upperBox"
                     },
                     {
                         "data": "data_3",
-                        "field": "median_people"
+                        "field": "midBox"
                     }
                 ],
                 "sort": true
