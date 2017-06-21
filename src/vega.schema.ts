@@ -173,7 +173,41 @@ export type VgEncodeEntry = {
 //  ...
 // }
 
-export type VgAxis = any;
+export type AxisOrient = 'top' | 'right' | 'left' | 'bottom';
+
+export interface VgAxis {
+  scale: string;
+  domain?: boolean;
+  format?: string;
+  grid?: boolean;
+  gridScale?: string;
+
+  labels?: boolean;
+  labelPadding?: number;
+  labelOverlap?: boolean | 'parity' | 'greedy';
+  maxExtent?: number;
+  minExtent?: number;
+  offset?: number;
+  orient?: AxisOrient;
+  position?: number;
+
+  ticks?: boolean;
+  tickCount?: number;
+  tickExtra?: boolean;
+  tickSize?: number;
+
+  title?: string;
+  titleAlign?: string;
+  titleAngle?: number;
+  titleMaxLength?: number;
+  titlePadding?: number;
+
+  values?: any[] | VgSignalRef;
+  zindex?: number;
+
+  encode?: VgAxisEncode;
+}
+
 export type VgLegend = any;
 
 export interface VgBinTransform extends BaseBin {

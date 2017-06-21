@@ -1,14 +1,14 @@
-import {Axis, AxisOrient} from '../../axis';
+import {Axis} from '../../axis';
 import {Channel, SpatialScaleChannel, X} from '../../channel';
 import {FieldDef} from '../../fielddef';
 import {ScaleType} from '../../scale';
 import {NOMINAL, ORDINAL, TEMPORAL} from '../../type';
 import {contains, extend, keys} from '../../util';
-import {VgAxis} from '../../vega.schema';
+import {AxisOrient, VgAxis} from '../../vega.schema';
 import {timeFormatExpression} from '../common';
 import {UnitModel} from '../unit';
 
-export function labels(model: UnitModel, channel: SpatialScaleChannel, specifiedLabelsSpec: any, def: VgAxis) {
+export function labels(model: UnitModel, channel: SpatialScaleChannel, specifiedLabelsSpec: any, def: Partial<VgAxis>) {
   const fieldDef = model.fieldDef(channel) ||
     (
       channel === 'x' ? model.fieldDef('x2') :

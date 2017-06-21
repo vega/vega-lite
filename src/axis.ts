@@ -1,9 +1,8 @@
 import {DateTime} from './datetime';
 import {Guide, GuideEncodingEntry, VlOnlyGuideConfig} from './guide';
-import {VgAxisBase, VgAxisConfig, VgAxisEncode} from './vega.schema';
+import {AxisOrient, VgAxis, VgAxisBase, VgAxisConfig, VgAxisEncode} from './vega.schema';
 
 
-export type AxisOrient = 'top' | 'right' | 'left' | 'bottom';
 
 export interface AxisConfig extends VgAxisConfig, VlOnlyGuideConfig {}
 
@@ -96,8 +95,8 @@ export interface AxisEncoding {
   title?: GuideEncodingEntry;
 }
 
-export const AXIS_PROPERTIES:(keyof Axis)[] = [
-  'domain', 'format', 'grid', 'labelPadding', 'labels', 'labelOverlap', 'maxExtent', 'minExtent', 'offset', 'orient', 'position', 'tickCount', 'ticks', 'tickSize', 'title', 'titlePadding', 'values', 'zindex'
+export const AXIS_PROPERTIES:(keyof (VgAxis|Axis))[] = [
+  'domain', 'format', 'grid', 'labelPadding', 'labels', 'labelOverlap', 'maxExtent', 'minExtent', 'offset', 'orient', 'position', 'tickCount', 'tickExtra', 'ticks', 'tickSize', 'title', 'titlePadding', 'values', 'zindex'
 ];
 
 export interface AxisConfigMixins {
