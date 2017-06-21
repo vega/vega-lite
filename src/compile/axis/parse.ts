@@ -81,9 +81,9 @@ function parseAxis(channel: SpatialScaleChannel, model: UnitModel, isGridAxis: b
   });
 
   // Special case for gridScale since gridScale is not a Vega-Lite Axis property.
-  const gridScale = getSpecifiedOrDefaultValue('gridScale', axis, channel, model, isGridAxis);
+  const gridScale = rules.gridScale(model, channel, isGridAxis);
   if (gridScale !== undefined) {
-      vgAxis.gridScale = gridScale;
+    vgAxis.gridScale = gridScale;
   }
 
   // 2) Add guide encode definition groups
@@ -112,12 +112,12 @@ function parseAxis(channel: SpatialScaleChannel, model: UnitModel, isGridAxis: b
   return vgAxis;
 }
 
-function getSpecifiedOrDefaultValue(property: keyof VgAxis, specifiedAxis: Axis, channel: SpatialScaleChannel, model: UnitModel, isGridAxis: boolean) {
+function getSpecifiedOrDefaultValue<K extends keyof (Axis|VgAxis)>(property: K, specifiedAxis: Axis, channel: SpatialScaleChannel, model: UnitModel, isGridAxis: boolean): VgAxis[K] {
   const fieldDef = model.fieldDef(channel);
 
   switch (property) {
     case 'labels':
-      return isGridAxis ? false : specifiedAxis[property];
+      return isGridAxis ? false : specifiedAxis.labels;
     case 'labelOverlap':
       return rules.labelOverlap(fieldDef, specifiedAxis, channel, isGridAxis);  // TODO: scaleType
     case 'domain':
@@ -128,8 +128,6 @@ function getSpecifiedOrDefaultValue(property: keyof VgAxis, specifiedAxis: Axis,
       return rules.format(specifiedAxis, fieldDef, model.config);
     case 'grid':
       return rules.grid(model, channel, isGridAxis); // FIXME: refactor this
-    case 'gridScale':
-      return rules.gridScale(model, channel, isGridAxis);
     case 'orient':
       return rules.orient(specifiedAxis, channel);
     case 'tickCount':
