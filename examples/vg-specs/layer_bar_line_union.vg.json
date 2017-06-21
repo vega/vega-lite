@@ -236,7 +236,7 @@
             "scale": "x",
             "orient": "bottom",
             "tickCount": 5,
-            "title": "a",
+            "title": "a, b",
             "zindex": 1,
             "encode": {
                 "labels": {

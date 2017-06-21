@@ -13,6 +13,7 @@ import {StackProperties} from '../stack';
 import {Transform} from '../transform';
 import {Dict, extend, vals, varName} from '../util';
 import {VgAxis, VgData, VgEncodeEntry, VgLayout, VgLegend, VgMarkGroup, VgScale, VgSignal, VgSignalRef, VgValueRef} from '../vega.schema';
+import {assembleAxes} from './axis/assemble';
 import {AxisComponent, AxisComponentIndex} from './axis/component';
 import {DataComponent} from './data/index';
 import {LayoutSize, LayoutSizeComponent} from './layout/component';
@@ -247,12 +248,7 @@ export abstract class Model {
   public abstract assembleMarks(): VgMarkGroup[]; // TODO: VgMarkGroup[]
 
   public assembleAxes(): VgAxis[] {
-    const {x, y} = this.component.axes;
-
-    return [
-      ...(x ? x.axes.concat(x.gridAxes) : []),
-      ...(y ? y.axes.concat(y.gridAxes) : []),
-    ];
+    return assembleAxes(this.component.axes);
   }
 
   public assembleLegends(): VgLegend[] {

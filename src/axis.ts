@@ -99,6 +99,8 @@ export const AXIS_PROPERTIES:(keyof (VgAxis|Axis))[] = [
   'domain', 'format', 'grid', 'labelPadding', 'labels', 'labelOverlap', 'maxExtent', 'minExtent', 'offset', 'orient', 'position', 'tickCount', 'tickExtra', 'ticks', 'tickSize', 'title', 'titlePadding', 'values', 'zindex'
 ];
 
+export const VG_AXIS_PROPERTIES: (keyof VgAxis)[] = [].concat(AXIS_PROPERTIES, ['gridScale']);
+
 export interface AxisConfigMixins {
   /** Generic axis config. */
   axis?: AxisConfig;

@@ -4,9 +4,11 @@
 
 import {logger, LoggerInterface, Warn} from 'vega-util';
 import {AggregateOp} from './aggregate';
+import {Axis} from './axis';
 import {Channel} from './channel';
 import {DateTime, DateTimeExpr} from './datetime';
 import {FieldDef} from './fielddef';
+import {Legend} from './legend';
 import {Mark} from './mark';
 import {Scale, ScaleType} from './scale';
 import {TimeUnit} from './timeunit';
@@ -222,8 +224,8 @@ export namespace message {
     return `Scale type "${scaleType}" does not work with mark ${mark}.`;
   }
 
-  export function mergeConflictingScaleProperty<T>(property: keyof Scale, v1: T, v2: T) {
-    return `Conflicting scale property ${property} (${v1} and ${v2}).  Using ${v1}.`;
+  export function mergeConflictingScaleProperty<T>(property: string, propertyOf: 'scale' | 'axis' | 'legend', v1: T, v2: T) {
+    return `Conflicting ${propertyOf} property ${property} (${v1} and ${v2}).  Using ${v1}.`;
   }
 
   export function independentScaleMeansIndependentGuide(channel: Channel) {

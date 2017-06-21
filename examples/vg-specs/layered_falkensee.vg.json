@@ -480,7 +480,7 @@
             "scale": "x",
             "orient": "bottom",
             "tickCount": 5,
-            "title": "YEAR(start)",
+            "title": "YEAR(start), YEAR(year)",
             "zindex": 1,
             "encode": {
                 "labels": {
@@ -509,7 +509,8 @@
             "orient": "bottom",
             "tickCount": 5,
             "ticks": false,
-            "zindex": 0
+            "zindex": 0,
+            "gridScale": "y"
         },
         {
             "scale": "y",

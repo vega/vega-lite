@@ -385,9 +385,9 @@
             }
         },
         {
+            "title": "population",
             "scale": "y",
             "orient": "left",
-            "title": "population",
             "zindex": 1
         },
         {

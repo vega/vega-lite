@@ -14,7 +14,7 @@ import {stack, StackProperties} from '../stack';
 import {Dict, duplicate, extend, vals} from '../util';
 import {VgData, VgEncodeEntry, VgLayout, VgScale, VgSignal} from '../vega.schema';
 import {AxisIndex} from './axis/component';
-import {parseAxisComponent} from './axis/parse';
+import {parseUnitAxis} from './axis/parse';
 import {applyConfig} from './common';
 import {assembleData} from './data/assemble';
 import {parseData} from './data/parse';
@@ -205,7 +205,7 @@ export class UnitModel extends ModelWithField {
   }
 
   public parseAxisAndHeader() {
-    this.component.axes = parseAxisComponent(this, [X, Y]);
+    this.component.axes = parseUnitAxis(this);
   }
 
   public parseLegend() {

@@ -110,7 +110,7 @@ describe('src/compile', function() {
       });
       parseScaleCore(model);
       assert.equal(model.getScaleComponent('y').explicit.type, 'log');
-      assert.equal(localLogger.warns[0], log.message.mergeConflictingScaleProperty('type', 'log', 'pow'));
+      assert.equal(localLogger.warns[0], log.message.mergeConflictingScaleProperty('type', 'scale', 'log', 'pow'));
     }));
 
     it('favors the band over point', () => {

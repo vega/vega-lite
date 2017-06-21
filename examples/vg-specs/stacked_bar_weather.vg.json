@@ -163,10 +163,10 @@
     ],
     "axes": [
         {
+            "title": "Month of the year",
             "scale": "x",
             "orient": "bottom",
             "tickCount": 5,
-            "title": "Month of the year",
             "zindex": 1,
             "encode": {
                 "labels": {

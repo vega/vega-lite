@@ -7,7 +7,7 @@ import * as util from '../../util';
 import {keys} from '../../util';
 import {VgScale} from '../../vega.schema';
 import {Model} from '../model';
-import {Explicit, mergeValuesWithExplicit, Split} from '../split';
+import {Explicit, mergeValuesWithExplicit, Split, tieBreakByComparing} from '../split';
 import {UnitModel} from '../unit';
 import {ScaleComponent, ScaleComponentIndex} from './component';
 import {parseScaleRange} from './range';
@@ -99,11 +99,11 @@ export function parseNonUnitScaleProperty(model: Model, property: keyof (Scale |
       const childComponent = child.component.scales[channel];
       if (childComponent) {
         const childValueWithExplicit = childComponent.getWithExplicit(property);
-        // TODO: precedence rule
-        valueWithExplicit = mergeValuesWithExplicit(
+        valueWithExplicit = mergeValuesWithExplicit<VgScale, any>(
           valueWithExplicit, childValueWithExplicit,
           property,
-          (v1, v2) => {
+          'scale',
+          tieBreakByComparing<VgScale, any>((v1, v2) => {
             switch (property) {
               case 'range':
                 // For range step, prefer larger step
@@ -111,9 +111,10 @@ export function parseNonUnitScaleProperty(model: Model, property: keyof (Scale |
                   return v1.step - v2.step;
                 }
                 return 0;
+              // TODO: precedence rule for other properties
             }
             return 0;
-          }
+          })
         );
       }
     }
