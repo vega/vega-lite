@@ -1700,9 +1700,12 @@
           "$ref": "#/definitions/FacetConfig",
           "description": "Facet Config "
         },
-        "filterInvalid": {
-          "description": "Whether to filter invalid values (`null` and `NaN`) from the data.\n- If set to `true` (default), all data items with null values are filtered.\n- If `false`, all data items are included. In this case, invalid values will be interpreted as zeroes.",
-          "type": "boolean"
+        "invalidValues": {
+          "description": "Defines how Vega-Lite should handle invalid values (`null` and `NaN`).\n- If set to `\"filter\"` (default), all data items with null values are filtered.\n- If `null`, all data items are included. In this case, invalid values will be interpreted as zeroes.",
+          "enum": [
+            "filter"
+          ],
+          "type": "string"
         },
         "legend": {
           "$ref": "#/definitions/LegendConfig",
@@ -5685,9 +5688,12 @@
           "$ref": "#/definitions/FacetConfig",
           "description": "Facet Config "
         },
-        "filterInvalid": {
-          "description": "Whether to filter invalid values (`null` and `NaN`) from the data.\n- If set to `true` (default), all data items with null values are filtered.\n- If `false`, all data items are included. In this case, invalid values will be interpreted as zeroes.",
-          "type": "boolean"
+        "invalidValues": {
+          "description": "Defines how Vega-Lite should handle invalid values (`null` and `NaN`).\n- If set to `\"filter\"` (default), all data items with null values are filtered.\n- If `null`, all data items are included. In this case, invalid values will be interpreted as zeroes.",
+          "enum": [
+            "filter"
+          ],
+          "type": "string"
         },
         "numberFormat": {
           "description": "D3 Number format for axis labels and text tables. For example \"s\" for SI units.(in the form of [D3 number format pattern](https://github.com/mbostock/d3/wiki/Formatting)).\n\n__Default value:__ `\"s\"` (except for text marks that encode a count field, the default value is `\"d\"`).",
