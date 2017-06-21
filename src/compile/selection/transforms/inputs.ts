@@ -25,7 +25,7 @@ const inputBindings:TransformCompiler = {
           events: selCmpt.events,
           update: `datum && ${datum}[${stringValue(p.field)}]`
         }],
-        bind: bind[p.field] || bind[p.encoding] || bind
+        bind: bind[p.field] || bind[p.channel] || bind
       });
     });
 

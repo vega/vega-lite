@@ -44,7 +44,7 @@ export interface SelectionComponent {
 
 export interface ProjectComponent {
   field?: string;
-  encoding?: ScaleChannel;
+  channel?: ScaleChannel;
 }
 
 export interface SelectionCompiler {

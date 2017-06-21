@@ -27,20 +27,20 @@ describe('Selection', function() {
 
     assert.equal(component.one.name, 'one');
     assert.equal(component.one.type, 'single');
-    assert.sameDeepMembers(component['one'].project, [{field: '_id', encoding: null}]);
+    assert.sameDeepMembers(component['one'].project, [{field: '_id', channel: null}]);
     assert.sameDeepMembers(component['one'].events, parseSelector('click', 'scope'));
 
     assert.equal(component.two.name, 'two');
     assert.equal(component.two.type, 'multi');
     assert.equal(component.two.toggle, 'event.shiftKey');
-    assert.sameDeepMembers(component['two'].project, [{field: '_id', encoding: null}]);
+    assert.sameDeepMembers(component['two'].project, [{field: '_id', channel: null}]);
     assert.sameDeepMembers(component['two'].events, parseSelector('click', 'scope'));
 
     assert.equal(component.three.name, 'three');
     assert.equal(component.three.type, 'interval');
     assert.equal(component.three.translate, '[mousedown, window:mouseup] > window:mousemove!');
     assert.equal(component.three.zoom, 'wheel');
-    assert.sameDeepMembers<selection.ProjectComponent>(component['three'].project, [{field: 'Horsepower', encoding: 'x'}, {field: 'Miles_per_Gallon', encoding: 'y'}]);
+    assert.sameDeepMembers<selection.ProjectComponent>(component['three'].project, [{field: 'Horsepower', channel: 'x'}, {field: 'Miles_per_Gallon', channel: 'y'}]);
     assert.sameDeepMembers(component['three'].events, parseSelector('[mousedown, window:mouseup] > window:mousemove!', 'scope'));
   });
 
@@ -65,20 +65,20 @@ describe('Selection', function() {
 
     assert.equal(component.one.name, 'one');
     assert.equal(component.one.type, 'single');
-    assert.sameDeepMembers(component['one'].project, [{field: 'Cylinders', encoding: null}]);
+    assert.sameDeepMembers(component['one'].project, [{field: 'Cylinders', channel: null}]);
     assert.sameDeepMembers(component['one'].events, parseSelector('dblclick', 'scope'));
 
     assert.equal(component.two.name, 'two');
     assert.equal(component.two.type, 'multi');
     assert.equal(component.two.toggle, 'event.ctrlKey');
-    assert.sameDeepMembers<selection.ProjectComponent>(component['two'].project, [{field: 'Origin', encoding: 'color'}]);
+    assert.sameDeepMembers<selection.ProjectComponent>(component['two'].project, [{field: 'Origin', channel: 'color'}]);
     assert.sameDeepMembers(component['two'].events, parseSelector('mouseover', 'scope'));
 
     assert.equal(component.three.name, 'three');
     assert.equal(component.three.type, 'interval');
     assert.equal(component.three.translate, false);
     assert.equal(component.three.zoom, 'wheel[event.altKey]');
-    assert.sameDeepMembers<selection.ProjectComponent>(component['three'].project, [{field: 'Miles_per_Gallon', encoding: 'y'}]);
+    assert.sameDeepMembers<selection.ProjectComponent>(component['three'].project, [{field: 'Miles_per_Gallon', channel: 'y'}]);
     assert.sameDeepMembers(component['three'].events, parseSelector('[mousedown[!event.shiftKey], mouseup] > mousemove', 'scope'));
   });
 
@@ -103,20 +103,20 @@ describe('Selection', function() {
 
     assert.equal(component.one.name, 'one');
     assert.equal(component.one.type, 'single');
-    assert.sameDeepMembers(component['one'].project, [{field: 'Cylinders', encoding: null}]);
+    assert.sameDeepMembers(component['one'].project, [{field: 'Cylinders', channel: null}]);
     assert.sameDeepMembers(component['one'].events, parseSelector('dblclick', 'scope'));
 
     assert.equal(component.two.name, 'two');
     assert.equal(component.two.type, 'multi');
     assert.equal(component.two.toggle, 'event.ctrlKey');
-    assert.sameDeepMembers<selection.ProjectComponent>(component['two'].project, [{field: 'Origin', encoding: 'color'}]);
+    assert.sameDeepMembers<selection.ProjectComponent>(component['two'].project, [{field: 'Origin', channel: 'color'}]);
     assert.sameDeepMembers(component['two'].events, parseSelector('mouseover', 'scope'));
 
     assert.equal(component.three.name, 'three');
     assert.equal(component.three.type, 'interval');
     assert(!component.three.translate);
     assert.equal(component.three.zoom, 'wheel[event.altKey]');
-    assert.sameDeepMembers<selection.ProjectComponent>(component['three'].project, [{field: 'Miles_per_Gallon', encoding: 'y'}]);
+    assert.sameDeepMembers<selection.ProjectComponent>(component['three'].project, [{field: 'Miles_per_Gallon', channel: 'y'}]);
     assert.sameDeepMembers(component['three'].events, parseSelector('[mousedown[!event.shiftKey], mouseup] > mousemove', 'scope'));
   });
 });

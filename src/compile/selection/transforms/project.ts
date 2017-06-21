@@ -44,12 +44,12 @@ const project:TransformCompiler = {
     const projection = selCmpt.project || (selCmpt.project = []);
     for (const field in channels) {
       if (channels.hasOwnProperty(field)) {
-        projection.push({field: field, encoding: channels[field]});
+        projection.push({field: field, channel: channels[field]});
       }
     }
 
     const fields = selCmpt.fields || (selCmpt.fields = {});
-    projection.filter((p) => p.encoding).forEach((p) => fields[p.encoding] = p.field);
+    projection.filter((p) => p.channel).forEach((p) => fields[p.channel] = p.field);
 
     if (keys(timeUnits).length) {
       selCmpt.timeUnit = new TimeUnitNode(timeUnits);
