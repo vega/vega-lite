@@ -6,6 +6,7 @@ import {SelectionDomain} from '../../scale';
 import {BrushConfig, SelectionDef, SelectionResolutions, SelectionTypes} from '../../selection';
 import {Dict, extend, isString, logicalExpr, stringValue, varName} from '../../util';
 import {isSignalRefDomain, VgBinding, VgData, VgDomain, VgEventStream, VgScale, VgSignalRef} from '../../vega.schema';
+import {TimeUnitNode} from '../data/timeunit';
 import {LayerModel} from '../layer';
 import {Model} from '../model';
 import {UnitModel} from '../unit';
@@ -33,6 +34,7 @@ export interface SelectionComponent {
   // Transforms
   project?: ProjectComponent[];
   fields?: any;
+  timeUnit?: TimeUnitNode;
   scales?: Channel[];
   toggle?: any;
   translate?: any;
