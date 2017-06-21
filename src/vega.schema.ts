@@ -208,7 +208,30 @@ export interface VgAxis {
   encode?: VgAxisEncode;
 }
 
-export type VgLegend = any;
+export interface VgLegend {
+  fill?: string;
+  stroke?: string;
+  size?: string;
+  shape?: string;
+  opacity?: string;
+
+  entryPadding?: number;
+  fillColor?: string;
+  format?: string;
+
+  offset?: number;
+  orient?: LegendOrient;
+  padding?: number;
+
+  tickCount?: number;
+  title?: string;
+  titleAlign?: string;
+  type?: 'symbol' | 'gradient';
+  values?: any[] | VgSignalRef;
+  zindex?: number;
+
+  encode?: VgLegendEncode;
+}
 
 export interface VgBinTransform extends BaseBin {
   type: 'bin';
@@ -574,6 +597,8 @@ export interface VgAxisConfig extends VgAxisBase {
   titleY?: number;
 }
 
+export type LegendOrient = 'left' | 'right' | 'top-left' | 'top-right' | 'bottom-left' | 'bottom-right' | 'none';
+
 export interface VgLegendBase {
   /**
    * Padding (in pixels) between legend entries in a symbol legend.
@@ -590,7 +615,7 @@ export interface VgLegendBase {
    *
    * __Default value:__  `"right"`
    */
-  orient?: 'left' | 'right' | 'top-left' | 'top-right' | 'bottom-left' | 'bottom-right' | 'none';
+  orient?: LegendOrient;
 
   /**
    * The offset, in pixels, by which to displace the legend from the edge of the enclosing group or data rectangle.
