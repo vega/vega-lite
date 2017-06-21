@@ -23,7 +23,7 @@ import {parseMarkDef} from './mark/mark';
 import {RepeaterValue} from './repeat';
 import {assembleScale} from './scale/assemble';
 import {ScaleComponent, ScaleComponentIndex} from './scale/component';
-import {NON_TYPE_DOMAIN_RANGE_VEGA_SCALE_PROPERTIES, parseScale} from './scale/parse';
+import {parseScale} from './scale/parse';
 import {SelectionComponent} from './selection/selection';
 import {Split} from './split';
 import {UnitModel} from './unit';

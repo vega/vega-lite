@@ -1,6 +1,6 @@
 import {SCALE_CHANNELS, ScaleChannel} from '../../channel';
 import {FieldDef, getFieldDef, isConditionalDef, isFieldDef} from '../../fielddef';
-import {Scale, scaleCompatible, ScaleType, scaleTypePrecedence} from '../../scale';
+import {NON_TYPE_DOMAIN_RANGE_VEGA_SCALE_PROPERTIES, Scale, scaleCompatible, ScaleType, scaleTypePrecedence} from '../../scale';
 import {keys} from '../../util';
 import {VgScale} from '../../vega.schema';
 import {Model} from '../model';
@@ -12,15 +12,6 @@ import {parseScaleProperty} from './properties';
 import {parseScaleRange} from './range';
 import {scaleType} from './type';
 
-export const NON_TYPE_DOMAIN_RANGE_VEGA_SCALE_PROPERTIES: (keyof (Scale | VgScale))[] = [
-  'round',
-  // quantitative / time
-  'clamp', 'nice',
-  // quantitative
-  'exponent', 'interpolate', 'zero', // zero depends on domain
-  // ordinal
-  'padding', 'paddingInner', 'paddingOuter', // padding
-];
 
 export function parseScale(model: Model) {
   parseScaleCore(model);
