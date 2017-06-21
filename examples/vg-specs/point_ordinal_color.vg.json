@@ -141,14 +141,13 @@
         },
         {
             "name": "color",
-            "type": "sequential",
+            "type": "ordinal",
             "domain": {
                 "data": "data_0",
-                "field": "a"
+                "field": "a",
+                "sort": true
             },
-            "range": "ramp",
-            "nice": false,
-            "zero": false
+            "range": "ordinal"
         }
     ],
     "axes": [

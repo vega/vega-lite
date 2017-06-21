@@ -771,7 +771,7 @@
         },
         {
             "name": "color",
-            "type": "sequential",
+            "type": "ordinal",
             "domain": {
                 "fields": [
                     {
@@ -785,9 +785,7 @@
                 ],
                 "sort": true
             },
-            "range": "ramp",
-            "nice": false,
-            "zero": false
+            "range": "ordinal"
         }
     ],
     "axes": [
