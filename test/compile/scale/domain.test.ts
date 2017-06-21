@@ -10,7 +10,7 @@ import {PositionFieldDef} from '../../../src/fielddef';
 import * as log from '../../../src/log';
 import {ScaleType} from '../../../src/scale';
 import {SortField} from '../../../src/sort';
-import {FieldRefUnionDomain, VgDataRef, VgDomain} from '../../../src/vega.schema';
+import {FieldRefUnionDomain, VgDataRef, VgDomain, VgSortField} from '../../../src/vega.schema';
 import {parseUnitModel} from '../../util';
 
 describe('compile/scale', () => {
@@ -329,13 +329,13 @@ describe('compile/scale', () => {
       });
     });
 
-    describe('for ordinal', function() {
+    describe('for nominal', function() {
       it('should return correct domain with the provided sort property', function() {
         const sortDef: SortField = {op: 'min' as 'min', field:'Acceleration'};
         const model = parseUnitModel({
             mark: "point",
             encoding: {
-              y: {field: 'origin', type: "ordinal", sort: sortDef}
+              y: {field: 'origin', type: "nominal", sort: sortDef}
             }
           });
         assert.deepEqual(testParseDomainForChannel(model,'y'), {
@@ -350,7 +350,7 @@ describe('compile/scale', () => {
         const model = parseUnitModel({
             mark: "point",
             encoding: {
-              y: {field: 'origin', type: "ordinal", sort: sortDef}
+              y: {field: 'origin', type: "nominal", sort: sortDef}
             }
           });
 
@@ -365,7 +365,7 @@ describe('compile/scale', () => {
         const model = parseUnitModel({
           mark: "point",
           encoding: {
-            y: {field: 'origin', type: "ordinal"}
+            y: {field: 'origin', type: "nominal"}
           }
         });
 
@@ -501,12 +501,11 @@ describe('compile/scale', () => {
       const model = parseUnitModel({
         mark: 'bar',
         encoding: {
-          x: {field: 'a', type: 'quantitative', sort: "descending"},
+          x: {field: 'a', type: 'nominal', sort: "descending"},
           y: {field: 'b', aggregate: 'sum', type: 'quantitative'}
         }
       });
-      const sort = domainSort(model, 'x', ScaleType.ORDINAL);
-      assert.deepEqual(sort, true);
+      assert.deepEqual<VgSortField>(domainSort(model, 'x', ScaleType.ORDINAL), {op: 'min', field: 'a', order: 'descending'});
     });
   });
 });

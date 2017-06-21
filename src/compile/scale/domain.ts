@@ -1,6 +1,6 @@
 import {SHARED_DOMAIN_OP_INDEX} from '../../aggregate';
 import {binToString} from '../../bin';
-import {Channel, ScaleChannel} from '../../channel';
+import {Channel, isScaleChannel, ScaleChannel} from '../../channel';
 import {MAIN, RAW} from '../../data';
 import {DateTime, dateTimeExpr, isDateTime} from '../../datetime';
 import {FieldDef} from '../../fielddef';
@@ -187,7 +187,7 @@ function parseSingleChannelDomain(scaleType: ScaleType, domain: Domain, model: U
     };
   }
 
-  const sort = domainSort(model, channel, scaleType);
+  const sort = isScaleChannel(channel) ? domainSort(model, channel, scaleType) : undefined;
 
   if (domain === 'unaggregated') {
     return {
@@ -249,7 +249,7 @@ function parseSingleChannelDomain(scaleType: ScaleType, domain: Domain, model: U
 }
 
 
-export function domainSort(model: UnitModel, channel: Channel, scaleType: ScaleType): VgSortField {
+export function domainSort(model: UnitModel, channel: ScaleChannel, scaleType: ScaleType): VgSortField {
   if (!hasDiscreteDomain(scaleType)) {
     return undefined;
   }
@@ -261,7 +261,15 @@ export function domainSort(model: UnitModel, channel: Channel, scaleType: ScaleT
     return sort;
   }
 
-  if (util.contains(['ascending', 'descending', undefined /* default =ascending*/], sort)) {
+  if (sort === 'descending') {
+    return {
+      op: 'min',
+      field: model.field(channel),
+      order: 'descending'
+    };
+  }
+
+  if (util.contains(['ascending', undefined /* default =ascending*/], sort)) {
     return true;
   }
 
