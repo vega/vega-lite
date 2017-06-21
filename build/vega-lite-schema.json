@@ -3089,17 +3089,8 @@
           "type": "number"
         },
         "orient": {
-          "description": "The orientation of the legend. One of `\"left\"` or `\"right\"`. This determines how the legend is positioned within the scene. The default is `\"right\"`.\n\n__Default value:__  `\"right\"`",
-          "enum": [
-            "left",
-            "right",
-            "top-left",
-            "top-right",
-            "bottom-left",
-            "bottom-right",
-            "none"
-          ],
-          "type": "string"
+          "$ref": "#/definitions/LegendOrient",
+          "description": "The orientation of the legend. One of `\"left\"` or `\"right\"`. This determines how the legend is positioned within the scene. The default is `\"right\"`.\n\n__Default value:__  `\"right\"`"
         },
         "padding": {
           "description": "The padding, in pixels, between the legend and axis.",
@@ -3237,17 +3228,8 @@
           "type": "number"
         },
         "orient": {
-          "description": "The orientation of the legend. One of `\"left\"` or `\"right\"`. This determines how the legend is positioned within the scene. The default is `\"right\"`.\n\n__Default value:__  `\"right\"`",
-          "enum": [
-            "left",
-            "right",
-            "top-left",
-            "top-right",
-            "bottom-left",
-            "bottom-right",
-            "none"
-          ],
-          "type": "string"
+          "$ref": "#/definitions/LegendOrient",
+          "description": "The orientation of the legend. One of `\"left\"` or `\"right\"`. This determines how the legend is positioned within the scene. The default is `\"right\"`.\n\n__Default value:__  `\"right\"`"
         },
         "padding": {
           "description": "The padding, in pixels, between the legend and axis.",
@@ -3415,6 +3397,18 @@
         "type"
       ],
       "type": "object"
+    },
+    "LegendOrient": {
+      "enum": [
+        "left",
+        "right",
+        "top-left",
+        "top-right",
+        "bottom-left",
+        "bottom-right",
+        "none"
+      ],
+      "type": "string"
     },
     "AndFilter": {
       "additionalProperties": false,
@@ -6123,17 +6117,8 @@
           "type": "number"
         },
         "orient": {
-          "description": "The orientation of the legend. One of `\"left\"` or `\"right\"`. This determines how the legend is positioned within the scene. The default is `\"right\"`.\n\n__Default value:__  `\"right\"`",
-          "enum": [
-            "left",
-            "right",
-            "top-left",
-            "top-right",
-            "bottom-left",
-            "bottom-right",
-            "none"
-          ],
-          "type": "string"
+          "$ref": "#/definitions/LegendOrient",
+          "description": "The orientation of the legend. One of `\"left\"` or `\"right\"`. This determines how the legend is positioned within the scene. The default is `\"right\"`.\n\n__Default value:__  `\"right\"`"
         },
         "padding": {
           "description": "The padding, in pixels, between the legend and axis.",
@@ -6227,17 +6212,8 @@
           "type": "number"
         },
         "orient": {
-          "description": "The orientation of the legend. One of `\"left\"` or `\"right\"`. This determines how the legend is positioned within the scene. The default is `\"right\"`.\n\n__Default value:__  `\"right\"`",
-          "enum": [
-            "left",
-            "right",
-            "top-left",
-            "top-right",
-            "bottom-left",
-            "bottom-right",
-            "none"
-          ],
-          "type": "string"
+          "$ref": "#/definitions/LegendOrient",
+          "description": "The orientation of the legend. One of `\"left\"` or `\"right\"`. This determines how the legend is positioned within the scene. The default is `\"right\"`.\n\n__Default value:__  `\"right\"`"
         },
         "padding": {
           "description": "The padding, in pixels, between the legend and axis.",

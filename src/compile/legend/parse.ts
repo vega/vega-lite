@@ -63,7 +63,7 @@ export function parseLegend(model: UnitModel, channel: NonspatialScaleChannel): 
   return def;
 }
 
-function getSpecifiedOrDefaultValue(property: keyof VgLegend, specifiedLegend: Legend, channel: NonspatialScaleChannel, model: UnitModel) {
+function getSpecifiedOrDefaultValue(property: keyof (Legend | VgLegend), specifiedLegend: Legend, channel: NonspatialScaleChannel, model: UnitModel) {
   const fieldDef = model.fieldDef(channel);
 
   switch (property) {
@@ -85,10 +85,10 @@ function getSpecifiedOrDefaultValue(property: keyof VgLegend, specifiedLegend: L
 /**
  * Move legend from child up.
  */
-export function moveSharedLegendUp(legendComponent: LegendComponent, child: Model, channel: Channel) {
+export function moveSharedLegendUp(legendComponents: LegendComponentIndex, child: Model, channel: Channel) {
   // just use the first legend definition for each channel
-  if (!legendComponent[channel]) {
-    legendComponent[channel] = child.component.legends[channel];
+  if (!legendComponents[channel]) {
+    legendComponents[channel] = child.component.legends[channel];
   }
   delete child.component.legends[channel];
 }

@@ -1,6 +1,6 @@
 import {DateTime} from './datetime';
 import {Guide, GuideEncodingEntry, VlOnlyGuideConfig} from './guide';
-import {VgLegendBase, VgLegendConfig, VgLegendEncode} from './vega.schema';
+import {VgLegend, VgLegendBase, VgLegendConfig, VgLegendEncode} from './vega.schema';
 
 
 export interface LegendConfig extends VgLegendConfig, VlOnlyGuideConfig {}
@@ -71,4 +71,4 @@ export const defaultLegendConfig: LegendConfig = {
   orient: undefined, // implicitly "right"
 };
 
-export const LEGEND_PROPERTIES:(keyof Legend)[] = ['entryPadding', 'format', 'offset', 'orient', 'tickCount', 'title', 'type', 'values' ,'zindex'];
+export const LEGEND_PROPERTIES:(keyof (VgLegend | Legend))[] = ['entryPadding', 'format', 'offset', 'orient', 'tickCount', 'title', 'type', 'values' ,'zindex'];
