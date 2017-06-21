@@ -1,4 +1,4 @@
-import {Channel, NONSPATIAL_SCALE_CHANNELS, SCALE_CHANNELS, SPATIAL_SCALE_CHANNELS} from './channel';
+import {Channel, NONSPATIAL_SCALE_CHANNELS, NonspatialScaleChannel, SCALE_CHANNELS, SPATIAL_SCALE_CHANNELS} from './channel';
 import * as log from './log';
 import {contains} from './util';
 
@@ -17,16 +17,13 @@ export interface NonspatialResolve {
 
 export type Resolve = SpatialResolve | NonspatialResolve;
 
-// TODO: replace this with {[P in NonspatialScaleChannel]?: NonspatialResolve} & {[P in SpatialScaleChannel]?: SpatialResolve}; and make sure that the right schema is being generated
 export type ResolveMapping = {
-  // spatial channels
+  // Spatial channels
   x?: SpatialResolve
   y?: SpatialResolve
-  // non-spatial channels
-  color?: NonspatialResolve
-  opacity?: NonspatialResolve
-  size?: NonspatialResolve
-  shape?: NonspatialResolve
+} & {
+  // Non-spatial channels
+  [C in NonspatialScaleChannel]?: NonspatialResolve
 };
 
 function initResolve(resolve: ResolveMapping, defaultScaleResolve: (channel: Channel) => 'shared'| 'independent') {
