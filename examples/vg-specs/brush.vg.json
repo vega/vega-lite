@@ -464,14 +464,13 @@
         },
         {
             "name": "color",
-            "type": "sequential",
+            "type": "ordinal",
             "domain": {
                 "data": "source_0",
-                "field": "Cylinders"
+                "field": "Cylinders",
+                "sort": true
             },
-            "range": "ramp",
-            "nice": false,
-            "zero": false
+            "range": "ordinal"
         }
     ],
     "axes": [

@@ -223,11 +223,12 @@ describe('src/compile', function() {
 
       it('should create sequential color scale', function() {
         assert.equal(scale.implicit.name, 'color');
-        assert.equal(scale.implicit.type, 'sequential');
+        assert.equal(scale.implicit.type, 'ordinal');
 
         assert.deepEqual(scale.implicit.domain, {
           data: 'main',
-          field: 'origin'
+          field: 'origin',
+          sort: true
         });
       });
     });
@@ -282,7 +283,7 @@ describe('src/compile', function() {
 
       it('should add correct scales', function() {
         assert.equal(scale.implicit.name, 'color');
-        assert.equal(scale.implicit.type, 'sequential');
+        assert.equal(scale.implicit.type, 'ordinal');
       });
     });
 
