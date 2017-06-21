@@ -2,11 +2,11 @@
 
 import {assert} from 'chai';
 
-import {NON_TYPE_DOMAIN_RANGE_VEGA_SCALE_PROPERTIES, parseScaleCore} from '../../../src/compile/scale/parse';
+import {parseScaleCore} from '../../../src/compile/scale/parse';
 import {SELECTION_DOMAIN} from '../../../src/compile/selection/selection';
 import {parseModel, parseUnitModelWithScale} from '../../util';
 
-import {SCALE_PROPERTIES} from '../../../src/scale';
+import {NON_TYPE_DOMAIN_RANGE_VEGA_SCALE_PROPERTIES, SCALE_PROPERTIES} from '../../../src/scale';
 import {toSet, without} from '../../../src/util';
 
 describe('src/compile', function() {

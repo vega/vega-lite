@@ -2,6 +2,7 @@ import {Channel} from './channel';
 import {DateTime} from './datetime';
 import * as log from './log';
 import {contains, toSet} from './util';
+import {VgScale} from './vega.schema';
 
 
 export namespace ScaleType {
@@ -371,6 +372,12 @@ export interface Scale {
   domain?: Domain;
 
   /**
+   * If true, reverses the order of the scale range.
+   * __Default value:__ `false`.
+   */
+  reverse?: boolean;
+
+  /**
    * The range of the scale, representing the set of visual values. For numeric values, the range can take the form of a two-element array with minimum and maximum values. For ordinal or quantized data, the range may by an array of desired output values, which are mapped to elements in the specified domain.
    */
   range?: Range;
@@ -467,15 +474,27 @@ export interface Scale {
   interpolate?: 'rgb'| 'lab' | 'hcl' | 'hsl' | 'hsl-long' | 'hcl-long' | 'cubehelix' | 'cubehelix-long';
 }
 
-export const SCALE_PROPERTIES:(keyof Scale)[]= [
-  'type', 'domain', 'range', 'round', 'rangeStep', 'scheme', 'padding', 'paddingInner', 'paddingOuter', 'clamp', 'nice',
-  'exponent', 'zero', 'interpolate'
+
+export const NON_TYPE_DOMAIN_RANGE_VEGA_SCALE_PROPERTIES: (keyof (Scale | VgScale))[] = [
+  'reverse', 'round',
+  // quantitative / time
+  'clamp', 'nice',
+  // quantitative
+  'exponent', 'interpolate', 'zero', // zero depends on domain
+  // ordinal
+  'padding', 'paddingInner', 'paddingOuter', // padding
 ];
+
+export const SCALE_PROPERTIES: (keyof Scale)[]= [].concat([
+  'type', 'domain',
+  'range', 'rangeStep', 'scheme'
+], NON_TYPE_DOMAIN_RANGE_VEGA_SCALE_PROPERTIES);
 
 export function scaleTypeSupportProperty(scaleType: ScaleType, propName: keyof Scale) {
   switch (propName) {
     case 'type':
     case 'domain':
+    case 'reverse':
     case 'range':
     case 'scheme':
       return true;
@@ -514,13 +533,6 @@ export function channelScalePropertyIncompatability(channel: Channel, propName: 
         return log.message.CANNOT_USE_RANGE_WITH_POSITION;
       }
       return undefined; // GOOD!
-    // band / point
-    case 'rangeStep':
-      return undefined; // GOOD!
-    case 'padding':
-    case 'paddingInner':
-    case 'paddingOuter':
-      return undefined; // GOOD!
     case 'interpolate':
     case 'scheme':
       if (channel !== 'color') {
@@ -529,12 +541,16 @@ export function channelScalePropertyIncompatability(channel: Channel, propName: 
       return undefined;
     case 'type':
     case 'domain':
-    case 'round':
-    case 'clamp':
     case 'exponent':
     case 'nice':
+    case 'padding':
+    case 'paddingInner':
+    case 'paddingOuter':
+    case 'rangeStep':
+    case 'reverse':
+    case 'round':
+    case 'clamp':
     case 'zero':
-      // These channel do not have strict requirement
       return undefined; // GOOD!
   }
   /* istanbul ignore next: it should never reach here */
