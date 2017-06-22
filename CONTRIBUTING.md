@@ -169,7 +169,7 @@ for instructions).
 ## Developing Vega-Lite and Vega-Util
 
 Vega-Lite depends on [vega-util](https://github.com/vega/vega-util).
-If you plan to make changes to the uils and test Vega-Lite without publishing / copying compiled vega-util all the time, use [`npm link`](http://justjs.com/posts/npm-link-developing-your-own-npm-modules-without-tears) command.
+If you plan to make changes to the utils and test Vega-Lite without publishing / copying compiled vega-util all the time, use [`npm link`](http://justjs.com/posts/npm-link-developing-your-own-npm-modules-without-tears) command.
 
 ```sh
 # first link vega-util global npm
