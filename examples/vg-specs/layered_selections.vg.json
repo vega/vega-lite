@@ -71,26 +71,10 @@
     "signals": [
         {
             "name": "width",
-            "update": "max(layer_0_width, layer_1_width)"
+            "update": "200"
         },
         {
             "name": "height",
-            "update": "max(layer_0_height, layer_1_height)"
-        },
-        {
-            "name": "layer_0_width",
-            "update": "200"
-        },
-        {
-            "name": "layer_0_height",
-            "update": "200"
-        },
-        {
-            "name": "layer_1_width",
-            "update": "200"
-        },
-        {
-            "name": "layer_1_height",
             "update": "200"
         },
         {
@@ -141,7 +125,7 @@
                     "events": {
                         "signal": "grid_translate_delta"
                     },
-                    "update": "panLinear(grid_translate_anchor.extent_x, -grid_translate_delta.x / layer_0_width)"
+                    "update": "panLinear(grid_translate_anchor.extent_x, -grid_translate_delta.x / width)"
                 },
                 {
                     "events": {
@@ -159,7 +143,7 @@
                     "events": {
                         "signal": "grid_translate_delta"
                     },
-                    "update": "panLinear(grid_translate_anchor.extent_y, grid_translate_delta.y / layer_0_height)"
+                    "update": "panLinear(grid_translate_anchor.extent_y, grid_translate_delta.y / height)"
                 },
                 {
                     "events": {
@@ -309,7 +293,7 @@
                             }
                         ]
                     },
-                    "update": "[brush_x[0], clamp(x(unit), 0, layer_1_width)]"
+                    "update": "[brush_x[0], clamp(x(unit), 0, width)]"
                 },
                 {
                     "events": {
@@ -321,13 +305,13 @@
                     "events": {
                         "signal": "brush_translate_delta"
                     },
-                    "update": "clampRange(panLinear(brush_translate_anchor.extent_x, brush_translate_delta.x / span(brush_translate_anchor.extent_x)), 0, layer_1_width)"
+                    "update": "clampRange(panLinear(brush_translate_anchor.extent_x, brush_translate_delta.x / span(brush_translate_anchor.extent_x)), 0, width)"
                 },
                 {
                     "events": {
                         "signal": "brush_zoom_delta"
                     },
-                    "update": "clampRange(zoomLinear(brush_x, brush_zoom_anchor.x, brush_zoom_delta), 0, layer_1_width)"
+                    "update": "clampRange(zoomLinear(brush_x, brush_zoom_anchor.x, brush_zoom_delta), 0, width)"
                 }
             ]
         },
@@ -376,7 +360,7 @@
                             }
                         ]
                     },
-                    "update": "[brush_y[0], clamp(y(unit), 0, layer_1_height)]"
+                    "update": "[brush_y[0], clamp(y(unit), 0, height)]"
                 },
                 {
                     "events": {
@@ -388,13 +372,13 @@
                     "events": {
                         "signal": "brush_translate_delta"
                     },
-                    "update": "clampRange(panLinear(brush_translate_anchor.extent_y, brush_translate_delta.y / span(brush_translate_anchor.extent_y)), 0, layer_1_height)"
+                    "update": "clampRange(panLinear(brush_translate_anchor.extent_y, brush_translate_delta.y / span(brush_translate_anchor.extent_y)), 0, height)"
                 },
                 {
                     "events": {
                         "signal": "brush_zoom_delta"
                     },
-                    "update": "clampRange(zoomLinear(brush_y, brush_zoom_anchor.y, brush_zoom_delta), 0, layer_1_height)"
+                    "update": "clampRange(zoomLinear(brush_y, brush_zoom_anchor.y, brush_zoom_delta), 0, height)"
                 }
             ]
         },

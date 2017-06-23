@@ -100,26 +100,10 @@
     "signals": [
         {
             "name": "width",
-            "update": "max(layer_0_width, layer_1_width)"
+            "update": "bandspace(domain('x').length, 0.1, 0.05) * 21"
         },
         {
             "name": "height",
-            "update": "max(layer_0_height, layer_1_height)"
-        },
-        {
-            "name": "layer_0_width",
-            "update": "bandspace(domain('x').length, 0.1, 0.05) * 21"
-        },
-        {
-            "name": "layer_0_height",
-            "update": "200"
-        },
-        {
-            "name": "layer_1_width",
-            "update": "bandspace(domain('x').length, 0.1, 0.05) * 21"
-        },
-        {
-            "name": "layer_1_height",
             "update": "200"
         }
     ],

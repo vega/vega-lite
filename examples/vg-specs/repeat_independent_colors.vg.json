@@ -53,19 +53,11 @@
     ],
     "signals": [
         {
-            "name": "child_Origin_width",
+            "name": "width",
             "update": "200"
         },
         {
-            "name": "child_Origin_height",
-            "update": "200"
-        },
-        {
-            "name": "child_Cylinders_width",
-            "update": "200"
-        },
-        {
-            "name": "child_Cylinders_height",
+            "name": "height",
             "update": "200"
         }
     ],
@@ -86,10 +78,10 @@
             "encode": {
                 "update": {
                     "width": {
-                        "signal": "child_Origin_width"
+                        "signal": "width"
                     },
                     "height": {
-                        "signal": "child_Origin_height"
+                        "signal": "height"
                     },
                     "fill": {
                         "value": "transparent"
@@ -220,10 +212,10 @@
             "encode": {
                 "update": {
                     "width": {
-                        "signal": "child_Cylinders_width"
+                        "signal": "width"
                     },
                     "height": {
-                        "signal": "child_Cylinders_height"
+                        "signal": "height"
                     },
                     "fill": {
                         "value": "transparent"

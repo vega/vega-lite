@@ -2,13 +2,14 @@
  * Utility files for producing Vega ValueRef for marks
  */
 
+import {isNumber} from 'vega-util';
 import {Channel, ScaleChannel, X, X2, Y, Y2} from '../../channel';
 import {Config} from '../../config';
 import {ChannelDef, Conditional, field, FieldDef, FieldRefOption, isFieldDef, isValueDef, TextFieldDef, ValueDef} from '../../fielddef';
 import {hasDiscreteDomain, ScaleType} from '../../scale';
 import {StackProperties} from '../../stack';
 import {contains} from '../../util';
-import {VgScale, VgValueRef} from '../../vega.schema';
+import {isVgSignalRef, VgScale, VgSignalRef, VgValueRef} from '../../vega.schema';
 import {formatSignalRef, numberFormat} from '../common';
 import {ScaleComponent} from '../scale/component';
 
@@ -157,26 +158,20 @@ export function text(textDef: Conditional<TextFieldDef<string>, ValueDef<any>>, 
   return undefined;
 }
 
-export function midX(width: number, config: Config): VgValueRef {
-  if (width) {
+export function midX(width: number | VgSignalRef, config: Config): VgValueRef {
+  if (isNumber(width)) {
     return {value: width / 2};
-  }
-
-  if (typeof config.scale.rangeStep === 'string') {
-    // TODO: For fit-mode, use middle of the width
-    throw new Error('midX can not handle string rangeSteps');
+  } else if (isVgSignalRef(width)) { // signal name
+    return {...width, mult: 0.5};
   }
   return {value: config.scale.rangeStep / 2};
 }
 
-export function midY(height: number, config: Config): VgValueRef {
-  if (height) {
+export function midY(height: number | VgSignalRef, config: Config): VgValueRef {
+  if (isNumber(height)) {
     return {value: height / 2};
-  }
-
-  if (typeof config.scale.rangeStep === 'string') {
-    // TODO: For fit-mode, use middle of the width
-    throw new Error('midX can not handle string rangeSteps');
+  } else if (isVgSignalRef(height)) { // signal name
+    return {...height, mult: 0.5};
   }
   return {value: config.scale.rangeStep / 2};
 }

@@ -4,7 +4,7 @@ import {field, FieldDef, isScaleFieldDef, OrderFieldDef} from '../fielddef';
 import * as log from '../log';
 import {Mark, MarkConfig, MarkDef, TextConfig} from '../mark';
 import {ScaleType} from '../scale';
-import {isConcatSpec, isFacetSpec, isLayerSpec, isRepeatSpec, isUnitSpec, LayoutSize, Spec} from '../spec';
+import {isConcatSpec, isFacetSpec, isLayerSpec, isRepeatSpec, isUnitSpec, LayoutSizeMixins, Spec} from '../spec';
 import {TimeUnit} from '../timeunit';
 import {formatExpression} from '../timeunit';
 import {QUANTITATIVE} from '../type';
@@ -20,7 +20,7 @@ import {UnitModel} from './unit';
 
 
 export function buildModel(spec: Spec, parent: Model, parentGivenName: string,
-  unitSize: LayoutSize, repeater: RepeaterValue, config: Config): Model {
+  unitSize: LayoutSizeMixins, repeater: RepeaterValue, config: Config): Model {
   if (isFacetSpec(spec)) {
     return new FacetModel(spec, parent, parentGivenName, repeater, config);
   }

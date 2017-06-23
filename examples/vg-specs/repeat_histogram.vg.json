@@ -226,27 +226,11 @@
     ],
     "signals": [
         {
-            "name": "child_Horsepower_width",
+            "name": "width",
             "update": "200"
         },
         {
-            "name": "child_Horsepower_height",
-            "update": "200"
-        },
-        {
-            "name": "child_Miles_per_Gallon_width",
-            "update": "200"
-        },
-        {
-            "name": "child_Miles_per_Gallon_height",
-            "update": "200"
-        },
-        {
-            "name": "child_Acceleration_width",
-            "update": "200"
-        },
-        {
-            "name": "child_Acceleration_height",
+            "name": "height",
             "update": "200"
         }
     ],
@@ -267,10 +251,10 @@
             "encode": {
                 "update": {
                     "width": {
-                        "signal": "child_Horsepower_width"
+                        "signal": "width"
                     },
                     "height": {
-                        "signal": "child_Horsepower_height"
+                        "signal": "height"
                     },
                     "fill": {
                         "value": "transparent"
@@ -398,10 +382,10 @@
             "encode": {
                 "update": {
                     "width": {
-                        "signal": "child_Miles_per_Gallon_width"
+                        "signal": "width"
                     },
                     "height": {
-                        "signal": "child_Miles_per_Gallon_height"
+                        "signal": "height"
                     },
                     "fill": {
                         "value": "transparent"
@@ -529,10 +513,10 @@
             "encode": {
                 "update": {
                     "width": {
-                        "signal": "child_Acceleration_width"
+                        "signal": "width"
                     },
                     "height": {
-                        "signal": "child_Acceleration_height"
+                        "signal": "height"
                     },
                     "fill": {
                         "value": "transparent"

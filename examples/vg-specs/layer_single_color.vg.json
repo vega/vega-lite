@@ -38,18 +38,10 @@
     "signals": [
         {
             "name": "width",
-            "update": "max(layer_0_width)"
-        },
-        {
-            "name": "height",
-            "update": "max(layer_0_height)"
-        },
-        {
-            "name": "layer_0_width",
             "update": "200"
         },
         {
-            "name": "layer_0_height",
+            "name": "height",
             "update": "200"
         }
     ],

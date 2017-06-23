@@ -3,7 +3,7 @@ import {Config} from '../config';
 import * as log from '../log';
 import {FILL_STROKE_CONFIG} from '../mark';
 import {NonspatialResolve, ResolveMapping, SpatialResolve} from '../resolve';
-import {isLayerSpec, isUnitSpec, LayerSpec, LayoutSize} from '../spec';
+import {isLayerSpec, isUnitSpec, LayerSpec, LayoutSizeMixins} from '../spec';
 import {Dict, flatten, keys, vals} from '../util';
 import {isSignalRefDomain, VgData, VgEncodeEntry, VgLayout, VgScale, VgSignal} from '../vega.schema';
 import {AxisComponentIndex} from './axis/component';
@@ -11,7 +11,7 @@ import {parseLayerAxis} from './axis/parse';
 import {applyConfig, buildModel} from './common';
 import {assembleData} from './data/assemble';
 import {parseData} from './data/parse';
-import {assembleLayoutLayerSignals} from './layout/assemble';
+import {assembleLayoutSignals} from './layout/assemble';
 import {parseNonUnitLegend} from './legend/parse';
 import {Model} from './model';
 import {RepeaterValue} from './repeat';
@@ -30,7 +30,7 @@ export class LayerModel extends Model {
 
 
   constructor(spec: LayerSpec, parent: Model, parentGivenName: string,
-    parentGivenSize: LayoutSize, repeater: RepeaterValue, config: Config) {
+    parentGivenSize: LayoutSizeMixins, repeater: RepeaterValue, config: Config) {
 
     super(spec, parent, parentGivenName, config, spec.resolve);
 
@@ -112,7 +112,7 @@ export class LayerModel extends Model {
   public assembleLayoutSignals(): VgSignal[] {
     return this.children.reduce((signals, child) => {
       return signals.concat(child.assembleLayoutSignals());
-    }, assembleLayoutLayerSignals(this));
+    }, assembleLayoutSignals(this));
   }
 
   public assembleSelectionData(data: VgData[]): VgData[] {

@@ -313,131 +313,11 @@
     ],
     "signals": [
         {
-            "name": "child_petalWidth_sepalLength_width",
+            "name": "width",
             "update": "200"
         },
         {
-            "name": "child_petalWidth_sepalLength_height",
-            "update": "200"
-        },
-        {
-            "name": "child_petalWidth_sepalWidth_width",
-            "update": "200"
-        },
-        {
-            "name": "child_petalWidth_sepalWidth_height",
-            "update": "200"
-        },
-        {
-            "name": "child_petalWidth_petalLength_width",
-            "update": "200"
-        },
-        {
-            "name": "child_petalWidth_petalLength_height",
-            "update": "200"
-        },
-        {
-            "name": "child_petalWidth_petalWidth_width",
-            "update": "200"
-        },
-        {
-            "name": "child_petalWidth_petalWidth_height",
-            "update": "200"
-        },
-        {
-            "name": "child_petalLength_sepalLength_width",
-            "update": "200"
-        },
-        {
-            "name": "child_petalLength_sepalLength_height",
-            "update": "200"
-        },
-        {
-            "name": "child_petalLength_sepalWidth_width",
-            "update": "200"
-        },
-        {
-            "name": "child_petalLength_sepalWidth_height",
-            "update": "200"
-        },
-        {
-            "name": "child_petalLength_petalLength_width",
-            "update": "200"
-        },
-        {
-            "name": "child_petalLength_petalLength_height",
-            "update": "200"
-        },
-        {
-            "name": "child_petalLength_petalWidth_width",
-            "update": "200"
-        },
-        {
-            "name": "child_petalLength_petalWidth_height",
-            "update": "200"
-        },
-        {
-            "name": "child_sepalWidth_sepalLength_width",
-            "update": "200"
-        },
-        {
-            "name": "child_sepalWidth_sepalLength_height",
-            "update": "200"
-        },
-        {
-            "name": "child_sepalWidth_sepalWidth_width",
-            "update": "200"
-        },
-        {
-            "name": "child_sepalWidth_sepalWidth_height",
-            "update": "200"
-        },
-        {
-            "name": "child_sepalWidth_petalLength_width",
-            "update": "200"
-        },
-        {
-            "name": "child_sepalWidth_petalLength_height",
-            "update": "200"
-        },
-        {
-            "name": "child_sepalWidth_petalWidth_width",
-            "update": "200"
-        },
-        {
-            "name": "child_sepalWidth_petalWidth_height",
-            "update": "200"
-        },
-        {
-            "name": "child_sepalLength_sepalLength_width",
-            "update": "200"
-        },
-        {
-            "name": "child_sepalLength_sepalLength_height",
-            "update": "200"
-        },
-        {
-            "name": "child_sepalLength_sepalWidth_width",
-            "update": "200"
-        },
-        {
-            "name": "child_sepalLength_sepalWidth_height",
-            "update": "200"
-        },
-        {
-            "name": "child_sepalLength_petalLength_width",
-            "update": "200"
-        },
-        {
-            "name": "child_sepalLength_petalLength_height",
-            "update": "200"
-        },
-        {
-            "name": "child_sepalLength_petalWidth_width",
-            "update": "200"
-        },
-        {
-            "name": "child_sepalLength_petalWidth_height",
+            "name": "height",
             "update": "200"
         }
     ],
@@ -458,10 +338,10 @@
             "encode": {
                 "update": {
                     "width": {
-                        "signal": "child_petalWidth_sepalLength_width"
+                        "signal": "width"
                     },
                     "height": {
-                        "signal": "child_petalWidth_sepalLength_height"
+                        "signal": "height"
                     },
                     "fill": {
                         "value": "transparent"
@@ -576,10 +456,10 @@
             "encode": {
                 "update": {
                     "width": {
-                        "signal": "child_petalWidth_sepalWidth_width"
+                        "signal": "width"
                     },
                     "height": {
-                        "signal": "child_petalWidth_sepalWidth_height"
+                        "signal": "height"
                     },
                     "fill": {
                         "value": "transparent"
@@ -694,10 +574,10 @@
             "encode": {
                 "update": {
                     "width": {
-                        "signal": "child_petalWidth_petalLength_width"
+                        "signal": "width"
                     },
                     "height": {
-                        "signal": "child_petalWidth_petalLength_height"
+                        "signal": "height"
                     },
                     "fill": {
                         "value": "transparent"
@@ -812,10 +692,10 @@
             "encode": {
                 "update": {
                     "width": {
-                        "signal": "child_petalWidth_petalWidth_width"
+                        "signal": "width"
                     },
                     "height": {
-                        "signal": "child_petalWidth_petalWidth_height"
+                        "signal": "height"
                     },
                     "fill": {
                         "value": "transparent"
@@ -930,10 +810,10 @@
             "encode": {
                 "update": {
                     "width": {
-                        "signal": "child_petalLength_sepalLength_width"
+                        "signal": "width"
                     },
                     "height": {
-                        "signal": "child_petalLength_sepalLength_height"
+                        "signal": "height"
                     },
                     "fill": {
                         "value": "transparent"
@@ -1048,10 +928,10 @@
             "encode": {
                 "update": {
                     "width": {
-                        "signal": "child_petalLength_sepalWidth_width"
+                        "signal": "width"
                     },
                     "height": {
-                        "signal": "child_petalLength_sepalWidth_height"
+                        "signal": "height"
                     },
                     "fill": {
                         "value": "transparent"
@@ -1166,10 +1046,10 @@
             "encode": {
                 "update": {
                     "width": {
-                        "signal": "child_petalLength_petalLength_width"
+                        "signal": "width"
                     },
                     "height": {
-                        "signal": "child_petalLength_petalLength_height"
+                        "signal": "height"
                     },
                     "fill": {
                         "value": "transparent"
@@ -1284,10 +1164,10 @@
             "encode": {
                 "update": {
                     "width": {
-                        "signal": "child_petalLength_petalWidth_width"
+                        "signal": "width"
                     },
                     "height": {
-                        "signal": "child_petalLength_petalWidth_height"
+                        "signal": "height"
                     },
                     "fill": {
                         "value": "transparent"
@@ -1402,10 +1282,10 @@
             "encode": {
                 "update": {
                     "width": {
-                        "signal": "child_sepalWidth_sepalLength_width"
+                        "signal": "width"
                     },
                     "height": {
-                        "signal": "child_sepalWidth_sepalLength_height"
+                        "signal": "height"
                     },
                     "fill": {
                         "value": "transparent"
@@ -1520,10 +1400,10 @@
             "encode": {
                 "update": {
                     "width": {
-                        "signal": "child_sepalWidth_sepalWidth_width"
+                        "signal": "width"
                     },
                     "height": {
-                        "signal": "child_sepalWidth_sepalWidth_height"
+                        "signal": "height"
                     },
                     "fill": {
                         "value": "transparent"
@@ -1638,10 +1518,10 @@
             "encode": {
                 "update": {
                     "width": {
-                        "signal": "child_sepalWidth_petalLength_width"
+                        "signal": "width"
                     },
                     "height": {
-                        "signal": "child_sepalWidth_petalLength_height"
+                        "signal": "height"
                     },
                     "fill": {
                         "value": "transparent"
@@ -1756,10 +1636,10 @@
             "encode": {
                 "update": {
                     "width": {
-                        "signal": "child_sepalWidth_petalWidth_width"
+                        "signal": "width"
                     },
                     "height": {
-                        "signal": "child_sepalWidth_petalWidth_height"
+                        "signal": "height"
                     },
                     "fill": {
                         "value": "transparent"
@@ -1874,10 +1754,10 @@
             "encode": {
                 "update": {
                     "width": {
-                        "signal": "child_sepalLength_sepalLength_width"
+                        "signal": "width"
                     },
                     "height": {
-                        "signal": "child_sepalLength_sepalLength_height"
+                        "signal": "height"
                     },
                     "fill": {
                         "value": "transparent"
@@ -1992,10 +1872,10 @@
             "encode": {
                 "update": {
                     "width": {
-                        "signal": "child_sepalLength_sepalWidth_width"
+                        "signal": "width"
                     },
                     "height": {
-                        "signal": "child_sepalLength_sepalWidth_height"
+                        "signal": "height"
                     },
                     "fill": {
                         "value": "transparent"
@@ -2110,10 +1990,10 @@
             "encode": {
                 "update": {
                     "width": {
-                        "signal": "child_sepalLength_petalLength_width"
+                        "signal": "width"
                     },
                     "height": {
-                        "signal": "child_sepalLength_petalLength_height"
+                        "signal": "height"
                     },
                     "fill": {
                         "value": "transparent"
@@ -2228,10 +2108,10 @@
             "encode": {
                 "update": {
                     "width": {
-                        "signal": "child_sepalLength_petalWidth_width"
+                        "signal": "width"
                     },
                     "height": {
-                        "signal": "child_sepalLength_petalWidth_height"
+                        "signal": "height"
                     },
                     "fill": {
                         "value": "transparent"

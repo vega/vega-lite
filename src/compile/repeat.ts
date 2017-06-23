@@ -13,6 +13,7 @@ import {isSignalRefDomain, VgData, VgLayout, VgScale, VgSignal} from '../vega.sc
 import {buildModel} from './common';
 import {assembleData} from './data/assemble';
 import {parseData} from './data/parse';
+import {assembleLayoutSignals} from './layout/assemble';
 import {parseNonUnitLegend} from './legend/parse';
 import {Model} from './model';
 import {ScaleComponent, ScaleComponentIndex} from './scale/component';
@@ -172,7 +173,7 @@ export class RepeatModel extends Model {
   public assembleLayoutSignals(): VgSignal[] {
     return this.children.reduce((signals, child) => {
       return signals.concat(child.assembleLayoutSignals());
-    }, []);
+    }, assembleLayoutSignals(this));
   }
 
   public assembleSelectionData(data: VgData[]): VgData[] {
