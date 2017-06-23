@@ -4,7 +4,8 @@
   "files.exclude": {
     "coverage/**/*": true,
     "_site/**/*": true,
-    ".nyc_output": true
+    ".nyc_output": true,
+    "build": true
   },
   "search.exclude": {
     "build": true
