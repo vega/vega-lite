@@ -12,6 +12,14 @@ This tutorial will guide through the process of writing a visualization specific
 
 We suggest that you follow along the tutorial by building a visualization in the [online editor](https://vega.github.io/new-editor/?mode=vega-lite). Extend your specification in the editor as you read through this tutorial. If something does not work as expected, compare your specifications with ones inside this tutorial.
 
+## $schema
+
+Before diving into components illustrating visualizations, we want to introduce "$schema" property that defines the [JSON schema](http://json-schema.org/) of the visualization specification in a certain version of Vega-Lite. It accepts value as an URL of the schema.
+
+```json
+ { "$schema": "https://vega.github.io/schema/vega-lite/v2.json" }
+```
+
 ## The Data
 
 Let's say you have a tabular data set with a categorical variable in the first column `a` and a numerical variable in the second column `b`.
@@ -145,7 +153,6 @@ You can use [Vega-Embed](https://github.com/vega/vega-embed) to embed your Vega-
   <title>Vega Lite Bar Chart</title>
   <meta charset="utf-8">
 
-  <script src="https://d3js.org/d3.v3.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/vega/{{ site.data.versions.vega }}/vega.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/vega-lite/{{ site.data.versions.vega-lite }}/vega-lite.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/vega-embed/{{ site.data.versions.vega-embed }}/vega-embed.js"></script>
@@ -165,6 +172,7 @@ You can use [Vega-Embed](https://github.com/vega/vega-embed) to embed your Vega-
   <script>
   // Assign the specification to a local variable vlSpec.
   var vlSpec = {
+    "$schema": "https://vega.github.io/schema/vega-lite/v2.json",
     "data": {
       "values": [
         {"a": "C", "b": 2}, {"a": "C", "b": 7}, {"a": "C", "b": 4},
@@ -184,16 +192,8 @@ You can use [Vega-Embed](https://github.com/vega/vega-embed) to embed your Vega-
     }
   };
 
-  // optional argument passed to Vega-Embed to specify vega-lite spec. More info at https://github.com/vega/vega-embed
-  var opt = {
-    "mode": "vega-lite"
-  };
-
   // Embed the visualization in the container with id `vis`
-  vega.embed("#vis", vlSpec, opt, function(error, result) {
-    // Callback receiving the View instance and parsed Vega spec
-    // result.view is the View, which resides under the '#vis' element
-  });
+  vega.embed("#vis", vlSpec);
   </script>
 </body>
 </html>
