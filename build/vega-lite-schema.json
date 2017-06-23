@@ -1142,7 +1142,7 @@
               "$ref": "#/definitions/SortOrder"
             }
           ],
-          "description": "Sort order for a field with discrete domain.\nThis can be `\"ascending\"`, `\"descending\"`, `\"none\"`, or a [sort field definition object](sort.html#sort-field) for sorting by an aggregate calculation of a specified sort field.\n\n__Note:__ For fields with continuous domain, please use `\"scale\": {\"reverse\": true}` to flip the scale instead."
+          "description": "Sort order for a field with discrete domain.\nThis can be `\"ascending\"`, `\"descending\"`, `null`, or a [sort field definition object](sort.html#sort-field) for sorting by an aggregate calculation of a specified sort field.\n\n__Note:__ For fields with continuous domain, please use `\"scale\": {\"reverse\": true}` to flip the scale instead."
         },
         "timeUnit": {
           "$ref": "#/definitions/TimeUnit",
@@ -1419,7 +1419,7 @@
               "$ref": "#/definitions/SortOrder"
             }
           ],
-          "description": "Sort order for a field with discrete domain.\nThis can be `\"ascending\"`, `\"descending\"`, `\"none\"`, or a [sort field definition object](sort.html#sort-field) for sorting by an aggregate calculation of a specified sort field.\n\n__Note:__ For fields with continuous domain, please use `\"scale\": {\"reverse\": true}` to flip the scale instead."
+          "description": "Sort order for a field with discrete domain.\nThis can be `\"ascending\"`, `\"descending\"`, `null`, or a [sort field definition object](sort.html#sort-field) for sorting by an aggregate calculation of a specified sort field.\n\n__Note:__ For fields with continuous domain, please use `\"scale\": {\"reverse\": true}` to flip the scale instead."
         },
         "timeUnit": {
           "$ref": "#/definitions/TimeUnit",
@@ -1490,7 +1490,7 @@
               "$ref": "#/definitions/SortOrder"
             }
           ],
-          "description": "Sort order for a field with discrete domain.\nThis can be `\"ascending\"`, `\"descending\"`, `\"none\"`, or a [sort field definition object](sort.html#sort-field) for sorting by an aggregate calculation of a specified sort field.\n\n__Note:__ For fields with continuous domain, please use `\"scale\": {\"reverse\": true}` to flip the scale instead."
+          "description": "Sort order for a field with discrete domain.\nThis can be `\"ascending\"`, `\"descending\"`, `null`, or a [sort field definition object](sort.html#sort-field) for sorting by an aggregate calculation of a specified sort field.\n\n__Note:__ For fields with continuous domain, please use `\"scale\": {\"reverse\": true}` to flip the scale instead."
         },
         "timeUnit": {
           "$ref": "#/definitions/TimeUnit",
@@ -3385,7 +3385,7 @@
               "$ref": "#/definitions/SortOrder"
             }
           ],
-          "description": "Sort order for a field with discrete domain.\nThis can be `\"ascending\"`, `\"descending\"`, `\"none\"`, or a [sort field definition object](sort.html#sort-field) for sorting by an aggregate calculation of a specified sort field.\n\n__Note:__ For fields with continuous domain, please use `\"scale\": {\"reverse\": true}` to flip the scale instead."
+          "description": "Sort order for a field with discrete domain.\nThis can be `\"ascending\"`, `\"descending\"`, `null`, or a [sort field definition object](sort.html#sort-field) for sorting by an aggregate calculation of a specified sort field.\n\n__Note:__ For fields with continuous domain, please use `\"scale\": {\"reverse\": true}` to flip the scale instead."
         },
         "timeUnit": {
           "$ref": "#/definitions/TimeUnit",
@@ -4041,7 +4041,7 @@
               "$ref": "#/definitions/SortOrder"
             }
           ],
-          "description": "Sort order for a field with discrete domain.\nThis can be `\"ascending\"`, `\"descending\"`, `\"none\"`, or a [sort field definition object](sort.html#sort-field) for sorting by an aggregate calculation of a specified sort field.\n\n__Note:__ For fields with continuous domain, please use `\"scale\": {\"reverse\": true}` to flip the scale instead."
+          "description": "Sort order for a field with discrete domain.\nThis can be `\"ascending\"`, `\"descending\"`, `null`, or a [sort field definition object](sort.html#sort-field) for sorting by an aggregate calculation of a specified sort field.\n\n__Note:__ For fields with continuous domain, please use `\"scale\": {\"reverse\": true}` to flip the scale instead."
         },
         "stack": {
           "$ref": "#/definitions/StackOffset",
@@ -4447,7 +4447,7 @@
               "$ref": "#/definitions/SortOrder"
             }
           ],
-          "description": "Sort order for a field with discrete domain.\nThis can be `\"ascending\"`, `\"descending\"`, `\"none\"`, or a [sort field definition object](sort.html#sort-field) for sorting by an aggregate calculation of a specified sort field.\n\n__Note:__ For fields with continuous domain, please use `\"scale\": {\"reverse\": true}` to flip the scale instead."
+          "description": "Sort order for a field with discrete domain.\nThis can be `\"ascending\"`, `\"descending\"`, `null`, or a [sort field definition object](sort.html#sort-field) for sorting by an aggregate calculation of a specified sort field.\n\n__Note:__ For fields with continuous domain, please use `\"scale\": {\"reverse\": true}` to flip the scale instead."
         },
         "timeUnit": {
           "$ref": "#/definitions/TimeUnit",
