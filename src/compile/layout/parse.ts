@@ -2,10 +2,9 @@ import {defaultScaleConfig, hasDiscreteDomain} from '../../scale';
 import {isVgRangeStep} from '../../vega.schema';
 import {LayerModel} from '../layer';
 import {Model} from '../model';
-import {makeImplicit, Split} from '../split';
+import {defaultTieBreaker, Explicit, makeImplicit, mergeValuesWithExplicit, Split} from '../split';
 import {UnitModel} from '../unit';
-import {LayoutSize, LayoutSizeComponent} from './component';
-
+import {LayoutSize, LayoutSizeComponent, LayoutSizeIndex} from './component';
 
 export function parseLayoutSize(model: Model) {
   if (model instanceof UnitModel) {
@@ -19,7 +18,34 @@ function parseNonUnitLayoutSize(model: Model) {
   for (const child of model.children) {
     parseLayoutSize(child);
   }
-  // TODO(https://github.com/vega/vega-lite/issues/2198): merge size
+
+  // Merge size
+  const layoutSizeCmpt = model.component.layoutSize;
+  layoutSizeCmpt.setWithExplicit('width', parseNonUnitLayoutSizeForChannel(model, 'x'));
+  layoutSizeCmpt.setWithExplicit('height', parseNonUnitLayoutSizeForChannel(model, 'y'));
+}
+
+function parseNonUnitLayoutSizeForChannel(model: Model, channel: 'x' | 'y'): Explicit<LayoutSize> {
+  const sizeType = channel === 'x' ? 'width' : 'height';
+  if (model.component.scales[channel]) {
+    let layoutSize: Explicit<LayoutSize>;
+    // If scale is shared, we can merge the layout size
+    for (const child of model.children) {
+      if (!layoutSize) {
+        layoutSize = child.component.layoutSize.getWithExplicit(sizeType);
+      } else {
+        layoutSize = mergeValuesWithExplicit<LayoutSizeIndex, LayoutSize>(layoutSize, child.component.layoutSize.getWithExplicit(sizeType), sizeType, 'layout', defaultTieBreaker);
+      }
+
+      // Rename size and set child's size as merged.
+      model.renameLayoutSize(child.getSizeSignalRef(sizeType).signal, model.getSizeSignalRef(sizeType).signal);
+      child.component.layoutSize.set(sizeType, 'merged', false);
+    }
+  }
+  return {
+    explicit: false,
+    value: 'max-child'
+  };
 }
 
 function parseUnitLayoutSize(model: UnitModel) {
@@ -35,7 +61,7 @@ function parseUnitLayoutSize(model: UnitModel) {
   }
 }
 
-function defaultUnitSize(model: UnitModel, sizeType: 'width' | 'height') {
+function defaultUnitSize(model: UnitModel, sizeType: 'width' | 'height'): LayoutSize {
   const channel = sizeType === 'width' ? 'x' : 'y';
   const config = model.config;
   const scaleComponent = model.getScaleComponent(channel);
@@ -46,7 +72,8 @@ function defaultUnitSize(model: UnitModel, sizeType: 'width' | 'height') {
 
     if (hasDiscreteDomain(scaleType) && isVgRangeStep(range)) {
       // For discrete domain with range.step, use dynamic width/height
-      return null;
+      // TODO: possibly consider range step's explicit level here?
+      return 'range-step';
     } else {
       // FIXME(https://github.com/vega/vega-lite/issues/1975): revise config.cell name
       // Otherwise, read this from cell config

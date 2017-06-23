@@ -11,5 +11,8 @@
   },
   "files.trimTrailingWhitespace": true,
   "tsimporter.spaceBetweenBraces": false,
-  "typescriptHero.resolver.insertSpaceBeforeAndAfterImportBraces": false
+  "typescriptHero.resolver.insertSpaceBeforeAndAfterImportBraces": false,
+  "tsimporter.filesToExclude": {
+    "build/**": true
+  }
 }

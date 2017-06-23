@@ -11,7 +11,7 @@ import {parseLayerAxis} from './axis/parse';
 import {applyConfig, buildModel} from './common';
 import {assembleData} from './data/assemble';
 import {parseData} from './data/parse';
-import {assembleLayoutLayerSignals} from './layout/assemble';
+import {assembleLayoutSignals} from './layout/assemble';
 import {moveSharedLegendUp} from './legend/parse';
 import {Model} from './model';
 import {RepeaterValue} from './repeat';
@@ -125,7 +125,7 @@ export class LayerModel extends Model {
   public assembleLayoutSignals(): VgSignal[] {
     return this.children.reduce((signals, child) => {
       return signals.concat(child.assembleLayoutSignals());
-    }, assembleLayoutLayerSignals(this));
+    }, assembleLayoutSignals(this));
   }
 
   public assembleSelectionData(data: VgData[]): VgData[] {

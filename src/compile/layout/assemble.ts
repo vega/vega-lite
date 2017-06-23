@@ -9,54 +9,58 @@ import {Model, ModelWithField} from '../model';
 import {ScaleComponent} from '../scale/component';
 import {UnitModel} from '../unit';
 
-// FIXME: rename this file to assemble.ts
-// TODO: rewrite this such that we merge redundant signals
-export function assembleLayoutLayerSignals(model: LayerModel): VgSignal[] {
-  return [
-    {name: model.getName('width'), update: layerSizeExpr(model, 'width')},
-    {name: model.getName('height'), update: layerSizeExpr(model, 'height')}
-  ];
-}
-
-export function layerSizeExpr(model: LayerModel, sizeType: 'width' | 'height'): string {
-  const childrenSizeSignals = model.children.map(child => child.getName(sizeType)).join(', ');
-  return `max(${childrenSizeSignals})`;
-}
-
-export function assembleLayoutUnitSignals(model: UnitModel): VgSignal[] {
-  return [
-    {name: model.getName('width'), update: unitSizeExpr(model, 'width')},
-    {name: model.getName('height'), update: unitSizeExpr(model, 'height')}
-  ];
-}
-
-export function unitSizeExpr(model: UnitModel, sizeType: 'width' | 'height'): string {
-  const channel = sizeType==='width' ? 'x' : 'y';
-
-  const scaleComponent = model.getScaleComponent(channel);
-  if (scaleComponent) {
-    const type = scaleComponent.get('type');
-    const range = scaleComponent.get('range');
-
-    if (hasDiscreteDomain(type) && isVgRangeStep(range)) {
-      const scaleName = model.scaleName(channel);
-
-      const cardinality = `domain('${scaleName}').length`;
-      const padding = scaleComponent.get('padding');
-      let paddingOuter = scaleComponent.get('paddingOuter');
-      paddingOuter = paddingOuter !== undefined ? paddingOuter : padding;
-
-      let paddingInner = scaleComponent.get('paddingInner');
-      paddingInner = type === 'band' ?
-        // only band has real paddingInner
-        (paddingInner !== undefined ? paddingInner : padding) :
-        // For point, as calculated in https://github.com/vega/vega-scale/blob/master/src/band.js#L128,
-        // it's equivalent to have paddingInner = 1 since there is only n-1 steps between n points.
-        1;
-
-      return `bandspace(${cardinality}, ${paddingInner}, ${paddingOuter}) * ${range.step}`;
-    }
+export function assembleLayoutSignals(model: Model): VgSignal[] {
+  const signals: VgSignal[] = [];
+  const width = sizeExpr(model, 'width');
+  if (width !== undefined) {
+    signals.push({name: model.getName('width'), update: width});
   }
-  return `${model.component.layoutSize.get(sizeType)}`;
+  const height = sizeExpr(model, 'height');
+  if (height !== undefined) {
+    signals.push({name: model.getName('height'), update: sizeExpr(model, 'height')});
+  }
+  return signals;
+}
+
+export function sizeExpr(model: Model, sizeType: 'width' | 'height'): string {
+  const channel = sizeType==='width' ? 'x' : 'y';
+  const size = model.component.layoutSize.get(sizeType);
+  if (size === 'merged') {
+    return undefined;
+  } else if (size === 'range-step') {
+    const scaleComponent = model.getScaleComponent(channel);
+
+    if (scaleComponent) {
+      const type = scaleComponent.get('type');
+      const range = scaleComponent.get('range');
+
+      if (hasDiscreteDomain(type) && isVgRangeStep(range)) {
+        const scaleName = model.scaleName(channel);
+
+        const cardinality = `domain('${scaleName}').length`;
+        const padding = scaleComponent.get('padding');
+        let paddingOuter = scaleComponent.get('paddingOuter');
+        paddingOuter = paddingOuter !== undefined ? paddingOuter : padding;
+
+        let paddingInner = scaleComponent.get('paddingInner');
+        paddingInner = type === 'band' ?
+          // only band has real paddingInner
+          (paddingInner !== undefined ? paddingInner : padding) :
+          // For point, as calculated in https://github.com/vega/vega-scale/blob/master/src/band.js#L128,
+          // it's equivalent to have paddingInner = 1 since there is only n-1 steps between n points.
+          1;
+
+        return `bandspace(${cardinality}, ${paddingInner}, ${paddingOuter}) * ${range.step}`;
+      }
+    }
+    /* istanbul ignore next: Condition should not happen -- only for warning in development. */
+    throw new Error('layout size is range step although there is no rangeStep.');
+  } else if (size ==='max-child') {
+    const childrenSizeSignals = model.children.map(
+      child => child.getName(sizeType)
+    ).join(', ');
+    return `max(${childrenSizeSignals})`;
+  }
+  return `${size}`;
 }
 

@@ -20,7 +20,7 @@ import {assembleData} from './data/assemble';
 import {parseData} from './data/parse';
 import {FacetModel} from './facet';
 import {LayerModel} from './layer';
-import {assembleLayoutUnitSignals} from './layout/assemble';
+import {assembleLayoutSignals} from './layout/assemble';
 import {LegendIndex} from './legend/component';
 import {parseLegendComponent} from './legend/parse';
 import {initEncoding} from './mark/init';
@@ -237,7 +237,7 @@ export class UnitModel extends ModelWithField {
   }
 
   public assembleLayoutSignals(): VgSignal[] {
-    return assembleLayoutUnitSignals(this);
+    return assembleLayoutSignals(this);
   }
 
   public assembleMarks() {
