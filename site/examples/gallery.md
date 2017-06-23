@@ -27,6 +27,10 @@ To see example code for embedding visualization in a webpage, please refer to [t
 
 <div class="gallery" data-gallery-group="Statistical"></div>
 
+## Layered Plots
+
+<div class="gallery" data-gallery-group="Layering"></div>
+
 ## Interactive Plots
 
 <div class="gallery" data-gallery-group="Interactive"></div>
