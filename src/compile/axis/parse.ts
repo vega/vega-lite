@@ -52,8 +52,10 @@ export function parseLayerAxis(model: LayerModel) {
 
 
     keys(child.component.axes).forEach((channel: SpatialScaleChannel) => {
-      if ((model.resolve[channel]).axis === 'shared' && axisResolveIndex[channel] !== 'independent') {
-        // If default rule says shared and so far there is no conflict,
+      if (model.resolve[channel].axis === 'shared' &&
+          axisResolveIndex[channel] !== 'independent' &&
+          model.component.scales[channel]) {
+        // If default rule says shared and so far there is no conflict and the scale is merged,
         // We will try to merge and see if there is a conflict
 
         axisComponents[channel] = mergeAxisComponents(axisComponents[channel], child.component.axes[channel]);
