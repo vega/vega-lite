@@ -204,8 +204,8 @@
     ],
     "axes": [
         {
-            "scale": "x",
             "domain": false,
+            "scale": "x",
             "labelOverlap": true,
             "orient": "bottom",
             "tickCount": 5,
@@ -222,8 +222,8 @@
             }
         },
         {
-            "scale": "x",
             "domain": false,
+            "scale": "x",
             "grid": true,
             "labels": false,
             "orient": "bottom",

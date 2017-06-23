@@ -207,12 +207,12 @@
     ],
     "axes": [
         {
-            "scale": "x",
             "domain": false,
+            "tickSize": 0,
+            "scale": "x",
             "labelOverlap": true,
             "orient": "bottom",
             "tickCount": 5,
-            "tickSize": 0,
             "title": "YEARMONTH(date)",
             "zindex": 1,
             "encode": {
@@ -226,14 +226,14 @@
             }
         },
         {
-            "scale": "x",
             "domain": false,
+            "tickSize": 0,
+            "scale": "x",
             "grid": true,
             "labels": false,
             "orient": "bottom",
             "tickCount": 5,
             "ticks": false,
-            "tickSize": 0,
             "zindex": 0,
             "gridScale": "y"
         }

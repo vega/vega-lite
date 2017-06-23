@@ -1,12 +1,18 @@
+import {Axis} from '../axis';
+import {Legend} from '../legend';
 import * as log from '../log';
 import {Scale} from '../scale';
-
+import {duplicate} from '../util';
 
 /**
  * Generic classs for storing properties that are explicitly specified and implicitly determined by the compiler.
  */
 export class Split<T extends Object> {
   constructor(public readonly explicit: T = {} as T, public readonly implicit: T = {} as T) {}
+
+  public clone() {
+    return new Split(duplicate(this.explicit), duplicate(this.implicit));
+  }
 
   public combine(keys: (keyof T)[] = []): T {
     const base = keys.reduce((b, key) => {
@@ -104,10 +110,31 @@ export function makeImplicit<T>(value: T): Explicit<T> {
   };
 }
 
-export function mergeValuesWithExplicit<T>(
+export function tieBreakByComparing<S, T>(compare: (v1: T, v2: T) => number) {
+  return (v1: Explicit<T>, v2: Explicit<T>, property: keyof S, propertyOf: 'scale' | 'axis' | 'legend'): Explicit<T> => {
+    const diff = compare(v1.value, v2.value);
+    if (diff > 0) {
+      return v1;
+    } else if (diff < 0) {
+      return v2;
+    }
+    return defaultTieBreaker<S, T>(v1, v2, property, propertyOf);
+  };
+}
+
+export function defaultTieBreaker<S, T>(v1: Explicit<T>, v2: Explicit<T>, property: keyof S, propertyOf: 'scale' | 'axis' | 'legend') {
+  if (v1.explicit && v2.explicit) {
+    log.warn(log.message.mergeConflictingScaleProperty(property, propertyOf, v1.value, v2.value));
+  }
+  // If equal score, prefer v1.
+  return v1;
+}
+
+export function mergeValuesWithExplicit<S, T>(
     v1: Explicit<T>, v2: Explicit<T>,
-    property: keyof Scale,
-    compare: (v1: T, v2: T) => number = () => 0
+    property: keyof S,
+    propertyOf: 'scale' | 'axis' | 'legend',
+    tieBreaker: (v1: Explicit<T>, v2: Explicit<T>, property: keyof S, propertyOf: 'scale' | 'axis' | 'legend',) => Explicit<T> = defaultTieBreaker
   ) {
   if (v1 === undefined || v1.value === undefined) {
     // For first run
@@ -119,18 +146,6 @@ export function mergeValuesWithExplicit<T>(
   } else if (v2.explicit && !v1.explicit) {
     return v2;
   } else {
-
-    const diff = compare(v1.value, v2.value);
-    if (diff > 0) {
-      return v1;
-    } else if (diff < 0) {
-      return v2;
-    } else {
-      if (v1.explicit && v2.explicit) {
-        log.warn(log.message.mergeConflictingScaleProperty(property, v1.value, v2.value));
-      }
-      // If equal score, prefer v1.
-      return v1;
-    }
+    return tieBreaker(v1, v2, property, propertyOf);
   }
 }

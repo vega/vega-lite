@@ -376,11 +376,11 @@
     ],
     "axes": [
         {
+            "title": "population",
             "scale": "x",
             "labelOverlap": true,
             "orient": "bottom",
             "tickCount": 5,
-            "title": "population",
             "zindex": 1
         },
         {

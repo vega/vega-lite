@@ -281,7 +281,7 @@
         {
             "scale": "y",
             "orient": "left",
-            "title": "price",
+            "title": "price, MEAN(price)",
             "zindex": 1
         },
         {

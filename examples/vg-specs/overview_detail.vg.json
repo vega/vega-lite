@@ -492,9 +492,9 @@
                     "gridScale": "concat_0_y"
                 },
                 {
+                    "tickCount": 3,
                     "scale": "concat_0_y",
                     "orient": "left",
-                    "tickCount": 3,
                     "title": "price",
                     "zindex": 1
                 }
