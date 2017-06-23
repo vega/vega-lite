@@ -133,7 +133,7 @@ export function defaultTieBreaker<S, T>(v1: Explicit<T>, v2: Explicit<T>, proper
 export function mergeValuesWithExplicit<S, T>(
     v1: Explicit<T>, v2: Explicit<T>,
     property: keyof S,
-    propertyOf: 'scale' | 'axis' | 'legend',
+    propertyOf: string,
     tieBreaker: (v1: Explicit<T>, v2: Explicit<T>, property: keyof S, propertyOf: string) => Explicit<T> = defaultTieBreaker
   ) {
   if (v1 === undefined || v1.value === undefined) {
