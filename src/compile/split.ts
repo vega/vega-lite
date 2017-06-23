@@ -111,7 +111,7 @@ export function makeImplicit<T>(value: T): Explicit<T> {
 }
 
 export function tieBreakByComparing<S, T>(compare: (v1: T, v2: T) => number) {
-  return (v1: Explicit<T>, v2: Explicit<T>, property: keyof S, propertyOf: 'scale' | 'axis' | 'legend'): Explicit<T> => {
+  return (v1: Explicit<T>, v2: Explicit<T>, property: keyof S, propertyOf: string): Explicit<T> => {
     const diff = compare(v1.value, v2.value);
     if (diff > 0) {
       return v1;
@@ -122,9 +122,9 @@ export function tieBreakByComparing<S, T>(compare: (v1: T, v2: T) => number) {
   };
 }
 
-export function defaultTieBreaker<S, T>(v1: Explicit<T>, v2: Explicit<T>, property: keyof S, propertyOf: 'scale' | 'axis' | 'legend') {
+export function defaultTieBreaker<S, T>(v1: Explicit<T>, v2: Explicit<T>, property: keyof S, propertyOf: string) {
   if (v1.explicit && v2.explicit) {
-    log.warn(log.message.mergeConflictingScaleProperty(property, propertyOf, v1.value, v2.value));
+    log.warn(log.message.mergeConflictingProperty(property, propertyOf, v1.value, v2.value));
   }
   // If equal score, prefer v1.
   return v1;
@@ -134,7 +134,7 @@ export function mergeValuesWithExplicit<S, T>(
     v1: Explicit<T>, v2: Explicit<T>,
     property: keyof S,
     propertyOf: 'scale' | 'axis' | 'legend',
-    tieBreaker: (v1: Explicit<T>, v2: Explicit<T>, property: keyof S, propertyOf: 'scale' | 'axis' | 'legend',) => Explicit<T> = defaultTieBreaker
+    tieBreaker: (v1: Explicit<T>, v2: Explicit<T>, property: keyof S, propertyOf: string) => Explicit<T> = defaultTieBreaker
   ) {
   if (v1 === undefined || v1.value === undefined) {
     // For first run

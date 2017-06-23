@@ -224,7 +224,7 @@ export namespace message {
     return `Scale type "${scaleType}" does not work with mark ${mark}.`;
   }
 
-  export function mergeConflictingScaleProperty<T>(property: string, propertyOf: 'scale' | 'axis' | 'legend', v1: T, v2: T) {
+  export function mergeConflictingProperty<T>(property: string, propertyOf: string, v1: T, v2: T) {
     return `Conflicting ${propertyOf} property ${property} (${v1} and ${v2}).  Using ${v1}.`;
   }
 
