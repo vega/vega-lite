@@ -47,7 +47,7 @@ function removeUnnecessaryNodes(node: DataFlowNode) {
  */
 function cloneSubtree(facet: FacetNode) {
   function clone(node: DataFlowNode): DataFlowNode[] {
-    if (!(node instanceof OrderNode)) {  // we can ignore order nodes beacuse they don't change the scale domain
+    if (!(node instanceof OrderNode || node instanceof FacetNode)) {  // we can ignore order nodes beacuse they don't change the scale domain
       const copy = node.clone();
 
       if (copy instanceof OutputNode) {
