@@ -31,7 +31,7 @@ Putting it together, we have:
   view.change('table', changeSet).run();
 ```
 
-The view is given to us by the Vega [embed](https://github.com/vega/vega-embed) method, which help load Vega/Vega-Lite specs on your webpages. The callback argument to `embed` is invoked when embed is complete, with parameters: `error`, then an object containing the `view`, which is how we could access the `view.change` mentioned earlier, and `spec`, which is the compiled Vega spec from the original Vega-Lite spec given.
+The view is given to us by the Vega [embed](https://github.com/vega/vega-embed) method, which helps load Vega/Vega-Lite specs on your webpages. When `embed` completes successfully, `embed` returns a fulfilled [promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise) with an object containing the `view`, which is how we could access the `view.change` mentioned earlier, and `spec`, which is the compiled Vega spec from the original Vega-Lite spec given. When `embed` fails, it returns a rejected [promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise) with an error object.
 
 For simplicity, we have generated some data to simulate real time data updates, but the code could easily be swapped with a server data request.  In the example, the "real time" is being simualted by `window.setInterval` that triggers `view.change` periodically.
 
@@ -49,7 +49,7 @@ var vlSpec = {
         'color': { 'field': 'category', 'type': 'nominal' }
     }
 };
-function cb(err, res) {
+function cb(res) {
     /**
      * Generates a new tuple with random walk.
      */
@@ -77,7 +77,7 @@ function cb(err, res) {
     }, 1000);
 }
 
-embed('#chart', vlSpec, {}, cb);
+embed('#chart', vlSpec).then(cb);
 ```
 
 This is the end of this tutorial where you learned how to stream new data into your chart. You can find more visualizations in the [gallery]({{site.baseurl}}/examples/). If you want to further customize your charts, please read the [documentation]({{site.baseurl}}/docs/).

@@ -14,7 +14,7 @@ export function runStreamingExample(eleId: string) {
     }
   };
 
-  function cb(err: Error, res: {view: any, spec: any}) {
+  function cb(res: {view: any, spec: any}) {
     const {view} = res;
 
     /**
@@ -47,5 +47,5 @@ export function runStreamingExample(eleId: string) {
 
   embed(eleId, vlSpec, {
     actions: false
-  }, cb);
+  }).then(cb);
 }
