@@ -76,8 +76,8 @@ describe('compile/layout', () => {
         config: {cell: {width: 123, height: 456}}
       });
 
-      assert.deepEqual(model.component.layoutSize.get('width'), null);
-      assert.deepEqual(model.component.layoutSize.get('height'), null);
+      assert.deepEqual(model.component.layoutSize.get('width'), 'range-step');
+      assert.deepEqual(model.component.layoutSize.get('height'), 'range-step');
     });
   });
 });

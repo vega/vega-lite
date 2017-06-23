@@ -2,7 +2,6 @@
 
 import {assert} from 'chai';
 import {X, Y} from '../../../src/channel';
-import {parseLayoutSize} from '../../../src/compile/layout/parse';
 import {parseMarkDef} from '../../../src/compile/mark/mark';
 import {text} from '../../../src/compile/mark/text';
 import {UnitModel} from '../../../src/compile/unit';

@@ -9,7 +9,7 @@ import {FILL_STROKE_CONFIG, isMarkDef, Mark, MarkDef, TEXT as TEXT_MARK} from '.
 import {defaultScaleConfig, Domain, hasDiscreteDomain, Scale} from '../scale';
 import {SelectionDef} from '../selection';
 import {SortField, SortOrder} from '../sort';
-import {LayoutSize, UnitSpec} from '../spec';
+import {LayoutSizeMixins, UnitSpec} from '../spec';
 import {stack, StackProperties} from '../stack';
 import {Dict, duplicate, extend, vals} from '../util';
 import {VgData, VgEncodeEntry, VgLayout, VgScale, VgSignal} from '../vega.schema';
@@ -20,7 +20,7 @@ import {assembleData} from './data/assemble';
 import {parseData} from './data/parse';
 import {FacetModel} from './facet';
 import {LayerModel} from './layer';
-import {assembleLayoutUnitSignals} from './layout/assemble';
+import {assembleLayoutSignals} from './layout/assemble';
 import {LegendIndex} from './legend/component';
 import {parseUnitLegend} from './legend/parse';
 import {initEncoding} from './mark/init';
@@ -51,7 +51,7 @@ export class UnitModel extends ModelWithField {
   public children: Model[] = [];
 
   constructor(spec: UnitSpec, parent: Model, parentGivenName: string,
-    parentGivenSize: LayoutSize = {}, repeater: RepeaterValue, config: Config) {
+    parentGivenSize: LayoutSizeMixins = {}, repeater: RepeaterValue, config: Config) {
 
     super(spec, parent, parentGivenName, config, {});
     this.initSize({
@@ -237,7 +237,7 @@ export class UnitModel extends ModelWithField {
   }
 
   public assembleLayoutSignals(): VgSignal[] {
-    return assembleLayoutUnitSignals(this);
+    return assembleLayoutSignals(this);
   }
 
   public assembleMarks() {

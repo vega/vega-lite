@@ -332,75 +332,11 @@
     ],
     "signals": [
         {
-            "name": "child_distance_width",
-            "update": "max(child_distance_layer_0_width, child_distance_layer_1_width)"
-        },
-        {
-            "name": "child_distance_height",
-            "update": "max(child_distance_layer_0_height, child_distance_layer_1_height)"
-        },
-        {
-            "name": "child_distance_layer_0_width",
+            "name": "width",
             "update": "200"
         },
         {
-            "name": "child_distance_layer_0_height",
-            "update": "200"
-        },
-        {
-            "name": "child_distance_layer_1_width",
-            "update": "200"
-        },
-        {
-            "name": "child_distance_layer_1_height",
-            "update": "200"
-        },
-        {
-            "name": "child_delay_width",
-            "update": "max(child_delay_layer_0_width, child_delay_layer_1_width)"
-        },
-        {
-            "name": "child_delay_height",
-            "update": "max(child_delay_layer_0_height, child_delay_layer_1_height)"
-        },
-        {
-            "name": "child_delay_layer_0_width",
-            "update": "200"
-        },
-        {
-            "name": "child_delay_layer_0_height",
-            "update": "200"
-        },
-        {
-            "name": "child_delay_layer_1_width",
-            "update": "200"
-        },
-        {
-            "name": "child_delay_layer_1_height",
-            "update": "200"
-        },
-        {
-            "name": "child_time_width",
-            "update": "max(child_time_layer_0_width, child_time_layer_1_width)"
-        },
-        {
-            "name": "child_time_height",
-            "update": "max(child_time_layer_0_height, child_time_layer_1_height)"
-        },
-        {
-            "name": "child_time_layer_0_width",
-            "update": "200"
-        },
-        {
-            "name": "child_time_layer_0_height",
-            "update": "200"
-        },
-        {
-            "name": "child_time_layer_1_width",
-            "update": "200"
-        },
-        {
-            "name": "child_time_layer_1_height",
+            "name": "height",
             "update": "200"
         },
         {
@@ -431,10 +367,10 @@
             "encode": {
                 "update": {
                     "width": {
-                        "signal": "child_distance_width"
+                        "signal": "width"
                     },
                     "height": {
-                        "signal": "child_distance_height"
+                        "signal": "height"
                     },
                     "fill": {
                         "value": "transparent"
@@ -475,7 +411,7 @@
                                     }
                                 ]
                             },
-                            "update": "[brush_x[0], clamp(x(unit), 0, child_distance_layer_0_width)]"
+                            "update": "[brush_x[0], clamp(x(unit), 0, width)]"
                         },
                         {
                             "events": {
@@ -487,13 +423,13 @@
                             "events": {
                                 "signal": "brush_translate_delta"
                             },
-                            "update": "clampRange(panLinear(brush_translate_anchor.extent_x, brush_translate_delta.x / span(brush_translate_anchor.extent_x)), 0, child_distance_layer_0_width)"
+                            "update": "clampRange(panLinear(brush_translate_anchor.extent_x, brush_translate_delta.x / span(brush_translate_anchor.extent_x)), 0, width)"
                         },
                         {
                             "events": {
                                 "signal": "brush_zoom_delta"
                             },
-                            "update": "clampRange(zoomLinear(brush_x, brush_zoom_anchor.x, brush_zoom_delta), 0, child_distance_layer_0_width)"
+                            "update": "clampRange(zoomLinear(brush_x, brush_zoom_anchor.x, brush_zoom_delta), 0, width)"
                         }
                     ]
                 },
@@ -885,10 +821,10 @@
             "encode": {
                 "update": {
                     "width": {
-                        "signal": "child_delay_width"
+                        "signal": "width"
                     },
                     "height": {
-                        "signal": "child_delay_height"
+                        "signal": "height"
                     },
                     "fill": {
                         "value": "transparent"
@@ -929,7 +865,7 @@
                                     }
                                 ]
                             },
-                            "update": "[brush_x[0], clamp(x(unit), 0, child_delay_layer_0_width)]"
+                            "update": "[brush_x[0], clamp(x(unit), 0, width)]"
                         },
                         {
                             "events": {
@@ -941,13 +877,13 @@
                             "events": {
                                 "signal": "brush_translate_delta"
                             },
-                            "update": "clampRange(panLinear(brush_translate_anchor.extent_x, brush_translate_delta.x / span(brush_translate_anchor.extent_x)), 0, child_delay_layer_0_width)"
+                            "update": "clampRange(panLinear(brush_translate_anchor.extent_x, brush_translate_delta.x / span(brush_translate_anchor.extent_x)), 0, width)"
                         },
                         {
                             "events": {
                                 "signal": "brush_zoom_delta"
                             },
-                            "update": "clampRange(zoomLinear(brush_x, brush_zoom_anchor.x, brush_zoom_delta), 0, child_delay_layer_0_width)"
+                            "update": "clampRange(zoomLinear(brush_x, brush_zoom_anchor.x, brush_zoom_delta), 0, width)"
                         }
                     ]
                 },
@@ -1339,10 +1275,10 @@
             "encode": {
                 "update": {
                     "width": {
-                        "signal": "child_time_width"
+                        "signal": "width"
                     },
                     "height": {
-                        "signal": "child_time_height"
+                        "signal": "height"
                     },
                     "fill": {
                         "value": "transparent"
@@ -1383,7 +1319,7 @@
                                     }
                                 ]
                             },
-                            "update": "[brush_x[0], clamp(x(unit), 0, child_time_layer_0_width)]"
+                            "update": "[brush_x[0], clamp(x(unit), 0, width)]"
                         },
                         {
                             "events": {
@@ -1395,13 +1331,13 @@
                             "events": {
                                 "signal": "brush_translate_delta"
                             },
-                            "update": "clampRange(panLinear(brush_translate_anchor.extent_x, brush_translate_delta.x / span(brush_translate_anchor.extent_x)), 0, child_time_layer_0_width)"
+                            "update": "clampRange(panLinear(brush_translate_anchor.extent_x, brush_translate_delta.x / span(brush_translate_anchor.extent_x)), 0, width)"
                         },
                         {
                             "events": {
                                 "signal": "brush_zoom_delta"
                             },
-                            "update": "clampRange(zoomLinear(brush_x, brush_zoom_anchor.x, brush_zoom_delta), 0, child_time_layer_0_width)"
+                            "update": "clampRange(zoomLinear(brush_x, brush_zoom_anchor.x, brush_zoom_delta), 0, width)"
                         }
                     ]
                 },

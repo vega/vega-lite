@@ -3129,7 +3129,7 @@
       },
       "type": "object"
     },
-    "LayoutSize": {
+    "LayoutSizeMixins": {
       "additionalProperties": false,
       "properties": {
         "height": {
