@@ -12,7 +12,7 @@ import {applyConfig, buildModel} from './common';
 import {assembleData} from './data/assemble';
 import {parseData} from './data/parse';
 import {assembleLayoutLayerSignals} from './layout/assemble';
-import {moveSharedLegendUp} from './legend/parse';
+import {parseNonUnitLegend} from './legend/parse';
 import {Model} from './model';
 import {RepeaterValue} from './repeat';
 import {ScaleComponent, ScaleComponentIndex} from './scale/component';
@@ -89,17 +89,7 @@ export class LayerModel extends Model {
   }
 
   public parseLegend() {
-    const legendComponent = this.component.legends = {};
-
-    for (const child of this.children) {
-      child.parseLegend();
-
-      keys(child.component.legends).forEach((channel: NonspatialScaleChannel) => {
-        if (this.resolve[channel].legend === 'shared') {
-          moveSharedLegendUp(legendComponent, child, channel);
-        }
-      });
-    }
+    parseNonUnitLegend(this);
   }
 
   public assembleParentGroupProperties(): VgEncodeEntry {
