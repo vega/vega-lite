@@ -828,7 +828,8 @@
     "legends": [
         {
             "stroke": "color",
-            "title": "Cylinders"
+            "title": "Cylinders",
+            "fill": "color"
         }
     ]
 }

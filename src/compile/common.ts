@@ -15,6 +15,7 @@ import {FacetModel} from './facet';
 import {LayerModel} from './layer';
 import {Model} from './model';
 import {RepeaterValue, RepeatModel} from './repeat';
+import {Explicit} from './split';
 import {UnitModel} from './unit';
 
 
@@ -158,4 +159,13 @@ export function sortParams(orderDef: OrderFieldDef<string> | OrderFieldDef<strin
     s.order.push(orderChannelDef.sort || 'ascending');
     return s;
   }, {field:[], order: []});
+}
+
+export function titleMerger(v1: Explicit<string>, v2: Explicit<string>) {
+  return {
+    explicit: v1.explicit, // keep the old explicit
+    value: v1.value === v2.value ?
+      v1.value : // if title is the same just use one of them
+      v1.value + ', ' + v2.value // join title with comma if different
+  };
 }

@@ -4,6 +4,7 @@ import {ResolveMode} from '../../resolve';
 import {Dict, keys, some} from '../../util';
 import {AxisOrient} from '../../vega.schema';
 import {VgAxis, VgAxisEncode} from '../../vega.schema';
+import {titleMerger} from '../common';
 import {LayerModel} from '../layer';
 import {defaultTieBreaker, Explicit, mergeValuesWithExplicit, Split} from '../split';
 import {UnitModel} from '../unit';
@@ -163,13 +164,7 @@ function mergeAxisComponentPart(merged: AxisComponentPart, child: AxisComponentP
       (v1: Explicit<any>, v2: Explicit<any>) => {
         switch (prop) {
           case 'title':
-            // merge title
-            return {
-              explicit: v1.explicit, // keep the old explicit
-              value: v1.value === v2.value ?
-                v1.value : // if title is the same just use one of them
-                v1.value + ', ' + v2.value // join title with comma if different
-            };
+            return titleMerger(v1, v2);
           case 'gridScale':
             return {
               explicit: v1.explicit, // keep the old explicit
