@@ -61,3 +61,6 @@
 - [Layering]({{site.baseurl}}/docs/layer.html)
 - [Repeat]({{site.baseurl}}/docs/repeat.html)
 - [Interactions]({{site.baseurl}}/docs/selection.html)
+- [Tooltip]({{site.baseurl}}/docs/tooltip.html)
+    - [Using Tooltip channel]({{site.baseurl}}/docs/tooltip.html#using-tooltip-channel)
+    - [Using Vega-tooltip plugin]({{site.baseurl}}/docs/tooltip.html#using-vega-tooltip-plugin)
