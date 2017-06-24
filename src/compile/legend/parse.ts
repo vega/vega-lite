@@ -10,10 +10,10 @@ import * as encode from './encode';
 import * as rules from './rules';
 
 
-export function parseLegendComponent(model: UnitModel): LegendComponentIndex {
+export function parseUnitLegend(model: UnitModel): LegendComponentIndex {
   return [COLOR, SIZE, SHAPE, OPACITY].reduce(function(legendComponent, channel) {
     if (model.legend(channel)) {
-      legendComponent[channel] = parseLegend(model, channel);
+      legendComponent[channel] = parseLegendForChannel(model, channel);
     }
     return legendComponent;
   }, {});
@@ -35,7 +35,7 @@ function getLegendDefWithScale(model: UnitModel, channel: Channel): LegendCompon
   return null;
 }
 
-export function parseLegend(model: UnitModel, channel: NonspatialScaleChannel): LegendComponent {
+export function parseLegendForChannel(model: UnitModel, channel: NonspatialScaleChannel): LegendComponent {
   const fieldDef = model.fieldDef(channel);
   const legend = model.legend(channel);
 

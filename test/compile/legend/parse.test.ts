@@ -17,7 +17,7 @@ describe('compile/legend', function() {
         }
       });
 
-      const def = legendParse.parseLegend(model, COLOR);
+      const def = legendParse.parseLegendForChannel(model, COLOR);
       assert.isObject(def);
       assert.equal(def.title, 'a');
       assert.equal(def.stroke, 'color');
@@ -36,7 +36,7 @@ describe('compile/legend', function() {
 
         const model = parseUnitModelWithScale(s);
 
-        const def = legendParse.parseLegend(model, channel);
+        const def = legendParse.parseLegendForChannel(model, channel);
         assert.isObject(def);
         assert.equal(def.title, "a");
       });
