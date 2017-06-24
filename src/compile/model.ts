@@ -253,7 +253,7 @@ export abstract class Model {
   }
 
   public assembleLegends(): VgLegend[] {
-    return assembleLegends(this.component.legends);
+    return assembleLegends(this);
   }
 
   public assembleGroup(signals: VgSignal[] = []) {

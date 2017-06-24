@@ -5,7 +5,7 @@ import {Dict, keys} from '../../util';
 import {VgLegend, VgLegendEncode} from '../../vega.schema';
 import {numberFormat, titleMerger} from '../common';
 import {Model} from '../model';
-import {Explicit} from '../split';
+import {Explicit, makeImplicit} from '../split';
 import {defaultTieBreaker, mergeValuesWithExplicit} from '../split';
 import {UnitModel} from '../unit';
 import {LegendComponent, LegendComponentIndex} from './component';
@@ -137,7 +137,7 @@ export function parseNonUnitLegend(model: Model) {
   });
 }
 
-function mergeLegendComponent(mergedLegend: LegendComponent, childLegend: LegendComponent) {
+export function mergeLegendComponent(mergedLegend: LegendComponent, childLegend: LegendComponent) {
   if (!mergedLegend) {
     return childLegend.clone();
   }
@@ -158,10 +158,13 @@ function mergeLegendComponent(mergedLegend: LegendComponent, childLegend: Legend
       prop, 'legend',
 
       // Tie breaker function
-      (v1: Explicit<any>, v2: Explicit<any>) => {
+      (v1: Explicit<any>, v2: Explicit<any>): any => {
         switch (prop) {
           case 'title':
             return titleMerger(v1, v2);
+          case 'type':
+            // There are only two types. If we have different types, then prefer symbol over gradient.
+            return makeImplicit('symbol');
         }
         return defaultTieBreaker<VgLegend, any>(v1, v2, prop, 'legend');
       }

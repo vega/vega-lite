@@ -829,7 +829,16 @@
         {
             "stroke": "color",
             "title": "Cylinders",
-            "fill": "color"
+            "fill": "color",
+            "encode": {
+                "symbols": {
+                    "update": {
+                        "shape": {
+                            "value": "square"
+                        }
+                    }
+                }
+            }
         }
     ]
 }
