@@ -5,7 +5,7 @@ import {ResolveMode} from '../../resolve';
 import {Dict, keys} from '../../util';
 import {VgLegend, VgLegendEncode} from '../../vega.schema';
 import {getSpecifiedOrDefaultValue, numberFormat, titleMerger} from '../common';
-import {Model} from '../model';
+import {isUnitModel, Model} from '../model';
 import {parseGuideResolve} from '../resolve';
 import {Explicit, makeImplicit} from '../split';
 import {defaultTieBreaker, mergeValuesWithExplicit} from '../split';
@@ -15,7 +15,15 @@ import * as encode from './encode';
 import * as rules from './rules';
 
 
-export function parseUnitLegend(model: UnitModel): LegendComponentIndex {
+export function parseLegend(model: Model) {
+  if (isUnitModel(model)) {
+    model.component.legends = parseUnitLegend(model);
+  } else {
+    model.component.legends = parseNonUnitLegend(model);
+  }
+}
+
+function parseUnitLegend(model: UnitModel): LegendComponentIndex {
   return [COLOR, SIZE, SHAPE, OPACITY].reduce(function(legendComponent, channel) {
     if (model.legend(channel)) {
       legendComponent[channel] = parseLegendForChannel(model, channel);
@@ -93,11 +101,11 @@ function getProperty(property: keyof (Legend | VgLegend), specifiedLegend: Legen
   return specifiedLegend[property];
 }
 
-export function parseNonUnitLegend(model: Model) {
+function parseNonUnitLegend(model: Model) {
   const {legends, resolve} = model.component;
 
   for (const child of model.children) {
-    child.parseLegend();
+    parseLegend(child);
 
     keys(child.component.legends).forEach((channel: NonspatialScaleChannel) => {
       const channelResolve = model.component.resolve[channel];
@@ -132,6 +140,7 @@ export function parseNonUnitLegend(model: Model) {
       }
     }
   });
+  return legends;
 }
 
 export function mergeLegendComponent(mergedLegend: LegendComponent, childLegend: LegendComponent) {

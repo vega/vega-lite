@@ -13,7 +13,6 @@ import {assembleData} from './data/assemble';
 import {parseData} from './data/parse';
 import {assembleLayoutSignals} from './layout/assemble';
 import {parseLayerLayoutSize} from './layout/parse';
-import {parseNonUnitLegend} from './legend/parse';
 import {Model} from './model';
 import {RepeaterValue} from './repeater';
 import {assembleScaleForModelAndChildren} from './scale/assemble';
@@ -89,10 +88,6 @@ export class LayerModel extends Model {
 
   public parseAxisAndHeader() {
     parseLayerAxis(this);
-  }
-
-  public parseLegend() {
-    parseNonUnitLegend(this);
   }
 
   public assembleParentGroupProperties(): VgEncodeEntry {

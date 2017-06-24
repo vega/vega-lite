@@ -22,7 +22,6 @@ import {LayerModel} from './layer';
 import {assembleLayoutSignals} from './layout/assemble';
 import {parseUnitLayoutSize} from './layout/parse';
 import {LegendIndex} from './legend/component';
-import {parseUnitLegend} from './legend/parse';
 import {initEncoding} from './mark/init';
 import {parseMarkGroup} from './mark/mark';
 import {isLayerModel, Model, ModelWithField} from './model';
@@ -192,10 +191,6 @@ export class UnitModel extends ModelWithField {
 
   public parseAxisAndHeader() {
     this.component.axes = parseUnitAxis(this);
-  }
-
-  public parseLegend() {
-    this.component.legends = parseUnitLegend(this);
   }
 
   public assembleData(): VgData[] {
