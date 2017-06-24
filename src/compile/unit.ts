@@ -22,7 +22,7 @@ import {FacetModel} from './facet';
 import {LayerModel} from './layer';
 import {assembleLayoutUnitSignals} from './layout/assemble';
 import {LegendIndex} from './legend/component';
-import {parseLegendComponent} from './legend/parse';
+import {parseUnitLegend} from './legend/parse';
 import {initEncoding} from './mark/init';
 import {parseMarkGroup} from './mark/mark';
 import {Model, ModelWithField} from './model';
@@ -209,7 +209,7 @@ export class UnitModel extends ModelWithField {
   }
 
   public parseLegend() {
-    this.component.legends = parseLegendComponent(this);
+    this.component.legends = parseUnitLegend(this);
   }
 
   public assembleData(): VgData[] {
