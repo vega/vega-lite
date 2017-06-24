@@ -258,7 +258,10 @@ export abstract class Model {
   public assembleGroup(signals: VgSignal[] = []) {
     const group: VgMarkGroup = {};
 
-    signals = signals.concat(this.assembleSelectionSignals());
+    signals = signals.concat(
+      this.assembleLayoutSignals(),
+      this.assembleSelectionSignals()
+    );
     if (signals.length > 0) {
       group.signals = signals;
     }

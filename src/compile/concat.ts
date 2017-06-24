@@ -106,9 +106,8 @@ export class ConcatModel extends Model {
   }
 
   public assembleLayoutSignals(): VgSignal[] {
-    return this.children.reduce((signals, child) => {
-      return signals.concat(child.assembleLayoutSignals());
-    }, []);
+    // TODO(https://github.com/vega/vega-lite/issues/2415): correct layout signal for concat with shared scales
+    return [];
   }
   public assembleSelectionData(data: VgData[]): VgData[] {
     return this.children.reduce((db, child) => child.assembleSelectionData(db), []);
