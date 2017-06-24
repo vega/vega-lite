@@ -122,15 +122,15 @@ function mergeAxisComponents(mergedAxisCmpts: AxisComponent[], childAxisCmpts: A
       if ((!!mergedMain) !== (!!childMain)) {
         return undefined;
       } else if (mergedMain && childMain) {
-        const mergedOrient = mergedMain.get('orient');
-        const childOrient = childMain.get('orient');
+        const mergedOrient = mergedMain.getWithExplicit('orient');
+        const childOrient = childMain.getWithExplicit('orient');
 
-        if (mergedOrient === childOrient) {
-          mergedAxisCmpts[i].main = mergeAxisComponentPart(mergedMain, childMain);
-        } else {
+        if (mergedOrient.explicit && childOrient.explicit && mergedOrient.value !== childOrient.value) {
           // TODO: throw warning if resolve is explicit (We don't have info about explicit/implicit resolve yet.)
           // Cannot merge due to inconsistent orient
           return undefined;
+        } else {
+          mergedAxisCmpts[i].main = mergeAxisComponentPart(mergedMain, childMain);
         }
       }
 
