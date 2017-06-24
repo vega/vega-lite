@@ -6,7 +6,6 @@ import {VgData, VgScale, VgSignal} from '../vega.schema';
 import {assembleData} from './data/assemble';
 import {parseData} from './data/parse';
 import {assembleLayoutSignals} from './layout/assemble';
-import {parseNonUnitLegend} from './legend/parse';
 import {Model} from './model';
 import {assembleScaleForModelAndChildren} from './scale/assemble';
 
@@ -47,9 +46,7 @@ export abstract class BaseConcatModel extends Model {
 
     // TODO(#2415): support shared axes
   }
-  public parseLegend() {
-    parseNonUnitLegend(this);
-  }
+
   public assembleData(): VgData[] {
      if (!this.parent) {
       // only assemble data in the root

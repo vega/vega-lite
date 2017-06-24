@@ -4,7 +4,7 @@ import {Channel, COLUMN, isChannel, isScaleChannel, NonspatialScaleChannel, Scal
 import {Config} from '../config';
 import {Data, DataSourceType, MAIN, RAW} from '../data';
 import {forEach, reduce} from '../encoding';
-import {ChannelDef, field, FieldDef, FieldRefOption, getFieldDef, isFieldDef, isRepeatRef} from '../fielddef';
+import {ChannelDef, field, FieldDef, FieldRefOption, getFieldDef, isFieldDef, isRepeatRef, title} from '../fielddef';
 import {Legend} from '../legend';
 import * as log from '../log';
 import {ResolveMapping} from '../resolve';
@@ -28,6 +28,7 @@ import {LayoutSizeComponent, LayoutSizeIndex} from './layout/component';
 import {getHeaderGroup, getTitleGroup, HEADER_CHANNELS, HEADER_TYPES, LayoutHeaderComponent} from './layout/header';
 import {assembleLegends} from './legend/assemble';
 import {LegendComponentIndex} from './legend/component';
+import {parseLegend} from './legend/parse';
 import {parseMarkDef} from './mark/mark';
 import {RepeatModel} from './repeat';
 import {assembleScalesForModel} from './scale/assemble';
@@ -249,7 +250,9 @@ export abstract class Model {
 
   public abstract parseAxisAndHeader(): void;
 
-  public abstract parseLegend(): void;
+  public parseLegend() {
+    parseLegend(this);
+  }
 
   public abstract assembleSelectionTopLevelSignals(signals: any[]): any[];
   public abstract assembleSelectionSignals(): any[];
