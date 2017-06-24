@@ -25,7 +25,7 @@ import {assembleData, assembleFacetData, FACET_SCALE_PREFIX} from './data/assemb
 import {parseData} from './data/parse';
 import {getHeaderType, HeaderChannel, HeaderComponent} from './layout/header';
 import {labels} from './legend/encode';
-import {moveSharedLegendUp} from './legend/parse';
+import {parseNonUnitLegend} from './legend/parse';
 import {Model, ModelWithField} from './model';
 import {RepeaterValue, replaceRepeaterInFacet} from './repeat';
 import {ScaleComponent, ScaleComponentIndex} from './scale/component';
@@ -197,14 +197,7 @@ export class FacetModel extends ModelWithField {
   }
 
   public parseLegend() {
-    this.child.parseLegend();
-
-    this.component.legends = {};
-    keys(this.child.component.legends).forEach((channel: NonspatialScaleChannel) => {
-      if (this.resolve[channel].legend === 'shared') {
-        moveSharedLegendUp(this.component.legends, this.child, channel);
-      }
-    });
+    parseNonUnitLegend(this);
   }
 
   public assembleData(): VgData[] {

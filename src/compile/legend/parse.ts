@@ -88,11 +88,24 @@ function getSpecifiedOrDefaultValue(property: keyof (Legend | VgLegend), specifi
   return specifiedLegend[property];
 }
 
+export function parseNonUnitLegend(model: Model) {
+  const legendComponent = model.component.legends = {};
+
+  for (const child of model.children) {
+    child.parseLegend();
+
+    keys(child.component.legends).forEach((channel: NonspatialScaleChannel) => {
+      if (model.resolve[channel].legend === 'shared') {
+        moveSharedLegendUp(legendComponent, child, channel);
+      }
+    });
+  }
+}
 
 /**
  * Move legend from child up.
  */
-export function moveSharedLegendUp(legendComponents: LegendComponentIndex, child: Model, channel: Channel) {
+function moveSharedLegendUp(legendComponents: LegendComponentIndex, child: Model, channel: Channel) {
   // just use the first legend definition for each channel
   if (!legendComponents[channel]) {
     legendComponents[channel] = child.component.legends[channel];
