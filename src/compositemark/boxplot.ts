@@ -1,7 +1,8 @@
 import {isNumber} from 'vega-util';
 import {Config} from '../config';
-import {Encoding} from './../encoding';
-import {Field, FieldDef, isContinuous, isDiscrete, isFieldDef, PositionFieldDef} from './../fielddef';
+import {Encoding, forEach} from './../encoding';
+import {field, Field, FieldDef, isContinuous, isDiscrete, isFieldDef, PositionFieldDef} from './../fielddef';
+import * as log from './../log';
 import {MarkConfig, MarkDef} from './../mark';
 import {GenericUnitSpec, LayerSpec} from './../spec';
 import {Orient} from './../vega.schema';
@@ -44,7 +45,25 @@ export const VL_ONLY_BOXPLOT_CONFIG_PROPERTY_INDEX: {
   box: ['size']
 };
 
+export function filterUnsupportedEncChannels(spec: GenericUnitSpec<Encoding<Field>, BOXPLOT | BoxPlotDef>) {
+  const {mark: mark, encoding: encoding, ...outerSpec} = spec;
+  const {x: x, y: y, ...nonPositionEncoding} = encoding;
+  const newNonPositionEncoding = {};
+  forEach(nonPositionEncoding, (f, c) => {
+    if (supportedEncChannels.indexOf(c) > -1) {
+      newNonPositionEncoding[c] = f;
+    } else {
+      log.warn(log.message.incompatibleChannel(c, BOXPLOT));
+    }
+  });
+  newNonPositionEncoding['x'] = x;
+  newNonPositionEncoding['y'] = y;
+
+  spec.encoding = newNonPositionEncoding;
+}
+
 export function normalizeBoxPlot(spec: GenericUnitSpec<Encoding<Field>, BOXPLOT | BoxPlotDef>, config: Config): LayerSpec {
+  filterUnsupportedEncChannels(spec);
   const {mark: mark, encoding: encoding, ...outerSpec} = spec;
   const {x: _x, y: _y, ...nonPositionEncoding} = encoding;
   const {size: size, ...nonPositionEncodingWithoutSize} = nonPositionEncoding;
@@ -67,14 +86,14 @@ export function normalizeBoxPlot(spec: GenericUnitSpec<Encoding<Field>, BOXPLOT 
 
   const orient: Orient = boxOrient(spec);
   const {discreteAxisChannelDef, continuousAxisChannelDef, discreteAxis, continuousAxis, is1D} = boxParams(spec, orient);
-  const params = boxParams(spec, orient);
 
   if (continuousAxisChannelDef.aggregate !== undefined && continuousAxisChannelDef.aggregate !== BOXPLOT) {
     throw new Error(`Continuous axis should not have customized aggregation function ${continuousAxisChannelDef.aggregate}`);
   }
 
   const transform = boxTransform(encoding, discreteAxisChannelDef, continuousAxisChannelDef, kIQRScalar, is1D);
-
+  const {x: _xTemp, y: _yTemp, ...nonPositionEncoding2} = encoding;
+  const {size: _size, ...nonPositionEncodingWithoutSize2} = nonPositionEncoding2;
   const discreteAxisEncodingMixin = discreteAxisChannelDef !== undefined ? {[discreteAxis]: discreteAxisChannelDef} : {};
 
   return {
@@ -131,7 +150,7 @@ export function normalizeBoxPlot(spec: GenericUnitSpec<Encoding<Field>, BOXPLOT 
             field: 'upperBox',
             type: continuousAxisChannelDef.type
           },
-          ...nonPositionEncodingWithoutSize,
+          ...nonPositionEncodingWithoutSize2,
           ...midTickAndBarSizeChannelDef
         }
       }, { // mid tick
@@ -293,38 +312,36 @@ export function boxTransform(encoding: Encoding<Field>, discreteAxisFieldDef: Po
     ]);
   }
 
-  for (const fieldName in encoding) {
-    if (supportedEncChannels.indexOf(fieldName) > -1) {
-      const fieldDef = encoding[fieldName];
-      if (fieldDef.field && fieldDef.aggregate !== BOXPLOT) {
-        transformDef[0].summarize = transformDef[0].summarize.push({
-          aggregate: fieldDef.aggregate,
-          field: fieldDef.field,
-          as: 'fieldName_' + fieldDef.field
-        });
-      }
-    }
-  }
-
-  transformDef[0].groupby = boxTransformGroupby(discreteAxisFieldDef, encoding);
-
-  return transformDef;
-}
-
-export function boxTransformGroupby(discreteAxisFieldDef: PositionFieldDef<Field>, encoding: Encoding<Field>): Array<Field | string> {
   const groupby: Array<Field | string> = [];
   if (discreteAxisFieldDef !== undefined) {
     groupby.push(discreteAxisFieldDef.field);
   }
 
-  for (const fieldName in encoding) {
-    if (supportedEncChannels.indexOf(fieldName) > -1) {
-      const fieldDef = encoding[fieldName];
-      if (fieldDef.field && fieldDef.aggregate === undefined) {
-        groupby.push(fieldName);
+  const {x: _x, y: _y, ...nonPositionEncoding} = encoding;
+
+  for (const fieldName in nonPositionEncoding) {
+    if (nonPositionEncoding.hasOwnProperty(fieldName)) {
+      const fieldDef = nonPositionEncoding[fieldName];
+      if (field(fieldDef)) {
+        if (fieldDef.aggregate && fieldDef.aggregate !== BOXPLOT) {
+          transformDef[0].summarize = transformDef[0].summarize.concat([{
+            aggregate: fieldDef.aggregate,
+            field: fieldDef.field,
+            as: field(fieldDef)
+          }]);
+          encoding[fieldName] = {
+            field: field(fieldDef),
+            type: fieldDef.type
+          };
+        } else if (fieldDef.aggregate === undefined) {
+          groupby.push(field(fieldDef));
+        }
       }
     }
   }
 
-  return groupby;
+
+
+  transformDef[0].groupby = groupby;
+  return transformDef;
 }

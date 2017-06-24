@@ -1605,4 +1605,145 @@ describe("normalizeBoxIQR", () => {
       });
   });
 
+  it("should produce correct layered specs for vertical IQR boxplot where color encodes the mean of the people field", () => {
+     assert.deepEqual<GenericSpec<GenericUnitSpec<Encoding<Field>, string | MarkDef>>>(normalize({
+        "description": "A box plot showing median, min, and max in the US population distribution of age groups in 2000.",
+        "data": {"url": "data/population.json"},
+        mark: {
+          "type": "box-plot",
+          "extent": 1.5
+        },
+        encoding: {
+          "x": {"field": "age","type": "quantitative"},
+          "y": {
+            "field": "people",
+            "type": "quantitative",
+            "axis": {"title": "population"}
+          },
+          "size": {"value": 5},
+          "color": {
+            "aggregate": "mean",
+            "field": "people",
+            "type": "quantitative"
+          }
+        }
+      }, defaultConfig), {
+        "description": "A box plot showing median, min, and max in the US population distribution of age groups in 2000.",
+        "data": {"url": "data/population.json"},
+        "transform": [
+          {
+            "summarize": [
+              {
+                "aggregate": "q1",
+                "field": "people",
+                "as": "lowerBox"
+              },
+              {
+                "aggregate": "q3",
+                "field": "people",
+                "as": "upperBox"
+              },
+              {
+                "aggregate": "median",
+                "field": "people",
+                "as": "midBox"
+              },
+              {
+                "aggregate": "mean",
+                "field": "people",
+                "as": "mean_people"
+              }
+            ],
+            "groupby": ["age"]
+          },
+          {
+            calculate: 'datum.upperBox - datum.lowerBox',
+            as: 'IQR'
+          },
+          {
+            calculate: 'datum.lowerBox - datum.IQR * 1.5',
+            as: 'lowerWhisker'
+          },
+          {
+            calculate: 'datum.upperBox + datum.IQR * 1.5',
+            as: 'lowerWhisker'
+          }
+        ],
+        "layer": [
+          {
+            mark: {
+              type: 'rule',
+              role: 'boxWhisker'
+            },
+            "encoding": {
+              "x": {"field": "age","type": "quantitative"},
+              "y": {
+                "field": "lowerWhisker",
+                "type": "quantitative",
+                "axis": {"title": "population"}
+              },
+              "y2": {
+                "field": "lowerBox",
+                "type": "quantitative"
+              }
+            }
+          },
+          {
+            mark: {
+              type: 'rule',
+              role: 'boxWhisker'
+            },
+            "encoding": {
+              "x": {"field": "age","type": "quantitative"},
+              "y": {
+                "field": "upperBox",
+                "type": "quantitative"
+              },
+              "y2": {
+                "field": "upperWhisker",
+                "type": "quantitative"
+              }
+            }
+          },
+          {
+            mark: {
+              type: 'bar',
+              role: 'box'
+            },
+            "encoding": {
+              "x": {"field": "age","type": "quantitative"},
+              "y": {
+                "field": "lowerBox",
+                "type": "quantitative"
+              },
+              "y2": {
+                "field": "upperBox",
+                "type": "quantitative"
+              },
+              "size": {"value": 5},
+              "color": {
+                "field": "mean_people",
+                "type": "quantitative"
+              }
+            }
+          },
+          {
+            mark: {
+              type: 'tick',
+              role: 'boxMid'
+            },
+            "encoding": {
+              "x": {"field": "age","type": "quantitative"},
+              "y": {
+                "field": "midBox",
+                "type": "quantitative"
+              },
+              "color": {"value" : "white"},
+              "size": {"value": 5}
+            }
+          }
+        ]
+      });
+  });
+
 });
