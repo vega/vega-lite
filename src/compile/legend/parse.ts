@@ -1,7 +1,7 @@
 import {Channel, COLOR, NonspatialScaleChannel, OPACITY, SHAPE, SIZE} from '../../channel';
 import {Legend, LEGEND_PROPERTIES} from '../../legend';
 import {Dict, keys} from '../../util';
-import {VgLegend} from '../../vega.schema';
+import {VgLegend, VgLegendEncode} from '../../vega.schema';
 import {numberFormat} from '../common';
 import {Model} from '../model';
 import {UnitModel} from '../unit';
@@ -19,7 +19,7 @@ export function parseUnitLegend(model: UnitModel): LegendComponentIndex {
   }, {});
 }
 
-function getLegendDefWithScale(model: UnitModel, channel: Channel): LegendComponent {
+function getLegendDefWithScale(model: UnitModel, channel: Channel): VgLegend {
   // For binned field with continuous scale, use a special scale so we can overrride the mark props and labels
   switch (channel) {
     case COLOR:
@@ -39,28 +39,35 @@ export function parseLegendForChannel(model: UnitModel, channel: NonspatialScale
   const fieldDef = model.fieldDef(channel);
   const legend = model.legend(channel);
 
-  const def: VgLegend = getLegendDefWithScale(model, channel);
+  const legendCmpt = new LegendComponent({}, getLegendDefWithScale(model, channel));
 
   LEGEND_PROPERTIES.forEach(function(property) {
     const value = getSpecifiedOrDefaultValue(property, legend, channel, model);
     if (value !== undefined) {
-      def[property] = value;
+      const explicit = property === 'values' ?
+        !!legend.values :  // specified legend.values is already respected, but may get transformed.
+        value === legend[property];
+      legendCmpt.set(property, value, explicit);
     }
   });
 
   // 2) Add mark property definition groups
   const legendEncoding = legend.encoding || {};
-  ['labels', 'legend', 'title', 'symbols'].forEach(function(part) {
+  const legendEncode = ['labels', 'legend', 'title', 'symbols'].reduce((e: VgLegendEncode, part) => {
     const value = encode[part] ?
       encode[part](fieldDef, legendEncoding[part], model, channel) : // apply rule
       legendEncoding[part]; // no rule -- just default values
     if (value !== undefined && keys(value).length > 0) {
-      def.encode = def.encode || {};
-      def.encode[part] = {update: value};
+      e[part] = {update: value};
     }
-  });
+    return e;
+  }, {} as VgLegendEncode);
 
-  return def;
+  if (keys(legendEncode).length > 0) {
+    legendCmpt.set('encode', legendEncode, !!legend.encoding);
+  }
+
+  return legendCmpt;
 }
 
 function getSpecifiedOrDefaultValue(property: keyof (Legend | VgLegend), specifiedLegend: Legend, channel: NonspatialScaleChannel, model: UnitModel) {
