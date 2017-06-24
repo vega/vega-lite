@@ -106,6 +106,7 @@
     "vega": "^3.0.0-beta.35",
     "vega-datasets": "vega/vega-datasets#gh-pages",
     "vega-embed": "3.0.0-beta.17",
+    "vega-tooltip": "^0.4.0",
     "watchify": "^3.9.0",
     "yaml-front-matter": "^3.4.0"
   },

@@ -3,6 +3,8 @@ import {select, selectAll, Selection} from 'd3-selection';
 import * as hljs from 'highlight.js';
 import embed from 'vega-embed';
 import {config} from 'vega-embed';
+import {vegaLite} from 'vega-tooltip';
+import {Spec} from '../../build/src/spec';
 import {runStreamingExample} from './streaming';
 
 window['runStreamingExample'] = runStreamingExample;
@@ -48,11 +50,14 @@ function renderExample($target: Selection<any, any, any, any>, text: string) {
       source: false,
       export: false
     }
-  }, (err: Error) => {
+  }, (err: Error, result: any) => {
     if (err) {
       console.error(err);
+    } else if ($target.classed('tooltip')) {
+      vegaLite(result.view, JSON.parse(text) as any);
     }
   });
+
 }
 
 selectAll('.vl-example').each(function(this: Element) {
@@ -88,7 +93,7 @@ function renderGallery() {
       select(this).call(renderGalleryGroup);
     });
 
-    function renderGalleryGroup (selection: Selection<any, any, any, any>) {
+    function renderGalleryGroup(selection: Selection<any, any, any, any>) {
       const galleryGroupName = selection.attr('data-gallery-group');
       let galleryGroupSpecs: any[];
 
@@ -107,7 +112,7 @@ function renderGallery() {
       const imageGroup = viz.enter()
         .append('a')
         .attr('class', 'imagegroup')
-        .attr('href', function(d){ return 'https://vega.github.io/new-editor/?mode=vega-lite&spec=' + d.name;})
+        .attr('href', function(d) {return 'https://vega.github.io/new-editor/?mode=vega-lite&spec=' + d.name;})
         .attr('target', 'blank');
 
       imageGroup.append('div')
@@ -115,7 +120,7 @@ function renderGallery() {
         .style('background-image', function(d) {return 'url(' + window.location.origin + BASEURL + '/build/examples/images/' + d.name + '.vl.svg)';})
         .style('background-size', function(d) {
           return (!d.galleryParameters || !d.galleryParameters.backgroundSize) ? 'cover' : d.galleryParameters.backgroundSize;
-      });
+        });
       imageGroup.append('div')
         .attr('class', 'image-title')
         .text(function(d) {return d.title;});
