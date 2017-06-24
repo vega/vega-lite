@@ -206,8 +206,8 @@
     ],
     "legends": [
         {
-            "fill": "color",
             "title": "Weather type",
+            "fill": "color",
             "encode": {
                 "symbols": {
                     "update": {

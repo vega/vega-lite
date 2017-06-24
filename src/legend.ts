@@ -72,3 +72,8 @@ export const defaultLegendConfig: LegendConfig = {
 };
 
 export const LEGEND_PROPERTIES:(keyof (VgLegend | Legend))[] = ['entryPadding', 'format', 'offset', 'orient', 'tickCount', 'title', 'type', 'values' ,'zindex'];
+
+export const VG_LEGEND_PROPERTIES:(keyof VgLegend)[] = [].concat(
+  ['fill', 'stroke', 'size', 'opacity'],
+  LEGEND_PROPERTIES
+);

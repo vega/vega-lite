@@ -1,9 +1,12 @@
 import {Channel, COLOR, NonspatialScaleChannel, OPACITY, SHAPE, SIZE} from '../../channel';
-import {Legend, LEGEND_PROPERTIES} from '../../legend';
+import {Legend, LEGEND_PROPERTIES, VG_LEGEND_PROPERTIES} from '../../legend';
+import {ResolveMode} from '../../resolve';
 import {Dict, keys} from '../../util';
 import {VgLegend, VgLegendEncode} from '../../vega.schema';
-import {numberFormat} from '../common';
+import {numberFormat, titleMerger} from '../common';
 import {Model} from '../model';
+import {Explicit} from '../split';
+import {defaultTieBreaker, mergeValuesWithExplicit} from '../split';
 import {UnitModel} from '../unit';
 import {LegendComponent, LegendComponentIndex} from './component';
 import * as encode from './encode';
@@ -90,25 +93,80 @@ function getSpecifiedOrDefaultValue(property: keyof (Legend | VgLegend), specifi
 
 export function parseNonUnitLegend(model: Model) {
   const legendComponent = model.component.legends = {};
+  const legendResolveIndex: {[k in NonspatialScaleChannel]?: ResolveMode} = {};
 
   for (const child of model.children) {
     child.parseLegend();
 
     keys(child.component.legends).forEach((channel: NonspatialScaleChannel) => {
-      if (model.resolve[channel].legend === 'shared') {
-        moveSharedLegendUp(legendComponent, child, channel);
+      if (model.resolve[channel].legend === 'shared' &&
+          legendResolveIndex[channel] !== 'independent' &&
+          model.component.scales[channel]) {
+        // If default rule says shared and so far there is no conflict and the scale is merged,
+        // We will try to merge and see if there is a conflict
+
+        legendComponent[channel] = mergeLegendComponent(legendComponent[channel], child.component.legends[channel]);
+
+        if (legendComponent[channel]) {
+          // If merge return something, then there is no conflict.
+          // Thus, we can set / preserve the resolve index to be shared.
+          legendResolveIndex[channel] = 'shared';
+        } else {
+          // If merge returns nothing, there is a conflict and thus we cannot make the legend shared.
+          legendResolveIndex[channel] = 'independent';
+          delete legendComponent[channel];
+        }
+      } else {
+        legendResolveIndex[channel] = 'independent';
       }
     });
   }
+
+  keys(legendResolveIndex).forEach((channel: NonspatialScaleChannel) => {
+    for (const child of model.children) {
+      if (!child.component.legends[channel]) {
+        // skip if the child does not have a particular legend
+        return;
+      }
+
+      if (legendResolveIndex[channel] === 'shared') {
+        // After merging shared legend, make sure to remove legend from child
+        delete child.component.legends[channel];
+      }
+    }
+  });
 }
 
-/**
- * Move legend from child up.
- */
-function moveSharedLegendUp(legendComponents: LegendComponentIndex, child: Model, channel: Channel) {
-  // just use the first legend definition for each channel
-  if (!legendComponents[channel]) {
-    legendComponents[channel] = child.component.legends[channel];
+function mergeLegendComponent(mergedLegend: LegendComponent, childLegend: LegendComponent) {
+  if (!mergedLegend) {
+    return childLegend.clone();
   }
-  delete child.component.legends[channel];
+  const mergedOrient = mergedLegend.getWithExplicit('orient');
+  const childOrient = childLegend.getWithExplicit('orient');
+
+
+  if (mergedOrient.explicit && childOrient.explicit && mergedOrient.value !== childOrient.value) {
+    // TODO: throw warning if resolve is explicit (We don't have info about explicit/implicit resolve yet.)
+    // Cannot merge due to inconsistent orient
+    return undefined;
+  }
+  // Otherwise, let's merge
+  for (const prop of VG_LEGEND_PROPERTIES) {
+    const mergedValueWithExplicit = mergeValuesWithExplicit<VgLegend, any>(
+      mergedLegend.getWithExplicit(prop),
+      childLegend.getWithExplicit(prop),
+      prop, 'legend',
+
+      // Tie breaker function
+      (v1: Explicit<any>, v2: Explicit<any>) => {
+        switch (prop) {
+          case 'title':
+            return titleMerger(v1, v2);
+        }
+        return defaultTieBreaker<VgLegend, any>(v1, v2, prop, 'legend');
+      }
+    );
+    mergedLegend.setWithExplicit(prop, mergedValueWithExplicit);
+  }
+  return mergedLegend;
 }
