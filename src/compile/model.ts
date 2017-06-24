@@ -19,6 +19,7 @@ import {DataComponent} from './data/index';
 import {LayoutSize, LayoutSizeComponent} from './layout/component';
 import {getHeaderGroup, getTitleGroup, HEADER_CHANNELS, HEADER_TYPES, LayoutHeaderComponent} from './layout/header';
 import {parseLayoutSize} from './layout/parse';
+import {assembleLegends} from './legend/assemble';
 import {LegendComponentIndex} from './legend/component';
 import {parseMarkDef} from './mark/mark';
 import {RepeaterValue} from './repeat';
@@ -252,7 +253,7 @@ export abstract class Model {
   }
 
   public assembleLegends(): VgLegend[] {
-    return vals(this.component.legends);
+    return assembleLegends(this.component.legends);
   }
 
   public assembleGroup(signals: VgSignal[] = []) {
