@@ -45,8 +45,8 @@ export const VL_ONLY_BOXPLOT_CONFIG_PROPERTY_INDEX: {
   box: ['size']
 };
 
-export function filterUnsupportedEncChannels(spec: GenericUnitSpec<Encoding<Field>, BOXPLOT | BoxPlotDef>) {
-  const {mark: mark, encoding: encoding, ...outerSpec} = spec;
+export function filterUnsupportedEncChannels(spec: GenericUnitSpec<Encoding<Field>, BOXPLOT | BoxPlotDef>): GenericUnitSpec<Encoding<Field>, BOXPLOT | BoxPlotDef> {
+  const {encoding: encoding, ...outerSpec} = spec;
   const {x: x, y: y, ...nonPositionEncoding} = encoding;
   const newNonPositionEncoding = {};
   forEach(nonPositionEncoding, (f, c) => {
@@ -56,18 +56,21 @@ export function filterUnsupportedEncChannels(spec: GenericUnitSpec<Encoding<Fiel
       log.warn(log.message.incompatibleChannel(c, BOXPLOT));
     }
   });
-  newNonPositionEncoding['x'] = x;
-  newNonPositionEncoding['y'] = y;
 
-  spec.encoding = newNonPositionEncoding;
+  return {
+    encoding: {
+      x: x,
+      y: y,
+      ...newNonPositionEncoding
+    },
+    ...outerSpec
+  };
 }
 
 export function normalizeBoxPlot(spec: GenericUnitSpec<Encoding<Field>, BOXPLOT | BoxPlotDef>, config: Config): LayerSpec {
-  filterUnsupportedEncChannels(spec);
+  spec = filterUnsupportedEncChannels(spec);
   const {mark: mark, encoding: encoding, ...outerSpec} = spec;
-  const {x: _x, y: _y, ...nonPositionEncoding} = encoding;
-  const {size: size, ...nonPositionEncodingWithoutSize} = nonPositionEncoding;
-  const {color: _color, ...nonPositionEncodingWithoutColorSize} = nonPositionEncodingWithoutSize;
+  const size = encoding.size;
   const midTickAndBarSizeChannelDef = size ? {size: size} : {size: {value: config.box.size}};
 
   let kIQRScalar: number = undefined;
@@ -91,14 +94,15 @@ export function normalizeBoxPlot(spec: GenericUnitSpec<Encoding<Field>, BOXPLOT 
     throw new Error(`Continuous axis should not have customized aggregation function ${continuousAxisChannelDef.aggregate}`);
   }
 
-  const transform = boxTransform(encoding, discreteAxisChannelDef, continuousAxisChannelDef, kIQRScalar, is1D);
-  const {x: _xTemp, y: _yTemp, ...nonPositionEncoding2} = encoding;
-  const {size: _size, ...nonPositionEncodingWithoutSize2} = nonPositionEncoding2;
+  const {transformDef, encodingPostTransform} = boxTransform(encoding, discreteAxisChannelDef, continuousAxisChannelDef, kIQRScalar, is1D);
+  const {x: _x, y: _y, ...nonPositionEncoding} = encodingPostTransform;
+  const {size: _size, ...nonPositionEncodingWithoutSize} = nonPositionEncoding;
+  const {color: _color, ...nonPositionEncodingWithoutColorSize} = nonPositionEncodingWithoutSize;
   const discreteAxisEncodingMixin = discreteAxisChannelDef !== undefined ? {[discreteAxis]: discreteAxisChannelDef} : {};
 
   return {
     ...outerSpec,
-    transform: transform,
+    transform: transformDef,
     layer: [
       { // lower whisker
         mark: {
@@ -150,7 +154,7 @@ export function normalizeBoxPlot(spec: GenericUnitSpec<Encoding<Field>, BOXPLOT 
             field: 'upperBox',
             type: continuousAxisChannelDef.type
           },
-          ...nonPositionEncodingWithoutSize2,
+          ...nonPositionEncodingWithoutSize,
           ...midTickAndBarSizeChannelDef
         }
       }, { // mid tick
@@ -219,20 +223,16 @@ export function boxParams(spec: GenericUnitSpec<Encoding<Field>, BOXPLOT | BoxPl
   let continuousAxis;
 
   if (orient === 'vertical') {
-    if (isFieldDef(encoding.y)) {
-      continuousAxis = 'y';
-      continuousAxisChannelDef = encoding.y;
-    }
+    continuousAxis = 'y';
+    continuousAxisChannelDef = encoding.y as FieldDef<Field>; // safe because need at least one axis for boxplot
 
     if (isFieldDef(encoding.x)) {
       discreteAxis = 'x';
       discreteAxisChannelDef = encoding.x;
     }
   } else {
-    if (isFieldDef(encoding.x)) {
-      continuousAxis = 'x';
-      continuousAxisChannelDef = encoding.x;
-    }
+    continuousAxis = 'x';
+    continuousAxisChannelDef = encoding.x as FieldDef<Field>; // safe because need at least one axis for boxplot
 
     if (isFieldDef(encoding.y)) {
       discreteAxis = 'y';
@@ -340,8 +340,8 @@ export function boxTransform(encoding: Encoding<Field>, discreteAxisFieldDef: Po
     }
   }
 
-
+  const encodingPostTransform = encoding;
 
   transformDef[0].groupby = groupby;
-  return transformDef;
+  return {transformDef, encodingPostTransform};
 }
