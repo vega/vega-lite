@@ -1,5 +1,5 @@
 import {assert} from 'chai';
-import {TopLevel, UnitSpec} from '../../../src/spec';
+import {LayoutSize, TopLevel, UnitSpec} from '../../../src/spec';
 import {parseUnitModelWithScaleAndLayoutSize} from '../../util';
 
 describe('compile/layout', () => {
@@ -76,8 +76,8 @@ describe('compile/layout', () => {
         config: {cell: {width: 123, height: 456}}
       });
 
-      assert.deepEqual(model.component.layoutSize.get('width'), null);
-      assert.deepEqual(model.component.layoutSize.get('height'), null);
+      assert.deepEqual<LayoutSize>(model.component.layoutSize.get('width'), 'range-step');
+      assert.deepEqual<LayoutSize>(model.component.layoutSize.get('height'), 'range-step');
     });
   });
 });

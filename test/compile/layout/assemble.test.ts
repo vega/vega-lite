@@ -4,11 +4,11 @@ import {assert} from 'chai';
 import {parseUnitModelWithScaleAndLayoutSize} from '../../util';
 
 import {X, Y} from '../../../src/channel';
-import {unitSizeExpr} from '../../../src/compile/layout/assemble';
+import {sizeExpr} from '../../../src/compile/layout/assemble';
 import * as log from '../../../src/log';
 
 describe('compile/layout', () => {
-  describe('unitSizeExpr', () => {
+  describe('sizeExpr', () => {
     it('should return correct formula for ordinal-point scale', () => {
       const model = parseUnitModelWithScaleAndLayoutSize({
         mark: 'point', // point mark produce ordinal-point scale by default
@@ -17,8 +17,8 @@ describe('compile/layout', () => {
         }
       });
 
-      const sizeExpr = unitSizeExpr(model, 'width');
-      assert.equal(sizeExpr, 'bandspace(domain(\'x\').length, 1, 0.5) * 21');
+      const size = sizeExpr(model, 'width');
+      assert.equal(size, 'bandspace(domain(\'x\').length, 1, 0.5) * 21');
     });
 
     it('should return correct formula for ordinal-band scale with custom padding', () => {
@@ -29,8 +29,8 @@ describe('compile/layout', () => {
         }
       });
 
-      const sizeExpr = unitSizeExpr(model, 'width');
-      assert.equal(sizeExpr, 'bandspace(domain(\'x\').length, 0.3, 0.3) * 21');
+      const size = sizeExpr(model, 'width');
+      assert.equal(size, 'bandspace(domain(\'x\').length, 0.3, 0.3) * 21');
     });
 
     it('should return correct formula for ordinal-band scale with custom paddingInner', () => {
@@ -41,8 +41,8 @@ describe('compile/layout', () => {
         }
       });
 
-      const sizeExpr = unitSizeExpr(model, 'width');
-      assert.equal(sizeExpr, 'bandspace(domain(\'x\').length, 0.3, 0.15) * 21');
+      const size = sizeExpr(model, 'width');
+      assert.equal(size, 'bandspace(domain(\'x\').length, 0.3, 0.15) * 21');
     });
 
     it('should return static cell size for ordinal x-scale with null', () => {
@@ -53,8 +53,8 @@ describe('compile/layout', () => {
         }
       });
 
-      const sizeExpr = unitSizeExpr(model, 'width');
-      assert.equal(sizeExpr, '200');
+      const size = sizeExpr(model, 'width');
+      assert.equal(size, '200');
     });
 
 
@@ -66,8 +66,8 @@ describe('compile/layout', () => {
         }
       });
 
-      const sizeExpr = unitSizeExpr(model, 'height');
-      assert.equal(sizeExpr, '200');
+      const size = sizeExpr(model, 'height');
+      assert.equal(size, '200');
     });
 
     it('should return static cell size for ordinal scale with top-level width', () => {
@@ -79,8 +79,8 @@ describe('compile/layout', () => {
         }
       });
 
-      const sizeExpr = unitSizeExpr(model, 'width');
-      assert.equal(sizeExpr, '205');
+      const size = sizeExpr(model, 'width');
+      assert.equal(size, '205');
     });
 
     it('should return static cell size for ordinal scale with top-level width even if there is numeric rangeStep', () => {
@@ -93,8 +93,8 @@ describe('compile/layout', () => {
           }
         });
 
-        const sizeExpr = unitSizeExpr(model, 'width');
-        assert.equal(sizeExpr, '205');
+        const size = sizeExpr(model, 'width');
+        assert.equal(size, '205');
         assert.equal(localLogger.warns[0], log.message.rangeStepDropped(X));
       });
     });
@@ -107,8 +107,8 @@ describe('compile/layout', () => {
         }
       });
 
-      const sizeExpr = unitSizeExpr(model, 'width');
-      assert.equal(sizeExpr, '200');
+      const size = sizeExpr(model, 'width');
+      assert.equal(size, '200');
     });
 
 
@@ -120,8 +120,8 @@ describe('compile/layout', () => {
         }
       });
 
-      const sizeExpr = unitSizeExpr(model, 'height');
-      assert.equal(sizeExpr, '200');
+      const size = sizeExpr(model, 'height');
+      assert.equal(size, '200');
     });
 
     it('should return default rangeStep if axis is not mapped', () => {
@@ -130,8 +130,8 @@ describe('compile/layout', () => {
         encoding: {},
         config: {scale: {rangeStep: 17}}
       });
-      const sizeExpr = unitSizeExpr(model, 'width');
-      assert.equal(sizeExpr, '17');
+      const size = sizeExpr(model, 'width');
+      assert.equal(size, '17');
     });
 
     it('should return textXRangeStep if axis is not mapped for X of text mark', () => {
@@ -140,8 +140,8 @@ describe('compile/layout', () => {
         encoding: {},
         config: {scale: {textXRangeStep: 91}}
       });
-      const sizeExpr = unitSizeExpr(model, 'width');
-      assert.equal(sizeExpr, '91');
+      const size = sizeExpr(model, 'width');
+      assert.equal(size, '91');
     });
 
   });

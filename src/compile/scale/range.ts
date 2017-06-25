@@ -1,8 +1,10 @@
+import {isNumber} from 'vega-util';
 import {Channel, COLOR, COLUMN, OPACITY, ROW, SCALE_CHANNELS, ScaleChannel, SHAPE, SIZE, X, Y} from '../../channel';
 import {Config} from '../../config';
 import * as log from '../../log';
 import {Mark} from '../../mark';
 import {channelScalePropertyIncompatability, isExtendedScheme, Range, Scale, ScaleConfig, ScaleType, scaleTypeSupportProperty, Scheme} from '../../scale';
+import {LayoutSize} from '../../spec';
 import {Type} from '../../type';
 import * as util from '../../util';
 import {isVgRangeStep, VgRange, VgRangeScheme} from '../../vega.schema';
@@ -75,7 +77,7 @@ function getXYRangeStep(model: UnitModel) {
  */
 export function parseRangeForChannel(
     channel: Channel, scaleType: ScaleType, type: Type, specifiedScale: Scale, config: Config,
-    zero: boolean, mark: Mark, specifiedSize: number | undefined, xyRangeSteps: number[]
+    zero: boolean, mark: Mark, specifiedSize: LayoutSize, xyRangeSteps: number[]
   ): Explicit<VgRange> {
 
   let specifiedRangeStepIsNull = false;
@@ -133,7 +135,7 @@ function parseScheme(scheme: Scheme) {
 }
 
 export function defaultRange(channel: Channel, scaleType: ScaleType, type: Type, config: Config,
-  zero: boolean, mark: Mark, topLevelSize: number | undefined, xyRangeSteps: number[],
+  zero: boolean, mark: Mark, topLevelSize: LayoutSize, xyRangeSteps: number[],
   specifiedRangeStepIsNull: boolean): VgRange {
   switch (channel) {
     // TODO: revise row/column when facetSpec has top-level width/height
@@ -143,11 +145,14 @@ export function defaultRange(channel: Channel, scaleType: ScaleType, type: Type,
       return 'width';
     case X:
     case Y:
-      if (topLevelSize === undefined) {
+      let size: number;
+      if (isNumber(topLevelSize)) {
+        size = topLevelSize;
+      } else {
         if (util.contains(['point', 'band'], scaleType) && !specifiedRangeStepIsNull) {
           if (channel === X && mark === 'text') {
             if (config.scale.textXRangeStep) {
-              return {step: config.scale.textXRangeStep};
+            return {step: config.scale.textXRangeStep};
             }
           } else {
             if (config.scale.rangeStep) {
@@ -157,10 +162,9 @@ export function defaultRange(channel: Channel, scaleType: ScaleType, type: Type,
         }
         // If specified range step is null or the range step config is null.
         // Use default topLevelSize rule/config
-        topLevelSize = channel === X ? config.cell.width : config.cell.height;
+        size = channel === X ? config.cell.width : config.cell.height;
       }
-      return channel === X ? [0, topLevelSize] : [topLevelSize, 0];
-
+      return channel === X ? [0, size] : [size, 0];
     case SIZE:
       // TODO: support custom rangeMin, rangeMax
       const rangeMin = sizeRangeMin(mark, zero, config);
