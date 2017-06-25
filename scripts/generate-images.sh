@@ -8,4 +8,4 @@ set -e
 export NODE_PATH=.
 
 echo "Generating SVGs..."
-ls examples/specs/*.vl.json | parallel --eta --halt 1 "bin/vl2svg {} build/examples/images/{/.}.svg"
+ls examples/specs/*.vl.json |  --no-notice --eta --halt 1 "bin/vl2svg {} build/examples/images/{/.}.svg"
