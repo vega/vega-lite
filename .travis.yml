@@ -6,9 +6,9 @@ node_js:
 before_install:
   - # Minimal installation as desdcribed in https://github.com/martinda/gnu-parallel
   - wget http://git.savannah.gnu.org/cgit/parallel.git/plain/src/parallel
-  - chmod 700 parallel # Need rwx permissoins for user.
+  - chmod +x parallel
   - cp parallel sem
-  - sudo mv parallel sem /usr/local/bin # echo $PATH for valid folders
+  - sudo mv parallel sem /usr/local/bin
 
 script:
   - npm run build
