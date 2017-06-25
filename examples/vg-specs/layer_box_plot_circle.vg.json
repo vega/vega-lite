@@ -23,26 +23,6 @@
             "source": "source_0",
             "transform": [
                 {
-                    "type": "formula",
-                    "expr": "toNumber(datum[\"people\"])",
-                    "as": "people"
-                },
-                {
-                    "type": "filter",
-                    "expr": "datum[\"people\"] !== null && !isNaN(datum[\"people\"])"
-                }
-            ]
-        },
-        {
-            "name": "data_1",
-            "source": "source_0",
-            "transform": [
-                {
-                    "type": "formula",
-                    "expr": "toNumber(datum[\"people\"])",
-                    "as": "people"
-                },
-                {
                     "type": "aggregate",
                     "groupby": [
                         "age"
@@ -86,22 +66,28 @@
                     "as": "lowerBox"
                 },
                 {
-                    "type": "aggregate",
-                    "groupby": [
-                        "age"
-                    ],
-                    "ops": [
-                        "q3",
-                        "max"
-                    ],
-                    "fields": [
-                        "people",
-                        "people"
-                    ],
-                    "as": [
-                        "q3_people",
-                        "max_people"
-                    ]
+                    "type": "filter",
+                    "expr": "datum[\"lowerWhisker\"] !== null && !isNaN(datum[\"lowerWhisker\"])"
+                }
+            ]
+        },
+        {
+            "name": "data_2",
+            "source": "data_0",
+            "transform": [
+                {
+                    "type": "formula",
+                    "expr": "toNumber(datum[\"upperBox\"])",
+                    "as": "upperBox"
+                },
+                {
+                    "type": "formula",
+                    "expr": "toNumber(datum[\"upperWhisker\"])",
+                    "as": "upperWhisker"
+                },
+                {
+                    "type": "filter",
+                    "expr": "datum[\"upperBox\"] !== null && !isNaN(datum[\"upperBox\"])"
                 }
             ]
         },
@@ -115,22 +101,13 @@
                     "as": "lowerBox"
                 },
                 {
-                    "type": "aggregate",
-                    "groupby": [
-                        "age"
-                    ],
-                    "ops": [
-                        "q1",
-                        "q3"
-                    ],
-                    "fields": [
-                        "people",
-                        "people"
-                    ],
-                    "as": [
-                        "q1_people",
-                        "q3_people"
-                    ]
+                    "type": "formula",
+                    "expr": "toNumber(datum[\"upperBox\"])",
+                    "as": "upperBox"
+                },
+                {
+                    "type": "filter",
+                    "expr": "datum[\"lowerBox\"] !== null && !isNaN(datum[\"lowerBox\"])"
                 }
             ]
         },
@@ -159,19 +136,8 @@
                     "as": "people"
                 },
                 {
-                    "type": "aggregate",
-                    "groupby": [
-                        "age"
-                    ],
-                    "ops": [
-                        "median"
-                    ],
-                    "fields": [
-                        "people"
-                    ],
-                    "as": [
-                        "median_people"
-                    ]
+                    "type": "filter",
+                    "expr": "datum[\"people\"] !== null && !isNaN(datum[\"people\"])"
                 }
             ]
         }
