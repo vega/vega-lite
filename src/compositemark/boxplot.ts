@@ -3,7 +3,7 @@ import {Channel} from '../channel';
 import {Config} from '../config';
 import {reduce} from '../encoding';
 import {isRepeatRef} from '../fielddef';
-import {CalculateTransform, Summarize, SummarizeTransform} from '../transform';
+import {BinTransform, CalculateTransform, Summarize, SummarizeTransform, TimeUnitTransform} from '../transform';
 import {Encoding, forEach} from './../encoding';
 import {field, Field, FieldDef, isContinuous, isDiscrete, isFieldDef, PositionFieldDef} from './../fielddef';
 import * as log from './../log';
@@ -79,13 +79,13 @@ export function normalizeBoxPlot(spec: GenericUnitSpec<Encoding<string>, BOXPLOT
   const isMinMax = kIQRScalar === undefined;
 
   const orient: Orient = boxOrient(spec);
-  const {discreteAxisChannelDef, continuousAxisChannelDef, discreteAxis, continuousAxis, is1D} = boxParams(spec, orient);
+  const {continuousAxisChannelDef, continuousAxis} = boxContinousAxis(spec, orient);
 
-  const {transform, nonPositionEncoding} = boxTransform(encoding, discreteAxisChannelDef, continuousAxisChannelDef, kIQRScalar, is1D);
+  const {transform, nonPositionEncoding} = boxTransform(encoding, continuousAxisChannelDef, continuousAxis, kIQRScalar);
 
   const {size, color, ...nonPositionEncodingWithoutColorSize} = nonPositionEncoding;
   const sizeMixins = size ? {size} : {size: {value: config.box.size}};
-  const discreteAxisEncodingMixin = discreteAxisChannelDef !== undefined ? {[discreteAxis]: discreteAxisChannelDef} : {};
+
   const continuousAxisScaleAndAxis = {};
   if (continuousAxisChannelDef.scale) {
     continuousAxisScaleAndAxis['scale'] = continuousAxisChannelDef.scale;
@@ -104,7 +104,6 @@ export function normalizeBoxPlot(spec: GenericUnitSpec<Encoding<string>, BOXPLOT
           role: 'boxWhisker'
         },
         encoding: {
-          ...discreteAxisEncodingMixin,
           [continuousAxis]: {
             field: 'lowerWhisker',
             type: continuousAxisChannelDef.type,
@@ -122,7 +121,6 @@ export function normalizeBoxPlot(spec: GenericUnitSpec<Encoding<string>, BOXPLOT
           role: 'boxWhisker'
         },
         encoding: {
-          ...discreteAxisEncodingMixin,
           [continuousAxis]: {
             field: 'upperBox',
             type: continuousAxisChannelDef.type
@@ -139,7 +137,6 @@ export function normalizeBoxPlot(spec: GenericUnitSpec<Encoding<string>, BOXPLOT
           role: 'box'
         },
         encoding: {
-          ...discreteAxisEncodingMixin,
           [continuousAxis]: {
             field: 'lowerBox',
             type: continuousAxisChannelDef.type
@@ -158,7 +155,6 @@ export function normalizeBoxPlot(spec: GenericUnitSpec<Encoding<string>, BOXPLOT
           role: 'boxMid'
         },
         encoding: {
-          ...discreteAxisEncodingMixin,
           [continuousAxis]: {
             field: 'midBox',
             type: continuousAxisChannelDef.type
@@ -207,30 +203,18 @@ function boxOrient(spec: GenericUnitSpec<Encoding<Field>, BOXPLOT | BoxPlotDef>)
 }
 
 
-function boxParams(spec: GenericUnitSpec<Encoding<string>, BOXPLOT | BoxPlotDef>, orient: Orient) {
+function boxContinousAxis(spec: GenericUnitSpec<Encoding<string>, BOXPLOT | BoxPlotDef>, orient: Orient) {
   const {mark: mark, encoding: encoding, ...outerSpec} = spec;
 
-  let discreteAxisChannelDef: PositionFieldDef<string>;
   let continuousAxisChannelDef: PositionFieldDef<string>;
-  let discreteAxis;
-  let continuousAxis;
+  let continuousAxis: 'x' | 'y';
 
   if (orient === 'vertical') {
     continuousAxis = 'y';
     continuousAxisChannelDef = encoding.y as FieldDef<string>; // Safe to cast because if y is not continous fielddef, the orient would not be vertical.
-
-    if (isFieldDef(encoding.x)) {
-      discreteAxis = 'x';
-      discreteAxisChannelDef = encoding.x;
-    }
   } else {
     continuousAxis = 'x';
     continuousAxisChannelDef = encoding.x as FieldDef<string>; // Safe to cast because if x is not continous fielddef, the orient would not be horizontal.
-
-    if (isFieldDef(encoding.y)) {
-      discreteAxis = 'y';
-      discreteAxisChannelDef = encoding.y;
-    }
   }
 
   if (continuousAxisChannelDef && continuousAxisChannelDef.aggregate) {
@@ -242,15 +226,13 @@ function boxParams(spec: GenericUnitSpec<Encoding<string>, BOXPLOT | BoxPlotDef>
   }
 
   return {
-    discreteAxisChannelDef,
     continuousAxisChannelDef,
-    discreteAxis,
-    continuousAxis,
-    is1D: !(isFieldDef(encoding.x) && isFieldDef(encoding.y))
+    continuousAxis
   };
 }
 
-function boxTransform(encoding: Encoding<string>, discreteAxisFieldDef: PositionFieldDef<string>, continuousAxisChannelDef: PositionFieldDef<string>, kIQRScalar: 'min-max' | number, is1D: boolean) {
+function boxTransform(encoding: Encoding<string>, continuousAxisChannelDef: PositionFieldDef<string>,
+continuousAxis: 'x' | 'y',  kIQRScalar: 'min-max' | number) {
   const isMinMax = kIQRScalar === undefined;
   const summarize: Summarize[] = [
     {
@@ -300,14 +282,11 @@ function boxTransform(encoding: Encoding<string>, discreteAxisFieldDef: Position
   }
 
   const groupby: Array<Field | string> = [];
-  if (discreteAxisFieldDef !== undefined) {
-    groupby.push(discreteAxisFieldDef.field);
-  }
 
   const nonPositionEncoding: Encoding<string> = {};
   forEach(encoding, (channelDef, channel) => {
-    if (channel === 'x' || channel === 'y') {
-      // Skip x and y as we already handle them separately
+    if (channel === continuousAxis) {
+      // Skip continuous axis as we already handle it separately
       return;
     }
     if (isFieldDef(channelDef)) {
@@ -340,7 +319,8 @@ function boxTransform(encoding: Encoding<string>, discreteAxisFieldDef: Position
 
   return {
     transform: [].concat(
-      // FIXME add timeUnit, bin if necessary
+      bins,
+      timeUnits,
       [{summarize, groupby}],
       calculateTransforms
     ),
