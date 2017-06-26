@@ -61,12 +61,8 @@ const interval:SelectionCompiler = {
     if (!hasScales) {
       signals.push({
         name: name + SCALE_TRIGGER,
-        value: {},
-        on: [{
-          events: scaleTriggers.map((t) => { return {scale: t.scaleName}; }),
-          update: scaleTriggers.map((t) => t.expr).join(' && ') +
-            ` ? ${name + SCALE_TRIGGER} : {}`
-        }]
+        update: scaleTriggers.map((t) => t.expr).join(' && ') +
+          ` ? ${name + SCALE_TRIGGER} : {}`
       });
     }
 
