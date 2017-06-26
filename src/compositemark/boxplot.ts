@@ -91,11 +91,10 @@ export function normalizeBoxPlot(spec: GenericUnitSpec<Encoding<Field>, BOXPLOT 
 
   const {transform, encodingPostTransform} = boxTransform(encoding, discreteAxisChannelDef, continuousAxisChannelDef, kIQRScalar, is1D);
 
-  const size = encoding.size;
-  const midTickAndBarSizeChannelDef = size ? {size} : {size: {value: config.box.size}};
 
   const {x: _x, y: _y, ...nonPositionEncoding} = encodingPostTransform;
-  const {size: _size, ...nonPositionEncodingWithoutSize} = nonPositionEncoding;
+  const {size, ...nonPositionEncodingWithoutSize} = nonPositionEncoding;
+  const midTickAndBarSizeChannelDef = size ? {size} : {size: {value: config.box.size}};
   const {color: _color, ...nonPositionEncodingWithoutColorSize} = nonPositionEncodingWithoutSize;
   const discreteAxisEncodingMixin = discreteAxisChannelDef !== undefined ? {[discreteAxis]: discreteAxisChannelDef} : {};
 
