@@ -214,7 +214,7 @@ export const defaultConfig: Config = {
 
   box: {size: 14},
   boxWhisker: {},
-  boxMid: {},
+  boxMid: {color: 'white'},
 
   scale: defaultScaleConfig,
   axis: {},
