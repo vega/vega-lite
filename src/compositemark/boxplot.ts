@@ -216,7 +216,7 @@ export function boxParams(spec: GenericUnitSpec<Encoding<Field>, BOXPLOT | BoxPl
 
   if (orient === 'vertical') {
     continuousAxis = 'y';
-    continuousAxisChannelDef = encoding.y as FieldDef<Field>; // safe because need at least one axis for boxplot
+    continuousAxisChannelDef = encoding.y as FieldDef<Field>; // Safe to cast because if y is not continous fielddef, the orient would not be vertical.
 
     if (isFieldDef(encoding.x)) {
       discreteAxis = 'x';
@@ -224,7 +224,7 @@ export function boxParams(spec: GenericUnitSpec<Encoding<Field>, BOXPLOT | BoxPl
     }
   } else {
     continuousAxis = 'x';
-    continuousAxisChannelDef = encoding.x as FieldDef<Field>; // safe because need at least one axis for boxplot
+    continuousAxisChannelDef = encoding.x as FieldDef<Field>; // Safe to cast because if x is not continous fielddef, the orient would not be horizontal.
 
     if (isFieldDef(encoding.y)) {
       discreteAxis = 'y';
