@@ -99,9 +99,10 @@ export function normalizeBoxPlot(spec: GenericUnitSpec<Encoding<string>, BOXPLOT
         encoding: {
           ...discreteAxisEncodingMixin,
           [continuousAxis]: {
-            axis: continuousAxisChannelDef.axis,
             field: 'lowerWhisker',
-            type: continuousAxisChannelDef.type
+            type: continuousAxisChannelDef.type,
+            continuousAxisChannelDef.scale ? {scale: continuousAxisChannelDef.scale} : {},
+            continuousAxisChannelDef.axis ? {axis: continuousAxisChannelDef.axis} : {},
           },
           [continuousAxis + '2']: {
             field: 'lowerBox',
