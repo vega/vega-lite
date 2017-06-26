@@ -1,5 +1,7 @@
 import {isNumber} from 'vega-util';
+import {Channel} from '../channel';
 import {Config} from '../config';
+import {reduce} from '../encoding';
 import {Encoding, forEach} from './../encoding';
 import {field, Field, FieldDef, isContinuous, isDiscrete, isFieldDef, PositionFieldDef} from './../fielddef';
 import * as log from './../log';
@@ -11,7 +13,7 @@ import {Orient} from './../vega.schema';
 export const BOXPLOT: 'box-plot' = 'box-plot';
 export type BOXPLOT = typeof BOXPLOT;
 export type BoxPlotRole = 'boxWhisker' | 'box' | 'boxMid';
-export const supportedEncChannels = ['color', 'detail', 'opacity', 'size'];
+
 
 export interface BoxPlotDef {
   type: BOXPLOT;
@@ -45,30 +47,25 @@ export const VL_ONLY_BOXPLOT_CONFIG_PROPERTY_INDEX: {
   box: ['size']
 };
 
-export function filterUnsupportedEncChannels(spec: GenericUnitSpec<Encoding<Field>, BOXPLOT | BoxPlotDef>): GenericUnitSpec<Encoding<Field>, BOXPLOT | BoxPlotDef> {
+const supportedChannels: Channel[] = ['x', 'y', 'color', 'detail', 'opacity', 'size'];
+export function filterUnsupportedChannels(spec: GenericUnitSpec<Encoding<Field>, BOXPLOT | BoxPlotDef>): GenericUnitSpec<Encoding<Field>, BOXPLOT | BoxPlotDef> {
   const {encoding: encoding, ...outerSpec} = spec;
-  const {x: x, y: y, ...nonPositionEncoding} = encoding;
-  const newNonPositionEncoding = {};
-  forEach(nonPositionEncoding, (f, c) => {
-    if (supportedEncChannels.indexOf(c) > -1) {
-      newNonPositionEncoding[c] = f;
-    } else {
-      log.warn(log.message.incompatibleChannel(c, BOXPLOT));
-    }
-  });
 
   return {
-    encoding: {
-      x: x,
-      y: y,
-      ...newNonPositionEncoding
-    },
+    encoding: reduce(encoding, (newEncoding, fieldDef, channel) => {
+      if (supportedChannels.indexOf(channel) > -1) {
+        newEncoding[channel] = fieldDef;
+      } else {
+        log.warn(log.message.incompatibleChannel(channel, BOXPLOT));
+      }
+      return newEncoding;
+    }, {}),
     ...outerSpec
   };
 }
 
 export function normalizeBoxPlot(spec: GenericUnitSpec<Encoding<Field>, BOXPLOT | BoxPlotDef>, config: Config): LayerSpec {
-  spec = filterUnsupportedEncChannels(spec);
+  spec = filterUnsupportedChannels(spec);
   const {mark: mark, encoding: encoding, ...outerSpec} = spec;
   const size = encoding.size;
   const midTickAndBarSizeChannelDef = size ? {size: size} : {size: {value: config.box.size}};
