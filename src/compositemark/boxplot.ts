@@ -2,6 +2,8 @@ import {isNumber} from 'vega-util';
 import {Channel} from '../channel';
 import {Config} from '../config';
 import {reduce} from '../encoding';
+import {isRepeatRef} from '../fielddef';
+import {CalculateTransform, Summarize, SummarizeTransform} from '../transform';
 import {Encoding, forEach} from './../encoding';
 import {field, Field, FieldDef, isContinuous, isDiscrete, isFieldDef, PositionFieldDef} from './../fielddef';
 import * as log from './../log';
@@ -83,10 +85,9 @@ export function normalizeBoxPlot(spec: GenericUnitSpec<Encoding<Field>, BOXPLOT 
     throw new Error(`Continuous axis should not have customized aggregation function ${continuousAxisChannelDef.aggregate}`);
   }
 
-  const {transform, encodingPostTransform} = boxTransform(encoding, discreteAxisChannelDef, continuousAxisChannelDef, kIQRScalar, is1D);
+  const {transform, nonPositionEncoding} = boxTransform(encoding, discreteAxisChannelDef, continuousAxisChannelDef, kIQRScalar, is1D);
 
 
-  const {x: _x, y: _y, ...nonPositionEncoding} = encodingPostTransform;
   const {size, ...nonPositionEncodingWithoutSize} = nonPositionEncoding;
   const midTickAndBarSizeChannelDef = size ? {size} : {size: {value: config.box.size}};
   const {color: _color, ...nonPositionEncodingWithoutColorSize} = nonPositionEncodingWithoutSize;
@@ -250,43 +251,38 @@ export function boxParams(spec: GenericUnitSpec<Encoding<Field>, BOXPLOT | BoxPl
 export function boxTransform(encoding: Encoding<Field>, discreteAxisFieldDef: PositionFieldDef<Field>, continuousAxisChannelDef: PositionFieldDef<Field>, kIQRScalar: 'min-max' | number, is1D: boolean) {
   const isMinMax = kIQRScalar === undefined;
 
-  let transform: any = [
-      {
-        summarize: [
-          {
-            aggregate: 'q1',
-            field: continuousAxisChannelDef.field,
-            as: 'lowerBox'
-          },
-          {
-            aggregate: 'q3',
-            field: continuousAxisChannelDef.field,
-            as: 'upperBox'
-          },
-          {
-            aggregate: 'median',
-            field: continuousAxisChannelDef.field,
-            as: 'midBox'
-          }
-        ]
-      }
+  const summarize: Summarize[] = [
+    {
+      aggregate: 'q1',
+      field: continuousAxisChannelDef.field,
+      as: 'lowerBox'
+    },
+    {
+      aggregate: 'q3',
+      field: continuousAxisChannelDef.field,
+      as: 'upperBox'
+    },
+    {
+      aggregate: 'median',
+      field: continuousAxisChannelDef.field,
+      as: 'midBox'
+    }
   ];
+  let calculateTransforms: CalculateTransform[] = [];
 
   if (isMinMax) {
-    transform[0].summarize = transform[0].summarize.concat([
-      {
-        aggregate: 'min',
-        field: continuousAxisChannelDef.field,
-        as: 'lowerWhisker'
-      },
-      {
-        aggregate: 'max',
-        field: continuousAxisChannelDef.field,
-        as: 'upperWhisker'
-      }
-    ]);
+    summarize.push({
+      aggregate: 'min',
+      field: continuousAxisChannelDef.field,
+      as: 'lowerWhisker'
+    });
+    summarize.push({
+      aggregate: 'max',
+      field: continuousAxisChannelDef.field,
+      as: 'upperWhisker'
+    });
   } else {
-    transform = transform.concat([
+    calculateTransforms = [
       {
         calculate: 'datum.upperBox - datum.lowerBox',
         as: 'IQR'
@@ -299,7 +295,7 @@ export function boxTransform(encoding: Encoding<Field>, discreteAxisFieldDef: Po
         calculate: 'datum.upperBox + datum.IQR * ' + kIQRScalar,
         as: 'lowerWhisker'
       }
-    ]);
+    ];
   }
 
   const groupby: Array<Field | string> = [];
@@ -307,31 +303,40 @@ export function boxTransform(encoding: Encoding<Field>, discreteAxisFieldDef: Po
     groupby.push(discreteAxisFieldDef.field);
   }
 
-  const {x: _x, y: _y, ...nonPositionEncoding} = encoding;
-
-  for (const fieldName in nonPositionEncoding) {
-    if (nonPositionEncoding.hasOwnProperty(fieldName)) {
-      const fieldDef = nonPositionEncoding[fieldName];
-      if (field(fieldDef)) {
-        if (fieldDef.aggregate && fieldDef.aggregate !== BOXPLOT) {
-          transform[0].summarize = transform[0].summarize.concat([{
-            aggregate: fieldDef.aggregate,
-            field: fieldDef.field,
-            as: field(fieldDef)
-          }]);
-          encoding[fieldName] = {
-            field: field(fieldDef),
-            type: fieldDef.type
-          };
-        } else if (fieldDef.aggregate === undefined) {
-          groupby.push(field(fieldDef));
-        }
-      }
+  const nonPositionEncoding = {};
+  forEach(encoding, (channelDef, channel) => {
+    if (channel === 'x' || channel === 'y') {
+      // Skip x and y as we already handle them separately
+      return;
     }
-  }
+    if (isFieldDef(channelDef)) {
+      if (channelDef.aggregate && channelDef.aggregate !== BOXPLOT) {
+        summarize.push({
+          aggregate: channelDef.aggregate,
+          field: channelDef.field,
+          as: field(channelDef)
+        });
+      } else if (channelDef.aggregate === undefined) {
+        // FIXME: Matthwchun -- you will need to apply timeUnit and bin transform before summarize in the output transform if applicable
+        groupby.push(field(channelDef));
+      }
+      // now the field should refer to post-transformed field instead
+      nonPositionEncoding[channel] = {
+        field: field(channelDef),
+        type: channelDef.type
+      };
+    } else {
+      // For value def, just copy
+      nonPositionEncoding[channel] = encoding[channel];
+    }
+  });
 
-  const encodingPostTransform = encoding;
-
-  transform[0].groupby = groupby;
-  return {transform, encodingPostTransform};
+  return {
+    transform: [].concat(
+      // FIXME add timeUnit, bin if necessary
+      [{summarize, groupby}],
+      calculateTransforms
+    ),
+    nonPositionEncoding
+  };
 }
