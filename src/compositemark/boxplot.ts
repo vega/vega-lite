@@ -162,7 +162,7 @@ export function normalizeBoxPlot(spec: GenericUnitSpec<Encoding<string>, BOXPLOT
           },
           ...nonPositionEncoding,
           ...sizeMixins,
-          color: {value : 'white'}
+          color: {value : 'white'} // FIXME: allow customizing this color
         }
       }
     ]
