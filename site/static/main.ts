@@ -48,7 +48,7 @@ function renderExample($target: Selection<any, any, any, any>, text: string) {
       source: false,
       export: false
     }
-  }, (err: Error) => {
+  }).catch((err: Error) => {
     if (err) {
       console.error(err);
     }

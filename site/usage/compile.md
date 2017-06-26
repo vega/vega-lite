@@ -20,14 +20,6 @@ If you want access to the compiled Vega spec from a Javascript program, you can 
 var vgSpec = vl.compile(vlSpec).spec;
 ```
 
-Then, you can continue to use the [Vega runtime](https://github.com/vega/vega/wiki/Runtime)'s `vg.parse.spec` method to render your Vega spec.
-
-```js
-vg.parse.spec(vgSpec, function(chart) {
-  chart({el:"#vis"}).update();
-});
-```
-
 {:#cli}
 ## From the Command Line
 If you want to compile your Vega-Lite specs from the command line, we provide a set of scripts which make it easy to go from Vega-Lite to Vega, SVG, or PNG. These scripts are `vl2vg`, `vl2svg`, and `vl2png` respectively.
