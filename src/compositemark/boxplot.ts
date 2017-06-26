@@ -87,10 +87,8 @@ export function normalizeBoxPlot(spec: GenericUnitSpec<Encoding<string>, BOXPLOT
 
   const {transform, nonPositionEncoding} = boxTransform(encoding, discreteAxisChannelDef, continuousAxisChannelDef, kIQRScalar, is1D);
 
-
-  const {size, ...nonPositionEncodingWithoutSize} = nonPositionEncoding;
+  const {size, color, ...nonPositionEncodingWithoutColorSize} = nonPositionEncoding;
   const sizeMixins = size ? {size} : {size: {value: config.box.size}};
-  const {color: _color, ...nonPositionEncodingWithoutColorSize} = nonPositionEncodingWithoutSize;
   const discreteAxisEncodingMixin = discreteAxisChannelDef !== undefined ? {[discreteAxis]: discreteAxisChannelDef} : {};
 
   return {
@@ -147,7 +145,8 @@ export function normalizeBoxPlot(spec: GenericUnitSpec<Encoding<string>, BOXPLOT
             field: 'upperBox',
             type: continuousAxisChannelDef.type
           },
-          ...nonPositionEncodingWithoutSize,
+          ...nonPositionEncoding,
+          // Need to apply size here to make sure size config get used
           ...sizeMixins
         }
       }, { // mid tick
