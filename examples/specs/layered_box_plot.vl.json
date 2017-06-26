@@ -61,7 +61,6 @@
         "y": {"field": "age", "type": "ordinal"},
         "x": {"field": "people_q1", "type": "quantitative"},
         "x2": {"field": "people_q3", "type": "quantitative"},
-        "color": {"value": "skyblue"},
         "size": {"value": 5}
       }
     },
