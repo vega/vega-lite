@@ -985,6 +985,19 @@
     "BoxPlotDef": {
       "additionalProperties": false,
       "properties": {
+        "extent": {
+          "anyOf": [
+            {
+              "enum": [
+                "min-max"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "number"
+            }
+          ]
+        },
         "orient": {
           "$ref": "#/definitions/Orient"
         },
@@ -993,8 +1006,7 @@
         }
       },
       "required": [
-        "type",
-        "orient"
+        "type"
       ],
       "type": "object"
     },

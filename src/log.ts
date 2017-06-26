@@ -6,6 +6,7 @@ import {logger, LoggerInterface, Warn} from 'vega-util';
 import {AggregateOp} from './aggregate';
 import {Axis} from './axis';
 import {Channel} from './channel';
+import {CompositeMark} from './compositemark';
 import {DateTime, DateTimeExpr} from './datetime';
 import {FieldDef} from './fielddef';
 import {Legend} from './legend';
@@ -146,7 +147,7 @@ export namespace message {
     return `Dropping ${JSON.stringify(fieldDef)} from channel ${channel} since it does not contain data field or value.`;
   }
 
-  export function incompatibleChannel(channel: Channel, markOrFacet: Mark | 'facet', when?: string) {
+  export function incompatibleChannel(channel: Channel, markOrFacet: Mark | 'facet' | CompositeMark, when?: string) {
     return `${channel} dropped as it is incompatible with ${markOrFacet}${when ? ` when ${when}` : ''}.`;
   }
 
