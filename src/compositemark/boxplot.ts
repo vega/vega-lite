@@ -157,9 +157,8 @@ export function normalizeBoxPlot(spec: GenericUnitSpec<Encoding<string>, BOXPLOT
             field: 'midBox',
             type: continuousAxisChannelDef.type
           },
-          ...encodingWithoutContinuousAxis,
-          ...sizeMixins,
-          color: {value : 'white'} // FIXME: allow customizing this color
+          ...nonPositionEncodingWithoutColorSize,
+          ...sizeMixins
         }
       }
     ]
