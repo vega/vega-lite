@@ -207,9 +207,9 @@ export const defaultConfig: Config = {
   line: {},
   point: {},
   rect: {},
-  rule: {},
+  rule: {color: 'black'},
   square: {},
-  text: mark.defaultTextConfig,
+  text: {color: 'black'},
   tick: mark.defaultTickConfig,
 
   box: {size: 14},

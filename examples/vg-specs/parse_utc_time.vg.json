@@ -80,7 +80,7 @@
                         "signal": "timeFormat(datum[\"year_Year\"], '%Y')"
                     },
                     "fill": {
-                        "value": "#4c78a8"
+                        "value": "black"
                     },
                     "align": {
                         "value": "center"

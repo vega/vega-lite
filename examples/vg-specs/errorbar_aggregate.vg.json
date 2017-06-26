@@ -196,7 +196,7 @@
                         "field": "max_people"
                     },
                     "stroke": {
-                        "value": "#4c78a8"
+                        "value": "black"
                     }
                 }
             },
