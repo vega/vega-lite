@@ -78,10 +78,6 @@ export function normalizeBoxPlot(spec: GenericUnitSpec<Encoding<Field>, BOXPLOT 
   }
   const isMinMax = kIQRScalar === undefined;
 
-  if (encoding.x === undefined && encoding.y === undefined) {
-    throw new Error('Need at least one axis');
-  }
-
   const orient: Orient = boxOrient(spec);
   const {discreteAxisChannelDef, continuousAxisChannelDef, discreteAxis, continuousAxis, is1D} = boxParams(spec, orient);
 

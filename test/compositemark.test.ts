@@ -275,7 +275,7 @@ it("should produce correct layered specs for vertical boxplot with two quantitat
           "color": {"value" : "skyblue"}
         }
       }, defaultConfig);
-    }, Error, 'Need at least one axis');
+    }, Error, 'Need a valid continuous axis for boxplots');
   });
 
   it("should produce an error if continuous axis has aggregate property 2D", () => {
