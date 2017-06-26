@@ -89,7 +89,7 @@ export function normalizeBoxPlot(spec: GenericUnitSpec<Encoding<string>, BOXPLOT
 
 
   const {size, ...nonPositionEncodingWithoutSize} = nonPositionEncoding;
-  const midTickAndBarSizeChannelDef = size ? {size} : {size: {value: config.box.size}};
+  const sizeMixins = size ? {size} : {size: {value: config.box.size}};
   const {color: _color, ...nonPositionEncodingWithoutColorSize} = nonPositionEncodingWithoutSize;
   const discreteAxisEncodingMixin = discreteAxisChannelDef !== undefined ? {[discreteAxis]: discreteAxisChannelDef} : {};
 
@@ -148,7 +148,7 @@ export function normalizeBoxPlot(spec: GenericUnitSpec<Encoding<string>, BOXPLOT
             type: continuousAxisChannelDef.type
           },
           ...nonPositionEncodingWithoutSize,
-          ...midTickAndBarSizeChannelDef
+          ...sizeMixins
         }
       }, { // mid tick
         mark: {
@@ -162,7 +162,7 @@ export function normalizeBoxPlot(spec: GenericUnitSpec<Encoding<string>, BOXPLOT
             type: continuousAxisChannelDef.type
           },
           ...nonPositionEncoding,
-          ...midTickAndBarSizeChannelDef,
+          ...sizeMixins,
           color: {value : 'white'}
         }
       }
