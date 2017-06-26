@@ -67,8 +67,6 @@ export function filterUnsupportedChannels(spec: GenericUnitSpec<Encoding<Field>,
 export function normalizeBoxPlot(spec: GenericUnitSpec<Encoding<Field>, BOXPLOT | BoxPlotDef>, config: Config): LayerSpec {
   spec = filterUnsupportedChannels(spec);
   const {mark: mark, encoding: encoding, ...outerSpec} = spec;
-  const size = encoding.size;
-  const midTickAndBarSizeChannelDef = size ? {size: size} : {size: {value: config.box.size}};
 
   let kIQRScalar: number = undefined;
   if (isBoxPlotDef(mark)) {
@@ -92,6 +90,9 @@ export function normalizeBoxPlot(spec: GenericUnitSpec<Encoding<Field>, BOXPLOT 
   }
 
   const {transformDef, encodingPostTransform} = boxTransform(encoding, discreteAxisChannelDef, continuousAxisChannelDef, kIQRScalar, is1D);
+  const size = encoding.size;
+  const midTickAndBarSizeChannelDef = size ? {size} : {size: {value: config.box.size}};
+
   const {x: _x, y: _y, ...nonPositionEncoding} = encodingPostTransform;
   const {size: _size, ...nonPositionEncodingWithoutSize} = nonPositionEncoding;
   const {color: _color, ...nonPositionEncodingWithoutColorSize} = nonPositionEncodingWithoutSize;
