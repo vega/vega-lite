@@ -251,7 +251,7 @@ continuousAxis: 'x' | 'y',  kIQRScalar: 'min-max' | number) {
       as: 'midBox'
     }
   ];
-  let calculateTransforms: CalculateTransform[] = [];
+  let postAggregateCalculates: CalculateTransform[] = [];
 
   if (isMinMax) {
     summarize.push({
@@ -265,7 +265,7 @@ continuousAxis: 'x' | 'y',  kIQRScalar: 'min-max' | number) {
       as: 'upperWhisker'
     });
   } else {
-    calculateTransforms = [
+    postAggregateCalculates = [
       {
         calculate: 'datum.upperBox - datum.lowerBox',
         as: 'IQR'
@@ -281,7 +281,7 @@ continuousAxis: 'x' | 'y',  kIQRScalar: 'min-max' | number) {
     ];
   }
 
-  const groupby: Array<Field | string> = [];
+  const groupby: string[] = [];
   const bins: BinTransform[] = [];
   const timeUnits: TimeUnitTransform[] = [];
 
@@ -328,7 +328,7 @@ continuousAxis: 'x' | 'y',  kIQRScalar: 'min-max' | number) {
       bins,
       timeUnits,
       [{summarize, groupby}],
-      calculateTransforms
+      postAggregateCalculates
     ),
     nonPositionEncoding
   };
