@@ -282,6 +282,8 @@ continuousAxis: 'x' | 'y',  kIQRScalar: 'min-max' | number) {
   }
 
   const groupby: Array<Field | string> = [];
+  const bins: BinTransform[] = [];
+  const timeUnits: TimeUnitTransform[] = [];
 
   const nonPositionEncoding: Encoding<string> = {};
   forEach(encoding, (channelDef, channel) => {
@@ -297,14 +299,18 @@ continuousAxis: 'x' | 'y',  kIQRScalar: 'min-max' | number) {
           as: field(channelDef)
         });
       } else if (channelDef.aggregate === undefined) {
-        // FIXME: Matthwchun -- you will need to apply timeUnit and bin transform before summarize in the output transform if applicable
-        if (channelDef.timeUnit) {
+        const transformedField = field(channelDef);
 
-        }
+        // Add bin or timeUnit transform if applicable
         if (channelDef.bin) {
-
+          const {bin, field} = channelDef;
+          bins.push({bin, field, as: transformedField});
+        } else if (channelDef.timeUnit) {
+          const {timeUnit, field} = channelDef;
+          timeUnits.push({timeUnit, field, as: transformedField});
         }
-        groupby.push(field(channelDef));
+
+        groupby.push(transformedField);
       }
       // now the field should refer to post-transformed field instead
       nonPositionEncoding[channel] = {
