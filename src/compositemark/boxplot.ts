@@ -235,7 +235,7 @@ export function boxParams(spec: GenericUnitSpec<Encoding<Field>, BOXPLOT | BoxPl
   if (continuousAxisChannelDef && continuousAxisChannelDef.aggregate) {
     const {aggregate, ...continuousAxisWithoutAggregate} = continuousAxisChannelDef;
     if (aggregate !== BOXPLOT) {
-      throw new Error(`Continuous axis should not have customized aggregation function ${aggregate}`);
+      log.warn(`Continuous axis should not have customized aggregation function ${aggregate}`);
     }
     continuousAxisChannelDef = continuousAxisWithoutAggregate;
   }

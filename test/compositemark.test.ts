@@ -3,6 +3,7 @@
 import {assert} from 'chai';
 import {Encoding} from '../src/encoding';
 import {Field} from '../src/fielddef';
+import * as log from '../src/log';
 import {Mark, MarkDef} from '../src/mark';
 import {GenericSpec, GenericUnitSpec, normalize} from '../src/spec';
 import {Config, defaultConfig} from './../src/config';
@@ -244,26 +245,6 @@ it("should produce correct layered specs for vertical boxplot with two quantitat
       });
   });
 
-  it("should produce an error if continuous axis has aggregate property 1D", () => {
-    assert.throws(() => {
-      normalize({
-        "description": "A box plot showing median, min, and max in the US population distribution of age groups in 2000.",
-        "data": {"url": "data/population.json"},
-        mark: "box-plot",
-        encoding: {
-          "y": {
-            "aggregate": "min",
-            "field": "people",
-            "type": "quantitative",
-            "axis": {"title": "population"}
-          },
-          "size": {"value": 5},
-          "color": {"value" : "skyblue"}
-        }
-      }, defaultConfig);
-    }, Error, 'Continuous axis should not have customized aggregation function min');
-  });
-
   it("should produce an error if neither the x axis or y axis is specified", () => {
     assert.throws(() => {
       normalize({
@@ -278,9 +259,8 @@ it("should produce correct layered specs for vertical boxplot with two quantitat
     }, Error, 'Need a valid continuous axis for boxplots');
   });
 
-  it("should produce an error if continuous axis has aggregate property 2D", () => {
-    assert.throws(() => {
-      normalize({
+  it("should produce a warning if continuous axis has aggregate property", log.wrap((localLogger) => {
+    normalize({
         "description": "A box plot showing median, min, and max in the US population distribution of age groups in 2000.",
         "data": {"url": "data/population.json"},
         mark: "box-plot",
@@ -295,9 +275,10 @@ it("should produce correct layered specs for vertical boxplot with two quantitat
           "size": {"value": 5},
           "color": {"value" : "skyblue"}
         }
-      }, defaultConfig);
-    }, Error, 'Continuous axis should not have customized aggregation function min');
-  });
+    }, defaultConfig);
+
+    assert.equal(localLogger.warns[0], 'Continuous axis should not have customized aggregation function min');
+  }));
 
   it("should produce an error if build 1D boxplot with a discrete axis", () => {
     assert.throws(() => {
