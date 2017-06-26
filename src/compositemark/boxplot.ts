@@ -49,10 +49,9 @@ export const VL_ONLY_BOXPLOT_CONFIG_PROPERTY_INDEX: {
 
 const supportedChannels: Channel[] = ['x', 'y', 'color', 'detail', 'opacity', 'size'];
 export function filterUnsupportedChannels(spec: GenericUnitSpec<Encoding<Field>, BOXPLOT | BoxPlotDef>): GenericUnitSpec<Encoding<Field>, BOXPLOT | BoxPlotDef> {
-  const {encoding: encoding, ...outerSpec} = spec;
-
   return {
-    encoding: reduce(encoding, (newEncoding, fieldDef, channel) => {
+    ...spec,
+    encoding: reduce(spec.encoding, (newEncoding, fieldDef, channel) => {
       if (supportedChannels.indexOf(channel) > -1) {
         newEncoding[channel] = fieldDef;
       } else {
@@ -60,7 +59,6 @@ export function filterUnsupportedChannels(spec: GenericUnitSpec<Encoding<Field>,
       }
       return newEncoding;
     }, {}),
-    ...outerSpec
   };
 }
 
