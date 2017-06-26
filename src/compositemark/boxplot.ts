@@ -81,10 +81,6 @@ export function normalizeBoxPlot(spec: GenericUnitSpec<Encoding<string>, BOXPLOT
   const orient: Orient = boxOrient(spec);
   const {discreteAxisChannelDef, continuousAxisChannelDef, discreteAxis, continuousAxis, is1D} = boxParams(spec, orient);
 
-  if (continuousAxisChannelDef.aggregate !== undefined && continuousAxisChannelDef.aggregate !== BOXPLOT) {
-    throw new Error(`Continuous axis should not have customized aggregation function ${continuousAxisChannelDef.aggregate}`);
-  }
-
   const {transform, nonPositionEncoding} = boxTransform(encoding, discreteAxisChannelDef, continuousAxisChannelDef, kIQRScalar, is1D);
 
   const {size, color, ...nonPositionEncodingWithoutColorSize} = nonPositionEncoding;
