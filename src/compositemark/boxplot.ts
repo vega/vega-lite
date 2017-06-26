@@ -79,9 +79,7 @@ export function normalizeBoxPlot(spec: GenericUnitSpec<Encoding<string>, BOXPLOT
   const isMinMax = kIQRScalar === undefined;
 
   const orient: Orient = boxOrient(spec);
-  const {continuousAxisChannelDef, continuousAxis} = boxContinousAxis(spec, orient);
-
-  const {transform, encodingWithoutContinuousAxis} = boxTransform(encoding, continuousAxisChannelDef, continuousAxis, kIQRScalar);
+  const {transform, continuousAxisChannelDef, continuousAxis, encodingWithoutContinuousAxis} = boxParams(spec, orient, kIQRScalar);
 
   const {size, color, ...nonPositionEncodingWithoutColorSize} = encodingWithoutContinuousAxis;
   const sizeMixins = size ? {size} : {size: {value: config.box.size}};
@@ -231,8 +229,10 @@ function boxContinousAxis(spec: GenericUnitSpec<Encoding<string>, BOXPLOT | BoxP
   };
 }
 
-function boxTransform(encoding: Encoding<string>, continuousAxisChannelDef: PositionFieldDef<string>,
-continuousAxis: 'x' | 'y',  kIQRScalar: 'min-max' | number) {
+function boxParams(spec: GenericUnitSpec<Encoding<string>, BOXPLOT | BoxPlotDef>, orient: Orient, kIQRScalar: 'min-max' | number) {
+
+  const {continuousAxisChannelDef, continuousAxis} = boxContinousAxis(spec, orient);
+
   const isMinMax = kIQRScalar === undefined;
   const summarize: Summarize[] = [
     {
@@ -330,6 +330,8 @@ continuousAxis: 'x' | 'y',  kIQRScalar: 'min-max' | number) {
       [{summarize, groupby}],
       postAggregateCalculates
     ),
+    continuousAxisChannelDef,
+    continuousAxis,
     encodingWithoutContinuousAxis
   };
 }
