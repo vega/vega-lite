@@ -50,7 +50,7 @@ export const VL_ONLY_BOXPLOT_CONFIG_PROPERTY_INDEX: {
 };
 
 const supportedChannels: Channel[] = ['x', 'y', 'color', 'detail', 'opacity', 'size'];
-export function filterUnsupportedChannels(spec: GenericUnitSpec<Encoding<Field>, BOXPLOT | BoxPlotDef>): GenericUnitSpec<Encoding<Field>, BOXPLOT | BoxPlotDef> {
+export function filterUnsupportedChannels(spec: GenericUnitSpec<Encoding<string>, BOXPLOT | BoxPlotDef>): GenericUnitSpec<Encoding<string>, BOXPLOT | BoxPlotDef> {
   return {
     ...spec,
     encoding: reduce(spec.encoding, (newEncoding, fieldDef, channel) => {
@@ -64,7 +64,7 @@ export function filterUnsupportedChannels(spec: GenericUnitSpec<Encoding<Field>,
   };
 }
 
-export function normalizeBoxPlot(spec: GenericUnitSpec<Encoding<Field>, BOXPLOT | BoxPlotDef>, config: Config): LayerSpec {
+export function normalizeBoxPlot(spec: GenericUnitSpec<Encoding<string>, BOXPLOT | BoxPlotDef>, config: Config): LayerSpec {
   spec = filterUnsupportedChannels(spec);
   const {mark, encoding, ...outerSpec} = spec;
 
@@ -170,7 +170,7 @@ export function normalizeBoxPlot(spec: GenericUnitSpec<Encoding<Field>, BOXPLOT 
   };
 }
 
-export function boxOrient(spec: GenericUnitSpec<Encoding<Field>, BOXPLOT | BoxPlotDef>): Orient {
+function boxOrient(spec: GenericUnitSpec<Encoding<Field>, BOXPLOT | BoxPlotDef>): Orient {
   const {mark: mark, encoding: encoding, ...outerSpec} = spec;
 
   if (isFieldDef(encoding.x) && isContinuous(encoding.x)) {
@@ -205,17 +205,17 @@ export function boxOrient(spec: GenericUnitSpec<Encoding<Field>, BOXPLOT | BoxPl
 }
 
 
-export function boxParams(spec: GenericUnitSpec<Encoding<Field>, BOXPLOT | BoxPlotDef>, orient: Orient) {
+function boxParams(spec: GenericUnitSpec<Encoding<string>, BOXPLOT | BoxPlotDef>, orient: Orient) {
   const {mark: mark, encoding: encoding, ...outerSpec} = spec;
 
-  let discreteAxisChannelDef: PositionFieldDef<Field>;
-  let continuousAxisChannelDef: PositionFieldDef<Field>;
+  let discreteAxisChannelDef: PositionFieldDef<string>;
+  let continuousAxisChannelDef: PositionFieldDef<string>;
   let discreteAxis;
   let continuousAxis;
 
   if (orient === 'vertical') {
     continuousAxis = 'y';
-    continuousAxisChannelDef = encoding.y as FieldDef<Field>; // Safe to cast because if y is not continous fielddef, the orient would not be vertical.
+    continuousAxisChannelDef = encoding.y as FieldDef<string>; // Safe to cast because if y is not continous fielddef, the orient would not be vertical.
 
     if (isFieldDef(encoding.x)) {
       discreteAxis = 'x';
@@ -223,7 +223,7 @@ export function boxParams(spec: GenericUnitSpec<Encoding<Field>, BOXPLOT | BoxPl
     }
   } else {
     continuousAxis = 'x';
-    continuousAxisChannelDef = encoding.x as FieldDef<Field>; // Safe to cast because if x is not continous fielddef, the orient would not be horizontal.
+    continuousAxisChannelDef = encoding.x as FieldDef<string>; // Safe to cast because if x is not continous fielddef, the orient would not be horizontal.
 
     if (isFieldDef(encoding.y)) {
       discreteAxis = 'y';
@@ -248,9 +248,8 @@ export function boxParams(spec: GenericUnitSpec<Encoding<Field>, BOXPLOT | BoxPl
   };
 }
 
-export function boxTransform(encoding: Encoding<Field>, discreteAxisFieldDef: PositionFieldDef<Field>, continuousAxisChannelDef: PositionFieldDef<Field>, kIQRScalar: 'min-max' | number, is1D: boolean) {
+function boxTransform(encoding: Encoding<string>, discreteAxisFieldDef: PositionFieldDef<string>, continuousAxisChannelDef: PositionFieldDef<string>, kIQRScalar: 'min-max' | number, is1D: boolean) {
   const isMinMax = kIQRScalar === undefined;
-
   const summarize: Summarize[] = [
     {
       aggregate: 'q1',
@@ -303,7 +302,7 @@ export function boxTransform(encoding: Encoding<Field>, discreteAxisFieldDef: Po
     groupby.push(discreteAxisFieldDef.field);
   }
 
-  const nonPositionEncoding = {};
+  const nonPositionEncoding: Encoding<string> = {};
   forEach(encoding, (channelDef, channel) => {
     if (channel === 'x' || channel === 'y') {
       // Skip x and y as we already handle them separately
