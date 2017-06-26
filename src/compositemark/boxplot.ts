@@ -86,6 +86,13 @@ export function normalizeBoxPlot(spec: GenericUnitSpec<Encoding<string>, BOXPLOT
   const {size, color, ...nonPositionEncodingWithoutColorSize} = nonPositionEncoding;
   const sizeMixins = size ? {size} : {size: {value: config.box.size}};
   const discreteAxisEncodingMixin = discreteAxisChannelDef !== undefined ? {[discreteAxis]: discreteAxisChannelDef} : {};
+  const continuousAxisScaleAndAxis = {};
+  if (continuousAxisChannelDef.scale) {
+    continuousAxisScaleAndAxis['scale'] = continuousAxisChannelDef.scale;
+  }
+  if (continuousAxisChannelDef.axis) {
+    continuousAxisScaleAndAxis['axis'] = continuousAxisChannelDef.axis;
+  }
 
   return {
     ...outerSpec,
@@ -101,8 +108,7 @@ export function normalizeBoxPlot(spec: GenericUnitSpec<Encoding<string>, BOXPLOT
           [continuousAxis]: {
             field: 'lowerWhisker',
             type: continuousAxisChannelDef.type,
-            continuousAxisChannelDef.scale ? {scale: continuousAxisChannelDef.scale} : {},
-            continuousAxisChannelDef.axis ? {axis: continuousAxisChannelDef.axis} : {},
+            ...continuousAxisScaleAndAxis
           },
           [continuousAxis + '2']: {
             field: 'lowerBox',
@@ -313,6 +319,12 @@ function boxTransform(encoding: Encoding<string>, discreteAxisFieldDef: Position
         });
       } else if (channelDef.aggregate === undefined) {
         // FIXME: Matthwchun -- you will need to apply timeUnit and bin transform before summarize in the output transform if applicable
+        if (channelDef.timeUnit) {
+
+        }
+        if (channelDef.bin) {
+
+        }
         groupby.push(field(channelDef));
       }
       // now the field should refer to post-transformed field instead
