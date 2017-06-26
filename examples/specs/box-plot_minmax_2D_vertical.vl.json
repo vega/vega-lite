@@ -10,8 +10,7 @@
       "type": "quantitative",
       "axis": {"title": "population"}
     },
-    "size": {"value": 5},
-    "color": {"value" : "skyblue"}
+    "size": {"value": 5}
   }
 }
 
