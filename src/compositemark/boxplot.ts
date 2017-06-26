@@ -66,7 +66,7 @@ export function filterUnsupportedChannels(spec: GenericUnitSpec<Encoding<Field>,
 
 export function normalizeBoxPlot(spec: GenericUnitSpec<Encoding<Field>, BOXPLOT | BoxPlotDef>, config: Config): LayerSpec {
   spec = filterUnsupportedChannels(spec);
-  const {mark: mark, encoding: encoding, ...outerSpec} = spec;
+  const {mark, encoding, ...outerSpec} = spec;
 
   let kIQRScalar: number = undefined;
   if (isBoxPlotDef(mark)) {
@@ -238,7 +238,7 @@ export function boxParams(spec: GenericUnitSpec<Encoding<Field>, BOXPLOT | BoxPl
   }
 
   if (continuousAxisChannelDef && continuousAxisChannelDef.aggregate) {
-    const {aggregate: aggregate, ...continuousAxisWithoutAggregate} = continuousAxisChannelDef;
+    const {aggregate, ...continuousAxisWithoutAggregate} = continuousAxisChannelDef;
     if (aggregate !== BOXPLOT) {
       throw new Error(`Continuous axis should not have customized aggregation function ${aggregate}`);
     }
@@ -246,10 +246,10 @@ export function boxParams(spec: GenericUnitSpec<Encoding<Field>, BOXPLOT | BoxPl
   }
 
   return {
-    discreteAxisChannelDef: discreteAxisChannelDef,
-    continuousAxisChannelDef: continuousAxisChannelDef,
-    discreteAxis: discreteAxis,
-    continuousAxis: continuousAxis,
+    discreteAxisChannelDef,
+    continuousAxisChannelDef,
+    discreteAxis,
+    continuousAxis,
     is1D: !(isFieldDef(encoding.x) && isFieldDef(encoding.y))
   };
 }
