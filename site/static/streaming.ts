@@ -18,7 +18,7 @@ export function runStreamingExample(eleId: string) {
 
   embed(eleId, vlSpec, {
     actions: false
-  }).then(function(res){
+  }).then(function(res) {
     const {view} = res;
 
     /**
