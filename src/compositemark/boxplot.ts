@@ -81,9 +81,9 @@ export function normalizeBoxPlot(spec: GenericUnitSpec<Encoding<string>, BOXPLOT
   const orient: Orient = boxOrient(spec);
   const {continuousAxisChannelDef, continuousAxis} = boxContinousAxis(spec, orient);
 
-  const {transform, nonPositionEncoding} = boxTransform(encoding, continuousAxisChannelDef, continuousAxis, kIQRScalar);
+  const {transform, encodingWithoutContinuousAxis} = boxTransform(encoding, continuousAxisChannelDef, continuousAxis, kIQRScalar);
 
-  const {size, color, ...nonPositionEncodingWithoutColorSize} = nonPositionEncoding;
+  const {size, color, ...nonPositionEncodingWithoutColorSize} = encodingWithoutContinuousAxis;
   const sizeMixins = size ? {size} : {size: {value: config.box.size}};
 
   const continuousAxisScaleAndAxis = {};
@@ -145,7 +145,7 @@ export function normalizeBoxPlot(spec: GenericUnitSpec<Encoding<string>, BOXPLOT
             field: 'upperBox',
             type: continuousAxisChannelDef.type
           },
-          ...nonPositionEncoding,
+          ...encodingWithoutContinuousAxis,
           // Need to apply size here to make sure size config get used
           ...sizeMixins
         }
@@ -159,7 +159,7 @@ export function normalizeBoxPlot(spec: GenericUnitSpec<Encoding<string>, BOXPLOT
             field: 'midBox',
             type: continuousAxisChannelDef.type
           },
-          ...nonPositionEncoding,
+          ...encodingWithoutContinuousAxis,
           ...sizeMixins,
           color: {value : 'white'} // FIXME: allow customizing this color
         }
@@ -285,7 +285,7 @@ continuousAxis: 'x' | 'y',  kIQRScalar: 'min-max' | number) {
   const bins: BinTransform[] = [];
   const timeUnits: TimeUnitTransform[] = [];
 
-  const nonPositionEncoding: Encoding<string> = {};
+  const encodingWithoutContinuousAxis: Encoding<string> = {};
   forEach(encoding, (channelDef, channel) => {
     if (channel === continuousAxis) {
       // Skip continuous axis as we already handle it separately
@@ -313,13 +313,13 @@ continuousAxis: 'x' | 'y',  kIQRScalar: 'min-max' | number) {
         groupby.push(transformedField);
       }
       // now the field should refer to post-transformed field instead
-      nonPositionEncoding[channel] = {
+      encodingWithoutContinuousAxis[channel] = {
         field: field(channelDef),
         type: channelDef.type
       };
     } else {
       // For value def, just copy
-      nonPositionEncoding[channel] = encoding[channel];
+      encodingWithoutContinuousAxis[channel] = encoding[channel];
     }
   });
 
@@ -330,6 +330,6 @@ continuousAxis: 'x' | 'y',  kIQRScalar: 'min-max' | number) {
       [{summarize, groupby}],
       postAggregateCalculates
     ),
-    nonPositionEncoding
+    encodingWithoutContinuousAxis
   };
 }
