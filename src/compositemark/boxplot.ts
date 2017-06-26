@@ -89,7 +89,8 @@ export function normalizeBoxPlot(spec: GenericUnitSpec<Encoding<Field>, BOXPLOT 
     throw new Error(`Continuous axis should not have customized aggregation function ${continuousAxisChannelDef.aggregate}`);
   }
 
-  const {transformDef, encodingPostTransform} = boxTransform(encoding, discreteAxisChannelDef, continuousAxisChannelDef, kIQRScalar, is1D);
+  const {transform, encodingPostTransform} = boxTransform(encoding, discreteAxisChannelDef, continuousAxisChannelDef, kIQRScalar, is1D);
+
   const size = encoding.size;
   const midTickAndBarSizeChannelDef = size ? {size} : {size: {value: config.box.size}};
 
@@ -100,7 +101,7 @@ export function normalizeBoxPlot(spec: GenericUnitSpec<Encoding<Field>, BOXPLOT 
 
   return {
     ...outerSpec,
-    transform: transformDef,
+    transform,
     layer: [
       { // lower whisker
         mark: {
@@ -256,7 +257,7 @@ export function boxParams(spec: GenericUnitSpec<Encoding<Field>, BOXPLOT | BoxPl
 export function boxTransform(encoding: Encoding<Field>, discreteAxisFieldDef: PositionFieldDef<Field>, continuousAxisChannelDef: PositionFieldDef<Field>, kIQRScalar: 'min-max' | number, is1D: boolean) {
   const isMinMax = kIQRScalar === undefined;
 
-  let transformDef:any = [
+  let transform: any = [
       {
         summarize: [
           {
@@ -279,7 +280,7 @@ export function boxTransform(encoding: Encoding<Field>, discreteAxisFieldDef: Po
   ];
 
   if (isMinMax) {
-    transformDef[0].summarize = transformDef[0].summarize.concat([
+    transform[0].summarize = transform[0].summarize.concat([
       {
         aggregate: 'min',
         field: continuousAxisChannelDef.field,
@@ -292,7 +293,7 @@ export function boxTransform(encoding: Encoding<Field>, discreteAxisFieldDef: Po
       }
     ]);
   } else {
-    transformDef = transformDef.concat([
+    transform = transform.concat([
       {
         calculate: 'datum.upperBox - datum.lowerBox',
         as: 'IQR'
@@ -320,7 +321,7 @@ export function boxTransform(encoding: Encoding<Field>, discreteAxisFieldDef: Po
       const fieldDef = nonPositionEncoding[fieldName];
       if (field(fieldDef)) {
         if (fieldDef.aggregate && fieldDef.aggregate !== BOXPLOT) {
-          transformDef[0].summarize = transformDef[0].summarize.concat([{
+          transform[0].summarize = transform[0].summarize.concat([{
             aggregate: fieldDef.aggregate,
             field: fieldDef.field,
             as: field(fieldDef)
@@ -338,6 +339,6 @@ export function boxTransform(encoding: Encoding<Field>, discreteAxisFieldDef: Po
 
   const encodingPostTransform = encoding;
 
-  transformDef[0].groupby = groupby;
-  return {transformDef, encodingPostTransform};
+  transform[0].groupby = groupby;
+  return {transform, encodingPostTransform};
 }
