@@ -180,37 +180,35 @@ export function normalizeBoxPlot(spec: GenericUnitSpec<Encoding<Field>, BOXPLOT 
 export function boxOrient(spec: GenericUnitSpec<Encoding<Field>, BOXPLOT | BoxPlotDef>): Orient {
   const {mark: mark, encoding: encoding, ...outerSpec} = spec;
 
-  const continuousXAxis = isFieldDef(encoding.x) && isContinuous(encoding.x);
-  const continuousYAxis = isFieldDef(encoding.y) && isContinuous(encoding.y);
+  if (isFieldDef(encoding.x) && isContinuous(encoding.x)) {
+    // x is continuous
+    if (isFieldDef(encoding.y) && isContinuous(encoding.y)) {
+      // both x and y are continuous
+      if (encoding.x.aggregate === undefined && encoding.y.aggregate === BOXPLOT) {
+        return 'vertical';
+      } else if (encoding.y.aggregate === undefined && encoding.x.aggregate === BOXPLOT) {
+        return 'horizontal';
+      } else if (encoding.x.aggregate === BOXPLOT && encoding.y.aggregate === BOXPLOT) {
+        throw new Error('Both x and y cannot have aggregate');
+      } else {
+        if (isBoxPlotDef(mark) && mark.orient) {
+          return mark.orient;
+        }
 
-  if (continuousXAxis
-      && (encoding.y === undefined || (isFieldDef(encoding.y) && isDiscrete(encoding.y)))) {
-    return 'horizontal';
-  } else if (continuousYAxis
-      && (encoding.x === undefined || (isFieldDef(encoding.x) && isDiscrete(encoding.x)))) {
-    return 'vertical';
-  }
-
-  if (!continuousXAxis && !continuousYAxis) {
-    throw new Error('Need a valid continuous axis for boxplots');
-  }
-
-  if (isFieldDef(encoding.x) && isFieldDef(encoding.y) && isContinuous(encoding.x) && isContinuous(encoding.y)) {
-    if (encoding.x.aggregate === undefined && encoding.y.aggregate === BOXPLOT) {
-      return 'vertical';
-    } else if (encoding.y.aggregate === undefined && encoding.x.aggregate === BOXPLOT) {
-      return 'horizontal';
-    } else if (encoding.x.aggregate === BOXPLOT && encoding.y.aggregate === BOXPLOT) {
-      throw new Error('Both x and y cannot have aggregate');
-    } else {
-      if (isBoxPlotDef(mark) && mark.orient) {
-        return mark.orient;
+        // default orientation = vertical
+        return 'vertical';
       }
     }
-  }
 
-  // default orientation = vertical
-  return 'vertical';
+    // x is continuous but y is not
+    return 'horizontal';
+  } else if (isFieldDef(encoding.y) && isContinuous(encoding.y)) {
+    // y is continuous but x is not
+    return 'vertical';
+  } else {
+    // Neither x nor y is continuous.
+    throw new Error('Need a valid continuous axis for boxplots');
+  }
 }
 
 
