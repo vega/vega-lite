@@ -12,9 +12,9 @@ This tutorial will guide through the process of writing a visualization specific
 
 We suggest that you follow along the tutorial by building a visualization in the [online editor](https://vega.github.io/new-editor/?mode=vega-lite). Extend your specification in the editor as you read through this tutorial. If something does not work as expected, compare your specifications with ones inside this tutorial.
 
-## $schema
+## `$schema`
 
-Before diving into components illustrating visualizations, we want to introduce "$schema" property that defines the [JSON schema](http://json-schema.org/) of the visualization specification in a certain version of Vega-Lite. It accepts value as an URL of the schema.
+Before diving into components illustrating visualizations, we want to introduce the "$schema" property that defines the [JSON schema](http://json-schema.org/) of the visualization specification in a certain version of Vega-Lite. It accepts value as an URL of the schema.
 
 ```json
  { "$schema": "https://vega.github.io/schema/vega-lite/v2.json" }

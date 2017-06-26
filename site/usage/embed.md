@@ -47,10 +47,10 @@ Here is the fianl html file in the easiest way to embed Vega-Lite:
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Embedding Vega-Lite</title>  
-  <script src="node_modules/vega/build/vega.js" charset="utf-8"></script>
-  <script src="node_modules/vega-lite/build/vega-lite.js" charset="utf-8"></script>
-  <script src="node_modules/vega-embed/vega-embed.js" charset="utf-8"></script>
+  <title>Embedding Vega-Lite</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/vega/{{ site.data.versions.vega }}/vega.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/vega-lite/{{ site.data.versions.vega-lite }}/vega-lite.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/vega-embed/{{ site.data.versions.vega-embed }}/vega-embed.js"></script>
 </head>
 <body>
 
