@@ -2,6 +2,7 @@ import {X} from '../../channel';
 import {Config} from '../../config';
 import {channelHasField, Encoding} from '../../encoding';
 import {ChannelDef, isFieldDef} from '../../fielddef';
+import {MarkDef} from '../../mark';
 import {QUANTITATIVE} from '../../type';
 import {VgValueRef} from '../../vega.schema';
 import {getMarkConfig} from '../common';
@@ -29,7 +30,7 @@ export const text: MarkCompiler = {
       ...mixins.nonPosition('size', model, {
         vgChannel: 'fontSize'  // VL's text size is fontSize
       }),
-      ...mixins.valueIfDefined('align', align(encoding, config))
+      ...mixins.valueIfDefined('align', align(model.markDef, encoding, config))
     };
   }
 };
@@ -42,8 +43,8 @@ function xDefault(config: Config, textDef: ChannelDef<string>): VgValueRef {
   return {value: config.scale.textXRangeStep / 2};
 }
 
-function align(encoding: Encoding<string>, config: Config) {
-  const alignConfig = getMarkConfig('align', 'text', config);
+function align(markDef: MarkDef, encoding: Encoding<string>, config: Config) {
+  const alignConfig = getMarkConfig('align', markDef, config);
   if (alignConfig === undefined) {
     return channelHasField(encoding, X) ? 'center' : 'right';
   }

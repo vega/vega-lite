@@ -72,7 +72,7 @@ export class UnitModel extends ModelWithField {
     this.specifiedScales = this.initScales(mark, encoding);
 
     // FIXME: this one seems out of place!
-    this.encoding = initEncoding(mark, encoding, this.stack, this.config);
+    this.encoding = initEncoding(this.markDef, encoding, this.stack, this.config);
 
     this.specifiedAxes = this.initAxes(encoding);
     this.specifiedLegends = this.initLegend(encoding);

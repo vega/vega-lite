@@ -26,7 +26,7 @@ export function shapeMixins(model: UnitModel, config: Config, fixedShape?: 'circ
   if (fixedShape) {
     return {shape: {value: fixedShape}};
   }
-  return mixins.nonPosition('shape', model, {defaultValue: getMarkConfig('shape', 'point', config) as string});
+  return mixins.nonPosition('shape', model, {defaultValue: getMarkConfig('shape', model.markDef, config) as string});
 }
 
 export const point: MarkCompiler = {
