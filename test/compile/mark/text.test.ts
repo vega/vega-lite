@@ -153,7 +153,7 @@ describe('Mark: Text', function() {
 
     it('should map text to expression', function() {
       assert.deepEqual(props.text, {
-        signal: `format(datum["mean_Acceleration"], null)`
+        signal: `format(datum["mean_Acceleration"], '')`
       });
     });
 
