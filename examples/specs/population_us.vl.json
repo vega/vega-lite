@@ -1,0 +1,104 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v2.json",
+  "data": {"values":[
+    {"state":"CA","age":"Under 5 Years","population":2704659},
+    {"state":"TX","age":"Under 5 Years","population":2027307},
+    {"state":"NY","age":"Under 5 Years","population":1208495},
+    {"state":"FL","age":"Under 5 Years","population":1140516},
+    {"state":"IL","age":"Under 5 Years","population":894368},
+    {"state":"PA","age":"Under 5 Years","population":737462},
+    {"state":"CA","age":"5 to 13 Years","population":4499890},
+    {"state":"TX","age":"5 to 13 Years","population":3277946},
+    {"state":"NY","age":"5 to 13 Years","population":2141490},
+    {"state":"FL","age":"5 to 13 Years","population":1938695},
+    {"state":"IL","age":"5 to 13 Years","population":1558919},
+    {"state":"PA","age":"5 to 13 Years","population":1345341},
+    {"state":"CA","age":"14 to 17 Years","population":2159981},
+    {"state":"TX","age":"14 to 17 Years","population":1420518},
+    {"state":"NY","age":"14 to 17 Years","population":1058031},
+    {"state":"FL","age":"14 to 17 Years","population":925060},
+    {"state":"IL","age":"14 to 17 Years","population":725973},
+    {"state":"PA","age":"14 to 17 Years","population":679201},
+    {"state":"CA","age":"18 to 24 Years","population":3853788},
+    {"state":"TX","age":"18 to 24 Years","population":2454721},
+    {"state":"NY","age":"18 to 24 Years","population":1999120},
+    {"state":"FL","age":"18 to 24 Years","population":1607297},
+    {"state":"IL","age":"18 to 24 Years","population":1311479},
+    {"state":"PA","age":"18 to 24 Years","population":1203944},
+    {"state":"CA","age":"25 to 44 Years","population":10604510},
+    {"state":"TX","age":"25 to 44 Years","population":7017731},
+    {"state":"NY","age":"25 to 44 Years","population":5355235},
+    {"state":"FL","age":"25 to 44 Years","population":4782119},
+    {"state":"IL","age":"25 to 44 Years","population":3596343},
+    {"state":"PA","age":"25 to 44 Years","population":3157759},
+    {"state":"CA","age":"45 to 64 Years","population":8819342},
+    {"state":"TX","age":"45 to 64 Years","population":5656528},
+    {"state":"NY","age":"45 to 64 Years","population":5120254},
+    {"state":"FL","age":"45 to 64 Years","population":4746856},
+    {"state":"IL","age":"45 to 64 Years","population":3239173},
+    {"state":"PA","age":"45 to 64 Years","population":3414001},
+    {"state":"CA","age":"65 Years and Over","population":4114496},
+    {"state":"TX","age":"65 Years and Over","population":2472223},
+    {"state":"NY","age":"65 Years and Over","population":2607672},
+    {"state":"FL","age":"65 Years and Over","population":3187797},
+    {"state":"IL","age":"65 Years and Over","population":1575308},
+    {"state":"PA","age":"65 Years and Over","population":1910571}]
+  },
+  "mark": "bar",
+  "description": "A grouped bar chart using color to encode age bins. Each cell represents a state in the US.",
+  "encoding": {
+    "column": {"field": "state","type": "nominal", "title":""},
+    "y": {
+      "aggregate": "sum",
+      "field": "population",
+      "type": "quantitative",
+      "axis": {
+        "title": "",
+        "grid": false
+      }
+    },
+    "x": {
+      "field": "age",
+      "type": "ordinal",
+      "axis": null,
+      "scale": {
+        "domain": [
+          "Under 5 Years",
+          "5 to 13 Years",
+          "14 to 17 Years",
+          "18 to 24 Years",
+          "25 to 44 Years",
+          "45 to 64 Years",
+          "65 Years and Over"
+        ],
+        "rangeStep": 15
+      }
+    },
+    "color": {
+      "field": "age",
+      "scale": {
+        "domain": [
+          "Under 5 Years",
+          "5 to 13 Years",
+          "14 to 17 Years",
+          "18 to 24 Years",
+          "25 to 44 Years",
+          "45 to 64 Years",
+          "65 Years and Over"
+        ],
+        "range": [
+          "#98abc5",
+          "#8a89a6",
+          "#7b6888",
+          "#6b486b",
+          "#a05d56",
+          "#d0743c",
+          "#ff8c00"
+        ]
+      },
+      "legend": {
+        "title": "Age"
+      }
+    }
+  }
+}
