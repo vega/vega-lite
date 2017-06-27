@@ -20,6 +20,15 @@ See our [issue](.github/ISSUE_TEMPLATE.md) and [pull request](.github/PULL_REQUE
 
 You can find [tasks with the "help-wanted" label in the issue tracker](https://github.com/vega/vega-lite/labels/help-wanted). Please get in touch if you are planning to work on a major task.
 
+### Help Create New Examples
+
+To submit a new example, you can fork the `master` branch and add a new `.vl.json` file to `examples/specs`. After adding the file, run `yarn run build:examples` to make sure that a compiled Vega file is included in your pull request.   
+
+If possible, please try to re-use datasets from [vega-datasets](https://github.com/vega/vega-datasets).  
+If you need a new dataset for your example, please try to submit an example with *small* [inline data](https://vega.github.io/vega-lite/docs/data.html#inline).  
+
+To avoid redundancy, please also make sure that your example is different from existing examples. 
+
 ## Documentation and Website
 
 The website is under `site/` and the documentation is under `site/docs/`.
@@ -193,9 +202,9 @@ When checking for code coverage, we require that your PR tests covers at least t
 
 Vega-Lite enables a number of open-source applications including user interface tools ([PoleStar](https://github.com/uwdata/polestar) and [Voyager](https://github.com/uwdata/voyager)) and visualization recommender ([Compass](https://github.com/uwdata/compass)). Look at their contribute pages if you are interested!
 
-- [PoleStar: Contribute](https://github.com/uwdata/polestar/wiki/Contribute)
+
 - [Voyager: Contribute](https://github.com/uwdata/voyager/wiki/Contribute)
-- [Compass: Contribute](https://github.com/uwdata/compass/wiki/Contribute)
+- [CompassQL: Contribute](https://github.com/uwdata/compassql/wiki/Contribute)
 
 -----
 
