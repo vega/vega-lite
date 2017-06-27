@@ -134,7 +134,7 @@ export function numberFormat(fieldDef: FieldDef<string>, specifiedFormat: string
 }
 
 function formatExpr(field: string, format: string) {
-  return `format(${field}, ${format ? `'${format}'` : null})`;
+  return `format(${field}, '${format || ''}')`;
 }
 
 export function numberFormatExpr(field: string, specifiedFormat: string, config: Config) {
