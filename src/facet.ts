@@ -1,4 +1,5 @@
 import {FieldDef} from './fielddef';
+import {SortOrder} from './sort';
 
 
 /**
@@ -21,7 +22,7 @@ export interface Header {
    */
   title?: string;
 
-  sort?: 'ascending' | 'descending';
+  sort?: SortOrder;
 }
 
 export interface FacetFieldDef<F> extends FieldDef<F> {

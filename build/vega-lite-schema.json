@@ -2968,11 +2968,7 @@
           "type": "string"
         },
         "sort": {
-          "enum": [
-            "ascending",
-            "descending"
-          ],
-          "type": "string"
+          "$ref": "#/definitions/SortOrder"
         },
         "title": {
           "description": "A title for the axis. Shows field name and its function by default.\n\n__Default value:__  derived from the field's name and transformation function applied e.g, \"field_name\", \"SUM(field_name)\", \"BIN(field_name)\", \"YEAR(field_name)\".",
