@@ -64,7 +64,7 @@ describe('Interval Selections', function() {
         }]
       }, {
         "name": "one_scale_trigger",
-        "update": "(!isArray(one_Horsepower) || (invert(\"x\", one_x)[0] === one_Horsepower[0] && invert(\"x\", one_x)[1] === one_Horsepower[1])) ? one_scale_trigger : {}"
+        "update": "(!isArray(one_Horsepower) || (+invert(\"x\", one_x)[0] === +one_Horsepower[0] && +invert(\"x\", one_x)[1] === +one_Horsepower[1])) ? one_scale_trigger : {}"
       }]);
 
       const twoSg = interval.signals(model, selCmpts['two']);
@@ -143,7 +143,7 @@ describe('Interval Selections', function() {
         },
         {
           "name": "thr_ee_scale_trigger",
-          "update": "(!isArray(thr_ee_Horsepower) || (invert(\"x\", thr_ee_x)[0] === thr_ee_Horsepower[0] && invert(\"x\", thr_ee_x)[1] === thr_ee_Horsepower[1])) && (!isArray(thr_ee_Miles_per_Gallon) || (invert(\"y\", thr_ee_y)[0] === thr_ee_Miles_per_Gallon[0] && invert(\"y\", thr_ee_y)[1] === thr_ee_Miles_per_Gallon[1])) ? thr_ee_scale_trigger : {}"
+          "update": "(!isArray(thr_ee_Horsepower) || (+invert(\"x\", thr_ee_x)[0] === +thr_ee_Horsepower[0] && +invert(\"x\", thr_ee_x)[1] === +thr_ee_Horsepower[1])) && (!isArray(thr_ee_Miles_per_Gallon) || (+invert(\"y\", thr_ee_y)[0] === +thr_ee_Miles_per_Gallon[0] && +invert(\"y\", thr_ee_y)[1] === +thr_ee_Miles_per_Gallon[1])) ? thr_ee_scale_trigger : {}"
         }
       ]);
     });

@@ -51,8 +51,8 @@ const interval:SelectionCompiler = {
       scaleTriggers.push({
         scaleName: model.scaleName(channel),
         expr: `(!isArray(${dname}) || ` +
-          `(invert(${scaleStr}, ${vname})[0] === ${dname}[0] && ` +
-            `invert(${scaleStr}, ${vname})[1] === ${dname}[1]))`
+          `(+invert(${scaleStr}, ${vname})[0] === +${dname}[0] && ` +
+            `+invert(${scaleStr}, ${vname})[1] === +${dname}[1]))`
       });
     });
 
