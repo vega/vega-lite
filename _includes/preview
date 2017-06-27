@@ -1,0 +1,4 @@
+<a class="imagegroup" href="https://vega.github.io/new-editor/?mode=vega-lite&spec={{ include.spec }}">
+  <span class="image" alt="{{ include.title | strip }}" style="background-image: url({{site.baseurl}}/build/examples/images/{{ include.spec }}.vl.svg);"></span>
+  <span class="image-title">{{ include.title | strip }}</span>
+</a>
