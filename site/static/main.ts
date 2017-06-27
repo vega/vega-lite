@@ -11,8 +11,6 @@ window['runStreamingExample'] = runStreamingExample;
 
 declare const BASEURL: string;
 
-config.editor_url = 'https://vega.github.io/new-editor';
-
 function trim(str: string) {
   return str.replace(/^\s+|\s+$/g, '');
 }
@@ -50,14 +48,11 @@ function renderExample($target: Selection<any, any, any, any>, text: string) {
       source: false,
       export: false
     }
-  }, (err: Error, result: any) => {
-    if (err) {
-      console.error(err);
-    } else if ($target.classed('tooltip')) {
+  }).then(result => {
+    if ($target.classed('tooltip')) {
       vegaLite(result.view, JSON.parse(text) as any);
     }
-  });
-
+  }).catch(console.error);
 }
 
 selectAll('.vl-example').each(function(this: Element) {
