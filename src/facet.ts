@@ -20,6 +20,8 @@ export interface Header {
    * __Default value:__  derived from the field's name and transformation function applied e.g, "field_name", "SUM(field_name)", "BIN(field_name)", "YEAR(field_name)".
    */
   title?: string;
+
+  sort?: 'ascending' | 'descending';
 }
 
 export interface FacetFieldDef<F> extends FieldDef<F> {

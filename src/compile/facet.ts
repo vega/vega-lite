@@ -122,16 +122,16 @@ export class FacetModel extends ModelWithField {
           }}: {})
         }
       },
-      ...(hasRow && hasColumn ? {sort: {
-        field: [this.field(ROW, {expr: 'datum'}), this.field(COLUMN, {expr: 'datum'})],
-        order: ['ascending', 'ascending']
-      }} : hasRow ? {sort: {
-        field: this.field(ROW, {expr: 'datum'}),
-        order: 'ascending'
-      }} : {sort: {
-        field: this.field(COLUMN, {expr: 'datum'}),
-        order: 'ascending'
-      }}),
+      sort: {
+        field: [].concat(
+          hasRow ? [this.field(ROW, {expr: 'datum'})] : [],
+          hasColumn ? [this.field(COLUMN, {expr: 'datum'})] : []
+        ),
+        order: [].concat(
+          hasRow ? [ (this.facet.row.header && this.facet.row.header.sort) || 'ascending'] : [],
+          hasColumn ? [ (this.facet.column.header && this.facet.column.header.sort) || 'ascending'] : []
+        )
+      },
       encode: {
         update: getFacetGroupProperties(this)
       }

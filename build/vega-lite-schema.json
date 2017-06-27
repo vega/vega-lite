@@ -2967,6 +2967,13 @@
           "description": "The formatting pattern for axis labels. This is D3's [number format pattern](https://github.com/mbostock/d3/wiki/Formatting) for quantitative axis and D3's [time format pattern](https://github.com/mbostock/d3/wiki/Time-Formatting) for time axis.\n\n__Default value:__  derived from [numberFormat](config.html#format) config for quantitative axis and from [timeFormat](config.html#format) config for time axis.",
           "type": "string"
         },
+        "sort": {
+          "enum": [
+            "ascending",
+            "descending"
+          ],
+          "type": "string"
+        },
         "title": {
           "description": "A title for the axis. Shows field name and its function by default.\n\n__Default value:__  derived from the field's name and transformation function applied e.g, \"field_name\", \"SUM(field_name)\", \"BIN(field_name)\", \"YEAR(field_name)\".",
           "type": "string"
