@@ -18,7 +18,7 @@ See our [issue](.github/ISSUE_TEMPLATE.md) and [pull request](.github/PULL_REQUE
 
 ### Looking for a Task to Contribute
 
-You can find [tasks with the "help-wanted" label in the issue tracker](https://github.com/vega/vega-lite/labels/help-wanted). Please get in touch if you are planning to work on a major task. 
+You can find [tasks with the "help-wanted" label in the issue tracker](https://github.com/vega/vega-lite/labels/help-wanted). Please get in touch if you are planning to work on a major task.
 
 ## Documentation and Website
 
@@ -79,9 +79,9 @@ you can run `npm run site` to serve the github page locally at [http://localhost
 - `data/` – Example data.
 - `site/` – Vega-Lite website including documentation.
 - `examples/` – Example Vega-Lite specifications.
-  - `examples/vl-examples.json` lists all examples under `examples/`. Similarly, `examples/docs/vl-docs-examples.json` lists all examples under `examples/docs`.
+  - `specs` Vega-Lite examples.
+  - `vg-specs` The generated Vega of the Vega-Lite examples.
 
-- `lib/` contains JSON schema's `schema.json`
 - `scripts/` - Scripts for NPM commands.
 - `site/` - Misc files for serving the website and gallery
 - `src/` - Main source code directory.
@@ -97,7 +97,6 @@ For example, `test/compile/` test files inside `src/compile/`.
   - Note that we prepend `/* tslint:disable:quotemark */` to all files under `test/compile`
   to allow putting JSON spec in tests directly without getting lint errors.
 - `typings/` - TypeScript typing declaration for dependencies.
-Some of them are downloaded from the TypeStrong community.
 
 
 ## Commands
