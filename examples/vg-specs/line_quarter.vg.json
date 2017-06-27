@@ -151,6 +151,10 @@
             "from": {
                 "data": "column"
             },
+            "sort": {
+                "field": "datum[\"year_date\"]",
+                "order": "ascending"
+            },
             "title": {
                 "text": {
                     "signal": "timeFormat(parent[\"year_date\"], '%Y')"
@@ -185,6 +189,10 @@
             "role": "column-footer",
             "from": {
                 "data": "column"
+            },
+            "sort": {
+                "field": "datum[\"year_date\"]",
+                "order": "ascending"
             },
             "encode": {
                 "update": {
@@ -232,6 +240,14 @@
                         "year_date"
                     ]
                 }
+            },
+            "sort": {
+                "field": [
+                    "datum[\"year_date\"]"
+                ],
+                "order": [
+                    "ascending"
+                ]
             },
             "encode": {
                 "update": {

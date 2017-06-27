@@ -134,6 +134,10 @@
             "from": {
                 "data": "row"
             },
+            "sort": {
+                "field": "datum[\"age\"]",
+                "order": "ascending"
+            },
             "title": {
                 "text": {
                     "signal": "parent[\"age\"]"
@@ -201,6 +205,14 @@
                         "age"
                     ]
                 }
+            },
+            "sort": {
+                "field": [
+                    "datum[\"age\"]"
+                ],
+                "order": [
+                    "ascending"
+                ]
             },
             "encode": {
                 "update": {
