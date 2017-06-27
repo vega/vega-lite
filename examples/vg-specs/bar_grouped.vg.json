@@ -168,6 +168,10 @@
             "from": {
                 "data": "column"
             },
+            "sort": {
+                "field": "datum[\"age\"]",
+                "order": "ascending"
+            },
             "title": {
                 "text": {
                     "signal": "parent[\"age\"]"
@@ -202,6 +206,10 @@
             "role": "column-footer",
             "from": {
                 "data": "column"
+            },
+            "sort": {
+                "field": "datum[\"age\"]",
+                "order": "ascending"
             },
             "encode": {
                 "update": {
@@ -245,6 +253,14 @@
                         "age"
                     ]
                 }
+            },
+            "sort": {
+                "field": [
+                    "datum[\"age\"]"
+                ],
+                "order": [
+                    "ascending"
+                ]
             },
             "encode": {
                 "update": {

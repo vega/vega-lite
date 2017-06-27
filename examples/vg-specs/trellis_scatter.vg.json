@@ -127,6 +127,10 @@
             "from": {
                 "data": "column"
             },
+            "sort": {
+                "field": "datum[\"MPAA_Rating\"]",
+                "order": "ascending"
+            },
             "title": {
                 "text": {
                     "signal": "parent[\"MPAA_Rating\"]"
@@ -162,6 +166,10 @@
             "from": {
                 "data": "column"
             },
+            "sort": {
+                "field": "datum[\"MPAA_Rating\"]",
+                "order": "ascending"
+            },
             "encode": {
                 "update": {
                     "width": {
@@ -191,6 +199,14 @@
                         "MPAA_Rating"
                     ]
                 }
+            },
+            "sort": {
+                "field": [
+                    "datum[\"MPAA_Rating\"]"
+                ],
+                "order": [
+                    "ascending"
+                ]
             },
             "encode": {
                 "update": {

@@ -135,6 +135,10 @@
             "from": {
                 "data": "row"
             },
+            "sort": {
+                "field": "datum[\"gender\"]",
+                "order": "ascending"
+            },
             "title": {
                 "text": {
                     "signal": "parent[\"gender\"]"
@@ -224,6 +228,14 @@
                         "gender"
                     ]
                 }
+            },
+            "sort": {
+                "field": [
+                    "datum[\"gender\"]"
+                ],
+                "order": [
+                    "ascending"
+                ]
             },
             "encode": {
                 "update": {

@@ -175,6 +175,10 @@
             "from": {
                 "data": "column"
             },
+            "sort": {
+                "field": "datum[\"Series\"]",
+                "order": "ascending"
+            },
             "title": {
                 "text": {
                     "signal": "parent[\"Series\"]"
@@ -210,6 +214,10 @@
             "from": {
                 "data": "column"
             },
+            "sort": {
+                "field": "datum[\"Series\"]",
+                "order": "ascending"
+            },
             "encode": {
                 "update": {
                     "width": {
@@ -239,6 +247,14 @@
                         "Series"
                     ]
                 }
+            },
+            "sort": {
+                "field": [
+                    "datum[\"Series\"]"
+                ],
+                "order": [
+                    "ascending"
+                ]
             },
             "encode": {
                 "update": {

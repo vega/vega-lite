@@ -152,6 +152,10 @@
             "from": {
                 "data": "row"
             },
+            "sort": {
+                "field": "datum[\"Cylinders\"]",
+                "order": "ascending"
+            },
             "title": {
                 "text": {
                     "signal": "parent[\"Cylinders\"]"
@@ -201,6 +205,10 @@
             "from": {
                 "data": "column"
             },
+            "sort": {
+                "field": "datum[\"Origin\"]",
+                "order": "ascending"
+            },
             "title": {
                 "text": {
                     "signal": "parent[\"Origin\"]"
@@ -235,6 +243,10 @@
             "role": "column-footer",
             "from": {
                 "data": "column"
+            },
+            "sort": {
+                "field": "datum[\"Origin\"]",
+                "order": "ascending"
             },
             "encode": {
                 "update": {
